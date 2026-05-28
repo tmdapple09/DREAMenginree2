@@ -19,6 +19,7 @@ import { nostrVerify } from '@/lib/connectors/providers/nostr';
 import { redditVerify } from '@/lib/connectors/providers/reddit';
 import { youtubeVerify } from '@/lib/connectors/providers/youtube';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { ConnectorConnectResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -33,7 +34,7 @@ export async function POST(
   const db = supabase as SupabaseClient;
 
   // Auth check — only authenticated users may connect
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ ok: false, status: 'error', message: 'Unauthorised' }, { status: 401 });
   }

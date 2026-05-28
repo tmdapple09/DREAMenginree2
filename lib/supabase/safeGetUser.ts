@@ -1,21 +1,18 @@
-type AuthUserResponse<TUser> = {
-  data?: {
-    user?: TUser | null;
-  } | null;
-};
+import type { SupabaseClient, User } from '@supabase/supabase-js';
 
-type SupabaseAuthLike<TUser> = {
+type SupabaseAuthLike = {
   auth: {
-    getUser: () => Promise<AuthUserResponse<TUser>>;
+    getUser: () => Promise<{ data: { user: User | null }; error: Error | null }>;
   };
 };
 
 export const AUTH_GET_USER_TIMEOUT_MS = 2500;
 
-export async function safeGetUser<TUser>(
-  supabase: SupabaseAuthLike<TUser>,
+export async function safeGetUser(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: SupabaseClient<any, any, any> | SupabaseAuthLike,
   timeoutMs = AUTH_GET_USER_TIMEOUT_MS,
-): Promise<TUser | null> {
+): Promise<User | null> {
   const effectiveTimeoutMs = Math.max(1, timeoutMs);
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
