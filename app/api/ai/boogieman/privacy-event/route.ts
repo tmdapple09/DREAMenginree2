@@ -23,6 +23,7 @@ import { writeAuditLog } from '@/lib/ai/audit';
 import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogieman';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -70,8 +71,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // All privacy events require authentication — the user must own the content.
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to log a privacy event.');
   }
 
