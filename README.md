@@ -4437,7 +4437,7 @@ Auto-synced from `output/**` using repository introspection.
 
 ## Public
 Auto-synced from `public/**` using repository introspection.
-- Files tracked: **35**
+- Files tracked: **33**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -4471,8 +4471,6 @@ Auto-synced from `public/**` using repository introspection.
     ├── logo_ENGIN_transparent.png
     ├── manifest.json
     ├── manifest.webmanifest
-    ├── models
-    │   └── madmaxi.glb
     ├── module-loader.html
     ├── next.svg
     ├── shoe1_transparent.png
@@ -4480,15 +4478,13 @@ Auto-synced from `public/**` using repository introspection.
     ├── sprite_2x_transparent.png
     ├── sprite_transparent.png
     ├── vercel.svg
-    ├── videos
-    │   └── signup-bg.mp4
     ├── window.svg
     └── workers
         ├── asset-optimizer.worker.js
         ├── engin-shader.wasm
         └── engin-shader.worker.ts
 ```
-<details><summary>Public file index (35 files)</summary>
+<details><summary>Public file index (33 files)</summary>
 
 - `public/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `public/arm1_transparent.png` — project file (png).
@@ -4512,7 +4508,6 @@ Auto-synced from `public/**` using repository introspection.
 - `public/logo_ENGIN_transparent.png` — project file (png).
 - `public/manifest.json` — project file (json).
 - `public/manifest.webmanifest` — project file (webmanifest).
-- `public/models/madmaxi.glb` — project file (glb).
 - `public/module-loader.html` — project file (html).
 - `public/next.svg` — project file (svg).
 - `public/shoe1_transparent.png` — project file (png).
@@ -4520,7 +4515,6 @@ Auto-synced from `public/**` using repository introspection.
 - `public/sprite_2x_transparent.png` — project file (png).
 - `public/sprite_transparent.png` — project file (png).
 - `public/vercel.svg` — project file (svg).
-- `public/videos/signup-bg.mp4` — project file (mp4).
 - `public/window.svg` — project file (svg).
 - `public/workers/asset-optimizer.worker.js` — TypeScript/JavaScript runtime module.
 - `public/workers/engin-shader.wasm` — project file (wasm).
