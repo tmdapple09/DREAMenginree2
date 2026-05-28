@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-28T20:14:17.072Z
+Generated: 2026-05-28T20:28:57.136Z
 
 ---
 
@@ -17855,6 +17855,7 @@ _No circular dependencies detected._
 │   │   ├── autofixvercelbuild.yml
 │   │   ├── bot-pr-automerge.yml
 │   │   ├── bouncer.yml
+│   │   ├── cleanup-dead-code.yml
 │   │   ├── codeql.yml
 │   │   ├── copilot-setup-steps.yml
 │   │   ├── daydream-all.yml
@@ -19778,6 +19779,17 @@ _No circular dependencies detected._
 │   └── webgpu.ts
 ├── misc
 │   ├── images
+│   │   ├── arm2_transparent.png
+│   │   ├── coat_transparent.png
+│   │   ├── head_transparent.png
+│   │   ├── iconslist.png
+│   │   ├── logo_DREAM_transparent.png
+│   │   ├── logo_ENGIN_transparent.png
+│   │   ├── logo_transparent.png
+│   │   ├── shoe1_transparent.png
+│   │   ├── shoe2_transparent.png
+│   │   ├── sprite_2x_transparent.png
+│   │   └── sprite_transparent.png
 │   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── optimizer
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -19802,19 +19814,34 @@ _No circular dependencies detected._
 │   ├── feeds
 │   │   └── embed-feed.json
 │   ├── images
+│   │   ├── iconslist.png
+│   │   ├── logo1.PNG
+│   │   ├── logo2.PNG
+│   │   └── logo3.PNG
 │   ├── workers
 │   │   ├── asset-optimizer.worker.js
 │   │   ├── engin-shader.wasm
 │   │   └── engin-shader.worker.ts
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
+│   ├── arm1_transparent.png
+│   ├── arm2_transparent.png
+│   ├── coat_transparent.png
 │   ├── dr-eams-pbr.html
 │   ├── favicon.ico
 │   ├── file.svg
 │   ├── globe.svg
+│   ├── head_transparent.png
+│   ├── logo_DREAM_transparent.png
+│   ├── logo_ENGIN_transparent.png
+│   ├── logo-icon.png
 │   ├── manifest.json
 │   ├── manifest.webmanifest
 │   ├── module-loader.html
 │   ├── next.svg
+│   ├── shoe1_transparent.png
+│   ├── shoe2_transparent.png
+│   ├── sprite_2x_transparent.png
+│   ├── sprite_transparent.png
 │   ├── vercel.svg
 │   └── window.svg
 ├── repo-visualizer
