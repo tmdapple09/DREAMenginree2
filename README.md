@@ -7,6 +7,8 @@
 ## 🗺️ Visual Repository Schematic
 See [`VISUAL-SCHEMATIC.md`](VISUAL-SCHEMATIC.md) for a live, auto-updated visual map of every file, function, and connection in this repo — including orphan/floating nodes. Live viewer: https://tmdapple09.github.io
 
+See [`repo_state.md`] for complete current map of entire map of everuthing.
+
 ## What is DREAMengin?
 DREAMengin is a spatial creative operating environment built around the **Creative Operating Law**: one fixed engine for universal concerns (state, I/O, events, security), and swappable rule-sets for product behavior. In practice, this means HomeDream, DreamSpace, Dream Windows, Engins, messaging, media, and commerce all share one runtime contract instead of each feature inventing its own stack.
 
