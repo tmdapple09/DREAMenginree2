@@ -1,0 +1,184 @@
+name: Cleanup Dead Code & Fix BabylonOptimizeroScene
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — show what would change without committing'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 1 — Delete root /api/ directory (dead — unreachable by
+      #          Next.js App Router; canonical routes live in app/api/)
+      # ─────────────────────────────────────────────────────────────
+      - name: Remove root /api/ directory
+        run: |
+          if [ -d "api" ]; then
+            echo "Removing root /api/ directory…"
+            git rm -r --force api/
+          else
+            echo "Root /api/ not present — nothing to do."
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 2 — Delete root-level orphan .tsx files
+      #          (canonical copies live in components/ and were already
+      #           being imported correctly; root copies were never reached)
+      # ─────────────────────────────────────────────────────────────
+      - name: Remove root-level orphan .tsx files
+        run: |
+          ROOT_TSX=(
+            "dream.CoreDream.tsx"
+            "dream.RuntimeView.tsx"
+            "dream.scene.DrEamsScene.tsx"
+            "dream.scene.BabylonOptimizeroScene.tsx"
+            "dreamsurface.daydream.BrandDaydream.tsx"
+            "dream.panel.PianoRollPanel.tsx"
+            "dream.universal_asset_registry.tsx"
+            "dream.ProfileSpace.tsx"
+            "dream.widget.WidgetBubble.tsx"
+          )
+
+          for f in "${ROOT_TSX[@]}"; do
+            if [ -f "$f" ]; then
+              echo "Removing root/$f…"
+              git rm --force "$f"
+            else
+              echo "Root/$f not present — skipping."
+            fi
+          done
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 3 — Delete root /dreamr/ directory
+      #          (only file inside was byte-for-byte identical to
+      #           components/dreamr/dream.panel.DreamRChannelPanel.tsx;
+      #           all imports already pointed to @/components/dreamr/)
+      # ─────────────────────────────────────────────────────────────
+      - name: Remove root /dreamr/ directory
+        run: |
+          if [ -d "dreamr" ]; then
+            echo "Removing root /dreamr/ directory…"
+            git rm -r --force dreamr/
+          else
+            echo "Root /dreamr/ not present — nothing to do."
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 4 — Delete root use-spatial.ts
+      #          (hooks/use-spatial.ts is the better-typed version;
+      #           the only importer already used @/hooks/use-spatial)
+      # ─────────────────────────────────────────────────────────────
+      - name: Remove root use-spatial.ts
+        run: |
+          if [ -f "use-spatial.ts" ]; then
+            echo "Removing root/use-spatial.ts…"
+            git rm --force use-spatial.ts
+          else
+            echo "Root/use-spatial.ts not present — nothing to do."
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 5 — Patch BabylonOptimizeroScene: remove unnecessary cast
+      #          engine is already AbstractEngine (returned by
+      #          createBabylonEngine); AbstractEngine has .dispose()
+      # ─────────────────────────────────────────────────────────────
+      - name: Patch BabylonOptimizeroScene — remove ad-hoc cast
+        run: |
+          FILE="components/optimizer/dream.scene.BabylonOptimizeroScene.tsx"
+
+          if [ ! -f "$FILE" ]; then
+            echo "$FILE not found — skipping patch."
+            exit 0
+          fi
+
+          # The bad line (may or may not still be present if run twice)
+          BAD='(engine as { stopRenderLoop: () => void; dispose: () => void }).dispose()'
+          GOOD='engine.dispose()'
+
+          if grep -qF "$BAD" "$FILE"; then
+            echo "Patching $FILE — replacing ad-hoc cast with direct call…"
+            # Use python for reliable in-place string replacement (no sed -i portability issues)
+            python3 - "$FILE" "$BAD" "$GOOD" <<'PYEOF'
+          import sys
+          path, bad, good = sys.argv[1], sys.argv[2], sys.argv[3]
+          text = open(path).read()
+          assert bad in text, f"Pattern not found in {path}"
+          open(path, 'w').write(text.replace(bad, good, 1))
+          print(f"  Replaced 1 occurrence.")
+          PYEOF
+          else
+            echo "$FILE already patched — skipping."
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 6 — Summarise changes / dry-run gate
+      # ─────────────────────────────────────────────────────────────
+      - name: Show diff summary
+        run: |
+          echo "──────────────────────────────────────────"
+          echo "Git status after all changes:"
+          echo "──────────────────────────────────────────"
+          git status --short
+          echo ""
+          echo "Files staged for deletion:"
+          git diff --cached --name-only --diff-filter=D | sed 's/^/  DELETE: /'
+          echo ""
+          echo "Files modified (patches):"
+          git diff --name-only | sed 's/^/  MODIFY: /'
+
+      - name: Abort if dry run
+        if: ${{ inputs.dry_run == 'true' }}
+        run: |
+          echo ""
+          echo "DRY RUN — no commit made. Re-run with dry_run=false to apply."
+          exit 0
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 7 — Commit & push
+      # ─────────────────────────────────────────────────────────────
+      - name: Stage patched files and commit
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          # Stage any unstaged modifications (the BabylonOptimizeroScene patch)
+          git add -u
+
+          # Check if there is actually anything to commit
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — repository is already clean."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git commit -m "chore: remove dead root-level duplicates, fix BabylonOptimizeroScene cast
+
+          Removes files that were unreachable / shadowed by their canonical counterparts:
+          - root /api/            → app/api/ is the live Next.js route directory
+          - root *.tsx orphans    → components/ versions were already imported
+          - root /dreamr/         → identical to components/dreamr/; imports already correct
+          - root use-spatial.ts   → hooks/use-spatial.ts is the better-typed version
+
+          Patches:
+          - components/optimizer/dream.scene.BabylonOptimizeroScene.tsx
+            Remove unnecessary ad-hoc cast on engine.dispose(); engine is already
+            AbstractEngine (returned by createBabylonEngine), which has .dispose()."
+
+          git push
