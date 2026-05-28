@@ -19,6 +19,7 @@
 import { reconcileConnector } from '@/lib/connectors/reconcile';
 import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { ConnectorSyncResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -32,7 +33,7 @@ export async function POST(
    
   const db = supabase as SupabaseClient;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json(
       { ok: false, fetched: 0, stored: 0, last_synced_at: '', error: 'Unauthorised' },

@@ -20,6 +20,7 @@ import { nostrVerify } from '@/lib/connectors/providers/nostr';
 import { redditVerify } from '@/lib/connectors/providers/reddit';
 import { youtubeVerify } from '@/lib/connectors/providers/youtube';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { ConnectorVerifyResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -35,7 +36,7 @@ export async function GET(
    
   const db = supabase as SupabaseClient;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json(
       { ok: false, status: 'error', last_verified_at: null, error: 'Unauthorised' },

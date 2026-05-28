@@ -9,6 +9,7 @@
  */
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -21,7 +22,7 @@ export async function GET(
    
   const db = supabase as SupabaseClient;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ ok: false, items: [], error: 'Unauthorised' }, { status: 401 });
   }
