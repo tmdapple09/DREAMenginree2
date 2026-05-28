@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-28T09:26:37.848Z
+Generated: 2026-05-28T13:57:57.009Z
 
 ---
 
@@ -38269,8 +38269,6 @@ _No circular dependencies detected._
 │   ├── logo_ENGIN_transparent.png
 │   ├── manifest.json
 │   ├── manifest.webmanifest
-│   ├── models
-│   │   └── madmaxi.glb
 │   ├── module-loader.html
 │   ├── next.svg
 │   ├── shoe1_transparent.png
@@ -38278,8 +38276,6 @@ _No circular dependencies detected._
 │   ├── sprite_2x_transparent.png
 │   ├── sprite_transparent.png
 │   ├── vercel.svg
-│   ├── videos
-│   │   └── signup-bg.mp4
 │   ├── window.svg
 │   └── workers
 │       ├── asset-optimizer.worker.js
