@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 25
       - name: Generate Repository State
         run: node scripts/generate-repo-state.mjs
       - name: Commit Changes
