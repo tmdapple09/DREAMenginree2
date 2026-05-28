@@ -2155,7 +2155,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 
 ## Agents & Workflow
 Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **139**
+- Files tracked: **138**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2186,7 +2186,6 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │       ├── autofixvercelbuild.yml
 │       ├── bot-pr-automerge.yml
 │       ├── bouncer.yml
-│       ├── cleanup-dead-code.yml
 │       ├── codeql.yml
 │       ├── copilot-setup-steps.yml
 │       ├── daydream-all.yml
@@ -2281,9 +2280,10 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   ├── lib
     │   │   └── tar.ts
     │   ├── maestro-analyze.ts
-… (19 more files)
+    │   ├── mechanic-run.ts
+… (18 more files)
 ```
-<details><summary>Agents & Workflow file index (139 files)</summary>
+<details><summary>Agents & Workflow file index (138 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
@@ -2307,7 +2307,6 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
 - `.github/workflows/bot-pr-automerge.yml` — project file (yml).
 - `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
 - `.github/workflows/codeql.yml` — project file (yml).
 - `.github/workflows/copilot-setup-steps.yml` — project file (yml).
 - `.github/workflows/daydream-all.yml` — project file (yml).
@@ -2517,7 +2516,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **72**
+- Files tracked: **71**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2529,7 +2528,6 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── autofixvercelbuild.yml
 │       ├── bot-pr-automerge.yml
 │       ├── bouncer.yml
-│       ├── cleanup-dead-code.yml
 │       ├── codeql.yml
 │       ├── copilot-setup-steps.yml
 │       ├── daydream-all.yml
@@ -2603,13 +2601,12 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │   └── main.tf
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (72 files)</summary>
+<details><summary>Infra & Ops file index (71 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
 - `.github/workflows/bot-pr-automerge.yml` — project file (yml).
 - `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
 - `.github/workflows/codeql.yml` — project file (yml).
 - `.github/workflows/copilot-setup-steps.yml` — project file (yml).
 - `.github/workflows/daydream-all.yml` — project file (yml).
@@ -3296,7 +3293,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 
 ## Contributing
 Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **278**
+- Files tracked: **277**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -3422,9 +3419,9 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
-… (158 more files)
+… (157 more files)
 ```
-<details><summary>Contributing file index (278 files)</summary>
+<details><summary>Contributing file index (277 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
 - `.github/actions/resilient-engine/action.yml` — project file (yml).
@@ -3547,7 +3544,6 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
 - `.github/workflows/bot-pr-automerge.yml` — project file (yml).
 - `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
 - `.github/workflows/codeql.yml` — project file (yml).
 - `.github/workflows/copilot-setup-steps.yml` — project file (yml).
 - `.github/workflows/daydream-all.yml` — project file (yml).

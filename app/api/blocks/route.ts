@@ -18,7 +18,7 @@ const BlockBodySchema = z.object({
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
+  if (!user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data, error } = await supabase
     .from('user_blocks')
@@ -34,7 +34,7 @@ export async function GET( ): Promise<NextResponse> {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
+  if (!user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   let body: unknown;
   try { body = await req.json(); } catch { return jsonApiError(400, 'BAD_JSON', 'Body must be valid JSON.'); }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
+  if (!user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const blocked_id = req.nextUrl.searchParams.get('blocked_id');
   if (!blocked_id || !/^[0-9a-f-]{36}$/.test(blocked_id)) {

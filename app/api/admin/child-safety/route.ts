@@ -31,7 +31,7 @@ const VALID_STATUSES = [
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (userErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
+  if (!user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles').select('role').eq('user_id', user.id).single();
@@ -87,7 +87,7 @@ const AdminBodySchema = z.discriminatedUnion('action', [ReviewBodySchema, AddHas
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (userErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
+  if (!user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles').select('role').eq('user_id', user.id).single();

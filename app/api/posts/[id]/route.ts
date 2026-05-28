@@ -30,7 +30,7 @@ export async function DELETE(
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  if (authError || !user) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

@@ -224,7 +224,7 @@ export function ForgeDreamCanvas( ){
     try {
       const { createClient } = await import('../lib/supabase/client');
       const supabase = createClient();
-      const user = await safeGetUser(supabase);
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setValidationMsg('⚠ Sign in to save to your workspace'); return; }
 
       const { error } = await supabase.from('forge_assemblies').upsert({

@@ -1,5 +1,6 @@
 import { encodeUint8ArrayToLedgerString } from '@/lib/media/ledger';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 
 /**
  * THE FLOW:

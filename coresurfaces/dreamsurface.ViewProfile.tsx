@@ -50,8 +50,7 @@ export default async function ViewProfilePage( ){
   // Gracefully handle Supabase being unavailable (no configured env vars)
   let user: { id: string } | null = null;
   try {
-    const user = await safeGetUser(supabase);
-    user = user;
+    user = await safeGetUser(supabase);
   } catch {
     // Supabase not configured — redirect to login
   }

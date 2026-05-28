@@ -45,7 +45,7 @@ function isValidSlot(s: unknown): s is LayoutSlot {
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authError || !user) {
+  if (!user) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -68,7 +68,7 @@ export async function GET( ): Promise<NextResponse> {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authError || !user) {
+  if (!user) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 

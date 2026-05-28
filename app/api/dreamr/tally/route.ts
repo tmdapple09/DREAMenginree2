@@ -60,7 +60,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const supabase = await createServerClient();
     const user = await safeGetUser(supabase);
-    if (error || !user) {
+    if (!user) {
       return NextResponse.json({ ok: false, error: 'NOT_AUTHENTICATED' }, { status: 401 });
     }
     viewerId = user.id;

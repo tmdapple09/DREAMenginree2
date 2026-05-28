@@ -294,8 +294,8 @@ function extractJSImportData(relPath, content, allFilesSet) {
     m = chunk.match(/^\s*export\s+(?:default\s+)?(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/);
     if (m) {
       const name = normalizeExportName(m[1]);
-      functions.push(){ name, exported: true, loc: lineOfIndex(content, start + (m.index || 0)) });
-      exports.push(){ kind: 'function', name });
+      functions.push({ name, exported: true, loc: lineOfIndex(content, start + (m.index || 0)) });
+      exports.push({ kind: 'function', name });
       continue;
     }
     m = chunk.match(/^\s*(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/);
@@ -320,8 +320,8 @@ function extractJSImportData(relPath, content, allFilesSet) {
     m = chunk.match(/^\s*export\s+const\s+([A-Za-z_$][\w$]*)\s*=\s*(?:async\s+)?(?:function\b|\([^)]*\)\s*=>|[A-Za-z_$][\w$]*\s*=>)/);
     if (m) {
       const name = m[1];
-      functions.push(){ name, exported: true, loc: lineOfIndex(content, start + (m.index || 0)) });
-      exports.push(){ kind: 'function', name });
+      functions.push({ name, exported: true, loc: lineOfIndex(content, start + (m.index || 0)) });
+      exports.push({ kind: 'function', name });
       continue;
     }
   }

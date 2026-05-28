@@ -12,7 +12,7 @@ export async function GET( ): Promise<NextResponse> {
     const supabase = await createServerClient();
     const user = await safeGetUser(supabase);
 
-    authenticated = Boolean(user) && !authError;
+    authenticated = Boolean(user);
 
     if (user) {
       const db = supabase as SupabaseClient;

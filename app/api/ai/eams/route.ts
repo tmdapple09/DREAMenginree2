@@ -38,7 +38,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Authenticate
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (userErr || !user) {
+  if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 

@@ -15,6 +15,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 
 export interface ControlMapping {
   id: string;

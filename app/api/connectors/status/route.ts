@@ -32,7 +32,7 @@ export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  if (authError || !user) {
+  if (!user) {
     return NextResponse.json({ ok: false, statuses: {} }, { status: 401 });
   }
 

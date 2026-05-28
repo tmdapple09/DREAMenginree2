@@ -25,7 +25,7 @@ function runServerBenchmarks( ){
 export async function POST(_req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (authError || !user) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

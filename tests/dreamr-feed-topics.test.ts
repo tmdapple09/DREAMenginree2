@@ -89,7 +89,7 @@ describe('DREAMR_TOPICS', () => {
 // We test the mapping logic directly — no need to import the private helper;
 // instead we inline the same transformation to verify expected output shape.
 
-function ytItemToFeedPostLocal(item: ){
+function ytItemToFeedPostLocal(item: {
   external_id: string;
   content_text: string;
   published_at: string;

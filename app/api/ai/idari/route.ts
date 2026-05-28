@@ -198,7 +198,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Authenticate — server-side only, no dev-bypass exemption (Phase 6 spec point 6).
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
-  if (userErr || !user) {
+  if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to access IDARi.');
   }
 

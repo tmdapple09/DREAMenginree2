@@ -69,7 +69,7 @@ export default async function SettingsPage( ){
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  if (!user && !userError) redirect('/login');
+  if (!user) redirect('/login');
   if (user) {
     try {
       const { data: roleData } = await supabase
@@ -81,8 +81,6 @@ export default async function SettingsPage( ){
     } catch {
       authWarning = 'Admin controls are temporarily unavailable. Your session was preserved.';
     }
-  } else if (userError) {
-    authWarning = 'We could not verify your admin role right now. Core settings remain available.';
   }
 
   return (
