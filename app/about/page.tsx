@@ -31,7 +31,7 @@ export default function AboutPage( ){
     {
       icon: Cpu,
       title: 'AI-Powered Tools',
-      description: 'IDARi helps you create, organise, and explore. Get intelligent suggestions, automate tasks, and unlock your creative potential.',
+      description: 'Our Ai helps you create, organise, and explore. Get intelligent suggestions, automate tasks, and unlock your creative potential.',
       color: 'from-purple-500 to-violet-600'
     },
     {
@@ -43,7 +43,7 @@ export default function AboutPage( ){
     {
       icon: Music,
       title: 'Music Integration',
-      description: 'Share your music, embed tracks from YouTube and Spotify, and showcase your sound. Perfect for artists, producers, and music lovers.',
+      description: 'Share your music, embed tracks from YouTube and Spotify, and showcase your sound. Perfect for artists, producers, and music lovers or create your own with StarMakerENGIN',
       color: 'from-pink-500 to-rose-600'
     },
     {
@@ -259,8 +259,8 @@ export default function AboutPage( ){
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${feature.color.replace('from-', '').replace(' to-', ', ')})`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
                     <feature.icon className="w-5 h-5" style={{ color: '#fff' }} />
                   </div>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: 'rgba(220,235,255,0.95)', marginBottom: 6 }}>{feature.title}</h3>
-                  <p style={{ fontSize: 13, color: 'rgba(165,195,235,0.65)', lineHeight: 1.6 }}>{feature.description}</p>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, color: 'rgba(220,235,255,0.95)', marginBottom: 6 }}>{feature.title}</h3>
+                  <p style={{ fontSize: 12, color: 'rgba(165,195,235,0.65)', lineHeight: 1.6 }}>{feature.description}</p>
                 </div>
               </div>
             ))}
