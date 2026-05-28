@@ -5,6 +5,7 @@ import { createUpgradeReadinessSnapshot } from '@/lib/admin/upgrade-readiness';
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { isDevAdminBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { LucideIcon } from 'lucide-react';
 import {
     Activity,
@@ -45,7 +46,7 @@ export default async function AdminPage( ){
     const {
       data: { user: authUser },
       error: authError,
-    } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
     user = authUser;
     if (!user && !authError) redirect('/login');
 

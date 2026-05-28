@@ -8,6 +8,7 @@
 //   and only published rows (or their own) are readable.
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 // ── GET /api/marketplace?category=<category> ─────────────────────────
@@ -62,7 +63,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // is_published is always false — admin publishes after review.
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   // Axiom 4 — all writes authenticated
   if (!user) {

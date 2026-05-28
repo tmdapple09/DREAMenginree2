@@ -77,13 +77,13 @@ export default function AnalyticsEngin({ onBack, instanceId: instanceIdProp }: P
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }: { data: { user: { id: string; email?: string } | null } }) => {
-      if (data.user) {
-        setUserId(data.user.id);
+      if (user) {
+        setUserId(user.id);
         // Check admin role
         Promise.resolve((supabase as SupabaseClient)
             .from('user_roles')
             .select('role')
-            .eq('user_id', data.user.id)
+            .eq('user_id', user.id)
             .single())
           .then(({ data: roleData }: { data: { role?: string } | null }) => {
             setIsAdmin(roleData?.role === 'admin');

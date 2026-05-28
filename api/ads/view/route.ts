@@ -14,6 +14,7 @@ import type {
 } from '@/lib/activity/types';
 import { CPV_PRICING, CPVTier } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 type ActivitySupabaseClient = {
@@ -55,11 +56,8 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const db = supabase as unknown as ActivitySupabaseClient;
 
   // Auth required
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

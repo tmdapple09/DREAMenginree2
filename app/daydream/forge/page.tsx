@@ -6,6 +6,7 @@ import ForgeEngin from '@/engins/dream.ForgeEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { CREATIVE_ENGINES } from '@/lib/forge/forgeRegistry';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Activity, Flame, Layers, TrendingUp, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -30,8 +31,8 @@ export default async function ForgeDaydreamPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

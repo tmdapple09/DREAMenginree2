@@ -18,6 +18,7 @@ import { correlate } from '@/lib/observability/correlator';
 import { buildImmediateRemediationAction } from '@/lib/observability/immediateAction';
 import { inferRootCause } from '@/lib/observability/rootCauseAnalyzer';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -34,12 +35,9 @@ export async function GET(req: NextRequest ): Promise<Response> {
 
   // Auth check
   const supabase = await createServerClient();
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
-  if (userErr || !user) {
+  if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to access observability data.');
   }
 

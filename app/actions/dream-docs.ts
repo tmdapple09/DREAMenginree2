@@ -8,6 +8,7 @@
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { embedDocSection } from '@/lib/dream-docs/embed';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Json } from '@/types/supabase';
 
 // ---------------------------------------------------------------------------
@@ -17,12 +18,9 @@ import type { Json } from '@/types/supabase';
 async function requireAdmin(): Promise<{ userId: string }> {
   const supabase = await createServerClient();
 
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
-  if (userErr || !user) {
+  if (!user) {
     throw new Error('NOT_AUTHENTICATED');
   }
 

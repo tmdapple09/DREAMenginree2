@@ -3,6 +3,7 @@ import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
 import { scanMediaUrlsForChildSafety } from '@/lib/child-safety/scanMediaUrls';
 import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
@@ -24,7 +25,7 @@ function normalizePostMedia<T extends Record<string, any>>(post: T): T & { media
 //   offset — pagination offset
 export async function GET(req: NextRequest ): Promise<Response> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -121,7 +122,7 @@ export async function GET(req: NextRequest ): Promise<Response> {
 // POST - Create a new post
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

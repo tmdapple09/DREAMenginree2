@@ -29,6 +29,7 @@ import {
     torusFocusKey,
 } from '@/lib/runtime/dualRuntime';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     createContext,
     useCallback,
@@ -291,7 +292,7 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
     const boot = async () => {
       try {
         const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        const user = await safeGetUser(supabase);
         if (!user) return;
         const { data: profile } = await supabase
           .from('profiles')

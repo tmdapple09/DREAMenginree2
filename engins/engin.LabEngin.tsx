@@ -185,7 +185,7 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     const supabase = createClient();
 
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.data.user;
+      const user = res.user;
       if (!user || cancelled) { setLoading(false); return; }
       const { data } = await supabase
         .from('physics_experiments')
@@ -493,7 +493,7 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     // Write a real experiment record to Supabase (Phase 8 §F, pt 53).
     const supabase = createClient();
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.data.user;
+      const user = res.user;
       if (user) {
         await supabase.from('physics_experiments').insert({
           creator_id:  user.id,

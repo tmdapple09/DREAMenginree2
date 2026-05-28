@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.MessagesBoards  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Layout, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -10,7 +11,7 @@ export const metadata = { title: 'Boards – Dreamengin' };
 export default async function BoardsPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   type Board = { id: string; title: string; description: string | null; is_public: boolean; updated_at: string; owner_id?: string };

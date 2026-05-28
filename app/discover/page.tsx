@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.Discover  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Radio, Search, Users } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -74,7 +75,7 @@ type Profile = { id: string; handle: string; display_name: string | null; bio: s
 export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   const { q } = await searchParams;

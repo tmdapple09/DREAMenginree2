@@ -10,6 +10,7 @@ import { DrEamsRunBodySchema, type DrEamsRunResponse } from '@/lib/ai/schemas';
 import { boogiePolicyCheck, isOwnerEmail, planWithEams, validateWithIdari } from '@/lib/ai/triad';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Authenticate
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }

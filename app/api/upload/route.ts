@@ -2,6 +2,7 @@ import { createHash } from 'crypto';
 import { gunzipSync, gzipSync } from 'zlib';
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 const MAX_PAYLOAD_BYTES = 2_000_000;
@@ -24,9 +25,7 @@ function normalizeInputData(payload: UploadPayload): string {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

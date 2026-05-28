@@ -18,13 +18,14 @@
  */
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 
 export async function GET( ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authError || !user) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
@@ -49,7 +50,7 @@ export async function GET( ): Promise<Response> {
 
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authError || !user) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }

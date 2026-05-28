@@ -5,6 +5,7 @@
 
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -16,7 +17,7 @@ const BlockBodySchema = z.object({
 /** GET /api/blocks — return the caller's current block list */
 export async function GET( ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data, error } = await supabase
@@ -32,7 +33,7 @@ export async function GET( ): Promise<Response> {
 /** POST /api/blocks — block a user */
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   let body: unknown;
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
 /** DELETE /api/blocks?blocked_id=<uuid> — unblock a user */
 export async function DELETE(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const blocked_id = req.nextUrl.searchParams.get('blocked_id');

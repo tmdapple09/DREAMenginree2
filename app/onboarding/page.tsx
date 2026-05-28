@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.Onboarding  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -61,7 +62,7 @@ const TIPS = [
 export default async function OnboardingPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

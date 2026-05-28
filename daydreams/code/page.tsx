@@ -3,6 +3,7 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import CodeEngin from '@/engins/engin.CodeEngin';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Code2, FileCode2, FolderOpen, Play, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -24,7 +25,7 @@ const WIDGETS: DaydreamWidget[] = [
 export default async function CodeDaydreamPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

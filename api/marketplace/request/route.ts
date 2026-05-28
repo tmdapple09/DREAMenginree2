@@ -21,11 +21,12 @@ import {
     validateContactRequest,
 } from '@/lib/marketplace/request';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   // Axiom 4: all writes require authentication
   if (!user) {

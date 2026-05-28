@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.SettingsAccount  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Calendar, Mail, Shield, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -10,7 +11,7 @@ import DangerZoneActions from './dream.DangerZoneActions';
 export default async function AccountSettingsPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     redirect('/login');

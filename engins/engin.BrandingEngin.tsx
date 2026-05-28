@@ -31,6 +31,7 @@ import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { useBrandingEnginBridge } from '@/lib/runtime/useEnginBridge';
 import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, BarChart2, BookOpen, DollarSign, Eye, FlaskConical, Layers, Megaphone, Minus, Palette, TrendingDown, TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -155,7 +156,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     const supabase = createClient();
 
     void (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user || cancelled) { setLoading(false); return; }
 
       const [profileRes, followsRes] = await Promise.all([
@@ -269,7 +270,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     let cancelled = false;
     const supabase = createClient();
     void (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user || cancelled) return;
       const { data } = await supabase
         .from('brand_kit_items')
@@ -367,7 +368,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     // Real DB write — correct optimistic id with DB id
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (user) {
         const { data } = await supabase
           .from('brand_kit_items')

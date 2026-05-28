@@ -6,6 +6,7 @@
 
 import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
 import { createServerClient, createServiceClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 type UserMetricAggregateRow = {
@@ -35,11 +36,8 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
 
   // Auth required (admin only)
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

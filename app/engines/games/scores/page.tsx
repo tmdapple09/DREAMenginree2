@@ -4,6 +4,7 @@ import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { buildLoginRedirectPath } from '@/lib/auth/nextRedirect';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
@@ -29,8 +30,8 @@ export default async function GamesScoresPage(props?: GamesScoresPageProps ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect(buildLoginRedirectPath('/engines/games/scores', currentSearchParams));
 

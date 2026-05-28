@@ -2,6 +2,7 @@
 // SURFACE: dreamsurface.ShopSell  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, DollarSign, ImageIcon, Loader2, Package, ShoppingBag } from 'lucide-react';
 import NextImage from 'next/image';
 import Link from 'next/link';
@@ -28,7 +29,7 @@ export default function SellItemPage( ){
     try {
       // Point 45: sell flow goes through the real API route so we get
       // a real API response (including the new item record) confirming success.
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) {
         router.push('/login');
         return;

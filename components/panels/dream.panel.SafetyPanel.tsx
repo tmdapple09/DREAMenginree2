@@ -9,6 +9,7 @@
 import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, ChevronRight, FileText, Loader2, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ export default function SafetyPanel( ){
     (async () => {
       try {
         const sb = createClient();
-        const { data: { user } } = await sb.auth.getUser();
+        const user = await safeGetUser(sb);
         if (!user) { setLoading(false); return; }
          
         const { data } = await (sb as SupabaseClient)

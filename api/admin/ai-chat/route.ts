@@ -18,6 +18,7 @@ import {
 import { groqChat, type GroqMessage } from '@/lib/ai/groq';
 import { AI_MODELS } from '@/lib/ai/triad';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextResponse } from 'next/server';
 
 
@@ -78,7 +79,7 @@ export async function POST(request: Request ): Promise<Response> {
   // 2. Verify Supabase session — must be owner email
   try {
     const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!isOwner(user?.email)) {
       return deny('Access denied.', 403);
     }

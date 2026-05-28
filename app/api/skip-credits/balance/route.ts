@@ -5,6 +5,7 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
@@ -12,11 +13,8 @@ export async function GET(): Promise<NextResponse> {
   const supabase = await createServerClient();
 
   // Auth required
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

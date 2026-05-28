@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -6,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // GET - Fetch profile
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   const { searchParams } = new URL(req.url);
   const handle = searchParams.get('handle');
@@ -77,7 +78,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // PUT - Update profile
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

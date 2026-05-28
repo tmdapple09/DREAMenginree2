@@ -8,6 +8,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -43,7 +44,7 @@ export default function ProjectsPanel( ){
     setLoading(true);
     setError(null);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) { setLoading(false); return; }
     const { data, error: err } = await supabase
       .from('projects')
@@ -62,7 +63,7 @@ export default function ProjectsPanel( ){
     if (!newTitle.trim()) return;
     setCreating(true);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) { setCreating(false); return; }
     const { error: err } = await supabase.from('projects').insert({
       title: newTitle.trim(),

@@ -3,6 +3,7 @@
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Eye, Loader2, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -41,7 +42,7 @@ export default function EditProfileDreamPage( ){
   useEffect(() => {
     (async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const user = await safeGetUser(supabase);
         if (!user) { router.push('/login'); return; }
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         const loadedProfile = {

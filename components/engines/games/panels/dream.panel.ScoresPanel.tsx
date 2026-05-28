@@ -8,6 +8,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Loader2, RefreshCw, Share2, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -29,7 +30,7 @@ export default function ScoresPanel( ){
     setLoading(true);
     setError(null);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) { setLoading(false); return; }
     const { data, error: err } = await supabase
       .from('game_scores')

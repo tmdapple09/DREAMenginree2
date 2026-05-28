@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.Engines  (framework-mandated basename: page.tsx)
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
@@ -88,7 +89,7 @@ const ENGINES = [
 export default async function EnginesHubPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (

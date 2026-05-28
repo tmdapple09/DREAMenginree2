@@ -16,6 +16,7 @@
 import MarketplaceRequestButton from '@/components/marketplace/dream.MarketplaceRequestButton';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, Calendar, ShoppingBag, Tag, User } from 'lucide-react';
 import Link from 'next/link';
@@ -39,7 +40,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
   const { id } = await params;
 
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   // Fetch the item — must be published OR owned by the current viewer

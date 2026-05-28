@@ -15,6 +15,7 @@
 
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { buildAuthCallbackUrl } from '@/lib/supabase/config';
 import { AlertTriangle, Check, Loader2, Lock, Shield, Smartphone } from 'lucide-react';
 import Link from 'next/link';
@@ -30,7 +31,7 @@ export default function SecuritySettingsPage( ){
     setPwLoading(true);
     setPwMsg('');
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user?.email) {
         setPwMsg('Could not retrieve your email. Please sign in again.');
         return;

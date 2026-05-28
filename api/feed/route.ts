@@ -25,6 +25,7 @@
 import { sortByVisibilityScore } from '@/lib/activity/visibility-score';
 import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -54,7 +55,7 @@ export interface UnifiedFeedEntry {
 export async function GET(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
 
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

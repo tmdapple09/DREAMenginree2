@@ -3,6 +3,7 @@ import CampaignsPanel from '@/components/engines/brand/panels/dream.panel.Campai
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
@@ -18,7 +19,7 @@ const NAV_ITEMS = [
 export default async function BrandCampaignsPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user && !isDevBypassActive()) redirect('/login');
   return (
     <EnginAppShell engineName="BrandingEngin" engineEmoji="🎨" accentColor={ACCENT} backHref="/daydream/brand" backLabel="Brand Daydream" nav={<EnginNavBar items={NAV_ITEMS} accentColor={ACCENT} />}>

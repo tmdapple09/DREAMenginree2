@@ -1,5 +1,6 @@
 import { estimateDurationSeconds } from '@/lib/content/voiceClone';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -66,7 +67,7 @@ const ELEVEN_BASE = 'https://api.elevenlabs.io/v1';
  */
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (authError || !user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

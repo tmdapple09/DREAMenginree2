@@ -9,6 +9,7 @@
 
 import type { TrackViewRequest, TrackViewResponse } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,9 +17,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
 
   // Auth check (optional - allow anonymous views)
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   try {
     const body = (await req.json()) as TrackViewRequest;

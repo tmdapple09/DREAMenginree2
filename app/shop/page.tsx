@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.Shop  (framework-mandated basename: page.tsx)
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Package, PlusCircle, Store } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -11,7 +12,7 @@ export const metadata = { title: 'DreamShop – Dreamengin', description: 'Sell 
 export default async function ShopPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   // Fetch this user's listings

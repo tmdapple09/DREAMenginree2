@@ -20,6 +20,7 @@
  */
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
@@ -65,7 +66,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   // ── Auth check — user must be signed in ─────────────────────────────────
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.redirect(`${origin}/login?next=/connectors`);
   }

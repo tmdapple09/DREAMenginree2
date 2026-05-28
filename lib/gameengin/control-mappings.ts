@@ -48,7 +48,7 @@ export const mapJoystickToAsset = async (
 ): Promise<{ data: ControlMapping[] | null; error: unknown }> => {
   const supabase = createClient();
 
-  const user = (await supabase.auth.getUser()).data.user;
+  const user = await safeGetUser(supabase);
   if (!user) return { data: null, error: 'Not authenticated' };
 
   const { data, error } = await supabase

@@ -11,6 +11,7 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,8 +32,8 @@ export default function MarketplaceSellPage( ){
   // ── Auth gate ─────────────────────────────────────────────────
   useEffect(() => {
     const checkAuth = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) router.replace('/login');
+      const user = await safeGetUser(supabase);
+      if (!user) router.replace('/login');
     };
     void checkAuth();
   // supabase and router are stable; eslint wants them but they never change

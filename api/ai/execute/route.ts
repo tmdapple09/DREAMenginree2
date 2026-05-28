@@ -9,6 +9,7 @@ import { ExecuteBodySchema, type Intent } from '@/lib/ai/schemas';
 import { validateWithIdari } from '@/lib/ai/triad';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -170,7 +171,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
 
   // Authenticate
   const supabase = await createServerClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (authError || !user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');

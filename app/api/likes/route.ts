@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Note: This API supports liking various content types: posts, music, projects
@@ -7,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // GET - Check if user has liked content or get like count
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   const { searchParams } = new URL(req.url);
   const contentType = searchParams.get('content_type'); // 'post', 'music', 'project'
@@ -47,7 +48,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // POST - Like content
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -118,7 +119,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 // DELETE - Unlike content
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

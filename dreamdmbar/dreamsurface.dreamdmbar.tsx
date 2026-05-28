@@ -1171,7 +1171,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     import('@/lib/supabase/client')
       .then(({ createClient }) =>
         createClient().auth.getUser().then(({ data }: { data: { user: { id: string } | null } }) => {
-          if (data.user) { setUserId(data.user.id); reloadConvs(); }
+          if (user) { setUserId(user.id); reloadConvs(); }
         })
       )
       .catch(() => {

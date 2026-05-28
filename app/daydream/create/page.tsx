@@ -5,6 +5,7 @@ import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHead
 import ContentEngin from '@/engins/engin.ContentEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { PlusCircle, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -30,8 +31,8 @@ export default async function CreateDaydreamPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

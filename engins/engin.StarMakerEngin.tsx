@@ -76,6 +76,7 @@ import {
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { SUPABASE_URL as CANONICAL_SUPABASE_URL } from '@/lib/supabase/config';
 import {
     ArrowLeft,
@@ -348,7 +349,7 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     const supabase = createClient();
 
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.data.user;
+      const user = res.user;
       if (!user || cancelled) { setLoading(false); return; }
 
       const { data } = await supabase
@@ -438,7 +439,7 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
 
     // Resolve authenticated user for canonical Supabase Storage URL construction.
     const supabaseForExport = createClient();
-    const { data: { user: exportUser } } = await supabaseForExport.auth.getUser();
+    const exportUser = await safeGetUser(supabaseForExport);
 
     for (const { key } of ready) {
       // Construct the canonical public Storage URL for this stem.
@@ -471,7 +472,7 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     // Write to music_outputs table — Phase 8 §F Point 51 (real DB output record)
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (user) {
         const stems = ready.map(({ key }) => key);
         const beat_grid = beatGrid;
@@ -3040,7 +3041,7 @@ function DAWFileIOPanel({
   const syncLedgerAudio = useCallback(async (blob: Blob, name: string) => {
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) return;
       const ext = name.split('.').pop() || 'bin';
       const storagePath = `${user.id}/starmaker/${Date.now()}-${crypto.randomUUID()}.${ext}.ledger`;

@@ -5,6 +5,7 @@ import {
     triggerAdminLockout,
 } from '@/lib/admin/lockout';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import fs from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
@@ -106,7 +107,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
   // 3. Verify Supabase session — must be owner email
   try {
     const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     const email = user?.email ?? '';
     if (!isOwner(email)) {
       // Do not trigger lockout for wrong user — just deny silently

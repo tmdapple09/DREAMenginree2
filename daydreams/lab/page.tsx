@@ -3,6 +3,7 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import LabEngin from '@/engins/engin.LabEngin';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { FlaskConical, Play } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -24,7 +25,7 @@ const WIDGETS: DaydreamWidget[] = [
 export default async function LabDaydreamPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

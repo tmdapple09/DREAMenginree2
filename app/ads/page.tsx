@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.Ads  (framework-mandated basename: page.tsx)
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { AdListing, AdOrder, AdSlot } from '@/types/ads';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, BarChart3, DollarSign, LayoutGrid, Plus, ShoppingCart, Sparkles } from 'lucide-react';
@@ -13,7 +14,7 @@ export default async function AdsPage( ){
   await connection();
   const supabase = await createServerClient();
   const db = supabase as SupabaseClient;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     redirect('/login');

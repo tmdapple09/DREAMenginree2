@@ -57,6 +57,7 @@ import {
 import { deriveNextCursor, parseFeedParams } from '@/lib/dreamr/feedCursor';
 import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { rankFeed, type ScoredPost } from '../algorithms/dreamrAlgorithm';
@@ -68,9 +69,7 @@ import { rankFeed, type ScoredPost } from '../algorithms/dreamrAlgorithm';
  */
 export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user)
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

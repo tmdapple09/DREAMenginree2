@@ -18,6 +18,7 @@
 
 import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '@/lib/media/ledger';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -65,7 +66,7 @@ export const DreamEngine = {
     wasmOutput: WasmOutput,
   ): Promise<GameAsset> {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) throw new Error('Auth Required');
 
     const { data, error } = await supabase
@@ -103,7 +104,7 @@ export const DreamEngine = {
     sensitivity = 1.0,
   ): Promise<void> {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) throw new Error('Auth Required');
 
     const { error } = await supabase

@@ -2,6 +2,7 @@
 import AlgorithmEngine from '@/components/feed/dream.AlgorithmEngine';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Cpu } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
@@ -14,7 +15,7 @@ export const metadata = {
 export default async function AlgorithmPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

@@ -25,6 +25,7 @@ import { DrEamsRunBodySchema, type Intent } from '@/lib/ai/schemas';
 import { AI_MODELS, isOwnerEmail, validateWithIdari } from '@/lib/ai/triad';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -196,7 +197,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
 
   // Authenticate — server-side only, no dev-bypass exemption (Phase 6 spec point 6).
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to access IDARi.');
   }

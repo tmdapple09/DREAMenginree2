@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.Settings  (framework-mandated basename: page.tsx)
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     ArrowLeft,
     Bot,
@@ -66,10 +67,7 @@ export default async function SettingsPage( ){
   let isAdmin = false;
   let authWarning: string | null = null;
   const supabase = await createServerClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user && !userError) redirect('/login');
   if (user) {

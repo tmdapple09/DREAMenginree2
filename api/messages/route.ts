@@ -2,6 +2,7 @@ import { scanContent } from '@/lib/child-safety/childSafetyDetector';
 import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
 import { scanMediaUrlsForChildSafety } from '@/lib/child-safety/scanMediaUrls';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
@@ -39,7 +40,7 @@ async function getUserAge(
 // GET - Fetch conversations
 export async function GET(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -90,7 +91,7 @@ export async function GET(req: NextRequest ): Promise<Response> {
 // POST - Send a message
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

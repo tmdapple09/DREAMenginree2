@@ -2,6 +2,7 @@
 // SURFACE: dreamsurface.MusicUpload  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Info, Loader2, Music, Upload, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,7 +24,7 @@ export default function UploadMusicPage( ){
     setIsLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) {
         router.push('/login');
         return;

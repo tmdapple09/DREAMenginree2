@@ -40,6 +40,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface SharedDreamMember {
@@ -125,7 +126,7 @@ export function useSharedDreamSession({
     const supabase = createClient();
 
     async function bootstrap( ){
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user || cancelled) { setIsLoading(false); return; }
       userIdRef.current = user.id;
 

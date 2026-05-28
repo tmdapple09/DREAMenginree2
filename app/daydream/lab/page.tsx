@@ -2,6 +2,7 @@
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { FlaskConical, Play } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -39,8 +40,8 @@ export default async function LabDaydreamPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

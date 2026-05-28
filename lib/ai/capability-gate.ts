@@ -4,6 +4,7 @@
 
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ActorContext, IntentType } from '@/types/ai-system';
 
 // ============================================================================
@@ -28,7 +29,7 @@ export async function buildActorContext(userId: string): Promise<ActorContext> {
   const supabase = await createServerClient();
 
   // Get authenticated user to check email for owner admin role
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   // Owner email always gets admin role, regardless of DB state
   let role = 'user';

@@ -13,6 +13,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { useCallback, useEffect, useRef } from 'react';
 
 export type DaydreamSide = 'A' | 'B';
@@ -41,7 +42,7 @@ export function useDaydreamState({ daydreamType, side }: UseDaydreamStateOptions
 
   const markVisited = useCallback(async () => {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (!user) return;
     await supabase
       .from('daydream_states')
@@ -60,7 +61,7 @@ export function useDaydreamState({ daydreamType, side }: UseDaydreamStateOptions
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) return;
       await supabase
         .from('daydream_states')

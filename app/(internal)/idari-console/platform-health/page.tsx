@@ -8,6 +8,7 @@
 
 import { PlatformHealth } from '@/components/idari/dream.PlatformHealth';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
@@ -19,7 +20,7 @@ export const metadata = {
 export default async function PlatformHealthPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
   const { data: isAdmin } = await supabase.rpc('is_admin');
   if (!isAdmin) redirect('/homedream');

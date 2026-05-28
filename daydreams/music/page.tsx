@@ -4,6 +4,7 @@ import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHead
 import StarMakerEngin from '@/engins/engin.StarMakerEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     BarChart3,
     CheckCircle,
@@ -88,7 +89,7 @@ const PROMO_TIMELINE = [
 export default async function MusicArtistHubPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (

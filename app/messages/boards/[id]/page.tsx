@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.MessagesBoardsId  (framework-mandated basename: page.tsx)
 import BoardComposer from '@/components/messaging/dream.BoardComposer';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Pin } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
@@ -13,7 +14,7 @@ export default async function BoardDetailPage({ params }: Props) {
   await connection();
   const { id } = await params;
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   const { data: board } = await supabase

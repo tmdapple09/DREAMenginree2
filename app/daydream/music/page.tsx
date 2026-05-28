@@ -3,6 +3,7 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import SoundRecorder from '@/components/music/dream.SoundRecorder';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Music, Sparkles } from 'lucide-react';
 import { redirect } from 'next/navigation';
 // Stream 8.3 — Bundle split: StarMakerEngin only loads when Side B mounts.
@@ -36,8 +37,8 @@ export default async function MusicArtistHubPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

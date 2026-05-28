@@ -12,6 +12,7 @@ import type {
 } from '@/lib/activity/types';
 import { VERIFICATION_STRENGTH } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -19,11 +20,8 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
 
   // Auth check
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

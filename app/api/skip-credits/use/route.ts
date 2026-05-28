@@ -9,6 +9,7 @@ import type {
     UseSkipCreditsResponse,
 } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,11 +17,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
 
   // Auth required
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

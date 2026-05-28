@@ -27,6 +27,7 @@
  */
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let viewerId: string;
   try {
     const supabase = await createServerClient();
-    const { data: { user }, error } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     if (error || !user) {
       return NextResponse.json({ ok: false, error: 'NOT_AUTHENTICATED' }, { status: 401 });
     }

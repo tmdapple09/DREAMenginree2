@@ -4,6 +4,7 @@
 // =====================================================
 
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { resolveFeedHost } from '@/lib/widgets/feed-resolver';
 import { HostKind, type DreamDefinition, type DreamInstance, type FeedHostConfig } from '@/types/widget-system-v2';
 import type { SupabaseClient } from '@supabase/supabase-js';
@@ -67,10 +68,7 @@ export async function POST(request: NextRequest ): Promise<Response> {
     const supabase = await createServerClient();
     
     // Get authenticated user
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     
     if (authError || !user) {
       return NextResponse.json(
@@ -114,10 +112,7 @@ export async function GET(request: NextRequest ): Promise<Response> {
     const supabase = await createServerClient();
     
     // Get authenticated user
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     
     if (authError || !user) {
       return NextResponse.json(

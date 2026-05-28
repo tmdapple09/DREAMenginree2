@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.SettingsHelp  (framework-mandated basename: page.tsx)
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { BookOpen, HelpCircle, MessageCircle, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -11,7 +12,7 @@ export const metadata = { title: 'Help – Dreamengin Settings' };
 export default async function HelpPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   const guides = [

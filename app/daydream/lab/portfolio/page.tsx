@@ -3,6 +3,7 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import PortfolioEngin from '@/engins/portfolio/dream.PortfolioEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -30,8 +31,8 @@ export default async function OptimizeroPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

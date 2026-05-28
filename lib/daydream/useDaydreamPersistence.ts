@@ -23,6 +23,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface UseDaydreamPersistenceOptions {
@@ -82,7 +83,7 @@ export function useDaydreamPersistence<T = Record<string, unknown>>(
 
     async function load( ){
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
 
       if (!user || cancelled) {
         setIsRestoring(false);
@@ -116,7 +117,7 @@ export function useDaydreamPersistence<T = Record<string, unknown>>(
 
       debounceRef.current = setTimeout(async () => {
         const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        const user = await safeGetUser(supabase);
         if (!user) return;
 
         await supabase

@@ -33,6 +33,7 @@ import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
 import { useForgeActivity } from '@/lib/forge/useForgeActivity';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     BarChart2,
     BookOpen,
@@ -155,7 +156,7 @@ export default function BrandDaydream( ){
     let cancelled = false;
     const supabase = createClient();
     void (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user || cancelled) { setProfileLoading(false); return; }
       const [profileRes, followsRes] = await Promise.all([
         supabase.from('profiles').select('handle, display_name').eq('id', user.id).maybeSingle(),

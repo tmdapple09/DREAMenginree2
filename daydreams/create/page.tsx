@@ -3,6 +3,7 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import ContentEngin from '@/engins/engin.ContentEngin';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { BarChart2, Brain, Calendar, FileText, PlusCircle, RefreshCw, Sparkles, Video } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -26,7 +27,7 @@ const ACCENT = '#f59e0b';
 export default async function CreateDaydreamPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

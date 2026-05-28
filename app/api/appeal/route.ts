@@ -11,6 +11,7 @@ import { BOOGIE_POLICY_VERSION, RULE_CODES } from '@/lib/ai/boogie-policy';
 import { AppealRequestSchema } from '@/lib/ai/schemas';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to submit an appeal.');
   }

@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.AdsSlotId  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { AdSlot } from '@/types/ads';
 import { ArrowLeft, DollarSign, Hash, LayoutGrid, ToggleLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import { connection } from 'next/server';
 export default async function AdSlotPage({ params }: { params: Promise<{ id: string }> }) {
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     redirect('/login');

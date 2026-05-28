@@ -13,6 +13,7 @@ import { runTriadConsensus } from '@/lib/agents/agentBus';
 import { writeAuditLog } from '@/lib/ai/audit';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient, createServiceClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const { reason } = parseResult.data;
 
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }

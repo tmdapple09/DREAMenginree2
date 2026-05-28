@@ -4,6 +4,7 @@ import AnalyticsDaydream from '@/components/daydream/dreamsurface.daydream.Analy
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { BarChart2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { redirect } from 'next/navigation';
@@ -40,8 +41,8 @@ export default async function AnalyticsDaydreamPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

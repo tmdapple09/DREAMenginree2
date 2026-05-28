@@ -9,6 +9,7 @@
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Eye, EyeOff, LayoutGrid, Loader2, Pin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -31,7 +32,7 @@ export default function WidgetsPanel( ){
     (async () => {
       try {
         const sb = createClient();
-        const { data: { user } } = await sb.auth.getUser();
+        const user = await safeGetUser(sb);
         if (!user) { setLoading(false); return; }
         const { data } = await sb.from('profiles').select('profile_dream_widgets').eq('id', user.id).single();
         if (data?.profile_dream_widgets && Array.isArray(data.profile_dream_widgets) && data.profile_dream_widgets.length > 0) {

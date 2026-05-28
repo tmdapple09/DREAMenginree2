@@ -3,6 +3,7 @@ import BrandDaydream from '@/components/daydream/dreamsurface.daydream.BrandDayd
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import BrandingEngin from '@/engins/engin.BrandingEngin';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Palette } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
@@ -25,7 +26,7 @@ const WIDGETS: DaydreamWidget[] = [
 export default async function BrandDaydreamPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

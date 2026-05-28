@@ -656,7 +656,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(async (res: { data: { user: import('@supabase/supabase-js').User | null }; error: any }) => {
-      const u = res.data.user;
+      const u = res.user;
       if (!u) { setLoadingProjects(false); return; }
       setUser(u);
       const { data } = await supabase.from('projects').select('id, title, visibility').eq('owner_id', u.id).order('created_at', { ascending: false }).limit(15);

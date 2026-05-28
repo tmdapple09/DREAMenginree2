@@ -5,6 +5,7 @@ import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHead
 import BrandingEngin from '@/engins/engin.BrandingEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Palette } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
@@ -28,8 +29,8 @@ export default async function BrandDaydreamPage( ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect('/login');
 

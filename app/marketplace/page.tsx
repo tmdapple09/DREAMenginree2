@@ -3,6 +3,7 @@ import MarketplaceListingCard from '@/components/marketplace/dream.MarketplaceLi
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { PlusCircle, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -30,7 +31,7 @@ const FALLBACK_CATEGORIES = [
 export default async function MarketplacePage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   const { data: rawListings } = await supabase

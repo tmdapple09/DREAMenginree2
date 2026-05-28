@@ -33,6 +33,7 @@
 
 import { useForgeActivity } from '@/lib/forge/useForgeActivity';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     Box,
     Check,
@@ -216,7 +217,7 @@ export default function UniversalAssetRegistry({
 
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) {
         setError('Authentication required');
         setLoading(false);

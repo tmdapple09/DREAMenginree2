@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -80,9 +81,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // Body: { game, score, level? } — auth required
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ data: null, error: 'Unauthorized' }, { status: 401 });

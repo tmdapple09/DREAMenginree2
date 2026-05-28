@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -34,7 +35,7 @@ export async function withApi(
 ): Promise<Response> {
   try {
     const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     return await handler({ req, supabase, user: user ? { id: user.id, email: user.email } : null });
   } catch (err: unknown) {
     console.error('API route error:', err);

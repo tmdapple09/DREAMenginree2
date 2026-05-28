@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
@@ -9,10 +10,7 @@ export async function GET( ): Promise<Response> {
 
   try {
     const supabase = await createServerClient();
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
 
     authenticated = Boolean(user) && !authError;
 

@@ -15,7 +15,7 @@ export const saveEngineAsset = async (
   wasm_output: { mesh: Uint8Array; rig: Uint8Array; dna: object }
 ) => {
   const supabase = createClient();
-  const user = (await supabase.auth.getUser()).data.user;
+  const user = await safeGetUser(supabase);
   if (!user) return { error: 'Not authenticated' };
 
   const meshBase64 = encodeUint8ArrayToLedgerString(wasm_output.mesh, {

@@ -436,7 +436,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     let cancelled = false;
     const supabase = createClient();
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.data.user;
+      const user = res.user;
       if (!user || cancelled) { setLoading(false); return; }
       const { data } = await supabase
         .from('game_scores')

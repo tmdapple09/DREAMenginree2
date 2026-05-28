@@ -2,6 +2,7 @@
 // SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, DollarSign, Info, LayoutGrid, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,7 @@ export default function CreateAdSlotPage( ){
     setIsLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await safeGetUser(supabase);
       if (!user) {
         router.push('/login');
         return;

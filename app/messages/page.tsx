@@ -1,6 +1,7 @@
 // SURFACE: dreamsurface.Messages  (framework-mandated basename: page.tsx)
 import MessagesClient from '@/components/dream.MessagesClient';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
@@ -12,7 +13,7 @@ interface MessagesPageProps {
 export default async function MessagesPage({ searchParams }: MessagesPageProps) {
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     redirect('/login');

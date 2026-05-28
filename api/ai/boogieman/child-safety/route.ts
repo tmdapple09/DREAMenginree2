@@ -24,6 +24,7 @@ import { isZeroTolerance, scanContent } from '@/lib/child-safety/childSafetyDete
 import { classifyImage } from '@/lib/child-safety/imageClassifier';
 import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
@@ -103,8 +104,8 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const request: ChildSafetyScanBody = parseResult.data;
 
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
-  if (userErr || !user) {
+  const user = await safeGetUser(supabase);
+  if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 

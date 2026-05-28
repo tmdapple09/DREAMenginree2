@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.Lab  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { FlaskConical, Globe, Lock, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -87,7 +88,7 @@ export default async function LabPage( ){
   await connection();
   const supabase = await createServerClient();
   const db = supabase as SupabaseClient;
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     redirect('/login');

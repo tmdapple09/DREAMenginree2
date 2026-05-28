@@ -1,6 +1,7 @@
 import { scanContent } from '@/lib/child-safety/childSafetyDetector';
 import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -74,9 +75,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // Body: { post_id, content } — auth required
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ data: null, error: 'Unauthorized' }, { status: 401 });
@@ -144,9 +143,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 // Body: { comment_id } — auth required; user can only delete own comments
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   if (!user) {
     return NextResponse.json({ data: null, error: 'Unauthorized' }, { status: 401 });

@@ -2,6 +2,7 @@ import ProfileShareButton from '@/components/dream.ProfileShareButton';
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { Eye, Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -49,8 +50,8 @@ export default async function ViewProfilePage( ){
   // Gracefully handle Supabase being unavailable (no configured env vars)
   let user: { id: string } | null = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const user = await safeGetUser(supabase);
+    user = user;
   } catch {
     // Supabase not configured — redirect to login
   }

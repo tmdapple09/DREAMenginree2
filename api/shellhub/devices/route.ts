@@ -21,6 +21,7 @@ import {
     type ShellHubDevice,
 } from '@/lib/connectors/providers/shellhub';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
@@ -38,7 +39,7 @@ export async function GET(): Promise<NextResponse<ShellHubDevicesResponse>> {
    
   const db = supabase as SupabaseClient;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ ok: false, error: 'Unauthorised' }, { status: 401 });
   }

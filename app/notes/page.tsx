@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.Notes  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, FileText, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -12,7 +13,7 @@ type Note = { id: number; title: string | null };
 export default async function NotesPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   const { data: notes } = await supabase

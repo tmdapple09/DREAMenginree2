@@ -6,6 +6,7 @@
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { AlertTriangle, ChevronRight, Download, FileText, Shield } from 'lucide-react';
 import Link from 'next/link';
@@ -27,7 +28,7 @@ interface PolicyEvent {
 export default async function SafetySettingsPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   // policy_events is not yet in the generated Supabase schema types;

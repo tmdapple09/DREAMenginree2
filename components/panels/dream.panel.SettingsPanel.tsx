@@ -8,6 +8,7 @@
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { SystemPanelId } from '@/lib/panels/panelTypes';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import {
     Bot,
     ChevronRight,
@@ -69,7 +70,7 @@ export default function SettingsPanel( ){
     (async () => {
       try {
         const sb = createClient();
-        const { data: { user } } = await sb.auth.getUser();
+        const user = await safeGetUser(sb);
         if (!user) return;
         const { data: profile } = await sb.from('profiles').select('handle').eq('id', user.id).single();
         setIsAdmin(user.user_metadata?.role === 'admin' || profile?.handle === 'admin');

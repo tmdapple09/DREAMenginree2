@@ -9,6 +9,7 @@
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Eye, Loader2, Share2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -42,7 +43,7 @@ export default function ProfilePanel( ){
   useEffect(() => {
     (async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const user = await safeGetUser(supabase);
         if (!user) { setIsLoading(false); return; }
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         const loaded: Profile = {

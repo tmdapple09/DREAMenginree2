@@ -10,6 +10,7 @@
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -29,7 +30,7 @@ const VALID_STATUSES = [
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data: roleData } = await (supabase as SupabaseClient)
@@ -85,7 +86,7 @@ const AdminBodySchema = z.discriminatedUnion('action', [ReviewBodySchema, AddHas
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (userErr || !user) return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
 
   const { data: roleData } = await (supabase as SupabaseClient)

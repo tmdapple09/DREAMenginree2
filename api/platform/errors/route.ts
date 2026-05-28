@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -15,7 +16,7 @@ export async function GET( ): Promise<Response> {
 
 export async function POST(req: NextRequest ): Promise<Response> {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   const body = await req.json().catch(() => ({}));
   const message = typeof body.message === 'string' ? body.message.slice(0, 2000) : 'Unknown platform error';
   const stack = typeof body.stack === 'string' ? body.stack.slice(0, 8000) : null;

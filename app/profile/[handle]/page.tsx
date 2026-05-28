@@ -7,6 +7,7 @@ import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/componen
 import DreamWord from '@/components/ui/dream.DreamWord';
 import InfinityIcon from '@/components/ui/dream.InfinityIcon';
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -58,7 +59,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   // Gracefully handle Supabase being unavailable (no configured env vars)
   let currentUser: { id: string } | null = null;
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await safeGetUser(supabase);
     currentUser = user;
   } catch {
     // Supabase not configured — treat as anonymous visitor

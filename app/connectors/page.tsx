@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.Connectors  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Plug } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -11,7 +12,7 @@ export const metadata = { title: 'System Integrations – Dreamengin', descripti
 export default async function ConnectorsPage( ){
   await connection();
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
   return (

@@ -1,5 +1,6 @@
 // SURFACE: dreamsurface.LabId  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Code, Download, FileText, FlaskConical, Terminal } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
@@ -38,9 +39,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
   await connection();
   const { id } = await params;
   const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await safeGetUser(supabase);
 
   // NOTE: Notebooks aren't set up yet, so we do NOT query them here.
   // This prevents runtime/db errors while you're still building the feature.
