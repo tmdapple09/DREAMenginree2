@@ -398,3 +398,40 @@ if (riskFiles.length) {
     md += `| ${file} | ${score} | ${flags.join(", ")} |\n`;
   }
 } else {
+  md += "_No high-risk files detected._\n";
+}
+md += "\n---\n\n";
+
+// 16. FEATURE OWNERSHIP MAP
+md += "# FEATURE OWNERSHIP MAP\n\n";
+for (const [file, d] of Object.entries(fileData)) {
+  if (!d.features.length) continue;
+  md += `- **${file}** → ${d.features.join(", ")}\n`;
+}
+md += "\n---\n\n";
+
+// 17. DEPENDENCY GRAPH JSON
+md += "# DEPENDENCY GRAPH\n\n";
+md += "```json\n";
+md += JSON.stringify(depGraphJSON, null, 2);
+md += "\n```\n\n---\n\n";
+
+// 18. RAW STRUCTURE
+md += "# RAW STRUCTURE\n\n```text\n";
+function buildTree(dir, prefix = "") {
+  const entries = fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter(e => !shouldIgnore(e.name));
+  entries.forEach((entry, i) => {
+    const isLast = i === entries.length - 1;
+    md += `${prefix}${isLast ? "└──" : "├──"} ${entry.name}\n`;
+    if (entry.isDirectory()) {
+      buildTree(path.join(dir, entry.name), prefix + (isLast ? "    " : "│   "));
+    }
+  });
+}
+buildTree(ROOT);
+md += "```\n";
+
+fs.writeFileSync("REPO_STATE.md", md);
+console.log("✓ REPO_STATE.md generated");
