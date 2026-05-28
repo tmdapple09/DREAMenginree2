@@ -30,8 +30,7 @@ export default async function GamesScoresPage(props?: GamesScoresPageProps ){
   const supabase = await createServerClient();
   let user = null;
   try {
-    const user = await safeGetUser(supabase);
-    user = user;
+    user = await safeGetUser(supabase);
   } catch { /* Supabase not configured — treat as unauthenticated */ }
   if (!user && !isDevBypassActive()) redirect(buildLoginRedirectPath('/engines/games/scores', currentSearchParams));
 

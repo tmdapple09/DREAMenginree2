@@ -46,8 +46,8 @@ export default async function AdminPage( ){
     const {
       data: { user: authUser },
       error: authError,
-  const user = await safeGetUser(supabase);
-    user = authUser;
+    } = await supabase.auth.getUser();
+    user = await safeGetUser(supabase) ?? authUser;
     if (!user && !authError) redirect('/login');
 
     if (user) {
