@@ -2257,7 +2257,6 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │   └── humanAI.persona.md
 └── scripts
     ├── Agents-MUST-READ-ARCHITECTURE.md
-    ├── analyze-repo-state.mjs
     ├── archive
     │   ├── proxy.ts
     │   └── validate-deployment.js
@@ -2279,6 +2278,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   ├── lib
     │   │   └── tar.ts
     │   ├── maestro-analyze.ts
+    │   ├── mechanic-run.ts
 … (18 more files)
 ```
 <details><summary>Agents & Workflow file index (138 files)</summary>
@@ -2374,7 +2374,6 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `agents/humanAI/personas/power-user.md` — documentation file.
 - `agents/humanAI/personas/social-explorer.md` — documentation file.
 - `scripts/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `scripts/analyze-repo-state.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/archive/proxy.ts` — TypeScript/JavaScript runtime module.
 - `scripts/archive/validate-deployment.js` — TypeScript/JavaScript runtime module.
 - `scripts/autofix-vercel-build.mjs` — TypeScript/JavaScript runtime module.
@@ -2399,6 +2398,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `scripts/gameengin/writer-run.ts` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-nextgen-spec.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-ps5-spec.mjs` — TypeScript/JavaScript runtime module.
+- `scripts/generate-repo-state.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-webapp-final-form.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/law-check.sh` — project file (sh).
 - `scripts/migrate-imports.sh` — project file (sh).
