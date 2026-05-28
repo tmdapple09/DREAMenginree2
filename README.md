@@ -80,7 +80,7 @@ Auto-synced from `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tscon
 
 ## The Engins
 Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dreamdm/**` using repository introspection.
-- Files tracked: **57**
+- Files tracked: **58**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeEngin`, `ContentEngin`, `DreamSystemContext`, `DualRuntimeContainer`, `ForgeEngin`, `GameEngin`, +9 more
@@ -92,6 +92,7 @@ Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dr
 │       ├── dream.RuntimeView.tsx
 │       └── dream.shell.RuntimeShell.tsx
 ├── engins
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── CodeEngin
 │   │   ├── core
 │   │   │   └── parser.ts
@@ -157,11 +158,12 @@ Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dr
         ├── useEnginCoopSync.ts
         └── useSharedEnginChannel.ts
 ```
-<details><summary>The Engins file index (57 files)</summary>
+<details><summary>The Engins file index (58 files)</summary>
 
 - `components/runtime/dream.DualRuntimeContainer.tsx` — React UI module for DualRuntimeContainer.
 - `components/runtime/dream.RuntimeView.tsx` — React UI module for RuntimeView.
 - `components/runtime/dream.shell.RuntimeShell.tsx` — React UI module for ShellRuntimeShell.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
 - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
 - `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
@@ -216,6 +218,133 @@ Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dr
 - `lib/runtime/useEnginBridge.ts` — TypeScript/JavaScript runtime module.
 - `lib/runtime/useEnginCoopSync.ts` — TypeScript/JavaScript runtime module.
 - `lib/runtime/useSharedEnginChannel.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+### Custom Engins capability (current state)
+Auto-synced from `engins/**`, `components/daydream/**`, `lib/engins/**` using repository introspection.
+- Files tracked: **47**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeDreamIDE`, `CodeEngin`, `Constellationmap`, `ContentEngin`, `DiffViewer`, `DreamsurfaceDaydreamAnalyticsDaydream`, +20 more
+#### Custom Engins capability (current state) file structure
+```text
+├── components
+│   └── daydream
+│       ├── dream.CodeDreamIDE.tsx
+│       ├── dream.DiffViewer.tsx
+│       ├── dream.JourneyTrail.tsx
+│       ├── dream.LabDreamIDE.tsx
+│       ├── dream.NGNEngin.tsx
+│       ├── dream.OpenDaydreamSideBButton.tsx
+│       ├── dream.StandaloneEnginSurface.tsx
+│       ├── dream.constellationmap.tsx
+│       ├── dream.shell.DaydreamShell.tsx
+│       ├── dreamsurface.daydream.AnalyticsDaydream.tsx
+│       ├── dreamsurface.daydream.BrandDaydream.tsx
+│       └── starmaker
+│           ├── dream.panel.CompingPanel.tsx
+│           ├── dream.panel.MultitrackArrangementPanel.tsx
+│           ├── dream.panel.PianoRollPanel.tsx
+│           └── dream.panel.SessionViewPanel.tsx
+├── engins
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
+│   ├── CodeEngin
+│   │   ├── core
+│   │   │   └── parser.ts
+│   │   ├── modules
+│   │   │   └── ai-co-pilot
+│   │   │       ├── dream.panel.AgentPanel.tsx
+│   │   │       ├── index.ts
+│   │   │       └── useAgentSession.ts
+│   │   └── orchestrator
+│   │       └── dream.index.tsx
+│   ├── autoopen
+│   │   └── dream.AutoOpenGameEngin.tsx
+│   ├── dream.ForgeEngin.tsx
+│   ├── dream.QuantumCircuitCanvas.tsx
+│   ├── dream.panel.AnalyticsEngin.tsx
+│   ├── engin.BrandingEngin.tsx
+│   ├── engin.CodeEngin.tsx
+│   ├── engin.ContentEngin.tsx
+│   ├── engin.GameEngin.tsx
+│   ├── engin.LabEngin.tsx
+│   ├── engin.StarMakerEngin.tsx
+│   └── portfolio
+│       └── dream.PortfolioEngin.tsx
+└── lib
+    └── engins
+        ├── brand
+        │   ├── brandEnginRuleSet.ts
+        │   └── useBrandEnginRuntime.ts
+        ├── code
+        │   ├── codeEnginRuleSet.ts
+        │   └── useCodeEnginRuntime.ts
+        ├── content
+        │   ├── contentEnginRuleSet.ts
+        │   └── useContentEnginRuntime.ts
+        ├── game
+        │   ├── gameEnginRuleSet.ts
+        │   ├── index.ts
+        │   └── useGameEnginRuntime.ts
+        ├── lab
+        │   ├── labEnginRuleSet.ts
+        │   └── useLabEnginRuntime.ts
+        ├── music
+        │   ├── starMakerEnginRuleSet.ts
+        │   └── useStarMakerEnginRuntime.ts
+        ├── useEnginWorkflow.ts
+        └── workflowEngine.ts
+```
+<details><summary>Custom Engins capability (current state) file index (47 files)</summary>
+
+- `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
+- `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
+- `components/daydream/dream.JourneyTrail.tsx` — React UI module for JourneyTrail.
+- `components/daydream/dream.LabDreamIDE.tsx` — React UI module for LabDreamIDE.
+- `components/daydream/dream.NGNEngin.tsx` — React UI module for NGNEngin.
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React UI module for OpenDaydreamSideBButton.
+- `components/daydream/dream.StandaloneEnginSurface.tsx` — React UI module for StandaloneEnginSurface.
+- `components/daydream/dream.constellationmap.tsx` — React UI module for Constellationmap.
+- `components/daydream/dream.shell.DaydreamShell.tsx` — React UI module for ShellDaydreamShell.
+- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` — React UI module for DreamsurfaceDaydreamAnalyticsDaydream.
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React UI module for DreamsurfaceDaydreamBrandDaydream.
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React UI module for PanelCompingPanel.
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
+- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
+- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
+- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript/JavaScript runtime module.
+- `engins/CodeEngin/orchestrator/dream.index.tsx` — React UI module for Index.
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React UI module for AutoOpenGameEngin.
+- `engins/dream.ForgeEngin.tsx` — React UI module for ForgeEngin.
+- `engins/dream.QuantumCircuitCanvas.tsx` — React UI module for QuantumCircuitCanvas.
+- `engins/dream.panel.AnalyticsEngin.tsx` — React UI module for PanelAnalyticsEngin.
+- `engins/engin.BrandingEngin.tsx` — React UI module for BrandingEngin.
+- `engins/engin.CodeEngin.tsx` — React UI module for CodeEngin.
+- `engins/engin.ContentEngin.tsx` — React UI module for ContentEngin.
+- `engins/engin.GameEngin.tsx` — React UI module for GameEngin.
+- `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
+- `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
+- `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
+- `lib/engins/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/code/codeEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/code/useCodeEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/content/contentEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/content/useContentEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/game/gameEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/game/index.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/game/useGameEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/lab/labEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/lab/useLabEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/music/starMakerEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/music/useStarMakerEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/useEnginWorkflow.ts` — TypeScript/JavaScript runtime module.
+- `lib/engins/workflowEngine.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
@@ -699,7 +828,7 @@ What it does:
 </details>
 ## The DmBar (`dreamdmbar/`)
 Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**` using repository introspection.
-- Files tracked: **15**
+- Files tracked: **16**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `BarGlobalDreamBar`, `BarPersistentDreamBar`, `DreamSystemContext`, `DreamsurfaceDreamdmbar`, `GlowingLight`
@@ -710,6 +839,7 @@ Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**
 │       ├── dream.bar.GlobalDreamBar.tsx
 │       └── dream.bar.PersistentDreamBar.tsx
 ├── dreamdmbar
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx
 │   └── dreamsurface.dreamdmbar.tsx
 └── lib
@@ -726,10 +856,11 @@ Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**
         ├── useModuleBarIntent.ts
         └── useNotifications.ts
 ```
-<details><summary>The DmBar (`dreamdmbar/`) file index (15 files)</summary>
+<details><summary>The DmBar (`dreamdmbar/`) file index (16 files)</summary>
 
 - `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
 - `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
+- `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `dreamdmbar/dream.GlowingLight.tsx` — React UI module for GlowingLight.
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React UI module for DreamsurfaceDreamdmbar.
 - `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
@@ -1082,13 +1213,14 @@ The naming convention `dreamsurface.*.tsx` marks canonical mount components acro
 </details>
 ## User-Facing Modularity
 Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using repository introspection.
-- Files tracked: **318**
+- Files tracked: **321**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `AIAssistant`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, `AlgorithmEngine`, +255 more
 #### User-Facing Modularity file structure
 ```text
 ├── components
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── activity
 │   │   ├── dream.ActivityPostForm.tsx
 │   │   ├── dream.ActivityProfile.tsx
@@ -1207,11 +1339,11 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 │   │   ├── dream.GlobalDragLayer.tsx
 │   │   ├── dream.PlatformErrorReporter.tsx
 │   │   ├── dream.SlideOverPanel.tsx
-│   │   ├── dream.connectorlayer.tsx
-… (198 more files)
+… (201 more files)
 ```
-<details><summary>User-Facing Modularity file index (318 files)</summary>
+<details><summary>User-Facing Modularity file index (321 files)</summary>
 
+- `components/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `components/activity/dream.ActivityPostForm.tsx` — React UI module for ActivityPostForm.
 - `components/activity/dream.ActivityProfile.tsx` — React UI module for ActivityProfile.
 - `components/activity/dream.TierBadge.tsx` — React UI module for TierBadge.
@@ -1510,6 +1642,7 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 - `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React UI module for WidgetWidgetPlaceholder.
 - `components/widgets/dream.widget.WidgetShell.tsx` — React UI module for WidgetWidgetShell.
 - `components/widgets/dream.widget.WidgetSurface.tsx` — React UI module for WidgetWidgetSurface.
+- `hooks/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `hooks/use-spatial.ts` — TypeScript/JavaScript runtime module.
 - `hooks/useAccount.ts` — TypeScript/JavaScript runtime module.
 - `hooks/useConnectorInstallFlow.ts` — TypeScript/JavaScript runtime module.
@@ -1525,6 +1658,7 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 - `lib/ui/skin-engine.ts` — TypeScript/JavaScript runtime module.
 - `lib/ui/theme-engine.ts` — TypeScript/JavaScript runtime module.
 - `lib/ui/theme.ts` — TypeScript/JavaScript runtime module.
+- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `styles/dream-shell.css` — project file (css).
 - `styles/globals.css` — project file (css).
 - `styles/home-dream.css` — project file (css).
@@ -1535,7 +1669,7 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 
 ## Custom Engins
 Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using repository introspection.
-- Files tracked: **37**
+- Files tracked: **39**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeDreamIDE`, `CodeEngin`, `Constellationmap`, `ContentEngin`, `DiffViewer`, `DreamsurfaceDaydreamAnalyticsDaydream`, +21 more
@@ -1560,6 +1694,7 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 │           ├── dream.panel.PianoRollPanel.tsx
 │           └── dream.panel.SessionViewPanel.tsx
 ├── daydreams
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── brand
 │   │   └── page.tsx
 │   ├── code
@@ -1573,6 +1708,7 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 │   └── music
 │       └── page.tsx
 └── engins
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── CodeEngin
     │   ├── core
     │   │   └── parser.ts
@@ -1597,7 +1733,7 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
     └── portfolio
         └── dream.PortfolioEngin.tsx
 ```
-<details><summary>Custom Engins file index (37 files)</summary>
+<details><summary>Custom Engins file index (39 files)</summary>
 
 - `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
 - `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
@@ -1614,12 +1750,14 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 - `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
 - `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
 - `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
+- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `daydreams/brand/page.tsx` — route page.
 - `daydreams/code/page.tsx` — route page.
 - `daydreams/create/page.tsx` — route page.
 - `daydreams/games/page.tsx` — route page.
 - `daydreams/lab/page.tsx` — route page.
 - `daydreams/music/page.tsx` — route page.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
 - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
 - `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
@@ -1641,7 +1779,7 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 
 ## Full Website Customizability
 Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styles/**` using repository introspection.
-- Files tracked: **29**
+- Files tracked: **30**
 - API routes discovered: `/api/settings/appearance`, `/api/settings/feed`, `/api/settings/notifications`, `/api/settings/privacy`
 - App pages discovered: `/settings`, `/settings/account`, `/settings/algorithm`, `/settings/appearance`, `/settings/controls`, `/settings/data`, `/settings/dreams`, `/settings/feed`, +6 more
 - Components/modules discovered: `ControlsClient`, `DangerZoneActions`, `DataClient`, `DreamsLayoutEditor`, `Page`, `PositionIndicatorToggle`, `PrivacyClient`
@@ -1693,13 +1831,14 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 │       └── widgets
 │           └── page.tsx
 └── styles
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── dream-shell.css
     ├── globals.css
     ├── home-dream.css
     ├── theme.css
     └── view-transitions.css
 ```
-<details><summary>Full Website Customizability file index (29 files)</summary>
+<details><summary>Full Website Customizability file index (30 files)</summary>
 
 - `app/api/settings/appearance/route.ts` — API route handler.
 - `app/api/settings/feed/route.ts` — API route handler.
@@ -1725,6 +1864,7 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 - `app/settings/safety/page.tsx` — route page.
 - `app/settings/security/page.tsx` — route page.
 - `app/settings/widgets/page.tsx` — route page.
+- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `styles/dream-shell.css` — project file (css).
 - `styles/globals.css` — project file (css).
 - `styles/home-dream.css` — project file (css).
@@ -1735,8 +1875,8 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 
 ## Backend, System, Core & CoreSurfaces
 Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `lib/supabase/**` using repository introspection.
-- Files tracked: **134**
-- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +99 more
+- Files tracked: **143**
+- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
 - App pages discovered: none
 - Components/modules discovered: `DreamsurfaceEditProfileDream`, `DreamsurfaceViewProfile`
 #### Backend, System, Core & CoreSurfaces file structure
@@ -1861,9 +2001,9 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 │       │       └── route.ts
 │       ├── dreamr
 │       │   ├── feed
-… (14 more files)
+… (23 more files)
 ```
-<details><summary>Backend, System, Core & CoreSurfaces file index (134 files)</summary>
+<details><summary>Backend, System, Core & CoreSurfaces file index (143 files)</summary>
 
 - `app/api/account/delete-data/route.ts` — API route handler.
 - `app/api/account/delete-dream/route.ts` — API route handler.
@@ -1916,6 +2056,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/dreamengin/os-status/route.ts` — API route handler.
 - `app/api/dreamr/feed/route.ts` — API route handler.
 - `app/api/dreamr/suggested/route.ts` — API route handler.
+- `app/api/dreamr/tally/route.ts` — API route handler.
 - `app/api/dreams/feed/route.ts` — API route handler.
 - `app/api/dreams/instances/route.ts` — API route handler.
 - `app/api/dreams/transfer/route.ts` — API route handler.
@@ -1958,11 +2099,16 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/settings/privacy/route.ts` — API route handler.
 - `app/api/setup/check/route.ts` — API route handler.
 - `app/api/setup/google-oauth/route.ts` — API route handler.
+- `app/api/shared-dream/sessions/[id]/route.ts` — API route handler.
+- `app/api/shared-dream/sessions/route.ts` — API route handler.
 - `app/api/shellhub/devices/route.ts` — API route handler.
 - `app/api/shop/route.ts` — API route handler.
 - `app/api/skip-credits/balance/route.ts` — API route handler.
 - `app/api/skip-credits/earn/route.ts` — API route handler.
 - `app/api/skip-credits/use/route.ts` — API route handler.
+- `app/api/social/ipfs/route.ts` — API route handler.
+- `app/api/social/livekit/room/route.ts` — API route handler.
+- `app/api/social/livekit/token/route.ts` — API route handler.
 - `app/api/social/rss-feed/route.ts` — API route handler.
 - `app/api/upload/route.ts` — API route handler.
 - `app/api/user/layout/route.ts` — API route handler.
@@ -1973,6 +2119,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/youtube/discovery/route.ts` — API route handler.
 - `app/api/youtube/live-feed/route.ts` — API route handler.
 - `backend/.env.example` — project file (example).
+- `backend/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `backend/README.md` — documentation file.
 - `backend/docker-compose.yml` — project file (yml).
 - `backend/dockerfile` — project file (no extension).
@@ -1989,22 +2136,24 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `backend/src/socialaggregators/mastodon.js` — TypeScript/JavaScript runtime module.
 - `backend/src/socialaggregators/nostr.js` — TypeScript/JavaScript runtime module.
 - `core/.gitkeep` — project file (no extension).
+- `core/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `coresurfaces/dreamsurface.EditProfileDream.tsx` — React UI module for DreamsurfaceEditProfileDream.
 - `coresurfaces/dreamsurface.ViewProfile.tsx` — React UI module for DreamsurfaceViewProfile.
 - `lib/supabase/client.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/config.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/env.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/realtime.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/safeGetUser.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/server.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/vector.ts` — TypeScript/JavaScript runtime module.
+- `system/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `system/ci/archive/root-workflows/github-actions.yml` — project file (yml).
 
 </details>
 
 ## Agents & Workflow
 Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **136**
+- Files tracked: **138**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2096,6 +2245,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │       └── visual-schematicpages.yml
 ├── agents
 │   ├── .gitkeep
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── humanAI
 │   │   ├── orchestrator.md
 │   │   └── personas
@@ -2106,6 +2256,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │   │       └── social-explorer.md
 │   └── humanAI.persona.md
 └── scripts
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── analyze-repo-state.mjs
     ├── archive
     │   ├── proxy.ts
@@ -2128,11 +2279,9 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   ├── lib
     │   │   └── tar.ts
     │   ├── maestro-analyze.ts
-    │   ├── mechanic-run.ts
-    │   ├── package-cartridge.ts
-… (16 more files)
+… (18 more files)
 ```
-<details><summary>Agents & Workflow file index (136 files)</summary>
+<details><summary>Agents & Workflow file index (138 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
@@ -2216,6 +2365,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `.github/workflows/visual-schematic.yml` — project file (yml).
 - `.github/workflows/visual-schematicpages.yml` — project file (yml).
 - `agents/.gitkeep` — project file (no extension).
+- `agents/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `agents/humanAI.persona.md` — documentation file.
 - `agents/humanAI/orchestrator.md` — documentation file.
 - `agents/humanAI/personas/accessibility.md` — documentation file.
@@ -2223,6 +2373,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `agents/humanAI/personas/ios-first.md` — documentation file.
 - `agents/humanAI/personas/power-user.md` — documentation file.
 - `agents/humanAI/personas/social-explorer.md` — documentation file.
+- `scripts/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `scripts/analyze-repo-state.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/archive/proxy.ts` — TypeScript/JavaScript runtime module.
 - `scripts/archive/validate-deployment.js` — TypeScript/JavaScript runtime module.
@@ -2275,13 +2426,14 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 
 ## Research, Experiments & Daydreams
 Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`, `daydreams/**` using repository introspection.
-- Files tracked: **24**
+- Files tracked: **28**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `Page`
 #### Research, Experiments & Daydreams file structure
 ```text
 ├── daydreams
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── brand
 │   │   └── page.tsx
 │   ├── code
@@ -2295,8 +2447,10 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 │   └── music
 │       └── page.tsx
 ├── experiments
-│   └── .gitkeep
+│   ├── .gitkeep
+│   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── research
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── DISCOVERY.md
 │   ├── README.md
 │   ├── ccc-ada-twin-engine
@@ -2321,11 +2475,13 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 │   └── paper
 │       └── torridity_ledger.tex
 └── research-and-development
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── LICENSE
     └── tech-spec-v1.md
 ```
-<details><summary>Research, Experiments & Daydreams file index (24 files)</summary>
+<details><summary>Research, Experiments & Daydreams file index (28 files)</summary>
 
+- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `daydreams/brand/page.tsx` — route page.
 - `daydreams/code/page.tsx` — route page.
 - `daydreams/create/page.tsx` — route page.
@@ -2333,8 +2489,11 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 - `daydreams/lab/page.tsx` — route page.
 - `daydreams/music/page.tsx` — route page.
 - `experiments/.gitkeep` — project file (no extension).
+- `experiments/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `research-and-development/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `research-and-development/LICENSE` — project file (no extension).
 - `research-and-development/tech-spec-v1.md` — documentation file.
+- `research/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `research/DISCOVERY.md` — documentation file.
 - `research/README.md` — documentation file.
 - `research/ccc-ada-twin-engine/README.md` — documentation file.
@@ -2355,7 +2514,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **68**
+- Files tracked: **71**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2427,17 +2586,20 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── visual-schematic.yml
 │       └── visual-schematicpages.yml
 ├── grafana
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dashboards
 │   │   └── default.yml
 │   └── datasources
 │       └── prometheus.yml
 ├── prometheus
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── prometheus.yml
 ├── terraform
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── main.tf
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (68 files)</summary>
+<details><summary>Infra & Ops file index (71 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
@@ -2502,9 +2664,12 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
 - `.github/workflows/visual-schematic.yml` — project file (yml).
 - `.github/workflows/visual-schematicpages.yml` — project file (yml).
+- `grafana/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `grafana/dashboards/default.yml` — project file (yml).
 - `grafana/datasources/prometheus.yml` — project file (yml).
+- `prometheus/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `prometheus/prometheus.yml` — project file (yml).
+- `terraform/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `terraform/main.tf` — project file (tf).
 - `vercel.json` — project file (json).
 
@@ -2512,7 +2677,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 
 ## Testing
 Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using repository introspection.
-- Files tracked: **209**
+- Files tracked: **210**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2520,6 +2685,7 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 ```text
 ├── playwright.config.ts
 ├── tests
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── DUALSENSE_TEST_PLAN.md
 │   ├── activity-first-protocol.test.ts
 │   ├── activity-revenue-split.test.ts
@@ -2637,12 +2803,12 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   ├── lab-dream-split.test.ts
 │   ├── lab-section-12-spec.test.ts
 │   ├── landing-calibration.test.ts
-│   ├── landing-mission-link.test.ts
-… (89 more files)
+… (90 more files)
 ```
-<details><summary>Testing file index (209 files)</summary>
+<details><summary>Testing file index (210 files)</summary>
 
 - `playwright.config.ts` — TypeScript/JavaScript runtime module.
+- `tests/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `tests/DUALSENSE_TEST_PLAN.md` — documentation file.
 - `tests/activity-first-protocol.test.ts` — TypeScript/JavaScript runtime module.
 - `tests/activity-revenue-split.test.ts` — TypeScript/JavaScript runtime module.
@@ -2876,8 +3042,8 @@ Auto-synced from `README.md`, `.env.example`, `.env.local.example` using reposit
 
 ## Environment Variables
 Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using repository introspection.
-- Files tracked: **109**
-- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +99 more
+- Files tracked: **115**
+- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
 - App pages discovered: none
 - Components/modules discovered: none
 #### Environment Variables file structure
@@ -3003,7 +3169,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
         │   └── os-status
         │       └── route.ts
 ```
-<details><summary>Environment Variables file index (109 files)</summary>
+<details><summary>Environment Variables file index (115 files)</summary>
 
 - `.env.example` — project file (example).
 - `.env.local.example` — project file (example).
@@ -3058,6 +3224,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 - `app/api/dreamengin/os-status/route.ts` — API route handler.
 - `app/api/dreamr/feed/route.ts` — API route handler.
 - `app/api/dreamr/suggested/route.ts` — API route handler.
+- `app/api/dreamr/tally/route.ts` — API route handler.
 - `app/api/dreams/feed/route.ts` — API route handler.
 - `app/api/dreams/instances/route.ts` — API route handler.
 - `app/api/dreams/transfer/route.ts` — API route handler.
@@ -3100,11 +3267,16 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 - `app/api/settings/privacy/route.ts` — API route handler.
 - `app/api/setup/check/route.ts` — API route handler.
 - `app/api/setup/google-oauth/route.ts` — API route handler.
+- `app/api/shared-dream/sessions/[id]/route.ts` — API route handler.
+- `app/api/shared-dream/sessions/route.ts` — API route handler.
 - `app/api/shellhub/devices/route.ts` — API route handler.
 - `app/api/shop/route.ts` — API route handler.
 - `app/api/skip-credits/balance/route.ts` — API route handler.
 - `app/api/skip-credits/earn/route.ts` — API route handler.
 - `app/api/skip-credits/use/route.ts` — API route handler.
+- `app/api/social/ipfs/route.ts` — API route handler.
+- `app/api/social/livekit/room/route.ts` — API route handler.
+- `app/api/social/livekit/token/route.ts` — API route handler.
 - `app/api/social/rss-feed/route.ts` — API route handler.
 - `app/api/upload/route.ts` — API route handler.
 - `app/api/user/layout/route.ts` — API route handler.
@@ -3119,7 +3291,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 
 ## Contributing
 Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **276**
+- Files tracked: **277**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -3245,9 +3417,9 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
-… (156 more files)
+… (157 more files)
 ```
-<details><summary>Contributing file index (276 files)</summary>
+<details><summary>Contributing file index (277 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
 - `.github/actions/resilient-engine/action.yml` — project file (yml).
@@ -3438,6 +3610,7 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 - `docs/ARCHITECTURE.md` — documentation file.
 - `docs/AUTH_SETUP.md` — documentation file.
 - `docs/AXIOMS.md` — documentation file.
+- `docs/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `docs/BOOGIEMAN_POLICY.md` — documentation file.
 - `docs/BUGS.md` — documentation file.
 - `docs/CHILD_SAFETY_POLICY.md` — documentation file.
@@ -3579,13 +3752,14 @@ No artificial "repurpose before invent" rule.
 
 ## Repo Visualizer
 Auto-synced from `repo-visualizer/**` using repository introspection.
-- Files tracked: **6**
+- Files tracked: **7**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
 #### Repo Visualizer file structure
 ```text
 └── repo-visualizer
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── README.md
     ├── analyzer.mjs
     ├── graph-stats.json
@@ -3593,8 +3767,9 @@ Auto-synced from `repo-visualizer/**` using repository introspection.
     ├── index.html
     └── server.mjs
 ```
-<details><summary>Repo Visualizer file index (6 files)</summary>
+<details><summary>Repo Visualizer file index (7 files)</summary>
 
+- `repo-visualizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `repo-visualizer/README.md` — documentation file.
 - `repo-visualizer/analyzer.mjs` — TypeScript/JavaScript runtime module.
 - `repo-visualizer/graph-stats.json` — project file (json).
@@ -3606,13 +3781,14 @@ Auto-synced from `repo-visualizer/**` using repository introspection.
 
 ## Build Memory
 Auto-synced from `build-memory/**` using repository introspection.
-- Files tracked: **6**
+- Files tracked: **7**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
 #### Build Memory file structure
 ```text
 └── build-memory
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── actions.json
     ├── events.json
     ├── registry.json
@@ -3620,8 +3796,9 @@ Auto-synced from `build-memory/**` using repository introspection.
     ├── schema.json
     └── ui-surfaces.json
 ```
-<details><summary>Build Memory file index (6 files)</summary>
+<details><summary>Build Memory file index (7 files)</summary>
 
+- `build-memory/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `build-memory/actions.json` — project file (json).
 - `build-memory/events.json` — project file (json).
 - `build-memory/registry.json` — project file (json).
@@ -3633,13 +3810,14 @@ Auto-synced from `build-memory/**` using repository introspection.
 
 ## Src
 Auto-synced from `src/**` using repository introspection.
-- Files tracked: **36**
+- Files tracked: **37**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: `DreamEnginLogo`, `LogoHero`, `Nav`
 #### Src file structure
 ```text
 └── src
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── components
     │   ├── dream.DreamEnginLogo.tsx
     │   ├── dream.LogoHero.tsx
@@ -3697,8 +3875,9 @@ Auto-synced from `src/**` using repository introspection.
         └── babylon
             └── useDreamLogoScene.ts
 ```
-<details><summary>Src file index (36 files)</summary>
+<details><summary>Src file index (37 files)</summary>
 
+- `src/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `src/components/dream.DreamEnginLogo.tsx` — React UI module for DreamEnginLogo.
 - `src/components/dream.LogoHero.tsx` — React UI module for LogoHero.
 - `src/components/dream.Nav.tsx` — React UI module for Nav.
@@ -3740,13 +3919,14 @@ Auto-synced from `src/**` using repository introspection.
 
 ## Api
 Auto-synced from `api/**` using repository introspection.
-- Files tracked: **112**
+- Files tracked: **113**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
 #### Api file structure
 ```text
 └── api
+    ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── account
     │   ├── delete-data
     │   │   └── route.ts
@@ -3865,10 +4045,10 @@ Auto-synced from `api/**` using repository introspection.
     │       └── route.ts
     ├── dreamr
     │   ├── feed
-    │   │   └── route.ts
 ```
-<details><summary>Api file index (112 files)</summary>
+<details><summary>Api file index (113 files)</summary>
 
+- `api/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `api/account/delete-data/route.ts` — API route handler.
 - `api/account/delete-dream/route.ts` — API route handler.
 - `api/account/export-data/route.ts` — API route handler.
@@ -3984,3 +4164,621 @@ Auto-synced from `api/**` using repository introspection.
 
 </details>
 
+## Assembly
+Auto-synced from `assembly/**` using repository introspection.
+- Files tracked: **4**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Assembly file structure
+```text
+└── assembly
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── bus.ts
+    ├── index.ts
+    └── mad-maxi-player.ts
+```
+<details><summary>Assembly file index (4 files)</summary>
+
+- `assembly/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `assembly/bus.ts` — TypeScript/JavaScript runtime module.
+- `assembly/index.ts` — TypeScript/JavaScript runtime module.
+- `assembly/mad-maxi-player.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Config
+Auto-synced from `config/**` using repository introspection.
+- Files tracked: **4**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Config file structure
+```text
+└── config
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── advanced-game-targets.json
+    ├── optimizer.yaml
+    └── ui-ux-spec.yaml
+```
+<details><summary>Config file index (4 files)</summary>
+
+- `config/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `config/advanced-game-targets.json` — project file (json).
+- `config/optimizer.yaml` — project file (yaml).
+- `config/ui-ux-spec.yaml` — project file (yaml).
+
+</details>
+
+## Dr Eams
+Auto-synced from `dr-eams/**` using repository introspection.
+- Files tracked: **3**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Dr Eams file structure
+```text
+└── dr-eams
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── capabilities.yaml
+    └── tools.ts
+```
+<details><summary>Dr Eams file index (3 files)</summary>
+
+- `dr-eams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `dr-eams/capabilities.yaml` — project file (yaml).
+- `dr-eams/tools.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Dreamr
+Auto-synced from `dreamr/**` using repository introspection.
+- Files tracked: **2**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: `PanelDreamRChannelPanel`
+#### Dreamr file structure
+```text
+└── dreamr
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── dream.panel.DreamRChannelPanel.tsx
+```
+<details><summary>Dreamr file index (2 files)</summary>
+
+- `dreamr/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `dreamr/dream.panel.DreamRChannelPanel.tsx` — React UI module for PanelDreamRChannelPanel.
+
+</details>
+
+## Engine
+Auto-synced from `engine/**` using repository introspection.
+- Files tracked: **2**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Engine file structure
+```text
+└── engine
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── io.ts
+```
+<details><summary>Engine file index (2 files)</summary>
+
+- `engine/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `engine/io.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Frontend
+Auto-synced from `frontend/**` using repository introspection.
+- Files tracked: **27**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: `App`, `BlockchainContext`, `CommentList`, `CommentSection`, `EngagementOverlay`, `Feed`, `FeedItem`, `VideoPlayer`, +1 more
+#### Frontend file structure
+```text
+└── frontend
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── public
+        ├── favicon.ico
+        ├── index.html
+        └── src
+            ├── App.jsx
+            ├── DockerFile
+            ├── Services
+            │   ├── api.js
+            │   └── livekit.js
+            ├── Utils
+            │   ├── socialUtils.js
+            │   └── web3Utils.js
+            ├── components
+            │   ├── Videoplayer
+            │   │   ├── EngagementOverlay.jsx
+            │   │   ├── VideoPlayer.css
+            │   │   └── VideoPlayer.jsx
+            │   ├── WalletConnect
+            │   │   ├── WalletConnect.css
+            │   │   └── WalletConnect.jsx
+            │   ├── commentSection
+            │   │   ├── CommentList.jsx
+            │   │   ├── CommentSection.css
+            │   │   └── CommentSection.jsx
+            │   └── feed
+            │       ├── Feed.css
+            │       ├── Feed.jsx
+            │       └── FeedItem.jsx
+            ├── contexts
+            │   └── BlockchainContext.jsx
+            ├── hooks
+            │   ├── useBlockchain.js
+            │   └── useSocialData.js
+            ├── index.css
+            ├── index.js
+            ├── package-lock.json
+            └── package.json
+```
+<details><summary>Frontend file index (27 files)</summary>
+
+- `frontend/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `frontend/public/favicon.ico` — project file (ico).
+- `frontend/public/index.html` — project file (html).
+- `frontend/public/src/App.jsx` — React UI module for App.
+- `frontend/public/src/DockerFile` — project file (no extension).
+- `frontend/public/src/Services/api.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/Services/livekit.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/Utils/socialUtils.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/Utils/web3Utils.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/components/Videoplayer/EngagementOverlay.jsx` — React UI module for EngagementOverlay.
+- `frontend/public/src/components/Videoplayer/VideoPlayer.css` — project file (css).
+- `frontend/public/src/components/Videoplayer/VideoPlayer.jsx` — React UI module for VideoPlayer.
+- `frontend/public/src/components/WalletConnect/WalletConnect.css` — project file (css).
+- `frontend/public/src/components/WalletConnect/WalletConnect.jsx` — React UI module for WalletConnect.
+- `frontend/public/src/components/commentSection/CommentList.jsx` — React UI module for CommentList.
+- `frontend/public/src/components/commentSection/CommentSection.css` — project file (css).
+- `frontend/public/src/components/commentSection/CommentSection.jsx` — React UI module for CommentSection.
+- `frontend/public/src/components/feed/Feed.css` — project file (css).
+- `frontend/public/src/components/feed/Feed.jsx` — React UI module for Feed.
+- `frontend/public/src/components/feed/FeedItem.jsx` — React UI module for FeedItem.
+- `frontend/public/src/contexts/BlockchainContext.jsx` — React UI module for BlockchainContext.
+- `frontend/public/src/hooks/useBlockchain.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/hooks/useSocialData.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/index.css` — project file (css).
+- `frontend/public/src/index.js` — TypeScript/JavaScript runtime module.
+- `frontend/public/src/package-lock.json` — project file (json).
+- `frontend/public/src/package.json` — project file (json).
+
+</details>
+
+## Misc
+Auto-synced from `misc/**` using repository introspection.
+- Files tracked: **12**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Misc file structure
+```text
+└── misc
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── images
+        ├── arm2_transparent.png
+        ├── coat_transparent.png
+        ├── head_transparent.png
+        ├── iconslist.png
+        ├── logo_DREAM_transparent.png
+        ├── logo_ENGIN_transparent.png
+        ├── logo_transparent.png
+        ├── shoe1_transparent.png
+        ├── shoe2_transparent.png
+        ├── sprite_2x_transparent.png
+        └── sprite_transparent.png
+```
+<details><summary>Misc file index (12 files)</summary>
+
+- `misc/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `misc/images/arm2_transparent.png` — project file (png).
+- `misc/images/coat_transparent.png` — project file (png).
+- `misc/images/head_transparent.png` — project file (png).
+- `misc/images/iconslist.png` — project file (png).
+- `misc/images/logo_DREAM_transparent.png` — project file (png).
+- `misc/images/logo_ENGIN_transparent.png` — project file (png).
+- `misc/images/logo_transparent.png` — project file (png).
+- `misc/images/shoe1_transparent.png` — project file (png).
+- `misc/images/shoe2_transparent.png` — project file (png).
+- `misc/images/sprite_2x_transparent.png` — project file (png).
+- `misc/images/sprite_transparent.png` — project file (png).
+
+</details>
+
+## Optimizer
+Auto-synced from `optimizer/**` using repository introspection.
+- Files tracked: **5**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Optimizer file structure
+```text
+└── optimizer
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── constraint-solver.ts
+    ├── creative-validator.ts
+    ├── index.ts
+    └── types.ts
+```
+<details><summary>Optimizer file index (5 files)</summary>
+
+- `optimizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `optimizer/constraint-solver.ts` — TypeScript/JavaScript runtime module.
+- `optimizer/creative-validator.ts` — TypeScript/JavaScript runtime module.
+- `optimizer/index.ts` — TypeScript/JavaScript runtime module.
+- `optimizer/types.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Output
+Auto-synced from `output/**` using repository introspection.
+- Files tracked: **3**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Output file structure
+```text
+└── output
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── patch-plan.json
+    └── result.json
+```
+<details><summary>Output file index (3 files)</summary>
+
+- `output/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `output/patch-plan.json` — project file (json).
+- `output/result.json` — project file (json).
+
+</details>
+
+## Public
+Auto-synced from `public/**` using repository introspection.
+- Files tracked: **35**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Public file structure
+```text
+└── public
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── arm1_transparent.png
+    ├── arm2_transparent.png
+    ├── cartridges
+    │   └── mad-maxi
+    │       ├── MANIFEST.json
+    │       ├── logic
+    │       │   └── main.wasm
+    │       └── tuning.json
+    ├── coat_transparent.png
+    ├── dr-eams-pbr.html
+    ├── favicon.ico
+    ├── feeds
+    │   └── embed-feed.json
+    ├── file.svg
+    ├── globe.svg
+    ├── head_transparent.png
+    ├── images
+    │   ├── iconslist.png
+    │   ├── logo1.PNG
+    │   ├── logo2.PNG
+    │   └── logo3.PNG
+    ├── logo-icon.png
+    ├── logo_DREAM_transparent.png
+    ├── logo_ENGIN_transparent.png
+    ├── manifest.json
+    ├── manifest.webmanifest
+    ├── models
+    │   └── madmaxi.glb
+    ├── module-loader.html
+    ├── next.svg
+    ├── shoe1_transparent.png
+    ├── shoe2_transparent.png
+    ├── sprite_2x_transparent.png
+    ├── sprite_transparent.png
+    ├── vercel.svg
+    ├── videos
+    │   └── signup-bg.mp4
+    ├── window.svg
+    └── workers
+        ├── asset-optimizer.worker.js
+        ├── engin-shader.wasm
+        └── engin-shader.worker.ts
+```
+<details><summary>Public file index (35 files)</summary>
+
+- `public/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `public/arm1_transparent.png` — project file (png).
+- `public/arm2_transparent.png` — project file (png).
+- `public/cartridges/mad-maxi/MANIFEST.json` — project file (json).
+- `public/cartridges/mad-maxi/logic/main.wasm` — project file (wasm).
+- `public/cartridges/mad-maxi/tuning.json` — project file (json).
+- `public/coat_transparent.png` — project file (png).
+- `public/dr-eams-pbr.html` — project file (html).
+- `public/favicon.ico` — project file (ico).
+- `public/feeds/embed-feed.json` — project file (json).
+- `public/file.svg` — project file (svg).
+- `public/globe.svg` — project file (svg).
+- `public/head_transparent.png` — project file (png).
+- `public/images/iconslist.png` — project file (png).
+- `public/images/logo1.PNG` — project file (png).
+- `public/images/logo2.PNG` — project file (png).
+- `public/images/logo3.PNG` — project file (png).
+- `public/logo-icon.png` — project file (png).
+- `public/logo_DREAM_transparent.png` — project file (png).
+- `public/logo_ENGIN_transparent.png` — project file (png).
+- `public/manifest.json` — project file (json).
+- `public/manifest.webmanifest` — project file (webmanifest).
+- `public/models/madmaxi.glb` — project file (glb).
+- `public/module-loader.html` — project file (html).
+- `public/next.svg` — project file (svg).
+- `public/shoe1_transparent.png` — project file (png).
+- `public/shoe2_transparent.png` — project file (png).
+- `public/sprite_2x_transparent.png` — project file (png).
+- `public/sprite_transparent.png` — project file (png).
+- `public/vercel.svg` — project file (svg).
+- `public/videos/signup-bg.mp4` — project file (mp4).
+- `public/window.svg` — project file (svg).
+- `public/workers/asset-optimizer.worker.js` — TypeScript/JavaScript runtime module.
+- `public/workers/engin-shader.wasm` — project file (wasm).
+- `public/workers/engin-shader.worker.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Supabase
+Auto-synced from `supabase/**` using repository introspection.
+- Files tracked: **68**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+- Supabase migrations touched: `20240120000000_initial_schema`, `20240120000001_enable_rls`, `20260129000000_upgrade_schema`, `20260210000000_widget_system_v2`, `20260210000001_ai_system_v2026`, `20260210_ai_core`, `20260214000000_security_axioms`, `20260226000000_admin_lock`, +47 more
+#### Supabase file structure
+```text
+└── supabase
+    ├── .temp
+    │   ├── cli-latest
+    │   ├── gotrue-version
+    │   ├── linked-project.json
+    │   ├── pooler-url
+    │   ├── postgres-version
+    │   ├── project-ref
+    │   ├── rest-version
+    │   ├── storage-migration
+    │   └── storage-version
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── config.toml
+    ├── migrations
+    │   ├── 20240120000000_initial_schema.sql
+    │   ├── 20240120000001_enable_rls.sql
+    │   ├── 20260129000000_upgrade_schema.sql
+    │   ├── 20260210000000_widget_system_v2.sql
+    │   ├── 20260210000001_ai_system_v2026.sql
+    │   ├── 20260210_ai_core.sql
+    │   ├── 20260214000000_security_axioms.sql
+    │   ├── 20260226000000_admin_lock.sql
+    │   ├── 20260305000000_create_notes.sql
+    │   ├── 20260305000001_comments.sql
+    │   ├── 20260305000002_leaderboard.sql
+    │   ├── 20260307000000_readme_gaps.sql
+    │   ├── 20260307000001_conversations_messages.sql
+    │   ├── 20260310000000_widget_instances_visibility.sql
+    │   ├── 20260310000001_profiles_widget_config.sql
+    │   ├── 20260310000002_profile_dream_widgets.sql
+    │   ├── 20260310000003_connector_accounts.sql
+    │   ├── 20260310000004_feed_items.sql
+    │   ├── 20260310000010_dreamdm_bar_pass2.sql
+    │   ├── 20260315000000_content_drafts.sql
+    │   ├── 20260316000000_visibility_mappings.sql
+    │   ├── 20260319000000_journey_dots.sql
+    │   ├── 20260319065444_new-migration.sql
+    │   ├── 20260319120000_connector_accounts_schema_reload.sql
+    │   ├── 20260320000000_scheduled_posts.sql
+    │   ├── 20260320100000_game_scores_all_games.sql
+    │   ├── 20260320110000_user_blocks.sql
+    │   ├── 20260321000000_ads_platform_promotions.sql
+    │   ├── 20260321200000_phase8a_feed_and_layout.sql
+    │   ├── 20260322000000_phase8b_dream_windows.sql
+    │   ├── 20260322000000_policy_events.sql
+    │   ├── 20260322000001_message_boards.sql
+    │   ├── 20260323100000_embed_feed_items.sql
+    │   ├── 20260324000000_phase8e_orders.sql
+    │   ├── 20260324000001_phase8e_shop_marketplace.sql
+    │   ├── 20260325000000_phase8f_daydream_network.sql
+    │   ├── 20260325100000_child_safety.sql
+    │   ├── 20260401000001_platform_utilities.sql
+    │   ├── 20260402000001_control_mappings.sql
+    │   ├── 20260402000002_game_assets.sql
+    │   ├── 20260403000001_pgvector_embeddings.sql
+    │   ├── 20260403000002_pgvector_search_rpc.sql
+    │   ├── 20260405000001_dreamr_feed_registry.sql
+    │   ├── 20260405042406_auto_scaffold.sql
+    │   ├── 20260413000000_phase9_activity_first_protocol.sql
+    │   ├── 20260417000000_repurpose_nods_as_dream_docs.sql
+    │   ├── 20260417000001_dream_docs_search_rpc.sql
+    │   ├── 20260418000000_gameengin_core.sql
+    │   ├── 20260420000001_consent_settings_audit.sql
+    │   ├── 20260426000000_activity_coop_gameengin_completion.sql
+    │   ├── 20260426000100_rename_widgets_to_dreams.sql
+    │   ├── 20260426000200_build_memory_schema_gaps.sql
+    │   ├── 20260516000000_agent_sessions_forge_rate_limits.sql
+    │   ├── 20260516000100_dreamr_tally.sql
+    │   └── 20260516000300_shared_dream_sessions.sql
+    ├── schema-final.sql
+    └── seed.sql
+```
+<details><summary>Supabase file index (68 files)</summary>
+
+- `supabase/.temp/cli-latest` — project file (no extension).
+- `supabase/.temp/gotrue-version` — project file (no extension).
+- `supabase/.temp/linked-project.json` — project file (json).
+- `supabase/.temp/pooler-url` — project file (no extension).
+- `supabase/.temp/postgres-version` — project file (no extension).
+- `supabase/.temp/project-ref` — project file (no extension).
+- `supabase/.temp/rest-version` — project file (no extension).
+- `supabase/.temp/storage-migration` — project file (no extension).
+- `supabase/.temp/storage-version` — project file (no extension).
+- `supabase/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `supabase/config.toml` — project file (toml).
+- `supabase/migrations/20240120000000_initial_schema.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20240120000001_enable_rls.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260129000000_upgrade_schema.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260210000000_widget_system_v2.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260210000001_ai_system_v2026.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260210_ai_core.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260214000000_security_axioms.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260226000000_admin_lock.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260305000000_create_notes.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260305000001_comments.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260305000002_leaderboard.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260307000000_readme_gaps.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260307000001_conversations_messages.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000000_widget_instances_visibility.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000001_profiles_widget_config.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000002_profile_dream_widgets.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000003_connector_accounts.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000004_feed_items.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260310000010_dreamdm_bar_pass2.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260315000000_content_drafts.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260316000000_visibility_mappings.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260319000000_journey_dots.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260319065444_new-migration.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260320000000_scheduled_posts.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260320100000_game_scores_all_games.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260320110000_user_blocks.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260321000000_ads_platform_promotions.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260322000000_policy_events.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260322000001_message_boards.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260323100000_embed_feed_items.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260324000000_phase8e_orders.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260325000000_phase8f_daydream_network.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260325100000_child_safety.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260401000001_platform_utilities.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260402000001_control_mappings.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260402000002_game_assets.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260403000001_pgvector_embeddings.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260403000002_pgvector_search_rpc.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260405000001_dreamr_feed_registry.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260405042406_auto_scaffold.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260417000001_dream_docs_search_rpc.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260418000000_gameengin_core.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260420000001_consent_settings_audit.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260426000200_build_memory_schema_gaps.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260516000100_dreamr_tally.sql` — SQL migration/schema artifact.
+- `supabase/migrations/20260516000300_shared_dream_sessions.sql` — SQL migration/schema artifact.
+- `supabase/schema-final.sql` — SQL migration/schema artifact.
+- `supabase/seed.sql` — SQL migration/schema artifact.
+
+</details>
+
+## Types
+Auto-synced from `types/**` using repository introspection.
+- Files tracked: **19**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Types file structure
+```text
+└── types
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── ads.ts
+    ├── ai-system.ts
+    ├── ai.ts
+    ├── ccc.ts
+    ├── connector.ts
+    ├── dream-window.ts
+    ├── dreamArtifact.ts
+    ├── experience.ts
+    ├── journey.ts
+    ├── marketplace.ts
+    ├── module-manifest.ts
+    ├── rivet-dev-agent-os.d.ts
+    ├── spatial.ts
+    ├── supabase.ts
+    ├── user-sim.ts
+    ├── widget-system-v2.ts
+    ├── widgetConfigs.ts
+    └── widgets.ts
+```
+<details><summary>Types file index (19 files)</summary>
+
+- `types/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `types/ads.ts` — TypeScript/JavaScript runtime module.
+- `types/ai-system.ts` — TypeScript/JavaScript runtime module.
+- `types/ai.ts` — TypeScript/JavaScript runtime module.
+- `types/ccc.ts` — TypeScript/JavaScript runtime module.
+- `types/connector.ts` — TypeScript/JavaScript runtime module.
+- `types/dream-window.ts` — TypeScript/JavaScript runtime module.
+- `types/dreamArtifact.ts` — TypeScript/JavaScript runtime module.
+- `types/experience.ts` — TypeScript/JavaScript runtime module.
+- `types/journey.ts` — TypeScript/JavaScript runtime module.
+- `types/marketplace.ts` — TypeScript/JavaScript runtime module.
+- `types/module-manifest.ts` — TypeScript/JavaScript runtime module.
+- `types/rivet-dev-agent-os.d.ts` — TypeScript/JavaScript runtime module.
+- `types/spatial.ts` — TypeScript/JavaScript runtime module.
+- `types/supabase.ts` — TypeScript/JavaScript runtime module.
+- `types/user-sim.ts` — TypeScript/JavaScript runtime module.
+- `types/widget-system-v2.ts` — TypeScript/JavaScript runtime module.
+- `types/widgetConfigs.ts` — TypeScript/JavaScript runtime module.
+- `types/widgets.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Utils
+Auto-synced from `utils/**` using repository introspection.
+- Files tracked: **2**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Utils file structure
+```text
+└── utils
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── supabase
+        └── server.ts
+```
+<details><summary>Utils file index (2 files)</summary>
+
+- `utils/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `utils/supabase/server.ts` — TypeScript/JavaScript runtime module.
+
+</details>
+
+## Workflow
+Auto-synced from `workflow/**` using repository introspection.
+- Files tracked: **6**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Workflow file structure
+```text
+└── workflow
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    └── archive
+        ├── Dockerfile
+        ├── Dockerfile.dev
+        ├── appthemanger-ctrl_DREAMengin_95779c.json
+        ├── config.yaml
+        └── docker-compose.yml
+```
+<details><summary>Workflow file index (6 files)</summary>
+
+- `workflow/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `workflow/archive/Dockerfile` — project file (no extension).
+- `workflow/archive/Dockerfile.dev` — project file (dev).
+- `workflow/archive/appthemanger-ctrl_DREAMengin_95779c.json` — project file (json).
+- `workflow/archive/config.yaml` — project file (yaml).
+- `workflow/archive/docker-compose.yml` — project file (yml).
+
+</details>
