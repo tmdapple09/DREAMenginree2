@@ -25,6 +25,7 @@ import { groqChat, type GroqMessage } from '@/lib/ai/groq';
 import { AI_MODELS } from '@/lib/ai/triad';
 import type { ForgeLogEvent } from '@/lib/forge/forgeBuild';
 import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
+import { toErrorMessage } from '@/lib/utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -285,7 +286,6 @@ if __name__ == '__main__':
     print(f'Mean final price: \${mean:.2f}')
     print(f'Std deviation:    \${std:.2f}')
     print(f'95% CI: [\${mean - 1.96*std:.2f}, \${mean + 1.96*std:.2f}]')`;
-import { toErrorMessage } from '@/lib/utils';
     case 'brand':
       return JSON.stringify({
         name: shortPrompt,

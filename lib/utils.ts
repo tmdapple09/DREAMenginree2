@@ -231,7 +231,7 @@ export function assert(condition: unknown, message: string): asserts condition {
  * Covers Error instances, objects with a message property, and primitives.
  */
 export function toErrorMessage(err: unknown): string {
-  if (err instanceof Error) return toErrorMessage(err);
+  if (err instanceof Error) return err.message;
   if (typeof err === 'object' && err !== null && 'message' in err) {
     const msg = (err as Record<string, unknown>).message;
     return typeof msg === 'string' ? msg : String(msg);

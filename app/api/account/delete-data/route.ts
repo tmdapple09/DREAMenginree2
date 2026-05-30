@@ -55,13 +55,13 @@ export async function POST(req: NextRequest): Promise<Response> {
   ]);
 
   if (feedResult.error) {
-    errors.push(`feed_rules: ${feedResult.toErrorMessage(error)}`);
+    errors.push(`feed_rules: ${toErrorMessage(feedResult.error)}`);
   } else {
     deleted.push('feed_rules');
   }
 
   if (widgetResult.error) {
-    errors.push(`dream_instances: ${widgetResult.toErrorMessage(error)}`);
+    errors.push(`dream_instances: ${toErrorMessage(widgetResult.error)}`);
   } else {
     deleted.push('dream_instances');
   }
