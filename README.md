@@ -2134,7 +2134,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 
 ## Agents & Workflow
 Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **138**
+- Files tracked: **137**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2260,9 +2260,9 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   │   └── tar.ts
     │   ├── maestro-analyze.ts
     │   ├── mechanic-run.ts
-… (18 more files)
+… (17 more files)
 ```
-<details><summary>Agents & Workflow file index (138 files)</summary>
+<details><summary>Agents & Workflow file index (137 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
@@ -2379,7 +2379,6 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `scripts/gameengin/writer-run.ts` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-nextgen-spec.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-ps5-spec.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/generate-repo-state.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-webapp-final-form.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/law-check.sh` — project file (sh).
 - `scripts/migrate-imports.sh` — project file (sh).
