@@ -2497,7 +2497,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **67**
+- Files tracked: **65**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2569,12 +2569,9 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── vercel-deploy.yml
 │       ├── visual-schematic.yml
 │       └── visual-schematicpages.yml
-├── terraform
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   └── main.tf
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (67 files)</summary>
+<details><summary>Infra & Ops file index (65 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
@@ -2640,8 +2637,6 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
 - `.github/workflows/visual-schematic.yml` — project file (yml).
 - `.github/workflows/visual-schematicpages.yml` — project file (yml).
-- `terraform/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `terraform/main.tf` — project file (tf).
 - `vercel.json` — project file (json).
 
 </details>
