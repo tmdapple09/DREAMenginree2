@@ -4238,20 +4238,17 @@ Auto-synced from `dreamr/**` using repository introspection.
 
 ## Engine
 Auto-synced from `engine/**` using repository introspection.
-- Files tracked: **2**
+- Files tracked: **0**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
 #### Engine file structure
 ```text
-└── engine
-    ├── Agents-MUST-READ-ARCHITECTURE.md
-    └── io.ts
+(no files currently matched)
 ```
-<details><summary>Engine file index (2 files)</summary>
+<details><summary>Engine file index (0 files)</summary>
 
-- `engine/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `engine/io.ts` — TypeScript/JavaScript runtime module.
+- _No files matched the configured glob set after this change._
 
 </details>
 
