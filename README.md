@@ -2379,7 +2379,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `scripts/gameengin/writer-run.ts` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-nextgen-spec.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-ps5-spec.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/generate-repo-state.mjs` — TypeScript/JavaScript runtime module.
+- `scripts/generate-repo-state 2.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-webapp-final-form.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/law-check.sh` — project file (sh).
 - `scripts/migrate-imports.sh` — project file (sh).
