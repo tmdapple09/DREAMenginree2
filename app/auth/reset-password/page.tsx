@@ -1,5 +1,6 @@
 "use client";
 // SURFACE: dreamsurface.AuthResetPassword  (framework-mandated basename: page.tsx)
+export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/lib/supabase/client";
 import { buildAuthCallbackUrl } from "@/lib/supabase/config";

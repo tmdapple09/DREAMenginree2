@@ -1,5 +1,6 @@
 'use client';
 // SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
+export const dynamic = 'force-dynamic';
 
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
