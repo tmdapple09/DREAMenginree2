@@ -83,7 +83,8 @@ export default function JoinPage( ){
         email,
         password,
         options: {
-          emailRedirectTo: origin ? buildAuthCallbackUrl(origin) : undefined,
+          // Email-confirmed new users should land on onboarding, not the fallback.
+          emailRedirectTo: buildAuthCallbackUrl(window.location.origin, '/onboarding'),
         },
       });
 
@@ -130,14 +131,11 @@ export default function JoinPage( ){
 
     setBusy(true);
     try {
-      const onboardingRedirectTo = origin
-        ? `${buildAuthCallbackUrl(origin)}?next=/onboarding`
-        : undefined;
+      // New users from /join always go through onboarding after OAuth.
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          // New users coming from /join get onboarding after OAuth callback
-          redirectTo: onboardingRedirectTo,
+          redirectTo: buildAuthCallbackUrl(window.location.origin, '/onboarding'),
         },
       });
       if (oauthError) setError(oauthError.message);

@@ -126,7 +126,7 @@ function LoginPageInner( ){
     try {
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: buildAuthCallbackUrl(origin, nextPath) },
+        options: { redirectTo: buildAuthCallbackUrl(window.location.origin, nextPath) },
       });
       if (authError) throw authError;
     } catch (err: unknown) {
