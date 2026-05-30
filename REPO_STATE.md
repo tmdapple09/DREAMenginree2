@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T08:33:22.667Z
+Generated: 2026-05-30T11:49:20.529Z
 
 ---
 
@@ -9245,59 +9245,6 @@ _No migrations for this feature._
 - imports: `@/components/webgpu/dream.WebGPUShowcase`
 - imports: `next`
 
-## `backend/index.js`
-
-- imports: `express`
-- imports: `cors`
-- imports: `./src/socialaggregators/mastodon.js`
-- imports: `./src/socialaggregators/nostr.js`
-- imports: `./src/socialaggregators/bluesky.js`
-- imports: `./services/ipfsService.js`
-- imports: `./services/livekitService.js`
-- imports: `express-rate-limit`
-
-## `backend/src/Routes/apiRoutes.js`
-
-- imports: `express`
-- imports: `../controllers/feedController.js`
-- imports: `../controllers/ipfsController.js`
-- imports: `../controllers/engagementController.js`
-
-## `backend/src/controllers/engagementController.js`
-
-- imports: `web3`
-- imports: `../../contracts/build/contracts/SocialEngagement.json`
-
-## `backend/src/controllers/feedController.js`
-
-- imports: `../social-aggregators/mastodon.js`
-- imports: `../social-aggregators/nostr.js`
-- imports: `../social-aggregators/bluesky.js`
-
-## `backend/src/controllers/ipfsController.js`
-
-- imports: `../services/ipfsService.js`
-
-## `backend/src/services/ipfsService.js`
-
-- imports: `ipfs-http-client`
-
-## `backend/src/services/livekitService.js`
-
-- imports: `livekit-server-sdk`
-
-## `backend/src/socialaggregators/bluesky.js`
-
-- imports: `axios`
-
-## `backend/src/socialaggregators/mastodon.js`
-
-- imports: `mastodon-api`
-
-## `backend/src/socialaggregators/nostr.js`
-
-- imports: `nostr-tools`
-
 ## `components/activity/dream.ActivityPostForm.tsx`
 
 - imports: `@/lib/activity/scoring`
@@ -17684,7 +17631,6 @@ _No circular dependencies detected._
 | `app/login/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/settings/security/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/shop/sell/page.tsx` | 8 | MEDIUM_COUPLING |
-| `backend/index.js` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
@@ -18068,9 +18014,6 @@ _No circular dependencies detected._
 │   ├── copilot-instructions.md
 │   ├── pull_request_template.md
 │   └── PULL_REQUEST_TEMPLATE.md
-├── .husky
-│   ├── pre-commit
-│   └── pre-push
 ├── agents
 │   ├── humanAI
 │   │   ├── personas
@@ -18624,29 +18567,6 @@ _No circular dependencies detected._
 │   ├── bus.ts
 │   ├── index.ts
 │   └── mad-maxi-player.ts
-├── backend
-│   ├── src
-│   │   ├── controllers
-│   │   │   ├── engagementController.js
-│   │   │   ├── feedController.js
-│   │   │   └── ipfsController.js
-│   │   ├── Routes
-│   │   │   └── apiRoutes.js
-│   │   ├── services
-│   │   │   ├── ipfsService.js
-│   │   │   └── livekitService.js
-│   │   └── socialaggregators
-│   │       ├── bluesky.js
-│   │       ├── mastodon.js
-│   │       └── nostr.js
-│   ├── .env.example
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── docker-compose.yml
-│   ├── dockerfile
-│   ├── index.js
-│   ├── package-lock.json
-│   ├── package.json
-│   └── README.md
 ├── build-memory
 │   ├── actions.json
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -19226,12 +19146,6 @@ _No circular dependencies detected._
 │   │   │   └── package.json
 │   │   ├── favicon.ico
 │   │   └── index.html
-│   └── Agents-MUST-READ-ARCHITECTURE.md
-├── grafana
-│   ├── dashboards
-│   │   └── default.yml
-│   ├── datasources
-│   │   └── prometheus.yml
 │   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── hooks
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -20480,6 +20394,7 @@ _No circular dependencies detected._
 ├── AGENTS.md
 ├── CHANGELOG.md
 ├── COOP_AND_SOLO_ROADMAP.md
+├── DREAMenginree2-fixed-v3 2.zip
 ├── eslint.config.mjs
 ├── fix-audit.js
 ├── GameENGINspec.md
