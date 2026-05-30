@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T12:51:58.886Z
+Generated: 2026-05-30T12:57:18.045Z
 
 ---
 
@@ -17821,17 +17821,17 @@ _No circular dependencies detected._
 # Raw File Tree
 
 ```text
-├── .ci
+├── .ci/
 │   ├── DREAMengin CI-CD Pipeline
 │   ├── snapshot.diff.txt
 │   └── snapshot.md
-├── .github
-│   ├── actions
-│   │   ├── resilient-engine
+├── .github/
+│   ├── actions/
+│   │   ├── resilient-engine/
 │   │   │   └── action.yml
-│   │   └── setup-node
+│   │   └── setup-node/
 │   │       └── action.yml
-│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── agents/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── dreamengin.agent.md
 │   │   ├── error-tracker.agent.md
 │   │   ├── gameengin-ai-agent.yml
@@ -17842,7 +17842,7 @@ _No circular dependencies detected._
 │   │   ├── newagent.agent.md
 │   │   ├── Spec-Engin HyperSICC.agent.md
 │   │   └── videogameAi.md
-│   ├── issue-triage
+│   ├── issue-triage/
 │   │   ├── issue-552.md
 │   │   ├── issue-556.md
 │   │   ├── issue-560.md
@@ -17871,7 +17871,7 @@ _No circular dependencies detected._
 │   │   ├── issue-647.md
 │   │   ├── issue-753.md
 │   │   └── issue-754.md
-│   ├── ruleset
+│   ├── ruleset/
 │   │   ├── autofixvercelbuild.yml
 │   │   ├── bot-pr-automerge.yml
 │   │   ├── bouncer.yml
@@ -17928,7 +17928,7 @@ _No circular dependencies detected._
 │   │   ├── update-embed-feed.yml
 │   │   ├── update-repo-state.yml
 │   │   └── vercel-deploy.yml
-│   ├── scripts
+│   ├── scripts/
 │   │   ├── ai_implement.py
 │   │   ├── ai_neural_decision.py
 │   │   ├── ai_propose.py
@@ -17942,12 +17942,13 @@ _No circular dependencies detected._
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
+│   │   │   └·· (lazy)  ← ./HeavyComponent
 │   │   ├── run-readme-autosync.mjs
 │   │   ├── scan_dreamengin_context.py
 │   │   ├── scan_gameengin_context.py
 │   │   ├── validate_game_sandbox.py
 │   │   └── validate_report_agent_spec.py
-│   ├── workflows
+│   ├── workflows/
 │   │   ├── autofixvercelbuild.yml
 │   │   ├── bot-pr-automerge.yml
 │   │   ├── bouncer.yml
@@ -18015,9 +18016,9 @@ _No circular dependencies detected._
 │   ├── copilot-instructions.md
 │   ├── pull_request_template.md
 │   └── PULL_REQUEST_TEMPLATE.md
-├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   ├── humanAI  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+├── agents/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── humanAI/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   ├── personas/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── accessibility.md
 │   │   │   ├── creator.md
 │   │   │   ├── ios-first.md
@@ -18027,548 +18028,1391 @@ _No circular dependencies detected._
 │   ├── .gitkeep
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── humanAI.persona.md
-├── app
-│   ├── (internal)
-│   │   └── idari-console  [Observability & Idari Console]
-│   │       ├── platform-errors  [Observability & Idari Console]
+├── app/
+│   ├── (internal)/
+│   │   └── idari-console/  [Observability & Idari Console]
+│   │       ├── platform-errors/  [Observability & Idari Console]
 │   │       │   └── page.tsx
-│   │       ├── platform-health  [Observability & Idari Console]
+│   │       │       └·· createServerClient  ← @/lib/supabase/server
+│   │       ├── platform-health/  [Observability & Idari Console]
 │   │       │   └── page.tsx
+│   │       │       ├·· PlatformHealth  ← @/components/idari/dream.PlatformHealth
+│   │       │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │       └── page.tsx
-│   ├── about
+│   │           ├·· createUpgradeReadinessSnapshot  ← @/lib/admin/upgrade-readiness
+│   │           ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │           ├·· isDevAdminBypassActive  ← @/lib/dev-bypass
+│   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │           ├·· ⬡ ChildSafetyPanel  ← @/components/dream.panel.ChildSafetyPanel
+│   │           └·· ⬡ IDariPanel  ← @/components/dream.panel.IDariPanel
+│   ├── about/
 │   │   └── page.tsx
-│   ├── actions
+│   │       └·· ⬡ PlatformBadge  ← @/components/ui/dream.PlatformBadge
+│   ├── actions/
 │   │   └── dream-docs.ts
-│   ├── ads
-│   │   ├── create
+│   │       ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │       ├·· embedDocSection  ← @/lib/dream-docs/embed
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· Json  ← @/types/supabase
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── ads/
+│   │   ├── create/
 │   │   │   └── page.tsx
-│   │   ├── slot
-│   │   │   └── [id]
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── slot/
+│   │   │   └── [id]/
 │   │   │       └── page.tsx
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· AdSlot  ← @/types/ads
 │   │   └── page.tsx
-│   ├── api
-│   │   ├── account
-│   │   │   ├── delete-data
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· AdListing, AdOrder, AdSlot  ← @/types/ads
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── api/
+│   │   ├── account/
+│   │   │   ├── delete-data/
 │   │   │   │   └── route.ts
-│   │   │   ├── delete-dream
+│   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── delete-dream/
 │   │   │   │   └── route.ts
-│   │   │   └── export-data
+│   │   │   │       ├·· runTriadConsensus  ← @/lib/agents/agentBus
+│   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient, createServiceClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └── export-data/
 │   │   │       └── route.ts
-│   │   ├── activity
-│   │   │   └── track
+│   │   │           ├·· jsonApiError  ← @/lib/api/route
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── activity/
+│   │   │   └── track/
 │   │   │       └── route.ts
-│   │   ├── admin
-│   │   │   ├── ai-chat
+│   │   │           ├·· calculateActivityPoints, calculateDecayDate  ← @/lib/activity/scoring
+│   │   │           ├·· ActivityVerification, TrackActivityRequest, TrackActivityResponse, VERIFICATION_STRENGTH  ← @/lib/activity/types
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── admin/
+│   │   │   ├── ai-chat/
 │   │   │   │   └── route.ts
-│   │   │   ├── ai-request
+│   │   │   │       ├·· isAdminLocked, isOwner, triggerAdminLockout  ← @/lib/admin/lockout
+│   │   │   │       ├·· GroqMessage, groqChat  ← @/lib/ai/groq
+│   │   │   │       ├·· AI_MODELS  ← @/lib/ai/triad
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── ai-request/
 │   │   │   │   └── route.ts
-│   │   │   ├── child-safety
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── child-safety/
 │   │   │   │   └── route.ts
-│   │   │   ├── code-files
+│   │   │   │       ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── code-files/
 │   │   │   │   └── route.ts
-│   │   │   └── observability
+│   │   │   │       ├·· isAdminLocked, isDomainBlocked, isOwner, triggerAdminLockout  ← @/lib/admin/lockout
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └── observability/
 │   │   │       └── route.ts
-│   │   ├── ads
-│   │   │   ├── orders
+│   │   │           ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │   │           ├·· jsonApiError  ← @/lib/api/route
+│   │   │           ├·· getBufferStats, getSnapshot  ← @/lib/observability/collector
+│   │   │           ├·· correlate  ← @/lib/observability/correlator
+│   │   │           ├·· buildImmediateRemediationAction  ← @/lib/observability/immediateAction
+│   │   │           ├·· inferRootCause  ← @/lib/observability/rootCauseAnalyzer
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── ads/
+│   │   │   ├── orders/
 │   │   │   │   └── route.ts
-│   │   │   └── view
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   └── view/
 │   │   │       └── route.ts
-│   │   ├── agent
-│   │   │   └── session
+│   │   │           ├·· qualifiesForPremiumCPV  ← @/lib/activity/aqs
+│   │   │           ├·· calculateActivityRevenueSplit  ← @/lib/activity/revenueSplit
+│   │   │           ├·· calculateSkipCreditsEarned  ← @/lib/activity/skipCredits
+│   │   │           ├·· AdView, CPVTier, CPV_PRICING, TrackAdViewRequest, TrackAdViewResponse  ← @/lib/activity/types
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── agent/
+│   │   │   └── session/
 │   │   │       └── route.ts
-│   │   ├── ai
-│   │   │   ├── boogieman
-│   │   │   │   ├── child-safety
+│   │   │           ├·· getAgentOS  ← @/lib/agentOS
+│   │   │           └·· codeEnginHostTools  ← @/lib/agentOS/hostTools
+│   │   ├── ai/
+│   │   │   ├── boogieman/
+│   │   │   │   ├── child-safety/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── privacy-event
+│   │   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │   │       ├·· BOOGIE_POLICY_VERSION, boogieEnforce  ← @/lib/ai/boogieman
+│   │   │   │   │       ├·· checkRateLimit  ← @/lib/ai/rateLimit
+│   │   │   │   │       ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │   │       ├·· isZeroTolerance, scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   │   │   │       ├·· classifyImage  ← @/lib/child-safety/imageClassifier
+│   │   │   │   │       ├·· reportChildSafetyIncident  ← @/lib/child-safety/ncmecReporter
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       └·· (lazy)  ← @/lib/child-safety/imageClassifier
+│   │   │   │   ├── privacy-event/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── status
+│   │   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │   │       ├·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogieman
+│   │   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   ├── status/
 │   │   │   │   │   └── route.ts
+│   │   │   │   │       └·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogie-policy
 │   │   │   │   └── route.ts
-│   │   │   ├── eams
+│   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │       ├·· BOOGIE_POLICY_VERSION, boogieEvaluate  ← @/lib/ai/boogieman
+│   │   │   │       ├·· checkRateLimit  ← @/lib/ai/rateLimit
+│   │   │   │       ├·· boogiePolicyCheck, isOwnerEmail  ← @/lib/ai/triad
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── eams/
 │   │   │   │   └── route.ts
-│   │   │   ├── execute
+│   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │       ├·· boogieEvaluate  ← @/lib/ai/boogieman
+│   │   │   │       ├·· makeConfirmToken  ← @/lib/ai/confirm
+│   │   │   │       ├·· checkRateLimit, getCurrentRPM  ← @/lib/ai/rateLimit
+│   │   │   │       ├·· DrEamsRunBodySchema, DrEamsRunResponse  ← @/lib/ai/schemas
+│   │   │   │       ├·· boogiePolicyCheck, isOwnerEmail, planWithEams, validateWithIdari  ← @/lib/ai/triad
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── execute/
 │   │   │   │   └── route.ts
-│   │   │   └── idari
+│   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │   │       ├·· verifyConfirmToken  ← @/lib/ai/confirm
+│   │   │   │       ├·· checkRateLimit  ← @/lib/ai/rateLimit
+│   │   │   │       ├·· ExecuteBodySchema, Intent  ← @/lib/ai/schemas
+│   │   │   │       ├·· validateWithIdari  ← @/lib/ai/triad
+│   │   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       ├·· Json  ← @/types/supabase
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   └── idari/
 │   │   │       └── route.ts
-│   │   ├── appeal
+│   │   │           ├·· GenerationLawAssessment, assessGenerationLawScope, formatGenerationLawLoadCheck  ← @/lib/agents/idari
+│   │   │           ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │           ├·· boogieEvaluate  ← @/lib/ai/boogieman
+│   │   │           ├·· GroqMessage, groqChat  ← @/lib/ai/groq
+│   │   │           ├·· checkRateLimit, getCurrentRPM  ← @/lib/ai/rateLimit
+│   │   │           ├·· DrEamsRunBodySchema, Intent  ← @/lib/ai/schemas
+│   │   │           ├·· AI_MODELS, isOwnerEmail, validateWithIdari  ← @/lib/ai/triad
+│   │   │           ├·· jsonApiError  ← @/lib/api/route
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── appeal/
 │   │   │   └── route.ts
-│   │   ├── auth
-│   │   │   ├── logout
+│   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
+│   │   │       ├·· BOOGIE_POLICY_VERSION, RULE_CODES  ← @/lib/ai/boogie-policy
+│   │   │       ├·· AppealRequestSchema  ← @/lib/ai/schemas
+│   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── auth/
+│   │   │   ├── logout/
 │   │   │   │   └── route.ts
-│   │   │   └── providers
+│   │   │   │       └·· createServerClient  ← @/lib/supabase/server
+│   │   │   └── providers/
 │   │   │       └── route.ts
-│   │   ├── blocks
+│   │   │           └·· SUPABASE_CONFIG  ← @/lib/supabase/config
+│   │   ├── blocks/
 │   │   │   └── route.ts
-│   │   ├── ci
-│   │   │   └── run
+│   │   │       ├·· jsonApiError  ← @/lib/api/route
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── ci/
+│   │   │   └── run/
 │   │   │       └── route.ts
-│   │   ├── close-friends
+│   │   ├── close-friends/
 │   │   │   └── route.ts
-│   │   ├── comments
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── comments/
 │   │   │   └── route.ts
-│   │   ├── connectors
-│   │   │   ├── [provider]
-│   │   │   │   ├── connect
+│   │   │       ├·· scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   │       ├·· reportChildSafetyIncident  ← @/lib/child-safety/ncmecReporter
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── connectors/
+│   │   │   ├── [provider]/
+│   │   │   │   ├── connect/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── disconnect
+│   │   │   │   │       ├·· blueskyVerify  ← @/lib/connectors/providers/bluesky
+│   │   │   │   │       ├·· githubVerify  ← @/lib/connectors/providers/github
+│   │   │   │   │       ├·· mastodonVerify  ← @/lib/connectors/providers/mastodon
+│   │   │   │   │       ├·· nostrVerify  ← @/lib/connectors/providers/nostr
+│   │   │   │   │       ├·· redditVerify  ← @/lib/connectors/providers/reddit
+│   │   │   │   │       ├·· youtubeVerify  ← @/lib/connectors/providers/youtube
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       ├·· ConnectorConnectResponse  ← @/types/connector
+│   │   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   │   ├── disconnect/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── items
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   ├── items/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── sync
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   │   ├── sync/
 │   │   │   │   │   └── route.ts
-│   │   │   │   └── verify
+│   │   │   │   │       ├·· reconcileConnector  ← @/lib/connectors/reconcile
+│   │   │   │   │       ├·· DISPATCH_SUPPORTED_PROVIDERS  ← @/lib/connectors/syncDispatch
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       └·· ConnectorSyncResponse  ← @/types/connector
+│   │   │   │   └── verify/
 │   │   │   │       └── route.ts
-│   │   │   ├── cron
+│   │   │   │           ├·· blueskyVerify  ← @/lib/connectors/providers/bluesky
+│   │   │   │           ├·· githubVerify  ← @/lib/connectors/providers/github
+│   │   │   │           ├·· mastodonVerify  ← @/lib/connectors/providers/mastodon
+│   │   │   │           ├·· nostrVerify  ← @/lib/connectors/providers/nostr
+│   │   │   │           ├·· redditVerify  ← @/lib/connectors/providers/reddit
+│   │   │   │           ├·· youtubeVerify  ← @/lib/connectors/providers/youtube
+│   │   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │           ├·· ConnectorVerifyResponse  ← @/types/connector
+│   │   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── cron/
 │   │   │   │   └── route.ts
-│   │   │   ├── instagram
-│   │   │   │   └── oauth
-│   │   │   │       ├── callback
+│   │   │   │       ├·· ReconcileResult, reconcileConnector  ← @/lib/connectors/reconcile
+│   │   │   │       ├·· DISPATCH_SUPPORTED_PROVIDERS  ← @/lib/connectors/syncDispatch
+│   │   │   │       ├·· isCronAuthorised  ← @/lib/connectors/webhookVerification
+│   │   │   │       ├·· createServiceClient  ← @/lib/supabase/server
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── instagram/
+│   │   │   │   └── oauth/
+│   │   │   │       ├── callback/
 │   │   │   │       │   └── route.ts
-│   │   │   │       └── start
+│   │   │   │       │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └── start/
 │   │   │   │           └── route.ts
-│   │   │   ├── status
+│   │   │   ├── status/
 │   │   │   │   └── route.ts
-│   │   │   ├── webhooks
-│   │   │   │   └── [provider]
+│   │   │   │       ├·· ConnectorStatus  ← @/lib/connectors/connectorRegistry
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── webhooks/
+│   │   │   │   └── [provider]/
 │   │   │   │       └── route.ts
-│   │   │   └── youtube
-│   │   │       └── oauth
-│   │   │           ├── callback
+│   │   │   │           ├·· supportsWebhook, supportsWebhookVerification  ← @/lib/connectors/deliveryStrategy
+│   │   │   │           ├·· extractMetaWebhookChallenge, extractYouTubeWebSubChallenge  ← @/lib/connectors/webhookVerification
+│   │   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   │   └── youtube/
+│   │   │       └── oauth/
+│   │   │           ├── callback/
 │   │   │           │   └── route.ts
-│   │   │           └── start
+│   │   │           │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └── start/
 │   │   │               └── route.ts
-│   │   ├── content
-│   │   │   ├── generative-fill
+│   │   ├── content/
+│   │   │   ├── generative-fill/
 │   │   │   │   └── route.ts
-│   │   │   ├── intelligence
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── intelligence/
 │   │   │   │   └── route.ts
-│   │   │   ├── transcribe
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── transcribe/
 │   │   │   │   └── route.ts
-│   │   │   └── voice-clone
+│   │   │   │       ├·· parseSRT, parseVTT, totalDurationMs  ← @/lib/content/transcriptEditor
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └── voice-clone/
 │   │   │       └── route.ts
-│   │   ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   │   ├── hf  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   │           ├·· estimateDurationSeconds  ← @/lib/content/voiceClone
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── dr-eams/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   │   ├── hf/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   │   └── route.ts
-│   │   │   └── run  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   │   └── run/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │       └── route.ts
-│   │   ├── drafts
-│   │   │   ├── [id]
+│   │   ├── drafts/
+│   │   │   ├── [id]/
 │   │   │   │   └── route.ts
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   └── route.ts
-│   │   ├── dream-windows
-│   │   │   ├── [id]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── dream-windows/
+│   │   │   ├── [id]/
 │   │   │   │   └── route.ts
+│   │   │   │       ├·· DREAM_WINDOW_STATES, DreamWindowInstance, validateDreamWindowLayers  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   └── route.ts
-│   │   ├── dreamengin
-│   │   │   └── os-status
+│   │   │       ├·· DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── dreamengin/
+│   │   │   └── os-status/
 │   │   │       └── route.ts
-│   │   ├── dreamr  [DreamR]
-│   │   │   ├── feed  [DreamR]
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── dreamr/  [DreamR]
+│   │   │   ├── feed/  [DreamR]
 │   │   │   │   └── route.ts
-│   │   │   ├── suggested  [DreamR]
+│   │   │   │       └·· dreamrFeedHandler  ← @/app/dreamdmbar/_components/dreamr/api/feedHandler
+│   │   │   ├── suggested/  [DreamR]
 │   │   │   │   └── route.ts
-│   │   │   └── tally  [DreamR]
+│   │   │   │       ├·· ScoredPost, rankFeed, scoreDreamRPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   │   │       ├·· filterByCloseFriends, loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │   │       ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └── tally/  [DreamR]
 │   │   │       └── route.ts
-│   │   ├── dreams
-│   │   │   ├── feed
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── dreams/
+│   │   │   ├── feed/
 │   │   │   │   └── route.ts
-│   │   │   ├── instances
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       ├·· resolveFeedHost  ← @/lib/widgets/feed-resolver
+│   │   │   │       └·· DreamDefinition, DreamInstance, FeedHostConfig, HostKind  ← @/types/widget-system-v2
+│   │   │   ├── instances/
 │   │   │   │   └── route.ts
-│   │   │   └── transfer
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· Surface  ← @/types/widget-system-v2
+│   │   │   └── transfer/
 │   │   │       └── route.ts
-│   │   ├── embed-feed
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── embed-feed/
 │   │   │   └── route.ts
-│   │   ├── favorites
+│   │   │       ├·· EmbedFeedItem, loadEmbedFeed  ← @/lib/feeds/embedFeedLoader
+│   │   │       └·· createServerClient  ← @/lib/supabase/server
+│   │   ├── favorites/
 │   │   │   └── route.ts
-│   │   ├── feed
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── feed/
 │   │   │   └── route.ts
-│   │   ├── follow
+│   │   │       ├·· sortByVisibilityScore  ← @/lib/activity/visibility-score
+│   │   │       ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── follow/
 │   │   │   └── route.ts
-│   │   ├── forge
-│   │   ├── gal
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── forge/
+│   │   ├── gal/
 │   │   │   └── route.ts
-│   │   ├── game-scores
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── game-scores/
 │   │   │   └── route.ts
-│   │   ├── gameengin
-│   │   │   └── crash-report
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── gameengin/
+│   │   │   └── crash-report/
 │   │   │       └── route.ts
-│   │   ├── health
+│   │   │           ├·· CRASH_REPORT_MAX_BYTES, isActiveCartridge, recordCrashReport  ← @/lib/gameengin/brain-reader
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── health/
 │   │   │   └── route.ts
-│   │   ├── home-layout
+│   │   ├── home-layout/
 │   │   │   └── route.ts
-│   │   ├── journey
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── journey/
 │   │   │   └── route.ts
-│   │   ├── lab
-│   │   │   └── benchmarks
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Json  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── lab/
+│   │   │   └── benchmarks/
 │   │   │       └── route.ts
-│   │   ├── ledger-media
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── ledger-media/
 │   │   │   └── route.ts
-│   │   ├── likes
+│   │   │       ├·· decodeLedgerBlob  ← @/lib/media/ledger
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── likes/
 │   │   │   └── route.ts
-│   │   ├── marketplace
-│   │   │   ├── request
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── marketplace/
+│   │   │   ├── request/
 │   │   │   │   └── route.ts
+│   │   │   │       ├·· buildContactRequestRecord, validateContactRequest  ← @/lib/marketplace/request
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   └── route.ts
-│   │   ├── messages
-│   │   │   ├── boards
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── messages/
+│   │   │   ├── boards/
 │   │   │   │   └── route.ts
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   └── route.ts
-│   │   ├── metrics
-│   │   │   ├── platform
+│   │   │       ├·· scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   │       ├·· reportChildSafetyIncident  ← @/lib/child-safety/ncmecReporter
+│   │   │       ├·· scanMediaUrlsForChildSafety  ← @/lib/child-safety/scanMediaUrls
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── metrics/
+│   │   │   ├── platform/
 │   │   │   │   └── route.ts
-│   │   │   ├── user
-│   │   │   │   └── [userId]
+│   │   │   │       ├·· GetPlatformMetricsResponse  ← @/lib/activity/types
+│   │   │   │       ├·· createServerClient, createServiceClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── user/
+│   │   │   │   └── [userId]/
 │   │   │   │       └── route.ts
+│   │   │   │           ├·· ActivityTier, GetUserMetricsResponse, UserMetrics, isValidActivityTier  ← @/lib/activity/types
+│   │   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │           └·· Database  ← @/types/supabase
 │   │   │   └── route.ts
-│   │   ├── music
+│   │   │       ├·· getPrometheusMetrics  ← @/lib/observability/otel
+│   │   │       └·· initOtelBridge  ← @/lib/observability/otelBridge
+│   │   ├── music/
 │   │   │   └── route.ts
-│   │   ├── notifications
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Database  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── notifications/
 │   │   │   └── route.ts
-│   │   ├── platform
-│   │   │   └── errors
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── platform/
+│   │   │   └── errors/
 │   │   │       └── route.ts
-│   │   ├── posts
-│   │   │   ├── [id]
-│   │   │   │   ├── save
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── posts/
+│   │   │   ├── [id]/
+│   │   │   │   ├── save/
 │   │   │   │   │   └── route.ts
-│   │   │   │   ├── view
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   │   ├── view/
 │   │   │   │   │   └── route.ts
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   │   └── route.ts
-│   │   │   ├── profile
-│   │   │   │   └── [userId]
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── profile/
+│   │   │   │   └── [userId]/
 │   │   │   │       └── route.ts
+│   │   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │   └── route.ts
-│   │   ├── profile
+│   │   │       ├·· scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   │       ├·· reportChildSafetyIncident  ← @/lib/child-safety/ncmecReporter
+│   │   │       ├·· scanMediaUrlsForChildSafety  ← @/lib/child-safety/scanMediaUrls
+│   │   │       ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Database  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── profile/
 │   │   │   └── route.ts
-│   │   ├── projects
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Database  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── projects/
 │   │   │   └── route.ts
-│   │   ├── scheduled-posts
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Database  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── scheduled-posts/
 │   │   │   └── route.ts
-│   │   ├── security
-│   │   │   └── scan
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── security/
+│   │   │   └── scan/
 │   │   │       └── route.ts
-│   │   ├── settings
-│   │   │   ├── appearance
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── settings/
+│   │   │   ├── appearance/
 │   │   │   │   └── route.ts
-│   │   │   ├── feed
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── feed/
 │   │   │   │   └── route.ts
-│   │   │   ├── notifications
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   ├── notifications/
 │   │   │   │   └── route.ts
-│   │   │   └── privacy
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   │   └── privacy/
 │   │   │       └── route.ts
-│   │   ├── setup
-│   │   │   ├── check
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── setup/
+│   │   │   ├── check/
 │   │   │   │   └── route.ts
-│   │   │   └── google-oauth
+│   │   │   │       └·· getSetupStatus  ← @/lib/setup/checks
+│   │   │   └── google-oauth/
 │   │   │       └── route.ts
-│   │   ├── shared-dream
-│   │   │   └── sessions
-│   │   │       ├── [id]
+│   │   │           └·· SUPABASE_CONFIG, getServerSiteOrigin, getSupabaseAuthCallbackUrl  ← @/lib/supabase/config
+│   │   ├── shared-dream/
+│   │   │   └── sessions/
+│   │   │       ├── [id]/
 │   │   │       │   └── route.ts
+│   │   │       │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       │       └·· createServerClient  ← @/lib/supabase/server
 │   │   │       └── route.ts
-│   │   ├── shellhub
-│   │   │   └── devices
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· createServerClient  ← @/lib/supabase/server
+│   │   ├── shellhub/
+│   │   │   └── devices/
 │   │   │       └── route.ts
-│   │   ├── shop
+│   │   │           ├·· SHELLHUB_DEFAULT_SERVER, ShellHubDevice, shellhubListDevices  ← @/lib/connectors/providers/shellhub
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── shop/
 │   │   │   └── route.ts
-│   │   ├── skip-credits
-│   │   │   ├── balance
+│   │   │       ├·· normalizeShopListing, validateShopListing  ← @/lib/shop/listings
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· Database  ← @/types/supabase
+│   │   │       └·· toErrorMessage  ← @/lib/utils
+│   │   ├── skip-credits/
+│   │   │   ├── balance/
 │   │   │   │   └── route.ts
-│   │   │   ├── earn
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── earn/
 │   │   │   │   └── route.ts
-│   │   │   └── use
+│   │   │   │       ├·· EarnSkipCreditsRequest, EarnSkipCreditsResponse  ← @/lib/activity/types
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └── use/
 │   │   │       └── route.ts
-│   │   ├── social
-│   │   │   ├── ipfs
+│   │   │           ├·· UseSkipCreditsRequest, UseSkipCreditsResponse  ← @/lib/activity/types
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── social/
+│   │   │   ├── ipfs/
 │   │   │   │   └── route.ts
-│   │   │   ├── livekit
-│   │   │   │   ├── room
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├── livekit/
+│   │   │   │   ├── room/
 │   │   │   │   │   └── route.ts
-│   │   │   │   └── token
+│   │   │   │   │       ├·· LiveKitRoomInfo  ← @/lib/social/livekit
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   └── token/
 │   │   │   │       └── route.ts
-│   │   │   └── rss-feed
+│   │   │   │           ├·· LiveKitError, generateServerToken  ← @/lib/social/livekit
+│   │   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   │   └── rss-feed/
 │   │   │       └── route.ts
-│   │   ├── upload
+│   │   │           ├·· DEFAULT_NITTER_INSTANCE, RssProvider, devtoUserRssUrl, facebookPageRssUrl, githubUserAtomUrl, hackerNewsRssUrl, hackerNewsUserRssUrl, mastodonUserRssUrl, mediumUserRssUrl, nostrGatewayRssUrl, parseRssFeed, pinterestRssUrl, podcastRssUrl, redditSubredditRssUrl, redditUserRssUrl, substackRssUrl, tiktokProfileRssUrl, tumblrRssUrl, twitterNitterRssUrl, youtubeChannelRssUrl, youtubePlaylistRssUrl  ← @/lib/social/rss-feed
+│   │   │           ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── upload/
 │   │   │   └── route.ts
-│   │   ├── user
-│   │   │   └── layout
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── user/
+│   │   │   └── layout/
 │   │   │       └── route.ts
-│   │   ├── views
-│   │   │   └── track
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │           └·· toErrorMessage  ← @/lib/utils
+│   │   ├── views/
+│   │   │   └── track/
 │   │   │       └── route.ts
-│   │   ├── widgets
-│   │   │   ├── feed
+│   │   │           ├·· TrackViewRequest, TrackViewResponse  ← @/lib/activity/types
+│   │   │           ├·· createServerClient  ← @/lib/supabase/server
+│   │   │           └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── widgets/
+│   │   │   ├── feed/
 │   │   │   │   └── route.ts
-│   │   │   └── instances
+│   │   │   └── instances/
 │   │   │       └── route.ts
-│   │   └── youtube
-│   │       ├── channel
+│   │   └── youtube/
+│   │       ├── channel/
 │   │       │   └── route.ts
-│   │       ├── discovery
+│   │       │       ├·· getYouTubeApiKey, youtubeSearchByQuery  ← @/lib/connectors/providers/youtube
+│   │       │       ├·· UnifiedFeedItem  ← @/types/connector
+│   │       │       └·· toErrorMessage  ← @/lib/utils
+│   │       ├── discovery/
 │   │       │   └── route.ts
-│   │       └── live-feed
+│   │       │       ├·· getYouTubeApiKey, youtubeDiscovery  ← @/lib/connectors/providers/youtube
+│   │       │       ├·· UnifiedFeedItem  ← @/types/connector
+│   │       │       └·· toErrorMessage  ← @/lib/utils
+│   │       └── live-feed/
 │   │           └── route.ts
-│   ├── auth  [Auth]
-│   │   ├── callback  [Auth]
+│   │               ├·· getYouTubeApiKey, youtubeSearchByQuery  ← @/lib/connectors/providers/youtube
+│   │               ├·· UnifiedFeedItem  ← @/types/connector
+│   │               └·· toErrorMessage  ← @/lib/utils
+│   ├── auth/  [Auth]
+│   │   ├── callback/  [Auth]
 │   │   │   └── route.ts
-│   │   ├── reset-password  [Auth]
+│   │   │       ├·· resolveSafeNextPath  ← @/lib/auth/nextRedirect
+│   │   │       ├·· SUPABASE_CONFIG  ← @/lib/supabase/config
+│   │   │       └·· createServerClientWithCustomCookies  ← @/lib/supabase/server
+│   │   ├── reset-password/  [Auth]
 │   │   │   └── page.tsx
-│   │   └── update-password  [Auth]
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       └·· buildAuthCallbackUrl  ← @/lib/supabase/config
+│   │   └── update-password/  [Auth]
 │   │       └── page.tsx
-│   ├── connectors  [Connectors]
+│   │           ├·· createClient  ← @/lib/supabase/client
+│   │           └·· ⬡ PasswordField  ← @/components/auth/dream.PasswordField
+│   ├── connectors/  [Connectors]
 │   │   ├── dream.ConnectorsClient.tsx
+│   │   │   ├·· FeedSlice, ⬡ AddSliceSheet  ← @/components/connectors/dream.AddSliceSheet
+│   │   │   ├·· WidgetDataState, ⬡ WidgetShell  ← @/components/widgets/dream.widget.WidgetShell
+│   │   │   ├·· useConnectorInstallFlow  ← @/hooks/useConnectorInstallFlow
+│   │   │   ├·· CONNECTOR_REGISTRY, ConnectorStatus, getConnectorDef  ← @/lib/connectors/connectorRegistry
+│   │   │   ├·· SlotGrid  ← @/lib/connectors/installFlow
+│   │   │   ├·· getWidgetTypeDef  ← @/lib/widgets/widgetRegistry
+│   │   │   ├·· ⬡ ConnectorRow  ← @/components/connectors/dream.ConnectorRow
+│   │   │   ├·· ⬡ NoSlotDialog  ← @/components/connectors/dream.NoSlotDialog
+│   │   │   ├·· ⬡ PlacementMode  ← @/components/connectors/dream.PlacementMode
+│   │   │   └·· ⬡ ConnectWidgetPrompt  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
 │   │   └── page.tsx
-│   ├── daydream  [Daydream System]
-│   │   ├── analytics  [Daydream System]
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ ConnectorsClient  ← ./dream.ConnectorsClient
+│   ├── daydream/  [Daydream System]
+│   │   ├── analytics/  [Daydream System]
 │   │   │   └── page.tsx
-│   │   ├── brand  [BrandEngin, Daydream System]
-│   │   │   ├── engin  [BrandEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ AnalyticsDaydream  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· (lazy)  ← @/engins/dream.panel.AnalyticsEngin
+│   │   ├── brand/  [BrandEngin, Daydream System]
+│   │   │   ├── engin/  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── code  [CodeEngin, Daydream System]
-│   │   │   ├── engin  [CodeEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ BrandDaydream  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· ⬡ BrandingEngin  ← @/engins/engin.BrandingEngin
+│   │   ├── code/  [CodeEngin, Daydream System]
+│   │   │   ├── engin/  [CodeEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── constellation  [Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· ⬡ CodeEngin  ← @/engins/engin.CodeEngin
+│   │   ├── constellation/  [Daydream System]
 │   │   │   ├── dream.ConstellationClient.tsx
+│   │   │   │   └·· ⬡ DreamConstellationMap  ← @/components/daydream/dream.constellationmap
 │   │   │   └── page.tsx
-│   │   ├── create  [CreateEngin, Daydream System]
-│   │   │   ├── engin  [CreateEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ ConstellationClient  ← ./dream.ConstellationClient
+│   │   ├── create/  [CreateEngin, Daydream System]
+│   │   │   ├── engin/  [CreateEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── forge  [ForgeEngin (Engine Builder), Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· ⬡ ContentEngin  ← @/engins/engin.ContentEngin
+│   │   ├── forge/  [ForgeEngin (Engine Builder), Daydream System]
 │   │   │   └── page.tsx
-│   │   ├── game  [GameEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· CREATIVE_ENGINES  ← @/lib/forge/forgeRegistry
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ ForgeMomentumWidget  ← @/components/forge/dream.widget.ForgeMomentumWidget
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· ⬡ ForgeEngin  ← @/engins/dream.ForgeEngin
+│   │   ├── game/  [GameEngin, Daydream System]
 │   │   │   ├── dream.GamePageClient.tsx
 │   │   │   ├── dream.shell.ImmersiveGameShell.tsx
+│   │   │   │   ├·· GameCartridge, GravityPreset  ← @/lib/gameengin/cartridge
+│   │   │   │   ├·· loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   │   │   ├·· CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   │   │   ├·· useGamePerformanceBaseline  ← @/lib/games/hooks
+│   │   │   │   ├·· MobileHudMode  ← @/lib/games/mobileControls
+│   │   │   │   ├·· DEFAULT_GAME_ID, buildGameLaunchHref, resolveGameLaunchId  ← @/lib/games/navigation
+│   │   │   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   │   │   ├·· ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   └·· ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
 │   │   │   └── page.tsx
-│   │   ├── games  [GameEngin, Daydream System]
-│   │   │   ├── engin  [GameEngin, Daydream System]
+│   │   ├── games/  [GameEngin, Daydream System]
+│   │   │   ├── engin/  [GameEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── lab  [LabEngin, Daydream System]
-│   │   │   ├── engin  [LabEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   │       ├·· buildGameLaunchHref  ← @/lib/games/navigation
+│   │   │       ├·· GAME_QUALITY_PILLARS  ← @/lib/games/quality-plan
+│   │   │       ├·· ⬡ GamesHub  ← @/components/games/dream.GamesHub
+│   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       ├·· ⬡ AutoOpenGameEngin  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│   │   │       └·· (lazy)  ← @/engins/engin.GameEngin
+│   │   ├── lab/  [LabEngin, Daydream System]
+│   │   │   ├── engin/  [LabEngin, Daydream System]
 │   │   │   │   └── page.tsx
-│   │   │   ├── portfolio  [LabEngin, PortfolioEngin, Daydream System]
+│   │   │   ├── portfolio/  [LabEngin, PortfolioEngin, Daydream System]
 │   │   │   │   └── page.tsx
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ PortfolioEngin  ← @/engins/portfolio/dream.PortfolioEngin
 │   │   │   └── page.tsx
-│   │   ├── media-vault  [CreateEngin, Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· (lazy)  ← @/engins/engin.LabEngin
+│   │   ├── media-vault/  [CreateEngin, Daydream System]
 │   │   │   └── page.tsx
-│   │   ├── music  [StarMaker (Music Engin), Daydream System]
-│   │   │   ├── engin  [StarMaker (Music Engin), Daydream System]
+│   │   ├── music/  [StarMaker (Music Engin), Daydream System]
+│   │   │   ├── engin/  [StarMaker (Music Engin), Daydream System]
 │   │   │   │   └── page.tsx
-│   │   │   ├── upload  [StarMaker (Music Engin), Daydream System]
+│   │   │   ├── upload/  [StarMaker (Music Engin), Daydream System]
 │   │   │   │   └── page.tsx
+│   │   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   │   └── page.tsx
-│   │   └── play  [Daydream System]
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ SoundRecorder  ← @/components/music/dream.SoundRecorder
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· (lazy)  ← @/engins/engin.StarMakerEngin
+│   │   └── play/  [Daydream System]
 │   │       └── page.tsx
-│   ├── discover  [Feed & Social]
+│   │           └·· DEFAULT_GAME_ID, buildGameLaunchHref  ← @/lib/games/navigation
+│   ├── discover/  [Feed & Social]
 │   │   └── page.tsx
-│   ├── dream-effects
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── dream-effects/
 │   │   └── page.tsx
-│   ├── dreamdmbar  [HOME — DreamDMBar]
-│   │   ├── _components  [HOME — DreamDMBar]
-│   │   │   ├── dreamr  [HOME — DreamDMBar, DreamR]
-│   │   │   │   ├── algorithms  [HOME — DreamDMBar, DreamR]
+│   │       ├·· useGsapEntrance  ← @/lib/gsap/useGsapEntrance
+│   │       ├·· cn  ← @/lib/utils
+│   │       ├·· getRendererBackend  ← @/lib/webgpu
+│   │       └·· (lazy)  ← @/components/three/dream.scene
+│   ├── dreamdmbar/  [HOME — DreamDMBar]
+│   │   ├── _components/  [HOME — DreamDMBar]
+│   │   │   ├── dreamr/  [HOME — DreamDMBar, DreamR]
+│   │   │   │   ├── algorithms/  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── botDetector.ts
+│   │   │   │   │   │   └·· TORRIDITY_LEDGER_CONFIG, slog  ← @/lib/dreamr/torridityLedger
 │   │   │   │   │   └── dreamrAlgorithm.ts
-│   │   │   │   ├── api  [HOME — DreamDMBar, DreamR]
+│   │   │   │   │       └·· calculateRank, derivePostMassMeta, getPostMass  ← @/lib/dreamr/torridityLedger
+│   │   │   │   ├── api/  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── feedHandler.ts
+│   │   │   │   │   │   ├·· filterByCloseFriends, loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │   │   │   │   ├·· deriveNextCursor, parseFeedParams  ← @/lib/dreamr/feedCursor
+│   │   │   │   │   │   ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │   │   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │   │   ├·· ScoredPost, rankFeed  ← ../algorithms/dreamrAlgorithm
+│   │   │   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   │   │   └── route.ts
+│   │   │   │   │       ├·· ScoredPost, rankFeed  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   │   │   │       ├·· filterByCloseFriends, loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │   │   │       ├·· deriveNextCursor, parseFeedParams  ← @/lib/dreamr/feedCursor
+│   │   │   │   │       ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   │   │   ├── dream.DreamRCore.tsx
+│   │   │   │   │   └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   │   ├── dream.DreamRFeed.tsx
+│   │   │   │   │   ├·· Point, analyzeSwipe, tallyView  ← @/lib/botDetection
+│   │   │   │   │   └·· enginBridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   │   └── dreamsurface.dreamr.tsx
+│   │   │   │       ├·· FeedPost  ← @/lib/feed/useLiveFeed
+│   │   │   │       ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │   │       ├·· ⬡ DreamRCore  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
+│   │   │   │       ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   │   │       └·· ⬡ DreamRFeed  ← @/lib/dreamr/dreamrfeed
 │   │   │   ├── DreamBarDataBridge.tsx
+│   │   │   │   ├·· useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   │   ├·· DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   │   │   ├·· SystemPanelId  ← @/lib/panels/panelTypes
+│   │   │   │   ├·· EnginDispatcher  ← @/lib/runtime/EnginDispatcher
+│   │   │   │   ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   │   ├── DreamSpaceRegion.tsx
+│   │   │   │   ├·· useAccount  ← @/hooks/useAccount
+│   │   │   │   ├·· listSystemArtifacts, listVisibleArtifacts, restoreArtifact  ← @/lib/artifactStore
+│   │   │   │   ├·· useOS  ← @/lib/dreamenginOS/OSContext
+│   │   │   │   ├·· AssetEntry, AssetType, getAllByKind  ← @/lib/ledger
+│   │   │   │   ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   │   ├·· DreamArtifact  ← @/types/dreamArtifact
+│   │   │   │   └·· ⬡ DraggableDream  ← @/components/dreams/dream.DraggableDream
 │   │   │   ├── DreamWidgetGrid.tsx
+│   │   │   │   └·· WidgetInstance  ← @/types/widgets
 │   │   │   └── HomeDreamRegion.tsx
-│   │   ├── dreamspace  [HOME — DreamDMBar]
+│   │   │       ├·· useNotifications  ← @/lib/notifications/useNotifications
+│   │   │       ├·· isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   │   │       ├·· ⬡ DreamRSection  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│   │   │       ├·· ⬡ BrandLogo  ← @/components/dream.BrandLogo
+│   │   │       ├·· ⬡ HomeFeed  ← @/components/dream.HomeFeed
+│   │   │       ├·· ⬡ NotificationCenter  ← @/components/dream.NotificationCenter
+│   │   │       ├·· ⬡ DraggableDream  ← @/components/dreams/dream.DraggableDream
+│   │   │       ├·· ⬡ ActiveModuleSurface  ← @/components/home/dream.ActiveModuleSurface
+│   │   │       ├·· ⬡ DaydreamPulseStrip  ← @/components/home/dream.DaydreamPulseStrip
+│   │   │       └·· ⬡ FlagshipEnginesStrip  ← @/components/home/dream.FlagshipEnginesStrip
+│   │   ├── dreamspace/  [HOME — DreamDMBar]
 │   │   │   └── page.tsx
-│   │   ├── dualruntime  [HOME — DreamDMBar, DREAMenginOS]
+│   │   │       ├·· useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │       └·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├── dualruntime/  [HOME — DreamDMBar, DREAMenginOS]
 │   │   │   └── page.tsx
-│   │   ├── homedream  [HOME — DreamDMBar]
+│   │   │       ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │       └·· ⬡ SharedDreamRuntime  ← @/components/shared-dream/dream.SharedDreamRuntime
+│   │   ├── homedream/  [HOME — DreamDMBar]
 │   │   │   └── page.tsx
+│   │   │       ├·· useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │       └·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├── layout.tsx
+│   │   │   ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │   │   ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   ├·· FeedPost  ← @/lib/feed/useLiveFeed
+│   │   │   ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   ├·· ⬡ DreamBarDataBridge  ← @/app/dreamdmbar/_components/DreamBarDataBridge
+│   │   │   ├·· ⬡ GlobalDreamBar  ← @/components/home/dream.bar.GlobalDreamBar
+│   │   │   └·· ⬡ PersistentDreamBar  ← @/components/home/dream.bar.PersistentDreamBar
+│   │   └── page.tsx
+│   ├── dreamr/  [DreamR]
+│   │   └── page.tsx
+│   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· ⬡ DreamRSection  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   ├── dreamspace/
+│   │   └── page.tsx
+│   │       └·· ⬡ DreamSpaceRuntime  ← @/components/dreams/dreamsurface.dreamspace
+│   ├── edit-profiledream/  [Profile & Edit Profile]
+│   │   └── page.tsx
+│   │       ├·· ActivityProfile  ← @/components/activity/dream.ActivityProfile
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── engines/
+│   │   ├── brand/  [BrandEngin]
+│   │   │   ├── campaigns/  [BrandEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ CampaignsPanel  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
+│   │   │   ├── identity/  [BrandEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ IdentityPanel  ← @/components/engines/brand/panels/dream.panel.IdentityPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ BrandEnginApp  ← @/components/engines/brand/dream.BrandEnginApp
+│   │   ├── code/  [CodeEngin]
+│   │   │   ├── ai/  [CodeEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ AIPanel  ← @/components/engines/code/panels/dream.panel.AIPanel
+│   │   │   ├── notebook/  [CodeEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ NotebookPanel  ← @/components/engines/code/panels/dream.panel.NotebookPanel
+│   │   │   ├── projects/  [CodeEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ ProjectsPanel  ← @/components/engines/code/panels/dream.panel.ProjectsPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ CodeEnginApp  ← @/components/engines/code/dream.CodeEnginApp
+│   │   ├── create/  [CreateEngin]
+│   │   │   ├── calendar/  [CreateEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ CalendarPanel  ← @/components/engines/create/panels/dream.panel.CalendarPanel
+│   │   │   ├── editor/  [CreateEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ EditorPanel  ← @/components/engines/create/panels/dream.panel.EditorPanel
+│   │   │   ├── queue/  [CreateEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ QueuePanel  ← @/components/engines/create/panels/dream.panel.QueuePanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ CreateEnginApp  ← @/components/engines/create/dream.CreateEnginApp
+│   │   ├── games/  [GameEngin]
+│   │   │   ├── builder/  [GameEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ BuilderPanel  ← @/components/engines/games/panels/dream.panel.BuilderPanel
+│   │   │   ├── library/  [GameEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ LibraryPanel  ← @/components/engines/games/panels/dream.panel.LibraryPanel
+│   │   │   ├── scores/  [GameEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ ScoresPanel  ← @/components/engines/games/panels/dream.panel.ScoresPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ GameEnginApp  ← @/components/engines/games/dream.GameEnginApp
+│   │   ├── lab/  [LabEngin]
+│   │   │   ├── data/  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ DataVizPanel  ← @/components/engines/lab/panels/dream.panel.DataVizPanel
+│   │   │   ├── experiments/  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ ExperimentsPanel  ← @/components/engines/lab/panels/dream.panel.ExperimentsPanel
+│   │   │   ├── quantum/  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ QuantumPanel  ← @/components/engines/lab/panels/dream.panel.QuantumPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ LabEnginApp  ← @/components/engines/lab/dream.LabEnginApp
+│   │   ├── music/  [StarMaker (Music Engin)]
+│   │   │   ├── arrange/  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ ArrangePanel  ← @/components/engines/music/panels/dream.panel.ArrangePanel
+│   │   │   ├── library/  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ MusicLibraryPanel  ← @/components/engines/music/panels/dream.panel.MusicLibraryPanel
+│   │   │   ├── studio/  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ StudioPanel  ← @/components/engines/music/panels/dream.panel.StudioPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ MusicEnginApp  ← @/components/engines/music/dream.MusicEnginApp
+│   │   ├── portfolio/  [PortfolioEngin]
+│   │   │   ├── assets/  [PortfolioEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ AssetsPanel  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
+│   │   │   ├── optimize/  [PortfolioEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ OptimizePanel  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
+│   │   │   ├── quantum/  [PortfolioEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· EnginAppShell, EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ PortfolioQuantumPanel  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ PortfolioEnginApp  ← @/components/engines/portfolio/dream.PortfolioEnginApp
 │   │   ├── layout.tsx
 │   │   └── page.tsx
-│   ├── dreamr  [DreamR]
-│   │   └── page.tsx
-│   ├── dreamspace
-│   │   └── page.tsx
-│   ├── edit-profiledream  [Profile & Edit Profile]
-│   │   └── page.tsx
-│   ├── engines
-│   │   ├── brand  [BrandEngin]
-│   │   │   ├── campaigns  [BrandEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── identity  [BrandEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── code  [CodeEngin]
-│   │   │   ├── ai  [CodeEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── notebook  [CodeEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── projects  [CodeEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── create  [CreateEngin]
-│   │   │   ├── calendar  [CreateEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── editor  [CreateEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── queue  [CreateEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── games  [GameEngin]
-│   │   │   ├── builder  [GameEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── library  [GameEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── scores  [GameEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── lab  [LabEngin]
-│   │   │   ├── data  [LabEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── experiments  [LabEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── quantum  [LabEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── music  [StarMaker (Music Engin)]
-│   │   │   ├── arrange  [StarMaker (Music Engin)]
-│   │   │   │   └── page.tsx
-│   │   │   ├── library  [StarMaker (Music Engin)]
-│   │   │   │   └── page.tsx
-│   │   │   ├── studio  [StarMaker (Music Engin)]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── portfolio  [PortfolioEngin]
-│   │   │   ├── assets  [PortfolioEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── optimize  [PortfolioEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── quantum  [PortfolioEngin]
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── feed-settings
+│   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── feed-settings/
 │   │   ├── dream.FeedSettingsClient.tsx
 │   │   └── page.tsx
-│   ├── gameengin  [GameEngin]
-│   │   ├── cartridges  [GameEngin]
-│   │   │   ├── [id]  [GameEngin]
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ FeedSettingsClient  ← ./dream.FeedSettingsClient
+│   ├── gameengin/  [GameEngin]
+│   │   ├── cartridges/  [GameEngin]
+│   │   │   ├── [id]/  [GameEngin]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· getCartridgeManifest  ← @/lib/gameengin/cartridges/manifest
+│   │   │   │       └·· ⬡ CartridgeLauncher  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│   │   │   └── page.tsx
+│   │   │       └·· ⬡ CartridgeBrowser  ← @/components/gameengin/dream.cartridge.CartridgeBrowser
+│   │   └── page.tsx
+│   ├── homedream/  [HOME — DreamDMBar]
+│   │   └── page.tsx
+│   ├── join/  [Auth]
+│   │   └── page.tsx
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       ├·· buildAuthCallbackUrl  ← @/lib/supabase/config
+│   │       └·· ⬡ PasswordField  ← @/components/auth/dream.PasswordField
+│   ├── lab/  [LabEngin]
+│   │   ├── [id]/  [LabEngin]
+│   │   │   ├── codespace/  [LabEngin]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   ├── new/  [LabEngin]
+│   │   │   └── page.tsx
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   └── page.tsx
-│   ├── homedream  [HOME — DreamDMBar]
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── login/  [Auth]
 │   │   └── page.tsx
-│   ├── join  [Auth]
+│   │       ├·· resolveSafeNextPath  ← @/lib/auth/nextRedirect
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       ├·· buildAuthCallbackUrl  ← @/lib/supabase/config
+│   │       └·· ⬡ PasswordField  ← @/components/auth/dream.PasswordField
+│   ├── marketplace/  [Marketplace & Shop]
+│   │   ├── [id]/  [Marketplace & Shop]
+│   │   │   └── page.tsx
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ MarketplaceRequestButton  ← @/components/marketplace/dream.MarketplaceRequestButton
+│   │   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   │   ├── sell/  [Marketplace & Shop]
+│   │   │   └── page.tsx
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   └── page.tsx
-│   ├── lab  [LabEngin]
-│   │   ├── [id]  [LabEngin]
-│   │   │   ├── codespace  [LabEngin]
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ MarketplaceListingCard  ← @/components/marketplace/dream.MarketplaceListingCard
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── messages/  [Messages & DMs]
+│   │   ├── boards/  [Messages & DMs]
+│   │   │   ├── [id]/  [Messages & DMs]
+│   │   │   │   └── page.tsx
+│   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· ⬡ BoardComposer  ← @/components/messaging/dream.BoardComposer
+│   │   │   ├── new/  [Messages & DMs]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── new  [LabEngin]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   └── page.tsx
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ MessagesClient  ← @/components/dream.MessagesClient
+│   ├── mission/
+│   │   └── page.tsx
+│   ├── notes/
+│   │   └── page.tsx
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── onboarding/  [Auth]
+│   │   └── page.tsx
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── policy/
+│   │   └── page.tsx
+│   │       └·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogie-policy
+│   ├── profile/  [Profile & Edit Profile]
+│   │   ├── [handle]/  [Profile & Edit Profile]
 │   │   │   └── page.tsx
+│   │   │       ├·· ActivityProfile  ← @/components/activity/dream.ActivityProfile
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ ProfileShareButton  ← @/components/dream.ProfileShareButton
+│   │   │       ├·· ⬡ FollowButton  ← @/components/feed/dream.FollowButton
+│   │   │       ├·· ⬡ ProfileCustomizeButton  ← @/components/profile/dream.ProfileCustomizeButton
+│   │   │       ├·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   │   │       └·· ⬡ InfinityIcon  ← @/components/ui/dream.InfinityIcon
 │   │   └── page.tsx
-│   ├── login  [Auth]
-│   │   └── page.tsx
-│   ├── marketplace  [Marketplace & Shop]
-│   │   ├── [id]  [Marketplace & Shop]
-│   │   │   └── page.tsx
-│   │   ├── sell  [Marketplace & Shop]
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   ├── messages  [Messages & DMs]
-│   │   ├── boards  [Messages & DMs]
-│   │   │   ├── [id]  [Messages & DMs]
-│   │   │   │   └── page.tsx
-│   │   │   ├── new  [Messages & DMs]
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   ├── mission
-│   │   └── page.tsx
-│   ├── notes
-│   │   └── page.tsx
-│   ├── onboarding  [Auth]
-│   │   └── page.tsx
-│   ├── policy
-│   │   └── page.tsx
-│   ├── profile  [Profile & Edit Profile]
-│   │   ├── [handle]  [Profile & Edit Profile]
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   ├── settings  [Settings]
-│   │   ├── account  [Settings]
+│   ├── settings/  [Settings]
+│   │   ├── account/  [Settings]
 │   │   │   ├── dream.DangerZoneActions.tsx
 │   │   │   └── page.tsx
-│   │   ├── algorithm  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ DangerZoneActions  ← ./dream.DangerZoneActions
+│   │   ├── algorithm/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── appearance  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· ⬡ AlgorithmEngine  ← @/components/feed/dream.AlgorithmEngine
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── appearance/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── controls  [Settings]
+│   │   │       ├·· DeTheme, THEME_PRESETS, applyTheme, applyVoidTheme, isVoidThemeActive  ← @/components/dream.ThemeApplicator
+│   │   │       ├·· useTheme  ← @/components/providers/dream.ThemeProvider
+│   │   │       ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │       └·· THEME_PRESETS  ← @/lib/ui/theme-engine
+│   │   ├── controls/  [Settings]
 │   │   │   ├── dream.ControlsClient.tsx
+│   │   │   │   └·· ⬡ PositionIndicatorToggle  ← ./dream.PositionIndicatorToggle
 │   │   │   ├── dream.PositionIndicatorToggle.tsx
 │   │   │   └── page.tsx
-│   │   ├── data  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ ControlsClient  ← ./dream.ControlsClient
+│   │   ├── data/  [Settings]
 │   │   │   ├── dream.DataClient.tsx
 │   │   │   └── page.tsx
-│   │   ├── dreams  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ DataClient  ← ./dream.DataClient
+│   │   ├── dreams/  [Settings]
 │   │   │   ├── dreams-layout-editor.tsx
+│   │   │   │   ├·· useDreamLayout  ← @/hooks/useDreamLayout
+│   │   │   │   └·· ⬡ DraggableDream  ← @/components/dreams/dream.DraggableDream
 │   │   │   └── page.tsx
-│   │   ├── feed  [Settings]
+│   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │       └·· ⬡ DreamsLayoutEditor  ← ./dreams-layout-editor
+│   │   ├── feed/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── help  [Settings]
+│   │   ├── help/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── notifications  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── notifications/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── privacy  [Settings]
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── privacy/  [Settings]
 │   │   │   ├── dream.PrivacyClient.tsx
 │   │   │   └── page.tsx
-│   │   ├── safety  [Settings]
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ PrivacyClient  ← ./dream.PrivacyClient
+│   │   ├── safety/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── security  [Settings]
+│   │   │       ├·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogie-policy
+│   │   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── security/  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── widgets  [Settings]
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· buildAuthCallbackUrl  ← @/lib/supabase/config
+│   │   │       ├·· toErrorMessage  ← @/lib/utils
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── widgets/  [Settings]
 │   │   │   └── page.tsx
+│   │   │       └·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
 │   │   └── page.tsx
-│   ├── shop  [Marketplace & Shop]
-│   │   ├── sell  [Marketplace & Shop]
+│   │       ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── shop/  [Marketplace & Shop]
+│   │   ├── sell/  [Marketplace & Shop]
 │   │   │   └── page.tsx
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   └── page.tsx
-│   ├── u  [Profile & Edit Profile]
-│   │   └── [handle]  [Profile & Edit Profile]
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── u/  [Profile & Edit Profile]
+│   │   └── [handle]/  [Profile & Edit Profile]
 │   │       └── page.tsx
-│   ├── view-profile  [Profile & Edit Profile]
+│   ├── view-profile/  [Profile & Edit Profile]
 │   │   └── page.tsx
-│   ├── webgpu
+│   │       ├·· ActivityProfile  ← @/components/activity/dream.ActivityProfile
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ ProfileShareButton  ← @/components/dream.ProfileShareButton
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── webgpu/
 │   │   └── page.tsx
+│   │       └·· ⬡ WebGPUShowcase  ← @/components/webgpu/dream.WebGPUShowcase
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── error.tsx
+│   │   ├·· isAuthRelatedError  ← @/lib/runtime/isAuthRelatedError
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   └·· ⬡ RootStatusScreen  ← @/components/overlays/dream.RootStatusScreen
 │   ├── global-error.tsx
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── globals-enhanced.css
 │   ├── layout.tsx
+│   │   ├·· DreamSystemProvider  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├·· OSProvider  ← @/lib/dreamenginOS/OSContext
+│   │   ├·· CustomizeModeProvider  ← @/lib/ui/CustomizeModeContext
+│   │   ├·· ⬡ CommandPalette  ← @/components/dream.CommandPalette
+│   │   ├·· ⬡ GlobalOverlays  ← @/components/dream.GlobalOverlays
+│   │   ├·· ⬡ ThemeApplicator  ← @/components/dream.ThemeApplicator
+│   │   ├·· ⬡ CartridgeRegistryBootstrap  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
+│   │   ├·· ⬡ GodTierProvider  ← @/components/providers/dream.GodTierProvider
+│   │   ├·· ⬡ ThemeProvider  ← @/components/providers/dream.ThemeProvider
+│   │   └·· ⬡ DualRuntimeContainer  ← @/components/runtime/dream.DualRuntimeContainer
 │   ├── loading.tsx
+│   │   └·· ⬡ RootStatusScreen  ← @/components/overlays/dream.RootStatusScreen
 │   ├── not-found.tsx
+│   │   └·· ⬡ RootStatusScreen  ← @/components/overlays/dream.RootStatusScreen
 │   └── page.tsx
-├── assembly  [GameEngin, VM / WASM Runtime]
+│       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│       ├·· createServerClient  ← @/lib/supabase/server
+│       ├·· (lazy)  ← @/components/dream.LandingHero
+│       ├·· (lazy)  ← @/components/landing/dream.LandingNav
+│       └·· (lazy)  ← @/components/landing/dream.scene.UniverseField
+├── assembly/  [GameEngin, VM / WASM Runtime]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── bus.ts
 │   ├── index.ts
 │   └── mad-maxi-player.ts
-├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+├── build-memory/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── actions.json
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── events.json
@@ -18576,722 +19420,1728 @@ _No circular dependencies detected._
 │   ├── routes.json
 │   ├── schema.json
 │   └── ui-surfaces.json
-├── components
-│   ├── activity
+├── components/
+│   ├── activity/
 │   │   ├── dream.ActivityPostForm.tsx
+│   │   │   ├·· calculateActivityPoints, getTierDescription  ← @/lib/activity/scoring
+│   │   │   ├·· ActivityTier, VerificationMethod  ← @/lib/activity/types
+│   │   │   └·· TierBadge  ← ./dream.TierBadge
 │   │   ├── dream.ActivityProfile.tsx
+│   │   │   ├·· formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor  ← @/lib/activity/aqs
+│   │   │   ├·· ActivityTier, GetUserMetricsResponse, UserMetrics  ← @/lib/activity/types
+│   │   │   └·· TierBadge  ← ./dream.TierBadge
 │   │   └── dream.TierBadge.tsx
-│   ├── ads  [Marketplace & Shop]
+│   │       ├·· getTierDescription, getTierDisplayName  ← @/lib/activity/scoring
+│   │       └·· ActivityTier  ← @/lib/activity/types
+│   ├── ads/  [Marketplace & Shop]
 │   │   ├── dream.AdUnit.tsx
+│   │   │   └·· AdType  ← @/lib/activity/types
 │   │   └── dream.SkipCreditBalance.tsx
-│   ├── auth  [Auth]
+│   ├── auth/  [Auth]
 │   │   └── dream.PasswordField.tsx
-│   ├── connectors  [Connectors]
+│   ├── connectors/  [Connectors]
 │   │   ├── dream.AddSliceSheet.tsx
+│   │   │   └·· ConnectorDef, SliceTypeDef  ← @/lib/connectors/connectorRegistry
 │   │   ├── dream.ConnectDreamPrompt.tsx
 │   │   ├── dream.ConnectorRow.tsx
+│   │   │   └·· ConnectorDef, ConnectorStatus  ← @/lib/connectors/connectorRegistry
 │   │   ├── dream.NoSlotDialog.tsx
+│   │   │   └·· WidgetTypeDef  ← @/lib/widgets/widgetRegistry
 │   │   ├── dream.PlacementMode.tsx
+│   │   │   ├·· handlePlacementCancel, handlePlacementDone  ← @/lib/connectors/installFlow
+│   │   │   └·· WidgetTypeDef  ← @/lib/widgets/widgetRegistry
 │   │   ├── dream.widget.ConnectorWidgetPicker.tsx
+│   │   │   └·· WidgetType  ← @/types/widgets
 │   │   └── dream.widget.ConnectWidgetPrompt.tsx
-│   ├── core
+│   │       └·· WidgetTypeDef  ← @/lib/widgets/widgetRegistry
+│   ├── core/
 │   │   └── dream.CoreDream.tsx
-│   ├── customize  [Customize Mode]
-│   │   ├── panels  [Customize Mode]
+│   │       └·· ⬡ HomeDreamSurface  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   ├── customize/  [Customize Mode]
+│   │   ├── panels/  [Customize Mode]
 │   │   │   ├── dream.panel.ColorPanel.tsx
+│   │   │   │   ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │   │   └·· SKIN_PRESETS  ← @/lib/ui/skin-engine
 │   │   │   ├── dream.panel.EffectsPanel.tsx
+│   │   │   │   ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │   │   └·· SlidePanel  ← ./dream.panel.ColorPanel
 │   │   │   ├── dream.panel.FontPanel.tsx
+│   │   │   │   ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │   │   ├·· SkinFont  ← @/lib/ui/skin-engine
+│   │   │   │   └·· SlidePanel  ← ./dream.panel.ColorPanel
 │   │   │   └── dream.panel.LayoutPanel.tsx
+│   │   │       ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │       ├·· SkinLayout, SkinShadow  ← @/lib/ui/skin-engine
+│   │   │       └·· SlidePanel  ← ./dream.panel.ColorPanel
 │   │   ├── dream.bar.CustomizeModeBar.tsx
+│   │   │   └·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
 │   │   ├── dream.bar.CustomizeToolbar.tsx
+│   │   │   └·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
 │   │   └── dream.GlobalCustomizeUI.tsx
-│   ├── daydream
-│   │   ├── starmaker  [StarMaker (Music Engin)]
+│   │       ├·· ⬡ CustomizeModeBar  ← ./dream.bar.CustomizeModeBar
+│   │       ├·· ⬡ CustomizeToolbar  ← ./dream.bar.CustomizeToolbar
+│   │       ├·· ⬡ ColorPanel  ← ./panels/dream.panel.ColorPanel
+│   │       ├·· ⬡ EffectsPanel  ← ./panels/dream.panel.EffectsPanel
+│   │       ├·· ⬡ FontPanel  ← ./panels/dream.panel.FontPanel
+│   │       └·· ⬡ LayoutPanel  ← ./panels/dream.panel.LayoutPanel
+│   ├── daydream/
+│   │   ├── starmaker/  [StarMaker (Music Engin)]
 │   │   │   ├── dream.panel.CompingPanel.tsx
+│   │   │   │   └·· AudioTake, CompingState, TAKE_COLORS, TakeRating, createDemoTake  ← @/lib/music/starmakerDaw
 │   │   │   ├── dream.panel.MultitrackArrangementPanel.tsx
+│   │   │   │   └·· ARRANGEMENT_BARS, ArrangementClip, ArrangementSource, ArrangementTrackId, ArrangementTrackState  ← @/lib/music/starmakerArrangement
 │   │   │   ├── dream.panel.PianoRollPanel.tsx
+│   │   │   │   └·· MidiNote, PianoRollQuantize, PianoRollState, createMidiNote, isBlackKey, midiPitchToName, snapToGrid  ← @/lib/music/starmakerDaw
 │   │   │   └── dream.panel.SessionViewPanel.tsx
+│   │   │       └·· SessionTrack, SessionViewState  ← @/lib/music/starmakerDaw
 │   │   ├── dream.CodeDreamIDE.tsx
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   └·· getSwap, toggleSwap  ← @/lib/runtime/swapManager
 │   │   ├── dream.constellationmap.tsx
 │   │   ├── dream.DiffViewer.tsx
+│   │   │   ├·· DEMO_DIFF, DiffFile, FullFileLine, buildFullFileLines, buildScrollMarkers, firstHunkIndex, nextHunkIndex, parseUnifiedDiff, prevHunkIndex  ← @/lib/diff/diffUtils
+│   │   │   └·· (lazy)  ← @/lib/diff/diffUtils
 │   │   ├── dream.JourneyTrail.tsx
+│   │   │   ├·· AnnotatedDot, annotateDotsWithInsights, computeCurrentStreak  ← @/lib/journey/journeyInsights
+│   │   │   └·· JourneyDot, JourneyTimeGroup  ← @/types/journey
 │   │   ├── dream.LabDreamIDE.tsx
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   └·· getSwap, toggleSwap  ← @/lib/runtime/swapManager
 │   │   ├── dream.NGNEngin.tsx
+│   │   │   ├·· bridgeBuses, createEventBus  ← @/lib/event-bus
+│   │   │   ├·· EngineAssembly, PlacedPiece, addConnection, addPiece, createAssembly, movePiece, removePiece, serializeAssembly, validateAssembly  ← @/lib/forge-ngn/assembly
+│   │   │   ├·· PIECE_CATEGORIES, PIECE_REGISTRY, PieceCategory, PieceManifest, Port, getPiece, getPiecesByCategory  ← @/lib/forge-ngn/piece-registry
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── dream.OpenDaydreamSideBButton.tsx
 │   │   ├── dream.shell.DaydreamShell.tsx
+│   │   │   ├·· useDaydreamState  ← @/lib/daydream/useDaydreamState
+│   │   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   │   ├·· useGsapFlip  ← @/lib/gsap/useGsapFlip
+│   │   │   ├·· hasJourneyDot, logJourneyDot  ← @/lib/journey/journeyDots
+│   │   │   ├·· JOURNEY_DOMAIN_COLORS  ← @/types/journey
+│   │   │   ├·· ⬡ BrandLogo  ← @/components/dream.BrandLogo
+│   │   │   └·· ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── dream.StandaloneEnginSurface.tsx
+│   │   │   ├·· ⬡ ForgeEngin  ← @/engins/dream.ForgeEngin
+│   │   │   ├·· ⬡ BrandingEngin  ← @/engins/engin.BrandingEngin
+│   │   │   ├·· ⬡ CodeEngin  ← @/engins/engin.CodeEngin
+│   │   │   ├·· ⬡ ContentEngin  ← @/engins/engin.ContentEngin
+│   │   │   ├·· ⬡ GameEngin  ← @/engins/engin.GameEngin
+│   │   │   ├·· ⬡ LabEngin  ← @/engins/engin.LabEngin
+│   │   │   └·· ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
 │   │   ├── dreamsurface.daydream.AnalyticsDaydream.tsx
+│   │   │   ├·· ActivityProfile  ← @/components/activity/dream.ActivityProfile
+│   │   │   └·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx
-│   ├── draggable
+│   │       ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │       ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │       ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── draggable/
 │   │   └── dream.DraggableModule.tsx
-│   ├── dreamengin  [DREAMenginOS]
-│   │   ├── engine  [DREAMenginOS]
+│   │       ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │       └·· ModuleManifest, RuntimeId  ← @/types/module-manifest
+│   ├── dreamengin/  [DREAMenginOS]
+│   │   ├── engine/  [DREAMenginOS]
 │   │   │   ├── math.ts
 │   │   │   └── types.ts
+│   │   │       └·· UnitComplex  ← ./math
 │   │   ├── dream.bar.DrEamsSearchBar.tsx
+│   │   │   └·· NavSuggestion, buildDrEamsRequest, buildDreamDMUrl, matchNavSuggestions, parseDrEamsReply, truncatePreview  ← @/lib/dreamengin/drEamsSearch
 │   │   ├── dream.CanvasDropZone.tsx
+│   │   │   └·· cacheAsset, enqueueSyncAction  ← @/lib/offline/offlineCache
 │   │   ├── dream.DREAMenginOS.tsx
+│   │   │   ├·· IdariEventDetail, onIdariEvent  ← @/lib/agents/agentBus
+│   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
+│   │   │   ├·· DREAMENGIN_OS_SUBSYSTEM_MANIFEST, DreamenginOSSubsystemNode  ← @/lib/dreamengin/osSubsystemManifest
+│   │   │   ├·· RuntimeRegion  ← @/lib/identity/canonical-names
+│   │   │   ├·· useSessionIntelligence  ← @/lib/intelligence/useSessionIntelligence
+│   │   │   ├·· DreamOSSharedArtifact, RuntimeContext, dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├·· PeerState, bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   ├·· DispatcherStats, EnginDispatcher  ← @/lib/runtime/EnginDispatcher
+│   │   │   ├·· (lazy)  ← @babylonjs/core
+│   │   │   └·· (lazy)  ← @babylonjs/havok
 │   │   ├── dream.DrEamsCanvas.tsx
+│   │   │   └·· DrEamsAction, DrEamsAnimator  ← @/lib/dreamengin/DrEamsAnimator
 │   │   ├── dream.HomeControls.tsx
+│   │   │   └·· ⬡ InfinityIcon  ← @/components/ui/dream.InfinityIcon
 │   │   ├── dream.menu.NexusMenu.tsx
+│   │   │   └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   │   ├── dream.menu.OutdreamMenu.tsx
+│   │   │   ├·· useDreamNav  ← @/components/dreamnav/dreamsurface.dreamnav
+│   │   │   ├·· Node  ← @/lib/dreamnav/delta
+│   │   │   └·· dispatchTauPath, findTauPath  ← @/lib/dreamnav/path
 │   │   ├── dream.overlay.ViewAllDreamsOverlay.tsx
+│   │   │   ├·· useDreamNav  ← @/components/dreamnav/dreamsurface.dreamnav
+│   │   │   ├·· Node  ← @/lib/dreamnav/delta
+│   │   │   └·· dispatchTauPath, findTauPath  ← @/lib/dreamnav/path
 │   │   ├── dream.panel.CrossEnginStatusPanel.tsx
+│   │   │   └·· PeerState, bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── dream.panel.DrEamsPanel.tsx
 │   │   ├── dream.scene.BabylonGameScene.tsx
+│   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
+│   │   │   ├·· DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
+│   │   │   ├·· WebGPUDirector, applyDirectorFrame, buildSceneObjects, defaultCameraSignals  ← @/lib/webgpu/director
+│   │   │   ├·· (lazy)  ← @babylonjs/core
+│   │   │   ├·· (lazy)  ← @/lib/god-tier/godTierEngine
+│   │   │   └·· (lazy)  ← @/lib/webgpu/director
 │   │   ├── dream.scene.DrEamsScene.tsx
+│   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
+│   │   │   ├·· BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
+│   │   │   └·· (lazy)  ← @babylonjs/core
 │   │   ├── dream.scene.PortfolioOptimizationScene.tsx
 │   │   ├── dream.shell.EnginShell.tsx
 │   │   ├── dream.widget.AppearanceWidget.tsx
+│   │   │   ├·· useTheme  ← @/components/providers/dream.ThemeProvider
+│   │   │   └·· THEME_PRESETS  ← @/lib/ui/theme-engine
 │   │   └── dreamsurface.dreamengin.tsx
-│   ├── dreamnav  [Menus & Navigation, Dream Navigation]
+│   │       ├·· DreamNavProvider  ← @/components/dreamnav/dreamsurface.dreamnav
+│   │       ├·· ⬡ DREAMenginOS  ← ./dream.DREAMenginOS
+│   │       ├·· ⬡ HomeControls  ← ./dream.HomeControls
+│   │       ├·· ⬡ NexusMenu  ← ./dream.menu.NexusMenu
+│   │       ├·· ⬡ OutdreamMenu  ← ./dream.menu.OutdreamMenu
+│   │       └·· ⬡ DrEamsPanel  ← ./dream.panel.DrEamsPanel
+│   ├── dreamnav/  [Menus & Navigation, Dream Navigation]
 │   │   ├── dream.DreamNavControls.tsx
 │   │   └── dreamsurface.dreamnav.tsx
-│   ├── dreamr  [DreamR]
+│   │       └·· Action, DEFAULT_NAV_STATE, Node, reduceNav  ← @/lib/dreamnav/delta
+│   ├── dreamr/  [DreamR]
 │   │   ├── dream.CloseFriendsSettings.tsx
 │   │   ├── dream.panel.DreamRChannelPanel.tsx
+│   │   │   ├·· FeedPost  ← @/lib/feed/useLiveFeed
+│   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   └── dream.panel.DreamRCreatorPanel.tsx
-│   ├── dreams
+│   │       └·· FeedPost  ← @/lib/feed/useLiveFeed
+│   ├── dreams/
 │   │   ├── dream.connectorlayer.tsx
 │   │   ├── dream.DraggableDream.tsx
+│   │   │   └·· DREAM_DRAG_MIME, DreamDragData, serializeDreamDragData  ← @/lib/dreams/drag
 │   │   ├── dream.featurelayer.tsx
 │   │   ├── dream.GlobalDragLayer.tsx
+│   │   │   └·· DreamDragData  ← @/lib/dreams/drag
 │   │   ├── dream.outputlayer.tsx
+│   │   │   └·· canRenderProjection  ← @/lib/dreams/profileProjection
 │   │   ├── dream.panel.RuntimeMemoryHUD.tsx
+│   │   │   ├·· formatArtifactKind, getArtifactAccent  ← @/lib/intelligence/continuityHelpers
+│   │   │   └·· DreamOSSnapshot, dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   │   ├── dream.PlatformErrorReporter.tsx
 │   │   ├── dream.shell.DreamShell.tsx
 │   │   ├── dream.shell.SharedDreamShell.tsx
+│   │   │   ├·· useSharedDream  ← @/hooks/useSharedDream
+│   │   │   ├·· DreamBroadcastPayload  ← @/lib/sharedDream
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── dream.SlideOverPanel.tsx
 │   │   ├── dream.widget.SuperDreamWidget.tsx
+│   │   │   ├·· DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │   ├·· useDreamWindowActions  ← @/lib/dream-window/useDreamWindowActions
+│   │   │   └·· CreateDreamWindowBody, DreamWindowRecord  ← @/types/dream-window
 │   │   ├── dream.window.JourneyDreamWindow.tsx
+│   │   │   └·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   │   ├── dreamsurface.dreamspace.tsx
+│   │   │   ├·· useDreamsRuntime  ← @/lib/dreams/useDreamsRuntime
+│   │   │   ├·· ForgeHistoryEntry, ForgeSuggestion, generateSuggestions, readForgeHistory  ← @/lib/forge/forgeIntelligence
+│   │   │   ├·· MomentumLevel, MomentumSnapshot, computeMomentum, getLevelColor  ← @/lib/forge/forgeMomentum
+│   │   │   ├·· ENGIN_REGISTRY, ForgeActivityPulse, readForgeActivity  ← @/lib/forge/forgeRegistry
+│   │   │   ├·· resolveResumeDest  ← @/lib/intelligence/continuityHelpers
+│   │   │   ├·· useSessionIntelligence  ← @/lib/intelligence/useSessionIntelligence
+│   │   │   ├·· ⬡ DreamSpace  ← @/app/dreamdmbar/_components/DreamSpaceRegion
+│   │   │   ├·· ⬡ RuntimeMemoryHUD  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   ├·· ⬡ SpatialProfileSpace  ← @/components/spatial/dream.ProfileSpace
+│   │   │   └·· ⬡ UniversalWidget  ← @/components/widgets/dream.widget.UniversalWidget
 │   │   ├── dreamsurface.shell.tsx
 │   │   └── dreamsurface.window.tsx
-│   ├── engines
-│   │   ├── brand  [BrandEngin]
-│   │   │   ├── panels  [BrandEngin]
+│   │       ├·· useTapHoldMove  ← @/hooks/useTapHoldMove
+│   │       └·· ModuleManifest, RuntimeId  ← @/lib/universalEditor
+│   ├── engines/
+│   │   ├── brand/  [BrandEngin]
+│   │   │   ├── panels/  [BrandEngin]
 │   │   │   │   ├── dream.panel.CampaignsPanel.tsx
 │   │   │   │   └── dream.panel.IdentityPanel.tsx
+│   │   │   │       └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── dream.BrandEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ BrandingEngin  ← @/engins/engin.BrandingEngin
 │   │   │   └── index.ts
-│   │   ├── code  [CodeEngin]
-│   │   │   ├── panels  [CodeEngin]
+│   │   ├── code/  [CodeEngin]
+│   │   │   ├── panels/  [CodeEngin]
 │   │   │   │   ├── dream.panel.AIPanel.tsx
 │   │   │   │   ├── dream.panel.NotebookPanel.tsx
 │   │   │   │   └── dream.panel.ProjectsPanel.tsx
+│   │   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── dream.CodeEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ CodeEngin  ← @/engins/engin.CodeEngin
 │   │   │   └── index.ts
-│   │   ├── create  [CreateEngin]
-│   │   │   ├── panels  [CreateEngin]
+│   │   ├── create/  [CreateEngin]
+│   │   │   ├── panels/  [CreateEngin]
 │   │   │   │   ├── dream.panel.CalendarPanel.tsx
 │   │   │   │   ├── dream.panel.EditorPanel.tsx
 │   │   │   │   └── dream.panel.QueuePanel.tsx
 │   │   │   ├── dream.CreateEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ ContentEngin  ← @/engins/engin.ContentEngin
 │   │   │   └── index.ts
-│   │   ├── games  [GameEngin]
-│   │   │   ├── panels  [GameEngin]
+│   │   ├── games/  [GameEngin]
+│   │   │   ├── panels/  [GameEngin]
 │   │   │   │   ├── dream.panel.BuilderPanel.tsx
+│   │   │   │   │   └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   │   ├── dream.panel.LibraryPanel.tsx
+│   │   │   │   │   ├·· GAME_CATALOG  ← @/lib/games/catalog
+│   │   │   │   │   └·· buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   │   └── dream.panel.ScoresPanel.tsx
+│   │   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── dream.GameEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ GameEngin  ← @/engins/engin.GameEngin
 │   │   │   └── index.ts
-│   │   ├── lab  [LabEngin]
-│   │   │   ├── panels  [LabEngin]
+│   │   ├── lab/  [LabEngin]
+│   │   │   ├── panels/  [LabEngin]
 │   │   │   │   ├── dream.panel.DataVizPanel.tsx
 │   │   │   │   ├── dream.panel.ExperimentsPanel.tsx
 │   │   │   │   └── dream.panel.QuantumPanel.tsx
 │   │   │   ├── dream.LabEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ LabEngin  ← @/engins/engin.LabEngin
 │   │   │   └── index.ts
-│   │   ├── music  [StarMaker (Music Engin)]
-│   │   │   ├── panels  [StarMaker (Music Engin)]
+│   │   ├── music/  [StarMaker (Music Engin)]
+│   │   │   ├── panels/  [StarMaker (Music Engin)]
 │   │   │   │   ├── dream.panel.ArrangePanel.tsx
 │   │   │   │   ├── dream.panel.MusicLibraryPanel.tsx
 │   │   │   │   └── dream.panel.StudioPanel.tsx
+│   │   │   │       └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── dream.MusicEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
 │   │   │   └── index.ts
-│   │   ├── portfolio  [PortfolioEngin]
-│   │   │   ├── panels  [PortfolioEngin]
+│   │   ├── portfolio/  [PortfolioEngin]
+│   │   │   ├── panels/  [PortfolioEngin]
 │   │   │   │   ├── dream.panel.AssetsPanel.tsx
 │   │   │   │   ├── dream.panel.OptimizePanel.tsx
 │   │   │   │   └── dream.panel.PortfolioQuantumPanel.tsx
 │   │   │   ├── dream.PortfolioEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   └·· ⬡ PortfolioEngin  ← @/engins/portfolio/dream.PortfolioEngin
 │   │   │   └── index.ts
-│   │   ├── shared
+│   │   ├── shared/
 │   │   │   ├── dream.bar.EnginNavBar.tsx
 │   │   │   ├── dream.EnginProvider.tsx
 │   │   │   ├── dream.EnginRuleSet.ts
+│   │   │   │   ├·· EngineId  ← ./dream.EnginProvider
+│   │   │   │   └·· NavItem  ← ./dream.bar.EnginNavBar
 │   │   │   ├── dream.makeEnginApp.tsx
+│   │   │   │   ├·· makeEnginApp  ← @/components/engines/shared
+│   │   │   │   ├·· EnginRuleSet  ← ./dream.EnginRuleSet
+│   │   │   │   ├·· ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
+│   │   │   │   ├·· ⬡ EnginNavBar  ← ./dream.bar.EnginNavBar
+│   │   │   │   └·· ⬡ EnginAppShell  ← ./dream.shell.EnginAppShell
 │   │   │   ├── dream.shell.EnginAppShell.tsx
+│   │   │   │   └·· InviteFlow, SharedDreamProvider  ← @/components/shared-dream
 │   │   │   └── index.ts
 │   │   └── index.ts
-│   ├── feed  [Feed & Social]
+│   ├── feed/  [Feed & Social]
 │   │   ├── dream.AlgorithmEngine.tsx
 │   │   ├── dream.CommentSection.tsx
+│   │   │   └·· formatRelativeTime  ← @/lib/utils
 │   │   ├── dream.FeedVideoCard.tsx
+│   │   │   └·· FeedPost  ← @/lib/feed/useLiveFeed
 │   │   ├── dream.FollowButton.tsx
 │   │   └── dream.FollowOnboarding.tsx
-│   ├── feeds  [Feed & Social]
+│   ├── feeds/  [Feed & Social]
 │   │   └── dream.widget.EmbedFeedWidget.tsx
-│   ├── forge  [ForgeEngin (Engine Builder)]
+│   │       ├·· EmbedFeedItem  ← @/lib/feeds/embedFeedLoader
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── forge/  [ForgeEngin (Engine Builder)]
 │   │   ├── dream.EngineBuilderCanvas.tsx
+│   │   │   ├·· AtomicComponent, COMPONENT_INVENTORY, ComponentCategory  ← @/lib/componentInventory
+│   │   │   └·· AtomicPiece, EngineAssembly, Wire, atomicPieceFromComponent, createAssembly, deserializeAssembly, serializeAssembly, validateAssembly  ← @/lib/forge/engineForge
 │   │   ├── dream.panel.AIBuilderPanel.tsx
+│   │   │   ├·· ForgeBuildRecord, ForgeLogEvent, canBuildToday, readForgeBuilds  ← @/lib/forge/forgeBuild
+│   │   │   ├·· ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
+│   │   │   └·· useForgeBuild  ← @/lib/forge/useForgeBuild
 │   │   └── dream.widget.ForgeMomentumWidget.tsx
-│   ├── gameengin  [GameEngin]
-│   │   ├── input  [GameEngin]
+│   │       └·· MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji  ← @/lib/forge/forgeMomentum
+│   ├── gameengin/  [GameEngin]
+│   │   ├── input/  [GameEngin]
 │   │   │   └── DualSenseManager.ts
 │   │   ├── dream.cartridge.CartridgeBrowser.tsx
+│   │   │   └·· CARTRIDGE_MANIFEST, CartridgeManifestEntry, getCartridgeCategories  ← @/lib/gameengin/cartridges/manifest
 │   │   ├── dream.cartridge.CartridgeErrorBoundary.tsx
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── dream.cartridge.CartridgeLauncher.tsx
+│   │   │   ├·· GameCartridge, GravityPreset  ← @/lib/gameengin/cartridge
+│   │   │   ├·· loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   │   ├·· CartridgeManifestEntry  ← @/lib/gameengin/cartridges/manifest
+│   │   │   ├·· CartridgeCrashEvent, CartridgeErrorBoundary, useGlobalCrashListener  ← ./dream.cartridge.CartridgeErrorBoundary
+│   │   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   │   └·· ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
 │   │   ├── dream.cartridge.FeaturedCartridges.tsx
+│   │   │   └·· CARTRIDGE_MANIFEST, CartridgeManifestEntry  ← @/lib/gameengin/cartridges/manifest
 │   │   ├── dream.CartridgeRegistryBootstrap.tsx
+│   │   │   └·· registerCartridges  ← @/lib/gameengin/registerCartridges
 │   │   ├── dream.CrashReportModal.tsx
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   └── README.md
-│   ├── games  [GameEngin]
-│   │   ├── _fx  [GameEngin]
+│   ├── games/  [GameEngin]
+│   │   ├── _fx/  [GameEngin]
 │   │   │   └── canvasFx.ts
-│   │   ├── madmaxi  [GameEngin]
+│   │   ├── madmaxi/  [GameEngin]
 │   │   │   ├── audio.ts
 │   │   │   ├── authoredZonePacks.ts
+│   │   │   │   ├·· ZONES, getMadmaxiEnemyCount  ← ./config
+│   │   │   │   └·· CoinDef, EnemyDef, HazardDef, LevelDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef  ← ./types
 │   │   │   ├── config.ts
+│   │   │   │   └·· BossMeta, MadmaxiEnemyKind, MadmaxiPowerUpKind, ZoneMeta  ← ./types
 │   │   │   ├── dream.MadmaxiGame.tsx
+│   │   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
+│   │   │   │   ├·· useGameAutoStart, useSubmitScore  ← @/lib/games/hooks
+│   │   │   │   ├·· useImmersiveGameLayout  ← @/lib/games/useImmersiveGameLayout
+│   │   │   │   ├·· BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultUXSignals  ← @/lib/god-tier/godTierEngine
+│   │   │   │   ├·· MadmaxiAudioController  ← ./audio
+│   │   │   │   ├·· BOSS_ENRAGE_MULTIPLIER, BOSS_ENRAGE_THRESHOLD, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, STAR_SEED_OFFSET, STAR_SEED_PRIME, TOTAL_LEVELS, ZONES, getBossForLevel, getZoneIdx, isBossLevel, seededRng  ← ./config
+│   │   │   │   ├·· getMadmaxiLevelDefinition  ← ./levels
+│   │   │   │   ├·· ScanLineTexture, createScanLineTexture, makeDetailMat  ← ./materials
+│   │   │   │   ├·· CoinDef, EnemyDef, HazardDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef  ← ./types
+│   │   │   │   ├·· VfxKit, VfxTier, createMadmaxiVfx  ← ./vfx
+│   │   │   │   └·· (lazy)  ← @babylonjs/core
 │   │   │   ├── index.ts
 │   │   │   ├── levels.ts
+│   │   │   │   ├·· getAuthoredStarterLevel, isMadmaxiAuthoredLevel  ← ./authoredZonePacks
+│   │   │   │   ├·· EXTRA_POWERUP_EVERY_N_LEVELS, LEVEL_SEED_KEY, ZONES, getBossForLevel, getEnemyKindForIndex, getMadmaxiEnemyCount, getPowerUpForIndex, getZoneIdx, isBossLevel, seededRng  ← ./config
+│   │   │   │   └·· EnemyDef, HazardDef, LevelDef, PlatDef, PowerUpDef  ← ./types
 │   │   │   ├── materials.ts
 │   │   │   ├── types.ts
 │   │   │   └── vfx.ts
 │   │   ├── css-modules.d.ts
 │   │   ├── dream.AvenueOfMirrors.tsx
+│   │   │   └·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.BabylonSideScroller.tsx
 │   │   ├── dream.DefuseRitual.tsx
+│   │   │   └·· useGameAutoStart, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.EchoArena.tsx
+│   │   │   ├·· DualSenseManager  ← @/components/gameengin/input/DualSenseManager
+│   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │   │   ├·· useRegisterMobileGameControls  ← @/lib/games/mobileControls
+│   │   │   ├·· createPerformanceBaselineSampler, publishGamePerformanceBaseline  ← @/lib/games/performance-baseline
+│   │   │   └·· (lazy)  ← @babylonjs/core/Engines
 │   │   ├── dream.EnginFracture.tsx
+│   │   │   └·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.GameController.module.css
 │   │   ├── dream.GameController.tsx
+│   │   │   ├·· ButtonInteractionManager, CONTROLLER_BUTTON_DEFS, ControllerButton  ← @/lib/games/gameControllerButtons
+│   │   │   ├·· LEFT_STICK_RADIUS_PX, StickVector, computeLeftStickVector  ← @/lib/games/gameControllerLeft
+│   │   │   ├·· AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS, RIGHT_RESET_TIMEOUT_MS, computeAimDelta, evaluateRightStickTap  ← @/lib/games/gameControllerRight
+│   │   │   └·· MobileControlVector, emitMobileButton, emitMobileJump, emitMobileLookDelta, emitMobileMove, emitMobileShoot, fireLegacyGameInput, getLegacyMoveAction  ← @/lib/games/mobileControls
 │   │   ├── dream.GamesHub.tsx
+│   │   │   ├·· getAvatarDataUrl, setPlayAsMe  ← @/lib/games/avatar
+│   │   │   ├·· GAME_CATALOG, GameCatalogEntry  ← @/lib/games/catalog
+│   │   │   ├·· GAME_LIBRARY_SELECTION_STORAGE_KEY, GAME_LIBRARY_SESSION_STORAGE_KEY, SavedGameSession, upsertSavedGameSession  ← @/lib/games/library-state
+│   │   │   ├·· buildGameLaunchHref, resolveGameLaunchId  ← @/lib/games/navigation
+│   │   │   ├·· useGsapEntrance  ← @/lib/gsap/useGsapEntrance
+│   │   │   ├·· useGsapScrollReveal  ← @/lib/gsap/useGsapScrollReveal
+│   │   │   ├·· useMotionTilt  ← @/lib/hooks/useMotionTilt
+│   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
+│   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
+│   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
+│   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
+│   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
+│   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
+│   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
+│   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
+│   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
+│   │   │   └·· (lazy)  ← @/components/games/dream.DefuseRitual
 │   │   ├── dream.Glassfall.tsx
+│   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │   │   └·· ParticlePool, ScreenShake, prefersReducedMotion  ← ./_fx/canvasFx
 │   │   ├── dream.hud.GameHUD.tsx
+│   │   │   ├·· MobileHudMode  ← @/lib/games/mobileControls
+│   │   │   ├·· ⬡ GameController  ← @/components/games/dream.GameController
+│   │   │   └·· ⬡ MobileGameHUD  ← @/components/games/dream.hud.MobileGameHUD
 │   │   ├── dream.hud.LegacyGameHUD.tsx
+│   │   │   └·· ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── dream.hud.MobileGameHUD.module.css
 │   │   ├── dream.hud.MobileGameHUD.tsx
+│   │   │   └·· MOBILE_HUD_BUTTON_RING, MobileControlVector, MobileHudButton, MobileHudMode, emitMobileButton, emitMobileLook, emitMobileMove, fireLegacyGameInput, getLegacyActionForMobileButton, getLegacyMoveAction, normalizeStickVector  ← @/lib/games/mobileControls
 │   │   ├── dream.Leaderboard.tsx
 │   │   ├── dream.LexiconSolitaire.tsx
+│   │   │   └·· useGameAutoStart, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.NeonDrift.tsx
+│   │   │   ├·· DualSenseManager  ← @/components/gameengin/input/DualSenseManager
+│   │   │   ├·· EliteGameEngine  ← @/lib/gameengin
+│   │   │   ├·· AIDirector  ← @/lib/gameengin/ai-director
+│   │   │   ├·· PostFXManager  ← @/lib/gameengin/post-fx
+│   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │   │   ├·· publishGamePerformanceBaseline  ← @/lib/games/performance-baseline
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── dream.NiteFlyerSolarHymn.tsx
+│   │   │   └·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.NullCathedral.tsx
+│   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │   │   └·· ParticlePool, ScreenShake, drawDitherFog, prefersReducedMotion  ← ./_fx/canvasFx
 │   │   ├── dream.RecordingControls.tsx
+│   │   │   └·· CaptureResult, GameCapture  ← @/lib/h265-encoder
 │   │   ├── dream.remote.GameRemote.tsx
 │   │   ├── dream.remote.LegacyGameRemote.tsx
+│   │   │   ├·· DEFAULT_GAME_ID, buildGameLaunchHref  ← @/lib/games/navigation
+│   │   │   ├·· useGamepad  ← @/lib/games/useGamepad
+│   │   │   └·· broadcastGameInput  ← @/lib/games/useRemoteChannel
 │   │   ├── dream.SerpentSiege.tsx
+│   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │   │   └·· ParticlePool, ScreenShake, prefersReducedMotion  ← ./_fx/canvasFx
 │   │   └── dream.VoidlineGP.tsx
-│   ├── home  [HOME — DreamDMBar]
+│   │       ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
+│   │       └·· ParticlePool, ScreenShake, motionTrail, prefersReducedMotion  ← ./_fx/canvasFx
+│   ├── home/  [HOME — DreamDMBar]
 │   │   ├── dream.ActiveModuleSurface.tsx
+│   │   │   ├·· loadActiveModules, removeActiveModule, saveActiveModule, saveActiveModules  ← @/lib/activeModulesStore
+│   │   │   ├·· loadArtifacts, saveArtifact  ← @/lib/artifactStore
+│   │   │   ├·· DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │   ├·· useDreamWindowActions  ← @/lib/dream-window/useDreamWindowActions
+│   │   │   ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   └·· ActiveModuleInstance, DreamArtifact, DreamArtifactDragPayload  ← @/types/dreamArtifact
 │   │   ├── dream.bar.GlobalDreamBar.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· runHomeAction  ← @/lib/home-buttons/contextual-home
+│   │   │   ├·· isPublicSurfacePath  ← @/lib/routing/surfaces
+│   │   │   └·· ⬡ DrEamsPanel  ← @/components/dreamengin/dream.panel.DrEamsPanel
 │   │   ├── dream.bar.PersistentDreamBar.tsx
+│   │   │   ├·· SkipCreditBalance  ← @/components/ads/dream.SkipCreditBalance
+│   │   │   ├·· useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │   ├·· useDreamLayout  ← @/hooks/useDreamLayout
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   │   ├·· useOS  ← @/lib/dreamenginOS/OSContext
+│   │   │   ├·· DreamRuntime, parseDreamDragData, surfaceForRuntime, transferDream  ← @/lib/dreams/drag
+│   │   │   ├·· isPublicSurfacePath  ← @/lib/routing/surfaces
+│   │   │   ├·· DreamDMContainer, ⬡ PersistentDreamBar  ← @/components/home/dream.bar.PersistentDreamBar
+│   │   │   ├·· ⬡ NeuralSeamCanvas  ← @/components/home/dream.NeuralSeamCanvas
+│   │   │   ├·· ⬡ RuntimeView  ← @/components/runtime/dream.RuntimeView
+│   │   │   └·· ⬡ DreamDMRail  ← @/dreamdmbar/dreamsurface.dreamdmbar
 │   │   ├── dream.DaydreamPulseStrip.tsx
 │   │   ├── dream.FlagshipEnginesStrip.tsx
+│   │   │   └·· MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji  ← @/lib/forge/forgeMomentum
 │   │   ├── dream.NeuralSeamCanvas.tsx
+│   │   │   ├·· DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   │   ├·· SeamParticle, createIdleParticle, createSeamParticle, evictDeadParticles, tickParticles  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   │   └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   └── dream.widget.DreamWidget.tsx
-│   ├── idari  [AI Systems (Boogieman / Dr.EAMS / Idari), Observability & Idari Console]
+│   │       └·· cn  ← @/lib/utils
+│   ├── idari/  [AI Systems (Boogieman / Dr.EAMS / Idari), Observability & Idari Console]
 │   │   └── dream.PlatformHealth.tsx
-│   ├── landing
+│   │       └·· GetPlatformMetricsResponse, PLATFORM_HEALTH_TARGETS  ← @/lib/activity/types
+│   ├── landing/
 │   │   ├── dream.LandingNav.tsx
 │   │   ├── dream.LandingProductStatement.tsx
 │   │   └── dream.scene.UniverseField.tsx
-│   ├── marketplace  [Marketplace & Shop]
+│   │       └·· n  ← @/lib/torridity/constants
+│   ├── marketplace/  [Marketplace & Shop]
 │   │   ├── dream.MarketplaceListingCard.tsx
 │   │   └── dream.MarketplaceRequestButton.tsx
-│   ├── menus  [Menus & Navigation]
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── menus/  [Menus & Navigation]
 │   │   ├── dream.menu.DreamRadialMenu.tsx
 │   │   ├── dream.menu.DualBottomMenu.tsx
 │   │   ├── dream.menu.RadialMenu.tsx
 │   │   ├── dream.menu.SystemRadialMenu.tsx
 │   │   └── dream.panel.MenuPanel.tsx
-│   ├── messaging  [Messages & DMs]
+│   ├── messaging/  [Messages & DMs]
 │   │   └── dream.BoardComposer.tsx
-│   ├── music  [StarMaker (Music Engin)]
+│   ├── music/  [StarMaker (Music Engin)]
 │   │   └── dream.SoundRecorder.tsx
-│   ├── onboarding
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── onboarding/
 │   │   └── dream.OnboardingTip.tsx
-│   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
+│   ├── optimizer/  [PortfolioEngin, WebGPU / Babylon Engine]
 │   │   └── dream.scene.BabylonOptimizeroScene.tsx
-│   ├── overlays
+│   │       ├·· createBabylonEngine  ← @/lib/babylon/createEngine
+│   │       ├·· BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
+│   │       ├·· BabylonUICandidate, BabylonUIGenerator, BabylonUIOptimizero  ← @/lib/optimizer/babylon-optimizero
+│   │       ├·· CHAOS_WEIGHTS, DEFAULT_WEIGHTS, OptimizeroResult, OptimizeroWeights, STABLE_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │       └·· (lazy)  ← @babylonjs/core
+│   ├── overlays/
 │   │   └── dream.RootStatusScreen.tsx
-│   ├── panels  [Settings]
+│   ├── panels/  [Settings]
 │   │   ├── dream.panel.AlgorithmPanel.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   └·· ⬡ AlgorithmEngine  ← @/components/feed/dream.AlgorithmEngine
 │   │   ├── dream.panel.AppearancePanel.tsx
+│   │   │   ├·· DeTheme, THEME_PRESETS, applyTheme  ← @/components/dream.ThemeApplicator
+│   │   │   ├·· useTheme  ← @/components/providers/dream.ThemeProvider
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   │   └·· DEFAULT_OVERRIDES, THEME_PRESETS  ← @/lib/ui/theme-engine
 │   │   ├── dream.panel.ConnectorsPanel.tsx
+│   │   │   └·· ⬡ ConnectorsClient  ← @/app/connectors/dream.ConnectorsClient
 │   │   ├── dream.panel.ControlsPanel.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   └·· ⬡ PositionIndicatorToggle  ← @/app/settings/controls/dream.PositionIndicatorToggle
 │   │   ├── dream.panel.DataPanel.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── dream.panel.FeedPanel.tsx
 │   │   ├── dream.panel.FeedSettingsPanel.tsx
+│   │   │   └·· ALL_TOPICS, DEFAULT_TOPIC_IDS, FEED_TOPICS_KEY, loadActiveTopicIds  ← @/lib/feed/feedTopics
 │   │   ├── dream.panel.HelpPanel.tsx
+│   │   │   └·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── dream.panel.MarketplacePanel.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   ├·· ⬡ MarketplaceListingCard  ← @/components/marketplace/dream.MarketplaceListingCard
+│   │   │   └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   │   ├── dream.panel.PrivacyPanel.tsx
+│   │   │   └·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── dream.panel.ProfilePanel.tsx
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   │   ├── dream.panel.SafetyPanel.tsx
+│   │   │   ├·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogie-policy
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   ├── dream.panel.SettingsPanel.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· SystemPanelId  ← @/lib/panels/panelTypes
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   └── dream.panel.WidgetsPanel.tsx
-│   ├── profile  [Profile & Edit Profile]
+│   │       ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│   ├── profile/  [Profile & Edit Profile]
 │   │   ├── dream.EditableAvatar.tsx
 │   │   ├── dream.ProfileCanvas.tsx
+│   │   │   ├·· PROFILE_SHARE_PLATFORMS  ← @/lib/social/platforms
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   │   └·· ⬡ PlatformBadge  ← @/components/ui/dream.PlatformBadge
 │   │   ├── dream.ProfileCustomizeButton.tsx
+│   │   │   └·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
 │   │   └── dream.widget.ProfileWidgetGrid.tsx
-│   ├── providers
+│   │       └·· ⬡ EditableAvatar  ← @/components/profile/dream.EditableAvatar
+│   ├── providers/
 │   │   ├── dream.AppSurfaceShell.tsx
+│   │   │   ├·· DreamSystemProvider  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· OSProvider  ← @/lib/dreamenginOS/OSContext
+│   │   │   ├·· isPublicSurfacePath  ← @/lib/routing/surfaces
+│   │   │   ├·· CustomizeModeProvider  ← @/lib/ui/CustomizeModeContext
+│   │   │   ├·· ⬡ CommandPalette  ← @/components/dream.CommandPalette
+│   │   │   ├·· ⬡ GlobalOverlays  ← @/components/dream.GlobalOverlays
+│   │   │   ├·· ⬡ ThemeApplicator  ← @/components/dream.ThemeApplicator
+│   │   │   ├·· ⬡ GodTierProvider  ← @/components/providers/dream.GodTierProvider
+│   │   │   ├·· ⬡ ThemeProvider  ← @/components/providers/dream.ThemeProvider
+│   │   │   └·· ⬡ DualRuntimeContainer  ← @/components/runtime/dream.DualRuntimeContainer
 │   │   ├── dream.GodTierProvider.tsx
+│   │   │   └·· useGodTier  ← @/lib/god-tier/useGodTier
 │   │   └── dream.ThemeProvider.tsx
-│   ├── runtime  [Runtime Core]
+│   │       └·· DEFAULT_OVERRIDES, UserOverrides, applyTheme, getPreset, loadStoredTheme, saveTheme  ← @/lib/ui/theme-engine
+│   ├── runtime/  [Runtime Core]
 │   │   ├── dream.DualRuntimeContainer.tsx
+│   │   │   └·· DEFAULT_DUAL_RUNTIME, DualRuntimeState, RuntimeWorld, isHomeActiveTop, makeDreamSpaceActiveSurface, makeHomeActiveTop, makeHomeDreamSpaceActive, setRuntimeWorld, swapDominantRuntime  ← @/lib/runtime/dualRuntime
 │   │   ├── dream.RuntimeView.tsx
+│   │   │   ├·· RuntimeRegion  ← @/lib/identity/canonical-names
+│   │   │   ├·· RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   │   ├·· getDreamComponent  ← @/lib/dreams/DreamRegistry
+│   │   │   ├·· SystemPanelId  ← @/lib/panels/panelTypes
+│   │   │   ├·· ⬡ HomeDreamSurface  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   │   │   ├·· ⬡ DreamsSpacePanel  ← @/components/dreams/dreamsurface.dreamspace
+│   │   │   ├·· ⬡ RuntimeShell  ← @/components/runtime/dream.shell.RuntimeShell
+│   │   │   ├·· ⬡ EnhancedSpatialShell  ← @/components/spatial/dream.shell.EnhancedSpatialShell
+│   │   │   ├·· ⬡ AlgorithmPanel  ← @/components/panels/dream.panel.AlgorithmPanel
+│   │   │   ├·· ⬡ AppearancePanel  ← @/components/panels/dream.panel.AppearancePanel
+│   │   │   ├·· ⬡ ConnectorsPanel  ← @/components/panels/dream.panel.ConnectorsPanel
+│   │   │   ├·· ⬡ ControlsPanel  ← @/components/panels/dream.panel.ControlsPanel
+│   │   │   ├·· ⬡ DataPanel  ← @/components/panels/dream.panel.DataPanel
+│   │   │   ├·· ⬡ FeedSettingsPanel  ← @/components/panels/dream.panel.FeedSettingsPanel
+│   │   │   ├·· ⬡ HelpPanel  ← @/components/panels/dream.panel.HelpPanel
+│   │   │   ├·· ⬡ MarketplacePanel  ← @/components/panels/dream.panel.MarketplacePanel
+│   │   │   ├·· ⬡ PrivacyPanel  ← @/components/panels/dream.panel.PrivacyPanel
+│   │   │   ├·· ⬡ ProfilePanel  ← @/components/panels/dream.panel.ProfilePanel
+│   │   │   ├·· ⬡ SafetyPanel  ← @/components/panels/dream.panel.SafetyPanel
+│   │   │   ├·· ⬡ SettingsPanel  ← @/components/panels/dream.panel.SettingsPanel
+│   │   │   └·· ⬡ WidgetsPanel  ← @/components/panels/dream.panel.WidgetsPanel
 │   │   └── dream.shell.RuntimeShell.tsx
-│   ├── shaders
+│   │       └·· isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   ├── shaders/
 │   │   ├── dream.LightningWing.tsx
 │   │   ├── dream.NeonGlow.tsx
 │   │   ├── dream.Refractor.tsx
 │   │   └── index.ts
-│   ├── shared-dream  [Shared Dream (Collab)]
+│   ├── shared-dream/  [Shared Dream (Collab)]
 │   │   ├── dream.InviteFlow.tsx
+│   │   │   └·· useSharedDream  ← ./dream.SharedDreamProvider
 │   │   ├── dream.SharedDreamCanvas.tsx
+│   │   │   └·· useSharedDream  ← ./dream.SharedDreamProvider
 │   │   ├── dream.SharedDreamProvider.tsx
+│   │   │   ├·· CollabEventHandler, CollabMode, CollabPayload, CollabSession, CollabSessionOptions, PeerInfo, PresenceUpdateData, SessionRole, broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession, generateInviteLink, parseInviteLink  ← @/lib/collaboration
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── dream.SharedDreamRuntime.tsx
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   ├·· useSharedDreamSession  ← @/lib/sharedDream/useSharedDreamSession
+│   │   │   ├·· InviteFlow  ← ./dream.InviteFlow
+│   │   │   ├·· SharedDreamCanvas  ← ./dream.SharedDreamCanvas
+│   │   │   └·· SharedDreamProvider  ← ./dream.SharedDreamProvider
 │   │   └── index.ts
-│   ├── spatial  [Profile & Edit Profile]
+│   ├── spatial/  [Profile & Edit Profile]
 │   │   ├── dream.PixiPhysicsLayer.tsx
 │   │   ├── dream.ProfileSpace.tsx
+│   │   │   ├·· useContent, useWidgets  ← @/hooks/use-spatial
+│   │   │   ├·· cn  ← @/lib/utils
+│   │   │   └·· ContentObject, Widget, WidgetType, WidgetVisibility  ← @/types/spatial
 │   │   └── dream.shell.EnhancedSpatialShell.tsx
-│   ├── three
+│   │       ├·· ProfileSpace  ← @/components/dream.ProfileSpace
+│   │       ├·· LAYER_HOME, LAYER_PROFILE  ← @/lib/navigation/NavStateBuffer
+│   │       ├·· SpatialNavigationEngine  ← @/lib/navigation/SpatialNavigationEngine
+│   │       ├·· WidgetBindingType, WidgetInstanceRecord, WidgetPresentation, WidgetVisibility  ← @/lib/navigation/WidgetInstanceMemory
+│   │       └·· ⬡ PixiPhysicsLayer  ← @/components/spatial/dream.PixiPhysicsLayer
+│   ├── three/
 │   │   ├── dream.scene.tsx
+│   │   │   ├·· LightningWing  ← @/components/shaders/dream.LightningWing
+│   │   │   ├·· NeonGlow  ← @/components/shaders/dream.NeonGlow
+│   │   │   └·· Refractor  ← @/components/shaders/dream.Refractor
 │   │   └── index.ts
-│   ├── ui
+│   ├── ui/
 │   │   ├── dream.AuthenticatedPageHeader.tsx
+│   │   │   └·· ⬡ BrandLogo  ← @/components/dream.BrandLogo
 │   │   ├── dream.DreamWord.tsx
+│   │   │   └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   │   ├── dream.IconList.tsx
+│   │   │   └·· ⬡ SheetIcon  ← ./dream.SheetIcon
 │   │   ├── dream.InfinityIcon.tsx
 │   │   ├── dream.PlatformBadge.tsx
+│   │   │   ├·· hasIcon  ← @/lib/icons/sheet
+│   │   │   ├·· PLATFORM_MAP  ← @/lib/social/platforms
+│   │   │   └·· ⬡ SheetIcon  ← @/components/ui/dream.SheetIcon
 │   │   ├── dream.SheetIcon.tsx
+│   │   │   └·· COLS, FRAME_W, ICONS, IconName, ROWS, SHEET_PATH, hasIcon  ← @/lib/icons/sheet
 │   │   └── dream.SocialShareSheet.tsx
-│   ├── universal-editor
+│   │       └·· PROFILE_SHARE_PLATFORMS, SocialPlatform  ← @/lib/social/platforms
+│   ├── universal-editor/
 │   │   ├── dream.UniversalEditor.tsx
+│   │   │   └·· DreamDrop, classifyDrop  ← @/lib/runtime/coercionTable
 │   │   ├── dream.UniversalEditorWrapper.tsx
+│   │   │   ├·· ModuleManifest, RuntimeId  ← @/lib/universal-editor/module-manifest
+│   │   │   └·· Position, useTapHoldMove  ← ./useTapHoldMove
 │   │   ├── index.ts
 │   │   └── useTapHoldMove.ts
-│   ├── universe
+│   │       └·· ModuleManifest, RuntimeId  ← @/lib/universal-editor/module-manifest
+│   ├── universe/
 │   │   ├── dream.node-cluster.tsx
+│   │   │   └·· cn  ← @/lib/utils
 │   │   ├── dream.shell.universe-shell.tsx
+│   │   │   └·· cn  ← @/lib/utils
 │   │   ├── dream.universe-card.tsx
+│   │   │   └·· cn  ← @/lib/utils
 │   │   └── index.ts
-│   ├── warp  [Warp System]
+│   ├── warp/  [Warp System]
 │   │   └── dream.WarpCanvas.tsx
-│   ├── webgpu  [WebGPU / Babylon Engine]
+│   │       ├·· useWarp  ← @/lib/warp/useWarp
+│   │       └·· WarpEffect  ← @/lib/warp/warpEngine
+│   ├── webgpu/  [WebGPU / Babylon Engine]
 │   │   ├── dream.WebGPUShowcase.tsx
+│   │   │   ├·· getRendererBackend, isWebGPUAvailable  ← @/lib/webgpu
+│   │   │   └·· WebGPURenderer  ← ./renderer
 │   │   ├── neuralPostProcess.ts
 │   │   ├── renderer.ts
+│   │   │   └·· BLUR_FRAG_WGSL, BRIGHT_FRAG_WGSL, COMPOSITE_FRAG_WGSL, COMPUTE_WGSL, FS_VERT_WGSL, LEMN_FRAG_WGSL, LEMN_VERT_WGSL, N_LEMN_VERTS, N_PARTICLES, N_PARTICLE_VERTS, PARTICLE_FRAG_WGSL, PARTICLE_VERT_WGSL  ← ./shaders
 │   │   └── shaders.ts
-│   ├── widgets  [Widgets System]
+│   ├── widgets/  [Widgets System]
 │   │   ├── dream.AddDreamCTA.tsx
 │   │   ├── dream.ConfigureSheet.tsx
 │   │   ├── dream.EditModeBanner.tsx
+│   │   │   └·· useEditMode  ← ./dream.EditModeProvider
 │   │   ├── dream.EditModeProvider.tsx
 │   │   ├── dream.widget.PlayMediaWidget.tsx
+│   │   │   └·· ⬡ WidgetCard  ← ./dream.widget.WidgetCard
 │   │   ├── dream.widget.UniversalWidget.tsx
+│   │   │   └·· ⬡ WidgetCard  ← ./dream.widget.WidgetCard
 │   │   ├── dream.widget.WidgetCard.tsx
+│   │   │   └·· ⬡ DreamShell  ← @/components/dreams/dreamsurface.shell
 │   │   ├── dream.widget.WidgetLibrary.tsx
 │   │   ├── dream.widget.WidgetPlaceholder.tsx
 │   │   ├── dream.widget.WidgetShell.tsx
 │   │   └── dream.widget.WidgetSurface.tsx
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.AIAssistant.tsx
+│   │   ├·· onIdariEvent  ← @/lib/agents/agentBus
+│   │   ├·· getDrEamsMode, onDrEamsModeChange  ← @/lib/agents/drEamsMode
+│   │   ├·· hasTaught, markTaught, onTeach  ← @/lib/agents/teachBus
+│   │   └·· executeUiAction, getUiCapabilities  ← @/lib/agents/uiActions
 │   ├── dream.AudioVisualizer3D.tsx
+│   │   ├·· Fingerprint, MatchResult, PeakMap, extractAudioChunks, matchFingerprint, recordReferenceFingerprint  ← ../lib/audioFingerprint
+│   │   └·· (lazy)  ← @babylonjs/core
 │   ├── dream.BoogieWarningBanner.tsx
+│   │   └·· PolicyResult  ← @/lib/policy/boogiePolicy
 │   ├── dream.BrandLogo.tsx
+│   │   └·· LOGO_PATHS, getRandomLogo  ← @/lib/branding/logos
 │   ├── dream.CommandPalette.tsx
 │   ├── dream.CreatePostModal.tsx
+│   │   ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── dream.DragToAnchorClose.tsx
 │   ├── dream.DrEamsModeToggle.tsx
+│   │   ├·· getDrEamsMode, onDrEamsModeChange, setDrEamsMode  ← @/lib/agents/drEamsMode
+│   │   └·· emitTeach  ← @/lib/agents/teachBus
 │   ├── dream.DrEamsVoiceAssistant.tsx
+│   │   └·· onIdariEvent  ← @/lib/agents/agentBus
 │   ├── dream.FeedCard.tsx
+│   │   ├·· UniverseCard, UniverseCardContent  ← @/components/universe
+│   │   ├·· cn, formatRelativeTime  ← @/lib/utils
+│   │   ├·· inferProviderFromUrl  ← @/lib/widgets/parseConfig
+│   │   └·· ⬡ CommentSection  ← @/components/feed/dream.CommentSection
 │   ├── dream.ForgeDreamCanvas.tsx
+│   │   ├·· ALL_CATEGORIES, AtomicComponent, ComponentCategory, getByCategory  ← ../lib/componentInventory
+│   │   ├·· createEventBus  ← ../lib/eventBus
+│   │   ├·· AssemblySandbox, AtomicPiece, Wire, atomicPieceFromComponent, createAssembly, runAssembly, serializeAssembly, validateAssembly  ← ../lib/forge/engineForge
+│   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   └·· (lazy)  ← ../lib/supabase/client
 │   ├── dream.GlobalOverlays.tsx
+│   │   ├·· (lazy)  ← @/components/customize/dream.GlobalCustomizeUI
+│   │   ├·· (lazy)  ← @/components/dreams/dream.GlobalDragLayer
+│   │   ├·· (lazy)  ← @/components/dreams/dream.PlatformErrorReporter
+│   │   └·· (lazy)  ← @/components/dream.KonamiDream
 │   ├── dream.HeroSprite.tsx
 │   ├── dream.HomeFeed.tsx
+│   │   ├·· AdUnit  ← @/components/ads/dream.AdUnit
+│   │   ├·· AdType  ← @/lib/activity/types
+│   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├·· FeedPost, useLiveFeed  ← @/lib/feed/useLiveFeed
+│   │   ├·· useYouTubeLiveFeed  ← @/lib/feed/useYouTubeLiveFeed
+│   │   ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   ├·· ⬡ FeedVideoCard  ← @/components/feed/dream.FeedVideoCard
+│   │   ├·· ⬡ EditableAvatar  ← @/components/profile/dream.EditableAvatar
+│   │   └·· ⬡ SocialShareSheet  ← @/components/ui/dream.SocialShareSheet
 │   ├── dream.IconSelector.tsx
 │   ├── dream.InnerDreamsButton.tsx
 │   ├── dream.KonamiDream.tsx
 │   ├── dream.LandingHero.tsx
+│   │   └·· CalibrationSample, calibrateDevice  ← @/lib/dreamr/swipeCalibration
 │   ├── dream.LedgerChart.tsx
+│   │   └·· LedgerData  ← @/lib/ledger-data
 │   ├── dream.MessagesClient.tsx
+│   │   ├·· useDreamDMDraft  ← @/lib/dreamdm/useDreamDMDraft
+│   │   ├·· DMMessage, useDreamDMMessages  ← @/lib/dreamdm/useDreamDMMessages
+│   │   ├·· useDreamSearch  ← @/lib/dreamdm/useDreamSearch
+│   │   ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   └·· formatRelativeTime, toErrorMessage  ← @/lib/utils
 │   ├── dream.NotificationCenter.tsx
+│   │   ├·· UiNotification, UiNotificationType  ← @/lib/notifications/notificationHelpers
+│   │   └·· useNotifications  ← @/lib/notifications/useNotifications
 │   ├── dream.OSShellActivator.tsx
+│   │   ├·· useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├·· DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   ├·· SystemPanelId  ← @/lib/panels/panelTypes
+│   │   ├·· isPublicSurfacePath  ← @/lib/routing/surfaces
+│   │   ├·· EnginDispatcher  ← @/lib/runtime/EnginDispatcher
+│   │   └·· dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   ├── dream.panel.ChildSafetyPanel.tsx
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── dream.panel.IDariPanel.tsx
+│   │   ├·· emitIdariEvent  ← @/lib/agents/agentBus
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── dream.PhysicsLab.tsx
 │   ├── dream.ProfileEditor.tsx
+│   │   ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   ├·· SOCIAL_PLATFORMS, detectPlatform  ← @/lib/social/platforms
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· useCustomizeMode  ← @/lib/ui/CustomizeModeContext
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── dream.ProfileShareButton.tsx
+│   │   └·· ⬡ SocialShareSheet  ← @/components/ui/dream.SocialShareSheet
 │   ├── dream.ProfileSpace.tsx
+│   │   ├·· WidgetInstanceRecord  ← @/lib/navigation/WidgetInstanceMemory
+│   │   └·· DragHandle, DragToAnchorClose  ← ./dream.DragToAnchorClose
 │   ├── dream.PullToRefresh.tsx
 │   ├── dream.ShrunkMode.tsx
+│   │   └·· PriorityWidget  ← @/lib/navigation/AnchorWidgetStorage
 │   ├── dream.SkeletonLoaders.tsx
 │   ├── dream.ThemeApplicator.tsx
 │   ├── dream.ThemeToggle.tsx
+│   │   ├·· emitTeach  ← @/lib/agents/teachBus
+│   │   └·· getInitialDarkMode, toggleDarkMode  ← @/lib/ui/theme
 │   ├── dream.ToastSystem.tsx
 │   ├── dream.universal_asset_registry.tsx
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   └·· toErrorMessage  ← @/lib/utils
 │   ├── dream.VoidThemeToggle.tsx
+│   │   └·· applyVoidTheme, isVoidThemeActive  ← @/components/dream.ThemeApplicator
 │   ├── dream.widget.AnchorWidget.tsx
+│   │   ├·· AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK  ← @/lib/navigation/AnchorStateBuffer
+│   │   ├·· AnchorWidgetStorage  ← @/lib/navigation/AnchorWidgetStorage
+│   │   ├·· LAYER_HOME, LAYER_PROFILE, NavStateBuffer, PROFILE_DEPTH  ← @/lib/navigation/NavStateBuffer
+│   │   ├·· ReturnStack  ← @/lib/navigation/ReturnStack
+│   │   └·· WidgetInstanceMemory  ← @/lib/navigation/WidgetInstanceMemory
 │   ├── dream.widget.ProfileWidgetBlock.tsx
 │   └── dream.widget.WidgetBubble.tsx
-├── config
+├── config/
 │   ├── advanced-game-targets.json
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── optimizer.yaml
 │   └── ui-ux-spec.yaml
-├── coresurfaces  [Profile & Edit Profile]
+├── coresurfaces/  [Profile & Edit Profile]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dreamsurface.EditProfileDream.tsx
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   └── dreamsurface.ViewProfile.tsx
-├── daydreams
-│   ├── brand
+│       ├·· createServerClient  ← @/lib/supabase/server
+│       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│       ├·· ⬡ ProfileShareButton  ← @/components/dream.ProfileShareButton
+│       └·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+├── daydreams/
+│   ├── brand/
 │   │   └── page.tsx
-│   ├── code
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ BrandDaydream  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ BrandingEngin  ← @/engins/engin.BrandingEngin
+│   ├── code/
 │   │   └── page.tsx
-│   ├── create
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ CodeEngin  ← @/engins/engin.CodeEngin
+│   ├── create/
 │   │   └── page.tsx
-│   ├── games
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ ContentEngin  ← @/engins/engin.ContentEngin
+│   ├── games/
 │   │   └── page.tsx
-│   ├── lab
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├·· buildGameLaunchHref  ← @/lib/games/navigation
+│   │       ├·· GAME_QUALITY_PILLARS  ← @/lib/games/quality-plan
+│   │       ├·· ⬡ GamesHub  ← @/components/games/dream.GamesHub
+│   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       ├·· ⬡ AutoOpenGameEngin  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│   │       └·· (lazy)  ← @/engins/engin.GameEngin
+│   ├── lab/
 │   │   └── page.tsx
-│   ├── music
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ LabEngin  ← @/engins/engin.LabEngin
+│   ├── music/
 │   │   └── page.tsx
+│   │       ├·· isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │       ├·· ⬡ SoundRecorder  ← @/components/music/dream.SoundRecorder
+│   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │       └·· ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
 │   └── Agents-MUST-READ-ARCHITECTURE.md
-├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+├── dr-eams/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── capabilities.yaml
 │   └── tools.ts
-├── dreamdmbar  [HOME — DreamDMBar]
+├── dreamdmbar/  [HOME — DreamDMBar]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx
 │   └── dreamsurface.dreamdmbar.tsx
-├── engins
-│   ├── autoopen  [GameEngin]
+│       ├·· DEFAULT_SPLIT_RATIO, DIVIDER_H, DOUBLE_TAP_WINDOW_MS, DRAG_TAP_THRESHOLD_PX, GOLD_LONG_PRESS_MS, MOOD_AURA_GRADIENTS, MOOD_EDGE_COLORS, MoodPeriod, ORB_TAP_SLOP, Particle, QUICK_REACTIONS, SPLIT_RATIO_MAX, SPLIT_RATIO_MIN, STREAK_STORAGE_KEY, SURFACE_ACCENT_COLORS, StreakData, StreakTier, SurfaceAccent, calculatePointerVelocity, computeTypingRhythm, decideBarRelease, filterSlashCommands, getMoodPeriod, getStreakTier, resolveGoldTapAction, resolveStreak, rhythmToHandleScale, shouldCollapseTopExpandedDrag, snapSplitRatioOnRelease  ← @/lib/dreamdm/barInteractions
+│       ├·· BarIntentMode, useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│       ├·· DreamBarContext, useDreamBarContext  ← @/lib/dreamdm/useDreamBarContext
+│       ├·· DMConversation, useDreamDMConversations  ← @/lib/dreamdm/useDreamDMConversations
+│       ├·· useDreamDMDraft  ← @/lib/dreamdm/useDreamDMDraft
+│       ├·· DMMessage, useDreamDMMessages  ← @/lib/dreamdm/useDreamDMMessages
+│       ├·· SearchResult, useDreamSearch  ← @/lib/dreamdm/useDreamSearch
+│       ├·· MediaType, useMessagingCore  ← @/lib/dreamdm/useMessagingCore
+│       ├·· useNotifications  ← @/lib/dreamdm/useNotifications
+│       ├·· useImmersiveGameLayout  ← @/lib/games/useImmersiveGameLayout
+│       ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│       ├·· getPreferredViewportHeight, isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│       ├·· formatRelativeTime  ← @/lib/utils
+│       ├·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
+│       ├·· ⬡ GlowingLight  ← @/dreamdmbar/dream.GlowingLight
+│       └·· (lazy)  ← @/lib/supabase/client
+├── engins/
+│   ├── autoopen/  [GameEngin]
 │   │   └── dream.AutoOpenGameEngin.tsx
-│   ├── CodeEngin  [CodeEngin]
-│   │   ├── core  [CodeEngin]
+│   │       ├·· createInstance  ← @/lib/runtime/instanceManager
+│   │       └·· useSharedEnginChannel  ← @/lib/runtime/useSharedEnginChannel
+│   ├── CodeEngin/  [CodeEngin]
+│   │   ├── core/  [CodeEngin]
 │   │   │   └── parser.ts
-│   │   ├── modules  [CodeEngin]
-│   │   │   └── ai-co-pilot  [CodeEngin]
+│   │   ├── modules/  [CodeEngin]
+│   │   │   └── ai-co-pilot/  [CodeEngin]
 │   │   │       ├── dream.panel.AgentPanel.tsx
+│   │   │       │   └·· useAgentSession  ← ./useAgentSession
 │   │   │       ├── index.ts
 │   │   │       └── useAgentSession.ts
-│   │   └── orchestrator  [CodeEngin]
+│   │   └── orchestrator/  [CodeEngin]
 │   │       └── dream.index.tsx
-│   ├── portfolio  [PortfolioEngin]
+│   │           ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │           ├·· AgentPanel  ← ../modules/ai-co-pilot/dream.panel.AgentPanel
+│   │           └·· ⬡ CodeEnginOrchestrator  ← @/engins/CodeEngin/orchestrator
+│   ├── portfolio/  [PortfolioEngin]
 │   │   └── dream.PortfolioEngin.tsx
+│   │       ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │       ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │       ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │       └·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.ForgeEngin.tsx
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· ForgeHistoryEntry, ForgeSuggestion, ForgeTransferEntry, WorkflowRunState, clearWorkflowRun, deleteCustomWorkflow, generateSuggestions, getActiveWorkflowRun, getFailureRecovery, parseGoalToWorkflow, readCustomWorkflows, readForgeHistory, readForgeTransfers, saveCustomWorkflow, startWorkflowRun, updateWorkflowStep  ← @/lib/forge/forgeIntelligence
+│   │   ├·· MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji  ← @/lib/forge/forgeMomentum
+│   │   ├·· NexusSnapshot, computeNexus  ← @/lib/forge/forgeNexus
+│   │   ├·· CREATIVE_ENGINES, ENGIN_REGISTRY, EnginEntry, FORGE_WORKFLOWS, ForgeActivityPulse, ForgeWorkflow, formatRelativeTime, readForgeActivity  ← @/lib/forge/forgeRegistry
+│   │   ├·· RitualSnapshot, computeRituals  ← @/lib/forge/forgeRituals
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· DualRuntimeChannel, bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├·· ⬡ BrandLogo  ← @/components/dream.BrandLogo
+│   │   └·· ⬡ AIBuilderPanel  ← @/components/forge/dream.panel.AIBuilderPanel
 │   ├── dream.panel.AnalyticsEngin.tsx
+│   │   ├·· ActivityProfile  ← @/components/activity/dream.ActivityProfile
+│   │   ├·· GetPlatformMetricsResponse, PLATFORM_HEALTH_TARGETS, SkipCredit  ← @/lib/activity/types
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   └·· ⬡ CrossEnginStatusPanel  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
 │   ├── dream.QuantumCircuitCanvas.tsx
 │   ├── engin.BrandingEngin.tsx
+│   │   ├·· useSharedDream  ← @/hooks/useSharedDream
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· useDaydreamState  ← @/lib/daydream/useDaydreamState
+│   │   ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· useBrandEnginRuntime  ← @/lib/engins/brand/useBrandEnginRuntime
+│   │   ├·· useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
+│   │   ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· useBrandingEnginBridge  ← @/lib/runtime/useEnginBridge
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   └·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   ├── engin.CodeEngin.tsx
+│   │   ├·· useSharedDream  ← @/hooks/useSharedDream
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· useDaydreamState  ← @/lib/daydream/useDaydreamState
+│   │   ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· useCodeEnginRuntime  ← @/lib/engins/code/useCodeEnginRuntime
+│   │   ├·· useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
+│   │   ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· useCodeEnginBridge  ← @/lib/runtime/useEnginBridge
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· parseCode  ← ./CodeEngin/core/parser
+│   │   ├·· AgentPanel  ← ./CodeEngin/modules/ai-co-pilot
+│   │   ├·· ⬡ DiffViewer  ← @/components/daydream/dream.DiffViewer
+│   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├·· ⬡ CrossEnginStatusPanel  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
+│   │   └·· (lazy)  ← @supabase/supabase-js
 │   ├── engin.ContentEngin.tsx
+│   │   ├·· ActivityPostData, ActivityPostForm  ← @/components/activity/dream.ActivityPostForm
+│   │   ├·· CompGraph, NodeType, addNode, connectNodes, createGraph, createNode, topologicalSort  ← @/lib/composite/compositor
+│   │   ├·· FxCategory, FxSimulation, allCategories, createSimulation, presetsByCategory  ← @/lib/composite/fxSimulation
+│   │   ├·· CameraTrack, addSample, addTrackPoint, createTrack, estimateCameraMotion, exportTrackCSV, trackSummary  ← @/lib/composite/matchmover
+│   │   ├·· MocapClip, clipSummary, exportBVH, parseBVH, retargetClip  ← @/lib/composite/motionCapture
+│   │   ├·· RotoProject, addLayer, createProject, exportFrameSVG, interpolateShape, keyframeList, setKeyframe  ← @/lib/composite/rotoscope
+│   │   ├·· publishToDreamR, resolvePublishIntent  ← @/lib/content/publishIntent
+│   │   ├·· scoreContent  ← @/lib/content/seoScorer
+│   │   ├·· annotateSearchMatches, applyEditsToSegments, computeCuts, exportSRT, parseSRT, parseVTT, searchTranscript  ← @/lib/content/transcriptEditor
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· useContentEnginRuntime  ← @/lib/engins/content/useContentEnginRuntime
+│   │   ├·· useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
+│   │   ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· useContentEnginBridge  ← @/lib/runtime/useEnginBridge
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├·· (lazy)  ← @/lib/content/transcriptEditor
+│   │   └·· (lazy)  ← @/lib/content/seoScorer
 │   ├── engin.GameEngin.tsx
+│   │   ├·· GAMES  ← @/components/games/dream.GamesHub
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│   │   ├·· useGameEnginRuntime  ← @/lib/engins/game/useGameEnginRuntime
+│   │   ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· GameCartridge  ← @/lib/gameengin/cartridge
+│   │   ├·· loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   ├·· consumePlayAsMe, getAvatarDataUrl  ← @/lib/games/avatar
+│   │   ├·· GAME_LIBRARY_SESSION_STORAGE_KEY, MAX_SAVED_GAME_SESSIONS, SavedGameSession  ← @/lib/games/library-state
+│   │   ├·· buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId  ← @/lib/games/navigation
+│   │   ├·· GAME_CONTROL_PROFILES, GAME_QUALITY_PILLARS  ← @/lib/games/quality-plan
+│   │   ├·· useGameInputKeyboardBridge  ← @/lib/games/useGameInputKeyboardBridge
+│   │   ├·· useGamepad  ← @/lib/games/useGamepad
+│   │   ├·· useRemoteChannel  ← @/lib/games/useRemoteChannel
+│   │   ├·· buildLedgerMediaUrl  ← @/lib/media/ledger
+│   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· createInstance  ← @/lib/runtime/instanceManager
+│   │   ├·· useGameEnginBridge  ← @/lib/runtime/useEnginBridge
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· useSharedEnginChannel  ← @/lib/runtime/useSharedEnginChannel
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├·· ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
+│   │   ├·· ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├·· ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
+│   │   └·· (lazy)  ← @babylonjs/core
 │   ├── engin.LabEngin.tsx
+│   │   ├·· ForgeDreamCanvas  ← @/components/dream.ForgeDreamCanvas
+│   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│   │   ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│   │   ├·· ArtifactSlot  ← @/lib/enginpipe
+│   │   ├·· useLabEnginRuntime  ← @/lib/engins/lab/useLabEnginRuntime
+│   │   ├·· useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
+│   │   ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├·· useLabEnginBridge  ← @/lib/runtime/useEnginBridge
+│   │   ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   └·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   └── engin.StarMakerEngin.tsx
-├── hooks
+│       ├·· AudioVisualizer3D  ← @/components/dream.AudioVisualizer3D
+│       ├·· useSharedDream  ← @/hooks/useSharedDream
+│       ├·· PeakMap, buildPeakMap, createFingerprintIsolator  ← @/lib/audioFingerprint
+│       ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
+│       ├·· useDaydreamState  ← @/lib/daydream/useDaydreamState
+│       ├·· EngineBase, UpgradedEngine, createEventBus, upgradeEngine  ← @/lib/dreamenginOS
+│       ├·· ArtifactSlot  ← @/lib/enginpipe
+│       ├·· useStarMakerEnginRuntime  ← @/lib/engins/music/useStarMakerEnginRuntime
+│       ├·· useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
+│       ├·· recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│       ├·· useForgeActivity  ← @/lib/forge/useForgeActivity
+│       ├·· buildLedgerMediaUrl, uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│       ├·· BEAT_PRESETS, BeatPreset, GENRE_LIST, INSTRUMENT_PRESETS, InstrumentPreset, PROJECT_TEMPLATES, ProjectTemplate  ← @/lib/music/presets
+│       ├·· MelodySuggestion, PlaybackQualityMode, buildReleaseStrategy, createMelodySuggestions, summarizePlaybackProfile  ← @/lib/music/starmaker
+│       ├·· ARRANGEMENT_BARS, ARRANGEMENT_TRACKS, ArrangementClip, ArrangementSource, ArrangementTrackState  ← @/lib/music/starmakerArrangement
+│       ├·· CompingState, PIANO_ROLL_DEFAULTS, PianoRollState, SessionViewState, createInitialCompingState, createInitialSessionView  ← @/lib/music/starmakerDaw
+│       ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│       ├·· useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
+│       ├·· createClient  ← @/lib/supabase/client
+│       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│       ├·· SUPABASE_URL  ← @/lib/supabase/config
+│       ├·· toErrorMessage  ← @/lib/utils
+│       ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│       ├·· ⬡ CompingPanel  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│       ├·· ⬡ PianoRollPanel  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
+│       └·· ⬡ SessionViewPanel  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
+├── hooks/
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── use-spatial.ts
+│   │   ├·· createClient  ← @/lib/supabase/client
+│   │   └·· Album, ContentObject, CreateAlbumInput, CreateContentInput, CreateWidgetInput, NavigationState, ShareIntent, SpaceType, UpdateContentInput, UpdateWidgetInput, Widget  ← @/types/spatial
 │   ├── useAccount.ts
+│   │   └·· createClient  ← @/lib/supabase/client
 │   ├── useConnectorInstallFlow.ts
+│   │   ├·· getConnectorDef  ← @/lib/connectors/connectorRegistry
+│   │   ├·· SlotGrid, consumeDeferredPrompt, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater  ← @/lib/connectors/installFlow
+│   │   └·· WidgetTypeDef, getWidgetTypeDef  ← @/lib/widgets/widgetRegistry
 │   ├── useDreamLayout.ts
 │   ├── useHideOnScroll.ts
 │   ├── useSharedDream.ts
+│   │   ├·· generateInviteLink  ← @/lib/collaboration
+│   │   ├·· DreamBroadcastPayload, DreamEventHandler, DreamPresenceUpdate, DreamSessionMode, DreamSessionRole, SharedDreamSession, broadcastControlSignal, broadcastCursorPosition, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createSharedDreamSession, leaveSharedDreamSession  ← @/lib/sharedDream
+│   │   └·· createClient  ← @/lib/supabase/client
 │   ├── useTapHoldMove.ts
+│   │   └·· ModuleManifest, RuntimeId, canTransfer  ← ../lib/universalEditor
 │   ├── useTick.ts
 │   └── useViewCounter.ts
-├── lib
-│   ├── activity
+├── lib/
+│   ├── activity/
 │   │   ├── aqs.ts
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· UserMetrics  ← ./types
 │   │   ├── boogieActivityPolicy.ts
+│   │   │   └·· PolicyCategory, PolicyCategoryValue  ← @/lib/policy/boogiePolicy
 │   │   ├── revenueSplit.ts
 │   │   ├── scoring.ts
+│   │   │   └·· ActivityTier, INNOVATION_BONUS, TIER_MULTIPLIERS, VERIFICATION_STRENGTH, VerificationMethod  ← ./types
 │   │   ├── skipCredits.ts
+│   │   │   └·· AdType, SKIP_CREDIT_REWARDS  ← ./types
 │   │   ├── types.ts
 │   │   └── visibility-score.ts
-│   ├── admin
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       └·· ActivityTier  ← ./types
+│   ├── admin/
 │   │   ├── lockout.ts
+│   │   │   └·· createServiceClient  ← @/lib/supabase/server
 │   │   └── upgrade-readiness.ts
-│   ├── agentOS
+│   │       ├·· PatchPlan, createPatchPlan  ← @/lib/agents/idari
+│   │       ├·· BuildCycleState, DaydreamEnginManifest, FEATURE_MANIFESTS, FeatureEntry, calculateProgress, computeAllBuildCycleStates  ← @/lib/feature-build
+│   │       └·· SetupCheckSummary, getSetupStatus  ← @/lib/setup/checks
+│   ├── agentOS/
 │   │   └── hostTools.ts
-│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │       └·· (lazy)  ← fs/promises
+│   ├── agents/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── agentBus.ts
+│   │   │   ├·· (lazy)  ← @/lib/ai/schemas
+│   │   │   └·· (lazy)  ← @/lib/ai/triad
 │   │   ├── boogieManAI.ts
+│   │   │   └·· BoogieManAgent  ← @/types/ai
 │   │   ├── dreamengin.ts
 │   │   ├── drEamsMode.ts
 │   │   ├── idari.ts
+│   │   │   └·· IDARiAgent  ← @/types/ai
 │   │   ├── idariLoop.ts
+│   │   │   ├·· PatchPlan, PatchRisk, createPatchPlan  ← @/lib/agents/idari
+│   │   │   ├·· TelemetrySnapshot, getSnapshot  ← @/lib/observability/collector
+│   │   │   ├·· CorrelationResult, correlate  ← @/lib/observability/correlator
+│   │   │   ├·· ImmediateRemediationAction, buildImmediateRemediationAction  ← @/lib/observability/immediateAction
+│   │   │   ├·· RootCauseAnalysis, inferRootCause  ← @/lib/observability/rootCauseAnalyzer
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── teachBus.ts
 │   │   └── uiActions.ts
-│   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── handlers  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │       └·· setDarkMode  ← @/lib/ui/theme
+│   ├── ai/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   ├── handlers/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── dreams.ts
+│   │   │   │   ├·· DreamAddFromPresetPayload, DreamConfigPatchPayload, DreamOpenPayload, DreamPreviewPayload, DreamRemovePayload, DreamReorderPayload  ← @/types/ai-system
+│   │   │   │   └·· ToolHandler  ← ../tool-router
 │   │   │   ├── index.ts
+│   │   │   │   ├·· registerHandler  ← ../tool-router
+│   │   │   │   ├·· handleHomeAnchorSetState, handleHomeMenuOpen, handleNavDelta  ← ./navigation
+│   │   │   │   ├·· handleDreamAddFromPreset, handleDreamConfigPatch, handleDreamOpen, handleDreamPreview, handleDreamRemove, handleDreamReorder  ← ./dreams
+│   │   │   │   └·· handleDraftSave, handleFollowUser, handlePostCreate, handlePostLike, handleSearch  ← ./social
 │   │   │   ├── navigation.ts
+│   │   │   │   ├·· HomeAnchorSetStatePayload, NavDeltaPayload  ← @/types/ai-system
+│   │   │   │   └·· ToolHandler  ← ../tool-router
 │   │   │   └── social.ts
+│   │   │       ├·· DraftSavePayload, FollowUserPayload, PostCreatePayload, PostLikePayload, SearchPayload  ← @/types/ai-system
+│   │   │       └·· ToolHandler  ← ../tool-router
 │   │   ├── audit.ts
+│   │   │   ├·· BOOGIE_POLICY_VERSION  ← @/lib/ai/boogie-policy
+│   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── boogie-policy.ts
 │   │   ├── boogie-verifier.ts
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   └·· ActorContext, AgentType, BoogieDecision, BoogieIntentDecision, BoogieOutput, BoogieSignals, Intent, ReasonCode  ← @/types/ai-system
 │   │   ├── boogieman.ts
+│   │   │   ├·· BOOGIE_POLICY_VERSION, DEFAULT_DURATIONS_SECONDS, EnforcementScope, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, StrikeSeverityLevel, THRESHOLDS, USER_REASON_MESSAGES  ← ./boogie-policy
+│   │   │   └·· BoogieEnforceOutput, BoogieOutput, BoogieResult, EnforcementAction, EnforcementScope, Intent  ← ./schemas
 │   │   ├── capability-gate.ts
+│   │   │   ├·· isOwnerEmail  ← @/lib/ai/triad
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └·· ActorContext, IntentType  ← @/types/ai-system
 │   │   ├── CIC.ts
 │   │   ├── confirm-token.ts
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   └·· UIContext  ← @/types/ai-system
 │   │   ├── confirm.ts
 │   │   ├── groq.ts
 │   │   ├── idempotency.ts
+│   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── rate-limiter.ts
+│   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── rateLimit.ts
+│   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── schemas.ts
 │   │   ├── tfBackend.ts
+│   │   │   ├·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
+│   │   │   └·· (lazy)  ← @tensorflow/tfjs
 │   │   ├── tool-router.ts
+│   │   │   ├·· SupabaseClient  ← @/engine/io
+│   │   │   ├·· ActorContext, Intent, IntentType, ToolResult, UIContext  ← @/types/ai-system
+│   │   │   ├·· writeAuditLog  ← ./audit
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   └── triad.ts
-│   ├── api
+│   │       ├·· GroqMessage, groqChat  ← @/lib/ai/groq
+│   │       └·· Intent, IntentSchema, IntentType  ← @/lib/ai/schemas
+│   ├── api/
 │   │   └── route.ts
-│   ├── assets
+│   │       ├·· createServerClient  ← @/lib/supabase/server
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── assets/
 │   │   ├── assetOptimizer.ts
+│   │   │   └·· storeOriginal  ← ./indexedDBStore
 │   │   └── indexedDBStore.ts
-│   ├── audio-fingerprint
+│   ├── audio-fingerprint/
 │   │   ├── fingerprint.ts
+│   │   │   └·· FrequencyPeak, PeakMap  ← ./peak-map
 │   │   ├── index.ts
 │   │   ├── peak-map.ts
 │   │   └── stem-extractor.ts
-│   ├── auth  [Auth]
+│   │       └·· TimeSlice  ← ./fingerprint
+│   ├── auth/  [Auth]
 │   │   └── nextRedirect.ts
-│   ├── babylon  [WebGPU / Babylon Engine]
+│   ├── babylon/  [WebGPU / Babylon Engine]
 │   │   ├── createEngine.ts
+│   │   │   └·· (lazy)  ← @babylonjs/core
 │   │   └── dreamengine-hybrid.ts
-│   ├── bot-detection
+│   ├── bot-detection/
 │   │   ├── detector.ts
+│   │   │   └·· Path, coarseGrainInvariance, crossSwipeSimilarity, deviationEntropy, perpendicularDeviation, velocityVarianceJerk  ← ./swipe-physics
 │   │   ├── index.ts
+│   │   │   └·· BotSessionResult, SwipeRecord, isBotSession  ← @/lib/botDetection
 │   │   ├── swipe-physics.ts
 │   │   └── view-tally.ts
-│   ├── branding
+│   ├── branding/
 │   │   └── logos.ts
-│   ├── child-safety  [Child Safety]
+│   ├── child-safety/  [Child Safety]
 │   │   ├── childSafetyDetector.ts
+│   │   │   ├·· scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   │   └·· (lazy)  ← ./imageClassifier
 │   │   ├── imageClassifier.ts
+│   │   │   ├·· groqChat  ← @/lib/ai/groq
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── messageContextChecker.ts
+│   │   │   └·· evaluateMessageContext  ← @/lib/child-safety/messageContextChecker
 │   │   ├── ncmecReporter.ts
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   ├·· ChildSafetyResult  ← ./childSafetyDetector
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   └── scanMediaUrls.ts
-│   ├── code  [CodeEngin]
+│   │       ├·· scanMediaUrlsForChildSafety  ← @/lib/child-safety/scanMediaUrls
+│   │       ├·· ChildSafetyResult, scanContent  ← ./childSafetyDetector
+│   │       └·· classifyImage  ← ./imageClassifier
+│   ├── code/  [CodeEngin]
 │   │   └── drEamsCodeAssist.ts
-│   ├── collaboration
+│   ├── collaboration/
 │   │   └── index.ts
-│   ├── composite
+│   │       ├·· SupabaseClient  ← @/engine/io
+│   │       └·· (lazy)  ← @supabase/supabase-js
+│   ├── composite/
 │   │   ├── compositor.ts
 │   │   ├── fxSimulation.ts
 │   │   ├── matchmover.ts
 │   │   ├── motionCapture.ts
 │   │   └── rotoscope.ts
-│   ├── connectors  [Connectors]
-│   │   ├── providers  [Connectors]
+│   ├── connectors/  [Connectors]
+│   │   ├── providers/  [Connectors]
 │   │   │   ├── bluesky.ts
+│   │   │   │   ├·· normaliseBluesky  ← @/lib/connectors/normalise
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── devto.ts
+│   │   │   │   ├·· normaliseDevto  ← @/lib/connectors/normalise
+│   │   │   │   ├·· devtoUserRssUrl, parseRssFeed  ← @/lib/social/rss-feed
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── facebook.ts
+│   │   │   │   ├·· normaliseFacebook  ← @/lib/connectors/normalise
+│   │   │   │   ├·· facebookPageRssUrl, parseRssFeed  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── github.ts
+│   │   │   │   ├·· normaliseGitHub  ← @/lib/connectors/normalise
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── hackernews.ts
+│   │   │   │   ├·· normaliseHackerNews  ← @/lib/connectors/normalise
+│   │   │   │   ├·· hackerNewsRssUrl, hackerNewsUserRssUrl, parseRssFeed  ← @/lib/social/rss-feed
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── instagram.ts
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── mastodon.ts
+│   │   │   │   ├·· normaliseMastodon  ← @/lib/connectors/normalise
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── medium.ts
+│   │   │   │   ├·· normaliseMedium  ← @/lib/connectors/normalise
+│   │   │   │   ├·· mediumUserRssUrl, parseRssFeed  ← @/lib/social/rss-feed
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── nostr.ts
+│   │   │   │   ├·· normaliseNostr  ← @/lib/connectors/normalise
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── pinterest.ts
+│   │   │   │   ├·· normalisePinterest  ← @/lib/connectors/normalise
+│   │   │   │   ├·· parseRssFeed, pinterestRssUrl  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── podcast.ts
+│   │   │   │   ├·· normalisePodcast  ← @/lib/connectors/normalise
+│   │   │   │   ├·· parseRssFeed  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── reddit.ts
+│   │   │   │   ├·· normaliseReddit  ← @/lib/connectors/normalise
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── shellhub.ts
 │   │   │   ├── substack.ts
+│   │   │   │   ├·· normaliseSubstack  ← @/lib/connectors/normalise
+│   │   │   │   ├·· parseRssFeed, substackRssUrl  ← @/lib/social/rss-feed
+│   │   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   │   ├── tiktok.ts
+│   │   │   │   ├·· normaliseTikTok  ← @/lib/connectors/normalise
+│   │   │   │   ├·· parseRssFeed, tiktokProfileRssUrl  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── tumblr.ts
+│   │   │   │   ├·· normaliseTumblr  ← @/lib/connectors/normalise
+│   │   │   │   ├·· parseRssFeed, tumblrRssUrl  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   ├── twitter.ts
+│   │   │   │   ├·· normaliseTwitter  ← @/lib/connectors/normalise
+│   │   │   │   ├·· DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl  ← @/lib/social/rss-feed
+│   │   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   │   └── youtube.ts
+│   │   │       ├·· YouTubePlaylistItem, YouTubeSearchItem, deduplicateFeedItems, normaliseYouTubePlaylistItem, normaliseYouTubeSearchResult  ← @/lib/connectors/normalise
+│   │   │       └·· UnifiedFeedItem  ← @/types/connector
 │   │   ├── connectorRegistry.ts
 │   │   ├── deliveryStrategy.ts
 │   │   ├── installFlow.ts
+│   │   │   └·· getWidgetTypesForConnector  ← @/lib/widgets/widgetRegistry
 │   │   ├── normalise.ts
+│   │   │   └·· FeedItemMedia, UnifiedFeedItem  ← @/types/connector
 │   │   ├── reconcile.ts
+│   │   │   ├·· SupabaseClient  ← @/engine/io
+│   │   │   ├·· Database  ← @/types/supabase
+│   │   │   ├·· deduplicateFeedItems  ← ./normalise
+│   │   │   ├·· dispatchSync  ← ./syncDispatch
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── syncDispatch.ts
+│   │   │   ├·· blueskySync  ← @/lib/connectors/providers/bluesky
+│   │   │   ├·· githubSync  ← @/lib/connectors/providers/github
+│   │   │   ├·· instagramSync  ← @/lib/connectors/providers/instagram
+│   │   │   ├·· mastodonSync  ← @/lib/connectors/providers/mastodon
+│   │   │   ├·· nostrSync  ← @/lib/connectors/providers/nostr
+│   │   │   ├·· redditSync  ← @/lib/connectors/providers/reddit
+│   │   │   ├·· youtubeSync  ← @/lib/connectors/providers/youtube
+│   │   │   └·· UnifiedFeedItem  ← @/types/connector
 │   │   ├── webhookVerification.ts
 │   │   └── youtube.ts
-│   ├── consent
+│   │       └·· createServiceClient  ← @/lib/supabase/server
+│   ├── consent/
 │   │   └── consentManager.ts
-│   ├── content  [CreateEngin]
+│   │       └·· (lazy)  ← @/lib/supabase/client
+│   ├── content/  [CreateEngin]
 │   │   ├── generativeFill.ts
 │   │   ├── publishIntent.ts
 │   │   ├── seoScorer.ts
 │   │   ├── transcriptEditor.ts
 │   │   └── voiceClone.ts
-│   ├── daydream  [Daydream System]
+│   ├── daydream/  [Daydream System]
 │   │   ├── useDaydreamPersistence.ts
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   └── useDaydreamState.ts
-│   ├── diff
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── diff/
 │   │   ├── aiEditEngine.ts
 │   │   └── diffUtils.ts
-│   ├── dream-docs
+│   ├── dream-docs/
 │   │   ├── embed.ts
+│   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── index.ts
 │   │   └── search.ts
-│   ├── dream-window
+│   │       └·· createServerClient  ← @/lib/supabase/server
+│   ├── dream-window/
 │   │   ├── connectionVerbs.ts
+│   │   │   └·· CONNECTION_VERBS, ConnectionVerb, REJECTED_CONNECTION_VERBS, isRejectedConnectionVerb, isValidConnectionVerb  ← @/lib/identity/canonical-names
 │   │   ├── DreamWindowLifecycle.ts
+│   │   │   └·· ConnectionVerb, DREAM_WINDOW_STATES, DreamWindowState  ← @/lib/identity/canonical-names
 │   │   ├── enginConnectionNetwork.ts
+│   │   │   └·· ConnectionVerb, DAYDREAM_DOMAINS, DaydreamDomain, ENGIN_SURFACES, EnginSurface, NETWORK_COUNTS  ← @/lib/identity/canonical-names
 │   │   ├── index.ts
+│   │   │   └·· ALL_CONNECTION_PATHS, DEFAULT_RUNTIME_REGION_STATE, DreamWindowInstance, activateSurface, bindDreamWindow, createBindAction, dispatch, getPathsForDomain, mountDreamWindow  ← @/lib/dream-window
 │   │   ├── runtimeRegion.ts
+│   │   │   └·· DreamWindowState, RUNTIME_REGIONS, RuntimeSeamName, SURFACE_NAMES  ← @/lib/identity/canonical-names
 │   │   └── useDreamWindowActions.ts
-│   ├── dreamdm  [HOME — DreamDMBar]
+│   │       ├·· CreateDreamWindowBody, DreamWindowRecord, PatchDreamWindowBody  ← @/types/dream-window
+│   │       ├·· DREAM_WINDOW_STATES  ← ./DreamWindowLifecycle
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── dreamdm/  [HOME — DreamDMBar]
 │   │   ├── barInteractions.ts
 │   │   ├── bridgeSeamFlow.ts
 │   │   ├── DreamSystemContext.tsx
+│   │   │   ├·· DEFAULT_SPLIT_RATIO  ← @/lib/dreamdm/barInteractions
+│   │   │   ├·· SystemPanelId  ← @/lib/panels/panelTypes
+│   │   │   ├·· moveTorus, torusFocusKey  ← @/lib/runtime/dualRuntime
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   ├── useDreamBarContext.ts
+│   │   │   └·· BarIntentMode  ← ./DreamSystemContext
 │   │   ├── useDreamDMConversations.ts
+│   │   │   ├·· RealtimePostgresInsertPayload  ← @/engine/io
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── useDreamDMDraft.ts
 │   │   ├── useDreamDMMessages.ts
+│   │   │   ├·· RealtimePostgresInsertPayload  ← @/engine/io
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── useDreamSearch.ts
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── useMessagingCore.ts
+│   │   │   ├·· uploadBlobToLedgerStorage  ← @/lib/media/ledger
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   ├·· DMMessage  ← ./useDreamDMMessages
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── useModuleBarIntent.ts
+│   │   │   └·· ModuleBarAction, useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   └── useNotifications.ts
-│   ├── dreamengin  [DREAMenginOS]
+│   ├── dreamengin/  [DREAMenginOS]
 │   │   ├── DrEamsAnimator.ts
 │   │   ├── drEamsSearch.ts
 │   │   ├── engineAssets.ts
+│   │   │   ├·· encodeUint8ArrayToLedgerString  ← @/lib/media/ledger
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   └── osSubsystemManifest.ts
-│   ├── dreamenginOS  [DREAMenginOS]
+│   │       ├·· CONNECTOR_REGISTRY  ← @/lib/connectors/connectorRegistry
+│   │       ├·· ALL_CONNECTION_PATHS, EnginConnectionPath  ← @/lib/dream-window/enginConnectionNetwork
+│   │       ├·· ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
+│   │       ├·· AI_AGENTS, AI_ROUTES  ← @/lib/identity/canonical-names
+│   │       └·· WIDGET_REGISTRY  ← @/lib/widgets/widgetRegistry
+│   ├── dreamenginOS/  [DREAMenginOS]
 │   │   ├── index.ts
+│   │   │   ├·· (lazy)  ← ../ledger
+│   │   │   └·· (lazy)  ← ../eventBus
 │   │   └── OSContext.tsx
-│   ├── dreamnav  [Menus & Navigation, Dream Navigation]
+│   │       ├·· EventBus, createEventBus  ← ../eventBus
+│   │       ├·· Ledger, createLedger  ← ../ledger
+│   │       └·· upgradeEngine  ← ./index
+│   ├── dreamnav/  [Menus & Navigation, Dream Navigation]
 │   │   ├── delta.ts
 │   │   ├── gctAssist.ts
+│   │   │   ├·· GCTEngine, GCTMatch, Template  ← @/lib/gct
+│   │   │   └·· Action, Node  ← ./tau
 │   │   ├── gestures6.ts
+│   │   │   └·· Action  ← ./delta
 │   │   ├── path.ts
+│   │   │   └·· Action, Node, tau  ← @/lib/dreamnav/delta
 │   │   └── tau.ts
-│   ├── dreamr  [DreamR]
+│   ├── dreamr/  [DreamR]
 │   │   ├── closeFriendsVisibility.ts
+│   │   │   ├·· SupabaseClient  ← @/engine/io
+│   │   │   └·· (lazy)  ← @/lib/supabase/server
 │   │   ├── dreamrfeed.tsx
+│   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   ├·· canRecordDreamRView, contentTypePreferenceKey, emptyDreamRSwipePreferences, nextSwipePreferences, personalizeFeedOrder  ← @/lib/dreamr/swipePersonalization
+│   │   │   ├·· resolveSwipeRelease  ← @/lib/dreamr/torridityLedger
+│   │   │   ├·· FeedPost  ← @/lib/feed/useLiveFeed
+│   │   │   ├·· UnifiedFeedItem  ← @/types/connector
+│   │   │   ├·· ⬡ DreamRChannelPanel  ← @/components/dreamr/dream.panel.DreamRChannelPanel
+│   │   │   └·· ⬡ DreamRCreatorPanel  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
 │   │   ├── feedCursor.ts
 │   │   ├── socialHumanityScore.ts
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   ├── swipeCalibration.ts
 │   │   ├── swipePersonalization.ts
 │   │   └── torridityLedger.ts
-│   ├── dreams
+│   │       └·· CalibrationProfile, getActiveProfile  ← ./swipeCalibration
+│   ├── dreams/
 │   │   ├── drag.ts
 │   │   ├── DreamRegistry.tsx
 │   │   ├── profileProjection.ts
+│   │   │   └·· DreamProjection, DreamVisibility  ← @/lib/dreams/types
 │   │   ├── types.ts
 │   │   └── useDreamsRuntime.ts
-│   ├── engin-runtime
+│   ├── engin-runtime/
 │   │   ├── EnginBaseState.ts
 │   │   ├── EnginCapabilities.ts
 │   │   ├── EnginEventBus.ts
+│   │   │   └·· EventHandler, createEventBus  ← @/lib/eventBus
 │   │   ├── EnginIOAdapter.ts
 │   │   ├── EnginRuleSetContract.ts
+│   │   │   ├·· EnginBaseState  ← ./EnginBaseState
+│   │   │   └·· EnginCapability  ← ./EnginCapabilities
 │   │   ├── EnginRuntime.ts
+│   │   │   ├·· EnginBaseState, EnginLifecycle, createBaseState, patchBaseState  ← ./EnginBaseState
+│   │   │   ├·· DEFAULT_USER_CAPABILITIES, EnginCapabilityMap, gateCapability  ← ./EnginCapabilities
+│   │   │   ├·· EnginEventBus, EnginLifecycleEvents, createEnginEventBus  ← ./EnginEventBus
+│   │   │   ├·· EnginIOAdapter, LocalStorageAdapter  ← ./EnginIOAdapter
+│   │   │   └·· EnginAction, EnginRuleSetContract  ← ./EnginRuleSetContract
 │   │   └── index.ts
-│   ├── engine
+│   │       ├·· EnginRuntime, createEnginRuntime  ← @/lib/engin-runtime
+│   │       ├·· EnginAction, EnginRuleSetContract  ← ./EnginRuleSetContract
+│   │       └·· EnginRuntime, EnginRuntimeOptions  ← ./EnginRuntime
+│   ├── engine/
 │   │   └── index.ts
-│   ├── enginpipe
-│   │   ├── artifact
+│   ├── enginpipe/
+│   │   ├── artifact/
 │   │   │   └── manifest.ts
-│   │   ├── quality
+│   │   ├── quality/
 │   │   │   └── tiers.ts
-│   │   ├── shell
+│   │   ├── shell/
 │   │   │   └── ArtifactSlot.tsx
-│   │   ├── telemetry
+│   │   │       └·· EventBus, createEventBus  ← ../../eventBus
+│   │   ├── telemetry/
 │   │   │   ├── client.ts
+│   │   │   │   └·· TelemetryEvent, parseTelemetryEvent  ← ./events
 │   │   │   └── events.ts
 │   │   └── index.ts
-│   ├── engins
-│   │   ├── brand  [BrandEngin]
+│   ├── engins/
+│   │   ├── brand/  [BrandEngin]
 │   │   │   ├── brandEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   └── useBrandEnginRuntime.ts
-│   │   ├── code  [CodeEngin]
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· BRAND_ENGIN_RULE_SET, BrandEnginAction, BrandEnginDerivedState  ← ./brandEnginRuleSet
+│   │   ├── code/  [CodeEngin]
 │   │   │   ├── codeEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   └── useCodeEnginRuntime.ts
-│   │   ├── content  [CreateEngin]
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· CODE_ENGIN_RULE_SET, CodeEnginAction, CodeEnginDerivedState  ← ./codeEnginRuleSet
+│   │   ├── content/  [CreateEngin]
 │   │   │   ├── contentEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   └── useContentEnginRuntime.ts
-│   │   ├── game  [GameEngin]
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· CONTENT_ENGIN_RULE_SET, ContentEnginAction, ContentEnginDerivedState  ← ./contentEnginRuleSet
+│   │   ├── game/  [GameEngin]
 │   │   │   ├── gameEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   ├── index.ts
 │   │   │   └── useGameEnginRuntime.ts
-│   │   ├── lab  [LabEngin]
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· GAME_ENGIN_RULE_SET, GameEnginAction, GameEnginDerivedState  ← ./gameEnginRuleSet
+│   │   ├── lab/  [LabEngin]
 │   │   │   ├── labEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   └── useLabEnginRuntime.ts
-│   │   ├── music  [StarMaker (Music Engin)]
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· LAB_ENGIN_RULE_SET, LabEnginAction, LabEnginDerivedState  ← ./labEnginRuleSet
+│   │   ├── music/  [StarMaker (Music Engin)]
 │   │   │   ├── starMakerEnginRuleSet.ts
+│   │   │   │   ├·· EnginBaseState, patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├·· EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   │   └·· ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   └── useStarMakerEnginRuntime.ts
+│   │   │       ├·· MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· EnginRuntime, EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       └·· STAR_MAKER_ENGIN_RULE_SET, StarMakerEnginAction, StarMakerEnginDerivedState  ← ./starMakerEnginRuleSet
 │   │   ├── useEnginWorkflow.ts
+│   │   │   ├·· logJourneyDot  ← @/lib/journey/journeyDots
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   └·· EnginWorkflow, HANDOFF_PATHS, HandoffKind, WorkflowStage, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef  ← ./workflowEngine
 │   │   └── workflowEngine.ts
-│   ├── event-bus
+│   ├── event-bus/
 │   │   └── index.ts
-│   ├── feature-build
+│   ├── feature-build/
 │   │   ├── buildCycle.ts
+│   │   │   └·· DaydreamEnginManifest, FeatureStatus  ← ./featureManifest
 │   │   ├── featureManifest.ts
+│   │   │   └·· DaydreamDomain, EnginSurface  ← @/lib/identity/canonical-names
 │   │   ├── index.ts
+│   │   │   └·· FEATURE_MANIFESTS, SICC_DIMENSIONS, computeBuildCycleState  ← @/lib/feature-build
 │   │   └── uiQualityCriteria.ts
-│   ├── feed  [Feed & Social]
+│   ├── feed/  [Feed & Social]
 │   │   ├── feedTopics.ts
 │   │   ├── hashtags.ts
 │   │   ├── useLiveFeed.ts
+│   │   │   ├·· RealtimePostgresInsertPayload  ← @/engine/io
+│   │   │   ├·· getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   │   └·· createClient  ← @/lib/supabase/client
 │   │   └── useYouTubeLiveFeed.ts
-│   ├── feeds  [Feed & Social]
+│   │       ├·· ALL_TOPICS, DEFAULT_TOPIC_IDS, loadActiveTopicIds, topicIdsToQueries  ← @/lib/feed/feedTopics
+│   │       ├·· FeedPost  ← @/lib/feed/useLiveFeed
+│   │       └·· UnifiedFeedItem  ← @/types/connector
+│   ├── feeds/  [Feed & Social]
 │   │   └── embedFeedLoader.ts
-│   ├── forge  [ForgeEngin (Engine Builder)]
+│   │       └·· loadEmbedFeed  ← @/lib/feeds/embedFeedLoader
+│   ├── forge/  [ForgeEngin (Engine Builder)]
 │   │   ├── engineForge.ts
+│   │   │   ├·· AtomicComponent  ← ../componentInventory
+│   │   │   └·· EventBus, createEventBus  ← ../eventBus
 │   │   ├── forgeBuild.ts
 │   │   ├── forgeIntelligence.ts
+│   │   │   └·· CREATIVE_ENGINES, ENGIN_REGISTRY, EnginEntry, FORGE_HISTORY_KEY, FORGE_WORKFLOWS, ForgeWorkflow  ← ./forgeRegistry
 │   │   ├── forgeMomentum.ts
+│   │   │   └·· CREATIVE_ENGINES, FORGE_HISTORY_KEY  ← ./forgeRegistry
 │   │   ├── forgeNexus.ts
+│   │   │   └·· CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY  ← ./forgeRegistry
 │   │   ├── forgeRegistry.ts
 │   │   ├── forgeRituals.ts
+│   │   │   └·· CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY  ← ./forgeRegistry
 │   │   ├── useForgeActivity.ts
+│   │   │   └·· recordForgeActivity  ← ./forgeRegistry
 │   │   └── useForgeBuild.ts
-│   ├── forge-ngn  [ForgeEngin (Engine Builder)]
+│   │       ├·· ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent, canBuildToday, isForgeLogEvent, recordBuildToday, saveForgeBuild, stageForgeArtifact  ← @/lib/forge/forgeBuild
+│   │       ├·· toErrorMessage  ← @/lib/utils
+│   │       └·· (lazy)  ← @/lib/forge/forgeBuild
+│   ├── forge-ngn/  [ForgeEngin (Engine Builder)]
 │   │   ├── assembly.ts
+│   │   │   └·· PieceManifest, getPiece  ← ./piece-registry
 │   │   ├── index.ts
 │   │   └── piece-registry.ts
-│   ├── gameengin  [GameEngin]
-│   │   ├── brain  [GameEngin]
-│   │   │   ├── asset-registry  [GameEngin]
+│   ├── gameengin/  [GameEngin]
+│   │   ├── brain/  [GameEngin]
+│   │   │   ├── asset-registry/  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── build-history  [GameEngin]
+│   │   │   ├── build-history/  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── character-voices  [GameEngin]
+│   │   │   ├── character-voices/  [GameEngin]
 │   │   │   │   └── mad-maxi.json
-│   │   │   ├── composition-principles  [GameEngin]
+│   │   │   ├── composition-principles/  [GameEngin]
 │   │   │   │   ├── leading-lines-landmark.json
 │   │   │   │   └── parallax-layers.json
-│   │   │   ├── concept-library  [GameEngin]
+│   │   │   ├── concept-library/  [GameEngin]
 │   │   │   │   ├── neon-courier.json
 │   │   │   │   └── README.md
-│   │   │   ├── concept-patterns  [GameEngin]
-│   │   │   │   ├── protagonists  [GameEngin]
+│   │   │   ├── concept-patterns/  [GameEngin]
+│   │   │   │   ├── protagonists/  [GameEngin]
 │   │   │   │   │   └── reluctant-courier.json
-│   │   │   │   ├── scope-formulas  [GameEngin]
+│   │   │   │   ├── scope-formulas/  [GameEngin]
 │   │   │   │   │   └── one-day-runner.json
-│   │   │   │   ├── settings  [GameEngin]
+│   │   │   │   ├── settings/  [GameEngin]
 │   │   │   │   │   └── neon-rain-megacity.json
 │   │   │   │   └── README.md
-│   │   │   ├── crash-reports  [GameEngin]
+│   │   │   ├── crash-reports/  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── dialogue-patterns  [GameEngin]
+│   │   │   ├── dialogue-patterns/  [GameEngin]
 │   │   │   │   ├── callback-anchor.json
 │   │   │   │   ├── implied-subject.json
 │   │   │   │   └── sentence-fragment-rhythm.json
-│   │   │   ├── emotional-tones  [GameEngin]
+│   │   │   ├── emotional-tones/  [GameEngin]
 │   │   │   │   ├── determined.json
 │   │   │   │   ├── fierce.json
 │   │   │   │   ├── hopeful.json
 │   │   │   │   ├── reflective.json
 │   │   │   │   └── weary.json
-│   │   │   ├── fun-heuristics  [GameEngin]
+│   │   │   ├── fun-heuristics/  [GameEngin]
 │   │   │   │   ├── meta-progression.json
 │   │   │   │   ├── moment-to-moment.json
 │   │   │   │   └── session-loop.json
-│   │   │   ├── genre-dna  [GameEngin]
+│   │   │   ├── genre-dna/  [GameEngin]
 │   │   │   │   ├── action-rpg.json
 │   │   │   │   ├── episodic.json
 │   │   │   │   ├── live-service.json
@@ -19303,108 +21153,133 @@ _No circular dependencies detected._
 │   │   │   │   ├── roguelike.json
 │   │   │   │   ├── sandbox.json
 │   │   │   │   └── template.json
-│   │   │   ├── inspiration-corpus  [GameEngin]
+│   │   │   ├── inspiration-corpus/  [GameEngin]
 │   │   │   │   ├── celeste.json
 │   │   │   │   ├── dead-cells.json
 │   │   │   │   ├── hades.json
 │   │   │   │   ├── hollow-knight.json
 │   │   │   │   └── outer-wilds.json
-│   │   │   ├── material-recipes  [GameEngin]
+│   │   │   ├── material-recipes/  [GameEngin]
 │   │   │   │   ├── neon-glass-tube.json
 │   │   │   │   ├── rusted-iron.json
 │   │   │   │   └── sun-bleached-sandstone.json
-│   │   │   ├── mechanic-library  [GameEngin]
-│   │   │   │   ├── camera  [GameEngin]
+│   │   │   ├── mechanic-library/  [GameEngin]
+│   │   │   │   ├── camera/  [GameEngin]
 │   │   │   │   │   ├── look-ahead.json
 │   │   │   │   │   ├── screen-shake.json
 │   │   │   │   │   └── smooth-follow.json
-│   │   │   │   ├── combat  [GameEngin]
+│   │   │   │   ├── combat/  [GameEngin]
 │   │   │   │   │   ├── combo.json
 │   │   │   │   │   ├── hit-stop.json
 │   │   │   │   │   ├── parry.json
 │   │   │   │   │   └── ranged.json
-│   │   │   │   ├── movement  [GameEngin]
+│   │   │   │   ├── movement/  [GameEngin]
 │   │   │   │   │   ├── coyote-time.json
 │   │   │   │   │   ├── dash.json
 │   │   │   │   │   ├── double-jump.json
 │   │   │   │   │   ├── grapple.json
 │   │   │   │   │   └── wall-slide.json
-│   │   │   │   ├── progression  [GameEngin]
+│   │   │   │   ├── progression/  [GameEngin]
 │   │   │   │   │   ├── metroidvania-gating.json
 │   │   │   │   │   ├── roguelike-perks.json
 │   │   │   │   │   └── skill-tree.json
-│   │   │   │   └── structural  [GameEngin]
+│   │   │   │   └── structural/  [GameEngin]
 │   │   │   │       ├── ability-gating.json
 │   │   │   │       ├── meta-progression.json
 │   │   │   │       ├── procedural-generation.json
 │   │   │   │       ├── run-persistence.json
 │   │   │   │       ├── season-pass.json
 │   │   │   │       └── world-streaming.json
-│   │   │   ├── narrative-pacing  [GameEngin]
+│   │   │   ├── narrative-pacing/  [GameEngin]
 │   │   │   │   └── default.json
-│   │   │   ├── originality-registry  [GameEngin]
-│   │   │   │   ├── by-cartridge  [GameEngin]
+│   │   │   ├── originality-registry/  [GameEngin]
+│   │   │   │   ├── by-cartridge/  [GameEngin]
 │   │   │   │   │   └── mad-maxi.json
 │   │   │   │   └── signatures.json
-│   │   │   ├── principles  [GameEngin]
+│   │   │   ├── principles/  [GameEngin]
 │   │   │   │   ├── emotional-core.md
 │   │   │   │   ├── feedback.md
 │   │   │   │   ├── mastery.md
 │   │   │   │   ├── progression.md
 │   │   │   │   ├── responsiveness.md
 │   │   │   │   └── risk-reward.md
-│   │   │   ├── progression-state  [GameEngin]
+│   │   │   ├── progression-state/  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── rd-sessions  [GameEngin]
+│   │   │   ├── rd-sessions/  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── technique-library  [GameEngin]
-│   │   │   │   ├── lighting  [GameEngin]
+│   │   │   ├── technique-library/  [GameEngin]
+│   │   │   │   ├── lighting/  [GameEngin]
 │   │   │   │   │   └── three-point-mood.json
-│   │   │   │   ├── modeling  [GameEngin]
+│   │   │   │   ├── modeling/  [GameEngin]
 │   │   │   │   │   ├── edge-flow.json
 │   │   │   │   │   └── silhouette-first.json
-│   │   │   │   └── optimization  [GameEngin]
+│   │   │   │   └── optimization/  [GameEngin]
 │   │   │   │       └── texture-atlasing.json
-│   │   │   ├── upgrade-history  [GameEngin]
+│   │   │   ├── upgrade-history/  [GameEngin]
 │   │   │   │   ├── prioritization-rules.json
 │   │   │   │   └── README.md
-│   │   │   ├── visual-bible  [GameEngin]
-│   │   │   │   ├── characters  [GameEngin]
+│   │   │   ├── visual-bible/  [GameEngin]
+│   │   │   │   ├── characters/  [GameEngin]
 │   │   │   │   │   └── mad-maxi.md
-│   │   │   │   └── environments  [GameEngin]
+│   │   │   │   └── environments/  [GameEngin]
 │   │   │   │       └── neon-wasteland.md
-│   │   │   ├── work-queue  [GameEngin]
+│   │   │   ├── work-queue/  [GameEngin]
 │   │   │   │   └── README.md
 │   │   │   ├── active-projects.json
 │   │   │   └── README.md
-│   │   ├── cartridges  [GameEngin]
+│   │   ├── cartridges/  [GameEngin]
 │   │   │   ├── achievementEngine.ts
+│   │   │   │   └·· AchievementDefinition, AchievementState, CartridgeAchievementsAPI  ← ../cartridge
 │   │   │   ├── apiStubs.ts
+│   │   │   │   └·· CartridgeAchievementsAPI, CartridgeAssetsAPI, CartridgeAudioAPI, CartridgeHapticsAPI, CartridgeNetworkAPI, CartridgeSaveAPI  ← ../cartridge
 │   │   │   ├── index.ts
 │   │   │   ├── loaders.ts
+│   │   │   │   ├·· GameCartridge  ← ../cartridge
+│   │   │   │   ├·· defineReactCartridgeLoader  ← ./reactCartridge
+│   │   │   │   ├·· toErrorMessage  ← @/lib/utils
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
+│   │   │   │   └·· (lazy)  ← @/components/games/dream.DefuseRitual
 │   │   │   ├── manifest.ts
 │   │   │   ├── reactCartridge.ts
+│   │   │   │   ├·· GameCartridge, GameEngineAPI  ← @/lib/gameengin/cartridge
+│   │   │   │   └·· (lazy)  ← ./MyGame
 │   │   │   └── saveState.ts
-│   │   ├── remote  [GameEngin]
+│   │   │       └·· CartridgeSaveAPI, CartridgeSaveSlot  ← ../cartridge
+│   │   ├── remote/  [GameEngin]
 │   │   │   ├── comboMachine.ts
+│   │   │   │   └·· ALL_COMBOS, Combo, FaceButton, MULTITOUCH_COMBOS, MultiTouchCombo, maxComboLength  ← ./moves
 │   │   │   ├── index.ts
 │   │   │   ├── layout.ts
 │   │   │   ├── moves.ts
 │   │   │   └── sprintDetector.ts
-│   │   ├── systems  [GameEngin]
+│   │   ├── systems/  [GameEngin]
 │   │   │   ├── ai.ts
 │   │   │   ├── animation.ts
 │   │   │   ├── assets.ts
 │   │   │   ├── index.ts
+│   │   │   │   └·· OctreeBVH, ResourcePool  ← @/lib/gameengin/systems
 │   │   │   ├── lod.ts
 │   │   │   ├── network.ts
 │   │   │   ├── physics.ts
 │   │   │   ├── pooling.ts
+│   │   │   │   └·· ResourcePool  ← ../power-systems
 │   │   │   ├── rendering.ts
 │   │   │   ├── spatial.ts
 │   │   │   └── world.ts
 │   │   ├── accessibility-ai.ts
 │   │   ├── ai-director.ts
+│   │   │   ├·· (lazy)  ← @tensorflow/tfjs
+│   │   │   └·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
 │   │   ├── ai-npcs.ts
 │   │   ├── brain-reader.ts
 │   │   ├── cartridge-manifest.ts
@@ -19412,218 +21287,383 @@ _No circular dependencies detected._
 │   │   ├── cartridgeLoader.ts
 │   │   ├── cloud-compute.ts
 │   │   ├── control-mappings.ts
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   ├── core.ts
+│   │   │   ├·· AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem  ← ./power-systems
+│   │   │   ├·· (lazy)  ← @/lib/babylon/createEngine
+│   │   │   └·· (lazy)  ← @babylonjs/core
 │   │   ├── dream-engine.ts
+│   │   │   ├·· decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString  ← @/lib/media/ledger
+│   │   │   ├·· createClient  ← @/lib/supabase/client
+│   │   │   ├·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── dreamr-loader.ts
+│   │   │   └·· CARTRIDGE_MAGIC, CartridgeManifest, validateManifest  ← @/lib/gameengin/cartridge-manifest
 │   │   ├── gameEnginRuntime.ts
+│   │   │   └·· EventBus, createEventBus  ← ../eventBus
 │   │   ├── GameRuntime.tsx
+│   │   │   ├·· recordEmission  ← @/lib/runtime/channelMetrics
+│   │   │   ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├·· createLocalChannel  ← @/lib/runtime/runtimeChannel
+│   │   │   ├·· acquireSharedResource, releaseSharedResource  ← @/lib/runtime/sharedResourcePool
+│   │   │   ├·· AchievementDefinition, CartridgeInputEvent, ENGINE_VERSION, GRAVITY_VALUES, GameCartridge, GameEngineAPI, GravityPreset  ← ./cartridge
+│   │   │   ├·· createAchievementsAPI  ← ./cartridges/achievementEngine
+│   │   │   ├·· stubAssetsAPI, stubAudioAPI, stubHapticsAPI, stubNetworkAPI  ← ./cartridges/apiStubs
+│   │   │   └·· createSaveAPI  ← ./cartridges/saveState
 │   │   ├── generative-audio.ts
 │   │   ├── index.ts
+│   │   │   └·· ..., AIDirector, AdvancedPhysicsWorld, ComputeShaderPipeline, EliteGameEngine, PostFXManager, RollbackNetcode  ← @/lib/gameengin
 │   │   ├── neural-render.ts
 │   │   ├── path-tracing.ts
 │   │   ├── platform.ts
+│   │   │   ├·· AIDirector  ← ./ai-director
+│   │   │   ├·· GRAVITY_VALUES, GameCartridge, GameEngineAPI  ← ./cartridge
+│   │   │   ├·· EliteGameEngine, FrameTelemetry, PerformanceBudget, QualityTier  ← ./core
+│   │   │   └·· PostFXManager  ← ./post-fx
 │   │   ├── post-fx.ts
+│   │   │   ├·· PerformanceBudget  ← ./core
+│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline
+│   │   │   ├·· (lazy)  ← @babylonjs/core
+│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline
+│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline
+│   │   │   └·· (lazy)  ← @babylonjs/core/Layers/glowLayer
 │   │   ├── power-systems.ts
 │   │   ├── predictive-stream.ts
 │   │   ├── procgen.ts
 │   │   ├── registerCartridges.ts
+│   │   │   ├·· CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   │   ├·· moduleRegistry  ← @/lib/runtime/moduleRegistry
+│   │   │   └·· ModuleManifest  ← @/types/module-manifest
 │   │   ├── unifiedLoop.ts
 │   │   ├── useUnifiedLoop.ts
+│   │   │   └·· LoopPriority, registerGame, unregisterGame  ← ./unifiedLoop
 │   │   ├── webgpu-runtime-shell.ts
+│   │   │   └·· DreamrCartridgeArchive  ← @/lib/gameengin/dreamr-loader
 │   │   ├── world-crdt.ts
 │   │   └── xr.ts
-│   ├── games  [GameEngin]
+│   ├── games/  [GameEngin]
 │   │   ├── avatar.ts
 │   │   ├── catalog.ts
+│   │   │   ├·· CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   │   ├·· MobileHudMode  ← @/lib/games/mobileControls
+│   │   │   └·· GameRenderMode  ← @/lib/games/performance-baseline
 │   │   ├── DualSenseManager.ts
 │   │   ├── gameControllerButtons.ts
 │   │   ├── gameControllerLeft.ts
 │   │   ├── gameControllerRight.ts
 │   │   ├── hooks.ts
+│   │   │   ├·· DE_GAME_PERFORMANCE_BASELINE, GamePerformanceBaseline, GameRenderMode, createPerformanceBaselineSampler, resolveRendererBackend  ← @/lib/games/performance-baseline
+│   │   │   └·· isWebGPUAvailable  ← @/lib/webgpu
 │   │   ├── library-state.ts
 │   │   ├── lucid-avenue-world.ts
 │   │   ├── mobileControls.ts
+│   │   │   └·· broadcastGameInput  ← @/lib/games/useRemoteChannel
 │   │   ├── navigation.ts
 │   │   ├── performance-baseline.ts
 │   │   ├── quality-plan.ts
 │   │   ├── useAIDirector.ts
+│   │   │   └·· AIDirector, DirectorState, PlayerSignals  ← @/lib/gameengin/ai-director
 │   │   ├── useGameInputKeyboardBridge.ts
+│   │   │   └·· GameInputAction  ← @/components/games/dream.remote.GameRemote
 │   │   ├── useGamepad.ts
 │   │   ├── useImmersiveGameLayout.ts
 │   │   └── useRemoteChannel.ts
-│   ├── gct
+│   ├── gct/
 │   │   ├── anomaly-detection.ts
+│   │   │   └·· GCTEngine, GCTMatch, Template  ← ./gct-engine
 │   │   ├── audio-fingerprint.ts
+│   │   │   └·· GCTEngine, GCTMatch, Template  ← ./gct-engine
 │   │   ├── gct-engine.ts
 │   │   ├── image-search.ts
+│   │   │   └·· GCTEngine, GCTMatch, Template  ← ./gct-engine
 │   │   ├── index.ts
 │   │   └── recommendations.ts
-│   ├── gestures  [Dream Navigation]
+│   │       └·· GCTEngine, Template  ← ./gct-engine
+│   ├── gestures/  [Dream Navigation]
 │   │   ├── touchGestures.ts
 │   │   └── useTouchGestures.ts
-│   ├── god-tier
+│   │       └·· GestureCallbacks, GestureConfig, GestureRecogniser  ← ./touchGestures
+│   ├── god-tier/
 │   │   ├── godTierEngine.ts
 │   │   └── useGodTier.ts
-│   ├── gsap
+│   │       └·· DeviceSignals, DreamEngineGodTierSystem, GodTierState, MeshSnapshot, RouteSignals, RuntimeMetrics, UIElementSnapshot, UXSignals, defaultDeviceSignals, defaultRuntimeMetrics, defaultUXSignals, getGodTierUiTokens  ← ./godTierEngine
+│   ├── gsap/
 │   │   ├── gsap.ts
+│   │   │   ├·· getGsap  ← @/lib/gsap/gsap
+│   │   │   └·· (lazy)  ← gsap
 │   │   ├── useGsapEntrance.ts
+│   │   │   └·· getGsap  ← @/lib/gsap/gsap
 │   │   ├── useGsapFlip.ts
+│   │   │   └·· getGsap  ← @/lib/gsap/gsap
 │   │   └── useGsapScrollReveal.ts
-│   ├── home-buttons
+│   │       └·· getGsap  ← @/lib/gsap/gsap
+│   ├── home-buttons/
 │   │   ├── button-groups.ts
 │   │   └── contextual-home.ts
-│   ├── hooks
+│   ├── hooks/
 │   │   ├── useMotionTilt.ts
+│   │   │   └·· useMotionTilt  ← @/lib/hooks/useMotionTilt
 │   │   ├── useResponsive.ts
+│   │   │   └·· BREAKPOINTS, Breakpoint, fluid, getBreakpoint, isAtLeast, isBelow, pickByBreakpoint, readViewportWidth  ← ../ui/responsive
 │   │   └── useTap.ts
-│   ├── icons
+│   ├── icons/
 │   │   └── sheet.ts
-│   ├── identity
+│   ├── identity/
 │   │   └── canonical-names.ts
-│   ├── intelligence
+│   ├── intelligence/
 │   │   ├── continuityHelpers.ts
+│   │   │   └·· ENGIN_REGISTRY, EnginEntry, ForgeActivityPulse  ← @/lib/forge/forgeRegistry
 │   │   ├── sessionContinuity.ts
 │   │   ├── sessionPatternEngine.ts
+│   │   │   ├·· (lazy)  ← @tensorflow/tfjs
+│   │   │   └·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
 │   │   └── useSessionIntelligence.ts
-│   ├── journey  [Journey System]
+│   │       ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │       ├·· SessionContinuity, SessionDiff, SessionSummary  ← ./sessionContinuity
+│   │       └·· PatternEngineState, PredictedNext, SessionPatternEngine  ← ./sessionPatternEngine
+│   ├── journey/  [Journey System]
 │   │   ├── journeyDots.ts
+│   │   │   ├·· hasJourneyDot, logJourneyDot  ← @/lib/journey/journeyDots
+│   │   │   └·· LogJourneyDotInput  ← @/types/journey
 │   │   ├── journeyInsights.ts
+│   │   │   └·· JourneyDot  ← @/types/journey
 │   │   └── withJourney.ts
-│   ├── marketplace  [Marketplace & Shop]
+│   │       ├·· logJourneyDot  ← @/lib/journey/journeyDots
+│   │       └·· JourneyDotKind  ← @/types/journey
+│   ├── marketplace/  [Marketplace & Shop]
 │   │   ├── listings.ts
 │   │   └── request.ts
-│   ├── media
+│   │       └·· MARKETPLACE_CONTACT_TABLE  ← ./listings
+│   ├── media/
 │   │   ├── ledger.ts
 │   │   └── postMedia.ts
-│   ├── music  [StarMaker (Music Engin)]
+│   ├── music/  [StarMaker (Music Engin)]
 │   │   ├── presets.ts
 │   │   ├── starmaker.ts
 │   │   ├── starmakerArrangement.ts
 │   │   ├── starmakerDaw.ts
 │   │   └── wasmAudioBridge.ts
-│   ├── navigation  [Menus & Navigation, Dream Navigation]
+│   ├── navigation/  [Menus & Navigation, Dream Navigation]
 │   │   ├── anchorField.ts
+│   │   │   └·· SINGULARITY_THRESHOLD, Vector3  ← ./manifold
 │   │   ├── AnchorStateBuffer.ts
 │   │   ├── AnchorWidgetStorage.ts
 │   │   ├── dream-state.ts
 │   │   ├── GestureFrameComputer.ts
+│   │   │   └·· PointerState  ← ./PointerEventCapture
 │   │   ├── GestureIntentResolver.ts
+│   │   │   ├·· GestureFrame  ← ./GestureFrameComputer
+│   │   │   └·· Quaternion, fromGestureSwipe, identityQuaternion, multiply, normalize  ← ./quaternion
 │   │   ├── index.ts
 │   │   ├── manifold.ts
 │   │   ├── NavStateBuffer.ts
 │   │   ├── physics.ts
 │   │   ├── PointerEventCapture.ts
 │   │   ├── quaternion.ts
+│   │   │   └·· VECTOR_ZERO_THRESHOLD  ← ./manifold
 │   │   ├── README.md
 │   │   ├── ReturnStack.ts
 │   │   ├── SpatialNavigationEngine.ts
+│   │   │   ├·· GestureFrameComputer  ← ./GestureFrameComputer
+│   │   │   ├·· GestureIntent, GestureIntentResolver  ← ./GestureIntentResolver
+│   │   │   ├·· LAYER_HOME, NavStateBuffer  ← ./NavStateBuffer
+│   │   │   ├·· PointerEventCapture, PointerState  ← ./PointerEventCapture
+│   │   │   ├·· ReturnStack  ← ./ReturnStack
+│   │   │   ├·· TransformSolver, ViewportMetrics  ← ./TransformSolver
+│   │   │   └·· WidgetInstanceMemory  ← ./WidgetInstanceMemory
 │   │   ├── StructureLedger.ts
+│   │   │   └·· DreamNode, DreamState, MoveDirection, getStateForNode, move  ← ./dream-state
 │   │   ├── TransformSolver.ts
+│   │   │   ├·· computeLambda, computeSlotPosition, projectCubicToSphere  ← ./manifold
+│   │   │   ├·· NavStateBuffer  ← ./NavStateBuffer
+│   │   │   └·· Quaternion, identityQuaternion, toRotationMatrix  ← ./quaternion
 │   │   ├── useNavigation.ts
+│   │   │   ├·· SpatialNavigationEngine  ← ./SpatialNavigationEngine
+│   │   │   └·· WidgetInstanceRecord  ← ./WidgetInstanceMemory
 │   │   └── WidgetInstanceMemory.ts
-│   ├── notifications  [Notifications]
+│   ├── notifications/  [Notifications]
 │   │   ├── notificationHelpers.ts
 │   │   └── useNotifications.ts
-│   ├── observability  [Observability & Idari Console]
+│   │       ├·· DbNotificationRow, UiNotification, applyOptimisticDelete, applyOptimisticMarkAll, applyOptimisticRead, getUnreadCount, normalizeDbRow, sortByRecent  ← ./notificationHelpers
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── observability/  [Observability & Idari Console]
 │   │   ├── collector.ts
+│   │   │   └·· (lazy)  ← ./otelBridge
 │   │   ├── correlator.ts
+│   │   │   └·· LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan  ← ./collector
 │   │   ├── healthTrend.ts
+│   │   │   └·· LoopIteration, LoopStatus  ← @/lib/agents/idariLoop
 │   │   ├── immediateAction.ts
+│   │   │   └·· RootCauseAnalysis  ← ./rootCauseAnalyzer
 │   │   ├── index.ts
 │   │   ├── otel.ts
 │   │   ├── otelBridge.ts
+│   │   │   └·· getMeter, getTracer  ← ./otel
 │   │   └── rootCauseAnalyzer.ts
-│   ├── offline
+│   │       ├·· PatchRisk  ← @/lib/agents/idari
+│   │       ├·· TelemetrySnapshot  ← ./collector
+│   │       └·· AnomalySignal  ← ./correlator
+│   ├── offline/
 │   │   ├── offlineCache.ts
 │   │   └── useOfflineSync.ts
-│   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
+│   │       └·· SyncQueueEntry, isOnline, onConnectivityChange, processSyncQueue  ← ./offlineCache
+│   ├── optimizer/  [PortfolioEngin, WebGPU / Babylon Engine]
 │   │   ├── babylon-optimizero.ts
+│   │   │   └·· CreativeCandidate, CreativeOptimizero, DEFAULT_WEIGHTS, OptimizeroResult, OptimizeroWeights, ScoredCandidate  ← ./creative-optimizero
 │   │   ├── constraint-solver.ts
+│   │   │   └·· Constraint, ConstraintSolverOptions, OptimizationItem, RankedItem  ← ./types
 │   │   ├── creative-optimizero.ts
 │   │   ├── creative-validator.ts
+│   │   │   └·· CreativeOption, CreativeValidationResult, HardFailureReason  ← ./types
 │   │   ├── index.ts
+│   │   │   ├·· ConstraintSolver  ← ./constraint-solver
+│   │   │   ├·· validateCreativeOption  ← ./creative-validator
+│   │   │   └·· Asset, Constraint, CreativeContext, CreativeOptimizerResult, CreativeOption, CreativeScore, FeedItem, HardFailureReason, Notification, OptimizationItem, OptimizerConfig, QueuedAction, RankedCreativeOption, RankedItem, RuntimeContext, SearchResult, WidgetPriority  ← ./types
 │   │   ├── README.md
 │   │   └── types.ts
-│   ├── panels
+│   ├── panels/
 │   │   └── panelTypes.ts
-│   ├── platform
+│   ├── platform/
 │   │   ├── index.ts
 │   │   └── lab.ts
-│   ├── policy
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── policy/
 │   │   └── boogiePolicy.ts
-│   ├── reality
+│   ├── reality/
 │   │   ├── realityStore.ts
+│   │   │   └·· Reality, RealityActivityEntry, RealityActivityKind, RealityEnginSlot, RealityMember, RealityMode, RealitySnapshot  ← ./types
 │   │   └── types.ts
-│   ├── renderer
+│   │       └·· CollabMode, SessionRole  ← @/lib/collaboration
+│   ├── renderer/
 │   │   ├── Canvas2DRenderer.ts
+│   │   │   ├·· FrustumCuller, Rect  ← ./FrustumCuller
+│   │   │   └·· IRenderer, TextStyle  ← ./IRenderer
 │   │   ├── FrustumCuller.ts
 │   │   ├── index.ts
+│   │   │   ├·· Canvas2DRenderer, createRenderer  ← @/lib/renderer
+│   │   │   └·· (lazy)  ← ./Canvas2DRenderer
 │   │   └── IRenderer.ts
-│   ├── routing
+│   ├── routing/
 │   │   └── surfaces.ts
-│   ├── runtime  [Runtime Core]
+│   ├── runtime/  [Runtime Core]
 │   │   ├── channelMetrics.ts
+│   │   │   └·· getChannelMetrics, recordEmission  ← @/lib/runtime/channelMetrics
 │   │   ├── coercionTable.ts
 │   │   ├── dreamOSBus.ts
+│   │   │   ├·· AI_AGENTS, RuntimeRegion  ← @/lib/identity/canonical-names
+│   │   │   ├·· RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   │   ├·· AnyBridgeEmission, DualRuntimeChannel, bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   ├·· RuntimeContainer  ← @/lib/runtime/runtimeContainer
+│   │   │   └·· DreamArtifactBusEventMap  ← @/types/dreamArtifact
 │   │   ├── dropTargetRegistry.ts
+│   │   │   ├·· DreamDrop, DreamDropType  ← @/lib/runtime/coercionTable
+│   │   │   └·· RuntimeId  ← @/types/module-manifest
 │   │   ├── dualRuntime.ts
+│   │   │   ├·· RUNTIME_REGIONS, SURFACE_NAMES  ← @/lib/identity/canonical-names
+│   │   │   └·· SystemPanelId  ← @/lib/panels/panelTypes
 │   │   ├── dualRuntimeBridge.ts
+│   │   │   ├·· invokeMadMaxiSnapshotTransfer  ← @/lib/runtime/madMaxiSnapshotBridge
+│   │   │   └·· (lazy)  ← @/lib/vm/wasmGpuVM
 │   │   ├── EnginDispatcher.ts
+│   │   │   └·· BAR_Y_SCALE, MAX_WORKERS, SAB_BYTES, SNAP_THRESHOLD_RATIO, Workgroup, buildWorkgroups, createEnginSAB, f64Telemetry, int32AxisState, int32DreamDMBarX, int32DreamDMBarY, int32LockedState  ← ./memory
 │   │   ├── enginWorkflowRegistry.ts
+│   │   │   └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── instanceManager.ts
+│   │   │   ├·· RuntimeChannel, createLocalChannel, createRuntimeChannel  ← @/lib/runtime/runtimeChannel
+│   │   │   ├·· RuntimeId  ← @/types/module-manifest
+│   │   │   └·· (lazy)  ← @/lib/supabase/client
 │   │   ├── isAuthRelatedError.ts
 │   │   ├── madMaxiSnapshotBridge.ts
 │   │   ├── memory.ts
 │   │   ├── moduleRegistry.ts
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   ├·· ModuleManifest, RuntimeId  ← @/types/module-manifest
+│   │   │   └·· WidgetInstance, getWidgetType  ← @/types/widgets
 │   │   ├── offlineQueue.ts
 │   │   ├── quantumCircuit.ts
+│   │   │   └·· QuantumComputeResult  ← ./dualRuntimeBridge
 │   │   ├── runtimeChannel.ts
+│   │   │   └·· (lazy)  ← @supabase/supabase-js
 │   │   ├── runtimeContainer.ts
 │   │   ├── seamClipboard.ts
+│   │   │   ├·· RuntimeRegion  ← @/lib/identity/canonical-names
+│   │   │   ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├·· bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   │   └·· ENGIN_KEYS, EnginKey, findWorkflows  ← @/lib/runtime/enginWorkflowRegistry
 │   │   ├── sharedResourcePool.ts
 │   │   ├── snapshotFingerprint.ts
+│   │   │   └·· TelemetrySnapshot  ← @/lib/observability/collector
 │   │   ├── swapManager.ts
 │   │   ├── useDragSurface.ts
+│   │   │   ├·· DreamDrop, DreamDropType, coerceDataTransfer  ← @/lib/runtime/coercionTable
+│   │   │   ├·· dropTargetRegistry  ← @/lib/runtime/dropTargetRegistry
+│   │   │   └·· RuntimeId  ← @/types/module-manifest
 │   │   ├── useDualRuntime.ts
+│   │   │   └·· BridgeEventHandler, ChannelEventKey, ChannelEventPayload, DualRuntimeChannel, PeerState, UnsubscribeFn, bridge  ← ./dualRuntimeBridge
 │   │   ├── useDualRuntimePersistence.ts
+│   │   │   └·· DEFAULT_DUAL_RUNTIME, DualRuntimeState, RuntimeWorld, makeHomeActiveTop, setRuntimeWorld, swapDominantRuntime  ← ./dualRuntime
 │   │   ├── useEnginBridge.ts
+│   │   │   └·· bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── useEnginCoopSync.ts
+│   │   │   ├·· EnginName  ← @/lib/runtime/instanceManager
+│   │   │   ├·· useSharedEnginChannel  ← @/lib/runtime/useSharedEnginChannel
+│   │   │   └·· RuntimeId  ← @/types/module-manifest
 │   │   └── useSharedEnginChannel.ts
-│   ├── scene
+│   │       ├·· EnginName, buildInstanceKey, promoteInstanceToRealtime, useInstanceManager  ← @/lib/runtime/instanceManager
+│   │       ├·· RuntimeChannel, RuntimeChannelEvent, createLocalChannel  ← @/lib/runtime/runtimeChannel
+│   │       └·· RuntimeId  ← @/types/module-manifest
+│   ├── scene/
 │   │   └── sceneState.ts
-│   ├── setup
+│   │       └·· CachedScene, SceneObject, SceneSnapshot, deleteScene, enqueueSyncAction, getScene, listScenes, saveScene  ← @/lib/offline/offlineCache
+│   ├── setup/
 │   │   └── checks.ts
-│   ├── sharedDream  [Shared Dream (Collab)]
+│   │       └·· SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_URL  ← @/lib/supabase/config
+│   ├── sharedDream/  [Shared Dream (Collab)]
 │   │   └── useSharedDreamSession.ts
-│   ├── shop  [Marketplace & Shop]
+│   │       ├·· createClient  ← @/lib/supabase/client
+│   │       └·· safeGetUser  ← @/lib/supabase/safeGetUser
+│   ├── shop/  [Marketplace & Shop]
 │   │   └── listings.ts
-│   ├── social  [Feed & Social]
+│   ├── social/  [Feed & Social]
 │   │   ├── crossPost.ts
+│   │   │   └·· PLATFORM_MAP, SocialPlatform  ← ./platforms
 │   │   ├── livekit.ts
 │   │   ├── normalizers.ts
 │   │   ├── platforms.ts
 │   │   ├── rss-feed.ts
+│   │   │   └·· FeedItemMedia, UnifiedFeedItem  ← @/types/connector
 │   │   └── useSocialData.ts
-│   ├── torridity
+│   │       ├·· NormalizedPost  ← @/lib/social/normalizers
+│   │       └·· toErrorMessage  ← @/lib/utils
+│   ├── torridity/
 │   │   ├── constants.ts
 │   │   ├── index.ts
 │   │   └── physics.ts
-│   ├── ui
+│   │       └·· a0Perception, deltaP, n  ← ./constants
+│   ├── ui/
 │   │   ├── CustomizeModeContext.tsx
+│   │   │   └·· AllPageSkins, DEFAULT_SKIN, SkinData, SkinPage, applySkin, loadAllSkins, resolveSkin, saveAllSkins  ← @/lib/ui/skin-engine
 │   │   ├── responsive.ts
 │   │   ├── runtimeViewport.ts
 │   │   ├── skin-engine.ts
 │   │   ├── theme-engine.ts
 │   │   └── theme.ts
-│   ├── universal-editor
+│   ├── universal-editor/
 │   │   └── module-manifest.ts
-│   ├── user-sim
+│   ├── user-sim/
 │   │   └── userSimAgent.ts
-│   ├── vm  [VM / WASM Runtime]
+│   │       └·· AgentAction, AuditFinding, BehaviorSignals, FindingSeverity, JourneyOutcome, PerceptionFrame, Persona, PersonaType, SimJourneyResult, SimStep  ← @/types/user-sim
+│   ├── vm/  [VM / WASM Runtime]
 │   │   ├── bufferManager.ts
+│   │   │   └·· BufferHandle, GPUBufferDescriptor, GPUBufferUsageFlags, VMErrorCode, VMPerformanceCounters, VMResourceQuotas  ← ./types
 │   │   ├── bus-events.ts
 │   │   ├── dual-runtime.ts
+│   │   │   ├·· VMBusEventMap, VMBusEventName, VMComputeCompletePayload, VMErrorPayload, VMStatsPayload, VMStatsUpdatePayload, VMWorkloadSubmittedPayload  ← ./bus-events
+│   │   │   └·· InterVMChannel, VMEvent  ← ./inter-vm-messaging
 │   │   ├── dualVMCoordinator.ts
+│   │   │   └·· VMRegion, VMWorkload, bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── index.ts
 │   │   ├── inter-vm-messaging.ts
 │   │   ├── pipelineCache.ts
@@ -19631,27 +21671,50 @@ _No circular dependencies detected._
 │   │   ├── resource-quota.ts
 │   │   ├── security.ts
 │   │   ├── snapshot.ts
+│   │   │   ├·· BindGroupHandle, BufferHandle, GPUBufferSnapshot, HandleTableSnapshot, PipelineHandle, PipelineSnapshot, VMSnapshot, WasmMemorySnapshot  ← ./types
+│   │   │   └·· WasmGpuVM  ← ./wasmGpuVM
 │   │   ├── types.ts
 │   │   ├── wasm-features.ts
 │   │   └── wasmGpuVM.ts
-│   ├── warp  [Warp System]
+│   │       ├·· BufferManager  ← ./bufferManager
+│   │       ├·· PipelineCache  ← ./pipelineCache
+│   │       ├·· BindGroupHandle, BufferHandle, ComputePipelineDescriptor, DEFAULT_VM_CONFIG, PipelineHandle, VMConfig, VMPerformanceCounters, VMState, VMSyscalls  ← ./types
+│   │       └·· (lazy)  ← ./types
+│   ├── warp/  [Warp System]
 │   │   ├── useWarp.ts
+│   │   │   └·· WarpEffect, WarpEngine, WarpEngineOptions  ← ./warpEngine
 │   │   └── warpEngine.ts
-│   ├── web3
+│   ├── web3/
 │   │   ├── client.ts
+│   │   │   ├·· ChainConfig, DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, WalletAccount, WalletConnectionState, WalletProvider, Web3Error  ← ./types
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── engagement.ts
+│   │   │   ├·· web3Client  ← ./client
+│   │   │   └·· DEFAULT_CHAIN_ID, EngagementPayload, EngagementStats, SUPPORTED_CHAINS, Web3Error  ← ./types
 │   │   ├── index.ts
+│   │   │   └·· trackEngagement, uploadToIpfs, web3Client  ← @/lib/web3
 │   │   ├── ipfs.ts
+│   │   │   └·· IpfsContent, IpfsUploadResult, Web3Error  ← ./types
 │   │   └── types.ts
-│   ├── webgpu  [WebGPU / Babylon Engine]
+│   ├── webgpu/  [WebGPU / Babylon Engine]
 │   │   ├── adaptiveQuality.ts
+│   │   │   └·· Pressure, RuntimeMetrics, classifyPressure  ← ./director
 │   │   ├── director.ts
 │   │   └── useWebGPUDirector.ts
-│   ├── widgets  [Widgets System]
+│   │       └·· CameraSignals, CameraState, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, DirectorFrame, MeshHints, RuntimeMetrics, WebGPUDirector, applyDirectorFrame, buildSceneObjects  ← ./director
+│   ├── widgets/  [Widgets System]
 │   │   ├── CrossWidgetPosting.ts
+│   │   │   ├·· WidgetMsg, widgetEventBus  ← ./WidgetEventBus
+│   │   │   ├·· WidgetLinkGraph  ← ./WidgetLinkGraph
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── feed-resolver.ts
+│   │   │   ├·· createServerClient  ← @/lib/supabase/server
+│   │   │   ├·· FeedHostConfig, FeedItemSummary, FeedScope, HostKind, HostResolved, HostResolvedStatus  ← @/types/widget-system-v2
+│   │   │   └·· toErrorMessage  ← @/lib/utils
 │   │   ├── parse.ts
+│   │   │   └·· DreamenginWidgetType, EmbedWidgetConfig, SocialEmbedWidgetConfig, SocialFeedWidgetConfig, SocialProfileWidgetConfig, SocialProvider, TextWidgetConfig, TypedWidget, YouTubeWidgetConfig  ← @/types/widgetConfigs
 │   │   ├── parseConfig.ts
+│   │   │   └·· SocialEmbedWidgetConfig, SocialFeedWidgetConfig, SocialProfileWidgetConfig, SocialProvider, YouTubeWidgetConfig  ← @/types/widgetConfigs
 │   │   ├── useWidget.ts
 │   │   ├── WidgetBus.ts
 │   │   ├── WidgetEngine.tsx
@@ -19659,12 +21722,17 @@ _No circular dependencies detected._
 │   │   ├── WidgetLinkGraph.ts
 │   │   └── widgetRegistry.ts
 │   ├── activeModulesStore.ts
+│   │   └·· ActiveModuleInstance  ← @/types/dreamArtifact
 │   ├── adari.ts
 │   ├── agentOS.ts
+│   │   └·· CodeEnginHostTools  ← ./agentOS/hostTools
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── artifactStore.ts
+│   │   └·· DreamArtifact  ← @/types/dreamArtifact
 │   ├── audioFingerprint.ts
+│   │   └·· TORRIDITY_DP, TORRIDITY_N  ← ./torridity
 │   ├── botDetection.ts
+│   │   └·· slog, slogEntropy, slogVariance  ← ./slog
 │   ├── bus.wasm
 │   ├── componentInventory.ts
 │   ├── data-transform.ts
@@ -19674,15 +21742,21 @@ _No circular dependencies detected._
 │   ├── h265-encoder.ts
 │   ├── ledger-data.ts
 │   ├── ledger.ts
+│   │   ├·· SupabaseClient  ← @/engine/io
+│   │   └·· Fingerprint, PeakMap  ← ./audioFingerprint
 │   ├── sharedDream.ts
+│   │   ├·· SupabaseClient  ← @/engine/io
+│   │   └·· CollabEventHandler, CollabEventType, CollabMode, CollabPayload, CollabSession, PresenceUpdateData, SessionRole, broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession  ← @/lib/collaboration
 │   ├── slog.ts
 │   ├── social-feed.ts
 │   ├── torridity.ts
+│   │   └·· slog  ← ./slog
 │   ├── universalEditor.ts
+│   │   └·· EventBus, createEventBus  ← ./eventBus
 │   ├── utils.ts
 │   └── webgpu.ts
-├── misc
-│   ├── images
+├── misc/
+│   ├── images/
 │   │   ├── arm2_transparent.png
 │   │   ├── coat_transparent.png
 │   │   ├── head_transparent.png
@@ -19695,13 +21769,18 @@ _No circular dependencies detected._
 │   │   ├── sprite_2x_transparent.png
 │   │   └── sprite_transparent.png
 │   └── Agents-MUST-READ-ARCHITECTURE.md
-├── optimizer  [WebGPU / Babylon Engine]
+├── optimizer/  [WebGPU / Babylon Engine]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── constraint-solver.ts
+│   │   └·· Constraint, ConstraintSolverOptions, OptimizationItem, RankedItem  ← ./types
 │   ├── creative-validator.ts
+│   │   └·· CreativeOption, CreativeValidationResult, HardFailureReason  ← ./types
 │   ├── index.ts
+│   │   ├·· ConstraintSolver  ← ./constraint-solver
+│   │   ├·· validateCreativeOption  ← ./creative-validator
+│   │   └·· Asset, Constraint, CreativeContext, CreativeOptimizerResult, CreativeOption, CreativeScore, FeedItem, HardFailureReason, Notification, OptimizationItem, OptimizerConfig, QueuedAction, RankedCreativeOption, RankedItem, RuntimeContext, SearchResult, WidgetPriority  ← ./types
 │   └── types.ts
-├── repo-visualizer
+├── repo-visualizer/
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── analyzer.mjs
 │   ├── graph-stats.json
@@ -19709,57 +21788,67 @@ _No circular dependencies detected._
 │   ├── index.html
 │   ├── README.md
 │   └── server.mjs
-├── research
-│   ├── ccc-ada-twin-engine
-│   │   ├── code
+├── research/
+│   ├── ccc-ada-twin-engine/
+│   │   ├── code/
 │   │   │   └── README.md
-│   │   ├── data
+│   │   ├── data/
 │   │   │   └── README.md
-│   │   ├── notes
+│   │   ├── notes/
 │   │   │   └── sharpening_notes.txt
-│   │   ├── paper
+│   │   ├── paper/
 │   │   │   ├── ccc_ada_axioms_and_invariants.tex
 │   │   │   ├── ccc_ada_black_hole_gravitational_wave_memory.tex
 │   │   │   ├── ccc_ada_holography_and_information_boundary.tex
 │   │   │   ├── ccc_ada_predictions_and_falsifiability.tex
 │   │   │   └── ccc_ada_twin_engine_framework.tex
 │   │   └── README.md
-│   ├── data
+│   ├── data/
 │   │   ├── README.md
 │   │   └── torr_vs_mond_lock_n11.csv
-│   ├── equations
+│   ├── equations/
 │   │   └── torridityequate.txt
-│   ├── paper
+│   ├── paper/
 │   │   └── torridity_ledger.tex
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── DISCOVERY.md
 │   └── README.md
-├── research-and-development
+├── research-and-development/
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── LICENSE
 │   └── tech-spec-v1.md
-├── scripts
-│   ├── archive
+├── scripts/
+│   ├── archive/
 │   │   └── validate-deployment.js
-│   ├── feature-build
+│   ├── feature-build/
 │   │   └── generate-features.mjs
-│   ├── gameengin
-│   │   ├── lib
+│   ├── gameengin/
+│   │   ├── lib/
 │   │   │   └── tar.ts
 │   │   ├── architect-run.ts
+│   │   │   └·· ConceptPattern, VisionStatement, isOriginal, listConceptPatterns, listMechanics, logRDSession, readVisionStatement, recordVisionStatement, signatureHash  ← ../../lib/gameengin/brain-reader.js
 │   │   ├── artisan-run.ts
+│   │   │   └·· BRAIN_ROOT, listCompositionPrinciples, listMaterialRecipes, listTechniques, logRDSession, recordAssetGeneration  ← ../../lib/gameengin/brain-reader.js
 │   │   ├── maestro-analyze.ts
+│   │   │   └·· AgentName, AssignmentLogEntry, CartridgeStatus, getLastTouched, isOriginal, listCartridges, listMechanics, logRDSession, readCartridgeStatus, recordAssignments, signatureHash  ← ../../lib/gameengin/brain-reader.js
 │   │   ├── mechanic-run.ts
+│   │   │   └·· listMechanics, logRDSession, recordBuild  ← ../../lib/gameengin/brain-reader.js
 │   │   ├── package-cartridge.ts
+│   │   │   ├·· CARTRIDGE_MAGIC, validateManifest  ← ../../lib/gameengin/cartridge-manifest.js
+│   │   │   └·· TarFile, packTar  ← ./lib/tar.js
 │   │   ├── prophet-run.ts
+│   │   │   └·· isOriginal, listMechanics, logRDSession, readGenreDNA, signatureHash  ← ../../lib/gameengin/brain-reader.js
 │   │   ├── upgrader-run.ts
+│   │   │   └·· AgentName, getLastTouched, listCartridges, listMechanics, listTechniques, logRDSession, readUpgradeRules, recordUpgrade  ← ../../lib/gameengin/brain-reader.js
 │   │   └── writer-run.ts
+│   │       └·· listDialoguePatterns, logRDSession, readCharacterVoice, readEmotionalTone, readNarrativePacing  ← ../../lib/gameengin/brain-reader.js
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── autofix-vercel-build.mjs
 │   ├── check-build-memory-drift.mjs
 │   ├── check-engin-filenames.mjs
 │   ├── check-licenses.mjs
 │   ├── check-orphans.mjs
+│   │   └·· buildRegistry  ← ./wire-orphans.mjs
 │   ├── check-root-hygiene.mjs
 │   ├── close-all-open-prs.sh
 │   ├── deploy.sh
@@ -19774,6 +21863,7 @@ _No circular dependencies detected._
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
 │   ├── postbuild.ts
+│   │   └·· assertBuildInvariants  ← ../lib/adari
 │   ├── readme-autosync.ts
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
@@ -19786,84 +21876,1203 @@ _No circular dependencies detected._
 │   ├── update-handoff.mjs
 │   ├── update-readme-status-utils.mjs
 │   ├── update-readme.mjs
+│   │   └·· extractNodeMajorFromDockerfile, extractPnpmVersion, refreshCurrentImplementationStatusSection  ← ./update-readme-status-utils.mjs
 │   ├── validate-schema-sync.sh
 │   ├── vercel-ignore.cjs
 │   ├── vercel-preflight.cjs
 │   └── wire-orphans.mjs
-├── src
-│   ├── components
+│       ├·· UniversalEngine  ← @/src/engin/core
+│       ├·· rulesets  ← ./rulesets
+│       ├·· surfaces  ← ./surfaces
+│       ├·· connectors  ← ./connectors
+│       ├·· cartridges  ← ./cartridges
+│       ├·· brain  ← ./brain
+│       ├·· personas  ← ./personas
+│       ├·· systems  ← ./systems
+│       └·· hooks  ← ./hooks
+├── src/
+│   ├── components/
 │   │   ├── dream.DreamEnginLogo.tsx
+│   │   │   ├·· DreamLogoSceneOptions, useDreamLogoScene  ← @/lib/babylon/useDreamLogoScene
+│   │   │   └·· DreamEnginLogo  ← @/components/DreamEnginLogo
 │   │   ├── dream.LogoHero.tsx
 │   │   └── dream.Nav.tsx
-│   ├── configs
+│   ├── configs/
 │   │   └── demoGameConfig.ts
-│   ├── core
+│   │       └·· GameConfig  ← ../core/GameEnginCore
+│   ├── core/
 │   │   └── GameEnginCore.ts
-│   ├── dream
-│   │   └── rulesets
-│   │       ├── codeengin
+│   │       ├·· EliteGameEngine, QualityTier  ← @/lib/gameengin/core
+│   │       └·· GameEnginRuntime  ← @/lib/gameengin/gameEnginRuntime
+│   ├── dream/
+│   │   └── rulesets/
+│   │       ├── codeengin/
 │   │       │   └── index.ts
-│   │       ├── dreamsengin
+│   │       ├── dreamsengin/
 │   │       │   └── index.ts
-│   │       ├── forgengn
+│   │       ├── forgengn/
 │   │       │   └── index.ts
-│   │       ├── gameengin
+│   │       ├── gameengin/
 │   │       │   └── index.ts
-│   │       ├── homedream
+│   │       ├── homedream/
 │   │       │   ├── dream.homedream.constants.ts
 │   │       │   ├── dream.homedream.physics.ts
+│   │       │   │   └·· HOMEDREAM_GRAVITY  ← ./dream.homedream.constants
 │   │       │   ├── dream.homedream.transforms.ts
+│   │       │   │   └·· HOMEDREAM_WORLD_ID  ← ./dream.homedream.constants
 │   │       │   └── index.ts
-│   │       ├── labengin
+│   │       ├── labengin/
 │   │       │   └── index.ts
-│   │       └── starmakerengin
+│   │       └── starmakerengin/
 │   │           └── index.ts
-│   ├── dreamsurface
+│   ├── dreamsurface/
 │   │   ├── dreamsurface.bridge.ts
+│   │   │   ├·· HomeDreamState, applyDelta  ← ../dream/rulesets/homedream/dream.homedream.transforms
+│   │   │   ├·· EventBus  ← ../engin/core/engin.eventbus
+│   │   │   └·· DreamLedger, appendEntry  ← ../engin/core/engin.ledger
 │   │   ├── dreamsurface.delta.ts
 │   │   └── index.ts
-│   ├── engin
-│   │   ├── core
+│   ├── engin/
+│   │   ├── core/
 │   │   │   ├── engin.auth.ts
 │   │   │   ├── engin.eventbus.ts
 │   │   │   ├── engin.ledger.ts
 │   │   │   ├── engin.renderloop.ts
 │   │   │   └── index.ts
-│   │   ├── generated
+│   │   │       ├·· createClient  ← @/lib/supabase/client
+│   │   │       ├·· (lazy)  ← @/lib/ai/capability-gate
+│   │   │       ├·· (lazy)  ← @/lib/ai/confirm-token
+│   │   │       ├·· (lazy)  ← @/lib/ai/rate-limiter
+│   │   │       ├·· (lazy)  ← @/lib/ai/idempotency
+│   │   │       ├·· (lazy)  ← @/lib/agents/boogieManAI
+│   │   │       ├·· (lazy)  ← @/build-memory/registry.json
+│   │   │       └·· (lazy)  ← ../generated/index
+│   │   ├── generated/
 │   │   │   ├── brain.ts
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/active-projects.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/character-voices/mad-maxi.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/composition-principles/leading-lines-landmark.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/composition-principles/parallax-layers.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-library/neon-courier.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/callback-anchor.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/implied-subject.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/determined.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/fierce.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/hopeful.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/reflective.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/weary.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/meta-progression.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/moment-to-moment.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/session-loop.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/action-rpg.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/episodic.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/live-service.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/metroidvania.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/open-world.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/platformer.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/puzzle.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/racing.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/roguelike.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/sandbox.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/template.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/celeste.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/dead-cells.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/hades.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/hollow-knight.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/outer-wilds.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/neon-glass-tube.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/rusted-iron.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/look-ahead.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/screen-shake.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/combo.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/hit-stop.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/parry.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/ranged.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/coyote-time.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/dash.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/double-jump.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/grapple.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/wall-slide.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/skill-tree.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/ability-gating.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/meta-progression.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/run-persistence.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/season-pass.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/world-streaming.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/narrative-pacing/default.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/originality-registry/signatures.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/lighting/three-point-mood.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/modeling/edge-flow.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/modeling/silhouette-first.json
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json
+│   │   │   │   └·· (lazy)  ← @/lib/gameengin/brain/upgrade-history/prioritization-rules.json
 │   │   │   ├── cartridges.ts
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/index
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/loaders
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/manifest
+│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/reactCartridge
+│   │   │   │   └·· (lazy)  ← @/public/cartridges/mad-maxi/MANIFEST.json
 │   │   │   ├── connectors.ts
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/connectorRegistry
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/deliveryStrategy
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/installFlow
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/normalise
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/bluesky
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/devto
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/facebook
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/github
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/hackernews
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/instagram
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/mastodon
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/medium
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/nostr
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/pinterest
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/podcast
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/reddit
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/shellhub
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/substack
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/tiktok
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/tumblr
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/twitter
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/youtube
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/reconcile
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/syncDispatch
+│   │   │   │   ├·· (lazy)  ← @/lib/connectors/webhookVerification
+│   │   │   │   └·· (lazy)  ← @/lib/connectors/youtube
 │   │   │   ├── hooks.ts
+│   │   │   │   ├·· (lazy)  ← @/hooks/use-spatial
+│   │   │   │   ├·· (lazy)  ← @/hooks/useAccount
+│   │   │   │   ├·· (lazy)  ← @/hooks/useConnectorInstallFlow
+│   │   │   │   ├·· (lazy)  ← @/hooks/useDreamLayout
+│   │   │   │   ├·· (lazy)  ← @/hooks/useHideOnScroll
+│   │   │   │   ├·· (lazy)  ← @/hooks/useSharedDream
+│   │   │   │   ├·· (lazy)  ← @/hooks/useTapHoldMove
+│   │   │   │   ├·· (lazy)  ← @/hooks/useTick
+│   │   │   │   ├·· (lazy)  ← @/hooks/useViewCounter
+│   │   │   │   ├·· (lazy)  ← @/lib/hooks/useMotionTilt
+│   │   │   │   ├·· (lazy)  ← @/lib/hooks/useResponsive
+│   │   │   │   └·· (lazy)  ← @/lib/hooks/useTap
 │   │   │   ├── index.ts
+│   │   │   │   ├·· brain  ← ./brain
+│   │   │   │   ├·· cartridges  ← ./cartridges
+│   │   │   │   ├·· connectors  ← ./connectors
+│   │   │   │   ├·· hooks  ← ./hooks
+│   │   │   │   ├·· personas  ← ./personas
+│   │   │   │   ├·· rulesets  ← ./rulesets
+│   │   │   │   ├·· surfaces  ← ./surfaces
+│   │   │   │   └·· systems  ← ./systems
 │   │   │   ├── personas.ts
 │   │   │   ├── rulesets.ts
+│   │   │   │   ├·· (lazy)  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/core/parser
+│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
+│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/index
+│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
+│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/orchestrator/dream.index
+│   │   │   │   ├·· (lazy)  ← @/engins/dream.ForgeEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/dream.panel.AnalyticsEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/dream.QuantumCircuitCanvas
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.BrandingEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.CodeEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.ContentEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.GameEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.LabEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/engin.StarMakerEngin
+│   │   │   │   ├·· (lazy)  ← @/engins/portfolio/dream.PortfolioEngin
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/codeengin/index
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/dreamsengin/index
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/forgengn/index
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/gameengin/index
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.constants
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.physics
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.transforms
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/index
+│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/labengin/index
+│   │   │   │   └·· (lazy)  ← @/src/dream/rulesets/starmakerengin/index
 │   │   │   ├── surfaces.ts
+│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/page
+│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/platform-errors/page
+│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/platform-health/page
+│   │   │   │   ├·· (lazy)  ← @/app/about/page
+│   │   │   │   ├·· (lazy)  ← @/app/actions/dream-docs
+│   │   │   │   ├·· (lazy)  ← @/app/ads/create/page
+│   │   │   │   ├·· (lazy)  ← @/app/ads/page
+│   │   │   │   ├·· (lazy)  ← @/app/ads/slot/[id]/page
+│   │   │   │   ├·· (lazy)  ← @/app/api/account/delete-data/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/account/delete-dream/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/account/export-data/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/activity/track/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/admin/ai-chat/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/admin/ai-request/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/admin/child-safety/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/admin/code-files/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/admin/observability/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ads/orders/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ads/view/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/agent/session/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/child-safety/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/privacy-event/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/status/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/eams/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/execute/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ai/idari/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/appeal/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/auth/logout/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/auth/providers/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/blocks/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ci/run/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/close-friends/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/comments/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/connect/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/disconnect/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/items/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/sync/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/verify/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/cron/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/instagram/oauth/callback/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/instagram/oauth/start/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/status/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/webhooks/[provider]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/youtube/oauth/callback/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/youtube/oauth/start/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/content/generative-fill/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/content/intelligence/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/content/transcribe/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/content/voice-clone/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dr-eams/hf/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dr-eams/run/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/drafts/[id]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/drafts/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dream-windows/[id]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dream-windows/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreamengin/os-status/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreamr/feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreamr/suggested/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/instances/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/transfer/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/embed-feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/favorites/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/follow/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/forge/build/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/gal/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/game-scores/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/gameengin/crash-report/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/health/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/home-layout/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/journey/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/lab/benchmarks/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/ledger-media/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/likes/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/marketplace/request/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/marketplace/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/messages/boards/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/messages/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/platform/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/user/[userId]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/music/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/notifications/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/platform/errors/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/save/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/view/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/posts/profile/[userId]/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/posts/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/profile/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/projects/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/scheduled-posts/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/security/scan/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/settings/appearance/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/settings/feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/settings/notifications/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/settings/privacy/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/setup/check/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/setup/google-oauth/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/shellhub/devices/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/shop/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/balance/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/earn/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/use/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/social/rss-feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/upload/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/user/layout/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/views/track/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/widgets/feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/widgets/instances/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/channel/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/discovery/route
+│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/live-feed/route
+│   │   │   │   ├·· (lazy)  ← @/app/auth/callback/route
+│   │   │   │   ├·· (lazy)  ← @/app/auth/reset-password/page
+│   │   │   │   ├·· (lazy)  ← @/app/auth/update-password/page
+│   │   │   │   ├·· (lazy)  ← @/app/connectors/dream.ConnectorsClient
+│   │   │   │   ├·· (lazy)  ← @/app/connectors/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/analytics/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/brand/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/brand/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/code/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/code/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/constellation/dream.ConstellationClient
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/constellation/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/create/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/create/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/forge/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/dream.GamePageClient
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/dream.shell.ImmersiveGameShell
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/games/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/games/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/portfolio/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/media-vault/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/engin/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/upload/page
+│   │   │   │   ├·· (lazy)  ← @/app/daydream/play/page
+│   │   │   │   ├·· (lazy)  ← @/app/discover/page
+│   │   │   │   ├·· (lazy)  ← @/app/dream-effects/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamBarDataBridge
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/api/route
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamSpaceRegion
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamWidgetGrid
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/dreamspace/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/dualruntime/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/homedream/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/layout
+│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamr/page
+│   │   │   │   ├·· (lazy)  ← @/app/dreamspace/page
+│   │   │   │   ├·· (lazy)  ← @/app/edit-profiledream/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/campaigns/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/identity/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/code/ai/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/code/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/code/notebook/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/code/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/code/projects/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/create/calendar/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/create/editor/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/create/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/create/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/create/queue/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/games/builder/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/games/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/games/library/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/games/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/games/scores/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/data/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/experiments/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/quantum/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/music/arrange/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/music/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/music/library/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/music/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/music/studio/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/assets/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/layout
+│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/optimize/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/page
+│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/quantum/page
+│   │   │   │   ├·· (lazy)  ← @/app/feed-settings/dream.FeedSettingsClient
+│   │   │   │   ├·· (lazy)  ← @/app/feed-settings/page
+│   │   │   │   ├·· (lazy)  ← @/app/gameengin/cartridges/[id]/page
+│   │   │   │   ├·· (lazy)  ← @/app/gameengin/cartridges/page
+│   │   │   │   ├·· (lazy)  ← @/app/gameengin/page
+│   │   │   │   ├·· (lazy)  ← @/app/homedream/page
+│   │   │   │   ├·· (lazy)  ← @/app/join/page
+│   │   │   │   ├·· (lazy)  ← @/app/lab/[id]/codespace/page
+│   │   │   │   ├·· (lazy)  ← @/app/lab/[id]/page
+│   │   │   │   ├·· (lazy)  ← @/app/lab/new/page
+│   │   │   │   ├·· (lazy)  ← @/app/lab/page
+│   │   │   │   ├·· (lazy)  ← @/app/layout
+│   │   │   │   ├·· (lazy)  ← @/app/login/page
+│   │   │   │   ├·· (lazy)  ← @/app/marketplace/[id]/page
+│   │   │   │   ├·· (lazy)  ← @/app/marketplace/page
+│   │   │   │   ├·· (lazy)  ← @/app/marketplace/sell/page
+│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/[id]/page
+│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/new/page
+│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/page
+│   │   │   │   ├·· (lazy)  ← @/app/messages/page
+│   │   │   │   ├·· (lazy)  ← @/app/mission/page
+│   │   │   │   ├·· (lazy)  ← @/app/notes/page
+│   │   │   │   ├·· (lazy)  ← @/app/onboarding/page
+│   │   │   │   ├·· (lazy)  ← @/app/page
+│   │   │   │   ├·· (lazy)  ← @/app/policy/page
+│   │   │   │   ├·· (lazy)  ← @/app/profile/[handle]/page
+│   │   │   │   ├·· (lazy)  ← @/app/profile/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/account/dream.DangerZoneActions
+│   │   │   │   ├·· (lazy)  ← @/app/settings/account/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/algorithm/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/appearance/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/dream.ControlsClient
+│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/dream.PositionIndicatorToggle
+│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/data/dream.DataClient
+│   │   │   │   ├·· (lazy)  ← @/app/settings/data/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/dreams/dreams-layout-editor
+│   │   │   │   ├·· (lazy)  ← @/app/settings/dreams/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/feed/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/help/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/notifications/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/privacy/dream.PrivacyClient
+│   │   │   │   ├·· (lazy)  ← @/app/settings/privacy/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/safety/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/security/page
+│   │   │   │   ├·· (lazy)  ← @/app/settings/widgets/page
+│   │   │   │   ├·· (lazy)  ← @/app/shop/page
+│   │   │   │   ├·· (lazy)  ← @/app/shop/sell/page
+│   │   │   │   ├·· (lazy)  ← @/app/u/[handle]/page
+│   │   │   │   ├·· (lazy)  ← @/app/view-profile/page
+│   │   │   │   ├·· (lazy)  ← @/app/webgpu/page
+│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.ActivityPostForm
+│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.ActivityProfile
+│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.TierBadge
+│   │   │   │   ├·· (lazy)  ← @/components/ads/dream.AdUnit
+│   │   │   │   ├·· (lazy)  ← @/components/ads/dream.SkipCreditBalance
+│   │   │   │   ├·· (lazy)  ← @/components/auth/dream.PasswordField
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.AddSliceSheet
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.ConnectDreamPrompt
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.ConnectorRow
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.NoSlotDialog
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.PlacementMode
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.widget.ConnectorWidgetPicker
+│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
+│   │   │   │   ├·· (lazy)  ← @/components/core/dream.CoreDream
+│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.bar.CustomizeModeBar
+│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.bar.CustomizeToolbar
+│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.GlobalCustomizeUI
+│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.ColorPanel
+│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.EffectsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.FontPanel
+│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.LayoutPanel
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.CodeDreamIDE
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.constellationmap
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.DiffViewer
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.JourneyTrail
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.LabDreamIDE
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.NGNEngin
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.shell.DaydreamShell
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.StandaloneEnginSurface
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
+│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
+│   │   │   │   ├·· (lazy)  ← @/components/draggable/dream.DraggableModule
+│   │   │   │   ├·· (lazy)  ← @/components/dream.AIAssistant
+│   │   │   │   ├·· (lazy)  ← @/components/dream.AudioVisualizer3D
+│   │   │   │   ├·· (lazy)  ← @/components/dream.BoogieWarningBanner
+│   │   │   │   ├·· (lazy)  ← @/components/dream.BrandLogo
+│   │   │   │   ├·· (lazy)  ← @/components/dream.CommandPalette
+│   │   │   │   ├·· (lazy)  ← @/components/dream.CreatePostModal
+│   │   │   │   ├·· (lazy)  ← @/components/dream.DragToAnchorClose
+│   │   │   │   ├·· (lazy)  ← @/components/dream.DrEamsModeToggle
+│   │   │   │   ├·· (lazy)  ← @/components/dream.DrEamsVoiceAssistant
+│   │   │   │   ├·· (lazy)  ← @/components/dream.FeedCard
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ForgeDreamCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/dream.GlobalOverlays
+│   │   │   │   ├·· (lazy)  ← @/components/dream.HeroSprite
+│   │   │   │   ├·· (lazy)  ← @/components/dream.HomeFeed
+│   │   │   │   ├·· (lazy)  ← @/components/dream.IconSelector
+│   │   │   │   ├·· (lazy)  ← @/components/dream.InnerDreamsButton
+│   │   │   │   ├·· (lazy)  ← @/components/dream.KonamiDream
+│   │   │   │   ├·· (lazy)  ← @/components/dream.LandingHero
+│   │   │   │   ├·· (lazy)  ← @/components/dream.LedgerChart
+│   │   │   │   ├·· (lazy)  ← @/components/dream.MessagesClient
+│   │   │   │   ├·· (lazy)  ← @/components/dream.NotificationCenter
+│   │   │   │   ├·· (lazy)  ← @/components/dream.OSShellActivator
+│   │   │   │   ├·· (lazy)  ← @/components/dream.panel.ChildSafetyPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dream.panel.IDariPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dream.PhysicsLab
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileEditor
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileShareButton
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileSpace
+│   │   │   │   ├·· (lazy)  ← @/components/dream.PullToRefresh
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ShrunkMode
+│   │   │   │   ├·· (lazy)  ← @/components/dream.SkeletonLoaders
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ThemeApplicator
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ThemeToggle
+│   │   │   │   ├·· (lazy)  ← @/components/dream.ToastSystem
+│   │   │   │   ├·· (lazy)  ← @/components/dream.universal_asset_registry
+│   │   │   │   ├·· (lazy)  ← @/components/dream.VoidThemeToggle
+│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.AnchorWidget
+│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.ProfileWidgetBlock
+│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.WidgetBubble
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.bar.DrEamsSearchBar
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.DREAMenginOS
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.DrEamsCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.HomeControls
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.menu.NexusMenu
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.menu.OutdreamMenu
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.overlay.ViewAllDreamsOverlay
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.panel.DrEamsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.BabylonGameScene
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.DrEamsScene
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.PortfolioOptimizationScene
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.shell.EnginShell
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.widget.AppearanceWidget
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dreamsurface.dreamengin
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/engine/math
+│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/engine/types
+│   │   │   │   ├·· (lazy)  ← @/components/dreamnav/dream.DreamNavControls
+│   │   │   │   ├·· (lazy)  ← @/components/dreamnav/dreamsurface.dreamnav
+│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.CloseFriendsSettings
+│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.panel.DreamRChannelPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.connectorlayer
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.DraggableDream
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.featurelayer
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.GlobalDragLayer
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.outputlayer
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.PlatformErrorReporter
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.shell.DreamShell
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.shell.SharedDreamShell
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.SlideOverPanel
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.widget.SuperDreamWidget
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.window.JourneyDreamWindow
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.dreamspace
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.shell
+│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.window
+│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/dream.BrandEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/panels/dream.panel.IdentityPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/code/dream.CodeEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/code/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.AIPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.NotebookPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.ProjectsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/create/dream.CreateEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/create/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.CalendarPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.EditorPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.QueuePanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/games/dream.GameEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/games/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.BuilderPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.LibraryPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.ScoresPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/dream.LabEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.DataVizPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.ExperimentsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.QuantumPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/music/dream.MusicEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/music/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.ArrangePanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.MusicLibraryPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.StudioPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/dream.PortfolioEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/index
+│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.bar.EnginNavBar
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.EnginProvider
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.EnginRuleSet
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.makeEnginApp
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.shell.EnginAppShell
+│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/index
+│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.AlgorithmEngine
+│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.CommentSection
+│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FeedVideoCard
+│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FollowButton
+│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FollowOnboarding
+│   │   │   │   ├·· (lazy)  ← @/components/feeds/dream.widget.EmbedFeedWidget
+│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.EngineBuilderCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.panel.AIBuilderPanel
+│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.widget.ForgeMomentumWidget
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeBrowser
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.CrashReportModal
+│   │   │   │   ├·· (lazy)  ← @/components/gameengin/input/DualSenseManager
+│   │   │   │   ├·· (lazy)  ← @/components/games/_fx/canvasFx
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.DefuseRitual
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.GameController
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.GamesHub
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.LegacyGameHUD
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.MobileGameHUD
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Leaderboard
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.RecordingControls
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.remote.GameRemote
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.remote.LegacyGameRemote
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
+│   │   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/audio
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/authoredZonePacks
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/config
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/dream.MadmaxiGame
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/index
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/levels
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/materials
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/types
+│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/vfx
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.ActiveModuleSurface
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.bar.GlobalDreamBar
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.bar.PersistentDreamBar
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.DaydreamPulseStrip
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.FlagshipEnginesStrip
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.NeuralSeamCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/home/dream.widget.DreamWidget
+│   │   │   │   ├·· (lazy)  ← @/components/idari/dream.PlatformHealth
+│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.LandingNav
+│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.LandingProductStatement
+│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.scene.UniverseField
+│   │   │   │   ├·· (lazy)  ← @/components/marketplace/dream.MarketplaceListingCard
+│   │   │   │   ├·· (lazy)  ← @/components/marketplace/dream.MarketplaceRequestButton
+│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.DreamRadialMenu
+│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.DualBottomMenu
+│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.RadialMenu
+│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.SystemRadialMenu
+│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.panel.MenuPanel
+│   │   │   │   ├·· (lazy)  ← @/components/messaging/dream.BoardComposer
+│   │   │   │   ├·· (lazy)  ← @/components/music/dream.SoundRecorder
+│   │   │   │   ├·· (lazy)  ← @/components/onboarding/dream.OnboardingTip
+│   │   │   │   ├·· (lazy)  ← @/components/optimizer/dream.scene.BabylonOptimizeroScene
+│   │   │   │   ├·· (lazy)  ← @/components/overlays/dream.RootStatusScreen
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.AlgorithmPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.AppearancePanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ConnectorsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ControlsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.DataPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.FeedPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.FeedSettingsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.HelpPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.MarketplacePanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.PrivacyPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ProfilePanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.SafetyPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.SettingsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.WidgetsPanel
+│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.EditableAvatar
+│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.ProfileCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.ProfileCustomizeButton
+│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.widget.ProfileWidgetGrid
+│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.AppSurfaceShell
+│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.GodTierProvider
+│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.ThemeProvider
+│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.RuntimeView
+│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.shell.RuntimeShell
+│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.LightningWing
+│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.NeonGlow
+│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.Refractor
+│   │   │   │   ├·· (lazy)  ← @/components/shaders/index
+│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.InviteFlow
+│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.SharedDreamCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.SharedDreamProvider
+│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/index
+│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.PixiPhysicsLayer
+│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.ProfileSpace
+│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.shell.EnhancedSpatialShell
+│   │   │   │   ├·· (lazy)  ← @/components/three/dream.scene
+│   │   │   │   ├·· (lazy)  ← @/components/three/index
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.DreamWord
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.IconList
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.InfinityIcon
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.PlatformBadge
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.SheetIcon
+│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.SocialShareSheet
+│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/dream.UniversalEditor
+│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/dream.UniversalEditorWrapper
+│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/index
+│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/useTapHoldMove
+│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.node-cluster
+│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.shell.universe-shell
+│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.universe-card
+│   │   │   │   ├·· (lazy)  ← @/components/universe/index
+│   │   │   │   ├·· (lazy)  ← @/components/warp/dream.WarpCanvas
+│   │   │   │   ├·· (lazy)  ← @/components/webgpu/dream.WebGPUShowcase
+│   │   │   │   ├·· (lazy)  ← @/components/webgpu/neuralPostProcess
+│   │   │   │   ├·· (lazy)  ← @/components/webgpu/renderer
+│   │   │   │   ├·· (lazy)  ← @/components/webgpu/shaders
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.AddDreamCTA
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.ConfigureSheet
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.EditModeBanner
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.EditModeProvider
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.PlayMediaWidget
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.UniversalWidget
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetCard
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetLibrary
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetPlaceholder
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetShell
+│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetSurface
+│   │   │   │   ├·· (lazy)  ← @/coresurfaces/dreamsurface.EditProfileDream
+│   │   │   │   ├·· (lazy)  ← @/coresurfaces/dreamsurface.ViewProfile
+│   │   │   │   ├·· (lazy)  ← @/daydreams/brand/page
+│   │   │   │   ├·· (lazy)  ← @/daydreams/code/page
+│   │   │   │   ├·· (lazy)  ← @/daydreams/create/page
+│   │   │   │   ├·· (lazy)  ← @/daydreams/games/page
+│   │   │   │   ├·· (lazy)  ← @/daydreams/lab/page
+│   │   │   │   └·· (lazy)  ← @/daydreams/music/page
 │   │   │   └── systems.ts
-│   │   └── state
+│   │   │       ├·· (lazy)  ← @/lib/activeModulesStore
+│   │   │       ├·· (lazy)  ← @/lib/activity/aqs
+│   │   │       ├·· (lazy)  ← @/lib/activity/boogieActivityPolicy
+│   │   │       ├·· (lazy)  ← @/lib/activity/revenueSplit
+│   │   │       ├·· (lazy)  ← @/lib/activity/scoring
+│   │   │       ├·· (lazy)  ← @/lib/activity/skipCredits
+│   │   │       ├·· (lazy)  ← @/lib/activity/types
+│   │   │       ├·· (lazy)  ← @/lib/activity/visibility-score
+│   │   │       ├·· (lazy)  ← @/lib/adari
+│   │   │       ├·· (lazy)  ← @/lib/admin/lockout
+│   │   │       ├·· (lazy)  ← @/lib/admin/upgrade-readiness
+│   │   │       ├·· (lazy)  ← @/lib/agentOS
+│   │   │       ├·· (lazy)  ← @/lib/agentOS/hostTools
+│   │   │       ├·· (lazy)  ← @/lib/agents/agentBus
+│   │   │       ├·· (lazy)  ← @/lib/agents/boogieManAI
+│   │   │       ├·· (lazy)  ← @/lib/agents/dreamengin
+│   │   │       ├·· (lazy)  ← @/lib/agents/drEamsMode
+│   │   │       ├·· (lazy)  ← @/lib/agents/idari
+│   │   │       ├·· (lazy)  ← @/lib/agents/idariLoop
+│   │   │       ├·· (lazy)  ← @/lib/agents/teachBus
+│   │   │       ├·· (lazy)  ← @/lib/agents/uiActions
+│   │   │       ├·· (lazy)  ← @/lib/ai/audit
+│   │   │       ├·· (lazy)  ← @/lib/ai/boogie-policy
+│   │   │       ├·· (lazy)  ← @/lib/ai/boogie-verifier
+│   │   │       ├·· (lazy)  ← @/lib/ai/boogieman
+│   │   │       ├·· (lazy)  ← @/lib/ai/capability-gate
+│   │   │       ├·· (lazy)  ← @/lib/ai/CIC
+│   │   │       ├·· (lazy)  ← @/lib/ai/confirm-token
+│   │   │       ├·· (lazy)  ← @/lib/ai/confirm
+│   │   │       ├·· (lazy)  ← @/lib/ai/groq
+│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/dreams
+│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/index
+│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/navigation
+│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/social
+│   │   │       ├·· (lazy)  ← @/lib/ai/idempotency
+│   │   │       ├·· (lazy)  ← @/lib/ai/rate-limiter
+│   │   │       ├·· (lazy)  ← @/lib/ai/rateLimit
+│   │   │       ├·· (lazy)  ← @/lib/ai/schemas
+│   │   │       ├·· (lazy)  ← @/lib/ai/tfBackend
+│   │   │       ├·· (lazy)  ← @/lib/ai/tool-router
+│   │   │       ├·· (lazy)  ← @/lib/ai/triad
+│   │   │       ├·· (lazy)  ← @/lib/api/route
+│   │   │       ├·· (lazy)  ← @/lib/artifactStore
+│   │   │       ├·· (lazy)  ← @/lib/assets/assetOptimizer
+│   │   │       ├·· (lazy)  ← @/lib/assets/indexedDBStore
+│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/fingerprint
+│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/index
+│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/peak-map
+│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/stem-extractor
+│   │   │       ├·· (lazy)  ← @/lib/audioFingerprint
+│   │   │       ├·· (lazy)  ← @/lib/auth/nextRedirect
+│   │   │       ├·· (lazy)  ← @/lib/babylon/createEngine
+│   │   │       ├·· (lazy)  ← @/lib/babylon/dreamengine-hybrid
+│   │   │       ├·· (lazy)  ← @/lib/bot-detection/detector
+│   │   │       ├·· (lazy)  ← @/lib/bot-detection/index
+│   │   │       ├·· (lazy)  ← @/lib/bot-detection/swipe-physics
+│   │   │       ├·· (lazy)  ← @/lib/bot-detection/view-tally
+│   │   │       ├·· (lazy)  ← @/lib/botDetection
+│   │   │       ├·· (lazy)  ← @/lib/branding/logos
+│   │   │       ├·· (lazy)  ← @/lib/child-safety/childSafetyDetector
+│   │   │       ├·· (lazy)  ← @/lib/child-safety/imageClassifier
+│   │   │       ├·· (lazy)  ← @/lib/child-safety/messageContextChecker
+│   │   │       ├·· (lazy)  ← @/lib/child-safety/ncmecReporter
+│   │   │       ├·· (lazy)  ← @/lib/child-safety/scanMediaUrls
+│   │   │       ├·· (lazy)  ← @/lib/code/drEamsCodeAssist
+│   │   │       ├·· (lazy)  ← @/lib/collaboration/index
+│   │   │       ├·· (lazy)  ← @/lib/componentInventory
+│   │   │       ├·· (lazy)  ← @/lib/composite/compositor
+│   │   │       ├·· (lazy)  ← @/lib/composite/fxSimulation
+│   │   │       ├·· (lazy)  ← @/lib/composite/matchmover
+│   │   │       ├·· (lazy)  ← @/lib/composite/motionCapture
+│   │   │       ├·· (lazy)  ← @/lib/composite/rotoscope
+│   │   │       ├·· (lazy)  ← @/lib/consent/consentManager
+│   │   │       ├·· (lazy)  ← @/lib/content/generativeFill
+│   │   │       ├·· (lazy)  ← @/lib/content/publishIntent
+│   │   │       ├·· (lazy)  ← @/lib/content/seoScorer
+│   │   │       ├·· (lazy)  ← @/lib/content/transcriptEditor
+│   │   │       ├·· (lazy)  ← @/lib/content/voiceClone
+│   │   │       ├·· (lazy)  ← @/lib/data-transform
+│   │   │       ├·· (lazy)  ← @/lib/daydream/useDaydreamPersistence
+│   │   │       ├·· (lazy)  ← @/lib/daydream/useDaydreamState
+│   │   │       ├·· (lazy)  ← @/lib/dev-bypass
+│   │   │       ├·· (lazy)  ← @/lib/diff/aiEditEngine
+│   │   │       ├·· (lazy)  ← @/lib/diff/diffUtils
+│   │   │       ├·· (lazy)  ← @/lib/dream-docs/embed
+│   │   │       ├·· (lazy)  ← @/lib/dream-docs/index
+│   │   │       ├·· (lazy)  ← @/lib/dream-docs/search
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/connectionVerbs
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/enginConnectionNetwork
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/index
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/runtimeRegion
+│   │   │       ├·· (lazy)  ← @/lib/dream-window/useDreamWindowActions
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/barInteractions
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamBarContext
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMConversations
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMDraft
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMMessages
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamSearch
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useMessagingCore
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useModuleBarIntent
+│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useNotifications
+│   │   │       ├·· (lazy)  ← @/lib/dreamengin/DrEamsAnimator
+│   │   │       ├·· (lazy)  ← @/lib/dreamengin/drEamsSearch
+│   │   │       ├·· (lazy)  ← @/lib/dreamengin/engineAssets
+│   │   │       ├·· (lazy)  ← @/lib/dreamengin/osSubsystemManifest
+│   │   │       ├·· (lazy)  ← @/lib/dreamenginOS/index
+│   │   │       ├·· (lazy)  ← @/lib/dreamnav/delta
+│   │   │       ├·· (lazy)  ← @/lib/dreamnav/gctAssist
+│   │   │       ├·· (lazy)  ← @/lib/dreamnav/gestures6
+│   │   │       ├·· (lazy)  ← @/lib/dreamnav/path
+│   │   │       ├·· (lazy)  ← @/lib/dreamnav/tau
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/feedCursor
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/socialHumanityScore
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/swipeCalibration
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/swipePersonalization
+│   │   │       ├·· (lazy)  ← @/lib/dreamr/torridityLedger
+│   │   │       ├·· (lazy)  ← @/lib/dreams/drag
+│   │   │       ├·· (lazy)  ← @/lib/dreams/profileProjection
+│   │   │       ├·· (lazy)  ← @/lib/dreams/types
+│   │   │       ├·· (lazy)  ← @/lib/dreams/useDreamsRuntime
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginBaseState
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginEventBus
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/index
+│   │   │       ├·· (lazy)  ← @/lib/engine/index
+│   │   │       ├·· (lazy)  ← @/lib/enginpipe/artifact/manifest
+│   │   │       ├·· (lazy)  ← @/lib/enginpipe/index
+│   │   │       ├·· (lazy)  ← @/lib/enginpipe/quality/tiers
+│   │   │       ├·· (lazy)  ← @/lib/enginpipe/telemetry/client
+│   │   │       ├·· (lazy)  ← @/lib/enginpipe/telemetry/events
+│   │   │       ├·· (lazy)  ← @/lib/engins/game/gameEnginRuleSet
+│   │   │       ├·· (lazy)  ← @/lib/engins/game/index
+│   │   │       ├·· (lazy)  ← @/lib/engins/game/useGameEnginRuntime
+│   │   │       ├·· (lazy)  ← @/lib/engins/useEnginWorkflow
+│   │   │       ├·· (lazy)  ← @/lib/engins/workflowEngine
+│   │   │       ├·· (lazy)  ← @/lib/event-bus/index
+│   │   │       ├·· (lazy)  ← @/lib/eventBus
+│   │   │       ├·· (lazy)  ← @/lib/feature-build/buildCycle
+│   │   │       ├·· (lazy)  ← @/lib/feature-build/featureManifest
+│   │   │       ├·· (lazy)  ← @/lib/feature-build/index
+│   │   │       ├·· (lazy)  ← @/lib/feature-build/uiQualityCriteria
+│   │   │       ├·· (lazy)  ← @/lib/feed/feedTopics
+│   │   │       ├·· (lazy)  ← @/lib/feed/hashtags
+│   │   │       ├·· (lazy)  ← @/lib/feed/useLiveFeed
+│   │   │       ├·· (lazy)  ← @/lib/feed/useYouTubeLiveFeed
+│   │   │       ├·· (lazy)  ← @/lib/feeds/embedFeedLoader
+│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/assembly
+│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/index
+│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/piece-registry
+│   │   │       ├·· (lazy)  ← @/lib/forge/engineForge
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeBuild
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeIntelligence
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeMomentum
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeNexus
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeRegistry
+│   │   │       ├·· (lazy)  ← @/lib/forge/forgeRituals
+│   │   │       ├·· (lazy)  ← @/lib/forge/useForgeActivity
+│   │   │       ├·· (lazy)  ← @/lib/forge/useForgeBuild
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/accessibility-ai
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/ai-director
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/ai-npcs
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/brain-reader
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridge-manifest
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridge
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridgeLoader
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/cloud-compute
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/control-mappings
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/core
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/dream-engine
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/dreamr-loader
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/gameEnginRuntime
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/generative-audio
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/index
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/neural-render
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/path-tracing
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/platform
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/post-fx
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/power-systems
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/predictive-stream
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/procgen
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/registerCartridges
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/comboMachine
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/index
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/layout
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/moves
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/sprintDetector
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/ai
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/animation
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/assets
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/index
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/lod
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/network
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/physics
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/pooling
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/rendering
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/spatial
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/world
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/unifiedLoop
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/useUnifiedLoop
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/webgpu-runtime-shell
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/world-crdt
+│   │   │       ├·· (lazy)  ← @/lib/gameengin/xr
+│   │   │       ├·· (lazy)  ← @/lib/games/avatar
+│   │   │       ├·· (lazy)  ← @/lib/games/catalog
+│   │   │       ├·· (lazy)  ← @/lib/games/DualSenseManager
+│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerButtons
+│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerLeft
+│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerRight
+│   │   │       ├·· (lazy)  ← @/lib/games/hooks
+│   │   │       ├·· (lazy)  ← @/lib/games/library-state
+│   │   │       ├·· (lazy)  ← @/lib/games/lucid-avenue-world
+│   │   │       ├·· (lazy)  ← @/lib/games/mobileControls
+│   │   │       ├·· (lazy)  ← @/lib/games/navigation
+│   │   │       ├·· (lazy)  ← @/lib/games/performance-baseline
+│   │   │       ├·· (lazy)  ← @/lib/games/quality-plan
+│   │   │       ├·· (lazy)  ← @/lib/games/useAIDirector
+│   │   │       ├·· (lazy)  ← @/lib/games/useGameInputKeyboardBridge
+│   │   │       ├·· (lazy)  ← @/lib/games/useGamepad
+│   │   │       ├·· (lazy)  ← @/lib/games/useImmersiveGameLayout
+│   │   │       ├·· (lazy)  ← @/lib/games/useRemoteChannel
+│   │   │       ├·· (lazy)  ← @/lib/gct/anomaly-detection
+│   │   │       ├·· (lazy)  ← @/lib/gct/audio-fingerprint
+│   │   │       ├·· (lazy)  ← @/lib/gct/gct-engine
+│   │   │       ├·· (lazy)  ← @/lib/gct/image-search
+│   │   │       ├·· (lazy)  ← @/lib/gct/index
+│   │   │       ├·· (lazy)  ← @/lib/gct/recommendations
+│   │   │       ├·· (lazy)  ← @/lib/generationLaw
+│   │   │       ├·· (lazy)  ← @/lib/gestures/touchGestures
+│   │   │       ├·· (lazy)  ← @/lib/gestures/useTouchGestures
+│   │   │       ├·· (lazy)  ← @/lib/god-tier/godTierEngine
+│   │   │       ├·· (lazy)  ← @/lib/god-tier/useGodTier
+│   │   │       ├·· (lazy)  ← @/lib/gsap/gsap
+│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapEntrance
+│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapFlip
+│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapScrollReveal
+│   │   │       ├·· (lazy)  ← @/lib/h265-encoder
+│   │   │       ├·· (lazy)  ← @/lib/home-buttons/button-groups
+│   │   │       ├·· (lazy)  ← @/lib/home-buttons/contextual-home
+│   │   │       ├·· (lazy)  ← @/lib/icons/sheet
+│   │   │       ├·· (lazy)  ← @/lib/identity/canonical-names
+│   │   │       ├·· (lazy)  ← @/lib/intelligence/continuityHelpers
+│   │   │       ├·· (lazy)  ← @/lib/intelligence/sessionContinuity
+│   │   │       ├·· (lazy)  ← @/lib/intelligence/sessionPatternEngine
+│   │   │       ├·· (lazy)  ← @/lib/intelligence/useSessionIntelligence
+│   │   │       ├·· (lazy)  ← @/lib/journey/journeyDots
+│   │   │       ├·· (lazy)  ← @/lib/journey/journeyInsights
+│   │   │       ├·· (lazy)  ← @/lib/journey/withJourney
+│   │   │       ├·· (lazy)  ← @/lib/ledger-data
+│   │   │       ├·· (lazy)  ← @/lib/ledger
+│   │   │       ├·· (lazy)  ← @/lib/marketplace/listings
+│   │   │       ├·· (lazy)  ← @/lib/marketplace/request
+│   │   │       ├·· (lazy)  ← @/lib/media/ledger
+│   │   │       ├·· (lazy)  ← @/lib/media/postMedia
+│   │   │       ├·· (lazy)  ← @/lib/music/presets
+│   │   │       ├·· (lazy)  ← @/lib/music/starmaker
+│   │   │       ├·· (lazy)  ← @/lib/music/starmakerArrangement
+│   │   │       ├·· (lazy)  ← @/lib/music/starmakerDaw
+│   │   │       ├·· (lazy)  ← @/lib/music/wasmAudioBridge
+│   │   │       ├·· (lazy)  ← @/lib/navigation/anchorField
+│   │   │       ├·· (lazy)  ← @/lib/navigation/AnchorStateBuffer
+│   │   │       ├·· (lazy)  ← @/lib/navigation/AnchorWidgetStorage
+│   │   │       ├·· (lazy)  ← @/lib/navigation/dream-state
+│   │   │       ├·· (lazy)  ← @/lib/navigation/GestureFrameComputer
+│   │   │       ├·· (lazy)  ← @/lib/navigation/GestureIntentResolver
+│   │   │       ├·· (lazy)  ← @/lib/navigation/index
+│   │   │       ├·· (lazy)  ← @/lib/navigation/manifold
+│   │   │       ├·· (lazy)  ← @/lib/navigation/NavStateBuffer
+│   │   │       ├·· (lazy)  ← @/lib/navigation/physics
+│   │   │       ├·· (lazy)  ← @/lib/navigation/PointerEventCapture
+│   │   │       ├·· (lazy)  ← @/lib/navigation/quaternion
+│   │   │       ├·· (lazy)  ← @/lib/navigation/ReturnStack
+│   │   │       ├·· (lazy)  ← @/lib/navigation/SpatialNavigationEngine
+│   │   │       ├·· (lazy)  ← @/lib/navigation/StructureLedger
+│   │   │       ├·· (lazy)  ← @/lib/navigation/TransformSolver
+│   │   │       ├·· (lazy)  ← @/lib/navigation/useNavigation
+│   │   │       ├·· (lazy)  ← @/lib/navigation/WidgetInstanceMemory
+│   │   │       ├·· (lazy)  ← @/lib/notifications/notificationHelpers
+│   │   │       ├·· (lazy)  ← @/lib/notifications/useNotifications
+│   │   │       ├·· (lazy)  ← @/lib/observability/collector
+│   │   │       ├·· (lazy)  ← @/lib/observability/correlator
+│   │   │       ├·· (lazy)  ← @/lib/observability/healthTrend
+│   │   │       ├·· (lazy)  ← @/lib/observability/immediateAction
+│   │   │       ├·· (lazy)  ← @/lib/observability/index
+│   │   │       ├·· (lazy)  ← @/lib/observability/otel
+│   │   │       ├·· (lazy)  ← @/lib/observability/otelBridge
+│   │   │       ├·· (lazy)  ← @/lib/observability/rootCauseAnalyzer
+│   │   │       ├·· (lazy)  ← @/lib/offline/offlineCache
+│   │   │       ├·· (lazy)  ← @/lib/offline/useOfflineSync
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/babylon-optimizero
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/constraint-solver
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/creative-optimizero
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/creative-validator
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/index
+│   │   │       ├·· (lazy)  ← @/lib/optimizer/types
+│   │   │       ├·· (lazy)  ← @/lib/panels/panelTypes
+│   │   │       ├·· (lazy)  ← @/lib/platform/index
+│   │   │       ├·· (lazy)  ← @/lib/platform/lab
+│   │   │       ├·· (lazy)  ← @/lib/policy/boogiePolicy
+│   │   │       ├·· (lazy)  ← @/lib/renderer/Canvas2DRenderer
+│   │   │       ├·· (lazy)  ← @/lib/renderer/FrustumCuller
+│   │   │       ├·· (lazy)  ← @/lib/renderer/index
+│   │   │       ├·· (lazy)  ← @/lib/renderer/IRenderer
+│   │   │       ├·· (lazy)  ← @/lib/routing/surfaces
+│   │   │       ├·· (lazy)  ← @/lib/runtime/channelMetrics
+│   │   │       ├·· (lazy)  ← @/lib/runtime/coercionTable
+│   │   │       ├·· (lazy)  ← @/lib/runtime/dreamOSBus
+│   │   │       ├·· (lazy)  ← @/lib/runtime/dropTargetRegistry
+│   │   │       ├·· (lazy)  ← @/lib/runtime/dualRuntime
+│   │   │       ├·· (lazy)  ← @/lib/runtime/dualRuntimeBridge
+│   │   │       ├·· (lazy)  ← @/lib/runtime/EnginDispatcher
+│   │   │       ├·· (lazy)  ← @/lib/runtime/enginWorkflowRegistry
+│   │   │       ├·· (lazy)  ← @/lib/runtime/instanceManager
+│   │   │       ├·· (lazy)  ← @/lib/runtime/isAuthRelatedError
+│   │   │       ├·· (lazy)  ← @/lib/runtime/madMaxiSnapshotBridge
+│   │   │       ├·· (lazy)  ← @/lib/runtime/memory
+│   │   │       ├·· (lazy)  ← @/lib/runtime/moduleRegistry
+│   │   │       ├·· (lazy)  ← @/lib/runtime/offlineQueue
+│   │   │       ├·· (lazy)  ← @/lib/runtime/quantumCircuit
+│   │   │       ├·· (lazy)  ← @/lib/runtime/runtimeChannel
+│   │   │       ├·· (lazy)  ← @/lib/runtime/runtimeContainer
+│   │   │       ├·· (lazy)  ← @/lib/runtime/seamClipboard
+│   │   │       ├·· (lazy)  ← @/lib/runtime/sharedResourcePool
+│   │   │       ├·· (lazy)  ← @/lib/runtime/snapshotFingerprint
+│   │   │       ├·· (lazy)  ← @/lib/runtime/swapManager
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useDragSurface
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useDualRuntime
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useDualRuntimePersistence
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useEnginBridge
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useEnginCoopSync
+│   │   │       ├·· (lazy)  ← @/lib/runtime/useSharedEnginChannel
+│   │   │       ├·· (lazy)  ← @/lib/scene/sceneState
+│   │   │       ├·· (lazy)  ← @/lib/setup/checks
+│   │   │       ├·· (lazy)  ← @/lib/sharedDream
+│   │   │       ├·· (lazy)  ← @/lib/shop/listings
+│   │   │       ├·· (lazy)  ← @/lib/slog
+│   │   │       ├·· (lazy)  ← @/lib/social-feed
+│   │   │       ├·· (lazy)  ← @/lib/social/crossPost
+│   │   │       ├·· (lazy)  ← @/lib/social/platforms
+│   │   │       ├·· (lazy)  ← @/lib/social/rss-feed
+│   │   │       ├·· (lazy)  ← @/lib/supabase/client
+│   │   │       ├·· (lazy)  ← @/lib/supabase/config
+│   │   │       ├·· (lazy)  ← @/lib/supabase/realtime
+│   │   │       ├·· (lazy)  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· (lazy)  ← @/lib/supabase/server
+│   │   │       ├·· (lazy)  ← @/lib/supabase/vector
+│   │   │       ├·· (lazy)  ← @/lib/torridity
+│   │   │       ├·· (lazy)  ← @/lib/torridity/constants
+│   │   │       ├·· (lazy)  ← @/lib/torridity/index
+│   │   │       ├·· (lazy)  ← @/lib/torridity/physics
+│   │   │       ├·· (lazy)  ← @/lib/ui/responsive
+│   │   │       ├·· (lazy)  ← @/lib/ui/runtimeViewport
+│   │   │       ├·· (lazy)  ← @/lib/ui/skin-engine
+│   │   │       ├·· (lazy)  ← @/lib/ui/theme-engine
+│   │   │       ├·· (lazy)  ← @/lib/ui/theme
+│   │   │       ├·· (lazy)  ← @/lib/universal-editor/module-manifest
+│   │   │       ├·· (lazy)  ← @/lib/universalEditor
+│   │   │       ├·· (lazy)  ← @/lib/user-sim/userSimAgent
+│   │   │       ├·· (lazy)  ← @/lib/utils
+│   │   │       ├·· (lazy)  ← @/lib/vm/bufferManager
+│   │   │       ├·· (lazy)  ← @/lib/vm/bus-events
+│   │   │       ├·· (lazy)  ← @/lib/vm/dual-runtime
+│   │   │       ├·· (lazy)  ← @/lib/vm/dualVMCoordinator
+│   │   │       ├·· (lazy)  ← @/lib/vm/index
+│   │   │       ├·· (lazy)  ← @/lib/vm/inter-vm-messaging
+│   │   │       ├·· (lazy)  ← @/lib/vm/pipelineCache
+│   │   │       ├·· (lazy)  ← @/lib/vm/resource-quota
+│   │   │       ├·· (lazy)  ← @/lib/vm/security
+│   │   │       ├·· (lazy)  ← @/lib/vm/snapshot
+│   │   │       ├·· (lazy)  ← @/lib/vm/types
+│   │   │       ├·· (lazy)  ← @/lib/vm/wasm-features
+│   │   │       ├·· (lazy)  ← @/lib/vm/wasmGpuVM
+│   │   │       ├·· (lazy)  ← @/lib/warp/useWarp
+│   │   │       ├·· (lazy)  ← @/lib/warp/warpEngine
+│   │   │       ├·· (lazy)  ← @/lib/webgpu
+│   │   │       ├·· (lazy)  ← @/lib/webgpu/adaptiveQuality
+│   │   │       ├·· (lazy)  ← @/lib/webgpu/director
+│   │   │       ├·· (lazy)  ← @/lib/webgpu/useWebGPUDirector
+│   │   │       ├·· (lazy)  ← @/lib/widgets/CrossWidgetPosting
+│   │   │       ├·· (lazy)  ← @/lib/widgets/feed-resolver
+│   │   │       ├·· (lazy)  ← @/lib/widgets/parse
+│   │   │       ├·· (lazy)  ← @/lib/widgets/parseConfig
+│   │   │       ├·· (lazy)  ← @/lib/widgets/useWidget
+│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetBus
+│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetEventBus
+│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetLinkGraph
+│   │   │       └·· (lazy)  ← @/lib/widgets/widgetRegistry
+│   │   └── state/
 │   │       └── base.json
-│   ├── lib
-│   │   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── lib/
+│   │   ├── ai/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   └── client.ts
-│   │   └── babylon  [WebGPU / Babylon Engine]
+│   │   └── babylon/  [WebGPU / Babylon Engine]
 │   │       └── useDreamLogoScene.ts
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── launcher.ts
-├── styles
+│       ├·· launch  ← @/src/launcher
+│       ├·· GameConfig, GameEnginConfigError, GameEnginCore  ← ./core/GameEnginCore
+│       └·· toErrorMessage  ← @/lib/utils
+├── styles/
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream-shell.css
 │   ├── globals.css
 │   ├── home-dream.css
 │   ├── theme.css
 │   └── view-transitions.css
-├── tests
-│   ├── e2e
+├── tests/
+│   ├── e2e/
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
-│   ├── enginpipe
+│   ├── enginpipe/
 │   │   ├── manifest.test.ts
 │   │   ├── telemetry.test.ts
 │   │   └── tiers.test.ts
-│   ├── navigation
+│   ├── navigation/
 │   │   ├── manifold-physics.spec.ts
 │   │   ├── navigation.spec.ts
 │   │   └── quaternion.spec.ts
@@ -20067,7 +23276,7 @@ _No circular dependencies detected._
 │   ├── webgpu-director.test.ts
 │   ├── widget-install-flow.test.ts
 │   └── youtube-provider.test.ts
-├── types
+├── types/
 │   ├── ads.ts
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── ai-system.ts
@@ -20075,6 +23284,7 @@ _No circular dependencies detected._
 │   ├── ccc.ts
 │   ├── connector.ts
 │   ├── dream-window.ts
+│   │   └·· DestinationRule, DreamWindowConfig, DreamWindowPosition, DreamWindowSize, DreamWindowState  ← @/lib/dream-window/DreamWindowLifecycle
 │   ├── dreamArtifact.ts
 │   ├── experience.ts
 │   ├── journey.ts
@@ -20087,7 +23297,7 @@ _No circular dependencies detected._
 │   ├── widget-system-v2.ts
 │   ├── widgetConfigs.ts
 │   └── widgets.ts
-├── utils
+├── utils/
 │   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── .cursorrules
 ├── .env.example
@@ -20104,6 +23314,7 @@ _No circular dependencies detected._
 ├── LICENSE
 ├── next-env.d.ts
 ├── next.config.mjs
+│   └·· (lazy)  ← next
 ├── package.json
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -20111,10 +23322,14 @@ _No circular dependencies detected._
 ├── postcss.config.js
 ├── postcss.config.mjs
 ├── proxy.ts
+│   ├·· createServerClientWithCustomCookies  ← @/lib/supabase/server
+│   ├·· SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL  ← @/lib/supabase/config
+│   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 ├── README.md
 ├── REPO_STATE.md
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
+│   └·· (lazy)  ← tailwindcss
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
