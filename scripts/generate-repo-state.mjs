@@ -1288,7 +1288,7 @@ function buildTree(dir, prefix = "") {
 
         const allDeps = [
           ...internal.map(([mod, names]) => ({ mod, names, dynamic: false })),
-          ...dynImps.map(mod => ({ mod, names: ["(lazy)"], dynamic: true })),
+          ...dynImps.map(mod => ({ mod, names: ["dynamic import()"], dynamic: true })),
         ];
 
         allDeps.forEach(({ mod, names, dynamic }, j) => {
@@ -1307,8 +1307,76 @@ md += "```\n";
 // ─── WRITE ────────────────────────────────────────────────────────────────────
 
 fs.writeFileSync("REPO_STATE.md", md);
+
+// ── Also write a standalone FILE_TREE.md ──────────────────────────────────────
+let treeMd = "# DREAMengin File Tree\n\n";
+treeMd += "Generated: " + new Date().toISOString() + "\n\n";
+treeMd += "> Directories show which feature they belong to.\n";
+treeMd += "> Files show every named function/hook/component they import internally.\n";
+treeMd += "> `├·· name  ← module` = named import · `dynamic import()` = loaded on demand\n\n";
+treeMd += "```text\n";
+
+let treeOnly = "";
+const origMd = md;
+const mdRef = { val: "" };
+
+function buildTreeInto(target, dir, prefix = "") {
+  const entries = fs.readdirSync(dir, { withFileTypes: true })
+    .filter(e => !shouldIgnore(e.name))
+    .sort((a, b) => {
+      if (a.isDirectory() && !b.isDirectory()) return -1;
+      if (!a.isDirectory() && b.isDirectory()) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+  entries.forEach((entry, i) => {
+    const isLast   = i === entries.length - 1;
+    const branch   = isLast ? "└──" : "├──";
+    const childPfx = prefix + (isLast ? "    " : "│   ");
+
+    if (entry.isDirectory()) {
+      const annotation = getFeatureAnnotation(path.join(dir, entry.name));
+      target.push(prefix + branch + " " + entry.name + "/" + annotation);
+      buildTreeInto(target, path.join(dir, entry.name), childPfx);
+    } else {
+      const rel = path.relative(ROOT, path.join(dir, entry.name));
+      target.push(prefix + branch + " " + entry.name);
+
+      if (isCodeFile(rel) && !isTestFile(rel) && fileData[rel]) {
+        const d = fileData[rel];
+        const internal = Object.entries(d.namedImports).filter(([mod]) =>
+          mod.startsWith("@/") || mod.startsWith("./") || mod.startsWith("../")
+        );
+        const dynImps = d.dynamicImports || [];
+
+        const allDeps = [
+          ...internal.map(([mod, names]) => ({ mod, names })),
+          ...dynImps.map(mod => ({ mod, names: ["dynamic import()"] })),
+        ];
+
+        allDeps.forEach(({ mod, names }, j) => {
+          const isLastDep = j === allDeps.length - 1;
+          const depBranch = isLastDep ? "└·· " : "├·· ";
+          target.push(childPfx + depBranch + names.join(", ") + "  ← " + mod);
+        });
+      }
+    }
+  });
+}
+
+const treeLines = [];
+buildTreeInto(treeLines, ROOT);
+const treeText = treeLines.join("\n");
+
+treeMd += treeText + "\n```\n";
+fs.writeFileSync("FILE_TREE.md", treeMd);
+
+// Patch the tree section in REPO_STATE.md to use the same content
+// (already written above via buildTree, so it matches)
+
 console.log("✓ REPO_STATE.md written");
-console.log(`  Routes: ${buildRouteMap(allFiles).length}`);
-console.log(`  Files analysed: ${codeFiles.length}`);
-console.log(`  Connected functions mapped: ${codeFiles.filter(f => Object.keys(fileData[f].namedImports).length > 0).length} files`);
-console.log(`  Dual-runtime files: ${codeFiles.filter(f => fileData[f].usesDualRuntime).length}`);
+console.log("✓ FILE_TREE.md written (standalone tree)");
+console.log("  Routes: " + buildRouteMap(allFiles).length);
+console.log("  Files analysed: " + codeFiles.length);
+console.log("  Connected functions mapped: " + codeFiles.filter(f => Object.keys(fileData[f].namedImports).length > 0).length + " files");
+console.log("  Dual-runtime files: " + codeFiles.filter(f => fileData[f].usesDualRuntime).length);
