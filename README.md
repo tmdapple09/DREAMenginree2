@@ -4713,29 +4713,17 @@ Auto-synced from `utils/**` using repository introspection.
 
 ## Workflow
 Auto-synced from `workflow/**` using repository introspection.
-- Files tracked: **6**
+- Files tracked: **0**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
 #### Workflow file structure
 ```text
-└── workflow
-    ├── Agents-MUST-READ-ARCHITECTURE.md
-    └── archive
-        ├── Dockerfile
-        ├── Dockerfile.dev
-        ├── appthemanger-ctrl_DREAMengin_95779c.json
-        ├── config.yaml
-        └── docker-compose.yml
+(no files currently matched)
 ```
-<details><summary>Workflow file index (6 files)</summary>
+<details><summary>Workflow file index (0 files)</summary>
 
-- `workflow/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `workflow/archive/Dockerfile` — project file (no extension).
-- `workflow/archive/Dockerfile.dev` — project file (dev).
-- `workflow/archive/appthemanger-ctrl_DREAMengin_95779c.json` — project file (json).
-- `workflow/archive/config.yaml` — project file (yaml).
-- `workflow/archive/docker-compose.yml` — project file (yml).
+- _No files matched the configured glob set after this change._
 
 </details>
 
