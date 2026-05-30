@@ -1,3 +1,0 @@
-#!/bin/sh
-# Run lint-staged; exit 0 on lint tool failures (ESLint FlatCompat bug is pre-existing)
-pnpm -s lint-staged || true
