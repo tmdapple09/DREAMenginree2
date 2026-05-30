@@ -1497,6 +1497,97 @@ md += "```\n";
 
 fs.writeFileSync("REPO_STATE.md", md);
 console.log("✓ REPO_STATE.md written");
+
+// FILE_TREE.md — standalone annotated tree with broken import / unused export detail
+let treeMd = "";
+treeMd += `# File Tree\n\n`;
+treeMd += `Generated: ${new Date().toISOString()}\n\n`;
+treeMd += `Legend: ⚠ broken import  ∅ unused export\n\n`;
+treeMd += "```text\n";
+function buildTreeInto(dir, prefix = "") {
+  const entries = fs.readdirSync(dir, { withFileTypes: true })
+    .filter(e => !shouldIgnore(e.name))
+    .sort((a, b) => {
+      if (a.isDirectory() && !b.isDirectory()) return -1;
+      if (!a.isDirectory() && b.isDirectory()) return 1;
+      return a.name.localeCompare(b.name);
+    });
+  entries.forEach((entry, i) => {
+    const isLast = i === entries.length - 1;
+    const fullPath = path.join(dir, entry.name);
+    const relPath = path.relative(ROOT, fullPath);
+    const childPrefix = prefix + (isLast ? "    " : "│   ");
+
+    const annotation = entry.isDirectory() ? getFeatureAnnotation(fullPath) : "";
+
+    let issueMarkers = "";
+    if (!entry.isDirectory()) {
+      const issues = fileIssues[relPath];
+      if (issues) {
+        if (issues.hasBrokenImports) issueMarkers += " ⚠";
+        if (issues.hasUnusedExports) issueMarkers += " ∅";
+      }
+    }
+
+    treeMd += `${prefix}${isLast ? "└──" : "├──"} ${entry.name}${issueMarkers}${annotation}\n`;
+
+    if (entry.isDirectory()) {
+      buildTreeInto(fullPath, childPrefix);
+    } else {
+      const d      = fileData[relPath];
+      const broken = brokenImports[relPath] || [];
+      const unused = unusedExports[relPath] || [];
+
+      // Collect all detail lines so we can correctly pick ├── vs └──
+      const lines = [];
+
+      // Named imports: one line per name — "name ← source"
+      if (d) {
+        for (const [mod, names] of Object.entries(d.namedImports).sort()) {
+          const isBroken = broken.some(b => b.specifier === mod);
+          for (const name of [...names].sort()) {
+            const tag = isBroken ? "⚠" : "←";
+            lines.push(`${name}  ${tag} ${mod}`);
+          }
+        }
+        // Dynamic imports
+        for (const imp of d.dynamicImports) {
+          lines.push(`(dynamic)  ← ${imp}`);
+        }
+        // Named exports this file provides
+        if (d.namedExports.length) {
+          for (const exp of d.namedExports.sort()) {
+            lines.push(`→ ${exp}`);
+          }
+        }
+      }
+
+      // Broken imports not already shown via namedImports
+      for (const item of broken) {
+        if (!d || !d.namedImports[item.specifier]) {
+          for (const name of item.names) {
+            lines.push(`${name}  ⚠ ${item.specifier}`);
+          }
+        }
+      }
+
+      // Unused exports
+      if (unused.length) {
+        lines.push(`∅ unused: ${unused.join(", ")}`);
+      }
+
+      lines.forEach((line, li) => {
+        const isLastLine = li === lines.length - 1;
+        treeMd += `${childPrefix}${isLastLine ? "└──" : "├──"} ${line}\n`;
+      });
+    }
+  });
+}
+buildTreeInto(ROOT);
+treeMd += "```\n";
+
+fs.writeFileSync("FILE_TREE.md", treeMd);
+console.log("✓ FILE_TREE.md written");
 console.log(`  Routes: ${buildRouteMap(allFiles).length}`);
 console.log(`  Files analysed: ${codeFiles.length}`);
 console.log(`  Connected functions mapped: ${codeFiles.filter(f => Object.keys(fileData[f].namedImports).length > 0).length} files`);
