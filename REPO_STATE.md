@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T03:42:53.881Z
+Generated: 2026-05-30T08:33:22.667Z
 
 ---
 
@@ -483,6 +483,7 @@ _No style files for this feature._
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
 - `@/lib/supabase/server`
+- `@/lib/utils`
 - `@/types/connector`
 
 ## Special Capabilities
@@ -1134,6 +1135,7 @@ _No migrations for this feature._
 - `@/lib/runtime/useSharedEnginChannel`
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
+- `@/lib/utils`
 - `@/lib/webgpu`
 - `@/types/module-manifest`
 
@@ -1323,6 +1325,7 @@ _No migrations for this feature._
 - `@/lib/runtime/useEnginCoopSync`
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -1468,6 +1471,7 @@ _No migrations for this feature._
 - `@/lib/runtime/useEnginBridge`
 - `@/lib/runtime/useEnginCoopSync`
 - `@/lib/supabase/client`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -1633,6 +1637,7 @@ _No migrations for this feature._
 - `@/lib/supabase/client`
 - `@/lib/supabase/config`
 - `@/lib/supabase/safeGetUser`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -1926,6 +1931,7 @@ _No style files for this feature._
 - `@/lib/runtime/useEnginBridge`
 - `@/lib/runtime/useEnginCoopSync`
 - `@/lib/supabase/client`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -2200,6 +2206,7 @@ _No style files for this feature._
 - `@/lib/forge/useForgeActivity`
 - `@/lib/forge/useForgeBuild`
 - `@/lib/runtime/dualRuntimeBridge`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -2348,6 +2355,7 @@ _No style files for this feature._
 - `@/lib/journey/journeyInsights`
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
+- `@/lib/utils`
 - `@/types/journey`
 
 ## Special Capabilities
@@ -2622,6 +2630,7 @@ _No style files for this feature._
 - `@/lib/navigation/ReturnStack`
 - `@/lib/navigation/WidgetInstanceMemory`
 - `@/lib/supabase/server`
+- `@/lib/utils`
 - `@/types/widget-system-v2`
 - `@/types/widgetConfigs`
 
@@ -3312,6 +3321,7 @@ _No migrations for this feature._
 - `./notificationHelpers`
 - `@/lib/notifications/notificationHelpers`
 - `@/lib/notifications/useNotifications`
+- `@/lib/utils`
 
 ---
 
@@ -3466,6 +3476,7 @@ _No style files for this feature._
 - `@/lib/connectors/providers/youtube`
 - `@/lib/social/rss-feed`
 - `@/lib/supabase/server`
+- `@/lib/utils`
 - `@/lib/widgets/widgetRegistry`
 - `@/types/connector`
 - `@/types/supabase`
@@ -3590,6 +3601,7 @@ _No style files for this feature._
 - `./listings`
 - `./types`
 - `@/lib/activity/types`
+- `@/lib/utils`
 
 ---
 
@@ -4096,6 +4108,7 @@ _No style files for this feature._
 - `@/lib/supabase/safeGetUser`
 - `@/lib/supabase/server`
 - `@/lib/ui/theme`
+- `@/lib/utils`
 - `@/types/ai`
 - `@/types/ai-system`
 
@@ -4203,6 +4216,7 @@ _No style files for this feature._
 - `@/lib/child-safety/messageContextChecker`
 - `@/lib/child-safety/scanMediaUrls`
 - `@/lib/supabase/server`
+- `@/lib/utils`
 
 ## Special Capabilities
 
@@ -7049,6 +7063,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@/types/supabase`
+- imports: `@/lib/utils`
 
 ## `app/ads/create/page.tsx`
 
@@ -7058,6 +7073,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/ads/page.tsx`
 
@@ -7091,6 +7107,7 @@ _No migrations for this feature._
 - imports: `next/server`
 - imports: `uuid`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/account/delete-dream/route.ts`
 
@@ -7146,6 +7163,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/admin/code-files/route.ts`
 
@@ -7175,6 +7193,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/ads/view/route.ts`
 
@@ -7270,6 +7289,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@/types/supabase`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/ai/idari/route.ts`
 
@@ -7315,6 +7335,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/ci/run/route.ts`
 
@@ -7327,6 +7348,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/comments/route.ts`
 
@@ -7337,6 +7359,7 @@ _No migrations for this feature._
 - imports: `crypto`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/[provider]/connect/route.ts`
 
@@ -7351,6 +7374,7 @@ _No migrations for this feature._
 - imports: `@/types/connector`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/[provider]/disconnect/route.ts`
 
@@ -7365,6 +7389,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/[provider]/sync/route.ts`
 
@@ -7389,6 +7414,7 @@ _No migrations for this feature._
 - imports: `@/types/connector`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/cron/route.ts`
 
@@ -7398,6 +7424,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/server`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/instagram/oauth/callback/route.ts`
 
@@ -7426,6 +7453,7 @@ _No migrations for this feature._
 - imports: `@/lib/connectors/webhookVerification`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/connectors/youtube/oauth/callback/route.ts`
 
@@ -7446,6 +7474,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/content/intelligence/route.ts`
 
@@ -7454,6 +7483,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/content/transcribe/route.ts`
 
@@ -7470,6 +7500,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/dr-eams/hf/route.ts`
 
@@ -7494,6 +7525,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/dream-windows/[id]/route.ts`
 
@@ -7510,6 +7542,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/dreamengin/os-status/route.ts`
 
@@ -7563,6 +7596,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/embed-feed/route.ts`
 
@@ -7577,6 +7611,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/feed/route.ts`
 
@@ -7593,6 +7628,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/gal/route.ts`
 
@@ -7600,6 +7636,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/game-scores/route.ts`
 
@@ -7607,11 +7644,13 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
 - imports: `zod`
+- imports: `@/lib/utils`
 
 ## `app/api/gameengin/crash-report/route.ts`
 
 - imports: `@/lib/gameengin/brain-reader`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/health/route.ts`
 
@@ -7623,6 +7662,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/journey/route.ts`
 
@@ -7630,6 +7670,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@/types/supabase`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/lab/benchmarks/route.ts`
 
@@ -7637,18 +7678,21 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/ledger-media/route.ts`
 
 - imports: `@/lib/media/ledger`
 - imports: `@/lib/supabase/server`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/likes/route.ts`
 
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/marketplace/request/route.ts`
 
@@ -7662,6 +7706,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/messages/boards/route.ts`
 
@@ -7680,6 +7725,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `crypto`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/metrics/platform/route.ts`
 
@@ -7708,12 +7754,14 @@ _No migrations for this feature._
 - imports: `@/types/supabase`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/notifications/route.ts`
 
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/platform/errors/route.ts`
 
@@ -7721,6 +7769,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/posts/[id]/route.ts`
 
@@ -7735,6 +7784,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/posts/[id]/view/route.ts`
 
@@ -7762,6 +7812,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `crypto`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/profile/route.ts`
 
@@ -7770,6 +7821,7 @@ _No migrations for this feature._
 - imports: `@/types/supabase`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/projects/route.ts`
 
@@ -7778,6 +7830,7 @@ _No migrations for this feature._
 - imports: `@/types/supabase`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/scheduled-posts/route.ts`
 
@@ -7785,12 +7838,14 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/security/scan/route.ts`
 
 - imports: `child_process`
 - imports: `next/server`
 - imports: `util`
+- imports: `@/lib/utils`
 
 ## `app/api/settings/appearance/route.ts`
 
@@ -7798,6 +7853,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/settings/feed/route.ts`
 
@@ -7805,6 +7861,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/settings/notifications/route.ts`
 
@@ -7812,6 +7869,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/settings/privacy/route.ts`
 
@@ -7819,6 +7877,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/setup/check/route.ts`
 
@@ -7853,6 +7912,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/shop/route.ts`
 
@@ -7862,6 +7922,7 @@ _No migrations for this feature._
 - imports: `@/types/supabase`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/skip-credits/balance/route.ts`
 
@@ -7905,12 +7966,14 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/social/rss-feed/route.ts`
 
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/upload/route.ts`
 
@@ -7926,6 +7989,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/views/track/route.ts`
 
@@ -7948,18 +8012,21 @@ _No migrations for this feature._
 - imports: `@/lib/connectors/providers/youtube`
 - imports: `@/types/connector`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/youtube/discovery/route.ts`
 
 - imports: `@/lib/connectors/providers/youtube`
 - imports: `@/types/connector`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/api/youtube/live-feed/route.ts`
 
 - imports: `@/lib/connectors/providers/youtube`
 - imports: `@/types/connector`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/auth/callback/route.ts`
 
@@ -8125,6 +8192,7 @@ _No migrations for this feature._
 - imports: `@/lib/games/navigation`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/daydream/game/page.tsx`
 
@@ -8220,6 +8288,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/daydream/play/page.tsx`
 
@@ -8308,6 +8377,7 @@ _No migrations for this feature._
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
 - imports: `../algorithms/dreamrAlgorithm`
+- imports: `@/lib/utils`
 
 ## `app/dreamdmbar/_components/dreamr/api/route.ts`
 
@@ -8319,6 +8389,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@supabase/supabase-js`
 - imports: `next/server`
+- imports: `@/lib/utils`
 
 ## `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
 
@@ -8757,6 +8828,7 @@ _No migrations for this feature._
 ## `app/global-error.tsx`
 
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/homedream/page.tsx`
 
@@ -8795,6 +8867,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/lab/page.tsx`
 
@@ -8869,6 +8942,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/messages/boards/[id]/page.tsx`
 
@@ -8932,14 +9006,14 @@ _No migrations for this feature._
 
 ## `app/page.tsx`
 
-- imports: `@/components/dream.LandingHero`
-- imports: `@/components/landing/dream.LandingNav`
-- imports: `@/components/landing/dream.LandingProductStatement`
-- imports: `@/components/landing/dream.scene.UniverseField`
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `@/lib/supabase/server`
 - imports: `next/navigation`
 - imports: `next/server`
+- imports: `next/dynamic`
+- dynamic: `@/components/dream.LandingHero`
+- dynamic: `@/components/landing/dream.LandingNav`
+- dynamic: `@/components/landing/dream.scene.UniverseField`
 
 ## `app/policy/page.tsx`
 
@@ -9117,6 +9191,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/link`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/settings/widgets/page.tsx`
 
@@ -9143,6 +9218,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `app/u/[handle]/page.tsx`
 
@@ -9376,6 +9452,7 @@ _No migrations for this feature._
 - imports: `framer-motion`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/daydream/dream.StandaloneEnginSurface.tsx`
 
@@ -9498,6 +9575,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/image`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.DrEamsModeToggle.tsx`
 
@@ -9533,6 +9611,7 @@ _No migrations for this feature._
 - imports: `../lib/componentInventory`
 - imports: `../lib/eventBus`
 - imports: `../lib/forge/engineForge`
+- imports: `@/lib/utils`
 - dynamic: `../lib/supabase/client`
 
 ## `components/dream.GlobalOverlays.tsx`
@@ -9565,6 +9644,7 @@ _No migrations for this feature._
 - imports: `next/link`
 - imports: `next/navigation`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.IconSelector.tsx`
 
@@ -9642,6 +9722,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/image`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.ProfileShareButton.tsx`
 
@@ -9688,12 +9769,14 @@ _No migrations for this feature._
 
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.panel.IDariPanel.tsx`
 
 - imports: `@/lib/agents/agentBus`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.universal_asset_registry.tsx`
 
@@ -9702,6 +9785,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dream.widget.AnchorWidget.tsx`
 
@@ -9911,6 +9995,7 @@ _No migrations for this feature._
 - imports: `@/lib/sharedDream`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/dreams/dream.widget.SuperDreamWidget.tsx`
 
@@ -10002,6 +10087,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/link`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/engines/create/dream.CreateEnginApp.tsx`
 
@@ -10062,6 +10148,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/safeGetUser`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/engines/index.ts`
 
@@ -10127,6 +10214,7 @@ _No migrations for this feature._
 
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/engines/portfolio/dream.PortfolioEnginApp.tsx`
 
@@ -10230,6 +10318,7 @@ _No migrations for this feature._
 - imports: `@/lib/feeds/embedFeedLoader`
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/forge/dream.EngineBuilderCanvas.tsx`
 
@@ -10262,6 +10351,7 @@ _No migrations for this feature._
 ## `components/gameengin/dream.CrashReportModal.tsx`
 
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/gameengin/dream.cartridge.CartridgeBrowser.tsx`
 
@@ -10272,6 +10362,7 @@ _No migrations for this feature._
 ## `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx`
 
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`
 
@@ -10283,6 +10374,7 @@ _No migrations for this feature._
 - imports: `react`
 - imports: `./dream.CrashReportModal`
 - imports: `./dream.cartridge.CartridgeErrorBoundary`
+- imports: `@/lib/utils`
 
 ## `components/gameengin/dream.cartridge.FeaturedCartridges.tsx`
 
@@ -10384,6 +10476,7 @@ _No migrations for this feature._
 - imports: `@/lib/games/performance-baseline`
 - imports: `@babylonjs/core`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/games/dream.NiteFlyerSolarHymn.tsx`
 
@@ -10578,6 +10671,7 @@ _No migrations for this feature._
 
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/menus/dream.menu.DreamRadialMenu.tsx`
 
@@ -10611,6 +10705,7 @@ _No migrations for this feature._
 
 - imports: `lucide-react`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/onboarding/dream.OnboardingTip.tsx`
 
@@ -10745,6 +10840,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/link`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `components/profile/dream.ProfileCustomizeButton.tsx`
 
@@ -11329,6 +11425,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/image`
 - imports: `react`
+- imports: `@/lib/utils`
 - dynamic: `@/lib/content/transcriptEditor`
 - dynamic: `@/lib/content/seoScorer`
 
@@ -11366,6 +11463,7 @@ _No migrations for this feature._
 - imports: `next/navigation`
 - imports: `react`
 - imports: `@/lib/enginpipe`
+- imports: `@/lib/utils`
 - dynamic: `@babylonjs/core`
 
 ## `engins/engin.LabEngin.tsx`
@@ -11387,6 +11485,7 @@ _No migrations for this feature._
 - imports: `@/engins/dream.QuantumCircuitCanvas`
 - imports: `lucide-react`
 - imports: `next/link`
+- imports: `@/lib/utils`
 
 ## `engins/engin.StarMakerEngin.tsx`
 
@@ -11418,6 +11517,7 @@ _No migrations for this feature._
 - imports: `lucide-react`
 - imports: `next/link`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `engins/portfolio/dream.PortfolioEngin.tsx`
 
@@ -11640,6 +11740,7 @@ _No migrations for this feature._
 - imports: `@/lib/observability/immediateAction`
 - imports: `@/lib/observability/rootCauseAnalyzer`
 - imports: `uuid`
+- imports: `@/lib/utils`
 
 ## `lib/agents/uiActions.ts`
 
@@ -11728,6 +11829,7 @@ _No migrations for this feature._
 - imports: `@/engine/io`
 - imports: `@/types/ai-system`
 - imports: `./audit`
+- imports: `@/lib/utils`
 
 ## `lib/ai/triad.ts`
 
@@ -11798,6 +11900,7 @@ _No migrations for this feature._
 ## `lib/child-safety/imageClassifier.ts`
 
 - imports: `@/lib/ai/groq`
+- imports: `@/lib/utils`
 
 ## `lib/child-safety/messageContextChecker.ts`
 
@@ -11808,6 +11911,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/server`
 - imports: `@supabase/supabase-js`
 - imports: `./childSafetyDetector`
+- imports: `@/lib/utils`
 
 ## `lib/child-safety/scanMediaUrls.ts`
 
@@ -11846,6 +11950,7 @@ _No migrations for this feature._
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/github.ts`
 
@@ -11883,12 +11988,14 @@ _No migrations for this feature._
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/podcast.ts`
 
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/reddit.ts`
 
@@ -11906,18 +12013,21 @@ _No migrations for this feature._
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/tumblr.ts`
 
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/twitter.ts`
 
 - imports: `@/lib/connectors/normalise`
 - imports: `@/lib/social/rss-feed`
 - imports: `@/types/connector`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/providers/youtube.ts`
 
@@ -11930,6 +12040,7 @@ _No migrations for this feature._
 - imports: `@/types/supabase`
 - imports: `./normalise`
 - imports: `./syncDispatch`
+- imports: `@/lib/utils`
 
 ## `lib/connectors/syncDispatch.ts`
 
@@ -12006,6 +12117,7 @@ _No migrations for this feature._
 - imports: `@/types/dream-window`
 - imports: `react`
 - imports: `./DreamWindowLifecycle`
+- imports: `@/lib/utils`
 
 ## `lib/dreamdm/DreamSystemContext.tsx`
 
@@ -12049,6 +12161,7 @@ _No migrations for this feature._
 - imports: `@/lib/supabase/client`
 - imports: `react`
 - imports: `./useDreamDMMessages`
+- imports: `@/lib/utils`
 
 ## `lib/dreamdm/useModuleBarIntent.ts`
 
@@ -12376,6 +12489,7 @@ _No migrations for this feature._
 - imports: `@/lib/forge/forgeBuild`
 - imports: `react`
 - imports: `uuid`
+- imports: `@/lib/utils`
 - dynamic: `@/lib/forge/forgeBuild`
 
 ## `lib/gameengin/GameRuntime.tsx`
@@ -12426,6 +12540,7 @@ _No migrations for this feature._
 
 - imports: `../cartridge`
 - imports: `./reactCartridge`
+- imports: `@/lib/utils`
 - dynamic: `@/components/games/dream.BabylonSideScroller`
 - dynamic: `@/components/games/dream.NeonDrift`
 - dynamic: `@/components/games/dream.EchoArena`
@@ -12467,6 +12582,7 @@ _No migrations for this feature._
 - imports: `@/lib/media/ledger`
 - imports: `@/lib/supabase/client`
 - imports: `@/lib/supabase/safeGetUser`
+- imports: `@/lib/utils`
 
 ## `lib/gameengin/dreamr-loader.ts`
 
@@ -12815,6 +12931,7 @@ _No migrations for this feature._
 
 - imports: `react`
 - imports: `./notificationHelpers`
+- imports: `@/lib/utils`
 
 ## `lib/observability/collector.ts`
 
@@ -12891,6 +13008,7 @@ _No migrations for this feature._
 ## `lib/platform/lab.ts`
 
 - imports: `@/lib/supabase/client`
+- imports: `@/lib/utils`
 
 ## `lib/policy/boogiePolicy.ts`
 
@@ -13061,6 +13179,7 @@ _No migrations for this feature._
 
 - imports: `@/lib/social/normalizers`
 - imports: `react`
+- imports: `@/lib/utils`
 
 ## `lib/supabase/client.ts`
 
@@ -13086,6 +13205,7 @@ _No migrations for this feature._
 ## `lib/supabase/vector.ts`
 
 - imports: `@supabase/supabase-js`
+- imports: `@/lib/utils`
 
 ## `lib/torridity.ts`
 
@@ -13171,6 +13291,7 @@ _No migrations for this feature._
 ## `lib/web3/client.ts`
 
 - imports: `./types`
+- imports: `@/lib/utils`
 
 ## `lib/web3/engagement.ts`
 
@@ -13202,6 +13323,7 @@ _No migrations for this feature._
 
 - imports: `./WidgetEventBus`
 - imports: `./WidgetLinkGraph`
+- imports: `@/lib/utils`
 
 ## `lib/widgets/WidgetEngine.tsx`
 
@@ -13211,6 +13333,7 @@ _No migrations for this feature._
 
 - imports: `@/lib/supabase/server`
 - imports: `@/types/widget-system-v2`
+- imports: `@/lib/utils`
 
 ## `lib/widgets/parse.ts`
 
@@ -13249,10 +13372,10 @@ _No migrations for this feature._
 
 ## `proxy.ts`
 
+- imports: `next/server`
 - imports: `@/lib/supabase/server`
 - imports: `@/lib/supabase/config`
 - imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
 
 ## `repo-visualizer/analyzer.mjs`
 
@@ -14662,6 +14785,7 @@ _No migrations for this feature._
 - imports: `@/src/launcher`
 - imports: `./configs/demoGameConfig`
 - imports: `./core/GameEnginCore`
+- imports: `@/lib/utils`
 
 ## `tailwindcss-animate.d.ts`
 
@@ -15957,6 +16081,12 @@ _No migrations for this feature._
 ## `app/dream-effects/page.tsx`
 
 - `@/components/three/dream.scene`
+
+## `app/page.tsx`
+
+- `@/components/dream.LandingHero`
+- `@/components/landing/dream.LandingNav`
+- `@/components/landing/dream.scene.UniverseField`
 
 ## `components/daydream/dream.DiffViewer.tsx`
 
@@ -17427,16 +17557,16 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 32 |
-| `engins/engin.StarMakerEngin.tsx` | 28 |
-| `engins/engin.ContentEngin.tsx` | 24 |
+| `engins/engin.GameEngin.tsx` | 33 |
+| `engins/engin.StarMakerEngin.tsx` | 29 |
+| `engins/engin.ContentEngin.tsx` | 25 |
 | `components/runtime/dream.RuntimeView.tsx` | 22 |
 | `engins/engin.CodeEngin.tsx` | 21 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
-| `engins/engin.LabEngin.tsx` | 17 |
+| `engins/engin.LabEngin.tsx` | 18 |
+| `components/dream.HomeFeed.tsx` | 17 |
 | `app/daydream/games/page.tsx` | 16 |
-| `components/dream.HomeFeed.tsx` | 16 |
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
@@ -17449,14 +17579,14 @@ _No circular dependencies detected._
 | `app/layout.tsx` | 13 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
+| `app/api/connectors/[provider]/connect/route.ts` | 12 |
+| `app/api/connectors/[provider]/verify/route.ts` | 12 |
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
 | `app/view-profile/page.tsx` | 12 |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 |
-| `lib/vm/index.ts` | 12 |
-| `scripts/wire-orphans.mjs` | 12 |
 
 ---
 
@@ -17466,16 +17596,16 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 32 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.StarMakerEngin.tsx` | 28 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.ContentEngin.tsx` | 24 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.GameEngin.tsx` | 33 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.StarMakerEngin.tsx` | 29 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS |
 | `components/runtime/dream.RuntimeView.tsx` | 22 | HIGH_COUPLING |
 | `engins/engin.CodeEngin.tsx` | 21 | HIGH_COUPLING, EVENT_BUS |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.LabEngin.tsx` | 17 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS |
+| `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
-| `components/dream.HomeFeed.tsx` | 16 | HIGH_COUPLING |
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
@@ -17488,6 +17618,8 @@ _No circular dependencies detected._
 | `app/layout.tsx` | 13 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 13 | HIGH_COUPLING |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
+| `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
+| `app/api/connectors/[provider]/verify/route.ts` | 12 | HIGH_COUPLING |
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 | HIGH_COUPLING |
 | `app/daydream/forge/page.tsx` | 12 | HIGH_COUPLING |
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
@@ -17498,10 +17630,11 @@ _No circular dependencies detected._
 | `scripts/wire-orphans.mjs` | 12 | HIGH_COUPLING |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
 | `app/api/ai/boogieman/route.ts` | 11 | HIGH_COUPLING |
-| `app/api/connectors/[provider]/connect/route.ts` | 11 | HIGH_COUPLING |
-| `app/api/connectors/[provider]/verify/route.ts` | 11 | HIGH_COUPLING |
+| `app/api/ai/execute/route.ts` | 11 | HIGH_COUPLING |
+| `app/api/posts/route.ts` | 11 | HIGH_COUPLING |
 | `app/daydream/code/page.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/create/page.tsx` | 11 | HIGH_COUPLING |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/lab/page.tsx` | 11 | HIGH_COUPLING |
 | `components/dream.MessagesClient.tsx` | 11 | HIGH_COUPLING |
 | `components/dreamengin/dream.DREAMenginOS.tsx` | 11 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
@@ -17512,11 +17645,8 @@ _No circular dependencies detected._
 | `lib/dreamenginOS/index.ts` | 11 | HIGH_COUPLING |
 | `lib/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
-| `app/api/ai/execute/route.ts` | 10 | MEDIUM_COUPLING |
-| `app/api/posts/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
-| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
@@ -17525,49 +17655,55 @@ _No circular dependencies detected._
 | `daydreams/lab/page.tsx` | 10 | MEDIUM_COUPLING |
 | `lib/dreamr/dreamrfeed.tsx` | 10 | MEDIUM_COUPLING |
 | `app/ads/page.tsx` | 9 | MEDIUM_COUPLING |
+| `app/api/account/delete-data/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/account/delete-dream/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/ai/boogieman/privacy-event/route.ts` | 9 | MEDIUM_COUPLING |
+| `app/api/messages/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/daydream/lab/portfolio/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 9 | MEDIUM_COUPLING |
+| `app/dreamdmbar/_components/dreamr/api/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/edit-profiledream/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/[id]/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/settings/safety/page.tsx` | 9 | MEDIUM_COUPLING |
 | `components/dream.OSShellActivator.tsx` | 9 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
 | `components/dreamengin/dreamsurface.dreamengin.tsx` | 9 | MEDIUM_COUPLING |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 9 | MEDIUM_COUPLING |
+| `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
 | `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS |
-| `app/api/account/delete-data/route.ts` | 8 | MEDIUM_COUPLING |
+| `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/appeal/route.ts` | 8 | MEDIUM_COUPLING |
-| `app/api/messages/route.ts` | 8 | MEDIUM_COUPLING |
+| `app/api/comments/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
-| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 8 | MEDIUM_COUPLING |
-| `app/dreamdmbar/_components/dreamr/api/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamr/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/builder/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/scores/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/login/page.tsx` | 8 | MEDIUM_COUPLING |
-| `app/page.tsx` | 8 | MEDIUM_COUPLING |
+| `app/settings/security/page.tsx` | 8 | MEDIUM_COUPLING |
+| `app/shop/sell/page.tsx` | 8 | MEDIUM_COUPLING |
 | `backend/index.js` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING |
+| `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
-| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 8 | MEDIUM_COUPLING |
-| `components/games/dream.NeonDrift.tsx` | 8 | MEDIUM_COUPLING |
 | `components/home/dream.ActiveModuleSurface.tsx` | 8 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
 | `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
 | `lib/observability/otel.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
 | `src/engin/generated/index.ts` | 8 | MEDIUM_COUPLING |
+| `app/ads/create/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/ads/slot/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/api/admin/child-safety/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/ads/view/route.ts` | 7 | MEDIUM_COUPLING |
-| `app/api/comments/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/connectors/[provider]/sync/route.ts` | 7 | MEDIUM_COUPLING |
+| `app/api/connectors/cron/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/dreamr/suggested/route.ts` | 7 | MEDIUM_COUPLING |
+| `app/api/shop/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/connectors/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/daydream/music/upload/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/dream-effects/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/brand/campaigns/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/brand/identity/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -17588,26 +17724,28 @@ _No circular dependencies detected._
 | `app/engines/portfolio/optimize/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/quantum/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/join/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/lab/new/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/marketplace/sell/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/messages/boards/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/account/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/algorithm/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/appearance/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/help/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/settings/security/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/shop/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/shop/sell/page.tsx` | 7 | MEDIUM_COUPLING |
+| `components/daydream/dream.NGNEngin.tsx` | 7 | MEDIUM_COUPLING |
 | `components/dream.AIAssistant.tsx` | 7 | MEDIUM_COUPLING |
 | `components/dream.FeedCard.tsx` | 7 | MEDIUM_COUPLING |
-| `components/dream.ProfileEditor.tsx` | 7 | MEDIUM_COUPLING |
 | `components/forge/dream.panel.AIBuilderPanel.tsx` | 7 | MEDIUM_COUPLING |
 | `components/games/dream.GameController.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/panels/dream.panel.AppearancePanel.tsx` | 7 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SafetyPanel.tsx` | 7 | MEDIUM_COUPLING |
+| `components/profile/dream.ProfileCanvas.tsx` | 7 | MEDIUM_COUPLING |
 | `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
 | `lib/engin-runtime/index.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING |
@@ -17616,16 +17754,22 @@ _No circular dependencies detected._
 | `tests/game-navigation.test.ts` | 7 | MEDIUM_COUPLING |
 | `tests/gameengin-cartridges.test.ts` | 7 | MEDIUM_COUPLING |
 | `tests/gameengin-spec.test.ts` | 7 | MEDIUM_COUPLING |
-| `app/ads/create/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/actions/dream-docs.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/activity/track/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/admin/ai-chat/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/admin/code-files/route.ts` | 6 | MEDIUM_COUPLING |
-| `app/api/connectors/cron/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/blocks/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/content/intelligence/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/content/voice-clone/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/drafts/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/dream-windows/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/dreams/feed/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/feed/route.ts` | 6 | MEDIUM_COUPLING |
-| `app/api/shop/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/music/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/profile/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/projects/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/shellhub/devices/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/daydream/constellation/page.tsx` | 6 | MEDIUM_COUPLING |
-| `app/daydream/music/upload/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/discover/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/brand/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/code/page.tsx` | 6 | MEDIUM_COUPLING |
@@ -17635,14 +17779,14 @@ _No circular dependencies detected._
 | `app/engines/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/portfolio/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/lab/[id]/page.tsx` | 6 | MEDIUM_COUPLING |
-| `app/lab/new/page.tsx` | 6 | MEDIUM_COUPLING |
-| `app/marketplace/sell/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/messages/boards/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/notes/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/onboarding/page.tsx` | 6 | MEDIUM_COUPLING |
 | `components/customize/dream.GlobalCustomizeUI.tsx` | 6 | MEDIUM_COUPLING |
-| `components/daydream/dream.NGNEngin.tsx` | 6 | MEDIUM_COUPLING |
+| `components/dream.CreatePostModal.tsx` | 6 | MEDIUM_COUPLING |
+| `components/dream.universal_asset_registry.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/dream.widget.AnchorWidget.tsx` | 6 | MEDIUM_COUPLING |
+| `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/engines/shared/dream.makeEnginApp.tsx` | 6 | MEDIUM_COUPLING |
 | `components/games/dream.EchoArena.tsx` | 6 | MEDIUM_COUPLING |
 | `components/games/dream.remote.LegacyGameRemote.tsx` | 6 | MEDIUM_COUPLING |
@@ -17650,10 +17794,8 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.ProfilePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SettingsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.WidgetsPanel.tsx` | 6 | MEDIUM_COUPLING |
-| `components/profile/dream.ProfileCanvas.tsx` | 6 | MEDIUM_COUPLING |
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
-| `lib/agents/idariLoop.ts` | 6 | MEDIUM_COUPLING |
 | `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
@@ -17661,11 +17803,10 @@ _No circular dependencies detected._
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/shell-cartridge-wiring.test.ts` | 6 | MEDIUM_COUPLING |
 | `components/daydream/dream.CodeDreamIDE.tsx` | 5 | EVENT_BUS |
-| `components/dream.universal_asset_registry.tsx` | 5 | EVENT_BUS |
+| `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY |
 | `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS |
-| `components/dream.ForgeDreamCanvas.tsx` | 4 | EVENT_BUS |
 | `frontend/public/src/components/commentSection/CommentSection.jsx` | 4 | EVENT_BUS |
 | `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -17674,6 +17815,7 @@ _No circular dependencies detected._
 | `lib/engins/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/feed/useLiveFeed.ts` | 4 | EVENT_BUS |
+| `lib/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
 | `lib/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS |
 | `lib/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, ZUSTAND_STATE |
 | `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS |
@@ -17688,10 +17830,10 @@ _No circular dependencies detected._
 | `frontend/public/src/contexts/BlockchainContext.jsx` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
-| `lib/gameengin/dream-engine.ts` | 3 | EVENT_BUS |
 | `lib/gameengin/registerCartridges.ts` | 3 | RUNTIME_REGISTRY |
 | `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
 | `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS |
+| `lib/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
@@ -17706,7 +17848,7 @@ _No circular dependencies detected._
 | `lib/runtime/useDualRuntime.ts` | 2 | EVENT_BUS |
 | `lib/runtime/useEnginBridge.ts` | 2 | EVENT_BUS |
 | `lib/vm/dual-runtime.ts` | 2 | EVENT_BUS |
-| `lib/widgets/feed-resolver.ts` | 2 | EVENT_BUS |
+| `lib/web3/client.ts` | 2 | EVENT_BUS |
 | `scripts/generate-repo-state.mjs` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `src/core/GameEnginCore.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/dual-runtime-bridge-peer-activity.test.ts` | 2 | EVENT_BUS |
@@ -17717,7 +17859,6 @@ _No circular dependencies detected._
 | `lib/gameengin/gameEnginRuntime.ts` | 1 | EVENT_BUS |
 | `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY |
 | `lib/supabase/realtime.ts` | 1 | EVENT_BUS |
-| `lib/web3/client.ts` | 1 | EVENT_BUS |
 | `lib/event-bus/index.ts` | 0 | EVENT_BUS |
 | `lib/eventBus.ts` | 0 | EVENT_BUS |
 | `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
@@ -20340,7 +20481,6 @@ _No circular dependencies detected._
 ├── CHANGELOG.md
 ├── COOP_AND_SOLO_ROADMAP.md
 ├── eslint.config.mjs
-├── final-clean.zip
 ├── fix-audit.js
 ├── GameENGINspec.md
 ├── LICENSE
