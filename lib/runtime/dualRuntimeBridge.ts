@@ -312,7 +312,7 @@ class DualRuntimeBridge extends EventEmitter {
       this.entryView = this.memory ? new Uint32Array(this.memory.buffer, this.entryPtr, ENTRY_WORDS) : null;
 
       this.startPolling();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.warn('dualRuntimeBridge: WASM bus unavailable, falling back to in-memory queue', err);
       this.memory = null;
       this.wasm = null;
@@ -407,7 +407,7 @@ class DualRuntimeBridge extends EventEmitter {
     return aligned;
   }
 
-  private enqueueEnvelope(channel: string, event: string, payload: any): boolean {
+  private enqueueEnvelope(channel: string, event: string, payload: Record<string, unknown>): boolean {
     if (!this.busOnline || !this.wasm || !this.memory) {
       this.dispatchLocal(channel, event, payload);
       return true;
@@ -443,7 +443,7 @@ class DualRuntimeBridge extends EventEmitter {
   // ── Channel emission ───────────────────────────────────────────────────────
 
   /** Emit an event on a named channel. Primary public API for cross-Engin events. */
-  emit(channel: string, event: string, payload: any): boolean {
+  emit(channel: string, event: string, payload: Record<string, unknown>): boolean {
     this.enqueueEnvelope(channel, event, payload);
     return true;
   }
@@ -466,7 +466,7 @@ class DualRuntimeBridge extends EventEmitter {
   subscribe(
     channel: string,
     event: string,
-    handler: (payload: any) => void,
+    handler: (payload: Record<string, unknown>) => void,
   ): UnsubscribeFn {
     const key = `${channel}:${event}`;
     this.on(key, handler as BridgeEventHandler);
@@ -657,7 +657,7 @@ class DualRuntimeBridge extends EventEmitter {
         interVMEnabled: config.enableInterVMCommunication !== false,
         timestamp: Date.now(),
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.warn('[DualRuntimeBridge] VM init failed (WebGPU unavailable?):', err);
     }
   }
@@ -809,7 +809,7 @@ class DualRuntimeBridge extends EventEmitter {
     }
   }
 
-  private dispatchLocal(channel: string, event: string, payload: any) {
+  private dispatchLocal(channel: string, event: string, payload: Record<string, unknown>) {
     if (channel === 'module' && event === 'transfer') {
       const modulePayload = payload['module'] as { type?: unknown; id?: unknown } | undefined;
       const isGameCartridge = modulePayload?.type === 'game-cartridge';
@@ -853,14 +853,14 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
   /** Internal handler for compute:vm:dispatch-workload bridge events. */
-  private async _handleVMWorkload(payload: any): Promise<void> {
+  private async _handleVMWorkload(payload: Record<string, unknown>): Promise<void> {
     const { workloadId, region, wasmBinary, channel, priority } = payload as {
       workloadId: string; region: VMRegion; wasmBinary: ArrayBuffer;
       channel: DualRuntimeChannel; priority: number;
     };
     try {
       await this.submitVMWorkload({ id: workloadId, region, wasmBinary, channel, priority });
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.emit(channel, 'vm:error', { workloadId, error: String(err) });
     }
   }

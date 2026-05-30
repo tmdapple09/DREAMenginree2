@@ -6,6 +6,7 @@ import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { toErrorMessage } from '@/lib/utils';
 const PostCommentSchema = z.object({
   post_id: z.string().uuid({ message: 'post_id must be a valid UUID' }),
   content: z
@@ -123,7 +124,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ data: null, error: error.message }, { status: 500 });
+    return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Enrich with profile
@@ -172,7 +173,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id);
 
   if (error) {
-    return NextResponse.json({ data: null, error: error.message }, { status: 500 });
+    return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ data: { deleted: true }, error: null });

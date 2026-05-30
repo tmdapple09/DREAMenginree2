@@ -8,7 +8,7 @@ function isBrowser( ){
   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 }
 
-function writeInstances(accountId: string, instances: any): ActiveModuleInstance[] | undefined {
+function writeInstances(accountId: string, instances: ActiveModuleInstance[]): ActiveModuleInstance[] | undefined {
   if (!isBrowser()) return;
   window.localStorage.setItem(STORAGE_KEY(accountId), JSON.stringify(instances));
 }
@@ -27,18 +27,18 @@ export function loadActiveModules(accountId?: string | null) {
   }
 }
 
-export function saveActiveModule(accountId: string, instance: any): void {
+export function saveActiveModule(accountId: string, instance: ActiveModuleInstance): void {
   const existing = loadActiveModules(accountId);
   const map = new Map(existing.map((entry) => [entry.instanceId, entry]));
   map.set(instance.instanceId, instance);
   writeInstances(accountId, Array.from(map.values()));
 }
 
-export function saveActiveModules(accountId: string, instances: any) {
+export function saveActiveModules(accountId: string, instances: ActiveModuleInstance[]) {
   writeInstances(accountId, instances);
 }
 
-export function removeActiveModule(accountId: string, instanceId: any): void {
+export function removeActiveModule(accountId: string, instanceId: string): void {
   const next = loadActiveModules(accountId).filter((instance) => instance.instanceId !== instanceId);
   writeInstances(accountId, next);
 }

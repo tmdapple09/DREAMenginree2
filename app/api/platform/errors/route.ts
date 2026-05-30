@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const { data, error } = await (supabase as SupabaseClient)
@@ -10,7 +11,7 @@ export async function GET( ): Promise<NextResponse> {
     .select('*')
     .order('created_at', { ascending: false })
     .limit(50);
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ ok: true, errors: data ?? [] });
 }
 
@@ -28,6 +29,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     stack,
     metadata,
   });
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ ok: true });
 }

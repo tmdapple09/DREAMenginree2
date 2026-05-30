@@ -45,13 +45,13 @@ interface RegistryDocument {
   entries: RegistryEntry[];
 }
 
-type EngineEventHandler = (payload: any) => void;
+type EngineEventHandler = (payload: Record<string, unknown>) => void;
 
 interface RuleSetDefinition {
   id: string;
   constraints: unknown[];
   transforms:
-    | ((state: any, params: any) => Record<string, unknown>)
+    | ((state: Record<string, unknown>, params: Record<string, unknown>) => Record<string, unknown>)
     | Record<string, unknown>;
   params: Record<string, unknown>;
 }
@@ -351,7 +351,7 @@ export class UniversalEngine {
     return this.snapshots;
   }
 
-  setState(nextState: any): Readonly<Record<string, unknown>> {
+  setState(nextState: Record<string, unknown>): Readonly<Record<string, unknown>> {
     const immutable = deepFreeze(cloneUnknown(normalizeState(nextState)));
     this.activeState = immutable;
     this.snapshots = [...this.snapshots, immutable];
@@ -460,12 +460,12 @@ export class UniversalEngine {
     const id = typeof ruleSet.id === 'string' ? ruleSet.id : fallbackId;
     const constraints = Array.isArray(ruleSet.constraints) ? ruleSet.constraints : [];
     const params = ruleSet.params && typeof ruleSet.params === 'object' && !Array.isArray(ruleSet.params)
-      ? (ruleSet.params as any)
+      ? (ruleSet.params as Record<string, unknown>)
       : {};
 
     const transformsRaw = ruleSet.transforms;
     const transforms = typeof transformsRaw === 'function'
-      ? transformsRaw as (state: any, params: any) => Record<string, unknown>
+      ? transformsRaw as (state: Record<string, unknown>, params: Record<string, unknown>) => Record<string, unknown>
       : normalizeState(transformsRaw);
 
     return {

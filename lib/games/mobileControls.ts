@@ -90,7 +90,7 @@ export function getLegacyMoveAction(vector: MobileControlVector, deadZone = 0.24
   return 'move-up-right';
 }
 
-export function fireLegacyGameInput(action: LegacyGameInputAction, active: any): void {
+export function fireLegacyGameInput(action: LegacyGameInputAction, active: boolean): void {
   emitWindowEvent('de-game-input', { action, active });
   broadcastGameInput(action, active);
 }
@@ -122,7 +122,7 @@ export function emitMobileButton(button: MobileHudButton ){
   });
 }
 
-export function emitMobileLookDelta(dx: number, dy: any): void {
+export function emitMobileLookDelta(dx: number, dy: number): void {
   emitWindowEvent('de-mobile-look-delta', { dx, dy });
   MOBILE_CONTROL_LISTENERS.forEach((handlers) => handlers.onLookDelta?.({ dx, dy }));
 }

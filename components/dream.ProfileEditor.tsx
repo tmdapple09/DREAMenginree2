@@ -8,6 +8,7 @@ import { Camera, Check, Image as ImageIcon, Link as LinkIcon, Palette, User, X }
 import Image from 'next/image';
 import { useCallback, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 interface ProfileData {
   id: string;
   handle: string;
@@ -90,7 +91,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
       alert('Avatar updated successfully!');
     } catch (error: unknown) {
       console.error('Avatar upload error:', error);
-      alert(`Failed to upload avatar: ${error instanceof Error ? error.message : String(error)}`);
+      alert(`Failed to upload avatar: ${error instanceof Error ? toErrorMessage(error) : String(error)}`);
     } finally {
       setUploadingAvatar(false);
     }
@@ -139,7 +140,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
       alert('Cover image updated successfully!');
     } catch (error: unknown) {
       console.error('Cover upload error:', error);
-      alert(`Failed to upload cover: ${error instanceof Error ? error.message : String(error)}`);
+      alert(`Failed to upload cover: ${error instanceof Error ? toErrorMessage(error) : String(error)}`);
     } finally {
       setUploadingCover(false);
     }
@@ -163,7 +164,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
       alert('Profile updated successfully!');
     } catch (error: unknown) {
       console.error('Save error:', error);
-      alert(`Failed to save profile: ${error instanceof Error ? error.message : String(error)}`);
+      alert(`Failed to save profile: ${error instanceof Error ? toErrorMessage(error) : String(error)}`);
     } finally {
       setSaving(false);
     }

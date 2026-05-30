@@ -158,11 +158,11 @@ export function coerceRawPayload(payload: unknown): DreamDrop {
     };
   }
 
-  const p = payload as any;
+  const p = payload as Record<string, unknown>;
 
   // Already a DreamDrop — pass through.
   if (typeof p['type'] === 'string' && typeof p['content'] === 'string' && p['timestamp']) {
-    return p as any as DreamDrop;
+    return p as unknown as DreamDrop;
   }
 
   // engin-state shape.

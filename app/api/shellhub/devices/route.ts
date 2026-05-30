@@ -26,6 +26,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export interface ShellHubDevicesResponse {
   ok: boolean;
   /** Sanitized server URL (no credentials) — safe to return to the client */
@@ -77,8 +78,8 @@ export async function GET(): Promise<NextResponse<ShellHubDevicesResponse>> {
       api_key: creds.api_key ?? '',
     });
     return NextResponse.json({ ok: true, server_url: serverUrl, devices });
-  } catch (err: any) {
-    const message = err instanceof Error ? err.message : 'Unknown error fetching devices';
+  } catch (err: unknown) {
+    const message = err instanceof Error ? toErrorMessage(err) : 'Unknown error fetching devices';
     return NextResponse.json({ ok: false, error: message }, { status: 502 });
   }
 }

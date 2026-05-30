@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export default function CreateAdSlotPage( ){
   const [placement, setPlacement] = useState('sidebar_banner');
   const [priceDay, setPriceDay] = useState('5.00');
@@ -53,7 +54,7 @@ export default function CreateAdSlotPage( ){
 
       router.push('/ads');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to create ad slot';
+      const message = err instanceof Error ? toErrorMessage(err) : 'Failed to create ad slot';
       setError(message);
     } finally {
       setIsLoading(false);

@@ -53,6 +53,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import { toErrorMessage } from '@/lib/utils';
 interface Props {
   onBack: () => void;
   instanceId?: string;
@@ -326,8 +327,8 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
       if (!res.ok) throw new Error(json.error ?? 'Unable to run benchmark');
       setBenchResults(json.results ?? []);
       setBenchSaveMsg(json.record?.id ? `Saved benchmark as ${json.record.title}.` : '');
-    } catch (error: any) {
-      setBenchSaveMsg(error instanceof Error ? error.message : 'Unable to run benchmark');
+    } catch (error: unknown) {
+      setBenchSaveMsg(error instanceof Error ? toErrorMessage(error) : 'Unable to run benchmark');
     } finally {
       setBenchRunning(false);
     }

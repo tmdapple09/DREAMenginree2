@@ -176,7 +176,7 @@ describe('ytItemToFeedPost mapping', () => {
 // ── Swipe-left routing logic ──────────────────────────────────────────────────
 // isYouTube(post) → true for YouTube provider or youtube permalink
 
-function isYouTubeLocal(post: ){ provider?: string; source?: string; permalink?: string | null }): boolean {
+function isYouTubeLocal(post: { provider?: string; source?: string; permalink?: string | null }): boolean {
   return post.provider === 'youtube' || !!(post.permalink?.includes('youtu'));
 }
 

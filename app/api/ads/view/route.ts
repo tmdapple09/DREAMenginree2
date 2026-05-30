@@ -28,7 +28,7 @@ type ActivitySupabaseClient = {
         single: () => Promise<{ data: Record<string, unknown> | null }>;
       };
     };
-    insert: (values: any) => {
+    insert: (values: Record<string, unknown>) => {
       select: () => {
         single: () => Promise<{
           data: Record<string, unknown> | null;
@@ -36,7 +36,7 @@ type ActivitySupabaseClient = {
         }>;
       };
     };
-    update: (values: any) => {
+    update: (values: Record<string, unknown>) => {
       eq: (column: string, value: unknown) => Promise<{ error?: { message?: string } | null }>;
     };
   };
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(response, {
       headers: { 'Cache-Control': 'no-store' },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[TrackAdView] Exception:', err);
     return NextResponse.json(
       { error: 'Internal server error' },

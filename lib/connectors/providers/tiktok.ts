@@ -23,6 +23,7 @@ import { normaliseTikTok } from '@/lib/connectors/normalise';
 import { parseRssFeed, tiktokProfileRssUrl } from '@/lib/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface TikTokCredentials {
   username: string;
   /** Optional RSSHub instance URL. Defaults to https://rsshub.app */
@@ -46,8 +47,8 @@ export async function tiktokVerify(creds: TikTokCredentials): Promise<string> {
       headers: { 'User-Agent': 'DREAMengin RSS Reader (+https://dreamengin.app)' },
       signal: AbortSignal.timeout(10_000),
     });
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : String(err);
     throw new Error(
       `Could not reach RSSHub at ${rsshubBase}. ` +
       `Try a different RSSHub instance or check your internet connection. (${msg})`,

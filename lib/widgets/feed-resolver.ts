@@ -23,6 +23,7 @@ import {
     type HostResolved,
 } from '@/types/widget-system-v2';
 
+import { toErrorMessage } from '@/lib/utils';
 // =====================================================
 // 1. FEED RESOLVER
 // =====================================================
@@ -82,7 +83,7 @@ export async function resolveFeedHost(
       return {
         kind: HostKind.HOST_FEED_VIEW,
         status: HostResolvedStatus.ERROR,
-        error_message: error.message,
+        error_message: toErrorMessage(error),
       };
     }
     
@@ -122,12 +123,12 @@ export async function resolveFeedHost(
       etag: generateETag(items),
       updated_at: new Date().toISOString(),
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Feed resolver unexpected error:', error);
     return {
       kind: HostKind.HOST_FEED_VIEW,
       status: HostResolvedStatus.ERROR,
-      error_message: error instanceof Error ? error.message : 'Unknown error',
+      error_message: error instanceof Error ? toErrorMessage(error) : 'Unknown error',
     };
   }
 }
@@ -246,7 +247,7 @@ export async function resolvePublicAppPosts(limit: number = 20): Promise<HostRes
       return {
         kind: HostKind.HOST_FEED_VIEW,
         status: HostResolvedStatus.ERROR,
-        error_message: error.message,
+        error_message: toErrorMessage(error),
       };
     }
 
@@ -268,12 +269,12 @@ export async function resolvePublicAppPosts(limit: number = 20): Promise<HostRes
       etag: generateETag(items),
       updated_at: new Date().toISOString(),
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('resolvePublicAppPosts unexpected error:', err);
     return {
       kind: HostKind.HOST_FEED_VIEW,
       status: HostResolvedStatus.ERROR,
-      error_message: err instanceof Error ? err.message : 'Unknown error',
+      error_message: err instanceof Error ? toErrorMessage(err) : 'Unknown error',
     };
   }
 }

@@ -55,12 +55,12 @@ export default function BuilderPanel( ){
     });
   }, [activePixel]);
 
-  function handleMouseDown(row: number, col: any): void {
+  function handleMouseDown(row: number, col: number): void {
     setIsPainting(true);
     paintCell(row, col);
   }
 
-  function handleMouseEnter(row: number, col: any): void {
+  function handleMouseEnter(row: number, col: number): void {
     if (isPainting) paintCell(row, col);
   }
 
@@ -68,11 +68,11 @@ export default function BuilderPanel( ){
     setIsPainting(false);
   }
 
-  function focusCell(row: number, col: any): void {
+  function focusCell(row: number, col: number): void {
     document.getElementById(cellId(row, col))?.focus();
   }
 
-  function handleCellKeyDown(event: KeyboardEvent<HTMLButtonElement>, row: number, col: any): number | undefined {
+  function handleCellKeyDown(event: KeyboardEvent<HTMLButtonElement>, row: number, col: number): number | undefined {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       paintCell(row, col);

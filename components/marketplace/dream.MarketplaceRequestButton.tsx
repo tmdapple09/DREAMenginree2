@@ -13,6 +13,7 @@
 import { CheckCircle, Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type Props = {
   itemId:    string;
   itemTitle: string;
@@ -44,7 +45,7 @@ export default function MarketplaceRequestButton({ itemId, itemTitle }: Props) {
       setSuccess(true);
       setIsOpen(false);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? toErrorMessage(err) : 'Something went wrong.');
     } finally {
       setIsLoading(false);
     }

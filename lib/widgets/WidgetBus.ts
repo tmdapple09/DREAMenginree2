@@ -1,5 +1,5 @@
 
-type Callback = (payload: any) => void;
+type Callback = (payload: unknown) => void;
 
 class WidgetBus {
   private listeners: Record<string, Callback[]> = {};

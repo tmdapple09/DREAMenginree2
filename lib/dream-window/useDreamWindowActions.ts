@@ -25,6 +25,7 @@ import type {
 import { useCallback, useEffect, useState } from 'react';
 import { DREAM_WINDOW_STATES } from './DreamWindowLifecycle';
 
+import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -91,11 +92,11 @@ async function fetchDreamWindow<T>(
       return { ok: false, data: null, error: json.error ?? 'Dream Window request failed' };
     }
     return { ok: true, data: json.dreamWindow ?? null, error: null };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return {
       ok: false,
       data: null,
-      error: err instanceof Error ? err.message : 'Unknown error',
+      error: err instanceof Error ? toErrorMessage(err) : 'Unknown error',
     };
   }
 }
@@ -144,8 +145,8 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       }
       const json = await res.json() as { dreamWindows: DreamWindowRecord[] };
       setDreamWindows(json.dreamWindows ?? []);
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Unknown error');
     } finally {
       setIsLoading(false);
     }
@@ -170,8 +171,8 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       }
       setDreamWindows((prev) => [created, ...prev]);
       return created;
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Unknown error');
       return null;
     } finally {
       setIsLoading(false);
@@ -192,8 +193,8 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       }
       setDreamWindows((prev) => prev.filter((w) => w.id !== id));
       return true;
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Unknown error');
       return false;
     } finally {
       setIsLoading(false);
@@ -224,8 +225,8 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
         prev.map((w) => (w.id === id ? updated : w)),
       );
       return updated;
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Unknown error');
       return null;
     } finally {
       setIsLoading(false);
@@ -246,8 +247,8 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       }
       setDreamWindows((prev) => prev.map((window) => (window.id === id ? updated : window)));
       return updated;
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Unknown error');
       return null;
     } finally {
       setIsLoading(false);

@@ -21,6 +21,7 @@ import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/provide
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeLiveFeedResponse {
   ok: boolean;
   items: UnifiedFeedItem[];
@@ -48,8 +49,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<YouTubeLiveFee
   try {
     const items = await youtubeSearchByQuery(apiKey, query, max);
     return NextResponse.json({ ok: true, items, fetched: items.length, query });
-  } catch (err: any) {
-    const message = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? toErrorMessage(err) : String(err);
     return NextResponse.json(
       { ok: false, items: [], fetched: 0, query, error: message },
       { status: 502 },

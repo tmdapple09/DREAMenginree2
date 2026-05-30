@@ -73,7 +73,7 @@ export const useModuleRegistry = create<ModuleRegistryState>((set, get) => ({
 
     // Publish to bridge so other runtimes can react.
     bridge.emit('module', 'transfer', {
-      module: updated as unknown as any,
+      module: updated as unknown as Record<string, unknown>,
       targetRuntime,
       sourceRuntime: manifest.sourceRuntime,
     });

@@ -36,7 +36,7 @@ export function formatRelativeTime(date: string | Date, options?: { compact?: bo
   return formatDate(date)
 }
 
-export function generateDedupeHash(userId: string, source: string, externalId: any): string {
+export function generateDedupeHash(userId: string, source: string, externalId: string): string {
   return `${userId}-${source}-${externalId}`
 }
 
@@ -157,7 +157,7 @@ export async function retry<T>(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await fn()
-    } catch (err: any) {
+    } catch (err: unknown) {
       lastError = err
       if (attempt < maxAttempts) {
         await sleep(baseDelayMs * Math.pow(2, attempt - 1))
@@ -222,4 +222,26 @@ export function unique<T>(arr: readonly T[]): T[] {
  */
 export function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`Assertion failed: ${message}`)
+}
+
+// ── Error utilities ───────────────────────────────────────────────────────────
+
+/**
+ * Extract a human-readable message from an unknown thrown value.
+ * Covers Error instances, objects with a message property, and primitives.
+ */
+export function toErrorMessage(err: unknown): string {
+  if (err instanceof Error) return toErrorMessage(err);
+  if (typeof err === 'object' && err !== null && 'message' in err) {
+    const msg = (err as Record<string, unknown>).message;
+    return typeof msg === 'string' ? msg : String(msg);
+  }
+  return String(err);
+}
+
+/**
+ * Type-guard: true if value is an Error instance.
+ */
+export function isError(value: unknown): value is Error {
+  return value instanceof Error;
 }

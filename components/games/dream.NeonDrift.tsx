@@ -24,6 +24,7 @@ import { publishGamePerformanceBaseline } from '@/lib/games/performance-baseline
 import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type Phase = 'menu' | 'playing' | 'gameover';
 
 // ─── Track constants ──────────────────────────────────────────────────────────
@@ -621,7 +622,7 @@ export default function NeonDrift( ){
         resizeObserver.observe(canvasRef.current!.parentElement ?? document.body);
 
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
+        const msg = err instanceof Error ? toErrorMessage(err) : String(err);
         console.error('NeonDrift init error:', msg);
         setStatus('Error: ' + msg);
       }

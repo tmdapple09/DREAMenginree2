@@ -20,6 +20,7 @@ import {
 import { inferRootCause, type RootCauseAnalysis } from '@/lib/observability/rootCauseAnalyzer';
 import { v4 as uuidv4 } from 'uuid';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 // ── Improvement 61: stopped_by_signal status ─────────────────────────────────
@@ -223,7 +224,7 @@ async function _callAiWithRetry(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await callAi(prompt);
-    } catch (err: any) {
+    } catch (err: unknown) {
       lastErr = err;
       if (attempt < maxAttempts) {
         await new Promise<void>((r) => setTimeout(r, baseDelayMs * Math.pow(2, attempt - 1)));
@@ -348,8 +349,8 @@ async function _runLoopIterationInternal(
         ai_response,
       };
       return { iteration, fingerprint };
-    } catch (err: any) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
+    } catch (err: unknown) {
+      const message = err instanceof Error ? toErrorMessage(err) : 'Unknown error';
       const snapshot = getSnapshot(windowMs);
       const fingerprint = _fingerprintSnapshot(snapshot);
       const correlation = correlate(snapshot);

@@ -16,6 +16,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const MAX_SAVED_POSTS = 25;
 
 export async function POST(
@@ -107,7 +108,7 @@ export async function DELETE(
     .eq('post_id', postId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, unsaved: true });

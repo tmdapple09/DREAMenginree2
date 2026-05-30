@@ -4,6 +4,7 @@ import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // GET - Fetch profile
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const { data: profile, error } = await query.single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   if (!profile) {
@@ -120,7 +121,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ profile });

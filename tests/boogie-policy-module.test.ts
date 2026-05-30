@@ -187,12 +187,12 @@ describe('boogieEvaluate — policy_ref link (req 94)', () => {
 describe('emitBoogieManEvent + onBoogieManEvent (req 99)', () => {
   let cleanup: (() => void) | undefined;
    
-  let originalWindow: any;
+  let originalWindow: (Window & typeof globalThis) | undefined;
   const listeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
 
   beforeEach(() => {
     // Simulate a minimal window with EventTarget in node environment
-    originalWindow = (globalThis as any).window;
+    originalWindow = (globalThis as Record<string, unknown>).window as (Window & typeof globalThis) | undefined;
     const et = new EventTarget();
      
     (globalThis as any).window = {

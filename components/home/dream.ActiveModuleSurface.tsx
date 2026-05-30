@@ -32,7 +32,7 @@ interface GhostPreviewState {
 
 const DEFAULT_WINDOW_SIZE = { width: 600, height: 400 };
 
-function clamp(value: number, min: number, max: any): number {
+function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 

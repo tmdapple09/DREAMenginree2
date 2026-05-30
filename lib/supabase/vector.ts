@@ -18,6 +18,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -93,7 +94,7 @@ export async function upsertEmbedding({
     .select('id')
     .single();
 
-  if (error) return { id: null, error: error.message };
+  if (error) return { id: null, error: toErrorMessage(error) };
   return { id: (data as { id: string }).id, error: null };
 }
 
@@ -135,7 +136,7 @@ export async function searchSimilar({
     filter_content_type: contentType ?? null,
   });
 
-  if (error) return { results: [], error: error.message };
+  if (error) return { results: [], error: toErrorMessage(error) };
 
   const results: SimilarityResult[] = (
     data as Array<{
@@ -223,7 +224,7 @@ export async function logTriadConsensus({
     .select('id')
     .single();
 
-  if (error) return { id: null, error: error.message };
+  if (error) return { id: null, error: toErrorMessage(error) };
   return { id: (data as { id: string }).id, error: null };
 }
 

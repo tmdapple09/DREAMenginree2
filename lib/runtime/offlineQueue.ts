@@ -74,7 +74,7 @@ function _save(queue: OfflineAction[]): void {
   if (typeof localStorage === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.warn('[offlineQueue] Failed to persist queue', err);
   }
 }
@@ -174,9 +174,9 @@ export async function flushQueue(
       const idx = queue.findIndex((a) => a.id === liveEntry.id);
       if (idx >= 0) queue.splice(idx, 1);
       _save(queue);
-    } catch (err: any) {
+    } catch (err: unknown) {
       liveEntry.attempts++;
-      liveEntry.lastError = err instanceof Error ? err.message : String(err);
+      liveEntry.lastError = err instanceof Error ? toErrorMessage(err) : String(err);
       liveEntry.status = liveEntry.attempts >= MAX_RETRY_ATTEMPTS ? 'failed' : 'pending';
       _save(queue);
       failed++;

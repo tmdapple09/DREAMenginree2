@@ -13,6 +13,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
@@ -43,7 +44,7 @@ export async function GET(
 
   if (error) {
     return NextResponse.json(
-      { ok: false, items: [], error: error.message },
+      { ok: false, items: [], error: toErrorMessage(error) },
       { status: 500 },
     );
   }

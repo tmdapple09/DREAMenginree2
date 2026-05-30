@@ -24,6 +24,7 @@ import type { ConnectorConnectResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
@@ -92,8 +93,8 @@ export async function POST(
     }
     status = 'connected';
     verifiedAt = new Date().toISOString();
-  } catch (err: any) {
-    lastError = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    lastError = err instanceof Error ? toErrorMessage(err) : String(err);
     status = 'error';
   }
 

@@ -70,7 +70,7 @@ export function verifyConfirmToken(
     }
 
     return { valid: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Token verification error:', error);
     return { valid: false };
   }

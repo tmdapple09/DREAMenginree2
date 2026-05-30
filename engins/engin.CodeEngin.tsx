@@ -111,7 +111,12 @@ const DEMO_CELLS: NotebookCell[] = [
 // REAL CODE EXECUTION (Pyodide CDN, no install)
 // ----------------------------------------------------------------------
 
-let pyodideInstance: any = null;
+interface PyodideInstance {
+  runPythonAsync(code: string): Promise<unknown>;
+  globals: { get(key: string): unknown };
+  loadPackage(pkg: string | string[]): Promise<void>;
+}
+let pyodideInstance: PyodideInstance | null = null;
 let pyodidePromise: Promise<unknown> | null = null;
 
 async function loadPyodide( ){
@@ -143,7 +148,7 @@ sys.stdout = StringIO()
     let lastExpr = '';
     try { lastExpr = String(pyodide.runPython('_') || ''); } catch {}
     return output + (lastExpr ? (output ? '\n' : '') + lastExpr : '');
-  } catch (err: any) {
+  } catch (err: unknown) {
     return `Error: ${(err as Error).message}`;
   }
 }
@@ -158,7 +163,7 @@ function executeJavaScript(code: string): string {
     let output = logs.join('\n');
     if (result !== undefined) output += (output ? '\n' : '') + String(result);
     return output || 'Executed successfully (no output)';
-  } catch (err: any) {
+  } catch (err: unknown) {
     return `Error: ${(err as Error).message}`;
   }
 }
@@ -381,7 +386,7 @@ async function callEamsAssist(prompt: string, codeContext?: string, language?: C
     }
     const data = await res.json() as { response_text?: string };
     return data.response_text || 'No response from AI.';
-  } catch (err: any) {
+  } catch (err: unknown) {
     return `AI assistant error: ${err instanceof Error ? (err as Error).message : String(err)}`;
   }
 }
@@ -538,7 +543,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
       const output = await runCellCode(language, code);
       setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, status: 'done', output } : c));
       bridge.emit('code', 'code:cell-executed', { cellId, language, outputType: 'text' });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, status: 'error', output: (err as Error).message, error: (err as Error).message } : c));
     }
   }, []);
@@ -628,7 +633,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
       if (!apiKey) throw new Error('CI_API_KEY not set in environment');
       const data = await callCI(apiKey);
       setCiResults(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setCiError((err as Error).message);
     } finally {
       setCiRunning(false);
@@ -645,7 +650,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
       if (!apiKey) throw new Error('CI_API_KEY not set in environment');
       const data = await callSecurityScan(apiKey);
       setSecResults(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setSecError((err as Error).message);
     } finally {
       setSecRunning(false);
@@ -655,7 +660,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
   // Load user and projects from Supabase
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(async (res: { data: { user: import('@supabase/supabase-js').User | null }; error: any }) => {
+    supabase.auth.getUser().then(async (res: { data: { user: import('@supabase/supabase-js').User | null }; error: import('@supabase/supabase-js').AuthError | null }) => {
       const u = res.data.user;
       if (!u) { setLoadingProjects(false); return; }
       setUser(u);
@@ -698,7 +703,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
       } else {
         setShellhubConnectError(data.message ?? 'Connection failed.');
       }
-    } catch (err: any) { setShellhubConnectError('Network error'); } finally { setShellhubConnecting(false); }
+    } catch (err: unknown) { setShellhubConnectError('Network error'); } finally { setShellhubConnecting(false); }
   };
 
   const handleShellHubDisconnect = async () => {
@@ -723,7 +728,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
       } else {
         setShellhubDevicesError(data.error ?? 'Failed to load devices.');
       }
-    } catch (err: any) { setShellhubDevicesError('Network error'); } finally { setShellhubDevicesLoading(false); }
+    } catch (err: unknown) { setShellhubDevicesError('Network error'); } finally { setShellhubDevicesLoading(false); }
   };
 
   useEffect(() => {

@@ -49,6 +49,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 interface Comment {
   id: string;
   content: string;
@@ -290,8 +291,8 @@ export default function HomeFeed({
       setNewPostContent('');
       setSelectedImages((prev) => { prev.forEach((img) => URL.revokeObjectURL(img.preview)); return []; });
       setShowComposer(false);
-    } catch (err: any) {
-      setPostError(err instanceof Error ? err.message : 'Unable to create your post right now.');
+    } catch (err: unknown) {
+      setPostError(err instanceof Error ? toErrorMessage(err) : 'Unable to create your post right now.');
     } finally {
       setIsPosting(false);
     }

@@ -165,12 +165,12 @@ class SeamClipboard {
             // ── Improvement 38: per-workflow try/catch ───────────────────
             try {
               workflow.execute({ ...parsed, _seamTimestamp: payload.timestamp });
-            } catch (workflowErr: any) {
+            } catch (workflowErr: unknown) {
               console.error(`[SeamClipboard] Workflow ${workflow.id} failed`, workflowErr);
             }
           }
         }
-      } catch (_err: any) {
+      } catch (_err: unknown) {
         // Non-JSON content or missing engin fields — fall through to the
         // fallback seam:drop emission below.
       }
@@ -210,7 +210,7 @@ class SeamClipboard {
    * @param artifact Serialisable artifact data merged into each workflow payload.
    * @returns        Array of workflow IDs that were executed (may be empty).
    */
-  setWithEngins(from: EnginKey, to: EnginKey, artifact: any): string[] {
+  setWithEngins(from: EnginKey, to: EnginKey, artifact: Record<string, unknown>): string[] {
     const workflows = findWorkflows(from, to);
     const firedIds: string[] = [];
     for (const workflow of workflows) {
@@ -218,7 +218,7 @@ class SeamClipboard {
       try {
         workflow.execute({ ...artifact, _seamTimestamp: Date.now() });
         firedIds.push(workflow.id);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error(`[SeamClipboard] Workflow ${workflow.id} failed`, err);
       }
     }
@@ -245,7 +245,7 @@ class SeamClipboard {
     for (const listener of Array.from(this.listeners)) {
       try {
         listener(payload);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[SeamClipboard] listener error', err);
       }
     }

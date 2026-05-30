@@ -85,7 +85,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     return NextResponse.json({ id: data.id, created_at: data.created_at }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[api/messages/boards] Unexpected error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

@@ -68,6 +68,7 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 /** A row from the global_registry table (GAL hub). */
@@ -283,8 +284,8 @@ export default function UniversalAssetRegistry({
       }));
 
       setEntries(enriched);
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Failed to load registry');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Failed to load registry');
     } finally {
       setLoading(false);
       setRefreshing(false);

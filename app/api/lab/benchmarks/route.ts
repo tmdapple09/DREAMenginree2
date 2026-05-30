@@ -4,6 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 
+import { toErrorMessage } from '@/lib/utils';
 function runServerBenchmarks( ){
   const start = performance.now();
   let acc = 0;
@@ -44,7 +45,7 @@ export async function POST(_req: NextRequest ): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ results, record });

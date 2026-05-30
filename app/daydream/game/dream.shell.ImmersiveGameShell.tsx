@@ -37,6 +37,7 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Boot-sequence keyframe CSS ────────────────────────────────────────────────
 
 const BOOT_KEYFRAMES = `
@@ -138,9 +139,9 @@ export default function ImmersiveGameShell( ){
     setCartridgeError(null);
     loadCartridge(gameId)
       .then((c) => { if (!cancelled) setCartridge(c); })
-      .catch((err: any) => {
+      .catch((err: unknown) => {
         if (!cancelled) {
-          setCartridgeError(err instanceof Error ? err.message : 'Failed to load cartridge.');
+          setCartridgeError(err instanceof Error ? toErrorMessage(err) : 'Failed to load cartridge.');
         }
       });
     return () => { cancelled = true; };

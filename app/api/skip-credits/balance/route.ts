@@ -43,7 +43,7 @@ export async function GET(): Promise<NextResponse> {
       { skip_credit: credits },
       { headers: { 'Cache-Control': 'no-store' } },
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[GetSkipCreditsBalance] Exception:', err);
     return NextResponse.json(
       { error: 'Internal server error' },

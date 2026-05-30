@@ -16,7 +16,7 @@ export interface EngineConfig {
 }
 
 export type EngineEventType = 'navchange' | 'gesture' | 'error';
-export type EngineEventCallback = (data: any) => void;
+export type EngineEventCallback = (data: unknown) => void;
 
 /**
  * SpatialNavigationEngine - Main coordination engine
@@ -279,7 +279,7 @@ export class SpatialNavigationEngine {
         returnStackTop: this.returnStack.peek() ? Array.from(this.returnStack.peek()!) : null,
       };
       localStorage.setItem('nav_state', JSON.stringify(stateData));
-    } catch (e: any) {
+    } catch (e: unknown) {
       // Ignore persistence errors
     }
   }
@@ -296,7 +296,7 @@ export class SpatialNavigationEngine {
           this.navState.restore(new Int32Array(parsed.navState));
         }
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       // Ignore restoration errors
     }
   }

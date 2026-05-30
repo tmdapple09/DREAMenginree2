@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
+import { toErrorMessage } from '@/lib/utils';
 const VALID_STATUSES = [
   'PENDING_REVIEW',
   'NCMEC_SUBMITTED',
@@ -51,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+  if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
 
   return NextResponse.json(
     { incidents, count: incidents?.length ?? 0 },
@@ -114,7 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       })
       .eq('id', data.incident_id);
 
-    if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+    if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
 
     return NextResponse.json({ ok: true, incident_id: data.incident_id, status: data.status });
   }
@@ -134,7 +135,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .upsert(rows, { onConflict: 'hash_sha256', ignoreDuplicates: true })
       .select('id');
 
-    if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+    if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
 
     return NextResponse.json({
       ok: true,

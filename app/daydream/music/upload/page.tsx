@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export default function UploadMusicPage( ){
   const [title, setTitle] = useState('');
   const [embedUrl, setEmbedUrl] = useState('');
@@ -57,7 +58,7 @@ export default function UploadMusicPage( ){
 
       router.push('/daydream/music');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to upload music');
+      setError(err instanceof Error ? toErrorMessage(err) : 'Failed to upload music');
     } finally {
       setIsLoading(false);
     }

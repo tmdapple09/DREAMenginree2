@@ -115,7 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(response, {
       headers: { 'Cache-Control': 'no-store' },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[EarnSkipCredits] Exception:', err);
     return NextResponse.json(
       { error: 'Internal server error' },

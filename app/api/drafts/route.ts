@@ -30,6 +30,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Validation ──────────────────────────────────────────────────────────────
 
 const CONTENT_TYPES = [
@@ -65,7 +66,7 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
     .limit(100);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ drafts: drafts ?? [] });
@@ -117,7 +118,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ draft }, { status: 201 });

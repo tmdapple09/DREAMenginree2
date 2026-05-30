@@ -106,7 +106,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[dreams/instances] Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

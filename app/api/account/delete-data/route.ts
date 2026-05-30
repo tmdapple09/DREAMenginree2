@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 
+import { toErrorMessage } from '@/lib/utils';
 const DeleteDataBodySchema = z.object({
   confirm: z.literal('DELETE_MY_DATA'),
 });
@@ -54,13 +55,13 @@ export async function POST(req: NextRequest): Promise<Response> {
   ]);
 
   if (feedResult.error) {
-    errors.push(`feed_rules: ${feedResult.error.message}`);
+    errors.push(`feed_rules: ${feedResult.toErrorMessage(error)}`);
   } else {
     deleted.push('feed_rules');
   }
 
   if (widgetResult.error) {
-    errors.push(`dream_instances: ${widgetResult.error.message}`);
+    errors.push(`dream_instances: ${widgetResult.toErrorMessage(error)}`);
   } else {
     deleted.push('dream_instances');
   }

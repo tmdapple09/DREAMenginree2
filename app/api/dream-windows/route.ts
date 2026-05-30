@@ -20,6 +20,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // The 10 required fields (Phase 8 §B Point 12)
 // ---------------------------------------------------------------------------
@@ -80,7 +81,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     .order('created_at', { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ dreamWindows: dreamWindows ?? [] });
@@ -187,7 +188,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ dreamWindow }, { status: 201 });

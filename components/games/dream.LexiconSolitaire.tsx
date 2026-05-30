@@ -101,7 +101,7 @@ export default function LexiconSolitaire( ){
     // Remove used cards; redeal from hand
     const used = new Set(picked);
     setColumns((cols) => cols.map((col) => col.filter((c) => !used.has(c.id))));
-    setHand((h) => h.filter((c: any) => !used.has(c.id)));
+    setHand((h) => h.filter((c) => !used.has(c.id)));
     // Draw 2
     setHand((h) => [...h, ...makeDeck().slice(0, 2)]);
     setPicked([]);

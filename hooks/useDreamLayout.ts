@@ -17,9 +17,9 @@ const DEFAULT_LAYOUT: UserDreamLayout = {
 function normalizeLayout(value: unknown): UserDreamLayout {
   const obj = value && typeof value === 'object' ? value as any : {};
   return {
-    home: { dreams: Array.isArray(obj.home?.dreams) ? obj.home.dreams.filter((id: any) => typeof id === 'string') : [] },
-    dreamspace: { dreams: Array.isArray(obj.dreamspace?.dreams) ? obj.dreamspace.dreams.filter((id: any) => typeof id === 'string') : [] },
-    hidden: Array.isArray(obj.hidden) ? obj.hidden.filter((id: any) => typeof id === 'string') : [],
+    home: { dreams: Array.isArray(obj.home?.dreams) ? obj.home.dreams.filter((id: unknown): id is string => typeof id === 'string') : [] },
+    dreamspace: { dreams: Array.isArray(obj.dreamspace?.dreams) ? obj.dreamspace.dreams.filter((id: unknown): id is string => typeof id === 'string') : [] },
+    hidden: Array.isArray(obj.hidden) ? obj.hidden.filter((id: unknown): id is string => typeof id === 'string') : [],
   };
 }
 

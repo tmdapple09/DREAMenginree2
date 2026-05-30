@@ -531,7 +531,7 @@ export function useShareToProfile(userId: string ){
         mutate(`albums/${userId}`);
 
         return { success: true, widgetId };
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error sharing content:", error);
         throw error;
       } finally {

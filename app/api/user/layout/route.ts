@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const DEFAULT_LAYOUT = { home: { dreams: [] }, dreamspace: { dreams: [] }, hidden: [] };
 
 function normalizeLayout(input: unknown ){
@@ -10,7 +11,7 @@ function normalizeLayout(input: unknown ){
   return {
     home: { dreams: Array.isArray((obj.home as {dreams?: unknown[]})?.dreams) ? ((obj.home as {dreams: unknown[]}).dreams).filter((id): id is string => typeof id === 'string') : [] },
     dreamspace: { dreams: Array.isArray((obj.dreamspace as {dreams?: unknown[]})?.dreams) ? ((obj.dreamspace as {dreams: unknown[]}).dreams).filter((id): id is string => typeof id === 'string') : [] },
-    hidden: Array.isArray(obj.hidden) ? obj.hidden.filter((id: any) => typeof id === 'string') : [],
+    hidden: Array.isArray(obj.hidden) ? obj.hidden.filter((id: unknown): id is string => typeof id === 'string') : [],
   };
 }
 
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('id', user.id);
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, layout });

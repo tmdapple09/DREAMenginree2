@@ -230,7 +230,7 @@ export async function fetchWithRetry(
       if (attempt < retries - 1) {
         await sleep(backoffMs * 2 ** attempt);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearTimeout(timer);
       if (attempt === retries - 1) throw err;
       await sleep(backoffMs * 2 ** attempt);
@@ -285,6 +285,7 @@ if __name__ == '__main__':
     print(f'Mean final price: \${mean:.2f}')
     print(f'Std deviation:    \${std:.2f}')
     print(f'95% CI: [\${mean - 1.96*std:.2f}, \${mean + 1.96*std:.2f}]')`;
+import { toErrorMessage } from '@/lib/utils';
     case 'brand':
       return JSON.stringify({
         name: shortPrompt,
@@ -902,8 +903,8 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
           send({ type: 'step', step: 'PHASE: Build complete! 🎉', ts: Date.now() });
           send({ type: 'done', ts: Date.now() });
         }
-      } catch (err: any) {
-        send({ type: 'error', message: String(err instanceof Error ? err.message : err), ts: Date.now() });
+      } catch (err: unknown) {
+        send({ type: 'error', message: String(err instanceof Error ? toErrorMessage(err) : err), ts: Date.now() });
         send({ type: 'done', ts: Date.now() });
       } finally {
         try { controller.close(); } catch { /* already closed */ }

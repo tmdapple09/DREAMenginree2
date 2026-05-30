@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export default function SellItemPage( ){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -55,7 +56,7 @@ export default function SellItemPage( ){
 
       router.push('/shop');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to create listing';
+      const message = err instanceof Error ? toErrorMessage(err) : 'Failed to create listing';
       setError(message);
     } finally {
       setIsLoading(false);

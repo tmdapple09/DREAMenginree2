@@ -39,7 +39,7 @@ export function setSwap(domain: SwapDomain, value: boolean): void {
   if (typeof localStorage === 'undefined') return;
   try {
     localStorage.setItem(SWAP_KEYS[domain], String(value));
-  } catch (err: any) {
+  } catch (err: unknown) {
     // ── Improvement 43: log storage errors ───────────────────────────────
     console.warn('[swapManager] Failed to persist swap state', { domain, err });
   }
@@ -64,7 +64,7 @@ export function clearSwap(domain: SwapDomain): void {
   if (typeof localStorage === 'undefined') return;
   try {
     localStorage.removeItem(SWAP_KEYS[domain]);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.warn('[swapManager] Failed to clear swap state', { domain, err });
   }
 }

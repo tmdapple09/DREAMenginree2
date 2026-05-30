@@ -14,6 +14,7 @@ import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 
+import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Intent dispatch table
 // ---------------------------------------------------------------------------
@@ -89,7 +90,7 @@ async function dispatchIntent(
         .update({ config: patch as Json })
         .eq('id', dream_id)
         .eq('user_id', userId);
-      if (error) return { executed: false, error: error.message };
+      if (error) return { executed: false, error: toErrorMessage(error) };
       return { executed: true, action_type: 'dream_config_patch', action_payload: { dream_id, patch } };
     }
 

@@ -14,6 +14,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -51,14 +52,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       roomName,
       identity: resolvedIdentity,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof LiveKitError) {
       const status =
         err.code === 'CREDENTIALS_MISSING' ||
         err.code === 'UNAUTHORIZED'
           ? 503
           : 500;
-      return NextResponse.json({ error: err.message }, { status });
+      return NextResponse.json({ error: toErrorMessage(err) }, { status });
     }
     return NextResponse.json({ error: 'Token generation failed' }, { status: 500 });
   }

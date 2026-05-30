@@ -33,6 +33,7 @@ import {
     type UiNotification,
 } from './notificationHelpers';
 
+import { toErrorMessage } from '@/lib/utils';
 // Poll every 30 s — unobtrusive; follows render-on-demand spirit
 const POLL_INTERVAL_MS = 30_000;
 
@@ -93,8 +94,8 @@ export function useNotifications(): UseNotificationsReturn {
       const normalised = rows.map(normalizeDbRow);
       setNotifications(sortByRecent(normalised));
       setError(null);
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Failed to load notifications.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : 'Failed to load notifications.');
     } finally {
       setIsLoading(false);
     }

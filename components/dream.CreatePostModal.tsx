@@ -6,6 +6,7 @@ import { Image as ImageIcon, Loader2, Music, Send, Trash2, Video, X } from 'luci
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 interface CreatePostModalProps {
   onClose: () => void;
   userId: string;
@@ -85,7 +86,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
         mimeType: media.file.type,
       });
       return upload.mediaUrl;
-    } catch (uploadError: any) {
+    } catch (uploadError: unknown) {
       console.error('Upload error:', uploadError);
       throw new Error(`Failed to upload ${media.file.name}: ${uploadError instanceof Error ? uploadError.message : String(uploadError)}`);
     }
@@ -149,9 +150,9 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
       } else {
         throw error;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Post creation error:', error);
-      alert(error instanceof Error ? error.message : 'Failed to create post');
+      alert(error instanceof Error ? toErrorMessage(error) : 'Failed to create post');
     } finally {
       setIsSubmitting(false);
       setUploadProgress('');

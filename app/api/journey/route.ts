@@ -18,6 +18,7 @@ import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 
+import { toErrorMessage } from '@/lib/utils';
 // ── GET ───────────────────────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (kind) query = query.eq('kind', kind);
 
   const { data, error } = await query;
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
 
   return NextResponse.json({ dots: data ?? [] });
 }
@@ -105,7 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
 
   return NextResponse.json({ dot: data }, { status: 201 });
 }

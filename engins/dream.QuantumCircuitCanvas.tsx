@@ -314,7 +314,7 @@ function drawCNOTGate(
   ctx.shadowBlur = 0;
 }
 
-function drawMeasureBox(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, color: any): void {
+function drawMeasureBox(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, color: string): void {
   ctx.strokeStyle = color;
   ctx.lineWidth = 0.8;
   // Meter arc

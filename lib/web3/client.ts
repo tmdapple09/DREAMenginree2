@@ -24,6 +24,7 @@ import {
     type ChainConfig,
 } from './types';
 
+import { toErrorMessage } from '@/lib/utils';
 // ─── EIP-1193 minimal types ───────────────────────────────────────────────────
 
 interface Eip1193Provider {
@@ -147,13 +148,13 @@ export class Web3Client {
       this.registerProviderListeners();
 
       return this.account;
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.setConnectionState('error');
       if ((err as { code?: number })?.code === 4001) {
         throw new Web3Error('User rejected the connection request', 'USER_REJECTED');
       }
       throw err instanceof Web3Error ? err : new Web3Error(
-        err instanceof Error ? err.message : 'Connection failed',
+        err instanceof Error ? toErrorMessage(err) : 'Connection failed',
         'WALLET_NOT_FOUND'
       );
     }
@@ -182,7 +183,7 @@ export class Web3Client {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: `0x${chainId.toString(16)}` }],
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Error code 4902 = chain not added — add it.
       if ((err as { code?: number })?.code === 4902) {
         await this.provider.request({
@@ -226,7 +227,7 @@ export class Web3Client {
 
   // ── Provider listeners ────────────────────────────────────────────────────
 
-  private readonly onAccountsChanged = (accounts: any) => {
+  private readonly onAccountsChanged = (accounts: string[]) => {
     const addrs = accounts as string[];
     if (!addrs.length) {
       this.disconnect();
@@ -242,7 +243,7 @@ export class Web3Client {
     }
   };
 
-  private readonly onChainChanged = (chainId: any) => {
+  private readonly onChainChanged = (chainId: string) => {
     const id = parseInt(chainId as string, 16);
     if (this.account) {
       this.account = { ...this.account, chainId: id };

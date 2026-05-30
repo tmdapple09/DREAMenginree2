@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 type Profile = {
   id: string;
   handle: string | null;
@@ -53,7 +54,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       // The cast below preserves runtime behavior while keeping the build green.
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     return NextResponse.json({
@@ -73,7 +74,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       // See NOTE above re: `.returns<T>()`.
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     return NextResponse.json({
@@ -141,7 +142,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Create notification — content JSONB must match notificationHelpers.ts schema
@@ -190,7 +191,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('following_id', targetId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

@@ -251,7 +251,7 @@ export async function uploadBlobToLedgerStorage(
     });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error(toErrorMessage(error));
   }
 
   return {

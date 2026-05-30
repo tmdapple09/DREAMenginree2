@@ -185,7 +185,7 @@ export class LiveKitRoomManager {
       await this.refresh();
       this.setConnectionState('connected');
       this.startPolling();
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.setConnectionState('failed');
       throw err;
     }

@@ -301,7 +301,7 @@ function extractJSImportData(relPath, content, allFilesSet) {
     m = chunk.match(/^\s*(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/);
     if (m) {
       const name = m[1];
-      functions.push(){ name, exported: false, loc: lineOfIndex(content, start + (m.index || 0)) });
+      functions.push({ name, exported: false, loc: lineOfIndex(content, start + (m.index || 0)) });
       continue;
     }
     m = chunk.match(/^\s*export\s+(?:default\s+)?class\s+([A-Za-z_$][\w$]*)/);

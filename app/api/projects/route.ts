@@ -4,6 +4,7 @@ import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // GET - Fetch projects
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
@@ -30,7 +31,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     // Check access
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const { data: projects, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ projects });
@@ -110,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Create feed item if public
@@ -169,7 +170,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ project });
@@ -198,7 +199,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

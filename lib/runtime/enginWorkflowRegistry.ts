@@ -71,7 +71,7 @@ export interface WorkflowDefinition {
    * Execute the workflow by firing bridge.emitDurable on the target channel.
    * The durable queue ensures delivery even if the target Engin is offline.
    */
-  execute(payload: any): void;
+  execute(payload: Record<string, unknown>): void;
 }
 
 // ── Helper: factory for workflow definitions ───────────────────────────────────
@@ -555,12 +555,12 @@ export function findWorkflowById(id: string): WorkflowDefinition | undefined {
  *
  * @returns true if the workflow was found and executed; false if the ID is unknown.
  */
-export function executeWorkflow(id: string, payload: any): boolean {
+export function executeWorkflow(id: string, payload: Record<string, unknown>): boolean {
   const workflow = findWorkflowById(id);
   if (!workflow) return false;
   try {
     workflow.execute(payload);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(`[enginWorkflowRegistry] executeWorkflow(${id}) threw`, err);
     return false;
   }

@@ -45,7 +45,7 @@ export function isAuthRelatedError(error: unknown): boolean {
   if (!error) return false;
 
   const message =
-    (error instanceof Error ? error.message : String(error)) ?? '';
+    (error instanceof Error ? toErrorMessage(error) : String(error)) ?? '';
   const name = error instanceof Error ? (error.name ?? '') : '';
 
   const haystack = `${name} ${message}`.toLowerCase();

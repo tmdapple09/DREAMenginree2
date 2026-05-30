@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { toErrorMessage } from '@/lib/utils';
 const MaskSchema = z.object({
   x: z.number().min(0).max(1),
   y: z.number().min(0).max(1),
@@ -155,9 +156,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { resultBase64, provider: 'replicate' },
         { headers: { 'Cache-Control': 'no-store' } },
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       return NextResponse.json(
-        { error: 'Generative fill request failed', detail: err instanceof Error ? err.message : String(err) },
+        { error: 'Generative fill request failed', detail: err instanceof Error ? toErrorMessage(err) : String(err) },
         { status: 502 },
       );
     }

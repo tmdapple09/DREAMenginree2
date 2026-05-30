@@ -98,6 +98,7 @@ import {
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type PersistedLedgerAudio = {
   bucket: 'audio';
   storagePath: string;
@@ -833,7 +834,7 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
   }
 
   // ── Playlist reorder handler ──
-  function movePlaylistItem(index: number, direction: any): void {
+  function movePlaylistItem(index: number, direction: 'up' | 'down'): void {
     setPlaylist((prev) => {
       const next = [...prev];
       const target = direction === 'up' ? index - 1 : index + 1;
@@ -2920,7 +2921,7 @@ function DAWFileIOPanel({
   const [show3DVisualizerFIO, setShow3DVisualizerFIO] = useState(false);
 
   // ── Helper: get/create OfflineAudioContext for processing ──
-  function getOfflineCtx(length: number, sr: number, ch: any): OfflineAudioContext {
+  function getOfflineCtx(length: number, sr: number, ch: number): OfflineAudioContext {
     return new OfflineAudioContext(ch, length, sr);
   }
 
@@ -2968,7 +2969,7 @@ function DAWFileIOPanel({
   }
 
   // ── Helper: download a blob ──
-  function downloadBlob(blob: Blob, name: any): void {
+  function downloadBlob(blob: Blob, name: string): void {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = name; a.click();
@@ -2988,7 +2989,7 @@ function DAWFileIOPanel({
     setHistoryTick((v) => v + 1);
   }
 
-  function pushHistory(ref: React.MutableRefObject<HistoryEntry[]>, entry: any): void {
+  function pushHistory(ref: React.MutableRefObject<HistoryEntry[]>, entry: HistoryEntry): void {
     ref.current.push(entry);
     if (ref.current.length > 24) ref.current.shift();
     syncHistoryTick();
@@ -3059,7 +3060,7 @@ function DAWFileIOPanel({
         fileName: name,
         mimeType: blob.type || 'audio/wav',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.warn('StarMaker ledger sync skipped:', error);
     }
   }, [onLedgerAudioChange]);
@@ -3135,8 +3136,8 @@ function DAWFileIOPanel({
         await syncLedgerAudio(blob, name);
       }
 
-    } catch (err: any) {
-      setImportErr(`Import failed: ${err instanceof Error ? err.message : String(err)}`);
+    } catch (err: unknown) {
+      setImportErr(`Import failed: ${err instanceof Error ? toErrorMessage(err) : String(err)}`);
     }
     setIsImporting(false);
   }, [isLooping, syncLedgerAudio, volume]);
@@ -3260,9 +3261,9 @@ function DAWFileIOPanel({
         if (!res.ok) throw new Error(`Failed to restore saved audio from ledger (${res.status})`);
         const restoredBlob = await res.blob();
         await loadBlob(restoredBlob, persistedLedgerAudio.fileName, { persistToLedger: false });
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (!controller.signal.aborted) {
-          setImportErr(`Failed to restore saved audio from ledger: ${err instanceof Error ? err.message : String(err)}`);
+          setImportErr(`Failed to restore saved audio from ledger: ${err instanceof Error ? toErrorMessage(err) : String(err)}`);
         }
       } finally {
         restoringLedgerAudioRef.current = false;
@@ -3442,7 +3443,7 @@ function DAWFileIOPanel({
   }
 
   // ── Waveform: click to seek + drag to select ──
-  function handleBarMouseDown(barIdx: number, e: any) {
+  function handleBarMouseDown(barIdx: number, e: React.MouseEvent) {
     e.preventDefault();
     setDragAnchor(barIdx);
     setIsDragging(true);

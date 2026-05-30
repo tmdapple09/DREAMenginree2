@@ -244,6 +244,7 @@ function makeEmptyGrid(): TileType[][] {
 
 import { ArtifactSlot } from '@/lib/enginpipe';
 
+import { toErrorMessage } from '@/lib/utils';
 /**
  * Default export wraps the inner component in a generic Engin Pipe
  * `<ArtifactSlot>` so future cross-Engin features (telemetry tagging,
@@ -891,8 +892,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       GAMES.map(async (game) => {
         try {
           return [game.id, await loadCartridge(game.id), null] as const;
-        } catch (error: any) {
-          const message = error instanceof Error ? error.message : 'Unknown cartridge loader failure.';
+        } catch (error: unknown) {
+          const message = error instanceof Error ? toErrorMessage(error) : 'Unknown cartridge loader failure.';
           console.warn(`[GameEngin] Failed to load cartridge "${game.id}"`, error);
           return [game.id, null, message] as const;
         }
@@ -1117,7 +1118,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   }
 
   // ── Tournament handlers ──────────────────────────────────────────────────────
-  function handlePickWinner(matchIndex: number, winner: any): void {
+  function handlePickWinner(matchIndex: number, winner: string | null): void {
     setBracket((prev) => prev.map((m, i: number) => i === matchIndex ? { ...m, winner } : m));
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'games', 'game:tournament-match', { matchIndex, winner },

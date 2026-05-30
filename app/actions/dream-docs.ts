@@ -11,6 +11,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Json } from '@/types/supabase';
 
+import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -98,12 +99,12 @@ export async function createDreamDoc(
 
     if (error) {
       console.error('[dream-docs] createDreamDoc error:', error);
-      return { id: null, error: error.message };
+      return { id: null, error: toErrorMessage(error) };
     }
 
     return { id: (data as { id: number }).id, error: null };
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : 'UNKNOWN_ERROR';
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : 'UNKNOWN_ERROR';
     return { id: null, error: msg };
   }
 }
@@ -127,12 +128,12 @@ export async function publishDreamDoc(
 
     if (error) {
       console.error('[dream-docs] publishDreamDoc error:', error);
-      return { error: error.message };
+      return { error: toErrorMessage(error) };
     }
 
     return { error: null };
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : 'UNKNOWN_ERROR';
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : 'UNKNOWN_ERROR';
     return { error: msg };
   }
 }
@@ -168,7 +169,7 @@ export async function upsertDocSection(
 
     if (error) {
       console.error('[dream-docs] upsertDocSection error:', error);
-      return { id: null, error: error.message };
+      return { id: null, error: toErrorMessage(error) };
     }
 
     const sectionId = (data as { id: number }).id;
@@ -178,8 +179,8 @@ export async function upsertDocSection(
     }
 
     return { id: sectionId, error: null };
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : 'UNKNOWN_ERROR';
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : 'UNKNOWN_ERROR';
     return { id: null, error: msg };
   }
 }

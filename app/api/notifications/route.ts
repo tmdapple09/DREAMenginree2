@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // GET - Fetch notifications
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -37,7 +38,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   ]);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ 
@@ -67,7 +68,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
       .eq('read', false);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, marked_all: true });
@@ -84,7 +85,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     .in('id', notification_ids);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });
@@ -110,7 +111,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
       .eq('user_id', user.id);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, deleted_all: true });
@@ -127,7 +128,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

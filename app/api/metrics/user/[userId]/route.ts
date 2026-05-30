@@ -107,7 +107,7 @@ export async function GET(
     return NextResponse.json(response, {
       headers: { 'Cache-Control': 'public, max-age=300' }, // Cache for 5 min
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[GetUserMetrics] Exception:', err);
     return NextResponse.json(
       { error: 'Internal server error' },

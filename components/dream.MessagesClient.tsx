@@ -6,7 +6,7 @@ import { useDreamDMMessages } from '@/lib/dreamdm/useDreamDMMessages';
 import { useDreamSearch } from '@/lib/dreamdm/useDreamSearch';
 import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
 import { createClient } from '@/lib/supabase/client';
-import { formatRelativeTime } from '@/lib/utils';
+import { formatRelativeTime, toErrorMessage } from '@/lib/utils';
 import { ArrowLeft, Bot, FileText, Loader2, Mail, MessageSquare, Music, Plus, Search, Send, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -257,9 +257,9 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
           )
         );
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to send message:', err);
-      alert(err instanceof Error ? err.message : 'Failed to send message');
+      alert(err instanceof Error ? toErrorMessage(err) : 'Failed to send message');
       if (optimisticMessage) removeOptimistic(optimisticMessage.id);
       setNewMessage(rawBody);
     } finally {

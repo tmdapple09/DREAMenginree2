@@ -1272,7 +1272,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 mimeType: file.type,
               });
               mediaUrls.push(upload.mediaUrl);
-            } catch (uploadError: any) {
+            } catch (uploadError: unknown) {
               console.error('[DreamBar] Comment media upload failed:', uploadError);
               alert(`Comment media upload failed for ${file.name}. Please try again.`);
             }
@@ -1293,7 +1293,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           const { error } = await res.json().catch(() => ({})) as { error?: string };
           console.error('[DreamBar] Comment failed:', error ?? 'Unknown error');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[DreamBar] Network error posting comment:', err);
       } finally {
         setCommentSending(false);
@@ -1363,7 +1363,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 mimeType: file.type,
               });
               mediaUrls.push(upload.mediaUrl);
-            } catch (uploadError: any) {
+            } catch (uploadError: unknown) {
               console.error('[DreamBar] Feed media upload failed:', uploadError);
               alert(`Post media upload failed for ${file.name}. Please try again.`);
             }
@@ -1390,7 +1390,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           console.error('[DreamBar] Post creation failed:', error ?? 'Unknown error', '— opening full composer');
           window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[DreamBar] Network error creating post:', err, '— opening full composer');
         window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
       }

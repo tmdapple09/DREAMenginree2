@@ -20,6 +20,7 @@ import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface GameAsset {
@@ -118,7 +119,7 @@ export const DreamEngine = {
         updated_at: new Date().toISOString(),
       }, { onConflict: 'owner_id,asset_id,input_source' });
 
-    if (error) throw new Error(`Binding Failed: ${error.message}`);
+    if (error) throw new Error(`Binding Failed: ${toErrorMessage(error)}`);
   },
 
   /**
@@ -129,7 +130,7 @@ export const DreamEngine = {
    * const channel = DreamEngine.syncController(assetId, (payload) => { ... });
    * return () => { channel.unsubscribe(); };
    */
-  syncController(assetId: string, onUpdate: (payload: any) => void) {
+  syncController(assetId: string, onUpdate: (payload: Record<string, unknown>) => void) {
     const supabase = createClient();
     return supabase
       .channel(`asset_controls_${assetId}`)

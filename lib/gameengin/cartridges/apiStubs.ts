@@ -20,7 +20,7 @@ import type {
     CartridgeSaveAPI,
 } from '../cartridge';
 
-function warn(capability: string, method: any): void {
+function warn(capability: string, method: string): void {
   if (process.env.NODE_ENV !== 'production') {
     console.warn(
       `[GameEngin] Cartridge called api.${capability}.${method}() but did not declare '${capability}' in capabilities[]. ` +

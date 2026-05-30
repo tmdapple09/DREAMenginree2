@@ -234,7 +234,7 @@ export async function planWithEams(input: {
         interpreted_intent,
         intents,
       };
-    } catch (e: any) {
+    } catch (e: unknown) {
       lastErr = e;
     }
   }

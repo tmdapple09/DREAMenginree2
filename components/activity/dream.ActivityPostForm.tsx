@@ -60,7 +60,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
       setActivityType('');
       setEvidenceUrl('');
       setMediaUrl('');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[ActivityPostForm] Submit error:', err);
       alert('Failed to create post');
     } finally {

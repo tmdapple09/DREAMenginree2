@@ -62,6 +62,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { rankFeed, type ScoredPost } from '../algorithms/dreamrAlgorithm';
 
+import { toErrorMessage } from '@/lib/utils';
 /**
  * Core DreamR feed handler — shared between the live route and any future
  * internal callers (e.g. server actions, edge middleware). Import this function
@@ -104,7 +105,7 @@ export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse>
   const { data: rows, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   const fetched = (rows ?? []) as any[];
@@ -119,7 +120,7 @@ export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse>
       ? visible.filter((r) => !params.seen.has((r as Record<string, unknown>).id as string))
       : visible;
 
-  const posts: ScoredPost[] = fresh.map((r: any) => ({
+  const posts: ScoredPost[] = fresh.map((r) => ({
     id: r.id,
     content: r.content ?? '',
     media_url: getPrimaryPostMediaUrl(r as any),

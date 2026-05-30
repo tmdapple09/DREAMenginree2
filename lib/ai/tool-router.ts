@@ -11,6 +11,7 @@ import {
 } from '@/types/ai-system';
 import { writeAuditLog } from './audit';
 
+import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // HANDLER CONTEXT
 // ============================================================================
@@ -97,14 +98,14 @@ export async function executeIntent(
 
   try {
     result = await handler(ctx);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Handler error for ${intent.type}:`, error);
 
     result = {
       ok: false,
       error: {
         code: 'HANDLER_ERROR',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: error instanceof Error ? toErrorMessage(error) : 'Unknown error',
         detail: error,
       },
     };

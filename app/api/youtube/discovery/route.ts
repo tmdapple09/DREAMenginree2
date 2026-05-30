@@ -20,6 +20,7 @@ import { getYouTubeApiKey, youtubeDiscovery } from '@/lib/connectors/providers/y
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeDiscoveryResponse {
   ok: boolean;
   items: UnifiedFeedItem[];
@@ -45,8 +46,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<YouTubeDiscove
   try {
     const items = await youtubeDiscovery(apiKey, max);
     return NextResponse.json({ ok: true, items, fetched: items.length });
-  } catch (err: any) {
-    const message = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? toErrorMessage(err) : String(err);
     return NextResponse.json(
       { ok: false, items: [], fetched: 0, error: message },
       { status: 502 },

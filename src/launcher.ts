@@ -26,6 +26,7 @@ import demoGameConfig from './configs/demoGameConfig';
 import type { GameConfig } from './core/GameEnginCore';
 import { GameEnginConfigError, GameEnginCore } from './core/GameEnginCore';
 
+import { toErrorMessage } from '@/lib/utils';
 // ─── launch() ────────────────────────────────────────────────────────────────
 
 /**
@@ -49,9 +50,9 @@ export async function launch(
   try {
     await core.start(canvas, config);
     console.log('✅ GameEngin runtime is active.');
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof GameEnginConfigError) {
-      console.error('❌ Configuration error:', err.message);
+      console.error('❌ Configuration error:', toErrorMessage(err));
     } else {
       console.error('❌ Failed to start GameEngin:', err);
     }

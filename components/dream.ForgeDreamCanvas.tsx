@@ -36,6 +36,7 @@ import {
     type Wire,
 } from '../lib/forge/engineForge';
 
+import { toErrorMessage } from '@/lib/utils';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface PlacedPiece {
@@ -79,7 +80,7 @@ export function ForgeDreamCanvas( ){
   // Listen to bus events
   useEffect(() => {
     const bus = busRef.current;
-    const handleExec = (payload: any) => {
+    const handleExec = (payload: unknown) => {
       const p = payload as { result: unknown };
       setRunResult(JSON.stringify(p.result, null, 2));
     };
@@ -198,7 +199,7 @@ export function ForgeDreamCanvas( ){
       assembly.bus.on('executed', payload => busRef.current.emit('executed', payload));
       assembly.bus.on('error', payload => setRunResult(`Error: ${(payload as { message: string }).message}`));
       runAssembly(assembly, DEFAULT_SANDBOX);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setRunResult(`Assembly error: ${String(err)}`);
     }
   }, [placed, wires]);
@@ -236,11 +237,11 @@ export function ForgeDreamCanvas( ){
       });
 
       if (error) {
-        setValidationMsg(`⚠ Save failed: ${error.message}`);
+        setValidationMsg(`⚠ Save failed: ${toErrorMessage(error)}`);
       } else {
         setValidationMsg(publish ? '✅ Published to Marketplace' : '✅ Saved to workspace');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setValidationMsg(`⚠ ${String(err)}`);
     }
   }, [placed, wires]);

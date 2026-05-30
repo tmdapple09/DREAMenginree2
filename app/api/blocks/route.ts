@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
+import { toErrorMessage } from '@/lib/utils';
 const BlockBodySchema = z.object({
   blocked_id: z.string().uuid(),
 });
@@ -26,7 +27,7 @@ export async function GET( ): Promise<NextResponse> {
     .eq('blocker_id', user.id)
     .order('created_at', { ascending: false });
 
-  if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+  if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
   return NextResponse.json({ blocks: data ?? [] });
 }
 
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .select('id, blocked_id, created_at')
     .single();
 
-  if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+  if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
   return NextResponse.json({ ok: true, block: data }, { status: 201 });
 }
 
@@ -75,6 +76,6 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('blocker_id', user.id)
     .eq('blocked_id', blocked_id);
 
-  if (error) return jsonApiError(500, 'DB_ERROR', error.message);
+  if (error) return jsonApiError(500, 'DB_ERROR', toErrorMessage(error));
   return NextResponse.json({ ok: true });
 }

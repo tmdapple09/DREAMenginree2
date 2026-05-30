@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES (mirroring the DB schema — no raw content fields)
 // ============================================================================
@@ -146,8 +147,8 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
       const json = await res.json() as { incidents?: ChildSafetyIncident[]; error?: string };
       if (!res.ok) throw new Error(json.error ?? `HTTP ${res.status}`);
       setIncidents(json.incidents ?? []);
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : String(err));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : String(err));
     } finally {
       setLoadingQueue(false);
     }
@@ -204,8 +205,8 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
       setReviewNotes('');
       await fetchIncidents();
       await fetchCounts();
-    } catch (err: any) {
-      setError(err instanceof Error ? err.message : String(err));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? toErrorMessage(err) : String(err));
     }
   };
 
@@ -237,8 +238,8 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
       if (!res.ok) throw new Error(json.error ?? `HTTP ${res.status}`);
       setHashUploadResult({ inserted: json.inserted_count ?? 0, submitted: json.submitted_count ?? 0 });
       setHashInput('');
-    } catch (err: any) {
-      setHashError(err instanceof Error ? err.message : String(err));
+    } catch (err: unknown) {
+      setHashError(err instanceof Error ? toErrorMessage(err) : String(err));
     } finally {
       setUploadingHashes(false);
     }

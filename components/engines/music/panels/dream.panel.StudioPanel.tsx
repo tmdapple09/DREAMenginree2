@@ -10,6 +10,7 @@
 import { AlertCircle, Mic, Play, Square, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type RecordState = 'idle' | 'recording' | 'stopped';
 
 interface Recording {
@@ -71,7 +72,7 @@ export default function StudioPanel( ){
       setElapsed(0);
       timerRef.current = setInterval(() => setElapsed((e: number) => e + 1), 1000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Microphone access denied');
+      setError(err instanceof Error ? toErrorMessage(err) : 'Microphone access denied');
     }
   }
 

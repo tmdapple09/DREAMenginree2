@@ -117,16 +117,16 @@ interface Galaxy {
   tiltY: number;
 }
 
-function clamp(value: number, min: number, max: any): number {
+function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function smoothstep(edge0: number, edge1: number, value: any): number {
+function smoothstep(edge0: number, edge1: number, value: number): number {
   const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
   return x * x * (3 - 2 * x);
 }
 
-function lerp(from: number, to: number, amount: any): number {
+function lerp(from: number, to: number, amount: number): number {
   return from + (to - from) * amount;
 }
 

@@ -48,6 +48,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function GET(req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -82,7 +83,7 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
   const { data: rows, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   const fetched = (rows ?? []) as any[];
@@ -96,7 +97,7 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
     ? visible.filter((r) => !params.seen.has((r as Record<string, unknown>).id as string))
     : visible;
 
-  const posts: ScoredPost[] = fresh.map((r: any) => ({
+  const posts: ScoredPost[] = fresh.map((r) => ({
     id:            r.id,
     content:       r.content ?? '',
     media_url:     getPrimaryPostMediaUrl(r as any),

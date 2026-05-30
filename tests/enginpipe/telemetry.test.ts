@@ -17,7 +17,7 @@ import {
   type TelemetrySupabaseClient,
 } from '@/lib/enginpipe/telemetry/client';
 
-function makeFakeSupabase(insertImpl?: (rows: any) => { error: unknown | null }) {
+function makeFakeSupabase(insertImpl?: (rows: unknown) => { error: unknown | null }) {
   const calls: { table: string; rows: unknown }[] = [];
   const client: TelemetrySupabaseClient = {
     from(table: string) {

@@ -86,7 +86,7 @@ export function useDreamDMMessages(
         if (data.messages) {
           setMessages(data.messages);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Failed to load messages:', err);
       } finally {
         setIsLoading(false);

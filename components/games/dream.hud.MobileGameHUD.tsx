@@ -39,7 +39,7 @@ function loadPersisted(key: string, fallback: number, min?: number, max?: number
   return fallback;
 }
 
-function savePersisted(key: string, value: any): void {
+function savePersisted(key: string, value: unknown): void {
   try { localStorage.setItem(key, String(value)); } catch { /* ignore */ }
 }
 
@@ -65,7 +65,7 @@ function keepPreviousVectorIfUnchanged(
   return previous.x === next.x && previous.y === next.y ? previous : next;
 }
 
-function formatVectorLabel(vector: MobileControlVector, idleLabel: any): string {
+function formatVectorLabel(vector: MobileControlVector, idleLabel: string): string {
   const magnitude = Math.hypot(vector.x, vector.y);
   if (magnitude < 0.08) return idleLabel;
   const x = vector.x > 0.18 ? 'R' : vector.x < -0.18 ? 'L' : '•';

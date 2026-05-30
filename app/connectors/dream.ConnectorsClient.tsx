@@ -168,7 +168,7 @@ export default function ConnectorsClient( ){
     flow.onPlacementDone(slot);
   }
 
-  function handleConnectSuccess(connectorId: string, connectorName: any): void {
+  function handleConnectSuccess(connectorId: string, connectorName: string): void {
     // Add to connected set so Sync Now button appears
     if (TIER1_IDS.has(connectorId)) {
       setConnectedIds((prev) => new Set([...prev, connectorId]));

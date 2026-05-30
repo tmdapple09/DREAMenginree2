@@ -23,6 +23,7 @@ import {
 } from '@/lib/gameengin/brain-reader';
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const ALLOWED_KEYS = new Set([
   'cartridge_id',
   'player_statement',
@@ -100,9 +101,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         : undefined,
     });
     return NextResponse.json({ ok: true, stored: filePath.split(/[\\/]/).slice(-3).join('/') }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'failed to record crash report' },
+      { error: err instanceof Error ? toErrorMessage(err) : 'failed to record crash report' },
       { status: 400 },
     );
   }

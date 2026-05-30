@@ -59,7 +59,7 @@ export class AnchorWidgetStorage {
       }
       
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load anchor widget state:', error);
       return null;
     }
@@ -79,7 +79,7 @@ export class AnchorWidgetStorage {
       };
       
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(stateToStore));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to save anchor widget state:', error);
     }
   }

@@ -3,6 +3,7 @@
 
 import { useEffect } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error('Global error:', error)
@@ -104,7 +105,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
                   marginBottom: 20,
                 }}
               >
-                {error.message}
+                {toErrorMessage(error)}
               </div>
             )}
           </div>

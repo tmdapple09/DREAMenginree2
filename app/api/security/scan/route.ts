@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { NextResponse } from 'next/server';
 import { promisify } from 'util';
 
+import { toErrorMessage } from '@/lib/utils';
 const execAsync = promisify(exec);
 
 export async function POST(request: Request ): Promise<NextResponse> {
@@ -36,7 +37,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
       low: advisories.filter((a) => a.severity === 'low').length,
     };
     return NextResponse.json({ summary, advisories });
-  } catch (_err: any) {
+  } catch (_err: unknown) {
     const error = _err as Record<string, unknown> & { message?: string };
     if (error.stdout) {
       // pnpm audit exits with non‑zero when vulnerabilities found, but stdout still contains JSON
@@ -65,6 +66,6 @@ export async function POST(request: Request ): Promise<NextResponse> {
       };
       return NextResponse.json({ summary, advisories });
     }
-    return NextResponse.json({ error: 'Audit failed', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Audit failed', details: toErrorMessage(error) }, { status: 500 });
   }
 }

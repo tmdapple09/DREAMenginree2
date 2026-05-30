@@ -282,7 +282,7 @@ class DreamOSBusImpl {
     for (const listener of Array.from(listeners)) {
       try {
         listener(payload);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(`[DreamOSBus] custom event listener error for ${event}`, error);
       }
     }
@@ -330,7 +330,7 @@ class DreamOSBusImpl {
         channel: emission.channel,
         event: emission.event,
         emittedAt: emission.emittedAt,
-        ...(emission.payload as any),
+        ...(emission.payload as Record<string, unknown>),
       },
       updatedAt: emission.emittedAt,
     });
@@ -353,7 +353,7 @@ class DreamOSBusImpl {
     for (const listener of Array.from(this.listeners)) {
       try {
         listener(snapshot);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('[DreamOSBus] listener error', error);
       }
     }

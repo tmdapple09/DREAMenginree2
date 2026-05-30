@@ -13,6 +13,7 @@ import { Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw } from 'lucid
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 interface Project {
   id: string;
   title: string;
@@ -52,7 +53,7 @@ export default function ProjectsPanel( ){
       .eq('owner_id', user.id)
       .order('created_at', { ascending: false })
       .limit(30);
-    if (err) setError(err.message);
+    if (err) setError(toErrorMessage(err));
     else setProjects(data ?? []);
     setLoading(false);
   }
@@ -71,7 +72,7 @@ export default function ProjectsPanel( ){
       language: newLang,
       owner_id: user.id,
     });
-    if (err) setError(err.message);
+    if (err) setError(toErrorMessage(err));
     else {
       setNewTitle('');
       setNewDesc('');

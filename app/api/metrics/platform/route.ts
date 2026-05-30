@@ -174,7 +174,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     return NextResponse.json(response, {
       headers: { 'Cache-Control': 'public, max-age=300' }, // Cache for 5 min
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[GetPlatformMetrics] Exception:', err);
     return NextResponse.json(
       { error: 'Internal server error' },

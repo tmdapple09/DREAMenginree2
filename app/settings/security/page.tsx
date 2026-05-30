@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export default function SecuritySettingsPage( ){
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState('');
@@ -40,7 +41,7 @@ export default function SecuritySettingsPage( ){
         redirectTo: buildAuthCallbackUrl(window.location.origin, '/auth/reset-password'),
       });
       if (error) {
-        setPwMsg(error.message);
+        setPwMsg(toErrorMessage(error));
       } else {
         setPwMsg('Password reset email sent. Check your inbox.');
       }

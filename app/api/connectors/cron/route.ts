@@ -27,6 +27,7 @@ import { createServiceClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const DEFAULT_BATCH_SIZE = 50;
 const MAX_BATCH_SIZE = 100;
 
@@ -67,8 +68,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
   let db;
   try {
     db = await createServiceClient();
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : String(err);
     return NextResponse.json({ error: `Service client unavailable: ${msg}` }, { status: 503 });
   }
 

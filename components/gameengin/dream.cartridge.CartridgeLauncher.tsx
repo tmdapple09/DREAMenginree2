@@ -17,6 +17,7 @@ import { useCallback, useEffect, useState } from 'react';
 import CrashReportModal, { type CrashContext } from './dream.CrashReportModal';
 import { CartridgeErrorBoundary, useGlobalCrashListener, type CartridgeCrashEvent } from './dream.cartridge.CartridgeErrorBoundary';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface CartridgeLauncherProps {
   manifest: CartridgeManifestEntry;
   /** Initial gravity preset for the cartridge (defaults to 'earth'). */
@@ -53,9 +54,9 @@ export default function CartridgeLauncher({
         if (cancelled) return;
         setCartridge(c);
       })
-      .catch((err: any) => {
+      .catch((err: unknown) => {
         if (cancelled) return;
-        setError(err instanceof Error ? err.message : 'Failed to load cartridge.');
+        setError(err instanceof Error ? toErrorMessage(err) : 'Failed to load cartridge.');
       });
     return () => { cancelled = true; };
   }, [manifest.id]);

@@ -398,7 +398,7 @@ export async function verifyIntents(
     if (data) {
       policy = data as unknown as PolicyVersion;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.warn('Failed to load policy from DB, using default:', error);
   }
 

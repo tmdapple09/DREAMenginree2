@@ -220,7 +220,7 @@ function checkJSON(content: string): ParseError[] {
   try {
     JSON.parse(content);
     return [];
-  } catch (e: any) {
+  } catch (e: unknown) {
     const msg: string = e?.message ?? 'Invalid JSON';
     const posMatch = msg.match(/line (\d+) column (\d+)/);
     if (posMatch) {

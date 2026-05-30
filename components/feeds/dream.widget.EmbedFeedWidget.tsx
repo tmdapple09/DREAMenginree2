@@ -30,6 +30,7 @@ import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
 import { ExternalLink, Eye, Hash, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 type Provider = 'all' | 'youtube' | 'instagram';
@@ -283,12 +284,12 @@ export default function EmbedFeedWidget({
       };
       if (!data.ok) throw new Error(data.error ?? 'Feed unavailable');
       setState({ items: data.items, generatedAt: data.generated_at, loading: false, error: null });
-    } catch (err: any) {
+    } catch (err: unknown) {
       if ((err as { name?: string }).name === 'AbortError') return;
       setState((s) => ({
         ...s,
         loading: false,
-        error: (err instanceof Error ? err.message : 'Failed to load embed feed'),
+        error: (err instanceof Error ? toErrorMessage(err) : 'Failed to load embed feed'),
       }));
     }
   }, [limit]);

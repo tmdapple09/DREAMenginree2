@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
+import { toErrorMessage } from '@/lib/utils';
 const IntelligenceSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('viral-hooks'),
@@ -245,7 +246,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
     return NextResponse.json({ hooks, draft });
@@ -267,7 +268,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .select('id, title')
       .single();
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
     return NextResponse.json({ outputs, draft });
   }
@@ -301,7 +302,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ ...result, draft });

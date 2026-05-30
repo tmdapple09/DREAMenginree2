@@ -15,6 +15,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 /** Mirrors `CRASH_REPORT_MAX_BYTES` in lib/gameengin/brain-reader.ts. */
 export const CRASH_REPORT_MAX_BYTES = 16 * 1024;
 /** Hard cap on the textarea so the player can't paste a megabyte of text. */
@@ -116,10 +117,10 @@ export default function CrashReportModal({
         if (j.error) msg = j.error;
       } catch { /* keep default */ }
       setSend({ kind: 'error', message: msg });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setSend({
         kind: 'error',
-        message: err instanceof Error ? err.message : 'Failed to send report',
+        message: err instanceof Error ? toErrorMessage(err) : 'Failed to send report',
       });
     }
   }

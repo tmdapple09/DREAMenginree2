@@ -22,6 +22,7 @@ import { normaliseTwitter } from '@/lib/connectors/normalise';
 import { DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl } from '@/lib/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface TwitterCredentials {
   username: string;
   /** Optional Nitter instance URL. Defaults to https://nitter.net */
@@ -46,8 +47,8 @@ export async function twitterVerify(creds: TwitterCredentials): Promise<string> 
       headers: { 'User-Agent': 'DREAMengin RSS Reader (+https://dreamengin.app)' },
       signal: AbortSignal.timeout(10_000),
     });
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : String(err);
     throw new Error(
       `Could not reach Nitter instance at ${instance}. ` +
       `Try a different Nitter instance or check your internet connection. (${msg})`,

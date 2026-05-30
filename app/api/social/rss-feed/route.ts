@@ -66,6 +66,7 @@ import {
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── SSRF guard ────────────────────────────────────────────────────────────
 
 const BLOCKED_HOST_PATTERNS = [
@@ -246,8 +247,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   let items: UnifiedFeedItem[];
   try {
     items = await parseRssFeed({ provider, feedUrl }, limit);
-  } catch (err: any) {
-    const message = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? toErrorMessage(err) : String(err);
     // Surface a clear public-vs-private message for auth failures
     const isAuthError = /401|403|unauthori|forbidden|private|login/i.test(message);
     return NextResponse.json(

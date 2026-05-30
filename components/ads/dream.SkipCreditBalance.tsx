@@ -20,7 +20,7 @@ export function SkipCreditBalance( ){
           const data = await res.json();
           setBalance(data.skip_credit?.credits_balance ?? 0);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[SkipCreditBalance] Error:', err);
       } finally {
         setLoading(false);

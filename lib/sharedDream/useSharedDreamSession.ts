@@ -88,7 +88,7 @@ export interface UseSharedDreamSessionResult {
    * Save this engin's state snapshot to DB (debounced 1 s).
    * Call from inside stateSnapshot() in useEnginCoopSync.
    */
-  saveEnginState: (enginKey: string, state: any) => void;
+  saveEnginState: (enginKey: string, state: Record<string, unknown>) => void;
   /** Members who have joined this session at least once. */
   members: readonly SharedDreamMember[];
   /** Most recent activity entries (newest first). */
@@ -197,7 +197,7 @@ export function useSharedDreamSession({
           .order('joined_at', { ascending: true });
 
         if (!cancelled && mData) {
-          setMembers(mData.map((m: any) => ({
+          setMembers(mData.map((m: Record<string, unknown>) => ({
             userId: m.user_id as string,
             role: m.role as string,
             joinedAt: m.joined_at as string,
@@ -214,7 +214,7 @@ export function useSharedDreamSession({
           .limit(20);
 
         if (!cancelled && aData) {
-          setActivity(aData.map((a: any) => ({
+          setActivity(aData.map((a: Record<string, unknown>) => ({
             id: a.id as string,
             userId: a.user_id as string | null,
             kind: a.kind as string,
@@ -250,7 +250,7 @@ export function useSharedDreamSession({
 
   // ── saveEnginState: merge into buffer then debounce flush ─────────────────
 
-  const saveEnginState = useCallback((enginKey: string, state: any) => {
+  const saveEnginState = useCallback((enginKey: string, state: Record<string, unknown>) => {
     bufferRef.current = { ...bufferRef.current, [enginKey]: state };
     setSavedEnginState((prev) => ({ ...prev, [enginKey]: state }));
     if (debounceRef.current) clearTimeout(debounceRef.current);

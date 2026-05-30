@@ -9,6 +9,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export async function GET(_req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -20,7 +21,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     .eq('user_id', user.id)
     .order('added_at', { ascending: false });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ close_friends: data ?? [] });
 }
 
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .from('close_friends')
     .upsert({ user_id: user.id, friend_id, added_at: new Date().toISOString() });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ ok: true, added: true }, { status: 201 });
 }
 
@@ -66,6 +67,6 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id)
     .eq('friend_id', friend_id);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ ok: true, removed: true });
 }

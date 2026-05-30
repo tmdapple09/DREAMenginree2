@@ -29,6 +29,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const PLATFORM_SHARE_PERCENT = 0.10; // 10% DREAMengin platform cut
 
 
@@ -82,8 +83,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    console.error('Ad order creation failed:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Ad order creation failed:', toErrorMessage(error));
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ data }, { status: 201 });

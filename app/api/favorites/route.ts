@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 /**
  * /api/favorites
  *
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // 23505 = unique_violation — already saved, treat as success
   if (error && error.code !== '23505') {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ saved: true }, { status: 201 });
@@ -111,7 +112,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('target_type', target_type)
     .eq('target_id', target_id);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ saved: false });
 }
 

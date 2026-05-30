@@ -114,7 +114,7 @@ export default function DrEamsVoiceAssistant( ){
       recognition.lang = 'en-US';
 
        
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         let interimTranscript = '';
         let finalTranscript = '';
 
@@ -144,7 +144,7 @@ export default function DrEamsVoiceAssistant( ){
       };
 
        
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error:', event.error);
         if (event.error === 'no-speech') {
           // Restart recognition if no speech detected
@@ -160,7 +160,7 @@ export default function DrEamsVoiceAssistant( ){
           setTimeout(() => {
             try {
               recognition.start();
-            } catch (e: any) {
+            } catch (e: unknown) {
               console.log('Recognition restart failed:', e);
             }
           }, 100);
@@ -202,7 +202,7 @@ export default function DrEamsVoiceAssistant( ){
       }
       speak('Voice control activated. Say "Hey Doc" whenever you need me!');
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Microphone permission denied:', error);
       alert('Microphone access is required for voice control. Please enable it in your browser settings.');
       return false;
@@ -237,7 +237,7 @@ export default function DrEamsVoiceAssistant( ){
     // Try to use a male voice for Dr. Eams
     const voices = synthRef.current.getVoices();
      
-    const maleVoice = voices.find((voice: any) => 
+    const maleVoice = voices.find((voice: SpeechSynthesisVoice) => 
       voice.name.includes('Male') || voice.name.includes('Daniel') || voice.name.includes('David')
     );
     if (maleVoice) {

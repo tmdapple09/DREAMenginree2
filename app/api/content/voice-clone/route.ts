@@ -4,6 +4,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { toErrorMessage } from '@/lib/utils';
 const CloneSchema = z.object({
   action: z.literal('clone'),
   sampleBase64: z.string().min(10).max(10_000_000),
@@ -134,9 +135,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         return NextResponse.json({
           profile: { id: profileId, name: voiceName, createdAt: now },
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
         return NextResponse.json(
-          { error: 'Voice clone request failed', detail: err instanceof Error ? err.message : String(err) },
+          { error: 'Voice clone request failed', detail: err instanceof Error ? toErrorMessage(err) : String(err) },
           { status: 502 },
         );
       }
@@ -178,9 +179,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           createdAt: new Date((v.created_at_unix ?? 0) * 1000).toISOString(),
         }));
         return NextResponse.json({ profiles });
-      } catch (err: any) {
+      } catch (err: unknown) {
         return NextResponse.json(
-          { error: 'Voice list request failed', detail: err instanceof Error ? err.message : String(err) },
+          { error: 'Voice list request failed', detail: err instanceof Error ? toErrorMessage(err) : String(err) },
           { status: 502 },
         );
       }
@@ -218,9 +219,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         if (!res.ok && res.status !== 404) {
           return NextResponse.json({ error: 'ElevenLabs delete failed' }, { status: res.status });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         return NextResponse.json(
-          { error: 'Voice delete request failed', detail: err instanceof Error ? err.message : String(err) },
+          { error: 'Voice delete request failed', detail: err instanceof Error ? toErrorMessage(err) : String(err) },
           { status: 502 },
         );
       }
@@ -275,9 +276,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         durationSeconds: +durationSeconds.toFixed(2),
         voiceId,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       return NextResponse.json(
-        { error: 'TTS request failed', detail: err instanceof Error ? err.message : String(err) },
+        { error: 'TTS request failed', detail: err instanceof Error ? toErrorMessage(err) : String(err) },
         { status: 502 },
       );
     }

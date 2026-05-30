@@ -97,7 +97,7 @@ export async function POST(request: NextRequest ): Promise<NextResponse> {
     }
     
     return NextResponse.json(result.data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Dream feed resolver error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -141,7 +141,7 @@ export async function GET(request: NextRequest ): Promise<NextResponse> {
     }
     
     return NextResponse.json(result.data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Dream feed resolver error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

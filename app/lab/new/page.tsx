@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 export default function NewProjectPage( ){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -45,7 +46,7 @@ export default function NewProjectPage( ){
 
       router.push(`/lab/${data.id}`);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create project');
+      setError(err instanceof Error ? toErrorMessage(err) : 'Failed to create project');
     } finally {
       setIsLoading(false);
     }

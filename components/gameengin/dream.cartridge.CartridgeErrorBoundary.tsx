@@ -14,6 +14,7 @@
 
 import { Component, useEffect, type ErrorInfo, type ReactNode } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface CartridgeCrashEvent {
   name?: string;
   message?: string;
@@ -39,7 +40,7 @@ export class CartridgeErrorBoundary extends Component<BoundaryProps, BoundarySta
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onCrash({
       name: error.name,
-      message: error.message,
+      message: toErrorMessage(error),
       stack: error.stack ?? info.componentStack ?? undefined,
     });
   }

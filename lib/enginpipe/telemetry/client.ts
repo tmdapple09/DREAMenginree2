@@ -62,7 +62,7 @@ export function createTelemetryClient(opts: TelemetryClientOptions ){
       let validated: TelemetryEvent;
       try {
         validated = parseTelemetryEvent(event);
-      } catch (error: any) {
+      } catch (error: unknown) {
         return { ok: false, error };
       }
 
@@ -80,7 +80,7 @@ export function createTelemetryClient(opts: TelemetryClientOptions ){
         const { error } = await opts.supabase.from(table).insert([row]);
         if (error) return { ok: false, error };
         return { ok: true };
-      } catch (error: any) {
+      } catch (error: unknown) {
         return { ok: false, error };
       }
     },

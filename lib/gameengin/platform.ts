@@ -166,7 +166,7 @@ export class GameEnginPlatform {
   private _activeContainer: HTMLDivElement | null = null;
   private _tickSubs = new Set<(dt: number, elapsed: number) => void>();
   private _renderSubs = new Set<(dt: number) => void>();
-  private _inputSubs = new Map<string, Set<(payload: any) => void>>();
+  private _inputSubs = new Map<string, Set<(payload: Record<string, unknown>) => void>>();
   private _heldKeys = new Set<string>();
   private _telemetry: FrameTelemetry | null = null;
   private _disposed = false;
@@ -432,13 +432,13 @@ export class GameEnginPlatform {
       physics,
       
       input: {
-        on: (event: string, cb: (payload: any) => void) => {
+        on: (event: string, cb: (payload: Record<string, unknown>) => void) => {
           let bucket = this._inputSubs.get(event);
           if (!bucket) {
             bucket = new Set();
             this._inputSubs.set(event, bucket);
           }
-          const wrapper = cb as unknown as (payload: any) => void;
+          const wrapper = cb as unknown as (payload: Record<string, unknown>) => void;
           bucket.add(wrapper);
           return () => bucket?.delete(wrapper);
         },

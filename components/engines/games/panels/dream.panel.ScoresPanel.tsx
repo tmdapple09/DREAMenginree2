@@ -12,6 +12,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Loader2, RefreshCw, Share2, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 interface GameScore {
   id: string;
   game: string;
@@ -38,7 +39,7 @@ export default function ScoresPanel( ){
       .eq('user_id', user.id)
       .order('score', { ascending: false })
       .limit(50);
-    if (err) setError(err.message);
+    if (err) setError(toErrorMessage(err));
     else setScores(data ?? []);
     setLoading(false);
   }

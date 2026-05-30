@@ -149,7 +149,7 @@ export class EnginRuntime<
             key: this._persistenceKey as string,
           });
         }
-      }).catch((cause: any) => {
+      }).catch((cause: unknown) => {
         _emit('engin:error', {
           enginId,
           message: 'Persistence failed — state not saved.',

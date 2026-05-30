@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // Note: This API supports liking various content types: posts, music, projects
 // The likes are stored in a generic likes table with content_type and content_id
 
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Update like count on the content table (optional RPC, ignore if it doesn't exist)
@@ -141,7 +142,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('content_id', contentId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Get new count

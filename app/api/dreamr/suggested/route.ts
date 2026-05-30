@@ -74,7 +74,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const visible = filterByCloseFriends((rows ?? []) as Record<string, unknown>[], user.id, circle);
 
-    const posts: ScoredPost[] = visible.map((r: any) => ({
+    const posts: ScoredPost[] = visible.map((r) => ({
       id:             r.id,
       content:        r.content ?? '',
       media_url:      getPrimaryPostMediaUrl(r as Record<string, unknown>),

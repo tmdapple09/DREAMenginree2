@@ -13,6 +13,7 @@
 
 import { createClient } from '@/lib/supabase/client';
 
+import { toErrorMessage } from '@/lib/utils';
 /**
  * Persists a WASM/physics tick telemetry snapshot to a physics_experiments row.
  *
@@ -36,6 +37,6 @@ export async function logPhysicsExperiment(
     .eq('id', experimentId);
 
   if (error) {
-    console.error('Physics telemetry log failed:', error.message);
+    console.error('Physics telemetry log failed:', toErrorMessage(error));
   }
 }

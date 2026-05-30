@@ -4,6 +4,7 @@
 import { widgetEventBus, type WidgetMsg } from './WidgetEventBus';
 import { WidgetLinkGraph } from './WidgetLinkGraph';
 
+import { toErrorMessage } from '@/lib/utils';
 // Message types
 export const MSG_TYPE_POST_REQUEST = 1;
 export const MSG_TYPE_POST_RESULT = 2;
@@ -129,10 +130,10 @@ export class CrossWidgetPostingEngine {
           error: err.error ?? `Post failed (HTTP ${res.status})`,
         });
       }
-    } catch (networkErr: any) {
+    } catch (networkErr: unknown) {
       this.sendPostResult(targetWidgetId, sourceWidgetId, {
         success: false,
-        error: networkErr instanceof Error ? networkErr.message : 'Network error',
+        error: networkErr instanceof Error ? toErrorMessage(networkErr) : 'Network error',
       });
     }
   }

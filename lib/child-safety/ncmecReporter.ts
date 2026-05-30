@@ -23,6 +23,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { ChildSafetyResult } from './childSafetyDetector';
 
+import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -167,8 +168,8 @@ async function submitToNcmec(
 
     const json = await res.json().catch(() => null) as { reportId?: string } | null;
     return { reportId: json?.reportId };
-  } catch (err: any) {
-    return { error: `NCMEC network error: ${err instanceof Error ? err.message : String(err)}` };
+  } catch (err: unknown) {
+    return { error: `NCMEC network error: ${err instanceof Error ? toErrorMessage(err) : String(err)}` };
   }
 }
 
@@ -193,7 +194,7 @@ async function updateIncidentStatus(
         reported_at: new Date().toISOString(),
       })
       .eq('id', incidentId);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[ncmec] Failed to update incident status:', err);
   }
 }
@@ -219,12 +220,12 @@ export async function reportChildSafetyIncident(
   // Step 1 — Write to DB (required before any NCMEC API call)
   try {
     incidentId = await writeIncidentToDB(input);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[ncmec] CRITICAL: failed to write incident to DB', err);
     return {
       incidentId: 'DB_WRITE_FAILED',
       ncmecSubmitted: false,
-      ncmecError: err instanceof Error ? err.message : String(err),
+      ncmecError: err instanceof Error ? toErrorMessage(err) : String(err),
     };
   }
 

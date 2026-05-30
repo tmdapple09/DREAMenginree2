@@ -9,7 +9,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
-function normalizePostMedia<T extends Record<string, any>>(post: T): T & { media_url: string | null } {
+import { toErrorMessage } from '@/lib/utils';
+function normalizePostMedia<T extends Record<string, unknown>>(post: T): T & { media_url: string | null } {
   return {
     ...post,
     media_url: getPrimaryPostMediaUrl(post),
@@ -71,11 +72,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .limit(500) // always fetch at most 500 regardless of requested page size
       .range(offset, offset + 499);
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
 
     // Filter out close_friends posts where the viewer is not in the poster's list.
     const posts = (rawPosts ?? [])
-      .filter((p: any) => {
+      .filter((p) => {
         if (p.post_visibility === 'close_friends') {
           return closeFriendPosters.has(p.user_id) || p.user_id === user.id;
         }
@@ -83,7 +84,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       })
       .slice(0, limit);
 
-    return NextResponse.json({ posts: posts.map((post: any) => normalizePostMedia(post)), total_cap: 500 });
+    return NextResponse.json({ posts: posts.map((post) => normalizePostMedia(post)), total_cap: 500 });
   }
 
   // ── Trending feed: order by likes_count DESC, then recent ─────────────────
@@ -98,8 +99,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ posts: (posts ?? []).map((post: any) => normalizePostMedia(post)) });
+    if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
+    return NextResponse.json({ posts: (posts ?? []).map((post) => normalizePostMedia(post)) });
   }
 
   // ── Default feed: public posts ordered by recency ─────────────────────────
@@ -113,10 +114,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     .range(offset, offset + limit - 1);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  return NextResponse.json({ posts: (posts ?? []).map((post: any) => normalizePostMedia(post)) });
+  return NextResponse.json({ posts: (posts ?? []).map((post) => normalizePostMedia(post)) });
 }
 
 // POST - Create a new post
@@ -227,7 +228,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
   // Also create a feed item for the user

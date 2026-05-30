@@ -27,7 +27,7 @@ export async function pollYouTube(userId: string, accessToken: string): Promise<
       await fetchChannelVideos(userId, accessToken, channelId)
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('YouTube polling error:', error)
   }
 }
@@ -76,7 +76,7 @@ async function fetchChannelVideos(userId: string, accessToken: string, channelId
         .upsert(feedItem, { onConflict: 'dedupe_hash', ignoreDuplicates: true })
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fetch channel videos error:', error)
   }
 }

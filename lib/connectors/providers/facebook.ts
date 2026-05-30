@@ -26,6 +26,7 @@ import { normaliseFacebook } from '@/lib/connectors/normalise';
 import { facebookPageRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface FacebookCredentials {
   /** Page ID, page username, or full Facebook page URL */
   page: string;
@@ -56,8 +57,8 @@ export async function facebookVerify(creds: FacebookCredentials): Promise<string
       headers: { 'User-Agent': 'DREAMengin RSS Reader (+https://dreamengin.app)' },
       signal: AbortSignal.timeout(10_000),
     });
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : String(err);
     throw new Error(`Could not reach Facebook RSS feed. (${msg})`);
   }
 

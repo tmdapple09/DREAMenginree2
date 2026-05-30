@@ -52,7 +52,7 @@ function timeAgo(iso: string): string {
   return `${Math.floor(ms / 86_400_000)}d ago`;
 }
 
-function summarizeEnginState(state: any): string {
+function summarizeEnginState(state: Record<string, unknown>): string {
   const parts: string[] = [];
   if (typeof state['selectedGame'] === 'string') parts.push(state['selectedGame']);
   if (typeof state['selectedPlayableGame'] === 'string') parts.push(state['selectedPlayableGame']);

@@ -20,6 +20,7 @@
 import type { NormalizedPost } from '@/lib/social/normalizers';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type SocialPlatformFilter = 'all' | 'mastodon' | 'nostr' | 'bluesky';
@@ -167,9 +168,9 @@ export function useSocialData(
         setPosts(fetched);
         setBreakdown(countByPlatform(fetched));
         setLastFetchedAt(new Date().toISOString());
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (!isMounted.current) return;
-        setError(err instanceof Error ? err.message : 'Failed to load social feed');
+        setError(err instanceof Error ? toErrorMessage(err) : 'Failed to load social feed');
       } finally {
         if (isMounted.current) setIsLoading(false);
       }

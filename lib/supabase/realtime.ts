@@ -237,7 +237,7 @@ export function trackPresence(
     config: { presence: { key: initialPayload.userId } },
   });
 
-  channel.subscribe(async (status: any) => {
+  channel.subscribe(async (status: string) => {
     if (status === 'SUBSCRIBED') {
       await channel.track(initialPayload);
     }

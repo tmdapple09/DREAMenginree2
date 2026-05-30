@@ -40,6 +40,7 @@ import {
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Service-role client (bypasses RLS for server-side webhook writes) ─────────
 
 function createServiceClient( ){
@@ -258,7 +259,7 @@ export async function POST(
       .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
     if (error) {
-      console.error('[webhook:youtube] feed_items upsert error', { error: error.message });
+      console.error('[webhook:youtube] feed_items upsert error', { error: toErrorMessage(error) });
     }
 
     return NextResponse.json({ ok: true, provider, ingested: inserts.length });
@@ -352,7 +353,7 @@ export async function POST(
           .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
         if (error) {
-          console.error('[webhook:instagram] feed_items upsert error', { error: error.message });
+          console.error('[webhook:instagram] feed_items upsert error', { error: toErrorMessage(error) });
         } else {
           totalIngested += inserts.length;
         }

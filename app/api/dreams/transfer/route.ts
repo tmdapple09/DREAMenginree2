@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const SURFACE = {
   HOME: 0,
   FACE: 1,
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  let body: any;
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('owner_id', user.id);
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, dream_id: dreamId, runtime: toRuntime });

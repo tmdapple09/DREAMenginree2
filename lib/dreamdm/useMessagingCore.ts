@@ -24,6 +24,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useCallback, useState } from 'react';
 import type { DMMessage } from './useDreamDMMessages';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type MediaType = 'image' | 'video' | 'audio' | 'file';
@@ -178,8 +179,8 @@ export function useMessagingCore(
         } else {
           throw new Error(data.error ?? 'Send failed');
         }
-      } catch (err: any) {
-        const msg = err instanceof Error ? err.message : 'Failed to send message';
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? toErrorMessage(err) : 'Failed to send message';
         setSendError(msg);
         onRemove?.(tempId);
         return null;

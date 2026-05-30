@@ -11,6 +11,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 // ── GET /api/marketplace?category=<category> ─────────────────────────
 // Returns all published marketplace items, optionally filtered by category.
 // Joins with profiles to surface seller handle + display name.
@@ -51,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   if (error) {
     // Surface a clean error — never leak internal DB messages to client
-    console.error('[marketplace GET]', error.message);
+    console.error('[marketplace GET]', toErrorMessage(error));
     return NextResponse.json({ error: 'Failed to fetch listings.' }, { status: 500 });
   }
 

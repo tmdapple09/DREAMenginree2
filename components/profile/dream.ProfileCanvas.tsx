@@ -22,6 +22,7 @@ import {
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type Profile = {
   id: string;
   handle: string;
@@ -92,7 +93,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
       })
       .eq('id', profile.id);
     setSaving(false);
-    if (error) { setSaveErr(error.message); return; }
+    if (error) { setSaveErr(toErrorMessage(error)); return; }
     setProfile((p) => ({ ...p, ...draft }));
     setEditing(false);
     setSaved(true);

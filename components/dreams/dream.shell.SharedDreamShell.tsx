@@ -20,6 +20,7 @@ import type { DreamBroadcastPayload } from '@/lib/sharedDream';
 import { Mic, MicOff, Users, X } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SharedDreamShellProps {
@@ -141,8 +142,8 @@ export function SharedDreamShell({
       setIsAudioActive(true);
       setAudioError(null);
       broadcast({ type: 'audio_join', summary: 'joined audio call' });
-    } catch (err: any) {
-      setAudioError(err instanceof Error ? err.message : 'Microphone access denied');
+    } catch (err: unknown) {
+      setAudioError(err instanceof Error ? toErrorMessage(err) : 'Microphone access denied');
     }
   }, [isAudioActive, broadcast]);
 

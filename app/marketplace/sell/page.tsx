@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 
+import { toErrorMessage } from '@/lib/utils';
 const CATEGORIES = [
   { value: 'widget',    label: '🧩 Dream',    desc: 'Dream module for HomeDream' },
   { value: 'theme',     label: '🎨 Theme',     desc: 'Color scheme / glass preset' },
@@ -80,7 +81,7 @@ export default function MarketplaceSellPage( ){
       // Small delay so the success state is visible before redirect
       setTimeout(() => router.push('/marketplace'), 1400);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? toErrorMessage(err) : 'Something went wrong.');
     } finally {
       setIsLoading(false);
     }

@@ -139,7 +139,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
       const fresh = createWorkflow(workflowId);
       saveToStorage(fresh);
       setWorkflow(fresh);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[useEnginWorkflow] loadWorkflow failed:', err);
     }
   }, []);

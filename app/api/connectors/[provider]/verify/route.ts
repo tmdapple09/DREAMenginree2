@@ -25,6 +25,7 @@ import type { ConnectorVerifyResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 const VERIFY_CACHE_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function GET(
@@ -117,8 +118,8 @@ export async function GET(
       newStatus = 'connected';
       verifiedAt = new Date().toISOString();
     }
-  } catch (err: any) {
-    lastError = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    lastError = err instanceof Error ? toErrorMessage(err) : String(err);
     newStatus = 'needs_reauth';
   }
 

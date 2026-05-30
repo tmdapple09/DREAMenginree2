@@ -48,7 +48,7 @@ export function useNavigation(options: UseNavigationOptions = {}) {
     }
     
     // Listen to nav changes
-    const handleNavChange = (data: any) => {
+    const handleNavChange = (data: unknown) => {
       const snapshot = data.state as Int32Array;
       setNavState({
         layer: snapshot[0],

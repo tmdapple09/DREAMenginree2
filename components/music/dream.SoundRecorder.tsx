@@ -3,6 +3,7 @@
 import { Download, Mic, Pause, Play, Square, Trash2, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { toErrorMessage } from '@/lib/utils';
 type RecorderState = 'idle' | 'recording' | 'recorded';
 
 interface Recording {
@@ -151,8 +152,8 @@ export default function SoundRecorder( ){
       setElapsed(0);
       timerRef.current = setInterval(() => setElapsed(Date.now() - startTimeRef.current), 200);
       drawWave();
-    } catch (err: any) {
-      const msg = err instanceof Error ? err.message : String(err);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? toErrorMessage(err) : String(err);
       if (msg.includes('Permission') || msg.includes('NotAllowed') || msg.includes('denied')) {
         setError('Microphone access denied. Tap "Allow" in your browser and try again.');
       } else if (msg.includes('NotFound') || msg.includes('DevicesNotFound')) {

@@ -25,6 +25,7 @@ import type { Database } from '@/types/supabase';
 import { deduplicateFeedItems } from './normalise';
 import { dispatchSync } from './syncDispatch';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface ReconcileResult {
   ok: boolean;
   provider: string;
@@ -83,8 +84,8 @@ export async function reconcileConnector(
   let items;
   try {
     items = await dispatchSync(provider, tokenBlob);
-  } catch (err: any) {
-    const msg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? toErrorMessage(err) : String(err);
     const isAuthError = isConnectorAuthError(msg);
 
     if (isAuthError) {

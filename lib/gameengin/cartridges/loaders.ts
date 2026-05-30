@@ -10,6 +10,7 @@
 import type { GameCartridge } from '../cartridge';
 import { defineReactCartridgeLoader } from './reactCartridge';
 
+import { toErrorMessage } from '@/lib/utils';
 export type CartridgeLoader = () => Promise<GameCartridge>;
 
 const load = defineReactCartridgeLoader;
@@ -43,8 +44,8 @@ export async function loadCartridge(id: string): Promise<GameCartridge> {
   }
   try {
     return await loader();
-  } catch (error: any) {
-    const details = error instanceof Error ? error.message : String(error);
+  } catch (error: unknown) {
+    const details = error instanceof Error ? toErrorMessage(error) : String(error);
     throw new Error(`Cartridge failed to load: ${id}. ${details}`);
   }
 }

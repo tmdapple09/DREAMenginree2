@@ -436,19 +436,19 @@ export function extractFirstImage(item: Record<string, unknown>): string | null 
   if (Array.isArray(item.mediaContent)) {
     const url = item.mediaContent.find(
        
-      (x: any) => x?.$?.url && isImageLike(x.$?.url),
+      (x: Record<string, unknown>) => (x as { $?: { url?: string } })?.$?.url && isImageLike((x as { $?: { url?: string } }).$!.url),
     )?.$?.url;
     if (url) return url;
     // Fall back to any url even if it's a video (still usable as thumbnail)
      
-    const anyUrl = item.mediaContent.find((x: any) => x?.$?.url)?.$?.url;
+    const anyUrl = item.mediaContent.find((x: Record<string, unknown>) => x?.$?.url)?.$?.url;
     if (anyUrl) return anyUrl;
   }
 
   // 3) media:thumbnail (array)
   if (Array.isArray(item.mediaThumbnail)) {
      
-    const url = item.mediaThumbnail.find((x: any) => x?.$?.url)?.$?.url;
+    const url = item.mediaThumbnail.find((x: Record<string, unknown>) => x?.$?.url)?.$?.url;
     if (url) return url;
   }
 

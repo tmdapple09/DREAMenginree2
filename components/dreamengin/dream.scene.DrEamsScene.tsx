@@ -41,7 +41,7 @@ function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-function getBounds(meshes: any[] ){
+function getBounds(meshes: Mesh[] ){
   let min = new Vector3(Infinity, Infinity, Infinity);
   let max = new Vector3(-Infinity, -Infinity, -Infinity);
 
@@ -110,7 +110,7 @@ function createFakeVisorGlow(root: TransformNode, scene: Scene): Mesh {
   return glow;
 }
 
-function maybeFixBoots(meshes: any[] ){
+function maybeFixBoots(meshes: Mesh[] ){
   for (const mesh of meshes) {
     const n = mesh.name.toLowerCase();
     if (!n.includes('boot')) continue;
@@ -119,7 +119,7 @@ function maybeFixBoots(meshes: any[] ){
   }
 }
 
-function applyMaterials(meshes: any[], scene: any): void {
+function applyMaterials(meshes: Mesh[], scene: Scene): void {
   const blackMetal = createBlackMetal(scene);
   const whiteCoat = createWhiteCoat(scene);
   const darkVisor = createDarkVisor(scene);

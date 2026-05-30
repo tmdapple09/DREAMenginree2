@@ -22,6 +22,7 @@ import {
 import { useCallback, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { toErrorMessage } from '@/lib/utils';
 export type { ForgeBuildState } from '@/lib/forge/forgeBuild';
 
 export interface UseForgeBuildReturn {
@@ -213,11 +214,11 @@ export function useForgeBuild(): UseForgeBuildReturn {
 
         // Stream ended without 'done' event
         setState('done');
-      } catch (err: any) {
+      } catch (err: unknown) {
         if ((err as Error)?.name === 'AbortError') return; // reset() was called
         const errEvent: ForgeLogEvent = {
           type: 'error',
-          message: `Network error: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Network error: ${err instanceof Error ? toErrorMessage(err) : String(err)}`,
           ts: Date.now(),
         };
         collectedLogs.push(errEvent);

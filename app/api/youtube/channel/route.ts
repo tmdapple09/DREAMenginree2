@@ -18,6 +18,7 @@ import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/provide
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeChannelResponse {
   ok: boolean;
   channelVideos: UnifiedFeedItem[];
@@ -66,8 +67,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<YouTubeChannel
       { ok: true, channelVideos, similarVideos: uniqueSimilar, channel, topic },
       { headers: { 'Cache-Control': 's-maxage=120, stale-while-revalidate=60' } },
     );
-  } catch (err: any) {
-    const message = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? toErrorMessage(err) : String(err);
     return NextResponse.json(
       { ok: false, channelVideos: [], similarVideos: [], channel, topic, error: message },
       { status: 502 },

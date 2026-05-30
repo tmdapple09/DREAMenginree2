@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { toErrorMessage } from '@/lib/utils';
 const VALID_GAMES = [
   'platformer', 'word-sprint', 'memory-grid', 'speed-tap',
   'rts', 'tower-defense', 'space-shooter', 'snake', 'breakout',
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .single();
 
   if (error) {
-    return NextResponse.json({ data: null, error: error.message }, { status: 500 });
+    return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
   }
 
   return NextResponse.json({ data: entry, error: null }, { status: 201 });

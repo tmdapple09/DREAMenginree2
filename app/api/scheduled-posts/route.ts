@@ -3,6 +3,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { toErrorMessage } from '@/lib/utils';
 /**
  * /api/scheduled-posts
  *
@@ -51,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     .order('scheduled_for', { ascending: true })
     .range(offset, offset + limit - 1);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ posts: data ?? [] });
 }
 
@@ -86,7 +87,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ post: data }, { status: 201 });
 }
 
@@ -118,7 +119,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ post: data });
 }
 
@@ -140,7 +141,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('id', id)
     .eq('user_id', user.id);   // RLS double-guard
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ success: true });
 }
 

@@ -24,6 +24,7 @@
 
 import { groqChat } from '@/lib/ai/groq';
 
+import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -203,8 +204,8 @@ export async function classifyImage(
     const flagged = FLAGGED_RISK_LEVELS.includes(risk) && confidence >= MIN_CONFIDENCE_FOR_FLAG;
 
     return { flagged, risk, confidence, severity, skipped: false };
-  } catch (err: any) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? toErrorMessage(err) : String(err);
     // On model error, return skipped (do not false-positive block content)
     return {
       flagged: false,

@@ -61,13 +61,13 @@ export function extractFirstImage(item: Record<string, any>): string | null {
 
   // 2) media:content
   if (Array.isArray(item.mediaContent)) {
-    const mediaUrl = item.mediaContent.find((x: any) => x?.$?.url)?.$?.url;
+    const mediaUrl = item.mediaContent.find((x: Record<string, unknown>) => x?.$?.url)?.$?.url;
     if (mediaUrl) return mediaUrl;
   }
 
   // 3) media:thumbnail
   if (Array.isArray(item.mediaThumbnail)) {
-    const thumbUrl = item.mediaThumbnail.find((x: any) => x?.$?.url)?.$?.url;
+    const thumbUrl = item.mediaThumbnail.find((x: Record<string, unknown>) => x?.$?.url)?.$?.url;
     if (thumbUrl) return thumbUrl;
   }
 
