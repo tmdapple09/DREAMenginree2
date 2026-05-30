@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T12:57:36.424Z
+Generated: 2026-05-30T13:07:24.701Z
 
 ---
 
@@ -17942,7 +17942,7 @@ _No circular dependencies detected._
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
-│   │   │   └·· (lazy)  ← ./HeavyComponent
+│   │   │   └·· dynamic import()  ← ./HeavyComponent
 │   │   ├── run-readme-autosync.mjs
 │   │   ├── scan_dreamengin_context.py
 │   │   ├── scan_gameengin_context.py
@@ -18170,7 +18170,7 @@ _No circular dependencies detected._
 │   │   │   │   │       ├·· reportChildSafetyIncident  ← @/lib/child-safety/ncmecReporter
 │   │   │   │   │       ├·· createServerClient  ← @/lib/supabase/server
 │   │   │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
-│   │   │   │   │       └·· (lazy)  ← @/lib/child-safety/imageClassifier
+│   │   │   │   │       └·· dynamic import()  ← @/lib/child-safety/imageClassifier
 │   │   │   │   ├── privacy-event/
 │   │   │   │   │   └── route.ts
 │   │   │   │   │       ├·· writeAuditLog  ← @/lib/ai/audit
@@ -18751,7 +18751,7 @@ _No circular dependencies detected._
 │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │       ├·· ⬡ AnalyticsDaydream  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
 │   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
-│   │   │       └·· (lazy)  ← @/engins/dream.panel.AnalyticsEngin
+│   │   │       └·· dynamic import()  ← @/engins/dream.panel.AnalyticsEngin
 │   │   ├── brand/  [BrandEngin, Daydream System]
 │   │   │   ├── engin/  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx
@@ -18826,7 +18826,7 @@ _No circular dependencies detected._
 │   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
 │   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
 │   │   │       ├·· ⬡ AutoOpenGameEngin  ← @/engins/autoopen/dream.AutoOpenGameEngin
-│   │   │       └·· (lazy)  ← @/engins/engin.GameEngin
+│   │   │       └·· dynamic import()  ← @/engins/engin.GameEngin
 │   │   ├── lab/  [LabEngin, Daydream System]
 │   │   │   ├── engin/  [LabEngin, Daydream System]
 │   │   │   │   └── page.tsx
@@ -18842,7 +18842,7 @@ _No circular dependencies detected._
 │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
 │   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
-│   │   │       └·· (lazy)  ← @/engins/engin.LabEngin
+│   │   │       └·· dynamic import()  ← @/engins/engin.LabEngin
 │   │   ├── media-vault/  [CreateEngin, Daydream System]
 │   │   │   └── page.tsx
 │   │   ├── music/  [StarMaker (Music Engin), Daydream System]
@@ -18859,7 +18859,7 @@ _No circular dependencies detected._
 │   │   │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   │       ├·· ⬡ SoundRecorder  ← @/components/music/dream.SoundRecorder
 │   │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
-│   │   │       └·· (lazy)  ← @/engins/engin.StarMakerEngin
+│   │   │       └·· dynamic import()  ← @/engins/engin.StarMakerEngin
 │   │   └── play/  [Daydream System]
 │   │       └── page.tsx
 │   │           └·· DEFAULT_GAME_ID, buildGameLaunchHref  ← @/lib/games/navigation
@@ -18872,7 +18872,7 @@ _No circular dependencies detected._
 │   │       ├·· useGsapEntrance  ← @/lib/gsap/useGsapEntrance
 │   │       ├·· cn  ← @/lib/utils
 │   │       ├·· getRendererBackend  ← @/lib/webgpu
-│   │       └·· (lazy)  ← @/components/three/dream.scene
+│   │       └·· dynamic import()  ← @/components/three/dream.scene
 │   ├── dreamdmbar/  [HOME — DreamDMBar]
 │   │   ├── _components/  [HOME — DreamDMBar]
 │   │   │   ├── dreamr/  [HOME — DreamDMBar, DreamR]
@@ -19404,9 +19404,9 @@ _No circular dependencies detected._
 │   └── page.tsx
 │       ├·· safeGetUser  ← @/lib/supabase/safeGetUser
 │       ├·· createServerClient  ← @/lib/supabase/server
-│       ├·· (lazy)  ← @/components/dream.LandingHero
-│       ├·· (lazy)  ← @/components/landing/dream.LandingNav
-│       └·· (lazy)  ← @/components/landing/dream.scene.UniverseField
+│       ├·· dynamic import()  ← @/components/dream.LandingHero
+│       ├·· dynamic import()  ← @/components/landing/dream.LandingNav
+│       └·· dynamic import()  ← @/components/landing/dream.scene.UniverseField
 ├── assembly/  [GameEngin, VM / WASM Runtime]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── bus.ts
@@ -19500,7 +19500,7 @@ _No circular dependencies detected._
 │   │   ├── dream.constellationmap.tsx
 │   │   ├── dream.DiffViewer.tsx
 │   │   │   ├·· DEMO_DIFF, DiffFile, FullFileLine, buildFullFileLines, buildScrollMarkers, firstHunkIndex, nextHunkIndex, parseUnifiedDiff, prevHunkIndex  ← @/lib/diff/diffUtils
-│   │   │   └·· (lazy)  ← @/lib/diff/diffUtils
+│   │   │   └·· dynamic import()  ← @/lib/diff/diffUtils
 │   │   ├── dream.JourneyTrail.tsx
 │   │   │   ├·· AnnotatedDot, annotateDotsWithInsights, computeCurrentStreak  ← @/lib/journey/journeyInsights
 │   │   │   └·· JourneyDot, JourneyTimeGroup  ← @/types/journey
@@ -19560,8 +19560,8 @@ _No circular dependencies detected._
 │   │   │   ├·· DreamOSSharedArtifact, RuntimeContext, dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   │   │   ├·· PeerState, bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├·· DispatcherStats, EnginDispatcher  ← @/lib/runtime/EnginDispatcher
-│   │   │   ├·· (lazy)  ← @babylonjs/core
-│   │   │   └·· (lazy)  ← @babylonjs/havok
+│   │   │   ├·· dynamic import()  ← @babylonjs/core
+│   │   │   └·· dynamic import()  ← @babylonjs/havok
 │   │   ├── dream.DrEamsCanvas.tsx
 │   │   │   └·· DrEamsAction, DrEamsAnimator  ← @/lib/dreamengin/DrEamsAnimator
 │   │   ├── dream.HomeControls.tsx
@@ -19583,13 +19583,13 @@ _No circular dependencies detected._
 │   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
 │   │   │   ├·· DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
 │   │   │   ├·· WebGPUDirector, applyDirectorFrame, buildSceneObjects, defaultCameraSignals  ← @/lib/webgpu/director
-│   │   │   ├·· (lazy)  ← @babylonjs/core
-│   │   │   ├·· (lazy)  ← @/lib/god-tier/godTierEngine
-│   │   │   └·· (lazy)  ← @/lib/webgpu/director
+│   │   │   ├·· dynamic import()  ← @babylonjs/core
+│   │   │   ├·· dynamic import()  ← @/lib/god-tier/godTierEngine
+│   │   │   └·· dynamic import()  ← @/lib/webgpu/director
 │   │   ├── dream.scene.DrEamsScene.tsx
 │   │   │   ├·· createBabylonEngine  ← @/lib/babylon/createEngine
 │   │   │   ├·· BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
-│   │   │   └·· (lazy)  ← @babylonjs/core
+│   │   │   └·· dynamic import()  ← @babylonjs/core
 │   │   ├── dream.scene.PortfolioOptimizationScene.tsx
 │   │   ├── dream.shell.EnginShell.tsx
 │   │   ├── dream.widget.AppearanceWidget.tsx
@@ -19807,7 +19807,7 @@ _No circular dependencies detected._
 │   │   │   │   ├·· ScanLineTexture, createScanLineTexture, makeDetailMat  ← ./materials
 │   │   │   │   ├·· CoinDef, EnemyDef, HazardDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef  ← ./types
 │   │   │   │   ├·· VfxKit, VfxTier, createMadmaxiVfx  ← ./vfx
-│   │   │   │   └·· (lazy)  ← @babylonjs/core
+│   │   │   │   └·· dynamic import()  ← @babylonjs/core
 │   │   │   ├── index.ts
 │   │   │   ├── levels.ts
 │   │   │   │   ├·· getAuthoredStarterLevel, isMadmaxiAuthoredLevel  ← ./authoredZonePacks
@@ -19827,7 +19827,7 @@ _No circular dependencies detected._
 │   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   │   ├·· useRegisterMobileGameControls  ← @/lib/games/mobileControls
 │   │   │   ├·· createPerformanceBaselineSampler, publishGamePerformanceBaseline  ← @/lib/games/performance-baseline
-│   │   │   └·· (lazy)  ← @babylonjs/core/Engines
+│   │   │   └·· dynamic import()  ← @babylonjs/core/Engines
 │   │   ├── dream.EnginFracture.tsx
 │   │   │   └·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   ├── dream.GameController.module.css
@@ -19844,18 +19844,18 @@ _No circular dependencies detected._
 │   │   │   ├·· useGsapEntrance  ← @/lib/gsap/useGsapEntrance
 │   │   │   ├·· useGsapScrollReveal  ← @/lib/gsap/useGsapScrollReveal
 │   │   │   ├·· useMotionTilt  ← @/lib/hooks/useMotionTilt
-│   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
-│   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
-│   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
-│   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
-│   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
-│   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
-│   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
-│   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
-│   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
-│   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
-│   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
-│   │   │   └·· (lazy)  ← @/components/games/dream.DefuseRitual
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.BabylonSideScroller
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.NeonDrift
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.EchoArena
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.NullCathedral
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.VoidlineGP
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.SerpentSiege
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.EnginFracture
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.Glassfall
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   ├·· dynamic import()  ← @/components/games/dream.LexiconSolitaire
+│   │   │   └·· dynamic import()  ← @/components/games/dream.DefuseRitual
 │   │   ├── dream.Glassfall.tsx
 │   │   │   ├·· useGameAutoStart, useGamePhase, useSubmitScore  ← @/lib/games/hooks
 │   │   │   └·· ParticlePool, ScreenShake, prefersReducedMotion  ← ./_fx/canvasFx
@@ -19963,7 +19963,7 @@ _No circular dependencies detected._
 │   │       ├·· BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  ← @/lib/god-tier/godTierEngine
 │   │       ├·· BabylonUICandidate, BabylonUIGenerator, BabylonUIOptimizero  ← @/lib/optimizer/babylon-optimizero
 │   │       ├·· CHAOS_WEIGHTS, DEFAULT_WEIGHTS, OptimizeroResult, OptimizeroWeights, STABLE_WEIGHTS  ← @/lib/optimizer/creative-optimizero
-│   │       └·· (lazy)  ← @babylonjs/core
+│   │       └·· dynamic import()  ← @babylonjs/core
 │   ├── overlays/
 │   │   └── dream.RootStatusScreen.tsx
 │   ├── panels/  [Settings]
@@ -20176,7 +20176,7 @@ _No circular dependencies detected._
 │   │   └·· executeUiAction, getUiCapabilities  ← @/lib/agents/uiActions
 │   ├── dream.AudioVisualizer3D.tsx
 │   │   ├·· Fingerprint, MatchResult, PeakMap, extractAudioChunks, matchFingerprint, recordReferenceFingerprint  ← ../lib/audioFingerprint
-│   │   └·· (lazy)  ← @babylonjs/core
+│   │   └·· dynamic import()  ← @babylonjs/core
 │   ├── dream.BoogieWarningBanner.tsx
 │   │   └·· PolicyResult  ← @/lib/policy/boogiePolicy
 │   ├── dream.BrandLogo.tsx
@@ -20202,12 +20202,12 @@ _No circular dependencies detected._
 │   │   ├·· createEventBus  ← ../lib/eventBus
 │   │   ├·· AssemblySandbox, AtomicPiece, Wire, atomicPieceFromComponent, createAssembly, runAssembly, serializeAssembly, validateAssembly  ← ../lib/forge/engineForge
 │   │   ├·· toErrorMessage  ← @/lib/utils
-│   │   └·· (lazy)  ← ../lib/supabase/client
+│   │   └·· dynamic import()  ← ../lib/supabase/client
 │   ├── dream.GlobalOverlays.tsx
-│   │   ├·· (lazy)  ← @/components/customize/dream.GlobalCustomizeUI
-│   │   ├·· (lazy)  ← @/components/dreams/dream.GlobalDragLayer
-│   │   ├·· (lazy)  ← @/components/dreams/dream.PlatformErrorReporter
-│   │   └·· (lazy)  ← @/components/dream.KonamiDream
+│   │   ├·· dynamic import()  ← @/components/customize/dream.GlobalCustomizeUI
+│   │   ├·· dynamic import()  ← @/components/dreams/dream.GlobalDragLayer
+│   │   ├·· dynamic import()  ← @/components/dreams/dream.PlatformErrorReporter
+│   │   └·· dynamic import()  ← @/components/dream.KonamiDream
 │   ├── dream.HeroSprite.tsx
 │   ├── dream.HomeFeed.tsx
 │   │   ├·· AdUnit  ← @/components/ads/dream.AdUnit
@@ -20337,7 +20337,7 @@ _No circular dependencies detected._
 │   │       ├·· ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
 │   │       ├·· ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
 │   │       ├·· ⬡ AutoOpenGameEngin  ← @/engins/autoopen/dream.AutoOpenGameEngin
-│   │       └·· (lazy)  ← @/engins/engin.GameEngin
+│   │       └·· dynamic import()  ← @/engins/engin.GameEngin
 │   ├── lab/
 │   │   └── page.tsx
 │   │       ├·· createServerClient  ← @/lib/supabase/server
@@ -20377,7 +20377,7 @@ _No circular dependencies detected._
 │       ├·· formatRelativeTime  ← @/lib/utils
 │       ├·· ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │       ├·· ⬡ GlowingLight  ← @/dreamdmbar/dream.GlowingLight
-│       └·· (lazy)  ← @/lib/supabase/client
+│       └·· dynamic import()  ← @/lib/supabase/client
 ├── engins/
 │   ├── autoopen/  [GameEngin]
 │   │   └── dream.AutoOpenGameEngin.tsx
@@ -20461,7 +20461,7 @@ _No circular dependencies detected._
 │   │   ├·· ⬡ DiffViewer  ← @/components/daydream/dream.DiffViewer
 │   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   │   ├·· ⬡ CrossEnginStatusPanel  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
-│   │   └·· (lazy)  ← @supabase/supabase-js
+│   │   └·· dynamic import()  ← @supabase/supabase-js
 │   ├── engin.ContentEngin.tsx
 │   │   ├·· ActivityPostData, ActivityPostForm  ← @/components/activity/dream.ActivityPostForm
 │   │   ├·· CompGraph, NodeType, addNode, connectNodes, createGraph, createNode, topologicalSort  ← @/lib/composite/compositor
@@ -20485,8 +20485,8 @@ _No circular dependencies detected._
 │   │   ├·· createClient  ← @/lib/supabase/client
 │   │   ├·· toErrorMessage  ← @/lib/utils
 │   │   ├·· ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
-│   │   ├·· (lazy)  ← @/lib/content/transcriptEditor
-│   │   └·· (lazy)  ← @/lib/content/seoScorer
+│   │   ├·· dynamic import()  ← @/lib/content/transcriptEditor
+│   │   └·· dynamic import()  ← @/lib/content/seoScorer
 │   ├── engin.GameEngin.tsx
 │   │   ├·· GAMES  ← @/components/games/dream.GamesHub
 │   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
@@ -20517,7 +20517,7 @@ _No circular dependencies detected._
 │   │   ├·· ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
 │   │   ├·· ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
 │   │   ├·· ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
-│   │   └·· (lazy)  ← @babylonjs/core
+│   │   └·· dynamic import()  ← @babylonjs/core
 │   ├── engin.LabEngin.tsx
 │   │   ├·· ForgeDreamCanvas  ← @/components/dream.ForgeDreamCanvas
 │   │   ├·· useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
@@ -20606,11 +20606,11 @@ _No circular dependencies detected._
 │   │       └·· SetupCheckSummary, getSetupStatus  ← @/lib/setup/checks
 │   ├── agentOS/
 │   │   └── hostTools.ts
-│   │       └·· (lazy)  ← fs/promises
+│   │       └·· dynamic import()  ← fs/promises
 │   ├── agents/  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── agentBus.ts
-│   │   │   ├·· (lazy)  ← @/lib/ai/schemas
-│   │   │   └·· (lazy)  ← @/lib/ai/triad
+│   │   │   ├·· dynamic import()  ← @/lib/ai/schemas
+│   │   │   └·· dynamic import()  ← @/lib/ai/triad
 │   │   ├── boogieManAI.ts
 │   │   │   └·· BoogieManAgent  ← @/types/ai
 │   │   ├── dreamengin.ts
@@ -20672,8 +20672,8 @@ _No circular dependencies detected._
 │   │   │   └·· createServerClient  ← @/lib/supabase/server
 │   │   ├── schemas.ts
 │   │   ├── tfBackend.ts
-│   │   │   ├·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
-│   │   │   └·· (lazy)  ← @tensorflow/tfjs
+│   │   │   ├·· dynamic import()  ← @tensorflow/tfjs-backend-webgpu
+│   │   │   └·· dynamic import()  ← @tensorflow/tfjs
 │   │   ├── tool-router.ts
 │   │   │   ├·· SupabaseClient  ← @/engine/io
 │   │   │   ├·· ActorContext, Intent, IntentType, ToolResult, UIContext  ← @/types/ai-system
@@ -20701,7 +20701,7 @@ _No circular dependencies detected._
 │   │   └── nextRedirect.ts
 │   ├── babylon/  [WebGPU / Babylon Engine]
 │   │   ├── createEngine.ts
-│   │   │   └·· (lazy)  ← @babylonjs/core
+│   │   │   └·· dynamic import()  ← @babylonjs/core
 │   │   └── dreamengine-hybrid.ts
 │   ├── bot-detection/
 │   │   ├── detector.ts
@@ -20715,7 +20715,7 @@ _No circular dependencies detected._
 │   ├── child-safety/  [Child Safety]
 │   │   ├── childSafetyDetector.ts
 │   │   │   ├·· scanContent  ← @/lib/child-safety/childSafetyDetector
-│   │   │   └·· (lazy)  ← ./imageClassifier
+│   │   │   └·· dynamic import()  ← ./imageClassifier
 │   │   ├── imageClassifier.ts
 │   │   │   ├·· groqChat  ← @/lib/ai/groq
 │   │   │   └·· toErrorMessage  ← @/lib/utils
@@ -20734,7 +20734,7 @@ _No circular dependencies detected._
 │   ├── collaboration/
 │   │   └── index.ts
 │   │       ├·· SupabaseClient  ← @/engine/io
-│   │       └·· (lazy)  ← @supabase/supabase-js
+│   │       └·· dynamic import()  ← @supabase/supabase-js
 │   ├── composite/
 │   │   ├── compositor.ts
 │   │   ├── fxSimulation.ts
@@ -20836,7 +20836,7 @@ _No circular dependencies detected._
 │   │       └·· createServiceClient  ← @/lib/supabase/server
 │   ├── consent/
 │   │   └── consentManager.ts
-│   │       └·· (lazy)  ← @/lib/supabase/client
+│   │       └·· dynamic import()  ← @/lib/supabase/client
 │   ├── content/  [CreateEngin]
 │   │   ├── generativeFill.ts
 │   │   ├── publishIntent.ts
@@ -20917,8 +20917,8 @@ _No circular dependencies detected._
 │   │       └·· WIDGET_REGISTRY  ← @/lib/widgets/widgetRegistry
 │   ├── dreamenginOS/  [DREAMenginOS]
 │   │   ├── index.ts
-│   │   │   ├·· (lazy)  ← ../ledger
-│   │   │   └·· (lazy)  ← ../eventBus
+│   │   │   ├·· dynamic import()  ← ../ledger
+│   │   │   └·· dynamic import()  ← ../eventBus
 │   │   └── OSContext.tsx
 │   │       ├·· EventBus, createEventBus  ← ../eventBus
 │   │       ├·· Ledger, createLedger  ← ../ledger
@@ -20936,7 +20936,7 @@ _No circular dependencies detected._
 │   ├── dreamr/  [DreamR]
 │   │   ├── closeFriendsVisibility.ts
 │   │   │   ├·· SupabaseClient  ← @/engine/io
-│   │   │   └·· (lazy)  ← @/lib/supabase/server
+│   │   │   └·· dynamic import()  ← @/lib/supabase/server
 │   │   ├── dreamrfeed.tsx
 │   │   │   ├·· useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   │   ├·· canRecordDreamRView, contentTypePreferenceKey, emptyDreamRSwipePreferences, nextSwipePreferences, personalizeFeedOrder  ← @/lib/dreamr/swipePersonalization
@@ -21097,7 +21097,7 @@ _No circular dependencies detected._
 │   │   └── useForgeBuild.ts
 │   │       ├·· ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent, canBuildToday, isForgeLogEvent, recordBuildToday, saveForgeBuild, stageForgeArtifact  ← @/lib/forge/forgeBuild
 │   │       ├·· toErrorMessage  ← @/lib/utils
-│   │       └·· (lazy)  ← @/lib/forge/forgeBuild
+│   │       └·· dynamic import()  ← @/lib/forge/forgeBuild
 │   ├── forge-ngn/  [ForgeEngin (Engine Builder)]
 │   │   ├── assembly.ts
 │   │   │   └·· PieceManifest, getPiece  ← ./piece-registry
@@ -21237,22 +21237,22 @@ _No circular dependencies detected._
 │   │   │   │   ├·· GameCartridge  ← ../cartridge
 │   │   │   │   ├·· defineReactCartridgeLoader  ← ./reactCartridge
 │   │   │   │   ├·· toErrorMessage  ← @/lib/utils
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
-│   │   │   │   └·· (lazy)  ← @/components/games/dream.DefuseRitual
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.BabylonSideScroller
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NeonDrift
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.EchoArena
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NullCathedral
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.VoidlineGP
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.SerpentSiege
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.EnginFracture
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.Glassfall
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.LexiconSolitaire
+│   │   │   │   └·· dynamic import()  ← @/components/games/dream.DefuseRitual
 │   │   │   ├── manifest.ts
 │   │   │   ├── reactCartridge.ts
 │   │   │   │   ├·· GameCartridge, GameEngineAPI  ← @/lib/gameengin/cartridge
-│   │   │   │   └·· (lazy)  ← ./MyGame
+│   │   │   │   └·· dynamic import()  ← ./MyGame
 │   │   │   └── saveState.ts
 │   │   │       └·· CartridgeSaveAPI, CartridgeSaveSlot  ← ../cartridge
 │   │   ├── remote/  [GameEngin]
@@ -21278,8 +21278,8 @@ _No circular dependencies detected._
 │   │   │   └── world.ts
 │   │   ├── accessibility-ai.ts
 │   │   ├── ai-director.ts
-│   │   │   ├·· (lazy)  ← @tensorflow/tfjs
-│   │   │   └·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
+│   │   │   ├·· dynamic import()  ← @tensorflow/tfjs
+│   │   │   └·· dynamic import()  ← @tensorflow/tfjs-backend-webgpu
 │   │   ├── ai-npcs.ts
 │   │   ├── brain-reader.ts
 │   │   ├── cartridge-manifest.ts
@@ -21291,8 +21291,8 @@ _No circular dependencies detected._
 │   │   │   └·· safeGetUser  ← @/lib/supabase/safeGetUser
 │   │   ├── core.ts
 │   │   │   ├·· AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem  ← ./power-systems
-│   │   │   ├·· (lazy)  ← @/lib/babylon/createEngine
-│   │   │   └·· (lazy)  ← @babylonjs/core
+│   │   │   ├·· dynamic import()  ← @/lib/babylon/createEngine
+│   │   │   └·· dynamic import()  ← @babylonjs/core
 │   │   ├── dream-engine.ts
 │   │   │   ├·· decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString  ← @/lib/media/ledger
 │   │   │   ├·· createClient  ← @/lib/supabase/client
@@ -21323,11 +21323,11 @@ _No circular dependencies detected._
 │   │   │   └·· PostFXManager  ← ./post-fx
 │   │   ├── post-fx.ts
 │   │   │   ├·· PerformanceBudget  ← ./core
-│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline
-│   │   │   ├·· (lazy)  ← @babylonjs/core
-│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline
-│   │   │   ├·· (lazy)  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline
-│   │   │   └·· (lazy)  ← @babylonjs/core/Layers/glowLayer
+│   │   │   ├·· dynamic import()  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline
+│   │   │   ├·· dynamic import()  ← @babylonjs/core
+│   │   │   ├·· dynamic import()  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline
+│   │   │   ├·· dynamic import()  ← @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline
+│   │   │   └·· dynamic import()  ← @babylonjs/core/Layers/glowLayer
 │   │   ├── power-systems.ts
 │   │   ├── predictive-stream.ts
 │   │   ├── procgen.ts
@@ -21391,7 +21391,7 @@ _No circular dependencies detected._
 │   ├── gsap/
 │   │   ├── gsap.ts
 │   │   │   ├·· getGsap  ← @/lib/gsap/gsap
-│   │   │   └·· (lazy)  ← gsap
+│   │   │   └·· dynamic import()  ← gsap
 │   │   ├── useGsapEntrance.ts
 │   │   │   └·· getGsap  ← @/lib/gsap/gsap
 │   │   ├── useGsapFlip.ts
@@ -21416,8 +21416,8 @@ _No circular dependencies detected._
 │   │   │   └·· ENGIN_REGISTRY, EnginEntry, ForgeActivityPulse  ← @/lib/forge/forgeRegistry
 │   │   ├── sessionContinuity.ts
 │   │   ├── sessionPatternEngine.ts
-│   │   │   ├·· (lazy)  ← @tensorflow/tfjs
-│   │   │   └·· (lazy)  ← @tensorflow/tfjs-backend-webgpu
+│   │   │   ├·· dynamic import()  ← @tensorflow/tfjs
+│   │   │   └·· dynamic import()  ← @tensorflow/tfjs-backend-webgpu
 │   │   └── useSessionIntelligence.ts
 │   │       ├·· dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   │       ├·· SessionContinuity, SessionDiff, SessionSummary  ← ./sessionContinuity
@@ -21489,7 +21489,7 @@ _No circular dependencies detected._
 │   │       └·· toErrorMessage  ← @/lib/utils
 │   ├── observability/  [Observability & Idari Console]
 │   │   ├── collector.ts
-│   │   │   └·· (lazy)  ← ./otelBridge
+│   │   │   └·· dynamic import()  ← ./otelBridge
 │   │   ├── correlator.ts
 │   │   │   └·· LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan  ← ./collector
 │   │   ├── healthTrend.ts
@@ -21543,7 +21543,7 @@ _No circular dependencies detected._
 │   │   ├── FrustumCuller.ts
 │   │   ├── index.ts
 │   │   │   ├·· Canvas2DRenderer, createRenderer  ← @/lib/renderer
-│   │   │   └·· (lazy)  ← ./Canvas2DRenderer
+│   │   │   └·· dynamic import()  ← ./Canvas2DRenderer
 │   │   └── IRenderer.ts
 │   ├── routing/
 │   │   └── surfaces.ts
@@ -21565,7 +21565,7 @@ _No circular dependencies detected._
 │   │   │   └·· SystemPanelId  ← @/lib/panels/panelTypes
 │   │   ├── dualRuntimeBridge.ts
 │   │   │   ├·· invokeMadMaxiSnapshotTransfer  ← @/lib/runtime/madMaxiSnapshotBridge
-│   │   │   └·· (lazy)  ← @/lib/vm/wasmGpuVM
+│   │   │   └·· dynamic import()  ← @/lib/vm/wasmGpuVM
 │   │   ├── EnginDispatcher.ts
 │   │   │   └·· BAR_Y_SCALE, MAX_WORKERS, SAB_BYTES, SNAP_THRESHOLD_RATIO, Workgroup, buildWorkgroups, createEnginSAB, f64Telemetry, int32AxisState, int32DreamDMBarX, int32DreamDMBarY, int32LockedState  ← ./memory
 │   │   ├── enginWorkflowRegistry.ts
@@ -21573,7 +21573,7 @@ _No circular dependencies detected._
 │   │   ├── instanceManager.ts
 │   │   │   ├·· RuntimeChannel, createLocalChannel, createRuntimeChannel  ← @/lib/runtime/runtimeChannel
 │   │   │   ├·· RuntimeId  ← @/types/module-manifest
-│   │   │   └·· (lazy)  ← @/lib/supabase/client
+│   │   │   └·· dynamic import()  ← @/lib/supabase/client
 │   │   ├── isAuthRelatedError.ts
 │   │   ├── madMaxiSnapshotBridge.ts
 │   │   ├── memory.ts
@@ -21585,7 +21585,7 @@ _No circular dependencies detected._
 │   │   ├── quantumCircuit.ts
 │   │   │   └·· QuantumComputeResult  ← ./dualRuntimeBridge
 │   │   ├── runtimeChannel.ts
-│   │   │   └·· (lazy)  ← @supabase/supabase-js
+│   │   │   └·· dynamic import()  ← @supabase/supabase-js
 │   │   ├── runtimeContainer.ts
 │   │   ├── seamClipboard.ts
 │   │   │   ├·· RuntimeRegion  ← @/lib/identity/canonical-names
@@ -21679,7 +21679,7 @@ _No circular dependencies detected._
 │   │       ├·· BufferManager  ← ./bufferManager
 │   │       ├·· PipelineCache  ← ./pipelineCache
 │   │       ├·· BindGroupHandle, BufferHandle, ComputePipelineDescriptor, DEFAULT_VM_CONFIG, PipelineHandle, VMConfig, VMPerformanceCounters, VMState, VMSyscalls  ← ./types
-│   │       └·· (lazy)  ← ./types
+│   │       └·· dynamic import()  ← ./types
 │   ├── warp/  [Warp System]
 │   │   ├── useWarp.ts
 │   │   │   └·· WarpEffect, WarpEngine, WarpEngineOptions  ← ./warpEngine
@@ -21940,128 +21940,128 @@ _No circular dependencies detected._
 │   │   │   ├── engin.renderloop.ts
 │   │   │   └── index.ts
 │   │   │       ├·· createClient  ← @/lib/supabase/client
-│   │   │       ├·· (lazy)  ← @/lib/ai/capability-gate
-│   │   │       ├·· (lazy)  ← @/lib/ai/confirm-token
-│   │   │       ├·· (lazy)  ← @/lib/ai/rate-limiter
-│   │   │       ├·· (lazy)  ← @/lib/ai/idempotency
-│   │   │       ├·· (lazy)  ← @/lib/agents/boogieManAI
-│   │   │       ├·· (lazy)  ← @/build-memory/registry.json
-│   │   │       └·· (lazy)  ← ../generated/index
+│   │   │       ├·· dynamic import()  ← @/lib/ai/capability-gate
+│   │   │       ├·· dynamic import()  ← @/lib/ai/confirm-token
+│   │   │       ├·· dynamic import()  ← @/lib/ai/rate-limiter
+│   │   │       ├·· dynamic import()  ← @/lib/ai/idempotency
+│   │   │       ├·· dynamic import()  ← @/lib/agents/boogieManAI
+│   │   │       ├·· dynamic import()  ← @/build-memory/registry.json
+│   │   │       └·· dynamic import()  ← ../generated/index
 │   │   ├── generated/
 │   │   │   ├── brain.ts
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/active-projects.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/character-voices/mad-maxi.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/composition-principles/leading-lines-landmark.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/composition-principles/parallax-layers.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-library/neon-courier.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/callback-anchor.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/implied-subject.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/determined.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/fierce.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/hopeful.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/reflective.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/emotional-tones/weary.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/meta-progression.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/moment-to-moment.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/fun-heuristics/session-loop.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/action-rpg.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/episodic.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/live-service.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/metroidvania.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/open-world.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/platformer.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/puzzle.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/racing.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/roguelike.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/sandbox.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/genre-dna/template.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/celeste.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/dead-cells.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/hades.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/hollow-knight.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/inspiration-corpus/outer-wilds.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/neon-glass-tube.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/rusted-iron.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/look-ahead.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/screen-shake.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/combo.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/hit-stop.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/parry.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/combat/ranged.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/coyote-time.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/dash.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/double-jump.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/grapple.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/movement/wall-slide.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/progression/skill-tree.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/ability-gating.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/meta-progression.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/run-persistence.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/season-pass.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/mechanic-library/structural/world-streaming.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/narrative-pacing/default.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/originality-registry/signatures.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/lighting/three-point-mood.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/modeling/edge-flow.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/modeling/silhouette-first.json
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json
-│   │   │   │   └·· (lazy)  ← @/lib/gameengin/brain/upgrade-history/prioritization-rules.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/active-projects.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/character-voices/mad-maxi.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/composition-principles/leading-lines-landmark.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/composition-principles/parallax-layers.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/concept-library/neon-courier.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/dialogue-patterns/callback-anchor.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/dialogue-patterns/implied-subject.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/emotional-tones/determined.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/emotional-tones/fierce.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/emotional-tones/hopeful.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/emotional-tones/reflective.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/emotional-tones/weary.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/fun-heuristics/meta-progression.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/fun-heuristics/moment-to-moment.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/fun-heuristics/session-loop.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/action-rpg.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/episodic.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/live-service.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/metroidvania.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/open-world.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/platformer.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/puzzle.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/racing.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/roguelike.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/sandbox.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/genre-dna/template.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/inspiration-corpus/celeste.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/inspiration-corpus/dead-cells.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/inspiration-corpus/hades.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/inspiration-corpus/hollow-knight.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/inspiration-corpus/outer-wilds.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/material-recipes/neon-glass-tube.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/material-recipes/rusted-iron.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/camera/look-ahead.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/camera/screen-shake.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/combat/combo.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/combat/hit-stop.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/combat/parry.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/combat/ranged.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/movement/coyote-time.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/movement/dash.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/movement/double-jump.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/movement/grapple.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/movement/wall-slide.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/progression/skill-tree.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/ability-gating.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/meta-progression.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/run-persistence.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/season-pass.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/mechanic-library/structural/world-streaming.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/narrative-pacing/default.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/originality-registry/signatures.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/technique-library/lighting/three-point-mood.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/technique-library/modeling/edge-flow.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/technique-library/modeling/silhouette-first.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json
+│   │   │   │   └·· dynamic import()  ← @/lib/gameengin/brain/upgrade-history/prioritization-rules.json
 │   │   │   ├── cartridges.ts
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/index
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/loaders
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/manifest
-│   │   │   │   ├·· (lazy)  ← @/lib/gameengin/cartridges/reactCartridge
-│   │   │   │   └·· (lazy)  ← @/public/cartridges/mad-maxi/MANIFEST.json
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/cartridges/index
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/cartridges/loaders
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/cartridges/manifest
+│   │   │   │   ├·· dynamic import()  ← @/lib/gameengin/cartridges/reactCartridge
+│   │   │   │   └·· dynamic import()  ← @/public/cartridges/mad-maxi/MANIFEST.json
 │   │   │   ├── connectors.ts
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/connectorRegistry
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/deliveryStrategy
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/installFlow
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/normalise
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/bluesky
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/devto
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/facebook
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/github
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/hackernews
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/instagram
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/mastodon
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/medium
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/nostr
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/pinterest
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/podcast
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/reddit
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/shellhub
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/substack
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/tiktok
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/tumblr
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/twitter
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/providers/youtube
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/reconcile
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/syncDispatch
-│   │   │   │   ├·· (lazy)  ← @/lib/connectors/webhookVerification
-│   │   │   │   └·· (lazy)  ← @/lib/connectors/youtube
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/connectorRegistry
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/deliveryStrategy
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/installFlow
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/normalise
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/bluesky
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/devto
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/facebook
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/github
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/hackernews
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/instagram
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/mastodon
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/medium
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/nostr
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/pinterest
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/podcast
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/reddit
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/shellhub
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/substack
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/tiktok
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/tumblr
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/twitter
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/providers/youtube
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/reconcile
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/syncDispatch
+│   │   │   │   ├·· dynamic import()  ← @/lib/connectors/webhookVerification
+│   │   │   │   └·· dynamic import()  ← @/lib/connectors/youtube
 │   │   │   ├── hooks.ts
-│   │   │   │   ├·· (lazy)  ← @/hooks/use-spatial
-│   │   │   │   ├·· (lazy)  ← @/hooks/useAccount
-│   │   │   │   ├·· (lazy)  ← @/hooks/useConnectorInstallFlow
-│   │   │   │   ├·· (lazy)  ← @/hooks/useDreamLayout
-│   │   │   │   ├·· (lazy)  ← @/hooks/useHideOnScroll
-│   │   │   │   ├·· (lazy)  ← @/hooks/useSharedDream
-│   │   │   │   ├·· (lazy)  ← @/hooks/useTapHoldMove
-│   │   │   │   ├·· (lazy)  ← @/hooks/useTick
-│   │   │   │   ├·· (lazy)  ← @/hooks/useViewCounter
-│   │   │   │   ├·· (lazy)  ← @/lib/hooks/useMotionTilt
-│   │   │   │   ├·· (lazy)  ← @/lib/hooks/useResponsive
-│   │   │   │   └·· (lazy)  ← @/lib/hooks/useTap
+│   │   │   │   ├·· dynamic import()  ← @/hooks/use-spatial
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useAccount
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useConnectorInstallFlow
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useDreamLayout
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useHideOnScroll
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useSharedDream
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useTapHoldMove
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useTick
+│   │   │   │   ├·· dynamic import()  ← @/hooks/useViewCounter
+│   │   │   │   ├·· dynamic import()  ← @/lib/hooks/useMotionTilt
+│   │   │   │   ├·· dynamic import()  ← @/lib/hooks/useResponsive
+│   │   │   │   └·· dynamic import()  ← @/lib/hooks/useTap
 │   │   │   ├── index.ts
 │   │   │   │   ├·· brain  ← ./brain
 │   │   │   │   ├·· cartridges  ← ./cartridges
@@ -22073,978 +22073,978 @@ _No circular dependencies detected._
 │   │   │   │   └·· systems  ← ./systems
 │   │   │   ├── personas.ts
 │   │   │   ├── rulesets.ts
-│   │   │   │   ├·· (lazy)  ← @/engins/autoopen/dream.AutoOpenGameEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/core/parser
-│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
-│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/index
-│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
-│   │   │   │   ├·· (lazy)  ← @/engins/CodeEngin/orchestrator/dream.index
-│   │   │   │   ├·· (lazy)  ← @/engins/dream.ForgeEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/dream.panel.AnalyticsEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/dream.QuantumCircuitCanvas
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.BrandingEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.CodeEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.ContentEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.GameEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.LabEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/engin.StarMakerEngin
-│   │   │   │   ├·· (lazy)  ← @/engins/portfolio/dream.PortfolioEngin
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/codeengin/index
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/dreamsengin/index
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/forgengn/index
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/gameengin/index
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.constants
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.physics
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/dream.homedream.transforms
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/homedream/index
-│   │   │   │   ├·· (lazy)  ← @/src/dream/rulesets/labengin/index
-│   │   │   │   └·· (lazy)  ← @/src/dream/rulesets/starmakerengin/index
+│   │   │   │   ├·· dynamic import()  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/CodeEngin/core/parser
+│   │   │   │   ├·· dynamic import()  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
+│   │   │   │   ├·· dynamic import()  ← @/engins/CodeEngin/modules/ai-co-pilot/index
+│   │   │   │   ├·· dynamic import()  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
+│   │   │   │   ├·· dynamic import()  ← @/engins/CodeEngin/orchestrator/dream.index
+│   │   │   │   ├·· dynamic import()  ← @/engins/dream.ForgeEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/dream.panel.AnalyticsEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/dream.QuantumCircuitCanvas
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.BrandingEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.CodeEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.ContentEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.GameEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.LabEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/engin.StarMakerEngin
+│   │   │   │   ├·· dynamic import()  ← @/engins/portfolio/dream.PortfolioEngin
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/codeengin/index
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/dreamsengin/index
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/forgengn/index
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/gameengin/index
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/homedream/dream.homedream.constants
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/homedream/dream.homedream.physics
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/homedream/dream.homedream.transforms
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/homedream/index
+│   │   │   │   ├·· dynamic import()  ← @/src/dream/rulesets/labengin/index
+│   │   │   │   └·· dynamic import()  ← @/src/dream/rulesets/starmakerengin/index
 │   │   │   ├── surfaces.ts
-│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/page
-│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/platform-errors/page
-│   │   │   │   ├·· (lazy)  ← @/app/(internal)/idari-console/platform-health/page
-│   │   │   │   ├·· (lazy)  ← @/app/about/page
-│   │   │   │   ├·· (lazy)  ← @/app/actions/dream-docs
-│   │   │   │   ├·· (lazy)  ← @/app/ads/create/page
-│   │   │   │   ├·· (lazy)  ← @/app/ads/page
-│   │   │   │   ├·· (lazy)  ← @/app/ads/slot/[id]/page
-│   │   │   │   ├·· (lazy)  ← @/app/api/account/delete-data/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/account/delete-dream/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/account/export-data/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/activity/track/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/admin/ai-chat/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/admin/ai-request/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/admin/child-safety/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/admin/code-files/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/admin/observability/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ads/orders/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ads/view/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/agent/session/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/child-safety/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/privacy-event/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/boogieman/status/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/eams/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/execute/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ai/idari/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/appeal/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/auth/logout/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/auth/providers/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/blocks/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ci/run/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/close-friends/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/comments/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/connect/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/disconnect/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/items/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/sync/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/[provider]/verify/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/cron/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/instagram/oauth/callback/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/instagram/oauth/start/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/status/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/webhooks/[provider]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/youtube/oauth/callback/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/connectors/youtube/oauth/start/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/content/generative-fill/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/content/intelligence/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/content/transcribe/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/content/voice-clone/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dr-eams/hf/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dr-eams/run/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/drafts/[id]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/drafts/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dream-windows/[id]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dream-windows/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreamengin/os-status/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreamr/feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreamr/suggested/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/instances/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/dreams/transfer/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/embed-feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/favorites/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/follow/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/forge/build/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/gal/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/game-scores/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/gameengin/crash-report/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/health/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/home-layout/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/journey/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/lab/benchmarks/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/ledger-media/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/likes/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/marketplace/request/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/marketplace/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/messages/boards/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/messages/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/platform/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/metrics/user/[userId]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/music/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/notifications/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/platform/errors/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/save/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/posts/[id]/view/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/posts/profile/[userId]/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/posts/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/profile/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/projects/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/scheduled-posts/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/security/scan/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/settings/appearance/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/settings/feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/settings/notifications/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/settings/privacy/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/setup/check/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/setup/google-oauth/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/shellhub/devices/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/shop/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/balance/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/earn/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/skip-credits/use/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/social/rss-feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/upload/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/user/layout/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/views/track/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/widgets/feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/widgets/instances/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/channel/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/discovery/route
-│   │   │   │   ├·· (lazy)  ← @/app/api/youtube/live-feed/route
-│   │   │   │   ├·· (lazy)  ← @/app/auth/callback/route
-│   │   │   │   ├·· (lazy)  ← @/app/auth/reset-password/page
-│   │   │   │   ├·· (lazy)  ← @/app/auth/update-password/page
-│   │   │   │   ├·· (lazy)  ← @/app/connectors/dream.ConnectorsClient
-│   │   │   │   ├·· (lazy)  ← @/app/connectors/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/analytics/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/brand/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/brand/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/code/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/code/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/constellation/dream.ConstellationClient
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/constellation/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/create/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/create/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/forge/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/dream.GamePageClient
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/dream.shell.ImmersiveGameShell
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/game/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/games/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/games/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/lab/portfolio/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/media-vault/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/engin/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/music/upload/page
-│   │   │   │   ├·· (lazy)  ← @/app/daydream/play/page
-│   │   │   │   ├·· (lazy)  ← @/app/discover/page
-│   │   │   │   ├·· (lazy)  ← @/app/dream-effects/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamBarDataBridge
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/api/route
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamSpaceRegion
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/DreamWidgetGrid
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/_components/HomeDreamRegion
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/dreamspace/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/dualruntime/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/homedream/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/layout
-│   │   │   │   ├·· (lazy)  ← @/app/dreamdmbar/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamr/page
-│   │   │   │   ├·· (lazy)  ← @/app/dreamspace/page
-│   │   │   │   ├·· (lazy)  ← @/app/edit-profiledream/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/campaigns/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/identity/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/brand/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/code/ai/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/code/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/code/notebook/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/code/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/code/projects/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/create/calendar/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/create/editor/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/create/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/create/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/create/queue/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/games/builder/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/games/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/games/library/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/games/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/games/scores/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/data/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/experiments/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/lab/quantum/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/music/arrange/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/music/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/music/library/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/music/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/music/studio/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/assets/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/layout
-│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/optimize/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/page
-│   │   │   │   ├·· (lazy)  ← @/app/engines/portfolio/quantum/page
-│   │   │   │   ├·· (lazy)  ← @/app/feed-settings/dream.FeedSettingsClient
-│   │   │   │   ├·· (lazy)  ← @/app/feed-settings/page
-│   │   │   │   ├·· (lazy)  ← @/app/gameengin/cartridges/[id]/page
-│   │   │   │   ├·· (lazy)  ← @/app/gameengin/cartridges/page
-│   │   │   │   ├·· (lazy)  ← @/app/gameengin/page
-│   │   │   │   ├·· (lazy)  ← @/app/homedream/page
-│   │   │   │   ├·· (lazy)  ← @/app/join/page
-│   │   │   │   ├·· (lazy)  ← @/app/lab/[id]/codespace/page
-│   │   │   │   ├·· (lazy)  ← @/app/lab/[id]/page
-│   │   │   │   ├·· (lazy)  ← @/app/lab/new/page
-│   │   │   │   ├·· (lazy)  ← @/app/lab/page
-│   │   │   │   ├·· (lazy)  ← @/app/layout
-│   │   │   │   ├·· (lazy)  ← @/app/login/page
-│   │   │   │   ├·· (lazy)  ← @/app/marketplace/[id]/page
-│   │   │   │   ├·· (lazy)  ← @/app/marketplace/page
-│   │   │   │   ├·· (lazy)  ← @/app/marketplace/sell/page
-│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/[id]/page
-│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/new/page
-│   │   │   │   ├·· (lazy)  ← @/app/messages/boards/page
-│   │   │   │   ├·· (lazy)  ← @/app/messages/page
-│   │   │   │   ├·· (lazy)  ← @/app/mission/page
-│   │   │   │   ├·· (lazy)  ← @/app/notes/page
-│   │   │   │   ├·· (lazy)  ← @/app/onboarding/page
-│   │   │   │   ├·· (lazy)  ← @/app/page
-│   │   │   │   ├·· (lazy)  ← @/app/policy/page
-│   │   │   │   ├·· (lazy)  ← @/app/profile/[handle]/page
-│   │   │   │   ├·· (lazy)  ← @/app/profile/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/account/dream.DangerZoneActions
-│   │   │   │   ├·· (lazy)  ← @/app/settings/account/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/algorithm/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/appearance/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/dream.ControlsClient
-│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/dream.PositionIndicatorToggle
-│   │   │   │   ├·· (lazy)  ← @/app/settings/controls/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/data/dream.DataClient
-│   │   │   │   ├·· (lazy)  ← @/app/settings/data/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/dreams/dreams-layout-editor
-│   │   │   │   ├·· (lazy)  ← @/app/settings/dreams/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/feed/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/help/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/notifications/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/privacy/dream.PrivacyClient
-│   │   │   │   ├·· (lazy)  ← @/app/settings/privacy/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/safety/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/security/page
-│   │   │   │   ├·· (lazy)  ← @/app/settings/widgets/page
-│   │   │   │   ├·· (lazy)  ← @/app/shop/page
-│   │   │   │   ├·· (lazy)  ← @/app/shop/sell/page
-│   │   │   │   ├·· (lazy)  ← @/app/u/[handle]/page
-│   │   │   │   ├·· (lazy)  ← @/app/view-profile/page
-│   │   │   │   ├·· (lazy)  ← @/app/webgpu/page
-│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.ActivityPostForm
-│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.ActivityProfile
-│   │   │   │   ├·· (lazy)  ← @/components/activity/dream.TierBadge
-│   │   │   │   ├·· (lazy)  ← @/components/ads/dream.AdUnit
-│   │   │   │   ├·· (lazy)  ← @/components/ads/dream.SkipCreditBalance
-│   │   │   │   ├·· (lazy)  ← @/components/auth/dream.PasswordField
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.AddSliceSheet
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.ConnectDreamPrompt
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.ConnectorRow
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.NoSlotDialog
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.PlacementMode
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.widget.ConnectorWidgetPicker
-│   │   │   │   ├·· (lazy)  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
-│   │   │   │   ├·· (lazy)  ← @/components/core/dream.CoreDream
-│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.bar.CustomizeModeBar
-│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.bar.CustomizeToolbar
-│   │   │   │   ├·· (lazy)  ← @/components/customize/dream.GlobalCustomizeUI
-│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.ColorPanel
-│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.EffectsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.FontPanel
-│   │   │   │   ├·· (lazy)  ← @/components/customize/panels/dream.panel.LayoutPanel
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.CodeDreamIDE
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.constellationmap
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.DiffViewer
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.JourneyTrail
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.LabDreamIDE
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.NGNEngin
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.OpenDaydreamSideBButton
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.shell.DaydreamShell
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dream.StandaloneEnginSurface
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.CompingPanel
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
-│   │   │   │   ├·· (lazy)  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
-│   │   │   │   ├·· (lazy)  ← @/components/draggable/dream.DraggableModule
-│   │   │   │   ├·· (lazy)  ← @/components/dream.AIAssistant
-│   │   │   │   ├·· (lazy)  ← @/components/dream.AudioVisualizer3D
-│   │   │   │   ├·· (lazy)  ← @/components/dream.BoogieWarningBanner
-│   │   │   │   ├·· (lazy)  ← @/components/dream.BrandLogo
-│   │   │   │   ├·· (lazy)  ← @/components/dream.CommandPalette
-│   │   │   │   ├·· (lazy)  ← @/components/dream.CreatePostModal
-│   │   │   │   ├·· (lazy)  ← @/components/dream.DragToAnchorClose
-│   │   │   │   ├·· (lazy)  ← @/components/dream.DrEamsModeToggle
-│   │   │   │   ├·· (lazy)  ← @/components/dream.DrEamsVoiceAssistant
-│   │   │   │   ├·· (lazy)  ← @/components/dream.FeedCard
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ForgeDreamCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/dream.GlobalOverlays
-│   │   │   │   ├·· (lazy)  ← @/components/dream.HeroSprite
-│   │   │   │   ├·· (lazy)  ← @/components/dream.HomeFeed
-│   │   │   │   ├·· (lazy)  ← @/components/dream.IconSelector
-│   │   │   │   ├·· (lazy)  ← @/components/dream.InnerDreamsButton
-│   │   │   │   ├·· (lazy)  ← @/components/dream.KonamiDream
-│   │   │   │   ├·· (lazy)  ← @/components/dream.LandingHero
-│   │   │   │   ├·· (lazy)  ← @/components/dream.LedgerChart
-│   │   │   │   ├·· (lazy)  ← @/components/dream.MessagesClient
-│   │   │   │   ├·· (lazy)  ← @/components/dream.NotificationCenter
-│   │   │   │   ├·· (lazy)  ← @/components/dream.OSShellActivator
-│   │   │   │   ├·· (lazy)  ← @/components/dream.panel.ChildSafetyPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dream.panel.IDariPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dream.PhysicsLab
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileEditor
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileShareButton
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ProfileSpace
-│   │   │   │   ├·· (lazy)  ← @/components/dream.PullToRefresh
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ShrunkMode
-│   │   │   │   ├·· (lazy)  ← @/components/dream.SkeletonLoaders
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ThemeApplicator
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ThemeToggle
-│   │   │   │   ├·· (lazy)  ← @/components/dream.ToastSystem
-│   │   │   │   ├·· (lazy)  ← @/components/dream.universal_asset_registry
-│   │   │   │   ├·· (lazy)  ← @/components/dream.VoidThemeToggle
-│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.AnchorWidget
-│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.ProfileWidgetBlock
-│   │   │   │   ├·· (lazy)  ← @/components/dream.widget.WidgetBubble
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.bar.DrEamsSearchBar
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.CanvasDropZone
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.DREAMenginOS
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.DrEamsCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.HomeControls
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.menu.NexusMenu
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.menu.OutdreamMenu
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.overlay.ViewAllDreamsOverlay
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.panel.DrEamsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.BabylonGameScene
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.DrEamsScene
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.scene.PortfolioOptimizationScene
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.shell.EnginShell
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dream.widget.AppearanceWidget
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/dreamsurface.dreamengin
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/engine/math
-│   │   │   │   ├·· (lazy)  ← @/components/dreamengin/engine/types
-│   │   │   │   ├·· (lazy)  ← @/components/dreamnav/dream.DreamNavControls
-│   │   │   │   ├·· (lazy)  ← @/components/dreamnav/dreamsurface.dreamnav
-│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.CloseFriendsSettings
-│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.panel.DreamRChannelPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.connectorlayer
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.DraggableDream
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.featurelayer
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.GlobalDragLayer
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.outputlayer
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.PlatformErrorReporter
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.shell.DreamShell
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.shell.SharedDreamShell
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.SlideOverPanel
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.widget.SuperDreamWidget
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dream.window.JourneyDreamWindow
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.dreamspace
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.shell
-│   │   │   │   ├·· (lazy)  ← @/components/dreams/dreamsurface.window
-│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/dream.BrandEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/brand/panels/dream.panel.IdentityPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/code/dream.CodeEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/code/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.AIPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.NotebookPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/code/panels/dream.panel.ProjectsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/create/dream.CreateEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/create/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.CalendarPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.EditorPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/create/panels/dream.panel.QueuePanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/games/dream.GameEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/games/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.BuilderPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.LibraryPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/games/panels/dream.panel.ScoresPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/dream.LabEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.DataVizPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.ExperimentsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/lab/panels/dream.panel.QuantumPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/music/dream.MusicEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/music/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.ArrangePanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.MusicLibraryPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/music/panels/dream.panel.StudioPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/dream.PortfolioEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/index
-│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.bar.EnginNavBar
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.EnginProvider
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.EnginRuleSet
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.makeEnginApp
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/dream.shell.EnginAppShell
-│   │   │   │   ├·· (lazy)  ← @/components/engines/shared/index
-│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.AlgorithmEngine
-│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.CommentSection
-│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FeedVideoCard
-│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FollowButton
-│   │   │   │   ├·· (lazy)  ← @/components/feed/dream.FollowOnboarding
-│   │   │   │   ├·· (lazy)  ← @/components/feeds/dream.widget.EmbedFeedWidget
-│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.EngineBuilderCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.panel.AIBuilderPanel
-│   │   │   │   ├·· (lazy)  ← @/components/forge/dream.widget.ForgeMomentumWidget
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeBrowser
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/dream.CrashReportModal
-│   │   │   │   ├·· (lazy)  ← @/components/gameengin/input/DualSenseManager
-│   │   │   │   ├·· (lazy)  ← @/components/games/_fx/canvasFx
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.AvenueOfMirrors
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.BabylonSideScroller
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.DefuseRitual
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EchoArena
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.EnginFracture
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.GameController
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.GamesHub
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Glassfall
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.GameHUD
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.LegacyGameHUD
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.hud.MobileGameHUD
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.Leaderboard
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.LexiconSolitaire
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NeonDrift
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NiteFlyerSolarHymn
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.NullCathedral
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.RecordingControls
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.remote.GameRemote
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.remote.LegacyGameRemote
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.SerpentSiege
-│   │   │   │   ├·· (lazy)  ← @/components/games/dream.VoidlineGP
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/audio
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/authoredZonePacks
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/config
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/dream.MadmaxiGame
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/index
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/levels
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/materials
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/types
-│   │   │   │   ├·· (lazy)  ← @/components/games/madmaxi/vfx
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.ActiveModuleSurface
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.bar.GlobalDreamBar
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.bar.PersistentDreamBar
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.DaydreamPulseStrip
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.FlagshipEnginesStrip
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.NeuralSeamCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/home/dream.widget.DreamWidget
-│   │   │   │   ├·· (lazy)  ← @/components/idari/dream.PlatformHealth
-│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.LandingNav
-│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.LandingProductStatement
-│   │   │   │   ├·· (lazy)  ← @/components/landing/dream.scene.UniverseField
-│   │   │   │   ├·· (lazy)  ← @/components/marketplace/dream.MarketplaceListingCard
-│   │   │   │   ├·· (lazy)  ← @/components/marketplace/dream.MarketplaceRequestButton
-│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.DreamRadialMenu
-│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.DualBottomMenu
-│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.RadialMenu
-│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.menu.SystemRadialMenu
-│   │   │   │   ├·· (lazy)  ← @/components/menus/dream.panel.MenuPanel
-│   │   │   │   ├·· (lazy)  ← @/components/messaging/dream.BoardComposer
-│   │   │   │   ├·· (lazy)  ← @/components/music/dream.SoundRecorder
-│   │   │   │   ├·· (lazy)  ← @/components/onboarding/dream.OnboardingTip
-│   │   │   │   ├·· (lazy)  ← @/components/optimizer/dream.scene.BabylonOptimizeroScene
-│   │   │   │   ├·· (lazy)  ← @/components/overlays/dream.RootStatusScreen
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.AlgorithmPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.AppearancePanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ConnectorsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ControlsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.DataPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.FeedPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.FeedSettingsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.HelpPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.MarketplacePanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.PrivacyPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.ProfilePanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.SafetyPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.SettingsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/panels/dream.panel.WidgetsPanel
-│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.EditableAvatar
-│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.ProfileCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.ProfileCustomizeButton
-│   │   │   │   ├·· (lazy)  ← @/components/profile/dream.widget.ProfileWidgetGrid
-│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.AppSurfaceShell
-│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.GodTierProvider
-│   │   │   │   ├·· (lazy)  ← @/components/providers/dream.ThemeProvider
-│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.DualRuntimeContainer
-│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.RuntimeView
-│   │   │   │   ├·· (lazy)  ← @/components/runtime/dream.shell.RuntimeShell
-│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.LightningWing
-│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.NeonGlow
-│   │   │   │   ├·· (lazy)  ← @/components/shaders/dream.Refractor
-│   │   │   │   ├·· (lazy)  ← @/components/shaders/index
-│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.InviteFlow
-│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.SharedDreamCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/dream.SharedDreamProvider
-│   │   │   │   ├·· (lazy)  ← @/components/shared-dream/index
-│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.PixiPhysicsLayer
-│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.ProfileSpace
-│   │   │   │   ├·· (lazy)  ← @/components/spatial/dream.shell.EnhancedSpatialShell
-│   │   │   │   ├·· (lazy)  ← @/components/three/dream.scene
-│   │   │   │   ├·· (lazy)  ← @/components/three/index
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.AuthenticatedPageHeader
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.DreamWord
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.IconList
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.InfinityIcon
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.PlatformBadge
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.SheetIcon
-│   │   │   │   ├·· (lazy)  ← @/components/ui/dream.SocialShareSheet
-│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/dream.UniversalEditor
-│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/dream.UniversalEditorWrapper
-│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/index
-│   │   │   │   ├·· (lazy)  ← @/components/universal-editor/useTapHoldMove
-│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.node-cluster
-│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.shell.universe-shell
-│   │   │   │   ├·· (lazy)  ← @/components/universe/dream.universe-card
-│   │   │   │   ├·· (lazy)  ← @/components/universe/index
-│   │   │   │   ├·· (lazy)  ← @/components/warp/dream.WarpCanvas
-│   │   │   │   ├·· (lazy)  ← @/components/webgpu/dream.WebGPUShowcase
-│   │   │   │   ├·· (lazy)  ← @/components/webgpu/neuralPostProcess
-│   │   │   │   ├·· (lazy)  ← @/components/webgpu/renderer
-│   │   │   │   ├·· (lazy)  ← @/components/webgpu/shaders
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.AddDreamCTA
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.ConfigureSheet
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.EditModeBanner
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.EditModeProvider
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.PlayMediaWidget
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.UniversalWidget
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetCard
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetLibrary
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetPlaceholder
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetShell
-│   │   │   │   ├·· (lazy)  ← @/components/widgets/dream.widget.WidgetSurface
-│   │   │   │   ├·· (lazy)  ← @/coresurfaces/dreamsurface.EditProfileDream
-│   │   │   │   ├·· (lazy)  ← @/coresurfaces/dreamsurface.ViewProfile
-│   │   │   │   ├·· (lazy)  ← @/daydreams/brand/page
-│   │   │   │   ├·· (lazy)  ← @/daydreams/code/page
-│   │   │   │   ├·· (lazy)  ← @/daydreams/create/page
-│   │   │   │   ├·· (lazy)  ← @/daydreams/games/page
-│   │   │   │   ├·· (lazy)  ← @/daydreams/lab/page
-│   │   │   │   └·· (lazy)  ← @/daydreams/music/page
+│   │   │   │   ├·· dynamic import()  ← @/app/(internal)/idari-console/page
+│   │   │   │   ├·· dynamic import()  ← @/app/(internal)/idari-console/platform-errors/page
+│   │   │   │   ├·· dynamic import()  ← @/app/(internal)/idari-console/platform-health/page
+│   │   │   │   ├·· dynamic import()  ← @/app/about/page
+│   │   │   │   ├·· dynamic import()  ← @/app/actions/dream-docs
+│   │   │   │   ├·· dynamic import()  ← @/app/ads/create/page
+│   │   │   │   ├·· dynamic import()  ← @/app/ads/page
+│   │   │   │   ├·· dynamic import()  ← @/app/ads/slot/[id]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/api/account/delete-data/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/account/delete-dream/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/account/export-data/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/activity/track/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/admin/ai-chat/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/admin/ai-request/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/admin/child-safety/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/admin/code-files/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/admin/observability/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ads/orders/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ads/view/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/agent/session/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/boogieman/child-safety/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/boogieman/privacy-event/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/boogieman/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/boogieman/status/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/eams/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/execute/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ai/idari/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/appeal/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/auth/logout/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/auth/providers/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/blocks/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ci/run/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/close-friends/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/comments/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/[provider]/connect/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/[provider]/disconnect/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/[provider]/items/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/[provider]/sync/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/[provider]/verify/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/cron/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/instagram/oauth/callback/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/instagram/oauth/start/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/status/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/webhooks/[provider]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/youtube/oauth/callback/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/connectors/youtube/oauth/start/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/content/generative-fill/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/content/intelligence/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/content/transcribe/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/content/voice-clone/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dr-eams/hf/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dr-eams/run/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/drafts/[id]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/drafts/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dream-windows/[id]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dream-windows/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreamengin/os-status/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreamr/feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreamr/suggested/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreams/feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreams/instances/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/dreams/transfer/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/embed-feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/favorites/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/follow/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/forge/build/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/gal/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/game-scores/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/gameengin/crash-report/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/health/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/home-layout/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/journey/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/lab/benchmarks/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/ledger-media/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/likes/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/marketplace/request/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/marketplace/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/messages/boards/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/messages/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/metrics/platform/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/metrics/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/metrics/user/[userId]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/music/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/notifications/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/platform/errors/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/posts/[id]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/posts/[id]/save/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/posts/[id]/view/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/posts/profile/[userId]/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/posts/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/profile/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/projects/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/scheduled-posts/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/security/scan/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/settings/appearance/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/settings/feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/settings/notifications/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/settings/privacy/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/setup/check/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/setup/google-oauth/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/shellhub/devices/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/shop/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/skip-credits/balance/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/skip-credits/earn/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/skip-credits/use/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/social/rss-feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/upload/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/user/layout/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/views/track/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/widgets/feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/widgets/instances/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/youtube/channel/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/youtube/discovery/route
+│   │   │   │   ├·· dynamic import()  ← @/app/api/youtube/live-feed/route
+│   │   │   │   ├·· dynamic import()  ← @/app/auth/callback/route
+│   │   │   │   ├·· dynamic import()  ← @/app/auth/reset-password/page
+│   │   │   │   ├·· dynamic import()  ← @/app/auth/update-password/page
+│   │   │   │   ├·· dynamic import()  ← @/app/connectors/dream.ConnectorsClient
+│   │   │   │   ├·· dynamic import()  ← @/app/connectors/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/analytics/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/brand/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/brand/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/code/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/code/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/constellation/dream.ConstellationClient
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/constellation/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/create/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/create/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/forge/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/game/dream.GamePageClient
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/game/dream.shell.ImmersiveGameShell
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/game/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/games/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/games/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/lab/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/lab/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/lab/portfolio/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/media-vault/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/music/engin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/music/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/music/upload/page
+│   │   │   │   ├·· dynamic import()  ← @/app/daydream/play/page
+│   │   │   │   ├·· dynamic import()  ← @/app/discover/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dream-effects/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/DreamBarDataBridge
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/api/route
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/DreamSpaceRegion
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/DreamWidgetGrid
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/dreamspace/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/dualruntime/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/homedream/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamdmbar/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamr/page
+│   │   │   │   ├·· dynamic import()  ← @/app/dreamspace/page
+│   │   │   │   ├·· dynamic import()  ← @/app/edit-profiledream/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/brand/campaigns/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/brand/identity/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/brand/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/brand/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/code/ai/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/code/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/code/notebook/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/code/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/code/projects/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/create/calendar/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/create/editor/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/create/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/create/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/create/queue/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/games/builder/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/games/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/games/library/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/games/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/games/scores/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/lab/data/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/lab/experiments/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/lab/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/lab/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/lab/quantum/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/music/arrange/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/music/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/music/library/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/music/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/music/studio/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/portfolio/assets/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/portfolio/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/portfolio/optimize/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/portfolio/page
+│   │   │   │   ├·· dynamic import()  ← @/app/engines/portfolio/quantum/page
+│   │   │   │   ├·· dynamic import()  ← @/app/feed-settings/dream.FeedSettingsClient
+│   │   │   │   ├·· dynamic import()  ← @/app/feed-settings/page
+│   │   │   │   ├·· dynamic import()  ← @/app/gameengin/cartridges/[id]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/gameengin/cartridges/page
+│   │   │   │   ├·· dynamic import()  ← @/app/gameengin/page
+│   │   │   │   ├·· dynamic import()  ← @/app/homedream/page
+│   │   │   │   ├·· dynamic import()  ← @/app/join/page
+│   │   │   │   ├·· dynamic import()  ← @/app/lab/[id]/codespace/page
+│   │   │   │   ├·· dynamic import()  ← @/app/lab/[id]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/lab/new/page
+│   │   │   │   ├·· dynamic import()  ← @/app/lab/page
+│   │   │   │   ├·· dynamic import()  ← @/app/layout
+│   │   │   │   ├·· dynamic import()  ← @/app/login/page
+│   │   │   │   ├·· dynamic import()  ← @/app/marketplace/[id]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/marketplace/page
+│   │   │   │   ├·· dynamic import()  ← @/app/marketplace/sell/page
+│   │   │   │   ├·· dynamic import()  ← @/app/messages/boards/[id]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/messages/boards/new/page
+│   │   │   │   ├·· dynamic import()  ← @/app/messages/boards/page
+│   │   │   │   ├·· dynamic import()  ← @/app/messages/page
+│   │   │   │   ├·· dynamic import()  ← @/app/mission/page
+│   │   │   │   ├·· dynamic import()  ← @/app/notes/page
+│   │   │   │   ├·· dynamic import()  ← @/app/onboarding/page
+│   │   │   │   ├·· dynamic import()  ← @/app/page
+│   │   │   │   ├·· dynamic import()  ← @/app/policy/page
+│   │   │   │   ├·· dynamic import()  ← @/app/profile/[handle]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/profile/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/account/dream.DangerZoneActions
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/account/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/algorithm/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/appearance/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/controls/dream.ControlsClient
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/controls/dream.PositionIndicatorToggle
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/controls/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/data/dream.DataClient
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/data/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/dreams/dreams-layout-editor
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/dreams/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/feed/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/help/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/notifications/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/privacy/dream.PrivacyClient
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/privacy/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/safety/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/security/page
+│   │   │   │   ├·· dynamic import()  ← @/app/settings/widgets/page
+│   │   │   │   ├·· dynamic import()  ← @/app/shop/page
+│   │   │   │   ├·· dynamic import()  ← @/app/shop/sell/page
+│   │   │   │   ├·· dynamic import()  ← @/app/u/[handle]/page
+│   │   │   │   ├·· dynamic import()  ← @/app/view-profile/page
+│   │   │   │   ├·· dynamic import()  ← @/app/webgpu/page
+│   │   │   │   ├·· dynamic import()  ← @/components/activity/dream.ActivityPostForm
+│   │   │   │   ├·· dynamic import()  ← @/components/activity/dream.ActivityProfile
+│   │   │   │   ├·· dynamic import()  ← @/components/activity/dream.TierBadge
+│   │   │   │   ├·· dynamic import()  ← @/components/ads/dream.AdUnit
+│   │   │   │   ├·· dynamic import()  ← @/components/ads/dream.SkipCreditBalance
+│   │   │   │   ├·· dynamic import()  ← @/components/auth/dream.PasswordField
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.AddSliceSheet
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.ConnectDreamPrompt
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.ConnectorRow
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.NoSlotDialog
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.PlacementMode
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.widget.ConnectorWidgetPicker
+│   │   │   │   ├·· dynamic import()  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
+│   │   │   │   ├·· dynamic import()  ← @/components/core/dream.CoreDream
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/dream.bar.CustomizeModeBar
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/dream.bar.CustomizeToolbar
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/dream.GlobalCustomizeUI
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/panels/dream.panel.ColorPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/panels/dream.panel.EffectsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/panels/dream.panel.FontPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/customize/panels/dream.panel.LayoutPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.CodeDreamIDE
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.constellationmap
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.DiffViewer
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.JourneyTrail
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.LabDreamIDE
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.NGNEngin
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.shell.DaydreamShell
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dream.StandaloneEnginSurface
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/draggable/dream.DraggableModule
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.AIAssistant
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.AudioVisualizer3D
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.BoogieWarningBanner
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.BrandLogo
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.CommandPalette
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.CreatePostModal
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.DragToAnchorClose
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.DrEamsModeToggle
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.DrEamsVoiceAssistant
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.FeedCard
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ForgeDreamCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.GlobalOverlays
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.HeroSprite
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.HomeFeed
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.IconSelector
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.InnerDreamsButton
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.KonamiDream
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.LandingHero
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.LedgerChart
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.MessagesClient
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.NotificationCenter
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.OSShellActivator
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.panel.ChildSafetyPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.panel.IDariPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.PhysicsLab
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ProfileEditor
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ProfileShareButton
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ProfileSpace
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.PullToRefresh
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ShrunkMode
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.SkeletonLoaders
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ThemeApplicator
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ThemeToggle
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.ToastSystem
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.universal_asset_registry
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.VoidThemeToggle
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.widget.AnchorWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.widget.ProfileWidgetBlock
+│   │   │   │   ├·· dynamic import()  ← @/components/dream.widget.WidgetBubble
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.bar.DrEamsSearchBar
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.DREAMenginOS
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.DrEamsCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.HomeControls
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.menu.NexusMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.menu.OutdreamMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.overlay.ViewAllDreamsOverlay
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.panel.DrEamsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.scene.BabylonGameScene
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.scene.DrEamsScene
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.scene.PortfolioOptimizationScene
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.shell.EnginShell
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dream.widget.AppearanceWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/dreamsurface.dreamengin
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/engine/math
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamengin/engine/types
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamnav/dream.DreamNavControls
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamnav/dreamsurface.dreamnav
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamr/dream.CloseFriendsSettings
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamr/dream.panel.DreamRChannelPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.connectorlayer
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.DraggableDream
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.featurelayer
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.GlobalDragLayer
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.outputlayer
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.PlatformErrorReporter
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.shell.DreamShell
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.shell.SharedDreamShell
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.SlideOverPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.widget.SuperDreamWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dream.window.JourneyDreamWindow
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dreamsurface.dreamspace
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dreamsurface.shell
+│   │   │   │   ├·· dynamic import()  ← @/components/dreams/dreamsurface.window
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/brand/dream.BrandEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/brand/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/brand/panels/dream.panel.IdentityPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/code/dream.CodeEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/code/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/code/panels/dream.panel.AIPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/code/panels/dream.panel.NotebookPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/code/panels/dream.panel.ProjectsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/create/dream.CreateEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/create/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/create/panels/dream.panel.CalendarPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/create/panels/dream.panel.EditorPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/create/panels/dream.panel.QueuePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/games/dream.GameEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/games/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/games/panels/dream.panel.BuilderPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/games/panels/dream.panel.LibraryPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/games/panels/dream.panel.ScoresPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/lab/dream.LabEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/lab/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/lab/panels/dream.panel.DataVizPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/lab/panels/dream.panel.ExperimentsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/lab/panels/dream.panel.QuantumPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/music/dream.MusicEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/music/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/music/panels/dream.panel.ArrangePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/music/panels/dream.panel.MusicLibraryPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/music/panels/dream.panel.StudioPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/portfolio/dream.PortfolioEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/portfolio/index
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/dream.bar.EnginNavBar
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/dream.EnginProvider
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/dream.EnginRuleSet
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/dream.makeEnginApp
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/dream.shell.EnginAppShell
+│   │   │   │   ├·· dynamic import()  ← @/components/engines/shared/index
+│   │   │   │   ├·· dynamic import()  ← @/components/feed/dream.AlgorithmEngine
+│   │   │   │   ├·· dynamic import()  ← @/components/feed/dream.CommentSection
+│   │   │   │   ├·· dynamic import()  ← @/components/feed/dream.FeedVideoCard
+│   │   │   │   ├·· dynamic import()  ← @/components/feed/dream.FollowButton
+│   │   │   │   ├·· dynamic import()  ← @/components/feed/dream.FollowOnboarding
+│   │   │   │   ├·· dynamic import()  ← @/components/feeds/dream.widget.EmbedFeedWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/forge/dream.EngineBuilderCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/forge/dream.panel.AIBuilderPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/forge/dream.widget.ForgeMomentumWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.cartridge.CartridgeBrowser
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/dream.CrashReportModal
+│   │   │   │   ├·· dynamic import()  ← @/components/gameengin/input/DualSenseManager
+│   │   │   │   ├·· dynamic import()  ← @/components/games/_fx/canvasFx
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.BabylonSideScroller
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.DefuseRitual
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.EchoArena
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.EnginFracture
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.GameController
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.GamesHub
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.Glassfall
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.hud.LegacyGameHUD
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.hud.MobileGameHUD
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.Leaderboard
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.LexiconSolitaire
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NeonDrift
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NiteFlyerSolarHymn
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.NullCathedral
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.RecordingControls
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.remote.GameRemote
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.remote.LegacyGameRemote
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.SerpentSiege
+│   │   │   │   ├·· dynamic import()  ← @/components/games/dream.VoidlineGP
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/audio
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/authoredZonePacks
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/config
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/dream.MadmaxiGame
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/index
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/levels
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/materials
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/types
+│   │   │   │   ├·· dynamic import()  ← @/components/games/madmaxi/vfx
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.ActiveModuleSurface
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.bar.GlobalDreamBar
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.bar.PersistentDreamBar
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.DaydreamPulseStrip
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.FlagshipEnginesStrip
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.NeuralSeamCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/home/dream.widget.DreamWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/idari/dream.PlatformHealth
+│   │   │   │   ├·· dynamic import()  ← @/components/landing/dream.LandingNav
+│   │   │   │   ├·· dynamic import()  ← @/components/landing/dream.LandingProductStatement
+│   │   │   │   ├·· dynamic import()  ← @/components/landing/dream.scene.UniverseField
+│   │   │   │   ├·· dynamic import()  ← @/components/marketplace/dream.MarketplaceListingCard
+│   │   │   │   ├·· dynamic import()  ← @/components/marketplace/dream.MarketplaceRequestButton
+│   │   │   │   ├·· dynamic import()  ← @/components/menus/dream.menu.DreamRadialMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/menus/dream.menu.DualBottomMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/menus/dream.menu.RadialMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/menus/dream.menu.SystemRadialMenu
+│   │   │   │   ├·· dynamic import()  ← @/components/menus/dream.panel.MenuPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/messaging/dream.BoardComposer
+│   │   │   │   ├·· dynamic import()  ← @/components/music/dream.SoundRecorder
+│   │   │   │   ├·· dynamic import()  ← @/components/onboarding/dream.OnboardingTip
+│   │   │   │   ├·· dynamic import()  ← @/components/optimizer/dream.scene.BabylonOptimizeroScene
+│   │   │   │   ├·· dynamic import()  ← @/components/overlays/dream.RootStatusScreen
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.AlgorithmPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.AppearancePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.ConnectorsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.ControlsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.DataPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.FeedPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.FeedSettingsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.HelpPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.MarketplacePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.PrivacyPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.ProfilePanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.SafetyPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.SettingsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/panels/dream.panel.WidgetsPanel
+│   │   │   │   ├·· dynamic import()  ← @/components/profile/dream.EditableAvatar
+│   │   │   │   ├·· dynamic import()  ← @/components/profile/dream.ProfileCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/profile/dream.ProfileCustomizeButton
+│   │   │   │   ├·· dynamic import()  ← @/components/profile/dream.widget.ProfileWidgetGrid
+│   │   │   │   ├·· dynamic import()  ← @/components/providers/dream.AppSurfaceShell
+│   │   │   │   ├·· dynamic import()  ← @/components/providers/dream.GodTierProvider
+│   │   │   │   ├·· dynamic import()  ← @/components/providers/dream.ThemeProvider
+│   │   │   │   ├·· dynamic import()  ← @/components/runtime/dream.DualRuntimeContainer
+│   │   │   │   ├·· dynamic import()  ← @/components/runtime/dream.RuntimeView
+│   │   │   │   ├·· dynamic import()  ← @/components/runtime/dream.shell.RuntimeShell
+│   │   │   │   ├·· dynamic import()  ← @/components/shaders/dream.LightningWing
+│   │   │   │   ├·· dynamic import()  ← @/components/shaders/dream.NeonGlow
+│   │   │   │   ├·· dynamic import()  ← @/components/shaders/dream.Refractor
+│   │   │   │   ├·· dynamic import()  ← @/components/shaders/index
+│   │   │   │   ├·· dynamic import()  ← @/components/shared-dream/dream.InviteFlow
+│   │   │   │   ├·· dynamic import()  ← @/components/shared-dream/dream.SharedDreamCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/shared-dream/dream.SharedDreamProvider
+│   │   │   │   ├·· dynamic import()  ← @/components/shared-dream/index
+│   │   │   │   ├·· dynamic import()  ← @/components/spatial/dream.PixiPhysicsLayer
+│   │   │   │   ├·· dynamic import()  ← @/components/spatial/dream.ProfileSpace
+│   │   │   │   ├·· dynamic import()  ← @/components/spatial/dream.shell.EnhancedSpatialShell
+│   │   │   │   ├·· dynamic import()  ← @/components/three/dream.scene
+│   │   │   │   ├·· dynamic import()  ← @/components/three/index
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.DreamWord
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.IconList
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.InfinityIcon
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.PlatformBadge
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.SheetIcon
+│   │   │   │   ├·· dynamic import()  ← @/components/ui/dream.SocialShareSheet
+│   │   │   │   ├·· dynamic import()  ← @/components/universal-editor/dream.UniversalEditor
+│   │   │   │   ├·· dynamic import()  ← @/components/universal-editor/dream.UniversalEditorWrapper
+│   │   │   │   ├·· dynamic import()  ← @/components/universal-editor/index
+│   │   │   │   ├·· dynamic import()  ← @/components/universal-editor/useTapHoldMove
+│   │   │   │   ├·· dynamic import()  ← @/components/universe/dream.node-cluster
+│   │   │   │   ├·· dynamic import()  ← @/components/universe/dream.shell.universe-shell
+│   │   │   │   ├·· dynamic import()  ← @/components/universe/dream.universe-card
+│   │   │   │   ├·· dynamic import()  ← @/components/universe/index
+│   │   │   │   ├·· dynamic import()  ← @/components/warp/dream.WarpCanvas
+│   │   │   │   ├·· dynamic import()  ← @/components/webgpu/dream.WebGPUShowcase
+│   │   │   │   ├·· dynamic import()  ← @/components/webgpu/neuralPostProcess
+│   │   │   │   ├·· dynamic import()  ← @/components/webgpu/renderer
+│   │   │   │   ├·· dynamic import()  ← @/components/webgpu/shaders
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.AddDreamCTA
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.ConfigureSheet
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.EditModeBanner
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.EditModeProvider
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.PlayMediaWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.UniversalWidget
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.WidgetCard
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.WidgetLibrary
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.WidgetPlaceholder
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.WidgetShell
+│   │   │   │   ├·· dynamic import()  ← @/components/widgets/dream.widget.WidgetSurface
+│   │   │   │   ├·· dynamic import()  ← @/coresurfaces/dreamsurface.EditProfileDream
+│   │   │   │   ├·· dynamic import()  ← @/coresurfaces/dreamsurface.ViewProfile
+│   │   │   │   ├·· dynamic import()  ← @/daydreams/brand/page
+│   │   │   │   ├·· dynamic import()  ← @/daydreams/code/page
+│   │   │   │   ├·· dynamic import()  ← @/daydreams/create/page
+│   │   │   │   ├·· dynamic import()  ← @/daydreams/games/page
+│   │   │   │   ├·· dynamic import()  ← @/daydreams/lab/page
+│   │   │   │   └·· dynamic import()  ← @/daydreams/music/page
 │   │   │   └── systems.ts
-│   │   │       ├·· (lazy)  ← @/lib/activeModulesStore
-│   │   │       ├·· (lazy)  ← @/lib/activity/aqs
-│   │   │       ├·· (lazy)  ← @/lib/activity/boogieActivityPolicy
-│   │   │       ├·· (lazy)  ← @/lib/activity/revenueSplit
-│   │   │       ├·· (lazy)  ← @/lib/activity/scoring
-│   │   │       ├·· (lazy)  ← @/lib/activity/skipCredits
-│   │   │       ├·· (lazy)  ← @/lib/activity/types
-│   │   │       ├·· (lazy)  ← @/lib/activity/visibility-score
-│   │   │       ├·· (lazy)  ← @/lib/adari
-│   │   │       ├·· (lazy)  ← @/lib/admin/lockout
-│   │   │       ├·· (lazy)  ← @/lib/admin/upgrade-readiness
-│   │   │       ├·· (lazy)  ← @/lib/agentOS
-│   │   │       ├·· (lazy)  ← @/lib/agentOS/hostTools
-│   │   │       ├·· (lazy)  ← @/lib/agents/agentBus
-│   │   │       ├·· (lazy)  ← @/lib/agents/boogieManAI
-│   │   │       ├·· (lazy)  ← @/lib/agents/dreamengin
-│   │   │       ├·· (lazy)  ← @/lib/agents/drEamsMode
-│   │   │       ├·· (lazy)  ← @/lib/agents/idari
-│   │   │       ├·· (lazy)  ← @/lib/agents/idariLoop
-│   │   │       ├·· (lazy)  ← @/lib/agents/teachBus
-│   │   │       ├·· (lazy)  ← @/lib/agents/uiActions
-│   │   │       ├·· (lazy)  ← @/lib/ai/audit
-│   │   │       ├·· (lazy)  ← @/lib/ai/boogie-policy
-│   │   │       ├·· (lazy)  ← @/lib/ai/boogie-verifier
-│   │   │       ├·· (lazy)  ← @/lib/ai/boogieman
-│   │   │       ├·· (lazy)  ← @/lib/ai/capability-gate
-│   │   │       ├·· (lazy)  ← @/lib/ai/CIC
-│   │   │       ├·· (lazy)  ← @/lib/ai/confirm-token
-│   │   │       ├·· (lazy)  ← @/lib/ai/confirm
-│   │   │       ├·· (lazy)  ← @/lib/ai/groq
-│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/dreams
-│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/index
-│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/navigation
-│   │   │       ├·· (lazy)  ← @/lib/ai/handlers/social
-│   │   │       ├·· (lazy)  ← @/lib/ai/idempotency
-│   │   │       ├·· (lazy)  ← @/lib/ai/rate-limiter
-│   │   │       ├·· (lazy)  ← @/lib/ai/rateLimit
-│   │   │       ├·· (lazy)  ← @/lib/ai/schemas
-│   │   │       ├·· (lazy)  ← @/lib/ai/tfBackend
-│   │   │       ├·· (lazy)  ← @/lib/ai/tool-router
-│   │   │       ├·· (lazy)  ← @/lib/ai/triad
-│   │   │       ├·· (lazy)  ← @/lib/api/route
-│   │   │       ├·· (lazy)  ← @/lib/artifactStore
-│   │   │       ├·· (lazy)  ← @/lib/assets/assetOptimizer
-│   │   │       ├·· (lazy)  ← @/lib/assets/indexedDBStore
-│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/fingerprint
-│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/index
-│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/peak-map
-│   │   │       ├·· (lazy)  ← @/lib/audio-fingerprint/stem-extractor
-│   │   │       ├·· (lazy)  ← @/lib/audioFingerprint
-│   │   │       ├·· (lazy)  ← @/lib/auth/nextRedirect
-│   │   │       ├·· (lazy)  ← @/lib/babylon/createEngine
-│   │   │       ├·· (lazy)  ← @/lib/babylon/dreamengine-hybrid
-│   │   │       ├·· (lazy)  ← @/lib/bot-detection/detector
-│   │   │       ├·· (lazy)  ← @/lib/bot-detection/index
-│   │   │       ├·· (lazy)  ← @/lib/bot-detection/swipe-physics
-│   │   │       ├·· (lazy)  ← @/lib/bot-detection/view-tally
-│   │   │       ├·· (lazy)  ← @/lib/botDetection
-│   │   │       ├·· (lazy)  ← @/lib/branding/logos
-│   │   │       ├·· (lazy)  ← @/lib/child-safety/childSafetyDetector
-│   │   │       ├·· (lazy)  ← @/lib/child-safety/imageClassifier
-│   │   │       ├·· (lazy)  ← @/lib/child-safety/messageContextChecker
-│   │   │       ├·· (lazy)  ← @/lib/child-safety/ncmecReporter
-│   │   │       ├·· (lazy)  ← @/lib/child-safety/scanMediaUrls
-│   │   │       ├·· (lazy)  ← @/lib/code/drEamsCodeAssist
-│   │   │       ├·· (lazy)  ← @/lib/collaboration/index
-│   │   │       ├·· (lazy)  ← @/lib/componentInventory
-│   │   │       ├·· (lazy)  ← @/lib/composite/compositor
-│   │   │       ├·· (lazy)  ← @/lib/composite/fxSimulation
-│   │   │       ├·· (lazy)  ← @/lib/composite/matchmover
-│   │   │       ├·· (lazy)  ← @/lib/composite/motionCapture
-│   │   │       ├·· (lazy)  ← @/lib/composite/rotoscope
-│   │   │       ├·· (lazy)  ← @/lib/consent/consentManager
-│   │   │       ├·· (lazy)  ← @/lib/content/generativeFill
-│   │   │       ├·· (lazy)  ← @/lib/content/publishIntent
-│   │   │       ├·· (lazy)  ← @/lib/content/seoScorer
-│   │   │       ├·· (lazy)  ← @/lib/content/transcriptEditor
-│   │   │       ├·· (lazy)  ← @/lib/content/voiceClone
-│   │   │       ├·· (lazy)  ← @/lib/data-transform
-│   │   │       ├·· (lazy)  ← @/lib/daydream/useDaydreamPersistence
-│   │   │       ├·· (lazy)  ← @/lib/daydream/useDaydreamState
-│   │   │       ├·· (lazy)  ← @/lib/dev-bypass
-│   │   │       ├·· (lazy)  ← @/lib/diff/aiEditEngine
-│   │   │       ├·· (lazy)  ← @/lib/diff/diffUtils
-│   │   │       ├·· (lazy)  ← @/lib/dream-docs/embed
-│   │   │       ├·· (lazy)  ← @/lib/dream-docs/index
-│   │   │       ├·· (lazy)  ← @/lib/dream-docs/search
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/connectionVerbs
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/DreamWindowLifecycle
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/enginConnectionNetwork
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/index
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/runtimeRegion
-│   │   │       ├·· (lazy)  ← @/lib/dream-window/useDreamWindowActions
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/barInteractions
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/bridgeSeamFlow
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamBarContext
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMConversations
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMDraft
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamDMMessages
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useDreamSearch
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useMessagingCore
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useModuleBarIntent
-│   │   │       ├·· (lazy)  ← @/lib/dreamdm/useNotifications
-│   │   │       ├·· (lazy)  ← @/lib/dreamengin/DrEamsAnimator
-│   │   │       ├·· (lazy)  ← @/lib/dreamengin/drEamsSearch
-│   │   │       ├·· (lazy)  ← @/lib/dreamengin/engineAssets
-│   │   │       ├·· (lazy)  ← @/lib/dreamengin/osSubsystemManifest
-│   │   │       ├·· (lazy)  ← @/lib/dreamenginOS/index
-│   │   │       ├·· (lazy)  ← @/lib/dreamnav/delta
-│   │   │       ├·· (lazy)  ← @/lib/dreamnav/gctAssist
-│   │   │       ├·· (lazy)  ← @/lib/dreamnav/gestures6
-│   │   │       ├·· (lazy)  ← @/lib/dreamnav/path
-│   │   │       ├·· (lazy)  ← @/lib/dreamnav/tau
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/feedCursor
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/socialHumanityScore
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/swipeCalibration
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/swipePersonalization
-│   │   │       ├·· (lazy)  ← @/lib/dreamr/torridityLedger
-│   │   │       ├·· (lazy)  ← @/lib/dreams/drag
-│   │   │       ├·· (lazy)  ← @/lib/dreams/profileProjection
-│   │   │       ├·· (lazy)  ← @/lib/dreams/types
-│   │   │       ├·· (lazy)  ← @/lib/dreams/useDreamsRuntime
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginBaseState
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginCapabilities
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginEventBus
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginIOAdapter
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginRuleSetContract
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/EnginRuntime
-│   │   │       ├·· (lazy)  ← @/lib/engin-runtime/index
-│   │   │       ├·· (lazy)  ← @/lib/engine/index
-│   │   │       ├·· (lazy)  ← @/lib/enginpipe/artifact/manifest
-│   │   │       ├·· (lazy)  ← @/lib/enginpipe/index
-│   │   │       ├·· (lazy)  ← @/lib/enginpipe/quality/tiers
-│   │   │       ├·· (lazy)  ← @/lib/enginpipe/telemetry/client
-│   │   │       ├·· (lazy)  ← @/lib/enginpipe/telemetry/events
-│   │   │       ├·· (lazy)  ← @/lib/engins/game/gameEnginRuleSet
-│   │   │       ├·· (lazy)  ← @/lib/engins/game/index
-│   │   │       ├·· (lazy)  ← @/lib/engins/game/useGameEnginRuntime
-│   │   │       ├·· (lazy)  ← @/lib/engins/useEnginWorkflow
-│   │   │       ├·· (lazy)  ← @/lib/engins/workflowEngine
-│   │   │       ├·· (lazy)  ← @/lib/event-bus/index
-│   │   │       ├·· (lazy)  ← @/lib/eventBus
-│   │   │       ├·· (lazy)  ← @/lib/feature-build/buildCycle
-│   │   │       ├·· (lazy)  ← @/lib/feature-build/featureManifest
-│   │   │       ├·· (lazy)  ← @/lib/feature-build/index
-│   │   │       ├·· (lazy)  ← @/lib/feature-build/uiQualityCriteria
-│   │   │       ├·· (lazy)  ← @/lib/feed/feedTopics
-│   │   │       ├·· (lazy)  ← @/lib/feed/hashtags
-│   │   │       ├·· (lazy)  ← @/lib/feed/useLiveFeed
-│   │   │       ├·· (lazy)  ← @/lib/feed/useYouTubeLiveFeed
-│   │   │       ├·· (lazy)  ← @/lib/feeds/embedFeedLoader
-│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/assembly
-│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/index
-│   │   │       ├·· (lazy)  ← @/lib/forge-ngn/piece-registry
-│   │   │       ├·· (lazy)  ← @/lib/forge/engineForge
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeBuild
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeIntelligence
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeMomentum
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeNexus
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeRegistry
-│   │   │       ├·· (lazy)  ← @/lib/forge/forgeRituals
-│   │   │       ├·· (lazy)  ← @/lib/forge/useForgeActivity
-│   │   │       ├·· (lazy)  ← @/lib/forge/useForgeBuild
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/accessibility-ai
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/ai-director
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/ai-npcs
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/brain-reader
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridge-manifest
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridge
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/cartridgeLoader
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/cloud-compute
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/control-mappings
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/core
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/dream-engine
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/dreamr-loader
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/gameEnginRuntime
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/generative-audio
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/index
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/neural-render
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/path-tracing
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/platform
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/post-fx
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/power-systems
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/predictive-stream
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/procgen
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/registerCartridges
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/comboMachine
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/index
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/layout
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/moves
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/remote/sprintDetector
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/ai
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/animation
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/assets
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/index
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/lod
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/network
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/physics
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/pooling
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/rendering
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/spatial
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/systems/world
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/unifiedLoop
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/useUnifiedLoop
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/webgpu-runtime-shell
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/world-crdt
-│   │   │       ├·· (lazy)  ← @/lib/gameengin/xr
-│   │   │       ├·· (lazy)  ← @/lib/games/avatar
-│   │   │       ├·· (lazy)  ← @/lib/games/catalog
-│   │   │       ├·· (lazy)  ← @/lib/games/DualSenseManager
-│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerButtons
-│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerLeft
-│   │   │       ├·· (lazy)  ← @/lib/games/gameControllerRight
-│   │   │       ├·· (lazy)  ← @/lib/games/hooks
-│   │   │       ├·· (lazy)  ← @/lib/games/library-state
-│   │   │       ├·· (lazy)  ← @/lib/games/lucid-avenue-world
-│   │   │       ├·· (lazy)  ← @/lib/games/mobileControls
-│   │   │       ├·· (lazy)  ← @/lib/games/navigation
-│   │   │       ├·· (lazy)  ← @/lib/games/performance-baseline
-│   │   │       ├·· (lazy)  ← @/lib/games/quality-plan
-│   │   │       ├·· (lazy)  ← @/lib/games/useAIDirector
-│   │   │       ├·· (lazy)  ← @/lib/games/useGameInputKeyboardBridge
-│   │   │       ├·· (lazy)  ← @/lib/games/useGamepad
-│   │   │       ├·· (lazy)  ← @/lib/games/useImmersiveGameLayout
-│   │   │       ├·· (lazy)  ← @/lib/games/useRemoteChannel
-│   │   │       ├·· (lazy)  ← @/lib/gct/anomaly-detection
-│   │   │       ├·· (lazy)  ← @/lib/gct/audio-fingerprint
-│   │   │       ├·· (lazy)  ← @/lib/gct/gct-engine
-│   │   │       ├·· (lazy)  ← @/lib/gct/image-search
-│   │   │       ├·· (lazy)  ← @/lib/gct/index
-│   │   │       ├·· (lazy)  ← @/lib/gct/recommendations
-│   │   │       ├·· (lazy)  ← @/lib/generationLaw
-│   │   │       ├·· (lazy)  ← @/lib/gestures/touchGestures
-│   │   │       ├·· (lazy)  ← @/lib/gestures/useTouchGestures
-│   │   │       ├·· (lazy)  ← @/lib/god-tier/godTierEngine
-│   │   │       ├·· (lazy)  ← @/lib/god-tier/useGodTier
-│   │   │       ├·· (lazy)  ← @/lib/gsap/gsap
-│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapEntrance
-│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapFlip
-│   │   │       ├·· (lazy)  ← @/lib/gsap/useGsapScrollReveal
-│   │   │       ├·· (lazy)  ← @/lib/h265-encoder
-│   │   │       ├·· (lazy)  ← @/lib/home-buttons/button-groups
-│   │   │       ├·· (lazy)  ← @/lib/home-buttons/contextual-home
-│   │   │       ├·· (lazy)  ← @/lib/icons/sheet
-│   │   │       ├·· (lazy)  ← @/lib/identity/canonical-names
-│   │   │       ├·· (lazy)  ← @/lib/intelligence/continuityHelpers
-│   │   │       ├·· (lazy)  ← @/lib/intelligence/sessionContinuity
-│   │   │       ├·· (lazy)  ← @/lib/intelligence/sessionPatternEngine
-│   │   │       ├·· (lazy)  ← @/lib/intelligence/useSessionIntelligence
-│   │   │       ├·· (lazy)  ← @/lib/journey/journeyDots
-│   │   │       ├·· (lazy)  ← @/lib/journey/journeyInsights
-│   │   │       ├·· (lazy)  ← @/lib/journey/withJourney
-│   │   │       ├·· (lazy)  ← @/lib/ledger-data
-│   │   │       ├·· (lazy)  ← @/lib/ledger
-│   │   │       ├·· (lazy)  ← @/lib/marketplace/listings
-│   │   │       ├·· (lazy)  ← @/lib/marketplace/request
-│   │   │       ├·· (lazy)  ← @/lib/media/ledger
-│   │   │       ├·· (lazy)  ← @/lib/media/postMedia
-│   │   │       ├·· (lazy)  ← @/lib/music/presets
-│   │   │       ├·· (lazy)  ← @/lib/music/starmaker
-│   │   │       ├·· (lazy)  ← @/lib/music/starmakerArrangement
-│   │   │       ├·· (lazy)  ← @/lib/music/starmakerDaw
-│   │   │       ├·· (lazy)  ← @/lib/music/wasmAudioBridge
-│   │   │       ├·· (lazy)  ← @/lib/navigation/anchorField
-│   │   │       ├·· (lazy)  ← @/lib/navigation/AnchorStateBuffer
-│   │   │       ├·· (lazy)  ← @/lib/navigation/AnchorWidgetStorage
-│   │   │       ├·· (lazy)  ← @/lib/navigation/dream-state
-│   │   │       ├·· (lazy)  ← @/lib/navigation/GestureFrameComputer
-│   │   │       ├·· (lazy)  ← @/lib/navigation/GestureIntentResolver
-│   │   │       ├·· (lazy)  ← @/lib/navigation/index
-│   │   │       ├·· (lazy)  ← @/lib/navigation/manifold
-│   │   │       ├·· (lazy)  ← @/lib/navigation/NavStateBuffer
-│   │   │       ├·· (lazy)  ← @/lib/navigation/physics
-│   │   │       ├·· (lazy)  ← @/lib/navigation/PointerEventCapture
-│   │   │       ├·· (lazy)  ← @/lib/navigation/quaternion
-│   │   │       ├·· (lazy)  ← @/lib/navigation/ReturnStack
-│   │   │       ├·· (lazy)  ← @/lib/navigation/SpatialNavigationEngine
-│   │   │       ├·· (lazy)  ← @/lib/navigation/StructureLedger
-│   │   │       ├·· (lazy)  ← @/lib/navigation/TransformSolver
-│   │   │       ├·· (lazy)  ← @/lib/navigation/useNavigation
-│   │   │       ├·· (lazy)  ← @/lib/navigation/WidgetInstanceMemory
-│   │   │       ├·· (lazy)  ← @/lib/notifications/notificationHelpers
-│   │   │       ├·· (lazy)  ← @/lib/notifications/useNotifications
-│   │   │       ├·· (lazy)  ← @/lib/observability/collector
-│   │   │       ├·· (lazy)  ← @/lib/observability/correlator
-│   │   │       ├·· (lazy)  ← @/lib/observability/healthTrend
-│   │   │       ├·· (lazy)  ← @/lib/observability/immediateAction
-│   │   │       ├·· (lazy)  ← @/lib/observability/index
-│   │   │       ├·· (lazy)  ← @/lib/observability/otel
-│   │   │       ├·· (lazy)  ← @/lib/observability/otelBridge
-│   │   │       ├·· (lazy)  ← @/lib/observability/rootCauseAnalyzer
-│   │   │       ├·· (lazy)  ← @/lib/offline/offlineCache
-│   │   │       ├·· (lazy)  ← @/lib/offline/useOfflineSync
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/babylon-optimizero
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/constraint-solver
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/creative-optimizero
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/creative-validator
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/index
-│   │   │       ├·· (lazy)  ← @/lib/optimizer/types
-│   │   │       ├·· (lazy)  ← @/lib/panels/panelTypes
-│   │   │       ├·· (lazy)  ← @/lib/platform/index
-│   │   │       ├·· (lazy)  ← @/lib/platform/lab
-│   │   │       ├·· (lazy)  ← @/lib/policy/boogiePolicy
-│   │   │       ├·· (lazy)  ← @/lib/renderer/Canvas2DRenderer
-│   │   │       ├·· (lazy)  ← @/lib/renderer/FrustumCuller
-│   │   │       ├·· (lazy)  ← @/lib/renderer/index
-│   │   │       ├·· (lazy)  ← @/lib/renderer/IRenderer
-│   │   │       ├·· (lazy)  ← @/lib/routing/surfaces
-│   │   │       ├·· (lazy)  ← @/lib/runtime/channelMetrics
-│   │   │       ├·· (lazy)  ← @/lib/runtime/coercionTable
-│   │   │       ├·· (lazy)  ← @/lib/runtime/dreamOSBus
-│   │   │       ├·· (lazy)  ← @/lib/runtime/dropTargetRegistry
-│   │   │       ├·· (lazy)  ← @/lib/runtime/dualRuntime
-│   │   │       ├·· (lazy)  ← @/lib/runtime/dualRuntimeBridge
-│   │   │       ├·· (lazy)  ← @/lib/runtime/EnginDispatcher
-│   │   │       ├·· (lazy)  ← @/lib/runtime/enginWorkflowRegistry
-│   │   │       ├·· (lazy)  ← @/lib/runtime/instanceManager
-│   │   │       ├·· (lazy)  ← @/lib/runtime/isAuthRelatedError
-│   │   │       ├·· (lazy)  ← @/lib/runtime/madMaxiSnapshotBridge
-│   │   │       ├·· (lazy)  ← @/lib/runtime/memory
-│   │   │       ├·· (lazy)  ← @/lib/runtime/moduleRegistry
-│   │   │       ├·· (lazy)  ← @/lib/runtime/offlineQueue
-│   │   │       ├·· (lazy)  ← @/lib/runtime/quantumCircuit
-│   │   │       ├·· (lazy)  ← @/lib/runtime/runtimeChannel
-│   │   │       ├·· (lazy)  ← @/lib/runtime/runtimeContainer
-│   │   │       ├·· (lazy)  ← @/lib/runtime/seamClipboard
-│   │   │       ├·· (lazy)  ← @/lib/runtime/sharedResourcePool
-│   │   │       ├·· (lazy)  ← @/lib/runtime/snapshotFingerprint
-│   │   │       ├·· (lazy)  ← @/lib/runtime/swapManager
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useDragSurface
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useDualRuntime
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useDualRuntimePersistence
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useEnginBridge
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useEnginCoopSync
-│   │   │       ├·· (lazy)  ← @/lib/runtime/useSharedEnginChannel
-│   │   │       ├·· (lazy)  ← @/lib/scene/sceneState
-│   │   │       ├·· (lazy)  ← @/lib/setup/checks
-│   │   │       ├·· (lazy)  ← @/lib/sharedDream
-│   │   │       ├·· (lazy)  ← @/lib/shop/listings
-│   │   │       ├·· (lazy)  ← @/lib/slog
-│   │   │       ├·· (lazy)  ← @/lib/social-feed
-│   │   │       ├·· (lazy)  ← @/lib/social/crossPost
-│   │   │       ├·· (lazy)  ← @/lib/social/platforms
-│   │   │       ├·· (lazy)  ← @/lib/social/rss-feed
-│   │   │       ├·· (lazy)  ← @/lib/supabase/client
-│   │   │       ├·· (lazy)  ← @/lib/supabase/config
-│   │   │       ├·· (lazy)  ← @/lib/supabase/realtime
-│   │   │       ├·· (lazy)  ← @/lib/supabase/safeGetUser
-│   │   │       ├·· (lazy)  ← @/lib/supabase/server
-│   │   │       ├·· (lazy)  ← @/lib/supabase/vector
-│   │   │       ├·· (lazy)  ← @/lib/torridity
-│   │   │       ├·· (lazy)  ← @/lib/torridity/constants
-│   │   │       ├·· (lazy)  ← @/lib/torridity/index
-│   │   │       ├·· (lazy)  ← @/lib/torridity/physics
-│   │   │       ├·· (lazy)  ← @/lib/ui/responsive
-│   │   │       ├·· (lazy)  ← @/lib/ui/runtimeViewport
-│   │   │       ├·· (lazy)  ← @/lib/ui/skin-engine
-│   │   │       ├·· (lazy)  ← @/lib/ui/theme-engine
-│   │   │       ├·· (lazy)  ← @/lib/ui/theme
-│   │   │       ├·· (lazy)  ← @/lib/universal-editor/module-manifest
-│   │   │       ├·· (lazy)  ← @/lib/universalEditor
-│   │   │       ├·· (lazy)  ← @/lib/user-sim/userSimAgent
-│   │   │       ├·· (lazy)  ← @/lib/utils
-│   │   │       ├·· (lazy)  ← @/lib/vm/bufferManager
-│   │   │       ├·· (lazy)  ← @/lib/vm/bus-events
-│   │   │       ├·· (lazy)  ← @/lib/vm/dual-runtime
-│   │   │       ├·· (lazy)  ← @/lib/vm/dualVMCoordinator
-│   │   │       ├·· (lazy)  ← @/lib/vm/index
-│   │   │       ├·· (lazy)  ← @/lib/vm/inter-vm-messaging
-│   │   │       ├·· (lazy)  ← @/lib/vm/pipelineCache
-│   │   │       ├·· (lazy)  ← @/lib/vm/resource-quota
-│   │   │       ├·· (lazy)  ← @/lib/vm/security
-│   │   │       ├·· (lazy)  ← @/lib/vm/snapshot
-│   │   │       ├·· (lazy)  ← @/lib/vm/types
-│   │   │       ├·· (lazy)  ← @/lib/vm/wasm-features
-│   │   │       ├·· (lazy)  ← @/lib/vm/wasmGpuVM
-│   │   │       ├·· (lazy)  ← @/lib/warp/useWarp
-│   │   │       ├·· (lazy)  ← @/lib/warp/warpEngine
-│   │   │       ├·· (lazy)  ← @/lib/webgpu
-│   │   │       ├·· (lazy)  ← @/lib/webgpu/adaptiveQuality
-│   │   │       ├·· (lazy)  ← @/lib/webgpu/director
-│   │   │       ├·· (lazy)  ← @/lib/webgpu/useWebGPUDirector
-│   │   │       ├·· (lazy)  ← @/lib/widgets/CrossWidgetPosting
-│   │   │       ├·· (lazy)  ← @/lib/widgets/feed-resolver
-│   │   │       ├·· (lazy)  ← @/lib/widgets/parse
-│   │   │       ├·· (lazy)  ← @/lib/widgets/parseConfig
-│   │   │       ├·· (lazy)  ← @/lib/widgets/useWidget
-│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetBus
-│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetEventBus
-│   │   │       ├·· (lazy)  ← @/lib/widgets/WidgetLinkGraph
-│   │   │       └·· (lazy)  ← @/lib/widgets/widgetRegistry
+│   │   │       ├·· dynamic import()  ← @/lib/activeModulesStore
+│   │   │       ├·· dynamic import()  ← @/lib/activity/aqs
+│   │   │       ├·· dynamic import()  ← @/lib/activity/boogieActivityPolicy
+│   │   │       ├·· dynamic import()  ← @/lib/activity/revenueSplit
+│   │   │       ├·· dynamic import()  ← @/lib/activity/scoring
+│   │   │       ├·· dynamic import()  ← @/lib/activity/skipCredits
+│   │   │       ├·· dynamic import()  ← @/lib/activity/types
+│   │   │       ├·· dynamic import()  ← @/lib/activity/visibility-score
+│   │   │       ├·· dynamic import()  ← @/lib/adari
+│   │   │       ├·· dynamic import()  ← @/lib/admin/lockout
+│   │   │       ├·· dynamic import()  ← @/lib/admin/upgrade-readiness
+│   │   │       ├·· dynamic import()  ← @/lib/agentOS
+│   │   │       ├·· dynamic import()  ← @/lib/agentOS/hostTools
+│   │   │       ├·· dynamic import()  ← @/lib/agents/agentBus
+│   │   │       ├·· dynamic import()  ← @/lib/agents/boogieManAI
+│   │   │       ├·· dynamic import()  ← @/lib/agents/dreamengin
+│   │   │       ├·· dynamic import()  ← @/lib/agents/drEamsMode
+│   │   │       ├·· dynamic import()  ← @/lib/agents/idari
+│   │   │       ├·· dynamic import()  ← @/lib/agents/idariLoop
+│   │   │       ├·· dynamic import()  ← @/lib/agents/teachBus
+│   │   │       ├·· dynamic import()  ← @/lib/agents/uiActions
+│   │   │       ├·· dynamic import()  ← @/lib/ai/audit
+│   │   │       ├·· dynamic import()  ← @/lib/ai/boogie-policy
+│   │   │       ├·· dynamic import()  ← @/lib/ai/boogie-verifier
+│   │   │       ├·· dynamic import()  ← @/lib/ai/boogieman
+│   │   │       ├·· dynamic import()  ← @/lib/ai/capability-gate
+│   │   │       ├·· dynamic import()  ← @/lib/ai/CIC
+│   │   │       ├·· dynamic import()  ← @/lib/ai/confirm-token
+│   │   │       ├·· dynamic import()  ← @/lib/ai/confirm
+│   │   │       ├·· dynamic import()  ← @/lib/ai/groq
+│   │   │       ├·· dynamic import()  ← @/lib/ai/handlers/dreams
+│   │   │       ├·· dynamic import()  ← @/lib/ai/handlers/index
+│   │   │       ├·· dynamic import()  ← @/lib/ai/handlers/navigation
+│   │   │       ├·· dynamic import()  ← @/lib/ai/handlers/social
+│   │   │       ├·· dynamic import()  ← @/lib/ai/idempotency
+│   │   │       ├·· dynamic import()  ← @/lib/ai/rate-limiter
+│   │   │       ├·· dynamic import()  ← @/lib/ai/rateLimit
+│   │   │       ├·· dynamic import()  ← @/lib/ai/schemas
+│   │   │       ├·· dynamic import()  ← @/lib/ai/tfBackend
+│   │   │       ├·· dynamic import()  ← @/lib/ai/tool-router
+│   │   │       ├·· dynamic import()  ← @/lib/ai/triad
+│   │   │       ├·· dynamic import()  ← @/lib/api/route
+│   │   │       ├·· dynamic import()  ← @/lib/artifactStore
+│   │   │       ├·· dynamic import()  ← @/lib/assets/assetOptimizer
+│   │   │       ├·· dynamic import()  ← @/lib/assets/indexedDBStore
+│   │   │       ├·· dynamic import()  ← @/lib/audio-fingerprint/fingerprint
+│   │   │       ├·· dynamic import()  ← @/lib/audio-fingerprint/index
+│   │   │       ├·· dynamic import()  ← @/lib/audio-fingerprint/peak-map
+│   │   │       ├·· dynamic import()  ← @/lib/audio-fingerprint/stem-extractor
+│   │   │       ├·· dynamic import()  ← @/lib/audioFingerprint
+│   │   │       ├·· dynamic import()  ← @/lib/auth/nextRedirect
+│   │   │       ├·· dynamic import()  ← @/lib/babylon/createEngine
+│   │   │       ├·· dynamic import()  ← @/lib/babylon/dreamengine-hybrid
+│   │   │       ├·· dynamic import()  ← @/lib/bot-detection/detector
+│   │   │       ├·· dynamic import()  ← @/lib/bot-detection/index
+│   │   │       ├·· dynamic import()  ← @/lib/bot-detection/swipe-physics
+│   │   │       ├·· dynamic import()  ← @/lib/bot-detection/view-tally
+│   │   │       ├·· dynamic import()  ← @/lib/botDetection
+│   │   │       ├·· dynamic import()  ← @/lib/branding/logos
+│   │   │       ├·· dynamic import()  ← @/lib/child-safety/childSafetyDetector
+│   │   │       ├·· dynamic import()  ← @/lib/child-safety/imageClassifier
+│   │   │       ├·· dynamic import()  ← @/lib/child-safety/messageContextChecker
+│   │   │       ├·· dynamic import()  ← @/lib/child-safety/ncmecReporter
+│   │   │       ├·· dynamic import()  ← @/lib/child-safety/scanMediaUrls
+│   │   │       ├·· dynamic import()  ← @/lib/code/drEamsCodeAssist
+│   │   │       ├·· dynamic import()  ← @/lib/collaboration/index
+│   │   │       ├·· dynamic import()  ← @/lib/componentInventory
+│   │   │       ├·· dynamic import()  ← @/lib/composite/compositor
+│   │   │       ├·· dynamic import()  ← @/lib/composite/fxSimulation
+│   │   │       ├·· dynamic import()  ← @/lib/composite/matchmover
+│   │   │       ├·· dynamic import()  ← @/lib/composite/motionCapture
+│   │   │       ├·· dynamic import()  ← @/lib/composite/rotoscope
+│   │   │       ├·· dynamic import()  ← @/lib/consent/consentManager
+│   │   │       ├·· dynamic import()  ← @/lib/content/generativeFill
+│   │   │       ├·· dynamic import()  ← @/lib/content/publishIntent
+│   │   │       ├·· dynamic import()  ← @/lib/content/seoScorer
+│   │   │       ├·· dynamic import()  ← @/lib/content/transcriptEditor
+│   │   │       ├·· dynamic import()  ← @/lib/content/voiceClone
+│   │   │       ├·· dynamic import()  ← @/lib/data-transform
+│   │   │       ├·· dynamic import()  ← @/lib/daydream/useDaydreamPersistence
+│   │   │       ├·· dynamic import()  ← @/lib/daydream/useDaydreamState
+│   │   │       ├·· dynamic import()  ← @/lib/dev-bypass
+│   │   │       ├·· dynamic import()  ← @/lib/diff/aiEditEngine
+│   │   │       ├·· dynamic import()  ← @/lib/diff/diffUtils
+│   │   │       ├·· dynamic import()  ← @/lib/dream-docs/embed
+│   │   │       ├·· dynamic import()  ← @/lib/dream-docs/index
+│   │   │       ├·· dynamic import()  ← @/lib/dream-docs/search
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/connectionVerbs
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/enginConnectionNetwork
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/index
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/runtimeRegion
+│   │   │       ├·· dynamic import()  ← @/lib/dream-window/useDreamWindowActions
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/barInteractions
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useDreamBarContext
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useDreamDMConversations
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useDreamDMDraft
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useDreamDMMessages
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useDreamSearch
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useMessagingCore
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useModuleBarIntent
+│   │   │       ├·· dynamic import()  ← @/lib/dreamdm/useNotifications
+│   │   │       ├·· dynamic import()  ← @/lib/dreamengin/DrEamsAnimator
+│   │   │       ├·· dynamic import()  ← @/lib/dreamengin/drEamsSearch
+│   │   │       ├·· dynamic import()  ← @/lib/dreamengin/engineAssets
+│   │   │       ├·· dynamic import()  ← @/lib/dreamengin/osSubsystemManifest
+│   │   │       ├·· dynamic import()  ← @/lib/dreamenginOS/index
+│   │   │       ├·· dynamic import()  ← @/lib/dreamnav/delta
+│   │   │       ├·· dynamic import()  ← @/lib/dreamnav/gctAssist
+│   │   │       ├·· dynamic import()  ← @/lib/dreamnav/gestures6
+│   │   │       ├·· dynamic import()  ← @/lib/dreamnav/path
+│   │   │       ├·· dynamic import()  ← @/lib/dreamnav/tau
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/feedCursor
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/socialHumanityScore
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/swipeCalibration
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/swipePersonalization
+│   │   │       ├·· dynamic import()  ← @/lib/dreamr/torridityLedger
+│   │   │       ├·· dynamic import()  ← @/lib/dreams/drag
+│   │   │       ├·· dynamic import()  ← @/lib/dreams/profileProjection
+│   │   │       ├·· dynamic import()  ← @/lib/dreams/types
+│   │   │       ├·· dynamic import()  ← @/lib/dreams/useDreamsRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginBaseState
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginEventBus
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/engin-runtime/index
+│   │   │       ├·· dynamic import()  ← @/lib/engine/index
+│   │   │       ├·· dynamic import()  ← @/lib/enginpipe/artifact/manifest
+│   │   │       ├·· dynamic import()  ← @/lib/enginpipe/index
+│   │   │       ├·· dynamic import()  ← @/lib/enginpipe/quality/tiers
+│   │   │       ├·· dynamic import()  ← @/lib/enginpipe/telemetry/client
+│   │   │       ├·· dynamic import()  ← @/lib/enginpipe/telemetry/events
+│   │   │       ├·· dynamic import()  ← @/lib/engins/game/gameEnginRuleSet
+│   │   │       ├·· dynamic import()  ← @/lib/engins/game/index
+│   │   │       ├·· dynamic import()  ← @/lib/engins/game/useGameEnginRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/engins/useEnginWorkflow
+│   │   │       ├·· dynamic import()  ← @/lib/engins/workflowEngine
+│   │   │       ├·· dynamic import()  ← @/lib/event-bus/index
+│   │   │       ├·· dynamic import()  ← @/lib/eventBus
+│   │   │       ├·· dynamic import()  ← @/lib/feature-build/buildCycle
+│   │   │       ├·· dynamic import()  ← @/lib/feature-build/featureManifest
+│   │   │       ├·· dynamic import()  ← @/lib/feature-build/index
+│   │   │       ├·· dynamic import()  ← @/lib/feature-build/uiQualityCriteria
+│   │   │       ├·· dynamic import()  ← @/lib/feed/feedTopics
+│   │   │       ├·· dynamic import()  ← @/lib/feed/hashtags
+│   │   │       ├·· dynamic import()  ← @/lib/feed/useLiveFeed
+│   │   │       ├·· dynamic import()  ← @/lib/feed/useYouTubeLiveFeed
+│   │   │       ├·· dynamic import()  ← @/lib/feeds/embedFeedLoader
+│   │   │       ├·· dynamic import()  ← @/lib/forge-ngn/assembly
+│   │   │       ├·· dynamic import()  ← @/lib/forge-ngn/index
+│   │   │       ├·· dynamic import()  ← @/lib/forge-ngn/piece-registry
+│   │   │       ├·· dynamic import()  ← @/lib/forge/engineForge
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeBuild
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeIntelligence
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeMomentum
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeNexus
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeRegistry
+│   │   │       ├·· dynamic import()  ← @/lib/forge/forgeRituals
+│   │   │       ├·· dynamic import()  ← @/lib/forge/useForgeActivity
+│   │   │       ├·· dynamic import()  ← @/lib/forge/useForgeBuild
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/accessibility-ai
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/ai-director
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/ai-npcs
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/brain-reader
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/cartridge-manifest
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/cartridge
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/cartridgeLoader
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/cloud-compute
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/control-mappings
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/core
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/dream-engine
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/dreamr-loader
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/gameEnginRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/generative-audio
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/index
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/neural-render
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/path-tracing
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/platform
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/post-fx
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/power-systems
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/predictive-stream
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/procgen
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/registerCartridges
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/remote/comboMachine
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/remote/index
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/remote/layout
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/remote/moves
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/remote/sprintDetector
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/ai
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/animation
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/assets
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/index
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/lod
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/network
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/physics
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/pooling
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/rendering
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/spatial
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/systems/world
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/unifiedLoop
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/useUnifiedLoop
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/webgpu-runtime-shell
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/world-crdt
+│   │   │       ├·· dynamic import()  ← @/lib/gameengin/xr
+│   │   │       ├·· dynamic import()  ← @/lib/games/avatar
+│   │   │       ├·· dynamic import()  ← @/lib/games/catalog
+│   │   │       ├·· dynamic import()  ← @/lib/games/DualSenseManager
+│   │   │       ├·· dynamic import()  ← @/lib/games/gameControllerButtons
+│   │   │       ├·· dynamic import()  ← @/lib/games/gameControllerLeft
+│   │   │       ├·· dynamic import()  ← @/lib/games/gameControllerRight
+│   │   │       ├·· dynamic import()  ← @/lib/games/hooks
+│   │   │       ├·· dynamic import()  ← @/lib/games/library-state
+│   │   │       ├·· dynamic import()  ← @/lib/games/lucid-avenue-world
+│   │   │       ├·· dynamic import()  ← @/lib/games/mobileControls
+│   │   │       ├·· dynamic import()  ← @/lib/games/navigation
+│   │   │       ├·· dynamic import()  ← @/lib/games/performance-baseline
+│   │   │       ├·· dynamic import()  ← @/lib/games/quality-plan
+│   │   │       ├·· dynamic import()  ← @/lib/games/useAIDirector
+│   │   │       ├·· dynamic import()  ← @/lib/games/useGameInputKeyboardBridge
+│   │   │       ├·· dynamic import()  ← @/lib/games/useGamepad
+│   │   │       ├·· dynamic import()  ← @/lib/games/useImmersiveGameLayout
+│   │   │       ├·· dynamic import()  ← @/lib/games/useRemoteChannel
+│   │   │       ├·· dynamic import()  ← @/lib/gct/anomaly-detection
+│   │   │       ├·· dynamic import()  ← @/lib/gct/audio-fingerprint
+│   │   │       ├·· dynamic import()  ← @/lib/gct/gct-engine
+│   │   │       ├·· dynamic import()  ← @/lib/gct/image-search
+│   │   │       ├·· dynamic import()  ← @/lib/gct/index
+│   │   │       ├·· dynamic import()  ← @/lib/gct/recommendations
+│   │   │       ├·· dynamic import()  ← @/lib/generationLaw
+│   │   │       ├·· dynamic import()  ← @/lib/gestures/touchGestures
+│   │   │       ├·· dynamic import()  ← @/lib/gestures/useTouchGestures
+│   │   │       ├·· dynamic import()  ← @/lib/god-tier/godTierEngine
+│   │   │       ├·· dynamic import()  ← @/lib/god-tier/useGodTier
+│   │   │       ├·· dynamic import()  ← @/lib/gsap/gsap
+│   │   │       ├·· dynamic import()  ← @/lib/gsap/useGsapEntrance
+│   │   │       ├·· dynamic import()  ← @/lib/gsap/useGsapFlip
+│   │   │       ├·· dynamic import()  ← @/lib/gsap/useGsapScrollReveal
+│   │   │       ├·· dynamic import()  ← @/lib/h265-encoder
+│   │   │       ├·· dynamic import()  ← @/lib/home-buttons/button-groups
+│   │   │       ├·· dynamic import()  ← @/lib/home-buttons/contextual-home
+│   │   │       ├·· dynamic import()  ← @/lib/icons/sheet
+│   │   │       ├·· dynamic import()  ← @/lib/identity/canonical-names
+│   │   │       ├·· dynamic import()  ← @/lib/intelligence/continuityHelpers
+│   │   │       ├·· dynamic import()  ← @/lib/intelligence/sessionContinuity
+│   │   │       ├·· dynamic import()  ← @/lib/intelligence/sessionPatternEngine
+│   │   │       ├·· dynamic import()  ← @/lib/intelligence/useSessionIntelligence
+│   │   │       ├·· dynamic import()  ← @/lib/journey/journeyDots
+│   │   │       ├·· dynamic import()  ← @/lib/journey/journeyInsights
+│   │   │       ├·· dynamic import()  ← @/lib/journey/withJourney
+│   │   │       ├·· dynamic import()  ← @/lib/ledger-data
+│   │   │       ├·· dynamic import()  ← @/lib/ledger
+│   │   │       ├·· dynamic import()  ← @/lib/marketplace/listings
+│   │   │       ├·· dynamic import()  ← @/lib/marketplace/request
+│   │   │       ├·· dynamic import()  ← @/lib/media/ledger
+│   │   │       ├·· dynamic import()  ← @/lib/media/postMedia
+│   │   │       ├·· dynamic import()  ← @/lib/music/presets
+│   │   │       ├·· dynamic import()  ← @/lib/music/starmaker
+│   │   │       ├·· dynamic import()  ← @/lib/music/starmakerArrangement
+│   │   │       ├·· dynamic import()  ← @/lib/music/starmakerDaw
+│   │   │       ├·· dynamic import()  ← @/lib/music/wasmAudioBridge
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/anchorField
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/AnchorStateBuffer
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/AnchorWidgetStorage
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/dream-state
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/GestureFrameComputer
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/GestureIntentResolver
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/index
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/manifold
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/NavStateBuffer
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/physics
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/PointerEventCapture
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/quaternion
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/ReturnStack
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/SpatialNavigationEngine
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/StructureLedger
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/TransformSolver
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/useNavigation
+│   │   │       ├·· dynamic import()  ← @/lib/navigation/WidgetInstanceMemory
+│   │   │       ├·· dynamic import()  ← @/lib/notifications/notificationHelpers
+│   │   │       ├·· dynamic import()  ← @/lib/notifications/useNotifications
+│   │   │       ├·· dynamic import()  ← @/lib/observability/collector
+│   │   │       ├·· dynamic import()  ← @/lib/observability/correlator
+│   │   │       ├·· dynamic import()  ← @/lib/observability/healthTrend
+│   │   │       ├·· dynamic import()  ← @/lib/observability/immediateAction
+│   │   │       ├·· dynamic import()  ← @/lib/observability/index
+│   │   │       ├·· dynamic import()  ← @/lib/observability/otel
+│   │   │       ├·· dynamic import()  ← @/lib/observability/otelBridge
+│   │   │       ├·· dynamic import()  ← @/lib/observability/rootCauseAnalyzer
+│   │   │       ├·· dynamic import()  ← @/lib/offline/offlineCache
+│   │   │       ├·· dynamic import()  ← @/lib/offline/useOfflineSync
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/babylon-optimizero
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/constraint-solver
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/creative-optimizero
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/creative-validator
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/index
+│   │   │       ├·· dynamic import()  ← @/lib/optimizer/types
+│   │   │       ├·· dynamic import()  ← @/lib/panels/panelTypes
+│   │   │       ├·· dynamic import()  ← @/lib/platform/index
+│   │   │       ├·· dynamic import()  ← @/lib/platform/lab
+│   │   │       ├·· dynamic import()  ← @/lib/policy/boogiePolicy
+│   │   │       ├·· dynamic import()  ← @/lib/renderer/Canvas2DRenderer
+│   │   │       ├·· dynamic import()  ← @/lib/renderer/FrustumCuller
+│   │   │       ├·· dynamic import()  ← @/lib/renderer/index
+│   │   │       ├·· dynamic import()  ← @/lib/renderer/IRenderer
+│   │   │       ├·· dynamic import()  ← @/lib/routing/surfaces
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/channelMetrics
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/coercionTable
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/dreamOSBus
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/dropTargetRegistry
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/dualRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/dualRuntimeBridge
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/EnginDispatcher
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/enginWorkflowRegistry
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/instanceManager
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/isAuthRelatedError
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/madMaxiSnapshotBridge
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/memory
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/moduleRegistry
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/offlineQueue
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/quantumCircuit
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/runtimeChannel
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/runtimeContainer
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/seamClipboard
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/sharedResourcePool
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/snapshotFingerprint
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/swapManager
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useDragSurface
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useDualRuntime
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useDualRuntimePersistence
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useEnginBridge
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useEnginCoopSync
+│   │   │       ├·· dynamic import()  ← @/lib/runtime/useSharedEnginChannel
+│   │   │       ├·· dynamic import()  ← @/lib/scene/sceneState
+│   │   │       ├·· dynamic import()  ← @/lib/setup/checks
+│   │   │       ├·· dynamic import()  ← @/lib/sharedDream
+│   │   │       ├·· dynamic import()  ← @/lib/shop/listings
+│   │   │       ├·· dynamic import()  ← @/lib/slog
+│   │   │       ├·· dynamic import()  ← @/lib/social-feed
+│   │   │       ├·· dynamic import()  ← @/lib/social/crossPost
+│   │   │       ├·· dynamic import()  ← @/lib/social/platforms
+│   │   │       ├·· dynamic import()  ← @/lib/social/rss-feed
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/client
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/config
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/realtime
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/safeGetUser
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/server
+│   │   │       ├·· dynamic import()  ← @/lib/supabase/vector
+│   │   │       ├·· dynamic import()  ← @/lib/torridity
+│   │   │       ├·· dynamic import()  ← @/lib/torridity/constants
+│   │   │       ├·· dynamic import()  ← @/lib/torridity/index
+│   │   │       ├·· dynamic import()  ← @/lib/torridity/physics
+│   │   │       ├·· dynamic import()  ← @/lib/ui/responsive
+│   │   │       ├·· dynamic import()  ← @/lib/ui/runtimeViewport
+│   │   │       ├·· dynamic import()  ← @/lib/ui/skin-engine
+│   │   │       ├·· dynamic import()  ← @/lib/ui/theme-engine
+│   │   │       ├·· dynamic import()  ← @/lib/ui/theme
+│   │   │       ├·· dynamic import()  ← @/lib/universal-editor/module-manifest
+│   │   │       ├·· dynamic import()  ← @/lib/universalEditor
+│   │   │       ├·· dynamic import()  ← @/lib/user-sim/userSimAgent
+│   │   │       ├·· dynamic import()  ← @/lib/utils
+│   │   │       ├·· dynamic import()  ← @/lib/vm/bufferManager
+│   │   │       ├·· dynamic import()  ← @/lib/vm/bus-events
+│   │   │       ├·· dynamic import()  ← @/lib/vm/dual-runtime
+│   │   │       ├·· dynamic import()  ← @/lib/vm/dualVMCoordinator
+│   │   │       ├·· dynamic import()  ← @/lib/vm/index
+│   │   │       ├·· dynamic import()  ← @/lib/vm/inter-vm-messaging
+│   │   │       ├·· dynamic import()  ← @/lib/vm/pipelineCache
+│   │   │       ├·· dynamic import()  ← @/lib/vm/resource-quota
+│   │   │       ├·· dynamic import()  ← @/lib/vm/security
+│   │   │       ├·· dynamic import()  ← @/lib/vm/snapshot
+│   │   │       ├·· dynamic import()  ← @/lib/vm/types
+│   │   │       ├·· dynamic import()  ← @/lib/vm/wasm-features
+│   │   │       ├·· dynamic import()  ← @/lib/vm/wasmGpuVM
+│   │   │       ├·· dynamic import()  ← @/lib/warp/useWarp
+│   │   │       ├·· dynamic import()  ← @/lib/warp/warpEngine
+│   │   │       ├·· dynamic import()  ← @/lib/webgpu
+│   │   │       ├·· dynamic import()  ← @/lib/webgpu/adaptiveQuality
+│   │   │       ├·· dynamic import()  ← @/lib/webgpu/director
+│   │   │       ├·· dynamic import()  ← @/lib/webgpu/useWebGPUDirector
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/CrossWidgetPosting
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/feed-resolver
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/parse
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/parseConfig
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/useWidget
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/WidgetBus
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/WidgetEventBus
+│   │   │       ├·· dynamic import()  ← @/lib/widgets/WidgetLinkGraph
+│   │   │       └·· dynamic import()  ← @/lib/widgets/widgetRegistry
 │   │   └── state/
 │   │       └── base.json
 │   ├── lib/
@@ -23314,7 +23314,7 @@ _No circular dependencies detected._
 ├── LICENSE
 ├── next-env.d.ts
 ├── next.config.mjs
-│   └·· (lazy)  ← next
+│   └·· dynamic import()  ← next
 ├── package.json
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -23329,7 +23329,7 @@ _No circular dependencies detected._
 ├── REPO_STATE.md
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
-│   └·· (lazy)  ← tailwindcss
+│   └·· dynamic import()  ← tailwindcss
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
