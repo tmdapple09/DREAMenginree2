@@ -1,98 +1,97 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T12:04:48.251Z
+Generated: 2026-05-30T12:51:39.187Z
 
 ---
 
 # MASTER INDEX
 
-Jump to any feature, subsection, or cross-cutting analysis directly.
-
 ## User-Facing Features
 
-- [HomeDream](#homedream) — Main home surface, feed, dual-runtime bar, persistent UI shell
-  - [Pages](#homedream-pages) · [Components](#homedream-components) · [Lib](#homedream-lib) · [Hooks](#homedream-hooks) · [API Routes](#homedream-api) · [Types](#homedream-types) · [Styles](#homedream-styles) · [Migrations](#homedream-migrations) · [Tests](#homedream-tests) · [Dependencies](#homedream-deps)
-- [DreamR](#dreamr) — Short-form vertical video feed, swipe algorithm, close friends, creator panels
-  - [Pages](#dreamr-pages) · [Components](#dreamr-components) · [Lib](#dreamr-lib) · [Hooks](#dreamr-hooks) · [API Routes](#dreamr-api) · [Types](#dreamr-types) · [Styles](#dreamr-styles) · [Migrations](#dreamr-migrations) · [Tests](#dreamr-tests) · [Dependencies](#dreamr-deps)
-- [DREAMenginOS](#dreamengin) — OS-level engine shell, 3D canvas, search bar, nexus menu, scene system
-  - [Pages](#dreamengin-pages) · [Components](#dreamengin-components) · [Lib](#dreamengin-lib) · [Hooks](#dreamengin-hooks) · [API Routes](#dreamengin-api) · [Types](#dreamengin-types) · [Styles](#dreamengin-styles) · [Migrations](#dreamengin-migrations) · [Tests](#dreamengin-tests) · [Dependencies](#dreamengin-deps)
-- [GameEngin](#gameengin) — Game OS, cartridge system, game launcher, DualSense input, in-game HUD, all games
-  - [Pages](#gameengin-pages) · [Components](#gameengin-components) · [Lib](#gameengin-lib) · [Hooks](#gameengin-hooks) · [API Routes](#gameengin-api) · [Types](#gameengin-types) · [Styles](#gameengin-styles) · [Migrations](#gameengin-migrations) · [Tests](#gameengin-tests) · [Dependencies](#gameengin-deps)
-- [CodeEngin](#codeengin) — Code editor, IDE, AI co-pilot, notebook and projects panel
-  - [Pages](#codeengin-pages) · [Components](#codeengin-components) · [Lib](#codeengin-lib) · [Hooks](#codeengin-hooks) · [API Routes](#codeengin-api) · [Types](#codeengin-types) · [Styles](#codeengin-styles) · [Migrations](#codeengin-migrations) · [Tests](#codeengin-tests) · [Dependencies](#codeengin-deps)
-- [LabEngin](#labengin) — Experiment runner, quantum panel, data viz, lab IDE
-  - [Pages](#labengin-pages) · [Components](#labengin-components) · [Lib](#labengin-lib) · [Hooks](#labengin-hooks) · [API Routes](#labengin-api) · [Types](#labengin-types) · [Styles](#labengin-styles) · [Migrations](#labengin-migrations) · [Tests](#labengin-tests) · [Dependencies](#labengin-deps)
-- [StarMaker (Music Engin)](#starmakerengin) — DAW, piano roll, multitrack arrangement, comping, session view, audio bridge
-  - [Pages](#starmakerengin-pages) · [Components](#starmakerengin-components) · [Lib](#starmakerengin-lib) · [Hooks](#starmakerengin-hooks) · [API Routes](#starmakerengin-api) · [Types](#starmakerengin-types) · [Styles](#starmakerengin-styles) · [Migrations](#starmakerengin-migrations) · [Tests](#starmakerengin-tests) · [Dependencies](#starmakerengin-deps)
-- [BrandEngin](#brandengin) — Brand identity, campaigns, analytics daydream, branding engine
-  - [Pages](#brandengin-pages) · [Components](#brandengin-components) · [Lib](#brandengin-lib) · [Hooks](#brandengin-hooks) · [API Routes](#brandengin-api) · [Types](#brandengin-types) · [Styles](#brandengin-styles) · [Migrations](#brandengin-migrations) · [Tests](#brandengin-tests) · [Dependencies](#brandengin-deps)
-- [CreateEngin](#createengin) — Content creation, editor panel, queue, calendar, publish intent
-  - [Pages](#createengin-pages) · [Components](#createengin-components) · [Lib](#createengin-lib) · [Hooks](#createengin-hooks) · [API Routes](#createengin-api) · [Types](#createengin-types) · [Styles](#createengin-styles) · [Migrations](#createengin-migrations) · [Tests](#createengin-tests) · [Dependencies](#createengin-deps)
-- [PortfolioEngin](#portfolioengin) — Portfolio optimization, asset management, quantum circuit canvas
-  - [Pages](#portfolioengin-pages) · [Components](#portfolioengin-components) · [Lib](#portfolioengin-lib) · [Hooks](#portfolioengin-hooks) · [API Routes](#portfolioengin-api) · [Types](#portfolioengin-types) · [Styles](#portfolioengin-styles) · [Migrations](#portfolioengin-migrations) · [Tests](#portfolioengin-tests) · [Dependencies](#portfolioengin-deps)
-- [ForgeEngin (Engine Builder)](#forgeengin) — Build custom engines, AI-powered engine builder, forge rituals and momentum
-  - [Pages](#forgeengin-pages) · [Components](#forgeengin-components) · [Lib](#forgeengin-lib) · [Hooks](#forgeengin-hooks) · [API Routes](#forgeengin-api) · [Types](#forgeengin-types) · [Styles](#forgeengin-styles) · [Migrations](#forgeengin-migrations) · [Tests](#forgeengin-tests) · [Dependencies](#forgeengin-deps)
-- [Daydream System](#daydream) — Daydream shell, pair routing, diff viewer, constellation map, journey trail
-  - [Pages](#daydream-pages) · [Components](#daydream-components) · [Lib](#daydream-lib) · [Hooks](#daydream-hooks) · [API Routes](#daydream-api) · [Types](#daydream-types) · [Styles](#daydream-styles) · [Migrations](#daydream-migrations) · [Tests](#daydream-tests) · [Dependencies](#daydream-deps)
-- [Profile & Edit Profile](#profile) — View/edit profile, profile dream surface, spatial widget layout, avatar editor
-  - [Pages](#profile-pages) · [Components](#profile-components) · [Lib](#profile-lib) · [Hooks](#profile-hooks) · [API Routes](#profile-api) · [Types](#profile-types) · [Styles](#profile-styles) · [Migrations](#profile-migrations) · [Tests](#profile-tests) · [Dependencies](#profile-deps)
-- [Widgets System](#widgets) — Widget engine, bubbles, drag-drop, universal widget, widget surface and registry
-  - [Pages](#widgets-pages) · [Components](#widgets-components) · [Lib](#widgets-lib) · [Hooks](#widgets-hooks) · [API Routes](#widgets-api) · [Types](#widgets-types) · [Styles](#widgets-styles) · [Migrations](#widgets-migrations) · [Tests](#widgets-tests) · [Dependencies](#widgets-deps)
-- [Feed & Social](#feed) — Main feed, algorithm engine, follow, comments, live feed, social cross-post, RSS
-  - [Pages](#feed-pages) · [Components](#feed-components) · [Lib](#feed-lib) · [Hooks](#feed-hooks) · [API Routes](#feed-api) · [Types](#feed-types) · [Styles](#feed-styles) · [Migrations](#feed-migrations) · [Tests](#feed-tests) · [Dependencies](#feed-deps)
-- [Settings](#settings) — All settings pages and panels: appearance, privacy, safety, controls, data, notifications, algorithm, security
-  - [Pages](#settings-pages) · [Components](#settings-components) · [Lib](#settings-lib) · [Hooks](#settings-hooks) · [API Routes](#settings-api) · [Types](#settings-types) · [Styles](#settings-styles) · [Migrations](#settings-migrations) · [Tests](#settings-tests) · [Dependencies](#settings-deps)
-- [Menus & Navigation](#menus) — Radial menus, dual bottom menu, dream nav controls, persistent bar, navigation engine
-  - [Pages](#menus-pages) · [Components](#menus-components) · [Lib](#menus-lib) · [Hooks](#menus-hooks) · [API Routes](#menus-api) · [Types](#menus-types) · [Styles](#menus-styles) · [Migrations](#menus-migrations) · [Tests](#menus-tests) · [Dependencies](#menus-deps)
-- [Messages & DMs](#messages) — Direct messages, conversations, message boards, board composer
-  - [Pages](#messages-pages) · [Components](#messages-components) · [Lib](#messages-lib) · [Hooks](#messages-hooks) · [API Routes](#messages-api) · [Types](#messages-types) · [Styles](#messages-styles) · [Migrations](#messages-migrations) · [Tests](#messages-tests) · [Dependencies](#messages-deps)
-- [Notifications](#notifications) — Notification center, push notifications, alerts
-  - [Pages](#notifications-pages) · [Components](#notifications-components) · [Lib](#notifications-lib) · [Hooks](#notifications-hooks) · [API Routes](#notifications-api) · [Types](#notifications-types) · [Styles](#notifications-styles) · [Migrations](#notifications-migrations) · [Tests](#notifications-tests) · [Dependencies](#notifications-deps)
-- [Connectors](#connectors) — Platform connectors (YouTube, Instagram, Bluesky, RSS etc), OAuth flows, sync
-  - [Pages](#connectors-pages) · [Components](#connectors-components) · [Lib](#connectors-lib) · [Hooks](#connectors-hooks) · [API Routes](#connectors-api) · [Types](#connectors-types) · [Styles](#connectors-styles) · [Migrations](#connectors-migrations) · [Tests](#connectors-tests) · [Dependencies](#connectors-deps)
-- [Marketplace & Shop](#marketplace) — Marketplace listings, shop, orders, skip credits, ads platform
-  - [Pages](#marketplace-pages) · [Components](#marketplace-components) · [Lib](#marketplace-lib) · [Hooks](#marketplace-hooks) · [API Routes](#marketplace-api) · [Types](#marketplace-types) · [Styles](#marketplace-styles) · [Migrations](#marketplace-migrations) · [Tests](#marketplace-tests) · [Dependencies](#marketplace-deps)
-- [Shared Dream (Collab)](#shared-dream) — Real-time collaborative dream sessions, invite flow, shared runtime
-  - [Pages](#shared-dream-pages) · [Components](#shared-dream-components) · [Lib](#shared-dream-lib) · [Hooks](#shared-dream-hooks) · [API Routes](#shared-dream-api) · [Types](#shared-dream-types) · [Styles](#shared-dream-styles) · [Migrations](#shared-dream-migrations) · [Tests](#shared-dream-tests) · [Dependencies](#shared-dream-deps)
-- [Customize Mode](#customize) — Theme, color, font, layout, effects customize panels and toolbar
-  - [Pages](#customize-pages) · [Components](#customize-components) · [Lib](#customize-lib) · [Hooks](#customize-hooks) · [API Routes](#customize-api) · [Types](#customize-types) · [Styles](#customize-styles) · [Migrations](#customize-migrations) · [Tests](#customize-tests) · [Dependencies](#customize-deps)
-- [Auth](#auth) — Login, join, password reset, OAuth callback, session management
-  - [Pages](#auth-pages) · [Components](#auth-components) · [Lib](#auth-lib) · [Hooks](#auth-hooks) · [API Routes](#auth-api) · [Types](#auth-types) · [Styles](#auth-styles) · [Migrations](#auth-migrations) · [Tests](#auth-tests) · [Dependencies](#auth-deps)
+- [HOME — DreamDMBar](#homedream)
+  - [Pages](#homedream-pages) · [Components](#homedream-components) · [Lib](#homedream-lib) · [Hooks](#homedream-hooks) · [API Routes](#homedream-api) · [Types](#homedream-types) · [Styles](#homedream-styles) · [Tests](#homedream-tests) · [Deps](#homedream-deps)
+- [DreamR](#dreamr)
+  - [Pages](#dreamr-pages) · [Components](#dreamr-components) · [Lib](#dreamr-lib) · [Hooks](#dreamr-hooks) · [API Routes](#dreamr-api) · [Types](#dreamr-types) · [Styles](#dreamr-styles) · [Tests](#dreamr-tests) · [Deps](#dreamr-deps)
+- [DREAMenginOS](#dreamengin)
+  - [Pages](#dreamengin-pages) · [Components](#dreamengin-components) · [Lib](#dreamengin-lib) · [Hooks](#dreamengin-hooks) · [API Routes](#dreamengin-api) · [Types](#dreamengin-types) · [Styles](#dreamengin-styles) · [Tests](#dreamengin-tests) · [Deps](#dreamengin-deps)
+- [GameEngin](#gameengin)
+  - [Pages](#gameengin-pages) · [Components](#gameengin-components) · [Lib](#gameengin-lib) · [Hooks](#gameengin-hooks) · [API Routes](#gameengin-api) · [Types](#gameengin-types) · [Styles](#gameengin-styles) · [Tests](#gameengin-tests) · [Deps](#gameengin-deps)
+- [CodeEngin](#codeengin)
+  - [Pages](#codeengin-pages) · [Components](#codeengin-components) · [Lib](#codeengin-lib) · [Hooks](#codeengin-hooks) · [API Routes](#codeengin-api) · [Types](#codeengin-types) · [Styles](#codeengin-styles) · [Tests](#codeengin-tests) · [Deps](#codeengin-deps)
+- [LabEngin](#labengin)
+  - [Pages](#labengin-pages) · [Components](#labengin-components) · [Lib](#labengin-lib) · [Hooks](#labengin-hooks) · [API Routes](#labengin-api) · [Types](#labengin-types) · [Styles](#labengin-styles) · [Tests](#labengin-tests) · [Deps](#labengin-deps)
+- [StarMaker (Music Engin)](#starmakerengin)
+  - [Pages](#starmakerengin-pages) · [Components](#starmakerengin-components) · [Lib](#starmakerengin-lib) · [Hooks](#starmakerengin-hooks) · [API Routes](#starmakerengin-api) · [Types](#starmakerengin-types) · [Styles](#starmakerengin-styles) · [Tests](#starmakerengin-tests) · [Deps](#starmakerengin-deps)
+- [BrandEngin](#brandengin)
+  - [Pages](#brandengin-pages) · [Components](#brandengin-components) · [Lib](#brandengin-lib) · [Hooks](#brandengin-hooks) · [API Routes](#brandengin-api) · [Types](#brandengin-types) · [Styles](#brandengin-styles) · [Tests](#brandengin-tests) · [Deps](#brandengin-deps)
+- [CreateEngin](#createengin)
+  - [Pages](#createengin-pages) · [Components](#createengin-components) · [Lib](#createengin-lib) · [Hooks](#createengin-hooks) · [API Routes](#createengin-api) · [Types](#createengin-types) · [Styles](#createengin-styles) · [Tests](#createengin-tests) · [Deps](#createengin-deps)
+- [PortfolioEngin](#portfolioengin)
+  - [Pages](#portfolioengin-pages) · [Components](#portfolioengin-components) · [Lib](#portfolioengin-lib) · [Hooks](#portfolioengin-hooks) · [API Routes](#portfolioengin-api) · [Types](#portfolioengin-types) · [Styles](#portfolioengin-styles) · [Tests](#portfolioengin-tests) · [Deps](#portfolioengin-deps)
+- [ForgeEngin (Engine Builder)](#forgeengin)
+  - [Pages](#forgeengin-pages) · [Components](#forgeengin-components) · [Lib](#forgeengin-lib) · [Hooks](#forgeengin-hooks) · [API Routes](#forgeengin-api) · [Types](#forgeengin-types) · [Styles](#forgeengin-styles) · [Tests](#forgeengin-tests) · [Deps](#forgeengin-deps)
+- [Daydream System](#daydream)
+  - [Pages](#daydream-pages) · [Components](#daydream-components) · [Lib](#daydream-lib) · [Hooks](#daydream-hooks) · [API Routes](#daydream-api) · [Types](#daydream-types) · [Styles](#daydream-styles) · [Tests](#daydream-tests) · [Deps](#daydream-deps)
+- [Profile & Edit Profile](#profile)
+  - [Pages](#profile-pages) · [Components](#profile-components) · [Lib](#profile-lib) · [Hooks](#profile-hooks) · [API Routes](#profile-api) · [Types](#profile-types) · [Styles](#profile-styles) · [Tests](#profile-tests) · [Deps](#profile-deps)
+- [Widgets System](#widgets)
+  - [Pages](#widgets-pages) · [Components](#widgets-components) · [Lib](#widgets-lib) · [Hooks](#widgets-hooks) · [API Routes](#widgets-api) · [Types](#widgets-types) · [Styles](#widgets-styles) · [Tests](#widgets-tests) · [Deps](#widgets-deps)
+- [Feed & Social](#feed)
+  - [Pages](#feed-pages) · [Components](#feed-components) · [Lib](#feed-lib) · [Hooks](#feed-hooks) · [API Routes](#feed-api) · [Types](#feed-types) · [Styles](#feed-styles) · [Tests](#feed-tests) · [Deps](#feed-deps)
+- [Settings](#settings)
+  - [Pages](#settings-pages) · [Components](#settings-components) · [Lib](#settings-lib) · [Hooks](#settings-hooks) · [API Routes](#settings-api) · [Types](#settings-types) · [Styles](#settings-styles) · [Tests](#settings-tests) · [Deps](#settings-deps)
+- [Menus & Navigation](#menus)
+  - [Pages](#menus-pages) · [Components](#menus-components) · [Lib](#menus-lib) · [Hooks](#menus-hooks) · [API Routes](#menus-api) · [Types](#menus-types) · [Styles](#menus-styles) · [Tests](#menus-tests) · [Deps](#menus-deps)
+- [Messages & DMs](#messages)
+  - [Pages](#messages-pages) · [Components](#messages-components) · [Lib](#messages-lib) · [Hooks](#messages-hooks) · [API Routes](#messages-api) · [Types](#messages-types) · [Styles](#messages-styles) · [Tests](#messages-tests) · [Deps](#messages-deps)
+- [Notifications](#notifications)
+  - [Pages](#notifications-pages) · [Components](#notifications-components) · [Lib](#notifications-lib) · [Hooks](#notifications-hooks) · [API Routes](#notifications-api) · [Types](#notifications-types) · [Styles](#notifications-styles) · [Tests](#notifications-tests) · [Deps](#notifications-deps)
+- [Connectors](#connectors)
+  - [Pages](#connectors-pages) · [Components](#connectors-components) · [Lib](#connectors-lib) · [Hooks](#connectors-hooks) · [API Routes](#connectors-api) · [Types](#connectors-types) · [Styles](#connectors-styles) · [Tests](#connectors-tests) · [Deps](#connectors-deps)
+- [Marketplace & Shop](#marketplace)
+  - [Pages](#marketplace-pages) · [Components](#marketplace-components) · [Lib](#marketplace-lib) · [Hooks](#marketplace-hooks) · [API Routes](#marketplace-api) · [Types](#marketplace-types) · [Styles](#marketplace-styles) · [Tests](#marketplace-tests) · [Deps](#marketplace-deps)
+- [Shared Dream (Collab)](#shared-dream)
+  - [Pages](#shared-dream-pages) · [Components](#shared-dream-components) · [Lib](#shared-dream-lib) · [Hooks](#shared-dream-hooks) · [API Routes](#shared-dream-api) · [Types](#shared-dream-types) · [Styles](#shared-dream-styles) · [Tests](#shared-dream-tests) · [Deps](#shared-dream-deps)
+- [Customize Mode](#customize)
+  - [Pages](#customize-pages) · [Components](#customize-components) · [Lib](#customize-lib) · [Hooks](#customize-hooks) · [API Routes](#customize-api) · [Types](#customize-types) · [Styles](#customize-styles) · [Tests](#customize-tests) · [Deps](#customize-deps)
+- [Auth](#auth)
+  - [Pages](#auth-pages) · [Components](#auth-components) · [Lib](#auth-lib) · [Hooks](#auth-hooks) · [API Routes](#auth-api) · [Types](#auth-types) · [Styles](#auth-styles) · [Tests](#auth-tests) · [Deps](#auth-deps)
 
 ## System & Infrastructure
 
-- [AI Systems (Boogieman / Dr.EAMS / Idari)](#ai) — Boogieman policy engine, Dr.EAMS assistant, Idari admin AI, triad consensus, tool router
-  - [Pages](#ai-pages) · [Components](#ai-components) · [Lib](#ai-lib) · [Hooks](#ai-hooks) · [API Routes](#ai-api) · [Types](#ai-types) · [Styles](#ai-styles) · [Migrations](#ai-migrations) · [Tests](#ai-tests) · [Dependencies](#ai-deps)
-- [Child Safety](#child-safety) — Content scanning, NCMEC reporting, image classifier, message context checker
-  - [Pages](#child-safety-pages) · [Components](#child-safety-components) · [Lib](#child-safety-lib) · [Hooks](#child-safety-hooks) · [API Routes](#child-safety-api) · [Types](#child-safety-types) · [Styles](#child-safety-styles) · [Migrations](#child-safety-migrations) · [Tests](#child-safety-tests) · [Dependencies](#child-safety-deps)
-- [Observability & Idari Console](#observability) — OpenTelemetry, metrics, health trends, platform errors, Idari admin console
-  - [Pages](#observability-pages) · [Components](#observability-components) · [Lib](#observability-lib) · [Hooks](#observability-hooks) · [API Routes](#observability-api) · [Types](#observability-types) · [Styles](#observability-styles) · [Migrations](#observability-migrations) · [Tests](#observability-tests) · [Dependencies](#observability-deps)
-- [WebGPU / Babylon Engine](#webgpu-babylon) — WebGPU director, Babylon.js engine factory, adaptive quality, 3D rendering pipeline
-  - [Pages](#webgpu-babylon-pages) · [Components](#webgpu-babylon-components) · [Lib](#webgpu-babylon-lib) · [Hooks](#webgpu-babylon-hooks) · [API Routes](#webgpu-babylon-api) · [Types](#webgpu-babylon-types) · [Styles](#webgpu-babylon-styles) · [Migrations](#webgpu-babylon-migrations) · [Tests](#webgpu-babylon-tests) · [Dependencies](#webgpu-babylon-deps)
-- [Warp System](#warp) — Warp engine, canvas, physics-based transition system
-  - [Pages](#warp-pages) · [Components](#warp-components) · [Lib](#warp-lib) · [Hooks](#warp-hooks) · [API Routes](#warp-api) · [Types](#warp-types) · [Styles](#warp-styles) · [Migrations](#warp-migrations) · [Tests](#warp-tests) · [Dependencies](#warp-deps)
-- [VM / WASM Runtime](#vm) — Dual-VM coordinator, WASM GPU VM, buffer manager, inter-VM messaging, resource quotas
-  - [Pages](#vm-pages) · [Components](#vm-components) · [Lib](#vm-lib) · [Hooks](#vm-hooks) · [API Routes](#vm-api) · [Types](#vm-types) · [Styles](#vm-styles) · [Migrations](#vm-migrations) · [Tests](#vm-tests) · [Dependencies](#vm-deps)
-- [Journey System](#journey) — Journey trail, dots, insights, user journey tracking
-  - [Pages](#journey-pages) · [Components](#journey-components) · [Lib](#journey-lib) · [Hooks](#journey-hooks) · [API Routes](#journey-api) · [Types](#journey-types) · [Styles](#journey-styles) · [Migrations](#journey-migrations) · [Tests](#journey-tests) · [Dependencies](#journey-deps)
-- [Runtime Core](#runtime-core) — Dual-runtime bridge, engin workflow registry, module registry, seam clipboard, channel metrics
-  - [Pages](#runtime-core-pages) · [Components](#runtime-core-components) · [Lib](#runtime-core-lib) · [Hooks](#runtime-core-hooks) · [API Routes](#runtime-core-api) · [Types](#runtime-core-types) · [Styles](#runtime-core-styles) · [Migrations](#runtime-core-migrations) · [Tests](#runtime-core-tests) · [Dependencies](#runtime-core-deps)
-- [Dream Navigation](#dreamnav) — Spatial navigation engine, anchor system, gesture frame computer, quaternion physics
-  - [Pages](#dreamnav-pages) · [Components](#dreamnav-components) · [Lib](#dreamnav-lib) · [Hooks](#dreamnav-hooks) · [API Routes](#dreamnav-api) · [Types](#dreamnav-types) · [Styles](#dreamnav-styles) · [Migrations](#dreamnav-migrations) · [Tests](#dreamnav-tests) · [Dependencies](#dreamnav-deps)
+- [AI Systems (Boogieman / Dr.EAMS / Idari)](#ai)
+  - [Pages](#ai-pages) · [Components](#ai-components) · [Lib](#ai-lib) · [Hooks](#ai-hooks) · [API Routes](#ai-api) · [Types](#ai-types) · [Styles](#ai-styles) · [Tests](#ai-tests) · [Deps](#ai-deps)
+- [Child Safety](#child-safety)
+  - [Pages](#child-safety-pages) · [Components](#child-safety-components) · [Lib](#child-safety-lib) · [Hooks](#child-safety-hooks) · [API Routes](#child-safety-api) · [Types](#child-safety-types) · [Styles](#child-safety-styles) · [Tests](#child-safety-tests) · [Deps](#child-safety-deps)
+- [Observability & Idari Console](#observability)
+  - [Pages](#observability-pages) · [Components](#observability-components) · [Lib](#observability-lib) · [Hooks](#observability-hooks) · [API Routes](#observability-api) · [Types](#observability-types) · [Styles](#observability-styles) · [Tests](#observability-tests) · [Deps](#observability-deps)
+- [WebGPU / Babylon Engine](#webgpu-babylon)
+  - [Pages](#webgpu-babylon-pages) · [Components](#webgpu-babylon-components) · [Lib](#webgpu-babylon-lib) · [Hooks](#webgpu-babylon-hooks) · [API Routes](#webgpu-babylon-api) · [Types](#webgpu-babylon-types) · [Styles](#webgpu-babylon-styles) · [Tests](#webgpu-babylon-tests) · [Deps](#webgpu-babylon-deps)
+- [Warp System](#warp)
+  - [Pages](#warp-pages) · [Components](#warp-components) · [Lib](#warp-lib) · [Hooks](#warp-hooks) · [API Routes](#warp-api) · [Types](#warp-types) · [Styles](#warp-styles) · [Tests](#warp-tests) · [Deps](#warp-deps)
+- [VM / WASM Runtime](#vm)
+  - [Pages](#vm-pages) · [Components](#vm-components) · [Lib](#vm-lib) · [Hooks](#vm-hooks) · [API Routes](#vm-api) · [Types](#vm-types) · [Styles](#vm-styles) · [Tests](#vm-tests) · [Deps](#vm-deps)
+- [Journey System](#journey)
+  - [Pages](#journey-pages) · [Components](#journey-components) · [Lib](#journey-lib) · [Hooks](#journey-hooks) · [API Routes](#journey-api) · [Types](#journey-types) · [Styles](#journey-styles) · [Tests](#journey-tests) · [Deps](#journey-deps)
+- [Runtime Core](#runtime-core)
+  - [Pages](#runtime-core-pages) · [Components](#runtime-core-components) · [Lib](#runtime-core-lib) · [Hooks](#runtime-core-hooks) · [API Routes](#runtime-core-api) · [Types](#runtime-core-types) · [Styles](#runtime-core-styles) · [Tests](#runtime-core-tests) · [Deps](#runtime-core-deps)
+- [Dream Navigation](#dreamnav)
+  - [Pages](#dreamnav-pages) · [Components](#dreamnav-components) · [Lib](#dreamnav-lib) · [Hooks](#dreamnav-hooks) · [API Routes](#dreamnav-api) · [Types](#dreamnav-types) · [Styles](#dreamnav-styles) · [Tests](#dreamnav-tests) · [Deps](#dreamnav-deps)
 
 ## Cross-Cutting Analysis
 
-- [All API Routes (grouped)](#all-api-routes)
+- [Route Map](#route-map)
+- [File Connections + Connecting Functions](#file-connections)
+- [Dynamic Imports](#dynamic-imports)
+- [All API Routes](#all-api-routes)
 - [All React Components](#all-components)
-- [All Hooks (every export)](#all-hooks)
+- [All Hooks](#all-hooks)
 - [All Type Files](#all-types)
-- [All Migrations](#all-migrations)
+- [Dual Runtime Files](#dual-runtime-files)
 - [Supabase Usage](#supabase-usage)
 - [State: Zustand / Context](#state)
 - [Event Bus Subscribers & Emitters](#event-bus)
 - [Runtime Registries](#runtime-registries)
-- [File Connections (import graph)](#file-connections)
-- [Dynamic Imports](#dynamic-imports)
 - [Circular Dependencies](#circular-deps)
 - [Coupling Scores (Top 30)](#coupling-scores)
 - [System Risk Report](#risk-report)
@@ -106,9 +105,13 @@ Jump to any feature, subsection, or cross-cutting analysis directly.
 
 <a name="homedream"></a>
 
-# HomeDream
+# HOME — DreamDMBar
 
-> **Main home surface, feed, dual-runtime bar, persistent UI shell**
+> dreamdmbar IS home. It contains two sub-surfaces:
+>   • homedream  — the main feed/home surface the user lands on
+>   • dreamspace — the spatial shell that wraps everything
+> The bar is the most important piece: it bridges the dual runtimes,
+> holds the persistent UI shell, the feed, and the DM channel.
 
 <a name="homedream-pages"></a>
 
@@ -197,14 +200,6 @@ _No type files for this feature._
 ## Styles
 
 _No style files for this feature._
-
-<a name="homedream-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260310000000_widget_instances_visibility.sql`
-- `supabase/migrations/20260310000010_dreamdm_bar_pass2.sql`
-- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql`
 
 <a name="homedream-tests"></a>
 
@@ -326,7 +321,24 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (10 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
+**Dual Runtime** (14 files) · **Supabase** (10 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
+
+### Dual Runtime files
+
+- `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
+- `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`
+- `components/home/dream.ActiveModuleSurface.tsx`
+- `components/home/dream.NeuralSeamCanvas.tsx`
+- `components/home/dream.bar.PersistentDreamBar.tsx`
+- `lib/dreamdm/DreamSystemContext.tsx`
+- `lib/runtime/EnginDispatcher.ts`
+- `lib/runtime/dreamOSBus.ts`
+- `lib/runtime/dualRuntime.ts`
+- `lib/runtime/dualRuntimeBridge.ts`
+- `lib/runtime/useDualRuntime.ts`
+- `lib/runtime/useDualRuntimePersistence.ts`
 
 ### Supabase files
 
@@ -367,7 +379,7 @@ _No style files for this feature._
 
 # DreamR
 
-> **Short-form vertical video feed, swipe algorithm, close friends, creator panels**
+> Short-form vertical video feed, swipe algorithm, close friends, creator panels
 
 <a name="dreamr-pages"></a>
 
@@ -425,13 +437,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="dreamr-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260405000001_dreamr_feed_registry.sql`
-- `supabase/migrations/20260516000100_dreamr_tally.sql`
-
 <a name="dreamr-tests"></a>
 
 ## Tests
@@ -488,7 +493,12 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (6 files) · **Event Bus** (1 files)
+**Dual Runtime** (2 files) · **Supabase** (6 files) · **Event Bus** (1 files)
+
+### Dual Runtime files
+
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`
 
 ### Supabase files
 
@@ -509,7 +519,7 @@ _No style files for this feature._
 
 # DREAMenginOS
 
-> **OS-level engine shell, 3D canvas, search bar, nexus menu, scene system**
+> OS-level engine shell, 3D canvas, search bar, nexus menu, scene system
 
 <a name="dreamengin-pages"></a>
 
@@ -594,12 +604,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="dreamengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="dreamengin-tests"></a>
 
 ## Tests
@@ -679,7 +683,15 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (2 files) · **Event Bus** (2 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (5 files) · **Supabase** (2 files) · **Event Bus** (2 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+
+### Dual Runtime files
+
+- `components/dreamengin/dream.DREAMenginOS.tsx`
+- `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx`
+- `lib/dreamenginOS/index.ts`
+- `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/moduleRegistry.ts`
 
 ### Supabase files
 
@@ -710,7 +722,7 @@ _No migrations for this feature._
 
 # GameEngin
 
-> **Game OS, cartridge system, game launcher, DualSense input, in-game HUD, all games**
+> Game OS, cartridge system, game launcher, DualSense input, in-game HUD, all games
 
 <a name="gameengin-pages"></a>
 
@@ -943,14 +955,6 @@ _No migrations for this feature._
 - `components/games/dream.GameController.module.css`
 - `components/games/dream.hud.MobileGameHUD.module.css`
 
-<a name="gameengin-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260320100000_game_scores_all_games.sql`
-- `supabase/migrations/20260402000002_game_assets.sql`
-- `supabase/migrations/20260418000000_gameengin_core.sql`
-
 <a name="gameengin-tests"></a>
 
 ## Tests
@@ -973,7 +977,6 @@ _No migrations for this feature._
 - `tests/gameengin-spec.test.ts`
 - `tests/madmaxi-authored-levels.test.ts`
 - `tests/madmaxi-mechanics.test.ts`
-- `tests/report-driven-game-agent.test.ts`
 - `tests/shell-cartridge-wiring.test.ts`
 
 <a name="gameengin-deps"></a>
@@ -1141,7 +1144,14 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (4 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (4 files) · **Supabase** (4 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+
+### Dual Runtime files
+
+- `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `engins/engin.GameEngin.tsx`
+- `lib/gameengin/GameRuntime.tsx`
+- `lib/games/DualSenseManager.ts`
 
 ### Supabase files
 
@@ -1175,7 +1185,7 @@ _No migrations for this feature._
 
 # CodeEngin
 
-> **Code editor, IDE, AI co-pilot, notebook and projects panel**
+> Code editor, IDE, AI co-pilot, notebook and projects panel
 
 <a name="codeengin-pages"></a>
 
@@ -1261,12 +1271,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="codeengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="codeengin-tests"></a>
 
 ## Tests
@@ -1329,7 +1333,12 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (2 files) · **Event Bus** (3 files)
+**Dual Runtime** (2 files) · **Supabase** (2 files) · **Event Bus** (3 files)
+
+### Dual Runtime files
+
+- `components/daydream/dream.CodeDreamIDE.tsx`
+- `engins/engin.CodeEngin.tsx`
 
 ### Supabase files
 
@@ -1348,7 +1357,7 @@ _No migrations for this feature._
 
 # LabEngin
 
-> **Experiment runner, quantum panel, data viz, lab IDE**
+> Experiment runner, quantum panel, data viz, lab IDE
 
 <a name="labengin-pages"></a>
 
@@ -1419,12 +1428,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="labengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="labengin-tests"></a>
 
 ## Tests
@@ -1475,7 +1478,12 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (1 files) · **Event Bus** (3 files)
+**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (3 files)
+
+### Dual Runtime files
+
+- `components/daydream/dream.LabDreamIDE.tsx`
+- `engins/engin.LabEngin.tsx`
 
 ### Supabase files
 
@@ -1493,7 +1501,7 @@ _No migrations for this feature._
 
 # StarMaker (Music Engin)
 
-> **DAW, piano roll, multitrack arrangement, comping, session view, audio bridge**
+> DAW, piano roll, multitrack arrangement, comping, session view, audio bridge
 
 <a name="starmakerengin-pages"></a>
 
@@ -1575,12 +1583,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="starmakerengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="starmakerengin-tests"></a>
 
 ## Tests
@@ -1641,7 +1643,11 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (1 files) · **Event Bus** (2 files)
+**Dual Runtime** (1 files) · **Supabase** (1 files) · **Event Bus** (2 files)
+
+### Dual Runtime files
+
+- `engins/engin.StarMakerEngin.tsx`
 
 ### Supabase files
 
@@ -1658,7 +1664,7 @@ _No migrations for this feature._
 
 # BrandEngin
 
-> **Brand identity, campaigns, analytics daydream, branding engine**
+> Brand identity, campaigns, analytics daydream, branding engine
 
 <a name="brandengin-pages"></a>
 
@@ -1722,12 +1728,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="brandengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="brandengin-tests"></a>
 
 ## Tests
@@ -1775,7 +1775,13 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (2 files) · **Event Bus** (3 files)
+**Dual Runtime** (3 files) · **Supabase** (2 files) · **Event Bus** (3 files)
+
+### Dual Runtime files
+
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
+- `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
+- `engins/engin.BrandingEngin.tsx`
 
 ### Supabase files
 
@@ -1794,7 +1800,7 @@ _No migrations for this feature._
 
 # CreateEngin
 
-> **Content creation, editor panel, queue, calendar, publish intent**
+> Content creation, editor panel, queue, calendar, publish intent
 
 <a name="createengin-pages"></a>
 
@@ -1871,13 +1877,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="createengin-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260315000000_content_drafts.sql`
-- `supabase/migrations/20260320000000_scheduled_posts.sql`
-
 <a name="createengin-tests"></a>
 
 ## Tests
@@ -1935,7 +1934,11 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (1 files) · **Event Bus** (2 files)
+**Dual Runtime** (1 files) · **Supabase** (1 files) · **Event Bus** (2 files)
+
+### Dual Runtime files
+
+- `engins/engin.ContentEngin.tsx`
 
 ### Supabase files
 
@@ -1952,7 +1955,7 @@ _No style files for this feature._
 
 # PortfolioEngin
 
-> **Portfolio optimization, asset management, quantum circuit canvas**
+> Portfolio optimization, asset management, quantum circuit canvas
 
 <a name="portfolioengin-pages"></a>
 
@@ -2025,12 +2028,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="portfolioengin-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="portfolioengin-tests"></a>
 
 ## Tests
@@ -2074,7 +2071,11 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Event Bus** (1 files)
+**Dual Runtime** (1 files) · **Event Bus** (1 files)
+
+### Dual Runtime files
+
+- `engins/portfolio/dream.PortfolioEngin.tsx`
 
 ### Event Bus files
 
@@ -2086,7 +2087,7 @@ _No migrations for this feature._
 
 # ForgeEngin (Engine Builder)
 
-> **Build custom engines, AI-powered engine builder, forge rituals and momentum**
+> Build custom engines, AI-powered engine builder, forge rituals and momentum
 
 <a name="forgeengin-pages"></a>
 
@@ -2155,12 +2156,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="forgeengin-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql`
-
 <a name="forgeengin-tests"></a>
 
 ## Tests
@@ -2210,7 +2205,11 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Event Bus** (1 files)
+**Dual Runtime** (1 files) · **Event Bus** (1 files)
+
+### Dual Runtime files
+
+- `engins/dream.ForgeEngin.tsx`
 
 ### Event Bus files
 
@@ -2222,7 +2221,7 @@ _No style files for this feature._
 
 # Daydream System
 
-> **Daydream shell, pair routing, diff viewer, constellation map, journey trail**
+> Daydream shell, pair routing, diff viewer, constellation map, journey trail
 
 <a name="daydream-pages"></a>
 
@@ -2297,12 +2296,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="daydream-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260325000000_phase8f_daydream_network.sql`
-
 <a name="daydream-tests"></a>
 
 ## Tests
@@ -2373,7 +2366,7 @@ _No style files for this feature._
 
 # Profile & Edit Profile
 
-> **View/edit profile, profile dream surface, spatial widget layout, avatar editor**
+> View/edit profile, profile dream surface, spatial widget layout, avatar editor
 
 <a name="profile-pages"></a>
 
@@ -2439,13 +2432,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="profile-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260310000001_profiles_widget_config.sql`
-- `supabase/migrations/20260310000002_profile_dream_widgets.sql`
-
 <a name="profile-tests"></a>
 
 ## Tests
@@ -2510,7 +2496,7 @@ _No style files for this feature._
 
 # Widgets System
 
-> **Widget engine, bubbles, drag-drop, universal widget, widget surface and registry**
+> Widget engine, bubbles, drag-drop, universal widget, widget surface and registry
 
 <a name="widgets-pages"></a>
 
@@ -2587,15 +2573,6 @@ _No page routes for this feature._
 
 _No style files for this feature._
 
-<a name="widgets-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260210000000_widget_system_v2.sql`
-- `supabase/migrations/20260310000000_widget_instances_visibility.sql`
-- `supabase/migrations/20260310000002_profile_dream_widgets.sql`
-- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql`
-
 <a name="widgets-tests"></a>
 
 ## Tests
@@ -2652,7 +2629,7 @@ _No style files for this feature._
 
 # Feed & Social
 
-> **Main feed, algorithm engine, follow, comments, live feed, social cross-post, RSS**
+> Main feed, algorithm engine, follow, comments, live feed, social cross-post, RSS
 
 <a name="feed-pages"></a>
 
@@ -2744,15 +2721,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="feed-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260305000001_comments.sql`
-- `supabase/migrations/20260310000004_feed_items.sql`
-- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql`
-- `supabase/migrations/20260323100000_embed_feed_items.sql`
-
 <a name="feed-tests"></a>
 
 ## Tests
@@ -2823,7 +2791,7 @@ _No style files for this feature._
 
 # Settings
 
-> **All settings pages and panels: appearance, privacy, safety, controls, data, notifications, algorithm, security**
+> All settings pages and panels: appearance, privacy, safety, controls, data, notifications, algorithm, security
 
 <a name="settings-pages"></a>
 
@@ -2898,13 +2866,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="settings-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260316000000_visibility_mappings.sql`
-- `supabase/migrations/20260420000001_consent_settings_audit.sql`
-
 <a name="settings-tests"></a>
 
 ## Tests
@@ -2964,7 +2925,7 @@ _No style files for this feature._
 
 # Menus & Navigation
 
-> **Radial menus, dual bottom menu, dream nav controls, persistent bar, navigation engine**
+> Radial menus, dual bottom menu, dream nav controls, persistent bar, navigation engine
 
 <a name="menus-pages"></a>
 
@@ -3052,12 +3013,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="menus-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="menus-tests"></a>
 
 ## Tests
@@ -3117,7 +3072,7 @@ _No migrations for this feature._
 
 # Messages & DMs
 
-> **Direct messages, conversations, message boards, board composer**
+> Direct messages, conversations, message boards, board composer
 
 <a name="messages-pages"></a>
 
@@ -3179,13 +3134,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="messages-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260307000001_conversations_messages.sql`
-- `supabase/migrations/20260322000001_message_boards.sql`
-
 <a name="messages-tests"></a>
 
 ## Tests
@@ -3236,7 +3184,7 @@ _No style files for this feature._
 
 # Notifications
 
-> **Notification center, push notifications, alerts**
+> Notification center, push notifications, alerts
 
 <a name="notifications-pages"></a>
 
@@ -3290,12 +3238,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="notifications-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="notifications-tests"></a>
 
 ## Tests
@@ -3326,7 +3268,7 @@ _No migrations for this feature._
 
 # Connectors
 
-> **Platform connectors (YouTube, Instagram, Bluesky, RSS etc), OAuth flows, sync**
+> Platform connectors (YouTube, Instagram, Bluesky, RSS etc), OAuth flows, sync
 
 <a name="connectors-pages"></a>
 
@@ -3423,13 +3365,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="connectors-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260310000003_connector_accounts.sql`
-- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql`
-
 <a name="connectors-tests"></a>
 
 ## Tests
@@ -3493,7 +3428,7 @@ _No style files for this feature._
 
 # Marketplace & Shop
 
-> **Marketplace listings, shop, orders, skip credits, ads platform**
+> Marketplace listings, shop, orders, skip credits, ads platform
 
 <a name="marketplace-pages"></a>
 
@@ -3567,13 +3502,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="marketplace-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260321000000_ads_platform_promotions.sql`
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql`
-
 <a name="marketplace-tests"></a>
 
 ## Tests
@@ -3606,7 +3534,7 @@ _No style files for this feature._
 
 # Shared Dream (Collab)
 
-> **Real-time collaborative dream sessions, invite flow, shared runtime**
+> Real-time collaborative dream sessions, invite flow, shared runtime
 
 <a name="shared-dream-pages"></a>
 
@@ -3669,12 +3597,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="shared-dream-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260516000300_shared_dream_sessions.sql`
-
 <a name="shared-dream-tests"></a>
 
 ## Tests
@@ -3708,7 +3630,11 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (3 files) · **Event Bus** (1 files) · **React Context** (1 files)
+**Dual Runtime** (1 files) · **Supabase** (3 files) · **Event Bus** (1 files) · **React Context** (1 files)
+
+### Dual Runtime files
+
+- `components/shared-dream/dream.SharedDreamRuntime.tsx`
 
 ### Supabase files
 
@@ -3730,7 +3656,7 @@ _No style files for this feature._
 
 # Customize Mode
 
-> **Theme, color, font, layout, effects customize panels and toolbar**
+> Theme, color, font, layout, effects customize panels and toolbar
 
 <a name="customize-pages"></a>
 
@@ -3790,12 +3716,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="customize-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="customize-tests"></a>
 
 ## Tests
@@ -3836,7 +3756,7 @@ _No migrations for this feature._
 
 # Auth
 
-> **Login, join, password reset, OAuth callback, session management**
+> Login, join, password reset, OAuth callback, session management
 
 <a name="auth-pages"></a>
 
@@ -3863,10 +3783,6 @@ _No migrations for this feature._
 ### `lib/auth/`
 
 - `lib/auth/nextRedirect.ts`
-
-### `lib/supabase/`
-
-- `lib/supabase/safeGetUser.ts`
 
 <a name="auth-hooks"></a>
 
@@ -3895,13 +3811,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="auth-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260214000000_security_axioms.sql`
-- `supabase/migrations/20260226000000_admin_lock.sql`
-
 <a name="auth-tests"></a>
 
 ## Tests
@@ -3917,7 +3826,6 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
 - `lucide-react`
 - `next`
 - `react`
@@ -3927,14 +3835,6 @@ _No style files for this feature._
 - `@/lib/auth/nextRedirect`
 - `@/lib/supabase/config`
 - `@/lib/supabase/server`
-
-## Special Capabilities
-
-**Supabase** (1 files)
-
-### Supabase files
-
-- `lib/supabase/safeGetUser.ts`
 
 ---
 
@@ -3946,7 +3846,7 @@ _No style files for this feature._
 
 # AI Systems (Boogieman / Dr.EAMS / Idari)
 
-> **Boogieman policy engine, Dr.EAMS assistant, Idari admin AI, triad consensus, tool router**
+> Boogieman policy engine, Dr.EAMS assistant, Idari admin AI, triad consensus, tool router
 
 <a name="ai-pages"></a>
 
@@ -4045,14 +3945,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="ai-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260210000001_ai_system_v2026.sql`
-- `supabase/migrations/20260210_ai_core.sql`
-- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql`
-
 <a name="ai-tests"></a>
 
 ## Tests
@@ -4128,7 +4020,7 @@ _No style files for this feature._
 
 # Child Safety
 
-> **Content scanning, NCMEC reporting, image classifier, message context checker**
+> Content scanning, NCMEC reporting, image classifier, message context checker
 
 <a name="child-safety-pages"></a>
 
@@ -4181,12 +4073,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="child-safety-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260325100000_child_safety.sql`
-
 <a name="child-safety-tests"></a>
 
 ## Tests
@@ -4230,7 +4116,7 @@ _No style files for this feature._
 
 # Observability & Idari Console
 
-> **OpenTelemetry, metrics, health trends, platform errors, Idari admin console**
+> OpenTelemetry, metrics, health trends, platform errors, Idari admin console
 
 <a name="observability-pages"></a>
 
@@ -4291,12 +4177,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="observability-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="observability-tests"></a>
 
 ## Tests
@@ -4346,7 +4226,7 @@ _No migrations for this feature._
 
 # WebGPU / Babylon Engine
 
-> **WebGPU director, Babylon.js engine factory, adaptive quality, 3D rendering pipeline**
+> WebGPU director, Babylon.js engine factory, adaptive quality, 3D rendering pipeline
 
 <a name="webgpu-babylon-pages"></a>
 
@@ -4393,6 +4273,13 @@ _No page routes for this feature._
 - `lib/webgpu/director.ts`
 - `lib/webgpu/useWebGPUDirector.ts`
 
+### `optimizer/`
+
+- `optimizer/constraint-solver.ts`
+- `optimizer/creative-validator.ts`
+- `optimizer/index.ts`
+- `optimizer/types.ts`
+
 <a name="webgpu-babylon-hooks"></a>
 
 ## Exported Hooks
@@ -4417,12 +4304,6 @@ _No type files for this feature._
 ## Styles
 
 _No style files for this feature._
-
-<a name="webgpu-babylon-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
 
 <a name="webgpu-babylon-tests"></a>
 
@@ -4464,7 +4345,7 @@ _No migrations for this feature._
 
 # Warp System
 
-> **Warp engine, canvas, physics-based transition system**
+> Warp engine, canvas, physics-based transition system
 
 <a name="warp-pages"></a>
 
@@ -4513,12 +4394,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="warp-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="warp-tests"></a>
 
 ## Tests
@@ -4545,7 +4420,7 @@ _No migrations for this feature._
 
 # VM / WASM Runtime
 
-> **Dual-VM coordinator, WASM GPU VM, buffer manager, inter-VM messaging, resource quotas**
+> Dual-VM coordinator, WASM GPU VM, buffer manager, inter-VM messaging, resource quotas
 
 <a name="vm-pages"></a>
 
@@ -4609,12 +4484,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="vm-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="vm-tests"></a>
 
 ## Tests
@@ -4644,7 +4513,14 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Event Bus** (1 files)
+**Dual Runtime** (4 files) · **Event Bus** (1 files)
+
+### Dual Runtime files
+
+- `lib/vm/bus-events.ts`
+- `lib/vm/dual-runtime.ts`
+- `lib/vm/dualVMCoordinator.ts`
+- `lib/vm/index.ts`
 
 ### Event Bus files
 
@@ -4656,7 +4532,7 @@ _No migrations for this feature._
 
 # Journey System
 
-> **Journey trail, dots, insights, user journey tracking**
+> Journey trail, dots, insights, user journey tracking
 
 <a name="journey-pages"></a>
 
@@ -4706,12 +4582,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="journey-migrations"></a>
-
-## Database Migrations
-
-- `supabase/migrations/20260319000000_journey_dots.sql`
-
 <a name="journey-tests"></a>
 
 ## Tests
@@ -4740,7 +4610,7 @@ _No style files for this feature._
 
 # Runtime Core
 
-> **Dual-runtime bridge, engin workflow registry, module registry, seam clipboard, channel metrics**
+> Dual-runtime bridge, engin workflow registry, module registry, seam clipboard, channel metrics
 
 <a name="runtime-core-pages"></a>
 
@@ -4835,12 +4705,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="runtime-core-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="runtime-core-tests"></a>
 
 ## Tests
@@ -4916,7 +4780,26 @@ _No migrations for this feature._
 
 ## Special Capabilities
 
-**Supabase** (1 files) · **Event Bus** (7 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (4 files)
+**Dual Runtime** (16 files) · **Supabase** (1 files) · **Event Bus** (7 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (4 files)
+
+### Dual Runtime files
+
+- `components/runtime/dream.DualRuntimeContainer.tsx`
+- `components/runtime/dream.RuntimeView.tsx`
+- `lib/engins/useEnginWorkflow.ts`
+- `lib/runtime/EnginDispatcher.ts`
+- `lib/runtime/channelMetrics.ts`
+- `lib/runtime/dreamOSBus.ts`
+- `lib/runtime/dualRuntime.ts`
+- `lib/runtime/dualRuntimeBridge.ts`
+- `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/memory.ts`
+- `lib/runtime/moduleRegistry.ts`
+- `lib/runtime/quantumCircuit.ts`
+- `lib/runtime/seamClipboard.ts`
+- `lib/runtime/useDualRuntime.ts`
+- `lib/runtime/useDualRuntimePersistence.ts`
+- `lib/runtime/useEnginBridge.ts`
 
 ### Supabase files
 
@@ -4954,7 +4837,7 @@ _No migrations for this feature._
 
 # Dream Navigation
 
-> **Spatial navigation engine, anchor system, gesture frame computer, quaternion physics**
+> Spatial navigation engine, anchor system, gesture frame computer, quaternion physics
 
 <a name="dreamnav-pages"></a>
 
@@ -5035,12 +4918,6 @@ _No type files for this feature._
 
 _No style files for this feature._
 
-<a name="dreamnav-migrations"></a>
-
-## Database Migrations
-
-_No migrations for this feature._
-
 <a name="dreamnav-tests"></a>
 
 ## Tests
@@ -5094,6 +4971,10634 @@ _No migrations for this feature._
 ### Context files
 
 - `components/dreamnav/dreamsurface.dreamnav.tsx`
+
+---
+
+<a name="route-map"></a>
+
+# Route Map
+
+> User navigation flow. dreamdmbar = HOME. Dynamic segments shown as `:param`. Catch-alls as `:param*`.
+
+## `Root`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/` | `app/page.tsx` |  |
+
+## `/about`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/about` | `app/about/page.tsx` |  |
+
+## `/ads`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/ads` | `app/ads/page.tsx` |  |
+| `/ads/create` | `app/ads/create/page.tsx` |  |
+| `/ads/slot/:id` | `app/ads/slot/[id]/page.tsx` |  |
+
+## `/auth`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/auth/reset-password` | `app/auth/reset-password/page.tsx` |  |
+| `/auth/update-password` | `app/auth/update-password/page.tsx` |  |
+
+## `/connectors`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/connectors` | `app/connectors/page.tsx` |  |
+
+## `/daydream`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/daydream/analytics` | `app/daydream/analytics/page.tsx` |  |
+| `/daydream/brand` | `app/daydream/brand/page.tsx` |  |
+| `/daydream/brand/engin` | `app/daydream/brand/engin/page.tsx` |  |
+| `/daydream/code` | `app/daydream/code/page.tsx` |  |
+| `/daydream/code/engin` | `app/daydream/code/engin/page.tsx` |  |
+| `/daydream/constellation` | `app/daydream/constellation/page.tsx` |  |
+| `/daydream/create` | `app/daydream/create/page.tsx` |  |
+| `/daydream/create/engin` | `app/daydream/create/engin/page.tsx` |  |
+| `/daydream/forge` | `app/daydream/forge/page.tsx` |  |
+| `/daydream/game` | `app/daydream/game/page.tsx` |  |
+| `/daydream/games` | `app/daydream/games/page.tsx` |  |
+| `/daydream/games/engin` | `app/daydream/games/engin/page.tsx` |  |
+| `/daydream/lab` | `app/daydream/lab/page.tsx` |  |
+| `/daydream/lab/engin` | `app/daydream/lab/engin/page.tsx` |  |
+| `/daydream/lab/portfolio` | `app/daydream/lab/portfolio/page.tsx` |  |
+| `/daydream/media-vault` | `app/daydream/media-vault/page.tsx` |  |
+| `/daydream/music` | `app/daydream/music/page.tsx` |  |
+| `/daydream/music/engin` | `app/daydream/music/engin/page.tsx` |  |
+| `/daydream/music/upload` | `app/daydream/music/upload/page.tsx` |  |
+| `/daydream/play` | `app/daydream/play/page.tsx` |  |
+
+## `/discover`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/discover` | `app/discover/page.tsx` |  |
+
+## `/dream-effects`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/dream-effects` | `app/dream-effects/page.tsx` |  |
+
+## `/dreamdmbar`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/dreamdmbar` | `app/dreamdmbar/page.tsx` |  ← HOME (DreamDMBar) |
+| `/dreamdmbar/dreamspace` | `app/dreamdmbar/dreamspace/page.tsx` |  ← HOME (DreamSpace) |
+| `/dreamdmbar/dualruntime` | `app/dreamdmbar/dualruntime/page.tsx` |  |
+| `/dreamdmbar/homedream` | `app/dreamdmbar/homedream/page.tsx` |  ← HOME (DreamDMBar) |
+
+## `/dreamr`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/dreamr` | `app/dreamr/page.tsx` |  |
+
+## `/dreamspace`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/dreamspace` | `app/dreamspace/page.tsx` |  |
+
+## `/edit-profiledream`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/edit-profiledream` | `app/edit-profiledream/page.tsx` |  |
+
+## `/engines`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/engines` | `app/engines/page.tsx` |  |
+| `/engines/brand` | `app/engines/brand/page.tsx` |  |
+| `/engines/brand/campaigns` | `app/engines/brand/campaigns/page.tsx` |  |
+| `/engines/brand/identity` | `app/engines/brand/identity/page.tsx` |  |
+| `/engines/code` | `app/engines/code/page.tsx` |  |
+| `/engines/code/ai` | `app/engines/code/ai/page.tsx` |  |
+| `/engines/code/notebook` | `app/engines/code/notebook/page.tsx` |  |
+| `/engines/code/projects` | `app/engines/code/projects/page.tsx` |  |
+| `/engines/create` | `app/engines/create/page.tsx` |  |
+| `/engines/create/calendar` | `app/engines/create/calendar/page.tsx` |  |
+| `/engines/create/editor` | `app/engines/create/editor/page.tsx` |  |
+| `/engines/create/queue` | `app/engines/create/queue/page.tsx` |  |
+| `/engines/games` | `app/engines/games/page.tsx` |  |
+| `/engines/games/builder` | `app/engines/games/builder/page.tsx` |  |
+| `/engines/games/library` | `app/engines/games/library/page.tsx` |  |
+| `/engines/games/scores` | `app/engines/games/scores/page.tsx` |  |
+| `/engines/lab` | `app/engines/lab/page.tsx` |  |
+| `/engines/lab/data` | `app/engines/lab/data/page.tsx` |  |
+| `/engines/lab/experiments` | `app/engines/lab/experiments/page.tsx` |  |
+| `/engines/lab/quantum` | `app/engines/lab/quantum/page.tsx` |  |
+| `/engines/music` | `app/engines/music/page.tsx` |  |
+| `/engines/music/arrange` | `app/engines/music/arrange/page.tsx` |  |
+| `/engines/music/library` | `app/engines/music/library/page.tsx` |  |
+| `/engines/music/studio` | `app/engines/music/studio/page.tsx` |  |
+| `/engines/portfolio` | `app/engines/portfolio/page.tsx` |  |
+| `/engines/portfolio/assets` | `app/engines/portfolio/assets/page.tsx` |  |
+| `/engines/portfolio/optimize` | `app/engines/portfolio/optimize/page.tsx` |  |
+| `/engines/portfolio/quantum` | `app/engines/portfolio/quantum/page.tsx` |  |
+
+## `/feed-settings`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/feed-settings` | `app/feed-settings/page.tsx` |  |
+
+## `/gameengin`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/gameengin` | `app/gameengin/page.tsx` |  |
+| `/gameengin/cartridges` | `app/gameengin/cartridges/page.tsx` |  |
+| `/gameengin/cartridges/:id` | `app/gameengin/cartridges/[id]/page.tsx` |  |
+
+## `/homedream`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/homedream` | `app/homedream/page.tsx` |  |
+
+## `/idari-console`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/idari-console` | `app/(internal)/idari-console/page.tsx` |  |
+| `/idari-console/platform-errors` | `app/(internal)/idari-console/platform-errors/page.tsx` |  |
+| `/idari-console/platform-health` | `app/(internal)/idari-console/platform-health/page.tsx` |  |
+
+## `/join`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/join` | `app/join/page.tsx` |  |
+
+## `/lab`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/lab` | `app/lab/page.tsx` |  |
+| `/lab/:id` | `app/lab/[id]/page.tsx` |  |
+| `/lab/:id/codespace` | `app/lab/[id]/codespace/page.tsx` |  |
+| `/lab/new` | `app/lab/new/page.tsx` |  |
+
+## `/login`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/login` | `app/login/page.tsx` |  |
+
+## `/marketplace`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/marketplace` | `app/marketplace/page.tsx` |  |
+| `/marketplace/:id` | `app/marketplace/[id]/page.tsx` |  |
+| `/marketplace/sell` | `app/marketplace/sell/page.tsx` |  |
+
+## `/messages`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/messages` | `app/messages/page.tsx` |  |
+| `/messages/boards` | `app/messages/boards/page.tsx` |  |
+| `/messages/boards/:id` | `app/messages/boards/[id]/page.tsx` |  |
+| `/messages/boards/new` | `app/messages/boards/new/page.tsx` |  |
+
+## `/mission`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/mission` | `app/mission/page.tsx` |  |
+
+## `/notes`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/notes` | `app/notes/page.tsx` |  |
+
+## `/onboarding`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/onboarding` | `app/onboarding/page.tsx` |  |
+
+## `/policy`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/policy` | `app/policy/page.tsx` |  |
+
+## `/profile`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/profile` | `app/profile/page.tsx` |  |
+| `/profile/:handle` | `app/profile/[handle]/page.tsx` |  |
+
+## `/settings`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/settings` | `app/settings/page.tsx` |  |
+| `/settings/account` | `app/settings/account/page.tsx` |  |
+| `/settings/algorithm` | `app/settings/algorithm/page.tsx` |  |
+| `/settings/appearance` | `app/settings/appearance/page.tsx` |  |
+| `/settings/controls` | `app/settings/controls/page.tsx` |  |
+| `/settings/data` | `app/settings/data/page.tsx` |  |
+| `/settings/dreams` | `app/settings/dreams/page.tsx` |  |
+| `/settings/feed` | `app/settings/feed/page.tsx` |  |
+| `/settings/help` | `app/settings/help/page.tsx` |  |
+| `/settings/notifications` | `app/settings/notifications/page.tsx` |  |
+| `/settings/privacy` | `app/settings/privacy/page.tsx` |  |
+| `/settings/safety` | `app/settings/safety/page.tsx` |  |
+| `/settings/security` | `app/settings/security/page.tsx` |  |
+| `/settings/widgets` | `app/settings/widgets/page.tsx` |  |
+
+## `/shop`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/shop` | `app/shop/page.tsx` |  |
+| `/shop/sell` | `app/shop/sell/page.tsx` |  |
+
+## `/u`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/u/:handle` | `app/u/[handle]/page.tsx` |  |
+
+## `/view-profile`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/view-profile` | `app/view-profile/page.tsx` |  |
+
+## `/webgpu`
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/webgpu` | `app/webgpu/page.tsx` |  |
+
+---
+
+<a name="file-connections"></a>
+
+# File Connections — Connecting Functions
+
+> Read this as: **file X pulls in [these named functions/components/hooks] from [these modules].**
+> ⬡ = default export · `* as` = namespace import · others = named exports
+
+## `.github/scripts/issue-bot.js`
+
+| Module | Connected via |
+|--------|---------------|
+| `./HeavyComponent` | _(dynamic import)_ |
+
+## `.github/scripts/run-readme-autosync.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `execFileSync`, `spawnSync` |
+| `node:fs` | `copyFileSync`, `existsSync`, `mkdirSync`, `readFileSync`, `writeFileSync` |
+| `node:path` | `dirname`, `join`, `resolve` |
+
+## `app/(internal)/idari-console/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.panel.ChildSafetyPanel` | `⬡ ChildSafetyPanel` |
+| `@/components/dream.panel.IDariPanel` | `⬡ IDariPanel` |
+| `@/lib/admin/upgrade-readiness` | `createUpgradeReadinessSnapshot` |
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/dev-bypass` | `isDevAdminBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Activity`, `AlertTriangle`, `ArrowLeft`, `Bot`, `CheckCircle`, `Clock`, `Database`, `LucideIcon`, `Shield`, `Users`, `XCircle`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/(internal)/idari-console/platform-errors/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `app/(internal)/idari-console/platform-health/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/idari/dream.PlatformHealth` | `PlatformHealth` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/about/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.PlatformBadge` | `⬡ PlatformBadge` |
+| `lucide-react` | `ArrowLeft`, `ArrowRight`, `Beaker`, `Cpu`, `Heart`, `LayoutGrid`, `Lock`, `MessageCircle`, `Music`, `Settings`, `Shield`, `ShoppingBag`, `Sparkles`, `Twitter`, `Users` |
+| `next/link` | `⬡ Link` |
+
+## `app/actions/dream-docs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/dream-docs/embed` | `embedDocSection` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Json` |
+
+## `app/ads/create/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `DollarSign`, `Info`, `LayoutGrid`, `Loader2` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `app/ads/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ads` | `AdListing`, `AdOrder`, `AdSlot` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `ArrowLeft`, `BarChart3`, `DollarSign`, `LayoutGrid`, `Plus`, `ShoppingCart`, `Sparkles` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/ads/slot/[id]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ads` | `AdSlot` |
+| `lucide-react` | `ArrowLeft`, `DollarSign`, `Hash`, `LayoutGrid`, `ToggleLeft` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/api/account/delete-data/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+| `zod` | `z` |
+
+## `app/api/account/delete-dream/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/agentBus` | `runTriadConsensus` |
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient`, `createServiceClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+| `zod` | `z` |
+
+## `app/api/account/export-data/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/activity/track/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/scoring` | `calculateActivityPoints`, `calculateDecayDate` |
+| `@/lib/activity/types` | `ActivityVerification`, `TrackActivityRequest`, `TrackActivityResponse`, `VERIFICATION_STRENGTH` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/admin/ai-chat/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/admin/lockout` | `isAdminLocked`, `isOwner`, `triggerAdminLockout` |
+| `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `@/lib/ai/triad` | `AI_MODELS` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/admin/ai-request/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `NextResponse` |
+
+## `app/api/admin/child-safety/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/admin/code-files/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/admin/lockout` | `isAdminLocked`, `isDomainBlocked`, `isOwner`, `triggerAdminLockout` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/admin/observability/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/observability/collector` | `getBufferStats`, `getSnapshot` |
+| `@/lib/observability/correlator` | `correlate` |
+| `@/lib/observability/immediateAction` | `buildImmediateRemediationAction` |
+| `@/lib/observability/rootCauseAnalyzer` | `inferRootCause` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/ads/orders/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/ads/view/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/aqs` | `qualifiesForPremiumCPV` |
+| `@/lib/activity/revenueSplit` | `calculateActivityRevenueSplit` |
+| `@/lib/activity/skipCredits` | `calculateSkipCreditsEarned` |
+| `@/lib/activity/types` | `AdView`, `CPVTier`, `CPV_PRICING`, `TrackAdViewRequest`, `TrackAdViewResponse` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/agent/session/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agentOS` | `getAgentOS` |
+| `@/lib/agentOS/hostTools` | `codeEnginHostTools` |
+| `@supabase/supabase-js` | `createClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/ai/boogieman/child-safety/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION`, `boogieEnforce` |
+| `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/child-safety/childSafetyDetector` | `isZeroTolerance`, `scanContent` |
+| `@/lib/child-safety/imageClassifier` | `classifyImage` |
+| `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `crypto` | `createHash` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+| `zod` | `z` |
+| `@/lib/child-safety/imageClassifier` | _(dynamic import)_ |
+
+## `app/api/ai/boogieman/privacy-event/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+| `zod` | `z` |
+
+## `app/api/ai/boogieman/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION`, `boogieEvaluate` |
+| `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `@/lib/ai/triad` | `boogiePolicyCheck`, `isOwnerEmail` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+| `zod` | `z` |
+
+## `app/api/ai/boogieman/status/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `next/server` | `NextResponse` |
+
+## `app/api/ai/eams/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogieman` | `boogieEvaluate` |
+| `@/lib/ai/confirm` | `makeConfirmToken` |
+| `@/lib/ai/rateLimit` | `checkRateLimit`, `getCurrentRPM` |
+| `@/lib/ai/schemas` | `DrEamsRunBodySchema`, `DrEamsRunResponse` |
+| `@/lib/ai/triad` | `boogiePolicyCheck`, `isOwnerEmail`, `planWithEams`, `validateWithIdari` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+
+## `app/api/ai/execute/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/confirm` | `verifyConfirmToken` |
+| `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `@/lib/ai/schemas` | `ExecuteBodySchema`, `Intent` |
+| `@/lib/ai/triad` | `validateWithIdari` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Json` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/ai/idari/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idari` | `GenerationLawAssessment`, `assessGenerationLawScope`, `formatGenerationLawLoadCheck` |
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogieman` | `boogieEvaluate` |
+| `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `@/lib/ai/rateLimit` | `checkRateLimit`, `getCurrentRPM` |
+| `@/lib/ai/schemas` | `DrEamsRunBodySchema`, `Intent` |
+| `@/lib/ai/triad` | `AI_MODELS`, `isOwnerEmail`, `validateWithIdari` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+
+## `app/api/appeal/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/audit` | `writeAuditLog` |
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION`, `RULE_CODES` |
+| `@/lib/ai/schemas` | `AppealRequestSchema` |
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `uuid` | `v4` |
+
+## `app/api/auth/logout/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+
+## `app/api/auth/providers/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/config` | `SUPABASE_CONFIG` |
+| `next/server` | `NextResponse` |
+
+## `app/api/blocks/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/api/route` | `jsonApiError` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/ci/run/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `child_process` | `spawn` |
+| `next/server` | `NextResponse` |
+
+## `app/api/close-friends/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/comments/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `crypto` | `createHash` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/connectors/[provider]/connect/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/bluesky` | `blueskyVerify` |
+| `@/lib/connectors/providers/github` | `githubVerify` |
+| `@/lib/connectors/providers/mastodon` | `mastodonVerify` |
+| `@/lib/connectors/providers/nostr` | `nostrVerify` |
+| `@/lib/connectors/providers/reddit` | `redditVerify` |
+| `@/lib/connectors/providers/youtube` | `youtubeVerify` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `ConnectorConnectResponse` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/[provider]/disconnect/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/[provider]/items/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/[provider]/sync/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/reconcile` | `reconcileConnector` |
+| `@/lib/connectors/syncDispatch` | `DISPATCH_SUPPORTED_PROVIDERS` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/connector` | `ConnectorSyncResponse` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/[provider]/verify/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/bluesky` | `blueskyVerify` |
+| `@/lib/connectors/providers/github` | `githubVerify` |
+| `@/lib/connectors/providers/mastodon` | `mastodonVerify` |
+| `@/lib/connectors/providers/nostr` | `nostrVerify` |
+| `@/lib/connectors/providers/reddit` | `redditVerify` |
+| `@/lib/connectors/providers/youtube` | `youtubeVerify` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `ConnectorVerifyResponse` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/cron/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/reconcile` | `ReconcileResult`, `reconcileConnector` |
+| `@/lib/connectors/syncDispatch` | `DISPATCH_SUPPORTED_PROVIDERS` |
+| `@/lib/connectors/webhookVerification` | `isCronAuthorised` |
+| `@/lib/supabase/server` | `createServiceClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/instagram/oauth/callback/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/headers` | `cookies` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/instagram/oauth/start/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/headers` | `cookies` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/status/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `ConnectorStatus` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/connectors/webhooks/[provider]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/deliveryStrategy` | `supportsWebhook`, `supportsWebhookVerification` |
+| `@/lib/connectors/webhookVerification` | `extractMetaWebhookChallenge`, `extractYouTubeWebSubChallenge` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `createClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/youtube/oauth/callback/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/headers` | `cookies` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/connectors/youtube/oauth/start/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/headers` | `cookies` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/content/generative-fill/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/content/intelligence/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/content/transcribe/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/content/transcriptEditor` | `parseSRT`, `parseVTT`, `totalDurationMs` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/content/voice-clone/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/content/voiceClone` | `estimateDurationSeconds` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/dr-eams/hf/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/dr-eams/run/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/drafts/[id]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/drafts/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/dream-windows/[id]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES`, `DreamWindowInstance`, `validateDreamWindowLayers` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/dream-windows/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/dreamengin/os-status/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/dreamr/feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/api/feedHandler` | `dreamrFeedHandler` |
+
+## `app/api/dreamr/suggested/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed`, `scoreDreamRPost` |
+| `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/dreamr/tally/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/dreams/feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/widgets/feed-resolver` | `resolveFeedHost` |
+| `@/types/widget-system-v2` | `DreamDefinition`, `DreamInstance`, `FeedHostConfig`, `HostKind` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse`, `connection` |
+
+## `app/api/dreams/instances/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/widget-system-v2` | `Surface` |
+| `next/server` | `NextRequest`, `NextResponse`, `connection` |
+| `zod` | `z` |
+
+## `app/api/dreams/transfer/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/embed-feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feeds/embedFeedLoader` | `EmbedFeedItem`, `loadEmbedFeed` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/favorites/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/visibility-score` | `sortByVisibilityScore` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/follow/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/gal/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/game-scores/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/gameengin/crash-report/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/brain-reader` | `CRASH_REPORT_MAX_BYTES`, `isActiveCartridge`, `recordCrashReport` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/health/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextResponse` |
+
+## `app/api/home-layout/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/journey/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Json` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/lab/benchmarks/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/ledger-media/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `decodeLedgerBlob` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/likes/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/marketplace/request/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/marketplace/request` | `buildContactRequestRecord`, `validateContactRequest` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/marketplace/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/messages/boards/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `app/api/messages/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `crypto` | `createHash` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/metrics/platform/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `GetPlatformMetricsResponse` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient`, `createServiceClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/metrics/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/observability/otel` | `getPrometheusMetrics` |
+| `@/lib/observability/otelBridge` | `initOtelBridge` |
+| `next/server` | `NextRequest`, `NextResponse`, `connection` |
+
+## `app/api/metrics/user/[userId]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `ActivityTier`, `GetUserMetricsResponse`, `UserMetrics`, `isValidActivityTier` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/supabase` | `Database` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/music/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/notifications/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/platform/errors/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/posts/[id]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/posts/[id]/save/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/posts/[id]/view/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/posts/profile/[userId]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/posts/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `crypto` | `createHash` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/profile/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/projects/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/scheduled-posts/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/security/scan/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `child_process` | `exec` |
+| `next/server` | `NextResponse` |
+| `util` | `promisify` |
+
+## `app/api/settings/appearance/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/settings/feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/settings/notifications/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/settings/privacy/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/setup/check/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/setup/checks` | `getSetupStatus` |
+| `next/server` | `NextResponse` |
+
+## `app/api/setup/google-oauth/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/config` | `SUPABASE_CONFIG`, `getServerSiteOrigin`, `getSupabaseAuthCallbackUrl` |
+| `next/server` | `NextResponse` |
+
+## `app/api/shared-dream/sessions/[id]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse`, `connection` |
+| `zod` | `z` |
+
+## `app/api/shared-dream/sessions/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse`, `connection` |
+| `zod` | `z` |
+
+## `app/api/shellhub/devices/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/shellhub` | `SHELLHUB_DEFAULT_SERVER`, `ShellHubDevice`, `shellhubListDevices` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/shop/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/shop/listings` | `normalizeShopListing`, `validateShopListing` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/skip-credits/balance/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextResponse` |
+
+## `app/api/skip-credits/earn/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `EarnSkipCreditsRequest`, `EarnSkipCreditsResponse` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/skip-credits/use/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `UseSkipCreditsRequest`, `UseSkipCreditsResponse` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/social/ipfs/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/social/livekit/room/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/livekit` | `LiveKitRoomInfo` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/social/livekit/token/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/livekit` | `LiveKitError`, `generateServerToken` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/social/rss-feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `RssProvider`, `devtoUserRssUrl`, `facebookPageRssUrl`, `githubUserAtomUrl`, `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `mastodonUserRssUrl`, `mediumUserRssUrl`, `nostrGatewayRssUrl`, `parseRssFeed`, `pinterestRssUrl`, `podcastRssUrl`, `redditSubredditRssUrl`, `redditUserRssUrl`, `substackRssUrl`, `tiktokProfileRssUrl`, `tumblrRssUrl`, `twitterNitterRssUrl`, `youtubeChannelRssUrl`, `youtubePlaylistRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/upload/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `crypto` | `createHash` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zlib` | `gunzipSync`, `gzipSync` |
+
+## `app/api/user/layout/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/views/track/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `TrackViewRequest`, `TrackViewResponse` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/widgets/feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/widgets/instances/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/youtube/channel/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeSearchByQuery` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/youtube/discovery/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeDiscovery` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/youtube/live-feed/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeSearchByQuery` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/auth/callback/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/auth/nextRedirect` | `resolveSafeNextPath` |
+| `@/lib/supabase/config` | `SUPABASE_CONFIG` |
+| `@/lib/supabase/server` | `createServerClientWithCustomCookies` |
+| `next/headers` | `cookies` |
+| `next/server` | `NextResponse` |
+
+## `app/auth/reset-password/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/config` | `buildAuthCallbackUrl` |
+| `next/link` | `⬡ Link` |
+| `react` | `useMemo`, `useState` |
+
+## `app/auth/update-password/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/auth/dream.PasswordField` | `⬡ PasswordField` |
+| `@/lib/supabase/client` | `createClient` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useMemo`, `useState` |
+
+## `app/connectors/dream.ConnectorsClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/connectors/dream.AddSliceSheet` | `FeedSlice`, `⬡ AddSliceSheet` |
+| `@/components/connectors/dream.ConnectorRow` | `⬡ ConnectorRow` |
+| `@/components/connectors/dream.NoSlotDialog` | `⬡ NoSlotDialog` |
+| `@/components/connectors/dream.PlacementMode` | `⬡ PlacementMode` |
+| `@/components/connectors/dream.widget.ConnectWidgetPrompt` | `⬡ ConnectWidgetPrompt` |
+| `@/components/widgets/dream.widget.WidgetShell` | `WidgetDataState`, `⬡ WidgetShell` |
+| `@/hooks/useConnectorInstallFlow` | `useConnectorInstallFlow` |
+| `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY`, `ConnectorStatus`, `getConnectorDef` |
+| `@/lib/connectors/installFlow` | `SlotGrid` |
+| `@/lib/widgets/widgetRegistry` | `getWidgetTypeDef` |
+| `lucide-react` | `RefreshCw` |
+
+## `app/connectors/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.ConnectorsClient` | `⬡ ConnectorsClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Plug` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/analytics/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream` | `⬡ AnalyticsDaydream` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `BarChart2` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/engins/dream.panel.AnalyticsEngin` | _(dynamic import)_ |
+
+## `app/daydream/brand/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/brand/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dreamsurface.daydream.BrandDaydream` | `⬡ BrandDaydream` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.BrandingEngin` | `⬡ BrandingEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Palette` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/code/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/code/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.CodeEngin` | `⬡ CodeEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Code2`, `FileCode2`, `FolderOpen`, `Play`, `Upload` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/constellation/dream.ConstellationClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.constellationmap` | `⬡ DreamConstellationMap` |
+| `lucide-react` | `ArrowLeft` |
+| `next/link` | `⬡ Link` |
+
+## `app/daydream/constellation/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.ConstellationClient` | `⬡ ConstellationClient` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/create/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/create/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.ContentEngin` | `⬡ ContentEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `PlusCircle`, `Sparkles` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/forge/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/forge/dream.widget.ForgeMomentumWidget` | `⬡ ForgeMomentumWidget` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/dream.ForgeEngin` | `⬡ ForgeEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/forge/forgeRegistry` | `CREATIVE_ENGINES` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Activity`, `Flame`, `Layers`, `TrendingUp`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
+| `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
+| `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `@/lib/games/hooks` | `useGamePerformanceBaseline` |
+| `@/lib/games/mobileControls` | `MobileHudMode` |
+| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref`, `resolveGameLaunchId` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/navigation` | `useRouter`, `useSearchParams` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `app/daydream/game/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/games/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/games/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/games/dream.GamesHub` | `⬡ GamesHub` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/autoopen/dream.AutoOpenGameEngin` | `⬡ AutoOpenGameEngin` |
+| `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `@/lib/games/quality-plan` | `GAME_QUALITY_PILLARS` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Gamepad2`, `Play`, `Sparkles`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
+
+## `app/daydream/lab/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/lab/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `FlaskConical`, `Play` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/engins/engin.LabEngin` | _(dynamic import)_ |
+
+## `app/daydream/lab/portfolio/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/portfolio/dream.PortfolioEngin` | `⬡ PortfolioEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `TrendingUp` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/media-vault/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/music/engin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/daydream/music/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/music/dream.SoundRecorder` | `⬡ SoundRecorder` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Music`, `Sparkles` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
+
+## `app/daydream/music/upload/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `Info`, `Loader2`, `Music`, `Upload`, `Youtube` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `app/daydream/play/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/discover/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Radio`, `Search`, `Users` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/dream-effects/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gsap/useGsapEntrance` | `useGsapEntrance` |
+| `@/lib/utils` | `cn` |
+| `@/lib/webgpu` | `getRendererBackend` |
+| `framer-motion` | `motion` |
+| `lucide-react` | `Layers`, `Monitor`, `Sparkles`, `Zap` |
+| `react` | `useEffect`, `useRef`, `useState` |
+| `@/components/three/dream.scene` | _(dynamic import)_ |
+
+## `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/runtime/dream.DualRuntimeContainer` | `useDualRuntime` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/runtime/EnginDispatcher` | `EnginDispatcher` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect` |
+
+## `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreams/dream.DraggableDream` | `⬡ DraggableDream` |
+| `@/hooks/useAccount` | `useAccount` |
+| `@/lib/artifactStore` | `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact` |
+| `@/lib/dreamenginOS/OSContext` | `useOS` |
+| `@/lib/ledger` | `AssetEntry`, `AssetType`, `getAllByKind` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/types/dreamArtifact` | `DreamArtifact` |
+| `lucide-react` | `Settings2` |
+
+## `app/dreamdmbar/_components/DreamWidgetGrid.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgets` | `WidgetInstance` |
+
+## `app/dreamdmbar/_components/HomeDreamRegion.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr` | `⬡ DreamRSection` |
+| `@/components/dream.BrandLogo` | `⬡ BrandLogo` |
+| `@/components/dream.HomeFeed` | `⬡ HomeFeed` |
+| `@/components/dream.NotificationCenter` | `⬡ NotificationCenter` |
+| `@/components/dreams/dream.DraggableDream` | `⬡ DraggableDream` |
+| `@/components/home/dream.ActiveModuleSurface` | `⬡ ActiveModuleSurface` |
+| `@/components/home/dream.DaydreamPulseStrip` | `⬡ DaydreamPulseStrip` |
+| `@/components/home/dream.FlagshipEnginesStrip` | `⬡ FlagshipEnginesStrip` |
+| `@/lib/notifications/useNotifications` | `useNotifications` |
+| `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `lucide-react` | `Bell`, `ChevronRight` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useState` |
+
+## `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamr/torridityLedger` | `TORRIDITY_LEDGER_CONFIG`, `slog` |
+
+## `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamr/torridityLedger` | `calculateRank`, `derivePostMassMeta`, `getPostMass` |
+
+## `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
+| `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
+| `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/dreamdmbar/_components/dreamr/api/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
+| `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
+| `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useEffect` |
+
+## `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/botDetection` | `Point`, `analyzeSwipe`, `tallyView` |
+| `@/lib/runtime/dualRuntimeBridge` | `enginBridge` |
+
+## `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore` | `⬡ DreamRCore` |
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/lib/dreamr/dreamrfeed` | `⬡ DreamRFeed` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `lucide-react` | `BarChart2`, `Check`, `ChevronRight`, `Eye`, `Heart`, `Image`, `Layers`, `Loader2`, `MapPin`, `MessageCircle`, `Minus`, `Music`, `Plug`, `PlusCircle`, `Radio`, `RefreshCw`, `Send`, `TrendingDown`, `TrendingUp`, `Users`, `Video` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `app/dreamdmbar/dreamspace/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/runtime/dream.DualRuntimeContainer` | `useDualRuntime` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `react` | `useEffect` |
+
+## `app/dreamdmbar/dualruntime/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/shared-dream/dream.SharedDreamRuntime` | `⬡ SharedDreamRuntime` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `react` | `useEffect`, `useState` |
+
+## `app/dreamdmbar/homedream/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/runtime/dream.DualRuntimeContainer` | `useDualRuntime` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `react` | `useEffect` |
+
+## `app/dreamdmbar/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/DreamBarDataBridge` | `⬡ DreamBarDataBridge` |
+| `@/components/home/dream.bar.GlobalDreamBar` | `⬡ GlobalDreamBar` |
+| `@/components/home/dream.bar.PersistentDreamBar` | `⬡ PersistentDreamBar` |
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `react` | `Suspense` |
+
+## `app/dreamdmbar/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+
+## `app/dreamr/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr` | `⬡ DreamRSection` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Radio` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/dreamspace/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreams/dreamsurface.dreamspace` | `⬡ DreamSpaceRuntime` |
+
+## `app/edit-profiledream/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `ArrowLeft`, `Eye`, `Loader2`, `Share2` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `app/engines/brand/campaigns/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/brand/panels/dream.panel.CampaignsPanel` | `⬡ CampaignsPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/brand/identity/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/brand/panels/dream.panel.IdentityPanel` | `⬡ IdentityPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/brand/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/brand/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/brand/dream.BrandEnginApp` | `⬡ BrandEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/code/ai/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/code/panels/dream.panel.AIPanel` | `⬡ AIPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/code/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/code/notebook/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/code/panels/dream.panel.NotebookPanel` | `⬡ NotebookPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/code/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/code/dream.CodeEnginApp` | `⬡ CodeEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/code/projects/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/code/panels/dream.panel.ProjectsPanel` | `⬡ ProjectsPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/create/calendar/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/create/panels/dream.panel.CalendarPanel` | `⬡ CalendarPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/create/editor/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/create/panels/dream.panel.EditorPanel` | `⬡ EditorPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/create/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/create/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/create/dream.CreateEnginApp` | `⬡ CreateEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/create/queue/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/create/panels/dream.panel.QueuePanel` | `⬡ QueuePanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/games/builder/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/games/panels/dream.panel.BuilderPanel` | `⬡ BuilderPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/games/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/games/library/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/games/panels/dream.panel.LibraryPanel` | `⬡ LibraryPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/games/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/games/dream.GameEnginApp` | `⬡ GameEnginApp` |
+| `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/games/scores/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/games/panels/dream.panel.ScoresPanel` | `⬡ ScoresPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/lab/data/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/lab/panels/dream.panel.DataVizPanel` | `⬡ DataVizPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/lab/experiments/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/lab/panels/dream.panel.ExperimentsPanel` | `⬡ ExperimentsPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/lab/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/lab/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/lab/dream.LabEnginApp` | `⬡ LabEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/lab/quantum/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/lab/panels/dream.panel.QuantumPanel` | `⬡ QuantumPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/music/arrange/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/music/panels/dream.panel.ArrangePanel` | `⬡ ArrangePanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/music/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/music/library/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/music/panels/dream.panel.MusicLibraryPanel` | `⬡ MusicLibraryPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/music/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/music/dream.MusicEnginApp` | `⬡ MusicEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/music/studio/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/music/panels/dream.panel.StudioPanel` | `⬡ StudioPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/portfolio/assets/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/portfolio/panels/dream.panel.AssetsPanel` | `⬡ AssetsPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/portfolio/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `app/engines/portfolio/optimize/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/portfolio/panels/dream.panel.OptimizePanel` | `⬡ OptimizePanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/portfolio/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/portfolio/dream.PortfolioEnginApp` | `⬡ PortfolioEnginApp` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/engines/portfolio/quantum/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel` | `⬡ PortfolioQuantumPanel` |
+| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/error.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/overlays/dream.RootStatusScreen` | `⬡ RootStatusScreen` |
+| `@/lib/runtime/isAuthRelatedError` | `isAuthRelatedError` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useEffect` |
+
+## `app/feed-settings/dream.FeedSettingsClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ArrowLeft`, `Check`, `Loader2`, `Plus`, `Rss`, `Sliders` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `app/feed-settings/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.FeedSettingsClient` | `⬡ FeedSettingsClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/gameengin/cartridges/[id]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/gameengin/dream.cartridge.CartridgeLauncher` | `⬡ CartridgeLauncher` |
+| `@/lib/gameengin/cartridges/manifest` | `getCartridgeManifest` |
+| `next/navigation` | `notFound` |
+| `next/server` | `connection` |
+
+## `app/gameengin/cartridges/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/gameengin/dream.cartridge.CartridgeBrowser` | `⬡ CartridgeBrowser` |
+| `next` | `Metadata` |
+
+## `app/gameengin/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+
+## `app/global-error.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useEffect` |
+
+## `app/homedream/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+
+## `app/join/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/auth/dream.PasswordField` | `⬡ PasswordField` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/config` | `buildAuthCallbackUrl` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useMemo`, `useState` |
+
+## `app/lab/[id]/codespace/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ArrowLeft`, `Check`, `Copy`, `Download`, `ExternalLink`, `RefreshCw`, `Terminal`, `Upload` |
+| `next/link` | `⬡ Link` |
+| `react` | `use`, `useCallback`, `useRef`, `useState` |
+
+## `app/lab/[id]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Code`, `Download`, `FileText`, `FlaskConical`, `Terminal` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `notFound`, `redirect` |
+| `next/server` | `connection` |
+
+## `app/lab/new/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `FlaskConical`, `Globe`, `Loader2`, `Lock`, `Sparkles` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `app/lab/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `FlaskConical`, `Globe`, `Lock`, `Plus` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/layout.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.CommandPalette` | `⬡ CommandPalette` |
+| `@/components/dream.GlobalOverlays` | `⬡ GlobalOverlays` |
+| `@/components/dream.ThemeApplicator` | `⬡ ThemeApplicator` |
+| `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
+| `@/components/providers/dream.GodTierProvider` | `⬡ GodTierProvider` |
+| `@/components/providers/dream.ThemeProvider` | `⬡ ThemeProvider` |
+| `@/components/runtime/dream.DualRuntimeContainer` | `⬡ DualRuntimeContainer` |
+| `@/lib/dreamdm/DreamSystemContext` | `DreamSystemProvider` |
+| `@/lib/dreamenginOS/OSContext` | `OSProvider` |
+| `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
+| `next` | `Metadata`, `Viewport` |
+| `next/font/google` | `Cormorant_Garamond`, `Plus_Jakarta_Sans`, `Space_Grotesk` |
+| `react` | `Suspense` |
+
+## `app/loading.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/overlays/dream.RootStatusScreen` | `⬡ RootStatusScreen` |
+
+## `app/login/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/auth/dream.PasswordField` | `⬡ PasswordField` |
+| `@/lib/auth/nextRedirect` | `resolveSafeNextPath` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/config` | `buildAuthCallbackUrl` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter`, `useSearchParams` |
+| `react` | `Suspense`, `useEffect`, `useMemo`, `useState` |
+
+## `app/marketplace/[id]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/marketplace/dream.MarketplaceRequestButton` | `⬡ MarketplaceRequestButton` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `ArrowLeft`, `Calendar`, `ShoppingBag`, `Tag`, `User` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `notFound`, `redirect` |
+| `next/server` | `connection` |
+
+## `app/marketplace/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/marketplace/dream.MarketplaceListingCard` | `⬡ MarketplaceListingCard` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `PlusCircle`, `ShoppingBag` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/marketplace/sell/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `DollarSign`, `Loader2`, `ShoppingBag`, `Tag` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useState` |
+
+## `app/messages/boards/[id]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/messaging/dream.BoardComposer` | `⬡ BoardComposer` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Pin` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `notFound`, `redirect` |
+| `next/server` | `connection` |
+
+## `app/messages/boards/new/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ArrowLeft`, `Loader2` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `app/messages/boards/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Layout`, `Plus` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/messages/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.MessagesClient` | `⬡ MessagesClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/mission/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
+## `app/not-found.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/overlays/dream.RootStatusScreen` | `⬡ RootStatusScreen` |
+
+## `app/notes/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `FileText`, `Plus` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/onboarding/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `ArrowRight` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/components/dream.LandingHero` | _(dynamic import)_ |
+| `@/components/landing/dream.LandingNav` | _(dynamic import)_ |
+| `@/components/landing/dream.scene.UniverseField` | _(dynamic import)_ |
+
+## `app/policy/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `lucide-react` | `AlertTriangle`, `ArrowLeft`, `ArrowUpRight`, `Bell`, `BookOpen`, `ChevronRight`, `Eye`, `FileText`, `Info`, `Scale`, `Shield` |
+| `next/link` | `⬡ Link` |
+
+## `app/profile/[handle]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
+| `@/components/dream.ProfileShareButton` | `⬡ ProfileShareButton` |
+| `@/components/feed/dream.FollowButton` | `⬡ FollowButton` |
+| `@/components/profile/dream.ProfileCustomizeButton` | `⬡ ProfileCustomizeButton` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/components/ui/dream.InfinityIcon` | `⬡ InfinityIcon` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `Pencil` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `notFound` |
+| `next/server` | `connection` |
+| `react` | `Suspense` |
+
+## `app/profile/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/account/dream.DangerZoneActions.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `AlertTriangle`, `Loader2`, `ShieldAlert`, `Trash2`, `X` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `app/settings/account/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.DangerZoneActions` | `⬡ DangerZoneActions` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Calendar`, `Mail`, `Shield`, `Trash2`, `User` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/algorithm/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/feed/dream.AlgorithmEngine` | `⬡ AlgorithmEngine` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Cpu` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/appearance/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.ThemeApplicator` | `DeTheme`, `THEME_PRESETS`, `applyTheme`, `applyVoidTheme`, `isVoidThemeActive` |
+| `@/components/providers/dream.ThemeProvider` | `useTheme` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/ui/theme-engine` | `THEME_PRESETS` |
+| `lucide-react` | `ArrowLeft`, `Check`, `RotateCcw` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `app/settings/controls/dream.ControlsClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.PositionIndicatorToggle` | `⬡ PositionIndicatorToggle` |
+| `lucide-react` | `ArrowLeft`, `Check`, `Sliders` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `app/settings/controls/dream.PositionIndicatorToggle.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useState` |
+
+## `app/settings/controls/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.ControlsClient` | `⬡ ControlsClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/data/dream.DataClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `AlertTriangle`, `ArrowLeft`, `Check`, `Database`, `Download`, `Loader2`, `Trash2` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useState` |
+
+## `app/settings/data/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.DataClient` | `⬡ DataClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/dreams/dreams-layout-editor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreams/dream.DraggableDream` | `⬡ DraggableDream` |
+| `@/hooks/useDreamLayout` | `useDreamLayout` |
+| `lucide-react` | `Eye`, `EyeOff`, `RotateCcw` |
+
+## `app/settings/dreams/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dreams-layout-editor` | `⬡ DreamsLayoutEditor` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `lucide-react` | `LayoutGrid`, `RotateCcw` |
+| `next/link` | `⬡ Link` |
+
+## `app/settings/feed/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `permanentRedirect` |
+| `next/server` | `connection` |
+
+## `app/settings/help/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `BookOpen`, `HelpCircle`, `MessageCircle`, `Wand2` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/notifications/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `lucide-react` | `Bell`, `Check`, `DollarSign`, `Heart`, `Loader2`, `MessageSquare`, `Sparkles`, `Users` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `app/settings/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Bot`, `ChevronRight`, `Cpu`, `Crown`, `Database`, `HelpCircle`, `LayoutGrid`, `LogOut`, `Palette`, `Plug`, `Rss`, `Shield`, `Sliders`, `User` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/privacy/dream.PrivacyClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ArrowLeft`, `Check`, `EyeOff`, `Flag`, `Loader2`, `Shield`, `UserX`, `X` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `app/settings/privacy/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.PrivacyClient` | `⬡ PrivacyClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/safety/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `AlertTriangle`, `ChevronRight`, `Download`, `FileText`, `Shield` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/settings/security/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/config` | `buildAuthCallbackUrl` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `AlertTriangle`, `Check`, `Loader2`, `Lock`, `Shield`, `Smartphone` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useState` |
+
+## `app/settings/widgets/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `lucide-react` | `LayoutGrid` |
+| `next/link` | `⬡ Link` |
+
+## `app/shop/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `ArrowLeft`, `Package`, `PlusCircle`, `Store` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/shop/sell/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `DollarSign`, `ImageIcon`, `Loader2`, `Package`, `ShoppingBag` |
+| `next/image` | `⬡ NextImage` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `app/u/[handle]/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/view-profile/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
+| `@/components/dream.ProfileShareButton` | `⬡ ProfileShareButton` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `Eye`, `Pencil` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `react` | `Suspense` |
+
+## `app/webgpu/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/webgpu/dream.WebGPUShowcase` | `⬡ WebGPUShowcase` |
+| `next` | `Metadata` |
+
+## `components/activity/dream.ActivityPostForm.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.TierBadge` | `TierBadge` |
+| `@/lib/activity/scoring` | `calculateActivityPoints`, `getTierDescription` |
+| `@/lib/activity/types` | `ActivityTier`, `VerificationMethod` |
+| `react` | `useState` |
+
+## `components/activity/dream.ActivityProfile.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.TierBadge` | `TierBadge` |
+| `@/lib/activity/aqs` | `formatAQS`, `formatRealShitRate`, `getAQSTier`, `getAQSTierColor` |
+| `@/lib/activity/types` | `ActivityTier`, `GetUserMetricsResponse`, `UserMetrics` |
+| `react` | `useEffect`, `useState` |
+
+## `components/activity/dream.TierBadge.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/scoring` | `getTierDescription`, `getTierDisplayName` |
+| `@/lib/activity/types` | `ActivityTier` |
+
+## `components/ads/dream.AdUnit.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `AdType` |
+| `next/image` | `⬡ Image` |
+| `react` | `useEffect`, `useState` |
+
+## `components/ads/dream.SkipCreditBalance.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useState` |
+
+## `components/auth/dream.PasswordField.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Eye`, `EyeOff` |
+| `react` | `useId`, `useState` |
+
+## `components/connectors/dream.AddSliceSheet.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `ConnectorDef`, `SliceTypeDef` |
+| `react` | `useState` |
+
+## `components/connectors/dream.ConnectorRow.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `ConnectorDef`, `ConnectorStatus` |
+| `lucide-react` | `AlertCircle`, `CheckCircle`, `Clock`, `Lock`, `RefreshCw`, `Settings`, `XCircle` |
+
+## `components/connectors/dream.NoSlotDialog.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+
+## `components/connectors/dream.PlacementMode.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/installFlow` | `handlePlacementCancel`, `handlePlacementDone` |
+| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/connectors/dream.widget.ConnectWidgetPrompt.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgets` | `WidgetType` |
+| `lucide-react` | `ArrowRight`, `Check`, `Plug`, `Search`, `X` |
+| `next/link` | `⬡ Link` |
+| `react` | `useMemo`, `useState` |
+
+## `components/core/dream.CoreDream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/HomeDreamRegion` | `⬡ HomeDreamSurface` |
+| `next/link` | `⬡ Link` |
+
+## `components/customize/dream.GlobalCustomizeUI.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.bar.CustomizeModeBar` | `⬡ CustomizeModeBar` |
+| `./dream.bar.CustomizeToolbar` | `⬡ CustomizeToolbar` |
+| `./panels/dream.panel.ColorPanel` | `⬡ ColorPanel` |
+| `./panels/dream.panel.EffectsPanel` | `⬡ EffectsPanel` |
+| `./panels/dream.panel.FontPanel` | `⬡ FontPanel` |
+| `./panels/dream.panel.LayoutPanel` | `⬡ LayoutPanel` |
+
+## `components/customize/dream.bar.CustomizeModeBar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+
+## `components/customize/dream.bar.CustomizeToolbar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+
+## `components/customize/panels/dream.panel.ColorPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/ui/skin-engine` | `SKIN_PRESETS` |
+
+## `components/customize/panels/dream.panel.EffectsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.panel.ColorPanel` | `SlidePanel` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+
+## `components/customize/panels/dream.panel.FontPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.panel.ColorPanel` | `SlidePanel` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/ui/skin-engine` | `SkinFont` |
+
+## `components/customize/panels/dream.panel.LayoutPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.panel.ColorPanel` | `SlidePanel` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/ui/skin-engine` | `SkinLayout`, `SkinShadow` |
+
+## `components/daydream/dream.CodeDreamIDE.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/swapManager` | `getSwap`, `toggleSwap` |
+| `@dreamengin/sdk` | `DreamEngine`, `Mesh`, `Scene` |
+| `lucide-react` | `ArrowLeftRight`, `Bot`, `Box`, `CheckCircle`, `Database`, `FlaskConical`, `Gamepad2`, `Loader2`, `Monitor`, `MousePointerClick`, `Play`, `RefreshCw`, `StopCircle`, `Zap` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/daydream/dream.DiffViewer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/diff/diffUtils` | `DEMO_DIFF`, `DiffFile`, `FullFileLine`, `buildFullFileLines`, `buildScrollMarkers`, `firstHunkIndex`, `nextHunkIndex`, `parseUnifiedDiff`, `prevHunkIndex` |
+| `lucide-react` | `ChevronDown`, `ChevronUp`, `ChevronsUpDown`, `Minimize2` |
+| `react` | `CSSProperties`, `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+| `@/lib/diff/diffUtils` | _(dynamic import)_ |
+
+## `components/daydream/dream.JourneyTrail.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/journey/journeyInsights` | `AnnotatedDot`, `annotateDotsWithInsights`, `computeCurrentStreak` |
+| `@/types/journey` | `JourneyDot`, `JourneyTimeGroup` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/daydream/dream.LabDreamIDE.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/swapManager` | `getSwap`, `toggleSwap` |
+| `lucide-react` | `Activity`, `ArrowLeftRight`, `BarChart2`, `CheckCircle`, `FlaskConical`, `Loader2`, `MousePointerClick`, `Play`, `RefreshCw`, `StopCircle`, `Zap` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/daydream/dream.NGNEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/event-bus` | `bridgeBuses`, `createEventBus` |
+| `@/lib/forge-ngn/assembly` | `EngineAssembly`, `PlacedPiece`, `addConnection`, `addPiece`, `createAssembly`, `movePiece`, `removePiece`, `serializeAssembly`, `validateAssembly` |
+| `@/lib/forge-ngn/piece-registry` | `PIECE_CATEGORIES`, `PIECE_REGISTRY`, `PieceCategory`, `PieceManifest`, `Port`, `getPiece`, `getPiecesByCategory` |
+| `@/lib/utils` | `toErrorMessage` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `lucide-react` | `AlertCircle`, `Bot`, `Boxes`, `CheckCircle2`, `ChevronDown`, `ChevronRight`, `Cpu`, `Eye`, `Gamepad2`, `Music`, `Play`, `Plus`, `Save`, `Share2`, `Users`, `Wrench`, `X`, `Zap` |
+| `react` | `DragEvent`, `MouseEvent`, `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/daydream/dream.StandaloneEnginSurface.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/dream.ForgeEngin` | `⬡ ForgeEngin` |
+| `@/engins/engin.BrandingEngin` | `⬡ BrandingEngin` |
+| `@/engins/engin.CodeEngin` | `⬡ CodeEngin` |
+| `@/engins/engin.ContentEngin` | `⬡ ContentEngin` |
+| `@/engins/engin.GameEngin` | `⬡ GameEngin` |
+| `@/engins/engin.LabEngin` | `⬡ LabEngin` |
+| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
+| `next/navigation` | `useRouter` |
+
+## `components/daydream/dream.constellationmap.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/daydream/dream.shell.DaydreamShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.BrandLogo` | `⬡ BrandLogo` |
+| `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
+| `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/gsap/useGsapFlip` | `useGsapFlip` |
+| `@/lib/journey/journeyDots` | `hasJourneyDot`, `logJourneyDot` |
+| `@/types/journey` | `JOURNEY_DOMAIN_COLORS` |
+| `framer-motion` | `motion` |
+| `lucide-react` | `ArrowLeft` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useSearchParams` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `lucide-react` | `BarChart2`, `ChevronRight`, `Eye`, `Star`, `TrendingUp`, `Zap` |
+| `next/link` | `⬡ Link` |
+
+## `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `BarChart2`, `BookOpen`, `DollarSign`, `Eye`, `Layers`, `Megaphone`, `Minus`, `Palette`, `Share2`, `TrendingDown`, `TrendingUp`, `Users` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useState` |
+
+## `components/daydream/starmaker/dream.panel.CompingPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/music/starmakerDaw` | `AudioTake`, `CompingState`, `TAKE_COLORS`, `TakeRating`, `createDemoTake` |
+| `lucide-react` | `Mic2`, `Plus`, `Star`, `Trash2`, `Wand2` |
+| `react` | `CSSProperties`, `useCallback`, `useState` |
+
+## `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackId`, `ArrangementTrackState` |
+| `lucide-react` | `ChevronDown`, `ChevronRight`, `Layers3`, `Pause`, `Play`, `Plus` |
+| `react` | `CSSProperties`, `useEffect`, `useState` |
+
+## `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/music/starmakerDaw` | `MidiNote`, `PianoRollQuantize`, `PianoRollState`, `createMidiNote`, `isBlackKey`, `midiPitchToName`, `snapToGrid` |
+| `lucide-react` | `ChevronDown`, `ChevronUp`, `Piano` |
+| `react` | `useCallback`, `useState` |
+
+## `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/music/starmakerDaw` | `SessionTrack`, `SessionViewState` |
+| `lucide-react` | `Mic2`, `Radio`, `Square`, `StopCircle`, `Volume2` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/draggable/dream.DraggableModule.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
+
+## `components/dream.AIAssistant.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/agentBus` | `onIdariEvent` |
+| `@/lib/agents/drEamsMode` | `getDrEamsMode`, `onDrEamsModeChange` |
+| `@/lib/agents/teachBus` | `hasTaught`, `markTaught`, `onTeach` |
+| `@/lib/agents/uiActions` | `executeUiAction`, `getUiCapabilities` |
+| `lucide-react` | `Bot`, `Maximize2`, `Minimize2`, `Send`, `X` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dream.AudioVisualizer3D.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../lib/audioFingerprint` | `Fingerprint`, `MatchResult`, `PeakMap`, `extractAudioChunks`, `matchFingerprint`, `recordReferenceFingerprint` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `components/dream.BoogieWarningBanner.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/policy/boogiePolicy` | `PolicyResult` |
+| `lucide-react` | `AlertTriangle`, `ExternalLink`, `X` |
+| `next/link` | `⬡ Link` |
+| `react` | `useState` |
+
+## `components/dream.BrandLogo.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/branding/logos` | `LOGO_PATHS`, `getRandomLogo` |
+| `next/image` | `⬡ Image` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dream.CommandPalette.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ArrowRight`, `Code2`, `Compass`, `Flame`, `FlaskConical`, `Gamepad2`, `Home`, `MessageSquare`, `Music`, `Palette`, `PenLine`, `Search`, `Settings`, `ShoppingBag`, `Stars`, `TrendingUp`, `User`, `Zap` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dream.CreatePostModal.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Image`, `Loader2`, `Music`, `Send`, `Trash2`, `Video`, `X` |
+| `next/image` | `⬡ Image` |
+| `react` | `useRef`, `useState` |
+
+## `components/dream.DrEamsModeToggle.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/drEamsMode` | `getDrEamsMode`, `onDrEamsModeChange`, `setDrEamsMode` |
+| `@/lib/agents/teachBus` | `emitTeach` |
+| `lucide-react` | `Bot`, `BotOff` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dream.DrEamsVoiceAssistant.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/agentBus` | `onIdariEvent` |
+| `lucide-react` | `Bot`, `Maximize2`, `Mic`, `MicOff`, `Minimize2`, `Radio`, `Send`, `Sparkles`, `Volume2`, `VolumeX`, `X` |
+| `next/navigation` | `usePathname`, `useRouter` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dream.FeedCard.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/feed/dream.CommentSection` | `⬡ CommentSection` |
+| `@/components/universe` | `UniverseCard`, `UniverseCardContent` |
+| `@/lib/utils` | `cn`, `formatRelativeTime` |
+| `@/lib/widgets/parseConfig` | `inferProviderFromUrl` |
+| `lucide-react` | `Bookmark`, `ExternalLink`, `FileText`, `Flag`, `Heart`, `Link2`, `MessageCircle`, `MoreHorizontal`, `Share2`, `Sparkles`, `Youtube` |
+| `next/image` | `⬡ Image` |
+| `react` | `memo`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dream.ForgeDreamCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../lib/componentInventory` | `ALL_CATEGORIES`, `AtomicComponent`, `ComponentCategory`, `getByCategory` |
+| `../lib/eventBus` | `createEventBus` |
+| `../lib/forge/engineForge` | `AssemblySandbox`, `AtomicPiece`, `Wire`, `atomicPieceFromComponent`, `createAssembly`, `runAssembly`, `serializeAssembly`, `validateAssembly` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `MouseEvent`, `useCallback`, `useEffect`, `useRef`, `useState` |
+| `../lib/supabase/client` | _(dynamic import)_ |
+
+## `components/dream.GlobalOverlays.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/customize/dream.GlobalCustomizeUI` | _(dynamic import)_ |
+| `@/components/dreams/dream.GlobalDragLayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.PlatformErrorReporter` | _(dynamic import)_ |
+| `@/components/dream.KonamiDream` | _(dynamic import)_ |
+
+## `components/dream.HeroSprite.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/dream.HomeFeed.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ads/dream.AdUnit` | `AdUnit` |
+| `@/components/feed/dream.FeedVideoCard` | `⬡ FeedVideoCard` |
+| `@/components/profile/dream.EditableAvatar` | `⬡ EditableAvatar` |
+| `@/components/ui/dream.SocialShareSheet` | `⬡ SocialShareSheet` |
+| `@/lib/activity/types` | `AdType` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/feed/useLiveFeed` | `FeedPost`, `useLiveFeed` |
+| `@/lib/feed/useYouTubeLiveFeed` | `useYouTubeLiveFeed` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowUp`, `Bookmark`, `ChevronDown`, `ChevronUp`, `FileText`, `Globe`, `Heart`, `Image`, `Loader2`, `Lock`, `MessageCircle`, `MoreHorizontal`, `Plus`, `Radio`, `RefreshCw`, `Send`, `Share2`, `Sparkles`, `TrendingUp`, `Users`, `Wifi`, `X` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `Fragment`, `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dream.IconSelector.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/image` | `⬡ Image` |
+| `react` | `useState` |
+
+## `components/dream.InnerDreamsButton.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Sparkles` |
+| `next/navigation` | `useRouter` |
+| `react` | `useState` |
+
+## `components/dream.KonamiDream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/dream.LandingHero.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamr/swipeCalibration` | `CalibrationSample`, `calibrateDevice` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useRef` |
+
+## `components/dream.LedgerChart.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ledger-data` | `LedgerData` |
+| `react` | `useEffect`, `useRef` |
+
+## `components/dream.MessagesClient.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/useDreamDMDraft` | `useDreamDMDraft` |
+| `@/lib/dreamdm/useDreamDMMessages` | `DMMessage`, `useDreamDMMessages` |
+| `@/lib/dreamdm/useDreamSearch` | `useDreamSearch` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `formatRelativeTime`, `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `Bot`, `FileText`, `Loader2`, `Mail`, `MessageSquare`, `Music`, `Plus`, `Search`, `Send`, `X` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dream.NotificationCenter.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/notifications/notificationHelpers` | `UiNotification`, `UiNotificationType` |
+| `@/lib/notifications/useNotifications` | `useNotifications` |
+| `lucide-react` | `Bell`, `Check`, `DollarSign`, `GitBranch`, `Heart`, `Loader2`, `MessageCircle`, `MessageSquare`, `TrendingUp`, `UserPlus`, `X` |
+| `next/navigation` | `useRouter` |
+| `react` | `useRef`, `useState` |
+
+## `components/dream.OSShellActivator.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/runtime/dream.DualRuntimeContainer` | `useDualRuntime` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `@/lib/runtime/EnginDispatcher` | `EnginDispatcher` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `next/navigation` | `usePathname` |
+| `react` | `useCallback`, `useEffect` |
+
+## `components/dream.PhysicsLab.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Binary`, `Check`, `FileText`, `FlaskConical`, `Layers`, `LineChart`, `Loader2`, `Play`, `Save`, `Settings`, `Share2`, `Sparkles`, `TrendingUp`, `Users`, `Zap` |
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useState` |
+
+## `components/dream.ProfileEditor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/social/platforms` | `SOCIAL_PLATFORMS`, `detectPlatform` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Camera`, `Check`, `Image`, `Link`, `Palette`, `User`, `X` |
+| `next/image` | `⬡ Image` |
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `components/dream.ProfileShareButton.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.SocialShareSheet` | `⬡ SocialShareSheet` |
+| `lucide-react` | `Share2` |
+| `react` | `useCallback`, `useState` |
+
+## `components/dream.ProfileSpace.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.DragToAnchorClose` | `DragHandle`, `DragToAnchorClose` |
+| `@/lib/navigation/WidgetInstanceMemory` | `WidgetInstanceRecord` |
+
+## `components/dream.PullToRefresh.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `RefreshCw` |
+| `react` | `ReactNode`, `useEffect`, `useRef`, `useState` |
+
+## `components/dream.ShrunkMode.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/navigation/AnchorWidgetStorage` | `PriorityWidget` |
+
+## `components/dream.ThemeApplicator.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
+
+## `components/dream.ThemeToggle.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/teachBus` | `emitTeach` |
+| `@/lib/ui/theme` | `getInitialDarkMode`, `toggleDarkMode` |
+| `lucide-react` | `Moon`, `Sun` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dream.ToastSystem.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `AlertCircle`, `CheckCircle`, `Info`, `X`, `XCircle` |
+| `react` | `createContext`, `useContext`, `useState` |
+
+## `components/dream.VoidThemeToggle.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.ThemeApplicator` | `applyVoidTheme`, `isVoidThemeActive` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dream.panel.ChildSafetyPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Activity`, `AlertCircle`, `AlertTriangle`, `CheckCircle`, `ChevronRight`, `Clock`, `Eye`, `Hash`, `RefreshCw`, `Shield`, `ShieldCheck`, `Trash2`, `Upload`, `XCircle` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/dream.panel.IDariPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/agentBus` | `emitIdariEvent` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `AlertCircle`, `CheckCircle`, `Pause`, `Play`, `RefreshCw`, `Shield`, `Sparkles`, `Zap` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dream.universal_asset_registry.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Box`, `Check`, `ChevronDown`, `ChevronUp`, `Clock`, `Code2`, `Cpu`, `Database`, `Edit3`, `Eye`, `FileText`, `Filter`, `FlaskConical`, `Gamepad2`, `Grid`, `Hash`, `Layers`, `Lightbulb`, `Link2`, `List`, `Loader2`, `Music`, `Palette`, `Plus`, `RefreshCw`, `Search`, `Settings`, `Tag`, `Trash2`, `X`, `Zap` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dream.widget.AnchorWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/navigation/AnchorStateBuffer` | `AnchorStateBuffer`, `HOLD_FIRED`, `HOLD_HOLDING`, `HOLD_IDLE`, `MODE_HOME`, `MODE_PROFILE`, `MODE_SHRUNK` |
+| `@/lib/navigation/AnchorWidgetStorage` | `AnchorWidgetStorage` |
+| `@/lib/navigation/NavStateBuffer` | `LAYER_HOME`, `LAYER_PROFILE`, `NavStateBuffer`, `PROFILE_DEPTH` |
+| `@/lib/navigation/ReturnStack` | `ReturnStack` |
+| `@/lib/navigation/WidgetInstanceMemory` | `WidgetInstanceMemory` |
+
+## `components/dream.widget.ProfileWidgetBlock.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Pencil` |
+| `next/link` | `⬡ Link` |
+| `react` | `ReactNode` |
+
+## `components/dream.widget.WidgetBubble.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Bell`, `Cpu`, `FlaskConical`, `Megaphone`, `MessageSquare`, `Play`, `Video` |
+| `react` | `useCallback` |
+| `react-dnd` | `useDrag` |
+
+## `components/dreamengin/dream.CanvasDropZone.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/offline/offlineCache` | `cacheAsset`, `enqueueSyncAction` |
+| `react` | `ReactNode`, `useCallback`, `useState` |
+| `uuid` | `v4` |
+
+## `components/dreamengin/dream.DREAMenginOS.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/agentBus` | `IdariEventDetail`, `onIdariEvent` |
+| `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `@/lib/dreamengin/osSubsystemManifest` | `DREAMENGIN_OS_SUBSYSTEM_MANIFEST`, `DreamenginOSSubsystemNode` |
+| `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `@/lib/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
+| `@/lib/runtime/EnginDispatcher` | `DispatcherStats`, `EnginDispatcher` |
+| `@/lib/runtime/dreamOSBus` | `DreamOSSharedArtifact`, `RuntimeContext`, `dreamOSBus` |
+| `@/lib/runtime/dualRuntimeBridge` | `PeerState`, `bridge` |
+| `@babylonjs/core` | `AbstractEngine`, `Scene` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+| `@babylonjs/core` | _(dynamic import)_ |
+| `@babylonjs/havok` | _(dynamic import)_ |
+
+## `components/dreamengin/dream.DrEamsCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamengin/DrEamsAnimator` | `DrEamsAction`, `DrEamsAnimator` |
+
+## `components/dreamengin/dream.HomeControls.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.InfinityIcon` | `⬡ InfinityIcon` |
+
+## `components/dreamengin/dream.bar.DrEamsSearchBar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamengin/drEamsSearch` | `NavSuggestion`, `buildDrEamsRequest`, `buildDreamDMUrl`, `matchNavSuggestions`, `parseDrEamsReply`, `truncatePreview` |
+| `lucide-react` | `ArrowRight`, `MessageCircle`, `Search`, `Sparkles`, `X` |
+| `next/navigation` | `useRouter` |
+
+## `components/dreamengin/dream.menu.NexusMenu.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `next/navigation` | `useRouter` |
+
+## `components/dreamengin/dream.menu.OutdreamMenu.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreamnav/dreamsurface.dreamnav` | `useDreamNav` |
+| `@/lib/dreamnav/delta` | `Node` |
+| `@/lib/dreamnav/path` | `dispatchTauPath`, `findTauPath` |
+
+## `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreamnav/dreamsurface.dreamnav` | `useDreamNav` |
+| `@/lib/dreamnav/delta` | `Node` |
+| `@/lib/dreamnav/path` | `dispatchTauPath`, `findTauPath` |
+
+## `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `PeerState`, `bridge` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dreamengin/dream.panel.DrEamsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dreamengin/dream.scene.BabylonGameScene.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `@/lib/god-tier/godTierEngine` | `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `@/lib/webgpu/director` | `WebGPUDirector`, `applyDirectorFrame`, `buildSceneObjects`, `defaultCameraSignals` |
+| `react` | `useEffect`, `useRef` |
+| `@babylonjs/core` | _(dynamic import)_ |
+| `@/lib/god-tier/godTierEngine` | _(dynamic import)_ |
+| `@/lib/webgpu/director` | _(dynamic import)_ |
+
+## `components/dreamengin/dream.scene.DrEamsScene.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `@babylonjs/core` | `ArcRotateCamera`, `Color3`, `DirectionalLight`, `HemisphericLight`, `Mesh`, `MeshBuilder`, `PBRMaterial`, `PointerEventTypes`, `Scene`, `SceneLoader`, `StandardMaterial`, `TransformNode`, `Vector3` |
+| `react` | `useEffect`, `useRef` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `components/dreamengin/dream.scene.PortfolioOptimizationScene.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef` |
+
+## `components/dreamengin/dream.shell.EnginShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `components/dreamengin/dream.widget.AppearanceWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/providers/dream.ThemeProvider` | `useTheme` |
+| `@/lib/ui/theme-engine` | `THEME_PRESETS` |
+| `react` | `useCallback` |
+
+## `components/dreamengin/dreamsurface.dreamengin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.DREAMenginOS` | `⬡ DREAMenginOS` |
+| `./dream.HomeControls` | `⬡ HomeControls` |
+| `./dream.menu.NexusMenu` | `⬡ NexusMenu` |
+| `./dream.menu.OutdreamMenu` | `⬡ OutdreamMenu` |
+| `./dream.panel.DrEamsPanel` | `⬡ DrEamsPanel` |
+| `@/components/dreamnav/dreamsurface.dreamnav` | `DreamNavProvider` |
+| `next/navigation` | `usePathname` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dreamengin/engine/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./math` | `UnitComplex` |
+
+## `components/dreamnav/dreamsurface.dreamnav.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamnav/delta` | `Action`, `DEFAULT_NAV_STATE`, `Node`, `reduceNav` |
+
+## `components/dreamr/dream.CloseFriendsSettings.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Loader2`, `Search`, `UserMinus`, `UserPlus`, `Users`, `X` |
+| `next/image` | `⬡ Image` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/dreamr/dream.panel.DreamRChannelPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `lucide-react` | `ChevronRight`, `ExternalLink`, `Loader2`, `Maximize2`, `Play`, `X`, `Youtube` |
+| `next/image` | `⬡ Image` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/dreamr/dream.panel.DreamRCreatorPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `lucide-react` | `ExternalLink`, `Globe`, `Hash`, `Instagram`, `MessageCircle`, `Music`, `Sparkles`, `UserCheck`, `UserPlus`, `X`, `Youtube` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dreams/dream.DraggableDream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreams/drag` | `DREAM_DRAG_MIME`, `DreamDragData`, `serializeDreamDragData` |
+
+## `components/dreams/dream.GlobalDragLayer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreams/drag` | `DreamDragData` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dreams/dream.PlatformErrorReporter.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
+
+## `components/dreams/dream.SlideOverPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `react` | `⬡ React` |
+
+## `components/dreams/dream.connectorlayer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `components/dreams/dream.featurelayer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode` |
+
+## `components/dreams/dream.outputlayer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreams/profileProjection` | `canRenderProjection` |
+| `react` | `ReactNode` |
+
+## `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/intelligence/continuityHelpers` | `formatArtifactKind`, `getArtifactAccent` |
+| `@/lib/runtime/dreamOSBus` | `DreamOSSnapshot`, `dreamOSBus` |
+| `react` | `useEffect`, `useState` |
+
+## `components/dreams/dream.shell.SharedDreamShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/hooks/useSharedDream` | `useSharedDream` |
+| `@/lib/sharedDream` | `DreamBroadcastPayload` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Mic`, `MicOff`, `Users`, `X` |
+
+## `components/dreams/dream.widget.SuperDreamWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `@/lib/dream-window/useDreamWindowActions` | `useDreamWindowActions` |
+| `@/types/dream-window` | `CreateDreamWindowBody`, `DreamWindowRecord` |
+| `react` | `useCallback`, `useMemo`, `useState` |
+
+## `components/dreams/dream.window.JourneyDreamWindow.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `next/link` | `⬡ Link` |
+
+## `components/dreams/dreamsurface.dreamspace.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/DreamSpaceRegion` | `⬡ DreamSpace` |
+| `@/components/dreams/dream.panel.RuntimeMemoryHUD` | `⬡ RuntimeMemoryHUD` |
+| `@/components/spatial/dream.ProfileSpace` | `⬡ SpatialProfileSpace` |
+| `@/components/widgets/dream.widget.UniversalWidget` | `⬡ UniversalWidget` |
+| `@/lib/dreams/useDreamsRuntime` | `useDreamsRuntime` |
+| `@/lib/forge/forgeIntelligence` | `ForgeHistoryEntry`, `ForgeSuggestion`, `generateSuggestions`, `readForgeHistory` |
+| `@/lib/forge/forgeMomentum` | `MomentumLevel`, `MomentumSnapshot`, `computeMomentum`, `getLevelColor` |
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `ForgeActivityPulse`, `readForgeActivity` |
+| `@/lib/intelligence/continuityHelpers` | `resolveResumeDest` |
+| `@/lib/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/dreams/dreamsurface.window.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/hooks/useTapHoldMove` | `useTapHoldMove` |
+| `@/lib/universalEditor` | `ModuleManifest`, `RuntimeId` |
+
+## `components/engines/brand/dream.BrandEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.BrandingEngin` | `⬡ BrandingEngin` |
+
+## `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Calculator`, `DollarSign`, `Plus`, `Trash2`, `TrendingUp` |
+| `react` | `useState` |
+
+## `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `lucide-react` | `Hash`, `Palette`, `Save`, `Type` |
+| `react` | `useState` |
+
+## `components/engines/code/dream.CodeEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.CodeEngin` | `⬡ CodeEngin` |
+
+## `components/engines/code/panels/dream.panel.AIPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Bot`, `CheckCheck`, `Copy`, `Loader2`, `Send`, `Sparkles` |
+| `react` | `useEffect`, `useRef`, `useState` |
+| `vitest` | `describe`, `expect`, `it`, `vi` |
+
+## `components/engines/code/panels/dream.panel.NotebookPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Code2`, `Play`, `Plus`, `TerminalSquare`, `Trash2` |
+| `react` | `useCallback`, `useState` |
+
+## `components/engines/code/panels/dream.panel.ProjectsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Clock`, `ExternalLink`, `FolderOpen`, `Loader2`, `Plus`, `RefreshCw` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useState` |
+
+## `components/engines/create/dream.CreateEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.ContentEngin` | `⬡ ContentEngin` |
+
+## `components/engines/create/panels/dream.panel.CalendarPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Calendar`, `ChevronLeft`, `ChevronRight`, `Clock`, `Plus`, `X` |
+| `react` | `useState` |
+
+## `components/engines/create/panels/dream.panel.EditorPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Bold`, `Hash`, `Italic`, `Link2`, `List`, `Save`, `Sparkles` |
+| `react` | `useRef`, `useState` |
+
+## `components/engines/create/panels/dream.panel.QueuePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `AlertCircle`, `CheckCircle`, `Clock`, `Loader2`, `Plus`, `Send`, `Trash2` |
+| `react` | `useState` |
+
+## `components/engines/games/dream.GameEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.GameEngin` | `⬡ GameEngin` |
+
+## `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `lucide-react` | `Info`, `Save`, `Sparkles`, `Trash2` |
+| `react` | `KeyboardEvent`, `useCallback`, `useState` |
+
+## `components/engines/games/panels/dream.panel.LibraryPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/catalog` | `GAME_CATALOG` |
+| `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `lucide-react` | `Filter`, `Play`, `Search` |
+| `next/link` | `⬡ Link` |
+| `react` | `useState` |
+
+## `components/engines/games/panels/dream.panel.ScoresPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Loader2`, `RefreshCw`, `Share2`, `Trophy` |
+| `react` | `useEffect`, `useState` |
+
+## `components/engines/lab/dream.LabEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.LabEngin` | `⬡ LabEngin` |
+
+## `components/engines/lab/panels/dream.panel.DataVizPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `BarChart2`, `Download`, `Layers`, `TrendingUp` |
+| `react` | `useState` |
+
+## `components/engines/lab/panels/dream.panel.ExperimentsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Loader2`, `Play`, `RotateCcw` |
+| `react` | `useState` |
+
+## `components/engines/lab/panels/dream.panel.QuantumPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Info`, `Play`, `RotateCcw`, `Zap` |
+| `react` | `useCallback`, `useState` |
+
+## `components/engines/music/dream.MusicEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
+
+## `components/engines/music/panels/dream.panel.ArrangePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Layers`, `Minus`, `Pause`, `Play`, `Plus`, `SkipBack` |
+| `react` | `useState` |
+
+## `components/engines/music/panels/dream.panel.MusicLibraryPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `ChevronRight`, `Drum`, `FolderOpen`, `Music2`, `Sparkles` |
+| `react` | `useState` |
+
+## `components/engines/music/panels/dream.panel.StudioPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `AlertCircle`, `Mic`, `Play`, `Square`, `Upload` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/engines/portfolio/dream.PortfolioEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/portfolio/dream.PortfolioEngin` | `⬡ PortfolioEngin` |
+
+## `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `CheckCircle2`, `Circle`, `RefreshCw`, `TrendingDown`, `TrendingUp` |
+| `react` | `useState` |
+
+## `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Activity`, `Cpu`, `Loader2`, `ShieldCheck`, `TrendingUp` |
+| `react` | `useState` |
+
+## `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Info`, `Play`, `RotateCcw`, `Zap` |
+| `react` | `useCallback`, `useState` |
+
+## `components/engines/shared/dream.EnginProvider.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `ReactNode`, `createContext`, `useContext`, `useEffect`, `useState` |
+
+## `components/engines/shared/dream.EnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.EnginProvider` | `EngineId` |
+| `./dream.bar.EnginNavBar` | `NavItem` |
+| `react` | `ComponentType` |
+
+## `components/engines/shared/dream.bar.EnginNavBar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `usePathname` |
+
+## `components/engines/shared/dream.makeEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.EnginRuleSet` | `EnginRuleSet` |
+| `./dream.bar.EnginNavBar` | `⬡ EnginNavBar` |
+| `./dream.shell.EnginAppShell` | `⬡ EnginAppShell` |
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
+| `next/navigation` | `useRouter` |
+
+## `components/engines/shared/dream.shell.EnginAppShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/shared-dream` | `InviteFlow`, `SharedDreamProvider` |
+| `lucide-react` | `ChevronLeft`, `X` |
+| `next/link` | `⬡ Link` |
+| `react` | `ReactNode`, `useEffect`, `useRef` |
+
+## `components/feed/dream.AlgorithmEngine.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Check`, `ChevronRight`, `Edit3`, `Plus`, `Share2`, `Shield`, `ShieldCheck`, `Shuffle`, `Trash2`, `User`, `X`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useId`, `useState` |
+
+## `components/feed/dream.CommentSection.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `formatRelativeTime` |
+| `lucide-react` | `AlertCircle`, `Loader2`, `MessageCircle`, `Send` |
+| `next/image` | `⬡ Image` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/feed/dream.FeedVideoCard.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `lucide-react` | `ChevronLeft`, `ChevronRight`, `Maximize2`, `Minimize2`, `X`, `Youtube` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/feed/dream.FollowButton.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `UserCheck`, `UserPlus` |
+| `react` | `useState` |
+
+## `components/feed/dream.FollowOnboarding.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Check`, `X` |
+| `react` | `useCallback`, `useState` |
+
+## `components/feeds/dream.widget.EmbedFeedWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feeds/embedFeedLoader` | `EmbedFeedItem` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ExternalLink`, `Eye`, `Hash`, `RefreshCw` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/forge/dream.EngineBuilderCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/componentInventory` | `AtomicComponent`, `COMPONENT_INVENTORY`, `ComponentCategory` |
+| `@/lib/forge/engineForge` | `AtomicPiece`, `EngineAssembly`, `Wire`, `atomicPieceFromComponent`, `createAssembly`, `deserializeAssembly`, `serializeAssembly`, `validateAssembly` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `lucide-react` | `AlertTriangle`, `Check`, `CheckCircle2`, `ChevronDown`, `ChevronRight`, `Play`, `Plus`, `Save`, `Trash2`, `Upload`, `X` |
+
+## `components/forge/dream.panel.AIBuilderPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeBuild` | `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `readForgeBuilds` |
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `@/lib/forge/useForgeBuild` | `useForgeBuild` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `lucide-react` | `AlertCircle`, `Check`, `CheckCircle2`, `ChevronDown`, `ChevronUp`, `Clock`, `Code2`, `Copy`, `ExternalLink`, `FileText`, `RotateCcw`, `Settings`, `Shield`, `User`, `Zap` |
+| `next/navigation` | `useRouter` |
+
+## `components/forge/dream.widget.ForgeMomentumWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `react` | `useEffect`, `useState` |
+
+## `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/registerCartridges` | `registerCartridges` |
+| `react` | `useEffect` |
+
+## `components/gameengin/dream.CrashReportModal.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useEffect`, `useId`, `useRef`, `useState` |
+
+## `components/gameengin/dream.cartridge.CartridgeBrowser.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST`, `CartridgeManifestEntry`, `getCartridgeCategories` |
+| `next/link` | `⬡ Link` |
+| `react` | `useMemo`, `useState` |
+
+## `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `Component`, `ErrorInfo`, `ReactNode`, `useEffect` |
+
+## `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.cartridge.CartridgeErrorBoundary` | `CartridgeCrashEvent`, `CartridgeErrorBoundary`, `useGlobalCrashListener` |
+| `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
+| `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `@/lib/gameengin/cartridges/manifest` | `CartridgeManifestEntry` |
+| `@/lib/utils` | `toErrorMessage` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/gameengin/dream.cartridge.FeaturedCartridges.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST`, `CartridgeManifestEntry` |
+| `next/link` | `⬡ Link` |
+
+## `components/gameengin/input/DualSenseManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@babylonjs/core` | `* as BABYLON` |
+
+## `components/games/dream.AvenueOfMirrors.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.DefuseRitual.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.EchoArena.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/gameengin/input/DualSenseManager` | `DualSenseManager` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `@/lib/games/mobileControls` | `useRegisterMobileGameControls` |
+| `@/lib/games/performance-baseline` | `createPerformanceBaselineSampler`, `publishGamePerformanceBaseline` |
+| `@babylonjs/core` | `* as BABYLON` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `@babylonjs/core/Engines` | _(dynamic import)_ |
+
+## `components/games/dream.EnginFracture.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.GameController.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/gameControllerButtons` | `ButtonInteractionManager`, `CONTROLLER_BUTTON_DEFS`, `ControllerButton` |
+| `@/lib/games/gameControllerLeft` | `LEFT_STICK_RADIUS_PX`, `StickVector`, `computeLeftStickVector` |
+| `@/lib/games/gameControllerRight` | `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS`, `RIGHT_RESET_TIMEOUT_MS`, `computeAimDelta`, `evaluateRightStickTap` |
+| `@/lib/games/mobileControls` | `MobileControlVector`, `emitMobileButton`, `emitMobileJump`, `emitMobileLookDelta`, `emitMobileMove`, `emitMobileShoot`, `fireLegacyGameInput`, `getLegacyMoveAction` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/games/dream.GamesHub.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/avatar` | `getAvatarDataUrl`, `setPlayAsMe` |
+| `@/lib/games/catalog` | `GAME_CATALOG`, `GameCatalogEntry` |
+| `@/lib/games/library-state` | `GAME_LIBRARY_SELECTION_STORAGE_KEY`, `GAME_LIBRARY_SESSION_STORAGE_KEY`, `SavedGameSession`, `upsertSavedGameSession` |
+| `@/lib/games/navigation` | `buildGameLaunchHref`, `resolveGameLaunchId` |
+| `@/lib/gsap/useGsapEntrance` | `useGsapEntrance` |
+| `@/lib/gsap/useGsapScrollReveal` | `useGsapScrollReveal` |
+| `@/lib/hooks/useMotionTilt` | `useMotionTilt` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `next/navigation` | `useSearchParams` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `@/components/games/dream.BabylonSideScroller` | _(dynamic import)_ |
+| `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
+| `@/components/games/dream.EchoArena` | _(dynamic import)_ |
+| `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
+| `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
+| `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
+| `@/components/games/dream.AvenueOfMirrors` | _(dynamic import)_ |
+| `@/components/games/dream.EnginFracture` | _(dynamic import)_ |
+| `@/components/games/dream.Glassfall` | _(dynamic import)_ |
+| `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
+| `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
+| `@/components/games/dream.DefuseRitual` | _(dynamic import)_ |
+
+## `components/games/dream.Glassfall.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./_fx/canvasFx` | `ParticlePool`, `ScreenShake`, `prefersReducedMotion` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `components/games/dream.Leaderboard.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `AlertCircle`, `Loader2`, `Trophy` |
+| `react` | `useEffect`, `useState` |
+
+## `components/games/dream.LexiconSolitaire.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/games/dream.NeonDrift.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/gameengin/input/DualSenseManager` | `DualSenseManager` |
+| `@/lib/gameengin` | `EliteGameEngine` |
+| `@/lib/gameengin/ai-director` | `AIDirector` |
+| `@/lib/gameengin/post-fx` | `PostFXManager` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `@/lib/games/performance-baseline` | `publishGamePerformanceBaseline` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@babylonjs/core` | `* as BABYLON` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.NiteFlyerSolarHymn.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `components/games/dream.NullCathedral.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./_fx/canvasFx` | `ParticlePool`, `ScreenShake`, `drawDitherFog`, `prefersReducedMotion` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.RecordingControls.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/h265-encoder` | `CaptureResult`, `GameCapture` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.SerpentSiege.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./_fx/canvasFx` | `ParticlePool`, `ScreenShake`, `prefersReducedMotion` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.VoidlineGP.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./_fx/canvasFx` | `ParticlePool`, `ScreenShake`, `motionTrail`, `prefersReducedMotion` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.hud.GameHUD.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/games/dream.GameController` | `⬡ GameController` |
+| `@/components/games/dream.hud.MobileGameHUD` | `⬡ MobileGameHUD` |
+| `@/lib/games/mobileControls` | `MobileHudMode` |
+
+## `components/games/dream.hud.LegacyGameHUD.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useState` |
+
+## `components/games/dream.hud.MobileGameHUD.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/mobileControls` | `MOBILE_HUD_BUTTON_RING`, `MobileControlVector`, `MobileHudButton`, `MobileHudMode`, `emitMobileButton`, `emitMobileLook`, `emitMobileMove`, `fireLegacyGameInput`, `getLegacyActionForMobileButton`, `getLegacyMoveAction`, `normalizeStickVector` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.remote.LegacyGameRemote.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
+| `@/lib/games/useGamepad` | `useGamepad` |
+| `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useSearchParams` |
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `components/games/madmaxi/authoredZonePacks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./config` | `ZONES`, `getMadmaxiEnemyCount` |
+| `./types` | `CoinDef`, `EnemyDef`, `HazardDef`, `LevelDef`, `MadmaxiEnemyKind`, `MadmaxiPowerUpKind`, `PlatDef`, `PowerUpDef` |
+
+## `components/games/madmaxi/config.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `BossMeta`, `MadmaxiEnemyKind`, `MadmaxiPowerUpKind`, `ZoneMeta` |
+
+## `components/games/madmaxi/dream.MadmaxiGame.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./audio` | `MadmaxiAudioController` |
+| `./config` | `BOSS_ENRAGE_MULTIPLIER`, `BOSS_ENRAGE_THRESHOLD`, `MADMAXI_SUPER_SECONDS`, `MADMAXI_SUPER_STREAK`, `STAR_SEED_OFFSET`, `STAR_SEED_PRIME`, `TOTAL_LEVELS`, `ZONES`, `getBossForLevel`, `getZoneIdx`, `isBossLevel`, `seededRng` |
+| `./levels` | `getMadmaxiLevelDefinition` |
+| `./materials` | `ScanLineTexture`, `createScanLineTexture`, `makeDetailMat` |
+| `./types` | `CoinDef`, `EnemyDef`, `HazardDef`, `MadmaxiEnemyKind`, `MadmaxiPowerUpKind`, `PlatDef`, `PowerUpDef` |
+| `./vfx` | `VfxKit`, `VfxTier`, `createMadmaxiVfx` |
+| `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `@/lib/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
+| `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultUXSignals` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `components/games/madmaxi/levels.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./authoredZonePacks` | `getAuthoredStarterLevel`, `isMadmaxiAuthoredLevel` |
+| `./config` | `EXTRA_POWERUP_EVERY_N_LEVELS`, `LEVEL_SEED_KEY`, `ZONES`, `getBossForLevel`, `getEnemyKindForIndex`, `getMadmaxiEnemyCount`, `getPowerUpForIndex`, `getZoneIdx`, `isBossLevel`, `seededRng` |
+| `./types` | `EnemyDef`, `HazardDef`, `LevelDef`, `PlatDef`, `PowerUpDef` |
+
+## `components/home/dream.ActiveModuleSurface.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activeModulesStore` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModules` |
+| `@/lib/artifactStore` | `loadArtifacts`, `saveArtifact` |
+| `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `@/lib/dream-window/useDreamWindowActions` | `useDreamWindowActions` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/types/dreamArtifact` | `ActiveModuleInstance`, `DreamArtifact`, `DreamArtifactDragPayload` |
+| `lucide-react` | `X` |
+
+## `components/home/dream.DaydreamPulseStrip.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `useRouter` |
+
+## `components/home/dream.FlagshipEnginesStrip.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `lucide-react` | `Activity`, `ChevronRight`, `Flame`, `Gamepad2` |
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useState` |
+
+## `components/home/dream.NeuralSeamCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `@/lib/dreamdm/bridgeSeamFlow` | `SeamParticle`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles`, `tickParticles` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `components/home/dream.bar.GlobalDreamBar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreamengin/dream.panel.DrEamsPanel` | `⬡ DrEamsPanel` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/home-buttons/contextual-home` | `runHomeAction` |
+| `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `next/navigation` | `usePathname`, `useRouter` |
+| `react` | `useCallback` |
+
+## `components/home/dream.bar.PersistentDreamBar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ads/dream.SkipCreditBalance` | `SkipCreditBalance` |
+| `@/components/home/dream.NeuralSeamCanvas` | `⬡ NeuralSeamCanvas` |
+| `@/components/home/dream.bar.PersistentDreamBar` | `DreamDMContainer`, `⬡ PersistentDreamBar` |
+| `@/components/runtime/dream.DualRuntimeContainer` | `useDualRuntime` |
+| `@/components/runtime/dream.RuntimeView` | `⬡ RuntimeView` |
+| `@/dreamdmbar/dreamsurface.dreamdmbar` | `⬡ DreamDMRail` |
+| `@/hooks/useDreamLayout` | `useDreamLayout` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `@/lib/dreamenginOS/OSContext` | `useOS` |
+| `@/lib/dreams/drag` | `DreamRuntime`, `parseDreamDragData`, `surfaceForRuntime`, `transferDream` |
+| `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `next/navigation` | `usePathname` |
+
+## `components/home/dream.widget.DreamWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `cn` |
+| `framer-motion` | `motion` |
+| `react` | `ReactNode`, `useRef` |
+
+## `components/idari/dream.PlatformHealth.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activity/types` | `GetPlatformMetricsResponse`, `PLATFORM_HEALTH_TARGETS` |
+| `react` | `useEffect`, `useState` |
+
+## `components/landing/dream.LandingNav.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
+## `components/landing/dream.LandingProductStatement.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
+## `components/landing/dream.scene.UniverseField.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/torridity/constants` | `n` |
+| `react` | `useEffect`, `useRef` |
+
+## `components/marketplace/dream.MarketplaceListingCard.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
+## `components/marketplace/dream.MarketplaceRequestButton.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `CheckCircle`, `Loader2`, `Send` |
+| `react` | `useState` |
+
+## `components/menus/dream.menu.DreamRadialMenu.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `useRouter` |
+| `react` | `useEffect`, `useRef` |
+
+## `components/menus/dream.menu.DualBottomMenu.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `useRouter` |
+
+## `components/messaging/dream.BoardComposer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Loader2`, `Send` |
+| `react` | `useState` |
+
+## `components/music/dream.SoundRecorder.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Download`, `Mic`, `Pause`, `Play`, `Square`, `Trash2`, `Zap` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/onboarding/dream.OnboardingTip.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useState` |
+
+## `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `@/lib/optimizer/babylon-optimizero` | `BabylonUICandidate`, `BabylonUIGenerator`, `BabylonUIOptimizero` |
+| `@/lib/optimizer/creative-optimizero` | `CHAOS_WEIGHTS`, `DEFAULT_WEIGHTS`, `OptimizeroResult`, `OptimizeroWeights`, `STABLE_WEIGHTS` |
+| `react` | `useEffect`, `useRef`, `useState` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `components/overlays/dream.RootStatusScreen.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
+## `components/panels/dream.panel.AlgorithmPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/feed/dream.AlgorithmEngine` | `⬡ AlgorithmEngine` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `lucide-react` | `ArrowLeft`, `Cpu` |
+
+## `components/panels/dream.panel.AppearancePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.ThemeApplicator` | `DeTheme`, `THEME_PRESETS`, `applyTheme` |
+| `@/components/providers/dream.ThemeProvider` | `useTheme` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `@/lib/ui/theme-engine` | `DEFAULT_OVERRIDES`, `THEME_PRESETS` |
+| `lucide-react` | `ArrowLeft`, `Check`, `RotateCcw` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/panels/dream.panel.ConnectorsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/connectors/dream.ConnectorsClient` | `⬡ ConnectorsClient` |
+| `lucide-react` | `Plug` |
+
+## `components/panels/dream.panel.ControlsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/settings/controls/dream.PositionIndicatorToggle` | `⬡ PositionIndicatorToggle` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `lucide-react` | `ArrowLeft`, `Check`, `Sliders` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/panels/dream.panel.DataPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/supabase/client` | `createClient` |
+| `lucide-react` | `AlertTriangle`, `ArrowLeft`, `Check`, `Database`, `Download`, `Loader2`, `Trash2` |
+| `react` | `useCallback`, `useState` |
+
+## `components/panels/dream.panel.FeedSettingsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `FEED_TOPICS_KEY`, `loadActiveTopicIds` |
+| `lucide-react` | `Check` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/panels/dream.panel.HelpPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `lucide-react` | `ArrowLeft`, `BookOpen`, `HelpCircle`, `MessageCircle`, `Wand2` |
+
+## `components/panels/dream.panel.MarketplacePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/marketplace/dream.MarketplaceListingCard` | `⬡ MarketplaceListingCard` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/supabase/client` | `createClient` |
+| `lucide-react` | `Loader2`, `PlusCircle`, `ShoppingBag` |
+| `react` | `useEffect`, `useState` |
+
+## `components/panels/dream.panel.PrivacyPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `lucide-react` | `ArrowLeft`, `Check`, `EyeOff`, `Flag`, `Loader2`, `Shield`, `UserX` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/panels/dream.panel.ProfilePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `Eye`, `Loader2`, `Share2` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/panels/dream.panel.SafetyPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `ArrowLeft`, `ChevronRight`, `FileText`, `Loader2`, `Shield` |
+| `react` | `useEffect`, `useState` |
+
+## `components/panels/dream.panel.SettingsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `Bot`, `ChevronRight`, `Cpu`, `Crown`, `Database`, `HelpCircle`, `LayoutGrid`, `LogOut`, `Palette`, `Plug`, `Rss`, `Shield`, `Sliders`, `User` |
+| `react` | `useEffect`, `useState` |
+
+## `components/panels/dream.panel.WidgetsPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `ArrowLeft`, `Eye`, `EyeOff`, `LayoutGrid`, `Loader2`, `Pin` |
+| `react` | `useEffect`, `useState` |
+
+## `components/profile/dream.EditableAvatar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/image` | `⬡ Image` |
+| `next/navigation` | `useRouter` |
+| `react` | `CSSProperties`, `MouseEvent`, `ReactNode` |
+
+## `components/profile/dream.ProfileCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.PlatformBadge` | `⬡ PlatformBadge` |
+| `@/lib/social/platforms` | `PROFILE_SHARE_PLATFORMS` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `BarChart3`, `Check`, `Eye`, `FileText`, `Gamepad2`, `Globe`, `Image`, `Music`, `Pencil`, `Save`, `Share2`, `ShoppingBag`, `Users`, `X` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useState` |
+
+## `components/profile/dream.ProfileCustomizeButton.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+
+## `components/profile/dream.widget.ProfileWidgetGrid.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/profile/dream.EditableAvatar` | `⬡ EditableAvatar` |
+| `lucide-react` | `Check`, `ChevronLeft`, `ChevronRight`, `Heart`, `MessageCircle`, `Plug`, `Share2`, `Users`, `X` |
+| `next/link` | `⬡ Link` |
+
+## `components/providers/dream.AppSurfaceShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.CommandPalette` | `⬡ CommandPalette` |
+| `@/components/dream.GlobalOverlays` | `⬡ GlobalOverlays` |
+| `@/components/dream.ThemeApplicator` | `⬡ ThemeApplicator` |
+| `@/components/providers/dream.GodTierProvider` | `⬡ GodTierProvider` |
+| `@/components/providers/dream.ThemeProvider` | `⬡ ThemeProvider` |
+| `@/components/runtime/dream.DualRuntimeContainer` | `⬡ DualRuntimeContainer` |
+| `@/lib/dreamdm/DreamSystemContext` | `DreamSystemProvider` |
+| `@/lib/dreamenginOS/OSContext` | `OSProvider` |
+| `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
+| `react` | `Suspense`, `useEffect`, `useState` |
+
+## `components/providers/dream.GodTierProvider.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/god-tier/useGodTier` | `useGodTier` |
+| `next/navigation` | `usePathname` |
+
+## `components/providers/dream.ThemeProvider.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/theme-engine` | `DEFAULT_OVERRIDES`, `UserOverrides`, `applyTheme`, `getPreset`, `loadStoredTheme`, `saveTheme` |
+
+## `components/runtime/dream.DualRuntimeContainer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `isHomeActiveTop`, `makeDreamSpaceActiveSurface`, `makeHomeActiveTop`, `makeHomeDreamSpaceActive`, `setRuntimeWorld`, `swapDominantRuntime` |
+
+## `components/runtime/dream.RuntimeView.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamdmbar/_components/HomeDreamRegion` | `⬡ HomeDreamSurface` |
+| `@/components/dreams/dreamsurface.dreamspace` | `⬡ DreamsSpacePanel` |
+| `@/components/panels/dream.panel.AlgorithmPanel` | `⬡ AlgorithmPanel` |
+| `@/components/panels/dream.panel.AppearancePanel` | `⬡ AppearancePanel` |
+| `@/components/panels/dream.panel.ConnectorsPanel` | `⬡ ConnectorsPanel` |
+| `@/components/panels/dream.panel.ControlsPanel` | `⬡ ControlsPanel` |
+| `@/components/panels/dream.panel.DataPanel` | `⬡ DataPanel` |
+| `@/components/panels/dream.panel.FeedSettingsPanel` | `⬡ FeedSettingsPanel` |
+| `@/components/panels/dream.panel.HelpPanel` | `⬡ HelpPanel` |
+| `@/components/panels/dream.panel.MarketplacePanel` | `⬡ MarketplacePanel` |
+| `@/components/panels/dream.panel.PrivacyPanel` | `⬡ PrivacyPanel` |
+| `@/components/panels/dream.panel.ProfilePanel` | `⬡ ProfilePanel` |
+| `@/components/panels/dream.panel.SafetyPanel` | `⬡ SafetyPanel` |
+| `@/components/panels/dream.panel.SettingsPanel` | `⬡ SettingsPanel` |
+| `@/components/panels/dream.panel.WidgetsPanel` | `⬡ WidgetsPanel` |
+| `@/components/runtime/dream.shell.RuntimeShell` | `⬡ RuntimeShell` |
+| `@/components/spatial/dream.shell.EnhancedSpatialShell` | `⬡ EnhancedSpatialShell` |
+| `@/lib/dreams/DreamRegistry` | `getDreamComponent` |
+| `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+
+## `components/runtime/dream.shell.RuntimeShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+
+## `components/shaders/dream.LightningWing.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@react-three/fiber` | `useFrame` |
+| `react` | `useMemo`, `useRef` |
+| `three` | `* as THREE` |
+
+## `components/shaders/dream.NeonGlow.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@react-three/fiber` | `useFrame` |
+| `react` | `useMemo`, `useRef` |
+| `three` | `* as THREE` |
+
+## `components/shaders/dream.Refractor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@react-three/fiber` | `useFrame` |
+| `react` | `useMemo`, `useRef` |
+| `three` | `* as THREE` |
+
+## `components/shared-dream/dream.InviteFlow.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.SharedDreamProvider` | `useSharedDream` |
+| `react` | `useCallback`, `useState` |
+
+## `components/shared-dream/dream.SharedDreamCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.SharedDreamProvider` | `useSharedDream` |
+
+## `components/shared-dream/dream.SharedDreamProvider.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/collaboration` | `CollabEventHandler`, `CollabMode`, `CollabPayload`, `CollabSession`, `CollabSessionOptions`, `PeerInfo`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession`, `generateInviteLink`, `parseInviteLink` |
+| `@/lib/supabase/client` | `createClient` |
+
+## `components/shared-dream/dream.SharedDreamRuntime.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.InviteFlow` | `InviteFlow` |
+| `./dream.SharedDreamCanvas` | `SharedDreamCanvas` |
+| `./dream.SharedDreamProvider` | `SharedDreamProvider` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/sharedDream/useSharedDreamSession` | `useSharedDreamSession` |
+
+## `components/spatial/dream.PixiPhysicsLayer.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `pixi-viewport` | `Viewport` |
+| `pixi.js` | `* as PIXI` |
+| `react` | `useEffect`, `useRef` |
+
+## `components/spatial/dream.ProfileSpace.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/hooks/use-spatial` | `useContent`, `useWidgets` |
+| `@/lib/utils` | `cn` |
+| `@/types/spatial` | `ContentObject`, `Widget`, `WidgetType`, `WidgetVisibility` |
+| `lucide-react` | `ChevronLeft`, `ChevronRight`, `ExternalLink`, `FileText`, `Globe`, `Image`, `Link`, `Lock`, `Music`, `Plus`, `Rss`, `Settings`, `Square`, `Trash2`, `User`, `Users`, `Video`, `X` |
+| `next/image` | `⬡ Image` |
+
+## `components/spatial/dream.shell.EnhancedSpatialShell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.ProfileSpace` | `ProfileSpace` |
+| `@/components/spatial/dream.PixiPhysicsLayer` | `⬡ PixiPhysicsLayer` |
+| `@/lib/navigation/NavStateBuffer` | `LAYER_HOME`, `LAYER_PROFILE` |
+| `@/lib/navigation/SpatialNavigationEngine` | `SpatialNavigationEngine` |
+| `@/lib/navigation/WidgetInstanceMemory` | `WidgetBindingType`, `WidgetInstanceRecord`, `WidgetPresentation`, `WidgetVisibility` |
+| `lucide-react` | `Home` |
+| `react` | `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/three/dream.scene.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/shaders/dream.LightningWing` | `LightningWing` |
+| `@/components/shaders/dream.NeonGlow` | `NeonGlow` |
+| `@/components/shaders/dream.Refractor` | `Refractor` |
+| `@react-three/drei` | `Float`, `OrbitControls`, `Sparkles`, `Stars`, `Trail` |
+| `@react-three/fiber` | `Canvas`, `useFrame` |
+| `react` | `Suspense`, `useRef` |
+| `three` | `* as THREE` |
+
+## `components/ui/dream.AuthenticatedPageHeader.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.BrandLogo` | `⬡ BrandLogo` |
+| `lucide-react` | `ArrowLeft` |
+| `next/link` | `⬡ Link` |
+| `react` | `ReactNode` |
+
+## `components/ui/dream.DreamWord.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+
+## `components/ui/dream.IconList.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.SheetIcon` | `⬡ SheetIcon` |
+| `next/link` | `⬡ Link` |
+
+## `components/ui/dream.InfinityIcon.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `components/ui/dream.PlatformBadge.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.SheetIcon` | `⬡ SheetIcon` |
+| `@/lib/icons/sheet` | `hasIcon` |
+| `@/lib/social/platforms` | `PLATFORM_MAP` |
+| `next/image` | `⬡ Image` |
+
+## `components/ui/dream.SheetIcon.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/icons/sheet` | `COLS`, `FRAME_W`, `ICONS`, `IconName`, `ROWS`, `SHEET_PATH`, `hasIcon` |
+
+## `components/ui/dream.SocialShareSheet.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/platforms` | `PROFILE_SHARE_PLATFORMS`, `SocialPlatform` |
+| `lucide-react` | `Check`, `Copy`, `ExternalLink`, `X` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/universal-editor/dream.UniversalEditor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/coercionTable` | `DreamDrop`, `classifyDrop` |
+| `react` | `useMemo`, `useState` |
+
+## `components/universal-editor/dream.UniversalEditorWrapper.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./useTapHoldMove` | `Position`, `useTapHoldMove` |
+| `@/lib/universal-editor/module-manifest` | `ModuleManifest`, `RuntimeId` |
+
+## `components/universal-editor/useTapHoldMove.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/universal-editor/module-manifest` | `ModuleManifest`, `RuntimeId` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `components/universe/dream.node-cluster.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `cn` |
+| `lucide-react` | `LucideIcon` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/universe/dream.shell.universe-shell.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `cn` |
+| `react` | `ReactNode` |
+
+## `components/universe/dream.universe-card.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `cn` |
+| `react` | `useRef`, `useState` |
+
+## `components/warp/dream.WarpCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/warp/useWarp` | `useWarp` |
+| `@/lib/warp/warpEngine` | `WarpEffect` |
+
+## `components/webgpu/dream.WebGPUShowcase.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./renderer` | `WebGPURenderer` |
+| `@/lib/webgpu` | `getRendererBackend`, `isWebGPUAvailable` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/webgpu/renderer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./shaders` | `BLUR_FRAG_WGSL`, `BRIGHT_FRAG_WGSL`, `COMPOSITE_FRAG_WGSL`, `COMPUTE_WGSL`, `FS_VERT_WGSL`, `LEMN_FRAG_WGSL`, `LEMN_VERT_WGSL`, `N_LEMN_VERTS`, `N_PARTICLES`, `N_PARTICLE_VERTS`, `PARTICLE_FRAG_WGSL`, `PARTICLE_VERT_WGSL` |
+
+## `components/widgets/dream.ConfigureSheet.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useState` |
+
+## `components/widgets/dream.EditModeBanner.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.EditModeProvider` | `useEditMode` |
+
+## `components/widgets/dream.widget.PlayMediaWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.widget.WidgetCard` | `⬡ WidgetCard` |
+| `react` | `useRef`, `useState` |
+
+## `components/widgets/dream.widget.UniversalWidget.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.widget.WidgetCard` | `⬡ WidgetCard` |
+| `react` | `useEffect`, `useMemo`, `useState` |
+
+## `components/widgets/dream.widget.WidgetCard.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreams/dreamsurface.shell` | `⬡ DreamShell` |
+| `react` | `⬡ React` |
+
+## `components/widgets/dream.widget.WidgetPlaceholder.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `coresurfaces/dreamsurface.EditProfileDream.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `ArrowLeft`, `Eye`, `Loader2`, `Share2` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useRouter` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `coresurfaces/dreamsurface.ViewProfile.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dream.ProfileShareButton` | `⬡ ProfileShareButton` |
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `Eye`, `Pencil` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `daydreams/brand/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dreamsurface.daydream.BrandDaydream` | `⬡ BrandDaydream` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.BrandingEngin` | `⬡ BrandingEngin` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Palette` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `daydreams/code/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.CodeEngin` | `⬡ CodeEngin` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Code2`, `FileCode2`, `FolderOpen`, `Play`, `Upload` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `daydreams/create/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.ContentEngin` | `⬡ ContentEngin` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `BarChart2`, `Brain`, `Calendar`, `FileText`, `PlusCircle`, `RefreshCw`, `Sparkles`, `Video` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `daydreams/games/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/games/dream.GamesHub` | `⬡ GamesHub` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/autoopen/dream.AutoOpenGameEngin` | `⬡ AutoOpenGameEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `@/lib/games/quality-plan` | `GAME_QUALITY_PILLARS` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `Gamepad2`, `Play`, `Sparkles`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
+
+## `daydreams/lab/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.LabEngin` | `⬡ LabEngin` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `FlaskConical`, `Play` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `daydreams/music/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/music/dream.SoundRecorder` | `⬡ SoundRecorder` |
+| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
+| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `lucide-react` | `BarChart3`, `CheckCircle`, `Clock`, `DiscAlbum`, `DollarSign`, `Globe`, `Music`, `Radio`, `Share2`, `Sparkles`, `TrendingUp`, `Upload`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `dreamdmbar/dream.GlowingLight.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `CSSProperties`, `KeyboardEvent`, `MouseEvent`, `TouchEvent` |
+
+## `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
+| `@/dreamdmbar/dream.GlowingLight` | `⬡ GlowingLight` |
+| `@/lib/dreamdm/DreamSystemContext` | `BarIntentMode`, `useDreamSystem` |
+| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `MoodPeriod`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `STREAK_STORAGE_KEY`, `SURFACE_ACCENT_COLORS`, `StreakData`, `StreakTier`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `filterSlashCommands`, `getMoodPeriod`, `getStreakTier`, `resolveGoldTapAction`, `resolveStreak`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
+| `@/lib/dreamdm/useDreamBarContext` | `DreamBarContext`, `useDreamBarContext` |
+| `@/lib/dreamdm/useDreamDMConversations` | `DMConversation`, `useDreamDMConversations` |
+| `@/lib/dreamdm/useDreamDMDraft` | `useDreamDMDraft` |
+| `@/lib/dreamdm/useDreamDMMessages` | `DMMessage`, `useDreamDMMessages` |
+| `@/lib/dreamdm/useDreamSearch` | `SearchResult`, `useDreamSearch` |
+| `@/lib/dreamdm/useMessagingCore` | `MediaType`, `useMessagingCore` |
+| `@/lib/dreamdm/useNotifications` | `useNotifications` |
+| `@/lib/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/ui/runtimeViewport` | `getPreferredViewportHeight`, `isCompactRuntimeViewport` |
+| `@/lib/utils` | `formatRelativeTime` |
+| `lucide-react` | `Bell`, `Bot`, `Code2`, `Compass`, `FileText`, `Gamepad2`, `Home`, `ImageIcon`, `Loader2`, `Maximize2`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Settings`, `ShoppingBag`, `Sparkles`, `User`, `X` |
+| `next/image` | `⬡ Image` |
+| `next/navigation` | `useRouter` |
+| `@/lib/supabase/client` | _(dynamic import)_ |
+
+## `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./useAgentSession` | `useAgentSession` |
+| `react` | `useState` |
+
+## `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `engins/CodeEngin/orchestrator/dream.index.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../modules/ai-co-pilot/dream.panel.AgentPanel` | `AgentPanel` |
+| `@/engins/CodeEngin/orchestrator` | `⬡ CodeEnginOrchestrator` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+
+## `engins/autoopen/dream.AutoOpenGameEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/instanceManager` | `createInstance` |
+| `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `next/navigation` | `useSearchParams` |
+| `react` | `useEffect` |
+
+## `engins/dream.ForgeEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/dream.BrandLogo` | `⬡ BrandLogo` |
+| `@/components/forge/dream.panel.AIBuilderPanel` | `⬡ AIBuilderPanel` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/forge/forgeIntelligence` | `ForgeHistoryEntry`, `ForgeSuggestion`, `ForgeTransferEntry`, `WorkflowRunState`, `clearWorkflowRun`, `deleteCustomWorkflow`, `generateSuggestions`, `getActiveWorkflowRun`, `getFailureRecovery`, `parseGoalToWorkflow`, `readCustomWorkflows`, `readForgeHistory`, `readForgeTransfers`, `saveCustomWorkflow`, `startWorkflowRun`, `updateWorkflowStep` |
+| `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `@/lib/forge/forgeNexus` | `NexusSnapshot`, `computeNexus` |
+| `@/lib/forge/forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `EnginEntry`, `FORGE_WORKFLOWS`, `ForgeActivityPulse`, `ForgeWorkflow`, `formatRelativeTime`, `readForgeActivity` |
+| `@/lib/forge/forgeRituals` | `RitualSnapshot`, `computeRituals` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `DualRuntimeChannel`, `bridge` |
+| `framer-motion` | `AnimatePresence`, `motion` |
+| `lucide-react` | `Activity`, `AlertTriangle`, `ArrowLeft`, `ArrowRightLeft`, `BarChart3`, `Brain`, `CheckCircle2`, `ChevronDown`, `ChevronRight`, `Clock`, `ExternalLink`, `Flame`, `Layers`, `Plus`, `RefreshCw`, `Save`, `Sparkles`, `Trash2`, `Wand2`, `Workflow`, `X`, `XCircle`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useState` |
+
+## `engins/dream.QuantumCircuitCanvas.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef` |
+
+## `engins/dream.panel.AnalyticsEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/dreamengin/dream.panel.CrossEnginStatusPanel` | `⬡ CrossEnginStatusPanel` |
+| `@/lib/activity/types` | `GetPlatformMetricsResponse`, `PLATFORM_HEALTH_TARGETS`, `SkipCredit` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `lucide-react` | `Activity`, `ArrowLeft`, `BarChart2`, `DollarSign`, `Eye`, `RefreshCw`, `Shield`, `TrendingUp`, `Zap` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useState` |
+
+## `engins/engin.BrandingEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/hooks/useSharedDream` | `useSharedDream` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/brand/useBrandEnginRuntime` | `useBrandEnginRuntime` |
+| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/useEnginBridge` | `useBrandingEnginBridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lucide-react` | `ArrowLeft`, `BarChart2`, `BookOpen`, `DollarSign`, `Eye`, `FlaskConical`, `Layers`, `Megaphone`, `Minus`, `Palette`, `TrendingDown`, `TrendingUp`, `Users` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `engins/engin.CodeEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./CodeEngin/core/parser` | `parseCode` |
+| `./CodeEngin/modules/ai-co-pilot` | `AgentPanel` |
+| `@/components/daydream/dream.DiffViewer` | `⬡ DiffViewer` |
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/dreamengin/dream.panel.CrossEnginStatusPanel` | `⬡ CrossEnginStatusPanel` |
+| `@/hooks/useSharedDream` | `useSharedDream` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/code/useCodeEnginRuntime` | `useCodeEnginRuntime` |
+| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/useEnginBridge` | `useCodeEnginBridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `lucide-react` | `ArrowLeft`, `ArrowLeftRight`, `BarChart2`, `Bot`, `Bug`, `CheckCircle`, `Clipboard`, `Code2`, `Copy`, `ListChecks`, `Loader2`, `MousePointer2`, `Plus`, `Scissors`, `Shield`, `Terminal`, `Trash2`, `X`, `XCircle`, `Zap`, `ZoomIn`, `ZoomOut` |
+| `next/link` | `⬡ Link` |
+| `react` | `CSSProperties`, `useCallback`, `useEffect`, `useRef`, `useState` |
+| `@supabase/supabase-js` | _(dynamic import)_ |
+
+## `engins/engin.ContentEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/activity/dream.ActivityPostForm` | `ActivityPostData`, `ActivityPostForm` |
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/lib/composite/compositor` | `CompGraph`, `NodeType`, `addNode`, `connectNodes`, `createGraph`, `createNode`, `topologicalSort` |
+| `@/lib/composite/fxSimulation` | `FxCategory`, `FxSimulation`, `allCategories`, `createSimulation`, `presetsByCategory` |
+| `@/lib/composite/matchmover` | `CameraTrack`, `addSample`, `addTrackPoint`, `createTrack`, `estimateCameraMotion`, `exportTrackCSV`, `trackSummary` |
+| `@/lib/composite/motionCapture` | `MocapClip`, `clipSummary`, `exportBVH`, `parseBVH`, `retargetClip` |
+| `@/lib/composite/rotoscope` | `RotoProject`, `addLayer`, `createProject`, `exportFrameSVG`, `interpolateShape`, `keyframeList`, `setKeyframe` |
+| `@/lib/content/publishIntent` | `publishToDreamR`, `resolvePublishIntent` |
+| `@/lib/content/seoScorer` | `scoreContent` |
+| `@/lib/content/transcriptEditor` | `annotateSearchMatches`, `applyEditsToSegments`, `computeCuts`, `exportSRT`, `parseSRT`, `parseVTT`, `searchTranscript` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/content/useContentEnginRuntime` | `useContentEnginRuntime` |
+| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/useEnginBridge` | `useContentEnginBridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `BarChart2`, `Brain`, `Calendar`, `Camera`, `CheckCircle`, `ChevronDown`, `ChevronUp`, `Crosshair`, `Dice5`, `Download`, `FileText`, `Film`, `Flag`, `Hash`, `Image`, `Layers`, `Link2`, `Mic`, `Rocket`, `RotateCcw`, `Search`, `Shield`, `Trash2`, `Video`, `Wand2`, `Wrench`, `Zap` |
+| `next/image` | `⬡ NextImage` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `@/lib/content/transcriptEditor` | _(dynamic import)_ |
+| `@/lib/content/seoScorer` | _(dynamic import)_ |
+
+## `engins/engin.GameEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/games/dream.GamesHub` | `GAMES` |
+| `@/components/games/dream.RecordingControls` | `⬡ RecordingControls` |
+| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/game/useGameEnginRuntime` | `useGameEnginRuntime` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `@/lib/gameengin/cartridge` | `GameCartridge` |
+| `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `@/lib/games/avatar` | `consumePlayAsMe`, `getAvatarDataUrl` |
+| `@/lib/games/library-state` | `GAME_LIBRARY_SESSION_STORAGE_KEY`, `MAX_SAVED_GAME_SESSIONS`, `SavedGameSession` |
+| `@/lib/games/navigation` | `buildGameLaunchHref`, `isLaunchFlagEnabled`, `resolveGameLaunchId` |
+| `@/lib/games/quality-plan` | `GAME_CONTROL_PROFILES`, `GAME_QUALITY_PILLARS` |
+| `@/lib/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
+| `@/lib/games/useGamepad` | `useGamepad` |
+| `@/lib/games/useRemoteChannel` | `useRemoteChannel` |
+| `@/lib/media/ledger` | `buildLedgerMediaUrl` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/instanceManager` | `createInstance` |
+| `@/lib/runtime/useEnginBridge` | `useGameEnginBridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `Award`, `FileCode`, `Gamepad2`, `Lock`, `Map`, `Play`, `Radio`, `Share2`, `Sliders`, `Trophy`, `Unlock` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useSearchParams` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `engins/engin.LabEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/dream.ForgeDreamCanvas` | `ForgeDreamCanvas` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/lab/useLabEnginRuntime` | `useLabEnginRuntime` |
+| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/useEnginBridge` | `useLabEnginBridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `Activity`, `ArrowLeft`, `BarChart2`, `Box`, `Code2`, `Database`, `Download`, `FlaskConical`, `Gamepad2`, `Loader2`, `Music`, `Play`, `RefreshCw` |
+| `next/link` | `⬡ Link` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `engins/engin.StarMakerEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/daydream/starmaker/dream.panel.CompingPanel` | `⬡ CompingPanel` |
+| `@/components/daydream/starmaker/dream.panel.PianoRollPanel` | `⬡ PianoRollPanel` |
+| `@/components/daydream/starmaker/dream.panel.SessionViewPanel` | `⬡ SessionViewPanel` |
+| `@/components/dream.AudioVisualizer3D` | `AudioVisualizer3D` |
+| `@/hooks/useSharedDream` | `useSharedDream` |
+| `@/lib/audioFingerprint` | `PeakMap`, `buildPeakMap`, `createFingerprintIsolator` |
+| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/music/useStarMakerEnginRuntime` | `useStarMakerEnginRuntime` |
+| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/media/ledger` | `buildLedgerMediaUrl`, `uploadBlobToLedgerStorage` |
+| `@/lib/music/presets` | `BEAT_PRESETS`, `BeatPreset`, `GENRE_LIST`, `INSTRUMENT_PRESETS`, `InstrumentPreset`, `PROJECT_TEMPLATES`, `ProjectTemplate` |
+| `@/lib/music/starmaker` | `MelodySuggestion`, `PlaybackQualityMode`, `buildReleaseStrategy`, `createMelodySuggestions`, `summarizePlaybackProfile` |
+| `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ARRANGEMENT_TRACKS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackState` |
+| `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `SessionViewState`, `createInitialCompingState`, `createInitialSessionView` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/config` | `SUPABASE_URL` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+| `lucide-react` | `ArrowLeft`, `Download`, `FileAudio`, `FolderOpen`, `Gauge`, `Mic2`, `Music`, `Pause`, `Play`, `Radio`, `Sliders`, `Sparkles`, `Upload`, `ZoomIn`, `ZoomOut` |
+| `next/link` | `⬡ Link` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `engins/portfolio/dream.PortfolioEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `lucide-react` | `Activity`, `ArrowLeft`, `Cpu`, `ShieldCheck`, `TrendingUp` |
+| `react` | `useState` |
+
+## `fix-audit.js`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `DatabaseIcon` |
+
+## `hooks/use-spatial.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/types/spatial` | `Album`, `ContentObject`, `CreateAlbumInput`, `CreateContentInput`, `CreateWidgetInput`, `NavigationState`, `ShareIntent`, `SpaceType`, `UpdateContentInput`, `UpdateWidgetInput`, `Widget` |
+| `react` | `useCallback`, `useMemo`, `useState` |
+
+## `hooks/useAccount.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useEffect`, `useState` |
+
+## `hooks/useConnectorInstallFlow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `getConnectorDef` |
+| `@/lib/connectors/installFlow` | `SlotGrid`, `consumeDeferredPrompt`, `handleAddWidget`, `handleConnectSuccess`, `handleDismissPrompt`, `handlePlaceLater` |
+| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef`, `getWidgetTypeDef` |
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `hooks/useDreamLayout.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `hooks/useHideOnScroll.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `hooks/useSharedDream.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/collaboration` | `generateInviteLink` |
+| `@/lib/sharedDream` | `DreamBroadcastPayload`, `DreamEventHandler`, `DreamPresenceUpdate`, `DreamSessionMode`, `DreamSessionRole`, `SharedDreamSession`, `broadcastControlSignal`, `broadcastCursorPosition`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createSharedDreamSession`, `leaveSharedDreamSession` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `hooks/useTapHoldMove.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../lib/universalEditor` | `ModuleManifest`, `RuntimeId`, `canTransfer` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `hooks/useTick.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useRef` |
+
+## `hooks/useViewCounter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef` |
+
+## `lib/activeModulesStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/dreamArtifact` | `ActiveModuleInstance` |
+
+## `lib/activity/aqs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `UserMetrics` |
+| `@/lib/supabase/client` | `createClient` |
+
+## `lib/activity/boogieActivityPolicy.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/policy/boogiePolicy` | `PolicyCategory`, `PolicyCategoryValue` |
+
+## `lib/activity/scoring.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ActivityTier`, `INNOVATION_BONUS`, `TIER_MULTIPLIERS`, `VERIFICATION_STRENGTH`, `VerificationMethod` |
+
+## `lib/activity/skipCredits.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `AdType`, `SKIP_CREDIT_REWARDS` |
+
+## `lib/activity/visibility-score.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ActivityTier` |
+| `@/lib/supabase/client` | `createClient` |
+
+## `lib/adari.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync` |
+| `node:path` | `resolve` |
+
+## `lib/admin/lockout.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServiceClient` |
+
+## `lib/admin/upgrade-readiness.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idari` | `PatchPlan`, `createPatchPlan` |
+| `@/lib/feature-build` | `BuildCycleState`, `DaydreamEnginManifest`, `FEATURE_MANIFESTS`, `FeatureEntry`, `calculateProgress`, `computeAllBuildCycleStates` |
+| `@/lib/setup/checks` | `SetupCheckSummary`, `getSetupStatus` |
+
+## `lib/agentOS.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./agentOS/hostTools` | `CodeEnginHostTools` |
+
+## `lib/agentOS/hostTools.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `child_process` | `exec` |
+| `fs/promises` | `readFile`, `writeFile` |
+| `util` | `promisify` |
+| `fs/promises` | _(dynamic import)_ |
+
+## `lib/agents/agentBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/schemas` | _(dynamic import)_ |
+| `@/lib/ai/triad` | _(dynamic import)_ |
+
+## `lib/agents/boogieManAI.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/ai` | `BoogieManAgent` |
+
+## `lib/agents/idari.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/ai` | `IDARiAgent` |
+
+## `lib/agents/idariLoop.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idari` | `PatchPlan`, `PatchRisk`, `createPatchPlan` |
+| `@/lib/observability/collector` | `TelemetrySnapshot`, `getSnapshot` |
+| `@/lib/observability/correlator` | `CorrelationResult`, `correlate` |
+| `@/lib/observability/immediateAction` | `ImmediateRemediationAction`, `buildImmediateRemediationAction` |
+| `@/lib/observability/rootCauseAnalyzer` | `RootCauseAnalysis`, `inferRootCause` |
+| `@/lib/utils` | `toErrorMessage` |
+| `uuid` | `v4` |
+
+## `lib/agents/uiActions.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/theme` | `setDarkMode` |
+
+## `lib/ai/audit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/ai/boogie-verifier.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `ActorContext`, `AgentType`, `BoogieDecision`, `BoogieIntentDecision`, `BoogieOutput`, `BoogieSignals`, `Intent`, `ReasonCode` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `lib/ai/boogieman.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./boogie-policy` | `BOOGIE_POLICY_VERSION`, `DEFAULT_DURATIONS_SECONDS`, `EnforcementScope`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `StrikeSeverityLevel`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
+| `./schemas` | `BoogieEnforceOutput`, `BoogieOutput`, `BoogieResult`, `EnforcementAction`, `EnforcementScope`, `Intent` |
+| `uuid` | `v4` |
+
+## `lib/ai/capability-gate.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `ActorContext`, `IntentType` |
+
+## `lib/ai/confirm-token.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `UIContext` |
+| `crypto` | `createHmac` |
+
+## `lib/ai/handlers/dreams.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `DreamAddFromPresetPayload`, `DreamConfigPatchPayload`, `DreamOpenPayload`, `DreamPreviewPayload`, `DreamRemovePayload`, `DreamReorderPayload` |
+
+## `lib/ai/handlers/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `registerHandler` |
+| `./dreams` | `handleDreamAddFromPreset`, `handleDreamConfigPatch`, `handleDreamOpen`, `handleDreamPreview`, `handleDreamRemove`, `handleDreamReorder` |
+| `./navigation` | `handleHomeAnchorSetState`, `handleHomeMenuOpen`, `handleNavDelta` |
+| `./social` | `handleDraftSave`, `handleFollowUser`, `handlePostCreate`, `handlePostLike`, `handleSearch` |
+
+## `lib/ai/handlers/navigation.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `HomeAnchorSetStatePayload`, `NavDeltaPayload` |
+
+## `lib/ai/handlers/social.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `DraftSavePayload`, `FollowUserPayload`, `PostCreatePayload`, `PostLikePayload`, `SearchPayload` |
+| `crypto` | `randomUUID` |
+
+## `lib/ai/idempotency.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/ai/rate-limiter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/ai/rateLimit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/ai/schemas.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `lib/ai/tfBackend.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
+| `@tensorflow/tfjs` | _(dynamic import)_ |
+
+## `lib/ai/tool-router.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./audit` | `writeAuditLog` |
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/ai-system` | `ActorContext`, `Intent`, `IntentType`, `ToolResult`, `UIContext` |
+
+## `lib/ai/triad.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `@/lib/ai/schemas` | `Intent`, `IntentSchema`, `IntentType` |
+| `uuid` | `v4` |
+
+## `lib/api/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
+
+## `lib/artifactStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/dreamArtifact` | `DreamArtifact` |
+
+## `lib/assets/assetOptimizer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./indexedDBStore` | `storeOriginal` |
+
+## `lib/audio-fingerprint/fingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./peak-map` | `FrequencyPeak`, `PeakMap` |
+
+## `lib/audio-fingerprint/stem-extractor.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./fingerprint` | `TimeSlice` |
+
+## `lib/audioFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./torridity` | `TORRIDITY_DP`, `TORRIDITY_N` |
+
+## `lib/babylon/createEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@babylonjs/core` | `AbstractEngine` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `lib/babylon/dreamengine-hybrid.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@babylonjs/core` | `* as BABYLON` |
+
+## `lib/bot-detection/detector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./swipe-physics` | `Path`, `coarseGrainInvariance`, `crossSwipeSimilarity`, `deviationEntropy`, `perpendicularDeviation`, `velocityVarianceJerk` |
+
+## `lib/bot-detection/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/botDetection` | `BotSessionResult`, `SwipeRecord`, `isBotSession` |
+
+## `lib/botDetection.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./slog` | `slog`, `slogEntropy`, `slogVariance` |
+
+## `lib/child-safety/childSafetyDetector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `./imageClassifier` | _(dynamic import)_ |
+
+## `lib/child-safety/imageClassifier.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/groq` | `groqChat` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `lib/child-safety/messageContextChecker.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/messageContextChecker` | `evaluateMessageContext` |
+
+## `lib/child-safety/ncmecReporter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./childSafetyDetector` | `ChildSafetyResult` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `lib/child-safety/scanMediaUrls.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./childSafetyDetector` | `ChildSafetyResult`, `scanContent` |
+| `./imageClassifier` | `classifyImage` |
+| `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `crypto` | `createHash` |
+
+## `lib/collaboration/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@supabase/supabase-js` | _(dynamic import)_ |
+
+## `lib/connectors/installFlow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/widgets/widgetRegistry` | `getWidgetTypesForConnector` |
+
+## `lib/connectors/normalise.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
+
+## `lib/connectors/providers/bluesky.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseBluesky` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/devto.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseDevto` |
+| `@/lib/social/rss-feed` | `devtoUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/facebook.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseFacebook` |
+| `@/lib/social/rss-feed` | `facebookPageRssUrl`, `parseRssFeed` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/github.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseGitHub` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/hackernews.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseHackerNews` |
+| `@/lib/social/rss-feed` | `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/instagram.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/mastodon.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseMastodon` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/medium.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseMedium` |
+| `@/lib/social/rss-feed` | `mediumUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/nostr.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseNostr` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/pinterest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normalisePinterest` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `pinterestRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/podcast.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normalisePodcast` |
+| `@/lib/social/rss-feed` | `parseRssFeed` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/reddit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseReddit` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/substack.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseSubstack` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `substackRssUrl` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/tiktok.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTikTok` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `tiktokProfileRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/tumblr.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTumblr` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `tumblrRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/twitter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTwitter` |
+| `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `parseRssFeed`, `twitterNitterRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/providers/youtube.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `YouTubePlaylistItem`, `YouTubeSearchItem`, `deduplicateFeedItems`, `normaliseYouTubePlaylistItem`, `normaliseYouTubeSearchResult` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/reconcile.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./normalise` | `deduplicateFeedItems` |
+| `./syncDispatch` | `dispatchSync` |
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+
+## `lib/connectors/syncDispatch.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/bluesky` | `blueskySync` |
+| `@/lib/connectors/providers/github` | `githubSync` |
+| `@/lib/connectors/providers/instagram` | `instagramSync` |
+| `@/lib/connectors/providers/mastodon` | `mastodonSync` |
+| `@/lib/connectors/providers/nostr` | `nostrSync` |
+| `@/lib/connectors/providers/reddit` | `redditSync` |
+| `@/lib/connectors/providers/youtube` | `youtubeSync` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `lib/connectors/youtube.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServiceClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `lib/consent/consentManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | _(dynamic import)_ |
+
+## `lib/daydream/useDaydreamPersistence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/daydream/useDaydreamState.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `lib/dream-docs/embed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/dream-docs/search.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/dream-window/DreamWindowLifecycle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DREAM_WINDOW_STATES`, `DreamWindowState` |
+
+## `lib/dream-window/connectionVerbs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `CONNECTION_VERBS`, `ConnectionVerb`, `REJECTED_CONNECTION_VERBS`, `isRejectedConnectionVerb`, `isValidConnectionVerb` |
+
+## `lib/dream-window/enginConnectionNetwork.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DAYDREAM_DOMAINS`, `DaydreamDomain`, `ENGIN_SURFACES`, `EnginSurface`, `NETWORK_COUNTS` |
+
+## `lib/dream-window/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window` | `ALL_CONNECTION_PATHS`, `DEFAULT_RUNTIME_REGION_STATE`, `DreamWindowInstance`, `activateSurface`, `bindDreamWindow`, `createBindAction`, `dispatch`, `getPathsForDomain`, `mountDreamWindow` |
+
+## `lib/dream-window/runtimeRegion.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `DreamWindowState`, `RUNTIME_REGIONS`, `RuntimeSeamName`, `SURFACE_NAMES` |
+
+## `lib/dream-window/useDreamWindowActions.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/dream-window` | `CreateDreamWindowBody`, `DreamWindowRecord`, `PatchDreamWindowBody` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `lib/dreamdm/DreamSystemContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/runtime/dualRuntime` | `moveTorus`, `torusFocusKey` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `Dispatch`, `ReactNode`, `SetStateAction`, `createContext`, `useCallback`, `useContext`, `useEffect`, `useRef`, `useState` |
+
+## `lib/dreamdm/useDreamBarContext.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./DreamSystemContext` | `BarIntentMode` |
+| `next/navigation` | `usePathname` |
+| `react` | `useMemo` |
+
+## `lib/dreamdm/useDreamDMConversations.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `lib/dreamdm/useDreamDMDraft.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/dreamdm/useDreamDMMessages.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/dreamdm/useDreamSearch.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/dreamdm/useMessagingCore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./useDreamDMMessages` | `DMMessage` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useState` |
+
+## `lib/dreamdm/useModuleBarIntent.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `ModuleBarAction`, `useDreamSystem` |
+| `react` | `useCallback` |
+
+## `lib/dreamdm/useNotifications.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/dreamengin/engineAssets.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `encodeUint8ArrayToLedgerString` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+
+## `lib/dreamengin/osSubsystemManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY` |
+| `@/lib/dream-window/enginConnectionNetwork` | `ALL_CONNECTION_PATHS`, `EnginConnectionPath` |
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `@/lib/identity/canonical-names` | `AI_AGENTS`, `AI_ROUTES` |
+| `@/lib/widgets/widgetRegistry` | `WIDGET_REGISTRY` |
+
+## `lib/dreamenginOS/OSContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../eventBus` | `EventBus`, `createEventBus` |
+| `../ledger` | `Ledger`, `createLedger` |
+| `./index` | `upgradeEngine` |
+
+## `lib/dreamenginOS/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../ledger` | _(dynamic import)_ |
+| `../eventBus` | _(dynamic import)_ |
+
+## `lib/dreamnav/gctAssist.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./tau` | `Action`, `Node` |
+| `@/lib/gct` | `GCTEngine`, `GCTMatch`, `Template` |
+
+## `lib/dreamnav/gestures6.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./delta` | `Action` |
+
+## `lib/dreamnav/path.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamnav/delta` | `Action`, `Node`, `tau` |
+
+## `lib/dreamr/closeFriendsVisibility.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/supabase/server` | _(dynamic import)_ |
+
+## `lib/dreamr/dreamrfeed.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreamr/dream.panel.DreamRChannelPanel` | `⬡ DreamRChannelPanel` |
+| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | `⬡ DreamRCreatorPanel` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamr/swipePersonalization` | `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences`, `nextSwipePreferences`, `personalizeFeedOrder` |
+| `@/lib/dreamr/torridityLedger` | `resolveSwipeRelease` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `lucide-react` | `ArrowUp`, `Bookmark`, `ChevronDown`, `ChevronUp`, `Eye`, `Heart`, `Loader2`, `Maximize2`, `MessageCircle`, `Music2`, `Play`, `RefreshCw`, `Share2`, `Sparkles`, `UserCheck`, `UserPlus`, `Wifi`, `X`, `Youtube` |
+| `next/image` | `⬡ Image` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `lib/dreamr/socialHumanityScore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `lib/dreamr/torridityLedger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./swipeCalibration` | `CalibrationProfile`, `getActiveProfile` |
+
+## `lib/dreams/DreamRegistry.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `lib/dreams/profileProjection.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreams/types` | `DreamProjection`, `DreamVisibility` |
+
+## `lib/dreams/useDreamsRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useState` |
+
+## `lib/engin-runtime/EnginEventBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/eventBus` | `EventHandler`, `createEventBus` |
+
+## `lib/engin-runtime/EnginRuleSetContract.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState` |
+| `./EnginCapabilities` | `EnginCapability` |
+
+## `lib/engin-runtime/EnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `createBaseState`, `patchBaseState` |
+| `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
+| `./EnginEventBus` | `EnginEventBus`, `EnginLifecycleEvents`, `createEnginEventBus` |
+| `./EnginIOAdapter` | `EnginIOAdapter`, `LocalStorageAdapter` |
+| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+
+## `lib/engin-runtime/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+| `./EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime` | `EnginRuntime`, `createEnginRuntime` |
+
+## `lib/enginpipe/artifact/manifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `lib/enginpipe/shell/ArtifactSlot.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../eventBus` | `EventBus`, `createEventBus` |
+| `react` | `ReactNode`, `createContext`, `useContext`, `useEffect`, `useMemo` |
+
+## `lib/enginpipe/telemetry/client.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./events` | `TelemetryEvent`, `parseTelemetryEvent` |
+
+## `lib/enginpipe/telemetry/events.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `lib/engins/brand/brandEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/brand/useBrandEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./brandEnginRuleSet` | `BRAND_ENGIN_RULE_SET`, `BrandEnginAction`, `BrandEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/code/codeEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/code/useCodeEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./codeEnginRuleSet` | `CODE_ENGIN_RULE_SET`, `CodeEnginAction`, `CodeEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/content/contentEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/content/useContentEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./contentEnginRuleSet` | `CONTENT_ENGIN_RULE_SET`, `ContentEnginAction`, `ContentEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/game/gameEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/game/useGameEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gameEnginRuleSet` | `GAME_ENGIN_RULE_SET`, `GameEnginAction`, `GameEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/lab/labEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/lab/useLabEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./labEnginRuleSet` | `LAB_ENGIN_RULE_SET`, `LabEnginAction`, `LabEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/music/starMakerEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+
+## `lib/engins/music/useStarMakerEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./starMakerEnginRuleSet` | `STAR_MAKER_ENGIN_RULE_SET`, `StarMakerEnginAction`, `StarMakerEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/engins/useEnginWorkflow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./workflowEngine` | `EnginWorkflow`, `HANDOFF_PATHS`, `HandoffKind`, `WorkflowStage`, `abandonWorkflow`, `advanceStage`, `checkHandoffEligibility`, `createWorkflow`, `describeWorkflow`, `findWorkflowDef` |
+| `@/lib/journey/journeyDots` | `logJourneyDot` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `lib/feature-build/buildCycle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./featureManifest` | `DaydreamEnginManifest`, `FeatureStatus` |
+
+## `lib/feature-build/featureManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `DaydreamDomain`, `EnginSurface` |
+
+## `lib/feature-build/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feature-build` | `FEATURE_MANIFESTS`, `SICC_DIMENSIONS`, `computeBuildCycleState` |
+
+## `lib/feed/useLiveFeed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/feed/useYouTubeLiveFeed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/feeds/embedFeedLoader.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feeds/embedFeedLoader` | `loadEmbedFeed` |
+| `node:fs` | `readFileSync` |
+| `node:path` | `join` |
+
+## `lib/forge-ngn/assembly.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./piece-registry` | `PieceManifest`, `getPiece` |
+
+## `lib/forge/engineForge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../componentInventory` | `AtomicComponent` |
+| `../eventBus` | `EventBus`, `createEventBus` |
+
+## `lib/forge/forgeBuild.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `uuid` | `v4` |
+
+## `lib/forge/forgeIntelligence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `EnginEntry`, `FORGE_HISTORY_KEY`, `FORGE_WORKFLOWS`, `ForgeWorkflow` |
+
+## `lib/forge/forgeMomentum.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `FORGE_HISTORY_KEY` |
+
+## `lib/forge/forgeNexus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
+
+## `lib/forge/forgeRituals.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
+
+## `lib/forge/useForgeActivity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `recordForgeActivity` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `lib/forge/useForgeBuild.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeBuild` | `ForgeArtifact`, `ForgeArtifactType`, `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `isForgeLogEvent`, `recordBuildToday`, `saveForgeBuild`, `stageForgeArtifact` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useRef`, `useState` |
+| `uuid` | `v4` |
+| `@/lib/forge/forgeBuild` | _(dynamic import)_ |
+
+## `lib/gameengin/GameRuntime.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./cartridge` | `AchievementDefinition`, `CartridgeInputEvent`, `ENGINE_VERSION`, `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI`, `GravityPreset` |
+| `./cartridges/achievementEngine` | `createAchievementsAPI` |
+| `./cartridges/apiStubs` | `stubAssetsAPI`, `stubAudioAPI`, `stubHapticsAPI`, `stubNetworkAPI` |
+| `./cartridges/saveState` | `createSaveAPI` |
+| `@/lib/runtime/channelMetrics` | `recordEmission` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/lib/runtime/runtimeChannel` | `createLocalChannel` |
+| `@/lib/runtime/sharedResourcePool` | `acquireSharedResource`, `releaseSharedResource` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/gameengin/ai-director.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@tensorflow/tfjs` | _(dynamic import)_ |
+| `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
+
+## `lib/gameengin/brain-reader.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:crypto` | `createHash` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `lib/gameengin/cartridge-manifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `lib/gameengin/cartridges/achievementEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `AchievementDefinition`, `AchievementState`, `CartridgeAchievementsAPI` |
+
+## `lib/gameengin/cartridges/apiStubs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `CartridgeAchievementsAPI`, `CartridgeAssetsAPI`, `CartridgeAudioAPI`, `CartridgeHapticsAPI`, `CartridgeNetworkAPI`, `CartridgeSaveAPI` |
+
+## `lib/gameengin/cartridges/loaders.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `GameCartridge` |
+| `./reactCartridge` | `defineReactCartridgeLoader` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/components/games/dream.BabylonSideScroller` | _(dynamic import)_ |
+| `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
+| `@/components/games/dream.EchoArena` | _(dynamic import)_ |
+| `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
+| `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
+| `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
+| `@/components/games/dream.AvenueOfMirrors` | _(dynamic import)_ |
+| `@/components/games/dream.EnginFracture` | _(dynamic import)_ |
+| `@/components/games/dream.Glassfall` | _(dynamic import)_ |
+| `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
+| `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
+| `@/components/games/dream.DefuseRitual` | _(dynamic import)_ |
+
+## `lib/gameengin/cartridges/reactCartridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridge` | `GameCartridge`, `GameEngineAPI` |
+| `react` | `ComponentType`, `createContext`, `createElement`, `useContext` |
+| `react-dom/client` | `Root`, `createRoot` |
+| `./MyGame` | _(dynamic import)_ |
+
+## `lib/gameengin/cartridges/saveState.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `CartridgeSaveAPI`, `CartridgeSaveSlot` |
+
+## `lib/gameengin/control-mappings.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+
+## `lib/gameengin/core.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./power-systems` | `AdvancedPhysicsWorld`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `ComputeShaderPipeline`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `RollbackNetcode`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem` |
+| `@babylonjs/core` | `AbstractEngine`, `Scene` |
+| `@/lib/babylon/createEngine` | _(dynamic import)_ |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `lib/gameengin/dream-engine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `decodeLedgerStringToUint8Array`, `encodeUint8ArrayToLedgerString` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `lib/gameengin/dreamr-loader.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridge-manifest` | `CARTRIDGE_MAGIC`, `CartridgeManifest`, `validateManifest` |
+
+## `lib/gameengin/gameEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../eventBus` | `EventBus`, `createEventBus` |
+
+## `lib/gameengin/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin` | `...`, `AIDirector`, `AdvancedPhysicsWorld`, `ComputeShaderPipeline`, `EliteGameEngine`, `PostFXManager`, `RollbackNetcode` |
+
+## `lib/gameengin/platform.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./ai-director` | `AIDirector` |
+| `./cartridge` | `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI` |
+| `./core` | `EliteGameEngine`, `FrameTelemetry`, `PerformanceBudget`, `QualityTier` |
+| `./post-fx` | `PostFXManager` |
+| `@babylonjs/core` | `Camera`, `Scene` |
+
+## `lib/gameengin/post-fx.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `PerformanceBudget` |
+| `@babylonjs/core` | `Camera`, `Scene` |
+| `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline` | _(dynamic import)_ |
+| `@babylonjs/core` | _(dynamic import)_ |
+| `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline` | _(dynamic import)_ |
+| `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline` | _(dynamic import)_ |
+| `@babylonjs/core/Layers/glowLayer` | _(dynamic import)_ |
+
+## `lib/gameengin/registerCartridges.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `@/lib/runtime/moduleRegistry` | `moduleRegistry` |
+| `@/types/module-manifest` | `ModuleManifest` |
+
+## `lib/gameengin/remote/comboMachine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./moves` | `ALL_COMBOS`, `Combo`, `FaceButton`, `MULTITOUCH_COMBOS`, `MultiTouchCombo`, `maxComboLength` |
+
+## `lib/gameengin/systems/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/systems` | `OctreeBVH`, `ResourcePool` |
+
+## `lib/gameengin/systems/pooling.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../power-systems` | `ResourcePool` |
+
+## `lib/gameengin/useUnifiedLoop.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./unifiedLoop` | `LoopPriority`, `registerGame`, `unregisterGame` |
+| `react` | `useEffect`, `useRef` |
+
+## `lib/gameengin/webgpu-runtime-shell.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/dreamr-loader` | `DreamrCartridgeArchive` |
+
+## `lib/games/DualSenseManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `lib/games/catalog.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `@/lib/games/mobileControls` | `MobileHudMode` |
+| `@/lib/games/performance-baseline` | `GameRenderMode` |
+
+## `lib/games/hooks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/performance-baseline` | `DE_GAME_PERFORMANCE_BASELINE`, `GamePerformanceBaseline`, `GameRenderMode`, `createPerformanceBaselineSampler`, `resolveRendererBackend` |
+| `@/lib/webgpu` | `isWebGPUAvailable` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/games/mobileControls.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
+| `react` | `useEffect`, `useRef` |
+
+## `lib/games/useAIDirector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/ai-director` | `AIDirector`, `DirectorState`, `PlayerSignals` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/games/useGameInputKeyboardBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/games/dream.remote.GameRemote` | `GameInputAction` |
+| `react` | `useEffect` |
+
+## `lib/games/useGamepad.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/games/useImmersiveGameLayout.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `usePathname` |
+| `react` | `CSSProperties`, `useEffect`, `useState` |
+
+## `lib/games/useRemoteChannel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
+
+## `lib/gct/anomaly-detection.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
+
+## `lib/gct/audio-fingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
+
+## `lib/gct/image-search.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
+
+## `lib/gct/recommendations.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gct-engine` | `GCTEngine`, `Template` |
+
+## `lib/gestures/useTouchGestures.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./touchGestures` | `GestureCallbacks`, `GestureConfig`, `GestureRecogniser` |
+| `react` | `RefObject`, `useEffect`, `useRef` |
+
+## `lib/god-tier/useGodTier.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./godTierEngine` | `DeviceSignals`, `DreamEngineGodTierSystem`, `GodTierState`, `MeshSnapshot`, `RouteSignals`, `RuntimeMetrics`, `UIElementSnapshot`, `UXSignals`, `defaultDeviceSignals`, `defaultRuntimeMetrics`, `defaultUXSignals`, `getGodTierUiTokens` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/gsap/gsap.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gsap/gsap` | `getGsap` |
+| `gsap` | `gsap` |
+| `gsap` | _(dynamic import)_ |
+
+## `lib/gsap/useGsapEntrance.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gsap/gsap` | `getGsap` |
+| `react` | `useEffect`, `useRef` |
+
+## `lib/gsap/useGsapFlip.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gsap/gsap` | `getGsap` |
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `lib/gsap/useGsapScrollReveal.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gsap/gsap` | `getGsap` |
+| `react` | `useEffect`, `useRef` |
+
+## `lib/hooks/useMotionTilt.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/hooks/useMotionTilt` | `useMotionTilt` |
+| `framer-motion` | `MotionProps`, `useMotionTemplate`, `useMotionValue`, `useSpring`, `useTransform` |
+| `react` | `useRef` |
+
+## `lib/hooks/useResponsive.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
+| `react` | `useEffect`, `useState`, `useSyncExternalStore` |
+
+## `lib/hooks/useTap.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `lib/intelligence/continuityHelpers.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `EnginEntry`, `ForgeActivityPulse` |
+
+## `lib/intelligence/sessionPatternEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@tensorflow/tfjs` | _(dynamic import)_ |
+| `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
+
+## `lib/intelligence/useSessionIntelligence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./sessionContinuity` | `SessionContinuity`, `SessionDiff`, `SessionSummary` |
+| `./sessionPatternEngine` | `PatternEngineState`, `PredictedNext`, `SessionPatternEngine` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/journey/journeyDots.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/journey/journeyDots` | `hasJourneyDot`, `logJourneyDot` |
+| `@/types/journey` | `LogJourneyDotInput` |
+
+## `lib/journey/journeyInsights.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/journey` | `JourneyDot` |
+
+## `lib/journey/withJourney.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/journey/journeyDots` | `logJourneyDot` |
+| `@/types/journey` | `JourneyDotKind` |
+
+## `lib/ledger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./audioFingerprint` | `Fingerprint`, `PeakMap` |
+| `@/engine/io` | `SupabaseClient` |
+
+## `lib/marketplace/request.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./listings` | `MARKETPLACE_CONTACT_TABLE` |
+
+## `lib/navigation/GestureFrameComputer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./PointerEventCapture` | `PointerState` |
+
+## `lib/navigation/GestureIntentResolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./GestureFrameComputer` | `GestureFrame` |
+| `./quaternion` | `Quaternion`, `fromGestureSwipe`, `identityQuaternion`, `multiply`, `normalize` |
+
+## `lib/navigation/SpatialNavigationEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./GestureFrameComputer` | `GestureFrameComputer` |
+| `./GestureIntentResolver` | `GestureIntent`, `GestureIntentResolver` |
+| `./NavStateBuffer` | `LAYER_HOME`, `NavStateBuffer` |
+| `./PointerEventCapture` | `PointerEventCapture`, `PointerState` |
+| `./ReturnStack` | `ReturnStack` |
+| `./TransformSolver` | `TransformSolver`, `ViewportMetrics` |
+| `./WidgetInstanceMemory` | `WidgetInstanceMemory` |
+
+## `lib/navigation/StructureLedger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream-state` | `DreamNode`, `DreamState`, `MoveDirection`, `getStateForNode`, `move` |
+
+## `lib/navigation/TransformSolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./NavStateBuffer` | `NavStateBuffer` |
+| `./manifold` | `computeLambda`, `computeSlotPosition`, `projectCubicToSphere` |
+| `./quaternion` | `Quaternion`, `identityQuaternion`, `toRotationMatrix` |
+
+## `lib/navigation/anchorField.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./manifold` | `SINGULARITY_THRESHOLD`, `Vector3` |
+
+## `lib/navigation/quaternion.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./manifold` | `VECTOR_ZERO_THRESHOLD` |
+
+## `lib/navigation/useNavigation.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./SpatialNavigationEngine` | `SpatialNavigationEngine` |
+| `./WidgetInstanceMemory` | `WidgetInstanceRecord` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/notifications/useNotifications.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./notificationHelpers` | `DbNotificationRow`, `UiNotification`, `applyOptimisticDelete`, `applyOptimisticMarkAll`, `applyOptimisticRead`, `getUnreadCount`, `normalizeDbRow`, `sortByRecent` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/observability/collector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./otelBridge` | _(dynamic import)_ |
+
+## `lib/observability/correlator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./collector` | `LogEntry`, `MetricPoint`, `TelemetrySnapshot`, `TraceSpan` |
+
+## `lib/observability/healthTrend.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idariLoop` | `LoopIteration`, `LoopStatus` |
+
+## `lib/observability/immediateAction.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./rootCauseAnalyzer` | `RootCauseAnalysis` |
+
+## `lib/observability/otel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@opentelemetry/api` | `Meter`, `Tracer`, `metrics`, `trace` |
+| `@opentelemetry/exporter-prometheus` | `PrometheusExporter` |
+| `@opentelemetry/exporter-trace-otlp-http` | `OTLPTraceExporter` |
+| `@opentelemetry/resources` | `resourceFromAttributes` |
+| `@opentelemetry/sdk-metrics` | `MeterProvider` |
+| `@opentelemetry/sdk-trace-node` | `BatchSpanProcessor`, `NodeTracerProvider` |
+| `@opentelemetry/semantic-conventions` | `ATTR_SERVICE_NAME`, `ATTR_SERVICE_VERSION` |
+| `node:http` | `IncomingMessage`, `ServerResponse` |
+
+## `lib/observability/otelBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./otel` | `getMeter`, `getTracer` |
+| `@opentelemetry/api` | `Counter`, `Histogram`, `Span`, `SpanStatusCode`, `UpDownCounter` |
+
+## `lib/observability/rootCauseAnalyzer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./collector` | `TelemetrySnapshot` |
+| `./correlator` | `AnomalySignal` |
+| `@/lib/agents/idari` | `PatchRisk` |
+
+## `lib/offline/useOfflineSync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./offlineCache` | `SyncQueueEntry`, `isOnline`, `onConnectivityChange`, `processSyncQueue` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `lib/optimizer/babylon-optimizero.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./creative-optimizero` | `CreativeCandidate`, `CreativeOptimizero`, `DEFAULT_WEIGHTS`, `OptimizeroResult`, `OptimizeroWeights`, `ScoredCandidate` |
+
+## `lib/optimizer/constraint-solver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `Constraint`, `ConstraintSolverOptions`, `OptimizationItem`, `RankedItem` |
+
+## `lib/optimizer/creative-validator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CreativeOption`, `CreativeValidationResult`, `HardFailureReason` |
+
+## `lib/optimizer/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./constraint-solver` | `ConstraintSolver` |
+| `./creative-validator` | `validateCreativeOption` |
+| `./types` | `Asset`, `Constraint`, `CreativeContext`, `CreativeOptimizerResult`, `CreativeOption`, `CreativeScore`, `FeedItem`, `HardFailureReason`, `Notification`, `OptimizationItem`, `OptimizerConfig`, `QueuedAction`, `RankedCreativeOption`, `RankedItem`, `RuntimeContext`, `SearchResult`, `WidgetPriority` |
+
+## `lib/platform/lab.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `lib/reality/realityStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `Reality`, `RealityActivityEntry`, `RealityActivityKind`, `RealityEnginSlot`, `RealityMember`, `RealityMode`, `RealitySnapshot` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `lib/reality/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/collaboration` | `CollabMode`, `SessionRole` |
+
+## `lib/renderer/Canvas2DRenderer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./FrustumCuller` | `FrustumCuller`, `Rect` |
+| `./IRenderer` | `IRenderer`, `TextStyle` |
+
+## `lib/renderer/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/renderer` | `Canvas2DRenderer`, `createRenderer` |
+| `./Canvas2DRenderer` | _(dynamic import)_ |
+
+## `lib/runtime/EnginDispatcher.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./memory` | `BAR_Y_SCALE`, `MAX_WORKERS`, `SAB_BYTES`, `SNAP_THRESHOLD_RATIO`, `Workgroup`, `buildWorkgroups`, `createEnginSAB`, `f64Telemetry`, `int32AxisState`, `int32DreamDMBarX`, `int32DreamDMBarY`, `int32LockedState` |
+
+## `lib/runtime/channelMetrics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/channelMetrics` | `getChannelMetrics`, `recordEmission` |
+
+## `lib/runtime/dreamOSBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
+| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `@/lib/runtime/dualRuntimeBridge` | `AnyBridgeEmission`, `DualRuntimeChannel`, `bridge` |
+| `@/lib/runtime/runtimeContainer` | `RuntimeContainer` |
+| `@/types/dreamArtifact` | `DreamArtifactBusEventMap` |
+
+## `lib/runtime/dropTargetRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType` |
+| `@/types/module-manifest` | `RuntimeId` |
+
+## `lib/runtime/dualRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `RUNTIME_REGIONS`, `SURFACE_NAMES` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+
+## `lib/runtime/dualRuntimeBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
+| `events` | `EventEmitter` |
+| `@/lib/vm/wasmGpuVM` | _(dynamic import)_ |
+
+## `lib/runtime/enginWorkflowRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+
+## `lib/runtime/instanceManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `zustand` | `create` |
+| `@/lib/supabase/client` | _(dynamic import)_ |
+
+## `lib/runtime/moduleRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
+| `@/types/widgets` | `WidgetInstance`, `getWidgetType` |
+| `zustand` | `create` |
+
+## `lib/runtime/quantumCircuit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntimeBridge` | `QuantumComputeResult` |
+
+## `lib/runtime/runtimeChannel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@supabase/supabase-js` | _(dynamic import)_ |
+
+## `lib/runtime/seamClipboard.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/enginWorkflowRegistry` | `ENGIN_KEYS`, `EnginKey`, `findWorkflows` |
+
+## `lib/runtime/snapshotFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/observability/collector` | `TelemetrySnapshot` |
+
+## `lib/runtime/useDragSurface.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType`, `coerceDataTransfer` |
+| `@/lib/runtime/dropTargetRegistry` | `dropTargetRegistry` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/runtime/useDualRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntimeBridge` | `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState`, `UnsubscribeFn`, `bridge` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/runtime/useDualRuntimePersistence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `makeHomeActiveTop`, `setRuntimeWorld`, `swapDominantRuntime` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `lib/runtime/useEnginBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useEffect`, `useState` |
+
+## `lib/runtime/useEnginCoopSync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/instanceManager` | `EnginName` |
+| `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useEffect` |
+
+## `lib/runtime/useSharedEnginChannel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/instanceManager` | `EnginName`, `buildInstanceKey`, `promoteInstanceToRealtime`, `useInstanceManager` |
+| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `RuntimeChannelEvent`, `createLocalChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/scene/sceneState.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/offline/offlineCache` | `CachedScene`, `SceneObject`, `SceneSnapshot`, `deleteScene`, `enqueueSyncAction`, `getScene`, `listScenes`, `saveScene` |
+
+## `lib/setup/checks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
+
+## `lib/sharedDream.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/collaboration` | `CollabEventHandler`, `CollabEventType`, `CollabMode`, `CollabPayload`, `CollabSession`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession` |
+
+## `lib/sharedDream/useSharedDreamSession.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/social-feed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `rss-parser` | `⬡ Parser` |
+
+## `lib/social/crossPost.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./platforms` | `PLATFORM_MAP`, `SocialPlatform` |
+
+## `lib/social/rss-feed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
+| `rss-parser` | `⬡ Parser` |
+
+## `lib/social/useSocialData.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/normalizers` | `NormalizedPost` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/torridity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./slog` | `slog` |
+
+## `lib/torridity/physics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./constants` | `a0Perception`, `deltaP`, `n` |
+
+## `lib/ui/CustomizeModeContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/skin-engine` | `AllPageSkins`, `DEFAULT_SKIN`, `SkinData`, `SkinPage`, `applySkin`, `loadAllSkins`, `resolveSkin`, `saveAllSkins` |
+
+## `lib/universalEditor.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./eventBus` | `EventBus`, `createEventBus` |
+
+## `lib/user-sim/userSimAgent.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/user-sim` | `AgentAction`, `AuditFinding`, `BehaviorSignals`, `FindingSeverity`, `JourneyOutcome`, `PerceptionFrame`, `Persona`, `PersonaType`, `SimJourneyResult`, `SimStep` |
+| `uuid` | `v4` |
+
+## `lib/utils.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `clsx` | `ClassValue`, `clsx` |
+| `tailwind-merge` | `twMerge` |
+
+## `lib/vm/bufferManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `BufferHandle`, `GPUBufferDescriptor`, `GPUBufferUsageFlags`, `VMErrorCode`, `VMPerformanceCounters`, `VMResourceQuotas` |
+
+## `lib/vm/dual-runtime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./bus-events` | `VMBusEventMap`, `VMBusEventName`, `VMComputeCompletePayload`, `VMErrorPayload`, `VMStatsPayload`, `VMStatsUpdatePayload`, `VMWorkloadSubmittedPayload` |
+| `./inter-vm-messaging` | `InterVMChannel`, `VMEvent` |
+
+## `lib/vm/dualVMCoordinator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `VMRegion`, `VMWorkload`, `bridge` |
+
+## `lib/vm/snapshot.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `BindGroupHandle`, `BufferHandle`, `GPUBufferSnapshot`, `HandleTableSnapshot`, `PipelineHandle`, `PipelineSnapshot`, `VMSnapshot`, `WasmMemorySnapshot` |
+| `./wasmGpuVM` | `WasmGpuVM` |
+
+## `lib/vm/wasmGpuVM.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./bufferManager` | `BufferManager` |
+| `./pipelineCache` | `PipelineCache` |
+| `./types` | `BindGroupHandle`, `BufferHandle`, `ComputePipelineDescriptor`, `DEFAULT_VM_CONFIG`, `PipelineHandle`, `VMConfig`, `VMPerformanceCounters`, `VMState`, `VMSyscalls` |
+| `./types` | _(dynamic import)_ |
+
+## `lib/warp/useWarp.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./warpEngine` | `WarpEffect`, `WarpEngine`, `WarpEngineOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/web3/client.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ChainConfig`, `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `WalletAccount`, `WalletConnectionState`, `WalletProvider`, `Web3Error` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `lib/web3/engagement.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./client` | `web3Client` |
+| `./types` | `DEFAULT_CHAIN_ID`, `EngagementPayload`, `EngagementStats`, `SUPPORTED_CHAINS`, `Web3Error` |
+
+## `lib/web3/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/web3` | `trackEngagement`, `uploadToIpfs`, `web3Client` |
+
+## `lib/web3/ipfs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `IpfsContent`, `IpfsUploadResult`, `Web3Error` |
+
+## `lib/webgpu/adaptiveQuality.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./director` | `Pressure`, `RuntimeMetrics`, `classifyPressure` |
+
+## `lib/webgpu/useWebGPUDirector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./director` | `CameraSignals`, `CameraState`, `DirectorBabylonEngine`, `DirectorBabylonMesh`, `DirectorBabylonScene`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics`, `WebGPUDirector`, `applyDirectorFrame`, `buildSceneObjects` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `lib/widgets/CrossWidgetPosting.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./WidgetEventBus` | `WidgetMsg`, `widgetEventBus` |
+| `./WidgetLinkGraph` | `WidgetLinkGraph` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `lib/widgets/WidgetEngine.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `lib/widgets/feed-resolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/widget-system-v2` | `FeedHostConfig`, `FeedItemSummary`, `FeedScope`, `HostKind`, `HostResolved`, `HostResolvedStatus` |
+
+## `lib/widgets/parse.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgetConfigs` | `DreamenginWidgetType`, `EmbedWidgetConfig`, `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `TextWidgetConfig`, `TypedWidget`, `YouTubeWidgetConfig` |
+
+## `lib/widgets/parseConfig.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgetConfigs` | `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `YouTubeWidgetConfig` |
+
+## `lib/widgets/useWidget.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
+
+## `next.config.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `next` | _(dynamic import)_ |
+
+## `optimizer/constraint-solver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `Constraint`, `ConstraintSolverOptions`, `OptimizationItem`, `RankedItem` |
+
+## `optimizer/creative-validator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CreativeOption`, `CreativeValidationResult`, `HardFailureReason` |
+
+## `optimizer/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./constraint-solver` | `ConstraintSolver` |
+| `./creative-validator` | `validateCreativeOption` |
+| `./types` | `Asset`, `Constraint`, `CreativeContext`, `CreativeOptimizerResult`, `CreativeOption`, `CreativeScore`, `FeedItem`, `HardFailureReason`, `Notification`, `OptimizationItem`, `OptimizerConfig`, `QueuedAction`, `RankedCreativeOption`, `RankedItem`, `RuntimeContext`, `SearchResult`, `WidgetPriority` |
+
+## `playwright.config.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@playwright/test` | `defineConfig`, `devices` |
+
+## `proxy.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClientWithCustomCookies` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `repo-visualizer/analyzer.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `execSync` |
+| `node:url` | `fileURLToPath` |
+
+## `repo-visualizer/server.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `exec` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/autofix-vercel-build.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `execSync`, `spawnSync` |
+| `node:fs` | `readFileSync`, `writeFileSync` |
+| `node:path` | `resolve` |
+
+## `scripts/check-engin-filenames.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs/promises` | `readdir`, `stat` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/check-licenses.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `execSync` |
+
+## `scripts/check-orphans.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `./wire-orphans.mjs` | `buildRegistry` |
+| `node:fs` | `promises` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/check-root-hygiene.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs/promises` | `readdir` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/export-full-code.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:url` | `fileURLToPath`, `pathToFileURL` |
+
+## `scripts/feature-build/generate-features.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `fs` | `existsSync`, `readFileSync`, `writeFileSync` |
+| `path` | `dirname`, `resolve` |
+| `url` | `fileURLToPath` |
+
+## `scripts/fix-audit.js`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `DatabaseIcon` |
+
+## `scripts/gameengin/architect-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `ConceptPattern`, `VisionStatement`, `isOriginal`, `listConceptPatterns`, `listMechanics`, `logRDSession`, `readVisionStatement`, `recordVisionStatement`, `signatureHash` |
+
+## `scripts/gameengin/artisan-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `BRAIN_ROOT`, `listCompositionPrinciples`, `listMaterialRecipes`, `listTechniques`, `logRDSession`, `recordAssetGeneration` |
+| `node:crypto` | `createHash` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/gameengin/lib/tar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:buffer` | `Buffer` |
+
+## `scripts/gameengin/maestro-analyze.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
+| `node:child_process` | `execSync` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/gameengin/mechanic-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
+| `node:child_process` | `execFileSync` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/gameengin/package-cartridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
+| `./lib/tar.js` | `TarFile`, `packTar` |
+| `node:child_process` | `execFileSync` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+| `node:zlib` | `gzipSync` |
+
+## `scripts/gameengin/prophet-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/gameengin/upgrader-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/gameengin/writer-run.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
+| `node:fs` | `* as fs` |
+| `node:path` | `* as path` |
+
+## `scripts/generate-mobile-nextgen-spec.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync` |
+| `node:fs/promises` | `readFile`, `writeFile` |
+
+## `scripts/generate-mobile-ps5-spec.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync` |
+| `node:fs/promises` | `readFile`, `writeFile` |
+
+## `scripts/generate-repo-state.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `path` | `* as Foo`, `Qux`, `bar`, `foo`, `⬡ Foo` |
+
+## `scripts/generate-webapp-final-form.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `child_process` | `execSync` |
+| `url` | `fileURLToPath` |
+
+## `scripts/optimize-dreamengin.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `fs` | `existsSync`, `mkdirSync`, `readFileSync`, `writeFileSync` |
+| `path` | `resolve` |
+| `yaml` | `parse` |
+
+## `scripts/postbuild.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../lib/adari` | `assertBuildInvariants` |
+
+## `scripts/readme-autosync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/update-bugs.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `child_process` | `execSync` |
+| `fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `path` | `dirname`, `extname`, `join`, `resolve` |
+| `url` | `fileURLToPath` |
+
+## `scripts/update-embed-feed.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `mkdirSync`, `writeFileSync` |
+| `node:path` | `dirname`, `join` |
+| `node:url` | `fileURLToPath` |
+
+## `scripts/update-handoff.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `child_process` | `execSync` |
+| `fs` | `readFileSync`, `writeFileSync` |
+| `path` | `dirname`, `resolve` |
+| `url` | `fileURLToPath` |
+
+## `scripts/update-readme.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `./update-readme-status-utils.mjs` | `extractNodeMajorFromDockerfile`, `extractPnpmVersion`, `refreshCurrentImplementationStatusSection` |
+| `child_process` | `execSync` |
+| `fs` | `appendFileSync`, `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `path` | `dirname`, `join`, `resolve` |
+| `url` | `fileURLToPath` |
+
+## `scripts/wire-orphans.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `./brain` | `brain` |
+| `./cartridges` | `cartridges` |
+| `./connectors` | `connectors` |
+| `./hooks` | `hooks` |
+| `./personas` | `personas` |
+| `./rulesets` | `rulesets` |
+| `./surfaces` | `surfaces` |
+| `./systems` | `systems` |
+| `@/src/engin/core` | `UniversalEngine` |
+| `node:fs` | `promises` |
+| `node:url` | `fileURLToPath`, `pathToFileURL` |
+
+## `src/components/dream.DreamEnginLogo.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/DreamEnginLogo` | `DreamEnginLogo` |
+| `@/lib/babylon/useDreamLogoScene` | `DreamLogoSceneOptions`, `useDreamLogoScene` |
+| `react` | `useRef` |
+
+## `src/components/dream.LogoHero.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/image` | `⬡ Image` |
+
+## `src/components/dream.Nav.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `Menu`, `X` |
+| `next/image` | `⬡ Image` |
+| `next/link` | `⬡ Link` |
+| `react` | `useState` |
+
+## `src/configs/demoGameConfig.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../core/GameEnginCore` | `GameConfig` |
+
+## `src/core/GameEnginCore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/core` | `EliteGameEngine`, `QualityTier` |
+| `@/lib/gameengin/gameEnginRuntime` | `GameEnginRuntime` |
+
+## `src/dream/rulesets/homedream/dream.homedream.physics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.homedream.constants` | `HOMEDREAM_GRAVITY` |
+
+## `src/dream/rulesets/homedream/dream.homedream.transforms.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.homedream.constants` | `HOMEDREAM_WORLD_ID` |
+
+## `src/dreamsurface/dreamsurface.bridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../dream/rulesets/homedream/dream.homedream.transforms` | `HomeDreamState`, `applyDelta` |
+| `../engin/core/engin.eventbus` | `EventBus` |
+| `../engin/core/engin.ledger` | `DreamLedger`, `appendEntry` |
+
+## `src/engin/core/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/ai/capability-gate` | _(dynamic import)_ |
+| `@/lib/ai/confirm-token` | _(dynamic import)_ |
+| `@/lib/ai/rate-limiter` | _(dynamic import)_ |
+| `@/lib/ai/idempotency` | _(dynamic import)_ |
+| `@/lib/agents/boogieManAI` | _(dynamic import)_ |
+| `@/build-memory/registry.json` | _(dynamic import)_ |
+| `../generated/index` | _(dynamic import)_ |
+
+## `src/engin/generated/brain.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/brain/active-projects.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/character-voices/mad-maxi.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/composition-principles/leading-lines-landmark.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/composition-principles/parallax-layers.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/concept-library/neon-courier.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/dialogue-patterns/callback-anchor.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/dialogue-patterns/implied-subject.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/emotional-tones/determined.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/emotional-tones/fierce.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/emotional-tones/hopeful.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/emotional-tones/reflective.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/emotional-tones/weary.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/fun-heuristics/meta-progression.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/fun-heuristics/moment-to-moment.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/fun-heuristics/session-loop.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/action-rpg.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/episodic.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/live-service.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/metroidvania.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/open-world.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/platformer.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/puzzle.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/racing.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/roguelike.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/sandbox.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/genre-dna/template.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/inspiration-corpus/celeste.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/inspiration-corpus/dead-cells.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/inspiration-corpus/hades.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/inspiration-corpus/hollow-knight.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/inspiration-corpus/outer-wilds.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/material-recipes/neon-glass-tube.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/material-recipes/rusted-iron.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/camera/look-ahead.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/camera/screen-shake.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/combat/combo.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/combat/hit-stop.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/combat/parry.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/combat/ranged.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/movement/coyote-time.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/movement/dash.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/movement/double-jump.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/movement/grapple.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/movement/wall-slide.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/progression/skill-tree.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/ability-gating.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/meta-progression.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/run-persistence.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/season-pass.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/mechanic-library/structural/world-streaming.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/narrative-pacing/default.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/originality-registry/signatures.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/technique-library/lighting/three-point-mood.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/technique-library/modeling/edge-flow.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/technique-library/modeling/silhouette-first.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json` | _(dynamic import)_ |
+| `@/lib/gameengin/brain/upgrade-history/prioritization-rules.json` | _(dynamic import)_ |
+
+## `src/engin/generated/cartridges.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/index` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridges/loaders` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridges/manifest` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridges/reactCartridge` | _(dynamic import)_ |
+| `@/public/cartridges/mad-maxi/MANIFEST.json` | _(dynamic import)_ |
+
+## `src/engin/generated/connectors.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | _(dynamic import)_ |
+| `@/lib/connectors/deliveryStrategy` | _(dynamic import)_ |
+| `@/lib/connectors/installFlow` | _(dynamic import)_ |
+| `@/lib/connectors/normalise` | _(dynamic import)_ |
+| `@/lib/connectors/providers/bluesky` | _(dynamic import)_ |
+| `@/lib/connectors/providers/devto` | _(dynamic import)_ |
+| `@/lib/connectors/providers/facebook` | _(dynamic import)_ |
+| `@/lib/connectors/providers/github` | _(dynamic import)_ |
+| `@/lib/connectors/providers/hackernews` | _(dynamic import)_ |
+| `@/lib/connectors/providers/instagram` | _(dynamic import)_ |
+| `@/lib/connectors/providers/mastodon` | _(dynamic import)_ |
+| `@/lib/connectors/providers/medium` | _(dynamic import)_ |
+| `@/lib/connectors/providers/nostr` | _(dynamic import)_ |
+| `@/lib/connectors/providers/pinterest` | _(dynamic import)_ |
+| `@/lib/connectors/providers/podcast` | _(dynamic import)_ |
+| `@/lib/connectors/providers/reddit` | _(dynamic import)_ |
+| `@/lib/connectors/providers/shellhub` | _(dynamic import)_ |
+| `@/lib/connectors/providers/substack` | _(dynamic import)_ |
+| `@/lib/connectors/providers/tiktok` | _(dynamic import)_ |
+| `@/lib/connectors/providers/tumblr` | _(dynamic import)_ |
+| `@/lib/connectors/providers/twitter` | _(dynamic import)_ |
+| `@/lib/connectors/providers/youtube` | _(dynamic import)_ |
+| `@/lib/connectors/reconcile` | _(dynamic import)_ |
+| `@/lib/connectors/syncDispatch` | _(dynamic import)_ |
+| `@/lib/connectors/webhookVerification` | _(dynamic import)_ |
+| `@/lib/connectors/youtube` | _(dynamic import)_ |
+
+## `src/engin/generated/hooks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/hooks/use-spatial` | _(dynamic import)_ |
+| `@/hooks/useAccount` | _(dynamic import)_ |
+| `@/hooks/useConnectorInstallFlow` | _(dynamic import)_ |
+| `@/hooks/useDreamLayout` | _(dynamic import)_ |
+| `@/hooks/useHideOnScroll` | _(dynamic import)_ |
+| `@/hooks/useSharedDream` | _(dynamic import)_ |
+| `@/hooks/useTapHoldMove` | _(dynamic import)_ |
+| `@/hooks/useTick` | _(dynamic import)_ |
+| `@/hooks/useViewCounter` | _(dynamic import)_ |
+| `@/lib/hooks/useMotionTilt` | _(dynamic import)_ |
+| `@/lib/hooks/useResponsive` | _(dynamic import)_ |
+| `@/lib/hooks/useTap` | _(dynamic import)_ |
+
+## `src/engin/generated/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./brain` | `brain` |
+| `./cartridges` | `cartridges` |
+| `./connectors` | `connectors` |
+| `./hooks` | `hooks` |
+| `./personas` | `personas` |
+| `./rulesets` | `rulesets` |
+| `./surfaces` | `surfaces` |
+| `./systems` | `systems` |
+
+## `src/engin/generated/rulesets.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/autoopen/dream.AutoOpenGameEngin` | _(dynamic import)_ |
+| `@/engins/CodeEngin/core/parser` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/index` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession` | _(dynamic import)_ |
+| `@/engins/CodeEngin/orchestrator/dream.index` | _(dynamic import)_ |
+| `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
+| `@/engins/dream.panel.AnalyticsEngin` | _(dynamic import)_ |
+| `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
+| `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
+| `@/engins/engin.CodeEngin` | _(dynamic import)_ |
+| `@/engins/engin.ContentEngin` | _(dynamic import)_ |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
+| `@/engins/engin.LabEngin` | _(dynamic import)_ |
+| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
+| `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
+| `@/src/dream/rulesets/codeengin/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/dreamsengin/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/forgengn/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/gameengin/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/homedream/dream.homedream.constants` | _(dynamic import)_ |
+| `@/src/dream/rulesets/homedream/dream.homedream.physics` | _(dynamic import)_ |
+| `@/src/dream/rulesets/homedream/dream.homedream.transforms` | _(dynamic import)_ |
+| `@/src/dream/rulesets/homedream/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/labengin/index` | _(dynamic import)_ |
+| `@/src/dream/rulesets/starmakerengin/index` | _(dynamic import)_ |
+
+## `src/engin/generated/surfaces.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/(internal)/idari-console/page` | _(dynamic import)_ |
+| `@/app/(internal)/idari-console/platform-errors/page` | _(dynamic import)_ |
+| `@/app/(internal)/idari-console/platform-health/page` | _(dynamic import)_ |
+| `@/app/about/page` | _(dynamic import)_ |
+| `@/app/actions/dream-docs` | _(dynamic import)_ |
+| `@/app/ads/create/page` | _(dynamic import)_ |
+| `@/app/ads/page` | _(dynamic import)_ |
+| `@/app/ads/slot/[id]/page` | _(dynamic import)_ |
+| `@/app/api/account/delete-data/route` | _(dynamic import)_ |
+| `@/app/api/account/delete-dream/route` | _(dynamic import)_ |
+| `@/app/api/account/export-data/route` | _(dynamic import)_ |
+| `@/app/api/activity/track/route` | _(dynamic import)_ |
+| `@/app/api/admin/ai-chat/route` | _(dynamic import)_ |
+| `@/app/api/admin/ai-request/route` | _(dynamic import)_ |
+| `@/app/api/admin/child-safety/route` | _(dynamic import)_ |
+| `@/app/api/admin/code-files/route` | _(dynamic import)_ |
+| `@/app/api/admin/observability/route` | _(dynamic import)_ |
+| `@/app/api/ads/orders/route` | _(dynamic import)_ |
+| `@/app/api/ads/view/route` | _(dynamic import)_ |
+| `@/app/api/agent/session/route` | _(dynamic import)_ |
+| `@/app/api/ai/boogieman/child-safety/route` | _(dynamic import)_ |
+| `@/app/api/ai/boogieman/privacy-event/route` | _(dynamic import)_ |
+| `@/app/api/ai/boogieman/route` | _(dynamic import)_ |
+| `@/app/api/ai/boogieman/status/route` | _(dynamic import)_ |
+| `@/app/api/ai/eams/route` | _(dynamic import)_ |
+| `@/app/api/ai/execute/route` | _(dynamic import)_ |
+| `@/app/api/ai/idari/route` | _(dynamic import)_ |
+| `@/app/api/appeal/route` | _(dynamic import)_ |
+| `@/app/api/auth/logout/route` | _(dynamic import)_ |
+| `@/app/api/auth/providers/route` | _(dynamic import)_ |
+| `@/app/api/blocks/route` | _(dynamic import)_ |
+| `@/app/api/ci/run/route` | _(dynamic import)_ |
+| `@/app/api/close-friends/route` | _(dynamic import)_ |
+| `@/app/api/comments/route` | _(dynamic import)_ |
+| `@/app/api/connectors/[provider]/connect/route` | _(dynamic import)_ |
+| `@/app/api/connectors/[provider]/disconnect/route` | _(dynamic import)_ |
+| `@/app/api/connectors/[provider]/items/route` | _(dynamic import)_ |
+| `@/app/api/connectors/[provider]/sync/route` | _(dynamic import)_ |
+| `@/app/api/connectors/[provider]/verify/route` | _(dynamic import)_ |
+| `@/app/api/connectors/cron/route` | _(dynamic import)_ |
+| `@/app/api/connectors/instagram/oauth/callback/route` | _(dynamic import)_ |
+| `@/app/api/connectors/instagram/oauth/start/route` | _(dynamic import)_ |
+| `@/app/api/connectors/status/route` | _(dynamic import)_ |
+| `@/app/api/connectors/webhooks/[provider]/route` | _(dynamic import)_ |
+| `@/app/api/connectors/youtube/oauth/callback/route` | _(dynamic import)_ |
+| `@/app/api/connectors/youtube/oauth/start/route` | _(dynamic import)_ |
+| `@/app/api/content/generative-fill/route` | _(dynamic import)_ |
+| `@/app/api/content/intelligence/route` | _(dynamic import)_ |
+| `@/app/api/content/transcribe/route` | _(dynamic import)_ |
+| `@/app/api/content/voice-clone/route` | _(dynamic import)_ |
+| `@/app/api/dr-eams/hf/route` | _(dynamic import)_ |
+| `@/app/api/dr-eams/run/route` | _(dynamic import)_ |
+| `@/app/api/drafts/[id]/route` | _(dynamic import)_ |
+| `@/app/api/drafts/route` | _(dynamic import)_ |
+| `@/app/api/dream-windows/[id]/route` | _(dynamic import)_ |
+| `@/app/api/dream-windows/route` | _(dynamic import)_ |
+| `@/app/api/dreamengin/os-status/route` | _(dynamic import)_ |
+| `@/app/api/dreamr/feed/route` | _(dynamic import)_ |
+| `@/app/api/dreamr/suggested/route` | _(dynamic import)_ |
+| `@/app/api/dreams/feed/route` | _(dynamic import)_ |
+| `@/app/api/dreams/instances/route` | _(dynamic import)_ |
+| `@/app/api/dreams/transfer/route` | _(dynamic import)_ |
+| `@/app/api/embed-feed/route` | _(dynamic import)_ |
+| `@/app/api/favorites/route` | _(dynamic import)_ |
+| `@/app/api/feed/route` | _(dynamic import)_ |
+| `@/app/api/follow/route` | _(dynamic import)_ |
+| `@/app/api/forge/build/route` | _(dynamic import)_ |
+| `@/app/api/gal/route` | _(dynamic import)_ |
+| `@/app/api/game-scores/route` | _(dynamic import)_ |
+| `@/app/api/gameengin/crash-report/route` | _(dynamic import)_ |
+| `@/app/api/health/route` | _(dynamic import)_ |
+| `@/app/api/home-layout/route` | _(dynamic import)_ |
+| `@/app/api/journey/route` | _(dynamic import)_ |
+| `@/app/api/lab/benchmarks/route` | _(dynamic import)_ |
+| `@/app/api/ledger-media/route` | _(dynamic import)_ |
+| `@/app/api/likes/route` | _(dynamic import)_ |
+| `@/app/api/marketplace/request/route` | _(dynamic import)_ |
+| `@/app/api/marketplace/route` | _(dynamic import)_ |
+| `@/app/api/messages/boards/route` | _(dynamic import)_ |
+| `@/app/api/messages/route` | _(dynamic import)_ |
+| `@/app/api/metrics/platform/route` | _(dynamic import)_ |
+| `@/app/api/metrics/route` | _(dynamic import)_ |
+| `@/app/api/metrics/user/[userId]/route` | _(dynamic import)_ |
+| `@/app/api/music/route` | _(dynamic import)_ |
+| `@/app/api/notifications/route` | _(dynamic import)_ |
+| `@/app/api/platform/errors/route` | _(dynamic import)_ |
+| `@/app/api/posts/[id]/route` | _(dynamic import)_ |
+| `@/app/api/posts/[id]/save/route` | _(dynamic import)_ |
+| `@/app/api/posts/[id]/view/route` | _(dynamic import)_ |
+| `@/app/api/posts/profile/[userId]/route` | _(dynamic import)_ |
+| `@/app/api/posts/route` | _(dynamic import)_ |
+| `@/app/api/profile/route` | _(dynamic import)_ |
+| `@/app/api/projects/route` | _(dynamic import)_ |
+| `@/app/api/scheduled-posts/route` | _(dynamic import)_ |
+| `@/app/api/security/scan/route` | _(dynamic import)_ |
+| `@/app/api/settings/appearance/route` | _(dynamic import)_ |
+| `@/app/api/settings/feed/route` | _(dynamic import)_ |
+| `@/app/api/settings/notifications/route` | _(dynamic import)_ |
+| `@/app/api/settings/privacy/route` | _(dynamic import)_ |
+| `@/app/api/setup/check/route` | _(dynamic import)_ |
+| `@/app/api/setup/google-oauth/route` | _(dynamic import)_ |
+| `@/app/api/shellhub/devices/route` | _(dynamic import)_ |
+| `@/app/api/shop/route` | _(dynamic import)_ |
+| `@/app/api/skip-credits/balance/route` | _(dynamic import)_ |
+| `@/app/api/skip-credits/earn/route` | _(dynamic import)_ |
+| `@/app/api/skip-credits/use/route` | _(dynamic import)_ |
+| `@/app/api/social/rss-feed/route` | _(dynamic import)_ |
+| `@/app/api/upload/route` | _(dynamic import)_ |
+| `@/app/api/user/layout/route` | _(dynamic import)_ |
+| `@/app/api/views/track/route` | _(dynamic import)_ |
+| `@/app/api/widgets/feed/route` | _(dynamic import)_ |
+| `@/app/api/widgets/instances/route` | _(dynamic import)_ |
+| `@/app/api/youtube/channel/route` | _(dynamic import)_ |
+| `@/app/api/youtube/discovery/route` | _(dynamic import)_ |
+| `@/app/api/youtube/live-feed/route` | _(dynamic import)_ |
+| `@/app/auth/callback/route` | _(dynamic import)_ |
+| `@/app/auth/reset-password/page` | _(dynamic import)_ |
+| `@/app/auth/update-password/page` | _(dynamic import)_ |
+| `@/app/connectors/dream.ConnectorsClient` | _(dynamic import)_ |
+| `@/app/connectors/page` | _(dynamic import)_ |
+| `@/app/daydream/analytics/page` | _(dynamic import)_ |
+| `@/app/daydream/brand/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/brand/page` | _(dynamic import)_ |
+| `@/app/daydream/code/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/code/page` | _(dynamic import)_ |
+| `@/app/daydream/constellation/dream.ConstellationClient` | _(dynamic import)_ |
+| `@/app/daydream/constellation/page` | _(dynamic import)_ |
+| `@/app/daydream/create/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/create/page` | _(dynamic import)_ |
+| `@/app/daydream/forge/page` | _(dynamic import)_ |
+| `@/app/daydream/game/dream.GamePageClient` | _(dynamic import)_ |
+| `@/app/daydream/game/dream.shell.ImmersiveGameShell` | _(dynamic import)_ |
+| `@/app/daydream/game/page` | _(dynamic import)_ |
+| `@/app/daydream/games/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/games/page` | _(dynamic import)_ |
+| `@/app/daydream/lab/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/lab/page` | _(dynamic import)_ |
+| `@/app/daydream/lab/portfolio/page` | _(dynamic import)_ |
+| `@/app/daydream/media-vault/page` | _(dynamic import)_ |
+| `@/app/daydream/music/engin/page` | _(dynamic import)_ |
+| `@/app/daydream/music/page` | _(dynamic import)_ |
+| `@/app/daydream/music/upload/page` | _(dynamic import)_ |
+| `@/app/daydream/play/page` | _(dynamic import)_ |
+| `@/app/discover/page` | _(dynamic import)_ |
+| `@/app/dream-effects/page` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/DreamBarDataBridge` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/algorithms/botDetector` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/api/route` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/DreamSpaceRegion` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/DreamWidgetGrid` | _(dynamic import)_ |
+| `@/app/dreamdmbar/_components/HomeDreamRegion` | _(dynamic import)_ |
+| `@/app/dreamdmbar/dreamspace/page` | _(dynamic import)_ |
+| `@/app/dreamdmbar/dualruntime/page` | _(dynamic import)_ |
+| `@/app/dreamdmbar/homedream/page` | _(dynamic import)_ |
+| `@/app/dreamdmbar/layout` | _(dynamic import)_ |
+| `@/app/dreamdmbar/page` | _(dynamic import)_ |
+| `@/app/dreamr/page` | _(dynamic import)_ |
+| `@/app/dreamspace/page` | _(dynamic import)_ |
+| `@/app/edit-profiledream/page` | _(dynamic import)_ |
+| `@/app/engines/brand/campaigns/page` | _(dynamic import)_ |
+| `@/app/engines/brand/identity/page` | _(dynamic import)_ |
+| `@/app/engines/brand/layout` | _(dynamic import)_ |
+| `@/app/engines/brand/page` | _(dynamic import)_ |
+| `@/app/engines/code/ai/page` | _(dynamic import)_ |
+| `@/app/engines/code/layout` | _(dynamic import)_ |
+| `@/app/engines/code/notebook/page` | _(dynamic import)_ |
+| `@/app/engines/code/page` | _(dynamic import)_ |
+| `@/app/engines/code/projects/page` | _(dynamic import)_ |
+| `@/app/engines/create/calendar/page` | _(dynamic import)_ |
+| `@/app/engines/create/editor/page` | _(dynamic import)_ |
+| `@/app/engines/create/layout` | _(dynamic import)_ |
+| `@/app/engines/create/page` | _(dynamic import)_ |
+| `@/app/engines/create/queue/page` | _(dynamic import)_ |
+| `@/app/engines/games/builder/page` | _(dynamic import)_ |
+| `@/app/engines/games/layout` | _(dynamic import)_ |
+| `@/app/engines/games/library/page` | _(dynamic import)_ |
+| `@/app/engines/games/page` | _(dynamic import)_ |
+| `@/app/engines/games/scores/page` | _(dynamic import)_ |
+| `@/app/engines/lab/data/page` | _(dynamic import)_ |
+| `@/app/engines/lab/experiments/page` | _(dynamic import)_ |
+| `@/app/engines/lab/layout` | _(dynamic import)_ |
+| `@/app/engines/lab/page` | _(dynamic import)_ |
+| `@/app/engines/lab/quantum/page` | _(dynamic import)_ |
+| `@/app/engines/layout` | _(dynamic import)_ |
+| `@/app/engines/music/arrange/page` | _(dynamic import)_ |
+| `@/app/engines/music/layout` | _(dynamic import)_ |
+| `@/app/engines/music/library/page` | _(dynamic import)_ |
+| `@/app/engines/music/page` | _(dynamic import)_ |
+| `@/app/engines/music/studio/page` | _(dynamic import)_ |
+| `@/app/engines/page` | _(dynamic import)_ |
+| `@/app/engines/portfolio/assets/page` | _(dynamic import)_ |
+| `@/app/engines/portfolio/layout` | _(dynamic import)_ |
+| `@/app/engines/portfolio/optimize/page` | _(dynamic import)_ |
+| `@/app/engines/portfolio/page` | _(dynamic import)_ |
+| `@/app/engines/portfolio/quantum/page` | _(dynamic import)_ |
+| `@/app/feed-settings/dream.FeedSettingsClient` | _(dynamic import)_ |
+| `@/app/feed-settings/page` | _(dynamic import)_ |
+| `@/app/gameengin/cartridges/[id]/page` | _(dynamic import)_ |
+| `@/app/gameengin/cartridges/page` | _(dynamic import)_ |
+| `@/app/gameengin/page` | _(dynamic import)_ |
+| `@/app/homedream/page` | _(dynamic import)_ |
+| `@/app/join/page` | _(dynamic import)_ |
+| `@/app/lab/[id]/codespace/page` | _(dynamic import)_ |
+| `@/app/lab/[id]/page` | _(dynamic import)_ |
+| `@/app/lab/new/page` | _(dynamic import)_ |
+| `@/app/lab/page` | _(dynamic import)_ |
+| `@/app/layout` | _(dynamic import)_ |
+| `@/app/login/page` | _(dynamic import)_ |
+| `@/app/marketplace/[id]/page` | _(dynamic import)_ |
+| `@/app/marketplace/page` | _(dynamic import)_ |
+| `@/app/marketplace/sell/page` | _(dynamic import)_ |
+| `@/app/messages/boards/[id]/page` | _(dynamic import)_ |
+| `@/app/messages/boards/new/page` | _(dynamic import)_ |
+| `@/app/messages/boards/page` | _(dynamic import)_ |
+| `@/app/messages/page` | _(dynamic import)_ |
+| `@/app/mission/page` | _(dynamic import)_ |
+| `@/app/notes/page` | _(dynamic import)_ |
+| `@/app/onboarding/page` | _(dynamic import)_ |
+| `@/app/page` | _(dynamic import)_ |
+| `@/app/policy/page` | _(dynamic import)_ |
+| `@/app/profile/[handle]/page` | _(dynamic import)_ |
+| `@/app/profile/page` | _(dynamic import)_ |
+| `@/app/settings/account/dream.DangerZoneActions` | _(dynamic import)_ |
+| `@/app/settings/account/page` | _(dynamic import)_ |
+| `@/app/settings/algorithm/page` | _(dynamic import)_ |
+| `@/app/settings/appearance/page` | _(dynamic import)_ |
+| `@/app/settings/controls/dream.ControlsClient` | _(dynamic import)_ |
+| `@/app/settings/controls/dream.PositionIndicatorToggle` | _(dynamic import)_ |
+| `@/app/settings/controls/page` | _(dynamic import)_ |
+| `@/app/settings/data/dream.DataClient` | _(dynamic import)_ |
+| `@/app/settings/data/page` | _(dynamic import)_ |
+| `@/app/settings/dreams/dreams-layout-editor` | _(dynamic import)_ |
+| `@/app/settings/dreams/page` | _(dynamic import)_ |
+| `@/app/settings/feed/page` | _(dynamic import)_ |
+| `@/app/settings/help/page` | _(dynamic import)_ |
+| `@/app/settings/notifications/page` | _(dynamic import)_ |
+| `@/app/settings/page` | _(dynamic import)_ |
+| `@/app/settings/privacy/dream.PrivacyClient` | _(dynamic import)_ |
+| `@/app/settings/privacy/page` | _(dynamic import)_ |
+| `@/app/settings/safety/page` | _(dynamic import)_ |
+| `@/app/settings/security/page` | _(dynamic import)_ |
+| `@/app/settings/widgets/page` | _(dynamic import)_ |
+| `@/app/shop/page` | _(dynamic import)_ |
+| `@/app/shop/sell/page` | _(dynamic import)_ |
+| `@/app/u/[handle]/page` | _(dynamic import)_ |
+| `@/app/view-profile/page` | _(dynamic import)_ |
+| `@/app/webgpu/page` | _(dynamic import)_ |
+| `@/components/activity/dream.ActivityPostForm` | _(dynamic import)_ |
+| `@/components/activity/dream.ActivityProfile` | _(dynamic import)_ |
+| `@/components/activity/dream.TierBadge` | _(dynamic import)_ |
+| `@/components/ads/dream.AdUnit` | _(dynamic import)_ |
+| `@/components/ads/dream.SkipCreditBalance` | _(dynamic import)_ |
+| `@/components/auth/dream.PasswordField` | _(dynamic import)_ |
+| `@/components/connectors/dream.AddSliceSheet` | _(dynamic import)_ |
+| `@/components/connectors/dream.ConnectDreamPrompt` | _(dynamic import)_ |
+| `@/components/connectors/dream.ConnectorRow` | _(dynamic import)_ |
+| `@/components/connectors/dream.NoSlotDialog` | _(dynamic import)_ |
+| `@/components/connectors/dream.PlacementMode` | _(dynamic import)_ |
+| `@/components/connectors/dream.widget.ConnectorWidgetPicker` | _(dynamic import)_ |
+| `@/components/connectors/dream.widget.ConnectWidgetPrompt` | _(dynamic import)_ |
+| `@/components/core/dream.CoreDream` | _(dynamic import)_ |
+| `@/components/customize/dream.bar.CustomizeModeBar` | _(dynamic import)_ |
+| `@/components/customize/dream.bar.CustomizeToolbar` | _(dynamic import)_ |
+| `@/components/customize/dream.GlobalCustomizeUI` | _(dynamic import)_ |
+| `@/components/customize/panels/dream.panel.ColorPanel` | _(dynamic import)_ |
+| `@/components/customize/panels/dream.panel.EffectsPanel` | _(dynamic import)_ |
+| `@/components/customize/panels/dream.panel.FontPanel` | _(dynamic import)_ |
+| `@/components/customize/panels/dream.panel.LayoutPanel` | _(dynamic import)_ |
+| `@/components/daydream/dream.CodeDreamIDE` | _(dynamic import)_ |
+| `@/components/daydream/dream.constellationmap` | _(dynamic import)_ |
+| `@/components/daydream/dream.DiffViewer` | _(dynamic import)_ |
+| `@/components/daydream/dream.JourneyTrail` | _(dynamic import)_ |
+| `@/components/daydream/dream.LabDreamIDE` | _(dynamic import)_ |
+| `@/components/daydream/dream.NGNEngin` | _(dynamic import)_ |
+| `@/components/daydream/dream.OpenDaydreamSideBButton` | _(dynamic import)_ |
+| `@/components/daydream/dream.shell.DaydreamShell` | _(dynamic import)_ |
+| `@/components/daydream/dream.StandaloneEnginSurface` | _(dynamic import)_ |
+| `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream` | _(dynamic import)_ |
+| `@/components/daydream/dreamsurface.daydream.BrandDaydream` | _(dynamic import)_ |
+| `@/components/daydream/starmaker/dream.panel.CompingPanel` | _(dynamic import)_ |
+| `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel` | _(dynamic import)_ |
+| `@/components/daydream/starmaker/dream.panel.PianoRollPanel` | _(dynamic import)_ |
+| `@/components/daydream/starmaker/dream.panel.SessionViewPanel` | _(dynamic import)_ |
+| `@/components/draggable/dream.DraggableModule` | _(dynamic import)_ |
+| `@/components/dream.AIAssistant` | _(dynamic import)_ |
+| `@/components/dream.AudioVisualizer3D` | _(dynamic import)_ |
+| `@/components/dream.BoogieWarningBanner` | _(dynamic import)_ |
+| `@/components/dream.BrandLogo` | _(dynamic import)_ |
+| `@/components/dream.CommandPalette` | _(dynamic import)_ |
+| `@/components/dream.CreatePostModal` | _(dynamic import)_ |
+| `@/components/dream.DragToAnchorClose` | _(dynamic import)_ |
+| `@/components/dream.DrEamsModeToggle` | _(dynamic import)_ |
+| `@/components/dream.DrEamsVoiceAssistant` | _(dynamic import)_ |
+| `@/components/dream.FeedCard` | _(dynamic import)_ |
+| `@/components/dream.ForgeDreamCanvas` | _(dynamic import)_ |
+| `@/components/dream.GlobalOverlays` | _(dynamic import)_ |
+| `@/components/dream.HeroSprite` | _(dynamic import)_ |
+| `@/components/dream.HomeFeed` | _(dynamic import)_ |
+| `@/components/dream.IconSelector` | _(dynamic import)_ |
+| `@/components/dream.InnerDreamsButton` | _(dynamic import)_ |
+| `@/components/dream.KonamiDream` | _(dynamic import)_ |
+| `@/components/dream.LandingHero` | _(dynamic import)_ |
+| `@/components/dream.LedgerChart` | _(dynamic import)_ |
+| `@/components/dream.MessagesClient` | _(dynamic import)_ |
+| `@/components/dream.NotificationCenter` | _(dynamic import)_ |
+| `@/components/dream.OSShellActivator` | _(dynamic import)_ |
+| `@/components/dream.panel.ChildSafetyPanel` | _(dynamic import)_ |
+| `@/components/dream.panel.IDariPanel` | _(dynamic import)_ |
+| `@/components/dream.PhysicsLab` | _(dynamic import)_ |
+| `@/components/dream.ProfileEditor` | _(dynamic import)_ |
+| `@/components/dream.ProfileShareButton` | _(dynamic import)_ |
+| `@/components/dream.ProfileSpace` | _(dynamic import)_ |
+| `@/components/dream.PullToRefresh` | _(dynamic import)_ |
+| `@/components/dream.ShrunkMode` | _(dynamic import)_ |
+| `@/components/dream.SkeletonLoaders` | _(dynamic import)_ |
+| `@/components/dream.ThemeApplicator` | _(dynamic import)_ |
+| `@/components/dream.ThemeToggle` | _(dynamic import)_ |
+| `@/components/dream.ToastSystem` | _(dynamic import)_ |
+| `@/components/dream.universal_asset_registry` | _(dynamic import)_ |
+| `@/components/dream.VoidThemeToggle` | _(dynamic import)_ |
+| `@/components/dream.widget.AnchorWidget` | _(dynamic import)_ |
+| `@/components/dream.widget.ProfileWidgetBlock` | _(dynamic import)_ |
+| `@/components/dream.widget.WidgetBubble` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.bar.DrEamsSearchBar` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.CanvasDropZone` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.DREAMenginOS` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.DrEamsCanvas` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.HomeControls` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.menu.NexusMenu` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.menu.OutdreamMenu` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.overlay.ViewAllDreamsOverlay` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.panel.CrossEnginStatusPanel` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.panel.DrEamsPanel` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.scene.BabylonGameScene` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.scene.DrEamsScene` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.scene.PortfolioOptimizationScene` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.shell.EnginShell` | _(dynamic import)_ |
+| `@/components/dreamengin/dream.widget.AppearanceWidget` | _(dynamic import)_ |
+| `@/components/dreamengin/dreamsurface.dreamengin` | _(dynamic import)_ |
+| `@/components/dreamengin/engine/math` | _(dynamic import)_ |
+| `@/components/dreamengin/engine/types` | _(dynamic import)_ |
+| `@/components/dreamnav/dream.DreamNavControls` | _(dynamic import)_ |
+| `@/components/dreamnav/dreamsurface.dreamnav` | _(dynamic import)_ |
+| `@/components/dreamr/dream.CloseFriendsSettings` | _(dynamic import)_ |
+| `@/components/dreamr/dream.panel.DreamRChannelPanel` | _(dynamic import)_ |
+| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | _(dynamic import)_ |
+| `@/components/dreams/dream.connectorlayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.DraggableDream` | _(dynamic import)_ |
+| `@/components/dreams/dream.featurelayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.GlobalDragLayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.outputlayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.panel.RuntimeMemoryHUD` | _(dynamic import)_ |
+| `@/components/dreams/dream.PlatformErrorReporter` | _(dynamic import)_ |
+| `@/components/dreams/dream.shell.DreamShell` | _(dynamic import)_ |
+| `@/components/dreams/dream.shell.SharedDreamShell` | _(dynamic import)_ |
+| `@/components/dreams/dream.SlideOverPanel` | _(dynamic import)_ |
+| `@/components/dreams/dream.widget.SuperDreamWidget` | _(dynamic import)_ |
+| `@/components/dreams/dream.window.JourneyDreamWindow` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.dreamspace` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.shell` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.window` | _(dynamic import)_ |
+| `@/components/engines/brand/dream.BrandEnginApp` | _(dynamic import)_ |
+| `@/components/engines/brand/index` | _(dynamic import)_ |
+| `@/components/engines/brand/panels/dream.panel.CampaignsPanel` | _(dynamic import)_ |
+| `@/components/engines/brand/panels/dream.panel.IdentityPanel` | _(dynamic import)_ |
+| `@/components/engines/code/dream.CodeEnginApp` | _(dynamic import)_ |
+| `@/components/engines/code/index` | _(dynamic import)_ |
+| `@/components/engines/code/panels/dream.panel.AIPanel` | _(dynamic import)_ |
+| `@/components/engines/code/panels/dream.panel.NotebookPanel` | _(dynamic import)_ |
+| `@/components/engines/code/panels/dream.panel.ProjectsPanel` | _(dynamic import)_ |
+| `@/components/engines/create/dream.CreateEnginApp` | _(dynamic import)_ |
+| `@/components/engines/create/index` | _(dynamic import)_ |
+| `@/components/engines/create/panels/dream.panel.CalendarPanel` | _(dynamic import)_ |
+| `@/components/engines/create/panels/dream.panel.EditorPanel` | _(dynamic import)_ |
+| `@/components/engines/create/panels/dream.panel.QueuePanel` | _(dynamic import)_ |
+| `@/components/engines/games/dream.GameEnginApp` | _(dynamic import)_ |
+| `@/components/engines/games/index` | _(dynamic import)_ |
+| `@/components/engines/games/panels/dream.panel.BuilderPanel` | _(dynamic import)_ |
+| `@/components/engines/games/panels/dream.panel.LibraryPanel` | _(dynamic import)_ |
+| `@/components/engines/games/panels/dream.panel.ScoresPanel` | _(dynamic import)_ |
+| `@/components/engines/index` | _(dynamic import)_ |
+| `@/components/engines/lab/dream.LabEnginApp` | _(dynamic import)_ |
+| `@/components/engines/lab/index` | _(dynamic import)_ |
+| `@/components/engines/lab/panels/dream.panel.DataVizPanel` | _(dynamic import)_ |
+| `@/components/engines/lab/panels/dream.panel.ExperimentsPanel` | _(dynamic import)_ |
+| `@/components/engines/lab/panels/dream.panel.QuantumPanel` | _(dynamic import)_ |
+| `@/components/engines/music/dream.MusicEnginApp` | _(dynamic import)_ |
+| `@/components/engines/music/index` | _(dynamic import)_ |
+| `@/components/engines/music/panels/dream.panel.ArrangePanel` | _(dynamic import)_ |
+| `@/components/engines/music/panels/dream.panel.MusicLibraryPanel` | _(dynamic import)_ |
+| `@/components/engines/music/panels/dream.panel.StudioPanel` | _(dynamic import)_ |
+| `@/components/engines/portfolio/dream.PortfolioEnginApp` | _(dynamic import)_ |
+| `@/components/engines/portfolio/index` | _(dynamic import)_ |
+| `@/components/engines/portfolio/panels/dream.panel.AssetsPanel` | _(dynamic import)_ |
+| `@/components/engines/portfolio/panels/dream.panel.OptimizePanel` | _(dynamic import)_ |
+| `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel` | _(dynamic import)_ |
+| `@/components/engines/shared/dream.bar.EnginNavBar` | _(dynamic import)_ |
+| `@/components/engines/shared/dream.EnginProvider` | _(dynamic import)_ |
+| `@/components/engines/shared/dream.EnginRuleSet` | _(dynamic import)_ |
+| `@/components/engines/shared/dream.makeEnginApp` | _(dynamic import)_ |
+| `@/components/engines/shared/dream.shell.EnginAppShell` | _(dynamic import)_ |
+| `@/components/engines/shared/index` | _(dynamic import)_ |
+| `@/components/feed/dream.AlgorithmEngine` | _(dynamic import)_ |
+| `@/components/feed/dream.CommentSection` | _(dynamic import)_ |
+| `@/components/feed/dream.FeedVideoCard` | _(dynamic import)_ |
+| `@/components/feed/dream.FollowButton` | _(dynamic import)_ |
+| `@/components/feed/dream.FollowOnboarding` | _(dynamic import)_ |
+| `@/components/feeds/dream.widget.EmbedFeedWidget` | _(dynamic import)_ |
+| `@/components/forge/dream.EngineBuilderCanvas` | _(dynamic import)_ |
+| `@/components/forge/dream.panel.AIBuilderPanel` | _(dynamic import)_ |
+| `@/components/forge/dream.widget.ForgeMomentumWidget` | _(dynamic import)_ |
+| `@/components/gameengin/dream.cartridge.CartridgeBrowser` | _(dynamic import)_ |
+| `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary` | _(dynamic import)_ |
+| `@/components/gameengin/dream.cartridge.CartridgeLauncher` | _(dynamic import)_ |
+| `@/components/gameengin/dream.cartridge.FeaturedCartridges` | _(dynamic import)_ |
+| `@/components/gameengin/dream.CartridgeRegistryBootstrap` | _(dynamic import)_ |
+| `@/components/gameengin/dream.CrashReportModal` | _(dynamic import)_ |
+| `@/components/gameengin/input/DualSenseManager` | _(dynamic import)_ |
+| `@/components/games/_fx/canvasFx` | _(dynamic import)_ |
+| `@/components/games/dream.AvenueOfMirrors` | _(dynamic import)_ |
+| `@/components/games/dream.BabylonSideScroller` | _(dynamic import)_ |
+| `@/components/games/dream.DefuseRitual` | _(dynamic import)_ |
+| `@/components/games/dream.EchoArena` | _(dynamic import)_ |
+| `@/components/games/dream.EnginFracture` | _(dynamic import)_ |
+| `@/components/games/dream.GameController` | _(dynamic import)_ |
+| `@/components/games/dream.GamesHub` | _(dynamic import)_ |
+| `@/components/games/dream.Glassfall` | _(dynamic import)_ |
+| `@/components/games/dream.hud.GameHUD` | _(dynamic import)_ |
+| `@/components/games/dream.hud.LegacyGameHUD` | _(dynamic import)_ |
+| `@/components/games/dream.hud.MobileGameHUD` | _(dynamic import)_ |
+| `@/components/games/dream.Leaderboard` | _(dynamic import)_ |
+| `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
+| `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
+| `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
+| `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
+| `@/components/games/dream.RecordingControls` | _(dynamic import)_ |
+| `@/components/games/dream.remote.GameRemote` | _(dynamic import)_ |
+| `@/components/games/dream.remote.LegacyGameRemote` | _(dynamic import)_ |
+| `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
+| `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
+| `@/components/games/madmaxi/audio` | _(dynamic import)_ |
+| `@/components/games/madmaxi/authoredZonePacks` | _(dynamic import)_ |
+| `@/components/games/madmaxi/config` | _(dynamic import)_ |
+| `@/components/games/madmaxi/dream.MadmaxiGame` | _(dynamic import)_ |
+| `@/components/games/madmaxi/index` | _(dynamic import)_ |
+| `@/components/games/madmaxi/levels` | _(dynamic import)_ |
+| `@/components/games/madmaxi/materials` | _(dynamic import)_ |
+| `@/components/games/madmaxi/types` | _(dynamic import)_ |
+| `@/components/games/madmaxi/vfx` | _(dynamic import)_ |
+| `@/components/home/dream.ActiveModuleSurface` | _(dynamic import)_ |
+| `@/components/home/dream.bar.GlobalDreamBar` | _(dynamic import)_ |
+| `@/components/home/dream.bar.PersistentDreamBar` | _(dynamic import)_ |
+| `@/components/home/dream.DaydreamPulseStrip` | _(dynamic import)_ |
+| `@/components/home/dream.FlagshipEnginesStrip` | _(dynamic import)_ |
+| `@/components/home/dream.NeuralSeamCanvas` | _(dynamic import)_ |
+| `@/components/home/dream.widget.DreamWidget` | _(dynamic import)_ |
+| `@/components/idari/dream.PlatformHealth` | _(dynamic import)_ |
+| `@/components/landing/dream.LandingNav` | _(dynamic import)_ |
+| `@/components/landing/dream.LandingProductStatement` | _(dynamic import)_ |
+| `@/components/landing/dream.scene.UniverseField` | _(dynamic import)_ |
+| `@/components/marketplace/dream.MarketplaceListingCard` | _(dynamic import)_ |
+| `@/components/marketplace/dream.MarketplaceRequestButton` | _(dynamic import)_ |
+| `@/components/menus/dream.menu.DreamRadialMenu` | _(dynamic import)_ |
+| `@/components/menus/dream.menu.DualBottomMenu` | _(dynamic import)_ |
+| `@/components/menus/dream.menu.RadialMenu` | _(dynamic import)_ |
+| `@/components/menus/dream.menu.SystemRadialMenu` | _(dynamic import)_ |
+| `@/components/menus/dream.panel.MenuPanel` | _(dynamic import)_ |
+| `@/components/messaging/dream.BoardComposer` | _(dynamic import)_ |
+| `@/components/music/dream.SoundRecorder` | _(dynamic import)_ |
+| `@/components/onboarding/dream.OnboardingTip` | _(dynamic import)_ |
+| `@/components/optimizer/dream.scene.BabylonOptimizeroScene` | _(dynamic import)_ |
+| `@/components/overlays/dream.RootStatusScreen` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.AlgorithmPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.AppearancePanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.ConnectorsPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.ControlsPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.DataPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.FeedPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.FeedSettingsPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.HelpPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.MarketplacePanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.PrivacyPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.ProfilePanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.SafetyPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.SettingsPanel` | _(dynamic import)_ |
+| `@/components/panels/dream.panel.WidgetsPanel` | _(dynamic import)_ |
+| `@/components/profile/dream.EditableAvatar` | _(dynamic import)_ |
+| `@/components/profile/dream.ProfileCanvas` | _(dynamic import)_ |
+| `@/components/profile/dream.ProfileCustomizeButton` | _(dynamic import)_ |
+| `@/components/profile/dream.widget.ProfileWidgetGrid` | _(dynamic import)_ |
+| `@/components/providers/dream.AppSurfaceShell` | _(dynamic import)_ |
+| `@/components/providers/dream.GodTierProvider` | _(dynamic import)_ |
+| `@/components/providers/dream.ThemeProvider` | _(dynamic import)_ |
+| `@/components/runtime/dream.DualRuntimeContainer` | _(dynamic import)_ |
+| `@/components/runtime/dream.RuntimeView` | _(dynamic import)_ |
+| `@/components/runtime/dream.shell.RuntimeShell` | _(dynamic import)_ |
+| `@/components/shaders/dream.LightningWing` | _(dynamic import)_ |
+| `@/components/shaders/dream.NeonGlow` | _(dynamic import)_ |
+| `@/components/shaders/dream.Refractor` | _(dynamic import)_ |
+| `@/components/shaders/index` | _(dynamic import)_ |
+| `@/components/shared-dream/dream.InviteFlow` | _(dynamic import)_ |
+| `@/components/shared-dream/dream.SharedDreamCanvas` | _(dynamic import)_ |
+| `@/components/shared-dream/dream.SharedDreamProvider` | _(dynamic import)_ |
+| `@/components/shared-dream/index` | _(dynamic import)_ |
+| `@/components/spatial/dream.PixiPhysicsLayer` | _(dynamic import)_ |
+| `@/components/spatial/dream.ProfileSpace` | _(dynamic import)_ |
+| `@/components/spatial/dream.shell.EnhancedSpatialShell` | _(dynamic import)_ |
+| `@/components/three/dream.scene` | _(dynamic import)_ |
+| `@/components/three/index` | _(dynamic import)_ |
+| `@/components/ui/dream.AuthenticatedPageHeader` | _(dynamic import)_ |
+| `@/components/ui/dream.DreamWord` | _(dynamic import)_ |
+| `@/components/ui/dream.IconList` | _(dynamic import)_ |
+| `@/components/ui/dream.InfinityIcon` | _(dynamic import)_ |
+| `@/components/ui/dream.PlatformBadge` | _(dynamic import)_ |
+| `@/components/ui/dream.SheetIcon` | _(dynamic import)_ |
+| `@/components/ui/dream.SocialShareSheet` | _(dynamic import)_ |
+| `@/components/universal-editor/dream.UniversalEditor` | _(dynamic import)_ |
+| `@/components/universal-editor/dream.UniversalEditorWrapper` | _(dynamic import)_ |
+| `@/components/universal-editor/index` | _(dynamic import)_ |
+| `@/components/universal-editor/useTapHoldMove` | _(dynamic import)_ |
+| `@/components/universe/dream.node-cluster` | _(dynamic import)_ |
+| `@/components/universe/dream.shell.universe-shell` | _(dynamic import)_ |
+| `@/components/universe/dream.universe-card` | _(dynamic import)_ |
+| `@/components/universe/index` | _(dynamic import)_ |
+| `@/components/warp/dream.WarpCanvas` | _(dynamic import)_ |
+| `@/components/webgpu/dream.WebGPUShowcase` | _(dynamic import)_ |
+| `@/components/webgpu/neuralPostProcess` | _(dynamic import)_ |
+| `@/components/webgpu/renderer` | _(dynamic import)_ |
+| `@/components/webgpu/shaders` | _(dynamic import)_ |
+| `@/components/widgets/dream.AddDreamCTA` | _(dynamic import)_ |
+| `@/components/widgets/dream.ConfigureSheet` | _(dynamic import)_ |
+| `@/components/widgets/dream.EditModeBanner` | _(dynamic import)_ |
+| `@/components/widgets/dream.EditModeProvider` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.PlayMediaWidget` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.UniversalWidget` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.WidgetCard` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.WidgetLibrary` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.WidgetPlaceholder` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.WidgetShell` | _(dynamic import)_ |
+| `@/components/widgets/dream.widget.WidgetSurface` | _(dynamic import)_ |
+| `@/coresurfaces/dreamsurface.EditProfileDream` | _(dynamic import)_ |
+| `@/coresurfaces/dreamsurface.ViewProfile` | _(dynamic import)_ |
+| `@/daydreams/brand/page` | _(dynamic import)_ |
+| `@/daydreams/code/page` | _(dynamic import)_ |
+| `@/daydreams/create/page` | _(dynamic import)_ |
+| `@/daydreams/games/page` | _(dynamic import)_ |
+| `@/daydreams/lab/page` | _(dynamic import)_ |
+| `@/daydreams/music/page` | _(dynamic import)_ |
+
+## `src/engin/generated/systems.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/activeModulesStore` | _(dynamic import)_ |
+| `@/lib/activity/aqs` | _(dynamic import)_ |
+| `@/lib/activity/boogieActivityPolicy` | _(dynamic import)_ |
+| `@/lib/activity/revenueSplit` | _(dynamic import)_ |
+| `@/lib/activity/scoring` | _(dynamic import)_ |
+| `@/lib/activity/skipCredits` | _(dynamic import)_ |
+| `@/lib/activity/types` | _(dynamic import)_ |
+| `@/lib/activity/visibility-score` | _(dynamic import)_ |
+| `@/lib/adari` | _(dynamic import)_ |
+| `@/lib/admin/lockout` | _(dynamic import)_ |
+| `@/lib/admin/upgrade-readiness` | _(dynamic import)_ |
+| `@/lib/agentOS` | _(dynamic import)_ |
+| `@/lib/agentOS/hostTools` | _(dynamic import)_ |
+| `@/lib/agents/agentBus` | _(dynamic import)_ |
+| `@/lib/agents/boogieManAI` | _(dynamic import)_ |
+| `@/lib/agents/dreamengin` | _(dynamic import)_ |
+| `@/lib/agents/drEamsMode` | _(dynamic import)_ |
+| `@/lib/agents/idari` | _(dynamic import)_ |
+| `@/lib/agents/idariLoop` | _(dynamic import)_ |
+| `@/lib/agents/teachBus` | _(dynamic import)_ |
+| `@/lib/agents/uiActions` | _(dynamic import)_ |
+| `@/lib/ai/audit` | _(dynamic import)_ |
+| `@/lib/ai/boogie-policy` | _(dynamic import)_ |
+| `@/lib/ai/boogie-verifier` | _(dynamic import)_ |
+| `@/lib/ai/boogieman` | _(dynamic import)_ |
+| `@/lib/ai/capability-gate` | _(dynamic import)_ |
+| `@/lib/ai/CIC` | _(dynamic import)_ |
+| `@/lib/ai/confirm-token` | _(dynamic import)_ |
+| `@/lib/ai/confirm` | _(dynamic import)_ |
+| `@/lib/ai/groq` | _(dynamic import)_ |
+| `@/lib/ai/handlers/dreams` | _(dynamic import)_ |
+| `@/lib/ai/handlers/index` | _(dynamic import)_ |
+| `@/lib/ai/handlers/navigation` | _(dynamic import)_ |
+| `@/lib/ai/handlers/social` | _(dynamic import)_ |
+| `@/lib/ai/idempotency` | _(dynamic import)_ |
+| `@/lib/ai/rate-limiter` | _(dynamic import)_ |
+| `@/lib/ai/rateLimit` | _(dynamic import)_ |
+| `@/lib/ai/schemas` | _(dynamic import)_ |
+| `@/lib/ai/tfBackend` | _(dynamic import)_ |
+| `@/lib/ai/tool-router` | _(dynamic import)_ |
+| `@/lib/ai/triad` | _(dynamic import)_ |
+| `@/lib/api/route` | _(dynamic import)_ |
+| `@/lib/artifactStore` | _(dynamic import)_ |
+| `@/lib/assets/assetOptimizer` | _(dynamic import)_ |
+| `@/lib/assets/indexedDBStore` | _(dynamic import)_ |
+| `@/lib/audio-fingerprint/fingerprint` | _(dynamic import)_ |
+| `@/lib/audio-fingerprint/index` | _(dynamic import)_ |
+| `@/lib/audio-fingerprint/peak-map` | _(dynamic import)_ |
+| `@/lib/audio-fingerprint/stem-extractor` | _(dynamic import)_ |
+| `@/lib/audioFingerprint` | _(dynamic import)_ |
+| `@/lib/auth/nextRedirect` | _(dynamic import)_ |
+| `@/lib/babylon/createEngine` | _(dynamic import)_ |
+| `@/lib/babylon/dreamengine-hybrid` | _(dynamic import)_ |
+| `@/lib/bot-detection/detector` | _(dynamic import)_ |
+| `@/lib/bot-detection/index` | _(dynamic import)_ |
+| `@/lib/bot-detection/swipe-physics` | _(dynamic import)_ |
+| `@/lib/bot-detection/view-tally` | _(dynamic import)_ |
+| `@/lib/botDetection` | _(dynamic import)_ |
+| `@/lib/branding/logos` | _(dynamic import)_ |
+| `@/lib/child-safety/childSafetyDetector` | _(dynamic import)_ |
+| `@/lib/child-safety/imageClassifier` | _(dynamic import)_ |
+| `@/lib/child-safety/messageContextChecker` | _(dynamic import)_ |
+| `@/lib/child-safety/ncmecReporter` | _(dynamic import)_ |
+| `@/lib/child-safety/scanMediaUrls` | _(dynamic import)_ |
+| `@/lib/code/drEamsCodeAssist` | _(dynamic import)_ |
+| `@/lib/collaboration/index` | _(dynamic import)_ |
+| `@/lib/componentInventory` | _(dynamic import)_ |
+| `@/lib/composite/compositor` | _(dynamic import)_ |
+| `@/lib/composite/fxSimulation` | _(dynamic import)_ |
+| `@/lib/composite/matchmover` | _(dynamic import)_ |
+| `@/lib/composite/motionCapture` | _(dynamic import)_ |
+| `@/lib/composite/rotoscope` | _(dynamic import)_ |
+| `@/lib/consent/consentManager` | _(dynamic import)_ |
+| `@/lib/content/generativeFill` | _(dynamic import)_ |
+| `@/lib/content/publishIntent` | _(dynamic import)_ |
+| `@/lib/content/seoScorer` | _(dynamic import)_ |
+| `@/lib/content/transcriptEditor` | _(dynamic import)_ |
+| `@/lib/content/voiceClone` | _(dynamic import)_ |
+| `@/lib/data-transform` | _(dynamic import)_ |
+| `@/lib/daydream/useDaydreamPersistence` | _(dynamic import)_ |
+| `@/lib/daydream/useDaydreamState` | _(dynamic import)_ |
+| `@/lib/dev-bypass` | _(dynamic import)_ |
+| `@/lib/diff/aiEditEngine` | _(dynamic import)_ |
+| `@/lib/diff/diffUtils` | _(dynamic import)_ |
+| `@/lib/dream-docs/embed` | _(dynamic import)_ |
+| `@/lib/dream-docs/index` | _(dynamic import)_ |
+| `@/lib/dream-docs/search` | _(dynamic import)_ |
+| `@/lib/dream-window/connectionVerbs` | _(dynamic import)_ |
+| `@/lib/dream-window/DreamWindowLifecycle` | _(dynamic import)_ |
+| `@/lib/dream-window/enginConnectionNetwork` | _(dynamic import)_ |
+| `@/lib/dream-window/index` | _(dynamic import)_ |
+| `@/lib/dream-window/runtimeRegion` | _(dynamic import)_ |
+| `@/lib/dream-window/useDreamWindowActions` | _(dynamic import)_ |
+| `@/lib/dreamdm/barInteractions` | _(dynamic import)_ |
+| `@/lib/dreamdm/bridgeSeamFlow` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamBarContext` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMConversations` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMDraft` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMMessages` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamSearch` | _(dynamic import)_ |
+| `@/lib/dreamdm/useMessagingCore` | _(dynamic import)_ |
+| `@/lib/dreamdm/useModuleBarIntent` | _(dynamic import)_ |
+| `@/lib/dreamdm/useNotifications` | _(dynamic import)_ |
+| `@/lib/dreamengin/DrEamsAnimator` | _(dynamic import)_ |
+| `@/lib/dreamengin/drEamsSearch` | _(dynamic import)_ |
+| `@/lib/dreamengin/engineAssets` | _(dynamic import)_ |
+| `@/lib/dreamengin/osSubsystemManifest` | _(dynamic import)_ |
+| `@/lib/dreamenginOS/index` | _(dynamic import)_ |
+| `@/lib/dreamnav/delta` | _(dynamic import)_ |
+| `@/lib/dreamnav/gctAssist` | _(dynamic import)_ |
+| `@/lib/dreamnav/gestures6` | _(dynamic import)_ |
+| `@/lib/dreamnav/path` | _(dynamic import)_ |
+| `@/lib/dreamnav/tau` | _(dynamic import)_ |
+| `@/lib/dreamr/closeFriendsVisibility` | _(dynamic import)_ |
+| `@/lib/dreamr/feedCursor` | _(dynamic import)_ |
+| `@/lib/dreamr/socialHumanityScore` | _(dynamic import)_ |
+| `@/lib/dreamr/swipeCalibration` | _(dynamic import)_ |
+| `@/lib/dreamr/swipePersonalization` | _(dynamic import)_ |
+| `@/lib/dreamr/torridityLedger` | _(dynamic import)_ |
+| `@/lib/dreams/drag` | _(dynamic import)_ |
+| `@/lib/dreams/profileProjection` | _(dynamic import)_ |
+| `@/lib/dreams/types` | _(dynamic import)_ |
+| `@/lib/dreams/useDreamsRuntime` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginBaseState` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginCapabilities` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginEventBus` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginIOAdapter` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginRuleSetContract` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginRuntime` | _(dynamic import)_ |
+| `@/lib/engin-runtime/index` | _(dynamic import)_ |
+| `@/lib/engine/index` | _(dynamic import)_ |
+| `@/lib/enginpipe/artifact/manifest` | _(dynamic import)_ |
+| `@/lib/enginpipe/index` | _(dynamic import)_ |
+| `@/lib/enginpipe/quality/tiers` | _(dynamic import)_ |
+| `@/lib/enginpipe/telemetry/client` | _(dynamic import)_ |
+| `@/lib/enginpipe/telemetry/events` | _(dynamic import)_ |
+| `@/lib/engins/game/gameEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/game/index` | _(dynamic import)_ |
+| `@/lib/engins/game/useGameEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/useEnginWorkflow` | _(dynamic import)_ |
+| `@/lib/engins/workflowEngine` | _(dynamic import)_ |
+| `@/lib/event-bus/index` | _(dynamic import)_ |
+| `@/lib/eventBus` | _(dynamic import)_ |
+| `@/lib/feature-build/buildCycle` | _(dynamic import)_ |
+| `@/lib/feature-build/featureManifest` | _(dynamic import)_ |
+| `@/lib/feature-build/index` | _(dynamic import)_ |
+| `@/lib/feature-build/uiQualityCriteria` | _(dynamic import)_ |
+| `@/lib/feed/feedTopics` | _(dynamic import)_ |
+| `@/lib/feed/hashtags` | _(dynamic import)_ |
+| `@/lib/feed/useLiveFeed` | _(dynamic import)_ |
+| `@/lib/feed/useYouTubeLiveFeed` | _(dynamic import)_ |
+| `@/lib/feeds/embedFeedLoader` | _(dynamic import)_ |
+| `@/lib/forge-ngn/assembly` | _(dynamic import)_ |
+| `@/lib/forge-ngn/index` | _(dynamic import)_ |
+| `@/lib/forge-ngn/piece-registry` | _(dynamic import)_ |
+| `@/lib/forge/engineForge` | _(dynamic import)_ |
+| `@/lib/forge/forgeBuild` | _(dynamic import)_ |
+| `@/lib/forge/forgeIntelligence` | _(dynamic import)_ |
+| `@/lib/forge/forgeMomentum` | _(dynamic import)_ |
+| `@/lib/forge/forgeNexus` | _(dynamic import)_ |
+| `@/lib/forge/forgeRegistry` | _(dynamic import)_ |
+| `@/lib/forge/forgeRituals` | _(dynamic import)_ |
+| `@/lib/forge/useForgeActivity` | _(dynamic import)_ |
+| `@/lib/forge/useForgeBuild` | _(dynamic import)_ |
+| `@/lib/gameengin/accessibility-ai` | _(dynamic import)_ |
+| `@/lib/gameengin/ai-director` | _(dynamic import)_ |
+| `@/lib/gameengin/ai-npcs` | _(dynamic import)_ |
+| `@/lib/gameengin/brain-reader` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridge-manifest` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridge` | _(dynamic import)_ |
+| `@/lib/gameengin/cartridgeLoader` | _(dynamic import)_ |
+| `@/lib/gameengin/cloud-compute` | _(dynamic import)_ |
+| `@/lib/gameengin/control-mappings` | _(dynamic import)_ |
+| `@/lib/gameengin/core` | _(dynamic import)_ |
+| `@/lib/gameengin/dream-engine` | _(dynamic import)_ |
+| `@/lib/gameengin/dreamr-loader` | _(dynamic import)_ |
+| `@/lib/gameengin/gameEnginRuntime` | _(dynamic import)_ |
+| `@/lib/gameengin/generative-audio` | _(dynamic import)_ |
+| `@/lib/gameengin/index` | _(dynamic import)_ |
+| `@/lib/gameengin/neural-render` | _(dynamic import)_ |
+| `@/lib/gameengin/path-tracing` | _(dynamic import)_ |
+| `@/lib/gameengin/platform` | _(dynamic import)_ |
+| `@/lib/gameengin/post-fx` | _(dynamic import)_ |
+| `@/lib/gameengin/power-systems` | _(dynamic import)_ |
+| `@/lib/gameengin/predictive-stream` | _(dynamic import)_ |
+| `@/lib/gameengin/procgen` | _(dynamic import)_ |
+| `@/lib/gameengin/registerCartridges` | _(dynamic import)_ |
+| `@/lib/gameengin/remote/comboMachine` | _(dynamic import)_ |
+| `@/lib/gameengin/remote/index` | _(dynamic import)_ |
+| `@/lib/gameengin/remote/layout` | _(dynamic import)_ |
+| `@/lib/gameengin/remote/moves` | _(dynamic import)_ |
+| `@/lib/gameengin/remote/sprintDetector` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/ai` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/animation` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/assets` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/index` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/lod` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/network` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/physics` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/pooling` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/rendering` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/spatial` | _(dynamic import)_ |
+| `@/lib/gameengin/systems/world` | _(dynamic import)_ |
+| `@/lib/gameengin/unifiedLoop` | _(dynamic import)_ |
+| `@/lib/gameengin/useUnifiedLoop` | _(dynamic import)_ |
+| `@/lib/gameengin/webgpu-runtime-shell` | _(dynamic import)_ |
+| `@/lib/gameengin/world-crdt` | _(dynamic import)_ |
+| `@/lib/gameengin/xr` | _(dynamic import)_ |
+| `@/lib/games/avatar` | _(dynamic import)_ |
+| `@/lib/games/catalog` | _(dynamic import)_ |
+| `@/lib/games/DualSenseManager` | _(dynamic import)_ |
+| `@/lib/games/gameControllerButtons` | _(dynamic import)_ |
+| `@/lib/games/gameControllerLeft` | _(dynamic import)_ |
+| `@/lib/games/gameControllerRight` | _(dynamic import)_ |
+| `@/lib/games/hooks` | _(dynamic import)_ |
+| `@/lib/games/library-state` | _(dynamic import)_ |
+| `@/lib/games/lucid-avenue-world` | _(dynamic import)_ |
+| `@/lib/games/mobileControls` | _(dynamic import)_ |
+| `@/lib/games/navigation` | _(dynamic import)_ |
+| `@/lib/games/performance-baseline` | _(dynamic import)_ |
+| `@/lib/games/quality-plan` | _(dynamic import)_ |
+| `@/lib/games/useAIDirector` | _(dynamic import)_ |
+| `@/lib/games/useGameInputKeyboardBridge` | _(dynamic import)_ |
+| `@/lib/games/useGamepad` | _(dynamic import)_ |
+| `@/lib/games/useImmersiveGameLayout` | _(dynamic import)_ |
+| `@/lib/games/useRemoteChannel` | _(dynamic import)_ |
+| `@/lib/gct/anomaly-detection` | _(dynamic import)_ |
+| `@/lib/gct/audio-fingerprint` | _(dynamic import)_ |
+| `@/lib/gct/gct-engine` | _(dynamic import)_ |
+| `@/lib/gct/image-search` | _(dynamic import)_ |
+| `@/lib/gct/index` | _(dynamic import)_ |
+| `@/lib/gct/recommendations` | _(dynamic import)_ |
+| `@/lib/generationLaw` | _(dynamic import)_ |
+| `@/lib/gestures/touchGestures` | _(dynamic import)_ |
+| `@/lib/gestures/useTouchGestures` | _(dynamic import)_ |
+| `@/lib/god-tier/godTierEngine` | _(dynamic import)_ |
+| `@/lib/god-tier/useGodTier` | _(dynamic import)_ |
+| `@/lib/gsap/gsap` | _(dynamic import)_ |
+| `@/lib/gsap/useGsapEntrance` | _(dynamic import)_ |
+| `@/lib/gsap/useGsapFlip` | _(dynamic import)_ |
+| `@/lib/gsap/useGsapScrollReveal` | _(dynamic import)_ |
+| `@/lib/h265-encoder` | _(dynamic import)_ |
+| `@/lib/home-buttons/button-groups` | _(dynamic import)_ |
+| `@/lib/home-buttons/contextual-home` | _(dynamic import)_ |
+| `@/lib/icons/sheet` | _(dynamic import)_ |
+| `@/lib/identity/canonical-names` | _(dynamic import)_ |
+| `@/lib/intelligence/continuityHelpers` | _(dynamic import)_ |
+| `@/lib/intelligence/sessionContinuity` | _(dynamic import)_ |
+| `@/lib/intelligence/sessionPatternEngine` | _(dynamic import)_ |
+| `@/lib/intelligence/useSessionIntelligence` | _(dynamic import)_ |
+| `@/lib/journey/journeyDots` | _(dynamic import)_ |
+| `@/lib/journey/journeyInsights` | _(dynamic import)_ |
+| `@/lib/journey/withJourney` | _(dynamic import)_ |
+| `@/lib/ledger-data` | _(dynamic import)_ |
+| `@/lib/ledger` | _(dynamic import)_ |
+| `@/lib/marketplace/listings` | _(dynamic import)_ |
+| `@/lib/marketplace/request` | _(dynamic import)_ |
+| `@/lib/media/ledger` | _(dynamic import)_ |
+| `@/lib/media/postMedia` | _(dynamic import)_ |
+| `@/lib/music/presets` | _(dynamic import)_ |
+| `@/lib/music/starmaker` | _(dynamic import)_ |
+| `@/lib/music/starmakerArrangement` | _(dynamic import)_ |
+| `@/lib/music/starmakerDaw` | _(dynamic import)_ |
+| `@/lib/music/wasmAudioBridge` | _(dynamic import)_ |
+| `@/lib/navigation/anchorField` | _(dynamic import)_ |
+| `@/lib/navigation/AnchorStateBuffer` | _(dynamic import)_ |
+| `@/lib/navigation/AnchorWidgetStorage` | _(dynamic import)_ |
+| `@/lib/navigation/dream-state` | _(dynamic import)_ |
+| `@/lib/navigation/GestureFrameComputer` | _(dynamic import)_ |
+| `@/lib/navigation/GestureIntentResolver` | _(dynamic import)_ |
+| `@/lib/navigation/index` | _(dynamic import)_ |
+| `@/lib/navigation/manifold` | _(dynamic import)_ |
+| `@/lib/navigation/NavStateBuffer` | _(dynamic import)_ |
+| `@/lib/navigation/physics` | _(dynamic import)_ |
+| `@/lib/navigation/PointerEventCapture` | _(dynamic import)_ |
+| `@/lib/navigation/quaternion` | _(dynamic import)_ |
+| `@/lib/navigation/ReturnStack` | _(dynamic import)_ |
+| `@/lib/navigation/SpatialNavigationEngine` | _(dynamic import)_ |
+| `@/lib/navigation/StructureLedger` | _(dynamic import)_ |
+| `@/lib/navigation/TransformSolver` | _(dynamic import)_ |
+| `@/lib/navigation/useNavigation` | _(dynamic import)_ |
+| `@/lib/navigation/WidgetInstanceMemory` | _(dynamic import)_ |
+| `@/lib/notifications/notificationHelpers` | _(dynamic import)_ |
+| `@/lib/notifications/useNotifications` | _(dynamic import)_ |
+| `@/lib/observability/collector` | _(dynamic import)_ |
+| `@/lib/observability/correlator` | _(dynamic import)_ |
+| `@/lib/observability/healthTrend` | _(dynamic import)_ |
+| `@/lib/observability/immediateAction` | _(dynamic import)_ |
+| `@/lib/observability/index` | _(dynamic import)_ |
+| `@/lib/observability/otel` | _(dynamic import)_ |
+| `@/lib/observability/otelBridge` | _(dynamic import)_ |
+| `@/lib/observability/rootCauseAnalyzer` | _(dynamic import)_ |
+| `@/lib/offline/offlineCache` | _(dynamic import)_ |
+| `@/lib/offline/useOfflineSync` | _(dynamic import)_ |
+| `@/lib/optimizer/babylon-optimizero` | _(dynamic import)_ |
+| `@/lib/optimizer/constraint-solver` | _(dynamic import)_ |
+| `@/lib/optimizer/creative-optimizero` | _(dynamic import)_ |
+| `@/lib/optimizer/creative-validator` | _(dynamic import)_ |
+| `@/lib/optimizer/index` | _(dynamic import)_ |
+| `@/lib/optimizer/types` | _(dynamic import)_ |
+| `@/lib/panels/panelTypes` | _(dynamic import)_ |
+| `@/lib/platform/index` | _(dynamic import)_ |
+| `@/lib/platform/lab` | _(dynamic import)_ |
+| `@/lib/policy/boogiePolicy` | _(dynamic import)_ |
+| `@/lib/renderer/Canvas2DRenderer` | _(dynamic import)_ |
+| `@/lib/renderer/FrustumCuller` | _(dynamic import)_ |
+| `@/lib/renderer/index` | _(dynamic import)_ |
+| `@/lib/renderer/IRenderer` | _(dynamic import)_ |
+| `@/lib/routing/surfaces` | _(dynamic import)_ |
+| `@/lib/runtime/channelMetrics` | _(dynamic import)_ |
+| `@/lib/runtime/coercionTable` | _(dynamic import)_ |
+| `@/lib/runtime/dreamOSBus` | _(dynamic import)_ |
+| `@/lib/runtime/dropTargetRegistry` | _(dynamic import)_ |
+| `@/lib/runtime/dualRuntime` | _(dynamic import)_ |
+| `@/lib/runtime/dualRuntimeBridge` | _(dynamic import)_ |
+| `@/lib/runtime/EnginDispatcher` | _(dynamic import)_ |
+| `@/lib/runtime/enginWorkflowRegistry` | _(dynamic import)_ |
+| `@/lib/runtime/instanceManager` | _(dynamic import)_ |
+| `@/lib/runtime/isAuthRelatedError` | _(dynamic import)_ |
+| `@/lib/runtime/madMaxiSnapshotBridge` | _(dynamic import)_ |
+| `@/lib/runtime/memory` | _(dynamic import)_ |
+| `@/lib/runtime/moduleRegistry` | _(dynamic import)_ |
+| `@/lib/runtime/offlineQueue` | _(dynamic import)_ |
+| `@/lib/runtime/quantumCircuit` | _(dynamic import)_ |
+| `@/lib/runtime/runtimeChannel` | _(dynamic import)_ |
+| `@/lib/runtime/runtimeContainer` | _(dynamic import)_ |
+| `@/lib/runtime/seamClipboard` | _(dynamic import)_ |
+| `@/lib/runtime/sharedResourcePool` | _(dynamic import)_ |
+| `@/lib/runtime/snapshotFingerprint` | _(dynamic import)_ |
+| `@/lib/runtime/swapManager` | _(dynamic import)_ |
+| `@/lib/runtime/useDragSurface` | _(dynamic import)_ |
+| `@/lib/runtime/useDualRuntime` | _(dynamic import)_ |
+| `@/lib/runtime/useDualRuntimePersistence` | _(dynamic import)_ |
+| `@/lib/runtime/useEnginBridge` | _(dynamic import)_ |
+| `@/lib/runtime/useEnginCoopSync` | _(dynamic import)_ |
+| `@/lib/runtime/useSharedEnginChannel` | _(dynamic import)_ |
+| `@/lib/scene/sceneState` | _(dynamic import)_ |
+| `@/lib/setup/checks` | _(dynamic import)_ |
+| `@/lib/sharedDream` | _(dynamic import)_ |
+| `@/lib/shop/listings` | _(dynamic import)_ |
+| `@/lib/slog` | _(dynamic import)_ |
+| `@/lib/social-feed` | _(dynamic import)_ |
+| `@/lib/social/crossPost` | _(dynamic import)_ |
+| `@/lib/social/platforms` | _(dynamic import)_ |
+| `@/lib/social/rss-feed` | _(dynamic import)_ |
+| `@/lib/supabase/client` | _(dynamic import)_ |
+| `@/lib/supabase/config` | _(dynamic import)_ |
+| `@/lib/supabase/realtime` | _(dynamic import)_ |
+| `@/lib/supabase/safeGetUser` | _(dynamic import)_ |
+| `@/lib/supabase/server` | _(dynamic import)_ |
+| `@/lib/supabase/vector` | _(dynamic import)_ |
+| `@/lib/torridity` | _(dynamic import)_ |
+| `@/lib/torridity/constants` | _(dynamic import)_ |
+| `@/lib/torridity/index` | _(dynamic import)_ |
+| `@/lib/torridity/physics` | _(dynamic import)_ |
+| `@/lib/ui/responsive` | _(dynamic import)_ |
+| `@/lib/ui/runtimeViewport` | _(dynamic import)_ |
+| `@/lib/ui/skin-engine` | _(dynamic import)_ |
+| `@/lib/ui/theme-engine` | _(dynamic import)_ |
+| `@/lib/ui/theme` | _(dynamic import)_ |
+| `@/lib/universal-editor/module-manifest` | _(dynamic import)_ |
+| `@/lib/universalEditor` | _(dynamic import)_ |
+| `@/lib/user-sim/userSimAgent` | _(dynamic import)_ |
+| `@/lib/utils` | _(dynamic import)_ |
+| `@/lib/vm/bufferManager` | _(dynamic import)_ |
+| `@/lib/vm/bus-events` | _(dynamic import)_ |
+| `@/lib/vm/dual-runtime` | _(dynamic import)_ |
+| `@/lib/vm/dualVMCoordinator` | _(dynamic import)_ |
+| `@/lib/vm/index` | _(dynamic import)_ |
+| `@/lib/vm/inter-vm-messaging` | _(dynamic import)_ |
+| `@/lib/vm/pipelineCache` | _(dynamic import)_ |
+| `@/lib/vm/resource-quota` | _(dynamic import)_ |
+| `@/lib/vm/security` | _(dynamic import)_ |
+| `@/lib/vm/snapshot` | _(dynamic import)_ |
+| `@/lib/vm/types` | _(dynamic import)_ |
+| `@/lib/vm/wasm-features` | _(dynamic import)_ |
+| `@/lib/vm/wasmGpuVM` | _(dynamic import)_ |
+| `@/lib/warp/useWarp` | _(dynamic import)_ |
+| `@/lib/warp/warpEngine` | _(dynamic import)_ |
+| `@/lib/webgpu` | _(dynamic import)_ |
+| `@/lib/webgpu/adaptiveQuality` | _(dynamic import)_ |
+| `@/lib/webgpu/director` | _(dynamic import)_ |
+| `@/lib/webgpu/useWebGPUDirector` | _(dynamic import)_ |
+| `@/lib/widgets/CrossWidgetPosting` | _(dynamic import)_ |
+| `@/lib/widgets/feed-resolver` | _(dynamic import)_ |
+| `@/lib/widgets/parse` | _(dynamic import)_ |
+| `@/lib/widgets/parseConfig` | _(dynamic import)_ |
+| `@/lib/widgets/useWidget` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetBus` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetEventBus` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetLinkGraph` | _(dynamic import)_ |
+| `@/lib/widgets/widgetRegistry` | _(dynamic import)_ |
+
+## `src/launcher.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core/GameEnginCore` | `GameConfig`, `GameEnginConfigError`, `GameEnginCore` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/src/launcher` | `launch` |
+
+## `tailwindcss-animate.d.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `tailwindcss` | _(dynamic import)_ |
+
+## `types/ai-system.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `types/dream-window.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window/DreamWindowLifecycle` | `DestinationRule`, `DreamWindowConfig`, `DreamWindowPosition`, `DreamWindowSize`, `DreamWindowState` |
+
+## `types/user-sim.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `vitest.config.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `vitest/config` | `defineConfig` |
+
+---
+
+<a name="dynamic-imports"></a>
+
+# Dynamic Imports
+
+## `.github/scripts/issue-bot.js`
+
+- `./HeavyComponent`
+
+## `app/api/ai/boogieman/child-safety/route.ts`
+
+- `@/lib/child-safety/imageClassifier`
+
+## `app/daydream/analytics/page.tsx`
+
+- `@/engins/dream.panel.AnalyticsEngin`
+
+## `app/daydream/games/page.tsx`
+
+- `@/engins/engin.GameEngin`
+
+## `app/daydream/lab/page.tsx`
+
+- `@/engins/engin.LabEngin`
+
+## `app/daydream/music/page.tsx`
+
+- `@/engins/engin.StarMakerEngin`
+
+## `app/dream-effects/page.tsx`
+
+- `@/components/three/dream.scene`
+
+## `app/page.tsx`
+
+- `@/components/dream.LandingHero`
+- `@/components/landing/dream.LandingNav`
+- `@/components/landing/dream.scene.UniverseField`
+
+## `components/daydream/dream.DiffViewer.tsx`
+
+- `@/lib/diff/diffUtils`
+
+## `components/dream.AudioVisualizer3D.tsx`
+
+- `@babylonjs/core`
+
+## `components/dream.ForgeDreamCanvas.tsx`
+
+- `../lib/supabase/client`
+
+## `components/dream.GlobalOverlays.tsx`
+
+- `@/components/customize/dream.GlobalCustomizeUI`
+- `@/components/dreams/dream.GlobalDragLayer`
+- `@/components/dreams/dream.PlatformErrorReporter`
+- `@/components/dream.KonamiDream`
+
+## `components/dreamengin/dream.DREAMenginOS.tsx`
+
+- `@babylonjs/core`
+- `@babylonjs/havok`
+
+## `components/dreamengin/dream.scene.BabylonGameScene.tsx`
+
+- `@babylonjs/core`
+- `@/lib/god-tier/godTierEngine`
+- `@/lib/webgpu/director`
+
+## `components/dreamengin/dream.scene.DrEamsScene.tsx`
+
+- `@babylonjs/core`
+
+## `components/games/dream.EchoArena.tsx`
+
+- `@babylonjs/core/Engines`
+
+## `components/games/dream.GamesHub.tsx`
+
+- `@/components/games/dream.BabylonSideScroller`
+- `@/components/games/dream.NeonDrift`
+- `@/components/games/dream.EchoArena`
+- `@/components/games/dream.NullCathedral`
+- `@/components/games/dream.VoidlineGP`
+- `@/components/games/dream.SerpentSiege`
+- `@/components/games/dream.AvenueOfMirrors`
+- `@/components/games/dream.EnginFracture`
+- `@/components/games/dream.Glassfall`
+- `@/components/games/dream.NiteFlyerSolarHymn`
+- `@/components/games/dream.LexiconSolitaire`
+- `@/components/games/dream.DefuseRitual`
+
+## `components/games/madmaxi/dream.MadmaxiGame.tsx`
+
+- `@babylonjs/core`
+
+## `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx`
+
+- `@babylonjs/core`
+
+## `daydreams/games/page.tsx`
+
+- `@/engins/engin.GameEngin`
+
+## `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+
+- `@/lib/supabase/client`
+
+## `engins/engin.CodeEngin.tsx`
+
+- `@supabase/supabase-js`
+
+## `engins/engin.ContentEngin.tsx`
+
+- `@/lib/content/transcriptEditor`
+- `@/lib/content/seoScorer`
+
+## `engins/engin.GameEngin.tsx`
+
+- `@babylonjs/core`
+
+## `lib/agentOS/hostTools.ts`
+
+- `fs/promises`
+
+## `lib/agents/agentBus.ts`
+
+- `@/lib/ai/schemas`
+- `@/lib/ai/triad`
+
+## `lib/ai/tfBackend.ts`
+
+- `@tensorflow/tfjs-backend-webgpu`
+- `@tensorflow/tfjs`
+
+## `lib/babylon/createEngine.ts`
+
+- `@babylonjs/core`
+
+## `lib/child-safety/childSafetyDetector.ts`
+
+- `./imageClassifier`
+
+## `lib/collaboration/index.ts`
+
+- `@supabase/supabase-js`
+
+## `lib/consent/consentManager.ts`
+
+- `@/lib/supabase/client`
+
+## `lib/dreamenginOS/index.ts`
+
+- `../ledger`
+- `../eventBus`
+
+## `lib/dreamr/closeFriendsVisibility.ts`
+
+- `@/lib/supabase/server`
+
+## `lib/forge/useForgeBuild.ts`
+
+- `@/lib/forge/forgeBuild`
+
+## `lib/gameengin/ai-director.ts`
+
+- `@tensorflow/tfjs`
+- `@tensorflow/tfjs-backend-webgpu`
+
+## `lib/gameengin/cartridges/loaders.ts`
+
+- `@/components/games/dream.BabylonSideScroller`
+- `@/components/games/dream.NeonDrift`
+- `@/components/games/dream.EchoArena`
+- `@/components/games/dream.NullCathedral`
+- `@/components/games/dream.VoidlineGP`
+- `@/components/games/dream.SerpentSiege`
+- `@/components/games/dream.AvenueOfMirrors`
+- `@/components/games/dream.EnginFracture`
+- `@/components/games/dream.Glassfall`
+- `@/components/games/dream.NiteFlyerSolarHymn`
+- `@/components/games/dream.LexiconSolitaire`
+- `@/components/games/dream.DefuseRitual`
+
+## `lib/gameengin/cartridges/reactCartridge.ts`
+
+- `./MyGame`
+
+## `lib/gameengin/core.ts`
+
+- `@/lib/babylon/createEngine`
+- `@babylonjs/core`
+
+## `lib/gameengin/post-fx.ts`
+
+- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline`
+- `@babylonjs/core`
+- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline`
+- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline`
+- `@babylonjs/core/Layers/glowLayer`
+
+## `lib/gsap/gsap.ts`
+
+- `gsap`
+
+## `lib/intelligence/sessionPatternEngine.ts`
+
+- `@tensorflow/tfjs`
+- `@tensorflow/tfjs-backend-webgpu`
+
+## `lib/observability/collector.ts`
+
+- `./otelBridge`
+
+## `lib/renderer/index.ts`
+
+- `./Canvas2DRenderer`
+
+## `lib/runtime/dualRuntimeBridge.ts`
+
+- `@/lib/vm/wasmGpuVM`
+
+## `lib/runtime/instanceManager.ts`
+
+- `@/lib/supabase/client`
+
+## `lib/runtime/runtimeChannel.ts`
+
+- `@supabase/supabase-js`
+
+## `lib/vm/wasmGpuVM.ts`
+
+- `./types`
+
+## `next.config.mjs`
+
+- `next`
+
+## `src/engin/core/index.ts`
+
+- `@/lib/ai/capability-gate`
+- `@/lib/ai/confirm-token`
+- `@/lib/ai/rate-limiter`
+- `@/lib/ai/idempotency`
+- `@/lib/agents/boogieManAI`
+- `@/build-memory/registry.json`
+- `../generated/index`
+
+## `src/engin/generated/brain.ts`
+
+- `@/lib/gameengin/brain/active-projects.json`
+- `@/lib/gameengin/brain/character-voices/mad-maxi.json`
+- `@/lib/gameengin/brain/composition-principles/leading-lines-landmark.json`
+- `@/lib/gameengin/brain/composition-principles/parallax-layers.json`
+- `@/lib/gameengin/brain/concept-library/neon-courier.json`
+- `@/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json`
+- `@/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json`
+- `@/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json`
+- `@/lib/gameengin/brain/dialogue-patterns/callback-anchor.json`
+- `@/lib/gameengin/brain/dialogue-patterns/implied-subject.json`
+- `@/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json`
+- `@/lib/gameengin/brain/emotional-tones/determined.json`
+- `@/lib/gameengin/brain/emotional-tones/fierce.json`
+- `@/lib/gameengin/brain/emotional-tones/hopeful.json`
+- `@/lib/gameengin/brain/emotional-tones/reflective.json`
+- `@/lib/gameengin/brain/emotional-tones/weary.json`
+- `@/lib/gameengin/brain/fun-heuristics/meta-progression.json`
+- `@/lib/gameengin/brain/fun-heuristics/moment-to-moment.json`
+- `@/lib/gameengin/brain/fun-heuristics/session-loop.json`
+- `@/lib/gameengin/brain/genre-dna/action-rpg.json`
+- `@/lib/gameengin/brain/genre-dna/episodic.json`
+- `@/lib/gameengin/brain/genre-dna/live-service.json`
+- `@/lib/gameengin/brain/genre-dna/metroidvania.json`
+- `@/lib/gameengin/brain/genre-dna/open-world.json`
+- `@/lib/gameengin/brain/genre-dna/platformer.json`
+- `@/lib/gameengin/brain/genre-dna/puzzle.json`
+- `@/lib/gameengin/brain/genre-dna/racing.json`
+- `@/lib/gameengin/brain/genre-dna/roguelike.json`
+- `@/lib/gameengin/brain/genre-dna/sandbox.json`
+- `@/lib/gameengin/brain/genre-dna/template.json`
+- `@/lib/gameengin/brain/inspiration-corpus/celeste.json`
+- `@/lib/gameengin/brain/inspiration-corpus/dead-cells.json`
+- `@/lib/gameengin/brain/inspiration-corpus/hades.json`
+- `@/lib/gameengin/brain/inspiration-corpus/hollow-knight.json`
+- `@/lib/gameengin/brain/inspiration-corpus/outer-wilds.json`
+- `@/lib/gameengin/brain/material-recipes/neon-glass-tube.json`
+- `@/lib/gameengin/brain/material-recipes/rusted-iron.json`
+- `@/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json`
+- `@/lib/gameengin/brain/mechanic-library/camera/look-ahead.json`
+- `@/lib/gameengin/brain/mechanic-library/camera/screen-shake.json`
+- `@/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json`
+- `@/lib/gameengin/brain/mechanic-library/combat/combo.json`
+- `@/lib/gameengin/brain/mechanic-library/combat/hit-stop.json`
+- `@/lib/gameengin/brain/mechanic-library/combat/parry.json`
+- `@/lib/gameengin/brain/mechanic-library/combat/ranged.json`
+- `@/lib/gameengin/brain/mechanic-library/movement/coyote-time.json`
+- `@/lib/gameengin/brain/mechanic-library/movement/dash.json`
+- `@/lib/gameengin/brain/mechanic-library/movement/double-jump.json`
+- `@/lib/gameengin/brain/mechanic-library/movement/grapple.json`
+- `@/lib/gameengin/brain/mechanic-library/movement/wall-slide.json`
+- `@/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json`
+- `@/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json`
+- `@/lib/gameengin/brain/mechanic-library/progression/skill-tree.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/ability-gating.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/meta-progression.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/run-persistence.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/season-pass.json`
+- `@/lib/gameengin/brain/mechanic-library/structural/world-streaming.json`
+- `@/lib/gameengin/brain/narrative-pacing/default.json`
+- `@/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json`
+- `@/lib/gameengin/brain/originality-registry/signatures.json`
+- `@/lib/gameengin/brain/technique-library/lighting/three-point-mood.json`
+- `@/lib/gameengin/brain/technique-library/modeling/edge-flow.json`
+- `@/lib/gameengin/brain/technique-library/modeling/silhouette-first.json`
+- `@/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json`
+- `@/lib/gameengin/brain/upgrade-history/prioritization-rules.json`
+
+## `src/engin/generated/cartridges.ts`
+
+- `@/lib/gameengin/cartridges/index`
+- `@/lib/gameengin/cartridges/loaders`
+- `@/lib/gameengin/cartridges/manifest`
+- `@/lib/gameengin/cartridges/reactCartridge`
+- `@/public/cartridges/mad-maxi/MANIFEST.json`
+
+## `src/engin/generated/connectors.ts`
+
+- `@/lib/connectors/connectorRegistry`
+- `@/lib/connectors/deliveryStrategy`
+- `@/lib/connectors/installFlow`
+- `@/lib/connectors/normalise`
+- `@/lib/connectors/providers/bluesky`
+- `@/lib/connectors/providers/devto`
+- `@/lib/connectors/providers/facebook`
+- `@/lib/connectors/providers/github`
+- `@/lib/connectors/providers/hackernews`
+- `@/lib/connectors/providers/instagram`
+- `@/lib/connectors/providers/mastodon`
+- `@/lib/connectors/providers/medium`
+- `@/lib/connectors/providers/nostr`
+- `@/lib/connectors/providers/pinterest`
+- `@/lib/connectors/providers/podcast`
+- `@/lib/connectors/providers/reddit`
+- `@/lib/connectors/providers/shellhub`
+- `@/lib/connectors/providers/substack`
+- `@/lib/connectors/providers/tiktok`
+- `@/lib/connectors/providers/tumblr`
+- `@/lib/connectors/providers/twitter`
+- `@/lib/connectors/providers/youtube`
+- `@/lib/connectors/reconcile`
+- `@/lib/connectors/syncDispatch`
+- `@/lib/connectors/webhookVerification`
+- `@/lib/connectors/youtube`
+
+## `src/engin/generated/hooks.ts`
+
+- `@/hooks/use-spatial`
+- `@/hooks/useAccount`
+- `@/hooks/useConnectorInstallFlow`
+- `@/hooks/useDreamLayout`
+- `@/hooks/useHideOnScroll`
+- `@/hooks/useSharedDream`
+- `@/hooks/useTapHoldMove`
+- `@/hooks/useTick`
+- `@/hooks/useViewCounter`
+- `@/lib/hooks/useMotionTilt`
+- `@/lib/hooks/useResponsive`
+- `@/lib/hooks/useTap`
+
+## `src/engin/generated/rulesets.ts`
+
+- `@/engins/autoopen/dream.AutoOpenGameEngin`
+- `@/engins/CodeEngin/core/parser`
+- `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel`
+- `@/engins/CodeEngin/modules/ai-co-pilot/index`
+- `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
+- `@/engins/CodeEngin/orchestrator/dream.index`
+- `@/engins/dream.ForgeEngin`
+- `@/engins/dream.panel.AnalyticsEngin`
+- `@/engins/dream.QuantumCircuitCanvas`
+- `@/engins/engin.BrandingEngin`
+- `@/engins/engin.CodeEngin`
+- `@/engins/engin.ContentEngin`
+- `@/engins/engin.GameEngin`
+- `@/engins/engin.LabEngin`
+- `@/engins/engin.StarMakerEngin`
+- `@/engins/portfolio/dream.PortfolioEngin`
+- `@/src/dream/rulesets/codeengin/index`
+- `@/src/dream/rulesets/dreamsengin/index`
+- `@/src/dream/rulesets/forgengn/index`
+- `@/src/dream/rulesets/gameengin/index`
+- `@/src/dream/rulesets/homedream/dream.homedream.constants`
+- `@/src/dream/rulesets/homedream/dream.homedream.physics`
+- `@/src/dream/rulesets/homedream/dream.homedream.transforms`
+- `@/src/dream/rulesets/homedream/index`
+- `@/src/dream/rulesets/labengin/index`
+- `@/src/dream/rulesets/starmakerengin/index`
+
+## `src/engin/generated/surfaces.ts`
+
+- `@/app/(internal)/idari-console/page`
+- `@/app/(internal)/idari-console/platform-errors/page`
+- `@/app/(internal)/idari-console/platform-health/page`
+- `@/app/about/page`
+- `@/app/actions/dream-docs`
+- `@/app/ads/create/page`
+- `@/app/ads/page`
+- `@/app/ads/slot/[id]/page`
+- `@/app/api/account/delete-data/route`
+- `@/app/api/account/delete-dream/route`
+- `@/app/api/account/export-data/route`
+- `@/app/api/activity/track/route`
+- `@/app/api/admin/ai-chat/route`
+- `@/app/api/admin/ai-request/route`
+- `@/app/api/admin/child-safety/route`
+- `@/app/api/admin/code-files/route`
+- `@/app/api/admin/observability/route`
+- `@/app/api/ads/orders/route`
+- `@/app/api/ads/view/route`
+- `@/app/api/agent/session/route`
+- `@/app/api/ai/boogieman/child-safety/route`
+- `@/app/api/ai/boogieman/privacy-event/route`
+- `@/app/api/ai/boogieman/route`
+- `@/app/api/ai/boogieman/status/route`
+- `@/app/api/ai/eams/route`
+- `@/app/api/ai/execute/route`
+- `@/app/api/ai/idari/route`
+- `@/app/api/appeal/route`
+- `@/app/api/auth/logout/route`
+- `@/app/api/auth/providers/route`
+- `@/app/api/blocks/route`
+- `@/app/api/ci/run/route`
+- `@/app/api/close-friends/route`
+- `@/app/api/comments/route`
+- `@/app/api/connectors/[provider]/connect/route`
+- `@/app/api/connectors/[provider]/disconnect/route`
+- `@/app/api/connectors/[provider]/items/route`
+- `@/app/api/connectors/[provider]/sync/route`
+- `@/app/api/connectors/[provider]/verify/route`
+- `@/app/api/connectors/cron/route`
+- `@/app/api/connectors/instagram/oauth/callback/route`
+- `@/app/api/connectors/instagram/oauth/start/route`
+- `@/app/api/connectors/status/route`
+- `@/app/api/connectors/webhooks/[provider]/route`
+- `@/app/api/connectors/youtube/oauth/callback/route`
+- `@/app/api/connectors/youtube/oauth/start/route`
+- `@/app/api/content/generative-fill/route`
+- `@/app/api/content/intelligence/route`
+- `@/app/api/content/transcribe/route`
+- `@/app/api/content/voice-clone/route`
+- `@/app/api/dr-eams/hf/route`
+- `@/app/api/dr-eams/run/route`
+- `@/app/api/drafts/[id]/route`
+- `@/app/api/drafts/route`
+- `@/app/api/dream-windows/[id]/route`
+- `@/app/api/dream-windows/route`
+- `@/app/api/dreamengin/os-status/route`
+- `@/app/api/dreamr/feed/route`
+- `@/app/api/dreamr/suggested/route`
+- `@/app/api/dreams/feed/route`
+- `@/app/api/dreams/instances/route`
+- `@/app/api/dreams/transfer/route`
+- `@/app/api/embed-feed/route`
+- `@/app/api/favorites/route`
+- `@/app/api/feed/route`
+- `@/app/api/follow/route`
+- `@/app/api/forge/build/route`
+- `@/app/api/gal/route`
+- `@/app/api/game-scores/route`
+- `@/app/api/gameengin/crash-report/route`
+- `@/app/api/health/route`
+- `@/app/api/home-layout/route`
+- `@/app/api/journey/route`
+- `@/app/api/lab/benchmarks/route`
+- `@/app/api/ledger-media/route`
+- `@/app/api/likes/route`
+- `@/app/api/marketplace/request/route`
+- `@/app/api/marketplace/route`
+- `@/app/api/messages/boards/route`
+- `@/app/api/messages/route`
+- `@/app/api/metrics/platform/route`
+- `@/app/api/metrics/route`
+- `@/app/api/metrics/user/[userId]/route`
+- `@/app/api/music/route`
+- `@/app/api/notifications/route`
+- `@/app/api/platform/errors/route`
+- `@/app/api/posts/[id]/route`
+- `@/app/api/posts/[id]/save/route`
+- `@/app/api/posts/[id]/view/route`
+- `@/app/api/posts/profile/[userId]/route`
+- `@/app/api/posts/route`
+- `@/app/api/profile/route`
+- `@/app/api/projects/route`
+- `@/app/api/scheduled-posts/route`
+- `@/app/api/security/scan/route`
+- `@/app/api/settings/appearance/route`
+- `@/app/api/settings/feed/route`
+- `@/app/api/settings/notifications/route`
+- `@/app/api/settings/privacy/route`
+- `@/app/api/setup/check/route`
+- `@/app/api/setup/google-oauth/route`
+- `@/app/api/shellhub/devices/route`
+- `@/app/api/shop/route`
+- `@/app/api/skip-credits/balance/route`
+- `@/app/api/skip-credits/earn/route`
+- `@/app/api/skip-credits/use/route`
+- `@/app/api/social/rss-feed/route`
+- `@/app/api/upload/route`
+- `@/app/api/user/layout/route`
+- `@/app/api/views/track/route`
+- `@/app/api/widgets/feed/route`
+- `@/app/api/widgets/instances/route`
+- `@/app/api/youtube/channel/route`
+- `@/app/api/youtube/discovery/route`
+- `@/app/api/youtube/live-feed/route`
+- `@/app/auth/callback/route`
+- `@/app/auth/reset-password/page`
+- `@/app/auth/update-password/page`
+- `@/app/connectors/dream.ConnectorsClient`
+- `@/app/connectors/page`
+- `@/app/daydream/analytics/page`
+- `@/app/daydream/brand/engin/page`
+- `@/app/daydream/brand/page`
+- `@/app/daydream/code/engin/page`
+- `@/app/daydream/code/page`
+- `@/app/daydream/constellation/dream.ConstellationClient`
+- `@/app/daydream/constellation/page`
+- `@/app/daydream/create/engin/page`
+- `@/app/daydream/create/page`
+- `@/app/daydream/forge/page`
+- `@/app/daydream/game/dream.GamePageClient`
+- `@/app/daydream/game/dream.shell.ImmersiveGameShell`
+- `@/app/daydream/game/page`
+- `@/app/daydream/games/engin/page`
+- `@/app/daydream/games/page`
+- `@/app/daydream/lab/engin/page`
+- `@/app/daydream/lab/page`
+- `@/app/daydream/lab/portfolio/page`
+- `@/app/daydream/media-vault/page`
+- `@/app/daydream/music/engin/page`
+- `@/app/daydream/music/page`
+- `@/app/daydream/music/upload/page`
+- `@/app/daydream/play/page`
+- `@/app/discover/page`
+- `@/app/dream-effects/page`
+- `@/app/dreamdmbar/_components/DreamBarDataBridge`
+- `@/app/dreamdmbar/_components/dreamr/algorithms/botDetector`
+- `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
+- `@/app/dreamdmbar/_components/dreamr/api/route`
+- `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
+- `@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed`
+- `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
+- `@/app/dreamdmbar/_components/DreamSpaceRegion`
+- `@/app/dreamdmbar/_components/DreamWidgetGrid`
+- `@/app/dreamdmbar/_components/HomeDreamRegion`
+- `@/app/dreamdmbar/dreamspace/page`
+- `@/app/dreamdmbar/dualruntime/page`
+- `@/app/dreamdmbar/homedream/page`
+- `@/app/dreamdmbar/layout`
+- `@/app/dreamdmbar/page`
+- `@/app/dreamr/page`
+- `@/app/dreamspace/page`
+- `@/app/edit-profiledream/page`
+- `@/app/engines/brand/campaigns/page`
+- `@/app/engines/brand/identity/page`
+- `@/app/engines/brand/layout`
+- `@/app/engines/brand/page`
+- `@/app/engines/code/ai/page`
+- `@/app/engines/code/layout`
+- `@/app/engines/code/notebook/page`
+- `@/app/engines/code/page`
+- `@/app/engines/code/projects/page`
+- `@/app/engines/create/calendar/page`
+- `@/app/engines/create/editor/page`
+- `@/app/engines/create/layout`
+- `@/app/engines/create/page`
+- `@/app/engines/create/queue/page`
+- `@/app/engines/games/builder/page`
+- `@/app/engines/games/layout`
+- `@/app/engines/games/library/page`
+- `@/app/engines/games/page`
+- `@/app/engines/games/scores/page`
+- `@/app/engines/lab/data/page`
+- `@/app/engines/lab/experiments/page`
+- `@/app/engines/lab/layout`
+- `@/app/engines/lab/page`
+- `@/app/engines/lab/quantum/page`
+- `@/app/engines/layout`
+- `@/app/engines/music/arrange/page`
+- `@/app/engines/music/layout`
+- `@/app/engines/music/library/page`
+- `@/app/engines/music/page`
+- `@/app/engines/music/studio/page`
+- `@/app/engines/page`
+- `@/app/engines/portfolio/assets/page`
+- `@/app/engines/portfolio/layout`
+- `@/app/engines/portfolio/optimize/page`
+- `@/app/engines/portfolio/page`
+- `@/app/engines/portfolio/quantum/page`
+- `@/app/feed-settings/dream.FeedSettingsClient`
+- `@/app/feed-settings/page`
+- `@/app/gameengin/cartridges/[id]/page`
+- `@/app/gameengin/cartridges/page`
+- `@/app/gameengin/page`
+- `@/app/homedream/page`
+- `@/app/join/page`
+- `@/app/lab/[id]/codespace/page`
+- `@/app/lab/[id]/page`
+- `@/app/lab/new/page`
+- `@/app/lab/page`
+- `@/app/layout`
+- `@/app/login/page`
+- `@/app/marketplace/[id]/page`
+- `@/app/marketplace/page`
+- `@/app/marketplace/sell/page`
+- `@/app/messages/boards/[id]/page`
+- `@/app/messages/boards/new/page`
+- `@/app/messages/boards/page`
+- `@/app/messages/page`
+- `@/app/mission/page`
+- `@/app/notes/page`
+- `@/app/onboarding/page`
+- `@/app/page`
+- `@/app/policy/page`
+- `@/app/profile/[handle]/page`
+- `@/app/profile/page`
+- `@/app/settings/account/dream.DangerZoneActions`
+- `@/app/settings/account/page`
+- `@/app/settings/algorithm/page`
+- `@/app/settings/appearance/page`
+- `@/app/settings/controls/dream.ControlsClient`
+- `@/app/settings/controls/dream.PositionIndicatorToggle`
+- `@/app/settings/controls/page`
+- `@/app/settings/data/dream.DataClient`
+- `@/app/settings/data/page`
+- `@/app/settings/dreams/dreams-layout-editor`
+- `@/app/settings/dreams/page`
+- `@/app/settings/feed/page`
+- `@/app/settings/help/page`
+- `@/app/settings/notifications/page`
+- `@/app/settings/page`
+- `@/app/settings/privacy/dream.PrivacyClient`
+- `@/app/settings/privacy/page`
+- `@/app/settings/safety/page`
+- `@/app/settings/security/page`
+- `@/app/settings/widgets/page`
+- `@/app/shop/page`
+- `@/app/shop/sell/page`
+- `@/app/u/[handle]/page`
+- `@/app/view-profile/page`
+- `@/app/webgpu/page`
+- `@/components/activity/dream.ActivityPostForm`
+- `@/components/activity/dream.ActivityProfile`
+- `@/components/activity/dream.TierBadge`
+- `@/components/ads/dream.AdUnit`
+- `@/components/ads/dream.SkipCreditBalance`
+- `@/components/auth/dream.PasswordField`
+- `@/components/connectors/dream.AddSliceSheet`
+- `@/components/connectors/dream.ConnectDreamPrompt`
+- `@/components/connectors/dream.ConnectorRow`
+- `@/components/connectors/dream.NoSlotDialog`
+- `@/components/connectors/dream.PlacementMode`
+- `@/components/connectors/dream.widget.ConnectorWidgetPicker`
+- `@/components/connectors/dream.widget.ConnectWidgetPrompt`
+- `@/components/core/dream.CoreDream`
+- `@/components/customize/dream.bar.CustomizeModeBar`
+- `@/components/customize/dream.bar.CustomizeToolbar`
+- `@/components/customize/dream.GlobalCustomizeUI`
+- `@/components/customize/panels/dream.panel.ColorPanel`
+- `@/components/customize/panels/dream.panel.EffectsPanel`
+- `@/components/customize/panels/dream.panel.FontPanel`
+- `@/components/customize/panels/dream.panel.LayoutPanel`
+- `@/components/daydream/dream.CodeDreamIDE`
+- `@/components/daydream/dream.constellationmap`
+- `@/components/daydream/dream.DiffViewer`
+- `@/components/daydream/dream.JourneyTrail`
+- `@/components/daydream/dream.LabDreamIDE`
+- `@/components/daydream/dream.NGNEngin`
+- `@/components/daydream/dream.OpenDaydreamSideBButton`
+- `@/components/daydream/dream.shell.DaydreamShell`
+- `@/components/daydream/dream.StandaloneEnginSurface`
+- `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream`
+- `@/components/daydream/dreamsurface.daydream.BrandDaydream`
+- `@/components/daydream/starmaker/dream.panel.CompingPanel`
+- `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel`
+- `@/components/daydream/starmaker/dream.panel.PianoRollPanel`
+- `@/components/daydream/starmaker/dream.panel.SessionViewPanel`
+- `@/components/draggable/dream.DraggableModule`
+- `@/components/dream.AIAssistant`
+- `@/components/dream.AudioVisualizer3D`
+- `@/components/dream.BoogieWarningBanner`
+- `@/components/dream.BrandLogo`
+- `@/components/dream.CommandPalette`
+- `@/components/dream.CreatePostModal`
+- `@/components/dream.DragToAnchorClose`
+- `@/components/dream.DrEamsModeToggle`
+- `@/components/dream.DrEamsVoiceAssistant`
+- `@/components/dream.FeedCard`
+- `@/components/dream.ForgeDreamCanvas`
+- `@/components/dream.GlobalOverlays`
+- `@/components/dream.HeroSprite`
+- `@/components/dream.HomeFeed`
+- `@/components/dream.IconSelector`
+- `@/components/dream.InnerDreamsButton`
+- `@/components/dream.KonamiDream`
+- `@/components/dream.LandingHero`
+- `@/components/dream.LedgerChart`
+- `@/components/dream.MessagesClient`
+- `@/components/dream.NotificationCenter`
+- `@/components/dream.OSShellActivator`
+- `@/components/dream.panel.ChildSafetyPanel`
+- `@/components/dream.panel.IDariPanel`
+- `@/components/dream.PhysicsLab`
+- `@/components/dream.ProfileEditor`
+- `@/components/dream.ProfileShareButton`
+- `@/components/dream.ProfileSpace`
+- `@/components/dream.PullToRefresh`
+- `@/components/dream.ShrunkMode`
+- `@/components/dream.SkeletonLoaders`
+- `@/components/dream.ThemeApplicator`
+- `@/components/dream.ThemeToggle`
+- `@/components/dream.ToastSystem`
+- `@/components/dream.universal_asset_registry`
+- `@/components/dream.VoidThemeToggle`
+- `@/components/dream.widget.AnchorWidget`
+- `@/components/dream.widget.ProfileWidgetBlock`
+- `@/components/dream.widget.WidgetBubble`
+- `@/components/dreamengin/dream.bar.DrEamsSearchBar`
+- `@/components/dreamengin/dream.CanvasDropZone`
+- `@/components/dreamengin/dream.DREAMenginOS`
+- `@/components/dreamengin/dream.DrEamsCanvas`
+- `@/components/dreamengin/dream.HomeControls`
+- `@/components/dreamengin/dream.menu.NexusMenu`
+- `@/components/dreamengin/dream.menu.OutdreamMenu`
+- `@/components/dreamengin/dream.overlay.ViewAllDreamsOverlay`
+- `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
+- `@/components/dreamengin/dream.panel.DrEamsPanel`
+- `@/components/dreamengin/dream.scene.BabylonGameScene`
+- `@/components/dreamengin/dream.scene.DrEamsScene`
+- `@/components/dreamengin/dream.scene.PortfolioOptimizationScene`
+- `@/components/dreamengin/dream.shell.EnginShell`
+- `@/components/dreamengin/dream.widget.AppearanceWidget`
+- `@/components/dreamengin/dreamsurface.dreamengin`
+- `@/components/dreamengin/engine/math`
+- `@/components/dreamengin/engine/types`
+- `@/components/dreamnav/dream.DreamNavControls`
+- `@/components/dreamnav/dreamsurface.dreamnav`
+- `@/components/dreamr/dream.CloseFriendsSettings`
+- `@/components/dreamr/dream.panel.DreamRChannelPanel`
+- `@/components/dreamr/dream.panel.DreamRCreatorPanel`
+- `@/components/dreams/dream.connectorlayer`
+- `@/components/dreams/dream.DraggableDream`
+- `@/components/dreams/dream.featurelayer`
+- `@/components/dreams/dream.GlobalDragLayer`
+- `@/components/dreams/dream.outputlayer`
+- `@/components/dreams/dream.panel.RuntimeMemoryHUD`
+- `@/components/dreams/dream.PlatformErrorReporter`
+- `@/components/dreams/dream.shell.DreamShell`
+- `@/components/dreams/dream.shell.SharedDreamShell`
+- `@/components/dreams/dream.SlideOverPanel`
+- `@/components/dreams/dream.widget.SuperDreamWidget`
+- `@/components/dreams/dream.window.JourneyDreamWindow`
+- `@/components/dreams/dreamsurface.dreamspace`
+- `@/components/dreams/dreamsurface.shell`
+- `@/components/dreams/dreamsurface.window`
+- `@/components/engines/brand/dream.BrandEnginApp`
+- `@/components/engines/brand/index`
+- `@/components/engines/brand/panels/dream.panel.CampaignsPanel`
+- `@/components/engines/brand/panels/dream.panel.IdentityPanel`
+- `@/components/engines/code/dream.CodeEnginApp`
+- `@/components/engines/code/index`
+- `@/components/engines/code/panels/dream.panel.AIPanel`
+- `@/components/engines/code/panels/dream.panel.NotebookPanel`
+- `@/components/engines/code/panels/dream.panel.ProjectsPanel`
+- `@/components/engines/create/dream.CreateEnginApp`
+- `@/components/engines/create/index`
+- `@/components/engines/create/panels/dream.panel.CalendarPanel`
+- `@/components/engines/create/panels/dream.panel.EditorPanel`
+- `@/components/engines/create/panels/dream.panel.QueuePanel`
+- `@/components/engines/games/dream.GameEnginApp`
+- `@/components/engines/games/index`
+- `@/components/engines/games/panels/dream.panel.BuilderPanel`
+- `@/components/engines/games/panels/dream.panel.LibraryPanel`
+- `@/components/engines/games/panels/dream.panel.ScoresPanel`
+- `@/components/engines/index`
+- `@/components/engines/lab/dream.LabEnginApp`
+- `@/components/engines/lab/index`
+- `@/components/engines/lab/panels/dream.panel.DataVizPanel`
+- `@/components/engines/lab/panels/dream.panel.ExperimentsPanel`
+- `@/components/engines/lab/panels/dream.panel.QuantumPanel`
+- `@/components/engines/music/dream.MusicEnginApp`
+- `@/components/engines/music/index`
+- `@/components/engines/music/panels/dream.panel.ArrangePanel`
+- `@/components/engines/music/panels/dream.panel.MusicLibraryPanel`
+- `@/components/engines/music/panels/dream.panel.StudioPanel`
+- `@/components/engines/portfolio/dream.PortfolioEnginApp`
+- `@/components/engines/portfolio/index`
+- `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
+- `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
+- `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
+- `@/components/engines/shared/dream.bar.EnginNavBar`
+- `@/components/engines/shared/dream.EnginProvider`
+- `@/components/engines/shared/dream.EnginRuleSet`
+- `@/components/engines/shared/dream.makeEnginApp`
+- `@/components/engines/shared/dream.shell.EnginAppShell`
+- `@/components/engines/shared/index`
+- `@/components/feed/dream.AlgorithmEngine`
+- `@/components/feed/dream.CommentSection`
+- `@/components/feed/dream.FeedVideoCard`
+- `@/components/feed/dream.FollowButton`
+- `@/components/feed/dream.FollowOnboarding`
+- `@/components/feeds/dream.widget.EmbedFeedWidget`
+- `@/components/forge/dream.EngineBuilderCanvas`
+- `@/components/forge/dream.panel.AIBuilderPanel`
+- `@/components/forge/dream.widget.ForgeMomentumWidget`
+- `@/components/gameengin/dream.cartridge.CartridgeBrowser`
+- `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
+- `@/components/gameengin/dream.cartridge.CartridgeLauncher`
+- `@/components/gameengin/dream.cartridge.FeaturedCartridges`
+- `@/components/gameengin/dream.CartridgeRegistryBootstrap`
+- `@/components/gameengin/dream.CrashReportModal`
+- `@/components/gameengin/input/DualSenseManager`
+- `@/components/games/_fx/canvasFx`
+- `@/components/games/dream.AvenueOfMirrors`
+- `@/components/games/dream.BabylonSideScroller`
+- `@/components/games/dream.DefuseRitual`
+- `@/components/games/dream.EchoArena`
+- `@/components/games/dream.EnginFracture`
+- `@/components/games/dream.GameController`
+- `@/components/games/dream.GamesHub`
+- `@/components/games/dream.Glassfall`
+- `@/components/games/dream.hud.GameHUD`
+- `@/components/games/dream.hud.LegacyGameHUD`
+- `@/components/games/dream.hud.MobileGameHUD`
+- `@/components/games/dream.Leaderboard`
+- `@/components/games/dream.LexiconSolitaire`
+- `@/components/games/dream.NeonDrift`
+- `@/components/games/dream.NiteFlyerSolarHymn`
+- `@/components/games/dream.NullCathedral`
+- `@/components/games/dream.RecordingControls`
+- `@/components/games/dream.remote.GameRemote`
+- `@/components/games/dream.remote.LegacyGameRemote`
+- `@/components/games/dream.SerpentSiege`
+- `@/components/games/dream.VoidlineGP`
+- `@/components/games/madmaxi/audio`
+- `@/components/games/madmaxi/authoredZonePacks`
+- `@/components/games/madmaxi/config`
+- `@/components/games/madmaxi/dream.MadmaxiGame`
+- `@/components/games/madmaxi/index`
+- `@/components/games/madmaxi/levels`
+- `@/components/games/madmaxi/materials`
+- `@/components/games/madmaxi/types`
+- `@/components/games/madmaxi/vfx`
+- `@/components/home/dream.ActiveModuleSurface`
+- `@/components/home/dream.bar.GlobalDreamBar`
+- `@/components/home/dream.bar.PersistentDreamBar`
+- `@/components/home/dream.DaydreamPulseStrip`
+- `@/components/home/dream.FlagshipEnginesStrip`
+- `@/components/home/dream.NeuralSeamCanvas`
+- `@/components/home/dream.widget.DreamWidget`
+- `@/components/idari/dream.PlatformHealth`
+- `@/components/landing/dream.LandingNav`
+- `@/components/landing/dream.LandingProductStatement`
+- `@/components/landing/dream.scene.UniverseField`
+- `@/components/marketplace/dream.MarketplaceListingCard`
+- `@/components/marketplace/dream.MarketplaceRequestButton`
+- `@/components/menus/dream.menu.DreamRadialMenu`
+- `@/components/menus/dream.menu.DualBottomMenu`
+- `@/components/menus/dream.menu.RadialMenu`
+- `@/components/menus/dream.menu.SystemRadialMenu`
+- `@/components/menus/dream.panel.MenuPanel`
+- `@/components/messaging/dream.BoardComposer`
+- `@/components/music/dream.SoundRecorder`
+- `@/components/onboarding/dream.OnboardingTip`
+- `@/components/optimizer/dream.scene.BabylonOptimizeroScene`
+- `@/components/overlays/dream.RootStatusScreen`
+- `@/components/panels/dream.panel.AlgorithmPanel`
+- `@/components/panels/dream.panel.AppearancePanel`
+- `@/components/panels/dream.panel.ConnectorsPanel`
+- `@/components/panels/dream.panel.ControlsPanel`
+- `@/components/panels/dream.panel.DataPanel`
+- `@/components/panels/dream.panel.FeedPanel`
+- `@/components/panels/dream.panel.FeedSettingsPanel`
+- `@/components/panels/dream.panel.HelpPanel`
+- `@/components/panels/dream.panel.MarketplacePanel`
+- `@/components/panels/dream.panel.PrivacyPanel`
+- `@/components/panels/dream.panel.ProfilePanel`
+- `@/components/panels/dream.panel.SafetyPanel`
+- `@/components/panels/dream.panel.SettingsPanel`
+- `@/components/panels/dream.panel.WidgetsPanel`
+- `@/components/profile/dream.EditableAvatar`
+- `@/components/profile/dream.ProfileCanvas`
+- `@/components/profile/dream.ProfileCustomizeButton`
+- `@/components/profile/dream.widget.ProfileWidgetGrid`
+- `@/components/providers/dream.AppSurfaceShell`
+- `@/components/providers/dream.GodTierProvider`
+- `@/components/providers/dream.ThemeProvider`
+- `@/components/runtime/dream.DualRuntimeContainer`
+- `@/components/runtime/dream.RuntimeView`
+- `@/components/runtime/dream.shell.RuntimeShell`
+- `@/components/shaders/dream.LightningWing`
+- `@/components/shaders/dream.NeonGlow`
+- `@/components/shaders/dream.Refractor`
+- `@/components/shaders/index`
+- `@/components/shared-dream/dream.InviteFlow`
+- `@/components/shared-dream/dream.SharedDreamCanvas`
+- `@/components/shared-dream/dream.SharedDreamProvider`
+- `@/components/shared-dream/index`
+- `@/components/spatial/dream.PixiPhysicsLayer`
+- `@/components/spatial/dream.ProfileSpace`
+- `@/components/spatial/dream.shell.EnhancedSpatialShell`
+- `@/components/three/dream.scene`
+- `@/components/three/index`
+- `@/components/ui/dream.AuthenticatedPageHeader`
+- `@/components/ui/dream.DreamWord`
+- `@/components/ui/dream.IconList`
+- `@/components/ui/dream.InfinityIcon`
+- `@/components/ui/dream.PlatformBadge`
+- `@/components/ui/dream.SheetIcon`
+- `@/components/ui/dream.SocialShareSheet`
+- `@/components/universal-editor/dream.UniversalEditor`
+- `@/components/universal-editor/dream.UniversalEditorWrapper`
+- `@/components/universal-editor/index`
+- `@/components/universal-editor/useTapHoldMove`
+- `@/components/universe/dream.node-cluster`
+- `@/components/universe/dream.shell.universe-shell`
+- `@/components/universe/dream.universe-card`
+- `@/components/universe/index`
+- `@/components/warp/dream.WarpCanvas`
+- `@/components/webgpu/dream.WebGPUShowcase`
+- `@/components/webgpu/neuralPostProcess`
+- `@/components/webgpu/renderer`
+- `@/components/webgpu/shaders`
+- `@/components/widgets/dream.AddDreamCTA`
+- `@/components/widgets/dream.ConfigureSheet`
+- `@/components/widgets/dream.EditModeBanner`
+- `@/components/widgets/dream.EditModeProvider`
+- `@/components/widgets/dream.widget.PlayMediaWidget`
+- `@/components/widgets/dream.widget.UniversalWidget`
+- `@/components/widgets/dream.widget.WidgetCard`
+- `@/components/widgets/dream.widget.WidgetLibrary`
+- `@/components/widgets/dream.widget.WidgetPlaceholder`
+- `@/components/widgets/dream.widget.WidgetShell`
+- `@/components/widgets/dream.widget.WidgetSurface`
+- `@/coresurfaces/dreamsurface.EditProfileDream`
+- `@/coresurfaces/dreamsurface.ViewProfile`
+- `@/daydreams/brand/page`
+- `@/daydreams/code/page`
+- `@/daydreams/create/page`
+- `@/daydreams/games/page`
+- `@/daydreams/lab/page`
+- `@/daydreams/music/page`
+
+## `src/engin/generated/systems.ts`
+
+- `@/lib/activeModulesStore`
+- `@/lib/activity/aqs`
+- `@/lib/activity/boogieActivityPolicy`
+- `@/lib/activity/revenueSplit`
+- `@/lib/activity/scoring`
+- `@/lib/activity/skipCredits`
+- `@/lib/activity/types`
+- `@/lib/activity/visibility-score`
+- `@/lib/adari`
+- `@/lib/admin/lockout`
+- `@/lib/admin/upgrade-readiness`
+- `@/lib/agentOS`
+- `@/lib/agentOS/hostTools`
+- `@/lib/agents/agentBus`
+- `@/lib/agents/boogieManAI`
+- `@/lib/agents/dreamengin`
+- `@/lib/agents/drEamsMode`
+- `@/lib/agents/idari`
+- `@/lib/agents/idariLoop`
+- `@/lib/agents/teachBus`
+- `@/lib/agents/uiActions`
+- `@/lib/ai/audit`
+- `@/lib/ai/boogie-policy`
+- `@/lib/ai/boogie-verifier`
+- `@/lib/ai/boogieman`
+- `@/lib/ai/capability-gate`
+- `@/lib/ai/CIC`
+- `@/lib/ai/confirm-token`
+- `@/lib/ai/confirm`
+- `@/lib/ai/groq`
+- `@/lib/ai/handlers/dreams`
+- `@/lib/ai/handlers/index`
+- `@/lib/ai/handlers/navigation`
+- `@/lib/ai/handlers/social`
+- `@/lib/ai/idempotency`
+- `@/lib/ai/rate-limiter`
+- `@/lib/ai/rateLimit`
+- `@/lib/ai/schemas`
+- `@/lib/ai/tfBackend`
+- `@/lib/ai/tool-router`
+- `@/lib/ai/triad`
+- `@/lib/api/route`
+- `@/lib/artifactStore`
+- `@/lib/assets/assetOptimizer`
+- `@/lib/assets/indexedDBStore`
+- `@/lib/audio-fingerprint/fingerprint`
+- `@/lib/audio-fingerprint/index`
+- `@/lib/audio-fingerprint/peak-map`
+- `@/lib/audio-fingerprint/stem-extractor`
+- `@/lib/audioFingerprint`
+- `@/lib/auth/nextRedirect`
+- `@/lib/babylon/createEngine`
+- `@/lib/babylon/dreamengine-hybrid`
+- `@/lib/bot-detection/detector`
+- `@/lib/bot-detection/index`
+- `@/lib/bot-detection/swipe-physics`
+- `@/lib/bot-detection/view-tally`
+- `@/lib/botDetection`
+- `@/lib/branding/logos`
+- `@/lib/child-safety/childSafetyDetector`
+- `@/lib/child-safety/imageClassifier`
+- `@/lib/child-safety/messageContextChecker`
+- `@/lib/child-safety/ncmecReporter`
+- `@/lib/child-safety/scanMediaUrls`
+- `@/lib/code/drEamsCodeAssist`
+- `@/lib/collaboration/index`
+- `@/lib/componentInventory`
+- `@/lib/composite/compositor`
+- `@/lib/composite/fxSimulation`
+- `@/lib/composite/matchmover`
+- `@/lib/composite/motionCapture`
+- `@/lib/composite/rotoscope`
+- `@/lib/consent/consentManager`
+- `@/lib/content/generativeFill`
+- `@/lib/content/publishIntent`
+- `@/lib/content/seoScorer`
+- `@/lib/content/transcriptEditor`
+- `@/lib/content/voiceClone`
+- `@/lib/data-transform`
+- `@/lib/daydream/useDaydreamPersistence`
+- `@/lib/daydream/useDaydreamState`
+- `@/lib/dev-bypass`
+- `@/lib/diff/aiEditEngine`
+- `@/lib/diff/diffUtils`
+- `@/lib/dream-docs/embed`
+- `@/lib/dream-docs/index`
+- `@/lib/dream-docs/search`
+- `@/lib/dream-window/connectionVerbs`
+- `@/lib/dream-window/DreamWindowLifecycle`
+- `@/lib/dream-window/enginConnectionNetwork`
+- `@/lib/dream-window/index`
+- `@/lib/dream-window/runtimeRegion`
+- `@/lib/dream-window/useDreamWindowActions`
+- `@/lib/dreamdm/barInteractions`
+- `@/lib/dreamdm/bridgeSeamFlow`
+- `@/lib/dreamdm/useDreamBarContext`
+- `@/lib/dreamdm/useDreamDMConversations`
+- `@/lib/dreamdm/useDreamDMDraft`
+- `@/lib/dreamdm/useDreamDMMessages`
+- `@/lib/dreamdm/useDreamSearch`
+- `@/lib/dreamdm/useMessagingCore`
+- `@/lib/dreamdm/useModuleBarIntent`
+- `@/lib/dreamdm/useNotifications`
+- `@/lib/dreamengin/DrEamsAnimator`
+- `@/lib/dreamengin/drEamsSearch`
+- `@/lib/dreamengin/engineAssets`
+- `@/lib/dreamengin/osSubsystemManifest`
+- `@/lib/dreamenginOS/index`
+- `@/lib/dreamnav/delta`
+- `@/lib/dreamnav/gctAssist`
+- `@/lib/dreamnav/gestures6`
+- `@/lib/dreamnav/path`
+- `@/lib/dreamnav/tau`
+- `@/lib/dreamr/closeFriendsVisibility`
+- `@/lib/dreamr/feedCursor`
+- `@/lib/dreamr/socialHumanityScore`
+- `@/lib/dreamr/swipeCalibration`
+- `@/lib/dreamr/swipePersonalization`
+- `@/lib/dreamr/torridityLedger`
+- `@/lib/dreams/drag`
+- `@/lib/dreams/profileProjection`
+- `@/lib/dreams/types`
+- `@/lib/dreams/useDreamsRuntime`
+- `@/lib/engin-runtime/EnginBaseState`
+- `@/lib/engin-runtime/EnginCapabilities`
+- `@/lib/engin-runtime/EnginEventBus`
+- `@/lib/engin-runtime/EnginIOAdapter`
+- `@/lib/engin-runtime/EnginRuleSetContract`
+- `@/lib/engin-runtime/EnginRuntime`
+- `@/lib/engin-runtime/index`
+- `@/lib/engine/index`
+- `@/lib/enginpipe/artifact/manifest`
+- `@/lib/enginpipe/index`
+- `@/lib/enginpipe/quality/tiers`
+- `@/lib/enginpipe/telemetry/client`
+- `@/lib/enginpipe/telemetry/events`
+- `@/lib/engins/game/gameEnginRuleSet`
+- `@/lib/engins/game/index`
+- `@/lib/engins/game/useGameEnginRuntime`
+- `@/lib/engins/useEnginWorkflow`
+- `@/lib/engins/workflowEngine`
+- `@/lib/event-bus/index`
+- `@/lib/eventBus`
+- `@/lib/feature-build/buildCycle`
+- `@/lib/feature-build/featureManifest`
+- `@/lib/feature-build/index`
+- `@/lib/feature-build/uiQualityCriteria`
+- `@/lib/feed/feedTopics`
+- `@/lib/feed/hashtags`
+- `@/lib/feed/useLiveFeed`
+- `@/lib/feed/useYouTubeLiveFeed`
+- `@/lib/feeds/embedFeedLoader`
+- `@/lib/forge-ngn/assembly`
+- `@/lib/forge-ngn/index`
+- `@/lib/forge-ngn/piece-registry`
+- `@/lib/forge/engineForge`
+- `@/lib/forge/forgeBuild`
+- `@/lib/forge/forgeIntelligence`
+- `@/lib/forge/forgeMomentum`
+- `@/lib/forge/forgeNexus`
+- `@/lib/forge/forgeRegistry`
+- `@/lib/forge/forgeRituals`
+- `@/lib/forge/useForgeActivity`
+- `@/lib/forge/useForgeBuild`
+- `@/lib/gameengin/accessibility-ai`
+- `@/lib/gameengin/ai-director`
+- `@/lib/gameengin/ai-npcs`
+- `@/lib/gameengin/brain-reader`
+- `@/lib/gameengin/cartridge-manifest`
+- `@/lib/gameengin/cartridge`
+- `@/lib/gameengin/cartridgeLoader`
+- `@/lib/gameengin/cloud-compute`
+- `@/lib/gameengin/control-mappings`
+- `@/lib/gameengin/core`
+- `@/lib/gameengin/dream-engine`
+- `@/lib/gameengin/dreamr-loader`
+- `@/lib/gameengin/gameEnginRuntime`
+- `@/lib/gameengin/generative-audio`
+- `@/lib/gameengin/index`
+- `@/lib/gameengin/neural-render`
+- `@/lib/gameengin/path-tracing`
+- `@/lib/gameengin/platform`
+- `@/lib/gameengin/post-fx`
+- `@/lib/gameengin/power-systems`
+- `@/lib/gameengin/predictive-stream`
+- `@/lib/gameengin/procgen`
+- `@/lib/gameengin/registerCartridges`
+- `@/lib/gameengin/remote/comboMachine`
+- `@/lib/gameengin/remote/index`
+- `@/lib/gameengin/remote/layout`
+- `@/lib/gameengin/remote/moves`
+- `@/lib/gameengin/remote/sprintDetector`
+- `@/lib/gameengin/systems/ai`
+- `@/lib/gameengin/systems/animation`
+- `@/lib/gameengin/systems/assets`
+- `@/lib/gameengin/systems/index`
+- `@/lib/gameengin/systems/lod`
+- `@/lib/gameengin/systems/network`
+- `@/lib/gameengin/systems/physics`
+- `@/lib/gameengin/systems/pooling`
+- `@/lib/gameengin/systems/rendering`
+- `@/lib/gameengin/systems/spatial`
+- `@/lib/gameengin/systems/world`
+- `@/lib/gameengin/unifiedLoop`
+- `@/lib/gameengin/useUnifiedLoop`
+- `@/lib/gameengin/webgpu-runtime-shell`
+- `@/lib/gameengin/world-crdt`
+- `@/lib/gameengin/xr`
+- `@/lib/games/avatar`
+- `@/lib/games/catalog`
+- `@/lib/games/DualSenseManager`
+- `@/lib/games/gameControllerButtons`
+- `@/lib/games/gameControllerLeft`
+- `@/lib/games/gameControllerRight`
+- `@/lib/games/hooks`
+- `@/lib/games/library-state`
+- `@/lib/games/lucid-avenue-world`
+- `@/lib/games/mobileControls`
+- `@/lib/games/navigation`
+- `@/lib/games/performance-baseline`
+- `@/lib/games/quality-plan`
+- `@/lib/games/useAIDirector`
+- `@/lib/games/useGameInputKeyboardBridge`
+- `@/lib/games/useGamepad`
+- `@/lib/games/useImmersiveGameLayout`
+- `@/lib/games/useRemoteChannel`
+- `@/lib/gct/anomaly-detection`
+- `@/lib/gct/audio-fingerprint`
+- `@/lib/gct/gct-engine`
+- `@/lib/gct/image-search`
+- `@/lib/gct/index`
+- `@/lib/gct/recommendations`
+- `@/lib/generationLaw`
+- `@/lib/gestures/touchGestures`
+- `@/lib/gestures/useTouchGestures`
+- `@/lib/god-tier/godTierEngine`
+- `@/lib/god-tier/useGodTier`
+- `@/lib/gsap/gsap`
+- `@/lib/gsap/useGsapEntrance`
+- `@/lib/gsap/useGsapFlip`
+- `@/lib/gsap/useGsapScrollReveal`
+- `@/lib/h265-encoder`
+- `@/lib/home-buttons/button-groups`
+- `@/lib/home-buttons/contextual-home`
+- `@/lib/icons/sheet`
+- `@/lib/identity/canonical-names`
+- `@/lib/intelligence/continuityHelpers`
+- `@/lib/intelligence/sessionContinuity`
+- `@/lib/intelligence/sessionPatternEngine`
+- `@/lib/intelligence/useSessionIntelligence`
+- `@/lib/journey/journeyDots`
+- `@/lib/journey/journeyInsights`
+- `@/lib/journey/withJourney`
+- `@/lib/ledger-data`
+- `@/lib/ledger`
+- `@/lib/marketplace/listings`
+- `@/lib/marketplace/request`
+- `@/lib/media/ledger`
+- `@/lib/media/postMedia`
+- `@/lib/music/presets`
+- `@/lib/music/starmaker`
+- `@/lib/music/starmakerArrangement`
+- `@/lib/music/starmakerDaw`
+- `@/lib/music/wasmAudioBridge`
+- `@/lib/navigation/anchorField`
+- `@/lib/navigation/AnchorStateBuffer`
+- `@/lib/navigation/AnchorWidgetStorage`
+- `@/lib/navigation/dream-state`
+- `@/lib/navigation/GestureFrameComputer`
+- `@/lib/navigation/GestureIntentResolver`
+- `@/lib/navigation/index`
+- `@/lib/navigation/manifold`
+- `@/lib/navigation/NavStateBuffer`
+- `@/lib/navigation/physics`
+- `@/lib/navigation/PointerEventCapture`
+- `@/lib/navigation/quaternion`
+- `@/lib/navigation/ReturnStack`
+- `@/lib/navigation/SpatialNavigationEngine`
+- `@/lib/navigation/StructureLedger`
+- `@/lib/navigation/TransformSolver`
+- `@/lib/navigation/useNavigation`
+- `@/lib/navigation/WidgetInstanceMemory`
+- `@/lib/notifications/notificationHelpers`
+- `@/lib/notifications/useNotifications`
+- `@/lib/observability/collector`
+- `@/lib/observability/correlator`
+- `@/lib/observability/healthTrend`
+- `@/lib/observability/immediateAction`
+- `@/lib/observability/index`
+- `@/lib/observability/otel`
+- `@/lib/observability/otelBridge`
+- `@/lib/observability/rootCauseAnalyzer`
+- `@/lib/offline/offlineCache`
+- `@/lib/offline/useOfflineSync`
+- `@/lib/optimizer/babylon-optimizero`
+- `@/lib/optimizer/constraint-solver`
+- `@/lib/optimizer/creative-optimizero`
+- `@/lib/optimizer/creative-validator`
+- `@/lib/optimizer/index`
+- `@/lib/optimizer/types`
+- `@/lib/panels/panelTypes`
+- `@/lib/platform/index`
+- `@/lib/platform/lab`
+- `@/lib/policy/boogiePolicy`
+- `@/lib/renderer/Canvas2DRenderer`
+- `@/lib/renderer/FrustumCuller`
+- `@/lib/renderer/index`
+- `@/lib/renderer/IRenderer`
+- `@/lib/routing/surfaces`
+- `@/lib/runtime/channelMetrics`
+- `@/lib/runtime/coercionTable`
+- `@/lib/runtime/dreamOSBus`
+- `@/lib/runtime/dropTargetRegistry`
+- `@/lib/runtime/dualRuntime`
+- `@/lib/runtime/dualRuntimeBridge`
+- `@/lib/runtime/EnginDispatcher`
+- `@/lib/runtime/enginWorkflowRegistry`
+- `@/lib/runtime/instanceManager`
+- `@/lib/runtime/isAuthRelatedError`
+- `@/lib/runtime/madMaxiSnapshotBridge`
+- `@/lib/runtime/memory`
+- `@/lib/runtime/moduleRegistry`
+- `@/lib/runtime/offlineQueue`
+- `@/lib/runtime/quantumCircuit`
+- `@/lib/runtime/runtimeChannel`
+- `@/lib/runtime/runtimeContainer`
+- `@/lib/runtime/seamClipboard`
+- `@/lib/runtime/sharedResourcePool`
+- `@/lib/runtime/snapshotFingerprint`
+- `@/lib/runtime/swapManager`
+- `@/lib/runtime/useDragSurface`
+- `@/lib/runtime/useDualRuntime`
+- `@/lib/runtime/useDualRuntimePersistence`
+- `@/lib/runtime/useEnginBridge`
+- `@/lib/runtime/useEnginCoopSync`
+- `@/lib/runtime/useSharedEnginChannel`
+- `@/lib/scene/sceneState`
+- `@/lib/setup/checks`
+- `@/lib/sharedDream`
+- `@/lib/shop/listings`
+- `@/lib/slog`
+- `@/lib/social-feed`
+- `@/lib/social/crossPost`
+- `@/lib/social/platforms`
+- `@/lib/social/rss-feed`
+- `@/lib/supabase/client`
+- `@/lib/supabase/config`
+- `@/lib/supabase/realtime`
+- `@/lib/supabase/safeGetUser`
+- `@/lib/supabase/server`
+- `@/lib/supabase/vector`
+- `@/lib/torridity`
+- `@/lib/torridity/constants`
+- `@/lib/torridity/index`
+- `@/lib/torridity/physics`
+- `@/lib/ui/responsive`
+- `@/lib/ui/runtimeViewport`
+- `@/lib/ui/skin-engine`
+- `@/lib/ui/theme-engine`
+- `@/lib/ui/theme`
+- `@/lib/universal-editor/module-manifest`
+- `@/lib/universalEditor`
+- `@/lib/user-sim/userSimAgent`
+- `@/lib/utils`
+- `@/lib/vm/bufferManager`
+- `@/lib/vm/bus-events`
+- `@/lib/vm/dual-runtime`
+- `@/lib/vm/dualVMCoordinator`
+- `@/lib/vm/index`
+- `@/lib/vm/inter-vm-messaging`
+- `@/lib/vm/pipelineCache`
+- `@/lib/vm/resource-quota`
+- `@/lib/vm/security`
+- `@/lib/vm/snapshot`
+- `@/lib/vm/types`
+- `@/lib/vm/wasm-features`
+- `@/lib/vm/wasmGpuVM`
+- `@/lib/warp/useWarp`
+- `@/lib/warp/warpEngine`
+- `@/lib/webgpu`
+- `@/lib/webgpu/adaptiveQuality`
+- `@/lib/webgpu/director`
+- `@/lib/webgpu/useWebGPUDirector`
+- `@/lib/widgets/CrossWidgetPosting`
+- `@/lib/widgets/feed-resolver`
+- `@/lib/widgets/parse`
+- `@/lib/widgets/parseConfig`
+- `@/lib/widgets/useWidget`
+- `@/lib/widgets/WidgetBus`
+- `@/lib/widgets/WidgetEventBus`
+- `@/lib/widgets/WidgetLinkGraph`
+- `@/lib/widgets/widgetRegistry`
+
+## `tailwindcss-animate.d.ts`
+
+- `tailwindcss`
+
+## `tests/agent-bus-consensus.test.ts`
+
+- `@/lib/ai/triad`
+- `@/lib/agents/agentBus`
+
+## `tests/asset-optimizer.test.ts`
+
+- `@/lib/assets/indexedDBStore`
+
+## `tests/auth-providers-route.test.ts`
+
+- `../app/api/auth/providers/route`
+
+## `tests/babylon-webgpu-engine.test.ts`
+
+- `@/lib/babylon/createEngine`
+
+## `tests/child-safety.test.ts`
+
+- `@/lib/child-safety/childSafetyDetector`
+
+## `tests/compositeengin-features.test.ts`
+
+- `../lib/composite/motionCapture`
+- `../lib/composite/compositor`
+- `../lib/composite/rotoscope`
+- `../lib/composite/fxSimulation`
+- `../lib/composite/matchmover`
+
+## `tests/content-intelligence-routes.test.ts`
+
+- `../app/api/content/intelligence/route`
+- `../app/api/lab/benchmarks/route`
+
+## `tests/contentengin-features.test.ts`
+
+- `../lib/content/transcriptEditor`
+- `../lib/content/seoScorer`
+- `../lib/content/voiceClone`
+- `../app/api/content/transcribe/route`
+- `next/server`
+- `../app/api/content/generative-fill/route`
+- `../app/api/content/voice-clone/route`
+
+## `tests/dev-bypass.test.ts`
+
+- `@/lib/dev-bypass`
+
+## `tests/dreamengin-os.test.ts`
+
+- `@/components/dreamengin/dream.DREAMenginOS`
+- `@/lib/babylon/createEngine`
+
+## `tests/forge-engin.test.ts`
+
+- `@/lib/forge/forgeRegistry`
+
+## `tests/gameengin-crash-modal.test.ts`
+
+- `@/components/gameengin/dream.cartridge.CartridgeLauncher`
+
+## `tests/games-daydream-page-auth.test.ts`
+
+- `@/app/daydream/games/page`
+
+## `tests/homedream-page-auth.test.ts`
+
+- `@/app/dreamdmbar/layout`
+
+## `tests/instance-manager.test.ts`
+
+- `../lib/runtime/instanceManager`
+
+## `tests/orphan-wire-script.test.ts`
+
+- `../scripts/wire-orphans.mjs`
+
+## `tests/phase8b-dream-windows.test.ts`
+
+- `@/lib/dream-window/useDreamWindowActions`
+- `@/components/dreams/dream.widget.SuperDreamWidget`
+- `@/components/widgets/dream.widget.WidgetShell`
+- `@/components/dreams/dreamsurface.shell`
+- `@/components/widgets/dream.widget.WidgetCard`
+- `@/components/widgets/dream.widget.UniversalWidget`
+- `@/components/widgets/dream.widget.WidgetLibrary`
+- `@/components/widgets/dream.widget.WidgetSurface`
+- `@/types/dream-window`
+- `node:fs`
+- `node:path`
+
+## `tests/phase9-cross-post.test.ts`
+
+- `@/lib/social/platforms`
+
+## `tests/phase9-offline-cache.test.ts`
+
+- `@/lib/offline/offlineCache`
+
+## `tests/platform-utils.test.ts`
+
+- `../lib/platform/lab`
+- `../app/api/ads/orders/route`
+- `../app/api/gal/route`
+- `../lib/platform/index`
+
+## `tests/rss-feed.test.ts`
+
+- `rss-parser`
+
+## `tests/social-feed.test.ts`
+
+- `rss-parser`
+
+## `tests/supabase-config.test.ts`
+
+- `@/lib/supabase/config`
+
+## `tests/tech-foundation.test.ts`
+
+- `../lib/supabase/vector`
+
+## `tests/universal-asset-registry.test.ts`
+
+- `@/components/dream.universal_asset_registry`
+
+## `tests/wasm-gpu-vm.test.ts`
+
+- `@/lib/vm/types`
+- `@/lib/vm/bufferManager`
+- `@/lib/vm/pipelineCache`
+- `@/lib/vm/snapshot`
+- `@/lib/vm/dualVMCoordinator`
+- `@/lib/vm/wasmGpuVM`
+
+## `tests/youtube-provider.test.ts`
+
+- `@/lib/connectors/providers/youtube`
 
 ---
 
@@ -6640,65 +17145,76 @@ _No migrations for this feature._
 
 ---
 
-<a name="all-migrations"></a>
+<a name="dual-runtime-files"></a>
 
-# All Database Migrations
+# Dual Runtime Files
 
-- `supabase/migrations/20240120000000_initial_schema.sql`
-- `supabase/migrations/20240120000001_enable_rls.sql`
-- `supabase/migrations/20260129000000_upgrade_schema.sql`
-- `supabase/migrations/20260210000000_widget_system_v2.sql`
-- `supabase/migrations/20260210000001_ai_system_v2026.sql`
-- `supabase/migrations/20260210_ai_core.sql`
-- `supabase/migrations/20260214000000_security_axioms.sql`
-- `supabase/migrations/20260226000000_admin_lock.sql`
-- `supabase/migrations/20260305000000_create_notes.sql`
-- `supabase/migrations/20260305000001_comments.sql`
-- `supabase/migrations/20260305000002_leaderboard.sql`
-- `supabase/migrations/20260307000000_readme_gaps.sql`
-- `supabase/migrations/20260307000001_conversations_messages.sql`
-- `supabase/migrations/20260310000000_widget_instances_visibility.sql`
-- `supabase/migrations/20260310000001_profiles_widget_config.sql`
-- `supabase/migrations/20260310000002_profile_dream_widgets.sql`
-- `supabase/migrations/20260310000003_connector_accounts.sql`
-- `supabase/migrations/20260310000004_feed_items.sql`
-- `supabase/migrations/20260310000010_dreamdm_bar_pass2.sql`
-- `supabase/migrations/20260315000000_content_drafts.sql`
-- `supabase/migrations/20260316000000_visibility_mappings.sql`
-- `supabase/migrations/20260319000000_journey_dots.sql`
-- `supabase/migrations/20260319065444_new-migration.sql`
-- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql`
-- `supabase/migrations/20260320000000_scheduled_posts.sql`
-- `supabase/migrations/20260320100000_game_scores_all_games.sql`
-- `supabase/migrations/20260320110000_user_blocks.sql`
-- `supabase/migrations/20260321000000_ads_platform_promotions.sql`
-- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql`
-- `supabase/migrations/20260322000000_phase8b_dream_windows.sql`
-- `supabase/migrations/20260322000000_policy_events.sql`
-- `supabase/migrations/20260322000001_message_boards.sql`
-- `supabase/migrations/20260323100000_embed_feed_items.sql`
-- `supabase/migrations/20260324000000_phase8e_orders.sql`
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql`
-- `supabase/migrations/20260325000000_phase8f_daydream_network.sql`
-- `supabase/migrations/20260325100000_child_safety.sql`
-- `supabase/migrations/20260401000001_platform_utilities.sql`
-- `supabase/migrations/20260402000001_control_mappings.sql`
-- `supabase/migrations/20260402000002_game_assets.sql`
-- `supabase/migrations/20260403000001_pgvector_embeddings.sql`
-- `supabase/migrations/20260403000002_pgvector_search_rpc.sql`
-- `supabase/migrations/20260405000001_dreamr_feed_registry.sql`
-- `supabase/migrations/20260405042406_auto_scaffold.sql`
-- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql`
-- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql`
-- `supabase/migrations/20260417000001_dream_docs_search_rpc.sql`
-- `supabase/migrations/20260418000000_gameengin_core.sql`
-- `supabase/migrations/20260420000001_consent_settings_audit.sql`
-- `supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql`
-- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql`
-- `supabase/migrations/20260426000200_build_memory_schema_gaps.sql`
-- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql`
-- `supabase/migrations/20260516000100_dreamr_tally.sql`
-- `supabase/migrations/20260516000300_shared_dream_sessions.sql`
+> Files that directly touch the dual-runtime system — the spine connecting dreamdmbar to everything.
+
+- `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
+- `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`
+- `app/dreamdmbar/dreamspace/page.tsx`
+- `app/dreamdmbar/dualruntime/page.tsx`
+- `app/dreamdmbar/homedream/page.tsx`
+- `app/layout.tsx`
+- `components/daydream/dream.CodeDreamIDE.tsx`
+- `components/daydream/dream.LabDreamIDE.tsx`
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
+- `components/draggable/dream.DraggableModule.tsx`
+- `components/dream.OSShellActivator.tsx`
+- `components/dreamengin/dream.DREAMenginOS.tsx`
+- `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx`
+- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`
+- `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
+- `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `components/home/dream.ActiveModuleSurface.tsx`
+- `components/home/dream.NeuralSeamCanvas.tsx`
+- `components/home/dream.bar.PersistentDreamBar.tsx`
+- `components/providers/dream.AppSurfaceShell.tsx`
+- `components/runtime/dream.DualRuntimeContainer.tsx`
+- `components/runtime/dream.RuntimeView.tsx`
+- `components/shared-dream/dream.SharedDreamRuntime.tsx`
+- `engins/dream.ForgeEngin.tsx`
+- `engins/engin.BrandingEngin.tsx`
+- `engins/engin.CodeEngin.tsx`
+- `engins/engin.ContentEngin.tsx`
+- `engins/engin.GameEngin.tsx`
+- `engins/engin.LabEngin.tsx`
+- `engins/engin.StarMakerEngin.tsx`
+- `engins/portfolio/dream.PortfolioEngin.tsx`
+- `lib/adari.ts`
+- `lib/dreamdm/DreamSystemContext.tsx`
+- `lib/dreamenginOS/index.ts`
+- `lib/engins/useEnginWorkflow.ts`
+- `lib/eventBus.ts`
+- `lib/gameengin/GameRuntime.tsx`
+- `lib/games/DualSenseManager.ts`
+- `lib/intelligence/sessionPatternEngine.ts`
+- `lib/intelligence/useSessionIntelligence.ts`
+- `lib/runtime/EnginDispatcher.ts`
+- `lib/runtime/channelMetrics.ts`
+- `lib/runtime/dreamOSBus.ts`
+- `lib/runtime/dualRuntime.ts`
+- `lib/runtime/dualRuntimeBridge.ts`
+- `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/memory.ts`
+- `lib/runtime/moduleRegistry.ts`
+- `lib/runtime/quantumCircuit.ts`
+- `lib/runtime/seamClipboard.ts`
+- `lib/runtime/useDualRuntime.ts`
+- `lib/runtime/useDualRuntimePersistence.ts`
+- `lib/runtime/useEnginBridge.ts`
+- `lib/vm/bus-events.ts`
+- `lib/vm/dual-runtime.ts`
+- `lib/vm/dualVMCoordinator.ts`
+- `lib/vm/index.ts`
+- `scripts/generate-repo-state.mjs`
+- `scripts/postbuild.js`
+- `src/engin/generated/surfaces.ts`
+- `src/engin/generated/systems.ts`
+- `types/dreamArtifact.ts`
 
 ---
 
@@ -6861,12 +17377,6 @@ _No migrations for this feature._
 - `lib/reality/realityStore.ts`
 - `lib/runtime/instanceManager.ts`
 - `lib/sharedDream/useSharedDreamSession.ts`
-- `lib/supabase/client.ts`
-- `lib/supabase/realtime.ts`
-- `lib/supabase/safeGetUser.ts`
-- `lib/supabase/server.ts`
-- `lib/supabase/vector.ts`
-- `utils/supabase/server.ts`
 
 ---
 
@@ -6952,7 +17462,6 @@ _No migrations for this feature._
 - `lib/runtime/useEnginBridge.ts`
 - `lib/runtime/useSharedEnginChannel.ts`
 - `lib/social/livekit.ts`
-- `lib/supabase/realtime.ts`
 - `lib/vm/dual-runtime.ts`
 - `lib/web3/client.ts`
 - `lib/widgets/feed-resolver.ts`
@@ -6981,10410 +17490,6 @@ _No migrations for this feature._
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
 - `src/engin/generated/systems.ts`
-
----
-
-<a name="file-connections"></a>
-
-# File Connections (import graph)
-
-## `.github/scripts/issue-bot.js`
-
-- imports: `child_process`
-- imports: `fs`
-- imports: `path`
-- dynamic: `./HeavyComponent`
-
-## `.github/scripts/run-readme-autosync.mjs`
-
-- imports: `node:fs`
-- imports: `node:os`
-- imports: `node:path`
-- imports: `node:child_process`
-
-## `app/(internal)/idari-console/page.tsx`
-
-- imports: `@/components/dream.panel.ChildSafetyPanel`
-- imports: `@/components/dream.panel.IDariPanel`
-- imports: `@/lib/admin/upgrade-readiness`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/(internal)/idari-console/platform-errors/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-
-## `app/(internal)/idari-console/platform-health/page.tsx`
-
-- imports: `@/components/idari/dream.PlatformHealth`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/about/page.tsx`
-
-- imports: `@/components/ui/dream.PlatformBadge`
-- imports: `lucide-react`
-- imports: `next/link`
-
-## `app/actions/dream-docs.ts`
-
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/dream-docs/embed`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@/lib/utils`
-
-## `app/ads/create/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/ads/page.tsx`
-
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/ads`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/ads/slot/[id]/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/ads`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/api/account/delete-data/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/account/delete-dream/route.ts`
-
-- imports: `@/lib/agents/agentBus`
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-- imports: `zod`
-
-## `app/api/account/export-data/route.ts`
-
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/activity/track/route.ts`
-
-- imports: `@/lib/activity/scoring`
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/admin/ai-chat/route.ts`
-
-- imports: `@/lib/admin/lockout`
-- imports: `@/lib/ai/groq`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/admin/ai-request/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/api/admin/child-safety/route.ts`
-
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/admin/code-files/route.ts`
-
-- imports: `@/lib/admin/lockout`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `fs/promises`
-- imports: `next/server`
-- imports: `path`
-
-## `app/api/admin/observability/route.ts`
-
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/observability/collector`
-- imports: `@/lib/observability/correlator`
-- imports: `@/lib/observability/immediateAction`
-- imports: `@/lib/observability/rootCauseAnalyzer`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/ads/orders/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/ads/view/route.ts`
-
-- imports: `@/lib/activity/aqs`
-- imports: `@/lib/activity/revenueSplit`
-- imports: `@/lib/activity/skipCredits`
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/agent/session/route.ts`
-
-- imports: `@/lib/agentOS`
-- imports: `@/lib/agentOS/hostTools`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/ai/boogieman/child-safety/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/ai/rateLimit`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/child-safety/childSafetyDetector`
-- imports: `@/lib/child-safety/imageClassifier`
-- imports: `@/lib/child-safety/ncmecReporter`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `crypto`
-- imports: `next/server`
-- imports: `uuid`
-- imports: `zod`
-- dynamic: `@/lib/child-safety/imageClassifier`
-
-## `app/api/ai/boogieman/privacy-event/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-- imports: `zod`
-
-## `app/api/ai/boogieman/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/ai/rateLimit`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-- imports: `zod`
-
-## `app/api/ai/boogieman/status/route.ts`
-
-- imports: `@/lib/ai/boogie-policy`
-- imports: `next/server`
-
-## `app/api/ai/eams/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/ai/confirm`
-- imports: `@/lib/ai/rateLimit`
-- imports: `@/lib/ai/schemas`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-
-## `app/api/ai/execute/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/confirm`
-- imports: `@/lib/ai/rateLimit`
-- imports: `@/lib/ai/schemas`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/ai/idari/route.ts`
-
-- imports: `@/lib/agents/idari`
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/ai/groq`
-- imports: `@/lib/ai/rateLimit`
-- imports: `@/lib/ai/schemas`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `uuid`
-
-## `app/api/appeal/route.ts`
-
-- imports: `@/lib/ai/audit`
-- imports: `@/lib/ai/boogie-policy`
-- imports: `@/lib/ai/schemas`
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `uuid`
-
-## `app/api/auth/logout/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `next/navigation`
-
-## `app/api/auth/providers/route.ts`
-
-- imports: `@/lib/supabase/config`
-- imports: `next/server`
-
-## `app/api/blocks/route.ts`
-
-- imports: `@/lib/api/route`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/ci/run/route.ts`
-
-- imports: `child_process`
-- imports: `next/server`
-
-## `app/api/close-friends/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/comments/route.ts`
-
-- imports: `@/lib/child-safety/childSafetyDetector`
-- imports: `@/lib/child-safety/ncmecReporter`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `crypto`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/[provider]/connect/route.ts`
-
-- imports: `@/lib/connectors/providers/bluesky`
-- imports: `@/lib/connectors/providers/github`
-- imports: `@/lib/connectors/providers/mastodon`
-- imports: `@/lib/connectors/providers/nostr`
-- imports: `@/lib/connectors/providers/reddit`
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/connector`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/[provider]/disconnect/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/connectors/[provider]/items/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/[provider]/sync/route.ts`
-
-- imports: `@/lib/connectors/reconcile`
-- imports: `@/lib/connectors/syncDispatch`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/connector`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/connectors/[provider]/verify/route.ts`
-
-- imports: `@/lib/connectors/providers/bluesky`
-- imports: `@/lib/connectors/providers/github`
-- imports: `@/lib/connectors/providers/mastodon`
-- imports: `@/lib/connectors/providers/nostr`
-- imports: `@/lib/connectors/providers/reddit`
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/connector`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/cron/route.ts`
-
-- imports: `@/lib/connectors/reconcile`
-- imports: `@/lib/connectors/syncDispatch`
-- imports: `@/lib/connectors/webhookVerification`
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/instagram/oauth/callback/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/headers`
-- imports: `next/server`
-
-## `app/api/connectors/instagram/oauth/start/route.ts`
-
-- imports: `next/headers`
-- imports: `next/server`
-
-## `app/api/connectors/status/route.ts`
-
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/connectors/webhooks/[provider]/route.ts`
-
-- imports: `@/lib/connectors/deliveryStrategy`
-- imports: `@/lib/connectors/webhookVerification`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/connectors/youtube/oauth/callback/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/headers`
-- imports: `next/server`
-
-## `app/api/connectors/youtube/oauth/start/route.ts`
-
-- imports: `next/headers`
-- imports: `next/server`
-
-## `app/api/content/generative-fill/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/content/intelligence/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/content/transcribe/route.ts`
-
-- imports: `@/lib/content/transcriptEditor`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/content/voice-clone/route.ts`
-
-- imports: `@/lib/content/voiceClone`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/dr-eams/hf/route.ts`
-
-- imports: `next/server`
-
-## `app/api/dr-eams/run/route.ts`
-
-- imports: `next/server`
-
-## `app/api/drafts/[id]/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/drafts/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/dream-windows/[id]/route.ts`
-
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/dream-windows/route.ts`
-
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/dreamengin/os-status/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/dreamr/feed/route.ts`
-
-- imports: `@/app/dreamdmbar/_components/dreamr/api/feedHandler`
-
-## `app/api/dreamr/suggested/route.ts`
-
-- imports: `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-- imports: `@/lib/dreamr/closeFriendsVisibility`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/dreamr/tally/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/dreams/feed/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/widgets/feed-resolver`
-- imports: `@/types/widget-system-v2`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/dreams/instances/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/widget-system-v2`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/dreams/transfer/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/embed-feed/route.ts`
-
-- imports: `@/lib/feeds/embedFeedLoader`
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/favorites/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/feed/route.ts`
-
-- imports: `@/lib/activity/visibility-score`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/follow/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/gal/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/game-scores/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-- imports: `@/lib/utils`
-
-## `app/api/gameengin/crash-report/route.ts`
-
-- imports: `@/lib/gameengin/brain-reader`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/health/route.ts`
-
-- imports: `next/server`
-
-## `app/api/home-layout/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/journey/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/lab/benchmarks/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/ledger-media/route.ts`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/server`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/likes/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/marketplace/request/route.ts`
-
-- imports: `@/lib/marketplace/request`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/marketplace/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/messages/boards/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/messages/route.ts`
-
-- imports: `@/lib/child-safety/childSafetyDetector`
-- imports: `@/lib/child-safety/ncmecReporter`
-- imports: `@/lib/child-safety/scanMediaUrls`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `crypto`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/metrics/platform/route.ts`
-
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/metrics/route.ts`
-
-- imports: `@/lib/observability/otel`
-- imports: `@/lib/observability/otelBridge`
-- imports: `next/server`
-
-## `app/api/metrics/user/[userId]/route.ts`
-
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/types/supabase`
-- imports: `next/server`
-
-## `app/api/music/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/notifications/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/platform/errors/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/posts/[id]/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/posts/[id]/save/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/posts/[id]/view/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/posts/profile/[userId]/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/posts/route.ts`
-
-- imports: `@/lib/child-safety/childSafetyDetector`
-- imports: `@/lib/child-safety/ncmecReporter`
-- imports: `@/lib/child-safety/scanMediaUrls`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@supabase/supabase-js`
-- imports: `crypto`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/profile/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/projects/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/scheduled-posts/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/security/scan/route.ts`
-
-- imports: `child_process`
-- imports: `next/server`
-- imports: `util`
-- imports: `@/lib/utils`
-
-## `app/api/settings/appearance/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/settings/feed/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/settings/notifications/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/settings/privacy/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/setup/check/route.ts`
-
-- imports: `@/lib/setup/checks`
-- imports: `next/server`
-
-## `app/api/setup/google-oauth/route.ts`
-
-- imports: `@/lib/supabase/config`
-- imports: `next/server`
-
-## `app/api/shared-dream/sessions/[id]/route.ts`
-
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/shared-dream/sessions/route.ts`
-
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `zod`
-
-## `app/api/shellhub/devices/route.ts`
-
-- imports: `@/lib/connectors/providers/shellhub`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/shop/route.ts`
-
-- imports: `@/lib/shop/listings`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/supabase`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/skip-credits/balance/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/skip-credits/earn/route.ts`
-
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/skip-credits/use/route.ts`
-
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/social/ipfs/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/social/livekit/room/route.ts`
-
-- imports: `@/lib/social/livekit`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/social/livekit/token/route.ts`
-
-- imports: `@/lib/social/livekit`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/social/rss-feed/route.ts`
-
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/upload/route.ts`
-
-- imports: `crypto`
-- imports: `zlib`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-
-## `app/api/user/layout/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/views/track/route.ts`
-
-- imports: `@/lib/activity/types`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-
-## `app/api/widgets/feed/route.ts`
-
-- imports: `next/server`
-
-## `app/api/widgets/instances/route.ts`
-
-- imports: `next/server`
-
-## `app/api/youtube/channel/route.ts`
-
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/types/connector`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/youtube/discovery/route.ts`
-
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/types/connector`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/api/youtube/live-feed/route.ts`
-
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/types/connector`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/auth/callback/route.ts`
-
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/supabase/config`
-- imports: `@/lib/supabase/server`
-- imports: `next/headers`
-- imports: `next/server`
-
-## `app/auth/reset-password/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/config`
-- imports: `next/link`
-- imports: `react`
-
-## `app/auth/update-password/page.tsx`
-
-- imports: `@/components/auth/dream.PasswordField`
-- imports: `@/lib/supabase/client`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `app/connectors/dream.ConnectorsClient.tsx`
-
-- imports: `@/components/connectors/dream.AddSliceSheet`
-- imports: `@/components/connectors/dream.ConnectorRow`
-- imports: `@/components/connectors/dream.NoSlotDialog`
-- imports: `@/components/connectors/dream.PlacementMode`
-- imports: `@/components/connectors/dream.widget.ConnectWidgetPrompt`
-- imports: `@/components/widgets/dream.widget.WidgetShell`
-- imports: `@/hooks/useConnectorInstallFlow`
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `@/lib/connectors/installFlow`
-- imports: `@/lib/widgets/widgetRegistry`
-- imports: `lucide-react`
-- imports: `react`
-
-## `app/connectors/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.ConnectorsClient`
-
-## `app/daydream/analytics/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/dynamic`
-- imports: `next/navigation`
-- imports: `next/server`
-- dynamic: `@/engins/dream.panel.AnalyticsEngin`
-
-## `app/daydream/brand/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/brand/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/daydream/dreamsurface.daydream.BrandDaydream`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.BrandingEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/code/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/code/page.tsx`
-
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.CodeEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/constellation/dream.ConstellationClient.tsx`
-
-- imports: `@/components/daydream/dream.constellationmap`
-- imports: `lucide-react`
-- imports: `next/link`
-
-## `app/daydream/constellation/page.tsx`
-
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.ConstellationClient`
-
-## `app/daydream/create/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/create/page.tsx`
-
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.ContentEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/forge/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/forge/dream.widget.ForgeMomentumWidget`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/dream.ForgeEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/game/dream.GamePageClient.tsx`
-
-- imports: `@/components/games/dream.BabylonSideScroller`
-
-## `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`
-
-- imports: `@/components/games/dream.hud.GameHUD`
-- imports: `@/lib/gameengin/GameRuntime`
-- imports: `@/lib/gameengin/cartridge`
-- imports: `@/lib/gameengin/cartridges/loaders`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/games/hooks`
-- imports: `@/lib/games/mobileControls`
-- imports: `@/lib/games/navigation`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/daydream/game/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/games/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/games/page.tsx`
-
-- imports: `@/components/games/dream.GamesHub`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/autoopen/dream.AutoOpenGameEngin`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/games/quality-plan`
-- imports: `next/dynamic`
-- imports: `next/server`
-- dynamic: `@/engins/engin.GameEngin`
-
-## `app/daydream/lab/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/lab/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `next/dynamic`
-- imports: `next/server`
-- dynamic: `@/engins/engin.LabEngin`
-
-## `app/daydream/lab/portfolio/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/engins/portfolio/dream.PortfolioEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/media-vault/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/music/engin/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/daydream/music/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/music/dream.SoundRecorder`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `next/dynamic`
-- imports: `next/server`
-- dynamic: `@/engins/engin.StarMakerEngin`
-
-## `app/daydream/music/upload/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/daydream/play/page.tsx`
-
-- imports: `@/lib/games/navigation`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/discover/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/dream-effects/page.tsx`
-
-- imports: `@/lib/gsap/useGsapEntrance`
-- imports: `@/lib/utils`
-- imports: `@/lib/webgpu`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `next/dynamic`
-- imports: `react`
-- dynamic: `@/components/three/dream.scene`
-
-## `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
-
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/panels/panelTypes`
-- imports: `@/lib/runtime/EnginDispatcher`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
-
-- imports: `@/components/dreams/dream.DraggableDream`
-- imports: `@/hooks/useAccount`
-- imports: `@/lib/artifactStore`
-- imports: `@/lib/dreamenginOS/OSContext`
-- imports: `@/lib/ledger`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/types/dreamArtifact`
-- imports: `lucide-react`
-- imports: `react`
-
-## `app/dreamdmbar/_components/DreamWidgetGrid.tsx`
-
-- imports: `@/types/widgets`
-
-## `app/dreamdmbar/_components/HomeDreamRegion.tsx`
-
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-- imports: `@/components/dream.BrandLogo`
-- imports: `@/components/dream.HomeFeed`
-- imports: `@/components/dream.NotificationCenter`
-- imports: `@/components/dreams/dream.DraggableDream`
-- imports: `@/components/home/dream.ActiveModuleSurface`
-- imports: `@/components/home/dream.DaydreamPulseStrip`
-- imports: `@/components/home/dream.FlagshipEnginesStrip`
-- imports: `@/lib/notifications/useNotifications`
-- imports: `@/lib/ui/runtimeViewport`
-
-## `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts`
-
-- imports: `@/lib/dreamr/torridityLedger`
-
-## `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts`
-
-- imports: `@/lib/dreamr/torridityLedger`
-
-## `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
-
-- imports: `@/lib/dreamr/closeFriendsVisibility`
-- imports: `@/lib/dreamr/feedCursor`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `../algorithms/dreamrAlgorithm`
-- imports: `@/lib/utils`
-
-## `app/dreamdmbar/_components/dreamr/api/route.ts`
-
-- imports: `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-- imports: `@/lib/dreamr/closeFriendsVisibility`
-- imports: `@/lib/dreamr/feedCursor`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `next/server`
-- imports: `@/lib/utils`
-
-## `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-
-## `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`
-
-- imports: `@/lib/botDetection`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-- imports: `@/lib/dreamr/dreamrfeed`
-
-## `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
-
-- imports: `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/lib/dreamr/dreamrfeed`
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `react`
-
-## `app/dreamdmbar/dreamspace/page.tsx`
-
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `react`
-
-## `app/dreamdmbar/dualruntime/page.tsx`
-
-- imports: `@/components/shared-dream/dream.SharedDreamRuntime`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `react`
-
-## `app/dreamdmbar/homedream/page.tsx`
-
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `react`
-
-## `app/dreamdmbar/layout.tsx`
-
-- imports: `@/app/dreamdmbar/_components/DreamBarDataBridge`
-- imports: `@/components/home/dream.bar.GlobalDreamBar`
-- imports: `@/components/home/dream.bar.PersistentDreamBar`
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `react`
-
-## `app/dreamdmbar/page.tsx`
-
-- imports: `next/navigation`
-
-## `app/dreamr/page.tsx`
-
-- imports: `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/dreamspace/page.tsx`
-
-- imports: `@/components/dreams/dreamsurface.dreamspace`
-
-## `app/edit-profiledream/page.tsx`
-
-- imports: `@/components/activity/dream.ActivityProfile`
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `app/engines/brand/campaigns/page.tsx`
-
-- imports: `@/components/engines/brand/panels/dream.panel.CampaignsPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/brand/identity/page.tsx`
-
-- imports: `@/components/engines/brand/panels/dream.panel.IdentityPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/brand/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/brand/page.tsx`
-
-- imports: `@/components/engines/brand/dream.BrandEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/code/ai/page.tsx`
-
-- imports: `@/components/engines/code/panels/dream.panel.AIPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/code/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/code/notebook/page.tsx`
-
-- imports: `@/components/engines/code/panels/dream.panel.NotebookPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/code/page.tsx`
-
-- imports: `@/components/engines/code/dream.CodeEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/code/projects/page.tsx`
-
-- imports: `@/components/engines/code/panels/dream.panel.ProjectsPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/create/calendar/page.tsx`
-
-- imports: `@/components/engines/create/panels/dream.panel.CalendarPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/create/editor/page.tsx`
-
-- imports: `@/components/engines/create/panels/dream.panel.EditorPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/create/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/create/page.tsx`
-
-- imports: `@/components/engines/create/dream.CreateEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/create/queue/page.tsx`
-
-- imports: `@/components/engines/create/panels/dream.panel.QueuePanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/games/builder/page.tsx`
-
-- imports: `@/components/engines/games/panels/dream.panel.BuilderPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/games/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/games/library/page.tsx`
-
-- imports: `@/components/engines/games/panels/dream.panel.LibraryPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/games/page.tsx`
-
-- imports: `@/components/engines/games/dream.GameEnginApp`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/games/scores/page.tsx`
-
-- imports: `@/components/engines/games/panels/dream.panel.ScoresPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/lab/data/page.tsx`
-
-- imports: `@/components/engines/lab/panels/dream.panel.DataVizPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/lab/experiments/page.tsx`
-
-- imports: `@/components/engines/lab/panels/dream.panel.ExperimentsPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/lab/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/lab/page.tsx`
-
-- imports: `@/components/engines/lab/dream.LabEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/lab/quantum/page.tsx`
-
-- imports: `@/components/engines/lab/panels/dream.panel.QuantumPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/music/arrange/page.tsx`
-
-- imports: `@/components/engines/music/panels/dream.panel.ArrangePanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/music/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/music/library/page.tsx`
-
-- imports: `@/components/engines/music/panels/dream.panel.MusicLibraryPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/music/page.tsx`
-
-- imports: `@/components/engines/music/dream.MusicEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/music/studio/page.tsx`
-
-- imports: `@/components/engines/music/panels/dream.panel.StudioPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/page.tsx`
-
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/portfolio/assets/page.tsx`
-
-- imports: `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/portfolio/layout.tsx`
-
-- imports: `react`
-
-## `app/engines/portfolio/optimize/page.tsx`
-
-- imports: `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/portfolio/page.tsx`
-
-- imports: `@/components/engines/portfolio/dream.PortfolioEnginApp`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/engines/portfolio/quantum/page.tsx`
-
-- imports: `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
-- imports: `@/components/engines/shared`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/error.tsx`
-
-- imports: `@/components/overlays/dream.RootStatusScreen`
-- imports: `@/lib/runtime/isAuthRelatedError`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `app/feed-settings/dream.FeedSettingsClient.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `app/feed-settings/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.FeedSettingsClient`
-
-## `app/gameengin/cartridges/[id]/page.tsx`
-
-- imports: `@/components/gameengin/dream.cartridge.CartridgeLauncher`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/gameengin/cartridges/page.tsx`
-
-- imports: `@/components/gameengin/dream.cartridge.CartridgeBrowser`
-- imports: `next`
-
-## `app/gameengin/page.tsx`
-
-- imports: `next/navigation`
-
-## `app/global-error.tsx`
-
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/homedream/page.tsx`
-
-- imports: `next/navigation`
-
-## `app/join/page.tsx`
-
-- imports: `@/components/auth/dream.PasswordField`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/config`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `app/lab/[id]/codespace/page.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `app/lab/[id]/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/lab/new/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/lab/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/layout.tsx`
-
-- imports: `@/components/dream.CommandPalette`
-- imports: `@/components/dream.GlobalOverlays`
-- imports: `@/components/dream.ThemeApplicator`
-- imports: `@/components/gameengin/dream.CartridgeRegistryBootstrap`
-- imports: `@/components/providers/dream.GodTierProvider`
-- imports: `@/components/providers/dream.ThemeProvider`
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamenginOS/OSContext`
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `next`
-- imports: `next/font/google`
-- imports: `react`
-
-## `app/loading.tsx`
-
-- imports: `@/components/overlays/dream.RootStatusScreen`
-
-## `app/login/page.tsx`
-
-- imports: `@/components/auth/dream.PasswordField`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/config`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `app/marketplace/[id]/page.tsx`
-
-- imports: `@/components/marketplace/dream.MarketplaceRequestButton`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/marketplace/page.tsx`
-
-- imports: `@/components/marketplace/dream.MarketplaceListingCard`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/marketplace/sell/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/messages/boards/[id]/page.tsx`
-
-- imports: `@/components/messaging/dream.BoardComposer`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/messages/boards/new/page.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `app/messages/boards/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/messages/page.tsx`
-
-- imports: `@/components/dream.MessagesClient`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/mission/page.tsx`
-
-- imports: `next/link`
-
-## `app/not-found.tsx`
-
-- imports: `@/components/overlays/dream.RootStatusScreen`
-
-## `app/notes/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/onboarding/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/page.tsx`
-
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `next/dynamic`
-- dynamic: `@/components/dream.LandingHero`
-- dynamic: `@/components/landing/dream.LandingNav`
-- dynamic: `@/components/landing/dream.scene.UniverseField`
-
-## `app/policy/page.tsx`
-
-- imports: `@/lib/ai/boogie-policy`
-- imports: `lucide-react`
-- imports: `next/link`
-
-## `app/profile/[handle]/page.tsx`
-
-- imports: `@/components/activity/dream.ActivityProfile`
-- imports: `@/components/dream.ProfileShareButton`
-- imports: `@/components/feed/dream.FollowButton`
-- imports: `@/components/profile/dream.ProfileCustomizeButton`
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/components/ui/dream.InfinityIcon`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `react`
-
-## `app/profile/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/account/dream.DangerZoneActions.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `app/settings/account/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.DangerZoneActions`
-
-## `app/settings/algorithm/page.tsx`
-
-- imports: `@/components/feed/dream.AlgorithmEngine`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/appearance/page.tsx`
-
-- imports: `@/components/dream.ThemeApplicator`
-- imports: `@/components/providers/dream.ThemeProvider`
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `@/lib/ui/theme-engine`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `app/settings/controls/dream.ControlsClient.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `./dream.PositionIndicatorToggle`
-
-## `app/settings/controls/dream.PositionIndicatorToggle.tsx`
-
-- imports: `react`
-
-## `app/settings/controls/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.ControlsClient`
-
-## `app/settings/data/dream.DataClient.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `app/settings/data/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.DataClient`
-
-## `app/settings/dreams/dreams-layout-editor.tsx`
-
-- imports: `@/components/dreams/dream.DraggableDream`
-- imports: `@/hooks/useDreamLayout`
-- imports: `lucide-react`
-
-## `app/settings/dreams/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `./dreams-layout-editor`
-
-## `app/settings/feed/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/help/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/notifications/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `lucide-react`
-- imports: `react`
-
-## `app/settings/page.tsx`
-
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/privacy/dream.PrivacyClient.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `app/settings/privacy/page.tsx`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `./dream.PrivacyClient`
-
-## `app/settings/safety/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/ai/boogie-policy`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/settings/security/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/config`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/settings/widgets/page.tsx`
-
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `lucide-react`
-- imports: `next/link`
-
-## `app/shop/page.tsx`
-
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/shop/sell/page.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `app/u/[handle]/page.tsx`
-
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `app/view-profile/page.tsx`
-
-- imports: `@/components/activity/dream.ActivityProfile`
-- imports: `@/components/dream.ProfileShareButton`
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-- imports: `react`
-
-## `app/webgpu/page.tsx`
-
-- imports: `@/components/webgpu/dream.WebGPUShowcase`
-- imports: `next`
-
-## `components/activity/dream.ActivityPostForm.tsx`
-
-- imports: `@/lib/activity/scoring`
-- imports: `@/lib/activity/types`
-- imports: `react`
-- imports: `./dream.TierBadge`
-
-## `components/activity/dream.ActivityProfile.tsx`
-
-- imports: `@/lib/activity/aqs`
-- imports: `@/lib/activity/types`
-- imports: `react`
-- imports: `./dream.TierBadge`
-
-## `components/activity/dream.TierBadge.tsx`
-
-- imports: `@/lib/activity/scoring`
-- imports: `@/lib/activity/types`
-
-## `components/ads/dream.AdUnit.tsx`
-
-- imports: `@/lib/activity/types`
-- imports: `next/image`
-- imports: `react`
-
-## `components/ads/dream.SkipCreditBalance.tsx`
-
-- imports: `react`
-
-## `components/auth/dream.PasswordField.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/connectors/dream.AddSliceSheet.tsx`
-
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `react`
-
-## `components/connectors/dream.ConnectDreamPrompt.tsx`
-
-- imports: `@/components/connectors/dream.widget.ConnectWidgetPrompt`
-
-## `components/connectors/dream.ConnectorRow.tsx`
-
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/connectors/dream.NoSlotDialog.tsx`
-
-- imports: `@/lib/widgets/widgetRegistry`
-
-## `components/connectors/dream.PlacementMode.tsx`
-
-- imports: `@/lib/connectors/installFlow`
-- imports: `@/lib/widgets/widgetRegistry`
-- imports: `react`
-
-## `components/connectors/dream.widget.ConnectWidgetPrompt.tsx`
-
-- imports: `@/lib/widgets/widgetRegistry`
-- imports: `react`
-
-## `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
-
-- imports: `@/types/widgets`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/core/dream.CoreDream.tsx`
-
-- imports: `@/app/dreamdmbar/_components/HomeDreamRegion`
-- imports: `next/link`
-- imports: `react`
-
-## `components/customize/dream.GlobalCustomizeUI.tsx`
-
-- imports: `./dream.bar.CustomizeModeBar`
-- imports: `./dream.bar.CustomizeToolbar`
-- imports: `./panels/dream.panel.ColorPanel`
-- imports: `./panels/dream.panel.EffectsPanel`
-- imports: `./panels/dream.panel.FontPanel`
-- imports: `./panels/dream.panel.LayoutPanel`
-
-## `components/customize/dream.bar.CustomizeModeBar.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-
-## `components/customize/dream.bar.CustomizeToolbar.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-
-## `components/customize/panels/dream.panel.ColorPanel.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `@/lib/ui/skin-engine`
-- imports: `react`
-
-## `components/customize/panels/dream.panel.EffectsPanel.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `./dream.panel.ColorPanel`
-
-## `components/customize/panels/dream.panel.FontPanel.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `@/lib/ui/skin-engine`
-- imports: `./dream.panel.ColorPanel`
-
-## `components/customize/panels/dream.panel.LayoutPanel.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `@/lib/ui/skin-engine`
-- imports: `./dream.panel.ColorPanel`
-
-## `components/daydream/dream.CodeDreamIDE.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/swapManager`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@dreamengin/sdk`
-
-## `components/daydream/dream.DiffViewer.tsx`
-
-- imports: `@/lib/diff/diffUtils`
-- imports: `lucide-react`
-- imports: `react`
-- dynamic: `@/lib/diff/diffUtils`
-
-## `components/daydream/dream.JourneyTrail.tsx`
-
-- imports: `@/lib/journey/journeyInsights`
-- imports: `@/types/journey`
-- imports: `framer-motion`
-- imports: `react`
-
-## `components/daydream/dream.LabDreamIDE.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/swapManager`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/daydream/dream.NGNEngin.tsx`
-
-- imports: `@/lib/event-bus`
-- imports: `@/lib/forge-ngn/assembly`
-- imports: `@/lib/forge-ngn/piece-registry`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/daydream/dream.StandaloneEnginSurface.tsx`
-
-- imports: `@/engins/dream.ForgeEngin`
-- imports: `@/engins/engin.BrandingEngin`
-- imports: `@/engins/engin.CodeEngin`
-- imports: `@/engins/engin.ContentEngin`
-- imports: `@/engins/engin.GameEngin`
-- imports: `@/engins/engin.LabEngin`
-- imports: `@/engins/engin.StarMakerEngin`
-- imports: `next/navigation`
-
-## `components/daydream/dream.constellationmap.tsx`
-
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/daydream/dream.shell.DaydreamShell.tsx`
-
-- imports: `@/components/dream.BrandLogo`
-- imports: `@/components/games/dream.remote.GameRemote`
-- imports: `@/lib/daydream/useDaydreamState`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/gsap/useGsapFlip`
-- imports: `@/lib/journey/journeyDots`
-- imports: `@/types/journey`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx`
-
-- imports: `@/components/activity/dream.ActivityProfile`
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `lucide-react`
-- imports: `next/link`
-
-## `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
-
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/daydream/starmaker/dream.panel.CompingPanel.tsx`
-
-- imports: `@/lib/music/starmakerDaw`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/music/starmakerArrangement`
-
-## `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx`
-
-- imports: `@/lib/music/starmakerDaw`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx`
-
-- imports: `@/lib/music/starmakerDaw`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/draggable/dream.DraggableModule.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/types/module-manifest`
-- imports: `react`
-
-## `components/dream.AIAssistant.tsx`
-
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/agents/agentBus`
-- imports: `@/lib/agents/drEamsMode`
-- imports: `@/lib/agents/teachBus`
-- imports: `@/lib/agents/uiActions`
-
-## `components/dream.AudioVisualizer3D.tsx`
-
-- imports: `react`
-- imports: `../lib/audioFingerprint`
-- dynamic: `@babylonjs/core`
-
-## `components/dream.BoogieWarningBanner.tsx`
-
-- imports: `@/lib/policy/boogiePolicy`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/dream.BrandLogo.tsx`
-
-- imports: `@/lib/branding/logos`
-- imports: `next/image`
-- imports: `react`
-
-## `components/dream.CommandPalette.tsx`
-
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.CreatePostModal.tsx`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.DrEamsModeToggle.tsx`
-
-- imports: `@/lib/agents/drEamsMode`
-- imports: `@/lib/agents/teachBus`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/dream.DrEamsVoiceAssistant.tsx`
-
-- imports: `@/lib/agents/agentBus`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.DragToAnchorClose.tsx`
-
-- imports: `react`
-
-## `components/dream.FeedCard.tsx`
-
-- imports: `@/components/feed/dream.CommentSection`
-- imports: `@/components/universe`
-- imports: `@/lib/utils`
-- imports: `@/lib/widgets/parseConfig`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `components/dream.ForgeDreamCanvas.tsx`
-
-- imports: `react`
-- imports: `../lib/componentInventory`
-- imports: `../lib/eventBus`
-- imports: `../lib/forge/engineForge`
-- imports: `@/lib/utils`
-- dynamic: `../lib/supabase/client`
-
-## `components/dream.GlobalOverlays.tsx`
-
-- imports: `next/dynamic`
-- dynamic: `@/components/customize/dream.GlobalCustomizeUI`
-- dynamic: `@/components/dreams/dream.GlobalDragLayer`
-- dynamic: `@/components/dreams/dream.PlatformErrorReporter`
-- dynamic: `@/components/dream.KonamiDream`
-
-## `components/dream.HeroSprite.tsx`
-
-- imports: `react`
-
-## `components/dream.HomeFeed.tsx`
-
-- imports: `@/components/ads/dream.AdUnit`
-- imports: `@/components/feed/dream.FeedVideoCard`
-- imports: `@/components/profile/dream.EditableAvatar`
-- imports: `@/components/ui/dream.SocialShareSheet`
-- imports: `@/lib/activity/types`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/lib/feed/useYouTubeLiveFeed`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/ui/runtimeViewport`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.IconSelector.tsx`
-
-- imports: `next/image`
-- imports: `react`
-
-## `components/dream.InnerDreamsButton.tsx`
-
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.KonamiDream.tsx`
-
-- imports: `framer-motion`
-- imports: `react`
-
-## `components/dream.LandingHero.tsx`
-
-- imports: `@/lib/dreamr/swipeCalibration`
-- imports: `next/link`
-- imports: `react`
-
-## `components/dream.LedgerChart.tsx`
-
-- imports: `@/lib/ledger-data`
-- imports: `react`
-
-## `components/dream.MessagesClient.tsx`
-
-- imports: `@/lib/dreamdm/useDreamDMDraft`
-- imports: `@/lib/dreamdm/useDreamDMMessages`
-- imports: `@/lib/dreamdm/useDreamSearch`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/utils`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.NotificationCenter.tsx`
-
-- imports: `@/lib/notifications/notificationHelpers`
-- imports: `@/lib/notifications/useNotifications`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.OSShellActivator.tsx`
-
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/panels/panelTypes`
-- imports: `@/lib/routing/surfaces`
-- imports: `@/lib/runtime/EnginDispatcher`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.PhysicsLab.tsx`
-
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dream.ProfileEditor.tsx`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/social/platforms`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.ProfileShareButton.tsx`
-
-- imports: `@/components/ui/dream.SocialShareSheet`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/dream.ProfileSpace.tsx`
-
-- imports: `@/lib/navigation/WidgetInstanceMemory`
-- imports: `./dream.DragToAnchorClose`
-
-## `components/dream.PullToRefresh.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/dream.ShrunkMode.tsx`
-
-- imports: `@/lib/navigation/AnchorWidgetStorage`
-
-## `components/dream.ThemeApplicator.tsx`
-
-- imports: `react`
-
-## `components/dream.ThemeToggle.tsx`
-
-- imports: `@/lib/agents/teachBus`
-- imports: `@/lib/ui/theme`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/dream.ToastSystem.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/dream.VoidThemeToggle.tsx`
-
-- imports: `@/components/dream.ThemeApplicator`
-- imports: `react`
-
-## `components/dream.panel.ChildSafetyPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.panel.IDariPanel.tsx`
-
-- imports: `@/lib/agents/agentBus`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.universal_asset_registry.tsx`
-
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dream.widget.AnchorWidget.tsx`
-
-- imports: `@/lib/navigation/AnchorStateBuffer`
-- imports: `@/lib/navigation/AnchorWidgetStorage`
-- imports: `@/lib/navigation/NavStateBuffer`
-- imports: `@/lib/navigation/ReturnStack`
-- imports: `@/lib/navigation/WidgetInstanceMemory`
-- imports: `react`
-
-## `components/dream.widget.ProfileWidgetBlock.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/dream.widget.WidgetBubble.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `react-dnd`
-
-## `components/dreamengin/dream.CanvasDropZone.tsx`
-
-- imports: `@/lib/offline/offlineCache`
-- imports: `react`
-- imports: `uuid`
-
-## `components/dreamengin/dream.DREAMenginOS.tsx`
-
-- imports: `@/components/dreamengin/dream.CanvasDropZone`
-- imports: `@/lib/agents/agentBus`
-- imports: `@/lib/babylon/createEngine`
-- imports: `@/lib/dreamengin/osSubsystemManifest`
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/intelligence/useSessionIntelligence`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/EnginDispatcher`
-- imports: `@babylonjs/core`
-- imports: `react`
-- dynamic: `@babylonjs/core`
-- dynamic: `@babylonjs/havok`
-
-## `components/dreamengin/dream.DrEamsCanvas.tsx`
-
-- imports: `@/lib/dreamengin/DrEamsAnimator`
-- imports: `react`
-
-## `components/dreamengin/dream.HomeControls.tsx`
-
-- imports: `@/components/ui/dream.InfinityIcon`
-
-## `components/dreamengin/dream.bar.DrEamsSearchBar.tsx`
-
-- imports: `@/lib/dreamengin/drEamsSearch`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dreamengin/dream.menu.NexusMenu.tsx`
-
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `next/navigation`
-
-## `components/dreamengin/dream.menu.OutdreamMenu.tsx`
-
-- imports: `@/components/dreamnav/dreamsurface.dreamnav`
-- imports: `@/lib/dreamnav/delta`
-- imports: `@/lib/dreamnav/path`
-
-## `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`
-
-- imports: `@/components/dreamnav/dreamsurface.dreamnav`
-- imports: `@/lib/dreamnav/delta`
-- imports: `@/lib/dreamnav/path`
-
-## `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-
-## `components/dreamengin/dream.panel.DrEamsPanel.tsx`
-
-- imports: `react`
-
-## `components/dreamengin/dream.scene.BabylonGameScene.tsx`
-
-- imports: `@/lib/babylon/createEngine`
-- imports: `@/lib/god-tier/godTierEngine`
-- imports: `@/lib/webgpu/director`
-- imports: `react`
-- dynamic: `@babylonjs/core`
-- dynamic: `@/lib/god-tier/godTierEngine`
-- dynamic: `@/lib/webgpu/director`
-
-## `components/dreamengin/dream.scene.DrEamsScene.tsx`
-
-- imports: `@/lib/babylon/createEngine`
-- imports: `@/lib/god-tier/godTierEngine`
-- imports: `@babylonjs/core`
-- imports: `react`
-- dynamic: `@babylonjs/core`
-
-## `components/dreamengin/dream.scene.PortfolioOptimizationScene.tsx`
-
-- imports: `react`
-
-## `components/dreamengin/dream.shell.EnginShell.tsx`
-
-- imports: `react`
-
-## `components/dreamengin/dream.widget.AppearanceWidget.tsx`
-
-- imports: `@/components/providers/dream.ThemeProvider`
-- imports: `@/lib/ui/theme-engine`
-- imports: `react`
-
-## `components/dreamengin/dreamsurface.dreamengin.tsx`
-
-- imports: `@/components/dreamnav/dreamsurface.dreamnav`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `./dream.CanvasDropZone`
-- imports: `./dream.DREAMenginOS`
-- imports: `./dream.HomeControls`
-- imports: `./dream.menu.NexusMenu`
-- imports: `./dream.menu.OutdreamMenu`
-- imports: `./dream.panel.DrEamsPanel`
-
-## `components/dreamengin/engine/types.ts`
-
-- imports: `./math`
-
-## `components/dreamnav/dreamsurface.dreamnav.tsx`
-
-- imports: `@/lib/dreamnav/delta`
-- imports: `react`
-
-## `components/dreamr/dream.CloseFriendsSettings.tsx`
-
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `components/dreamr/dream.panel.DreamRChannelPanel.tsx`
-
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/types/connector`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `components/dreamr/dream.panel.DreamRCreatorPanel.tsx`
-
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `react`
-
-## `components/dreams/dream.DraggableDream.tsx`
-
-- imports: `@/lib/dreams/drag`
-- imports: `react`
-
-## `components/dreams/dream.GlobalDragLayer.tsx`
-
-- imports: `@/lib/dreams/drag`
-- imports: `react`
-
-## `components/dreams/dream.PlatformErrorReporter.tsx`
-
-- imports: `react`
-
-## `components/dreams/dream.SlideOverPanel.tsx`
-
-- imports: `framer-motion`
-- imports: `react`
-
-## `components/dreams/dream.connectorlayer.tsx`
-
-- imports: `react`
-
-## `components/dreams/dream.featurelayer.tsx`
-
-- imports: `react`
-
-## `components/dreams/dream.outputlayer.tsx`
-
-- imports: `@/lib/dreams/profileProjection`
-- imports: `react`
-
-## `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`
-
-- imports: `@/lib/intelligence/continuityHelpers`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `react`
-
-## `components/dreams/dream.shell.DreamShell.tsx`
-
-- imports: `@/components/dreams/dreamsurface.shell`
-
-## `components/dreams/dream.shell.SharedDreamShell.tsx`
-
-- imports: `@/hooks/useSharedDream`
-- imports: `@/lib/sharedDream`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/dreams/dream.widget.SuperDreamWidget.tsx`
-
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- imports: `@/lib/dream-window/useDreamWindowActions`
-- imports: `@/types/dream-window`
-- imports: `react`
-
-## `components/dreams/dream.window.JourneyDreamWindow.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `next/link`
-
-## `components/dreams/dreamsurface.dreamspace.tsx`
-
-- imports: `@/app/dreamdmbar/_components/DreamSpaceRegion`
-- imports: `@/components/dreams/dream.panel.RuntimeMemoryHUD`
-- imports: `@/components/spatial/dream.ProfileSpace`
-- imports: `@/components/widgets/dream.widget.UniversalWidget`
-- imports: `@/lib/dreams/useDreamsRuntime`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/forgeMomentum`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/intelligence/continuityHelpers`
-- imports: `@/lib/intelligence/useSessionIntelligence`
-- imports: `framer-motion`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/dreams/dreamsurface.shell.tsx`
-
-- imports: `react`
-
-## `components/dreams/dreamsurface.window.tsx`
-
-- imports: `@/hooks/useTapHoldMove`
-- imports: `@/lib/universalEditor`
-- imports: `react`
-
-## `components/engines/brand/dream.BrandEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.BrandingEngin`
-
-## `components/engines/brand/index.ts`
-
-- imports: `./dream.BrandEnginApp`
-- imports: `./panels/dream.panel.CampaignsPanel`
-- imports: `./panels/dream.panel.IdentityPanel`
-
-## `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/code/dream.CodeEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.CodeEngin`
-
-## `components/engines/code/index.ts`
-
-- imports: `./dream.CodeEnginApp`
-- imports: `./panels/dream.panel.AIPanel`
-- imports: `./panels/dream.panel.NotebookPanel`
-- imports: `./panels/dream.panel.ProjectsPanel`
-
-## `components/engines/code/panels/dream.panel.AIPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `vitest`
-
-## `components/engines/code/panels/dream.panel.NotebookPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/code/panels/dream.panel.ProjectsPanel.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/engines/create/dream.CreateEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.ContentEngin`
-
-## `components/engines/create/index.ts`
-
-- imports: `./dream.CreateEnginApp`
-- imports: `./panels/dream.panel.CalendarPanel`
-- imports: `./panels/dream.panel.EditorPanel`
-- imports: `./panels/dream.panel.QueuePanel`
-
-## `components/engines/create/panels/dream.panel.CalendarPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/create/panels/dream.panel.EditorPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/create/panels/dream.panel.QueuePanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/games/dream.GameEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.GameEngin`
-
-## `components/engines/games/index.ts`
-
-- imports: `./dream.GameEnginApp`
-- imports: `./panels/dream.panel.BuilderPanel`
-- imports: `./panels/dream.panel.LibraryPanel`
-- imports: `./panels/dream.panel.ScoresPanel`
-
-## `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/games/panels/dream.panel.LibraryPanel.tsx`
-
-- imports: `@/lib/games/catalog`
-- imports: `@/lib/games/navigation`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/engines/games/panels/dream.panel.ScoresPanel.tsx`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/engines/index.ts`
-
-- imports: `./shared`
-- imports: `./brand`
-- imports: `./code`
-- imports: `./create`
-- imports: `./games`
-- imports: `./lab`
-- imports: `./music`
-- imports: `./portfolio`
-
-## `components/engines/lab/dream.LabEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.LabEngin`
-
-## `components/engines/lab/index.ts`
-
-- imports: `./dream.LabEnginApp`
-- imports: `./panels/dream.panel.DataVizPanel`
-- imports: `./panels/dream.panel.ExperimentsPanel`
-- imports: `./panels/dream.panel.QuantumPanel`
-
-## `components/engines/lab/panels/dream.panel.DataVizPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/lab/panels/dream.panel.ExperimentsPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/lab/panels/dream.panel.QuantumPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/music/dream.MusicEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.StarMakerEngin`
-
-## `components/engines/music/index.ts`
-
-- imports: `./dream.MusicEnginApp`
-- imports: `./panels/dream.panel.ArrangePanel`
-- imports: `./panels/dream.panel.MusicLibraryPanel`
-- imports: `./panels/dream.panel.StudioPanel`
-
-## `components/engines/music/panels/dream.panel.ArrangePanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/music/panels/dream.panel.MusicLibraryPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/music/panels/dream.panel.StudioPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/engines/portfolio/dream.PortfolioEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/portfolio/dream.PortfolioEngin`
-
-## `components/engines/portfolio/index.ts`
-
-- imports: `./dream.PortfolioEnginApp`
-- imports: `./panels/dream.panel.AssetsPanel`
-- imports: `./panels/dream.panel.OptimizePanel`
-- imports: `./panels/dream.panel.PortfolioQuantumPanel`
-
-## `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`
-
-- imports: `@/engins/dream.QuantumCircuitCanvas`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/engines/shared/dream.EnginProvider.tsx`
-
-- imports: `react`
-
-## `components/engines/shared/dream.EnginRuleSet.ts`
-
-- imports: `react`
-- imports: `./dream.EnginProvider`
-- imports: `./dream.bar.EnginNavBar`
-
-## `components/engines/shared/dream.bar.EnginNavBar.tsx`
-
-- imports: `next/link`
-- imports: `next/navigation`
-
-## `components/engines/shared/dream.makeEnginApp.tsx`
-
-- imports: `@/components/engines/shared`
-- imports: `@/engins/engin.StarMakerEngin`
-- imports: `next/navigation`
-- imports: `./dream.bar.EnginNavBar`
-- imports: `./dream.EnginRuleSet`
-- imports: `./dream.shell.EnginAppShell`
-
-## `components/engines/shared/dream.shell.EnginAppShell.tsx`
-
-- imports: `@/components/shared-dream`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/engines/shared/index.ts`
-
-- imports: `./dream.bar.EnginNavBar`
-- imports: `./dream.EnginProvider`
-- imports: `./dream.EnginRuleSet`
-- imports: `./dream.makeEnginApp`
-- imports: `./dream.shell.EnginAppShell`
-
-## `components/feed/dream.AlgorithmEngine.tsx`
-
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/feed/dream.CommentSection.tsx`
-
-- imports: `@/lib/utils`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `components/feed/dream.FeedVideoCard.tsx`
-
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/feed/dream.FollowButton.tsx`
-
-- imports: `@/components/feed/dream.FollowOnboarding`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/feed/dream.FollowOnboarding.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/feeds/dream.widget.EmbedFeedWidget.tsx`
-
-- imports: `@/lib/feeds/embedFeedLoader`
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/forge/dream.EngineBuilderCanvas.tsx`
-
-- imports: `@/lib/componentInventory`
-- imports: `@/lib/forge/engineForge`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/forge/dream.panel.AIBuilderPanel.tsx`
-
-- imports: `@/lib/forge/forgeBuild`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/forge/useForgeBuild`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/forge/dream.widget.ForgeMomentumWidget.tsx`
-
-- imports: `@/lib/forge/forgeMomentum`
-- imports: `react`
-
-## `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
-
-- imports: `@/lib/gameengin/registerCartridges`
-- imports: `react`
-
-## `components/gameengin/dream.CrashReportModal.tsx`
-
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/gameengin/dream.cartridge.CartridgeBrowser.tsx`
-
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `next/link`
-- imports: `react`
-
-## `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx`
-
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`
-
-- imports: `@/lib/gameengin/GameRuntime`
-- imports: `@/lib/gameengin/cartridge`
-- imports: `@/lib/gameengin/cartridges/loaders`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `next/link`
-- imports: `react`
-- imports: `./dream.CrashReportModal`
-- imports: `./dream.cartridge.CartridgeErrorBoundary`
-- imports: `@/lib/utils`
-
-## `components/gameengin/dream.cartridge.FeaturedCartridges.tsx`
-
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `next/link`
-
-## `components/gameengin/input/DualSenseManager.ts`
-
-- imports: `@babylonjs/core`
-
-## `components/games/dream.AvenueOfMirrors.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-
-## `components/games/dream.BabylonSideScroller.tsx`
-
-- imports: `./madmaxi`
-
-## `components/games/dream.DefuseRitual.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-
-## `components/games/dream.EchoArena.tsx`
-
-- imports: `@/components/gameengin/input/DualSenseManager`
-- imports: `@/lib/games/hooks`
-- imports: `@/lib/games/mobileControls`
-- imports: `@/lib/games/performance-baseline`
-- imports: `@babylonjs/core`
-- imports: `react`
-- dynamic: `@babylonjs/core/Engines`
-
-## `components/games/dream.EnginFracture.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-
-## `components/games/dream.GameController.tsx`
-
-- imports: `clsx`
-- imports: `react`
-- imports: `@/components/games/dream.GameController.module.css`
-- imports: `@/lib/games/gameControllerButtons`
-- imports: `@/lib/games/gameControllerLeft`
-- imports: `@/lib/games/gameControllerRight`
-- imports: `@/lib/games/mobileControls`
-
-## `components/games/dream.GamesHub.tsx`
-
-- imports: `@/lib/games/avatar`
-- imports: `@/lib/games/catalog`
-- imports: `@/lib/games/library-state`
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/gsap/useGsapEntrance`
-- imports: `@/lib/gsap/useGsapScrollReveal`
-- imports: `@/lib/hooks/useMotionTilt`
-- imports: `framer-motion`
-- imports: `next/dynamic`
-- imports: `next/navigation`
-- imports: `react`
-- dynamic: `@/components/games/dream.BabylonSideScroller`
-- dynamic: `@/components/games/dream.NeonDrift`
-- dynamic: `@/components/games/dream.EchoArena`
-- dynamic: `@/components/games/dream.NullCathedral`
-- dynamic: `@/components/games/dream.VoidlineGP`
-- dynamic: `@/components/games/dream.SerpentSiege`
-- dynamic: `@/components/games/dream.AvenueOfMirrors`
-- dynamic: `@/components/games/dream.EnginFracture`
-- dynamic: `@/components/games/dream.Glassfall`
-- dynamic: `@/components/games/dream.NiteFlyerSolarHymn`
-- dynamic: `@/components/games/dream.LexiconSolitaire`
-- dynamic: `@/components/games/dream.DefuseRitual`
-
-## `components/games/dream.Glassfall.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-- imports: `./_fx/canvasFx`
-
-## `components/games/dream.Leaderboard.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/games/dream.LexiconSolitaire.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-
-## `components/games/dream.NeonDrift.tsx`
-
-- imports: `@/components/gameengin/input/DualSenseManager`
-- imports: `@/lib/gameengin`
-- imports: `@/lib/gameengin/ai-director`
-- imports: `@/lib/gameengin/post-fx`
-- imports: `@/lib/games/hooks`
-- imports: `@/lib/games/performance-baseline`
-- imports: `@babylonjs/core`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/games/dream.NiteFlyerSolarHymn.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-
-## `components/games/dream.NullCathedral.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-- imports: `./_fx/canvasFx`
-
-## `components/games/dream.RecordingControls.tsx`
-
-- imports: `@/lib/h265-encoder`
-- imports: `react`
-
-## `components/games/dream.SerpentSiege.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-- imports: `./_fx/canvasFx`
-
-## `components/games/dream.VoidlineGP.tsx`
-
-- imports: `@/lib/games/hooks`
-- imports: `react`
-- imports: `./_fx/canvasFx`
-
-## `components/games/dream.hud.GameHUD.tsx`
-
-- imports: `@/components/games/dream.GameController`
-- imports: `@/components/games/dream.hud.MobileGameHUD`
-- imports: `@/lib/games/mobileControls`
-
-## `components/games/dream.hud.LegacyGameHUD.tsx`
-
-- imports: `@/components/games/dream.remote.GameRemote`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/games/dream.hud.MobileGameHUD.tsx`
-
-- imports: `@/components/games/dream.hud.MobileGameHUD.module.css`
-- imports: `@/lib/games/mobileControls`
-- imports: `clsx`
-- imports: `react`
-
-## `components/games/dream.remote.GameRemote.tsx`
-
-- imports: `@/components/games/dream.remote.LegacyGameRemote`
-
-## `components/games/dream.remote.LegacyGameRemote.tsx`
-
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/games/useGamepad`
-- imports: `@/lib/games/useRemoteChannel`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/games/madmaxi/authoredZonePacks.ts`
-
-- imports: `./config`
-- imports: `./types`
-
-## `components/games/madmaxi/config.ts`
-
-- imports: `./types`
-
-## `components/games/madmaxi/dream.MadmaxiGame.tsx`
-
-- imports: `@/lib/babylon/createEngine`
-- imports: `@/lib/games/hooks`
-- imports: `@/lib/games/useImmersiveGameLayout`
-- imports: `react`
-- imports: `@/lib/god-tier/godTierEngine`
-- imports: `./audio`
-- imports: `./config`
-- imports: `./levels`
-- imports: `./materials`
-- imports: `./types`
-- imports: `./vfx`
-- dynamic: `@babylonjs/core`
-
-## `components/games/madmaxi/index.ts`
-
-- imports: `./dream.MadmaxiGame`
-- imports: `./config`
-- imports: `./levels`
-
-## `components/games/madmaxi/levels.ts`
-
-- imports: `./authoredZonePacks`
-- imports: `./config`
-- imports: `./types`
-
-## `components/games/madmaxi/materials.ts`
-
-- imports: `@babylonjs/core`
-
-## `components/games/madmaxi/vfx.ts`
-
-- imports: `@babylonjs/core`
-
-## `components/home/dream.ActiveModuleSurface.tsx`
-
-- imports: `@/lib/activeModulesStore`
-- imports: `@/lib/artifactStore`
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- imports: `@/lib/dream-window/useDreamWindowActions`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/types/dreamArtifact`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/home/dream.DaydreamPulseStrip.tsx`
-
-- imports: `next/navigation`
-
-## `components/home/dream.FlagshipEnginesStrip.tsx`
-
-- imports: `@/lib/forge/forgeMomentum`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/home/dream.NeuralSeamCanvas.tsx`
-
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/dreamdm/bridgeSeamFlow`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-
-## `components/home/dream.bar.GlobalDreamBar.tsx`
-
-- imports: `@/components/dreamengin/dream.panel.DrEamsPanel`
-- imports: `@/components/menus/dream.menu.DualBottomMenu`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/home-buttons/contextual-home`
-- imports: `@/lib/routing/surfaces`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `go-home`
-
-## `components/home/dream.bar.PersistentDreamBar.tsx`
-
-- imports: `@/components/ads/dream.SkipCreditBalance`
-- imports: `@/components/home/dream.NeuralSeamCanvas`
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/components/runtime/dream.RuntimeView`
-- imports: `@/dreamdmbar/dreamsurface.dreamdmbar`
-- imports: `@/hooks/useDreamLayout`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/dreamenginOS/OSContext`
-- imports: `@/lib/dreams/drag`
-- imports: `@/lib/routing/surfaces`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/components/home/dream.bar.PersistentDreamBar`
-
-## `components/home/dream.widget.DreamWidget.tsx`
-
-- imports: `@/lib/utils`
-- imports: `framer-motion`
-- imports: `react`
-
-## `components/idari/dream.PlatformHealth.tsx`
-
-- imports: `@/lib/activity/types`
-- imports: `react`
-
-## `components/landing/dream.LandingNav.tsx`
-
-- imports: `next/link`
-
-## `components/landing/dream.LandingProductStatement.tsx`
-
-- imports: `next/link`
-
-## `components/landing/dream.scene.UniverseField.tsx`
-
-- imports: `@/lib/torridity/constants`
-- imports: `react`
-
-## `components/marketplace/dream.MarketplaceListingCard.tsx`
-
-- imports: `next/link`
-
-## `components/marketplace/dream.MarketplaceRequestButton.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/menus/dream.menu.DreamRadialMenu.tsx`
-
-- imports: `next/navigation`
-- imports: `react`
-- imports: `./dream.panel.MenuPanel`
-
-## `components/menus/dream.menu.DualBottomMenu.tsx`
-
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/menus/dream.menu.RadialMenu.tsx`
-
-- imports: `react`
-
-## `components/menus/dream.menu.SystemRadialMenu.tsx`
-
-- imports: `./dream.panel.MenuPanel`
-
-## `components/menus/dream.panel.MenuPanel.tsx`
-
-- imports: `react`
-
-## `components/messaging/dream.BoardComposer.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/music/dream.SoundRecorder.tsx`
-
-- imports: `lucide-react`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/onboarding/dream.OnboardingTip.tsx`
-
-- imports: `react`
-
-## `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx`
-
-- imports: `@/lib/babylon/createEngine`
-- imports: `@/lib/god-tier/godTierEngine`
-- imports: `@/lib/optimizer/babylon-optimizero`
-- imports: `@/lib/optimizer/creative-optimizero`
-- imports: `react`
-- dynamic: `@babylonjs/core`
-
-## `components/overlays/dream.RootStatusScreen.tsx`
-
-- imports: `next/link`
-
-## `components/panels/dream.panel.AlgorithmPanel.tsx`
-
-- imports: `@/components/feed/dream.AlgorithmEngine`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `lucide-react`
-
-## `components/panels/dream.panel.AppearancePanel.tsx`
-
-- imports: `@/components/dream.ThemeApplicator`
-- imports: `@/components/providers/dream.ThemeProvider`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `@/lib/ui/theme-engine`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.ConnectorsPanel.tsx`
-
-- imports: `@/app/connectors/dream.ConnectorsClient`
-- imports: `lucide-react`
-
-## `components/panels/dream.panel.ControlsPanel.tsx`
-
-- imports: `@/app/settings/controls/dream.PositionIndicatorToggle`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.DataPanel.tsx`
-
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.FeedPanel.tsx`
-
-- imports: `@/components/panels/dream.panel.FeedSettingsPanel`
-
-## `components/panels/dream.panel.FeedSettingsPanel.tsx`
-
-- imports: `@/lib/feed/feedTopics`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.HelpPanel.tsx`
-
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `lucide-react`
-
-## `components/panels/dream.panel.MarketplacePanel.tsx`
-
-- imports: `@/components/marketplace/dream.MarketplaceListingCard`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.PrivacyPanel.tsx`
-
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.ProfilePanel.tsx`
-
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.SafetyPanel.tsx`
-
-- imports: `@/lib/ai/boogie-policy`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.SettingsPanel.tsx`
-
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/panels/panelTypes`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/panels/dream.panel.WidgetsPanel.tsx`
-
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/profile/dream.EditableAvatar.tsx`
-
-- imports: `next/image`
-- imports: `next/navigation`
-- imports: `react`
-
-## `components/profile/dream.ProfileCanvas.tsx`
-
-- imports: `@/components/ui/dream.PlatformBadge`
-- imports: `@/lib/social/platforms`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `components/profile/dream.ProfileCustomizeButton.tsx`
-
-- imports: `@/lib/ui/CustomizeModeContext`
-
-## `components/profile/dream.widget.ProfileWidgetGrid.tsx`
-
-- imports: `@/components/connectors/dream.widget.ConnectorWidgetPicker`
-- imports: `@/components/profile/dream.EditableAvatar`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/providers/dream.AppSurfaceShell.tsx`
-
-- imports: `@/components/dream.CommandPalette`
-- imports: `@/components/dream.GlobalOverlays`
-- imports: `@/components/dream.ThemeApplicator`
-- imports: `@/components/providers/dream.GodTierProvider`
-- imports: `@/components/providers/dream.ThemeProvider`
-- imports: `@/components/runtime/dream.DualRuntimeContainer`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamenginOS/OSContext`
-- imports: `@/lib/routing/surfaces`
-- imports: `@/lib/ui/CustomizeModeContext`
-- imports: `react`
-
-## `components/providers/dream.GodTierProvider.tsx`
-
-- imports: `@/lib/god-tier/useGodTier`
-- imports: `next/navigation`
-
-## `components/providers/dream.ThemeProvider.tsx`
-
-- imports: `@/lib/ui/theme-engine`
-- imports: `react`
-
-## `components/runtime/dream.DualRuntimeContainer.tsx`
-
-- imports: `@/lib/runtime/dualRuntime`
-- imports: `react`
-
-## `components/runtime/dream.RuntimeView.tsx`
-
-- imports: `@/app/dreamdmbar/_components/HomeDreamRegion`
-- imports: `@/components/dreams/dreamsurface.dreamspace`
-- imports: `@/components/runtime/dream.shell.RuntimeShell`
-- imports: `@/components/spatial/dream.shell.EnhancedSpatialShell`
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/runtime/dualRuntime`
-- imports: `react`
-- imports: `@/components/panels/dream.panel.AlgorithmPanel`
-- imports: `@/components/panels/dream.panel.AppearancePanel`
-- imports: `@/components/panels/dream.panel.ConnectorsPanel`
-- imports: `@/components/panels/dream.panel.ControlsPanel`
-- imports: `@/components/panels/dream.panel.DataPanel`
-- imports: `@/components/panels/dream.panel.FeedSettingsPanel`
-- imports: `@/components/panels/dream.panel.HelpPanel`
-- imports: `@/components/panels/dream.panel.MarketplacePanel`
-- imports: `@/components/panels/dream.panel.PrivacyPanel`
-- imports: `@/components/panels/dream.panel.ProfilePanel`
-- imports: `@/components/panels/dream.panel.SafetyPanel`
-- imports: `@/components/panels/dream.panel.SettingsPanel`
-- imports: `@/components/panels/dream.panel.WidgetsPanel`
-- imports: `@/lib/dreams/DreamRegistry`
-- imports: `@/lib/panels/panelTypes`
-
-## `components/runtime/dream.shell.RuntimeShell.tsx`
-
-- imports: `@/lib/ui/runtimeViewport`
-- imports: `react`
-
-## `components/shaders/dream.LightningWing.tsx`
-
-- imports: `@react-three/fiber`
-- imports: `react`
-- imports: `three`
-
-## `components/shaders/dream.NeonGlow.tsx`
-
-- imports: `@react-three/fiber`
-- imports: `react`
-- imports: `three`
-
-## `components/shaders/dream.Refractor.tsx`
-
-- imports: `@react-three/fiber`
-- imports: `react`
-- imports: `three`
-
-## `components/shaders/index.ts`
-
-- imports: `./dream.NeonGlow`
-- imports: `./dream.LightningWing`
-- imports: `./dream.Refractor`
-
-## `components/shared-dream/dream.InviteFlow.tsx`
-
-- imports: `react`
-- imports: `./dream.SharedDreamProvider`
-
-## `components/shared-dream/dream.SharedDreamCanvas.tsx`
-
-- imports: `react`
-- imports: `./dream.SharedDreamProvider`
-
-## `components/shared-dream/dream.SharedDreamProvider.tsx`
-
-- imports: `@/lib/collaboration`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `components/shared-dream/dream.SharedDreamRuntime.tsx`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/sharedDream/useSharedDreamSession`
-- imports: `react`
-- imports: `./dream.InviteFlow`
-- imports: `./dream.SharedDreamCanvas`
-- imports: `./dream.SharedDreamProvider`
-
-## `components/shared-dream/index.ts`
-
-- imports: `./dream.SharedDreamProvider`
-- imports: `./dream.SharedDreamCanvas`
-- imports: `./dream.InviteFlow`
-- imports: `./dream.SharedDreamRuntime`
-
-## `components/spatial/dream.PixiPhysicsLayer.tsx`
-
-- imports: `pixi-viewport`
-- imports: `pixi.js`
-- imports: `react`
-
-## `components/spatial/dream.ProfileSpace.tsx`
-
-- imports: `@/hooks/use-spatial`
-- imports: `@/lib/utils`
-- imports: `@/types/spatial`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `components/spatial/dream.shell.EnhancedSpatialShell.tsx`
-
-- imports: `@/components/dream.ProfileSpace`
-- imports: `@/components/spatial/dream.PixiPhysicsLayer`
-- imports: `@/lib/navigation/NavStateBuffer`
-- imports: `@/lib/navigation/SpatialNavigationEngine`
-- imports: `@/lib/navigation/WidgetInstanceMemory`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/three/dream.scene.tsx`
-
-- imports: `@/components/shaders/dream.LightningWing`
-- imports: `@/components/shaders/dream.NeonGlow`
-- imports: `@/components/shaders/dream.Refractor`
-- imports: `@react-three/drei`
-- imports: `@react-three/fiber`
-- imports: `react`
-- imports: `three`
-
-## `components/three/index.ts`
-
-- imports: `./dream.scene`
-
-## `components/ui/dream.AuthenticatedPageHeader.tsx`
-
-- imports: `@/components/dream.BrandLogo`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/ui/dream.DreamWord.tsx`
-
-- imports: `@/components/ui/dream.DreamWord`
-
-## `components/ui/dream.IconList.tsx`
-
-- imports: `next/link`
-- imports: `./dream.SheetIcon`
-
-## `components/ui/dream.InfinityIcon.tsx`
-
-- imports: `react`
-
-## `components/ui/dream.PlatformBadge.tsx`
-
-- imports: `@/components/ui/dream.SheetIcon`
-- imports: `@/lib/icons/sheet`
-- imports: `@/lib/social/platforms`
-- imports: `next/image`
-
-## `components/ui/dream.SheetIcon.tsx`
-
-- imports: `@/lib/icons/sheet`
-
-## `components/ui/dream.SocialShareSheet.tsx`
-
-- imports: `@/lib/social/platforms`
-- imports: `lucide-react`
-- imports: `react`
-
-## `components/universal-editor/dream.UniversalEditor.tsx`
-
-- imports: `@/lib/runtime/coercionTable`
-- imports: `react`
-
-## `components/universal-editor/dream.UniversalEditorWrapper.tsx`
-
-- imports: `@/lib/universal-editor/module-manifest`
-- imports: `react`
-- imports: `./useTapHoldMove`
-
-## `components/universal-editor/index.ts`
-
-- imports: `./useTapHoldMove`
-- imports: `./dream.UniversalEditorWrapper`
-- imports: `./dream.UniversalEditor`
-
-## `components/universal-editor/useTapHoldMove.ts`
-
-- imports: `@/lib/universal-editor/module-manifest`
-- imports: `react`
-
-## `components/universe/dream.node-cluster.tsx`
-
-- imports: `@/lib/utils`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `components/universe/dream.shell.universe-shell.tsx`
-
-- imports: `@/lib/utils`
-- imports: `react`
-
-## `components/universe/dream.universe-card.tsx`
-
-- imports: `@/lib/utils`
-- imports: `react`
-
-## `components/universe/index.ts`
-
-- imports: `./dream.node-cluster`
-- imports: `./dream.shell.universe-shell`
-- imports: `./dream.universe-card`
-
-## `components/warp/dream.WarpCanvas.tsx`
-
-- imports: `@/lib/warp/useWarp`
-- imports: `@/lib/warp/warpEngine`
-
-## `components/webgpu/dream.WebGPUShowcase.tsx`
-
-- imports: `@/lib/webgpu`
-- imports: `next/link`
-- imports: `react`
-- imports: `./renderer`
-
-## `components/webgpu/renderer.ts`
-
-- imports: `./shaders`
-
-## `components/widgets/dream.ConfigureSheet.tsx`
-
-- imports: `react`
-
-## `components/widgets/dream.EditModeBanner.tsx`
-
-- imports: `./dream.EditModeProvider`
-
-## `components/widgets/dream.EditModeProvider.tsx`
-
-- imports: `react`
-
-## `components/widgets/dream.widget.PlayMediaWidget.tsx`
-
-- imports: `react`
-- imports: `./dream.widget.WidgetCard`
-
-## `components/widgets/dream.widget.UniversalWidget.tsx`
-
-- imports: `react`
-- imports: `./dream.widget.WidgetCard`
-
-## `components/widgets/dream.widget.WidgetCard.tsx`
-
-- imports: `@/components/dreams/dreamsurface.shell`
-- imports: `react`
-
-## `components/widgets/dream.widget.WidgetLibrary.tsx`
-
-- imports: `@/components/dreams/dream.widget.SuperDreamWidget`
-
-## `components/widgets/dream.widget.WidgetPlaceholder.tsx`
-
-- imports: `react`
-
-## `components/widgets/dream.widget.WidgetShell.tsx`
-
-- imports: `@/components/dreams/dreamsurface.shell`
-
-## `components/widgets/dream.widget.WidgetSurface.tsx`
-
-- imports: `@/components/dreams/dream.widget.SuperDreamWidget`
-
-## `coresurfaces/dreamsurface.EditProfileDream.tsx`
-
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-
-## `coresurfaces/dreamsurface.ViewProfile.tsx`
-
-- imports: `@/components/dream.ProfileShareButton`
-- imports: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `daydreams/brand/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/daydream/dreamsurface.daydream.BrandDaydream`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.BrandingEngin`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `daydreams/code/page.tsx`
-
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.CodeEngin`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `daydreams/create/page.tsx`
-
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.ContentEngin`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `daydreams/games/page.tsx`
-
-- imports: `@/components/games/dream.GamesHub`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/server`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/autoopen/dream.AutoOpenGameEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/games/quality-plan`
-- imports: `next/dynamic`
-- imports: `next/server`
-- dynamic: `@/engins/engin.GameEngin`
-
-## `daydreams/lab/page.tsx`
-
-- imports: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.LabEngin`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `daydreams/music/page.tsx`
-
-- imports: `@/components/daydream/dream.shell.DaydreamShell`
-- imports: `@/components/music/dream.SoundRecorder`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-- imports: `@/engins/engin.StarMakerEngin`
-- imports: `@/lib/dev-bypass`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `next/server`
-
-## `dreamdmbar/dream.GlowingLight.tsx`
-
-- imports: `react`
-
-## `dreamdmbar/dreamsurface.dreamdmbar.tsx`
-
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/components/ui/dream.DreamWord`
-- imports: `@/dreamdmbar/dream.GlowingLight`
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamdm/useDreamBarContext`
-- imports: `@/lib/dreamdm/useDreamDMConversations`
-- imports: `@/lib/dreamdm/useDreamDMDraft`
-- imports: `@/lib/dreamdm/useDreamDMMessages`
-- imports: `@/lib/dreamdm/useDreamSearch`
-- imports: `@/lib/dreamdm/useMessagingCore`
-- imports: `@/lib/dreamdm/useNotifications`
-- imports: `@/lib/games/useImmersiveGameLayout`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/ui/runtimeViewport`
-- imports: `@/lib/utils`
-- dynamic: `@/lib/supabase/client`
-
-## `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
-
-- imports: `react`
-- imports: `./useAgentSession`
-
-## `engins/CodeEngin/modules/ai-co-pilot/index.ts`
-
-- imports: `./dream.panel.AgentPanel`
-- imports: `./useAgentSession`
-
-## `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts`
-
-- imports: `react`
-
-## `engins/CodeEngin/orchestrator/dream.index.tsx`
-
-- imports: `@/lib/enginpipe`
-- imports: `../modules/ai-co-pilot/dream.panel.AgentPanel`
-- imports: `@/engins/CodeEngin/orchestrator`
-
-## `engins/autoopen/dream.AutoOpenGameEngin.tsx`
-
-- imports: `@/lib/runtime/instanceManager`
-- imports: `@/lib/runtime/useSharedEnginChannel`
-- imports: `next/navigation`
-- imports: `react`
-
-## `engins/dream.ForgeEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/dream.BrandLogo`
-- imports: `@/components/forge/dream.panel.AIBuilderPanel`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/forgeMomentum`
-- imports: `@/lib/forge/forgeNexus`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/forge/forgeRituals`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `framer-motion`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `engins/dream.QuantumCircuitCanvas.tsx`
-
-- imports: `@/engins/dream.QuantumCircuitCanvas`
-- imports: `react`
-
-## `engins/dream.panel.AnalyticsEngin.tsx`
-
-- imports: `@/components/activity/dream.ActivityProfile`
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
-- imports: `@/lib/activity/types`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `@supabase/supabase-js`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `engins/engin.BrandingEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/hooks/useSharedDream`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/daydream/useDaydreamState`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/engins/brand/useBrandEnginRuntime`
-- imports: `@/lib/engins/useEnginWorkflow`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/useEnginBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-
-## `engins/engin.CodeEngin.tsx`
-
-- imports: `@/components/daydream/dream.DiffViewer`
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
-- imports: `@/hooks/useSharedDream`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/daydream/useDaydreamState`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/engins/code/useCodeEnginRuntime`
-- imports: `@/lib/engins/useEnginWorkflow`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/useEnginBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `./CodeEngin/core/parser`
-- imports: `./CodeEngin/modules/ai-co-pilot`
-- dynamic: `@supabase/supabase-js`
-
-## `engins/engin.ContentEngin.tsx`
-
-- imports: `@/components/activity/dream.ActivityPostForm`
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/lib/composite/compositor`
-- imports: `@/lib/composite/fxSimulation`
-- imports: `@/lib/composite/matchmover`
-- imports: `@/lib/composite/motionCapture`
-- imports: `@/lib/composite/rotoscope`
-- imports: `@/lib/content/publishIntent`
-- imports: `@/lib/content/seoScorer`
-- imports: `@/lib/content/transcriptEditor`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/engins/content/useContentEnginRuntime`
-- imports: `@/lib/engins/useEnginWorkflow`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/useEnginBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-- imports: `@/lib/utils`
-- dynamic: `@/lib/content/transcriptEditor`
-- dynamic: `@/lib/content/seoScorer`
-
-## `engins/engin.GameEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/games/dream.GamesHub`
-- imports: `@/components/games/dream.RecordingControls`
-- imports: `@/components/games/dream.hud.GameHUD`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/engins/game/useGameEnginRuntime`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/gameengin/GameRuntime`
-- imports: `@/lib/gameengin/cartridge`
-- imports: `@/lib/gameengin/cartridges/loaders`
-- imports: `@/lib/games/avatar`
-- imports: `@/lib/games/library-state`
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/games/quality-plan`
-- imports: `@/lib/games/useGameInputKeyboardBridge`
-- imports: `@/lib/games/useGamepad`
-- imports: `@/lib/games/useRemoteChannel`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/instanceManager`
-- imports: `@/lib/runtime/useEnginBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/runtime/useSharedEnginChannel`
-- imports: `@/lib/supabase/client`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `next/navigation`
-- imports: `react`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/utils`
-- dynamic: `@babylonjs/core`
-
-## `engins/engin.LabEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/dream.ForgeDreamCanvas`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/engins/lab/useLabEnginRuntime`
-- imports: `@/lib/engins/useEnginWorkflow`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/useEnginBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-- imports: `@/engins/dream.QuantumCircuitCanvas`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `@/lib/utils`
-
-## `engins/engin.StarMakerEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/components/daydream/starmaker/dream.panel.CompingPanel`
-- imports: `@/components/daydream/starmaker/dream.panel.PianoRollPanel`
-- imports: `@/components/daydream/starmaker/dream.panel.SessionViewPanel`
-- imports: `@/components/dream.AudioVisualizer3D`
-- imports: `@/hooks/useSharedDream`
-- imports: `@/lib/audioFingerprint`
-- imports: `@/lib/daydream/useDaydreamPersistence`
-- imports: `@/lib/daydream/useDaydreamState`
-- imports: `@/lib/dreamenginOS`
-- imports: `@/lib/enginpipe`
-- imports: `@/lib/engins/music/useStarMakerEnginRuntime`
-- imports: `@/lib/engins/useEnginWorkflow`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/music/presets`
-- imports: `@/lib/music/starmaker`
-- imports: `@/lib/music/starmakerArrangement`
-- imports: `@/lib/music/starmakerDaw`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/useEnginCoopSync`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/supabase/config`
-- imports: `lucide-react`
-- imports: `next/link`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `engins/portfolio/dream.PortfolioEngin.tsx`
-
-- imports: `@/components/daydream/dream.JourneyTrail`
-- imports: `@/engins/dream.QuantumCircuitCanvas`
-- imports: `@/lib/forge/forgeIntelligence`
-- imports: `@/lib/forge/useForgeActivity`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `lucide-react`
-- imports: `react`
-
-## `eslint.config.mjs`
-
-- imports: `eslint-config-next/core-web-vitals`
-- imports: `eslint-config-next/typescript`
-
-## `fix-audit.js`
-
-- imports: `fs`
-- imports: `path`
-- imports: `ts-morph`
-- imports: `lucide-react`
-
-## `hooks/use-spatial.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/types/spatial`
-- imports: `react`
-- imports: `swr`
-
-## `hooks/useAccount.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `hooks/useConnectorInstallFlow.ts`
-
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `@/lib/connectors/installFlow`
-- imports: `@/lib/widgets/widgetRegistry`
-- imports: `react`
-
-## `hooks/useDreamLayout.ts`
-
-- imports: `react`
-
-## `hooks/useHideOnScroll.ts`
-
-- imports: `react`
-
-## `hooks/useSharedDream.ts`
-
-- imports: `@/lib/collaboration`
-- imports: `@/lib/sharedDream`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `hooks/useTapHoldMove.ts`
-
-- imports: `react`
-- imports: `../lib/universalEditor`
-
-## `hooks/useTick.ts`
-
-- imports: `react`
-
-## `hooks/useViewCounter.ts`
-
-- imports: `react`
-
-## `lib/activeModulesStore.ts`
-
-- imports: `@/types/dreamArtifact`
-
-## `lib/activity/aqs.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `./types`
-
-## `lib/activity/boogieActivityPolicy.ts`
-
-- imports: `@/lib/policy/boogiePolicy`
-
-## `lib/activity/scoring.ts`
-
-- imports: `./types`
-
-## `lib/activity/skipCredits.ts`
-
-- imports: `./types`
-
-## `lib/activity/visibility-score.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `./types`
-
-## `lib/adari.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-
-## `lib/admin/lockout.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/admin/upgrade-readiness.ts`
-
-- imports: `@/lib/agents/idari`
-- imports: `@/lib/feature-build`
-- imports: `@/lib/setup/checks`
-
-## `lib/agentOS.ts`
-
-- imports: `./agentOS/hostTools`
-
-## `lib/agentOS/hostTools.ts`
-
-- imports: `child_process`
-- imports: `fs/promises`
-- imports: `path`
-- imports: `util`
-- dynamic: `fs/promises`
-
-## `lib/agents/agentBus.ts`
-
-- imports: `@/lib/ai/schemas`
-- dynamic: `@/lib/ai/schemas`
-- dynamic: `@/lib/ai/triad`
-
-## `lib/agents/boogieManAI.ts`
-
-- imports: `@/types/ai`
-
-## `lib/agents/idari.ts`
-
-- imports: `@/types/ai`
-
-## `lib/agents/idariLoop.ts`
-
-- imports: `@/lib/agents/idari`
-- imports: `@/lib/observability/collector`
-- imports: `@/lib/observability/correlator`
-- imports: `@/lib/observability/immediateAction`
-- imports: `@/lib/observability/rootCauseAnalyzer`
-- imports: `uuid`
-- imports: `@/lib/utils`
-
-## `lib/agents/uiActions.ts`
-
-- imports: `@/lib/ui/theme`
-
-## `lib/ai/audit.ts`
-
-- imports: `@/lib/ai/boogie-policy`
-- imports: `@/lib/supabase/server`
-
-## `lib/ai/boogie-verifier.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/types/ai-system`
-- imports: `@supabase/supabase-js`
-
-## `lib/ai/boogieman.ts`
-
-- imports: `uuid`
-- imports: `./boogie-policy`
-- imports: `./schemas`
-
-## `lib/ai/capability-gate.ts`
-
-- imports: `@/lib/ai/triad`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/types/ai-system`
-
-## `lib/ai/confirm-token.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/types/ai-system`
-- imports: `crypto`
-
-## `lib/ai/confirm.ts`
-
-- imports: `crypto`
-
-## `lib/ai/handlers/dreams.ts`
-
-- imports: `@/types/ai-system`
-- imports: `../tool-router`
-
-## `lib/ai/handlers/index.ts`
-
-- imports: `../tool-router`
-- imports: `./navigation`
-- imports: `./dreams`
-- imports: `./social`
-
-## `lib/ai/handlers/navigation.ts`
-
-- imports: `@/types/ai-system`
-- imports: `../tool-router`
-
-## `lib/ai/handlers/social.ts`
-
-- imports: `@/types/ai-system`
-- imports: `crypto`
-- imports: `../tool-router`
-
-## `lib/ai/idempotency.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/ai/rate-limiter.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/ai/rateLimit.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/ai/schemas.ts`
-
-- imports: `zod`
-
-## `lib/ai/tfBackend.ts`
-
-- dynamic: `@tensorflow/tfjs-backend-webgpu`
-- dynamic: `@tensorflow/tfjs`
-
-## `lib/ai/tool-router.ts`
-
-- imports: `@/engine/io`
-- imports: `@/types/ai-system`
-- imports: `./audit`
-- imports: `@/lib/utils`
-
-## `lib/ai/triad.ts`
-
-- imports: `@/lib/ai/groq`
-- imports: `@/lib/ai/schemas`
-- imports: `uuid`
-
-## `lib/api/route.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `next/server`
-- imports: `zod`
-
-## `lib/artifactStore.ts`
-
-- imports: `@/types/dreamArtifact`
-
-## `lib/assets/assetOptimizer.ts`
-
-- imports: `./indexedDBStore`
-
-## `lib/audio-fingerprint/fingerprint.ts`
-
-- imports: `./peak-map`
-
-## `lib/audio-fingerprint/index.ts`
-
-- imports: `./fingerprint`
-- imports: `./peak-map`
-- imports: `./stem-extractor`
-
-## `lib/audio-fingerprint/stem-extractor.ts`
-
-- imports: `./fingerprint`
-
-## `lib/audioFingerprint.ts`
-
-- imports: `./torridity`
-
-## `lib/babylon/createEngine.ts`
-
-- imports: `@/lib/webgpu/director`
-- imports: `@babylonjs/core`
-- dynamic: `@babylonjs/core`
-
-## `lib/babylon/dreamengine-hybrid.ts`
-
-- imports: `@babylonjs/core`
-
-## `lib/bot-detection/detector.ts`
-
-- imports: `./swipe-physics`
-
-## `lib/bot-detection/index.ts`
-
-- imports: `@/lib/botDetection`
-
-## `lib/botDetection.ts`
-
-- imports: `./slog`
-
-## `lib/child-safety/childSafetyDetector.ts`
-
-- imports: `@/lib/child-safety/childSafetyDetector`
-- dynamic: `./imageClassifier`
-
-## `lib/child-safety/imageClassifier.ts`
-
-- imports: `@/lib/ai/groq`
-- imports: `@/lib/utils`
-
-## `lib/child-safety/messageContextChecker.ts`
-
-- imports: `@/lib/child-safety/messageContextChecker`
-
-## `lib/child-safety/ncmecReporter.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@supabase/supabase-js`
-- imports: `./childSafetyDetector`
-- imports: `@/lib/utils`
-
-## `lib/child-safety/scanMediaUrls.ts`
-
-- imports: `@/lib/child-safety/scanMediaUrls`
-- imports: `@supabase/supabase-js`
-- imports: `crypto`
-- imports: `./childSafetyDetector`
-- imports: `./imageClassifier`
-
-## `lib/collaboration/index.ts`
-
-- imports: `@/engine/io`
-- dynamic: `@supabase/supabase-js`
-
-## `lib/connectors/installFlow.ts`
-
-- imports: `@/lib/widgets/widgetRegistry`
-
-## `lib/connectors/normalise.ts`
-
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/bluesky.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/devto.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/facebook.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/github.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/hackernews.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/instagram.ts`
-
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/mastodon.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/medium.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/nostr.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/pinterest.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/podcast.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/reddit.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/substack.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-
-## `lib/connectors/providers/tiktok.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/tumblr.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/twitter.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/social/rss-feed`
-- imports: `@/types/connector`
-- imports: `@/lib/utils`
-
-## `lib/connectors/providers/youtube.ts`
-
-- imports: `@/lib/connectors/normalise`
-- imports: `@/types/connector`
-
-## `lib/connectors/reconcile.ts`
-
-- imports: `@/engine/io`
-- imports: `@/types/supabase`
-- imports: `./normalise`
-- imports: `./syncDispatch`
-- imports: `@/lib/utils`
-
-## `lib/connectors/syncDispatch.ts`
-
-- imports: `@/lib/connectors/providers/bluesky`
-- imports: `@/lib/connectors/providers/github`
-- imports: `@/lib/connectors/providers/instagram`
-- imports: `@/lib/connectors/providers/mastodon`
-- imports: `@/lib/connectors/providers/nostr`
-- imports: `@/lib/connectors/providers/reddit`
-- imports: `@/lib/connectors/providers/youtube`
-- imports: `@/types/connector`
-
-## `lib/connectors/youtube.ts`
-
-- imports: `@supabase/supabase-js`
-- imports: `@/lib/supabase/server`
-
-## `lib/consent/consentManager.ts`
-
-- dynamic: `@/lib/supabase/client`
-
-## `lib/daydream/useDaydreamPersistence.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `react`
-
-## `lib/daydream/useDaydreamState.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `react`
-
-## `lib/dream-docs/embed.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/dream-docs/index.ts`
-
-- imports: `./search`
-- imports: `./embed`
-
-## `lib/dream-docs/search.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `lib/dream-window/DreamWindowLifecycle.ts`
-
-- imports: `@/lib/identity/canonical-names`
-- imports: `${instance.activeState}`
-
-## `lib/dream-window/connectionVerbs.ts`
-
-- imports: `@/lib/identity/canonical-names`
-
-## `lib/dream-window/enginConnectionNetwork.ts`
-
-- imports: `@/lib/identity/canonical-names`
-
-## `lib/dream-window/index.ts`
-
-- imports: `@/lib/dream-window`
-- imports: `./DreamWindowLifecycle`
-- imports: `./connectionVerbs`
-- imports: `./runtimeRegion`
-- imports: `./enginConnectionNetwork`
-
-## `lib/dream-window/runtimeRegion.ts`
-
-- imports: `@/lib/identity/canonical-names`
-
-## `lib/dream-window/useDreamWindowActions.ts`
-
-- imports: `@/types/dream-window`
-- imports: `react`
-- imports: `./DreamWindowLifecycle`
-- imports: `@/lib/utils`
-
-## `lib/dreamdm/DreamSystemContext.tsx`
-
-- imports: `@/lib/dreamdm/barInteractions`
-- imports: `@/lib/panels/panelTypes`
-- imports: `@/lib/runtime/dualRuntime`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `react`
-
-## `lib/dreamdm/useDreamBarContext.ts`
-
-- imports: `next/navigation`
-- imports: `react`
-- imports: `./DreamSystemContext`
-
-## `lib/dreamdm/useDreamDMConversations.ts`
-
-- imports: `@/engine/io`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `lib/dreamdm/useDreamDMDraft.ts`
-
-- imports: `react`
-
-## `lib/dreamdm/useDreamDMMessages.ts`
-
-- imports: `@/engine/io`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `lib/dreamdm/useDreamSearch.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `lib/dreamdm/useMessagingCore.ts`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-- imports: `./useDreamDMMessages`
-- imports: `@/lib/utils`
-
-## `lib/dreamdm/useModuleBarIntent.ts`
-
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `react`
-
-## `lib/dreamdm/useNotifications.ts`
-
-- imports: `react`
-
-## `lib/dreamengin/engineAssets.ts`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-
-## `lib/dreamengin/osSubsystemManifest.ts`
-
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `@/lib/dream-window/enginConnectionNetwork`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/widgets/widgetRegistry`
-
-## `lib/dreamenginOS/OSContext.tsx`
-
-- imports: `react`
-- imports: `../eventBus`
-- imports: `../ledger`
-- imports: `./index`
-
-## `lib/dreamenginOS/index.ts`
-
-- imports: `../slog`
-- imports: `../torridity`
-- imports: `../generationLaw`
-- imports: `../eventBus`
-- imports: `../ledger`
-- imports: `../universalEditor`
-- imports: `../botDetection`
-- imports: `../audioFingerprint`
-- imports: `../componentInventory`
-- imports: `../forge/engineForge`
-- imports: `../gameengin/gameEnginRuntime`
-- dynamic: `../ledger`
-- dynamic: `../eventBus`
-
-## `lib/dreamnav/gctAssist.ts`
-
-- imports: `@/lib/gct`
-- imports: `./tau`
-
-## `lib/dreamnav/gestures6.ts`
-
-- imports: `./delta`
-
-## `lib/dreamnav/path.ts`
-
-- imports: `@/lib/dreamnav/delta`
-
-## `lib/dreamnav/tau.ts`
-
-- imports: `./delta`
-
-## `lib/dreamr/closeFriendsVisibility.ts`
-
-- imports: `@/engine/io`
-- dynamic: `@/lib/supabase/server`
-
-## `lib/dreamr/dreamrfeed.tsx`
-
-- imports: `@/components/dreamr/dream.panel.DreamRChannelPanel`
-- imports: `@/components/dreamr/dream.panel.DreamRCreatorPanel`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-- imports: `@/lib/dreamr/swipePersonalization`
-- imports: `@/lib/dreamr/torridityLedger`
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/types/connector`
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `react`
-
-## `lib/dreamr/socialHumanityScore.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@supabase/supabase-js`
-
-## `lib/dreamr/torridityLedger.ts`
-
-- imports: `./swipeCalibration`
-
-## `lib/dreams/DreamRegistry.tsx`
-
-- imports: `react`
-
-## `lib/dreams/profileProjection.ts`
-
-- imports: `@/lib/dreams/types`
-
-## `lib/dreams/useDreamsRuntime.ts`
-
-- imports: `react`
-
-## `lib/engin-runtime/EnginEventBus.ts`
-
-- imports: `@/lib/eventBus`
-
-## `lib/engin-runtime/EnginRuleSetContract.ts`
-
-- imports: `./EnginBaseState`
-- imports: `./EnginCapabilities`
-
-## `lib/engin-runtime/EnginRuntime.ts`
-
-- imports: `./EnginBaseState`
-- imports: `./EnginCapabilities`
-- imports: `./EnginEventBus`
-- imports: `./EnginIOAdapter`
-- imports: `./EnginRuleSetContract`
-
-## `lib/engin-runtime/index.ts`
-
-- imports: `@/lib/engin-runtime`
-- imports: `./EnginBaseState`
-- imports: `./EnginEventBus`
-- imports: `./EnginIOAdapter`
-- imports: `./EnginCapabilities`
-- imports: `./EnginRuleSetContract`
-- imports: `./EnginRuntime`
-
-## `lib/engine/index.ts`
-
-- imports: `@/src/engin/core`
-
-## `lib/enginpipe/artifact/manifest.ts`
-
-- imports: `zod`
-
-## `lib/enginpipe/index.ts`
-
-- imports: `./artifact/manifest`
-- imports: `./telemetry/client`
-- imports: `./telemetry/events`
-- imports: `./quality/tiers`
-- imports: `./shell/ArtifactSlot`
-
-## `lib/enginpipe/shell/ArtifactSlot.tsx`
-
-- imports: `react`
-- imports: `../../eventBus`
-
-## `lib/enginpipe/telemetry/client.ts`
-
-- imports: `./events`
-
-## `lib/enginpipe/telemetry/events.ts`
-
-- imports: `zod`
-
-## `lib/engins/brand/brandEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/brand/useBrandEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./brandEnginRuleSet`
-
-## `lib/engins/code/codeEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/code/useCodeEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./codeEnginRuleSet`
-
-## `lib/engins/content/contentEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/content/useContentEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./contentEnginRuleSet`
-
-## `lib/engins/game/gameEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/game/index.ts`
-
-- imports: `./gameEnginRuleSet`
-
-## `lib/engins/game/useGameEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./gameEnginRuleSet`
-
-## `lib/engins/lab/labEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/lab/useLabEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./labEnginRuleSet`
-
-## `lib/engins/music/starMakerEnginRuleSet.ts`
-
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `lib/engins/music/useStarMakerEnginRuntime.ts`
-
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginRuntime`
-- imports: `react`
-- imports: `./starMakerEnginRuleSet`
-
-## `lib/engins/useEnginWorkflow.ts`
-
-- imports: `@/lib/journey/journeyDots`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-- imports: `./workflowEngine`
-
-## `lib/feature-build/buildCycle.ts`
-
-- imports: `./featureManifest`
-
-## `lib/feature-build/featureManifest.ts`
-
-- imports: `@/lib/identity/canonical-names`
-
-## `lib/feature-build/index.ts`
-
-- imports: `@/lib/feature-build`
-- imports: `./featureManifest`
-- imports: `./buildCycle`
-- imports: `./uiQualityCriteria`
-
-## `lib/feed/useLiveFeed.ts`
-
-- imports: `@/engine/io`
-- imports: `@/lib/media/postMedia`
-- imports: `@/lib/supabase/client`
-- imports: `react`
-
-## `lib/feed/useYouTubeLiveFeed.ts`
-
-- imports: `@/lib/feed/feedTopics`
-- imports: `@/lib/feed/useLiveFeed`
-- imports: `@/types/connector`
-- imports: `react`
-
-## `lib/feeds/embedFeedLoader.ts`
-
-- imports: `@/lib/feeds/embedFeedLoader`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `lib/forge-ngn/assembly.ts`
-
-- imports: `./piece-registry`
-
-## `lib/forge-ngn/index.ts`
-
-- imports: `./assembly`
-- imports: `./piece-registry`
-
-## `lib/forge/engineForge.ts`
-
-- imports: `../componentInventory`
-- imports: `../eventBus`
-
-## `lib/forge/forgeBuild.ts`
-
-- imports: `uuid`
-
-## `lib/forge/forgeIntelligence.ts`
-
-- imports: `./forgeRegistry`
-
-## `lib/forge/forgeMomentum.ts`
-
-- imports: `./forgeRegistry`
-
-## `lib/forge/forgeNexus.ts`
-
-- imports: `./forgeRegistry`
-
-## `lib/forge/forgeRituals.ts`
-
-- imports: `./forgeRegistry`
-
-## `lib/forge/useForgeActivity.ts`
-
-- imports: `react`
-- imports: `./forgeRegistry`
-
-## `lib/forge/useForgeBuild.ts`
-
-- imports: `@/lib/forge/forgeBuild`
-- imports: `react`
-- imports: `uuid`
-- imports: `@/lib/utils`
-- dynamic: `@/lib/forge/forgeBuild`
-
-## `lib/gameengin/GameRuntime.tsx`
-
-- imports: `@/lib/runtime/channelMetrics`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/lib/runtime/runtimeChannel`
-- imports: `@/lib/runtime/sharedResourcePool`
-- imports: `react`
-- imports: `./cartridge`
-- imports: `./cartridges/achievementEngine`
-- imports: `./cartridges/apiStubs`
-- imports: `./cartridges/saveState`
-
-## `lib/gameengin/ai-director.ts`
-
-- dynamic: `@tensorflow/tfjs`
-- dynamic: `@tensorflow/tfjs-backend-webgpu`
-
-## `lib/gameengin/brain-reader.ts`
-
-- imports: `node:crypto`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `lib/gameengin/cartridge-manifest.ts`
-
-- imports: `zod`
-
-## `lib/gameengin/cartridgeLoader.ts`
-
-- imports: `./dreamr-loader`
-
-## `lib/gameengin/cartridges/achievementEngine.ts`
-
-- imports: `../cartridge`
-
-## `lib/gameengin/cartridges/apiStubs.ts`
-
-- imports: `../cartridge`
-
-## `lib/gameengin/cartridges/index.ts`
-
-- imports: `./manifest`
-- imports: `./loaders`
-
-## `lib/gameengin/cartridges/loaders.ts`
-
-- imports: `../cartridge`
-- imports: `./reactCartridge`
-- imports: `@/lib/utils`
-- dynamic: `@/components/games/dream.BabylonSideScroller`
-- dynamic: `@/components/games/dream.NeonDrift`
-- dynamic: `@/components/games/dream.EchoArena`
-- dynamic: `@/components/games/dream.NullCathedral`
-- dynamic: `@/components/games/dream.VoidlineGP`
-- dynamic: `@/components/games/dream.SerpentSiege`
-- dynamic: `@/components/games/dream.AvenueOfMirrors`
-- dynamic: `@/components/games/dream.EnginFracture`
-- dynamic: `@/components/games/dream.Glassfall`
-- dynamic: `@/components/games/dream.NiteFlyerSolarHymn`
-- dynamic: `@/components/games/dream.LexiconSolitaire`
-- dynamic: `@/components/games/dream.DefuseRitual`
-
-## `lib/gameengin/cartridges/reactCartridge.ts`
-
-- imports: `@/lib/gameengin/cartridge`
-- imports: `react`
-- imports: `react-dom/client`
-- dynamic: `./MyGame`
-
-## `lib/gameengin/cartridges/saveState.ts`
-
-- imports: `../cartridge`
-
-## `lib/gameengin/control-mappings.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-
-## `lib/gameengin/core.ts`
-
-- imports: `@babylonjs/core`
-- imports: `./power-systems`
-- dynamic: `@/lib/babylon/createEngine`
-- dynamic: `@babylonjs/core`
-
-## `lib/gameengin/dream-engine.ts`
-
-- imports: `@/lib/media/ledger`
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `@/lib/utils`
-
-## `lib/gameengin/dreamr-loader.ts`
-
-- imports: `@/lib/gameengin/cartridge-manifest`
-
-## `lib/gameengin/gameEnginRuntime.ts`
-
-- imports: `../eventBus`
-
-## `lib/gameengin/index.ts`
-
-- imports: `@/lib/gameengin`
-- imports: `./control-mappings`
-- imports: `./core`
-- imports: `./dream-engine`
-- imports: `./unifiedLoop`
-- imports: `./useUnifiedLoop`
-- imports: `./ai-director`
-- imports: `./post-fx`
-- imports: `./platform`
-- imports: `./cartridge`
-- imports: `./cartridges/reactCartridge`
-- imports: `./GameRuntime`
-- imports: `./cartridges/manifest`
-- imports: `./power-systems`
-
-## `lib/gameengin/platform.ts`
-
-- imports: `@babylonjs/core`
-- imports: `./ai-director`
-- imports: `./cartridge`
-- imports: `./core`
-- imports: `./post-fx`
-
-## `lib/gameengin/post-fx.ts`
-
-- imports: `@babylonjs/core`
-- imports: `./core`
-- dynamic: `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline`
-- dynamic: `@babylonjs/core`
-- dynamic: `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline`
-- dynamic: `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline`
-- dynamic: `@babylonjs/core/Layers/glowLayer`
-
-## `lib/gameengin/registerCartridges.ts`
-
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/runtime/moduleRegistry`
-- imports: `@/types/module-manifest`
-
-## `lib/gameengin/remote/comboMachine.ts`
-
-- imports: `./moves`
-
-## `lib/gameengin/remote/index.ts`
-
-- imports: `./comboMachine`
-- imports: `./layout`
-- imports: `./moves`
-- imports: `./sprintDetector`
-
-## `lib/gameengin/systems/ai.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/animation.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/assets.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/index.ts`
-
-- imports: `@/lib/gameengin/systems`
-- imports: `./ai`
-- imports: `./animation`
-- imports: `./assets`
-- imports: `./lod`
-- imports: `./network`
-- imports: `./physics`
-- imports: `./pooling`
-- imports: `./rendering`
-- imports: `./spatial`
-- imports: `./world`
-
-## `lib/gameengin/systems/lod.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/network.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/physics.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/pooling.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/rendering.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/spatial.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/systems/world.ts`
-
-- imports: `../power-systems`
-
-## `lib/gameengin/useUnifiedLoop.ts`
-
-- imports: `react`
-- imports: `./unifiedLoop`
-
-## `lib/gameengin/webgpu-runtime-shell.ts`
-
-- imports: `@/lib/gameengin/dreamr-loader`
-
-## `lib/games/DualSenseManager.ts`
-
-- imports: `react`
-
-## `lib/games/catalog.ts`
-
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/games/mobileControls`
-- imports: `@/lib/games/performance-baseline`
-
-## `lib/games/hooks.ts`
-
-- imports: `@/lib/games/performance-baseline`
-- imports: `@/lib/webgpu`
-- imports: `react`
-
-## `lib/games/mobileControls.ts`
-
-- imports: `@/lib/games/useRemoteChannel`
-- imports: `react`
-
-## `lib/games/useAIDirector.ts`
-
-- imports: `@/lib/gameengin/ai-director`
-- imports: `react`
-
-## `lib/games/useGameInputKeyboardBridge.ts`
-
-- imports: `@/components/games/dream.remote.GameRemote`
-- imports: `react`
-
-## `lib/games/useGamepad.ts`
-
-- imports: `react`
-
-## `lib/games/useImmersiveGameLayout.ts`
-
-- imports: `next/navigation`
-- imports: `react`
-
-## `lib/games/useRemoteChannel.ts`
-
-- imports: `react`
-
-## `lib/gct/anomaly-detection.ts`
-
-- imports: `./gct-engine`
-
-## `lib/gct/audio-fingerprint.ts`
-
-- imports: `./gct-engine`
-
-## `lib/gct/image-search.ts`
-
-- imports: `./gct-engine`
-
-## `lib/gct/index.ts`
-
-- imports: `./anomaly-detection`
-- imports: `./audio-fingerprint`
-- imports: `./gct-engine`
-- imports: `./image-search`
-- imports: `./recommendations`
-
-## `lib/gct/recommendations.ts`
-
-- imports: `./gct-engine`
-
-## `lib/gestures/useTouchGestures.ts`
-
-- imports: `react`
-- imports: `./touchGestures`
-
-## `lib/god-tier/godTierEngine.ts`
-
-- imports: `../webgpu/director`
-
-## `lib/god-tier/useGodTier.ts`
-
-- imports: `react`
-- imports: `./godTierEngine`
-
-## `lib/gsap/gsap.ts`
-
-- imports: `@/lib/gsap/gsap`
-- imports: `gsap`
-- dynamic: `gsap`
-
-## `lib/gsap/useGsapEntrance.ts`
-
-- imports: `@/lib/gsap/gsap`
-- imports: `react`
-
-## `lib/gsap/useGsapFlip.ts`
-
-- imports: `@/lib/gsap/gsap`
-- imports: `react`
-
-## `lib/gsap/useGsapScrollReveal.ts`
-
-- imports: `@/lib/gsap/gsap`
-- imports: `react`
-
-## `lib/hooks/useMotionTilt.ts`
-
-- imports: `@/lib/hooks/useMotionTilt`
-- imports: `framer-motion`
-- imports: `react`
-
-## `lib/hooks/useResponsive.ts`
-
-- imports: `react`
-- imports: `../ui/responsive`
-
-## `lib/hooks/useTap.ts`
-
-- imports: `react`
-
-## `lib/intelligence/continuityHelpers.ts`
-
-- imports: `@/lib/forge/forgeRegistry`
-
-## `lib/intelligence/sessionPatternEngine.ts`
-
-- imports: `@tensorflow/tfjs`
-- dynamic: `@tensorflow/tfjs`
-- dynamic: `@tensorflow/tfjs-backend-webgpu`
-
-## `lib/intelligence/useSessionIntelligence.ts`
-
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `react`
-- imports: `./sessionContinuity`
-- imports: `./sessionPatternEngine`
-
-## `lib/journey/journeyDots.ts`
-
-- imports: `@/lib/journey/journeyDots`
-- imports: `@/types/journey`
-
-## `lib/journey/journeyInsights.ts`
-
-- imports: `@/types/journey`
-
-## `lib/journey/withJourney.ts`
-
-- imports: `@/lib/journey/journeyDots`
-- imports: `@/types/journey`
-
-## `lib/ledger.ts`
-
-- imports: `@/engine/io`
-- imports: `./audioFingerprint`
-
-## `lib/marketplace/request.ts`
-
-- imports: `./listings`
-
-## `lib/navigation/GestureFrameComputer.ts`
-
-- imports: `./PointerEventCapture`
-
-## `lib/navigation/GestureIntentResolver.ts`
-
-- imports: `./GestureFrameComputer`
-- imports: `./quaternion`
-
-## `lib/navigation/SpatialNavigationEngine.ts`
-
-- imports: `./GestureFrameComputer`
-- imports: `./GestureIntentResolver`
-- imports: `./NavStateBuffer`
-- imports: `./PointerEventCapture`
-- imports: `./ReturnStack`
-- imports: `./TransformSolver`
-- imports: `./WidgetInstanceMemory`
-
-## `lib/navigation/StructureLedger.ts`
-
-- imports: `./dream-state`
-
-## `lib/navigation/TransformSolver.ts`
-
-- imports: `./manifold`
-- imports: `./NavStateBuffer`
-- imports: `./quaternion`
-
-## `lib/navigation/anchorField.ts`
-
-- imports: `./manifold`
-
-## `lib/navigation/index.ts`
-
-- imports: `./AnchorStateBuffer`
-- imports: `./AnchorWidgetStorage`
-- imports: `./GestureFrameComputer`
-- imports: `./GestureIntentResolver`
-- imports: `./NavStateBuffer`
-- imports: `./PointerEventCapture`
-- imports: `./ReturnStack`
-- imports: `./SpatialNavigationEngine`
-- imports: `./TransformSolver`
-- imports: `./useNavigation`
-- imports: `./WidgetInstanceMemory`
-- imports: `./StructureLedger`
-- imports: `./quaternion`
-- imports: `./manifold`
-- imports: `./physics`
-- imports: `./anchorField`
-
-## `lib/navigation/quaternion.ts`
-
-- imports: `./manifold`
-
-## `lib/navigation/useNavigation.ts`
-
-- imports: `react`
-- imports: `./SpatialNavigationEngine`
-- imports: `./WidgetInstanceMemory`
-
-## `lib/notifications/useNotifications.ts`
-
-- imports: `react`
-- imports: `./notificationHelpers`
-- imports: `@/lib/utils`
-
-## `lib/observability/collector.ts`
-
-- imports: `./otelBridge`
-- dynamic: `./otelBridge`
-
-## `lib/observability/correlator.ts`
-
-- imports: `./collector`
-
-## `lib/observability/healthTrend.ts`
-
-- imports: `@/lib/agents/idariLoop`
-
-## `lib/observability/immediateAction.ts`
-
-- imports: `./rootCauseAnalyzer`
-
-## `lib/observability/index.ts`
-
-- imports: `./collector`
-- imports: `./correlator`
-- imports: `./rootCauseAnalyzer`
-
-## `lib/observability/otel.ts`
-
-- imports: `@opentelemetry/api`
-- imports: `@opentelemetry/exporter-prometheus`
-- imports: `@opentelemetry/exporter-trace-otlp-http`
-- imports: `@opentelemetry/resources`
-- imports: `@opentelemetry/sdk-metrics`
-- imports: `@opentelemetry/sdk-trace-node`
-- imports: `@opentelemetry/semantic-conventions`
-- imports: `node:http`
-
-## `lib/observability/otelBridge.ts`
-
-- imports: `@opentelemetry/api`
-- imports: `./otel`
-
-## `lib/observability/rootCauseAnalyzer.ts`
-
-- imports: `@/lib/agents/idari`
-- imports: `./collector`
-- imports: `./correlator`
-
-## `lib/offline/useOfflineSync.ts`
-
-- imports: `react`
-- imports: `./offlineCache`
-
-## `lib/optimizer/babylon-optimizero.ts`
-
-- imports: `./creative-optimizero`
-
-## `lib/optimizer/constraint-solver.ts`
-
-- imports: `./types`
-
-## `lib/optimizer/creative-validator.ts`
-
-- imports: `./types`
-
-## `lib/optimizer/index.ts`
-
-- imports: `./constraint-solver`
-- imports: `./creative-validator`
-- imports: `./types`
-
-## `lib/platform/index.ts`
-
-- imports: `./lab`
-
-## `lib/platform/lab.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/utils`
-
-## `lib/policy/boogiePolicy.ts`
-
-- imports: `@/lib/ai/boogie-policy`
-
-## `lib/reality/realityStore.ts`
-
-- imports: `@supabase/supabase-js`
-- imports: `./types`
-
-## `lib/reality/types.ts`
-
-- imports: `@/lib/collaboration`
-
-## `lib/renderer/Canvas2DRenderer.ts`
-
-- imports: `./FrustumCuller`
-- imports: `./IRenderer`
-
-## `lib/renderer/index.ts`
-
-- imports: `@/lib/renderer`
-- imports: `./Canvas2DRenderer`
-- imports: `./FrustumCuller`
-- imports: `./IRenderer`
-- dynamic: `./Canvas2DRenderer`
-
-## `lib/runtime/EnginDispatcher.ts`
-
-- imports: `./memory`
-
-## `lib/runtime/channelMetrics.ts`
-
-- imports: `@/lib/runtime/channelMetrics`
-
-## `lib/runtime/dreamOSBus.ts`
-
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/runtime/dualRuntime`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/runtimeContainer`
-- imports: `@/types/dreamArtifact`
-
-## `lib/runtime/dropTargetRegistry.ts`
-
-- imports: `@/lib/runtime/coercionTable`
-- imports: `@/types/module-manifest`
-
-## `lib/runtime/dualRuntime.ts`
-
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/panels/panelTypes`
-
-## `lib/runtime/dualRuntimeBridge.ts`
-
-- imports: `@/lib/runtime/madMaxiSnapshotBridge`
-- imports: `events`
-- imports: `pending`
-- dynamic: `@/lib/vm/wasmGpuVM`
-
-## `lib/runtime/enginWorkflowRegistry.ts`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-
-## `lib/runtime/instanceManager.ts`
-
-- imports: `@/lib/runtime/runtimeChannel`
-- imports: `@/types/module-manifest`
-- imports: `zustand`
-- dynamic: `@/lib/supabase/client`
-
-## `lib/runtime/moduleRegistry.ts`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/types/module-manifest`
-- imports: `zustand`
-- imports: `@/types/widgets`
-
-## `lib/runtime/quantumCircuit.ts`
-
-- imports: `./dualRuntimeBridge`
-
-## `lib/runtime/runtimeChannel.ts`
-
-- dynamic: `@supabase/supabase-js`
-
-## `lib/runtime/seamClipboard.ts`
-
-- imports: `@/lib/identity/canonical-names`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/enginWorkflowRegistry`
-
-## `lib/runtime/snapshotFingerprint.ts`
-
-- imports: `@/lib/observability/collector`
-
-## `lib/runtime/useDragSurface.ts`
-
-- imports: `@/lib/runtime/coercionTable`
-- imports: `@/lib/runtime/dropTargetRegistry`
-- imports: `@/types/module-manifest`
-- imports: `react`
-
-## `lib/runtime/useDualRuntime.ts`
-
-- imports: `react`
-- imports: `./dualRuntimeBridge`
-
-## `lib/runtime/useDualRuntimePersistence.ts`
-
-- imports: `react`
-- imports: `./dualRuntime`
-
-## `lib/runtime/useEnginBridge.ts`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `react`
-
-## `lib/runtime/useEnginCoopSync.ts`
-
-- imports: `@/lib/runtime/instanceManager`
-- imports: `@/lib/runtime/useSharedEnginChannel`
-- imports: `@/types/module-manifest`
-- imports: `react`
-
-## `lib/runtime/useSharedEnginChannel.ts`
-
-- imports: `@/lib/runtime/instanceManager`
-- imports: `@/lib/runtime/runtimeChannel`
-- imports: `@/types/module-manifest`
-- imports: `react`
-
-## `lib/scene/sceneState.ts`
-
-- imports: `@/lib/offline/offlineCache`
-
-## `lib/setup/checks.ts`
-
-- imports: `@/lib/supabase/config`
-
-## `lib/sharedDream.ts`
-
-- imports: `@/engine/io`
-- imports: `@/lib/collaboration`
-- imports: `./sharedDream/useSharedDreamSession`
-
-## `lib/sharedDream/useSharedDreamSession.ts`
-
-- imports: `@/lib/supabase/client`
-- imports: `@/lib/supabase/safeGetUser`
-- imports: `react`
-
-## `lib/social-feed.ts`
-
-- imports: `rss-parser`
-
-## `lib/social/crossPost.ts`
-
-- imports: `./platforms`
-
-## `lib/social/rss-feed.ts`
-
-- imports: `@/types/connector`
-- imports: `rss-parser`
-
-## `lib/social/useSocialData.ts`
-
-- imports: `@/lib/social/normalizers`
-- imports: `react`
-- imports: `@/lib/utils`
-
-## `lib/supabase/client.ts`
-
-- imports: `@supabase/ssr`
-- imports: `./config`
-
-## `lib/supabase/realtime.ts`
-
-- imports: `@supabase/supabase-js`
-
-## `lib/supabase/safeGetUser.ts`
-
-- imports: `@supabase/supabase-js`
-
-## `lib/supabase/server.ts`
-
-- imports: `@/types/supabase`
-- imports: `@supabase/ssr`
-- imports: `@supabase/supabase-js`
-- imports: `next/headers`
-- imports: `./config`
-
-## `lib/supabase/vector.ts`
-
-- imports: `@supabase/supabase-js`
-- imports: `@/lib/utils`
-
-## `lib/torridity.ts`
-
-- imports: `./slog`
-
-## `lib/torridity/index.ts`
-
-- imports: `./constants`
-- imports: `./physics`
-
-## `lib/torridity/physics.ts`
-
-- imports: `./constants`
-
-## `lib/ui/CustomizeModeContext.tsx`
-
-- imports: `@/lib/ui/skin-engine`
-- imports: `react`
-
-## `lib/ui/runtimeViewport.ts`
-
-- imports: `./responsive`
-
-## `lib/universalEditor.ts`
-
-- imports: `./eventBus`
-
-## `lib/user-sim/userSimAgent.ts`
-
-- imports: `@/types/user-sim`
-- imports: `uuid`
-
-## `lib/utils.ts`
-
-- imports: `clsx`
-- imports: `tailwind-merge`
-
-## `lib/vm/bufferManager.ts`
-
-- imports: `./types`
-
-## `lib/vm/dual-runtime.ts`
-
-- imports: `./bus-events`
-- imports: `./inter-vm-messaging`
-
-## `lib/vm/dualVMCoordinator.ts`
-
-- imports: `@/lib/runtime/dualRuntimeBridge`
-
-## `lib/vm/index.ts`
-
-- imports: `./wasm-features`
-- imports: `./resource-quota`
-- imports: `./inter-vm-messaging`
-- imports: `./security`
-- imports: `./bus-events`
-- imports: `./dual-runtime`
-- imports: `./bufferManager`
-- imports: `./dualVMCoordinator`
-- imports: `./pipelineCache`
-- imports: `./snapshot`
-- imports: `./wasmGpuVM`
-- imports: `./types`
-
-## `lib/vm/snapshot.ts`
-
-- imports: `./types`
-- imports: `./wasmGpuVM`
-
-## `lib/vm/wasmGpuVM.ts`
-
-- imports: `./bufferManager`
-- imports: `./pipelineCache`
-- imports: `./types`
-- dynamic: `./types`
-
-## `lib/warp/useWarp.ts`
-
-- imports: `react`
-- imports: `./warpEngine`
-
-## `lib/web3/client.ts`
-
-- imports: `./types`
-- imports: `@/lib/utils`
-
-## `lib/web3/engagement.ts`
-
-- imports: `./client`
-- imports: `./types`
-
-## `lib/web3/index.ts`
-
-- imports: `@/lib/web3`
-- imports: `./types`
-- imports: `./client`
-- imports: `./engagement`
-- imports: `./ipfs`
-
-## `lib/web3/ipfs.ts`
-
-- imports: `./types`
-
-## `lib/webgpu/adaptiveQuality.ts`
-
-- imports: `./director`
-
-## `lib/webgpu/useWebGPUDirector.ts`
-
-- imports: `react`
-- imports: `./director`
-
-## `lib/widgets/CrossWidgetPosting.ts`
-
-- imports: `./WidgetEventBus`
-- imports: `./WidgetLinkGraph`
-- imports: `@/lib/utils`
-
-## `lib/widgets/WidgetEngine.tsx`
-
-- imports: `react`
-
-## `lib/widgets/feed-resolver.ts`
-
-- imports: `@/lib/supabase/server`
-- imports: `@/types/widget-system-v2`
-- imports: `@/lib/utils`
-
-## `lib/widgets/parse.ts`
-
-- imports: `@/types/widgetConfigs`
-
-## `lib/widgets/parseConfig.ts`
-
-- imports: `@/types/widgetConfigs`
-
-## `lib/widgets/useWidget.ts`
-
-- imports: `react`
-- imports: `./WidgetBus`
-
-## `next.config.mjs`
-
-- dynamic: `next`
-
-## `optimizer/constraint-solver.ts`
-
-- imports: `./types`
-
-## `optimizer/creative-validator.ts`
-
-- imports: `./types`
-
-## `optimizer/index.ts`
-
-- imports: `./constraint-solver`
-- imports: `./creative-validator`
-- imports: `./types`
-
-## `playwright.config.ts`
-
-- imports: `@playwright/test`
-
-## `proxy.ts`
-
-- imports: `next/server`
-- imports: `@/lib/supabase/server`
-- imports: `@/lib/supabase/config`
-- imports: `@/lib/supabase/safeGetUser`
-
-## `repo-visualizer/analyzer.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:child_process`
-- imports: `node:url`
-
-## `repo-visualizer/server.mjs`
-
-- imports: `node:http`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:child_process`
-- imports: `node:url`
-
-## `scripts/archive/validate-deployment.js`
-
-- imports: `fs`
-- imports: `path`
-
-## `scripts/autofix-vercel-build.mjs`
-
-- imports: `node:child_process`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/check-build-memory-drift.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/check-engin-filenames.mjs`
-
-- imports: `node:fs/promises`
-- imports: `node:path`
-- imports: `node:process`
-- imports: `node:url`
-
-## `scripts/check-licenses.mjs`
-
-- imports: `node:child_process`
-
-## `scripts/check-orphans.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:url`
-- imports: `./wire-orphans.mjs`
-
-## `scripts/check-root-hygiene.mjs`
-
-- imports: `node:fs/promises`
-- imports: `node:path`
-- imports: `node:process`
-- imports: `node:url`
-
-## `scripts/export-full-code.mjs`
-
-- imports: `node:fs/promises`
-- imports: `node:path`
-- imports: `node:url`
-
-## `scripts/feature-build/generate-features.mjs`
-
-- imports: `fs`
-- imports: `path`
-- imports: `url`
-
-## `scripts/fix-audit.js`
-
-- imports: `fs`
-- imports: `path`
-- imports: `glob`
-- imports: `lucide-react`
-
-## `scripts/gameengin/architect-run.ts`
-
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/artisan-run.ts`
-
-- imports: `node:crypto`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/lib/tar.ts`
-
-- imports: `node:buffer`
-
-## `scripts/gameengin/maestro-analyze.ts`
-
-- imports: `node:child_process`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/mechanic-run.ts`
-
-- imports: `node:child_process`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/package-cartridge.ts`
-
-- imports: `node:child_process`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:zlib`
-- imports: `../../lib/gameengin/cartridge-manifest.js`
-- imports: `./lib/tar.js`
-
-## `scripts/gameengin/prophet-run.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/upgrader-run.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/gameengin/writer-run.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `../../lib/gameengin/brain-reader.js`
-
-## `scripts/generate-mobile-nextgen-spec.mjs`
-
-- imports: `node:fs/promises`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/generate-mobile-ps5-spec.mjs`
-
-- imports: `node:fs/promises`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/generate-repo-state.mjs`
-
-- imports: `fs`
-- imports: `path`
-
-## `scripts/generate-webapp-final-form.mjs`
-
-- imports: `fs/promises`
-- imports: `path`
-- imports: `url`
-- imports: `child_process`
-
-## `scripts/optimize-dreamengin.mjs`
-
-- imports: `fs`
-- imports: `path`
-- imports: `yaml`
-
-## `scripts/postbuild.js`
-
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/postbuild.ts`
-
-- imports: `../lib/adari`
-
-## `scripts/readme-autosync.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:url`
-
-## `scripts/sync-build-memory.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-
-## `scripts/update-bugs.mjs`
-
-- imports: `child_process`
-- imports: `fs`
-- imports: `path`
-- imports: `url`
-
-## `scripts/update-embed-feed.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:url`
-
-## `scripts/update-handoff.mjs`
-
-- imports: `child_process`
-- imports: `fs`
-- imports: `path`
-- imports: `url`
-
-## `scripts/update-readme.mjs`
-
-- imports: `child_process`
-- imports: `fs`
-- imports: `path`
-- imports: `url`
-- imports: `./update-readme-status-utils.mjs`
-
-## `scripts/wire-orphans.mjs`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:url`
-- imports: `@/src/engin/core`
-- imports: `./rulesets`
-- imports: `./surfaces`
-- imports: `./connectors`
-- imports: `./cartridges`
-- imports: `./brain`
-- imports: `./personas`
-- imports: `./systems`
-- imports: `./hooks`
-
-## `src/components/dream.DreamEnginLogo.tsx`
-
-- imports: `@/lib/babylon/useDreamLogoScene`
-- imports: `react`
-- imports: `@/components/DreamEnginLogo`
-
-## `src/components/dream.LogoHero.tsx`
-
-- imports: `next/image`
-
-## `src/components/dream.Nav.tsx`
-
-- imports: `lucide-react`
-- imports: `next/image`
-- imports: `next/link`
-- imports: `react`
-
-## `src/configs/demoGameConfig.ts`
-
-- imports: `../core/GameEnginCore`
-
-## `src/core/GameEnginCore.ts`
-
-- imports: `@/lib/gameengin/core`
-- imports: `@/lib/gameengin/gameEnginRuntime`
-
-## `src/dream/rulesets/homedream/dream.homedream.physics.ts`
-
-- imports: `./dream.homedream.constants`
-
-## `src/dream/rulesets/homedream/dream.homedream.transforms.ts`
-
-- imports: `./dream.homedream.constants`
-
-## `src/dream/rulesets/homedream/index.ts`
-
-- imports: `./dream.homedream.constants`
-- imports: `./dream.homedream.transforms`
-- imports: `./dream.homedream.physics`
-
-## `src/dreamsurface/dreamsurface.bridge.ts`
-
-- imports: `../dream/rulesets/homedream/dream.homedream.transforms`
-- imports: `../engin/core/engin.eventbus`
-- imports: `../engin/core/engin.ledger`
-
-## `src/dreamsurface/index.ts`
-
-- imports: `./dreamsurface.bridge`
-- imports: `./dreamsurface.delta`
-
-## `src/engin/core/index.ts`
-
-- imports: `@/engin/state/base.json`
-- imports: `@/lib/supabase/client`
-- imports: `./engin.ledger`
-- imports: `./engin.eventbus`
-- imports: `./engin.renderloop`
-- imports: `./engin.auth`
-- dynamic: `@/lib/ai/capability-gate`
-- dynamic: `@/lib/ai/confirm-token`
-- dynamic: `@/lib/ai/rate-limiter`
-- dynamic: `@/lib/ai/idempotency`
-- dynamic: `@/lib/agents/boogieManAI`
-- dynamic: `@/build-memory/registry.json`
-- dynamic: `../generated/index`
-
-## `src/engin/generated/brain.ts`
-
-- dynamic: `@/lib/gameengin/brain/active-projects.json`
-- dynamic: `@/lib/gameengin/brain/character-voices/mad-maxi.json`
-- dynamic: `@/lib/gameengin/brain/composition-principles/leading-lines-landmark.json`
-- dynamic: `@/lib/gameengin/brain/composition-principles/parallax-layers.json`
-- dynamic: `@/lib/gameengin/brain/concept-library/neon-courier.json`
-- dynamic: `@/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json`
-- dynamic: `@/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json`
-- dynamic: `@/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json`
-- dynamic: `@/lib/gameengin/brain/dialogue-patterns/callback-anchor.json`
-- dynamic: `@/lib/gameengin/brain/dialogue-patterns/implied-subject.json`
-- dynamic: `@/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json`
-- dynamic: `@/lib/gameengin/brain/emotional-tones/determined.json`
-- dynamic: `@/lib/gameengin/brain/emotional-tones/fierce.json`
-- dynamic: `@/lib/gameengin/brain/emotional-tones/hopeful.json`
-- dynamic: `@/lib/gameengin/brain/emotional-tones/reflective.json`
-- dynamic: `@/lib/gameengin/brain/emotional-tones/weary.json`
-- dynamic: `@/lib/gameengin/brain/fun-heuristics/meta-progression.json`
-- dynamic: `@/lib/gameengin/brain/fun-heuristics/moment-to-moment.json`
-- dynamic: `@/lib/gameengin/brain/fun-heuristics/session-loop.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/action-rpg.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/episodic.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/live-service.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/metroidvania.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/open-world.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/platformer.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/puzzle.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/racing.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/roguelike.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/sandbox.json`
-- dynamic: `@/lib/gameengin/brain/genre-dna/template.json`
-- dynamic: `@/lib/gameengin/brain/inspiration-corpus/celeste.json`
-- dynamic: `@/lib/gameengin/brain/inspiration-corpus/dead-cells.json`
-- dynamic: `@/lib/gameengin/brain/inspiration-corpus/hades.json`
-- dynamic: `@/lib/gameengin/brain/inspiration-corpus/hollow-knight.json`
-- dynamic: `@/lib/gameengin/brain/inspiration-corpus/outer-wilds.json`
-- dynamic: `@/lib/gameengin/brain/material-recipes/neon-glass-tube.json`
-- dynamic: `@/lib/gameengin/brain/material-recipes/rusted-iron.json`
-- dynamic: `@/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/camera/look-ahead.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/camera/screen-shake.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/combat/combo.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/combat/hit-stop.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/combat/parry.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/combat/ranged.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/movement/coyote-time.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/movement/dash.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/movement/double-jump.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/movement/grapple.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/movement/wall-slide.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/progression/skill-tree.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/ability-gating.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/meta-progression.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/run-persistence.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/season-pass.json`
-- dynamic: `@/lib/gameengin/brain/mechanic-library/structural/world-streaming.json`
-- dynamic: `@/lib/gameengin/brain/narrative-pacing/default.json`
-- dynamic: `@/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json`
-- dynamic: `@/lib/gameengin/brain/originality-registry/signatures.json`
-- dynamic: `@/lib/gameengin/brain/technique-library/lighting/three-point-mood.json`
-- dynamic: `@/lib/gameengin/brain/technique-library/modeling/edge-flow.json`
-- dynamic: `@/lib/gameengin/brain/technique-library/modeling/silhouette-first.json`
-- dynamic: `@/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json`
-- dynamic: `@/lib/gameengin/brain/upgrade-history/prioritization-rules.json`
-
-## `src/engin/generated/cartridges.ts`
-
-- dynamic: `@/lib/gameengin/cartridges/index`
-- dynamic: `@/lib/gameengin/cartridges/loaders`
-- dynamic: `@/lib/gameengin/cartridges/manifest`
-- dynamic: `@/lib/gameengin/cartridges/reactCartridge`
-- dynamic: `@/public/cartridges/mad-maxi/MANIFEST.json`
-
-## `src/engin/generated/connectors.ts`
-
-- dynamic: `@/lib/connectors/connectorRegistry`
-- dynamic: `@/lib/connectors/deliveryStrategy`
-- dynamic: `@/lib/connectors/installFlow`
-- dynamic: `@/lib/connectors/normalise`
-- dynamic: `@/lib/connectors/providers/bluesky`
-- dynamic: `@/lib/connectors/providers/devto`
-- dynamic: `@/lib/connectors/providers/facebook`
-- dynamic: `@/lib/connectors/providers/github`
-- dynamic: `@/lib/connectors/providers/hackernews`
-- dynamic: `@/lib/connectors/providers/instagram`
-- dynamic: `@/lib/connectors/providers/mastodon`
-- dynamic: `@/lib/connectors/providers/medium`
-- dynamic: `@/lib/connectors/providers/nostr`
-- dynamic: `@/lib/connectors/providers/pinterest`
-- dynamic: `@/lib/connectors/providers/podcast`
-- dynamic: `@/lib/connectors/providers/reddit`
-- dynamic: `@/lib/connectors/providers/shellhub`
-- dynamic: `@/lib/connectors/providers/substack`
-- dynamic: `@/lib/connectors/providers/tiktok`
-- dynamic: `@/lib/connectors/providers/tumblr`
-- dynamic: `@/lib/connectors/providers/twitter`
-- dynamic: `@/lib/connectors/providers/youtube`
-- dynamic: `@/lib/connectors/reconcile`
-- dynamic: `@/lib/connectors/syncDispatch`
-- dynamic: `@/lib/connectors/webhookVerification`
-- dynamic: `@/lib/connectors/youtube`
-
-## `src/engin/generated/hooks.ts`
-
-- dynamic: `@/hooks/use-spatial`
-- dynamic: `@/hooks/useAccount`
-- dynamic: `@/hooks/useConnectorInstallFlow`
-- dynamic: `@/hooks/useDreamLayout`
-- dynamic: `@/hooks/useHideOnScroll`
-- dynamic: `@/hooks/useSharedDream`
-- dynamic: `@/hooks/useTapHoldMove`
-- dynamic: `@/hooks/useTick`
-- dynamic: `@/hooks/useViewCounter`
-- dynamic: `@/lib/hooks/useMotionTilt`
-- dynamic: `@/lib/hooks/useResponsive`
-- dynamic: `@/lib/hooks/useTap`
-
-## `src/engin/generated/index.ts`
-
-- imports: `./brain`
-- imports: `./cartridges`
-- imports: `./connectors`
-- imports: `./hooks`
-- imports: `./personas`
-- imports: `./rulesets`
-- imports: `./surfaces`
-- imports: `./systems`
-
-## `src/engin/generated/rulesets.ts`
-
-- dynamic: `@/engins/autoopen/dream.AutoOpenGameEngin`
-- dynamic: `@/engins/CodeEngin/core/parser`
-- dynamic: `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel`
-- dynamic: `@/engins/CodeEngin/modules/ai-co-pilot/index`
-- dynamic: `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
-- dynamic: `@/engins/CodeEngin/orchestrator/dream.index`
-- dynamic: `@/engins/dream.ForgeEngin`
-- dynamic: `@/engins/dream.panel.AnalyticsEngin`
-- dynamic: `@/engins/dream.QuantumCircuitCanvas`
-- dynamic: `@/engins/engin.BrandingEngin`
-- dynamic: `@/engins/engin.CodeEngin`
-- dynamic: `@/engins/engin.ContentEngin`
-- dynamic: `@/engins/engin.GameEngin`
-- dynamic: `@/engins/engin.LabEngin`
-- dynamic: `@/engins/engin.StarMakerEngin`
-- dynamic: `@/engins/portfolio/dream.PortfolioEngin`
-- dynamic: `@/src/dream/rulesets/codeengin/index`
-- dynamic: `@/src/dream/rulesets/dreamsengin/index`
-- dynamic: `@/src/dream/rulesets/forgengn/index`
-- dynamic: `@/src/dream/rulesets/gameengin/index`
-- dynamic: `@/src/dream/rulesets/homedream/dream.homedream.constants`
-- dynamic: `@/src/dream/rulesets/homedream/dream.homedream.physics`
-- dynamic: `@/src/dream/rulesets/homedream/dream.homedream.transforms`
-- dynamic: `@/src/dream/rulesets/homedream/index`
-- dynamic: `@/src/dream/rulesets/labengin/index`
-- dynamic: `@/src/dream/rulesets/starmakerengin/index`
-
-## `src/engin/generated/surfaces.ts`
-
-- dynamic: `@/app/(internal)/idari-console/page`
-- dynamic: `@/app/(internal)/idari-console/platform-errors/page`
-- dynamic: `@/app/(internal)/idari-console/platform-health/page`
-- dynamic: `@/app/about/page`
-- dynamic: `@/app/actions/dream-docs`
-- dynamic: `@/app/ads/create/page`
-- dynamic: `@/app/ads/page`
-- dynamic: `@/app/ads/slot/[id]/page`
-- dynamic: `@/app/api/account/delete-data/route`
-- dynamic: `@/app/api/account/delete-dream/route`
-- dynamic: `@/app/api/account/export-data/route`
-- dynamic: `@/app/api/activity/track/route`
-- dynamic: `@/app/api/admin/ai-chat/route`
-- dynamic: `@/app/api/admin/ai-request/route`
-- dynamic: `@/app/api/admin/child-safety/route`
-- dynamic: `@/app/api/admin/code-files/route`
-- dynamic: `@/app/api/admin/observability/route`
-- dynamic: `@/app/api/ads/orders/route`
-- dynamic: `@/app/api/ads/view/route`
-- dynamic: `@/app/api/agent/session/route`
-- dynamic: `@/app/api/ai/boogieman/child-safety/route`
-- dynamic: `@/app/api/ai/boogieman/privacy-event/route`
-- dynamic: `@/app/api/ai/boogieman/route`
-- dynamic: `@/app/api/ai/boogieman/status/route`
-- dynamic: `@/app/api/ai/eams/route`
-- dynamic: `@/app/api/ai/execute/route`
-- dynamic: `@/app/api/ai/idari/route`
-- dynamic: `@/app/api/appeal/route`
-- dynamic: `@/app/api/auth/logout/route`
-- dynamic: `@/app/api/auth/providers/route`
-- dynamic: `@/app/api/blocks/route`
-- dynamic: `@/app/api/ci/run/route`
-- dynamic: `@/app/api/close-friends/route`
-- dynamic: `@/app/api/comments/route`
-- dynamic: `@/app/api/connectors/[provider]/connect/route`
-- dynamic: `@/app/api/connectors/[provider]/disconnect/route`
-- dynamic: `@/app/api/connectors/[provider]/items/route`
-- dynamic: `@/app/api/connectors/[provider]/sync/route`
-- dynamic: `@/app/api/connectors/[provider]/verify/route`
-- dynamic: `@/app/api/connectors/cron/route`
-- dynamic: `@/app/api/connectors/instagram/oauth/callback/route`
-- dynamic: `@/app/api/connectors/instagram/oauth/start/route`
-- dynamic: `@/app/api/connectors/status/route`
-- dynamic: `@/app/api/connectors/webhooks/[provider]/route`
-- dynamic: `@/app/api/connectors/youtube/oauth/callback/route`
-- dynamic: `@/app/api/connectors/youtube/oauth/start/route`
-- dynamic: `@/app/api/content/generative-fill/route`
-- dynamic: `@/app/api/content/intelligence/route`
-- dynamic: `@/app/api/content/transcribe/route`
-- dynamic: `@/app/api/content/voice-clone/route`
-- dynamic: `@/app/api/dr-eams/hf/route`
-- dynamic: `@/app/api/dr-eams/run/route`
-- dynamic: `@/app/api/drafts/[id]/route`
-- dynamic: `@/app/api/drafts/route`
-- dynamic: `@/app/api/dream-windows/[id]/route`
-- dynamic: `@/app/api/dream-windows/route`
-- dynamic: `@/app/api/dreamengin/os-status/route`
-- dynamic: `@/app/api/dreamr/feed/route`
-- dynamic: `@/app/api/dreamr/suggested/route`
-- dynamic: `@/app/api/dreams/feed/route`
-- dynamic: `@/app/api/dreams/instances/route`
-- dynamic: `@/app/api/dreams/transfer/route`
-- dynamic: `@/app/api/embed-feed/route`
-- dynamic: `@/app/api/favorites/route`
-- dynamic: `@/app/api/feed/route`
-- dynamic: `@/app/api/follow/route`
-- dynamic: `@/app/api/forge/build/route`
-- dynamic: `@/app/api/gal/route`
-- dynamic: `@/app/api/game-scores/route`
-- dynamic: `@/app/api/gameengin/crash-report/route`
-- dynamic: `@/app/api/health/route`
-- dynamic: `@/app/api/home-layout/route`
-- dynamic: `@/app/api/journey/route`
-- dynamic: `@/app/api/lab/benchmarks/route`
-- dynamic: `@/app/api/ledger-media/route`
-- dynamic: `@/app/api/likes/route`
-- dynamic: `@/app/api/marketplace/request/route`
-- dynamic: `@/app/api/marketplace/route`
-- dynamic: `@/app/api/messages/boards/route`
-- dynamic: `@/app/api/messages/route`
-- dynamic: `@/app/api/metrics/platform/route`
-- dynamic: `@/app/api/metrics/route`
-- dynamic: `@/app/api/metrics/user/[userId]/route`
-- dynamic: `@/app/api/music/route`
-- dynamic: `@/app/api/notifications/route`
-- dynamic: `@/app/api/platform/errors/route`
-- dynamic: `@/app/api/posts/[id]/route`
-- dynamic: `@/app/api/posts/[id]/save/route`
-- dynamic: `@/app/api/posts/[id]/view/route`
-- dynamic: `@/app/api/posts/profile/[userId]/route`
-- dynamic: `@/app/api/posts/route`
-- dynamic: `@/app/api/profile/route`
-- dynamic: `@/app/api/projects/route`
-- dynamic: `@/app/api/scheduled-posts/route`
-- dynamic: `@/app/api/security/scan/route`
-- dynamic: `@/app/api/settings/appearance/route`
-- dynamic: `@/app/api/settings/feed/route`
-- dynamic: `@/app/api/settings/notifications/route`
-- dynamic: `@/app/api/settings/privacy/route`
-- dynamic: `@/app/api/setup/check/route`
-- dynamic: `@/app/api/setup/google-oauth/route`
-- dynamic: `@/app/api/shellhub/devices/route`
-- dynamic: `@/app/api/shop/route`
-- dynamic: `@/app/api/skip-credits/balance/route`
-- dynamic: `@/app/api/skip-credits/earn/route`
-- dynamic: `@/app/api/skip-credits/use/route`
-- dynamic: `@/app/api/social/rss-feed/route`
-- dynamic: `@/app/api/upload/route`
-- dynamic: `@/app/api/user/layout/route`
-- dynamic: `@/app/api/views/track/route`
-- dynamic: `@/app/api/widgets/feed/route`
-- dynamic: `@/app/api/widgets/instances/route`
-- dynamic: `@/app/api/youtube/channel/route`
-- dynamic: `@/app/api/youtube/discovery/route`
-- dynamic: `@/app/api/youtube/live-feed/route`
-- dynamic: `@/app/auth/callback/route`
-- dynamic: `@/app/auth/reset-password/page`
-- dynamic: `@/app/auth/update-password/page`
-- dynamic: `@/app/connectors/dream.ConnectorsClient`
-- dynamic: `@/app/connectors/page`
-- dynamic: `@/app/daydream/analytics/page`
-- dynamic: `@/app/daydream/brand/engin/page`
-- dynamic: `@/app/daydream/brand/page`
-- dynamic: `@/app/daydream/code/engin/page`
-- dynamic: `@/app/daydream/code/page`
-- dynamic: `@/app/daydream/constellation/dream.ConstellationClient`
-- dynamic: `@/app/daydream/constellation/page`
-- dynamic: `@/app/daydream/create/engin/page`
-- dynamic: `@/app/daydream/create/page`
-- dynamic: `@/app/daydream/forge/page`
-- dynamic: `@/app/daydream/game/dream.GamePageClient`
-- dynamic: `@/app/daydream/game/dream.shell.ImmersiveGameShell`
-- dynamic: `@/app/daydream/game/page`
-- dynamic: `@/app/daydream/games/engin/page`
-- dynamic: `@/app/daydream/games/page`
-- dynamic: `@/app/daydream/lab/engin/page`
-- dynamic: `@/app/daydream/lab/page`
-- dynamic: `@/app/daydream/lab/portfolio/page`
-- dynamic: `@/app/daydream/media-vault/page`
-- dynamic: `@/app/daydream/music/engin/page`
-- dynamic: `@/app/daydream/music/page`
-- dynamic: `@/app/daydream/music/upload/page`
-- dynamic: `@/app/daydream/play/page`
-- dynamic: `@/app/discover/page`
-- dynamic: `@/app/dream-effects/page`
-- dynamic: `@/app/dreamdmbar/_components/DreamBarDataBridge`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/algorithms/botDetector`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/api/route`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed`
-- dynamic: `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-- dynamic: `@/app/dreamdmbar/_components/DreamSpaceRegion`
-- dynamic: `@/app/dreamdmbar/_components/DreamWidgetGrid`
-- dynamic: `@/app/dreamdmbar/_components/HomeDreamRegion`
-- dynamic: `@/app/dreamdmbar/dreamspace/page`
-- dynamic: `@/app/dreamdmbar/dualruntime/page`
-- dynamic: `@/app/dreamdmbar/homedream/page`
-- dynamic: `@/app/dreamdmbar/layout`
-- dynamic: `@/app/dreamdmbar/page`
-- dynamic: `@/app/dreamr/page`
-- dynamic: `@/app/dreamspace/page`
-- dynamic: `@/app/edit-profiledream/page`
-- dynamic: `@/app/engines/brand/campaigns/page`
-- dynamic: `@/app/engines/brand/identity/page`
-- dynamic: `@/app/engines/brand/layout`
-- dynamic: `@/app/engines/brand/page`
-- dynamic: `@/app/engines/code/ai/page`
-- dynamic: `@/app/engines/code/layout`
-- dynamic: `@/app/engines/code/notebook/page`
-- dynamic: `@/app/engines/code/page`
-- dynamic: `@/app/engines/code/projects/page`
-- dynamic: `@/app/engines/create/calendar/page`
-- dynamic: `@/app/engines/create/editor/page`
-- dynamic: `@/app/engines/create/layout`
-- dynamic: `@/app/engines/create/page`
-- dynamic: `@/app/engines/create/queue/page`
-- dynamic: `@/app/engines/games/builder/page`
-- dynamic: `@/app/engines/games/layout`
-- dynamic: `@/app/engines/games/library/page`
-- dynamic: `@/app/engines/games/page`
-- dynamic: `@/app/engines/games/scores/page`
-- dynamic: `@/app/engines/lab/data/page`
-- dynamic: `@/app/engines/lab/experiments/page`
-- dynamic: `@/app/engines/lab/layout`
-- dynamic: `@/app/engines/lab/page`
-- dynamic: `@/app/engines/lab/quantum/page`
-- dynamic: `@/app/engines/layout`
-- dynamic: `@/app/engines/music/arrange/page`
-- dynamic: `@/app/engines/music/layout`
-- dynamic: `@/app/engines/music/library/page`
-- dynamic: `@/app/engines/music/page`
-- dynamic: `@/app/engines/music/studio/page`
-- dynamic: `@/app/engines/page`
-- dynamic: `@/app/engines/portfolio/assets/page`
-- dynamic: `@/app/engines/portfolio/layout`
-- dynamic: `@/app/engines/portfolio/optimize/page`
-- dynamic: `@/app/engines/portfolio/page`
-- dynamic: `@/app/engines/portfolio/quantum/page`
-- dynamic: `@/app/feed-settings/dream.FeedSettingsClient`
-- dynamic: `@/app/feed-settings/page`
-- dynamic: `@/app/gameengin/cartridges/[id]/page`
-- dynamic: `@/app/gameengin/cartridges/page`
-- dynamic: `@/app/gameengin/page`
-- dynamic: `@/app/homedream/page`
-- dynamic: `@/app/join/page`
-- dynamic: `@/app/lab/[id]/codespace/page`
-- dynamic: `@/app/lab/[id]/page`
-- dynamic: `@/app/lab/new/page`
-- dynamic: `@/app/lab/page`
-- dynamic: `@/app/layout`
-- dynamic: `@/app/login/page`
-- dynamic: `@/app/marketplace/[id]/page`
-- dynamic: `@/app/marketplace/page`
-- dynamic: `@/app/marketplace/sell/page`
-- dynamic: `@/app/messages/boards/[id]/page`
-- dynamic: `@/app/messages/boards/new/page`
-- dynamic: `@/app/messages/boards/page`
-- dynamic: `@/app/messages/page`
-- dynamic: `@/app/mission/page`
-- dynamic: `@/app/notes/page`
-- dynamic: `@/app/onboarding/page`
-- dynamic: `@/app/page`
-- dynamic: `@/app/policy/page`
-- dynamic: `@/app/profile/[handle]/page`
-- dynamic: `@/app/profile/page`
-- dynamic: `@/app/settings/account/dream.DangerZoneActions`
-- dynamic: `@/app/settings/account/page`
-- dynamic: `@/app/settings/algorithm/page`
-- dynamic: `@/app/settings/appearance/page`
-- dynamic: `@/app/settings/controls/dream.ControlsClient`
-- dynamic: `@/app/settings/controls/dream.PositionIndicatorToggle`
-- dynamic: `@/app/settings/controls/page`
-- dynamic: `@/app/settings/data/dream.DataClient`
-- dynamic: `@/app/settings/data/page`
-- dynamic: `@/app/settings/dreams/dreams-layout-editor`
-- dynamic: `@/app/settings/dreams/page`
-- dynamic: `@/app/settings/feed/page`
-- dynamic: `@/app/settings/help/page`
-- dynamic: `@/app/settings/notifications/page`
-- dynamic: `@/app/settings/page`
-- dynamic: `@/app/settings/privacy/dream.PrivacyClient`
-- dynamic: `@/app/settings/privacy/page`
-- dynamic: `@/app/settings/safety/page`
-- dynamic: `@/app/settings/security/page`
-- dynamic: `@/app/settings/widgets/page`
-- dynamic: `@/app/shop/page`
-- dynamic: `@/app/shop/sell/page`
-- dynamic: `@/app/u/[handle]/page`
-- dynamic: `@/app/view-profile/page`
-- dynamic: `@/app/webgpu/page`
-- dynamic: `@/components/activity/dream.ActivityPostForm`
-- dynamic: `@/components/activity/dream.ActivityProfile`
-- dynamic: `@/components/activity/dream.TierBadge`
-- dynamic: `@/components/ads/dream.AdUnit`
-- dynamic: `@/components/ads/dream.SkipCreditBalance`
-- dynamic: `@/components/auth/dream.PasswordField`
-- dynamic: `@/components/connectors/dream.AddSliceSheet`
-- dynamic: `@/components/connectors/dream.ConnectDreamPrompt`
-- dynamic: `@/components/connectors/dream.ConnectorRow`
-- dynamic: `@/components/connectors/dream.NoSlotDialog`
-- dynamic: `@/components/connectors/dream.PlacementMode`
-- dynamic: `@/components/connectors/dream.widget.ConnectorWidgetPicker`
-- dynamic: `@/components/connectors/dream.widget.ConnectWidgetPrompt`
-- dynamic: `@/components/core/dream.CoreDream`
-- dynamic: `@/components/customize/dream.bar.CustomizeModeBar`
-- dynamic: `@/components/customize/dream.bar.CustomizeToolbar`
-- dynamic: `@/components/customize/dream.GlobalCustomizeUI`
-- dynamic: `@/components/customize/panels/dream.panel.ColorPanel`
-- dynamic: `@/components/customize/panels/dream.panel.EffectsPanel`
-- dynamic: `@/components/customize/panels/dream.panel.FontPanel`
-- dynamic: `@/components/customize/panels/dream.panel.LayoutPanel`
-- dynamic: `@/components/daydream/dream.CodeDreamIDE`
-- dynamic: `@/components/daydream/dream.constellationmap`
-- dynamic: `@/components/daydream/dream.DiffViewer`
-- dynamic: `@/components/daydream/dream.JourneyTrail`
-- dynamic: `@/components/daydream/dream.LabDreamIDE`
-- dynamic: `@/components/daydream/dream.NGNEngin`
-- dynamic: `@/components/daydream/dream.OpenDaydreamSideBButton`
-- dynamic: `@/components/daydream/dream.shell.DaydreamShell`
-- dynamic: `@/components/daydream/dream.StandaloneEnginSurface`
-- dynamic: `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream`
-- dynamic: `@/components/daydream/dreamsurface.daydream.BrandDaydream`
-- dynamic: `@/components/daydream/starmaker/dream.panel.CompingPanel`
-- dynamic: `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel`
-- dynamic: `@/components/daydream/starmaker/dream.panel.PianoRollPanel`
-- dynamic: `@/components/daydream/starmaker/dream.panel.SessionViewPanel`
-- dynamic: `@/components/draggable/dream.DraggableModule`
-- dynamic: `@/components/dream.AIAssistant`
-- dynamic: `@/components/dream.AudioVisualizer3D`
-- dynamic: `@/components/dream.BoogieWarningBanner`
-- dynamic: `@/components/dream.BrandLogo`
-- dynamic: `@/components/dream.CommandPalette`
-- dynamic: `@/components/dream.CreatePostModal`
-- dynamic: `@/components/dream.DragToAnchorClose`
-- dynamic: `@/components/dream.DrEamsModeToggle`
-- dynamic: `@/components/dream.DrEamsVoiceAssistant`
-- dynamic: `@/components/dream.FeedCard`
-- dynamic: `@/components/dream.ForgeDreamCanvas`
-- dynamic: `@/components/dream.GlobalOverlays`
-- dynamic: `@/components/dream.HeroSprite`
-- dynamic: `@/components/dream.HomeFeed`
-- dynamic: `@/components/dream.IconSelector`
-- dynamic: `@/components/dream.InnerDreamsButton`
-- dynamic: `@/components/dream.KonamiDream`
-- dynamic: `@/components/dream.LandingHero`
-- dynamic: `@/components/dream.LedgerChart`
-- dynamic: `@/components/dream.MessagesClient`
-- dynamic: `@/components/dream.NotificationCenter`
-- dynamic: `@/components/dream.OSShellActivator`
-- dynamic: `@/components/dream.panel.ChildSafetyPanel`
-- dynamic: `@/components/dream.panel.IDariPanel`
-- dynamic: `@/components/dream.PhysicsLab`
-- dynamic: `@/components/dream.ProfileEditor`
-- dynamic: `@/components/dream.ProfileShareButton`
-- dynamic: `@/components/dream.ProfileSpace`
-- dynamic: `@/components/dream.PullToRefresh`
-- dynamic: `@/components/dream.ShrunkMode`
-- dynamic: `@/components/dream.SkeletonLoaders`
-- dynamic: `@/components/dream.ThemeApplicator`
-- dynamic: `@/components/dream.ThemeToggle`
-- dynamic: `@/components/dream.ToastSystem`
-- dynamic: `@/components/dream.universal_asset_registry`
-- dynamic: `@/components/dream.VoidThemeToggle`
-- dynamic: `@/components/dream.widget.AnchorWidget`
-- dynamic: `@/components/dream.widget.ProfileWidgetBlock`
-- dynamic: `@/components/dream.widget.WidgetBubble`
-- dynamic: `@/components/dreamengin/dream.bar.DrEamsSearchBar`
-- dynamic: `@/components/dreamengin/dream.CanvasDropZone`
-- dynamic: `@/components/dreamengin/dream.DREAMenginOS`
-- dynamic: `@/components/dreamengin/dream.DrEamsCanvas`
-- dynamic: `@/components/dreamengin/dream.HomeControls`
-- dynamic: `@/components/dreamengin/dream.menu.NexusMenu`
-- dynamic: `@/components/dreamengin/dream.menu.OutdreamMenu`
-- dynamic: `@/components/dreamengin/dream.overlay.ViewAllDreamsOverlay`
-- dynamic: `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
-- dynamic: `@/components/dreamengin/dream.panel.DrEamsPanel`
-- dynamic: `@/components/dreamengin/dream.scene.BabylonGameScene`
-- dynamic: `@/components/dreamengin/dream.scene.DrEamsScene`
-- dynamic: `@/components/dreamengin/dream.scene.PortfolioOptimizationScene`
-- dynamic: `@/components/dreamengin/dream.shell.EnginShell`
-- dynamic: `@/components/dreamengin/dream.widget.AppearanceWidget`
-- dynamic: `@/components/dreamengin/dreamsurface.dreamengin`
-- dynamic: `@/components/dreamengin/engine/math`
-- dynamic: `@/components/dreamengin/engine/types`
-- dynamic: `@/components/dreamnav/dream.DreamNavControls`
-- dynamic: `@/components/dreamnav/dreamsurface.dreamnav`
-- dynamic: `@/components/dreamr/dream.CloseFriendsSettings`
-- dynamic: `@/components/dreamr/dream.panel.DreamRChannelPanel`
-- dynamic: `@/components/dreamr/dream.panel.DreamRCreatorPanel`
-- dynamic: `@/components/dreams/dream.connectorlayer`
-- dynamic: `@/components/dreams/dream.DraggableDream`
-- dynamic: `@/components/dreams/dream.featurelayer`
-- dynamic: `@/components/dreams/dream.GlobalDragLayer`
-- dynamic: `@/components/dreams/dream.outputlayer`
-- dynamic: `@/components/dreams/dream.panel.RuntimeMemoryHUD`
-- dynamic: `@/components/dreams/dream.PlatformErrorReporter`
-- dynamic: `@/components/dreams/dream.shell.DreamShell`
-- dynamic: `@/components/dreams/dream.shell.SharedDreamShell`
-- dynamic: `@/components/dreams/dream.SlideOverPanel`
-- dynamic: `@/components/dreams/dream.widget.SuperDreamWidget`
-- dynamic: `@/components/dreams/dream.window.JourneyDreamWindow`
-- dynamic: `@/components/dreams/dreamsurface.dreamspace`
-- dynamic: `@/components/dreams/dreamsurface.shell`
-- dynamic: `@/components/dreams/dreamsurface.window`
-- dynamic: `@/components/engines/brand/dream.BrandEnginApp`
-- dynamic: `@/components/engines/brand/index`
-- dynamic: `@/components/engines/brand/panels/dream.panel.CampaignsPanel`
-- dynamic: `@/components/engines/brand/panels/dream.panel.IdentityPanel`
-- dynamic: `@/components/engines/code/dream.CodeEnginApp`
-- dynamic: `@/components/engines/code/index`
-- dynamic: `@/components/engines/code/panels/dream.panel.AIPanel`
-- dynamic: `@/components/engines/code/panels/dream.panel.NotebookPanel`
-- dynamic: `@/components/engines/code/panels/dream.panel.ProjectsPanel`
-- dynamic: `@/components/engines/create/dream.CreateEnginApp`
-- dynamic: `@/components/engines/create/index`
-- dynamic: `@/components/engines/create/panels/dream.panel.CalendarPanel`
-- dynamic: `@/components/engines/create/panels/dream.panel.EditorPanel`
-- dynamic: `@/components/engines/create/panels/dream.panel.QueuePanel`
-- dynamic: `@/components/engines/games/dream.GameEnginApp`
-- dynamic: `@/components/engines/games/index`
-- dynamic: `@/components/engines/games/panels/dream.panel.BuilderPanel`
-- dynamic: `@/components/engines/games/panels/dream.panel.LibraryPanel`
-- dynamic: `@/components/engines/games/panels/dream.panel.ScoresPanel`
-- dynamic: `@/components/engines/index`
-- dynamic: `@/components/engines/lab/dream.LabEnginApp`
-- dynamic: `@/components/engines/lab/index`
-- dynamic: `@/components/engines/lab/panels/dream.panel.DataVizPanel`
-- dynamic: `@/components/engines/lab/panels/dream.panel.ExperimentsPanel`
-- dynamic: `@/components/engines/lab/panels/dream.panel.QuantumPanel`
-- dynamic: `@/components/engines/music/dream.MusicEnginApp`
-- dynamic: `@/components/engines/music/index`
-- dynamic: `@/components/engines/music/panels/dream.panel.ArrangePanel`
-- dynamic: `@/components/engines/music/panels/dream.panel.MusicLibraryPanel`
-- dynamic: `@/components/engines/music/panels/dream.panel.StudioPanel`
-- dynamic: `@/components/engines/portfolio/dream.PortfolioEnginApp`
-- dynamic: `@/components/engines/portfolio/index`
-- dynamic: `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
-- dynamic: `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
-- dynamic: `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
-- dynamic: `@/components/engines/shared/dream.bar.EnginNavBar`
-- dynamic: `@/components/engines/shared/dream.EnginProvider`
-- dynamic: `@/components/engines/shared/dream.EnginRuleSet`
-- dynamic: `@/components/engines/shared/dream.makeEnginApp`
-- dynamic: `@/components/engines/shared/dream.shell.EnginAppShell`
-- dynamic: `@/components/engines/shared/index`
-- dynamic: `@/components/feed/dream.AlgorithmEngine`
-- dynamic: `@/components/feed/dream.CommentSection`
-- dynamic: `@/components/feed/dream.FeedVideoCard`
-- dynamic: `@/components/feed/dream.FollowButton`
-- dynamic: `@/components/feed/dream.FollowOnboarding`
-- dynamic: `@/components/feeds/dream.widget.EmbedFeedWidget`
-- dynamic: `@/components/forge/dream.EngineBuilderCanvas`
-- dynamic: `@/components/forge/dream.panel.AIBuilderPanel`
-- dynamic: `@/components/forge/dream.widget.ForgeMomentumWidget`
-- dynamic: `@/components/gameengin/dream.cartridge.CartridgeBrowser`
-- dynamic: `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
-- dynamic: `@/components/gameengin/dream.cartridge.CartridgeLauncher`
-- dynamic: `@/components/gameengin/dream.cartridge.FeaturedCartridges`
-- dynamic: `@/components/gameengin/dream.CartridgeRegistryBootstrap`
-- dynamic: `@/components/gameengin/dream.CrashReportModal`
-- dynamic: `@/components/gameengin/input/DualSenseManager`
-- dynamic: `@/components/games/_fx/canvasFx`
-- dynamic: `@/components/games/dream.AvenueOfMirrors`
-- dynamic: `@/components/games/dream.BabylonSideScroller`
-- dynamic: `@/components/games/dream.DefuseRitual`
-- dynamic: `@/components/games/dream.EchoArena`
-- dynamic: `@/components/games/dream.EnginFracture`
-- dynamic: `@/components/games/dream.GameController`
-- dynamic: `@/components/games/dream.GamesHub`
-- dynamic: `@/components/games/dream.Glassfall`
-- dynamic: `@/components/games/dream.hud.GameHUD`
-- dynamic: `@/components/games/dream.hud.LegacyGameHUD`
-- dynamic: `@/components/games/dream.hud.MobileGameHUD`
-- dynamic: `@/components/games/dream.Leaderboard`
-- dynamic: `@/components/games/dream.LexiconSolitaire`
-- dynamic: `@/components/games/dream.NeonDrift`
-- dynamic: `@/components/games/dream.NiteFlyerSolarHymn`
-- dynamic: `@/components/games/dream.NullCathedral`
-- dynamic: `@/components/games/dream.RecordingControls`
-- dynamic: `@/components/games/dream.remote.GameRemote`
-- dynamic: `@/components/games/dream.remote.LegacyGameRemote`
-- dynamic: `@/components/games/dream.SerpentSiege`
-- dynamic: `@/components/games/dream.VoidlineGP`
-- dynamic: `@/components/games/madmaxi/audio`
-- dynamic: `@/components/games/madmaxi/authoredZonePacks`
-- dynamic: `@/components/games/madmaxi/config`
-- dynamic: `@/components/games/madmaxi/dream.MadmaxiGame`
-- dynamic: `@/components/games/madmaxi/index`
-- dynamic: `@/components/games/madmaxi/levels`
-- dynamic: `@/components/games/madmaxi/materials`
-- dynamic: `@/components/games/madmaxi/types`
-- dynamic: `@/components/games/madmaxi/vfx`
-- dynamic: `@/components/home/dream.ActiveModuleSurface`
-- dynamic: `@/components/home/dream.bar.GlobalDreamBar`
-- dynamic: `@/components/home/dream.bar.PersistentDreamBar`
-- dynamic: `@/components/home/dream.DaydreamPulseStrip`
-- dynamic: `@/components/home/dream.FlagshipEnginesStrip`
-- dynamic: `@/components/home/dream.NeuralSeamCanvas`
-- dynamic: `@/components/home/dream.widget.DreamWidget`
-- dynamic: `@/components/idari/dream.PlatformHealth`
-- dynamic: `@/components/landing/dream.LandingNav`
-- dynamic: `@/components/landing/dream.LandingProductStatement`
-- dynamic: `@/components/landing/dream.scene.UniverseField`
-- dynamic: `@/components/marketplace/dream.MarketplaceListingCard`
-- dynamic: `@/components/marketplace/dream.MarketplaceRequestButton`
-- dynamic: `@/components/menus/dream.menu.DreamRadialMenu`
-- dynamic: `@/components/menus/dream.menu.DualBottomMenu`
-- dynamic: `@/components/menus/dream.menu.RadialMenu`
-- dynamic: `@/components/menus/dream.menu.SystemRadialMenu`
-- dynamic: `@/components/menus/dream.panel.MenuPanel`
-- dynamic: `@/components/messaging/dream.BoardComposer`
-- dynamic: `@/components/music/dream.SoundRecorder`
-- dynamic: `@/components/onboarding/dream.OnboardingTip`
-- dynamic: `@/components/optimizer/dream.scene.BabylonOptimizeroScene`
-- dynamic: `@/components/overlays/dream.RootStatusScreen`
-- dynamic: `@/components/panels/dream.panel.AlgorithmPanel`
-- dynamic: `@/components/panels/dream.panel.AppearancePanel`
-- dynamic: `@/components/panels/dream.panel.ConnectorsPanel`
-- dynamic: `@/components/panels/dream.panel.ControlsPanel`
-- dynamic: `@/components/panels/dream.panel.DataPanel`
-- dynamic: `@/components/panels/dream.panel.FeedPanel`
-- dynamic: `@/components/panels/dream.panel.FeedSettingsPanel`
-- dynamic: `@/components/panels/dream.panel.HelpPanel`
-- dynamic: `@/components/panels/dream.panel.MarketplacePanel`
-- dynamic: `@/components/panels/dream.panel.PrivacyPanel`
-- dynamic: `@/components/panels/dream.panel.ProfilePanel`
-- dynamic: `@/components/panels/dream.panel.SafetyPanel`
-- dynamic: `@/components/panels/dream.panel.SettingsPanel`
-- dynamic: `@/components/panels/dream.panel.WidgetsPanel`
-- dynamic: `@/components/profile/dream.EditableAvatar`
-- dynamic: `@/components/profile/dream.ProfileCanvas`
-- dynamic: `@/components/profile/dream.ProfileCustomizeButton`
-- dynamic: `@/components/profile/dream.widget.ProfileWidgetGrid`
-- dynamic: `@/components/providers/dream.AppSurfaceShell`
-- dynamic: `@/components/providers/dream.GodTierProvider`
-- dynamic: `@/components/providers/dream.ThemeProvider`
-- dynamic: `@/components/runtime/dream.DualRuntimeContainer`
-- dynamic: `@/components/runtime/dream.RuntimeView`
-- dynamic: `@/components/runtime/dream.shell.RuntimeShell`
-- dynamic: `@/components/shaders/dream.LightningWing`
-- dynamic: `@/components/shaders/dream.NeonGlow`
-- dynamic: `@/components/shaders/dream.Refractor`
-- dynamic: `@/components/shaders/index`
-- dynamic: `@/components/shared-dream/dream.InviteFlow`
-- dynamic: `@/components/shared-dream/dream.SharedDreamCanvas`
-- dynamic: `@/components/shared-dream/dream.SharedDreamProvider`
-- dynamic: `@/components/shared-dream/index`
-- dynamic: `@/components/spatial/dream.PixiPhysicsLayer`
-- dynamic: `@/components/spatial/dream.ProfileSpace`
-- dynamic: `@/components/spatial/dream.shell.EnhancedSpatialShell`
-- dynamic: `@/components/three/dream.scene`
-- dynamic: `@/components/three/index`
-- dynamic: `@/components/ui/dream.AuthenticatedPageHeader`
-- dynamic: `@/components/ui/dream.DreamWord`
-- dynamic: `@/components/ui/dream.IconList`
-- dynamic: `@/components/ui/dream.InfinityIcon`
-- dynamic: `@/components/ui/dream.PlatformBadge`
-- dynamic: `@/components/ui/dream.SheetIcon`
-- dynamic: `@/components/ui/dream.SocialShareSheet`
-- dynamic: `@/components/universal-editor/dream.UniversalEditor`
-- dynamic: `@/components/universal-editor/dream.UniversalEditorWrapper`
-- dynamic: `@/components/universal-editor/index`
-- dynamic: `@/components/universal-editor/useTapHoldMove`
-- dynamic: `@/components/universe/dream.node-cluster`
-- dynamic: `@/components/universe/dream.shell.universe-shell`
-- dynamic: `@/components/universe/dream.universe-card`
-- dynamic: `@/components/universe/index`
-- dynamic: `@/components/warp/dream.WarpCanvas`
-- dynamic: `@/components/webgpu/dream.WebGPUShowcase`
-- dynamic: `@/components/webgpu/neuralPostProcess`
-- dynamic: `@/components/webgpu/renderer`
-- dynamic: `@/components/webgpu/shaders`
-- dynamic: `@/components/widgets/dream.AddDreamCTA`
-- dynamic: `@/components/widgets/dream.ConfigureSheet`
-- dynamic: `@/components/widgets/dream.EditModeBanner`
-- dynamic: `@/components/widgets/dream.EditModeProvider`
-- dynamic: `@/components/widgets/dream.widget.PlayMediaWidget`
-- dynamic: `@/components/widgets/dream.widget.UniversalWidget`
-- dynamic: `@/components/widgets/dream.widget.WidgetCard`
-- dynamic: `@/components/widgets/dream.widget.WidgetLibrary`
-- dynamic: `@/components/widgets/dream.widget.WidgetPlaceholder`
-- dynamic: `@/components/widgets/dream.widget.WidgetShell`
-- dynamic: `@/components/widgets/dream.widget.WidgetSurface`
-- dynamic: `@/coresurfaces/dreamsurface.EditProfileDream`
-- dynamic: `@/coresurfaces/dreamsurface.ViewProfile`
-- dynamic: `@/daydreams/brand/page`
-- dynamic: `@/daydreams/code/page`
-- dynamic: `@/daydreams/create/page`
-- dynamic: `@/daydreams/games/page`
-- dynamic: `@/daydreams/lab/page`
-- dynamic: `@/daydreams/music/page`
-
-## `src/engin/generated/systems.ts`
-
-- dynamic: `@/lib/activeModulesStore`
-- dynamic: `@/lib/activity/aqs`
-- dynamic: `@/lib/activity/boogieActivityPolicy`
-- dynamic: `@/lib/activity/revenueSplit`
-- dynamic: `@/lib/activity/scoring`
-- dynamic: `@/lib/activity/skipCredits`
-- dynamic: `@/lib/activity/types`
-- dynamic: `@/lib/activity/visibility-score`
-- dynamic: `@/lib/adari`
-- dynamic: `@/lib/admin/lockout`
-- dynamic: `@/lib/admin/upgrade-readiness`
-- dynamic: `@/lib/agentOS`
-- dynamic: `@/lib/agentOS/hostTools`
-- dynamic: `@/lib/agents/agentBus`
-- dynamic: `@/lib/agents/boogieManAI`
-- dynamic: `@/lib/agents/dreamengin`
-- dynamic: `@/lib/agents/drEamsMode`
-- dynamic: `@/lib/agents/idari`
-- dynamic: `@/lib/agents/idariLoop`
-- dynamic: `@/lib/agents/teachBus`
-- dynamic: `@/lib/agents/uiActions`
-- dynamic: `@/lib/ai/audit`
-- dynamic: `@/lib/ai/boogie-policy`
-- dynamic: `@/lib/ai/boogie-verifier`
-- dynamic: `@/lib/ai/boogieman`
-- dynamic: `@/lib/ai/capability-gate`
-- dynamic: `@/lib/ai/CIC`
-- dynamic: `@/lib/ai/confirm-token`
-- dynamic: `@/lib/ai/confirm`
-- dynamic: `@/lib/ai/groq`
-- dynamic: `@/lib/ai/handlers/dreams`
-- dynamic: `@/lib/ai/handlers/index`
-- dynamic: `@/lib/ai/handlers/navigation`
-- dynamic: `@/lib/ai/handlers/social`
-- dynamic: `@/lib/ai/idempotency`
-- dynamic: `@/lib/ai/rate-limiter`
-- dynamic: `@/lib/ai/rateLimit`
-- dynamic: `@/lib/ai/schemas`
-- dynamic: `@/lib/ai/tfBackend`
-- dynamic: `@/lib/ai/tool-router`
-- dynamic: `@/lib/ai/triad`
-- dynamic: `@/lib/api/route`
-- dynamic: `@/lib/artifactStore`
-- dynamic: `@/lib/assets/assetOptimizer`
-- dynamic: `@/lib/assets/indexedDBStore`
-- dynamic: `@/lib/audio-fingerprint/fingerprint`
-- dynamic: `@/lib/audio-fingerprint/index`
-- dynamic: `@/lib/audio-fingerprint/peak-map`
-- dynamic: `@/lib/audio-fingerprint/stem-extractor`
-- dynamic: `@/lib/audioFingerprint`
-- dynamic: `@/lib/auth/nextRedirect`
-- dynamic: `@/lib/babylon/createEngine`
-- dynamic: `@/lib/babylon/dreamengine-hybrid`
-- dynamic: `@/lib/bot-detection/detector`
-- dynamic: `@/lib/bot-detection/index`
-- dynamic: `@/lib/bot-detection/swipe-physics`
-- dynamic: `@/lib/bot-detection/view-tally`
-- dynamic: `@/lib/botDetection`
-- dynamic: `@/lib/branding/logos`
-- dynamic: `@/lib/child-safety/childSafetyDetector`
-- dynamic: `@/lib/child-safety/imageClassifier`
-- dynamic: `@/lib/child-safety/messageContextChecker`
-- dynamic: `@/lib/child-safety/ncmecReporter`
-- dynamic: `@/lib/child-safety/scanMediaUrls`
-- dynamic: `@/lib/code/drEamsCodeAssist`
-- dynamic: `@/lib/collaboration/index`
-- dynamic: `@/lib/componentInventory`
-- dynamic: `@/lib/composite/compositor`
-- dynamic: `@/lib/composite/fxSimulation`
-- dynamic: `@/lib/composite/matchmover`
-- dynamic: `@/lib/composite/motionCapture`
-- dynamic: `@/lib/composite/rotoscope`
-- dynamic: `@/lib/consent/consentManager`
-- dynamic: `@/lib/content/generativeFill`
-- dynamic: `@/lib/content/publishIntent`
-- dynamic: `@/lib/content/seoScorer`
-- dynamic: `@/lib/content/transcriptEditor`
-- dynamic: `@/lib/content/voiceClone`
-- dynamic: `@/lib/data-transform`
-- dynamic: `@/lib/daydream/useDaydreamPersistence`
-- dynamic: `@/lib/daydream/useDaydreamState`
-- dynamic: `@/lib/dev-bypass`
-- dynamic: `@/lib/diff/aiEditEngine`
-- dynamic: `@/lib/diff/diffUtils`
-- dynamic: `@/lib/dream-docs/embed`
-- dynamic: `@/lib/dream-docs/index`
-- dynamic: `@/lib/dream-docs/search`
-- dynamic: `@/lib/dream-window/connectionVerbs`
-- dynamic: `@/lib/dream-window/DreamWindowLifecycle`
-- dynamic: `@/lib/dream-window/enginConnectionNetwork`
-- dynamic: `@/lib/dream-window/index`
-- dynamic: `@/lib/dream-window/runtimeRegion`
-- dynamic: `@/lib/dream-window/useDreamWindowActions`
-- dynamic: `@/lib/dreamdm/barInteractions`
-- dynamic: `@/lib/dreamdm/bridgeSeamFlow`
-- dynamic: `@/lib/dreamdm/useDreamBarContext`
-- dynamic: `@/lib/dreamdm/useDreamDMConversations`
-- dynamic: `@/lib/dreamdm/useDreamDMDraft`
-- dynamic: `@/lib/dreamdm/useDreamDMMessages`
-- dynamic: `@/lib/dreamdm/useDreamSearch`
-- dynamic: `@/lib/dreamdm/useMessagingCore`
-- dynamic: `@/lib/dreamdm/useModuleBarIntent`
-- dynamic: `@/lib/dreamdm/useNotifications`
-- dynamic: `@/lib/dreamengin/DrEamsAnimator`
-- dynamic: `@/lib/dreamengin/drEamsSearch`
-- dynamic: `@/lib/dreamengin/engineAssets`
-- dynamic: `@/lib/dreamengin/osSubsystemManifest`
-- dynamic: `@/lib/dreamenginOS/index`
-- dynamic: `@/lib/dreamnav/delta`
-- dynamic: `@/lib/dreamnav/gctAssist`
-- dynamic: `@/lib/dreamnav/gestures6`
-- dynamic: `@/lib/dreamnav/path`
-- dynamic: `@/lib/dreamnav/tau`
-- dynamic: `@/lib/dreamr/closeFriendsVisibility`
-- dynamic: `@/lib/dreamr/feedCursor`
-- dynamic: `@/lib/dreamr/socialHumanityScore`
-- dynamic: `@/lib/dreamr/swipeCalibration`
-- dynamic: `@/lib/dreamr/swipePersonalization`
-- dynamic: `@/lib/dreamr/torridityLedger`
-- dynamic: `@/lib/dreams/drag`
-- dynamic: `@/lib/dreams/profileProjection`
-- dynamic: `@/lib/dreams/types`
-- dynamic: `@/lib/dreams/useDreamsRuntime`
-- dynamic: `@/lib/engin-runtime/EnginBaseState`
-- dynamic: `@/lib/engin-runtime/EnginCapabilities`
-- dynamic: `@/lib/engin-runtime/EnginEventBus`
-- dynamic: `@/lib/engin-runtime/EnginIOAdapter`
-- dynamic: `@/lib/engin-runtime/EnginRuleSetContract`
-- dynamic: `@/lib/engin-runtime/EnginRuntime`
-- dynamic: `@/lib/engin-runtime/index`
-- dynamic: `@/lib/engine/index`
-- dynamic: `@/lib/enginpipe/artifact/manifest`
-- dynamic: `@/lib/enginpipe/index`
-- dynamic: `@/lib/enginpipe/quality/tiers`
-- dynamic: `@/lib/enginpipe/telemetry/client`
-- dynamic: `@/lib/enginpipe/telemetry/events`
-- dynamic: `@/lib/engins/game/gameEnginRuleSet`
-- dynamic: `@/lib/engins/game/index`
-- dynamic: `@/lib/engins/game/useGameEnginRuntime`
-- dynamic: `@/lib/engins/useEnginWorkflow`
-- dynamic: `@/lib/engins/workflowEngine`
-- dynamic: `@/lib/event-bus/index`
-- dynamic: `@/lib/eventBus`
-- dynamic: `@/lib/feature-build/buildCycle`
-- dynamic: `@/lib/feature-build/featureManifest`
-- dynamic: `@/lib/feature-build/index`
-- dynamic: `@/lib/feature-build/uiQualityCriteria`
-- dynamic: `@/lib/feed/feedTopics`
-- dynamic: `@/lib/feed/hashtags`
-- dynamic: `@/lib/feed/useLiveFeed`
-- dynamic: `@/lib/feed/useYouTubeLiveFeed`
-- dynamic: `@/lib/feeds/embedFeedLoader`
-- dynamic: `@/lib/forge-ngn/assembly`
-- dynamic: `@/lib/forge-ngn/index`
-- dynamic: `@/lib/forge-ngn/piece-registry`
-- dynamic: `@/lib/forge/engineForge`
-- dynamic: `@/lib/forge/forgeBuild`
-- dynamic: `@/lib/forge/forgeIntelligence`
-- dynamic: `@/lib/forge/forgeMomentum`
-- dynamic: `@/lib/forge/forgeNexus`
-- dynamic: `@/lib/forge/forgeRegistry`
-- dynamic: `@/lib/forge/forgeRituals`
-- dynamic: `@/lib/forge/useForgeActivity`
-- dynamic: `@/lib/forge/useForgeBuild`
-- dynamic: `@/lib/gameengin/accessibility-ai`
-- dynamic: `@/lib/gameengin/ai-director`
-- dynamic: `@/lib/gameengin/ai-npcs`
-- dynamic: `@/lib/gameengin/brain-reader`
-- dynamic: `@/lib/gameengin/cartridge-manifest`
-- dynamic: `@/lib/gameengin/cartridge`
-- dynamic: `@/lib/gameengin/cartridgeLoader`
-- dynamic: `@/lib/gameengin/cloud-compute`
-- dynamic: `@/lib/gameengin/control-mappings`
-- dynamic: `@/lib/gameengin/core`
-- dynamic: `@/lib/gameengin/dream-engine`
-- dynamic: `@/lib/gameengin/dreamr-loader`
-- dynamic: `@/lib/gameengin/gameEnginRuntime`
-- dynamic: `@/lib/gameengin/generative-audio`
-- dynamic: `@/lib/gameengin/index`
-- dynamic: `@/lib/gameengin/neural-render`
-- dynamic: `@/lib/gameengin/path-tracing`
-- dynamic: `@/lib/gameengin/platform`
-- dynamic: `@/lib/gameengin/post-fx`
-- dynamic: `@/lib/gameengin/power-systems`
-- dynamic: `@/lib/gameengin/predictive-stream`
-- dynamic: `@/lib/gameengin/procgen`
-- dynamic: `@/lib/gameengin/registerCartridges`
-- dynamic: `@/lib/gameengin/remote/comboMachine`
-- dynamic: `@/lib/gameengin/remote/index`
-- dynamic: `@/lib/gameengin/remote/layout`
-- dynamic: `@/lib/gameengin/remote/moves`
-- dynamic: `@/lib/gameengin/remote/sprintDetector`
-- dynamic: `@/lib/gameengin/systems/ai`
-- dynamic: `@/lib/gameengin/systems/animation`
-- dynamic: `@/lib/gameengin/systems/assets`
-- dynamic: `@/lib/gameengin/systems/index`
-- dynamic: `@/lib/gameengin/systems/lod`
-- dynamic: `@/lib/gameengin/systems/network`
-- dynamic: `@/lib/gameengin/systems/physics`
-- dynamic: `@/lib/gameengin/systems/pooling`
-- dynamic: `@/lib/gameengin/systems/rendering`
-- dynamic: `@/lib/gameengin/systems/spatial`
-- dynamic: `@/lib/gameengin/systems/world`
-- dynamic: `@/lib/gameengin/unifiedLoop`
-- dynamic: `@/lib/gameengin/useUnifiedLoop`
-- dynamic: `@/lib/gameengin/webgpu-runtime-shell`
-- dynamic: `@/lib/gameengin/world-crdt`
-- dynamic: `@/lib/gameengin/xr`
-- dynamic: `@/lib/games/avatar`
-- dynamic: `@/lib/games/catalog`
-- dynamic: `@/lib/games/DualSenseManager`
-- dynamic: `@/lib/games/gameControllerButtons`
-- dynamic: `@/lib/games/gameControllerLeft`
-- dynamic: `@/lib/games/gameControllerRight`
-- dynamic: `@/lib/games/hooks`
-- dynamic: `@/lib/games/library-state`
-- dynamic: `@/lib/games/lucid-avenue-world`
-- dynamic: `@/lib/games/mobileControls`
-- dynamic: `@/lib/games/navigation`
-- dynamic: `@/lib/games/performance-baseline`
-- dynamic: `@/lib/games/quality-plan`
-- dynamic: `@/lib/games/useAIDirector`
-- dynamic: `@/lib/games/useGameInputKeyboardBridge`
-- dynamic: `@/lib/games/useGamepad`
-- dynamic: `@/lib/games/useImmersiveGameLayout`
-- dynamic: `@/lib/games/useRemoteChannel`
-- dynamic: `@/lib/gct/anomaly-detection`
-- dynamic: `@/lib/gct/audio-fingerprint`
-- dynamic: `@/lib/gct/gct-engine`
-- dynamic: `@/lib/gct/image-search`
-- dynamic: `@/lib/gct/index`
-- dynamic: `@/lib/gct/recommendations`
-- dynamic: `@/lib/generationLaw`
-- dynamic: `@/lib/gestures/touchGestures`
-- dynamic: `@/lib/gestures/useTouchGestures`
-- dynamic: `@/lib/god-tier/godTierEngine`
-- dynamic: `@/lib/god-tier/useGodTier`
-- dynamic: `@/lib/gsap/gsap`
-- dynamic: `@/lib/gsap/useGsapEntrance`
-- dynamic: `@/lib/gsap/useGsapFlip`
-- dynamic: `@/lib/gsap/useGsapScrollReveal`
-- dynamic: `@/lib/h265-encoder`
-- dynamic: `@/lib/home-buttons/button-groups`
-- dynamic: `@/lib/home-buttons/contextual-home`
-- dynamic: `@/lib/icons/sheet`
-- dynamic: `@/lib/identity/canonical-names`
-- dynamic: `@/lib/intelligence/continuityHelpers`
-- dynamic: `@/lib/intelligence/sessionContinuity`
-- dynamic: `@/lib/intelligence/sessionPatternEngine`
-- dynamic: `@/lib/intelligence/useSessionIntelligence`
-- dynamic: `@/lib/journey/journeyDots`
-- dynamic: `@/lib/journey/journeyInsights`
-- dynamic: `@/lib/journey/withJourney`
-- dynamic: `@/lib/ledger-data`
-- dynamic: `@/lib/ledger`
-- dynamic: `@/lib/marketplace/listings`
-- dynamic: `@/lib/marketplace/request`
-- dynamic: `@/lib/media/ledger`
-- dynamic: `@/lib/media/postMedia`
-- dynamic: `@/lib/music/presets`
-- dynamic: `@/lib/music/starmaker`
-- dynamic: `@/lib/music/starmakerArrangement`
-- dynamic: `@/lib/music/starmakerDaw`
-- dynamic: `@/lib/music/wasmAudioBridge`
-- dynamic: `@/lib/navigation/anchorField`
-- dynamic: `@/lib/navigation/AnchorStateBuffer`
-- dynamic: `@/lib/navigation/AnchorWidgetStorage`
-- dynamic: `@/lib/navigation/dream-state`
-- dynamic: `@/lib/navigation/GestureFrameComputer`
-- dynamic: `@/lib/navigation/GestureIntentResolver`
-- dynamic: `@/lib/navigation/index`
-- dynamic: `@/lib/navigation/manifold`
-- dynamic: `@/lib/navigation/NavStateBuffer`
-- dynamic: `@/lib/navigation/physics`
-- dynamic: `@/lib/navigation/PointerEventCapture`
-- dynamic: `@/lib/navigation/quaternion`
-- dynamic: `@/lib/navigation/ReturnStack`
-- dynamic: `@/lib/navigation/SpatialNavigationEngine`
-- dynamic: `@/lib/navigation/StructureLedger`
-- dynamic: `@/lib/navigation/TransformSolver`
-- dynamic: `@/lib/navigation/useNavigation`
-- dynamic: `@/lib/navigation/WidgetInstanceMemory`
-- dynamic: `@/lib/notifications/notificationHelpers`
-- dynamic: `@/lib/notifications/useNotifications`
-- dynamic: `@/lib/observability/collector`
-- dynamic: `@/lib/observability/correlator`
-- dynamic: `@/lib/observability/healthTrend`
-- dynamic: `@/lib/observability/immediateAction`
-- dynamic: `@/lib/observability/index`
-- dynamic: `@/lib/observability/otel`
-- dynamic: `@/lib/observability/otelBridge`
-- dynamic: `@/lib/observability/rootCauseAnalyzer`
-- dynamic: `@/lib/offline/offlineCache`
-- dynamic: `@/lib/offline/useOfflineSync`
-- dynamic: `@/lib/optimizer/babylon-optimizero`
-- dynamic: `@/lib/optimizer/constraint-solver`
-- dynamic: `@/lib/optimizer/creative-optimizero`
-- dynamic: `@/lib/optimizer/creative-validator`
-- dynamic: `@/lib/optimizer/index`
-- dynamic: `@/lib/optimizer/types`
-- dynamic: `@/lib/panels/panelTypes`
-- dynamic: `@/lib/platform/index`
-- dynamic: `@/lib/platform/lab`
-- dynamic: `@/lib/policy/boogiePolicy`
-- dynamic: `@/lib/renderer/Canvas2DRenderer`
-- dynamic: `@/lib/renderer/FrustumCuller`
-- dynamic: `@/lib/renderer/index`
-- dynamic: `@/lib/renderer/IRenderer`
-- dynamic: `@/lib/routing/surfaces`
-- dynamic: `@/lib/runtime/channelMetrics`
-- dynamic: `@/lib/runtime/coercionTable`
-- dynamic: `@/lib/runtime/dreamOSBus`
-- dynamic: `@/lib/runtime/dropTargetRegistry`
-- dynamic: `@/lib/runtime/dualRuntime`
-- dynamic: `@/lib/runtime/dualRuntimeBridge`
-- dynamic: `@/lib/runtime/EnginDispatcher`
-- dynamic: `@/lib/runtime/enginWorkflowRegistry`
-- dynamic: `@/lib/runtime/instanceManager`
-- dynamic: `@/lib/runtime/isAuthRelatedError`
-- dynamic: `@/lib/runtime/madMaxiSnapshotBridge`
-- dynamic: `@/lib/runtime/memory`
-- dynamic: `@/lib/runtime/moduleRegistry`
-- dynamic: `@/lib/runtime/offlineQueue`
-- dynamic: `@/lib/runtime/quantumCircuit`
-- dynamic: `@/lib/runtime/runtimeChannel`
-- dynamic: `@/lib/runtime/runtimeContainer`
-- dynamic: `@/lib/runtime/seamClipboard`
-- dynamic: `@/lib/runtime/sharedResourcePool`
-- dynamic: `@/lib/runtime/snapshotFingerprint`
-- dynamic: `@/lib/runtime/swapManager`
-- dynamic: `@/lib/runtime/useDragSurface`
-- dynamic: `@/lib/runtime/useDualRuntime`
-- dynamic: `@/lib/runtime/useDualRuntimePersistence`
-- dynamic: `@/lib/runtime/useEnginBridge`
-- dynamic: `@/lib/runtime/useEnginCoopSync`
-- dynamic: `@/lib/runtime/useSharedEnginChannel`
-- dynamic: `@/lib/scene/sceneState`
-- dynamic: `@/lib/setup/checks`
-- dynamic: `@/lib/sharedDream`
-- dynamic: `@/lib/shop/listings`
-- dynamic: `@/lib/slog`
-- dynamic: `@/lib/social-feed`
-- dynamic: `@/lib/social/crossPost`
-- dynamic: `@/lib/social/platforms`
-- dynamic: `@/lib/social/rss-feed`
-- dynamic: `@/lib/supabase/client`
-- dynamic: `@/lib/supabase/config`
-- dynamic: `@/lib/supabase/realtime`
-- dynamic: `@/lib/supabase/safeGetUser`
-- dynamic: `@/lib/supabase/server`
-- dynamic: `@/lib/supabase/vector`
-- dynamic: `@/lib/torridity`
-- dynamic: `@/lib/torridity/constants`
-- dynamic: `@/lib/torridity/index`
-- dynamic: `@/lib/torridity/physics`
-- dynamic: `@/lib/ui/responsive`
-- dynamic: `@/lib/ui/runtimeViewport`
-- dynamic: `@/lib/ui/skin-engine`
-- dynamic: `@/lib/ui/theme-engine`
-- dynamic: `@/lib/ui/theme`
-- dynamic: `@/lib/universal-editor/module-manifest`
-- dynamic: `@/lib/universalEditor`
-- dynamic: `@/lib/user-sim/userSimAgent`
-- dynamic: `@/lib/utils`
-- dynamic: `@/lib/vm/bufferManager`
-- dynamic: `@/lib/vm/bus-events`
-- dynamic: `@/lib/vm/dual-runtime`
-- dynamic: `@/lib/vm/dualVMCoordinator`
-- dynamic: `@/lib/vm/index`
-- dynamic: `@/lib/vm/inter-vm-messaging`
-- dynamic: `@/lib/vm/pipelineCache`
-- dynamic: `@/lib/vm/resource-quota`
-- dynamic: `@/lib/vm/security`
-- dynamic: `@/lib/vm/snapshot`
-- dynamic: `@/lib/vm/types`
-- dynamic: `@/lib/vm/wasm-features`
-- dynamic: `@/lib/vm/wasmGpuVM`
-- dynamic: `@/lib/warp/useWarp`
-- dynamic: `@/lib/warp/warpEngine`
-- dynamic: `@/lib/webgpu`
-- dynamic: `@/lib/webgpu/adaptiveQuality`
-- dynamic: `@/lib/webgpu/director`
-- dynamic: `@/lib/webgpu/useWebGPUDirector`
-- dynamic: `@/lib/widgets/CrossWidgetPosting`
-- dynamic: `@/lib/widgets/feed-resolver`
-- dynamic: `@/lib/widgets/parse`
-- dynamic: `@/lib/widgets/parseConfig`
-- dynamic: `@/lib/widgets/useWidget`
-- dynamic: `@/lib/widgets/WidgetBus`
-- dynamic: `@/lib/widgets/WidgetEventBus`
-- dynamic: `@/lib/widgets/WidgetLinkGraph`
-- dynamic: `@/lib/widgets/widgetRegistry`
-
-## `src/launcher.ts`
-
-- imports: `@/src/launcher`
-- imports: `./configs/demoGameConfig`
-- imports: `./core/GameEnginCore`
-- imports: `@/lib/utils`
-
-## `tailwindcss-animate.d.ts`
-
-- dynamic: `tailwindcss`
-
-## `tests/activity-first-protocol.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/activity/types`
-- imports: `../lib/activity/scoring`
-- imports: `../lib/activity/aqs`
-- imports: `../lib/activity/visibility-score`
-
-## `tests/activity-revenue-split.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/activity/revenueSplit`
-
-## `tests/admin-lockout.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/admin/lockout`
-
-## `tests/admin-upgrade-readiness.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/feature-build`
-- imports: `@/lib/admin/upgrade-readiness`
-- imports: `@/lib/setup/checks`
-
-## `tests/agent-bus-consensus.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/ai/triad`
-- dynamic: `@/lib/agents/agentBus`
-
-## `tests/ai-edit-engine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/diff/aiEditEngine`
-
-## `tests/api-route-body-guard.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/asset-optimizer.test.ts`
-
-- imports: `@/types/supabase`
-- imports: `vitest`
-- imports: `@/lib/assets/assetOptimizer`
-- dynamic: `@/lib/assets/indexedDBStore`
-
-## `tests/auth-providers-route.test.ts`
-
-- imports: `vitest`
-- dynamic: `../app/api/auth/providers/route`
-
-## `tests/auth-update-password-page.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/authenticated-ui-shells.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/components/ui/dream.AuthenticatedPageHeader`
-
-## `tests/babylon-optimizero.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/optimizer/babylon-optimizero`
-- imports: `@/lib/optimizer/creative-optimizero`
-
-## `tests/babylon-webgpu-engine.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/babylon/createEngine`
-
-## `tests/bar-hide-preserves-both-runtimes.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/barInteractions`
-
-## `tests/boogie-policy-module.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/policy/boogiePolicy`
-
-## `tests/boogieman.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/ai/boogieman`
-- imports: `@/lib/ai/boogie-policy`
-- imports: `@/lib/ai/schemas`
-
-## `tests/bot-detector.test.ts`
-
-- imports: `vitest`
-- imports: `@/app/dreamdmbar/_components/dreamr/algorithms/botDetector`
-
-## `tests/branding-logos.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/branding/logos`
-
-## `tests/canonical-naming-enforcement.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/child-safety.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/child-safety/childSafetyDetector`
-- imports: `@/lib/child-safety/imageClassifier`
-- imports: `@/lib/child-safety/scanMediaUrls`
-- imports: `@/lib/child-safety/messageContextChecker`
-- dynamic: `@/lib/child-safety/childSafetyDetector`
-
-## `tests/code-dream-preview.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/code/drEamsCodeAssist`
-
-## `tests/coercion-table.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/runtime/coercionTable`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `tests/collector-extended.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/observability/collector`
-
-## `tests/compositeengin-features.test.ts`
-
-- imports: `vitest`
-- dynamic: `../lib/composite/motionCapture`
-- dynamic: `../lib/composite/compositor`
-- dynamic: `../lib/composite/rotoscope`
-- dynamic: `../lib/composite/fxSimulation`
-- dynamic: `../lib/composite/matchmover`
-
-## `tests/conform-memory-map.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/memory`
-
-## `tests/connector-delivery.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/connectors/deliveryStrategy`
-- imports: `@/lib/connectors/webhookVerification`
-
-## `tests/connectors.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/connectors/connectorRegistry`
-- imports: `@/lib/connectors/normalise`
-- imports: `@/lib/connectors/providers/nostr`
-
-## `tests/content-intelligence-routes.test.ts`
-
-- imports: `vitest`
-- dynamic: `../app/api/content/intelligence/route`
-- dynamic: `../app/api/lab/benchmarks/route`
-
-## `tests/content-publish-intent.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/content/publishIntent`
-
-## `tests/contentengin-features.test.ts`
-
-- imports: `vitest`
-- dynamic: `../lib/content/transcriptEditor`
-- dynamic: `../lib/content/seoScorer`
-- dynamic: `../lib/content/voiceClone`
-- dynamic: `../app/api/content/transcribe/route`
-- dynamic: `next/server`
-- dynamic: `../app/api/content/generative-fill/route`
-- dynamic: `../app/api/content/voice-clone/route`
-
-## `tests/contextual-home.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/home-buttons/contextual-home`
-
-## `tests/creative-optimizero.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/optimizer/creative-optimizero`
-
-## `tests/data-transform-extended.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/data-transform`
-
-## `tests/data-transform.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/data-transform`
-
-## `tests/daydream-engin-routes.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/decide-bar-release.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/barInteractions`
-
-## `tests/dev-bypass.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/dev-bypass`
-
-## `tests/diff-viewer.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/diff/diffUtils`
-- imports: `react`
-
-## `tests/dr-eams-code-assist.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/code/drEamsCodeAssist`
-
-## `tests/dr-eams-search-bar.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamengin/drEamsSearch`
-
-## `tests/dream-bar-context.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/useDreamBarContext`
-
-## `tests/dream-continuity-spine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/intelligence/continuityHelpers`
-- imports: `@/lib/forge/forgeRegistry`
-
-## `tests/dream-effects.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/lib/gsap/useGsapEntrance`
-
-## `tests/dream-os-bus.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/dreamOSBus`
-
-## `tests/dream-state.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/navigation/dream-state`
-
-## `tests/dream-window-system.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- imports: `@/lib/dream-window/connectionVerbs`
-- imports: `@/lib/dream-window/runtimeRegion`
-- imports: `@/lib/dream-window/enginConnectionNetwork`
-- imports: `@/lib/runtime/dualRuntime`
-- imports: `@/lib/identity/canonical-names`
-
-## `tests/dreamdm-bar-intent.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/useDreamBarContext`
-- imports: `@/lib/dreamdm/DreamSystemContext`
-
-## `tests/dreamdm-bar-interactions.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/barInteractions`
-
-## `tests/dreamdm-bar-wild.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/barInteractions`
-
-## `tests/dreamdm-draft.test.ts`
-
-- imports: `vitest`
-
-## `tests/dreamdm-messaging-phase2.test.ts`
-
-- imports: `vitest`
-
-## `tests/dreamengin-os.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/components/dreamengin/dream.DREAMenginOS`
-- dynamic: `@/lib/babylon/createEngine`
-
-## `tests/dreamnav.tau.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamnav/tau`
-
-## `tests/dreamr-algorithm-velocity.test.ts`
-
-- imports: `vitest`
-- imports: `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-
-## `tests/dreamr-algorithm.test.ts`
-
-- imports: `vitest`
-- imports: `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-
-## `tests/dreamr-feed-limits.test.ts`
-
-- imports: `vitest`
-
-## `tests/dreamr-feed-topics.test.ts`
-
-- imports: `vitest`
-- imports: `@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed`
-
-## `tests/dreamr-page-route.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-
-## `tests/dreamr-swipe-personalization.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamr/swipePersonalization`
-
-## `tests/dreamr-visibility-cursor.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamr/closeFriendsVisibility`
-- imports: `@/lib/dreamr/feedCursor`
-
-## `tests/dreamspace-panel.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/components/dreams/dreamsurface.dreamspace`
-
-## `tests/drop-target-registry.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/runtime/dropTargetRegistry`
-- imports: `../lib/runtime/coercionTable`
-
-## `tests/dual-runtime-bridge-peer-activity.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-
-## `tests/durable-bridge.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-
-## `tests/e2e/demo.spec.ts`
-
-- imports: `@playwright/test`
-
-## `tests/e2e/full-coverage.spec.ts`
-
-- imports: `@playwright/test`
-
-## `tests/edit-profiledream-section7.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/engin-dispatcher.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/lib/runtime/memory`
-- imports: `@/lib/runtime/EnginDispatcher`
-
-## `tests/engin-runtime-core.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engin-runtime/EnginCapabilities`
-- imports: `@/lib/engin-runtime/EnginIOAdapter`
-- imports: `@/lib/engin-runtime/EnginEventBus`
-- imports: `@/lib/engin-runtime`
-- imports: `@/lib/engin-runtime/EnginRuleSetContract`
-
-## `tests/engin-workflow.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/engins/workflowEngine`
-
-## `tests/enginpipe/manifest.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/enginpipe/artifact/manifest`
-
-## `tests/enginpipe/telemetry.test.ts`
-
-- imports: `@supabase/supabase-js`
-- imports: `vitest`
-- imports: `@/lib/enginpipe/telemetry/events`
-- imports: `@/lib/enginpipe/telemetry/client`
-
-## `tests/enginpipe/tiers.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/enginpipe/quality/tiers`
-
-## `tests/example.spec.ts`
-
-- imports: `@playwright/test`
-
-## `tests/export-full-code.test.ts`
-
-- imports: `node:fs`
-- imports: `node:fs/promises`
-- imports: `node:path`
-- imports: `node:os`
-- imports: `vitest`
-
-## `tests/feature-build.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/feature-build/featureManifest`
-- imports: `@/lib/feature-build/buildCycle`
-- imports: `@/lib/feature-build/uiQualityCriteria`
-- imports: `@/lib/identity/canonical-names`
-
-## `tests/forge-build.test.ts`
-
-- imports: `vitest`
-- imports: `path`
-- imports: `fs`
-- imports: `@/lib/forge/forgeBuild`
-
-## `tests/forge-engin.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/lib/forge/forgeIntelligence`
-- dynamic: `@/lib/forge/forgeRegistry`
-
-## `tests/forge-momentum.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/forge/forgeMomentum`
-- imports: `@/lib/forge/forgeRegistry`
-
-## `tests/forge-nexus.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/forge/forgeNexus`
-- imports: `@/lib/forge/forgeRegistry`
-
-## `tests/forge-rituals.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/forge/forgeRituals`
-- imports: `@/lib/forge/forgeRegistry`
-
-## `tests/fusion-cartridges-depth.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/fusion-cartridges.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/gameengin/cartridges/loaders`
-
-## `tests/game-controller.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/games/gameControllerLeft`
-- imports: `@/lib/games/gameControllerRight`
-- imports: `@/lib/games/gameControllerButtons`
-- imports: `@/components/games/dream.GameController`
-
-## `tests/game-engin-ruleset.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/engin-runtime/EnginBaseState`
-- imports: `@/lib/engins/game/gameEnginRuleSet`
-
-## `tests/game-navigation.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/auth/nextRedirect`
-- imports: `@/lib/games/library-state`
-- imports: `@/lib/games/navigation`
-- imports: `@/lib/games/useGameInputKeyboardBridge`
-
-## `tests/game-performance-baseline.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/games/performance-baseline`
-
-## `tests/game-quality-plan.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/games/quality-plan`
-
-## `tests/game-remote-regression.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/components/games/dream.hud.GameHUD`
-
-## `tests/gameengin-architect.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/brain-reader`
-
-## `tests/gameengin-cartridges.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/gameengin/cartridges/loaders`
-- imports: `@/components/games/dream.GamesHub`
-- imports: `@/lib/games/catalog`
-
-## `tests/gameengin-crash-modal.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/gameengin/brain-reader`
-- imports: `@/components/gameengin/dream.CrashReportModal`
-- imports: `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
-- dynamic: `@/components/gameengin/dream.cartridge.CartridgeLauncher`
-
-## `tests/gameengin-loop.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/brain-reader`
-- imports: `@/app/api/gameengin/crash-report/route`
-
-## `tests/gameengin-power-systems.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/gameengin/power-systems`
-
-## `tests/gameengin-progression.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/brain-reader`
-
-## `tests/gameengin-remote.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/gameengin/remote`
-
-## `tests/gameengin-spec.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/cartridge-manifest`
-- imports: `@/lib/gameengin/cartridgeLoader`
-- imports: `@/lib/gameengin/brain-reader`
-- imports: `@/scripts/gameengin/lib/tar`
-
-## `tests/games-daydream-page-auth.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/app/daydream/games/page`
-
-## `tests/god-tier-engine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/god-tier/godTierEngine`
-
-## `tests/hero-sprite.test.ts`
-
-- imports: `vitest`
-- imports: `@/components/dream.HeroSprite`
-
-## `tests/home-feed-home.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/dreamdm/barInteractions`
-
-## `tests/homedream-page-auth.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/app/dreamdmbar/layout`
-
-## `tests/icons.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/icons/sheet`
-
-## `tests/idari-admin-guard.test.ts`
-
-- imports: `vitest`
-
-## `tests/idari-observability-loop.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/observability/collector`
-- imports: `@/lib/observability/correlator`
-- imports: `@/lib/observability/rootCauseAnalyzer`
-- imports: `@/lib/observability/immediateAction`
-- imports: `@/lib/agents/idariLoop`
-
-## `tests/idari-patch-plan.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/agents/idari`
-
-## `tests/instance-manager.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- dynamic: `../lib/runtime/instanceManager`
-
-## `tests/integration-wiring.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/forge/forgeRegistry`
-- imports: `@/components/dream.CommandPalette`
-
-## `tests/is-auth-related-error.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/isAuthRelatedError`
-
-## `tests/journey-insights.test.ts`
-
-- imports: `vitest`
-- imports: `@/types/journey`
-- imports: `@/lib/journey/journeyInsights`
-
-## `tests/journey.test.ts`
-
-- imports: `vitest`
-- imports: `@/types/journey`
-
-## `tests/lab-dream-split.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/code/drEamsCodeAssist`
-
-## `tests/lab-section-12-spec.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/landing-calibration.test.ts`
-
-- imports: `fs`
-- imports: `path`
-- imports: `vitest`
-- imports: `@/lib/dreamr/swipeCalibration`
-
-## `tests/landing-mission-link.test.ts`
-
-- imports: `fs`
-- imports: `path`
-- imports: `vitest`
-
-## `tests/ledger-media.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/media/ledger`
-
-## `tests/live-feed.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/feed/useLiveFeed`
-
-## `tests/madmaxi-authored-levels.test.ts`
-
-- imports: `vitest`
-- imports: `@/components/games/madmaxi`
-- imports: `@/components/games/dream.BabylonSideScroller`
-
-## `tests/madmaxi-mechanics.test.ts`
-
-- imports: `vitest`
-- imports: `@/components/games/madmaxi`
-- imports: `@/components/games/dream.BabylonSideScroller`
-
-## `tests/mobile-game-controls.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/lib/games/mobileControls`
-- imports: `@/lib/games/catalog`
-
-## `tests/modular-os-stores.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/artifactStore`
-- imports: `@/lib/activeModulesStore`
-- imports: `@/lib/runtime/dreamOSBus`
-- imports: `@/types/dreamArtifact`
-
-## `tests/module-registry.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/music-starmaker-section10.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-
-## `tests/namespace-isolation.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/navigation/manifold-physics.spec.ts`
-
-- imports: `@playwright/test`
-- imports: `@/lib/navigation/manifold`
-- imports: `@/lib/navigation/physics`
-- imports: `@/lib/navigation/anchorField`
-
-## `tests/navigation/navigation.spec.ts`
-
-- imports: `@playwright/test`
-
-## `tests/navigation/quaternion.spec.ts`
-
-- imports: `@playwright/test`
-- imports: `@/lib/navigation/quaternion`
-
-## `tests/neural-seam-flow.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamdm/bridgeSeamFlow`
-
-## `tests/notifications.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/notifications/notificationHelpers`
-
-## `tests/offline-queue.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/runtime/offlineQueue`
-
-## `tests/optimizer.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/optimizer/constraint-solver`
-- imports: `@/lib/optimizer`
-- imports: `@/lib/optimizer/creative-validator`
-- imports: `@/lib/optimizer/types`
-
-## `tests/orphan-wire-script.test.ts`
-
-- imports: `vitest`
-- dynamic: `../scripts/wire-orphans.mjs`
-
-## `tests/os-subsystem-manifest.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamengin/osSubsystemManifest`
-
-## `tests/page-surface-wiring.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-
-## `tests/phase6-privacy-idari.test.ts`
-
-- imports: `vitest`
-- imports: `zod`
-
-## `tests/phase7-naming.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/identity/canonical-names`
-
-## `tests/phase8a.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/ai/triad`
-
-## `tests/phase8b-dream-windows.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-- dynamic: `@/lib/dream-window/useDreamWindowActions`
-- dynamic: `@/components/dreams/dream.widget.SuperDreamWidget`
-- dynamic: `@/components/widgets/dream.widget.WidgetShell`
-- dynamic: `@/components/dreams/dreamsurface.shell`
-- dynamic: `@/components/widgets/dream.widget.WidgetCard`
-- dynamic: `@/components/widgets/dream.widget.UniversalWidget`
-- dynamic: `@/components/widgets/dream.widget.WidgetLibrary`
-- dynamic: `@/components/widgets/dream.widget.WidgetSurface`
-- dynamic: `@/types/dream-window`
-- dynamic: `node:fs`
-- dynamic: `node:path`
-
-## `tests/phase8e-orders.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/phase8e-shop-marketplace.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/lib/shop/listings`
-- imports: `@/lib/marketplace/listings`
-- imports: `@/lib/marketplace/request`
-
-## `tests/phase8f-daydream-activation.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/phase8f-daydream-network.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `@/lib/supabase/client`
-
-## `tests/phase8g-dual-runtime-persistence.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/phase8h-triad-consensus.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- imports: `child_process`
-
-## `tests/phase8i-settings-persistence.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/phase9-adaptive-quality.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/webgpu/adaptiveQuality`
-
-## `tests/phase9-cross-post.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/social/crossPost`
-- dynamic: `@/lib/social/platforms`
-
-## `tests/phase9-drag-drop.test.ts`
-
-- imports: `vitest`
-- imports: `@/components/dreamengin/dream.CanvasDropZone`
-
-## `tests/phase9-hashtags.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/feed/hashtags`
-
-## `tests/phase9-notifications.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/notifications/notificationHelpers`
-
-## `tests/phase9-offline-cache.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/offline/offlineCache`
-- dynamic: `@/lib/offline/offlineCache`
-
-## `tests/phase9-scene-state.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/scene/sceneState`
-
-## `tests/phase9-touch-gestures.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/gestures/touchGestures`
-
-## `tests/platform-utils.test.ts`
-
-- imports: `vitest`
-- dynamic: `../lib/platform/lab`
-- dynamic: `../app/api/ads/orders/route`
-- dynamic: `../app/api/gal/route`
-- dynamic: `../lib/platform/index`
-
-## `tests/post-media.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/media/postMedia`
-
-## `tests/post-view-counting.test.ts`
-
-- imports: `vitest`
-
-## `tests/product-law-principle10-alignment.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-
-## `tests/profile-avatar-edit-entrypoints.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-- imports: `@/components/profile/dream.EditableAvatar`
-
-## `tests/rate-limiting.test.ts`
-
-- imports: `vitest`
-
-## `tests/readme-autosync.test.ts`
-
-- imports: `vitest`
-- imports: `../scripts/readme-autosync`
-
-## `tests/readme-homedream-system.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/readme-section13-code-codeengin.test.ts`
-
-- imports: `fs`
-- imports: `path`
-- imports: `vitest`
-
-## `tests/readme-section6-homedream.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/report-driven-game-agent.test.ts`
-
-- imports: `node:child_process`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `node:os`
-- imports: `vitest`
-
-## `tests/repository-state-analysis-section.test.ts`
-
-- imports: `vitest`
-- imports: `../scripts/repository-state-analysis-section.mjs`
-
-## `tests/responsive.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/ui/responsive`
-
-## `tests/rss-feed.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/social/rss-feed`
-- dynamic: `rss-parser`
-
-## `tests/runtime-channel.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/runtimeChannel`
-
-## `tests/runtime-container.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/runtimeContainer`
-
-## `tests/runtime-viewport.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/ui/runtimeViewport`
-
-## `tests/runtime-wiring.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/safe-get-user.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/supabase/safeGetUser`
-
-## `tests/seam-clipboard.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/runtime/dualRuntimeBridge`
-- imports: `@/lib/runtime/enginWorkflowRegistry`
-- imports: `@/lib/runtime/seamClipboard`
-
-## `tests/session-continuity.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/intelligence/sessionContinuity`
-
-## `tests/session-pattern-engine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/intelligence/sessionPatternEngine`
-
-## `tests/shell-cartridge-wiring.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/gameengin/cartridges/manifest`
-- imports: `@/lib/gameengin/registerCartridges`
-- imports: `@/lib/runtime/moduleRegistry`
-
-## `tests/skip-credits.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/activity/skipCredits`
-- imports: `@/lib/activity/types`
-
-## `tests/social-feed.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/social-feed`
-- dynamic: `rss-parser`
-
-## `tests/social-platforms.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/social/platforms`
-
-## `tests/spec35-vm-bus-events.test.ts`
-
-- imports: `vitest`
-
-## `tests/spec36-bot-detection.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/bot-detection/index`
-- imports: `@/lib/botDetection`
-
-## `tests/spec37-torridity.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/torridity`
-
-## `tests/spec38-collaboration.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/collaboration/index`
-
-## `tests/spec41-engine-builder.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/forge/engineForge`
-- imports: `@/lib/componentInventory`
-- imports: `@/lib/eventBus`
-
-## `tests/starmaker-music.test.ts`
-
-- imports: `vitest`
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `@/lib/music/starmaker`
-- imports: `@/lib/music/starmakerDaw`
-
-## `tests/structure-ledger.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/navigation/dream-state`
-- imports: `@/lib/navigation/StructureLedger`
-- imports: `0`
-
-## `tests/supabase-config.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/supabase/config`
-
-## `tests/swap-manager-extended.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/runtime/swapManager`
-
-## `tests/swipe-calibration.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamr/swipeCalibration`
-
-## `tests/tech-foundation.test.ts`
-
-- imports: `vitest`
-- imports: `fs`
-- imports: `path`
-- dynamic: `../lib/supabase/vector`
-
-## `tests/torridity-ledger.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/dreamr/torridityLedger`
-
-## `tests/universal-asset-registry.test.ts`
-
-- imports: `vitest`
-- imports: `@/components/dream.universal_asset_registry`
-- dynamic: `@/components/dream.universal_asset_registry`
-
-## `tests/universal-engine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/engine`
-
-## `tests/universal-visual-modularity.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/update-readme-current-status.test.ts`
-
-- imports: `vitest`
-- imports: `../scripts/update-readme-status-utils.mjs`
-
-## `tests/user-sim.test.ts`
-
-- imports: `vitest`
-- imports: `@/types/user-sim`
-- imports: `@/lib/user-sim/userSimAgent`
-
-## `tests/utils-extended.test.ts`
-
-- imports: `vitest`
-- imports: `../lib/utils`
-
-## `tests/utils-supabase-server.test.ts`
-
-- imports: `vitest`
-- imports: `@/utils/supabase/server`
-
-## `tests/v2-readiness.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/identity/canonical-names`
-- imports: `fs`
-- imports: `path`
-
-## `tests/view-profile-public-view-controls.test.ts`
-
-- imports: `node:fs`
-- imports: `node:path`
-- imports: `vitest`
-
-## `tests/warp-engine.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/warp/warpEngine`
-
-## `tests/wasm-gpu-vm.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/vm/types`
-- dynamic: `@/lib/vm/bufferManager`
-- dynamic: `@/lib/vm/pipelineCache`
-- dynamic: `@/lib/vm/snapshot`
-- dynamic: `@/lib/vm/dualVMCoordinator`
-- dynamic: `@/lib/vm/wasmGpuVM`
-
-## `tests/webgpu-director.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/webgpu/director`
-
-## `tests/widget-install-flow.test.ts`
-
-- imports: `vitest`
-- imports: `@/lib/connectors/installFlow`
-- imports: `@/lib/widgets/widgetRegistry`
-- imports: `@/lib/connectors/connectorRegistry`
-
-## `tests/youtube-provider.test.ts`
-
-- imports: `vitest`
-- dynamic: `@/lib/connectors/providers/youtube`
-
-## `types/ai-system.ts`
-
-- imports: `zod`
-
-## `types/dream-window.ts`
-
-- imports: `@/lib/dream-window/DreamWindowLifecycle`
-
-## `types/user-sim.ts`
-
-- imports: `zod`
-
-## `utils/supabase/server.ts`
-
-- imports: `@/lib/supabase/server`
-
-## `vitest.config.ts`
-
-- imports: `path`
-- imports: `vitest/config`
-
----
-
-<a name="dynamic-imports"></a>
-
-# Dynamic Imports
-
-## `.github/scripts/issue-bot.js`
-
-- `./HeavyComponent`
-
-## `app/api/ai/boogieman/child-safety/route.ts`
-
-- `@/lib/child-safety/imageClassifier`
-
-## `app/daydream/analytics/page.tsx`
-
-- `@/engins/dream.panel.AnalyticsEngin`
-
-## `app/daydream/games/page.tsx`
-
-- `@/engins/engin.GameEngin`
-
-## `app/daydream/lab/page.tsx`
-
-- `@/engins/engin.LabEngin`
-
-## `app/daydream/music/page.tsx`
-
-- `@/engins/engin.StarMakerEngin`
-
-## `app/dream-effects/page.tsx`
-
-- `@/components/three/dream.scene`
-
-## `app/page.tsx`
-
-- `@/components/dream.LandingHero`
-- `@/components/landing/dream.LandingNav`
-- `@/components/landing/dream.scene.UniverseField`
-
-## `components/daydream/dream.DiffViewer.tsx`
-
-- `@/lib/diff/diffUtils`
-
-## `components/dream.AudioVisualizer3D.tsx`
-
-- `@babylonjs/core`
-
-## `components/dream.ForgeDreamCanvas.tsx`
-
-- `../lib/supabase/client`
-
-## `components/dream.GlobalOverlays.tsx`
-
-- `@/components/customize/dream.GlobalCustomizeUI`
-- `@/components/dreams/dream.GlobalDragLayer`
-- `@/components/dreams/dream.PlatformErrorReporter`
-- `@/components/dream.KonamiDream`
-
-## `components/dreamengin/dream.DREAMenginOS.tsx`
-
-- `@babylonjs/core`
-- `@babylonjs/havok`
-
-## `components/dreamengin/dream.scene.BabylonGameScene.tsx`
-
-- `@babylonjs/core`
-- `@/lib/god-tier/godTierEngine`
-- `@/lib/webgpu/director`
-
-## `components/dreamengin/dream.scene.DrEamsScene.tsx`
-
-- `@babylonjs/core`
-
-## `components/games/dream.EchoArena.tsx`
-
-- `@babylonjs/core/Engines`
-
-## `components/games/dream.GamesHub.tsx`
-
-- `@/components/games/dream.BabylonSideScroller`
-- `@/components/games/dream.NeonDrift`
-- `@/components/games/dream.EchoArena`
-- `@/components/games/dream.NullCathedral`
-- `@/components/games/dream.VoidlineGP`
-- `@/components/games/dream.SerpentSiege`
-- `@/components/games/dream.AvenueOfMirrors`
-- `@/components/games/dream.EnginFracture`
-- `@/components/games/dream.Glassfall`
-- `@/components/games/dream.NiteFlyerSolarHymn`
-- `@/components/games/dream.LexiconSolitaire`
-- `@/components/games/dream.DefuseRitual`
-
-## `components/games/madmaxi/dream.MadmaxiGame.tsx`
-
-- `@babylonjs/core`
-
-## `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx`
-
-- `@babylonjs/core`
-
-## `daydreams/games/page.tsx`
-
-- `@/engins/engin.GameEngin`
-
-## `dreamdmbar/dreamsurface.dreamdmbar.tsx`
-
-- `@/lib/supabase/client`
-
-## `engins/engin.CodeEngin.tsx`
-
-- `@supabase/supabase-js`
-
-## `engins/engin.ContentEngin.tsx`
-
-- `@/lib/content/transcriptEditor`
-- `@/lib/content/seoScorer`
-
-## `engins/engin.GameEngin.tsx`
-
-- `@babylonjs/core`
-
-## `lib/agentOS/hostTools.ts`
-
-- `fs/promises`
-
-## `lib/agents/agentBus.ts`
-
-- `@/lib/ai/schemas`
-- `@/lib/ai/triad`
-
-## `lib/ai/tfBackend.ts`
-
-- `@tensorflow/tfjs-backend-webgpu`
-- `@tensorflow/tfjs`
-
-## `lib/babylon/createEngine.ts`
-
-- `@babylonjs/core`
-
-## `lib/child-safety/childSafetyDetector.ts`
-
-- `./imageClassifier`
-
-## `lib/collaboration/index.ts`
-
-- `@supabase/supabase-js`
-
-## `lib/consent/consentManager.ts`
-
-- `@/lib/supabase/client`
-
-## `lib/dreamenginOS/index.ts`
-
-- `../ledger`
-- `../eventBus`
-
-## `lib/dreamr/closeFriendsVisibility.ts`
-
-- `@/lib/supabase/server`
-
-## `lib/forge/useForgeBuild.ts`
-
-- `@/lib/forge/forgeBuild`
-
-## `lib/gameengin/ai-director.ts`
-
-- `@tensorflow/tfjs`
-- `@tensorflow/tfjs-backend-webgpu`
-
-## `lib/gameengin/cartridges/loaders.ts`
-
-- `@/components/games/dream.BabylonSideScroller`
-- `@/components/games/dream.NeonDrift`
-- `@/components/games/dream.EchoArena`
-- `@/components/games/dream.NullCathedral`
-- `@/components/games/dream.VoidlineGP`
-- `@/components/games/dream.SerpentSiege`
-- `@/components/games/dream.AvenueOfMirrors`
-- `@/components/games/dream.EnginFracture`
-- `@/components/games/dream.Glassfall`
-- `@/components/games/dream.NiteFlyerSolarHymn`
-- `@/components/games/dream.LexiconSolitaire`
-- `@/components/games/dream.DefuseRitual`
-
-## `lib/gameengin/cartridges/reactCartridge.ts`
-
-- `./MyGame`
-
-## `lib/gameengin/core.ts`
-
-- `@/lib/babylon/createEngine`
-- `@babylonjs/core`
-
-## `lib/gameengin/post-fx.ts`
-
-- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline`
-- `@babylonjs/core`
-- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline`
-- `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline`
-- `@babylonjs/core/Layers/glowLayer`
-
-## `lib/gsap/gsap.ts`
-
-- `gsap`
-
-## `lib/intelligence/sessionPatternEngine.ts`
-
-- `@tensorflow/tfjs`
-- `@tensorflow/tfjs-backend-webgpu`
-
-## `lib/observability/collector.ts`
-
-- `./otelBridge`
-
-## `lib/renderer/index.ts`
-
-- `./Canvas2DRenderer`
-
-## `lib/runtime/dualRuntimeBridge.ts`
-
-- `@/lib/vm/wasmGpuVM`
-
-## `lib/runtime/instanceManager.ts`
-
-- `@/lib/supabase/client`
-
-## `lib/runtime/runtimeChannel.ts`
-
-- `@supabase/supabase-js`
-
-## `lib/vm/wasmGpuVM.ts`
-
-- `./types`
-
-## `next.config.mjs`
-
-- `next`
-
-## `src/engin/core/index.ts`
-
-- `@/lib/ai/capability-gate`
-- `@/lib/ai/confirm-token`
-- `@/lib/ai/rate-limiter`
-- `@/lib/ai/idempotency`
-- `@/lib/agents/boogieManAI`
-- `@/build-memory/registry.json`
-- `../generated/index`
-
-## `src/engin/generated/brain.ts`
-
-- `@/lib/gameengin/brain/active-projects.json`
-- `@/lib/gameengin/brain/character-voices/mad-maxi.json`
-- `@/lib/gameengin/brain/composition-principles/leading-lines-landmark.json`
-- `@/lib/gameengin/brain/composition-principles/parallax-layers.json`
-- `@/lib/gameengin/brain/concept-library/neon-courier.json`
-- `@/lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json`
-- `@/lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json`
-- `@/lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json`
-- `@/lib/gameengin/brain/dialogue-patterns/callback-anchor.json`
-- `@/lib/gameengin/brain/dialogue-patterns/implied-subject.json`
-- `@/lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json`
-- `@/lib/gameengin/brain/emotional-tones/determined.json`
-- `@/lib/gameengin/brain/emotional-tones/fierce.json`
-- `@/lib/gameengin/brain/emotional-tones/hopeful.json`
-- `@/lib/gameengin/brain/emotional-tones/reflective.json`
-- `@/lib/gameengin/brain/emotional-tones/weary.json`
-- `@/lib/gameengin/brain/fun-heuristics/meta-progression.json`
-- `@/lib/gameengin/brain/fun-heuristics/moment-to-moment.json`
-- `@/lib/gameengin/brain/fun-heuristics/session-loop.json`
-- `@/lib/gameengin/brain/genre-dna/action-rpg.json`
-- `@/lib/gameengin/brain/genre-dna/episodic.json`
-- `@/lib/gameengin/brain/genre-dna/live-service.json`
-- `@/lib/gameengin/brain/genre-dna/metroidvania.json`
-- `@/lib/gameengin/brain/genre-dna/open-world.json`
-- `@/lib/gameengin/brain/genre-dna/platformer.json`
-- `@/lib/gameengin/brain/genre-dna/puzzle.json`
-- `@/lib/gameengin/brain/genre-dna/racing.json`
-- `@/lib/gameengin/brain/genre-dna/roguelike.json`
-- `@/lib/gameengin/brain/genre-dna/sandbox.json`
-- `@/lib/gameengin/brain/genre-dna/template.json`
-- `@/lib/gameengin/brain/inspiration-corpus/celeste.json`
-- `@/lib/gameengin/brain/inspiration-corpus/dead-cells.json`
-- `@/lib/gameengin/brain/inspiration-corpus/hades.json`
-- `@/lib/gameengin/brain/inspiration-corpus/hollow-knight.json`
-- `@/lib/gameengin/brain/inspiration-corpus/outer-wilds.json`
-- `@/lib/gameengin/brain/material-recipes/neon-glass-tube.json`
-- `@/lib/gameengin/brain/material-recipes/rusted-iron.json`
-- `@/lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json`
-- `@/lib/gameengin/brain/mechanic-library/camera/look-ahead.json`
-- `@/lib/gameengin/brain/mechanic-library/camera/screen-shake.json`
-- `@/lib/gameengin/brain/mechanic-library/camera/smooth-follow.json`
-- `@/lib/gameengin/brain/mechanic-library/combat/combo.json`
-- `@/lib/gameengin/brain/mechanic-library/combat/hit-stop.json`
-- `@/lib/gameengin/brain/mechanic-library/combat/parry.json`
-- `@/lib/gameengin/brain/mechanic-library/combat/ranged.json`
-- `@/lib/gameengin/brain/mechanic-library/movement/coyote-time.json`
-- `@/lib/gameengin/brain/mechanic-library/movement/dash.json`
-- `@/lib/gameengin/brain/mechanic-library/movement/double-jump.json`
-- `@/lib/gameengin/brain/mechanic-library/movement/grapple.json`
-- `@/lib/gameengin/brain/mechanic-library/movement/wall-slide.json`
-- `@/lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json`
-- `@/lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json`
-- `@/lib/gameengin/brain/mechanic-library/progression/skill-tree.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/ability-gating.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/meta-progression.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/procedural-generation.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/run-persistence.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/season-pass.json`
-- `@/lib/gameengin/brain/mechanic-library/structural/world-streaming.json`
-- `@/lib/gameengin/brain/narrative-pacing/default.json`
-- `@/lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json`
-- `@/lib/gameengin/brain/originality-registry/signatures.json`
-- `@/lib/gameengin/brain/technique-library/lighting/three-point-mood.json`
-- `@/lib/gameengin/brain/technique-library/modeling/edge-flow.json`
-- `@/lib/gameengin/brain/technique-library/modeling/silhouette-first.json`
-- `@/lib/gameengin/brain/technique-library/optimization/texture-atlasing.json`
-- `@/lib/gameengin/brain/upgrade-history/prioritization-rules.json`
-
-## `src/engin/generated/cartridges.ts`
-
-- `@/lib/gameengin/cartridges/index`
-- `@/lib/gameengin/cartridges/loaders`
-- `@/lib/gameengin/cartridges/manifest`
-- `@/lib/gameengin/cartridges/reactCartridge`
-- `@/public/cartridges/mad-maxi/MANIFEST.json`
-
-## `src/engin/generated/connectors.ts`
-
-- `@/lib/connectors/connectorRegistry`
-- `@/lib/connectors/deliveryStrategy`
-- `@/lib/connectors/installFlow`
-- `@/lib/connectors/normalise`
-- `@/lib/connectors/providers/bluesky`
-- `@/lib/connectors/providers/devto`
-- `@/lib/connectors/providers/facebook`
-- `@/lib/connectors/providers/github`
-- `@/lib/connectors/providers/hackernews`
-- `@/lib/connectors/providers/instagram`
-- `@/lib/connectors/providers/mastodon`
-- `@/lib/connectors/providers/medium`
-- `@/lib/connectors/providers/nostr`
-- `@/lib/connectors/providers/pinterest`
-- `@/lib/connectors/providers/podcast`
-- `@/lib/connectors/providers/reddit`
-- `@/lib/connectors/providers/shellhub`
-- `@/lib/connectors/providers/substack`
-- `@/lib/connectors/providers/tiktok`
-- `@/lib/connectors/providers/tumblr`
-- `@/lib/connectors/providers/twitter`
-- `@/lib/connectors/providers/youtube`
-- `@/lib/connectors/reconcile`
-- `@/lib/connectors/syncDispatch`
-- `@/lib/connectors/webhookVerification`
-- `@/lib/connectors/youtube`
-
-## `src/engin/generated/hooks.ts`
-
-- `@/hooks/use-spatial`
-- `@/hooks/useAccount`
-- `@/hooks/useConnectorInstallFlow`
-- `@/hooks/useDreamLayout`
-- `@/hooks/useHideOnScroll`
-- `@/hooks/useSharedDream`
-- `@/hooks/useTapHoldMove`
-- `@/hooks/useTick`
-- `@/hooks/useViewCounter`
-- `@/lib/hooks/useMotionTilt`
-- `@/lib/hooks/useResponsive`
-- `@/lib/hooks/useTap`
-
-## `src/engin/generated/rulesets.ts`
-
-- `@/engins/autoopen/dream.AutoOpenGameEngin`
-- `@/engins/CodeEngin/core/parser`
-- `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel`
-- `@/engins/CodeEngin/modules/ai-co-pilot/index`
-- `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
-- `@/engins/CodeEngin/orchestrator/dream.index`
-- `@/engins/dream.ForgeEngin`
-- `@/engins/dream.panel.AnalyticsEngin`
-- `@/engins/dream.QuantumCircuitCanvas`
-- `@/engins/engin.BrandingEngin`
-- `@/engins/engin.CodeEngin`
-- `@/engins/engin.ContentEngin`
-- `@/engins/engin.GameEngin`
-- `@/engins/engin.LabEngin`
-- `@/engins/engin.StarMakerEngin`
-- `@/engins/portfolio/dream.PortfolioEngin`
-- `@/src/dream/rulesets/codeengin/index`
-- `@/src/dream/rulesets/dreamsengin/index`
-- `@/src/dream/rulesets/forgengn/index`
-- `@/src/dream/rulesets/gameengin/index`
-- `@/src/dream/rulesets/homedream/dream.homedream.constants`
-- `@/src/dream/rulesets/homedream/dream.homedream.physics`
-- `@/src/dream/rulesets/homedream/dream.homedream.transforms`
-- `@/src/dream/rulesets/homedream/index`
-- `@/src/dream/rulesets/labengin/index`
-- `@/src/dream/rulesets/starmakerengin/index`
-
-## `src/engin/generated/surfaces.ts`
-
-- `@/app/(internal)/idari-console/page`
-- `@/app/(internal)/idari-console/platform-errors/page`
-- `@/app/(internal)/idari-console/platform-health/page`
-- `@/app/about/page`
-- `@/app/actions/dream-docs`
-- `@/app/ads/create/page`
-- `@/app/ads/page`
-- `@/app/ads/slot/[id]/page`
-- `@/app/api/account/delete-data/route`
-- `@/app/api/account/delete-dream/route`
-- `@/app/api/account/export-data/route`
-- `@/app/api/activity/track/route`
-- `@/app/api/admin/ai-chat/route`
-- `@/app/api/admin/ai-request/route`
-- `@/app/api/admin/child-safety/route`
-- `@/app/api/admin/code-files/route`
-- `@/app/api/admin/observability/route`
-- `@/app/api/ads/orders/route`
-- `@/app/api/ads/view/route`
-- `@/app/api/agent/session/route`
-- `@/app/api/ai/boogieman/child-safety/route`
-- `@/app/api/ai/boogieman/privacy-event/route`
-- `@/app/api/ai/boogieman/route`
-- `@/app/api/ai/boogieman/status/route`
-- `@/app/api/ai/eams/route`
-- `@/app/api/ai/execute/route`
-- `@/app/api/ai/idari/route`
-- `@/app/api/appeal/route`
-- `@/app/api/auth/logout/route`
-- `@/app/api/auth/providers/route`
-- `@/app/api/blocks/route`
-- `@/app/api/ci/run/route`
-- `@/app/api/close-friends/route`
-- `@/app/api/comments/route`
-- `@/app/api/connectors/[provider]/connect/route`
-- `@/app/api/connectors/[provider]/disconnect/route`
-- `@/app/api/connectors/[provider]/items/route`
-- `@/app/api/connectors/[provider]/sync/route`
-- `@/app/api/connectors/[provider]/verify/route`
-- `@/app/api/connectors/cron/route`
-- `@/app/api/connectors/instagram/oauth/callback/route`
-- `@/app/api/connectors/instagram/oauth/start/route`
-- `@/app/api/connectors/status/route`
-- `@/app/api/connectors/webhooks/[provider]/route`
-- `@/app/api/connectors/youtube/oauth/callback/route`
-- `@/app/api/connectors/youtube/oauth/start/route`
-- `@/app/api/content/generative-fill/route`
-- `@/app/api/content/intelligence/route`
-- `@/app/api/content/transcribe/route`
-- `@/app/api/content/voice-clone/route`
-- `@/app/api/dr-eams/hf/route`
-- `@/app/api/dr-eams/run/route`
-- `@/app/api/drafts/[id]/route`
-- `@/app/api/drafts/route`
-- `@/app/api/dream-windows/[id]/route`
-- `@/app/api/dream-windows/route`
-- `@/app/api/dreamengin/os-status/route`
-- `@/app/api/dreamr/feed/route`
-- `@/app/api/dreamr/suggested/route`
-- `@/app/api/dreams/feed/route`
-- `@/app/api/dreams/instances/route`
-- `@/app/api/dreams/transfer/route`
-- `@/app/api/embed-feed/route`
-- `@/app/api/favorites/route`
-- `@/app/api/feed/route`
-- `@/app/api/follow/route`
-- `@/app/api/forge/build/route`
-- `@/app/api/gal/route`
-- `@/app/api/game-scores/route`
-- `@/app/api/gameengin/crash-report/route`
-- `@/app/api/health/route`
-- `@/app/api/home-layout/route`
-- `@/app/api/journey/route`
-- `@/app/api/lab/benchmarks/route`
-- `@/app/api/ledger-media/route`
-- `@/app/api/likes/route`
-- `@/app/api/marketplace/request/route`
-- `@/app/api/marketplace/route`
-- `@/app/api/messages/boards/route`
-- `@/app/api/messages/route`
-- `@/app/api/metrics/platform/route`
-- `@/app/api/metrics/route`
-- `@/app/api/metrics/user/[userId]/route`
-- `@/app/api/music/route`
-- `@/app/api/notifications/route`
-- `@/app/api/platform/errors/route`
-- `@/app/api/posts/[id]/route`
-- `@/app/api/posts/[id]/save/route`
-- `@/app/api/posts/[id]/view/route`
-- `@/app/api/posts/profile/[userId]/route`
-- `@/app/api/posts/route`
-- `@/app/api/profile/route`
-- `@/app/api/projects/route`
-- `@/app/api/scheduled-posts/route`
-- `@/app/api/security/scan/route`
-- `@/app/api/settings/appearance/route`
-- `@/app/api/settings/feed/route`
-- `@/app/api/settings/notifications/route`
-- `@/app/api/settings/privacy/route`
-- `@/app/api/setup/check/route`
-- `@/app/api/setup/google-oauth/route`
-- `@/app/api/shellhub/devices/route`
-- `@/app/api/shop/route`
-- `@/app/api/skip-credits/balance/route`
-- `@/app/api/skip-credits/earn/route`
-- `@/app/api/skip-credits/use/route`
-- `@/app/api/social/rss-feed/route`
-- `@/app/api/upload/route`
-- `@/app/api/user/layout/route`
-- `@/app/api/views/track/route`
-- `@/app/api/widgets/feed/route`
-- `@/app/api/widgets/instances/route`
-- `@/app/api/youtube/channel/route`
-- `@/app/api/youtube/discovery/route`
-- `@/app/api/youtube/live-feed/route`
-- `@/app/auth/callback/route`
-- `@/app/auth/reset-password/page`
-- `@/app/auth/update-password/page`
-- `@/app/connectors/dream.ConnectorsClient`
-- `@/app/connectors/page`
-- `@/app/daydream/analytics/page`
-- `@/app/daydream/brand/engin/page`
-- `@/app/daydream/brand/page`
-- `@/app/daydream/code/engin/page`
-- `@/app/daydream/code/page`
-- `@/app/daydream/constellation/dream.ConstellationClient`
-- `@/app/daydream/constellation/page`
-- `@/app/daydream/create/engin/page`
-- `@/app/daydream/create/page`
-- `@/app/daydream/forge/page`
-- `@/app/daydream/game/dream.GamePageClient`
-- `@/app/daydream/game/dream.shell.ImmersiveGameShell`
-- `@/app/daydream/game/page`
-- `@/app/daydream/games/engin/page`
-- `@/app/daydream/games/page`
-- `@/app/daydream/lab/engin/page`
-- `@/app/daydream/lab/page`
-- `@/app/daydream/lab/portfolio/page`
-- `@/app/daydream/media-vault/page`
-- `@/app/daydream/music/engin/page`
-- `@/app/daydream/music/page`
-- `@/app/daydream/music/upload/page`
-- `@/app/daydream/play/page`
-- `@/app/discover/page`
-- `@/app/dream-effects/page`
-- `@/app/dreamdmbar/_components/DreamBarDataBridge`
-- `@/app/dreamdmbar/_components/dreamr/algorithms/botDetector`
-- `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
-- `@/app/dreamdmbar/_components/dreamr/api/route`
-- `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
-- `@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed`
-- `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
-- `@/app/dreamdmbar/_components/DreamSpaceRegion`
-- `@/app/dreamdmbar/_components/DreamWidgetGrid`
-- `@/app/dreamdmbar/_components/HomeDreamRegion`
-- `@/app/dreamdmbar/dreamspace/page`
-- `@/app/dreamdmbar/dualruntime/page`
-- `@/app/dreamdmbar/homedream/page`
-- `@/app/dreamdmbar/layout`
-- `@/app/dreamdmbar/page`
-- `@/app/dreamr/page`
-- `@/app/dreamspace/page`
-- `@/app/edit-profiledream/page`
-- `@/app/engines/brand/campaigns/page`
-- `@/app/engines/brand/identity/page`
-- `@/app/engines/brand/layout`
-- `@/app/engines/brand/page`
-- `@/app/engines/code/ai/page`
-- `@/app/engines/code/layout`
-- `@/app/engines/code/notebook/page`
-- `@/app/engines/code/page`
-- `@/app/engines/code/projects/page`
-- `@/app/engines/create/calendar/page`
-- `@/app/engines/create/editor/page`
-- `@/app/engines/create/layout`
-- `@/app/engines/create/page`
-- `@/app/engines/create/queue/page`
-- `@/app/engines/games/builder/page`
-- `@/app/engines/games/layout`
-- `@/app/engines/games/library/page`
-- `@/app/engines/games/page`
-- `@/app/engines/games/scores/page`
-- `@/app/engines/lab/data/page`
-- `@/app/engines/lab/experiments/page`
-- `@/app/engines/lab/layout`
-- `@/app/engines/lab/page`
-- `@/app/engines/lab/quantum/page`
-- `@/app/engines/layout`
-- `@/app/engines/music/arrange/page`
-- `@/app/engines/music/layout`
-- `@/app/engines/music/library/page`
-- `@/app/engines/music/page`
-- `@/app/engines/music/studio/page`
-- `@/app/engines/page`
-- `@/app/engines/portfolio/assets/page`
-- `@/app/engines/portfolio/layout`
-- `@/app/engines/portfolio/optimize/page`
-- `@/app/engines/portfolio/page`
-- `@/app/engines/portfolio/quantum/page`
-- `@/app/feed-settings/dream.FeedSettingsClient`
-- `@/app/feed-settings/page`
-- `@/app/gameengin/cartridges/[id]/page`
-- `@/app/gameengin/cartridges/page`
-- `@/app/gameengin/page`
-- `@/app/homedream/page`
-- `@/app/join/page`
-- `@/app/lab/[id]/codespace/page`
-- `@/app/lab/[id]/page`
-- `@/app/lab/new/page`
-- `@/app/lab/page`
-- `@/app/layout`
-- `@/app/login/page`
-- `@/app/marketplace/[id]/page`
-- `@/app/marketplace/page`
-- `@/app/marketplace/sell/page`
-- `@/app/messages/boards/[id]/page`
-- `@/app/messages/boards/new/page`
-- `@/app/messages/boards/page`
-- `@/app/messages/page`
-- `@/app/mission/page`
-- `@/app/notes/page`
-- `@/app/onboarding/page`
-- `@/app/page`
-- `@/app/policy/page`
-- `@/app/profile/[handle]/page`
-- `@/app/profile/page`
-- `@/app/settings/account/dream.DangerZoneActions`
-- `@/app/settings/account/page`
-- `@/app/settings/algorithm/page`
-- `@/app/settings/appearance/page`
-- `@/app/settings/controls/dream.ControlsClient`
-- `@/app/settings/controls/dream.PositionIndicatorToggle`
-- `@/app/settings/controls/page`
-- `@/app/settings/data/dream.DataClient`
-- `@/app/settings/data/page`
-- `@/app/settings/dreams/dreams-layout-editor`
-- `@/app/settings/dreams/page`
-- `@/app/settings/feed/page`
-- `@/app/settings/help/page`
-- `@/app/settings/notifications/page`
-- `@/app/settings/page`
-- `@/app/settings/privacy/dream.PrivacyClient`
-- `@/app/settings/privacy/page`
-- `@/app/settings/safety/page`
-- `@/app/settings/security/page`
-- `@/app/settings/widgets/page`
-- `@/app/shop/page`
-- `@/app/shop/sell/page`
-- `@/app/u/[handle]/page`
-- `@/app/view-profile/page`
-- `@/app/webgpu/page`
-- `@/components/activity/dream.ActivityPostForm`
-- `@/components/activity/dream.ActivityProfile`
-- `@/components/activity/dream.TierBadge`
-- `@/components/ads/dream.AdUnit`
-- `@/components/ads/dream.SkipCreditBalance`
-- `@/components/auth/dream.PasswordField`
-- `@/components/connectors/dream.AddSliceSheet`
-- `@/components/connectors/dream.ConnectDreamPrompt`
-- `@/components/connectors/dream.ConnectorRow`
-- `@/components/connectors/dream.NoSlotDialog`
-- `@/components/connectors/dream.PlacementMode`
-- `@/components/connectors/dream.widget.ConnectorWidgetPicker`
-- `@/components/connectors/dream.widget.ConnectWidgetPrompt`
-- `@/components/core/dream.CoreDream`
-- `@/components/customize/dream.bar.CustomizeModeBar`
-- `@/components/customize/dream.bar.CustomizeToolbar`
-- `@/components/customize/dream.GlobalCustomizeUI`
-- `@/components/customize/panels/dream.panel.ColorPanel`
-- `@/components/customize/panels/dream.panel.EffectsPanel`
-- `@/components/customize/panels/dream.panel.FontPanel`
-- `@/components/customize/panels/dream.panel.LayoutPanel`
-- `@/components/daydream/dream.CodeDreamIDE`
-- `@/components/daydream/dream.constellationmap`
-- `@/components/daydream/dream.DiffViewer`
-- `@/components/daydream/dream.JourneyTrail`
-- `@/components/daydream/dream.LabDreamIDE`
-- `@/components/daydream/dream.NGNEngin`
-- `@/components/daydream/dream.OpenDaydreamSideBButton`
-- `@/components/daydream/dream.shell.DaydreamShell`
-- `@/components/daydream/dream.StandaloneEnginSurface`
-- `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream`
-- `@/components/daydream/dreamsurface.daydream.BrandDaydream`
-- `@/components/daydream/starmaker/dream.panel.CompingPanel`
-- `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel`
-- `@/components/daydream/starmaker/dream.panel.PianoRollPanel`
-- `@/components/daydream/starmaker/dream.panel.SessionViewPanel`
-- `@/components/draggable/dream.DraggableModule`
-- `@/components/dream.AIAssistant`
-- `@/components/dream.AudioVisualizer3D`
-- `@/components/dream.BoogieWarningBanner`
-- `@/components/dream.BrandLogo`
-- `@/components/dream.CommandPalette`
-- `@/components/dream.CreatePostModal`
-- `@/components/dream.DragToAnchorClose`
-- `@/components/dream.DrEamsModeToggle`
-- `@/components/dream.DrEamsVoiceAssistant`
-- `@/components/dream.FeedCard`
-- `@/components/dream.ForgeDreamCanvas`
-- `@/components/dream.GlobalOverlays`
-- `@/components/dream.HeroSprite`
-- `@/components/dream.HomeFeed`
-- `@/components/dream.IconSelector`
-- `@/components/dream.InnerDreamsButton`
-- `@/components/dream.KonamiDream`
-- `@/components/dream.LandingHero`
-- `@/components/dream.LedgerChart`
-- `@/components/dream.MessagesClient`
-- `@/components/dream.NotificationCenter`
-- `@/components/dream.OSShellActivator`
-- `@/components/dream.panel.ChildSafetyPanel`
-- `@/components/dream.panel.IDariPanel`
-- `@/components/dream.PhysicsLab`
-- `@/components/dream.ProfileEditor`
-- `@/components/dream.ProfileShareButton`
-- `@/components/dream.ProfileSpace`
-- `@/components/dream.PullToRefresh`
-- `@/components/dream.ShrunkMode`
-- `@/components/dream.SkeletonLoaders`
-- `@/components/dream.ThemeApplicator`
-- `@/components/dream.ThemeToggle`
-- `@/components/dream.ToastSystem`
-- `@/components/dream.universal_asset_registry`
-- `@/components/dream.VoidThemeToggle`
-- `@/components/dream.widget.AnchorWidget`
-- `@/components/dream.widget.ProfileWidgetBlock`
-- `@/components/dream.widget.WidgetBubble`
-- `@/components/dreamengin/dream.bar.DrEamsSearchBar`
-- `@/components/dreamengin/dream.CanvasDropZone`
-- `@/components/dreamengin/dream.DREAMenginOS`
-- `@/components/dreamengin/dream.DrEamsCanvas`
-- `@/components/dreamengin/dream.HomeControls`
-- `@/components/dreamengin/dream.menu.NexusMenu`
-- `@/components/dreamengin/dream.menu.OutdreamMenu`
-- `@/components/dreamengin/dream.overlay.ViewAllDreamsOverlay`
-- `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
-- `@/components/dreamengin/dream.panel.DrEamsPanel`
-- `@/components/dreamengin/dream.scene.BabylonGameScene`
-- `@/components/dreamengin/dream.scene.DrEamsScene`
-- `@/components/dreamengin/dream.scene.PortfolioOptimizationScene`
-- `@/components/dreamengin/dream.shell.EnginShell`
-- `@/components/dreamengin/dream.widget.AppearanceWidget`
-- `@/components/dreamengin/dreamsurface.dreamengin`
-- `@/components/dreamengin/engine/math`
-- `@/components/dreamengin/engine/types`
-- `@/components/dreamnav/dream.DreamNavControls`
-- `@/components/dreamnav/dreamsurface.dreamnav`
-- `@/components/dreamr/dream.CloseFriendsSettings`
-- `@/components/dreamr/dream.panel.DreamRChannelPanel`
-- `@/components/dreamr/dream.panel.DreamRCreatorPanel`
-- `@/components/dreams/dream.connectorlayer`
-- `@/components/dreams/dream.DraggableDream`
-- `@/components/dreams/dream.featurelayer`
-- `@/components/dreams/dream.GlobalDragLayer`
-- `@/components/dreams/dream.outputlayer`
-- `@/components/dreams/dream.panel.RuntimeMemoryHUD`
-- `@/components/dreams/dream.PlatformErrorReporter`
-- `@/components/dreams/dream.shell.DreamShell`
-- `@/components/dreams/dream.shell.SharedDreamShell`
-- `@/components/dreams/dream.SlideOverPanel`
-- `@/components/dreams/dream.widget.SuperDreamWidget`
-- `@/components/dreams/dream.window.JourneyDreamWindow`
-- `@/components/dreams/dreamsurface.dreamspace`
-- `@/components/dreams/dreamsurface.shell`
-- `@/components/dreams/dreamsurface.window`
-- `@/components/engines/brand/dream.BrandEnginApp`
-- `@/components/engines/brand/index`
-- `@/components/engines/brand/panels/dream.panel.CampaignsPanel`
-- `@/components/engines/brand/panels/dream.panel.IdentityPanel`
-- `@/components/engines/code/dream.CodeEnginApp`
-- `@/components/engines/code/index`
-- `@/components/engines/code/panels/dream.panel.AIPanel`
-- `@/components/engines/code/panels/dream.panel.NotebookPanel`
-- `@/components/engines/code/panels/dream.panel.ProjectsPanel`
-- `@/components/engines/create/dream.CreateEnginApp`
-- `@/components/engines/create/index`
-- `@/components/engines/create/panels/dream.panel.CalendarPanel`
-- `@/components/engines/create/panels/dream.panel.EditorPanel`
-- `@/components/engines/create/panels/dream.panel.QueuePanel`
-- `@/components/engines/games/dream.GameEnginApp`
-- `@/components/engines/games/index`
-- `@/components/engines/games/panels/dream.panel.BuilderPanel`
-- `@/components/engines/games/panels/dream.panel.LibraryPanel`
-- `@/components/engines/games/panels/dream.panel.ScoresPanel`
-- `@/components/engines/index`
-- `@/components/engines/lab/dream.LabEnginApp`
-- `@/components/engines/lab/index`
-- `@/components/engines/lab/panels/dream.panel.DataVizPanel`
-- `@/components/engines/lab/panels/dream.panel.ExperimentsPanel`
-- `@/components/engines/lab/panels/dream.panel.QuantumPanel`
-- `@/components/engines/music/dream.MusicEnginApp`
-- `@/components/engines/music/index`
-- `@/components/engines/music/panels/dream.panel.ArrangePanel`
-- `@/components/engines/music/panels/dream.panel.MusicLibraryPanel`
-- `@/components/engines/music/panels/dream.panel.StudioPanel`
-- `@/components/engines/portfolio/dream.PortfolioEnginApp`
-- `@/components/engines/portfolio/index`
-- `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
-- `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
-- `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
-- `@/components/engines/shared/dream.bar.EnginNavBar`
-- `@/components/engines/shared/dream.EnginProvider`
-- `@/components/engines/shared/dream.EnginRuleSet`
-- `@/components/engines/shared/dream.makeEnginApp`
-- `@/components/engines/shared/dream.shell.EnginAppShell`
-- `@/components/engines/shared/index`
-- `@/components/feed/dream.AlgorithmEngine`
-- `@/components/feed/dream.CommentSection`
-- `@/components/feed/dream.FeedVideoCard`
-- `@/components/feed/dream.FollowButton`
-- `@/components/feed/dream.FollowOnboarding`
-- `@/components/feeds/dream.widget.EmbedFeedWidget`
-- `@/components/forge/dream.EngineBuilderCanvas`
-- `@/components/forge/dream.panel.AIBuilderPanel`
-- `@/components/forge/dream.widget.ForgeMomentumWidget`
-- `@/components/gameengin/dream.cartridge.CartridgeBrowser`
-- `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
-- `@/components/gameengin/dream.cartridge.CartridgeLauncher`
-- `@/components/gameengin/dream.cartridge.FeaturedCartridges`
-- `@/components/gameengin/dream.CartridgeRegistryBootstrap`
-- `@/components/gameengin/dream.CrashReportModal`
-- `@/components/gameengin/input/DualSenseManager`
-- `@/components/games/_fx/canvasFx`
-- `@/components/games/dream.AvenueOfMirrors`
-- `@/components/games/dream.BabylonSideScroller`
-- `@/components/games/dream.DefuseRitual`
-- `@/components/games/dream.EchoArena`
-- `@/components/games/dream.EnginFracture`
-- `@/components/games/dream.GameController`
-- `@/components/games/dream.GamesHub`
-- `@/components/games/dream.Glassfall`
-- `@/components/games/dream.hud.GameHUD`
-- `@/components/games/dream.hud.LegacyGameHUD`
-- `@/components/games/dream.hud.MobileGameHUD`
-- `@/components/games/dream.Leaderboard`
-- `@/components/games/dream.LexiconSolitaire`
-- `@/components/games/dream.NeonDrift`
-- `@/components/games/dream.NiteFlyerSolarHymn`
-- `@/components/games/dream.NullCathedral`
-- `@/components/games/dream.RecordingControls`
-- `@/components/games/dream.remote.GameRemote`
-- `@/components/games/dream.remote.LegacyGameRemote`
-- `@/components/games/dream.SerpentSiege`
-- `@/components/games/dream.VoidlineGP`
-- `@/components/games/madmaxi/audio`
-- `@/components/games/madmaxi/authoredZonePacks`
-- `@/components/games/madmaxi/config`
-- `@/components/games/madmaxi/dream.MadmaxiGame`
-- `@/components/games/madmaxi/index`
-- `@/components/games/madmaxi/levels`
-- `@/components/games/madmaxi/materials`
-- `@/components/games/madmaxi/types`
-- `@/components/games/madmaxi/vfx`
-- `@/components/home/dream.ActiveModuleSurface`
-- `@/components/home/dream.bar.GlobalDreamBar`
-- `@/components/home/dream.bar.PersistentDreamBar`
-- `@/components/home/dream.DaydreamPulseStrip`
-- `@/components/home/dream.FlagshipEnginesStrip`
-- `@/components/home/dream.NeuralSeamCanvas`
-- `@/components/home/dream.widget.DreamWidget`
-- `@/components/idari/dream.PlatformHealth`
-- `@/components/landing/dream.LandingNav`
-- `@/components/landing/dream.LandingProductStatement`
-- `@/components/landing/dream.scene.UniverseField`
-- `@/components/marketplace/dream.MarketplaceListingCard`
-- `@/components/marketplace/dream.MarketplaceRequestButton`
-- `@/components/menus/dream.menu.DreamRadialMenu`
-- `@/components/menus/dream.menu.DualBottomMenu`
-- `@/components/menus/dream.menu.RadialMenu`
-- `@/components/menus/dream.menu.SystemRadialMenu`
-- `@/components/menus/dream.panel.MenuPanel`
-- `@/components/messaging/dream.BoardComposer`
-- `@/components/music/dream.SoundRecorder`
-- `@/components/onboarding/dream.OnboardingTip`
-- `@/components/optimizer/dream.scene.BabylonOptimizeroScene`
-- `@/components/overlays/dream.RootStatusScreen`
-- `@/components/panels/dream.panel.AlgorithmPanel`
-- `@/components/panels/dream.panel.AppearancePanel`
-- `@/components/panels/dream.panel.ConnectorsPanel`
-- `@/components/panels/dream.panel.ControlsPanel`
-- `@/components/panels/dream.panel.DataPanel`
-- `@/components/panels/dream.panel.FeedPanel`
-- `@/components/panels/dream.panel.FeedSettingsPanel`
-- `@/components/panels/dream.panel.HelpPanel`
-- `@/components/panels/dream.panel.MarketplacePanel`
-- `@/components/panels/dream.panel.PrivacyPanel`
-- `@/components/panels/dream.panel.ProfilePanel`
-- `@/components/panels/dream.panel.SafetyPanel`
-- `@/components/panels/dream.panel.SettingsPanel`
-- `@/components/panels/dream.panel.WidgetsPanel`
-- `@/components/profile/dream.EditableAvatar`
-- `@/components/profile/dream.ProfileCanvas`
-- `@/components/profile/dream.ProfileCustomizeButton`
-- `@/components/profile/dream.widget.ProfileWidgetGrid`
-- `@/components/providers/dream.AppSurfaceShell`
-- `@/components/providers/dream.GodTierProvider`
-- `@/components/providers/dream.ThemeProvider`
-- `@/components/runtime/dream.DualRuntimeContainer`
-- `@/components/runtime/dream.RuntimeView`
-- `@/components/runtime/dream.shell.RuntimeShell`
-- `@/components/shaders/dream.LightningWing`
-- `@/components/shaders/dream.NeonGlow`
-- `@/components/shaders/dream.Refractor`
-- `@/components/shaders/index`
-- `@/components/shared-dream/dream.InviteFlow`
-- `@/components/shared-dream/dream.SharedDreamCanvas`
-- `@/components/shared-dream/dream.SharedDreamProvider`
-- `@/components/shared-dream/index`
-- `@/components/spatial/dream.PixiPhysicsLayer`
-- `@/components/spatial/dream.ProfileSpace`
-- `@/components/spatial/dream.shell.EnhancedSpatialShell`
-- `@/components/three/dream.scene`
-- `@/components/three/index`
-- `@/components/ui/dream.AuthenticatedPageHeader`
-- `@/components/ui/dream.DreamWord`
-- `@/components/ui/dream.IconList`
-- `@/components/ui/dream.InfinityIcon`
-- `@/components/ui/dream.PlatformBadge`
-- `@/components/ui/dream.SheetIcon`
-- `@/components/ui/dream.SocialShareSheet`
-- `@/components/universal-editor/dream.UniversalEditor`
-- `@/components/universal-editor/dream.UniversalEditorWrapper`
-- `@/components/universal-editor/index`
-- `@/components/universal-editor/useTapHoldMove`
-- `@/components/universe/dream.node-cluster`
-- `@/components/universe/dream.shell.universe-shell`
-- `@/components/universe/dream.universe-card`
-- `@/components/universe/index`
-- `@/components/warp/dream.WarpCanvas`
-- `@/components/webgpu/dream.WebGPUShowcase`
-- `@/components/webgpu/neuralPostProcess`
-- `@/components/webgpu/renderer`
-- `@/components/webgpu/shaders`
-- `@/components/widgets/dream.AddDreamCTA`
-- `@/components/widgets/dream.ConfigureSheet`
-- `@/components/widgets/dream.EditModeBanner`
-- `@/components/widgets/dream.EditModeProvider`
-- `@/components/widgets/dream.widget.PlayMediaWidget`
-- `@/components/widgets/dream.widget.UniversalWidget`
-- `@/components/widgets/dream.widget.WidgetCard`
-- `@/components/widgets/dream.widget.WidgetLibrary`
-- `@/components/widgets/dream.widget.WidgetPlaceholder`
-- `@/components/widgets/dream.widget.WidgetShell`
-- `@/components/widgets/dream.widget.WidgetSurface`
-- `@/coresurfaces/dreamsurface.EditProfileDream`
-- `@/coresurfaces/dreamsurface.ViewProfile`
-- `@/daydreams/brand/page`
-- `@/daydreams/code/page`
-- `@/daydreams/create/page`
-- `@/daydreams/games/page`
-- `@/daydreams/lab/page`
-- `@/daydreams/music/page`
-
-## `src/engin/generated/systems.ts`
-
-- `@/lib/activeModulesStore`
-- `@/lib/activity/aqs`
-- `@/lib/activity/boogieActivityPolicy`
-- `@/lib/activity/revenueSplit`
-- `@/lib/activity/scoring`
-- `@/lib/activity/skipCredits`
-- `@/lib/activity/types`
-- `@/lib/activity/visibility-score`
-- `@/lib/adari`
-- `@/lib/admin/lockout`
-- `@/lib/admin/upgrade-readiness`
-- `@/lib/agentOS`
-- `@/lib/agentOS/hostTools`
-- `@/lib/agents/agentBus`
-- `@/lib/agents/boogieManAI`
-- `@/lib/agents/dreamengin`
-- `@/lib/agents/drEamsMode`
-- `@/lib/agents/idari`
-- `@/lib/agents/idariLoop`
-- `@/lib/agents/teachBus`
-- `@/lib/agents/uiActions`
-- `@/lib/ai/audit`
-- `@/lib/ai/boogie-policy`
-- `@/lib/ai/boogie-verifier`
-- `@/lib/ai/boogieman`
-- `@/lib/ai/capability-gate`
-- `@/lib/ai/CIC`
-- `@/lib/ai/confirm-token`
-- `@/lib/ai/confirm`
-- `@/lib/ai/groq`
-- `@/lib/ai/handlers/dreams`
-- `@/lib/ai/handlers/index`
-- `@/lib/ai/handlers/navigation`
-- `@/lib/ai/handlers/social`
-- `@/lib/ai/idempotency`
-- `@/lib/ai/rate-limiter`
-- `@/lib/ai/rateLimit`
-- `@/lib/ai/schemas`
-- `@/lib/ai/tfBackend`
-- `@/lib/ai/tool-router`
-- `@/lib/ai/triad`
-- `@/lib/api/route`
-- `@/lib/artifactStore`
-- `@/lib/assets/assetOptimizer`
-- `@/lib/assets/indexedDBStore`
-- `@/lib/audio-fingerprint/fingerprint`
-- `@/lib/audio-fingerprint/index`
-- `@/lib/audio-fingerprint/peak-map`
-- `@/lib/audio-fingerprint/stem-extractor`
-- `@/lib/audioFingerprint`
-- `@/lib/auth/nextRedirect`
-- `@/lib/babylon/createEngine`
-- `@/lib/babylon/dreamengine-hybrid`
-- `@/lib/bot-detection/detector`
-- `@/lib/bot-detection/index`
-- `@/lib/bot-detection/swipe-physics`
-- `@/lib/bot-detection/view-tally`
-- `@/lib/botDetection`
-- `@/lib/branding/logos`
-- `@/lib/child-safety/childSafetyDetector`
-- `@/lib/child-safety/imageClassifier`
-- `@/lib/child-safety/messageContextChecker`
-- `@/lib/child-safety/ncmecReporter`
-- `@/lib/child-safety/scanMediaUrls`
-- `@/lib/code/drEamsCodeAssist`
-- `@/lib/collaboration/index`
-- `@/lib/componentInventory`
-- `@/lib/composite/compositor`
-- `@/lib/composite/fxSimulation`
-- `@/lib/composite/matchmover`
-- `@/lib/composite/motionCapture`
-- `@/lib/composite/rotoscope`
-- `@/lib/consent/consentManager`
-- `@/lib/content/generativeFill`
-- `@/lib/content/publishIntent`
-- `@/lib/content/seoScorer`
-- `@/lib/content/transcriptEditor`
-- `@/lib/content/voiceClone`
-- `@/lib/data-transform`
-- `@/lib/daydream/useDaydreamPersistence`
-- `@/lib/daydream/useDaydreamState`
-- `@/lib/dev-bypass`
-- `@/lib/diff/aiEditEngine`
-- `@/lib/diff/diffUtils`
-- `@/lib/dream-docs/embed`
-- `@/lib/dream-docs/index`
-- `@/lib/dream-docs/search`
-- `@/lib/dream-window/connectionVerbs`
-- `@/lib/dream-window/DreamWindowLifecycle`
-- `@/lib/dream-window/enginConnectionNetwork`
-- `@/lib/dream-window/index`
-- `@/lib/dream-window/runtimeRegion`
-- `@/lib/dream-window/useDreamWindowActions`
-- `@/lib/dreamdm/barInteractions`
-- `@/lib/dreamdm/bridgeSeamFlow`
-- `@/lib/dreamdm/useDreamBarContext`
-- `@/lib/dreamdm/useDreamDMConversations`
-- `@/lib/dreamdm/useDreamDMDraft`
-- `@/lib/dreamdm/useDreamDMMessages`
-- `@/lib/dreamdm/useDreamSearch`
-- `@/lib/dreamdm/useMessagingCore`
-- `@/lib/dreamdm/useModuleBarIntent`
-- `@/lib/dreamdm/useNotifications`
-- `@/lib/dreamengin/DrEamsAnimator`
-- `@/lib/dreamengin/drEamsSearch`
-- `@/lib/dreamengin/engineAssets`
-- `@/lib/dreamengin/osSubsystemManifest`
-- `@/lib/dreamenginOS/index`
-- `@/lib/dreamnav/delta`
-- `@/lib/dreamnav/gctAssist`
-- `@/lib/dreamnav/gestures6`
-- `@/lib/dreamnav/path`
-- `@/lib/dreamnav/tau`
-- `@/lib/dreamr/closeFriendsVisibility`
-- `@/lib/dreamr/feedCursor`
-- `@/lib/dreamr/socialHumanityScore`
-- `@/lib/dreamr/swipeCalibration`
-- `@/lib/dreamr/swipePersonalization`
-- `@/lib/dreamr/torridityLedger`
-- `@/lib/dreams/drag`
-- `@/lib/dreams/profileProjection`
-- `@/lib/dreams/types`
-- `@/lib/dreams/useDreamsRuntime`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginEventBus`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
-- `@/lib/engin-runtime/index`
-- `@/lib/engine/index`
-- `@/lib/enginpipe/artifact/manifest`
-- `@/lib/enginpipe/index`
-- `@/lib/enginpipe/quality/tiers`
-- `@/lib/enginpipe/telemetry/client`
-- `@/lib/enginpipe/telemetry/events`
-- `@/lib/engins/game/gameEnginRuleSet`
-- `@/lib/engins/game/index`
-- `@/lib/engins/game/useGameEnginRuntime`
-- `@/lib/engins/useEnginWorkflow`
-- `@/lib/engins/workflowEngine`
-- `@/lib/event-bus/index`
-- `@/lib/eventBus`
-- `@/lib/feature-build/buildCycle`
-- `@/lib/feature-build/featureManifest`
-- `@/lib/feature-build/index`
-- `@/lib/feature-build/uiQualityCriteria`
-- `@/lib/feed/feedTopics`
-- `@/lib/feed/hashtags`
-- `@/lib/feed/useLiveFeed`
-- `@/lib/feed/useYouTubeLiveFeed`
-- `@/lib/feeds/embedFeedLoader`
-- `@/lib/forge-ngn/assembly`
-- `@/lib/forge-ngn/index`
-- `@/lib/forge-ngn/piece-registry`
-- `@/lib/forge/engineForge`
-- `@/lib/forge/forgeBuild`
-- `@/lib/forge/forgeIntelligence`
-- `@/lib/forge/forgeMomentum`
-- `@/lib/forge/forgeNexus`
-- `@/lib/forge/forgeRegistry`
-- `@/lib/forge/forgeRituals`
-- `@/lib/forge/useForgeActivity`
-- `@/lib/forge/useForgeBuild`
-- `@/lib/gameengin/accessibility-ai`
-- `@/lib/gameengin/ai-director`
-- `@/lib/gameengin/ai-npcs`
-- `@/lib/gameengin/brain-reader`
-- `@/lib/gameengin/cartridge-manifest`
-- `@/lib/gameengin/cartridge`
-- `@/lib/gameengin/cartridgeLoader`
-- `@/lib/gameengin/cloud-compute`
-- `@/lib/gameengin/control-mappings`
-- `@/lib/gameengin/core`
-- `@/lib/gameengin/dream-engine`
-- `@/lib/gameengin/dreamr-loader`
-- `@/lib/gameengin/gameEnginRuntime`
-- `@/lib/gameengin/generative-audio`
-- `@/lib/gameengin/index`
-- `@/lib/gameengin/neural-render`
-- `@/lib/gameengin/path-tracing`
-- `@/lib/gameengin/platform`
-- `@/lib/gameengin/post-fx`
-- `@/lib/gameengin/power-systems`
-- `@/lib/gameengin/predictive-stream`
-- `@/lib/gameengin/procgen`
-- `@/lib/gameengin/registerCartridges`
-- `@/lib/gameengin/remote/comboMachine`
-- `@/lib/gameengin/remote/index`
-- `@/lib/gameengin/remote/layout`
-- `@/lib/gameengin/remote/moves`
-- `@/lib/gameengin/remote/sprintDetector`
-- `@/lib/gameengin/systems/ai`
-- `@/lib/gameengin/systems/animation`
-- `@/lib/gameengin/systems/assets`
-- `@/lib/gameengin/systems/index`
-- `@/lib/gameengin/systems/lod`
-- `@/lib/gameengin/systems/network`
-- `@/lib/gameengin/systems/physics`
-- `@/lib/gameengin/systems/pooling`
-- `@/lib/gameengin/systems/rendering`
-- `@/lib/gameengin/systems/spatial`
-- `@/lib/gameengin/systems/world`
-- `@/lib/gameengin/unifiedLoop`
-- `@/lib/gameengin/useUnifiedLoop`
-- `@/lib/gameengin/webgpu-runtime-shell`
-- `@/lib/gameengin/world-crdt`
-- `@/lib/gameengin/xr`
-- `@/lib/games/avatar`
-- `@/lib/games/catalog`
-- `@/lib/games/DualSenseManager`
-- `@/lib/games/gameControllerButtons`
-- `@/lib/games/gameControllerLeft`
-- `@/lib/games/gameControllerRight`
-- `@/lib/games/hooks`
-- `@/lib/games/library-state`
-- `@/lib/games/lucid-avenue-world`
-- `@/lib/games/mobileControls`
-- `@/lib/games/navigation`
-- `@/lib/games/performance-baseline`
-- `@/lib/games/quality-plan`
-- `@/lib/games/useAIDirector`
-- `@/lib/games/useGameInputKeyboardBridge`
-- `@/lib/games/useGamepad`
-- `@/lib/games/useImmersiveGameLayout`
-- `@/lib/games/useRemoteChannel`
-- `@/lib/gct/anomaly-detection`
-- `@/lib/gct/audio-fingerprint`
-- `@/lib/gct/gct-engine`
-- `@/lib/gct/image-search`
-- `@/lib/gct/index`
-- `@/lib/gct/recommendations`
-- `@/lib/generationLaw`
-- `@/lib/gestures/touchGestures`
-- `@/lib/gestures/useTouchGestures`
-- `@/lib/god-tier/godTierEngine`
-- `@/lib/god-tier/useGodTier`
-- `@/lib/gsap/gsap`
-- `@/lib/gsap/useGsapEntrance`
-- `@/lib/gsap/useGsapFlip`
-- `@/lib/gsap/useGsapScrollReveal`
-- `@/lib/h265-encoder`
-- `@/lib/home-buttons/button-groups`
-- `@/lib/home-buttons/contextual-home`
-- `@/lib/icons/sheet`
-- `@/lib/identity/canonical-names`
-- `@/lib/intelligence/continuityHelpers`
-- `@/lib/intelligence/sessionContinuity`
-- `@/lib/intelligence/sessionPatternEngine`
-- `@/lib/intelligence/useSessionIntelligence`
-- `@/lib/journey/journeyDots`
-- `@/lib/journey/journeyInsights`
-- `@/lib/journey/withJourney`
-- `@/lib/ledger-data`
-- `@/lib/ledger`
-- `@/lib/marketplace/listings`
-- `@/lib/marketplace/request`
-- `@/lib/media/ledger`
-- `@/lib/media/postMedia`
-- `@/lib/music/presets`
-- `@/lib/music/starmaker`
-- `@/lib/music/starmakerArrangement`
-- `@/lib/music/starmakerDaw`
-- `@/lib/music/wasmAudioBridge`
-- `@/lib/navigation/anchorField`
-- `@/lib/navigation/AnchorStateBuffer`
-- `@/lib/navigation/AnchorWidgetStorage`
-- `@/lib/navigation/dream-state`
-- `@/lib/navigation/GestureFrameComputer`
-- `@/lib/navigation/GestureIntentResolver`
-- `@/lib/navigation/index`
-- `@/lib/navigation/manifold`
-- `@/lib/navigation/NavStateBuffer`
-- `@/lib/navigation/physics`
-- `@/lib/navigation/PointerEventCapture`
-- `@/lib/navigation/quaternion`
-- `@/lib/navigation/ReturnStack`
-- `@/lib/navigation/SpatialNavigationEngine`
-- `@/lib/navigation/StructureLedger`
-- `@/lib/navigation/TransformSolver`
-- `@/lib/navigation/useNavigation`
-- `@/lib/navigation/WidgetInstanceMemory`
-- `@/lib/notifications/notificationHelpers`
-- `@/lib/notifications/useNotifications`
-- `@/lib/observability/collector`
-- `@/lib/observability/correlator`
-- `@/lib/observability/healthTrend`
-- `@/lib/observability/immediateAction`
-- `@/lib/observability/index`
-- `@/lib/observability/otel`
-- `@/lib/observability/otelBridge`
-- `@/lib/observability/rootCauseAnalyzer`
-- `@/lib/offline/offlineCache`
-- `@/lib/offline/useOfflineSync`
-- `@/lib/optimizer/babylon-optimizero`
-- `@/lib/optimizer/constraint-solver`
-- `@/lib/optimizer/creative-optimizero`
-- `@/lib/optimizer/creative-validator`
-- `@/lib/optimizer/index`
-- `@/lib/optimizer/types`
-- `@/lib/panels/panelTypes`
-- `@/lib/platform/index`
-- `@/lib/platform/lab`
-- `@/lib/policy/boogiePolicy`
-- `@/lib/renderer/Canvas2DRenderer`
-- `@/lib/renderer/FrustumCuller`
-- `@/lib/renderer/index`
-- `@/lib/renderer/IRenderer`
-- `@/lib/routing/surfaces`
-- `@/lib/runtime/channelMetrics`
-- `@/lib/runtime/coercionTable`
-- `@/lib/runtime/dreamOSBus`
-- `@/lib/runtime/dropTargetRegistry`
-- `@/lib/runtime/dualRuntime`
-- `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/runtime/EnginDispatcher`
-- `@/lib/runtime/enginWorkflowRegistry`
-- `@/lib/runtime/instanceManager`
-- `@/lib/runtime/isAuthRelatedError`
-- `@/lib/runtime/madMaxiSnapshotBridge`
-- `@/lib/runtime/memory`
-- `@/lib/runtime/moduleRegistry`
-- `@/lib/runtime/offlineQueue`
-- `@/lib/runtime/quantumCircuit`
-- `@/lib/runtime/runtimeChannel`
-- `@/lib/runtime/runtimeContainer`
-- `@/lib/runtime/seamClipboard`
-- `@/lib/runtime/sharedResourcePool`
-- `@/lib/runtime/snapshotFingerprint`
-- `@/lib/runtime/swapManager`
-- `@/lib/runtime/useDragSurface`
-- `@/lib/runtime/useDualRuntime`
-- `@/lib/runtime/useDualRuntimePersistence`
-- `@/lib/runtime/useEnginBridge`
-- `@/lib/runtime/useEnginCoopSync`
-- `@/lib/runtime/useSharedEnginChannel`
-- `@/lib/scene/sceneState`
-- `@/lib/setup/checks`
-- `@/lib/sharedDream`
-- `@/lib/shop/listings`
-- `@/lib/slog`
-- `@/lib/social-feed`
-- `@/lib/social/crossPost`
-- `@/lib/social/platforms`
-- `@/lib/social/rss-feed`
-- `@/lib/supabase/client`
-- `@/lib/supabase/config`
-- `@/lib/supabase/realtime`
-- `@/lib/supabase/safeGetUser`
-- `@/lib/supabase/server`
-- `@/lib/supabase/vector`
-- `@/lib/torridity`
-- `@/lib/torridity/constants`
-- `@/lib/torridity/index`
-- `@/lib/torridity/physics`
-- `@/lib/ui/responsive`
-- `@/lib/ui/runtimeViewport`
-- `@/lib/ui/skin-engine`
-- `@/lib/ui/theme-engine`
-- `@/lib/ui/theme`
-- `@/lib/universal-editor/module-manifest`
-- `@/lib/universalEditor`
-- `@/lib/user-sim/userSimAgent`
-- `@/lib/utils`
-- `@/lib/vm/bufferManager`
-- `@/lib/vm/bus-events`
-- `@/lib/vm/dual-runtime`
-- `@/lib/vm/dualVMCoordinator`
-- `@/lib/vm/index`
-- `@/lib/vm/inter-vm-messaging`
-- `@/lib/vm/pipelineCache`
-- `@/lib/vm/resource-quota`
-- `@/lib/vm/security`
-- `@/lib/vm/snapshot`
-- `@/lib/vm/types`
-- `@/lib/vm/wasm-features`
-- `@/lib/vm/wasmGpuVM`
-- `@/lib/warp/useWarp`
-- `@/lib/warp/warpEngine`
-- `@/lib/webgpu`
-- `@/lib/webgpu/adaptiveQuality`
-- `@/lib/webgpu/director`
-- `@/lib/webgpu/useWebGPUDirector`
-- `@/lib/widgets/CrossWidgetPosting`
-- `@/lib/widgets/feed-resolver`
-- `@/lib/widgets/parse`
-- `@/lib/widgets/parseConfig`
-- `@/lib/widgets/useWidget`
-- `@/lib/widgets/WidgetBus`
-- `@/lib/widgets/WidgetEventBus`
-- `@/lib/widgets/WidgetLinkGraph`
-- `@/lib/widgets/widgetRegistry`
-
-## `tailwindcss-animate.d.ts`
-
-- `tailwindcss`
-
-## `tests/agent-bus-consensus.test.ts`
-
-- `@/lib/ai/triad`
-- `@/lib/agents/agentBus`
-
-## `tests/asset-optimizer.test.ts`
-
-- `@/lib/assets/indexedDBStore`
-
-## `tests/auth-providers-route.test.ts`
-
-- `../app/api/auth/providers/route`
-
-## `tests/babylon-webgpu-engine.test.ts`
-
-- `@/lib/babylon/createEngine`
-
-## `tests/child-safety.test.ts`
-
-- `@/lib/child-safety/childSafetyDetector`
-
-## `tests/compositeengin-features.test.ts`
-
-- `../lib/composite/motionCapture`
-- `../lib/composite/compositor`
-- `../lib/composite/rotoscope`
-- `../lib/composite/fxSimulation`
-- `../lib/composite/matchmover`
-
-## `tests/content-intelligence-routes.test.ts`
-
-- `../app/api/content/intelligence/route`
-- `../app/api/lab/benchmarks/route`
-
-## `tests/contentengin-features.test.ts`
-
-- `../lib/content/transcriptEditor`
-- `../lib/content/seoScorer`
-- `../lib/content/voiceClone`
-- `../app/api/content/transcribe/route`
-- `next/server`
-- `../app/api/content/generative-fill/route`
-- `../app/api/content/voice-clone/route`
-
-## `tests/dev-bypass.test.ts`
-
-- `@/lib/dev-bypass`
-
-## `tests/dreamengin-os.test.ts`
-
-- `@/components/dreamengin/dream.DREAMenginOS`
-- `@/lib/babylon/createEngine`
-
-## `tests/forge-engin.test.ts`
-
-- `@/lib/forge/forgeRegistry`
-
-## `tests/gameengin-crash-modal.test.ts`
-
-- `@/components/gameengin/dream.cartridge.CartridgeLauncher`
-
-## `tests/games-daydream-page-auth.test.ts`
-
-- `@/app/daydream/games/page`
-
-## `tests/homedream-page-auth.test.ts`
-
-- `@/app/dreamdmbar/layout`
-
-## `tests/instance-manager.test.ts`
-
-- `../lib/runtime/instanceManager`
-
-## `tests/orphan-wire-script.test.ts`
-
-- `../scripts/wire-orphans.mjs`
-
-## `tests/phase8b-dream-windows.test.ts`
-
-- `@/lib/dream-window/useDreamWindowActions`
-- `@/components/dreams/dream.widget.SuperDreamWidget`
-- `@/components/widgets/dream.widget.WidgetShell`
-- `@/components/dreams/dreamsurface.shell`
-- `@/components/widgets/dream.widget.WidgetCard`
-- `@/components/widgets/dream.widget.UniversalWidget`
-- `@/components/widgets/dream.widget.WidgetLibrary`
-- `@/components/widgets/dream.widget.WidgetSurface`
-- `@/types/dream-window`
-- `node:fs`
-- `node:path`
-
-## `tests/phase9-cross-post.test.ts`
-
-- `@/lib/social/platforms`
-
-## `tests/phase9-offline-cache.test.ts`
-
-- `@/lib/offline/offlineCache`
-
-## `tests/platform-utils.test.ts`
-
-- `../lib/platform/lab`
-- `../app/api/ads/orders/route`
-- `../app/api/gal/route`
-- `../lib/platform/index`
-
-## `tests/rss-feed.test.ts`
-
-- `rss-parser`
-
-## `tests/social-feed.test.ts`
-
-- `rss-parser`
-
-## `tests/supabase-config.test.ts`
-
-- `@/lib/supabase/config`
-
-## `tests/tech-foundation.test.ts`
-
-- `../lib/supabase/vector`
-
-## `tests/universal-asset-registry.test.ts`
-
-- `@/components/dream.universal_asset_registry`
-
-## `tests/wasm-gpu-vm.test.ts`
-
-- `@/lib/vm/types`
-- `@/lib/vm/bufferManager`
-- `@/lib/vm/pipelineCache`
-- `@/lib/vm/snapshot`
-- `@/lib/vm/dualVMCoordinator`
-- `@/lib/vm/wasmGpuVM`
-
-## `tests/youtube-provider.test.ts`
-
-- `@/lib/connectors/providers/youtube`
 
 ---
 
@@ -17441,26 +17546,26 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 33 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.StarMakerEngin.tsx` | 29 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS |
-| `components/runtime/dream.RuntimeView.tsx` | 22 | HIGH_COUPLING |
-| `engins/engin.CodeEngin.tsx` | 21 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.GameEngin.tsx` | 33 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.StarMakerEngin.tsx` | 29 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `components/runtime/dream.RuntimeView.tsx` | 22 | HIGH_COUPLING, DUAL_RUNTIME |
+| `engins/engin.CodeEngin.tsx` | 21 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
-| `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS |
-| `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS |
+| `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
-| `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING |
-| `components/home/dream.bar.PersistentDreamBar.tsx` | 14 | HIGH_COUPLING, EVENT_BUS |
+| `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | 14 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 13 | HIGH_COUPLING |
-| `app/layout.tsx` | 13 | HIGH_COUPLING |
+| `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 13 | HIGH_COUPLING |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -17471,7 +17576,7 @@ _No circular dependencies detected._
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 | HIGH_COUPLING |
-| `lib/vm/index.ts` | 12 | HIGH_COUPLING |
+| `lib/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `scripts/wire-orphans.mjs` | 12 | HIGH_COUPLING |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
 | `app/api/ai/boogieman/route.ts` | 11 | HIGH_COUPLING |
@@ -17482,12 +17587,12 @@ _No circular dependencies detected._
 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/lab/page.tsx` | 11 | HIGH_COUPLING |
 | `components/dream.MessagesClient.tsx` | 11 | HIGH_COUPLING |
-| `components/dreamengin/dream.DREAMenginOS.tsx` | 11 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | 11 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `components/games/dream.GamesHub.tsx` | 11 | HIGH_COUPLING |
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | 11 | HIGH_COUPLING |
-| `components/providers/dream.AppSurfaceShell.tsx` | 11 | HIGH_COUPLING |
+| `components/providers/dream.AppSurfaceShell.tsx` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
 | `daydreams/music/page.tsx` | 11 | HIGH_COUPLING |
-| `lib/dreamenginOS/index.ts` | 11 | HIGH_COUPLING |
+| `lib/dreamenginOS/index.ts` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
 | `lib/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
@@ -17505,23 +17610,23 @@ _No circular dependencies detected._
 | `app/api/ai/boogieman/privacy-event/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/messages/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/daydream/lab/portfolio/page.tsx` | 9 | MEDIUM_COUPLING |
-| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 9 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/api/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/edit-profiledream/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/[id]/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/settings/safety/page.tsx` | 9 | MEDIUM_COUPLING |
-| `components/dream.OSShellActivator.tsx` | 9 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
+| `components/dream.OSShellActivator.tsx` | 9 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `components/dreamengin/dreamsurface.dreamengin.tsx` | 9 | MEDIUM_COUPLING |
 | `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 9 | MEDIUM_COUPLING |
 | `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
-| `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS |
+| `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/appeal/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/comments/route.ts` | 8 | MEDIUM_COUPLING |
-| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/dreamr/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/builder/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
@@ -17530,10 +17635,10 @@ _No circular dependencies detected._
 | `app/settings/security/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/shop/sell/page.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | 8 | MEDIUM_COUPLING |
-| `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING |
+| `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
-| `components/home/dream.ActiveModuleSurface.tsx` | 8 | MEDIUM_COUPLING, EVENT_BUS |
+| `components/home/dream.ActiveModuleSurface.tsx` | 8 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
 | `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
@@ -17588,11 +17693,11 @@ _No circular dependencies detected._
 | `components/profile/dream.ProfileCanvas.tsx` | 7 | MEDIUM_COUPLING |
 | `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
-| `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
 | `lib/engin-runtime/index.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
-| `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING |
+| `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/engin-runtime-core.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/game-controller.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/game-navigation.test.ts` | 7 | MEDIUM_COUPLING |
@@ -17638,19 +17743,19 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.ProfilePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SettingsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.WidgetsPanel.tsx` | 6 | MEDIUM_COUPLING |
-| `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS |
+| `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
-| `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING |
+| `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/shell-cartridge-wiring.test.ts` | 6 | MEDIUM_COUPLING |
-| `components/daydream/dream.CodeDreamIDE.tsx` | 5 | EVENT_BUS |
+| `components/daydream/dream.CodeDreamIDE.tsx` | 5 | EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
-| `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY |
-| `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS |
-| `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS |
+| `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS, DUAL_RUNTIME |
+| `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/content/useContentEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -17659,56 +17764,55 @@ _No circular dependencies detected._
 | `lib/engins/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/feed/useLiveFeed.ts` | 4 | EVENT_BUS |
 | `lib/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
-| `lib/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS |
-| `lib/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, ZUSTAND_STATE |
-| `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS |
+| `lib/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `lib/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, DUAL_RUNTIME, ZUSTAND_STATE |
+| `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
 | `lib/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
-| `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS |
-| `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS |
-| `components/draggable/dream.DraggableModule.tsx` | 3 | EVENT_BUS |
-| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | 3 | EVENT_BUS |
-| `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS |
-| `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS |
+| `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `components/draggable/dream.DraggableModule.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `lib/gameengin/registerCartridges.ts` | 3 | RUNTIME_REGISTRY |
 | `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
-| `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS |
+| `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
-| `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS |
+| `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
 | `tests/module-registry.test.ts` | 3 | EVENT_BUS, ZUSTAND_STATE |
 | `tests/phase8f-daydream-activation.test.ts` | 3 | EVENT_BUS |
-| `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS |
+| `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/universal-visual-modularity.test.ts` | 3 | EVENT_BUS |
 | `app/api/ci/run/route.ts` | 2 | EVENT_BUS |
-| `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS |
+| `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/forge/engineForge.ts` | 2 | EVENT_BUS |
 | `lib/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
-| `lib/runtime/useDualRuntime.ts` | 2 | EVENT_BUS |
-| `lib/runtime/useEnginBridge.ts` | 2 | EVENT_BUS |
-| `lib/vm/dual-runtime.ts` | 2 | EVENT_BUS |
+| `lib/runtime/useDualRuntime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `lib/runtime/useEnginBridge.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `lib/vm/dual-runtime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/web3/client.ts` | 2 | EVENT_BUS |
-| `scripts/generate-repo-state.mjs` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
+| `scripts/generate-repo-state.mjs` | 2 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `src/core/GameEnginCore.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
-| `tests/dual-runtime-bridge-peer-activity.test.ts` | 2 | EVENT_BUS |
-| `tests/durable-bridge.test.ts` | 2 | EVENT_BUS |
+| `tests/dual-runtime-bridge-peer-activity.test.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/durable-bridge.test.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/gameengin-power-systems.test.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
 | `lib/collaboration/index.ts` | 1 | EVENT_BUS |
 | `lib/gameengin/gameEnginRuntime.ts` | 1 | EVENT_BUS |
-| `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY |
-| `lib/supabase/realtime.ts` | 1 | EVENT_BUS |
+| `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/event-bus/index.ts` | 0 | EVENT_BUS |
-| `lib/eventBus.ts` | 0 | EVENT_BUS |
+| `lib/eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
-| `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY |
+| `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/runtime/runtimeChannel.ts` | 0 | EVENT_BUS |
 | `lib/social/livekit.ts` | 0 | EVENT_BUS |
-| `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY |
-| `types/dreamArtifact.ts` | 0 | EVENT_BUS |
+| `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 
 ---
 
@@ -17727,7 +17831,7 @@ _No circular dependencies detected._
 │   │   │   └── action.yml
 │   │   └── setup-node
 │   │       └── action.yml
-│   ├── agents
+│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── dreamengin.agent.md
 │   │   ├── error-tracker.agent.md
 │   │   ├── gameengin-ai-agent.yml
@@ -17911,9 +18015,9 @@ _No circular dependencies detected._
 │   ├── copilot-instructions.md
 │   ├── pull_request_template.md
 │   └── PULL_REQUEST_TEMPLATE.md
-├── agents
-│   ├── humanAI
-│   │   ├── personas
+├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── humanAI  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   ├── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── accessibility.md
 │   │   │   ├── creator.md
 │   │   │   ├── ios-first.md
@@ -17925,10 +18029,10 @@ _No circular dependencies detected._
 │   └── humanAI.persona.md
 ├── app
 │   ├── (internal)
-│   │   └── idari-console
-│   │       ├── platform-errors
+│   │   └── idari-console  [Observability & Idari Console]
+│   │       ├── platform-errors  [Observability & Idari Console]
 │   │       │   └── page.tsx
-│   │       ├── platform-health
+│   │       ├── platform-health  [Observability & Idari Console]
 │   │       │   └── page.tsx
 │   │       └── page.tsx
 │   ├── about
@@ -18043,10 +18147,10 @@ _No circular dependencies detected._
 │   │   │   │   └── route.ts
 │   │   │   └── voice-clone
 │   │   │       └── route.ts
-│   │   ├── dr-eams
-│   │   │   ├── hf
+│   │   ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   │   ├── hf  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   │   └── route.ts
-│   │   │   └── run
+│   │   │   └── run  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │       └── route.ts
 │   │   ├── drafts
 │   │   │   ├── [id]
@@ -18059,12 +18163,12 @@ _No circular dependencies detected._
 │   │   ├── dreamengin
 │   │   │   └── os-status
 │   │   │       └── route.ts
-│   │   ├── dreamr
-│   │   │   ├── feed
+│   │   ├── dreamr  [DreamR]
+│   │   │   ├── feed  [DreamR]
 │   │   │   │   └── route.ts
-│   │   │   ├── suggested
+│   │   │   ├── suggested  [DreamR]
 │   │   │   │   └── route.ts
-│   │   │   └── tally
+│   │   │   └── tally  [DreamR]
 │   │   │       └── route.ts
 │   │   ├── dreams
 │   │   │   ├── feed
@@ -18205,71 +18309,71 @@ _No circular dependencies detected._
 │   │       │   └── route.ts
 │   │       └── live-feed
 │   │           └── route.ts
-│   ├── auth
-│   │   ├── callback
+│   ├── auth  [Auth]
+│   │   ├── callback  [Auth]
 │   │   │   └── route.ts
-│   │   ├── reset-password
+│   │   ├── reset-password  [Auth]
 │   │   │   └── page.tsx
-│   │   └── update-password
+│   │   └── update-password  [Auth]
 │   │       └── page.tsx
-│   ├── connectors
+│   ├── connectors  [Connectors]
 │   │   ├── dream.ConnectorsClient.tsx
 │   │   └── page.tsx
-│   ├── daydream
-│   │   ├── analytics
+│   ├── daydream  [Daydream System]
+│   │   ├── analytics  [Daydream System]
 │   │   │   └── page.tsx
-│   │   ├── brand
-│   │   │   ├── engin
+│   │   ├── brand  [BrandEngin, Daydream System]
+│   │   │   ├── engin  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── code
-│   │   │   ├── engin
+│   │   ├── code  [CodeEngin, Daydream System]
+│   │   │   ├── engin  [CodeEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── constellation
+│   │   ├── constellation  [Daydream System]
 │   │   │   ├── dream.ConstellationClient.tsx
 │   │   │   └── page.tsx
-│   │   ├── create
-│   │   │   ├── engin
+│   │   ├── create  [CreateEngin, Daydream System]
+│   │   │   ├── engin  [CreateEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── forge
+│   │   ├── forge  [ForgeEngin (Engine Builder), Daydream System]
 │   │   │   └── page.tsx
-│   │   ├── game
+│   │   ├── game  [GameEngin, Daydream System]
 │   │   │   ├── dream.GamePageClient.tsx
 │   │   │   ├── dream.shell.ImmersiveGameShell.tsx
 │   │   │   └── page.tsx
-│   │   ├── games
-│   │   │   ├── engin
+│   │   ├── games  [GameEngin, Daydream System]
+│   │   │   ├── engin  [GameEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── lab
-│   │   │   ├── engin
+│   │   ├── lab  [LabEngin, Daydream System]
+│   │   │   ├── engin  [LabEngin, Daydream System]
 │   │   │   │   └── page.tsx
-│   │   │   ├── portfolio
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   ├── media-vault
-│   │   │   └── page.tsx
-│   │   ├── music
-│   │   │   ├── engin
-│   │   │   │   └── page.tsx
-│   │   │   ├── upload
+│   │   │   ├── portfolio  [LabEngin, PortfolioEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   └── play
+│   │   ├── media-vault  [CreateEngin, Daydream System]
+│   │   │   └── page.tsx
+│   │   ├── music  [StarMaker (Music Engin), Daydream System]
+│   │   │   ├── engin  [StarMaker (Music Engin), Daydream System]
+│   │   │   │   └── page.tsx
+│   │   │   ├── upload  [StarMaker (Music Engin), Daydream System]
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   └── play  [Daydream System]
 │   │       └── page.tsx
-│   ├── discover
+│   ├── discover  [Feed & Social]
 │   │   └── page.tsx
 │   ├── dream-effects
 │   │   └── page.tsx
-│   ├── dreamdmbar
-│   │   ├── _components
-│   │   │   ├── dreamr
-│   │   │   │   ├── algorithms
+│   ├── dreamdmbar  [HOME — DreamDMBar]
+│   │   ├── _components  [HOME — DreamDMBar]
+│   │   │   ├── dreamr  [HOME — DreamDMBar, DreamR]
+│   │   │   │   ├── algorithms  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── botDetector.ts
 │   │   │   │   │   └── dreamrAlgorithm.ts
-│   │   │   │   ├── api
+│   │   │   │   ├── api  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── feedHandler.ts
 │   │   │   │   │   └── route.ts
 │   │   │   │   ├── dream.DreamRCore.tsx
@@ -18279,79 +18383,79 @@ _No circular dependencies detected._
 │   │   │   ├── DreamSpaceRegion.tsx
 │   │   │   ├── DreamWidgetGrid.tsx
 │   │   │   └── HomeDreamRegion.tsx
-│   │   ├── dreamspace
+│   │   ├── dreamspace  [HOME — DreamDMBar]
 │   │   │   └── page.tsx
-│   │   ├── dualruntime
+│   │   ├── dualruntime  [HOME — DreamDMBar, DREAMenginOS]
 │   │   │   └── page.tsx
-│   │   ├── homedream
+│   │   ├── homedream  [HOME — DreamDMBar]
 │   │   │   └── page.tsx
 │   │   ├── layout.tsx
 │   │   └── page.tsx
-│   ├── dreamr
+│   ├── dreamr  [DreamR]
 │   │   └── page.tsx
 │   ├── dreamspace
 │   │   └── page.tsx
-│   ├── edit-profiledream
+│   ├── edit-profiledream  [Profile & Edit Profile]
 │   │   └── page.tsx
 │   ├── engines
-│   │   ├── brand
-│   │   │   ├── campaigns
+│   │   ├── brand  [BrandEngin]
+│   │   │   ├── campaigns  [BrandEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── identity
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── code
-│   │   │   ├── ai
-│   │   │   │   └── page.tsx
-│   │   │   ├── notebook
-│   │   │   │   └── page.tsx
-│   │   │   ├── projects
+│   │   │   ├── identity  [BrandEngin]
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
 │   │   │   └── page.tsx
-│   │   ├── create
-│   │   │   ├── calendar
+│   │   ├── code  [CodeEngin]
+│   │   │   ├── ai  [CodeEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── editor
+│   │   │   ├── notebook  [CodeEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── queue
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── games
-│   │   │   ├── builder
-│   │   │   │   └── page.tsx
-│   │   │   ├── library
-│   │   │   │   └── page.tsx
-│   │   │   ├── scores
+│   │   │   ├── projects  [CodeEngin]
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
 │   │   │   └── page.tsx
-│   │   ├── lab
-│   │   │   ├── data
+│   │   ├── create  [CreateEngin]
+│   │   │   ├── calendar  [CreateEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── experiments
+│   │   │   ├── editor  [CreateEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── quantum
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── music
-│   │   │   ├── arrange
-│   │   │   │   └── page.tsx
-│   │   │   ├── library
-│   │   │   │   └── page.tsx
-│   │   │   ├── studio
+│   │   │   ├── queue  [CreateEngin]
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
 │   │   │   └── page.tsx
-│   │   ├── portfolio
-│   │   │   ├── assets
+│   │   ├── games  [GameEngin]
+│   │   │   ├── builder  [GameEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── optimize
+│   │   │   ├── library  [GameEngin]
 │   │   │   │   └── page.tsx
-│   │   │   ├── quantum
+│   │   │   ├── scores  [GameEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   ├── lab  [LabEngin]
+│   │   │   ├── data  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── experiments  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── quantum  [LabEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   ├── music  [StarMaker (Music Engin)]
+│   │   │   ├── arrange  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   ├── library  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   ├── studio  [StarMaker (Music Engin)]
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   ├── portfolio  [PortfolioEngin]
+│   │   │   ├── assets  [PortfolioEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── optimize  [PortfolioEngin]
+│   │   │   │   └── page.tsx
+│   │   │   ├── quantum  [PortfolioEngin]
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
 │   │   │   └── page.tsx
@@ -18360,37 +18464,37 @@ _No circular dependencies detected._
 │   ├── feed-settings
 │   │   ├── dream.FeedSettingsClient.tsx
 │   │   └── page.tsx
-│   ├── gameengin
-│   │   ├── cartridges
-│   │   │   ├── [id]
+│   ├── gameengin  [GameEngin]
+│   │   ├── cartridges  [GameEngin]
+│   │   │   ├── [id]  [GameEngin]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
 │   │   └── page.tsx
-│   ├── homedream
+│   ├── homedream  [HOME — DreamDMBar]
 │   │   └── page.tsx
-│   ├── join
+│   ├── join  [Auth]
 │   │   └── page.tsx
-│   ├── lab
-│   │   ├── [id]
-│   │   │   ├── codespace
+│   ├── lab  [LabEngin]
+│   │   ├── [id]  [LabEngin]
+│   │   │   ├── codespace  [LabEngin]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── new
+│   │   ├── new  [LabEngin]
 │   │   │   └── page.tsx
 │   │   └── page.tsx
-│   ├── login
+│   ├── login  [Auth]
 │   │   └── page.tsx
-│   ├── marketplace
-│   │   ├── [id]
+│   ├── marketplace  [Marketplace & Shop]
+│   │   ├── [id]  [Marketplace & Shop]
 │   │   │   └── page.tsx
-│   │   ├── sell
+│   │   ├── sell  [Marketplace & Shop]
 │   │   │   └── page.tsx
 │   │   └── page.tsx
-│   ├── messages
-│   │   ├── boards
-│   │   │   ├── [id]
+│   ├── messages  [Messages & DMs]
+│   │   ├── boards  [Messages & DMs]
+│   │   │   ├── [id]  [Messages & DMs]
 │   │   │   │   └── page.tsx
-│   │   │   ├── new
+│   │   │   ├── new  [Messages & DMs]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
 │   │   └── page.tsx
@@ -18398,56 +18502,56 @@ _No circular dependencies detected._
 │   │   └── page.tsx
 │   ├── notes
 │   │   └── page.tsx
-│   ├── onboarding
+│   ├── onboarding  [Auth]
 │   │   └── page.tsx
 │   ├── policy
 │   │   └── page.tsx
-│   ├── profile
-│   │   ├── [handle]
+│   ├── profile  [Profile & Edit Profile]
+│   │   ├── [handle]  [Profile & Edit Profile]
 │   │   │   └── page.tsx
 │   │   └── page.tsx
-│   ├── settings
-│   │   ├── account
+│   ├── settings  [Settings]
+│   │   ├── account  [Settings]
 │   │   │   ├── dream.DangerZoneActions.tsx
 │   │   │   └── page.tsx
-│   │   ├── algorithm
+│   │   ├── algorithm  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── appearance
+│   │   ├── appearance  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── controls
+│   │   ├── controls  [Settings]
 │   │   │   ├── dream.ControlsClient.tsx
 │   │   │   ├── dream.PositionIndicatorToggle.tsx
 │   │   │   └── page.tsx
-│   │   ├── data
+│   │   ├── data  [Settings]
 │   │   │   ├── dream.DataClient.tsx
 │   │   │   └── page.tsx
-│   │   ├── dreams
+│   │   ├── dreams  [Settings]
 │   │   │   ├── dreams-layout-editor.tsx
 │   │   │   └── page.tsx
-│   │   ├── feed
+│   │   ├── feed  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── help
+│   │   ├── help  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── notifications
+│   │   ├── notifications  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── privacy
+│   │   ├── privacy  [Settings]
 │   │   │   ├── dream.PrivacyClient.tsx
 │   │   │   └── page.tsx
-│   │   ├── safety
+│   │   ├── safety  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── security
+│   │   ├── security  [Settings]
 │   │   │   └── page.tsx
-│   │   ├── widgets
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   ├── shop
-│   │   ├── sell
+│   │   ├── widgets  [Settings]
 │   │   │   └── page.tsx
 │   │   └── page.tsx
-│   ├── u
-│   │   └── [handle]
+│   ├── shop  [Marketplace & Shop]
+│   │   ├── sell  [Marketplace & Shop]
+│   │   │   └── page.tsx
+│   │   └── page.tsx
+│   ├── u  [Profile & Edit Profile]
+│   │   └── [handle]  [Profile & Edit Profile]
 │   │       └── page.tsx
-│   ├── view-profile
+│   ├── view-profile  [Profile & Edit Profile]
 │   │   └── page.tsx
 │   ├── webgpu
 │   │   └── page.tsx
@@ -18459,12 +18563,12 @@ _No circular dependencies detected._
 │   ├── loading.tsx
 │   ├── not-found.tsx
 │   └── page.tsx
-├── assembly
+├── assembly  [GameEngin, VM / WASM Runtime]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── bus.ts
 │   ├── index.ts
 │   └── mad-maxi-player.ts
-├── build-memory
+├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── actions.json
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── events.json
@@ -18477,12 +18581,12 @@ _No circular dependencies detected._
 │   │   ├── dream.ActivityPostForm.tsx
 │   │   ├── dream.ActivityProfile.tsx
 │   │   └── dream.TierBadge.tsx
-│   ├── ads
+│   ├── ads  [Marketplace & Shop]
 │   │   ├── dream.AdUnit.tsx
 │   │   └── dream.SkipCreditBalance.tsx
-│   ├── auth
+│   ├── auth  [Auth]
 │   │   └── dream.PasswordField.tsx
-│   ├── connectors
+│   ├── connectors  [Connectors]
 │   │   ├── dream.AddSliceSheet.tsx
 │   │   ├── dream.ConnectDreamPrompt.tsx
 │   │   ├── dream.ConnectorRow.tsx
@@ -18492,8 +18596,8 @@ _No circular dependencies detected._
 │   │   └── dream.widget.ConnectWidgetPrompt.tsx
 │   ├── core
 │   │   └── dream.CoreDream.tsx
-│   ├── customize
-│   │   ├── panels
+│   ├── customize  [Customize Mode]
+│   │   ├── panels  [Customize Mode]
 │   │   │   ├── dream.panel.ColorPanel.tsx
 │   │   │   ├── dream.panel.EffectsPanel.tsx
 │   │   │   ├── dream.panel.FontPanel.tsx
@@ -18502,7 +18606,7 @@ _No circular dependencies detected._
 │   │   ├── dream.bar.CustomizeToolbar.tsx
 │   │   └── dream.GlobalCustomizeUI.tsx
 │   ├── daydream
-│   │   ├── starmaker
+│   │   ├── starmaker  [StarMaker (Music Engin)]
 │   │   │   ├── dream.panel.CompingPanel.tsx
 │   │   │   ├── dream.panel.MultitrackArrangementPanel.tsx
 │   │   │   ├── dream.panel.PianoRollPanel.tsx
@@ -18520,8 +18624,8 @@ _No circular dependencies detected._
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx
 │   ├── draggable
 │   │   └── dream.DraggableModule.tsx
-│   ├── dreamengin
-│   │   ├── engine
+│   ├── dreamengin  [DREAMenginOS]
+│   │   ├── engine  [DREAMenginOS]
 │   │   │   ├── math.ts
 │   │   │   └── types.ts
 │   │   ├── dream.bar.DrEamsSearchBar.tsx
@@ -18540,10 +18644,10 @@ _No circular dependencies detected._
 │   │   ├── dream.shell.EnginShell.tsx
 │   │   ├── dream.widget.AppearanceWidget.tsx
 │   │   └── dreamsurface.dreamengin.tsx
-│   ├── dreamnav
+│   ├── dreamnav  [Menus & Navigation, Dream Navigation]
 │   │   ├── dream.DreamNavControls.tsx
 │   │   └── dreamsurface.dreamnav.tsx
-│   ├── dreamr
+│   ├── dreamr  [DreamR]
 │   │   ├── dream.CloseFriendsSettings.tsx
 │   │   ├── dream.panel.DreamRChannelPanel.tsx
 │   │   └── dream.panel.DreamRCreatorPanel.tsx
@@ -18564,49 +18668,49 @@ _No circular dependencies detected._
 │   │   ├── dreamsurface.shell.tsx
 │   │   └── dreamsurface.window.tsx
 │   ├── engines
-│   │   ├── brand
-│   │   │   ├── panels
+│   │   ├── brand  [BrandEngin]
+│   │   │   ├── panels  [BrandEngin]
 │   │   │   │   ├── dream.panel.CampaignsPanel.tsx
 │   │   │   │   └── dream.panel.IdentityPanel.tsx
 │   │   │   ├── dream.BrandEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── code
-│   │   │   ├── panels
+│   │   ├── code  [CodeEngin]
+│   │   │   ├── panels  [CodeEngin]
 │   │   │   │   ├── dream.panel.AIPanel.tsx
 │   │   │   │   ├── dream.panel.NotebookPanel.tsx
 │   │   │   │   └── dream.panel.ProjectsPanel.tsx
 │   │   │   ├── dream.CodeEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── create
-│   │   │   ├── panels
+│   │   ├── create  [CreateEngin]
+│   │   │   ├── panels  [CreateEngin]
 │   │   │   │   ├── dream.panel.CalendarPanel.tsx
 │   │   │   │   ├── dream.panel.EditorPanel.tsx
 │   │   │   │   └── dream.panel.QueuePanel.tsx
 │   │   │   ├── dream.CreateEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── games
-│   │   │   ├── panels
+│   │   ├── games  [GameEngin]
+│   │   │   ├── panels  [GameEngin]
 │   │   │   │   ├── dream.panel.BuilderPanel.tsx
 │   │   │   │   ├── dream.panel.LibraryPanel.tsx
 │   │   │   │   └── dream.panel.ScoresPanel.tsx
 │   │   │   ├── dream.GameEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── lab
-│   │   │   ├── panels
+│   │   ├── lab  [LabEngin]
+│   │   │   ├── panels  [LabEngin]
 │   │   │   │   ├── dream.panel.DataVizPanel.tsx
 │   │   │   │   ├── dream.panel.ExperimentsPanel.tsx
 │   │   │   │   └── dream.panel.QuantumPanel.tsx
 │   │   │   ├── dream.LabEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── music
-│   │   │   ├── panels
+│   │   ├── music  [StarMaker (Music Engin)]
+│   │   │   ├── panels  [StarMaker (Music Engin)]
 │   │   │   │   ├── dream.panel.ArrangePanel.tsx
 │   │   │   │   ├── dream.panel.MusicLibraryPanel.tsx
 │   │   │   │   └── dream.panel.StudioPanel.tsx
 │   │   │   ├── dream.MusicEnginApp.tsx
 │   │   │   └── index.ts
-│   │   ├── portfolio
-│   │   │   ├── panels
+│   │   ├── portfolio  [PortfolioEngin]
+│   │   │   ├── panels  [PortfolioEngin]
 │   │   │   │   ├── dream.panel.AssetsPanel.tsx
 │   │   │   │   ├── dream.panel.OptimizePanel.tsx
 │   │   │   │   └── dream.panel.PortfolioQuantumPanel.tsx
@@ -18620,20 +18724,20 @@ _No circular dependencies detected._
 │   │   │   ├── dream.shell.EnginAppShell.tsx
 │   │   │   └── index.ts
 │   │   └── index.ts
-│   ├── feed
+│   ├── feed  [Feed & Social]
 │   │   ├── dream.AlgorithmEngine.tsx
 │   │   ├── dream.CommentSection.tsx
 │   │   ├── dream.FeedVideoCard.tsx
 │   │   ├── dream.FollowButton.tsx
 │   │   └── dream.FollowOnboarding.tsx
-│   ├── feeds
+│   ├── feeds  [Feed & Social]
 │   │   └── dream.widget.EmbedFeedWidget.tsx
-│   ├── forge
+│   ├── forge  [ForgeEngin (Engine Builder)]
 │   │   ├── dream.EngineBuilderCanvas.tsx
 │   │   ├── dream.panel.AIBuilderPanel.tsx
 │   │   └── dream.widget.ForgeMomentumWidget.tsx
-│   ├── gameengin
-│   │   ├── input
+│   ├── gameengin  [GameEngin]
+│   │   ├── input  [GameEngin]
 │   │   │   └── DualSenseManager.ts
 │   │   ├── dream.cartridge.CartridgeBrowser.tsx
 │   │   ├── dream.cartridge.CartridgeErrorBoundary.tsx
@@ -18642,10 +18746,10 @@ _No circular dependencies detected._
 │   │   ├── dream.CartridgeRegistryBootstrap.tsx
 │   │   ├── dream.CrashReportModal.tsx
 │   │   └── README.md
-│   ├── games
-│   │   ├── _fx
+│   ├── games  [GameEngin]
+│   │   ├── _fx  [GameEngin]
 │   │   │   └── canvasFx.ts
-│   │   ├── madmaxi
+│   │   ├── madmaxi  [GameEngin]
 │   │   │   ├── audio.ts
 │   │   │   ├── authoredZonePacks.ts
 │   │   │   ├── config.ts
@@ -18679,7 +18783,7 @@ _No circular dependencies detected._
 │   │   ├── dream.remote.LegacyGameRemote.tsx
 │   │   ├── dream.SerpentSiege.tsx
 │   │   └── dream.VoidlineGP.tsx
-│   ├── home
+│   ├── home  [HOME — DreamDMBar]
 │   │   ├── dream.ActiveModuleSurface.tsx
 │   │   ├── dream.bar.GlobalDreamBar.tsx
 │   │   ├── dream.bar.PersistentDreamBar.tsx
@@ -18687,32 +18791,32 @@ _No circular dependencies detected._
 │   │   ├── dream.FlagshipEnginesStrip.tsx
 │   │   ├── dream.NeuralSeamCanvas.tsx
 │   │   └── dream.widget.DreamWidget.tsx
-│   ├── idari
+│   ├── idari  [AI Systems (Boogieman / Dr.EAMS / Idari), Observability & Idari Console]
 │   │   └── dream.PlatformHealth.tsx
 │   ├── landing
 │   │   ├── dream.LandingNav.tsx
 │   │   ├── dream.LandingProductStatement.tsx
 │   │   └── dream.scene.UniverseField.tsx
-│   ├── marketplace
+│   ├── marketplace  [Marketplace & Shop]
 │   │   ├── dream.MarketplaceListingCard.tsx
 │   │   └── dream.MarketplaceRequestButton.tsx
-│   ├── menus
+│   ├── menus  [Menus & Navigation]
 │   │   ├── dream.menu.DreamRadialMenu.tsx
 │   │   ├── dream.menu.DualBottomMenu.tsx
 │   │   ├── dream.menu.RadialMenu.tsx
 │   │   ├── dream.menu.SystemRadialMenu.tsx
 │   │   └── dream.panel.MenuPanel.tsx
-│   ├── messaging
+│   ├── messaging  [Messages & DMs]
 │   │   └── dream.BoardComposer.tsx
-│   ├── music
+│   ├── music  [StarMaker (Music Engin)]
 │   │   └── dream.SoundRecorder.tsx
 │   ├── onboarding
 │   │   └── dream.OnboardingTip.tsx
-│   ├── optimizer
+│   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
 │   │   └── dream.scene.BabylonOptimizeroScene.tsx
 │   ├── overlays
 │   │   └── dream.RootStatusScreen.tsx
-│   ├── panels
+│   ├── panels  [Settings]
 │   │   ├── dream.panel.AlgorithmPanel.tsx
 │   │   ├── dream.panel.AppearancePanel.tsx
 │   │   ├── dream.panel.ConnectorsPanel.tsx
@@ -18727,7 +18831,7 @@ _No circular dependencies detected._
 │   │   ├── dream.panel.SafetyPanel.tsx
 │   │   ├── dream.panel.SettingsPanel.tsx
 │   │   └── dream.panel.WidgetsPanel.tsx
-│   ├── profile
+│   ├── profile  [Profile & Edit Profile]
 │   │   ├── dream.EditableAvatar.tsx
 │   │   ├── dream.ProfileCanvas.tsx
 │   │   ├── dream.ProfileCustomizeButton.tsx
@@ -18736,7 +18840,7 @@ _No circular dependencies detected._
 │   │   ├── dream.AppSurfaceShell.tsx
 │   │   ├── dream.GodTierProvider.tsx
 │   │   └── dream.ThemeProvider.tsx
-│   ├── runtime
+│   ├── runtime  [Runtime Core]
 │   │   ├── dream.DualRuntimeContainer.tsx
 │   │   ├── dream.RuntimeView.tsx
 │   │   └── dream.shell.RuntimeShell.tsx
@@ -18745,13 +18849,13 @@ _No circular dependencies detected._
 │   │   ├── dream.NeonGlow.tsx
 │   │   ├── dream.Refractor.tsx
 │   │   └── index.ts
-│   ├── shared-dream
+│   ├── shared-dream  [Shared Dream (Collab)]
 │   │   ├── dream.InviteFlow.tsx
 │   │   ├── dream.SharedDreamCanvas.tsx
 │   │   ├── dream.SharedDreamProvider.tsx
 │   │   ├── dream.SharedDreamRuntime.tsx
 │   │   └── index.ts
-│   ├── spatial
+│   ├── spatial  [Profile & Edit Profile]
 │   │   ├── dream.PixiPhysicsLayer.tsx
 │   │   ├── dream.ProfileSpace.tsx
 │   │   └── dream.shell.EnhancedSpatialShell.tsx
@@ -18776,14 +18880,14 @@ _No circular dependencies detected._
 │   │   ├── dream.shell.universe-shell.tsx
 │   │   ├── dream.universe-card.tsx
 │   │   └── index.ts
-│   ├── warp
+│   ├── warp  [Warp System]
 │   │   └── dream.WarpCanvas.tsx
-│   ├── webgpu
+│   ├── webgpu  [WebGPU / Babylon Engine]
 │   │   ├── dream.WebGPUShowcase.tsx
 │   │   ├── neuralPostProcess.ts
 │   │   ├── renderer.ts
 │   │   └── shaders.ts
-│   ├── widgets
+│   ├── widgets  [Widgets System]
 │   │   ├── dream.AddDreamCTA.tsx
 │   │   ├── dream.ConfigureSheet.tsx
 │   │   ├── dream.EditModeBanner.tsx
@@ -18840,7 +18944,7 @@ _No circular dependencies detected._
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── optimizer.yaml
 │   └── ui-ux-spec.yaml
-├── coresurfaces
+├── coresurfaces  [Profile & Edit Profile]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dreamsurface.EditProfileDream.tsx
 │   └── dreamsurface.ViewProfile.tsx
@@ -18858,133 +18962,28 @@ _No circular dependencies detected._
 │   ├── music
 │   │   └── page.tsx
 │   └── Agents-MUST-READ-ARCHITECTURE.md
-├── docs
-│   ├── alignment
-│   │   ├── DOCS_CHANGE_TRACKER.md
-│   │   └── REPO_TO_SPEC.md
-│   ├── architecture
-│   │   ├── dreamengin_phase2.md
-│   │   └── IMPLEMENTATION_NOTES.md
-│   ├── archive
-│   │   └── .gitkeep
-│   ├── engineering
-│   │   └── guardrails.md
-│   ├── enginpipe
-│   │   └── README.md
-│   ├── guides
-│   │   ├── GITHUB_PUSH_GUIDE.md
-│   │   └── README.agent.md
-│   ├── logs
-│   │   └── README_PATCH.md
-│   ├── policy
-│   │   └── theboogie.md
-│   ├── ACTION_AUDIT.md
-│   ├── ACTIVITY_FIRST_PROTOCOL.md
-│   ├── ADD_WORKFLOW.md
-│   ├── AGENT_PLAYBOOK.md
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── AI_MAP.md
-│   ├── ARCHITECTURE.md
-│   ├── AUTH_SETUP.md
-│   ├── AXIOMS.md
-│   ├── BOOGIEMAN_POLICY.md
-│   ├── BUGS.md
-│   ├── CHILD_SAFETY_POLICY.md
-│   ├── CONNECTOR_MATRIX.md
-│   ├── CONNECTORS.md
-│   ├── CONSTITUTION.md
-│   ├── COPILOT_TOOLKIT.md
-│   ├── DR_EAMS.md
-│   ├── dreamdm_bar_pass1.md
-│   ├── dreamdm_bar_pass2.md
-│   ├── dreamdm_messaging_phase2.md
-│   ├── dreamengin_phase1.md
-│   ├── dreamengin_phase6.md
-│   ├── dreamengin_phase8.md
-│   ├── DREAMGAME_FORMAT.md
-│   ├── DUALSENSE_EXAMPLE.md
-│   ├── DUALSENSE_INTEGRATION.md
-│   ├── ENGIN_RUNTIME.md
-│   ├── engin_workflows.md
-│   ├── FEATURE_STATUS.md
-│   ├── GENERATION_LAW.md
-│   ├── GITHUB_CODING_AGENT.md
-│   ├── GOLD_BUTTON_DUAL_RUNTIME.md
-│   ├── GOLD_BUTTON_QUICK_REF.md
-│   ├── HANDOFF.md
-│   ├── icons.md
-│   ├── IDARI_CONTRACT.md
-│   ├── ISSUE_FIXES.md
-│   ├── issue-552-readme-section-bot-ai-agent-quick-reference.md
-│   ├── issue-556-readme-section-bot-canonical-route-system.md
-│   ├── issue-560-readme-section-bot-runtime-model.md
-│   ├── issue-565-readme-section-bot-3-os-layer-naming-law-canonic.md
-│   ├── issue-571-readme-section-bot-9-daydream-pair-system-6-dayd.md
-│   ├── issue-573-readme-section-bot-11-games-gameengin.md
-│   ├── issue-600-readme-section-bot-recent-changes.md
-│   ├── issue-601-readme-section-bot-repository-state-analysis.md
-│   ├── issue-602-readme-section-bot-homedream-system.md
-│   ├── issue-603-readme-section-bot-core-surfaces.md
-│   ├── issue-604-readme-section-bot-current-implementation-status.md
-│   ├── issue-605-readme-section-bot-daydream-surfaces.md
-│   ├── issue-606-readme-section-bot-daydream-engin-network-model.md
-│   ├── issue-607-readme-section-bot-dreamdmbar-interaction-rail-r.md
-│   ├── issue-608-readme-section-bot-1-product-law-16-foundational.md
-│   ├── issue-609-readme-section-bot-6-homedream-core-system-priva.md
-│   ├── issue-610-readme-section-bot-10-music-starmakerengin.md
-│   ├── issue-611-readme-section-bot-12-lab-labengin.md
-│   ├── issue-612-readme-section-bot-13-code-codeengin.md
-│   ├── issue-613-readme-section-bot-7-edit-profiledream-core-syst.md
-│   ├── issue-617-readme-section-bot-8-view-profile-public-shared-.md
-│   ├── issue-620-readme-section-bot-what-this-is.md
-│   ├── issue-621-readme-section-bot-start-here.md
-│   ├── issue-622-readme-section-bot-structure.md
-│   ├── issue-623-readme-section-bot-root-rules.md
-│   ├── issue-647-readme-section-bot-how-to-regenerate-this-spec.md
-│   ├── LAW.md
-│   ├── mobile-nextgen-web-gaming-engine-spec.md
-│   ├── mobile-ps5-web-gaming-engine-spec.md
-│   ├── MODULARITY_VIOLATION_LOG.md
-│   ├── NAMESPACE_PROTOCOL.md
-│   ├── NAMING_AUTHORITY.md
-│   ├── OBSERVABILITY.md
-│   ├── PHASE9_IMPLEMENTATION.md
-│   ├── POLICY_TESTS.md
-│   ├── PRINCIPLES_UPDATE.md
-│   ├── PRODUCT_DEFINITION.md
-│   ├── REPO_COMPANION.md
-│   ├── REPO_STATE_ANALYZER.md
-│   ├── REPO_STRUCTURE_CONTRACT.md
-│   ├── REVIEW_QUEUE.md
-│   ├── SECURITY.md
-│   ├── THEME.md
-│   ├── TRIAGE_LOG.md
-│   ├── UNIVERSAL_ENGINE.md
-│   ├── wasm_gpu_vm_spec.md
-│   ├── WASM_GPU_VM_SUMMARY.md
-│   └── WIDGET_SYSTEM_V2.md
-├── dr-eams
+├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── capabilities.yaml
 │   └── tools.ts
-├── dreamdmbar
+├── dreamdmbar  [HOME — DreamDMBar]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx
 │   └── dreamsurface.dreamdmbar.tsx
 ├── engins
-│   ├── autoopen
+│   ├── autoopen  [GameEngin]
 │   │   └── dream.AutoOpenGameEngin.tsx
-│   ├── CodeEngin
-│   │   ├── core
+│   ├── CodeEngin  [CodeEngin]
+│   │   ├── core  [CodeEngin]
 │   │   │   └── parser.ts
-│   │   ├── modules
-│   │   │   └── ai-co-pilot
+│   │   ├── modules  [CodeEngin]
+│   │   │   └── ai-co-pilot  [CodeEngin]
 │   │   │       ├── dream.panel.AgentPanel.tsx
 │   │   │       ├── index.ts
 │   │   │       └── useAgentSession.ts
-│   │   └── orchestrator
+│   │   └── orchestrator  [CodeEngin]
 │   │       └── dream.index.tsx
-│   ├── portfolio
+│   ├── portfolio  [PortfolioEngin]
 │   │   └── dream.PortfolioEngin.tsx
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.ForgeEngin.tsx
@@ -19021,7 +19020,7 @@ _No circular dependencies detected._
 │   │   └── upgrade-readiness.ts
 │   ├── agentOS
 │   │   └── hostTools.ts
-│   ├── agents
+│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── agentBus.ts
 │   │   ├── boogieManAI.ts
 │   │   ├── dreamengin.ts
@@ -19030,8 +19029,8 @@ _No circular dependencies detected._
 │   │   ├── idariLoop.ts
 │   │   ├── teachBus.ts
 │   │   └── uiActions.ts
-│   ├── ai
-│   │   ├── handlers
+│   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   ├── handlers  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── dreams.ts
 │   │   │   ├── index.ts
 │   │   │   ├── navigation.ts
@@ -19062,9 +19061,9 @@ _No circular dependencies detected._
 │   │   ├── index.ts
 │   │   ├── peak-map.ts
 │   │   └── stem-extractor.ts
-│   ├── auth
+│   ├── auth  [Auth]
 │   │   └── nextRedirect.ts
-│   ├── babylon
+│   ├── babylon  [WebGPU / Babylon Engine]
 │   │   ├── createEngine.ts
 │   │   └── dreamengine-hybrid.ts
 │   ├── bot-detection
@@ -19074,13 +19073,13 @@ _No circular dependencies detected._
 │   │   └── view-tally.ts
 │   ├── branding
 │   │   └── logos.ts
-│   ├── child-safety
+│   ├── child-safety  [Child Safety]
 │   │   ├── childSafetyDetector.ts
 │   │   ├── imageClassifier.ts
 │   │   ├── messageContextChecker.ts
 │   │   ├── ncmecReporter.ts
 │   │   └── scanMediaUrls.ts
-│   ├── code
+│   ├── code  [CodeEngin]
 │   │   └── drEamsCodeAssist.ts
 │   ├── collaboration
 │   │   └── index.ts
@@ -19090,8 +19089,8 @@ _No circular dependencies detected._
 │   │   ├── matchmover.ts
 │   │   ├── motionCapture.ts
 │   │   └── rotoscope.ts
-│   ├── connectors
-│   │   ├── providers
+│   ├── connectors  [Connectors]
+│   │   ├── providers  [Connectors]
 │   │   │   ├── bluesky.ts
 │   │   │   ├── devto.ts
 │   │   │   ├── facebook.ts
@@ -19120,13 +19119,13 @@ _No circular dependencies detected._
 │   │   └── youtube.ts
 │   ├── consent
 │   │   └── consentManager.ts
-│   ├── content
+│   ├── content  [CreateEngin]
 │   │   ├── generativeFill.ts
 │   │   ├── publishIntent.ts
 │   │   ├── seoScorer.ts
 │   │   ├── transcriptEditor.ts
 │   │   └── voiceClone.ts
-│   ├── daydream
+│   ├── daydream  [Daydream System]
 │   │   ├── useDaydreamPersistence.ts
 │   │   └── useDaydreamState.ts
 │   ├── diff
@@ -19143,7 +19142,7 @@ _No circular dependencies detected._
 │   │   ├── index.ts
 │   │   ├── runtimeRegion.ts
 │   │   └── useDreamWindowActions.ts
-│   ├── dreamdm
+│   ├── dreamdm  [HOME — DreamDMBar]
 │   │   ├── barInteractions.ts
 │   │   ├── bridgeSeamFlow.ts
 │   │   ├── DreamSystemContext.tsx
@@ -19155,21 +19154,21 @@ _No circular dependencies detected._
 │   │   ├── useMessagingCore.ts
 │   │   ├── useModuleBarIntent.ts
 │   │   └── useNotifications.ts
-│   ├── dreamengin
+│   ├── dreamengin  [DREAMenginOS]
 │   │   ├── DrEamsAnimator.ts
 │   │   ├── drEamsSearch.ts
 │   │   ├── engineAssets.ts
 │   │   └── osSubsystemManifest.ts
-│   ├── dreamenginOS
+│   ├── dreamenginOS  [DREAMenginOS]
 │   │   ├── index.ts
 │   │   └── OSContext.tsx
-│   ├── dreamnav
+│   ├── dreamnav  [Menus & Navigation, Dream Navigation]
 │   │   ├── delta.ts
 │   │   ├── gctAssist.ts
 │   │   ├── gestures6.ts
 │   │   ├── path.ts
 │   │   └── tau.ts
-│   ├── dreamr
+│   ├── dreamr  [DreamR]
 │   │   ├── closeFriendsVisibility.ts
 │   │   ├── dreamrfeed.tsx
 │   │   ├── feedCursor.ts
@@ -19205,23 +19204,23 @@ _No circular dependencies detected._
 │   │   │   └── events.ts
 │   │   └── index.ts
 │   ├── engins
-│   │   ├── brand
+│   │   ├── brand  [BrandEngin]
 │   │   │   ├── brandEnginRuleSet.ts
 │   │   │   └── useBrandEnginRuntime.ts
-│   │   ├── code
+│   │   ├── code  [CodeEngin]
 │   │   │   ├── codeEnginRuleSet.ts
 │   │   │   └── useCodeEnginRuntime.ts
-│   │   ├── content
+│   │   ├── content  [CreateEngin]
 │   │   │   ├── contentEnginRuleSet.ts
 │   │   │   └── useContentEnginRuntime.ts
-│   │   ├── game
+│   │   ├── game  [GameEngin]
 │   │   │   ├── gameEnginRuleSet.ts
 │   │   │   ├── index.ts
 │   │   │   └── useGameEnginRuntime.ts
-│   │   ├── lab
+│   │   ├── lab  [LabEngin]
 │   │   │   ├── labEnginRuleSet.ts
 │   │   │   └── useLabEnginRuntime.ts
-│   │   ├── music
+│   │   ├── music  [StarMaker (Music Engin)]
 │   │   │   ├── starMakerEnginRuleSet.ts
 │   │   │   └── useStarMakerEnginRuntime.ts
 │   │   ├── useEnginWorkflow.ts
@@ -19233,14 +19232,14 @@ _No circular dependencies detected._
 │   │   ├── featureManifest.ts
 │   │   ├── index.ts
 │   │   └── uiQualityCriteria.ts
-│   ├── feed
+│   ├── feed  [Feed & Social]
 │   │   ├── feedTopics.ts
 │   │   ├── hashtags.ts
 │   │   ├── useLiveFeed.ts
 │   │   └── useYouTubeLiveFeed.ts
-│   ├── feeds
+│   ├── feeds  [Feed & Social]
 │   │   └── embedFeedLoader.ts
-│   ├── forge
+│   ├── forge  [ForgeEngin (Engine Builder)]
 │   │   ├── engineForge.ts
 │   │   ├── forgeBuild.ts
 │   │   ├── forgeIntelligence.ts
@@ -19250,49 +19249,49 @@ _No circular dependencies detected._
 │   │   ├── forgeRituals.ts
 │   │   ├── useForgeActivity.ts
 │   │   └── useForgeBuild.ts
-│   ├── forge-ngn
+│   ├── forge-ngn  [ForgeEngin (Engine Builder)]
 │   │   ├── assembly.ts
 │   │   ├── index.ts
 │   │   └── piece-registry.ts
-│   ├── gameengin
-│   │   ├── brain
-│   │   │   ├── asset-registry
+│   ├── gameengin  [GameEngin]
+│   │   ├── brain  [GameEngin]
+│   │   │   ├── asset-registry  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── build-history
+│   │   │   ├── build-history  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── character-voices
+│   │   │   ├── character-voices  [GameEngin]
 │   │   │   │   └── mad-maxi.json
-│   │   │   ├── composition-principles
+│   │   │   ├── composition-principles  [GameEngin]
 │   │   │   │   ├── leading-lines-landmark.json
 │   │   │   │   └── parallax-layers.json
-│   │   │   ├── concept-library
+│   │   │   ├── concept-library  [GameEngin]
 │   │   │   │   ├── neon-courier.json
 │   │   │   │   └── README.md
-│   │   │   ├── concept-patterns
-│   │   │   │   ├── protagonists
+│   │   │   ├── concept-patterns  [GameEngin]
+│   │   │   │   ├── protagonists  [GameEngin]
 │   │   │   │   │   └── reluctant-courier.json
-│   │   │   │   ├── scope-formulas
+│   │   │   │   ├── scope-formulas  [GameEngin]
 │   │   │   │   │   └── one-day-runner.json
-│   │   │   │   ├── settings
+│   │   │   │   ├── settings  [GameEngin]
 │   │   │   │   │   └── neon-rain-megacity.json
 │   │   │   │   └── README.md
-│   │   │   ├── crash-reports
+│   │   │   ├── crash-reports  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── dialogue-patterns
+│   │   │   ├── dialogue-patterns  [GameEngin]
 │   │   │   │   ├── callback-anchor.json
 │   │   │   │   ├── implied-subject.json
 │   │   │   │   └── sentence-fragment-rhythm.json
-│   │   │   ├── emotional-tones
+│   │   │   ├── emotional-tones  [GameEngin]
 │   │   │   │   ├── determined.json
 │   │   │   │   ├── fierce.json
 │   │   │   │   ├── hopeful.json
 │   │   │   │   ├── reflective.json
 │   │   │   │   └── weary.json
-│   │   │   ├── fun-heuristics
+│   │   │   ├── fun-heuristics  [GameEngin]
 │   │   │   │   ├── meta-progression.json
 │   │   │   │   ├── moment-to-moment.json
 │   │   │   │   └── session-loop.json
-│   │   │   ├── genre-dna
+│   │   │   ├── genre-dna  [GameEngin]
 │   │   │   │   ├── action-rpg.json
 │   │   │   │   ├── episodic.json
 │   │   │   │   ├── live-service.json
@@ -19304,81 +19303,81 @@ _No circular dependencies detected._
 │   │   │   │   ├── roguelike.json
 │   │   │   │   ├── sandbox.json
 │   │   │   │   └── template.json
-│   │   │   ├── inspiration-corpus
+│   │   │   ├── inspiration-corpus  [GameEngin]
 │   │   │   │   ├── celeste.json
 │   │   │   │   ├── dead-cells.json
 │   │   │   │   ├── hades.json
 │   │   │   │   ├── hollow-knight.json
 │   │   │   │   └── outer-wilds.json
-│   │   │   ├── material-recipes
+│   │   │   ├── material-recipes  [GameEngin]
 │   │   │   │   ├── neon-glass-tube.json
 │   │   │   │   ├── rusted-iron.json
 │   │   │   │   └── sun-bleached-sandstone.json
-│   │   │   ├── mechanic-library
-│   │   │   │   ├── camera
+│   │   │   ├── mechanic-library  [GameEngin]
+│   │   │   │   ├── camera  [GameEngin]
 │   │   │   │   │   ├── look-ahead.json
 │   │   │   │   │   ├── screen-shake.json
 │   │   │   │   │   └── smooth-follow.json
-│   │   │   │   ├── combat
+│   │   │   │   ├── combat  [GameEngin]
 │   │   │   │   │   ├── combo.json
 │   │   │   │   │   ├── hit-stop.json
 │   │   │   │   │   ├── parry.json
 │   │   │   │   │   └── ranged.json
-│   │   │   │   ├── movement
+│   │   │   │   ├── movement  [GameEngin]
 │   │   │   │   │   ├── coyote-time.json
 │   │   │   │   │   ├── dash.json
 │   │   │   │   │   ├── double-jump.json
 │   │   │   │   │   ├── grapple.json
 │   │   │   │   │   └── wall-slide.json
-│   │   │   │   ├── progression
+│   │   │   │   ├── progression  [GameEngin]
 │   │   │   │   │   ├── metroidvania-gating.json
 │   │   │   │   │   ├── roguelike-perks.json
 │   │   │   │   │   └── skill-tree.json
-│   │   │   │   └── structural
+│   │   │   │   └── structural  [GameEngin]
 │   │   │   │       ├── ability-gating.json
 │   │   │   │       ├── meta-progression.json
 │   │   │   │       ├── procedural-generation.json
 │   │   │   │       ├── run-persistence.json
 │   │   │   │       ├── season-pass.json
 │   │   │   │       └── world-streaming.json
-│   │   │   ├── narrative-pacing
+│   │   │   ├── narrative-pacing  [GameEngin]
 │   │   │   │   └── default.json
-│   │   │   ├── originality-registry
-│   │   │   │   ├── by-cartridge
+│   │   │   ├── originality-registry  [GameEngin]
+│   │   │   │   ├── by-cartridge  [GameEngin]
 │   │   │   │   │   └── mad-maxi.json
 │   │   │   │   └── signatures.json
-│   │   │   ├── principles
+│   │   │   ├── principles  [GameEngin]
 │   │   │   │   ├── emotional-core.md
 │   │   │   │   ├── feedback.md
 │   │   │   │   ├── mastery.md
 │   │   │   │   ├── progression.md
 │   │   │   │   ├── responsiveness.md
 │   │   │   │   └── risk-reward.md
-│   │   │   ├── progression-state
+│   │   │   ├── progression-state  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── rd-sessions
+│   │   │   ├── rd-sessions  [GameEngin]
 │   │   │   │   └── README.md
-│   │   │   ├── technique-library
-│   │   │   │   ├── lighting
+│   │   │   ├── technique-library  [GameEngin]
+│   │   │   │   ├── lighting  [GameEngin]
 │   │   │   │   │   └── three-point-mood.json
-│   │   │   │   ├── modeling
+│   │   │   │   ├── modeling  [GameEngin]
 │   │   │   │   │   ├── edge-flow.json
 │   │   │   │   │   └── silhouette-first.json
-│   │   │   │   └── optimization
+│   │   │   │   └── optimization  [GameEngin]
 │   │   │   │       └── texture-atlasing.json
-│   │   │   ├── upgrade-history
+│   │   │   ├── upgrade-history  [GameEngin]
 │   │   │   │   ├── prioritization-rules.json
 │   │   │   │   └── README.md
-│   │   │   ├── visual-bible
-│   │   │   │   ├── characters
+│   │   │   ├── visual-bible  [GameEngin]
+│   │   │   │   ├── characters  [GameEngin]
 │   │   │   │   │   └── mad-maxi.md
-│   │   │   │   └── environments
+│   │   │   │   └── environments  [GameEngin]
 │   │   │   │       └── neon-wasteland.md
-│   │   │   ├── work-queue
+│   │   │   ├── work-queue  [GameEngin]
 │   │   │   │   └── README.md
 │   │   │   ├── active-projects.json
 │   │   │   └── README.md
-│   │   ├── cartridges
+│   │   ├── cartridges  [GameEngin]
 │   │   │   ├── achievementEngine.ts
 │   │   │   ├── apiStubs.ts
 │   │   │   ├── index.ts
@@ -19386,13 +19385,13 @@ _No circular dependencies detected._
 │   │   │   ├── manifest.ts
 │   │   │   ├── reactCartridge.ts
 │   │   │   └── saveState.ts
-│   │   ├── remote
+│   │   ├── remote  [GameEngin]
 │   │   │   ├── comboMachine.ts
 │   │   │   ├── index.ts
 │   │   │   ├── layout.ts
 │   │   │   ├── moves.ts
 │   │   │   └── sprintDetector.ts
-│   │   ├── systems
+│   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts
 │   │   │   ├── animation.ts
 │   │   │   ├── assets.ts
@@ -19433,7 +19432,7 @@ _No circular dependencies detected._
 │   │   ├── webgpu-runtime-shell.ts
 │   │   ├── world-crdt.ts
 │   │   └── xr.ts
-│   ├── games
+│   ├── games  [GameEngin]
 │   │   ├── avatar.ts
 │   │   ├── catalog.ts
 │   │   ├── DualSenseManager.ts
@@ -19459,7 +19458,7 @@ _No circular dependencies detected._
 │   │   ├── image-search.ts
 │   │   ├── index.ts
 │   │   └── recommendations.ts
-│   ├── gestures
+│   ├── gestures  [Dream Navigation]
 │   │   ├── touchGestures.ts
 │   │   └── useTouchGestures.ts
 │   ├── god-tier
@@ -19486,23 +19485,23 @@ _No circular dependencies detected._
 │   │   ├── sessionContinuity.ts
 │   │   ├── sessionPatternEngine.ts
 │   │   └── useSessionIntelligence.ts
-│   ├── journey
+│   ├── journey  [Journey System]
 │   │   ├── journeyDots.ts
 │   │   ├── journeyInsights.ts
 │   │   └── withJourney.ts
-│   ├── marketplace
+│   ├── marketplace  [Marketplace & Shop]
 │   │   ├── listings.ts
 │   │   └── request.ts
 │   ├── media
 │   │   ├── ledger.ts
 │   │   └── postMedia.ts
-│   ├── music
+│   ├── music  [StarMaker (Music Engin)]
 │   │   ├── presets.ts
 │   │   ├── starmaker.ts
 │   │   ├── starmakerArrangement.ts
 │   │   ├── starmakerDaw.ts
 │   │   └── wasmAudioBridge.ts
-│   ├── navigation
+│   ├── navigation  [Menus & Navigation, Dream Navigation]
 │   │   ├── anchorField.ts
 │   │   ├── AnchorStateBuffer.ts
 │   │   ├── AnchorWidgetStorage.ts
@@ -19522,10 +19521,10 @@ _No circular dependencies detected._
 │   │   ├── TransformSolver.ts
 │   │   ├── useNavigation.ts
 │   │   └── WidgetInstanceMemory.ts
-│   ├── notifications
+│   ├── notifications  [Notifications]
 │   │   ├── notificationHelpers.ts
 │   │   └── useNotifications.ts
-│   ├── observability
+│   ├── observability  [Observability & Idari Console]
 │   │   ├── collector.ts
 │   │   ├── correlator.ts
 │   │   ├── healthTrend.ts
@@ -19537,7 +19536,7 @@ _No circular dependencies detected._
 │   ├── offline
 │   │   ├── offlineCache.ts
 │   │   └── useOfflineSync.ts
-│   ├── optimizer
+│   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
 │   │   ├── babylon-optimizero.ts
 │   │   ├── constraint-solver.ts
 │   │   ├── creative-optimizero.ts
@@ -19562,7 +19561,7 @@ _No circular dependencies detected._
 │   │   └── IRenderer.ts
 │   ├── routing
 │   │   └── surfaces.ts
-│   ├── runtime
+│   ├── runtime  [Runtime Core]
 │   │   ├── channelMetrics.ts
 │   │   ├── coercionTable.ts
 │   │   ├── dreamOSBus.ts
@@ -19594,24 +19593,17 @@ _No circular dependencies detected._
 │   │   └── sceneState.ts
 │   ├── setup
 │   │   └── checks.ts
-│   ├── sharedDream
+│   ├── sharedDream  [Shared Dream (Collab)]
 │   │   └── useSharedDreamSession.ts
-│   ├── shop
+│   ├── shop  [Marketplace & Shop]
 │   │   └── listings.ts
-│   ├── social
+│   ├── social  [Feed & Social]
 │   │   ├── crossPost.ts
 │   │   ├── livekit.ts
 │   │   ├── normalizers.ts
 │   │   ├── platforms.ts
 │   │   ├── rss-feed.ts
 │   │   └── useSocialData.ts
-│   ├── supabase
-│   │   ├── client.ts
-│   │   ├── config.ts
-│   │   ├── realtime.ts
-│   │   ├── safeGetUser.ts
-│   │   ├── server.ts
-│   │   └── vector.ts
 │   ├── torridity
 │   │   ├── constants.ts
 │   │   ├── index.ts
@@ -19627,7 +19619,7 @@ _No circular dependencies detected._
 │   │   └── module-manifest.ts
 │   ├── user-sim
 │   │   └── userSimAgent.ts
-│   ├── vm
+│   ├── vm  [VM / WASM Runtime]
 │   │   ├── bufferManager.ts
 │   │   ├── bus-events.ts
 │   │   ├── dual-runtime.ts
@@ -19642,7 +19634,7 @@ _No circular dependencies detected._
 │   │   ├── types.ts
 │   │   ├── wasm-features.ts
 │   │   └── wasmGpuVM.ts
-│   ├── warp
+│   ├── warp  [Warp System]
 │   │   ├── useWarp.ts
 │   │   └── warpEngine.ts
 │   ├── web3
@@ -19651,11 +19643,11 @@ _No circular dependencies detected._
 │   │   ├── index.ts
 │   │   ├── ipfs.ts
 │   │   └── types.ts
-│   ├── webgpu
+│   ├── webgpu  [WebGPU / Babylon Engine]
 │   │   ├── adaptiveQuality.ts
 │   │   ├── director.ts
 │   │   └── useWebGPUDirector.ts
-│   ├── widgets
+│   ├── widgets  [Widgets System]
 │   │   ├── CrossWidgetPosting.ts
 │   │   ├── feed-resolver.ts
 │   │   ├── parse.ts
@@ -19703,52 +19695,12 @@ _No circular dependencies detected._
 │   │   ├── sprite_2x_transparent.png
 │   │   └── sprite_transparent.png
 │   └── Agents-MUST-READ-ARCHITECTURE.md
-├── optimizer
+├── optimizer  [WebGPU / Babylon Engine]
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── constraint-solver.ts
 │   ├── creative-validator.ts
 │   ├── index.ts
 │   └── types.ts
-├── public
-│   ├── cartridges
-│   │   └── mad-maxi
-│   │       ├── logic
-│   │       │   └── main.wasm
-│   │       ├── MANIFEST.json
-│   │       └── tuning.json
-│   ├── feeds
-│   │   └── embed-feed.json
-│   ├── images
-│   │   ├── iconslist.png
-│   │   ├── logo1.PNG
-│   │   ├── logo2.PNG
-│   │   └── logo3.PNG
-│   ├── workers
-│   │   ├── asset-optimizer.worker.js
-│   │   ├── engin-shader.wasm
-│   │   └── engin-shader.worker.ts
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── arm1_transparent.png
-│   ├── arm2_transparent.png
-│   ├── coat_transparent.png
-│   ├── dr-eams-pbr.html
-│   ├── favicon.ico
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── head_transparent.png
-│   ├── logo_DREAM_transparent.png
-│   ├── logo_ENGIN_transparent.png
-│   ├── logo-icon.png
-│   ├── manifest.json
-│   ├── manifest.webmanifest
-│   ├── module-loader.html
-│   ├── next.svg
-│   ├── shoe1_transparent.png
-│   ├── shoe2_transparent.png
-│   ├── sprite_2x_transparent.png
-│   ├── sprite_transparent.png
-│   ├── vercel.svg
-│   └── window.svg
 ├── repo-visualizer
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── analyzer.mjs
@@ -19890,9 +19842,9 @@ _No circular dependencies detected._
 │   │   └── state
 │   │       └── base.json
 │   ├── lib
-│   │   ├── ai
+│   │   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   └── client.ts
-│   │   └── babylon
+│   │   └── babylon  [WebGPU / Babylon Engine]
 │   │       └── useDreamLogoScene.ts
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── launcher.ts
@@ -19903,77 +19855,6 @@ _No circular dependencies detected._
 │   ├── home-dream.css
 │   ├── theme.css
 │   └── view-transitions.css
-├── supabase
-│   ├── .temp
-│   │   ├── cli-latest
-│   │   ├── gotrue-version
-│   │   ├── linked-project.json
-│   │   ├── pooler-url
-│   │   ├── postgres-version
-│   │   ├── project-ref
-│   │   ├── rest-version
-│   │   ├── storage-migration
-│   │   └── storage-version
-│   ├── migrations
-│   │   ├── 20240120000000_initial_schema.sql
-│   │   ├── 20240120000001_enable_rls.sql
-│   │   ├── 20260129000000_upgrade_schema.sql
-│   │   ├── 20260210_ai_core.sql
-│   │   ├── 20260210000000_widget_system_v2.sql
-│   │   ├── 20260210000001_ai_system_v2026.sql
-│   │   ├── 20260214000000_security_axioms.sql
-│   │   ├── 20260226000000_admin_lock.sql
-│   │   ├── 20260305000000_create_notes.sql
-│   │   ├── 20260305000001_comments.sql
-│   │   ├── 20260305000002_leaderboard.sql
-│   │   ├── 20260307000000_readme_gaps.sql
-│   │   ├── 20260307000001_conversations_messages.sql
-│   │   ├── 20260310000000_widget_instances_visibility.sql
-│   │   ├── 20260310000001_profiles_widget_config.sql
-│   │   ├── 20260310000002_profile_dream_widgets.sql
-│   │   ├── 20260310000003_connector_accounts.sql
-│   │   ├── 20260310000004_feed_items.sql
-│   │   ├── 20260310000010_dreamdm_bar_pass2.sql
-│   │   ├── 20260315000000_content_drafts.sql
-│   │   ├── 20260316000000_visibility_mappings.sql
-│   │   ├── 20260319000000_journey_dots.sql
-│   │   ├── 20260319065444_new-migration.sql
-│   │   ├── 20260319120000_connector_accounts_schema_reload.sql
-│   │   ├── 20260320000000_scheduled_posts.sql
-│   │   ├── 20260320100000_game_scores_all_games.sql
-│   │   ├── 20260320110000_user_blocks.sql
-│   │   ├── 20260321000000_ads_platform_promotions.sql
-│   │   ├── 20260321200000_phase8a_feed_and_layout.sql
-│   │   ├── 20260322000000_phase8b_dream_windows.sql
-│   │   ├── 20260322000000_policy_events.sql
-│   │   ├── 20260322000001_message_boards.sql
-│   │   ├── 20260323100000_embed_feed_items.sql
-│   │   ├── 20260324000000_phase8e_orders.sql
-│   │   ├── 20260324000001_phase8e_shop_marketplace.sql
-│   │   ├── 20260325000000_phase8f_daydream_network.sql
-│   │   ├── 20260325100000_child_safety.sql
-│   │   ├── 20260401000001_platform_utilities.sql
-│   │   ├── 20260402000001_control_mappings.sql
-│   │   ├── 20260402000002_game_assets.sql
-│   │   ├── 20260403000001_pgvector_embeddings.sql
-│   │   ├── 20260403000002_pgvector_search_rpc.sql
-│   │   ├── 20260405000001_dreamr_feed_registry.sql
-│   │   ├── 20260405042406_auto_scaffold.sql
-│   │   ├── 20260413000000_phase9_activity_first_protocol.sql
-│   │   ├── 20260417000000_repurpose_nods_as_dream_docs.sql
-│   │   ├── 20260417000001_dream_docs_search_rpc.sql
-│   │   ├── 20260418000000_gameengin_core.sql
-│   │   ├── 20260420000001_consent_settings_audit.sql
-│   │   ├── 20260426000000_activity_coop_gameengin_completion.sql
-│   │   ├── 20260426000100_rename_widgets_to_dreams.sql
-│   │   ├── 20260426000200_build_memory_schema_gaps.sql
-│   │   ├── 20260516000000_agent_sessions_forge_rate_limits.sql
-│   │   ├── 20260516000100_dreamr_tally.sql
-│   │   └── 20260516000300_shared_dream_sessions.sql
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── config.toml
-│   ├── schema-final.sql
-│   └── seed.sql
 ├── tests
 │   ├── e2e
 │   │   ├── demo.spec.ts
@@ -20207,8 +20088,6 @@ _No circular dependencies detected._
 │   ├── widgetConfigs.ts
 │   └── widgets.ts
 ├── utils
-│   ├── supabase
-│   │   └── server.ts
 │   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── .cursorrules
 ├── .env.example
@@ -20219,7 +20098,6 @@ _No circular dependencies detected._
 ├── AGENTS.md
 ├── CHANGELOG.md
 ├── COOP_AND_SOLO_ROADMAP.md
-├── DREAMenginree2-fixed-v3 2.zip
 ├── eslint.config.mjs
 ├── fix-audit.js
 ├── GameENGINspec.md
