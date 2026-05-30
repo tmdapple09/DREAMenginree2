@@ -348,8 +348,7 @@ jobs:
             >> audit-reports/report.md || true
 
           MISSING=$(wc -l < audit-reports/env-missing.txt)
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
           echo "**Undeclared env vars used: $MISSING**" >> audit-reports/report.md
           echo "" >> audit-reports/report.md
