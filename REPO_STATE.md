@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T17:02:08.334Z
+Generated: 2026-05-30T17:07:38.955Z
 
 ---
 
@@ -18971,8 +18971,7 @@ Legend: ⚠ broken import  ∅ unused export
 
 ├── .ci
 │   ├── DREAMengin CI-CD Pipeline
-│   ├── snapshot.diff.txt
-│   └── snapshot.md
+│   └── snapshot.diff.txt
 ├── .github
 │   ├── actions
 │   │   ├── resilient-engine
@@ -18980,45 +18979,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── setup-node
 │   │       └── action.yml
 │   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── dreamengin.agent.md
-│   │   ├── error-tracker.agent.md
-│   │   ├── gameengin-ai-agent.yml
-│   │   ├── gameengin.md
-│   │   ├── humanAI.agent.md
-│   │   ├── idari.agent.md
-│   │   ├── my-agent.agent.md
-│   │   ├── newagent.agent.md
-│   │   ├── Spec-Engin HyperSICC.agent.md
-│   │   └── videogameAi.md
+│   │   └── gameengin-ai-agent.yml
 │   ├── issue-triage
-│   │   ├── issue-552.md
-│   │   ├── issue-556.md
-│   │   ├── issue-560.md
-│   │   ├── issue-565.md
-│   │   ├── issue-571.md
-│   │   ├── issue-573.md
-│   │   ├── issue-600.md
-│   │   ├── issue-601.md
-│   │   ├── issue-602.md
-│   │   ├── issue-603.md
-│   │   ├── issue-604.md
-│   │   ├── issue-605.md
-│   │   ├── issue-606.md
-│   │   ├── issue-607.md
-│   │   ├── issue-608.md
-│   │   ├── issue-609.md
-│   │   ├── issue-610.md
-│   │   ├── issue-611.md
-│   │   ├── issue-612.md
-│   │   ├── issue-613.md
-│   │   ├── issue-617.md
-│   │   ├── issue-620.md
-│   │   ├── issue-621.md
-│   │   ├── issue-622.md
-│   │   ├── issue-623.md
-│   │   ├── issue-647.md
-│   │   ├── issue-753.md
-│   │   └── issue-754.md
 │   ├── ruleset
 │   │   ├── autofixvercelbuild.yml
 │   │   ├── bot-pr-automerge.yml
@@ -19085,8 +19047,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── catalog_games_for_ai.py
 │   │   ├── check_workflow_masking.py
 │   │   ├── check-root-hygiene.sh
-│   │   ├── DREAMENGIN_CORE_COMPLETE.md
-│   │   ├── DREAMENGIN_CORE_USAGE.md
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
@@ -19095,86 +19055,75 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── scan_gameengin_context.py
 │   │   ├── validate_game_sandbox.py
 │   │   └── validate_report_agent_spec.py
-│   ├── workflows
-│   │   ├── autofixvercelbuild.yml
-│   │   ├── bot-pr-automerge.yml
-│   │   ├── bouncer.yml
-│   │   ├── cleanup-dead-code.yml
-│   │   ├── codeql.yml
-│   │   ├── copilot-setup-steps.yml
-│   │   ├── daydream-all.yml
-│   │   ├── daydream-brand-engin.yml
-│   │   ├── daydream-code-engin.yml
-│   │   ├── daydream-create-engin.yml
-│   │   ├── daydream-engin-build-cycle.yml
-│   │   ├── daydream-engin-sicc-refinement.yml
-│   │   ├── daydream-games-engin.yml
-│   │   ├── daydream-lab-engin.yml
-│   │   ├── daydream-music-engin.yml
-│   │   ├── db-extension-audit.yml
-│   │   ├── db-extension-check.yml
-│   │   ├── deploy-artifact.yml
-│   │   ├── docs-auto-update.yml
-│   │   ├── dreamengin-preflight.yml
-│   │   ├── elite-gameengin-evolution.yml
-│   │   ├── engin-all.yml
-│   │   ├── exportrepo.yml
-│   │   ├── full-audit.yml
-│   │   ├── game-engin-patrol.yml
-│   │   ├── game-library-research.yml
-│   │   ├── gameengin-ai-agent.yml
-│   │   ├── gameengin-artisan.yml
-│   │   ├── gameengin-maestro.yml
-│   │   ├── gameengin-mechanic.yml
-│   │   ├── gameengin-prophet.yml
-│   │   ├── gameengin-upgrader.yml
-│   │   ├── gameengin-writer.yml
-│   │   ├── games-library-ai-agent.yml
-│   │   ├── garbageman.yml
-│   │   ├── generatesupabasetypes.yml
-│   │   ├── github-actions.yml
-│   │   ├── humanai-army-audit.yml
-│   │   ├── humanai-audit.yml
-│   │   ├── idari-daily.yml
-│   │   ├── issue-bot.yml
-│   │   ├── mobile-nextgen-spec-evolution.yml
-│   │   ├── mobile-ps5-spec-evolution.yml
-│   │   ├── neural_decision_engine.yml
-│   │   ├── optimize-dreamengin.yml
-│   │   ├── orphan-guard.yml
-│   │   ├── portfolio-optimization.yml
-│   │   ├── preflight.yml
-│   │   ├── print-codebase.yml
-│   │   ├── readme-autosync.yml
-│   │   ├── refreshlock.yml
-│   │   ├── Repo Audit Auto Fix.yml
-│   │   ├── repo-snapshot.yml
-│   │   ├── report-driven-coding-agent.yml
-│   │   ├── resilient-engine-smoke.yml
-│   │   ├── root-hygiene.yml
-│   │   ├── spec-engin-ai-agent.yml
-│   │   ├── sql-migration-guard.yml
-│   │   ├── sync-build-memory.yml
-│   │   ├── update-embed-feed.yml
-│   │   ├── update-repo-state.yml
-│   │   ├── vercel-deploy.yml
-│   │   ├── visual-schematic.yml
-│   │   └── visual-schematicpages.yml
-│   ├── copilot-instructions.md
-│   ├── pull_request_template.md
-│   └── PULL_REQUEST_TEMPLATE.md
+│   └── workflows
+│       ├── autofixvercelbuild.yml
+│       ├── bot-pr-automerge.yml
+│       ├── bouncer.yml
+│       ├── cleanup-dead-code.yml
+│       ├── codeql.yml
+│       ├── copilot-setup-steps.yml
+│       ├── daydream-all.yml
+│       ├── daydream-brand-engin.yml
+│       ├── daydream-code-engin.yml
+│       ├── daydream-create-engin.yml
+│       ├── daydream-engin-build-cycle.yml
+│       ├── daydream-engin-sicc-refinement.yml
+│       ├── daydream-games-engin.yml
+│       ├── daydream-lab-engin.yml
+│       ├── daydream-music-engin.yml
+│       ├── db-extension-audit.yml
+│       ├── db-extension-check.yml
+│       ├── deploy-artifact.yml
+│       ├── docs-auto-update.yml
+│       ├── dreamengin-preflight.yml
+│       ├── elite-gameengin-evolution.yml
+│       ├── engin-all.yml
+│       ├── exportrepo.yml
+│       ├── full-audit.yml
+│       ├── game-engin-patrol.yml
+│       ├── game-library-research.yml
+│       ├── gameengin-ai-agent.yml
+│       ├── gameengin-artisan.yml
+│       ├── gameengin-maestro.yml
+│       ├── gameengin-mechanic.yml
+│       ├── gameengin-prophet.yml
+│       ├── gameengin-upgrader.yml
+│       ├── gameengin-writer.yml
+│       ├── games-library-ai-agent.yml
+│       ├── garbageman.yml
+│       ├── generatesupabasetypes.yml
+│       ├── github-actions.yml
+│       ├── humanai-army-audit.yml
+│       ├── humanai-audit.yml
+│       ├── idari-daily.yml
+│       ├── issue-bot.yml
+│       ├── mobile-nextgen-spec-evolution.yml
+│       ├── mobile-ps5-spec-evolution.yml
+│       ├── neural_decision_engine.yml
+│       ├── optimize-dreamengin.yml
+│       ├── orphan-guard.yml
+│       ├── portfolio-optimization.yml
+│       ├── preflight.yml
+│       ├── print-codebase.yml
+│       ├── readme-autosync.yml
+│       ├── refreshlock.yml
+│       ├── Repo Audit Auto Fix.yml
+│       ├── repo-snapshot.yml
+│       ├── report-driven-coding-agent.yml
+│       ├── resilient-engine-smoke.yml
+│       ├── root-hygiene.yml
+│       ├── spec-engin-ai-agent.yml
+│       ├── sql-migration-guard.yml
+│       ├── sync-build-memory.yml
+│       ├── update-embed-feed.yml
+│       ├── update-repo-state.yml
+│       ├── vercel-deploy.yml
+│       ├── visual-schematic.yml
+│       └── visual-schematicpages.yml
 ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── humanAI  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   │   ├── accessibility.md
-│   │   │   ├── creator.md
-│   │   │   ├── ios-first.md
-│   │   │   ├── power-user.md
-│   │   │   └── social-explorer.md
-│   │   └── orchestrator.md
-│   ├── .gitkeep
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   └── humanAI.persona.md
+│   │   └── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   └── .gitkeep
 ├── app
 │   ├── (internal)
 │   │   └── idari-console  [Observability & Idari Console]
@@ -20077,7 +20026,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── webgpu
 │   │   └── page.tsx
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── error.tsx ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: (default)
@@ -20094,7 +20042,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │       └── ⚠ @/lib/supabase/server  (createServerClient)
 ├── assembly  [GameEngin, VM / WASM Runtime]
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── bus.ts ∅
 │   │   └── ∅ unused: QUEUE_SIZE, enqueue, dequeue, reset
 │   ├── index.ts ∅
@@ -20103,7 +20050,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── actions.json
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── events.json
 │   ├── registry.json
 │   ├── routes.json
@@ -20403,9 +20349,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.CartridgeRegistryBootstrap.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.CrashReportModal.tsx ∅
-│   │   │   └── ∅ unused: (default)
-│   │   └── README.md
+│   │   └── dream.CrashReportModal.tsx ∅
+│   │       └── ∅ unused: (default)
 │   ├── games  [GameEngin]
 │   │   ├── _fx  [GameEngin]
 │   │   │   └── canvasFx.ts ∅
@@ -20685,7 +20630,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: default
 │   │   └── dream.widget.WidgetSurface.tsx ∅
 │   │       └── ∅ unused: default
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.AIAssistant.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.AudioVisualizer3D.tsx ∅
@@ -20770,11 +20714,9 @@ Legend: ⚠ broken import  ∅ unused export
 │       └── ∅ unused: (default)
 ├── config
 │   ├── advanced-game-targets.json
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── optimizer.yaml
 │   └── ui-ux-spec.yaml
 ├── coresurfaces  [Profile & Edit Profile]
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dreamsurface.EditProfileDream.tsx ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
@@ -20809,18 +20751,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ∅ unused: metadata, (default)
-│   ├── music
-│   │   └── page.tsx ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │       └── ∅ unused: metadata, (default)
-│   └── Agents-MUST-READ-ARCHITECTURE.md
+│   └── music
+│       └── page.tsx ⚠ ∅
+│           ├── ⚠ @/lib/supabase/server  (createServerClient)
+│           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│           └── ∅ unused: metadata, (default)
 ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── capabilities.yaml
 │   └── tools.ts
 ├── dreamdmbar  [HOME — DreamDMBar]
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx ∅
 │   │   └── ∅ unused: (default)
 │   └── dreamsurface.dreamdmbar.tsx ∅
@@ -20845,7 +20784,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── portfolio  [PortfolioEngin]
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       └── ∅ unused: (default)
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.ForgeEngin.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.panel.AnalyticsEngin.tsx ⚠ ∅
@@ -20875,7 +20813,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ @/lib/supabase/config  (SUPABASE_URL)
 │       └── ∅ unused: (default)
 ├── hooks
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── use-spatial.ts ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: useSpatialNavigation, useAlbums, useShareToProfile
@@ -21284,27 +21221,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── gameengin  [GameEngin]
 │   │   ├── brain  [GameEngin]
 │   │   │   ├── asset-registry  [GameEngin]
-│   │   │   │   └── README.md
 │   │   │   ├── build-history  [GameEngin]
-│   │   │   │   └── README.md
 │   │   │   ├── character-voices  [GameEngin]
 │   │   │   │   └── mad-maxi.json
 │   │   │   ├── composition-principles  [GameEngin]
 │   │   │   │   ├── leading-lines-landmark.json
 │   │   │   │   └── parallax-layers.json
 │   │   │   ├── concept-library  [GameEngin]
-│   │   │   │   ├── neon-courier.json
-│   │   │   │   └── README.md
+│   │   │   │   └── neon-courier.json
 │   │   │   ├── concept-patterns  [GameEngin]
 │   │   │   │   ├── protagonists  [GameEngin]
 │   │   │   │   │   └── reluctant-courier.json
 │   │   │   │   ├── scope-formulas  [GameEngin]
 │   │   │   │   │   └── one-day-runner.json
-│   │   │   │   ├── settings  [GameEngin]
-│   │   │   │   │   └── neon-rain-megacity.json
-│   │   │   │   └── README.md
+│   │   │   │   └── settings  [GameEngin]
+│   │   │   │       └── neon-rain-megacity.json
 │   │   │   ├── crash-reports  [GameEngin]
-│   │   │   │   └── README.md
 │   │   │   ├── dialogue-patterns  [GameEngin]
 │   │   │   │   ├── callback-anchor.json
 │   │   │   │   ├── implied-subject.json
@@ -21375,16 +21307,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   └── mad-maxi.json
 │   │   │   │   └── signatures.json
 │   │   │   ├── principles  [GameEngin]
-│   │   │   │   ├── emotional-core.md
-│   │   │   │   ├── feedback.md
-│   │   │   │   ├── mastery.md
-│   │   │   │   ├── progression.md
-│   │   │   │   ├── responsiveness.md
-│   │   │   │   └── risk-reward.md
 │   │   │   ├── progression-state  [GameEngin]
-│   │   │   │   └── README.md
 │   │   │   ├── rd-sessions  [GameEngin]
-│   │   │   │   └── README.md
 │   │   │   ├── technique-library  [GameEngin]
 │   │   │   │   ├── lighting  [GameEngin]
 │   │   │   │   │   └── three-point-mood.json
@@ -21394,17 +21318,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── optimization  [GameEngin]
 │   │   │   │       └── texture-atlasing.json
 │   │   │   ├── upgrade-history  [GameEngin]
-│   │   │   │   ├── prioritization-rules.json
-│   │   │   │   └── README.md
+│   │   │   │   └── prioritization-rules.json
 │   │   │   ├── visual-bible  [GameEngin]
 │   │   │   │   ├── characters  [GameEngin]
-│   │   │   │   │   └── mad-maxi.md
 │   │   │   │   └── environments  [GameEngin]
-│   │   │   │       └── neon-wasteland.md
 │   │   │   ├── work-queue  [GameEngin]
-│   │   │   │   └── README.md
-│   │   │   ├── active-projects.json
-│   │   │   └── README.md
+│   │   │   └── active-projects.json
 │   │   ├── cartridges  [GameEngin]
 │   │   │   ├── achievementEngine.ts ∅
 │   │   │   │   └── ∅ unused: purgeCartridgeAchievements, getUnlockedCount
@@ -21626,7 +21545,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── PointerEventCapture.ts
 │   │   ├── quaternion.ts ∅
 │   │   │   └── ∅ unused: fromAxisAngle, magnitude, isValid, rotateVector, slerp, toEulerAngles
-│   │   ├── README.md
 │   │   ├── ReturnStack.ts
 │   │   ├── SpatialNavigationEngine.ts
 │   │   ├── StructureLedger.ts
@@ -21661,7 +21579,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── creative-validator.ts
 │   │   ├── index.ts ∅
 │   │   │   └── ∅ unused: ConstraintSolver
-│   │   ├── README.md
 │   │   └── types.ts
 │   ├── panels
 │   │   └── panelTypes.ts ∅
@@ -21787,7 +21704,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: detectWasmFeatures, resetWasmFeatureCache, WasmFeatureSet, DEFAULT_RESOURCE_QUOTA, QuotaExceededError, enforceQuota, withinQuota, QuotaViolation, ResourceQuota, ResourceUsage, InterVMChannel, VMEvent, GPUTimeSlicer, MemoryBoundsError, SYSCALL_ALLOWLIST, checkBounds, isSyscallAllowed, AllowedSyscall, TimeBudget, DualRuntime, dualRuntime, VMId, VMRuntimeStats, VMWorkloadSpec, BufferManager, destroyDualVMCoordinator, getDualVMCoordinator, initializeDualVMCoordinator, DualVMConfig, DualVMCoordinator, VMRegion, VMWorkload, PipelineCache, SnapshotManager, WasmGpuVM, DEFAULT_VM_CONFIG, ErrorCode, GPUBufferUsageFlags
 │   │   ├── inter-vm-messaging.ts
 │   │   ├── pipelineCache.ts
-│   │   ├── README.md
 │   │   ├── resource-quota.ts ∅
 │   │   │   └── ∅ unused: QuotaExceededError, DEFAULT_RESOURCE_QUOTA, enforceQuota, withinQuota
 │   │   ├── security.ts ∅
@@ -21843,7 +21759,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── adari.ts ∅
 │   │   └── ∅ unused: getBuildReport
 │   ├── agentOS.ts
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── artifactStore.ts ∅
 │   │   └── ∅ unused: getDefaultSystemArtifacts, saveArtifacts, removeArtifact
 │   ├── audioFingerprint.ts
@@ -21876,63 +21791,50 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: formatDate, generateDedupeHash, isError
 │   └── webgpu.ts
 ├── misc
-│   ├── images
-│   │   ├── arm2_transparent.png
-│   │   ├── coat_transparent.png
-│   │   ├── head_transparent.png
-│   │   ├── iconslist.png
-│   │   ├── logo_DREAM_transparent.png
-│   │   ├── logo_ENGIN_transparent.png
-│   │   ├── logo_transparent.png
-│   │   ├── shoe1_transparent.png
-│   │   ├── shoe2_transparent.png
-│   │   ├── sprite_2x_transparent.png
-│   │   └── sprite_transparent.png
-│   └── Agents-MUST-READ-ARCHITECTURE.md
+│   └── images
+│       ├── arm2_transparent.png
+│       ├── coat_transparent.png
+│       ├── head_transparent.png
+│       ├── iconslist.png
+│       ├── logo_DREAM_transparent.png
+│       ├── logo_ENGIN_transparent.png
+│       ├── logo_transparent.png
+│       ├── shoe1_transparent.png
+│       ├── shoe2_transparent.png
+│       ├── sprite_2x_transparent.png
+│       └── sprite_transparent.png
 ├── optimizer  [WebGPU / Babylon Engine]
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── constraint-solver.ts
 │   ├── creative-validator.ts
 │   ├── index.ts ∅
 │   │   └── ∅ unused: DreamOptimizer, ConstraintSolver
 │   └── types.ts
 ├── repo-visualizer
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── analyzer.mjs
 │   ├── graph-stats.json
 │   ├── graph.json
 │   ├── index.html
-│   ├── README.md
 │   └── server.mjs
 ├── research
 │   ├── ccc-ada-twin-engine
 │   │   ├── code
-│   │   │   └── README.md
 │   │   ├── data
-│   │   │   └── README.md
 │   │   ├── notes
 │   │   │   └── sharpening_notes.txt
-│   │   ├── paper
-│   │   │   ├── ccc_ada_axioms_and_invariants.tex
-│   │   │   ├── ccc_ada_black_hole_gravitational_wave_memory.tex
-│   │   │   ├── ccc_ada_holography_and_information_boundary.tex
-│   │   │   ├── ccc_ada_predictions_and_falsifiability.tex
-│   │   │   └── ccc_ada_twin_engine_framework.tex
-│   │   └── README.md
+│   │   └── paper
+│   │       ├── ccc_ada_axioms_and_invariants.tex
+│   │       ├── ccc_ada_black_hole_gravitational_wave_memory.tex
+│   │       ├── ccc_ada_holography_and_information_boundary.tex
+│   │       ├── ccc_ada_predictions_and_falsifiability.tex
+│   │       └── ccc_ada_twin_engine_framework.tex
 │   ├── data
-│   │   ├── README.md
 │   │   └── torr_vs_mond_lock_n11.csv
 │   ├── equations
 │   │   └── torridityequate.txt
-│   ├── paper
-│   │   └── torridity_ledger.tex
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── DISCOVERY.md
-│   └── README.md
+│   └── paper
+│       └── torridity_ledger.tex
 ├── research-and-development
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── LICENSE
-│   └── tech-spec-v1.md
+│   └── LICENSE
 ├── scripts
 │   ├── archive
 │   │   └── validate-deployment.js
@@ -21959,7 +21861,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (AgentName, getLastTouched, listCartridges, listMechanics, listTechniques, logRDSession, readUpgradeRules, recordUpgrade)
 │   │   └── writer-run.ts ⚠
 │   │       └── ⚠ ../../lib/gameengin/brain-reader.js  (listDialoguePatterns, logRDSession, readCharacterVoice, readEmotionalTone, readNarrativePacing)
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── autofix-vercel-build.mjs
 │   ├── check-build-memory-drift.mjs
 │   ├── check-engin-filenames.mjs
@@ -22095,10 +21996,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── babylon  [WebGPU / Babylon Engine]
 │   │       └── useDreamLogoScene.ts ∅
 │   │           └── ∅ unused: useDreamLogoScene
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   └── launcher.ts
 ├── styles
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream-shell.css
 │   ├── globals.css
 │   ├── home-dream.css
@@ -22121,7 +22020,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── admin-lockout.test.ts
 │   ├── admin-upgrade-readiness.test.ts
 │   ├── agent-bus-consensus.test.ts
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── ai-edit-engine.test.ts
 │   ├── api-route-body-guard.test.ts
 │   ├── asset-optimizer.test.ts
@@ -22180,7 +22078,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dreamspace-panel.test.ts
 │   ├── drop-target-registry.test.ts
 │   ├── dual-runtime-bridge-peer-activity.test.ts
-│   ├── DUALSENSE_TEST_PLAN.md
 │   ├── durable-bridge.test.ts
 │   ├── edit-profiledream-section7.test.ts
 │   ├── engin-dispatcher.test.ts
@@ -22321,7 +22218,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── youtube-provider.test.ts
 ├── types
 │   ├── ads.ts
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── ai-system.ts ∅
 │   │   └── ∅ unused: UserRole, ActorContextSchema, HomeAnchorState, Surface, CubePosition, Overlay, GestureDirection, GestureChain, NavStateSafe, UIContextSchema, DrEamsIntentType, IDariIntentType, IntentSchema, IntentEnvelopeSchema, HomeMenuOpenPayload, DiagSchemaSnapshotPayload, DiagRLSSnapshotPayload, DiagCodeReferenceScanPayload, DiagEnvChecklistPayload, AdminPatchProposalPayload, AdminMigrationProposalPayload, ModerationFlagContentPayload, JSONPatch, UIToast, UIDelta, ToolResultError, DrEamsRunRequest, DrEamsRunResponse, IDariRunRequest, IDariRunResponse, ExecuteRequest, ExecuteResponse, MemoryScope, AIMemory, AuditEntry
 │   ├── ai.ts
@@ -22349,21 +22245,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── widgets.ts ∅
 │       └── ∅ unused: getWidgetConfig, isWidgetInstance, isFeedWidget, isTextWidget, isMediaWidget
 ├── utils
-│   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── .cursorrules
 ├── .env.example
 ├── .env.local.example
 ├── .gitignore
 ├── .gitleaks.toml
-├── Agents-MUST-READ-ARCHITECTURE.md
-├── AGENTS.md
-├── CHANGELOG.md
-├── COOP_AND_SOLO_ROADMAP.md
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
-├── FILE_TREE.md
 ├── fix-audit.js
-├── GameENGINspec.md
 ├── LICENSE
 ├── next-env.d.ts
 ├── next.config.mjs ∅
@@ -22381,15 +22270,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── ⚠ @/lib/supabase/config  (SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL)
 │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   └── ∅ unused: proxy, config
-├── README.md
-├── REPO_STATE.md
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
 ├── vercel.json
-├── VISUAL-SCHEMATIC.md
 └── vitest.config.ts ∅
     └── ∅ unused: (default)
 ```
