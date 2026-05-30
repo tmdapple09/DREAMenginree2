@@ -72,7 +72,7 @@ jobs:
 
           node <<'NODE' 2>&1 | tee audit-reports/root-causes.txt >> audit-reports/report.md
           const fs = require('fs');
-          const { execSync } = require('child_process');
+          const path = require('path');
 
           const rawPath = 'audit-reports/typescript-raw.txt';
           if (!fs.existsSync(rawPath)) {
@@ -112,23 +112,52 @@ jobs:
             return null;
           }
 
+          function isSourceFile(file) {
+            return /\.(ts|tsx|js|jsx)$/.test(file);
+          }
+
+          function walkFiles(rootDirs) {
+            const files = [];
+            function walk(dir) {
+              if (!fs.existsSync(dir)) return;
+              for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                  if (entry.name === 'node_modules' || entry.name === '.next' || entry.name === '.git') continue;
+                  walk(full);
+                } else if (isSourceFile(entry.name)) {
+                  files.push(full);
+                }
+              }
+            }
+            rootDirs.forEach(walk);
+            return files;
+          }
+
           function searchDefinitions(symbol) {
             if (!symbol) return [];
-            const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const roots = ['app', 'lib', 'src', 'pages', 'components', 'engins'].filter(d => fs.existsSync(d));
+            const files = walkFiles(roots);
+            const hits = [];
+            const symbolRe = new RegExp(`\\b${symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
 
-            const cmd = [
-              `grep -RInE --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' `,
-              `'(^|[[:space:]])(interface|type|class|function|const|let|var)[[:space:]]+${escaped}([[:space:]=(<{:]|$)|export[[:space:]]+(declare[[:space:]]+)?(interface|type|class|function|const|let|var)[[:space:]]+${escaped}([[:space:]=(<{:]|$))' `,
-              `app lib src pages components engins . 2>/dev/null`
-            ].join('');
-
-            try {
-              const out = execSync(cmd, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
-              if (!out) return [];
-              return out.split(/\r?\n/).slice(0, 10);
-            } catch {
-              return [];
+            for (const file of files) {
+              try {
+                const content = fs.readFileSync(file, 'utf8');
+                const lines = content.split(/\r?\n/);
+                for (let i = 0; i < lines.length; i++) {
+                  const line = lines[i];
+                  if (!symbolRe.test(line)) continue;
+                  if (/\b(interface|type|class|function|const|let|var)\b/.test(line) || /\bexport\b/.test(line)) {
+                    hits.push(`${file}:${i + 1}: ${line.trim()}`);
+                    if (hits.length >= 10) return hits;
+                  }
+                }
+              } catch {
+                // ignore unreadable files
+              }
             }
+            return hits;
           }
 
           const errors = [];
@@ -220,8 +249,7 @@ jobs:
           }));
           NODE
 
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -236,8 +264,7 @@ jobs:
           grep -E "^(Error|error|Type error|×|\s+\^|Failed)" \
             audit-reports/build-raw.txt \
             >> audit-reports/report.md || echo "(none)" >> audit-reports/report.md
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -255,8 +282,7 @@ jobs:
           if [ "$COUNT" -gt 0 ]; then
             echo '```' >> audit-reports/report.md
             cat audit-reports/imports-raw.txt >> audit-reports/report.md
-            echo '
-```' >> audit-reports/report.md
+            echo '```' >> audit-reports/report.md
           else
             echo "✅ All import graphs resolved smoothly." >> audit-reports/report.md
           fi
@@ -302,8 +328,7 @@ jobs:
           if [ "$COUNT" -gt 0 ]; then
             echo '```' >> audit-reports/report.md
             cat audit-reports/circular-raw.txt >> audit-reports/report.md
-            echo '
-```' >> audit-reports/report.md
+            echo '```' >> audit-reports/report.md
           else
             echo "✅ Absolute linear tracking. No recursive files found." >> audit-reports/report.md
           fi
@@ -361,7 +386,7 @@ jobs:
           echo '```' >> audit-reports/report.md
 
           curl -sSfL \
-            [https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz](https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz) \
+            https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz \
             -o gitleaks.tar.gz
           tar -xzf gitleaks.tar.gz gitleaks
           chmod +x gitleaks
@@ -391,8 +416,7 @@ jobs:
             echo "✅ Absolute validation. 0 credentials or signature strings leaked." >> audit-reports/report.md
           fi
 
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -422,8 +446,7 @@ jobs:
             " 2>&1 | tee audit-reports/deps-raw.txt \
             >> audit-reports/report.md || true
 
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -445,8 +468,7 @@ jobs:
           echo -e "\n=== Fallback overrides to untyped Supabase Client ===" >> audit-reports/report.md
           grep -rn "as unknown as SupabaseClient" app/ lib/ src/ pages/ 2>/dev/null >> audit-reports/report.md || echo "(none)" >> audit-reports/report.md
 
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -486,8 +508,7 @@ jobs:
             }
           " 2>&1 | tee audit-reports/per-file-ts.txt >> audit-reports/report.md
 
-          echo '
-```' >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
@@ -503,11 +524,11 @@ jobs:
 
             const DIRS = ['app', 'lib', 'src', 'pages', 'components'].filter(d => fs.existsSync(d));
             const targets = [
-              { label: 'console.log left in production', regex: /console\\.log\\(/ },
+              { label: 'console.log left in production', regex: /console\.log\(/ },
               { label: 'TODO / FIXME metrics left outstanding', regex: /(TODO|FIXME|HACK):/ },
-              { label: 'Bypassing strict safety via \"as any\"', regex: /\\sas\\sany\\b/ },
+              { label: 'Bypassing strict safety via \"as any\"', regex: /\sas\sany\b/ },
               { label: 'TypeScript suppression rules (@ts-ignore)', regex: /@ts-ignore/ },
-              { label: 'Evaluated raw execution scripts (eval)', regex: /\\beval\\(/ },
+              { label: 'Evaluated raw execution scripts (eval)', regex: /\beval\(/ },
               { label: 'Raw HTML cross-site injection surface (dangerouslySetInnerHTML)', regex: /dangerouslySetInnerHTML/ }
             ];
 
@@ -543,29 +564,29 @@ jobs:
         run: |
           SUMMARY_FILE="audit-reports/summary.md"
 
-          echo "# 🔍 Full Codebase Audit Report" > $SUMMARY_FILE
-          echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $SUMMARY_FILE
-          echo "Commit Signature: ${{ github.sha }}" >> $SUMMARY_FILE
-          echo "" >> $SUMMARY_FILE
-          echo "## 🗂 Executive Summary Metrics" >> $SUMMARY_FILE
-          echo "" >> $SUMMARY_FILE
+          echo "# 🔍 Full Codebase Audit Report" > "$SUMMARY_FILE"
+          echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$SUMMARY_FILE"
+          echo "Commit Signature: ${{ github.sha }}" >> "$SUMMARY_FILE"
+          echo "" >> "$SUMMARY_FILE"
+          echo "## 🗂 Executive Summary Metrics" >> "$SUMMARY_FILE"
+          echo "" >> "$SUMMARY_FILE"
 
           TS_ERRORS=$(grep -c "error TS" audit-reports/typescript-raw.txt 2>/dev/null | head -n 1 || echo 0)
-          HOT_FILES=$(grep -c "^#\d\+" audit-reports/root-causes.txt 2>/dev/null | head -n 1 || echo 0)
+          ROOT_HOTSPOTS=$(grep -c "^#" audit-reports/root-causes.txt 2>/dev/null | head -n 1 || echo 0)
 
           if [ -z "$TS_ERRORS" ]; then TS_ERRORS=0; fi
-          if [ -z "$HOT_FILES" ]; then HOT_FILES=0; fi
+          if [ -z "$ROOT_HOTSPOTS" ]; then ROOT_HOTSPOTS=0; fi
 
-          echo "| Engine Target Vector | Detected Integrity Anomalies |" >> $SUMMARY_FILE
-          echo "|---|---|" >> $SUMMARY_FILE
-          echo "| Core TypeScript Syntax Type Errors | $TS_ERRORS |" >> $SUMMARY_FILE
-          echo "| Root Cause Hotspots Listed | $HOT_FILES |" >> $SUMMARY_FILE
-          echo "" >> $SUMMARY_FILE
-          echo "---" >> $SUMMARY_FILE
-          echo "" >> $SUMMARY_FILE
+          echo "| Engine Target Vector | Detected Integrity Anomalies |" >> "$SUMMARY_FILE"
+          echo "|---|---|" >> "$SUMMARY_FILE"
+          echo "| Core TypeScript Syntax Type Errors | $TS_ERRORS |" >> "$SUMMARY_FILE"
+          echo "| Root Cause Hotspots Listed | $ROOT_HOTSPOTS |" >> "$SUMMARY_FILE"
+          echo "" >> "$SUMMARY_FILE"
+          echo "---" >> "$SUMMARY_FILE"
+          echo "" >> "$SUMMARY_FILE"
 
-          cat audit-reports/report.md >> $SUMMARY_FILE
-          cp $SUMMARY_FILE audit-reports/FULL_AUDIT_REPORT.md
+          cat audit-reports/report.md >> "$SUMMARY_FILE"
+          cp "$SUMMARY_FILE" audit-reports/FULL_AUDIT_REPORT.md
         continue-on-error: true
 
       - name: Upload full audit report
