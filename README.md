@@ -1877,7 +1877,7 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 
 ## Backend, System, Core & CoreSurfaces
 Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `lib/supabase/**` using repository introspection.
-- Files tracked: **124**
+- Files tracked: **122**
 - API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
 - App pages discovered: none
 - Components/modules discovered: `DreamsurfaceEditProfileDream`, `DreamsurfaceViewProfile`
@@ -2003,9 +2003,9 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 │       │       └── route.ts
 │       ├── dreamr
 │       │   ├── feed
-… (4 more files)
+… (2 more files)
 ```
-<details><summary>Backend, System, Core & CoreSurfaces file index (124 files)</summary>
+<details><summary>Backend, System, Core & CoreSurfaces file index (122 files)</summary>
 
 - `app/api/account/delete-data/route.ts` — API route handler.
 - `app/api/account/delete-dream/route.ts` — API route handler.
@@ -2129,8 +2129,6 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `lib/supabase/safeGetUser.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/server.ts` — TypeScript/JavaScript runtime module.
 - `lib/supabase/vector.ts` — TypeScript/JavaScript runtime module.
-- `system/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `system/ci/archive/root-workflows/github-actions.yml` — project file (yml).
 
 </details>
 
