@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T11:49:20.529Z
+Generated: 2026-05-30T12:04:48.251Z
 
 ---
 
@@ -2742,7 +2742,7 @@ _No type files for this feature._
 
 ## Styles
 
-- `frontend/public/src/components/feed/Feed.css`
+_No style files for this feature._
 
 <a name="feed-migrations"></a>
 
@@ -2780,9 +2780,6 @@ _No type files for this feature._
 
 ### Internal imports
 
-- `../../hooks/useSocialData`
-- `../VideoPlayer/VideoPlayer`
-- `./FeedItem`
 - `./platforms`
 - `@/components/ads/dream.AdUnit`
 - `@/components/feed/dream.CommentSection`
@@ -6208,18 +6205,6 @@ _No migrations for this feature._
 
 - `engins/portfolio/dream.PortfolioEngin.tsx`
 
-## `frontend/public/`
-
-- `frontend/public/src/App.jsx`
-- `frontend/public/src/components/Videoplayer/EngagementOverlay.jsx`
-- `frontend/public/src/components/Videoplayer/VideoPlayer.jsx`
-- `frontend/public/src/components/WalletConnect/WalletConnect.jsx`
-- `frontend/public/src/components/commentSection/CommentList.jsx`
-- `frontend/public/src/components/commentSection/CommentSection.jsx`
-- `frontend/public/src/components/feed/Feed.jsx`
-- `frontend/public/src/components/feed/FeedItem.jsx`
-- `frontend/public/src/contexts/BlockchainContext.jsx`
-
 ## `lib/dreamdm/`
 
 - `lib/dreamdm/DreamSystemContext.tsx`
@@ -6834,7 +6819,6 @@ _No migrations for this feature._
 - `coresurfaces/dreamsurface.EditProfileDream.tsx`
 - `coresurfaces/dreamsurface.ViewProfile.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
-- `engine/io.ts`
 - `engins/dream.panel.AnalyticsEngin.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
@@ -6904,9 +6888,6 @@ _No migrations for this feature._
 - `components/runtime/dream.DualRuntimeContainer.tsx`
 - `components/shared-dream/dream.SharedDreamProvider.tsx`
 - `components/widgets/dream.EditModeProvider.tsx`
-- `frontend/public/src/components/WalletConnect/WalletConnect.jsx`
-- `frontend/public/src/contexts/BlockchainContext.jsx`
-- `frontend/public/src/hooks/useBlockchain.js`
 - `lib/dreamdm/DreamSystemContext.tsx`
 - `lib/dreamenginOS/OSContext.tsx`
 - `lib/enginpipe/shell/ArtifactSlot.tsx`
@@ -6943,8 +6924,6 @@ _No migrations for this feature._
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
-- `frontend/public/src/components/commentSection/CommentSection.jsx`
-- `frontend/public/src/contexts/BlockchainContext.jsx`
 - `lib/collaboration/index.ts`
 - `lib/dreamdm/useDreamDMConversations.ts`
 - `lib/dreamdm/useDreamDMMessages.ts`
@@ -11231,10 +11210,6 @@ _No migrations for this feature._
 - imports: `@/lib/utils`
 - dynamic: `@/lib/supabase/client`
 
-## `engine/io.ts`
-
-- imports: `@supabase/supabase-js`
-
 ## `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
 
 - imports: `react`
@@ -11487,83 +11462,6 @@ _No migrations for this feature._
 - imports: `path`
 - imports: `ts-morph`
 - imports: `lucide-react`
-
-## `frontend/public/src/App.jsx`
-
-- imports: `react`
-- imports: `./components/Feed/Feed`
-- imports: `./components/WalletConnect/WalletConnect`
-- imports: `./contexts/BlockchainContext.`
-
-## `frontend/public/src/Services/api.js`
-
-- imports: `axios`
-
-## `frontend/public/src/Utils/web3Utils.js`
-
-- imports: `web3`
-
-## `frontend/public/src/components/Videoplayer/EngagementOverlay.jsx`
-
-- imports: `react`
-- imports: `react-icons/fa`
-
-## `frontend/public/src/components/Videoplayer/VideoPlayer.jsx`
-
-- imports: `react`
-- imports: `./EngagementOverlay`
-- imports: `../CommentSection/CommentSection`
-- imports: `../../hooks/useBlockchain`
-
-## `frontend/public/src/components/WalletConnect/WalletConnect.jsx`
-
-- imports: `react`
-- imports: `../../contexts/BlockchainContext`
-
-## `frontend/public/src/components/commentSection/CommentList.jsx`
-
-- imports: `react`
-
-## `frontend/public/src/components/commentSection/CommentSection.jsx`
-
-- imports: `react`
-- imports: `./CommentList`
-- imports: `../../services/livekit`
-- imports: `@livekit/components-react`
-
-## `frontend/public/src/components/feed/Feed.jsx`
-
-- imports: `react`
-- imports: `./FeedItem`
-- imports: `../../hooks/useSocialData`
-
-## `frontend/public/src/components/feed/FeedItem.jsx`
-
-- imports: `react`
-- imports: `../VideoPlayer/VideoPlayer`
-
-## `frontend/public/src/contexts/BlockchainContext.jsx`
-
-- imports: `react`
-- imports: `web3`
-- imports: `../../contracts/build/contracts/SocialEngagement.json`
-
-## `frontend/public/src/hooks/useBlockchain.js`
-
-- imports: `react`
-- imports: `../contexts/BlockchainContext`
-
-## `frontend/public/src/hooks/useSocialData.js`
-
-- imports: `react`
-- imports: `../services/api`
-
-## `frontend/public/src/index.js`
-
-- imports: `react`
-- imports: `react-dom/client`
-- imports: `./App`
-- imports: `@livekit/components-react`
 
 ## `hooks/use-spatial.ts`
 
@@ -17753,7 +17651,6 @@ _No circular dependencies detected._
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY |
 | `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS |
-| `frontend/public/src/components/commentSection/CommentSection.jsx` | 4 | EVENT_BUS |
 | `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/content/useContentEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -17773,7 +17670,6 @@ _No circular dependencies detected._
 | `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | 3 | EVENT_BUS |
 | `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS |
 | `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS |
-| `frontend/public/src/contexts/BlockchainContext.jsx` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `lib/gameengin/registerCartridges.ts` | 3 | RUNTIME_REGISTRY |
@@ -17822,6 +17718,7 @@ _No circular dependencies detected._
 
 ```text
 ├── .ci
+│   ├── DREAMengin CI-CD Pipeline
 │   ├── snapshot.diff.txt
 │   └── snapshot.md
 ├── .github
@@ -18943,9 +18840,6 @@ _No circular dependencies detected._
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── optimizer.yaml
 │   └── ui-ux-spec.yaml
-├── core
-│   ├── .gitkeep
-│   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── coresurfaces
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dreamsurface.EditProfileDream.tsx
@@ -19077,9 +18971,6 @@ _No circular dependencies detected._
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx
 │   └── dreamsurface.dreamdmbar.tsx
-├── engine
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   └── io.ts
 ├── engins
 │   ├── autoopen
 │   │   └── dream.AutoOpenGameEngin.tsx
@@ -19105,48 +18996,6 @@ _No circular dependencies detected._
 │   ├── engin.GameEngin.tsx
 │   ├── engin.LabEngin.tsx
 │   └── engin.StarMakerEngin.tsx
-├── experiments
-│   ├── .gitkeep
-│   └── Agents-MUST-READ-ARCHITECTURE.md
-├── frontend
-│   ├── public
-│   │   ├── src
-│   │   │   ├── components
-│   │   │   │   ├── commentSection
-│   │   │   │   │   ├── CommentList.jsx
-│   │   │   │   │   ├── CommentSection.css
-│   │   │   │   │   └── CommentSection.jsx
-│   │   │   │   ├── feed
-│   │   │   │   │   ├── Feed.css
-│   │   │   │   │   ├── Feed.jsx
-│   │   │   │   │   └── FeedItem.jsx
-│   │   │   │   ├── Videoplayer
-│   │   │   │   │   ├── EngagementOverlay.jsx
-│   │   │   │   │   ├── VideoPlayer.css
-│   │   │   │   │   └── VideoPlayer.jsx
-│   │   │   │   └── WalletConnect
-│   │   │   │       ├── WalletConnect.css
-│   │   │   │       └── WalletConnect.jsx
-│   │   │   ├── contexts
-│   │   │   │   └── BlockchainContext.jsx
-│   │   │   ├── hooks
-│   │   │   │   ├── useBlockchain.js
-│   │   │   │   └── useSocialData.js
-│   │   │   ├── Services
-│   │   │   │   ├── api.js
-│   │   │   │   └── livekit.js
-│   │   │   ├── Utils
-│   │   │   │   ├── socialUtils.js
-│   │   │   │   └── web3Utils.js
-│   │   │   ├── App.jsx
-│   │   │   ├── DockerFile
-│   │   │   ├── index.css
-│   │   │   ├── index.js
-│   │   │   ├── package-lock.json
-│   │   │   └── package.json
-│   │   ├── favicon.ico
-│   │   └── index.html
-│   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── hooks
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── use-spatial.ts
@@ -19860,13 +19709,6 @@ _No circular dependencies detected._
 │   ├── creative-validator.ts
 │   ├── index.ts
 │   └── types.ts
-├── output
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── patch-plan.json
-│   └── result.json
-├── prometheus
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   └── prometheus.yml
 ├── public
 │   ├── cartridges
 │   │   └── mad-maxi
@@ -20132,15 +19974,6 @@ _No circular dependencies detected._
 │   ├── config.toml
 │   ├── schema-final.sql
 │   └── seed.sql
-├── system
-│   ├── ci
-│   │   └── archive
-│   │       └── root-workflows
-│   │           └── github-actions.yml
-│   └── Agents-MUST-READ-ARCHITECTURE.md
-├── terraform
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   └── main.tf
 ├── tests
 │   ├── e2e
 │   │   ├── demo.spec.ts
@@ -20376,14 +20209,6 @@ _No circular dependencies detected._
 ├── utils
 │   ├── supabase
 │   │   └── server.ts
-│   └── Agents-MUST-READ-ARCHITECTURE.md
-├── workflow
-│   ├── archive
-│   │   ├── appthemanger-ctrl_DREAMengin_95779c.json
-│   │   ├── config.yaml
-│   │   ├── docker-compose.yml
-│   │   ├── Dockerfile
-│   │   └── Dockerfile.dev
 │   └── Agents-MUST-READ-ARCHITECTURE.md
 ├── .cursorrules
 ├── .env.example
