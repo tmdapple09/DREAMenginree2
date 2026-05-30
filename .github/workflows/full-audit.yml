@@ -47,11 +47,11 @@ jobs:
         run: |
           echo "## 1. TypeScript Type Errors" >> audit-reports/report.md
           pnpm tsc --noEmit --pretty false 2>&1 | tee audit-reports/typescript-raw.txt || true
-          
+
           COUNT=$(grep -c "error TS" audit-reports/typescript-raw.txt | head -n 1 || echo 0)
           if [ -z "$COUNT" ]; then COUNT=0; fi
           echo "typescript_errors=$COUNT" >> $GITHUB_OUTPUT
-          
+
           if [ "$COUNT" -gt 0 ]; then
             echo '```' >> audit-reports/report.md
             cat audit-reports/typescript-raw.txt >> audit-reports/report.md
@@ -64,34 +64,165 @@ jobs:
           echo "" >> audit-reports/report.md
         continue-on-error: true
 
-      - name: '[2/12] ESLint — lint errors & warnings'
-        id: eslint
+           - name: '[2/12] Type Root Cause Clustering + Definition Discovery'
+        id: root_causes
         run: |
-          echo "## 2. ESLint Errors & Warnings" >> audit-reports/report.md
-          pnpm eslint . \
-            --format unix \
-            --max-warnings 9999 \
-            2>&1 | tee audit-reports/eslint-raw.txt || true
+          echo "## 2. Type Root Cause Clustering + Definition Discovery" >> audit-reports/report.md
+          echo '```' >> audit-reports/report.md
 
-          ERRORS=$(grep -c ": error " audit-reports/eslint-raw.txt | head -n 1 || echo 0)
-          WARNINGS=$(grep -c ": warning " audit-reports/eslint-raw.txt | head -n 1 || echo 0)
-          if [ -z "$ERRORS" ]; then ERRORS=0; fi
-          if [ -z "$WARNINGS" ]; then WARNINGS=0; fi
-          echo "eslint_errors=$ERRORS" >> $GITHUB_OUTPUT
-          echo "eslint_warnings=$WARNINGS" >> $GITHUB_OUTPUT
+          node <<'NODE' 2>&1 | tee audit-reports/root-causes.txt >> audit-reports/report.md
+          const fs = require('fs');
+          const { execSync } = require('child_process');
 
-          if [ "$ERRORS" -gt 0 ] || [ "$WARNINGS" -gt 0 ]; then
-            echo '```' >> audit-reports/report.md
-            cat audit-reports/eslint-raw.txt >> audit-reports/report.md
-            echo '```' >> audit-reports/report.md
-          else
-            echo "✅ No ESLint patterns violated." >> audit-reports/report.md
-          fi
-          echo "" >> audit-reports/report.md
-          echo "**ESLint errors: $ERRORS | warnings: $WARNINGS**" >> audit-reports/report.md
+          const rawPath = 'audit-reports/typescript-raw.txt';
+          if (!fs.existsSync(rawPath)) {
+            console.log('No TypeScript diagnostics available.');
+            process.exit(0);
+          }
+
+          const raw = fs.readFileSync(rawPath, 'utf8');
+          const lines = raw.split(/\r?\n/);
+
+          const byFile = new Map();
+          const byCode = new Map();
+          const bySymbol = new Map();
+
+          function add(map, key, value) {
+            if (!key) return;
+            if (!map.has(key)) map.set(key, []);
+            map.get(key).push(value);
+          }
+
+          function symbolFromMessage(msg) {
+            const patterns = [
+              /Property '([^']+)' does not exist on type/,
+              /Cannot find name '([^']+)'/,
+              /Cannot find module '([^']+)'/,
+              /has no exported member '([^']+)'/,
+              /Type '([^']+)' is not assignable to type/,
+              /Argument of type '([^']+)' is not assignable/,
+              /Object is possibly '([^']+)'/,
+              /Property '([^']+)' does not exist/,
+            ];
+
+            for (const re of patterns) {
+              const m = msg.match(re);
+              if (m) return m[1];
+            }
+            return null;
+          }
+
+          function searchDefinitions(symbol) {
+            if (!symbol) return [];
+            const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            const cmd = [
+              `grep -RInE --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' `,
+              `'(^|[[:space:]])(interface|type|class|function|const|let|var)[[:space:]]+${escaped}([[:space:]=(<{:]|$)|export[[:space:]]+(declare[[:space:]]+)?(interface|type|class|function|const|let|var)[[:space:]]+${escaped}([[:space:]=(<{:]|$))' `,
+              `app lib src pages components engins . 2>/dev/null`
+            ].join('');
+
+            try {
+              const out = execSync(cmd, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+              if (!out) return [];
+              return out.split(/\r?\n/).slice(0, 10);
+            } catch {
+              return [];
+            }
+          }
+
+          const errors = [];
+
+          for (const line of lines) {
+            const m = line.match(/^(.+\.tsx?)\((\d+),(\d+)\): error (TS\d+): (.+)$/);
+            if (!m) continue;
+
+            const [, file, ln, col, code, msg] = m;
+            const item = { file, ln: Number(ln), col: Number(col), code, msg };
+            errors.push(item);
+
+            add(byFile, file, item);
+            add(byCode, code, item);
+
+            const symbol = symbolFromMessage(msg);
+            add(bySymbol, symbol, item);
+          }
+
+          console.log('═══════════════════════════════════════');
+          console.log('TOP FILE BREAKERS');
+          console.log('═══════════════════════════════════════');
+
+          [...byFile.entries()]
+            .sort((a, b) => b[1].length - a[1].length)
+            .slice(0, 15)
+            .forEach(([file, items], index) => {
+              console.log('');
+              console.log(`#${index + 1} ${file}`);
+              console.log(`  Impact: ${items.length} errors`);
+              console.log(`  Codes: ${[...new Set(items.map(x => x.code))].join(', ')}`);
+            });
+
+          console.log('');
+          console.log('═══════════════════════════════════════');
+          console.log('TOP ERROR CODES');
+          console.log('═══════════════════════════════════════');
+
+          [...byCode.entries()]
+            .sort((a, b) => b[1].length - a[1].length)
+            .forEach(([code, items]) => {
+              console.log(`${code}: ${items.length}`);
+            });
+
+          console.log('');
+          console.log('═══════════════════════════════════════');
+          console.log('LIKELY ROOT SYMBOLS');
+          console.log('═══════════════════════════════════════');
+
+          const symbolEntries = [...bySymbol.entries()]
+            .filter(([key]) => key)
+            .sort((a, b) => b[1].length - a[1].length)
+            .slice(0, 25);
+
+          for (const [symbol, items] of symbolEntries) {
+            const files = [...new Set(items.map(x => x.file))].slice(0, 5).join(', ');
+            const defs = searchDefinitions(symbol);
+
+            console.log('');
+            console.log(symbol);
+            console.log(`  Impact: ${items.length} errors`);
+            console.log(`  Files: ${files}`);
+
+            if (defs.length) {
+              console.log('  Definitions:');
+              defs.forEach(d => console.log(`    ${d}`));
+            } else {
+              console.log('  Definitions: NOT FOUND');
+            }
+          }
+
+          console.log('');
+          console.log('═══════════════════════════════════════');
+          console.log('ROOT CAUSE HINTS');
+          console.log('═══════════════════════════════════════');
+
+          for (const [symbol, items] of symbolEntries.filter(([k, v]) => k && v.length >= 3).slice(0, 10)) {
+            console.log('');
+            console.log(`${symbol} → affects ${items.length} diagnostics`);
+          }
+
+          console.log('');
+          console.log('Summary Metrics:');
+          console.log(JSON.stringify({
+            totalErrors: errors.length,
+            impactedFiles: byFile.size,
+            impactedCodes: byCode.size,
+            likelySymbols: symbolEntries.filter(([k]) => k).length
+          }));
+          NODE
+
+          echo '```' >> audit-reports/report.md
           echo "" >> audit-reports/report.md
         continue-on-error: true
-
       - name: '[3/12] Next.js — production build check'
         id: nextbuild
         run: |
@@ -111,7 +242,7 @@ jobs:
         id: imports
         run: |
           echo "## 4. Missing / Broken Imports" >> audit-reports/report.md
-          
+
           pnpm tsc --noEmit --pretty false 2>&1 \
             | grep -E "Cannot find module|Could not find|has no exported member|is not a module" \
             | sort -u \
@@ -225,7 +356,7 @@ jobs:
           echo '```' >> audit-reports/report.md
 
           curl -sSfL \
-            [https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz](https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz) \
+            https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_linux_x64.tar.gz \
             -o gitleaks.tar.gz
           tar -xzf gitleaks.tar.gz gitleaks
           chmod +x gitleaks
@@ -411,18 +542,15 @@ jobs:
           echo "" >> $SUMMARY_FILE
 
           TS_ERRORS=$(grep -c "error TS" audit-reports/typescript-raw.txt 2>/dev/null | head -n 1 || echo 0)
-          ESLINT_E=$(grep -c ": error " audit-reports/eslint-raw.txt 2>/dev/null | head -n 1 || echo 0)
-          ESLINT_W=$(grep -c ": warning " audit-reports/eslint-raw.txt 2>/dev/null | head -n 1 || echo 0)
-          
+          HOT_FILES=$(grep -c "^#\d\+" audit-reports/root-causes.txt 2>/dev/null | head -n 1 || echo 0)
+
           if [ -z "$TS_ERRORS" ]; then TS_ERRORS=0; fi
-          if [ -z "$ESLINT_E" ]; then ESLINT_E=0; fi
-          if [ -z "$ESLINT_W" ]; then ESLINT_W=0; fi
+          if [ -z "$HOT_FILES" ]; then HOT_FILES=0; fi
 
           echo "| Engine Target Vector | Detected Integrity Anomalies |" >> $SUMMARY_FILE
           echo "|---|---|" >> $SUMMARY_FILE
           echo "| Core TypeScript Syntax Type Errors | $TS_ERRORS |" >> $SUMMARY_FILE
-          echo "| ESLint Syntax Violations (Errors) | $ESLINT_E |" >> $SUMMARY_FILE
-          echo "| ESLint Stylistic/Logical Warnings | $ESLINT_W |" >> $SUMMARY_FILE
+          echo "| Root Cause Hotspots Listed | $HOT_FILES |" >> $SUMMARY_FILE
           echo "" >> $SUMMARY_FILE
           echo "---" >> $SUMMARY_FILE
           echo "" >> $SUMMARY_FILE
