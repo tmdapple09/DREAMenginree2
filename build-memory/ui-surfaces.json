@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T01:45:01.585Z",
+  "generated_at": "2026-05-30T08:29:42.025Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 121,
   "surfaces": [
@@ -8,24 +8,7 @@
       "path": "/",
       "file": "app/page.tsx",
       "component": "Page",
-      "imports": [
-        {
-          "name": "LandingHero",
-          "from": "@/components/dream.LandingHero"
-        },
-        {
-          "name": "LandingNav",
-          "from": "@/components/landing/dream.LandingNav"
-        },
-        {
-          "name": "LandingProductStatement",
-          "from": "@/components/landing/dream.LandingProductStatement"
-        },
-        {
-          "name": "UniverseField",
-          "from": "@/components/landing/dream.scene.UniverseField"
-        }
-      ]
+      "imports": []
     },
     {
       "type": "layout",
