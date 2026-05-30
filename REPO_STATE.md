@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T02:49:00.351Z
+Generated: 2026-05-30T02:53:08.545Z
 
 ---
 
@@ -13269,13 +13269,6 @@ _No migrations for this feature._
 - imports: `node:child_process`
 - imports: `node:url`
 
-## `scripts/archive/proxy.ts`
-
-- imports: `next/server`
-- imports: `../../lib/supabase/server`
-- imports: `../../lib/supabase/config`
-- imports: `./lib/supabase/safeGetUser`
-
 ## `scripts/archive/validate-deployment.js`
 
 - imports: `fs`
@@ -19898,7 +19891,6 @@ _No circular dependencies detected._
 │   └── tech-spec-v1.md
 ├── scripts
 │   ├── archive
-│   │   ├── proxy.ts
 │   │   └── validate-deployment.js
 │   ├── feature-build
 │   │   └── generate-features.mjs
