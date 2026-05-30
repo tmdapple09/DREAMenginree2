@@ -1439,7 +1439,7 @@ md += `\`\`\`text\n`;
 md += `Legend: ⚠ broken import  ∅ unused export\n\n`;
 function buildTree(dir, prefix = "") {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
-    .filter(e => !shouldIgnore(e.name))
+    .filter(e => !shouldIgnore(e.name) && !/\.md$/i.test(e.name))
     .sort((a, b) => {
       if (a.isDirectory() && !b.isDirectory()) return -1;
       if (!a.isDirectory() && b.isDirectory()) return 1;
@@ -1506,7 +1506,7 @@ treeMd += `Legend: ⚠ broken import  ∅ unused export\n\n`;
 treeMd += "```text\n";
 function buildTreeInto(dir, prefix = "") {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
-    .filter(e => !shouldIgnore(e.name))
+    .filter(e => !shouldIgnore(e.name) && !/\.md$/i.test(e.name))
     .sort((a, b) => {
       if (a.isDirectory() && !b.isDirectory()) return -1;
       if (!a.isDirectory() && b.isDirectory()) return 1;
