@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-28T20:28:57.136Z
+Generated: 2026-05-30T02:49:00.351Z
 
 ---
 
@@ -8932,7 +8932,14 @@ _No migrations for this feature._
 
 ## `app/page.tsx`
 
+- imports: `@/components/dream.LandingHero`
+- imports: `@/components/landing/dream.LandingNav`
+- imports: `@/components/landing/dream.LandingProductStatement`
+- imports: `@/components/landing/dream.scene.UniverseField`
+- imports: `@/lib/supabase/safeGetUser`
+- imports: `@/lib/supabase/server`
 - imports: `next/navigation`
+- imports: `next/server`
 
 ## `app/policy/page.tsx`
 
@@ -13240,6 +13247,13 @@ _No migrations for this feature._
 
 - imports: `@playwright/test`
 
+## `proxy.ts`
+
+- imports: `@/lib/supabase/server`
+- imports: `@/lib/supabase/config`
+- imports: `@/lib/supabase/safeGetUser`
+- imports: `next/server`
+
 ## `repo-visualizer/analyzer.mjs`
 
 - imports: `node:fs`
@@ -17541,6 +17555,7 @@ _No circular dependencies detected._
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/scores/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/login/page.tsx` | 8 | MEDIUM_COUPLING |
+| `app/page.tsx` | 8 | MEDIUM_COUPLING |
 | `backend/index.js` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING |
@@ -20333,6 +20348,7 @@ _No circular dependencies detected._
 ├── CHANGELOG.md
 ├── COOP_AND_SOLO_ROADMAP.md
 ├── eslint.config.mjs
+├── final-clean.zip
 ├── fix-audit.js
 ├── GameENGINspec.md
 ├── LICENSE
@@ -20344,6 +20360,7 @@ _No circular dependencies detected._
 ├── pnpm-workspace.yaml
 ├── postcss.config.js
 ├── postcss.config.mjs
+├── proxy.ts
 ├── README.md
 ├── REPO_STATE.md
 ├── tailwind.config.ts
