@@ -128,6 +128,36 @@ function detectReactComponent(file, content) {
          /return\s*\(?\s*</.test(content);
 }
 
+// ─── EXPORT EXTRACTORS ────────────────────────────────────────────────────────
+
+/**
+ * extractNamedExports — returns all exported identifiers from a file.
+ * Covers: export function/const/class/let/var, export { ... }, export default.
+ */
+function extractNamedExports(content) {
+  const out = new Set();
+
+  // export function/const/class/let/var Foo
+  const declRe = /export\s+(?:async\s+)?(?:function|const|class|let|var)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g;
+  let m;
+  while ((m = declRe.exec(content)) !== null) out.add(m[1]);
+
+  // export { Foo, Bar as Baz }
+  const listRe = /export\s+\{([^}]+)\}/g;
+  while ((m = listRe.exec(content)) !== null) {
+    m[1].split(",").forEach(s => {
+      const parts = s.trim().replace(/^type\s+/, "").split(/\s+as\s+/);
+      const exported = (parts[1] || parts[0]).trim();
+      if (exported) out.add(exported);
+    });
+  }
+
+  // export default — mark with special token
+  if (/export\s+default\s+/.test(content)) out.add("(default)");
+
+  return [...out];
+}
+
 // ─── CAPABILITY DETECTORS ─────────────────────────────────────────────────────
 
 function detectSupabase(content) {
@@ -680,6 +710,7 @@ for (const file of codeFiles) {
     namedImports:        extractNamedImports(content),   // ← THE CONNECTORS
     dynamicImports:      extractDynamicImports(content),
     hookExports:         detectHookExports(content),
+    namedExports:        extractNamedExports(content),   // ← EXPORTS (for unused detection)
     isReactComponent:    detectReactComponent(file, content),
     isAPIRoute:          isAPIRoute(file),
     usesSupabase:        detectSupabase(content),
@@ -716,6 +747,111 @@ const riskFiles = Object.entries(fileData)
     ].filter(Boolean),
   }))
   .sort((a, b) => b.score - a.score);
+
+// ─── BROKEN IMPORTS ───────────────────────────────────────────────────────────
+// An import is "broken" if it points to an internal path (@/ alias or relative)
+// that cannot be resolved to any actual file in the repo.
+
+const EXTENSIONS = ["", ".ts", ".tsx", ".js", ".jsx", ".mjs", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"];
+
+// Build a set of all normalised file paths (strip extension, for fuzzy match)
+const allFileSet = new Set(allFiles.map(f => path.normalize(f)));
+const allFileStemSet = new Set(
+  allFiles.map(f => path.normalize(f).replace(/\.(ts|tsx|js|jsx|mjs)$/, ""))
+);
+
+function resolveAliasOrRelative(fromFile, imp) {
+  let candidate;
+  if (imp.startsWith("@/")) {
+    // @/ maps to ROOT
+    candidate = imp.slice(2); // e.g. "lib/foo/bar"
+  } else if (imp.startsWith(".")) {
+    candidate = path.normalize(path.join(path.dirname(fromFile), imp));
+  } else {
+    return null; // external package — not our concern
+  }
+
+  // Try with all known extensions
+  for (const ext of EXTENSIONS) {
+    const full = candidate + ext;
+    if (allFileSet.has(full)) return full; // exact hit
+  }
+  // Also try stem match (catches files the walker picked up)
+  if (allFileStemSet.has(candidate)) return candidate;
+  return false; // couldn't resolve
+}
+
+// brokenImports: { file → [{ specifier, names }] }
+const brokenImports = {};
+for (const [file, d] of Object.entries(fileData)) {
+  const broken = [];
+  for (const [specifier, names] of Object.entries(d.namedImports)) {
+    const resolved = resolveAliasOrRelative(file, specifier);
+    if (resolved === false) {
+      // Can't resolve → broken
+      broken.push({ specifier, names });
+    }
+  }
+  // Also catch bare-import specifiers from extractImports that aren't in namedImports
+  for (const imp of d.imports) {
+    const resolved = resolveAliasOrRelative(file, imp);
+    if (resolved === false) {
+      // Only add if not already captured via namedImports
+      if (!broken.some(b => b.specifier === imp)) {
+        broken.push({ specifier: imp, names: ["(unknown — bare import)"] });
+      }
+    }
+  }
+  if (broken.length) brokenImports[file] = broken;
+}
+
+// ─── UNUSED EXPORTS ───────────────────────────────────────────────────────────
+// Build a global set of every (resolvedFile, exportName) pair that is actually
+// imported somewhere, then compare against every file's declared exports.
+
+// Maps: normalised-stem → original file key (for looking up exports)
+const stemToFile = {};
+for (const file of codeFiles) {
+  const stem = path.normalize(file).replace(/\.(ts|tsx|js|jsx|mjs)$/, "");
+  stemToFile[stem] = file;
+  stemToFile[path.normalize(file)] = file;
+}
+
+// Collect all (file, exportName) pairs that ARE imported somewhere
+const importedPairs = new Set(); // "file::exportName"
+for (const [fromFile, d] of Object.entries(fileData)) {
+  for (const [specifier, names] of Object.entries(d.namedImports)) {
+    const resolved = resolveAliasOrRelative(fromFile, specifier);
+    if (!resolved) continue;
+    const targetFile = stemToFile[path.normalize(resolved).replace(/\.(ts|tsx|js|jsx|mjs)$/, "")]
+                    || stemToFile[path.normalize(resolved)];
+    if (!targetFile) continue;
+    for (const name of names) {
+      const cleanName = name.replace(/^⬡ /, "(default)");
+      importedPairs.add(`${targetFile}::${cleanName}`);
+    }
+  }
+}
+
+// unusedExports: { file → [exportName] }
+const unusedExports = {};
+for (const [file, d] of Object.entries(fileData)) {
+  if (isTestFile(file)) continue;
+  // Entry points and route files are allowed to have "unused" exports — skip them
+  if (isPageFile(file) || isAPIRoute(file)) continue;
+  const unused = d.namedExports.filter(exp => !importedPairs.has(`${file}::${exp}`));
+  if (unused.length) unusedExports[file] = unused;
+}
+
+// ─── PER-FILE ISSUE FLAGS (used by tree renderer) ────────────────────────────
+// fileIssues: { file → { broken: bool, unusedExports: bool } }
+const fileIssues = {};
+for (const file of codeFiles) {
+  fileIssues[file] = {
+    hasBrokenImports: !!brokenImports[file],
+    hasUnusedExports: !!unusedExports[file],
+  };
+}
 
 // ─── FEATURE FILE MATCHER ─────────────────────────────────────────────────────
 
@@ -1004,6 +1140,8 @@ md += `- [Runtime Registries](#runtime-registries)\n`;
 md += `- [Circular Dependencies](#circular-deps)\n`;
 md += `- [Coupling Scores (Top 30)](#coupling-scores)\n`;
 md += `- [System Risk Report](#risk-report)\n`;
+md += `- [Broken Imports](#broken-imports)\n`;
+md += `- [Unused Exports](#unused-exports)\n`;
 md += `- [Raw File Tree](#raw-tree)\n`;
 
 md += `\n---\n\n`;
@@ -1228,6 +1366,48 @@ if (riskFiles.length) {
 }
 md += `\n---\n\n`;
 
+// ─── BROKEN IMPORTS SECTION ───────────────────────────────────────────────────
+
+md += `<a name="broken-imports"></a>\n\n`;
+md += `# Broken Imports\n\n`;
+md += `> Internal imports (\`@/\` or relative) that cannot be resolved to any file in the repo.\n`;
+md += `> ⚠ = could cause a build error. External packages (npm) are excluded.\n\n`;
+
+const brokenEntries = Object.entries(brokenImports).filter(([f]) => !isTestFile(f)).sort();
+if (brokenEntries.length) {
+  md += `| File | Broken specifier | Imported names |\n`;
+  md += `|------|-----------------|----------------|\n`;
+  for (const [file, items] of brokenEntries) {
+    for (const { specifier, names } of items) {
+      const nameStr = names.map(n => `\`${n}\``).join(", ");
+      md += `| \`${file}\` | \`${specifier}\` | ${nameStr} |\n`;
+    }
+  }
+} else {
+  md += `_No broken internal imports detected._\n`;
+}
+md += `\n---\n\n`;
+
+// ─── UNUSED EXPORTS SECTION ───────────────────────────────────────────────────
+
+md += `<a name="unused-exports"></a>\n\n`;
+md += `# Unused Exports\n\n`;
+md += `> Exports that are never imported anywhere else in the codebase.\n`;
+md += `> Page/route files are excluded (they are consumed by the framework, not by imports).\n`;
+md += `> Test files are excluded. \`(default)\` = default export.\n\n`;
+
+const unusedEntries = Object.entries(unusedExports).sort();
+if (unusedEntries.length) {
+  md += `| File | Unused exports |\n`;
+  md += `|------|----------------|\n`;
+  for (const [file, names] of unusedEntries) {
+    md += `| \`${file}\` | ${names.map(n => `\`${n}\``).join(", ")} |\n`;
+  }
+} else {
+  md += `_No unused exports detected._\n`;
+}
+md += `\n---\n\n`;
+
 // ─── RAW FILE TREE ────────────────────────────────────────────────────────────
 // Annotated: each directory shows which feature(s) it belongs to.
 
@@ -1255,7 +1435,8 @@ function getFeatureAnnotation(entryPath) {
   return matches.length ? `  [${matches.join(", ")}]` : "";
 }
 
-md += "```text\n";
+md += `\`\`\`text\n`;
+md += `Legend: ⚠ broken import  ∅ unused export\n\n`;
 function buildTree(dir, prefix = "") {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
     .filter(e => !shouldIgnore(e.name))
@@ -1264,39 +1445,47 @@ function buildTree(dir, prefix = "") {
       if (!a.isDirectory() && b.isDirectory()) return 1;
       return a.name.localeCompare(b.name);
     });
-
   entries.forEach((entry, i) => {
-    const isLast   = i === entries.length - 1;
-    const branch   = isLast ? "└──" : "├──";
-    const childPfx = prefix + (isLast ? "    " : "│   ");
+    const isLast = i === entries.length - 1;
+    const fullPath = path.join(dir, entry.name);
+    const relPath = path.relative(ROOT, fullPath);
+    const childPrefix = prefix + (isLast ? "    " : "│   ");
+
+    const annotation = entry.isDirectory()
+      ? getFeatureAnnotation(fullPath)
+      : "";
+
+    // File-level issue markers (inline on the filename line)
+    let issueMarkers = "";
+    if (!entry.isDirectory()) {
+      const issues = fileIssues[relPath];
+      if (issues) {
+        if (issues.hasBrokenImports) issueMarkers += " ⚠";
+        if (issues.hasUnusedExports) issueMarkers += " ∅";
+      }
+    }
+
+    md += `${prefix}${isLast ? "└──" : "├──"} ${entry.name}${issueMarkers}${annotation}\n`;
 
     if (entry.isDirectory()) {
-      const annotation = getFeatureAnnotation(path.join(dir, entry.name));
-      md += prefix + branch + " " + entry.name + "/" + annotation + "\n";
-      buildTree(path.join(dir, entry.name), childPfx);
+      buildTree(fullPath, childPrefix);
     } else {
-      const rel = path.relative(ROOT, path.join(dir, entry.name));
-      md += prefix + branch + " " + entry.name + "\n";
-
-      // Show which named functions/hooks/components this file imports internally
-      if (isCodeFile(rel) && !isTestFile(rel) && fileData[rel]) {
-        const d = fileData[rel];
-        const internal = Object.entries(d.namedImports).filter(([mod]) =>
-          mod.startsWith("@/") || mod.startsWith("./") || mod.startsWith("../")
-        );
-        const dynImps = d.dynamicImports || [];
-
-        const allDeps = [
-          ...internal.map(([mod, names]) => ({ mod, names, dynamic: false })),
-          ...dynImps.map(mod => ({ mod, names: ["dynamic import()"], dynamic: true })),
-        ];
-
-        allDeps.forEach(({ mod, names, dynamic }, j) => {
-          const isLastDep = j === allDeps.length - 1;
-          const depBranch = isLastDep ? "└·· " : "├·· ";
-          const short = names.join(", ");
-          md += childPfx + depBranch + short + "  ← " + mod + "\n";
-        });
+      // Inline broken imports detail
+      const broken = brokenImports[relPath];
+      const unused  = unusedExports[relPath];
+      const hasDetail = (broken && broken.length) || (unused && unused.length);
+      if (hasDetail) {
+        // Total sub-lines: figure out whether this is the last child for connector
+        if (broken && broken.length) {
+          broken.forEach((item, bi) => {
+            const isLastDetail = bi === broken.length - 1 && (!unused || !unused.length);
+            const names = item.names.join(", ");
+            md += `${childPrefix}${isLastDetail ? "└──" : "├──"} ⚠ ${item.specifier}  (${names})\n`;
+          });
+        }
+        if (unused && unused.length) {
+          md += `${childPrefix}└── ∅ unused: ${unused.join(", ")}\n`;
+        }
       }
     }
   });
@@ -1307,76 +1496,10 @@ md += "```\n";
 // ─── WRITE ────────────────────────────────────────────────────────────────────
 
 fs.writeFileSync("REPO_STATE.md", md);
-
-// ── Also write a standalone FILE_TREE.md ──────────────────────────────────────
-let treeMd = "# DREAMengin File Tree\n\n";
-treeMd += "Generated: " + new Date().toISOString() + "\n\n";
-treeMd += "> Directories show which feature they belong to.\n";
-treeMd += "> Files show every named function/hook/component they import internally.\n";
-treeMd += "> `├·· name  ← module` = named import · `dynamic import()` = loaded on demand\n\n";
-treeMd += "```text\n";
-
-let treeOnly = "";
-const origMd = md;
-const mdRef = { val: "" };
-
-function buildTreeInto(target, dir, prefix = "") {
-  const entries = fs.readdirSync(dir, { withFileTypes: true })
-    .filter(e => !shouldIgnore(e.name))
-    .sort((a, b) => {
-      if (a.isDirectory() && !b.isDirectory()) return -1;
-      if (!a.isDirectory() && b.isDirectory()) return 1;
-      return a.name.localeCompare(b.name);
-    });
-
-  entries.forEach((entry, i) => {
-    const isLast   = i === entries.length - 1;
-    const branch   = isLast ? "└──" : "├──";
-    const childPfx = prefix + (isLast ? "    " : "│   ");
-
-    if (entry.isDirectory()) {
-      const annotation = getFeatureAnnotation(path.join(dir, entry.name));
-      target.push(prefix + branch + " " + entry.name + "/" + annotation);
-      buildTreeInto(target, path.join(dir, entry.name), childPfx);
-    } else {
-      const rel = path.relative(ROOT, path.join(dir, entry.name));
-      target.push(prefix + branch + " " + entry.name);
-
-      if (isCodeFile(rel) && !isTestFile(rel) && fileData[rel]) {
-        const d = fileData[rel];
-        const internal = Object.entries(d.namedImports).filter(([mod]) =>
-          mod.startsWith("@/") || mod.startsWith("./") || mod.startsWith("../")
-        );
-        const dynImps = d.dynamicImports || [];
-
-        const allDeps = [
-          ...internal.map(([mod, names]) => ({ mod, names })),
-          ...dynImps.map(mod => ({ mod, names: ["dynamic import()"] })),
-        ];
-
-        allDeps.forEach(({ mod, names }, j) => {
-          const isLastDep = j === allDeps.length - 1;
-          const depBranch = isLastDep ? "└·· " : "├·· ";
-          target.push(childPfx + depBranch + names.join(", ") + "  ← " + mod);
-        });
-      }
-    }
-  });
-}
-
-const treeLines = [];
-buildTreeInto(treeLines, ROOT);
-const treeText = treeLines.join("\n");
-
-treeMd += treeText + "\n```\n";
-fs.writeFileSync("FILE_TREE.md", treeMd);
-
-// Patch the tree section in REPO_STATE.md to use the same content
-// (already written above via buildTree, so it matches)
-
 console.log("✓ REPO_STATE.md written");
-console.log("✓ FILE_TREE.md written (standalone tree)");
-console.log("  Routes: " + buildRouteMap(allFiles).length);
-console.log("  Files analysed: " + codeFiles.length);
-console.log("  Connected functions mapped: " + codeFiles.filter(f => Object.keys(fileData[f].namedImports).length > 0).length + " files");
-console.log("  Dual-runtime files: " + codeFiles.filter(f => fileData[f].usesDualRuntime).length);
+console.log(`  Routes: ${buildRouteMap(allFiles).length}`);
+console.log(`  Files analysed: ${codeFiles.length}`);
+console.log(`  Connected functions mapped: ${codeFiles.filter(f => Object.keys(fileData[f].namedImports).length > 0).length} files`);
+console.log(`  Dual-runtime files: ${codeFiles.filter(f => fileData[f].usesDualRuntime).length}`);
+console.log(`  Broken imports: ${Object.values(brokenImports).reduce((s, a) => s + a.length, 0)} specifiers across ${Object.keys(brokenImports).length} files`);
+console.log(`  Unused exports: ${Object.values(unusedExports).reduce((s, a) => s + a.length, 0)} exports across ${Object.keys(unusedExports).length} files`);
