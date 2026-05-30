@@ -1877,7 +1877,7 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 
 ## Backend, System, Core & CoreSurfaces
 Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `lib/supabase/**` using repository introspection.
-- Files tracked: **143**
+- Files tracked: **124**
 - API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
 - App pages discovered: none
 - Components/modules discovered: `DreamsurfaceEditProfileDream`, `DreamsurfaceViewProfile`
@@ -2003,9 +2003,9 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 │       │       └── route.ts
 │       ├── dreamr
 │       │   ├── feed
-… (23 more files)
+… (4 more files)
 ```
-<details><summary>Backend, System, Core & CoreSurfaces file index (143 files)</summary>
+<details><summary>Backend, System, Core & CoreSurfaces file index (124 files)</summary>
 
 - `app/api/account/delete-data/route.ts` — API route handler.
 - `app/api/account/delete-dream/route.ts` — API route handler.
@@ -2120,25 +2120,6 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/youtube/channel/route.ts` — API route handler.
 - `app/api/youtube/discovery/route.ts` — API route handler.
 - `app/api/youtube/live-feed/route.ts` — API route handler.
-- `backend/.env.example` — project file (example).
-- `backend/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `backend/README.md` — documentation file.
-- `backend/docker-compose.yml` — project file (yml).
-- `backend/dockerfile` — project file (no extension).
-- `backend/index.js` — TypeScript/JavaScript runtime module.
-- `backend/package-lock.json` — project file (json).
-- `backend/package.json` — project file (json).
-- `backend/src/Routes/apiRoutes.js` — TypeScript/JavaScript runtime module.
-- `backend/src/controllers/engagementController.js` — TypeScript/JavaScript runtime module.
-- `backend/src/controllers/feedController.js` — TypeScript/JavaScript runtime module.
-- `backend/src/controllers/ipfsController.js` — TypeScript/JavaScript runtime module.
-- `backend/src/services/ipfsService.js` — TypeScript/JavaScript runtime module.
-- `backend/src/services/livekitService.js` — TypeScript/JavaScript runtime module.
-- `backend/src/socialaggregators/bluesky.js` — TypeScript/JavaScript runtime module.
-- `backend/src/socialaggregators/mastodon.js` — TypeScript/JavaScript runtime module.
-- `backend/src/socialaggregators/nostr.js` — TypeScript/JavaScript runtime module.
-- `core/.gitkeep` — project file (no extension).
-- `core/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `coresurfaces/dreamsurface.EditProfileDream.tsx` — React UI module for DreamsurfaceEditProfileDream.
 - `coresurfaces/dreamsurface.ViewProfile.tsx` — React UI module for DreamsurfaceViewProfile.
