@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-05-17T05:32:08.261Z",
+  "totalFiles": 1962,
+  "totalNodes": 6512,
+  "totalEdges": 6314,
+  "totalFunctionAndClassNodes": 3548,
+  "orphanCount": 2903,
+  "countsByType": {
+    "folder": 608,
+    "doc": 186,
+    "file": 72,
+    "config": 227,
+    "function": 3392,
+    "python": 14,
+    "class": 156,
+    "js": 22,
+    "mjs": 27,
+    "route": 235,
+    "ts": 777,
+    "tsx": 318,
+    "css": 13,
+    "jsx": 9,
+    "cjs": 4,
+    "sql-table": 139,
+    "sql-policy": 255,
+    "sql": 58
+  },
+  "topConnected": [
+    {
+      "id": "file:src/engin/generated/surfaces.ts",
+      "degree": 551,
+      "label": "surfaces.ts",
+      "type": "ts",
+      "path": "src/engin/generated/surfaces.ts"
+    },
+    {
+      "id": "file:src/engin/generated/systems.ts",
+      "degree": 393,
+      "label": "systems.ts",
+      "type": "ts",
+      "path": "src/engin/generated/systems.ts"
+    },
+    {
+      "id": "file:lib/supabase/server.ts",
+      "degree": 349,
+      "label": "server.ts",
+      "type": "ts",
+      "path": "lib/supabase/server.ts"
+    },
+    {
+      "id": "function:lib/supabase/server.ts#createServerClient",
+      "degree": 180,
+      "label": "createServerClient",
+      "type": "function",
+      "path": "lib/supabase/server.ts"
+    },
+    {
+      "id": "file:lib/dev-bypass.ts",
+      "degree": 86,
+      "label": "dev-bypass.ts",
+      "type": "ts",
+      "path": "lib/dev-bypass.ts"
+    },
+    {
+      "id": "file:lib/supabase/client.ts",
+      "degree": 75,
+      "label": "client.ts",
+      "type": "ts",
+      "path": "lib/supabase/client.ts"
+    },
+    {
+      "id": "file:engins/engin.ContentEngin.tsx",
+      "degree": 73,
+      "label": "engin.ContentEngin.tsx",
+      "type": "tsx",
+      "path": "engins/engin.ContentEngin.tsx"
+    },
+    {
+      "id": "file:src/engin/generated/brain.ts",
+      "degree": 68,
+      "label": "brain.ts",
+      "type": "ts",
+      "path": "src/engin/generated/brain.ts"
+    },
+    {
+      "id": "file:components/engines/shared/index.ts",
+      "degree": 60,
+      "label": "index.ts",
+      "type": "ts",
+      "path": "components/engines/shared/index.ts"
+    },
+    {
+      "id": "function:lib/supabase/client.ts#createClient",
+      "degree": 58,
+      "label": "createClient",
+      "type": "function",
+      "path": "lib/supabase/client.ts"
+    }
+  ]
+}

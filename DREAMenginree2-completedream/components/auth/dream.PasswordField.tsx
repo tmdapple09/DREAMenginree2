@@ -1,0 +1,70 @@
+'use client';
+
+import { Eye, EyeOff } from 'lucide-react';
+import { useId, useState } from 'react';
+
+type PasswordFieldProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete: 'current-password' | 'new-password';
+  placeholder?: string;
+  id?: string;
+  required?: boolean;
+  className?: string;
+  inputClassName?: string;
+};
+
+export default function PasswordField({
+  label,
+  value,
+  onChange,
+  autoComplete,
+  placeholder,
+  id,
+  required = true,
+  className,
+  inputClassName,
+}: PasswordFieldProps) {
+  const generatedId = useId();
+  const inputId = id || generatedId;
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <label className={className || 'block'}>
+      <span className="mb-1 block text-sm font-semibold uppercase tracking-wider" style={{ color: 'rgba(140,170,220,0.55)', fontSize: 11, letterSpacing: '0.08em' }}>{label}</span>
+      <div className="relative">
+        <input
+          id={inputId}
+          type={visible ? 'text' : 'password'}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+          autoComplete={autoComplete}
+          className={inputClassName}
+          style={!inputClassName ? {
+            width: '100%',
+            padding: '11px 48px 11px 14px',
+            borderRadius: 12,
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            color: 'rgba(220,235,255,0.90)',
+            fontSize: 14,
+            outline: 'none',
+          } : undefined}
+          placeholder={placeholder}
+        />
+        <button
+          type="button"
+          onClick={() => setVisible((current) => !current)}
+          className="absolute right-1 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-lg"
+          style={{ color: 'rgba(140,170,220,0.55)' }}
+          aria-label={visible ? `Hide ${label}` : `Show ${label}`}
+          title={visible ? 'Hide password' : 'Show password'}
+        >
+          {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+    </label>
+  );
+}

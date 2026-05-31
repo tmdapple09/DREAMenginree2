@@ -1,0 +1,65 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+export type ApiContext = {
+  req: NextRequest;
+  supabase: Awaited<ReturnType<typeof createServerClient>>;
+  user: { id: string; email?: string | null } | null;
+};
+
+export function json(data: unknown, init?: ResponseInit): NextResponse {
+  return NextResponse.json(data, init);
+}
+
+/** Simple error response — `{ error: message }` */
+export function jsonError(message: string, status = 400, details?: unknown): NextResponse {
+  return NextResponse.json({ error: message, ...(details ? { details } : {}) }, { status });
+}
+
+/**
+ * Structured AI-route error — `{ ok: false, error: { code, message } }`.
+ * Used by all `/api/ai/*` and `/api/dr-eams/*` routes so the shape is uniform.
+ */
+export function jsonApiError(status: number, code: string, message: string, details?: unknown): NextResponse {
+  return NextResponse.json(
+    { ok: false, error: { code, message, ...(details !== undefined ? { details } : {}) } },
+    { status, headers: { 'Cache-Control': 'no-store' } }
+  );
+}
+
+export async function withApi(
+  req: NextRequest,
+  handler: (ctx: ApiContext) => Promise<Response>
+): Promise<Response> {
+  try {
+    const supabase = await createServerClient();
+    const user = await safeGetUser(supabase);
+    return await handler({ req, supabase, user: user ? { id: user.id, email: user.email } : null });
+  } catch (err: unknown) {
+    console.error('API route error:', err);
+    return jsonError('Internal Server Error', 500);
+  }
+}
+
+export function requireUser(ctx: ApiContext): NextResponse | null {
+  if (!ctx.user) return jsonError('Unauthorized', 401);
+  return null;
+}
+
+export async function parseJson<T extends z.ZodTypeAny>(req: NextRequest, schema: T) {
+  const raw = await req.json().catch(() => null);
+  const parsed = schema.safeParse(raw);
+  if (!parsed.success) return { ok: false as const, error: parsed.error.flatten() };
+  return { ok: true as const, data: parsed.data as z.infer<T> };
+}
+
+export function parseQuery<T extends z.ZodTypeAny>(req: NextRequest, schema: T) {
+  const url = new URL(req.url);
+  const obj: Record<string, string> = {};
+  for (const [k, v] of url.searchParams.entries()) obj[k] = v;
+  const parsed = schema.safeParse(obj);
+  if (!parsed.success) return { ok: false as const, error: parsed.error.flatten() };
+  return { ok: true as const, data: parsed.data as z.infer<T> };
+}
