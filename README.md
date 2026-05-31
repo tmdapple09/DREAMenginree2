@@ -2499,7 +2499,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **65**
+- Files tracked: **67**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2508,6 +2508,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 ├── .github
 │   └── workflows
 │       ├── Repo Audit Auto Fix.yml
+│       ├── ScanArcCleanup.yml
 │       ├── autofixvercelbuild.yml
 │       ├── bot-pr-automerge.yml
 │       ├── bouncer.yml
@@ -2566,6 +2567,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
+│       ├── type-audit.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -2573,9 +2575,10 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (65 files)</summary>
+<details><summary>Infra & Ops file index (67 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
+- `.github/workflows/ScanArcCleanup.yml` — project file (yml).
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
 - `.github/workflows/bot-pr-automerge.yml` — project file (yml).
 - `.github/workflows/bouncer.yml` — project file (yml).
@@ -2634,6 +2637,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 - `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
+- `.github/workflows/type-audit.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
