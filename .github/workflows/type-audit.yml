@@ -15,7 +15,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v5 # Updated to v4 for Node 26 compatibility
         with:
-          version: 9
+          version: 10.30.0
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v5
