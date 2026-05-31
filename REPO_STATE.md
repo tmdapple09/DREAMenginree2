@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-31T03:48:32.833Z
+Generated: 2026-05-31T11:48:12.565Z
 
 ---
 
@@ -229,7 +229,6 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
 - `events`
 - `framer-motion`
 - `go-home`
@@ -323,7 +322,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (14 files) · **Supabase** (10 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
+**Dual Runtime** (14 files) · **Supabase** (8 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
 
 ### Dual Runtime files
 
@@ -345,8 +344,6 @@ _No style files for this feature._
 ### Supabase files
 
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
-- `app/dreamdmbar/_components/dreamr/api/route.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 - `lib/dreamdm/DreamSystemContext.tsx`
@@ -495,7 +492,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (6 files) · **Event Bus** (1 files)
+**Dual Runtime** (2 files) · **Supabase** (4 files) · **Event Bus** (1 files)
 
 ### Dual Runtime files
 
@@ -506,8 +503,6 @@ _No style files for this feature._
 
 - `app/api/dreamr/suggested/route.ts`
 - `app/api/dreamr/tally/route.ts`
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
-- `app/dreamdmbar/_components/dreamr/api/route.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `lib/dreamr/socialHumanityScore.ts`
 
@@ -6916,11 +6911,10 @@ _No style files for this feature._
 | `../algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
 | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
 | `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
-| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
 | `@/lib/utils` | `toErrorMessage` |
-| `@supabase/supabase-js` | `SupabaseClient` |
 | `next/server` | `NextRequest`, `NextResponse` |
 
 ## `app/dreamdmbar/_components/dreamr/api/route.ts`
@@ -6930,11 +6924,10 @@ _No style files for this feature._
 | `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
 | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
 | `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
-| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
 | `@/lib/utils` | `toErrorMessage` |
-| `@supabase/supabase-js` | `SupabaseClient` |
 | `next/server` | `NextRequest`, `NextResponse` |
 
 ## `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
@@ -17314,8 +17307,6 @@ _No style files for this feature._
 - `app/auth/update-password/page.tsx`
 - `app/daydream/music/upload/page.tsx`
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
-- `app/dreamdmbar/_components/dreamr/api/route.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `app/edit-profiledream/page.tsx`
 - `app/error.tsx`
@@ -17627,8 +17618,6 @@ _No circular dependencies detected._
 | `app/api/messages/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/daydream/lab/portfolio/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 9 | MEDIUM_COUPLING |
-| `app/dreamdmbar/_components/dreamr/api/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/edit-profiledream/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/[id]/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/page.tsx` | 9 | MEDIUM_COUPLING |
@@ -17643,6 +17632,8 @@ _No circular dependencies detected._
 | `app/api/appeal/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/comments/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 8 | MEDIUM_COUPLING |
+| `app/dreamdmbar/_components/dreamr/api/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamr/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/builder/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
@@ -19047,6 +19038,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ai_neural_decision.py
 │   │   ├── ai_propose.py
 │   │   ├── ai_report_propose.py
+│   │   ├── analyze-repo.js
 │   │   ├── assemble_report_context.py
 │   │   ├── catalog_games_for_ai.py
 │   │   ├── check_workflow_masking.py
@@ -19116,6 +19108,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── report-driven-coding-agent.yml
 │       ├── resilient-engine-smoke.yml
 │       ├── root-hygiene.yml
+│       ├── ScanArcCleanup.yml
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
@@ -21860,6 +21853,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── writer-run.ts ⚠
 │   │       └── ⚠ ../../lib/gameengin/brain-reader.js  (listDialoguePatterns, logRDSession, readCharacterVoice, readEmotionalTone, readNarrativePacing)
 │   ├── autofix-vercel-build.mjs
+│   ├── center-audit.mjs
 │   ├── check-build-memory-drift.mjs
 │   ├── check-engin-filenames.mjs
 │   ├── check-licenses.mjs
