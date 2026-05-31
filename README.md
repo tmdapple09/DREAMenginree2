@@ -1,6 +1,6 @@
 #DREAMengin
 
-**Spatial creative operating environment with one fixed engine + swappable rule-sets.**
+**A modular spatial creative operating environment with one fixed engine + dual runtimes + swappable rule-sets.**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/) [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/) [![pnpm workspace](https://img.shields.io/badge/pnpm-workspace-orange?logo=pnpm)](https://pnpm.io/workspaces) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Live Demo](https://img.shields.io/badge/Live-dreamengin.com-000?logo=DREAMengin)](https://dreamengin.com)
 
