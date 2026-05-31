@@ -1,329 +1,451 @@
-# DREAMengin Architecture
-
-> **Documentation Owner:** José Mancilla (appthemanger-ctrl)  
-> **Documentation Date:** 2026-04-06
-
-
-Status: active implementation architecture  
-Last updated: 2026-03-16
-
-`README.md` is the authoritative full product specification. This file explains how the current repo maps to that spec and where the implementation is already strong versus where it is still being aligned.
-
-## 0. DreamR-first architectural commandment
-
-Start with **DreamR**.
-
-DreamR is the first repo-level reference for the global build pattern:
-- a **stable core** owns runtime state, event flow, visibility boundaries, safety rules, and durable execution contracts
-- a **surface layer** renders the active user experience around that core
-- a **rule-set layer** owns scoring, transforms, presets, thresholds, and domain variation
-
-Reference split in the repo:
-- `dreamdmbar/homedream/dreamr/dream.DreamRCore.tsx` — logic reactor / durable core seam
-- `dreamdmbar/homedream/dreamr/dream.DreamRFeed.tsx` — active feed surface
-- `dreamdmbar/homedream/dreamr/algorithms/dreamrAlgorithm.ts` — swappable ranking rule-set
-
-This commandment is global. New systems should add behavior by composing or replacing
-rule-sets before rewriting the core layer. If a feature needs a one-off core branch,
-the boundary is wrong and should be redesigned.
-
-## 1. Product model
-
-DREAMengin is a **privacy-first, DreamDM-Bar-led spatial operating environment** built around three core surfaces, a six-surface Daydream network connected to six Engin runtimes via 11 named connection paths, Dream Windows, and the AI triad.
-
-### Runtime structure
-
 ```
-DreamDM Bar  ── root container (owns both runtimes)
-├── HomeDream Surface  ── dependent runtime, lives above the bar
-└── DreamSpace          ── dependent runtime, lives below the bar
-```
+# DREAMengin Architecture Specification
 
-- **DreamDM Bar** — root container. Not a component of either runtime; it owns both. When the bar moves, both runtimes are pushed with it. When the bar is hidden, both runtimes remain rendered at the split they held.
-- **HomeDream Surface** — first dependent runtime / root private operating surface with the feed
-- **DreamSpace** — second dependent runtime owned by the DreamDM Bar; always rendered, frozen at the last split when the bar is hidden
-
-### Core surfaces
-- **HomeDream Surface** — the main private operating surface (`/homedream`)
-- **Edit ProfileDream Surface** — the private builder for profile output (`/edit-profiledream`)
-- **View Profile Surface** — the shared/public output surface (`/view-profile`)
-
-### README §5 — Global Product Architecture
-
-The product has two major surface groups:
-
-- **Core Dreams (not Daydreams):** HomeDream, Edit ProfileDream, View Profile.
-- **Daydream Pair model:** each Daydream has Side A (domain experience) and Side B (its Engin control layer).
-
-Naming rule: only Side B uses the `Engin` suffix.
-
-### Daydream Surface Network (multi-connection, not 1-to-1)
-- Music Daydream Surface / StarMakerEngin
-- Games Daydream Surface / GameEngin
-- Lab Daydream Surface / LabEngin
-- Code Daydream Surface / CodeEngin
-- Brand Daydream Surface / BrandingEngin
-- Create Daydream Surface / ContentEngin
-
-Any Daydream Surface may connect to multiple Engin runtimes. The system is a multi-surface, multi-engin connection network with 11 named connection paths.
-
-### Platform modules
-- Dream Windows (modular runtime containers)
-- DreamShop Surface
-- DreamMarketplace Surface
-- DreamMenu
-- DreamDM Surface
-- DreamAds Surface
-
-### AI triad
-- Dr. Eams
-- IDARi
-- TheBoogieMan.Ai
-
-## 2. Canonical route model in the repo
-
-| Product surface | Canonical route | Current support routes |
-|---|---|---|
-| HomeDream Surface | `/homedream` | `/home` |
-| Edit ProfileDream Surface | `/edit-profiledream` | `/edit-profile` |
-| View Profile Surface | `/view-profile` | `/profile/[handle]`, `/profile`, `/u/[handle]` |
-| DreamShop Surface | `/shop` | `/shop/sell` |
-| DreamMarketplace Surface | `/marketplace` | none |
-| DreamDM Surface | `/messages` | none |
-| DreamAds Surface | `/ads` | `/ads/create` |
-
-The canonical product names should be used in docs, labels, and architecture conversations even when support routes still exist.
-
-## 3. Current implementation zones
-
-### HomeDream Surface
-Primary code lives in:
-- `app/homedream/page.tsx`
-- `app/home/page.tsx`
-- `components/home/*`
-- `components/dreamnav/*`
-- `components/menus/*`
-- `components/dream.HomeRadialNav.tsx`
-- `dreamdmbar/homedream/dreamr/*` for the DreamR-first feed/core split that future surfaces should emulate
-
-### Edit ProfileDream Surface and View Profile Surface
-Primary code lives in:
-- `app/edit-profiledream/page.tsx`
-- `app/edit-profile/page.tsx`
-- `app/view-profile/page.tsx`
-- `app/profile/[handle]/page.tsx`
-- `components/profile/*`
-- `components/dream.ProfileEditor.tsx`
-
-### Dream Windows
-Canonical Dream Window layer files already exist in:
-- `components/dreams/dreamsurface.shell.tsx`
-- `components/dreams/dream.connectorlayer.tsx`
-- `components/dreams/dream.featurelayer.tsx`
-- `components/dreams/dream.outputlayer.tsx`
-- `components/dreams/dream.widget.SuperDreamWidget.tsx`
-
-Legacy widget implementation material still exists in:
-- `components/widgets/*`
-- `types/widget-system-v2.ts`
-
-## 4. Universal Dream Window model
-
-The repo is being aligned to one universal Dream Window model.
-
-### Layer 1 — DreamShell
-Visual shell, naming, size, placement, style, menus, and shell-level controls.
-
-### Layer 2 — Connector / Identity
-Authentication state, provider identity, capability discovery, and connector metadata.
-
-### Layer 3 — Feature
-Active modules that only appear when the connector or Dream Window actually supports them.
-
-### Layer 4 — Output / Projection
-Saved profile-safe output. This is what should be shared into View Profile Surface and other public contexts.
-
-## 5. Privacy and projection boundaries
-
-The architecture follows the README rule that nothing is public by default.
-
-- **HomeDream Surface** is the private source surface.
-- **Edit ProfileDream Surface** is the private builder and staging layer.
-- **View Profile Surface** and public profile routes must render only saved/shared output.
-- Profile output must not read unrestricted private HomeDream data.
-- Any visibility change with public effect must require explicit user intent.
-
-## 6. Combined profile output
-
-Compatible Dream Windows may combine into automatic profile output blocks.
-
-Implementation rule:
-- the user chooses what to expose
-- the system decides the default composition template
-- the public/shared surface receives a projection, not the source Dream Window internals
-
-## 7. DreamAds separation
-
-DREAMengin uses two distinct advertising concepts:
-
-- **DreamAds** = user-controlled ad space or promotion slots attached to their surfaces where allowed
-- **Platform promotions** = platform-run promotional inventory
-
-These must remain separate in docs and code language.
-
-## 8. Design system direction
-
-The repo design language should use the README palette and intent model:
-- **Gold** = save, confirm, action, premium emphasis
-- **Light Blue** = live state, connected state, signal state
-- **White** = base surface, clarity, space
-
-Minimal clutter, intentional motion, mobile-first polish.
-
-## 9. Current alignment gaps
-
-These remain open and should be documented honestly:
-- legacy route names still exist beside canonical spec routes
-- legacy widget naming still appears in code and docs (use Dream Window canonically)
-- extra daydream routes still exist outside the six canonical pairs
-- some profile editing behavior still uses owner-facing profile workspace patterns rather than fully isolated Edit ProfileDream Surface language
-
-## 10. Build/runtime assumptions
-
-- Next.js 16+
-- App Router
-- TypeScript
-- Node 25
-- pnpm 10.30.0
-- Supabase for auth, database, storage, and realtime
-
-These assumptions should remain stable unless a change is truly required.
-
-## 11. AI Rate-Limiting System
-
-All AI API routes use a **single, unified rate-limit system**. There must be no deviation from this in future builds.
-
-| Component | Canonical name |
-|-----------|---------------|
-| Supabase RPC | `check_ai_rate_limit` |
-| Supabase table | `ai_rate_limits` |
-
-**Removed / must not be used:**
-- RPC `rate_limit_hit` — replaced by `check_ai_rate_limit`
-- Table `rate_limit_counters` — replaced by `ai_rate_limits`
-
-The TypeScript entry-point is `lib/ai/rateLimit.ts`:
-- `checkRateLimit(userId, endpoint, limit, windowSeconds)` → `RateLimitResult`
-- `getCurrentRPM(userId, endpoint)` → `number`
-
-`RateLimitResult` interface:
-```ts
-{ allowed: boolean; rpm: number; retry_after_seconds?: number }
-```
-
-`checkRateLimit` is fail-closed: any RPC error or invalid response returns
-`{ allowed: false, rpm: 0, retry_after_seconds }`.
-
-The `lib/ai/rate-limiter.ts` file is a separate higher-level service that also
-uses `check_ai_rate_limit` + `ai_rate_limits` and is not a replacement for
-`rateLimit.ts` — both must stay consistent with the canonical table/RPC above.
-
-## 12. Runtime Memory Architecture (SharedArrayBuffer + EnginDispatcher)
-
-The Engine uses a **zero-copy shared memory model** powered by `SharedArrayBuffer` to
-keep the HomeDream-rooted primary experience and the DreamDM-Bar-owned DreamSpace layer in sync without main-thread round-trips.
-
-`lib/runtime/memory.ts` defines **two distinct SharedArrayBuffer layouts** that serve different roles:
+This document defines the permanent technical architecture of the DREAMengin
+codebase. It describes what subsystems exist, where they live, what they own,
+and how they communicate. The architecture is authoritative: when implementation
+and architecture conflict, the implementation must be corrected.
 
 ---
 
-### EnginSAB — shader worker buffer (`createEnginSAB()`)
+## Foundational Invariants
 
-Used by `EnginDispatcher` and the shader workers. Allocated at runtime via
-`createEnginSAB()` and partitioned across all shader workers as non-overlapping
-`Workgroup` slices. Total size: **`SAB_BYTES = 250,520` bytes (~245 KB)**.
-
-| Region | Offset | Size | Purpose |
-|--------|--------|------|---------|
-| PosX SoA | 0 – 39,999 | 40 KB | Float32 x-positions for 10,000 entities |
-| PosY SoA | 40,000 – 79,999 | 40 KB | Float32 y-positions for 10,000 entities |
-| PosZ SoA | 80,000 – 119,999 | 40 KB | Float32 z-positions for 10,000 entities |
-| VelX SoA | 120,000 – 159,999 | 40 KB | Float32 x-velocities for 10,000 entities |
-| VelY SoA | 160,000 – 199,999 | 40 KB | Float32 y-velocities for 10,000 entities |
-| VelZ SoA | 200,000 – 239,999 | 40 KB | Float32 z-velocities for 10,000 entities |
-| DaydreamType | 240,000 – 249,999 | 10 KB | Uint8 daydream-class identifier per entity |
-| DreamDM Bar Y | 250,000 – 250,003 | 4 B | Float32 bar y-offset (root container y-position) |
-| Telemetry | 250,008 – 250,519 | 512 B | Float64 µs/tick per worker (64 slots, 8-byte aligned) |
-
-Key layout constants: `OFFSET_POS_X`, `OFFSET_POS_Y`, `OFFSET_POS_Z`, `OFFSET_VEL_X`,
-`OFFSET_VEL_Y`, `OFFSET_VEL_Z`, `OFFSET_DAYDREAM_TYPE`, `OFFSET_DREAMDM_BAR_Y`,
-`OFFSET_TELEMETRY`, `SAB_BYTES`.
+1.  **The Runtime Kernel is the sole authority for state mutation.**
+2.  **All behavior variation is expressed through rule-sets.**
+3.  **Engins are isolated capability domains.**
+4.  **Surfaces are presentation layers and do not own business logic.**
+5.  **Intents are the only mechanism for requesting change.**
+6.  **Cross-context communication occurs through registered channels.**
 
 ---
 
-### ConformMemoryMap — surface-sync buffer (`getConformMemoryMap()`)
+## 1. RUNTIME KERNEL
 
-Used to keep the HomeDream-rooted Surface Space and the DreamDM-Bar-owned DreamSpace in
-sync via Atomics without main-thread round-trips. Allocated once as a singleton via
-`getConformMemoryMap()`. Total size: **16 MB (`MEMORY_SIZE = 16,777,216` bytes)**.
+### Purpose
+Ultimate authority for state, events, I/O, security, transport,
+orchestration, and lifecycle. The kernel is the sole executor of Intents;
+every meaningful state change passes through it.
 
-| Region | Offset | Size | Purpose |
-|--------|--------|------|---------|
-| Control | 0 – 63 | 64 B | Atomics flags; `BAR_SEAM_ATOMICS_INDEX` (slot 0) — DreamDM Bar root container split ratio × 1000 |
-| PosX SoA | 64 – 40,063 | ~39 KB | Float32 x-positions for 10,000 entities |
-| PosY SoA | 40,064 – 80,063 | ~39 KB | Float32 y-positions for 10,000 entities |
-| VelX SoA | 80,064 – 120,063 | ~39 KB | Float32 x-velocities for 10,000 entities |
-| VelY SoA | 120,064 – 160,063 | ~39 KB | Float32 y-velocities for 10,000 entities |
-| HomeDream private | 160,064 – end | ~16 MB | Private region — access enforced by `boogieMemoryGuard()` |
+### Core Files
+`lib/runtime/EnginDispatcher.ts` – Intent routing  
+`lib/runtime/dreamOSBus.ts` – Global event bus  
+`lib/runtime/moduleRegistry.ts` – Module/Engin registry  
+`lib/runtime/dualRuntime.ts` – Dual‑runtime state machine  
+`lib/runtime/dualRuntimeBridge.ts` – Cross‑context bridge  
+`lib/runtime/memory.ts` – Shared memory layout  
+`lib/runtime/instanceManager.ts` – Runtime instance lifecycle  
+`lib/runtime/runtimeChannel.ts` – Local / realtime channels  
+`lib/runtime/runtimeContainer.ts` – Logical container  
+`lib/runtime/seamClipboard.ts` – Cross‑context clipboard  
+`lib/runtime/coercionTable.ts` – Drop/payload coercion  
+`lib/runtime/dropTargetRegistry.ts` – Registered drop handlers  
+`lib/runtime/offlineQueue.ts` – Offline mutation queue  
+`lib/runtime/sharedResourcePool.ts` – Managed shared resources  
+`lib/runtime/swapManager.ts` – Context swap state  
+`lib/runtime/channelMetrics.ts` – Telemetry for channels  
 
-**Privacy boundary:** `PUBLIC_VIEW_LIMIT` prevents the public View Profile pointer from
-ever reaching the HomeDream private region. `boogieMemoryGuard()` enforces rule
-`C29_PRIVACY` (see `docs/BOOGIEMAN_POLICY.md`).
+### Relationships
+Receives Intents from every surface; routes them to handlers via the
+registry; publishes state mutations to the bus; coordinates dual‑runtime
+state through the bridge; persists state to Supabase; replays offline
+mutations.
 
-Use `writeBarSeam(splitRatio)` / `readBarSeam()` to write and read the DreamDM Bar split
-ratio atomically via `Atomics.store()` / `Atomics.load()`.
+### Contribution Rules
+- Register new module keys only through the registry.
+- Add utilities in `lib/runtime/` only if truly universal.
+- Preserve the dispatcher contract; never embed feature logic in kernel files.
+
+### Prohibitions
+- No direct UI state mutation.
+- No hidden stores outside the runtime.
+- No bypassing the dispatcher.
 
 ---
 
-### EnginDispatcher (`lib/runtime/EnginDispatcher.ts`)
+## 2. INTENT SYSTEM
 
-`EnginDispatcher` is the process-wide singleton that orchestrates the shader worker pool:
+### Purpose
+Intents are the universal mechanism for requesting change. This system
+defines the Intent envelope, the dispatch lifecycle, and the global bus
+contract. Every surface, Engin, and agent uses Intents to communicate
+with the runtime.
 
-1. Allocates the EnginSAB via `createEnginSAB()`.
-2. Spawns `navigator.hardwareConcurrency − 1` shader workers (min 1, max `MAX_WORKERS`).
-3. Partitions 10,000 entities into non-overlapping `Workgroup` slices and posts each
-   worker its SAB + range via `postMessage` (zero-copy transfer).
-4. Relays DreamDM Bar y-offset writes from the primary surface into the SAB so workers can
-   reposition Dream Windows in DreamSpace without a main-thread round-trip.
-5. Exposes per-worker µs/tick telemetry read directly from the SAB Telemetry Zone.
-6. Enforces the IDARi/TheBoogieMan audit: any `bounds_violation` message from a worker
-   is logged with full context and increments the violation counter.
-7. Optionally loads and initialises the AssemblyScript Wasm physics engine
-   (`engin-shader.wasm`) for near-native SIMD performance via `initWasm()`.
+### Core Files
+`lib/runtime/EnginDispatcher.ts` – Receives, authorizes, and routes Intents  
+`lib/runtime/dreamOSBus.ts` – Publish/subscribe bus for state and events  
+`types/ai-system.ts` – Intent envelope schema (also used by AI)  
+`lib/ai/schemas.ts` – Zod schemas for Intent validation  
 
-**SSR safety:** all browser-only APIs (`Worker`, `navigator`, `SharedArrayBuffer`) are
-guarded behind `typeof` checks so this module is safe to import server-side.
+### Intent Lifecycle
+1. **Emission** – A surface, Engin, or agent dispatches an Intent.
+2. **Authorization** – The kernel checks the user’s role and the target Engin’s
+   permissions (capability gate).
+3. **Routing** – The dispatcher looks up the handler in the Module Registry.
+4. **Execution** – The handler (often a rule‑set) applies constraints,
+   transformations, and state mutations.
+5. **Publication** – The resulting state change is published on the bus.
+6. **Reaction** – Subscribers (surfaces, Engins) update accordingly.
 
-**Usage:**
-```ts
-const dispatcher = EnginDispatcher.getInstance();
-dispatcher.init();                        // allocate EnginSAB, spawn workers
-await dispatcher.initWasm();              // optional: load Wasm SIMD physics engine
-dispatcher.setDreamDMBarY(barYpx);        // relay bar seam position to workers
-const stats = dispatcher.stats;           // { workerCount, microsecondsPerTick[], boundsViolations }
-dispatcher.dispose();                     // terminate workers, release SAB
+### Bus Contract
+- All state mutations are published as typed events on `dreamOSBus`.
+- Subscribers register by event type; the bus ensures decoupling.
+- Events are synchronous within a context and relayed across contexts via
+  the dual‑runtime bridge.
+
+### Contribution Rules
+- Every new action must be modelled as an Intent with a typed schema.
+- Intent handlers must be registered in the Module Registry.
+- Intents are never fired directly at a surface; surfaces only subscribe.
+
+### Prohibitions
+- No ad‑hoc state changes outside the Intent lifecycle.
+- No surface‑to‑surface direct communication.
+
+### Terminology
+- **Intent** – A request for change (e.g., "CreateObject", "MoveWidget").
+- **Event** – A notification that a change has occurred (published on the bus).
+- **Command** – An Intent that is expected to produce a side‑effect.
+- **Query** – A read‑only request for current state (routed separately, never mutates).
+
+---
+
+## 3. RULESET ARCHITECTURE
+
+### Purpose
+The core engine is immutable. All variable behaviour is defined by
+replaceable rule‑sets. A rule‑set is a pure, declarative module that
+specifies constraints, transformations, parameters, capabilities, and
+workflow composition. It never contains infrastructure, side effects,
+React hooks, persistence, or network calls.
+
+### Core Files
+`lib/engin-runtime/EnginRuleSetContract.ts` – Rule‑set type contract  
+`lib/engins/brand/brandEnginRuleSet.ts`  
+`lib/engins/code/codeEnginRuleSet.ts`  
+`lib/engins/content/contentEnginRuleSet.ts`  
+`lib/engins/game/gameEnginRuleSet.ts`  
+`lib/engins/lab/labEnginRuleSet.ts`  
+`lib/engins/music/starMakerEnginRuleSet.ts`  
+`src/dream/rulesets/*/index.ts` – Per‑surface rule‑set stubs  
+`src/engin/generated/rulesets.ts` – Auto‑generated registry  
+
+### Relationships
+The engine reads rule‑sets to constrain Intents, transform state, and
+validate outputs. Engin runtimes consume their rule‑set to derive
+behaviour. The generated registry ensures consistency between code and
+declarations.
+
+### Contribution Rules
+- When behaviour changes but infrastructure does not, update the rule‑set.
+- Keep rule‑sets declarative, deterministic, and free of side effects.
+- Register new rule‑sets in the generated registry.
+
+### Prohibitions
+- No executable logic inside rule‑set files.
+- No side effects (API calls, DOM access, timers).
+- No unregistered rule‑sets.
+- No rule‑set that modifies the engine’s own responsibilities.
+
+---
+
+## 4. TYPE SYSTEM & CONTRACTS
+
+### Purpose
+Canonical structural definitions for the entire system: Intents, manifests,
+runtime state, connector schemas, database models, journey dots, etc.
+The type layer is the authoritative definition of structure; all
+implementations must conform.
+
+### Core Files
+`types/ai-system.ts` – Intent envelopes and AI schemas  
+`types/module-manifest.ts` – Engin registration contracts  
+`types/connector.ts` – Social connector data models  
+`types/dream-window.ts` – Window lifecycle and state  
+`types/dreamArtifact.ts` – Shared artifact definitions  
+`types/widget-system-v2.ts` – Widget and feed contracts  
+`types/journey.ts` – Journey dot structures  
+`types/spatial.ts` – Spatial layout types  
+`types/supabase.ts` – Database schema types  
+
+### Relationships
+All other subsystems import from here. Every Intent, manifest, and state
+update is validated at runtime boundaries using Zod schemas derived from
+these types.
+
+### Contribution Rules
+- Define new types in `types/` before implementing logic.
+- Extend contracts only when behaviour changes; never duplicate.
+- Ensure Zod validation schemas match the exported TypeScript types exactly.
+
+### Prohibitions
+- No duplicate or ad‑hoc type definitions outside `types/`.
+- No untyped data crossing runtime boundaries.
+
+---
+
+## 5. ENGIN SYSTEM
+
+### Purpose
+Engins are the bounded, modular capability units of DREAMengin. Each
+Engin represents a creative domain and is composed of a manifest, a
+rule‑set, a runtime adapter, and UI components. Engins are loaded,
+mounted, and swapped without changing the core engine.
+
+### Core Files – Implementations
+`engins/engin.BrandingEngin.tsx`  
+`engins/engin.CodeEngin.tsx`  
+`engins/engin.ContentEngin.tsx`  
+`engins/engin.GameEngin.tsx`  
+`engins/engin.LabEngin.tsx`  
+`engins/engin.StarMakerEngin.tsx`  
+`engins/dream.ForgeEngin.tsx`  
+`engins/dream.panel.AnalyticsEngin.tsx`  
+`engins/portfolio/dream.PortfolioEngin.tsx`  
+`engins/autoopen/dream.AutoOpenGameEngin.tsx`  
+
+### Core Files – Runtime Adapters
+`lib/engin-runtime/EnginRuntime.ts`  
+`lib/engin-runtime/EnginBaseState.ts`  
+`lib/engin-runtime/EnginCapabilities.ts`  
+`lib/engin-runtime/EnginEventBus.ts`  
+`lib/engin-runtime/EnginIOAdapter.ts`  
+`lib/engins/brand/useBrandEnginRuntime.ts`  
+`lib/engins/code/useCodeEnginRuntime.ts`  
+`lib/engins/content/useContentEnginRuntime.ts`  
+`lib/engins/game/useGameEnginRuntime.ts`  
+`lib/engins/lab/useLabEnginRuntime.ts`  
+`lib/engins/music/useStarMakerEnginRuntime.ts`  
+
+### Manifest Schema (example)
+```json
+{
+  "name": "CodeEngin",
+  "enginId": "code",
+  "version": "1.0.0",
+  "entryScript": "engin.CodeEngin.js",
+  "ui": "CodeEnginUI.html",
+  "inputs": { "code": { "type": "string" } },
+  "outputs": { "result": { "type": "data" } },
+  "permissions": { "networkAccess": ["api.github.com"], "clipboard": true }
+}
 ```
 
-**Shader worker:** `public/workers/engin-shader.worker.ts` — each worker receives its
-`Workgroup` slice and runs a `requestAnimationFrame` loop (with a `setTimeout` fallback
-for non-browser contexts) so the main thread is never blocked by physics ticks.
+### Relationships
+The engine registers Engins via the ModuleRegistry. Runtimes feed the
+rule‑set to the EnginRuntime adapter, which connects to the bus and
+dual‑runtime bridge. UI surfaces mount Engins through shell components
+and dispatch Intents upward.
 
-### Key files
+### Contribution Rules
+- Every new Engin requires a manifest, a rule‑set, and a runtime.
+- UI must stay in `components/engines/<name>/`; rule‑set logic in `lib/engins/<name>/`.
+- Engins communicate only through the bus.
 
-| File | Purpose |
-|------|---------|
-| `lib/runtime/memory.ts` | Both SAB layouts — `createEnginSAB()`, `getConformMemoryMap()`, `buildWorkgroups()`, `boogieMemoryGuard()`, typed view helpers |
-| `lib/runtime/EnginDispatcher.ts` | Singleton dispatcher — lifecycle, Wasm init, SAB writes, telemetry, bounds audit |
-| `public/workers/engin-shader.worker.ts` | Per-worker tick loop — reads EnginSAB, applies 3-axis SoA physics, enforces workgroup bounds |
-| `tests/engin-dispatcher.test.ts` | Unit tests for dispatcher lifecycle and bounds enforcement |
-| `tests/conform-memory-map.test.ts` | Conformance tests for the ConformMemoryMap (16 MB) layout |
+### Prohibitions
+- No surface‑owned feature logic inside Engin UI.
+- No side effects in rule‑sets.
+- No Engin that cannot be described by a manifest.
+
+---
+
+## 6. DUAL RUNTIME (Cross‑Context Orchestration)
+
+### Purpose
+Orchestrate parallel runtime contexts (HomeDream and DreamSpace) sharing
+authoritative state. Enable drag, teleport, and workflow transfer between
+them.
+
+### Core Files
+`lib/runtime/dualRuntime.ts`  
+`lib/runtime/dualRuntimeBridge.ts`  
+`lib/runtime/runtimeChannel.ts`  
+`lib/runtime/runtimeContainer.ts`  
+`components/runtime/dream.DualRuntimeContainer.tsx`  
+`components/runtime/dream.RuntimeView.tsx`  
+
+### Relationships
+The bridge uses BroadcastChannel for intra‑browser sync and WebSocket/
+Supabase Realtime for cross‑device. The dual‑runtime state machine
+determines which context is dominant.
+
+### Contribution Rules
+- All cross‑context messages must go through the bridge.
+- Offline mutations must be queued and replayed.
+
+### Prohibitions
+- No direct shared state between contexts outside the bridge.
+
+---
+
+## 7. STATE OWNERSHIP
+
+### Purpose
+Prevent hidden state stores and ambiguous ownership. Every piece of
+runtime state has a defined owner. No other subsystem may directly
+mutate state owned by another owner.
+
+### Ownership Map
+
+**Kernel (Runtime Core)**
+- Intent ledger
+- Runtime lifecycle
+- Module registry
+- Channel registry
+- Shared memory layout (SAB)
+- Authoritative session state
+
+**Engins**
+- Engin-local state (managed through EnginRuntime)
+- Capability metadata (from manifest)
+
+**DreamSpace**
+- Layout metadata (widget positions, sizes)
+- Active widget instances
+- Workspace configuration
+
+**HomeDream**
+- Active module surface state
+- Feed visibility preferences
+
+**SharedDream**
+- CRDT documents (Yjs)
+- Presence state (cursors, selections)
+
+**DreamR**
+- Feed ranking state
+- Swipe personalization data
+- Torridity ledger
+
+**Navigation Engine**
+- Anchor widget positions
+- Navigation history / return stack
+- Gesture state
+
+**Observability (Idari)**
+- Telemetry buffers
+- Health trend data
+
+### Contribution Rules
+- New state must be explicitly assigned to an owner.
+- Access to another owner’s state must go through the bus or a defined channel.
+
+### Prohibitions
+- No ad-hoc `useState`/`zustand` stores that duplicate owned state.
+- No direct mutation of another subsystem’s state.
+
+---
+
+## 8. APPLICATION LAYERS & SURFACES
+
+The following subsystems are **consumers** of the runtime architecture.
+They depend on the kernel, Intents, and Engins but do not extend the
+runtime model itself.
+
+### 8.1 DreamDM Bar (Exchange Layer)
+**Purpose:** Permanent interaction rail connecting HomeDream, DreamSpace,
+messaging, and navigation.  
+**Core Files:** `dreamdmbar/dreamsurface.dreamdmbar.tsx`,
+`lib/dreamdm/barInteractions.ts`, `lib/dreamdm/DreamSystemContext.tsx`
+
+### 8.2 HomeDream (Global Workspace)
+**Purpose:** Persistent feed, active modules, notifications, social hub.  
+**Core Files:** `app/dreamdmbar/_components/HomeDreamRegion.tsx`,
+`components/home/dream.HomeFeed.tsx`
+
+### 8.3 DreamSpace (Project Canvas)
+**Purpose:** Active creative surface where Engins are composed.  
+**Core Files:** `app/dreamdmbar/_components/DreamSpaceRegion.tsx`,
+`components/dreams/dreamsurface.dreamspace.tsx`
+
+### 8.4 SharedDream (Collaboration)
+**Purpose:** Real‑time multi‑user editing with CRDTs and presence.  
+**Core Files:** `components/shared-dream/dream.SharedDreamProvider.tsx`,
+`lib/collaboration/index.ts`
+
+### 8.5 DreamR (Feed & Algorithm)
+**Purpose:** Swipe‑based content feed, ranking, bot detection.  
+**Core Files:** `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts`,
+`lib/dreamr/torridityLedger.ts`
+
+### 8.6 GameEngin (Cartridge System)
+**Purpose:** Console‑class gaming runtime; exercises the full stack.  
+**Core Files:** `lib/gameengin/core.ts`, `lib/gameengin/GameRuntime.tsx`,
+`lib/gameengin/cartridges/loaders.ts`
+
+### 8.7 WebGPU & Rendering
+**Purpose:** Browser‑native GPU rendering, adaptive quality, Babylon.js
+integration.  
+**Core Files:** `lib/webgpu.ts`, `lib/babylon/createEngine.ts`,
+`lib/god-tier/godTierEngine.ts`
+
+### 8.8 VM / WASM Runtime
+**Purpose:** Isolated high‑performance compute for game logic.  
+**Core Files:** `lib/vm/wasmGpuVM.ts`, `lib/vm/dualVMCoordinator.ts`
+
+### 8.9 Navigation Engine
+**Purpose:** Gesture‑driven spatial navigation with anchor widgets.  
+**Core Files:** `lib/navigation/SpatialNavigationEngine.ts`,
+`lib/navigation/GestureFrameComputer.ts`
+
+### 8.10 AI System
+**Purpose:** Multi‑model orchestration for moderation, assistance, and
+health.  
+**Core Files:** `lib/ai/triad.ts`, `lib/ai/boogieman.ts`,
+`lib/agents/agentBus.ts`
+
+### 8.11 Security & Permissions
+**Purpose:** Intent authorization, Engin permissions, sandboxing, child
+safety.  
+**Core Files:** `lib/ai/capability-gate.ts`, `lib/child-safety/childSafetyDetector.ts`
+
+### 8.12 Observability (Idari)
+**Purpose:** Platform health, telemetry, root cause analysis.  
+**Core Files:** `lib/observability/collector.ts`, `lib/agents/idari.ts`
+
+---
+
+## 9. BUILD, DEPLOY & MONOREPO
+
+### Purpose
+Define how the codebase is structured, built, and deployed while
+preserving the architecture.
+
+### Structure
+```
+app/        – Next.js App Router (pages, API routes)
+components/ – React components (surfaces, shells, widgets)
+engins/     – Engin entry points and orchestrators
+lib/        – Business logic, runtime, utilities, rule‑sets
+types/      – Shared TypeScript types and schemas
+assembly/   – WASM modules (AssemblyScript)
+public/     – Static assets and cartridge bundles
+scripts/    – CI, studio agents, analysis tools
+config/     – YAML/JSON configuration files
+```
+
+### Deployment
+- Core engine deploys as a single Next.js application.
+- Engins can be federated modules, multi‑zones, or dynamic imports.
+- Monorepo managed by Turborepo/Nx.
+
+### Contribution Rules
+- New libraries go in `lib/`; UI in `components/`; types in `types/`.
+- Keep build pipelines per Engin independent.
+
+---
+
+## 10. CONTRIBUTION RULES
+
+- Every new Engin must include a manifest, a rule‑set, and a runtime.
+- New runtime utilities go in `lib/runtime/` only if truly universal.
+- New Intents and state shapes must be typed in `types/` before implementation.
+- No direct DOM mutation from Engin logic; use the bus.
+- No hidden state stores; all state flows through the engine.
+- Mobile‑first: all critical interactions must work on a phone.
+- When architecture and code disagree, the code must be refactored.
+
+---
+
+All subsystems defined above must maintain their declared boundaries.
+Violating these boundaries breaks the runtime model.
+```
