@@ -1,0 +1,149 @@
+name: Manual Type Audit Manager
+
+on:
+  workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
+
+jobs:
+  audit-worker:
+    name: Execute Type and Import Audit
+    runs-on: ubuntu-26.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v5
+        with:
+          node-version: '26'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Create and Run Audit Script
+        run: |
+          cat << 'EOF' > run-audit.js
+          const fs = require('fs');
+          const path = require('path');
+          const { execSync } = require('child_process');
+
+          const REPORT_FILE = 'system-type-audit.txt';
+          
+          // Data structures for grouping
+          const groups = {
+            'BROKEN_IMPORTS_EXPORTS': [],
+            'TYPE_ANY': [],
+            'TYPE_UNKNOWN': [],
+            'PLACEHOLDERS_AND_TODOS': [],
+            'TS_CORE_ERRORS': []
+          };
+
+          // 1. Run TypeScript Compiler to catch imports, exports, and syntax errors
+          console.log('Running tsc analysis...');
+          let tscOutput = '';
+          try {
+            // --noEmit ensures we just type-check without building
+            execSync('npx tsc --noEmit', { encoding: 'utf-8', stdio: 'pipe' });
+          } catch (error) {
+            tscOutput = error.stdout || error.message;
+          }
+
+          // Parse TSC output
+          const tscLines = tscOutput.split('\n');
+          const tsErrorRegex = /^(.*?)\((\d+,\d+)\):\s+error\s+(TS\d+):\s+(.*)$/;
+
+          tscLines.forEach(line => {
+            const match = line.match(tsErrorRegex);
+            if (match) {
+              const [_, file, coords, code, message] = match;
+              const entry = `File: ${file}:${coords} | ${code} | ${message}`;
+              
+              // TS2307, TS2792, TS2305 generally relate to broken imports/exports
+              if (['TS2307', 'TS2792', 'TS2305', 'TS2564'].includes(code)) {
+                groups['BROKEN_IMPORTS_EXPORTS'].push(entry);
+              } else {
+                groups['TS_CORE_ERRORS'].push(entry);
+              }
+            }
+          });
+
+          // 2. Scan for specific types and placeholders across the tree
+          console.log('Scanning component trees for unconstrained types...');
+          
+          function walkSync(dir, filelist = []) {
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+              const filepath = path.join(dir, file);
+              const stat = fs.statSync(filepath);
+              if (stat.isDirectory()) {
+                if (!filepath.includes('node_modules') && !filepath.includes('dist') && !filepath.includes('.git')) {
+                  walkSync(filepath, filelist);
+                }
+              } else if (filepath.endsWith('.ts') || filepath.endsWith('.tsx')) {
+                filelist.push(filepath);
+              }
+            }
+            return filelist;
+          }
+
+          const allTsFiles = walkSync(process.cwd());
+
+          const rxAny = /(?<=:)\s*any\b|<\s*any\s*>/g;
+          const rxUnknown = /(?<=:)\s*unknown\b|<\s*unknown\s*>/g;
+          const rxPlaceholders = /\b(TODO|FIXME)\b|<placeholder>|@ts-ignore/gi;
+
+          allTsFiles.forEach(file => {
+            const content = fs.readFileSync(file, 'utf-8');
+            const lines = content.split('\n');
+            const relativePath = path.relative(process.cwd(), file);
+
+            lines.forEach((line, index) => {
+              const lineNum = index + 1;
+              if (rxAny.test(line)) {
+                groups['TYPE_ANY'].push(`File: ${relativePath}:${lineNum} | Usage of 'any'`);
+              }
+              if (rxUnknown.test(line)) {
+                groups['TYPE_UNKNOWN'].push(`File: ${relativePath}:${lineNum} | Usage of 'unknown'`);
+              }
+              if (rxPlaceholders.test(line)) {
+                groups['PLACEHOLDERS_AND_TODOS'].push(`File: ${relativePath}:${lineNum} | Placeholder/Todo found`);
+              }
+            });
+          });
+
+          // 3. Construct the Output File
+          console.log('Generating indexed report...');
+          let report = `================================================================================\n`;
+          report += `CRITICAL INSTRUCTION: Before fixing anything, read all core*.md files found at the repo root.\n`;
+          report += `================================================================================\n\n`;
+
+          report += `--- AUDIT INDEX ---\n`;
+          for (const [key, items] of Object.entries(groups)) {
+            report += `- ${key.replace(/_/g, ' ')}: ${items.length} instances found\n`;
+          }
+          report += `\n================================================================================\n\n`;
+
+          report += `--- DETAILED LOG ---\n\n`;
+          for (const [key, items] of Object.entries(groups)) {
+            report += `### [ ${key.replace(/_/g, ' ')} ] ###\n`;
+            if (items.length === 0) {
+              report += `  (No issues found)\n\n`;
+            } else {
+              items.forEach(item => report += `* ${item}\n`);
+              report += `\n`;
+            }
+          }
+
+          fs.writeFileSync(REPORT_FILE, report);
+          console.log('Report successfully generated: ' + REPORT_FILE);
+          EOF
+
+          node run-audit.js
+
+      - name: Upload Audit Report
+        uses: actions/upload-artifact@v5
+        with:
+          name: typescript-audit-report
+          path: system-type-audit.txt
+          retention-days: 1
