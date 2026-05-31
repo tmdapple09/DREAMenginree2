@@ -52,7 +52,7 @@ const CONFIG = {
     ".storybook",
     ".husky",
   ],
-  architectureFile: "Architecture.md",
+  architectureFile: "ARCHITECTURE.md",
   outputDir: ".github",
   testPatterns: [
     "*.test.",
