@@ -58,22 +58,9 @@ function extractDynamicImports(content) {
   return [...out];
 }
 
-/**
- * extractNamedImports — the heart of the "connecting function" view.
- * Returns a map of:  modulePath → [namedExport1, namedExport2, ...]
- *
- * Example output:
- *   '@/lib/runtime/useDualRuntime'  → ['useDualRuntime', 'DualRuntimeBridge']
- *   '@/lib/runtime/dreamOSBus'      → ['(default) dreamOSBus']
- *   '@/components/dream.HomeFeed'   → ['HomeFeed']
- *
- * This is what lets you trace exactly WHICH function/hook/component
- * is the glue between any two files.
- */
 function extractNamedImports(content) {
   const out = {};
 
-  // Named: import { foo, bar as baz, type Qux } from 'path'
   const namedRe = /import\s+(?:type\s+)?\{\s*([^}]+)\s*\}\s+from\s+['"](.+?)['"]/g;
   let m;
   while ((m = namedRe.exec(content)) !== null) {
@@ -91,15 +78,13 @@ function extractNamedImports(content) {
     names.forEach(n => out[mod].add(n));
   }
 
-  // Default: import Foo from 'path'
   const defRe = /import\s+([A-Z_][a-zA-Z0-9_]*)\s+from\s+['"](.+?)['"]/g;
   while ((m = defRe.exec(content)) !== null) {
     const mod = m[2];
     if (!out[mod]) out[mod] = new Set();
-    out[mod].add(`⬡ ${m[1]}`); // ⬡ = default export marker
+    out[mod].add(`⬡ ${m[1]}`);
   }
 
-  // Namespace: import * as Foo from 'path'
   const nsRe = /import\s+\*\s+as\s+(\w+)\s+from\s+['"](.+?)['"]/g;
   while ((m = nsRe.exec(content)) !== null) {
     const mod = m[2];
@@ -130,19 +115,13 @@ function detectReactComponent(file, content) {
 
 // ─── EXPORT EXTRACTORS ────────────────────────────────────────────────────────
 
-/**
- * extractNamedExports — returns all exported identifiers from a file.
- * Covers: export function/const/class/let/var, export { ... }, export default.
- */
 function extractNamedExports(content) {
   const out = new Set();
 
-  // export function/const/class/let/var Foo
   const declRe = /export\s+(?:async\s+)?(?:function|const|class|let|var)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g;
   let m;
   while ((m = declRe.exec(content)) !== null) out.add(m[1]);
 
-  // export { Foo, Bar as Baz }
   const listRe = /export\s+\{([^}]+)\}/g;
   while ((m = listRe.exec(content)) !== null) {
     m[1].split(",").forEach(s => {
@@ -152,7 +131,6 @@ function extractNamedExports(content) {
     });
   }
 
-  // export default — mark with special token
   if (/export\s+default\s+/.test(content)) out.add("(default)");
 
   return [...out];
@@ -185,8 +163,6 @@ function detectDualRuntime(content) {
 }
 
 // ─── ROUTE MAP ────────────────────────────────────────────────────────────────
-// Converts Next.js App Router file paths → human-readable route strings.
-// dreamdmbar = HOME — gets a special label.
 
 function buildRouteMap(files) {
   const pages = files.filter(isPageFile);
@@ -195,13 +171,12 @@ function buildRouteMap(files) {
     let route = f
       .replace(/^app/, "")
       .replace(/\/page\.tsx$/, "")
-      .replace(/\/\(([^)]+)\)/g, "")   // strip route groups like (auth)
-      .replace(/\/\[\.\.\.([^\]]+)\]/g, "/:$1*")  // catch-all [...slug]
-      .replace(/\[([^\]]+)\]/g, ":$1"); // dynamic [id]
+      .replace(/\/\(([^)]+)\)/g, "")
+      .replace(/\/\[\.\.\.([^\]]+)\]/g, "/:$1*")
+      .replace(/\[([^\]]+)\]/g, ":$1");
 
     if (!route || route === "") route = "/";
 
-    // Label HOME
     let label = "";
     if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " ← HOME (DreamDMBar)";
     if (route === "/dreamdmbar/dreamspace") label = " ← HOME (DreamSpace)";
@@ -209,7 +184,6 @@ function buildRouteMap(files) {
     return { route, file: f, label };
   });
 
-  // Sort: root first, then alphabetically
   routes.sort((a, b) => {
     if (a.route === "/") return -1;
     if (b.route === "/") return 1;
@@ -247,10 +221,6 @@ function detectCircular(graph) {
 }
 
 // ─── FEATURE TAXONOMY ─────────────────────────────────────────────────────────
-// USER-FACING FEATURES
-// Note: dreamdmbar IS home — it contains homedream (main surface) and
-//       dreamspace (the spatial shell). The DM bar is the connecting spine
-//       between the two runtimes. Everything routes through it.
 
 const FEATURES = [
 
@@ -707,10 +677,10 @@ for (const file of codeFiles) {
   const imports = extractImports(content);
   fileData[file] = {
     imports,
-    namedImports:        extractNamedImports(content),   // ← THE CONNECTORS
+    namedImports:        extractNamedImports(content),
     dynamicImports:      extractDynamicImports(content),
     hookExports:         detectHookExports(content),
-    namedExports:        extractNamedExports(content),   // ← EXPORTS (for unused detection)
+    namedExports:        extractNamedExports(content),
     isReactComponent:    detectReactComponent(file, content),
     isAPIRoute:          isAPIRoute(file),
     usesSupabase:        detectSupabase(content),
@@ -723,7 +693,6 @@ for (const file of codeFiles) {
   };
 }
 
-// Relative dep graph for circular detection
 const relDepGraph = {};
 for (const [file, d] of Object.entries(fileData)) {
   relDepGraph[file] = d.imports
@@ -732,7 +701,6 @@ for (const [file, d] of Object.entries(fileData)) {
 }
 const circularDeps = detectCircular(relDepGraph);
 
-// Risk report
 const riskFiles = Object.entries(fileData)
   .filter(([_, d]) => d.couplingScore > 5 || d.usesEventBus || d.usesRuntimeRegistry)
   .map(([file, d]) => ({
@@ -749,12 +717,9 @@ const riskFiles = Object.entries(fileData)
   .sort((a, b) => b.score - a.score);
 
 // ─── BROKEN IMPORTS ───────────────────────────────────────────────────────────
-// An import is "broken" if it points to an internal path (@/ alias or relative)
-// that cannot be resolved to any actual file in the repo.
 
 const EXTENSIONS = ["", ".ts", ".tsx", ".js", ".jsx", ".mjs", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"];
 
-// Build a set of all normalised file paths (strip extension, for fuzzy match)
 const allFileSet = new Set(allFiles.map(f => path.normalize(f)));
 const allFileStemSet = new Set(
   allFiles.map(f => path.normalize(f).replace(/\.(ts|tsx|js|jsx|mjs)$/, ""))
@@ -763,40 +728,33 @@ const allFileStemSet = new Set(
 function resolveAliasOrRelative(fromFile, imp) {
   let candidate;
   if (imp.startsWith("@/")) {
-    // @/ maps to ROOT
-    candidate = imp.slice(2); // e.g. "lib/foo/bar"
+    candidate = imp.slice(2);
   } else if (imp.startsWith(".")) {
     candidate = path.normalize(path.join(path.dirname(fromFile), imp));
   } else {
-    return null; // external package — not our concern
+    return null;
   }
 
-  // Try with all known extensions
   for (const ext of EXTENSIONS) {
     const full = candidate + ext;
-    if (allFileSet.has(full)) return full; // exact hit
+    if (allFileSet.has(full)) return full;
   }
-  // Also try stem match (catches files the walker picked up)
   if (allFileStemSet.has(candidate)) return candidate;
-  return false; // couldn't resolve
+  return false;
 }
 
-// brokenImports: { file → [{ specifier, names }] }
 const brokenImports = {};
 for (const [file, d] of Object.entries(fileData)) {
   const broken = [];
   for (const [specifier, names] of Object.entries(d.namedImports)) {
     const resolved = resolveAliasOrRelative(file, specifier);
     if (resolved === false) {
-      // Can't resolve → broken
       broken.push({ specifier, names });
     }
   }
-  // Also catch bare-import specifiers from extractImports that aren't in namedImports
   for (const imp of d.imports) {
     const resolved = resolveAliasOrRelative(file, imp);
     if (resolved === false) {
-      // Only add if not already captured via namedImports
       if (!broken.some(b => b.specifier === imp)) {
         broken.push({ specifier: imp, names: ["(unknown — bare import)"] });
       }
@@ -806,10 +764,7 @@ for (const [file, d] of Object.entries(fileData)) {
 }
 
 // ─── UNUSED EXPORTS ───────────────────────────────────────────────────────────
-// Build a global set of every (resolvedFile, exportName) pair that is actually
-// imported somewhere, then compare against every file's declared exports.
 
-// Maps: normalised-stem → original file key (for looking up exports)
 const stemToFile = {};
 for (const file of codeFiles) {
   const stem = path.normalize(file).replace(/\.(ts|tsx|js|jsx|mjs)$/, "");
@@ -817,8 +772,7 @@ for (const file of codeFiles) {
   stemToFile[path.normalize(file)] = file;
 }
 
-// Collect all (file, exportName) pairs that ARE imported somewhere
-const importedPairs = new Set(); // "file::exportName"
+const importedPairs = new Set();
 for (const [fromFile, d] of Object.entries(fileData)) {
   for (const [specifier, names] of Object.entries(d.namedImports)) {
     const resolved = resolveAliasOrRelative(fromFile, specifier);
@@ -833,18 +787,16 @@ for (const [fromFile, d] of Object.entries(fileData)) {
   }
 }
 
-// unusedExports: { file → [exportName] }
 const unusedExports = {};
 for (const [file, d] of Object.entries(fileData)) {
   if (isTestFile(file)) continue;
-  // Entry points and route files are allowed to have "unused" exports — skip them
   if (isPageFile(file) || isAPIRoute(file)) continue;
   const unused = d.namedExports.filter(exp => !importedPairs.has(`${file}::${exp}`));
   if (unused.length) unusedExports[file] = unused;
 }
 
 // ─── PER-FILE ISSUE FLAGS (used by tree renderer) ────────────────────────────
-// fileIssues: { file → { broken: bool, unusedExports: bool } }
+
 const fileIssues = {};
 for (const file of codeFiles) {
   fileIssues[file] = {
@@ -924,12 +876,10 @@ function renderFeatureSection(f) {
   s += `<a name="${f.id}"></a>\n\n`;
   s += `# ${f.name}\n\n`;
 
-  // Multiline descriptions (used for HOME)
   const descLines = f.desc.split("\n");
   for (const line of descLines) s += `> ${line}\n`;
   s += `\n`;
 
-  // ── PAGES ──────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-pages"></a>\n\n`;
   s += `## Pages\n\n`;
   if (fx.pages.length) {
@@ -939,7 +889,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── COMPONENTS ─────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-components"></a>\n\n`;
   s += `## Components\n\n`;
   if (fx.components.length) {
@@ -958,7 +907,6 @@ function renderFeatureSection(f) {
     s += `_No component files for this feature._\n\n`;
   }
 
-  // ── LIB ────────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-lib"></a>\n\n`;
   s += `## Lib / Logic\n\n`;
   if (fx.lib.length) {
@@ -977,7 +925,6 @@ function renderFeatureSection(f) {
     s += `_No lib files for this feature._\n\n`;
   }
 
-  // ── HOOKS ──────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-hooks"></a>\n\n`;
   s += `## Exported Hooks\n\n`;
   if (fx.hooks.length) {
@@ -989,7 +936,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── API ROUTES ─────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-api"></a>\n\n`;
   s += `## API Routes\n\n`;
   if (fx.apis.length) {
@@ -999,7 +945,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── TYPES ──────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-types"></a>\n\n`;
   s += `## Types\n\n`;
   if (fx.types.length) {
@@ -1009,7 +954,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── STYLES ─────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-styles"></a>\n\n`;
   s += `## Styles\n\n`;
   if (fx.styles.length) {
@@ -1019,7 +963,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── TESTS ──────────────────────────────────────────────────────────────────
   s += `<a name="${f.id}-tests"></a>\n\n`;
   s += `## Tests\n\n`;
   if (fx.tests.length) {
@@ -1029,7 +972,6 @@ function renderFeatureSection(f) {
   }
   s += `\n`;
 
-  // ── DEPENDENCIES ───────────────────────────────────────────────────────────
   s += `<a name="${f.id}-deps"></a>\n\n`;
   s += `## Dependencies\n\n`;
   if (fx.extDeps.length) {
@@ -1046,7 +988,6 @@ function renderFeatureSection(f) {
     s += `_No dependencies detected._\n\n`;
   }
 
-  // ── SPECIAL CAPABILITIES ───────────────────────────────────────────────────
   const caps = [];
   if (fx.dualRuntimeFiles.length) caps.push(`**Dual Runtime** (${fx.dualRuntimeFiles.length} files)`);
   if (fx.supabaseFiles.length)    caps.push(`**Supabase** (${fx.supabaseFiles.length} files)`);
@@ -1105,8 +1046,6 @@ md += `# DREAMengin Repository State\n\n`;
 md += `Generated: ${new Date().toISOString()}\n\n`;
 md += `---\n\n`;
 
-// ─── MASTER INDEX ─────────────────────────────────────────────────────────────
-
 md += `# MASTER INDEX\n\n`;
 
 const userFeatures   = FEATURES.filter(f => f.group === "user");
@@ -1146,20 +1085,13 @@ md += `- [Raw File Tree](#raw-tree)\n`;
 
 md += `\n---\n\n`;
 
-// ─── FEATURE SECTIONS ─────────────────────────────────────────────────────────
-
 md += `# User-Facing Features\n\n---\n\n`;
 for (const f of userFeatures) md += renderFeatureSection(f);
 
 md += `# System & Infrastructure\n\n---\n\n`;
 for (const f of systemFeatures) md += renderFeatureSection(f);
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CROSS-CUTTING
-// ═══════════════════════════════════════════════════════════════════════════════
-
 // ─── ROUTE MAP ────────────────────────────────────────────────────────────────
-// What happens when a user navigates — every route in the app.
 
 md += `<a name="route-map"></a>\n\n`;
 md += `# Route Map\n\n`;
@@ -1167,7 +1099,6 @@ md += `> User navigation flow. dreamdmbar = HOME. Dynamic segments shown as \`:p
 
 const routes = buildRouteMap(allFiles);
 
-// Group by top-level segment
 const routeGroups = {};
 for (const r of routes) {
   const top = "/" + (r.route.split("/")[1] || "");
@@ -1187,10 +1118,7 @@ for (const [group, groupRoutes] of Object.entries(routeGroups).sort()) {
 }
 md += `---\n\n`;
 
-// ─── FILE CONNECTIONS + CONNECTING FUNCTIONS ──────────────────────────────────
-// This is the "what code connects these files" view.
-// For each file: shows WHAT named exports/functions are imported from WHERE.
-// ⬡ = default export   · * as = namespace import
+// ─── FILE CONNECTIONS ─────────────────────────────────────────────────────────
 
 md += `<a name="file-connections"></a>\n\n`;
 md += `# File Connections — Connecting Functions\n\n`;
@@ -1409,12 +1337,10 @@ if (unusedEntries.length) {
 md += `\n---\n\n`;
 
 // ─── RAW FILE TREE ────────────────────────────────────────────────────────────
-// Annotated: each directory shows which feature(s) it belongs to.
 
 md += `<a name="raw-tree"></a>\n\n`;
 md += `# Raw File Tree\n\n`;
 
-// Build feature lookup: dir prefix → feature names
 const dirFeatureMap = {};
 for (const f of FEATURES) {
   for (const g of f.globs) {
@@ -1455,7 +1381,6 @@ function buildTree(dir, prefix = "") {
       ? getFeatureAnnotation(fullPath)
       : "";
 
-    // File-level issue markers (inline on the filename line)
     let issueMarkers = "";
     if (!entry.isDirectory()) {
       const issues = fileIssues[relPath];
@@ -1470,12 +1395,10 @@ function buildTree(dir, prefix = "") {
     if (entry.isDirectory()) {
       buildTree(fullPath, childPrefix);
     } else {
-      // Inline broken imports detail
       const broken = brokenImports[relPath];
       const unused  = unusedExports[relPath];
       const hasDetail = (broken && broken.length) || (unused && unused.length);
       if (hasDetail) {
-        // Total sub-lines: figure out whether this is the last child for connector
         if (broken && broken.length) {
           broken.forEach((item, bi) => {
             const isLastDetail = bi === broken.length - 1 && (!unused || !unused.length);
@@ -1493,17 +1416,17 @@ function buildTree(dir, prefix = "") {
 buildTree(ROOT);
 md += "```\n";
 
-// ─── WRITE ────────────────────────────────────────────────────────────────────
-
 fs.writeFileSync("REPO_STATE.md", md);
 console.log("✓ REPO_STATE.md written");
 
-// FILE_TREE.md — standalone annotated tree with broken import / unused export detail
+// ─── FILE_TREE.md (slimmed down) ─────────────────────────────────────────────
+
 let treeMd = "";
 treeMd += `# File Tree\n\n`;
 treeMd += `Generated: ${new Date().toISOString()}\n\n`;
 treeMd += `Legend: ⚠ broken import  ∅ unused export\n\n`;
 treeMd += "```text\n";
+
 function buildTreeInto(dir, prefix = "") {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
     .filter(e => !shouldIgnore(e.name) && !/\.md$/i.test(e.name))
@@ -1517,6 +1440,16 @@ function buildTreeInto(dir, prefix = "") {
     const fullPath = path.join(dir, entry.name);
     const relPath = path.relative(ROOT, fullPath);
     const childPrefix = prefix + (isLast ? "    " : "│   ");
+
+    // --- EXCLUDE FILES THAT ADD NO VALUE TO THE TREE ---
+    if (!entry.isDirectory()) {
+      // Exclude test files, type declarations, style files, and any non-code file
+      if (isTestFile(entry.name)) return;
+      if (entry.name.endsWith('.d.ts')) return;
+      if (isStyleFile(entry.name)) return;
+      if (!isCodeFile(entry.name)) return;   // .json, .yaml, .env, Dockerfile, etc.
+      // (Optional: if you also want to exclude API routes, add: if (isAPIRoute(relPath)) return; )
+    }
 
     const annotation = entry.isDirectory() ? getFeatureAnnotation(fullPath) : "";
 
@@ -1534,14 +1467,13 @@ function buildTreeInto(dir, prefix = "") {
     if (entry.isDirectory()) {
       buildTreeInto(fullPath, childPrefix);
     } else {
+      // The rest of the detail is kept exactly as before, but only for the files we kept
       const d      = fileData[relPath];
       const broken = brokenImports[relPath] || [];
       const unused = unusedExports[relPath] || [];
 
-      // Collect all detail lines so we can correctly pick ├── vs └──
       const lines = [];
 
-      // Named imports: one line per name — "name ← source"
       if (d) {
         for (const [mod, names] of Object.entries(d.namedImports).sort()) {
           const isBroken = broken.some(b => b.specifier === mod);
@@ -1550,11 +1482,9 @@ function buildTreeInto(dir, prefix = "") {
             lines.push(`${name}  ${tag} ${mod}`);
           }
         }
-        // Dynamic imports
         for (const imp of d.dynamicImports) {
           lines.push(`(dynamic)  ← ${imp}`);
         }
-        // Named exports this file provides
         if (d.namedExports.length) {
           for (const exp of d.namedExports.sort()) {
             lines.push(`→ ${exp}`);
@@ -1562,7 +1492,6 @@ function buildTreeInto(dir, prefix = "") {
         }
       }
 
-      // Broken imports not already shown via namedImports
       for (const item of broken) {
         if (!d || !d.namedImports[item.specifier]) {
           for (const name of item.names) {
@@ -1571,7 +1500,6 @@ function buildTreeInto(dir, prefix = "") {
         }
       }
 
-      // Unused exports
       if (unused.length) {
         lines.push(`∅ unused: ${unused.join(", ")}`);
       }
