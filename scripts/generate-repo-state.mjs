@@ -1441,13 +1441,14 @@ function buildTreeInto(dir, prefix = "") {
     const relPath = path.relative(ROOT, fullPath);
     const childPrefix = prefix + (isLast ? "    " : "│   ");
 
-    // --- EXCLUDE FILES THAT ADD NO VALUE TO THE TREE ---
+        // --- EXCLUDE FILES THAT ADD NO VALUE TO THE TREE ---
     if (!entry.isDirectory()) {
       // Exclude test files, type declarations, style files, and any non-code file
       if (isTestFile(entry.name)) return;
       if (entry.name.endsWith('.d.ts')) return;
       if (isStyleFile(entry.name)) return;
       if (!isCodeFile(entry.name)) return;   // .json, .yaml, .env, Dockerfile, etc.
+      if (relPath.startsWith("scripts/") || relPath.includes("/scripts/")) return;
       // (Optional: if you also want to exclude API routes, add: if (isAPIRoute(relPath)) return; )
     }
 
