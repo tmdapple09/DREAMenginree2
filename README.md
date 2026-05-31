@@ -3254,7 +3254,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 
 ## Contributing
 Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **278**
+- Files tracked: **279**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -3380,9 +3380,9 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
-… (158 more files)
+… (159 more files)
 ```
-<details><summary>Contributing file index (278 files)</summary>
+<details><summary>Contributing file index (279 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
 - `.github/actions/resilient-engine/action.yml` — project file (yml).
@@ -3560,6 +3560,7 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 - `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
+- `.github/workflows/type-audit.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
