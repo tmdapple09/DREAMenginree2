@@ -42,13 +42,29 @@ import {
     loadVisibilityCircle,
 } from '@/lib/dreamr/closeFriendsVisibility';
 import { deriveNextCursor, parseFeedParams } from '@/lib/dreamr/feedCursor';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
+import { getPrimaryPostMediaUrl, type PostMediaShape } from '@/lib/media/postMedia';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { toErrorMessage } from '@/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { toErrorMessage } from '@/lib/utils';
+/**
+ * Raw row shape from the app_posts Supabase query.
+ * `view_count` (DB column) maps to `views_count` on ScoredPost.
+ */
+interface DbPostRow extends PostMediaShape {
+  id: string;
+  user_id: string | null;
+  content: string | null;
+  visibility: string | null;
+  post_visibility: string | null;
+  created_at: string;
+  view_count: number | null;
+  likes_count: number | null;
+  comments_count: number | null;
+  profiles: { handle: string; display_name: string | null; avatar_url: string | null } | null;
+}
+
 export async function GET(req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -56,8 +72,6 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
 
   const { searchParams } = new URL(req.url);
   const params = parseFeedParams(searchParams);
-
-  const db = supabase as SupabaseClient;
 
   // ── Fetch a wider pool so the algorithm has material to work with ────────
   // NOTE: the DB column on app_posts is `view_count` (singular), maintained by
@@ -68,7 +82,7 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
   // pages don't drift when new posts arrive between requests. Fall back to
   // the legacy numeric offset for backward compatibility with callers that
   // haven't migrated yet (the in-tree `dreamrfeed.tsx` is one of them).
-  let query = db
+  let query = supabase
     .from('app_posts')
     .select('id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)')
     .eq('visibility', 'public')
@@ -86,18 +100,7 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  interface FeedRow {
-    id: string;
-    content: string | null;
-    created_at: string;
-    view_count: number | null;
-    likes_count: number | null;
-    comments_count: number | null;
-    user_id?: string | null;
-    post_visibility?: string | null;
-    profiles?: { handle: string; display_name: string | null; avatar_url: string | null } | null;
-  }
-  const fetched = (rows ?? []) as FeedRow[];
+  const fetched = rows ?? [];
 
   // ── Visibility filter: drop close-friends posts the viewer cannot see ────
   const circle = await loadVisibilityCircle(user.id);
@@ -108,10 +111,10 @@ export async function GET(req: NextRequest ): Promise<NextResponse> {
     ? visible.filter((r) => !params.seen.has(r.id))
     : visible;
 
-  const posts: ScoredPost[] = (fresh as FeedRow[]).map((r) => ({
+  const posts: ScoredPost[] = fresh.map((r) => ({
     id:            r.id,
     content:       r.content ?? '',
-    media_url:     getPrimaryPostMediaUrl(r as unknown as Record<string, unknown>),
+    media_url:     getPrimaryPostMediaUrl(r),
     created_at:    r.created_at,
     views_count:   r.view_count    ?? 0,
     likes_count:   r.likes_count   ?? 0,

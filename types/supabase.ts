@@ -863,9 +863,12 @@ export type Database = {
           id: string
           likes_count: number
           media_json: Json | null
+          media_url: string | null
           media_urls: string[]
+          post_visibility: string | null
           updated_at: string
           user_id: string
+          view_count: number
           visibility: string | null
         }
         Insert: {
@@ -875,9 +878,12 @@ export type Database = {
           id?: string
           likes_count?: number
           media_json?: Json | null
+          media_url?: string | null
           media_urls?: string[]
+          post_visibility?: string | null
           updated_at?: string
           user_id: string
+          view_count?: number
           visibility?: string | null
         }
         Update: {
@@ -887,9 +893,12 @@ export type Database = {
           id?: string
           likes_count?: number
           media_json?: Json | null
+          media_url?: string | null
           media_urls?: string[]
+          post_visibility?: string | null
           updated_at?: string
           user_id?: string
+          view_count?: number
           visibility?: string | null
         }
         Relationships: [
