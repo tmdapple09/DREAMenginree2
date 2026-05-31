@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-31T02:57:25.456Z
+Generated: 2026-05-31T03:29:21.367Z
 
 ---
 
@@ -12806,12 +12806,6 @@ _No style files for this feature._
 | `node:fs` | `existsSync` |
 | `node:fs/promises` | `readFile`, `writeFile` |
 
-## `scripts/generate-repo-state.mjs`
-
-| Module | Connected via |
-|--------|---------------|
-| `path` | `* as Foo`, `Qux`, `bar`, `foo`, `⬡ Foo` |
-
 ## `scripts/generate-webapp-final-form.mjs`
 
 | Module | Connected via |
@@ -18929,7 +18923,6 @@ _No circular dependencies detected._
 | `proxy.ts` | `proxy`, `config` |
 | `scripts/export-full-code.mjs` | `DEFAULT_EXCLUDED_DIRS`, `DEFAULT_EXCLUDED_BASENAMES`, `isProbablyTextBuffer`, `hasPrintableContent`, `collectExportableFiles`, `exportFullCodeSnapshot` |
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
-| `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
 | `scripts/readme-autosync.ts` | `runReadmeAutosync` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
@@ -21879,8 +21872,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── fix-audit.js
 │   ├── generate-mobile-nextgen-spec.mjs
 │   ├── generate-mobile-ps5-spec.mjs
-│   ├── generate-repo-state.mjs ∅
-│   │   └── ∅ unused: ..., Foo, Baz, (default)
+│   ├── generate-repo-state.mjs
 │   ├── generate-webapp-final-form.mjs ∅
 │   │   └── ∅ unused: POST, $, (default)
 │   ├── law-check.sh
