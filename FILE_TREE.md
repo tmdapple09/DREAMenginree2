@@ -1,23 +1,179 @@
 # File Tree
 
-Generated: 2026-05-31T11:54:05.091Z
+Generated: 2026-05-31T20:53:17.301Z
 
 Legend: ⚠ broken import  ∅ unused export
 
 ```text
 ├── .ci
+│   ├── DREAMengin CI-CD Pipeline
+│   └── snapshot.diff.txt
 ├── .github
 │   ├── actions
 │   │   ├── resilient-engine
+│   │   │   └── action.yml
 │   │   └── setup-node
+│   │       └── action.yml
 │   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   └── gameengin-ai-agent.yml
 │   ├── issue-triage
 │   ├── ruleset
+│   │   ├── autofixvercelbuild.yml
+│   │   ├── bot-pr-automerge.yml
+│   │   ├── bouncer.yml
+│   │   ├── copilot-setup-steps.yml
+│   │   ├── daydream-all.yml
+│   │   ├── daydream-brand-engin.yml
+│   │   ├── daydream-code-engin.yml
+│   │   ├── daydream-create-engin.yml
+│   │   ├── daydream-engin-build-cycle.yml
+│   │   ├── daydream-engin-sicc-refinement.yml
+│   │   ├── daydream-games-engin.yml
+│   │   ├── daydream-lab-engin.yml
+│   │   ├── daydream-music-engin.yml
+│   │   ├── db-extension-audit.yml
+│   │   ├── db-extension-check.yml
+│   │   ├── deploy-artifact.yml
+│   │   ├── docs-auto-update.yml
+│   │   ├── dreamengin-preflight.yml
+│   │   ├── elite-gameengin-evolution.yml
+│   │   ├── engin-all.yml
+│   │   ├── exportrepo.yml
+│   │   ├── game-engin-patrol.yml
+│   │   ├── game-library-research.yml
+│   │   ├── gameengin-ai-agent.yml
+│   │   ├── gameengin-artisan.yml
+│   │   ├── gameengin-maestro.yml
+│   │   ├── gameengin-mechanic.yml
+│   │   ├── gameengin-prophet.yml
+│   │   ├── gameengin-upgrader.yml
+│   │   ├── gameengin-writer.yml
+│   │   ├── games-library-ai-agent.yml
+│   │   ├── garbageman.yml
+│   │   ├── generatesupabasetypes.yml
+│   │   ├── github-actions.yml
+│   │   ├── humanai-army-audit.yml
+│   │   ├── humanai-audit.yml
+│   │   ├── idari-daily.yml
+│   │   ├── issue-bot.yml
+│   │   ├── mobile-nextgen-spec-evolution.yml
+│   │   ├── mobile-ps5-spec-evolution.yml
+│   │   ├── neural-decision-engine.yml
+│   │   ├── optimize-dreamengin.yml
+│   │   ├── portfolio-optimization.yml
+│   │   ├── preflight.yml
+│   │   ├── print-codebase.yml
+│   │   ├── readme-autosync.yml
+│   │   ├── refreshlock.yml
+│   │   ├── repo-snapshot.yml
+│   │   ├── report-driven-coding-agent.yml
+│   │   ├── root-hygiene.yml
+│   │   ├── spec-engin-ai-agent.yml
+│   │   ├── sql-migration-guard.yml
+│   │   ├── sync-build-memory.yml
+│   │   ├── update-embed-feed.yml
+│   │   ├── update-repo-state.yml
+│   │   └── vercel-deploy.yml
 │   ├── scripts
+│   │   ├── ai_implement.py
+│   │   ├── ai_neural_decision.py
+│   │   ├── ai_propose.py
+│   │   ├── ai_report_propose.py
+│   │   ├── analyze-repo.js
+│   │   ├── assemble_report_context.py
+│   │   ├── catalog_games_for_ai.py
+│   │   ├── check_workflow_masking.py
+│   │   ├── check-root-hygiene.sh
+│   │   ├── dreamengin_core.py
+│   │   ├── humanai_audit.py
+│   │   ├── issue-bot.js
+│   │   │   └── (dynamic)  ← ./HeavyComponent
+│   │   ├── run-readme-autosync.mjs
+│   │   │   ├── execFileSync  ← node:child_process
+│   │   │   ├── spawnSync  ← node:child_process
+│   │   │   ├── copyFileSync  ← node:fs
+│   │   │   ├── existsSync  ← node:fs
+│   │   │   ├── mkdirSync  ← node:fs
+│   │   │   ├── readFileSync  ← node:fs
+│   │   │   ├── writeFileSync  ← node:fs
+│   │   │   ├── dirname  ← node:path
+│   │   │   ├── join  ← node:path
+│   │   │   └── resolve  ← node:path
+│   │   ├── scan_dreamengin_context.py
+│   │   ├── scan_gameengin_context.py
+│   │   ├── validate_game_sandbox.py
+│   │   └── validate_report_agent_spec.py
 │   └── workflows
+│       ├── autofixvercelbuild.yml
+│       ├── bot-pr-automerge.yml
+│       ├── bouncer.yml
+│       ├── cleanup-dead-code.yml
+│       ├── codeql.yml
+│       ├── copilot-setup-steps.yml
+│       ├── daydream-all.yml
+│       ├── daydream-brand-engin.yml
+│       ├── daydream-code-engin.yml
+│       ├── daydream-create-engin.yml
+│       ├── daydream-engin-build-cycle.yml
+│       ├── daydream-engin-sicc-refinement.yml
+│       ├── daydream-games-engin.yml
+│       ├── daydream-lab-engin.yml
+│       ├── daydream-music-engin.yml
+│       ├── db-extension-audit.yml
+│       ├── db-extension-check.yml
+│       ├── deploy-artifact.yml
+│       ├── docs-auto-update.yml
+│       ├── dreamengin-preflight.yml
+│       ├── elite-gameengin-evolution.yml
+│       ├── engin-all.yml
+│       ├── exportrepo.yml
+│       ├── full-audit.yml
+│       ├── game-engin-patrol.yml
+│       ├── game-library-research.yml
+│       ├── gameengin-ai-agent.yml
+│       ├── gameengin-artisan.yml
+│       ├── gameengin-maestro.yml
+│       ├── gameengin-mechanic.yml
+│       ├── gameengin-prophet.yml
+│       ├── gameengin-upgrader.yml
+│       ├── gameengin-writer.yml
+│       ├── games-library-ai-agent.yml
+│       ├── garbageman.yml
+│       ├── generatesupabasetypes.yml
+│       ├── github-actions.yml
+│       ├── humanai-army-audit.yml
+│       ├── humanai-audit.yml
+│       ├── idari-daily.yml
+│       ├── issue-bot.yml
+│       ├── mobile-nextgen-spec-evolution.yml
+│       ├── mobile-ps5-spec-evolution.yml
+│       ├── neural_decision_engine.yml
+│       ├── optimize-dreamengin.yml
+│       ├── orphan-guard.yml
+│       ├── portfolio-optimization.yml
+│       ├── preflight.yml
+│       ├── print-codebase.yml
+│       ├── readme-autosync.yml
+│       ├── refreshlock.yml
+│       ├── Repo Audit Auto Fix.yml
+│       ├── repo-snapshot.yml
+│       ├── report-driven-coding-agent.yml
+│       ├── resilient-engine-smoke.yml
+│       ├── root-hygiene.yml
+│       ├── ScanArcCleanup.yml
+│       ├── spec-engin-ai-agent.yml
+│       ├── sql-migration-guard.yml
+│       ├── sync-build-memory.yml
+│       ├── type-audit.yml
+│       ├── update-embed-feed.yml
+│       ├── update-repo-state.yml
+│       ├── vercel-deploy.yml
+│       ├── visual-schematic.yml
+│       └── visual-schematicpages.yml
 ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── humanAI  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   └── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   └── .gitkeep
 ├── app
 │   ├── (internal)
 │   │   └── idari-console  [Observability & Idari Console]
@@ -2865,6 +3021,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useEffect  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
+│   ├── globals-enhanced.css
 │   ├── layout.tsx ∅
 │   │   ├── ⬡ CommandPalette  ← @/components/dream.CommandPalette
 │   │   ├── ⬡ GlobalOverlays  ← @/components/dream.GlobalOverlays
@@ -2933,6 +3090,12 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → writeSnapshot
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── actions.json
+│   ├── events.json
+│   ├── registry.json
+│   ├── routes.json
+│   ├── schema.json
+│   └── ui-surfaces.json
 ├── components
 │   ├── activity
 │   │   ├── dream.ActivityPostForm.tsx
@@ -4405,6 +4568,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── types.ts
 │   │   │   └── vfx.ts
 │   │   │       └── → createMadmaxiVfx
+│   │   ├── css-modules.d.ts ∅
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.AvenueOfMirrors.tsx ∅
 │   │   │   ├── useGameAutoStart  ← @/lib/games/hooks
 │   │   │   ├── useGamePhase  ← @/lib/games/hooks
@@ -4462,6 +4628,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.GameController.module.css
 │   │   ├── dream.GameController.tsx ∅
 │   │   │   ├── ButtonInteractionManager  ← @/lib/games/gameControllerButtons
 │   │   │   ├── CONTROLLER_BUTTON_DEFS  ← @/lib/games/gameControllerButtons
@@ -4550,6 +4717,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.hud.MobileGameHUD.module.css
 │   │   ├── dream.hud.MobileGameHUD.tsx ∅
 │   │   │   ├── MOBILE_HUD_BUTTON_RING  ← @/lib/games/mobileControls
 │   │   │   ├── MobileControlVector  ← @/lib/games/mobileControls
@@ -6103,6 +6271,9 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → (default)
 │       └── ∅ unused: (default)
 ├── config
+│   ├── advanced-game-targets.json
+│   ├── optimizer.yaml
+│   └── ui-ux-spec.yaml
 ├── coresurfaces  [Profile & Edit Profile]
 │   ├── dreamsurface.EditProfileDream.tsx ⚠ ∅
 │   │   ├── ⬡ DreamWord  ← @/components/ui/dream.DreamWord
@@ -6252,6 +6423,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           ├── → metadata
 │           └── ∅ unused: metadata, (default)
 ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── capabilities.yaml
 │   └── tools.ts
 ├── dreamdmbar  [HOME — DreamDMBar]
 │   ├── dream.GlowingLight.tsx ∅
@@ -8977,40 +9149,107 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── asset-registry  [GameEngin]
 │   │   │   ├── build-history  [GameEngin]
 │   │   │   ├── character-voices  [GameEngin]
+│   │   │   │   └── mad-maxi.json
 │   │   │   ├── composition-principles  [GameEngin]
+│   │   │   │   ├── leading-lines-landmark.json
+│   │   │   │   └── parallax-layers.json
 │   │   │   ├── concept-library  [GameEngin]
+│   │   │   │   └── neon-courier.json
 │   │   │   ├── concept-patterns  [GameEngin]
 │   │   │   │   ├── protagonists  [GameEngin]
+│   │   │   │   │   └── reluctant-courier.json
 │   │   │   │   ├── scope-formulas  [GameEngin]
+│   │   │   │   │   └── one-day-runner.json
 │   │   │   │   └── settings  [GameEngin]
+│   │   │   │       └── neon-rain-megacity.json
 │   │   │   ├── crash-reports  [GameEngin]
 │   │   │   ├── dialogue-patterns  [GameEngin]
+│   │   │   │   ├── callback-anchor.json
+│   │   │   │   ├── implied-subject.json
+│   │   │   │   └── sentence-fragment-rhythm.json
 │   │   │   ├── emotional-tones  [GameEngin]
+│   │   │   │   ├── determined.json
+│   │   │   │   ├── fierce.json
+│   │   │   │   ├── hopeful.json
+│   │   │   │   ├── reflective.json
+│   │   │   │   └── weary.json
 │   │   │   ├── fun-heuristics  [GameEngin]
+│   │   │   │   ├── meta-progression.json
+│   │   │   │   ├── moment-to-moment.json
+│   │   │   │   └── session-loop.json
 │   │   │   ├── genre-dna  [GameEngin]
+│   │   │   │   ├── action-rpg.json
+│   │   │   │   ├── episodic.json
+│   │   │   │   ├── live-service.json
+│   │   │   │   ├── metroidvania.json
+│   │   │   │   ├── open-world.json
+│   │   │   │   ├── platformer.json
+│   │   │   │   ├── puzzle.json
+│   │   │   │   ├── racing.json
+│   │   │   │   ├── roguelike.json
+│   │   │   │   ├── sandbox.json
+│   │   │   │   └── template.json
 │   │   │   ├── inspiration-corpus  [GameEngin]
+│   │   │   │   ├── celeste.json
+│   │   │   │   ├── dead-cells.json
+│   │   │   │   ├── hades.json
+│   │   │   │   ├── hollow-knight.json
+│   │   │   │   └── outer-wilds.json
 │   │   │   ├── material-recipes  [GameEngin]
+│   │   │   │   ├── neon-glass-tube.json
+│   │   │   │   ├── rusted-iron.json
+│   │   │   │   └── sun-bleached-sandstone.json
 │   │   │   ├── mechanic-library  [GameEngin]
 │   │   │   │   ├── camera  [GameEngin]
+│   │   │   │   │   ├── look-ahead.json
+│   │   │   │   │   ├── screen-shake.json
+│   │   │   │   │   └── smooth-follow.json
 │   │   │   │   ├── combat  [GameEngin]
+│   │   │   │   │   ├── combo.json
+│   │   │   │   │   ├── hit-stop.json
+│   │   │   │   │   ├── parry.json
+│   │   │   │   │   └── ranged.json
 │   │   │   │   ├── movement  [GameEngin]
+│   │   │   │   │   ├── coyote-time.json
+│   │   │   │   │   ├── dash.json
+│   │   │   │   │   ├── double-jump.json
+│   │   │   │   │   ├── grapple.json
+│   │   │   │   │   └── wall-slide.json
 │   │   │   │   ├── progression  [GameEngin]
+│   │   │   │   │   ├── metroidvania-gating.json
+│   │   │   │   │   ├── roguelike-perks.json
+│   │   │   │   │   └── skill-tree.json
 │   │   │   │   └── structural  [GameEngin]
+│   │   │   │       ├── ability-gating.json
+│   │   │   │       ├── meta-progression.json
+│   │   │   │       ├── procedural-generation.json
+│   │   │   │       ├── run-persistence.json
+│   │   │   │       ├── season-pass.json
+│   │   │   │       └── world-streaming.json
 │   │   │   ├── narrative-pacing  [GameEngin]
+│   │   │   │   └── default.json
 │   │   │   ├── originality-registry  [GameEngin]
 │   │   │   │   ├── by-cartridge  [GameEngin]
+│   │   │   │   │   └── mad-maxi.json
+│   │   │   │   └── signatures.json
 │   │   │   ├── principles  [GameEngin]
 │   │   │   ├── progression-state  [GameEngin]
 │   │   │   ├── rd-sessions  [GameEngin]
 │   │   │   ├── technique-library  [GameEngin]
 │   │   │   │   ├── lighting  [GameEngin]
+│   │   │   │   │   └── three-point-mood.json
 │   │   │   │   ├── modeling  [GameEngin]
+│   │   │   │   │   ├── edge-flow.json
+│   │   │   │   │   └── silhouette-first.json
 │   │   │   │   └── optimization  [GameEngin]
+│   │   │   │       └── texture-atlasing.json
 │   │   │   ├── upgrade-history  [GameEngin]
+│   │   │   │   └── prioritization-rules.json
 │   │   │   ├── visual-bible  [GameEngin]
 │   │   │   │   ├── characters  [GameEngin]
 │   │   │   │   └── environments  [GameEngin]
 │   │   │   ├── work-queue  [GameEngin]
+│   │   │   └── active-projects.json
 │   │   ├── cartridges  [GameEngin]
 │   │   │   ├── achievementEngine.ts ∅
 │   │   │   │   ├── AchievementDefinition  ← ../cartridge
@@ -11431,6 +11670,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → analyzeSwipe
 │   │   ├── → isBotSession
 │   │   └── → tallyView
+│   ├── bus.wasm
 │   ├── componentInventory.ts ∅
 │   │   ├── → ALL_CATEGORIES
 │   │   ├── → COMPONENT_INVENTORY
@@ -11581,6 +11821,17 @@ Legend: ⚠ broken import  ∅ unused export
 │       └── → isWebGPUAvailable
 ├── misc
 │   └── images
+│       ├── arm2_transparent.png
+│       ├── coat_transparent.png
+│       ├── head_transparent.png
+│       ├── iconslist.png
+│       ├── logo_DREAM_transparent.png
+│       ├── logo_ENGIN_transparent.png
+│       ├── logo_transparent.png
+│       ├── shoe1_transparent.png
+│       ├── shoe2_transparent.png
+│       ├── sprite_2x_transparent.png
+│       └── sprite_transparent.png
 ├── optimizer  [WebGPU / Babylon Engine]
 │   ├── constraint-solver.ts
 │   │   ├── Constraint  ← ./types
@@ -11621,6 +11872,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── analyzer.mjs
 │   │   ├── execSync  ← node:child_process
 │   │   └── fileURLToPath  ← node:url
+│   ├── graph-stats.json
+│   ├── graph.json
+│   ├── index.html
 │   └── server.mjs
 │       ├── exec  ← node:child_process
 │       └── fileURLToPath  ← node:url
@@ -11629,16 +11883,285 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── code
 │   │   ├── data
 │   │   ├── notes
+│   │   │   └── sharpening_notes.txt
 │   │   └── paper
+│   │       ├── ccc_ada_axioms_and_invariants.tex
+│   │       ├── ccc_ada_black_hole_gravitational_wave_memory.tex
+│   │       ├── ccc_ada_holography_and_information_boundary.tex
+│   │       ├── ccc_ada_predictions_and_falsifiability.tex
+│   │       └── ccc_ada_twin_engine_framework.tex
 │   ├── data
+│   │   └── torr_vs_mond_lock_n11.csv
 │   ├── equations
+│   │   └── torridityequate.txt
 │   └── paper
+│       └── torridity_ledger.tex
 ├── research-and-development
+│   └── LICENSE
 ├── scripts
 │   ├── archive
+│   │   └── validate-deployment.js
 │   ├── feature-build
+│   │   └── generate-features.mjs
+│   │       ├── existsSync  ← fs
+│   │       ├── readFileSync  ← fs
+│   │       ├── writeFileSync  ← fs
+│   │       ├── dirname  ← path
+│   │       ├── resolve  ← path
+│   │       └── fileURLToPath  ← url
 │   ├── gameengin
 │   │   ├── lib
+│   │   │   └── tar.ts
+│   │   │       ├── Buffer  ← node:buffer
+│   │   │       ├── → packTar
+│   │   │       └── → unpackTar
+│   │   ├── architect-run.ts ⚠
+│   │   │   ├── ConceptPattern  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── VisionStatement  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── isOriginal  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listConceptPatterns  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listMechanics  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── readVisionStatement  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── recordVisionStatement  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   └── signatureHash  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   ├── artisan-run.ts ⚠
+│   │   │   ├── BRAIN_ROOT  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listCompositionPrinciples  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listMaterialRecipes  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listTechniques  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── recordAssetGeneration  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── createHash  ← node:crypto
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   └── * as path  ← node:path
+│   │   ├── maestro-analyze.ts ⚠
+│   │   │   ├── AgentName  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── AssignmentLogEntry  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── CartridgeStatus  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── getLastTouched  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── isOriginal  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listCartridges  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listMechanics  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── readCartridgeStatus  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── recordAssignments  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── signatureHash  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── execSync  ← node:child_process
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   └── * as path  ← node:path
+│   │   ├── mechanic-run.ts ⚠
+│   │   │   ├── listMechanics  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── recordBuild  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── execFileSync  ← node:child_process
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   └── * as path  ← node:path
+│   │   ├── package-cartridge.ts ⚠ ∅
+│   │   │   ├── CARTRIDGE_MAGIC  ⚠ ../../lib/gameengin/cartridge-manifest.js
+│   │   │   ├── validateManifest  ⚠ ../../lib/gameengin/cartridge-manifest.js
+│   │   │   ├── TarFile  ⚠ ./lib/tar.js
+│   │   │   ├── packTar  ⚠ ./lib/tar.js
+│   │   │   ├── execFileSync  ← node:child_process
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   ├── * as path  ← node:path
+│   │   │   ├── gzipSync  ← node:zlib
+│   │   │   ├── → packageCartridge
+│   │   │   └── ∅ unused: packageCartridge
+│   │   ├── prophet-run.ts ⚠
+│   │   │   ├── isOriginal  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listMechanics  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── readGenreDNA  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── signatureHash  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   └── * as path  ← node:path
+│   │   ├── upgrader-run.ts ⚠
+│   │   │   ├── AgentName  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── getLastTouched  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listCartridges  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listMechanics  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── listTechniques  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── readUpgradeRules  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── recordUpgrade  ⚠ ../../lib/gameengin/brain-reader.js
+│   │   │   ├── * as fs  ← node:fs
+│   │   │   └── * as path  ← node:path
+│   │   └── writer-run.ts ⚠
+│   │       ├── listDialoguePatterns  ⚠ ../../lib/gameengin/brain-reader.js
+│   │       ├── logRDSession  ⚠ ../../lib/gameengin/brain-reader.js
+│   │       ├── readCharacterVoice  ⚠ ../../lib/gameengin/brain-reader.js
+│   │       ├── readEmotionalTone  ⚠ ../../lib/gameengin/brain-reader.js
+│   │       ├── readNarrativePacing  ⚠ ../../lib/gameengin/brain-reader.js
+│   │       ├── * as fs  ← node:fs
+│   │       └── * as path  ← node:path
+│   ├── autofix-vercel-build.mjs
+│   │   ├── execSync  ← node:child_process
+│   │   ├── spawnSync  ← node:child_process
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   └── resolve  ← node:path
+│   ├── center-audit.mjs
+│   ├── check-build-memory-drift.mjs
+│   ├── check-engin-filenames.mjs
+│   │   ├── readdir  ← node:fs/promises
+│   │   ├── stat  ← node:fs/promises
+│   │   └── fileURLToPath  ← node:url
+│   ├── check-licenses.mjs
+│   │   └── execSync  ← node:child_process
+│   ├── check-orphans.mjs
+│   │   ├── buildRegistry  ← ./wire-orphans.mjs
+│   │   ├── promises  ← node:fs
+│   │   └── fileURLToPath  ← node:url
+│   ├── check-root-hygiene.mjs
+│   │   ├── readdir  ← node:fs/promises
+│   │   └── fileURLToPath  ← node:url
+│   ├── close-all-open-prs.sh
+│   ├── deploy.sh
+│   ├── export-full-code.mjs ∅
+│   │   ├── fileURLToPath  ← node:url
+│   │   ├── pathToFileURL  ← node:url
+│   │   ├── → DEFAULT_EXCLUDED_BASENAMES
+│   │   ├── → DEFAULT_EXCLUDED_DIRS
+│   │   ├── → collectExportableFiles
+│   │   ├── → exportFullCodeSnapshot
+│   │   ├── → hasPrintableContent
+│   │   ├── → isProbablyTextBuffer
+│   │   └── ∅ unused: DEFAULT_EXCLUDED_DIRS, DEFAULT_EXCLUDED_BASENAMES, isProbablyTextBuffer, hasPrintableContent, collectExportableFiles, exportFullCodeSnapshot
+│   ├── fix-audit.js
+│   │   └── DatabaseIcon  ← lucide-react
+│   ├── generate-mobile-nextgen-spec.mjs
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFile  ← node:fs/promises
+│   │   └── writeFile  ← node:fs/promises
+│   ├── generate-mobile-ps5-spec.mjs
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFile  ← node:fs/promises
+│   │   └── writeFile  ← node:fs/promises
+│   ├── generate-repo-state.mjs ∅
+│   │   ├── * as Foo  ← path
+│   │   ├── Qux  ← path
+│   │   ├── bar  ← path
+│   │   ├── foo  ← path
+│   │   ├── ⬡ Foo  ← path
+│   │   ├── → (default)
+│   │   ├── → ...
+│   │   ├── → Baz
+│   │   ├── → Foo
+│   │   └── ∅ unused: ..., Foo, Baz, (default)
+│   ├── generate-webapp-final-form.mjs ∅
+│   │   ├── execSync  ← child_process
+│   │   ├── fileURLToPath  ← url
+│   │   ├── → $
+│   │   ├── → (default)
+│   │   ├── → POST
+│   │   └── ∅ unused: POST, $, (default)
+│   ├── law-check.sh
+│   ├── migrate-imports.sh
+│   ├── optimize-dreamengin.mjs
+│   │   ├── existsSync  ← fs
+│   │   ├── mkdirSync  ← fs
+│   │   ├── readFileSync  ← fs
+│   │   ├── writeFileSync  ← fs
+│   │   ├── resolve  ← path
+│   │   └── parse  ← yaml
+│   ├── postbuild.js
+│   ├── postbuild.ts
+│   │   └── assertBuildInvariants  ← ../lib/adari
+│   ├── readme-autosync.ts ∅
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── readdirSync  ← node:fs
+│   │   ├── statSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── basename  ← node:path
+│   │   ├── extname  ← node:path
+│   │   ├── join  ← node:path
+│   │   ├── relative  ← node:path
+│   │   ├── resolve  ← node:path
+│   │   ├── fileURLToPath  ← node:url
+│   │   ├── → SECTION_REGISTRY
+│   │   ├── → computeAffected
+│   │   ├── → replaceSection
+│   │   ├── → runReadmeAutosync
+│   │   ├── → upsertSubsectionInSection
+│   │   └── ∅ unused: runReadmeAutosync
+│   ├── repository-state-analysis-section.mjs
+│   │   ├── → buildRepositoryStateAnalysisSection
+│   │   └── → extractRepositoryStateSnapshot
+│   ├── score-pass.cjs
+│   ├── setup-database.sql
+│   ├── spec-check.cjs
+│   ├── sync-build-memory.mjs ∅
+│   │   ├── → ...
+│   │   ├── → GET
+│   │   ├── → name
+│   │   └── ∅ unused: GET, name, ...
+│   ├── ui-ux-agent.py
+│   ├── update-bugs.mjs
+│   │   ├── execSync  ← child_process
+│   │   ├── existsSync  ← fs
+│   │   ├── readFileSync  ← fs
+│   │   ├── readdirSync  ← fs
+│   │   ├── statSync  ← fs
+│   │   ├── writeFileSync  ← fs
+│   │   ├── dirname  ← path
+│   │   ├── extname  ← path
+│   │   ├── join  ← path
+│   │   ├── resolve  ← path
+│   │   └── fileURLToPath  ← url
+│   ├── update-embed-feed.mjs
+│   │   ├── mkdirSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── dirname  ← node:path
+│   │   ├── join  ← node:path
+│   │   └── fileURLToPath  ← node:url
+│   ├── update-handoff.mjs
+│   │   ├── execSync  ← child_process
+│   │   ├── readFileSync  ← fs
+│   │   ├── writeFileSync  ← fs
+│   │   ├── dirname  ← path
+│   │   ├── resolve  ← path
+│   │   └── fileURLToPath  ← url
+│   ├── update-readme-status-utils.mjs
+│   │   ├── → extractNodeMajorFromDockerfile
+│   │   ├── → extractPnpmVersion
+│   │   └── → refreshCurrentImplementationStatusSection
+│   ├── update-readme.mjs
+│   │   ├── extractNodeMajorFromDockerfile  ← ./update-readme-status-utils.mjs
+│   │   ├── extractPnpmVersion  ← ./update-readme-status-utils.mjs
+│   │   ├── refreshCurrentImplementationStatusSection  ← ./update-readme-status-utils.mjs
+│   │   ├── execSync  ← child_process
+│   │   ├── appendFileSync  ← fs
+│   │   ├── existsSync  ← fs
+│   │   ├── readFileSync  ← fs
+│   │   ├── readdirSync  ← fs
+│   │   ├── statSync  ← fs
+│   │   ├── writeFileSync  ← fs
+│   │   ├── dirname  ← path
+│   │   ├── join  ← path
+│   │   ├── resolve  ← path
+│   │   └── fileURLToPath  ← url
+│   ├── validate-schema-sync.sh
+│   ├── vercel-ignore.cjs
+│   ├── vercel-preflight.cjs
+│   └── wire-orphans.mjs ⚠ ∅
+│       ├── brain  ⚠ ./brain
+│       ├── cartridges  ⚠ ./cartridges
+│       ├── connectors  ⚠ ./connectors
+│       ├── hooks  ⚠ ./hooks
+│       ├── personas  ⚠ ./personas
+│       ├── rulesets  ⚠ ./rulesets
+│       ├── surfaces  ⚠ ./surfaces
+│       ├── systems  ⚠ ./systems
+│       ├── UniversalEngine  ← @/src/engin/core
+│       ├── promises  ← node:fs
+│       ├── fileURLToPath  ← node:url
+│       ├── pathToFileURL  ← node:url
+│       ├── → $
+│       ├── → buildRegistry
+│       ├── → hydrateEngineRegistry
+│       └── ∅ unused: $, hydrateEngineRegistry
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -12920,6 +13443,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/widgets/widgetRegistry
 │   │   │       └── → systems
 │   │   └── state
+│   │       └── base.json
 │   ├── lib
 │   │   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   └── client.ts ∅
@@ -12937,11 +13461,2360 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── launch  ← @/src/launcher
 │       └── → launch
 ├── styles
+│   ├── dream-shell.css
+│   ├── globals.css
+│   ├── home-dream.css
+│   ├── theme.css
+│   └── view-transitions.css
 ├── tests
 │   ├── e2e
+│   │   ├── demo.spec.ts
+│   │   │   ├── expect  ← @playwright/test
+│   │   │   └── test  ← @playwright/test
+│   │   └── full-coverage.spec.ts
+│   │       ├── BrowserContext  ← @playwright/test
+│   │       ├── Page  ← @playwright/test
+│   │       ├── expect  ← @playwright/test
+│   │       └── test  ← @playwright/test
 │   ├── enginpipe
+│   │   ├── manifest.test.ts
+│   │   │   ├── EnginArtifactManifestSchema  ← @/lib/enginpipe/artifact/manifest
+│   │   │   ├── createManifest  ← @/lib/enginpipe/artifact/manifest
+│   │   │   ├── parseManifest  ← @/lib/enginpipe/artifact/manifest
+│   │   │   ├── safeParseManifest  ← @/lib/enginpipe/artifact/manifest
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
+│   │   ├── telemetry.test.ts
+│   │   │   ├── TelemetrySupabaseClient  ← @/lib/enginpipe/telemetry/client
+│   │   │   ├── createTelemetryClient  ← @/lib/enginpipe/telemetry/client
+│   │   │   ├── TelemetryEventTypeSchema  ← @/lib/enginpipe/telemetry/events
+│   │   │   ├── parseTelemetryEvent  ← @/lib/enginpipe/telemetry/events
+│   │   │   ├── SupabaseClient  ← @supabase/supabase-js
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   ├── it  ← vitest
+│   │   │   └── vi  ← vitest
+│   │   └── tiers.test.ts
+│   │       ├── DEFAULT_TIER_CONFIG  ← @/lib/enginpipe/quality/tiers
+│   │       ├── detectCapabilityTier  ← @/lib/enginpipe/quality/tiers
+│   │       ├── getTierConfig  ← @/lib/enginpipe/quality/tiers
+│   │       ├── scoreCapabilities  ← @/lib/enginpipe/quality/tiers
+│   │       ├── tierFromScore  ← @/lib/enginpipe/quality/tiers
+│   │       ├── describe  ← vitest
+│   │       ├── expect  ← vitest
+│   │       └── it  ← vitest
 │   ├── navigation
+│   │   ├── manifold-physics.spec.ts
+│   │   │   ├── expect  ← @playwright/test
+│   │   │   └── test  ← @playwright/test
+│   │   ├── navigation.spec.ts
+│   │   │   ├── expect  ← @playwright/test
+│   │   │   └── test  ← @playwright/test
+│   │   └── quaternion.spec.ts
+│   │       ├── expect  ← @playwright/test
+│   │       └── test  ← @playwright/test
+│   ├── activity-first-protocol.test.ts
+│   │   ├── calculateRealShitRate  ← ../lib/activity/aqs
+│   │   ├── formatAQS  ← ../lib/activity/aqs
+│   │   ├── formatRealShitRate  ← ../lib/activity/aqs
+│   │   ├── getAQSTier  ← ../lib/activity/aqs
+│   │   ├── calculateActivityPoints  ← ../lib/activity/scoring
+│   │   ├── calculateDecayDate  ← ../lib/activity/scoring
+│   │   ├── getInnovationBonus  ← ../lib/activity/scoring
+│   │   ├── getTierDisplayName  ← ../lib/activity/scoring
+│   │   ├── getTierMultiplier  ← ../lib/activity/scoring
+│   │   ├── getVerificationStrength  ← ../lib/activity/scoring
+│   │   ├── isDecayed  ← ../lib/activity/scoring
+│   │   ├── shouldPromoteActivity  ← ../lib/activity/scoring
+│   │   ├── ActivityTier  ← ../lib/activity/types
+│   │   ├── CPV_PRICING  ← ../lib/activity/types
+│   │   ├── SKIP_CREDIT_REWARDS  ← ../lib/activity/types
+│   │   ├── TIER_MULTIPLIERS  ← ../lib/activity/types
+│   │   ├── VERIFICATION_STRENGTH  ← ../lib/activity/types
+│   │   ├── VerificationMethod  ← ../lib/activity/types
+│   │   ├── estimateVisibilityScore  ← ../lib/activity/visibility-score
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── activity-revenue-split.test.ts
+│   │   ├── ACTIVITY_REVENUE_SPLIT  ← @/lib/activity/revenueSplit
+│   │   ├── calculateActivityRevenueSplit  ← @/lib/activity/revenueSplit
+│   │   ├── validateActivityRevenueSplit  ← @/lib/activity/revenueSplit
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── admin-lockout.test.ts
+│   │   ├── OWNER_EMAIL  ← @/lib/admin/lockout
+│   │   ├── isDomainBlocked  ← @/lib/admin/lockout
+│   │   ├── isOwner  ← @/lib/admin/lockout
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── admin-upgrade-readiness.test.ts
+│   │   ├── buildPatchPlanChecklist  ← @/lib/admin/upgrade-readiness
+│   │   ├── createUpgradeReadinessSnapshot  ← @/lib/admin/upgrade-readiness
+│   │   ├── selectNextUpgradeTarget  ← @/lib/admin/upgrade-readiness
+│   │   ├── summarizeBuildReadiness  ← @/lib/admin/upgrade-readiness
+│   │   ├── DaydreamEnginManifest  ← @/lib/feature-build
+│   │   ├── SetupCheck  ← @/lib/setup/checks
+│   │   ├── summarizeSetupChecks  ← @/lib/setup/checks
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── agent-bus-consensus.test.ts
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← @/lib/ai/triad
+│   │   └── (dynamic)  ← @/lib/agents/agentBus
+│   ├── ai-edit-engine.test.ts
+│   │   ├── CONFIRMATION_REQUIRED  ← @/lib/diff/aiEditEngine
+│   │   ├── EditPreview  ← @/lib/diff/aiEditEngine
+│   │   ├── EditableCell  ← @/lib/diff/aiEditEngine
+│   │   ├── SCOPE_DESCRIPTION  ← @/lib/diff/aiEditEngine
+│   │   ├── SCOPE_LABEL  ← @/lib/diff/aiEditEngine
+│   │   ├── SCOPE_ORDER  ← @/lib/diff/aiEditEngine
+│   │   ├── SCOPE_RISK  ← @/lib/diff/aiEditEngine
+│   │   ├── applyEdit  ← @/lib/diff/aiEditEngine
+│   │   ├── applyMatchesForCell  ← @/lib/diff/aiEditEngine
+│   │   ├── blockBoundsAt  ← @/lib/diff/aiEditEngine
+│   │   ├── buildEditPreview  ← @/lib/diff/aiEditEngine
+│   │   ├── escapeRegex  ← @/lib/diff/aiEditEngine
+│   │   ├── functionBoundsAt  ← @/lib/diff/aiEditEngine
+│   │   ├── generateDiffLines  ← @/lib/diff/aiEditEngine
+│   │   ├── lineBoundsAt  ← @/lib/diff/aiEditEngine
+│   │   ├── parseAiInstruction  ← @/lib/diff/aiEditEngine
+│   │   ├── undoEdit  ← @/lib/diff/aiEditEngine
+│   │   ├── wordBoundsAt  ← @/lib/diff/aiEditEngine
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── api-route-body-guard.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── asset-optimizer.test.ts
+│   │   ├── registryTagsForContext  ← @/lib/assets/assetOptimizer
+│   │   ├── Database  ← @/types/supabase
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/lib/assets/indexedDBStore
+│   ├── auth-providers-route.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← ../app/api/auth/providers/route
+│   ├── auth-update-password-page.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── authenticated-ui-shells.test.ts
+│   │   ├── ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── babylon-optimizero.test.ts
+│   │   ├── BABYLON_HARD_CHECKS  ← @/lib/optimizer/babylon-optimizero
+│   │   ├── BabylonOptimizeroScorers  ← @/lib/optimizer/babylon-optimizero
+│   │   ├── BabylonUICandidate  ← @/lib/optimizer/babylon-optimizero
+│   │   ├── BabylonUIGenerator  ← @/lib/optimizer/babylon-optimizero
+│   │   ├── BabylonUIOptimizero  ← @/lib/optimizer/babylon-optimizero
+│   │   ├── CHAOS_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── CreativeCandidate  ← @/lib/optimizer/creative-optimizero
+│   │   ├── DEFAULT_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── babylon-webgpu-engine.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/lib/babylon/createEngine
+│   ├── bar-hide-preserves-both-runtimes.test.ts
+│   │   ├── DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── boogie-policy-module.test.ts
+│   │   ├── BOOGIE_POLICY_VERSION  ← @/lib/policy/boogiePolicy
+│   │   ├── PolicyCategory  ← @/lib/policy/boogiePolicy
+│   │   ├── PolicyResult  ← @/lib/policy/boogiePolicy
+│   │   ├── PolicySeverity  ← @/lib/policy/boogiePolicy
+│   │   ├── boogieEvaluate  ← @/lib/policy/boogiePolicy
+│   │   ├── emitBoogieManEvent  ← @/lib/policy/boogiePolicy
+│   │   ├── onBoogieManEvent  ← @/lib/policy/boogiePolicy
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── boogieman.test.ts
+│   │   ├── RULE_CODES  ← @/lib/ai/boogie-policy
+│   │   ├── THRESHOLDS  ← @/lib/ai/boogie-policy
+│   │   ├── BLAST_RADIUS_ESCALATION_THRESHOLD  ← @/lib/ai/boogieman
+│   │   ├── BOOGIE_POLICY_VERSION  ← @/lib/ai/boogieman
+│   │   ├── CONTAINMENT_ACTIONS  ← @/lib/ai/boogieman
+│   │   ├── boogieEnforce  ← @/lib/ai/boogieman
+│   │   ├── boogieEvaluate  ← @/lib/ai/boogieman
+│   │   ├── computeRiskScore  ← @/lib/ai/boogieman
+│   │   ├── selectAction  ← @/lib/ai/boogieman
+│   │   ├── Intent  ← @/lib/ai/schemas
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── bot-detector.test.ts
+│   │   ├── TouchPoint  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   ├── isLikelyBot  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   ├── isSwipeBot  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   ├── scoreBotLikelihood  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   ├── scoreSwipePath  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── branding-logos.test.ts
+│   │   ├── LOGO_PATHS  ← @/lib/branding/logos
+│   │   ├── getRandomLogo  ← @/lib/branding/logos
+│   │   ├── resetLogoCache  ← @/lib/branding/logos
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── canonical-naming-enforcement.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── readdirSync  ← node:fs
+│   │   ├── statSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── relative  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── child-safety.test.ts
+│   │   ├── isZeroTolerance  ← @/lib/child-safety/childSafetyDetector
+│   │   ├── scanContent  ← @/lib/child-safety/childSafetyDetector
+│   │   ├── classifyImage  ← @/lib/child-safety/imageClassifier
+│   │   ├── evaluateMessageContext  ← @/lib/child-safety/messageContextChecker
+│   │   ├── isImageUrl  ← @/lib/child-safety/scanMediaUrls
+│   │   ├── scanMediaUrlsForChildSafety  ← @/lib/child-safety/scanMediaUrls
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/lib/child-safety/childSafetyDetector
+│   ├── code-dream-preview.test.ts
+│   │   ├── CellLanguage  ← @/lib/code/drEamsCodeAssist
+│   │   ├── detectLanguageFromCode  ← @/lib/code/drEamsCodeAssist
+│   │   ├── detectNLCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── generateCodeFromCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── matchCodeVocabulary  ← @/lib/code/drEamsCodeAssist
+│   │   ├── parseCodeResponse  ← @/lib/code/drEamsCodeAssist
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── coercion-table.test.ts
+│   │   ├── DreamDrop  ← ../lib/runtime/coercionTable
+│   │   ├── classifyDrop  ← ../lib/runtime/coercionTable
+│   │   ├── coerceRawPayload  ← ../lib/runtime/coercionTable
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── collector-extended.test.ts
+│   │   ├── clearBuffers  ← ../lib/observability/collector
+│   │   ├── collectBatchLogs  ← ../lib/observability/collector
+│   │   ├── collectLog  ← ../lib/observability/collector
+│   │   ├── collectTrace  ← ../lib/observability/collector
+│   │   ├── getErrorRate  ← ../lib/observability/collector
+│   │   ├── getLogCountsBySeverity  ← ../lib/observability/collector
+│   │   ├── getP95Latency  ← ../lib/observability/collector
+│   │   ├── groupTracesByTraceId  ← ../lib/observability/collector
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── compositeengin-features.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── (dynamic)  ← ../lib/composite/motionCapture
+│   │   ├── (dynamic)  ← ../lib/composite/compositor
+│   │   ├── (dynamic)  ← ../lib/composite/rotoscope
+│   │   ├── (dynamic)  ← ../lib/composite/fxSimulation
+│   │   └── (dynamic)  ← ../lib/composite/matchmover
+│   ├── conform-memory-map.test.ts
+│   │   ├── BAR_SEAM_ATOMICS_INDEX  ← @/lib/runtime/memory
+│   │   ├── BAR_SEAM_SCALE  ← @/lib/runtime/memory
+│   │   ├── CACHE_LINE  ← @/lib/runtime/memory
+│   │   ├── ENTITY_COUNT  ← @/lib/runtime/memory
+│   │   ├── HOMEDREAM_PRIVATE_OFFSET  ← @/lib/runtime/memory
+│   │   ├── MEMORY_SIZE  ← @/lib/runtime/memory
+│   │   ├── PUBLIC_VIEW_LIMIT  ← @/lib/runtime/memory
+│   │   ├── SOA_POSX_OFFSET  ← @/lib/runtime/memory
+│   │   ├── SOA_POSY_OFFSET  ← @/lib/runtime/memory
+│   │   ├── SOA_POSZ_OFFSET  ← @/lib/runtime/memory
+│   │   ├── SOA_VELX_OFFSET  ← @/lib/runtime/memory
+│   │   ├── SOA_VELY_OFFSET  ← @/lib/runtime/memory
+│   │   ├── SOA_VELZ_OFFSET  ← @/lib/runtime/memory
+│   │   ├── _resetConformMemoryMap  ← @/lib/runtime/memory
+│   │   ├── boogieMemoryGuard  ← @/lib/runtime/memory
+│   │   ├── getConformMemoryMap  ← @/lib/runtime/memory
+│   │   ├── readBarSeam  ← @/lib/runtime/memory
+│   │   ├── writeBarSeam  ← @/lib/runtime/memory
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── connector-delivery.test.ts
+│   │   ├── DELIVERY_STRATEGY_MATRIX  ← @/lib/connectors/deliveryStrategy
+│   │   ├── getDeliveryStrategy  ← @/lib/connectors/deliveryStrategy
+│   │   ├── knownDeliveryProviders  ← @/lib/connectors/deliveryStrategy
+│   │   ├── supportsPoll  ← @/lib/connectors/deliveryStrategy
+│   │   ├── supportsWebhook  ← @/lib/connectors/deliveryStrategy
+│   │   ├── supportsWebhookVerification  ← @/lib/connectors/deliveryStrategy
+│   │   ├── extractMetaWebhookChallenge  ← @/lib/connectors/webhookVerification
+│   │   ├── extractYouTubeWebSubChallenge  ← @/lib/connectors/webhookVerification
+│   │   ├── isCronAuthorised  ← @/lib/connectors/webhookVerification
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── connectors.test.ts
+│   │   ├── CONNECTOR_REGISTRY  ← @/lib/connectors/connectorRegistry
+│   │   ├── getConnectorDef  ← @/lib/connectors/connectorRegistry
+│   │   ├── atUriToHttps  ← @/lib/connectors/normalise
+│   │   ├── deduplicateFeedItems  ← @/lib/connectors/normalise
+│   │   ├── hostFromUrl  ← @/lib/connectors/normalise
+│   │   ├── normaliseBluesky  ← @/lib/connectors/normalise
+│   │   ├── normaliseGitHub  ← @/lib/connectors/normalise
+│   │   ├── normaliseMastodon  ← @/lib/connectors/normalise
+│   │   ├── normaliseNostr  ← @/lib/connectors/normalise
+│   │   ├── normalisePodcast  ← @/lib/connectors/normalise
+│   │   ├── normaliseReddit  ← @/lib/connectors/normalise
+│   │   ├── normaliseTwitter  ← @/lib/connectors/normalise
+│   │   ├── normaliseYouTubePlaylistItem  ← @/lib/connectors/normalise
+│   │   ├── normaliseYouTubeSearchResult  ← @/lib/connectors/normalise
+│   │   ├── stripHtml  ← @/lib/connectors/normalise
+│   │   ├── isValidNostrPubkey  ← @/lib/connectors/providers/nostr
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── content-intelligence-routes.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← ../app/api/content/intelligence/route
+│   │   └── (dynamic)  ← ../app/api/lab/benchmarks/route
+│   ├── content-publish-intent.test.ts
+│   │   ├── formatPublishError  ← @/lib/content/publishIntent
+│   │   ├── publishToDreamR  ← @/lib/content/publishIntent
+│   │   ├── resolvePublishIntent  ← @/lib/content/publishIntent
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── contentengin-features.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← ../lib/content/transcriptEditor
+│   │   ├── (dynamic)  ← ../lib/content/seoScorer
+│   │   ├── (dynamic)  ← ../lib/content/voiceClone
+│   │   ├── (dynamic)  ← ../app/api/content/transcribe/route
+│   │   ├── (dynamic)  ← next/server
+│   │   ├── (dynamic)  ← ../app/api/content/generative-fill/route
+│   │   └── (dynamic)  ← ../app/api/content/voice-clone/route
+│   ├── contextual-home.test.ts
+│   │   ├── HOME_BOTTOM_THRESHOLD  ← @/lib/home-buttons/contextual-home
+│   │   ├── HOME_TOP_THRESHOLD  ← @/lib/home-buttons/contextual-home
+│   │   ├── resolveHomeTarget  ← @/lib/home-buttons/contextual-home
+│   │   ├── runHomeAction  ← @/lib/home-buttons/contextual-home
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── creative-optimizero.test.ts
+│   │   ├── CHAOS_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── CreativeCandidate  ← @/lib/optimizer/creative-optimizero
+│   │   ├── CreativeOptimizero  ← @/lib/optimizer/creative-optimizero
+│   │   ├── DEFAULT_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── HardFailCheck  ← @/lib/optimizer/creative-optimizero
+│   │   ├── STABLE_WEIGHTS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── STANDARD_UI_HARD_CHECKS  ← @/lib/optimizer/creative-optimizero
+│   │   ├── ScoreFunction  ← @/lib/optimizer/creative-optimizero
+│   │   ├── createUIOptimizero  ← @/lib/optimizer/creative-optimizero
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── data-transform-extended.test.ts
+│   │   ├── computeBufferStats  ← ../lib/data-transform
+│   │   ├── decodeFromLedger  ← ../lib/data-transform
+│   │   ├── encodeToLedger  ← ../lib/data-transform
+│   │   ├── normalizeBuffer  ← ../lib/data-transform
+│   │   ├── zscore  ← ../lib/data-transform
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── data-transform.test.ts
+│   │   ├── DATA_PHYSICS  ← @/lib/data-transform
+│   │   ├── applyPhysicsFilter  ← @/lib/data-transform
+│   │   ├── decodeFromLedger  ← @/lib/data-transform
+│   │   ├── encodeToLedger  ← @/lib/data-transform
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── daydream-engin-routes.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── decide-bar-release.test.ts
+│   │   ├── BAR_FLING_LINE_RATIO  ← @/lib/dreamdm/barInteractions
+│   │   ├── BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── decideBarRelease  ← @/lib/dreamdm/barInteractions
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dev-bypass.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/lib/dev-bypass
+│   ├── diff-viewer.test.ts
+│   │   ├── DEMO_DIFF  ← @/lib/diff/diffUtils
+│   │   ├── buildFullFileLines  ← @/lib/diff/diffUtils
+│   │   ├── buildScrollMarkers  ← @/lib/diff/diffUtils
+│   │   ├── firstHunkIndex  ← @/lib/diff/diffUtils
+│   │   ├── nextHunkIndex  ← @/lib/diff/diffUtils
+│   │   ├── parseUnifiedDiff  ← @/lib/diff/diffUtils
+│   │   ├── prevHunkIndex  ← @/lib/diff/diffUtils
+│   │   ├── useEffect  ← react
+│   │   ├── useState  ← react
+│   │   ├── ⬡ React  ← react
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── → Foo
+│   ├── dr-eams-code-assist.test.ts
+│   │   ├── CODE_VOCABULARY  ← @/lib/code/drEamsCodeAssist
+│   │   ├── CellLanguage  ← @/lib/code/drEamsCodeAssist
+│   │   ├── NLCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── VOCAB_TERMS  ← @/lib/code/drEamsCodeAssist
+│   │   ├── buildCodeSystemPrompt  ← @/lib/code/drEamsCodeAssist
+│   │   ├── classifyQuery  ← @/lib/code/drEamsCodeAssist
+│   │   ├── detectLanguageFromCode  ← @/lib/code/drEamsCodeAssist
+│   │   ├── detectNLCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── generateCodeFromCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── matchCodeVocabulary  ← @/lib/code/drEamsCodeAssist
+│   │   ├── parseCodeResponse  ← @/lib/code/drEamsCodeAssist
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dr-eams-search-bar.test.ts
+│   │   ├── NAV_SUGGESTIONS  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── buildDrEamsRequest  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── buildDreamDMUrl  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── matchNavSuggestions  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── parseDrEamsReply  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── truncatePreview  ← @/lib/dreamengin/drEamsSearch
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-bar-context.test.ts
+│   │   ├── DreamBarSurface  ← @/lib/dreamdm/useDreamBarContext
+│   │   ├── detectSurface  ← @/lib/dreamdm/useDreamBarContext
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-continuity-spine.test.ts
+│   │   ├── ForgeActivityPulse  ← @/lib/forge/forgeRegistry
+│   │   ├── formatArtifactKind  ← @/lib/intelligence/continuityHelpers
+│   │   ├── getArtifactAccent  ← @/lib/intelligence/continuityHelpers
+│   │   ├── resolveResumeDest  ← @/lib/intelligence/continuityHelpers
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-effects.test.ts
+│   │   ├── useGsapEntrance  ← @/lib/gsap/useGsapEntrance
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-os-bus.test.ts
+│   │   ├── deriveAIRuntimeContext  ← @/lib/runtime/dreamOSBus
+│   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-state.test.ts
+│   │   ├── createInitialDreamState  ← @/lib/navigation/dream-state
+│   │   ├── move  ← @/lib/navigation/dream-state
+│   │   ├── returnHome  ← @/lib/navigation/dream-state
+│   │   ├── zoom  ← @/lib/navigation/dream-state
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dream-window-system.test.ts
+│   │   ├── DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── DreamWindowInstance  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── activateDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── bindDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── collapseDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── createDreamWindowInstance  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── mountDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── unbindDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── unmountDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── CONNECTION_VERBS  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createActivateAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createAttachAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createBindAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createConnectAcrossAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createMountAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createOpenIntoAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── createRouteIntoAction  ← @/lib/dream-window/connectionVerbs
+│   │   ├── dispatch  ← @/lib/dream-window/connectionVerbs
+│   │   ├── ALL_CONNECTION_PATHS  ← @/lib/dream-window/enginConnectionNetwork
+│   │   ├── getPathsForDomain  ← @/lib/dream-window/enginConnectionNetwork
+│   │   ├── getPathsForEngin  ← @/lib/dream-window/enginConnectionNetwork
+│   │   ├── hasConnectionPath  ← @/lib/dream-window/enginConnectionNetwork
+│   │   ├── DEFAULT_RUNTIME_REGION_STATE  ← @/lib/dream-window/runtimeRegion
+│   │   ├── RUNTIME_REGIONS  ← @/lib/dream-window/runtimeRegion
+│   │   ├── activateSurface  ← @/lib/dream-window/runtimeRegion
+│   │   ├── dismountWindowFromDreamSpace  ← @/lib/dream-window/runtimeRegion
+│   │   ├── getSurfaceSpaceSurface  ← @/lib/dream-window/runtimeRegion
+│   │   ├── isDreamSpaceDominant  ← @/lib/dream-window/runtimeRegion
+│   │   ├── mountWindowInDreamSpace  ← @/lib/dream-window/runtimeRegion
+│   │   ├── setSeamPosition  ← @/lib/dream-window/runtimeRegion
+│   │   ├── DAYDREAM_DOMAINS  ← @/lib/identity/canonical-names
+│   │   ├── ENGIN_SURFACES  ← @/lib/identity/canonical-names
+│   │   ├── NETWORK_COUNTS  ← @/lib/identity/canonical-names
+│   │   ├── SURFACE_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── DEFAULT_DUAL_RUNTIME  ← @/lib/runtime/dualRuntime
+│   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   ├── SURFACE_NAMES  ← @/lib/runtime/dualRuntime
+│   │   ├── isHomeActiveTop  ← @/lib/runtime/dualRuntime
+│   │   ├── makeHomeActiveTop  ← @/lib/runtime/dualRuntime
+│   │   ├── makeHomeDreamSpaceActive  ← @/lib/runtime/dualRuntime
+│   │   ├── setRuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   ├── swapDominantRuntime  ← @/lib/runtime/dualRuntime
+│   │   ├── worldsEqual  ← @/lib/runtime/dualRuntime
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamdm-bar-intent.test.ts
+│   │   ├── BarIntent  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├── BarIntentMode  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├── DEFAULT_BAR_INTENT  ← @/lib/dreamdm/DreamSystemContext
+│   │   ├── detectSurface  ← @/lib/dreamdm/useDreamBarContext
+│   │   ├── resolveIntentOverride  ← @/lib/dreamdm/useDreamBarContext
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamdm-bar-interactions.test.ts
+│   │   ├── BAR_FLING_TO_TOP_MIN_DRAG_PX  ← @/lib/dreamdm/barInteractions
+│   │   ├── BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── DEFAULT_SPLIT_RATIO  ← @/lib/dreamdm/barInteractions
+│   │   ├── DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   ├── DOUBLE_TAP_WINDOW_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── DRAG_TAP_THRESHOLD_PX  ← @/lib/dreamdm/barInteractions
+│   │   ├── GOLD_TAP_SLOP_PX  ← @/lib/dreamdm/barInteractions
+│   │   ├── LightPosition  ← @/lib/dreamdm/barInteractions
+│   │   ├── ORB_SIZE  ← @/lib/dreamdm/barInteractions
+│   │   ├── ORB_TAP_SLOP  ← @/lib/dreamdm/barInteractions
+│   │   ├── SPLIT_FLING_VELOCITY_PX_PER_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── SPLIT_SNAP_POINTS  ← @/lib/dreamdm/barInteractions
+│   │   ├── clampOrbOffset  ← @/lib/dreamdm/barInteractions
+│   │   ├── computeOrbDragPosition  ← @/lib/dreamdm/barInteractions
+│   │   ├── cycleLightPosition  ← @/lib/dreamdm/barInteractions
+│   │   ├── resolveGoldTapAction  ← @/lib/dreamdm/barInteractions
+│   │   ├── shouldCollapseGoldSwipe  ← @/lib/dreamdm/barInteractions
+│   │   ├── shouldCollapseTopExpandedDrag  ← @/lib/dreamdm/barInteractions
+│   │   ├── shouldSnapBottomDragToTop  ← @/lib/dreamdm/barInteractions
+│   │   ├── shouldTreatGoldReleaseAsTap  ← @/lib/dreamdm/barInteractions
+│   │   ├── snapSplitRatioOnRelease  ← @/lib/dreamdm/barInteractions
+│   │   ├── snapToSplitPoint  ← @/lib/dreamdm/barInteractions
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamdm-bar-wild.test.ts
+│   │   ├── GOLD_LONG_PRESS_MS  ← @/lib/dreamdm/barInteractions
+│   │   ├── MOOD_AURA_GRADIENTS  ← @/lib/dreamdm/barInteractions
+│   │   ├── MOOD_EDGE_COLORS  ← @/lib/dreamdm/barInteractions
+│   │   ├── MoodPeriod  ← @/lib/dreamdm/barInteractions
+│   │   ├── PARTICLE_COUNT  ← @/lib/dreamdm/barInteractions
+│   │   ├── QUICK_REACTIONS  ← @/lib/dreamdm/barInteractions
+│   │   ├── SLASH_COMMANDS  ← @/lib/dreamdm/barInteractions
+│   │   ├── STREAK_STORAGE_KEY  ← @/lib/dreamdm/barInteractions
+│   │   ├── SURFACE_ACCENT_COLORS  ← @/lib/dreamdm/barInteractions
+│   │   ├── StreakData  ← @/lib/dreamdm/barInteractions
+│   │   ├── StreakTier  ← @/lib/dreamdm/barInteractions
+│   │   ├── computeTypingRhythm  ← @/lib/dreamdm/barInteractions
+│   │   ├── filterSlashCommands  ← @/lib/dreamdm/barInteractions
+│   │   ├── generateParticles  ← @/lib/dreamdm/barInteractions
+│   │   ├── getMoodPeriod  ← @/lib/dreamdm/barInteractions
+│   │   ├── getStreakTier  ← @/lib/dreamdm/barInteractions
+│   │   ├── resolveStreak  ← @/lib/dreamdm/barInteractions
+│   │   ├── rhythmToHandleScale  ← @/lib/dreamdm/barInteractions
+│   │   ├── todayDateString  ← @/lib/dreamdm/barInteractions
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── dreamdm-draft.test.ts
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── dreamdm-messaging-phase2.test.ts
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── dreamengin-os.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← @/components/dreamengin/dream.DREAMenginOS
+│   │   └── (dynamic)  ← @/lib/babylon/createEngine
+│   ├── dreamnav.tau.test.ts
+│   │   ├── NavState  ← @/lib/dreamnav/tau
+│   │   ├── tau  ← @/lib/dreamnav/tau
+│   │   ├── transition  ← @/lib/dreamnav/tau
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-algorithm-velocity.test.ts
+│   │   ├── DREAMR_REASONS  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── DREAMR_WEIGHTS  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── DreamRSignals  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── ScoredPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── computeViewVelocity  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── dominantSignal  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── rankFeed  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreDreamRPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreViewVelocity  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-algorithm.test.ts
+│   │   ├── DREAMR_WEIGHTS  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── ScoredPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── rankFeed  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreContentDepth  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreDreamRPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreDreamenginMade  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreFreshness  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreOriginalMedia  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreTextRichness  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── scoreTrendImpact  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-feed-limits.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-feed-topics.test.ts
+│   │   ├── DREAMR_TOPICS  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-page-route.test.ts
+│   │   ├── ⬡ DreamRSection  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│   │   ├── readFileSync  ← fs
+│   │   ├── resolve  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-swipe-personalization.test.ts
+│   │   ├── DreamRSwipePost  ← @/lib/dreamr/swipePersonalization
+│   │   ├── canRecordDreamRView  ← @/lib/dreamr/swipePersonalization
+│   │   ├── contentTypePreferenceKey  ← @/lib/dreamr/swipePersonalization
+│   │   ├── emptyDreamRSwipePreferences  ← @/lib/dreamr/swipePersonalization
+│   │   ├── nextSwipePreferences  ← @/lib/dreamr/swipePersonalization
+│   │   ├── personalizeFeedOrder  ← @/lib/dreamr/swipePersonalization
+│   │   ├── shouldRecordDreamRView  ← @/lib/dreamr/swipePersonalization
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamr-visibility-cursor.test.ts
+│   │   ├── filterByCloseFriends  ← @/lib/dreamr/closeFriendsVisibility
+│   │   ├── MAX_SEEN_IDS  ← @/lib/dreamr/feedCursor
+│   │   ├── deriveNextCursor  ← @/lib/dreamr/feedCursor
+│   │   ├── parseFeedParams  ← @/lib/dreamr/feedCursor
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── dreamspace-panel.test.ts
+│   │   ├── buildRecentDestinations  ← @/components/dreams/dreamsurface.dreamspace
+│   │   ├── getAppRoute  ← @/components/dreams/dreamsurface.dreamspace
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── drop-target-registry.test.ts
+│   │   ├── DreamDrop  ← ../lib/runtime/coercionTable
+│   │   ├── dropTargetRegistry  ← ../lib/runtime/dropTargetRegistry
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── dual-runtime-bridge-peer-activity.test.ts
+│   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── durable-bridge.test.ts
+│   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── edit-profiledream-section7.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── engin-dispatcher.test.ts
+│   │   ├── EnginDispatcher  ← @/lib/runtime/EnginDispatcher
+│   │   ├── BAR_Y_SCALE  ← @/lib/runtime/memory
+│   │   ├── ENTITY_COUNT  ← @/lib/runtime/memory
+│   │   ├── MAX_WORKERS  ← @/lib/runtime/memory
+│   │   ├── OFFSET_AXIS_STATE  ← @/lib/runtime/memory
+│   │   ├── OFFSET_DAYDREAM_TYPE  ← @/lib/runtime/memory
+│   │   ├── OFFSET_DREAMDM_BAR_X  ← @/lib/runtime/memory
+│   │   ├── OFFSET_DREAMDM_BAR_Y  ← @/lib/runtime/memory
+│   │   ├── OFFSET_LOCKED_STATE  ← @/lib/runtime/memory
+│   │   ├── OFFSET_POS_X  ← @/lib/runtime/memory
+│   │   ├── OFFSET_POS_Y  ← @/lib/runtime/memory
+│   │   ├── OFFSET_POS_Z  ← @/lib/runtime/memory
+│   │   ├── OFFSET_TELEMETRY  ← @/lib/runtime/memory
+│   │   ├── OFFSET_VEL_X  ← @/lib/runtime/memory
+│   │   ├── OFFSET_VEL_Y  ← @/lib/runtime/memory
+│   │   ├── OFFSET_VEL_Z  ← @/lib/runtime/memory
+│   │   ├── SAB_BYTES  ← @/lib/runtime/memory
+│   │   ├── SEAM_CTRL_IDX_AXIS  ← @/lib/runtime/memory
+│   │   ├── SEAM_CTRL_IDX_BAR_X  ← @/lib/runtime/memory
+│   │   ├── SEAM_CTRL_IDX_BAR_Y  ← @/lib/runtime/memory
+│   │   ├── SEAM_CTRL_IDX_LOCKED  ← @/lib/runtime/memory
+│   │   ├── SNAP_THRESHOLD_RATIO  ← @/lib/runtime/memory
+│   │   ├── buildWorkgroups  ← @/lib/runtime/memory
+│   │   ├── createEnginSAB  ← @/lib/runtime/memory
+│   │   ├── f32Channel  ← @/lib/runtime/memory
+│   │   ├── f32DreamDMBarY  ← @/lib/runtime/memory
+│   │   ├── f64Telemetry  ← @/lib/runtime/memory
+│   │   ├── int32AxisState  ← @/lib/runtime/memory
+│   │   ├── int32DreamDMBarX  ← @/lib/runtime/memory
+│   │   ├── int32DreamDMBarY  ← @/lib/runtime/memory
+│   │   ├── int32LockedState  ← @/lib/runtime/memory
+│   │   ├── isIndexInBounds  ← @/lib/runtime/memory
+│   │   ├── u8DaydreamType  ← @/lib/runtime/memory
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── engin-runtime-core.test.ts
+│   │   ├── EnginRuntime  ← @/lib/engin-runtime
+│   │   ├── createEnginRuntime  ← @/lib/engin-runtime
+│   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── createBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── DEFAULT_USER_CAPABILITIES  ← @/lib/engin-runtime/EnginCapabilities
+│   │   ├── DENY_ALL  ← @/lib/engin-runtime/EnginCapabilities
+│   │   ├── gateCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   ├── mergeCapabilities  ← @/lib/engin-runtime/EnginCapabilities
+│   │   ├── createEnginEventBus  ← @/lib/engin-runtime/EnginEventBus
+│   │   ├── LocalStorageAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   ├── enginStorageKey  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── engin-workflow.test.ts
+│   │   ├── HANDOFF_PATHS  ← ../lib/engins/workflowEngine
+│   │   ├── STAGE_LABELS  ← ../lib/engins/workflowEngine
+│   │   ├── WORKFLOW_CATALOG  ← ../lib/engins/workflowEngine
+│   │   ├── abandonWorkflow  ← ../lib/engins/workflowEngine
+│   │   ├── advanceStage  ← ../lib/engins/workflowEngine
+│   │   ├── checkHandoffEligibility  ← ../lib/engins/workflowEngine
+│   │   ├── createWorkflow  ← ../lib/engins/workflowEngine
+│   │   ├── describeWorkflow  ← ../lib/engins/workflowEngine
+│   │   ├── findWorkflowDef  ← ../lib/engins/workflowEngine
+│   │   ├── handoffsFrom  ← ../lib/engins/workflowEngine
+│   │   ├── isValidTransition  ← ../lib/engins/workflowEngine
+│   │   ├── workflowsForEngin  ← ../lib/engins/workflowEngine
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── example.spec.ts
+│   │   ├── expect  ← @playwright/test
+│   │   └── test  ← @playwright/test
+│   ├── export-full-code.test.ts
+│   │   ├── mkdtempSync  ← node:fs
+│   │   ├── tmpdir  ← node:os
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── → (default)
+│   ├── feature-build.test.ts
+│   │   ├── allPairsInRefinePhase  ← @/lib/feature-build/buildCycle
+│   │   ├── allPairsMovingForward  ← @/lib/feature-build/buildCycle
+│   │   ├── calculateProgress  ← @/lib/feature-build/buildCycle
+│   │   ├── computeAllBuildCycleStates  ← @/lib/feature-build/buildCycle
+│   │   ├── computeBuildCycleState  ← @/lib/feature-build/buildCycle
+│   │   ├── countFeaturesByStatus  ← @/lib/feature-build/buildCycle
+│   │   ├── countUsableFeatures  ← @/lib/feature-build/buildCycle
+│   │   ├── getBuildPhase  ← @/lib/feature-build/buildCycle
+│   │   ├── DaydreamEnginManifest  ← @/lib/feature-build/featureManifest
+│   │   ├── FEATURE_MANIFESTS  ← @/lib/feature-build/featureManifest
+│   │   ├── getManifest  ← @/lib/feature-build/featureManifest
+│   │   ├── SICC_DIMENSIONS  ← @/lib/feature-build/uiQualityCriteria
+│   │   ├── SICC_GLOBAL_CRITERIA  ← @/lib/feature-build/uiQualityCriteria
+│   │   ├── getCriteriaForDimension  ← @/lib/feature-build/uiQualityCriteria
+│   │   ├── DAYDREAM_DOMAINS  ← @/lib/identity/canonical-names
+│   │   ├── ENGIN_SURFACES  ← @/lib/identity/canonical-names
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── forge-build.test.ts
+│   │   ├── ForgeArtifact  ← @/lib/forge/forgeBuild
+│   │   ├── ForgeArtifactType  ← @/lib/forge/forgeBuild
+│   │   ├── ForgeBuildRecord  ← @/lib/forge/forgeBuild
+│   │   ├── ForgeBuildState  ← @/lib/forge/forgeBuild
+│   │   ├── ForgeLogEvent  ← @/lib/forge/forgeBuild
+│   │   ├── canBuildToday  ← @/lib/forge/forgeBuild
+│   │   ├── clearForgeBuilds  ← @/lib/forge/forgeBuild
+│   │   ├── isForgeLogEvent  ← @/lib/forge/forgeBuild
+│   │   ├── readForgeBuilds  ← @/lib/forge/forgeBuild
+│   │   ├── recordBuildToday  ← @/lib/forge/forgeBuild
+│   │   ├── saveForgeBuild  ← @/lib/forge/forgeBuild
+│   │   ├── stageForgeArtifact  ← @/lib/forge/forgeBuild
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── → (default)
+│   │   ├── → POST
+│   │   ├── → canBuildToday
+│   │   ├── → clearForgeBuilds
+│   │   ├── → isForgeLogEvent
+│   │   ├── → readForgeBuilds
+│   │   ├── → recordBuildToday
+│   │   ├── → saveForgeBuild
+│   │   ├── → stageForgeArtifact
+│   │   └── → useForgeBuild
+│   ├── forge-engin.test.ts
+│   │   ├── ForgeHistoryEntry  ← @/lib/forge/forgeIntelligence
+│   │   ├── appendForgeHistory  ← @/lib/forge/forgeIntelligence
+│   │   ├── clearCustomWorkflows  ← @/lib/forge/forgeIntelligence
+│   │   ├── clearForgeHistory  ← @/lib/forge/forgeIntelligence
+│   │   ├── clearForgeTransfers  ← @/lib/forge/forgeIntelligence
+│   │   ├── clearWorkflowRun  ← @/lib/forge/forgeIntelligence
+│   │   ├── deleteCustomWorkflow  ← @/lib/forge/forgeIntelligence
+│   │   ├── generateSuggestions  ← @/lib/forge/forgeIntelligence
+│   │   ├── getActiveWorkflowRun  ← @/lib/forge/forgeIntelligence
+│   │   ├── getFailureRecovery  ← @/lib/forge/forgeIntelligence
+│   │   ├── parseGoalToWorkflow  ← @/lib/forge/forgeIntelligence
+│   │   ├── predictNextEngines  ← @/lib/forge/forgeIntelligence
+│   │   ├── readCustomWorkflows  ← @/lib/forge/forgeIntelligence
+│   │   ├── readForgeHistory  ← @/lib/forge/forgeIntelligence
+│   │   ├── readForgeTransfers  ← @/lib/forge/forgeIntelligence
+│   │   ├── recordForgeTransfer  ← @/lib/forge/forgeIntelligence
+│   │   ├── saveCustomWorkflow  ← @/lib/forge/forgeIntelligence
+│   │   ├── startWorkflowRun  ← @/lib/forge/forgeIntelligence
+│   │   ├── updateWorkflowStep  ← @/lib/forge/forgeIntelligence
+│   │   ├── CREATIVE_ENGINES  ← @/lib/forge/forgeRegistry
+│   │   ├── ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
+│   │   ├── EnginEntry  ← @/lib/forge/forgeRegistry
+│   │   ├── FORGE_WORKFLOWS  ← @/lib/forge/forgeRegistry
+│   │   ├── ForgeActivityPulse  ← @/lib/forge/forgeRegistry
+│   │   ├── formatRelativeTime  ← @/lib/forge/forgeRegistry
+│   │   ├── getForgeHeat  ← @/lib/forge/forgeRegistry
+│   │   ├── readForgeActivity  ← @/lib/forge/forgeRegistry
+│   │   ├── recordForgeActivity  ← @/lib/forge/forgeRegistry
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/lib/forge/forgeRegistry
+│   ├── forge-momentum.test.ts
+│   │   ├── MomentumLevel  ← @/lib/forge/forgeMomentum
+│   │   ├── computeDepth  ← @/lib/forge/forgeMomentum
+│   │   ├── computeDiversity  ← @/lib/forge/forgeMomentum
+│   │   ├── computeMomentum  ← @/lib/forge/forgeMomentum
+│   │   ├── computeStreak  ← @/lib/forge/forgeMomentum
+│   │   ├── computeVelocity  ← @/lib/forge/forgeMomentum
+│   │   ├── getLevel  ← @/lib/forge/forgeMomentum
+│   │   ├── getLevelColor  ← @/lib/forge/forgeMomentum
+│   │   ├── getLevelEmoji  ← @/lib/forge/forgeMomentum
+│   │   ├── readHistory  ← @/lib/forge/forgeMomentum
+│   │   ├── FORGE_HISTORY_KEY  ← @/lib/forge/forgeRegistry
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── forge-nexus.test.ts
+│   │   ├── buildTransitionMap  ← @/lib/forge/forgeNexus
+│   │   ├── computeEdges  ← @/lib/forge/forgeNexus
+│   │   ├── computeNexus  ← @/lib/forge/forgeNexus
+│   │   ├── computeNodes  ← @/lib/forge/forgeNexus
+│   │   ├── detectClusters  ← @/lib/forge/forgeNexus
+│   │   ├── findDominantPipeline  ← @/lib/forge/forgeNexus
+│   │   ├── CREATIVE_ENGINES  ← @/lib/forge/forgeRegistry
+│   │   ├── FORGE_HISTORY_KEY  ← @/lib/forge/forgeRegistry
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── forge-rituals.test.ts
+│   │   ├── FORGE_HISTORY_KEY  ← @/lib/forge/forgeRegistry
+│   │   ├── computeRituals  ← @/lib/forge/forgeRituals
+│   │   ├── detectAffinityPatterns  ← @/lib/forge/forgeRituals
+│   │   ├── detectSequencePatterns  ← @/lib/forge/forgeRituals
+│   │   ├── detectSessionPatterns  ← @/lib/forge/forgeRituals
+│   │   ├── detectTimePatterns  ← @/lib/forge/forgeRituals
+│   │   ├── getTimeBucket  ← @/lib/forge/forgeRituals
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── fusion-cartridges-depth.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── → ParticlePool
+│   │   ├── → ScreenShake
+│   │   ├── → drawDitherFog
+│   │   └── → prefersReducedMotion
+│   ├── fusion-cartridges.test.ts
+│   │   ├── CARTRIDGE_LOADERS  ← @/lib/gameengin/cartridges/loaders
+│   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── → (default)
+│   ├── game-controller.test.ts
+│   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
+│   │   ├── BTN_DOUBLE_TAP_MAX_MS  ← @/lib/games/gameControllerButtons
+│   │   ├── BTN_LONG_PRESS_MS  ← @/lib/games/gameControllerButtons
+│   │   ├── BTN_TAP_AND_HOLD_WINDOW_MS  ← @/lib/games/gameControllerButtons
+│   │   ├── BTN_TAP_MAX_MS  ← @/lib/games/gameControllerButtons
+│   │   ├── ButtonInteractionEvent  ← @/lib/games/gameControllerButtons
+│   │   ├── ButtonInteractionManager  ← @/lib/games/gameControllerButtons
+│   │   ├── CONTROLLER_BUTTONS  ← @/lib/games/gameControllerButtons
+│   │   ├── CONTROLLER_BUTTON_DEFS  ← @/lib/games/gameControllerButtons
+│   │   ├── ControllerButton  ← @/lib/games/gameControllerButtons
+│   │   ├── LEFT_STICK_DEAD_ZONE  ← @/lib/games/gameControllerLeft
+│   │   ├── LEFT_STICK_RADIUS_PX  ← @/lib/games/gameControllerLeft
+│   │   ├── computeLeftStickVector  ← @/lib/games/gameControllerLeft
+│   │   ├── RIGHT_RESET_TIMEOUT_MS  ← @/lib/games/gameControllerRight
+│   │   ├── RIGHT_TAP_MAX_MS  ← @/lib/games/gameControllerRight
+│   │   ├── RIGHT_TAP_MAX_PX  ← @/lib/games/gameControllerRight
+│   │   ├── computeAimDelta  ← @/lib/games/gameControllerRight
+│   │   ├── evaluateRightStickTap  ← @/lib/games/gameControllerRight
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── game-engin-ruleset.test.ts
+│   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── createBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── GAME_ENGIN_RULE_SET  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── GRAVITY_VALUES  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── GameEnginAction  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── GameScore  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── game-navigation.test.ts
+│   │   ├── buildLoginRedirectPath  ← @/lib/auth/nextRedirect
+│   │   ├── resolveSafeNextPath  ← @/lib/auth/nextRedirect
+│   │   ├── upsertSavedGameSession  ← @/lib/games/library-state
+│   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
+│   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
+│   │   ├── isLaunchFlagEnabled  ← @/lib/games/navigation
+│   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
+│   │   ├── GAME_INPUT_KEYBOARD_MAP  ← @/lib/games/useGameInputKeyboardBridge
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── game-performance-baseline.test.ts
+│   │   ├── createPerformanceBaselineSampler  ← @/lib/games/performance-baseline
+│   │   ├── resolveRendererBackend  ← @/lib/games/performance-baseline
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── game-quality-plan.test.ts
+│   │   ├── ADVANCED_GAME_TARGETS  ← @/lib/games/quality-plan
+│   │   ├── GAME_CONTROL_PROFILES  ← @/lib/games/quality-plan
+│   │   ├── GAME_ENGINE_STANDARDS  ← @/lib/games/quality-plan
+│   │   ├── GAME_QUALITY_PILLARS  ← @/lib/games/quality-plan
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── game-remote-regression.test.ts
+│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-architect.test.ts
+│   │   ├── BRAIN_ROOT  ← @/lib/gameengin/brain-reader
+│   │   ├── VISION_BUDGET_MAX_HOURS  ← @/lib/gameengin/brain-reader
+│   │   ├── VISION_STATEMENT_MAX_BYTES  ← @/lib/gameengin/brain-reader
+│   │   ├── VisionStatement  ← @/lib/gameengin/brain-reader
+│   │   ├── listCartridges  ← @/lib/gameengin/brain-reader
+│   │   ├── listCartridgesByStatus  ← @/lib/gameengin/brain-reader
+│   │   ├── listConceptPatterns  ← @/lib/gameengin/brain-reader
+│   │   ├── listVisionStatements  ← @/lib/gameengin/brain-reader
+│   │   ├── readCartridgeStatus  ← @/lib/gameengin/brain-reader
+│   │   ├── readVisionStatement  ← @/lib/gameengin/brain-reader
+│   │   ├── recordVisionStatement  ← @/lib/gameengin/brain-reader
+│   │   ├── setCartridgeStatus  ← @/lib/gameengin/brain-reader
+│   │   ├── * as fs  ← node:fs
+│   │   ├── * as path  ← node:path
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-cartridges.test.ts
+│   │   ├── GAMES  ← @/components/games/dream.GamesHub
+│   │   ├── CARTRIDGE_LOADERS  ← @/lib/gameengin/cartridges/loaders
+│   │   ├── getCartridgeIds  ← @/lib/gameengin/cartridges/loaders
+│   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   ├── getCartridgeCategories  ← @/lib/gameengin/cartridges/manifest
+│   │   ├── getCartridgeManifest  ← @/lib/gameengin/cartridges/manifest
+│   │   ├── GAME_CATALOG  ← @/lib/games/catalog
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-crash-modal.test.ts
+│   │   ├── CRASH_REPORT_MAX_BYTES  ← @/components/gameengin/dream.CrashReportModal
+│   │   ├── CartridgeErrorBoundary  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   ├── CRASH_REPORT_MAX_BYTES  ← @/lib/gameengin/brain-reader
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│   ├── gameengin-loop.test.ts
+│   │   ├── POST  ← @/app/api/gameengin/crash-report/route
+│   │   ├── ActiveProjects  ← @/lib/gameengin/brain-reader
+│   │   ├── BRAIN_ROOT  ← @/lib/gameengin/brain-reader
+│   │   ├── CRASH_REPORT_MAX_BYTES  ← @/lib/gameengin/brain-reader
+│   │   ├── isActiveCartridge  ← @/lib/gameengin/brain-reader
+│   │   ├── listCrashReports  ← @/lib/gameengin/brain-reader
+│   │   ├── readActiveProjects  ← @/lib/gameengin/brain-reader
+│   │   ├── recordCrashReport  ← @/lib/gameengin/brain-reader
+│   │   ├── setActiveProjects  ← @/lib/gameengin/brain-reader
+│   │   ├── * as fs  ← node:fs
+│   │   ├── * as path  ← node:path
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-power-systems.test.ts
+│   │   ├── AdvancedPhysicsWorld  ← ../lib/gameengin/power-systems
+│   │   ├── AnimationClip  ← ../lib/gameengin/power-systems
+│   │   ├── AnimationStateMachine  ← ../lib/gameengin/power-systems
+│   │   ├── AssetStreamManager  ← ../lib/gameengin/power-systems
+│   │   ├── BTContext  ← ../lib/gameengin/power-systems
+│   │   ├── BTNode  ← ../lib/gameengin/power-systems
+│   │   ├── BehaviorTreeEngine  ← ../lib/gameengin/power-systems
+│   │   ├── ClientSidePrediction  ← ../lib/gameengin/power-systems
+│   │   ├── ComputeShaderPipeline  ← ../lib/gameengin/power-systems
+│   │   ├── GPUProfiler  ← ../lib/gameengin/power-systems
+│   │   ├── GlobalIllumProbes  ← ../lib/gameengin/power-systems
+│   │   ├── LODLevel  ← ../lib/gameengin/power-systems
+│   │   ├── LODObject  ← ../lib/gameengin/power-systems
+│   │   ├── LODSystem  ← ../lib/gameengin/power-systems
+│   │   ├── OctreeBVH  ← ../lib/gameengin/power-systems
+│   │   ├── PhysicsMaterialSystem  ← ../lib/gameengin/power-systems
+│   │   ├── ProceduralWorldGen  ← ../lib/gameengin/power-systems
+│   │   ├── ReplayBuffer  ← ../lib/gameengin/power-systems
+│   │   ├── ResourcePool  ← ../lib/gameengin/power-systems
+│   │   ├── RollbackNetcode  ← ../lib/gameengin/power-systems
+│   │   ├── TerrainEngine  ← ../lib/gameengin/power-systems
+│   │   ├── TypedEventBus  ← ../lib/gameengin/power-systems
+│   │   ├── WGSLShaderManager  ← ../lib/gameengin/power-systems
+│   │   ├── WorkerJobSystem  ← ../lib/gameengin/power-systems
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-progression.test.ts
+│   │   ├── BRAIN_ROOT  ← @/lib/gameengin/brain-reader
+│   │   ├── STRUCTURE_TYPES  ← @/lib/gameengin/brain-reader
+│   │   ├── StructureType  ← @/lib/gameengin/brain-reader
+│   │   ├── listGenres  ← @/lib/gameengin/brain-reader
+│   │   ├── listStructuralMechanics  ← @/lib/gameengin/brain-reader
+│   │   ├── readGenreDNA  ← @/lib/gameengin/brain-reader
+│   │   ├── readProgressionModel  ← @/lib/gameengin/brain-reader
+│   │   ├── readProgressionState  ← @/lib/gameengin/brain-reader
+│   │   ├── recordProgressionState  ← @/lib/gameengin/brain-reader
+│   │   ├── * as fs  ← node:fs
+│   │   ├── * as path  ← node:path
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-remote.test.ts
+│   │   ├── BASE_COMBOS  ← @/lib/gameengin/remote
+│   │   ├── BASE_MOVES  ← @/lib/gameengin/remote
+│   │   ├── Combo  ← @/lib/gameengin/remote
+│   │   ├── ComboMachine  ← @/lib/gameengin/remote
+│   │   ├── DOUBLE_TAP_WINDOW_MS  ← @/lib/gameengin/remote
+│   │   ├── FaceButton  ← @/lib/gameengin/remote
+│   │   ├── HUD_ALLOWED_ELEMENTS  ← @/lib/gameengin/remote
+│   │   ├── LANDSCAPE_LAYOUT  ← @/lib/gameengin/remote
+│   │   ├── LEFT_JOYSTICK_RADIUS_MM  ← @/lib/gameengin/remote
+│   │   ├── MULTITOUCH_COMBOS  ← @/lib/gameengin/remote
+│   │   ├── PORTRAIT_LAYOUT  ← @/lib/gameengin/remote
+│   │   ├── RIGHT_JOYSTICK_RADIUS_MM  ← @/lib/gameengin/remote
+│   │   ├── RIGHT_JOYSTICK_RADIUS_RATIO  ← @/lib/gameengin/remote
+│   │   ├── SPRINT_COMBOS  ← @/lib/gameengin/remote
+│   │   ├── SPRINT_MOVES  ← @/lib/gameengin/remote
+│   │   ├── SprintDetector  ← @/lib/gameengin/remote
+│   │   ├── isHudElementAllowed  ← @/lib/gameengin/remote
+│   │   ├── layoutFor  ← @/lib/gameengin/remote
+│   │   ├── radiusMmToPx  ← @/lib/gameengin/remote
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-spec.test.ts
+│   │   ├── BRAIN_ROOT  ← @/lib/gameengin/brain-reader
+│   │   ├── getLastTouched  ← @/lib/gameengin/brain-reader
+│   │   ├── isOriginal  ← @/lib/gameengin/brain-reader
+│   │   ├── listCartridges  ← @/lib/gameengin/brain-reader
+│   │   ├── listCompositionPrinciples  ← @/lib/gameengin/brain-reader
+│   │   ├── listDialoguePatterns  ← @/lib/gameengin/brain-reader
+│   │   ├── listEmotionalTones  ← @/lib/gameengin/brain-reader
+│   │   ├── listMaterialRecipes  ← @/lib/gameengin/brain-reader
+│   │   ├── listMechanics  ← @/lib/gameengin/brain-reader
+│   │   ├── listTechniques  ← @/lib/gameengin/brain-reader
+│   │   ├── readCharacterVoice  ← @/lib/gameengin/brain-reader
+│   │   ├── readEmotionalTone  ← @/lib/gameengin/brain-reader
+│   │   ├── readGenreDNA  ← @/lib/gameengin/brain-reader
+│   │   ├── readNarrativePacing  ← @/lib/gameengin/brain-reader
+│   │   ├── readOriginalityRegistry  ← @/lib/gameengin/brain-reader
+│   │   ├── readUpgradeRules  ← @/lib/gameengin/brain-reader
+│   │   ├── recordAssetGeneration  ← @/lib/gameengin/brain-reader
+│   │   ├── recordAssignments  ← @/lib/gameengin/brain-reader
+│   │   ├── recordBuild  ← @/lib/gameengin/brain-reader
+│   │   ├── recordUpgrade  ← @/lib/gameengin/brain-reader
+│   │   ├── signatureHash  ← @/lib/gameengin/brain-reader
+│   │   ├── CARTRIDGE_MAGIC  ← @/lib/gameengin/cartridge-manifest
+│   │   ├── hasCartridgeMagic  ← @/lib/gameengin/cartridge-manifest
+│   │   ├── validateManifest  ← @/lib/gameengin/cartridge-manifest
+│   │   ├── parseDreamrArchive  ← @/lib/gameengin/cartridgeLoader
+│   │   ├── packTar  ← @/scripts/gameengin/lib/tar
+│   │   ├── unpackTar  ← @/scripts/gameengin/lib/tar
+│   │   ├── * as fs  ← node:fs
+│   │   ├── * as path  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── games-daydream-page-auth.test.ts
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/app/daydream/games/page
+│   ├── god-tier-engine.test.ts
+│   │   ├── BabylonEngineLike  ← @/lib/god-tier/godTierEngine
+│   │   ├── BabylonSceneLike  ← @/lib/god-tier/godTierEngine
+│   │   ├── DeviceSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── DreamEngineGodTierSystem  ← @/lib/god-tier/godTierEngine
+│   │   ├── GodTierState  ← @/lib/god-tier/godTierEngine
+│   │   ├── MeshSnapshot  ← @/lib/god-tier/godTierEngine
+│   │   ├── RingAverage  ← @/lib/god-tier/godTierEngine
+│   │   ├── RouteSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── RuntimeMetrics  ← @/lib/god-tier/godTierEngine
+│   │   ├── UIElementSnapshot  ← @/lib/god-tier/godTierEngine
+│   │   ├── UXSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── applyGodTierToBabylon  ← @/lib/god-tier/godTierEngine
+│   │   ├── buildChildContentFilter  ← @/lib/god-tier/godTierEngine
+│   │   ├── cinematicMotionStack  ← @/lib/god-tier/godTierEngine
+│   │   ├── computeAlgorithmLevel  ← @/lib/god-tier/godTierEngine
+│   │   ├── defaultDeviceSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── defaultRouteSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── defaultRuntimeMetrics  ← @/lib/god-tier/godTierEngine
+│   │   ├── defaultUXSignals  ← @/lib/god-tier/godTierEngine
+│   │   ├── eliteMeshPolicy  ← @/lib/god-tier/godTierEngine
+│   │   ├── fidelityScaler  ← @/lib/god-tier/godTierEngine
+│   │   ├── framePressureShield  ← @/lib/god-tier/godTierEngine
+│   │   ├── frictionOverride  ← @/lib/god-tier/godTierEngine
+│   │   ├── getGodTierUiTokens  ← @/lib/god-tier/godTierEngine
+│   │   ├── heroObjectImportance  ← @/lib/god-tier/godTierEngine
+│   │   ├── maxAssumptionBoot  ← @/lib/god-tier/godTierEngine
+│   │   ├── predictIntent  ← @/lib/god-tier/godTierEngine
+│   │   ├── speculativePrefetchEngine  ← @/lib/god-tier/godTierEngine
+│   │   ├── uiPrioritySolver  ← @/lib/god-tier/godTierEngine
+│   │   ├── visualDominanceEngine  ← @/lib/god-tier/godTierEngine
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── hero-sprite.test.ts
+│   │   ├── ZONE_QUOTES  ← @/components/dream.HeroSprite
+│   │   ├── hitZone  ← @/components/dream.HeroSprite
+│   │   ├── pickZoneQuote  ← @/components/dream.HeroSprite
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── home-feed-home.test.ts
+│   │   ├── DIVIDER_H  ← @/lib/dreamdm/barInteractions
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── homedream-page-auth.test.ts
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/app/dreamdmbar/layout
+│   ├── icons.test.ts
+│   │   ├── COLS  ← @/lib/icons/sheet
+│   │   ├── FRAME_H  ← @/lib/icons/sheet
+│   │   ├── FRAME_W  ← @/lib/icons/sheet
+│   │   ├── ICONS  ← @/lib/icons/sheet
+│   │   ├── ICON_ENTRIES  ← @/lib/icons/sheet
+│   │   ├── IconName  ← @/lib/icons/sheet
+│   │   ├── ROWS  ← @/lib/icons/sheet
+│   │   ├── getIconPos  ← @/lib/icons/sheet
+│   │   ├── hasIcon  ← @/lib/icons/sheet
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── idari-admin-guard.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── idari-observability-loop.test.ts
+│   │   ├── buildFallbackPatchPlan  ← @/lib/agents/idariLoop
+│   │   ├── buildIdariPrompt  ← @/lib/agents/idariLoop
+│   │   ├── runLoopIteration  ← @/lib/agents/idariLoop
+│   │   ├── LogEntry  ← @/lib/observability/collector
+│   │   ├── MetricPoint  ← @/lib/observability/collector
+│   │   ├── TelemetrySnapshot  ← @/lib/observability/collector
+│   │   ├── TraceSpan  ← @/lib/observability/collector
+│   │   ├── clearBuffers  ← @/lib/observability/collector
+│   │   ├── collectLog  ← @/lib/observability/collector
+│   │   ├── collectMetric  ← @/lib/observability/collector
+│   │   ├── collectTrace  ← @/lib/observability/collector
+│   │   ├── getBufferStats  ← @/lib/observability/collector
+│   │   ├── getSnapshot  ← @/lib/observability/collector
+│   │   ├── AnomalySignal  ← @/lib/observability/correlator
+│   │   ├── CorrelationResult  ← @/lib/observability/correlator
+│   │   ├── correlate  ← @/lib/observability/correlator
+│   │   ├── detectErrorSpikes  ← @/lib/observability/correlator
+│   │   ├── detectLatencySpikes  ← @/lib/observability/correlator
+│   │   ├── detectMetricAnomalies  ← @/lib/observability/correlator
+│   │   ├── buildImmediateRemediationAction  ← @/lib/observability/immediateAction
+│   │   ├── RootCauseAnalysis  ← @/lib/observability/rootCauseAnalyzer
+│   │   ├── inferRootCause  ← @/lib/observability/rootCauseAnalyzer
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── idari-patch-plan.test.ts
+│   │   ├── KnownIssue  ← @/lib/agents/idari
+│   │   ├── PatchPlan  ← @/lib/agents/idari
+│   │   ├── SpecRequirement  ← @/lib/agents/idari
+│   │   ├── VERCEL_2026_RUNTIME  ← @/lib/agents/idari
+│   │   ├── assessGenerationLawScope  ← @/lib/agents/idari
+│   │   ├── createKnownIssue  ← @/lib/agents/idari
+│   │   ├── createPatchPlan  ← @/lib/agents/idari
+│   │   ├── createVercelBuildResult  ← @/lib/agents/idari
+│   │   ├── evaluateSpecRequirements  ← @/lib/agents/idari
+│   │   ├── formatGenerationLawLoadCheck  ← @/lib/agents/idari
+│   │   ├── updateKnownIssueStatus  ← @/lib/agents/idari
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── instance-manager.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← ../lib/runtime/instanceManager
+│   ├── integration-wiring.test.ts
+│   │   ├── ⬡ CommandPalette  ← @/components/dream.CommandPalette
+│   │   ├── CREATIVE_ENGINES  ← @/lib/forge/forgeRegistry
+│   │   ├── ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── is-auth-related-error.test.ts
+│   │   ├── isAuthRelatedError  ← @/lib/runtime/isAuthRelatedError
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── journey-insights.test.ts
+│   │   ├── RETURN_GAP_DAYS  ← @/lib/journey/journeyInsights
+│   │   ├── annotateDotsWithInsights  ← @/lib/journey/journeyInsights
+│   │   ├── computeCurrentStreak  ← @/lib/journey/journeyInsights
+│   │   ├── computeWeeklyFrequency  ← @/lib/journey/journeyInsights
+│   │   ├── detectReturnGaps  ← @/lib/journey/journeyInsights
+│   │   ├── findFirstOccurrenceIds  ← @/lib/journey/journeyInsights
+│   │   ├── JourneyDot  ← @/types/journey
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── journey.test.ts
+│   │   ├── JOURNEY_DOMAIN_COLORS  ← @/types/journey
+│   │   ├── JourneyDot  ← @/types/journey
+│   │   ├── JourneyTimeGroup  ← @/types/journey
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── lab-dream-split.test.ts
+│   │   ├── detectLanguageFromCode  ← @/lib/code/drEamsCodeAssist
+│   │   ├── detectNLCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── generateCodeFromCommand  ← @/lib/code/drEamsCodeAssist
+│   │   ├── parseCodeResponse  ← @/lib/code/drEamsCodeAssist
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── lab-section-12-spec.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── landing-calibration.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── landing-mission-link.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── ledger-media.test.ts
+│   │   ├── analyzeLedgerDensity  ← @/lib/media/ledger
+│   │   ├── buildLedgerMediaUrl  ← @/lib/media/ledger
+│   │   ├── decodeFromLedger  ← @/lib/media/ledger
+│   │   ├── decodeLedgerBlob  ← @/lib/media/ledger
+│   │   ├── decodeLedgerStringToUint8Array  ← @/lib/media/ledger
+│   │   ├── encodeBlobToLedger  ← @/lib/media/ledger
+│   │   ├── encodeToLedger  ← @/lib/media/ledger
+│   │   ├── encodeUint8ArrayToLedgerString  ← @/lib/media/ledger
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── live-feed.test.ts
+│   │   ├── FeedPost  ← @/lib/feed/useLiveFeed
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── madmaxi-authored-levels.test.ts
+│   │   ├── isMadmaxiAuthoredLevel  ← @/components/games/dream.BabylonSideScroller
+│   │   ├── ZONES  ← @/components/games/madmaxi
+│   │   ├── getMadmaxiLevelDefinition  ← @/components/games/madmaxi
+│   │   ├── isMadmaxiAuthoredLevel  ← @/components/games/madmaxi
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── madmaxi-mechanics.test.ts
+│   │   ├── getMadmaxiEnemyCount  ← @/components/games/dream.BabylonSideScroller
+│   │   ├── MADMAXI_ENEMY_KINDS  ← @/components/games/madmaxi
+│   │   ├── MADMAXI_POWERUP_KINDS  ← @/components/games/madmaxi
+│   │   ├── MADMAXI_SUPER_SECONDS  ← @/components/games/madmaxi
+│   │   ├── MADMAXI_SUPER_STREAK  ← @/components/games/madmaxi
+│   │   ├── getEnemyKindForIndex  ← @/components/games/madmaxi
+│   │   ├── getMadmaxiEnemyCount  ← @/components/games/madmaxi
+│   │   ├── getMadmaxiLevelDefinition  ← @/components/games/madmaxi
+│   │   ├── getPowerUpForIndex  ← @/components/games/madmaxi
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── mobile-game-controls.test.ts
+│   │   ├── GAME_CATALOG  ← @/lib/games/catalog
+│   │   ├── MOBILE_HUD_BUTTON_RING  ← @/lib/games/mobileControls
+│   │   ├── getLegacyMoveAction  ← @/lib/games/mobileControls
+│   │   ├── normalizeStickVector  ← @/lib/games/mobileControls
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── modular-os-stores.test.ts
+│   │   ├── loadActiveModules  ← @/lib/activeModulesStore
+│   │   ├── removeActiveModule  ← @/lib/activeModulesStore
+│   │   ├── saveActiveModule  ← @/lib/activeModulesStore
+│   │   ├── hideArtifact  ← @/lib/artifactStore
+│   │   ├── listSystemArtifacts  ← @/lib/artifactStore
+│   │   ├── listVisibleArtifacts  ← @/lib/artifactStore
+│   │   ├── loadArtifacts  ← @/lib/artifactStore
+│   │   ├── restoreArtifact  ← @/lib/artifactStore
+│   │   ├── saveArtifact  ← @/lib/artifactStore
+│   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   ├── DreamArtifact  ← @/types/dreamArtifact
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── module-registry.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── music-starmaker-section10.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── namespace-isolation.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── readdirSync  ← fs
+│   │   ├── statSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── resolve  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── neural-seam-flow.test.ts
+│   │   ├── SEAM_CHANNEL_COLORS  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── SEAM_DEFAULT_COLOR  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── SeamParticle  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── _resetIdCounter  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── channelColor  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── createIdleParticle  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── createSeamParticle  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── evictDeadParticles  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── isParticleDead  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── tickParticles  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── notifications.test.ts
+│   │   ├── DbNotificationRow  ← @/lib/notifications/notificationHelpers
+│   │   ├── UiNotification  ← @/lib/notifications/notificationHelpers
+│   │   ├── applyOptimisticDelete  ← @/lib/notifications/notificationHelpers
+│   │   ├── applyOptimisticMarkAll  ← @/lib/notifications/notificationHelpers
+│   │   ├── applyOptimisticRead  ← @/lib/notifications/notificationHelpers
+│   │   ├── extractNotificationMessage  ← @/lib/notifications/notificationHelpers
+│   │   ├── getNotificationActionUrl  ← @/lib/notifications/notificationHelpers
+│   │   ├── getNotificationTitle  ← @/lib/notifications/notificationHelpers
+│   │   ├── getUnreadCount  ← @/lib/notifications/notificationHelpers
+│   │   ├── mapNotificationType  ← @/lib/notifications/notificationHelpers
+│   │   ├── normalizeDbRow  ← @/lib/notifications/notificationHelpers
+│   │   ├── sortByRecent  ← @/lib/notifications/notificationHelpers
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── offline-queue.test.ts
+│   │   ├── dequeue  ← ../lib/runtime/offlineQueue
+│   │   ├── enqueue  ← ../lib/runtime/offlineQueue
+│   │   ├── flushQueue  ← ../lib/runtime/offlineQueue
+│   │   ├── getQueueStatus  ← ../lib/runtime/offlineQueue
+│   │   ├── isOnline  ← ../lib/runtime/offlineQueue
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── optimizer.test.ts
+│   │   ├── DreamOptimizer  ← @/lib/optimizer
+│   │   ├── ConstraintSolver  ← @/lib/optimizer/constraint-solver
+│   │   ├── validateCreativeOption  ← @/lib/optimizer/creative-validator
+│   │   ├── Asset  ← @/lib/optimizer/types
+│   │   ├── CreativeContext  ← @/lib/optimizer/types
+│   │   ├── CreativeOption  ← @/lib/optimizer/types
+│   │   ├── FeedItem  ← @/lib/optimizer/types
+│   │   ├── Notification  ← @/lib/optimizer/types
+│   │   ├── OptimizerConfig  ← @/lib/optimizer/types
+│   │   ├── QueuedAction  ← @/lib/optimizer/types
+│   │   ├── RuntimeContext  ← @/lib/optimizer/types
+│   │   ├── SearchResult  ← @/lib/optimizer/types
+│   │   ├── WidgetPriority  ← @/lib/optimizer/types
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── orphan-wire-script.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← ../scripts/wire-orphans.mjs
+│   ├── os-subsystem-manifest.test.ts
+│   │   ├── DREAMENGIN_OS_SUBSYSTEM_MANIFEST  ← @/lib/dreamengin/osSubsystemManifest
+│   │   ├── buildDreamenginOSSubsystemManifest  ← @/lib/dreamengin/osSubsystemManifest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── page-surface-wiring.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase6-privacy-idari.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── z  ← zod
+│   ├── phase7-naming.test.ts
+│   │   ├── AI_AGENTS  ← @/lib/identity/canonical-names
+│   │   ├── AI_ROUTES  ← @/lib/identity/canonical-names
+│   │   ├── ALL_CANONICAL_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── ALL_ENGIN_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── CONNECTION_VERBS  ← @/lib/identity/canonical-names
+│   │   ├── CORE_SURFACES  ← @/lib/identity/canonical-names
+│   │   ├── CORE_SURFACE_ROUTES  ← @/lib/identity/canonical-names
+│   │   ├── DAYDREAM_DOMAINS  ← @/lib/identity/canonical-names
+│   │   ├── DAYDREAM_TO_ENGIN  ← @/lib/identity/canonical-names
+│   │   ├── DREAM_WINDOW  ← @/lib/identity/canonical-names
+│   │   ├── DREAM_WINDOW_REQUIRED_FIELDS  ← @/lib/identity/canonical-names
+│   │   ├── DREAM_WINDOW_STATES  ← @/lib/identity/canonical-names
+│   │   ├── ENGIN_SURFACES  ← @/lib/identity/canonical-names
+│   │   ├── MODULE_ROUTES  ← @/lib/identity/canonical-names
+│   │   ├── NETWORK_COUNTS  ← @/lib/identity/canonical-names
+│   │   ├── NETWORK_WORK_TYPES  ← @/lib/identity/canonical-names
+│   │   ├── PLATFORM_MODULES  ← @/lib/identity/canonical-names
+│   │   ├── PLATFORM_NAME  ← @/lib/identity/canonical-names
+│   │   ├── PRODUCT_DESCRIPTION  ← @/lib/identity/canonical-names
+│   │   ├── REJECTED_CONNECTION_VERBS  ← @/lib/identity/canonical-names
+│   │   ├── REJECTED_ENGIN_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── REJECTED_OS_TERMS  ← @/lib/identity/canonical-names
+│   │   ├── REJECTED_PLATFORM_VARIANTS  ← @/lib/identity/canonical-names
+│   │   ├── ROUTE_LAW_NAMING_PREFERENCES  ← @/lib/identity/canonical-names
+│   │   ├── RUNTIME_REGIONS  ← @/lib/identity/canonical-names
+│   │   ├── RUNTIME_SEAM_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── SURFACE_NAMES  ← @/lib/identity/canonical-names
+│   │   ├── getEnginForDomain  ← @/lib/identity/canonical-names
+│   │   ├── hasEnginSuffix  ← @/lib/identity/canonical-names
+│   │   ├── hasEngineSuffix  ← @/lib/identity/canonical-names
+│   │   ├── isCanonicalPlatformName  ← @/lib/identity/canonical-names
+│   │   ├── isRejectedConnectionVerb  ← @/lib/identity/canonical-names
+│   │   ├── isRejectedEnginName  ← @/lib/identity/canonical-names
+│   │   ├── isRejectedModuleName  ← @/lib/identity/canonical-names
+│   │   ├── isRejectedOsTerm  ← @/lib/identity/canonical-names
+│   │   ├── isRejectedPlatformVariant  ← @/lib/identity/canonical-names
+│   │   ├── isRouteLawPreferredName  ← @/lib/identity/canonical-names
+│   │   ├── isValidConnectionVerb  ← @/lib/identity/canonical-names
+│   │   ├── isValidDaydreamDomain  ← @/lib/identity/canonical-names
+│   │   ├── isValidDreamWindowState  ← @/lib/identity/canonical-names
+│   │   ├── isValidEnginName  ← @/lib/identity/canonical-names
+│   │   ├── isValidModuleName  ← @/lib/identity/canonical-names
+│   │   ├── isValidRuntimeRegion  ← @/lib/identity/canonical-names
+│   │   ├── isValidSurfaceName  ← @/lib/identity/canonical-names
+│   │   ├── validateName  ← @/lib/identity/canonical-names
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8a.test.ts
+│   │   ├── CANONICAL_NAV_ROUTES  ← @/lib/ai/triad
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8b-dream-windows.test.ts
+│   │   ├── DREAM_WINDOW_REQUIRED_LAYERS  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── DreamWindowInstance  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── DreamWindowLayerValidationResult  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── activateDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── bindDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── collapseDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── createDreamWindowInstance  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── mountDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── unbindDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── unmountDreamWindow  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── validateDreamWindowLayers  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── (dynamic)  ← @/lib/dream-window/useDreamWindowActions
+│   │   ├── (dynamic)  ← @/components/dreams/dream.widget.SuperDreamWidget
+│   │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetShell
+│   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.shell
+│   │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetCard
+│   │   ├── (dynamic)  ← @/components/widgets/dream.widget.UniversalWidget
+│   │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetLibrary
+│   │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetSurface
+│   │   ├── (dynamic)  ← @/types/dream-window
+│   │   ├── (dynamic)  ← node:fs
+│   │   ├── (dynamic)  ← node:path
+│   │   ├── → DELETE
+│   │   ├── → GET
+│   │   └── → POST
+│   ├── phase8e-orders.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8e-shop-marketplace.test.ts
+│   │   ├── MARKETPLACE_CONTACT_TABLE  ← @/lib/marketplace/listings
+│   │   ├── MARKETPLACE_TABLE  ← @/lib/marketplace/listings
+│   │   ├── MARKETPLACE_TAGS_MAX  ← @/lib/marketplace/listings
+│   │   ├── MARKETPLACE_TAG_MAX_LENGTH  ← @/lib/marketplace/listings
+│   │   ├── MARKETPLACE_TITLE_MAX  ← @/lib/marketplace/listings
+│   │   ├── VALID_MARKETPLACE_CATEGORIES  ← @/lib/marketplace/listings
+│   │   ├── formatMarketplacePrice  ← @/lib/marketplace/listings
+│   │   ├── marketplaceDetailRoute  ← @/lib/marketplace/listings
+│   │   ├── normalizeMarketplaceListing  ← @/lib/marketplace/listings
+│   │   ├── validateMarketplaceListing  ← @/lib/marketplace/listings
+│   │   ├── CONTACT_REQUEST_MESSAGE_MAX  ← @/lib/marketplace/request
+│   │   ├── buildContactRequestRecord  ← @/lib/marketplace/request
+│   │   ├── validateContactRequest  ← @/lib/marketplace/request
+│   │   ├── SHOP_LISTING_REQUIRED_FIELDS  ← @/lib/shop/listings
+│   │   ├── SHOP_ORDERS_PRIVATE_FIELDS  ← @/lib/shop/listings
+│   │   ├── SHOP_ORDERS_TABLE  ← @/lib/shop/listings
+│   │   ├── SHOP_PRICE_MIN  ← @/lib/shop/listings
+│   │   ├── SHOP_TABLE  ← @/lib/shop/listings
+│   │   ├── SHOP_TITLE_MAX_LENGTH  ← @/lib/shop/listings
+│   │   ├── isOrderOwner  ← @/lib/shop/listings
+│   │   ├── normalizeShopListing  ← @/lib/shop/listings
+│   │   ├── validateShopListing  ← @/lib/shop/listings
+│   │   ├── * as fs  ← fs
+│   │   ├── * as path  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8f-daydream-activation.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8f-daydream-network.test.ts ⚠
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── → useDaydreamPersistence
+│   │   └── (unknown — bare import)  ⚠ @/lib/supabase/client
+│   ├── phase8g-dual-runtime-persistence.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8h-triad-consensus.test.ts
+│   │   ├── execSync  ← child_process
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase8i-settings-persistence.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── → GET
+│   │   └── → POST
+│   ├── phase9-adaptive-quality.test.ts
+│   │   ├── AdaptiveQualityController  ← @/lib/webgpu/adaptiveQuality
+│   │   ├── DeviceSignals  ← @/lib/webgpu/adaptiveQuality
+│   │   ├── QualityTier  ← @/lib/webgpu/adaptiveQuality
+│   │   ├── getQualityProfile  ← @/lib/webgpu/adaptiveQuality
+│   │   ├── resolveQualityTier  ← @/lib/webgpu/adaptiveQuality
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase9-cross-post.test.ts
+│   │   ├── DreamSharePayload  ← @/lib/social/crossPost
+│   │   ├── buildCrossPostTargets  ← @/lib/social/crossPost
+│   │   ├── buildDreamOgMeta  ← @/lib/social/crossPost
+│   │   ├── formatShareText  ← @/lib/social/crossPost
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/lib/social/platforms
+│   ├── phase9-drag-drop.test.ts
+│   │   ├── ASSET_IMPORT_EVENT  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   ├── AssetCategory  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   ├── classifyFile  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   ├── isAcceptedFile  ← @/components/dreamengin/dream.CanvasDropZone
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase9-hashtags.test.ts
+│   │   ├── MAX_TAGS_PER_POST  ← @/lib/feed/hashtags
+│   │   ├── MAX_TAG_LENGTH  ← @/lib/feed/hashtags
+│   │   ├── calculateTrending  ← @/lib/feed/hashtags
+│   │   ├── extractHashtags  ← @/lib/feed/hashtags
+│   │   ├── formatTag  ← @/lib/feed/hashtags
+│   │   ├── segmentText  ← @/lib/feed/hashtags
+│   │   ├── validateTag  ← @/lib/feed/hashtags
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase9-notifications.test.ts
+│   │   ├── DbNotificationRow  ← @/lib/notifications/notificationHelpers
+│   │   ├── extractNotificationMessage  ← @/lib/notifications/notificationHelpers
+│   │   ├── getNotificationActionUrl  ← @/lib/notifications/notificationHelpers
+│   │   ├── getNotificationTitle  ← @/lib/notifications/notificationHelpers
+│   │   ├── mapNotificationType  ← @/lib/notifications/notificationHelpers
+│   │   ├── normalizeDbRow  ← @/lib/notifications/notificationHelpers
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase9-offline-cache.test.ts
+│   │   ├── CachedAsset  ← @/lib/offline/offlineCache
+│   │   ├── CachedScene  ← @/lib/offline/offlineCache
+│   │   ├── SceneObject  ← @/lib/offline/offlineCache
+│   │   ├── SceneSnapshot  ← @/lib/offline/offlineCache
+│   │   ├── SyncQueueEntry  ← @/lib/offline/offlineCache
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/lib/offline/offlineCache
+│   ├── phase9-scene-state.test.ts
+│   │   ├── SceneSnapshot  ← @/lib/scene/sceneState
+│   │   ├── createDefaultSnapshot  ← @/lib/scene/sceneState
+│   │   ├── scenesAreDifferent  ← @/lib/scene/sceneState
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── phase9-touch-gestures.test.ts
+│   │   ├── GestureCallbacks  ← @/lib/gestures/touchGestures
+│   │   ├── GestureEvent  ← @/lib/gestures/touchGestures
+│   │   ├── GestureRecogniser  ← @/lib/gestures/touchGestures
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── platform-utils.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← ../lib/platform/lab
+│   │   ├── (dynamic)  ← ../app/api/ads/orders/route
+│   │   ├── (dynamic)  ← ../app/api/gal/route
+│   │   └── (dynamic)  ← ../lib/platform/index
+│   ├── post-media.test.ts
+│   │   ├── getPostMediaUrls  ← @/lib/media/postMedia
+│   │   ├── getPrimaryPostMediaUrl  ← @/lib/media/postMedia
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── post-view-counting.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── product-law-principle10-alignment.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── profile-avatar-edit-entrypoints.test.ts
+│   │   ├── ⬡ EditableAvatar  ← @/components/profile/dream.EditableAvatar
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── rate-limiting.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── readme-autosync.test.ts
+│   │   ├── SECTION_REGISTRY  ← ../scripts/readme-autosync
+│   │   ├── SectionDescriptor  ← ../scripts/readme-autosync
+│   │   ├── SubsectionDescriptor  ← ../scripts/readme-autosync
+│   │   ├── computeAffected  ← ../scripts/readme-autosync
+│   │   ├── replaceSection  ← ../scripts/readme-autosync
+│   │   ├── upsertSubsectionInSection  ← ../scripts/readme-autosync
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── readme-homedream-system.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── readme-section13-code-codeengin.test.ts
+│   │   ├── readFileSync  ← fs
+│   │   ├── join  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── readme-section6-homedream.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── report-driven-game-agent.test.ts
+│   │   ├── execFileSync  ← node:child_process
+│   │   ├── mkdtempSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── tmpdir  ← node:os
+│   │   ├── join  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── repository-state-analysis-section.test.ts
+│   │   ├── buildRepositoryStateAnalysisSection  ← ../scripts/repository-state-analysis-section.mjs
+│   │   ├── extractRepositoryStateSnapshot  ← ../scripts/repository-state-analysis-section.mjs
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── responsive.test.ts
+│   │   ├── BREAKPOINTS  ← ../lib/ui/responsive
+│   │   ├── BREAKPOINT_ORDER  ← ../lib/ui/responsive
+│   │   ├── clamp  ← ../lib/ui/responsive
+│   │   ├── cssClamp  ← ../lib/ui/responsive
+│   │   ├── fluid  ← ../lib/ui/responsive
+│   │   ├── getBreakpoint  ← ../lib/ui/responsive
+│   │   ├── isAtLeast  ← ../lib/ui/responsive
+│   │   ├── isBelow  ← ../lib/ui/responsive
+│   │   ├── pickByBreakpoint  ← ../lib/ui/responsive
+│   │   ├── readViewportWidth  ← ../lib/ui/responsive
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── rss-feed.test.ts
+│   │   ├── RssFeedConfig  ← @/lib/social/rss-feed
+│   │   ├── extractFirstImage  ← @/lib/social/rss-feed
+│   │   ├── githubUserAtomUrl  ← @/lib/social/rss-feed
+│   │   ├── mastodonUserRssUrl  ← @/lib/social/rss-feed
+│   │   ├── normaliseRssItem  ← @/lib/social/rss-feed
+│   │   ├── nostrGatewayRssUrl  ← @/lib/social/rss-feed
+│   │   ├── parseRssFeed  ← @/lib/social/rss-feed
+│   │   ├── redditSubredditRssUrl  ← @/lib/social/rss-feed
+│   │   ├── redditUserRssUrl  ← @/lib/social/rss-feed
+│   │   ├── stripHtml  ← @/lib/social/rss-feed
+│   │   ├── youtubeChannelRssUrl  ← @/lib/social/rss-feed
+│   │   ├── youtubePlaylistRssUrl  ← @/lib/social/rss-feed
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← rss-parser
+│   ├── runtime-channel.test.ts
+│   │   ├── createLocalChannel  ← @/lib/runtime/runtimeChannel
+│   │   ├── createRuntimeChannel  ← @/lib/runtime/runtimeChannel
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── runtime-container.test.ts
+│   │   ├── RuntimeContainer  ← @/lib/runtime/runtimeContainer
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── runtime-viewport.test.ts
+│   │   ├── COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH  ← @/lib/ui/runtimeViewport
+│   │   ├── getPreferredViewportHeight  ← @/lib/ui/runtimeViewport
+│   │   ├── isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── runtime-wiring.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── safe-get-user.test.ts ⚠
+│   │   ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── seam-clipboard.test.ts
+│   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
+│   │   ├── ENGIN_KEYS  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── EnginKey  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── allWorkflows  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── executeWorkflow  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── findWorkflowById  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── findWorkflows  ← @/lib/runtime/enginWorkflowRegistry
+│   │   ├── SeamClipboardPayload  ← @/lib/runtime/seamClipboard
+│   │   ├── seamClipboard  ← @/lib/runtime/seamClipboard
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── session-continuity.test.ts
+│   │   ├── SessionContinuity  ← @/lib/intelligence/sessionContinuity
+│   │   ├── SessionStorageBackend  ← @/lib/intelligence/sessionContinuity
+│   │   ├── StoredSession  ← @/lib/intelligence/sessionContinuity
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── session-pattern-engine.test.ts
+│   │   ├── SessionPatternEngine  ← @/lib/intelligence/sessionPatternEngine
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
 │   ├── setup-env.ts
+│   ├── shell-cartridge-wiring.test.ts
+│   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
+│   │   ├── registerCartridges  ← @/lib/gameengin/registerCartridges
+│   │   ├── moduleRegistry  ← @/lib/runtime/moduleRegistry
+│   │   ├── useModuleRegistry  ← @/lib/runtime/moduleRegistry
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── skip-credits.test.ts
+│   │   ├── addSkipCredits  ← @/lib/activity/skipCredits
+│   │   ├── calculateSkipCreditsEarned  ← @/lib/activity/skipCredits
+│   │   ├── canSpendSkipCredit  ← @/lib/activity/skipCredits
+│   │   ├── spendSkipCredit  ← @/lib/activity/skipCredits
+│   │   ├── AdType  ← @/lib/activity/types
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── social-feed.test.ts
+│   │   ├── SocialFeedItem  ← @/lib/social-feed
+│   │   ├── extractFirstImage  ← @/lib/social-feed
+│   │   ├── fetchSocialFeed  ← @/lib/social-feed
+│   │   ├── stripHtml  ← @/lib/social-feed
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← rss-parser
+│   ├── social-platforms.test.ts
+│   │   ├── PLATFORM_MAP  ← @/lib/social/platforms
+│   │   ├── PROFILE_SHARE_PLATFORMS  ← @/lib/social/platforms
+│   │   ├── SOCIAL_PLATFORMS  ← @/lib/social/platforms
+│   │   ├── detectPlatform  ← @/lib/social/platforms
+│   │   ├── getPlatform  ← @/lib/social/platforms
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── spec35-vm-bus-events.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── spec36-bot-detection.test.ts
+│   │   ├── BOT_MAX_DEVIATION_PX  ← @/lib/bot-detection/index
+│   │   ├── BotSessionTracker  ← @/lib/bot-detection/index
+│   │   ├── FREEZE_MAX_MS  ← @/lib/bot-detection/index
+│   │   ├── FREEZE_MIN_MS  ← @/lib/bot-detection/index
+│   │   ├── HUMAN_MIN_DEVIATION_PX  ← @/lib/bot-detection/index
+│   │   ├── PERFECT_LINE_THRESHOLD_PX  ← @/lib/bot-detection/index
+│   │   ├── PerfectLineTrap  ← @/lib/bot-detection/index
+│   │   ├── VIEW_TALLY_THRESHOLD_MS  ← @/lib/bot-detection/index
+│   │   ├── createViewTimer  ← @/lib/bot-detection/index
+│   │   ├── analyzeSwipe  ← @/lib/botDetection
+│   │   ├── tallyView  ← @/lib/botDetection
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── spec37-torridity.test.ts
+│   │   ├── ContentItem  ← @/lib/torridity
+│   │   ├── TORRIDITY_A0_PERCEPTION  ← @/lib/torridity
+│   │   ├── TORRIDITY_DP  ← @/lib/torridity
+│   │   ├── TORRIDITY_LAMBDA  ← @/lib/torridity
+│   │   ├── TORRIDITY_N  ← @/lib/torridity
+│   │   ├── contentDecayFactor  ← @/lib/torridity
+│   │   ├── contentMass  ← @/lib/torridity
+│   │   ├── decayedRank  ← @/lib/torridity
+│   │   ├── mu  ← @/lib/torridity
+│   │   ├── rankFeed  ← @/lib/torridity
+│   │   ├── throttledVisibility  ← @/lib/torridity
+│   │   ├── torridityRank  ← @/lib/torridity
+│   │   ├── torridityRankSpec  ← @/lib/torridity
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── spec38-collaboration.test.ts
+│   │   ├── CollabPayload  ← @/lib/collaboration/index
+│   │   ├── DEFAULT_MODE_RULESETS  ← @/lib/collaboration/index
+│   │   ├── WebRTCCollabSession  ← @/lib/collaboration/index
+│   │   ├── broadcastDataPacket  ← @/lib/collaboration/index
+│   │   ├── broadcastEdit  ← @/lib/collaboration/index
+│   │   ├── broadcastMediaSync  ← @/lib/collaboration/index
+│   │   ├── broadcastModeChange  ← @/lib/collaboration/index
+│   │   ├── broadcastPresenceUpdate  ← @/lib/collaboration/index
+│   │   ├── broadcastStatePatch  ← @/lib/collaboration/index
+│   │   ├── createCollabSession  ← @/lib/collaboration/index
+│   │   ├── generateInviteLink  ← @/lib/collaboration/index
+│   │   ├── parseInviteLink  ← @/lib/collaboration/index
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── spec41-engine-builder.test.ts
+│   │   ├── COMPONENT_INVENTORY  ← @/lib/componentInventory
+│   │   ├── createDualRuntimeHub  ← @/lib/eventBus
+│   │   ├── createEventBus  ← @/lib/eventBus
+│   │   ├── AtomicPiece  ← @/lib/forge/engineForge
+│   │   ├── Wire  ← @/lib/forge/engineForge
+│   │   ├── atomicPieceFromComponent  ← @/lib/forge/engineForge
+│   │   ├── createAssembly  ← @/lib/forge/engineForge
+│   │   ├── deserializeAssembly  ← @/lib/forge/engineForge
+│   │   ├── runAssembly  ← @/lib/forge/engineForge
+│   │   ├── serializeAssembly  ← @/lib/forge/engineForge
+│   │   ├── validateAssembly  ← @/lib/forge/engineForge
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── starmaker-music.test.ts
+│   │   ├── buildReleaseStrategy  ← @/lib/music/starmaker
+│   │   ├── createMelodySuggestions  ← @/lib/music/starmaker
+│   │   ├── summarizePlaybackProfile  ← @/lib/music/starmaker
+│   │   ├── AUDIO_QUALITY_PRESETS  ← @/lib/music/starmakerDaw
+│   │   ├── PIANO_ROLL_DEFAULTS  ← @/lib/music/starmakerDaw
+│   │   ├── audioQualityLabel  ← @/lib/music/starmakerDaw
+│   │   ├── computeWarpPlaybackRate  ← @/lib/music/starmakerDaw
+│   │   ├── createInitialCompingState  ← @/lib/music/starmakerDaw
+│   │   ├── createInitialSessionView  ← @/lib/music/starmakerDaw
+│   │   ├── createInitialWarpState  ← @/lib/music/starmakerDaw
+│   │   ├── createMidiNote  ← @/lib/music/starmakerDaw
+│   │   ├── isBlackKey  ← @/lib/music/starmakerDaw
+│   │   ├── midiPitchToName  ← @/lib/music/starmakerDaw
+│   │   ├── snapToGrid  ← @/lib/music/starmakerDaw
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── → ARRANGEMENT_BARS
+│   │   └── → AUDIO_QUALITY_PRESETS
+│   ├── structure-ledger.test.ts
+│   │   ├── ledgerStats  ← @/lib/navigation/StructureLedger
+│   │   ├── matchState  ← @/lib/navigation/StructureLedger
+│   │   ├── resolveTransition  ← @/lib/navigation/StructureLedger
+│   │   ├── createInitialDreamState  ← @/lib/navigation/dream-state
+│   │   ├── getStateForNode  ← @/lib/navigation/dream-state
+│   │   ├── move  ← @/lib/navigation/dream-state
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── supabase-config.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/lib/supabase/config
+│   ├── swap-manager-extended.test.ts
+│   │   ├── clearSwap  ← ../lib/runtime/swapManager
+│   │   ├── getAllSwapStates  ← ../lib/runtime/swapManager
+│   │   ├── getSwap  ← ../lib/runtime/swapManager
+│   │   ├── resetAllSwaps  ← ../lib/runtime/swapManager
+│   │   ├── setSwap  ← ../lib/runtime/swapManager
+│   │   ├── toggleSwap  ← ../lib/runtime/swapManager
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── swipe-calibration.test.ts
+│   │   ├── CalibrationProfile  ← @/lib/dreamr/swipeCalibration
+│   │   ├── calibrateDevice  ← @/lib/dreamr/swipeCalibration
+│   │   ├── getActiveProfile  ← @/lib/dreamr/swipeCalibration
+│   │   ├── resetCalibration  ← @/lib/dreamr/swipeCalibration
+│   │   ├── setActiveProfile  ← @/lib/dreamr/swipeCalibration
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── tech-foundation.test.ts
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← ../lib/supabase/vector
+│   ├── torridity-ledger.test.ts
+│   │   ├── TORRIDITY_LEDGER_CONFIG  ← @/lib/dreamr/torridityLedger
+│   │   ├── calculateOriginality  ← @/lib/dreamr/torridityLedger
+│   │   ├── calculateRank  ← @/lib/dreamr/torridityLedger
+│   │   ├── derivePostMassMeta  ← @/lib/dreamr/torridityLedger
+│   │   ├── getInteractionDelta  ← @/lib/dreamr/torridityLedger
+│   │   ├── getPostMass  ← @/lib/dreamr/torridityLedger
+│   │   ├── resolveSwipeRelease  ← @/lib/dreamr/torridityLedger
+│   │   ├── slog  ← @/lib/dreamr/torridityLedger
+│   │   ├── verifyHumanity  ← @/lib/dreamr/torridityLedger
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── universal-asset-registry.test.ts
+│   │   ├── ControlMapping  ← @/components/dream.universal_asset_registry
+│   │   ├── EnrichedEntry  ← @/components/dream.universal_asset_registry
+│   │   ├── GameAssetRow  ← @/components/dream.universal_asset_registry
+│   │   ├── RegistryEntry  ← @/components/dream.universal_asset_registry
+│   │   ├── UniversalAssetRegistryProps  ← @/components/dream.universal_asset_registry
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   └── (dynamic)  ← @/components/dream.universal_asset_registry
+│   ├── universal-engine.test.ts
+│   │   ├── engine  ← @/lib/engine
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── universal-visual-modularity.test.ts
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── → (default)
+│   │   └── → DreamWindowShell
+│   ├── update-readme-current-status.test.ts
+│   │   ├── extractNodeMajorFromDockerfile  ← ../scripts/update-readme-status-utils.mjs
+│   │   ├── extractPnpmVersion  ← ../scripts/update-readme-status-utils.mjs
+│   │   ├── refreshCurrentImplementationStatusSection  ← ../scripts/update-readme-status-utils.mjs
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── user-sim.test.ts
+│   │   ├── PERSONAS  ← @/lib/user-sim/userSimAgent
+│   │   ├── SPEC_RULES  ← @/lib/user-sim/userSimAgent
+│   │   ├── decideAction  ← @/lib/user-sim/userSimAgent
+│   │   ├── judgeJourney  ← @/lib/user-sim/userSimAgent
+│   │   ├── judgeStep  ← @/lib/user-sim/userSimAgent
+│   │   ├── perceive  ← @/lib/user-sim/userSimAgent
+│   │   ├── runJourney  ← @/lib/user-sim/userSimAgent
+│   │   ├── PerceptionFrame  ← @/types/user-sim
+│   │   ├── VisibleElement  ← @/types/user-sim
+│   │   ├── afterEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── utils-extended.test.ts
+│   │   ├── assert  ← ../lib/utils
+│   │   ├── clamp  ← ../lib/utils
+│   │   ├── debounce  ← ../lib/utils
+│   │   ├── deepClone  ← ../lib/utils
+│   │   ├── groupBy  ← ../lib/utils
+│   │   ├── retry  ← ../lib/utils
+│   │   ├── sleep  ← ../lib/utils
+│   │   ├── throttle  ← ../lib/utils
+│   │   ├── truncate  ← ../lib/utils
+│   │   ├── unique  ← ../lib/utils
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── utils-supabase-server.test.ts ⚠
+│   │   ├── createClient  ⚠ @/utils/supabase/server
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── v2-readiness.test.ts
+│   │   ├── CORE_SURFACE_ROUTES  ← @/lib/identity/canonical-names
+│   │   ├── LEGACY_ROUTES  ← @/lib/identity/canonical-names
+│   │   ├── PLATFORM_NAME  ← @/lib/identity/canonical-names
+│   │   ├── PRODUCT_VERSION  ← @/lib/identity/canonical-names
+│   │   ├── existsSync  ← fs
+│   │   ├── readFileSync  ← fs
+│   │   ├── resolve  ← path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── view-profile-public-view-controls.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── warp-engine.test.ts
+│   │   ├── WarpContext  ← @/lib/warp/warpEngine
+│   │   ├── WarpEngine  ← @/lib/warp/warpEngine
+│   │   ├── WarpParticle  ← @/lib/warp/warpEngine
+│   │   ├── dampingKernel  ← @/lib/warp/warpEngine
+│   │   ├── decayKernel  ← @/lib/warp/warpEngine
+│   │   ├── expansionKernel  ← @/lib/warp/warpEngine
+│   │   ├── flowKernel  ← @/lib/warp/warpEngine
+│   │   ├── gravityKernel  ← @/lib/warp/warpEngine
+│   │   ├── integrateKernel  ← @/lib/warp/warpEngine
+│   │   ├── spawnParticle  ← @/lib/warp/warpEngine
+│   │   ├── spiralKernel  ← @/lib/warp/warpEngine
+│   │   ├── turbulenceKernel  ← @/lib/warp/warpEngine
+│   │   ├── wrapBoundaryKernel  ← @/lib/warp/warpEngine
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── wasm-gpu-vm.test.ts
+│   │   ├── afterEach  ← vitest
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← @/lib/vm/types
+│   │   ├── (dynamic)  ← @/lib/vm/bufferManager
+│   │   ├── (dynamic)  ← @/lib/vm/pipelineCache
+│   │   ├── (dynamic)  ← @/lib/vm/snapshot
+│   │   ├── (dynamic)  ← @/lib/vm/dualVMCoordinator
+│   │   └── (dynamic)  ← @/lib/vm/wasmGpuVM
+│   ├── webgpu-director.test.ts
+│   │   ├── CameraSignals  ← @/lib/webgpu/director
+│   │   ├── DirectorBabylonEngine  ← @/lib/webgpu/director
+│   │   ├── DirectorBabylonMesh  ← @/lib/webgpu/director
+│   │   ├── DirectorBabylonScene  ← @/lib/webgpu/director
+│   │   ├── RuntimeMetrics  ← @/lib/webgpu/director
+│   │   ├── SceneObject  ← @/lib/webgpu/director
+│   │   ├── WebGPUDirector  ← @/lib/webgpu/director
+│   │   ├── applyDirectorFrame  ← @/lib/webgpu/director
+│   │   ├── babylonMeshToSceneObject  ← @/lib/webgpu/director
+│   │   ├── buildPassPlan  ← @/lib/webgpu/director
+│   │   ├── buildSceneObjects  ← @/lib/webgpu/director
+│   │   ├── classifyObject  ← @/lib/webgpu/director
+│   │   ├── classifyPressure  ← @/lib/webgpu/director
+│   │   ├── decideObject  ← @/lib/webgpu/director
+│   │   ├── defaultCameraSignals  ← @/lib/webgpu/director
+│   │   ├── defaultDirectorMetrics  ← @/lib/webgpu/director
+│   │   ├── resolveFrameBudget  ← @/lib/webgpu/director
+│   │   ├── resolveResolutionScale  ← @/lib/webgpu/director
+│   │   ├── resolveTemporalState  ← @/lib/webgpu/director
+│   │   ├── scoreObject  ← @/lib/webgpu/director
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   ├── widget-install-flow.test.ts
+│   │   ├── CONNECTOR_REGISTRY  ← @/lib/connectors/connectorRegistry
+│   │   ├── getConnectorDef  ← @/lib/connectors/connectorRegistry
+│   │   ├── SlotGrid  ← @/lib/connectors/installFlow
+│   │   ├── _resetInstallFlowState  ← @/lib/connectors/installFlow
+│   │   ├── cancelAutoLock  ← @/lib/connectors/installFlow
+│   │   ├── consumeDeferredPrompt  ← @/lib/connectors/installFlow
+│   │   ├── deferPrompt  ← @/lib/connectors/installFlow
+│   │   ├── dismissSuggestedWidget  ← @/lib/connectors/installFlow
+│   │   ├── findBestSlot  ← @/lib/connectors/installFlow
+│   │   ├── getSuggestedWidgets  ← @/lib/connectors/installFlow
+│   │   ├── handleAddWidget  ← @/lib/connectors/installFlow
+│   │   ├── handleConnectSuccess  ← @/lib/connectors/installFlow
+│   │   ├── handleDismissPrompt  ← @/lib/connectors/installFlow
+│   │   ├── handlePlaceLater  ← @/lib/connectors/installFlow
+│   │   ├── isSessionDismissed  ← @/lib/connectors/installFlow
+│   │   ├── queueSuggestedWidget  ← @/lib/connectors/installFlow
+│   │   ├── scheduleAutoLock  ← @/lib/connectors/installFlow
+│   │   ├── WIDGET_REGISTRY  ← @/lib/widgets/widgetRegistry
+│   │   ├── getWidgetTypeDef  ← @/lib/widgets/widgetRegistry
+│   │   ├── getWidgetTypesForConnector  ← @/lib/widgets/widgetRegistry
+│   │   ├── resolveConnectorState  ← @/lib/widgets/widgetRegistry
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
+│   └── youtube-provider.test.ts
+│       ├── afterEach  ← vitest
+│       ├── beforeEach  ← vitest
+│       ├── describe  ← vitest
+│       ├── expect  ← vitest
+│       ├── it  ← vitest
+│       ├── vi  ← vitest
+│       └── (dynamic)  ← @/lib/connectors/providers/youtube
 ├── types
 │   ├── ads.ts
 │   ├── ai-system.ts ∅
@@ -13022,6 +15895,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── → JOURNEY_DOMAIN_COLORS
 │   ├── marketplace.ts
 │   ├── module-manifest.ts
+│   ├── rivet-dev-agent-os.d.ts ∅
+│   │   ├── → (default)
+│   │   ├── → AgentOs
+│   │   └── ∅ unused: AgentOs, (default)
 │   ├── spatial.ts ∅
 │   │   ├── → isAlbum
 │   │   ├── → isContentObject
@@ -13068,20 +15945,32 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → isWidgetInstance
 │       └── ∅ unused: getWidgetConfig, isWidgetInstance, isFeedWidget, isTextWidget, isMediaWidget
 ├── utils
+├── _manifest.json
+├── .cursorrules
+├── .env.example
+├── .env.local.example
+├── .gitignore
+├── .gitleaks.toml
 ├── eslint.config.mjs ∅
 │   ├── → (default)
 │   └── ∅ unused: (default)
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
+├── lib-index.mjs
+├── LICENSE
+├── next-env.d.ts
 ├── next.config.mjs ∅
 │   ├── (dynamic)  ← next
 │   ├── → (default)
 │   └── ∅ unused: (default)
+├── package.json
 ├── playwright.config.ts ∅
 │   ├── defineConfig  ← @playwright/test
 │   ├── devices  ← @playwright/test
 │   ├── → (default)
 │   └── ∅ unused: (default)
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 ├── postcss.config.js
 ├── postcss.config.mjs ∅
 │   ├── → (default)
@@ -13097,6 +15986,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── → proxy
 │   └── ∅ unused: proxy, config
 ├── tailwind.config.ts
+├── tailwindcss-animate.d.ts
+│   └── (dynamic)  ← tailwindcss
+├── tsconfig.games.json
+├── tsconfig.gamesengin.json
+├── tsconfig.json
+├── vercel.json
 └── vitest.config.ts ∅
     ├── defineConfig  ← vitest/config
     ├── → (default)
