@@ -1,24 +1,29 @@
 name: Manual Type Audit Manager
 
 on:
-  workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
+  workflow_dispatch: 
 
 jobs:
   audit-worker:
     name: Execute Type and Import Audit
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
       - name: Setup Node.js Environment
         uses: actions/setup-node@v5
         with:
-          node-version: '25.9.0'
-          cache: 'npm'
+          node-version: '25'
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: pnpm install
 
       - name: Create and Run Audit Script
         run: |
@@ -29,7 +34,6 @@ jobs:
 
           const REPORT_FILE = 'system-type-audit.txt';
           
-          // Data structures for grouping
           const groups = {
             'BROKEN_IMPORTS_EXPORTS': [],
             'TYPE_ANY': [],
@@ -38,17 +42,14 @@ jobs:
             'TS_CORE_ERRORS': []
           };
 
-          // 1. Run TypeScript Compiler to catch imports, exports, and syntax errors
           console.log('Running tsc analysis...');
           let tscOutput = '';
           try {
-            // --noEmit ensures we just type-check without building
             execSync('npx tsc --noEmit', { encoding: 'utf-8', stdio: 'pipe' });
           } catch (error) {
             tscOutput = error.stdout || error.message;
           }
 
-          // Parse TSC output
           const tscLines = tscOutput.split('\n');
           const tsErrorRegex = /^(.*?)\((\d+,\d+)\):\s+error\s+(TS\d+):\s+(.*)$/;
 
@@ -58,7 +59,6 @@ jobs:
               const [_, file, coords, code, message] = match;
               const entry = `File: ${file}:${coords} | ${code} | ${message}`;
               
-              // TS2307, TS2792, TS2305 generally relate to broken imports/exports
               if (['TS2307', 'TS2792', 'TS2305', 'TS2564'].includes(code)) {
                 groups['BROKEN_IMPORTS_EXPORTS'].push(entry);
               } else {
@@ -67,7 +67,6 @@ jobs:
             }
           });
 
-          // 2. Scan for specific types and placeholders across the tree
           console.log('Scanning component trees for unconstrained types...');
           
           function walkSync(dir, filelist = []) {
@@ -111,7 +110,6 @@ jobs:
             });
           });
 
-          // 3. Construct the Output File
           console.log('Generating indexed report...');
           let report = `================================================================================\n`;
           report += `CRITICAL INSTRUCTION: Before fixing anything, read all core*.md files found at the repo root.\n`;
@@ -146,3 +144,5 @@ jobs:
           name: typescript-audit-report
           path: system-type-audit.txt
           retention-days: 1
+
+```
