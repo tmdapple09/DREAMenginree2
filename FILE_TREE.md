@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-05-31T20:53:17.301Z
+Generated: 2026-05-31T21:36:09.067Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1877,11 +1877,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   │   ├── loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
 │   │   │   │   │   │   ├── deriveNextCursor  ← @/lib/dreamr/feedCursor
 │   │   │   │   │   │   ├── parseFeedParams  ← @/lib/dreamr/feedCursor
-│   │   │   │   │   │   ├── PostMediaShape  ← @/lib/media/postMedia
 │   │   │   │   │   │   ├── getPrimaryPostMediaUrl  ← @/lib/media/postMedia
 │   │   │   │   │   │   ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │   │   │   │   ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │   │   │   │   ├── toErrorMessage  ← @/lib/utils
+│   │   │   │   │   │   ├── SupabaseClient  ← @supabase/supabase-js
 │   │   │   │   │   │   ├── NextRequest  ← next/server
 │   │   │   │   │   │   ├── NextResponse  ← next/server
 │   │   │   │   │   │   └── → dreamrFeedHandler

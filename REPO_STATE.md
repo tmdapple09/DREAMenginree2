@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-31T20:53:17.172Z
+Generated: 2026-05-31T21:36:08.950Z
 
 ---
 
@@ -229,6 +229,7 @@ _No style files for this feature._
 
 ### External packages
 
+- `@supabase/supabase-js`
 - `events`
 - `framer-motion`
 - `go-home`
@@ -322,7 +323,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (14 files) · **Supabase** (8 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
+**Dual Runtime** (14 files) · **Supabase** (9 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (2 files)
 
 ### Dual Runtime files
 
@@ -344,6 +345,7 @@ _No style files for this feature._
 ### Supabase files
 
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 - `lib/dreamdm/DreamSystemContext.tsx`
@@ -492,7 +494,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (4 files) · **Event Bus** (1 files)
+**Dual Runtime** (2 files) · **Supabase** (5 files) · **Event Bus** (1 files)
 
 ### Dual Runtime files
 
@@ -503,6 +505,7 @@ _No style files for this feature._
 
 - `app/api/dreamr/suggested/route.ts`
 - `app/api/dreamr/tally/route.ts`
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `lib/dreamr/socialHumanityScore.ts`
 
@@ -6911,10 +6914,10 @@ _No style files for this feature._
 | `../algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
 | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
 | `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
-| `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
-| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
 | `next/server` | `NextRequest`, `NextResponse` |
 
 ## `app/dreamdmbar/_components/dreamr/api/route.ts`
@@ -17313,6 +17316,7 @@ _No style files for this feature._
 - `app/auth/update-password/page.tsx`
 - `app/daydream/music/upload/page.tsx`
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
 - `app/edit-profiledream/page.tsx`
 - `app/error.tsx`
