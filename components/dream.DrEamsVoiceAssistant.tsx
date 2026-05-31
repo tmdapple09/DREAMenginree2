@@ -143,16 +143,16 @@ export default function DrEamsVoiceAssistant( ){
         }
       };
 
-       
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        console.error('Speech recognition error:', event.error);
+      recognition.onerror = (event: Event) => {
+        const srEvent = event as Event & { error?: string };
+        console.error('Speech recognition error:', srEvent.error);
         if (srEvent.error === 'no-speech') {
           // Restart recognition if no speech detected
           if (voiceEnabled && !isListening) {
             setTimeout(() => recognition.start(), 100);
           }
         }
-      }) as (event: Event) => void;
+      };
 
       recognition.onend = () => {
         // Auto-restart for wake word detection

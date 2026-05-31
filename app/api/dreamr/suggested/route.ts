@@ -83,9 +83,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       post_visibility?: string | null;
       profiles?: { handle: string; display_name: string | null; avatar_url: string | null } | null;
     }
-    const visible = filterByCloseFriends((rows ?? []) as SuggContentRow[], user.id, circle);
+    const visible = filterByCloseFriends((rows ?? []) as unknown as SuggContentRow[], user.id, circle);
 
-    const posts: ScoredPost[] = (visible as SuggContentRow[]).map((r) => ({
+    const posts: ScoredPost[] = (visible as unknown as SuggContentRow[]).map((r) => ({
       id:             r.id,
       content:        r.content ?? '',
       media_url:      getPrimaryPostMediaUrl(r as unknown as Record<string, unknown>),
