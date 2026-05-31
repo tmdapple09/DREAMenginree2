@@ -2134,7 +2134,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 
 ## Agents & Workflow
 Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **137**
+- Files tracked: **139**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2220,6 +2220,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
+│       ├── type-audit.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -2259,10 +2260,9 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   ├── lib
     │   │   └── tar.ts
     │   ├── maestro-analyze.ts
-    │   ├── mechanic-run.ts
-… (17 more files)
+… (19 more files)
 ```
-<details><summary>Agents & Workflow file index (137 files)</summary>
+<details><summary>Agents & Workflow file index (139 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
@@ -2341,6 +2341,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
+- `.github/workflows/type-audit.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
@@ -2379,6 +2380,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `scripts/gameengin/writer-run.ts` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-nextgen-spec.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-mobile-ps5-spec.mjs` — TypeScript/JavaScript runtime module.
+- `scripts/generate-repo-state.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/generate-webapp-final-form.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/law-check.sh` — project file (sh).
 - `scripts/migrate-imports.sh` — project file (sh).
@@ -2494,7 +2496,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **65**
+- Files tracked: **66**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2561,6 +2563,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
+│       ├── type-audit.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -2568,7 +2571,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (65 files)</summary>
+<details><summary>Infra & Ops file index (66 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
 - `.github/workflows/autofixvercelbuild.yml` — project file (yml).
@@ -2629,6 +2632,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 - `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
+- `.github/workflows/type-audit.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
@@ -3254,7 +3258,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 
 ## Contributing
 Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **278**
+- Files tracked: **279**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -3380,9 +3384,9 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
 │   │   ├── issue-bot.js
-… (158 more files)
+… (159 more files)
 ```
-<details><summary>Contributing file index (278 files)</summary>
+<details><summary>Contributing file index (279 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
 - `.github/actions/resilient-engine/action.yml` — project file (yml).
@@ -3560,6 +3564,7 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 - `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
+- `.github/workflows/type-audit.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
