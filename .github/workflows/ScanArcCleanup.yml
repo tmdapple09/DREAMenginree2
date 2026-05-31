@@ -1,6 +1,5 @@
 name: Repository Architecture Cleanup
 
-# This makes it run ONLY when you manually push the button on GitHub
 on:
   workflow_dispatch:
 
@@ -27,12 +26,21 @@ jobs:
           echo "This run is strictly read-only. No files have been moved or deleted." >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY
           
-          # This prints the "Smart Relocation" suggestions to your screen
           if [ -f .github/orphaned-relocation-plan.md ]; then
             cat .github/orphaned-relocation-plan.md >> $GITHUB_STEP_SUMMARY
           fi
           
-          # This prints the "Dead Code" list to your screen
           if [ -f .github/flagged-files.md ]; then
             cat .github/flagged-files.md >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Make Output Downloadable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-audit-report
+          path: |
+            .github/analysis-results.json
+            .github/orphaned-relocation-plan.md
+            .github/flagged-files.md
+          retention-days: 14
