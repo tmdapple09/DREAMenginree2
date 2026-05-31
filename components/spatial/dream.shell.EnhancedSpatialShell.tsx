@@ -83,7 +83,7 @@ export default function EnhancedSpatialShell({
     
     // Listen to navigation changes
     const handleNavChange = (data: unknown) => {
-      const snapshot = data.state as Int32Array;
+      const snapshot = (data as { state: Int32Array }).state;
       setNavState({
         layer: snapshot[0],
         face: snapshot[1],

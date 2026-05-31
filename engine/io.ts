@@ -7,3 +7,4 @@
  * through this path to stay decoupled from the concrete Supabase package.
  */
 export type { SupabaseClient } from '@supabase/supabase-js';
+export type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';

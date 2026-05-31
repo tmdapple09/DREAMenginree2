@@ -200,25 +200,26 @@ export class GameEnginRuntime {
   private _attachDomListener(type: InputType): void {
     if (!this.canvas) return;
 
-    const dispatch = (event: Record<string, unknown>) => {
-      this.inputHandlers.get(type)?.forEach((h) => h(event));
+    const dispatch = (event: unknown) => {
+      this.inputHandlers.get(type)?.forEach((h) => h(event as Record<string, unknown>));
       this.bus.emit('inputReceived', { type, event });
     };
+    const domDispatch = dispatch as EventListener;
 
     switch (type) {
       case 'touch':
-        this.canvas.addEventListener('touchstart',  dispatch, { passive: true });
-        this.canvas.addEventListener('touchmove',   dispatch, { passive: true });
-        this.canvas.addEventListener('touchend',    dispatch, { passive: true });
+        this.canvas.addEventListener('touchstart',  domDispatch, { passive: true });
+        this.canvas.addEventListener('touchmove',   domDispatch, { passive: true });
+        this.canvas.addEventListener('touchend',    domDispatch, { passive: true });
         break;
       case 'mouse':
-        this.canvas.addEventListener('mousedown',  dispatch);
-        this.canvas.addEventListener('mousemove',  dispatch);
-        this.canvas.addEventListener('mouseup',    dispatch);
+        this.canvas.addEventListener('mousedown',  domDispatch);
+        this.canvas.addEventListener('mousemove',  domDispatch);
+        this.canvas.addEventListener('mouseup',    domDispatch);
         break;
       case 'keyboard':
-        window.addEventListener('keydown', dispatch);
-        window.addEventListener('keyup',   dispatch);
+        window.addEventListener('keydown', domDispatch);
+        window.addEventListener('keyup',   domDispatch);
         break;
       case 'gamepad':
       case 'dualsense':
@@ -239,7 +240,7 @@ export class GameEnginRuntime {
                             gp.id.toLowerCase().includes('ps5');
         if (type === 'dualsense' && !isDualSense) continue;
         if (type === 'gamepad'   &&  isDualSense) continue;
-        dispatch(gp);
+        dispatch(gp as unknown as Record<string, unknown>);
       }
       this._gamepadPollId = requestAnimationFrame(poll);
     };

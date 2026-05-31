@@ -108,22 +108,33 @@ export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse>
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  const fetched = (rows ?? []) as any[];
+  interface FeedRow {
+    id: string;
+    content: string | null;
+    created_at: string;
+    view_count: number | null;
+    likes_count: number | null;
+    comments_count: number | null;
+    user_id?: string | null;
+    post_visibility?: string | null;
+    profiles?: { handle: string; display_name: string | null; avatar_url: string | null } | null;
+  }
+  const fetched = (rows ?? []) as FeedRow[];
 
   // ── Visibility filter: drop close-friends posts the viewer cannot see ────
   const circle = await loadVisibilityCircle(user.id);
-  const visible = filterByCloseFriends(fetched as any, user.id, circle);
+  const visible = filterByCloseFriends(fetched, user.id, circle);
 
   // ── Dedupe ids the client has already seen *before* ranking ──────────────
   const fresh =
     params.seen.size > 0
-      ? visible.filter((r) => !params.seen.has((r as Record<string, unknown>).id as string))
+      ? visible.filter((r) => !params.seen.has(r.id))
       : visible;
 
-  const posts: ScoredPost[] = fresh.map((r) => ({
+  const posts: ScoredPost[] = (fresh as FeedRow[]).map((r) => ({
     id: r.id,
     content: r.content ?? '',
-    media_url: getPrimaryPostMediaUrl(r as any),
+    media_url: getPrimaryPostMediaUrl(r as unknown as Record<string, unknown>),
     created_at: r.created_at,
     views_count: r.view_count ?? 0,
     likes_count: r.likes_count ?? 0,

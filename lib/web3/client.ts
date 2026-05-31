@@ -252,13 +252,13 @@ export class Web3Client {
   };
 
   private registerProviderListeners(): void {
-    this.provider?.on('accountsChanged', this.onAccountsChanged);
-    this.provider?.on('chainChanged', this.onChainChanged);
+    this.provider?.on('accountsChanged', this.onAccountsChanged as unknown as (...args: unknown[]) => void);
+    this.provider?.on('chainChanged', this.onChainChanged as unknown as (...args: unknown[]) => void);
   }
 
   private removeProviderListeners(): void {
-    this.provider?.removeListener('accountsChanged', this.onAccountsChanged);
-    this.provider?.removeListener('chainChanged', this.onChainChanged);
+    this.provider?.removeListener('accountsChanged', this.onAccountsChanged as unknown as (...args: unknown[]) => void);
+    this.provider?.removeListener('chainChanged', this.onChainChanged as unknown as (...args: unknown[]) => void);
   }
 
   private setConnectionState(next: WalletConnectionState): void {

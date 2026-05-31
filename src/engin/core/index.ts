@@ -182,7 +182,7 @@ class AssemblyBusBackedEventBus {
       const handlers = this.listeners.get(queued.event);
       if (!handlers) continue;
       for (const handler of handlers) {
-        handler(queued.payload);
+        handler(queued.payload as Record<string, unknown>);
       }
     }
   }

@@ -16,9 +16,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  let body: unknown;
+  interface TransferBody {
+    dreamData?: { dream_id?: string };
+    toRuntime?: string;
+    position?: { x?: number; y?: number };
+    swap?: boolean;
+  }
+  let body: TransferBody;
   try {
-    body = await req.json();
+    body = await req.json() as TransferBody;
   } catch {
     return NextResponse.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }

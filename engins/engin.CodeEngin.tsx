@@ -131,7 +131,7 @@ async function loadPyodide( ){
   });
   // @ts-expect-error - pyodide loader injected at runtime
   pyodidePromise = globalThis.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
-  pyodideInstance = await pyodidePromise;
+  pyodideInstance = await pyodidePromise as PyodideInstance;
   return pyodideInstance;
 }
 

@@ -221,7 +221,7 @@ function checkJSON(content: string): ParseError[] {
     JSON.parse(content);
     return [];
   } catch (e: unknown) {
-    const msg: string = e?.message ?? 'Invalid JSON';
+    const msg: string = e instanceof Error ? e.message : 'Invalid JSON';
     const posMatch = msg.match(/line (\d+) column (\d+)/);
     if (posMatch) {
       return [{ line: Number(posMatch[1]), col: Number(posMatch[2]), message: msg, severity: 'error' }];

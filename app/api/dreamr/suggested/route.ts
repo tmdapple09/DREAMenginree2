@@ -72,12 +72,23 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .order('created_at', { ascending: false })
       .limit(60);
 
-    const visible = filterByCloseFriends((rows ?? []) as Record<string, unknown>[], user.id, circle);
+    interface SuggContentRow {
+      id: string;
+      content: string | null;
+      created_at: string;
+      view_count: number | null;
+      likes_count: number | null;
+      comments_count: number | null;
+      user_id?: string | null;
+      post_visibility?: string | null;
+      profiles?: { handle: string; display_name: string | null; avatar_url: string | null } | null;
+    }
+    const visible = filterByCloseFriends((rows ?? []) as SuggContentRow[], user.id, circle);
 
-    const posts: ScoredPost[] = visible.map((r) => ({
+    const posts: ScoredPost[] = (visible as SuggContentRow[]).map((r) => ({
       id:             r.id,
       content:        r.content ?? '',
-      media_url:      getPrimaryPostMediaUrl(r as Record<string, unknown>),
+      media_url:      getPrimaryPostMediaUrl(r as unknown as Record<string, unknown>),
       created_at:     r.created_at,
       views_count:    r.view_count     ?? 0,
       likes_count:    r.likes_count    ?? 0,

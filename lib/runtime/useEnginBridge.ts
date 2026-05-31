@@ -165,7 +165,7 @@ export function useGameEnginBridge(): GameEnginBridgeState {
     const subs = [
       bridge.subscribe('music', 'music:bpm-changed', p => {
         setLastBpm(p.bpm as number | null);
-        setLastBpmTrackId(p.trackId as number | null);
+        setLastBpmTrackId(p.trackId != null ? String(p.trackId) : null);
         setStatus((s) => ({ ...s, music: `BPM ${p.bpm} synced · ${ts()}` }));
       }),
       bridge.subscribe('code', 'code:build-success', p => {
