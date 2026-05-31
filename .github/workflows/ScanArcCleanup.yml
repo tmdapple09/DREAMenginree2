@@ -1,0 +1,38 @@
+name: Repository Architecture Cleanup
+
+# This makes it run ONLY when you manually push the button on GitHub
+on:
+  workflow_dispatch:
+
+jobs:
+  manual-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+
+      - name: Run Core Analysis Engine
+        run: node .github/scripts/analyze-repo.js
+
+      - name: Print Mobile Report
+        if: always()
+        run: |
+          echo "### 🔍 DREAMengin Architecture Audit" >> $GITHUB_STEP_SUMMARY
+          echo "This run is strictly read-only. No files have been moved or deleted." >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          
+          # This prints the "Smart Relocation" suggestions to your screen
+          if [ -f .github/orphaned-relocation-plan.md ]; then
+            cat .github/orphaned-relocation-plan.md >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # This prints the "Dead Code" list to your screen
+          if [ -f .github/flagged-files.md ]; then
+            cat .github/flagged-files.md >> $GITHUB_STEP_SUMMARY
+          fi
