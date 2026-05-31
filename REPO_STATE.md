@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-31T22:18:37.158Z
+Generated: 2026-05-31T22:23:31.988Z
 
 ---
 
@@ -18060,8 +18060,8 @@ _No circular dependencies detected._
 | `app/discover/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/discover/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/supabase/client` | `createClient` |
-| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/dreamdmbar/_components/dreamr/api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/dreamdmbar/_components/dreamr/api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -19704,8 +19704,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   └── dreamrAlgorithm.ts
 │   │   │   │   ├── api  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── feedHandler.ts ⚠
-│   │   │   │   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │   │   └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │   └── route.ts ⚠ ∅
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
