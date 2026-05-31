@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-30T17:07:57.172Z
+Generated: 2026-05-31T02:57:25.456Z
 
 ---
 
@@ -4775,6 +4775,7 @@ _No style files for this feature._
 - `@/lib/runtime/useSharedEnginChannel`
 - `@/lib/supabase/client`
 - `@/lib/ui/runtimeViewport`
+- `@/lib/utils`
 - `@/lib/vm/wasmGpuVM`
 - `@/types/dreamArtifact`
 - `@/types/module-manifest`
@@ -12046,6 +12047,12 @@ _No style files for this feature._
 |--------|---------------|
 | `./listings` | `MARKETPLACE_CONTACT_TABLE` |
 
+## `lib/media/ledger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+
 ## `lib/navigation/GestureFrameComputer.ts`
 
 | Module | Connected via |
@@ -12291,6 +12298,12 @@ _No style files for this feature._
 | `zustand` | `create` |
 | `@/lib/supabase/client` | _(dynamic import)_ |
 
+## `lib/runtime/isAuthRelatedError.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+
 ## `lib/runtime/moduleRegistry.ts`
 
 | Module | Connected via |
@@ -12299,6 +12312,12 @@ _No style files for this feature._
 | `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
 | `@/types/widgets` | `WidgetInstance`, `getWidgetType` |
 | `zustand` | `create` |
+
+## `lib/runtime/offlineQueue.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
 
 ## `lib/runtime/quantumCircuit.ts`
 
@@ -17337,6 +17356,7 @@ _No style files for this feature._
 - `coresurfaces/dreamsurface.EditProfileDream.tsx`
 - `coresurfaces/dreamsurface.ViewProfile.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+- `engine/io.ts`
 - `engins/dream.panel.AnalyticsEngin.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
@@ -18239,12 +18259,9 @@ _No circular dependencies detected._
 | `lib/ai/idempotency.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/ai/rate-limiter.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/ai/rateLimit.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/tool-router.ts` | `@/engine/io` | `SupabaseClient` |
 | `lib/api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/child-safety/ncmecReporter.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/collaboration/index.ts` | `@/engine/io` | `SupabaseClient` |
-| `lib/connectors/reconcile.ts` | `@/engine/io` | `SupabaseClient` |
 | `lib/connectors/youtube.ts` | `@/lib/supabase/server` | `createServiceClient` |
 | `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
@@ -18254,26 +18271,20 @@ _No circular dependencies detected._
 | `lib/dream-docs/search.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/dreamdm/DreamSystemContext.tsx` | `@/lib/supabase/client` | `createClient` |
 | `lib/dreamdm/DreamSystemContext.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/dreamdm/useDreamDMConversations.ts` | `@/engine/io` | `RealtimePostgresInsertPayload` |
 | `lib/dreamdm/useDreamDMConversations.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamdm/useDreamDMMessages.ts` | `@/engine/io` | `RealtimePostgresInsertPayload` |
 | `lib/dreamdm/useDreamDMMessages.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/dreamdm/useDreamSearch.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/dreamdm/useMessagingCore.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/dreamengin/engineAssets.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/dreamengin/engineAssets.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/dreamr/closeFriendsVisibility.ts` | `@/engine/io` | `SupabaseClient` |
 | `lib/dreamr/socialHumanityScore.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/feed/useLiveFeed.ts` | `@/engine/io` | `RealtimePostgresInsertPayload` |
 | `lib/feed/useLiveFeed.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/gameengin/control-mappings.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/gameengin/control-mappings.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/gameengin/dream-engine.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/gameengin/dream-engine.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/ledger.ts` | `@/engine/io` | `SupabaseClient` |
 | `lib/platform/lab.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/setup/checks.ts` | `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
-| `lib/sharedDream.ts` | `@/engine/io` | `SupabaseClient` |
 | `lib/sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/widgets/feed-resolver.ts` | `@/lib/supabase/server` | `createServerClient` |
@@ -19115,6 +19126,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
+│       ├── type-audit.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -20764,6 +20776,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   └── dreamsurface.dreamdmbar.tsx ∅
 │       └── ∅ unused: BAR_H, NAV_H, (default)
+├── engine
+│   └── io.ts
 ├── engins
 │   ├── autoopen  [GameEngin]
 │   │   └── dream.AutoOpenGameEngin.tsx ∅
@@ -20907,8 +20921,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: AgentSchema, UIContextSchema, IntentTypeSchema, IntentEnvelopeSchema, CodeContextSchema, DrEamsRunResponseSchema, ExecuteResponseSchema, BoogieDecisionSchema, BoogieResultSchema, BoogieOutputSchema, EnforcementActionSchema, EnforcementScopeSchema, StrikeSeveritySchema, StrikeEntrySchema, UserSafeExplanationSchema, InternalAuditEventSchema, BoogieEnforceOutputSchema, AppealEntrySchema, PolicyHealthSchema
 │   │   ├── tfBackend.ts ∅
 │   │   │   └── ∅ unused: initTfBackend
-│   │   ├── tool-router.ts ⚠ ∅
-│   │   │   ├── ⚠ @/engine/io  (SupabaseClient)
+│   │   ├── tool-router.ts ∅
 │   │   │   └── ∅ unused: getHandler, executeIntent, executeIntents
 │   │   └── triad.ts ∅
 │   │       └── ∅ unused: getOwnerEmail
@@ -20960,8 +20973,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── drEamsCodeAssist.ts ∅
 │   │       └── ∅ unused: buildCodePrompt, getCodeAssistCompletion
 │   ├── collaboration
-│   │   └── index.ts ⚠ ∅
-│   │       ├── ⚠ @/engine/io  (SupabaseClient)
+│   │   └── index.ts ∅
 │   │       └── ∅ unused: createLocalCollabSession, createSupabaseCollabSession, broadcastPlayhead
 │   ├── composite
 │   │   ├── compositor.ts ∅
@@ -21017,8 +21029,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── installFlow.ts ∅
 │   │   │   └── ∅ unused: removeSuggestedWidget, enqueueForPlacement, dequeueNextPlacement, peekPlacementQueue
 │   │   ├── normalise.ts
-│   │   ├── reconcile.ts ⚠
-│   │   │   └── ⚠ @/engine/io  (SupabaseClient)
+│   │   ├── reconcile.ts
 │   │   ├── syncDispatch.ts ∅
 │   │   │   └── ∅ unused: UnsupportedProviderError
 │   │   ├── webhookVerification.ts
@@ -21077,12 +21088,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DEFAULT_WORLD_FOCUS
 │   │   ├── useDreamBarContext.ts
 │   │   ├── useDreamDMConversations.ts ⚠
-│   │   │   ├── ⚠ @/engine/io  (RealtimePostgresInsertPayload)
 │   │   │   └── ⚠ @/lib/supabase/client  (createClient)
 │   │   ├── useDreamDMDraft.ts ∅
 │   │   │   └── ∅ unused: listAllDraftIds, cleanupStaleDrafts, getDraftAge
 │   │   ├── useDreamDMMessages.ts ⚠
-│   │   │   ├── ⚠ @/engine/io  (RealtimePostgresInsertPayload)
 │   │   │   └── ⚠ @/lib/supabase/client  (createClient)
 │   │   ├── useDreamSearch.ts ⚠
 │   │   │   └── ⚠ @/lib/supabase/client  (createClient)
@@ -21113,8 +21122,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── path.ts
 │   │   └── tau.ts
 │   ├── dreamr  [DreamR]
-│   │   ├── closeFriendsVisibility.ts ⚠ ∅
-│   │   │   ├── ⚠ @/engine/io  (SupabaseClient)
+│   │   ├── closeFriendsVisibility.ts ∅
 │   │   │   └── ∅ unused: fetchCloseFriendsCircle
 │   │   ├── dreamrfeed.tsx ∅
 │   │   │   └── ∅ unused: DREAMR_TOPICS, (default)
@@ -21197,7 +21205,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── feedTopics.ts
 │   │   ├── hashtags.ts
 │   │   ├── useLiveFeed.ts ⚠
-│   │   │   ├── ⚠ @/engine/io  (RealtimePostgresInsertPayload)
 │   │   │   └── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── useYouTubeLiveFeed.ts
 │   ├── feeds  [Feed & Social]
@@ -21775,11 +21782,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: H265Encoder
 │   ├── ledger-data.ts ∅
 │   │   └── ∅ unused: ledgerData
-│   ├── ledger.ts ⚠ ∅
-│   │   ├── ⚠ @/engine/io  (SupabaseClient)
+│   ├── ledger.ts ∅
 │   │   └── ∅ unused: getLedgerEntry, storePeakMap, storeFingerprint, storeSampleMetadata, storeTorridityRank, storeAsset, recordView
-│   ├── sharedDream.ts ⚠ ∅
-│   │   ├── ⚠ @/engine/io  (SupabaseClient)
+│   ├── sharedDream.ts ∅
 │   │   └── ∅ unused: joinSharedDreamSession, useSharedDreamSession, SharedDreamActivityEntry, SharedDreamMember, UseSharedDreamSessionOptions, UseSharedDreamSessionResult
 │   ├── slog.ts ∅
 │   │   └── ∅ unused: slogInv, slogArray, slogMean
@@ -22245,6 +22250,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── widgets.ts ∅
 │       └── ∅ unused: getWidgetConfig, isWidgetInstance, isFeedWidget, isTextWidget, isMediaWidget
 ├── utils
+├── _manifest.json
 ├── .cursorrules
 ├── .env.example
 ├── .env.local.example

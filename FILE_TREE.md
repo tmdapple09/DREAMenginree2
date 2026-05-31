@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-05-30T17:07:57.303Z
+Generated: 2026-05-31T02:57:25.589Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -162,6 +162,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── spec-engin-ai-agent.yml
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
+│       ├── type-audit.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -260,8 +261,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⬡ Link  ← next/link
 │   │   │       ├── useRouter  ← next/navigation
 │   │   │       ├── useState  ← react
-│   │   │       ├── → (default)
-│   │   │       └── → dynamic
+│   │   │       └── → (default)
 │   │   ├── slot
 │   │   │   └── [id]
 │   │   │       └── page.tsx ⚠
@@ -1523,8 +1523,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⬡ Link  ← next/link
 │   │   │       ├── useMemo  ← react
 │   │   │       ├── useState  ← react
-│   │   │       ├── → (default)
-│   │   │       └── → dynamic
+│   │   │       └── → (default)
 │   │   └── update-password  [Auth]
 │   │       └── page.tsx ⚠
 │   │           ├── ⬡ PasswordField  ← @/components/auth/dream.PasswordField
@@ -6511,6 +6510,8 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → BAR_H
 │       ├── → NAV_H
 │       └── ∅ unused: BAR_H, NAV_H, (default)
+├── engine
+│   └── io.ts
 ├── engins
 │   ├── autoopen  [GameEngin]
 │   │   └── dream.AutoOpenGameEngin.tsx ∅
@@ -7514,9 +7515,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── (dynamic)  ← @tensorflow/tfjs
 │   │   │   ├── → initTfBackend
 │   │   │   └── ∅ unused: initTfBackend
-│   │   ├── tool-router.ts ⚠ ∅
+│   │   ├── tool-router.ts ∅
 │   │   │   ├── writeAuditLog  ← ./audit
-│   │   │   ├── SupabaseClient  ⚠ @/engine/io
+│   │   │   ├── SupabaseClient  ← @/engine/io
 │   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── ActorContext  ← @/types/ai-system
 │   │   │   ├── Intent  ← @/types/ai-system
@@ -7716,8 +7717,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → parseCodeResponse
 │   │       └── ∅ unused: buildCodePrompt, getCodeAssistCompletion
 │   ├── collaboration
-│   │   └── index.ts ⚠ ∅
-│   │       ├── SupabaseClient  ⚠ @/engine/io
+│   │   └── index.ts ∅
+│   │       ├── SupabaseClient  ← @/engine/io
 │   │       ├── (dynamic)  ← @supabase/supabase-js
 │   │       ├── → DEFAULT_MODE_RULESETS
 │   │       ├── → WebRTCCollabSession
@@ -8005,10 +8006,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → normaliseYouTubePlaylistItem
 │   │   │   ├── → normaliseYouTubeSearchResult
 │   │   │   └── → stripHtml
-│   │   ├── reconcile.ts ⚠
+│   │   ├── reconcile.ts
 │   │   │   ├── deduplicateFeedItems  ← ./normalise
 │   │   │   ├── dispatchSync  ← ./syncDispatch
-│   │   │   ├── SupabaseClient  ⚠ @/engine/io
+│   │   │   ├── SupabaseClient  ← @/engine/io
 │   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── Database  ← @/types/supabase
 │   │   │   └── → reconcileConnector
@@ -8336,7 +8337,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → resolveIntentOverride
 │   │   │   └── → useDreamBarContext
 │   │   ├── useDreamDMConversations.ts ⚠
-│   │   │   ├── RealtimePostgresInsertPayload  ⚠ @/engine/io
+│   │   │   ├── RealtimePostgresInsertPayload  ← @/engine/io
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
@@ -8353,7 +8354,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useDreamDMDraft
 │   │   │   └── ∅ unused: listAllDraftIds, cleanupStaleDrafts, getDraftAge
 │   │   ├── useDreamDMMessages.ts ⚠
-│   │   │   ├── RealtimePostgresInsertPayload  ⚠ @/engine/io
+│   │   │   ├── RealtimePostgresInsertPayload  ← @/engine/io
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
@@ -8515,8 +8516,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── → findTauPath
 │   │   └── tau.ts
 │   ├── dreamr  [DreamR]
-│   │   ├── closeFriendsVisibility.ts ⚠ ∅
-│   │   │   ├── SupabaseClient  ⚠ @/engine/io
+│   │   ├── closeFriendsVisibility.ts ∅
+│   │   │   ├── SupabaseClient  ← @/engine/io
 │   │   │   ├── (dynamic)  ← @/lib/supabase/server
 │   │   │   ├── → fetchCloseFriendsCircle
 │   │   │   ├── → filterByCloseFriends
@@ -8981,7 +8982,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → segmentText
 │   │   │   └── → validateTag
 │   │   ├── useLiveFeed.ts ⚠
-│   │   │   ├── RealtimePostgresInsertPayload  ⚠ @/engine/io
+│   │   │   ├── RealtimePostgresInsertPayload  ← @/engine/io
 │   │   │   ├── getPrimaryPostMediaUrl  ← @/lib/media/postMedia
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   │   ├── useCallback  ← react
@@ -10236,6 +10237,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── ∅ unused: MARKETPLACE_CONTACT_TABLE
 │   ├── media
 │   │   ├── ledger.ts ∅
+│   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── → analyzeLedgerDensity
 │   │   │   ├── → buildLedgerMediaUrl
 │   │   │   ├── → compressData
@@ -10858,6 +10860,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useInstanceManager
 │   │   │   └── ∅ unused: persistInstanceList, spawnDualInstances
 │   │   ├── isAuthRelatedError.ts
+│   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   └── → isAuthRelatedError
 │   │   ├── madMaxiSnapshotBridge.ts
 │   │   │   └── → invokeMadMaxiSnapshotTransfer
@@ -10941,6 +10944,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useModuleRegistry
 │   │   │   └── ∅ unused: subscribeRegistryToTransferEvents, manifestFromWidget
 │   │   ├── offlineQueue.ts ∅
+│   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── → dequeue
 │   │   │   ├── → enqueue
 │   │   │   ├── → flushQueue
@@ -11706,10 +11710,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── ledger-data.ts ∅
 │   │   ├── → ledgerData
 │   │   └── ∅ unused: ledgerData
-│   ├── ledger.ts ⚠ ∅
+│   ├── ledger.ts ∅
 │   │   ├── Fingerprint  ← ./audioFingerprint
 │   │   ├── PeakMap  ← ./audioFingerprint
-│   │   ├── SupabaseClient  ⚠ @/engine/io
+│   │   ├── SupabaseClient  ← @/engine/io
 │   │   ├── → createLedger
 │   │   ├── → getAllByKind
 │   │   ├── → getLedgerEntry
@@ -11720,8 +11724,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → storeSampleMetadata
 │   │   ├── → storeTorridityRank
 │   │   └── ∅ unused: getLedgerEntry, storePeakMap, storeFingerprint, storeSampleMetadata, storeTorridityRank, storeAsset, recordView
-│   ├── sharedDream.ts ⚠ ∅
-│   │   ├── SupabaseClient  ⚠ @/engine/io
+│   ├── sharedDream.ts ∅
+│   │   ├── SupabaseClient  ← @/engine/io
 │   │   ├── CollabEventHandler  ← @/lib/collaboration
 │   │   ├── CollabEventType  ← @/lib/collaboration
 │   │   ├── CollabMode  ← @/lib/collaboration
@@ -15938,6 +15942,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → isWidgetInstance
 │       └── ∅ unused: getWidgetConfig, isWidgetInstance, isFeedWidget, isTextWidget, isMediaWidget
 ├── utils
+├── _manifest.json
 ├── .cursorrules
 ├── .env.example
 ├── .env.local.example
