@@ -8,52 +8,60 @@
  */
 
 export {
-    createBaseState,
-    patchBaseState
+  createBaseState,
+  createDomainObject,
+  isDomainObject,
+  isEnginBaseState,
+  patchBaseState,
 } from './EnginBaseState';
 export type {
-    EnginBaseState,
-    EnginLifecycle
+  CreateDomainObjectInput,
+  DomainObject,
+  DomainVisibility,
+  EnginBaseState,
+  EnginLifecycle,
 } from './EnginBaseState';
 
-export {
-    createEnginEventBus
-} from './EnginEventBus';
+export { createEnginEventBus } from './EnginEventBus';
 export type {
-    EnginEventBus,
-    EnginEventMap,
-    EnginLifecycleEvents
+  EnginEventBus,
+  EnginEventMap,
+  EnginLifecycleEvents,
 } from './EnginEventBus';
 
 export {
-    enginStorageKey, LocalStorageAdapter,
-    MemoryAdapter
+  enginStorageKey,
+  LocalStorageAdapter,
+  MemoryAdapter,
 } from './EnginIOAdapter';
-export type {
-    EnginIOAdapter
-} from './EnginIOAdapter';
+export type { EnginIOAdapter } from './EnginIOAdapter';
 
 export {
-    DEFAULT_USER_CAPABILITIES,
-    DENY_ALL,
-    gateCapability,
-    mergeCapabilities
+  authorizeDomainCapability,
+  DEFAULT_USER_CAPABILITIES,
+  DENY_ALL,
+  gateCapability,
+  mergeCapabilities,
 } from './EnginCapabilities';
 export type {
-    CapabilityGateResult, EnginCapability,
-    EnginCapabilityMap
+  CapabilityGateResult,
+  DomainAuthorizationContext,
+  DomainCapability,
+  EnginCapability,
+  EnginCapabilityMap,
 } from './EnginCapabilities';
 
 export type {
-    ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetParams, EnginTransform
+  ConstraintResult,
+  EnginAction,
+  EnginConstraint,
+  EnginRuleSetContract,
+  EnginRuleSetParams,
+  EnginTransform,
 } from './EnginRuleSetContract';
 
-export {
-    EnginRuntime
-} from './EnginRuntime';
-export type {
-    EnginRuntimeOptions
-} from './EnginRuntime';
+export { EnginRuntime } from './EnginRuntime';
+export type { EnginRuntimeOptions } from './EnginRuntime';
 
 // ─── Factory helper ───────────────────────────────────────────────────────────
 

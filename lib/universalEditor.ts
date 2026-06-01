@@ -7,31 +7,10 @@
 
 import { createEventBus, type EventBus } from './eventBus';
 
-// ─── Runtime IDs ─────────────────────────────────────────────────────────────
+// ─── Canonical Module Manifest ───────────────────────────────────────────────
 
-export type RuntimeId = 'HomeDream' | 'DreamSpace' | 'Daydream' | 'Engin';
-
-// ─── Module Manifest ─────────────────────────────────────────────────────────
-
-export interface ModuleManifest {
-  /** Unique module identifier. */
-  id: string;
-  /** Human-readable module type label. */
-  type: string;
-  /** The runtime this module was originally created in. */
-  sourceRuntime: RuntimeId;
-  /** Runtimes that can accept this module. */
-  compatibleRuntimes: RuntimeId[];
-  /** Serialisable module content (component state, config, etc.). */
-  content: Record<string, unknown>;
-  /** Optional rendering / layout hints for the target runtime. */
-  uiHints?: {
-    minWidth?: number;
-    minHeight?: number;
-    prefersDark?: boolean;
-    [key: string]: unknown;
-  };
-}
+import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
+export type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 
 // ─── Assembly-Scoped Event Bus ────────────────────────────────────────────────
 

@@ -11,7 +11,7 @@
  * Works with touch and mouse events.
  */
 
-import type { ModuleManifest, RuntimeId } from '@/lib/universal-editor/module-manifest';
+import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 import { useCallback, useEffect, useRef } from 'react';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
