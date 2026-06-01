@@ -361,7 +361,6 @@ export const systems = {
   "lib/ui/skin-engine": () => import("@/lib/ui/skin-engine"),
   "lib/ui/theme-engine": () => import("@/lib/ui/theme-engine"),
   "lib/ui/theme": () => import("@/lib/ui/theme"),
-  "lib/universal-editor/module-manifest": () => import("@/lib/universal-editor/module-manifest"),
   "lib/universalEditor": () => import("@/lib/universalEditor"),
   "lib/user-sim/userSimAgent": () => import("@/lib/user-sim/userSimAgent"),
   "lib/utils": () => import("@/lib/utils"),

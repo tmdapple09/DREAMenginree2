@@ -16,13 +16,23 @@
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel.
  */
 
-import { createBaseState, patchBaseState, type EnginBaseState, type EnginLifecycle } from './EnginBaseState';
 import {
-    DEFAULT_USER_CAPABILITIES,
-    gateCapability,
-    type EnginCapabilityMap,
+  createBaseState,
+  isEnginBaseState,
+  patchBaseState,
+  type EnginBaseState,
+  type EnginLifecycle,
+} from './EnginBaseState';
+import {
+  DEFAULT_USER_CAPABILITIES,
+  gateCapability,
+  type EnginCapabilityMap,
 } from './EnginCapabilities';
-import { createEnginEventBus, type EnginEventBus, type EnginLifecycleEvents } from './EnginEventBus';
+import {
+  createEnginEventBus,
+  type EnginEventBus,
+  type EnginLifecycleEvents,
+} from './EnginEventBus';
 import { LocalStorageAdapter, type EnginIOAdapter } from './EnginIOAdapter';
 import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
 
@@ -37,6 +47,27 @@ export interface EnginRuntimeOptions {
   persistenceKey?: string | false;
 }
 
+const LIFECYCLE_TRANSITIONS: Readonly<
+  Record<EnginLifecycle, ReadonlyArray<EnginLifecycle>>
+> = {
+  idle: ['running', 'stopped'],
+  starting: ['running', 'stopped'],
+  running: ['paused', 'stopped'],
+  paused: ['running', 'stopped'],
+  stopping: ['stopped'],
+  stopped: [],
+};
+
+function cloneState(state: EnginBaseState): EnginBaseState {
+  if (!isEnginBaseState(state)) throw new Error('Engin state must be a serializable valid base-state snapshot.');
+  const clone = JSON.parse(JSON.stringify(state)) as unknown;
+  if (!isEnginBaseState(clone))
+    throw new Error(
+      'Engin state must be a serializable valid base-state snapshot.',
+    );
+  return clone;
+}
+
 // ─── Runtime ─────────────────────────────────────────────────────────────────
 
 export class EnginRuntime<
@@ -48,6 +79,10 @@ export class EnginRuntime<
   private readonly _capabilities: EnginCapabilityMap;
   private readonly _io: EnginIOAdapter;
   private readonly _persistenceKey: string | false;
+  private readonly _lifecycleHooks = new Set<
+    (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
+  >();
+  private readonly _snapshots: EnginBaseState[] = [];
 
   /** Scoped event bus — owned by this runtime instance. */
   readonly bus: EnginEventBus<DomainEvents>;
@@ -58,10 +93,12 @@ export class EnginRuntime<
   ) {
     this._ruleSet = ruleSet;
     this._capabilities = options.capabilities ?? DEFAULT_USER_CAPABILITIES;
-    this._io = options.ioAdapter ?? new LocalStorageAdapter(ruleSet.params.enginId);
-    this._persistenceKey = options.persistenceKey !== undefined
-      ? options.persistenceKey
-      : 'domain-state';
+    this._io =
+      options.ioAdapter ?? new LocalStorageAdapter(ruleSet.params.enginId);
+    this._persistenceKey =
+      options.persistenceKey !== undefined
+        ? options.persistenceKey
+        : 'domain-state';
     this._state = createBaseState(ruleSet.params.enginId);
     this.bus = createEnginEventBus<DomainEvents>();
   }
@@ -83,6 +120,39 @@ export class EnginRuntime<
     return this._ruleSet.deriveState(this._state);
   }
 
+  /** Immutable snapshots captured for recovery, duplication, or replay. */
+  get snapshots(): ReadonlyArray<Readonly<EnginBaseState>> {
+    return this._snapshots.map(cloneState);
+  }
+
+  /** Observe lifecycle transitions without embedding feature behavior in the engine. */
+  onLifecycle(
+    hook: (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void,
+  ): () => void {
+    this._lifecycleHooks.add(hook);
+    return () => this._lifecycleHooks.delete(hook);
+  }
+
+  /** Capture a serializable state snapshot for restore, duplication, and replay. */
+  snapshot(): Readonly<EnginBaseState> {
+    const snapshot = cloneState(this._state);
+    this._snapshots.push(snapshot);
+    return cloneState(snapshot);
+  }
+
+  /** Restore a previously captured snapshot into this same Engin runtime. */
+  restoreSnapshot(snapshot: EnginBaseState): void {
+    if (!isEnginBaseState(snapshot))
+      throw new Error('Snapshot is not a valid Engin base state.');
+    if (snapshot.enginId !== this._state.enginId)
+      throw new Error('Snapshot belongs to a different Engin runtime.');
+    this._state = cloneState(snapshot);
+    this._emitLifecycle('engin:state', {
+      enginId: this._state.enginId,
+      revision: this._state.revision,
+    });
+  }
+
   // ─── Action dispatch ────────────────────────────────────────────────────────
 
   /**
@@ -98,16 +168,28 @@ export class EnginRuntime<
    * Returns `true` if the action was applied, `false` if it was rejected.
    */
   dispatch(action: A): boolean {
+    if (this._state.lifecycle === 'stopped')
+      throw new Error(
+        'Cannot dispatch an action after the Engin runtime has stopped.',
+      );
+
     // Type-safe helper: cast payload to the bus's expected type
     const _emit = <K extends keyof EnginLifecycleEvents>(
       event: K,
       payload: EnginLifecycleEvents[K],
-    ) => this.bus.emit(event as Parameters<typeof this.bus.emit>[0], payload as Parameters<typeof this.bus.emit>[1]);
+    ) =>
+      this.bus.emit(
+        event as Parameters<typeof this.bus.emit>[0],
+        payload as Parameters<typeof this.bus.emit>[1],
+      );
 
     // 1. Capability gate
-    const capabilityKey = (action as any)['__capability'];
+    const capabilityKey = (action as { __capability?: unknown }).__capability;
     if (typeof capabilityKey === 'string') {
-      const gate = gateCapability(this._capabilities, capabilityKey as Parameters<typeof gateCapability>[1]);
+      const gate = gateCapability(
+        this._capabilities,
+        capabilityKey as Parameters<typeof gateCapability>[1],
+      );
       if (!gate.granted) {
         _emit('engin:error', {
           enginId: this._state.enginId,
@@ -131,6 +213,11 @@ export class EnginRuntime<
 
     // 3. Transform
     const next = this._ruleSet.transform(this._state, action);
+    if (!isEnginBaseState(next) || next.enginId !== this._state.enginId) {
+      throw new Error(
+        'Rule-set transform returned an invalid Engin base state.',
+      );
+    }
     this._state = next;
 
     // 4. Emit state change
@@ -142,20 +229,23 @@ export class EnginRuntime<
     // 5. Persist (fire-and-forget)
     if (this._persistenceKey !== false) {
       const enginId = this._state.enginId;
-      this._io.save(this._persistenceKey, this._state.domain).then((ok: boolean ) => {
-        if (ok) {
-          _emit('engin:persisted', {
+      this._io
+        .save(this._persistenceKey, this._state.domain)
+        .then((ok: boolean) => {
+          if (ok) {
+            _emit('engin:persisted', {
+              enginId,
+              key: this._persistenceKey as string,
+            });
+          }
+        })
+        .catch((cause: unknown) => {
+          _emit('engin:error', {
             enginId,
-            key: this._persistenceKey as string,
+            message: 'Persistence failed — state not saved.',
+            cause,
           });
-        }
-      }).catch((cause: unknown) => {
-        _emit('engin:error', {
-          enginId,
-          message: 'Persistence failed — state not saved.',
-          cause,
         });
-      });
     }
 
     return true;
@@ -164,8 +254,21 @@ export class EnginRuntime<
   // ─── Lifecycle ──────────────────────────────────────────────────────────────
 
   /** Transition the engine to a new lifecycle stage. */
-  private _setLifecycle(lc: EnginLifecycle): void {
-    this._state = patchBaseState(this._state, { lifecycle: lc });
+  private _setLifecycle(lifecycle: EnginLifecycle): void {
+    const current = this._state.lifecycle;
+    if (!LIFECYCLE_TRANSITIONS[current].includes(lifecycle)) {
+      throw new Error(
+        `Invalid Engin lifecycle transition: ${current} -> ${lifecycle}.`,
+      );
+    }
+    this._state = patchBaseState(this._state, { lifecycle });
+    for (const hook of this._lifecycleHooks) {
+      try {
+        hook(lifecycle, this._state);
+      } catch (error: unknown) {
+        console.error('[EnginRuntime] lifecycle hook threw', error);
+      }
+    }
   }
 
   start(): void {
@@ -209,7 +312,9 @@ export class EnginRuntime<
    */
   async restore(): Promise<boolean> {
     if (this._persistenceKey === false) return false;
-    const domain = await this._io.load<Record<string, unknown>>(this._persistenceKey);
+    const domain = await this._io.load<Record<string, unknown>>(
+      this._persistenceKey,
+    );
     if (!domain) return false;
     this._state = patchBaseState(this._state, { domain });
     this._emitLifecycle('engin:restored', {

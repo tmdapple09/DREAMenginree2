@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-05-31T22:23:32.124Z
+Generated: 2026-06-01T02:30:25.213Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1885,20 +1885,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   │   ├── NextRequest  ← next/server
 │   │   │   │   │   │   ├── NextResponse  ← next/server
 │   │   │   │   │   │   └── → dreamrFeedHandler
-│   │   │   │   │   └── route.ts ⚠ ∅
-│   │   │   │   │       ├── ScoredPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
-│   │   │   │   │       ├── rankFeed  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
-│   │   │   │   │       ├── filterByCloseFriends  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │   │   │       ├── loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │   │   │       ├── deriveNextCursor  ← @/lib/dreamr/feedCursor
-│   │   │   │   │       ├── parseFeedParams  ← @/lib/dreamr/feedCursor
-│   │   │   │   │       ├── PostMediaShape  ← @/lib/media/postMedia
-│   │   │   │   │       ├── getPrimaryPostMediaUrl  ← @/lib/media/postMedia
-│   │   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
-│   │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │   │   │       ├── toErrorMessage  ← @/lib/utils
-│   │   │   │   │       ├── NextRequest  ← next/server
-│   │   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │   │   └── route.ts ∅
 │   │   │   │   │       ├── → GET
 │   │   │   │   │       └── ∅ unused: GET
 │   │   │   │   ├── dream.DreamRCore.tsx ∅
@@ -5560,8 +5547,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.UniversalEditorWrapper.tsx ∅
 │   │   │   ├── Position  ← ./useTapHoldMove
 │   │   │   ├── useTapHoldMove  ← ./useTapHoldMove
-│   │   │   ├── ModuleManifest  ← @/lib/universal-editor/module-manifest
-│   │   │   ├── RuntimeId  ← @/lib/universal-editor/module-manifest
+│   │   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   │   ├── RuntimeId  ← @/types/module-manifest
 │   │   │   ├── → UniversalEditorWrapper
 │   │   │   └── ∅ unused: UniversalEditorWrapper
 │   │   ├── index.ts ∅
@@ -5575,8 +5562,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useTapHoldMove
 │   │   │   └── ∅ unused: useTapHoldMove, Position, TapHoldMoveBindings, TapHoldMoveOptions, UniversalEditorWrapper, UniversalEditorWrapperProps, UniversalEditor, UniversalEditorProps
 │   │   └── useTapHoldMove.ts
-│   │       ├── ModuleManifest  ← @/lib/universal-editor/module-manifest
-│   │       ├── RuntimeId  ← @/lib/universal-editor/module-manifest
+│   │       ├── ModuleManifest  ← @/types/module-manifest
+│   │       ├── RuntimeId  ← @/types/module-manifest
 │   │       ├── useCallback  ← react
 │   │       ├── useEffect  ← react
 │   │       ├── useRef  ← react
@@ -8631,12 +8618,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── useState  ← react
 │   │       └── → useDreamsRuntime
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts
+│   │   ├── EnginBaseState.ts ∅
 │   │   │   ├── → createBaseState
-│   │   │   └── → patchBaseState
+│   │   │   ├── → createDomainObject
+│   │   │   ├── → isDomainObject
+│   │   │   ├── → isEnginBaseState
+│   │   │   ├── → isJsonSerializable
+│   │   │   ├── → patchBaseState
+│   │   │   └── ∅ unused: createDomainObject
 │   │   ├── EnginCapabilities.ts
+│   │   │   ├── DomainObject  ← ./EnginBaseState
+│   │   │   ├── isDomainObject  ← ./EnginBaseState
 │   │   │   ├── → DEFAULT_USER_CAPABILITIES
 │   │   │   ├── → DENY_ALL
+│   │   │   ├── → authorizeDomainCapability
 │   │   │   ├── → gateCapability
 │   │   │   └── → mergeCapabilities
 │   │   ├── EnginEventBus.ts
@@ -8654,6 +8649,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
 │   │   │   ├── EnginLifecycle  ← ./EnginBaseState
 │   │   │   ├── createBaseState  ← ./EnginBaseState
+│   │   │   ├── isEnginBaseState  ← ./EnginBaseState
 │   │   │   ├── patchBaseState  ← ./EnginBaseState
 │   │   │   ├── DEFAULT_USER_CAPABILITIES  ← ./EnginCapabilities
 │   │   │   ├── EnginCapabilityMap  ← ./EnginCapabilities
@@ -8678,14 +8674,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → EnginRuntime
 │   │       ├── → LocalStorageAdapter
 │   │       ├── → MemoryAdapter
+│   │       ├── → authorizeDomainCapability
 │   │       ├── → createBaseState
+│   │       ├── → createDomainObject
 │   │       ├── → createEnginEventBus
 │   │       ├── → createEnginRuntime
 │   │       ├── → enginStorageKey
 │   │       ├── → gateCapability
+│   │       ├── → isDomainObject
+│   │       ├── → isEnginBaseState
 │   │       ├── → mergeCapabilities
 │   │       ├── → patchBaseState
-│   │       └── ∅ unused: createBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
+│   │       └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
 │   ├── engine
 │   │   └── index.ts ∅
 │   │       ├── → UniversalEngine
@@ -10777,7 +10777,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → classifyDrop
 │   │   │   ├── → coerceDataTransfer
 │   │   │   └── → coerceRawPayload
-│   │   ├── dreamOSBus.ts
+│   │   ├── dreamOSBus.ts ∅
+│   │   │   ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── isDomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── authorizeDomainCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   ├── AI_AGENTS  ← @/lib/identity/canonical-names
 │   │   │   ├── RuntimeRegion  ← @/lib/identity/canonical-names
 │   │   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
@@ -10787,7 +10792,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── RuntimeContainer  ← @/lib/runtime/runtimeContainer
 │   │   │   ├── DreamArtifactBusEventMap  ← @/types/dreamArtifact
 │   │   │   ├── → deriveAIRuntimeContext
-│   │   │   └── → dreamOSBus
+│   │   │   ├── → dreamOSBus
+│   │   │   ├── → isIntentEnvelope
+│   │   │   └── ∅ unused: isIntentEnvelope
 │   │   ├── dropTargetRegistry.ts
 │   │   │   ├── DreamDrop  ← @/lib/runtime/coercionTable
 │   │   │   ├── DreamDropType  ← @/lib/runtime/coercionTable
@@ -10936,7 +10943,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── moduleRegistry.ts ∅
 │   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   │   ├── RuntimeCompatibility  ← @/types/module-manifest
 │   │   │   ├── RuntimeId  ← @/types/module-manifest
+│   │   │   ├── isModuleManifest  ← @/types/module-manifest
+│   │   │   ├── negotiateModuleCompatibility  ← @/types/module-manifest
 │   │   │   ├── WidgetInstance  ← @/types/widgets
 │   │   │   ├── getWidgetType  ← @/types/widgets
 │   │   │   ├── create  ← zustand
@@ -10959,7 +10969,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → runQuantumCircuit
 │   │   │   └── ∅ unused: runQuantumCircuit
 │   │   ├── runtimeChannel.ts ∅
-│   │   │   ├── (dynamic)  ← @supabase/supabase-js
+│   │   │   ├── isJsonSerializable  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── → createLocalChannel
 │   │   │   ├── → createRealtimeChannel
 │   │   │   ├── → createRuntimeChannel
@@ -11249,12 +11259,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → getInitialDarkMode
 │   │       ├── → setDarkMode
 │   │       └── → toggleDarkMode
-│   ├── universal-editor
-│   │   └── module-manifest.ts ∅
-│   │       ├── → canTransferTo
-│   │       ├── → createManifest
-│   │       ├── → isValidManifest
-│   │       └── ∅ unused: createManifest, isValidManifest, canTransferTo
 │   ├── user-sim
 │   │   └── userSimAgent.ts
 │   │       ├── AgentAction  ← @/types/user-sim
@@ -11791,6 +11795,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── universalEditor.ts ∅
 │   │   ├── EventBus  ← ./eventBus
 │   │   ├── createEventBus  ← ./eventBus
+│   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   ├── RuntimeId  ← @/types/module-manifest
 │   │   ├── → canTransfer
 │   │   ├── → createLocalEventBus
 │   │   ├── → transferModule
@@ -12332,7 +12338,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → createSession
 │   │   │       ├── → engine
 │   │   │       ├── → validateSession
-│   │   │       ├── (unknown — bare import)  ⚠ @/engin/state/base.json
 │   │   │       └── ∅ unused: engine, appendEntry, createLedger, createEventBus, createRenderLoop, createSession, validateSession
 │   │   ├── generated
 │   │   │   ├── brain.ts
@@ -13409,7 +13414,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/ui/skin-engine
 │   │   │       ├── (dynamic)  ← @/lib/ui/theme-engine
 │   │   │       ├── (dynamic)  ← @/lib/ui/theme
-│   │   │       ├── (dynamic)  ← @/lib/universal-editor/module-manifest
 │   │   │       ├── (dynamic)  ← @/lib/universalEditor
 │   │   │       ├── (dynamic)  ← @/lib/user-sim/userSimAgent
 │   │   │       ├── (dynamic)  ← @/lib/utils
@@ -14275,7 +14279,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
-│   │   └── vi  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← @/lib/engin-runtime/EnginBaseState
+│   │   └── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
 │   ├── engin-workflow.test.ts
 │   │   ├── HANDOFF_PATHS  ← ../lib/engins/workflowEngine
 │   │   ├── STAGE_LABELS  ← ../lib/engins/workflowEngine
@@ -14948,7 +14954,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── resolve  ← node:path
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
-│   │   └── it  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/types/module-manifest
 │   ├── music-starmaker-section10.test.ts
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path
@@ -15895,6 +15902,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── → JOURNEY_DOMAIN_COLORS
 │   ├── marketplace.ts
 │   ├── module-manifest.ts
+│   │   ├── isJsonSerializable  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── → isModuleManifest
+│   │   └── → negotiateModuleCompatibility
 │   ├── rivet-dev-agent-os.d.ts ∅
 │   │   ├── → (default)
 │   │   ├── → AgentOs

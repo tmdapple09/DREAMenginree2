@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-05-31T22:23:31.988Z
+Generated: 2026-06-01T02:30:25.088Z
 
 ---
 
@@ -243,10 +243,10 @@ _No style files for this feature._
 - `./DreamSystemContext`
 - `./dualRuntime`
 - `./dualRuntimeBridge`
+- `./feedHandler`
 - `./memory`
 - `./useDreamDMMessages`
 - `@/app/dreamdmbar/_components/DreamBarDataBridge`
-- `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
 - `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
 - `@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr`
 - `@/components/ads/dream.SkipCreditBalance`
@@ -294,6 +294,8 @@ _No style files for this feature._
 - `@/lib/dreamr/feedCursor`
 - `@/lib/dreamr/torridityLedger`
 - `@/lib/dreams/drag`
+- `@/lib/engin-runtime/EnginBaseState`
+- `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/feed/useLiveFeed`
 - `@/lib/forge/forgeMomentum`
 - `@/lib/games/useImmersiveGameLayout`
@@ -465,6 +467,7 @@ _No style files for this feature._
 ### Internal imports
 
 - `../algorithms/dreamrAlgorithm`
+- `./feedHandler`
 - `./swipeCalibration`
 - `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
 - `@/app/dreamdmbar/_components/dreamr/api/feedHandler`
@@ -4722,7 +4725,6 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
 - `events`
 - `pending`
 - `react`
@@ -4752,6 +4754,8 @@ _No style files for this feature._
 - `@/components/runtime/dream.shell.RuntimeShell`
 - `@/components/spatial/dream.shell.EnhancedSpatialShell`
 - `@/lib/dreams/DreamRegistry`
+- `@/lib/engin-runtime/EnginBaseState`
+- `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/identity/canonical-names`
 - `@/lib/journey/journeyDots`
 - `@/lib/observability/collector`
@@ -6909,19 +6913,6 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
-| `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
-| `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
-| `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `next/server` | `NextRequest`, `NextResponse` |
-
-## `app/dreamdmbar/_components/dreamr/api/route.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm` | `ScoredPost`, `rankFeed` |
 | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
 | `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
 | `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
@@ -10038,13 +10029,13 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./useTapHoldMove` | `Position`, `useTapHoldMove` |
-| `@/lib/universal-editor/module-manifest` | `ModuleManifest`, `RuntimeId` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
 
 ## `components/universal-editor/useTapHoldMove.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/universal-editor/module-manifest` | `ModuleManifest`, `RuntimeId` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
 | `react` | `useCallback`, `useEffect`, `useRef` |
 
 ## `components/universe/dream.node-cluster.tsx`
@@ -11378,6 +11369,12 @@ _No style files for this feature._
 |--------|---------------|
 | `react` | `useCallback`, `useState` |
 
+## `lib/engin-runtime/EnginCapabilities.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `DomainObject`, `isDomainObject` |
+
 ## `lib/engin-runtime/EnginEventBus.ts`
 
 | Module | Connected via |
@@ -11395,7 +11392,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `createBaseState`, `patchBaseState` |
+| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `createBaseState`, `isEnginBaseState`, `patchBaseState` |
 | `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
 | `./EnginEventBus` | `EnginEventBus`, `EnginLifecycleEvents`, `createEnginEventBus` |
 | `./EnginIOAdapter` | `EnginIOAdapter`, `LocalStorageAdapter` |
@@ -12248,6 +12245,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
 | `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
 | `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
 | `@/lib/runtime/dualRuntimeBridge` | `AnyBridgeEmission`, `DualRuntimeChannel`, `bridge` |
@@ -12302,7 +12301,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId`, `isModuleManifest`, `negotiateModuleCompatibility` |
 | `@/types/widgets` | `WidgetInstance`, `getWidgetType` |
 | `zustand` | `create` |
 
@@ -12322,7 +12321,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@supabase/supabase-js` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
 
 ## `lib/runtime/seamClipboard.ts`
 
@@ -12464,6 +12463,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./eventBus` | `EventBus`, `createEventBus` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
 
 ## `lib/user-sim/userSimAgent.ts`
 
@@ -14050,7 +14050,6 @@ _No style files for this feature._
 | `@/lib/ui/skin-engine` | _(dynamic import)_ |
 | `@/lib/ui/theme-engine` | _(dynamic import)_ |
 | `@/lib/ui/theme` | _(dynamic import)_ |
-| `@/lib/universal-editor/module-manifest` | _(dynamic import)_ |
 | `@/lib/universalEditor` | _(dynamic import)_ |
 | `@/lib/user-sim/userSimAgent` | _(dynamic import)_ |
 | `@/lib/utils` | _(dynamic import)_ |
@@ -14108,6 +14107,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/dream-window/DreamWindowLifecycle` | `DestinationRule`, `DreamWindowConfig`, `DreamWindowPosition`, `DreamWindowSize`, `DreamWindowState` |
+
+## `types/module-manifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
 
 ## `types/user-sim.ts`
 
@@ -14347,10 +14352,6 @@ _No style files for this feature._
 ## `lib/runtime/instanceManager.ts`
 
 - `@/lib/supabase/client`
-
-## `lib/runtime/runtimeChannel.ts`
-
-- `@supabase/supabase-js`
 
 ## `lib/vm/wasmGpuVM.ts`
 
@@ -15438,7 +15439,6 @@ _No style files for this feature._
 - `@/lib/ui/skin-engine`
 - `@/lib/ui/theme-engine`
 - `@/lib/ui/theme`
-- `@/lib/universal-editor/module-manifest`
 - `@/lib/universalEditor`
 - `@/lib/user-sim/userSimAgent`
 - `@/lib/utils`
@@ -15528,6 +15528,11 @@ _No style files for this feature._
 - `@/components/dreamengin/dream.DREAMenginOS`
 - `@/lib/babylon/createEngine`
 
+## `tests/engin-runtime-core.test.ts`
+
+- `@/lib/engin-runtime/EnginBaseState`
+- `@/lib/engin-runtime/EnginCapabilities`
+
 ## `tests/forge-engin.test.ts`
 
 - `@/lib/forge/forgeRegistry`
@@ -15547,6 +15552,10 @@ _No style files for this feature._
 ## `tests/instance-manager.test.ts`
 
 - `../lib/runtime/instanceManager`
+
+## `tests/module-registry.test.ts`
+
+- `@/types/module-manifest`
 
 ## `tests/orphan-wire-script.test.ts`
 
@@ -17639,7 +17648,6 @@ _No circular dependencies detected._
 | `app/api/comments/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | 8 | MEDIUM_COUPLING |
-| `app/dreamdmbar/_components/dreamr/api/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/dreamr/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/builder/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
@@ -17710,6 +17718,7 @@ _No circular dependencies detected._
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
 | `lib/engin-runtime/index.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `lib/runtime/dreamOSBus.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/engin-runtime-core.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/game-controller.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
@@ -17818,11 +17827,11 @@ _No circular dependencies detected._
 | `lib/collaboration/index.ts` | 1 | EVENT_BUS |
 | `lib/gameengin/gameEnginRuntime.ts` | 1 | EVENT_BUS |
 | `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `lib/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
 | `lib/event-bus/index.ts` | 0 | EVENT_BUS |
 | `lib/eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
 | `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `lib/runtime/runtimeChannel.ts` | 0 | EVENT_BUS |
 | `lib/social/livekit.ts` | 0 | EVENT_BUS |
 | `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
@@ -18062,8 +18071,6 @@ _No circular dependencies detected._
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `app/dreamdmbar/_components/dreamr/api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `app/dreamdmbar/_components/dreamr/api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/dreamdmbar/layout.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/layout.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -18302,7 +18309,6 @@ _No circular dependencies detected._
 | `src/components/dream.DreamEnginLogo.tsx` | `@/lib/babylon/useDreamLogoScene` | `DreamLogoSceneOptions`, `useDreamLogoScene` |
 | `src/components/dream.DreamEnginLogo.tsx` | `@/components/DreamEnginLogo` | `DreamEnginLogo` |
 | `src/engin/core/index.ts` | `@/lib/supabase/client` | `createClient` |
-| `src/engin/core/index.ts` | `@/engin/state/base.json` | `(unknown — bare import)` |
 
 ---
 
@@ -18751,7 +18757,8 @@ _No circular dependencies detected._
 | `lib/dreamr/torridityLedger.ts` | `getDeceleration`, `calculateSnapForce`, `normalizeHumanViews` |
 | `lib/dreams/DreamRegistry.tsx` | `DreamRegistry` |
 | `lib/dreams/profileProjection.ts` | `createDreamProjection` |
-| `lib/engin-runtime/index.ts` | `createBaseState`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities` |
+| `lib/engin-runtime/EnginBaseState.ts` | `createDomainObject` |
+| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities` |
 | `lib/engine/index.ts` | `UniversalEngine` |
 | `lib/enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema` |
 | `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
@@ -18862,6 +18869,7 @@ _No circular dependencies detected._
 | `lib/routing/surfaces.ts` | `PUBLIC_SURFACE_PREFIXES`, `SAB_ISOLATED_ROUTE_PREFIXES`, `isSabIsolatedPath` |
 | `lib/runtime/EnginDispatcher.ts` | `initWasmEngine` |
 | `lib/runtime/channelMetrics.ts` | `recordError`, `getAllChannelMetrics`, `resetChannelMetrics` |
+| `lib/runtime/dreamOSBus.ts` | `isIntentEnvelope` |
 | `lib/runtime/dualRuntime.ts` | `TORUS_DOMAINS`, `TORUS_WIDTH`, `TORUS_HEIGHT`, `TORUS_FOCUS_MAP`, `RUNTIME_REGIONS` |
 | `lib/runtime/enginWorkflowRegistry.ts` | `getWorkflowsByArtifactType`, `getWorkflowStats`, `workflowExists` |
 | `lib/runtime/instanceManager.ts` | `persistInstanceList`, `spawnDualInstances` |
@@ -18887,7 +18895,6 @@ _No circular dependencies detected._
 | `lib/torridity/index.ts` | `a0Perception`, `deltaP`, `lambda`, `n`, `contentMass`, `decayFactor`, `mu`, `rankFeed`, `throttlingGate`, `torridityRank`, `ContentItem`, `RankedItem` |
 | `lib/torridity/physics.ts` | `mu`, `contentMass`, `torridityRank`, `decayFactor`, `throttlingGate`, `rankFeed` |
 | `lib/ui/skin-engine.ts` | `getSkinPreset` |
-| `lib/universal-editor/module-manifest.ts` | `createManifest`, `isValidManifest`, `canTransferTo` |
 | `lib/universalEditor.ts` | `createLocalEventBus`, `transferModule` |
 | `lib/utils.ts` | `formatDate`, `generateDedupeHash`, `isError` |
 | `lib/vm/dual-runtime.ts` | `DualRuntime`, `dualRuntime` |
@@ -19706,9 +19713,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   ├── feedHandler.ts ⚠
 │   │   │   │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │   └── route.ts ⚠ ∅
-│   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │   └── route.ts ∅
 │   │   │   │   │       └── ∅ unused: GET
 │   │   │   │   ├── dream.DreamRCore.tsx ∅
 │   │   │   │   │   └── ∅ unused: (default)
@@ -21137,14 +21142,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── types.ts
 │   │   └── useDreamsRuntime.ts
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts
+│   │   ├── EnginBaseState.ts ∅
+│   │   │   └── ∅ unused: createDomainObject
 │   │   ├── EnginCapabilities.ts
 │   │   ├── EnginEventBus.ts
 │   │   ├── EnginIOAdapter.ts
 │   │   ├── EnginRuleSetContract.ts
 │   │   ├── EnginRuntime.ts
 │   │   └── index.ts ∅
-│   │       └── ∅ unused: createBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
+│   │       └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
 │   ├── engine
 │   │   └── index.ts ∅
 │   │       └── ∅ unused: UniversalEngine
@@ -21610,7 +21616,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── channelMetrics.ts ∅
 │   │   │   └── ∅ unused: recordError, getAllChannelMetrics, resetChannelMetrics
 │   │   ├── coercionTable.ts
-│   │   ├── dreamOSBus.ts
+│   │   ├── dreamOSBus.ts ∅
+│   │   │   └── ∅ unused: isIntentEnvelope
 │   │   ├── dropTargetRegistry.ts
 │   │   ├── dualRuntime.ts ∅
 │   │   │   └── ∅ unused: TORUS_DOMAINS, TORUS_WIDTH, TORUS_HEIGHT, TORUS_FOCUS_MAP, RUNTIME_REGIONS
@@ -21688,9 +21695,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: getSkinPreset
 │   │   ├── theme-engine.ts
 │   │   └── theme.ts
-│   ├── universal-editor
-│   │   └── module-manifest.ts ∅
-│   │       └── ∅ unused: createManifest, isValidManifest, canTransferTo
 │   ├── user-sim
 │   │   └── userSimAgent.ts
 │   ├── vm  [VM / WASM Runtime]
@@ -21973,7 +21977,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: createRenderLoop
 │   │   │   └── index.ts ⚠ ∅
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │       ├── ⚠ @/engin/state/base.json  ((unknown — bare import))
 │   │   │       └── ∅ unused: engine, appendEntry, createLedger, createEventBus, createRenderLoop, createSession, validateSession
 │   │   ├── generated
 │   │   │   ├── brain.ts

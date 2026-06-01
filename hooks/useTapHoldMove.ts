@@ -8,10 +8,10 @@
  * with the module manifest and the target runtime inferred from the edge.
  *
  * Edge → Runtime mapping:
- *   left edge  → HomeDream
- *   right edge → DreamSpace
- *   top edge   → Daydream
- *   bottom edge → Engin
+ *   left edge  → homedream
+ *   right edge → dreamspace
+ *   top edge   → daydream:create
+ *   bottom edge → engin:content
  */
 
 import { useCallback, useEffect, useRef } from 'react';
@@ -30,10 +30,10 @@ function detectEdgeRuntime(
   clientY: number
 ): RuntimeId | null {
   const { innerWidth: W, innerHeight: H } = window;
-  if (clientX < EDGE_THRESHOLD_PX)       return 'HomeDream';
-  if (clientX > W - EDGE_THRESHOLD_PX)   return 'DreamSpace';
-  if (clientY < EDGE_THRESHOLD_PX)       return 'Daydream';
-  if (clientY > H - EDGE_THRESHOLD_PX)   return 'Engin';
+  if (clientX < EDGE_THRESHOLD_PX)       return 'homedream';
+  if (clientX > W - EDGE_THRESHOLD_PX)   return 'dreamspace';
+  if (clientY < EDGE_THRESHOLD_PX)       return 'daydream:create';
+  if (clientY > H - EDGE_THRESHOLD_PX)   return 'engin:content';
   return null;
 }
 

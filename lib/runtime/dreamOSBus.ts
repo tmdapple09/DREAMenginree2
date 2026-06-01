@@ -1,12 +1,74 @@
 import { AI_AGENTS, type RuntimeRegion } from '@/lib/identity/canonical-names';
 import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
 import {
-    bridge,
-    type AnyBridgeEmission,
-    type DualRuntimeChannel,
+  bridge,
+  type AnyBridgeEmission,
+  type DualRuntimeChannel,
 } from '@/lib/runtime/dualRuntimeBridge';
 import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
 import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
+import {
+  isDomainObject,
+  type DomainObject,
+} from '@/lib/engin-runtime/EnginBaseState';
+import {
+  authorizeDomainCapability,
+  type DomainAuthorizationContext,
+  type DomainCapability,
+} from '@/lib/engin-runtime/EnginCapabilities';
+
+export type IntentPriority = 'low' | 'normal' | 'high' | 'system';
+
+/** Intents use the same explicit ownership envelope as every domain object. */
+export type IntentEnvelope<
+  TType extends string = string,
+  TPayload = unknown,
+> = DomainObject<
+  TType,
+  {
+    sourceRuntimeId: string;
+    targetRuntimeId?: string;
+    actorId: string;
+    capability: DomainCapability;
+    priority: IntentPriority;
+    payload: TPayload;
+  }
+>;
+
+type IntentHandler = (intent: IntentEnvelope) => void | Promise<void>;
+type IntentValidator = (intent: IntentEnvelope) => boolean;
+type IntentDispatchResult = { handled: boolean; replayed: boolean };
+
+export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
+  if (!isDomainObject(value)) return false;
+  const data = value.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+  const intent = data as IntentEnvelope['data'];
+  return (
+    typeof intent.sourceRuntimeId === 'string' &&
+    intent.sourceRuntimeId.trim().length > 0 &&
+    intent.sourceRuntimeId === value.runtimeId &&
+    (intent.targetRuntimeId === undefined ||
+      (typeof intent.targetRuntimeId === 'string' &&
+        intent.targetRuntimeId.trim().length > 0)) &&
+    typeof intent.actorId === 'string' &&
+    intent.actorId.trim().length > 0 &&
+    intent.actorId === value.ownerId &&
+    (intent.capability === 'read' ||
+      intent.capability === 'write' ||
+      intent.capability === 'share' ||
+      intent.capability === 'move' ||
+      intent.capability === 'duplicate' ||
+      intent.capability === 'publish' ||
+      intent.capability === 'destroy' ||
+      intent.capability === 'admin') &&
+    (intent.priority === 'low' ||
+      intent.priority === 'normal' ||
+      intent.priority === 'high' ||
+      intent.priority === 'system') &&
+    'payload' in intent
+  );
+}
 
 export type DreamOSArtifactKind =
   | 'event'
@@ -58,7 +120,10 @@ export interface DreamOSSnapshot {
   runtimeContexts: readonly RuntimeContext[];
 }
 
-type PublishRuntimeContextInput = Omit<RuntimeContext, 'updatedAt' | 'aiContext' | 'subsystemId'>;
+type PublishRuntimeContextInput = Omit<
+  RuntimeContext,
+  'updatedAt' | 'aiContext' | 'subsystemId'
+>;
 type RuntimeContextStore = ReadonlyMap<RuntimeRegion, RuntimeContext>;
 
 type SnapshotListener = (snapshot: DreamOSSnapshot) => void;
@@ -88,7 +153,9 @@ function channelToSubsystem(channel: DualRuntimeChannel): string {
   }
 }
 
-function relatedSubsystemsForChannel(channel: DualRuntimeChannel): readonly string[] {
+function relatedSubsystemsForChannel(
+  channel: DualRuntimeChannel,
+): readonly string[] {
   switch (channel) {
     case 'music':
       return ['GameEngin', 'ContentEngin', 'BrandingEngin', AI_AGENTS.DR_EAMS];
@@ -101,7 +168,12 @@ function relatedSubsystemsForChannel(channel: DualRuntimeChannel): readonly stri
     case 'brand':
       return ['ContentEngin', 'GameEngin', AI_AGENTS.DR_EAMS];
     case 'create':
-      return ['BrandingEngin', 'GameEngin', 'StarMakerEngin', AI_AGENTS.DR_EAMS];
+      return [
+        'BrandingEngin',
+        'GameEngin',
+        'StarMakerEngin',
+        AI_AGENTS.DR_EAMS,
+      ];
     default:
       return [AI_AGENTS.DR_EAMS];
   }
@@ -129,18 +201,24 @@ function worldToSubsystemId(world: RuntimeWorld): string {
   return 'unknown';
 }
 
-export function deriveAIRuntimeContext(world: RuntimeWorld): RuntimeContext['aiContext'] {
+export function deriveAIRuntimeContext(
+  world: RuntimeWorld,
+): RuntimeContext['aiContext'] {
   const subsystemId = worldToSubsystemId(world).toLowerCase();
   if (subsystemId.includes('code')) return 'code';
   if (subsystemId.includes('lab')) return 'lab';
   if (subsystemId.includes('game')) return 'game';
-  if (subsystemId.includes('content') || subsystemId.includes('create')) return 'content';
+  if (subsystemId.includes('content') || subsystemId.includes('create'))
+    return 'content';
   if (subsystemId.includes('brand')) return 'brand';
-  if (subsystemId.includes('music') || subsystemId.includes('starmaker')) return 'music';
+  if (subsystemId.includes('music') || subsystemId.includes('starmaker'))
+    return 'music';
   return 'general';
 }
 
-function buildRuntimeContext(input: PublishRuntimeContextInput): RuntimeContext {
+function buildRuntimeContext(
+  input: PublishRuntimeContextInput,
+): RuntimeContext {
   return {
     ...input,
     aiContext: deriveAIRuntimeContext(input.world),
@@ -158,7 +236,10 @@ function publishRuntimeContextStrategy(
   return next;
 }
 
-function createRuntimeContextContainer(): RuntimeContainer<RuntimeContextStore, PublishRuntimeContextInput> {
+function createRuntimeContextContainer(): RuntimeContainer<
+  RuntimeContextStore,
+  PublishRuntimeContextInput
+> {
   return new RuntimeContainer<RuntimeContextStore, PublishRuntimeContextInput>(
     new Map<RuntimeRegion, RuntimeContext>(),
     publishRuntimeContextStrategy,
@@ -169,6 +250,15 @@ class DreamOSBusImpl {
   private readonly artifacts = new Map<string, DreamOSSharedArtifact>();
   private runtimeContexts = createRuntimeContextContainer();
   private readonly listeners = new Set<SnapshotListener>();
+  private readonly intentHandlers = new Map<
+    string,
+    { validate: IntentValidator; handle: IntentHandler }
+  >();
+  private readonly handledIntentIds = new Set<string>();
+  private readonly pendingIntents = new Map<
+    string,
+    Promise<IntentDispatchResult>
+  >();
   private readonly customEventListeners = new Map<
     DreamOSCustomEventName,
     Set<(payload: DreamArtifactBusEventMap[DreamOSCustomEventName]) => void>
@@ -180,7 +270,79 @@ class DreamOSBusImpl {
     });
   }
 
-  upsertArtifact(input: Omit<DreamOSSharedArtifact, 'updatedAt'> & { updatedAt?: number }): void {
+  /** Register the single deterministic handler for an intent type. */
+  registerIntent(
+    type: string,
+    validate: IntentValidator,
+    handle: IntentHandler,
+  ): () => void {
+    if (this.intentHandlers.has(type))
+      throw new Error(`Intent handler already registered for '${type}'.`);
+    if (!type.trim()) throw new Error('Intent type is required.');
+    const registration = { validate, handle };
+    this.intentHandlers.set(type, registration);
+    return () => {
+      if (this.intentHandlers.get(type) === registration)
+        this.intentHandlers.delete(type);
+    };
+  }
+
+  /** Route behavior requests through the OS intent seam; repeated IDs replay idempotently. */
+  async dispatchIntent(
+    intent: IntentEnvelope,
+    context: DomainAuthorizationContext,
+  ): Promise<IntentDispatchResult> {
+    if (!isIntentEnvelope(intent)) throw new Error('Invalid intent envelope.');
+    const authorization = authorizeDomainCapability(intent.data.capability, intent, context);
+    if (!authorization.granted)
+      throw new Error(authorization.reason ?? 'Intent capability is not authorized.');
+    if (
+      intent.data.targetRuntimeId &&
+      !context.surfaceRuntimeIds.includes(intent.data.targetRuntimeId)
+    ) {
+      throw new Error('Intent target runtime is outside the active surface scope.');
+    }
+    if (this.handledIntentIds.has(intent.id))
+      return { handled: true, replayed: true };
+    const pending = this.pendingIntents.get(intent.id);
+    if (pending) {
+      await pending;
+      return { handled: true, replayed: true };
+    }
+    const registration = this.intentHandlers.get(intent.type);
+    if (!registration)
+      throw new Error(
+        `No deterministic handler registered for intent '${intent.type}'.`,
+      );
+    if (!registration.validate(intent))
+      throw new Error(`Intent '${intent.type}' failed schema validation.`);
+
+    const execution = (async (): Promise<IntentDispatchResult> => {
+      await registration.handle(intent);
+      this.handledIntentIds.add(intent.id);
+      this.upsertArtifact({
+        id: `intent:${intent.id}`,
+        kind: 'event',
+        title: formatEventTitle(intent.type),
+        sourceSubsystem: intent.data.sourceRuntimeId,
+        relatedSubsystems: intent.data.targetRuntimeId
+          ? [intent.data.targetRuntimeId]
+          : [],
+        payload: { intent },
+      });
+      return { handled: true, replayed: false };
+    })();
+    this.pendingIntents.set(intent.id, execution);
+    try {
+      return await execution;
+    } finally {
+      this.pendingIntents.delete(intent.id);
+    }
+  }
+
+  upsertArtifact(
+    input: Omit<DreamOSSharedArtifact, 'updatedAt'> & { updatedAt?: number },
+  ): void {
     this.artifacts.set(input.id, {
       ...input,
       updatedAt: input.updatedAt ?? Date.now(),
@@ -258,14 +420,19 @@ class DreamOSBusImpl {
    * Unlike the full snapshot listener, this avoids re-rendering when
    * unrelated artifacts change.
    */
-  watchArtifact(id: string, callback: (artifact: DreamOSSharedArtifact | null) => void): () => void {
+  watchArtifact(
+    id: string,
+    callback: (artifact: DreamOSSharedArtifact | null) => void,
+  ): () => void {
     const listener = (_snapshot: DreamOSSnapshot) => {
       callback(this.artifacts.get(id) ?? null);
     };
     this.listeners.add(listener);
     // Immediately deliver the current value.
     callback(this.artifacts.get(id) ?? null);
-    return () => { this.listeners.delete(listener); };
+    return () => {
+      this.listeners.delete(listener);
+    };
   }
 
   subscribe(listener: SnapshotListener): () => void {
@@ -276,14 +443,20 @@ class DreamOSBusImpl {
     };
   }
 
-  emit<K extends DreamOSCustomEventName>(event: K, payload: DreamArtifactBusEventMap[K]): void {
+  emit<K extends DreamOSCustomEventName>(
+    event: K,
+    payload: DreamArtifactBusEventMap[K],
+  ): void {
     const listeners = this.customEventListeners.get(event);
     if (!listeners || listeners.size === 0) return;
     for (const listener of Array.from(listeners)) {
       try {
         listener(payload);
       } catch (error: unknown) {
-        console.error(`[DreamOSBus] custom event listener error for ${event}`, error);
+        console.error(
+          `[DreamOSBus] custom event listener error for ${event}`,
+          error,
+        );
       }
     }
   }
@@ -293,12 +466,20 @@ class DreamOSBusImpl {
     handler: DreamOSCustomEventHandler<K>,
   ): () => void {
     const listeners = this.customEventListeners.get(event) ?? new Set();
-    listeners.add(handler as (payload: DreamArtifactBusEventMap[DreamOSCustomEventName]) => void);
+    listeners.add(
+      handler as (
+        payload: DreamArtifactBusEventMap[DreamOSCustomEventName],
+      ) => void,
+    );
     this.customEventListeners.set(event, listeners);
     return () => {
       const existing = this.customEventListeners.get(event);
       if (!existing) return;
-      existing.delete(handler as (payload: DreamArtifactBusEventMap[DreamOSCustomEventName]) => void);
+      existing.delete(
+        handler as (
+          payload: DreamArtifactBusEventMap[DreamOSCustomEventName],
+        ) => void,
+      );
       if (existing.size === 0) {
         this.customEventListeners.delete(event);
       }
@@ -307,15 +488,21 @@ class DreamOSBusImpl {
 
   getSnapshot(): DreamOSSnapshot {
     return {
-      artifacts: Array.from(this.artifacts.values()).sort((a, b) => b.updatedAt - a.updatedAt),
-      runtimeContexts: Array.from(this.runtimeContexts.getState().values())
-        .sort((a, b) => a.region.localeCompare(b.region)),
+      artifacts: Array.from(this.artifacts.values()).sort(
+        (a, b) => b.updatedAt - a.updatedAt,
+      ),
+      runtimeContexts: Array.from(
+        this.runtimeContexts.getState().values(),
+      ).sort((a, b) => a.region.localeCompare(b.region)),
     };
   }
 
   clearAll(): void {
     this.artifacts.clear();
     this.runtimeContexts = createRuntimeContextContainer();
+    this.handledIntentIds.clear();
+    this.pendingIntents.clear();
+    this.intentHandlers.clear();
     this.notify();
   }
 
@@ -324,8 +511,12 @@ class DreamOSBusImpl {
       id: `bridge:${emission.channel}:${String(emission.event)}:${emission.emittedAt}`,
       kind: 'event',
       title: formatEventTitle(String(emission.event)),
-      sourceSubsystem: channelToSubsystem(emission.channel as DualRuntimeChannel),
-      relatedSubsystems: relatedSubsystemsForChannel(emission.channel as DualRuntimeChannel),
+      sourceSubsystem: channelToSubsystem(
+        emission.channel as DualRuntimeChannel,
+      ),
+      relatedSubsystems: relatedSubsystemsForChannel(
+        emission.channel as DualRuntimeChannel,
+      ),
       payload: {
         channel: emission.channel,
         event: emission.event,
