@@ -17821,6 +17821,7 @@ _No circular dependencies detected._
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
 | `lib/engin-runtime/index.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `lib/runtime/dreamOSBus.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/engin-runtime-core.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/game-controller.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |

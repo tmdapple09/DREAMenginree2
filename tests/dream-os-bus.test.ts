@@ -16,6 +16,14 @@ const authorizationContext = {
   collaboration: { active: false, participantIds: [], editorIds: [] },
 } as const;
 
+
+const authorizationContext = {
+  actorId: 'owner-1',
+  runtimeId: 'homedream',
+  surfaceRuntimeIds: ['homedream', 'dreamspace'],
+  collaboration: { active: false, participantIds: [], editorIds: [] },
+} as const;
+
 describe('dreamOSBus', () => {
   beforeEach(() => {
     dreamOSBus.clearAll();
