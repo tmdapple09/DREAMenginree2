@@ -166,7 +166,17 @@ describe('DREAMengin v2.0.0 — onboarding flow', () => {
 
   it('/join OAuth redirects new users to /auth/callback?next=/onboarding', () => {
     const join = readFileSync(resolve(__dirname, '../app/join/page.tsx'), 'utf8');
-    expect(join).toContain('next=/onboarding');
+    expect(join).toContain("buildAuthCallbackUrl(origin, '/onboarding')");
+  });
+
+
+  it('OAuth callback exchanges PKCE session cookies before entering DreamDMBar', () => {
+    const callback = readFileSync(resolve(__dirname, '../app/auth/callback/route.ts'), 'utf8');
+    expect(callback).toContain('resolveSafeNextPath(next)');
+    expect(callback).toContain('const cookieStore = await cookies()');
+    expect(callback).toContain('() => cookieStore.getAll()');
+    expect(callback).toContain('exchangeCodeForSession(code)');
+    expect(callback).toContain('response.cookies.set(name, value, options)');
   });
 });
 

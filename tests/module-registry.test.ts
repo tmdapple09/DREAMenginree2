@@ -38,10 +38,10 @@ describe('ModuleManifest type', () => {
   });
 
   it('includes all canonical runtimes', () => {
-    expect(manifestSrc).toContain("'homedream'");
-    expect(manifestSrc).toContain("'dreamspace'");
-    expect(manifestSrc).toContain("'daydream:music'");
-    expect(manifestSrc).toContain("'engin:game'");
+    expect(manifestSrc).toContain("\'homedream\'");
+    expect(manifestSrc).toContain("\'dreamspace\'");
+    expect(manifestSrc).toContain("\'daydream:music\'");
+    expect(manifestSrc).toContain("\'engin:game\'");
   });
 });
 
@@ -115,7 +115,9 @@ describe('DraggableModule component', () => {
   });
 
   it('sets willChange only when lifted for render-on-demand', () => {
-    expect(draggableSrc).toContain("willChange: lifted ? 'transform' : undefined");
+    expect(draggableSrc).toContain(
+      "willChange: lifted ? 'transform' : undefined",
+    );
   });
 
   it('renders screen-edge glow overlays for visual feedback', () => {
@@ -126,5 +128,60 @@ describe('DraggableModule component', () => {
   it('announces edge proximity to screen readers', () => {
     expect(draggableSrc).toContain('aria-live');
     expect(draggableSrc).toContain('edgeLabel');
+  });
+});
+
+describe('ModuleManifest runtime compatibility', () => {
+  it('declares validation and compatibility negotiation in the canonical manifest module', () => {
+    expect(manifestSrc).toContain('isModuleManifest');
+    expect(manifestSrc).toContain('negotiateModuleCompatibility');
+    expect(manifestSrc).toContain('requiredFeatures');
+    expect(registrySrc).toContain('canActivate');
+    expect(registrySrc).toContain('isModuleManifest(manifest)');
+  });
+});
+
+describe('ModuleManifest schema hardening', () => {
+  it('validates the complete transferable manifest schema and serialized content', async () => {
+    const { isModuleManifest } = await import('@/types/module-manifest');
+    const valid = {
+      id: 'module-1',
+      type: 'notes',
+      sourceRuntime: 'homedream',
+      compatibleRuntimes: ['dreamspace'],
+      content: {},
+      ui: {
+        defaultSize: { width: 320, height: 200 },
+        resizable: true,
+        movable: true,
+      },
+    };
+    expect(isModuleManifest(valid)).toBe(true);
+    expect(
+      isModuleManifest({
+        ...valid,
+        ui: { ...valid.ui, defaultSize: { width: 0, height: 200 } },
+      }),
+    ).toBe(false);
+    expect(isModuleManifest({ ...valid, content: BigInt(1) })).toBe(false);
+  });
+
+  it('rejects invalid compatibility declarations and de-duplicates missing features', async () => {
+    const { negotiateModuleCompatibility } =
+      await import('@/types/module-manifest');
+    expect(
+      negotiateModuleCompatibility(
+        { apiVersion: '1', requiredFeatures: ['gpu', 'gpu'] },
+        { apiVersion: '1', features: [] },
+      ),
+    ).toEqual({
+      compatible: false,
+      missingFeatures: ['gpu'],
+      reason: 'Runtime is missing required features.',
+    });
+    expect(
+      negotiateModuleCompatibility(undefined, { apiVersion: '', features: [] })
+        .compatible,
+    ).toBe(false);
   });
 });

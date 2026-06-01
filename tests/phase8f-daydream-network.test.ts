@@ -308,9 +308,9 @@ describe('Point 52 — Games Daydream has real game loop and persistent state', 
     expect(sourceExists('app/daydream/game/dream.shell.ImmersiveGameShell.tsx')).toBe(true);
     const src = readSource('app/daydream/game/dream.shell.ImmersiveGameShell.tsx');
     expect(src).toContain('requestFullscreen');
-    expect(src).toContain('DREAMENGIN');
-    expect(src).toContain('boot sequence');
-    expect(src).toContain('Elite Game Engine');
+    expect(src).toContain('GAMEENGIN');
+    expect(src).toContain('Boot phases:');
+    expect(src).toContain('by DREAMengin');
   });
 
   it('GameEngin reads personal bests from game_scores', () => {

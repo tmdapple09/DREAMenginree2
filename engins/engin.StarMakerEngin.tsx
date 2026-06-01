@@ -26,6 +26,7 @@
  */
 
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
+import MultitrackArrangementPanel from '@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel';
 import CompingPanel from '@/components/daydream/starmaker/dream.panel.CompingPanel';
 import PianoRollPanel from '@/components/daydream/starmaker/dream.panel.PianoRollPanel';
 import SessionViewPanel from '@/components/daydream/starmaker/dream.panel.SessionViewPanel';
@@ -60,9 +61,11 @@ import {
 } from '@/lib/music/starmaker';
 import {
     ARRANGEMENT_BARS,
+    ARRANGEMENT_SOURCE_COLORS,
     ARRANGEMENT_TRACKS,
     type ArrangementClip,
     type ArrangementSource,
+    type ArrangementTrackId,
     type ArrangementTrackState,
 } from '@/lib/music/starmakerArrangement';
 import {
@@ -3178,6 +3181,77 @@ function DAWFileIOPanel({
     showOpMsg(successMessage);
   }, [loadBlob]);
 
+  function captureCurrentToRack() {
+    const buffer = audioBufRef.current;
+    if (!buffer || !fileName) {
+      showOpMsg('⚠ Load audio before capturing a rack source');
+      return;
+    }
+    const id = crypto.randomUUID();
+    const source: ArrangementSource = {
+      id,
+      name: fileName,
+      durationSec: buffer.duration,
+      waveform: [...waveform],
+      color: ARRANGEMENT_SOURCE_COLORS[sourceLibrary.length % ARRANGEMENT_SOURCE_COLORS.length],
+    };
+    arrangementBuffersRef.current[id] = buffer;
+    setSourceLibrary((current) => [...current, source]);
+    setSelectedSourceId(id);
+    showOpMsg(`✓ Captured ${fileName} to the arrangement rack`);
+  }
+
+  function updateArrangementTrack(
+    trackId: ArrangementTrackId,
+    update: (track: ArrangementTrackState) => ArrangementTrackState,
+  ) {
+    setArrTracks((current) => current.map((track) => (track.id === trackId ? update(track) : track)));
+  }
+
+  function placeArrangementClip(trackId: ArrangementTrackId, startBar: number) {
+    const source = sourceLibrary.find((item) => item.id === selectedSourceId);
+    if (!source) {
+      showOpMsg('⚠ Capture and select a source before placing a clip');
+      return;
+    }
+    const id = crypto.randomUUID();
+    const clampedStartBar = Math.max(0, Math.min(ARRANGEMENT_BARS - 1, startBar));
+    const clip: ArrangementClip = {
+      id,
+      trackId,
+      sourceId: source.id,
+      label: source.name,
+      startBar: clampedStartBar,
+      barLength: Math.min(4, ARRANGEMENT_BARS - clampedStartBar),
+      gain: 1,
+      color: source.color,
+    };
+    setArrClips((current) => [...current, clip]);
+    setSelectedClipId(id);
+  }
+
+  function updateSelectedArrangementClip(update: (clip: ArrangementClip) => ArrangementClip) {
+    setArrClips((current) => current.map((clip) => (clip.id === selectedClipId ? update(clip) : clip)));
+  }
+
+  function duplicateSelectedArrangementClip() {
+    const selectedClip = arrClips.find((clip) => clip.id === selectedClipId);
+    if (!selectedClip) return;
+    const duplicate = {
+      ...selectedClip,
+      id: crypto.randomUUID(),
+      startBar: Math.min(ARRANGEMENT_BARS - selectedClip.barLength, selectedClip.startBar + selectedClip.barLength),
+    };
+    setArrClips((current) => [...current, duplicate]);
+    setSelectedClipId(duplicate.id);
+  }
+
+  function removeSelectedArrangementClip() {
+    if (!selectedClipId) return;
+    setArrClips((current) => current.filter((clip) => clip.id !== selectedClipId));
+    setSelectedClipId(null);
+  }
+
   const startArrangementPlayback = useCallback(() => {
     if (!arrClips.length) {
       showOpMsg('⚠ Add clips to the arrangement first');
@@ -3240,6 +3314,10 @@ function DAWFileIOPanel({
     showOpMsg(`✓ Arrangement preview ${arrLooping ? 'looping' : 'playing'} across ${ARRANGEMENT_BARS} bars`);
   }, [arrClips, arrLooping, arrTracks]);
 
+  function toggleArrangementPlayback() {
+    if (arrPlaying) stopArrangementPlayback();
+    else startArrangementPlayback();
+  }
 
   // ── React to external load (from SoundRecorder "Send to Editor") ──
   useEffect(() => {
@@ -4188,6 +4266,35 @@ function DAWFileIOPanel({
             </div>
           </div>
         )}
+
+        <MultitrackArrangementPanel
+          hasAudio={hasAudio}
+          sourceLibrary={sourceLibrary}
+          selectedSourceId={selectedSourceId}
+          selectedClipId={selectedClipId}
+          arrTracks={arrTracks}
+          arrClips={arrClips}
+          arrPlaying={arrPlaying}
+          arrLooping={arrLooping}
+          arrPlayheadBar={arrPlayheadBar}
+          formatSeconds={fmtSec}
+          onCaptureCurrentToRack={captureCurrentToRack}
+          onToggleArrangementPlayback={toggleArrangementPlayback}
+          onToggleArrangementLoop={() => setArrLooping((current) => !current)}
+          onSelectSource={setSelectedSourceId}
+          onSelectClip={setSelectedClipId}
+          onTrackMuteToggle={(trackId) => updateArrangementTrack(trackId, (track) => ({ ...track, muted: !track.muted }))}
+          onTrackSoloToggle={(trackId) => updateArrangementTrack(trackId, (track) => ({ ...track, solo: !track.solo }))}
+          onTrackVolumeChange={(trackId, volume) => updateArrangementTrack(trackId, (track) => ({ ...track, volume }))}
+          onPlaceClip={placeArrangementClip}
+          onNudgeClipLeft={() => updateSelectedArrangementClip((clip) => ({ ...clip, startBar: Math.max(0, clip.startBar - 1) }))}
+          onNudgeClipRight={() => updateSelectedArrangementClip((clip) => ({ ...clip, startBar: Math.min(ARRANGEMENT_BARS - clip.barLength, clip.startBar + 1) }))}
+          onShortenClip={() => updateSelectedArrangementClip((clip) => ({ ...clip, barLength: Math.max(1, clip.barLength - 1) }))}
+          onLengthenClip={() => updateSelectedArrangementClip((clip) => ({ ...clip, barLength: Math.min(ARRANGEMENT_BARS - clip.startBar, clip.barLength + 1) }))}
+          onDuplicateClip={duplicateSelectedArrangementClip}
+          onRemoveClip={removeSelectedArrangementClip}
+          onSelectedClipGainChange={(gain) => updateSelectedArrangementClip((clip) => ({ ...clip, gain }))}
+        />
 
         {/* ── 3D Audio Visualizer (real AnalyserNode wired to audio element) ── */}
         {show3DVisualizerFIO && analyserRef.current && (

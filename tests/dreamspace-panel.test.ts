@@ -24,6 +24,12 @@ describe('DreamSpace panel evolution', () => {
     expect(src).toContain('Quick Return');
   });
 
+  it('loads existing Engin capabilities inside the owning recursive runtime', () => {
+    expect(src).toContain('Engin capabilities');
+    expect(src).toContain('ENGIN_REGISTRY.map');
+    expect(src).toContain('onOpenEngin(engin.name)');
+  });
+
   it('uses consumer-friendly navigation labels inside DreamSpace', () => {
     expect(src).toContain('✨ Explore');
     expect(src).toContain('More apps');

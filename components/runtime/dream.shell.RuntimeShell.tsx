@@ -251,32 +251,40 @@ export default function RuntimeShell({
          * The parent container (HomeSystem region div) is already sized to
          * exclude the DreamDMBar, so this div fills exactly the safe area.
          *
-         * Technique: size the inner div to `100/zoom %` of its parent so that
-         * after `transform: scale(zoom)` with `transformOrigin: top left` it
-         * exactly fills the parent. The inner div carries `overflow: auto` so
-         * content scrolls within the zoomed viewport.
+         * Technique: keep native scrolling on a dedicated viewport container,
+         * then size the transformed child to `100/zoom %` of that viewport.
+         * This keeps touch scrolling independent from the zoom transform and
+         * lets HomeDream and DreamSpace remain independently scrollable.
          *
          *   zoom=1.0 → 100% × 100% → scale(1.0)  → fills parent exactly
          *   zoom=1.5 → 66.7% × 66.7% → scale(1.5) → fills parent exactly
          *   zoom=0.75 → 133% × 133% → scale(0.75) → fills parent exactly
          */
-         <div
-           style={{
-             position: 'relative',
-             width: `${(100 / zoom).toFixed(4)}%`,
-             height: `${(100 / zoom).toFixed(4)}%`,
-            minHeight: '100%',
-            transform: `scale(${zoom})`,
-            transformOrigin: 'top left',
-             overflowY: 'auto',
-             overflowX: 'hidden',
-             overscrollBehavior: 'contain',
-             touchAction: 'manipulation',
-             display: 'flex',
-             flexDirection: 'column',
-           }}
-         >
-          {children}
+        <div
+          data-runtime-scroll-container
+          style={{
+            position: 'absolute',
+            inset: 0,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            overscrollBehavior: 'contain',
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'manipulation',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: `${(100 / zoom).toFixed(4)}%`,
+              minHeight: `${(100 / zoom).toFixed(4)}%`,
+              transform: `scale(${zoom})`,
+              transformOrigin: 'top left',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {children}
+          </div>
         </div>
       )}
     </div>

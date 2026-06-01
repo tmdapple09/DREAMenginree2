@@ -12,7 +12,117 @@
 
 // ─── Lifecycle ────────────────────────────────────────────────────────────────
 
-export type EnginLifecycle = 'idle' | 'starting' | 'running' | 'paused' | 'stopping' | 'stopped';
+export type EnginLifecycle =
+  | 'idle'
+  | 'starting'
+  | 'running'
+  | 'paused'
+  | 'stopping'
+  | 'stopped';
+
+// ─── Universal domain object envelope ────────────────────────────────────────
+
+/** Explicit visibility for every runtime-owned domain object. */
+export type DomainVisibility = 'local' | 'shared' | 'global';
+
+/**
+ * Canonical envelope shared by Dreams, DreamSpaces, Engins, Rulesets, Intents,
+ * Memories, Agents, Windows, and Assets. UI placement never implies ownership.
+ */
+export type DomainObject<TType extends string, TData> = {
+  id: string;
+  type: TType;
+  ownerId: string;
+  runtimeId: string;
+  visibility: DomainVisibility;
+  createdAt: string;
+  updatedAt: string;
+  version: number;
+  data: TData;
+};
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isCanonicalIsoTimestamp(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  const timestamp = Date.parse(value);
+  return (
+    Number.isFinite(timestamp) && new Date(timestamp).toISOString() === value
+  );
+}
+
+/** Return whether a value can cross persistence and transport boundaries without loss. */
+export function isJsonSerializable(value: unknown, seen = new Set<object>()): boolean {
+  if (value === null) return true;
+  if (typeof value === 'string' || typeof value === 'boolean') return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (typeof value !== 'object' || seen.has(value)) return false;
+
+  seen.add(value);
+  const prototype = Object.getPrototypeOf(value);
+  const serializable = Array.isArray(value)
+    ? value.every((item) => isJsonSerializable(item, seen))
+    : (prototype === Object.prototype || prototype === null) &&
+      Object.values(value).every((item) => isJsonSerializable(item, seen));
+  seen.delete(value);
+  return serializable;
+}
+
+export function isDomainObject(
+  value: unknown,
+): value is DomainObject<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const object = value as Partial<DomainObject<string, unknown>>;
+  return (
+    isNonEmptyString(object.id) &&
+    isNonEmptyString(object.type) &&
+    isNonEmptyString(object.ownerId) &&
+    isNonEmptyString(object.runtimeId) &&
+    (object.visibility === 'local' ||
+      object.visibility === 'shared' ||
+      object.visibility === 'global') &&
+    isCanonicalIsoTimestamp(object.createdAt) &&
+    isCanonicalIsoTimestamp(object.updatedAt) &&
+    Date.parse(object.updatedAt) >= Date.parse(object.createdAt) &&
+    typeof object.version === 'number' &&
+    Number.isInteger(object.version) &&
+    object.version >= 1 &&
+    'data' in object &&
+    isJsonSerializable(object.data)
+  );
+}
+
+export interface CreateDomainObjectInput<TType extends string, TData> {
+  id: string;
+  type: TType;
+  ownerId: string;
+  runtimeId: string;
+  visibility: DomainVisibility;
+  data: TData;
+  now?: string;
+}
+
+export function createDomainObject<TType extends string, TData>(
+  input: CreateDomainObjectInput<TType, TData>,
+): DomainObject<TType, TData> {
+  const now = input.now ?? new Date().toISOString();
+  const object: DomainObject<TType, TData> = {
+    id: input.id,
+    type: input.type,
+    ownerId: input.ownerId,
+    runtimeId: input.runtimeId,
+    visibility: input.visibility,
+    createdAt: now,
+    updatedAt: now,
+    version: 1,
+    data: input.data,
+  };
+  if (!isDomainObject(object))
+    throw new Error('Cannot create an invalid domain object envelope.');
+  return object;
+}
 
 // ─── Base state record ────────────────────────────────────────────────────────
 
@@ -33,6 +143,28 @@ export interface EnginBaseState {
   readonly revision: number;
   /** Arbitrary key-value bag owned by the active rule-set. */
   readonly domain: Readonly<Record<string, unknown>>;
+}
+
+export function isEnginBaseState(value: unknown): value is EnginBaseState {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const state = value as Partial<EnginBaseState>;
+  return (
+    isNonEmptyString(state.enginId) &&
+    (state.lifecycle === 'idle' ||
+      state.lifecycle === 'starting' ||
+      state.lifecycle === 'running' ||
+      state.lifecycle === 'paused' ||
+      state.lifecycle === 'stopping' ||
+      state.lifecycle === 'stopped') &&
+    isCanonicalIsoTimestamp(state.updatedAt) &&
+    typeof state.revision === 'number' &&
+    Number.isInteger(state.revision) &&
+    state.revision >= 0 &&
+    !!state.domain &&
+    typeof state.domain === 'object' &&
+    !Array.isArray(state.domain) &&
+    isJsonSerializable(state.domain)
+  );
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
