@@ -137,8 +137,26 @@ export default function LandingHero() {
         className="text-base md:text-lg leading-relaxed mb-6 max-w-md"
         style={{ color: 'rgba(165,195,235,0.78)' }}
       >
-        A privacy-first creative browser based OS. Your world — your rules, your dreams, and
-        entirely yours.
+        DREAMengin is a digital world where capabilities, intelligence, creation, communication, memory, and experiences can exist as first-class entities.
+
+The purpose is not to organize them.
+
+The purpose is to allow them to exist, interact, evolve, and create new possibilities together.
+
+The architecture exists to support that world.
+
+It is not the world.
+
+Let your
+Dreams. 
+fuel our
+Engins. 
+
+DREAMengin®️
+
+Make Your DREAM Come True. ™️
+
+i’m gonna put this .
       </p>
 
       {/* Mission statement link (replaces old stats strip) */}
@@ -165,7 +183,7 @@ export default function LandingHero() {
             textDecoration: 'none',
           }}
         >
-          Sign Up and start dreaming again!
+          Sign Up!
         </Link>
         <Link
           href="/login"
