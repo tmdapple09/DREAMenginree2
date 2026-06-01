@@ -140,23 +140,11 @@ export default function LandingHero() {
         DREAMengin is a digital world where capabilities, intelligence, creation, communication, memory, and experiences can exist as first-class entities.
 
 The purpose is not to organize them.
-
 The purpose is to allow them to exist, interact, evolve, and create new possibilities together.
 
 The architecture exists to support that world.
-
 It is not the world.
 
-Let your
-Dreams. 
-fuel our
-Engins. 
-
-DREAMengin®️
-
-Make Your DREAM Come True. ™️
-
-i’m gonna put this .
       </p>
 
       {/* Mission statement link (replaces old stats strip) */}
