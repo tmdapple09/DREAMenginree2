@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 1980
+- **Total files:** 2017
 - **Total function/class nodes:** 3581
 - **Total edges:** 7154
-- **Orphan nodes:** 2952
+- **Orphan nodes:** 2989
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4823,10 +4823,47 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
-| `fonts/Cormorant_Garamond.zip` | file |
+| `fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf` | file |
+| `fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf` | file |
+| `fonts/Cormorant_Garamond/OFL.txt` | doc |
+| `fonts/Cormorant_Garamond/README.txt` | doc |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-Bold.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-BoldItalic.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-Italic.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-Light.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-LightItalic.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-MediumItalic.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf` | file |
+| `fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBoldItalic.ttf` | file |
 | `fonts/fonts.md` | doc |
-| `fonts/Plus_Jakarta_Sans.zip` | file |
-| `fonts/Space_Grotesk.zip` | file |
+| `fonts/Plus_Jakarta_Sans/OFL.txt` | doc |
+| `fonts/Plus_Jakarta_Sans/PlusJakartaSans-Italic-VariableFont_wght.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/README.txt` | doc |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Bold.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-BoldItalic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBold.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBoldItalic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLight.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLightItalic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Italic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Light.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-LightItalic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Medium.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-MediumItalic.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBold.ttf` | file |
+| `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBoldItalic.ttf` | file |
+| `fonts/Space_Grotesk/OFL.txt` | doc |
+| `fonts/Space_Grotesk/README.txt` | doc |
+| `fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf` | file |
+| `fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf` | file |
+| `fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf` | file |
+| `fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf` | file |
+| `fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf` | file |
+| `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `lib-index.mjs` | mjs |

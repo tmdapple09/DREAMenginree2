@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T03:24:29.475Z",
+  "generatedAt": "2026-06-02T03:51:49.068Z",
   "root": ".",
   "nodes": [
     {
@@ -24813,31 +24813,455 @@
       "isOrphan": false
     },
     {
-      "id": "file:fonts/Cormorant_Garamond.zip",
-      "label": "Cormorant_Garamond.zip",
-      "type": "file",
-      "path": "fonts/Cormorant_Garamond.zip",
+      "id": "folder:fonts/Cormorant_Garamond",
+      "label": "Cormorant_Garamond",
+      "type": "folder",
+      "path": "fonts/Cormorant_Garamond",
       "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf",
+      "label": "CormorantGaramond-Italic-VariableFont_wght.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond",
       "loc": null,
       "isOrphan": true,
       "tags": []
     },
     {
-      "id": "file:fonts/Plus_Jakarta_Sans.zip",
-      "label": "Plus_Jakarta_Sans.zip",
+      "id": "file:fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf",
+      "label": "CormorantGaramond-VariableFont_wght.ttf",
       "type": "file",
-      "path": "fonts/Plus_Jakarta_Sans.zip",
-      "parent": "folder:fonts",
+      "path": "fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond",
       "loc": null,
       "isOrphan": true,
       "tags": []
     },
     {
-      "id": "file:fonts/Space_Grotesk.zip",
-      "label": "Space_Grotesk.zip",
+      "id": "file:fonts/Cormorant_Garamond/OFL.txt",
+      "label": "OFL.txt",
+      "type": "doc",
+      "path": "fonts/Cormorant_Garamond/OFL.txt",
+      "parent": "folder:fonts/Cormorant_Garamond",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/README.txt",
+      "label": "README.txt",
+      "type": "doc",
+      "path": "fonts/Cormorant_Garamond/README.txt",
+      "parent": "folder:fonts/Cormorant_Garamond",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:fonts/Cormorant_Garamond/static",
+      "label": "static",
+      "type": "folder",
+      "path": "fonts/Cormorant_Garamond/static",
+      "parent": "folder:fonts/Cormorant_Garamond",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-Bold.ttf",
+      "label": "CormorantGaramond-Bold.ttf",
       "type": "file",
-      "path": "fonts/Space_Grotesk.zip",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-Bold.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-BoldItalic.ttf",
+      "label": "CormorantGaramond-BoldItalic.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-BoldItalic.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-Italic.ttf",
+      "label": "CormorantGaramond-Italic.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-Italic.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-Light.ttf",
+      "label": "CormorantGaramond-Light.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-Light.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-LightItalic.ttf",
+      "label": "CormorantGaramond-LightItalic.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-LightItalic.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf",
+      "label": "CormorantGaramond-Medium.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-MediumItalic.ttf",
+      "label": "CormorantGaramond-MediumItalic.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-MediumItalic.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf",
+      "label": "CormorantGaramond-Regular.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf",
+      "label": "CormorantGaramond-SemiBold.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBoldItalic.ttf",
+      "label": "CormorantGaramond-SemiBoldItalic.ttf",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBoldItalic.ttf",
+      "parent": "folder:fonts/Cormorant_Garamond/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:fonts/Plus_Jakarta_Sans",
+      "label": "Plus_Jakarta_Sans",
+      "type": "folder",
+      "path": "fonts/Plus_Jakarta_Sans",
       "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/OFL.txt",
+      "label": "OFL.txt",
+      "type": "doc",
+      "path": "fonts/Plus_Jakarta_Sans/OFL.txt",
+      "parent": "folder:fonts/Plus_Jakarta_Sans",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/PlusJakartaSans-Italic-VariableFont_wght.ttf",
+      "label": "PlusJakartaSans-Italic-VariableFont_wght.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/PlusJakartaSans-Italic-VariableFont_wght.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf",
+      "label": "PlusJakartaSans-VariableFont_wght.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/README.txt",
+      "label": "README.txt",
+      "type": "doc",
+      "path": "fonts/Plus_Jakarta_Sans/README.txt",
+      "parent": "folder:fonts/Plus_Jakarta_Sans",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:fonts/Plus_Jakarta_Sans/static",
+      "label": "static",
+      "type": "folder",
+      "path": "fonts/Plus_Jakarta_Sans/static",
+      "parent": "folder:fonts/Plus_Jakarta_Sans",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Bold.ttf",
+      "label": "PlusJakartaSans-Bold.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Bold.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-BoldItalic.ttf",
+      "label": "PlusJakartaSans-BoldItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-BoldItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBold.ttf",
+      "label": "PlusJakartaSans-ExtraBold.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBold.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBoldItalic.ttf",
+      "label": "PlusJakartaSans-ExtraBoldItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBoldItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLight.ttf",
+      "label": "PlusJakartaSans-ExtraLight.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLight.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLightItalic.ttf",
+      "label": "PlusJakartaSans-ExtraLightItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLightItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Italic.ttf",
+      "label": "PlusJakartaSans-Italic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Italic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Light.ttf",
+      "label": "PlusJakartaSans-Light.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Light.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-LightItalic.ttf",
+      "label": "PlusJakartaSans-LightItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-LightItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Medium.ttf",
+      "label": "PlusJakartaSans-Medium.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Medium.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-MediumItalic.ttf",
+      "label": "PlusJakartaSans-MediumItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-MediumItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf",
+      "label": "PlusJakartaSans-Regular.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBold.ttf",
+      "label": "PlusJakartaSans-SemiBold.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBold.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBoldItalic.ttf",
+      "label": "PlusJakartaSans-SemiBoldItalic.ttf",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBoldItalic.ttf",
+      "parent": "folder:fonts/Plus_Jakarta_Sans/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:fonts/Space_Grotesk",
+      "label": "Space_Grotesk",
+      "type": "folder",
+      "path": "fonts/Space_Grotesk",
+      "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/OFL.txt",
+      "label": "OFL.txt",
+      "type": "doc",
+      "path": "fonts/Space_Grotesk/OFL.txt",
+      "parent": "folder:fonts/Space_Grotesk",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/README.txt",
+      "label": "README.txt",
+      "type": "doc",
+      "path": "fonts/Space_Grotesk/README.txt",
+      "parent": "folder:fonts/Space_Grotesk",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf",
+      "label": "SpaceGrotesk-VariableFont_wght.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf",
+      "parent": "folder:fonts/Space_Grotesk",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:fonts/Space_Grotesk/static",
+      "label": "static",
+      "type": "folder",
+      "path": "fonts/Space_Grotesk/static",
+      "parent": "folder:fonts/Space_Grotesk",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf",
+      "label": "SpaceGrotesk-Bold.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf",
+      "parent": "folder:fonts/Space_Grotesk/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf",
+      "label": "SpaceGrotesk-Light.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf",
+      "parent": "folder:fonts/Space_Grotesk/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf",
+      "label": "SpaceGrotesk-Medium.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf",
+      "parent": "folder:fonts/Space_Grotesk/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf",
+      "label": "SpaceGrotesk-Regular.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf",
+      "parent": "folder:fonts/Space_Grotesk/static",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf",
+      "label": "SpaceGrotesk-SemiBold.ttf",
+      "type": "file",
+      "path": "fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf",
+      "parent": "folder:fonts/Space_Grotesk/static",
       "loc": null,
       "isOrphan": true,
       "tags": []
