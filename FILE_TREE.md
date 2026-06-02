@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T09:39:31.450Z
+Generated: 2026-06-02T21:39:08.461Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1830,15 +1830,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── page.tsx
 │   │       ├── useGsapEntrance  ← @/lib/gsap/useGsapEntrance
 │   │       ├── cn  ← @/lib/utils
-│   │       ├── getRendererBackend  ← @/lib/webgpu
 │   │       ├── motion  ← framer-motion
 │   │       ├── Layers  ← lucide-react
 │   │       ├── Monitor  ← lucide-react
 │   │       ├── Sparkles  ← lucide-react
 │   │       ├── Zap  ← lucide-react
-│   │       ├── useEffect  ← react
 │   │       ├── useRef  ← react
-│   │       ├── useState  ← react
 │   │       ├── (dynamic)  ← @/components/three/dream.scene
 │   │       └── → (default)
 │   ├── dreamdmbar  [HOME — DreamDMBar]
@@ -3831,7 +3828,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dreamsurface.dreamspace.tsx ∅
 │   │   │   ├── ⬡ DreamSpace  ← @/app/dreamdmbar/_components/DreamSpaceRegion
-│   │   │   ├── ⬡ RuntimeMemoryHUD  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
 │   │   │   ├── ⬡ ActiveModuleSurface  ← @/components/home/dream.ActiveModuleSurface
 │   │   │   ├── ⬡ SpatialProfileSpace  ← @/components/spatial/dream.ProfileSpace
 │   │   │   ├── ⬡ UniversalWidget  ← @/components/widgets/dream.widget.UniversalWidget
@@ -5626,7 +5622,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── webgpu  [WebGPU / Babylon Engine]
 │   │   ├── dream.WebGPUShowcase.tsx ∅
 │   │   │   ├── WebGPURenderer  ← ./renderer
-│   │   │   ├── getRendererBackend  ← @/lib/webgpu
 │   │   │   ├── isWebGPUAvailable  ← @/lib/webgpu
 │   │   │   ├── ⬡ Link  ← next/link
 │   │   │   ├── useCallback  ← react
@@ -11893,9 +11888,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → truncate
 │   │   ├── → unique
 │   │   └── ∅ unused: formatDate, generateDedupeHash, isError
-│   └── webgpu.ts
+│   └── webgpu.ts ∅
 │       ├── → getRendererBackend
-│       └── → isWebGPUAvailable
+│       ├── → isWebGPUAvailable
+│       └── ∅ unused: getRendererBackend
 ├── misc
 │   └── images
 │       ├── arm2_transparent.png
@@ -15021,6 +15017,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── it  ← vitest
 │   ├── live-feed.test.ts
 │   │   ├── FeedPost  ← @/lib/feed/useLiveFeed
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── madmaxi-accessibility-tuning.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── join  ← node:path
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
