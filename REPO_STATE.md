@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T01:51:47.621Z
+Generated: 2026-06-02T04:19:34.864Z
 
 ---
 
@@ -12848,14 +12848,6 @@ _No style files for this feature._
 |--------|---------------|
 | `../lib/adari` | `assertBuildInvariants` |
 
-## `scripts/readme-autosync.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
-| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
-| `node:url` | `fileURLToPath` |
-
 ## `scripts/update-bugs.mjs`
 
 | Module | Connected via |
@@ -19030,7 +19022,6 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
-| `scripts/readme-autosync.ts` | `runReadmeAutosync` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
@@ -19228,6 +19219,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -20926,6 +20918,53 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │       ├── ⚠ @/lib/supabase/config  (SUPABASE_URL)
 │       └── ∅ unused: (default)
+├── fonts
+│   ├── Cormorant_Garamond
+│   │   ├── static
+│   │   │   ├── CormorantGaramond-Bold.ttf
+│   │   │   ├── CormorantGaramond-BoldItalic.ttf
+│   │   │   ├── CormorantGaramond-Italic.ttf
+│   │   │   ├── CormorantGaramond-Light.ttf
+│   │   │   ├── CormorantGaramond-LightItalic.ttf
+│   │   │   ├── CormorantGaramond-Medium.ttf
+│   │   │   ├── CormorantGaramond-MediumItalic.ttf
+│   │   │   ├── CormorantGaramond-Regular.ttf
+│   │   │   ├── CormorantGaramond-SemiBold.ttf
+│   │   │   └── CormorantGaramond-SemiBoldItalic.ttf
+│   │   ├── CormorantGaramond-Italic-VariableFont_wght.ttf
+│   │   ├── CormorantGaramond-VariableFont_wght.ttf
+│   │   ├── OFL.txt
+│   │   └── README.txt
+│   ├── Plus_Jakarta_Sans
+│   │   ├── static
+│   │   │   ├── PlusJakartaSans-Bold.ttf
+│   │   │   ├── PlusJakartaSans-BoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBold.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLight.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Italic.ttf
+│   │   │   ├── PlusJakartaSans-Light.ttf
+│   │   │   ├── PlusJakartaSans-LightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Medium.ttf
+│   │   │   ├── PlusJakartaSans-MediumItalic.ttf
+│   │   │   ├── PlusJakartaSans-Regular.ttf
+│   │   │   ├── PlusJakartaSans-SemiBold.ttf
+│   │   │   └── PlusJakartaSans-SemiBoldItalic.ttf
+│   │   ├── OFL.txt
+│   │   ├── PlusJakartaSans-Italic-VariableFont_wght.ttf
+│   │   ├── PlusJakartaSans-VariableFont_wght.ttf
+│   │   └── README.txt
+│   └── Space_Grotesk
+│       ├── static
+│       │   ├── SpaceGrotesk-Bold.ttf
+│       │   ├── SpaceGrotesk-Light.ttf
+│       │   ├── SpaceGrotesk-Medium.ttf
+│       │   ├── SpaceGrotesk-Regular.ttf
+│       │   └── SpaceGrotesk-SemiBold.ttf
+│       ├── OFL.txt
+│       ├── README.txt
+│       └── SpaceGrotesk-VariableFont_wght.ttf
 ├── hooks
 │   ├── use-spatial.ts ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
@@ -21987,8 +22026,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
 │   ├── postbuild.ts
-│   ├── readme-autosync.ts ∅
-│   │   └── ∅ unused: runReadmeAutosync
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql
@@ -22271,7 +22308,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── product-law-principle10-alignment.test.ts
 │   ├── profile-avatar-edit-entrypoints.test.ts
 │   ├── rate-limiting.test.ts
-│   ├── readme-autosync.test.ts
+│   ├── readme-autosync.test.ts ⚠
+│   │   └── ⚠ ../scripts/readme-autosync  (SECTION_REGISTRY, SectionDescriptor, SubsectionDescriptor, computeAffected, replaceSection, upsertSubsectionInSection)
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts

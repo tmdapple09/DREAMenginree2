@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T01:51:47.753Z
+Generated: 2026-06-02T04:19:34.997Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -165,6 +165,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -7027,6 +7028,53 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── useState  ← react
 │       ├── → (default)
 │       └── ∅ unused: (default)
+├── fonts
+│   ├── Cormorant_Garamond
+│   │   ├── static
+│   │   │   ├── CormorantGaramond-Bold.ttf
+│   │   │   ├── CormorantGaramond-BoldItalic.ttf
+│   │   │   ├── CormorantGaramond-Italic.ttf
+│   │   │   ├── CormorantGaramond-Light.ttf
+│   │   │   ├── CormorantGaramond-LightItalic.ttf
+│   │   │   ├── CormorantGaramond-Medium.ttf
+│   │   │   ├── CormorantGaramond-MediumItalic.ttf
+│   │   │   ├── CormorantGaramond-Regular.ttf
+│   │   │   ├── CormorantGaramond-SemiBold.ttf
+│   │   │   └── CormorantGaramond-SemiBoldItalic.ttf
+│   │   ├── CormorantGaramond-Italic-VariableFont_wght.ttf
+│   │   ├── CormorantGaramond-VariableFont_wght.ttf
+│   │   ├── OFL.txt
+│   │   └── README.txt
+│   ├── Plus_Jakarta_Sans
+│   │   ├── static
+│   │   │   ├── PlusJakartaSans-Bold.ttf
+│   │   │   ├── PlusJakartaSans-BoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBold.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLight.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Italic.ttf
+│   │   │   ├── PlusJakartaSans-Light.ttf
+│   │   │   ├── PlusJakartaSans-LightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Medium.ttf
+│   │   │   ├── PlusJakartaSans-MediumItalic.ttf
+│   │   │   ├── PlusJakartaSans-Regular.ttf
+│   │   │   ├── PlusJakartaSans-SemiBold.ttf
+│   │   │   └── PlusJakartaSans-SemiBoldItalic.ttf
+│   │   ├── OFL.txt
+│   │   ├── PlusJakartaSans-Italic-VariableFont_wght.ttf
+│   │   ├── PlusJakartaSans-VariableFont_wght.ttf
+│   │   └── README.txt
+│   └── Space_Grotesk
+│       ├── static
+│       │   ├── SpaceGrotesk-Bold.ttf
+│       │   ├── SpaceGrotesk-Light.ttf
+│       │   ├── SpaceGrotesk-Medium.ttf
+│       │   ├── SpaceGrotesk-Regular.ttf
+│       │   └── SpaceGrotesk-SemiBold.ttf
+│       ├── OFL.txt
+│       ├── README.txt
+│       └── SpaceGrotesk-VariableFont_wght.ttf
 ├── hooks
 │   ├── use-spatial.ts ⚠ ∅
 │   │   ├── createClient  ⚠ @/lib/supabase/client
@@ -12097,24 +12145,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts
 │   │   └── assertBuildInvariants  ← ../lib/adari
-│   ├── readme-autosync.ts ∅
-│   │   ├── existsSync  ← node:fs
-│   │   ├── readFileSync  ← node:fs
-│   │   ├── readdirSync  ← node:fs
-│   │   ├── statSync  ← node:fs
-│   │   ├── writeFileSync  ← node:fs
-│   │   ├── basename  ← node:path
-│   │   ├── extname  ← node:path
-│   │   ├── join  ← node:path
-│   │   ├── relative  ← node:path
-│   │   ├── resolve  ← node:path
-│   │   ├── fileURLToPath  ← node:url
-│   │   ├── → SECTION_REGISTRY
-│   │   ├── → computeAffected
-│   │   ├── → replaceSection
-│   │   ├── → runReadmeAutosync
-│   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: runReadmeAutosync
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
@@ -15372,13 +15402,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
-│   ├── readme-autosync.test.ts
-│   │   ├── SECTION_REGISTRY  ← ../scripts/readme-autosync
-│   │   ├── SectionDescriptor  ← ../scripts/readme-autosync
-│   │   ├── SubsectionDescriptor  ← ../scripts/readme-autosync
-│   │   ├── computeAffected  ← ../scripts/readme-autosync
-│   │   ├── replaceSection  ← ../scripts/readme-autosync
-│   │   ├── upsertSubsectionInSection  ← ../scripts/readme-autosync
+│   ├── readme-autosync.test.ts ⚠
+│   │   ├── SECTION_REGISTRY  ⚠ ../scripts/readme-autosync
+│   │   ├── SectionDescriptor  ⚠ ../scripts/readme-autosync
+│   │   ├── SubsectionDescriptor  ⚠ ../scripts/readme-autosync
+│   │   ├── computeAffected  ⚠ ../scripts/readme-autosync
+│   │   ├── replaceSection  ⚠ ../scripts/readme-autosync
+│   │   ├── upsertSubsectionInSection  ⚠ ../scripts/readme-autosync
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
