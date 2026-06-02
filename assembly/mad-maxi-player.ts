@@ -23,12 +23,12 @@
 // ─── Tuning (mirrors tuning.json) ────────────────────────────────────────────
 const FIXED_HZ:        f32 = 60.0;
 const GRAVITY:         f32 = 15.0;
-const MAX_HSPEED:      f32 = 7.5;
+const MAX_HSPEED:      f32 = 9.0;
 const GROUND_ACCEL:    f32 = 60.0;
 const GROUND_FRICTION: f32 = 18.0;
 const AIR_ACCEL:       f32 = 28.0;
-const JUMP_FORCE:      f32 = 8.0;
-const DJUMP_FORCE:     f32 = 7.0;
+const JUMP_FORCE:      f32 = 9.6;
+const DJUMP_FORCE:     f32 = 8.4;
 const VAR_JUMP_MULT:   f32 = 2.4;
 const COYOTE_FRAMES:   i32 = 6;
 const BUFFER_FRAMES:   i32 = 8;

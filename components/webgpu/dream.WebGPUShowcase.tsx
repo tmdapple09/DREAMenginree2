@@ -16,7 +16,7 @@
  * iPhone-optimised: safe-area insets, DPR clamped to 2, GPU-composited layers
  */
 
-import { getRendererBackend, isWebGPUAvailable } from '@/lib/webgpu';
+import { isWebGPUAvailable } from '@/lib/webgpu';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { WebGPURenderer } from './renderer';
@@ -209,42 +209,6 @@ function useGPUCanvas(
   }, [canvasRef, setFps, setGpuActive]);
 }
 
-// ── Backend badge ─────────────────────────────────────────────────────────────
-
-function BackendBadge({ backend }: {backend: string | null}) {
-  if (!backend) {
-    return (
-      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>
-        detecting…
-      </span>
-    );
-  }
-
-  const isGPU  = backend === 'webgpu';
-  const color  = isGPU ? CYAN : '#f59e0b';
-  const label  = backend.toUpperCase();
-  const dot    = isGPU ? '✓' : '~';
-
-  return (
-    <span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: 5,
-      fontSize: 11,
-      fontWeight: 700,
-      letterSpacing: '0.08em',
-      color,
-      background: `${color}18`,
-      border: `1px solid ${color}44`,
-      borderRadius: 99,
-      padding: '3px 10px 3px 8px',
-    }}>
-      <span style={{ fontSize: 9 }}>{dot}</span>
-      {label}
-    </span>
-  );
-}
-
 // ── Section card ──────────────────────────────────────────────────────────────
 
 function SectionCard({
@@ -301,8 +265,7 @@ function SectionCard({
 
 export default function WebGPUShowcase( ){
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [fps,       setFps]       = useState<number>(0);
-  const [backend,   setBackend]   = useState<string | null>(null);
+  const [,          setFps]       = useState<number>(0);
   const [gpuFlag,   setGpuFlag]   = useState<boolean | null>(null);
   const [gpuActive, setGpuActive] = useState(false);
 
@@ -311,7 +274,6 @@ export default function WebGPUShowcase( ){
   useGPUCanvas(canvasRef, handleFps, handleGpuActive);
 
   useEffect(() => {
-    getRendererBackend().then(setBackend);
     isWebGPUAvailable().then(setGpuFlag);
   }, []);
 
@@ -352,21 +314,7 @@ export default function WebGPUShowcase( ){
           </span>
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <BackendBadge backend={backend} />
-          {fps > 0 && (
-            <span style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: fps >= 55 ? '#4ade80' : fps >= 30 ? '#f59e0b' : '#ef4444',
-              letterSpacing: '0.05em',
-              minWidth: 44,
-              textAlign: 'right',
-            }}>
-              {fps} fps
-            </span>
-          )}
-        </div>
+
       </div>
 
       {/* ── Hero canvas ───────────────────────────────────────────────────── */}
@@ -483,17 +431,16 @@ export default function WebGPUShowcase( ){
           gap: 12,
         }}>
           <h3 style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.72)', margin: 0, letterSpacing: '-0.01em' }}>
-            Performance stack
+            Experience stack
           </h3>
           {[
-            { label: 'Renderer',           value: gpuActive ? 'Raw WebGPU API · WGSL shaders' : 'Canvas2D fallback' },
-            { label: 'Particles',           value: `${gpuActive ? '2 048' : '1'} GPU-driven (compute shaders)` },
-            { label: 'Post-processing',    value: 'HDR → bright → blur H → blur V → composite' },
-            { label: 'Tone-mapping',       value: 'ACES filmic (Narkowicz 2015)' },
-            { label: 'Chromatic aberration', value: 'Radial, GPU fragment shader' },
-            { label: 'Babylon.js layer',   value: 'WebGPU-first · director pass-based' },
-            { label: 'Target framerate',   value: '60 fps · graceful 30 fallback' },
-            { label: 'Mobile',             value: 'safe-area · DPR≤2 · GPU-composited' },
+            { label: 'Motion quality',      value: gpuActive ? 'Ultra smooth effects' : 'Comfort mode effects' },
+            { label: 'Particles',           value: gpuActive ? 'Dense living field' : 'Focused living field' },
+            { label: 'Glow',                value: 'Layered cinematic bloom' },
+            { label: 'Color',               value: 'Filmic highlight rolloff' },
+            { label: 'Lens feel',           value: 'Subtle radial energy shimmer' },
+            { label: 'Scene layer',         value: 'Ready for Games, Daydreams, and Engines' },
+            { label: 'Mobile',             value: 'Safe-area aware and touch-first' },
           ].map(({ label, value }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)' }}>{label}</span>

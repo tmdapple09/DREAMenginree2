@@ -100,8 +100,7 @@ player.set_position(0, 1.5, 0)
 scene.gravity = -9.8
 scene.step(frames=60)
 
-print(f"Player position: {player.position}")
-print(f"FPS: {scene.fps}")`,
+print(f"Player position: {player.position}")`,
 
   javascript: `// DREAMengin Code Dream — JavaScript
 // Connect to an Engine below, then Run ▶
@@ -175,7 +174,6 @@ function getMockOutput(language: Language, engine: EngineId, code: string): stri
       `[${ts()}] PBR material applied  roughness: 0.4  metalness: 0.6`,
       `[${ts()}] SSAO2 enabled  kernel: 16  radius: 0.3`,
       `[${ts()}] Render pipeline: ✓ ACES tone mapping  ✓ TAA  ✓ Bloom`,
-      `[${ts()}] Frame budget: 16.6ms  FPS: 60  draw calls: 24`,
       `[${ts()}] ✅ Scene ready — runtime active`,
     ];
   }
@@ -581,7 +579,6 @@ export default function CodeDreamIDE( ){
                     <div style={{ border: '1px solid rgba(139,92,246,0.3)', borderRadius: 6, padding: 10, background: 'rgba(139,92,246,0.04)', fontFamily: 'monospace', fontSize: 10, color: '#c084fc', lineHeight: 1.8 }}>
                       Scene: {outputLines.length > 0 ? 'scene_active' : 'waiting…'}<br />
                       Entities: {outputLines.length > 0 ? '124' : '0'}<br />
-                      FPS: {outputLines.length > 0 ? '60' : '—'}<br />
                       Draw calls: {outputLines.length > 0 ? '24' : '—'}<br />
                       Physics: {engine === 'game' && outputLines.length > 0 ? 'Havok ●' : 'idle'}<br /><br />
                       {outputLines.length > 0 ? (
@@ -788,7 +785,6 @@ export default function CodeDreamIDE( ){
                     }}>
                       Scene: {outputLines.length > 0 ? `scene_active` : 'waiting…'}<br />
                       Entities: {outputLines.length > 0 ? '124' : '0'}<br />
-                      FPS: {outputLines.length > 0 ? '60' : '—'}<br />
                       Draw calls: {outputLines.length > 0 ? '24' : '—'}<br />
                       Physics: {engine === 'game' && outputLines.length > 0 ? 'Havok ●' : 'idle'}<br />
                       <br />

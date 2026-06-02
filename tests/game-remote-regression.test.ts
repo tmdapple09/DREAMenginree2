@@ -96,8 +96,30 @@ describe('existing PS5 remote usage', () => {
   it('raises MADMAXI jump reach and increases its normal run speed by twenty percent', () => {
     const src = readFileSync(join(REPO_ROOT, 'components/games/madmaxi/dream.MadmaxiGame.tsx'), 'utf8');
 
-    expect(src).toContain('const JUMP_VY       = 0.78;');
-    expect(src).toContain('const WALK_SPD      = 0.174;');
+    expect(src).toContain('const JUMP_VY       = 0.936;');
+    expect(src).toContain('const WALK_SPD      = 0.2088;');
   });
 
+});
+
+describe('immersive Game Remote HUD interaction states', () => {
+  it('keeps immersive controls nearly transparent at rest and visible during touch activity', () => {
+    const css = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.MobileGameHUD.module.css'), 'utf8');
+
+    expect(css).toContain('.overlayIdle {\n  opacity: 0.01;');
+    expect(css).toContain('.overlayActive {\n  opacity: 0.3;');
+  });
+
+  it('collapses to a floating restore button while its overlay routes touches to the cartridge', () => {
+    const hud = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.MobileGameHUD.tsx'), 'utf8');
+    const css = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.MobileGameHUD.module.css'), 'utf8');
+
+    expect(hud).toContain("useState<'idle' | 'active' | 'collapsed'>('idle')");
+    expect(hud).toContain('aria-label="Hide game remote"');
+    expect(hud).toContain('aria-label="Show game remote"');
+    expect(hud).toContain('data-game-remote-state="collapsed"');
+    expect(css).toContain('.overlayCollapsed {\n  opacity: 1;\n  pointer-events: none;');
+    expect(css).toContain('.restoreRemoteButton {');
+    expect(css).toContain('pointer-events: auto;');
+  });
 });

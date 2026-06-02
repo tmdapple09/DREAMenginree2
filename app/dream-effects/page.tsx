@@ -3,11 +3,10 @@
 
 import { useGsapEntrance } from '@/lib/gsap/useGsapEntrance';
 import { cn } from '@/lib/utils';
-import { getRendererBackend } from '@/lib/webgpu';
 import { motion } from 'framer-motion';
 import { Layers, Monitor, Sparkles, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 /* Lazy-load the R3F scene so the heavy Three.js bundle is only pulled
    when the user actually visits this page. SSR is disabled because
@@ -39,7 +38,7 @@ const features = [
   {
     icon: Monitor,
     title: 'WebGPU Ready',
-    desc: 'Automatic detection of the best available GPU backend – WebGPU, WebGL 2, or WebGL – for maximum performance.',
+    desc: 'Automatically adapts visual quality so motion stays smooth while preserving the richest effects your device can comfortably support.',
   },
 ];
 
@@ -47,7 +46,6 @@ const features = [
 /*  Page component                                                     */
 /* ------------------------------------------------------------------ */
 export default function DreamEffectsPage( ){
-  const [backend, setBackend] = useState<string>('detecting…');
   const cardsRef = useRef<HTMLElement | null>(null);
 
   useGsapEntrance(cardsRef, [features.length], {
@@ -57,9 +55,6 @@ export default function DreamEffectsPage( ){
     ease: 'power3.out',
   });
 
-  useEffect(() => {
-    getRendererBackend().then((b) => setBackend(b));
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white">
@@ -77,9 +72,6 @@ export default function DreamEffectsPage( ){
           GLSL shaders, React Three Fiber, GSAP and Framer Motion animations,
           plus WebGPU — all running in your browser.
         </p>
-        <span className="inline-block mt-3 text-xs font-mono text-gray-500 border border-gray-800 rounded-full px-3 py-1">
-          GPU backend: <span className="text-cyan-400">{backend}</span>
-        </span>
       </motion.header>
 
       {/* 3-D Canvas */}
