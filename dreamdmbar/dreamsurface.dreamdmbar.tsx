@@ -30,12 +30,10 @@
 
 import {
     Bell,
+    Menu,
     Bot,
     Code2,
-    Compass,
     FileText,
-    Gamepad2,
-    Home,
     ImageIcon,
     Loader2,
     Maximize2,
@@ -45,14 +43,10 @@ import {
     PenLine,
     Search,
     Send,
-    Settings,
-    ShoppingBag,
     Sparkles,
-    User,
     X,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import DreamWord from '@/components/ui/dream.DreamWord';
@@ -65,7 +59,6 @@ import {
     DIVIDER_H,
     DOUBLE_TAP_WINDOW_MS,
     DRAG_TAP_THRESHOLD_PX,
-    filterSlashCommands,
     getMoodPeriod,
     getStreakTier,
     GOLD_LONG_PRESS_MS,
@@ -175,28 +168,6 @@ function ContextIcon({ ctx, size }: {ctx: DreamBarContext; size: number}) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SlashCommandIcon — maps slash command icon hints to Lucide icons
-// ─────────────────────────────────────────────────────────────────────────────
-function SlashCommandIcon({ icon, size }: {icon: string; size: number}) {
-  const props = { size, 'aria-hidden': true as const };
-  switch (icon) {
-    case 'home':         return <Home        {...props} />;
-    case 'gamepad-2':    return <Gamepad2    {...props} />;
-    case 'music':        return <Music       {...props} />;
-    case 'code-2':       return <Code2       {...props} />;
-    case 'sparkles':     return <Sparkles    {...props} />;
-    case 'send':         return <Send        {...props} />;
-    case 'compass':      return <Compass     {...props} />;
-    case 'settings':     return <Settings    {...props} />;
-    case 'user':         return <User        {...props} />;
-    case 'search':       return <Search      {...props} />;
-    case 'bot':          return <Bot         {...props} />;
-    case 'shopping-bag': return <ShoppingBag {...props} />;
-    default:             return <Sparkles    {...props} />;
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // StreakFlame — renders the dream streak flame icon with tier-appropriate style
 // ─────────────────────────────────────────────────────────────────────────────
 function StreakFlame({ count, tier }: {count: number; tier: StreakTier}) {
@@ -246,7 +217,7 @@ function StreakFlame({ count, tier }: {count: number; tier: StreakTier}) {
 // ─────────────────────────────────────────────────────────────────────────────
 interface DreamDMBarProps {
   /**
-   * Single-tap the Gold Particle → open both radial menus (Daydreams + System).
+   * Menu button opens both radial menus (Daydreams + System).
    */
   onBothMenus: () => void;
   /** Bridge bar state to the dual-runtime host */
@@ -433,13 +404,6 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     const interval = setInterval(updateMood, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
-
-  // ── ⌨️ Slash Command Palette ──────────────────────────────────────────────
-  const [slashOpen, setSlashOpen] = useState(false);
-  const [slashQuery, setSlashQuery] = useState('');
-  const [slashSelectedIdx, setSlashSelectedIdx] = useState(0);
-  const slashResults = slashOpen ? filterSlashCommands(slashQuery) : [];
-  const router = useRouter();
 
   // ── 🎹 Typing Rhythm Visualizer ──────────────────────────────────────────
   const keystrokeTimesRef = useRef<number[]>([]);
@@ -714,7 +678,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   }, [onSplitChange, screenH, splitRatio, revealBar]);
 
   // ── Dream bar context (route-aware + intent-aware) ──────────────────────────
-  const { barIntent, setBarIntent, clearBarIntent, openDrEams } = useDreamSystem();
+  const { barIntent, setBarIntent, clearBarIntent, openDrEams, openInDominant } = useDreamSystem();
   const barCtx = useDreamBarContext(barIntent.mode, barIntent.targetLabel);
   const dividerModeActive = typeof splitRatio === 'number' && typeof onSplitChange === 'function';
   const [expandTapCount, setExpandTapCount] = useState(0);
@@ -765,7 +729,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (!touch) return;
     const target = e.target as HTMLElement;
     // Ignore touches that originated inside an overlay (DualBottomMenu,
-    // DrEams panel, slash palette, lightbox, etc.). The bar's drag detector
+    // DrEams panel, lightbox, etc.). The bar's drag detector
     // would otherwise swallow taps on overlay buttons.
     if (target.closest('[data-de-overlay]')) return;
     const isInTextarea = target.tagName === 'TEXTAREA' || target.closest('textarea') !== null;
@@ -855,16 +819,16 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     // It was a tap — the light's touch handlers manage the tap separately
   }, [onSplitChange, screenH, splitRatio]);
 
-  function openDreamDMInput( ){
+  const openDreamDMInput = useCallback(() => {
     setIsMinimized(false);
     revealBar();
     setIsBloom(true);
     setBarIntent({ mode: 'message' });
     setTimeout(() => textareaRef.current?.focus(), 60);
-  }
+  }, [revealBar, setBarIntent]);
 
   // ── Glowing light tap/hold ────────────────────────────────────────────────
-  // Double tap opens menus. Tap-and-hold opens the DreamDM text input.
+  // Double tap and tap-and-hold both reveal the DreamDM text input.
 
   const handleLightTap = useCallback(() => {
     const ref = lightPressRef.current;
@@ -878,14 +842,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (ref.tapTimer) clearTimeout(ref.tapTimer);
     if (result.action === 'menu') {
       if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(4);
-      onBothMenus();
+      openDreamDMInput();
       return;
     }
     ref.tapTimer = setTimeout(() => {
       ref.lastTapAt = 0;
       ref.tapTimer = null;
     }, DOUBLE_TAP_WINDOW_MS);
-  }, [onBothMenus]);
+  }, [openDreamDMInput]);
 
   const handleLightTouchStart = useCallback((_e: React.TouchEvent<HTMLSpanElement>) => {
     const ref = lightPressRef.current;
@@ -900,7 +864,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       }
       openDreamDMInput();
     }, GOLD_LONG_PRESS_MS);
-  }, []);
+  }, [openDreamDMInput]);
 
   const handleLightTouchMove = useCallback(() => {
     const ref = lightPressRef.current;
@@ -933,6 +897,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   }, [handleLightTap]);
   const [userId,         setUserId]         = useState('');
   const [selectedConv,   setSelectedConv]   = useState<DMConversation | null>(null);
+  const [recipientQuery,  setRecipientQuery]  = useState('');
+  const [selectedRecipient, setSelectedRecipient] = useState<SearchResult | null>(null);
   const [quickDraft,     setQuickDraft]     = useState('');
   const [commentSending, setCommentSending] = useState(false);
   const [quickDraftFiles, setQuickDraftFiles] = useState<File[]>([]);
@@ -1013,7 +979,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     }
     openDrEams();
     setExpandTapCount(0);
-  }, [dividerModeActive, expandTapCount, openDrEams, revealBar]);
+  }, [dividerModeActive, expandTapCount, openDrEams, openDreamDMInput, revealBar]);
 
   const { conversations, reload: reloadConvs } = useDreamDMConversations(userId);
   const { unreadCount, markAllRead }            = useNotifications();
@@ -1037,6 +1003,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const [showSearch,  setShowSearch]  = useState(false);
   const { results: searchResults, isSearching, drEamsMode, toggleDrEams, clearResults } =
     useDreamSearch(searchQuery);
+  const { results: recipientResults, isSearching: isSearchingRecipients, clearResults: clearRecipientResults } =
+    useDreamSearch(recipientQuery);
 
   // Restore draft on conversation change
   useEffect(() => {
@@ -1161,8 +1129,29 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       setIsBloom(true);
       setTimeout(() => textareaRef.current?.focus(), 60);
     };
+    const isContextualTextInput = (target: EventTarget | null): target is HTMLInputElement | HTMLTextAreaElement => {
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return false;
+      if (target.closest('[data-dreamdm-compose]')) return false;
+      if (target instanceof HTMLTextAreaElement) return true;
+      return !target.type || ['text', 'search', 'email', 'url', 'tel'].includes(target.type);
+    };
+    const mirrorContextualInput = (event: Event) => {
+      if (!isContextualTextInput(event.target)) return;
+      const target = event.target;
+      const mode: BarIntentMode = target.type === 'search' ? 'search' : 'message';
+      const targetLabel = target.getAttribute('aria-label') || target.placeholder || 'Context typing';
+      setBarIntent({ mode, targetLabel });
+      setQuickDraft(target.value);
+      setIsBloom(true);
+    };
     window.addEventListener('de:input-intent', handler);
-    return () => window.removeEventListener('de:input-intent', handler);
+    document.addEventListener('focusin', mirrorContextualInput);
+    document.addEventListener('input', mirrorContextualInput);
+    return () => {
+      window.removeEventListener('de:input-intent', handler);
+      document.removeEventListener('focusin', mirrorContextualInput);
+      document.removeEventListener('input', mirrorContextualInput);
+    };
   }, [setBarIntent]);
 
   // Resolve userId
@@ -1302,6 +1291,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     }
 
     if (barIntent.mode === 'search') {
+      const firstDestination = searchResults.find((result) => result.href);
+      if (firstDestination?.href) {
+        openInDominant(firstDestination.href);
+        setQuickDraft('');
+        setSearchQuery('');
+        clearResults();
+        return;
+      }
       setSearchQuery(text);
       setShowSearch(true);
       return;
@@ -1311,8 +1308,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       if (selectedConv) {
         await sendMessage({ conversationId: selectedConv.id, recipientId: selectedConv.otherUser.id, content: text, userId });
         clearDraft(selectedConv.id);
+      } else if (selectedRecipient?.targetId) {
+        window.location.href = `/messages/new?recipient=${encodeURIComponent(selectedRecipient.targetId)}&compose=${encodeURIComponent(text)}`;
       } else {
-        window.location.href = `/messages?compose=${encodeURIComponent(text)}`;
+        setRecipientQuery('');
+        return;
       }
       setQuickDraft('');
       return;
@@ -1435,7 +1435,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     // General / fallback: compose a message
     window.location.href = `/messages?compose=${encodeURIComponent(text)}`;
     setQuickDraft('');
-  }, [quickDraft, quickDraftFiles, quickDraftPreviews, selectedConv, sendMessage, clearDraft, userId, barCtx.surface, barIntent, clearBarIntent, toggleDrEams]);
+  }, [quickDraft, quickDraftFiles, quickDraftPreviews, selectedConv, sendMessage, clearDraft, userId, barCtx.surface, barIntent, clearBarIntent, toggleDrEams, selectedRecipient, searchResults, openInDominant, clearResults]);
 
   const handlePanelSend = useCallback(async () => {
     if (!selectedConv) return;
@@ -1476,9 +1476,20 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     } else if (result.type === 'person' && result.targetId) {
       window.location.href = `/messages/new?recipient=${result.targetId}`;
     } else if (result.href) {
-      window.location.href = result.href;
+      openInDominant(result.href);
     }
-  }, [conversations, clearResults, markAllRead]);
+  }, [conversations, clearResults, markAllRead, openInDominant]);
+
+  const handleRecipientSelect = useCallback((result: SearchResult) => {
+    setSelectedRecipient(result);
+    setRecipientQuery(result.label);
+    clearRecipientResults();
+    if (result.type === 'conversation') {
+      const conversation = conversations.find((item) => item.id === result.id);
+      if (conversation) setSelectedConv(conversation);
+    }
+    setTimeout(() => textareaRef.current?.focus(), 40);
+  }, [clearRecipientResults, conversations]);
 
   useEffect(() => {
     if (!onRuntimeModeChange) return;
@@ -1795,6 +1806,55 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               >
                 <Search size={14} aria-hidden /> Search
               </button>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={onBothMenus}
+                aria-label="Open DreamDM menus"
+                style={{
+                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(180,185,200,0.10)', border: '1px solid rgba(180,185,200,0.22)',
+                  cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--de-text-dim)',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                <Menu size={14} aria-hidden /> Menu
+              </button>
+            </div>
+          )}
+
+          {barIntent.mode === 'search' && quickDraft.trim() && (
+            <div style={{ maxHeight: 168, overflowY: 'auto', marginBottom: 8, borderRadius: 14, background: 'rgba(255,255,255,0.96)', border: '1px solid rgba(180,185,200,0.24)' }}>
+              {isSearching && <p style={{ margin: 0, padding: 10, fontSize: 12, color: 'var(--de-text-dim)' }}>Searching…</p>}
+              {searchResults.slice(0, 8).map((result) => (
+                <button key={`${result.type}:${result.id}`} type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => handleSearchResultSelect(result)} style={{ width: '100%', padding: '9px 12px', border: 'none', borderBottom: '1px solid rgba(180,185,200,0.14)', background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'var(--de-text)' }}>
+                  <strong>{result.label}</strong>{result.sublabel ? <span style={{ marginLeft: 6, color: 'var(--de-text-dim)' }}>{result.sublabel}</span> : null}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {barIntent.mode === 'message' && (
+            <div style={{ position: 'relative', paddingBottom: 8 }}>
+              <input
+                value={recipientQuery}
+                onChange={(event) => { setRecipientQuery(event.target.value); setSelectedRecipient(null); setSelectedConv(null); }}
+                onPointerDown={(event) => event.stopPropagation()}
+                placeholder="To: start typing a name"
+                aria-label="Message recipient"
+                style={{ width: '100%', borderRadius: 999, border: '1px solid rgba(200,152,26,0.35)', background: 'rgba(255,255,255,0.72)', padding: '8px 14px', color: 'var(--de-text)', outline: 'none' }}
+              />
+              {recipientQuery.trim() && !selectedRecipient && (
+                <div style={{ marginTop: 6, maxHeight: 144, overflowY: 'auto', borderRadius: 14, background: 'rgba(255,255,255,0.96)', border: '1px solid rgba(180,185,200,0.24)' }}>
+                  {isSearchingRecipients && <p style={{ margin: 0, padding: 10, fontSize: 12, color: 'var(--de-text-dim)' }}>Searching…</p>}
+                  {!isSearchingRecipients && recipientResults.filter((result) => result.type === 'person' || result.type === 'conversation').slice(0, 6).map((result) => (
+                    <button key={`${result.type}:${result.id}`} type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => handleRecipientSelect(result)} style={{ width: '100%', padding: '9px 12px', border: 'none', borderBottom: '1px solid rgba(180,185,200,0.14)', background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'var(--de-text)' }}>
+                      <strong>{result.label}</strong>{result.sublabel ? <span style={{ marginLeft: 6, color: 'var(--de-text-dim)' }}>{result.sublabel}</span> : null}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -1803,41 +1863,25 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
               <textarea
                 ref={textareaRef}
+                data-dreamdm-compose
                 value={quickDraft}
                 onChange={(e) => {
                   const val = e.target.value;
                   setQuickDraft(val);
+                  if (barIntent.mode === 'search') setSearchQuery(val);
                   recordKeystroke();
-                  if (val === '/') { setSlashOpen(true); setSlashQuery(''); setSlashSelectedIdx(0); }
-                  else if (val.startsWith('/') && slashOpen) { setSlashQuery(val.slice(1)); setSlashSelectedIdx(0); }
-                  else if (!val.startsWith('/') && slashOpen) { setSlashOpen(false); }
                 }}
                 onFocus={() => setComposeFocused(true)}
                 onBlur={() => {
                   setComposeFocused(false);
                   setTimeout(() => {
-                    setSlashOpen(false);
                     if (!quickDraft.trim() && quickDraftFiles.length === 0) {
                       setIsBloom(false);
                     }
                   }, 200);
                 }}
                 onKeyDown={(e) => {
-                  if (slashOpen) {
-                    if (e.key === 'ArrowDown') { e.preventDefault(); setSlashSelectedIdx((i) => Math.min(i + 1, slashResults.length - 1)); return; }
-                    if (e.key === 'ArrowUp') { e.preventDefault(); setSlashSelectedIdx((i) => Math.max(i - 1, 0)); return; }
-                    if (e.key === 'Enter' && slashResults[slashSelectedIdx]) {
-                      e.preventDefault();
-                      const cmd = slashResults[slashSelectedIdx];
-                      setSlashOpen(false); setQuickDraft('');
-                      if (cmd.href) router.push(cmd.href);
-                      else if (cmd.action === 'search-mode') setBarIntent({ mode: 'search' });
-                      else if (cmd.action === 'dreams-mode') setBarIntent({ mode: 'dreams' });
-                      return;
-                    }
-                    if (e.key === 'Escape') { e.preventDefault(); setSlashOpen(false); setQuickDraft(''); return; }
-                  }
-                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleQuickSend(); }
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleQuickSend(); }
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
                 placeholder={barCtx.placeholder}
@@ -2118,7 +2162,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 onTouchEnd={handleLightTouchEnd}
                 onClick={handleLightClick}
                 onKeyDown={handleLightKeyDown}
-                aria-label="DreamDM seam — double tap for menus, hold for input, drag to resize"
+                aria-label="DreamDM seam — double tap or hold for input, drag to resize"
               />
             </div>
           </div>
@@ -2583,50 +2627,25 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 {/* Quick compose — bubble textarea */}
                 <textarea
                   ref={textareaRef}
+                  data-dreamdm-compose
                   value={quickDraft}
                   onChange={(e) => {
                     const val = e.target.value;
                     setQuickDraft(val);
+                    if (barIntent.mode === 'search') setSearchQuery(val);
                     recordKeystroke();
-                    // Slash command detection
-                    if (val === '/') {
-                      setSlashOpen(true);
-                      setSlashQuery('');
-                      setSlashSelectedIdx(0);
-                    } else if (val.startsWith('/') && slashOpen) {
-                      setSlashQuery(val.slice(1));
-                      setSlashSelectedIdx(0);
-                    } else if (!val.startsWith('/') && slashOpen) {
-                      setSlashOpen(false);
-                    }
                   }}
                   onFocus={() => setComposeFocused(true)}
                   onBlur={() => {
                     setComposeFocused(false);
                     setTimeout(() => {
-                      setSlashOpen(false);
-                      // Collapse bloom if user left the field empty
+                        // Collapse bloom if user left the field empty
                       if (onSplitChange && !quickDraft.trim() && quickDraftFiles.length === 0) {
                         setIsBloom(false);
                       }
                     }, 200);
                   }}
                   onKeyDown={(e) => {
-                    if (slashOpen) {
-                      if (e.key === 'ArrowDown') { e.preventDefault(); setSlashSelectedIdx((i) => Math.min(i + 1, slashResults.length - 1)); return; }
-                      if (e.key === 'ArrowUp') { e.preventDefault(); setSlashSelectedIdx((i) => Math.max(i - 1, 0)); return; }
-                      if (e.key === 'Enter' && slashResults[slashSelectedIdx]) {
-                        e.preventDefault();
-                        const cmd = slashResults[slashSelectedIdx];
-                        setSlashOpen(false);
-                        setQuickDraft('');
-                        if (cmd.href) router.push(cmd.href);
-                        else if (cmd.action === 'search-mode') setBarIntent({ mode: 'search' });
-                        else if (cmd.action === 'dreams-mode') setBarIntent({ mode: 'dreams' });
-                        return;
-                      }
-                      if (e.key === 'Escape') { e.preventDefault(); setSlashOpen(false); setQuickDraft(''); return; }
-                    }
                     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleQuickSend(); }
                   }}
                   onPointerDown={(e) => e.stopPropagation()}
@@ -2698,92 +2717,6 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           )}
         </div>
       </div>
-
-      {/* ── ⌨️ Slash Command Palette ─────────────────────────────────────── */}
-      {slashOpen && slashResults.length > 0 && (
-        <div
-          role="listbox"
-          aria-label="Slash commands"
-          className="sicc-slash-palette"
-          style={{
-            position: 'fixed',
-            bottom: isDividerMode ? overlayBottomPx : (screenH - barTop + 8),
-            left: isCompactViewport ? 12 : 24,
-            right: isCompactViewport ? 12 : 24,
-            maxHeight: 320,
-            overflowY: 'auto',
-            zIndex: 150,
-            background: 'rgba(255,255,255,0.96)',
-            backdropFilter: 'blur(24px) saturate(140%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(140%)',
-            borderRadius: 16,
-            border: '1px solid rgba(200,152,26,0.25)',
-            boxShadow: '0 8px 40px rgba(0,0,0,0.15), 0 2px 12px rgba(200,152,26,0.12), inset 0 1px 0 rgba(255,255,255,0.5)',
-            padding: '8px 0',
-          }}
-        >
-          <div style={{ padding: '4px 14px 8px', fontSize: 10, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            Quick Commands
-          </div>
-          {slashResults.map((cmd, idx: number) => (
-            <button
-              key={cmd.id}
-              type="button"
-              role="option"
-              aria-selected={idx === slashSelectedIdx}
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={() => {
-                setSlashOpen(false);
-                setQuickDraft('');
-                if (cmd.href) router.push(cmd.href);
-                else if (cmd.action === 'search-mode') setBarIntent({ mode: 'search' });
-                else if (cmd.action === 'dreams-mode') setBarIntent({ mode: 'dreams' });
-              }}
-              style={{
-                width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-                padding: '10px 14px',
-                background: idx === slashSelectedIdx ? 'rgba(200,152,26,0.10)' : 'transparent',
-                border: 'none', cursor: 'pointer', textAlign: 'left',
-                borderRadius: 0,
-                transition: 'background 0.12s',
-              }}
-              onMouseEnter={() => setSlashSelectedIdx(idx)}
-            >
-              <div style={{
-                width: 32, height: 32, borderRadius: 10,
-                background: idx === slashSelectedIdx
-                  ? 'linear-gradient(135deg, var(--de-gold), #e0b020)'
-                  : 'rgba(180,185,200,0.15)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: idx === slashSelectedIdx ? 'white' : 'var(--de-text-dim)',
-                transition: 'all 0.18s',
-                flexShrink: 0,
-              }}>
-                <SlashCommandIcon icon={cmd.icon} size={15} />
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--de-heading)', lineHeight: 1.2 }}>
-                  {cmd.label}
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--de-text-dim)', lineHeight: 1.3, marginTop: 1 }}>
-                  {cmd.description}
-                </div>
-              </div>
-              <span style={{
-                fontSize: 9, color: 'var(--de-text-dim)', opacity: 0.5,
-                padding: '2px 6px', borderRadius: 4,
-                background: 'rgba(180,185,200,0.10)',
-                flexShrink: 0,
-              }}>
-                {cmd.category}
-              </span>
-            </button>
-          ))}
-          <div style={{ padding: '6px 14px 4px', fontSize: 9, color: 'var(--de-text-dim)', opacity: 0.6, textAlign: 'center' }}>
-            Type to filter · ↑↓ to navigate · Enter to select · Esc to close
-          </div>
-        </div>
-      )}
 
       {/* ── Media lightbox overlay ─────────────────────────────────────────── */}
       {lightboxUrl && (

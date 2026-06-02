@@ -5,12 +5,12 @@ import { describe, expect, it } from 'vitest';
 const REPO_ROOT = process.cwd();
 
 describe('existing PS5 remote usage', () => {
-  it('keeps GameEngin wired to the universal HUD while the legacy remote stays archived', () => {
+  it('keeps GameEngin wired to the separate shared GameRemote capability', () => {
     const src = readFileSync(join(REPO_ROOT, 'engins/engin.GameEngin.tsx'), 'utf8');
 
-    expect(src).toContain("import GameHUD from '@/components/games/dream.hud.GameHUD'");
-    expect(src).toContain('<GameHUD');
-    expect(src).not.toContain('GameRemote');
+    expect(src).toContain("import GameRemote from '@/components/games/dream.remote.GameRemote'");
+    expect(src).toContain('<GameRemote');
+    expect(src).not.toContain('<GameHUD');
   });
 
   it('keeps the embedded shared remote generic instead of a MADMAXI controller deck', () => {
@@ -45,13 +45,15 @@ describe('existing PS5 remote usage', () => {
     expect(src).not.toContain('interface DPadState');
   });
 
-  it('keeps immersive sessions on the universal GameHUD instead of the legacy expandable remote', () => {
+  it('keeps immersive sessions on cartridge-owned HUDs with the shared GameRemote beside them', () => {
     const shellSrc = readFileSync(join(REPO_ROOT, 'engins/engin.GameEngin.tsx'), 'utf8');
-    const hudSrc = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.GameHUD.tsx'), 'utf8');
+    const immersiveSrc = readFileSync(join(REPO_ROOT, 'app/daydream/game/dream.shell.ImmersiveGameShell.tsx'), 'utf8');
 
-    expect(shellSrc).toContain('mode={expandedPlayable.mobileHudMode ?? \'buttons\'}');
-    expect(hudSrc).toContain('<MobileGameHUD');
-    expect(hudSrc).not.toContain('<GameRemote');
+    expect(shellSrc).toContain('<GameRemote');
+    expect(shellSrc).not.toContain('<GameHUD');
+    expect(immersiveSrc).toContain('<GameRemote');
+    expect(immersiveSrc).not.toContain('<GameHUD');
+    expect(immersiveSrc).toContain('The cartridge owns its visual HUD');
   });
 
   it('removes per-game on-screen remote pads in favor of the shared GameRemote', () => {
@@ -70,4 +72,32 @@ describe('existing PS5 remote usage', () => {
     expect(src).toContain('ArrowLeft');
     expect(src).toContain('ArrowRight');
   });
+
+  it('supports idle, active, and collapsed remote states without blocking native game touches', () => {
+    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.LegacyGameRemote.tsx'), 'utf8');
+
+    expect(src).toContain("useState<'idle' | 'active' | 'collapsed'>('idle')");
+    expect(src).toContain("opacity: remoteState === 'active' ? 0.3 : 0.01");
+    expect(src).toContain('aria-label="Hide game remote"');
+    expect(src).toContain('aria-label="Show game remote"');
+    expect(src).toContain("pointerEvents: 'none'");
+    expect(src).toContain("pointerEvents: 'auto'");
+  });
+
+  it('keeps frame pacing internal instead of showing FPS or backend telemetry over gameplay', () => {
+    const runtime = readFileSync(join(REPO_ROOT, 'lib/gameengin/GameRuntime.tsx'), 'utf8');
+    const shell = readFileSync(join(REPO_ROOT, 'app/daydream/game/dream.shell.ImmersiveGameShell.tsx'), 'utf8');
+
+    expect(runtime).not.toContain('{fps} FPS');
+    expect(shell).not.toContain('BASELINE [DONE]');
+    expect(shell).not.toContain('avgFps} FPS');
+  });
+
+  it('raises MADMAXI jump reach and increases its normal run speed by twenty percent', () => {
+    const src = readFileSync(join(REPO_ROOT, 'components/games/madmaxi/dream.MadmaxiGame.tsx'), 'utf8');
+
+    expect(src).toContain('const JUMP_VY       = 0.78;');
+    expect(src).toContain('const WALK_SPD      = 0.174;');
+  });
+
 });

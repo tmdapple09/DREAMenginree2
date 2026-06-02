@@ -93,7 +93,7 @@ describe('TypeScript strict mode', () => {
   it('uses TypeScript 5.8+ in devDependencies', () => {
     const pkg = JSON.parse(readFile('package.json'));
     const tsVersion = pkg.devDependencies?.typescript ?? '';
-    expect(tsVersion).toMatch(/5\.(8|9|\d{2,})/);
+    expect(tsVersion).toMatch(/(?:5\.(?:8|9|\d{2,})|[6-9]\.\d+)/);
   });
 });
 

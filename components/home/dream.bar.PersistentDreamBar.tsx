@@ -8,10 +8,10 @@ type Post = { id: string; content?: string; created_at?: string; [key: string]: 
  *
  * Also exported as `DreamDMContainer` for architectural clarity.
  * PersistentDreamBar IS the DreamDM Container: the always-mounted shell that
- * owns the dual-runtime split (HomeDream Surface + DreamSpace) and the
- * DreamDM Bar seam between them.
+ * owns the dual-runtime split (HomeDream Surface + DreamSpace) and mounts the
+ * complete DreamDMBar exchange capability between them.
  *
- * The DreamDM Bar IS home. It is never unmounted during navigation and always
+ * The DreamDMBar IS home. It is never unmounted during navigation and always
  * holds both runtime regions in React's tree:
  *   • HomeDream Surface (top) — shrinks when bar is dragged up
  *   • DreamSpace        (bottom) — shrinks when bar is dragged down
@@ -30,11 +30,10 @@ type Post = { id: string; content?: string; created_at?: string; [key: string]: 
  * Hidden on public / pre-login routes only.
  */
 
-import { SkipCreditBalance } from '@/components/ads/dream.SkipCreditBalance';
 import NeuralSeamCanvas from '@/components/home/dream.NeuralSeamCanvas';
 import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
 import RuntimeView from '@/components/runtime/dream.RuntimeView';
-import DreamDMRail from '@/dreamdmbar/dreamsurface.dreamdmbar';
+import DreamDMBar from '@/dreamdmbar/dreamsurface.dreamdmbar';
 import { useDreamLayout } from '@/hooks/useDreamLayout';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
@@ -45,7 +44,6 @@ import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
-const Z_INDEX_SKIP_CREDIT_BALANCE = 120;
 
 export default function PersistentDreamBar( ){
   const pathname    = usePathname();
@@ -101,12 +99,22 @@ export default function PersistentDreamBar( ){
     revealSplitRuntime(Math.max(splitRatio, 0.5));
   }, [dualRuntime, revealSplitRuntime, splitRatio]);
 
+  const openEnginInSurfaceRegion = useCallback((enginName: string) => {
+    dualRuntime.setTopRuntime({ type: 'engin', name: enginName });
+    revealSplitRuntime(Math.max(splitRatio, 0.5));
+  }, [dualRuntime, revealSplitRuntime, splitRatio]);
+
   const backFromSurfaceRegion = useCallback(() => {
     dualRuntime.setTopRuntime('HomeDream Surface');
   }, [dualRuntime]);
 
   const openInDreamRegion = useCallback((path: string) => {
     dualRuntime.setBottomRuntime({ type: 'custom', path });
+    revealSplitRuntime(Math.min(splitRatio, 0.5));
+  }, [dualRuntime, revealSplitRuntime, splitRatio]);
+
+  const openEnginInDreamRegion = useCallback((enginName: string) => {
+    dualRuntime.setBottomRuntime({ type: 'engin', name: enginName });
     revealSplitRuntime(Math.min(splitRatio, 0.5));
   }, [dualRuntime, revealSplitRuntime, splitRatio]);
 
@@ -235,12 +243,15 @@ export default function PersistentDreamBar( ){
           <RuntimeView
             world={dualRuntime.state.surfaceSpaceWorld}
             isActive={true}
+            userId={homeData?.userId}
             profile={homeData?.profile ?? null}
             posts={(homeData?.initialPosts ?? []) as Post[]}
             isAdmin={homeData?.isAdmin ?? false}
             onOpenDrEams={openDrEams}
             onOpenDreamSpace={openDreamSpaceInSurface}
             onOpenInRegion={openInSurfaceRegion}
+            onOpenEngin={openEnginInSurfaceRegion}
+            runtimeId="homedream"
             onBackFromRegion={backFromSurfaceRegion}
             seamOffsetPx={seamOffset}
             splitRatio={runtimeSplitRatio}
@@ -269,28 +280,17 @@ export default function PersistentDreamBar( ){
         />
       )}
 
-      {/* ── DreamDM Bar (the seam) ────────────────────────────────────────────
-          Split props only wired when isHomeActive so the bar stays as a
-          simple nav-rail on other pages (no seam, no divider mode touch capture). */}
-      <DreamDMRail
+      {/* ── DreamDMBar exchange capability ────────────────────────────────────
+          Messaging, search, notifications, Dr. Eams, navigation, contextual
+          actions, and surface exchange stay mounted as one capability. Split
+          props only enable its divider interaction mode while home is active. */}
+      <DreamDMBar
         onBothMenus={openBothMenus}
         splitRatio={isHomeActive ? splitRatio : undefined}
         onSplitChange={isHomeActive ? setSplitRatio : undefined}
         onMinimizedChange={isHomeActive ? setIsBarMinimized : undefined}
         onSwapRuntimes={isHomeActive ? swapDreamRuntimes : undefined}
       />
-
-      <div
-        style={{
-          position: 'fixed',
-          top: 12,
-          right: 12,
-          zIndex: Z_INDEX_SKIP_CREDIT_BALANCE,
-          pointerEvents: 'auto',
-        }}
-      >
-        <SkipCreditBalance />
-      </div>
 
       {/* ── DreamSpace (bottom runtime) ──────────────────────────────────────
           Always MOUNTED in React. display:none when not on /homedream. */}
@@ -313,12 +313,15 @@ export default function PersistentDreamBar( ){
           <RuntimeView
             world={dualRuntime.state.dreamSpaceWorld}
             isActive={true}
+            userId={homeData?.userId}
             profile={homeData?.profile ?? null}
             posts={(homeData?.initialPosts ?? []) as Post[]}
             isAdmin={homeData?.isAdmin ?? false}
             onOpenDrEams={openDrEams}
             onOpenDreamSpace={handleHomeDreamSpace}
             onOpenInRegion={openInDreamRegion}
+            onOpenEngin={openEnginInDreamRegion}
+            runtimeId="dreamspace"
             onBackFromRegion={backFromDreamRegion}
             seamOffsetPx={seamOffset}
             splitRatio={runtimeSplitRatio}
@@ -337,7 +340,7 @@ export default function PersistentDreamBar( ){
  * PersistentDreamBar is the implementation name; DreamDMContainer is the
  * architectural name used in diagrams and specs. Both refer to the same
  * always-mounted shell component that owns the dual-runtime split and the
- * DreamDM Bar seam.
+ * complete DreamDMBar exchange capability.
  *
  * Usage:
  *   import PersistentDreamBar from '@/components/home/dream.bar.PersistentDreamBar';

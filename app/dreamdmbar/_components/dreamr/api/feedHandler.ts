@@ -93,4 +93,22 @@ export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse>
   const { data: rows, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: toErrorMessage(error) }, { status:
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
+  }
+
+  const fetched = (rows ?? []) as DreamRFeedRow[];
+  const circle = await loadVisibilityCircle(user.id);
+  const visible = filterByCloseFriends(fetched, user.id, circle);
+  const fresh =
+    params.seen.size > 0
+      ? visible.filter((row) => !params.seen.has(row.id))
+      : visible;
+  const posts = fresh.map(toScoredPost);
+  const ranked = rankFeed(posts).slice(0, params.limit);
+  const nextCursor = deriveNextCursor(ranked, fetched.length, params.fetchLimit);
+
+  return NextResponse.json(
+    { posts: ranked, count: ranked.length, nextCursor },
+    { headers: { 'Cache-Control': 'no-store' } },
+  );
+}

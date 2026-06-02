@@ -54,7 +54,7 @@ interface MobileGameHUDProps {
 const ZERO_VECTOR: MobileControlVector = { x: 0, y: 0 };
 type TouchPoint = { clientX: number; clientY: number };
 
-function getStickTransform(vector: MobileControlVector ){
+function getStickTransform(vector: MobileControlVector) {
   return `translate(calc(-50% + ${vector.x * 50}%), calc(-50% + ${vector.y * 50}%))`;
 }
 

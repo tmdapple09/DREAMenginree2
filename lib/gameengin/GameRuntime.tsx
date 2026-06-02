@@ -10,10 +10,10 @@
  *   - Builds and provides the complete GameEngineAPI to whatever cartridge is loaded
  *   - Wires physicsConfig from GameEngin's existing state
  *   - Handles cartridge hot-swap (unmount old, mount new) without page reload
- *   - Shows a real FPS counter in the HUD (engine chrome only — no game HUD here)
+ *   - Samples frame pacing internally without exposing architecture telemetry in the player UI
  *
  * HUD layer contract:
- *   - ENGINE chrome (this file): FPS counter — top-right, 10px, pointer-events: none
+ *   - ENGINE services (this file): frame sampling stays internal and never renders UI chrome
  *   - GAME chrome: score/lives/level — rendered by the cartridge inside its own container
  *   - SHELL chrome: mobile controls — rendered by ImmersiveGameShell outside this component
  *
@@ -24,7 +24,7 @@ import { recordEmission } from '@/lib/runtime/channelMetrics';
 import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
 import { createLocalChannel } from '@/lib/runtime/runtimeChannel';
 import { acquireSharedResource, releaseSharedResource } from '@/lib/runtime/sharedResourcePool';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type {
     AchievementDefinition,
     CartridgeInputEvent,
@@ -49,7 +49,7 @@ const FIXED_DT = 1000 / 60;
 /** Maximum frames to accumulate before capping (prevents spiral of death) */
 const MAX_ACCUMULATED_FRAMES = 5;
 const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
-/** Cap FPS display to prevent layout issues */
+/** Cap sampled FPS before forwarding optional internal diagnostics. */
 const MAX_DISPLAY_FPS = 999;
 
 // ── Props ────────────────────────────────────────────────────────────────────
@@ -64,7 +64,6 @@ export interface GameRuntimeProps {
 
 export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameRuntimeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [fps, setFps] = useState(0);
 
   // Mutable refs for RAF loop state
   const tickCallbacksRef   = useRef<Set<(dt: number, elapsed: number) => void>>(new Set());
@@ -294,13 +293,12 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
 
     rafIdRef.current = requestAnimationFrame(loop);
 
-    // FPS counter interval
+    // Internal frame-pacing sample interval
     fpsIntervalRef.current = window.setInterval(() => {
       const times = frameTimesRef.current;
       if (times.length > 0) {
         const avgMs      = times.reduce((a, b) => a + b, 0) / times.length;
         const currentFps = avgMs > 0 ? Math.round(Math.min(1000 / avgMs, MAX_DISPLAY_FPS)) : 0;
-        setFps(currentFps);
         onFrameRef.current?.(currentFps);
       }
     }, 500);
@@ -348,29 +346,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* ── Engine chrome: FPS counter ── */}
-      {cartridge && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 6,
-            right: 8,
-            zIndex: 10,
-            fontSize: 10,
-            fontWeight: 700,
-            fontFamily: 'monospace',
-            color: fps >= 50 ? '#4ade80' : fps >= 30 ? '#facc15' : '#f87171',
-            background: 'rgba(0,0,0,0.5)',
-            padding: '2px 6px',
-            borderRadius: 4,
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-        >
-          {fps} FPS
-        </div>
-      )}
-
       {/* ── Game container — cartridges mount into this div ── */}
       <div
         ref={containerRef}

@@ -121,15 +121,27 @@ export default function DreamBarDataBridge({
     revealSplitRuntime(Math.max(splitRatio, 0.5));
   }, [dualRuntime, revealSplitRuntime, splitRatio]);
 
+  const openInDominant = useCallback((path: string) => {
+    const world = { type: 'custom' as const, path };
+    if (dualRuntime.state.dominantRegion === 'DreamSpace') {
+      dualRuntime.setBottomRuntime(world);
+      revealSplitRuntime(Math.min(splitRatio, 0.5));
+      return;
+    }
+    dualRuntime.setTopRuntime(world);
+    revealSplitRuntime(Math.max(splitRatio, 0.5));
+  }, [dualRuntime, revealSplitRuntime, splitRatio]);
+
   useEffect(() => {
     registerRuntimeCallbacks({
       returnHome,
       openInSurface,
+      openInDominant,
       openHomeDreamSpace,
       returnDreamSpace,
     });
     return unregisterRuntimeCallbacks;
-  }, [openHomeDreamSpace, openInSurface, registerRuntimeCallbacks, returnDreamSpace, returnHome, unregisterRuntimeCallbacks]);
+  }, [openHomeDreamSpace, openInDominant, openInSurface, registerRuntimeCallbacks, returnDreamSpace, returnHome, unregisterRuntimeCallbacks]);
 
   // Dominant-region effect — keeps DualRuntime state in sync with the seam position
   useEffect(() => {

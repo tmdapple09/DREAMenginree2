@@ -7,7 +7,7 @@
  *   - Show the user's personal best scores per game (from `game_scores` table).
  *   - Allow one-tap publish of high scores to the leaderboard (real Supabase write).
  *   - Surface the "Play Now" entry points for all live games.
- *   - Run games through the GameEngin session shell and universal HUD.
+ *   - Run games through the GameEngin session shell and separate shared GameRemote.
  *   - DualSense controller support: Bluetooth pairing (Android 12+, iOS 14.5+), haptic feedback, gyro steering.
  *   - Functional World Builder: 5×5 tile-grid editor, save to state, bridge emit on save.
  *   - Achievement System: 8 achievements, score-driven unlock logic.
@@ -25,7 +25,7 @@
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import { GAMES } from '@/components/games/dream.GamesHub';
 import RecordingControls from '@/components/games/dream.RecordingControls';
-import GameHUD from '@/components/games/dream.hud.GameHUD';
+import GameRemote from '@/components/games/dream.remote.GameRemote';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
@@ -372,27 +372,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     },
   });
 
-  /**
-   * Active GPU rendering backend for this session.
-   * Probed once on mount via WebGPUEngine.IsSupportedAsync so the header
-   * can surface a live engine-type badge (WebGPU vs WebGL2) to the user.
-   */
-  const [engineType, setEngineType] = useState<'WebGPU' | 'WebGL2' | null>(null);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    let cancelled = false;
-    import('@babylonjs/core')
-      .then(({ WebGPUEngine }) =>
-        WebGPUEngine.IsSupportedAsync.then((supported) => {
-          if (!cancelled) setEngineType(supported ? 'WebGPU' : 'WebGL2');
-        }),
-      )
-      .catch(() => {
-        if (!cancelled) setEngineType('WebGL2');
-      });
-    return () => { cancelled = true; };
-  }, []);
 
   // ── World Builder state ──────────────────────────────────────────────────────
   const [worldName,     setWorldName]     = useState('');
@@ -603,29 +583,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(3,'0')}`;
   }
 
-  // ── Engine Power Systems ───────────────────────────────────────────────────────
-  const ENGINE_POWER_SYSTEMS = [
-    { id: 'netcode',    label: 'Rollback Netcode',        desc: 'Deterministic lockstep + rollback for lag-free multiplayer', icon: '🌐', status: 'online' },
-    { id: 'compute',    label: 'GPU Compute Pipeline',    desc: 'WebGPU compute shaders — physics/particles on GPU',           icon: '⚡', status: 'standby' },
-    { id: 'physics',    label: 'Advanced Physics World',  desc: 'Rigid-body, constraints, CCD, raycast, 4 substeps',          icon: '🔭', status: 'online' },
-    { id: 'bvh',        label: 'Octree / BVH',            desc: 'O(log n) broad-phase spatial queries against 100k+ objects',  icon: '🗂️', status: 'online' },
-    { id: 'jobs',       label: 'Worker Job System',       desc: 'Priority-queued async jobs — AI pathfinding off main thread', icon: '⚙️', status: 'online' },
-    { id: 'procgen',    label: 'Procedural World Gen',    desc: 'Seeded Simplex-noise infinite terrain + biome classification',icon: '🌍', status: 'online' },
-    { id: 'audio',      label: 'Spatial Audio DSP',       desc: 'HRTF panning, convolution reverb, Doppler shift',            icon: '🔊', status: 'standby' },
-    { id: 'replay',     label: 'Replay Buffer',           desc: 'Deterministic input recording, ghost playback, anti-cheat',  icon: '📼', status: 'online' },
-    { id: 'btree',      label: 'Behavior Tree Engine',    desc: 'Sequence/Selector/Parallel nodes + GOAP-ready blackboard',   icon: '🧠', status: 'online' },
-    { id: 'profiler',   label: 'GPU Profiler',            desc: 'CPU flame-graph ring buffer + WebGPU timestamp queries',     icon: '📊', status: 'online' },
-    { id: 'events',     label: 'Typed Event Bus',         desc: 'Pub/sub with history replay for late joining multiplayer',   icon: '📡', status: 'online' },
-    { id: 'anim',       label: 'Animation State Machine', desc: 'Blend-tree + parameter-driven transitions + IK interface',  icon: '🎭', status: 'online' },
-    { id: 'lod',        label: 'LOD System',              desc: 'Distance-based LOD with hysteresis — zero pop-in',           icon: '🔬', status: 'online' },
-    { id: 'prediction', label: 'Client-Side Prediction',  desc: 'Optimistic tick + server reconciliation for silky MP',       icon: '🎯', status: 'online' },
-    { id: 'pool',       label: 'Resource Pools',          desc: 'Zero-allocation object pools — bullets, particles, FX',      icon: '♻️', status: 'online' },
-    { id: 'wgsl',       label: 'WGSL Shader Manager',     desc: 'Hot-reload pipeline cache + {{DEFINE}} variant compilation', icon: '🖥️', status: 'standby' },
-    { id: 'terrain',    label: 'Terrain Engine',          desc: 'Heightmap clipmap LOD with virtual texture page streaming',  icon: '🏔️', status: 'online' },
-    { id: 'gi',         label: 'GI Probe System',         desc: 'Spherical-harmonics L2 light probes (9 coefficients × RGB)', icon: '💡', status: 'online' },
-    { id: 'assets',     label: 'Asset Stream Manager',    desc: 'Priority-queue progressive LOD with LRU memory eviction',   icon: '📦', status: 'online' },
-    { id: 'materials',  label: 'Physics Materials',       desc: '8 built-in surfaces: concrete/metal/wood/ice/rubber/sand…', icon: '🧱', status: 'online' },
-  ] as const;
+
 
   // ── Daily Quests ─────────────────────────────────────────────────────────────
   const initialQuests = [
@@ -963,7 +921,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           />
         )}
 
-        {/* Game stage — stops above the HUD remote so the canvas never renders behind it */}
+        {/* Game stage — cartridge owns its HUD; shared GameRemote stays a separate control capability. */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 'max(var(--de-hud-bottom, 175px), clamp(80px, 22dvh, 38dvh))' }}>
           <GameRuntime
             cartridge={expandedCartridge}
@@ -1046,11 +1004,13 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           <RecordingControls containerRef={playOverlayRef} />
         </div>
 
-        <GameHUD
-          gameLabel={expandedPlayable.label}
-          mode={expandedPlayable.mobileHudMode ?? 'buttons'}
-          onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
-        />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 55 }}>
+          <GameRemote
+            embedded
+            gameLabel={expandedPlayable.label}
+            onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
+          />
+        </div>
 
         {/* ── Avatar overlay — shown when user chose "Play as Yourself" ── */}
         {avatarDataUrl && (
@@ -1168,21 +1128,20 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     { label: 'Playable', value: String(GAMES.length), tone: '#7dd3fc' },
     { label: 'Categories', value: String(playableCategoriesCount), tone: '#c084fc' },
     { label: 'Saved Slots', value: String(savedLaunches.length), tone: '#4ade80' },
-    { label: 'Backend', value: engineType ?? 'Detecting…', tone: engineType === 'WebGPU' ? '#a78bfa' : '#38bdf8' },
   ] as const;
-  const selectedPlayableUsesEliteRuntime = selectedPlayable.id === 'neon-drift' || selectedPlayable.id === 'echo-arena';
+  const selectedPlayableUsesEnhancedVisuals = selectedPlayable.id === 'neon-drift' || selectedPlayable.id === 'echo-arena';
   const selectedPlayableCapabilities = [
     'Fullscreen boot',
-    'Universal HUD',
+    'Shared GameRemote',
     'Quick resume',
     `${activeControlProfile.label} controls`,
-    ...(selectedPlayableUsesEliteRuntime ? ['Elite engine telemetry', 'Adaptive quality'] : []),
+    ...(selectedPlayableUsesEnhancedVisuals ? ['Adaptive quality'] : []),
   ];
   const selectedPlayableStatus = [
     `${selectedPlayable.category} class`,
     savedPlayableSession ? 'Saved to memory deck' : 'Ready for first save',
     activePlayable ? 'Live on play screen' : 'Standby',
-    ...(selectedPlayableUsesEliteRuntime ? ['Elite engine active in web app'] : []),
+    ...(selectedPlayableUsesEnhancedVisuals ? ['Enhanced visuals active'] : []),
   ];
 
   return (
@@ -1224,25 +1183,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           >
             Console Side
           </span>
-          {/* Engine type status badge — shows which GPU backend is powering the games layer */}
-          {engineType && (
-            <span
-              title={engineType === 'WebGPU' ? 'WebGPU backend active — modern compute path' : 'WebGL2 backend active — compatibility path'}
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: '0.05em',
-                padding: '3px 8px',
-                borderRadius: 999,
-                background: engineType === 'WebGPU' ? 'rgba(139,92,246,0.14)' : 'rgba(56,189,248,0.12)',
-                color:      engineType === 'WebGPU' ? '#a78bfa'               : '#38bdf8',
-                border:     engineType === 'WebGPU' ? '1px solid rgba(139,92,246,0.30)' : '1px solid rgba(56,189,248,0.24)',
-                flexShrink: 0,
-              }}
-            >
-              {engineType === 'WebGPU' ? '⚡ WebGPU' : '🔷 WebGL2'}
-            </span>
-          )}
+
         </div>
       </header>
 
@@ -1284,7 +1225,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
           <div className="de-widget-body" style={{ paddingTop: 12 }}>
             <div style={{ fontSize: 12, lineHeight: 1.65, color: 'rgba(226,232,240,0.78)', marginBottom: 14 }}>
-              GameEngin is the actual play surface. Pick a saved game or any library title, boot it on the big screen here, expand fullscreen when you want the browser to disappear, and use the universal HUD directly on the session. This layer should feel like the premium runtime OS behind every playable game, not just a launcher. Elite-engine titles surface their runtime directly here in the web app with live telemetry, adaptive quality, and AI-assisted pacing.
+              GameEngin is the actual play surface. Pick a saved game or any library title, boot it on the big screen here, expand fullscreen when you want the browser to disappear, and use the shared GameRemote beside the session. This layer should feel like the premium runtime OS behind every playable game, not just a launcher. Elite-engine titles play directly here in the web app with adaptive quality and responsive play.
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 14 }}>
@@ -1473,7 +1414,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 Side B session contract
               </div>
               <div style={{ fontSize: 12, color: 'rgba(220,235,255,0.82)', lineHeight: 1.7 }}>
-                This game runs inside <span style={{ color: '#fff', fontWeight: 800 }}>GameEngin</span> with the universal HUD over the session.
+                This game runs inside <span style={{ color: '#fff', fontWeight: 800 }}>GameEngin</span> with its cartridge HUD and the separate shared GameRemote.
                 The engine owns fullscreen, input, resume, and controller handoff — not a separate remote dock under the canvas.
               </div>
             </div>
@@ -1535,12 +1476,12 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               className="ml-auto text-xs font-semibold px-2 py-1 rounded-full"
               style={{ background: `${ACCENT}18`, color: ACCENT, border: `1px solid ${ACCENT}35` }}
             >
-              Premium runtime deck
+              Premium game deck
             </span>
           </div>
           <div className="de-widget-body">
             <div style={{ fontSize: 12, color: 'var(--de-text-dim)', lineHeight: 1.6, marginBottom: 12 }}>
-              GameEngin is the console home behind the Games shelf: saved launches, quick resume, controller memory, and your personal score deck. It should read like a premium runtime layer instead of a toy control panel.
+              GameEngin is the console home behind the Games shelf: saved launches, quick resume, controller memory, and your personal score deck. It should read like a premium game layer instead of a toy control panel.
             </div>
             {savedLaunches[0] && (
               <div
@@ -1800,11 +1741,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Gamepad2 className="w-4 h-4" style={{ color: ACCENT }} />
-            <span className="de-widget-title ml-2">Universal HUD</span>
+            <span className="de-widget-title ml-2">Shared GameRemote</span>
           </div>
           <div className="de-widget-body">
             <p style={{ fontSize: 12, color: 'var(--de-text-dim)', marginBottom: 4 }}>
-              Game inputs now live inside the GameEngin session. Launch a game and the universal HUD overlays the full-screen runtime instead of opening a separate remote deck.
+              GameEngin runs the cartridge without inventing another HUD. Each cartridge owns its HUD, while the shared GameRemote remains a separate control capability that works beside the session.
             </p>
           </div>
           <div className="de-widget-actions">
@@ -2746,74 +2687,14 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
         </div>
 
-        {/* ── Engine Power Systems Status — 20 Subsystems ── */}
-        <div className="de-widget" style={{ marginBottom: 14, borderColor: 'rgba(42,138,184,0.28)' }}>
-          <div className="de-widget-header">
-            <span style={{ fontSize: 16 }}>🚀</span>
-            <span className="de-widget-title ml-2" style={{ color: '#2a8ab8' }}>Engine Power Systems</span>
-            <span style={{ marginLeft: 'auto', fontSize: 9, fontWeight: 700, color: '#22c55e', background: 'rgba(34,197,94,0.1)', padding: '2px 7px', borderRadius: 4 }}>
-              20 / 20 LOADED
-            </span>
-          </div>
-          <div className="de-widget-body">
-            <p style={{ fontSize: 11, color: 'var(--de-text-dim)', marginBottom: 10, lineHeight: 1.5 }}>
-              Elite 2026+ engine subsystems powering every game on the platform.
-              All systems are zero-visual-overhead — pure computational runtime power.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              {ENGINE_POWER_SYSTEMS.map((sys) => (
-                <div key={sys.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '8px 10px', borderRadius: 9, background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(42,138,184,0.12)' }}>
-                  <span style={{ fontSize: 15, flexShrink: 0, marginTop: 1 }}>{sys.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-heading)', whiteSpace: 'nowrap' }}>{sys.label}</span>
-                      <span style={{ fontSize: 9, fontWeight: 700, color: sys.status === 'online' ? '#22c55e' : '#f59e0b', background: sys.status === 'online' ? 'rgba(34,197,94,0.1)' : 'rgba(245,158,11,0.1)', padding: '1px 6px', borderRadius: 4, flexShrink: 0 }}>
-                        {sys.status === 'online' ? '● ONLINE' : '◎ STANDBY'}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: 10, color: 'var(--de-text-dim)', lineHeight: 1.4 }}>{sys.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 10, background: 'linear-gradient(135deg, rgba(42,138,184,0.08), rgba(99,102,241,0.06))', border: '1px solid rgba(42,138,184,0.18)' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#2a8ab8', marginBottom: 6 }}>ENGINE RUNTIME PROFILE</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-                {[
-                  { label: 'Systems Online',  value: '17 / 20' },
-                  { label: 'GPU Backend',     value: typeof navigator !== 'undefined' && (navigator as { gpu?: unknown }).gpu ? 'WebGPU' : 'WebGL2' },
-                  { label: 'Physics Substeps', value: '4× / frame' },
-                  { label: 'Rollback Buffer',  value: '8 frames' },
-                  { label: 'LOD Levels',       value: '0 → 6' },
-                  { label: 'SH Probes',        value: 'L2 (9 coeff)' },
-                  { label: 'Asset Cache',      value: '256 MB max' },
-                  { label: 'Job Concurrency',  value: '4 workers' },
-                ].map((m) => (
-                  <div key={m.label} style={{ padding: '5px 8px', borderRadius: 7, background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(42,138,184,0.1)' }}>
-                    <div style={{ fontSize: 9, color: 'var(--de-text-dim)', marginBottom: 1 }}>{m.label}</div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#2a8ab8', fontFamily: 'monospace' }}>{m.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+
 
         {/* ── .dreamgame File Picker ── */}
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <FileCode className="w-4 h-4" style={{ color: ACCENT }} />
             <span className="de-widget-title ml-2">.dreamgame Loader</span>
-            {engineType && (
-              <span style={{
-                marginLeft: 'auto', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5,
-                background: engineType === 'WebGPU' ? 'rgba(139,92,246,0.14)' : 'rgba(56,189,248,0.12)',
-                color:      engineType === 'WebGPU' ? '#a78bfa' : '#38bdf8',
-                border:     engineType === 'WebGPU' ? '1px solid rgba(139,92,246,0.30)' : '1px solid rgba(56,189,248,0.24)',
-              }}>
-                {engineType === 'WebGPU' ? '⚡ WebGPU' : '🔷 WebGL2'}
-              </span>
-            )}
+
           </div>
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <p style={{ fontSize: 11, color: 'var(--de-text-dim)', margin: 0 }}>
@@ -2847,7 +2728,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               }}>
                 ✓ Loaded: <strong>{dreamGameFile.name}</strong> ({(dreamGameFile.size / 1024).toFixed(1)} KB)
                 <br />
-                <span style={{ fontSize: 9, opacity: 0.7 }}>Ready to run via GameEngin Runtime</span>
+                <span style={{ fontSize: 9, opacity: 0.7 }}>Ready to play</span>
               </div>
             )}
           </div>

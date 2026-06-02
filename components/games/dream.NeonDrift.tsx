@@ -66,7 +66,6 @@ export default function NeonDrift( ){
   const [score, setScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [directorLabel, setDirectorLabel] = useState('');
-  const [renderInfo, setRenderInfo] = useState('');
   const [status, setStatus] = useState('Ready to race');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const eliteEngineRef = useRef<EliteGameEngine | null>(null);
@@ -167,7 +166,6 @@ export default function NeonDrift( ){
         engineRef.current = engine;
         sceneRef.current = scene;
         scene.clearColor = new BABYLON.Color4(0.01, 0.01, 0.05, 1);
-        setRenderInfo(elite.isUsingWebGPU ? 'WebGPU · elite engine' : 'WebGL2 · elite engine');
 
         // ── Camera ───────────────────────────────────────────────────────────
         const camera = new BABYLON.ArcRotateCamera('cam', -Math.PI / 2, Math.PI / 3.5, 28,
@@ -392,7 +390,7 @@ export default function NeonDrift( ){
         dualSenseRef.current = dualSense;
         await dualSense.init();
 
-        setStatus(elite.isUsingWebGPU ? 'Elite WebGPU runtime active' : 'Elite compatibility runtime active');
+        setStatus('Race ready');
 
         const telemetryEntity = elite.world.createEntity();
         telemetryEntityRef.current = telemetryEntity;
@@ -407,9 +405,6 @@ export default function NeonDrift( ){
         elite.onFrame((_dt, telemetry) => {
           if (performance.now() - lastTelemetryHud < 250) return;
           lastTelemetryHud = performance.now();
-          setRenderInfo(
-            `${telemetry.isWebGPU ? 'WebGPU' : 'WebGL2'} · ${telemetry.avgFps}fps · ${telemetry.qualityTier} tier`
-          );
           publishGamePerformanceBaseline({
             gameId: 'neon-drift',
             renderMode: 'webgpu',
@@ -661,7 +656,7 @@ export default function NeonDrift( ){
           </div>
           <div style={{ fontSize: '13px', color: '#666', letterSpacing: '2px',
             textTransform: 'uppercase' }}>
-            Elite WebGPU Racer · 2026
+            Elite Racer · 2026
           </div>
           <div style={{ fontSize: '12px', color: '#444', maxWidth: '320px',
             textAlign: 'center', lineHeight: '1.6', marginTop: '8px' }}>
@@ -684,14 +679,6 @@ export default function NeonDrift( ){
             position: 'absolute', top: 10, left: 10,
             display: 'flex', flexDirection: 'column', gap: 4,
           }}>
-            <div style={{
-              background: 'rgba(0,0,0,0.75)', color: '#0ff',
-              padding: '4px 10px', borderRadius: 4,
-              fontSize: 11, fontFamily: 'monospace',
-              border: '1px solid rgba(0,255,255,0.2)',
-            }}>
-              {renderInfo} · {status}
-            </div>
             {directorLabel && (
               <div style={{
                 background: 'rgba(0,0,0,0.65)', color: '#ff9',

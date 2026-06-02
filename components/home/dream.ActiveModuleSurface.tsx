@@ -4,22 +4,27 @@ import {
     loadActiveModules,
     removeActiveModule,
     saveActiveModule,
-    saveActiveModules,
+    saveActiveModulesForRegion,
+    transferActiveModuleRegion,
 } from '@/lib/activeModulesStore';
 import { loadArtifacts, saveArtifact } from '@/lib/artifactStore';
 import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
 import { useDreamWindowActions } from '@/lib/dream-window/useDreamWindowActions';
 import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import type {
     ActiveModuleInstance,
     DreamArtifact,
     DreamArtifactDragPayload,
+    RuntimeRegionKey,
 } from '@/types/dreamArtifact';
 import { X } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface ActiveModuleSurfaceProps {
   accountId?: string | null;
+  /** Canonical dual-runtime region that owns the mounted window placement. */
+  runtimeRegion?: RuntimeRegionKey;
 }
 
 interface GhostPreviewState {
@@ -54,12 +59,13 @@ function shouldUseModuleLoader(moduleUrl?: string ){
   return !moduleUrl.startsWith('/');
 }
 
-export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfaceProps) {
+export default function ActiveModuleSurface({ accountId, runtimeRegion = 'surface' }: ActiveModuleSurfaceProps) {
   const surfaceRef = useRef<HTMLDivElement>(null);
   const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
   const dragArtifactRef = useRef<DreamArtifact | null>(null);
   const activeModulesRef = useRef<ActiveModuleInstance[]>([]);
   const [activeModules, setActiveModules] = useState<ActiveModuleInstance[]>([]);
+  const [loadedAccountId, setLoadedAccountId] = useState<string | null>(null);
   const [ghostPreview, setGhostPreview] = useState<GhostPreviewState | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const { addWindow, removeWindow, updateWindow } = useDreamWindowActions();
@@ -71,19 +77,23 @@ export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfacePr
   useEffect(() => {
     if (!accountId) {
       setActiveModules([]);
+      setLoadedAccountId(null);
       return;
     }
-    setActiveModules(loadActiveModules(accountId));
-  }, [accountId]);
+    setActiveModules(
+      loadActiveModules(accountId).filter((instance) => instance.runtimeRegion === runtimeRegion),
+    );
+    setLoadedAccountId(accountId);
+  }, [accountId, runtimeRegion]);
 
   useEffect(() => {
     activeModulesRef.current = activeModules;
   }, [activeModules]);
 
   useEffect(() => {
-    if (!accountId) return;
-    saveActiveModules(accountId, activeModules);
-  }, [accountId, activeModules]);
+    if (!accountId || loadedAccountId !== accountId) return;
+    saveActiveModulesForRegion(accountId, runtimeRegion, activeModules);
+  }, [accountId, activeModules, loadedAccountId, runtimeRegion]);
 
   useEffect(() => {
     const unsubscribeStart = dreamOSBus.on('drag:start', ({ artifact, accountId: sourceAccountId }) => {
@@ -141,7 +151,7 @@ export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfacePr
       const instance: ActiveModuleInstance = {
         instanceId,
         artifactId: artifact.id,
-        runtimeRegion: 'surface',
+        runtimeRegion,
         containerId: instanceId,
         state: { createdFrom: 'drag-drop' },
         dreamWindowId: dreamWindow?.id,
@@ -168,11 +178,11 @@ export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfacePr
         payload: {
           artifactId: artifact.id,
           moduleUrl: artifact.moduleUrl ?? '/module-loader.html',
-          runtimeRegion: 'surface',
+          runtimeRegion,
         },
       });
     },
-    [accountId, addWindow],
+    [accountId, addWindow, runtimeRegion],
   );
 
   const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -252,10 +262,25 @@ export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfacePr
       );
     };
 
-    const onUp = () => {
+    const onUp = (event: PointerEvent) => {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
-      if (!accountId) return;
+      if (!accountId || !surfaceRef.current) return;
+      const rect = surfaceRef.current.getBoundingClientRect();
+      const crossedSeam = event.clientY < rect.top || event.clientY > rect.bottom;
+      if (crossedSeam) {
+        const targetRegion: RuntimeRegionKey = runtimeRegion === 'surface' ? 'dream' : 'surface';
+        const transferred = transferActiveModuleRegion(accountId, instanceId, targetRegion);
+        if (!transferred) return;
+        setActiveModules((current) => current.filter((entry) => entry.instanceId !== instanceId));
+        bridge.emitDurable('module', 'surface-transfer', {
+          accountId,
+          instanceId,
+          sourceRegion: runtimeRegion,
+          targetRegion,
+        });
+        return;
+      }
       const updated = activeModulesRef.current.find((entry) => entry.instanceId === instanceId);
       if (updated) {
         saveActiveModule(accountId, updated);
@@ -265,7 +290,17 @@ export default function ActiveModuleSurface({ accountId }: ActiveModuleSurfacePr
 
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp, { once: true });
-  }, [accountId, persistModulePosition]);
+  }, [accountId, persistModulePosition, runtimeRegion]);
+
+  useEffect(() => {
+    if (!accountId) return;
+    return bridge.subscribe('module', 'surface-transfer', (payload) => {
+      if (payload.accountId !== accountId || payload.targetRegion !== runtimeRegion) return;
+      setActiveModules(
+        loadActiveModules(accountId).filter((instance) => instance.runtimeRegion === runtimeRegion),
+      );
+    });
+  }, [accountId, runtimeRegion]);
 
   useEffect(() => {
     if (!accountId) return;

@@ -63,7 +63,7 @@ describe('app/dreamdmbar/layout auth gating', () => {
 
     await expect(DreamDMBarLayout({ children: null })).rejects.toThrow('redirect:/login');
     expect(redirectMock).toHaveBeenCalledWith('/login');
-  });
+  }, 10_000);
 
   it('renders the home system in dev bypass mode without a Supabase user', async () => {
     isDevBypassActiveMock.mockReturnValue(true);

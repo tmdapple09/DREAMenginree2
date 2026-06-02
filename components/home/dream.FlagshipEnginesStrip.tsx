@@ -29,6 +29,7 @@ import {
     getLevelEmoji,
     type MomentumSnapshot,
 } from '@/lib/forge/forgeMomentum';
+import { getEnginById } from '@/lib/forge/forgeRegistry';
 import { Activity, ChevronRight, Flame, Gamepad2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -36,6 +37,8 @@ import { useEffect, useState } from 'react';
 interface FlagshipEnginesStripProps {
   /** Compact viewport flag (mobile / narrow). */
   isCompactViewport?: boolean;
+  /** Mount the existing capability inside the active recursive runtime region. */
+  onOpenEngin?: (enginName: string) => void;
 }
 
 /** Polished gold/blue gradient used for the decal trim on flagship cards. */
@@ -43,26 +46,13 @@ const SHINY_GOLD =
   'linear-gradient(135deg, #f6d27a 0%, #c8981a 38%, #e8b830 65%, #87CEEB 100%)';
 
 const FLAGSHIPS = [
-  {
-    id: 'gameengin',
-    label: 'GameEngin',
-    tagline: 'Play, prototype, ship cartridges',
-    href: '/daydream/games',
-    Icon: Gamepad2,
-    accent: '#22c55e',
-  },
-  {
-    id: 'forgeengin',
-    label: 'EngineForge',
-    tagline: 'The meta-creation command center',
-    href: '/daydream/forge',
-    Icon: Flame,
-    accent: '#ef4444',
-  },
+  { id: 'games', label: 'GameEngin', tagline: 'Play, prototype, ship cartridges', Icon: Gamepad2 },
+  { id: 'forge', label: 'EngineForge', tagline: 'The meta-creation command center', Icon: Flame },
 ] as const;
 
 export default function FlagshipEnginesStrip({
   isCompactViewport = false,
+  onOpenEngin,
 }: FlagshipEnginesStripProps) {
   const router = useRouter();
   const [snap, setSnap] = useState<MomentumSnapshot | null>(null);
@@ -74,8 +64,16 @@ export default function FlagshipEnginesStrip({
     return () => clearInterval(timer);
   }, []);
 
-  const open = (href: string) => {
+  const openPage = (href: string) => {
     router.push(href);
+  };
+
+  const openEngin = (enginName: string, href: string) => {
+    if (onOpenEngin) {
+      onOpenEngin(enginName);
+      return;
+    }
+    openPage(href);
   };
 
   const composite = snap?.composite ?? 0;
@@ -151,7 +149,7 @@ export default function FlagshipEnginesStrip({
         </div>
         <button
           type="button"
-          onClick={() => open('/daydream/field')}
+          onClick={() => openPage('/daydream/field')}
           aria-label="Open DREAMfield analytics"
           style={{
             border: '1px solid rgba(200,152,26,0.32)',
@@ -182,118 +180,122 @@ export default function FlagshipEnginesStrip({
           padding: '14px',
         }}
       >
-        {FLAGSHIPS.map(({ id, label, tagline, href, Icon, accent }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => open(href)}
-            aria-label={`Open ${label}`}
-            className="de-pressable"
-            style={{
-              position: 'relative',
-              textAlign: 'left',
-              padding: '14px 14px 12px',
-              borderRadius: 18,
-              cursor: 'pointer',
-              WebkitTapHighlightColor: 'transparent',
-              touchAction: 'manipulation',
-              border: '1px solid rgba(255,255,255,0.95)',
-              background: `linear-gradient(160deg, rgba(255,255,255,0.92) 0%, ${accent}10 100%)`,
-              boxShadow:
-                '0 6px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.96)',
-              overflow: 'hidden',
-              transition:
-                'transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
-            }}
-          >
-            {/* Shiny gold decal stripe along the top edge */}
-            <span
-              aria-hidden="true"
+        {FLAGSHIPS.map(({ id, label, tagline, Icon }) => {
+          const engin = getEnginById(id);
+          if (!engin) return null;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => openEngin(engin.name, engin.daydreamHref)}
+              aria-label={`Open ${label}`}
+              className="de-pressable"
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 4,
-                background: SHINY_GOLD,
-                boxShadow: '0 2px 12px rgba(200,152,26,0.45)',
-              }}
-            />
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 8,
+                position: 'relative',
+                textAlign: 'left',
+                padding: '14px 14px 12px',
+                borderRadius: 18,
+                cursor: 'pointer',
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation',
+                border: '1px solid rgba(255,255,255,0.95)',
+                background: `linear-gradient(160deg, rgba(255,255,255,0.92) 0%, ${engin.accent}10 100%)`,
+                boxShadow:
+                  '0 6px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.96)',
+                overflow: 'hidden',
+                transition:
+                  'transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
               }}
             >
-              <div
+              {/* Shiny gold decal stripe along the top edge */}
+              <span
                 aria-hidden="true"
                 style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 12,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 4,
                   background: SHINY_GOLD,
-                  color: '#fff',
+                  boxShadow: '0 2px 12px rgba(200,152,26,0.45)',
+                }}
+              />
+              <div
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: '0 4px 14px rgba(200,152,26,0.40)',
+                  gap: 10,
+                  marginBottom: 8,
                 }}
               >
-                <Icon size={20} />
-              </div>
-              <div style={{ minWidth: 0, flex: 1 }}>
                 <div
+                  aria-hidden="true"
                   style={{
-                    fontSize: 15,
-                    fontWeight: 800,
-                    color: 'var(--de-heading)',
-                    letterSpacing: '-0.01em',
-                    lineHeight: 1.15,
+                    width: 38,
+                    height: 38,
+                    borderRadius: 12,
+                    background: SHINY_GOLD,
+                    color: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    boxShadow: '0 4px 14px rgba(200,152,26,0.40)',
                   }}
                 >
-                  {label}
+                  <Icon size={20} />
                 </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: 'var(--de-text-dim)',
-                    marginTop: 2,
-                    lineHeight: 1.35,
-                  }}
-                >
-                  {tagline}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 800,
+                      color: 'var(--de-heading)',
+                      letterSpacing: '-0.01em',
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: 'var(--de-text-dim)',
+                      marginTop: 2,
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    {tagline}
+                  </div>
                 </div>
+                <ChevronRight
+                  size={16}
+                  color="var(--de-text-dim)"
+                  aria-hidden="true"
+                  style={{ flexShrink: 0 }}
+                />
               </div>
-              <ChevronRight
-                size={16}
-                color="var(--de-text-dim)"
-                aria-hidden="true"
-                style={{ flexShrink: 0 }}
-              />
-            </div>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '4px 10px',
-                borderRadius: 999,
-                background: `${accent}14`,
-                border: `1px solid ${accent}30`,
-                color: accent,
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Flagship
-            </div>
-          </button>
-        ))}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '4px 10px',
+                  borderRadius: 999,
+                  background: `${engin.accent}14`,
+                  border: `1px solid ${engin.accent}30`,
+                  color: engin.accent,
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Flagship
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* ── DREAMfield-mini momentum read-out ── */}
@@ -388,7 +390,7 @@ export default function FlagshipEnginesStrip({
         </div>
         <button
           type="button"
-          onClick={() => open('/daydream/field')}
+          onClick={() => openPage('/daydream/field')}
           aria-label="Open DREAMfield analytics"
           style={{
             border: 'none',

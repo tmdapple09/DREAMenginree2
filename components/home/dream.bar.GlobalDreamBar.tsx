@@ -3,8 +3,8 @@
 /**
  * GlobalDreamBar — global overlay menus only.
  *
- * DreamDMBar (the seam) now lives inside HomeSystem, co-located with the
- * dual-runtime it controls. It only renders when the home surface is active.
+ * DreamDMBar is the permanent exchange capability mounted with the dual runtime.
+ * Its divider seam is one interaction mode, not the whole capability.
  *
  * This component handles only the true global overlays that need to appear
  * above any surface: DualBottomMenu and DrEamsPanel.
@@ -66,6 +66,7 @@ export default function GlobalDreamBar( ){
     // here would re-introduce that race on iOS / Android.
     if (action === 'dr-eams')       { openDrEams(); return; }
     if (action === 'go-home')       { handleHome(); return; }
+    if (action === 'logout')        { window.location.assign('/api/auth/logout'); return; }
 
     // When HomeSystem's runtimeCallbacks are registered (user is on /dreamdmbar),
     // open the feature inline in Surface Space — no routing, no page reload.

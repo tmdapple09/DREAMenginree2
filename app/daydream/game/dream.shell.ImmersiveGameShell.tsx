@@ -2,14 +2,14 @@
 
 /**
  * ImmersiveGameShell — True full-screen game launcher with PS5-style boot
- * sequence and a floating HUD controller overlay.
+ * sequence and the separate shared GameRemote control capability.
  *
  * All games run through the GameEngin cartridge system via GameRuntime.
  * No game component is ever mounted directly here.
  *
- * HUD layer contract (three clean layers, no overlap):
- *   SHELL:  Boot sequence overlay + GameHUD mobile controls (this file)
- *   ENGINE: FPS counter (GameRuntime — top-right, pointer-events: none)
+ * Runtime layer contract (three clean layers, no overlap):
+ *   SHELL:  Boot sequence overlay + separate shared GameRemote (this file)
+ *   ENGINE: frame pacing and services remain internal to GameRuntime
  *   GAME:   Score / lives / level (inside each cartridge's container)
  *
  * Boot phases:
@@ -19,16 +19,14 @@
  *   4 (3400 ms+)       Waiting for user input → fade out → game revealed
  *
  * Skip button is available from phase 1.
- * After boot dismissal: game fills 100 vw × 100 dvh, GameHUD floats at bottom.
+ * After boot dismissal: the cartridge renders its HUD and GameRemote stays separate.
  */
 
-import GameHUD from '@/components/games/dream.hud.GameHUD';
+import GameRemote from '@/components/games/dream.remote.GameRemote';
 import GameRuntime from '@/lib/gameengin/GameRuntime';
 import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
 import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
 import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import { useGamePerformanceBaseline } from '@/lib/games/hooks';
-import type { MobileHudMode } from '@/lib/games/mobileControls';
 import {
     buildGameLaunchHref,
     DEFAULT_GAME_ID,
@@ -80,34 +78,15 @@ const BOOT_KEYFRAMES = `
 }
 `;
 
-// ── Mobile HUD mode per cartridge ─────────────────────────────────────────────
-// Overrides the default 'controller' mode for specific games.
-
-const HUD_MODES: Record<string, MobileHudMode> = {
-  'platformer':             'controller',
-  'neon-drift':             'controller',
-  'echo-arena':             'controller',
-  'null-cathedral':         'buttons',
-  'voidline-gp':            'controller',
-  'serpent-siege':          'joystick',
-  'avenue-of-mirrors':      'joystick',
-  'engin-fracture':         'controller',
-  'glassfall':              'buttons',
-  'nite-flyer-solar-hymn':  'buttons',
-  'lexicon-solitaire':      'buttons',
-  'defuse-ritual':          'buttons',
-};
-
 // ── Layout constants ──────────────────────────────────────────────────────────
 
 const DEFAULT_HUD_BOTTOM             = '175px';
 const MIN_STAGE_BOTTOM_CLEARANCE     = 'clamp(80px, 22dvh, 38dvh)';
 const LANDSCAPE_MIN_STAGE_BOTTOM     = 'clamp(56px, 14dvh, 24dvh)';
-const BASELINE_OVERLAY_OFFSET_PX     = 14;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function ImmersiveGameShell( ){
+export default function ImmersiveGameShell() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const rootRef      = useRef<HTMLDivElement>(null);
@@ -123,11 +102,7 @@ export default function ImmersiveGameShell( ){
     [gameId],
   );
 
-  const performanceBaseline = useGamePerformanceBaseline({
-    active: true,
-    gameId: game.id,
-    renderMode: game.renderMode,
-  });
+
 
   // ── Cartridge loading ────────────────────────────────────────────────────
   const [cartridge, setCartridge] = useState<GameCartridge | null>(null);
@@ -238,7 +213,6 @@ export default function ImmersiveGameShell( ){
 
   // ── Derived ──────────────────────────────────────────────────────────────
   const accent      = game.color;
-  const hudMode     = HUD_MODES[game.id] ?? 'controller';
   const stageBottom = isLandscape ? LANDSCAPE_MIN_STAGE_BOTTOM : MIN_STAGE_BOTTOM_CLEARANCE;
   const physicsConfig = useMemo<{ gravity: GravityPreset; friction: number }>(
     () => ({ gravity: 'earth', friction: 0.5 }),
@@ -274,7 +248,7 @@ export default function ImmersiveGameShell( ){
           </div>
         ) : (
           // GameRuntime is the ONLY place games are mounted.
-          // It provides the FPS counter (engine chrome) and all engine services.
+          // It provides internal frame pacing and all engine services without exposing architecture chrome.
           // The game renders its own HUD (score/lives) inside its container.
           <GameRuntime
             cartridge={cartridge}
@@ -283,33 +257,7 @@ export default function ImmersiveGameShell( ){
         )}
       </div>
 
-      {/* ── SHELL layer 2: Performance baseline chip ── */}
-      {performanceBaseline && (
-        <div
-          style={{
-            position: 'absolute',
-            left: BASELINE_OVERLAY_OFFSET_PX,
-            bottom: `calc(max(var(--de-hud-bottom, ${DEFAULT_HUD_BOTTOM}), ${stageBottom}) + ${BASELINE_OVERLAY_OFFSET_PX}px)`,
-            zIndex: 3,
-            pointerEvents: 'none',
-            background: 'rgba(2,6,23,0.78)',
-            border: '1px solid rgba(148,163,184,0.28)',
-            borderRadius: 999,
-            padding: '6px 10px',
-            fontSize: 11,
-            fontFamily: 'monospace',
-            letterSpacing: '0.04em',
-            color: '#e2e8f0',
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          BASELINE [DONE] · {performanceBaseline.rendererBackend.toUpperCase()} · {performanceBaseline.sampleCount > 0
-            ? `${performanceBaseline.avgFps} FPS · ${performanceBaseline.avgFrameMs.toFixed(1)}ms`
-            : 'warming up'}
-        </div>
-      )}
-
-      {/* ── SHELL layer 3: PS5-style boot overlay ── */}
+      {/* ── SHELL layer 2: PS5-style boot overlay ── */}
       {!bootDone && (
         <div
           role="presentation"
@@ -380,17 +328,17 @@ export default function ImmersiveGameShell( ){
         <div aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: LANDSCAPE_MIN_STAGE_BOTTOM, background: '#000', zIndex: 0 }} />
       )}
 
-      {/* ── SHELL layer 4: Mobile controls — mounted only after boot ── */}
-      {/* This is CONTROLS chrome: virtual joysticks, buttons, pause, exit.   */}
-      {/* It never overlaps the engine FPS counter (top-right) or game HUD.  */}
+      {/* ── SHELL layer 3: shared remote — mounted only after boot ── */}
+      {/* The cartridge owns its visual HUD; GameRemote is a separate control capability. */}
       {bootDone && (
-        <GameHUD
-          gameLabel={game.label}
-          gameEmoji={game.emoji}
-          playHref={buildGameLaunchHref(game.id, { play: true })}
-          mode={hudMode}
-          onExit={handleExit}
-        />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 50 }}>
+          <GameRemote
+            embedded
+            gameLabel={game.label}
+            playHref={buildGameLaunchHref(game.id, { play: true })}
+            onExit={handleExit}
+          />
+        </div>
       )}
     </div>
   );

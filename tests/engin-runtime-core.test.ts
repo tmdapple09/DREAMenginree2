@@ -12,17 +12,27 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createBaseState, patchBaseState } from '@/lib/engin-runtime/EnginBaseState';
+import {
+  createBaseState,
+  patchBaseState,
+} from '@/lib/engin-runtime/EnginBaseState';
 import {
   gateCapability,
   mergeCapabilities,
   DEFAULT_USER_CAPABILITIES,
   DENY_ALL,
 } from '@/lib/engin-runtime/EnginCapabilities';
-import { MemoryAdapter, LocalStorageAdapter, enginStorageKey } from '@/lib/engin-runtime/EnginIOAdapter';
+import {
+  MemoryAdapter,
+  LocalStorageAdapter,
+  enginStorageKey,
+} from '@/lib/engin-runtime/EnginIOAdapter';
 import { createEnginEventBus } from '@/lib/engin-runtime/EnginEventBus';
 import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
-import type { EnginRuleSetContract, EnginAction } from '@/lib/engin-runtime/EnginRuleSetContract';
+import type {
+  EnginRuleSetContract,
+  EnginAction,
+} from '@/lib/engin-runtime/EnginRuleSetContract';
 import type { EnginBaseState } from '@/lib/engin-runtime/EnginBaseState';
 
 // ─── Minimal stub rule-set for testing ───────────────────────────────────────
@@ -42,8 +52,11 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
   constraints: [
     (_state, action) => {
       if (action.type === 'counter:increment') {
-        const { by } = (action as EnginAction<'counter:increment', { by: number }>).payload ?? { by: 0 };
-        if (by < 0) return { valid: false, reason: 'Increment must be non-negative.' };
+        const { by } = (
+          action as EnginAction<'counter:increment', { by: number }>
+        ).payload ?? { by: 0 };
+        if (by < 0)
+          return { valid: false, reason: 'Increment must be non-negative.' };
       }
       return { valid: true };
     },
@@ -51,7 +64,9 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
   transform(state: EnginBaseState, action: CounterAction): EnginBaseState {
     switch (action.type) {
       case 'counter:increment': {
-        const { by } = (action as EnginAction<'counter:increment', { by: number }>).payload ?? { by: 0 };
+        const { by } = (
+          action as EnginAction<'counter:increment', { by: number }>
+        ).payload ?? { by: 0 };
         const prev = (state.domain.count as number | undefined) ?? 0;
         return patchBaseState(state, { domain: { count: prev + by } });
       }
@@ -62,7 +77,10 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
     }
   },
   deriveState(state: EnginBaseState) {
-    return { count: (state.domain.count as number | undefined) ?? 0, lifecycle: state.lifecycle };
+    return {
+      count: (state.domain.count as number | undefined) ?? 0,
+      lifecycle: state.lifecycle,
+    };
   },
 };
 
@@ -110,7 +128,10 @@ describe('EnginCapabilities', () => {
   });
 
   it('gateCapability: denies missing capabilities', () => {
-    const result = gateCapability(DEFAULT_USER_CAPABILITIES, 'persistence:remote');
+    const result = gateCapability(
+      DEFAULT_USER_CAPABILITIES,
+      'persistence:remote',
+    );
     expect(result.granted).toBe(false);
     expect(result.reason).toContain('persistence:remote');
   });
@@ -164,7 +185,9 @@ describe('MemoryAdapter', () => {
 
 describe('enginStorageKey', () => {
   it('namespaces key correctly', () => {
-    expect(enginStorageKey('games', 'domain-state')).toBe('de:engin:games:domain-state');
+    expect(enginStorageKey('games', 'domain-state')).toBe(
+      'de:engin:games:domain-state',
+    );
   });
 });
 
@@ -232,13 +255,19 @@ describe('EnginRuntime', () => {
   });
 
   it('dispatch rejects action that fails constraint', () => {
-    const result = runtime.dispatch({ type: 'counter:increment', payload: { by: -1 } });
+    const result = runtime.dispatch({
+      type: 'counter:increment',
+      payload: { by: -1 },
+    });
     expect(result).toBe(false);
     expect(runtime.getDerivedState().count).toBe(0);
   });
 
   it('dispatch returns true on success', () => {
-    const ok = runtime.dispatch({ type: 'counter:increment', payload: { by: 1 } });
+    const ok = runtime.dispatch({
+      type: 'counter:increment',
+      payload: { by: 1 },
+    });
     expect(ok).toBe(true);
   });
 
@@ -283,7 +312,10 @@ describe('EnginRuntime', () => {
     // Create a new runtime with the same adapter (shared MemoryAdapter)
     const adapter = new MemoryAdapter();
     await adapter.save('state', runtime.state.domain);
-    const runtime2 = createEnginRuntime(counterRuleSet, { ioAdapter: adapter, persistenceKey: 'state' });
+    const runtime2 = createEnginRuntime(counterRuleSet, {
+      ioAdapter: adapter,
+      persistenceKey: 'state',
+    });
     const restored = await runtime2.restore();
     expect(restored).toBe(true);
     expect(runtime2.getDerivedState().count).toBe(42);
@@ -294,8 +326,194 @@ describe('EnginRuntime', () => {
       ioAdapter: new MemoryAdapter(),
       capabilities: DENY_ALL,
     });
-    const actionWithCap = { type: 'counter:increment', payload: { by: 1 }, __capability: 'state:write' } as any as CounterAction;
+    const actionWithCap = {
+      type: 'counter:increment',
+      payload: { by: 1 },
+      __capability: 'state:write',
+    } as CounterAction & { __capability: string };
     const result = restrictedRuntime.dispatch(actionWithCap);
     expect(result).toBe(false);
+  });
+});
+// ─── Universal envelope, authorization, lifecycle hooks, snapshots ───────────
+
+describe('universal domain object contract', () => {
+  it('creates an explicitly owned and visible domain envelope', async () => {
+    const { createDomainObject, isDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const object = createDomainObject({
+      id: 'asset-1',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'shared',
+      data: { src: '/tree.glb' },
+      now: '2026-06-01T00:00:00.000Z',
+    });
+    expect(isDomainObject(object)).toBe(true);
+    expect(object).toMatchObject({
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'shared',
+      version: 1,
+    });
+  });
+
+  it('authorizes shared edits only with actor, runtime, scope, and collaboration grants', async () => {
+    const { createDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const { authorizeDomainCapability } =
+      await import('@/lib/engin-runtime/EnginCapabilities');
+    const object = createDomainObject({
+      id: 'asset-1',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'shared',
+      data: {},
+    });
+    const context = {
+      actorId: 'editor-1',
+      runtimeId: 'dreamspace-1',
+      surfaceRuntimeIds: ['dreamspace-1'],
+      collaboration: {
+        active: true,
+        participantIds: ['editor-1'],
+        editorIds: ['editor-1'],
+      },
+    };
+    expect(authorizeDomainCapability('write', object, context).granted).toBe(
+      true,
+    );
+    expect(authorizeDomainCapability('publish', object, context).granted).toBe(
+      false,
+    );
+    expect(
+      authorizeDomainCapability('read', object, {
+        ...context,
+        surfaceRuntimeIds: [],
+      }).granted,
+    ).toBe(false);
+  });
+});
+
+describe('EnginRuntime recovery hooks', () => {
+  it('observes lifecycle changes and restores captured snapshots', () => {
+    const runtime = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+    });
+    const hook = vi.fn();
+    runtime.onLifecycle(hook);
+    runtime.start();
+    runtime.dispatch({ type: 'counter:increment', payload: { by: 4 } });
+    const snapshot = runtime.snapshot();
+    runtime.dispatch({ type: 'counter:increment', payload: { by: 6 } });
+    runtime.restoreSnapshot(snapshot);
+    expect(runtime.getDerivedState().count).toBe(4);
+    expect(hook).toHaveBeenCalledWith('running', expect.any(Object));
+  });
+});
+
+describe('EnginRuntime contract hardening', () => {
+  it('keeps helper-only timestamps out of the exact domain envelope', async () => {
+    const { createDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const object = createDomainObject({
+      id: 'asset-2',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'local',
+      data: {},
+      now: '2026-06-01T00:00:00.000Z',
+    });
+    expect(object).not.toHaveProperty('now');
+    expect(() =>
+      createDomainObject({
+        id: 'asset-3',
+        type: 'asset',
+        ownerId: 'owner-1',
+        runtimeId: 'dreamspace-1',
+        visibility: 'local',
+        data: {},
+        now: 'not-a-timestamp',
+      }),
+    ).toThrow('invalid domain object');
+  });
+
+  it('denies malformed authorization context instead of throwing during capability checks', async () => {
+    const { createDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const { authorizeDomainCapability } =
+      await import('@/lib/engin-runtime/EnginCapabilities');
+    const object = createDomainObject({
+      id: 'asset-malformed-context',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'shared',
+      data: {},
+    });
+    expect(
+      authorizeDomainCapability('read', object, undefined as never),
+    ).toEqual({ granted: false, reason: 'Authorization context is required.' });
+    expect(
+      authorizeDomainCapability('read', object, {
+        actorId: 'viewer-1',
+        runtimeId: 'dreamspace-1',
+        surfaceRuntimeIds: ['dreamspace-1'],
+        collaboration: undefined as never,
+      }),
+    ).toEqual({ granted: false, reason: 'Collaboration state is invalid.' });
+  });
+
+  it('does not infer admin access from ownership and keeps local objects in their runtime', async () => {
+    const { createDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const { authorizeDomainCapability } =
+      await import('@/lib/engin-runtime/EnginCapabilities');
+    const object = createDomainObject({
+      id: 'asset-4',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'local',
+      data: {},
+    });
+    const context = {
+      actorId: 'owner-1',
+      runtimeId: 'homedream',
+      surfaceRuntimeIds: ['homedream', 'dreamspace-1'],
+      collaboration: { active: false, participantIds: [], editorIds: [] },
+    };
+    expect(authorizeDomainCapability('read', object, context).granted).toBe(
+      false,
+    );
+    expect(
+      authorizeDomainCapability('admin', object, {
+        ...context,
+        runtimeId: 'dreamspace-1',
+      }).granted,
+    ).toBe(false);
+  });
+
+  it('isolates snapshots, validates restore input, publishes restore, and rejects invalid lifecycle transitions', () => {
+    const runtime = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+    });
+    runtime.dispatch({ type: 'counter:increment', payload: { by: 4 } });
+    const snapshot = runtime.snapshot() as EnginBaseState;
+    const stateEvents: unknown[] = [];
+    runtime.bus.on('engin:state', (event) => stateEvents.push(event));
+    (snapshot.domain as { count?: number }).count = 99;
+    expect(runtime.getDerivedState().count).toBe(4);
+    expect(() =>
+      runtime.restoreSnapshot({ ...snapshot, revision: -1 }),
+    ).toThrow('valid Engin base state');
+    runtime.restoreSnapshot(runtime.snapshots[0] as EnginBaseState);
+    expect(stateEvents).toHaveLength(1);
+    expect(() => runtime.pause()).toThrow('idle -> paused');
   });
 });

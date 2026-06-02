@@ -46,3 +46,6 @@ DREAMengin-full-code.txt
 __pycache__/
 *.pyc
 *.pyo
+
+# Generated repository audit reports
+reports/

@@ -11,6 +11,19 @@
 
 // ── Engin Catalog ─────────────────────────────────────────────────────────────
 
+/** Centers describe information concerns; they are not services or runtimes. */
+export const INFORMATION_DOMAINS = [
+  'audio',
+  'visual',
+  'memory',
+  'physics',
+  'logic',
+  'identity',
+  'communication',
+  'ai',
+] as const;
+export type InformationDomain = (typeof INFORMATION_DOMAINS)[number];
+
 export interface EnginEntry {
   /** Canonical machine id, e.g. 'games', 'music', 'code' */
   id: string;
@@ -26,6 +39,8 @@ export interface EnginEntry {
   daydreamHref: string;
   /** Standalone engin route */
   enginHref: string;
+  /** Semantic information domains used by the existing orchestrator. */
+  domains: readonly InformationDomain[];
   /** Capability tags */
   capabilities: readonly string[];
 }
@@ -43,6 +58,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Play, compete, build worlds. Babylon.js + WebGPU + ray-tracing.',
     daydreamHref: '/daydream/games',
     enginHref: '/engines/games',
+    domains: ['physics', 'visual', 'logic'],
     capabilities: ['Babylon.js', 'WebGPU', 'Ray-Tracing', 'Spatial Audio', 'AI NPCs'],
   },
   {
@@ -53,6 +69,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Full DAW · AI stem separation · spatial audio · live collab.',
     daydreamHref: '/daydream/music',
     enginHref: '/engines/music',
+    domains: ['audio', 'visual', 'communication'],
     capabilities: ['Web Audio', 'Multitrack', 'AI Stems', 'Spatial Audio', 'Live Collab'],
   },
   {
@@ -63,6 +80,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'IDE · AI copilot 2026 · multi-cursor · live preview.',
     daydreamHref: '/daydream/code',
     enginHref: '/engines/code',
+    domains: ['logic', 'ai'],
     capabilities: ['Monaco', 'TypeScript', 'AI Copilot', 'Multi-Cursor', 'Live Preview'],
   },
   {
@@ -73,6 +91,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Experiments · quantum circuits 2026 · GPU compute · real-time viz.',
     daydreamHref: '/daydream/lab',
     enginHref: '/engines/lab',
+    domains: ['physics', 'logic', 'ai'],
     capabilities: ['WebGPU', 'Quantum 2026', 'TensorFlow', 'GPU Compute', 'Real-Time Viz'],
   },
   {
@@ -83,6 +102,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Identity · AI brand kit · motion graphics · analytics 2.0.',
     daydreamHref: '/daydream/brand',
     enginHref: '/engines/brand',
+    domains: ['visual', 'communication'],
     capabilities: ['AI Brand Kit', 'Motion Graphics', 'Analytics 2.0', 'Export'],
   },
   {
@@ -93,6 +113,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Editor · multi-platform scheduler · AI optimizer · analytics.',
     daydreamHref: '/daydream/create',
     enginHref: '/engines/create',
+    domains: ['communication', 'visual', 'memory'],
     capabilities: ['Rich Text', 'Multi-Platform', 'AI Optimizer', 'Scheduling', 'Analytics'],
   },
   {
@@ -103,12 +124,21 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     desc: 'Meta-creation engine. Orchestrate all engines. Workflow automation 2.0.',
     daydreamHref: '/daydream/forge',
     enginHref: '/daydream/forge',
+    domains: ['logic', 'memory', 'ai'],
     capabilities: ['Cross-Engine', 'Status Matrix', 'Orchestration', 'Automation 2.0'],
   },
 ] as const;
 
 /** Just the 6 creative engines (no Forge self-reference) */
 export const CREATIVE_ENGINES = ENGIN_REGISTRY.filter((e) => e.id !== 'forge');
+
+export function getEnginById(id: string): EnginEntry | null {
+  return ENGIN_REGISTRY.find((engin) => engin.id === id) ?? null;
+}
+
+export function getEnginByName(name: string): EnginEntry | null {
+  return ENGIN_REGISTRY.find((engin) => engin.name === name) ?? null;
+}
 
 // ── Activity Pulse ────────────────────────────────────────────────────────────
 

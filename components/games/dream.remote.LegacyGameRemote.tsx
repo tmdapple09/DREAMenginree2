@@ -28,7 +28,7 @@ import { useGamepad } from '@/lib/games/useGamepad';
 import { broadcastGameInput } from '@/lib/games/useRemoteChannel';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type GameInputAction =
@@ -386,6 +386,18 @@ export default function GameRemote({
 }: GameRemoteProps) {
   const { connected: gpConnected, gamepadName } = useGamepad();
   const searchParams = useSearchParams();
+  const [remoteState, setRemoteState] = useState<'idle' | 'active' | 'collapsed'>('idle');
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const activateRemote = useCallback(() => {
+    setRemoteState((current) => current === 'collapsed' ? current : 'active');
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => setRemoteState((current) => current === 'collapsed' ? current : 'idle'), 1200);
+  }, []);
+
+  useEffect(() => () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+  }, []);
 
   const gpNameLower = gamepadName.toLowerCase();
   const isDualSense = gpNameLower.includes('dualsense')
@@ -409,8 +421,32 @@ export default function GameRemote({
   const rightButtonSize = 28 * rightClusterScale;
   const rightButtonFontSize = embedded ? 9 : 11;
 
+  if (remoteState === 'collapsed') {
+    return (
+      <div style={{ position: 'relative', pointerEvents: 'none', minHeight: embedded ? 52 : '100dvh' }}>
+        <button
+          type="button"
+          aria-label="Show game remote"
+          onClick={() => setRemoteState('active')}
+          style={{
+            position: 'absolute', right: 12, bottom: 12, pointerEvents: 'auto',
+            width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(200,152,26,0.56)',
+            background: 'rgba(7,16,30,0.84)', color: '#fef08a', cursor: 'pointer', fontSize: 18,
+            boxShadow: '0 8px 22px rgba(0,0,0,0.34)',
+          }}
+        >
+          🎮
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{
+    <div
+      data-game-remote-state={remoteState}
+      onPointerDownCapture={activateRemote}
+      onPointerMoveCapture={activateRemote}
+      style={{
       position: 'relative',
       minHeight: embedded ? undefined : '100dvh',
       background: 'linear-gradient(160deg, #07101e 0%, #0b1a30 55%, #07101e 100%)',
@@ -420,7 +456,21 @@ export default function GameRemote({
       borderRadius: embedded ? 20 : undefined,
       border: embedded ? '1px solid rgba(160,195,240,0.12)' : undefined,
       boxShadow: embedded ? '0 16px 48px rgba(0,0,0,0.28)' : undefined,
+      opacity: remoteState === 'active' ? 0.3 : 0.01,
+      transition: 'opacity 180ms ease',
     }}>
+      <button
+        type="button"
+        aria-label="Hide game remote"
+        onClick={() => setRemoteState('collapsed')}
+        style={{
+          position: 'absolute', top: 8, right: 8, zIndex: 5, padding: '4px 9px', borderRadius: 999,
+          border: '1px solid rgba(160,195,240,0.24)', background: 'rgba(7,16,30,0.72)',
+          color: 'rgba(220,235,255,0.82)', cursor: 'pointer', fontSize: 10, fontWeight: 800,
+        }}
+      >
+        Hide
+      </button>
       {!embedded && (
         <header style={{
           display: 'flex', alignItems: 'center', gap: 12,
