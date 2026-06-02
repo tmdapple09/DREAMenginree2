@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-05-31T22:23:32.124Z
+Generated: 2026-06-02T05:19:03.978Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -579,7 +579,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── logout
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │   │       ├── redirect  ← next/navigation
+│   │   │   │       ├── NextRequest  ← next/server
+│   │   │   │       ├── NextResponse  ← next/server
 │   │   │   │       └── → GET
 │   │   │   └── providers
 │   │   │       └── route.ts ⚠
@@ -1680,14 +1681,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → default
 │   │   │   │   └── ∅ unused: default
 │   │   │   ├── dream.shell.ImmersiveGameShell.tsx ∅
-│   │   │   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   │   │   ├── ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
 │   │   │   │   ├── GameCartridge  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── GravityPreset  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
 │   │   │   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
 │   │   │   │   ├── useGamePerformanceBaseline  ← @/lib/games/hooks
-│   │   │   │   ├── MobileHudMode  ← @/lib/games/mobileControls
 │   │   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
 │   │   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
@@ -1885,20 +1885,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   │   ├── NextRequest  ← next/server
 │   │   │   │   │   │   ├── NextResponse  ← next/server
 │   │   │   │   │   │   └── → dreamrFeedHandler
-│   │   │   │   │   └── route.ts ⚠ ∅
-│   │   │   │   │       ├── ScoredPost  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
-│   │   │   │   │       ├── rankFeed  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
-│   │   │   │   │       ├── filterByCloseFriends  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │   │   │       ├── loadVisibilityCircle  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │   │   │       ├── deriveNextCursor  ← @/lib/dreamr/feedCursor
-│   │   │   │   │       ├── parseFeedParams  ← @/lib/dreamr/feedCursor
-│   │   │   │   │       ├── PostMediaShape  ← @/lib/media/postMedia
-│   │   │   │   │       ├── getPrimaryPostMediaUrl  ← @/lib/media/postMedia
-│   │   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
-│   │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │   │   │       ├── toErrorMessage  ← @/lib/utils
-│   │   │   │   │       ├── NextRequest  ← next/server
-│   │   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │   │   └── route.ts ∅
 │   │   │   │   │       ├── → GET
 │   │   │   │   │       └── ∅ unused: GET
 │   │   │   │   ├── dream.DreamRCore.tsx ∅
@@ -1992,6 +1979,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⬡ FlagshipEnginesStrip  ← @/components/home/dream.FlagshipEnginesStrip
 │   │   │       ├── useNotifications  ← @/lib/notifications/useNotifications
 │   │   │       ├── isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   │   │       ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │       ├── Bell  ← lucide-react
 │   │   │       ├── ChevronRight  ← lucide-react
 │   │   │       ├── useRouter  ← next/navigation
@@ -3130,10 +3118,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useState  ← react
 │   │   │   └── → AdUnit
-│   │   └── dream.SkipCreditBalance.tsx
+│   │   └── dream.SkipCreditBalance.tsx ∅
 │   │       ├── useEffect  ← react
 │   │       ├── useState  ← react
-│   │       └── → SkipCreditBalance
+│   │       ├── → SkipCreditBalance
+│   │       └── ∅ unused: SkipCreditBalance
 │   ├── auth  [Auth]
 │   │   └── dream.PasswordField.tsx ∅
 │   │       ├── Eye  ← lucide-react
@@ -3846,6 +3835,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dreamsurface.dreamspace.tsx ∅
 │   │   │   ├── ⬡ DreamSpace  ← @/app/dreamdmbar/_components/DreamSpaceRegion
 │   │   │   ├── ⬡ RuntimeMemoryHUD  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   ├── ⬡ ActiveModuleSurface  ← @/components/home/dream.ActiveModuleSurface
 │   │   │   ├── ⬡ SpatialProfileSpace  ← @/components/spatial/dream.ProfileSpace
 │   │   │   ├── ⬡ UniversalWidget  ← @/components/widgets/dream.widget.UniversalWidget
 │   │   │   ├── useDreamsRuntime  ← @/lib/dreams/useDreamsRuntime
@@ -3862,6 +3852,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── readForgeActivity  ← @/lib/forge/forgeRegistry
 │   │   │   ├── resolveResumeDest  ← @/lib/intelligence/continuityHelpers
 │   │   │   ├── useSessionIntelligence  ← @/lib/intelligence/useSessionIntelligence
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── AnimatePresence  ← framer-motion
 │   │   │   ├── motion  ← framer-motion
 │   │   │   ├── useRouter  ← next/navigation
@@ -4849,15 +4840,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── loadActiveModules  ← @/lib/activeModulesStore
 │   │   │   ├── removeActiveModule  ← @/lib/activeModulesStore
 │   │   │   ├── saveActiveModule  ← @/lib/activeModulesStore
-│   │   │   ├── saveActiveModules  ← @/lib/activeModulesStore
+│   │   │   ├── saveActiveModulesForRegion  ← @/lib/activeModulesStore
+│   │   │   ├── transferActiveModuleRegion  ← @/lib/activeModulesStore
 │   │   │   ├── loadArtifacts  ← @/lib/artifactStore
 │   │   │   ├── saveArtifact  ← @/lib/artifactStore
 │   │   │   ├── DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
 │   │   │   ├── useDreamWindowActions  ← @/lib/dream-window/useDreamWindowActions
 │   │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── ActiveModuleInstance  ← @/types/dreamArtifact
 │   │   │   ├── DreamArtifact  ← @/types/dreamArtifact
 │   │   │   ├── DreamArtifactDragPayload  ← @/types/dreamArtifact
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── X  ← lucide-react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
@@ -4872,13 +4866,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.bar.PersistentDreamBar.tsx ∅
-│   │   │   ├── SkipCreditBalance  ← @/components/ads/dream.SkipCreditBalance
 │   │   │   ├── ⬡ NeuralSeamCanvas  ← @/components/home/dream.NeuralSeamCanvas
 │   │   │   ├── DreamDMContainer  ← @/components/home/dream.bar.PersistentDreamBar
 │   │   │   ├── ⬡ PersistentDreamBar  ← @/components/home/dream.bar.PersistentDreamBar
 │   │   │   ├── useDualRuntime  ← @/components/runtime/dream.DualRuntimeContainer
 │   │   │   ├── ⬡ RuntimeView  ← @/components/runtime/dream.RuntimeView
-│   │   │   ├── ⬡ DreamDMRail  ← @/dreamdmbar/dreamsurface.dreamdmbar
+│   │   │   ├── ⬡ DreamDMBar  ← @/dreamdmbar/dreamsurface.dreamdmbar
 │   │   │   ├── useDreamLayout  ← @/hooks/useDreamLayout
 │   │   │   ├── useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   │   ├── DIVIDER_H  ← @/lib/dreamdm/barInteractions
@@ -4901,6 +4894,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── computeMomentum  ← @/lib/forge/forgeMomentum
 │   │   │   ├── getLevelColor  ← @/lib/forge/forgeMomentum
 │   │   │   ├── getLevelEmoji  ← @/lib/forge/forgeMomentum
+│   │   │   ├── getEnginById  ← @/lib/forge/forgeRegistry
 │   │   │   ├── Activity  ← lucide-react
 │   │   │   ├── ChevronRight  ← lucide-react
 │   │   │   ├── Flame  ← lucide-react
@@ -5333,9 +5327,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⬡ RuntimeShell  ← @/components/runtime/dream.shell.RuntimeShell
 │   │   │   ├── ⬡ EnhancedSpatialShell  ← @/components/spatial/dream.shell.EnhancedSpatialShell
 │   │   │   ├── getDreamComponent  ← @/lib/dreams/DreamRegistry
+│   │   │   ├── getEnginByName  ← @/lib/forge/forgeRegistry
 │   │   │   ├── RuntimeRegion  ← @/lib/identity/canonical-names
 │   │   │   ├── SystemPanelId  ← @/lib/panels/panelTypes
 │   │   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
+│   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.LabEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.CodeEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
+│   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.shell.RuntimeShell.tsx ∅
@@ -5560,8 +5563,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.UniversalEditorWrapper.tsx ∅
 │   │   │   ├── Position  ← ./useTapHoldMove
 │   │   │   ├── useTapHoldMove  ← ./useTapHoldMove
-│   │   │   ├── ModuleManifest  ← @/lib/universal-editor/module-manifest
-│   │   │   ├── RuntimeId  ← @/lib/universal-editor/module-manifest
+│   │   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   │   ├── RuntimeId  ← @/types/module-manifest
 │   │   │   ├── → UniversalEditorWrapper
 │   │   │   └── ∅ unused: UniversalEditorWrapper
 │   │   ├── index.ts ∅
@@ -5575,8 +5578,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useTapHoldMove
 │   │   │   └── ∅ unused: useTapHoldMove, Position, TapHoldMoveBindings, TapHoldMoveOptions, UniversalEditorWrapper, UniversalEditorWrapperProps, UniversalEditor, UniversalEditorProps
 │   │   └── useTapHoldMove.ts
-│   │       ├── ModuleManifest  ← @/lib/universal-editor/module-manifest
-│   │       ├── RuntimeId  ← @/lib/universal-editor/module-manifest
+│   │       ├── ModuleManifest  ← @/types/module-manifest
+│   │       ├── RuntimeId  ← @/types/module-manifest
 │   │       ├── useCallback  ← react
 │   │       ├── useEffect  ← react
 │   │       ├── useRef  ← react
@@ -6459,7 +6462,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── calculatePointerVelocity  ← @/lib/dreamdm/barInteractions
 │       ├── computeTypingRhythm  ← @/lib/dreamdm/barInteractions
 │       ├── decideBarRelease  ← @/lib/dreamdm/barInteractions
-│       ├── filterSlashCommands  ← @/lib/dreamdm/barInteractions
 │       ├── getMoodPeriod  ← @/lib/dreamdm/barInteractions
 │       ├── getStreakTier  ← @/lib/dreamdm/barInteractions
 │       ├── resolveGoldTapAction  ← @/lib/dreamdm/barInteractions
@@ -6487,10 +6489,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── Bell  ← lucide-react
 │       ├── Bot  ← lucide-react
 │       ├── Code2  ← lucide-react
-│       ├── Compass  ← lucide-react
 │       ├── FileText  ← lucide-react
-│       ├── Gamepad2  ← lucide-react
-│       ├── Home  ← lucide-react
 │       ├── ImageIcon  ← lucide-react
 │       ├── Loader2  ← lucide-react
 │       ├── Maximize2  ← lucide-react
@@ -6500,13 +6499,9 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── PenLine  ← lucide-react
 │       ├── Search  ← lucide-react
 │       ├── Send  ← lucide-react
-│       ├── Settings  ← lucide-react
-│       ├── ShoppingBag  ← lucide-react
 │       ├── Sparkles  ← lucide-react
-│       ├── User  ← lucide-react
 │       ├── X  ← lucide-react
 │       ├── ⬡ Image  ← next/image
-│       ├── useRouter  ← next/navigation
 │       ├── (dynamic)  ← @/lib/supabase/client
 │       ├── → (default)
 │       ├── → BAR_H
@@ -6860,7 +6855,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   │   ├── GAMES  ← @/components/games/dream.GamesHub
 │   │   ├── ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
-│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
 │   │   ├── useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── EngineBase  ← @/lib/dreamenginOS
@@ -6956,6 +6951,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── engin.StarMakerEngin.tsx ⚠ ∅
 │       ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │       ├── ⬡ CompingPanel  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│       ├── ⬡ MultitrackArrangementPanel  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
 │       ├── ⬡ PianoRollPanel  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
 │       ├── ⬡ SessionViewPanel  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
 │       ├── AudioVisualizer3D  ← @/components/dream.AudioVisualizer3D
@@ -6989,9 +6985,11 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── createMelodySuggestions  ← @/lib/music/starmaker
 │       ├── summarizePlaybackProfile  ← @/lib/music/starmaker
 │       ├── ARRANGEMENT_BARS  ← @/lib/music/starmakerArrangement
+│       ├── ARRANGEMENT_SOURCE_COLORS  ← @/lib/music/starmakerArrangement
 │       ├── ARRANGEMENT_TRACKS  ← @/lib/music/starmakerArrangement
 │       ├── ArrangementClip  ← @/lib/music/starmakerArrangement
 │       ├── ArrangementSource  ← @/lib/music/starmakerArrangement
+│       ├── ArrangementTrackId  ← @/lib/music/starmakerArrangement
 │       ├── ArrangementTrackState  ← @/lib/music/starmakerArrangement
 │       ├── CompingState  ← @/lib/music/starmakerDaw
 │       ├── PIANO_ROLL_DEFAULTS  ← @/lib/music/starmakerDaw
@@ -8631,12 +8629,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── useState  ← react
 │   │       └── → useDreamsRuntime
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts
+│   │   ├── EnginBaseState.ts ∅
 │   │   │   ├── → createBaseState
-│   │   │   └── → patchBaseState
+│   │   │   ├── → createDomainObject
+│   │   │   ├── → isDomainObject
+│   │   │   ├── → isEnginBaseState
+│   │   │   ├── → isJsonSerializable
+│   │   │   ├── → patchBaseState
+│   │   │   └── ∅ unused: createDomainObject
 │   │   ├── EnginCapabilities.ts
+│   │   │   ├── DomainObject  ← ./EnginBaseState
+│   │   │   ├── isDomainObject  ← ./EnginBaseState
 │   │   │   ├── → DEFAULT_USER_CAPABILITIES
 │   │   │   ├── → DENY_ALL
+│   │   │   ├── → authorizeDomainCapability
 │   │   │   ├── → gateCapability
 │   │   │   └── → mergeCapabilities
 │   │   ├── EnginEventBus.ts
@@ -8654,6 +8660,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
 │   │   │   ├── EnginLifecycle  ← ./EnginBaseState
 │   │   │   ├── createBaseState  ← ./EnginBaseState
+│   │   │   ├── isEnginBaseState  ← ./EnginBaseState
 │   │   │   ├── patchBaseState  ← ./EnginBaseState
 │   │   │   ├── DEFAULT_USER_CAPABILITIES  ← ./EnginCapabilities
 │   │   │   ├── EnginCapabilityMap  ← ./EnginCapabilities
@@ -8678,14 +8685,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → EnginRuntime
 │   │       ├── → LocalStorageAdapter
 │   │       ├── → MemoryAdapter
+│   │       ├── → authorizeDomainCapability
 │   │       ├── → createBaseState
+│   │       ├── → createDomainObject
 │   │       ├── → createEnginEventBus
 │   │       ├── → createEnginRuntime
 │   │       ├── → enginStorageKey
 │   │       ├── → gateCapability
+│   │       ├── → isDomainObject
+│   │       ├── → isEnginBaseState
 │   │       ├── → mergeCapabilities
 │   │       ├── → patchBaseState
-│   │       └── ∅ unused: createBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
+│   │       └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
 │   ├── engine
 │   │   └── index.ts ∅
 │   │       ├── → UniversalEngine
@@ -9084,7 +9095,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → ENGIN_REGISTRY
 │   │   │   ├── → FORGE_HISTORY_KEY
 │   │   │   ├── → FORGE_WORKFLOWS
+│   │   │   ├── → INFORMATION_DOMAINS
 │   │   │   ├── → formatRelativeTime
+│   │   │   ├── → getEnginById
+│   │   │   ├── → getEnginByName
 │   │   │   ├── → getForgeHeat
 │   │   │   ├── → readForgeActivity
 │   │   │   └── → recordForgeActivity
@@ -10270,11 +10284,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → buildReleaseStrategy
 │   │   │   ├── → createMelodySuggestions
 │   │   │   └── → summarizePlaybackProfile
-│   │   ├── starmakerArrangement.ts ∅
+│   │   ├── starmakerArrangement.ts
 │   │   │   ├── → ARRANGEMENT_BARS
 │   │   │   ├── → ARRANGEMENT_SOURCE_COLORS
-│   │   │   ├── → ARRANGEMENT_TRACKS
-│   │   │   └── ∅ unused: ARRANGEMENT_SOURCE_COLORS
+│   │   │   └── → ARRANGEMENT_TRACKS
 │   │   ├── starmakerDaw.ts ∅
 │   │   │   ├── → AUDIO_QUALITY_PRESETS
 │   │   │   ├── → AUTOMATABLE_PARAMS
@@ -10777,7 +10790,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → classifyDrop
 │   │   │   ├── → coerceDataTransfer
 │   │   │   └── → coerceRawPayload
-│   │   ├── dreamOSBus.ts
+│   │   ├── dreamOSBus.ts ∅
+│   │   │   ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── isDomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── authorizeDomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
+│   │   │   ├── INFORMATION_DOMAINS  ← @/lib/forge/forgeRegistry
+│   │   │   ├── InformationDomain  ← @/lib/forge/forgeRegistry
 │   │   │   ├── AI_AGENTS  ← @/lib/identity/canonical-names
 │   │   │   ├── RuntimeRegion  ← @/lib/identity/canonical-names
 │   │   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
@@ -10786,8 +10807,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── RuntimeContainer  ← @/lib/runtime/runtimeContainer
 │   │   │   ├── DreamArtifactBusEventMap  ← @/types/dreamArtifact
+│   │   │   ├── → CAPABILITY_DESCRIPTORS
+│   │   │   ├── → INFORMATION_DOMAINS
 │   │   │   ├── → deriveAIRuntimeContext
-│   │   │   └── → dreamOSBus
+│   │   │   ├── → dreamOSBus
+│   │   │   ├── → getCapabilitiesForDomains
+│   │   │   ├── → getCapabilityChildren
+│   │   │   ├── → getCapabilityDescriptor
+│   │   │   ├── → isInformationDomain
+│   │   │   ├── → isIntentEnvelope
+│   │   │   └── ∅ unused: isIntentEnvelope, isInformationDomain, CAPABILITY_DESCRIPTORS, INFORMATION_DOMAINS
 │   │   ├── dropTargetRegistry.ts
 │   │   │   ├── DreamDrop  ← @/lib/runtime/coercionTable
 │   │   │   ├── DreamDropType  ← @/lib/runtime/coercionTable
@@ -10936,7 +10965,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── moduleRegistry.ts ∅
 │   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   │   ├── RuntimeCompatibility  ← @/types/module-manifest
 │   │   │   ├── RuntimeId  ← @/types/module-manifest
+│   │   │   ├── isModuleManifest  ← @/types/module-manifest
+│   │   │   ├── negotiateModuleCompatibility  ← @/types/module-manifest
 │   │   │   ├── WidgetInstance  ← @/types/widgets
 │   │   │   ├── getWidgetType  ← @/types/widgets
 │   │   │   ├── create  ← zustand
@@ -10959,7 +10991,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → runQuantumCircuit
 │   │   │   └── ∅ unused: runQuantumCircuit
 │   │   ├── runtimeChannel.ts ∅
-│   │   │   ├── (dynamic)  ← @supabase/supabase-js
+│   │   │   ├── isJsonSerializable  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── → createLocalChannel
 │   │   │   ├── → createRealtimeChannel
 │   │   │   ├── → createRuntimeChannel
@@ -11249,12 +11281,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → getInitialDarkMode
 │   │       ├── → setDarkMode
 │   │       └── → toggleDarkMode
-│   ├── universal-editor
-│   │   └── module-manifest.ts ∅
-│   │       ├── → canTransferTo
-│   │       ├── → createManifest
-│   │       ├── → isValidManifest
-│   │       └── ∅ unused: createManifest, isValidManifest, canTransferTo
 │   ├── user-sim
 │   │   └── userSimAgent.ts
 │   │       ├── AgentAction  ← @/types/user-sim
@@ -11627,12 +11653,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → getWidgetTypeDef
 │   │       ├── → getWidgetTypesForConnector
 │   │       └── → resolveConnectorState
-│   ├── activeModulesStore.ts
+│   ├── activeModulesStore.ts ∅
 │   │   ├── ActiveModuleInstance  ← @/types/dreamArtifact
+│   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   ├── → loadActiveModules
 │   │   ├── → removeActiveModule
 │   │   ├── → saveActiveModule
-│   │   └── → saveActiveModules
+│   │   ├── → saveActiveModules
+│   │   ├── → saveActiveModulesForRegion
+│   │   ├── → transferActiveModuleRegion
+│   │   └── ∅ unused: saveActiveModules
 │   ├── adari.ts ∅
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
@@ -11791,6 +11821,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── universalEditor.ts ∅
 │   │   ├── EventBus  ← ./eventBus
 │   │   ├── createEventBus  ← ./eventBus
+│   │   ├── ModuleManifest  ← @/types/module-manifest
+│   │   ├── RuntimeId  ← @/types/module-manifest
 │   │   ├── → canTransfer
 │   │   ├── → createLocalEventBus
 │   │   ├── → transferModule
@@ -12154,7 +12186,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── rulesets  ⚠ ./rulesets
 │       ├── surfaces  ⚠ ./surfaces
 │       ├── systems  ⚠ ./systems
-│       ├── UniversalEngine  ← @/src/engin/core
 │       ├── promises  ← node:fs
 │       ├── fileURLToPath  ← node:url
 │       ├── pathToFileURL  ← node:url
@@ -12332,8 +12363,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → createSession
 │   │   │       ├── → engine
 │   │   │       ├── → validateSession
-│   │   │       ├── (unknown — bare import)  ⚠ @/engin/state/base.json
-│   │   │       └── ∅ unused: engine, appendEntry, createLedger, createEventBus, createRenderLoop, createSession, validateSession
+│   │   │       └── ∅ unused: UniversalEngine, engine, appendEntry, createLedger, createEventBus, createRenderLoop, createSession, validateSession
 │   │   ├── generated
 │   │   │   ├── brain.ts
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/brain/active-projects.json
@@ -12405,10 +12435,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/brain/upgrade-history/prioritization-rules.json
 │   │   │   │   └── → brain
 │   │   │   ├── cartridges.ts
+│   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/achievementEngine
+│   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/apiStubs
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/index
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/loaders
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/manifest
 │   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/reactCartridge
+│   │   │   │   ├── (dynamic)  ← @/lib/gameengin/cartridges/saveState
 │   │   │   │   ├── (dynamic)  ← @/public/cartridges/mad-maxi/MANIFEST.json
 │   │   │   │   └── → cartridges
 │   │   │   ├── connectors.ts
@@ -12554,6 +12587,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreamengin/os-status/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreamr/feed/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreamr/suggested/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/dreamr/tally/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreams/feed/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreams/instances/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dreams/transfer/route
@@ -12596,11 +12630,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/api/settings/privacy/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/setup/check/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/setup/google-oauth/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/shared-dream/sessions/[id]/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/shared-dream/sessions/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/shellhub/devices/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/shop/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/skip-credits/balance/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/skip-credits/earn/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/skip-credits/use/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/social/ipfs/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/social/livekit/room/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/social/livekit/token/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/social/rss-feed/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/upload/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/user/layout/route
@@ -12643,6 +12682,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/DreamBarDataBridge
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/api/feedHandler
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/api/route
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
@@ -13002,6 +13042,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/shared-dream/dream.InviteFlow
 │   │   │   │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamCanvas
 │   │   │   │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamProvider
+│   │   │   │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamRuntime
 │   │   │   │   ├── (dynamic)  ← @/components/shared-dream/index
 │   │   │   │   ├── (dynamic)  ← @/components/spatial/dream.PixiPhysicsLayer
 │   │   │   │   ├── (dynamic)  ← @/components/spatial/dream.ProfileSpace
@@ -13185,9 +13226,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/quality/tiers
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/telemetry/client
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/telemetry/events
+│   │   │       ├── (dynamic)  ← @/lib/engins/brand/brandEnginRuleSet
+│   │   │       ├── (dynamic)  ← @/lib/engins/brand/useBrandEnginRuntime
+│   │   │       ├── (dynamic)  ← @/lib/engins/code/codeEnginRuleSet
+│   │   │       ├── (dynamic)  ← @/lib/engins/code/useCodeEnginRuntime
+│   │   │       ├── (dynamic)  ← @/lib/engins/content/contentEnginRuleSet
+│   │   │       ├── (dynamic)  ← @/lib/engins/content/useContentEnginRuntime
 │   │   │       ├── (dynamic)  ← @/lib/engins/game/gameEnginRuleSet
 │   │   │       ├── (dynamic)  ← @/lib/engins/game/index
 │   │   │       ├── (dynamic)  ← @/lib/engins/game/useGameEnginRuntime
+│   │   │       ├── (dynamic)  ← @/lib/engins/lab/labEnginRuleSet
+│   │   │       ├── (dynamic)  ← @/lib/engins/lab/useLabEnginRuntime
+│   │   │       ├── (dynamic)  ← @/lib/engins/music/starMakerEnginRuleSet
+│   │   │       ├── (dynamic)  ← @/lib/engins/music/useStarMakerEnginRuntime
 │   │   │       ├── (dynamic)  ← @/lib/engins/useEnginWorkflow
 │   │   │       ├── (dynamic)  ← @/lib/engins/workflowEngine
 │   │   │       ├── (dynamic)  ← @/lib/event-bus/index
@@ -13353,6 +13404,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/platform/index
 │   │   │       ├── (dynamic)  ← @/lib/platform/lab
 │   │   │       ├── (dynamic)  ← @/lib/policy/boogiePolicy
+│   │   │       ├── (dynamic)  ← @/lib/reality/realityStore
+│   │   │       ├── (dynamic)  ← @/lib/reality/types
 │   │   │       ├── (dynamic)  ← @/lib/renderer/Canvas2DRenderer
 │   │   │       ├── (dynamic)  ← @/lib/renderer/FrustumCuller
 │   │   │       ├── (dynamic)  ← @/lib/renderer/index
@@ -13388,12 +13441,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/scene/sceneState
 │   │   │       ├── (dynamic)  ← @/lib/setup/checks
 │   │   │       ├── (dynamic)  ← @/lib/sharedDream
+│   │   │       ├── (dynamic)  ← @/lib/sharedDream/useSharedDreamSession
 │   │   │       ├── (dynamic)  ← @/lib/shop/listings
 │   │   │       ├── (dynamic)  ← @/lib/slog
 │   │   │       ├── (dynamic)  ← @/lib/social-feed
 │   │   │       ├── (dynamic)  ← @/lib/social/crossPost
+│   │   │       ├── (dynamic)  ← @/lib/social/livekit
+│   │   │       ├── (dynamic)  ← @/lib/social/normalizers
 │   │   │       ├── (dynamic)  ← @/lib/social/platforms
 │   │   │       ├── (dynamic)  ← @/lib/social/rss-feed
+│   │   │       ├── (dynamic)  ← @/lib/social/useSocialData
 │   │   │       ├── (dynamic)  ← @/lib/supabase/client
 │   │   │       ├── (dynamic)  ← @/lib/supabase/config
 │   │   │       ├── (dynamic)  ← @/lib/supabase/realtime
@@ -13409,7 +13466,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/ui/skin-engine
 │   │   │       ├── (dynamic)  ← @/lib/ui/theme-engine
 │   │   │       ├── (dynamic)  ← @/lib/ui/theme
-│   │   │       ├── (dynamic)  ← @/lib/universal-editor/module-manifest
 │   │   │       ├── (dynamic)  ← @/lib/universalEditor
 │   │   │       ├── (dynamic)  ← @/lib/user-sim/userSimAgent
 │   │   │       ├── (dynamic)  ← @/lib/utils
@@ -13428,6 +13484,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/vm/wasmGpuVM
 │   │   │       ├── (dynamic)  ← @/lib/warp/useWarp
 │   │   │       ├── (dynamic)  ← @/lib/warp/warpEngine
+│   │   │       ├── (dynamic)  ← @/lib/web3/client
+│   │   │       ├── (dynamic)  ← @/lib/web3/engagement
+│   │   │       ├── (dynamic)  ← @/lib/web3/index
+│   │   │       ├── (dynamic)  ← @/lib/web3/ipfs
+│   │   │       ├── (dynamic)  ← @/lib/web3/types
 │   │   │       ├── (dynamic)  ← @/lib/webgpu
 │   │   │       ├── (dynamic)  ← @/lib/webgpu/adaptiveQuality
 │   │   │       ├── (dynamic)  ← @/lib/webgpu/director
@@ -13968,6 +14029,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dream-os-bus.test.ts
 │   │   ├── deriveAIRuntimeContext  ← @/lib/runtime/dreamOSBus
 │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   ├── getCapabilitiesForDomains  ← @/lib/runtime/dreamOSBus
+│   │   ├── getCapabilityChildren  ← @/lib/runtime/dreamOSBus
+│   │   ├── getCapabilityDescriptor  ← @/lib/runtime/dreamOSBus
 │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
@@ -14275,7 +14339,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
-│   │   └── vi  ← vitest
+│   │   ├── vi  ← vitest
+│   │   ├── (dynamic)  ← @/lib/engin-runtime/EnginBaseState
+│   │   └── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
 │   ├── engin-workflow.test.ts
 │   │   ├── HANDOFF_PATHS  ← ../lib/engins/workflowEngine
 │   │   ├── STAGE_LABELS  ← ../lib/engins/workflowEngine
@@ -14488,7 +14554,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
-│   ├── game-navigation.test.ts
+│   ├── game-navigation.test.ts ⚠
 │   │   ├── buildLoginRedirectPath  ← @/lib/auth/nextRedirect
 │   │   ├── resolveSafeNextPath  ← @/lib/auth/nextRedirect
 │   │   ├── upsertSavedGameSession  ← @/lib/games/library-state
@@ -14497,6 +14563,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── isLaunchFlagEnabled  ← @/lib/games/navigation
 │   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
 │   │   ├── GAME_INPUT_KEYBOARD_MAP  ← @/lib/games/useGameInputKeyboardBridge
+│   │   ├── buildAuthCallbackUrl  ⚠ @/lib/supabase/config
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path
 │   │   ├── describe  ← vitest
@@ -14519,7 +14586,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── game-remote-regression.test.ts
-│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path
 │   │   ├── describe  ← vitest
@@ -14931,6 +14998,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── loadActiveModules  ← @/lib/activeModulesStore
 │   │   ├── removeActiveModule  ← @/lib/activeModulesStore
 │   │   ├── saveActiveModule  ← @/lib/activeModulesStore
+│   │   ├── saveActiveModulesForRegion  ← @/lib/activeModulesStore
+│   │   ├── transferActiveModuleRegion  ← @/lib/activeModulesStore
 │   │   ├── hideArtifact  ← @/lib/artifactStore
 │   │   ├── listSystemArtifacts  ← @/lib/artifactStore
 │   │   ├── listVisibleArtifacts  ← @/lib/artifactStore
@@ -14948,7 +15017,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── resolve  ← node:path
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
-│   │   └── it  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── (dynamic)  ← @/types/module-manifest
 │   ├── music-starmaker-section10.test.ts
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path
@@ -15456,7 +15526,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── resolve  ← node:path
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
-│   │   └── it  ← vitest
+│   │   ├── it  ← vitest
+│   │   ├── (dynamic)  ← @/engins/engin.GameEngin
+│   │   └── (dynamic)  ← @/engins/engin.StarMakerEngin
 │   ├── skip-credits.test.ts
 │   │   ├── addSkipCredits  ← @/lib/activity/skipCredits
 │   │   ├── calculateSkipCreditsEarned  ← @/lib/activity/skipCredits
@@ -15895,6 +15967,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── → JOURNEY_DOMAIN_COLORS
 │   ├── marketplace.ts
 │   ├── module-manifest.ts
+│   │   ├── isJsonSerializable  ← @/lib/engin-runtime/EnginBaseState
+│   │   ├── → isModuleManifest
+│   │   └── → negotiateModuleCompatibility
 │   ├── rivet-dev-agent-os.d.ts ∅
 │   │   ├── → (default)
 │   │   ├── → AgentOs
