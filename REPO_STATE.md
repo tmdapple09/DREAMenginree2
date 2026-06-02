@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T09:39:31.336Z
+Generated: 2026-06-02T21:39:21.041Z
 
 ---
 
@@ -976,6 +976,7 @@ _No style files for this feature._
 - `tests/gameengin-progression.test.ts`
 - `tests/gameengin-remote.test.ts`
 - `tests/gameengin-spec.test.ts`
+- `tests/madmaxi-accessibility-tuning.test.ts`
 - `tests/madmaxi-authored-levels.test.ts`
 - `tests/madmaxi-mechanics.test.ts`
 - `tests/shell-cartridge-wiring.test.ts`
@@ -6846,10 +6847,9 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/gsap/useGsapEntrance` | `useGsapEntrance` |
 | `@/lib/utils` | `cn` |
-| `@/lib/webgpu` | `getRendererBackend` |
 | `framer-motion` | `motion` |
 | `lucide-react` | `Layers`, `Monitor`, `Sparkles`, `Zap` |
-| `react` | `useEffect`, `useRef`, `useState` |
+| `react` | `useRef` |
 | `@/components/three/dream.scene` | _(dynamic import)_ |
 
 ## `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
@@ -8879,7 +8879,6 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/app/dreamdmbar/_components/DreamSpaceRegion` | `⬡ DreamSpace` |
-| `@/components/dreams/dream.panel.RuntimeMemoryHUD` | `⬡ RuntimeMemoryHUD` |
 | `@/components/home/dream.ActiveModuleSurface` | `⬡ ActiveModuleSurface` |
 | `@/components/spatial/dream.ProfileSpace` | `⬡ SpatialProfileSpace` |
 | `@/components/widgets/dream.widget.UniversalWidget` | `⬡ UniversalWidget` |
@@ -10091,7 +10090,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./renderer` | `WebGPURenderer` |
-| `@/lib/webgpu` | `getRendererBackend`, `isWebGPUAvailable` |
+| `@/lib/webgpu` | `isWebGPUAvailable` |
 | `next/link` | `⬡ Link` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -17639,12 +17638,13 @@ _No circular dependencies detected._
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
-| `components/dreams/dreamsurface.dreamspace.tsx` | 15 |
 | `daydreams/games/page.tsx` | 15 |
 | `engins/dream.ForgeEngin.tsx` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
+| `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `lib/gameengin/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
+| `app/layout.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
@@ -17652,7 +17652,6 @@ _No circular dependencies detected._
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
-| `app/layout.tsx` | 12 |
 | `app/view-profile/page.tsx` | 12 |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 |
@@ -17678,12 +17677,13 @@ _No circular dependencies detected._
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
-| `components/dreams/dreamsurface.dreamspace.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
+| `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
+| `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -17691,7 +17691,6 @@ _No circular dependencies detected._
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 | HIGH_COUPLING |
 | `app/daydream/forge/page.tsx` | 12 | HIGH_COUPLING |
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
-| `app/layout.tsx` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 | HIGH_COUPLING |
@@ -17773,7 +17772,6 @@ _No circular dependencies detected._
 | `app/api/shop/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/connectors/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/daydream/music/upload/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/dream-effects/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/brand/campaigns/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/brand/identity/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/code/ai/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -17839,6 +17837,7 @@ _No circular dependencies detected._
 | `app/api/shellhub/devices/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/daydream/constellation/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/discover/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/dream-effects/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/brand/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/code/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/create/page.tsx` | 6 | MEDIUM_COUPLING |
@@ -19008,6 +19007,7 @@ _No circular dependencies detected._
 | `lib/web3/engagement.ts` | `trackEngagement`, `getEngagementStats`, `applyOptimisticEngagement`, `getOptimisticDelta`, `clearOptimisticDelta` |
 | `lib/web3/index.ts` | `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `Web3Error`, `Web3Client`, `applyOptimisticEngagement`, `clearOptimisticDelta`, `getEngagementStats`, `getOptimisticDelta`, `getFromIpfs`, `isIpfsCid`, `pinCid`, `resolveIpfsUrl`, `uploadFileToIpfs` |
 | `lib/web3/ipfs.ts` | `uploadToIpfs`, `uploadFileToIpfs`, `getFromIpfs`, `pinCid`, `resolveIpfsUrl`, `isIpfsCid` |
+| `lib/webgpu.ts` | `getRendererBackend` |
 | `lib/webgpu/adaptiveQuality.ts` | `getBatteryState`, `getDeviceMemoryGB`, `getCoreCount`, `gatherDeviceSignals` |
 | `lib/webgpu/director.ts` | `webGPUDirector` |
 | `lib/webgpu/useWebGPUDirector.ts` | `useWebGPUDirector`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildSceneObjects`, `defaultCameraSignals`, `defaultDirectorMetrics`, `CameraSignals`, `CameraState`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics` |
@@ -21939,7 +21939,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: createLocalEventBus, transferModule
 │   ├── utils.ts ∅
 │   │   └── ∅ unused: formatDate, generateDedupeHash, isError
-│   └── webgpu.ts
+│   └── webgpu.ts ∅
+│       └── ∅ unused: getRendererBackend
 ├── misc
 │   └── images
 │       ├── arm2_transparent.png
@@ -22278,6 +22279,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── landing-mission-link.test.ts
 │   ├── ledger-media.test.ts
 │   ├── live-feed.test.ts
+│   ├── madmaxi-accessibility-tuning.test.ts
 │   ├── madmaxi-authored-levels.test.ts
 │   ├── madmaxi-mechanics.test.ts
 │   ├── mobile-game-controls.test.ts
