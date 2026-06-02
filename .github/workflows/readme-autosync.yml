@@ -44,9 +44,36 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Collect changed files
+        shell: bash
+        run: |
+          mkdir -p .readme-autosync
+
+          CHANGED_FILES=".readme-autosync/changed-files.txt"
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD > "$CHANGED_FILES"
+
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.sha }}"
+
+            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              git ls-files > "$CHANGED_FILES"
+            else
+              git diff --name-only "$BEFORE" "$AFTER" > "$CHANGED_FILES"
+            fi
+
+          else
+            git ls-files > "$CHANGED_FILES"
+          fi
+
+          echo "Changed files:"
+          cat "$CHANGED_FILES"
+
       - name: Regenerate README
         run: |
-          pnpm tsx scripts/generate-readme.ts
+          pnpm tsx scripts/generate-readme.ts --changed-files .readme-autosync/changed-files.txt
 
       - name: Detect README changes
         id: autosync
