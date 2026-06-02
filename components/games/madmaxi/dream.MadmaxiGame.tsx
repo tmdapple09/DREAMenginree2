@@ -64,8 +64,8 @@ const GH = 480; // logical canvas height
 const GRAV          = 0.048;   // units / frame² (upward phase)
 const FALL_GRAV_MUL = 3.0;    // max gravity multiplier at terminal velocity (fall phase)
 const MAX_FALL      = 0.95;    // terminal velocity (positive = down in BJS Y-up is handled)
-const JUMP_VY       = 0.78;    // initial jump Y velocity — jet-like upward burst
-const WALK_SPD      = 0.174;   // horizontal speed — brisk robot run
+const JUMP_VY       = 0.936;   // +20% jump reach — jet-like upward burst
+const WALK_SPD      = 0.2088;  // +20% horizontal speed — brisk robot run
 // Visual offset to raise the player rig so boots sit on the platform surface
 // (the detailed rig geometry extends further below the hitbox centre than the
 //  32-px hitbox half-height, causing an apparent 2 BU sink without the lift).

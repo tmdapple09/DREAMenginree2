@@ -20,7 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const SCALE_MIN = 0.55;
 const SCALE_MAX = 1.45;
 const SCALE_STEP = 0.1;
-const TOUCH_FEEDBACK_DECAY_MS = 120;
+const TOUCH_FEEDBACK_DECAY_MS = 1200;
 const HUD_CLEARANCE_BASE = 28;
 const DEFAULT_REMOTE_OFFSET_Y = 26;
 
@@ -109,7 +109,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
   const [exitPressed, setExitPressed] = useState(false);
   const [remoteScale, setRemoteScale] = useState(() => loadPersisted('de:hud:scale', 1.0, SCALE_MIN, SCALE_MAX));
   const [offsetY, setOffsetY] = useState(() => loadPersisted('de:hud:offsetY', DEFAULT_REMOTE_OFFSET_Y, -40, 220));
-  const [isTouching, setIsTouching] = useState(false);
+  const [remoteState, setRemoteState] = useState<'idle' | 'active' | 'collapsed'>('idle');
   const [sizeControlHidden, setSizeControlHidden] = useState(false);
 
   const interactiveButtons = MOBILE_HUD_BUTTON_RING.filter((b) => b.interactive);
@@ -120,9 +120,9 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     const readoutH = 40;
     const baseBottom = HUD_CLEARANCE_BASE + (dockH + readoutH) * remoteScale + Math.max(0, offsetY);
     const clamped = Math.max(0, Math.min(480, Math.round(baseBottom)));
-    document.documentElement.style.setProperty('--de-hud-bottom', `${clamped}px`);
+    document.documentElement.style.setProperty('--de-hud-bottom', remoteState === 'collapsed' ? '0px' : `${clamped}px`);
     return () => { document.documentElement.style.removeProperty('--de-hud-bottom'); };
-  }, [remoteScale, offsetY]);
+  }, [remoteScale, offsetY, remoteState]);
 
   // ── Touch activity → opacity ──────────────────────────────────────────────
   const markTouchStart = useCallback(() => {
@@ -130,13 +130,13 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
       clearTimeout(touchFadeTimerRef.current);
       touchFadeTimerRef.current = null;
     }
-    setIsTouching(true);
+    setRemoteState((current) => current === 'collapsed' ? current : 'active');
   }, []);
 
   const markTouchEnd = useCallback(() => {
     if (touchFadeTimerRef.current !== null) clearTimeout(touchFadeTimerRef.current);
     touchFadeTimerRef.current = setTimeout(() => {
-      setIsTouching(false);
+      setRemoteState((current) => current === 'collapsed' ? current : 'idle');
       touchFadeTimerRef.current = null;
     }, TOUCH_FEEDBACK_DECAY_MS);
   }, []);
@@ -370,14 +370,55 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     fireLegacyGameInput('pause', false);
   }, []);
 
+  const collapseRemote = useCallback(() => {
+    if (touchFadeTimerRef.current !== null) {
+      clearTimeout(touchFadeTimerRef.current);
+      touchFadeTimerRef.current = null;
+    }
+    leftTouchIdRef.current = null;
+    rightJoyTouchIdRef.current = null;
+    rightBtnTouchesRef.current.clear();
+    activeMoveActionRef.current = null;
+    Object.entries(activeBtnCountsRef.current).forEach(([buttonId, count]) => {
+      if (!count || !INTERACTIVE_BUTTONS.has(buttonId)) return;
+      fireLegacyGameInput(getLegacyActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
+    });
+    activeBtnCountsRef.current = {};
+    setPressedButtons({});
+    updateLeftVector(ZERO_VECTOR);
+    updateRightVector(ZERO_VECTOR);
+    fireLegacyGameInput('move-stop', true);
+    fireLegacyGameInput('move-stop', false);
+    setRemoteState('collapsed');
+  }, [updateLeftVector, updateRightVector]);
+
   const remoteVars = {
     '--remote-scale': String(remoteScale),
     '--remote-offset-y': `${offsetY}px`,
   } as React.CSSProperties;
 
+  if (remoteState === 'collapsed') {
+    return (
+      <div className={clsx(styles.overlay, styles.overlayCollapsed)} data-game-remote-state="collapsed">
+        <button
+          type="button"
+          className={styles.restoreRemoteButton}
+          aria-label="Show game remote"
+          onClick={() => setRemoteState('active')}
+        >
+          🎮
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={clsx(styles.overlay, isTouching ? styles.overlayActive : styles.overlayIdle)}
+      className={clsx(styles.overlay, remoteState === 'active' ? styles.overlayActive : styles.overlayIdle)}
+      data-game-remote-state={remoteState}
+      onPointerDownCapture={markTouchStart}
+      onPointerUpCapture={markTouchEnd}
+      onPointerCancelCapture={markTouchEnd}
       style={remoteVars}
     >
       <div className={styles.hudBadge}>{gameEmoji ? `${gameEmoji} ` : ''}{gameLabel} · instant touch HUD</div>
@@ -417,6 +458,14 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
             onMouseLeave={handlePauseRelease}
           >
             Pause
+          </button>
+          <button
+            type="button"
+            className={clsx(styles.pill, styles.pillHide)}
+            onClick={collapseRemote}
+            aria-label="Hide game remote"
+          >
+            Hide
           </button>
           <button
             type="button"
