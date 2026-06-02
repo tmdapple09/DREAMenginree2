@@ -43,6 +43,20 @@ describe('authenticated UI shell upgrade rollout', () => {
     }
   });
 
+  it('routes DreamMenu logout through the server endpoint that clears auth cookies and returns to landing', () => {
+    const logoutRoute = readFileSync(join(root, 'app/api/auth/logout/route.ts'), 'utf-8');
+    const dualMenu = readFileSync(join(root, 'components/menus/dream.menu.DualBottomMenu.tsx'), 'utf-8');
+    const globalBar = readFileSync(join(root, 'components/home/dream.bar.GlobalDreamBar.tsx'), 'utf-8');
+    const settingsPanel = readFileSync(join(root, 'components/panels/dream.panel.SettingsPanel.tsx'), 'utf-8');
+
+    expect(logoutRoute).toContain('await supabase.auth.signOut()');
+    expect(logoutRoute).toContain('response.cookies.delete(cookie.name)');
+    expect(logoutRoute).toContain("NextResponse.redirect(new URL('/', request.url))");
+    expect(dualMenu).toContain("{ id: 'logout',");
+    expect(globalBar).toContain("window.location.assign('/api/auth/logout')");
+    expect(settingsPanel).toContain("location.href = '/api/auth/logout'");
+  });
+
   it('upgrades shared post-login shells with premium framing', () => {
     const daydreamShell = readFileSync(join(root, 'components/daydream/dream.shell.DaydreamShell.tsx'), 'utf-8');
     const dashboard = readFileSync(join(root, 'app/dreamdmbar/_components/HomeDreamRegion.tsx'), 'utf-8');

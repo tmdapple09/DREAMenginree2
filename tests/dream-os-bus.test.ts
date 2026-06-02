@@ -16,14 +16,6 @@ const authorizationContext = {
   collaboration: { active: false, participantIds: [], editorIds: [] },
 } as const;
 
-
-const authorizationContext = {
-  actorId: 'owner-1',
-  runtimeId: 'homedream',
-  surfaceRuntimeIds: ['homedream', 'dreamspace'],
-  collaboration: { active: false, participantIds: [], editorIds: [] },
-} as const;
-
 describe('dreamOSBus', () => {
   beforeEach(() => {
     dreamOSBus.clearAll();
@@ -122,6 +114,12 @@ describe('dreamOSBus semantic capability domains', () => {
       'DreamDMBar.dr-eams',
     ]);
     expect(getCapabilityDescriptor('safeGetUser')?.domains).toEqual(['identity']);
+    expect(getCapabilityDescriptor('HomeDream')?.kind).toBe('surface');
+    expect(getCapabilityDescriptor('DreamR')?.domains).toContain('communication');
+    expect(getCapabilityDescriptor('DualRuntime')?.kind).toBe('runtime');
+    expect(getCapabilityDescriptor('GameRemote')?.domains).toEqual(['physics', 'logic']);
+    expect(getCapabilityDescriptor('WebGPUDirector')?.domains).toContain('visual');
+    expect(getCapabilityDescriptor('WasmGpuVM')?.domains).toContain('memory');
   });
 
   it('annotates mirrored artifacts with semantic domains for orchestrator discovery', () => {

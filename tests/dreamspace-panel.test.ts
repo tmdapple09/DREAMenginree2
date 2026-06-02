@@ -8,6 +8,8 @@ import {
 
 const root = process.cwd();
 const src = readFileSync(join(root, 'components/dreams/dreamsurface.dreamspace.tsx'), 'utf-8');
+const activeModulesSrc = readFileSync(join(root, 'components/home/dream.ActiveModuleSurface.tsx'), 'utf-8');
+const runtimeViewSrc = readFileSync(join(root, 'components/runtime/dream.RuntimeView.tsx'), 'utf-8');
 
 describe('DreamSpace panel evolution', () => {
   it('surfaces DreamSpace as the visible panel title', () => {
@@ -34,6 +36,17 @@ describe('DreamSpace panel evolution', () => {
     expect(src).toContain('✨ Explore');
     expect(src).toContain('More apps');
     expect(src).not.toContain('Forge Analytics');
+  });
+
+  it('mounts the same live-module capability surface in DreamSpace and transfers title drags through the bridge', () => {
+    expect(src).toContain('<ActiveModuleSurface accountId={accountId} runtimeRegion={runtimeRegion} />');
+    expect(activeModulesSrc).toContain("bridge.emitDurable('module', 'surface-transfer'");
+    expect(activeModulesSrc).toContain("runtimeRegion === 'surface' ? 'dream' : 'surface'");
+  });
+
+  it('derives modular placement from the recursive runtime owner instead of the rendered world name', () => {
+    expect(runtimeViewSrc).toContain("runtimeId === 'homedream' ? 'surface' : 'dream'");
+    expect(runtimeViewSrc).toContain('runtimeRegion={moduleRuntimeRegion}');
   });
 });
 

@@ -28,6 +28,7 @@ import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
 import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
 import { getEnginByName } from '@/lib/forge/forgeRegistry';
 import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -111,6 +112,7 @@ export default function RuntimeView({
   runtimeId,
 }: RuntimeViewProps) {
   /* ── In-region iframe state ─────────────────────────────────────────────── */
+  const moduleRuntimeRegion: RuntimeRegionKey = runtimeId === 'homedream' ? 'surface' : 'dream';
   const [iframeUrl,   setIframeUrl]   = useState<string | null>(null);
   const [iframeTitle, setIframeTitle] = useState<string>('');
 
@@ -162,6 +164,7 @@ export default function RuntimeView({
             onOpenEngin={onOpenEngin}
             isAdmin={isAdmin}
             userId={userId}
+            runtimeRegion={moduleRuntimeRegion}
           />
         </RuntimeShell>
       </div>
@@ -188,6 +191,7 @@ export default function RuntimeView({
             onOpenInRegion={onOpenInRegion}
             onOpenEngin={onOpenEngin}
             accountId={userId}
+            runtimeRegion={moduleRuntimeRegion}
             profile={profile}
           />
         </RuntimeShell>

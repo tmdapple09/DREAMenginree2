@@ -7,7 +7,7 @@
  *   - Show the user's personal best scores per game (from `game_scores` table).
  *   - Allow one-tap publish of high scores to the leaderboard (real Supabase write).
  *   - Surface the "Play Now" entry points for all live games.
- *   - Run games through the GameEngin session shell and universal HUD.
+ *   - Run games through the GameEngin session shell and separate shared GameRemote.
  *   - DualSense controller support: Bluetooth pairing (Android 12+, iOS 14.5+), haptic feedback, gyro steering.
  *   - Functional World Builder: 5×5 tile-grid editor, save to state, bridge emit on save.
  *   - Achievement System: 8 achievements, score-driven unlock logic.
@@ -25,7 +25,7 @@
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import { GAMES } from '@/components/games/dream.GamesHub';
 import RecordingControls from '@/components/games/dream.RecordingControls';
-import GameHUD from '@/components/games/dream.hud.GameHUD';
+import GameRemote from '@/components/games/dream.remote.GameRemote';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
@@ -963,7 +963,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           />
         )}
 
-        {/* Game stage — stops above the HUD remote so the canvas never renders behind it */}
+        {/* Game stage — cartridge owns its HUD; shared GameRemote stays a separate control capability. */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 'max(var(--de-hud-bottom, 175px), clamp(80px, 22dvh, 38dvh))' }}>
           <GameRuntime
             cartridge={expandedCartridge}
@@ -1046,11 +1046,13 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           <RecordingControls containerRef={playOverlayRef} />
         </div>
 
-        <GameHUD
-          gameLabel={expandedPlayable.label}
-          mode={expandedPlayable.mobileHudMode ?? 'buttons'}
-          onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
-        />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 55 }}>
+          <GameRemote
+            embedded
+            gameLabel={expandedPlayable.label}
+            onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
+          />
+        </div>
 
         {/* ── Avatar overlay — shown when user chose "Play as Yourself" ── */}
         {avatarDataUrl && (
@@ -1173,7 +1175,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   const selectedPlayableUsesEliteRuntime = selectedPlayable.id === 'neon-drift' || selectedPlayable.id === 'echo-arena';
   const selectedPlayableCapabilities = [
     'Fullscreen boot',
-    'Universal HUD',
+    'Shared GameRemote',
     'Quick resume',
     `${activeControlProfile.label} controls`,
     ...(selectedPlayableUsesEliteRuntime ? ['Elite engine telemetry', 'Adaptive quality'] : []),
@@ -1284,7 +1286,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
           <div className="de-widget-body" style={{ paddingTop: 12 }}>
             <div style={{ fontSize: 12, lineHeight: 1.65, color: 'rgba(226,232,240,0.78)', marginBottom: 14 }}>
-              GameEngin is the actual play surface. Pick a saved game or any library title, boot it on the big screen here, expand fullscreen when you want the browser to disappear, and use the universal HUD directly on the session. This layer should feel like the premium runtime OS behind every playable game, not just a launcher. Elite-engine titles surface their runtime directly here in the web app with live telemetry, adaptive quality, and AI-assisted pacing.
+              GameEngin is the actual play surface. Pick a saved game or any library title, boot it on the big screen here, expand fullscreen when you want the browser to disappear, and use the shared GameRemote beside the session. This layer should feel like the premium runtime OS behind every playable game, not just a launcher. Elite-engine titles surface their runtime directly here in the web app with live telemetry, adaptive quality, and AI-assisted pacing.
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 14 }}>
@@ -1473,7 +1475,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 Side B session contract
               </div>
               <div style={{ fontSize: 12, color: 'rgba(220,235,255,0.82)', lineHeight: 1.7 }}>
-                This game runs inside <span style={{ color: '#fff', fontWeight: 800 }}>GameEngin</span> with the universal HUD over the session.
+                This game runs inside <span style={{ color: '#fff', fontWeight: 800 }}>GameEngin</span> with its cartridge HUD and the separate shared GameRemote.
                 The engine owns fullscreen, input, resume, and controller handoff — not a separate remote dock under the canvas.
               </div>
             </div>
@@ -1800,11 +1802,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Gamepad2 className="w-4 h-4" style={{ color: ACCENT }} />
-            <span className="de-widget-title ml-2">Universal HUD</span>
+            <span className="de-widget-title ml-2">Shared GameRemote</span>
           </div>
           <div className="de-widget-body">
             <p style={{ fontSize: 12, color: 'var(--de-text-dim)', marginBottom: 4 }}>
-              Game inputs now live inside the GameEngin session. Launch a game and the universal HUD overlays the full-screen runtime instead of opening a separate remote deck.
+              GameEngin runs the cartridge without inventing another HUD. Each cartridge owns its HUD, while the shared GameRemote remains a separate control capability that works beside the session.
             </p>
           </div>
           <div className="de-widget-actions">

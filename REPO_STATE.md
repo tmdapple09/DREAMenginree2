@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T04:46:24.752Z
+Generated: 2026-06-02T05:20:55.114Z
 
 ---
 
@@ -1076,7 +1076,6 @@ _No style files for this feature._
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
-- `@/components/games/dream.hud.GameHUD`
 - `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
 - `@/components/games/dream.remote.GameRemote`
@@ -2323,7 +2322,6 @@ _No style files for this feature._
 - `@/components/daydream/dream.constellationmap`
 - `@/components/dream.BrandLogo`
 - `@/components/games/dream.BabylonSideScroller`
-- `@/components/games/dream.hud.GameHUD`
 - `@/components/games/dream.remote.GameRemote`
 - `@/engins/dream.ForgeEngin`
 - `@/engins/engin.BrandingEngin`
@@ -2343,7 +2341,6 @@ _No style files for this feature._
 - `@/lib/gameengin/cartridges/loaders`
 - `@/lib/gameengin/cartridges/manifest`
 - `@/lib/games/hooks`
-- `@/lib/games/mobileControls`
 - `@/lib/games/navigation`
 - `@/lib/gsap/useGsapFlip`
 - `@/lib/journey/journeyDots`
@@ -5642,7 +5639,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/supabase/server` | `createServerClient` |
-| `next/navigation` | `redirect` |
+| `next/server` | `NextRequest`, `NextResponse` |
 
 ## `app/api/auth/providers/route.ts`
 
@@ -6706,13 +6703,12 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
+| `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
 | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
 | `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
 | `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
 | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 | `@/lib/games/hooks` | `useGamePerformanceBaseline` |
-| `@/lib/games/mobileControls` | `MobileHudMode` |
 | `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref`, `resolveGameLaunchId` |
 | `@/lib/utils` | `toErrorMessage` |
 | `next/navigation` | `useRouter`, `useSearchParams` |
@@ -6904,6 +6900,7 @@ _No style files for this feature._
 | `@/components/home/dream.FlagshipEnginesStrip` | `⬡ FlagshipEnginesStrip` |
 | `@/lib/notifications/useNotifications` | `useNotifications` |
 | `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `@/types/dreamArtifact` | `RuntimeRegionKey` |
 | `lucide-react` | `Bell`, `ChevronRight` |
 | `next/navigation` | `useRouter` |
 | `react` | `useEffect`, `useState` |
@@ -8886,6 +8883,7 @@ _No style files for this feature._
 |--------|---------------|
 | `@/app/dreamdmbar/_components/DreamSpaceRegion` | `⬡ DreamSpace` |
 | `@/components/dreams/dream.panel.RuntimeMemoryHUD` | `⬡ RuntimeMemoryHUD` |
+| `@/components/home/dream.ActiveModuleSurface` | `⬡ ActiveModuleSurface` |
 | `@/components/spatial/dream.ProfileSpace` | `⬡ SpatialProfileSpace` |
 | `@/components/widgets/dream.widget.UniversalWidget` | `⬡ UniversalWidget` |
 | `@/lib/dreams/useDreamsRuntime` | `useDreamsRuntime` |
@@ -8894,6 +8892,7 @@ _No style files for this feature._
 | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `ForgeActivityPulse`, `readForgeActivity` |
 | `@/lib/intelligence/continuityHelpers` | `resolveResumeDest` |
 | `@/lib/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
+| `@/types/dreamArtifact` | `RuntimeRegionKey` |
 | `framer-motion` | `AnimatePresence`, `motion` |
 | `next/navigation` | `useRouter` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
@@ -9498,12 +9497,13 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/activeModulesStore` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModules` |
+| `@/lib/activeModulesStore` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion` |
 | `@/lib/artifactStore` | `loadArtifacts`, `saveArtifact` |
 | `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
 | `@/lib/dream-window/useDreamWindowActions` | `useDreamWindowActions` |
 | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
-| `@/types/dreamArtifact` | `ActiveModuleInstance`, `DreamArtifact`, `DreamArtifactDragPayload` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/types/dreamArtifact` | `ActiveModuleInstance`, `DreamArtifact`, `DreamArtifactDragPayload`, `RuntimeRegionKey` |
 | `lucide-react` | `X` |
 
 ## `components/home/dream.DaydreamPulseStrip.tsx`
@@ -9876,6 +9876,7 @@ _No style files for this feature._
 | `@/lib/identity/canonical-names` | `RuntimeRegion` |
 | `@/lib/panels/panelTypes` | `SystemPanelId` |
 | `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `@/types/dreamArtifact` | `RuntimeRegionKey` |
 | `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
 | `@/engins/engin.GameEngin` | _(dynamic import)_ |
 | `@/engins/engin.LabEngin` | _(dynamic import)_ |
@@ -10270,7 +10271,7 @@ _No style files for this feature._
 | `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
 | `@/dreamdmbar/dream.GlowingLight` | `⬡ GlowingLight` |
 | `@/lib/dreamdm/DreamSystemContext` | `BarIntentMode`, `useDreamSystem` |
-| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `MoodPeriod`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `STREAK_STORAGE_KEY`, `SURFACE_ACCENT_COLORS`, `StreakData`, `StreakTier`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `filterSlashCommands`, `getMoodPeriod`, `getStreakTier`, `resolveGoldTapAction`, `resolveStreak`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
+| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `MoodPeriod`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `STREAK_STORAGE_KEY`, `SURFACE_ACCENT_COLORS`, `StreakData`, `StreakTier`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `getMoodPeriod`, `getStreakTier`, `resolveGoldTapAction`, `resolveStreak`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
 | `@/lib/dreamdm/useDreamBarContext` | `DreamBarContext`, `useDreamBarContext` |
 | `@/lib/dreamdm/useDreamDMConversations` | `DMConversation`, `useDreamDMConversations` |
 | `@/lib/dreamdm/useDreamDMDraft` | `useDreamDMDraft` |
@@ -10282,9 +10283,8 @@ _No style files for this feature._
 | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `@/lib/ui/runtimeViewport` | `getPreferredViewportHeight`, `isCompactRuntimeViewport` |
 | `@/lib/utils` | `formatRelativeTime` |
-| `lucide-react` | `Bell`, `Bot`, `Code2`, `Compass`, `FileText`, `Gamepad2`, `Home`, `ImageIcon`, `Loader2`, `Maximize2`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Settings`, `ShoppingBag`, `Sparkles`, `User`, `X` |
+| `lucide-react` | `Bell`, `Bot`, `Code2`, `FileText`, `ImageIcon`, `Loader2`, `Maximize2`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Sparkles`, `X` |
 | `next/image` | `⬡ Image` |
-| `next/navigation` | `useRouter` |
 | `@/lib/supabase/client` | _(dynamic import)_ |
 
 ## `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
@@ -10449,7 +10449,7 @@ _No style files for this feature._
 | `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
 | `@/components/games/dream.GamesHub` | `GAMES` |
 | `@/components/games/dream.RecordingControls` | `⬡ RecordingControls` |
-| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
+| `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
 | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
 | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
@@ -10623,7 +10623,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/types/dreamArtifact` | `ActiveModuleInstance` |
+| `@/types/dreamArtifact` | `ActiveModuleInstance`, `RuntimeRegionKey` |
 
 ## `lib/activity/aqs.ts`
 
@@ -17635,10 +17635,10 @@ _No circular dependencies detected._
 |------|--------------|
 | `engins/engin.GameEngin.tsx` | 33 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
+| `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/engin.ContentEngin.tsx` | 25 |
-| `components/runtime/dream.RuntimeView.tsx` | 24 |
 | `engins/engin.CodeEngin.tsx` | 21 |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
 | `components/dream.HomeFeed.tsx` | 17 |
@@ -17646,13 +17646,13 @@ _No circular dependencies detected._
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
+| `components/dreams/dreamsurface.dreamspace.tsx` | 15 |
 | `daydreams/games/page.tsx` | 15 |
 | `engins/dream.ForgeEngin.tsx` | 15 |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `lib/gameengin/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 13 |
 | `app/layout.tsx` | 13 |
-| `components/dreams/dreamsurface.dreamspace.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
@@ -17674,10 +17674,10 @@ _No circular dependencies detected._
 |------|----------|-------|
 | `engins/engin.GameEngin.tsx` | 33 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `components/runtime/dream.RuntimeView.tsx` | 24 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.CodeEngin.tsx` | 21 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
@@ -17685,13 +17685,13 @@ _No circular dependencies detected._
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
+| `components/dreams/dreamsurface.dreamspace.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 13 | HIGH_COUPLING |
 | `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
-| `components/dreams/dreamsurface.dreamspace.tsx` | 13 | HIGH_COUPLING |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -17709,7 +17709,6 @@ _No circular dependencies detected._
 | `app/api/posts/route.ts` | 11 | HIGH_COUPLING |
 | `app/daydream/code/page.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/create/page.tsx` | 11 | HIGH_COUPLING |
-| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/lab/page.tsx` | 11 | HIGH_COUPLING |
 | `components/dream.MessagesClient.tsx` | 11 | HIGH_COUPLING |
 | `components/dreamengin/dream.DREAMenginOS.tsx` | 11 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
@@ -17723,6 +17722,7 @@ _No circular dependencies detected._
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
@@ -17745,6 +17745,7 @@ _No circular dependencies detected._
 | `components/dreamengin/dreamsurface.dreamengin.tsx` | 9 | MEDIUM_COUPLING |
 | `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 9 | MEDIUM_COUPLING |
 | `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
+| `components/home/dream.ActiveModuleSurface.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
 | `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
@@ -17763,7 +17764,6 @@ _No circular dependencies detected._
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
-| `components/home/dream.ActiveModuleSurface.tsx` | 8 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
 | `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
@@ -18766,6 +18766,7 @@ _No circular dependencies detected._
 | `hooks/useHideOnScroll.ts` | `useHideOnScroll` |
 | `hooks/useTick.ts` | `useTick` |
 | `hooks/useViewCounter.ts` | `useViewCounter` |
+| `lib/activeModulesStore.ts` | `saveActiveModules` |
 | `lib/activity/aqs.ts` | `calculateAQS`, `getUserMetrics`, `getAQS`, `getAQSLeaderboard` |
 | `lib/activity/boogieActivityPolicy.ts` | `resolveActivityFeedTreatment`, `shouldExcludeFromFeed`, `detectActivityFraudSignals` |
 | `lib/activity/scoring.ts` | `calculateVisibilityBoost`, `getVerificationMethodDisplayName`, `validateTierForActivityType` |
@@ -21912,7 +21913,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: WidgetEventBus
 │   │   ├── WidgetLinkGraph.ts
 │   │   └── widgetRegistry.ts
-│   ├── activeModulesStore.ts
+│   ├── activeModulesStore.ts ∅
+│   │   └── ∅ unused: saveActiveModules
 │   ├── adari.ts ∅
 │   │   └── ∅ unused: getBuildReport
 │   ├── agentOS.ts

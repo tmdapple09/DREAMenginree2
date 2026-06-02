@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T04:46:24.883Z
+Generated: 2026-06-02T05:20:55.238Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -580,7 +580,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── logout
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │   │       ├── redirect  ← next/navigation
+│   │   │   │       ├── NextRequest  ← next/server
+│   │   │   │       ├── NextResponse  ← next/server
 │   │   │   │       └── → GET
 │   │   │   └── providers
 │   │   │       └── route.ts ⚠
@@ -1681,14 +1682,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → default
 │   │   │   │   └── ∅ unused: default
 │   │   │   ├── dream.shell.ImmersiveGameShell.tsx ∅
-│   │   │   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   │   │   ├── ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
 │   │   │   │   ├── GameCartridge  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── GravityPreset  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
 │   │   │   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
 │   │   │   │   ├── useGamePerformanceBaseline  ← @/lib/games/hooks
-│   │   │   │   ├── MobileHudMode  ← @/lib/games/mobileControls
 │   │   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
 │   │   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
@@ -1980,6 +1980,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⬡ FlagshipEnginesStrip  ← @/components/home/dream.FlagshipEnginesStrip
 │   │   │       ├── useNotifications  ← @/lib/notifications/useNotifications
 │   │   │       ├── isCompactRuntimeViewport  ← @/lib/ui/runtimeViewport
+│   │   │       ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │       ├── Bell  ← lucide-react
 │   │   │       ├── ChevronRight  ← lucide-react
 │   │   │       ├── useRouter  ← next/navigation
@@ -3835,6 +3836,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dreamsurface.dreamspace.tsx ∅
 │   │   │   ├── ⬡ DreamSpace  ← @/app/dreamdmbar/_components/DreamSpaceRegion
 │   │   │   ├── ⬡ RuntimeMemoryHUD  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   ├── ⬡ ActiveModuleSurface  ← @/components/home/dream.ActiveModuleSurface
 │   │   │   ├── ⬡ SpatialProfileSpace  ← @/components/spatial/dream.ProfileSpace
 │   │   │   ├── ⬡ UniversalWidget  ← @/components/widgets/dream.widget.UniversalWidget
 │   │   │   ├── useDreamsRuntime  ← @/lib/dreams/useDreamsRuntime
@@ -3851,6 +3853,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── readForgeActivity  ← @/lib/forge/forgeRegistry
 │   │   │   ├── resolveResumeDest  ← @/lib/intelligence/continuityHelpers
 │   │   │   ├── useSessionIntelligence  ← @/lib/intelligence/useSessionIntelligence
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── AnimatePresence  ← framer-motion
 │   │   │   ├── motion  ← framer-motion
 │   │   │   ├── useRouter  ← next/navigation
@@ -4838,15 +4841,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── loadActiveModules  ← @/lib/activeModulesStore
 │   │   │   ├── removeActiveModule  ← @/lib/activeModulesStore
 │   │   │   ├── saveActiveModule  ← @/lib/activeModulesStore
-│   │   │   ├── saveActiveModules  ← @/lib/activeModulesStore
+│   │   │   ├── saveActiveModulesForRegion  ← @/lib/activeModulesStore
+│   │   │   ├── transferActiveModuleRegion  ← @/lib/activeModulesStore
 │   │   │   ├── loadArtifacts  ← @/lib/artifactStore
 │   │   │   ├── saveArtifact  ← @/lib/artifactStore
 │   │   │   ├── DREAM_WINDOW_STATES  ← @/lib/dream-window/DreamWindowLifecycle
 │   │   │   ├── useDreamWindowActions  ← @/lib/dream-window/useDreamWindowActions
 │   │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── ActiveModuleInstance  ← @/types/dreamArtifact
 │   │   │   ├── DreamArtifact  ← @/types/dreamArtifact
 │   │   │   ├── DreamArtifactDragPayload  ← @/types/dreamArtifact
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── X  ← lucide-react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
@@ -5326,6 +5332,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── RuntimeRegion  ← @/lib/identity/canonical-names
 │   │   │   ├── SystemPanelId  ← @/lib/panels/panelTypes
 │   │   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
 │   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
 │   │   │   ├── (dynamic)  ← @/engins/engin.LabEngin
@@ -6456,7 +6463,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── calculatePointerVelocity  ← @/lib/dreamdm/barInteractions
 │       ├── computeTypingRhythm  ← @/lib/dreamdm/barInteractions
 │       ├── decideBarRelease  ← @/lib/dreamdm/barInteractions
-│       ├── filterSlashCommands  ← @/lib/dreamdm/barInteractions
 │       ├── getMoodPeriod  ← @/lib/dreamdm/barInteractions
 │       ├── getStreakTier  ← @/lib/dreamdm/barInteractions
 │       ├── resolveGoldTapAction  ← @/lib/dreamdm/barInteractions
@@ -6484,10 +6490,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── Bell  ← lucide-react
 │       ├── Bot  ← lucide-react
 │       ├── Code2  ← lucide-react
-│       ├── Compass  ← lucide-react
 │       ├── FileText  ← lucide-react
-│       ├── Gamepad2  ← lucide-react
-│       ├── Home  ← lucide-react
 │       ├── ImageIcon  ← lucide-react
 │       ├── Loader2  ← lucide-react
 │       ├── Maximize2  ← lucide-react
@@ -6497,13 +6500,9 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── PenLine  ← lucide-react
 │       ├── Search  ← lucide-react
 │       ├── Send  ← lucide-react
-│       ├── Settings  ← lucide-react
-│       ├── ShoppingBag  ← lucide-react
 │       ├── Sparkles  ← lucide-react
-│       ├── User  ← lucide-react
 │       ├── X  ← lucide-react
 │       ├── ⬡ Image  ← next/image
-│       ├── useRouter  ← next/navigation
 │       ├── (dynamic)  ← @/lib/supabase/client
 │       ├── → (default)
 │       ├── → BAR_H
@@ -6857,7 +6856,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
 │   │   ├── GAMES  ← @/components/games/dream.GamesHub
 │   │   ├── ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
-│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
 │   │   ├── useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── EngineBase  ← @/lib/dreamenginOS
@@ -11702,12 +11701,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → getWidgetTypeDef
 │   │       ├── → getWidgetTypesForConnector
 │   │       └── → resolveConnectorState
-│   ├── activeModulesStore.ts
+│   ├── activeModulesStore.ts ∅
 │   │   ├── ActiveModuleInstance  ← @/types/dreamArtifact
+│   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   ├── → loadActiveModules
 │   │   ├── → removeActiveModule
 │   │   ├── → saveActiveModule
-│   │   └── → saveActiveModules
+│   │   ├── → saveActiveModules
+│   │   ├── → saveActiveModulesForRegion
+│   │   ├── → transferActiveModuleRegion
+│   │   └── ∅ unused: saveActiveModules
 │   ├── adari.ts ∅
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
@@ -14647,7 +14650,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── game-remote-regression.test.ts
-│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path
 │   │   ├── describe  ← vitest
@@ -15059,6 +15062,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── loadActiveModules  ← @/lib/activeModulesStore
 │   │   ├── removeActiveModule  ← @/lib/activeModulesStore
 │   │   ├── saveActiveModule  ← @/lib/activeModulesStore
+│   │   ├── saveActiveModulesForRegion  ← @/lib/activeModulesStore
+│   │   ├── transferActiveModuleRegion  ← @/lib/activeModulesStore
 │   │   ├── hideArtifact  ← @/lib/artifactStore
 │   │   ├── listSystemArtifacts  ← @/lib/artifactStore
 │   │   ├── listVisibleArtifacts  ← @/lib/artifactStore

@@ -14,6 +14,7 @@ import DaydreamPulseStrip from '@/components/home/dream.DaydreamPulseStrip';
 import FlagshipEnginesStrip from '@/components/home/dream.FlagshipEnginesStrip';
 import { useNotifications } from '@/lib/notifications/useNotifications';
 import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 
 type ProfileLike = {
   id?: string;
@@ -41,6 +42,7 @@ interface HomeDreamSurfaceProps {
   onOpenEngin?: (enginName: string) => void;
   isAdmin?: boolean;
   userId?: string;
+  runtimeRegion?: RuntimeRegionKey;
 }
 
 function QuickLink({
@@ -89,6 +91,7 @@ export default function HomeDreamSurface({
   onOpenDreamSpace,
   onOpenEngin,
   userId,
+  runtimeRegion = 'surface',
 }: HomeDreamSurfaceProps) {
   const router = useRouter();
   const [notifOpen,    setNotifOpen]    = useState(false);
@@ -142,7 +145,7 @@ export default function HomeDreamSurface({
           : 'calc(env(safe-area-inset-bottom, 0px) + 132px)',
       }}
     >
-      <ActiveModuleSurface accountId={userId ?? profile?.id} />
+      <ActiveModuleSurface accountId={userId ?? profile?.id} runtimeRegion={runtimeRegion} />
 
       {/* ── Sticky header bar ──────────────────────────────────────────────── */}
       <div

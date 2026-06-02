@@ -73,6 +73,14 @@ describe('HomeDream home surface', () => {
     expect(persistentBar).toContain('actions, and surface exchange stay mounted as one capability.');
   });
 
+  it('uses DreamDMBar contextual typing instead of slash-command routing', () => {
+    expect(dreamDmBar).toContain("document.addEventListener('focusin', mirrorContextualInput)");
+    expect(dreamDmBar).toContain("document.addEventListener('input', mirrorContextualInput)");
+    expect(dreamDmBar).toContain('data-dreamdm-compose');
+    expect(dreamDmBar).not.toContain('Slash Command Palette');
+    expect(dreamDmBar).not.toContain('filterSlashCommands');
+  });
+
   it('preserves runtimes when bar is minimized (Bar Ownership Law §0)', () => {
     // Per Bar Ownership Law §0: hiding the bar must NOT force splitRatio to 1.
     // Both runtimes remain visible at their last split position.

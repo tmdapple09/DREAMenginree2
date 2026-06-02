@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T22:35:47.182Z",
+  "generatedAt": "2026-06-02T03:57:00.381Z",
   "totals": {
     "surface": 296,
     "route-surface": 264,
@@ -5618,7 +5618,9 @@
         "loadActiveModules",
         "removeActiveModule",
         "saveActiveModule",
-        "saveActiveModules"
+        "saveActiveModules",
+        "saveActiveModulesForRegion",
+        "transferActiveModuleRegion"
       ]
     },
     {

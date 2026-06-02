@@ -28,6 +28,7 @@
 
 import DreamSpace from '@/app/dreamdmbar/_components/DreamSpaceRegion';
 import RuntimeMemoryHUD from '@/components/dreams/dream.panel.RuntimeMemoryHUD';
+import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import SpatialProfileSpace from '@/components/spatial/dream.ProfileSpace';
 import UniversalWidget from '@/components/widgets/dream.widget.UniversalWidget';
 import { useDreamsRuntime } from '@/lib/dreams/useDreamsRuntime';
@@ -52,6 +53,7 @@ import { resolveResumeDest } from '@/lib/intelligence/continuityHelpers';
 import { useSessionIntelligence } from '@/lib/intelligence/useSessionIntelligence';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /** Called to open a URL inside the runtime region (no full-page navigation). */
@@ -261,6 +263,7 @@ export default function DreamsSpacePanel({
   onOpenInRegion,
   onOpenEngin,
   accountId,
+  runtimeRegion = 'dream',
   profile,
 }: {
   onOpenUrl?: OpenUrlFn;
@@ -268,6 +271,7 @@ export default function DreamsSpacePanel({
   /** Mount an existing capability inside whichever recursive runtime owns this panel. */
   onOpenEngin?: (enginName: string) => void;
   accountId?: string | null;
+  runtimeRegion?: RuntimeRegionKey;
   profile?: {
     id?: string;
     handle?: string | null;
@@ -337,7 +341,8 @@ export default function DreamsSpacePanel({
 
   // Feed view — main dreams space content
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+      <ActiveModuleSurface accountId={accountId} runtimeRegion={runtimeRegion} />
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,

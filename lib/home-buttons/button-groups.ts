@@ -7,7 +7,7 @@ export const BUTTON_GROUPS = {
     { label: "Forgot Password",   href: "/forgot-password" },
     { label: "Reset Password",    href: "/reset-password" },
     { label: "Verify Email",      href: "/verify-email" },
-    { label: "Sign Out",          href: "/logout" },
+    { label: "Sign Out",          href: "/api/auth/logout" },
   ],
 
   account: [
