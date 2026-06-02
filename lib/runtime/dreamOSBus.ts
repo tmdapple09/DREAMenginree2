@@ -6,6 +6,11 @@ import {
   type DualRuntimeChannel,
 } from '@/lib/runtime/dualRuntimeBridge';
 import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
+import {
+  ENGIN_REGISTRY,
+  INFORMATION_DOMAINS,
+  type InformationDomain,
+} from '@/lib/forge/forgeRegistry';
 import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
 import {
   isDomainObject,
@@ -30,6 +35,8 @@ export type IntentEnvelope<
     targetRuntimeId?: string;
     actorId: string;
     capability: DomainCapability;
+    /** Semantic concerns route intent handling by meaning, never by file path. */
+    domains: readonly InformationDomain[];
     priority: IntentPriority;
     payload: TPayload;
   }
@@ -62,6 +69,9 @@ export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
       intent.capability === 'publish' ||
       intent.capability === 'destroy' ||
       intent.capability === 'admin') &&
+    Array.isArray(intent.domains) &&
+    intent.domains.length > 0 &&
+    intent.domains.every(isInformationDomain) &&
     (intent.priority === 'low' ||
       intent.priority === 'normal' ||
       intent.priority === 'high' ||
@@ -88,6 +98,8 @@ export interface DreamOSSharedArtifact {
   sourceSubsystem: string;
   sourceRegion?: RuntimeRegion;
   relatedSubsystems: readonly string[];
+  /** Meaning carried by this artifact; Centers are descriptions, not runtimes. */
+  domains?: readonly InformationDomain[];
   payload: Record<string, unknown>;
   updatedAt: number;
 }
@@ -134,49 +146,118 @@ type DreamOSCustomEventHandler<K extends DreamOSCustomEventName> = (
 
 const MAX_ARTIFACTS = 48;
 
-function channelToSubsystem(channel: DualRuntimeChannel): string {
-  switch (channel) {
-    case 'music':
-      return 'StarMakerEngin';
-    case 'games':
-      return 'GameEngin';
-    case 'lab':
-      return 'LabEngin';
-    case 'code':
-      return 'CodeEngin';
-    case 'brand':
-      return 'BrandingEngin';
-    case 'create':
-      return 'ContentEngin';
-    default:
-      return channel;
-  }
+/** Centers are semantic descriptions of existing capabilities, never new systems. */
+export { INFORMATION_DOMAINS };
+export type { InformationDomain };
+
+export type CapabilityKind =
+  | 'engin'
+  | 'runtime'
+  | 'surface'
+  | 'orchestrator'
+  | 'service'
+  | 'agent';
+
+export interface CapabilityDescriptor {
+  /** Stable semantic identifier used by the orchestrator, never a file path. */
+  id: string;
+  /** Information concerns handled by this already-existing capability. */
+  domains: readonly InformationDomain[];
+  /** What kind of existing product capability this descriptor documents. */
+  kind: CapabilityKind;
+  /** Parent capability when this is one discoverable facet of a larger capability. */
+  parentId?: string;
 }
 
-function relatedSubsystemsForChannel(
-  channel: DualRuntimeChannel,
-): readonly string[] {
-  switch (channel) {
-    case 'music':
-      return ['GameEngin', 'ContentEngin', 'BrandingEngin', AI_AGENTS.DR_EAMS];
-    case 'games':
-      return ['ContentEngin', 'BrandingEngin', 'CodeEngin', AI_AGENTS.DR_EAMS];
-    case 'lab':
-      return ['CodeEngin', 'ContentEngin', AI_AGENTS.DR_EAMS];
-    case 'code':
-      return ['LabEngin', 'GameEngin', 'ContentEngin', AI_AGENTS.DR_EAMS];
-    case 'brand':
-      return ['ContentEngin', 'GameEngin', AI_AGENTS.DR_EAMS];
-    case 'create':
-      return [
-        'BrandingEngin',
-        'GameEngin',
-        'StarMakerEngin',
-        AI_AGENTS.DR_EAMS,
-      ];
-    default:
-      return [AI_AGENTS.DR_EAMS];
-  }
+/**
+ * DreamDMBar is the permanent exchange capability, not merely its divider seam.
+ * These descriptors expose the behavior that already lives in the existing bar
+ * surface so the orchestrator can discover it by meaning without importing UI
+ * files or creating a second DreamDMBar registry.
+ */
+const DREAMDM_BAR_CAPABILITIES: readonly CapabilityDescriptor[] = [
+  { id: 'DreamDMBar', domains: ['communication', 'identity', 'logic', 'memory'], kind: 'orchestrator' },
+  { id: 'DreamDMBar.messaging', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.search', domains: ['communication', 'identity', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.notifications', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.navigation', domains: ['logic', 'memory'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.context-actions', domains: ['logic', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.surface-exchange', domains: ['memory', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.dr-eams', domains: ['ai', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
+] as const;
+
+const informationDomainSet = new Set<string>(INFORMATION_DOMAINS);
+
+export function isInformationDomain(value: unknown): value is InformationDomain {
+  return typeof value === 'string' && informationDomainSet.has(value);
+}
+
+/** Existing capabilities classified by the information they already work with. */
+export const CAPABILITY_DESCRIPTORS: readonly CapabilityDescriptor[] = [
+  ...ENGIN_REGISTRY.map(({ name: id, domains }) => ({ id, domains, kind: 'engin' as const })),
+  ...DREAMDM_BAR_CAPABILITIES,
+  { id: 'ComputeRuntime', domains: ['logic', 'physics', 'ai'], kind: 'runtime' },
+  { id: 'SharedDreamRuntime', domains: ['memory', 'communication'], kind: 'runtime' },
+  { id: 'DreamSystemContext', domains: ['memory'], kind: 'service' },
+  { id: 'DreamSpace', domains: ['visual', 'memory'], kind: 'surface' },
+  { id: 'NeuralSeamCanvas', domains: ['visual', 'ai'], kind: 'surface' },
+  { id: 'EnginDispatcher', domains: ['logic'], kind: 'service' },
+  { id: 'safeGetUser', domains: ['identity'], kind: 'service' },
+  { id: 'Idari', domains: ['ai', 'logic'], kind: 'agent' },
+  { id: AI_AGENTS.DR_EAMS, domains: ['ai', 'logic'], kind: 'agent' },
+] as const;
+
+const capabilityById = new Map(
+  CAPABILITY_DESCRIPTORS.map((capability) => [capability.id, capability]),
+);
+
+const channelCapabilityIds: Record<DualRuntimeChannel, string> = {
+  music: 'StarMakerEngin',
+  game: 'GameEngin',
+  games: 'GameEngin',
+  lab: 'LabEngin',
+  code: 'CodeEngin',
+  brand: 'BrandingEngin',
+  content: 'ContentEngin',
+  create: 'ContentEngin',
+  compute: 'ComputeRuntime',
+  shared_dream: 'SharedDreamRuntime',
+};
+
+export function getCapabilityDescriptor(id: string): CapabilityDescriptor | null {
+  return capabilityById.get(id) ?? null;
+}
+
+export function getCapabilityChildren(
+  parentId: string,
+): readonly CapabilityDescriptor[] {
+  return CAPABILITY_DESCRIPTORS.filter(
+    (capability) => capability.parentId === parentId,
+  );
+}
+
+export function getCapabilitiesForDomains(
+  domains: readonly InformationDomain[],
+): readonly CapabilityDescriptor[] {
+  const requested = new Set(domains);
+  return CAPABILITY_DESCRIPTORS.filter((capability) =>
+    capability.domains.some((domain) => requested.has(domain)),
+  );
+}
+
+function channelToSubsystem(channel: DualRuntimeChannel): string {
+  return channelCapabilityIds[channel] ?? channel;
+}
+
+function domainsForChannel(channel: DualRuntimeChannel): readonly InformationDomain[] {
+  return getCapabilityDescriptor(channelToSubsystem(channel))?.domains ?? [];
+}
+
+function relatedSubsystemsForChannel(channel: DualRuntimeChannel): readonly string[] {
+  const sourceSubsystem = channelToSubsystem(channel);
+  return getCapabilitiesForDomains(domainsForChannel(channel))
+    .map((capability) => capability.id)
+    .filter((capabilityId) => capabilityId !== sourceSubsystem);
 }
 
 function formatEventTitle(event: string): string {
@@ -252,7 +333,7 @@ class DreamOSBusImpl {
   private readonly listeners = new Set<SnapshotListener>();
   private readonly intentHandlers = new Map<
     string,
-    { validate: IntentValidator; handle: IntentHandler }
+    { validate: IntentValidator; handle: IntentHandler; domains?: readonly InformationDomain[] }
   >();
   private readonly handledIntentIds = new Set<string>();
   private readonly pendingIntents = new Map<
@@ -275,11 +356,14 @@ class DreamOSBusImpl {
     type: string,
     validate: IntentValidator,
     handle: IntentHandler,
+    domains?: readonly InformationDomain[],
   ): () => void {
     if (this.intentHandlers.has(type))
       throw new Error(`Intent handler already registered for '${type}'.`);
     if (!type.trim()) throw new Error('Intent type is required.');
-    const registration = { validate, handle };
+    if (domains && (domains.length === 0 || !domains.every(isInformationDomain)))
+      throw new Error('Intent handler domains must contain known semantic domains.');
+    const registration = { validate, handle, domains };
     this.intentHandlers.set(type, registration);
     return () => {
       if (this.intentHandlers.get(type) === registration)
@@ -314,6 +398,12 @@ class DreamOSBusImpl {
       throw new Error(
         `No deterministic handler registered for intent '${intent.type}'.`,
       );
+    if (
+      registration.domains &&
+      !registration.domains.some((domain) => intent.data.domains.includes(domain))
+    ) {
+      throw new Error(`Intent '${intent.type}' has no domain handled by its registered capability.`);
+    }
     if (!registration.validate(intent))
       throw new Error(`Intent '${intent.type}' failed schema validation.`);
 
@@ -328,6 +418,7 @@ class DreamOSBusImpl {
         relatedSubsystems: intent.data.targetRuntimeId
           ? [intent.data.targetRuntimeId]
           : [],
+        domains: intent.data.domains,
         payload: { intent },
       });
       return { handled: true, replayed: false };
@@ -517,6 +608,7 @@ class DreamOSBusImpl {
       relatedSubsystems: relatedSubsystemsForChannel(
         emission.channel as DualRuntimeChannel,
       ),
+      domains: domainsForChannel(emission.channel as DualRuntimeChannel),
       payload: {
         channel: emission.channel,
         event: emission.event,

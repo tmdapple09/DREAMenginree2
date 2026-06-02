@@ -26,8 +26,10 @@ import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
 import DreamsSpacePanel from '@/components/dreams/dreamsurface.dreamspace';
 import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
 import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
+import { getEnginByName } from '@/lib/forge/forgeRegistry';
 import type { RuntimeRegion } from '@/lib/identity/canonical-names';
 import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useState } from 'react';
 
 // ── Panel components (loaded in-region, never as overlays) ───────────────────
@@ -50,6 +52,7 @@ import type { SystemPanelId } from '@/lib/panels/panelTypes';
 interface RuntimeViewProps {
   world: RuntimeWorld;
   isActive: boolean;
+  userId?: string;
   profile: {
     id?: string;
     handle?: string | null;
@@ -63,6 +66,10 @@ interface RuntimeViewProps {
   onOpenDreamSpace?: () => void;
   /** Open a path contained inside this region (iframe), instead of full-page navigation */
   onOpenInRegion?: (path: string) => void;
+  /** Load an existing Engin capability directly inside this runtime region. */
+  onOpenEngin?: (enginName: string) => void;
+  /** Stable runtime identity keeps duplicate Engin mounts independent. */
+  runtimeId: 'homedream' | 'dreamspace';
   /** Return to the default world for this region (close iframe) */
   onBackFromRegion?: () => void;
   seamOffsetPx?: number;
@@ -72,24 +79,36 @@ interface RuntimeViewProps {
 }
 
 /** Engin name → canonical daydream route */
-const ENGIN_ROUTES: Record<string, string> = {
-  StarMakerEngin: '/daydream/music',
-  GameEngin:      '/daydream/games',
-  LabEngin:       '/daydream/lab',
-  CodeEngin:      '/daydream/code',
-  BrandingEngin:  '/daydream/brand',
-  ContentEngin:   '/daydream/create',
+type EnginSurfaceProps = { onBack: () => void; instanceId?: string };
+
+/** Existing Engin capabilities mounted directly inside recursive runtime surfaces. */
+const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
+  StarMakerEngin: dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false }),
+  GameEngin: dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false }),
+  LabEngin: dynamic(() => import('@/engins/engin.LabEngin'), { ssr: false }),
+  CodeEngin: dynamic(() => import('@/engins/engin.CodeEngin'), { ssr: false }),
+  BrandingEngin: dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false }),
+  ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
+  ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
 };
+
+function getEnginFallbackRoute(name: string): string {
+  return getEnginByName(name)?.daydreamHref ?? '/dreamdmbar/homedream';
+}
 
 export default function RuntimeView({
   world,
   isActive,
+  userId,
   profile,
   posts,
   isAdmin,
   onOpenDrEams,
   onOpenDreamSpace,
   onOpenInRegion,
+  onOpenEngin,
+  onBackFromRegion,
+  runtimeId,
 }: RuntimeViewProps) {
   /* ── In-region iframe state ─────────────────────────────────────────────── */
   const [iframeUrl,   setIframeUrl]   = useState<string | null>(null);
@@ -140,8 +159,9 @@ export default function RuntimeView({
             onOpenDreamSpace={onOpenDreamSpace}
             onOpenInRegion={onOpenInRegion}
             onOpenUrl={openUrl}
+            onOpenEngin={onOpenEngin}
             isAdmin={isAdmin}
-            userId={profile?.id}
+            userId={userId}
           />
         </RuntimeShell>
       </div>
@@ -166,7 +186,8 @@ export default function RuntimeView({
           <DreamsSpacePanel
             onOpenUrl={openUrl}
             onOpenInRegion={onOpenInRegion}
-            accountId={profile?.id}
+            onOpenEngin={onOpenEngin}
+            accountId={userId}
             profile={profile}
           />
         </RuntimeShell>
@@ -210,7 +231,7 @@ export default function RuntimeView({
             onOpenInRegion={onOpenInRegion}
             onOpenUrl={openUrl}
             isAdmin={isAdmin}
-            userId={profile?.id}
+            userId={userId}
           />
         </RuntimeShell>
       </div>
@@ -241,38 +262,38 @@ export default function RuntimeView({
     );
   }
 
-  /* ── Engin runtime — open engin route in-region iframe ──────────────────── */
+  /* ── Engin runtime — mount the existing capability directly in-region ───── */
   if (typeof world === 'object' && world.type === 'engin') {
-    const route = ENGIN_ROUTES[world.name] ?? '/dreamdmbar';
+    const EnginSurface = ENGIN_SURFACES[world.name];
+    if (EnginSurface) {
+      const instanceId = `${runtimeId}:${world.name}`;
+      return (
+        <div style={outerStyle}>
+          <RuntimeShell
+            iframeUrl={iframeUrl}
+            onCloseIframe={closeIframe}
+            iframeTitle={iframeTitle}
+          >
+            <EnginSurface
+              key={instanceId}
+              instanceId={instanceId}
+              onBack={onBackFromRegion ?? closeIframe}
+            />
+          </RuntimeShell>
+        </div>
+      );
+    }
+
+    const route = getEnginFallbackRoute(world.name);
     return (
       <div style={outerStyle}>
-        <RuntimeShell
-          iframeUrl={iframeUrl}
-          onCloseIframe={closeIframe}
-          iframeTitle={iframeTitle}
-        >
-          <div
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              height: '100%', minHeight: '100%',
-              background: 'linear-gradient(180deg, var(--de-bg-start) 0%, var(--de-bg-mid) 42%, var(--de-bg-end) 100%)',
-            }}
-          >
-            <div className="de-glass" style={{ borderRadius: 28, padding: 32, maxWidth: 600, textAlign: 'center' }}>
-              <div className="de-tag">Engin</div>
-              <div className="de-label" style={{ fontSize: 24, marginTop: 8 }}>{world.name}</div>
-              <button
-                type="button"
-                onClick={() => openUrl(route, world.name)}
-                style={{
-                  display: 'inline-block', marginTop: 16, padding: '10px 24px',
-                  background: 'linear-gradient(135deg,#c8981a,#e0b830)', color: '#fff',
-                  borderRadius: 10, fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer',
-                }}
-              >
-                Open {world.name} →
-              </button>
-            </div>
+        <RuntimeShell iframeUrl={iframeUrl} onCloseIframe={closeIframe} iframeTitle={iframeTitle}>
+          <div className="de-glass" style={{ borderRadius: 28, margin: 'auto', padding: 32, maxWidth: 600, textAlign: 'center' }}>
+            <div className="de-tag">Unavailable Engin</div>
+            <div className="de-label" style={{ fontSize: 24, marginTop: 8 }}>{world.name}</div>
+            <button type="button" onClick={() => openUrl(route, world.name)} className="de-btn de-btn-gold" style={{ marginTop: 16 }}>
+              Open fallback route →
+            </button>
           </div>
         </RuntimeShell>
       </div>

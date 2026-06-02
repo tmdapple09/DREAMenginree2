@@ -19,7 +19,7 @@ const nextConfig = {
   serverExternalPackages: ["@supabase/supabase-js"],
   productionBrowserSourceMaps: false,
 
-  // Next.js 16+ native PPR model (replaces experimental.ppr and dynamicIO)
+  // Next.js 16+ native Partial Prerendering (PPR) model (replaces experimental.ppr and dynamicIO)
   cacheComponents: true,
 
   experimental: {},

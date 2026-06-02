@@ -442,6 +442,32 @@ describe('EnginRuntime contract hardening', () => {
     ).toThrow('invalid domain object');
   });
 
+  it('denies malformed authorization context instead of throwing during capability checks', async () => {
+    const { createDomainObject } =
+      await import('@/lib/engin-runtime/EnginBaseState');
+    const { authorizeDomainCapability } =
+      await import('@/lib/engin-runtime/EnginCapabilities');
+    const object = createDomainObject({
+      id: 'asset-malformed-context',
+      type: 'asset',
+      ownerId: 'owner-1',
+      runtimeId: 'dreamspace-1',
+      visibility: 'shared',
+      data: {},
+    });
+    expect(
+      authorizeDomainCapability('read', object, undefined as never),
+    ).toEqual({ granted: false, reason: 'Authorization context is required.' });
+    expect(
+      authorizeDomainCapability('read', object, {
+        actorId: 'viewer-1',
+        runtimeId: 'dreamspace-1',
+        surfaceRuntimeIds: ['dreamspace-1'],
+        collaboration: undefined as never,
+      }),
+    ).toEqual({ granted: false, reason: 'Collaboration state is invalid.' });
+  });
+
   it('does not infer admin access from ownership and keeps local objects in their runtime', async () => {
     const { createDomainObject } =
       await import('@/lib/engin-runtime/EnginBaseState');

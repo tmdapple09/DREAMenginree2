@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildLoginRedirectPath, resolveSafeNextPath } from '@/lib/auth/nextRedirect';
+import { buildAuthCallbackUrl } from '@/lib/supabase/config';
 import { upsertSavedGameSession } from '@/lib/games/library-state';
 import { buildGameLaunchHref, DEFAULT_GAME_ID, isLaunchFlagEnabled, resolveGameLaunchId } from '@/lib/games/navigation';
 import { GAME_INPUT_KEYBOARD_MAP } from '@/lib/games/useGameInputKeyboardBridge';
@@ -34,9 +35,16 @@ describe('game launch navigation', () => {
       .toBe('/login?next=%2Fengines%2Fgames%3Fgame%3Dplatformer%26play%3D1%26expand%3D1');
     expect(resolveSafeNextPath('/engines/games?game=platformer&play=1&expand=1'))
       .toBe('/engines/games?game=platformer&play=1&expand=1');
-    expect(resolveSafeNextPath('https://evil.example/engines/games')).toBe('/homedream');
-    expect(resolveSafeNextPath('//evil.example/engines/games')).toBe('/homedream');
-    expect(resolveSafeNextPath('/engines%5cgames')).toBe('/homedream');
+    expect(resolveSafeNextPath('https://evil.example/engines/games')).toBe('/dreamdmbar/homedream');
+    expect(resolveSafeNextPath('//evil.example/engines/games')).toBe('/dreamdmbar/homedream');
+    expect(resolveSafeNextPath('/engines%5cgames')).toBe('/dreamdmbar/homedream');
+  });
+
+  it('preserves protected destinations through the OAuth callback URL', () => {
+    expect(buildAuthCallbackUrl('https://dreamengin.com', '/dreamdmbar/homedream'))
+      .toBe('https://dreamengin.com/auth/callback?next=%2Fdreamdmbar%2Fhomedream');
+    expect(buildAuthCallbackUrl('https://dreamengin.com', '/onboarding'))
+      .toBe('https://dreamengin.com/auth/callback?next=%2Fonboarding');
   });
 
   it('treats only 1 as an enabled launch flag', () => {

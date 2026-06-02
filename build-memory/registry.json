@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-05-13T12:47:02.503Z",
+  "generatedAt": "2026-06-01T22:35:47.182Z",
   "totals": {
-    "surface": 295,
-    "route-surface": 257,
+    "surface": 296,
+    "route-surface": 264,
     "engine-ruleset": 26,
     "connector": 26,
     "brain-node": 67,
     "brain-doc": 18,
-    "cartridge": 5,
+    "cartridge": 8,
     "persona": 6,
-    "migration": 52,
+    "migration": 55,
     "memory": 6,
-    "dr-eams-tool": 2,
+    "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 62,
-    "engine-utility": 330
+    "engine-utility": 350
   },
   "entries": [
     {
@@ -492,12 +492,21 @@
       "slot": "route-surface",
       "path": "app/api/dreamr/feed/route.ts",
       "engine": "Universal",
-      "exports": []
+      "exports": [
+        "GET"
+      ]
     },
     {
       "id": "app/api/dreamr/suggested/route",
       "slot": "route-surface",
       "path": "app/api/dreamr/suggested/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/dreamr/tally/route",
+      "slot": "route-surface",
+      "path": "app/api/dreamr/tally/route.ts",
       "engine": "Universal",
       "exports": []
     },
@@ -802,6 +811,20 @@
       "exports": []
     },
     {
+      "id": "app/api/shared-dream/sessions/[id]/route",
+      "slot": "route-surface",
+      "path": "app/api/shared-dream/sessions/[id]/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/shared-dream/sessions/route",
+      "slot": "route-surface",
+      "path": "app/api/shared-dream/sessions/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
       "id": "app/api/shellhub/devices/route",
       "slot": "route-surface",
       "path": "app/api/shellhub/devices/route.ts",
@@ -835,6 +858,27 @@
       "id": "app/api/skip-credits/use/route",
       "slot": "route-surface",
       "path": "app/api/skip-credits/use/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/social/ipfs/route",
+      "slot": "route-surface",
+      "path": "app/api/social/ipfs/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/social/livekit/room/route",
+      "slot": "route-surface",
+      "path": "app/api/social/livekit/room/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/social/livekit/token/route",
+      "slot": "route-surface",
+      "path": "app/api/social/livekit/token/route.ts",
       "engine": "Universal",
       "exports": []
     },
@@ -1242,11 +1286,20 @@
       ]
     },
     {
+      "id": "app/dreamdmbar/_components/dreamr/api/feedHandler",
+      "slot": "route-surface",
+      "path": "app/dreamdmbar/_components/dreamr/api/feedHandler.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
       "id": "app/dreamdmbar/_components/dreamr/api/route",
       "slot": "route-surface",
       "path": "app/dreamdmbar/_components/dreamr/api/route.ts",
       "engine": "Universal",
-      "exports": []
+      "exports": [
+        "GET"
+      ]
     },
     {
       "id": "app/dreamdmbar/_components/dreamr/dream.DreamRCore",
@@ -4358,7 +4411,8 @@
       "path": "components/landing/dream.scene.UniverseField.tsx",
       "engine": "Universal",
       "exports": [
-        "default"
+        "default",
+        "UniverseFieldProps"
       ]
     },
     {
@@ -4782,6 +4836,16 @@
       ]
     },
     {
+      "id": "components/shared-dream/dream.SharedDreamRuntime",
+      "slot": "surface",
+      "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default",
+        "SharedDreamRuntimeProps"
+      ]
+    },
+    {
       "id": "components/shared-dream/index",
       "slot": "surface",
       "path": "components/shared-dream/index.ts",
@@ -4794,6 +4858,8 @@
         "SharedDreamContextValue",
         "SharedDreamProvider",
         "SharedDreamProviderProps",
+        "SharedDreamRuntime",
+        "SharedDreamRuntimeProps",
         "useSharedDream"
       ]
     },
@@ -5252,6 +5318,13 @@
       ]
     },
     {
+      "id": "dr-eams/Agents-MUST-READ-ARCHITECTURE",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/Agents-MUST-READ-ARCHITECTURE.md",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
       "id": "dr-eams/capabilities",
       "slot": "dr-eams-tool",
       "path": "dr-eams/capabilities.yaml",
@@ -5304,6 +5377,8 @@
       "engine": "CodeEngin",
       "exports": [
         "parseCode",
+        "ParsedSymbol",
+        "ParseError",
         "ParseResult"
       ]
     },
@@ -5449,7 +5524,8 @@
         "useContent",
         "useShareToProfile",
         "useSpatialNavigation",
-        "useWidgets"
+        "useWidgets",
+        "UseWidgetsResult"
       ]
     },
     {
@@ -7811,8 +7887,15 @@
       "engine": "Universal",
       "exports": [
         "createBaseState",
+        "createDomainObject",
+        "CreateDomainObjectInput",
+        "DomainObject",
+        "DomainVisibility",
         "EnginBaseState",
         "EnginLifecycle",
+        "isDomainObject",
+        "isEnginBaseState",
+        "isJsonSerializable",
         "patchBaseState"
       ]
     },
@@ -7822,9 +7905,12 @@
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "engine": "Universal",
       "exports": [
+        "authorizeDomainCapability",
         "CapabilityGateResult",
         "DEFAULT_USER_CAPABILITIES",
         "DENY_ALL",
+        "DomainAuthorizationContext",
+        "DomainCapability",
         "EnginCapability",
         "EnginCapabilityMap",
         "gateCapability",
@@ -7885,7 +7971,9 @@
       "path": "lib/engin-runtime/index.ts",
       "engine": "Universal",
       "exports": [
+        "authorizeDomainCapability",
         "createBaseState",
+        "createDomainObject",
         "createEnginEventBus",
         "createEnginRuntime",
         "DEFAULT_USER_CAPABILITIES",
@@ -7893,6 +7981,8 @@
         "EnginRuntime",
         "enginStorageKey",
         "gateCapability",
+        "isDomainObject",
+        "isEnginBaseState",
         "LocalStorageAdapter",
         "MemoryAdapter",
         "mergeCapabilities",
@@ -7994,6 +8084,85 @@
       ]
     },
     {
+      "id": "lib/engins/brand/brandEnginRuleSet",
+      "slot": "engine-utility",
+      "path": "lib/engins/brand/brandEnginRuleSet.ts",
+      "engine": "Universal",
+      "exports": [
+        "ABTest",
+        "AnalyticMetric",
+        "BRAND_ENGIN_RULE_SET",
+        "BrandAsset",
+        "BrandEnginAction",
+        "BrandEnginDerivedState",
+        "BrandProfile"
+      ]
+    },
+    {
+      "id": "lib/engins/brand/useBrandEnginRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engins/brand/useBrandEnginRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "useBrandEnginRuntime",
+        "UseBrandEnginRuntimeOptions",
+        "UseBrandEnginRuntimeResult"
+      ]
+    },
+    {
+      "id": "lib/engins/code/codeEnginRuleSet",
+      "slot": "engine-utility",
+      "path": "lib/engins/code/codeEnginRuleSet.ts",
+      "engine": "Universal",
+      "exports": [
+        "CellLanguage",
+        "CellStatus",
+        "CiStatus",
+        "CODE_ENGIN_RULE_SET",
+        "CodeEnginAction",
+        "CodeEnginDerivedState",
+        "NotebookCell",
+        "SecurityFinding"
+      ]
+    },
+    {
+      "id": "lib/engins/code/useCodeEnginRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engins/code/useCodeEnginRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "useCodeEnginRuntime",
+        "UseCodeEnginRuntimeOptions",
+        "UseCodeEnginRuntimeResult"
+      ]
+    },
+    {
+      "id": "lib/engins/content/contentEnginRuleSet",
+      "slot": "engine-utility",
+      "path": "lib/engins/content/contentEnginRuleSet.ts",
+      "engine": "Universal",
+      "exports": [
+        "CalendarItem",
+        "CONTENT_ENGIN_RULE_SET",
+        "ContentDraft",
+        "ContentEnginAction",
+        "ContentEnginDerivedState",
+        "ContentType",
+        "Platform"
+      ]
+    },
+    {
+      "id": "lib/engins/content/useContentEnginRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engins/content/useContentEnginRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "useContentEnginRuntime",
+        "UseContentEnginRuntimeOptions",
+        "UseContentEnginRuntimeResult"
+      ]
+    },
+    {
       "id": "lib/engins/game/gameEnginRuleSet",
       "slot": "engine-utility",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
@@ -8031,6 +8200,58 @@
         "useGameEnginRuntime",
         "UseGameEnginRuntimeOptions",
         "UseGameEnginRuntimeResult"
+      ]
+    },
+    {
+      "id": "lib/engins/lab/labEnginRuleSet",
+      "slot": "engine-utility",
+      "path": "lib/engins/lab/labEnginRuleSet.ts",
+      "engine": "Universal",
+      "exports": [
+        "ChartType",
+        "Experiment",
+        "LAB_ENGIN_RULE_SET",
+        "LabEnginAction",
+        "LabEnginDerivedState",
+        "SimState",
+        "SimulationKind",
+        "SimulationResult"
+      ]
+    },
+    {
+      "id": "lib/engins/lab/useLabEnginRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engins/lab/useLabEnginRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "useLabEnginRuntime",
+        "UseLabEnginRuntimeOptions",
+        "UseLabEnginRuntimeResult"
+      ]
+    },
+    {
+      "id": "lib/engins/music/starMakerEnginRuleSet",
+      "slot": "engine-utility",
+      "path": "lib/engins/music/starMakerEnginRuleSet.ts",
+      "engine": "Universal",
+      "exports": [
+        "MusicRelease",
+        "PlaybackQualityMode",
+        "STAR_MAKER_ENGIN_RULE_SET",
+        "StarMakerEnginAction",
+        "StarMakerEnginDerivedState",
+        "StemChannel"
+      ]
+    },
+    {
+      "id": "lib/engins/music/useStarMakerEnginRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engins/music/useStarMakerEnginRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "useStarMakerEnginRuntime",
+        "UseStarMakerEnginRuntimeOptions",
+        "UseStarMakerEnginRuntimeResult"
       ]
     },
     {
@@ -8396,7 +8617,11 @@
         "ForgeActivityPulse",
         "ForgeWorkflow",
         "formatRelativeTime",
+        "getEnginById",
+        "getEnginByName",
         "getForgeHeat",
+        "INFORMATION_DOMAINS",
+        "InformationDomain",
         "readForgeActivity",
         "recordForgeActivity"
       ]
@@ -9190,7 +9415,21 @@
       "path": "lib/gameengin/cartridge.ts",
       "engine": "GameEngin",
       "exports": [
+        "AchievementDefinition",
+        "AchievementState",
+        "CartridgeAchievementsAPI",
+        "CartridgeAssetsAPI",
+        "CartridgeAudioAPI",
+        "CartridgeCapability",
+        "CartridgeHapticsAPI",
         "CartridgeInputEvent",
+        "CartridgeNetworkAPI",
+        "CartridgeSaveAPI",
+        "CartridgeSaveSlot",
+        "CartridgeSessionPlayer",
+        "CartridgeSoundOptions",
+        "ENGINE_VERSION",
+        "engineSatisfies",
         "GameCartridge",
         "GameEngineAPI",
         "GRAVITY_VALUES",
@@ -9207,6 +9446,32 @@
         "DreamrFileEntry",
         "loadDreamrCartridgeFromResponse",
         "parseDreamrArchive"
+      ]
+    },
+    {
+      "id": "lib/gameengin/cartridges/achievementEngine",
+      "slot": "cartridge",
+      "path": "lib/gameengin/cartridges/achievementEngine.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "AchievementUnlockListener",
+        "createAchievementsAPI",
+        "getUnlockedCount",
+        "purgeCartridgeAchievements"
+      ]
+    },
+    {
+      "id": "lib/gameengin/cartridges/apiStubs",
+      "slot": "cartridge",
+      "path": "lib/gameengin/cartridges/apiStubs.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "stubAchievementsAPI",
+        "stubAssetsAPI",
+        "stubAudioAPI",
+        "stubHapticsAPI",
+        "stubNetworkAPI",
+        "stubSaveAPI"
       ]
     },
     {
@@ -9256,8 +9521,22 @@
       "path": "lib/gameengin/cartridges/reactCartridge.ts",
       "engine": "GameEngin",
       "exports": [
+        "CARTRIDGE_LOADERS",
         "createReactGameCartridge",
-        "defineReactCartridgeLoader"
+        "defineReactCartridgeLoader",
+        "GameEngineAPIContext",
+        "useGameEngineAPI"
+      ]
+    },
+    {
+      "id": "lib/gameengin/cartridges/saveState",
+      "slot": "cartridge",
+      "path": "lib/gameengin/cartridges/saveState.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "createSaveAPI",
+        "getSaveStorageBytes",
+        "purgeCartridgeSaves"
       ]
     },
     {
@@ -11439,6 +11718,31 @@
       ]
     },
     {
+      "id": "lib/reality/realityStore",
+      "slot": "engine-utility",
+      "path": "lib/reality/realityStore.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildChannelId"
+      ]
+    },
+    {
+      "id": "lib/reality/types",
+      "slot": "engine-utility",
+      "path": "lib/reality/types.ts",
+      "engine": "Universal",
+      "exports": [
+        "Reality",
+        "RealityActivityEntry",
+        "RealityActivityKind",
+        "RealityContextValue",
+        "RealityEnginSlot",
+        "RealityMember",
+        "RealityMode",
+        "RealitySnapshot"
+      ]
+    },
+    {
       "id": "lib/renderer/Canvas2DRenderer",
       "slot": "engine-utility",
       "path": "lib/renderer/Canvas2DRenderer.ts",
@@ -11523,12 +11827,23 @@
       "path": "lib/runtime/dreamOSBus.ts",
       "engine": "Universal",
       "exports": [
+        "CAPABILITY_DESCRIPTORS",
+        "CapabilityDescriptor",
+        "CapabilityKind",
         "deriveAIRuntimeContext",
         "DreamOSArtifactKind",
         "dreamOSBus",
         "DreamOSRuntimeContext",
         "DreamOSSharedArtifact",
         "DreamOSSnapshot",
+        "getCapabilitiesForDomains",
+        "getCapabilityChildren",
+        "getCapabilityDescriptor",
+        "INFORMATION_DOMAINS",
+        "IntentEnvelope",
+        "IntentPriority",
+        "isInformationDomain",
+        "isIntentEnvelope",
         "RuntimeContext"
       ]
     },
@@ -11784,9 +12099,12 @@
       "engine": "Universal",
       "exports": [
         "createLocalChannel",
+        "RealtimeChannel",
         "RealtimeChannelOptions",
+        "RealtimeClient",
         "RuntimeChannel",
-        "RuntimeChannelEvent"
+        "RuntimeChannelEvent",
+        "RuntimeChannelOptions"
       ]
     },
     {
@@ -11966,8 +12284,26 @@
         "DreamPresenceUpdate",
         "DreamSessionMode",
         "DreamSessionRole",
+        "SharedDreamActivityEntry",
+        "SharedDreamMember",
         "SharedDreamSession",
-        "SharedDreamSessionOptions"
+        "SharedDreamSessionOptions",
+        "useSharedDreamSession",
+        "UseSharedDreamSessionOptions",
+        "UseSharedDreamSessionResult"
+      ]
+    },
+    {
+      "id": "lib/sharedDream/useSharedDreamSession",
+      "slot": "engine-utility",
+      "path": "lib/sharedDream/useSharedDreamSession.ts",
+      "engine": "Universal",
+      "exports": [
+        "SharedDreamActivityEntry",
+        "SharedDreamMember",
+        "useSharedDreamSession",
+        "UseSharedDreamSessionOptions",
+        "UseSharedDreamSessionResult"
       ]
     },
     {
@@ -12031,6 +12367,35 @@
       ]
     },
     {
+      "id": "lib/social/livekit",
+      "slot": "engine-utility",
+      "path": "lib/social/livekit.ts",
+      "engine": "Universal",
+      "exports": [
+        "LiveKitConnectionState",
+        "LiveKitError",
+        "LiveKitParticipant",
+        "LiveKitRoomInfo",
+        "LiveKitRoomManager",
+        "LiveKitTokenResponse"
+      ]
+    },
+    {
+      "id": "lib/social/normalizers",
+      "slot": "engine-utility",
+      "path": "lib/social/normalizers.ts",
+      "engine": "Universal",
+      "exports": [
+        "BlueskyPost",
+        "MastodonStatus",
+        "normalizeBlueskyPost",
+        "NormalizedPost",
+        "normalizeMastodonPost",
+        "normalizeNostrEvent",
+        "NostrEvent"
+      ]
+    },
+    {
       "id": "lib/social/platforms",
       "slot": "engine-utility",
       "path": "lib/social/platforms.ts",
@@ -12074,6 +12439,17 @@
         "twitterNitterRssUrl",
         "youtubeChannelRssUrl",
         "youtubePlaylistRssUrl"
+      ]
+    },
+    {
+      "id": "lib/social/useSocialData",
+      "slot": "engine-utility",
+      "path": "lib/social/useSocialData.ts",
+      "engine": "Universal",
+      "exports": [
+        "SocialDataState",
+        "SocialPlatformFilter",
+        "useSocialData"
       ]
     },
     {
@@ -12310,20 +12686,6 @@
       ]
     },
     {
-      "id": "lib/universal-editor/module-manifest",
-      "slot": "engine-utility",
-      "path": "lib/universal-editor/module-manifest.ts",
-      "engine": "Universal",
-      "exports": [
-        "canTransferTo",
-        "createManifest",
-        "isValidManifest",
-        "ModuleManifest",
-        "RuntimeId",
-        "UIHints"
-      ]
-    },
-    {
       "id": "lib/universalEditor",
       "slot": "engine-utility",
       "path": "lib/universalEditor.ts",
@@ -12332,8 +12694,6 @@
         "AssemblyEvents",
         "canTransfer",
         "createLocalEventBus",
-        "ModuleManifest",
-        "RuntimeId",
         "transferModule"
       ]
     },
@@ -12369,8 +12729,10 @@
         "formatRelativeTime",
         "generateDedupeHash",
         "groupBy",
+        "isError",
         "sleep",
         "throttle",
+        "toErrorMessage",
         "truncate",
         "unique"
       ]
@@ -12616,6 +12978,80 @@
         "WarpParticle",
         "WarpVec2",
         "wrapBoundaryKernel"
+      ]
+    },
+    {
+      "id": "lib/web3/client",
+      "slot": "engine-utility",
+      "path": "lib/web3/client.ts",
+      "engine": "Universal",
+      "exports": [
+        "web3Client",
+        "Web3Client"
+      ]
+    },
+    {
+      "id": "lib/web3/engagement",
+      "slot": "engine-utility",
+      "path": "lib/web3/engagement.ts",
+      "engine": "Universal",
+      "exports": [
+        "applyOptimisticEngagement",
+        "clearOptimisticDelta",
+        "getOptimisticDelta"
+      ]
+    },
+    {
+      "id": "lib/web3/index",
+      "slot": "engine-utility",
+      "path": "lib/web3/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "applyOptimisticEngagement",
+        "clearOptimisticDelta",
+        "DEFAULT_CHAIN_ID",
+        "getEngagementStats",
+        "getFromIpfs",
+        "getOptimisticDelta",
+        "isIpfsCid",
+        "pinCid",
+        "resolveIpfsUrl",
+        "SUPPORTED_CHAINS",
+        "trackEngagement",
+        "uploadFileToIpfs",
+        "uploadToIpfs",
+        "web3Client",
+        "Web3Client",
+        "Web3Error"
+      ]
+    },
+    {
+      "id": "lib/web3/ipfs",
+      "slot": "engine-utility",
+      "path": "lib/web3/ipfs.ts",
+      "engine": "Universal",
+      "exports": [
+        "isIpfsCid",
+        "resolveIpfsUrl"
+      ]
+    },
+    {
+      "id": "lib/web3/types",
+      "slot": "engine-utility",
+      "path": "lib/web3/types.ts",
+      "engine": "Universal",
+      "exports": [
+        "ChainConfig",
+        "DEFAULT_CHAIN_ID",
+        "EngagementPayload",
+        "EngagementStats",
+        "IpfsContent",
+        "IpfsUploadResult",
+        "SUPPORTED_CHAINS",
+        "WalletAccount",
+        "WalletConnectionState",
+        "WalletProvider",
+        "Web3Error"
       ]
     },
     {
@@ -13325,6 +13761,27 @@
       "id": "supabase/migrations/20260426000200_build_memory_schema_gaps",
       "slot": "migration",
       "path": "supabase/migrations/20260426000200_build_memory_schema_gaps.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260516000000_agent_sessions_forge_rate_limits",
+      "slot": "migration",
+      "path": "supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260516000100_dreamr_tally",
+      "slot": "migration",
+      "path": "supabase/migrations/20260516000100_dreamr_tally.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260516000300_shared_dream_sessions",
+      "slot": "migration",
+      "path": "supabase/migrations/20260516000300_shared_dream_sessions.sql",
       "engine": "Universal",
       "exports": []
     }

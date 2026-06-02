@@ -32,6 +32,15 @@ const EXCLUDE_DIRS = new Set([
   ".cache",
 ]);
 
+const CODE_EXTENSIONS = new Set([
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+]);
+
 const TEXT_EXTENSIONS = new Set([
   ".ts",
   ".tsx",
@@ -206,6 +215,10 @@ function isTextFile(filePath) {
   return TEXT_EXTENSIONS.has(ext);
 }
 
+function isCodeFile(filePath) {
+  return CODE_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+}
+
 function safeRead(filePath) {
   try {
     return fs.readFileSync(filePath, "utf8");
@@ -218,13 +231,10 @@ function normalizeSlashes(p) {
   return p.split(path.sep).join("/");
 }
 
-function stripCommentsAndStrings(code) {
+function stripComments(code) {
   return code
     .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/.*$/gm, "")
-    .replace(/`(?:\\[\s\S]|[^`])*`/g, "``")
-    .replace(/"(?:\\.|[^"])*"/g, '""')
-    .replace(/'(?:\\.|[^'])*'/g, "''");
+    .replace(/\/\/.*$/gm, "");
 }
 
 function extractExports(code) {
@@ -284,10 +294,12 @@ function scoreCategories(filePath, content) {
 }
 
 function resolveLocalImport(fromFile, specifier) {
-  if (!specifier.startsWith(".")) return null;
-
-  const fromDir = path.dirname(fromFile);
-  const base = path.resolve(fromDir, specifier);
+  const base = specifier.startsWith("@/")
+    ? path.resolve(ROOT, specifier.slice(2))
+    : specifier.startsWith(".")
+      ? path.resolve(path.dirname(fromFile), specifier)
+      : null;
+  if (!base) return null;
 
   const candidates = [
     base,
@@ -357,9 +369,9 @@ function main() {
     const content = safeRead(file);
     if (content == null) continue;
 
-    const clean = stripCommentsAndStrings(content);
-    const exports = extractExports(content);
-    const imports = extractImports(clean);
+    const code = isCodeFile(file) ? stripComments(content) : '';
+    const exports = code ? extractExports(content) : [];
+    const imports = code ? extractImports(code) : [];
     const categories = scoreCategories(file, content);
     const abs = path.normalize(file);
 
@@ -381,12 +393,7 @@ function main() {
   }
 
   for (const [abs, record] of recordsMap.entries()) {
-    const content = safeRead(abs);
-    if (content == null) continue;
-    const clean = stripCommentsAndStrings(content);
-    const imports = extractImports(clean);
-
-    for (const specifier of imports) {
+    for (const specifier of record.importSpecifiers) {
       const target = resolveLocalImport(abs, specifier);
       if (target && recordsMap.has(path.normalize(target))) {
         record.importsResolved.push(normalizeSlashes(path.relative(ROOT, target)));

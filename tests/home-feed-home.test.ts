@@ -65,6 +65,14 @@ describe('HomeDream home surface', () => {
     expect(persistentBar).toContain('onMinimizedChange={isHomeActive ? setIsBarMinimized : undefined}');
   });
 
+  it('removes the unrelated Skip overlay without shrinking DreamDM bar capabilities', () => {
+    expect(persistentBar).not.toContain('SkipCreditBalance');
+    expect(persistentBar).toContain('<DreamDMBar');
+    expect(persistentBar).toContain('onBothMenus={openBothMenus}');
+    expect(persistentBar).toContain('Messaging, search, notifications, Dr. Eams, navigation, contextual');
+    expect(persistentBar).toContain('actions, and surface exchange stay mounted as one capability.');
+  });
+
   it('preserves runtimes when bar is minimized (Bar Ownership Law §0)', () => {
     // Per Bar Ownership Law §0: hiding the bar must NOT force splitRatio to 1.
     // Both runtimes remain visible at their last split position.
@@ -73,6 +81,9 @@ describe('HomeDream home surface', () => {
   });
 
   it('keeps feed scrolling native while limiting divider drag capture to the centered seam handle', () => {
+    expect(runtimeShell).toContain('data-runtime-scroll-container');
+    expect(runtimeShell).toContain("overflowY: 'auto'");
+    expect(runtimeShell).toContain("WebkitOverflowScrolling: 'touch'");
     expect(runtimeShell).toContain("touchAction: 'manipulation'");
     expect(dreamDmBar).toContain("pointerEvents: 'none'");
     expect(dreamDmBar).toContain("width: isDividerMode ? 112 : '100%'");

@@ -110,6 +110,8 @@ interface AnalyticsData {
 }
 
 interface DreamRSectionProps {
+  /** Authenticated account identity is authoritative even when profile hydration is delayed. */
+  userId?: string;
   profile: ProfileLike | null;
   initialPosts: FeedPost[];
   onOpenUrl?: (url: string, title?: string) => void;
@@ -765,9 +767,9 @@ function JourneyTab( ){
 
 // ── Main DreamRSection ─────────────────────────────────────────────────────────
 
-export default function DreamRSection({ profile, initialPosts, onOpenUrl }: DreamRSectionProps) {
+export default function DreamRSection({ userId: authenticatedUserId, profile, initialPosts, onOpenUrl }: DreamRSectionProps) {
   const [tab, setTab] = useState<Tab>('feed');
-  const userId = profile?.id ?? '';
+  const userId = authenticatedUserId ?? profile?.id ?? '';
 
   return (
     <div

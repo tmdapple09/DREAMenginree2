@@ -152,12 +152,24 @@ export function authorizeDomainCapability(
   object: DomainObject<string, unknown>,
   context: DomainAuthorizationContext,
 ): CapabilityGateResult {
-  if (!context.actorId.trim())
+  if (!context || typeof context !== 'object')
+    return { granted: false, reason: 'Authorization context is required.' };
+  if (typeof context.actorId !== 'string' || !context.actorId.trim())
     return { granted: false, reason: 'Actor identity is required.' };
-  if (!context.runtimeId.trim())
+  if (typeof context.runtimeId !== 'string' || !context.runtimeId.trim())
     return { granted: false, reason: 'Runtime context is required.' };
   if (!isDomainObject(object))
     return { granted: false, reason: 'Domain object envelope is invalid.' };
+  if (!Array.isArray(context.surfaceRuntimeIds))
+    return { granted: false, reason: 'Surface scope is invalid.' };
+  if (
+    !context.collaboration ||
+    typeof context.collaboration.active !== 'boolean' ||
+    !Array.isArray(context.collaboration.participantIds) ||
+    !Array.isArray(context.collaboration.editorIds)
+  ) {
+    return { granted: false, reason: 'Collaboration state is invalid.' };
+  }
   if (!context.surfaceRuntimeIds.includes(context.runtimeId)) {
     return {
       granted: false,

@@ -38,6 +38,7 @@ interface HomeDreamSurfaceProps {
   onOpenDreamSpace?: () => void;
   onOpenInRegion?: (path: string) => void;
   onOpenUrl?: (url: string, title?: string) => void;
+  onOpenEngin?: (enginName: string) => void;
   isAdmin?: boolean;
   userId?: string;
 }
@@ -86,6 +87,7 @@ export default function HomeDreamSurface({
   posts,
   onOpenDrEams,
   onOpenDreamSpace,
+  onOpenEngin,
   userId,
 }: HomeDreamSurfaceProps) {
   const router = useRouter();
@@ -303,6 +305,7 @@ export default function HomeDreamSurface({
           }}
         >
           <DreamRSection
+            userId={userId}
             profile={profile}
             initialPosts={posts as unknown as Parameters<typeof DreamRSection>[0]['initialPosts']}
           />
@@ -316,6 +319,7 @@ export default function HomeDreamSurface({
         <DraggableDream dream={{ dream_id: 'home-flagship-engins', type: 'flagship-engins', surface: 'home', runtime: 'HOME', title: 'Flagship Engins' }}>
           <FlagshipEnginesStrip
             isCompactViewport={isCompactViewport}
+            onOpenEngin={onOpenEngin}
           />
         </DraggableDream>
 
@@ -429,7 +433,7 @@ export default function HomeDreamSurface({
           </div>
 
           <HomeFeed
-            userId={profile?.id ?? ''}
+            userId={userId ?? profile?.id ?? ''}
             userHandle={profile?.handle ?? 'user'}
             userAvatar={profile?.avatar_url ?? null}
             userDisplayName={profile?.display_name || profile?.handle || 'Dreamer'}

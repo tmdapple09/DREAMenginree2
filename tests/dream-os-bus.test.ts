@@ -1,6 +1,20 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { dreamOSBus, deriveAIRuntimeContext } from '@/lib/runtime/dreamOSBus';
+import {
+  dreamOSBus,
+  deriveAIRuntimeContext,
+  getCapabilitiesForDomains,
+  getCapabilityChildren,
+  getCapabilityDescriptor,
+} from '@/lib/runtime/dreamOSBus';
+
+
+const authorizationContext = {
+  actorId: 'owner-1',
+  runtimeId: 'homedream',
+  surfaceRuntimeIds: ['homedream', 'dreamspace'],
+  collaboration: { active: false, participantIds: [], editorIds: [] },
+} as const;
 
 
 const authorizationContext = {
@@ -81,6 +95,44 @@ describe('dreamOSBus', () => {
   });
 });
 
+
+describe('dreamOSBus semantic capability domains', () => {
+  beforeEach(() => {
+    dreamOSBus.clearAll();
+  });
+
+  it('describes existing capabilities with multi-domain membership without creating center runtimes', () => {
+    expect(getCapabilityDescriptor('StarMakerEngin')?.domains).toEqual([
+      'audio',
+      'visual',
+      'communication',
+    ]);
+    expect(getCapabilitiesForDomains(['physics']).map((capability) => capability.id)).toContain('GameEngin');
+    expect(getCapabilityDescriptor('DreamDMBar')).toMatchObject({
+      kind: 'orchestrator',
+      domains: ['communication', 'identity', 'logic', 'memory'],
+    });
+    expect(getCapabilityChildren('DreamDMBar').map((capability) => capability.id)).toEqual([
+      'DreamDMBar.messaging',
+      'DreamDMBar.search',
+      'DreamDMBar.notifications',
+      'DreamDMBar.navigation',
+      'DreamDMBar.context-actions',
+      'DreamDMBar.surface-exchange',
+      'DreamDMBar.dr-eams',
+    ]);
+    expect(getCapabilityDescriptor('safeGetUser')?.domains).toEqual(['identity']);
+  });
+
+  it('annotates mirrored artifacts with semantic domains for orchestrator discovery', () => {
+    bridge.emit('music', 'music:stem-ready', { stemType: 'drums' });
+    const artifact = dreamOSBus.getSnapshot().artifacts[0];
+    expect(artifact?.sourceSubsystem).toBe('StarMakerEngin');
+    expect(artifact?.domains).toContain('audio');
+    expect(artifact?.relatedSubsystems).toContain('ContentEngin');
+  });
+});
+
 describe('deriveAIRuntimeContext', () => {
   it('maps runtime worlds to subsystem-aware AI modes', () => {
     expect(deriveAIRuntimeContext({ type: 'engin', name: 'LabEngin' })).toBe(
@@ -119,6 +171,7 @@ describe('dreamOSBus intent routing', () => {
         targetRuntimeId: 'dreamspace',
         actorId: 'owner-1',
         capability: 'move' as const,
+        domains: ['memory'] as const,
         priority: 'normal' as const,
         payload: { objectId: 'asset-1' },
       },
@@ -155,12 +208,38 @@ describe('dreamOSBus intent contract hardening', () => {
         sourceRuntimeId: 'dreamspace',
         actorId: 'other-owner',
         capability: 'move' as const,
+        domains: ['memory'] as const,
         priority: 'normal' as const,
         payload: {},
       },
     };
     await expect(dreamOSBus.dispatchIntent(intent, authorizationContext)).rejects.toThrow(
       'Invalid intent envelope',
+    );
+  });
+
+  it('rejects intent handlers that do not own any requested semantic domain', async () => {
+    dreamOSBus.registerIntent('audio.export', () => true, () => undefined, ['audio']);
+    const intent = {
+      id: 'intent-wrong-domain',
+      type: 'audio.export',
+      ownerId: 'owner-1',
+      runtimeId: 'homedream',
+      visibility: 'local' as const,
+      createdAt: '2026-06-01T00:00:00.000Z',
+      updatedAt: '2026-06-01T00:00:00.000Z',
+      version: 1,
+      data: {
+        sourceRuntimeId: 'homedream',
+        actorId: 'owner-1',
+        capability: 'move' as const,
+        domains: ['physics'] as const,
+        priority: 'normal' as const,
+        payload: {},
+      },
+    };
+    await expect(dreamOSBus.dispatchIntent(intent, authorizationContext)).rejects.toThrow(
+      'has no domain handled',
     );
   });
 
@@ -187,6 +266,7 @@ describe('dreamOSBus intent contract hardening', () => {
         sourceRuntimeId: 'homedream',
         actorId: 'owner-1',
         capability: 'move' as const,
+        domains: ['memory'] as const,
         priority: 'normal' as const,
         payload: {},
       },
