@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T04:56:58.838Z",
+  "generatedAt": "2026-06-02T23:51:25.924Z",
   "root": ".",
   "nodes": [
     {
@@ -4834,7 +4834,7 @@
       "type": "function",
       "path": "app/api/auth/logout/route.ts",
       "parent": "file:app/api/auth/logout/route.ts",
-      "loc": 3,
+      "loc": 11,
       "isOrphan": false,
       "exported": true
     },
@@ -8980,7 +8980,7 @@
       "type": "function",
       "path": "app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
       "parent": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "loc": 109,
+      "loc": 88,
       "isOrphan": true,
       "exported": true
     },
@@ -9354,7 +9354,7 @@
       "type": "function",
       "path": "app/dream-effects/page.tsx",
       "parent": "file:app/dream-effects/page.tsx",
-      "loc": 49,
+      "loc": 48,
       "isOrphan": false,
       "exported": true
     },
@@ -9464,7 +9464,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 45,
+      "loc": 47,
       "isOrphan": true,
       "exported": false
     },
@@ -9474,7 +9474,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 84,
+      "loc": 86,
       "isOrphan": true,
       "exported": true
     },
@@ -11514,7 +11514,7 @@
       "type": "function",
       "path": "app/layout.tsx",
       "parent": "file:app/layout.tsx",
-      "loc": 70,
+      "loc": 66,
       "isOrphan": false,
       "exported": true
     },
@@ -13758,7 +13758,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 158,
+      "loc": 157,
       "isOrphan": true,
       "exported": false
     },
@@ -13768,7 +13768,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 234,
+      "loc": 232,
       "isOrphan": true,
       "exported": false
     },
@@ -13778,7 +13778,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 253,
+      "loc": 251,
       "isOrphan": true,
       "exported": false
     },
@@ -13788,7 +13788,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 270,
+      "loc": 268,
       "isOrphan": true,
       "exported": true
     },
@@ -16538,7 +16538,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 99,
+      "loc": 100,
       "isOrphan": true,
       "exported": false
     },
@@ -16548,7 +16548,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 109,
+      "loc": 110,
       "isOrphan": false,
       "exported": true
     },
@@ -16558,7 +16558,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 120,
+      "loc": 121,
       "isOrphan": false,
       "exported": true
     },
@@ -16568,7 +16568,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 155,
+      "loc": 156,
       "isOrphan": true,
       "exported": false
     },
@@ -16578,7 +16578,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 221,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -16588,7 +16588,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 258,
+      "loc": 259,
       "isOrphan": true,
       "exported": true
     },
@@ -19471,7 +19471,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 34,
+      "loc": 39,
       "isOrphan": true,
       "exported": false
     },
@@ -19481,7 +19481,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 38,
+      "loc": 43,
       "isOrphan": true,
       "exported": false
     },
@@ -19491,7 +19491,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 51,
+      "loc": 56,
       "isOrphan": true,
       "exported": false
     },
@@ -19501,7 +19501,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 56,
+      "loc": 61,
       "isOrphan": true,
       "exported": true
     },
@@ -19927,7 +19927,7 @@
       "type": "function",
       "path": "components/menus/dream.menu.DualBottomMenu.tsx",
       "parent": "file:components/menus/dream.menu.DualBottomMenu.tsx",
-      "loc": 60,
+      "loc": 62,
       "isOrphan": true,
       "exported": false
     },
@@ -19937,7 +19937,7 @@
       "type": "function",
       "path": "components/menus/dream.menu.DualBottomMenu.tsx",
       "parent": "file:components/menus/dream.menu.DualBottomMenu.tsx",
-      "loc": 129,
+      "loc": 131,
       "isOrphan": true,
       "exported": false
     },
@@ -19947,7 +19947,7 @@
       "type": "function",
       "path": "components/menus/dream.menu.DualBottomMenu.tsx",
       "parent": "file:components/menus/dream.menu.DualBottomMenu.tsx",
-      "loc": 179,
+      "loc": 181,
       "isOrphan": true,
       "exported": true
     },
@@ -20908,7 +20908,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 94,
+      "loc": 95,
       "isOrphan": true,
       "exported": false
     },
@@ -20918,7 +20918,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 98,
+      "loc": 99,
       "isOrphan": true,
       "exported": true
     },
@@ -21856,22 +21856,12 @@
       "exported": false
     },
     {
-      "id": "function:components/webgpu/dream.WebGPUShowcase.tsx#BackendBadge",
-      "label": "BackendBadge",
-      "type": "function",
-      "path": "components/webgpu/dream.WebGPUShowcase.tsx",
-      "parent": "file:components/webgpu/dream.WebGPUShowcase.tsx",
-      "loc": 213,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:components/webgpu/dream.WebGPUShowcase.tsx#SectionCard",
       "label": "SectionCard",
       "type": "function",
       "path": "components/webgpu/dream.WebGPUShowcase.tsx",
       "parent": "file:components/webgpu/dream.WebGPUShowcase.tsx",
-      "loc": 249,
+      "loc": 213,
       "isOrphan": true,
       "exported": false
     },
@@ -21881,7 +21871,7 @@
       "type": "function",
       "path": "components/webgpu/dream.WebGPUShowcase.tsx",
       "parent": "file:components/webgpu/dream.WebGPUShowcase.tsx",
-      "loc": 301,
+      "loc": 265,
       "isOrphan": true,
       "exported": true
     },
@@ -23627,7 +23617,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 132,
+      "loc": 125,
       "isOrphan": true,
       "exported": false
     },
@@ -23637,7 +23627,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2840,
+      "loc": 2773,
       "isOrphan": true,
       "exported": false
     },
@@ -23647,7 +23637,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2929,
+      "loc": 2862,
       "isOrphan": true,
       "exported": false
     },
@@ -24437,7 +24427,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 2875,
+      "loc": 2756,
       "isOrphan": true,
       "exported": false
     },
@@ -25749,6 +25739,26 @@
       "path": "lib/activeModulesStore.ts",
       "parent": "file:lib/activeModulesStore.ts",
       "loc": 36,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/activeModulesStore.ts#saveActiveModulesForRegion",
+      "label": "saveActiveModulesForRegion",
+      "type": "function",
+      "path": "lib/activeModulesStore.ts",
+      "parent": "file:lib/activeModulesStore.ts",
+      "loc": 42,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/activeModulesStore.ts#transferActiveModuleRegion",
+      "label": "transferActiveModuleRegion",
+      "type": "function",
+      "path": "lib/activeModulesStore.ts",
+      "parent": "file:lib/activeModulesStore.ts",
+      "loc": 54,
       "isOrphan": false,
       "exported": true
     },
@@ -25758,7 +25768,7 @@
       "type": "function",
       "path": "lib/activeModulesStore.ts",
       "parent": "file:lib/activeModulesStore.ts",
-      "loc": 40,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -33218,7 +33228,7 @@
       "type": "function",
       "path": "lib/dreamdm/DreamSystemContext.tsx",
       "parent": "file:lib/dreamdm/DreamSystemContext.tsx",
-      "loc": 272,
+      "loc": 278,
       "isOrphan": true,
       "exported": true
     },
@@ -33228,7 +33238,7 @@
       "type": "function",
       "path": "lib/dreamdm/DreamSystemContext.tsx",
       "parent": "file:lib/dreamdm/DreamSystemContext.tsx",
-      "loc": 401,
+      "loc": 416,
       "isOrphan": false,
       "exported": true
     },
@@ -33701,12 +33711,22 @@
       ]
     },
     {
+      "id": "function:lib/dreamdm/useDreamSearch.ts#getLocalSearchResults",
+      "label": "getLocalSearchResults",
+      "type": "function",
+      "path": "lib/dreamdm/useDreamSearch.ts",
+      "parent": "file:lib/dreamdm/useDreamSearch.ts",
+      "loc": 89,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/dreamdm/useDreamSearch.ts#useDreamSearch",
       "label": "useDreamSearch",
       "type": "function",
       "path": "lib/dreamdm/useDreamSearch.ts",
       "parent": "file:lib/dreamdm/useDreamSearch.ts",
-      "loc": 74,
+      "loc": 99,
       "isOrphan": false,
       "exported": true
     },
@@ -40911,7 +40931,7 @@
       "path": "lib/games/hooks.ts",
       "parent": "file:lib/games/hooks.ts",
       "loc": 154,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -46722,7 +46742,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 226,
+      "loc": 232,
       "isOrphan": false,
       "exported": true
     },
@@ -46732,7 +46752,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 230,
+      "loc": 236,
       "isOrphan": false,
       "exported": true
     },
@@ -46742,7 +46762,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 238,
+      "loc": 244,
       "isOrphan": false,
       "exported": true
     },
@@ -46752,7 +46772,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 247,
+      "loc": 253,
       "isOrphan": true,
       "exported": false
     },
@@ -46762,7 +46782,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 251,
+      "loc": 257,
       "isOrphan": true,
       "exported": false
     },
@@ -46772,7 +46792,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 255,
+      "loc": 261,
       "isOrphan": true,
       "exported": false
     },
@@ -46782,7 +46802,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 262,
+      "loc": 268,
       "isOrphan": true,
       "exported": false
     },
@@ -46792,7 +46812,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 270,
+      "loc": 276,
       "isOrphan": true,
       "exported": false
     },
@@ -46802,7 +46822,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 284,
+      "loc": 290,
       "isOrphan": false,
       "exported": true
     },
@@ -46812,7 +46832,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 299,
+      "loc": 305,
       "isOrphan": true,
       "exported": false
     },
@@ -46822,7 +46842,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 310,
+      "loc": 316,
       "isOrphan": true,
       "exported": false
     },
@@ -46832,7 +46852,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 319,
+      "loc": 325,
       "isOrphan": true,
       "exported": false
     },
@@ -46842,7 +46862,7 @@
       "type": "class",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 329,
+      "loc": 335,
       "isOrphan": true,
       "exported": false
     },
@@ -51054,7 +51074,7 @@
       "path": "lib/webgpu.ts",
       "parent": "file:lib/webgpu.ts",
       "loc": 25,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -64010,6 +64030,16 @@
       "tags": []
     },
     {
+      "id": "file:tests/madmaxi-accessibility-tuning.test.ts",
+      "label": "madmaxi-accessibility-tuning.test.ts",
+      "type": "ts",
+      "path": "tests/madmaxi-accessibility-tuning.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/madmaxi-authored-levels.test.ts",
       "label": "madmaxi-authored-levels.test.ts",
       "type": "ts",
@@ -64045,7 +64075,7 @@
       "type": "function",
       "path": "tests/modular-os-stores.test.ts",
       "parent": "file:tests/modular-os-stores.test.ts",
-      "loc": 19,
+      "loc": 21,
       "isOrphan": false,
       "exported": false
     },
@@ -70351,7 +70381,7 @@
     },
     {
       "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "target": "file:components/games/dream.hud.GameHUD.tsx",
+      "target": "file:components/games/dream.remote.GameRemote.tsx",
       "kind": "import"
     },
     {
@@ -70376,16 +70406,6 @@
     },
     {
       "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "target": "file:lib/games/hooks.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "target": "file:lib/games/mobileControls.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
       "target": "file:lib/games/navigation.ts",
       "kind": "import"
     },
@@ -70772,11 +70792,6 @@
     {
       "source": "file:app/dream-effects/page.tsx",
       "target": "file:lib/utils.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/dream-effects/page.tsx",
-      "target": "file:lib/webgpu.ts",
       "kind": "import"
     },
     {
@@ -70792,11 +70807,6 @@
     {
       "source": "file:app/dream-effects/page.tsx",
       "target": "file:lib/utils.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/dream-effects/page.tsx",
-      "target": "file:lib/webgpu.ts",
       "kind": "route-uses"
     },
     {
@@ -70927,6 +70937,11 @@
     {
       "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "target": "file:lib/ui/runtimeViewport.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
+      "target": "file:types/dreamArtifact.ts",
       "kind": "import"
     },
     {
@@ -74971,7 +74986,7 @@
     },
     {
       "source": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "target": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
+      "target": "file:components/home/dream.ActiveModuleSurface.tsx",
       "kind": "import"
     },
     {
@@ -75012,6 +75027,11 @@
     {
       "source": "file:components/dreams/dreamsurface.dreamspace.tsx",
       "target": "file:lib/intelligence/useSessionIntelligence.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/dreams/dreamsurface.dreamspace.tsx",
+      "target": "file:types/dreamArtifact.ts",
       "kind": "import"
     },
     {
@@ -75916,6 +75936,11 @@
     },
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
+      "target": "file:lib/runtime/dualRuntimeBridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/home/dream.ActiveModuleSurface.tsx",
       "target": "file:types/dreamArtifact.ts",
       "kind": "import"
     },
@@ -76382,6 +76407,11 @@
     {
       "source": "file:components/runtime/dream.RuntimeView.tsx",
       "target": "file:lib/identity/canonical-names.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/runtime/dream.RuntimeView.tsx",
+      "target": "file:types/dreamArtifact.ts",
       "kind": "import"
     },
     {
@@ -77561,7 +77591,7 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
-      "target": "file:components/games/dream.hud.GameHUD.tsx",
+      "target": "file:components/games/dream.remote.GameRemote.tsx",
       "kind": "import"
     },
     {
@@ -78837,6 +78867,11 @@
     {
       "source": "file:lib/dreamdm/useDreamDMMessages.ts",
       "target": "file:lib/supabase/client.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/dreamdm/useDreamSearch.ts",
+      "target": "file:lib/forge/forgeRegistry.ts",
       "kind": "import"
     },
     {
@@ -90391,12 +90426,12 @@
     },
     {
       "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "target": "function:lib/games/navigation.ts#resolveGameLaunchId",
+      "target": "file:components/games/dream.remote.GameRemote.tsx",
       "kind": "call"
     },
     {
       "source": "file:app/daydream/game/dream.shell.ImmersiveGameShell.tsx",
-      "target": "function:lib/games/hooks.ts#useGamePerformanceBaseline",
+      "target": "function:lib/games/navigation.ts#resolveGameLaunchId",
       "kind": "call"
     },
     {
@@ -90517,11 +90552,6 @@
     {
       "source": "file:app/dream-effects/page.tsx",
       "target": "function:lib/gsap/useGsapEntrance.ts#useGsapEntrance",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/dream-effects/page.tsx",
-      "target": "function:lib/webgpu.ts#getRendererBackend",
       "kind": "call"
     },
     {
@@ -93131,7 +93161,7 @@
     },
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "target": "function:lib/activeModulesStore.ts#saveActiveModules",
+      "target": "function:lib/activeModulesStore.ts#saveActiveModulesForRegion",
       "kind": "call"
     },
     {
@@ -93142,6 +93172,11 @@
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
       "target": "function:lib/activeModulesStore.ts#removeActiveModule",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.ActiveModuleSurface.tsx",
+      "target": "function:lib/activeModulesStore.ts#transferActiveModuleRegion",
       "kind": "call"
     },
     {
@@ -93656,11 +93691,6 @@
     },
     {
       "source": "file:components/webgpu/dream.WebGPUShowcase.tsx",
-      "target": "function:lib/webgpu.ts#getRendererBackend",
-      "kind": "call"
-    },
-    {
-      "source": "file:components/webgpu/dream.WebGPUShowcase.tsx",
       "target": "function:lib/webgpu.ts#isWebGPUAvailable",
       "kind": "call"
     },
@@ -93797,11 +93827,6 @@
     {
       "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "target": "function:lib/dreamdm/barInteractions.ts#getMoodPeriod",
-      "kind": "call"
-    },
-    {
-      "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "target": "function:lib/dreamdm/barInteractions.ts#filterSlashCommands",
       "kind": "call"
     },
     {
@@ -98982,6 +99007,16 @@
     {
       "source": "file:tests/modular-os-stores.test.ts",
       "target": "function:lib/activeModulesStore.ts#removeActiveModule",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/modular-os-stores.test.ts",
+      "target": "function:lib/activeModulesStore.ts#saveActiveModulesForRegion",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/modular-os-stores.test.ts",
+      "target": "function:lib/activeModulesStore.ts#transferActiveModuleRegion",
       "kind": "call"
     },
     {
