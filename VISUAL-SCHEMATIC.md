@@ -4823,7 +4823,7 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
-| `fonts.zip` | file |
+| `fonts/fonts.md` | doc |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `lib-index.mjs` | mjs |

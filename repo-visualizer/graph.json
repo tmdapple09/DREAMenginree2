@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T02:56:26.529Z",
+  "generatedAt": "2026-06-02T03:01:18.322Z",
   "root": ".",
   "nodes": [
     {
@@ -24804,11 +24804,20 @@
       "tags": []
     },
     {
-      "id": "file:fonts.zip",
-      "label": "fonts.zip",
-      "type": "file",
-      "path": "fonts.zip",
+      "id": "folder:fonts",
+      "label": "fonts",
+      "type": "folder",
+      "path": "fonts",
       "parent": "folder:.",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:fonts/fonts.md",
+      "label": "fonts.md",
+      "type": "doc",
+      "path": "fonts/fonts.md",
+      "parent": "folder:fonts",
       "loc": null,
       "isOrphan": true,
       "tags": []
