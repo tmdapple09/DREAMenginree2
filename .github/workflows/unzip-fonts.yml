@@ -1,0 +1,68 @@
+name: Unzip fonts
+"on":
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Unzip fonts into fonts/ and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          zips=( fonts/*.zip )
+          shopt -u nullglob
+
+          if [ ${#zips[@]} -eq 0 ]; then
+            echo "No zip files found in fonts/, nothing to do."
+            exit 0
+          fi
+
+          for ZIP in "${zips[@]}"; do
+            echo "Processing: $ZIP"
+
+            BASENAME="$(basename "$ZIP" .zip)"
+            DEST="fonts/$BASENAME"
+
+            TMP="$(mktemp -d)"
+            unzip -q "$ZIP" -d "$TMP"
+
+            rm -rf "$TMP/__MACOSX"
+
+            top_dirs=()
+            top_files=()
+            for item in "$TMP"/*; do
+              [ -e "$item" ] || continue
+              base="$(basename "$item")"
+              [[ "$base" == "__MACOSX" ]] && continue
+              if [ -d "$item" ]; then
+                top_dirs+=( "$item" )
+              else
+                top_files+=( "$item" )
+              fi
+            done
+
+            ROOT="$TMP"
+            if [ "${#top_dirs[@]}" -eq 1 ] && [ "${#top_files[@]}" -eq 0 ]; then
+              ROOT="${top_dirs[0]}"
+            fi
+
+            mkdir -p "$DEST"
+            rsync -a --exclude="__MACOSX" "$ROOT/" "$DEST/"
+
+            rm -f "$ZIP"
+            git rm -f "$ZIP" 2>/dev/null || true
+          done
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "No font changes to commit." && exit 0
+          git commit -m "chore: unzip fonts into fonts/ [skip ci] [skip vercel]"
+          git pull --rebase origin "$(git branch --show-current)"
+          git push
