@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T05:21:37.933Z
+Generated: 2026-06-02T09:36:44.508Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1688,7 +1688,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── GravityPreset  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
 │   │   │   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
-│   │   │   │   ├── useGamePerformanceBaseline  ← @/lib/games/hooks
 │   │   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
 │   │   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
@@ -3024,9 +3023,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── CustomizeModeProvider  ← @/lib/ui/CustomizeModeContext
 │   │   ├── Metadata  ← next
 │   │   ├── Viewport  ← next
-│   │   ├── Cormorant_Garamond  ← next/font/google
-│   │   ├── Plus_Jakarta_Sans  ← next/font/google
-│   │   ├── Space_Grotesk  ← next/font/google
 │   │   ├── Suspense  ← react
 │   │   ├── → (default)
 │   │   ├── → metadata
@@ -4805,6 +4801,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⬡ Link  ← next/link
 │   │   │   ├── useSearchParams  ← next/navigation
 │   │   │   ├── useCallback  ← react
+│   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
@@ -6494,6 +6491,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ImageIcon  ← lucide-react
 │       ├── Loader2  ← lucide-react
 │       ├── Maximize2  ← lucide-react
+│       ├── Menu  ← lucide-react
 │       ├── MessageCircle  ← lucide-react
 │       ├── Music  ← lucide-react
 │       ├── Paperclip  ← lucide-react
@@ -6909,7 +6907,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useEffect  ← react
 │   │   ├── useRef  ← react
 │   │   ├── useState  ← react
-│   │   ├── (dynamic)  ← @babylonjs/core
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
 │   ├── engin.LabEngin.tsx ⚠ ∅
@@ -8410,6 +8407,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   └── → useDreamDMMessages
 │   │   ├── useDreamSearch.ts ⚠
+│   │   │   ├── ENGIN_REGISTRY  ← @/lib/forge/forgeRegistry
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
@@ -9652,7 +9650,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
-│   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── generative-audio.ts ∅
@@ -9870,7 +9867,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useGamePhase
 │   │   │   ├── → useKeySet
 │   │   │   ├── → useSubmitScore
-│   │   │   └── ∅ unused: useKeySet
+│   │   │   └── ∅ unused: useKeySet, useGamePerformanceBaseline
 │   │   ├── library-state.ts
 │   │   │   ├── → GAME_LIBRARY_SELECTION_STORAGE_KEY
 │   │   │   ├── → GAME_LIBRARY_SESSION_STORAGE_KEY

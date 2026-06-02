@@ -128,13 +128,13 @@ export default function EchoArena( ){
           (engine as BABYLON.WebGPUEngine).snapshotRendering = true;
           (engine as BABYLON.WebGPUEngine).snapshotRenderingMode = BABYLON.Constants.SNAPSHOTRENDERING_FAST;
 
-          setStatus('WebGPU active — Press PLAY to start');
+          setStatus('Ready — Press PLAY to start');
         } else {
           engine = new Engine(canvasRef.current, true, {
             preserveDrawingBuffer: true,
             stencil: true,
           });
-          setStatus('WebGL active — Press PLAY to start');
+          setStatus('Ready — Press PLAY to start');
         }
 
         engineRef.current = engine;
@@ -347,7 +347,7 @@ export default function EchoArena( ){
           <div style={{ fontSize: '48px' }}>🎯</div>
           <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#a78bfa' }}>ECHO ARENA</div>
           <div style={{ fontSize: '16px', color: '#888', maxWidth: '300px', textAlign: 'center' }}>
-            Top-down arena shooter powered by WebGPU
+            Top-down arena shooter
           </div>
           <div style={{ fontSize: '14px', color: '#555', maxWidth: '320px', textAlign: 'center' }}>
             Controls: Left Stick to move, Right Stick/Gyro to aim, R2 to shoot

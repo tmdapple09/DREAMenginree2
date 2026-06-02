@@ -72,4 +72,32 @@ describe('existing PS5 remote usage', () => {
     expect(src).toContain('ArrowLeft');
     expect(src).toContain('ArrowRight');
   });
+
+  it('supports idle, active, and collapsed remote states without blocking native game touches', () => {
+    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.LegacyGameRemote.tsx'), 'utf8');
+
+    expect(src).toContain("useState<'idle' | 'active' | 'collapsed'>('idle')");
+    expect(src).toContain("opacity: remoteState === 'active' ? 0.3 : 0.01");
+    expect(src).toContain('aria-label="Hide game remote"');
+    expect(src).toContain('aria-label="Show game remote"');
+    expect(src).toContain("pointerEvents: 'none'");
+    expect(src).toContain("pointerEvents: 'auto'");
+  });
+
+  it('keeps frame pacing internal instead of showing FPS or backend telemetry over gameplay', () => {
+    const runtime = readFileSync(join(REPO_ROOT, 'lib/gameengin/GameRuntime.tsx'), 'utf8');
+    const shell = readFileSync(join(REPO_ROOT, 'app/daydream/game/dream.shell.ImmersiveGameShell.tsx'), 'utf8');
+
+    expect(runtime).not.toContain('{fps} FPS');
+    expect(shell).not.toContain('BASELINE [DONE]');
+    expect(shell).not.toContain('avgFps} FPS');
+  });
+
+  it('raises MADMAXI jump reach and increases its normal run speed by twenty percent', () => {
+    const src = readFileSync(join(REPO_ROOT, 'components/games/madmaxi/dream.MadmaxiGame.tsx'), 'utf8');
+
+    expect(src).toContain('const JUMP_VY       = 0.78;');
+    expect(src).toContain('const WALK_SPD      = 0.174;');
+  });
+
 });

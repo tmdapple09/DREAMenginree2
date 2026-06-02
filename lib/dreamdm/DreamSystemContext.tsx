@@ -127,6 +127,7 @@ export const DEFAULT_WORLD_FOCUS: WorldFocusState = {
 
 type ReturnHomeFn     = () => void;
 type OpenInSurfaceFn  = (id: SystemPanelId) => void;
+type OpenInDominantFn = (path: string) => void;
 
 /**
  * Callbacks registered by DreamBarDataBridge.
@@ -140,6 +141,8 @@ export interface RuntimeCallbacks {
    * No routing. No overlays. The world dispatch in RuntimeView handles rendering.
    */
   openInSurface?:  OpenInSurfaceFn;
+  /** Load a named destination into whichever runtime owns the larger viewport. */
+  openInDominant?: OpenInDominantFn;
   /** Open DreamSpace in the bottom runtime region */
   openHomeDreamSpace?: () => void;
   /**
@@ -177,6 +180,8 @@ interface DreamSystemContextValue {
    * Delegates to runtimeCallbacks.openInSurface when DreamBarDataBridge is active.
    */
   openInSurface: (id: SystemPanelId) => void;
+  /** Stable accessor for search-driven dominant-runtime navigation. */
+  openInDominant: OpenInDominantFn;
 
   /** Active bar intent mode — drives DreamDM Bar behaviour */
   barIntent: BarIntent;
@@ -255,6 +260,7 @@ const DreamSystemContext = createContext<DreamSystemContextValue>({
   registerRuntimeCallbacks:   () => {},
   unregisterRuntimeCallbacks: () => {},
   openInSurface:              () => {},
+  openInDominant:             () => {},
   barIntent:                  DEFAULT_BAR_INTENT,
   setBarIntent:               () => {},
   clearBarIntent:             () => {},
@@ -333,6 +339,14 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
     callbacksRef.current?.openInSurface?.(id);
   }, []);
 
+  const openInDominant = useCallback((path: string) => {
+    if (callbacksRef.current?.openInDominant) {
+      callbacksRef.current.openInDominant(path);
+      return;
+    }
+    window.location.assign(path);
+  }, []);
+
   const setBarIntent   = useCallback((intent: BarIntent) => setBarIntentState(intent), []);
   const clearBarIntent = useCallback(() => setBarIntentState(DEFAULT_BAR_INTENT), []);
 
@@ -380,6 +394,7 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
       registerRuntimeCallbacks,
       unregisterRuntimeCallbacks,
       openInSurface,
+      openInDominant,
       barIntent,
       setBarIntent,
       clearBarIntent,

@@ -113,10 +113,10 @@ export default function RuntimeShell({
         >
           <div style={{ display: 'flex', flexDirection: 'column', padding: '0 6px 0 2px' }}>
             <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.44)' }}>
-              Runtime
+              Workspace
             </span>
             <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.88)' }}>
-              Viewport
+              View
             </span>
           </div>
           <button

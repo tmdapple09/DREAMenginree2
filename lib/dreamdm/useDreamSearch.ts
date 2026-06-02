@@ -25,6 +25,7 @@
  * docs/dreamdm_messaging_phase2.md §3 — useDreamSearch
  */
 
+import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
 import { createClient } from '@/lib/supabase/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -34,7 +35,9 @@ export type SearchResultType =
   | 'person'
   | 'conversation'
   | 'board'
-  | 'topic';
+  | 'topic'
+  | 'destination'
+  | 'engin';
 
 export interface SearchResult {
   id: string;
@@ -69,6 +72,28 @@ const DR_EAMS_KEY  = 'de-dreams-mode';
 const DEBOUNCE_MS  = 300;
 const MAX_RESULTS  = 8;
 const PER_TYPE     = 5;
+
+
+const SEARCH_DESTINATIONS: readonly SearchResult[] = [
+  { id: 'home', type: 'destination', label: 'HomeDream', sublabel: 'Home', href: '/dreamdmbar' },
+  { id: 'dreamspace', type: 'destination', label: 'DreamSpace', sublabel: 'Your spatial canvas', href: '/dreamdmbar' },
+  { id: 'dreamr', type: 'destination', label: 'DreamR', sublabel: 'Feed', href: '/dreamr' },
+  { id: 'settings', type: 'destination', label: 'Settings', sublabel: 'Preferences', href: '/settings' },
+  { id: 'appearance', type: 'destination', label: 'Appearance', sublabel: 'Settings', href: '/settings/appearance' },
+  { id: 'account', type: 'destination', label: 'Account', sublabel: 'Profile settings', href: '/edit-profiledream' },
+  ...ENGIN_REGISTRY.flatMap((engin) => [
+    { id: `engin:${engin.id}`, type: 'engin' as const, label: engin.name, sublabel: 'Engin', href: engin.daydreamHref },
+    { id: `engin-route:${engin.id}`, type: 'engin' as const, label: engin.id, sublabel: engin.name, href: engin.daydreamHref },
+  ]),
+];
+
+function getLocalSearchResults(query: string): SearchResult[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+  return SEARCH_DESTINATIONS.filter((result) =>
+    `${result.label} ${result.sublabel ?? ''}`.toLowerCase().includes(normalized),
+  );
+}
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 
@@ -110,13 +135,15 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
     }
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    // Named destinations are local and should feel instantaneous like device search.
+    setResults(getLocalSearchResults(trimmed).slice(0, MAX_RESULTS));
 
     debounceRef.current = setTimeout(async () => {
       setIsSearching(true);
       try {
         const supabase = createClient();
         const q        = trimmed.toLowerCase();
-        const combined: SearchResult[] = [];
+        const combined: SearchResult[] = getLocalSearchResults(q);
 
         // ── 1. Profiles (people / pages / friends) ──────────────────────────
         const { data: profiles } = await supabase
@@ -204,7 +231,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
         setResults(combined.slice(0, MAX_RESULTS));
       } catch (err: unknown) {
         console.error('[useDreamSearch] error:', err);
-        setResults([]);
+        setResults(getLocalSearchResults(trimmed).slice(0, MAX_RESULTS));
       } finally {
         setIsSearching(false);
       }

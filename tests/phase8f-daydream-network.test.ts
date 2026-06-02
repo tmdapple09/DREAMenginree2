@@ -323,8 +323,8 @@ describe('Point 52 — Games Daydream has real game loop and persistent state', 
     const src = readSource('components/games/dream.NeonDrift.tsx');
     expect(src).toContain('EliteGameEngine');
     expect(src).toContain('elite.onFrame');
-    expect(src).toContain('qualityTier');
-    expect(src).toContain('elite engine');
+    expect(src).toContain('publishGamePerformanceBaseline');
+    expect(src).not.toContain('Elite WebGPU runtime active');
   });
 
   it('GameEngin persists world builder and physics config', () => {

@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T05:21:37.813Z
+Generated: 2026-06-02T09:36:44.375Z
 
 ---
 
@@ -2340,7 +2340,6 @@ _No style files for this feature._
 - `@/lib/gameengin/cartridge`
 - `@/lib/gameengin/cartridges/loaders`
 - `@/lib/gameengin/cartridges/manifest`
-- `@/lib/games/hooks`
 - `@/lib/games/navigation`
 - `@/lib/gsap/useGsapFlip`
 - `@/lib/journey/journeyDots`
@@ -6708,7 +6707,6 @@ _No style files for this feature._
 | `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
 | `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
 | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
-| `@/lib/games/hooks` | `useGamePerformanceBaseline` |
 | `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref`, `resolveGameLaunchId` |
 | `@/lib/utils` | `toErrorMessage` |
 | `next/navigation` | `useRouter`, `useSearchParams` |
@@ -7550,7 +7548,6 @@ _No style files for this feature._
 | `@/lib/dreamenginOS/OSContext` | `OSProvider` |
 | `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
 | `next` | `Metadata`, `Viewport` |
-| `next/font/google` | `Cormorant_Garamond`, `Plus_Jakarta_Sans`, `Space_Grotesk` |
 | `react` | `Suspense` |
 
 ## `app/loading.tsx`
@@ -9454,7 +9451,7 @@ _No style files for this feature._
 | `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
 | `next/link` | `⬡ Link` |
 | `next/navigation` | `useSearchParams` |
-| `react` | `useCallback`, `useRef`, `useState` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `components/games/madmaxi/authoredZonePacks.ts`
 
@@ -10283,7 +10280,7 @@ _No style files for this feature._
 | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `@/lib/ui/runtimeViewport` | `getPreferredViewportHeight`, `isCompactRuntimeViewport` |
 | `@/lib/utils` | `formatRelativeTime` |
-| `lucide-react` | `Bell`, `Bot`, `Code2`, `FileText`, `ImageIcon`, `Loader2`, `Maximize2`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Sparkles`, `X` |
+| `lucide-react` | `Bell`, `Bot`, `Code2`, `FileText`, `ImageIcon`, `Loader2`, `Maximize2`, `Menu`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Sparkles`, `X` |
 | `next/image` | `⬡ Image` |
 | `@/lib/supabase/client` | _(dynamic import)_ |
 
@@ -10479,7 +10476,6 @@ _No style files for this feature._
 | `next/link` | `⬡ Link` |
 | `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-| `@babylonjs/core` | _(dynamic import)_ |
 
 ## `engins/engin.LabEngin.tsx`
 
@@ -11259,6 +11255,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
 | `@/lib/supabase/client` | `createClient` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -11679,7 +11676,7 @@ _No style files for this feature._
 | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
 | `@/lib/runtime/runtimeChannel` | `createLocalChannel` |
 | `@/lib/runtime/sharedResourcePool` | `acquireSharedResource`, `releaseSharedResource` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
 
 ## `lib/gameengin/ai-director.ts`
 
@@ -14307,10 +14304,6 @@ _No style files for this feature._
 
 - `@/lib/content/transcriptEditor`
 - `@/lib/content/seoScorer`
-
-## `engins/engin.GameEngin.tsx`
-
-- `@babylonjs/core`
 
 ## `lib/agentOS/hostTools.ts`
 
@@ -17652,7 +17645,6 @@ _No circular dependencies detected._
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `lib/gameengin/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
-| `app/layout.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
@@ -17660,6 +17652,7 @@ _No circular dependencies detected._
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
+| `app/layout.tsx` | 12 |
 | `app/view-profile/page.tsx` | 12 |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 |
@@ -17691,7 +17684,6 @@ _No circular dependencies detected._
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
-| `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -17699,6 +17691,7 @@ _No circular dependencies detected._
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 | HIGH_COUPLING |
 | `app/daydream/forge/page.tsx` | 12 | HIGH_COUPLING |
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
+| `app/layout.tsx` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 | HIGH_COUPLING |
@@ -17722,7 +17715,6 @@ _No circular dependencies detected._
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
-| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
@@ -17735,6 +17727,7 @@ _No circular dependencies detected._
 | `app/api/account/delete-dream/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/ai/boogieman/privacy-event/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/messages/route.ts` | 9 | MEDIUM_COUPLING |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 9 | MEDIUM_COUPLING |
 | `app/daydream/lab/portfolio/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/edit-profiledream/page.tsx` | 9 | MEDIUM_COUPLING |
@@ -18922,7 +18915,7 @@ _No circular dependencies detected._
 | `lib/games/DualSenseManager.ts` | `useDualSense`, `DualSenseManager` |
 | `lib/games/avatar.ts` | `AVATAR_IMAGE_KEY`, `AVATAR_CREATED_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `setAvatarDataUrl`, `hasAvatar`, `clearAvatar`, `resizeImageToDataUrl` |
 | `lib/games/catalog.ts` | `GAME_CATALOG_IDS` |
-| `lib/games/hooks.ts` | `useKeySet` |
+| `lib/games/hooks.ts` | `useKeySet`, `useGamePerformanceBaseline` |
 | `lib/games/lucid-avenue-world.ts` | `LUCID_AVENUE_TOTAL_SHARDS`, `LUCID_AVENUE_TOTAL_FLAGS`, `LUCID_AVENUE_TOTAL_CONTRACTS`, `LUCID_AVENUE_6900_TARGET`, `LUCID_AVENUE_DISTRICTS`, `createInitialLucidAvenueState`, `getLucidAvenueDistrict`, `getLucidAvenuePatrolPositions`, `getLucidAvenueMissionChecklist`, `getLucidAvenueRouteContracts`, `calculateLucidAvenueScore`, `getLucidAvenueCompletionPercent`, `getLucidAvenueStoryBeat`, `isSamePosition`, `moveLucidAvenuePlayer`, `waitLucidAvenueTurn`, `scanLucidAvenue`, `jamLucidAvenueGrid`, `deployLucidAvenueVehicle`, `fastTravelLucidAvenue`, `getLucidAvenueHint`, `requestLucidAvenueHint`, `interactInLucidAvenue`, `getLucidAvenuePatrolPathKeys`, `getLucidAvenueObjectiveKeys` |
 | `lib/games/mobileControls.ts` | `registerMobileGameControls` |
 | `lib/games/useAIDirector.ts` | `useAIDirector` |
@@ -21599,7 +21592,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── gameControllerLeft.ts
 │   │   ├── gameControllerRight.ts
 │   │   ├── hooks.ts ∅
-│   │   │   └── ∅ unused: useKeySet
+│   │   │   └── ∅ unused: useKeySet, useGamePerformanceBaseline
 │   │   ├── library-state.ts
 │   │   ├── lucid-avenue-world.ts ∅
 │   │   │   └── ∅ unused: LUCID_AVENUE_TOTAL_SHARDS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, createInitialLucidAvenueState, getLucidAvenueDistrict, getLucidAvenuePatrolPositions, getLucidAvenueMissionChecklist, getLucidAvenueRouteContracts, calculateLucidAvenueScore, getLucidAvenueCompletionPercent, getLucidAvenueStoryBeat, isSamePosition, moveLucidAvenuePlayer, waitLucidAvenueTurn, scanLucidAvenue, jamLucidAvenueGrid, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueHint, requestLucidAvenueHint, interactInLucidAvenue, getLucidAvenuePatrolPathKeys, getLucidAvenueObjectiveKeys

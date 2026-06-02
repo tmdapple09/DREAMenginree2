@@ -9,7 +9,7 @@
  *
  * Runtime layer contract (three clean layers, no overlap):
  *   SHELL:  Boot sequence overlay + separate shared GameRemote (this file)
- *   ENGINE: FPS counter (GameRuntime — top-right, pointer-events: none)
+ *   ENGINE: frame pacing and services remain internal to GameRuntime
  *   GAME:   Score / lives / level (inside each cartridge's container)
  *
  * Boot phases:
@@ -27,7 +27,6 @@ import GameRuntime from '@/lib/gameengin/GameRuntime';
 import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
 import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
 import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import { useGamePerformanceBaseline } from '@/lib/games/hooks';
 import {
     buildGameLaunchHref,
     DEFAULT_GAME_ID,
@@ -84,7 +83,6 @@ const BOOT_KEYFRAMES = `
 const DEFAULT_HUD_BOTTOM             = '175px';
 const MIN_STAGE_BOTTOM_CLEARANCE     = 'clamp(80px, 22dvh, 38dvh)';
 const LANDSCAPE_MIN_STAGE_BOTTOM     = 'clamp(56px, 14dvh, 24dvh)';
-const BASELINE_OVERLAY_OFFSET_PX     = 14;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -104,11 +102,7 @@ export default function ImmersiveGameShell() {
     [gameId],
   );
 
-  const performanceBaseline = useGamePerformanceBaseline({
-    active: true,
-    gameId: game.id,
-    renderMode: game.renderMode,
-  });
+
 
   // ── Cartridge loading ────────────────────────────────────────────────────
   const [cartridge, setCartridge] = useState<GameCartridge | null>(null);
@@ -254,7 +248,7 @@ export default function ImmersiveGameShell() {
           </div>
         ) : (
           // GameRuntime is the ONLY place games are mounted.
-          // It provides the FPS counter (engine chrome) and all engine services.
+          // It provides internal frame pacing and all engine services without exposing architecture chrome.
           // The game renders its own HUD (score/lives) inside its container.
           <GameRuntime
             cartridge={cartridge}
@@ -263,33 +257,7 @@ export default function ImmersiveGameShell() {
         )}
       </div>
 
-      {/* ── SHELL layer 2: Performance baseline chip ── */}
-      {performanceBaseline && (
-        <div
-          style={{
-            position: 'absolute',
-            left: BASELINE_OVERLAY_OFFSET_PX,
-            bottom: `calc(max(var(--de-hud-bottom, ${DEFAULT_HUD_BOTTOM}), ${stageBottom}) + ${BASELINE_OVERLAY_OFFSET_PX}px)`,
-            zIndex: 3,
-            pointerEvents: 'none',
-            background: 'rgba(2,6,23,0.78)',
-            border: '1px solid rgba(148,163,184,0.28)',
-            borderRadius: 999,
-            padding: '6px 10px',
-            fontSize: 11,
-            fontFamily: 'monospace',
-            letterSpacing: '0.04em',
-            color: '#e2e8f0',
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          BASELINE [DONE] · {performanceBaseline.rendererBackend.toUpperCase()} · {performanceBaseline.sampleCount > 0
-            ? `${performanceBaseline.avgFps} FPS · ${performanceBaseline.avgFrameMs.toFixed(1)}ms`
-            : 'warming up'}
-        </div>
-      )}
-
-      {/* ── SHELL layer 3: PS5-style boot overlay ── */}
+      {/* ── SHELL layer 2: PS5-style boot overlay ── */}
       {!bootDone && (
         <div
           role="presentation"
@@ -360,7 +328,7 @@ export default function ImmersiveGameShell() {
         <div aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: LANDSCAPE_MIN_STAGE_BOTTOM, background: '#000', zIndex: 0 }} />
       )}
 
-      {/* ── SHELL layer 4: shared remote — mounted only after boot ── */}
+      {/* ── SHELL layer 3: shared remote — mounted only after boot ── */}
       {/* The cartridge owns its visual HUD; GameRemote is a separate control capability. */}
       {bootDone && (
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 50 }}>
