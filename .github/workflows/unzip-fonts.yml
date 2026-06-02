@@ -1,3 +1,4 @@
+```yaml
 name: Unzip fonts
 on:
   workflow_dispatch:
@@ -25,33 +26,36 @@ jobs:
 
           for ZIP in "${zips[@]}"; do
             echo "Processing: $ZIP"
+
+            BASENAME="$(basename "$ZIP" .zip)"
+            DEST="fonts/$BASENAME"
+
             TMP="$(mktemp -d)"
             unzip -q "$ZIP" -d "$TMP"
 
-            # Flatten single wrapper folder (e.g. MyFont-family/), ignoring __MACOSX
-            ROOT="$TMP"
+            rm -rf "$TMP/__MACOSX"
+
             top_dirs=()
-            for d in "$TMP"/*/; do
-              [ -d "$d" ] || continue
-              [[ "$(basename "$d")" == "__MACOSX" ]] && continue
-              top_dirs+=( "$d" )
+            top_files=()
+            for item in "$TMP"/*; do
+              [ -e "$item" ] || continue
+              base="$(basename "$item")"
+              [[ "$base" == "__MACOSX" ]] && continue
+              if [ -d "$item" ]; then
+                top_dirs+=( "$item" )
+              else
+                top_files+=( "$item" )
+              fi
             done
-            if [ "${#top_dirs[@]}" -eq 1 ]; then
+
+            ROOT="$TMP"
+            if [ "${#top_dirs[@]}" -eq 1 ] && [ "${#top_files[@]}" -eq 0 ]; then
               ROOT="${top_dirs[0]}"
             fi
 
-            # Sync only font files back into fonts/, preserving any subfolders
-            rsync -a \
-              --include="*.woff" \
-              --include="*.woff2" \
-              --include="*.ttf" \
-              --include="*.otf" \
-              --include="*.eot" \
-              --include="*/" \
-              --exclude="*" \
-              "$ROOT/" "./fonts/"
+            mkdir -p "$DEST"
+            rsync -a --exclude="__MACOSX" "$ROOT/" "$DEST/"
 
-            # Remove the zip from the repo tree
             rm -f "$ZIP"
             git rm -f "$ZIP" 2>/dev/null || true
           done
@@ -61,4 +65,6 @@ jobs:
           git add -A
           git diff --cached --quiet && echo "No font changes to commit." && exit 0
           git commit -m "chore: unzip fonts into fonts/ [skip ci] [skip vercel]"
-          git push || true
+          git pull --rebase origin "$(git branch --show-current)"
+          git push
+```
