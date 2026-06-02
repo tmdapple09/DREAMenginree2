@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T03:54:36.898Z",
+  "generatedAt": "2026-06-02T04:37:15.886Z",
   "root": ".",
   "nodes": [
     {
@@ -53466,6 +53466,16 @@
       "tags": []
     },
     {
+      "id": "file:scripts-fix.zip",
+      "label": "scripts-fix.zip",
+      "type": "file",
+      "path": "scripts-fix.zip",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "folder:scripts",
       "label": "scripts",
       "type": "folder",
@@ -55130,7 +55140,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 95,
+      "loc": 174,
       "isOrphan": true,
       "exported": false
     },
@@ -55140,7 +55150,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 99,
+      "loc": 178,
       "isOrphan": true,
       "exported": false
     },
@@ -55150,7 +55160,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 103,
+      "loc": 182,
       "isOrphan": true,
       "exported": false
     },
@@ -55160,7 +55170,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 131,
+      "loc": 197,
       "isOrphan": true,
       "exported": false
     },
@@ -55170,7 +55180,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 135,
+      "loc": 201,
       "isOrphan": true,
       "exported": false
     },
@@ -55180,7 +55190,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 140,
+      "loc": 206,
       "isOrphan": true,
       "exported": false
     },
@@ -55190,7 +55200,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 155,
+      "loc": 220,
       "isOrphan": true,
       "exported": false
     },
@@ -55200,27 +55210,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 167,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#summarizeList",
-      "label": "summarizeList",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 177,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#describeFileKind",
-      "label": "describeFileKind",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 185,
+      "loc": 229,
       "isOrphan": true,
       "exported": false
     },
@@ -55230,27 +55220,227 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 196,
+      "loc": 235,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#buildSectionProse",
-      "label": "buildSectionProse",
+      "id": "function:scripts/readme-autosync.ts#getTsProject",
+      "label": "getTsProject",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 231,
+      "loc": 269,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#buildSubsectionBlock",
-      "label": "buildSubsectionBlock",
+      "id": "function:scripts/readme-autosync.ts#getSourceFile",
+      "label": "getSourceFile",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 275,
+      "loc": 278,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#isReactComponent",
+      "label": "isReactComponent",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 294,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#isHook",
+      "label": "isHook",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 302,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeExports",
+      "label": "analyzeExports",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 306,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeImports",
+      "label": "analyzeImports",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 364,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#httpMethodsFromFile",
+      "label": "httpMethodsFromFile",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 399,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeRoutes",
+      "label": "analyzeRoutes",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 415,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeComponents",
+      "label": "analyzeComponents",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 433,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeHooks",
+      "label": "analyzeHooks",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 437,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeDependencies",
+      "label": "analyzeDependencies",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 445,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#analyzeSubsystem",
+      "label": "analyzeSubsystem",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 475,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#inferKeyModules",
+      "label": "inferKeyModules",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 532,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#inferArchitecturalNarrative",
+      "label": "inferArchitecturalNarrative",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 558,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#generateSubsystemDescription",
+      "label": "generateSubsystemDescription",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 698,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#fmtList",
+      "label": "fmtList",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 758,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#fmtRoutes",
+      "label": "fmtRoutes",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 762,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#fmtSymbolList",
+      "label": "fmtSymbolList",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 772,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildFileIndex",
+      "label": "buildFileIndex",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 778,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildArchitecturalSectionBlock",
+      "label": "buildArchitecturalSectionBlock",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 796,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildArchitecturalSubsectionBlock",
+      "label": "buildArchitecturalSubsectionBlock",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 805,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#renderSectionMarkdown",
+      "label": "renderSectionMarkdown",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 815,
       "isOrphan": true,
       "exported": false
     },
@@ -55260,7 +55450,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 299,
+      "loc": 913,
       "isOrphan": true,
       "exported": false
     },
@@ -55270,7 +55460,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 311,
+      "loc": 925,
       "isOrphan": false,
       "exported": true
     },
@@ -55280,7 +55470,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 317,
+      "loc": 931,
       "isOrphan": false,
       "exported": true
     },
@@ -55290,7 +55480,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 331,
+      "loc": 953,
       "isOrphan": true,
       "exported": false
     },
@@ -55300,7 +55490,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 373,
+      "loc": 976,
       "isOrphan": false,
       "exported": true
     },
@@ -55310,7 +55500,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 396,
+      "loc": 999,
       "isOrphan": true,
       "exported": true
     },
@@ -55320,7 +55510,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 456,
+      "loc": 1071,
       "isOrphan": true,
       "exported": false
     },
@@ -55330,7 +55520,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 462,
+      "loc": 1077,
       "isOrphan": true,
       "exported": false
     },

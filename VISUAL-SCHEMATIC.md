@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2017
-- **Total function/class nodes:** 3581
+- **Total files:** 2018
+- **Total function/class nodes:** 3599
 - **Total edges:** 7154
-- **Orphan nodes:** 2989
+- **Orphan nodes:** 3008
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4977,6 +4977,7 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `research/equations/torridityequate.txt` | doc |
 | `research/paper/torridity_ledger.tex` | file |
 | `research/README.md` | doc |
+| `scripts-fix.zip` | file |
 | `scripts/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `scripts/archive/validate-deployment.js` | js |
 | `scripts/autofix-vercel-build.mjs` | mjs |
