@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2019
+- **Total files:** 2017
 - **Total function/class nodes:** 3601
 - **Total edges:** 7151
-- **Orphan nodes:** 3015
+- **Orphan nodes:** 3013
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4730,8 +4730,6 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `docs/alignment/DOCS_CHANGE_TRACKER.md` | doc |
 | `docs/alignment/REPO_TO_SPEC.md` | doc |
 | `docs/ARCHITECTURE.md` | doc |
-| `docs/architecture/dreamengin_phase2.md` | doc |
-| `docs/architecture/IMPLEMENTATION_NOTES.md` | doc |
 | `docs/archive/.gitkeep` | file |
 | `docs/AUTH_SETUP.md` | doc |
 | `docs/AXIOMS.md` | doc |

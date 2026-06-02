@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T23:56:06.042Z",
+  "generatedAt": "2026-06-02T23:57:07.274Z",
   "root": ".",
   "nodes": [
     {
@@ -23006,35 +23006,6 @@
       "type": "doc",
       "path": "docs/alignment/REPO_TO_SPEC.md",
       "parent": "folder:docs/alignment",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "folder:docs/architecture",
-      "label": "architecture",
-      "type": "folder",
-      "path": "docs/architecture",
-      "parent": "folder:docs",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "file:docs/architecture/IMPLEMENTATION_NOTES.md",
-      "label": "IMPLEMENTATION_NOTES.md",
-      "type": "doc",
-      "path": "docs/architecture/IMPLEMENTATION_NOTES.md",
-      "parent": "folder:docs/architecture",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:docs/architecture/dreamengin_phase2.md",
-      "label": "dreamengin_phase2.md",
-      "type": "doc",
-      "path": "docs/architecture/dreamengin_phase2.md",
-      "parent": "folder:docs/architecture",
       "loc": null,
       "isOrphan": true,
       "tags": []
