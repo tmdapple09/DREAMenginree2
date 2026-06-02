@@ -2,13 +2,13 @@
 
 /**
  * ImmersiveGameShell — True full-screen game launcher with PS5-style boot
- * sequence and a floating HUD controller overlay.
+ * sequence and the separate shared GameRemote control capability.
  *
  * All games run through the GameEngin cartridge system via GameRuntime.
  * No game component is ever mounted directly here.
  *
- * HUD layer contract (three clean layers, no overlap):
- *   SHELL:  Boot sequence overlay + GameHUD mobile controls (this file)
+ * Runtime layer contract (three clean layers, no overlap):
+ *   SHELL:  Boot sequence overlay + separate shared GameRemote (this file)
  *   ENGINE: FPS counter (GameRuntime — top-right, pointer-events: none)
  *   GAME:   Score / lives / level (inside each cartridge's container)
  *
@@ -19,16 +19,15 @@
  *   4 (3400 ms+)       Waiting for user input → fade out → game revealed
  *
  * Skip button is available from phase 1.
- * After boot dismissal: game fills 100 vw × 100 dvh, GameHUD floats at bottom.
+ * After boot dismissal: the cartridge renders its HUD and GameRemote stays separate.
  */
 
-import GameHUD from '@/components/games/dream.hud.GameHUD';
+import GameRemote from '@/components/games/dream.remote.GameRemote';
 import GameRuntime from '@/lib/gameengin/GameRuntime';
 import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
 import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
 import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
 import { useGamePerformanceBaseline } from '@/lib/games/hooks';
-import type { MobileHudMode } from '@/lib/games/mobileControls';
 import {
     buildGameLaunchHref,
     DEFAULT_GAME_ID,
@@ -80,24 +79,6 @@ const BOOT_KEYFRAMES = `
 }
 `;
 
-// ── Mobile HUD mode per cartridge ─────────────────────────────────────────────
-// Overrides the default 'controller' mode for specific games.
-
-const HUD_MODES: Record<string, MobileHudMode> = {
-  'platformer':             'controller',
-  'neon-drift':             'controller',
-  'echo-arena':             'controller',
-  'null-cathedral':         'buttons',
-  'voidline-gp':            'controller',
-  'serpent-siege':          'joystick',
-  'avenue-of-mirrors':      'joystick',
-  'engin-fracture':         'controller',
-  'glassfall':              'buttons',
-  'nite-flyer-solar-hymn':  'buttons',
-  'lexicon-solitaire':      'buttons',
-  'defuse-ritual':          'buttons',
-};
-
 // ── Layout constants ──────────────────────────────────────────────────────────
 
 const DEFAULT_HUD_BOTTOM             = '175px';
@@ -107,7 +88,7 @@ const BASELINE_OVERLAY_OFFSET_PX     = 14;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function ImmersiveGameShell( ){
+export default function ImmersiveGameShell() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const rootRef      = useRef<HTMLDivElement>(null);
@@ -238,7 +219,6 @@ export default function ImmersiveGameShell( ){
 
   // ── Derived ──────────────────────────────────────────────────────────────
   const accent      = game.color;
-  const hudMode     = HUD_MODES[game.id] ?? 'controller';
   const stageBottom = isLandscape ? LANDSCAPE_MIN_STAGE_BOTTOM : MIN_STAGE_BOTTOM_CLEARANCE;
   const physicsConfig = useMemo<{ gravity: GravityPreset; friction: number }>(
     () => ({ gravity: 'earth', friction: 0.5 }),
@@ -380,17 +360,17 @@ export default function ImmersiveGameShell( ){
         <div aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: LANDSCAPE_MIN_STAGE_BOTTOM, background: '#000', zIndex: 0 }} />
       )}
 
-      {/* ── SHELL layer 4: Mobile controls — mounted only after boot ── */}
-      {/* This is CONTROLS chrome: virtual joysticks, buttons, pause, exit.   */}
-      {/* It never overlaps the engine FPS counter (top-right) or game HUD.  */}
+      {/* ── SHELL layer 4: shared remote — mounted only after boot ── */}
+      {/* The cartridge owns its visual HUD; GameRemote is a separate control capability. */}
       {bootDone && (
-        <GameHUD
-          gameLabel={game.label}
-          gameEmoji={game.emoji}
-          playHref={buildGameLaunchHref(game.id, { play: true })}
-          mode={hudMode}
-          onExit={handleExit}
-        />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 50 }}>
+          <GameRemote
+            embedded
+            gameLabel={game.label}
+            playHref={buildGameLaunchHref(game.id, { play: true })}
+            onExit={handleExit}
+          />
+        </div>
       )}
     </div>
   );

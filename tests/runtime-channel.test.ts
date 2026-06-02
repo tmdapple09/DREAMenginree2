@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
+import {
+  createLocalChannel,
+  createRuntimeChannel,
+} from '@/lib/runtime/runtimeChannel';
 
 describe('runtimeChannel — LocalChannel (solo parity)', () => {
   it('delivers published events to all subscribers', async () => {
@@ -55,4 +58,38 @@ describe('runtimeChannel — factory', () => {
     expect(ch.id).toBe('engin:demo:1');
     await ch.close();
   });
+});
+
+describe('runtimeChannel — replay transport abstraction', () => {
+  it('replays published events for recovery and offline reconciliation', async () => {
+    const ch = createLocalChannel<{ n: number }>('test:replay');
+    await ch.publish({ n: 1 });
+    await ch.publish({ n: 2 });
+    expect(await ch.replay()).toEqual([{ n: 1 }, { n: 2 }]);
+  });
+});
+
+describe('runtimeChannel — hardened replay transport', () => {
+  it('bounds replay history and snapshots caller-owned event data', async () => {
+    const ch = createLocalChannel<{ n: number; nested: { value: number } }>(
+      'test:bounded-replay',
+      { replayLimit: 1 },
+    );
+    const event = { n: 1, nested: { value: 1 } };
+    await ch.publish(event);
+    event.nested.value = 99;
+    await ch.publish({ n: 2, nested: { value: 2 } });
+    const replay = await ch.replay();
+    expect(replay).toEqual([{ n: 2, nested: { value: 2 } }]);
+    (replay[0] as { nested: { value: number } }).nested.value = 88;
+    expect(await ch.replay()).toEqual([{ n: 2, nested: { value: 2 } }]);
+  });
+});
+
+it('rejects lossy transport events and isolates replay from listener mutation', async () => {
+  const ch = createLocalChannel<{ nested: { value: number }; callback?: () => void }>('test:strict-events');
+  ch.subscribe((event) => { event.nested.value = 99; });
+  await ch.publish({ nested: { value: 1 } });
+  expect(await ch.replay()).toEqual([{ nested: { value: 1 } }]);
+  await expect(ch.publish({ nested: { value: 1 }, callback: () => undefined })).rejects.toThrow('JSON-serializable');
 });

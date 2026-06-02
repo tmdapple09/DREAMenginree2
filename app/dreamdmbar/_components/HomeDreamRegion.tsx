@@ -14,6 +14,7 @@ import DaydreamPulseStrip from '@/components/home/dream.DaydreamPulseStrip';
 import FlagshipEnginesStrip from '@/components/home/dream.FlagshipEnginesStrip';
 import { useNotifications } from '@/lib/notifications/useNotifications';
 import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 
 type ProfileLike = {
   id?: string;
@@ -38,8 +39,10 @@ interface HomeDreamSurfaceProps {
   onOpenDreamSpace?: () => void;
   onOpenInRegion?: (path: string) => void;
   onOpenUrl?: (url: string, title?: string) => void;
+  onOpenEngin?: (enginName: string) => void;
   isAdmin?: boolean;
   userId?: string;
+  runtimeRegion?: RuntimeRegionKey;
 }
 
 function QuickLink({
@@ -86,7 +89,9 @@ export default function HomeDreamSurface({
   posts,
   onOpenDrEams,
   onOpenDreamSpace,
+  onOpenEngin,
   userId,
+  runtimeRegion = 'surface',
 }: HomeDreamSurfaceProps) {
   const router = useRouter();
   const [notifOpen,    setNotifOpen]    = useState(false);
@@ -140,7 +145,7 @@ export default function HomeDreamSurface({
           : 'calc(env(safe-area-inset-bottom, 0px) + 132px)',
       }}
     >
-      <ActiveModuleSurface accountId={userId ?? profile?.id} />
+      <ActiveModuleSurface accountId={userId ?? profile?.id} runtimeRegion={runtimeRegion} />
 
       {/* ── Sticky header bar ──────────────────────────────────────────────── */}
       <div
@@ -303,6 +308,7 @@ export default function HomeDreamSurface({
           }}
         >
           <DreamRSection
+            userId={userId}
             profile={profile}
             initialPosts={posts as unknown as Parameters<typeof DreamRSection>[0]['initialPosts']}
           />
@@ -316,6 +322,7 @@ export default function HomeDreamSurface({
         <DraggableDream dream={{ dream_id: 'home-flagship-engins', type: 'flagship-engins', surface: 'home', runtime: 'HOME', title: 'Flagship Engins' }}>
           <FlagshipEnginesStrip
             isCompactViewport={isCompactViewport}
+            onOpenEngin={onOpenEngin}
           />
         </DraggableDream>
 
@@ -429,7 +436,7 @@ export default function HomeDreamSurface({
           </div>
 
           <HomeFeed
-            userId={profile?.id ?? ''}
+            userId={userId ?? profile?.id ?? ''}
             userHandle={profile?.handle ?? 'user'}
             userAvatar={profile?.avatar_url ?? null}
             userDisplayName={profile?.display_name || profile?.handle || 'Dreamer'}

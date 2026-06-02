@@ -28,6 +28,7 @@
 
 import DreamSpace from '@/app/dreamdmbar/_components/DreamSpaceRegion';
 import RuntimeMemoryHUD from '@/components/dreams/dream.panel.RuntimeMemoryHUD';
+import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import SpatialProfileSpace from '@/components/spatial/dream.ProfileSpace';
 import UniversalWidget from '@/components/widgets/dream.widget.UniversalWidget';
 import { useDreamsRuntime } from '@/lib/dreams/useDreamsRuntime';
@@ -52,6 +53,7 @@ import { resolveResumeDest } from '@/lib/intelligence/continuityHelpers';
 import { useSessionIntelligence } from '@/lib/intelligence/useSessionIntelligence';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /** Called to open a URL inside the runtime region (no full-page navigation). */
@@ -259,12 +261,17 @@ function EngineBarChart({ engines }: { engines: string[] }) {
 export default function DreamsSpacePanel({
   onOpenUrl,
   onOpenInRegion,
+  onOpenEngin,
   accountId,
+  runtimeRegion = 'dream',
   profile,
 }: {
   onOpenUrl?: OpenUrlFn;
   onOpenInRegion?: (path: string) => void;
+  /** Mount an existing capability inside whichever recursive runtime owns this panel. */
+  onOpenEngin?: (enginName: string) => void;
   accountId?: string | null;
+  runtimeRegion?: RuntimeRegionKey;
   profile?: {
     id?: string;
     handle?: string | null;
@@ -334,7 +341,8 @@ export default function DreamsSpacePanel({
 
   // Feed view — main dreams space content
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+      <ActiveModuleSurface accountId={accountId} runtimeRegion={runtimeRegion} />
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
@@ -687,6 +695,47 @@ export default function DreamsSpacePanel({
               ))}
             </div>
           </div>
+
+          {/* Section: Engin capabilities — load directly into this recursive runtime. */}
+          {onOpenEngin && (
+            <div style={{
+              marginBottom:         16,
+              background:           'rgba(8,16,38,0.48)',
+              borderRadius:         22,
+              border:               '1px solid rgba(212,168,67,0.18)',
+              padding:              '12px 8px 10px',
+              boxShadow:            '0 10px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
+              backdropFilter:       'blur(32px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(32px) saturate(160%)',
+            }}>
+              <div style={{
+                fontSize: 10,
+                fontWeight: 700,
+                color: 'var(--de-text-dim)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                padding: '0 4px 8px',
+              }}>
+                Engin capabilities
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '12px 4px',
+                justifyItems: 'center',
+              }}>
+                {ENGIN_REGISTRY.map((engin) => (
+                  <AppIcon
+                    key={engin.id}
+                    icon={engin.emoji}
+                    label={engin.name}
+                    color={`linear-gradient(135deg, ${engin.accent}, rgba(8,16,38,0.86))`}
+                    onClick={() => onOpenEngin(engin.name)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Section: More apps — Shop, Marketplace, Ads, Links */}
           <div style={{

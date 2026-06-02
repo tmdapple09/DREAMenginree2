@@ -131,7 +131,7 @@ export default function JoinPage( ){
     setBusy(true);
     try {
       const onboardingRedirectTo = origin
-        ? `${buildAuthCallbackUrl(origin)}?next=/onboarding`
+        ? buildAuthCallbackUrl(origin, '/onboarding')
         : undefined;
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,

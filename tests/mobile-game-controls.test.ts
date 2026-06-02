@@ -35,13 +35,15 @@ describe('shared mobile game controls', () => {
     expect(jumpButton?.slotClassName).toBe('slotX');
   });
 
-  it('wires the immersive shell to the shared mobile HUD modes for example games', () => {
+  it('keeps cartridge HUDs separate from the shared GameRemote capability', () => {
     const shellSrc = readFileSync(join(REPO_ROOT, 'engins/engin.GameEngin.tsx'), 'utf8');
-    const hudSrc = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.GameHUD.tsx'), 'utf8');
+    const immersiveShellSrc = readFileSync(join(REPO_ROOT, 'app/daydream/game/dream.shell.ImmersiveGameShell.tsx'), 'utf8');
     const echoSrc = readFileSync(join(REPO_ROOT, 'components/games/dream.EchoArena.tsx'), 'utf8');
 
-    expect(shellSrc).toContain('<GameHUD');
-    expect(hudSrc).toContain('<MobileGameHUD');
+    expect(shellSrc).toContain('<GameRemote');
+    expect(shellSrc).not.toContain('<GameHUD');
+    expect(immersiveShellSrc).toContain('<GameRemote');
+    expect(immersiveShellSrc).not.toContain('<GameHUD');
     expect(GAME_CATALOG.find((game) => game.id === 'platformer')?.mobileHudMode).toBe('buttons');
     expect(GAME_CATALOG.find((game) => game.id === 'echo-arena')?.mobileHudMode).toBe('joystick');
     expect(echoSrc).toContain('useRegisterMobileGameControls');

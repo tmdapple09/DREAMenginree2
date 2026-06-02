@@ -11,6 +11,8 @@ import {
   loadActiveModules,
   removeActiveModule,
   saveActiveModule,
+  saveActiveModulesForRegion,
+  transferActiveModuleRegion,
 } from '@/lib/activeModulesStore';
 import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
 import type { DreamArtifact } from '@/types/dreamArtifact';
@@ -88,6 +90,34 @@ describe('modular OS stores', () => {
     expect(loadActiveModules(accountId)).toHaveLength(1);
     removeActiveModule(accountId, 'module-1');
     expect(loadActiveModules(accountId)).toHaveLength(0);
+  });
+
+  it('preserves the opposite runtime slice when one dual-runtime surface saves', () => {
+    saveActiveModule(accountId, {
+      instanceId: 'surface-module', artifactId: 'codeengin', runtimeRegion: 'surface', containerId: 'surface-module', state: {},
+    });
+    saveActiveModule(accountId, {
+      instanceId: 'dream-module', artifactId: 'labengin', runtimeRegion: 'dream', containerId: 'dream-module', state: {},
+    });
+
+    saveActiveModulesForRegion(accountId, 'surface', [{
+      instanceId: 'surface-module-2', artifactId: 'gameengin', runtimeRegion: 'surface', containerId: 'surface-module-2', state: {},
+    }]);
+
+    expect(loadActiveModules(accountId).map((instance) => instance.instanceId).sort()).toEqual([
+      'dream-module', 'surface-module-2',
+    ]);
+  });
+
+  it('moves a live module between canonical runtime regions without duplicating it', () => {
+    saveActiveModule(accountId, {
+      instanceId: 'moving-module', artifactId: 'codeengin', runtimeRegion: 'surface', containerId: 'moving-module', state: {},
+    });
+
+    expect(transferActiveModuleRegion(accountId, 'moving-module', 'dream')?.runtimeRegion).toBe('dream');
+    expect(loadActiveModules(accountId).filter((instance) => instance.instanceId === 'moving-module')).toEqual([
+      expect.objectContaining({ runtimeRegion: 'dream' }),
+    ]);
   });
 });
 
