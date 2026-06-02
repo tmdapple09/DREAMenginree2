@@ -1,5 +1,5 @@
-Name: Unzip fonts
-on:
+name: Unzip fonts
+"on":
   workflow_dispatch:
 permissions:
   contents: write
@@ -66,4 +66,3 @@ jobs:
           git commit -m "chore: unzip fonts into fonts/ [skip ci] [skip vercel]"
           git pull --rebase origin "$(git branch --show-current)"
           git push
-```
