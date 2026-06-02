@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T03:01:18.322Z",
+  "generatedAt": "2026-06-02T03:24:29.475Z",
   "root": ".",
   "nodes": [
     {
@@ -24811,6 +24811,36 @@
       "parent": "folder:.",
       "loc": null,
       "isOrphan": false
+    },
+    {
+      "id": "file:fonts/Cormorant_Garamond.zip",
+      "label": "Cormorant_Garamond.zip",
+      "type": "file",
+      "path": "fonts/Cormorant_Garamond.zip",
+      "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Plus_Jakarta_Sans.zip",
+      "label": "Plus_Jakarta_Sans.zip",
+      "type": "file",
+      "path": "fonts/Plus_Jakarta_Sans.zip",
+      "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts/Space_Grotesk.zip",
+      "label": "Space_Grotesk.zip",
+      "type": "file",
+      "path": "fonts/Space_Grotesk.zip",
+      "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
     },
     {
       "id": "file:fonts/fonts.md",
