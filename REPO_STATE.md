@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T04:19:34.864Z
+Generated: 2026-06-02T04:21:06.054Z
 
 ---
 
@@ -12848,6 +12848,15 @@ _No style files for this feature._
 |--------|---------------|
 | `../lib/adari` | `assertBuildInvariants` |
 
+## `scripts/readme-autosync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
+| `node:url` | `fileURLToPath` |
+| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
+
 ## `scripts/update-bugs.mjs`
 
 | Module | Connected via |
@@ -17327,6 +17336,7 @@ _No style files for this feature._
 - `lib/vm/index.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
+- `scripts/readme-autosync.ts`
 - `src/engin/generated/surfaces.ts`
 - `src/engin/generated/systems.ts`
 - `types/dreamArtifact.ts`
@@ -17602,6 +17612,7 @@ _No style files for this feature._
 - `lib/runtime/memory.ts`
 - `lib/runtime/useDragSurface.ts`
 - `scripts/generate-repo-state.mjs`
+- `scripts/readme-autosync.ts`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
 - `src/engin/generated/systems.ts`
@@ -17884,6 +17895,7 @@ _No circular dependencies detected._
 | `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
 | `lib/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
+| `scripts/readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/draggable/dream.DraggableModule.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
@@ -19022,6 +19034,7 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
+| `scripts/readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `runReadmeAutosync` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
@@ -22026,6 +22039,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
 │   ├── postbuild.ts
+│   ├── readme-autosync.ts ∅
+│   │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, runReadmeAutosync
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql
@@ -22308,8 +22323,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── product-law-principle10-alignment.test.ts
 │   ├── profile-avatar-edit-entrypoints.test.ts
 │   ├── rate-limiting.test.ts
-│   ├── readme-autosync.test.ts ⚠
-│   │   └── ⚠ ../scripts/readme-autosync  (SECTION_REGISTRY, SectionDescriptor, SubsectionDescriptor, computeAffected, replaceSection, upsertSubsectionInSection)
+│   ├── readme-autosync.test.ts
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts

@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T04:19:34.997Z
+Generated: 2026-06-02T04:21:06.189Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -12145,6 +12145,40 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts
 │   │   └── assertBuildInvariants  ← ../lib/adari
+│   ├── readme-autosync.ts ∅
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── readdirSync  ← node:fs
+│   │   ├── statSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── basename  ← node:path
+│   │   ├── extname  ← node:path
+│   │   ├── join  ← node:path
+│   │   ├── relative  ← node:path
+│   │   ├── resolve  ← node:path
+│   │   ├── fileURLToPath  ← node:url
+│   │   ├── ArrowFunction  ← ts-morph
+│   │   ├── FunctionDeclaration  ← ts-morph
+│   │   ├── FunctionExpression  ← ts-morph
+│   │   ├── Node  ← ts-morph
+│   │   ├── Project  ← ts-morph
+│   │   ├── SourceFile  ← ts-morph
+│   │   ├── SyntaxKind  ← ts-morph
+│   │   ├── → SECTION_REGISTRY
+│   │   ├── → analyzeComponents
+│   │   ├── → analyzeDependencies
+│   │   ├── → analyzeExports
+│   │   ├── → analyzeHooks
+│   │   ├── → analyzeImports
+│   │   ├── → analyzeRoutes
+│   │   ├── → analyzeSubsystem
+│   │   ├── → buildArchitecturalSectionBlock
+│   │   ├── → buildArchitecturalSubsectionBlock
+│   │   ├── → computeAffected
+│   │   ├── → replaceSection
+│   │   ├── → runReadmeAutosync
+│   │   ├── → upsertSubsectionInSection
+│   │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, runReadmeAutosync
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
@@ -15402,13 +15436,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
-│   ├── readme-autosync.test.ts ⚠
-│   │   ├── SECTION_REGISTRY  ⚠ ../scripts/readme-autosync
-│   │   ├── SectionDescriptor  ⚠ ../scripts/readme-autosync
-│   │   ├── SubsectionDescriptor  ⚠ ../scripts/readme-autosync
-│   │   ├── computeAffected  ⚠ ../scripts/readme-autosync
-│   │   ├── replaceSection  ⚠ ../scripts/readme-autosync
-│   │   ├── upsertSubsectionInSection  ⚠ ../scripts/readme-autosync
+│   ├── readme-autosync.test.ts
+│   │   ├── SECTION_REGISTRY  ← ../scripts/readme-autosync
+│   │   ├── SectionDescriptor  ← ../scripts/readme-autosync
+│   │   ├── SubsectionDescriptor  ← ../scripts/readme-autosync
+│   │   ├── computeAffected  ← ../scripts/readme-autosync
+│   │   ├── replaceSection  ← ../scripts/readme-autosync
+│   │   ├── upsertSubsectionInSection  ← ../scripts/readme-autosync
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
