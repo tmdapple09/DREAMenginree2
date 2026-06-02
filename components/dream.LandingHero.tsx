@@ -104,8 +104,8 @@ export default function LandingHero() {
       <div
         className="de-kicker mb-6"
         style={{ color: '#d4a832' }}
-        aria-label="DREAMengin — Creative OS"
-      >
+        aria-label="DREAMengin — Creative OS + DreamR - Human Social Media"
+      
         Creative Operating Surface
       </div>
 
@@ -121,7 +121,7 @@ export default function LandingHero() {
         Space to{' '}
         <span
           style={{
-            background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 40%, #c8981a 100%)',
+            background: 'linear-gradient(135deg, #38bdf8 10%, #0ea5e9 40%, #c8981a 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -135,24 +135,18 @@ export default function LandingHero() {
       {/* Product statement */}
       <p
         className="text-base md:text-lg leading-relaxed mb-6 max-w-md"
-        style={{ color: 'rgba(165,195,235,0.78)' }}
+        style={{ color: 'rgba(165,195,235,0.92)' }}
       >
-        DREAMengin is a digital world where capabilities, intelligence, creation, communication, memory, and experiences can exist as first-class entities.
-
-The purpose is not to organize them.
-The purpose is to allow them to exist, interact, evolve, and create new possibilities together.
-
-The architecture exists to support that world.
-It is not the world.
-
+        DREAMengin is an AI-powered creative OS where apps, games, chats, tools, and media become movable building blocks inside your own digital world.
       </p>
 
       {/* Mission statement link (replaces old stats strip) */}
       <Link
         href="/mission"
         className="mb-10 text-sm font-medium"
-        style={{ color: 'rgba(165,195,235,0.60)' }}
+        style={{ color: 'rgba(14, 165, 233,0.60)' }}
       >
+        DreamR - 
         A social platform where your individuality is the algorithm.{' '}
         <span style={{ color: '#38bdf8' }}>Where creativity—not likes—gets you seen. →</span>
       </Link>
