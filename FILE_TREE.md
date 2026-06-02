@@ -165,6 +165,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -7026,6 +7027,53 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── useState  ← react
 │       ├── → (default)
 │       └── ∅ unused: (default)
+├── fonts
+│   ├── Cormorant_Garamond
+│   │   ├── static
+│   │   │   ├── CormorantGaramond-Bold.ttf
+│   │   │   ├── CormorantGaramond-BoldItalic.ttf
+│   │   │   ├── CormorantGaramond-Italic.ttf
+│   │   │   ├── CormorantGaramond-Light.ttf
+│   │   │   ├── CormorantGaramond-LightItalic.ttf
+│   │   │   ├── CormorantGaramond-Medium.ttf
+│   │   │   ├── CormorantGaramond-MediumItalic.ttf
+│   │   │   ├── CormorantGaramond-Regular.ttf
+│   │   │   ├── CormorantGaramond-SemiBold.ttf
+│   │   │   └── CormorantGaramond-SemiBoldItalic.ttf
+│   │   ├── CormorantGaramond-Italic-VariableFont_wght.ttf
+│   │   ├── CormorantGaramond-VariableFont_wght.ttf
+│   │   ├── OFL.txt
+│   │   └── README.txt
+│   ├── Plus_Jakarta_Sans
+│   │   ├── static
+│   │   │   ├── PlusJakartaSans-Bold.ttf
+│   │   │   ├── PlusJakartaSans-BoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBold.ttf
+│   │   │   ├── PlusJakartaSans-ExtraBoldItalic.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLight.ttf
+│   │   │   ├── PlusJakartaSans-ExtraLightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Italic.ttf
+│   │   │   ├── PlusJakartaSans-Light.ttf
+│   │   │   ├── PlusJakartaSans-LightItalic.ttf
+│   │   │   ├── PlusJakartaSans-Medium.ttf
+│   │   │   ├── PlusJakartaSans-MediumItalic.ttf
+│   │   │   ├── PlusJakartaSans-Regular.ttf
+│   │   │   ├── PlusJakartaSans-SemiBold.ttf
+│   │   │   └── PlusJakartaSans-SemiBoldItalic.ttf
+│   │   ├── OFL.txt
+│   │   ├── PlusJakartaSans-Italic-VariableFont_wght.ttf
+│   │   ├── PlusJakartaSans-VariableFont_wght.ttf
+│   │   └── README.txt
+│   └── Space_Grotesk
+│       ├── static
+│       │   ├── SpaceGrotesk-Bold.ttf
+│       │   ├── SpaceGrotesk-Light.ttf
+│       │   ├── SpaceGrotesk-Medium.ttf
+│       │   ├── SpaceGrotesk-Regular.ttf
+│       │   └── SpaceGrotesk-SemiBold.ttf
+│       ├── OFL.txt
+│       ├── README.txt
+│       └── SpaceGrotesk-VariableFont_wght.ttf
 ├── hooks
 │   ├── use-spatial.ts ⚠ ∅
 │   │   ├── createClient  ⚠ @/lib/supabase/client
@@ -12070,6 +12118,40 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFile  ← node:fs/promises
 │   │   └── writeFile  ← node:fs/promises
+│   ├── generate-readme.ts ∅
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── readdirSync  ← node:fs
+│   │   ├── statSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── basename  ← node:path
+│   │   ├── extname  ← node:path
+│   │   ├── join  ← node:path
+│   │   ├── relative  ← node:path
+│   │   ├── resolve  ← node:path
+│   │   ├── fileURLToPath  ← node:url
+│   │   ├── ArrowFunction  ← ts-morph
+│   │   ├── FunctionDeclaration  ← ts-morph
+│   │   ├── FunctionExpression  ← ts-morph
+│   │   ├── Node  ← ts-morph
+│   │   ├── Project  ← ts-morph
+│   │   ├── SourceFile  ← ts-morph
+│   │   ├── SyntaxKind  ← ts-morph
+│   │   ├── → SECTION_REGISTRY
+│   │   ├── → analyzeComponents
+│   │   ├── → analyzeDependencies
+│   │   ├── → analyzeExports
+│   │   ├── → analyzeHooks
+│   │   ├── → analyzeImports
+│   │   ├── → analyzeRoutes
+│   │   ├── → analyzeSubsystem
+│   │   ├── → buildArchitecturalSectionBlock
+│   │   ├── → buildArchitecturalSubsectionBlock
+│   │   ├── → computeAffected
+│   │   ├── → replaceSection
+│   │   ├── → runReadmeAutosync
+│   │   ├── → upsertSubsectionInSection
+│   │   └── ∅ unused: SECTION_REGISTRY, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected, runReadmeAutosync
 │   ├── generate-repo-state.mjs ∅
 │   │   ├── * as Foo  ← path
 │   │   ├── Qux  ← path
@@ -12100,24 +12182,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts
 │   │   └── assertBuildInvariants  ← ../lib/adari
-│   ├── readme-autosync.ts ∅
-│   │   ├── existsSync  ← node:fs
-│   │   ├── readFileSync  ← node:fs
-│   │   ├── readdirSync  ← node:fs
-│   │   ├── statSync  ← node:fs
-│   │   ├── writeFileSync  ← node:fs
-│   │   ├── basename  ← node:path
-│   │   ├── extname  ← node:path
-│   │   ├── join  ← node:path
-│   │   ├── relative  ← node:path
-│   │   ├── resolve  ← node:path
-│   │   ├── fileURLToPath  ← node:url
-│   │   ├── → SECTION_REGISTRY
-│   │   ├── → computeAffected
-│   │   ├── → replaceSection
-│   │   ├── → runReadmeAutosync
-│   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: runReadmeAutosync
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
@@ -15377,13 +15441,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
-│   ├── readme-autosync.test.ts
-│   │   ├── SECTION_REGISTRY  ← ../scripts/readme-autosync
-│   │   ├── SectionDescriptor  ← ../scripts/readme-autosync
-│   │   ├── SubsectionDescriptor  ← ../scripts/readme-autosync
-│   │   ├── computeAffected  ← ../scripts/readme-autosync
-│   │   ├── replaceSection  ← ../scripts/readme-autosync
-│   │   ├── upsertSubsectionInSection  ← ../scripts/readme-autosync
+│   ├── readme-autosync.test.ts ⚠
+│   │   ├── SECTION_REGISTRY  ⚠ ../scripts/readme-autosync
+│   │   ├── SectionDescriptor  ⚠ ../scripts/readme-autosync
+│   │   ├── SubsectionDescriptor  ⚠ ../scripts/readme-autosync
+│   │   ├── computeAffected  ⚠ ../scripts/readme-autosync
+│   │   ├── replaceSection  ⚠ ../scripts/readme-autosync
+│   │   ├── upsertSubsectionInSection  ⚠ ../scripts/readme-autosync
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -16060,6 +16124,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── → config
 │   ├── → proxy
 │   └── ∅ unused: proxy, config
+├── scripts-fix.zip
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 │   └── (dynamic)  ← tailwindcss

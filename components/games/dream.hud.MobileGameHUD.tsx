@@ -20,14 +20,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const SCALE_MIN = 0.55;
 const SCALE_MAX = 1.45;
 const SCALE_STEP = 0.1;
-const TOUCH_FEEDBACK_DECAY_MS = 160;
+const TOUCH_FEEDBACK_DECAY_MS = 120;
 const HUD_CLEARANCE_BASE = 28;
 const DEFAULT_REMOTE_OFFSET_Y = 26;
 
 // Fraction of dock radius within which a touch claims the right joystick
 const RIGHT_JOY_ZONE = 0.40;
 // Fraction of dock width used as the joystick travel radius (how far stick can move)
-const JOYSTICK_TRAVEL_RATIO = 0.45;
+const JOYSTICK_TRAVEL_RATIO = 0.65;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
