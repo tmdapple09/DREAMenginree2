@@ -25,6 +25,7 @@ export type SystemMenuAction =
   | 'dr-eams'
   | 'connectors'
   | 'account'
+  | 'logout'
   | 'go-home';
 
 type Props = {
@@ -54,6 +55,7 @@ const SYSTEM_ITEMS: Array<{ id: SystemMenuAction; icon: string; label: string }>
   { id: 'marketplace',   icon: '🏪', label: 'Marketplace'   },
   { id: 'feed-settings', icon: '📡', label: 'Feed Sources'  },
   { id: 'appearance',    icon: '🎨', label: 'Appearance'    },
+  { id: 'logout',        icon: '↪',  label: 'Log Out'        },
 ];
 
 /* ── Sub-components ─────────────────────────────────────────────────────────── */

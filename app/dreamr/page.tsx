@@ -13,6 +13,8 @@ export const metadata = {
   description: 'The DreamR human media platform: ranked feed, creator signal, publishing, and journey.',
 };
 
+const DEV_BYPASS_USER_ID = 'dev-bypass-user';
+
 const DEV_PROFILE = {
   handle: 'devdreamer',
   display_name: 'Dev Dreamer',
@@ -35,12 +37,13 @@ export default async function DreamRPage( ){
 
   if (!user && !devBypass) redirect('/login');
 
+  const userId = user?.id ?? DEV_BYPASS_USER_ID;
   let profile: DreamRProfile | null = devBypass ? DEV_PROFILE : null;
 
   if (user) {
     const { data } = await supabase
       .from('profiles')
-      .select('handle, display_name, avatar_url, bio')
+      .select('id, handle, display_name, avatar_url, bio')
       .eq('id', user.id)
       .single();
     profile = data ?? null;
@@ -62,7 +65,7 @@ export default async function DreamRPage( ){
       <section className="max-w-5xl mx-auto px-4 py-6">
         <div className="rounded-[28px] overflow-hidden border border-white/60 shadow-[0_24px_80px_rgba(91,168,212,0.22)] bg-white/40">
           <div style={{ height: 'calc(100vh - 190px)', minHeight: 720 }}>
-            <DreamRSection profile={profile} initialPosts={[]} />
+            <DreamRSection userId={userId} profile={profile} initialPosts={[]} />
           </div>
         </div>
       </section>

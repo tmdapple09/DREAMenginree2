@@ -51,7 +51,7 @@ describe('DreamR swipe personalization', () => {
       { post: post({ id: 'c', profiles: { handle: 'alpha' } }) },
     ];
     const prefs = nextSwipePreferences(emptyDreamRSwipePreferences(), items[2]!.post, 'more');
-    const ordered = personalizeFeedOrder((items, prefs, item) => item.post);
+    const ordered = personalizeFeedOrder(items, prefs, (item) => item.post);
     expect(ordered.map((item) => item.post.id)).toEqual(['c', 'a', 'b']);
   });
 

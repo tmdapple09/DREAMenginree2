@@ -1,6 +1,6 @@
 'use client';
 
-import type { ActiveModuleInstance } from '@/types/dreamArtifact';
+import type { ActiveModuleInstance, RuntimeRegionKey } from '@/types/dreamArtifact';
 
 const STORAGE_KEY = (accountId: string) => `dream_active_modules_${accountId}`;
 
@@ -36,6 +36,35 @@ export function saveActiveModule(accountId: string, instance: ActiveModuleInstan
 
 export function saveActiveModules(accountId: string, instances: ActiveModuleInstance[]) {
   writeInstances(accountId, instances);
+}
+
+/** Replace one runtime region without overwriting modules mounted in the other. */
+export function saveActiveModulesForRegion(
+  accountId: string,
+  runtimeRegion: RuntimeRegionKey,
+  instances: ActiveModuleInstance[],
+): void {
+  const retained = loadActiveModules(accountId).filter(
+    (instance) => instance.runtimeRegion !== runtimeRegion,
+  );
+  writeInstances(accountId, [...retained, ...instances]);
+}
+
+/** Move one live module between the canonical dual-runtime regions. */
+export function transferActiveModuleRegion(
+  accountId: string,
+  instanceId: string,
+  targetRegion: RuntimeRegionKey,
+): ActiveModuleInstance | null {
+  let transferred: ActiveModuleInstance | null = null;
+  const next = loadActiveModules(accountId).map((instance) => {
+    if (instance.instanceId !== instanceId) return instance;
+    transferred = { ...instance, runtimeRegion: targetRegion };
+    return transferred;
+  });
+  if (!transferred) return null;
+  writeInstances(accountId, next);
+  return transferred;
 }
 
 export function removeActiveModule(accountId: string, instanceId: string): void {

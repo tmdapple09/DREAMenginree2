@@ -1,6 +1,6 @@
 // src/engin/core/index.ts
 
-import baseStateSeed from '@/engin/state/base.json';
+import baseStateSeed from '@/src/engin/state/base.json';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
 
 export { appendEntry, createLedger } from './engin.ledger';

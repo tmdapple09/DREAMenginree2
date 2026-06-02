@@ -78,10 +78,8 @@ export default function SettingsPanel( ){
     })();
   }, []);
 
-  async function handleSignOut( ){
-    const sb = createClient();
-    await sb.auth.signOut();
-    (window.top ?? window).location.href = '/login';
+  function handleSignOut( ){
+    (window.top ?? window).location.href = '/api/auth/logout';
   }
 
   return (

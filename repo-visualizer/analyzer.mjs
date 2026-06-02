@@ -376,7 +376,7 @@ function extractPythonData(relPath, content, allFilesSet) {
   }
 
   for (const match of content.matchAll(/^def\s+([A-Za-z_][\w]*)\s*\(/gm)) {
-    functions.push(){ name: match[1], exported: true, loc: lineOfIndex(content, match.index ?? 0) });
+    functions.push({ name: match[1], exported: true, loc: lineOfIndex(content, match.index ?? 0) });
   }
 
   for (const match of content.matchAll(/^class\s+([A-Za-z_][\w]*)\b/gm)) {

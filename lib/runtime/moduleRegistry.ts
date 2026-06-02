@@ -18,7 +18,7 @@
  */
 
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
+import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
 import { create } from 'zustand';
 
 // ── Store shape ────────────────────────────────────────────────────────────────
@@ -46,6 +46,7 @@ export const useModuleRegistry = create<ModuleRegistryState>((set, get) => ({
   modules: {},
 
   registerModule(manifest) {
+    if (!isModuleManifest(manifest)) return;
     set((state) => ({
       modules: { ...state.modules, [manifest.id]: manifest },
     }));
@@ -98,6 +99,10 @@ export const moduleRegistry = {
   },
   list(): ModuleManifest[] {
     return Object.values(useModuleRegistry.getState().modules);
+  },
+  canActivate(manifest: ModuleManifest, runtime: RuntimeCompatibility) {
+    if (!isModuleManifest(manifest)) return false;
+    return negotiateModuleCompatibility(manifest.compatibility, runtime).compatible;
   },
 };
 

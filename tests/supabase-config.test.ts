@@ -19,6 +19,7 @@ describe('lib/supabase/config', () => {
       ...ORIGINAL_ENV,
       NEXT_PUBLIC_SUPABASE_URL: '',
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: '',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
     })
     expect(config.SUPABASE_URL).toBe('https://suaiqcynxospjijzdudc.supabase.co')
     expect(config.SUPABASE_PUBLISHABLE_KEY).toBe('sb_publishable_5gYss6NWI2tvE6wDOsb8cw_rjVqrAe6')

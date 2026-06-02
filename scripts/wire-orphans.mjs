@@ -189,7 +189,7 @@ function classifySlot(relPath) {
     return 'route-surface';
   }
 
-  if (relPath.startsWith('engins/')) return 'engine-ruleset';
+  if (relPath.startsWith('engins/') && (isTs || isTsx)) return 'engine-ruleset';
   if (relPath.startsWith('src/dream/rulesets/')) return 'engine-ruleset';
   if (relPath.startsWith('lib/connectors/') && isTs) return 'connector';
   if (relPath.startsWith('lib/gameengin/brain/') && isJson) return 'brain-node';
@@ -247,7 +247,12 @@ function buildGeneratedModule(name, entries) {
 function buildGeneratedIndex() {
   return `${GENERATED_HEADER}
 
-import type { UniversalEngine } from '@/src/engin/core';
+// Keep generated registry hydration structural so generated wiring never imports
+// the core engine that dynamically loads this module.
+interface EngineWithRegistry {
+  registry: { hydrate: (config: Record<string, unknown>) => void };
+}
+
 import { rulesets } from './rulesets';
 import { surfaces } from './surfaces';
 import { connectors } from './connectors';
@@ -257,7 +262,7 @@ import { personas } from './personas';
 import { systems } from './systems';
 import { hooks } from './hooks';
 
-export function hydrateEngineRegistry(engine: UniversalEngine): void {
+export function hydrateEngineRegistry(engine: EngineWithRegistry): void {
   engine.registry.hydrate({
     rulesets,
     surfaces,
@@ -277,7 +282,7 @@ async function writeFileSafely(targetPath, content) {
   await fs.writeFile(targetPath, content, 'utf8');
 }
 
-export async function buildRegistry(options = ){ write: true }) {
+export async function buildRegistry(options = { write: true }) {
   const write = options.write !== false;
   const scannedFiles = await collectScannedFiles();
   const entries = [];
