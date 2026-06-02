@@ -2135,7 +2135,7 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 
 ## Agents & Workflow
 Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **141**
+- Files tracked: **143**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2224,6 +2224,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -2246,6 +2247,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     ├── archive
     │   └── validate-deployment.js
     ├── autofix-vercel-build.mjs
+    ├── center-audit.mjs
     ├── check-build-memory-drift.mjs
     ├── check-engin-filenames.mjs
     ├── check-licenses.mjs
@@ -2259,11 +2261,9 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     ├── fix-audit.js
     ├── gameengin
     │   ├── architect-run.ts
-    │   ├── artisan-run.ts
-    │   ├── lib
-… (21 more files)
+… (23 more files)
 ```
-<details><summary>Agents & Workflow file index (141 files)</summary>
+<details><summary>Agents & Workflow file index (143 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
@@ -2345,6 +2345,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
 - `.github/workflows/type-audit.yml` — project file (yml).
+- `.github/workflows/unzip-fonts.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
@@ -2362,6 +2363,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 - `scripts/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `scripts/archive/validate-deployment.js` — TypeScript/JavaScript runtime module.
 - `scripts/autofix-vercel-build.mjs` — TypeScript/JavaScript runtime module.
+- `scripts/center-audit.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/check-build-memory-drift.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/check-engin-filenames.mjs` — TypeScript/JavaScript runtime module.
 - `scripts/check-licenses.mjs` — TypeScript/JavaScript runtime module.
@@ -2499,7 +2501,7 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 
 ## Infra & Ops
 Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **67**
+- Files tracked: **68**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -2568,6 +2570,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── sql-migration-guard.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
 │       ├── vercel-deploy.yml
@@ -2575,7 +2578,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (67 files)</summary>
+<details><summary>Infra & Ops file index (68 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
 - `.github/workflows/ScanArcCleanup.yml` — project file (yml).
@@ -2638,6 +2641,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
 - `.github/workflows/type-audit.yml` — project file (yml).
+- `.github/workflows/unzip-fonts.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
@@ -3263,7 +3267,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 
 ## Contributing
 Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **281**
+- Files tracked: **282**
 - API routes discovered: none
 - App pages discovered: none
 - Components/modules discovered: none
@@ -3389,9 +3393,9 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── check_workflow_masking.py
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
-… (161 more files)
+… (162 more files)
 ```
-<details><summary>Contributing file index (281 files)</summary>
+<details><summary>Contributing file index (282 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
 - `.github/actions/resilient-engine/action.yml` — project file (yml).
@@ -3572,6 +3576,7 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 - `.github/workflows/sql-migration-guard.yml` — project file (yml).
 - `.github/workflows/sync-build-memory.yml` — project file (yml).
 - `.github/workflows/type-audit.yml` — project file (yml).
+- `.github/workflows/unzip-fonts.yml` — project file (yml).
 - `.github/workflows/update-embed-feed.yml` — project file (yml).
 - `.github/workflows/update-repo-state.yml` — project file (yml).
 - `.github/workflows/vercel-deploy.yml` — project file (yml).
@@ -4738,3 +4743,25 @@ Auto-synced from `workflow/**` using repository introspection.
 
 </details>
 
+## Fonts
+Auto-synced from `fonts/**` using repository introspection.
+- Files tracked: **4**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Fonts file structure
+```text
+└── fonts
+    ├── Cormorant_Garamond.zip
+    ├── Plus_Jakarta_Sans.zip
+    ├── Space_Grotesk.zip
+    └── fonts.md
+```
+<details><summary>Fonts file index (4 files)</summary>
+
+- `fonts/Cormorant_Garamond.zip` — project file (zip).
+- `fonts/Plus_Jakarta_Sans.zip` — project file (zip).
+- `fonts/Space_Grotesk.zip` — project file (zip).
+- `fonts/fonts.md` — documentation file.
+
+</details>
