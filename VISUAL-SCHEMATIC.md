@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 1976
+- **Total files:** 1977
 - **Total function/class nodes:** 3581
 - **Total edges:** 7154
-- **Orphan nodes:** 2948
+- **Orphan nodes:** 2949
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4823,6 +4823,7 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
+| `fonts.zip` | file |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `lib-index.mjs` | mjs |

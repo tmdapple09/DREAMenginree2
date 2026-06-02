@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T02:50:55.760Z",
+  "generatedAt": "2026-06-02T02:56:26.529Z",
   "root": ".",
   "nodes": [
     {
@@ -24798,6 +24798,16 @@
       "label": "fix-audit.js",
       "type": "js",
       "path": "fix-audit.js",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:fonts.zip",
+      "label": "fonts.zip",
+      "type": "file",
+      "path": "fonts.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
