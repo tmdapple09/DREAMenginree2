@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T09:35:09.117Z
+Generated: 2026-06-02T09:36:44.375Z
 
 ---
 
@@ -17715,7 +17715,6 @@ _No circular dependencies detected._
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
-| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
