@@ -4738,3 +4738,25 @@ Auto-synced from `workflow/**` using repository introspection.
 
 </details>
 
+## Fonts
+Auto-synced from `fonts/**` using repository introspection.
+- Files tracked: **4**
+- API routes discovered: none
+- App pages discovered: none
+- Components/modules discovered: none
+#### Fonts file structure
+```text
+└── fonts
+    ├── Cormorant_Garamond.zip
+    ├── Plus_Jakarta_Sans.zip
+    ├── Space_Grotesk.zip
+    └── fonts.md
+```
+<details><summary>Fonts file index (4 files)</summary>
+
+- `fonts/Cormorant_Garamond.zip` — project file (zip).
+- `fonts/Plus_Jakarta_Sans.zip` — project file (zip).
+- `fonts/Space_Grotesk.zip` — project file (zip).
+- `fonts/fonts.md` — documentation file.
+
+</details>
