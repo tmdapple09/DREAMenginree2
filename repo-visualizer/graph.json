@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T23:51:25.924Z",
+  "generatedAt": "2026-06-02T23:52:09.835Z",
   "root": ".",
   "nodes": [
     {
@@ -3346,16 +3346,6 @@
       "label": "AGENTS.md",
       "type": "doc",
       "path": "AGENTS.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:ARCHITECTURE.md",
-      "label": "ARCHITECTURE.md",
-      "type": "doc",
-      "path": "ARCHITECTURE.md",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
