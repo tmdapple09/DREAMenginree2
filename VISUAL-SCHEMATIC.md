@@ -10,8 +10,8 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 
 - **Total files:** 2018
 - **Total function/class nodes:** 3599
-- **Total edges:** 7154
-- **Orphan nodes:** 3008
+- **Total edges:** 7150
+- **Orphan nodes:** 3012
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -46,9 +46,9 @@ graph LR
   src["src"] -->|6| daydreams["daydreams"]
   components["components"] -->|5| app["app"]
   coresurfaces["coresurfaces"] -->|5| components["components"]
-  tests["tests"] -->|5| scripts["scripts"]
   components["components"] -->|4| hooks["hooks"]
   coresurfaces["coresurfaces"] -->|4| lib["lib"]
+  tests["tests"] -->|4| scripts["scripts"]
   app["app"] -->|3| hooks["hooks"]
   engins["engins"] -->|3| hooks["hooks"]
   _root_["(root)"] -->|3| lib["lib"]
@@ -1354,7 +1354,7 @@ graph LR
 | `tests/product-law-principle10-alignment.test.ts` | ts | 0 | 0 | — | — |
 | `tests/profile-avatar-edit-entrypoints.test.ts` | ts | 0 | 0 | — | — |
 | `tests/rate-limiting.test.ts` | ts | 0 | 0 | — | — |
-| `tests/readme-autosync.test.ts` | ts | 1 | 0 | — | `scripts/readme-autosync.ts` |
+| `tests/readme-autosync.test.ts` | ts | 0 | 0 | — | — |
 | `tests/readme-homedream-system.test.ts` | ts | 0 | 0 | — | — |
 | `tests/readme-section13-code-codeengin.test.ts` | ts | 0 | 0 | — | — |
 | `tests/readme-section6-homedream.test.ts` | ts | 0 | 0 | — | — |
@@ -1411,7 +1411,6 @@ graph LR
 | `scripts/update-readme-status-utils.mjs` | mjs | 0 | 2 | `scripts/update-readme.mjs`, `tests/update-readme-current-status.test.ts` | — |
 | `scripts/wire-orphans.mjs` | mjs | 0 | 2 | `scripts/check-orphans.mjs`, `tests/orphan-wire-script.test.ts` | — |
 | `scripts/gameengin/lib/tar.ts` | ts | 0 | 1 | `tests/gameengin-spec.test.ts` | — |
-| `scripts/readme-autosync.ts` | ts | 0 | 1 | `tests/readme-autosync.test.ts` | — |
 | `scripts/repository-state-analysis-section.mjs` | mjs | 0 | 1 | `tests/repository-state-analysis-section.test.ts` | — |
 | `scripts/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `scripts/archive/validate-deployment.js` | js | 0 | 0 | — | — |
@@ -1437,6 +1436,7 @@ graph LR
 | `scripts/gameengin/writer-run.ts` | ts | 0 | 0 | — | — |
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs | 0 | 0 | — | — |
+| `scripts/generate-readme.ts` | ts | 0 | 0 | — | — |
 | `scripts/generate-repo-state.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-webapp-final-form.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/law-check.sh` | file | 0 | 0 | — | — |
@@ -4493,13 +4493,13 @@ graph LR
   f_scripts_gameengin_writer_run_ts["writer-run.ts"]
   f_scripts_generate_mobile_nextgen_spec_mjs["generate-mobile-nextgen-spec.mjs"]
   f_scripts_generate_mobile_ps5_spec_mjs["generate-mobile-ps5-spec.mjs"]
+  f_scripts_generate_readme_ts["generate-readme.ts"]
   f_scripts_generate_repo_state_mjs["generate-repo-state.mjs"]
   f_scripts_generate_webapp_final_form_mjs["generate-webapp-final-form.mjs"]
   f_scripts_law_check_sh["law-check.sh"]
   f_scripts_migrate_imports_sh["migrate-imports.sh"]
   f_scripts_optimize_dreamengin_mjs["optimize-dreamengin.mjs"]
   f_scripts_postbuild_js["postbuild.js"]
-  f_scripts_readme_autosync_ts["readme-autosync.ts"]
   f_scripts_repository_state_analysis_section_mjs["repository-state-analysis-section.mjs"]
   f_scripts_score_pass_cjs["score-pass.cjs"]
   f_scripts_setup_database_sql["setup-database.sql"]
@@ -5002,6 +5002,7 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `scripts/gameengin/writer-run.ts` | ts |
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs |
+| `scripts/generate-readme.ts` | ts |
 | `scripts/generate-repo-state.mjs` | mjs |
 | `scripts/generate-webapp-final-form.mjs` | mjs |
 | `scripts/law-check.sh` | file |

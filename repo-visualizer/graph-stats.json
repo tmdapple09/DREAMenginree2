@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-02T04:37:15.886Z",
+  "generatedAt": "2026-06-02T04:56:58.838Z",
   "totalFiles": 2018,
   "totalNodes": 6595,
-  "totalEdges": 7154,
+  "totalEdges": 7150,
   "totalFunctionAndClassNodes": 3599,
-  "orphanCount": 3008,
+  "orphanCount": 3012,
   "countsByType": {
     "folder": 584,
     "file": 113,
