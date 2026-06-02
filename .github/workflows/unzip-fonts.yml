@@ -1,5 +1,4 @@
-```yaml
-name: Unzip fonts
+Name: Unzip fonts
 on:
   workflow_dispatch:
 permissions:
