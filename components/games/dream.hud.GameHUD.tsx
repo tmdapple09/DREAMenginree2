@@ -1,7 +1,6 @@
 'use client';
 
-import GameController from '@/components/games/dream.GameController';
-import MobileGameHUD from '@/components/games/dream.hud.MobileGameHUD';
+import GameRemote from '@/components/games/dream.remote.GameRemote';
 import type { MobileHudMode } from '@/lib/games/mobileControls';
 
 interface GameHUDProps {
@@ -12,18 +11,13 @@ interface GameHUDProps {
   onExit: () => void;
 }
 
-
-export default function GameHUD({ gameLabel, gameEmoji, playHref, mode = 'buttons', onExit }: GameHUDProps) {
-  if (mode === 'controller') {
-    return <GameController gameLabel={gameLabel} onExit={onExit} />;
-  }
-  return (
-    <MobileGameHUD
-      gameLabel={gameLabel}
-      gameEmoji={gameEmoji}
-      playHref={playHref}
-      mode={mode}
-      onExit={onExit}
-    />
-  );
+/**
+ * Compatibility wrapper only.
+ *
+ * GameEngin's shared control surface is GameRemote. Cartridge-specific HUDs
+ * belong inside cartridges; this wrapper keeps older imports from creating a
+ * second generic HUD/controller layer.
+ */
+export default function GameHUD({ gameLabel, playHref, onExit }: GameHUDProps) {
+  return <GameRemote embedded gameLabel={gameLabel} playHref={playHref} onExit={onExit} />;
 }

@@ -211,7 +211,7 @@ export default async function LabDaydreamPage( ){
                 {[
                   { label: 'Shaders', val: '12', color: '#8b5cf6' },
                   { label: 'Passes',  val: '4',  color: '#0ea5e9' },
-                  { label: 'FPS',     val: '60', color: '#22c55e' },
+                  { label: 'Scenes',  val: '∞',  color: '#22c55e' },
                 ].map((m) => (
                   <div key={m.label} style={{ padding: '8px 6px', borderRadius: 9, background: `${m.color}0e`, border: `1px solid ${m.color}25`, textAlign: 'center' }}>
                     <div style={{ fontSize: 16, fontWeight: 800, color: m.color }}>{m.val}</div>
@@ -252,7 +252,7 @@ export default async function LabDaydreamPage( ){
             <div className="de-widget-body">
               {[
                 { label: 'WebGPU Dynamic Shadows', on: true },
-                { label: 'TF.js Telemetry',        on: true },
+                { label: 'Adaptive Quality',       on: true },
                 { label: 'Multiplayer Beta',        on: false },
                 { label: 'Quantum Simulator',       on: true },
               ].map((f) => (

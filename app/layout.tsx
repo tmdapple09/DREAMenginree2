@@ -17,16 +17,29 @@ import { OSProvider } from '@/lib/dreamenginOS/OSContext';
 import { CustomizeModeProvider } from '@/lib/ui/CustomizeModeContext';
 import '@/styles/home-dream.css';
 import type { Metadata, Viewport } from 'next';
+import localFont from 'next/font/local';
 import { Suspense } from 'react';
 
 // DreamSystemProvider and DualRuntimeContainer remain mounted at root so every
 // surface has shared runtime context. DMBar mounts under app/dreamdmbar/layout.
 
-const localFontVariables = {
-  '--font-space-grotesk': '"Space Grotesk", system-ui, sans-serif',
-  '--font-cormorant': '"Cormorant Garamond", Georgia, serif',
-  '--font-dreamr': '"Plus Jakarta Sans", system-ui, sans-serif',
-} as React.CSSProperties;
+const spaceGrotesk = localFont({
+  src: '../fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf',
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
+
+const cormorant = localFont({
+  src: '../fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf',
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const dreamr = localFont({
+  src: '../fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf',
+  variable: '--font-dreamr',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'DREAMengin - Your Creative Platform',
@@ -55,8 +68,7 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
   return (
     <html
       lang="en"
-      className="scroll-smooth"
-      style={localFontVariables}
+      className={`${spaceGrotesk.variable} ${cormorant.variable} ${dreamr.variable} scroll-smooth`}
       data-theme="dream-ice"
       suppressHydrationWarning
     >

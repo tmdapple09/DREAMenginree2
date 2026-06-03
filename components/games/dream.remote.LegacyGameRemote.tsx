@@ -64,8 +64,6 @@ const REMOTE_ACTION_PILLS = [
   { sym: 'R2', label: 'J+Shot', action: 'jump-shoot' as GameInputAction, color: '#a78bfa' },
   { sym: 'L2', label: 'Hold', action: 'l2' as GameInputAction, color: '#818cf8' },
   { sym: 'R1', label: 'Dash', action: 'r1' as GameInputAction, color: '#818cf8' },
-  { sym: 'L3', label: 'Stick Click', action: 'l3' as GameInputAction, color: '#94a3b8' },
-  { sym: 'R3', label: 'Stick Click / Jump', action: 'r3' as GameInputAction, color: '#facc15' },
 ] as const;
 
 const RIGHT_STICK_RING_BUTTONS = [
@@ -132,9 +130,6 @@ interface StickProps {
   label: string;
   scale?: number;
   clickAction?: GameInputAction;
-  clickSym?: string;
-  clickLabel?: string;
-  clickColor?: string;
 }
 
 function Stick({
@@ -143,9 +138,6 @@ function Stick({
   label,
   scale = 1,
   clickAction,
-  clickSym,
-  clickLabel,
-  clickColor = 'rgba(220,235,255,0.82)',
 }: StickProps) {
   const padRadius = (side === 'right' ? RIGHT_PAD_R : LEFT_PAD_R) * scale;
   const knobRadius = (side === 'right' ? RIGHT_KNOB_R : LEFT_KNOB_R) * scale;
@@ -157,16 +149,36 @@ function Stick({
   const [buttonAction, setButtonAction] = useState<GameInputAction | null>(null);
 
   const centerRef       = useRef<{ x: number; y: number } | null>(null);
+  const pressStartRef   = useRef<{ x: number; y: number; clickFired: boolean } | null>(null);
+  const clickTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeActionRef = useRef<GameInputAction | null>(null);
   const prevDirRef      = useRef<Dir8 | null>(null);
+
+  const clearClickTimer = useCallback(() => {
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current);
+      clickTimerRef.current = null;
+    }
+  }, []);
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
     const rect = e.currentTarget.getBoundingClientRect();
     centerRef.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    pressStartRef.current = { x: e.clientX, y: e.clientY, clickFired: false };
     setActive(true);
-  }, []);
+    if (clickAction) {
+      clearClickTimer();
+      clickTimerRef.current = setTimeout(() => {
+        const start = pressStartRef.current;
+        if (!start || start.clickFired || prevDirRef.current) return;
+        start.clickFired = true;
+        setButtonAction(clickAction);
+        fireAction(clickAction, true);
+      }, 420);
+    }
+  }, [clearClickTimer, clickAction]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -176,6 +188,11 @@ function Stick({
     const rawDy = e.clientY - centerRef.current.y;
     const clamped = clampToCircle({ x: rawDx, y: rawDy }, maxDisp);
     setKnob(clamped);
+
+    const start = pressStartRef.current;
+    if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > DEAD) {
+      clearClickTimer();
+    }
 
     const newDir = angleToDir(rawDx, rawDy);
 
@@ -198,41 +215,38 @@ function Stick({
     }
 
     setDir(newDir);
-  }, [maxDisp, side]);
+  }, [clearClickTimer, maxDisp, side]);
 
   const handlePointerUp = useCallback(() => {
+    clearClickTimer();
+    const start = pressStartRef.current;
     if (activeActionRef.current) {
       fireAction(activeActionRef.current, false);
       if (side === 'left') fireAction('move-stop', false);
       activeActionRef.current = null;
+    } else if (clickAction && start && !start.clickFired) {
+      fireAction(clickAction, true);
+      fireAction(clickAction, false);
+    } else if (clickAction && start?.clickFired) {
+      fireAction(clickAction, false);
     }
+    setButtonAction(null);
     prevDirRef.current = null;
+    pressStartRef.current = null;
     centerRef.current  = null;
     setKnob({ x: 0, y: 0 });
     setDir(null);
     setActive(false);
-  }, [side]);
+  }, [clearClickTimer, clickAction, side]);
 
-  const triggerButtonAction = useCallback((action: GameInputAction) => {
-    if (activeActionRef.current) {
-      fireAction(activeActionRef.current, false);
-      activeActionRef.current = null;
-    }
-    setButtonAction(action);
-    fireAction(action, true);
-  }, []);
-
-  const releaseButtonAction = useCallback(() => {
-    if (!buttonAction) return;
-    fireAction(buttonAction, false);
-    setButtonAction(null);
-  }, [buttonAction]);
 
   const map        = side === 'right' ? RIGHT_MAP : LEFT_MAP;
   const activeInfo = dir ? map[dir] : null;
   const dirLabel   = activeInfo ? activeInfo.label : null;
   const buttonLabel = buttonAction
-    ? (Object.values(RIGHT_MAP).find((info) => info.action === buttonAction)?.label ?? buttonAction)
+    ? buttonAction === clickAction
+      ? side === 'right' ? 'Press jump' : 'Press'
+      : (Object.values(RIGHT_MAP).find((info) => info.action === buttonAction)?.label ?? buttonAction)
     : null;
   const labelColor = side === 'right' && dir
     ? RIGHT_MAP[dir].color
@@ -321,43 +335,6 @@ function Stick({
         }} />
       </div>
 
-      {clickAction && clickSym && (
-        <button
-          type="button"
-          aria-label={clickLabel ?? clickSym}
-          onPointerDown={(e) => { e.preventDefault(); triggerButtonAction(clickAction); }}
-          onPointerUp={(e) => { e.preventDefault(); releaseButtonAction(); }}
-          onPointerCancel={(e) => { e.preventDefault(); releaseButtonAction(); }}
-          onPointerLeave={(e) => { e.preventDefault(); releaseButtonAction(); }}
-          onTouchStart={(e) => { e.preventDefault(); triggerButtonAction(clickAction); }}
-          onTouchEnd={(e) => { e.preventDefault(); releaseButtonAction(); }}
-          onTouchCancel={(e) => { e.preventDefault(); releaseButtonAction(); }}
-          title={clickLabel ?? clickSym}
-          style={{
-            minWidth: side === 'right' ? 72 * scale : 58 * scale,
-            height: 26 * scale,
-            borderRadius: 999,
-            padding: '0 10px',
-            background: side === 'right'
-              ? 'rgba(250,204,21,0.16)'
-              : 'rgba(148,163,184,0.16)',
-            border: `1.5px solid ${side === 'right' ? '#facc15' : 'rgba(148,163,184,0.6)'}`,
-            color: clickColor,
-            fontSize: 10 * scale,
-            fontWeight: 900,
-            letterSpacing: '0.08em',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            boxShadow: side === 'right'
-              ? '0 0 14px rgba(250,204,21,0.18)'
-              : '0 0 10px rgba(148,163,184,0.12)',
-          }}
-        >
-          {clickSym}
-        </button>
-      )}
     </div>
   );
 }
@@ -634,8 +611,6 @@ export default function GameRemote({
           label="Move"
           scale={embedded ? 0.78 : 1}
           clickAction="l3"
-          clickSym="L3"
-          clickLabel="Left stick click"
         />
 
         {/* Center controls */}
@@ -716,9 +691,6 @@ export default function GameRemote({
               label="Actions"
               scale={rightClusterScale}
               clickAction="r3"
-              clickSym="R3 / ×"
-              clickLabel="Right stick click / jump"
-              clickColor="#fef08a"
             />
 
             {RIGHT_STICK_RING_BUTTONS.map(({ sym, label, action, color, top, left }) => (
@@ -772,13 +744,12 @@ export default function GameRemote({
           flexShrink: 0,
         }}>
           {([
-            ['L-stick', 'Move'],
-            ['L3',      'Stick Click'],
+            ['L-stick', 'Move / press'],
             ['×',       'Jump'],
             ['△',       'Duck'],
             ['□',       'Spin'],
             ['○',       'Shoot'],
-            ['R3',      'Stick Click / Jump'],
+            ['R-stick', 'Aim / press jump'],
             ['R-stick ↗', 'Jump+Shoot'],
           ] as [string, string][]).map(([ctrl, action]) => (
             <div key={ctrl} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>

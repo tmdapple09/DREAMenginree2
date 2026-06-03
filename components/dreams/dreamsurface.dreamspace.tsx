@@ -27,7 +27,6 @@
  */
 
 import DreamSpace from '@/app/dreamdmbar/_components/DreamSpaceRegion';
-import RuntimeMemoryHUD from '@/components/dreams/dream.panel.RuntimeMemoryHUD';
 import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import SpatialProfileSpace from '@/components/spatial/dream.ProfileSpace';
 import UniversalWidget from '@/components/widgets/dream.widget.UniversalWidget';
@@ -653,9 +652,6 @@ export default function DreamsSpacePanel({
               </div>
             </div>
           </div>
-
-          {/* Section: Runtime Memory HUD — artifact trail + active contexts */}
-          <RuntimeMemoryHUD />
 
           {/* Section: Daydreams */}
           <div style={{
