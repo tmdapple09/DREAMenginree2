@@ -1,11 +1,11 @@
 'use client';
 
 /**
- * GameRemote — compatibility export for the legacy Side-B remote surface.
+ * GameRemote — shared control surface for GameEngin cartridges.
  *
- * Immersive full-screen game sessions now use GameHUD/MobileGameHUD as the
- * universal in-game controller layer. The old dual-stick panel remains
- * available for legacy Daydream / Side-B remote workflows via this export.
+ * GameEngin shells mount this remote beside cartridge-owned visuals. A game may
+ * draw its own HUD inside the cartridge, but generic overlay controllers
+ * must not replace this universal input capability.
  */
 
 export { default, type GameInputAction } from '@/components/games/dream.remote.LegacyGameRemote';

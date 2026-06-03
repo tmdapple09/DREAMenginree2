@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-02T22:18:29.344Z
+Generated: 2026-06-03T00:19:28.715Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4689,8 +4689,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.hud.GameHUD.tsx ∅
-│   │   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
-│   │   │   ├── ⬡ MobileGameHUD  ← @/components/games/dream.hud.MobileGameHUD
+│   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   │   ├── MobileHudMode  ← @/lib/games/mobileControls
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)

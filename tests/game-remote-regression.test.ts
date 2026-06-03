@@ -35,7 +35,11 @@ describe('existing PS5 remote usage', () => {
     expect(src).toContain("{ sym: 'R1', label: 'Dash'");
     expect(src).toContain("clickAction=\"l3\"");
     expect(src).toContain("clickAction=\"r3\"");
-    expect(src).toContain("clickSym=\"R3 / ×\"");
+    expect(src).not.toContain('clickSym');
+    expect(src).not.toContain('Stick Click');
+    expect(src).not.toContain('R3 / ×');
+    expect(src).not.toContain("{ sym: 'L3'");
+    expect(src).not.toContain("{ sym: 'R3'");
   });
 
   it('does not reintroduce the old duplicate UniversalDPad controller in GamesHub', () => {
@@ -54,6 +58,17 @@ describe('existing PS5 remote usage', () => {
     expect(immersiveSrc).toContain('<GameRemote');
     expect(immersiveSrc).not.toContain('<GameHUD');
     expect(immersiveSrc).toContain('The cartridge owns its visual HUD');
+  });
+
+  it('keeps legacy GameHUD imports routed to GameRemote instead of MobileGameHUD', () => {
+    const hud = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.GameHUD.tsx'), 'utf8');
+    const remoteExport = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.GameRemote.tsx'), 'utf8');
+
+    expect(hud).toContain("import GameRemote from '@/components/games/dream.remote.GameRemote'");
+    expect(hud).toContain('<GameRemote embedded');
+    expect(hud).not.toContain('MobileGameHUD');
+    expect(remoteExport).toContain('shared control surface for GameEngin cartridges');
+    expect(remoteExport).not.toContain('GameHUD/MobileGameHUD');
   });
 
   it('removes per-game on-screen remote pads in favor of the shared GameRemote', () => {

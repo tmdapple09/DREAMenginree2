@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-02T22:18:29.211Z
+Generated: 2026-06-03T00:19:28.575Z
 
 ---
 
@@ -1066,7 +1066,6 @@ _No style files for this feature._
 - `@/components/games/dream.DefuseRitual`
 - `@/components/games/dream.EchoArena`
 - `@/components/games/dream.EnginFracture`
-- `@/components/games/dream.GameController`
 - `@/components/games/dream.GameController.module.css`
 - `@/components/games/dream.GamesHub`
 - `@/components/games/dream.Glassfall`
@@ -1077,7 +1076,6 @@ _No style files for this feature._
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
-- `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
 - `@/components/games/dream.remote.GameRemote`
 - `@/components/games/dream.remote.LegacyGameRemote`
@@ -9422,8 +9420,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/games/dream.GameController` | `⬡ GameController` |
-| `@/components/games/dream.hud.MobileGameHUD` | `⬡ MobileGameHUD` |
+| `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
 | `@/lib/games/mobileControls` | `MobileHudMode` |
 
 ## `components/games/dream.hud.LegacyGameHUD.tsx`
