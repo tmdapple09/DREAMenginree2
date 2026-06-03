@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-03T00:21:18.904Z
+Generated: 2026-06-03T00:55:04.408Z
 
 ---
 
@@ -9573,12 +9573,6 @@ _No style files for this feature._
 |--------|---------------|
 | `next/link` | `⬡ Link` |
 
-## `components/landing/dream.LandingProductStatement.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `next/link` | `⬡ Link` |
-
 ## `components/landing/dream.scene.UniverseField.tsx`
 
 | Module | Connected via |
@@ -16600,7 +16594,6 @@ _No style files for this feature._
 ## `components/landing/`
 
 - `components/landing/dream.LandingNav.tsx`
-- `components/landing/dream.LandingProductStatement.tsx`
 - `components/landing/dream.scene.UniverseField.tsx`
 
 ## `components/marketplace/`
@@ -18649,7 +18642,6 @@ _No circular dependencies detected._
 | `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)` |
 | `components/home/dream.widget.DreamWidget.tsx` | `(default)` |
 | `components/landing/dream.LandingNav.tsx` | `(default)` |
-| `components/landing/dream.LandingProductStatement.tsx` | `(default)` |
 | `components/landing/dream.scene.UniverseField.tsx` | `(default)` |
 | `components/marketplace/dream.MarketplaceListingCard.tsx` | `(default)` |
 | `components/marketplace/dream.MarketplaceRequestButton.tsx` | `(default)` |
@@ -20543,8 +20535,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── dream.PlatformHealth.tsx
 │   ├── landing
 │   │   ├── dream.LandingNav.tsx ∅
-│   │   │   └── ∅ unused: (default)
-│   │   ├── dream.LandingProductStatement.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.scene.UniverseField.tsx ∅
 │   │       └── ∅ unused: (default)

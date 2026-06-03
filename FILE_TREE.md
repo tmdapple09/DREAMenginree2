@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-03T00:21:19.032Z
+Generated: 2026-06-03T00:55:04.549Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4926,10 +4926,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── → PlatformHealth
 │   ├── landing
 │   │   ├── dream.LandingNav.tsx ∅
-│   │   │   ├── ⬡ Link  ← next/link
-│   │   │   ├── → (default)
-│   │   │   └── ∅ unused: (default)
-│   │   ├── dream.LandingProductStatement.tsx ∅
 │   │   │   ├── ⬡ Link  ← next/link
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
