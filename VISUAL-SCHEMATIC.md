@@ -8,24 +8,24 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2018
-- **Total function/class nodes:** 3599
-- **Total edges:** 7150
-- **Orphan nodes:** 3012
+- **Total files:** 2017
+- **Total function/class nodes:** 3601
+- **Total edges:** 7151
+- **Orphan nodes:** 3013
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
-  app["app"] -->|1238| lib["lib"]
+  app["app"] -->|1234| lib["lib"]
   src["src"] -->|524| lib["lib"]
-  components["components"] -->|312| lib["lib"]
+  components["components"] -->|313| lib["lib"]
   src["src"] -->|294| components["components"]
-  app["app"] -->|291| components["components"]
+  app["app"] -->|292| components["components"]
   src["src"] -->|257| app["app"]
   tests["tests"] -->|240| lib["lib"]
   engins["engins"] -->|127| lib["lib"]
   lib["lib"] -->|55| types["types"]
-  app["app"] -->|41| types["types"]
+  app["app"] -->|42| types["types"]
   engins["engins"] -->|25| components["components"]
   tests["tests"] -->|24| components["components"]
   components["components"] -->|22| engins["engins"]
@@ -36,7 +36,7 @@ graph LR
   lib["lib"] -->|15| components["components"]
   tests["tests"] -->|15| app["app"]
   dreamdmbar["dreamdmbar"] -->|14| lib["lib"]
-  components["components"] -->|10| types["types"]
+  components["components"] -->|12| types["types"]
   hooks["hooks"] -->|10| lib["lib"]
   lib["lib"] -->|9| engine["engine"]
   src["src"] -->|9| hooks["hooks"]
@@ -69,10 +69,10 @@ graph LR
 | `lib/utils.ts` | ts | 0 | 124 | `app/actions/dream-docs.ts`, `app/ads/create/page.tsx`, `app/api/account/delete-data/route.ts` | — |
 | `lib/supabase/client.ts` | ts | 1 | 63 | `app/ads/create/page.tsx`, `app/auth/reset-password/page.tsx`, `app/auth/update-password/page.tsx` | `lib/supabase/config.ts` |
 | `lib/dev-bypass.ts` | ts | 0 | 45 | `app/(internal)/idari-console/page.tsx`, `app/daydream/analytics/page.tsx`, `app/daydream/brand/page.tsx` | — |
-| `lib/runtime/dualRuntimeBridge.ts` | ts | 2 | 34 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`, `components/daydream/dream.CodeDreamIDE.tsx` | `lib/runtime/madMaxiSnapshotBridge.ts`, `lib/vm/wasmGpuVM.ts` |
+| `lib/runtime/dualRuntimeBridge.ts` | ts | 2 | 35 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`, `components/daydream/dream.CodeDreamIDE.tsx` | `lib/runtime/madMaxiSnapshotBridge.ts`, `lib/vm/wasmGpuVM.ts` |
 | `lib/dreamdm/DreamSystemContext.tsx` | tsx | 5 | 26 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `app/dreamdmbar/dreamspace/page.tsx`, `app/dreamdmbar/dualruntime/page.tsx` | `lib/dreamdm/barInteractions.ts`, `lib/panels/panelTypes.ts`, `lib/runtime/dualRuntime.ts` |
+| `lib/forge/forgeRegistry.ts` | ts | 0 | 22 | `app/daydream/forge/page.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` | — |
 | `lib/activity/types.ts` | ts | 0 | 21 | `app/api/activity/track/route.ts`, `app/api/ads/view/route.ts`, `app/api/metrics/platform/route.ts` | — |
-| `lib/forge/forgeRegistry.ts` | ts | 0 | 21 | `app/daydream/forge/page.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` | — |
 | `lib/connectors/normalise.ts` | ts | 1 | 19 | `lib/connectors/providers/bluesky.ts`, `lib/connectors/providers/devto.ts`, `lib/connectors/providers/facebook.ts` | `types/connector.ts` |
 | `lib/ai/triad.ts` | ts | 2 | 17 | `app/(internal)/idari-console/page.tsx`, `app/actions/dream-docs.ts`, `app/api/admin/ai-chat/route.ts` | `lib/ai/groq.ts`, `lib/ai/schemas.ts` |
 | `lib/engin-runtime/EnginBaseState.ts` | ts | 0 | 16 | `lib/engin-runtime/EnginCapabilities.ts`, `lib/engin-runtime/EnginRuleSetContract.ts`, `lib/engin-runtime/EnginRuntime.ts` | — |
@@ -80,10 +80,10 @@ graph LR
 | `lib/supabase/config.ts` | ts | 0 | 15 | `app/api/auth/providers/route.ts`, `app/api/setup/google-oauth/route.ts`, `app/auth/callback/route.ts` | — |
 | `lib/api/route.ts` | ts | 2 | 14 | `app/api/account/delete-data/route.ts`, `app/api/account/delete-dream/route.ts`, `app/api/account/export-data/route.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `lib/gameengin/power-systems.ts` | ts | 0 | 14 | `lib/gameengin/core.ts`, `lib/gameengin/index.ts`, `lib/gameengin/systems/ai.ts` | — |
-| `lib/games/hooks.ts` | ts | 2 | 14 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/games/dream.AvenueOfMirrors.tsx`, `components/games/dream.DefuseRitual.tsx` | `lib/games/performance-baseline.ts`, `lib/webgpu.ts` |
 | `lib/media/ledger.ts` | ts | 1 | 14 | `app/api/ledger-media/route.ts`, `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.CreatePostModal.tsx` | `lib/utils.ts` |
 | `lib/forge/useForgeActivity.ts` | ts | 1 | 13 | `components/daydream/dream.shell.DaydreamShell.tsx`, `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`, `components/dream.universal_asset_registry.tsx` | `lib/forge/forgeRegistry.ts` |
 | `lib/gameengin/cartridges/manifest.ts` | ts | 0 | 13 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `app/gameengin/cartridges/[id]/page.tsx`, `components/gameengin/dream.cartridge.CartridgeBrowser.tsx` | — |
+| `lib/games/hooks.ts` | ts | 2 | 13 | `components/games/dream.AvenueOfMirrors.tsx`, `components/games/dream.DefuseRitual.tsx`, `components/games/dream.EchoArena.tsx` | `lib/games/performance-baseline.ts`, `lib/webgpu.ts` |
 | `lib/social/rss-feed.ts` | ts | 1 | 13 | `app/api/social/rss-feed/route.ts`, `lib/connectors/providers/devto.ts`, `lib/connectors/providers/facebook.ts` | `types/connector.ts` |
 | `lib/dreamdm/barInteractions.ts` | ts | 0 | 12 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `components/dream.OSShellActivator.tsx`, `components/home/dream.NeuralSeamCanvas.tsx` | — |
 | `lib/engin-runtime/EnginCapabilities.ts` | ts | 1 | 12 | `lib/engin-runtime/EnginRuleSetContract.ts`, `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts` | `lib/engin-runtime/EnginBaseState.ts` |
@@ -111,7 +111,6 @@ graph LR
 | `lib/daydream/useDaydreamPersistence.ts` | ts | 2 | 8 | `engins/dream.panel.AnalyticsEngin.tsx`, `engins/engin.BrandingEngin.tsx`, `engins/engin.CodeEngin.tsx` | `lib/supabase/client.ts`, `lib/supabase/safeGetUser.ts` |
 | `lib/dreamenginOS/index.ts` | ts | 11 | 8 | `engins/engin.BrandingEngin.tsx`, `engins/engin.CodeEngin.tsx`, `engins/engin.ContentEngin.tsx` | `lib/ledger.ts`, `lib/eventBus.ts`, `lib/slog.ts` |
 | `lib/engin-runtime/EnginRuntime.ts` | ts | 5 | 8 | `lib/engin-runtime/index.ts`, `lib/engins/brand/useBrandEnginRuntime.ts`, `lib/engins/code/useCodeEnginRuntime.ts` | `lib/engin-runtime/EnginBaseState.ts`, `lib/engin-runtime/EnginCapabilities.ts`, `lib/engin-runtime/EnginEventBus.ts` |
-| `lib/games/mobileControls.ts` | ts | 1 | 8 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/games/dream.EchoArena.tsx`, `components/games/dream.GameController.tsx` | `lib/games/useRemoteChannel.ts` |
 | `lib/media/postMedia.ts` | ts | 0 | 8 | `app/api/dreamr/suggested/route.ts`, `app/api/feed/route.ts`, `app/api/posts/route.ts` | — |
 | `lib/runtime/useEnginCoopSync.ts` | ts | 3 | 8 | `engins/dream.panel.AnalyticsEngin.tsx`, `engins/engin.BrandingEngin.tsx`, `engins/engin.CodeEngin.tsx` | `lib/runtime/instanceManager.ts`, `lib/runtime/useSharedEnginChannel.ts`, `types/module-manifest.ts` |
 | `lib/social/platforms.ts` | ts | 0 | 8 | `components/dream.ProfileEditor.tsx`, `components/profile/dream.ProfileCanvas.tsx`, `components/ui/dream.PlatformBadge.tsx` | — |
@@ -120,6 +119,7 @@ graph LR
 | `lib/dreamnav/delta.ts` | ts | 0 | 7 | `components/dreamengin/dream.menu.OutdreamMenu.tsx`, `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`, `components/dreamnav/dreamsurface.dreamnav.tsx` | — |
 | `lib/gameengin/brain-reader.ts` | ts | 0 | 7 | `app/api/gameengin/crash-report/route.ts`, `src/engin/generated/systems.ts`, `tests/gameengin-architect.test.ts` | — |
 | `lib/gameengin/cartridges/loaders.ts` | ts | 15 | 7 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`, `engins/engin.GameEngin.tsx` | `lib/gameengin/cartridge.ts`, `lib/gameengin/cartridges/reactCartridge.ts`, `lib/utils.ts` |
+| `lib/games/mobileControls.ts` | ts | 1 | 7 | `components/games/dream.EchoArena.tsx`, `components/games/dream.GameController.tsx`, `components/games/dream.hud.GameHUD.tsx` | `lib/games/useRemoteChannel.ts` |
 | `lib/god-tier/godTierEngine.ts` | ts | 1 | 7 | `components/dreamengin/dream.scene.BabylonGameScene.tsx`, `components/dreamengin/dream.scene.DrEamsScene.tsx`, `components/games/madmaxi/dream.MadmaxiGame.tsx` | `lib/webgpu/director.ts` |
 | `lib/navigation/WidgetInstanceMemory.ts` | ts | 0 | 7 | `components/dream.ProfileSpace.tsx`, `components/dream.widget.AnchorWidget.tsx`, `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | — |
 | `lib/panels/panelTypes.ts` | ts | 0 | 7 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `components/dream.OSShellActivator.tsx`, `components/panels/dream.panel.SettingsPanel.tsx` | — |
@@ -227,7 +227,6 @@ graph LR
 | `lib/vm/bufferManager.ts` | ts | 1 | 4 | `lib/vm/index.ts`, `lib/vm/wasmGpuVM.ts`, `src/engin/generated/systems.ts` | `lib/vm/types.ts` |
 | `lib/vm/pipelineCache.ts` | ts | 0 | 4 | `lib/vm/index.ts`, `lib/vm/wasmGpuVM.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/warp/warpEngine.ts` | ts | 0 | 4 | `components/warp/dream.WarpCanvas.tsx`, `lib/warp/useWarp.ts`, `src/engin/generated/systems.ts` | — |
-| `lib/webgpu.ts` | ts | 0 | 4 | `app/dream-effects/page.tsx`, `components/webgpu/dream.WebGPUShowcase.tsx`, `lib/games/hooks.ts` | — |
 | `lib/activeModulesStore.ts` | ts | 1 | 3 | `components/home/dream.ActiveModuleSurface.tsx`, `src/engin/generated/systems.ts`, `tests/modular-os-stores.test.ts` | `types/dreamArtifact.ts` |
 | `lib/activity/revenueSplit.ts` | ts | 0 | 3 | `app/api/ads/view/route.ts`, `src/engin/generated/systems.ts`, `tests/activity-revenue-split.test.ts` | — |
 | `lib/activity/skipCredits.ts` | ts | 1 | 3 | `app/api/ads/view/route.ts`, `src/engin/generated/systems.ts`, `tests/skip-credits.test.ts` | `lib/activity/types.ts` |
@@ -258,7 +257,7 @@ graph LR
 | `lib/dream-window/runtimeRegion.ts` | ts | 1 | 3 | `lib/dream-window/index.ts`, `src/engin/generated/systems.ts`, `tests/dream-window-system.test.ts` | `lib/identity/canonical-names.ts` |
 | `lib/dreamdm/bridgeSeamFlow.ts` | ts | 0 | 3 | `components/home/dream.NeuralSeamCanvas.tsx`, `src/engin/generated/systems.ts`, `tests/neural-seam-flow.test.ts` | — |
 | `lib/dreamdm/useDreamDMDraft.ts` | ts | 0 | 3 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `src/engin/generated/systems.ts` | — |
-| `lib/dreamdm/useDreamSearch.ts` | ts | 1 | 3 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `src/engin/generated/systems.ts` | `lib/supabase/client.ts` |
+| `lib/dreamdm/useDreamSearch.ts` | ts | 2 | 3 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `src/engin/generated/systems.ts` | `lib/forge/forgeRegistry.ts`, `lib/supabase/client.ts` |
 | `lib/dreamengin/drEamsSearch.ts` | ts | 0 | 3 | `components/dreamengin/dream.bar.DrEamsSearchBar.tsx`, `src/engin/generated/systems.ts`, `tests/dr-eams-search-bar.test.ts` | — |
 | `lib/dreamengin/osSubsystemManifest.ts` | ts | 5 | 3 | `components/dreamengin/dream.DREAMenginOS.tsx`, `src/engin/generated/systems.ts`, `tests/os-subsystem-manifest.test.ts` | `lib/connectors/connectorRegistry.ts`, `lib/dream-window/enginConnectionNetwork.ts`, `lib/forge/forgeRegistry.ts` |
 | `lib/dreamnav/path.ts` | ts | 1 | 3 | `components/dreamengin/dream.menu.OutdreamMenu.tsx`, `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`, `src/engin/generated/systems.ts` | `lib/dreamnav/delta.ts` |
@@ -328,6 +327,7 @@ graph LR
 | `lib/vm/inter-vm-messaging.ts` | ts | 0 | 3 | `lib/vm/dual-runtime.ts`, `lib/vm/index.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/vm/snapshot.ts` | ts | 2 | 3 | `lib/vm/index.ts`, `src/engin/generated/systems.ts`, `tests/wasm-gpu-vm.test.ts` | `lib/vm/types.ts`, `lib/vm/wasmGpuVM.ts` |
 | `lib/web3/client.ts` | ts | 2 | 3 | `lib/web3/engagement.ts`, `lib/web3/index.ts`, `src/engin/generated/systems.ts` | `lib/web3/types.ts`, `lib/utils.ts` |
+| `lib/webgpu.ts` | ts | 0 | 3 | `components/webgpu/dream.WebGPUShowcase.tsx`, `lib/games/hooks.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/adari.ts` | ts | 0 | 2 | `scripts/postbuild.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/agentOS.ts` | ts | 1 | 2 | `app/api/agent/session/route.ts`, `src/engin/generated/systems.ts` | `lib/agentOS/hostTools.ts` |
 | `lib/agents/boogieManAI.ts` | ts | 1 | 2 | `src/engin/core/index.ts`, `src/engin/generated/systems.ts` | `types/ai.ts` |
@@ -628,6 +628,7 @@ graph LR
 | `components/activity/dream.ActivityProfile.tsx` | tsx | 3 | 6 | `app/edit-profiledream/page.tsx`, `app/profile/[handle]/page.tsx`, `app/view-profile/page.tsx` | `lib/activity/aqs.ts`, `lib/activity/types.ts`, `components/activity/dream.TierBadge.tsx` |
 | `components/dream.ThemeApplicator.tsx` | tsx | 0 | 6 | `app/layout.tsx`, `app/settings/appearance/page.tsx`, `components/dream.VoidThemeToggle.tsx` | — |
 | `components/games/dream.BabylonSideScroller.tsx` | tsx | 1 | 6 | `app/daydream/game/dream.GamePageClient.tsx`, `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts` | `components/games/madmaxi/index.ts` |
+| `components/games/dream.remote.GameRemote.tsx` | tsx | 1 | 6 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/daydream/dream.shell.DaydreamShell.tsx`, `components/games/dream.hud.LegacyGameHUD.tsx` | `components/games/dream.remote.LegacyGameRemote.tsx` |
 | `components/providers/dream.ThemeProvider.tsx` | tsx | 1 | 6 | `app/layout.tsx`, `app/settings/appearance/page.tsx`, `components/dreamengin/dream.widget.AppearanceWidget.tsx` | `lib/ui/theme-engine.ts` |
 | `components/customize/panels/dream.panel.ColorPanel.tsx` | tsx | 2 | 5 | `components/customize/dream.GlobalCustomizeUI.tsx`, `components/customize/panels/dream.panel.EffectsPanel.tsx`, `components/customize/panels/dream.panel.FontPanel.tsx` | `lib/ui/CustomizeModeContext.tsx`, `lib/ui/skin-engine.ts` |
 | `components/dream.BrandLogo.tsx` | tsx | 1 | 5 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/daydream/dream.shell.DaydreamShell.tsx`, `components/ui/dream.AuthenticatedPageHeader.tsx` | `lib/branding/logos.ts` |
@@ -643,9 +644,8 @@ graph LR
 | `components/dreamnav/dreamsurface.dreamnav.tsx` | tsx | 1 | 4 | `components/dreamengin/dream.menu.OutdreamMenu.tsx`, `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`, `components/dreamengin/dreamsurface.dreamengin.tsx` | `lib/dreamnav/delta.ts` |
 | `components/dreams/dream.DraggableDream.tsx` | tsx | 1 | 4 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `app/settings/dreams/dreams-layout-editor.tsx` | `lib/dreams/drag.ts` |
 | `components/dreams/dream.widget.SuperDreamWidget.tsx` | tsx | 3 | 4 | `components/widgets/dream.widget.WidgetLibrary.tsx`, `components/widgets/dream.widget.WidgetSurface.tsx`, `src/engin/generated/surfaces.ts` | `lib/dream-window/DreamWindowLifecycle.ts`, `lib/dream-window/useDreamWindowActions.ts`, `types/dream-window.ts` |
-| `components/dreams/dreamsurface.dreamspace.tsx` | tsx | 10 | 4 | `app/dreamspace/page.tsx`, `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`, `components/spatial/dream.ProfileSpace.tsx` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | tsx | 11 | 4 | `app/dreamspace/page.tsx`, `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `components/home/dream.ActiveModuleSurface.tsx`, `components/spatial/dream.ProfileSpace.tsx` |
 | `components/engines/shared/dream.bar.EnginNavBar.tsx` | tsx | 0 | 4 | `components/engines/shared/dream.EnginRuleSet.ts`, `components/engines/shared/dream.makeEnginApp.tsx`, `components/engines/shared/index.ts` | — |
-| `components/games/dream.remote.GameRemote.tsx` | tsx | 1 | 4 | `components/daydream/dream.shell.DaydreamShell.tsx`, `components/games/dream.hud.LegacyGameHUD.tsx`, `lib/games/useGameInputKeyboardBridge.ts` | `components/games/dream.remote.LegacyGameRemote.tsx` |
 | `components/games/madmaxi/index.ts` | ts | 3 | 4 | `components/games/dream.BabylonSideScroller.tsx`, `src/engin/generated/surfaces.ts`, `tests/madmaxi-authored-levels.test.ts` | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `components/games/madmaxi/config.ts`, `components/games/madmaxi/levels.ts` |
 | `components/overlays/dream.RootStatusScreen.tsx` | tsx | 0 | 4 | `app/error.tsx`, `app/loading.tsx`, `app/not-found.tsx` | — |
 | `components/widgets/dream.widget.WidgetCard.tsx` | tsx | 1 | 4 | `components/widgets/dream.widget.PlayMediaWidget.tsx`, `components/widgets/dream.widget.UniversalWidget.tsx`, `src/engin/generated/surfaces.ts` | `components/dreams/dreamsurface.shell.tsx` |
@@ -696,7 +696,6 @@ graph LR
 | `components/games/dream.EchoArena.tsx` | tsx | 4 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `components/gameengin/input/DualSenseManager.ts`, `lib/games/hooks.ts`, `lib/games/mobileControls.ts` |
 | `components/games/dream.EnginFracture.tsx` | tsx | 1 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts` |
 | `components/games/dream.Glassfall.tsx` | tsx | 2 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts`, `components/games/_fx/canvasFx.ts` |
-| `components/games/dream.hud.GameHUD.tsx` | tsx | 3 | 3 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `engins/engin.GameEngin.tsx`, `src/engin/generated/surfaces.ts` | `components/games/dream.GameController.tsx`, `components/games/dream.hud.MobileGameHUD.tsx`, `lib/games/mobileControls.ts` |
 | `components/games/dream.LexiconSolitaire.tsx` | tsx | 1 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts` |
 | `components/games/dream.NeonDrift.tsx` | tsx | 7 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `components/gameengin/input/DualSenseManager.ts`, `lib/gameengin/index.ts`, `lib/gameengin/ai-director.ts` |
 | `components/games/dream.NiteFlyerSolarHymn.tsx` | tsx | 1 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts` |
@@ -704,6 +703,7 @@ graph LR
 | `components/games/dream.SerpentSiege.tsx` | tsx | 2 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts`, `components/games/_fx/canvasFx.ts` |
 | `components/games/dream.VoidlineGP.tsx` | tsx | 2 | 3 | `components/games/dream.GamesHub.tsx`, `lib/gameengin/cartridges/loaders.ts`, `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts`, `components/games/_fx/canvasFx.ts` |
 | `components/games/madmaxi/levels.ts` | ts | 3 | 3 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `components/games/madmaxi/index.ts`, `src/engin/generated/surfaces.ts` | `components/games/madmaxi/authoredZonePacks.ts`, `components/games/madmaxi/config.ts`, `components/games/madmaxi/types.ts` |
+| `components/home/dream.ActiveModuleSurface.tsx` | tsx | 7 | 3 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `src/engin/generated/surfaces.ts` | `lib/activeModulesStore.ts`, `lib/artifactStore.ts`, `lib/dream-window/DreamWindowLifecycle.ts` |
 | `components/marketplace/dream.MarketplaceListingCard.tsx` | tsx | 0 | 3 | `app/marketplace/page.tsx`, `components/panels/dream.panel.MarketplacePanel.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `components/menus/dream.panel.MenuPanel.tsx` | tsx | 0 | 3 | `components/menus/dream.menu.DreamRadialMenu.tsx`, `components/menus/dream.menu.SystemRadialMenu.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `components/music/dream.SoundRecorder.tsx` | tsx | 1 | 3 | `app/daydream/music/page.tsx`, `daydreams/music/page.tsx`, `src/engin/generated/surfaces.ts` | `lib/utils.ts` |
@@ -764,7 +764,6 @@ graph LR
 | `components/dreamr/dream.panel.DreamRChannelPanel.tsx` | tsx | 2 | 2 | `lib/dreamr/dreamrfeed.tsx`, `src/engin/generated/surfaces.ts` | `lib/feed/useLiveFeed.ts`, `types/connector.ts` |
 | `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` | tsx | 1 | 2 | `lib/dreamr/dreamrfeed.tsx`, `src/engin/generated/surfaces.ts` | `lib/feed/useLiveFeed.ts` |
 | `components/dreams/dream.GlobalDragLayer.tsx` | tsx | 1 | 2 | `components/dream.GlobalOverlays.tsx`, `src/engin/generated/surfaces.ts` | `lib/dreams/drag.ts` |
-| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | tsx | 2 | 2 | `components/dreams/dreamsurface.dreamspace.tsx`, `src/engin/generated/surfaces.ts` | `lib/intelligence/continuityHelpers.ts`, `lib/runtime/dreamOSBus.ts` |
 | `components/dreams/dream.PlatformErrorReporter.tsx` | tsx | 0 | 2 | `components/dream.GlobalOverlays.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `components/engines/brand/index.ts` | ts | 3 | 2 | `components/engines/index.ts`, `src/engin/generated/surfaces.ts` | `components/engines/brand/dream.BrandEnginApp.tsx`, `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx`, `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` |
 | `components/engines/code/index.ts` | ts | 4 | 2 | `components/engines/index.ts`, `src/engin/generated/surfaces.ts` | `components/engines/code/dream.CodeEnginApp.tsx`, `components/engines/code/panels/dream.panel.AIPanel.tsx`, `components/engines/code/panels/dream.panel.NotebookPanel.tsx` |
@@ -792,7 +791,6 @@ graph LR
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | tsx | 10 | 2 | `components/games/madmaxi/index.ts`, `src/engin/generated/surfaces.ts` | `lib/babylon/createEngine.ts`, `lib/games/hooks.ts`, `lib/games/useImmersiveGameLayout.ts` |
 | `components/games/madmaxi/materials.ts` | ts | 0 | 2 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `components/games/madmaxi/vfx.ts` | ts | 0 | 2 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `src/engin/generated/surfaces.ts` | — |
-| `components/home/dream.ActiveModuleSurface.tsx` | tsx | 6 | 2 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `src/engin/generated/surfaces.ts` | `lib/activeModulesStore.ts`, `lib/artifactStore.ts`, `lib/dream-window/DreamWindowLifecycle.ts` |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | tsx | 5 | 2 | `app/dreamdmbar/layout.tsx`, `src/engin/generated/surfaces.ts` | `components/dreamengin/dream.panel.DrEamsPanel.tsx`, `components/menus/dream.menu.DualBottomMenu.tsx`, `lib/dreamdm/DreamSystemContext.tsx` |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | tsx | 10 | 2 | `app/dreamdmbar/layout.tsx`, `src/engin/generated/surfaces.ts` | `components/home/dream.NeuralSeamCanvas.tsx`, `components/runtime/dream.DualRuntimeContainer.tsx`, `components/runtime/dream.RuntimeView.tsx` |
 | `components/home/dream.DaydreamPulseStrip.tsx` | tsx | 0 | 2 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `src/engin/generated/surfaces.ts` | — |
@@ -817,7 +815,7 @@ graph LR
 | `components/panels/dream.panel.SettingsPanel.tsx` | tsx | 4 | 2 | `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `lib/dreamdm/DreamSystemContext.tsx`, `lib/panels/panelTypes.ts`, `lib/supabase/client.ts` |
 | `components/panels/dream.panel.WidgetsPanel.tsx` | tsx | 4 | 2 | `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `components/ui/dream.DreamWord.tsx`, `lib/dreamdm/DreamSystemContext.tsx`, `lib/supabase/client.ts` |
 | `components/profile/dream.ProfileCustomizeButton.tsx` | tsx | 1 | 2 | `app/profile/[handle]/page.tsx`, `src/engin/generated/surfaces.ts` | `lib/ui/CustomizeModeContext.tsx` |
-| `components/runtime/dream.RuntimeView.tsx` | tsx | 29 | 2 | `components/home/dream.bar.PersistentDreamBar.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `components/runtime/dream.shell.RuntimeShell.tsx` |
+| `components/runtime/dream.RuntimeView.tsx` | tsx | 30 | 2 | `components/home/dream.bar.PersistentDreamBar.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `components/runtime/dream.shell.RuntimeShell.tsx` |
 | `components/runtime/dream.shell.RuntimeShell.tsx` | tsx | 1 | 2 | `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `lib/ui/runtimeViewport.ts` |
 | `components/shared-dream/index.ts` | ts | 4 | 2 | `components/engines/shared/dream.shell.EnginAppShell.tsx`, `src/engin/generated/surfaces.ts` | `components/shared-dream/dream.SharedDreamProvider.tsx`, `components/shared-dream/dream.SharedDreamCanvas.tsx`, `components/shared-dream/dream.InviteFlow.tsx` |
 | `components/spatial/dream.PixiPhysicsLayer.tsx` | tsx | 0 | 2 | `components/spatial/dream.shell.EnhancedSpatialShell.tsx`, `src/engin/generated/surfaces.ts` | — |
@@ -879,6 +877,7 @@ graph LR
 | `components/dreams/dream.connectorlayer.tsx` | tsx | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
 | `components/dreams/dream.featurelayer.tsx` | tsx | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
 | `components/dreams/dream.outputlayer.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `lib/dreams/profileProjection.ts` |
+| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/intelligence/continuityHelpers.ts`, `lib/runtime/dreamOSBus.ts` |
 | `components/dreams/dream.shell.DreamShell.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/dreams/dreamsurface.shell.tsx` |
 | `components/dreams/dream.shell.SharedDreamShell.tsx` | tsx | 3 | 1 | `src/engin/generated/surfaces.ts` | `hooks/useSharedDream.ts`, `lib/sharedDream.ts`, `lib/utils.ts` |
 | `components/dreams/dream.SlideOverPanel.tsx` | tsx | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
@@ -889,6 +888,7 @@ graph LR
 | `components/forge/dream.EngineBuilderCanvas.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/componentInventory.ts`, `lib/forge/engineForge.ts` |
 | `components/gameengin/dream.cartridge.FeaturedCartridges.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `lib/gameengin/cartridges/manifest.ts` |
 | `components/games/dream.GameController.module.css` | css | 0 | 1 | `components/games/dream.GameController.tsx` | — |
+| `components/games/dream.hud.GameHUD.tsx` | tsx | 3 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.GameController.tsx`, `components/games/dream.hud.MobileGameHUD.tsx`, `lib/games/mobileControls.ts` |
 | `components/games/dream.hud.LegacyGameHUD.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.remote.GameRemote.tsx` |
 | `components/games/dream.hud.MobileGameHUD.module.css` | css | 0 | 1 | `components/games/dream.hud.MobileGameHUD.tsx` | — |
 | `components/games/dream.Leaderboard.tsx` | tsx | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
@@ -927,7 +927,7 @@ graph LR
 | `app/connectors/dream.ConnectorsClient.tsx` | tsx | 10 | 3 | `app/connectors/page.tsx`, `components/panels/dream.panel.ConnectorsPanel.tsx`, `src/engin/generated/surfaces.ts` | `components/connectors/dream.AddSliceSheet.tsx`, `components/connectors/dream.ConnectorRow.tsx`, `components/connectors/dream.NoSlotDialog.tsx` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | ts | 7 | 3 | `app/api/dreamr/feed/route.ts`, `app/dreamdmbar/_components/dreamr/api/route.ts`, `src/engin/generated/surfaces.ts` | `lib/dreamr/closeFriendsVisibility.ts`, `lib/dreamr/feedCursor.ts`, `lib/media/postMedia.ts` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | tsx | 6 | 3 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `app/dreamr/page.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `components/daydream/dream.JourneyTrail.tsx`, `lib/dreamr/dreamrfeed.tsx` |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | tsx | 10 | 3 | `components/core/dream.CoreDream.tsx`, `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.BrandLogo.tsx`, `components/dream.HomeFeed.tsx` |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | tsx | 11 | 3 | `components/core/dream.CoreDream.tsx`, `components/runtime/dream.RuntimeView.tsx`, `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.BrandLogo.tsx`, `components/dream.HomeFeed.tsx` |
 | `app/settings/controls/dream.PositionIndicatorToggle.tsx` | tsx | 0 | 3 | `app/settings/controls/dream.ControlsClient.tsx`, `components/panels/dream.panel.ControlsPanel.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `app/api/ads/orders/route.ts` | route | 3 | 2 | `src/engin/generated/surfaces.ts`, `tests/platform-utils.test.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
 | `app/api/auth/providers/route.ts` | route | 1 | 2 | `src/engin/generated/surfaces.ts`, `tests/auth-providers-route.test.ts` | `lib/supabase/config.ts` |
@@ -1077,7 +1077,7 @@ graph LR
 | `app/daydream/create/page.tsx` | route | 7 | 1 | `src/engin/generated/surfaces.ts` | `components/daydream/dream.OpenDaydreamSideBButton.tsx`, `components/daydream/dream.shell.DaydreamShell.tsx`, `components/ui/dream.AuthenticatedPageHeader.tsx` |
 | `app/daydream/forge/page.tsx` | route | 8 | 1 | `src/engin/generated/surfaces.ts` | `components/daydream/dream.shell.DaydreamShell.tsx`, `components/forge/dream.widget.ForgeMomentumWidget.tsx`, `components/ui/dream.AuthenticatedPageHeader.tsx` |
 | `app/daydream/game/dream.GamePageClient.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.BabylonSideScroller.tsx` |
-| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | tsx | 9 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.hud.GameHUD.tsx`, `lib/gameengin/GameRuntime.tsx`, `lib/gameengin/cartridge.ts` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | tsx | 7 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.remote.GameRemote.tsx`, `lib/gameengin/GameRuntime.tsx`, `lib/gameengin/cartridge.ts` |
 | `app/daydream/game/page.tsx` | route | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
 | `app/daydream/games/engin/page.tsx` | route | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
 | `app/daydream/lab/engin/page.tsx` | route | 0 | 1 | `src/engin/generated/surfaces.ts` | — |
@@ -1089,7 +1089,7 @@ graph LR
 | `app/daydream/music/upload/page.tsx` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/client.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
 | `app/daydream/play/page.tsx` | route | 1 | 1 | `src/engin/generated/surfaces.ts` | `lib/games/navigation.ts` |
 | `app/discover/page.tsx` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
-| `app/dream-effects/page.tsx` | route | 4 | 1 | `src/engin/generated/surfaces.ts` | `lib/gsap/useGsapEntrance.ts`, `lib/utils.ts`, `lib/webgpu.ts` |
+| `app/dream-effects/page.tsx` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/gsap/useGsapEntrance.ts`, `lib/utils.ts`, `components/three/dream.scene.tsx` |
 | `app/dreamdmbar/_components/dreamr/api/route.ts` | route | 1 | 1 | `src/engin/generated/surfaces.ts` | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` |
 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `types/widgets.ts` |
 | `app/dreamdmbar/dreamspace/page.tsx` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `components/runtime/dream.DualRuntimeContainer.tsx`, `lib/dreamdm/DreamSystemContext.tsx` |
@@ -1189,7 +1189,7 @@ graph LR
 
 </details>
 
-<details><summary>tests/ (208 files)</summary>
+<details><summary>tests/ (209 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -1312,6 +1312,7 @@ graph LR
 | `tests/landing-mission-link.test.ts` | ts | 0 | 0 | — | — |
 | `tests/ledger-media.test.ts` | ts | 1 | 0 | — | `lib/media/ledger.ts` |
 | `tests/live-feed.test.ts` | ts | 1 | 0 | — | `lib/feed/useLiveFeed.ts` |
+| `tests/madmaxi-accessibility-tuning.test.ts` | ts | 0 | 0 | — | — |
 | `tests/madmaxi-authored-levels.test.ts` | ts | 2 | 0 | — | `components/games/madmaxi/index.ts`, `components/games/dream.BabylonSideScroller.tsx` |
 | `tests/madmaxi-mechanics.test.ts` | ts | 2 | 0 | — | `components/games/madmaxi/index.ts`, `components/games/dream.BabylonSideScroller.tsx` |
 | `tests/mobile-game-controls.test.ts` | ts | 2 | 0 | — | `lib/games/mobileControls.ts`, `lib/games/catalog.ts` |
@@ -1510,9 +1511,9 @@ graph LR
 | `types/connector.ts` | ts | 0 | 30 | `app/api/connectors/[provider]/connect/route.ts`, `app/api/connectors/[provider]/sync/route.ts`, `app/api/connectors/[provider]/verify/route.ts` | — |
 | `types/module-manifest.ts` | ts | 1 | 12 | `components/draggable/dream.DraggableModule.tsx`, `components/universal-editor/dream.UniversalEditorWrapper.tsx`, `components/universal-editor/useTapHoldMove.ts` | `lib/engin-runtime/EnginBaseState.ts` |
 | `types/supabase.ts` | ts | 0 | 12 | `app/actions/dream-docs.ts`, `app/api/ai/execute/route.ts`, `app/api/journey/route.ts` | — |
+| `types/dreamArtifact.ts` | ts | 0 | 9 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dreams/dreamsurface.dreamspace.tsx` | — |
 | `types/ai-system.ts` | ts | 0 | 7 | `lib/ai/boogie-verifier.ts`, `lib/ai/capability-gate.ts`, `lib/ai/confirm-token.ts` | — |
 | `types/journey.ts` | ts | 0 | 7 | `components/daydream/dream.JourneyTrail.tsx`, `components/daydream/dream.shell.DaydreamShell.tsx`, `lib/journey/journeyDots.ts` | — |
-| `types/dreamArtifact.ts` | ts | 0 | 6 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `components/home/dream.ActiveModuleSurface.tsx`, `lib/activeModulesStore.ts` | — |
 | `types/dream-window.ts` | ts | 1 | 3 | `components/dreams/dream.widget.SuperDreamWidget.tsx`, `lib/dream-window/useDreamWindowActions.ts`, `tests/phase8b-dream-windows.test.ts` | `lib/dream-window/DreamWindowLifecycle.ts` |
 | `types/widget-system-v2.ts` | ts | 0 | 3 | `app/api/dreams/feed/route.ts`, `app/api/dreams/instances/route.ts`, `lib/widgets/feed-resolver.ts` | — |
 | `types/widgets.ts` | ts | 0 | 3 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx`, `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`, `lib/runtime/moduleRegistry.ts` | — |
@@ -1941,7 +1942,7 @@ graph LR
   f_engins_engin_GameEngin_tsx["engin.GameEngin.tsx"]
   f_components_games_dream_GamesHub_tsx["dream.GamesHub.tsx"]
   f_components_games_dream_RecordingControls_tsx["dream.RecordingControls.tsx"]
-  f_components_games_dream_hud_GameHUD_tsx["dream.hud.GameHUD.tsx"]
+  f_components_games_dream_remote_GameRemote_tsx["dream.remote.GameRemote.tsx"]
   f_lib_dreamdm_DreamSystemContext_tsx["DreamSystemContext.tsx"]
   f_lib_engins_game_useGameEnginRuntime_ts["useGameEnginRuntime.ts"]
   f_lib_gameengin_GameRuntime_tsx["GameRuntime.tsx"]
@@ -2058,7 +2059,7 @@ graph LR
   f_engins_engin_GameEngin_tsx --> f_components_daydream_dream_JourneyTrail_tsx
   f_engins_engin_GameEngin_tsx --> f_components_games_dream_GamesHub_tsx
   f_engins_engin_GameEngin_tsx --> f_components_games_dream_RecordingControls_tsx
-  f_engins_engin_GameEngin_tsx --> f_components_games_dream_hud_GameHUD_tsx
+  f_engins_engin_GameEngin_tsx --> f_components_games_dream_remote_GameRemote_tsx
   f_engins_engin_GameEngin_tsx --> f_lib_daydream_useDaydreamPersistence_ts
   f_engins_engin_GameEngin_tsx --> f_lib_dreamdm_DreamSystemContext_tsx
   f_engins_engin_GameEngin_tsx --> f_lib_dreamenginOS_index_ts
@@ -4519,9 +4520,9 @@ graph LR
 
 </details>
 
-<details><summary>tests/ — 208 files</summary>
+<details><summary>tests/ — 209 files</summary>
 
-_File-level graph omitted: 208 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 209 files exceeds Mermaid render budget. See table above._
 
 </details>
 
@@ -4729,8 +4730,6 @@ _File-level graph omitted: 546 files exceeds Mermaid render budget. See table ab
 | `docs/alignment/DOCS_CHANGE_TRACKER.md` | doc |
 | `docs/alignment/REPO_TO_SPEC.md` | doc |
 | `docs/ARCHITECTURE.md` | doc |
-| `docs/architecture/dreamengin_phase2.md` | doc |
-| `docs/architecture/IMPLEMENTATION_NOTES.md` | doc |
 | `docs/archive/.gitkeep` | file |
 | `docs/AUTH_SETUP.md` | doc |
 | `docs/AXIOMS.md` | doc |

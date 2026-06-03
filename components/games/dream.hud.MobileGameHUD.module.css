@@ -9,13 +9,34 @@
 }
 
 .overlayIdle {
-  opacity: 0.13;
+  opacity: 0.01;
   transition: opacity 0.45s ease;
 }
 
 .overlayActive {
-  opacity: 1;
+  opacity: 0.3;
   transition: opacity 0.08s ease;
+}
+
+.overlayCollapsed {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.restoreRemoteButton {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(200, 152, 26, 0.56);
+  border-radius: 999px;
+  background: rgba(7, 16, 30, 0.84);
+  color: #fef08a;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
+  cursor: pointer;
+  font-size: 18px;
+  pointer-events: auto;
 }
 
 /* ── Joystick dock (shared base) ────────────────────────────────────────── */
@@ -186,6 +207,11 @@
 .pillExit {
   color: #fca5a5;
 }
+
+.pillHide {
+  color: #fef08a;
+}
+
 
 .pillActive {
   background: rgba(15, 23, 42, 0.92);
