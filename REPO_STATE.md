@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-04T21:47:32.971Z
+Generated: 2026-06-04T21:55:04.000Z
 
 ---
 
@@ -9586,6 +9586,12 @@ _No style files for this feature._
 |--------|---------------|
 | `next/link` | `⬡ Link` |
 
+## `components/landing/dream.LandingProductStatement.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/link` | `⬡ Link` |
+
 ## `components/landing/dream.scene.UniverseField.tsx`
 
 | Module | Connected via |
@@ -16663,6 +16669,7 @@ _No style files for this feature._
 ## `components/landing/`
 
 - `components/landing/dream.LandingNav.tsx`
+- `components/landing/dream.LandingProductStatement.tsx`
 - `components/landing/dream.scene.UniverseField.tsx`
 
 ## `components/marketplace/`
@@ -18363,7 +18370,6 @@ _No circular dependencies detected._
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `components/dream.CreatePostModal.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.HomeFeed.tsx` | `@/lib/supabase/client` | `createClient` |
-| `components/dream.LandingHero.tsx` | `@/components/landing/dream.LandingProductStatement` | `⬡ LandingProductStatement` |
 | `components/dream.MessagesClient.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.ProfileEditor.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.universal_asset_registry.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -18724,6 +18730,7 @@ _No circular dependencies detected._
 | `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)` |
 | `components/home/dream.widget.DreamWidget.tsx` | `(default)` |
 | `components/landing/dream.LandingNav.tsx` | `(default)` |
+| `components/landing/dream.LandingProductStatement.tsx` | `(default)` |
 | `components/landing/dream.scene.UniverseField.tsx` | `(default)` |
 | `components/marketplace/dream.MarketplaceListingCard.tsx` | `(default)` |
 | `components/marketplace/dream.MarketplaceRequestButton.tsx` | `(default)` |
@@ -20625,6 +20632,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── landing
 │   │   ├── dream.LandingNav.tsx ∅
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.LandingProductStatement.tsx ∅
+│   │   │   └── ∅ unused: (default)
 │   │   └── dream.scene.UniverseField.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── marketplace  [Marketplace & Shop]
@@ -20852,8 +20861,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── dream.KonamiDream.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.LandingHero.tsx ⚠ ∅
-│   │   ├── ⚠ @/components/landing/dream.LandingProductStatement  (⬡ LandingProductStatement)
+│   ├── dream.LandingHero.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.LedgerChart.tsx ∅
 │   │   └── ∅ unused: (default)

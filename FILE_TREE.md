@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-04T21:47:33.099Z
+Generated: 2026-06-04T21:55:04.135Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4944,6 +4944,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⬡ Link  ← next/link
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.LandingProductStatement.tsx ∅
+│   │   │   ├── ⬡ Link  ← next/link
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
 │   │   └── dream.scene.UniverseField.tsx ∅
 │   │       ├── n  ← @/lib/torridity/constants
 │   │       ├── useEffect  ← react
@@ -5980,8 +5984,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useState  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
-│   ├── dream.LandingHero.tsx ⚠ ∅
-│   │   ├── ⬡ LandingProductStatement  ⚠ @/components/landing/dream.LandingProductStatement
+│   ├── dream.LandingHero.tsx ∅
+│   │   ├── ⬡ LandingProductStatement  ← @/components/landing/dream.LandingProductStatement
 │   │   ├── CalibrationSample  ← @/lib/dreamr/swipeCalibration
 │   │   ├── calibrateDevice  ← @/lib/dreamr/swipeCalibration
 │   │   ├── useEffect  ← react
