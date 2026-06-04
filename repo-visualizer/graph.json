@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T23:57:07.274Z",
+  "generatedAt": "2026-06-04T22:26:20.404Z",
   "root": ".",
   "nodes": [
     {
@@ -3456,6 +3456,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-completedream_3_filtered_TS_fixed.zip",
+      "label": "DREAMenginree2-completedream_3_filtered_TS_fixed.zip",
+      "type": "file",
+      "path": "DREAMenginree2-completedream_3_filtered_TS_fixed.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -12913,6 +12923,26 @@
       "exported": true
     },
     {
+      "id": "function:assembly/index.ts#hashBytesFNV1A",
+      "label": "hashBytesFNV1A",
+      "type": "function",
+      "path": "assembly/index.ts",
+      "parent": "file:assembly/index.ts",
+      "loc": 123,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:assembly/index.ts#shapeGlowFieldSIMD",
+      "label": "shapeGlowFieldSIMD",
+      "type": "function",
+      "path": "assembly/index.ts",
+      "parent": "file:assembly/index.ts",
+      "loc": 141,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
       "id": "file:assembly/index.ts",
       "label": "index.ts",
       "type": "ts",
@@ -18568,12 +18598,22 @@
       "tags": []
     },
     {
-      "id": "function:components/games/dream.GameController.tsx#useLegacyMoveSync",
-      "label": "useLegacyMoveSync",
+      "id": "function:components/games/dream.GameController.tsx#createSingleTouchEvent",
+      "label": "createSingleTouchEvent",
       "type": "function",
       "path": "components/games/dream.GameController.tsx",
       "parent": "file:components/games/dream.GameController.tsx",
-      "loc": 76,
+      "loc": 70,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.GameController.tsx#useRemoteMoveSync",
+      "label": "useRemoteMoveSync",
+      "type": "function",
+      "path": "components/games/dream.GameController.tsx",
+      "parent": "file:components/games/dream.GameController.tsx",
+      "loc": 91,
       "isOrphan": true,
       "exported": false
     },
@@ -18583,7 +18623,7 @@
       "type": "function",
       "path": "components/games/dream.GameController.tsx",
       "parent": "file:components/games/dream.GameController.tsx",
-      "loc": 106,
+      "loc": 121,
       "isOrphan": true,
       "exported": true
     },
@@ -18903,7 +18943,7 @@
       "type": "function",
       "path": "components/games/dream.hud.GameHUD.tsx",
       "parent": "file:components/games/dream.hud.GameHUD.tsx",
-      "loc": 15,
+      "loc": 21,
       "isOrphan": true,
       "exported": true
     },
@@ -18934,7 +18974,7 @@
       "path": "components/games/dream.hud.LegacyGameHUD.tsx",
       "parent": "folder:components/games",
       "loc": null,
-      "isOrphan": false,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -19038,6 +19078,66 @@
       "tags": []
     },
     {
+      "id": "function:components/games/dream.remote.GameRemoteSurface.tsx#fireAction",
+      "label": "fireAction",
+      "type": "function",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.remote.GameRemoteSurface.tsx#angleToDir",
+      "label": "angleToDir",
+      "type": "function",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "loc": 82,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.remote.GameRemoteSurface.tsx#clampToCircle",
+      "label": "clampToCircle",
+      "type": "function",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "loc": 97,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.remote.GameRemoteSurface.tsx#Stick",
+      "label": "Stick",
+      "type": "function",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "loc": 134,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.remote.GameRemoteSurface.tsx#GameRemote",
+      "label": "GameRemote",
+      "type": "function",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "loc": 354,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "label": "dream.remote.GameRemoteSurface.tsx",
+      "type": "tsx",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "parent": "folder:components/games",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:components/games/dream.remote.LegacyGameRemote.tsx#fireAction",
       "label": "fireAction",
       "type": "function",
@@ -19053,7 +19153,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 84,
+      "loc": 82,
       "isOrphan": true,
       "exported": false
     },
@@ -19063,7 +19163,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 99,
+      "loc": 97,
       "isOrphan": true,
       "exported": false
     },
@@ -19073,7 +19173,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 139,
+      "loc": 134,
       "isOrphan": true,
       "exported": false
     },
@@ -19083,7 +19183,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 377,
+      "loc": 354,
       "isOrphan": true,
       "exported": true
     },
@@ -19094,7 +19194,7 @@
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "folder:components/games",
       "loc": null,
-      "isOrphan": false,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -19699,7 +19799,7 @@
       "type": "function",
       "path": "components/landing/dream.LandingProductStatement.tsx",
       "parent": "file:components/landing/dream.LandingProductStatement.tsx",
-      "loc": 17,
+      "loc": 4,
       "isOrphan": true,
       "exported": true
     },
@@ -25233,6 +25333,46 @@
       "type": "doc",
       "path": "fonts/fonts.md",
       "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:generate-readme.ts#parseArg",
+      "label": "parseArg",
+      "type": "function",
+      "path": "generate-readme.ts",
+      "parent": "file:generate-readme.ts",
+      "loc": 32,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:generate-readme.ts#readChangedFiles",
+      "label": "readChangedFiles",
+      "type": "function",
+      "path": "generate-readme.ts",
+      "parent": "file:generate-readme.ts",
+      "loc": 38,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:generate-readme.ts#allRegistryFiles",
+      "label": "allRegistryFiles",
+      "type": "function",
+      "path": "generate-readme.ts",
+      "parent": "file:generate-readme.ts",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:generate-readme.ts",
+      "label": "generate-readme.ts",
+      "type": "ts",
+      "path": "generate-readme.ts",
+      "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
       "tags": []
@@ -34808,6 +34948,66 @@
       "tags": []
     },
     {
+      "id": "function:lib/dreams/dreamIntentBus.ts#stableJson",
+      "label": "stableJson",
+      "type": "function",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "file:lib/dreams/dreamIntentBus.ts",
+      "loc": 60,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/dreamIntentBus.ts#payloadToJson",
+      "label": "payloadToJson",
+      "type": "function",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "file:lib/dreams/dreamIntentBus.ts",
+      "loc": 72,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/dreamIntentBus.ts#createDreamIntentId",
+      "label": "createDreamIntentId",
+      "type": "function",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "file:lib/dreams/dreamIntentBus.ts",
+      "loc": 76,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/dreamIntentBus.ts#dispatchDreamIntent",
+      "label": "dispatchDreamIntent",
+      "type": "function",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "file:lib/dreams/dreamIntentBus.ts",
+      "loc": 111,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/dreams/dreamIntentBus.ts#registerDreamIntentHandler",
+      "label": "registerDreamIntentHandler",
+      "type": "function",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "file:lib/dreams/dreamIntentBus.ts",
+      "loc": 163,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/dreams/dreamIntentBus.ts",
+      "label": "dreamIntentBus.ts",
+      "type": "ts",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "parent": "folder:lib/dreams",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/dreams/profileProjection.ts#createDreamProjection",
       "label": "createDreamProjection",
       "type": "function",
@@ -34836,6 +35036,106 @@
       "loc": null,
       "isOrphan": false,
       "tags": []
+    },
+    {
+      "id": "function:lib/dreams/types.ts#oneOf",
+      "label": "oneOf",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 156,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#createDream",
+      "label": "createDream",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 391,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isIsoTimestamp",
+      "label": "isIsoTimestamp",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 414,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isPermissionSet",
+      "label": "isPermissionSet",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 420,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isPlacement",
+      "label": "isPlacement",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 426,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isCapabilityMap",
+      "label": "isCapabilityMap",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 441,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isSurfaceAdapter",
+      "label": "isSurfaceAdapter",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 452,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/dreams/types.ts#isDream",
+      "label": "isDream",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 465,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/dreams/types.ts#dreamCan",
+      "label": "dreamCan",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 494,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/dreams/types.ts#resolveDreamSurfaceAdapter",
+      "label": "resolveDreamSurfaceAdapter",
+      "type": "function",
+      "path": "lib/dreams/types.ts",
+      "parent": "file:lib/dreams/types.ts",
+      "loc": 499,
+      "isOrphan": false,
+      "exported": true
     },
     {
       "id": "file:lib/dreams/types.ts",
@@ -34882,7 +35182,17 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 43,
+      "loc": 54,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginBaseState.ts#hasExactDomainObjectKeys",
+      "label": "hasExactDomainObjectKeys",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginBaseState.ts",
+      "parent": "file:lib/engin-runtime/EnginBaseState.ts",
+      "loc": 70,
       "isOrphan": true,
       "exported": false
     },
@@ -34892,7 +35202,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 47,
+      "loc": 78,
       "isOrphan": true,
       "exported": false
     },
@@ -34902,7 +35212,17 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 57,
+      "loc": 88,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginBaseState.ts#isJsonObject",
+      "label": "isJsonObject",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginBaseState.ts",
+      "parent": "file:lib/engin-runtime/EnginBaseState.ts",
+      "loc": 108,
       "isOrphan": false,
       "exported": true
     },
@@ -34912,7 +35232,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 72,
+      "loc": 117,
       "isOrphan": false,
       "exported": true
     },
@@ -34922,7 +35242,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 106,
+      "loc": 155,
       "isOrphan": true,
       "exported": true
     },
@@ -34932,7 +35252,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 147,
+      "loc": 196,
       "isOrphan": false,
       "exported": true
     },
@@ -34942,7 +35262,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 173,
+      "loc": 221,
       "isOrphan": false,
       "exported": true
     },
@@ -34952,7 +35272,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 187,
+      "loc": 235,
       "isOrphan": false,
       "exported": true
     },
@@ -34972,7 +35292,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 100,
+      "loc": 104,
       "isOrphan": false,
       "exported": true
     },
@@ -34982,7 +35302,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 115,
+      "loc": 119,
       "isOrphan": false,
       "exported": true
     },
@@ -34992,7 +35312,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 150,
+      "loc": 154,
       "isOrphan": false,
       "exported": true
     },
@@ -35012,7 +35332,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginEventBus.ts",
       "parent": "file:lib/engin-runtime/EnginEventBus.ts",
-      "loc": 67,
+      "loc": 57,
       "isOrphan": false,
       "exported": true
     },
@@ -35032,7 +35352,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 39,
+      "loc": 42,
       "isOrphan": false,
       "exported": true
     },
@@ -35042,7 +35362,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 51,
+      "loc": 54,
       "isOrphan": false,
       "exported": true
     },
@@ -35052,7 +35372,17 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 104,
+      "loc": 110,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginIOAdapter.ts#MemorySyncTransport",
+      "label": "MemorySyncTransport",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginIOAdapter.ts",
+      "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
+      "loc": 165,
       "isOrphan": false,
       "exported": true
     },
@@ -35065,6 +35395,56 @@
       "loc": null,
       "isOrphan": false,
       "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#parseVersion",
+      "label": "parseVersion",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
+      "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "loc": 76,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#compareVersions",
+      "label": "compareVersions",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
+      "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "loc": 81,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#validateRuleSetManifest",
+      "label": "validateRuleSetManifest",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
+      "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "loc": 98,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#negotiateRuleSetCompatibility",
+      "label": "negotiateRuleSetCompatibility",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
+      "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "loc": 124,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#validateRuleSetState",
+      "label": "validateRuleSetState",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
+      "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "loc": 172,
+      "isOrphan": false,
+      "exported": true
     },
     {
       "id": "file:lib/engin-runtime/EnginRuleSetContract.ts",
@@ -35082,7 +35462,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 60,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -35092,7 +35472,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 72,
+      "loc": 106,
       "isOrphan": false,
       "exported": true
     },
@@ -35107,12 +35487,142 @@
       "tags": []
     },
     {
+      "id": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#stableJson",
+      "label": "stableJson",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "loc": 14,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#stableStringifySnapshot",
+      "label": "stableStringifySnapshot",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "loc": 28,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#hashBytesFNV1A",
+      "label": "hashBytesFNV1A",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "loc": 38,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#fingerprintEnginSnapshot",
+      "label": "fingerprintEnginSnapshot",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "loc": 47,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#fingerprintBytesWithWasm",
+      "label": "fingerprintBytesWithWasm",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "loc": 52,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "label": "EnginSnapshotFingerprint.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#tierForSnapshotCount",
+      "label": "tierForSnapshotCount",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#materialForSurfaceTier",
+      "label": "materialForSurfaceTier",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 47,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#isTier",
+      "label": "isTier",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 53,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#isMaterial",
+      "label": "isMaterial",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 57,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#createPremiumRuntimeQuality",
+      "label": "createPremiumRuntimeQuality",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 61,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#validatePremiumRuntimeQuality",
+      "label": "validatePremiumRuntimeQuality",
+      "type": "function",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "loc": 94,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "label": "PremiumRuntimeQuality.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/engin-runtime/index.ts#createEnginRuntime",
       "label": "createEnginRuntime",
       "type": "function",
       "path": "lib/engin-runtime/index.ts",
       "parent": "file:lib/engin-runtime/index.ts",
-      "loc": 78,
+      "loc": 124,
       "isOrphan": false,
       "exported": true
     },
@@ -35404,7 +35914,7 @@
       "type": "function",
       "path": "lib/engins/brand/brandEnginRuleSet.ts",
       "parent": "file:lib/engins/brand/brandEnginRuleSet.ts",
-      "loc": 138,
+      "loc": 140,
       "isOrphan": true,
       "exported": false
     },
@@ -35414,7 +35924,7 @@
       "type": "function",
       "path": "lib/engins/brand/brandEnginRuleSet.ts",
       "parent": "file:lib/engins/brand/brandEnginRuleSet.ts",
-      "loc": 204,
+      "loc": 206,
       "isOrphan": true,
       "exported": false
     },
@@ -35463,7 +35973,7 @@
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 138,
+      "loc": 140,
       "isOrphan": true,
       "exported": false
     },
@@ -35473,7 +35983,7 @@
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 219,
+      "loc": 221,
       "isOrphan": true,
       "exported": false
     },
@@ -35522,7 +36032,7 @@
       "type": "function",
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "parent": "file:lib/engins/content/contentEnginRuleSet.ts",
-      "loc": 116,
+      "loc": 118,
       "isOrphan": true,
       "exported": false
     },
@@ -35532,7 +36042,7 @@
       "type": "function",
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "parent": "file:lib/engins/content/contentEnginRuleSet.ts",
-      "loc": 180,
+      "loc": 182,
       "isOrphan": true,
       "exported": false
     },
@@ -35581,7 +36091,7 @@
       "type": "function",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
       "parent": "file:lib/engins/game/gameEnginRuleSet.ts",
-      "loc": 166,
+      "loc": 168,
       "isOrphan": true,
       "exported": false
     },
@@ -35591,7 +36101,7 @@
       "type": "function",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
       "parent": "file:lib/engins/game/gameEnginRuleSet.ts",
-      "loc": 249,
+      "loc": 251,
       "isOrphan": true,
       "exported": false
     },
@@ -35650,7 +36160,7 @@
       "type": "function",
       "path": "lib/engins/lab/labEnginRuleSet.ts",
       "parent": "file:lib/engins/lab/labEnginRuleSet.ts",
-      "loc": 114,
+      "loc": 116,
       "isOrphan": true,
       "exported": false
     },
@@ -35660,7 +36170,7 @@
       "type": "function",
       "path": "lib/engins/lab/labEnginRuleSet.ts",
       "parent": "file:lib/engins/lab/labEnginRuleSet.ts",
-      "loc": 183,
+      "loc": 185,
       "isOrphan": true,
       "exported": false
     },
@@ -35709,7 +36219,7 @@
       "type": "function",
       "path": "lib/engins/music/starMakerEnginRuleSet.ts",
       "parent": "file:lib/engins/music/starMakerEnginRuleSet.ts",
-      "loc": 143,
+      "loc": 145,
       "isOrphan": true,
       "exported": false
     },
@@ -35719,7 +36229,7 @@
       "type": "function",
       "path": "lib/engins/music/starMakerEnginRuleSet.ts",
       "parent": "file:lib/engins/music/starMakerEnginRuleSet.ts",
-      "loc": 221,
+      "loc": 223,
       "isOrphan": true,
       "exported": false
     },
@@ -41311,7 +41821,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 62,
+      "loc": 70,
       "isOrphan": true,
       "exported": false
     },
@@ -41321,27 +41831,27 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 67,
+      "loc": 75,
       "isOrphan": false,
       "exported": true
     },
     {
-      "id": "function:lib/games/mobileControls.ts#getLegacyMoveAction",
-      "label": "getLegacyMoveAction",
+      "id": "function:lib/games/mobileControls.ts#getRemoteMoveAction",
+      "label": "getRemoteMoveAction",
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 78,
+      "loc": 86,
       "isOrphan": false,
       "exported": true
     },
     {
-      "id": "function:lib/games/mobileControls.ts#fireLegacyGameInput",
-      "label": "fireLegacyGameInput",
+      "id": "function:lib/games/mobileControls.ts#fireGameRemoteInput",
+      "label": "fireGameRemoteInput",
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 92,
+      "loc": 100,
       "isOrphan": false,
       "exported": true
     },
@@ -41351,7 +41861,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 97,
+      "loc": 105,
       "isOrphan": true,
       "exported": true
     },
@@ -41361,7 +41871,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 104,
+      "loc": 112,
       "isOrphan": false,
       "exported": true
     },
@@ -41371,7 +41881,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 109,
+      "loc": 117,
       "isOrphan": false,
       "exported": true
     },
@@ -41381,7 +41891,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 114,
+      "loc": 122,
       "isOrphan": false,
       "exported": true
     },
@@ -41391,7 +41901,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 124,
+      "loc": 132,
       "isOrphan": false,
       "exported": true
     },
@@ -41401,7 +41911,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 129,
+      "loc": 137,
       "isOrphan": false,
       "exported": true
     },
@@ -41411,17 +41921,17 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 134,
+      "loc": 142,
       "isOrphan": false,
       "exported": true
     },
     {
-      "id": "function:lib/games/mobileControls.ts#getLegacyActionForMobileButton",
-      "label": "getLegacyActionForMobileButton",
+      "id": "function:lib/games/mobileControls.ts#getRemoteActionForMobileButton",
+      "label": "getRemoteActionForMobileButton",
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 139,
+      "loc": 147,
       "isOrphan": false,
       "exported": true
     },
@@ -41431,7 +41941,7 @@
       "type": "function",
       "path": "lib/games/mobileControls.ts",
       "parent": "file:lib/games/mobileControls.ts",
-      "loc": 143,
+      "loc": 151,
       "isOrphan": false,
       "exported": true
     },
@@ -46523,7 +47033,7 @@
       "type": "function",
       "path": "lib/runtime/EnginDispatcher.ts",
       "parent": "file:lib/runtime/EnginDispatcher.ts",
-      "loc": 157,
+      "loc": 169,
       "isOrphan": true,
       "exported": true
     },
@@ -46533,7 +47043,7 @@
       "type": "class",
       "path": "lib/runtime/EnginDispatcher.ts",
       "parent": "file:lib/runtime/EnginDispatcher.ts",
-      "loc": 223,
+      "loc": 235,
       "isOrphan": true,
       "exported": true
     },
@@ -46693,7 +47203,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 48,
+      "loc": 50,
       "isOrphan": true,
       "exported": true
     },
@@ -46703,7 +47213,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 190,
+      "loc": 193,
       "isOrphan": true,
       "exported": true
     },
@@ -46713,7 +47223,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 232,
+      "loc": 235,
       "isOrphan": false,
       "exported": true
     },
@@ -46723,7 +47233,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 236,
+      "loc": 239,
       "isOrphan": false,
       "exported": true
     },
@@ -46733,7 +47243,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 244,
+      "loc": 247,
       "isOrphan": false,
       "exported": true
     },
@@ -46743,7 +47253,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 253,
+      "loc": 256,
       "isOrphan": true,
       "exported": false
     },
@@ -46753,7 +47263,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 257,
+      "loc": 260,
       "isOrphan": true,
       "exported": false
     },
@@ -46763,7 +47273,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 261,
+      "loc": 264,
       "isOrphan": true,
       "exported": false
     },
@@ -46773,7 +47283,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 268,
+      "loc": 271,
       "isOrphan": true,
       "exported": false
     },
@@ -46783,7 +47293,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 276,
+      "loc": 279,
       "isOrphan": true,
       "exported": false
     },
@@ -46793,7 +47303,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 290,
+      "loc": 293,
       "isOrphan": false,
       "exported": true
     },
@@ -46803,7 +47313,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 305,
+      "loc": 308,
       "isOrphan": true,
       "exported": false
     },
@@ -46813,7 +47323,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 316,
+      "loc": 319,
       "isOrphan": true,
       "exported": false
     },
@@ -46823,7 +47333,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 325,
+      "loc": 328,
       "isOrphan": true,
       "exported": false
     },
@@ -46833,7 +47343,7 @@
       "type": "class",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 335,
+      "loc": 338,
       "isOrphan": true,
       "exported": false
     },
@@ -52883,7 +53393,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 136,
+      "loc": 138,
       "isOrphan": true,
       "exported": false
     },
@@ -52893,7 +53403,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 169,
+      "loc": 171,
       "isOrphan": true,
       "exported": false
     },
@@ -52903,7 +53413,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 183,
+      "loc": 185,
       "isOrphan": true,
       "exported": false
     },
@@ -52913,7 +53423,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 278,
+      "loc": 280,
       "isOrphan": true,
       "exported": false
     },
@@ -52925,6 +53435,406 @@
       "parent": "folder:public/workers",
       "loc": null,
       "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:readme-autosync.ts#escapeRegExp",
+      "label": "escapeRegExp",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 174,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#normalizePath",
+      "label": "normalizePath",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 178,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#globToRegExp",
+      "label": "globToRegExp",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 182,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#matchesGlob",
+      "label": "matchesGlob",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 197,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#matchesAnyGlob",
+      "label": "matchesAnyGlob",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 201,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#walkFiles",
+      "label": "walkFiles",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 206,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#toRoutePath",
+      "label": "toRoutePath",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 220,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#toComponentName",
+      "label": "toComponentName",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 229,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#buildTreeLines",
+      "label": "buildTreeLines",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 235,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#getTsProject",
+      "label": "getTsProject",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 269,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#getSourceFile",
+      "label": "getSourceFile",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 278,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#isReactComponent",
+      "label": "isReactComponent",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 294,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#isHook",
+      "label": "isHook",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 302,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeExports",
+      "label": "analyzeExports",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 306,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeImports",
+      "label": "analyzeImports",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 364,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#httpMethodsFromFile",
+      "label": "httpMethodsFromFile",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 399,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeRoutes",
+      "label": "analyzeRoutes",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 415,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeComponents",
+      "label": "analyzeComponents",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 433,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeHooks",
+      "label": "analyzeHooks",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 437,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeDependencies",
+      "label": "analyzeDependencies",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 445,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#analyzeSubsystem",
+      "label": "analyzeSubsystem",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 475,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#inferKeyModules",
+      "label": "inferKeyModules",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 532,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#inferArchitecturalNarrative",
+      "label": "inferArchitecturalNarrative",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 558,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#generateSubsystemDescription",
+      "label": "generateSubsystemDescription",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 698,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#fmtList",
+      "label": "fmtList",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 758,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#fmtRoutes",
+      "label": "fmtRoutes",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 762,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#fmtSymbolList",
+      "label": "fmtSymbolList",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 772,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#buildFileIndex",
+      "label": "buildFileIndex",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 778,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#buildArchitecturalSectionBlock",
+      "label": "buildArchitecturalSectionBlock",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 796,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#buildArchitecturalSubsectionBlock",
+      "label": "buildArchitecturalSubsectionBlock",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 805,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#renderSectionMarkdown",
+      "label": "renderSectionMarkdown",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 815,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#findSectionBounds",
+      "label": "findSectionBounds",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 913,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#replaceSection",
+      "label": "replaceSection",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 925,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#upsertSubsectionInSection",
+      "label": "upsertSubsectionInSection",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 931,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#inferDynamicSections",
+      "label": "inferDynamicSections",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 953,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#computeAffected",
+      "label": "computeAffected",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 976,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#runReadmeAutosync",
+      "label": "runReadmeAutosync",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 999,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:readme-autosync.ts#parseArg",
+      "label": "parseArg",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 1071,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:readme-autosync.ts#readChangedFiles",
+      "label": "readChangedFiles",
+      "type": "function",
+      "path": "readme-autosync.ts",
+      "parent": "file:readme-autosync.ts",
+      "loc": 1077,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:readme-autosync.ts",
+      "label": "readme-autosync.ts",
+      "type": "ts",
+      "path": "readme-autosync.ts",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -53452,16 +54362,6 @@
       "type": "file",
       "path": "research/paper/torridity_ledger.tex",
       "parent": "folder:research/paper",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:scripts-fix.zip",
-      "label": "scripts-fix.zip",
-      "type": "file",
-      "path": "scripts-fix.zip",
-      "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
       "tags": []
@@ -55523,6 +56423,146 @@
       "parent": "folder:scripts",
       "loc": null,
       "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#normalizePath",
+      "label": "normalizePath",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 52,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#globToRegExp",
+      "label": "globToRegExp",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 56,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#matchesAny",
+      "label": "matchesAny",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 65,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#computeAffected",
+      "label": "computeAffected",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 70,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#sectionHeading",
+      "label": "sectionHeading",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 95,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#findHeadingEnd",
+      "label": "findHeadingEnd",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 99,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#replaceSection",
+      "label": "replaceSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 104,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#subsectionHeading",
+      "label": "subsectionHeading",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 119,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#upsertSubsectionInSection",
+      "label": "upsertSubsectionInSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 123,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#parseArg",
+      "label": "parseArg",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 147,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#readChangedFilesFile",
+      "label": "readChangedFilesFile",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 153,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildAutosyncSummary",
+      "label": "buildAutosyncSummary",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 160,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#runCli",
+      "label": "runCli",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 182,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:scripts/readme-autosync.ts",
+      "label": "readme-autosync.ts",
+      "type": "ts",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "folder:scripts",
+      "loc": null,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -62673,6 +63713,16 @@
       "tags": []
     },
     {
+      "id": "file:tests/dream-intent-bus.test.ts",
+      "label": "dream-intent-bus.test.ts",
+      "type": "ts",
+      "path": "tests/dream-intent-bus.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/dream-os-bus.test.ts",
       "label": "dream-os-bus.test.ts",
       "type": "ts",
@@ -63136,6 +64186,16 @@
       "label": "edit-profiledream-section7.test.ts",
       "type": "ts",
       "path": "tests/edit-profiledream-section7.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/engin-dispatcher-glow.test.ts",
+      "label": "engin-dispatcher-glow.test.ts",
+      "type": "ts",
+      "path": "tests/engin-dispatcher-glow.test.ts",
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
@@ -65464,7 +66524,7 @@
       "type": "function",
       "path": "types/module-manifest.ts",
       "parent": "file:types/module-manifest.ts",
-      "loc": 93,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -65474,7 +66534,7 @@
       "type": "function",
       "path": "types/module-manifest.ts",
       "parent": "file:types/module-manifest.ts",
-      "loc": 103,
+      "loc": 104,
       "isOrphan": false,
       "exported": true
     },
@@ -65484,7 +66544,7 @@
       "type": "function",
       "path": "types/module-manifest.ts",
       "parent": "file:types/module-manifest.ts",
-      "loc": 135,
+      "loc": 136,
       "isOrphan": false,
       "exported": true
     },
@@ -74486,6 +75546,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/dream.LandingHero.tsx",
+      "target": "file:components/landing/dream.LandingProductStatement.tsx",
+      "kind": "import"
+    },
+    {
       "source": "file:components/dream.LedgerChart.tsx",
       "target": "file:lib/ledger-data.ts",
       "kind": "import"
@@ -75737,12 +76802,7 @@
     },
     {
       "source": "file:components/games/dream.hud.GameHUD.tsx",
-      "target": "file:components/games/dream.GameController.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/games/dream.hud.GameHUD.tsx",
-      "target": "file:components/games/dream.hud.MobileGameHUD.tsx",
+      "target": "file:components/games/dream.remote.GameRemote.tsx",
       "kind": "import"
     },
     {
@@ -75767,8 +76827,23 @@
     },
     {
       "source": "file:components/games/dream.remote.GameRemote.tsx",
-      "target": "file:components/games/dream.remote.LegacyGameRemote.tsx",
+      "target": "file:components/games/dream.remote.GameRemoteSurface.tsx",
       "kind": "reexport"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "file:lib/games/navigation.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "file:lib/games/useGamepad.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "file:lib/games/useRemoteChannel.ts",
+      "kind": "import"
     },
     {
       "source": "file:components/games/dream.remote.LegacyGameRemote.tsx",
@@ -77926,6 +79001,11 @@
       "kind": "import"
     },
     {
+      "source": "file:generate-readme.ts",
+      "target": "file:readme-autosync.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:hooks/use-spatial.ts",
       "target": "file:lib/supabase/client.ts",
       "kind": "import"
@@ -79076,8 +80156,33 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/dreams/dreamIntentBus.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/dreams/dreamIntentBus.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/dreams/dreamIntentBus.ts",
+      "target": "file:lib/runtime/dreamOSBus.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/dreams/dreamIntentBus.ts",
+      "target": "file:lib/dreams/types.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/dreams/profileProjection.ts",
       "target": "file:lib/dreams/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/dreams/types.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
       "kind": "import"
     },
     {
@@ -79086,8 +80191,13 @@
       "kind": "import"
     },
     {
-      "source": "file:lib/engin-runtime/EnginEventBus.ts",
-      "target": "file:lib/eventBus.ts",
+      "source": "file:lib/engin-runtime/EnginIOAdapter.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginIOAdapter.ts",
+      "target": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
       "kind": "import"
     },
     {
@@ -79122,6 +80232,31 @@
     },
     {
       "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
       "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "kind": "import"
     },
@@ -79153,6 +80288,21 @@
     {
       "source": "file:lib/engin-runtime/index.ts",
       "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
       "kind": "reexport"
     },
     {
@@ -84142,11 +85292,6 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/games/dream.hud.LegacyGameHUD.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/games/dream.hud.MobileGameHUD.tsx",
       "kind": "import"
     },
@@ -84187,7 +85332,7 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/games/dream.remote.LegacyGameRemote.tsx",
+      "target": "file:components/games/dream.remote.GameRemoteSurface.tsx",
       "kind": "import"
     },
     {
@@ -87146,6 +88291,16 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/dream-intent-bus.test.ts",
+      "target": "file:lib/runtime/dreamOSBus.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/dream-intent-bus.test.ts",
+      "target": "file:lib/dreams/dreamIntentBus.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/dream-os-bus.test.ts",
       "target": "file:lib/runtime/dualRuntimeBridge.ts",
       "kind": "import"
@@ -87278,6 +88433,11 @@
     {
       "source": "file:tests/durable-bridge.test.ts",
       "target": "file:lib/runtime/dualRuntimeBridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-dispatcher-glow.test.ts",
+      "target": "file:lib/runtime/EnginDispatcher.ts",
       "kind": "import"
     },
     {
@@ -87918,6 +89078,16 @@
     {
       "source": "file:tests/post-media.test.ts",
       "target": "file:lib/media/postMedia.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "file:scripts/readme-autosync.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "file:lib/dreams/types.ts",
       "kind": "import"
     },
     {
@@ -92662,12 +93832,12 @@
     },
     {
       "source": "file:components/games/dream.GameController.tsx",
-      "target": "function:lib/games/mobileControls.ts#getLegacyMoveAction",
+      "target": "function:lib/games/mobileControls.ts#getRemoteMoveAction",
       "kind": "call"
     },
     {
       "source": "file:components/games/dream.GameController.tsx",
-      "target": "function:lib/games/mobileControls.ts#fireLegacyGameInput",
+      "target": "function:lib/games/mobileControls.ts#fireGameRemoteInput",
       "kind": "call"
     },
     {
@@ -92927,12 +94097,12 @@
     },
     {
       "source": "file:components/games/dream.hud.MobileGameHUD.tsx",
-      "target": "function:lib/games/mobileControls.ts#getLegacyMoveAction",
+      "target": "function:lib/games/mobileControls.ts#getRemoteMoveAction",
       "kind": "call"
     },
     {
       "source": "file:components/games/dream.hud.MobileGameHUD.tsx",
-      "target": "function:lib/games/mobileControls.ts#fireLegacyGameInput",
+      "target": "function:lib/games/mobileControls.ts#fireGameRemoteInput",
       "kind": "call"
     },
     {
@@ -92957,7 +94127,22 @@
     },
     {
       "source": "file:components/games/dream.hud.MobileGameHUD.tsx",
-      "target": "function:lib/games/mobileControls.ts#getLegacyActionForMobileButton",
+      "target": "function:lib/games/mobileControls.ts#getRemoteActionForMobileButton",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "function:lib/games/useRemoteChannel.ts#broadcastGameInput",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "function:lib/games/useGamepad.ts#useGamepad",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "target": "function:lib/games/navigation.ts#buildGameLaunchHref",
       "kind": "call"
     },
     {
@@ -94641,6 +95826,11 @@
       "kind": "call"
     },
     {
+      "source": "file:generate-readme.ts",
+      "target": "function:readme-autosync.ts#runReadmeAutosync",
+      "kind": "call"
+    },
+    {
       "source": "file:hooks/use-spatial.ts",
       "target": "function:lib/supabase/client.ts#createClient",
       "kind": "call"
@@ -95456,8 +96646,23 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/dreams/types.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#isJsonObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/dreams/types.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#isJsonSerializable",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/engin-runtime/EnginCapabilities.ts",
       "target": "function:lib/engin-runtime/EnginBaseState.ts#isDomainObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#isEnginBaseState",
       "kind": "call"
     },
     {
@@ -95467,7 +96672,17 @@
     },
     {
       "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginRuleSetContract.ts#negotiateRuleSetCompatibility",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
       "target": "class:lib/engin-runtime/EnginIOAdapter.ts#LocalStorageAdapter",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "class:lib/engin-runtime/EnginIOAdapter.ts#MemorySyncTransport",
       "kind": "call"
     },
     {
@@ -95477,7 +96692,27 @@
     },
     {
       "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginSnapshotFingerprint.ts#fingerprintEnginSnapshot",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#createPremiumRuntimeQuality",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
       "target": "function:lib/engin-runtime/EnginCapabilities.ts#gateCapability",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginRuleSetContract.ts#validateRuleSetState",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/PremiumRuntimeQuality.ts#validatePremiumRuntimeQuality",
       "kind": "call"
     },
     {
@@ -97271,6 +98506,16 @@
       "kind": "call"
     },
     {
+      "source": "file:tests/dream-intent-bus.test.ts",
+      "target": "function:lib/dreams/dreamIntentBus.ts#registerDreamIntentHandler",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/dream-intent-bus.test.ts",
+      "target": "function:lib/dreams/dreamIntentBus.ts#dispatchDreamIntent",
+      "kind": "call"
+    },
+    {
       "source": "file:tests/dream-os-bus.test.ts",
       "target": "function:lib/runtime/dreamOSBus.ts#getCapabilityDescriptor",
       "kind": "call"
@@ -98932,7 +100177,7 @@
     },
     {
       "source": "file:tests/mobile-game-controls.test.ts",
-      "target": "function:lib/games/mobileControls.ts#getLegacyMoveAction",
+      "target": "function:lib/games/mobileControls.ts#getRemoteMoveAction",
       "kind": "call"
     },
     {
@@ -99408,6 +100653,41 @@
     {
       "source": "file:tests/post-media.test.ts",
       "target": "function:lib/media/postMedia.ts#getPostMediaUrls",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:lib/dreams/types.ts#createDream",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:lib/dreams/types.ts#isDream",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:lib/dreams/types.ts#dreamCan",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:lib/dreams/types.ts#resolveDreamSurfaceAdapter",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:scripts/readme-autosync.ts#computeAffected",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:scripts/readme-autosync.ts#buildAutosyncSummary",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/readme-autosync.test.ts",
+      "target": "function:scripts/readme-autosync.ts#replaceSection",
       "kind": "call"
     },
     {
