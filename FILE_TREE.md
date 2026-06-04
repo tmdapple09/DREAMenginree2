@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-04T21:55:04.135Z
+Generated: 2026-06-04T23:31:03.585Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -6871,6 +6871,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── createEventBus  ← @/lib/dreamenginOS
 │   │   ├── upgradeEngine  ← @/lib/dreamenginOS
 │   │   ├── ArtifactSlot  ← @/lib/enginpipe
+│   │   ├── GameScore  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── GravityPreset  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── PhysicsConfig  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── ScriptLanguage  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── ScriptState  ← @/lib/engins/game/gameEnginRuleSet
+│   │   ├── TileType  ← @/lib/engins/game/gameEnginRuleSet
 │   │   ├── useGameEnginRuntime  ← @/lib/engins/game/useGameEnginRuntime
 │   │   ├── recordForgeTransfer  ← @/lib/forge/forgeIntelligence
 │   │   ├── useForgeActivity  ← @/lib/forge/useForgeActivity
@@ -16237,8 +16243,8 @@ Legend: ⚠ broken import  ∅ unused export
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
 ├── generate-readme.ts
-│   ├── SECTION_REGISTRY  ← ./readme-autosync.ts
-│   ├── runReadmeAutosync  ← ./readme-autosync.ts
+│   ├── SECTION_REGISTRY  ← ./readme-autosync
+│   ├── runReadmeAutosync  ← ./readme-autosync
 │   ├── existsSync  ← node:fs
 │   ├── readFileSync  ← node:fs
 │   ├── writeFileSync  ← node:fs

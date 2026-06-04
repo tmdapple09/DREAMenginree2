@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-04T21:55:04.000Z
+Generated: 2026-06-04T23:31:03.457Z
 
 ---
 
@@ -1091,6 +1091,7 @@ _No style files for this feature._
 - `@/lib/engin-runtime/EnginRuleSetContract`
 - `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
+- `@/lib/engins/game/gameEnginRuleSet`
 - `@/lib/engins/game/useGameEnginRuntime`
 - `@/lib/forge/forgeIntelligence`
 - `@/lib/forge/useForgeActivity`
@@ -10460,6 +10461,7 @@ _No style files for this feature._
 | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
 | `@/lib/enginpipe` | `ArtifactSlot` |
+| `@/lib/engins/game/gameEnginRuleSet` | `GameScore`, `GravityPreset`, `PhysicsConfig`, `ScriptLanguage`, `ScriptState`, `TileType` |
 | `@/lib/engins/game/useGameEnginRuntime` | `useGameEnginRuntime` |
 | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
 | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
@@ -10564,7 +10566,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./readme-autosync.ts` | `SECTION_REGISTRY`, `runReadmeAutosync` |
+| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
 | `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
 | `node:path` | `resolve` |
 | `node:url` | `fileURLToPath` |
@@ -17697,7 +17699,7 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 33 |
+| `engins/engin.GameEngin.tsx` | 34 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/engin.ContentEngin.tsx` | 25 |
@@ -17736,7 +17738,7 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 33 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 34 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
