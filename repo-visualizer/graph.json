@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-03T09:22:01.238Z",
+  "generatedAt": "2026-06-04T21:00:11.193Z",
   "root": ".",
   "nodes": [
     {
@@ -3466,6 +3466,16 @@
       "label": "DREAMenginree2-completedream-upgraded-behavior-checked.zip",
       "type": "file",
       "path": "DREAMenginree2-completedream-upgraded-behavior-checked.zip",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-completedream-upgraded.zip",
+      "label": "DREAMenginree2-completedream-upgraded.zip",
+      "type": "file",
+      "path": "DREAMenginree2-completedream-upgraded.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
