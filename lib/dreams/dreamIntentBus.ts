@@ -64,9 +64,12 @@ function stableJson(value: JsonValue): string {
   if (typeof value === 'number') return Number.isFinite(value) ? String(value) : 'null';
   if (typeof value === 'boolean') return value ? 'true' : 'false';
   if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
-  return `{${Object.keys(value)
+
+  const objectValue = value as JsonObject;
+
+  return `{${Object.keys(objectValue)
     .sort()
-    .map((key) => `${JSON.stringify(key)}:${stableJson(value[key] ?? null)}`)
+    .map((key) => `${JSON.stringify(key)}:${stableJson(objectValue[key] ?? null)}`)
     .join(',')}}`;
 }
 
@@ -171,8 +174,17 @@ export function registerDreamIntentHandler<T extends DrEamsIntentType['type']>(
     intentType,
     (envelope: IntentEnvelope) => envelope.type === intentType,
     (envelope: IntentEnvelope) => {
-      const payload = envelope.data.payload as Extract<DrEamsIntentType, { type: T }>['payload'];
-      return handler(payload, envelope as IntentEnvelope<T, JsonObject>);
+      type MatchedIntent = Extract<DrEamsIntentType, { type: T }>;
+      type MatchedPayload = MatchedIntent['payload'];
+
+      const payload = envelope.data.payload as MatchedPayload;
+      const typedEnvelope = envelope as IntentEnvelope<T, JsonObject>;
+      const typedHandler = handler as (
+        payload: MatchedPayload,
+        envelope: IntentEnvelope<T, JsonObject>,
+      ) => void | Promise<void>;
+
+      return typedHandler(payload, typedEnvelope);
     },
     resolvedDomains,
   );

@@ -30,6 +30,14 @@ import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
 import { createEventBus, upgradeEngine } from '@/lib/dreamenginOS';
+import type {
+    GameScore,
+    GravityPreset,
+    PhysicsConfig,
+    ScriptLanguage,
+    ScriptState,
+    TileType,
+} from '@/lib/engins/game/gameEnginRuleSet';
 import { useGameEnginRuntime } from '@/lib/engins/game/useGameEnginRuntime';
 import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
 import { useForgeActivity } from '@/lib/forge/useForgeActivity';
@@ -77,34 +85,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface Props {
   onBack: () => void;
   instanceId?: string;
-}
-
-interface GameScore {
-  id: string;
-  game: string;
-  score: number;
-  created_at: string;
-  shared: boolean;
-}
-
-/** Tile types for the 5×5 World Builder grid */
-type TileType = 'empty' | 'ground' | 'wall' | 'water' | 'spawn';
-
-/** Gravity presets for the Physics Config widget */
-type GravityPreset = 'moon' | 'earth' | 'mars' | 'jupiter';
-
-/** Script language selector options */
-type ScriptLanguage = 'GameScript' | 'Lua';
-
-
-interface PhysicsConfig {
-  gravity: GravityPreset;
-  friction: number;
-}
-
-interface ScriptState {
-  code: string;
-  language: ScriptLanguage;
 }
 
 interface AchievementDef {

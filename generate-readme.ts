@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 import {
   runReadmeAutosync,
   SECTION_REGISTRY,
-} from './readme-autosync.ts';
+} from './readme-autosync';
 
 const __filename = fileURLToPath(import.meta.url);
 
