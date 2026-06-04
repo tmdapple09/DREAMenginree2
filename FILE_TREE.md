@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-03T01:02:48.517Z
+Generated: 2026-06-04T21:47:33.099Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3050,9 +3050,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → reset
 │   │   └── ∅ unused: QUEUE_SIZE, enqueue, dequeue, reset
 │   ├── index.ts ∅
+│   │   ├── → hashBytesFNV1A
 │   │   ├── → processAudioBufferSIMD
+│   │   ├── → shapeGlowFieldSIMD
 │   │   ├── → tickPhysicsSIMD
-│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD
+│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD
 │   └── mad-maxi-player.ts ∅
 │       ├── → getCoyoteTimer
 │       ├── → getDashTimer
@@ -4693,6 +4695,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── MobileHudMode  ← @/lib/games/mobileControls
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.hud.LegacyGameHUD.tsx ∅
+│   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
+│   │   │   ├── useRouter  ← next/navigation
+│   │   │   ├── useCallback  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.hud.MobileGameHUD.module.css
 │   │   ├── dream.hud.MobileGameHUD.tsx ∅
 │   │   │   ├── MOBILE_HUD_BUTTON_RING  ← @/lib/games/mobileControls
@@ -4782,6 +4791,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → default
 │   │   │   └── ∅ unused: default
 │   │   ├── dream.remote.GameRemoteSurface.tsx ∅
+│   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
+│   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
+│   │   │   ├── useGamepad  ← @/lib/games/useGamepad
+│   │   │   ├── broadcastGameInput  ← @/lib/games/useRemoteChannel
+│   │   │   ├── ⬡ Link  ← next/link
+│   │   │   ├── useSearchParams  ← next/navigation
+│   │   │   ├── useCallback  ← react
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── dream.remote.LegacyGameRemote.tsx ∅
 │   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
 │   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   ├── useGamepad  ← @/lib/games/useGamepad
@@ -5958,10 +5980,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useState  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
-│   ├── dream.LandingHero.tsx ∅
+│   ├── dream.LandingHero.tsx ⚠ ∅
+│   │   ├── ⬡ LandingProductStatement  ⚠ @/components/landing/dream.LandingProductStatement
 │   │   ├── CalibrationSample  ← @/lib/dreamr/swipeCalibration
 │   │   ├── calibrateDevice  ← @/lib/dreamr/swipeCalibration
-│   │   ├── ⬡ Link  ← next/link
 │   │   ├── useEffect  ← react
 │   │   ├── useRef  ← react
 │   │   ├── → (default)
@@ -8641,6 +8663,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → serializeDreamDragData
 │   │   │   ├── → surfaceForRuntime
 │   │   │   └── → transferDream
+│   │   ├── dreamIntentBus.ts
+│   │   │   ├── DrEamsIntentType  ← ./types
+│   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createDomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── InformationDomain  ← @/lib/runtime/dreamOSBus
+│   │   │   ├── IntentEnvelope  ← @/lib/runtime/dreamOSBus
+│   │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   │   ├── → dispatchDreamIntent
+│   │   │   └── → registerDreamIntentHandler
 │   │   ├── DreamRegistry.tsx ∅
 │   │   │   ├── ⬡ React  ← react
 │   │   │   ├── → DreamRegistry
@@ -8652,22 +8686,38 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → canRenderProjection
 │   │   │   ├── → createDreamProjection
 │   │   │   └── ∅ unused: createDreamProjection
-│   │   ├── types.ts
+│   │   ├── types.ts ∅
+│   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── isJsonObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── isJsonSerializable  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── → DREAM_KINDS
+│   │   │   ├── → DREAM_RENDER_MODES
+│   │   │   ├── → DREAM_SURFACES
+│   │   │   ├── → DREAM_VISIBILITIES
+│   │   │   ├── → NO_PERMISSIONS
+│   │   │   ├── → OWNER_PERMISSIONS
+│   │   │   ├── → VIEWER_PERMISSIONS
+│   │   │   ├── → createDream
+│   │   │   ├── → dreamCan
+│   │   │   ├── → isDream
+│   │   │   ├── → resolveDreamSurfaceAdapter
+│   │   │   └── ∅ unused: DREAM_SURFACES, DREAM_KINDS, DREAM_RENDER_MODES, DREAM_VISIBILITIES
 │   │   └── useDreamsRuntime.ts
 │   │       ├── useCallback  ← react
 │   │       ├── useState  ← react
 │   │       └── → useDreamsRuntime
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts ∅
+│   │   ├── EnginBaseState.ts
 │   │   │   ├── → createBaseState
 │   │   │   ├── → createDomainObject
 │   │   │   ├── → isDomainObject
 │   │   │   ├── → isEnginBaseState
+│   │   │   ├── → isJsonObject
 │   │   │   ├── → isJsonSerializable
-│   │   │   ├── → patchBaseState
-│   │   │   └── ∅ unused: createDomainObject
+│   │   │   └── → patchBaseState
 │   │   ├── EnginCapabilities.ts
 │   │   │   ├── DomainObject  ← ./EnginBaseState
+│   │   │   ├── JsonValue  ← ./EnginBaseState
 │   │   │   ├── isDomainObject  ← ./EnginBaseState
 │   │   │   ├── → DEFAULT_USER_CAPABILITIES
 │   │   │   ├── → DENY_ALL
@@ -8675,19 +8725,29 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → gateCapability
 │   │   │   └── → mergeCapabilities
 │   │   ├── EnginEventBus.ts
-│   │   │   ├── EventHandler  ← @/lib/eventBus
-│   │   │   ├── createEventBus  ← @/lib/eventBus
 │   │   │   └── → createEnginEventBus
 │   │   ├── EnginIOAdapter.ts
+│   │   │   ├── EnginBaseState  ← ./EnginBaseState
+│   │   │   ├── JsonValue  ← ./EnginBaseState
+│   │   │   ├── PremiumRuntimeQuality  ← ./PremiumRuntimeQuality
 │   │   │   ├── → LocalStorageAdapter
 │   │   │   ├── → MemoryAdapter
+│   │   │   ├── → MemorySyncTransport
 │   │   │   └── → enginStorageKey
-│   │   ├── EnginRuleSetContract.ts
+│   │   ├── EnginRuleSetContract.ts ∅
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
-│   │   │   └── EnginCapability  ← ./EnginCapabilities
-│   │   ├── EnginRuntime.ts
+│   │   │   ├── JsonObject  ← ./EnginBaseState
+│   │   │   ├── JsonValue  ← ./EnginBaseState
+│   │   │   ├── isEnginBaseState  ← ./EnginBaseState
+│   │   │   ├── EnginCapability  ← ./EnginCapabilities
+│   │   │   ├── → negotiateRuleSetCompatibility
+│   │   │   ├── → validateRuleSetManifest
+│   │   │   ├── → validateRuleSetState
+│   │   │   └── ∅ unused: validateRuleSetManifest
+│   │   ├── EnginRuntime.ts ∅
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
 │   │   │   ├── EnginLifecycle  ← ./EnginBaseState
+│   │   │   ├── JsonObject  ← ./EnginBaseState
 │   │   │   ├── createBaseState  ← ./EnginBaseState
 │   │   │   ├── isEnginBaseState  ← ./EnginBaseState
 │   │   │   ├── patchBaseState  ← ./EnginBaseState
@@ -8698,34 +8758,75 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── EnginLifecycleEvents  ← ./EnginEventBus
 │   │   │   ├── createEnginEventBus  ← ./EnginEventBus
 │   │   │   ├── EnginIOAdapter  ← ./EnginIOAdapter
+│   │   │   ├── EnginSyncTransport  ← ./EnginIOAdapter
 │   │   │   ├── LocalStorageAdapter  ← ./EnginIOAdapter
+│   │   │   ├── MemorySyncTransport  ← ./EnginIOAdapter
+│   │   │   ├── CompatibilityNegotiationResult  ← ./EnginRuleSetContract
 │   │   │   ├── EnginAction  ← ./EnginRuleSetContract
 │   │   │   ├── EnginRuleSetContract  ← ./EnginRuleSetContract
-│   │   │   └── → EnginRuntime
-│   │   └── index.ts ∅
-│   │       ├── EnginAction  ← ./EnginRuleSetContract
-│   │       ├── EnginRuleSetContract  ← ./EnginRuleSetContract
-│   │       ├── EnginRuntime  ← ./EnginRuntime
-│   │       ├── EnginRuntimeOptions  ← ./EnginRuntime
-│   │       ├── EnginRuntime  ← @/lib/engin-runtime
-│   │       ├── createEnginRuntime  ← @/lib/engin-runtime
-│   │       ├── → DEFAULT_USER_CAPABILITIES
-│   │       ├── → DENY_ALL
-│   │       ├── → EnginRuntime
-│   │       ├── → LocalStorageAdapter
-│   │       ├── → MemoryAdapter
-│   │       ├── → authorizeDomainCapability
-│   │       ├── → createBaseState
-│   │       ├── → createDomainObject
-│   │       ├── → createEnginEventBus
-│   │       ├── → createEnginRuntime
-│   │       ├── → enginStorageKey
-│   │       ├── → gateCapability
-│   │       ├── → isDomainObject
-│   │       ├── → isEnginBaseState
-│   │       ├── → mergeCapabilities
-│   │       ├── → patchBaseState
-│   │       └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
+│   │   │   ├── EnginRuntimeFeature  ← ./EnginRuleSetContract
+│   │   │   ├── negotiateRuleSetCompatibility  ← ./EnginRuleSetContract
+│   │   │   ├── validateRuleSetState  ← ./EnginRuleSetContract
+│   │   │   ├── fingerprintEnginSnapshot  ← ./EnginSnapshotFingerprint
+│   │   │   ├── PremiumRuntimeQuality  ← ./PremiumRuntimeQuality
+│   │   │   ├── createPremiumRuntimeQuality  ← ./PremiumRuntimeQuality
+│   │   │   ├── validatePremiumRuntimeQuality  ← ./PremiumRuntimeQuality
+│   │   │   ├── → ENGIN_RUNTIME_FEATURES
+│   │   │   ├── → ENGIN_RUNTIME_VERSION
+│   │   │   ├── → EnginRuntime
+│   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
+│   │   ├── EnginSnapshotFingerprint.ts ∅
+│   │   │   ├── EnginBaseState  ← ./EnginBaseState
+│   │   │   ├── JsonValue  ← ./EnginBaseState
+│   │   │   ├── → fingerprintBytesWithWasm
+│   │   │   ├── → fingerprintEnginSnapshot
+│   │   │   ├── → hashBytesFNV1A
+│   │   │   ├── → stableStringifySnapshot
+│   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
+│   │   ├── index.ts ∅
+│   │   │   ├── EnginAction  ← ./EnginRuleSetContract
+│   │   │   ├── EnginRuleSetContract  ← ./EnginRuleSetContract
+│   │   │   ├── EnginRuntime  ← ./EnginRuntime
+│   │   │   ├── EnginRuntimeOptions  ← ./EnginRuntime
+│   │   │   ├── EnginRuntime  ← @/lib/engin-runtime
+│   │   │   ├── createEnginRuntime  ← @/lib/engin-runtime
+│   │   │   ├── → DEFAULT_USER_CAPABILITIES
+│   │   │   ├── → DENY_ALL
+│   │   │   ├── → ENGIN_RUNTIME_FEATURES
+│   │   │   ├── → ENGIN_RUNTIME_VERSION
+│   │   │   ├── → EnginRuntime
+│   │   │   ├── → LocalStorageAdapter
+│   │   │   ├── → MemoryAdapter
+│   │   │   ├── → MemorySyncTransport
+│   │   │   ├── → authorizeDomainCapability
+│   │   │   ├── → createBaseState
+│   │   │   ├── → createDomainObject
+│   │   │   ├── → createEnginEventBus
+│   │   │   ├── → createEnginRuntime
+│   │   │   ├── → createPremiumRuntimeQuality
+│   │   │   ├── → enginStorageKey
+│   │   │   ├── → fingerprintBytesWithWasm
+│   │   │   ├── → fingerprintEnginSnapshot
+│   │   │   ├── → gateCapability
+│   │   │   ├── → hashBytesFNV1A
+│   │   │   ├── → isDomainObject
+│   │   │   ├── → isEnginBaseState
+│   │   │   ├── → isJsonObject
+│   │   │   ├── → isJsonSerializable
+│   │   │   ├── → mergeCapabilities
+│   │   │   ├── → negotiateRuleSetCompatibility
+│   │   │   ├── → patchBaseState
+│   │   │   ├── → stableStringifySnapshot
+│   │   │   ├── → validatePremiumRuntimeQuality
+│   │   │   ├── → validateRuleSetManifest
+│   │   │   ├── → validateRuleSetState
+│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   └── PremiumRuntimeQuality.ts
+│   │       ├── EnginBaseState  ← ./EnginBaseState
+│   │       ├── JsonObject  ← ./EnginBaseState
+│   │       ├── EnginRuntimeFeature  ← ./EnginRuleSetContract
+│   │       ├── → createPremiumRuntimeQuality
+│   │       └── → validatePremiumRuntimeQuality
 │   ├── engine
 │   │   └── index.ts ∅
 │   │       ├── → UniversalEngine
@@ -8795,12 +8896,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── brand  [BrandEngin]
 │   │   │   ├── brandEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   └── → BRAND_ENGIN_RULE_SET
 │   │   │   └── useBrandEnginRuntime.ts
@@ -8818,12 +8921,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── code  [CodeEngin]
 │   │   │   ├── codeEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   └── → CODE_ENGIN_RULE_SET
 │   │   │   └── useCodeEnginRuntime.ts
@@ -8841,12 +8946,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── content  [CreateEngin]
 │   │   │   ├── contentEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   └── → CONTENT_ENGIN_RULE_SET
 │   │   │   └── useContentEnginRuntime.ts
@@ -8864,12 +8971,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── game  [GameEngin]
 │   │   │   ├── gameEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── → GAME_ENGIN_RULE_SET
 │   │   │   │   └── → GRAVITY_VALUES
@@ -8892,12 +9001,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── lab  [LabEngin]
 │   │   │   ├── labEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   └── → LAB_ENGIN_RULE_SET
 │   │   │   └── useLabEnginRuntime.ts
@@ -8915,12 +9026,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── music  [StarMaker (Music Engin)]
 │   │   │   ├── starMakerEnginRuleSet.ts
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── EnginCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   │   ├── ConstraintResult  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginAction  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginConstraint  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
+│   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   └── → STAR_MAKER_ENGIN_RULE_SET
 │   │   │   └── useStarMakerEnginRuntime.ts
@@ -10820,6 +10933,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── → coerceRawPayload
 │   │   ├── dreamOSBus.ts ∅
 │   │   │   ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── isDomainObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
@@ -12163,6 +12278,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts
 │   │   └── assertBuildInvariants  ← ../lib/adari
+│   ├── readme-autosync.ts ∅
+│   │   ├── existsSync  ← node:fs
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── resolve  ← node:path
+│   │   ├── → SECTION_REGISTRY
+│   │   ├── → buildAutosyncSummary
+│   │   ├── → computeAffected
+│   │   ├── → replaceSection
+│   │   ├── → upsertSubsectionInSection
+│   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
@@ -14070,6 +14196,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
+│   ├── dream-intent-bus.test.ts
+│   │   ├── dispatchDreamIntent  ← @/lib/dreams/dreamIntentBus
+│   │   ├── registerDreamIntentHandler  ← @/lib/dreams/dreamIntentBus
+│   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
 │   ├── dream-os-bus.test.ts
 │   │   ├── deriveAIRuntimeContext  ← @/lib/runtime/dreamOSBus
 │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
@@ -14321,6 +14456,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
+│   ├── engin-dispatcher-glow.test.ts
+│   │   ├── EnginDispatcher  ← @/lib/runtime/EnginDispatcher
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
 │   ├── engin-dispatcher.test.ts
 │   │   ├── EnginDispatcher  ← @/lib/runtime/EnginDispatcher
 │   │   ├── BAR_Y_SCALE  ← @/lib/runtime/memory
@@ -14385,7 +14525,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── it  ← vitest
 │   │   ├── vi  ← vitest
 │   │   ├── (dynamic)  ← @/lib/engin-runtime/EnginBaseState
-│   │   └── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
+│   │   ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
+│   │   └── (dynamic)  ← @/lib/engin-runtime
 │   ├── engin-workflow.test.ts
 │   │   ├── HANDOFF_PATHS  ← ../lib/engins/workflowEngine
 │   │   ├── STAGE_LABELS  ← ../lib/engins/workflowEngine
@@ -14562,7 +14703,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── it  ← vitest
 │   │   └── → (default)
 │   ├── game-controller.test.ts
-│   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
+│   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
 │   │   ├── BTN_DOUBLE_TAP_MAX_MS  ← @/lib/games/gameControllerButtons
 │   │   ├── BTN_LONG_PRESS_MS  ← @/lib/games/gameControllerButtons
 │   │   ├── BTN_TAP_AND_HOLD_WINDOW_MS  ← @/lib/games/gameControllerButtons
@@ -15427,13 +15568,23 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
-│   ├── readme-autosync.test.ts ⚠
-│   │   ├── SECTION_REGISTRY  ⚠ ../scripts/readme-autosync
-│   │   ├── SectionDescriptor  ⚠ ../scripts/readme-autosync
-│   │   ├── SubsectionDescriptor  ⚠ ../scripts/readme-autosync
-│   │   ├── computeAffected  ⚠ ../scripts/readme-autosync
-│   │   ├── replaceSection  ⚠ ../scripts/readme-autosync
-│   │   ├── upsertSubsectionInSection  ⚠ ../scripts/readme-autosync
+│   ├── readme-autosync.test.ts
+│   │   ├── DrEamsIntentType  ← ../lib/dreams/types
+│   │   ├── Dream  ← ../lib/dreams/types
+│   │   ├── DreamKind  ← ../lib/dreams/types
+│   │   ├── DreamPermissions  ← ../lib/dreams/types
+│   │   ├── DreamRenderMode  ← ../lib/dreams/types
+│   │   ├── DreamSurface  ← ../lib/dreams/types
+│   │   ├── NO_PERMISSIONS  ← ../lib/dreams/types
+│   │   ├── OWNER_PERMISSIONS  ← ../lib/dreams/types
+│   │   ├── VIEWER_PERMISSIONS  ← ../lib/dreams/types
+│   │   ├── createDream  ← ../lib/dreams/types
+│   │   ├── dreamCan  ← ../lib/dreams/types
+│   │   ├── isDream  ← ../lib/dreams/types
+│   │   ├── resolveDreamSurfaceAdapter  ← ../lib/dreams/types
+│   │   ├── buildAutosyncSummary  ← ../scripts/readme-autosync
+│   │   ├── computeAffected  ← ../scripts/readme-autosync
+│   │   ├── replaceSection  ← ../scripts/readme-autosync
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -16081,6 +16232,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: (default)
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
+├── generate-readme.ts
+│   ├── SECTION_REGISTRY  ← ./readme-autosync.ts
+│   ├── runReadmeAutosync  ← ./readme-autosync.ts
+│   ├── existsSync  ← node:fs
+│   ├── readFileSync  ← node:fs
+│   ├── writeFileSync  ← node:fs
+│   ├── resolve  ← node:path
+│   └── fileURLToPath  ← node:url
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
@@ -16110,7 +16269,40 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── → config
 │   ├── → proxy
 │   └── ∅ unused: proxy, config
-├── scripts-fix.zip
+├── readme-autosync.ts ∅
+│   ├── existsSync  ← node:fs
+│   ├── readFileSync  ← node:fs
+│   ├── readdirSync  ← node:fs
+│   ├── statSync  ← node:fs
+│   ├── writeFileSync  ← node:fs
+│   ├── basename  ← node:path
+│   ├── extname  ← node:path
+│   ├── join  ← node:path
+│   ├── relative  ← node:path
+│   ├── resolve  ← node:path
+│   ├── fileURLToPath  ← node:url
+│   ├── ArrowFunction  ← ts-morph
+│   ├── FunctionDeclaration  ← ts-morph
+│   ├── FunctionExpression  ← ts-morph
+│   ├── Node  ← ts-morph
+│   ├── Project  ← ts-morph
+│   ├── SourceFile  ← ts-morph
+│   ├── SyntaxKind  ← ts-morph
+│   ├── → SECTION_REGISTRY
+│   ├── → analyzeComponents
+│   ├── → analyzeDependencies
+│   ├── → analyzeExports
+│   ├── → analyzeHooks
+│   ├── → analyzeImports
+│   ├── → analyzeRoutes
+│   ├── → analyzeSubsystem
+│   ├── → buildArchitecturalSectionBlock
+│   ├── → buildArchitecturalSubsectionBlock
+│   ├── → computeAffected
+│   ├── → replaceSection
+│   ├── → runReadmeAutosync
+│   ├── → upsertSubsectionInSection
+│   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 │   └── (dynamic)  ← tailwindcss

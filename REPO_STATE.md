@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-03T01:02:48.378Z
+Generated: 2026-06-04T21:47:32.971Z
 
 ---
 
@@ -788,6 +788,7 @@ _No style files for this feature._
 - `components/games/dream.hud.LegacyGameHUD.tsx`
 - `components/games/dream.hud.MobileGameHUD.tsx`
 - `components/games/dream.remote.GameRemote.tsx`
+- `components/games/dream.remote.GameRemoteSurface.tsx`
 - `components/games/dream.remote.LegacyGameRemote.tsx`
 
 ### `components/games/_fx/`
@@ -1078,7 +1079,7 @@ _No style files for this feature._
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
 - `@/components/games/dream.remote.GameRemote`
-- `@/components/games/dream.remote.LegacyGameRemote`
+- `@/components/games/dream.remote.GameRemoteSurface`
 - `@/engins/engin.GameEngin`
 - `@/lib/babylon/createEngine`
 - `@/lib/daydream/useDaydreamPersistence`
@@ -4706,6 +4707,7 @@ _No style files for this feature._
 
 ## Tests
 
+- `tests/engin-dispatcher-glow.test.ts`
 - `tests/engin-dispatcher.test.ts`
 - `tests/engin-runtime-core.test.ts`
 - `tests/engin-workflow.test.ts`
@@ -8435,8 +8437,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/components/landing/dream.LandingProductStatement` | `⬡ LandingProductStatement` |
 | `@/lib/dreamr/swipeCalibration` | `CalibrationSample`, `calibrateDevice` |
-| `next/link` | `⬡ Link` |
 | `react` | `useEffect`, `useRef` |
 
 ## `components/dream.LedgerChart.tsx`
@@ -9312,7 +9314,7 @@ _No style files for this feature._
 | `@/lib/games/gameControllerButtons` | `ButtonInteractionManager`, `CONTROLLER_BUTTON_DEFS`, `ControllerButton` |
 | `@/lib/games/gameControllerLeft` | `LEFT_STICK_RADIUS_PX`, `StickVector`, `computeLeftStickVector` |
 | `@/lib/games/gameControllerRight` | `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS`, `RIGHT_RESET_TIMEOUT_MS`, `computeAimDelta`, `evaluateRightStickTap` |
-| `@/lib/games/mobileControls` | `MobileControlVector`, `emitMobileButton`, `emitMobileJump`, `emitMobileLookDelta`, `emitMobileMove`, `emitMobileShoot`, `fireLegacyGameInput`, `getLegacyMoveAction` |
+| `@/lib/games/mobileControls` | `MobileControlVector`, `emitMobileButton`, `emitMobileJump`, `emitMobileLookDelta`, `emitMobileMove`, `emitMobileShoot`, `fireGameRemoteInput`, `getRemoteMoveAction` |
 | `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
 
 ## `components/games/dream.GamesHub.tsx`
@@ -9435,7 +9437,18 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/games/mobileControls` | `MOBILE_HUD_BUTTON_RING`, `MobileControlVector`, `MobileHudButton`, `MobileHudMode`, `emitMobileButton`, `emitMobileLook`, `emitMobileMove`, `fireLegacyGameInput`, `getLegacyActionForMobileButton`, `getLegacyMoveAction`, `normalizeStickVector` |
+| `@/lib/games/mobileControls` | `MOBILE_HUD_BUTTON_RING`, `MobileControlVector`, `MobileHudButton`, `MobileHudMode`, `emitMobileButton`, `emitMobileLook`, `emitMobileMove`, `fireGameRemoteInput`, `getRemoteActionForMobileButton`, `getRemoteMoveAction`, `normalizeStickVector` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `components/games/dream.remote.GameRemoteSurface.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
+| `@/lib/games/useGamepad` | `useGamepad` |
+| `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
+| `next/link` | `⬡ Link` |
+| `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `components/games/dream.remote.LegacyGameRemote.tsx`
@@ -10541,6 +10554,15 @@ _No style files for this feature._
 |--------|---------------|
 | `lucide-react` | `DatabaseIcon` |
 
+## `generate-readme.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./readme-autosync.ts` | `SECTION_REGISTRY`, `runReadmeAutosync` |
+| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
+| `node:path` | `resolve` |
+| `node:url` | `fileURLToPath` |
+
 ## `hooks/use-spatial.ts`
 
 | Module | Connected via |
@@ -11365,11 +11387,26 @@ _No style files for this feature._
 |--------|---------------|
 | `react` | `⬡ React` |
 
+## `lib/dreams/dreamIntentBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `DrEamsIntentType` |
+| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `JsonValue`, `createDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability` |
+| `@/lib/runtime/dreamOSBus` | `InformationDomain`, `IntentEnvelope`, `dreamOSBus` |
+
 ## `lib/dreams/profileProjection.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/dreams/types` | `DreamProjection`, `DreamVisibility` |
+
+## `lib/dreams/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `isJsonObject`, `isJsonSerializable` |
 
 ## `lib/dreams/useDreamsRuntime.ts`
 
@@ -11381,30 +11418,46 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./EnginBaseState` | `DomainObject`, `isDomainObject` |
+| `./EnginBaseState` | `DomainObject`, `JsonValue`, `isDomainObject` |
 
-## `lib/engin-runtime/EnginEventBus.ts`
+## `lib/engin-runtime/EnginIOAdapter.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/eventBus` | `EventHandler`, `createEventBus` |
+| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
+| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality` |
 
 ## `lib/engin-runtime/EnginRuleSetContract.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `./EnginBaseState` | `EnginBaseState` |
+| `./EnginBaseState` | `EnginBaseState`, `JsonObject`, `JsonValue`, `isEnginBaseState` |
 | `./EnginCapabilities` | `EnginCapability` |
 
 ## `lib/engin-runtime/EnginRuntime.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `createBaseState`, `isEnginBaseState`, `patchBaseState` |
+| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `JsonObject`, `createBaseState`, `isEnginBaseState`, `patchBaseState` |
 | `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
 | `./EnginEventBus` | `EnginEventBus`, `EnginLifecycleEvents`, `createEnginEventBus` |
-| `./EnginIOAdapter` | `EnginIOAdapter`, `LocalStorageAdapter` |
-| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+| `./EnginIOAdapter` | `EnginIOAdapter`, `EnginSyncTransport`, `LocalStorageAdapter`, `MemorySyncTransport` |
+| `./EnginRuleSetContract` | `CompatibilityNegotiationResult`, `EnginAction`, `EnginRuleSetContract`, `EnginRuntimeFeature`, `negotiateRuleSetCompatibility`, `validateRuleSetState` |
+| `./EnginSnapshotFingerprint` | `fingerprintEnginSnapshot` |
+| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
+
+## `lib/engin-runtime/EnginSnapshotFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
+
+## `lib/engin-runtime/PremiumRuntimeQuality.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonObject` |
+| `./EnginRuleSetContract` | `EnginRuntimeFeature` |
 
 ## `lib/engin-runtime/index.ts`
 
@@ -11443,9 +11496,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/brand/useBrandEnginRuntime.ts`
 
@@ -11460,9 +11513,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/code/useCodeEnginRuntime.ts`
 
@@ -11477,9 +11530,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/content/useContentEnginRuntime.ts`
 
@@ -11494,9 +11547,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/game/useGameEnginRuntime.ts`
 
@@ -11511,9 +11564,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/lab/useLabEnginRuntime.ts`
 
@@ -11528,9 +11581,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetParams` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
 
 ## `lib/engins/music/useStarMakerEnginRuntime.ts`
 
@@ -12253,7 +12306,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `isDomainObject` |
 | `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
 | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `INFORMATION_DOMAINS`, `InformationDomain` |
 | `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
@@ -12650,6 +12703,15 @@ _No style files for this feature._
 | `@/lib/supabase/server` | `createServerClientWithCustomCookies` |
 | `next/server` | `NextRequest`, `NextResponse` |
 
+## `readme-autosync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
+| `node:url` | `fileURLToPath` |
+| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
+
 ## `repo-visualizer/analyzer.mjs`
 
 | Module | Connected via |
@@ -12843,6 +12905,13 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../lib/adari` | `assertBuildInvariants` |
+
+## `scripts/readme-autosync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
+| `node:path` | `resolve` |
 
 ## `scripts/update-bugs.mjs`
 
@@ -13584,7 +13653,6 @@ _No style files for this feature._
 | `@/components/games/dream.GamesHub` | _(dynamic import)_ |
 | `@/components/games/dream.Glassfall` | _(dynamic import)_ |
 | `@/components/games/dream.hud.GameHUD` | _(dynamic import)_ |
-| `@/components/games/dream.hud.LegacyGameHUD` | _(dynamic import)_ |
 | `@/components/games/dream.hud.MobileGameHUD` | _(dynamic import)_ |
 | `@/components/games/dream.Leaderboard` | _(dynamic import)_ |
 | `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
@@ -13593,7 +13661,7 @@ _No style files for this feature._
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
 | `@/components/games/dream.RecordingControls` | _(dynamic import)_ |
 | `@/components/games/dream.remote.GameRemote` | _(dynamic import)_ |
-| `@/components/games/dream.remote.LegacyGameRemote` | _(dynamic import)_ |
+| `@/components/games/dream.remote.GameRemoteSurface` | _(dynamic import)_ |
 | `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
 | `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
 | `@/components/games/madmaxi/audio` | _(dynamic import)_ |
@@ -15013,7 +15081,6 @@ _No style files for this feature._
 - `@/components/games/dream.GamesHub`
 - `@/components/games/dream.Glassfall`
 - `@/components/games/dream.hud.GameHUD`
-- `@/components/games/dream.hud.LegacyGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.Leaderboard`
 - `@/components/games/dream.LexiconSolitaire`
@@ -15022,7 +15089,7 @@ _No style files for this feature._
 - `@/components/games/dream.NullCathedral`
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.remote.GameRemote`
-- `@/components/games/dream.remote.LegacyGameRemote`
+- `@/components/games/dream.remote.GameRemoteSurface`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/madmaxi/audio`
@@ -15611,6 +15678,7 @@ _No style files for this feature._
 
 - `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/engin-runtime/EnginCapabilities`
+- `@/lib/engin-runtime`
 
 ## `tests/forge-engin.test.ts`
 
@@ -16574,6 +16642,7 @@ _No style files for this feature._
 - `components/games/dream.hud.GameHUD.tsx`
 - `components/games/dream.hud.LegacyGameHUD.tsx`
 - `components/games/dream.hud.MobileGameHUD.tsx`
+- `components/games/dream.remote.GameRemoteSurface.tsx`
 - `components/games/dream.remote.LegacyGameRemote.tsx`
 - `components/games/madmaxi/dream.MadmaxiGame.tsx`
 
@@ -17293,6 +17362,8 @@ _No style files for this feature._
 - `lib/adari.ts`
 - `lib/dreamdm/DreamSystemContext.tsx`
 - `lib/dreamenginOS/index.ts`
+- `lib/dreams/dreamIntentBus.ts`
+- `lib/dreams/types.ts`
 - `lib/engins/useEnginWorkflow.ts`
 - `lib/eventBus.ts`
 - `lib/gameengin/GameRuntime.tsx`
@@ -17316,6 +17387,7 @@ _No style files for this feature._
 - `lib/vm/dual-runtime.ts`
 - `lib/vm/dualVMCoordinator.ts`
 - `lib/vm/index.ts`
+- `readme-autosync.ts`
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
@@ -17543,6 +17615,7 @@ _No style files for this feature._
 - `lib/collaboration/index.ts`
 - `lib/dreamdm/useDreamDMConversations.ts`
 - `lib/dreamdm/useDreamDMMessages.ts`
+- `lib/engin-runtime/EnginRuntime.ts`
 - `lib/engins/brand/useBrandEnginRuntime.ts`
 - `lib/engins/code/useCodeEnginRuntime.ts`
 - `lib/engins/content/useContentEnginRuntime.ts`
@@ -17586,6 +17659,7 @@ _No style files for this feature._
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
 - `components/dream.OSShellActivator.tsx`
 - `components/dreamengin/dream.DREAMenginOS.tsx`
+- `lib/dreams/types.ts`
 - `lib/gameengin/registerCartridges.ts`
 - `lib/observability/otel.ts`
 - `lib/runtime/EnginDispatcher.ts`
@@ -17593,6 +17667,7 @@ _No style files for this feature._
 - `lib/runtime/dropTargetRegistry.ts`
 - `lib/runtime/memory.ts`
 - `lib/runtime/useDragSurface.ts`
+- `readme-autosync.ts`
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
 - `src/core/GameEnginCore.ts`
@@ -17729,6 +17804,7 @@ _No circular dependencies detected._
 | `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
 | `components/home/dream.ActiveModuleSurface.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
+| `lib/engin-runtime/index.ts` | 9 | MEDIUM_COUPLING |
 | `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/appeal/route.ts` | 8 | MEDIUM_COUPLING |
@@ -17803,7 +17879,7 @@ _No circular dependencies detected._
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
-| `lib/engin-runtime/index.ts` | 7 | MEDIUM_COUPLING |
+| `lib/engin-runtime/EnginRuntime.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/engin-runtime-core.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
@@ -17846,6 +17922,7 @@ _No circular dependencies detected._
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/engines/shared/dream.makeEnginApp.tsx` | 6 | MEDIUM_COUPLING |
 | `components/games/dream.EchoArena.tsx` | 6 | MEDIUM_COUPLING |
+| `components/games/dream.remote.GameRemoteSurface.tsx` | 6 | MEDIUM_COUPLING |
 | `components/games/dream.remote.LegacyGameRemote.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.MarketplacePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.ProfilePanel.tsx` | 6 | MEDIUM_COUPLING |
@@ -17877,6 +17954,7 @@ _No circular dependencies detected._
 | `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
 | `lib/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
+| `readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/generate-readme.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
@@ -17909,9 +17987,11 @@ _No circular dependencies detected._
 | `src/core/GameEnginCore.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/dual-runtime-bridge-peer-activity.test.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/durable-bridge.test.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/engin-dispatcher-glow.test.ts` | 2 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-power-systems.test.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
 | `lib/collaboration/index.ts` | 1 | EVENT_BUS |
+| `lib/dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/gameengin/gameEnginRuntime.ts` | 1 | EVENT_BUS |
 | `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
@@ -18283,6 +18363,7 @@ _No circular dependencies detected._
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `components/dream.CreatePostModal.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.HomeFeed.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/dream.LandingHero.tsx` | `@/components/landing/dream.LandingProductStatement` | `⬡ LandingProductStatement` |
 | `components/dream.MessagesClient.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.ProfileEditor.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.universal_asset_registry.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -18445,7 +18526,7 @@ _No circular dependencies detected._
 | `app/settings/dreams/dreams-layout-editor.tsx` | `(default)` |
 | `app/settings/privacy/dream.PrivacyClient.tsx` | `(default)` |
 | `assembly/bus.ts` | `QUEUE_SIZE`, `enqueue`, `dequeue`, `reset` |
-| `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD` |
+| `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD`, `hashBytesFNV1A`, `shapeGlowFieldSIMD` |
 | `assembly/mad-maxi-player.ts` | `init`, `handleInput`, `update`, `getSnapshotSize`, `writeSnapshot`, `loadSnapshot`, `getMemoryUsage`, `getX`, `getY`, `getVX`, `getVY`, `getOnGround`, `getJumpsUsed`, `getCoyoteTimer`, `getDashTimer`, `getTicks` |
 | `components/ads/dream.SkipCreditBalance.tsx` | `SkipCreditBalance` |
 | `components/auth/dream.PasswordField.tsx` | `(default)` |
@@ -18628,6 +18709,7 @@ _No circular dependencies detected._
 | `components/games/dream.hud.LegacyGameHUD.tsx` | `(default)` |
 | `components/games/dream.hud.MobileGameHUD.tsx` | `(default)` |
 | `components/games/dream.remote.GameRemote.tsx` | `default` |
+| `components/games/dream.remote.GameRemoteSurface.tsx` | `(default)` |
 | `components/games/dream.remote.LegacyGameRemote.tsx` | `(default)` |
 | `components/games/madmaxi/config.ts` | `MADMAXI_ENEMY_KINDS`, `MADMAXI_POWERUP_KINDS`, `BOSSES` |
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | `(default)` |
@@ -18845,8 +18927,11 @@ _No circular dependencies detected._
 | `lib/dreamr/torridityLedger.ts` | `getDeceleration`, `calculateSnapForce`, `normalizeHumanViews` |
 | `lib/dreams/DreamRegistry.tsx` | `DreamRegistry` |
 | `lib/dreams/profileProjection.ts` | `createDreamProjection` |
-| `lib/engin-runtime/EnginBaseState.ts` | `createDomainObject` |
-| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities` |
+| `lib/dreams/types.ts` | `DREAM_SURFACES`, `DREAM_KINDS`, `DREAM_RENDER_MODES`, `DREAM_VISIBILITIES` |
+| `lib/engin-runtime/EnginRuleSetContract.ts` | `validateRuleSetManifest` |
+| `lib/engin-runtime/EnginRuntime.ts` | `ENGIN_RUNTIME_VERSION`, `ENGIN_RUNTIME_FEATURES` |
+| `lib/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
+| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
 | `lib/engine/index.ts` | `UniversalEngine` |
 | `lib/enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema` |
 | `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
@@ -19013,11 +19098,13 @@ _No circular dependencies detected._
 | `playwright.config.ts` | `(default)` |
 | `postcss.config.mjs` | `(default)` |
 | `proxy.ts` | `proxy`, `config` |
+| `readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected` |
 | `scripts/export-full-code.mjs` | `DEFAULT_EXCLUDED_DIRS`, `DEFAULT_EXCLUDED_BASENAMES`, `isProbablyTextBuffer`, `hasPrintableContent`, `collectExportableFiles`, `exportFullCodeSnapshot` |
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-readme.ts` | `SECTION_REGISTRY`, `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected`, `runReadmeAutosync` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
+| `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
@@ -20144,7 +20231,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── bus.ts ∅
 │   │   └── ∅ unused: QUEUE_SIZE, enqueue, dequeue, reset
 │   ├── index.ts ∅
-│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD
+│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD
 │   └── mad-maxi-player.ts ∅
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
@@ -20510,6 +20597,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.GameRemote.tsx ∅
 │   │   │   └── ∅ unused: default
+│   │   ├── dream.remote.GameRemoteSurface.tsx ∅
+│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.LegacyGameRemote.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.SerpentSiege.tsx ∅
@@ -20763,7 +20852,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── dream.KonamiDream.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.LandingHero.tsx ∅
+│   ├── dream.LandingHero.tsx ⚠ ∅
+│   │   ├── ⚠ @/components/landing/dream.LandingProductStatement  (⬡ LandingProductStatement)
 │   │   └── ∅ unused: (default)
 │   ├── dream.LedgerChart.tsx ∅
 │   │   └── ∅ unused: (default)
@@ -21270,22 +21360,28 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── ∅ unused: getDeceleration, calculateSnapForce, normalizeHumanViews
 │   ├── dreams
 │   │   ├── drag.ts
+│   │   ├── dreamIntentBus.ts
 │   │   ├── DreamRegistry.tsx ∅
 │   │   │   └── ∅ unused: DreamRegistry
 │   │   ├── profileProjection.ts ∅
 │   │   │   └── ∅ unused: createDreamProjection
-│   │   ├── types.ts
+│   │   ├── types.ts ∅
+│   │   │   └── ∅ unused: DREAM_SURFACES, DREAM_KINDS, DREAM_RENDER_MODES, DREAM_VISIBILITIES
 │   │   └── useDreamsRuntime.ts
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts ∅
-│   │   │   └── ∅ unused: createDomainObject
+│   │   ├── EnginBaseState.ts
 │   │   ├── EnginCapabilities.ts
 │   │   ├── EnginEventBus.ts
 │   │   ├── EnginIOAdapter.ts
-│   │   ├── EnginRuleSetContract.ts
-│   │   ├── EnginRuntime.ts
-│   │   └── index.ts ∅
-│   │       └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities
+│   │   ├── EnginRuleSetContract.ts ∅
+│   │   │   └── ∅ unused: validateRuleSetManifest
+│   │   ├── EnginRuntime.ts ∅
+│   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
+│   │   ├── EnginSnapshotFingerprint.ts ∅
+│   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
+│   │   ├── index.ts ∅
+│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   └── PremiumRuntimeQuality.ts
 │   ├── engine
 │   │   └── index.ts ∅
 │   │       └── ∅ unused: UniversalEngine
@@ -22024,6 +22120,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
 │   ├── postbuild.ts
+│   ├── readme-autosync.ts ∅
+│   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql
@@ -22196,6 +22294,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dream-bar-context.test.ts
 │   ├── dream-continuity-spine.test.ts
 │   ├── dream-effects.test.ts
+│   ├── dream-intent-bus.test.ts
 │   ├── dream-os-bus.test.ts
 │   ├── dream-state.test.ts
 │   ├── dream-window-system.test.ts
@@ -22218,6 +22317,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dual-runtime-bridge-peer-activity.test.ts
 │   ├── durable-bridge.test.ts
 │   ├── edit-profiledream-section7.test.ts
+│   ├── engin-dispatcher-glow.test.ts
 │   ├── engin-dispatcher.test.ts
 │   ├── engin-runtime-core.test.ts
 │   ├── engin-workflow.test.ts
@@ -22307,8 +22407,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── product-law-principle10-alignment.test.ts
 │   ├── profile-avatar-edit-entrypoints.test.ts
 │   ├── rate-limiting.test.ts
-│   ├── readme-autosync.test.ts ⚠
-│   │   └── ⚠ ../scripts/readme-autosync  (SECTION_REGISTRY, SectionDescriptor, SubsectionDescriptor, computeAffected, replaceSection, upsertSubsectionInSection)
+│   ├── readme-autosync.test.ts
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
@@ -22395,6 +22494,7 @@ Legend: ⚠ broken import  ∅ unused export
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
 ├── fix-audit.js
+├── generate-readme.ts
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
@@ -22413,7 +22513,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── ⚠ @/lib/supabase/config  (SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL)
 │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   └── ∅ unused: proxy, config
-├── scripts-fix.zip
+├── readme-autosync.ts ∅
+│   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 ├── tsconfig.games.json
