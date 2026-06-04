@@ -127,6 +127,18 @@ export interface WasmEngineExports {
    * @param gain   - Linear gain factor.
    */
   processAudioBufferSIMD: (bufPtr: number, count: number, gain: number) => void;
+
+  /** Deterministic FNV-1a byte hash used by runtime snapshot fingerprint hosts. */
+  hashBytesFNV1A?: (ptr: number, count: number) => number;
+
+  /** SIMD glow/intensity field shaper for runtime surfaces that share Wasm memory. */
+  shapeGlowFieldSIMD?: (
+    intensityPtr: number,
+    velocityPtr: number,
+    count: number,
+    deltaTime: number,
+    resonance: number,
+  ) => void;
 }
 
 /**
@@ -396,6 +408,60 @@ export class EnginDispatcher {
     }
 
     return this._wasmExports !== null;
+  }
+
+  // ─── Visual field shaping ────────────────────────────────────────────────
+
+  /**
+   * Shape glow/particle intensity buffers for OS surfaces and games.
+   *
+   * When callers pass Float32Array views backed by the dispatcher's shared Wasm
+   * memory, the AssemblyScript SIMD kernel owns the hot loop. For normal JS
+   * buffers this method applies the exact same deterministic policy in
+   * TypeScript so surfaces can use the owner path before the binary is present.
+   *
+   * Returns true when the Wasm SIMD export was used, false when the JS fallback
+   * shaped the buffers.
+   */
+  shapeGlowField(
+    intensity: Float32Array,
+    velocity: Float32Array,
+    deltaTime: number,
+    resonance: number,
+  ): boolean {
+    if (intensity.length !== velocity.length) {
+      throw new Error('Glow intensity and velocity buffers must have the same length.');
+    }
+    if (!Number.isFinite(deltaTime) || deltaTime < 0) {
+      throw new Error('Glow deltaTime must be a finite non-negative number.');
+    }
+    if (!Number.isFinite(resonance) || resonance < 0) {
+      throw new Error('Glow resonance must be a finite non-negative number.');
+    }
+
+    const wasmBuffer = this._wasmMemory?.buffer;
+    if (
+      this._wasmExports?.shapeGlowFieldSIMD &&
+      wasmBuffer &&
+      intensity.buffer === wasmBuffer &&
+      velocity.buffer === wasmBuffer
+    ) {
+      this._wasmExports.shapeGlowFieldSIMD(
+        intensity.byteOffset,
+        velocity.byteOffset,
+        intensity.length,
+        deltaTime,
+        resonance,
+      );
+      return true;
+    }
+
+    const decay = 1.0 - Math.min(0.92, deltaTime * 0.66);
+    const gain = deltaTime * resonance;
+    for (let i = 0; i < intensity.length; i += 1) {
+      intensity[i] = Math.min(1.0, intensity[i] * decay + velocity[i] * gain);
+    }
+    return false;
   }
 
   // ─── Dual-Runtime Seam ──────────────────────────────────────────────────────

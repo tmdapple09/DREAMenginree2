@@ -116,6 +116,8 @@ function wasmSIMDAddF32x4(
 interface WasmExports {
   tickPhysicsSIMD: (posPtr: number, velPtr: number, count: number, deltaTime: number) => void;
   processAudioBufferSIMD: (bufPtr: number, count: number, gain: number) => void;
+  hashBytesFNV1A?: (ptr: number, count: number) => number;
+  shapeGlowFieldSIMD?: (intensityPtr: number, velocityPtr: number, count: number, deltaTime: number, resonance: number) => void;
 }
 
 let wasmExports: WasmExports | null = null;

@@ -42,6 +42,32 @@ type CounterAction =
   | EnginAction<'counter:reset'>;
 
 const counterRuleSet: EnginRuleSetContract<CounterAction> = {
+  manifest: {
+    id: 'test',
+    name: 'TestEngin',
+    version: '1.0.0',
+    schema: {
+      actionTypes: ['counter:increment', 'counter:reset'],
+      domainVersion: 1,
+      validateAction: (action) => {
+        if (!action.type.startsWith('counter:')) {
+          return { valid: false, reason: 'Counter action required.' };
+        }
+        return { valid: true };
+      },
+    },
+    compatibility: {
+      minRuntimeVersion: '1.0.0',
+      requiredFeatures: [
+        'lifecycle-hooks',
+        'manifest-schema',
+        'strict-intent-routing',
+        'sync-transport',
+        'state-snapshotting',
+        'compatibility-negotiation',
+      ],
+    },
+  },
   params: {
     enginId: 'test',
     name: 'TestEngin',
@@ -163,7 +189,7 @@ describe('MemoryAdapter', () => {
     expect(val).toEqual({ foo: 'bar' });
   });
 
-  it('returns null for unknown key', async () => {
+  it('returns null for a missing key', async () => {
     const val = await adapter.load('nope');
     expect(val).toBeNull();
   });
@@ -411,7 +437,8 @@ describe('EnginRuntime recovery hooks', () => {
     runtime.dispatch({ type: 'counter:increment', payload: { by: 6 } });
     runtime.restoreSnapshot(snapshot);
     expect(runtime.getDerivedState().count).toBe(4);
-    expect(hook).toHaveBeenCalledWith('running', expect.any(Object));
+    expect(hook.mock.calls[0]?.[0]).toBe('running');
+    expect(hook.mock.calls[0]?.[1]).toMatchObject({ enginId: 'test' });
   });
 });
 
@@ -505,7 +532,7 @@ describe('EnginRuntime contract hardening', () => {
     });
     runtime.dispatch({ type: 'counter:increment', payload: { by: 4 } });
     const snapshot = runtime.snapshot() as EnginBaseState;
-    const stateEvents: unknown[] = [];
+    const stateEvents: Array<{ enginId: string; revision: number }> = [];
     runtime.bus.on('engin:state', (event) => stateEvents.push(event));
     (snapshot.domain as { count?: number }).count = 99;
     expect(runtime.getDerivedState().count).toBe(4);
@@ -516,4 +543,267 @@ describe('EnginRuntime contract hardening', () => {
     expect(stateEvents).toHaveLength(1);
     expect(() => runtime.pause()).toThrow('idle -> paused');
   });
+});
+
+describe('ι-Engine manifest, schema, compatibility, and sync transport', () => {
+  it('rejects actions that are not declared by the active ruleset manifest', () => {
+    type UndeclaredCounterAction = CounterAction | EnginAction<'counter:teleport'>;
+    const undeclaredRuleSet: EnginRuleSetContract<UndeclaredCounterAction> = {
+      ...counterRuleSet,
+      manifest: {
+        ...counterRuleSet.manifest,
+        schema: {
+          ...counterRuleSet.manifest.schema,
+          validateAction(action) {
+            if (!action.type.startsWith('counter:')) {
+              return { valid: false, reason: 'Counter action required.' };
+            }
+            return { valid: true };
+          },
+        },
+      },
+      constraints: [],
+      transform(state, action) {
+        if (action.type === 'counter:teleport') return state;
+        return counterRuleSet.transform(state, action);
+      },
+    };
+    const runtime = createEnginRuntime(undeclaredRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+    });
+    const handler = vi.fn();
+    runtime.bus.on('engin:error', handler);
+    const result = runtime.dispatch({ type: 'counter:teleport' });
+    expect(result).toBe(false);
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining('not allowed'),
+      }),
+    );
+  });
+
+  it('negotiates compatibility before constructing a runtime', () => {
+    const incompatibleRuleSet: EnginRuleSetContract<CounterAction> = {
+      ...counterRuleSet,
+      manifest: {
+        ...counterRuleSet.manifest,
+        compatibility: {
+          minRuntimeVersion: '99.0.0',
+          requiredFeatures: ['compatibility-negotiation'],
+        },
+      },
+    };
+    expect(() =>
+      createEnginRuntime(incompatibleRuleSet, {
+        ioAdapter: new MemoryAdapter(),
+        persistenceKey: false,
+      }),
+    ).toThrow('older than required');
+  });
+
+  it('publishes schema-versioned sync frames through an injected transport', async () => {
+    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const frames: Array<{
+      enginId: string;
+      runtimeId: string;
+      direction: string;
+      schemaVersion: number;
+      fingerprint: string;
+      quality: { runtimeTier: string; material: string };
+    }> = [];
+    transport.subscribe('test', (frame) => frames.push(frame));
+    const runtime = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+      runtimeId: 'homedream',
+    });
+    runtime.dispatch({ type: 'counter:increment', payload: { by: 2 } });
+    expect(frames).toHaveLength(1);
+    const publishedFrame = frames[0];
+    expect(publishedFrame.enginId).toBe('test');
+    expect(publishedFrame.runtimeId).toBe('homedream');
+    expect(publishedFrame.direction).toBe('receive');
+    expect(typeof publishedFrame.fingerprint).toBe('string');
+    expect(publishedFrame.fingerprint.length).toBeGreaterThan(0);
+    expect(publishedFrame.quality.runtimeTier).toBe('premium');
+    expect(publishedFrame.quality.material).toBe('glass-chrome-glow');
+    expect(publishedFrame.schemaVersion).toBe(1);
+  });
+
+  it('rejects domain object envelopes with extra top-level keys', async () => {
+    const { isDomainObject } = await import('@/lib/engin-runtime');
+    expect(
+      isDomainObject({
+        id: 'asset-extra',
+        type: 'asset',
+        ownerId: 'owner-1',
+        runtimeId: 'homedream',
+        visibility: 'local',
+        createdAt: '2026-06-01T00:00:00.000Z',
+        updatedAt: '2026-06-01T00:00:00.000Z',
+        version: 1,
+        data: {},
+        placementOwner: 'ui-only',
+      }),
+    ).toBe(false);
+  });
+
+  it('applies valid cross-runtime sync snapshots through the runtime subscriber', async () => {
+    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const sender = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+      runtimeId: 'homedream',
+    });
+    const receiver = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+      runtimeId: 'dreamspace',
+    });
+    const received: Readonly<EnginBaseState>[] = [];
+    receiver.subscribeSync((snapshot) => received.push(snapshot));
+    sender.dispatch({ type: 'counter:increment', payload: { by: 7 } });
+    expect(received).toHaveLength(1);
+    expect(receiver.getDerivedState().count).toBe(7);
+  });
+
+  it('matches the AssemblyScript FNV-1a fingerprint algorithm in TypeScript', async () => {
+    const { hashBytesFNV1A } = await import('@/lib/engin-runtime');
+    const bytes = new TextEncoder().encode('dreamengin');
+    expect(hashBytesFNV1A(bytes).toString(16)).toBe('2b467b17');
+  });
+
+
+  it('describes premium runtime quality for synced snapshots', async () => {
+    const { createPremiumRuntimeQuality, fingerprintEnginSnapshot } =
+      await import('@/lib/engin-runtime');
+    const state = createBaseState('premium-test');
+    const fingerprint = fingerprintEnginSnapshot(state);
+    const quality = createPremiumRuntimeQuality({
+      state,
+      snapshotCount: 3,
+      manifestVersion: '1.0.0',
+      fingerprint,
+      features: ['sync-transport', 'state-snapshotting'],
+    });
+    expect(quality).toMatchObject({
+      engineTier: 'premium',
+      runtimeTier: 'premium',
+      surfaceTier: 'premium',
+      frameBudgetMs: 16,
+      material: 'glass-chrome-glow',
+    });
+  });
+
+  it('stable snapshot strings and fingerprints ignore object key insertion order', async () => {
+    const { stableStringifySnapshot, fingerprintEnginSnapshot } = await import('@/lib/engin-runtime');
+    const left: EnginBaseState = {
+      enginId: 'test',
+      lifecycle: 'running',
+      updatedAt: '2026-06-01T00:00:00.000Z',
+      revision: 4,
+      domain: { b: 2, a: { y: 2, x: 1 } },
+    };
+    const right: EnginBaseState = {
+      enginId: 'test',
+      lifecycle: 'running',
+      updatedAt: '2026-06-01T00:00:00.000Z',
+      revision: 4,
+      domain: { a: { x: 1, y: 2 }, b: 2 },
+    };
+    expect(stableStringifySnapshot(left)).toBe(stableStringifySnapshot(right));
+    expect(fingerprintEnginSnapshot(left)).toBe(fingerprintEnginSnapshot(right));
+  });
+
+  it('rejects cross-runtime sync frames with mismatched fingerprints', async () => {
+    const { MemorySyncTransport, createPremiumRuntimeQuality } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const receiver = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+      runtimeId: 'dreamspace',
+    });
+    const received: Readonly<EnginBaseState>[] = [];
+    receiver.subscribeSync((snapshot) => received.push(snapshot));
+    const snapshot = patchBaseState(createBaseState('test'), { domain: { count: 11 } });
+    await transport.publish({
+      id: 'bad-fingerprint',
+      enginId: 'test',
+      runtimeId: 'homedream',
+      direction: 'publish',
+      schemaVersion: 1,
+      fingerprint: '00000000',
+      quality: createPremiumRuntimeQuality({
+        state: snapshot,
+        snapshotCount: 1,
+        manifestVersion: '1.0.0',
+        fingerprint: '00000000',
+        features: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+      }),
+      snapshot,
+      createdAt: '2026-06-01T00:00:00.000Z',
+    });
+    expect(received).toHaveLength(0);
+    expect(receiver.getDerivedState().count).toBe(0);
+  });
+
+  it('rejects cross-runtime sync frames with impossible premium quality metadata', async () => {
+    const { MemorySyncTransport, createPremiumRuntimeQuality, fingerprintEnginSnapshot } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const receiver = createEnginRuntime(counterRuleSet, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+      runtimeId: 'dreamspace',
+    });
+    const received: Readonly<EnginBaseState>[] = [];
+    receiver.subscribeSync((snapshot) => received.push(snapshot));
+    const snapshot = patchBaseState(createBaseState('test'), { domain: { count: 12 } });
+    const fingerprint = fingerprintEnginSnapshot(snapshot);
+    const quality = createPremiumRuntimeQuality({
+      state: snapshot,
+      snapshotCount: 1,
+      manifestVersion: '1.0.0',
+      fingerprint,
+      features: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+    });
+    await transport.publish({
+      id: 'bad-quality',
+      enginId: 'test',
+      runtimeId: 'homedream',
+      direction: 'publish',
+      schemaVersion: 1,
+      fingerprint,
+      quality: { ...quality, frameBudgetMs: 999, fingerprint: 'ffffffff' },
+      snapshot,
+      createdAt: '2026-06-01T00:00:00.000Z',
+    });
+    expect(received).toHaveLength(0);
+    expect(receiver.getDerivedState().count).toBe(0);
+  });
+
+  it('rejects non-JSON runtime state shapes instead of silently accepting class/function values', async () => {
+    const { isJsonSerializable, isEnginBaseState } = await import('@/lib/engin-runtime');
+    expect(isJsonSerializable({ ok: true, nested: [1, 'two', null] })).toBe(true);
+    expect(isJsonSerializable({ when: new Date('2026-06-01T00:00:00.000Z') })).toBe(false);
+    expect(isJsonSerializable({ fn: () => true })).toBe(false);
+    expect(
+      isEnginBaseState({
+        enginId: 'test',
+        lifecycle: 'running',
+        updatedAt: '2026-06-01T00:00:00.000Z',
+        revision: 1,
+        domain: { fn: () => true },
+      }),
+    ).toBe(false);
+  });
+
+
 });

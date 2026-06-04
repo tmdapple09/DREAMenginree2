@@ -98,7 +98,7 @@ export default function RuntimeShell({
       {/* ── Zoom controls — top-right of the region, never zoomed ───────── */}
       {showZoomControls && (
         <div
-          className="premium-card"
+          className="premium-card de-os-panel de-runtime-seam de-material-enter"
           style={{
             position: 'absolute',
             top: 10,
@@ -170,7 +170,7 @@ export default function RuntimeShell({
         <>
           {/* Chrome bar with back button */}
           <div
-            className="premium-card"
+            className="premium-card de-os-panel de-runtime-seam de-material-enter"
             style={{
               position: 'absolute',
               top: 0,

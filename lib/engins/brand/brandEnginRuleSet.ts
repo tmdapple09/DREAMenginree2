@@ -16,6 +16,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -23,12 +24,13 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
 // ─── Profile ──────────────────────────────────────────────────────────────────
 
-export interface BrandProfile {
+export interface BrandProfile extends JsonObject {
   handle: string;
   displayName: string | null;
   followerCount: number;
@@ -36,7 +38,7 @@ export interface BrandProfile {
 
 // ─── Analytic metric ──────────────────────────────────────────────────────────
 
-export interface AnalyticMetric {
+export interface AnalyticMetric extends JsonObject {
   id: string;
   label: string;
   value: string;
@@ -45,7 +47,7 @@ export interface AnalyticMetric {
 
 // ─── A/B test ─────────────────────────────────────────────────────────────────
 
-export interface ABTest {
+export interface ABTest extends JsonObject {
   id: string;
   name: string;
   variantA: string;
@@ -56,7 +58,7 @@ export interface ABTest {
 
 // ─── Brand asset ──────────────────────────────────────────────────────────────
 
-export interface BrandAsset {
+export interface BrandAsset extends JsonObject {
   id: string;
   name: string;
   type: 'logo' | 'color' | 'font';
@@ -65,7 +67,7 @@ export interface BrandAsset {
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface BrandEnginDerivedState extends Record<string, unknown> {
+export interface BrandEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   profile: BrandProfile | null;
   metrics: AnalyticMetric[];
@@ -73,7 +75,7 @@ export interface BrandEnginDerivedState extends Record<string, unknown> {
   assets: BrandAsset[];
   campaignDraftReady: boolean;
   audioBriefReady: boolean;
-  brandCheckPayload: Record<string, unknown> | null;
+  brandCheckPayload: JsonObject | null;
 }
 
 // ─── Action discriminated union ───────────────────────────────────────────────
@@ -87,7 +89,7 @@ export type BrandEnginAction =
   | EnginAction<'brand:asset-add',         { asset: BrandAsset }>
   | EnginAction<'brand:campaign-draft',    Record<string, never>>
   | EnginAction<'brand:audio-brief',       Record<string, never>>
-  | EnginAction<'brand:check-received',    { payload: Record<string, unknown> }>;
+  | EnginAction<'brand:check-received',    { payload: JsonObject }>;
 
 // ─── Default domain state ─────────────────────────────────────────────────────
 
@@ -191,7 +193,7 @@ function transform(state: EnginBaseState, action: BrandEnginAction): EnginBaseSt
     }
 
     case 'brand:check-received': {
-      const { payload } = (action as EnginAction<'brand:check-received', { payload: Record<string, unknown> }>).payload!;
+      const { payload } = (action as EnginAction<'brand:check-received', { payload: JsonObject }>).payload!;
       return patchBaseState(state, { domain: { ...domain, brandCheckPayload: payload } });
     }
 
@@ -212,7 +214,7 @@ function deriveState(state: EnginBaseState): BrandEnginDerivedState {
     assets:             (d.assets             ?? DEFAULT_DOMAIN.assets)             as BrandAsset[],
     campaignDraftReady: (d.campaignDraftReady ?? DEFAULT_DOMAIN.campaignDraftReady) as boolean,
     audioBriefReady:    (d.audioBriefReady    ?? DEFAULT_DOMAIN.audioBriefReady)    as boolean,
-    brandCheckPayload:  (d.brandCheckPayload  ?? DEFAULT_DOMAIN.brandCheckPayload)  as any | null,
+    brandCheckPayload:  (d.brandCheckPayload  ?? DEFAULT_DOMAIN.brandCheckPayload)  as JsonObject | null,
   };
 }
 
@@ -223,6 +225,21 @@ const PARAMS: EnginRuleSetParams = {
   name: 'BrandingEngin',
   layoutMode: 'standard',
   accentColor: '#ec4899',
+};
+
+
+const MANIFEST: EnginRuleSetManifest<BrandEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['brand:profile-loaded', 'brand:metrics-refresh', 'brand:ab-test-add', 'brand:ab-test-pause', 'brand:ab-test-winner', 'brand:asset-add', 'brand:campaign-draft', 'brand:audio-brief', 'brand:check-received'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
 };
 
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
@@ -237,6 +254,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const BRAND_ENGIN_RULE_SET: EnginRuleSetContract<BrandEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [abTestAddConstraint, winnerConstraint],

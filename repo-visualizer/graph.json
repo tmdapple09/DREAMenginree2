@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T21:30:17.606Z",
+  "generatedAt": "2026-06-02T23:57:07.274Z",
   "root": ".",
   "nodes": [
     {
@@ -3456,16 +3456,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMenginree2-completedream-upgraded-behavior-checked.zip",
-      "label": "DREAMenginree2-completedream-upgraded-behavior-checked.zip",
-      "type": "file",
-      "path": "DREAMenginree2-completedream-upgraded-behavior-checked.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -18913,7 +18903,7 @@
       "type": "function",
       "path": "components/games/dream.hud.GameHUD.tsx",
       "parent": "file:components/games/dream.hud.GameHUD.tsx",
-      "loc": 21,
+      "loc": 15,
       "isOrphan": true,
       "exported": true
     },
@@ -19063,7 +19053,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 82,
+      "loc": 84,
       "isOrphan": true,
       "exported": false
     },
@@ -19073,7 +19063,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 97,
+      "loc": 99,
       "isOrphan": true,
       "exported": false
     },
@@ -19083,7 +19073,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 134,
+      "loc": 139,
       "isOrphan": true,
       "exported": false
     },
@@ -19093,7 +19083,7 @@
       "type": "function",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "file:components/games/dream.remote.LegacyGameRemote.tsx",
-      "loc": 354,
+      "loc": 377,
       "isOrphan": true,
       "exported": true
     },
@@ -19698,6 +19688,26 @@
       "label": "dream.LandingNav.tsx",
       "type": "tsx",
       "path": "components/landing/dream.LandingNav.tsx",
+      "parent": "folder:components/landing",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:components/landing/dream.LandingProductStatement.tsx#LandingProductStatement",
+      "label": "LandingProductStatement",
+      "type": "function",
+      "path": "components/landing/dream.LandingProductStatement.tsx",
+      "parent": "file:components/landing/dream.LandingProductStatement.tsx",
+      "loc": 17,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/landing/dream.LandingProductStatement.tsx",
+      "label": "dream.LandingProductStatement.tsx",
+      "type": "tsx",
+      "path": "components/landing/dream.LandingProductStatement.tsx",
       "parent": "folder:components/landing",
       "loc": null,
       "isOrphan": false,
@@ -75727,7 +75737,12 @@
     },
     {
       "source": "file:components/games/dream.hud.GameHUD.tsx",
-      "target": "file:components/games/dream.remote.GameRemote.tsx",
+      "target": "file:components/games/dream.GameController.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/games/dream.hud.GameHUD.tsx",
+      "target": "file:components/games/dream.hud.MobileGameHUD.tsx",
       "kind": "import"
     },
     {
@@ -84273,6 +84288,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/landing/dream.LandingNav.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/landing/dream.LandingProductStatement.tsx",
       "kind": "import"
     },
     {

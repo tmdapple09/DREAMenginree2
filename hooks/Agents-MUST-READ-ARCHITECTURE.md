@@ -549,8 +549,8 @@ User Action / Agent / CI
 - `components/games/dream.GamesHub.tsx` — games hub (19 imports, 5 consumers)
 - Plus: `dream.DefuseRitual.tsx`, `dream.EnginFracture.tsx`, `dream.Glassfall.tsx`, `dream.LexiconSolitaire.tsx`, `dream.NiteFlyerSolarHymn.tsx`, `dream.NullCathedral.tsx`, `dream.SerpentSiege.tsx`, `dream.VoidlineGP.tsx`
 - `components/games/dream.GameController.tsx` — on-screen touch controller
-- `components/games/dream.hud.GameHUD.tsx` + `MobileGameHUD.tsx` + `LegacyGameHUD.tsx`
-- `components/games/dream.remote.GameRemote.tsx` + `LegacyGameRemote.tsx` — remote control
+- `components/games/dream.hud.GameHUD.tsx` + `MobileGameHUD.tsx`
+- `components/games/dream.remote.GameRemote.tsx` + `GameRemoteSurface.tsx` — remote control
 
 **Core files — Game hooks & utilities:**
 - `lib/games/hooks.ts` — game lifecycle hooks (14 consumers)

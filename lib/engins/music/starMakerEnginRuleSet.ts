@@ -15,6 +15,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -22,6 +23,7 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
@@ -31,7 +33,7 @@ export type PlaybackQualityMode = 'normal' | 'hq' | 'offline';
 
 // ─── Stem channel ─────────────────────────────────────────────────────────────
 
-export interface StemChannel {
+export interface StemChannel extends JsonObject {
   id: string;
   name: string;
   volume: number;
@@ -40,7 +42,7 @@ export interface StemChannel {
 
 // ─── Release entry ────────────────────────────────────────────────────────────
 
-export interface MusicRelease {
+export interface MusicRelease extends JsonObject {
   id: string;
   title: string;
   visibility: 'private' | 'public';
@@ -49,7 +51,7 @@ export interface MusicRelease {
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface StarMakerEnginDerivedState extends Record<string, unknown> {
+export interface StarMakerEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   bpm: number;
   key: string;
@@ -245,6 +247,21 @@ const PARAMS: EnginRuleSetParams = {
   accentColor: '#a855f7',
 };
 
+
+const MANIFEST: EnginRuleSetManifest<StarMakerEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['music:bpm-set', 'music:key-set', 'music:pitch-shift', 'music:stem-volume', 'music:stem-mute', 'music:stem-activate', 'music:stems-loaded', 'music:export-ready', 'music:releases-loaded', 'music:release-publish', 'music:playback-mode', 'music:audio-brief-ready'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
+};
+
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'state:read',
   'state:write',
@@ -259,6 +276,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const STAR_MAKER_ENGIN_RULE_SET: EnginRuleSetContract<StarMakerEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [bpmConstraint, pitchConstraint, volumeConstraint],

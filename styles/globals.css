@@ -4339,3 +4339,755 @@ main[role="main"] > * {
   }
 
 }
+
+/* =============================================================================
+   2026 PREMIUM OS SURFACE MATERIALS
+   Architecture: ARCHITECTURE.md §32 — Visual Materials / DREAMengin OS skin
+   These classes are the shared visual language across ALL DREAMengin surfaces.
+   Dream Windows · Dream Cards · Runtime panels · Game overlays · DreamDMBar
+   Never invent one-off inline styles when these cover the need.
+   =========================================================================== */
+
+/* ── Dream OS root tokens ──────────────────────────────────────────────────── */
+:root {
+  /* Chromatic glass — the DREAMengin OS pane material */
+  --dream-glass-bg:      rgba(8, 16, 34, 0.72);
+  --dream-glass-border:  rgba(255, 255, 255, 0.10);
+  --dream-glass-shine:   rgba(255, 255, 255, 0.06);
+  --dream-glass-blur:    blur(48px) saturate(180%);
+  --dream-glass-shadow:  0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
+
+  /* Dream gold spectrum */
+  --dream-gold:          #c8981a;
+  --dream-gold-bright:   #f0b830;
+  --dream-gold-glow:     rgba(200, 152, 26, 0.35);
+  --dream-gold-edge:     rgba(200, 152, 26, 0.18);
+
+  /* Dream sky/blue spectrum */
+  --dream-sky:           #38bdf8;
+  --dream-sky-deep:      #0ea5e9;
+  --dream-sky-glow:      rgba(56, 189, 248, 0.28);
+  --dream-sky-edge:      rgba(56, 189, 248, 0.14);
+
+  /* OS dark runtime backgrounds */
+  --os-void:             #020818;
+  --os-deep:             #060e20;
+  --os-surface:          #0a1628;
+  --os-elevated:         rgba(14, 24, 46, 0.88);
+
+  /* Game overlay surface */
+  --game-overlay-bg:     rgba(2, 6, 16, 0.82);
+  --game-overlay-border: rgba(56, 189, 248, 0.18);
+  --game-overlay-glow:   rgba(56, 189, 248, 0.12);
+
+  /* Window chrome */
+  --window-titlebar-bg:  rgba(255, 255, 255, 0.04);
+  --window-border:       rgba(255, 255, 255, 0.09);
+  --window-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.06) inset,
+    0 32px 80px rgba(0,0,0,0.52),
+    0 8px 24px rgba(0,0,0,0.28);
+
+  /* Motion timing */
+  --dream-spring:        cubic-bezier(0.34, 1.22, 0.64, 1);
+  --dream-ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --dream-snap:          cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ── dream-window — the floating Dream Window shell ────────────────────────── */
+.dream-window {
+  position: absolute;
+  background: var(--dream-glass-bg);
+  backdrop-filter: var(--dream-glass-blur);
+  -webkit-backdrop-filter: var(--dream-glass-blur);
+  border: 1px solid var(--dream-glass-border);
+  border-radius: 20px;
+  box-shadow: var(--window-shadow);
+  overflow: hidden;
+  contain: layout paint;
+  transition:
+    transform 0.18s var(--dream-spring),
+    box-shadow 0.22s ease,
+    border-color 0.18s ease;
+  will-change: transform;
+}
+
+.dream-window::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.07) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(255,255,255,0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.dream-window:focus-within {
+  border-color: var(--dream-sky-edge);
+  box-shadow:
+    var(--window-shadow),
+    0 0 0 1px var(--dream-sky-edge) inset;
+}
+
+/* ── dream-window-titlebar ─────────────────────────────────────────────────── */
+.dream-window-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 14px;
+  background: var(--window-titlebar-bg);
+  border-bottom: 1px solid var(--window-border);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  flex-shrink: 0;
+}
+
+.dream-window-titlebar:active { cursor: grabbing; }
+
+.dream-window-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(200, 220, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dream-window-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dream-window-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.12s ease, transform 0.12s var(--dream-spring);
+}
+
+.dream-window-btn:active { transform: scale(0.88); }
+.dream-window-btn-close   { background: rgba(255, 80, 80, 0.55); }
+.dream-window-btn-min     { background: rgba(255, 200, 40, 0.55); }
+.dream-window-btn-max     { background: rgba(40, 200, 100, 0.55); }
+
+/* ── dream-window-body ─────────────────────────────────────────────────────── */
+.dream-window-body {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  z-index: 1;
+}
+
+/* ── dream-card — universal Dream card used in feeds, widgets, profiles ─────── */
+.dream-card {
+  position: relative;
+  background:
+    radial-gradient(ellipse at top left, rgba(56,189,248,0.06) 0%, transparent 50%),
+    rgba(8, 16, 34, 0.68);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  transition:
+    transform 0.16s var(--dream-spring),
+    box-shadow 0.18s ease,
+    border-color 0.16s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
+}
+
+.dream-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 28%, rgba(200,152,26,0.04));
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.dream-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.18);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(56, 189, 248, 0.10) inset;
+}
+
+/* Gold accent — dream-card-gold */
+.dream-card-gold {
+  border-color: var(--dream-gold-edge);
+}
+.dream-card-gold:hover {
+  border-color: var(--dream-gold-glow);
+  box-shadow:
+    0 16px 48px rgba(0,0,0,0.4),
+    0 0 24px var(--dream-gold-edge);
+}
+
+/* ── os-surface — dark runtime region panel ────────────────────────────────── */
+.os-surface {
+  background: linear-gradient(180deg, var(--os-void) 0%, var(--os-deep) 40%, var(--os-surface) 100%);
+  color: rgba(200, 220, 255, 0.88);
+}
+
+.os-panel {
+  background: var(--os-elevated);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+}
+
+/* ── game-overlay — HUD and game overlay surfaces ──────────────────────────── */
+.game-overlay {
+  background: var(--game-overlay-bg);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--game-overlay-border);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px var(--game-overlay-glow) inset,
+    0 8px 32px rgba(0, 0, 0, 0.48);
+}
+
+.game-overlay-sky {
+  border-color: var(--dream-sky-edge);
+  box-shadow:
+    0 0 0 1px var(--dream-sky-glow) inset,
+    0 8px 32px rgba(0, 0, 0, 0.48),
+    0 0 40px var(--dream-sky-glow);
+}
+
+/* ── dream-feed-card — DreamR / HomeDream feed object ──────────────────────── */
+.dream-feed-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.14s var(--dream-spring);
+}
+
+.dream-feed-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(56, 189, 248, 0.14);
+  transform: translateY(-1px);
+}
+
+.dream-feed-card-active {
+  background: rgba(56, 189, 248, 0.06);
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+/* ── dream-widget-shell — HomeDream widget container ──────────────────────── */
+.dream-widget-shell {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.28),
+    0 0 0 0.5px rgba(255,255,255,0.04) inset;
+  transition:
+    transform 0.18s var(--dream-spring),
+    box-shadow 0.18s ease;
+}
+
+.dream-widget-shell:hover {
+  transform: translateY(-1px) scale(1.005);
+  box-shadow:
+    0 8px 36px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(56, 189, 248, 0.08) inset;
+}
+
+/* ── dream-bar-surface — DreamDMBar dark glass ─────────────────────────────── */
+.dream-bar-surface {
+  background:
+    linear-gradient(180deg, rgba(8,14,28,0.94) 0%, rgba(6,10,22,0.98) 100%);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 -8px 40px rgba(0, 0, 0, 0.48),
+    0 0 80px rgba(56, 189, 248, 0.04);
+}
+
+/* ── dream-glow-ring — premium glowing border ─────────────────────────────── */
+.dream-glow-ring {
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.24),
+    0 0 24px rgba(56, 189, 248, 0.14),
+    0 0 48px rgba(56, 189, 248, 0.06);
+}
+
+.dream-glow-ring-gold {
+  box-shadow:
+    0 0 0 1px rgba(200, 152, 26, 0.36),
+    0 0 24px rgba(200, 152, 26, 0.18),
+    0 0 48px rgba(200, 152, 26, 0.08);
+}
+
+/* ── dream-text — OS typography hierarchy ──────────────────────────────────── */
+.dream-text-hero {
+  color: rgba(220, 235, 255, 0.96);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+.dream-text-primary   { color: rgba(200, 220, 255, 0.88); }
+.dream-text-secondary { color: rgba(140, 170, 220, 0.60); }
+.dream-text-gold      { color: var(--dream-gold-bright); }
+.dream-text-sky       { color: var(--dream-sky); }
+
+/* ── dream-badge — kind/type indicator badge ───────────────────────────────── */
+.dream-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--dream-sky);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+}
+
+.dream-badge-gold {
+  background: rgba(200, 152, 26, 0.14);
+  color: var(--dream-gold-bright);
+  border-color: rgba(200, 152, 26, 0.22);
+}
+
+.dream-badge-game {
+  background: rgba(168, 85, 247, 0.14);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.22);
+}
+
+.dream-badge-music {
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.18);
+}
+
+/* ── dream-btn — OS action buttons ────────────────────────────────────────── */
+.dream-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.13s var(--dream-spring),
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.dream-btn:active { transform: scale(0.94); }
+
+.dream-btn-primary {
+  background: linear-gradient(135deg, var(--dream-sky-deep), #0284c7);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.38);
+}
+.dream-btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.52);
+  transform: translateY(-1px);
+}
+
+.dream-btn-gold {
+  background: linear-gradient(135deg, var(--dream-gold-bright), #d97706);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--dream-gold-glow);
+}
+.dream-btn-gold:hover {
+  box-shadow: 0 8px 32px var(--dream-gold-glow);
+  transform: translateY(-1px);
+}
+
+.dream-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(200, 220, 255, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+.dream-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.dream-btn-danger {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.24);
+}
+.dream-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(239, 68, 68, 0.36);
+}
+
+/* ── dream-divider — the seam line between runtime surfaces ────────────────── */
+.dream-seam {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.25) 20%,
+    rgba(200, 152, 26, 0.35) 50%,
+    rgba(56, 189, 248, 0.25) 80%,
+    transparent 100%
+  );
+  flex-shrink: 0;
+}
+
+.dream-seam::before {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+/* ── dream-enter / dream-exit — shared surface entrance animations ─────────── */
+@keyframes dream-enter {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes dream-enter-up {
+  from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes dream-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dream-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(56,189,248,0.18), 0 0 20px rgba(56,189,248,0.08); }
+  50%       { box-shadow: 0 0 0 1px rgba(56,189,248,0.36), 0 0 40px rgba(56,189,248,0.18); }
+}
+
+.dream-enter      { animation: dream-enter      0.34s var(--dream-ease-out) both; }
+.dream-enter-up   { animation: dream-enter-up   0.34s var(--dream-ease-out) both; }
+.dream-fade-in    { animation: dream-fade-in     0.24s ease both; }
+.dream-glow-pulse { animation: dream-glow-pulse  2.4s ease-in-out infinite; }
+
+/* ── Stagger delays for grid/list reveals ──────────────────────────────────── */
+.dream-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.dream-stagger > *:nth-child(2) { animation-delay: 48ms; }
+.dream-stagger > *:nth-child(3) { animation-delay: 96ms; }
+.dream-stagger > *:nth-child(4) { animation-delay: 144ms; }
+.dream-stagger > *:nth-child(5) { animation-delay: 192ms; }
+.dream-stagger > *:nth-child(6) { animation-delay: 240ms; }
+
+/* ── Reduced motion overrides ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .dream-window,
+  .dream-card,
+  .dream-widget-shell,
+  .dream-feed-card,
+  .dream-btn {
+    transition: none;
+  }
+
+  .dream-enter,
+  .dream-enter-up,
+  .dream-fade-in,
+  .dream-glow-pulse {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Premium landing stack: engine → runtime → product ───────────────────── */
+.de-landing-copy {
+  max-width: 720px;
+  margin: 0 0 22px;
+  color: rgba(208, 226, 255, 0.92);
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  line-height: 1.72;
+  text-wrap: balance;
+  text-shadow: 0 1px 24px rgba(56, 189, 248, 0.10);
+}
+
+.de-premium-stack {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 8px 0 28px;
+}
+
+.de-premium-layer-card {
+  position: relative;
+  min-height: 158px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 24px;
+  text-align: left;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035)),
+    radial-gradient(circle at 20% 0%, rgba(56,189,248,0.18), transparent 34%),
+    radial-gradient(circle at 100% 100%, rgba(216,158,45,0.18), transparent 38%);
+  border: 1px solid rgba(202, 226, 255, 0.18);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+  backdrop-filter: blur(22px) saturate(155%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+}
+
+.de-premium-layer-card::after {
+  content: '';
+  position: absolute;
+  inset: auto 14px 12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.55), rgba(216,158,45,0.52), transparent);
+}
+
+.de-premium-layer-label {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: rgba(115, 205, 255, 0.82);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.de-premium-layer-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(245, 250, 255, 0.96);
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+.de-premium-layer-card p {
+  margin: 0;
+  color: rgba(185, 210, 244, 0.78);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.de-landing-mission-link {
+  margin-bottom: 30px;
+  color: rgba(148, 202, 245, 0.72);
+  font-size: 0.92rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.de-landing-mission-link span {
+  color: #5dd6ff;
+  text-shadow: 0 0 22px rgba(56, 189, 248, 0.22);
+}
+
+.de-landing-primary-cta,
+.de-landing-secondary-cta {
+  width: 100%;
+  padding: 14px 32px;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.975rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.de-landing-primary-cta {
+  color: white;
+  font-weight: 750;
+  background: linear-gradient(135deg, #f8bd55 0%, #d97706 54%, #38bdf8 140%);
+  box-shadow: 0 10px 36px rgba(245,158,11,0.42), inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+.de-landing-secondary-cta {
+  color: rgba(218, 235, 255, 0.9);
+  font-weight: 650;
+  background: rgba(255,255,255,0.075);
+  border: 1px solid rgba(218,235,255,0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+}
+
+@media (min-width: 640px) {
+  .de-landing-primary-cta,
+  .de-landing-secondary-cta {
+    width: auto;
+  }
+}
+
+@media (max-width: 820px) {
+  .de-premium-stack {
+    grid-template-columns: 1fr;
+  }
+  .de-premium-layer-card {
+    min-height: auto;
+  }
+}
+
+/* ── Shared 2026 DREAMengin OS material system ────────────────────────────── */
+:root {
+  --de-material-bg: linear-gradient(145deg, rgba(8, 18, 34, 0.82), rgba(13, 30, 55, 0.54));
+  --de-material-border: rgba(210, 230, 255, 0.16);
+  --de-material-highlight: rgba(255, 255, 255, 0.18);
+  --de-material-shadow: 0 26px 80px rgba(0, 0, 0, 0.32), inset 0 1px 0 var(--de-material-highlight);
+  --de-material-glow-blue: rgba(56, 189, 248, 0.24);
+  --de-material-glow-gold: rgba(216, 158, 45, 0.24);
+}
+
+.de-os-surface,
+.de-os-panel,
+.de-dream-window-material,
+.de-dream-card-material,
+.de-dream-widget-material,
+.de-dreamdmbar-material,
+.de-game-overlay-material {
+  position: relative;
+  background: var(--de-material-bg);
+  border: 1px solid var(--de-material-border);
+  box-shadow: var(--de-material-shadow);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+
+.de-os-surface::before,
+.de-os-panel::before,
+.de-dream-window-material::before,
+.de-dream-card-material::before,
+.de-dream-widget-material::before,
+.de-dreamdmbar-material::before,
+.de-game-overlay-material::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 18% 0%, var(--de-material-glow-blue), transparent 34%),
+    radial-gradient(circle at 100% 100%, var(--de-material-glow-gold), transparent 38%);
+  opacity: 0.78;
+}
+
+.de-os-panel,
+.de-dream-window-material,
+.de-dream-card-material,
+.de-dream-widget-material {
+  border-radius: 24px;
+}
+
+.de-dreamdmbar-material {
+  border-color: rgba(216, 158, 45, 0.22);
+}
+
+.de-game-overlay-material {
+  border-color: rgba(56, 189, 248, 0.24);
+}
+
+.de-runtime-seam {
+  isolation: isolate;
+}
+
+.de-runtime-seam::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 10px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.55), rgba(216,158,45,0.52), transparent);
+  opacity: 0.7;
+}
+
+.de-glow-ring {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.16),
+    0 0 34px rgba(56,189,248,0.24),
+    0 0 52px rgba(216,158,45,0.16);
+}
+
+.de-action-button-material,
+.de-badge-material {
+  border: 1px solid rgba(220, 236, 255, 0.16);
+  background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 8px 24px rgba(0,0,0,0.22);
+  backdrop-filter: blur(16px) saturate(145%);
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
+}
+
+.de-material-enter {
+  animation: de-material-enter 420ms cubic-bezier(0.2, 0.84, 0.28, 1) both;
+}
+
+@keyframes de-material-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .de-material-enter,
+  .de-runtime-seam::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .de-os-surface,
+  .de-os-panel,
+  .de-dream-window-material,
+  .de-dream-card-material,
+  .de-dream-widget-material,
+  .de-dreamdmbar-material,
+  .de-game-overlay-material {
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+  }
+}

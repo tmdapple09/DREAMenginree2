@@ -16,6 +16,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -23,6 +24,7 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
@@ -31,7 +33,7 @@ import type {
 export type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
 export type CellStatus   = 'idle' | 'running' | 'done' | 'error';
 
-export interface NotebookCell {
+export interface NotebookCell extends JsonObject {
   id: string;
   language: CellLanguage;
   code: string;
@@ -44,7 +46,7 @@ export interface NotebookCell {
 
 export type CiStatus = 'idle' | 'running' | 'passed' | 'failed';
 
-export interface SecurityFinding {
+export interface SecurityFinding extends JsonObject {
   severity: 'critical' | 'high' | 'medium' | 'low';
   message: string;
   file?: string;
@@ -52,7 +54,7 @@ export interface SecurityFinding {
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface CodeEnginDerivedState extends Record<string, unknown> {
+export interface CodeEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   cells: NotebookCell[];
   activeCellId: string | null;
@@ -240,6 +242,21 @@ const PARAMS: EnginRuleSetParams = {
   accentColor: '#3b7dd8',
 };
 
+
+const MANIFEST: EnginRuleSetManifest<CodeEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['code:cell-add', 'code:cell-remove', 'code:cell-update', 'code:cell-output', 'code:cell-activate', 'code:cells-load', 'code:project-select', 'code:ci-start', 'code:ci-result', 'code:security-scan', 'code:module-inject', 'code:zoom-set'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
+};
+
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'state:read',
   'state:write',
@@ -254,6 +271,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const CODE_ENGIN_RULE_SET: EnginRuleSetContract<CodeEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [cellAddConstraint, zoomConstraint],

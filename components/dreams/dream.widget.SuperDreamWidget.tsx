@@ -100,7 +100,7 @@ function DreamWindowTile({
 
   return (
     <div
-      className="de-surface"
+      className="de-surface de-dream-window-material"
       style={{
         padding: '10px 14px',
         borderRadius: 14,
@@ -176,7 +176,7 @@ function ClusterCard({ group, onRemove, onBind, onCollapse }: { group: ClusterGr
   const layout = group.windows.length > 2 ? 'grid' : 'stack';
 
   return (
-    <div className="de-widget" style={{ marginBottom: 12 }}>
+    <div className="de-widget de-dream-widget-material" style={{ marginBottom: 12 }}>
       <div
         style={{
           padding: '8px 14px',
@@ -274,7 +274,7 @@ export default function SuperDreamWidget({
   }, [addWindow, newType]);
 
   return (
-    <section className="de-widget" data-super-dream-widget>
+    <section className="de-widget de-dream-widget-material" data-super-dream-widget>
       <div
         style={{
           padding: '10px 14px',

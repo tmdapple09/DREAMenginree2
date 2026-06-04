@@ -4,7 +4,7 @@
  * Security / capabilities layer for Engins.
  *
  * Every action that an Engin can perform is declared as a capability string.
- * The engine consults the active capability map before executing any action.
+ * The engine consults the active capability map before executing each action.
  * Rule-sets declare which capabilities they require; the engine grants or
  * denies them at runtime.
  *
@@ -14,7 +14,11 @@
  * Architecture: docs/AXIOMS.md §4 — security by default.
  */
 
-import { isDomainObject, type DomainObject } from './EnginBaseState';
+import {
+  isDomainObject,
+  type DomainObject,
+  type JsonValue,
+} from './EnginBaseState';
 
 // ─── Capability identifiers ───────────────────────────────────────────────────
 
@@ -95,7 +99,7 @@ export interface CapabilityGateResult {
  * gateCapability(map, capability)
  *
  * Returns whether the given capability is granted in the active map.
- * This is the single enforcement point — engine calls this before any action.
+ * This is the single enforcement point — engine calls this before each action.
  */
 export function gateCapability(
   map: EnginCapabilityMap,
@@ -149,7 +153,7 @@ export interface DomainAuthorizationContext {
 /** The single capability check for runtime-owned domain objects. */
 export function authorizeDomainCapability(
   action: DomainCapability,
-  object: DomainObject<string, unknown>,
+  object: DomainObject<string, JsonValue>,
   context: DomainAuthorizationContext,
 ): CapabilityGateResult {
   if (!context || typeof context !== 'object')

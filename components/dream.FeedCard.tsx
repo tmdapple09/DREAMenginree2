@@ -196,7 +196,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
     <UniverseCard>
       <UniverseCardContent className="p-0">
         <div
-          className="feed-card-premium"
+          className="feed-card-premium de-dream-card-material de-material-enter"
           data-source={source}
           style={{ position: 'relative' }}
         >

@@ -70,7 +70,7 @@ export default function LandingHero() {
       state.activePointer.lastY = e.clientY;
     }
 
-    function finishPointer(e: PointerEvent) {
+    function onPointerUp(e: PointerEvent) {
       if (state.calibrated || !state.activePointer) return;
       if (e.pointerId !== state.activePointer.id) return;
 
@@ -89,14 +89,14 @@ export default function LandingHero() {
 
     addEventListener('pointerdown', onPointerDown);
     addEventListener('pointermove', onPointerMove);
-    addEventListener('pointerup', finishPointer);
-    addEventListener('pointercancel', finishPointer);
+    addEventListener('pointerup', onPointerUp);
+    addEventListener('pointercancel', onPointerUp);
 
     return () => {
       removeEventListener('pointerdown', onPointerDown);
       removeEventListener('pointermove', onPointerMove);
-      removeEventListener('pointerup', finishPointer);
-      removeEventListener('pointercancel', finishPointer);
+      removeEventListener('pointerup', onPointerUp);
+      removeEventListener('pointercancel', onPointerUp);
     };
   }, []);
 
@@ -141,60 +141,46 @@ export default function LandingHero() {
           </h1>
 
           {/* Product statement */}
-          <p
-            className="text-base md:text-lg leading-relaxed mb-6 max-w-md"
-            style={{ color: 'rgba(165,195,235,0.78)' }}
-          >
+          <p className="de-landing-copy">
             DREAMengin is an AI-powered creative OS where apps, games, chats, tools, and media become movable building blocks inside your own digital world.
           </p>
 
+          <div className="de-premium-stack" aria-label="DREAMengin premium stack">
+            <article className="de-premium-layer-card">
+              <span className="de-premium-layer-label">Engine underneath</span>
+              <strong>WASM motion + glow math</strong>
+              <p>Low-level browser muscle shapes simulation, particles, and sync fingerprints without dragging React into hot loops.</p>
+            </article>
+            <article className="de-premium-layer-card">
+              <span className="de-premium-layer-label">Runtime in the middle</span>
+              <strong>Fingerprint-synced Dreams</strong>
+              <p>HomeDream and DreamSpace share validated runtime frames so objects move surfaces without duplicate state.</p>
+            </article>
+            <article className="de-premium-layer-card">
+              <span className="de-premium-layer-label">Product on top</span>
+              <strong>DreamR creative world</strong>
+              <p>A glass-and-gold social OS where profiles, feeds, games, media, and tools become movable Dreams.</p>
+            </article>
+          </div>
+
           {/* DreamR statement */}
-          <Link
-            href="/mission"
-            className="mb-10 text-sm font-medium max-w-md"
-            style={{
-              color: 'rgba(165,195,235,0.64)',
-              textDecoration: 'none',
-            }}
-          >
-            DreamR - 
-        Our official DREAMengin social platform where your individuality is the algorithm..{' '}
-            <span style={{ color: '#38bdf8' }}>
-              Where creativity—not likes—gets you seen. →
-            </span>
+          <Link href="/mission" className="de-landing-mission-link">
+            DreamR — A social platform where your individuality is the algorithm.{' '}
+            <span>Where creativity—not likes—gets you seen. →</span>
           </Link>
 
           {/* CTAs */}
           <div className="flex w-full max-w-xs flex-col items-center gap-3 sm:max-w-none sm:flex-row lg:justify-start">
             <Link
               href="/join"
-              className="w-full sm:w-auto font-semibold rounded-full text-white text-center"
-              style={{
-                padding: '14px 32px',
-                fontSize: '0.975rem',
-                background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-                boxShadow: '0 6px 28px rgba(245,158,11,0.40)',
-                letterSpacing: '0.01em',
-                textDecoration: 'none',
-                boxSizing: 'border-box',
-              }}
+              className="de-landing-primary-cta"
             >
               Sign Up Here
             </Link>
 
             <Link
               href="/login"
-              className="w-full sm:w-auto font-medium rounded-full text-center"
-              style={{
-                padding: '14px 32px',
-                fontSize: '0.975rem',
-                background: 'rgba(255,255,255,0.07)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'rgba(200,220,255,0.88)',
-                letterSpacing: '0.01em',
-                textDecoration: 'none',
-                boxSizing: 'border-box',
-              }}
+              className="de-landing-secondary-cta"
             >
               Welcome Back!
             </Link>

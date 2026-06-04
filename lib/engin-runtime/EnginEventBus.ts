@@ -2,53 +2,43 @@
  * lib/engin-runtime/EnginEventBus.ts
  *
  * Client-safe event bus abstraction for Engin-internal events.
- *
- * This wraps the existing createEventBus primitive to add:
- *   - Engin-scoped namespacing so events never leak across engine instances.
- *   - A typed contract for lifecycle events that every engine emits.
- *   - An optional wildcard listener for cross-Engin debugging.
- *
- * IMPORTANT: each EnginRuntime creates exactly ONE EnginEventBus.
- * Buses are never shared between engines.
+ * Each EnginRuntime creates exactly one bus; buses are never shared between
+ * engines and never carry domain behavior.
  */
-
-import { createEventBus, type EventHandler } from '@/lib/eventBus';
 
 // ─── Lifecycle events (always emitted by the runtime) ────────────────────────
 
-export interface EnginLifecycleEvents extends Record<string, unknown> {
-  'engin:started':   { enginId: string };
-  'engin:paused':    { enginId: string };
-  'engin:resumed':   { enginId: string };
-  'engin:stopped':   { enginId: string };
-  'engin:error':     { enginId: string; message: string; cause?: unknown };
-  'engin:state':     { enginId: string; revision: number };
+export interface EnginLifecycleEvents extends Record<string, object> {
+  'engin:started': { enginId: string };
+  'engin:paused': { enginId: string };
+  'engin:resumed': { enginId: string };
+  'engin:stopped': { enginId: string };
+  'engin:error': { enginId: string; message: string; cause?: string };
+  'engin:state': { enginId: string; revision: number };
   'engin:persisted': { enginId: string; key: string };
-  'engin:restored':  { enginId: string; key: string };
+  'engin:restored': { enginId: string; key: string };
 }
 
 // ─── Domain events (rule-sets add their own) ──────────────────────────────────
 
-/**
- * EnginEventMap — union of lifecycle + domain-specific events.
- * Rule-sets extend this by providing a generic parameter.
- */
 export type EnginEventMap<
-  DomainEvents extends Record<string, unknown> = Record<string, unknown>,
+  DomainEvents extends Record<string, object> = Record<string, object>,
 > = EnginLifecycleEvents & DomainEvents;
+
+export type EnginEventHandler<TPayload extends object> = (payload: TPayload) => void;
 
 // ─── Scoped bus ───────────────────────────────────────────────────────────────
 
 export interface EnginEventBus<
-  DomainEvents extends Record<string, unknown> = Record<string, unknown>,
+  DomainEvents extends Record<string, object> = Record<string, object>,
 > {
   on<K extends keyof EnginEventMap<DomainEvents>>(
     event: K,
-    handler: EventHandler<EnginEventMap<DomainEvents>[K]>,
+    handler: EnginEventHandler<EnginEventMap<DomainEvents>[K]>,
   ): void;
   off<K extends keyof EnginEventMap<DomainEvents>>(
     event: K,
-    handler: EventHandler<EnginEventMap<DomainEvents>[K]>,
+    handler: EnginEventHandler<EnginEventMap<DomainEvents>[K]>,
   ): void;
   emit<K extends keyof EnginEventMap<DomainEvents>>(
     event: K,
@@ -65,8 +55,50 @@ export interface EnginEventBus<
  * MUST NOT be shared across multiple engines.
  */
 export function createEnginEventBus<
-  DomainEvents extends Record<string, unknown> = Record<string, unknown>,
+  DomainEvents extends Record<string, object> = Record<string, object>,
 >(): EnginEventBus<DomainEvents> {
-  const inner = createEventBus<EnginEventMap<DomainEvents>>();
-  return inner as unknown as EnginEventBus<DomainEvents>;
+  const handlers = new Map<keyof EnginEventMap<DomainEvents>, Set<(payload: object) => void>>();
+  let destroyed = false;
+
+  function assertAlive(): void {
+    if (destroyed) throw new Error('EnginEventBus: cannot use a destroyed bus.');
+  }
+
+  return {
+    get destroyed() {
+      return destroyed;
+    },
+
+    on<K extends keyof EnginEventMap<DomainEvents>>(
+      event: K,
+      handler: EnginEventHandler<EnginEventMap<DomainEvents>[K]>,
+    ): void {
+      assertAlive();
+      const existing = handlers.get(event) ?? new Set();
+      existing.add(handler as (payload: object) => void);
+      handlers.set(event, existing);
+    },
+
+    off<K extends keyof EnginEventMap<DomainEvents>>(
+      event: K,
+      handler: EnginEventHandler<EnginEventMap<DomainEvents>[K]>,
+    ): void {
+      handlers
+        .get(event)
+        ?.delete(handler as (payload: object) => void);
+    },
+
+    emit<K extends keyof EnginEventMap<DomainEvents>>(
+      event: K,
+      payload: EnginEventMap<DomainEvents>[K],
+    ): void {
+      assertAlive();
+      handlers.get(event)?.forEach((handler) => handler(payload as object));
+    },
+
+    destroy(): void {
+      handlers.clear();
+      destroyed = true;
+    },
+  };
 }

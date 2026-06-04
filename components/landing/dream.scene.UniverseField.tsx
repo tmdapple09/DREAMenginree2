@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 const MIN_PARTICLES = 10001;
 const MAX_PARTICLES = 20001;
-const GALAXY_COUNT = Math.floor(Math.random() * 120) + 1; 
+const GALAXY_COUNT = 48;
 const MAX_DPR = 1;
 const TAU = Math.PI * 2;
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
@@ -230,7 +230,7 @@ export default function UniverseField(_props: UniverseFieldProps ){
       const safeDt = Math.min(dt, 1/30);
       
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = '#010208';
+      ctx.fillStyle = '#01030a';
       ctx.fillRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 

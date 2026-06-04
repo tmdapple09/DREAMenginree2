@@ -12,10 +12,10 @@ interface GameHUDProps {
 }
 
 /**
- * Compatibility wrapper only.
+ * Canonical HUD seam.
  *
  * GameEngin's shared control surface is GameRemote. Cartridge-specific HUDs
- * belong inside cartridges; this wrapper keeps older imports from creating a
+ * belong inside cartridges; this seam keeps existing imports from creating a
  * second generic HUD/controller layer.
  */
 export default function GameHUD({ gameLabel, playHref, onExit }: GameHUDProps) {

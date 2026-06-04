@@ -3,9 +3,9 @@
  *
  * Base state model shared by every Engin.
  *
- * The engine holds a BaseState and a RuleSet.  The RuleSet's transform
+ * The engine holds a BaseState and a RuleSet. The RuleSet's transform
  * function maps (BaseState, EnginAction) → BaseState; the engine then
- * derives the UI-facing DerivedState by running any registered selectors.
+ * derives the UI-facing DerivedState by running registered selectors.
  *
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel owns state.
  */
@@ -20,6 +20,17 @@ export type EnginLifecycle =
   | 'stopping'
   | 'stopped';
 
+// ─── JSON-safe runtime values ────────────────────────────────────────────────
+
+export type JsonPrimitive = string | number | boolean | null;
+export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+export interface JsonObject {
+  readonly [key: string]: JsonValue | undefined;
+}
+export type JsonArray = readonly JsonValue[];
+
+type RuntimeInspectableValue = unknown;
+
 // ─── Universal domain object envelope ────────────────────────────────────────
 
 /** Explicit visibility for every runtime-owned domain object. */
@@ -29,7 +40,7 @@ export type DomainVisibility = 'local' | 'shared' | 'global';
  * Canonical envelope shared by Dreams, DreamSpaces, Engins, Rulesets, Intents,
  * Memories, Agents, Windows, and Assets. UI placement never implies ownership.
  */
-export type DomainObject<TType extends string, TData> = {
+export type DomainObject<TType extends string, TData extends JsonValue> = {
   id: string;
   type: TType;
   ownerId: string;
@@ -41,11 +52,31 @@ export type DomainObject<TType extends string, TData> = {
   data: TData;
 };
 
-function isNonEmptyString(value: unknown): value is string {
+function isNonEmptyString(value: RuntimeInspectableValue): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-function isCanonicalIsoTimestamp(value: unknown): value is string {
+const DOMAIN_OBJECT_KEYS = new Set([
+  'id',
+  'type',
+  'ownerId',
+  'runtimeId',
+  'visibility',
+  'createdAt',
+  'updatedAt',
+  'version',
+  'data',
+]);
+
+function hasExactDomainObjectKeys(value: object): boolean {
+  const keys = Object.keys(value);
+  return (
+    keys.length === DOMAIN_OBJECT_KEYS.size &&
+    keys.every((key) => DOMAIN_OBJECT_KEYS.has(key))
+  );
+}
+
+function isCanonicalIsoTimestamp(value: RuntimeInspectableValue): value is string {
   if (typeof value !== 'string') return false;
   const timestamp = Date.parse(value);
   return (
@@ -54,7 +85,10 @@ function isCanonicalIsoTimestamp(value: unknown): value is string {
 }
 
 /** Return whether a value can cross persistence and transport boundaries without loss. */
-export function isJsonSerializable(value: unknown, seen = new Set<object>()): boolean {
+export function isJsonSerializable(
+  value: RuntimeInspectableValue,
+  seen = new Set<object>(),
+): value is JsonValue {
   if (value === null) return true;
   if (typeof value === 'string' || typeof value === 'boolean') return true;
   if (typeof value === 'number') return Number.isFinite(value);
@@ -65,16 +99,28 @@ export function isJsonSerializable(value: unknown, seen = new Set<object>()): bo
   const serializable = Array.isArray(value)
     ? value.every((item) => isJsonSerializable(item, seen))
     : (prototype === Object.prototype || prototype === null) &&
-      Object.values(value).every((item) => isJsonSerializable(item, seen));
+      Object.values(value).every((item) =>
+        isJsonSerializable(item as RuntimeInspectableValue, seen),
+      );
   seen.delete(value);
   return serializable;
 }
 
+export function isJsonObject(value: RuntimeInspectableValue): value is JsonObject {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    isJsonSerializable(value)
+  );
+}
+
 export function isDomainObject(
-  value: unknown,
-): value is DomainObject<string, unknown> {
+  value: RuntimeInspectableValue,
+): value is DomainObject<string, JsonValue> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
-  const object = value as Partial<DomainObject<string, unknown>>;
+  if (!hasExactDomainObjectKeys(value)) return false;
+  const object = value as Partial<DomainObject<string, JsonValue>>;
   return (
     isNonEmptyString(object.id) &&
     isNonEmptyString(object.type) &&
@@ -94,7 +140,10 @@ export function isDomainObject(
   );
 }
 
-export interface CreateDomainObjectInput<TType extends string, TData> {
+export interface CreateDomainObjectInput<
+  TType extends string,
+  TData extends JsonValue,
+> {
   id: string;
   type: TType;
   ownerId: string;
@@ -104,7 +153,7 @@ export interface CreateDomainObjectInput<TType extends string, TData> {
   now?: string;
 }
 
-export function createDomainObject<TType extends string, TData>(
+export function createDomainObject<TType extends string, TData extends JsonValue>(
   input: CreateDomainObjectInput<TType, TData>,
 ): DomainObject<TType, TData> {
   const now = input.now ?? new Date().toISOString();
@@ -132,7 +181,7 @@ export function createDomainObject<TType extends string, TData>(
  * The engine never exposes this directly; the active rule-set transforms it
  * into a domain-specific DerivedState.
  */
-export interface EnginBaseState {
+export interface EnginBaseState<TDomain extends JsonObject = JsonObject> {
   /** Canonical engine identifier (e.g. 'games', 'music', 'code'). */
   readonly enginId: string;
   /** Current lifecycle stage. */
@@ -142,10 +191,12 @@ export interface EnginBaseState {
   /** Monotonically increasing action counter (for optimistic-UI purposes). */
   readonly revision: number;
   /** Arbitrary key-value bag owned by the active rule-set. */
-  readonly domain: Readonly<Record<string, unknown>>;
+  readonly domain: Readonly<TDomain>;
 }
 
-export function isEnginBaseState(value: unknown): value is EnginBaseState {
+export function isEnginBaseState(
+  value: RuntimeInspectableValue,
+): value is EnginBaseState {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const state = value as Partial<EnginBaseState>;
   return (
@@ -160,10 +211,7 @@ export function isEnginBaseState(value: unknown): value is EnginBaseState {
     typeof state.revision === 'number' &&
     Number.isInteger(state.revision) &&
     state.revision >= 0 &&
-    !!state.domain &&
-    typeof state.domain === 'object' &&
-    !Array.isArray(state.domain) &&
-    isJsonSerializable(state.domain)
+    isJsonObject(state.domain)
   );
 }
 
@@ -184,14 +232,14 @@ export function createBaseState(enginId: string): EnginBaseState {
  * Produce a new EnginBaseState by merging a partial domain update.
  * The engine calls this internally — rule-sets must not mutate state directly.
  */
-export function patchBaseState(
+export function patchBaseState<TDomain extends JsonObject = JsonObject>(
   prev: EnginBaseState,
-  patch: Partial<Omit<EnginBaseState, 'enginId' | 'revision' | 'updatedAt'>>,
-): EnginBaseState {
+  patch: Partial<Omit<EnginBaseState<TDomain>, 'enginId' | 'revision' | 'updatedAt'>>,
+): EnginBaseState<TDomain> {
   return {
     ...prev,
     ...patch,
-    domain: { ...prev.domain, ...(patch.domain ?? {}) },
+    domain: { ...prev.domain, ...(patch.domain ?? {}) } as TDomain,
     revision: prev.revision + 1,
     updatedAt: new Date().toISOString(),
   };

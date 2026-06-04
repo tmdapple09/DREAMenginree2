@@ -8,4 +8,4 @@
  * must not replace this universal input capability.
  */
 
-export { default, type GameInputAction } from '@/components/games/dream.remote.LegacyGameRemote';
+export { default, type GameInputAction } from '@/components/games/dream.remote.GameRemoteSurface';

@@ -88,7 +88,8 @@ function isNonEmptyString(value: unknown): value is string {
 }
 
 function isSerializable(value: unknown): boolean {
-  return isJsonSerializable(value);
+  if (value === undefined) return false;
+  return isJsonSerializable(value as object);
 }
 
 function isModuleCompatibility(value: unknown): value is ModuleCompatibility {

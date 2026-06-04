@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  getLegacyMoveAction,
+  getRemoteMoveAction,
   MOBILE_HUD_BUTTON_RING,
   normalizeStickVector,
 } from '@/lib/games/mobileControls';
@@ -17,11 +17,11 @@ describe('shared mobile game controls', () => {
     expect(normalizeStickVector(15, 15, 30)).toEqual({ x: 0.5, y: 0.5 });
   });
 
-  it('maps analog motion back to the legacy movement actions for existing games', () => {
-    expect(getLegacyMoveAction({ x: -1, y: 0 })).toBe('move-left');
-    expect(getLegacyMoveAction({ x: 0, y: -1 })).toBe('move-up');
-    expect(getLegacyMoveAction({ x: 0.8, y: 0.8 })).toBe('move-down-right');
-    expect(getLegacyMoveAction({ x: 0.08, y: 0.04 })).toBeNull();
+  it('maps analog motion into shared remote movement actions for existing games', () => {
+    expect(getRemoteMoveAction({ x: -1, y: 0 })).toBe('move-left');
+    expect(getRemoteMoveAction({ x: 0, y: -1 })).toBe('move-up');
+    expect(getRemoteMoveAction({ x: 0.8, y: 0.8 })).toBe('move-down-right');
+    expect(getRemoteMoveAction({ x: 0.08, y: 0.04 })).toBeNull();
   });
 
   it('renders the corrected right-side action symbol as a circle', () => {

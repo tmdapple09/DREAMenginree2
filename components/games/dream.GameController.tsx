@@ -46,8 +46,8 @@ import {
     emitMobileLookDelta,
     emitMobileMove,
     emitMobileShoot,
-    fireLegacyGameInput,
-    getLegacyMoveAction,
+    fireGameRemoteInput,
+    getRemoteMoveAction,
     type MobileControlVector,
 } from '@/lib/games/mobileControls';
 
@@ -63,6 +63,21 @@ interface StickState {
   vector: StickVector;
 }
 
+interface ControllerTouchEvent {
+  preventDefault(): void;
+  changedTouches: ArrayLike<React.Touch>;
+}
+
+function createSingleTouchEvent(
+  event: ControllerTouchEvent,
+  touch: React.Touch,
+): ControllerTouchEvent {
+  return {
+    preventDefault: () => event.preventDefault(),
+    changedTouches: [touch],
+  };
+}
+
 const INACTIVE_STICK: StickState = {
   active: false,
   originX: 0,
@@ -72,30 +87,30 @@ const INACTIVE_STICK: StickState = {
 
 const ZERO_VEC: MobileControlVector = { x: 0, y: 0 };
 
-// ─── Left-stick legacy sync ─────────────────────────────────────────────────
+// ─── Left-stick remote sync ─────────────────────────────────────────────────
 
-function useLegacyMoveSync( ){
-  const activeMoveRef = useRef<ReturnType<typeof getLegacyMoveAction>>(null);
+function useRemoteMoveSync( ){
+  const activeMoveRef = useRef<ReturnType<typeof getRemoteMoveAction>>(null);
 
   const sync = useCallback((vector: MobileControlVector) => {
-    const next = getLegacyMoveAction(vector);
+    const next = getRemoteMoveAction(vector);
     if (activeMoveRef.current && activeMoveRef.current !== next) {
-      fireLegacyGameInput(activeMoveRef.current, false);
+      fireGameRemoteInput(activeMoveRef.current, false);
     }
     if (next && next !== activeMoveRef.current) {
-      fireLegacyGameInput(next, true);
+      fireGameRemoteInput(next, true);
     }
     if (!next && activeMoveRef.current) {
-      fireLegacyGameInput('move-stop', true);
-      fireLegacyGameInput('move-stop', false);
+      fireGameRemoteInput('move-stop', true);
+      fireGameRemoteInput('move-stop', false);
     }
     activeMoveRef.current = next;
   }, []);
 
   const stop = useCallback(() => {
-    if (activeMoveRef.current) fireLegacyGameInput(activeMoveRef.current, false);
-    fireLegacyGameInput('move-stop', true);
-    fireLegacyGameInput('move-stop', false);
+    if (activeMoveRef.current) fireGameRemoteInput(activeMoveRef.current, false);
+    fireGameRemoteInput('move-stop', true);
+    fireGameRemoteInput('move-stop', false);
     activeMoveRef.current = null;
   }, []);
 
@@ -136,8 +151,8 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
   // ── Button DOM refs for hit-testing ───────────────────────────────────
   const btnRefs = useRef<Partial<Record<ControllerButton, HTMLDivElement | null>>>({});
 
-  // ── Legacy move sync ──────────────────────────────────────────────────
-  const { sync: syncLegacyMove, stop: stopLegacyMove } = useLegacyMoveSync();
+  // ── Remote move sync ──────────────────────────────────────────────────
+  const { sync: syncRemoteMove, stop: stopRemoteMove } = useRemoteMoveSync();
 
   // ── Wire button manager to visual state ───────────────────────────────
   useEffect(() => {
@@ -159,10 +174,10 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
       if (rightResetTimerRef.current)    clearTimeout(rightResetTimerRef.current);
       if (autoFireTimerRef.current)      clearTimeout(autoFireTimerRef.current);
       if (autoFireIntervalRef.current)   clearInterval(autoFireIntervalRef.current);
-      stopLegacyMove();
-      fireLegacyGameInput('pause', false);
+      stopRemoteMove();
+      fireGameRemoteInput('pause', false);
     };
-  }, [stopLegacyMove]);
+  }, [stopRemoteMove]);
 
   // ────────────────────────────────────────────────────────────────────────
   // LEFT STICK
@@ -203,10 +218,10 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
 
     const mv: MobileControlVector = { x: vec.x, y: vec.y };
     emitMobileMove(mv);
-    syncLegacyMove(mv);
+    syncRemoteMove(mv);
 
     setLeftStick((prev) => ({ ...prev, vector: vec }));
-  }, [syncLegacyMove]);
+  }, [syncRemoteMove]);
 
   const handleLeftEnd = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
@@ -219,17 +234,17 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
     const lastVec = leftVectorRef.current;
     emitMobileJump(lastVec);
     emitMobileButton('jump');
-    fireLegacyGameInput('jump', true);
-    fireLegacyGameInput('jump', false);
+    fireGameRemoteInput('jump', true);
+    fireGameRemoteInput('jump', false);
 
     // Stop movement
     emitMobileMove(ZERO_VEC);
-    stopLegacyMove();
+    stopRemoteMove();
 
     leftTouchIdRef.current = null;
     leftVectorRef.current  = { x: 0, y: 0 };
     setLeftStick(INACTIVE_STICK);
-  }, [stopLegacyMove]);
+  }, [stopRemoteMove]);
 
   // ────────────────────────────────────────────────────────────────────────
   // RIGHT STICK  (tap=shoot, drag=aim, tap-and-hold=auto-fire)
@@ -237,8 +252,8 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
 
   const fireShot = useCallback(() => {
     emitMobileShoot();
-    fireLegacyGameInput('shoot', true);
-    fireLegacyGameInput('shoot', false);
+    fireGameRemoteInput('shoot', true);
+    fireGameRemoteInput('shoot', false);
     setShootFlash(true);
     setTimeout(() => setShootFlash(false), 260);
   }, []);
@@ -263,7 +278,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
     }, AUTO_FIRE_DELAY_MS);
   }, [fireShot, stopAutoFire]);
 
-  const handleRightStart = useCallback((e: React.TouchEvent) => {
+  const handleRightStart = useCallback((e: ControllerTouchEvent) => {
     e.preventDefault();
     if (rightTouchIdRef.current !== null) return;
     const touch = e.changedTouches[0];
@@ -292,7 +307,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
     });
   }, [startAutoFire]);
 
-  const handleRightMove = useCallback((e: React.TouchEvent) => {
+  const handleRightMove = useCallback((e: ControllerTouchEvent) => {
     e.preventDefault();
     const touch = Array.from(e.changedTouches).find(
       (t) => t.identifier === rightTouchIdRef.current,
@@ -326,7 +341,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
     setRightStick((prev) => ({ ...prev, vector: vec }));
   }, [stopAutoFire]);
 
-  const handleRightEnd = useCallback((e: React.TouchEvent) => {
+  const handleRightEnd = useCallback((e: ControllerTouchEvent) => {
     e.preventDefault();
     const released = Array.from(e.changedTouches).some(
       (t) => t.identifier === rightTouchIdRef.current,
@@ -396,8 +411,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
       } else {
         rightTouchRouteRef.current.set(touch.identifier, 'stick');
         // Synthesise a right-stick touchstart event for this touch
-        const synth = { ...e, changedTouches: [touch] } as unknown as React.TouchEvent;
-        handleRightStart(synth);
+        handleRightStart(createSingleTouchEvent(e, touch));
       }
     });
   }, [findButtonAt, handleRightStart]);
@@ -407,8 +421,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
     Array.from(e.changedTouches).forEach((touch) => {
       const route = rightTouchRouteRef.current.get(touch.identifier);
       if (route === 'stick') {
-        const synth = { ...e, changedTouches: [touch] } as unknown as React.TouchEvent;
-        handleRightMove(synth);
+        handleRightMove(createSingleTouchEvent(e, touch));
       }
       // Button drags are intentionally ignored (buttons are independent)
     });
@@ -424,8 +437,7 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
         rightTouchButtonRef.current.delete(touch.identifier);
         if (btn) btnMgrRef.current?.pressEnd(btn, touch.identifier);
       } else if (route === 'stick') {
-        const synth = { ...e, changedTouches: [touch] } as unknown as React.TouchEvent;
-        handleRightEnd(synth);
+        handleRightEnd(createSingleTouchEvent(e, touch));
       }
     });
   }, [handleRightEnd]);
@@ -451,12 +463,12 @@ export default function GameController({ gameLabel, onExit }: GameControllerProp
   const handlePauseStart = useCallback(() => {
     setPauseActive(true);
     emitMobileButton('pause');
-    fireLegacyGameInput('pause', true);
+    fireGameRemoteInput('pause', true);
   }, []);
 
   const handlePauseEnd = useCallback(() => {
     setPauseActive(false);
-    fireLegacyGameInput('pause', false);
+    fireGameRemoteInput('pause', false);
   }, []);
 
   // ────────────────────────────────────────────────────────────────────────

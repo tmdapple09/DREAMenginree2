@@ -16,6 +16,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -23,6 +24,7 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
@@ -37,7 +39,7 @@ export type ChartType = 'line' | 'bar' | 'scatter';
 
 // ─── Experiment ───────────────────────────────────────────────────────────────
 
-export interface Experiment {
+export interface Experiment extends JsonObject {
   id: string;
   title: string;
   status: 'draft' | 'running' | 'complete' | 'failed';
@@ -45,7 +47,7 @@ export interface Experiment {
 
 // ─── Simulation result ────────────────────────────────────────────────────────
 
-export interface SimulationResult {
+export interface SimulationResult extends JsonObject {
   kind: SimulationKind;
   result: string;
   completedAt: string;
@@ -53,7 +55,7 @@ export interface SimulationResult {
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface LabEnginDerivedState extends Record<string, unknown> {
+export interface LabEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   experiments: Experiment[];
   activeSimulation: SimulationKind | null;
@@ -62,7 +64,7 @@ export interface LabEnginDerivedState extends Record<string, unknown> {
   chartType: ChartType;
   datasetExportReady: boolean;
   researchExportReady: boolean;
-  physicsPayload: Record<string, unknown> | null;
+  physicsPayload: JsonObject | null;
 }
 
 // ─── Action discriminated union ───────────────────────────────────────────────
@@ -76,7 +78,7 @@ export type LabEnginAction =
   | EnginAction<'lab:chart-type',           { type: ChartType }>
   | EnginAction<'lab:dataset-export-ready', Record<string, never>>
   | EnginAction<'lab:research-export-ready', Record<string, never>>
-  | EnginAction<'lab:physics-received',     { payload: Record<string, unknown> }>;
+  | EnginAction<'lab:physics-received',     { payload: JsonObject }>;
 
 // ─── Default domain state ─────────────────────────────────────────────────────
 
@@ -170,7 +172,7 @@ function transform(state: EnginBaseState, action: LabEnginAction): EnginBaseStat
     }
 
     case 'lab:physics-received': {
-      const { payload } = (action as EnginAction<'lab:physics-received', { payload: Record<string, unknown> }>).payload!;
+      const { payload } = (action as EnginAction<'lab:physics-received', { payload: JsonObject }>).payload!;
       return patchBaseState(state, { domain: { ...domain, physicsPayload: payload } });
     }
 
@@ -192,7 +194,7 @@ function deriveState(state: EnginBaseState): LabEnginDerivedState {
     chartType:           (d.chartType           ?? DEFAULT_DOMAIN.chartType)           as ChartType,
     datasetExportReady:  (d.datasetExportReady  ?? DEFAULT_DOMAIN.datasetExportReady)  as boolean,
     researchExportReady: (d.researchExportReady ?? DEFAULT_DOMAIN.researchExportReady) as boolean,
-    physicsPayload:      (d.physicsPayload      ?? DEFAULT_DOMAIN.physicsPayload)      as any | null,
+    physicsPayload:      (d.physicsPayload      ?? DEFAULT_DOMAIN.physicsPayload)      as JsonObject | null,
   };
 }
 
@@ -204,6 +206,21 @@ const PARAMS: EnginRuleSetParams = {
   layoutMode: 'standard',
   accentColor: '#22c55e',
   simulationBudgetMs: 16,
+};
+
+
+const MANIFEST: EnginRuleSetManifest<LabEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['lab:experiments-loaded', 'lab:experiment-update', 'lab:sim-start', 'lab:sim-complete', 'lab:sim-reset', 'lab:chart-type', 'lab:dataset-export-ready', 'lab:research-export-ready', 'lab:physics-received'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
 };
 
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
@@ -219,6 +236,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const LAB_ENGIN_RULE_SET: EnginRuleSetContract<LabEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [simStartConstraint],

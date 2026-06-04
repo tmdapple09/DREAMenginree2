@@ -16,6 +16,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -23,6 +24,7 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
@@ -30,14 +32,14 @@ import type {
 
 export type ContentType = 'Post' | 'Video' | 'Story' | 'Thread';
 
-export interface CalendarItem {
+export interface CalendarItem extends JsonObject {
   id: string;
   type: ContentType;
   title: string;
   scheduled_at?: string;
 }
 
-export interface ContentDraft {
+export interface ContentDraft extends JsonObject {
   id: number;
   title: string;
 }
@@ -48,7 +50,7 @@ export type Platform = 'Feed' | 'Stories' | 'DreamDM' | 'Twitter' | 'Instagram' 
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface ContentEnginDerivedState extends Record<string, unknown> {
+export interface ContentEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   drafts: ContentDraft[];
   publishQueue: CalendarItem[];
@@ -57,7 +59,7 @@ export interface ContentEnginDerivedState extends Record<string, unknown> {
   wordCount: number;
   creativityLevel: number;
   brandCheckReady: boolean;
-  stemPayload: Record<string, unknown> | null;
+  stemPayload: JsonObject | null;
 }
 
 // ─── Action discriminated union ───────────────────────────────────────────────
@@ -71,7 +73,7 @@ export type ContentEnginAction =
   | EnginAction<'content:seo-score',       { score: number; wordCount: number }>
   | EnginAction<'content:creativity-set',  { level: number }>
   | EnginAction<'content:brand-check',     Record<string, never>>
-  | EnginAction<'content:stem-received',   { payload: Record<string, unknown> }>;
+  | EnginAction<'content:stem-received',   { payload: JsonObject }>;
 
 // ─── Default domain state ─────────────────────────────────────────────────────
 
@@ -167,7 +169,7 @@ function transform(state: EnginBaseState, action: ContentEnginAction): EnginBase
     }
 
     case 'content:stem-received': {
-      const { payload } = (action as EnginAction<'content:stem-received', { payload: Record<string, unknown> }>).payload!;
+      const { payload } = (action as EnginAction<'content:stem-received', { payload: JsonObject }>).payload!;
       return patchBaseState(state, { domain: { ...domain, stemPayload: payload } });
     }
 
@@ -189,7 +191,7 @@ function deriveState(state: EnginBaseState): ContentEnginDerivedState {
     wordCount:       (d.wordCount       ?? DEFAULT_DOMAIN.wordCount)       as number,
     creativityLevel: (d.creativityLevel ?? DEFAULT_DOMAIN.creativityLevel) as number,
     brandCheckReady: (d.brandCheckReady ?? DEFAULT_DOMAIN.brandCheckReady) as boolean,
-    stemPayload:     (d.stemPayload     ?? DEFAULT_DOMAIN.stemPayload)     as any | null,
+    stemPayload:     (d.stemPayload     ?? DEFAULT_DOMAIN.stemPayload)     as JsonObject | null,
   };
 }
 
@@ -200,6 +202,21 @@ const PARAMS: EnginRuleSetParams = {
   name: 'ContentEngin',
   layoutMode: 'standard',
   accentColor: '#f97316',
+};
+
+
+const MANIFEST: EnginRuleSetManifest<ContentEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['content:drafts-loaded', 'content:item-add', 'content:item-remove', 'content:item-publish', 'content:platform-toggle', 'content:seo-score', 'content:creativity-set', 'content:brand-check', 'content:stem-received'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
 };
 
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
@@ -214,6 +231,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const CONTENT_ENGIN_RULE_SET: EnginRuleSetContract<ContentEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [itemAddConstraint, creativityConstraint],

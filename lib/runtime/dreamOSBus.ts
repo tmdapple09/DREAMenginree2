@@ -15,6 +15,8 @@ import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
 import {
   isDomainObject,
   type DomainObject,
+  type JsonObject,
+  type JsonValue,
 } from '@/lib/engin-runtime/EnginBaseState';
 import {
   authorizeDomainCapability,
@@ -27,7 +29,7 @@ export type IntentPriority = 'low' | 'normal' | 'high' | 'system';
 /** Intents use the same explicit ownership envelope as every domain object. */
 export type IntentEnvelope<
   TType extends string = string,
-  TPayload = unknown,
+  TPayload extends JsonValue = JsonObject,
 > = DomainObject<
   TType,
   {
@@ -47,6 +49,7 @@ type IntentValidator = (intent: IntentEnvelope) => boolean;
 type IntentDispatchResult = { handled: boolean; replayed: boolean };
 
 export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   if (!isDomainObject(value)) return false;
   const data = value.data;
   if (!data || typeof data !== 'object' || Array.isArray(data)) return false;

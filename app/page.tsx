@@ -18,6 +18,7 @@ export default async function Page() {
 
   return (
     <div
+      data-route="landing"
       className="relative flex min-h-[100svh] w-full flex-col overflow-hidden"
       style={{ background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)' }}
     >

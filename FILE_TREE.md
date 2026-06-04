@@ -4631,8 +4631,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── emitMobileLookDelta  ← @/lib/games/mobileControls
 │   │   │   ├── emitMobileMove  ← @/lib/games/mobileControls
 │   │   │   ├── emitMobileShoot  ← @/lib/games/mobileControls
-│   │   │   ├── fireLegacyGameInput  ← @/lib/games/mobileControls
-│   │   │   ├── getLegacyMoveAction  ← @/lib/games/mobileControls
+│   │   │   ├── fireGameRemoteInput  ← @/lib/games/mobileControls
+│   │   │   ├── getRemoteMoveAction  ← @/lib/games/mobileControls
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useMemo  ← react
@@ -4693,13 +4693,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── MobileHudMode  ← @/lib/games/mobileControls
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.hud.LegacyGameHUD.tsx ∅
-│   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
-│   │   │   ├── useRouter  ← next/navigation
-│   │   │   ├── useCallback  ← react
-│   │   │   ├── useState  ← react
-│   │   │   ├── → (default)
-│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.hud.MobileGameHUD.module.css
 │   │   ├── dream.hud.MobileGameHUD.tsx ∅
 │   │   │   ├── MOBILE_HUD_BUTTON_RING  ← @/lib/games/mobileControls
@@ -4709,9 +4702,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── emitMobileButton  ← @/lib/games/mobileControls
 │   │   │   ├── emitMobileLook  ← @/lib/games/mobileControls
 │   │   │   ├── emitMobileMove  ← @/lib/games/mobileControls
-│   │   │   ├── fireLegacyGameInput  ← @/lib/games/mobileControls
-│   │   │   ├── getLegacyActionForMobileButton  ← @/lib/games/mobileControls
-│   │   │   ├── getLegacyMoveAction  ← @/lib/games/mobileControls
+│   │   │   ├── fireGameRemoteInput  ← @/lib/games/mobileControls
+│   │   │   ├── getRemoteActionForMobileButton  ← @/lib/games/mobileControls
+│   │   │   ├── getRemoteMoveAction  ← @/lib/games/mobileControls
 │   │   │   ├── normalizeStickVector  ← @/lib/games/mobileControls
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
@@ -4788,7 +4781,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → GameInputAction
 │   │   │   ├── → default
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.remote.LegacyGameRemote.tsx ∅
+│   │   ├── dream.remote.GameRemoteSurface.tsx ∅
 │   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
 │   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
 │   │   │   ├── useGamepad  ← @/lib/games/useGamepad
@@ -9901,9 +9894,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → emitMobileLookDelta
 │   │   │   ├── → emitMobileMove
 │   │   │   ├── → emitMobileShoot
-│   │   │   ├── → fireLegacyGameInput
-│   │   │   ├── → getLegacyActionForMobileButton
-│   │   │   ├── → getLegacyMoveAction
+│   │   │   ├── → fireGameRemoteInput
+│   │   │   ├── → getRemoteActionForMobileButton
+│   │   │   ├── → getRemoteMoveAction
 │   │   │   ├── → normalizeStickVector
 │   │   │   ├── → registerMobileGameControls
 │   │   │   ├── → useRegisterMobileGameControls
@@ -13019,7 +13012,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.GamesHub
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Glassfall
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.GameHUD
-│   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.LegacyGameHUD
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.MobileGameHUD
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Leaderboard
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.LexiconSolitaire
@@ -13028,7 +13020,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.RecordingControls
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemote
-│   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.LegacyGameRemote
+│   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemoteSurface
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.SerpentSiege
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.VoidlineGP
 │   │   │   │   ├── (dynamic)  ← @/components/games/madmaxi/audio
@@ -15045,7 +15037,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── mobile-game-controls.test.ts
 │   │   ├── GAME_CATALOG  ← @/lib/games/catalog
 │   │   ├── MOBILE_HUD_BUTTON_RING  ← @/lib/games/mobileControls
-│   │   ├── getLegacyMoveAction  ← @/lib/games/mobileControls
+│   │   ├── getRemoteMoveAction  ← @/lib/games/mobileControls
 │   │   ├── normalizeStickVector  ← @/lib/games/mobileControls
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── join  ← node:path

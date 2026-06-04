@@ -14,7 +14,7 @@ describe('existing PS5 remote usage', () => {
   });
 
   it('keeps the embedded shared remote generic instead of a MADMAXI controller deck', () => {
-    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.LegacyGameRemote.tsx'), 'utf8');
+    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.GameRemoteSurface.tsx'), 'utf8');
 
     expect(src).toContain('Shared Remote');
     expect(src).toContain("Inline game controls");
@@ -23,7 +23,7 @@ describe('existing PS5 remote usage', () => {
   });
 
   it('keeps the original remote layout with a larger right analog and wrapped action buttons', () => {
-    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.LegacyGameRemote.tsx'), 'utf8');
+    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.GameRemoteSurface.tsx'), 'utf8');
 
     expect(src).toContain('const RIGHT_PAD_R   = 70');
     expect(src).toContain('const LEFT_PAD_R    = 52');
@@ -60,7 +60,7 @@ describe('existing PS5 remote usage', () => {
     expect(immersiveSrc).toContain('The cartridge owns its visual HUD');
   });
 
-  it('keeps legacy GameHUD imports routed to GameRemote instead of MobileGameHUD', () => {
+  it('keeps compatibility GameHUD imports routed to GameRemote instead of MobileGameHUD', () => {
     const hud = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.GameHUD.tsx'), 'utf8');
     const remoteExport = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.GameRemote.tsx'), 'utf8');
 
@@ -73,7 +73,7 @@ describe('existing PS5 remote usage', () => {
 
   it('removes per-game on-screen remote pads in favor of the shared GameRemote', () => {
     // Source-game files that previously hosted their own touch pads have been
-    // removed in the fusion-cartridge migration. The only legacy file left to
+    // removed in the fusion-cartridge migration. The only remaining source file to
     // assert against is BabylonSideScroller (kept as MADMAXI flagship).
     const babylon = readFileSync(join(REPO_ROOT, 'components/games/dream.BabylonSideScroller.tsx'), 'utf8');
 
@@ -89,7 +89,7 @@ describe('existing PS5 remote usage', () => {
   });
 
   it('supports idle, active, and collapsed remote states without blocking native game touches', () => {
-    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.LegacyGameRemote.tsx'), 'utf8');
+    const src = readFileSync(join(REPO_ROOT, 'components/games/dream.remote.GameRemoteSurface.tsx'), 'utf8');
 
     expect(src).toContain("useState<'idle' | 'active' | 'collapsed'>('idle')");
     expect(src).toContain("opacity: remoteState === 'active' ? 0.3 : 0.01");

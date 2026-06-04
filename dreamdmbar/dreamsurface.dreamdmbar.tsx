@@ -1936,7 +1936,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       {/* ── DreamDM window ───────────────────────────────────────────────────── */}
       <div
         aria-label="DreamDM Bar"
-        className="sicc-bar-edge"
+        className="sicc-bar-edge de-dreamdmbar-material de-runtime-seam"
         data-bar-state={isParticleMode ? 'particle' : isSeamMode ? 'seam' : 'normal'}
         // ── Pointer routing ──────────────────────────────────────────────────
         // seam mode:    whole 2px line is the drag/tap target → divider handlers

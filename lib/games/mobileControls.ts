@@ -11,7 +11,7 @@ export interface MobileControlVector {
 export type MobileHudMode = 'buttons' | 'joystick' | 'controller';
 export type MobileHudButton = 'jump' | 'dash' | 'action' | 'pause';
 
-type LegacyMoveAction =
+export type RemoteMoveAction =
   | 'move-left'
   | 'move-right'
   | 'move-up'
@@ -21,7 +21,7 @@ type LegacyMoveAction =
   | 'move-down-left'
   | 'move-down-right';
 
-type LegacyGameInputAction = LegacyMoveAction | 'move-stop' | 'jump' | 'r1' | 'shoot' | 'pause';
+export type GameRemoteInputAction = RemoteMoveAction | 'move-stop' | 'jump' | 'r1' | 'shoot' | 'pause';
 
 export interface MobileGameControlHandlers {
   onMove?: (directionVector: MobileControlVector) => void;
@@ -41,9 +41,17 @@ export interface MobileHudRingButtonDefinition {
   slotClassName: string;
 }
 
+export type MobileEventDetail =
+  | MobileControlVector
+  | { button: MobileHudButton }
+  | { dx: number; dy: number }
+  | { x: number; y: number }
+  | { action: GameRemoteInputAction; active: boolean }
+  | Record<string, never>;
+
 const MOBILE_CONTROL_LISTENERS = new Set<MobileGameControlHandlers>();
 const ZERO_VECTOR: MobileControlVector = Object.freeze({ x: 0, y: 0 });
-const LEGACY_BUTTON_MAP: Record<Exclude<MobileHudButton, 'pause'>, LegacyGameInputAction> = {
+const REMOTE_BUTTON_MAP: Record<Exclude<MobileHudButton, 'pause'>, GameRemoteInputAction> = {
   jump: 'jump',
   dash: 'r1',
   action: 'shoot',
@@ -60,7 +68,7 @@ export const MOBILE_HUD_BUTTON_RING: readonly MobileHudRingButtonDefinition[] = 
   { id: 'square', symbol: '□', label: 'Tech', interactive: false, slotClassName: 'slotSquare' },
 ] as const;
 
-function emitWindowEvent(name: string, detail: unknown): void {
+function emitWindowEvent(name: string, detail: MobileEventDetail): void {
   if (typeof window === 'undefined') return;
   window.dispatchEvent(new CustomEvent(name, { detail }));
 }
@@ -76,7 +84,7 @@ export function normalizeStickVector(dx: number, dy: number, radius: number): Mo
   };
 }
 
-export function getLegacyMoveAction(vector: MobileControlVector, deadZone = 0.24): LegacyMoveAction | null {
+export function getRemoteMoveAction(vector: MobileControlVector, deadZone = 0.24): RemoteMoveAction | null {
   const magnitude = Math.hypot(vector.x, vector.y);
   if (magnitude < deadZone) return null;
   const angle = Math.atan2(vector.y, vector.x) * (180 / Math.PI);
@@ -90,7 +98,7 @@ export function getLegacyMoveAction(vector: MobileControlVector, deadZone = 0.24
   return 'move-up-right';
 }
 
-export function fireLegacyGameInput(action: LegacyGameInputAction, active: boolean): void {
+export function fireGameRemoteInput(action: GameRemoteInputAction, active: boolean): void {
   emitWindowEvent('de-game-input', { action, active });
   broadcastGameInput(action, active);
 }
@@ -137,8 +145,8 @@ export function emitMobileShoot( ){
   MOBILE_CONTROL_LISTENERS.forEach((handlers) => handlers.onAction?.());
 }
 
-export function getLegacyActionForMobileButton(button: Exclude<MobileHudButton, 'pause'> ){
-  return LEGACY_BUTTON_MAP[button];
+export function getRemoteActionForMobileButton(button: Exclude<MobileHudButton, 'pause'> ): GameRemoteInputAction {
+  return REMOTE_BUTTON_MAP[button];
 }
 
 export function useRegisterMobileGameControls(handlers: MobileGameControlHandlers | null ){

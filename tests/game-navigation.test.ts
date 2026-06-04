@@ -64,7 +64,7 @@ describe('game launch navigation', () => {
     expect(enginePageSrc).toContain('GameEnginApp');
     expect(enginSrc).toContain('<GameRemote');
     expect(enginSrc).not.toContain('<GameHUD');
-    expect(remoteSrc).toContain('LegacyGameRemote');
+    expect(remoteSrc).toContain('GameRemoteSurface');
   });
 
   it('lets the games daydream launch spotlight titles directly into immersive full-screen engine sessions', () => {

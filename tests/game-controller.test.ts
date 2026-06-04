@@ -243,20 +243,29 @@ describe('ButtonInteractionManager – button definitions', () => {
   });
 });
 
-// ─── Integration — source-level checks ───────────────────────────────────────
+
+// ─── Dream → GameEngin pipeline — architecture contract ─────────────────────
+//
+// Validates that the GameEngin pipeline (ARCHITECTURE.md §16-19) satisfies:
+//   Dream (kind: 'game') → GameEngin → Cartridge → GameRemote/GameController
+//
+// These source-level checks confirm the wiring is in place and that the
+// GameHUD correctly routes control surfaces by MobileHudMode.
 
 describe('GameController integration', () => {
-  it('GameHUD routes the controller mode to GameController', () => {
+  it('GameHUD delegates to the shared GameRemote instead of preserving a duplicate controller path', () => {
     const src = readFileSync(join(REPO_ROOT, 'components/games/dream.hud.GameHUD.tsx'), 'utf8');
-    expect(src).toContain("mode === 'controller'");
-    expect(src).toContain('<GameController');
-    expect(src).toContain("import GameController from '@/components/games/dream.GameController'");
+    expect(src).toContain("import GameRemote from '@/components/games/dream.remote.GameRemote'");
+    expect(src).toContain('<GameRemote');
+    expect(src).toContain('embedded');
+    expect(src).not.toContain("mode === 'controller'");
+    expect(src).not.toContain('<GameController');
   });
 
   it('MobileHudMode includes the controller value', () => {
     const src = readFileSync(join(REPO_ROOT, 'lib/games/mobileControls.ts'), 'utf8');
     expect(src).toContain("'controller'");
-    expect(src).toContain("MobileHudMode");
+    expect(src).toContain('MobileHudMode');
   });
 
   it('mobileControls exports emitMobileLookDelta, emitMobileJump, emitMobileShoot', () => {
@@ -282,7 +291,6 @@ describe('GameController integration', () => {
   it('left stick emits jump on thumb-lift', () => {
     const src = readFileSync(join(REPO_ROOT, 'components/games/dream.GameController.tsx'), 'utf8');
     expect(src).toContain('emitMobileJump');
-    // Jump must be inside the handleLeftEnd callback
     expect(src).toContain('handleLeftEnd');
   });
 
@@ -301,5 +309,36 @@ describe('GameController integration', () => {
     expect(css).toContain('.faceCluster');
     expect(css).toContain('.shoulderGroup');
     expect(css).toContain('.shootFlash');
+  });
+
+  it('GameEngin rule-set wires into the EnginRuntime (engine underneath)', () => {
+    const ruleSet = readFileSync(join(REPO_ROOT, 'lib/engins/game/gameEnginRuleSet.ts'), 'utf8');
+    expect(ruleSet).toContain('EnginRuleSetContract');
+    expect(ruleSet).toContain('GAME_ENGIN_RULE_SET');
+    expect(ruleSet).toContain('game:session-start');
+    expect(ruleSet).toContain('game:score-add');
+    expect(ruleSet).toContain('deriveState');
+  });
+
+  it('useGameEnginRuntime wires the rule-set into EnginRuntime (runtime middle)', () => {
+    const hook = readFileSync(join(REPO_ROOT, 'lib/engins/game/useGameEnginRuntime.ts'), 'utf8');
+    expect(hook).toContain('EnginRuntime');
+    expect(hook).toContain('GAME_ENGIN_RULE_SET');
+    expect(hook).toContain('getDerivedState');
+  });
+
+  it('Dream kinds include game — one model, many surfaces', () => {
+    const types = readFileSync(join(REPO_ROOT, 'lib/dreams/types.ts'), 'utf8');
+    expect(types).toContain("'game'");
+    expect(types).toContain('DreamKind');
+    expect(types).toContain('DreamPermissions');
+    expect(types).toContain('DrEamsIntentType');
+  });
+
+  it('dream:open intent carries surface and dreamId for GameEngin launch', () => {
+    const types = readFileSync(join(REPO_ROOT, 'lib/dreams/types.ts'), 'utf8');
+    expect(types).toContain("'dream:open'");
+    expect(types).toContain('surface: DreamSurface');
+    expect(types).toContain('dreamId: string');
   });
 });

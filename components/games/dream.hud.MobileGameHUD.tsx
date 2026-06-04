@@ -5,9 +5,9 @@ import {
     emitMobileButton,
     emitMobileLook,
     emitMobileMove,
-    fireLegacyGameInput,
-    getLegacyActionForMobileButton,
-    getLegacyMoveAction,
+    fireGameRemoteInput,
+    getRemoteActionForMobileButton,
+    getRemoteMoveAction,
     MOBILE_HUD_BUTTON_RING,
     normalizeStickVector,
     type MobileControlVector,
@@ -39,7 +39,7 @@ function loadPersisted(key: string, fallback: number, min?: number, max?: number
   return fallback;
 }
 
-function savePersisted(key: string, value: unknown): void {
+function savePersisted(key: string, value: number): void {
   try { localStorage.setItem(key, String(value)); } catch { /* ignore */ }
 }
 
@@ -96,7 +96,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
   const rightJoyTouchIdRef = useRef<number | null>(null);
   const rightBtnTouchesRef = useRef<Map<number, string | null>>(new Map());
   const activeBtnCountsRef = useRef<Record<string, number>>({});
-  const activeMoveActionRef = useRef<ReturnType<typeof getLegacyMoveAction>>(null);
+  const activeMoveActionRef = useRef<ReturnType<typeof getRemoteMoveAction>>(null);
   const touchFadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragStartRef = useRef<{ y: number; baseOffsetY: number } | null>(null);
   /** Tracks start position of the right joystick touch for tap detection */
@@ -147,17 +147,17 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     cap.style.transform = getStickTransform(vector);
   }, []);
 
-  const syncLegacyMove = useCallback((vector: MobileControlVector) => {
-    const nextAction = getLegacyMoveAction(vector);
+  const syncRemoteMove = useCallback((vector: MobileControlVector) => {
+    const nextAction = getRemoteMoveAction(vector);
     if (activeMoveActionRef.current && activeMoveActionRef.current !== nextAction) {
-      fireLegacyGameInput(activeMoveActionRef.current, false);
+      fireGameRemoteInput(activeMoveActionRef.current, false);
     }
     if (nextAction && nextAction !== activeMoveActionRef.current) {
-      fireLegacyGameInput(nextAction, true);
+      fireGameRemoteInput(nextAction, true);
     }
     if (!nextAction && activeMoveActionRef.current) {
-      fireLegacyGameInput('move-stop', true);
-      fireLegacyGameInput('move-stop', false);
+      fireGameRemoteInput('move-stop', true);
+      fireGameRemoteInput('move-stop', false);
     }
     activeMoveActionRef.current = nextAction;
   }, []);
@@ -166,8 +166,8 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     syncStickCap(leftCapRef.current, nextVector);
     setLeftVector((prev) => keepPreviousVectorIfUnchanged(prev, nextVector));
     emitMobileMove(nextVector);
-    syncLegacyMove(nextVector);
-  }, [syncLegacyMove, syncStickCap]);
+    syncRemoteMove(nextVector);
+  }, [syncRemoteMove, syncStickCap]);
 
   const updateRightVector = useCallback((nextVector: MobileControlVector) => {
     syncStickCap(rightCapRef.current, nextVector);
@@ -239,10 +239,10 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     updateButtonPressed(buttonId, next > 0);
     if (active && current === 0) {
       emitMobileButton(buttonId as MobileHudButton);
-      fireLegacyGameInput(getLegacyActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), true);
+      fireGameRemoteInput(getRemoteActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), true);
     }
     if (!active && current > 0 && next === 0) {
-      fireLegacyGameInput(getLegacyActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
+      fireGameRemoteInput(getRemoteActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
     }
   }, [updateButtonPressed]);
 
@@ -324,13 +324,13 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     setPausePressed(true);
     markTouchStart();
     emitMobileButton('pause');
-    fireLegacyGameInput('pause', true);
+    fireGameRemoteInput('pause', true);
   }, [markTouchStart]);
 
   const handlePauseRelease = useCallback(() => {
     setPausePressed(false);
     markTouchEnd();
-    fireLegacyGameInput('pause', false);
+    fireGameRemoteInput('pause', false);
   }, [markTouchEnd]);
 
   // ── Size control ──────────────────────────────────────────────────────────
@@ -360,14 +360,14 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
   // ── Cleanup ───────────────────────────────────────────────────────────────
   useEffect(() => () => {
     if (touchFadeTimerRef.current !== null) clearTimeout(touchFadeTimerRef.current);
-    if (activeMoveActionRef.current) fireLegacyGameInput(activeMoveActionRef.current, false);
-    fireLegacyGameInput('move-stop', true);
-    fireLegacyGameInput('move-stop', false);
+    if (activeMoveActionRef.current) fireGameRemoteInput(activeMoveActionRef.current, false);
+    fireGameRemoteInput('move-stop', true);
+    fireGameRemoteInput('move-stop', false);
     Object.entries(activeBtnCountsRef.current).forEach(([buttonId, count]) => {
       if (!count || !INTERACTIVE_BUTTONS.has(buttonId)) return;
-      fireLegacyGameInput(getLegacyActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
+      fireGameRemoteInput(getRemoteActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
     });
-    fireLegacyGameInput('pause', false);
+    fireGameRemoteInput('pause', false);
   }, []);
 
   const collapseRemote = useCallback(() => {
@@ -381,14 +381,14 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     activeMoveActionRef.current = null;
     Object.entries(activeBtnCountsRef.current).forEach(([buttonId, count]) => {
       if (!count || !INTERACTIVE_BUTTONS.has(buttonId)) return;
-      fireLegacyGameInput(getLegacyActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
+      fireGameRemoteInput(getRemoteActionForMobileButton(buttonId as 'jump' | 'dash' | 'action'), false);
     });
     activeBtnCountsRef.current = {};
     setPressedButtons({});
     updateLeftVector(ZERO_VECTOR);
     updateRightVector(ZERO_VECTOR);
-    fireLegacyGameInput('move-stop', true);
-    fireLegacyGameInput('move-stop', false);
+    fireGameRemoteInput('move-stop', true);
+    fireGameRemoteInput('move-stop', false);
     setRemoteState('collapsed');
   }, [updateLeftVector, updateRightVector]);
 

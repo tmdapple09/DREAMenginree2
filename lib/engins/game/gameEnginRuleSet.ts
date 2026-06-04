@@ -19,6 +19,7 @@
 import {
     patchBaseState,
     type EnginBaseState,
+    type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
 import type {
@@ -26,6 +27,7 @@ import type {
     EnginAction,
     EnginConstraint,
     EnginRuleSetContract,
+    EnginRuleSetManifest,
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
@@ -49,7 +51,7 @@ export type ScriptLanguage = 'GameScript' | 'Lua';
 
 // ─── Domain state shape ───────────────────────────────────────────────────────
 
-export interface GameScore {
+export interface GameScore extends JsonObject {
   id: string;
   game: string;
   score: number;
@@ -57,23 +59,23 @@ export interface GameScore {
   shared: boolean;
 }
 
-export interface WorldState {
+export interface WorldState extends JsonObject {
   name: string;
   grid: TileType[][];
 }
 
-export interface PhysicsConfig {
+export interface PhysicsConfig extends JsonObject {
   gravity: GravityPreset;
   friction: number;
 }
 
-export interface ScriptState {
+export interface ScriptState extends JsonObject {
   code: string;
   language: ScriptLanguage;
 }
 
 /** The domain-specific state shape exposed to GameEngin UI. */
-export interface GameEnginDerivedState extends Record<string, unknown> {
+export interface GameEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   scores: GameScore[];
   activeGame: string | null;
@@ -272,6 +274,21 @@ const PARAMS: EnginRuleSetParams = {
   defaultGrid: DEFAULT_GRID,
 };
 
+
+const MANIFEST: EnginRuleSetManifest<GameEnginAction> = {
+  id: PARAMS.enginId,
+  name: PARAMS.name,
+  version: '1.0.0',
+  schema: {
+    actionTypes: ['game:session-start', 'game:session-end', 'game:select', 'game:score-add', 'game:score-shared', 'game:scores-loaded', 'game:world-save', 'game:physics-apply', 'game:script-save', 'game:control-profile', 'game:immersive-toggle'],
+    domainVersion: 1,
+  },
+  compatibility: {
+    minRuntimeVersion: '1.0.0',
+    requiredFeatures: ['lifecycle-hooks', 'manifest-schema', 'strict-intent-routing', 'sync-transport', 'state-snapshotting', 'compatibility-negotiation'],
+  },
+};
+
 const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'state:read',
   'state:write',
@@ -287,6 +304,7 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
 // ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const GAME_ENGIN_RULE_SET: EnginRuleSetContract<GameEnginAction> = {
+  manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
   constraints: [sessionStartConstraint, scoreConstraint, physicsConstraint],
