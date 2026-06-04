@@ -1,4 +1,4 @@
-name: Extract zip assets into public/
+name: Extract zip code update
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  extract:
+  update-code:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,11 +15,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Unzip -> extract assets into public/ -> commit
+      - name: Unzip -> sync code -> commit
         shell: bash
         run: |
           set -euo pipefail
 
+          # 1. Find the zip file
           shopt -s nullglob
           zips=( *.zip )
           shopt -u nullglob
@@ -36,7 +37,7 @@ jobs:
           TMP="$(mktemp -d)"
           unzip -q "$ZIP" -d "$TMP"
 
-          # Flatten single wrapper folder (e.g. DREAMengin-assets/), ignoring __MACOSX
+          # 2. Flatten the folder if the zip has a single root wrapper (ignoring Mac hidden files)
           ROOT="$TMP"
           top_dirs=()
           for d in "$TMP"/*/; do
@@ -48,59 +49,27 @@ jobs:
             ROOT="${top_dirs[0]}"
           fi
 
-          # If the zip already has a public/ subfolder, use that as the source
-          # so we don't create public/public/ nesting.
-          if [ -d "$ROOT/public" ]; then
-            ASSET_ROOT="$ROOT/public"
-          else
-            ASSET_ROOT="$ROOT"
-          fi
+          # 3. Sync EVERYTHING into the repo root, leaving existing files completely safe
+          # Excludes .git/ and .github/ to protect your repository infrastructure
+          rsync -a -v \
+            --exclude=".git/" \
+            --exclude=".github/" \
+            "$ROOT/" "./"
 
-          # Create destination and sync ONLY asset files into public/.
-          # Source code (src/, package.json, etc.) lives outside public/ and
-          # is therefore structurally unreachable — no excludes needed.
-          mkdir -p public
-
-          rsync -a \
-            --include="*.png" \
-            --include="*.PNG" \
-            --include="*.jpg" \
-            --include="*.JPG" \
-            --include="*.jpeg" \
-            --include="*.JPEG" \
-            --include="*.gif" \
-            --include="*.GIF" \
-            --include="*.webp" \
-            --include="*.svg" \
-            --include="*.mp4" \
-            --include="*.webm" \
-            --include="*.mp3" \
-            --include="*.wav" \
-            --include="*.ogg" \
-            --include="*.woff" \
-            --include="*.woff2" \
-            --include="*.ttf" \
-            --include="*.otf" \
-            --include="*.ico" \
-            --include="*/" \
-            --exclude="*" \
-            "$ASSET_ROOT/" "./public/"
-
-          # Remove the zip from the repo tree
+          # 4. Remove the zip so it doesn't bloat the codebase
           rm -f "$ZIP"
           git rm -f "$ZIP" 2>/dev/null || true
 
-          # sync contents into repo root (protect git internals)
-          rsync -a \
-            --exclude ".git/" \
-            --exclude ".github/" \
-            "$ROOT/" "./"
-
+          # 5. Stage and Commit
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add -A
-          git diff --cached --quiet && echo "No asset changes to commit." && exit 0
-          git commit -m "chore: extract zip assets into public/ [skip ci] [skip vercel]"
+          git diff --cached --quiet && echo "No code changes to commit." && exit 0
+          git commit -m "chore: apply code updates from zip [skip ci] [skip vercel]"
+          
+          # 6. THE FIX: Pull latest changes first to prevent push rejections
+          git pull --rebase
+          
+          # 7. Push the updated codebase back to GitHub
           git push || true
-
