@@ -10,7 +10,7 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 
 - **Total files:** 2026
 - **Total function/class nodes:** 3698
-- **Total edges:** 7195
+- **Total edges:** 7196
 - **Orphan nodes:** 3096
 
 #### Top-Level Folder Connectivity (overview)
@@ -23,7 +23,7 @@ graph LR
   app["app"] -->|292| components["components"]
   src["src"] -->|257| app["app"]
   tests["tests"] -->|244| lib["lib"]
-  engins["engins"] -->|127| lib["lib"]
+  engins["engins"] -->|128| lib["lib"]
   lib["lib"] -->|55| types["types"]
   app["app"] -->|42| types["types"]
   engins["engins"] -->|25| components["components"]
@@ -154,6 +154,7 @@ graph LR
 | `lib/connectors/providers/nostr.ts` | ts | 2 | 5 | `app/api/connectors/[provider]/connect/route.ts`, `app/api/connectors/[provider]/verify/route.ts`, `lib/connectors/syncDispatch.ts` | `lib/connectors/normalise.ts`, `types/connector.ts` |
 | `lib/daydream/useDaydreamState.ts` | ts | 2 | 5 | `components/daydream/dream.shell.DaydreamShell.tsx`, `engins/engin.BrandingEngin.tsx`, `engins/engin.CodeEngin.tsx` | `lib/supabase/client.ts`, `lib/supabase/safeGetUser.ts` |
 | `lib/dreamr/torridityLedger.ts` | ts | 1 | 5 | `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts`, `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts`, `lib/dreamr/dreamrfeed.tsx` | `lib/dreamr/swipeCalibration.ts` |
+| `lib/engins/game/gameEnginRuleSet.ts` | ts | 3 | 5 | `engins/engin.GameEngin.tsx`, `lib/engins/game/index.ts`, `lib/engins/game/useGameEnginRuntime.ts` | `lib/engin-runtime/EnginBaseState.ts`, `lib/engin-runtime/EnginCapabilities.ts`, `lib/engin-runtime/EnginRuleSetContract.ts` |
 | `lib/forge/engineForge.ts` | ts | 2 | 5 | `components/dream.ForgeDreamCanvas.tsx`, `components/forge/dream.EngineBuilderCanvas.tsx`, `lib/dreamenginOS/index.ts` | `lib/componentInventory.ts`, `lib/eventBus.ts` |
 | `lib/gameengin/ai-director.ts` | ts | 0 | 5 | `components/games/dream.NeonDrift.tsx`, `lib/gameengin/index.ts`, `lib/gameengin/platform.ts` | — |
 | `lib/gameengin/core.ts` | ts | 2 | 5 | `lib/gameengin/index.ts`, `lib/gameengin/platform.ts`, `lib/gameengin/post-fx.ts` | `lib/gameengin/power-systems.ts`, `lib/babylon/createEngine.ts` |
@@ -195,7 +196,6 @@ graph LR
 | `lib/dreams/types.ts` | ts | 1 | 4 | `lib/dreams/dreamIntentBus.ts`, `lib/dreams/profileProjection.ts`, `src/engin/generated/systems.ts` | `lib/engin-runtime/EnginBaseState.ts` |
 | `lib/engin-runtime/EnginEventBus.ts` | ts | 0 | 4 | `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/enginpipe/telemetry/events.ts` | ts | 0 | 4 | `lib/enginpipe/index.ts`, `lib/enginpipe/telemetry/client.ts`, `src/engin/generated/systems.ts` | — |
-| `lib/engins/game/gameEnginRuleSet.ts` | ts | 3 | 4 | `lib/engins/game/index.ts`, `lib/engins/game/useGameEnginRuntime.ts`, `src/engin/generated/systems.ts` | `lib/engin-runtime/EnginBaseState.ts`, `lib/engin-runtime/EnginCapabilities.ts`, `lib/engin-runtime/EnginRuleSetContract.ts` |
 | `lib/feature-build/featureManifest.ts` | ts | 1 | 4 | `lib/feature-build/buildCycle.ts`, `lib/feature-build/index.ts`, `src/engin/generated/systems.ts` | `lib/identity/canonical-names.ts` |
 | `lib/forge-ngn/piece-registry.ts` | ts | 0 | 4 | `components/daydream/dream.NGNEngin.tsx`, `lib/forge-ngn/assembly.ts`, `lib/forge-ngn/index.ts` | — |
 | `lib/forge/forgeBuild.ts` | ts | 0 | 4 | `components/forge/dream.panel.AIBuilderPanel.tsx`, `lib/forge/useForgeBuild.ts`, `src/engin/generated/systems.ts` | — |
@@ -1541,7 +1541,7 @@ graph LR
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
-| `engins/engin.GameEngin.tsx` | tsx | 29 | 7 | `app/daydream/games/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/games/dream.GameEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/games/dream.GamesHub.tsx`, `components/games/dream.RecordingControls.tsx` |
+| `engins/engin.GameEngin.tsx` | tsx | 30 | 7 | `app/daydream/games/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/games/dream.GameEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/games/dream.GamesHub.tsx`, `components/games/dream.RecordingControls.tsx` |
 | `engins/engin.StarMakerEngin.tsx` | tsx | 27 | 7 | `app/daydream/music/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/music/dream.MusicEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`, `components/daydream/starmaker/dream.panel.CompingPanel.tsx` |
 | `engins/engin.BrandingEngin.tsx` | tsx | 15 | 6 | `app/daydream/brand/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/brand/dream.BrandEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `hooks/useSharedDream.ts`, `lib/daydream/useDaydreamPersistence.ts` |
 | `engins/engin.CodeEngin.tsx` | tsx | 18 | 6 | `app/daydream/code/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/code/dream.CodeEnginApp.tsx` | `components/daydream/dream.DiffViewer.tsx`, `components/daydream/dream.JourneyTrail.tsx`, `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` |
@@ -1951,6 +1951,7 @@ graph LR
   f_components_games_dream_RecordingControls_tsx["dream.RecordingControls.tsx"]
   f_components_games_dream_remote_GameRemote_tsx["dream.remote.GameRemote.tsx"]
   f_lib_dreamdm_DreamSystemContext_tsx["DreamSystemContext.tsx"]
+  f_lib_engins_game_gameEnginRuleSet_ts["gameEnginRuleSet.ts"]
   f_lib_engins_game_useGameEnginRuntime_ts["useGameEnginRuntime.ts"]
   f_lib_gameengin_GameRuntime_tsx["GameRuntime.tsx"]
   f_lib_gameengin_cartridge_ts["cartridge.ts"]
@@ -2070,6 +2071,7 @@ graph LR
   f_engins_engin_GameEngin_tsx --> f_lib_daydream_useDaydreamPersistence_ts
   f_engins_engin_GameEngin_tsx --> f_lib_dreamdm_DreamSystemContext_tsx
   f_engins_engin_GameEngin_tsx --> f_lib_dreamenginOS_index_ts
+  f_engins_engin_GameEngin_tsx --> f_lib_engins_game_gameEnginRuleSet_ts
   f_engins_engin_GameEngin_tsx --> f_lib_engins_game_useGameEnginRuntime_ts
   f_engins_engin_GameEngin_tsx --> f_lib_forge_forgeIntelligence_ts
   f_engins_engin_GameEngin_tsx --> f_lib_forge_useForgeActivity_ts
@@ -4710,6 +4712,7 @@ _File-level graph omitted: 549 files exceeds Mermaid render budget. See table ab
 | `build-memory/routes.json` | config |
 | `build-memory/schema.json` | config |
 | `build-memory/ui-surfaces.json` | config |
+| `changed-agent-architecture-files-only.zip` | file |
 | `CHANGELOG.md` | doc |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `components/gameengin/README.md` | doc |
@@ -4827,7 +4830,6 @@ _File-level graph omitted: 549 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `DREAMenginree2-completedream_3_filtered_TS_fixed.zip` | file |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
