@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { calibrateDevice, type CalibrationSample } from '@/lib/dreamr/swipeCalibration';
+import LandingProductStatement from '@/components/landing/dream.LandingProductStatement';
 
 // ── Gesture calibration state ────────────────────────────────────────────────
 
@@ -106,86 +106,8 @@ export default function LandingHero() {
       aria-labelledby="hero-heading"
     >
       <div className="flex w-full max-w-6xl flex-col items-center lg:items-start">
-        <div className="flex w-full min-w-0 max-w-[36rem] flex-col items-center text-center lg:items-start lg:text-left lg:max-w-[52%] lg:py-16">
-          {/* Brand kicker */}
-          <div
-            className="de-kicker mb-6"
-            style={{ color: '#d4a832' }}
-            aria-label="DREAMengin — Creative OS + DreamR"
-          >
-            Creative Operating Surface
-          </div>
-
-          {/* Headline */}
-          <h1
-            id="hero-heading"
-            className="font-bold tracking-tight leading-[1.04] mb-5"
-            style={{
-              fontSize: 'clamp(2.6rem, 6.5vw, 5rem)',
-              color: 'rgba(220,235,255,0.97)',
-            }}
-          >
-            Space to{' '}
-            <span
-              style={{
-                background:
-                  'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 40%, #c8981a 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              dream
-            </span>
-            .
-          </h1>
-
-          {/* Product statement */}
-          <p className="de-landing-copy">
-            DREAMengin is an AI-powered creative OS where apps, games, chats, tools, and media become movable building blocks inside your own digital world.
-          </p>
-
-          <div className="de-premium-stack" aria-label="DREAMengin premium stack">
-            <article className="de-premium-layer-card">
-              <span className="de-premium-layer-label">Engine underneath</span>
-              <strong>WASM motion + glow math</strong>
-              <p>Low-level browser muscle shapes simulation, particles, and sync fingerprints without dragging React into hot loops.</p>
-            </article>
-            <article className="de-premium-layer-card">
-              <span className="de-premium-layer-label">Runtime in the middle</span>
-              <strong>Fingerprint-synced Dreams</strong>
-              <p>HomeDream and DreamSpace share validated runtime frames so objects move surfaces without duplicate state.</p>
-            </article>
-            <article className="de-premium-layer-card">
-              <span className="de-premium-layer-label">Product on top</span>
-              <strong>DreamR creative world</strong>
-              <p>A glass-and-gold social OS where profiles, feeds, games, media, and tools become movable Dreams.</p>
-            </article>
-          </div>
-
-          {/* DreamR statement */}
-          <Link href="/mission" className="de-landing-mission-link">
-            DreamR — A social platform where your individuality is the algorithm.{' '}
-            <span>Where creativity—not likes—gets you seen. →</span>
-          </Link>
-
-          {/* CTAs */}
-          <div className="flex w-full max-w-xs flex-col items-center gap-3 sm:max-w-none sm:flex-row lg:justify-start">
-            <Link
-              href="/join"
-              className="de-landing-primary-cta"
-            >
-              Sign Up Here
-            </Link>
-
-            <Link
-              href="/login"
-              className="de-landing-secondary-cta"
-            >
-              Welcome Back!
-            </Link>
-          </div>
-        </div>
+        {/* The UI is now safely compartmentalized in the child component */}
+        <LandingProductStatement />
       </div>
     </section>
   );
