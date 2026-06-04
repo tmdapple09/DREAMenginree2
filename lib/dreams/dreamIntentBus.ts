@@ -179,7 +179,7 @@ export function registerDreamIntentHandler<T extends DrEamsIntentType['type']>(
 
       const payload = envelope.data.payload as MatchedPayload;
       const typedEnvelope = envelope as IntentEnvelope<T, JsonObject>;
-      const typedHandler = handler as (
+      const typedHandler = handler as unknown as (
         payload: MatchedPayload,
         envelope: IntentEnvelope<T, JsonObject>,
       ) => void | Promise<void>;
