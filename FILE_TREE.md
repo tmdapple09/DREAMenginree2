@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-05T00:30:06.941Z
+Generated: 2026-06-05T17:47:30.309Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -16313,6 +16313,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── → runReadmeAutosync
 │   ├── → upsertSubsectionInSection
 │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
+├── supabaseClient.ts ∅
+│   ├── Database  ← ./types/supabase
+│   ├── createClient  ← @supabase/supabase-js
+│   ├── → supabase
+│   └── ∅ unused: supabase
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 │   └── (dynamic)  ← tailwindcss
