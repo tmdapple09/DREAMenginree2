@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-05T00:30:06.826Z
+Generated: 2026-06-05T17:47:30.172Z
 
 ---
 
@@ -14207,6 +14207,13 @@ _No style files for this feature._
 | `@/lib/utils` | `toErrorMessage` |
 | `@/src/launcher` | `launch` |
 
+## `supabaseClient.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types/supabase` | `Database` |
+| `@supabase/supabase-js` | `createClient` |
+
 ## `tailwindcss-animate.d.ts`
 
 | Module | Connected via |
@@ -17564,6 +17571,7 @@ _No style files for this feature._
 - `lib/reality/realityStore.ts`
 - `lib/runtime/instanceManager.ts`
 - `lib/sharedDream/useSharedDreamSession.ts`
+- `supabaseClient.ts`
 
 ---
 
@@ -19142,6 +19150,7 @@ _No circular dependencies detected._
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
+| `supabaseClient.ts` | `supabase` |
 | `types/ai-system.ts` | `UserRole`, `ActorContextSchema`, `HomeAnchorState`, `Surface`, `CubePosition`, `Overlay`, `GestureDirection`, `GestureChain`, `NavStateSafe`, `UIContextSchema`, `DrEamsIntentType`, `IDariIntentType`, `IntentSchema`, `IntentEnvelopeSchema`, `HomeMenuOpenPayload`, `DiagSchemaSnapshotPayload`, `DiagRLSSnapshotPayload`, `DiagCodeReferenceScanPayload`, `DiagEnvChecklistPayload`, `AdminPatchProposalPayload`, `AdminMigrationProposalPayload`, `ModerationFlagContentPayload`, `JSONPatch`, `UIToast`, `UIDelta`, `ToolResultError`, `DrEamsRunRequest`, `DrEamsRunResponse`, `IDariRunRequest`, `IDariRunResponse`, `ExecuteRequest`, `ExecuteResponse`, `MemoryScope`, `AIMemory`, `AuditEntry` |
 | `types/dream-window.ts` | `DREAM_WINDOW_STATES` |
 | `types/experience.ts` | `MAX_WIDGETS` |
@@ -22525,6 +22534,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: proxy, config
 ├── readme-autosync.ts ∅
 │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
+├── supabaseClient.ts ∅
+│   └── ∅ unused: supabase
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 ├── tsconfig.games.json

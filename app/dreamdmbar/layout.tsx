@@ -33,21 +33,22 @@ type AppPostRow = FeedPost & {
   media_json?: unknown;
 };
 
-type FeedItemPayload = {
+type FeedItemPreview = {
   title?: string;
+  text?: string;
   content_text?: string;
   author_handle?: string | null;
   author_name?: string | null;
   author_avatar?: string | null;
   permalink?: string | null;
+  media_url?: string | null;
   media?: Array<{ url?: string | null }>;
 };
 
 type FeedItemRow = {
   id: string;
-  provider: string;
-  payload: FeedItemPayload | null;
-  published_at: string | null;
+  title: string | null;
+  preview: FeedItemPreview | null;
   created_at: string | null;
 };
 
@@ -85,8 +86,8 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
               .single<UserRoleRow>(),
         supabase
           .from('feed_items')
-          .select('id, provider, payload, published_at, created_at')
-          .order('published_at', { ascending: false, nullsFirst: false })
+          .select('id, title, preview, created_at')
+          .order('created_at', { ascending: false })
           .limit(20),
         supabase
           .from('follows')
@@ -125,21 +126,21 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
       }));
 
       const connectorEntries: FeedPost[] = feedItems.map((item) => {
-        const payload = item.payload ?? {};
-        const firstMedia = Array.isArray(payload.media) ? payload.media[0] : null;
+        const preview = item.preview ?? {};
+        const firstMedia = Array.isArray(preview.media) ? preview.media[0] : null;
         return {
           id: item.id,
           source: 'connector' as const,
-          provider: item.provider,
-          content: payload.content_text ?? payload.title ?? '',
+          provider: 'widget-feed',
+          content: preview.content_text ?? preview.text ?? item.title ?? preview.title ?? '',
           visibility: 'private',
-          media_url: firstMedia?.url ?? null,
-          permalink: payload.permalink ?? undefined,
-          created_at: item.published_at ?? item.created_at ?? new Date(0).toISOString(),
+          media_url: preview.media_url ?? firstMedia?.url ?? null,
+          permalink: preview.permalink ?? undefined,
+          created_at: item.created_at ?? new Date(0).toISOString(),
           profiles: {
-            handle: payload.author_handle ?? item.provider,
-            display_name: payload.author_name ?? item.provider,
-            avatar_url: payload.author_avatar ?? null,
+            handle: preview.author_handle ?? 'feed',
+            display_name: preview.author_name ?? 'Feed',
+            avatar_url: preview.author_avatar ?? null,
           },
         };
       });

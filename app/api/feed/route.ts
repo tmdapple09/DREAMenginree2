@@ -74,32 +74,33 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const db = supabase as SupabaseClient;
     let q = db
       .from('feed_items')
-      .select('id, provider, payload, published_at, created_at')
-      .eq('user_id', user.id)
-      .order('published_at', { ascending: false, nullsFirst: false })
+      .select('id, title, preview, created_at')
+      .order('created_at', { ascending: false })
       .limit(limit);
 
-    if (before) q = q.lt('published_at', before);
-    if (provider) q = q.eq('provider', provider);
+    if (before) q = q.lt('created_at', before);
 
     const { data: items } = await q;
 
     if (items) {
-      for (const item of items) {
-        const p = (item.payload ?? {}) as Record<string, unknown>;
+      for (const item of items as Array<{ id: string; title: string | null; preview: Record<string, unknown> | null; created_at: string }>) {
+        const p = item.preview ?? {};
+        const itemProvider = (p.provider as string | undefined) ?? 'widget-feed';
+        if (provider && itemProvider !== provider) continue;
+        const firstMedia = Array.isArray(p.media) ? p.media[0] as { url?: string; type?: 'image' | 'video' | 'audio' } | undefined : undefined;
         entries.push({
           id:           item.id,
           source:       'connector',
-          provider:     item.provider,
+          provider:     itemProvider,
           author_handle: p.author_handle as string | undefined,
           author_name:   p.author_name   as string | undefined,
           author_avatar: p.author_avatar as string | null | undefined,
-          content_text:  p.content_text  as string | undefined,
+          content_text:  (p.content_text ?? p.text ?? item.title ?? p.title) as string | undefined,
           content_html:  p.content_html  as string | undefined,
-          media:         (p.media as UnifiedFeedEntry['media']) ?? [],
+          media:         (p.media as UnifiedFeedEntry['media']) ?? (firstMedia?.url ? [{ url: firstMedia.url, type: firstMedia.type ?? 'image' }] : []),
           permalink:     p.permalink     as string | undefined,
-          published_at:  (item.published_at ?? item.created_at) as string,
-          created_at:    item.created_at as string,
+          published_at:  item.created_at,
+          created_at:    item.created_at,
           raw:           p,
         });
       }
