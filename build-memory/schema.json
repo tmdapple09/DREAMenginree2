@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T10:24:35.777Z",
+  "generated_at": "2026-06-05T02:02:50.097Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
@@ -1317,9 +1317,25 @@
     },
     {
       "table": "collaborative_realities",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     },
     {
       "table": "collection_items",
@@ -4343,21 +4359,69 @@
     },
     {
       "table": "reality_activity_log",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     },
     {
       "table": "reality_members",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     },
     {
       "table": "reality_state_snapshots",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     },
     {
       "table": "reports",
@@ -4829,9 +4893,25 @@
     },
     {
       "table": "t",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     },
     {
       "table": "transactions",
@@ -5533,9 +5613,25 @@
     },
     {
       "table": "x",
-      "columns": [],
-      "source": "code-only",
-      "note": "Referenced in code but not found in types/supabase.ts or migrations — may indicate missing migration"
+      "columns": [
+        {
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID        REFERENCES auth"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260605015234_auto_scaffold.sql"
     }
   ]
 }
