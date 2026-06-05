@@ -98,7 +98,7 @@ export default async function EnginesHubPage( ){
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-3">
-            <Link href="/daydream" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+            <Link href="/homedream" className="text-xs text-white/40 hover:text-white/70 transition-colors">
               ← Daydream
             </Link>
           </div>

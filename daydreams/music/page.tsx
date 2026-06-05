@@ -130,7 +130,7 @@ export default async function MusicArtistHubPage( ){
               Artist Hub is where your music lives after the studio session. Manage every step of your release pipeline, track distribution readiness, understand your audience, and grow your income — all while your StarMakerEngin session stays hot on Side&nbsp;B.
             </div>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              <Link href="/music/upload" style={{
+              <Link href="/daydream/music/upload" style={{
                 padding: '10px 18px', borderRadius: 9, fontSize: 13, fontWeight: 700,
                 background: 'rgba(0,208,240,0.2)', color: '#00d0f0',
                 border: '1px solid rgba(0,208,240,0.4)', textDecoration: 'none',
@@ -217,7 +217,7 @@ export default async function MusicArtistHubPage( ){
                 </div>
               ))}
             </div>
-            <Link href="/music" style={{
+            <Link href="/daydream/music" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               marginTop: 10, padding: '9px', borderRadius: 8, fontSize: 12, fontWeight: 600,
               background: 'rgba(0,208,240,0.08)', color: '#00d0f0',
@@ -340,7 +340,7 @@ export default async function MusicArtistHubPage( ){
                 </div>
               ))}
             </div>
-            <Link href="/music/upload" style={{
+            <Link href="/daydream/music/upload" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '10px', borderRadius: 8, fontSize: 13, fontWeight: 700,
               background: 'rgba(42,138,184,0.15)', color: '#2a8ab8',

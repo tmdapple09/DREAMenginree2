@@ -61,7 +61,7 @@ export default function HelpPanel( ){
             <p className="text-sm" style={{ color: 'var(--de-text-dim)', marginBottom: 12 }}>Dr. Eams is your AI assistant. Ask about system status, how features work, or get help setting things up.</p>
           </div>
           <div className="de-widget-actions">
-            <button type="button" className="de-btn de-btn-ghost text-xs" onClick={() => { window.location.href = '/dr-eams'; }}>Open Dr. Eams</button>
+            <button type="button" className="de-btn de-btn-ghost text-xs" onClick={() => { window.location.href = '/dreamr'; }}>Open Dr. Eams</button>
           </div>
         </div>
       </div>
