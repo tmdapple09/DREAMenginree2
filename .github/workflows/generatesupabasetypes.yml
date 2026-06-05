@@ -11,6 +11,9 @@ jobs:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Fetch all history so git pull can rebase properly if needed
+          fetch-depth: 0
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
@@ -41,5 +44,13 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add types/supabase.ts supabaseClient.ts
-          git commit -m "chore: sync schema types and update client [skip ci]" || echo "No changes"
-          git push
+          
+          # Only proceed if there are actually changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes detected."
+          else
+            git commit -m "chore: sync schema types and update client [skip ci]"
+            # Fetch latest remote changes and rebase our new types on top of them before pushing
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin ${{ github.ref_name }}
+          fi
