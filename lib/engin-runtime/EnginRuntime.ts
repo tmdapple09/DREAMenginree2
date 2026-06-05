@@ -79,7 +79,11 @@ export interface EnginRuntimeOptions {
   syncTransport?: EnginSyncTransport;
   /** Runtime context used in sync frames and authorization-aware surfaces. */
   runtimeId?: string;
+  /** Maximum recovery snapshots retained in memory. Prevents long sessions from growing unbounded. */
+  maxSnapshots?: number;
 }
+
+const DEFAULT_MAX_SNAPSHOTS = 48;
 
 const LIFECYCLE_TRANSITIONS: Readonly<
   Record<EnginLifecycle, ReadonlyArray<EnginLifecycle>>
@@ -115,11 +119,13 @@ export class EnginRuntime<
   private readonly _persistenceKey: string | false;
   private readonly _sync: EnginSyncTransport;
   private readonly _runtimeId: string;
+  private readonly _maxSnapshots: number;
   private readonly _compatibility: CompatibilityNegotiationResult;
   private readonly _lifecycleHooks = new Set<
     (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
   >();
   private readonly _snapshots: EnginBaseState[] = [];
+  private _lastPublishedFingerprint: string | null = null;
 
   /** Scoped event bus — owned by this runtime instance. */
   readonly bus: EnginEventBus<DomainEvents>;
@@ -148,6 +154,7 @@ export class EnginRuntime<
         : 'domain-state';
     this._sync = options.syncTransport ?? new MemorySyncTransport();
     this._runtimeId = options.runtimeId ?? ruleSet.params.enginId;
+    this._maxSnapshots = Math.max(1, Math.floor(options.maxSnapshots ?? DEFAULT_MAX_SNAPSHOTS));
     this._state = createBaseState(ruleSet.params.enginId);
     this.bus = createEnginEventBus<DomainEvents>();
   }
@@ -202,11 +209,26 @@ export class EnginRuntime<
     return () => this._lifecycleHooks.delete(hook);
   }
 
+  private rememberSnapshot(state: EnginBaseState = this._state): EnginBaseState {
+    const snapshot = cloneState(state);
+    this._snapshots.push(snapshot);
+    while (this._snapshots.length > this._maxSnapshots) {
+      this._snapshots.shift();
+    }
+    return cloneState(snapshot);
+  }
+
   /** Capture a serializable state snapshot for restore, duplication, and replay. */
   snapshot(): Readonly<EnginBaseState> {
-    const snapshot = cloneState(this._state);
-    this._snapshots.push(snapshot);
-    return cloneState(snapshot);
+    return this.rememberSnapshot(this._state);
+  }
+
+  /** Restore the newest retained snapshot. Useful after a failed surface/runtime handoff. */
+  recoverLatestSnapshot(): boolean {
+    const latest = this._snapshots.at(-1);
+    if (!latest) return false;
+    this.restoreSnapshot(latest);
+    return true;
   }
 
   /** Restore a previously captured snapshot into this same Engin runtime. */
@@ -220,6 +242,8 @@ export class EnginRuntime<
       enginId: this._state.enginId,
       revision: this._state.revision,
     });
+    this.publishSyncFrame();
+    this.persistDomainState();
   }
 
   // ─── Action dispatch ────────────────────────────────────────────────────────
@@ -323,34 +347,38 @@ export class EnginRuntime<
 
     // 6. Persist and sync (fire-and-forget)
     this.publishSyncFrame();
-
-    if (this._persistenceKey !== false) {
-      const enginId = this._state.enginId;
-      this._io
-        .save(this._persistenceKey, this._state.domain)
-        .then((ok: boolean) => {
-          if (ok) {
-            _emit('engin:persisted', {
-              enginId,
-              key: this._persistenceKey as string,
-            });
-          }
-        })
-        .catch((cause: Error) => {
-          _emit('engin:error', {
-            enginId,
-            message: 'Persistence failed — state not saved.',
-            cause: cause.message,
-          });
-        });
-    }
+    this.persistDomainState();
 
     return true;
   }
 
+  private persistDomainState(): void {
+    if (this._persistenceKey === false) return;
+    const enginId = this._state.enginId;
+    this._io
+      .save(this._persistenceKey, this._state.domain)
+      .then((ok: boolean) => {
+        if (ok) {
+          this._emitLifecycle('engin:persisted', {
+            enginId,
+            key: this._persistenceKey as string,
+          });
+        }
+      })
+      .catch((cause: Error) => {
+        this._emitLifecycle('engin:error', {
+          enginId,
+          message: 'Persistence failed — state not saved.',
+          cause: cause.message,
+        });
+      });
+  }
+
   private publishSyncFrame(): void {
-    const snapshot = this.snapshot();
+    const snapshot = this.rememberSnapshot(this._state);
     const fingerprint = fingerprintEnginSnapshot(snapshot);
+    if (fingerprint === this._lastPublishedFingerprint) return;
+    this._lastPublishedFingerprint = fingerprint;
     void this._sync.publish({
       id: `${this._state.enginId}:${this._state.revision}:${this._state.updatedAt}`,
       enginId: this._state.enginId,
@@ -367,6 +395,12 @@ export class EnginRuntime<
       }),
       snapshot,
       createdAt: new Date().toISOString(),
+    }).catch((cause: Error) => {
+      this._emitLifecycle('engin:error', {
+        enginId: this._state.enginId,
+        message: 'Sync publish failed — state remains local.',
+        cause: cause.message,
+      });
     });
   }
 
@@ -389,18 +423,29 @@ export class EnginRuntime<
       });
       if (!qualityResult.valid) return;
       const next = cloneState(frame.snapshot);
+      if (!this.shouldAcceptIncomingSnapshot(next)) return;
       const schemaResult = validateRuleSetState(
         next,
         this._ruleSet.manifest.schema,
       );
       if (!schemaResult.valid) return;
       this._state = next;
+      this.rememberSnapshot(next);
       this._emitLifecycle('engin:state', {
         enginId: this._state.enginId,
         revision: this._state.revision,
       });
       handler(cloneState(this._state));
     });
+  }
+
+  private shouldAcceptIncomingSnapshot(next: EnginBaseState): boolean {
+    if (next.revision < this._state.revision) return false;
+    if (next.revision > this._state.revision) return true;
+    const currentTime = Date.parse(this._state.updatedAt);
+    const nextTime = Date.parse(next.updatedAt);
+    if (!Number.isFinite(currentTime) || !Number.isFinite(nextTime)) return false;
+    return nextTime > currentTime;
   }
 
   // ─── Lifecycle ──────────────────────────────────────────────────────────────
