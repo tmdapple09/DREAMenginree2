@@ -32,7 +32,7 @@ export async function searchDreamDocs(
     query_embedding: `[${options.queryEmbedding.join(',')}]`,
     match_threshold: options.matchThreshold ?? 0.75,
     match_count: options.matchCount ?? 5,
-    filter_category: options.category ?? null,
+    filter_category: options.category ?? undefined,
   });
 
   if (error) {

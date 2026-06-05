@@ -12,6 +12,18 @@ export interface RateLimitConfig {
   windowMinutes: number;
 }
 
+type RateLimitRpcPayload = {
+  allowed?: boolean;
+  rpm?: number;
+  retry_after_seconds?: number;
+  request_count?: number;
+};
+
+function normalizeRateLimitPayload(data: unknown): RateLimitRpcPayload | null {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  return data as RateLimitRpcPayload;
+}
+
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
   '/api/dr-eams/run': {
     maxRequests: 30,
@@ -49,7 +61,8 @@ export async function checkRateLimit(
     return { allowed: false, rpm: 0 };
   }
 
-  const allowed = data?.allowed === true;
+  const result = normalizeRateLimitPayload(data);
+  const allowed = result?.allowed === true;
 
   // Calculate reset time
   const now = new Date();
@@ -67,7 +80,7 @@ export async function checkRateLimit(
     .limit(1)
     .single();
 
-  const rpm = data?.rpm ?? rateLimitData?.request_count ?? 0;
+  const rpm = result?.rpm ?? rateLimitData?.request_count ?? 0;
 
   return { allowed, rpm, resetAt };
 }

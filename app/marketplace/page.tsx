@@ -41,7 +41,15 @@ export default async function MarketplacePage( ){
     .order('created_at', { ascending: false })
     .limit(24);
 
-  const listings: MarketplaceListing[] = rawListings ?? [];
+  const listings: MarketplaceListing[] = (rawListings ?? []).map((item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.description ?? null,
+    category: item.category ?? 'general',
+    price_cents: item.price_cents ?? 0,
+    preview_url: item.preview_url ?? null,
+    tags: item.tags ?? [],
+  }));
 
   return (
     <div className="de-sky-bg min-h-screen">

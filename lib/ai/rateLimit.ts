@@ -3,6 +3,18 @@
 
 import { createServerClient } from '@/lib/supabase/server';
 
+type RateLimitRpcPayload = {
+  allowed?: boolean;
+  rpm?: number;
+  retry_after_seconds?: number;
+  request_count?: number;
+};
+
+function normalizeRateLimitPayload(data: unknown): RateLimitRpcPayload | null {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  return data as RateLimitRpcPayload;
+}
+
 export interface RateLimitResult {
   allowed: boolean;
   rpm: number;
@@ -40,8 +52,10 @@ export async function checkRateLimit(
       };
     }
 
-    if (data === null || data === undefined) {
-      console.error('[rateLimit] No data returned from RPC');
+    const result = normalizeRateLimitPayload(data);
+
+    if (!result) {
+      console.error('[rateLimit] No rate-limit payload returned from RPC');
       return {
         allowed: false,
         rpm: 0,
@@ -49,12 +63,14 @@ export async function checkRateLimit(
       };
     }
 
+    const allowed = result.allowed === true;
+
     return {
-      allowed: data.allowed === true,
-      rpm: data.rpm ?? 0,
-      retry_after_seconds: data.allowed
+      allowed,
+      rpm: result.rpm ?? 0,
+      retry_after_seconds: allowed
         ? undefined
-        : (data.retry_after_seconds ?? windowSeconds),
+        : (result.retry_after_seconds ?? windowSeconds),
     };
   } catch (error: unknown) {
     console.error('[rateLimit] Unexpected error:', error);
@@ -88,6 +104,10 @@ export async function getCurrentRPM(userId: string, endpoint: string): Promise<n
       return 0;
     }
 
+    if (!data.window_start) {
+      return 0;
+    }
+
     // Check if window is still within the last 60 seconds
     const windowStart = new Date(data.window_start).getTime();
     const windowAge = (Date.now() - windowStart) / 1000;
@@ -97,7 +117,7 @@ export async function getCurrentRPM(userId: string, endpoint: string): Promise<n
     }
 
     // Compute RPM from request_count and elapsed window time
-    return Math.round((data.request_count / Math.max(1, windowAge)) * 60);
+    return Math.round(((data.request_count ?? 0) / Math.max(1, windowAge)) * 60);
   } catch {
     return 0;
   }

@@ -30,19 +30,69 @@ export default async function BoardDetailPage({ params }: Props) {
     redirect('/messages/boards');
   }
 
-  const { data: posts } = await supabase
+  const { data: rawPosts } = await supabase
     .from('board_posts')
-    .select('id, author_id, content, is_pinned, created_at, profiles!author_id(handle, display_name, avatar_url)')
+    .select('id, author_id, content, is_pinned, created_at')
     .eq('board_id', id)
     .order('is_pinned', { ascending: false })
     .order('created_at', { ascending: true });
 
-  type Post = {
-    id: string; author_id: string; content: string; is_pinned: boolean; created_at: string;
-    profiles: { handle: string | null; display_name: string | null; avatar_url: string | null } | null;
+  type AuthorProfile = {
+    id: string;
+    handle: string | null;
+    display_name: string | null;
+    avatar_url: string | null;
   };
 
-  const typedPosts = (posts ?? []) as Post[];
+  type RawPost = {
+    id: string;
+    author_id: string;
+    content: string;
+    is_pinned: boolean | null;
+    created_at: string | null;
+  };
+
+  type Post = {
+    id: string;
+    author_id: string;
+    content: string;
+    is_pinned: boolean;
+    created_at: string;
+    profiles: Omit<AuthorProfile, 'id'> | null;
+  };
+
+  const postRows = (rawPosts ?? []) as RawPost[];
+  const authorIds = [...new Set(postRows.map((post) => post.author_id).filter(Boolean))];
+  let authorRows: AuthorProfile[] = [];
+
+  if (authorIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, handle, display_name, avatar_url')
+      .in('id', authorIds);
+
+    authorRows = (profiles ?? []) as AuthorProfile[];
+  }
+
+  const profilesById = new Map(authorRows.map((profile) => [profile.id, profile]));
+  const typedPosts: Post[] = postRows.map((post) => {
+    const profile = profilesById.get(post.author_id) ?? null;
+
+    return {
+      id: post.id,
+      author_id: post.author_id,
+      content: post.content,
+      is_pinned: post.is_pinned ?? false,
+      created_at: post.created_at ?? new Date(0).toISOString(),
+      profiles: profile
+        ? {
+            handle: profile.handle,
+            display_name: profile.display_name,
+            avatar_url: profile.avatar_url,
+          }
+        : null,
+    };
+  });
 
   return (
     <div style={{ minHeight: '100svh', background: 'linear-gradient(160deg, #dce8f8 0%, #c8d8f0 40%, #f5e8c4 100%)', paddingBottom: 120 }}>
