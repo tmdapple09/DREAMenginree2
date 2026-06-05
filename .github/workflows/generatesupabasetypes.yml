@@ -2,6 +2,10 @@ name: Generate Supabase Types
 
 on:
   workflow_dispatch:
+  # Optional: Uncomment if you want this to run automatically on every push
+  # push:
+  #   branches:
+  #     - main
 
 permissions:
   contents: write
@@ -17,10 +21,10 @@ jobs:
         with:
           version: latest
 
-      - name: Generate types (via DB URL)
+      - name: Generate types (via Project Ref)
         run: |
           supabase gen types typescript \
-            --db-url "${{ secrets.SUPABASE_DB_URL }}" \
+            --project-id "suaiqcynxospjijzdudc" \
             --schema public > types/supabase.ts
 
       - name: Commit and push
@@ -29,6 +33,4 @@ jobs:
           git config user.email "actions@github.com"
           git add types/supabase.ts
           git commit -m "chore: regenerate supabase types [skip ci] [skip vercel]" || echo "No changes"
-          git push || true
-
-
+          git push
