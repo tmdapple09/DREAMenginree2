@@ -1,65 +1,65 @@
 {
-  "generated_at": "2026-06-05T02:02:50.097Z",
+  "generated_at": "2026-06-05T02:39:48.770Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
     "supabase/migrations/"
   ],
-  "count": 153,
+  "count": 149,
   "tables": [
     {
       "table": "activity_points",
       "columns": [
         {
-          "name": "activity_type",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "decay_timestamp",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "is_decayed",
-          "type": "boolean"
-        },
-        {
-          "name": "points",
-          "type": "number"
-        },
-        {
-          "name": "post_id",
-          "type": "string | null"
-        },
-        {
-          "name": "tier",
-          "type": "number"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "uuid PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "tier",
+          "type": "smallint NOT NULL CHECK (tier"
+        },
+        {
+          "name": "points",
+          "type": "integer NOT NULL CHECK (points"
+        },
+        {
+          "name": "activity_type",
+          "type": "text NOT NULL"
+        },
+        {
+          "name": "description",
+          "type": "text"
         },
         {
           "name": "verification_id",
-          "type": "string | null"
+          "type": "uuid REFERENCES public"
+        },
+        {
+          "name": "post_id",
+          "type": "uuid REFERENCES public"
+        },
+        {
+          "name": "decay_timestamp",
+          "type": "timestamptz NOT NULL DEFAULT (now()"
+        },
+        {
+          "name": "is_decayed",
+          "type": "boolean NOT NULL DEFAULT false"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260413000000_phase9_activity_first_protocol.sql"
     },
     {
       "table": "activity_verification",
@@ -291,28 +291,8 @@
           "type": "string"
         },
         {
-          "name": "creator_payout",
-          "type": "number | null"
-        },
-        {
-          "name": "creator_share",
-          "type": "number | null"
-        },
-        {
-          "name": "gross_revenue",
-          "type": "number | null"
-        },
-        {
           "name": "id",
           "type": "string"
-        },
-        {
-          "name": "platform_payout",
-          "type": "number | null"
-        },
-        {
-          "name": "platform_share",
-          "type": "number | null"
         },
         {
           "name": "status",
@@ -480,22 +460,22 @@
       "columns": [
         {
           "name": "id",
-          "type": "boolean"
+          "type": "boolean primary key default true"
         },
         {
           "name": "locked",
-          "type": "boolean"
+          "type": "boolean not null default false"
         },
         {
           "name": "locked_at",
-          "type": "string | null"
+          "type": "timestamptz"
         },
         {
           "name": "reason",
-          "type": "string | null"
+          "type": "text"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260226000000_admin_lock.sql"
     },
     {
       "table": "agent_sessions",
@@ -741,31 +721,35 @@
       "table": "ai_rate_limits",
       "columns": [
         {
-          "name": "endpoint",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "request_count",
-          "type": "number"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "UUID PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "UUID NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "endpoint",
+          "type": "TEXT NOT NULL"
         },
         {
           "name": "window_start",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL"
+        },
+        {
+          "name": "request_count",
+          "type": "INTEGER DEFAULT 1"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260210000001_ai_system_v2026.sql"
     },
     {
       "table": "ai_triad_consensus_log",
@@ -901,16 +885,8 @@
           "type": "Json | null"
         },
         {
-          "name": "media_url",
-          "type": "string | null"
-        },
-        {
           "name": "media_urls",
           "type": "string[]"
-        },
-        {
-          "name": "post_visibility",
-          "type": "string | null"
         },
         {
           "name": "updated_at",
@@ -919,10 +895,6 @@
         {
           "name": "user_id",
           "type": "string"
-        },
-        {
-          "name": "view_count",
-          "type": "number"
         },
         {
           "name": "visibility",
@@ -1029,69 +1001,69 @@
       "table": "board_posts",
       "columns": [
         {
-          "name": "author_id",
-          "type": "string"
+          "name": "id",
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "board_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES public"
+        },
+        {
+          "name": "author_id",
+          "type": "UUID        NOT NULL REFERENCES auth"
         },
         {
           "name": "content",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
+          "type": "TEXT        NOT NULL"
         },
         {
           "name": "is_pinned",
-          "type": "boolean"
+          "type": "BOOLEAN     NOT NULL DEFAULT false"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         },
         {
           "name": "updated_at",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260307000000_readme_gaps.sql"
     },
     {
       "table": "boards",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "is_public",
-          "type": "boolean"
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "owner_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES auth"
         },
         {
           "name": "title",
-          "type": "string"
+          "type": "TEXT        NOT NULL"
+        },
+        {
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "name": "is_public",
+          "type": "BOOLEAN     NOT NULL DEFAULT false"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         },
         {
           "name": "updated_at",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260307000000_readme_gaps.sql"
     },
     {
       "table": "brand_kit_items",
@@ -1320,22 +1292,18 @@
       "columns": [
         {
           "name": "id",
-          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+          "type": "string"
         },
         {
-          "name": "owner_id",
-          "type": "UUID        REFERENCES auth"
+          "name": "mode",
+          "type": "string | null"
         },
         {
-          "name": "created_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
-        },
-        {
-          "name": "updated_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "name": "state_contract",
+          "type": "Json | null"
         }
       ],
-      "source": "20260605015234_auto_scaffold.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "collection_items",
@@ -1389,73 +1357,69 @@
       "table": "comments",
       "columns": [
         {
-          "name": "content",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
+          "type": "uuid primary key default gen_random_uuid()"
         },
         {
           "name": "post_id",
-          "type": "string"
+          "type": "uuid not null references public"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid not null references auth"
+        },
+        {
+          "name": "content",
+          "type": "text not null check (char_length(content) between 1 and 1000)"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz not null default now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260305000001_comments.sql"
     },
     {
       "table": "confirm_tokens",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "expires_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "intent_ids",
-          "type": "string[] | null"
+          "name": "token",
+          "type": "TEXT PRIMARY KEY"
         },
         {
           "name": "request_id",
-          "type": "string | null"
-        },
-        {
-          "name": "token",
-          "type": "string"
-        },
-        {
-          "name": "ui_snapshot",
-          "type": "Json | null"
-        },
-        {
-          "name": "used",
-          "type": "boolean"
-        },
-        {
-          "name": "used_at",
-          "type": "string | null"
+          "type": "UUID NOT NULL"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "UUID NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "intent_ids",
+          "type": "UUID"
+        },
+        {
+          "name": "ui_snapshot",
+          "type": "JSONB NOT NULL"
+        },
+        {
+          "name": "expires_at",
+          "type": "TIMESTAMPTZ NOT NULL"
+        },
+        {
+          "name": "used",
+          "type": "BOOLEAN DEFAULT FALSE"
+        },
+        {
+          "name": "used_at",
+          "type": "TIMESTAMPTZ"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260210000001_ai_system_v2026.sql"
     },
     {
       "table": "connector_accounts",
@@ -2119,207 +2083,175 @@
       "table": "dream_content",
       "columns": [
         {
-          "name": "content",
-          "type": "Json"
-        },
-        {
-          "name": "content_body",
-          "type": "string | null"
-        },
-        {
-          "name": "content_encoding",
-          "type": "string | null"
-        },
-        {
-          "name": "content_hash",
-          "type": "string | null"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "metadata",
-          "type": "Json | null"
+          "type": "uuid        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "owner_id",
-          "type": "string | null"
+          "type": "uuid        REFERENCES auth"
         },
         {
-          "name": "updated_at",
-          "type": "string"
+          "name": "content_hash",
+          "type": "text        UNIQUE"
+        },
+        {
+          "name": "content_encoding",
+          "type": "text"
+        },
+        {
+          "name": "content_body",
+          "type": "text"
+        },
+        {
+          "name": "content",
+          "type": "jsonb       NOT NULL DEFAULT"
+        },
+        {
+          "name": "metadata",
+          "type": "jsonb"
         },
         {
           "name": "widget_id",
-          "type": "string | null"
+          "type": "uuid"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260319065444_new-migration.sql"
     },
     {
       "table": "dream_definitions",
       "columns": [
         {
-          "name": "component",
-          "type": "string | null"
+          "name": "widget_id",
+          "type": "UUID PRIMARY KEY DEFAULT gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE"
+        },
+        {
+          "name": "name",
+          "type": "TEXT NOT NULL"
+        },
+        {
+          "name": "host_kind",
+          "type": "SMALLINT NOT NULL"
+        },
+        {
+          "name": "host_config",
+          "type": "JSONB NOT NULL DEFAULT"
+        },
+        {
+          "name": "settings",
+          "type": "JSONB NOT NULL DEFAULT"
+        },
+        {
+          "name": "policy",
+          "type": "INTEGER NOT NULL DEFAULT 0"
         },
         {
           "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "default_config",
-          "type": "Json"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
-          "name": "key",
-          "type": "string"
-        },
-        {
-          "name": "title",
-          "type": "string | null"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT NOW()"
         },
         {
           "name": "updated_at",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260210000000_widget_system_v2.sql"
     },
     {
       "table": "dream_doc_sections",
       "columns": [
         {
           "name": "id",
-          "type": "number"
+          "type": "BIGSERIAL PRIMARY KEY"
         },
         {
           "name": "page_id",
-          "type": "number"
+          "type": "BIGINT NOT NULL REFERENCES dream_docs(id) ON UPDATE CASCADE ON DELETE CASCADE"
         },
         {
           "name": "content",
-          "type": "string | null"
+          "type": "TEXT"
         },
         {
           "name": "token_count",
-          "type": "number | null"
-        },
-        {
-          "name": "embedding",
-          "type": "string | null"
+          "type": "INTEGER"
         },
         {
           "name": "slug",
-          "type": "string | null"
+          "type": "TEXT"
         },
         {
           "name": "heading",
-          "type": "string | null"
-        },
-        {
-          "name": "chunk_index",
-          "type": "number"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "TEXT"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260417000000_repurpose_nods_as_dream_docs.sql"
     },
     {
       "table": "dream_docs",
       "columns": [
         {
           "name": "id",
-          "type": "number"
+          "type": "BIGSERIAL PRIMARY KEY"
         },
         {
           "name": "parent_page_id",
-          "type": "number | null"
+          "type": "BIGINT REFERENCES dream_docs(id)"
         },
         {
           "name": "path",
-          "type": "string"
-        },
-        {
-          "name": "checksum",
-          "type": "string | null"
+          "type": "TEXT NOT NULL UNIQUE"
         },
         {
           "name": "meta",
-          "type": "Json | null"
+          "type": "JSONB"
         },
         {
           "name": "type",
-          "type": "string | null"
+          "type": "TEXT"
         },
         {
           "name": "source",
-          "type": "string | null"
-        },
-        {
-          "name": "slug",
-          "type": "string | null"
-        },
-        {
-          "name": "category",
-          "type": "'help' | 'tutorial' | 'policy' | 'release_notes' | 'api_reference' | 'general'"
-        },
-        {
-          "name": "published",
-          "type": "boolean"
-        },
-        {
-          "name": "author_id",
-          "type": "string | null"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "TEXT"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260417000000_repurpose_nods_as_dream_docs.sql"
     },
     {
       "table": "dream_instances",
       "columns": [
         {
-          "name": "config",
-          "type": "Json"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "UUID PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "UUID REFERENCES profiles(id) ON DELETE CASCADE"
         },
         {
-          "name": "widget_type",
-          "type": "string"
+          "name": "type",
+          "type": "TEXT NOT NULL"
+        },
+        {
+          "name": "config_json",
+          "type": "JSONB"
+        },
+        {
+          "name": "enabled",
+          "type": "BOOLEAN DEFAULT TRUE"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20240120000000_initial_schema.sql"
     },
     {
       "table": "dream_settings",
@@ -2829,35 +2761,35 @@
       "table": "forge_assemblies",
       "columns": [
         {
-          "name": "assembly",
-          "type": "Json"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "title",
-          "type": "string"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
+          "type": "uuid        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid        NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "title",
+          "type": "text        NOT NULL"
+        },
+        {
+          "name": "assembly",
+          "type": "jsonb       NOT NULL DEFAULT"
         },
         {
           "name": "visibility",
-          "type": "string"
+          "type": "text        NOT NULL DEFAULT"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260426000200_build_memory_schema_gaps.sql"
     },
     {
       "table": "forge_rate_limits",
@@ -2915,73 +2847,77 @@
       "table": "game_assets",
       "columns": [
         {
-          "name": "asset_type",
-          "type": "string"
-        },
-        {
-          "name": "config_dna",
-          "type": "Json | null"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "label",
-          "type": "string"
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "owner_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES profiles(id) ON DELETE CASCADE"
+        },
+        {
+          "name": "label",
+          "type": "TEXT        NOT NULL"
         },
         {
           "name": "source_image_url",
-          "type": "string | null"
+          "type": "TEXT"
+        },
+        {
+          "name": "asset_type",
+          "type": "TEXT        NOT NULL DEFAULT"
+        },
+        {
+          "name": "config_dna",
+          "type": "JSONB"
         },
         {
           "name": "wasm_mesh_data",
-          "type": "string | null"
+          "type": "BYTEA"
         },
         {
           "name": "wasm_rig_data",
-          "type": "string | null"
+          "type": "BYTEA"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260402000002_game_assets.sql"
     },
     {
       "table": "game_scores",
       "columns": [
         {
-          "name": "achieved_at",
-          "type": "string"
-        },
-        {
-          "name": "game",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "level",
-          "type": "number | null"
-        },
-        {
-          "name": "score",
-          "type": "number"
+          "type": "uuid primary key default gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid not null references auth"
+        },
+        {
+          "name": "game",
+          "type": "text not null check (game in ("
+        },
+        {
+          "name": "score",
+          "type": "integer not null check (score"
+        },
+        {
+          "name": "level",
+          "type": "integer"
+        },
+        {
+          "name": "achieved_at",
+          "type": "timestamptz not null default now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260305000002_leaderboard.sql"
     },
     {
       "table": "gameengin_cartridges",
@@ -3101,57 +3037,57 @@
       "table": "global_registry",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "internal_id",
-          "type": "string"
-        },
-        {
-          "name": "label",
-          "type": "string"
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "object_type",
-          "type": "string"
+          "type": "TEXT        NOT NULL"
+        },
+        {
+          "name": "internal_id",
+          "type": "TEXT        NOT NULL"
+        },
+        {
+          "name": "label",
+          "type": "TEXT        NOT NULL"
         },
         {
           "name": "owner_id",
-          "type": "string | null"
+          "type": "UUID        REFERENCES profiles(id) ON DELETE CASCADE"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260401000001_platform_utilities.sql"
     },
     {
       "table": "idempotency_keys",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "intent_type",
-          "type": "string | null"
-        },
-        {
           "name": "key",
-          "type": "string"
+          "type": "TEXT PRIMARY KEY"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "UUID NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "intent_type",
+          "type": "TEXT NOT NULL"
+        },
+        {
+          "name": "result",
+          "type": "JSONB"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260210000001_ai_system_v2026.sql"
     },
     {
       "table": "intent_cache",
@@ -3232,42 +3168,42 @@
       "columns": [
         {
           "name": "id",
-          "type": "string"
+          "type": "uuid PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid NOT NULL REFERENCES auth"
         },
         {
           "name": "kind",
-          "type": "string"
+          "type": "text NOT NULL"
         },
         {
           "name": "surface",
-          "type": "string"
+          "type": "text NOT NULL DEFAULT"
         },
         {
           "name": "label",
-          "type": "string"
+          "type": "text NOT NULL DEFAULT"
         },
         {
           "name": "significance",
-          "type": "number"
+          "type": "numeric(3"
         },
         {
           "name": "domain_color",
-          "type": "string"
+          "type": "text NOT NULL DEFAULT"
         },
         {
           "name": "metadata",
-          "type": "Json"
+          "type": "jsonb NOT NULL DEFAULT"
         },
         {
           "name": "created_at",
-          "type": "string"
+          "type": "timestamptz NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260319000000_journey_dots.sql"
     },
     {
       "table": "likes",
@@ -3300,88 +3236,88 @@
       "columns": [
         {
           "name": "id",
-          "type": "string"
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "item_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES public"
         },
         {
           "name": "requester_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES auth"
         },
         {
           "name": "seller_id",
-          "type": "string"
+          "type": "UUID        NOT NULL REFERENCES auth"
         },
         {
           "name": "message",
-          "type": "string | null"
+          "type": "TEXT"
         },
         {
           "name": "status",
-          "type": "'pending' | 'acknowledged' | 'closed'"
+          "type": "TEXT        NOT NULL DEFAULT"
         },
         {
           "name": "created_at",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260324000001_phase8e_shop_marketplace.sql"
     },
     {
       "table": "marketplace_items",
       "columns": [
         {
-          "name": "category",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
-          "name": "file_url",
-          "type": "string | null"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "is_published",
-          "type": "boolean"
-        },
-        {
-          "name": "preview_url",
-          "type": "string | null"
-        },
-        {
-          "name": "price_cents",
-          "type": "number"
+          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "seller_id",
-          "type": "string"
-        },
-        {
-          "name": "tags",
-          "type": "string[]"
+          "type": "UUID        NOT NULL REFERENCES auth"
         },
         {
           "name": "title",
-          "type": "string"
+          "type": "TEXT        NOT NULL"
+        },
+        {
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "name": "category",
+          "type": "TEXT        NOT NULL DEFAULT"
+        },
+        {
+          "name": "price_cents",
+          "type": "INTEGER     NOT NULL DEFAULT 0"
+        },
+        {
+          "name": "file_url",
+          "type": "TEXT"
+        },
+        {
+          "name": "preview_url",
+          "type": "TEXT"
+        },
+        {
+          "name": "is_published",
+          "type": "BOOLEAN     NOT NULL DEFAULT false"
+        },
+        {
+          "name": "tags",
+          "type": "TEXT"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         },
         {
           "name": "updated_at",
-          "type": "string"
+          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260307000000_readme_gaps.sql"
     },
     {
       "table": "merch",
@@ -3886,14 +3822,14 @@
       "columns": [
         {
           "name": "id",
-          "type": "number"
+          "type": "SERIAL PRIMARY KEY"
         },
         {
           "name": "title",
-          "type": "string"
+          "type": "TEXT NOT NULL"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260305000000_create_notes.sql"
     },
     {
       "table": "notifications",
@@ -4009,55 +3945,51 @@
       "table": "physics_experiments",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
+          "name": "id",
+          "type": "UUID PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "creator_id",
-          "type": "string | null"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
-          "name": "hypothesis",
-          "type": "string | null"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "methodology",
-          "type": "Json | null"
-        },
-        {
-          "name": "parameters",
-          "type": "Json | null"
-        },
-        {
-          "name": "performance_metrics",
-          "type": "Json | null"
-        },
-        {
-          "name": "status",
-          "type": "string"
+          "type": "UUID REFERENCES profiles(id) ON DELETE CASCADE"
         },
         {
           "name": "title",
-          "type": "string"
+          "type": "TEXT NOT NULL"
         },
         {
-          "name": "updated_at",
-          "type": "string"
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "name": "hypothesis",
+          "type": "TEXT"
+        },
+        {
+          "name": "methodology",
+          "type": "JSONB"
+        },
+        {
+          "name": "parameters",
+          "type": "JSONB"
         },
         {
           "name": "visibility",
-          "type": "string"
+          "type": "TEXT DEFAULT"
+        },
+        {
+          "name": "status",
+          "type": "TEXT DEFAULT"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260129000000_upgrade_schema.sql"
     },
     {
       "table": "physics_frameworks",
@@ -4233,10 +4165,6 @@
           "type": "string | null"
         },
         {
-          "name": "banner_url",
-          "type": "string | null"
-        },
-        {
           "name": "bio",
           "type": "string | null"
         },
@@ -4261,20 +4189,8 @@
           "type": "string"
         },
         {
-          "name": "location",
-          "type": "string | null"
-        },
-        {
           "name": "updated_at",
           "type": "string"
-        },
-        {
-          "name": "website",
-          "type": "string | null"
-        },
-        {
-          "name": "dream_config",
-          "type": "Json"
         }
       ],
       "source": "types/supabase.ts"
@@ -4361,67 +4277,51 @@
       "table": "reality_activity_log",
       "columns": [
         {
+          "name": "event_data",
+          "type": "Json | null"
+        },
+        {
           "name": "id",
-          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+          "type": "string"
         },
         {
-          "name": "owner_id",
-          "type": "UUID        REFERENCES auth"
-        },
-        {
-          "name": "created_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
-        },
-        {
-          "name": "updated_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "name": "reality_id",
+          "type": "string | null"
         }
       ],
-      "source": "20260605015234_auto_scaffold.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "reality_members",
       "columns": [
         {
-          "name": "id",
-          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+          "name": "reality_id",
+          "type": "string"
         },
         {
-          "name": "owner_id",
-          "type": "UUID        REFERENCES auth"
-        },
-        {
-          "name": "created_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
-        },
-        {
-          "name": "updated_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "name": "user_id",
+          "type": "string"
         }
       ],
-      "source": "20260605015234_auto_scaffold.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "reality_state_snapshots",
       "columns": [
         {
           "name": "id",
-          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
+          "type": "string"
         },
         {
-          "name": "owner_id",
-          "type": "UUID        REFERENCES auth"
+          "name": "reality_id",
+          "type": "string | null"
         },
         {
-          "name": "created_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
-        },
-        {
-          "name": "updated_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "name": "snapshot",
+          "type": "Json | null"
         }
       ],
-      "source": "20260605015234_auto_scaffold.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "reports",
@@ -4895,23 +4795,15 @@
       "table": "t",
       "columns": [
         {
+          "name": "data",
+          "type": "string | null"
+        },
+        {
           "name": "id",
-          "type": "UUID        PRIMARY KEY DEFAULT gen_random_uuid()"
-        },
-        {
-          "name": "owner_id",
-          "type": "UUID        REFERENCES auth"
-        },
-        {
-          "name": "created_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
-        },
-        {
-          "name": "updated_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "type": "string"
         }
       ],
-      "source": "20260605015234_auto_scaffold.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "transactions",
@@ -4967,53 +4859,53 @@
       "table": "user_actions",
       "columns": [
         {
-          "name": "action_type",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
           "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "ip_hash",
-          "type": "string | null"
-        },
-        {
-          "name": "metadata",
-          "type": "Json"
+          "type": "uuid        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
           "name": "user_id",
-          "type": "string"
+          "type": "uuid        NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "action_type",
+          "type": "text        NOT NULL"
+        },
+        {
+          "name": "ip_hash",
+          "type": "text"
+        },
+        {
+          "name": "metadata",
+          "type": "jsonb       NOT NULL DEFAULT"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260426000200_build_memory_schema_gaps.sql"
     },
     {
       "table": "user_blocks",
       "columns": [
         {
           "name": "id",
-          "type": "string"
+          "type": "uuid primary key default gen_random_uuid()"
         },
         {
           "name": "blocker_id",
-          "type": "string"
+          "type": "uuid not null references auth"
         },
         {
           "name": "blocked_id",
-          "type": "string"
+          "type": "uuid not null references auth"
         },
         {
           "name": "created_at",
-          "type": "string"
+          "type": "timestamptz not null default now()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260320110000_user_blocks.sql"
     },
     {
       "table": "user_dream_layout",
@@ -5167,23 +5059,23 @@
       "table": "user_roles",
       "columns": [
         {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
+          "name": "user_id",
+          "type": "UUID PRIMARY KEY REFERENCES auth"
         },
         {
           "name": "role",
-          "type": "string"
+          "type": "TEXT NOT NULL CHECK(role IN ("
         },
         {
-          "name": "user_id",
-          "type": "string"
+          "name": "created_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMPTZ DEFAULT NOW()"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260210000001_ai_system_v2026.sql"
     },
     {
       "table": "views",
@@ -5277,27 +5169,69 @@
       "table": "voice_profiles",
       "columns": [
         {
+          "name": "id",
+          "type": "text        PRIMARY KEY"
+        },
+        {
+          "name": "user_id",
+          "type": "uuid        NOT NULL REFERENCES auth"
+        },
+        {
+          "name": "name",
+          "type": "text        NOT NULL"
+        },
+        {
+          "name": "metadata",
+          "type": "jsonb       NOT NULL DEFAULT"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamptz NOT NULL DEFAULT now()"
+        }
+      ],
+      "source": "20260426000200_build_memory_schema_gaps.sql"
+    },
+    {
+      "table": "widget_definitions",
+      "columns": [
+        {
           "name": "created_at",
           "type": "string"
         },
         {
-          "name": "id",
-          "type": "string"
+          "name": "host_config",
+          "type": "Json"
         },
         {
-          "name": "metadata",
-          "type": "Json"
+          "name": "host_kind",
+          "type": "number"
         },
         {
           "name": "name",
           "type": "string"
         },
         {
+          "name": "owner_id",
+          "type": "string"
+        },
+        {
+          "name": "policy",
+          "type": "number"
+        },
+        {
+          "name": "settings",
+          "type": "Json"
+        },
+        {
           "name": "updated_at",
           "type": "string"
         },
         {
-          "name": "user_id",
+          "name": "widget_id",
           "type": "string"
         }
       ],
@@ -5307,99 +5241,69 @@
       "table": "widget_events",
       "columns": [
         {
-          "name": "actor_id",
-          "type": "string | null"
-        },
-        {
-          "name": "channel",
-          "type": "string | null"
-        },
-        {
-          "name": "event_type",
-          "type": "string | null"
-        },
-        {
           "name": "id",
-          "type": "string"
+          "type": "uuid        PRIMARY KEY DEFAULT gen_random_uuid()"
         },
         {
-          "name": "payload",
-          "type": "Json | null"
-        },
-        {
-          "name": "timestamp",
-          "type": "string | null"
-        },
-        {
-          "name": "type",
-          "type": "string | null"
-        },
-        {
-          "name": "widget_id",
-          "type": "string | null"
+          "name": "actor_id",
+          "type": "uuid        REFERENCES auth"
         },
         {
           "name": "widget_instance_id",
-          "type": "string | null"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
-      "table": "widget_follows",
-      "columns": [
-        {
-          "name": "created_at",
-          "type": "string"
+          "type": "uuid"
         },
         {
-          "name": "user_id",
-          "type": "string"
+          "name": "event_type",
+          "type": "text"
+        },
+        {
+          "name": "payload",
+          "type": "jsonb"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "channel",
+          "type": "text"
+        },
+        {
+          "name": "timestamp",
+          "type": "timestamptz NOT NULL DEFAULT now()"
         },
         {
           "name": "widget_id",
-          "type": "string"
+          "type": "uuid"
         }
       ],
-      "source": "types/supabase.ts"
+      "source": "20260319065444_new-migration.sql"
     },
     {
-      "table": "widget_layouts",
+      "table": "widget_instances",
       "columns": [
         {
           "name": "created_at",
           "type": "string"
         },
         {
-          "name": "h",
+          "name": "focus_rank",
           "type": "number"
         },
         {
-          "name": "id",
+          "name": "instance_id",
           "type": "string"
         },
         {
-          "name": "rail_angle",
-          "type": "number | null"
+          "name": "owner_id",
+          "type": "string"
         },
         {
-          "name": "rot_x",
+          "name": "presentation",
           "type": "number"
         },
         {
-          "name": "rot_y",
-          "type": "number"
-        },
-        {
-          "name": "rot_z",
-          "type": "number"
-        },
-        {
-          "name": "rotation",
-          "type": "number"
-        },
-        {
-          "name": "scale",
+          "name": "runtime_flags",
           "type": "number"
         },
         {
@@ -5407,36 +5311,40 @@
           "type": "number"
         },
         {
+          "name": "surface",
+          "type": "number"
+        },
+        {
           "name": "surface_key",
-          "type": "string | null"
+          "type": "number"
+        },
+        {
+          "name": "transform_opacity",
+          "type": "number"
+        },
+        {
+          "name": "transform_rotation",
+          "type": "number"
+        },
+        {
+          "name": "transform_scale",
+          "type": "number"
+        },
+        {
+          "name": "transform_x",
+          "type": "number"
+        },
+        {
+          "name": "transform_y",
+          "type": "number"
         },
         {
           "name": "updated_at",
           "type": "string"
         },
         {
-          "name": "viewport",
-          "type": "Database[\"public\"][\"Enums\"][\"viewport_kind\"]"
-        },
-        {
-          "name": "w",
-          "type": "number"
-        },
-        {
           "name": "widget_id",
           "type": "string"
-        },
-        {
-          "name": "x",
-          "type": "number"
-        },
-        {
-          "name": "y",
-          "type": "number"
-        },
-        {
-          "name": "z",
-          "type": "number"
         },
         {
           "name": "z_index",
@@ -5446,173 +5354,7 @@
       "source": "types/supabase.ts"
     },
     {
-      "table": "widget_metrics",
-      "columns": [
-        {
-          "name": "interaction_count",
-          "type": "number | null"
-        },
-        {
-          "name": "last_used",
-          "type": "string | null"
-        },
-        {
-          "name": "user_id",
-          "type": "string | null"
-        },
-        {
-          "name": "widget_id",
-          "type": "string | null"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
-      "table": "widget_presets",
-      "columns": [
-        {
-          "name": "created_at",
-          "type": "string | null"
-        },
-        {
-          "name": "description",
-          "type": "string | null"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "layout",
-          "type": "Json | null"
-        },
-        {
-          "name": "name",
-          "type": "string | null"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
-      "table": "widget_shares",
-      "columns": [
-        {
-          "name": "copied_widget_id",
-          "type": "string"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "created_by",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "source_space_id",
-          "type": "string"
-        },
-        {
-          "name": "source_widget_id",
-          "type": "string"
-        },
-        {
-          "name": "target_space_id",
-          "type": "string"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
-      "table": "widget_types",
-      "columns": [
-        {
-          "name": "config_schema",
-          "type": "Json"
-        },
-        {
-          "name": "content_kind",
-          "type": "Database[\"public\"][\"Enums\"][\"content_kind\"]"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "settings_schema",
-          "type": "Json"
-        },
-        {
-          "name": "type_key",
-          "type": "string"
-        },
-        {
-          "name": "version",
-          "type": "string"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
       "table": "widgets",
-      "columns": [
-        {
-          "name": "archived",
-          "type": "boolean"
-        },
-        {
-          "name": "config",
-          "type": "Json"
-        },
-        {
-          "name": "created_at",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "type": "string"
-        },
-        {
-          "name": "owner_id",
-          "type": "string"
-        },
-        {
-          "name": "settings",
-          "type": "Json"
-        },
-        {
-          "name": "space_id",
-          "type": "string"
-        },
-        {
-          "name": "title",
-          "type": "string | null"
-        },
-        {
-          "name": "type_id",
-          "type": "string"
-        },
-        {
-          "name": "updated_at",
-          "type": "string"
-        },
-        {
-          "name": "visibility",
-          "type": "Database[\"public\"][\"Enums\"][\"widget_visibility\"]"
-        }
-      ],
-      "source": "types/supabase.ts"
-    },
-    {
-      "table": "x",
       "columns": [
         {
           "name": "id",
@@ -5632,6 +5374,20 @@
         }
       ],
       "source": "20260605015234_auto_scaffold.sql"
+    },
+    {
+      "table": "x",
+      "columns": [
+        {
+          "name": "data",
+          "type": "string | null"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "source": "types/supabase.ts"
     }
   ]
 }
