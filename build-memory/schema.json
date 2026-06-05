@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T04:05:27.635Z",
+  "generated_at": "2026-06-05T17:48:41.553Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
@@ -893,8 +893,20 @@
           "type": "Json | null"
         },
         {
+          "name": "media_url",
+          "type": "string | null"
+        },
+        {
           "name": "media_urls",
           "type": "string[]"
+        },
+        {
+          "name": "original_post_id",
+          "type": "string | null"
+        },
+        {
+          "name": "post_visibility",
+          "type": "string"
         },
         {
           "name": "updated_at",
@@ -903,6 +915,10 @@
         {
           "name": "user_id",
           "type": "string"
+        },
+        {
+          "name": "view_count",
+          "type": "number"
         },
         {
           "name": "visibility",
@@ -1022,7 +1038,7 @@
         },
         {
           "name": "created_at",
-          "type": "string | null"
+          "type": "string"
         },
         {
           "name": "id",
@@ -1030,7 +1046,7 @@
         },
         {
           "name": "is_pinned",
-          "type": "boolean | null"
+          "type": "boolean"
         },
         {
           "name": "updated_at",
@@ -1281,19 +1297,19 @@
       "table": "close_friends",
       "columns": [
         {
-          "name": "user_id",
-          "type": "UUID NOT NULL REFERENCES auth"
+          "name": "added_at",
+          "type": "string"
         },
         {
           "name": "friend_id",
-          "type": "UUID NOT NULL REFERENCES auth"
+          "type": "string"
         },
         {
-          "name": "added_at",
-          "type": "TIMESTAMPTZ NOT NULL DEFAULT now()"
+          "name": "user_id",
+          "type": "string"
         }
       ],
-      "source": "20260405000001_dreamr_feed_registry.sql"
+      "source": "types/supabase.ts"
     },
     {
       "table": "collaborative_realities",
@@ -3362,7 +3378,7 @@
       "columns": [
         {
           "name": "category",
-          "type": "string | null"
+          "type": "string"
         },
         {
           "name": "created_at",
@@ -3402,7 +3418,7 @@
         },
         {
           "name": "tags",
-          "type": "string[] | null"
+          "type": "string[]"
         },
         {
           "name": "title",
