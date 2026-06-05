@@ -243,7 +243,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
 
     postsChannelRef.current = postsChannel;
 
-    // ── Channel 2: feed_items (connector-synced items for this user) ────────
+    // ── Channel 2: feed_items (Widget System V2 schema: preview/title) ─────
     const itemsChannel = supabase
       .channel(`homedream-items:${userId}`)
       .on(
@@ -252,30 +252,28 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           event: 'INSERT',
           schema: 'public',
           table: 'feed_items',
-          filter: `user_id=eq.${userId}`,
         },
         (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
           const raw = payload.new as any;
            
-          const p = (raw.payload ?? {}) as any;
+          const p = (raw.preview ?? {}) as any;
+          const firstMedia = Array.isArray(p.media) && p.media.length > 0 ? p.media[0] : null;
 
           const newEntry: FeedPost = {
             id:             raw.id         as string,
-            content:        (p.content_text ?? p.title ?? '') as string,
+            content:        (p.content_text ?? p.text ?? raw.title ?? p.title ?? '') as string,
             visibility:     'public',
-            media_url:      Array.isArray(p.media) && p.media.length > 0
-                              ? (p.media[0].url as string)
-                              : null,
-            created_at:     (raw.published_at ?? raw.created_at) as string,
+            media_url:      (p.media_url ?? firstMedia?.url ?? null) as string | null,
+            created_at:     (raw.created_at ?? new Date().toISOString()) as string,
             likes_count:    0,
             comments_count: 0,
             profiles: {
-              handle:       (p.author_handle ?? raw.provider ?? 'feed') as string,
-              display_name: (p.author_name   ?? raw.provider ?? null)   as string | null,
+              handle:       (p.author_handle ?? 'feed') as string,
+              display_name: (p.author_name   ?? 'Feed') as string | null,
               avatar_url:   (p.author_avatar ?? null)                   as string | null,
             },
             source:   'connector',
-            provider: raw.provider as string | undefined,
+            provider: 'widget-feed',
           };
 
           // Connector items always queue — they are from external services

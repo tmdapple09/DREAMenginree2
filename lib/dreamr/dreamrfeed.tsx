@@ -717,6 +717,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   const [newCount,      setNewCount]    = useState(0);
   const [isLive,        setIsLive]      = useState(false);
   const [loadingMore,   setLoadingMore] = useState(false);
+  const [feedError,     setFeedError]   = useState<string | null>(null);
   const [hasMore,       setHasMore]     = useState(true);
   const [swipePrefs,    setSwipePrefs]  = useState(emptyDreamRSwipePreferences);
   const [redistributionNotice, setRedistributionNotice] = useState<string | null>(null);
@@ -737,21 +738,55 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   const scrollRef  = useRef<HTMLDivElement>(null);
   const pendingRef = useRef<FeedPost[]>([]);
   const offsetRef  = useRef(0);
+  const nextCursorRef = useRef<string | null>(null);
   const mountedRef = useRef(true);
   const countedViewIdsRef = useRef<Set<string>>(new Set());
+  const postsRef = useRef<FeedPost[]>(initialPosts);
 
+  useEffect(() => { postsRef.current = posts; }, [posts]);
   useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false; }; }, []);
+
+  const loadDreamRPage = useCallback(async (mode: 'replace' | 'append' = 'replace') => {
+    if (!userId) return;
+    if (mode === 'append') setLoadingMore(true);
+    setFeedError(null);
+
+    try {
+      const params = new URLSearchParams({ limit: '20' });
+      if (mode === 'append' && nextCursorRef.current) {
+        params.set('before', nextCursorRef.current);
+      }
+      if (mode === 'append') {
+        const seen = postsRef.current.slice(0, 200).map((post) => post.id).join(',');
+        if (seen) params.set('seen', seen);
+      }
+
+      const response = await fetch(`/api/dreamr/feed?${params.toString()}`, { headers: { Accept: 'application/json' } });
+      const payload = await response.json().catch(() => ({})) as { posts?: FeedPost[]; nextCursor?: string | null; error?: string };
+      if (!response.ok) throw new Error(payload.error ?? 'DreamR feed request failed.');
+
+      const incoming = Array.isArray(payload.posts) ? payload.posts : [];
+      nextCursorRef.current = payload.nextCursor ?? null;
+      setHasMore(Boolean(payload.nextCursor) && incoming.length > 0);
+      offsetRef.current = mode === 'replace' ? incoming.length : offsetRef.current + incoming.length;
+
+      setPosts((prev) => {
+        if (mode === 'replace') return incoming;
+        const ids = new Set(prev.map((post) => post.id));
+        return [...prev, ...incoming.filter((post) => !ids.has(post.id))];
+      });
+    } catch (error) {
+      setFeedError(error instanceof Error ? error.message : 'Unable to load DreamR feed.');
+      if (mode === 'replace' && initialPosts.length > 0) setPosts(initialPosts);
+    } finally {
+      if (mode === 'append') setLoadingMore(false);
+    }
+  }, [initialPosts, userId]);
 
   // ── Fetch DreamR-ranked native feed ──────────────────────────────────────
   useEffect(() => {
-    if (!userId) return;
-    fetch('/api/dreamr/feed?limit=20')
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => {
-        if (d?.posts?.length) { setPosts(d.posts); offsetRef.current = d.posts.length; }
-      })
-      .catch(() => {});
-  }, [userId]);
+    void loadDreamRPage('replace');
+  }, [loadDreamRPage]);
 
   // ── Fetch suggested content/creators (for interstitial cards) ─────────────
   useEffect(() => {
@@ -834,25 +869,8 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   // ── Load more posts when near the end ────────────────────────────────
   const loadMore = useCallback(() => {
     if (loadingMore || !hasMore || !userId) return;
-    setLoadingMore(true);
-    fetch(`/api/dreamr/feed?limit=20&offset=${offsetRef.current}`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => {
-        if (d?.posts?.length) {
-          setPosts((prev) => {
-            const existingIds = new Set(prev.map((p) => p.id));
-            const fresh = (d.posts as FeedPost[]).filter((p: FeedPost) => !existingIds.has(p.id));
-            offsetRef.current += fresh.length;
-            return [...prev, ...fresh];
-          });
-          if (d.posts.length < 20) setHasMore(false);
-        } else {
-          setHasMore(false);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoadingMore(false));
-  }, [loadingMore, hasMore, userId]);
+    void loadDreamRPage('append');
+  }, [hasMore, loadDreamRPage, loadingMore, userId]);
 
   // ── Interleave: native posts + YouTube topic videos + suggested ──────
   // Pattern: 3 native posts → 1 YouTube video, then periodically a suggested card
@@ -1023,9 +1041,12 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: DR.bg, fontFamily: DR.font }}>
         <div style={{ width: 60, height: 50, borderRadius: 22, background: DR.bg, boxShadow: nmR(8), display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 25 }}>◈</div>
         <div style={{ fontWeight: 800, fontSize: 20, color: DR.sky }}>DreamR</div>
-        <div style={{ fontSize: 13, color: DR.textDim, textAlign: 'center', maxWidth: 240, lineHeight: 1.6 }}>
-          Follow creators on dreamengin to see their human media here.
+        <div style={{ fontSize: 13, color: DR.textDim, textAlign: 'center', maxWidth: 260, lineHeight: 1.6 }}>
+          {feedError ?? 'Follow creators on dreamengin to see their human media here.'}
         </div>
+        <button type="button" onClick={() => void loadDreamRPage('replace')} style={{ padding: '10px 22px', borderRadius: 99, border: 'none', background: DR.bg, boxShadow: nmR(4), color: DR.sky, fontFamily: DR.font, fontSize: 12, fontWeight: 800, cursor: 'pointer' }}>
+          Refresh DreamR feed
+        </button>
         {sugCreators.length > 0 && (
           <div style={{ width: '80%', maxWidth: 280 }}>
             <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.10em', color: DR.textDim, textTransform: 'uppercase', textAlign: 'center', marginBottom: 10 }}>
@@ -1056,6 +1077,12 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: DR.bg }}>
+
+      {feedError && (
+        <button type="button" onClick={() => void loadDreamRPage('replace')} style={{ position: 'absolute', top: 58, left: '50%', transform: 'translateX(-50%)', zIndex: 35, background: DR.bg, boxShadow: nmR(5), border: 'none', borderRadius: 99, padding: '9px 18px', fontSize: 12, fontWeight: 800, color: '#b45309', cursor: 'pointer', fontFamily: DR.font, whiteSpace: 'nowrap' }}>
+          {feedError} · retry
+        </button>
+      )}
 
       {/* ── Topic channel strip ──────────────────────────────────────────── */}
       <div

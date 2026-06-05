@@ -68,6 +68,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .from('app_posts')
       .select('*, profiles!inner(id, handle, display_name, avatar_url)')
       .in('user_id', followedIds)
+      .or(`visibility.eq.public,user_id.eq.${user.id}`)
       .order('created_at', { ascending: false })
       .limit(500) // always fetch at most 500 regardless of requested page size
       .range(offset, offset + 499);

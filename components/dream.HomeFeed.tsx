@@ -85,6 +85,7 @@ export default function HomeFeed({
   const editProfileHref = '/edit-profiledream';
 
   const [tabLoading, setTabLoading] = useState(false);
+  const [feedLoadError, setFeedLoadError] = useState<string | null>(null);
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostVisibility, setNewPostVisibility] = useState<'public' | 'private'>('public');
   const [isPosting, setIsPosting] = useState(false);
@@ -189,22 +190,35 @@ export default function HomeFeed({
     }
   }, [initialPosts, replacePosts]);
 
-  useEffect(() => {
-    if (activeTab === 'feed') {
-      replacePosts(initialPosts);
-      return;
-    }
+  const loadFeedTab = useCallback(async (tab: typeof activeTab, signal?: AbortSignal) => {
     setTabLoading(true);
+    setFeedLoadError(null);
     const params = new URLSearchParams({ limit: '20' });
-    if (activeTab === 'trending')  params.set('sort', 'trending');
-    if (activeTab === 'following') params.set('feed', 'following');
-    fetch(`/api/posts?${params.toString()}`)
-      .then((r) => r.json())
-      .then((data: { posts?: FeedPost[] }) => { if (data.posts) replacePosts(data.posts); })
-      .catch(() => {})
-      .finally(() => setTabLoading(false));
-   
-  }, [activeTab]);
+    if (tab === 'trending') params.set('sort', 'trending');
+    if (tab === 'following') params.set('feed', 'following');
+
+    try {
+      const response = await fetch(`/api/posts?${params.toString()}`, {
+        signal,
+        headers: { Accept: 'application/json' },
+      });
+      const payload = await response.json().catch(() => ({})) as { posts?: FeedPost[]; error?: string };
+      if (!response.ok) throw new Error(payload.error ?? 'Feed request failed.');
+      replacePosts(Array.isArray(payload.posts) ? payload.posts : []);
+    } catch (error) {
+      if ((error as DOMException).name === 'AbortError') return;
+      setFeedLoadError(error instanceof Error ? error.message : 'Unable to load the feed.');
+      if (tab === 'feed') replacePosts(initialPosts);
+    } finally {
+      setTabLoading(false);
+    }
+  }, [initialPosts, replacePosts]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void loadFeedTab(activeTab, controller.signal);
+    return () => controller.abort();
+  }, [activeTab, loadFeedTab]);
 
   const handleSharePost = useCallback((post: FeedPost) => {
     const url = `${typeof window !== 'undefined' ? window.location.origin : 'https://dreamengin.app'}/posts/${post.id}`;
@@ -433,6 +447,17 @@ export default function HomeFeed({
             Refresh feed
           </button>
         </div>
+
+        {feedLoadError && (
+          <div className="mb-4 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-sm text-amber-700" style={embedded ? { flexShrink: 0 } : undefined}>
+            <div className="flex items-center justify-between gap-3">
+              <span>{feedLoadError}</span>
+              <button type="button" onClick={() => void loadFeedTab(activeTab)} className="rounded-lg border border-amber-500/30 px-2 py-1 text-xs font-bold">
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* New-posts banner */}
         {newCount > 0 && (
