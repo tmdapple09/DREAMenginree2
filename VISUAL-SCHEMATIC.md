@@ -10,8 +10,8 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 
 - **Total files:** 2026
 - **Total function/class nodes:** 3698
-- **Total edges:** 7196
-- **Orphan nodes:** 3096
+- **Total edges:** 7206
+- **Orphan nodes:** 3136
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4712,7 +4712,6 @@ _File-level graph omitted: 549 files exceeds Mermaid render budget. See table ab
 | `build-memory/routes.json` | config |
 | `build-memory/schema.json` | config |
 | `build-memory/ui-surfaces.json` | config |
-| `changed-agent-architecture-files-only.zip` | file |
 | `CHANGELOG.md` | doc |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `components/gameengin/README.md` | doc |
@@ -5108,6 +5107,7 @@ _File-level graph omitted: 549 files exceeds Mermaid render budget. See table ab
 | `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql` | sql |
 | `supabase/migrations/20260516000100_dreamr_tally.sql` | sql |
 | `supabase/migrations/20260516000300_shared_dream_sessions.sql` | sql |
+| `supabase/migrations/20260605015234_auto_scaffold.sql` | sql |
 | `supabase/schema-final.sql` | sql |
 | `supabase/seed.sql` | sql |
 | `tailwindcss-animate.d.ts` | ts |

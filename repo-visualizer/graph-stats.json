@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-04T22:45:12.242Z",
+  "generatedAt": "2026-06-05T02:17:01.757Z",
   "totalFiles": 2026,
-  "totalNodes": 6701,
-  "totalEdges": 7196,
+  "totalNodes": 6751,
+  "totalEdges": 7206,
   "totalFunctionAndClassNodes": 3698,
-  "orphanCount": 3096,
+  "orphanCount": 3136,
   "countsByType": {
     "folder": 583,
-    "file": 113,
+    "file": 112,
     "doc": 227,
     "config": 221,
     "function": 3539,
@@ -20,9 +20,9 @@
     "tsx": 320,
     "css": 8,
     "cjs": 4,
-    "sql-table": 139,
-    "sql-policy": 255,
-    "sql": 58
+    "sql-table": 149,
+    "sql-policy": 295,
+    "sql": 59
   },
   "topConnected": [
     {
@@ -48,7 +48,7 @@
     },
     {
       "id": "file:lib/supabase/server.ts",
-      "degree": 349,
+      "degree": 351,
       "label": "server.ts",
       "type": "ts",
       "path": "lib/supabase/server.ts"

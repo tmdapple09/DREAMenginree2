@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T22:45:12.242Z",
+  "generatedAt": "2026-06-05T02:17:01.757Z",
   "root": ".",
   "nodes": [
     {
@@ -13182,16 +13182,6 @@
       "tags": []
     },
     {
-      "id": "file:changed-agent-architecture-files-only.zip",
-      "label": "changed-agent-architecture-files-only.zip",
-      "type": "file",
-      "path": "changed-agent-architecture-files-only.zip",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
       "id": "folder:components",
       "label": "components",
       "type": "folder",
@@ -23698,7 +23688,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2773,
+      "loc": 2791,
       "isOrphan": true,
       "exported": false
     },
@@ -23708,7 +23698,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2862,
+      "loc": 2880,
       "isOrphan": true,
       "exported": false
     },
@@ -62971,6 +62961,466 @@
       "label": "20260516000300_shared_dream_sessions.sql",
       "type": "sql",
       "path": "supabase/migrations/20260516000300_shared_dream_sessions.sql",
+      "parent": "folder:supabase/migrations",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#widgets",
+      "label": "widgets",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects",
+      "label": "content_objects",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#albums",
+      "label": "albums",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#album_content",
+      "label": "album_content",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities",
+      "label": "collaborative_realities",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members",
+      "label": "reality_members",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots",
+      "label": "reality_state_snapshots",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log",
+      "label": "reality_activity_log",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#t",
+      "label": "t",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#x",
+      "label": "x",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#widgets_select_own",
+      "label": "widgets_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#widgets_insert_own",
+      "label": "widgets_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#widgets_update_own",
+      "label": "widgets_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#widgets_delete_own",
+      "label": "widgets_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects_select_own",
+      "label": "content_objects_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects_insert_own",
+      "label": "content_objects_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects_update_own",
+      "label": "content_objects_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects_delete_own",
+      "label": "content_objects_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#albums_select_own",
+      "label": "albums_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#albums_insert_own",
+      "label": "albums_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#albums_update_own",
+      "label": "albums_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#albums_delete_own",
+      "label": "albums_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#album_content_select_own",
+      "label": "album_content_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#album_content_insert_own",
+      "label": "album_content_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#album_content_update_own",
+      "label": "album_content_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#album_content_delete_own",
+      "label": "album_content_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities_select_own",
+      "label": "collaborative_realities_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities_insert_own",
+      "label": "collaborative_realities_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities_update_own",
+      "label": "collaborative_realities_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities_delete_own",
+      "label": "collaborative_realities_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members_select_own",
+      "label": "reality_members_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members_insert_own",
+      "label": "reality_members_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members_update_own",
+      "label": "reality_members_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members_delete_own",
+      "label": "reality_members_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots_select_own",
+      "label": "reality_state_snapshots_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots_insert_own",
+      "label": "reality_state_snapshots_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots_update_own",
+      "label": "reality_state_snapshots_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots_delete_own",
+      "label": "reality_state_snapshots_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log_select_own",
+      "label": "reality_activity_log_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log_insert_own",
+      "label": "reality_activity_log_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log_update_own",
+      "label": "reality_activity_log_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log_delete_own",
+      "label": "reality_activity_log_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#t_select_own",
+      "label": "t_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#t_insert_own",
+      "label": "t_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#t_update_own",
+      "label": "t_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#t_delete_own",
+      "label": "t_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#x_select_own",
+      "label": "x_select_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#x_insert_own",
+      "label": "x_insert_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#x_update_own",
+      "label": "x_update_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260605015234_auto_scaffold.sql#x_delete_own",
+      "label": "x_delete_own",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "parent": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "file:supabase/migrations/20260605015234_auto_scaffold.sql",
+      "label": "20260605015234_auto_scaffold.sql",
+      "type": "sql",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
       "parent": "folder:supabase/migrations",
       "loc": null,
       "isOrphan": true,
@@ -102542,7 +102992,27 @@
     },
     {
       "source": "file:hooks/use-spatial.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#widgets",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:hooks/use-spatial.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#content_objects",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:hooks/use-spatial.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#albums",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:hooks/use-spatial.ts",
       "target": "sql-table:supabase/migrations/20260319065444_new-migration.sql#dream_content",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:hooks/use-spatial.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#album_content",
       "kind": "sql-reference"
     },
     {
@@ -102781,6 +103251,26 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:lib/reality/realityStore.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#collaborative_realities",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/reality/realityStore.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_members",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/reality/realityStore.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_state_snapshots",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/reality/realityStore.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#reality_activity_log",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:lib/runtime/instanceManager.ts",
       "target": "sql-table:supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql#engin_instances",
       "kind": "sql-reference"
@@ -102798,6 +103288,16 @@
     {
       "source": "file:lib/sharedDream/useSharedDreamSession.ts",
       "target": "sql-table:supabase/migrations/20260516000300_shared_dream_sessions.sql#shared_dream_activity",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/supabase/server.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#t",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/supabase/server.ts",
+      "target": "sql-table:supabase/migrations/20260605015234_auto_scaffold.sql#x",
       "kind": "sql-reference"
     },
     {
