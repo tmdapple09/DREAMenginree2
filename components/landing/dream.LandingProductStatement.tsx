@@ -23,7 +23,7 @@ export default function LandingProductStatement() {
           color: 'rgba(220,235,255,0.97)',
         }}
       >
-        Space to{' '}
+        Let Our ENGINS{' '}
         <span
           style={{
             background:
@@ -33,7 +33,7 @@ export default function LandingProductStatement() {
             backgroundClip: 'text',
           }}
         >
-          dream
+          Power Your DREAMS.
         </span>
         .
       </h1>
@@ -46,24 +46,44 @@ export default function LandingProductStatement() {
         A privacy-first creative browser based OS. Your world — your rules, your dreams, and entirely yours.
       </p>
 
-      {/* Premium Stack */}
-      <div className="de-premium-stack" aria-label="DREAMengin premium stack">
-        <article className="de-premium-layer-card">
-          <span className="de-premium-layer-label">Engine underneath</span>
-          <strong>WASM motion + glow math</strong>
-          <p>Low-level browser muscle shapes simulation, particles, and sync fingerprints without dragging React into hot loops.</p>
-        </article>
-        <article className="de-premium-layer-card">
-          <span className="de-premium-layer-label">Runtime in the middle</span>
-          <strong>Fingerprint-synced Dreams</strong>
-          <p>HomeDream and DreamSpace share validated runtime frames so objects move surfaces without duplicate state.</p>
-        </article>
-        <article className="de-premium-layer-card">
-          <span className="de-premium-layer-label">Product on top</span>
-          <strong>DreamR creative world</strong>
-          <p>A glass-and-gold social OS where profiles, feeds, games, media, and tools become movable Dreams.</p>
-        </article>
-      </div>
+      {/* DREAMengin Engins */}
+<div className="de-premium-stack" aria-label="DREAMengin Engins">
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">CodeEngin</span>
+    <strong>Software Development</strong>
+    <p>Build applications, automate workflows, manage projects, and create software that powers the DREAMengin ecosystem.</p>
+  </article>
+
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">GameEngin</span>
+    <strong>Game & World Creation</strong>
+    <p>Create interactive experiences, virtual worlds, gameplay systems, and immersive entertainment.</p>
+  </article>
+
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">StarMakerEngin</span>
+    <strong>Music Production Studio</strong>
+    <p>Record, arrange, mix, master, and publish music using integrated creative audio tools.</p>
+  </article>
+
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">ContentEngin</span>
+    <strong>Media & Publishing</strong>
+    <p>Create videos, posts, articles, campaigns, and publish content across connected creative workflows.</p>
+  </article>
+
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">LabEngin</span>
+    <strong>Research & Experimentation</strong>
+    <p>Explore ideas through simulations, experiments, data analysis, visualization, and discovery.</p>
+  </article>
+
+  <article className="de-premium-layer-card">
+    <span className="de-premium-layer-label">BrandingEngin</span>
+    <strong>Identity & Growth</strong>
+    <p>Develop brands, launch campaigns, measure performance, and connect creative work to real audiences.</p>
+  </article>
+</div>
 
       {/* DreamR statement */}
       <Link href="/mission" className="de-landing-mission-link mt-4 mb-6 block">
@@ -86,7 +106,7 @@ export default function LandingProductStatement() {
             boxSizing: 'border-box',
           }}
         >
-          Sign Up and start dreaming again!
+          Create an Account
         </Link>
         <Link
           href="/login"
