@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-05T00:30:06.826Z
+Generated: 2026-06-05T19:37:34.177Z
 
 ---
 
@@ -10534,7 +10534,7 @@ _No style files for this feature._
 | `@/lib/music/presets` | `BEAT_PRESETS`, `BeatPreset`, `GENRE_LIST`, `INSTRUMENT_PRESETS`, `InstrumentPreset`, `PROJECT_TEMPLATES`, `ProjectTemplate` |
 | `@/lib/music/starmaker` | `MelodySuggestion`, `PlaybackQualityMode`, `buildReleaseStrategy`, `createMelodySuggestions`, `summarizePlaybackProfile` |
 | `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ARRANGEMENT_SOURCE_COLORS`, `ARRANGEMENT_TRACKS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackId`, `ArrangementTrackState` |
-| `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `SessionViewState`, `createInitialCompingState`, `createInitialSessionView` |
+| `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `RealtimeStarMakerAudioEngine`, `SessionViewState`, `StarMakerAudioDiagnostics`, `StarMakerSequencerSnapshot`, `analyzeStereoPcm`, `createInitialCompingState`, `createInitialSessionView`, `createRealtimeStarMakerAudioEngine`, `renderStarMakerPattern` |
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
 | `@/lib/supabase/client` | `createClient` |
@@ -14207,6 +14207,13 @@ _No style files for this feature._
 | `@/lib/utils` | `toErrorMessage` |
 | `@/src/launcher` | `launch` |
 
+## `supabaseClient.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types/supabase` | `Database` |
+| `@supabase/supabase-js` | `createClient` |
+
 ## `tailwindcss-animate.d.ts`
 
 | Module | Connected via |
@@ -17564,6 +17571,7 @@ _No style files for this feature._
 - `lib/reality/realityStore.ts`
 - `lib/runtime/instanceManager.ts`
 - `lib/sharedDream/useSharedDreamSession.ts`
+- `supabaseClient.ts`
 
 ---
 
@@ -19024,7 +19032,7 @@ _No circular dependencies detected._
 | `lib/marketplace/request.ts` | `MARKETPLACE_CONTACT_TABLE` |
 | `lib/media/ledger.ts` | `compressData`, `downloadBlobFromLedgerStorage` |
 | `lib/music/presets.ts` | `getPresetsByGenre`, `findPreset`, `findInstrumentPreset`, `findProjectTemplate` |
-| `lib/music/starmakerDaw.ts` | `createEmptyClip`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState` |
+| `lib/music/starmakerDaw.ts` | `createEmptyClip`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState`, `encodeWav24Bit` |
 | `lib/music/wasmAudioBridge.ts` | `createWasmAudioBridge` |
 | `lib/navigation/GestureIntentResolver.ts` | `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `HOLD_THRESHOLD_MS`, `GESTURE_SENSITIVITY` |
 | `lib/navigation/NavStateBuffer.ts` | `LAYER_CUBE`, `LAYER_WIDGET`, `LAYER_DREAM`, `FULLSCREEN_DEPTH` |
@@ -19142,6 +19150,7 @@ _No circular dependencies detected._
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
+| `supabaseClient.ts` | `supabase` |
 | `types/ai-system.ts` | `UserRole`, `ActorContextSchema`, `HomeAnchorState`, `Surface`, `CubePosition`, `Overlay`, `GestureDirection`, `GestureChain`, `NavStateSafe`, `UIContextSchema`, `DrEamsIntentType`, `IDariIntentType`, `IntentSchema`, `IntentEnvelopeSchema`, `HomeMenuOpenPayload`, `DiagSchemaSnapshotPayload`, `DiagRLSSnapshotPayload`, `DiagCodeReferenceScanPayload`, `DiagEnvChecklistPayload`, `AdminPatchProposalPayload`, `AdminMigrationProposalPayload`, `ModerationFlagContentPayload`, `JSONPatch`, `UIToast`, `UIDelta`, `ToolResultError`, `DrEamsRunRequest`, `DrEamsRunResponse`, `IDariRunRequest`, `IDariRunResponse`, `ExecuteRequest`, `ExecuteResponse`, `MemoryScope`, `AIMemory`, `AuditEntry` |
 | `types/dream-window.ts` | `DREAM_WINDOW_STATES` |
 | `types/experience.ts` | `MAX_WIDGETS` |
@@ -21768,7 +21777,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── starmaker.ts
 │   │   ├── starmakerArrangement.ts
 │   │   ├── starmakerDaw.ts ∅
-│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState
+│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState, encodeWav24Bit
 │   │   └── wasmAudioBridge.ts ∅
 │   │       └── ∅ unused: createWasmAudioBridge
 │   ├── navigation  [Menus & Navigation, Dream Navigation]
@@ -22525,6 +22534,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: proxy, config
 ├── readme-autosync.ts ∅
 │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
+├── supabaseClient.ts ∅
+│   └── ∅ unused: supabase
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 ├── tsconfig.games.json
