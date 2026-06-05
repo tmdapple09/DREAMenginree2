@@ -14,7 +14,7 @@
  *
  * A compact DREAMfield-style momentum read-out is rendered underneath so the
  * user always sees a live pulse of their creative state from the home scroll
- * — without needing to navigate to /daydream/field. The full DREAMfield is
+ * — without needing to navigate away from HomeDream. The full Analytics Daydream is
  * one tap away via the "Open DREAMfield" link.
  *
  * Architecture justification:
@@ -47,7 +47,7 @@ const SHINY_GOLD =
 
 const FLAGSHIPS = [
   { id: 'games', label: 'GameEngin', tagline: 'Play, prototype, ship cartridges', Icon: Gamepad2 },
-  { id: 'forge', label: 'EngineForge', tagline: 'The meta-creation command center', Icon: Flame },
+  { id: 'forge', label: 'ForgeEngin', tagline: 'The meta-creation command center', Icon: Flame },
 ] as const;
 
 export default function FlagshipEnginesStrip({
@@ -149,8 +149,8 @@ export default function FlagshipEnginesStrip({
         </div>
         <button
           type="button"
-          onClick={() => openPage('/daydream/field')}
-          aria-label="Open DREAMfield analytics"
+          onClick={() => openPage('/daydream/analytics')}
+          aria-label="Open analytics Daydream"
           style={{
             border: '1px solid rgba(200,152,26,0.32)',
             background: 'rgba(200,152,26,0.10)',
@@ -390,8 +390,8 @@ export default function FlagshipEnginesStrip({
         </div>
         <button
           type="button"
-          onClick={() => openPage('/daydream/field')}
-          aria-label="Open DREAMfield analytics"
+          onClick={() => openPage('/daydream/analytics')}
+          aria-label="Open analytics Daydream"
           style={{
             border: 'none',
             background: 'none',

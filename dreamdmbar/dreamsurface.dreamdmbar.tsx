@@ -390,6 +390,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
    * without being stale — avoids adding isSeamMode to every useCallback dep array.
    */
   const isSeamModeRef = useRef(false);
+  const [pendingCommandDockOpen, setPendingCommandDockOpen] = useState(false);
   const revealBar = useCallback(() => {
     setBarTouched(true);
     if (barTouchTimerRef.current) clearTimeout(barTouchTimerRef.current);
@@ -653,6 +654,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (dividerDragRef.current.startedFromSeam && !dividerDragRef.current.hasMovedPastSlop) {
       dividerDragRef.current.active = false;
       revealBar(); // barTouched = true → isSeamMode = false → bar expands
+      setPendingCommandDockOpen(true); // a seam tap must reveal the full DreamDM command dock, not just the line
       if (e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
       }
@@ -827,8 +829,21 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     setTimeout(() => textareaRef.current?.focus(), 60);
   }, [revealBar, setBarIntent]);
 
+  const openDreamDMCommandDock = useCallback(() => {
+    setIsMinimized(false);
+    revealBar();
+    setIsBloom(true);
+    clearBarIntent();
+  }, [clearBarIntent, revealBar]);
+
+  useEffect(() => {
+    if (!pendingCommandDockOpen) return;
+    setPendingCommandDockOpen(false);
+    openDreamDMCommandDock();
+  }, [openDreamDMCommandDock, pendingCommandDockOpen]);
+
   // ── Glowing light tap/hold ────────────────────────────────────────────────
-  // Double tap and tap-and-hold both reveal the DreamDM text input.
+  // Double tap opens the DreamDM command dock; tap-and-hold reveals message input.
 
   const handleLightTap = useCallback(() => {
     const ref = lightPressRef.current;
@@ -842,14 +857,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (ref.tapTimer) clearTimeout(ref.tapTimer);
     if (result.action === 'menu') {
       if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(4);
-      openDreamDMInput();
+      openDreamDMCommandDock();
       return;
     }
     ref.tapTimer = setTimeout(() => {
       ref.lastTapAt = 0;
       ref.tapTimer = null;
     }, DOUBLE_TAP_WINDOW_MS);
-  }, [openDreamDMInput]);
+  }, [openDreamDMCommandDock]);
 
   const handleLightTouchStart = useCallback((_e: React.TouchEvent<HTMLSpanElement>) => {
     const ref = lightPressRef.current;
@@ -928,7 +943,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const handleLightKeyDown = useCallback((e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onBothMenus();
+      openDreamDMCommandDock();
       return;
     }
     if (e.key === 'ArrowUp') {
@@ -961,7 +976,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         minimizeDreamDMBar();
       }
     }
-  }, [closeToParticleLine, dividerModeActive, minimizeDreamDMBar, onBothMenus, onSplitChange, revealBar, screenH, splitRatio]);
+  }, [closeToParticleLine, dividerModeActive, minimizeDreamDMBar, onSplitChange, openDreamDMCommandDock, revealBar, screenH, splitRatio]);
 
   const handleExpandButtonClick = useCallback(() => {
     if (expandTapCount === 0) {
@@ -1761,65 +1776,68 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             </button>
           </div>
 
-          {/* Mode picker — tap the particle with no context pre-selected */}
+          {/* Mode picker — the DreamDMBar is a command dock, not just a seam. */}
           {barIntent.mode === 'default' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 2 }}>
-              <button
-                type="button"
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => { setBarIntent({ mode: 'comment' }); setTimeout(() => textareaRef.current?.focus(), 40); }}
-                style={{
-                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                  padding: '10px 8px', borderRadius: 14,
-                  background: 'rgba(42,138,184,0.10)', border: '1px solid rgba(42,138,184,0.20)',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--de-accent)',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <MessageCircle size={14} aria-hidden /> Comment
-              </button>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8, paddingBottom: 2 }}>
               <button
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={() => { setBarIntent({ mode: 'message' }); setTimeout(() => textareaRef.current?.focus(), 40); }}
+                aria-label="Open DreamDM message composer"
                 style={{
-                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   padding: '10px 8px', borderRadius: 14,
                   background: 'rgba(200,152,26,0.10)', border: '1px solid rgba(200,152,26,0.22)',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--de-gold)',
-                  WebkitTapHighlightColor: 'transparent',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-gold)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
                 }}
               >
-                <Send size={14} aria-hidden /> Message
+                <Send size={14} aria-hidden /> <span>Message</span>
               </button>
               <button
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={() => { setBarIntent({ mode: 'search' }); setTimeout(() => textareaRef.current?.focus(), 40); }}
+                aria-label="Open DreamDM search"
                 style={{
-                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   padding: '10px 8px', borderRadius: 14,
-                  background: 'rgba(180,185,200,0.10)', border: '1px solid rgba(180,185,200,0.22)',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--de-text-dim)',
-                  WebkitTapHighlightColor: 'transparent',
+                  background: 'rgba(42,138,184,0.10)', border: '1px solid rgba(42,138,184,0.22)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-accent)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
                 }}
               >
-                <Search size={14} aria-hidden /> Search
+                <Search size={14} aria-hidden /> <span>Search</span>
+              </button>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => { setBarIntent({ mode: 'dreams' }); openDrEams(); }}
+                aria-label="Open Dr. Eams"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(125,211,252,0.12)', border: '1px solid rgba(42,138,184,0.24)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-blue)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
+                }}
+              >
+                <Bot size={14} aria-hidden /> <span>Dr. Eams</span>
               </button>
               <button
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={onBothMenus}
-                aria-label="Open DreamDM menus"
+                aria-label="Open dual menu"
                 style={{
-                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   padding: '10px 8px', borderRadius: 14,
                   background: 'rgba(180,185,200,0.10)', border: '1px solid rgba(180,185,200,0.22)',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'var(--de-text-dim)',
-                  WebkitTapHighlightColor: 'transparent',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-text-dim)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
                 }}
               >
-                <Menu size={14} aria-hidden /> Menu
+                <Menu size={14} aria-hidden /> <span>Dual Menu</span>
               </button>
             </div>
           )}
@@ -2440,7 +2458,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   mode="dreams"
                   icon={<Bot size={13} aria-hidden />}
                   activeMode={barIntent.mode}
-                  onSelect={(m) => setBarIntent(m === barIntent.mode ? { mode: 'default' } : { mode: m })}
+                  onSelect={() => { setBarIntent({ mode: 'dreams' }); openDrEams(); }}
                   label="Dr. Eams"
                   compact={isCompactViewport}
                 />
