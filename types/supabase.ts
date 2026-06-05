@@ -16,28 +16,46 @@ export type Database = {
     Tables: {
       activity_points: {
         Row: {
+          activity_type: string | null
+          created_at: string
+          decay_timestamp: string
+          description: string | null
           id: string
           is_decayed: boolean | null
           points: number | null
+          post_id: string | null
           tier: number | null
           updated_at: string | null
           user_id: string
+          verification_id: string | null
         }
         Insert: {
+          activity_type?: string | null
+          created_at?: string
+          decay_timestamp?: string
+          description?: string | null
           id?: string
           is_decayed?: boolean | null
           points?: number | null
+          post_id?: string | null
           tier?: number | null
           updated_at?: string | null
           user_id: string
+          verification_id?: string | null
         }
         Update: {
+          activity_type?: string | null
+          created_at?: string
+          decay_timestamp?: string
+          description?: string | null
           id?: string
           is_decayed?: boolean | null
           points?: number | null
+          post_id?: string | null
           tier?: number | null
           updated_at?: string | null
           user_id?: string
+          verification_id?: string | null
         }
         Relationships: []
       }
@@ -294,24 +312,21 @@ export type Database = {
       }
       admin_lock: {
         Row: {
-          id: string
-          locked: boolean | null
+          id: boolean
+          locked: boolean
           locked_at: string | null
-          locked_by: string | null
           reason: string | null
         }
         Insert: {
-          id?: string
-          locked?: boolean | null
+          id?: boolean
+          locked?: boolean
           locked_at?: string | null
-          locked_by?: string | null
           reason?: string | null
         }
         Update: {
-          id?: string
-          locked?: boolean | null
+          id?: boolean
+          locked?: boolean
           locked_at?: string | null
-          locked_by?: string | null
           reason?: string | null
         }
         Relationships: []
@@ -431,8 +446,9 @@ export type Database = {
           request_count: number | null
           retry_after_seconds: number | null
           rpm: number | null
+          updated_at: string | null
           user_id: string
-          window_start: string | null
+          window_start: string
         }
         Insert: {
           allowed?: boolean | null
@@ -441,8 +457,9 @@ export type Database = {
           request_count?: number | null
           retry_after_seconds?: number | null
           rpm?: number | null
+          updated_at?: string | null
           user_id: string
-          window_start?: string | null
+          window_start?: string
         }
         Update: {
           allowed?: boolean | null
@@ -451,8 +468,9 @@ export type Database = {
           request_count?: number | null
           retry_after_seconds?: number | null
           rpm?: number | null
+          updated_at?: string | null
           user_id?: string
-          window_start?: string | null
+          window_start?: string
         }
         Relationships: []
       }
@@ -544,9 +562,13 @@ export type Database = {
           id: string
           likes_count: number
           media_json: Json | null
+          media_url: string | null
           media_urls: string[]
+          original_post_id: string | null
+          post_visibility: string
           updated_at: string
           user_id: string
+          view_count: number
           visibility: string | null
         }
         Insert: {
@@ -556,9 +578,13 @@ export type Database = {
           id?: string
           likes_count?: number
           media_json?: Json | null
+          media_url?: string | null
           media_urls?: string[]
+          original_post_id?: string | null
+          post_visibility?: string
           updated_at?: string
           user_id: string
+          view_count?: number
           visibility?: string | null
         }
         Update: {
@@ -568,12 +594,23 @@ export type Database = {
           id?: string
           likes_count?: number
           media_json?: Json | null
+          media_url?: string | null
           media_urls?: string[]
+          original_post_id?: string | null
+          post_visibility?: string
           updated_at?: string
           user_id?: string
+          view_count?: number
           visibility?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "app_posts_original_post_id_fkey"
+            columns: ["original_post_id"]
+            isOneToOne: false
+            referencedRelation: "app_posts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "app_posts_user_id_fkey"
             columns: ["user_id"]
@@ -651,30 +688,38 @@ export type Database = {
           author_id: string
           board_id: string
           content: string
-          created_at: string | null
+          created_at: string
           id: string
-          is_pinned: boolean | null
+          is_pinned: boolean
           updated_at: string | null
         }
         Insert: {
           author_id: string
           board_id: string
           content: string
-          created_at?: string | null
+          created_at?: string
           id?: string
-          is_pinned?: boolean | null
+          is_pinned?: boolean
           updated_at?: string | null
         }
         Update: {
           author_id?: string
           board_id?: string
           content?: string
-          created_at?: string | null
+          created_at?: string
           id?: string
-          is_pinned?: boolean | null
+          is_pinned?: boolean
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "board_posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       boards: {
         Row: {
@@ -703,6 +748,32 @@ export type Database = {
           owner_id?: string
           title?: string
           updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boards_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      close_friends: {
+        Row: {
+          added_at: string
+          friend_id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          friend_id: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          friend_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -814,6 +885,7 @@ export type Database = {
           token: string
           ui_snapshot: Json | null
           used: boolean | null
+          used_at: string | null
           user_id: string
         }
         Insert: {
@@ -825,6 +897,7 @@ export type Database = {
           token: string
           ui_snapshot?: Json | null
           used?: boolean | null
+          used_at?: string | null
           user_id: string
         }
         Update: {
@@ -836,6 +909,7 @@ export type Database = {
           token?: string
           ui_snapshot?: Json | null
           used?: boolean | null
+          used_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -1033,7 +1107,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          id: string
+          id?: string
           participant1_id: string
           participant2_id: string
           updated_at?: string
@@ -1064,84 +1138,154 @@ export type Database = {
       }
       dream_content: {
         Row: {
+          content: Json
+          content_body: string | null
+          content_encoding: string | null
           content_hash: string
           created_at: string | null
           file_url: string | null
           id: string
           metadata: Json | null
-          user_id: string
+          owner_id: string | null
+          updated_at: string
+          user_id: string | null
+          widget_id: string | null
         }
         Insert: {
+          content?: Json
+          content_body?: string | null
+          content_encoding?: string | null
           content_hash: string
           created_at?: string | null
           file_url?: string | null
           id?: string
           metadata?: Json | null
-          user_id: string
+          owner_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          widget_id?: string | null
         }
         Update: {
+          content?: Json
+          content_body?: string | null
+          content_encoding?: string | null
           content_hash?: string
           created_at?: string | null
           file_url?: string | null
           id?: string
           metadata?: Json | null
-          user_id?: string
+          owner_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          widget_id?: string | null
         }
         Relationships: []
       }
       dream_doc_sections: {
         Row: {
+          chunk_index: number
           content: string | null
-          created_at: string | null
+          created_at: string
+          embedding: string | null
           heading: string | null
-          id: string
-          order: number | null
-          page_id: string
+          id: number
+          page_id: number
+          slug: string | null
+          token_count: number | null
+          updated_at: string
         }
         Insert: {
+          chunk_index?: number
           content?: string | null
-          created_at?: string | null
+          created_at?: string
+          embedding?: string | null
           heading?: string | null
-          id?: string
-          order?: number | null
-          page_id: string
+          id?: number
+          page_id: number
+          slug?: string | null
+          token_count?: number | null
+          updated_at?: string
         }
         Update: {
+          chunk_index?: number
           content?: string | null
-          created_at?: string | null
+          created_at?: string
+          embedding?: string | null
           heading?: string | null
-          id?: string
-          order?: number | null
-          page_id?: string
+          id?: number
+          page_id?: number
+          slug?: string | null
+          token_count?: number | null
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dream_doc_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "dream_docs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dream_docs: {
         Row: {
-          created_at: string | null
-          id: string
+          author_id: string | null
+          category: string
+          checksum: string | null
+          created_at: string
+          id: number
+          meta: Json | null
+          parent_page_id: number | null
           path: string
+          published: boolean
+          slug: string | null
+          source: string | null
           title: string | null
-          updated_at: string | null
-          user_id: string
+          type: string | null
+          updated_at: string
         }
         Insert: {
-          created_at?: string | null
-          id?: string
+          author_id?: string | null
+          category?: string
+          checksum?: string | null
+          created_at?: string
+          id?: number
+          meta?: Json | null
+          parent_page_id?: number | null
           path: string
+          published?: boolean
+          slug?: string | null
+          source?: string | null
           title?: string | null
-          updated_at?: string | null
-          user_id: string
+          type?: string | null
+          updated_at?: string
         }
         Update: {
-          created_at?: string | null
-          id?: string
+          author_id?: string | null
+          category?: string
+          checksum?: string | null
+          created_at?: string
+          id?: number
+          meta?: Json | null
+          parent_page_id?: number | null
           path?: string
+          published?: boolean
+          slug?: string | null
+          source?: string | null
           title?: string | null
-          updated_at?: string | null
-          user_id?: string
+          type?: string | null
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dream_docs_parent_page_id_fkey"
+            columns: ["parent_page_id"]
+            isOneToOne: false
+            referencedRelation: "dream_docs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dream_instances: {
         Row: {
@@ -1378,27 +1522,33 @@ export type Database = {
       }
       game_scores: {
         Row: {
+          achieved_at: string
           created_at: string | null
           game: string
           id: string
           level: number | null
           score: number
+          shared: boolean
           user_id: string
         }
         Insert: {
+          achieved_at?: string
           created_at?: string | null
           game: string
           id?: string
           level?: number | null
           score: number
+          shared?: boolean
           user_id: string
         }
         Update: {
+          achieved_at?: string
           created_at?: string | null
           game?: string
           id?: string
           level?: number | null
           score?: number
+          shared?: boolean
           user_id?: string
         }
         Relationships: []
@@ -1407,22 +1557,28 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          intent_type: string | null
           key: string
           response: Json | null
+          result: Json | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
           id?: string
+          intent_type?: string | null
           key: string
           response?: Json | null
+          result?: Json | null
           user_id: string
         }
         Update: {
           created_at?: string | null
           id?: string
+          intent_type?: string | null
           key?: string
           response?: Json | null
+          result?: Json | null
           user_id?: string
         }
         Relationships: []
@@ -1431,24 +1587,36 @@ export type Database = {
         Row: {
           created_at: string | null
           data: Json | null
+          domain_color: string
           id: string
           kind: string
+          label: string
+          metadata: Json
+          significance: number
           surface: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
           data?: Json | null
+          domain_color?: string
           id?: string
           kind: string
+          label?: string
+          metadata?: Json
+          significance?: number
           surface?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
           data?: Json | null
+          domain_color?: string
           id?: string
           kind?: string
+          label?: string
+          metadata?: Json
+          significance?: number
           surface?: string | null
           user_id?: string
         }
@@ -1525,42 +1693,59 @@ export type Database = {
       }
       marketplace_items: {
         Row: {
-          category: string | null
+          category: string
           created_at: string | null
           description: string | null
+          file_url: string | null
           id: string
           is_published: boolean | null
+          preview_url: string | null
           price: number | null
+          price_cents: number
           seller_id: string
-          tags: string[] | null
+          tags: string[]
           title: string
           updated_at: string | null
         }
         Insert: {
-          category?: string | null
+          category?: string
           created_at?: string | null
           description?: string | null
+          file_url?: string | null
           id?: string
           is_published?: boolean | null
+          preview_url?: string | null
           price?: number | null
+          price_cents?: number
           seller_id: string
-          tags?: string[] | null
+          tags?: string[]
           title: string
           updated_at?: string | null
         }
         Update: {
-          category?: string | null
+          category?: string
           created_at?: string | null
           description?: string | null
+          file_url?: string | null
           id?: string
           is_published?: boolean | null
+          preview_url?: string | null
           price?: number | null
+          price_cents?: number
           seller_id?: string
-          tags?: string[] | null
+          tags?: string[]
           title?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_items_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       merch: {
         Row: {
@@ -1966,26 +2151,26 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string | null
-          id: string
+          id: number
           title: string
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string | null
-          id?: string
+          id?: number
           title: string
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string | null
-          id?: string
+          id?: number
           title?: string
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -2438,25 +2623,25 @@ export type Database = {
       }
       user_blocks: {
         Row: {
-          blocked_user_id: string
+          blocked_id: string
+          blocker_id: string
           created_at: string | null
           id: string
           reason: string | null
-          user_id: string
         }
         Insert: {
-          blocked_user_id: string
+          blocked_id: string
+          blocker_id: string
           created_at?: string | null
           id?: string
           reason?: string | null
-          user_id: string
         }
         Update: {
-          blocked_user_id?: string
+          blocked_id?: string
+          blocker_id?: string
           created_at?: string | null
           id?: string
           reason?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -2586,25 +2771,43 @@ export type Database = {
       }
       widget_events: {
         Row: {
+          actor_id: string | null
+          channel: string | null
           created_at: string | null
           event_data: Json | null
           event_type: string
           id: string
-          widget_instance_id: string
+          payload: Json | null
+          timestamp: string
+          type: string | null
+          widget_id: string | null
+          widget_instance_id: string | null
         }
         Insert: {
+          actor_id?: string | null
+          channel?: string | null
           created_at?: string | null
           event_data?: Json | null
           event_type: string
           id?: string
-          widget_instance_id: string
+          payload?: Json | null
+          timestamp?: string
+          type?: string | null
+          widget_id?: string | null
+          widget_instance_id?: string | null
         }
         Update: {
+          actor_id?: string | null
+          channel?: string | null
           created_at?: string | null
           event_data?: Json | null
           event_type?: string
           id?: string
-          widget_instance_id?: string
+          payload?: Json | null
+          timestamp?: string
+          type?: string | null
+          widget_id?: string | null
+          widget_instance_id?: string | null
         }
         Relationships: []
       }
@@ -2705,10 +2908,15 @@ export type Database = {
     Functions: {
       bootstrap_user_spaces: { Args: { p_user_id: string }; Returns: undefined }
       check_ai_rate_limit: {
-        Args: { p_endpoint: string; p_user_id: string }
+        Args: {
+          p_endpoint: string
+          p_max_requests?: number
+          p_user_id: string
+          p_window_minutes?: number
+        }
         Returns: Json
       }
-      get_user_capabilities: { Args: { p_user_id: string }; Returns: Json }
+      get_user_capabilities: { Args: { p_user_id: string }; Returns: string[] }
       get_user_metrics: { Args: { p_user_id: string }; Returns: Json }
       increment_likes: {
         Args: { row_id: string; table_name: string }
@@ -2720,14 +2928,19 @@ export type Database = {
       is_premium: { Args: never; Returns: boolean }
       jwt_role: { Args: never; Returns: string }
       search_dream_docs: {
-        Args: { search_query: string }
+        Args: {
+          filter_category?: string
+          match_count?: number
+          match_threshold?: number
+          query_embedding: string
+        }
         Returns: {
-          doc_id: string
+          doc_id: number
           doc_slug: string
           doc_title: string
           section_content: string
           section_heading: string
-          section_id: string
+          section_id: number
           similarity: number
         }[]
       }
