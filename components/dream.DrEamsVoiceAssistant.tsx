@@ -353,7 +353,7 @@ export default function DrEamsVoiceAssistant( ){
       return 'Opening settings for you.';
     }
     if (lower.includes('go to analytics') || lower.includes('open analytics') || lower.includes('show analytics')) {
-      router.push('/analytics');
+      router.push('/daydream/analytics');
       return 'Opening your analytics dashboard.';
     }
     if (lower.includes('go to shop') || lower.includes('open shop') || lower.includes('my store')) {

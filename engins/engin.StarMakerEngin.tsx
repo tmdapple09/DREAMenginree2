@@ -2408,7 +2408,7 @@ function DAWReleasePanel({ strategy, releases, loading, publishing, onPublish }:
           ) : releases.length === 0 ? (
             <div style={{ fontSize: 12, color: DAW.dim, padding: '8px 0' }}>
               No releases yet.&nbsp;
-              <Link href="/music/upload" style={{ color: DAW.accent }}>Upload your first track →</Link>
+              <Link href="/daydream/music/upload" style={{ color: DAW.accent }}>Upload your first track →</Link>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -2440,7 +2440,7 @@ function DAWReleasePanel({ strategy, releases, loading, publishing, onPublish }:
           )}
         </div>
 
-        <Link href="/music/upload" style={{
+        <Link href="/daydream/music/upload" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
           padding: '9px', borderRadius: 8, border: `1px solid ${DAW.border}`,
           background: DAW.surfaceHi, color: DAW.dim, fontSize: 12, textDecoration: 'none',

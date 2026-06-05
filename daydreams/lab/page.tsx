@@ -419,7 +419,7 @@ export default async function LabDaydreamPage( ){
               </p>
             </div>
             <div className="de-widget-actions">
-              <Link href="/physics-lab" className="de-btn de-btn-primary text-xs">Open Physics Lab</Link>
+              <Link href="/engines/lab/experiments" className="de-btn de-btn-primary text-xs">Open Physics Lab</Link>
             </div>
           </div>
 

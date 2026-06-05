@@ -253,7 +253,7 @@ export default function CommandPalette( ){
       iconColor: '#34d399',
       iconBg: 'rgba(52,211,153,0.10)',
       keywords: ['analytics', 'stats', 'metrics', 'insights'],
-      action: () => router.push('/analytics'),
+      action: () => router.push('/daydream/analytics'),
       category: 'Platform',
     },
     {

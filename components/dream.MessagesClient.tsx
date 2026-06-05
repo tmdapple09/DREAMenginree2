@@ -322,7 +322,7 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
             <h1 className="text-2xl font-bold" style={{ color: 'var(--de-heading)' }}>Messages</h1>
           </div>
           <Link
-            href="/messages/new"
+            href="/messages"
             className="de-btn de-btn-primary flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
@@ -494,7 +494,7 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
                   <MessageSquare className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--de-text-dim)', opacity: 0.3 }} />
                   <p className="text-sm" style={{ color: 'var(--de-text-dim)' }}>No conversations yet</p>
                   <Link
-                    href="/messages/new"
+                    href="/messages"
                     className="text-sm mt-2 inline-block"
                     style={{ color: 'var(--de-accent)' }}
                   >

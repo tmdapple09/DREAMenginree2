@@ -70,7 +70,7 @@ export default function AnalyticsDaydream({ userId }: Props) {
         <div className="de-widget-header">
           <BarChart2 className="w-4 h-4" style={{ color: ACCENT }} />
           <span className="de-widget-title ml-2">Your Metrics</span>
-          <Link href="/api/metrics/user" className="text-xs font-semibold ml-auto" style={{ color: ACCENT, textDecoration: 'none' }}>
+          <Link href={`/api/metrics/user/${userId}`} className="text-xs font-semibold ml-auto" style={{ color: ACCENT, textDecoration: 'none' }}>
             Raw API →
           </Link>
         </div>
