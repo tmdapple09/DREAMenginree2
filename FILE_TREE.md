@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-05T17:48:22.380Z
+Generated: 2026-06-05T19:40:14.953Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -7007,9 +7007,15 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── CompingState  ← @/lib/music/starmakerDaw
 │       ├── PIANO_ROLL_DEFAULTS  ← @/lib/music/starmakerDaw
 │       ├── PianoRollState  ← @/lib/music/starmakerDaw
+│       ├── RealtimeStarMakerAudioEngine  ← @/lib/music/starmakerDaw
 │       ├── SessionViewState  ← @/lib/music/starmakerDaw
+│       ├── StarMakerAudioDiagnostics  ← @/lib/music/starmakerDaw
+│       ├── StarMakerSequencerSnapshot  ← @/lib/music/starmakerDaw
+│       ├── analyzeStereoPcm  ← @/lib/music/starmakerDaw
 │       ├── createInitialCompingState  ← @/lib/music/starmakerDaw
 │       ├── createInitialSessionView  ← @/lib/music/starmakerDaw
+│       ├── createRealtimeStarMakerAudioEngine  ← @/lib/music/starmakerDaw
+│       ├── renderStarMakerPattern  ← @/lib/music/starmakerDaw
 │       ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │       ├── useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
 │       ├── createClient  ⚠ @/lib/supabase/client
@@ -10444,6 +10450,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → AUTOMATABLE_PARAMS
 │   │   │   ├── → PIANO_ROLL_DEFAULTS
 │   │   │   ├── → TAKE_COLORS
+│   │   │   ├── → analyzeStereoPcm
 │   │   │   ├── → audioQualityLabel
 │   │   │   ├── → computeWarpPlaybackRate
 │   │   │   ├── → createDemoTake
@@ -10453,10 +10460,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createInitialSessionView
 │   │   │   ├── → createInitialWarpState
 │   │   │   ├── → createMidiNote
+│   │   │   ├── → createRealtimeStarMakerAudioEngine
+│   │   │   ├── → encodeWav24Bit
 │   │   │   ├── → isBlackKey
 │   │   │   ├── → midiPitchToName
+│   │   │   ├── → renderStarMakerPattern
 │   │   │   ├── → snapToGrid
-│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState
+│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState, encodeWav24Bit
 │   │   └── wasmAudioBridge.ts ∅
 │   │       ├── → createWasmAudioBridge
 │   │       └── ∅ unused: createWasmAudioBridge

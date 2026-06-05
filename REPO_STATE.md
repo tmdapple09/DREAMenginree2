@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-05T17:48:22.262Z
+Generated: 2026-06-05T19:40:14.814Z
 
 ---
 
@@ -10534,7 +10534,7 @@ _No style files for this feature._
 | `@/lib/music/presets` | `BEAT_PRESETS`, `BeatPreset`, `GENRE_LIST`, `INSTRUMENT_PRESETS`, `InstrumentPreset`, `PROJECT_TEMPLATES`, `ProjectTemplate` |
 | `@/lib/music/starmaker` | `MelodySuggestion`, `PlaybackQualityMode`, `buildReleaseStrategy`, `createMelodySuggestions`, `summarizePlaybackProfile` |
 | `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ARRANGEMENT_SOURCE_COLORS`, `ARRANGEMENT_TRACKS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackId`, `ArrangementTrackState` |
-| `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `SessionViewState`, `createInitialCompingState`, `createInitialSessionView` |
+| `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `RealtimeStarMakerAudioEngine`, `SessionViewState`, `StarMakerAudioDiagnostics`, `StarMakerSequencerSnapshot`, `analyzeStereoPcm`, `createInitialCompingState`, `createInitialSessionView`, `createRealtimeStarMakerAudioEngine`, `renderStarMakerPattern` |
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
 | `@/lib/supabase/client` | `createClient` |
@@ -19032,7 +19032,7 @@ _No circular dependencies detected._
 | `lib/marketplace/request.ts` | `MARKETPLACE_CONTACT_TABLE` |
 | `lib/media/ledger.ts` | `compressData`, `downloadBlobFromLedgerStorage` |
 | `lib/music/presets.ts` | `getPresetsByGenre`, `findPreset`, `findInstrumentPreset`, `findProjectTemplate` |
-| `lib/music/starmakerDaw.ts` | `createEmptyClip`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState` |
+| `lib/music/starmakerDaw.ts` | `createEmptyClip`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState`, `encodeWav24Bit` |
 | `lib/music/wasmAudioBridge.ts` | `createWasmAudioBridge` |
 | `lib/navigation/GestureIntentResolver.ts` | `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `HOLD_THRESHOLD_MS`, `GESTURE_SENSITIVITY` |
 | `lib/navigation/NavStateBuffer.ts` | `LAYER_CUBE`, `LAYER_WIDGET`, `LAYER_DREAM`, `FULLSCREEN_DEPTH` |
@@ -21777,7 +21777,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── starmaker.ts
 │   │   ├── starmakerArrangement.ts
 │   │   ├── starmakerDaw.ts ∅
-│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState
+│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState, encodeWav24Bit
 │   │   └── wasmAudioBridge.ts ∅
 │   │       └── ∅ unused: createWasmAudioBridge
 │   ├── navigation  [Menus & Navigation, Dream Navigation]

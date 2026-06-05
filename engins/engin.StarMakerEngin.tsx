@@ -70,11 +70,17 @@ import {
 } from '@/lib/music/starmakerArrangement';
 import {
     PIANO_ROLL_DEFAULTS,
+    analyzeStereoPcm,
     createInitialCompingState,
     createInitialSessionView,
+    createRealtimeStarMakerAudioEngine,
+    renderStarMakerPattern,
     type CompingState,
     type PianoRollState,
+    type RealtimeStarMakerAudioEngine,
     type SessionViewState,
+    type StarMakerAudioDiagnostics,
+    type StarMakerSequencerSnapshot,
 } from '@/lib/music/starmakerDaw';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
@@ -288,6 +294,11 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     keyMode?: 'major' | 'minor';
     pitch?: number;
     ledgerAudio?: PersistedLedgerAudio | null;
+    beatGrid?: BeatGrid;
+    mixer?: MixerState;
+    effects?: EffectName[];
+    chordProgression?: string[];
+    qualityMode?: PlaybackQualityMode;
   };
   const {
     savedState: savedMusicState,
@@ -307,6 +318,8 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
   const [beatGrid, setBeatGrid] = useState<BeatGrid>(createEmptyBeatGrid);
   const [bpm,      setBpm]      = useState(120);
   const [qualityMode, setQualityMode] = useState<PlaybackQualityMode>('studio');
+  const [audioDiagnostics, setAudioDiagnostics] = useState<StarMakerAudioDiagnostics | null>(null);
+  const realtimeAudioEngineRef = useRef<RealtimeStarMakerAudioEngine | null>(null);
 
   // ── Mixing Board state ──
   const [mixer, setMixer] = useState<MixerState>({
@@ -328,6 +341,11 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
   const [exportPending, setExportPending] = useState(false);
   const [exportDone,    setExportDone]    = useState(false);
 
+  // ── Chord Builder state ──
+  const [chordProgression, setChordProgression] = useState<string[]>(['Cmaj', 'Amin', 'Fmaj', 'Gmaj']);
+  const [chordPlaying, setChordPlaying] = useState<number | null>(null);
+
+
   // ── Restore workspace state from DB once on mount ──
   useEffect(() => {
     if (musicRestoring || musicRestoredRef.current || !savedMusicState) return;
@@ -336,16 +354,35 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     if (savedMusicState.musicalKey)        setMusicalKey(savedMusicState.musicalKey);
     if (savedMusicState.keyMode)           setKeyMode(savedMusicState.keyMode);
     if (savedMusicState.pitch !== undefined) setPitch(savedMusicState.pitch);
+    if (savedMusicState.beatGrid) setBeatGrid(savedMusicState.beatGrid.map((row) => [...row]));
+    if (savedMusicState.mixer) setMixer(savedMusicState.mixer);
+    if (savedMusicState.effects) setActiveEffects(new Set(savedMusicState.effects));
+    if (savedMusicState.chordProgression) setChordProgression([...savedMusicState.chordProgression]);
+    if (savedMusicState.qualityMode) setQualityMode(savedMusicState.qualityMode);
     setPersistedLedgerAudio(savedMusicState.ledgerAudio ?? null);
   }, [musicRestoring, savedMusicState]);
 
   // ── Persist creative workspace state to Supabase (Phase 8 §F Point 51) ──
   useEffect(() => {
     if (musicRestoring) return;
-    persistState({ side: 'B', bpm, musicalKey, keyMode, pitch, ledgerAudio: persistedLedgerAudio });
-    persistMusicState({ bpm, musicalKey, keyMode, pitch, ledgerAudio: persistedLedgerAudio });
-   
-  }, [bpm, musicalKey, keyMode, pitch, musicRestoring, persistedLedgerAudio]);
+    const effects = Array.from(activeEffects);
+    const payload = {
+      side: 'B' as const,
+      bpm,
+      musicalKey,
+      keyMode,
+      pitch,
+      ledgerAudio: persistedLedgerAudio,
+      beatGrid,
+      mixer,
+      effects,
+      chordProgression,
+      qualityMode,
+    };
+    persistState(payload);
+    persistMusicState(payload);
+
+  }, [activeEffects, beatGrid, bpm, chordProgression, keyMode, mixer, musicRestoring, musicalKey, persistedLedgerAudio, pitch, qualityMode]);
 
   // ── Supabase: fetch releases (defence-in-depth owner_id filter; RLS enforced server-side) ──
   useEffect(() => {
@@ -509,9 +546,6 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
   );
   const [waveformRecording, setWaveformRecording] = useState(false);
 
-  // ── Chord Builder state ──
-  const [chordProgression, setChordProgression] = useState<string[]>(['Cmaj', 'Amin', 'Fmaj', 'Gmaj']);
-  const [chordPlaying, setChordPlaying] = useState<number | null>(null);
 
   // ── AI Melody Suggestions state ──
   const [melodyLoading, setMelodyLoading] = useState(false);
@@ -725,10 +759,23 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
   // calls the latest version of triggerPreviewVoice (latest-ref pattern).
   triggerVoiceRef.current = triggerPreviewVoice;
 
+  const sequencerSnapshot = useMemo<StarMakerSequencerSnapshot>(() => ({
+    bpm,
+    beatGrid,
+    mixer,
+    effects: effectList,
+    qualityMode,
+    sampleRate: qualityMode === 'studio' ? 96_000 : 48_000,
+    bars: 4,
+  }), [beatGrid, bpm, effectList, mixer, qualityMode]);
+
   const playPreviewStep = useCallback((stepIndex: number) => {
-    beatGrid.forEach((row, channelIndex) => {
-      if (row[stepIndex]) triggerPreviewVoice(channelIndex, stepIndex);
-    });
+    if (!realtimeAudioEngineRef.current?.playing) {
+      beatGrid.forEach((row, channelIndex) => {
+        if (row[stepIndex]) triggerPreviewVoice(channelIndex, stepIndex);
+      });
+    }
+    setPlaybackStep(stepIndex);
     setWaveformBars(buildPlaybackBars(stepIndex));
   }, [beatGrid, buildPlaybackBars, triggerPreviewVoice]);
 
@@ -740,18 +787,8 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
 
   useEffect(() => {
     if (!playbackActive) return;
-
-    const stepMs = Math.max(100, (60 / bpm) * (1000 / STEP_DIVISION_PER_BEAT));
-    const timer = setInterval(() => {
-      setPlaybackStep((prev) => {
-        const next = (prev + 1) % BEAT_STEPS;
-        playPreviewStep(next);
-        return next;
-      });
-    }, stepMs);
-
-    return () => clearInterval(timer);
-  }, [bpm, playbackActive, playPreviewStep]);
+    realtimeAudioEngineRef.current?.update(sequencerSnapshot);
+  }, [playbackActive, sequencerSnapshot]);
 
   useEffect(() => () => {
     if (audioContextRef.current) {
@@ -770,9 +807,10 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     );
   }
 
-  function handleTransportToggle( ){
+  async function handleTransportToggle( ){
     if (playbackActive) {
       setPlaybackActive(false);
+      realtimeAudioEngineRef.current?.stop();
       setPlaybackStep(0);
       setWaveformBars(buildPlaybackBars(0));
       (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
@@ -782,7 +820,17 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     }
 
     setPlaybackStep(0);
-    playPreviewStep(0);
+    const offlinePreview = renderStarMakerPattern(sequencerSnapshot);
+    setAudioDiagnostics(offlinePreview.diagnostics);
+    if (!realtimeAudioEngineRef.current) {
+      realtimeAudioEngineRef.current = await createRealtimeStarMakerAudioEngine();
+    }
+    await realtimeAudioEngineRef.current.start(sequencerSnapshot, (step) => {
+      setPlaybackStep(step);
+      setWaveformBars(buildPlaybackBars(step));
+      setAudioDiagnostics(realtimeAudioEngineRef.current?.diagnostics ?? analyzeStereoPcm(offlinePreview));
+    });
+    setAudioDiagnostics(realtimeAudioEngineRef.current.diagnostics);
     setPlaybackActive(true);
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'music', 'music:preview-start', {
@@ -909,7 +957,8 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     chordProgression,
     qualityMode,
     activePresetId,
-  }), [bpm, musicalKey, keyMode, pitch, beatGrid, mixer, activeEffects, chordProgression, qualityMode, activePresetId]);
+    audioDiagnostics,
+  }), [bpm, musicalKey, keyMode, pitch, beatGrid, mixer, activeEffects, chordProgression, qualityMode, activePresetId, audioDiagnostics]);
 
 
   // ── Render ────────────────────────────────────────────────────────────────────
@@ -925,10 +974,11 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
         musicalKey={musicalKey}
         keyMode={keyMode}
         waveformRecording={waveformRecording}
+        audioDiagnostics={audioDiagnostics}
         onBack={onBack}
-        onTogglePlayback={handleTransportToggle}
+        onTogglePlayback={() => void handleTransportToggle()}
         onWaveformRecord={handleWaveformToggle}
-        onSkipToStart={() => { setPlaybackStep(0); setPlaybackActive(false); }}
+        onSkipToStart={() => { realtimeAudioEngineRef.current?.stop(); setPlaybackStep(0); setPlaybackActive(false); }}
         onChangeBpm={changeBpm}
       />
 
@@ -1283,6 +1333,7 @@ interface DAWTransportBarProps {
   musicalKey: MusicalKey;
   keyMode: 'major' | 'minor';
   waveformRecording: boolean;
+  audioDiagnostics: StarMakerAudioDiagnostics | null;
   onBack: () => void;
   onTogglePlayback: () => void;
   onWaveformRecord: () => void;
@@ -1291,7 +1342,7 @@ interface DAWTransportBarProps {
 }
 
 function DAWTransportBar({
-  bpm, playing, playbackStep, musicalKey, keyMode, waveformRecording,
+  bpm, playing, playbackStep, musicalKey, keyMode, waveformRecording, audioDiagnostics,
   onBack, onTogglePlayback, onWaveformRecord, onSkipToStart, onChangeBpm,
 }: DAWTransportBarProps) {
   const bar  = Math.floor(playbackStep / 4) + 1;
@@ -1396,6 +1447,16 @@ function DAWTransportBar({
       <div style={{ ...dawPill(DAW.accent), margin: '0 8px', flexShrink: 0, fontSize: 11, fontWeight: 800 }}>
         {musicalKey}&nbsp;{keyMode === 'major' ? 'Maj' : 'min'}
       </div>
+
+      {audioDiagnostics && (
+        <div style={{
+          fontFamily: 'monospace', fontSize: 9, color: audioDiagnostics.engine === 'audio-worklet' ? '#22c55e' : '#facc15',
+          border: `1px solid ${audioDiagnostics.engine === 'audio-worklet' ? 'rgba(34,197,94,0.35)' : 'rgba(250,204,21,0.35)'}`,
+          borderRadius: 999, padding: '3px 7px', flexShrink: 0, background: 'rgba(0,0,0,0.18)',
+        }}>
+          {audioDiagnostics.engine} · {audioDiagnostics.sampleRate / 1000}kHz · {audioDiagnostics.baseLatencyMs}ms · drift {audioDiagnostics.transportDriftMs}ms · {audioDiagnostics.lufs} LUFS
+        </div>
+      )}
 
       <div style={{ marginLeft: 'auto', padding: '0 10px', flexShrink: 0 }}>
         <span style={{
