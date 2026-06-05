@@ -10,21 +10,36 @@ jobs:
       SUPABASE_PROJECT_ID: "suaiqcynxospjijzdudc"
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Generate types
+      - name: Generate types and client
         run: |
+          # 1. Ensure the types folder exists
+          mkdir -p types
+          
+          # 2. Generate the giant schema types file
           supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > types/supabase.ts
+          
+          # 3. Inject the initialization code directly into a client file
+          cat << 'EOF' > supabaseClient.ts
+          import { createClient } from '@supabase/supabase-js';
+          import { Database } from './types/supabase';
 
-      - name: Commit types
+          export const supabase = createClient<Database>(
+            process.env.SUPABASE_URL!,
+            process.env.SUPABASE_ANON_KEY!
+          );
+          EOF
+
+      - name: Commit files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add types/supabase.ts
-          git commit -m "chore: sync schema types [skip ci]" || echo "No changes"
+          git add types/supabase.ts supabaseClient.ts
+          git commit -m "chore: sync schema types and update client [skip ci]" || echo "No changes"
           git push
