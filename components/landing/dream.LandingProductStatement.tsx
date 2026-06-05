@@ -9,9 +9,9 @@ export default function LandingProductStatement() {
       <div
         className="de-kicker mb-6"
         style={{ color: '#d4a832' }}
-        aria-label="DREAMengin — Creative OS"
+        aria-label="DREAMengin — Creative Operating System"
       >
-        Creative Operating Surface
+        Creative Operating System
       </div>
 
       {/* Headline */}
@@ -35,7 +35,6 @@ export default function LandingProductStatement() {
         >
           Power Your DREAMS.
         </span>
-        .
       </h1>
 
       {/* Product statement */}
@@ -43,47 +42,60 @@ export default function LandingProductStatement() {
         className="text-base md:text-lg leading-relaxed mb-8 max-w-md"
         style={{ color: 'rgba(165,195,235,0.78)' }}
       >
-        A privacy-first creative browser based OS. Your world — your rules, your dreams, and entirely yours.
+        A creative operating system where software, games, music, content,
+        research, and branding work together in one connected ecosystem.
       </p>
 
       {/* DREAMengin Engins */}
-<div className="de-premium-stack" aria-label="DREAMengin Engins">
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">CodeEngin</span>
-    <strong>Software Development</strong>
-    <p>Build applications, automate workflows, manage projects, and create software that powers the DREAMengin ecosystem.</p>
-  </article>
+      <div className="de-premium-stack" aria-label="DREAMengin Engins">
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">CodeEngin</span>
+          <strong>Build Software</strong>
+          <p>
+            Create apps, websites, automations, tools, and AI-powered workflows.
+          </p>
+        </article>
 
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">GameEngin</span>
-    <strong>Game & World Creation</strong>
-    <p>Create interactive experiences, virtual worlds, gameplay systems, and immersive entertainment.</p>
-  </article>
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">GameEngin</span>
+          <strong>Create Games</strong>
+          <p>
+            Build worlds, gameplay systems, multiplayer experiences, and interactive entertainment.
+          </p>
+        </article>
 
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">StarMakerEngin</span>
-    <strong>Music Production Studio</strong>
-    <p>Record, arrange, mix, master, and publish music using integrated creative audio tools.</p>
-  </article>
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">StarMakerEngin</span>
+          <strong>Produce Music</strong>
+          <p>
+            Record vocals, arrange tracks, mix audio, master releases, and publish your music.
+          </p>
+        </article>
 
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">ContentEngin</span>
-    <strong>Media & Publishing</strong>
-    <p>Create videos, posts, articles, campaigns, and publish content across connected creative workflows.</p>
-  </article>
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">ContentEngin</span>
+          <strong>Create Content</strong>
+          <p>
+            Design videos, posts, media campaigns, and content for every platform.
+          </p>
+        </article>
 
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">LabEngin</span>
-    <strong>Research & Experimentation</strong>
-    <p>Explore ideas through simulations, experiments, data analysis, visualization, and discovery.</p>
-  </article>
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">LabEngin</span>
+          <strong>Experiment & Discover</strong>
+          <p>
+            Run simulations, test ideas, analyze data, and turn research into results.
+          </p>
+        </article>
 
-  <article className="de-premium-layer-card">
-    <span className="de-premium-layer-label">BrandingEngin</span>
-    <strong>Identity & Growth</strong>
-    <p>Develop brands, launch campaigns, measure performance, and connect creative work to real audiences.</p>
-  </article>
-</div>
+        <article className="de-premium-layer-card">
+          <span className="de-premium-layer-label">BrandingEngin</span>
+          <strong>Build Your Brand</strong>
+          <p>
+            Create identities, launch campaigns, grow audiences, and measure performance.
+          </p>
+        </article>
+      </div>
 
       {/* DreamR statement */}
       <Link href="/mission" className="de-landing-mission-link mt-4 mb-6 block">
@@ -108,6 +120,7 @@ export default function LandingProductStatement() {
         >
           Create an Account
         </Link>
+
         <Link
           href="/login"
           className="w-full sm:w-auto font-medium rounded-full text-center"
