@@ -6,13 +6,13 @@
  * runtime move toward those targets without putting raw metrics in UI copy.
  */
 
-import type { CanonicalEnginId, EnginCapabilityProfile, EnginProfileId } from './EnginCapabilityTargets';
+import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile, type EnginProfileId } from './EnginCapabilityTargets';
 
 export type ExecutionSubsystem =
   | 'coalesced-runtime-work'
   | 'typed-array-state'
   | 'instanced-geometry'
-  | 'bvh-ray-grid'
+  | 'deterministic-aabb-ray-scan'
   | 'audio-worklet-buffer'
   | 'midi-ring-buffer'
   | 'vector-cache'
@@ -21,7 +21,7 @@ export type ExecutionSubsystem =
   | 'gpu-compute-dispatch';
 
 export interface EnginExecutionPlan {
-  readonly enginId: EnginProfileId;
+  readonly enginId: string;
   readonly realtimeActionTypes: ReadonlyArray<string>;
   readonly syncCadenceRevisions: number;
   readonly subsystems: ReadonlyArray<ExecutionSubsystem>;
@@ -80,7 +80,7 @@ function executionPlan(plan: EnginExecutionPlan): EnginExecutionPlan {
   });
 }
 
-function defaultPlan(enginId: EnginProfileId): EnginExecutionPlan {
+function defaultPlan(enginId: string): EnginExecutionPlan {
   return executionPlan({
   enginId,
   realtimeActionTypes: [],
@@ -102,7 +102,7 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = 
     enginId: 'games',
     realtimeActionTypes: ['game:control-profile', 'game:immersive-toggle', 'game:physics-apply'],
     syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'bvh-ray-grid', 'gpu-compute-dispatch'],
+    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
     workerPreferred: true,
   }),
   music: executionPlan({
@@ -116,7 +116,7 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = 
     enginId: 'create',
     realtimeActionTypes: ['content:item-add', 'content:asset-stage', 'content:render-preview'],
     syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'bvh-ray-grid', 'gpu-compute-dispatch'],
+    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
     workerPreferred: true,
   }),
   brand: executionPlan({
@@ -130,7 +130,7 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = 
     enginId: 'lab',
     realtimeActionTypes: ['lab:sim-start', 'lab:physics-received', 'lab:chart-type'],
     syncCadenceRevisions: 2,
-    subsystems: ['coalesced-runtime-work', 'particle-struct-of-arrays', 'bvh-ray-grid', 'gpu-compute-dispatch'],
+    subsystems: ['coalesced-runtime-work', 'particle-struct-of-arrays', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
     workerPreferred: true,
   }),
 });
@@ -140,8 +140,8 @@ function clampPositiveInteger(value: number, fallback: number): number {
 }
 
 export function getEnginExecutionPlan(enginId: EnginProfileId): EnginExecutionPlan {
-  return enginId in EXECUTION_PLANS
-    ? EXECUTION_PLANS[enginId as CanonicalEnginId]
+  return isCanonicalEnginId(enginId)
+    ? EXECUTION_PLANS[enginId]
     : defaultPlan(enginId);
 }
 
@@ -193,6 +193,14 @@ export class GeometryBatcher {
   }
 }
 
+/**
+ * Deterministic AABB scanner used by ray tests and CPU fallback paths.
+ *
+ * This class intentionally does not claim to be a BVH, spatial grid, or
+ * WebGPU accelerator: it keeps a flat ordered box list and returns the nearest
+ * AABB hit by scanning that list. Keep the historical class name to avoid
+ * rippling public imports while making the actual execution model explicit.
+ */
 export class RayGridAccelerator {
   private boxes: RayBox[] = [];
 
@@ -260,36 +268,37 @@ export class AudioTrackMixer {
 }
 
 export class MidiEventRingBuffer {
-  private readonly events: Float64Array;
-  private cursor = 0;
-  private filled = 0;
-
+  private readonly capacity: number;
+  private readonly queue: Array<[timestamp: number, note: number, velocity: number]> = [];
   constructor(capacity = 4096) {
-    this.events = new Float64Array(clampPositiveInteger(capacity, 4096) * 3);
+    this.capacity = clampPositiveInteger(capacity, 4096);
   }
 
   push(timestamp: number, note: number, velocity: number): void {
-    const offset = this.cursor * 3;
-    this.events[offset] = timestamp;
-    this.events[offset + 1] = note;
-    this.events[offset + 2] = velocity;
-    this.cursor = (this.cursor + 1) % (this.events.length / 3);
-    this.filled = Math.min(this.filled + 1, this.events.length / 3);
+    const event: [number, number, number] = [timestamp, note, velocity];
+    if (this.queue.length === this.capacity) this.queue.shift();
+    let insertAt = this.queue.length;
+    for (let index = this.queue.length - 1; index >= 0; index -= 1) {
+      if (this.queue[index][0] <= timestamp) break;
+      insertAt = index;
+    }
+    this.queue.splice(insertAt, 0, event);
   }
 
   drainDue(now: number): Float64Array {
     const due: number[] = [];
-    const capacity = this.events.length / 3;
-    const start = (this.cursor - this.filled + capacity) % capacity;
-    for (let i = 0; i < this.filled; i += 1) {
-      const slot = (start + i) % capacity;
-      const offset = slot * 3;
-      if (this.events[offset] <= now) {
-        due.push(this.events[offset], this.events[offset + 1], this.events[offset + 2]);
-      }
+    let dueCount = 0;
+    while (dueCount < this.queue.length && this.queue[dueCount][0] <= now) {
+      const event = this.queue[dueCount];
+      due.push(event[0], event[1], event[2]);
+      dueCount += 1;
     }
-    this.filled = 0;
+    if (dueCount > 0) this.queue.splice(0, dueCount);
     return Float64Array.from(due);
+  }
+
+  get size(): number {
+    return this.queue.length;
   }
 }
 

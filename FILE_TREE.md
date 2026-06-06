@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-06T07:13:00.148Z
+Generated: 2026-06-06T22:32:39.997Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -8745,6 +8745,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── CanonicalEnginId  ← ./EnginCapabilityTargets
 │   │   │   ├── EnginCapabilityProfile  ← ./EnginCapabilityTargets
 │   │   │   ├── EnginProfileId  ← ./EnginCapabilityTargets
+│   │   │   ├── isCanonicalEnginId  ← ./EnginCapabilityTargets
 │   │   │   ├── → AudioTrackMixer
 │   │   │   ├── → CodeEditRingBuffer
 │   │   │   ├── → CollaborationDeltaPacker
@@ -8780,7 +8781,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → toCustomEnginProfileId
 │   │   │   ├── → validateCanonicalEnginCapabilityProfiles
 │   │   │   ├── → validateEnginCapabilityProfile
-│   │   │   └── ∅ unused: isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, CANONICAL_ENGIN_ALIASES, toCustomEnginProfileId, createCustomEnginCapabilityProfile
+│   │   │   └── ∅ unused: isCustomEnginProfileId, isEnginProfileId, CANONICAL_ENGIN_ALIASES, toCustomEnginProfileId
 │   │   ├── EnginDomainCores.ts ∅
 │   │   │   ├── AudioTrackMixer  ← ./EnginCapabilityExecution
 │   │   │   ├── CollaborationDeltaPacker  ← ./EnginCapabilityExecution
@@ -8881,7 +8882,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → StreamingAssetLoader
 │   │   │   ├── → TransportLatencyProbe
 │   │   │   ├── → createCanonicalScorecards
-│   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
+│   │   │   ├── → runCanonicalPerformanceBenchmarks
+│   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, runCanonicalPerformanceBenchmarks, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
 │   │   ├── EnginEventBus.ts
 │   │   │   └── → createEnginEventBus
 │   │   ├── EnginHardwareCapabilities.ts ∅
@@ -14722,13 +14724,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── engin-capability-targets.test.ts
 │   │   ├── AudioTrackMixer  ← @/lib/engin-runtime/EnginCapabilityExecution
 │   │   ├── GeometryBatcher  ← @/lib/engin-runtime/EnginCapabilityExecution
+│   │   ├── MidiEventRingBuffer  ← @/lib/engin-runtime/EnginCapabilityExecution
 │   │   ├── ParticleSoAKernel  ← @/lib/engin-runtime/EnginCapabilityExecution
 │   │   ├── RayGridAccelerator  ← @/lib/engin-runtime/EnginCapabilityExecution
 │   │   ├── createEnginCapabilityExecutionKernel  ← @/lib/engin-runtime/EnginCapabilityExecution
 │   │   ├── CANONICAL_ENGIN_IDS  ← @/lib/engin-runtime/EnginCapabilityTargets
 │   │   ├── ENGIN_CAPABILITY_PROFILES  ← @/lib/engin-runtime/EnginCapabilityTargets
 │   │   ├── acceptanceValueForTarget  ← @/lib/engin-runtime/EnginCapabilityTargets
+│   │   ├── capabilityProfileMatchesRuleSet  ← @/lib/engin-runtime/EnginCapabilityTargets
+│   │   ├── createCustomEnginCapabilityProfile  ← @/lib/engin-runtime/EnginCapabilityTargets
 │   │   ├── validateCanonicalEnginCapabilityProfiles  ← @/lib/engin-runtime/EnginCapabilityTargets
+│   │   ├── validateEnginCapabilityProfile  ← @/lib/engin-runtime/EnginCapabilityTargets
 │   │   ├── BRAND_ENGIN_RULE_SET  ← @/lib/engins/brand/brandEnginRuleSet
 │   │   ├── CODE_ENGIN_RULE_SET  ← @/lib/engins/code/codeEnginRuleSet
 │   │   ├── CONTENT_ENGIN_RULE_SET  ← @/lib/engins/content/contentEnginRuleSet
@@ -14868,7 +14874,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── DENY_ALL  ← @/lib/engin-runtime/EnginCapabilities
 │   │   ├── gateCapability  ← @/lib/engin-runtime/EnginCapabilities
 │   │   ├── mergeCapabilities  ← @/lib/engin-runtime/EnginCapabilities
-│   │   ├── getEnginCapabilityProfile  ← @/lib/engin-runtime/EnginCapabilityTargets
+│   │   ├── createCustomEnginCapabilityProfile  ← @/lib/engin-runtime/EnginCapabilityTargets
 │   │   ├── createEnginEventBus  ← @/lib/engin-runtime/EnginEventBus
 │   │   ├── LocalStorageAdapter  ← @/lib/engin-runtime/EnginIOAdapter
 │   │   ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter

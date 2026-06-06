@@ -135,6 +135,8 @@ export class EnginRuntime<
   private readonly _executionKernel: EnginCapabilityExecutionKernel;
   private readonly _hotRuntime: HotRuntime<A>;
   private _runtimeWorkQueued = false;
+  private _lastRuntimeWorkFlushedRevision = 0;
+  private _queuedRuntimeWorkRevision: number | null = null;
   private readonly _lifecycleHooks = new Set<
     (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
   >();
@@ -169,7 +171,7 @@ export class EnginRuntime<
           'Rule-set capability target profile is invalid.',
       );
     }
-    if (!capabilityProfileMatchesRuleSet(ruleSet.capabilityTargets, ruleSet.params.enginId)) {
+    if (!capabilityProfileMatchesRuleSet(ruleSet.params.enginId, ruleSet.capabilityTargets.enginId)) {
       throw new Error(
         'Rule-set capability target profile must match the Engin params id or a canonical alias.',
       );
@@ -402,12 +404,22 @@ export class EnginRuntime<
     // persist, and publish every single input event.
     if (this._executionKernel.shouldDeferRuntimeWork(action.type)) {
       this._hotRuntime.submit(action, this._state.revision);
-      this.scheduleRuntimeWork();
+      this.queueRealtimeRuntimeWork(this._state.revision);
     } else {
       this.flushRuntimeWork();
     }
 
-    return true;
+    return this._state.revision === next.revision;
+  }
+
+  private queueRealtimeRuntimeWork(revision: number): void {
+    this._queuedRuntimeWorkRevision = revision;
+    const cadence = Math.max(1, this._executionKernel.plan.syncCadenceRevisions);
+    if (revision - this._lastRuntimeWorkFlushedRevision >= cadence) {
+      this.flushRuntimeWork();
+      return;
+    }
+    this.scheduleRuntimeWork();
   }
 
   private scheduleRuntimeWork(): void {
@@ -420,13 +432,24 @@ export class EnginRuntime<
         };
     enqueue(() => {
       this._runtimeWorkQueued = false;
+      const queuedRevision = this._queuedRuntimeWorkRevision;
+      if (queuedRevision === null) return;
+      if (queuedRevision <= this._lastRuntimeWorkFlushedRevision) {
+        this._queuedRuntimeWorkRevision = null;
+        return;
+      }
       this.flushRuntimeWork();
     });
   }
 
   private flushRuntimeWork(): void {
+    if (this._state.revision <= this._lastRuntimeWorkFlushedRevision) return;
     this.publishSyncFrame();
     this.persistDomainState();
+    this._lastRuntimeWorkFlushedRevision = this._state.revision;
+    if (this._queuedRuntimeWorkRevision !== null && this._queuedRuntimeWorkRevision <= this._lastRuntimeWorkFlushedRevision) {
+      this._queuedRuntimeWorkRevision = null;
+    }
   }
 
   private persistDomainState(): void {

@@ -13,6 +13,8 @@ export interface MetricMeasurement extends JsonObject {
   dimension: CapabilityTargetDimension;
   value: number | null;
   status?: Exclude<MetricStatus, 'pass' | 'fail'>;
+  source?: 'measured' | 'reported' | 'hardware-dependent';
+  evidence?: JsonObject;
   reason?: string;
 }
 
@@ -24,6 +26,8 @@ export interface EnginCapabilityScorecardEntry extends JsonObject {
   acceptanceValue: number;
   direction: CapabilityTargetEvaluation['direction'];
   unit: CapabilityTargetEvaluation['unit'];
+  source?: 'measured' | 'reported' | 'hardware-dependent';
+  evidence?: JsonObject;
   reason?: string;
 }
 
@@ -63,6 +67,8 @@ export function createEnginCapabilityScorecard(
         acceptanceValue: target.acceptanceValue,
         direction: target.direction,
         unit: target.unit,
+        source: measurement?.source,
+        evidence: measurement?.evidence,
         reason: measurement?.reason ?? 'Metric has no measured value.',
       };
     }
@@ -75,6 +81,8 @@ export function createEnginCapabilityScorecard(
       acceptanceValue: target.acceptanceValue,
       direction: target.direction,
       unit: target.unit,
+      source: measurement.source,
+      evidence: measurement.evidence,
       reason: measurement.reason,
     };
   });
