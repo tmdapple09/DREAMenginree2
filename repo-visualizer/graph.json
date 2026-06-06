@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T02:42:50.809Z",
+  "generatedAt": "2026-06-06T22:57:50.934Z",
   "root": ".",
   "nodes": [
     {
@@ -3456,6 +3456,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-completedream-webgpu-initialized-no-media.zip",
+      "label": "DREAMenginree2-completedream-webgpu-initialized-no-media.zip",
+      "type": "file",
+      "path": "DREAMenginree2-completedream-webgpu-initialized-no-media.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -8805,7 +8815,7 @@
       "type": "function",
       "path": "app/daydream/code/page.tsx",
       "parent": "file:app/daydream/code/page.tsx",
-      "loc": 27,
+      "loc": 95,
       "isOrphan": false,
       "exported": true
     },
@@ -8941,7 +8951,7 @@
       "type": "function",
       "path": "app/daydream/forge/page.tsx",
       "parent": "file:app/daydream/forge/page.tsx",
-      "loc": 28,
+      "loc": 70,
       "isOrphan": false,
       "exported": true
     },
@@ -9116,7 +9126,7 @@
       "type": "function",
       "path": "app/daydream/lab/page.tsx",
       "parent": "file:app/daydream/lab/page.tsx",
-      "loc": 37,
+      "loc": 112,
       "isOrphan": false,
       "exported": true
     },
@@ -9863,7 +9873,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
       "parent": "file:app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
-      "loc": 146,
+      "loc": 149,
       "isOrphan": true,
       "exported": false
     },
@@ -9873,7 +9883,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
       "parent": "file:app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
-      "loc": 156,
+      "loc": 159,
       "isOrphan": true,
       "exported": false
     },
@@ -9883,7 +9893,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
       "parent": "file:app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
-      "loc": 370,
+      "loc": 667,
       "isOrphan": true,
       "exported": false
     },
@@ -9893,7 +9903,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
       "parent": "file:app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx",
-      "loc": 535,
+      "loc": 1095,
       "isOrphan": true,
       "exported": false
     },
@@ -10002,7 +10012,7 @@
       "type": "function",
       "path": "app/dreamdmbar/layout.tsx",
       "parent": "file:app/dreamdmbar/layout.tsx",
-      "loc": 53,
+      "loc": 54,
       "isOrphan": false,
       "exported": true
     },
@@ -10057,7 +10067,7 @@
       "type": "function",
       "path": "app/dreamr/page.tsx",
       "parent": "file:app/dreamr/page.tsx",
-      "loc": 31,
+      "loc": 32,
       "isOrphan": false,
       "exported": true
     },
@@ -10323,7 +10333,7 @@
       "type": "function",
       "path": "app/engines/code/notebook/page.tsx",
       "parent": "file:app/engines/code/notebook/page.tsx",
-      "loc": 19,
+      "loc": 22,
       "isOrphan": false,
       "exported": true
     },
@@ -11730,7 +11740,8 @@
       "isOrphan": false,
       "tags": [
         "supabase-table:boards",
-        "supabase-table:board_posts"
+        "supabase-table:board_posts",
+        "supabase-table:profiles"
       ]
     },
     {
@@ -12615,7 +12626,7 @@
       "type": "function",
       "path": "app/settings/security/page.tsx",
       "parent": "file:app/settings/security/page.tsx",
-      "loc": 26,
+      "loc": 31,
       "isOrphan": false,
       "exported": true
     },
@@ -13392,7 +13403,7 @@
       "type": "function",
       "path": "components/connectors/dream.ConnectorRow.tsx",
       "parent": "file:components/connectors/dream.ConnectorRow.tsx",
-      "loc": 23,
+      "loc": 34,
       "isOrphan": true,
       "exported": false
     },
@@ -13402,7 +13413,7 @@
       "type": "function",
       "path": "components/connectors/dream.ConnectorRow.tsx",
       "parent": "file:components/connectors/dream.ConnectorRow.tsx",
-      "loc": 57,
+      "loc": 114,
       "isOrphan": true,
       "exported": false
     },
@@ -13412,7 +13423,7 @@
       "type": "function",
       "path": "components/connectors/dream.ConnectorRow.tsx",
       "parent": "file:components/connectors/dream.ConnectorRow.tsx",
-      "loc": 137,
+      "loc": 251,
       "isOrphan": true,
       "exported": false
     },
@@ -13422,7 +13433,7 @@
       "type": "function",
       "path": "components/connectors/dream.ConnectorRow.tsx",
       "parent": "file:components/connectors/dream.ConnectorRow.tsx",
-      "loc": 174,
+      "loc": 336,
       "isOrphan": true,
       "exported": true
     },
@@ -13778,7 +13789,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 157,
+      "loc": 187,
       "isOrphan": true,
       "exported": false
     },
@@ -13788,7 +13799,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 232,
+      "loc": 296,
       "isOrphan": true,
       "exported": false
     },
@@ -13798,7 +13809,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 251,
+      "loc": 332,
       "isOrphan": true,
       "exported": false
     },
@@ -13808,7 +13819,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 268,
+      "loc": 384,
       "isOrphan": true,
       "exported": true
     },
@@ -13948,7 +13959,7 @@
       "type": "function",
       "path": "components/daydream/dream.LabDreamIDE.tsx",
       "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
-      "loc": 127,
+      "loc": 169,
       "isOrphan": true,
       "exported": false
     },
@@ -13958,7 +13969,7 @@
       "type": "function",
       "path": "components/daydream/dream.LabDreamIDE.tsx",
       "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
-      "loc": 142,
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
@@ -13968,7 +13979,7 @@
       "type": "function",
       "path": "components/daydream/dream.LabDreamIDE.tsx",
       "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
-      "loc": 163,
+      "loc": 208,
       "isOrphan": true,
       "exported": false
     },
@@ -13978,7 +13989,7 @@
       "type": "function",
       "path": "components/daydream/dream.LabDreamIDE.tsx",
       "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
-      "loc": 183,
+      "loc": 230,
       "isOrphan": true,
       "exported": false
     },
@@ -13988,7 +13999,7 @@
       "type": "function",
       "path": "components/daydream/dream.LabDreamIDE.tsx",
       "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
-      "loc": 239,
+      "loc": 289,
       "isOrphan": true,
       "exported": true
     },
@@ -14697,7 +14708,7 @@
       "type": "function",
       "path": "components/dream.HomeFeed.tsx",
       "parent": "file:components/dream.HomeFeed.tsx",
-      "loc": 68,
+      "loc": 84,
       "isOrphan": true,
       "exported": true
     },
@@ -15356,7 +15367,7 @@
       "type": "function",
       "path": "components/dream.universal_asset_registry.tsx",
       "parent": "file:components/dream.universal_asset_registry.tsx",
-      "loc": 139,
+      "loc": 179,
       "isOrphan": true,
       "exported": false
     },
@@ -15366,7 +15377,7 @@
       "type": "function",
       "path": "components/dream.universal_asset_registry.tsx",
       "parent": "file:components/dream.universal_asset_registry.tsx",
-      "loc": 143,
+      "loc": 183,
       "isOrphan": true,
       "exported": false
     },
@@ -15376,7 +15387,7 @@
       "type": "function",
       "path": "components/dream.universal_asset_registry.tsx",
       "parent": "file:components/dream.universal_asset_registry.tsx",
-      "loc": 172,
+      "loc": 216,
       "isOrphan": true,
       "exported": true
     },
@@ -15522,7 +15533,7 @@
       "type": "function",
       "path": "components/dreamengin/dream.DREAMenginOS.tsx",
       "parent": "file:components/dreamengin/dream.DREAMenginOS.tsx",
-      "loc": 64,
+      "loc": 73,
       "isOrphan": true,
       "exported": false
     },
@@ -15532,7 +15543,7 @@
       "type": "function",
       "path": "components/dreamengin/dream.DREAMenginOS.tsx",
       "parent": "file:components/dreamengin/dream.DREAMenginOS.tsx",
-      "loc": 74,
+      "loc": 88,
       "isOrphan": true,
       "exported": true
     },
@@ -16189,7 +16200,7 @@
       "type": "function",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "parent": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "loc": 46,
+      "loc": 48,
       "isOrphan": true,
       "exported": false
     },
@@ -16199,7 +16210,7 @@
       "type": "function",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "parent": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "loc": 50,
+      "loc": 52,
       "isOrphan": true,
       "exported": false
     },
@@ -16209,7 +16220,7 @@
       "type": "function",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "parent": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "loc": 69,
+      "loc": 77,
       "isOrphan": true,
       "exported": false
     },
@@ -16219,7 +16230,7 @@
       "type": "function",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "parent": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "loc": 77,
+      "loc": 85,
       "isOrphan": true,
       "exported": false
     },
@@ -16229,7 +16240,7 @@
       "type": "function",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "parent": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "loc": 104,
+      "loc": 118,
       "isOrphan": false,
       "exported": true
     },
@@ -16393,22 +16404,12 @@
       "tags": []
     },
     {
-      "id": "function:components/dreams/dream.panel.RuntimeMemoryHUD.tsx#relativeTime",
-      "label": "relativeTime",
-      "type": "function",
-      "path": "components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
-      "parent": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
-      "loc": 31,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:components/dreams/dream.panel.RuntimeMemoryHUD.tsx#RuntimeMemoryHUD",
       "label": "RuntimeMemoryHUD",
       "type": "function",
       "path": "components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
       "parent": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
-      "loc": 43,
+      "loc": 33,
       "isOrphan": true,
       "exported": true
     },
@@ -16438,7 +16439,7 @@
       "type": "function",
       "path": "components/dreams/dream.shell.SharedDreamShell.tsx",
       "parent": "file:components/dreams/dream.shell.SharedDreamShell.tsx",
-      "loc": 47,
+      "loc": 60,
       "isOrphan": true,
       "exported": false
     },
@@ -16448,7 +16449,7 @@
       "type": "function",
       "path": "components/dreams/dream.shell.SharedDreamShell.tsx",
       "parent": "file:components/dreams/dream.shell.SharedDreamShell.tsx",
-      "loc": 57,
+      "loc": 70,
       "isOrphan": true,
       "exported": true
     },
@@ -16843,7 +16844,7 @@
       "type": "function",
       "path": "components/engines/code/panels/dream.panel.NotebookPanel.tsx",
       "parent": "file:components/engines/code/panels/dream.panel.NotebookPanel.tsx",
-      "loc": 49,
+      "loc": 50,
       "isOrphan": true,
       "exported": false
     },
@@ -18196,9 +18197,39 @@
       "type": "function",
       "path": "components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
       "parent": "file:components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
-      "loc": 29,
+      "loc": 32,
       "isOrphan": true,
       "exported": true
+    },
+    {
+      "id": "function:components/gameengin/dream.cartridge.CartridgeBrowser.tsx#FilterRow",
+      "label": "FilterRow",
+      "type": "function",
+      "path": "components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "parent": "file:components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "loc": 234,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/gameengin/dream.cartridge.CartridgeBrowser.tsx#CartridgeCard",
+      "label": "CartridgeCard",
+      "type": "function",
+      "path": "components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "parent": "file:components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "loc": 295,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/gameengin/dream.cartridge.CartridgeBrowser.tsx#tierColor",
+      "label": "tierColor",
+      "type": "function",
+      "path": "components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "parent": "file:components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
+      "loc": 387,
+      "isOrphan": true,
+      "exported": false
     },
     {
       "id": "file:components/gameengin/dream.cartridge.CartridgeBrowser.tsx",
@@ -18246,7 +18277,7 @@
       "type": "function",
       "path": "components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
       "parent": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
-      "loc": 28,
+      "loc": 32,
       "isOrphan": true,
       "exported": true
     },
@@ -20750,7 +20781,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 104,
+      "loc": 129,
       "isOrphan": true,
       "exported": false
     },
@@ -20760,7 +20791,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 116,
+      "loc": 155,
       "isOrphan": true,
       "exported": false
     },
@@ -20770,7 +20801,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 125,
+      "loc": 164,
       "isOrphan": true,
       "exported": false
     },
@@ -20780,7 +20811,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 135,
+      "loc": 187,
       "isOrphan": true,
       "exported": false
     },
@@ -20790,7 +20821,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 139,
+      "loc": 191,
       "isOrphan": true,
       "exported": false
     },
@@ -20800,7 +20831,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 144,
+      "loc": 196,
       "isOrphan": true,
       "exported": false
     },
@@ -20810,7 +20841,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 154,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -20820,7 +20851,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 166,
+      "loc": 260,
       "isOrphan": true,
       "exported": false
     },
@@ -20830,7 +20861,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 183,
+      "loc": 283,
       "isOrphan": true,
       "exported": false
     },
@@ -20840,7 +20871,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 436,
+      "loc": 734,
       "isOrphan": true,
       "exported": false
     },
@@ -20850,7 +20881,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 510,
+      "loc": 860,
       "isOrphan": true,
       "exported": false
     },
@@ -20860,7 +20891,7 @@
       "type": "function",
       "path": "components/profile/dream.widget.ProfileWidgetGrid.tsx",
       "parent": "file:components/profile/dream.widget.ProfileWidgetGrid.tsx",
-      "loc": 920,
+      "loc": 1730,
       "isOrphan": true,
       "exported": true
     },
@@ -21208,7 +21239,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 46,
+      "loc": 76,
       "isOrphan": true,
       "exported": false
     },
@@ -21218,7 +21249,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 54,
+      "loc": 84,
       "isOrphan": true,
       "exported": false
     },
@@ -21228,7 +21259,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 76,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -21238,7 +21269,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 266,
+      "loc": 345,
       "isOrphan": true,
       "exported": true
     },
@@ -24507,12 +24538,42 @@
       ]
     },
     {
+      "id": "function:engins/engin.LabEngin.tsx#seededRandom",
+      "label": "seededRandom",
+      "type": "function",
+      "path": "engins/engin.LabEngin.tsx",
+      "parent": "file:engins/engin.LabEngin.tsx",
+      "loc": 116,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.LabEngin.tsx#roundMetric",
+      "label": "roundMetric",
+      "type": "function",
+      "path": "engins/engin.LabEngin.tsx",
+      "parent": "file:engins/engin.LabEngin.tsx",
+      "loc": 124,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.LabEngin.tsx#runBrowserSimulation",
+      "label": "runBrowserSimulation",
+      "type": "function",
+      "path": "engins/engin.LabEngin.tsx",
+      "parent": "file:engins/engin.LabEngin.tsx",
+      "loc": 129,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:engins/engin.LabEngin.tsx#LabEngin",
       "label": "LabEngin",
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 149,
+      "loc": 228,
       "isOrphan": false,
       "exported": true
     },
@@ -24536,7 +24597,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 205,
+      "loc": 211,
       "isOrphan": true,
       "exported": false
     },
@@ -24546,7 +24607,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 211,
+      "loc": 217,
       "isOrphan": true,
       "exported": false
     },
@@ -24556,7 +24617,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 215,
+      "loc": 221,
       "isOrphan": true,
       "exported": false
     },
@@ -24566,7 +24627,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 219,
+      "loc": 225,
       "isOrphan": true,
       "exported": false
     },
@@ -24576,7 +24637,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 223,
+      "loc": 229,
       "isOrphan": true,
       "exported": false
     },
@@ -24586,7 +24647,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 227,
+      "loc": 233,
       "isOrphan": true,
       "exported": false
     },
@@ -24596,7 +24657,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 244,
+      "loc": 250,
       "isOrphan": false,
       "exported": true
     },
@@ -24606,7 +24667,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1222,
+      "loc": 1298,
       "isOrphan": true,
       "exported": false
     },
@@ -24616,7 +24677,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1235,
+      "loc": 1311,
       "isOrphan": true,
       "exported": false
     },
@@ -24626,7 +24687,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1292,
+      "loc": 1369,
       "isOrphan": true,
       "exported": false
     },
@@ -24636,7 +24697,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1425,
+      "loc": 1512,
       "isOrphan": true,
       "exported": false
     },
@@ -24646,7 +24707,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1571,
+      "loc": 1658,
       "isOrphan": true,
       "exported": false
     },
@@ -24656,7 +24717,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1758,
+      "loc": 1845,
       "isOrphan": true,
       "exported": false
     },
@@ -24666,7 +24727,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 1965,
+      "loc": 2052,
       "isOrphan": true,
       "exported": false
     },
@@ -24676,7 +24737,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2082,
+      "loc": 2169,
       "isOrphan": true,
       "exported": false
     },
@@ -24686,7 +24747,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2219,
+      "loc": 2306,
       "isOrphan": true,
       "exported": false
     },
@@ -24696,7 +24757,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2308,
+      "loc": 2395,
       "isOrphan": true,
       "exported": false
     },
@@ -24706,7 +24767,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2406,
+      "loc": 2493,
       "isOrphan": true,
       "exported": false
     },
@@ -24716,7 +24777,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2524,
+      "loc": 2611,
       "isOrphan": true,
       "exported": false
     },
@@ -24726,7 +24787,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2733,
+      "loc": 2820,
       "isOrphan": true,
       "exported": false
     },
@@ -24736,7 +24797,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2784,
+      "loc": 2871,
       "isOrphan": true,
       "exported": false
     },
@@ -24746,7 +24807,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2790,
+      "loc": 2877,
       "isOrphan": true,
       "exported": false
     },
@@ -24756,7 +24817,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2796,
+      "loc": 2883,
       "isOrphan": true,
       "exported": false
     },
@@ -24766,7 +24827,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2818,
+      "loc": 2905,
       "isOrphan": true,
       "exported": false
     },
@@ -24776,7 +24837,7 @@
       "type": "function",
       "path": "engins/engin.StarMakerEngin.tsx",
       "parent": "file:engins/engin.StarMakerEngin.tsx",
-      "loc": 2850,
+      "loc": 2937,
       "isOrphan": true,
       "exported": false
     },
@@ -27762,12 +27823,22 @@
       ]
     },
     {
+      "id": "function:lib/ai/rate-limiter.ts#normalizeRateLimitPayload",
+      "label": "normalizeRateLimitPayload",
+      "type": "function",
+      "path": "lib/ai/rate-limiter.ts",
+      "parent": "file:lib/ai/rate-limiter.ts",
+      "loc": 21,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/ai/rate-limiter.ts#checkRateLimit",
       "label": "checkRateLimit",
       "type": "function",
       "path": "lib/ai/rate-limiter.ts",
       "parent": "file:lib/ai/rate-limiter.ts",
-      "loc": 29,
+      "loc": 41,
       "isOrphan": true,
       "exported": true
     },
@@ -27777,7 +27848,7 @@
       "type": "function",
       "path": "lib/ai/rate-limiter.ts",
       "parent": "file:lib/ai/rate-limiter.ts",
-      "loc": 78,
+      "loc": 91,
       "isOrphan": true,
       "exported": true
     },
@@ -27795,12 +27866,22 @@
       ]
     },
     {
+      "id": "function:lib/ai/rateLimit.ts#normalizeRateLimitPayload",
+      "label": "normalizeRateLimitPayload",
+      "type": "function",
+      "path": "lib/ai/rateLimit.ts",
+      "parent": "file:lib/ai/rateLimit.ts",
+      "loc": 12,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/ai/rateLimit.ts#checkRateLimit",
       "label": "checkRateLimit",
       "type": "function",
       "path": "lib/ai/rateLimit.ts",
       "parent": "file:lib/ai/rateLimit.ts",
-      "loc": 16,
+      "loc": 28,
       "isOrphan": false,
       "exported": true
     },
@@ -27810,7 +27891,7 @@
       "type": "function",
       "path": "lib/ai/rateLimit.ts",
       "parent": "file:lib/ai/rateLimit.ts",
-      "loc": 74,
+      "loc": 90,
       "isOrphan": false,
       "exported": true
     },
@@ -30176,7 +30257,7 @@
       "type": "function",
       "path": "lib/composite/rotoscope.ts",
       "parent": "file:lib/composite/rotoscope.ts",
-      "loc": 193,
+      "loc": 196,
       "isOrphan": true,
       "exported": true
     },
@@ -30186,7 +30267,7 @@
       "type": "function",
       "path": "lib/composite/rotoscope.ts",
       "parent": "file:lib/composite/rotoscope.ts",
-      "loc": 224,
+      "loc": 227,
       "isOrphan": false,
       "exported": true
     },
@@ -30196,7 +30277,7 @@
       "type": "function",
       "path": "lib/composite/rotoscope.ts",
       "parent": "file:lib/composite/rotoscope.ts",
-      "loc": 264,
+      "loc": 267,
       "isOrphan": false,
       "exported": true
     },
@@ -30206,7 +30287,7 @@
       "type": "function",
       "path": "lib/composite/rotoscope.ts",
       "parent": "file:lib/composite/rotoscope.ts",
-      "loc": 271,
+      "loc": 274,
       "isOrphan": true,
       "exported": false
     },
@@ -35317,6 +35398,1236 @@
       "tags": []
     },
     {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#executionPlan",
+      "label": "executionPlan",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 74,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#defaultPlan",
+      "label": "defaultPlan",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 82,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#clampPositiveInteger",
+      "label": "clampPositiveInteger",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 137,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#getEnginExecutionPlan",
+      "label": "getEnginExecutionPlan",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 141,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#intersectAabb",
+      "label": "intersectAabb",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 221,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityExecution.ts#createEnginCapabilityExecutionKernel",
+      "label": "createEnginCapabilityExecutionKernel",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 389,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#CodeEditRingBuffer",
+      "label": "CodeEditRingBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 147,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#GeometryBatcher",
+      "label": "GeometryBatcher",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 177,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#RayGridAccelerator",
+      "label": "RayGridAccelerator",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 204,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#AudioTrackMixer",
+      "label": "AudioTrackMixer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 245,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#MidiEventRingBuffer",
+      "label": "MidiEventRingBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 269,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#VectorPathCache",
+      "label": "VectorPathCache",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 304,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#CollaborationDeltaPacker",
+      "label": "CollaborationDeltaPacker",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 320,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#ParticleSoAKernel",
+      "label": "ParticleSoAKernel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 331,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginCapabilityExecution.ts#EnginCapabilityExecutionKernel",
+      "label": "EnginCapabilityExecutionKernel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "loc": 359,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "label": "EnginCapabilityExecution.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityScorecard.ts#measuredPasses",
+      "label": "measuredPasses",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "loc": 44,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityScorecard.ts#createEnginCapabilityScorecard",
+      "label": "createEnginCapabilityScorecard",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "loc": 50,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "label": "EnginCapabilityScorecard.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#atMost",
+      "label": "atMost",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 87,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#atLeast",
+      "label": "atLeast",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 103,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#profile",
+      "label": "profile",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 117,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#acceptanceValueForTarget",
+      "label": "acceptanceValueForTarget",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 233,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#evaluateCapabilityTarget",
+      "label": "evaluateCapabilityTarget",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 239,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#validateEnginCapabilityProfile",
+      "label": "validateEnginCapabilityProfile",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 251,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#isCanonicalEnginId",
+      "label": "isCanonicalEnginId",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 310,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#isCustomEnginProfileId",
+      "label": "isCustomEnginProfileId",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 314,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#isEnginProfileId",
+      "label": "isEnginProfileId",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 318,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#toCustomEnginProfileId",
+      "label": "toCustomEnginProfileId",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 331,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#createCustomEnginCapabilityProfile",
+      "label": "createCustomEnginCapabilityProfile",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 337,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#canonicalProfileAlias",
+      "label": "canonicalProfileAlias",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 357,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#capabilityProfileMatchesRuleSet",
+      "label": "capabilityProfileMatchesRuleSet",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 367,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
+      "label": "getEnginCapabilityProfile",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 378,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginCapabilityTargets.ts#validateCanonicalEnginCapabilityProfiles",
+      "label": "validateCanonicalEnginCapabilityProfiles",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "loc": 384,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "label": "EnginCapabilityTargets.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#createCanonicalScorecards",
+      "label": "createCanonicalScorecards",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 195,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#runtimeNowMs",
+      "label": "runtimeNowMs",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 227,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#measuredSamples",
+      "label": "measuredSamples",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 233,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#medianSample",
+      "label": "medianSample",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 244,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#withEvidence",
+      "label": "withEvidence",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 249,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#blockedMeasurement",
+      "label": "blockedMeasurement",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 259,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#benchmarkMeasurement",
+      "label": "benchmarkMeasurement",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 288,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#hardwareWebGpuMeasurement",
+      "label": "hardwareWebGpuMeasurement",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 312,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#audioRuntimeMeasurement",
+      "label": "audioRuntimeMeasurement",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 326,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#codeMeasurements",
+      "label": "codeMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 339,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#gamesMeasurements",
+      "label": "gamesMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 372,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#musicMeasurements",
+      "label": "musicMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 390,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#createMeasurements",
+      "label": "createMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 432,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#brandMeasurements",
+      "label": "brandMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 458,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#labMeasurements",
+      "label": "labMeasurements",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 479,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginDomainCores.ts#runCanonicalPerformanceBenchmarks",
+      "label": "runCanonicalPerformanceBenchmarks",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 502,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodePieceTableDocument",
+      "label": "CodePieceTableDocument",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 10,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeEditorHotState",
+      "label": "CodeEditorHotState",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 116,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeDiagnosticWorkerBridge",
+      "label": "CodeDiagnosticWorkerBridge",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 117,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeExecutionWorkerBridge",
+      "label": "CodeExecutionWorkerBridge",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 118,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeSnapshotCompactor",
+      "label": "CodeSnapshotCompactor",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 119,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeStartupHydrator",
+      "label": "CodeStartupHydrator",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 120,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CodeKeystrokeBenchmark",
+      "label": "CodeKeystrokeBenchmark",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 121,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameWebGPUDevice",
+      "label": "GameWebGPUDevice",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 122,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameRenderLoop",
+      "label": "GameRenderLoop",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 124,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameInstanceBufferManager",
+      "label": "GameInstanceBufferManager",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 125,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameGeometryBufferRegistry",
+      "label": "GameGeometryBufferRegistry",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 126,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameMaterialBucketBuffer",
+      "label": "GameMaterialBucketBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 127,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameFrustumCuller",
+      "label": "GameFrustumCuller",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 128,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameLODSelector",
+      "label": "GameLODSelector",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 129,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameInputRingBuffer",
+      "label": "GameInputRingBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 130,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GamePhysicsCommandBuffer",
+      "label": "GamePhysicsCommandBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 131,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameFrameBudgetProbe",
+      "label": "GameFrameBudgetProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 132,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#GameGeometryThroughputBenchmark",
+      "label": "GameGeometryThroughputBenchmark",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 133,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerAudioWorkletProcessor",
+      "label": "StarMakerAudioWorkletProcessor",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 134,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerAudioWorkletBridge",
+      "label": "StarMakerAudioWorkletBridge",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 136,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerTrackBufferPool",
+      "label": "StarMakerTrackBufferPool",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 137,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerAudioCommandQueue",
+      "label": "StarMakerAudioCommandQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 138,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerTransportClock",
+      "label": "StarMakerTransportClock",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 139,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerMixerKernel",
+      "label": "StarMakerMixerKernel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 140,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerMeteringDecoupler",
+      "label": "StarMakerMeteringDecoupler",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 141,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StarMakerLatencyProbe",
+      "label": "StarMakerLatencyProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 142,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentRenderJobQueue",
+      "label": "ContentRenderJobQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 145,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentWorkerRenderBridge",
+      "label": "ContentWorkerRenderBridge",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 146,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentWebGPURenderPath",
+      "label": "ContentWebGPURenderPath",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 147,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentTileRenderer4K",
+      "label": "ContentTileRenderer4K",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 148,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentRayAccelerationStructure",
+      "label": "ContentRayAccelerationStructure",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 149,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentGeometryBufferRegistry",
+      "label": "ContentGeometryBufferRegistry",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 150,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentMaterialBufferRegistry",
+      "label": "ContentMaterialBufferRegistry",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 151,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentProgressiveOutputBuffer",
+      "label": "ContentProgressiveOutputBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 152,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentGpuCapabilityProbe",
+      "label": "ContentGpuCapabilityProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 153,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#ContentRenderBenchmark",
+      "label": "ContentRenderBenchmark",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 154,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandVectorPathCache",
+      "label": "BrandVectorPathCache",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 155,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandSdfGlyphAtlas",
+      "label": "BrandSdfGlyphAtlas",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 157,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandPaletteCache",
+      "label": "BrandPaletteCache",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 158,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandTypeScaleCache",
+      "label": "BrandTypeScaleCache",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 159,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandFileHydrator",
+      "label": "BrandFileHydrator",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 160,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandCollaborationDeltaPacker",
+      "label": "BrandCollaborationDeltaPacker",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 161,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandPatchLog",
+      "label": "BrandPatchLog",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 162,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandLocalApplyQueue",
+      "label": "BrandLocalApplyQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 163,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandVectorRenderProbe",
+      "label": "BrandVectorRenderProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 164,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandFileOpenProbe",
+      "label": "BrandFileOpenProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 165,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#BrandCollaborationSyncProbe",
+      "label": "BrandCollaborationSyncProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 166,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabParticleSoABuffer",
+      "label": "LabParticleSoABuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 167,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabSpatialHashGrid",
+      "label": "LabSpatialHashGrid",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 169,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabCollisionCandidateBuffer",
+      "label": "LabCollisionCandidateBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 170,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabCollisionKernel",
+      "label": "LabCollisionKernel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 171,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabWebGPUComputePipeline",
+      "label": "LabWebGPUComputePipeline",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 172,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabComputeShaderRegistry",
+      "label": "LabComputeShaderRegistry",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 173,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabGpuParticleBuffers",
+      "label": "LabGpuParticleBuffers",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 174,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabWasmSimdFallback",
+      "label": "LabWasmSimdFallback",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 175,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabSimulationWorkerBridge",
+      "label": "LabSimulationWorkerBridge",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 176,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabSimulationClock",
+      "label": "LabSimulationClock",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 177,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabParticleBenchmark64K",
+      "label": "LabParticleBenchmark64K",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 178,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabParticleBenchmark1M",
+      "label": "LabParticleBenchmark1M",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 179,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabCollisionBenchmark",
+      "label": "LabCollisionBenchmark",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 180,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LabGpuDispatchProbe",
+      "label": "LabGpuDispatchProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 181,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CollaborationApplyQueue",
+      "label": "CollaborationApplyQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 182,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CollaborationRevisionClock",
+      "label": "CollaborationRevisionClock",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 184,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#TransportLatencyProbe",
+      "label": "TransportLatencyProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 185,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#DeterministicMergePatchModel",
+      "label": "DeterministicMergePatchModel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 186,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CrdtPatchModel",
+      "label": "CrdtPatchModel",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 187,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#AssetManifestLoader",
+      "label": "AssetManifestLoader",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 188,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#LazyEnginHydrator",
+      "label": "LazyEnginHydrator",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 190,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#StreamingAssetLoader",
+      "label": "StreamingAssetLoader",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 191,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#IndexedDbBlobStore",
+      "label": "IndexedDbBlobStore",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 192,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginDomainCores.ts#CacheStorageRuntime",
+      "label": "CacheStorageRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "loc": 193,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "label": "EnginDomainCores.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/engin-runtime/EnginEventBus.ts#createEnginEventBus",
       "label": "createEnginEventBus",
       "type": "function",
@@ -35331,6 +36642,46 @@
       "label": "EnginEventBus.ts",
       "type": "ts",
       "path": "lib/engin-runtime/EnginEventBus.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginHardwareCapabilities.ts#detectWasmSimdSupport",
+      "label": "detectWasmSimdSupport",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "loc": 17,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginHardwareCapabilities.ts#detectEnginHardwareCapabilities",
+      "label": "detectEnginHardwareCapabilities",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "loc": 27,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginHardwareCapabilities.ts#fallbackEnginHardwareCapabilities",
+      "label": "fallbackEnginHardwareCapabilities",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "loc": 59,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "label": "EnginHardwareCapabilities.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
       "parent": "folder:lib/engin-runtime",
       "loc": null,
       "isOrphan": false,
@@ -35387,12 +36738,72 @@
       "tags": []
     },
     {
+      "id": "function:lib/engin-runtime/EnginPerformanceProbe.ts#gpuMeasurementOrHardwareDependent",
+      "label": "gpuMeasurementOrHardwareDependent",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/engin-runtime/EnginPerformanceProbe.ts#now",
+      "label": "now",
+      "type": "function",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "loc": 56,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginPerformanceProbe.ts#EnginPerformanceProbe",
+      "label": "EnginPerformanceProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "loc": 4,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginPerformanceProbe.ts#StartupBudgetProbe",
+      "label": "StartupBudgetProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "loc": 43,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/EnginPerformanceProbe.ts#IdleMemoryProbe",
+      "label": "IdleMemoryProbe",
+      "type": "class",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "loc": 45,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "label": "EnginPerformanceProbe.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/engin-runtime/EnginRuleSetContract.ts#parseVersion",
       "label": "parseVersion",
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 76,
+      "loc": 77,
       "isOrphan": true,
       "exported": false
     },
@@ -35402,7 +36813,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 81,
+      "loc": 82,
       "isOrphan": true,
       "exported": false
     },
@@ -35412,7 +36823,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 98,
+      "loc": 99,
       "isOrphan": true,
       "exported": true
     },
@@ -35422,7 +36833,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 124,
+      "loc": 125,
       "isOrphan": false,
       "exported": true
     },
@@ -35432,7 +36843,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 172,
+      "loc": 173,
       "isOrphan": false,
       "exported": true
     },
@@ -35452,7 +36863,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 94,
+      "loc": 108,
       "isOrphan": true,
       "exported": false
     },
@@ -35462,7 +36873,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 106,
+      "loc": 120,
       "isOrphan": false,
       "exported": true
     },
@@ -35531,6 +36942,206 @@
       "label": "EnginSnapshotFingerprint.ts",
       "type": "ts",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/engin-runtime/HotRuntime.ts#performanceNow",
+      "label": "performanceNow",
+      "type": "function",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 222,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#HotActionClassifier",
+      "label": "HotActionClassifier",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 20,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#RevisionCoalescer",
+      "label": "RevisionCoalescer",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 47,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#CommandRingBuffer",
+      "label": "CommandRingBuffer",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 64,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#TypedMemoryArena",
+      "label": "TypedMemoryArena",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 93,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#BinaryCommandBus",
+      "label": "BinaryCommandBus",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 112,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#DeferredPersistenceQueue",
+      "label": "DeferredPersistenceQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 127,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#DeferredSyncQueue",
+      "label": "DeferredSyncQueue",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 129,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#SnapshotCompactor",
+      "label": "SnapshotCompactor",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 130,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#WorkerPoolRuntime",
+      "label": "WorkerPoolRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 141,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#WebGPUDeviceRuntime",
+      "label": "WebGPUDeviceRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 155,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#GpuBufferRegistry",
+      "label": "GpuBufferRegistry",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 169,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#AudioWorkletRuntime",
+      "label": "AudioWorkletRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 175,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#WasmKernelRuntime",
+      "label": "WasmKernelRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 185,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/HotRuntime.ts#HotRuntime",
+      "label": "HotRuntime",
+      "type": "class",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "file:lib/engin-runtime/HotRuntime.ts",
+      "loc": 195,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/HotRuntime.ts",
+      "label": "HotRuntime.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "parent": "folder:lib/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "class:lib/engin-runtime/InternalMetrics.ts#InternalOnlyMetricStore",
+      "label": "InternalOnlyMetricStore",
+      "type": "class",
+      "path": "lib/engin-runtime/InternalMetrics.ts",
+      "parent": "file:lib/engin-runtime/InternalMetrics.ts",
+      "loc": 2,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/InternalMetrics.ts#UserFacingMetricLeakTest",
+      "label": "UserFacingMetricLeakTest",
+      "type": "class",
+      "path": "lib/engin-runtime/InternalMetrics.ts",
+      "parent": "file:lib/engin-runtime/InternalMetrics.ts",
+      "loc": 9,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "class:lib/engin-runtime/InternalMetrics.ts#DevOnlyBenchmarkRunner",
+      "label": "DevOnlyBenchmarkRunner",
+      "type": "class",
+      "path": "lib/engin-runtime/InternalMetrics.ts",
+      "parent": "file:lib/engin-runtime/InternalMetrics.ts",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/engin-runtime/InternalMetrics.ts",
+      "label": "InternalMetrics.ts",
+      "type": "ts",
+      "path": "lib/engin-runtime/InternalMetrics.ts",
       "parent": "folder:lib/engin-runtime",
       "loc": null,
       "isOrphan": false,
@@ -35612,7 +37223,7 @@
       "type": "function",
       "path": "lib/engin-runtime/index.ts",
       "parent": "file:lib/engin-runtime/index.ts",
-      "loc": 124,
+      "loc": 209,
       "isOrphan": false,
       "exported": true
     },
@@ -35904,7 +37515,7 @@
       "type": "function",
       "path": "lib/engins/brand/brandEnginRuleSet.ts",
       "parent": "file:lib/engins/brand/brandEnginRuleSet.ts",
-      "loc": 140,
+      "loc": 141,
       "isOrphan": true,
       "exported": false
     },
@@ -35914,7 +37525,7 @@
       "type": "function",
       "path": "lib/engins/brand/brandEnginRuleSet.ts",
       "parent": "file:lib/engins/brand/brandEnginRuleSet.ts",
-      "loc": 206,
+      "loc": 207,
       "isOrphan": true,
       "exported": false
     },
@@ -35963,7 +37574,7 @@
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 140,
+      "loc": 141,
       "isOrphan": true,
       "exported": false
     },
@@ -35973,7 +37584,7 @@
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 221,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -36022,7 +37633,7 @@
       "type": "function",
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "parent": "file:lib/engins/content/contentEnginRuleSet.ts",
-      "loc": 118,
+      "loc": 119,
       "isOrphan": true,
       "exported": false
     },
@@ -36032,7 +37643,7 @@
       "type": "function",
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "parent": "file:lib/engins/content/contentEnginRuleSet.ts",
-      "loc": 182,
+      "loc": 183,
       "isOrphan": true,
       "exported": false
     },
@@ -36081,7 +37692,7 @@
       "type": "function",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
       "parent": "file:lib/engins/game/gameEnginRuleSet.ts",
-      "loc": 168,
+      "loc": 169,
       "isOrphan": true,
       "exported": false
     },
@@ -36091,7 +37702,7 @@
       "type": "function",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
       "parent": "file:lib/engins/game/gameEnginRuleSet.ts",
-      "loc": 251,
+      "loc": 252,
       "isOrphan": true,
       "exported": false
     },
@@ -36150,7 +37761,7 @@
       "type": "function",
       "path": "lib/engins/lab/labEnginRuleSet.ts",
       "parent": "file:lib/engins/lab/labEnginRuleSet.ts",
-      "loc": 116,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -36160,7 +37771,7 @@
       "type": "function",
       "path": "lib/engins/lab/labEnginRuleSet.ts",
       "parent": "file:lib/engins/lab/labEnginRuleSet.ts",
-      "loc": 185,
+      "loc": 186,
       "isOrphan": true,
       "exported": false
     },
@@ -36209,7 +37820,7 @@
       "type": "function",
       "path": "lib/engins/music/starMakerEnginRuleSet.ts",
       "parent": "file:lib/engins/music/starMakerEnginRuleSet.ts",
-      "loc": 145,
+      "loc": 146,
       "isOrphan": true,
       "exported": false
     },
@@ -36219,7 +37830,7 @@
       "type": "function",
       "path": "lib/engins/music/starMakerEnginRuleSet.ts",
       "parent": "file:lib/engins/music/starMakerEnginRuleSet.ts",
-      "loc": 223,
+      "loc": 224,
       "isOrphan": true,
       "exported": false
     },
@@ -40309,6 +41920,56 @@
       "tags": []
     },
     {
+      "id": "function:lib/gameengin/power-systems.ts#clamp01",
+      "label": "clamp01",
+      "type": "function",
+      "path": "lib/gameengin/power-systems.ts",
+      "parent": "file:lib/gameengin/power-systems.ts",
+      "loc": 290,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/power-systems.ts#distanceSq",
+      "label": "distanceSq",
+      "type": "function",
+      "path": "lib/gameengin/power-systems.ts",
+      "parent": "file:lib/gameengin/power-systems.ts",
+      "loc": 294,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/power-systems.ts#gaussianWeight",
+      "label": "gaussianWeight",
+      "type": "function",
+      "path": "lib/gameengin/power-systems.ts",
+      "parent": "file:lib/gameengin/power-systems.ts",
+      "loc": 301,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/power-systems.ts#predictionPosition",
+      "label": "predictionPosition",
+      "type": "function",
+      "path": "lib/gameengin/power-systems.ts",
+      "parent": "file:lib/gameengin/power-systems.ts",
+      "loc": 306,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/power-systems.ts#totalAttentionWeight",
+      "label": "totalAttentionWeight",
+      "type": "function",
+      "path": "lib/gameengin/power-systems.ts",
+      "parent": "file:lib/gameengin/power-systems.ts",
+      "loc": 316,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "class:lib/gameengin/power-systems.ts#RollbackNetcode",
       "label": "RollbackNetcode",
       "type": "class",
@@ -40334,7 +41995,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 280,
+      "loc": 331,
       "isOrphan": false,
       "exported": true
     },
@@ -40344,7 +42005,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 527,
+      "loc": 676,
       "isOrphan": false,
       "exported": true
     },
@@ -40354,7 +42015,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 664,
+      "loc": 813,
       "isOrphan": false,
       "exported": true
     },
@@ -40364,7 +42025,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 741,
+      "loc": 890,
       "isOrphan": false,
       "exported": true
     },
@@ -40374,7 +42035,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 896,
+      "loc": 1074,
       "isOrphan": false,
       "exported": true
     },
@@ -40384,7 +42045,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1018,
+      "loc": 1222,
       "isOrphan": false,
       "exported": true
     },
@@ -40394,7 +42055,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1137,
+      "loc": 1341,
       "isOrphan": false,
       "exported": true
     },
@@ -40404,7 +42065,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1229,
+      "loc": 1441,
       "isOrphan": false,
       "exported": true
     },
@@ -40414,7 +42075,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1318,
+      "loc": 1530,
       "isOrphan": false,
       "exported": true
     },
@@ -40424,7 +42085,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1408,
+      "loc": 1620,
       "isOrphan": false,
       "exported": true
     },
@@ -40434,7 +42095,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1509,
+      "loc": 1724,
       "isOrphan": false,
       "exported": true
     },
@@ -40444,7 +42105,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1566,
+      "loc": 1784,
       "isOrphan": false,
       "exported": true
     },
@@ -40454,7 +42115,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1620,
+      "loc": 1838,
       "isOrphan": true,
       "exported": true
     },
@@ -40464,7 +42125,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1669,
+      "loc": 1887,
       "isOrphan": false,
       "exported": true
     },
@@ -40474,7 +42135,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1735,
+      "loc": 1953,
       "isOrphan": false,
       "exported": true
     },
@@ -40484,7 +42145,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1839,
+      "loc": 2057,
       "isOrphan": false,
       "exported": true
     },
@@ -40494,7 +42155,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1949,
+      "loc": 2167,
       "isOrphan": false,
       "exported": true
     },
@@ -40504,7 +42165,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 2048,
+      "loc": 2275,
       "isOrphan": false,
       "exported": true
     },
@@ -44448,7 +46109,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 55,
+      "loc": 68,
       "isOrphan": false,
       "exported": true
     },
@@ -44458,7 +46119,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 62,
+      "loc": 75,
       "isOrphan": false,
       "exported": true
     },
@@ -44468,7 +46129,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 67,
+      "loc": 80,
       "isOrphan": false,
       "exported": true
     },
@@ -44478,7 +46139,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 84,
+      "loc": 97,
       "isOrphan": false,
       "exported": true
     },
@@ -44488,7 +46149,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 135,
+      "loc": 159,
       "isOrphan": false,
       "exported": true
     },
@@ -44498,7 +46159,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 153,
+      "loc": 186,
       "isOrphan": false,
       "exported": true
     },
@@ -44508,7 +46169,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 201,
+      "loc": 239,
       "isOrphan": true,
       "exported": true
     },
@@ -44518,7 +46179,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 235,
+      "loc": 304,
       "isOrphan": false,
       "exported": true
     },
@@ -44528,7 +46189,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 296,
+      "loc": 367,
       "isOrphan": true,
       "exported": true
     },
@@ -44538,7 +46199,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 337,
+      "loc": 408,
       "isOrphan": false,
       "exported": true
     },
@@ -44548,7 +46209,7 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 353,
+      "loc": 424,
       "isOrphan": false,
       "exported": true
     },
@@ -44558,7 +46219,107 @@
       "type": "function",
       "path": "lib/music/starmakerDaw.ts",
       "parent": "file:lib/music/starmakerDaw.ts",
-      "loc": 381,
+      "loc": 480,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#clampAudio",
+      "label": "clampAudio",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 538,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#normalizeMixerValue",
+      "label": "normalizeMixerValue",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 542,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#getStepFrequency",
+      "label": "getStepFrequency",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 546,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#getStepDuration",
+      "label": "getStepDuration",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 553,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#softLimit",
+      "label": "softLimit",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 565,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#computePcmDiagnostics",
+      "label": "computePcmDiagnostics",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 569,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#analyzeStereoPcm",
+      "label": "analyzeStereoPcm",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 599,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#renderStarMakerPattern",
+      "label": "renderStarMakerPattern",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 610,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#encodeWav24Bit",
+      "label": "encodeWav24Bit",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 693,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/music/starmakerDaw.ts#createRealtimeStarMakerAudioEngine",
+      "label": "createRealtimeStarMakerAudioEngine",
+      "type": "function",
+      "path": "lib/music/starmakerDaw.ts",
+      "parent": "file:lib/music/starmakerDaw.ts",
+      "loc": 787,
       "isOrphan": false,
       "exported": true
     },
@@ -63492,6 +65253,16 @@
       "tags": []
     },
     {
+      "id": "file:supabaseClient.ts",
+      "label": "supabaseClient.ts",
+      "type": "ts",
+      "path": "supabaseClient.ts",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:tailwind.config.ts",
       "label": "tailwind.config.ts",
       "type": "ts",
@@ -64642,6 +66413,16 @@
       "tags": []
     },
     {
+      "id": "file:tests/engin-capability-targets.test.ts",
+      "label": "engin-capability-targets.test.ts",
+      "type": "ts",
+      "path": "tests/engin-capability-targets.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/engin-dispatcher-glow.test.ts",
       "label": "engin-dispatcher-glow.test.ts",
       "type": "ts",
@@ -64656,6 +66437,16 @@
       "label": "engin-dispatcher.test.ts",
       "type": "ts",
       "path": "tests/engin-dispatcher.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "label": "engin-hot-runtime-wiring.test.ts",
+      "type": "ts",
+      "path": "tests/engin-hot-runtime-wiring.test.ts",
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
@@ -80646,6 +82437,61 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/HotRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/engin-runtime/EnginIOAdapter.ts",
       "target": "file:lib/engin-runtime/EnginBaseState.ts",
       "kind": "import"
@@ -80656,6 +82502,21 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "target": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "target": "file:lib/engin-runtime/EnginBaseState.ts",
       "kind": "import"
@@ -80663,6 +82524,11 @@
     {
       "source": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "import"
     },
     {
@@ -80687,6 +82553,21 @@
     },
     {
       "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "file:lib/engin-runtime/HotRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
       "target": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "kind": "import"
     },
@@ -80703,6 +82584,21 @@
     {
       "source": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/HotRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/HotRuntime.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engin-runtime/InternalMetrics.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
       "kind": "import"
     },
     {
@@ -80758,6 +82654,46 @@
     {
       "source": "file:lib/engin-runtime/index.ts",
       "target": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/HotRuntime.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/InternalMetrics.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/engin-runtime/index.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "reexport"
     },
     {
@@ -80817,6 +82753,11 @@
     },
     {
       "source": "file:lib/engins/brand/brandEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/brand/brandEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "kind": "import"
     },
@@ -80843,6 +82784,11 @@
     {
       "source": "file:lib/engins/code/codeEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "import"
     },
     {
@@ -80877,6 +82823,11 @@
     },
     {
       "source": "file:lib/engins/content/contentEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/content/contentEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "kind": "import"
     },
@@ -80903,6 +82854,11 @@
     {
       "source": "file:lib/engins/game/gameEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/game/gameEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "import"
     },
     {
@@ -80942,6 +82898,11 @@
     },
     {
       "source": "file:lib/engins/lab/labEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/lab/labEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "kind": "import"
     },
@@ -80968,6 +82929,11 @@
     {
       "source": "file:lib/engins/music/starMakerEnginRuleSet.ts",
       "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/engins/music/starMakerEnginRuleSet.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "import"
     },
     {
@@ -88421,6 +90387,11 @@
       "kind": "import"
     },
     {
+      "source": "file:supabaseClient.ts",
+      "target": "file:types/supabase.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/activity-first-protocol.test.ts",
       "target": "file:lib/activity/types.ts",
       "kind": "import"
@@ -88891,6 +90862,46 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/brand/brandEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/content/contentEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/game/gameEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/lab/labEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "file:lib/engins/music/starMakerEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/engin-dispatcher-glow.test.ts",
       "target": "file:lib/runtime/EnginDispatcher.ts",
       "kind": "import"
@@ -88903,6 +90914,16 @@
     {
       "source": "file:tests/engin-dispatcher.test.ts",
       "target": "file:lib/runtime/EnginDispatcher.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "target": "file:lib/engin-runtime/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
       "kind": "import"
     },
     {
@@ -88928,6 +90949,16 @@
     {
       "source": "file:tests/engin-runtime-core.test.ts",
       "target": "file:lib/engin-runtime/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-runtime-core.test.ts",
+      "target": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/engin-runtime-core.test.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
       "kind": "import"
     },
     {
@@ -96242,6 +98273,21 @@
     },
     {
       "source": "file:engins/engin.StarMakerEngin.tsx",
+      "target": "function:lib/music/starmakerDaw.ts#renderStarMakerPattern",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.StarMakerEngin.tsx",
+      "target": "function:lib/music/starmakerDaw.ts#createRealtimeStarMakerAudioEngine",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.StarMakerEngin.tsx",
+      "target": "function:lib/music/starmakerDaw.ts#analyzeStereoPcm",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.StarMakerEngin.tsx",
       "target": "function:lib/music/starmaker.ts#createMelodySuggestions",
       "kind": "call"
     },
@@ -97116,6 +99162,51 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#isCanonicalEnginId",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#acceptanceValueForTarget",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#evaluateCapabilityTarget",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "class:lib/engin-runtime/HotRuntime.ts#WorkerPoolRuntime",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#GeometryBatcher",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "class:lib/engin-runtime/HotRuntime.ts#AudioWorkletRuntime",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "class:lib/engin-runtime/EnginPerformanceProbe.ts#EnginPerformanceProbe",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityScorecard.ts#createEnginCapabilityScorecard",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#MidiEventRingBuffer",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/engin-runtime/EnginRuleSetContract.ts",
       "target": "function:lib/engin-runtime/EnginBaseState.ts#isEnginBaseState",
       "kind": "call"
@@ -97128,6 +99219,21 @@
     {
       "source": "file:lib/engin-runtime/EnginRuntime.ts",
       "target": "function:lib/engin-runtime/EnginRuleSetContract.ts#negotiateRuleSetCompatibility",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#validateEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#capabilityProfileMatchesRuleSet",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engin-runtime/EnginRuntime.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityExecution.ts#createEnginCapabilityExecutionKernel",
       "kind": "call"
     },
     {
@@ -97196,6 +99302,11 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/engins/brand/brandEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/engins/brand/useBrandEnginRuntime.ts",
       "target": "class:lib/engin-runtime/EnginIOAdapter.ts#MemoryAdapter",
       "kind": "call"
@@ -97208,6 +99319,11 @@
     {
       "source": "file:lib/engins/code/codeEnginRuleSet.ts",
       "target": "function:lib/engin-runtime/EnginBaseState.ts#patchBaseState",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
       "kind": "call"
     },
     {
@@ -97226,6 +99342,11 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/engins/content/contentEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/engins/content/useContentEnginRuntime.ts",
       "target": "class:lib/engin-runtime/EnginIOAdapter.ts#MemoryAdapter",
       "kind": "call"
@@ -97238,6 +99359,11 @@
     {
       "source": "file:lib/engins/game/gameEnginRuleSet.ts",
       "target": "function:lib/engin-runtime/EnginBaseState.ts#patchBaseState",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engins/game/gameEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
       "kind": "call"
     },
     {
@@ -97256,6 +99382,11 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/engins/lab/labEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/engins/lab/useLabEnginRuntime.ts",
       "target": "class:lib/engin-runtime/EnginIOAdapter.ts#MemoryAdapter",
       "kind": "call"
@@ -97268,6 +99399,11 @@
     {
       "source": "file:lib/engins/music/starMakerEnginRuleSet.ts",
       "target": "function:lib/engin-runtime/EnginBaseState.ts#patchBaseState",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/engins/music/starMakerEnginRuleSet.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#getEnginCapabilityProfile",
       "kind": "call"
     },
     {
@@ -99386,6 +101522,61 @@
       "kind": "call"
     },
     {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#validateCanonicalEnginCapabilityProfiles",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#createCustomEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#validateEnginCapabilityProfile",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#capabilityProfileMatchesRuleSet",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#acceptanceValueForTarget",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityExecution.ts#createEnginCapabilityExecutionKernel",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#GeometryBatcher",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#AudioTrackMixer",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#RayGridAccelerator",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#ParticleSoAKernel",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-capability-targets.test.ts",
+      "target": "class:lib/engin-runtime/EnginCapabilityExecution.ts#MidiEventRingBuffer",
+      "kind": "call"
+    },
+    {
       "source": "file:tests/engin-dispatcher.test.ts",
       "target": "function:lib/runtime/memory.ts#createEnginSAB",
       "kind": "call"
@@ -99438,6 +101629,26 @@
     {
       "source": "file:tests/engin-dispatcher.test.ts",
       "target": "function:lib/runtime/memory.ts#isIndexInBounds",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "target": "file:lib/engin-runtime/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#patchBaseState",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-hot-runtime-wiring.test.ts",
+      "target": "function:lib/engin-runtime/index.ts#createEnginRuntime",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/engin-runtime-core.test.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilityTargets.ts#createCustomEnginCapabilityProfile",
       "kind": "call"
     },
     {
@@ -102773,6 +104984,11 @@
     {
       "source": "file:app/messages/boards/[id]/page.tsx",
       "target": "sql-table:supabase/migrations/20260307000000_readme_gaps.sql#board_posts",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/messages/boards/[id]/page.tsx",
+      "target": "sql-table:supabase/schema-final.sql#profiles",
       "kind": "sql-reference"
     },
     {
