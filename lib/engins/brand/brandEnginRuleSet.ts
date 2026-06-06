@@ -19,6 +19,7 @@ import {
     type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
+import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
 import type {
     ConstraintResult,
     EnginAction,
@@ -257,6 +258,7 @@ export const BRAND_ENGIN_RULE_SET: EnginRuleSetContract<BrandEnginAction> = {
   manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
+  capabilityTargets: getEnginCapabilityProfile('brand'),
   constraints: [abTestAddConstraint, winnerConstraint],
   transform,
   deriveState,

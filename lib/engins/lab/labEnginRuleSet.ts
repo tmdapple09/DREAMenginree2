@@ -19,6 +19,7 @@ import {
     type JsonObject,
 } from '@/lib/engin-runtime/EnginBaseState';
 import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
+import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
 import type {
     ConstraintResult,
     EnginAction,
@@ -239,6 +240,7 @@ export const LAB_ENGIN_RULE_SET: EnginRuleSetContract<LabEnginAction> = {
   manifest: MANIFEST,
   params: PARAMS,
   requiredCapabilities: REQUIRED_CAPABILITIES,
+  capabilityTargets: getEnginCapabilityProfile('lab'),
   constraints: [simStartConstraint],
   transform,
   deriveState,

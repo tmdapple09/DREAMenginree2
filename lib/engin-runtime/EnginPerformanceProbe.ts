@@ -1,0 +1,61 @@
+import type { CapabilityTargetDimension } from './EnginCapabilityTargets';
+import type { MetricMeasurement } from './EnginCapabilityScorecard';
+import type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
+
+export class EnginPerformanceProbe {
+  timeMs(work: () => void): number {
+    const start = now();
+    work();
+    return now() - start;
+  }
+
+  async timeAsyncMs(work: () => Promise<void>): Promise<number> {
+    const start = now();
+    await work();
+    return now() - start;
+  }
+
+  throughputPerFrame(polygons: number, frames: number): number {
+    return Math.floor(polygons / Math.max(1, frames));
+  }
+
+  memoryEstimateMb(): number | null {
+    const perf = globalThis.performance as Performance & { memory?: { usedJSHeapSize?: number } };
+    return perf.memory?.usedJSHeapSize ? perf.memory.usedJSHeapSize / 1024 / 1024 : null;
+  }
+
+  startupBudget(startedAt: number, completedAt = now()): number {
+    return Math.max(0, completedAt - startedAt) / 1000;
+  }
+
+  measurement(dimension: CapabilityTargetDimension, value: number | null, reason?: string): MetricMeasurement {
+    return { dimension, value, reason };
+  }
+
+  hardwareDependent(dimension: CapabilityTargetDimension, reason: string): MetricMeasurement {
+    return { dimension, value: null, status: 'hardware-dependent', reason };
+  }
+
+  unsupported(dimension: CapabilityTargetDimension, reason: string): MetricMeasurement {
+    return { dimension, value: null, status: 'unsupported', reason };
+  }
+}
+
+export class StartupBudgetProbe extends EnginPerformanceProbe {}
+export class IdleMemoryProbe extends EnginPerformanceProbe {}
+
+export function gpuMeasurementOrHardwareDependent(
+  hardware: EnginHardwareCapabilities,
+  dimension: CapabilityTargetDimension,
+  value: number | null,
+): MetricMeasurement {
+  const probe = new EnginPerformanceProbe();
+  if (!hardware.webgpu) return probe.hardwareDependent(dimension, 'WebGPU is unavailable on this device.');
+  return probe.measurement(dimension, value);
+}
+
+function now(): number {
+  return typeof performance !== 'undefined' && typeof performance.now === 'function'
+    ? performance.now()
+    : Date.now();
+}
