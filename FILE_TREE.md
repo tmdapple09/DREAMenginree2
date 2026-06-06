@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-06T00:16:20.815Z
+Generated: 2026-06-06T00:59:57.330Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3802,7 +3802,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── Mic  ← lucide-react
 │   │   │   ├── MicOff  ← lucide-react
-│   │   │   ├── Users  ← lucide-react
 │   │   │   ├── X  ← lucide-react
 │   │   │   ├── → (default)
 │   │   │   ├── → SharedDreamShell
