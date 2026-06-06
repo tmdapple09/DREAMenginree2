@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-06T00:16:20.688Z
+Generated: 2026-06-06T00:59:57.217Z
 
 ---
 
@@ -8857,7 +8857,7 @@ _No style files for this feature._
 | `@/hooks/useSharedDream` | `useSharedDream` |
 | `@/lib/sharedDream` | `DreamBroadcastPayload` |
 | `@/lib/utils` | `toErrorMessage` |
-| `lucide-react` | `Mic`, `MicOff`, `Users`, `X` |
+| `lucide-react` | `Mic`, `MicOff`, `X` |
 
 ## `components/dreams/dream.widget.SuperDreamWidget.tsx`
 
