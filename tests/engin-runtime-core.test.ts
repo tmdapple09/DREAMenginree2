@@ -29,6 +29,8 @@ import {
 } from '@/lib/engin-runtime/EnginIOAdapter';
 import { createEnginEventBus } from '@/lib/engin-runtime/EnginEventBus';
 import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
+import { CODE_ENGIN_RULE_SET } from '@/lib/engins/code/codeEnginRuleSet';
+import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
 import type {
   EnginRuleSetContract,
   EnginAction,
@@ -43,8 +45,8 @@ type CounterAction =
 
 const counterRuleSet: EnginRuleSetContract<CounterAction> = {
   manifest: {
-    id: 'test',
-    name: 'TestEngin',
+    id: 'code',
+    name: 'TestCodeEngin',
     version: '1.0.0',
     schema: {
       actionTypes: ['counter:increment', 'counter:reset'],
@@ -69,12 +71,13 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
     },
   },
   params: {
-    enginId: 'test',
-    name: 'TestEngin',
+    enginId: 'code',
+    name: 'TestCodeEngin',
     layoutMode: 'standard',
     accentColor: '#ffffff',
   },
   requiredCapabilities: ['state:read', 'state:write'],
+  capabilityTargets: getEnginCapabilityProfile('code'),
   constraints: [
     (_state, action) => {
       if (action.type === 'counter:increment') {
@@ -224,8 +227,8 @@ describe('EnginEventBus', () => {
     const bus = createEnginEventBus();
     const handler = vi.fn();
     bus.on('engin:started', handler);
-    bus.emit('engin:started', { enginId: 'test' });
-    expect(handler).toHaveBeenCalledWith({ enginId: 'test' });
+    bus.emit('engin:started', { enginId: 'code' });
+    expect(handler).toHaveBeenCalledWith({ enginId: 'code' });
   });
 
   it('off unsubscribes a handler', () => {
@@ -233,7 +236,7 @@ describe('EnginEventBus', () => {
     const handler = vi.fn();
     bus.on('engin:stopped', handler);
     bus.off('engin:stopped', handler);
-    bus.emit('engin:stopped', { enginId: 'test' });
+    bus.emit('engin:stopped', { enginId: 'code' });
     expect(handler).not.toHaveBeenCalled();
   });
 
@@ -241,7 +244,7 @@ describe('EnginEventBus', () => {
     const bus = createEnginEventBus();
     bus.destroy();
     expect(bus.destroyed).toBe(true);
-    expect(() => bus.emit('engin:started', { enginId: 'test' })).toThrow();
+    expect(() => bus.emit('engin:started', { enginId: 'code' })).toThrow();
   });
 });
 
@@ -438,7 +441,7 @@ describe('EnginRuntime recovery hooks', () => {
     runtime.restoreSnapshot(snapshot);
     expect(runtime.getDerivedState().count).toBe(4);
     expect(hook.mock.calls[0]?.[0]).toBe('running');
-    expect(hook.mock.calls[0]?.[1]).toMatchObject({ enginId: 'test' });
+    expect(hook.mock.calls[0]?.[1]).toMatchObject({ enginId: 'code' });
   });
 });
 
@@ -613,7 +616,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
       fingerprint: string;
       quality: { runtimeTier: string; material: string };
     }> = [];
-    transport.subscribe('test', (frame) => frames.push(frame));
+    transport.subscribe('code', (frame) => frames.push(frame));
     const runtime = createEnginRuntime(counterRuleSet, {
       ioAdapter: new MemoryAdapter(),
       persistenceKey: false,
@@ -623,7 +626,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
     runtime.dispatch({ type: 'counter:increment', payload: { by: 2 } });
     expect(frames).toHaveLength(1);
     const publishedFrame = frames[0];
-    expect(publishedFrame.enginId).toBe('test');
+    expect(publishedFrame.enginId).toBe('code');
     expect(publishedFrame.runtimeId).toBe('homedream');
     expect(publishedFrame.direction).toBe('receive');
     expect(typeof publishedFrame.fingerprint).toBe('string');
@@ -806,4 +809,33 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
 
+});
+
+
+describe('EnginRuntime realtime execution fast paths', () => {
+  it('coalesces realtime CodeEngin runtime work behind the execution kernel', async () => {
+    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const frames: unknown[] = [];
+    transport.subscribe('code', (frame) => frames.push(frame));
+    const runtime = createEnginRuntime(CODE_ENGIN_RULE_SET, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+    });
+
+    runtime.dispatch({
+      type: 'code:cell-update',
+      payload: { cellId: 'demo-1', code: 'a' },
+    });
+    runtime.dispatch({
+      type: 'code:cell-update',
+      payload: { cellId: 'demo-1', code: 'ab' },
+    });
+
+    expect(runtime.executionKernel.isRealtimeAction('code:cell-update')).toBe(true);
+    expect(frames).toHaveLength(0);
+    await Promise.resolve();
+    expect(frames).toHaveLength(1);
+  });
 });

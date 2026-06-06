@@ -21,6 +21,7 @@ import {
   type JsonValue,
 } from './EnginBaseState';
 import type { EnginCapability } from './EnginCapabilities';
+import type { EnginCapabilityProfile } from './EnginCapabilityTargets';
 
 // ─── Actions ─────────────────────────────────────────────────────────────────
 
@@ -241,6 +242,12 @@ export interface EnginRuleSetContract<A extends EnginAction = EnginAction> {
    * The engine will warn if these capabilities are not granted.
    */
   readonly requiredCapabilities: ReadonlyArray<EnginCapability>;
+
+  /**
+   * Internal capability targets that shape architecture decisions for this Engin.
+   * These are runtime guardrails, not UI content.
+   */
+  readonly capabilityTargets: EnginCapabilityProfile;
 
   /**
    * constraints

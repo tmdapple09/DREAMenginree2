@@ -40,6 +40,16 @@ import {
   type EnginIOAdapter,
   type EnginSyncTransport,
 } from './EnginIOAdapter';
+import {
+  capabilityProfileMatchesRuleSet,
+  validateEnginCapabilityProfile,
+  type CapabilityProfileValidation,
+} from './EnginCapabilityTargets';
+import {
+  createEnginCapabilityExecutionKernel,
+  type EnginCapabilityExecutionKernel,
+} from './EnginCapabilityExecution';
+import { HotRuntime } from './HotRuntime';
 import { fingerprintEnginSnapshot } from './EnginSnapshotFingerprint';
 import {
   createPremiumRuntimeQuality,
@@ -121,6 +131,10 @@ export class EnginRuntime<
   private readonly _runtimeId: string;
   private readonly _maxSnapshots: number;
   private readonly _compatibility: CompatibilityNegotiationResult;
+  private readonly _capabilityTargetValidation: CapabilityProfileValidation;
+  private readonly _executionKernel: EnginCapabilityExecutionKernel;
+  private readonly _hotRuntime: HotRuntime<A>;
+  private _runtimeWorkQueued = false;
   private readonly _lifecycleHooks = new Set<
     (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
   >();
@@ -146,6 +160,24 @@ export class EnginRuntime<
         this._compatibility.reason ?? 'Rule-set is not compatible with this runtime.',
       );
     }
+    this._capabilityTargetValidation = validateEnginCapabilityProfile(
+      ruleSet.capabilityTargets,
+    );
+    if (!this._capabilityTargetValidation.valid) {
+      throw new Error(
+        this._capabilityTargetValidation.reason ??
+          'Rule-set capability target profile is invalid.',
+      );
+    }
+    if (!capabilityProfileMatchesRuleSet(ruleSet.capabilityTargets, ruleSet.params.enginId)) {
+      throw new Error(
+        'Rule-set capability target profile must match the Engin params id or a canonical alias.',
+      );
+    }
+    this._executionKernel = createEnginCapabilityExecutionKernel(
+      ruleSet.capabilityTargets,
+    );
+    this._hotRuntime = new HotRuntime<A>(this._executionKernel.plan);
     this._io =
       options.ioAdapter ?? new LocalStorageAdapter(ruleSet.params.enginId);
     this._persistenceKey =
@@ -182,6 +214,26 @@ export class EnginRuntime<
       ...this._compatibility,
       missingFeatures: [...this._compatibility.missingFeatures],
     };
+  }
+
+  /** Internal capability target validation negotiated before the ruleset can run. */
+  get capabilityTargetValidation(): CapabilityProfileValidation {
+    return {
+      ...this._capabilityTargetValidation,
+      evaluations: this._capabilityTargetValidation.evaluations.map((target) => ({
+        ...target,
+      })),
+    };
+  }
+
+  /** Concrete hot-path execution kernel used by this Engin runtime. */
+  get executionKernel(): EnginCapabilityExecutionKernel {
+    return this._executionKernel;
+  }
+
+  /** Private hot runtime lane for high-frequency work outside React. */
+  get hotRuntime(): HotRuntime<A> {
+    return this._hotRuntime;
   }
 
   /** Current runtime quality policy used for sync acceptance and surface decisions. */
@@ -345,11 +397,36 @@ export class EnginRuntime<
       revision: this._state.revision,
     });
 
-    // 6. Persist and sync (fire-and-forget)
-    this.publishSyncFrame();
-    this.persistDomainState();
+    // 6. Persist and sync (fire-and-forget). Realtime actions coalesce this
+    // work so keystrokes/audio/control ticks do not synchronously clone, hash,
+    // persist, and publish every single input event.
+    if (this._executionKernel.shouldDeferRuntimeWork(action.type)) {
+      this._hotRuntime.submit(action, this._state.revision);
+      this.scheduleRuntimeWork();
+    } else {
+      this.flushRuntimeWork();
+    }
 
     return true;
+  }
+
+  private scheduleRuntimeWork(): void {
+    if (this._runtimeWorkQueued) return;
+    this._runtimeWorkQueued = true;
+    const enqueue = typeof queueMicrotask === 'function'
+      ? queueMicrotask
+      : (callback: () => void) => {
+          void Promise.resolve().then(callback);
+        };
+    enqueue(() => {
+      this._runtimeWorkQueued = false;
+      this.flushRuntimeWork();
+    });
+  }
+
+  private flushRuntimeWork(): void {
+    this.publishSyncFrame();
+    this.persistDomainState();
   }
 
   private persistDomainState(): void {

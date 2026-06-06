@@ -102,6 +102,91 @@ export type {
   PremiumRuntimeQualityValidation,
 } from './PremiumRuntimeQuality';
 
+
+
+
+export {
+  AudioWorkletRuntime,
+  BinaryCommandBus,
+  CommandRingBuffer,
+  DeferredPersistenceQueue,
+  DeferredSyncQueue,
+  GpuBufferRegistry,
+  HotActionClassifier,
+  HotRuntime,
+  RevisionCoalescer,
+  SnapshotCompactor,
+  TypedMemoryArena,
+  WasmKernelRuntime,
+  WebGPUDeviceRuntime,
+  WorkerPoolRuntime,
+} from './HotRuntime';
+export type { BinaryCommandPacket, GpuBufferKind, HotActionKind } from './HotRuntime';
+
+export { detectEnginHardwareCapabilities, detectWasmSimdSupport, fallbackEnginHardwareCapabilities } from './EnginHardwareCapabilities';
+export type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
+
+export { createEnginCapabilityScorecard } from './EnginCapabilityScorecard';
+export type { EnginCapabilityScorecard, EnginCapabilityScorecardEntry, MetricMeasurement, MetricStatus } from './EnginCapabilityScorecard';
+
+export { EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent } from './EnginPerformanceProbe';
+
+export { DevOnlyBenchmarkRunner, InternalOnlyMetricStore, UserFacingMetricLeakTest } from './InternalMetrics';
+
+export * from './EnginDomainCores';
+
+export {
+  AudioTrackMixer,
+  CodeEditRingBuffer,
+  CollaborationDeltaPacker,
+  EnginCapabilityExecutionKernel,
+  GeometryBatcher,
+  MidiEventRingBuffer,
+  ParticleSoAKernel,
+  RayGridAccelerator,
+  VectorPathCache,
+  createEnginCapabilityExecutionKernel,
+  getEnginExecutionPlan,
+} from './EnginCapabilityExecution';
+export type {
+  CodeEditPatch,
+  EnginExecutionPlan,
+  ExecutionSubsystem,
+  GeometryBatchInput,
+  GeometryBatchPlan,
+  Ray3,
+  RayBox,
+  RayHit,
+} from './EnginCapabilityExecution';
+
+export {
+  CANONICAL_ENGIN_IDS,
+  ENGIN_CAPABILITY_PROFILES,
+  acceptanceValueForTarget,
+  evaluateCapabilityTarget,
+  capabilityProfileMatchesRuleSet,
+  createCustomEnginCapabilityProfile,
+  getEnginCapabilityProfile,
+  isCanonicalEnginId,
+  isCustomEnginProfileId,
+  isEnginProfileId,
+  toCustomEnginProfileId,
+  validateCanonicalEnginCapabilityProfiles,
+  validateEnginCapabilityProfile,
+} from './EnginCapabilityTargets';
+export type {
+  CanonicalEnginId,
+  CustomEnginProfileId,
+  EnginProfileId,
+  CapabilityProfileValidation,
+  CapabilityTargetDimension,
+  CapabilityTargetDirection,
+  CapabilityTargetEvaluation,
+  CapabilityTargetUnit,
+  EnginCapabilityProfile,
+  EnginCapabilityTarget,
+} from './EnginCapabilityTargets';
+
 export {
   ENGIN_RUNTIME_FEATURES,
   ENGIN_RUNTIME_VERSION,
