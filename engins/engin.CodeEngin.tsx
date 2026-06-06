@@ -50,7 +50,7 @@ import {
     ZoomIn, ZoomOut,
 } from 'lucide-react';
 import Link from 'next/link';
-import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseCode } from './CodeEngin/core/parser';
 import { AgentPanel } from './CodeEngin/modules/ai-co-pilot';
 
@@ -435,8 +435,10 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     stateSnapshot: () => ({ type: 'code:state', cells: cells.map((c) => ({ id: c.id, language: c.language, code: c.code })) }),
     onPeerState: (evt) => {
       if (evt.type === 'code:state' && Array.isArray(evt.cells)) {
+        const peerCells = evt.cells as Array<{ id: string; code: string; language: string }>;
+        const peerById = new Map(peerCells.map((peer) => [peer.id, peer]));
         setCells((prev) => prev.map((c) => {
-          const peer = (evt.cells as Array<{ id: string; code: string; language: string }>).find((p) => p.id === c.id);
+          const peer = peerById.get(c.id);
           return peer ? { ...c, code: peer.code, language: peer.language as typeof c.language } : c;
         }));
       }
@@ -454,6 +456,7 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     try { const raw = localStorage.getItem(NOTEBOOK_STORAGE_KEY); if (raw) { const parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length > 0) return parsed; } } catch {}
     return DEMO_CELLS.map((c) => ({ ...c }));
   });
+  const cellIndexById = useMemo(() => new Map(cells.map((cell, index) => [cell.id, index])), [cells]);
 
   // Persistence
   useEffect(() => {
@@ -801,8 +804,73 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
   const handleSelectAll = () => { const ta = lastFocusedRef.current; if (ta) { ta.focus(); ta.setSelectionRange(0, ta.value.length); setSelectionBar({ visible: false, x: 0, y: 0, text: ta.value }); } };
   const handleSelectLine = () => { const ta = lastFocusedRef.current; if (ta) { const val = ta.value, cursor = ta.selectionStart; let s = cursor; while (s > 0 && val[s-1] !== '\n') s--; let e = cursor; while (e < val.length && val[e] !== '\n') e++; ta.setSelectionRange(s, e); setSelectionBar({ visible: false, x: 0, y: 0, text: val.slice(s, e) }); } };
   const handleSelectBlock = () => { const ta = lastFocusedRef.current; if (ta) { const val = ta.value, cursor = ta.selectionStart; let start = -1, end = -1, depth = 0; for (let i = cursor; i >= 0; i--) { if (val[i] === '}') depth++; else if (val[i] === '{') { if (depth === 0) { start = i; break; } depth--; } } depth = 0; for (let i = cursor; i < val.length; i++) { if (val[i] === '{') depth++; else if (val[i] === '}') { if (depth === 0) { end = i+1; break; } depth--; } } if (start !== -1 && end !== -1) { ta.setSelectionRange(start, end); setSelectionBar({ visible: false, x: 0, y: 0, text: val.slice(start, end) }); } } };
-  const handleSelectVariable = (scope: 'cell' | 'codebase') => { const ta = lastFocusedRef.current; const raw = selectionBar.text || (() => { if (!ta) return ''; const val = ta.value, c = ta.selectionStart; let s = c; while (s > 0 && /\w/.test(val[s-1])) s--; let e = c; while (e < val.length && /\w/.test(val[e])) e++; return val.slice(s, e); })(); if (!raw.trim()) return; setFindTarget(raw.trim()); setReplaceWith(''); if (scope === 'cell' && ta) { const rx = new RegExp(`\\b${raw.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g'); setFindResults({ scope: 'cell', total: (ta.value.match(rx) || []).length }); } else { const rx = new RegExp(`\\b${raw.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g'); const total = cells.reduce((acc, cell) => acc + (cell.code.match(rx) || []).length, 0); setFindResults({ scope: 'codebase', total }); } closeSelectionBar(); };
-  const handleReplaceAll = (scope: 'cell' | 'codebase') => { if (!findTarget) return; const rx = new RegExp(`\\b${findTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g'); if (scope === 'cell') { const ta = lastFocusedRef.current; const targetId = ta?.getAttribute('data-cell-id') || ''; setCells((prev) => prev.map((c) => c.id === targetId ? { ...c, code: c.code.replace(rx, replaceWith) } : c)); } else { setCells((prev) => prev.map((c) => ({ ...c, code: c.code.replace(rx, replaceWith) }))); } setFindResults(null); setFindTarget(''); setReplaceWith(''); };
+  const activeDependencyFrontier = useCallback((symbol: string, sourceCells = cells) => {
+    const activeId = lastFocusedRef.current?.getAttribute('data-cell-id') ?? '';
+    const activeIndex = sourceCells === cells
+      ? cellIndexById.get(activeId) ?? 0
+      : sourceCells.findIndex((cell) => cell.id === activeId);
+    const safeIndex = Math.max(0, activeIndex);
+    const cleanSymbol = symbol.trim();
+    const candidateIndexes = new Set<number>([safeIndex]);
+    for (let offset = 1; offset <= 2; offset++) {
+      if (safeIndex - offset >= 0) candidateIndexes.add(safeIndex - offset);
+      if (safeIndex + offset < sourceCells.length) candidateIndexes.add(safeIndex + offset);
+    }
+    return [...candidateIndexes]
+      .map((index) => {
+        const cell = sourceCells[index];
+        const graphDistance = cell.id === activeId ? 0 : cell.code.includes(cleanSymbol) ? 1 : Math.abs(index - safeIndex);
+        const editWeight = cell.id === activeId ? 1 : Math.exp(-(Math.abs(index - safeIndex) ** 2) / (2 * 2 * 2));
+        const dependencyWeight = 1 / (1 + graphDistance);
+        const executionWeight = cell.status === 'running' || cell.status === 'error' ? 1 : 0.75;
+        return { cell, weight: editWeight * dependencyWeight * executionWeight };
+      })
+      .filter((entry) => entry.cell && entry.weight >= 0.1)
+      .sort((a, b) => b.weight - a.weight);
+  }, [cellIndexById, cells]);
+
+  const handleSelectVariable = (scope: 'cell' | 'codebase') => {
+    const ta = lastFocusedRef.current;
+    const raw = selectionBar.text || (() => {
+      if (!ta) return '';
+      const val = ta.value, c = ta.selectionStart;
+      let s = c;
+      while (s > 0 && /\w/.test(val[s - 1])) s--;
+      let e = c;
+      while (e < val.length && /\w/.test(val[e])) e++;
+      return val.slice(s, e);
+    })();
+    if (!raw.trim()) return;
+    setFindTarget(raw.trim());
+    setReplaceWith('');
+    const rx = new RegExp(`\\b${raw.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+    if (scope === 'cell' && ta) {
+      setFindResults({ scope: 'cell', total: (ta.value.match(rx) || []).length });
+    } else {
+      const frontier = activeDependencyFrontier(raw.trim());
+      const total = frontier.reduce((acc, { cell }) => acc + (cell.code.match(rx) || []).length, 0);
+      setFindResults({ scope: 'codebase', total });
+    }
+    closeSelectionBar();
+  };
+
+  const handleReplaceAll = (scope: 'cell' | 'codebase') => {
+    if (!findTarget) return;
+    const rx = new RegExp(`\\b${findTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+    if (scope === 'cell') {
+      const ta = lastFocusedRef.current;
+      const targetId = ta?.getAttribute('data-cell-id') || '';
+      setCells((prev) => prev.map((c) => c.id === targetId ? { ...c, code: c.code.replace(rx, replaceWith) } : c));
+    } else {
+      setCells((prev) => {
+        const ids = new Set(activeDependencyFrontier(findTarget, prev).map(({ cell }) => cell.id));
+        return prev.map((c) => ids.has(c.id) ? { ...c, code: c.code.replace(rx, replaceWith) } : c);
+      });
+    }
+    setFindResults(null);
+    setFindTarget('');
+    setReplaceWith('');
+  };
 
   return (
     <ArtifactSlot artifactId="engin:code">

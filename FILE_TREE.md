@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-05T21:41:41.383Z
+Generated: 2026-06-06T00:15:34.958Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -6705,6 +6705,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── Users  ← lucide-react
 │   │   ├── ⬡ Link  ← next/link
 │   │   ├── useEffect  ← react
+│   │   ├── useMemo  ← react
 │   │   ├── useRef  ← react
 │   │   ├── useState  ← react
 │   │   ├── → (default)
@@ -6757,6 +6758,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── CSSProperties  ← react
 │   │   ├── useCallback  ← react
 │   │   ├── useEffect  ← react
+│   │   ├── useMemo  ← react
 │   │   ├── useRef  ← react
 │   │   ├── useState  ← react
 │   │   ├── (dynamic)  ← @supabase/supabase-js

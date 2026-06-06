@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-05T21:41:41.254Z
+Generated: 2026-06-06T00:15:34.822Z
 
 ---
 
@@ -10388,7 +10388,7 @@ _No style files for this feature._
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lucide-react` | `ArrowLeft`, `BarChart2`, `BookOpen`, `DollarSign`, `Eye`, `FlaskConical`, `Layers`, `Megaphone`, `Minus`, `Palette`, `TrendingDown`, `TrendingUp`, `Users` |
 | `next/link` | `⬡ Link` |
-| `react` | `useEffect`, `useRef`, `useState` |
+| `react` | `useEffect`, `useMemo`, `useRef`, `useState` |
 
 ## `engins/engin.CodeEngin.tsx`
 
@@ -10414,7 +10414,7 @@ _No style files for this feature._
 | `@/lib/supabase/client` | `createClient` |
 | `lucide-react` | `ArrowLeft`, `ArrowLeftRight`, `BarChart2`, `Bot`, `Bug`, `CheckCircle`, `Clipboard`, `Code2`, `Copy`, `ListChecks`, `Loader2`, `MousePointer2`, `Plus`, `Scissors`, `Shield`, `Terminal`, `Trash2`, `X`, `XCircle`, `Zap`, `ZoomIn`, `ZoomOut` |
 | `next/link` | `⬡ Link` |
-| `react` | `CSSProperties`, `useCallback`, `useEffect`, `useRef`, `useState` |
+| `react` | `CSSProperties`, `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
 | `@supabase/supabase-js` | _(dynamic import)_ |
 
 ## `engins/engin.ContentEngin.tsx`

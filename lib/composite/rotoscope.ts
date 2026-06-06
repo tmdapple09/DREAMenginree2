@@ -153,13 +153,16 @@ export function interpolateShape(layer: RotoLayer, frame: number): InterpolatedS
     return { frame, points: last.points, opacity: layer.opacity, feather: last.feather };
   }
 
-  // Find surrounding keyframes
-  let lo = kfs[0], hi = kfs[kfs.length - 1];
-  for (let i = 0; i < kfs.length - 1; i++) {
-    if (kfs[i].frame <= frame && kfs[i + 1].frame > frame) {
-      lo = kfs[i]; hi = kfs[i + 1]; break;
-    }
+  // Find surrounding keyframes with interval candidate elimination.
+  let left = 0;
+  let right = kfs.length - 1;
+  while (left + 1 < right) {
+    const mid = Math.floor((left + right) / 2);
+    if (kfs[mid].frame <= frame) left = mid;
+    else right = mid;
   }
+  const lo = kfs[left];
+  const hi = kfs[right];
 
   const t = (frame - lo.frame) / (hi.frame - lo.frame);
 
