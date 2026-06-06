@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * components/shared-dream/dream.InviteFlow.tsx — §38 Invite Flow
@@ -9,8 +9,8 @@
  *   3. Accept flow initialises sync automatically (handled via URL param)
  */
 
-import { useCallback, useState } from 'react';
-import { useSharedDream } from './dream.SharedDreamProvider';
+import { useCallback, useState } from "react";
+import { useSharedDream } from "./dream.SharedDreamProvider";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -21,12 +21,12 @@ export interface InviteFlowProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function InviteFlow({ className = '' }: InviteFlowProps) {
-  const { getInviteLink, channelId, connected } = useSharedDream();
-  const [open,    setOpen]    = useState(false);
-  const [copied,  setCopied]  = useState(false);
+export function InviteFlow({ className = "" }: InviteFlowProps) {
+  const { getInviteLink, connected } = useSharedDream();
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const inviteLink = open ? getInviteLink() : '';
+  const inviteLink = open ? getInviteLink() : "";
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -46,7 +46,9 @@ export function InviteFlow({ className = '' }: InviteFlowProps) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback: select the input
-      const input = document.getElementById('sd-invite-input') as HTMLInputElement | null;
+      const input = document.getElementById(
+        "sd-invite-input",
+      ) as HTMLInputElement | null;
       input?.select();
     }
   }, [inviteLink]);
@@ -58,12 +60,12 @@ export function InviteFlow({ className = '' }: InviteFlowProps) {
         onClick={handleOpen}
         disabled={!connected}
         className={[
-          'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold',
-          'bg-violet-600 hover:bg-violet-500 text-white',
-          'disabled:opacity-40 disabled:cursor-not-allowed',
-          'transition-colors duration-150',
+          "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold",
+          "bg-violet-600 hover:bg-violet-500 text-white",
+          "disabled:opacity-40 disabled:cursor-not-allowed",
+          "transition-colors duration-150",
           className,
-        ].join(' ')}
+        ].join(" ")}
       >
         <span>🔗</span>
         Launch Shared Dream
@@ -85,7 +87,9 @@ export function InviteFlow({ className = '' }: InviteFlowProps) {
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-white">Shared Dream Invite</h2>
+              <h2 className="text-base font-bold text-white">
+                Shared Dream Invite
+              </h2>
               <button
                 onClick={handleClose}
                 className="text-white/40 hover:text-white/80 transition-colors text-xl leading-none"
@@ -93,12 +97,6 @@ export function InviteFlow({ className = '' }: InviteFlowProps) {
                 ×
               </button>
             </div>
-
-            {/* Channel ID */}
-            <p className="text-xs text-white/40 mb-1">Channel</p>
-            <p className="text-xs font-mono text-violet-300 mb-4 truncate">
-              {channelId}
-            </p>
 
             {/* Invite link */}
             <p className="text-xs text-white/40 mb-1">Invite link</p>
@@ -108,28 +106,28 @@ export function InviteFlow({ className = '' }: InviteFlowProps) {
                 readOnly
                 value={inviteLink}
                 className={[
-                  'flex-1 min-w-0 rounded-lg px-3 py-2 text-xs font-mono',
-                  'bg-white/5 border border-white/10 text-white/70',
-                  'focus:outline-none focus:ring-1 focus:ring-violet-500',
-                ].join(' ')}
+                  "flex-1 min-w-0 rounded-lg px-3 py-2 text-xs font-mono",
+                  "bg-white/5 border border-white/10 text-white/70",
+                  "focus:outline-none focus:ring-1 focus:ring-violet-500",
+                ].join(" ")}
               />
               <button
                 onClick={handleCopy}
                 className={[
-                  'px-3 py-2 rounded-lg text-xs font-semibold transition-colors',
+                  "px-3 py-2 rounded-lg text-xs font-semibold transition-colors",
                   copied
-                    ? 'bg-green-600 text-white'
-                    : 'bg-violet-600 hover:bg-violet-500 text-white',
-                ].join(' ')}
+                    ? "bg-green-600 text-white"
+                    : "bg-violet-600 hover:bg-violet-500 text-white",
+                ].join(" ")}
               >
-                {copied ? '✓ Copied' : 'Copy'}
+                {copied ? "✓ Copied" : "Copy"}
               </button>
             </div>
 
             {/* Instructions */}
             <p className="text-[11px] text-white/30 leading-relaxed">
-              Share this link with collaborators. Opening the link automatically
-              joins the session and initialises real-time sync.
+              Share this link with collaborators. Opening it starts the shared
+              workspace.
             </p>
           </div>
         </div>
