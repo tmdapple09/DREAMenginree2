@@ -1,6 +1,7 @@
 import type { EnginAction } from './EnginRuleSetContract';
 import type { EnginExecutionPlan } from './EnginCapabilityExecution';
 
+
 export type HotActionKind =
   | 'keystroke'
   | 'midi'
@@ -52,7 +53,7 @@ export class RevisionCoalescer {
     this.latestRevision = Math.max(this.latestRevision, revision);
     if (this.queued) return false;
     this.queued = true;
-    return true;
+    return this.queued;
   }
 
   flush(): number {
@@ -160,7 +161,7 @@ export class WebGPUDeviceRuntime {
     this.adapter = await (navigator as Navigator & { gpu: GPU }).gpu.requestAdapter();
     if (!this.adapter) return false;
     this.device = await this.adapter.requestDevice();
-    return true;
+    return this.device !== null;
   }
 }
 
@@ -178,7 +179,7 @@ export class AudioWorkletRuntime {
     if (typeof AudioContext === 'undefined' || !('audioWorklet' in AudioContext.prototype)) return false;
     this.context = new AudioContext();
     if (moduleUrl) await this.context.audioWorklet.addModule(moduleUrl);
-    return true;
+    return this.context !== null;
   }
 }
 
@@ -188,7 +189,7 @@ export class WasmKernelRuntime {
     if (typeof WebAssembly === 'undefined') return false;
     const { instance } = await WebAssembly.instantiate(bytes, imports);
     this.instance = instance;
-    return true;
+    return this.instance !== null;
   }
 }
 

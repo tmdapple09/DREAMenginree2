@@ -30,7 +30,7 @@ import {
 import { createEnginEventBus } from '@/lib/engin-runtime/EnginEventBus';
 import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
 import { CODE_ENGIN_RULE_SET } from '@/lib/engins/code/codeEnginRuleSet';
-import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
+import { createCustomEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
 import type {
   EnginRuleSetContract,
   EnginAction,
@@ -45,8 +45,8 @@ type CounterAction =
 
 const counterRuleSet: EnginRuleSetContract<CounterAction> = {
   manifest: {
-    id: 'code',
-    name: 'TestCodeEngin',
+    id: 'test',
+    name: 'TestEngin',
     version: '1.0.0',
     schema: {
       actionTypes: ['counter:increment', 'counter:reset'],
@@ -71,13 +71,13 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
     },
   },
   params: {
-    enginId: 'code',
-    name: 'TestCodeEngin',
+    enginId: 'test',
+    name: 'TestEngin',
     layoutMode: 'standard',
     accentColor: '#ffffff',
   },
   requiredCapabilities: ['state:read', 'state:write'],
-  capabilityTargets: getEnginCapabilityProfile('code'),
+  capabilityTargets: createCustomEnginCapabilityProfile('test'),
   constraints: [
     (_state, action) => {
       if (action.type === 'counter:increment') {
@@ -260,7 +260,9 @@ describe('EnginRuntime', () => {
     });
   });
 
-  it('initial state is idle with empty domain', () => {
+  it('initial state is idle with empty domain for a custom test Engin', () => {
+    expect(runtime.state.enginId).toBe('test');
+    expect(runtime.executionKernel.plan.enginId).toBe('test');
     expect(runtime.state.lifecycle).toBe('idle');
     expect(runtime.state.domain).toEqual({});
   });
@@ -441,7 +443,7 @@ describe('EnginRuntime recovery hooks', () => {
     runtime.restoreSnapshot(snapshot);
     expect(runtime.getDerivedState().count).toBe(4);
     expect(hook.mock.calls[0]?.[0]).toBe('running');
-    expect(hook.mock.calls[0]?.[1]).toMatchObject({ enginId: 'code' });
+    expect(hook.mock.calls[0]?.[1]).toMatchObject({ enginId: 'test' });
   });
 });
 
@@ -616,7 +618,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
       fingerprint: string;
       quality: { runtimeTier: string; material: string };
     }> = [];
-    transport.subscribe('code', (frame) => frames.push(frame));
+    transport.subscribe('test', (frame) => frames.push(frame));
     const runtime = createEnginRuntime(counterRuleSet, {
       ioAdapter: new MemoryAdapter(),
       persistenceKey: false,
@@ -626,7 +628,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
     runtime.dispatch({ type: 'counter:increment', payload: { by: 2 } });
     expect(frames).toHaveLength(1);
     const publishedFrame = frames[0];
-    expect(publishedFrame.enginId).toBe('code');
+    expect(publishedFrame.enginId).toBe('test');
     expect(publishedFrame.runtimeId).toBe('homedream');
     expect(publishedFrame.direction).toBe('receive');
     expect(typeof publishedFrame.fingerprint).toBe('string');
@@ -813,6 +815,36 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
 
 
 describe('EnginRuntime realtime execution fast paths', () => {
+
+
+  it('flushes non-realtime actions immediately and cancels stale queued realtime work', async () => {
+    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const transport = new MemorySyncTransport();
+    const frames: unknown[] = [];
+    transport.subscribe('code', (frame) => frames.push(frame));
+    const runtime = createEnginRuntime(CODE_ENGIN_RULE_SET, {
+      ioAdapter: new MemoryAdapter(),
+      persistenceKey: false,
+      syncTransport: transport,
+    });
+
+    runtime.dispatch({
+      type: 'code:cell-update',
+      payload: { cellId: 'demo-1', code: 'queued' },
+    });
+    expect(frames).toHaveLength(0);
+
+    runtime.dispatch({
+      type: 'code:ci-start',
+      payload: {},
+    });
+
+    expect(frames).toHaveLength(1);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(frames).toHaveLength(1);
+  });
+
   it('coalesces realtime CodeEngin runtime work behind the execution kernel', async () => {
     const { MemorySyncTransport } = await import('@/lib/engin-runtime');
     const transport = new MemorySyncTransport();

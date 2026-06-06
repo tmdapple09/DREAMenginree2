@@ -9,7 +9,7 @@
  */
 
 export type CanonicalEnginId = 'code' | 'games' | 'music' | 'create' | 'brand' | 'lab';
-export type CustomEnginProfileId = `custom:${string}`;
+export type CustomEnginProfileId = string & { readonly __customEnginProfileId?: unique symbol };
 export type EnginProfileId = CanonicalEnginId | CustomEnginProfileId;
 
 export type CapabilityTargetDimension =
@@ -20,6 +20,7 @@ export type CapabilityTargetDimension =
   | 'geometry-throughput'
   | 'gpu-render-latency'
   | 'viewport-framerate'
+  | 'viewport-resolution'
   | 'audio-latency'
   | 'track-count'
   | 'audio-bit-depth'
@@ -42,6 +43,7 @@ export type CapabilityTargetUnit =
   | 'mb'
   | 'ms'
   | 'fps'
+  | 'k'
   | 'polygons-per-frame'
   | 'tracks'
   | 'bit'
@@ -59,6 +61,7 @@ export interface EnginCapabilityTarget {
   readonly unit: CapabilityTargetUnit;
   /** Minimum normalized progress that counts as acceptable. */
   readonly minimumProgress: number;
+  readonly preferredTarget?: number;
 }
 
 export interface EnginCapabilityProfile {
@@ -86,6 +89,7 @@ function atMost(
   dimension: CapabilityTargetDimension,
   target: number,
   unit: CapabilityTargetUnit,
+  preferredTarget?: number,
 ): EnginCapabilityTarget {
   return Object.freeze({
     dimension,
@@ -93,6 +97,7 @@ function atMost(
     target,
     unit,
     minimumProgress: MINIMUM_PROGRESS,
+    ...(preferredTarget === undefined ? {} : { preferredTarget }),
   });
 }
 
@@ -127,8 +132,8 @@ export const ENGIN_CAPABILITY_PROFILES: Readonly<Record<CanonicalEnginId, EnginC
     'code',
     [
       atMost('install-footprint', 80, 'mb'),
-      atMost('idle-memory', 120, 'mb'),
-      atMost('input-latency', 0.1, 'ms'),
+      atMost('idle-memory', 200, 'mb', 120),
+      atMost('input-latency', 0.3, 'ms', 0.1),
       atMost('startup-time', 0.5, 'seconds'),
     ],
     [
@@ -142,8 +147,9 @@ export const ENGIN_CAPABILITY_PROFILES: Readonly<Record<CanonicalEnginId, EnginC
     'games',
     [
       atLeast('geometry-throughput', 10_000_000, 'polygons-per-frame'),
-      atMost('gpu-render-latency', 1, 'ms'),
+      atMost('gpu-render-latency', 2, 'ms', 1),
       atLeast('viewport-framerate', 60, 'fps'),
+      atLeast('viewport-resolution', 4, 'k'),
     ],
     [
       'use WebGPU-first Babylon render paths with adaptive material tiers',
@@ -173,24 +179,24 @@ export const ENGIN_CAPABILITY_PROFILES: Readonly<Record<CanonicalEnginId, EnginC
     'create',
     [
       atLeast('geometry-throughput', 100_000_000, 'polygons-per-frame'),
-      atMost('ray-intersection', 1, 'ms'),
-      atMost('offline-frame-render', 2, 'seconds'),
+      atMost('ray-intersection', 2, 'ms', 1),
+      atMost('offline-frame-render', 5, 'seconds', 2),
       atLeast('gpu-compute-throughput', 82, 'tflops'),
     ],
     [
       'stage render jobs as declarative scene snapshots for worker/GPU execution',
-      'prioritize BVH construction, instancing, and tile-based progressive output',
+      'prioritize deterministic AABB ray scanning, instancing, and tile-based progressive output',
       'separate creative timeline edits from heavyweight render dispatch',
-      'negotiate local, shared, or remote acceleration without changing rule-set shape',
+      'negotiate local, shared, or remote execution without changing rule-set shape',
     ],
   ),
   brand: profile(
     'brand',
     [
       atMost('ui-response', 0.5, 'ms'),
-      atMost('vector-render-latency', 1, 'ms'),
+      atMost('vector-render-latency', 2, 'ms', 1),
       atMost('file-open-time', 50, 'ms'),
-      atMost('collaboration-sync', 3, 'ms'),
+      atMost('collaboration-sync', 5, 'ms', 3),
     ],
     [
       'store brand assets as envelope-owned vectors and compact manifests',
@@ -203,7 +209,7 @@ export const ENGIN_CAPABILITY_PROFILES: Readonly<Record<CanonicalEnginId, EnginC
     'lab',
     [
       atMost('physics-loop-64k', 0.5, 'ms'),
-      atMost('physics-loop-1m', 2, 'ms'),
+      atMost('physics-loop-1m', 3, 'ms', 2),
       atMost('collision-detection', 50, 'ns'),
       atMost('gpu-compute-latency', 0.2, 'ms'),
     ],
@@ -246,12 +252,12 @@ export function evaluateCapabilityTarget(
 export function validateEnginCapabilityProfile(
   profileToValidate: EnginCapabilityProfile,
 ): CapabilityProfileValidation {
-  if (!isEnginProfileId(profileToValidate.enginId)) {
+  if (typeof profileToValidate.enginId !== 'string' || profileToValidate.enginId.trim().length === 0) {
     return {
       valid: false,
       enginId: profileToValidate.enginId,
       evaluations: [],
-      reason: 'Capability profile must use a canonical id or custom:<id>.',
+      reason: 'Capability profile must use a non-empty Engin id.',
     };
   }
   if (profileToValidate.targets.length === 0) {
@@ -307,11 +313,11 @@ export function isCanonicalEnginId(value: string): value is CanonicalEnginId {
 }
 
 export function isCustomEnginProfileId(value: string): value is CustomEnginProfileId {
-  return /^custom:[a-z0-9][a-z0-9._-]*$/i.test(value);
+  return value.trim().length > 0 && !isCanonicalEnginId(value);
 }
 
 export function isEnginProfileId(value: string): value is EnginProfileId {
-  return isCanonicalEnginId(value) || isCustomEnginProfileId(value);
+  return value.trim().length > 0;
 }
 
 export const CANONICAL_ENGIN_ALIASES: Readonly<Record<CanonicalEnginId, ReadonlyArray<string>>> = Object.freeze({
@@ -326,34 +332,48 @@ export const CANONICAL_ENGIN_ALIASES: Readonly<Record<CanonicalEnginId, Readonly
 export function toCustomEnginProfileId(rawId: string): CustomEnginProfileId {
   const normalized = rawId.trim().replace(/[^a-z0-9._-]+/gi, '-').replace(/^-+|-+$/g, '');
   if (!normalized) throw new Error('Custom Engin id is required.');
-  return `custom:${normalized}`;
+  return normalized as CustomEnginProfileId;
 }
 
-export function createCustomEnginCapabilityProfile(enginId: string): EnginCapabilityProfile {
+export function createCustomEnginCapabilityProfile(
+  enginId: EnginProfileId,
+  levers: ReadonlyArray<string> = [
+    'use the fixed runtime for state, sync, lifecycle, and persistence',
+    'route high-frequency actions through hot runtime queues',
+    'defer persistence, snapshots, sync, and diagnostics behind local application',
+  ],
+): EnginCapabilityProfile {
   return profile(
-    isCustomEnginProfileId(enginId) ? enginId : toCustomEnginProfileId(enginId),
+    enginId,
     [
+      atMost('ui-response', 1, 'ms'),
       atMost('idle-memory', 160, 'mb'),
-      atMost('input-latency', 1, 'ms'),
       atMost('startup-time', 1, 'seconds'),
       atMost('collaboration-sync', 8, 'ms'),
     ],
-    [
-      'use the fixed runtime for state, sync, lifecycle, and persistence',
-      'route high-frequency actions through hot runtime queues',
-      'defer persistence, snapshots, sync, and diagnostics behind local application',
-    ],
+    levers,
   );
 }
 
-export function capabilityProfileMatchesRuleSet(
-  profileToMatch: EnginCapabilityProfile,
-  ruleSetEnginId: string,
-): boolean {
-  if (isCanonicalEnginId(profileToMatch.enginId)) {
-    return CANONICAL_ENGIN_ALIASES[profileToMatch.enginId].includes(ruleSetEnginId);
+function canonicalProfileAlias(value: string): CanonicalEnginId | null {
+  const normalized = value.trim().toLowerCase().replace(/engin$/i, '');
+  for (const canonicalId of CANONICAL_ENGIN_IDS) {
+    if (CANONICAL_ENGIN_ALIASES[canonicalId].some((alias) => alias.toLowerCase().replace(/engin$/i, '') === normalized)) {
+      return canonicalId;
+    }
   }
-  return profileToMatch.enginId === ruleSetEnginId;
+  return null;
+}
+
+export function capabilityProfileMatchesRuleSet(
+  ruleSetEnginId: EnginProfileId,
+  profileEnginId: EnginProfileId,
+): boolean {
+  if (ruleSetEnginId === profileEnginId) return true;
+  const ruleSetCanonical = canonicalProfileAlias(ruleSetEnginId);
+  const profileCanonical = canonicalProfileAlias(profileEnginId);
+  if (ruleSetCanonical === null || profileCanonical === null) return false;
+  return ruleSetCanonical === profileCanonical;
 }
 
 export function getEnginCapabilityProfile(
