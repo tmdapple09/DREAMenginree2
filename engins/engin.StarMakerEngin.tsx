@@ -637,10 +637,19 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     collabActive,
   }), [stemReady, releases.length, playlist.length, effectList, qualityMode, collabActive]);
 
+  const waveformValueCacheRef = useRef<number[]>([]);
+  const waveformDensityRef = useRef({ computed: 0, cached: 0 });
   const buildPlaybackBars = useCallback((stepSeed: number) => (
     Array.from({ length: 32 }, (_, index: number) => {
       const channelIndex = index % BEAT_CHANNELS.length;
       const stepIndex = (stepSeed + Math.floor(index / 4)) % BEAT_STEPS;
+      const distance = Math.min(Math.abs(stepIndex - stepSeed), BEAT_STEPS - Math.abs(stepIndex - stepSeed));
+      const playheadWeight = Math.exp(-(distance * distance) / (2 * 4 * 4));
+      if (playheadWeight <= 0.25 && waveformValueCacheRef.current[index] !== undefined) {
+        waveformDensityRef.current.cached++;
+        return waveformValueCacheRef.current[index];
+      }
+      waveformDensityRef.current.computed++;
       const channelLevel = [
         mixer.vocals,
         mixer.instruments,
@@ -648,10 +657,12 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
         mixer.fx,
       ][channelIndex] / 100;
       const beatActive = beatGrid[channelIndex][stepIndex];
-      const qualityBoost = getQualityModeVisualBoost(qualityMode);
-      const fxBoost = activeEffects.has('Reverb') || activeEffects.has('Delay') ? 0.05 : 0;
+      const qualityBoost = playheadWeight > 0.75 ? getQualityModeVisualBoost(qualityMode) : getQualityModeVisualBoost(qualityMode) * 0.5;
+      const fxBoost = playheadWeight > 0.5 && (activeEffects.has('Reverb') || activeEffects.has('Delay')) ? 0.05 : 0;
       const base = beatActive ? 0.5 + channelLevel * 0.35 : 0.12 + channelLevel * 0.08;
-      return clamp(base + qualityBoost + fxBoost, 0.08, 1);
+      const next = clamp(base + qualityBoost + fxBoost, 0.08, 1);
+      waveformValueCacheRef.current[index] = next;
+      return next;
     })
   ), [activeEffects, beatGrid, mixer, qualityMode]);
 
@@ -785,6 +796,15 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
       : buildPlaybackBars(playbackStep)
   ), [buildPlaybackBars, playbackActive, playbackStep, waveformBars, waveformRecording]);
 
+  const renderProductCacheRef = useRef<{ fingerprint: string; preview: ReturnType<typeof renderStarMakerPattern> } | null>(null);
+  const sequencerFingerprint = useMemo(() => JSON.stringify({
+    bpm,
+    beatGrid,
+    mixer,
+    effects: effectList,
+    qualityMode,
+  }), [beatGrid, bpm, effectList, mixer, qualityMode]);
+
   useEffect(() => {
     if (!playbackActive) return;
     realtimeAudioEngineRef.current?.update(sequencerSnapshot);
@@ -820,7 +840,13 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     }
 
     setPlaybackStep(0);
-    const offlinePreview = renderStarMakerPattern(sequencerSnapshot);
+    const cachedRender = renderProductCacheRef.current;
+    const offlinePreview = cachedRender?.fingerprint === sequencerFingerprint
+      ? cachedRender.preview
+      : renderStarMakerPattern(sequencerSnapshot);
+    if (cachedRender?.fingerprint !== sequencerFingerprint) {
+      renderProductCacheRef.current = { fingerprint: sequencerFingerprint, preview: offlinePreview };
+    }
     setAudioDiagnostics(offlinePreview.diagnostics);
     if (!realtimeAudioEngineRef.current) {
       realtimeAudioEngineRef.current = await createRealtimeStarMakerAudioEngine();

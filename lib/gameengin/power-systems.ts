@@ -271,6 +271,57 @@ export interface PhysicsBody {
   sleeping: boolean;
 }
 
+export interface ComputationFocus {
+  position: [number, number, number];
+  velocity?: [number, number, number];
+  awarenessRadius?: number;
+  predictionRadius?: number;
+  predictionWindowSeconds?: number;
+}
+
+export interface PhysicsDensityStats {
+  fullPairCandidates: number;
+  candidateBodies: number;
+  broadphaseCandidates: number;
+  narrowphaseTests: number;
+  skippedBodies: number;
+  sleepingBodies: number;
+}
+
+function clamp01(value: number): number {
+  return Math.min(1, Math.max(0, value));
+}
+
+function distanceSq(a: [number, number, number], b: [number, number, number]): number {
+  const dx = a[0] - b[0];
+  const dy = a[1] - b[1];
+  const dz = a[2] - b[2];
+  return dx * dx + dy * dy + dz * dz;
+}
+
+function gaussianWeight(distanceSquared: number, radius: number): number {
+  const safeRadius = Math.max(0.0001, radius);
+  return Math.exp(-distanceSquared / (2 * safeRadius * safeRadius));
+}
+
+function predictionPosition(focus: ComputationFocus): [number, number, number] {
+  const windowSeconds = focus.predictionWindowSeconds ?? 0.5;
+  const velocity = focus.velocity ?? [0, 0, 0];
+  return [
+    focus.position[0] + velocity[0] * windowSeconds,
+    focus.position[1] + velocity[1] * windowSeconds,
+    focus.position[2] + velocity[2] * windowSeconds,
+  ];
+}
+
+function totalAttentionWeight(point: [number, number, number], focus: ComputationFocus): number {
+  const awarenessRadius = focus.awarenessRadius ?? 64;
+  const predictionRadius = focus.predictionRadius ?? awarenessRadius;
+  const awarenessWeight = gaussianWeight(distanceSq(point, focus.position), awarenessRadius);
+  const predictionWeight = gaussianWeight(distanceSq(point, predictionPosition(focus)), predictionRadius);
+  return clamp01(Math.max(awarenessWeight, predictionWeight));
+}
+
 /**
  * Advanced in-process physics world.
  * Provides rigid-body dynamics, constraints, continuous collision detection,
@@ -284,9 +335,20 @@ export class AdvancedPhysicsWorld {
   private substeps = 4;
   private stepCount = 0;
   private collisionPairs: Array<[string, string]> = [];
+  private focus: ComputationFocus = { position: [0, 0, 0], awarenessRadius: 64, predictionRadius: 64, predictionWindowSeconds: 0.5 };
+  private densityStats: PhysicsDensityStats = { fullPairCandidates: 0, candidateBodies: 0, broadphaseCandidates: 0, narrowphaseTests: 0, skippedBodies: 0, sleepingBodies: 0 };
 
   setGravity(g: [number, number, number]): void { this.gravity = [...g]; }
   setSubsteps(n: number): void { this.substeps = Math.max(1, Math.min(16, n)); }
+  setComputationFocus(focus: ComputationFocus): void {
+    this.focus = {
+      position: [...focus.position],
+      velocity: focus.velocity ? [...focus.velocity] : undefined,
+      awarenessRadius: focus.awarenessRadius ?? this.focus.awarenessRadius,
+      predictionRadius: focus.predictionRadius ?? this.focus.predictionRadius,
+      predictionWindowSeconds: focus.predictionWindowSeconds ?? this.focus.predictionWindowSeconds,
+    };
+  }
 
   addBody(def: PhysicsBodyDef): PhysicsBody {
     const body: PhysicsBody = {
@@ -331,6 +393,7 @@ export class AdvancedPhysicsWorld {
   }
 
   step(dtSeconds: number): void {
+    this.densityStats = { fullPairCandidates: 0, candidateBodies: 0, broadphaseCandidates: 0, narrowphaseTests: 0, skippedBodies: 0, sleepingBodies: 0 };
     const subDt = dtSeconds / this.substeps;
     for (let s = 0; s < this.substeps; s++) {
       this._integrateForces(subDt);
@@ -366,11 +429,15 @@ export class AdvancedPhysicsWorld {
   private _integrateForces(dt: number): void {
     for (const body of this.bodies.values()) {
       if (body.def.type !== 'dynamic' || body.sleeping) continue;
+      const weight = this._physicsWeight(body);
+      if (weight < 0.05) { body.sleeping = true; this.densityStats.skippedBodies++; continue; }
+      if (!this._shouldSimulateBody(body, weight)) { this.densityStats.skippedBodies++; continue; }
+      const effectiveDt = dt * this._simulationInterval(weight);
       const ld = body.def.linearDamping ?? 0.01;
       const ad = body.def.angularDamping ?? 0.02;
-      body.velocity[0] = body.velocity[0] * (1 - ld) + this.gravity[0] * dt;
-      body.velocity[1] = body.velocity[1] * (1 - ld) + this.gravity[1] * dt;
-      body.velocity[2] = body.velocity[2] * (1 - ld) + this.gravity[2] * dt;
+      body.velocity[0] = body.velocity[0] * (1 - ld) + this.gravity[0] * effectiveDt;
+      body.velocity[1] = body.velocity[1] * (1 - ld) + this.gravity[1] * effectiveDt;
+      body.velocity[2] = body.velocity[2] * (1 - ld) + this.gravity[2] * effectiveDt;
       body.angularVelocity[0] *= (1 - ad);
       body.angularVelocity[1] *= (1 - ad);
       body.angularVelocity[2] *= (1 - ad);
@@ -380,26 +447,108 @@ export class AdvancedPhysicsWorld {
   private _integratePositions(dt: number): void {
     for (const body of this.bodies.values()) {
       if (body.def.type !== 'dynamic' || body.sleeping) continue;
-      body.position[0] += body.velocity[0] * dt;
-      body.position[1] += body.velocity[1] * dt;
-      body.position[2] += body.velocity[2] * dt;
+      const weight = this._physicsWeight(body);
+      if (weight < 0.05 || !this._shouldSimulateBody(body, weight)) { this.densityStats.skippedBodies++; continue; }
+      const effectiveDt = dt * this._simulationInterval(weight);
+      body.position[0] += body.velocity[0] * effectiveDt;
+      body.position[1] += body.velocity[1] * effectiveDt;
+      body.position[2] += body.velocity[2] * effectiveDt;
     }
   }
 
   private _detectCollisions(): void {
     this.collisionPairs = [];
-    const ids = [...this.bodies.keys()];
-    for (let i = 0; i < ids.length; i++) {
-      for (let j = i + 1; j < ids.length; j++) {
-        const a = this.bodies.get(ids[i])!;
-        const b = this.bodies.get(ids[j])!;
-        if (a.sleeping && b.sleeping) continue;
+    const bodies = [...this.bodies.entries()];
+    this.densityStats.fullPairCandidates = Math.max(0, (bodies.length * (bodies.length - 1)) / 2);
+    this.densityStats.candidateBodies = 0;
+    this.densityStats.broadphaseCandidates = 0;
+    this.densityStats.narrowphaseTests = 0;
+    this.densityStats.sleepingBodies = 0;
+    const dynamicBounds = this._worldBoundsForBodies(bodies);
+    const spatial = new OctreeBVH(dynamicBounds, 7, 12);
+    for (const [id, body] of bodies) spatial.insert({ id, aabb: this._bodyAABB(body) });
+
+    const awarenessRadius = this.focus.awarenessRadius ?? 64;
+    const predictionRadius = this.focus.predictionRadius ?? awarenessRadius;
+    const candidateIds = new Set<string>();
+    for (const entry of spatial.querySphere(this.focus.position, awarenessRadius)) candidateIds.add(entry.id);
+    for (const entry of spatial.querySphere(predictionPosition(this.focus), predictionRadius)) candidateIds.add(entry.id);
+    this.densityStats.candidateBodies = candidateIds.size;
+
+    const seen = new Set<string>();
+    for (const id of candidateIds) {
+      const a = this.bodies.get(id);
+      if (!a) continue;
+      const aWeight = this._physicsWeight(a);
+      if (a.sleeping || aWeight < 0.10) { this.densityStats.sleepingBodies++; continue; }
+      const radius = this._shapeRadius(a);
+      const candidates = spatial.queryAABB(this._bodyAABB(a));
+      for (const candidate of candidates) {
+        if (candidate.id === id) continue;
+        const pairKey = id < candidate.id ? `${id}|${candidate.id}` : `${candidate.id}|${id}`;
+        if (seen.has(pairKey)) continue;
+        seen.add(pairKey);
+        this.densityStats.broadphaseCandidates++;
+        const b = this.bodies.get(candidate.id);
+        if (!b || (a.sleeping && b.sleeping)) continue;
+        const bWeight = this._physicsWeight(b);
+        if (!candidateIds.has(candidate.id) || Math.max(aWeight, bWeight) < 0.10) continue;
+        const bRadius = this._shapeRadius(b);
+        const dx = a.position[0] - b.position[0];
+        const dy = a.position[1] - b.position[1];
+        const dz = a.position[2] - b.position[2];
+        if (dx * dx + dy * dy + dz * dz > (radius + bRadius) * (radius + bRadius)) continue;
+        this.densityStats.narrowphaseTests++;
         if (this._sphereOverlap(a, b)) {
-          this.collisionPairs.push([ids[i], ids[j]]);
+          this.collisionPairs.push([id, candidate.id]);
           this._resolveCollision(a, b);
         }
       }
     }
+  }
+
+  private _bodyAABB(body: PhysicsBody): AABB {
+    const r = this._shapeRadius(body);
+    return {
+      min: [body.position[0] - r, body.position[1] - r, body.position[2] - r],
+      max: [body.position[0] + r, body.position[1] + r, body.position[2] + r],
+    };
+  }
+
+  private _worldBoundsForBodies(bodies: Array<[string, PhysicsBody]>): AABB {
+    if (bodies.length === 0) return { min: [-1, -1, -1], max: [1, 1, 1] };
+    const first = this._bodyAABB(bodies[0][1]);
+    const bounds: AABB = { min: [...first.min], max: [...first.max] };
+    for (const [, body] of bodies.slice(1)) {
+      const aabb = this._bodyAABB(body);
+      for (let axis = 0; axis < 3; axis++) {
+        bounds.min[axis] = Math.min(bounds.min[axis], aabb.min[axis]);
+        bounds.max[axis] = Math.max(bounds.max[axis], aabb.max[axis]);
+      }
+    }
+    for (let axis = 0; axis < 3; axis++) {
+      bounds.min[axis] -= 1;
+      bounds.max[axis] += 1;
+    }
+    return bounds;
+  }
+
+  private _physicsWeight(body: PhysicsBody): number {
+    return totalAttentionWeight(body.position, this.focus);
+  }
+
+  private _simulationInterval(weight: number): number {
+    if (weight >= 0.75) return 1;
+    if (weight >= 0.50) return 2;
+    if (weight >= 0.25) return 4;
+    if (weight >= 0.10) return 8;
+    return Infinity;
+  }
+
+  private _shouldSimulateBody(body: PhysicsBody, weight: number): boolean {
+    if (weight < 0.10) { body.sleeping = true; return false; }
+    const interval = this._simulationInterval(weight);
+    return this.stepCount % interval === 0;
   }
 
   private _sphereOverlap(a: PhysicsBody, b: PhysicsBody): boolean {
@@ -484,7 +633,7 @@ export class AdvancedPhysicsWorld {
   }
 
   get stats() {
-    return { bodyCount: this.bodies.size, constraintCount: this.constraints.length, stepCount: this.stepCount, collisionPairs: this.collisionPairs.length };
+    return { bodyCount: this.bodies.size, constraintCount: this.constraints.length, stepCount: this.stepCount, collisionPairs: this.collisionPairs.length, density: { ...this.densityStats } };
   }
 
   dispose(): void { this.bodies.clear(); this.constraints = []; }
@@ -805,6 +954,35 @@ export class ProceduralWorldGen {
     return h / norm;
   }
 
+  generateFocusedChunks(focus: ComputationFocus, chunkSize = this.config.width, radiusChunks = 1): WorldChunk[] {
+    const future = predictionPosition(focus);
+    const focusChunk = [Math.floor(focus.position[0] / chunkSize), Math.floor(focus.position[2] / chunkSize)] as const;
+    const predictionChunk = [Math.floor(future[0] / chunkSize), Math.floor(future[2] / chunkSize)] as const;
+    const ordered: Array<readonly [number, number]> = [focusChunk, predictionChunk];
+    for (let dz = -radiusChunks; dz <= radiusChunks; dz++) {
+      for (let dx = -radiusChunks; dx <= radiusChunks; dx++) {
+        ordered.push([focusChunk[0] + dx, focusChunk[1] + dz]);
+        ordered.push([predictionChunk[0] + dx, predictionChunk[1] + dz]);
+      }
+    }
+    const keys = new Set<string>();
+    const chunks: WorldChunk[] = [];
+    for (const [cx, cz] of ordered) {
+      const key = `${cx},${cz}`;
+      if (keys.has(key)) continue;
+      keys.add(key);
+      chunks.push(this.generateChunk(cx, cz));
+    }
+    const awarenessChunks = Math.ceil(((focus.awarenessRadius ?? chunkSize) * 2) / chunkSize);
+    for (const key of this.chunkCache.keys()) {
+      const [cx, cz] = key.split(',').map(Number);
+      const outsideFocus = Math.abs(cx - focusChunk[0]) > awarenessChunks || Math.abs(cz - focusChunk[1]) > awarenessChunks;
+      const outsidePrediction = Math.abs(cx - predictionChunk[0]) > awarenessChunks || Math.abs(cz - predictionChunk[1]) > awarenessChunks;
+      if (outsideFocus && outsidePrediction) this.chunkCache.delete(key);
+    }
+    return chunks;
+  }
+
   evictChunk(x: number, z: number): void { this.chunkCache.delete(`${x},${z}`); }
   get cachedChunks(): number { return this.chunkCache.size; }
 
@@ -898,7 +1076,9 @@ export class SpatialAudioDSP {
   private masterGain: GainNode | null = null;
   private reverbConvolver: ConvolverNode | null = null;
   private reverbGain: GainNode | null = null;
-  private sources = new Map<string, { panner: PannerNode; gain: GainNode; source?: AudioBufferSourceNode }>();
+  private sources = new Map<string, { panner: PannerNode; gain: GainNode; source?: AudioBufferSourceNode; position: [number, number, number]; lastUpdateTime: number }>();
+  private skippedSourceUpdates = 0;
+  private appliedSourceUpdates = 0;
   private listenerState: ListenerState = { position: [0, 0, 0], forward: [0, 0, -1], up: [0, 1, 0] };
 
   async init(reverbIrBuffer?: ArrayBuffer): Promise<boolean> {
@@ -945,16 +1125,40 @@ export class SpatialAudioDSP {
     gain.connect(this.masterGain);
     if (this.reverbConvolver) gain.connect(this.reverbConvolver);
 
-    this.sources.set(def.id, { panner, gain });
+    this.sources.set(def.id, { panner, gain, position: [...def.position], lastUpdateTime: 0 });
     return true;
   }
 
   updateSourcePosition(id: string, position: [number, number, number]): void {
     const s = this.sources.get(id);
     if (!s || !this.ctx) return;
+    const weight = this.audioWeight(position);
+    const dx = position[0] - s.position[0];
+    const dy = position[1] - s.position[1];
+    const dz = position[2] - s.position[2];
+    const movedSq = dx * dx + dy * dy + dz * dz;
+    const minInterval = weight > 0.75 ? 0.016 : weight > 0.5 ? 0.033 : weight > 0.25 ? 0.066 : 0.25;
+    if (weight <= 0.25 && (movedSq < 0.25 || this.ctx.currentTime - s.lastUpdateTime < minInterval)) {
+      this.skippedSourceUpdates++;
+      return;
+    }
+    s.position = [...position];
+    s.lastUpdateTime = this.ctx.currentTime;
     s.panner.positionX.linearRampToValueAtTime(position[0], this.ctx.currentTime + 0.016);
     s.panner.positionY.linearRampToValueAtTime(position[1], this.ctx.currentTime + 0.016);
     s.panner.positionZ.linearRampToValueAtTime(position[2], this.ctx.currentTime + 0.016);
+    this.appliedSourceUpdates++;
+  }
+
+  audioWeight(position: [number, number, number], audibility = 1): number {
+    const focus: ComputationFocus = {
+      position: this.listenerState.position,
+      velocity: this.listenerState.velocity,
+      awarenessRadius: 32,
+      predictionRadius: 32,
+      predictionWindowSeconds: 0.25,
+    };
+    return clamp01((audibility * totalAttentionWeight(position, focus)) / (1 + distanceSq(position, this.listenerState.position)));
   }
 
   updateListener(state: ListenerState): void {
@@ -985,7 +1189,7 @@ export class SpatialAudioDSP {
 
   resume(): Promise<void> { return this.ctx?.resume() ?? Promise.resolve(); }
 
-  get stats() { return { sources: this.sources.size, sampleRate: this.ctx?.sampleRate ?? 0, state: this.ctx?.state ?? 'unavailable' }; }
+  get stats() { return { sources: this.sources.size, sampleRate: this.ctx?.sampleRate ?? 0, state: this.ctx?.state ?? 'unavailable', density: { appliedSourceUpdates: this.appliedSourceUpdates, skippedSourceUpdates: this.skippedSourceUpdates } }; }
 
   dispose(): void { this.sources.forEach((_, id: string) => this.removeSource(id)); this.ctx?.close(); this.ctx = null; }
 }
@@ -1143,6 +1347,14 @@ export class BehaviorTreeEngine {
     const root = this.trees.get(treeId);
     if (!root) return 'failure';
     return this._eval(root, ctx);
+  }
+
+  tickWeighted(treeId: string, ctx: BTContext, weight: number, tick: number): BTStatus {
+    const w = clamp01(weight);
+    if (w < 0.10) return 'success';
+    const interval = w >= 0.75 ? 1 : w >= 0.50 ? 2 : w >= 0.25 ? 4 : 8;
+    if (tick % interval === 0) return this.tick(treeId, ctx);
+    return 'running';
   }
 
   private _eval(node: BTNode, ctx: BTContext): BTStatus {
@@ -1499,6 +1711,9 @@ export interface LODObject {
   levels: LODLevel[];
   currentLevel: number;
   forceLevel?: number;
+  visible?: boolean;
+  screenCoverage?: number;
+  motionImportance?: number;
 }
 
 /**
@@ -1517,28 +1732,31 @@ export class LODSystem {
 
   unregister(id: string): void { this.objects.delete(id); }
 
-  update(cameraPos: [number, number, number]): Map<string, number> {
+  update(cameraPos: [number, number, number], maxTriangleBudget = Infinity, focusVelocity?: [number, number, number]): Map<string, number> {
     const changes = new Map<string, number>();
+    let allocatedTriangles = 0;
+    let skippedObjects = 0;
+    const focus: ComputationFocus = { position: cameraPos, velocity: focusVelocity, awarenessRadius: 64, predictionRadius: 96, predictionWindowSeconds: 0.5 };
     for (const [id, obj] of this.objects) {
       if (obj.forceLevel !== undefined) { obj.currentLevel = obj.forceLevel; continue; }
-      const dx = obj.position[0] - cameraPos[0];
-      const dy = obj.position[1] - cameraPos[1];
-      const dz = obj.position[2] - cameraPos[2];
-      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-      let newLevel = obj.currentLevel;
-      for (let l = 0; l < obj.levels.length; l++) {
-        const lv = obj.levels[l];
-        const threshold = l < obj.currentLevel ? lv.maxDist * this.hysteresis : lv.maxDist;
-        if (dist >= lv.minDist && dist < threshold) { newLevel = l; break; }
-      }
+      const visibility = obj.visible === false ? 0 : 1;
+      const renderWeight = visibility * totalAttentionWeight(obj.position, focus);
+      if (renderWeight <= 0.10) { skippedObjects++; continue; }
+      const desiredLevel = renderWeight > 0.8 ? 0 : renderWeight > 0.5 ? 1 : renderWeight > 0.25 ? 2 : 3;
+      let newLevel = Math.min(desiredLevel, obj.levels.length - 1);
+      const triangleBudget = maxTriangleBudget * renderWeight;
+      while (newLevel < obj.levels.length - 1 && obj.levels[newLevel].triangleCount > triangleBudget) newLevel++;
+      if (Number.isFinite(maxTriangleBudget)) allocatedTriangles += obj.levels[newLevel]?.triangleCount ?? 0;
       if (newLevel !== obj.currentLevel) { obj.currentLevel = newLevel; changes.set(id, newLevel); }
     }
     this.updateCount++;
+    this.lastDensityStats = { skippedObjects, allocatedTriangles };
     return changes;
   }
 
-  get stats() { return { objects: this.objects.size, updateCount: this.updateCount }; }
+  private lastDensityStats = { skippedObjects: 0, allocatedTriangles: 0 };
+
+  get stats() { return { objects: this.objects.size, updateCount: this.updateCount, density: this.lastDensityStats }; }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1954,6 +2172,7 @@ export class AssetStreamManager {
   private active = new Set<string>();
   private loadedBytes = 0;
   private loadCount = 0;
+  private deferredCount = 0;
 
   constructor(maxConcurrent = 4, maxCacheMB = 256) {
     this.maxConcurrent = maxConcurrent;
@@ -1966,9 +2185,17 @@ export class AssetStreamManager {
   }
 
   request(id: string): boolean {
+    return this.requestWeighted(id, 1);
+  }
+
+  requestWeighted(id: string, weight: number): boolean {
     const h = this.assets.get(id);
     if (!h || h.state !== 'unloaded') return false;
+    const w = clamp01(weight);
+    if (w < 0.05) { this.deferredCount++; return false; }
     h.state = 'queued';
+    h.priority = h.priority * w;
+    h.lod = Math.max(h.lod, w >= 0.75 ? h.lod : w >= 0.35 ? h.lod + 1 : h.lod + 2);
     this.queue.push(h);
     this.queue.sort((a, b) => b.priority - a.priority || a.lod - b.lod);
     this._drain();
@@ -2015,7 +2242,7 @@ export class AssetStreamManager {
     }
   }
 
-  get stats() { return { assets: this.assets.size, queued: this.queue.length, active: this.active.size, loadedMB: (this.loadedBytes / 1024 / 1024).toFixed(2), loadCount: this.loadCount }; }
+  get stats() { return { assets: this.assets.size, queued: this.queue.length, active: this.active.size, loadedMB: (this.loadedBytes / 1024 / 1024).toFixed(2), loadCount: this.loadCount, deferredCount: this.deferredCount }; }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

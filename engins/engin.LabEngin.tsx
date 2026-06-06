@@ -130,15 +130,32 @@ function roundMetric(value: number, places = 3): number {
 function runBrowserSimulation(kind: SimKind, seed = Date.now()): SimResult {
   const random = seededRandom(seed);
   if (kind === 'particle') {
+    const totalParticles = 512;
     let kineticEnergy = 0;
+    let speedSum = 0;
+    let speedSqSum = 0;
+    let evaluatedParticles = 0;
     const samples: number[] = [];
-    for (let i = 0; i < 512; i += 1) {
+    for (let i = 0; i < totalParticles; i += 1) {
       const speed = Math.hypot((random() - 0.5) * 18, (random() - 0.5) * 18 - 9.80665 * 0.016);
+      evaluatedParticles++;
+      speedSum += speed;
+      speedSqSum += speed * speed;
       kineticEnergy += 0.5 * speed * speed;
       if (i < 12) samples.push(roundMetric(speed, 2));
+      if (evaluatedParticles >= 64 && evaluatedParticles % 32 === 0) {
+        const mean = speedSum / evaluatedParticles;
+        const variance = Math.max(0, speedSqSum / evaluatedParticles - mean * mean);
+        const error = Math.sqrt(variance / evaluatedParticles);
+        const informationGain = error / Math.max(0.001, mean);
+        const refinementWeight = Math.min(1, error * variance * informationGain);
+        if (refinementWeight < 0.03) break;
+      }
     }
-    const averageVelocity = Math.sqrt((2 * kineticEnergy) / 512);
-    return { summary: `512 particles integrated · avg v=${roundMetric(averageVelocity, 2)}m/s · KE=${roundMetric(kineticEnergy / 512, 2)}J`, metrics: { particles: 512, averageVelocity: roundMetric(averageVelocity), kineticEnergy: roundMetric(kineticEnergy) }, samples };
+    const averageKineticEnergy = kineticEnergy / evaluatedParticles;
+    const averageVelocity = Math.sqrt(2 * averageKineticEnergy);
+    const estimatedTotalKineticEnergy = averageKineticEnergy * totalParticles;
+    return { summary: `${evaluatedParticles}/${totalParticles} particles sampled · avg v=${roundMetric(averageVelocity, 2)}m/s · KE≈${roundMetric(averageKineticEnergy, 2)}J`, metrics: { particles: totalParticles, evaluatedParticles, averageVelocity: roundMetric(averageVelocity), kineticEnergy: roundMetric(estimatedTotalKineticEnergy) }, samples };
   }
   if (kind === 'fluid') {
     const viscosity = 0.00089 + random() * 0.0004;

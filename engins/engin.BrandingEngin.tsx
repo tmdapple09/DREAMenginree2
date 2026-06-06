@@ -34,7 +34,7 @@ import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, BarChart2, BookOpen, DollarSign, Eye, FlaskConical, Layers, Megaphone, Minus, Palette, TrendingDown, TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
   onBack: () => void;
@@ -178,16 +178,30 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     return () => { cancelled = true; };
   }, []);
 
+  const analyticsBucketsRef = useRef(new Map<string, AnalyticMetric>());
+
   // ── Refresh analytics ──────────────────────────────────────────────────────
   function refreshAnalytics( ){
-    setMetrics([
+    const nextMetrics: AnalyticMetric[] = [
       { id: 'reach',  label: 'Reach',           value: '12.4K', trend: 'up',   icon: <Users className="w-4 h-4" /> },
       { id: 'eng',    label: 'Engagement Rate',  value: '4.7%',  trend: 'up',   icon: <TrendingUp className="w-4 h-4" /> },
       { id: 'ctr',    label: 'Click-Through',    value: '2.1%',  trend: 'down', icon: <BarChart2 className="w-4 h-4" /> },
       { id: 'growth', label: 'Follower Growth',  value: '+127',  trend: 'up',   icon: <Megaphone className="w-4 h-4" /> },
-    ]);
+    ];
+    const analyticsWeight = (metric: AnalyticMetric) => {
+      const recency = 1;
+      const queryFrequency = metric.id === 'reach' || metric.id === 'eng' ? 1 : 0.65;
+      const campaignActivity = abTests.some((test) => !test.paused) ? 1 : metric.id === 'growth' ? 0.8 : 0.6;
+      return recency * queryFrequency * campaignActivity;
+    };
+    const changedBuckets = nextMetrics.filter((metric) => {
+      const previous = analyticsBucketsRef.current.get(metric.id);
+      return !previous || previous.value !== metric.value || previous.trend !== metric.trend;
+    }).sort((a, b) => analyticsWeight(b) - analyticsWeight(a));
+    changedBuckets.forEach((metric) => analyticsBucketsRef.current.set(metric.id, metric));
+    setMetrics((prev) => prev.map((metric) => analyticsBucketsRef.current.get(metric.id) ?? metric));
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
-      'brand', 'brand:analytics-snapshot', { metrics: ['reach', 'eng', 'ctr', 'growth'] },
+      'brand', 'brand:analytics-snapshot', { metrics: changedBuckets.map((metric) => metric.id), changedBuckets: changedBuckets.length },
     );
     recordForgeTransfer('brand', 'create', 'analytics-snapshot', 'Brand analytics snapshot → ContentEngin insights');
   }
@@ -244,6 +258,11 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   ]);
   const [newAssetName, setNewAssetName]   = useState('');
   const [newAssetValue, setNewAssetValue] = useState('');
+  const assetsByType = useMemo(() => assets.reduce<Record<'logo' | 'color' | 'font', typeof assets>>((groups, asset) => {
+    groups[asset.type].push(asset);
+    return groups;
+  }, { logo: [], color: [], font: [] }), [assets]);
+  const sharedAnalyticsPeerIds = useMemo(() => Object.keys(sharedAnalytics.peers), [sharedAnalytics.peers]);
 
   // ── Color Palette Generator (regeneratable) ───────────────────────────────────
   const PALETTE_PRESETS = [
@@ -902,7 +921,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
           <div className="de-widget-body">
             {(['logo', 'color', 'font'] as const).map((type) => {
-              const group = assets.filter((a) => a.type === type);
+              const group = assetsByType[type];
               if (group.length === 0) return null;
               return (
                 <div key={type} style={{ marginBottom: 12 }}>
@@ -1204,7 +1223,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
             <span className="de-widget-title">Shared Dream Analytics</span>
             {sharedAnalyticsActive && (
               <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 700, color: '#22c55e' }}>
-                ● {sharedAnalytics.isConnected ? `Live · ${Object.keys(sharedAnalytics.peers).length} peer(s)` : 'Connecting…'}
+                ● {sharedAnalytics.isConnected ? `Live · ${sharedAnalyticsPeerIds.length} peer(s)` : 'Connecting…'}
               </span>
             )}
           </div>
@@ -1241,9 +1260,9 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
                 <div style={{ fontSize: 10, color: 'var(--de-text-dim)', wordBreak: 'break-all' }}>
                   ID: <code style={{ color: ACCENT }}>{sharedAnalyticsId.slice(-12)}</code>
                 </div>
-                {Object.keys(sharedAnalytics.peers).length > 0 && (
+                {sharedAnalyticsPeerIds.length > 0 && (
                   <div style={{ marginTop: 6, fontSize: 10, color: 'var(--de-text-dim)' }}>
-                    Peers: {Object.keys(sharedAnalytics.peers).map((id) => id.slice(0, 8)).join(', ')}
+                    Peers: {sharedAnalyticsPeerIds.map((id) => id.slice(0, 8)).join(', ')}
                   </div>
                 )}
               </div>
