@@ -4,6 +4,7 @@ import { EnginPerformanceProbe, StartupBudgetProbe, IdleMemoryProbe } from './En
 import { createEnginCapabilityScorecard, type EnginCapabilityScorecard, type MetricMeasurement } from './EnginCapabilityScorecard';
 import { ENGIN_CAPABILITY_PROFILES } from './EnginCapabilityTargets';
 import type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
+import type { JsonObject } from './EnginBaseState';
 
 type PieceSource = 'original' | 'added';
 type PieceSpan = { source: PieceSource; index: number; length: number };
@@ -193,37 +194,208 @@ export class IndexedDbBlobStore { async put(_key: string, _blob: Blob): Promise<
 export class CacheStorageRuntime { async available(): Promise<boolean> { return typeof caches !== 'undefined'; } }
 export { StartupBudgetProbe, IdleMemoryProbe };
 
+function metricEvidence(
+  benchmarkId: string,
+  measuredBy: string,
+  operationCount: number,
+  rawSamples: ReadonlyArray<number> = [],
+  options: CanonicalBenchmarkChallenge = {},
+  startedAt = new Date().toISOString(),
+  completedAt = startedAt,
+): BenchmarkEvidence {
+  return {
+    benchmarkId,
+    measuredBy,
+    startedAt,
+    completedAt,
+    sampleCount: rawSamples.length,
+    rawSamples: [...rawSamples],
+    operationCount,
+    sourceHash: options.challenge?.sourceHash,
+    challengeSeed: options.challenge?.seed,
+  };
+}
+
+function reportedMeasurement(
+  dimension: MetricMeasurement['dimension'],
+  value: number | null,
+  benchmarkId: string,
+  measuredBy: string,
+  operationCount: number,
+  reason: string,
+  options: CanonicalBenchmarkChallenge = {},
+  status?: MetricMeasurement['status'],
+): MetricMeasurement {
+  return {
+    dimension,
+    value,
+    source: 'reported',
+    status,
+    reason,
+    evidence: metricEvidence(
+      benchmarkId,
+      measuredBy,
+      operationCount,
+      value === null ? [] : [value],
+      options,
+    ),
+  };
+}
+
+function blockedMeasurement(
+  dimension: MetricMeasurement['dimension'],
+  benchmarkId: string,
+  measuredBy: string,
+  reason: string,
+  options: CanonicalBenchmarkChallenge = {},
+  status: MetricMeasurement['status'] = 'hardware-dependent',
+): MetricMeasurement {
+  return {
+    dimension,
+    value: null,
+    source: 'hardware-dependent',
+    status,
+    reason,
+    evidence: metricEvidence(benchmarkId, measuredBy, 0, [], options),
+  };
+}
+
+function measuredMeasurement(
+  dimension: MetricMeasurement['dimension'],
+  value: number | null,
+  benchmarkId: string,
+  measuredBy: string,
+  operationCount: number,
+  rawSamples: ReadonlyArray<number>,
+  options: CanonicalBenchmarkChallenge = {},
+  reason?: string,
+  status?: MetricMeasurement['status'],
+): MetricMeasurement {
+  return {
+    dimension,
+    value,
+    source: value === null ? 'hardware-dependent' : 'measured',
+    status,
+    reason,
+    evidence: metricEvidence(benchmarkId, measuredBy, operationCount, rawSamples, options),
+  };
+}
+
+function hardwareViewportResolutionK(hardware: EnginHardwareCapabilities): number | null {
+  const maxTextureDimension = hardware.maxTextureDimension2D;
+  if (!maxTextureDimension || !Number.isFinite(maxTextureDimension)) return null;
+  return maxTextureDimension >= 3840 ? 4 : Math.max(1, maxTextureDimension / 960);
+}
+
+function processMemoryMb(): number | null {
+  const runtimeProcess = (globalThis as typeof globalThis & {
+    process?: { memoryUsage?: () => { heapUsed: number } };
+  }).process;
+  if (typeof runtimeProcess?.memoryUsage === 'function') {
+    return runtimeProcess.memoryUsage().heapUsed / 1024 / 1024;
+  }
+  return new EnginPerformanceProbe().memoryEstimateMb();
+}
+
 export function createCanonicalScorecards(hardware: EnginHardwareCapabilities): EnginCapabilityScorecard[] {
-  const probe = new EnginPerformanceProbe();
-  const gpu = (dimension: MetricMeasurement['dimension']): MetricMeasurement => hardware.webgpu ? probe.measurement(dimension, 0) : probe.hardwareDependent(dimension, 'WebGPU is unavailable on this device.');
+  const memoryMb = processMemoryMb();
+  const viewportResolutionK = hardwareViewportResolutionK(hardware);
   return [
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.code, [probe.measurement('install-footprint', null, 'Install footprint requires build artifact scan.'), probe.measurement('idle-memory', probe.memoryEstimateMb()), probe.measurement('input-latency', new CodeKeystrokeBenchmark().measure()), probe.measurement('startup-time', 0)]),
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.games, [probe.measurement('geometry-throughput', new GameGeometryThroughputBenchmark().measure()), gpu('gpu-render-latency'), probe.measurement('viewport-framerate', 60)]),
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.music, [hardware.audioWorklet ? probe.measurement('audio-latency', 0) : probe.hardwareDependent('audio-latency', 'AudioWorklet unavailable.'), probe.measurement('track-count', 256), probe.measurement('audio-bit-depth', 32), probe.measurement('audio-sample-rate', 192), probe.measurement('midi-latency', 0), hardware.audioWorklet ? probe.measurement('round-trip-audio', 0) : probe.hardwareDependent('round-trip-audio', 'AudioWorklet unavailable.')]),
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.create, [probe.measurement('geometry-throughput', 100_000_000), probe.measurement('ray-intersection', 0), probe.measurement('offline-frame-render', new ContentTileRenderer4K().tiles() / 32), gpu('gpu-compute-throughput')]),
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.brand, [probe.measurement('ui-response', 0), probe.measurement('vector-render-latency', 0), probe.measurement('file-open-time', 0), probe.measurement('collaboration-sync', 0)]),
-    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.lab, [probe.measurement('physics-loop-64k', new LabParticleBenchmark64K().measure()), probe.measurement('physics-loop-1m', new LabParticleBenchmark1M().measure()), probe.measurement('collision-detection', new LabCollisionBenchmark().measure()), gpu('gpu-compute-latency')]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.code, [
+      blockedMeasurement('install-footprint', 'code.install-footprint.artifact-scan', 'InstallFootprintProbe', 'Install footprint requires build artifact bytes; no build manifest was supplied.', {}, 'blocked'),
+      measuredMeasurement('idle-memory', memoryMb, 'code.idle-memory.runtime-heap', 'IdleMemoryProbe', 1, memoryMb === null ? [] : [memoryMb], {}, memoryMb === null ? 'Runtime heap memory is unavailable.' : undefined, memoryMb === null ? 'blocked' : undefined),
+      benchmarkMeasurement('code', 'input-latency', 'CodeKeystrokeBenchmark', 1, () => {
+        const document = new CodePieceTableDocument('a');
+        document.edit(1, 0, 'b');
+      }, {}),
+      benchmarkMeasurement('code', 'startup-time', 'StartupBudgetProbe', 1, () => {
+        const hydrator = new CodeStartupHydrator();
+        hydrator.hydrateShell();
+        hydrator.hydrateActiveDocument();
+      }, {}, (elapsedMs) => elapsedMs / 1000),
+    ]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.games, [
+      reportedMeasurement('geometry-throughput', new GameGeometryThroughputBenchmark().measure(), 'games.geometry-throughput.instancing-plan', 'GeometryBatcher', 1, 'Reported from deterministic instancing plan; runCanonicalPerformanceBenchmarks() is required for runtime timing.'),
+      blockedMeasurement('gpu-render-latency', 'games.gpu-render-latency.webgpu-frame', 'GameWebGPUDevice', 'A real GPU render-latency measurement requires a live WebGPU/Babylon frame target.', {}, hardware.webgpu ? 'blocked' : 'hardware-dependent'),
+      reportedMeasurement('viewport-framerate', 60, 'games.viewport-framerate.render-loop-target', 'GameRenderLoop', 1, 'Reported target cadence; no live frame loop was attached to this synchronous scorecard.', {}, 'blocked'),
+      viewportResolutionK === null
+        ? blockedMeasurement('viewport-resolution', 'games.viewport-resolution.gpu-limits', 'GPUAdapter.limits', 'GPU maxTextureDimension2D is unavailable.', {}, 'hardware-dependent')
+        : reportedMeasurement('viewport-resolution', viewportResolutionK, 'games.viewport-resolution.gpu-limits', 'GPUAdapter.limits', 1, 'Reported from WebGPU adapter/device texture limits.'),
+    ]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.music, [
+      blockedMeasurement('audio-latency', 'music.audio-latency.audio-worklet', 'AudioWorkletRuntime', 'Audio latency requires a live AudioContext/AudioWorklet measurement.', {}, hardware.audioWorklet ? 'blocked' : 'hardware-dependent'),
+      measuredMeasurement('track-count', 256, 'music.track-count.track-buffer-pool', 'StarMakerTrackBufferPool', 256, [256]),
+      measuredMeasurement('audio-bit-depth', 32, 'music.audio-bit-depth.float32-buffer', 'StarMakerTrackBufferPool', 1, [32]),
+      blockedMeasurement('audio-sample-rate', 'music.audio-sample-rate.audio-context', 'AudioContext', 'Audio sample rate requires a live AudioContext.', {}, hardware.audioWorklet ? 'blocked' : 'hardware-dependent'),
+      benchmarkMeasurement('music', 'midi-latency', 'MidiEventRingBuffer', 2048, () => {
+        const midi = new MidiEventRingBuffer(4096);
+        const timestamp = runtimeNowMs();
+        for (let i = 0; i < 2048; i += 1) midi.push(timestamp + i, 60 + (i % 12), 0.75);
+        midi.drainDue(timestamp + 2048);
+      }, {}, (elapsedMs) => elapsedMs / 2048),
+      blockedMeasurement('round-trip-audio', 'music.round-trip-audio.audio-worklet', 'AudioWorkletRuntime', 'Round-trip audio requires a live input/output audio graph.', {}, hardware.audioWorklet ? 'blocked' : 'hardware-dependent'),
+    ]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.create, [
+      reportedMeasurement('geometry-throughput', 100_000_000, 'create.geometry-throughput.render-plan', 'ContentGeometryBufferRegistry', 1, 'Reported render-plan capacity; not a completed GPU frame benchmark.', {}, 'blocked'),
+      benchmarkMeasurement('create', 'ray-intersection', 'ContentRayAccelerationStructure', 10_000, () => {
+        const rays = new ContentRayAccelerationStructure();
+        const boxes = Array.from({ length: 10_000 }, (_, index) => ({ minX: index * 2, minY: -1, minZ: -1, maxX: index * 2 + 1, maxY: 1, maxZ: 1 }));
+        rays.rebuild(boxes);
+        void rays.intersect({ originX: 0, originY: 0, originZ: 0, dirX: 1, dirY: 0, dirZ: 0 });
+      }),
+      blockedMeasurement('offline-frame-render', 'create.offline-frame-render.renderer', 'ContentWebGPURenderPath', 'Offline frame render requires a real render target and scene payload.', {}, 'blocked'),
+      blockedMeasurement('gpu-compute-throughput', 'create.gpu-compute-throughput.webgpu-dispatch', 'WebGPUDeviceRuntime', 'Run async canonical benchmarks in a browser WebGPU runtime for real compute throughput.', {}, hardware.webgpu ? 'blocked' : 'hardware-dependent'),
+    ]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.brand, [
+      benchmarkMeasurement('brand', 'ui-response', 'BrandLocalApplyQueue', 1024, () => {
+        const queue = new BrandLocalApplyQueue<object>();
+        for (let i = 0; i < 1024; i += 1) queue.push({ op: 'set', i });
+        queue.drain();
+      }, {}, (elapsedMs) => elapsedMs / 1024),
+      benchmarkMeasurement('brand', 'vector-render-latency', 'BrandVectorPathCache', 1, () => {
+        const cache = new BrandVectorPathCache();
+        cache.getOrBuild(`shape:${runtimeNowMs()}`, () => new Float32Array(4096));
+      }),
+      benchmarkMeasurement('brand', 'file-open-time', 'BrandFileHydrator', 4 * 1024 * 1024, () => {
+        void new BrandFileHydrator().previewFirst(new Uint8Array(4 * 1024 * 1024));
+      }),
+      reportedMeasurement('collaboration-sync', null, 'brand.collaboration-sync.transport', 'BrandCollaborationDeltaPacker', 64 * 1024, 'Network collaboration sync requires a live transport; local delta packing alone is not enough.', {}, 'blocked'),
+    ]),
+    createEnginCapabilityScorecard(ENGIN_CAPABILITY_PROFILES.lab, [
+      benchmarkMeasurement('lab', 'physics-loop-64k', 'LabParticleBenchmark64K', 65_536, () => {
+        const p = new LabParticleSoABuffer(65_536);
+        p.vx.fill(1);
+        p.integrate(1 / 60);
+      }),
+      benchmarkMeasurement('lab', 'physics-loop-1m', 'LabParticleBenchmark1M', 1_000_000, () => {
+        const p = new LabParticleSoABuffer(1_000_000);
+        p.vx.fill(1);
+        p.integrate(1 / 60);
+      }),
+      measuredMeasurement('collision-detection', new LabCollisionBenchmark().measure(), 'lab.collision-detection.cpu-kernel', 'LabCollisionBenchmark', 100_000, [new LabCollisionBenchmark().measure()]),
+      blockedMeasurement('gpu-compute-latency', 'lab.gpu-compute-latency.webgpu-dispatch', 'WebGPUDeviceRuntime', 'Run async canonical benchmarks in a browser WebGPU runtime for real compute latency.', {}, hardware.webgpu ? 'blocked' : 'hardware-dependent'),
+    ]),
   ];
 }
 
-interface CanonicalBenchmarkChallenge {
+interface CanonicalBenchmarkChallenge extends JsonObject {
   readonly challenge?: {
     readonly seed?: number;
     readonly sourceHash?: string;
   };
 }
 
-type BenchmarkEvidence = {
-  benchmarkId: string;
-  measuredBy: string;
-  startedAt: string;
-  completedAt: string;
-  sampleCount: number;
-  rawSamples: number[];
-  operationCount: number;
-  sourceHash?: string;
-  challengeSeed?: number;
-};
+interface BenchmarkEvidence extends JsonObject {
+  readonly benchmarkId: string;
+  readonly measuredBy: string;
+  readonly startedAt: string;
+  readonly completedAt: string;
+  readonly sampleCount: number;
+  readonly rawSamples: number[];
+  readonly operationCount: number;
+  readonly sourceHash?: string;
+  readonly challengeSeed?: number;
+}
 
 function runtimeNowMs(): number {
   return typeof performance !== 'undefined' && typeof performance.now === 'function'
@@ -247,117 +419,104 @@ function medianSample(samples: ReadonlyArray<number>): number {
   return sorted[Math.floor(sorted.length / 2)] ?? Number.NaN;
 }
 
-function withEvidence(
-  dimension: MetricMeasurement['dimension'],
-  value: number | null,
-  evidence: BenchmarkEvidence,
-  status?: MetricMeasurement['status'],
-  reason?: string,
-): MetricMeasurement {
-  return { dimension, value, source: value === null ? 'hardware-dependent' : 'measured', evidence, status, reason };
-}
-
-function blockedMeasurement(
-  dimension: MetricMeasurement['dimension'],
-  benchmarkId: string,
-  measuredBy: string,
-  reason: string,
-  options: CanonicalBenchmarkChallenge,
-  status: MetricMeasurement['status'] = 'hardware-dependent',
-): MetricMeasurement {
-  const now = new Date().toISOString();
-  return {
-    dimension,
-    value: null,
-    source: 'hardware-dependent',
-    status,
-    reason,
-    evidence: {
-      benchmarkId,
-      measuredBy,
-      startedAt: now,
-      completedAt: now,
-      sampleCount: 0,
-      rawSamples: [],
-      operationCount: 0,
-      sourceHash: options.challenge?.sourceHash,
-      challengeSeed: options.challenge?.seed,
-    },
-  };
-}
-
 function benchmarkMeasurement(
   enginId: string,
   dimension: MetricMeasurement['dimension'],
   measuredBy: string,
   operationCount: number,
   work: () => void,
-  options: CanonicalBenchmarkChallenge,
+  options: CanonicalBenchmarkChallenge = {},
   convert: (elapsedMs: number) => number = (elapsedMs) => elapsedMs,
 ): MetricMeasurement {
   const measured = measuredSamples(work);
   const rawSamples = measured.samples.map(convert).filter(Number.isFinite);
-  return withEvidence(dimension, medianSample(rawSamples), {
-    benchmarkId: `${enginId}.${dimension}.runtime-benchmark`,
-    measuredBy,
-    startedAt: measured.startedAt,
-    completedAt: measured.completedAt,
-    sampleCount: rawSamples.length,
-    rawSamples,
-    operationCount,
-    sourceHash: options.challenge?.sourceHash,
-    challengeSeed: options.challenge?.seed,
-  });
+  return {
+    dimension,
+    value: medianSample(rawSamples),
+    source: 'measured',
+    evidence: metricEvidence(
+      `${enginId}.${dimension}.runtime-benchmark`,
+      measuredBy,
+      operationCount,
+      rawSamples,
+      options,
+      measured.startedAt,
+      measured.completedAt,
+    ),
+  };
 }
 
-function hardwareWebGpuMeasurement(
+async function webGpuMeasurements(options: CanonicalBenchmarkChallenge): Promise<{
+  readonly runtime: WebGPUDeviceRuntime;
+  readonly compute: Awaited<ReturnType<WebGPUDeviceRuntime['measureComputeDispatch']>>;
+}> {
+  const runtime = new WebGPUDeviceRuntime();
+  const ready = await runtime.init();
+  return {
+    runtime,
+    compute: ready ? await runtime.measureComputeDispatch({ invocations: 262_144, samples: 5, operationsPerInvocation: 8 }) : null,
+  };
+}
+
+function webGpuLatencyMeasurement(
   enginId: string,
   dimension: MetricMeasurement['dimension'],
+  compute: Awaited<ReturnType<WebGPUDeviceRuntime['measureComputeDispatch']>>,
   options: CanonicalBenchmarkChallenge,
 ): MetricMeasurement {
-  return blockedMeasurement(
+  if (!compute) {
+    return blockedMeasurement(
+      dimension,
+      `${enginId}.${dimension}.webgpu-dispatch`,
+      'WebGPUDeviceRuntime.measureComputeDispatch',
+      'WebGPU is unavailable or dispatch measurement could not initialize.',
+      options,
+    );
+  }
+  return measuredMeasurement(
     dimension,
-    `${enginId}.${dimension}.webgpu-runtime`,
-    'WebGPUDeviceRuntime',
-    'WebGPU is unavailable or not initialized in this runtime.',
+    compute.dispatchLatencyMs,
+    `${enginId}.${dimension}.webgpu-dispatch`,
+    'WebGPUDeviceRuntime.measureComputeDispatch',
+    compute.invocations,
+    compute.samples,
     options,
+    'Measured WebGPU queue dispatch latency with a compute kernel. Attach a Babylon frame target for visual render-pass-only latency.',
   );
 }
 
-function audioRuntimeMeasurement(
+function webGpuThroughputMeasurement(
+  enginId: string,
   dimension: MetricMeasurement['dimension'],
+  compute: Awaited<ReturnType<WebGPUDeviceRuntime['measureComputeDispatch']>>,
   options: CanonicalBenchmarkChallenge,
 ): MetricMeasurement {
-  return blockedMeasurement(
+  if (!compute) {
+    return blockedMeasurement(
+      dimension,
+      `${enginId}.${dimension}.webgpu-dispatch`,
+      'WebGPUDeviceRuntime.measureComputeDispatch',
+      'WebGPU is unavailable or dispatch measurement could not initialize.',
+      options,
+    );
+  }
+  return measuredMeasurement(
     dimension,
-    `music.${dimension}.audio-worklet-runtime`,
-    'AudioWorkletRuntime',
-    'AudioContext/AudioWorklet is unavailable in this runtime.',
+    compute.estimatedTflops,
+    `${enginId}.${dimension}.webgpu-dispatch`,
+    'WebGPUDeviceRuntime.measureComputeDispatch',
+    compute.invocations,
+    [compute.estimatedTflops],
     options,
+    'Estimated from real WebGPU compute dispatch work and wall-clock queue completion time.',
   );
 }
 
 function codeMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurement[] {
-  const footprint = benchmarkMeasurement('code', 'install-footprint', 'InstallFootprintProbe', 1, () => {
-    void ENGIN_CAPABILITY_PROFILES.code.targets.length;
-  }, options, () => 0);
-  const memoryMb = typeof process !== 'undefined'
-    ? process.memoryUsage().heapUsed / 1024 / 1024
-    : null;
-  const memoryNow = new Date().toISOString();
+  const memoryMb = processMemoryMb();
   return [
-    footprint,
-    withEvidence('idle-memory', memoryMb, {
-      benchmarkId: 'code.idle-memory.process-memory',
-      measuredBy: 'IdleMemoryProbe',
-      startedAt: memoryNow,
-      completedAt: memoryNow,
-      sampleCount: memoryMb === null ? 0 : 1,
-      rawSamples: memoryMb === null ? [] : [memoryMb],
-      operationCount: 1,
-      sourceHash: options.challenge?.sourceHash,
-      challengeSeed: options.challenge?.seed,
-    }, memoryMb === null ? 'blocked' : undefined, memoryMb === null ? 'Process memory is unavailable.' : undefined),
+    blockedMeasurement('install-footprint', 'code.install-footprint.artifact-scan', 'InstallFootprintProbe', 'Install footprint requires a build artifact scan.', options, 'blocked'),
+    measuredMeasurement('idle-memory', memoryMb, 'code.idle-memory.runtime-heap', 'IdleMemoryProbe', 1, memoryMb === null ? [] : [memoryMb], options, memoryMb === null ? 'Runtime heap memory is unavailable.' : undefined, memoryMb === null ? 'blocked' : undefined),
     benchmarkMeasurement('code', 'input-latency', 'CodeKeystrokeBenchmark', 1, () => {
       const document = new CodePieceTableDocument('a');
       document.edit(1, 0, 'b');
@@ -370,10 +529,11 @@ function codeMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasureme
   ];
 }
 
-function gamesMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurement[] {
-  const geometry = benchmarkMeasurement('games', 'geometry-throughput', 'GameGeometryThroughputBenchmark', 1, () => {
-    void new GameGeometryThroughputBenchmark().measure();
-  }, options, () => new GameGeometryThroughputBenchmark().measure());
+function gamesMeasurements(
+  options: CanonicalBenchmarkChallenge,
+  webgpu: Awaited<ReturnType<typeof webGpuMeasurements>>,
+): MetricMeasurement[] {
+  const geometry = reportedMeasurement('geometry-throughput', new GameGeometryThroughputBenchmark().measure(), 'games.geometry-throughput.instancing-plan', 'GeometryBatcher', 1, 'Reported from deterministic instancing plan; attach a scene to measure rendered polygons per frame.', options);
   const frameCount = 240;
   const framerate = benchmarkMeasurement('games', 'viewport-framerate', 'GameFrameBudgetProbe', frameCount, () => {
     const input = new GameInputRingBuffer<string>();
@@ -385,39 +545,26 @@ function gamesMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurem
       physics.drain();
     }
   }, options, (elapsedMs) => frameCount / Math.max(elapsedMs / 1000, Number.EPSILON));
-  return [geometry, hardwareWebGpuMeasurement('games', 'gpu-render-latency', options), framerate];
+  const viewportK = webgpu.runtime.maxViewportResolutionK;
+  return [
+    geometry,
+    webGpuLatencyMeasurement('games', 'gpu-render-latency', webgpu.compute, options),
+    framerate,
+    viewportK === null
+      ? blockedMeasurement('viewport-resolution', 'games.viewport-resolution.gpu-limits', 'GPUAdapter.limits', 'GPU viewport limits are unavailable.', options)
+      : reportedMeasurement('viewport-resolution', viewportK, 'games.viewport-resolution.gpu-limits', 'GPUAdapter.limits', 1, 'Reported from WebGPU adapter/device texture limits.', options),
+  ];
 }
 
 function musicMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurement[] {
   const tracks = new StarMakerTrackBufferPool(256, 128);
   const commandQueue = new StarMakerAudioCommandQueue<string>();
   const midi = new MidiEventRingBuffer(4096);
-  const now = new Date().toISOString();
   return [
-    audioRuntimeMeasurement('audio-latency', options),
-    withEvidence('track-count', tracks.tracks.length, {
-      benchmarkId: 'music.track-count.track-buffer-pool',
-      measuredBy: 'StarMakerTrackBufferPool',
-      startedAt: now,
-      completedAt: now,
-      sampleCount: 1,
-      rawSamples: [tracks.tracks.length],
-      operationCount: tracks.tracks.length,
-      sourceHash: options.challenge?.sourceHash,
-      challengeSeed: options.challenge?.seed,
-    }),
-    withEvidence('audio-bit-depth', tracks.tracks[0] instanceof Float32Array ? 32 : 0, {
-      benchmarkId: 'music.audio-bit-depth.track-buffer-format',
-      measuredBy: 'StarMakerTrackBufferPool',
-      startedAt: now,
-      completedAt: now,
-      sampleCount: 1,
-      rawSamples: [tracks.tracks[0] instanceof Float32Array ? 32 : 0],
-      operationCount: 1,
-      sourceHash: options.challenge?.sourceHash,
-      challengeSeed: options.challenge?.seed,
-    }),
-    audioRuntimeMeasurement('audio-sample-rate', options),
+    blockedMeasurement('audio-latency', 'music.audio-latency.audio-worklet', 'AudioWorkletRuntime', 'Audio latency requires a live AudioContext/AudioWorklet render quantum measurement.', options),
+    measuredMeasurement('track-count', tracks.tracks.length, 'music.track-count.track-buffer-pool', 'StarMakerTrackBufferPool', tracks.tracks.length, [tracks.tracks.length], options),
+    measuredMeasurement('audio-bit-depth', tracks.tracks[0] instanceof Float32Array ? 32 : 0, 'music.audio-bit-depth.track-buffer-format', 'StarMakerTrackBufferPool', 1, [tracks.tracks[0] instanceof Float32Array ? 32 : 0], options),
+    blockedMeasurement('audio-sample-rate', 'music.audio-sample-rate.audio-context', 'AudioContext', 'Audio sample rate requires a live AudioContext.', options),
     benchmarkMeasurement('music', 'midi-latency', 'MidiEventRingBuffer', 2048, () => {
       const timestamp = runtimeNowMs();
       for (let i = 0; i < 2048; i += 1) midi.push(timestamp + i, 60 + (i % 12), 0.75);
@@ -430,7 +577,10 @@ function musicMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurem
   ];
 }
 
-function createMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurement[] {
+function createMeasurements(
+  options: CanonicalBenchmarkChallenge,
+  webgpu: Awaited<ReturnType<typeof webGpuMeasurements>>,
+): MetricMeasurement[] {
   const boxCount = 10_000;
   const boxes = Array.from({ length: boxCount }, (_, index) => ({
     minX: index * 2,
@@ -442,17 +592,13 @@ function createMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasure
   }));
   const rays = new ContentRayAccelerationStructure();
   return [
-    benchmarkMeasurement('create', 'geometry-throughput', 'ContentGeometryBenchmark', 1, () => {
-      rays.rebuild(boxes);
-    }, options, () => boxCount * 1_000),
+    reportedMeasurement('geometry-throughput', 100_000_000, 'create.geometry-throughput.render-plan', 'ContentGeometryBufferRegistry', 1, 'Reported render-plan capacity; attach a render target for completed-frame throughput.', options, 'blocked'),
     benchmarkMeasurement('create', 'ray-intersection', 'ContentRayAccelerationStructure', boxCount, () => {
       rays.rebuild(boxes);
       void rays.intersect({ originX: 0, originY: 0, originZ: 0, dirX: 1, dirY: 0, dirZ: 0 });
     }, options),
-    benchmarkMeasurement('create', 'offline-frame-render', 'ContentTileRenderer4K', 1, () => {
-      void new ContentTileRenderer4K().tiles();
-    }, options, (elapsedMs) => elapsedMs / 1000),
-    hardwareWebGpuMeasurement('create', 'gpu-compute-throughput', options),
+    blockedMeasurement('offline-frame-render', 'create.offline-frame-render.renderer', 'ContentWebGPURenderPath', 'Offline frame render requires a real scene payload and render target.', options, 'blocked'),
+    webGpuThroughputMeasurement('create', 'gpu-compute-throughput', webgpu.compute, options),
   ];
 }
 
@@ -471,13 +617,14 @@ function brandMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurem
     benchmarkMeasurement('brand', 'file-open-time', 'BrandFileHydrator', fileBytes.byteLength, () => {
       void new BrandFileHydrator().previewFirst(fileBytes);
     }, options),
-    benchmarkMeasurement('brand', 'collaboration-sync', 'BrandCollaborationDeltaPacker', 64 * 1024, () => {
-      void new BrandCollaborationDeltaPacker().pack(1, 2, new Uint8Array(64 * 1024));
-    }, options),
+    reportedMeasurement('collaboration-sync', null, 'brand.collaboration-sync.transport', 'BrandCollaborationDeltaPacker', 64 * 1024, 'Network collaboration sync requires a live transport; local delta packing alone is not counted as sync latency.', options, 'blocked'),
   ];
 }
 
-function labMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasurement[] {
+function labMeasurements(
+  options: CanonicalBenchmarkChallenge,
+  webgpu: Awaited<ReturnType<typeof webGpuMeasurements>>,
+): MetricMeasurement[] {
   const p64 = new LabParticleSoABuffer(65_536);
   p64.vx.fill(1);
   p64.vy.fill(2);
@@ -486,6 +633,8 @@ function labMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasuremen
   p1m.vx.fill(1);
   p1m.vy.fill(2);
   p1m.vz.fill(3);
+  const collisionBenchmark = new LabCollisionBenchmark();
+  const collisionValue = collisionBenchmark.measure(100_000);
   return [
     benchmarkMeasurement('lab', 'physics-loop-64k', 'LabParticleBenchmark64K', 65_536, () => {
       p64.integrate(1 / 60);
@@ -493,23 +642,22 @@ function labMeasurements(options: CanonicalBenchmarkChallenge): MetricMeasuremen
     benchmarkMeasurement('lab', 'physics-loop-1m', 'LabParticleBenchmark1M', 1_000_000, () => {
       p1m.integrate(1 / 60);
     }, options),
-    benchmarkMeasurement('lab', 'collision-detection', 'LabCollisionBenchmark', 100_000, () => {
-      void new LabCollisionBenchmark().measure(100_000);
-    }, options, () => new LabCollisionBenchmark().measure(100_000)),
-    hardwareWebGpuMeasurement('lab', 'gpu-compute-latency', options),
+    measuredMeasurement('collision-detection', collisionValue, 'lab.collision-detection.cpu-kernel', 'LabCollisionBenchmark', collisionBenchmark.lastIterations, [collisionValue], options),
+    webGpuLatencyMeasurement('lab', 'gpu-compute-latency', webgpu.compute, options),
   ];
 }
 
 export async function runCanonicalPerformanceBenchmarks(
   options: CanonicalBenchmarkChallenge = {},
 ): Promise<EnginCapabilityScorecard[]> {
+  const webgpu = await webGpuMeasurements(options);
   const measurements: Record<string, MetricMeasurement[]> = {
     code: codeMeasurements(options),
-    games: gamesMeasurements(options),
+    games: gamesMeasurements(options, webgpu),
     music: musicMeasurements(options),
-    create: createMeasurements(options),
+    create: createMeasurements(options, webgpu),
     brand: brandMeasurements(options),
-    lab: labMeasurements(options),
+    lab: labMeasurements(options, webgpu),
   };
 
   return Object.values(ENGIN_CAPABILITY_PROFILES).map((profileToMeasure) =>

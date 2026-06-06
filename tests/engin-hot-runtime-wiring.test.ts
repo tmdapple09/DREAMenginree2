@@ -55,6 +55,7 @@ import {
   TransportLatencyProbe,
   TypedMemoryArena,
   UserFacingMetricLeakTest,
+  WebGPUDeviceRuntime,
   createCanonicalScorecards,
   createCustomEnginCapabilityProfile,
   createEnginCapabilityScorecard,
@@ -92,6 +93,16 @@ describe('DREAMengin hot runtime execution inventory', () => {
     expect(persistence.drain()).toEqual(['save-later']);
     expect(sync.drain()).toEqual(['sync-later']);
     expect(snapshots.latest()).toBe('checkpoint');
+  });
+
+
+
+  it('exposes an honest WebGPU initialization contract instead of assuming GPU readiness', async () => {
+    const webgpu = new WebGPUDeviceRuntime();
+    const result = await webgpu.ensureInitialized();
+    expect(typeof result.ready).toBe('boolean');
+    expect(['ready', 'unavailable', 'failed', 'lost']).toContain(result.state);
+    expect(webgpu.ready).toBe(result.ready);
   });
 
   it('wires CodeEngin edit hot state, workers, compaction, startup, and keystroke probe', () => {

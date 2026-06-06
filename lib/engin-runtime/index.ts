@@ -121,7 +121,7 @@ export {
   WebGPUDeviceRuntime,
   WorkerPoolRuntime,
 } from './HotRuntime';
-export type { BinaryCommandPacket, GpuBufferKind, HotActionKind } from './HotRuntime';
+export type { BinaryCommandPacket, GpuBufferKind, HotActionKind, JsonSafeGpuAdapterInfo, WebGPUComputeMeasurement, WebGPUDispatchOptions, WebGPUInitializationResult, WebGPUInitializeOptions, WebGPUInitState } from './HotRuntime';
 
 export { detectEnginHardwareCapabilities, detectWasmSimdSupport, fallbackEnginHardwareCapabilities } from './EnginHardwareCapabilities';
 export type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';

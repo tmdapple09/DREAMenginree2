@@ -57,7 +57,7 @@ export function createEnginCapabilityScorecard(
   const entries = profile.targets.map((rawTarget): EnginCapabilityScorecardEntry => {
     const target = evaluateCapabilityTarget(rawTarget);
     const measurement = byDimension.get(target.dimension);
-    if (!measurement || measurement.value === null) {
+    if (!measurement || measurement.value === null || measurement.status) {
       const status = measurement?.status ?? 'blocked';
       return {
         dimension: target.dimension,
@@ -69,7 +69,7 @@ export function createEnginCapabilityScorecard(
         unit: target.unit,
         source: measurement?.source,
         evidence: measurement?.evidence,
-        reason: measurement?.reason ?? 'Metric has no measured value.',
+        reason: measurement?.reason ?? (measurement?.value === null ? 'Metric has no measured value.' : 'Metric is reported but not gate-measured.'),
       };
     }
     const status: MetricStatus = measuredPasses(target, measurement.value) ? 'pass' : 'fail';

@@ -41,6 +41,34 @@ export interface BabylonEngineResult {
   engine: AbstractEngine;
   /** true when WebGPUEngine is active; false when WebGL Engine is active */
   isWebGPU: boolean;
+  /** true only when the WebGPU engine actually initialized, not just when support was advertised */
+  webgpuInitialized: boolean;
+  /** diagnostic reason when DREAMengin fell back to WebGL */
+  webgpuReason?: string;
+}
+
+async function probeBrowserWebGPU(): Promise<{ supported: boolean; reason?: string }> {
+  if (typeof navigator === 'undefined') return { supported: true, reason: 'Navigator unavailable in this runtime; deferring to Babylon test double.' };
+  const gpu = (navigator as Navigator & { gpu?: GPU }).gpu;
+  if (!gpu) {
+    if (typeof document === 'undefined') return { supported: true, reason: 'navigator.gpu unavailable in non-browser test runtime; deferring to Babylon test double.' };
+    return { supported: false, reason: 'navigator.gpu is unavailable.' };
+  }
+  if (typeof globalThis !== 'undefined' && globalThis.isSecureContext === false) {
+    return { supported: false, reason: 'WebGPU requires HTTPS or localhost secure context.' };
+  }
+  const preferences: ReadonlyArray<GPUPowerPreference | undefined> = ['high-performance', undefined, 'low-power'];
+  for (const powerPreference of preferences) {
+    try {
+      const adapter = await gpu.requestAdapter(powerPreference ? { powerPreference } : undefined);
+      if (adapter) return { supported: true };
+    } catch (error) {
+      if (powerPreference === 'low-power') {
+        return { supported: false, reason: error instanceof Error ? error.message : String(error) };
+      }
+    }
+  }
+  return { supported: false, reason: 'No WebGPU adapter was returned.' };
 }
 
 /**
@@ -57,12 +85,19 @@ export async function createBabylonEngine(
 
   const { WebGPUEngine, Engine } = await import('@babylonjs/core');
 
-  // 1. Attempt WebGPU
+  // 1. Attempt WebGPU. Probe navigator.gpu first in real browsers so
+  // iPhone/Safari-style support initializes through an actual adapter path,
+  // then let Babylon create the rendering engine.
   let webGPUSupported = false;
+  let webgpuReason: string | undefined;
   try {
-    webGPUSupported = await WebGPUEngine.IsSupportedAsync;
-  } catch {
+    const browserProbe = await probeBrowserWebGPU();
+    webgpuReason = browserProbe.reason;
+    webGPUSupported = browserProbe.supported && (await WebGPUEngine.IsSupportedAsync);
+    if (browserProbe.supported && !webGPUSupported) webgpuReason = 'Babylon WebGPUEngine reported unsupported.';
+  } catch (error) {
     webGPUSupported = false;
+    webgpuReason = error instanceof Error ? error.message : String(error);
   }
 
   if (webGPUSupported) {
@@ -75,9 +110,10 @@ export async function createBabylonEngine(
         // policy as the WebGL path so both paths produce crisp output.
         adaptToDeviceRatio: true,
       });
-      return { engine, isWebGPU: true };
-    } catch {
-      // WebGPU init failed (e.g. browser flag not enabled) — fall through to WebGL
+      return { engine, isWebGPU: true, webgpuInitialized: true };
+    } catch (error) {
+      webgpuReason = error instanceof Error ? error.message : String(error);
+      // WebGPU init failed — fall through to WebGL without pretending it initialized.
     }
   }
 
@@ -90,5 +126,5 @@ export async function createBabylonEngine(
     // drawing buffer matches the device's native resolution.
     adaptToDeviceRatio: true,
   });
-  return { engine, isWebGPU: false };
+  return { engine, isWebGPU: false, webgpuInitialized: false, webgpuReason };
 }

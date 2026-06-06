@@ -51,7 +51,16 @@ export function gpuMeasurementOrHardwareDependent(
 ): MetricMeasurement {
   const probe = new EnginPerformanceProbe();
   if (!hardware.webgpu) return probe.hardwareDependent(dimension, 'WebGPU is unavailable on this device.');
-  return probe.measurement(dimension, value);
+  if (value === null) {
+    return {
+      dimension,
+      value: null,
+      status: 'blocked',
+      source: 'hardware-dependent',
+      reason: 'WebGPU is available, but no runtime measurement was supplied.',
+    };
+  }
+  return { dimension, value, source: 'measured' };
 }
 
 function now(): number {

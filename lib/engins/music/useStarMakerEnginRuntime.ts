@@ -12,7 +12,7 @@
  */
 
 import { MemoryAdapter } from '@/lib/engin-runtime/EnginIOAdapter';
-import type { EnginRuntimeOptions } from '@/lib/engin-runtime/EnginRuntime';
+import type { EnginHardwareAccelerationState, EnginRuntimeOptions } from '@/lib/engin-runtime/EnginRuntime';
 import { EnginRuntime } from '@/lib/engin-runtime/EnginRuntime';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { StarMakerEnginAction, StarMakerEnginDerivedState } from './starMakerEnginRuleSet';
@@ -27,6 +27,7 @@ export interface UseStarMakerEnginRuntimeResult {
   state: StarMakerEnginDerivedState;
   dispatch: (action: StarMakerEnginAction) => boolean;
   ready: boolean;
+  hardwareAcceleration: EnginHardwareAccelerationState | null;
 }
 
 export function useStarMakerEnginRuntime(
@@ -50,6 +51,7 @@ export function useStarMakerEnginRuntime(
     () => runtime.getDerivedState() as unknown as StarMakerEnginDerivedState,
   );
   const [ready, setReady] = useState(false);
+  const [hardwareAcceleration, setHardwareAcceleration] = useState<EnginHardwareAccelerationState | null>(null);
 
   useEffect(() => {
     const rt = runtimeRef.current!;
@@ -60,6 +62,7 @@ export function useStarMakerEnginRuntime(
 
     rt.bus.on('engin:state', handleState);
     rt.start();
+    void rt.initializeHardwareAcceleration().then(setHardwareAcceleration).catch(() => setHardwareAcceleration(null));
 
     rt.restore().finally(() => {
       setDerivedState(rt.getDerivedState() as unknown as StarMakerEnginDerivedState);
@@ -79,5 +82,5 @@ export function useStarMakerEnginRuntime(
     return rt.dispatch(action);
   }, []);
 
-  return { state: derivedState, dispatch, ready };
+  return { state: derivedState, dispatch, ready, hardwareAcceleration };
 }

@@ -49,7 +49,7 @@ import {
   createEnginCapabilityExecutionKernel,
   type EnginCapabilityExecutionKernel,
 } from './EnginCapabilityExecution';
-import { HotRuntime } from './HotRuntime';
+import { HotRuntime, type WebGPUComputeMeasurement, type WebGPUInitializationResult } from './HotRuntime';
 import { fingerprintEnginSnapshot } from './EnginSnapshotFingerprint';
 import {
   createPremiumRuntimeQuality,
@@ -91,6 +91,14 @@ export interface EnginRuntimeOptions {
   runtimeId?: string;
   /** Maximum recovery snapshots retained in memory. Prevents long sessions from growing unbounded. */
   maxSnapshots?: number;
+}
+
+export interface EnginHardwareAccelerationState {
+  readonly enginId: string;
+  readonly runtimeId: string;
+  readonly subsystems: ReadonlyArray<string>;
+  readonly webgpu: WebGPUInitializationResult;
+  readonly computeWarmup: WebGPUComputeMeasurement | null;
 }
 
 const DEFAULT_MAX_SNAPSHOTS = 48;
@@ -135,6 +143,8 @@ export class EnginRuntime<
   private readonly _executionKernel: EnginCapabilityExecutionKernel;
   private readonly _hotRuntime: HotRuntime<A>;
   private _runtimeWorkQueued = false;
+  private _hardwareAccelerationPromise: Promise<EnginHardwareAccelerationState> | null = null;
+  private _lastHardwareAccelerationState: EnginHardwareAccelerationState | null = null;
   private _lastRuntimeWorkFlushedRevision = 0;
   private _queuedRuntimeWorkRevision: number | null = null;
   private readonly _lifecycleHooks = new Set<
@@ -236,6 +246,39 @@ export class EnginRuntime<
   /** Private hot runtime lane for high-frequency work outside React. */
   get hotRuntime(): HotRuntime<A> {
     return this._hotRuntime;
+  }
+
+  /** Latest hardware acceleration probe/warmup result, if initialized. */
+  get hardwareAccelerationState(): EnginHardwareAccelerationState | null {
+    return this._lastHardwareAccelerationState;
+  }
+
+  /**
+   * Initializes the runtime-owned WebGPU lane and runs a small compute warmup
+   * for Engins whose execution plan includes GPU dispatch. This gives every
+   * Engin one fixed initialization contract while keeping unsupported devices
+   * honest through WebGPUInitializationResult instead of fake passes.
+   */
+  async initializeHardwareAcceleration(): Promise<EnginHardwareAccelerationState> {
+    if (this._hardwareAccelerationPromise) return this._hardwareAccelerationPromise;
+    this._hardwareAccelerationPromise = (async () => {
+      const webgpu = await this._hotRuntime.webgpu.ensureInitialized();
+      const computeWarmup = webgpu.ready && this._executionKernel.plan.subsystems.includes('gpu-compute-dispatch')
+        ? await this._hotRuntime.webgpu.warmupCompute({ invocations: 65_536, samples: 1, operationsPerInvocation: 8 })
+        : null;
+      const state: EnginHardwareAccelerationState = {
+        enginId: this._state.enginId,
+        runtimeId: this._runtimeId,
+        subsystems: [...this._executionKernel.plan.subsystems],
+        webgpu,
+        computeWarmup,
+      };
+      this._lastHardwareAccelerationState = state;
+      return state;
+    })().finally(() => {
+      this._hardwareAccelerationPromise = null;
+    });
+    return this._hardwareAccelerationPromise;
   }
 
   /** Current runtime quality policy used for sync acceptance and surface decisions. */
@@ -572,6 +615,14 @@ export class EnginRuntime<
   start(): void {
     this._setLifecycle('running');
     this._emitLifecycle('engin:started', { enginId: this._state.enginId });
+    void this.initializeHardwareAcceleration().catch((cause: unknown) => {
+      if (this.bus.destroyed) return;
+      this._emitLifecycle('engin:error', {
+        enginId: this._state.enginId,
+        message: 'Hardware acceleration initialization failed.',
+        cause: cause instanceof Error ? cause.message : String(cause),
+      });
+    });
   }
 
   pause(): void {

@@ -12,7 +12,7 @@
  */
 
 import { MemoryAdapter } from '@/lib/engin-runtime/EnginIOAdapter';
-import type { EnginRuntimeOptions } from '@/lib/engin-runtime/EnginRuntime';
+import type { EnginHardwareAccelerationState, EnginRuntimeOptions } from '@/lib/engin-runtime/EnginRuntime';
 import { EnginRuntime } from '@/lib/engin-runtime/EnginRuntime';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { GameEnginAction, GameEnginDerivedState } from './gameEnginRuleSet';
@@ -31,6 +31,8 @@ export interface UseGameEnginRuntimeResult {
   dispatch: (action: GameEnginAction) => boolean;
   /** Whether the runtime has finished the initial restore from storage. */
   ready: boolean;
+  /** Runtime-owned WebGPU/device warmup state when hardware acceleration has initialized. */
+  hardwareAcceleration: EnginHardwareAccelerationState | null;
 }
 
 export function useGameEnginRuntime(
@@ -56,6 +58,7 @@ export function useGameEnginRuntime(
     () => runtime.getDerivedState() as unknown as GameEnginDerivedState,
   );
   const [ready, setReady] = useState(false);
+  const [hardwareAcceleration, setHardwareAcceleration] = useState<EnginHardwareAccelerationState | null>(null);
 
   // Subscribe to state-change events and trigger re-render.
   useEffect(() => {
@@ -67,6 +70,7 @@ export function useGameEnginRuntime(
 
     rt.bus.on('engin:state', handleState);
     rt.start();
+    void rt.initializeHardwareAcceleration().then(setHardwareAcceleration).catch(() => setHardwareAcceleration(null));
 
     // Restore persisted domain state.
     rt.restore().finally(() => {
@@ -88,5 +92,5 @@ export function useGameEnginRuntime(
     // State update is handled by the engin:state event subscription above.
   }, []);
 
-  return { state: derivedState, dispatch, ready };
+  return { state: derivedState, dispatch, ready, hardwareAcceleration };
 }

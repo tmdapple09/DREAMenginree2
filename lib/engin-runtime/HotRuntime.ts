@@ -153,15 +153,258 @@ export class WorkerPoolRuntime {
   }
 }
 
+export type WebGPUInitState = 'idle' | 'ready' | 'unavailable' | 'failed' | 'lost';
+
+export interface WebGPUInitializationResult {
+  readonly ready: boolean;
+  readonly state: WebGPUInitState;
+  readonly reason?: string;
+  readonly adapterInfo?: JsonSafeGpuAdapterInfo;
+  readonly maxTextureDimension2D?: number;
+  readonly powerPreference?: GPUPowerPreference;
+  readonly initializedAt?: string;
+}
+
+export interface JsonSafeGpuAdapterInfo {
+  readonly vendor?: string;
+  readonly architecture?: string;
+  readonly device?: string;
+  readonly description?: string;
+}
+
+export interface WebGPUComputeMeasurement {
+  readonly dispatchLatencyMs: number;
+  readonly estimatedTflops: number;
+  readonly invocations: number;
+  readonly workgroups: number;
+  readonly operationsPerInvocation: number;
+  readonly samples: number[];
+}
+
+export interface WebGPUDispatchOptions {
+  readonly invocations?: number;
+  readonly samples?: number;
+  readonly operationsPerInvocation?: number;
+}
+
+export interface WebGPUInitializeOptions {
+  readonly powerPreference?: GPUPowerPreference;
+  readonly force?: boolean;
+}
+
+function readGpuFromNavigator(): GPU | null {
+  if (typeof navigator === 'undefined') return null;
+  const candidate = navigator as Navigator & { gpu?: GPU };
+  return candidate.gpu ?? null;
+}
+
+function gpuAdapterInfo(adapter: GPUAdapter): JsonSafeGpuAdapterInfo | undefined {
+  const info = (adapter as GPUAdapter & { info?: { vendor?: string; architecture?: string; device?: string; description?: string } }).info;
+  if (!info) return undefined;
+  return {
+    vendor: info.vendor,
+    architecture: info.architecture,
+    device: info.device,
+    description: info.description,
+  };
+}
+
 export class WebGPUDeviceRuntime {
   adapter: GPUAdapter | null = null;
   device: GPUDevice | null = null;
-  async init(): Promise<boolean> {
-    if (typeof navigator === 'undefined' || !('gpu' in navigator)) return false;
-    this.adapter = await (navigator as Navigator & { gpu: GPU }).gpu.requestAdapter();
-    if (!this.adapter) return false;
-    this.device = await this.adapter.requestDevice();
-    return this.device !== null;
+  initState: WebGPUInitState = 'idle';
+  initReason: string | null = null;
+  initializedAt: string | null = null;
+  adapterInfo: JsonSafeGpuAdapterInfo | undefined;
+  private initPromise: Promise<WebGPUInitializationResult> | null = null;
+
+  get ready(): boolean {
+    return this.initState === 'ready' && this.device !== null;
+  }
+
+  async init(options: WebGPUInitializeOptions = {}): Promise<boolean> {
+    const result = await this.ensureInitialized(options);
+    return result.ready;
+  }
+
+  async ensureInitialized(options: WebGPUInitializeOptions = {}): Promise<WebGPUInitializationResult> {
+    if (!options.force && this.ready) return this.result();
+    if (!options.force && this.initPromise) return this.initPromise;
+
+    this.initPromise = this.initialize(options).finally(() => {
+      this.initPromise = null;
+    });
+    return this.initPromise;
+  }
+
+  reset(): void {
+    this.device?.destroy?.();
+    this.adapter = null;
+    this.device = null;
+    this.initState = 'idle';
+    this.initReason = null;
+    this.initializedAt = null;
+    this.adapterInfo = undefined;
+    this.initPromise = null;
+  }
+
+  private async initialize(options: WebGPUInitializeOptions): Promise<WebGPUInitializationResult> {
+    const gpu = readGpuFromNavigator();
+    if (!gpu) return this.fail('unavailable', 'navigator.gpu is unavailable in this runtime.');
+    if (typeof globalThis !== 'undefined' && globalThis.isSecureContext === false) {
+      return this.fail('unavailable', 'WebGPU requires a secure context. Use HTTPS or localhost.');
+    }
+
+    const preferred = options.powerPreference ?? 'high-performance';
+    const preferences: ReadonlyArray<GPUPowerPreference | undefined> = preferred === 'high-performance'
+      ? ['high-performance', undefined, 'low-power']
+      : [preferred, undefined, 'high-performance'];
+
+    let lastReason = 'No WebGPU adapter was returned.';
+    for (const powerPreference of preferences) {
+      try {
+        const adapter = await gpu.requestAdapter(powerPreference ? { powerPreference } : undefined);
+        if (!adapter) {
+          lastReason = `No WebGPU adapter for ${powerPreference ?? 'default'} preference.`;
+          continue;
+        }
+        const device = await adapter.requestDevice();
+        this.adapter = adapter;
+        this.device = device;
+        this.initState = 'ready';
+        this.initReason = null;
+        this.initializedAt = new Date().toISOString();
+        this.adapterInfo = gpuAdapterInfo(adapter);
+        void device.lost.then((info) => {
+          if (this.device === device) {
+            this.initState = 'lost';
+            this.initReason = info.message || `WebGPU device lost: ${info.reason}`;
+            this.device = null;
+          }
+        });
+        return this.result(powerPreference);
+      } catch (error) {
+        lastReason = error instanceof Error ? error.message : String(error);
+      }
+    }
+    return this.fail('failed', lastReason);
+  }
+
+  private fail(state: Exclude<WebGPUInitState, 'idle' | 'ready'>, reason: string): WebGPUInitializationResult {
+    this.initState = state;
+    this.initReason = reason;
+    this.initializedAt = new Date().toISOString();
+    this.device = null;
+    return this.result(undefined, reason);
+  }
+
+  private result(powerPreference?: GPUPowerPreference, reason = this.initReason ?? undefined): WebGPUInitializationResult {
+    const maxTextureDimension2D = this.device?.limits.maxTextureDimension2D ?? this.adapter?.limits.maxTextureDimension2D;
+    return {
+      ready: this.ready,
+      state: this.initState,
+      reason,
+      adapterInfo: this.adapterInfo,
+      maxTextureDimension2D,
+      powerPreference,
+      initializedAt: this.initializedAt ?? undefined,
+    };
+  }
+
+  get maxViewportResolutionK(): number | null {
+    const maxTextureDimension = this.device?.limits.maxTextureDimension2D ?? this.adapter?.limits.maxTextureDimension2D ?? null;
+    if (!maxTextureDimension || !Number.isFinite(maxTextureDimension)) return null;
+    return maxTextureDimension >= 3840 ? 4 : Math.max(1, maxTextureDimension / 960);
+  }
+
+  async warmupCompute(options: WebGPUDispatchOptions = {}): Promise<WebGPUComputeMeasurement | null> {
+    return this.measureComputeDispatch({ invocations: 65_536, samples: 1, operationsPerInvocation: 8, ...options });
+  }
+
+  async measureComputeDispatch(options: WebGPUDispatchOptions = {}): Promise<WebGPUComputeMeasurement | null> {
+    if (!this.ready) {
+      const init = await this.ensureInitialized();
+      if (!init.ready) return null;
+    }
+    const device = this.device;
+    if (!device) return null;
+
+    const invocations = Math.max(64, Math.floor(options.invocations ?? 262_144));
+    const samplesRequested = Math.max(1, Math.floor(options.samples ?? 5));
+    const operationsPerInvocation = Math.max(1, Math.floor(options.operationsPerInvocation ?? 8));
+    const workgroupSize = 64;
+    const workgroups = Math.ceil(invocations / workgroupSize);
+    const byteLength = invocations * Float32Array.BYTES_PER_ELEMENT;
+
+    const buffer = device.createBuffer({
+      size: byteLength,
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(buffer, 0, new Float32Array(invocations).fill(1));
+
+    const shader = device.createShaderModule({
+      code: `
+        @group(0) @binding(0) var<storage, read_write> data: array<f32>;
+
+        @compute @workgroup_size(${workgroupSize})
+        fn main(@builtin(global_invocation_id) id: vec3<u32>) {
+          let i = id.x;
+          if (i >= arrayLength(&data)) {
+            return;
+          }
+          var v = data[i];
+          v = v * 1.000001 + 0.000001;
+          v = v * 1.000001 + 0.000001;
+          v = v * 1.000001 + 0.000001;
+          v = v * 1.000001 + 0.000001;
+          data[i] = v;
+        }
+      `,
+    });
+
+    const pipeline = device.createComputePipeline({
+      layout: 'auto',
+      compute: { module: shader, entryPoint: 'main' },
+    });
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [{ binding: 0, resource: { buffer } }],
+    });
+
+    const submitOnce = async (): Promise<number> => {
+      const encoder = device.createCommandEncoder();
+      const pass = encoder.beginComputePass();
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.dispatchWorkgroups(workgroups);
+      pass.end();
+      const started = performanceNow();
+      device.queue.submit([encoder.finish()]);
+      await device.queue.onSubmittedWorkDone();
+      return performanceNow() - started;
+    };
+
+    await submitOnce();
+    const samples: number[] = [];
+    for (let i = 0; i < samplesRequested; i += 1) {
+      samples.push(await submitOnce());
+    }
+    buffer.destroy();
+
+    const median = [...samples].sort((a, b) => a - b)[Math.floor(samples.length / 2)] ?? Number.NaN;
+    const operations = invocations * operationsPerInvocation;
+    const estimatedTflops = Number.isFinite(median) && median > 0
+      ? operations / (median / 1000) / 1_000_000_000_000
+      : 0;
+
+    return {
+      dispatchLatencyMs: median,
+      estimatedTflops,
+      invocations,
+      workgroups,
+      operationsPerInvocation,
+      samples,
+    };
   }
 }
 
