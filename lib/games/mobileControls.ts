@@ -46,7 +46,7 @@ export type MobileEventDetail =
   | { button: MobileHudButton }
   | { dx: number; dy: number }
   | { x: number; y: number }
-  | { action: GameRemoteInputAction; active: boolean }
+  | { action: GameRemoteInputAction; active: boolean; source?: 'mobile' | 'gamepad' | 'remote' }
   | Record<string, never>;
 
 const MOBILE_CONTROL_LISTENERS = new Set<MobileGameControlHandlers>();
