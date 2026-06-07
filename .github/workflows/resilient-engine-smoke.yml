@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Fail on job-level continue-on-error true
         run: python .github/scripts/check_workflow_masking.py
@@ -40,11 +40,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run resilient engine with intentional failure
         id: intentional_failure
-        # continue-on-error is step-scoped here so we can assert the expected failure outcome below.
         continue-on-error: true
         uses: ./.github/actions/resilient-engine
         with:
@@ -59,16 +58,18 @@ jobs:
             echo "::error::Expected resilient-engine action to fail, but outcome was '${{ steps.intentional_failure.outcome }}'."
             exit 1
           fi
+
           echo "✅ resilient-engine correctly failed on an intentional error."
 
-  typescript-turbopack-autofix:
-    name: TypeScript/Turbopack scan, autofix, rebase, push
+  typescript-turbopack-until-green-repair:
+    name: TypeScript/Turbopack repair until green, log, push
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
+    timeout-minutes: 360
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -87,106 +88,500 @@ jobs:
       - name: Run Registry Wire-Up
         run: node scripts/wire-orphans.mjs
 
-      - name: Run ESLint autofix
-        continue-on-error: true
+      - name: Create TypeScript repair engine
         run: |
           mkdir -p build-memory/typecheck
 
-          pnpm exec eslint . \
-            --fix \
-            --ext .js,.jsx,.ts,.tsx,.mjs,.cjs \
-            > build-memory/typecheck/eslint-autofix.log 2>&1
+          cat > build-memory/typecheck/repair-typescript-until-green.mjs <<'NODE'
+          import fs from "node:fs";
+          import path from "node:path";
+          import cp from "node:child_process";
+          import ts from "typescript";
 
-          cat build-memory/typecheck/eslint-autofix.log || true
+          const repoRoot = process.cwd();
+          const memoryDir = path.join(repoRoot, "build-memory", "typecheck");
+          const ledgerPath = path.join(memoryDir, "fixed-errors-ledger.json");
+          const markdownPath = path.join(memoryDir, "fixed-errors-ledger.md");
+          const repairLogPath = path.join(memoryDir, "repair-loop.log");
 
-      - name: Run Prettier autofix
-        continue-on-error: true
+          fs.mkdirSync(memoryDir, { recursive: true });
+
+          const maxPasses = Number(process.env.TS_REPAIR_MAX_PASSES || "9999");
+          const ledger = [];
+          const logLines = [];
+
+          function log(message) {
+            const line = `[${new Date().toISOString()}] ${message}`;
+            console.log(line);
+            logLines.push(line);
+            fs.writeFileSync(repairLogPath, logLines.join("\n") + "\n");
+          }
+
+          function run(command, options = {}) {
+            const result = cp.spawnSync(command, {
+              shell: true,
+              cwd: repoRoot,
+              encoding: "utf8",
+              maxBuffer: 1024 * 1024 * 80,
+              ...options,
+            });
+
+            return {
+              status: result.status ?? 1,
+              stdout: result.stdout || "",
+              stderr: result.stderr || "",
+              output: `${result.stdout || ""}${result.stderr || ""}`,
+            };
+          }
+
+          function writeFile(fileName, text) {
+            fs.mkdirSync(path.dirname(fileName), { recursive: true });
+            fs.writeFileSync(fileName, text);
+          }
+
+          function readFile(fileName) {
+            try {
+              return fs.readFileSync(fileName, "utf8");
+            } catch {
+              return undefined;
+            }
+          }
+
+          function flatten(messageText) {
+            return ts.flattenDiagnosticMessageText(messageText, "\n");
+          }
+
+          function findTsConfig() {
+            const configPath = ts.findConfigFile(repoRoot, ts.sys.fileExists, "tsconfig.json");
+            if (!configPath) throw new Error("Could not find tsconfig.json.");
+            return configPath;
+          }
+
+          function loadProject() {
+            const configPath = findTsConfig();
+            const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
+
+            if (configFile.error) {
+              throw new Error(flatten(configFile.error.messageText));
+            }
+
+            const parsed = ts.parseJsonConfigFileContent(
+              configFile.config,
+              ts.sys,
+              path.dirname(configPath),
+              { noEmit: true },
+              configPath
+            );
+
+            if (parsed.errors.length) {
+              throw new Error(parsed.errors.map((error) => flatten(error.messageText)).join("\n"));
+            }
+
+            return parsed;
+          }
+
+          function createLanguageService(parsed) {
+            const versions = new Map();
+
+            for (const fileName of parsed.fileNames) {
+              versions.set(path.resolve(fileName), "0");
+            }
+
+            const host = {
+              getScriptFileNames: () => parsed.fileNames,
+              getScriptVersion: (fileName) => versions.get(path.resolve(fileName)) || "0",
+              getScriptSnapshot: (fileName) => {
+                const text = readFile(fileName);
+                return text === undefined ? undefined : ts.ScriptSnapshot.fromString(text);
+              },
+              getCurrentDirectory: () => repoRoot,
+              getCompilationSettings: () => parsed.options,
+              getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options),
+              fileExists: ts.sys.fileExists,
+              readFile: ts.sys.readFile,
+              readDirectory: ts.sys.readDirectory,
+              directoryExists: ts.sys.directoryExists,
+              getDirectories: ts.sys.getDirectories,
+              realpath: ts.sys.realpath,
+              useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+              getNewLine: () => "\n",
+            };
+
+            return {
+              service: ts.createLanguageService(host, ts.createDocumentRegistry()),
+              versions,
+            };
+          }
+
+          function lineCol(fileName, start) {
+            const text = readFile(fileName) || "";
+            const source = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
+            const lc = source.getLineAndCharacterOfPosition(start);
+            return {
+              line: lc.line + 1,
+              column: lc.character + 1,
+            };
+          }
+
+          function getDiagnostics(service, parsed) {
+            const diagnostics = [];
+            const program = service.getProgram();
+
+            if (program) {
+              diagnostics.push(...program.getOptionsDiagnostics());
+              diagnostics.push(...program.getGlobalDiagnostics());
+            }
+
+            for (const fileName of parsed.fileNames) {
+              if (fileName.includes("node_modules")) continue;
+
+              diagnostics.push(...service.getSyntacticDiagnostics(fileName));
+              diagnostics.push(...service.getSemanticDiagnostics(fileName));
+            }
+
+            return diagnostics
+              .filter((diagnostic) => diagnostic.file && typeof diagnostic.start === "number")
+              .map((diagnostic) => {
+                const position = lineCol(diagnostic.file.fileName, diagnostic.start);
+
+                return {
+                  fileName: diagnostic.file.fileName,
+                  relativeFileName: path.relative(repoRoot, diagnostic.file.fileName),
+                  start: diagnostic.start,
+                  length: diagnostic.length || 0,
+                  code: diagnostic.code,
+                  tsCode: `TS${diagnostic.code}`,
+                  message: flatten(diagnostic.messageText),
+                  line: position.line,
+                  column: position.column,
+                };
+              });
+          }
+
+          function getCodeFixes(service, diagnostic) {
+            return service.getCodeFixesAtPosition(
+              diagnostic.fileName,
+              diagnostic.start,
+              diagnostic.start + diagnostic.length,
+              [diagnostic.code],
+              {
+                indentSize: 2,
+                tabSize: 2,
+                convertTabsToSpaces: true,
+                newLineCharacter: "\n",
+                semicolons: ts.SemicolonPreference.Insert,
+              },
+              {
+                quotePreference: "double",
+                includeCompletionsForModuleExports: true,
+                includeCompletionsForImportStatements: true,
+                includePackageJsonAutoImports: "auto",
+              }
+            );
+          }
+
+          function applyTextChanges(fileName, textChanges) {
+            let text = readFile(fileName);
+
+            if (text === undefined) {
+              return {
+                changed: false,
+                changes: [],
+              };
+            }
+
+            const applied = [];
+            const ordered = [...textChanges].sort((a, b) => b.span.start - a.span.start);
+
+            for (const change of ordered) {
+              const beforeText = text.slice(change.span.start, change.span.start + change.span.length);
+              const afterText = change.newText;
+
+              text =
+                text.slice(0, change.span.start) +
+                afterText +
+                text.slice(change.span.start + change.span.length);
+
+              applied.push({
+                start: change.span.start,
+                length: change.span.length,
+                beforeText,
+                afterText,
+              });
+            }
+
+            writeFile(fileName, text);
+
+            return {
+              changed: applied.length > 0,
+              changes: applied.reverse(),
+            };
+          }
+
+          function writeLedger() {
+            fs.writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2));
+
+            const md = [
+              "# DREAMengin TypeScript Errors Fixed",
+              "",
+              `Total fixed diagnostic edits: ${ledger.length}`,
+              "",
+              ...ledger.map((entry, index) => {
+                return [
+                  `## ${index + 1}. ${entry.tsCode} — ${entry.file}:${entry.line}:${entry.column}`,
+                  "",
+                  `Pass: ${entry.pass}`,
+                  "",
+                  `Original error: ${entry.message}`,
+                  "",
+                  `Fix used: ${entry.fixDescription}`,
+                  "",
+                  "Changed text:",
+                  "",
+                  "```diff",
+                  ...entry.fileChanges.flatMap((fileChange) => {
+                    return [
+                      `--- ${fileChange.file}`,
+                      `+++ ${fileChange.file}`,
+                      ...fileChange.textChanges.flatMap((textChange) => [
+                        `- ${textChange.beforeText || "[empty]"}`,
+                        `+ ${textChange.afterText || "[empty]"}`,
+                      ]),
+                    ];
+                  }),
+                  "```",
+                  "",
+                ].join("\n");
+              }),
+            ].join("\n");
+
+            fs.writeFileSync(markdownPath, md);
+          }
+
+          function writeDiagnosticsSnapshot(name, diagnostics) {
+            const jsonPath = path.join(memoryDir, `${name}.json`);
+            const mdPath = path.join(memoryDir, `${name}.md`);
+
+            fs.writeFileSync(jsonPath, JSON.stringify(diagnostics, null, 2));
+
+            fs.writeFileSync(
+              mdPath,
+              [
+                `# ${name}`,
+                "",
+                `Total diagnostics: ${diagnostics.length}`,
+                "",
+                ...diagnostics.map((diagnostic) => {
+                  return `- ${diagnostic.tsCode} ${diagnostic.relativeFileName}:${diagnostic.line}:${diagnostic.column} — ${diagnostic.message}`;
+                }),
+                "",
+              ].join("\n")
+            );
+          }
+
+          function applyOneRepairPass(pass) {
+            const parsed = loadProject();
+            const { service, versions } = createLanguageService(parsed);
+            const diagnostics = getDiagnostics(service, parsed);
+
+            writeDiagnosticsSnapshot(`diagnostics-pass-${pass}-before`, diagnostics);
+
+            log(`Pass ${pass}: ${diagnostics.length} TypeScript diagnostics before repair.`);
+
+            if (diagnostics.length === 0) {
+              return {
+                diagnostics,
+                changed: false,
+              };
+            }
+
+            let changed = false;
+
+            for (const diagnostic of diagnostics) {
+              const fixes = getCodeFixes(service, diagnostic);
+
+              if (!fixes.length) {
+                log(`No TypeScript compiler fix for ${diagnostic.tsCode} ${diagnostic.relativeFileName}:${diagnostic.line}:${diagnostic.column}`);
+                continue;
+              }
+
+              for (const fix of fixes) {
+                const fileChanges = [];
+
+                for (const fileChange of fix.changes) {
+                  if (!fileChange.fileName || !fileChange.textChanges?.length) continue;
+
+                  const absoluteFile = path.resolve(fileChange.fileName);
+                  const result = applyTextChanges(absoluteFile, fileChange.textChanges);
+
+                  if (!result.changed) continue;
+
+                  versions.set(absoluteFile, String(Number(versions.get(absoluteFile) || "0") + 1));
+
+                  fileChanges.push({
+                    file: path.relative(repoRoot, absoluteFile),
+                    textChanges: result.changes,
+                  });
+                }
+
+                if (fileChanges.length) {
+                  changed = true;
+
+                  ledger.push({
+                    pass,
+                    tsCode: diagnostic.tsCode,
+                    file: diagnostic.relativeFileName,
+                    line: diagnostic.line,
+                    column: diagnostic.column,
+                    message: diagnostic.message,
+                    fixName: fix.fixName,
+                    fixDescription: fix.description,
+                    fileChanges,
+                  });
+
+                  log(`Fixed ${diagnostic.tsCode} ${diagnostic.relativeFileName}:${diagnostic.line}:${diagnostic.column} using ${fix.fixName}`);
+                  writeLedger();
+
+                  break;
+                }
+              }
+            }
+
+            return {
+              diagnostics,
+              changed,
+            };
+          }
+
+          function checksAreGreen() {
+            const tsc = run("pnpm exec tsc --noEmit --pretty false");
+            fs.writeFileSync(path.join(memoryDir, "latest-tsc.log"), tsc.output);
+
+            if (tsc.status !== 0) {
+              log("TypeScript check is still failing.");
+              return false;
+            }
+
+            const build = run("pnpm build");
+            fs.writeFileSync(path.join(memoryDir, "latest-build.log"), build.output);
+
+            if (build.status !== 0) {
+              log("Next/Turbopack build is still failing.");
+              return false;
+            }
+
+            return true;
+          }
+
+          try {
+            for (let pass = 1; pass <= maxPasses; pass += 1) {
+              log(`Starting repair pass ${pass}.`);
+
+              if (checksAreGreen()) {
+                log("Project is already green.");
+                writeLedger();
+                process.exit(0);
+              }
+
+              const result = applyOneRepairPass(pass);
+
+              run("pnpm exec prettier . --write");
+              run("pnpm exec eslint . --fix --ext .js,.jsx,.ts,.tsx,.mjs,.cjs");
+
+              const parsedAfter = loadProject();
+              const { service: serviceAfter } = createLanguageService(parsedAfter);
+              const afterDiagnostics = getDiagnostics(serviceAfter, parsedAfter);
+              writeDiagnosticsSnapshot(`diagnostics-pass-${pass}-after`, afterDiagnostics);
+
+              const diff = run("git diff -- . ':!build-memory/typecheck/**'");
+              fs.writeFileSync(path.join(memoryDir, `git-diff-pass-${pass}.patch`), diff.output);
+
+              if (checksAreGreen()) {
+                log(`Repair succeeded on pass ${pass}.`);
+                writeLedger();
+
+                const finalDiff = run("git diff -- . ':!build-memory/typecheck/**'");
+                fs.writeFileSync(path.join(memoryDir, "final-repair.diff.patch"), finalDiff.output);
+
+                process.exit(0);
+              }
+
+              if (!result.changed) {
+                log("No more compiler-backed edits were available, but errors remain.");
+                writeLedger();
+
+                const finalDiff = run("git diff -- . ':!build-memory/typecheck/**'");
+                fs.writeFileSync(path.join(memoryDir, "final-repair.diff.patch"), finalDiff.output);
+
+                process.exit(1);
+              }
+            }
+
+            log(`Stopped after ${maxPasses} repair passes without reaching green.`);
+            writeLedger();
+
+            const finalDiff = run("git diff -- . ':!build-memory/typecheck/**'");
+            fs.writeFileSync(path.join(memoryDir, "final-repair.diff.patch"), finalDiff.output);
+
+            process.exit(1);
+          } catch (error) {
+            log(`Repair crashed: ${error?.stack || error?.message || String(error)}`);
+            writeLedger();
+            process.exit(1);
+          }
+          NODE
+
+      - name: Run TypeScript repair loop until green
         run: |
           mkdir -p build-memory/typecheck
 
-          pnpm exec prettier . --write \
-            > build-memory/typecheck/prettier-autofix.log 2>&1
+          node build-memory/typecheck/repair-typescript-until-green.mjs \
+            > build-memory/typecheck/repair-loop.stdout.log 2>&1
 
-          cat build-memory/typecheck/prettier-autofix.log || true
-
-      - name: Scan TypeScript errors
-        continue-on-error: true
-        run: |
-          mkdir -p build-memory/typecheck
-
-          pnpm exec tsc --noEmit --pretty false \
-            > build-memory/typecheck/typescript-errors.log 2>&1
-
-          cat build-memory/typecheck/typescript-errors.log || true
-
-      - name: Scan Next/Turbopack build errors
-        continue-on-error: true
-        run: |
-          mkdir -p build-memory/typecheck
-
-          pnpm build \
-            > build-memory/typecheck/turbopack-build-errors.log 2>&1
-
-          cat build-memory/typecheck/turbopack-build-errors.log || true
-
-      - name: Extract files with TypeScript, syntax, or build errors
-        run: |
-          mkdir -p build-memory/typecheck
-
-          {
-            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/typescript-errors.log || true
-            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/turbopack-build-errors.log || true
-            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/eslint-autofix.log || true
-          } \
-            | sed 's#^\./##' \
-            | sed 's#^@/##' \
-            | sort -u \
-            > build-memory/typecheck/error-files.txt
-
-          echo "Files reported by TypeScript/Turbopack/ESLint:"
-          cat build-memory/typecheck/error-files.txt || true
-
-      - name: Upload generated Engin folder
-        uses: actions/upload-artifact@v4
+      - name: Upload downloadable repair log
+        if: always()
+        uses: actions/upload-artifact@v6
         with:
-          name: engin-generated-${{ github.ref_name }}
-          path: |
-            src/engin/generated/**
-            build-memory/registry.json
-            build-memory/os-architecture-map.md
-          retention-days: 14
-          if-no-files-found: warn
-
-      - name: Upload TypeScript and build error report
-        uses: actions/upload-artifact@v4
-        with:
-          name: typescript-build-errors-${{ github.ref_name }}
+          name: typescript-errors-fixed-and-changes-${{ github.run_id }}
           path: |
             build-memory/typecheck/**
-          retention-days: 14
+          retention-days: 5
           if-no-files-found: warn
 
-      - name: Commit autofix and generated updates
+      - name: Final TypeScript check before commit
+        run: pnpm exec tsc --noEmit --pretty false
+
+      - name: Final Next/Turbopack build check before commit
+        run: pnpm build
+
+      - name: Commit verified correct repairs
         run: |
           git config user.name "DREAMengin-Bot"
           git config user.email "bot@dreamengin.com"
 
-          git add .
+          git add -A -- . ':!build-memory/typecheck/**'
 
           if ! git diff --staged --quiet; then
-            git commit -m "chore: autofix TypeScript surface and refresh engine registry [skip ci]"
+            git commit -m "chore: repair TypeScript errors until green [skip ci]"
           else
-            echo "No autofix changes to commit."
+            echo "No verified repair changes to commit."
           fi
 
-      - name: Rebase and push updates
+      - name: Rebase verified repair
         run: |
           git fetch origin "${GITHUB_REF_NAME}"
           git rebase "origin/${GITHUB_REF_NAME}"
-          git push origin HEAD:"${GITHUB_REF_NAME}"
 
-      - name: Final TypeScript check
+      - name: Final TypeScript check after rebase
         run: pnpm exec tsc --noEmit --pretty false
 
-      - name: Final Next/Turbopack build check
+      - name: Final Next/Turbopack build check after rebase
         run: pnpm build
+
+      - name: Push verified repair
+        run: |
+          if git log --format=%B -n 1 | grep -q "chore: repair TypeScript errors until green"; then
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          else
+            echo "No new verified repair commit to push."
+          fi
