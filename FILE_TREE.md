@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T06:08:50.592Z
+Generated: 2026-06-07T06:42:03.669Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -12601,9 +12601,10 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → $
 │       ├── → buildRegistry
 │       ├── → hydrateEngineRegistry
+│       ├── → osArchitectureFlow
 │       ├── → osArchitectureMap
 │       ├── (unknown — bare import)  ⚠ ./osArchitectureMap
-│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureMap
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -12883,6 +12884,95 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/lib/connectors/webhookVerification
 │   │   │   │   ├── (dynamic)  ← @/lib/connectors/youtube
 │   │   │   │   └── → connectors
+│   │   │   ├── dreamdmbar.ts
+│   │   │   │   ├── (dynamic)  ← @/dreamdmbar/dream.GlowingLight
+│   │   │   │   ├── (dynamic)  ← @/dreamdmbar/dreamsurface.dreamdmbar
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/barInteractions
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/bridgeSeamFlow
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/DreamSystemContext
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useDreamBarContext
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useDreamDMConversations
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useDreamDMDraft
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useDreamDMMessages
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useDreamSearch
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useMessagingCore
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useModuleBarIntent
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamdm/useNotifications
+│   │   │   │   └── → dreamdmbar
+│   │   │   ├── dreamr.ts
+│   │   │   │   ├── (dynamic)  ← @/app/dreamr/page
+│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.CloseFriendsSettings
+│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRChannelPanel
+│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/closeFriendsVisibility
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/dreamrfeed
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/feedCursor
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/socialHumanityScore
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/swipeCalibration
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/swipePersonalization
+│   │   │   │   ├── (dynamic)  ← @/lib/dreamr/torridityLedger
+│   │   │   │   └── → dreamr
+│   │   │   ├── dreamsurfaces.ts
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.connectorlayer
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.DraggableDream
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.featurelayer
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.GlobalDragLayer
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.outputlayer
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.PlatformErrorReporter
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.shell.DreamShell
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.shell.SharedDreamShell
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.SlideOverPanel
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.widget.SuperDreamWidget
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.window.JourneyDreamWindow
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.dreamspace
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.shell
+│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.window
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/connectionVerbs
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/DreamWindowLifecycle
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/enginConnectionNetwork
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/index
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/runtimeRegion
+│   │   │   │   ├── (dynamic)  ← @/lib/dream-window/useDreamWindowActions
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/drag
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/dreamIntentBus
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/DreamRegistry
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/profileProjection
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/types
+│   │   │   │   ├── (dynamic)  ← @/lib/dreams/useDreamsRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/CrossWidgetPosting
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/feed-resolver
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/parse
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/parseConfig
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/useWidget
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/WidgetBus
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/WidgetEngine
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/WidgetEventBus
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/WidgetLinkGraph
+│   │   │   │   ├── (dynamic)  ← @/lib/widgets/widgetRegistry
+│   │   │   │   └── → dreamsurfaces
+│   │   │   ├── engins.ts
+│   │   │   │   ├── (dynamic)  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/core/parser
+│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
+│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/index
+│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
+│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/orchestrator/dream.index
+│   │   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.CodeEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.LabEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
+│   │   │   │   └── → engins
+│   │   │   ├── homedream.ts
+│   │   │   │   ├── (dynamic)  ← @/app/homedream/page
+│   │   │   │   ├── (dynamic)  ← @/lib/home-buttons/button-groups
+│   │   │   │   ├── (dynamic)  ← @/lib/home-buttons/contextual-home
+│   │   │   │   └── → homedream
 │   │   │   ├── hooks.ts
 │   │   │   │   ├── (dynamic)  ← @/hooks/use-spatial
 │   │   │   │   ├── (dynamic)  ← @/hooks/useAccount
@@ -12901,31 +12991,40 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── brain  ← ./brain
 │   │   │   │   ├── cartridges  ← ./cartridges
 │   │   │   │   ├── connectors  ← ./connectors
+│   │   │   │   ├── dreamdmbar  ← ./dreamdmbar
+│   │   │   │   ├── dreamr  ← ./dreamr
+│   │   │   │   ├── dreamsurfaces  ← ./dreamsurfaces
+│   │   │   │   ├── engins  ← ./engins
+│   │   │   │   ├── homedream  ← ./homedream
 │   │   │   │   ├── hooks  ← ./hooks
 │   │   │   │   ├── personas  ← ./personas
 │   │   │   │   ├── rulesets  ← ./rulesets
 │   │   │   │   ├── surfaces  ← ./surfaces
 │   │   │   │   ├── systems  ← ./systems
 │   │   │   │   ├── → hydrateEngineRegistry
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry
+│   │   │   │   ├── → osArchitectureMap
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureMap
+│   │   │   ├── osArchitectureMap.ts ∅
+│   │   │   │   ├── → osArchitectureMap
+│   │   │   │   └── ∅ unused: osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   │   └── → personas
 │   │   │   ├── rulesets.ts
-│   │   │   │   ├── (dynamic)  ← @/engins/autoopen/dream.AutoOpenGameEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/core/parser
-│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
-│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/index
-│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
-│   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/orchestrator/dream.index
-│   │   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.CodeEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.LabEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/brand/brandEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/brand/useBrandEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/code/codeEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/code/useCodeEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/content/contentEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/content/useContentEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/game/gameEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/game/index
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/game/useGameEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/lab/labEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/lab/useLabEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/music/starMakerEnginRuleSet
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/music/useStarMakerEnginRuntime
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/useEnginWorkflow
+│   │   │   │   ├── (dynamic)  ← @/lib/engins/workflowEngine
 │   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/codeengin/index
 │   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/dreamsengin/index
 │   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/forgengn/index
@@ -13104,7 +13203,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/homedream/page
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/layout
 │   │   │   │   ├── (dynamic)  ← @/app/dreamdmbar/page
-│   │   │   │   ├── (dynamic)  ← @/app/dreamr/page
 │   │   │   │   ├── (dynamic)  ← @/app/dreamspace/page
 │   │   │   │   ├── (dynamic)  ← @/app/edit-profiledream/page
 │   │   │   │   ├── (dynamic)  ← @/app/engines/brand/campaigns/page
@@ -13148,7 +13246,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/gameengin/cartridges/[id]/page
 │   │   │   │   ├── (dynamic)  ← @/app/gameengin/cartridges/page
 │   │   │   │   ├── (dynamic)  ← @/app/gameengin/page
-│   │   │   │   ├── (dynamic)  ← @/app/homedream/page
 │   │   │   │   ├── (dynamic)  ← @/app/join/page
 │   │   │   │   ├── (dynamic)  ← @/app/lab/[id]/codespace/page
 │   │   │   │   ├── (dynamic)  ← @/app/lab/[id]/page
@@ -13290,24 +13387,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/dreamengin/engine/types
 │   │   │   │   ├── (dynamic)  ← @/components/dreamnav/dream.DreamNavControls
 │   │   │   │   ├── (dynamic)  ← @/components/dreamnav/dreamsurface.dreamnav
-│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.CloseFriendsSettings
-│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRChannelPanel
-│   │   │   │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.connectorlayer
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.DraggableDream
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.featurelayer
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.GlobalDragLayer
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.outputlayer
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.PlatformErrorReporter
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.shell.DreamShell
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.shell.SharedDreamShell
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.SlideOverPanel
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.widget.SuperDreamWidget
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dream.window.JourneyDreamWindow
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.dreamspace
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.shell
-│   │   │   │   ├── (dynamic)  ← @/components/dreams/dreamsurface.window
 │   │   │   │   ├── (dynamic)  ← @/components/engines/brand/dream.BrandEnginApp
 │   │   │   │   ├── (dynamic)  ← @/components/engines/brand/index
 │   │   │   │   ├── (dynamic)  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
@@ -13586,22 +13665,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/dream-docs/embed
 │   │   │       ├── (dynamic)  ← @/lib/dream-docs/index
 │   │   │       ├── (dynamic)  ← @/lib/dream-docs/search
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/connectionVerbs
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/DreamWindowLifecycle
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/enginConnectionNetwork
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/index
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/runtimeRegion
-│   │   │       ├── (dynamic)  ← @/lib/dream-window/useDreamWindowActions
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/barInteractions
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/bridgeSeamFlow
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useDreamBarContext
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useDreamDMConversations
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useDreamDMDraft
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useDreamDMMessages
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useDreamSearch
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useMessagingCore
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useModuleBarIntent
-│   │   │       ├── (dynamic)  ← @/lib/dreamdm/useNotifications
 │   │   │       ├── (dynamic)  ← @/lib/dreamengin/DrEamsAnimator
 │   │   │       ├── (dynamic)  ← @/lib/dreamengin/drEamsSearch
 │   │   │       ├── (dynamic)  ← @/lib/dreamengin/engineAssets
@@ -13612,17 +13675,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/dreamnav/gestures6
 │   │   │       ├── (dynamic)  ← @/lib/dreamnav/path
 │   │   │       ├── (dynamic)  ← @/lib/dreamnav/tau
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/closeFriendsVisibility
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/feedCursor
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/socialHumanityScore
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/swipeCalibration
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/swipePersonalization
-│   │   │       ├── (dynamic)  ← @/lib/dreamr/torridityLedger
-│   │   │       ├── (dynamic)  ← @/lib/dreams/drag
-│   │   │       ├── (dynamic)  ← @/lib/dreams/dreamIntentBus
-│   │   │       ├── (dynamic)  ← @/lib/dreams/profileProjection
-│   │   │       ├── (dynamic)  ← @/lib/dreams/types
-│   │   │       ├── (dynamic)  ← @/lib/dreams/useDreamsRuntime
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginBaseState
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilityExecution
@@ -13646,21 +13698,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/quality/tiers
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/telemetry/client
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/telemetry/events
-│   │   │       ├── (dynamic)  ← @/lib/engins/brand/brandEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/brand/useBrandEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/code/codeEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/code/useCodeEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/content/contentEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/content/useContentEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/game/gameEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/game/index
-│   │   │       ├── (dynamic)  ← @/lib/engins/game/useGameEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/lab/labEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/lab/useLabEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/music/starMakerEnginRuleSet
-│   │   │       ├── (dynamic)  ← @/lib/engins/music/useStarMakerEnginRuntime
-│   │   │       ├── (dynamic)  ← @/lib/engins/useEnginWorkflow
-│   │   │       ├── (dynamic)  ← @/lib/engins/workflowEngine
 │   │   │       ├── (dynamic)  ← @/lib/event-bus/index
 │   │   │       ├── (dynamic)  ← @/lib/eventBus
 │   │   │       ├── (dynamic)  ← @/lib/feature-build/buildCycle
@@ -13762,8 +13799,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gsap/useGsapFlip
 │   │   │       ├── (dynamic)  ← @/lib/gsap/useGsapScrollReveal
 │   │   │       ├── (dynamic)  ← @/lib/h265-encoder
-│   │   │       ├── (dynamic)  ← @/lib/home-buttons/button-groups
-│   │   │       ├── (dynamic)  ← @/lib/home-buttons/contextual-home
 │   │   │       ├── (dynamic)  ← @/lib/icons/sheet
 │   │   │       ├── (dynamic)  ← @/lib/identity/canonical-names
 │   │   │       ├── (dynamic)  ← @/lib/intelligence/continuityHelpers
@@ -13913,15 +13948,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/webgpu/adaptiveQuality
 │   │   │       ├── (dynamic)  ← @/lib/webgpu/director
 │   │   │       ├── (dynamic)  ← @/lib/webgpu/useWebGPUDirector
-│   │   │       ├── (dynamic)  ← @/lib/widgets/CrossWidgetPosting
-│   │   │       ├── (dynamic)  ← @/lib/widgets/feed-resolver
-│   │   │       ├── (dynamic)  ← @/lib/widgets/parse
-│   │   │       ├── (dynamic)  ← @/lib/widgets/parseConfig
-│   │   │       ├── (dynamic)  ← @/lib/widgets/useWidget
-│   │   │       ├── (dynamic)  ← @/lib/widgets/WidgetBus
-│   │   │       ├── (dynamic)  ← @/lib/widgets/WidgetEventBus
-│   │   │       ├── (dynamic)  ← @/lib/widgets/WidgetLinkGraph
-│   │   │       ├── (dynamic)  ← @/lib/widgets/widgetRegistry
 │   │   │       └── → systems
 │   │   └── state
 │   │       └── base.json

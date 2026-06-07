@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T06:08:50.463Z
+Generated: 2026-06-07T06:42:03.475Z
 
 ---
 
@@ -13190,6 +13190,110 @@ _No style files for this feature._
 | `@/lib/connectors/webhookVerification` | _(dynamic import)_ |
 | `@/lib/connectors/youtube` | _(dynamic import)_ |
 
+## `src/engin/generated/dreamdmbar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/dreamdmbar/dream.GlowingLight` | _(dynamic import)_ |
+| `@/dreamdmbar/dreamsurface.dreamdmbar` | _(dynamic import)_ |
+| `@/lib/dreamdm/barInteractions` | _(dynamic import)_ |
+| `@/lib/dreamdm/bridgeSeamFlow` | _(dynamic import)_ |
+| `@/lib/dreamdm/DreamSystemContext` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamBarContext` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMConversations` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMDraft` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamDMMessages` | _(dynamic import)_ |
+| `@/lib/dreamdm/useDreamSearch` | _(dynamic import)_ |
+| `@/lib/dreamdm/useMessagingCore` | _(dynamic import)_ |
+| `@/lib/dreamdm/useModuleBarIntent` | _(dynamic import)_ |
+| `@/lib/dreamdm/useNotifications` | _(dynamic import)_ |
+
+## `src/engin/generated/dreamr.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/dreamr/page` | _(dynamic import)_ |
+| `@/components/dreamr/dream.CloseFriendsSettings` | _(dynamic import)_ |
+| `@/components/dreamr/dream.panel.DreamRChannelPanel` | _(dynamic import)_ |
+| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | _(dynamic import)_ |
+| `@/lib/dreamr/closeFriendsVisibility` | _(dynamic import)_ |
+| `@/lib/dreamr/dreamrfeed` | _(dynamic import)_ |
+| `@/lib/dreamr/feedCursor` | _(dynamic import)_ |
+| `@/lib/dreamr/socialHumanityScore` | _(dynamic import)_ |
+| `@/lib/dreamr/swipeCalibration` | _(dynamic import)_ |
+| `@/lib/dreamr/swipePersonalization` | _(dynamic import)_ |
+| `@/lib/dreamr/torridityLedger` | _(dynamic import)_ |
+
+## `src/engin/generated/dreamsurfaces.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreams/dream.connectorlayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.DraggableDream` | _(dynamic import)_ |
+| `@/components/dreams/dream.featurelayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.GlobalDragLayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.outputlayer` | _(dynamic import)_ |
+| `@/components/dreams/dream.panel.RuntimeMemoryHUD` | _(dynamic import)_ |
+| `@/components/dreams/dream.PlatformErrorReporter` | _(dynamic import)_ |
+| `@/components/dreams/dream.shell.DreamShell` | _(dynamic import)_ |
+| `@/components/dreams/dream.shell.SharedDreamShell` | _(dynamic import)_ |
+| `@/components/dreams/dream.SlideOverPanel` | _(dynamic import)_ |
+| `@/components/dreams/dream.widget.SuperDreamWidget` | _(dynamic import)_ |
+| `@/components/dreams/dream.window.JourneyDreamWindow` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.dreamspace` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.shell` | _(dynamic import)_ |
+| `@/components/dreams/dreamsurface.window` | _(dynamic import)_ |
+| `@/lib/dream-window/connectionVerbs` | _(dynamic import)_ |
+| `@/lib/dream-window/DreamWindowLifecycle` | _(dynamic import)_ |
+| `@/lib/dream-window/enginConnectionNetwork` | _(dynamic import)_ |
+| `@/lib/dream-window/index` | _(dynamic import)_ |
+| `@/lib/dream-window/runtimeRegion` | _(dynamic import)_ |
+| `@/lib/dream-window/useDreamWindowActions` | _(dynamic import)_ |
+| `@/lib/dreams/drag` | _(dynamic import)_ |
+| `@/lib/dreams/dreamIntentBus` | _(dynamic import)_ |
+| `@/lib/dreams/DreamRegistry` | _(dynamic import)_ |
+| `@/lib/dreams/profileProjection` | _(dynamic import)_ |
+| `@/lib/dreams/types` | _(dynamic import)_ |
+| `@/lib/dreams/useDreamsRuntime` | _(dynamic import)_ |
+| `@/lib/widgets/CrossWidgetPosting` | _(dynamic import)_ |
+| `@/lib/widgets/feed-resolver` | _(dynamic import)_ |
+| `@/lib/widgets/parse` | _(dynamic import)_ |
+| `@/lib/widgets/parseConfig` | _(dynamic import)_ |
+| `@/lib/widgets/useWidget` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetBus` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetEngine` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetEventBus` | _(dynamic import)_ |
+| `@/lib/widgets/WidgetLinkGraph` | _(dynamic import)_ |
+| `@/lib/widgets/widgetRegistry` | _(dynamic import)_ |
+
+## `src/engin/generated/engins.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/autoopen/dream.AutoOpenGameEngin` | _(dynamic import)_ |
+| `@/engins/CodeEngin/core/parser` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/index` | _(dynamic import)_ |
+| `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession` | _(dynamic import)_ |
+| `@/engins/CodeEngin/orchestrator/dream.index` | _(dynamic import)_ |
+| `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
+| `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
+| `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
+| `@/engins/engin.CodeEngin` | _(dynamic import)_ |
+| `@/engins/engin.ContentEngin` | _(dynamic import)_ |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
+| `@/engins/engin.LabEngin` | _(dynamic import)_ |
+| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
+| `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
+
+## `src/engin/generated/homedream.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/app/homedream/page` | _(dynamic import)_ |
+| `@/lib/home-buttons/button-groups` | _(dynamic import)_ |
+| `@/lib/home-buttons/contextual-home` | _(dynamic import)_ |
+
 ## `src/engin/generated/hooks.ts`
 
 | Module | Connected via |
@@ -13214,6 +13318,11 @@ _No style files for this feature._
 | `./brain` | `brain` |
 | `./cartridges` | `cartridges` |
 | `./connectors` | `connectors` |
+| `./dreamdmbar` | `dreamdmbar` |
+| `./dreamr` | `dreamr` |
+| `./dreamsurfaces` | `dreamsurfaces` |
+| `./engins` | `engins` |
+| `./homedream` | `homedream` |
 | `./hooks` | `hooks` |
 | `./personas` | `personas` |
 | `./rulesets` | `rulesets` |
@@ -13224,21 +13333,21 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/autoopen/dream.AutoOpenGameEngin` | _(dynamic import)_ |
-| `@/engins/CodeEngin/core/parser` | _(dynamic import)_ |
-| `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel` | _(dynamic import)_ |
-| `@/engins/CodeEngin/modules/ai-co-pilot/index` | _(dynamic import)_ |
-| `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession` | _(dynamic import)_ |
-| `@/engins/CodeEngin/orchestrator/dream.index` | _(dynamic import)_ |
-| `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
-| `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
-| `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
-| `@/engins/engin.CodeEngin` | _(dynamic import)_ |
-| `@/engins/engin.ContentEngin` | _(dynamic import)_ |
-| `@/engins/engin.GameEngin` | _(dynamic import)_ |
-| `@/engins/engin.LabEngin` | _(dynamic import)_ |
-| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
-| `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
+| `@/lib/engins/brand/brandEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/brand/useBrandEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/code/codeEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/code/useCodeEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/content/contentEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/content/useContentEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/game/gameEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/game/index` | _(dynamic import)_ |
+| `@/lib/engins/game/useGameEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/lab/labEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/lab/useLabEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/music/starMakerEnginRuleSet` | _(dynamic import)_ |
+| `@/lib/engins/music/useStarMakerEnginRuntime` | _(dynamic import)_ |
+| `@/lib/engins/useEnginWorkflow` | _(dynamic import)_ |
+| `@/lib/engins/workflowEngine` | _(dynamic import)_ |
 | `@/src/dream/rulesets/codeengin/index` | _(dynamic import)_ |
 | `@/src/dream/rulesets/dreamsengin/index` | _(dynamic import)_ |
 | `@/src/dream/rulesets/forgengn/index` | _(dynamic import)_ |
@@ -13420,7 +13529,6 @@ _No style files for this feature._
 | `@/app/dreamdmbar/homedream/page` | _(dynamic import)_ |
 | `@/app/dreamdmbar/layout` | _(dynamic import)_ |
 | `@/app/dreamdmbar/page` | _(dynamic import)_ |
-| `@/app/dreamr/page` | _(dynamic import)_ |
 | `@/app/dreamspace/page` | _(dynamic import)_ |
 | `@/app/edit-profiledream/page` | _(dynamic import)_ |
 | `@/app/engines/brand/campaigns/page` | _(dynamic import)_ |
@@ -13464,7 +13572,6 @@ _No style files for this feature._
 | `@/app/gameengin/cartridges/[id]/page` | _(dynamic import)_ |
 | `@/app/gameengin/cartridges/page` | _(dynamic import)_ |
 | `@/app/gameengin/page` | _(dynamic import)_ |
-| `@/app/homedream/page` | _(dynamic import)_ |
 | `@/app/join/page` | _(dynamic import)_ |
 | `@/app/lab/[id]/codespace/page` | _(dynamic import)_ |
 | `@/app/lab/[id]/page` | _(dynamic import)_ |
@@ -13606,24 +13713,6 @@ _No style files for this feature._
 | `@/components/dreamengin/engine/types` | _(dynamic import)_ |
 | `@/components/dreamnav/dream.DreamNavControls` | _(dynamic import)_ |
 | `@/components/dreamnav/dreamsurface.dreamnav` | _(dynamic import)_ |
-| `@/components/dreamr/dream.CloseFriendsSettings` | _(dynamic import)_ |
-| `@/components/dreamr/dream.panel.DreamRChannelPanel` | _(dynamic import)_ |
-| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | _(dynamic import)_ |
-| `@/components/dreams/dream.connectorlayer` | _(dynamic import)_ |
-| `@/components/dreams/dream.DraggableDream` | _(dynamic import)_ |
-| `@/components/dreams/dream.featurelayer` | _(dynamic import)_ |
-| `@/components/dreams/dream.GlobalDragLayer` | _(dynamic import)_ |
-| `@/components/dreams/dream.outputlayer` | _(dynamic import)_ |
-| `@/components/dreams/dream.panel.RuntimeMemoryHUD` | _(dynamic import)_ |
-| `@/components/dreams/dream.PlatformErrorReporter` | _(dynamic import)_ |
-| `@/components/dreams/dream.shell.DreamShell` | _(dynamic import)_ |
-| `@/components/dreams/dream.shell.SharedDreamShell` | _(dynamic import)_ |
-| `@/components/dreams/dream.SlideOverPanel` | _(dynamic import)_ |
-| `@/components/dreams/dream.widget.SuperDreamWidget` | _(dynamic import)_ |
-| `@/components/dreams/dream.window.JourneyDreamWindow` | _(dynamic import)_ |
-| `@/components/dreams/dreamsurface.dreamspace` | _(dynamic import)_ |
-| `@/components/dreams/dreamsurface.shell` | _(dynamic import)_ |
-| `@/components/dreams/dreamsurface.window` | _(dynamic import)_ |
 | `@/components/engines/brand/dream.BrandEnginApp` | _(dynamic import)_ |
 | `@/components/engines/brand/index` | _(dynamic import)_ |
 | `@/components/engines/brand/panels/dream.panel.CampaignsPanel` | _(dynamic import)_ |
@@ -13905,22 +13994,6 @@ _No style files for this feature._
 | `@/lib/dream-docs/embed` | _(dynamic import)_ |
 | `@/lib/dream-docs/index` | _(dynamic import)_ |
 | `@/lib/dream-docs/search` | _(dynamic import)_ |
-| `@/lib/dream-window/connectionVerbs` | _(dynamic import)_ |
-| `@/lib/dream-window/DreamWindowLifecycle` | _(dynamic import)_ |
-| `@/lib/dream-window/enginConnectionNetwork` | _(dynamic import)_ |
-| `@/lib/dream-window/index` | _(dynamic import)_ |
-| `@/lib/dream-window/runtimeRegion` | _(dynamic import)_ |
-| `@/lib/dream-window/useDreamWindowActions` | _(dynamic import)_ |
-| `@/lib/dreamdm/barInteractions` | _(dynamic import)_ |
-| `@/lib/dreamdm/bridgeSeamFlow` | _(dynamic import)_ |
-| `@/lib/dreamdm/useDreamBarContext` | _(dynamic import)_ |
-| `@/lib/dreamdm/useDreamDMConversations` | _(dynamic import)_ |
-| `@/lib/dreamdm/useDreamDMDraft` | _(dynamic import)_ |
-| `@/lib/dreamdm/useDreamDMMessages` | _(dynamic import)_ |
-| `@/lib/dreamdm/useDreamSearch` | _(dynamic import)_ |
-| `@/lib/dreamdm/useMessagingCore` | _(dynamic import)_ |
-| `@/lib/dreamdm/useModuleBarIntent` | _(dynamic import)_ |
-| `@/lib/dreamdm/useNotifications` | _(dynamic import)_ |
 | `@/lib/dreamengin/DrEamsAnimator` | _(dynamic import)_ |
 | `@/lib/dreamengin/drEamsSearch` | _(dynamic import)_ |
 | `@/lib/dreamengin/engineAssets` | _(dynamic import)_ |
@@ -13931,17 +14004,6 @@ _No style files for this feature._
 | `@/lib/dreamnav/gestures6` | _(dynamic import)_ |
 | `@/lib/dreamnav/path` | _(dynamic import)_ |
 | `@/lib/dreamnav/tau` | _(dynamic import)_ |
-| `@/lib/dreamr/closeFriendsVisibility` | _(dynamic import)_ |
-| `@/lib/dreamr/feedCursor` | _(dynamic import)_ |
-| `@/lib/dreamr/socialHumanityScore` | _(dynamic import)_ |
-| `@/lib/dreamr/swipeCalibration` | _(dynamic import)_ |
-| `@/lib/dreamr/swipePersonalization` | _(dynamic import)_ |
-| `@/lib/dreamr/torridityLedger` | _(dynamic import)_ |
-| `@/lib/dreams/drag` | _(dynamic import)_ |
-| `@/lib/dreams/dreamIntentBus` | _(dynamic import)_ |
-| `@/lib/dreams/profileProjection` | _(dynamic import)_ |
-| `@/lib/dreams/types` | _(dynamic import)_ |
-| `@/lib/dreams/useDreamsRuntime` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginBaseState` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginCapabilities` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginCapabilityExecution` | _(dynamic import)_ |
@@ -13965,21 +14027,6 @@ _No style files for this feature._
 | `@/lib/enginpipe/quality/tiers` | _(dynamic import)_ |
 | `@/lib/enginpipe/telemetry/client` | _(dynamic import)_ |
 | `@/lib/enginpipe/telemetry/events` | _(dynamic import)_ |
-| `@/lib/engins/brand/brandEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/brand/useBrandEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/code/codeEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/code/useCodeEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/content/contentEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/content/useContentEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/game/gameEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/game/index` | _(dynamic import)_ |
-| `@/lib/engins/game/useGameEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/lab/labEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/lab/useLabEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/music/starMakerEnginRuleSet` | _(dynamic import)_ |
-| `@/lib/engins/music/useStarMakerEnginRuntime` | _(dynamic import)_ |
-| `@/lib/engins/useEnginWorkflow` | _(dynamic import)_ |
-| `@/lib/engins/workflowEngine` | _(dynamic import)_ |
 | `@/lib/event-bus/index` | _(dynamic import)_ |
 | `@/lib/eventBus` | _(dynamic import)_ |
 | `@/lib/feature-build/buildCycle` | _(dynamic import)_ |
@@ -14081,8 +14128,6 @@ _No style files for this feature._
 | `@/lib/gsap/useGsapFlip` | _(dynamic import)_ |
 | `@/lib/gsap/useGsapScrollReveal` | _(dynamic import)_ |
 | `@/lib/h265-encoder` | _(dynamic import)_ |
-| `@/lib/home-buttons/button-groups` | _(dynamic import)_ |
-| `@/lib/home-buttons/contextual-home` | _(dynamic import)_ |
 | `@/lib/icons/sheet` | _(dynamic import)_ |
 | `@/lib/identity/canonical-names` | _(dynamic import)_ |
 | `@/lib/intelligence/continuityHelpers` | _(dynamic import)_ |
@@ -14232,15 +14277,6 @@ _No style files for this feature._
 | `@/lib/webgpu/adaptiveQuality` | _(dynamic import)_ |
 | `@/lib/webgpu/director` | _(dynamic import)_ |
 | `@/lib/webgpu/useWebGPUDirector` | _(dynamic import)_ |
-| `@/lib/widgets/CrossWidgetPosting` | _(dynamic import)_ |
-| `@/lib/widgets/feed-resolver` | _(dynamic import)_ |
-| `@/lib/widgets/parse` | _(dynamic import)_ |
-| `@/lib/widgets/parseConfig` | _(dynamic import)_ |
-| `@/lib/widgets/useWidget` | _(dynamic import)_ |
-| `@/lib/widgets/WidgetBus` | _(dynamic import)_ |
-| `@/lib/widgets/WidgetEventBus` | _(dynamic import)_ |
-| `@/lib/widgets/WidgetLinkGraph` | _(dynamic import)_ |
-| `@/lib/widgets/widgetRegistry` | _(dynamic import)_ |
 
 ## `src/launcher.ts`
 
@@ -14650,6 +14686,100 @@ _No style files for this feature._
 - `@/lib/connectors/webhookVerification`
 - `@/lib/connectors/youtube`
 
+## `src/engin/generated/dreamdmbar.ts`
+
+- `@/dreamdmbar/dream.GlowingLight`
+- `@/dreamdmbar/dreamsurface.dreamdmbar`
+- `@/lib/dreamdm/barInteractions`
+- `@/lib/dreamdm/bridgeSeamFlow`
+- `@/lib/dreamdm/DreamSystemContext`
+- `@/lib/dreamdm/useDreamBarContext`
+- `@/lib/dreamdm/useDreamDMConversations`
+- `@/lib/dreamdm/useDreamDMDraft`
+- `@/lib/dreamdm/useDreamDMMessages`
+- `@/lib/dreamdm/useDreamSearch`
+- `@/lib/dreamdm/useMessagingCore`
+- `@/lib/dreamdm/useModuleBarIntent`
+- `@/lib/dreamdm/useNotifications`
+
+## `src/engin/generated/dreamr.ts`
+
+- `@/app/dreamr/page`
+- `@/components/dreamr/dream.CloseFriendsSettings`
+- `@/components/dreamr/dream.panel.DreamRChannelPanel`
+- `@/components/dreamr/dream.panel.DreamRCreatorPanel`
+- `@/lib/dreamr/closeFriendsVisibility`
+- `@/lib/dreamr/dreamrfeed`
+- `@/lib/dreamr/feedCursor`
+- `@/lib/dreamr/socialHumanityScore`
+- `@/lib/dreamr/swipeCalibration`
+- `@/lib/dreamr/swipePersonalization`
+- `@/lib/dreamr/torridityLedger`
+
+## `src/engin/generated/dreamsurfaces.ts`
+
+- `@/components/dreams/dream.connectorlayer`
+- `@/components/dreams/dream.DraggableDream`
+- `@/components/dreams/dream.featurelayer`
+- `@/components/dreams/dream.GlobalDragLayer`
+- `@/components/dreams/dream.outputlayer`
+- `@/components/dreams/dream.panel.RuntimeMemoryHUD`
+- `@/components/dreams/dream.PlatformErrorReporter`
+- `@/components/dreams/dream.shell.DreamShell`
+- `@/components/dreams/dream.shell.SharedDreamShell`
+- `@/components/dreams/dream.SlideOverPanel`
+- `@/components/dreams/dream.widget.SuperDreamWidget`
+- `@/components/dreams/dream.window.JourneyDreamWindow`
+- `@/components/dreams/dreamsurface.dreamspace`
+- `@/components/dreams/dreamsurface.shell`
+- `@/components/dreams/dreamsurface.window`
+- `@/lib/dream-window/connectionVerbs`
+- `@/lib/dream-window/DreamWindowLifecycle`
+- `@/lib/dream-window/enginConnectionNetwork`
+- `@/lib/dream-window/index`
+- `@/lib/dream-window/runtimeRegion`
+- `@/lib/dream-window/useDreamWindowActions`
+- `@/lib/dreams/drag`
+- `@/lib/dreams/dreamIntentBus`
+- `@/lib/dreams/DreamRegistry`
+- `@/lib/dreams/profileProjection`
+- `@/lib/dreams/types`
+- `@/lib/dreams/useDreamsRuntime`
+- `@/lib/widgets/CrossWidgetPosting`
+- `@/lib/widgets/feed-resolver`
+- `@/lib/widgets/parse`
+- `@/lib/widgets/parseConfig`
+- `@/lib/widgets/useWidget`
+- `@/lib/widgets/WidgetBus`
+- `@/lib/widgets/WidgetEngine`
+- `@/lib/widgets/WidgetEventBus`
+- `@/lib/widgets/WidgetLinkGraph`
+- `@/lib/widgets/widgetRegistry`
+
+## `src/engin/generated/engins.ts`
+
+- `@/engins/autoopen/dream.AutoOpenGameEngin`
+- `@/engins/CodeEngin/core/parser`
+- `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel`
+- `@/engins/CodeEngin/modules/ai-co-pilot/index`
+- `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
+- `@/engins/CodeEngin/orchestrator/dream.index`
+- `@/engins/dream.ForgeEngin`
+- `@/engins/dream.QuantumCircuitCanvas`
+- `@/engins/engin.BrandingEngin`
+- `@/engins/engin.CodeEngin`
+- `@/engins/engin.ContentEngin`
+- `@/engins/engin.GameEngin`
+- `@/engins/engin.LabEngin`
+- `@/engins/engin.StarMakerEngin`
+- `@/engins/portfolio/dream.PortfolioEngin`
+
+## `src/engin/generated/homedream.ts`
+
+- `@/app/homedream/page`
+- `@/lib/home-buttons/button-groups`
+- `@/lib/home-buttons/contextual-home`
+
 ## `src/engin/generated/hooks.ts`
 
 - `@/hooks/use-spatial`
@@ -14667,21 +14797,21 @@ _No style files for this feature._
 
 ## `src/engin/generated/rulesets.ts`
 
-- `@/engins/autoopen/dream.AutoOpenGameEngin`
-- `@/engins/CodeEngin/core/parser`
-- `@/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel`
-- `@/engins/CodeEngin/modules/ai-co-pilot/index`
-- `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
-- `@/engins/CodeEngin/orchestrator/dream.index`
-- `@/engins/dream.ForgeEngin`
-- `@/engins/dream.QuantumCircuitCanvas`
-- `@/engins/engin.BrandingEngin`
-- `@/engins/engin.CodeEngin`
-- `@/engins/engin.ContentEngin`
-- `@/engins/engin.GameEngin`
-- `@/engins/engin.LabEngin`
-- `@/engins/engin.StarMakerEngin`
-- `@/engins/portfolio/dream.PortfolioEngin`
+- `@/lib/engins/brand/brandEnginRuleSet`
+- `@/lib/engins/brand/useBrandEnginRuntime`
+- `@/lib/engins/code/codeEnginRuleSet`
+- `@/lib/engins/code/useCodeEnginRuntime`
+- `@/lib/engins/content/contentEnginRuleSet`
+- `@/lib/engins/content/useContentEnginRuntime`
+- `@/lib/engins/game/gameEnginRuleSet`
+- `@/lib/engins/game/index`
+- `@/lib/engins/game/useGameEnginRuntime`
+- `@/lib/engins/lab/labEnginRuleSet`
+- `@/lib/engins/lab/useLabEnginRuntime`
+- `@/lib/engins/music/starMakerEnginRuleSet`
+- `@/lib/engins/music/useStarMakerEnginRuntime`
+- `@/lib/engins/useEnginWorkflow`
+- `@/lib/engins/workflowEngine`
 - `@/src/dream/rulesets/codeengin/index`
 - `@/src/dream/rulesets/dreamsengin/index`
 - `@/src/dream/rulesets/forgengn/index`
@@ -14861,7 +14991,6 @@ _No style files for this feature._
 - `@/app/dreamdmbar/homedream/page`
 - `@/app/dreamdmbar/layout`
 - `@/app/dreamdmbar/page`
-- `@/app/dreamr/page`
 - `@/app/dreamspace/page`
 - `@/app/edit-profiledream/page`
 - `@/app/engines/brand/campaigns/page`
@@ -14905,7 +15034,6 @@ _No style files for this feature._
 - `@/app/gameengin/cartridges/[id]/page`
 - `@/app/gameengin/cartridges/page`
 - `@/app/gameengin/page`
-- `@/app/homedream/page`
 - `@/app/join/page`
 - `@/app/lab/[id]/codespace/page`
 - `@/app/lab/[id]/page`
@@ -15047,24 +15175,6 @@ _No style files for this feature._
 - `@/components/dreamengin/engine/types`
 - `@/components/dreamnav/dream.DreamNavControls`
 - `@/components/dreamnav/dreamsurface.dreamnav`
-- `@/components/dreamr/dream.CloseFriendsSettings`
-- `@/components/dreamr/dream.panel.DreamRChannelPanel`
-- `@/components/dreamr/dream.panel.DreamRCreatorPanel`
-- `@/components/dreams/dream.connectorlayer`
-- `@/components/dreams/dream.DraggableDream`
-- `@/components/dreams/dream.featurelayer`
-- `@/components/dreams/dream.GlobalDragLayer`
-- `@/components/dreams/dream.outputlayer`
-- `@/components/dreams/dream.panel.RuntimeMemoryHUD`
-- `@/components/dreams/dream.PlatformErrorReporter`
-- `@/components/dreams/dream.shell.DreamShell`
-- `@/components/dreams/dream.shell.SharedDreamShell`
-- `@/components/dreams/dream.SlideOverPanel`
-- `@/components/dreams/dream.widget.SuperDreamWidget`
-- `@/components/dreams/dream.window.JourneyDreamWindow`
-- `@/components/dreams/dreamsurface.dreamspace`
-- `@/components/dreams/dreamsurface.shell`
-- `@/components/dreams/dreamsurface.window`
 - `@/components/engines/brand/dream.BrandEnginApp`
 - `@/components/engines/brand/index`
 - `@/components/engines/brand/panels/dream.panel.CampaignsPanel`
@@ -15344,22 +15454,6 @@ _No style files for this feature._
 - `@/lib/dream-docs/embed`
 - `@/lib/dream-docs/index`
 - `@/lib/dream-docs/search`
-- `@/lib/dream-window/connectionVerbs`
-- `@/lib/dream-window/DreamWindowLifecycle`
-- `@/lib/dream-window/enginConnectionNetwork`
-- `@/lib/dream-window/index`
-- `@/lib/dream-window/runtimeRegion`
-- `@/lib/dream-window/useDreamWindowActions`
-- `@/lib/dreamdm/barInteractions`
-- `@/lib/dreamdm/bridgeSeamFlow`
-- `@/lib/dreamdm/useDreamBarContext`
-- `@/lib/dreamdm/useDreamDMConversations`
-- `@/lib/dreamdm/useDreamDMDraft`
-- `@/lib/dreamdm/useDreamDMMessages`
-- `@/lib/dreamdm/useDreamSearch`
-- `@/lib/dreamdm/useMessagingCore`
-- `@/lib/dreamdm/useModuleBarIntent`
-- `@/lib/dreamdm/useNotifications`
 - `@/lib/dreamengin/DrEamsAnimator`
 - `@/lib/dreamengin/drEamsSearch`
 - `@/lib/dreamengin/engineAssets`
@@ -15370,17 +15464,6 @@ _No style files for this feature._
 - `@/lib/dreamnav/gestures6`
 - `@/lib/dreamnav/path`
 - `@/lib/dreamnav/tau`
-- `@/lib/dreamr/closeFriendsVisibility`
-- `@/lib/dreamr/feedCursor`
-- `@/lib/dreamr/socialHumanityScore`
-- `@/lib/dreamr/swipeCalibration`
-- `@/lib/dreamr/swipePersonalization`
-- `@/lib/dreamr/torridityLedger`
-- `@/lib/dreams/drag`
-- `@/lib/dreams/dreamIntentBus`
-- `@/lib/dreams/profileProjection`
-- `@/lib/dreams/types`
-- `@/lib/dreams/useDreamsRuntime`
 - `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/engin-runtime/EnginCapabilityExecution`
@@ -15404,21 +15487,6 @@ _No style files for this feature._
 - `@/lib/enginpipe/quality/tiers`
 - `@/lib/enginpipe/telemetry/client`
 - `@/lib/enginpipe/telemetry/events`
-- `@/lib/engins/brand/brandEnginRuleSet`
-- `@/lib/engins/brand/useBrandEnginRuntime`
-- `@/lib/engins/code/codeEnginRuleSet`
-- `@/lib/engins/code/useCodeEnginRuntime`
-- `@/lib/engins/content/contentEnginRuleSet`
-- `@/lib/engins/content/useContentEnginRuntime`
-- `@/lib/engins/game/gameEnginRuleSet`
-- `@/lib/engins/game/index`
-- `@/lib/engins/game/useGameEnginRuntime`
-- `@/lib/engins/lab/labEnginRuleSet`
-- `@/lib/engins/lab/useLabEnginRuntime`
-- `@/lib/engins/music/starMakerEnginRuleSet`
-- `@/lib/engins/music/useStarMakerEnginRuntime`
-- `@/lib/engins/useEnginWorkflow`
-- `@/lib/engins/workflowEngine`
 - `@/lib/event-bus/index`
 - `@/lib/eventBus`
 - `@/lib/feature-build/buildCycle`
@@ -15520,8 +15588,6 @@ _No style files for this feature._
 - `@/lib/gsap/useGsapFlip`
 - `@/lib/gsap/useGsapScrollReveal`
 - `@/lib/h265-encoder`
-- `@/lib/home-buttons/button-groups`
-- `@/lib/home-buttons/contextual-home`
 - `@/lib/icons/sheet`
 - `@/lib/identity/canonical-names`
 - `@/lib/intelligence/continuityHelpers`
@@ -15671,15 +15737,6 @@ _No style files for this feature._
 - `@/lib/webgpu/adaptiveQuality`
 - `@/lib/webgpu/director`
 - `@/lib/webgpu/useWebGPUDirector`
-- `@/lib/widgets/CrossWidgetPosting`
-- `@/lib/widgets/feed-resolver`
-- `@/lib/widgets/parse`
-- `@/lib/widgets/parseConfig`
-- `@/lib/widgets/useWidget`
-- `@/lib/widgets/WidgetBus`
-- `@/lib/widgets/WidgetEventBus`
-- `@/lib/widgets/WidgetLinkGraph`
-- `@/lib/widgets/widgetRegistry`
 
 ## `tailwindcss-animate.d.ts`
 
@@ -17456,6 +17513,7 @@ _No style files for this feature._
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
 - `scripts/wire-orphans.mjs`
+- `src/engin/generated/osArchitectureMap.ts`
 - `src/engin/generated/surfaces.ts`
 - `src/engin/generated/systems.ts`
 - `types/dreamArtifact.ts`
@@ -17739,6 +17797,7 @@ _No style files for this feature._
 - `scripts/wire-orphans.mjs`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
+- `src/engin/generated/osArchitectureMap.ts`
 - `src/engin/generated/systems.ts`
 
 ---
@@ -17777,6 +17836,7 @@ _No circular dependencies detected._
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `lib/gameengin/index.ts` | 14 |
+| `src/engin/generated/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
 | `app/layout.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
@@ -17786,7 +17846,6 @@ _No circular dependencies detected._
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
-| `app/view-profile/page.tsx` | 12 |
 
 ---
 
@@ -17816,6 +17875,7 @@ _No circular dependencies detected._
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
+| `src/engin/generated/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
 | `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -17895,7 +17955,6 @@ _No circular dependencies detected._
 | `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
 | `lib/observability/otel.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
 | `lib/runtime/dreamOSBus.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `src/engin/generated/index.ts` | 8 | MEDIUM_COUPLING |
 | `tests/game-navigation.test.ts` | 8 | MEDIUM_COUPLING |
 | `app/ads/create/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/ads/slot/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -18068,6 +18127,7 @@ _No circular dependencies detected._
 | `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
 | `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/social/livekit.ts` | 0 | EVENT_BUS |
+| `src/engin/generated/osArchitectureMap.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 
@@ -19182,7 +19242,7 @@ _No circular dependencies detected._
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
 | `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
-| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureMap` |
+| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureMap` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
 | `src/components/dream.LogoHero.tsx` | `(default)` |
 | `src/components/dream.Nav.tsx` | `(default)` |
@@ -19206,7 +19266,8 @@ _No circular dependencies detected._
 | `src/engin/core/engin.ledger.ts` | `createLedger` |
 | `src/engin/core/engin.renderloop.ts` | `createRenderLoop` |
 | `src/engin/core/index.ts` | `UniversalEngine`, `engine`, `appendEntry`, `createLedger`, `createEventBus`, `createRenderLoop`, `createSession`, `validateSession` |
-| `src/engin/generated/index.ts` | `hydrateEngineRegistry` |
+| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureMap` |
+| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureMap` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
 | `supabaseClient.ts` | `supabase` |
@@ -22237,7 +22298,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ ./systems  (systems)
 │       ├── ⚠ ./hooks  (hooks)
 │       ├── ⚠ ./osArchitectureMap  ((unknown — bare import))
-│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureMap
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -22307,9 +22368,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── brain.ts
 │   │   │   ├── cartridges.ts
 │   │   │   ├── connectors.ts
+│   │   │   ├── dreamdmbar.ts
+│   │   │   ├── dreamr.ts
+│   │   │   ├── dreamsurfaces.ts
+│   │   │   ├── engins.ts
+│   │   │   ├── homedream.ts
 │   │   │   ├── hooks.ts
 │   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureMap
+│   │   │   ├── osArchitectureMap.ts ∅
+│   │   │   │   └── ∅ unused: osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   ├── rulesets.ts
 │   │   │   ├── surfaces.ts
