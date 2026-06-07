@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T06:42:03.475Z
+Generated: 2026-06-07T07:01:39.645Z
 
 ---
 
@@ -19242,7 +19242,7 @@ _No circular dependencies detected._
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
 | `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
-| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureMap` |
+| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
 | `src/components/dream.LogoHero.tsx` | `(default)` |
 | `src/components/dream.Nav.tsx` | `(default)` |
@@ -19266,8 +19266,8 @@ _No circular dependencies detected._
 | `src/engin/core/engin.ledger.ts` | `createLedger` |
 | `src/engin/core/engin.renderloop.ts` | `createRenderLoop` |
 | `src/engin/core/index.ts` | `UniversalEngine`, `engine`, `appendEntry`, `createLedger`, `createEventBus`, `createRenderLoop`, `createSession`, `validateSession` |
-| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureMap` |
-| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureMap` |
+| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureMap` |
+| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureFlow`, `osArchitectureMap` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
 | `supabaseClient.ts` | `supabase` |
@@ -22298,7 +22298,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ ./systems  (systems)
 │       ├── ⚠ ./hooks  (hooks)
 │       ├── ⚠ ./osArchitectureMap  ((unknown — bare import))
-│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -22375,9 +22375,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── homedream.ts
 │   │   │   ├── hooks.ts
 │   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureMap
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
 │   │   │   ├── osArchitectureMap.ts ∅
-│   │   │   │   └── ∅ unused: osArchitectureMap
+│   │   │   │   └── ∅ unused: osArchitectureFlow, osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   ├── rulesets.ts
 │   │   │   ├── surfaces.ts

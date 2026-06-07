@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T06:42:03.669Z
+Generated: 2026-06-07T07:01:39.777Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -12602,9 +12602,13 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → buildRegistry
 │       ├── → hydrateEngineRegistry
 │       ├── → osArchitectureFlow
+│       ├── → osArchitectureGraph
 │       ├── → osArchitectureMap
+│       ├── → osArchitectureStageEntries
+│       ├── → osGeneratedRouters
+│       ├── → osSlotCounts
 │       ├── (unknown — bare import)  ⚠ ./osArchitectureMap
-│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -13002,11 +13006,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── surfaces  ← ./surfaces
 │   │   │   │   ├── systems  ← ./systems
 │   │   │   │   ├── → hydrateEngineRegistry
+│   │   │   │   ├── → osArchitectureFlow
 │   │   │   │   ├── → osArchitectureMap
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureMap
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
 │   │   │   ├── osArchitectureMap.ts ∅
+│   │   │   │   ├── → osArchitectureFlow
 │   │   │   │   ├── → osArchitectureMap
-│   │   │   │   └── ∅ unused: osArchitectureMap
+│   │   │   │   └── ∅ unused: osArchitectureFlow, osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   │   └── → personas
 │   │   │   ├── rulesets.ts
