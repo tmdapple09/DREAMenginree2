@@ -47,11 +47,11 @@ function fireAction(action: GameInputAction, active: boolean): void {
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const LEFT_PAD_R    = 52;   // outer pad radius (px)
+const LEFT_PAD_R    = 70;   // outer pad radius (px)
 const RIGHT_PAD_R   = 70;   // right analog is intentionally larger for readability
-const LEFT_KNOB_R   = 15;   // inner knob radius
-const RIGHT_KNOB_R  = 19;   // slightly larger knob for action stick
-const LEFT_MAX_DISP = 38;   // max knob displacement from center
+const LEFT_KNOB_R   = 20;   // inner knob radius
+const RIGHT_KNOB_R  = 20;   // slightly larger knob for action stick
+const LEFT_MAX_DISP = 50;   // max knob displacement from center
 const RIGHT_MAX_DISP= 50;   // larger travel to match larger right stick
 const DEAD     = 16;   // dead-zone: no action below this displacement
 
