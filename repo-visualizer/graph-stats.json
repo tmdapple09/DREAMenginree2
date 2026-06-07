@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-06-07T13:09:22.565Z",
-  "totalFiles": 2044,
-  "totalNodes": 6941,
-  "totalEdges": 7284,
-  "totalFunctionAndClassNodes": 3871,
-  "orphanCount": 3289,
+  "generatedAt": "2026-06-07T23:36:41.402Z",
+  "totalFiles": 2046,
+  "totalNodes": 6953,
+  "totalEdges": 7382,
+  "totalFunctionAndClassNodes": 3880,
+  "orphanCount": 3259,
   "countsByType": {
-    "folder": 582,
-    "file": 113,
-    "doc": 228,
-    "config": 222,
-    "function": 3608,
+    "folder": 583,
+    "file": 112,
+    "doc": 229,
+    "config": 223,
+    "function": 3617,
     "python": 14,
     "class": 263,
     "js": 8,
     "mjs": 29,
     "route": 234,
-    "ts": 807,
+    "ts": 808,
     "tsx": 318,
     "css": 8,
     "cjs": 4,
@@ -34,17 +34,10 @@
     },
     {
       "id": "file:src/engin/generated/systems.ts",
-      "degree": 371,
+      "degree": 372,
       "label": "systems.ts",
       "type": "ts",
       "path": "src/engin/generated/systems.ts"
-    },
-    {
-      "id": "file:lib/supabase/safeGetUser.ts",
-      "degree": 350,
-      "label": "safeGetUser.ts",
-      "type": "ts",
-      "path": "lib/supabase/safeGetUser.ts"
     },
     {
       "id": "file:lib/supabase/server.ts",
@@ -54,15 +47,22 @@
       "path": "lib/supabase/server.ts"
     },
     {
+      "id": "file:lib/supabase/safeGetUser.ts",
+      "degree": 349,
+      "label": "safeGetUser.ts",
+      "type": "ts",
+      "path": "lib/supabase/safeGetUser.ts"
+    },
+    {
       "id": "function:lib/supabase/safeGetUser.ts#safeGetUser",
-      "degree": 190,
+      "degree": 189,
       "label": "safeGetUser",
       "type": "function",
       "path": "lib/supabase/safeGetUser.ts"
     },
     {
       "id": "file:lib/utils.ts",
-      "degree": 182,
+      "degree": 181,
       "label": "utils.ts",
       "type": "ts",
       "path": "lib/utils.ts"
@@ -76,7 +76,7 @@
     },
     {
       "id": "function:lib/utils.ts#toErrorMessage",
-      "degree": 113,
+      "degree": 112,
       "label": "toErrorMessage",
       "type": "function",
       "path": "lib/utils.ts"
@@ -89,11 +89,11 @@
       "path": "lib/dev-bypass.ts"
     },
     {
-      "id": "file:lib/supabase/client.ts",
-      "degree": 74,
-      "label": "client.ts",
+      "id": "file:lib/gameengin/executionWiring.ts",
+      "degree": 79,
+      "label": "executionWiring.ts",
       "type": "ts",
-      "path": "lib/supabase/client.ts"
+      "path": "lib/gameengin/executionWiring.ts"
     }
   ]
 }

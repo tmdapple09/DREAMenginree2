@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T13:09:22.565Z",
+  "generatedAt": "2026-06-07T23:36:41.402Z",
   "root": ".",
   "nodes": [
     {
@@ -2666,6 +2666,16 @@
       "label": "ScanArcCleanup.yml",
       "type": "config",
       "path": ".github/workflows/ScanArcCleanup.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/Strict English Codebase Export.yml",
+      "label": "Strict English Codebase Export.yml",
+      "type": "config",
+      "path": ".github/workflows/Strict English Codebase Export.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -6481,7 +6491,9 @@
       "tags": [
         "api-handler",
         "supabase-table:game_scores",
+        "supabase-table:game_scores",
         "supabase-table:profiles",
+        "supabase-table:game_scores",
         "supabase-table:game_scores"
       ]
     },
@@ -9014,12 +9026,22 @@
       "isOrphan": false
     },
     {
+      "id": "function:app/daydream/games/engin/page.tsx#firstValue",
+      "label": "firstValue",
+      "type": "function",
+      "path": "app/daydream/games/engin/page.tsx",
+      "parent": "file:app/daydream/games/engin/page.tsx",
+      "loc": 8,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
       "id": "function:app/daydream/games/engin/page.tsx#GamesEnginRedirectPage",
       "label": "GamesEnginRedirectPage",
       "type": "function",
       "path": "app/daydream/games/engin/page.tsx",
       "parent": "file:app/daydream/games/engin/page.tsx",
-      "loc": 7,
+      "loc": 14,
       "isOrphan": false,
       "exported": true
     },
@@ -13164,6 +13186,25 @@
       "tags": []
     },
     {
+      "id": "folder:build-memory/typecheck",
+      "label": "typecheck",
+      "type": "folder",
+      "path": "build-memory/typecheck",
+      "parent": "folder:build-memory",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:build-memory/typecheck/error-files.txt",
+      "label": "error-files.txt",
+      "type": "doc",
+      "path": "build-memory/typecheck/error-files.txt",
+      "parent": "folder:build-memory/typecheck",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:build-memory/ui-surfaces.json",
       "label": "ui-surfaces.json",
       "type": "config",
@@ -17025,7 +17066,7 @@
       "type": "function",
       "path": "components/engines/games/panels/dream.panel.ScoresPanel.tsx",
       "parent": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "loc": 23,
+      "loc": 20,
       "isOrphan": true,
       "exported": true
     },
@@ -17037,11 +17078,7 @@
       "parent": "folder:components/engines/games/panels",
       "loc": null,
       "isOrphan": false,
-      "tags": [
-        "supabase-create-client",
-        "supabase-table:game_scores",
-        "supabase-table:game_scores"
-      ]
+      "tags": []
     },
     {
       "id": "file:components/engines/index.ts",
@@ -18098,7 +18135,7 @@
       "type": "function",
       "path": "components/gameengin/dream.CartridgeRegistryBootstrap.tsx",
       "parent": "file:components/gameengin/dream.CartridgeRegistryBootstrap.tsx",
-      "loc": 5,
+      "loc": 6,
       "isOrphan": true,
       "exported": true
     },
@@ -24417,7 +24454,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 216,
+      "loc": 233,
       "isOrphan": true,
       "exported": false
     },
@@ -24427,7 +24464,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 234,
+      "loc": 251,
       "isOrphan": true,
       "exported": true
     },
@@ -24437,7 +24474,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 241,
+      "loc": 258,
       "isOrphan": true,
       "exported": false
     },
@@ -24447,7 +24484,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 2736,
+      "loc": 2866,
       "isOrphan": true,
       "exported": false
     },
@@ -25312,16 +25349,6 @@
       "type": "doc",
       "path": "fonts/fonts.md",
       "parent": "folder:fonts",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:gameengin_inventory_files_execution_wired.zip",
-      "label": "gameengin_inventory_files_execution_wired.zip",
-      "type": "file",
-      "path": "gameengin_inventory_files_execution_wired.zip",
-      "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
       "tags": []
@@ -39524,7 +39551,7 @@
       "type": "function",
       "path": "lib/gameengin/GameRuntime.tsx",
       "parent": "file:lib/gameengin/GameRuntime.tsx",
-      "loc": 64,
+      "loc": 74,
       "isOrphan": true,
       "exported": true
     },
@@ -39545,7 +39572,7 @@
       "path": "lib/gameengin/accessibility-ai.ts",
       "parent": "file:lib/gameengin/accessibility-ai.ts",
       "loc": 30,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -39555,7 +39582,7 @@
       "path": "lib/gameengin/accessibility-ai.ts",
       "parent": "file:lib/gameengin/accessibility-ai.ts",
       "loc": 128,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -39565,7 +39592,7 @@
       "path": "lib/gameengin/accessibility-ai.ts",
       "parent": "file:lib/gameengin/accessibility-ai.ts",
       "loc": 169,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -39605,7 +39632,7 @@
       "path": "lib/gameengin/ai-npcs.ts",
       "parent": "file:lib/gameengin/ai-npcs.ts",
       "loc": 41,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -39615,7 +39642,7 @@
       "path": "lib/gameengin/ai-npcs.ts",
       "parent": "file:lib/gameengin/ai-npcs.ts",
       "loc": 135,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -39625,7 +39652,7 @@
       "path": "lib/gameengin/ai-npcs.ts",
       "parent": "file:lib/gameengin/ai-npcs.ts",
       "loc": 176,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41357,7 +41384,7 @@
       "path": "lib/gameengin/cartridge.ts",
       "parent": "file:lib/gameengin/cartridge.ts",
       "loc": 26,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41490,12 +41517,42 @@
       "tags": []
     },
     {
+      "id": "function:lib/gameengin/cartridges/loaders.ts#getMissingCartridgeLoaders",
+      "label": "getMissingCartridgeLoaders",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/loaders.ts",
+      "parent": "file:lib/gameengin/cartridges/loaders.ts",
+      "loc": 40,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/cartridges/loaders.ts#getOrphanCartridgeLoaders",
+      "label": "getOrphanCartridgeLoaders",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/loaders.ts",
+      "parent": "file:lib/gameengin/cartridges/loaders.ts",
+      "loc": 46,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/cartridges/loaders.ts#assertCartridgeLoadersReady",
+      "label": "assertCartridgeLoadersReady",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/loaders.ts",
+      "parent": "file:lib/gameengin/cartridges/loaders.ts",
+      "loc": 51,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
       "id": "function:lib/gameengin/cartridges/loaders.ts#loadCartridge",
       "label": "loadCartridge",
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 39,
+      "loc": 58,
       "isOrphan": false,
       "exported": true
     },
@@ -41505,7 +41562,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 52,
+      "loc": 75,
       "isOrphan": false,
       "exported": true
     },
@@ -41686,7 +41743,7 @@
       "path": "lib/gameengin/cloud-compute.ts",
       "parent": "file:lib/gameengin/cloud-compute.ts",
       "loc": 35,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41696,7 +41753,7 @@
       "path": "lib/gameengin/cloud-compute.ts",
       "parent": "file:lib/gameengin/cloud-compute.ts",
       "loc": 78,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41706,7 +41763,7 @@
       "path": "lib/gameengin/cloud-compute.ts",
       "parent": "file:lib/gameengin/cloud-compute.ts",
       "loc": 119,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41838,6 +41895,46 @@
       "tags": []
     },
     {
+      "id": "function:lib/gameengin/executionWiring.ts#faceButtonForInput",
+      "label": "faceButtonForInput",
+      "type": "function",
+      "path": "lib/gameengin/executionWiring.ts",
+      "parent": "file:lib/gameengin/executionWiring.ts",
+      "loc": 95,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/executionWiring.ts#createMusicEngine",
+      "label": "createMusicEngine",
+      "type": "function",
+      "path": "lib/gameengin/executionWiring.ts",
+      "parent": "file:lib/gameengin/executionWiring.ts",
+      "loc": 104,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/executionWiring.ts#createGameEnginExecutionKernel",
+      "label": "createGameEnginExecutionKernel",
+      "type": "function",
+      "path": "lib/gameengin/executionWiring.ts",
+      "parent": "file:lib/gameengin/executionWiring.ts",
+      "loc": 118,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/executionWiring.ts",
+      "label": "executionWiring.ts",
+      "type": "ts",
+      "path": "lib/gameengin/executionWiring.ts",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/gameengin/gameEnginRuntime.ts#loadDreamGame",
       "label": "loadDreamGame",
       "type": "function",
@@ -41874,7 +41971,7 @@
       "path": "lib/gameengin/generative-audio.ts",
       "parent": "file:lib/gameengin/generative-audio.ts",
       "loc": 35,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41884,7 +41981,7 @@
       "path": "lib/gameengin/generative-audio.ts",
       "parent": "file:lib/gameengin/generative-audio.ts",
       "loc": 111,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41896,6 +41993,26 @@
       "loc": null,
       "isOrphan": false,
       "tags": []
+    },
+    {
+      "id": "function:lib/gameengin/index.ts#getGameEnginWorkPacketByTarget",
+      "label": "getGameEnginWorkPacketByTarget",
+      "type": "function",
+      "path": "lib/gameengin/index.ts",
+      "parent": "file:lib/gameengin/index.ts",
+      "loc": 3938,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/index.ts#getGameEnginWorkPacketEntry",
+      "label": "getGameEnginWorkPacketEntry",
+      "type": "function",
+      "path": "lib/gameengin/index.ts",
+      "parent": "file:lib/gameengin/index.ts",
+      "loc": 3942,
+      "isOrphan": true,
+      "exported": true
     },
     {
       "id": "file:lib/gameengin/index.ts",
@@ -41914,7 +42031,7 @@
       "path": "lib/gameengin/neural-render.ts",
       "parent": "file:lib/gameengin/neural-render.ts",
       "loc": 25,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41924,7 +42041,7 @@
       "path": "lib/gameengin/neural-render.ts",
       "parent": "file:lib/gameengin/neural-render.ts",
       "loc": 96,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41934,7 +42051,7 @@
       "path": "lib/gameengin/neural-render.ts",
       "parent": "file:lib/gameengin/neural-render.ts",
       "loc": 154,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41954,7 +42071,7 @@
       "path": "lib/gameengin/path-tracing.ts",
       "parent": "file:lib/gameengin/path-tracing.ts",
       "loc": 35,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41964,7 +42081,7 @@
       "path": "lib/gameengin/path-tracing.ts",
       "parent": "file:lib/gameengin/path-tracing.ts",
       "loc": 137,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41974,7 +42091,7 @@
       "path": "lib/gameengin/path-tracing.ts",
       "parent": "file:lib/gameengin/path-tracing.ts",
       "loc": 204,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -41994,7 +42111,7 @@
       "path": "lib/gameengin/platform.ts",
       "parent": "file:lib/gameengin/platform.ts",
       "loc": 76,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42304,7 +42421,7 @@
       "path": "lib/gameengin/predictive-stream.ts",
       "parent": "file:lib/gameengin/predictive-stream.ts",
       "loc": 48,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42314,7 +42431,7 @@
       "path": "lib/gameengin/predictive-stream.ts",
       "parent": "file:lib/gameengin/predictive-stream.ts",
       "loc": 103,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42344,7 +42461,7 @@
       "path": "lib/gameengin/procgen.ts",
       "parent": "file:lib/gameengin/procgen.ts",
       "loc": 36,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42354,7 +42471,7 @@
       "path": "lib/gameengin/procgen.ts",
       "parent": "file:lib/gameengin/procgen.ts",
       "loc": 147,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42364,7 +42481,7 @@
       "path": "lib/gameengin/procgen.ts",
       "parent": "file:lib/gameengin/procgen.ts",
       "loc": 216,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42383,7 +42500,7 @@
       "type": "function",
       "path": "lib/gameengin/registerCartridges.ts",
       "parent": "file:lib/gameengin/registerCartridges.ts",
-      "loc": 6,
+      "loc": 7,
       "isOrphan": true,
       "exported": false
     },
@@ -42393,7 +42510,7 @@
       "type": "function",
       "path": "lib/gameengin/registerCartridges.ts",
       "parent": "file:lib/gameengin/registerCartridges.ts",
-      "loc": 28,
+      "loc": 29,
       "isOrphan": false,
       "exported": true
     },
@@ -42433,7 +42550,7 @@
       "path": "lib/gameengin/remote/comboMachine.ts",
       "parent": "file:lib/gameengin/remote/comboMachine.ts",
       "loc": 58,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42463,7 +42580,7 @@
       "path": "lib/gameengin/remote/layout.ts",
       "parent": "file:lib/gameengin/remote/layout.ts",
       "loc": 57,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42473,7 +42590,7 @@
       "path": "lib/gameengin/remote/layout.ts",
       "parent": "file:lib/gameengin/remote/layout.ts",
       "loc": 75,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42483,7 +42600,7 @@
       "path": "lib/gameengin/remote/layout.ts",
       "parent": "file:lib/gameengin/remote/layout.ts",
       "loc": 81,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42523,7 +42640,7 @@
       "path": "lib/gameengin/remote/sprintDetector.ts",
       "parent": "file:lib/gameengin/remote/sprintDetector.ts",
       "loc": 33,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42872,7 +42989,7 @@
       "path": "lib/gameengin/xr.ts",
       "parent": "file:lib/gameengin/xr.ts",
       "loc": 34,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42882,7 +42999,7 @@
       "path": "lib/gameengin/xr.ts",
       "parent": "file:lib/gameengin/xr.ts",
       "loc": 104,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42892,7 +43009,7 @@
       "path": "lib/gameengin/xr.ts",
       "parent": "file:lib/gameengin/xr.ts",
       "loc": 148,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42921,7 +43038,7 @@
       "path": "lib/games/DualSenseManager.ts",
       "parent": "file:lib/games/DualSenseManager.ts",
       "loc": 72,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -43821,7 +43938,7 @@
       "path": "lib/games/useAIDirector.ts",
       "parent": "file:lib/games/useAIDirector.ts",
       "loc": 53,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -71741,6 +71858,11 @@
     },
     {
       "source": "file:app/api/game-scores/route.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/game-scores/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "import"
     },
@@ -71753,6 +71875,11 @@
       "source": "file:app/api/game-scores/route.ts",
       "target": "file:lib/utils.ts",
       "kind": "import"
+    },
+    {
+      "source": "file:app/api/game-scores/route.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "route-uses"
     },
     {
       "source": "file:app/api/game-scores/route.ts",
@@ -78500,21 +78627,6 @@
       "kind": "import"
     },
     {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "file:lib/supabase/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "file:lib/supabase/safeGetUser.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "file:lib/utils.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:components/engines/index.ts",
       "target": "file:components/engines/shared/index.ts",
       "kind": "reexport"
@@ -78765,6 +78877,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/gameengin/dream.CartridgeRegistryBootstrap.tsx",
+      "target": "file:lib/runtime/dreamOSBus.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:components/gameengin/dream.CrashReportModal.tsx",
       "target": "file:lib/utils.ts",
       "kind": "import"
@@ -78921,7 +79038,7 @@
     },
     {
       "source": "file:components/games/dream.GamesHub.tsx",
-      "target": "file:components/games/dream.BabylonSideScroller.tsx",
+      "target": "file:components/games/madmaxi/index.ts",
       "kind": "import"
     },
     {
@@ -80856,17 +80973,67 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
-      "target": "file:components/games/dream.GamesHub.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:components/games/dream.RecordingControls.tsx",
       "kind": "import"
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/gameengin/dream.CartridgeRegistryBootstrap.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/gameengin/dream.cartridge.FeaturedCartridges.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.Leaderboard.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:components/games/dream.remote.GameRemote.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.hud.GameHUD.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.hud.LegacyGameHUD.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.hud.MobileGameHUD.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.GameController.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/games/dream.remote.LegacyGameRemote.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/gameengin/dream.CrashReportModal.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx",
       "kind": "import"
     },
     {
@@ -80921,6 +81088,11 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:lib/games/catalog.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:lib/games/avatar.ts",
       "kind": "import"
     },
@@ -80947,6 +81119,16 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:lib/games/useGamepad.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:lib/games/useAIDirector.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:lib/games/DualSenseManager.ts",
       "kind": "import"
     },
     {
@@ -83120,6 +83302,11 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/GameRuntime.tsx",
+      "target": "file:lib/gameengin/executionWiring.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/cartridgeLoader.ts",
       "target": "file:lib/gameengin/dreamr-loader.ts",
       "kind": "reexport"
@@ -83151,6 +83338,11 @@
     },
     {
       "source": "file:lib/gameengin/cartridges/loaders.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/cartridges/loaders.ts",
       "target": "file:lib/gameengin/cartridges/reactCartridge.ts",
       "kind": "import"
     },
@@ -83161,7 +83353,7 @@
     },
     {
       "source": "file:lib/gameengin/cartridges/loaders.ts",
-      "target": "file:components/games/dream.BabylonSideScroller.tsx",
+      "target": "file:components/games/madmaxi/index.ts",
       "kind": "import"
     },
     {
@@ -83275,6 +83467,201 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/accessibility-ai.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/ai-director.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/ai-npcs.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cloud-compute.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/platform.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/generative-audio.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/neural-render.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/path-tracing.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/predictive-stream.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/procgen.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/world-crdt.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/xr.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/remote/comboMachine.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/remote/layout.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/remote/moves.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/remote/sprintDetector.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cartridges/loaders.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/runtime/madMaxiSnapshotBridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cartridges/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/control-mappings.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/dream-engine.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/cartridgeLoader.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/gameEnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/webgpu-runtime-shell.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/ai.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/animation.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/assets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/lod.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/network.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/physics.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/pooling.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/rendering.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/spatial.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/systems/world.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/engins/game/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/games/lucid-avenue-world.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "file:lib/gameengin/useUnifiedLoop.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/gameEnginRuntime.ts",
       "target": "file:lib/eventBus.ts",
       "kind": "import"
@@ -83341,7 +83728,17 @@
     },
     {
       "source": "file:lib/gameengin/index.ts",
+      "target": "file:lib/gameengin/cartridges/loaders.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/index.ts",
       "target": "file:lib/gameengin/power-systems.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/index.ts",
+      "target": "file:lib/gameengin/executionWiring.ts",
       "kind": "reexport"
     },
     {
@@ -83372,6 +83769,11 @@
     {
       "source": "file:lib/gameengin/registerCartridges.ts",
       "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/registerCartridges.ts",
+      "target": "file:lib/gameengin/cartridges/loaders.ts",
       "kind": "import"
     },
     {
@@ -89397,6 +89799,11 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/dreamr-loader.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/executionWiring.ts",
       "kind": "import"
     },
     {
@@ -96210,21 +96617,6 @@
       "kind": "call"
     },
     {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "function:lib/supabase/client.ts#createClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "function:lib/supabase/safeGetUser.ts#safeGetUser",
-      "kind": "call"
-    },
-    {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "function:lib/utils.ts#toErrorMessage",
-      "kind": "call"
-    },
-    {
       "source": "file:components/engines/lab/dream.LabEnginApp.tsx",
       "target": "file:components/engines/shared/index.ts",
       "kind": "call"
@@ -98131,6 +98523,16 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:lib/games/useAIDirector.ts#useAIDirector",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:lib/games/DualSenseManager.ts#useDualSense",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "function:lib/dreamdm/DreamSystemContext.tsx#useDreamSystem",
       "kind": "call"
     },
@@ -98207,6 +98609,11 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "function:lib/games/avatar.ts#getAvatarDataUrl",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx#useGlobalCrashListener",
       "kind": "call"
     },
     {
@@ -99596,6 +100003,11 @@
     },
     {
       "source": "file:lib/gameengin/GameRuntime.tsx",
+      "target": "function:lib/gameengin/executionWiring.ts#createGameEnginExecutionKernel",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/GameRuntime.tsx",
       "target": "function:lib/gameengin/cartridges/saveState.ts#createSaveAPI",
       "kind": "call"
     },
@@ -99617,6 +100029,16 @@
     {
       "source": "file:lib/gameengin/GameRuntime.tsx",
       "target": "function:lib/runtime/sharedResourcePool.ts#releaseSharedResource",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/GameRuntime.tsx",
+      "target": "function:lib/gameengin/cartridge.ts#engineSatisfies",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/cartridges/loaders.ts",
+      "target": "function:lib/gameengin/cartridges/manifest.ts#getCartridgeManifest",
       "kind": "call"
     },
     {
@@ -99760,6 +100182,191 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/generative-audio.ts#AdaptiveMusicEngine",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/cartridges/loaders.ts#assertCartridgeLoadersReady",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/ai-director.ts#AIDirector",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/accessibility-ai.ts#RealtimeCaptioner",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/accessibility-ai.ts#MotionReductionAI",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/accessibility-ai.ts#ColorVisionAdapter",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/ai-npcs.ts#LLMNPCBrain",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/ai-npcs.ts#EmergentDialogue",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/ai-npcs.ts#NPCPersonalityStore",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/cloud-compute.ts#EdgeOffloadRouter",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/cloud-compute.ts#RemoteRenderHandoff",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/cloud-compute.ts#ResultVerifier",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/generative-audio.ts#NeuralFoley",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/neural-render.ts#NeuralUpscaler",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/neural-render.ts#NeuralTextureCompression",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/neural-render.ts#FrameGenerator",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/path-tracing.ts#PathTracer",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/path-tracing.ts#RestirGI",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/path-tracing.ts#NeuralDenoiser",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/predictive-stream.ts#MLPrefetchModel",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/predictive-stream.ts#BehaviorAnticipator",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/procgen.ts#WaveFunctionCollapse",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/procgen.ts#BiomeSynthesizer",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/procgen.ts#ChunkScheduler",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/xr.ts#WebXRSession",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/xr.ts#HandTrackingInput",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/xr.ts#PassthroughComposite",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/remote/sprintDetector.ts#SprintDetector",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "class:lib/gameengin/remote/comboMachine.ts#ComboMachine",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/remote/layout.ts#isHudElementAllowed",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/cartridges/loaders.ts#getMissingCartridgeLoaders",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/cartridges/loaders.ts#getOrphanCartridgeLoaders",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/platform.ts#detectCapabilities",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/remote/layout.ts#layoutFor",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/remote/layout.ts#radiusMmToPx",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/gameengin/cartridge.ts#engineSatisfies",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/executionWiring.ts",
+      "target": "function:lib/runtime/madMaxiSnapshotBridge.ts#invokeMadMaxiSnapshotTransfer",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/gameengin/platform.ts",
       "target": "class:lib/gameengin/core.ts#EliteGameEngine",
       "kind": "call"
@@ -99772,6 +100379,11 @@
     {
       "source": "file:lib/gameengin/platform.ts",
       "target": "class:lib/gameengin/post-fx.ts#PostFXManager",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/registerCartridges.ts",
+      "target": "function:lib/gameengin/cartridges/loaders.ts#assertCartridgeLoadersReady",
       "kind": "call"
     },
     {
@@ -105177,11 +105789,6 @@
     {
       "source": "file:components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#projects",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:components/engines/games/panels/dream.panel.ScoresPanel.tsx",
-      "target": "sql-table:supabase/migrations/20260305000002_leaderboard.sql#game_scores",
       "kind": "sql-reference"
     },
     {
