@@ -11,7 +11,7 @@
  *   5. Exposes getDerivedState() so the UI can read the projected state.
  *
  * The engine itself has NO knowledge of game scores, music stems, world
- * tiles, or another domain concept.  All of that lives in rule-sets.
+ * tiles, or another domain concept. All of that lives in rule-sets.
  *
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel.
  */
@@ -49,7 +49,15 @@ import {
   createEnginCapabilityExecutionKernel,
   type EnginCapabilityExecutionKernel,
 } from './EnginCapabilityExecution';
-import { HotRuntime, type WebGPUComputeMeasurement, type WebGPUInitializationResult } from './HotRuntime';
+import {
+  HotRuntime,
+  type HotActionMetadata,
+  type HotLaneCommand,
+  type HotRuntimeLane,
+  type MoldableModuleFrame,
+  type WebGPUComputeMeasurement,
+  type WebGPUInitializationResult,
+} from './HotRuntime';
 import { fingerprintEnginSnapshot } from './EnginSnapshotFingerprint';
 import {
   createPremiumRuntimeQuality,
@@ -65,8 +73,6 @@ import {
   type EnginRuleSetContract,
 } from './EnginRuleSetContract';
 
-// ─── Runtime options ──────────────────────────────────────────────────────────
-
 export const ENGIN_RUNTIME_VERSION = '1.0.0';
 
 export const ENGIN_RUNTIME_FEATURES: readonly EnginRuntimeFeature[] = [
@@ -79,17 +85,11 @@ export const ENGIN_RUNTIME_FEATURES: readonly EnginRuntimeFeature[] = [
 ] as const;
 
 export interface EnginRuntimeOptions {
-  /** Override the capability map (e.g. for admin or guest users). */
   capabilities?: EnginCapabilityMap;
-  /** Override the I/O adapter (e.g. MemoryAdapter for tests). */
   ioAdapter?: EnginIOAdapter;
-  /** Persist domain state under this key on every change. Set to false to disable. */
   persistenceKey?: string | false;
-  /** Transport for Shared/Global runtime sync frames. */
   syncTransport?: EnginSyncTransport;
-  /** Runtime context used in sync frames and authorization-aware surfaces. */
   runtimeId?: string;
-  /** Maximum recovery snapshots retained in memory. Prevents long sessions from growing unbounded. */
   maxSnapshots?: number;
 }
 
@@ -99,6 +99,19 @@ export interface EnginHardwareAccelerationState {
   readonly subsystems: ReadonlyArray<string>;
   readonly webgpu: WebGPUInitializationResult;
   readonly computeWarmup: WebGPUComputeMeasurement | null;
+}
+
+export interface RuntimeWorkFlushResult {
+  readonly flushed: boolean;
+  readonly revision: number;
+  readonly reason:
+    | 'already-flushed'
+    | 'immediate'
+    | 'cadence'
+    | 'microtask'
+    | 'settled-module'
+    | 'restore'
+    | 'manual';
 }
 
 const DEFAULT_MAX_SNAPSHOTS = 48;
@@ -115,16 +128,18 @@ const LIFECYCLE_TRANSITIONS: Readonly<
 };
 
 function cloneState(state: EnginBaseState): EnginBaseState {
-  if (!isEnginBaseState(state)) throw new Error('Engin state must be a serializable valid base-state snapshot.');
+  if (!isEnginBaseState(state)) {
+    throw new Error('Engin state must be a serializable valid base-state snapshot.');
+  }
+
   const clone = JSON.parse(JSON.stringify(state)) as EnginBaseState;
-  if (!isEnginBaseState(clone))
-    throw new Error(
-      'Engin state must be a serializable valid base-state snapshot.',
-    );
+
+  if (!isEnginBaseState(clone)) {
+    throw new Error('Engin state must be a serializable valid base-state snapshot.');
+  }
+
   return clone;
 }
-
-// ─── Runtime ─────────────────────────────────────────────────────────────────
 
 export class EnginRuntime<
   A extends EnginAction = EnginAction,
@@ -142,18 +157,21 @@ export class EnginRuntime<
   private readonly _capabilityTargetValidation: CapabilityProfileValidation;
   private readonly _executionKernel: EnginCapabilityExecutionKernel;
   private readonly _hotRuntime: HotRuntime<A>;
+
   private _runtimeWorkQueued = false;
   private _hardwareAccelerationPromise: Promise<EnginHardwareAccelerationState> | null = null;
   private _lastHardwareAccelerationState: EnginHardwareAccelerationState | null = null;
   private _lastRuntimeWorkFlushedRevision = 0;
   private _queuedRuntimeWorkRevision: number | null = null;
+  private _queuedRuntimeWorkReason: RuntimeWorkFlushResult['reason'] | null = null;
+
   private readonly _lifecycleHooks = new Set<
     (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
   >();
+
   private readonly _snapshots: EnginBaseState[] = [];
   private _lastPublishedFingerprint: string | null = null;
 
-  /** Scoped event bus — owned by this runtime instance. */
   readonly bus: EnginEventBus<DomainEvents>;
 
   constructor(
@@ -162,40 +180,44 @@ export class EnginRuntime<
   ) {
     this._ruleSet = ruleSet;
     this._capabilities = options.capabilities ?? DEFAULT_USER_CAPABILITIES;
+
     this._compatibility = negotiateRuleSetCompatibility(
       ruleSet.manifest,
       ENGIN_RUNTIME_VERSION,
       ENGIN_RUNTIME_FEATURES,
     );
+
     if (!this._compatibility.compatible) {
       throw new Error(
         this._compatibility.reason ?? 'Rule-set is not compatible with this runtime.',
       );
     }
+
     this._capabilityTargetValidation = validateEnginCapabilityProfile(
       ruleSet.capabilityTargets,
     );
+
     if (!this._capabilityTargetValidation.valid) {
       throw new Error(
         this._capabilityTargetValidation.reason ??
           'Rule-set capability target profile is invalid.',
       );
     }
+
     if (!capabilityProfileMatchesRuleSet(ruleSet.params.enginId, ruleSet.capabilityTargets.enginId)) {
       throw new Error(
         'Rule-set capability target profile must match the Engin params id or a canonical alias.',
       );
     }
+
     this._executionKernel = createEnginCapabilityExecutionKernel(
       ruleSet.capabilityTargets,
     );
+
     this._hotRuntime = new HotRuntime<A>(this._executionKernel.plan);
-    this._io =
-      options.ioAdapter ?? new LocalStorageAdapter(ruleSet.params.enginId);
+    this._io = options.ioAdapter ?? new LocalStorageAdapter(ruleSet.params.enginId);
     this._persistenceKey =
-      options.persistenceKey !== undefined
-        ? options.persistenceKey
-        : 'domain-state';
+      options.persistenceKey !== undefined ? options.persistenceKey : 'domain-state';
     this._sync = options.syncTransport ?? new MemorySyncTransport();
     this._runtimeId = options.runtimeId ?? ruleSet.params.enginId;
     this._maxSnapshots = Math.max(1, Math.floor(options.maxSnapshots ?? DEFAULT_MAX_SNAPSHOTS));
@@ -203,24 +225,14 @@ export class EnginRuntime<
     this.bus = createEnginEventBus<DomainEvents>();
   }
 
-  // ─── Read ───────────────────────────────────────────────────────────────────
-
-  /** Current raw base state (read-only snapshot). */
   get state(): Readonly<EnginBaseState> {
     return this._state;
   }
 
-  /**
-   * getDerivedState()
-   *
-   * Projects the current base state through the rule-set's deriveState()
-   * selector.  Call this to get the shape the UI needs.
-   */
   getDerivedState(): JsonObject {
     return this._ruleSet.deriveState(this._state);
   }
 
-  /** Compatibility result negotiated before the ruleset can run. */
   get compatibility(): CompatibilityNegotiationResult {
     return {
       ...this._compatibility,
@@ -228,7 +240,6 @@ export class EnginRuntime<
     };
   }
 
-  /** Internal capability target validation negotiated before the ruleset can run. */
   get capabilityTargetValidation(): CapabilityProfileValidation {
     return {
       ...this._capabilityTargetValidation,
@@ -238,52 +249,21 @@ export class EnginRuntime<
     };
   }
 
-  /** Concrete hot-path execution kernel used by this Engin runtime. */
   get executionKernel(): EnginCapabilityExecutionKernel {
     return this._executionKernel;
   }
 
-  /** Private hot runtime lane for high-frequency work outside React. */
   get hotRuntime(): HotRuntime<A> {
     return this._hotRuntime;
   }
 
-  /** Latest hardware acceleration probe/warmup result, if initialized. */
   get hardwareAccelerationState(): EnginHardwareAccelerationState | null {
     return this._lastHardwareAccelerationState;
   }
 
-  /**
-   * Initializes the runtime-owned WebGPU lane and runs a small compute warmup
-   * for Engins whose execution plan includes GPU dispatch. This gives every
-   * Engin one fixed initialization contract while keeping unsupported devices
-   * honest through WebGPUInitializationResult instead of fake passes.
-   */
-  async initializeHardwareAcceleration(): Promise<EnginHardwareAccelerationState> {
-    if (this._hardwareAccelerationPromise) return this._hardwareAccelerationPromise;
-    this._hardwareAccelerationPromise = (async () => {
-      const webgpu = await this._hotRuntime.webgpu.ensureInitialized();
-      const computeWarmup = webgpu.ready && this._executionKernel.plan.subsystems.includes('gpu-compute-dispatch')
-        ? await this._hotRuntime.webgpu.warmupCompute({ invocations: 65_536, samples: 1, operationsPerInvocation: 8 })
-        : null;
-      const state: EnginHardwareAccelerationState = {
-        enginId: this._state.enginId,
-        runtimeId: this._runtimeId,
-        subsystems: [...this._executionKernel.plan.subsystems],
-        webgpu,
-        computeWarmup,
-      };
-      this._lastHardwareAccelerationState = state;
-      return state;
-    })().finally(() => {
-      this._hardwareAccelerationPromise = null;
-    });
-    return this._hardwareAccelerationPromise;
-  }
-
-  /** Current runtime quality policy used for sync acceptance and surface decisions. */
   get qualityPolicy(): PremiumRuntimeQuality {
     const fingerprint = fingerprintEnginSnapshot(this._state);
+
     return createPremiumRuntimeQuality({
       state: this._state,
       snapshotCount: this._snapshots.length,
@@ -293,12 +273,10 @@ export class EnginRuntime<
     });
   }
 
-  /** Immutable snapshots captured for recovery, duplication, or replay. */
   get snapshots(): ReadonlyArray<Readonly<EnginBaseState>> {
     return this._snapshots.map(cloneState);
   }
 
-  /** Observe lifecycle transitions without embedding feature behavior in the engine. */
   onLifecycle(
     hook: (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void,
   ): () => void {
@@ -306,21 +284,53 @@ export class EnginRuntime<
     return () => this._lifecycleHooks.delete(hook);
   }
 
+  async initializeHardwareAcceleration(): Promise<EnginHardwareAccelerationState> {
+    if (this._hardwareAccelerationPromise) return this._hardwareAccelerationPromise;
+
+    this._hardwareAccelerationPromise = (async () => {
+      const webgpu = await this._hotRuntime.webgpu.ensureInitialized();
+
+      const computeWarmup =
+        webgpu.ready && this._executionKernel.plan.subsystems.includes('gpu-compute-dispatch')
+          ? await this._hotRuntime.webgpu.warmupCompute({
+              invocations: 65_536,
+              samples: 1,
+              operationsPerInvocation: 8,
+            })
+          : null;
+
+      const state: EnginHardwareAccelerationState = {
+        enginId: this._state.enginId,
+        runtimeId: this._runtimeId,
+        subsystems: [...this._executionKernel.plan.subsystems],
+        webgpu,
+        computeWarmup,
+      };
+
+      this._lastHardwareAccelerationState = state;
+      return state;
+    })().finally(() => {
+      this._hardwareAccelerationPromise = null;
+    });
+
+    return this._hardwareAccelerationPromise;
+  }
+
   private rememberSnapshot(state: EnginBaseState = this._state): EnginBaseState {
     const snapshot = cloneState(state);
     this._snapshots.push(snapshot);
+
     while (this._snapshots.length > this._maxSnapshots) {
       this._snapshots.shift();
     }
+
     return cloneState(snapshot);
   }
 
-  /** Capture a serializable state snapshot for restore, duplication, and replay. */
   snapshot(): Readonly<EnginBaseState> {
     return this.rememberSnapshot(this._state);
   }
 
-  /** Restore the newest retained snapshot. Useful after a failed surface/runtime handoff. */
   recoverLatestSnapshot(): boolean {
     const latest = this._snapshots.at(-1);
     if (!latest) return false;
@@ -328,42 +338,30 @@ export class EnginRuntime<
     return true;
   }
 
-  /** Restore a previously captured snapshot into this same Engin runtime. */
   restoreSnapshot(snapshot: EnginBaseState): void {
-    if (!isEnginBaseState(snapshot))
+    if (!isEnginBaseState(snapshot)) {
       throw new Error('Snapshot is not a valid Engin base state.');
-    if (snapshot.enginId !== this._state.enginId)
+    }
+
+    if (snapshot.enginId !== this._state.enginId) {
       throw new Error('Snapshot belongs to a different Engin runtime.');
+    }
+
     this._state = cloneState(snapshot);
+
     this._emitLifecycle('engin:state', {
       enginId: this._state.enginId,
       revision: this._state.revision,
     });
-    this.publishSyncFrame();
-    this.persistDomainState();
+
+    this.flushRuntimeWork('restore');
   }
 
-  // ─── Action dispatch ────────────────────────────────────────────────────────
+  dispatch(action: A, metadata: HotActionMetadata = {}): boolean {
+    if (this._state.lifecycle === 'stopped') {
+      throw new Error('Cannot dispatch an action after the Engin runtime has stopped.');
+    }
 
-  /**
-   * dispatch(action)
-   *
-   * Processes an action through the engine pipeline:
-   *   1. Gate capability (if action declares one via __capability).
-   *   2. Run all rule-set constraints.
-   *   3. Apply the rule-set transform.
-   *   4. Emit state change event.
-   *   5. Persist if persistence is configured.
-   *
-   * Returns `true` if the action was applied, `false` if it was rejected.
-   */
-  dispatch(action: A): boolean {
-    if (this._state.lifecycle === 'stopped')
-      throw new Error(
-        'Cannot dispatch an action after the Engin runtime has stopped.',
-      );
-
-    // Type-safe helper: cast payload to the bus's expected type
     const _emit = <K extends keyof EnginLifecycleEvents>(
       event: K,
       payload: EnginLifecycleEvents[K],
@@ -373,13 +371,14 @@ export class EnginRuntime<
         payload as Parameters<typeof this.bus.emit>[1],
       );
 
-    // 1. Capability gate
     const capabilityKey = (action as A & { __capability?: string }).__capability;
+
     if (typeof capabilityKey === 'string') {
       const gate = gateCapability(
         this._capabilities,
         capabilityKey as Parameters<typeof gateCapability>[1],
       );
+
       if (!gate.granted) {
         _emit('engin:error', {
           enginId: this._state.enginId,
@@ -389,7 +388,6 @@ export class EnginRuntime<
       }
     }
 
-    // 2. Manifest schema + ruleset constraints
     if (!this._ruleSet.manifest.schema.actionTypes.includes(action.type)) {
       _emit('engin:error', {
         enginId: this._state.enginId,
@@ -397,8 +395,10 @@ export class EnginRuntime<
       });
       return false;
     }
+
     const actionSchemaResult =
       this._ruleSet.manifest.schema.validateAction?.(action) ?? { valid: true };
+
     if (!actionSchemaResult.valid) {
       _emit('engin:error', {
         enginId: this._state.enginId,
@@ -407,9 +407,9 @@ export class EnginRuntime<
       return false;
     }
 
-    // 3. Constraints
     for (const constraint of this._ruleSet.constraints) {
       const result = constraint(this._state, action);
+
       if (!result.valid) {
         _emit('engin:error', {
           enginId: this._state.enginId,
@@ -419,85 +419,167 @@ export class EnginRuntime<
       }
     }
 
-    // 4. Transform
     const next = this._ruleSet.transform(this._state, action);
     const stateSchemaResult = validateRuleSetState(
       next,
       this._ruleSet.manifest.schema,
     );
+
     if (
       !isEnginBaseState(next) ||
       next.enginId !== this._state.enginId ||
       !stateSchemaResult.valid
     ) {
-      throw new Error(
-        'Rule-set transform returned an invalid Engin base state.',
-      );
+      throw new Error('Rule-set transform returned an invalid Engin base state.');
     }
+
     this._state = next;
 
-    // 5. Emit state change
     _emit('engin:state', {
       enginId: this._state.enginId,
       revision: this._state.revision,
     });
 
-    // 6. Persist and sync (fire-and-forget). Realtime actions coalesce this
-    // work so keystrokes/audio/control ticks do not synchronously clone, hash,
-    // persist, and publish every single input event.
-    if (this._executionKernel.shouldDeferRuntimeWork(action.type)) {
-      this._hotRuntime.submit(action, this._state.revision);
-      this.queueRealtimeRuntimeWork(this._state.revision);
-    } else {
-      this.flushRuntimeWork();
-    }
+    this.afterActionApplied(action, metadata);
 
     return this._state.revision === next.revision;
   }
 
-  private queueRealtimeRuntimeWork(revision: number): void {
-    this._queuedRuntimeWorkRevision = revision;
-    const cadence = Math.max(1, this._executionKernel.plan.syncCadenceRevisions);
-    if (revision - this._lastRuntimeWorkFlushedRevision >= cadence) {
-      this.flushRuntimeWork();
+  private afterActionApplied(action: A, metadata: HotActionMetadata): void {
+    const shouldDefer = this._executionKernel.shouldDeferRuntimeWork(action.type);
+    const hotSubmitted = this._hotRuntime.submit(action, this._state.revision, metadata);
+
+    if (shouldDefer || hotSubmitted) {
+      this.queueRealtimeRuntimeWork(this._state.revision, metadata);
       return;
     }
+
+    this.flushRuntimeWork('immediate');
+  }
+
+  stageMoldableModuleFrame(frame: MoldableModuleFrame): boolean {
+    if (this._state.lifecycle === 'stopped') {
+      throw new Error('Cannot stage a moldable module frame after the Engin runtime has stopped.');
+    }
+
+    const staged = this._hotRuntime.submitMoldableModuleFrame(frame);
+
+    this._queuedRuntimeWorkRevision = Math.max(
+      this._queuedRuntimeWorkRevision ?? 0,
+      frame.revision,
+    );
+
+    this._queuedRuntimeWorkReason = 'microtask';
+    this.scheduleRuntimeWork();
+
+    return staged;
+  }
+
+  settleMoldableModule(moduleId: string): MoldableModuleFrame | null {
+    const settled = this._hotRuntime.moldableModules.settle(moduleId);
+
+    if (settled) {
+      this._queuedRuntimeWorkRevision = Math.max(
+        this._queuedRuntimeWorkRevision ?? 0,
+        settled.revision,
+      );
+
+      this.flushRuntimeWork('settled-module');
+    }
+
+    return settled;
+  }
+
+  drainFrameCriticalRuntimeWork(): HotLaneCommand<A>[] {
+    return this._hotRuntime.drainFrameCritical();
+  }
+
+  drainHotLane(lane: HotRuntimeLane): HotLaneCommand<A>[] {
+    return this._hotRuntime.drainLane(lane);
+  }
+
+  private queueRealtimeRuntimeWork(revision: number, metadata: HotActionMetadata = {}): void {
+    this._queuedRuntimeWorkRevision = revision;
+
+    const cadence = Math.max(1, this._executionKernel.plan.syncCadenceRevisions);
+
+    if (metadata.persist === 'after-settle' || metadata.sync === 'after-settle') {
+      this._queuedRuntimeWorkReason = 'microtask';
+      this.scheduleRuntimeWork();
+      return;
+    }
+
+    if (revision - this._lastRuntimeWorkFlushedRevision >= cadence) {
+      this.flushRuntimeWork('cadence');
+      return;
+    }
+
+    this._queuedRuntimeWorkReason = 'microtask';
     this.scheduleRuntimeWork();
   }
 
   private scheduleRuntimeWork(): void {
     if (this._runtimeWorkQueued) return;
+
     this._runtimeWorkQueued = true;
-    const enqueue = typeof queueMicrotask === 'function'
-      ? queueMicrotask
-      : (callback: () => void) => {
-          void Promise.resolve().then(callback);
-        };
+
+    const enqueue =
+      typeof queueMicrotask === 'function'
+        ? queueMicrotask
+        : (callback: () => void) => {
+            void Promise.resolve().then(callback);
+          };
+
     enqueue(() => {
       this._runtimeWorkQueued = false;
+
       const queuedRevision = this._queuedRuntimeWorkRevision;
       if (queuedRevision === null) return;
+
       if (queuedRevision <= this._lastRuntimeWorkFlushedRevision) {
         this._queuedRuntimeWorkRevision = null;
+        this._queuedRuntimeWorkReason = null;
         return;
       }
-      this.flushRuntimeWork();
+
+      this.flushRuntimeWork(this._queuedRuntimeWorkReason ?? 'microtask');
     });
   }
 
-  private flushRuntimeWork(): void {
-    if (this._state.revision <= this._lastRuntimeWorkFlushedRevision) return;
+  flushRuntimeWork(reason: RuntimeWorkFlushResult['reason'] = 'manual'): RuntimeWorkFlushResult {
+    if (this._state.revision <= this._lastRuntimeWorkFlushedRevision) {
+      return {
+        flushed: false,
+        revision: this._state.revision,
+        reason: 'already-flushed',
+      };
+    }
+
     this.publishSyncFrame();
     this.persistDomainState();
+
     this._lastRuntimeWorkFlushedRevision = this._state.revision;
-    if (this._queuedRuntimeWorkRevision !== null && this._queuedRuntimeWorkRevision <= this._lastRuntimeWorkFlushedRevision) {
+
+    if (
+      this._queuedRuntimeWorkRevision !== null &&
+      this._queuedRuntimeWorkRevision <= this._lastRuntimeWorkFlushedRevision
+    ) {
       this._queuedRuntimeWorkRevision = null;
+      this._queuedRuntimeWorkReason = null;
     }
+
+    return {
+      flushed: true,
+      revision: this._state.revision,
+      reason,
+    };
   }
 
   private persistDomainState(): void {
     if (this._persistenceKey === false) return;
+
     const enginId = this._state.enginId;
+
     this._io
       .save(this._persistenceKey, this._state.domain)
       .then((ok: boolean) => {
@@ -520,31 +602,36 @@ export class EnginRuntime<
   private publishSyncFrame(): void {
     const snapshot = this.rememberSnapshot(this._state);
     const fingerprint = fingerprintEnginSnapshot(snapshot);
+
     if (fingerprint === this._lastPublishedFingerprint) return;
+
     this._lastPublishedFingerprint = fingerprint;
-    void this._sync.publish({
-      id: `${this._state.enginId}:${this._state.revision}:${this._state.updatedAt}`,
-      enginId: this._state.enginId,
-      runtimeId: this._runtimeId,
-      direction: 'publish',
-      schemaVersion: this._ruleSet.manifest.schema.domainVersion,
-      fingerprint,
-      quality: createPremiumRuntimeQuality({
-        state: snapshot,
-        snapshotCount: this._snapshots.length,
-        manifestVersion: this._ruleSet.manifest.version,
-        fingerprint,
-        features: ENGIN_RUNTIME_FEATURES,
-      }),
-      snapshot,
-      createdAt: new Date().toISOString(),
-    }).catch((cause: Error) => {
-      this._emitLifecycle('engin:error', {
+
+    void this._sync
+      .publish({
+        id: `${this._state.enginId}:${this._state.revision}:${this._state.updatedAt}`,
         enginId: this._state.enginId,
-        message: 'Sync publish failed — state remains local.',
-        cause: cause.message,
+        runtimeId: this._runtimeId,
+        direction: 'publish',
+        schemaVersion: this._ruleSet.manifest.schema.domainVersion,
+        fingerprint,
+        quality: createPremiumRuntimeQuality({
+          state: snapshot,
+          snapshotCount: this._snapshots.length,
+          manifestVersion: this._ruleSet.manifest.version,
+          fingerprint,
+          features: ENGIN_RUNTIME_FEATURES,
+        }),
+        snapshot,
+        createdAt: new Date().toISOString(),
+      })
+      .catch((cause: Error) => {
+        this._emitLifecycle('engin:error', {
+          enginId: this._state.enginId,
+          message: 'Sync publish failed — state remains local.',
+          cause: cause.message,
+        });
       });
-    });
   }
 
   subscribeSync(
@@ -555,8 +642,10 @@ export class EnginRuntime<
       if (frame.runtimeId === this._runtimeId) return;
       if (frame.schemaVersion !== this._ruleSet.manifest.schema.domainVersion) return;
       if (!isEnginBaseState(frame.snapshot)) return;
+
       const expectedFingerprint = fingerprintEnginSnapshot(frame.snapshot);
       if (frame.fingerprint !== expectedFingerprint) return;
+
       const qualityResult = validatePremiumRuntimeQuality(frame.quality, {
         fingerprint: expectedFingerprint,
         manifestVersion: this._ruleSet.manifest.version,
@@ -564,20 +653,27 @@ export class EnginRuntime<
         minimumFeatureCount: ENGIN_RUNTIME_FEATURES.length,
         maxFrameBudgetMs: this.qualityPolicy.frameBudgetMs,
       });
+
       if (!qualityResult.valid) return;
+
       const next = cloneState(frame.snapshot);
       if (!this.shouldAcceptIncomingSnapshot(next)) return;
+
       const schemaResult = validateRuleSetState(
         next,
         this._ruleSet.manifest.schema,
       );
+
       if (!schemaResult.valid) return;
+
       this._state = next;
       this.rememberSnapshot(next);
+
       this._emitLifecycle('engin:state', {
         enginId: this._state.enginId,
         revision: this._state.revision,
       });
+
       handler(cloneState(this._state));
     });
   }
@@ -585,23 +681,24 @@ export class EnginRuntime<
   private shouldAcceptIncomingSnapshot(next: EnginBaseState): boolean {
     if (next.revision < this._state.revision) return false;
     if (next.revision > this._state.revision) return true;
+
     const currentTime = Date.parse(this._state.updatedAt);
     const nextTime = Date.parse(next.updatedAt);
+
     if (!Number.isFinite(currentTime) || !Number.isFinite(nextTime)) return false;
+
     return nextTime > currentTime;
   }
 
-  // ─── Lifecycle ──────────────────────────────────────────────────────────────
-
-  /** Transition the engine to a new lifecycle stage. */
   private _setLifecycle(lifecycle: EnginLifecycle): void {
     const current = this._state.lifecycle;
+
     if (!LIFECYCLE_TRANSITIONS[current].includes(lifecycle)) {
-      throw new Error(
-        `Invalid Engin lifecycle transition: ${current} -> ${lifecycle}.`,
-      );
+      throw new Error(`Invalid Engin lifecycle transition: ${current} -> ${lifecycle}.`);
     }
+
     this._state = patchBaseState(this._state, { lifecycle });
+
     for (const hook of this._lifecycleHooks) {
       try {
         hook(lifecycle, this._state);
@@ -615,8 +712,10 @@ export class EnginRuntime<
   start(): void {
     this._setLifecycle('running');
     this._emitLifecycle('engin:started', { enginId: this._state.enginId });
+
     void this.initializeHardwareAcceleration().catch((cause: unknown) => {
       if (this.bus.destroyed) return;
+
       this._emitLifecycle('engin:error', {
         enginId: this._state.enginId,
         message: 'Hardware acceleration initialization failed.',
@@ -636,6 +735,8 @@ export class EnginRuntime<
   }
 
   stop(): void {
+    this.flushRuntimeWork('manual');
+    this._hotRuntime.gpuBuffers.clear();
     this._setLifecycle('stopped');
     this._emitLifecycle('engin:stopped', { enginId: this._state.enginId });
     this.bus.destroy();
@@ -651,39 +752,33 @@ export class EnginRuntime<
     );
   }
 
-  // ─── Persistence helpers ────────────────────────────────────────────────────
-
-  /**
-   * restore()
-   *
-   * Loads the previously persisted domain state and applies it to the
-   * current base state.  Call during component mount to hydrate.
-   */
   async restore(): Promise<boolean> {
     if (this._persistenceKey === false) return false;
-    const domain = await this._io.load<JsonObject>(
-      this._persistenceKey,
-    );
+
+    const domain = await this._io.load<JsonObject>(this._persistenceKey);
     if (!domain) return false;
+
     const restoredState = patchBaseState(this._state, { domain });
+
     const schemaResult = validateRuleSetState(
       restoredState,
       this._ruleSet.manifest.schema,
     );
+
     if (!schemaResult.valid) return false;
+
     this._state = restoredState;
+
     this._emitLifecycle('engin:restored', {
       enginId: this._state.enginId,
       key: this._persistenceKey,
     });
+
+    this.flushRuntimeWork('restore');
+
     return true;
   }
 
-  /**
-   * clearPersistedState()
-   *
-   * Removes the persisted domain state from storage.
-   */
   async clearPersistedState(): Promise<void> {
     if (this._persistenceKey === false) return;
     await this._io.remove(this._persistenceKey);
