@@ -97,7 +97,14 @@ export interface DreamArtifactBusEventMap {
   };
   'game:input': {
     key: string;
-    type: 'keydown' | 'keyup';
+    type: 'keydown' | 'keyup' | 'touchstart' | 'touchend' | 'gamepad' | 'remote';
     preventDefault: () => void;
+    gamepadButton?: number;
+    touchX?: number;
+    touchY?: number;
+    action?: string;
+    active?: boolean;
+    source?: 'keyboard' | 'touch' | 'gamepad' | 'dualsense' | 'remote' | 'mobile';
+    cartridgeId?: string;
   };
 }
