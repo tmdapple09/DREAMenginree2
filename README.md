@@ -2132,12 +2132,31 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 </details>
 
 ## Agents & Workflow
-Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scripts/**` using repository introspection.
-- Files tracked: **143**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Agents & Workflow file structure
+Agents & Workflow provides shared infrastructure used across the platform.
+### Responsibilities
+- Database schema ownership and data persistence
+- Feed ranking, algorithm execution, and content scoring
+- Quality assurance and integration coverage
+- Infrastructure provisioning and operational observability
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+### Notable Abstractions
+- `TarFile` — interface
+- `PackResult` — interface
+- `SubsectionDescriptor` — interface
+- `SectionDescriptor` — interface
+- `AutosyncSummary` — interface
+- `ExportedSymbol` — interface
+- `ImportEdge` — interface
+- `RouteEntry` — interface
+- `SubsystemModel` — interface
+- `SubsectionDescriptor` — interface
+- `SectionDescriptor` — interface
+- `AffectedSection` — interface
+### Capabilities
+- Public contract surface: TarFile, PackResult, SubsectionDescriptor, SectionDescriptor, AutosyncSummary
+- Utility functions: packTar, unpackTar, packageCartridge, analyzeExports, analyzeImports, analyzeRoutes
+#### File Structure
 ```text
 ├── .github
 │   ├── scripts
@@ -2214,6 +2233,7 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
 │       ├── print-codebase.yml
 │       ├── readme-autosync.yml
 │       ├── refreshlock.yml
+│       ├── registry-sync.yml
 │       ├── repo-snapshot.yml
 │       ├── report-driven-coding-agent.yml
 │       ├── resilient-engine-smoke.yml
@@ -2258,154 +2278,155 @@ Auto-synced from `agents/**`, `.github/workflows/**`, `.github/scripts/**`, `scr
     │   └── generate-features.mjs
     ├── fix-audit.js
     ├── gameengin
-    │   ├── architect-run.ts
-… (23 more files)
+… (25 more files)
 ```
-<details><summary>Agents & Workflow file index (143 files)</summary>
+<details><summary>Agents & Workflow file index (145 files)</summary>
 
-- `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
-- `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
-- `.github/scripts/ai_implement.py` — project file (py).
-- `.github/scripts/ai_neural_decision.py` — project file (py).
-- `.github/scripts/ai_propose.py` — project file (py).
-- `.github/scripts/ai_report_propose.py` — project file (py).
-- `.github/scripts/analyze-repo.js` — TypeScript/JavaScript runtime module.
-- `.github/scripts/assemble_report_context.py` — project file (py).
-- `.github/scripts/catalog_games_for_ai.py` — project file (py).
-- `.github/scripts/check-root-hygiene.sh` — project file (sh).
-- `.github/scripts/check_workflow_masking.py` — project file (py).
-- `.github/scripts/dreamengin_core.py` — project file (py).
-- `.github/scripts/humanai_audit.py` — project file (py).
-- `.github/scripts/issue-bot.js` — TypeScript/JavaScript runtime module.
-- `.github/scripts/run-readme-autosync.mjs` — TypeScript/JavaScript runtime module.
-- `.github/scripts/scan_dreamengin_context.py` — project file (py).
-- `.github/scripts/scan_gameengin_context.py` — project file (py).
-- `.github/scripts/validate_game_sandbox.py` — project file (py).
-- `.github/scripts/validate_report_agent_spec.py` — project file (py).
-- `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
-- `.github/workflows/ScanArcCleanup.yml` — project file (yml).
-- `.github/workflows/autofixvercelbuild.yml` — project file (yml).
-- `.github/workflows/bot-pr-automerge.yml` — project file (yml).
-- `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
-- `.github/workflows/codeql.yml` — project file (yml).
-- `.github/workflows/copilot-setup-steps.yml` — project file (yml).
-- `.github/workflows/daydream-all.yml` — project file (yml).
-- `.github/workflows/daydream-brand-engin.yml` — project file (yml).
-- `.github/workflows/daydream-code-engin.yml` — project file (yml).
-- `.github/workflows/daydream-create-engin.yml` — project file (yml).
-- `.github/workflows/daydream-engin-build-cycle.yml` — project file (yml).
-- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file (yml).
-- `.github/workflows/daydream-games-engin.yml` — project file (yml).
-- `.github/workflows/daydream-lab-engin.yml` — project file (yml).
-- `.github/workflows/daydream-music-engin.yml` — project file (yml).
-- `.github/workflows/db-extension-audit.yml` — project file (yml).
-- `.github/workflows/db-extension-check.yml` — project file (yml).
-- `.github/workflows/deploy-artifact.yml` — project file (yml).
-- `.github/workflows/docs-auto-update.yml` — project file (yml).
-- `.github/workflows/dreamengin-preflight.yml` — project file (yml).
-- `.github/workflows/elite-gameengin-evolution.yml` — project file (yml).
-- `.github/workflows/engin-all.yml` — project file (yml).
-- `.github/workflows/exportrepo.yml` — project file (yml).
-- `.github/workflows/full-audit.yml` — project file (yml).
-- `.github/workflows/game-engin-patrol.yml` — project file (yml).
-- `.github/workflows/game-library-research.yml` — project file (yml).
-- `.github/workflows/gameengin-ai-agent.yml` — project file (yml).
-- `.github/workflows/gameengin-artisan.yml` — project file (yml).
-- `.github/workflows/gameengin-maestro.yml` — project file (yml).
-- `.github/workflows/gameengin-mechanic.yml` — project file (yml).
-- `.github/workflows/gameengin-prophet.yml` — project file (yml).
-- `.github/workflows/gameengin-upgrader.yml` — project file (yml).
-- `.github/workflows/gameengin-writer.yml` — project file (yml).
-- `.github/workflows/games-library-ai-agent.yml` — project file (yml).
-- `.github/workflows/garbageman.yml` — project file (yml).
-- `.github/workflows/generatesupabasetypes.yml` — project file (yml).
-- `.github/workflows/github-actions.yml` — project file (yml).
-- `.github/workflows/humanai-army-audit.yml` — project file (yml).
-- `.github/workflows/humanai-audit.yml` — project file (yml).
-- `.github/workflows/idari-daily.yml` — project file (yml).
-- `.github/workflows/issue-bot.yml` — project file (yml).
-- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file (yml).
-- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file (yml).
-- `.github/workflows/neural_decision_engine.yml` — project file (yml).
-- `.github/workflows/optimize-dreamengin.yml` — project file (yml).
-- `.github/workflows/orphan-guard.yml` — project file (yml).
-- `.github/workflows/portfolio-optimization.yml` — project file (yml).
-- `.github/workflows/preflight.yml` — project file (yml).
-- `.github/workflows/print-codebase.yml` — project file (yml).
-- `.github/workflows/readme-autosync.yml` — project file (yml).
-- `.github/workflows/refreshlock.yml` — project file (yml).
-- `.github/workflows/repo-snapshot.yml` — project file (yml).
-- `.github/workflows/report-driven-coding-agent.yml` — project file (yml).
-- `.github/workflows/resilient-engine-smoke.yml` — project file (yml).
-- `.github/workflows/root-hygiene.yml` — project file (yml).
-- `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
-- `.github/workflows/sql-migration-guard.yml` — project file (yml).
-- `.github/workflows/sync-build-memory.yml` — project file (yml).
-- `.github/workflows/type-audit.yml` — project file (yml).
-- `.github/workflows/unzip-fonts.yml` — project file (yml).
-- `.github/workflows/update-embed-feed.yml` — project file (yml).
-- `.github/workflows/update-repo-state.yml` — project file (yml).
-- `.github/workflows/vercel-deploy.yml` — project file (yml).
-- `.github/workflows/visual-schematic.yml` — project file (yml).
-- `.github/workflows/visual-schematicpages.yml` — project file (yml).
-- `agents/.gitkeep` — project file (no extension).
-- `agents/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `agents/humanAI.persona.md` — documentation file.
-- `agents/humanAI/orchestrator.md` — documentation file.
-- `agents/humanAI/personas/accessibility.md` — documentation file.
-- `agents/humanAI/personas/creator.md` — documentation file.
-- `agents/humanAI/personas/ios-first.md` — documentation file.
-- `agents/humanAI/personas/power-user.md` — documentation file.
-- `agents/humanAI/personas/social-explorer.md` — documentation file.
-- `scripts/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `scripts/archive/validate-deployment.js` — TypeScript/JavaScript runtime module.
-- `scripts/autofix-vercel-build.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/center-audit.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/check-build-memory-drift.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/check-engin-filenames.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/check-licenses.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/check-orphans.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/check-root-hygiene.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/close-all-open-prs.sh` — project file (sh).
-- `scripts/deploy.sh` — project file (sh).
-- `scripts/export-full-code.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/feature-build/generate-features.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/fix-audit.js` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/architect-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/artisan-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/lib/tar.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/maestro-analyze.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/mechanic-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/package-cartridge.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/prophet-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/upgrader-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/gameengin/writer-run.ts` — TypeScript/JavaScript runtime module.
-- `scripts/generate-mobile-nextgen-spec.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/generate-mobile-ps5-spec.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/generate-repo-state.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/generate-webapp-final-form.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/law-check.sh` — project file (sh).
-- `scripts/migrate-imports.sh` — project file (sh).
-- `scripts/optimize-dreamengin.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/postbuild.js` — TypeScript/JavaScript runtime module.
-- `scripts/postbuild.ts` — TypeScript/JavaScript runtime module.
-- `scripts/readme-autosync.ts` — TypeScript/JavaScript runtime module.
-- `scripts/repository-state-analysis-section.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/score-pass.cjs` — TypeScript/JavaScript runtime module.
-- `scripts/setup-database.sql` — SQL migration/schema artifact.
-- `scripts/spec-check.cjs` — TypeScript/JavaScript runtime module.
-- `scripts/sync-build-memory.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/ui-ux-agent.py` — project file (py).
-- `scripts/update-bugs.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/update-embed-feed.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/update-handoff.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/update-readme-status-utils.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/update-readme.mjs` — TypeScript/JavaScript runtime module.
-- `scripts/validate-schema-sync.sh` — project file (sh).
-- `scripts/vercel-ignore.cjs` — TypeScript/JavaScript runtime module.
-- `scripts/vercel-preflight.cjs` — TypeScript/JavaScript runtime module.
-- `scripts/wire-orphans.mjs` — TypeScript/JavaScript runtime module.
+- `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
+- `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
+- `.github/scripts/ai_implement.py` — project file.
+- `.github/scripts/ai_neural_decision.py` — project file.
+- `.github/scripts/ai_propose.py` — project file.
+- `.github/scripts/ai_report_propose.py` — project file.
+- `.github/scripts/analyze-repo.js` — TypeScript module.
+- `.github/scripts/assemble_report_context.py` — project file.
+- `.github/scripts/catalog_games_for_ai.py` — project file.
+- `.github/scripts/check-root-hygiene.sh` — project file.
+- `.github/scripts/check_workflow_masking.py` — project file.
+- `.github/scripts/dreamengin_core.py` — project file.
+- `.github/scripts/humanai_audit.py` — project file.
+- `.github/scripts/issue-bot.js` — TypeScript module.
+- `.github/scripts/run-readme-autosync.mjs` — project file.
+- `.github/scripts/scan_dreamengin_context.py` — project file.
+- `.github/scripts/scan_gameengin_context.py` — project file.
+- `.github/scripts/validate_game_sandbox.py` — project file.
+- `.github/scripts/validate_report_agent_spec.py` — project file.
+- `.github/workflows/Repo Audit Auto Fix.yml` — project file.
+- `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/autofixvercelbuild.yml` — project file.
+- `.github/workflows/bot-pr-automerge.yml` — project file.
+- `.github/workflows/bouncer.yml` — project file.
+- `.github/workflows/cleanup-dead-code.yml` — project file.
+- `.github/workflows/codeql.yml` — project file.
+- `.github/workflows/copilot-setup-steps.yml` — project file.
+- `.github/workflows/daydream-all.yml` — project file.
+- `.github/workflows/daydream-brand-engin.yml` — project file.
+- `.github/workflows/daydream-code-engin.yml` — project file.
+- `.github/workflows/daydream-create-engin.yml` — project file.
+- `.github/workflows/daydream-engin-build-cycle.yml` — project file.
+- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file.
+- `.github/workflows/daydream-games-engin.yml` — project file.
+- `.github/workflows/daydream-lab-engin.yml` — project file.
+- `.github/workflows/daydream-music-engin.yml` — project file.
+- `.github/workflows/db-extension-audit.yml` — project file.
+- `.github/workflows/db-extension-check.yml` — project file.
+- `.github/workflows/deploy-artifact.yml` — project file.
+- `.github/workflows/docs-auto-update.yml` — project file.
+- `.github/workflows/dreamengin-preflight.yml` — project file.
+- `.github/workflows/elite-gameengin-evolution.yml` — project file.
+- `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/exportrepo.yml` — project file.
+- `.github/workflows/full-audit.yml` — project file.
+- `.github/workflows/game-engin-patrol.yml` — project file.
+- `.github/workflows/game-library-research.yml` — project file.
+- `.github/workflows/gameengin-ai-agent.yml` — project file.
+- `.github/workflows/gameengin-artisan.yml` — project file.
+- `.github/workflows/gameengin-maestro.yml` — project file.
+- `.github/workflows/gameengin-mechanic.yml` — project file.
+- `.github/workflows/gameengin-prophet.yml` — project file.
+- `.github/workflows/gameengin-upgrader.yml` — project file.
+- `.github/workflows/gameengin-writer.yml` — project file.
+- `.github/workflows/games-library-ai-agent.yml` — project file.
+- `.github/workflows/garbageman.yml` — project file.
+- `.github/workflows/generatesupabasetypes.yml` — project file.
+- `.github/workflows/github-actions.yml` — project file.
+- `.github/workflows/humanai-army-audit.yml` — project file.
+- `.github/workflows/humanai-audit.yml` — project file.
+- `.github/workflows/idari-daily.yml` — project file.
+- `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
+- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
+- `.github/workflows/neural_decision_engine.yml` — project file.
+- `.github/workflows/optimize-dreamengin.yml` — project file.
+- `.github/workflows/orphan-guard.yml` — project file.
+- `.github/workflows/portfolio-optimization.yml` — project file.
+- `.github/workflows/preflight.yml` — project file.
+- `.github/workflows/print-codebase.yml` — project file.
+- `.github/workflows/readme-autosync.yml` — project file.
+- `.github/workflows/refreshlock.yml` — project file.
+- `.github/workflows/registry-sync.yml` — project file.
+- `.github/workflows/repo-snapshot.yml` — project file.
+- `.github/workflows/report-driven-coding-agent.yml` — project file.
+- `.github/workflows/resilient-engine-smoke.yml` — project file.
+- `.github/workflows/root-hygiene.yml` — project file.
+- `.github/workflows/spec-engin-ai-agent.yml` — project file.
+- `.github/workflows/sql-migration-guard.yml` — project file.
+- `.github/workflows/sync-build-memory.yml` — project file.
+- `.github/workflows/type-audit.yml` — project file.
+- `.github/workflows/unzip-fonts.yml` — project file.
+- `.github/workflows/update-embed-feed.yml` — project file.
+- `.github/workflows/update-repo-state.yml` — project file.
+- `.github/workflows/vercel-deploy.yml` — project file.
+- `.github/workflows/visual-schematic.yml` — project file.
+- `.github/workflows/visual-schematicpages.yml` — project file.
+- `agents/.gitkeep` — project file.
+- `agents/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `agents/humanAI.persona.md` — documentation.
+- `agents/humanAI/orchestrator.md` — documentation.
+- `agents/humanAI/personas/accessibility.md` — documentation.
+- `agents/humanAI/personas/creator.md` — documentation.
+- `agents/humanAI/personas/ios-first.md` — documentation.
+- `agents/humanAI/personas/power-user.md` — documentation.
+- `agents/humanAI/personas/social-explorer.md` — documentation.
+- `scripts/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `scripts/archive/validate-deployment.js` — TypeScript module.
+- `scripts/autofix-vercel-build.mjs` — project file.
+- `scripts/center-audit.mjs` — project file.
+- `scripts/check-build-memory-drift.mjs` — project file.
+- `scripts/check-engin-filenames.mjs` — project file.
+- `scripts/check-licenses.mjs` — project file.
+- `scripts/check-orphans.mjs` — project file.
+- `scripts/check-root-hygiene.mjs` — project file.
+- `scripts/close-all-open-prs.sh` — project file.
+- `scripts/deploy.sh` — project file.
+- `scripts/export-full-code.mjs` — project file.
+- `scripts/feature-build/generate-features.mjs` — project file.
+- `scripts/fix-audit.js` — TypeScript module.
+- `scripts/gameengin/architect-run.ts` — TypeScript module.
+- `scripts/gameengin/artisan-run.ts` — TypeScript module.
+- `scripts/gameengin/lib/tar.ts` — TypeScript module.
+- `scripts/gameengin/maestro-analyze.ts` — TypeScript module.
+- `scripts/gameengin/mechanic-run.ts` — TypeScript module.
+- `scripts/gameengin/package-cartridge.ts` — TypeScript module.
+- `scripts/gameengin/prophet-run.ts` — TypeScript module.
+- `scripts/gameengin/upgrader-run.ts` — TypeScript module.
+- `scripts/gameengin/writer-run.ts` — TypeScript module.
+- `scripts/generate-mobile-nextgen-spec.mjs` — project file.
+- `scripts/generate-mobile-ps5-spec.mjs` — project file.
+- `scripts/generate-readme.ts` — TypeScript module.
+- `scripts/generate-repo-state.mjs` — project file.
+- `scripts/generate-webapp-final-form.mjs` — project file.
+- `scripts/law-check.sh` — project file.
+- `scripts/migrate-imports.sh` — project file.
+- `scripts/optimize-dreamengin.mjs` — project file.
+- `scripts/postbuild.js` — TypeScript module.
+- `scripts/postbuild.ts` — TypeScript module.
+- `scripts/readme-autosync.ts` — TypeScript module.
+- `scripts/repository-state-analysis-section.mjs` — project file.
+- `scripts/score-pass.cjs` — project file.
+- `scripts/setup-database.sql` — SQL schema/migration.
+- `scripts/spec-check.cjs` — project file.
+- `scripts/sync-build-memory.mjs` — project file.
+- `scripts/ui-ux-agent.py` — project file.
+- `scripts/update-bugs.mjs` — project file.
+- `scripts/update-embed-feed.mjs` — project file.
+- `scripts/update-handoff.mjs` — project file.
+- `scripts/update-readme-status-utils.mjs` — project file.
+- `scripts/update-readme.mjs` — project file.
+- `scripts/validate-schema-sync.sh` — project file.
+- `scripts/vercel-ignore.cjs` — project file.
+- `scripts/vercel-preflight.cjs` — project file.
+- `scripts/wire-orphans.mjs` — project file.
 
 </details>
 
@@ -2498,12 +2519,15 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 </details>
 
 ## Infra & Ops
-Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflows/**`, `vercel.json`, `docker-compose.yml` using repository introspection.
-- Files tracked: **68**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Infra & Ops file structure
+Infra & Ops provides shared infrastructure used across the platform.
+### Responsibilities
+- Database schema ownership and data persistence
+- Feed ranking, algorithm execution, and content scoring
+- Quality assurance and integration coverage
+- Infrastructure provisioning and operational observability
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 ├── .github
 │   └── workflows
@@ -2560,6 +2584,7 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       ├── print-codebase.yml
 │       ├── readme-autosync.yml
 │       ├── refreshlock.yml
+│       ├── registry-sync.yml
 │       ├── repo-snapshot.yml
 │       ├── report-driven-coding-agent.yml
 │       ├── resilient-engine-smoke.yml
@@ -2576,76 +2601,77 @@ Auto-synced from `terraform/**`, `prometheus/**`, `grafana/**`, `.github/workflo
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (68 files)</summary>
+<details><summary>Infra & Ops file index (69 files)</summary>
 
-- `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
-- `.github/workflows/ScanArcCleanup.yml` — project file (yml).
-- `.github/workflows/autofixvercelbuild.yml` — project file (yml).
-- `.github/workflows/bot-pr-automerge.yml` — project file (yml).
-- `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
-- `.github/workflows/codeql.yml` — project file (yml).
-- `.github/workflows/copilot-setup-steps.yml` — project file (yml).
-- `.github/workflows/daydream-all.yml` — project file (yml).
-- `.github/workflows/daydream-brand-engin.yml` — project file (yml).
-- `.github/workflows/daydream-code-engin.yml` — project file (yml).
-- `.github/workflows/daydream-create-engin.yml` — project file (yml).
-- `.github/workflows/daydream-engin-build-cycle.yml` — project file (yml).
-- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file (yml).
-- `.github/workflows/daydream-games-engin.yml` — project file (yml).
-- `.github/workflows/daydream-lab-engin.yml` — project file (yml).
-- `.github/workflows/daydream-music-engin.yml` — project file (yml).
-- `.github/workflows/db-extension-audit.yml` — project file (yml).
-- `.github/workflows/db-extension-check.yml` — project file (yml).
-- `.github/workflows/deploy-artifact.yml` — project file (yml).
-- `.github/workflows/docs-auto-update.yml` — project file (yml).
-- `.github/workflows/dreamengin-preflight.yml` — project file (yml).
-- `.github/workflows/elite-gameengin-evolution.yml` — project file (yml).
-- `.github/workflows/engin-all.yml` — project file (yml).
-- `.github/workflows/exportrepo.yml` — project file (yml).
-- `.github/workflows/full-audit.yml` — project file (yml).
-- `.github/workflows/game-engin-patrol.yml` — project file (yml).
-- `.github/workflows/game-library-research.yml` — project file (yml).
-- `.github/workflows/gameengin-ai-agent.yml` — project file (yml).
-- `.github/workflows/gameengin-artisan.yml` — project file (yml).
-- `.github/workflows/gameengin-maestro.yml` — project file (yml).
-- `.github/workflows/gameengin-mechanic.yml` — project file (yml).
-- `.github/workflows/gameengin-prophet.yml` — project file (yml).
-- `.github/workflows/gameengin-upgrader.yml` — project file (yml).
-- `.github/workflows/gameengin-writer.yml` — project file (yml).
-- `.github/workflows/games-library-ai-agent.yml` — project file (yml).
-- `.github/workflows/garbageman.yml` — project file (yml).
-- `.github/workflows/generatesupabasetypes.yml` — project file (yml).
-- `.github/workflows/github-actions.yml` — project file (yml).
-- `.github/workflows/humanai-army-audit.yml` — project file (yml).
-- `.github/workflows/humanai-audit.yml` — project file (yml).
-- `.github/workflows/idari-daily.yml` — project file (yml).
-- `.github/workflows/issue-bot.yml` — project file (yml).
-- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file (yml).
-- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file (yml).
-- `.github/workflows/neural_decision_engine.yml` — project file (yml).
-- `.github/workflows/optimize-dreamengin.yml` — project file (yml).
-- `.github/workflows/orphan-guard.yml` — project file (yml).
-- `.github/workflows/portfolio-optimization.yml` — project file (yml).
-- `.github/workflows/preflight.yml` — project file (yml).
-- `.github/workflows/print-codebase.yml` — project file (yml).
-- `.github/workflows/readme-autosync.yml` — project file (yml).
-- `.github/workflows/refreshlock.yml` — project file (yml).
-- `.github/workflows/repo-snapshot.yml` — project file (yml).
-- `.github/workflows/report-driven-coding-agent.yml` — project file (yml).
-- `.github/workflows/resilient-engine-smoke.yml` — project file (yml).
-- `.github/workflows/root-hygiene.yml` — project file (yml).
-- `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
-- `.github/workflows/sql-migration-guard.yml` — project file (yml).
-- `.github/workflows/sync-build-memory.yml` — project file (yml).
-- `.github/workflows/type-audit.yml` — project file (yml).
-- `.github/workflows/unzip-fonts.yml` — project file (yml).
-- `.github/workflows/update-embed-feed.yml` — project file (yml).
-- `.github/workflows/update-repo-state.yml` — project file (yml).
-- `.github/workflows/vercel-deploy.yml` — project file (yml).
-- `.github/workflows/visual-schematic.yml` — project file (yml).
-- `.github/workflows/visual-schematicpages.yml` — project file (yml).
-- `vercel.json` — project file (json).
+- `.github/workflows/Repo Audit Auto Fix.yml` — project file.
+- `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/autofixvercelbuild.yml` — project file.
+- `.github/workflows/bot-pr-automerge.yml` — project file.
+- `.github/workflows/bouncer.yml` — project file.
+- `.github/workflows/cleanup-dead-code.yml` — project file.
+- `.github/workflows/codeql.yml` — project file.
+- `.github/workflows/copilot-setup-steps.yml` — project file.
+- `.github/workflows/daydream-all.yml` — project file.
+- `.github/workflows/daydream-brand-engin.yml` — project file.
+- `.github/workflows/daydream-code-engin.yml` — project file.
+- `.github/workflows/daydream-create-engin.yml` — project file.
+- `.github/workflows/daydream-engin-build-cycle.yml` — project file.
+- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file.
+- `.github/workflows/daydream-games-engin.yml` — project file.
+- `.github/workflows/daydream-lab-engin.yml` — project file.
+- `.github/workflows/daydream-music-engin.yml` — project file.
+- `.github/workflows/db-extension-audit.yml` — project file.
+- `.github/workflows/db-extension-check.yml` — project file.
+- `.github/workflows/deploy-artifact.yml` — project file.
+- `.github/workflows/docs-auto-update.yml` — project file.
+- `.github/workflows/dreamengin-preflight.yml` — project file.
+- `.github/workflows/elite-gameengin-evolution.yml` — project file.
+- `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/exportrepo.yml` — project file.
+- `.github/workflows/full-audit.yml` — project file.
+- `.github/workflows/game-engin-patrol.yml` — project file.
+- `.github/workflows/game-library-research.yml` — project file.
+- `.github/workflows/gameengin-ai-agent.yml` — project file.
+- `.github/workflows/gameengin-artisan.yml` — project file.
+- `.github/workflows/gameengin-maestro.yml` — project file.
+- `.github/workflows/gameengin-mechanic.yml` — project file.
+- `.github/workflows/gameengin-prophet.yml` — project file.
+- `.github/workflows/gameengin-upgrader.yml` — project file.
+- `.github/workflows/gameengin-writer.yml` — project file.
+- `.github/workflows/games-library-ai-agent.yml` — project file.
+- `.github/workflows/garbageman.yml` — project file.
+- `.github/workflows/generatesupabasetypes.yml` — project file.
+- `.github/workflows/github-actions.yml` — project file.
+- `.github/workflows/humanai-army-audit.yml` — project file.
+- `.github/workflows/humanai-audit.yml` — project file.
+- `.github/workflows/idari-daily.yml` — project file.
+- `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
+- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
+- `.github/workflows/neural_decision_engine.yml` — project file.
+- `.github/workflows/optimize-dreamengin.yml` — project file.
+- `.github/workflows/orphan-guard.yml` — project file.
+- `.github/workflows/portfolio-optimization.yml` — project file.
+- `.github/workflows/preflight.yml` — project file.
+- `.github/workflows/print-codebase.yml` — project file.
+- `.github/workflows/readme-autosync.yml` — project file.
+- `.github/workflows/refreshlock.yml` — project file.
+- `.github/workflows/registry-sync.yml` — project file.
+- `.github/workflows/repo-snapshot.yml` — project file.
+- `.github/workflows/report-driven-coding-agent.yml` — project file.
+- `.github/workflows/resilient-engine-smoke.yml` — project file.
+- `.github/workflows/root-hygiene.yml` — project file.
+- `.github/workflows/spec-engin-ai-agent.yml` — project file.
+- `.github/workflows/sql-migration-guard.yml` — project file.
+- `.github/workflows/sync-build-memory.yml` — project file.
+- `.github/workflows/type-audit.yml` — project file.
+- `.github/workflows/unzip-fonts.yml` — project file.
+- `.github/workflows/update-embed-feed.yml` — project file.
+- `.github/workflows/update-repo-state.yml` — project file.
+- `.github/workflows/vercel-deploy.yml` — project file.
+- `.github/workflows/visual-schematic.yml` — project file.
+- `.github/workflows/visual-schematicpages.yml` — project file.
+- `vercel.json` — project file.
 
 </details>
 
@@ -3264,12 +3290,16 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 </details>
 
 ## Contributing
-Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using repository introspection.
-- Files tracked: **282**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Contributing file structure
+Contributing provides shared infrastructure used across the platform.
+### Responsibilities
+- Runtime orchestration and engin lifecycle management
+- Database schema ownership and data persistence
+- Feed ranking, algorithm execution, and content scoring
+- Quality assurance and integration coverage
+- Infrastructure provisioning and operational observability
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 ├── .github
 │   ├── PULL_REQUEST_TEMPLATE.md
@@ -3391,292 +3421,291 @@ Auto-synced from `CONTRIBUTING*`, `AGENTS.md`, `docs/**`, `.github/**` using rep
 │   │   ├── check_workflow_masking.py
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
-… (162 more files)
+… (161 more files)
 ```
-<details><summary>Contributing file index (282 files)</summary>
+<details><summary>Contributing file index (281 files)</summary>
 
-- `.github/PULL_REQUEST_TEMPLATE.md` — documentation file.
-- `.github/actions/resilient-engine/action.yml` — project file (yml).
-- `.github/actions/setup-node/action.yml` — project file (yml).
-- `.github/agents/Spec-Engin HyperSICC.agent.md` — documentation file.
-- `.github/agents/dreamengin.agent.md` — documentation file.
-- `.github/agents/error-tracker.agent.md` — documentation file.
-- `.github/agents/gameengin-ai-agent.yml` — project file (yml).
-- `.github/agents/gameengin.md` — documentation file.
-- `.github/agents/humanAI.agent.md` — documentation file.
-- `.github/agents/idari.agent.md` — documentation file.
-- `.github/agents/my-agent.agent.md` — documentation file.
-- `.github/agents/newagent.agent.md` — documentation file.
-- `.github/agents/videogameAi.md` — documentation file.
-- `.github/copilot-instructions.md` — documentation file.
-- `.github/issue-triage/issue-552.md` — documentation file.
-- `.github/issue-triage/issue-556.md` — documentation file.
-- `.github/issue-triage/issue-560.md` — documentation file.
-- `.github/issue-triage/issue-565.md` — documentation file.
-- `.github/issue-triage/issue-571.md` — documentation file.
-- `.github/issue-triage/issue-573.md` — documentation file.
-- `.github/issue-triage/issue-600.md` — documentation file.
-- `.github/issue-triage/issue-601.md` — documentation file.
-- `.github/issue-triage/issue-602.md` — documentation file.
-- `.github/issue-triage/issue-603.md` — documentation file.
-- `.github/issue-triage/issue-604.md` — documentation file.
-- `.github/issue-triage/issue-605.md` — documentation file.
-- `.github/issue-triage/issue-606.md` — documentation file.
-- `.github/issue-triage/issue-607.md` — documentation file.
-- `.github/issue-triage/issue-608.md` — documentation file.
-- `.github/issue-triage/issue-609.md` — documentation file.
-- `.github/issue-triage/issue-610.md` — documentation file.
-- `.github/issue-triage/issue-611.md` — documentation file.
-- `.github/issue-triage/issue-612.md` — documentation file.
-- `.github/issue-triage/issue-613.md` — documentation file.
-- `.github/issue-triage/issue-617.md` — documentation file.
-- `.github/issue-triage/issue-620.md` — documentation file.
-- `.github/issue-triage/issue-621.md` — documentation file.
-- `.github/issue-triage/issue-622.md` — documentation file.
-- `.github/issue-triage/issue-623.md` — documentation file.
-- `.github/issue-triage/issue-647.md` — documentation file.
-- `.github/issue-triage/issue-753.md` — documentation file.
-- `.github/issue-triage/issue-754.md` — documentation file.
-- `.github/pull_request_template.md` — documentation file.
-- `.github/ruleset/autofixvercelbuild.yml` — project file (yml).
-- `.github/ruleset/bot-pr-automerge.yml` — project file (yml).
-- `.github/ruleset/bouncer.yml` — project file (yml).
-- `.github/ruleset/copilot-setup-steps.yml` — project file (yml).
-- `.github/ruleset/daydream-all.yml` — project file (yml).
-- `.github/ruleset/daydream-brand-engin.yml` — project file (yml).
-- `.github/ruleset/daydream-code-engin.yml` — project file (yml).
-- `.github/ruleset/daydream-create-engin.yml` — project file (yml).
-- `.github/ruleset/daydream-engin-build-cycle.yml` — project file (yml).
-- `.github/ruleset/daydream-engin-sicc-refinement.yml` — project file (yml).
-- `.github/ruleset/daydream-games-engin.yml` — project file (yml).
-- `.github/ruleset/daydream-lab-engin.yml` — project file (yml).
-- `.github/ruleset/daydream-music-engin.yml` — project file (yml).
-- `.github/ruleset/db-extension-audit.yml` — project file (yml).
-- `.github/ruleset/db-extension-check.yml` — project file (yml).
-- `.github/ruleset/deploy-artifact.yml` — project file (yml).
-- `.github/ruleset/docs-auto-update.yml` — project file (yml).
-- `.github/ruleset/dreamengin-preflight.yml` — project file (yml).
-- `.github/ruleset/elite-gameengin-evolution.yml` — project file (yml).
-- `.github/ruleset/engin-all.yml` — project file (yml).
-- `.github/ruleset/exportrepo.yml` — project file (yml).
-- `.github/ruleset/game-engin-patrol.yml` — project file (yml).
-- `.github/ruleset/game-library-research.yml` — project file (yml).
-- `.github/ruleset/gameengin-ai-agent.yml` — project file (yml).
-- `.github/ruleset/gameengin-artisan.yml` — project file (yml).
-- `.github/ruleset/gameengin-maestro.yml` — project file (yml).
-- `.github/ruleset/gameengin-mechanic.yml` — project file (yml).
-- `.github/ruleset/gameengin-prophet.yml` — project file (yml).
-- `.github/ruleset/gameengin-upgrader.yml` — project file (yml).
-- `.github/ruleset/gameengin-writer.yml` — project file (yml).
-- `.github/ruleset/games-library-ai-agent.yml` — project file (yml).
-- `.github/ruleset/garbageman.yml` — project file (yml).
-- `.github/ruleset/generatesupabasetypes.yml` — project file (yml).
-- `.github/ruleset/github-actions.yml` — project file (yml).
-- `.github/ruleset/humanai-army-audit.yml` — project file (yml).
-- `.github/ruleset/humanai-audit.yml` — project file (yml).
-- `.github/ruleset/idari-daily.yml` — project file (yml).
-- `.github/ruleset/issue-bot.yml` — project file (yml).
-- `.github/ruleset/mobile-nextgen-spec-evolution.yml` — project file (yml).
-- `.github/ruleset/mobile-ps5-spec-evolution.yml` — project file (yml).
-- `.github/ruleset/neural-decision-engine.yml` — project file (yml).
-- `.github/ruleset/optimize-dreamengin.yml` — project file (yml).
-- `.github/ruleset/portfolio-optimization.yml` — project file (yml).
-- `.github/ruleset/preflight.yml` — project file (yml).
-- `.github/ruleset/print-codebase.yml` — project file (yml).
-- `.github/ruleset/readme-autosync.yml` — project file (yml).
-- `.github/ruleset/refreshlock.yml` — project file (yml).
-- `.github/ruleset/repo-snapshot.yml` — project file (yml).
-- `.github/ruleset/report-driven-coding-agent.yml` — project file (yml).
-- `.github/ruleset/root-hygiene.yml` — project file (yml).
-- `.github/ruleset/spec-engin-ai-agent.yml` — project file (yml).
-- `.github/ruleset/sql-migration-guard.yml` — project file (yml).
-- `.github/ruleset/sync-build-memory.yml` — project file (yml).
-- `.github/ruleset/update-embed-feed.yml` — project file (yml).
-- `.github/ruleset/update-repo-state.yml` — project file (yml).
-- `.github/ruleset/vercel-deploy.yml` — project file (yml).
-- `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation file.
-- `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation file.
-- `.github/scripts/ai_implement.py` — project file (py).
-- `.github/scripts/ai_neural_decision.py` — project file (py).
-- `.github/scripts/ai_propose.py` — project file (py).
-- `.github/scripts/ai_report_propose.py` — project file (py).
-- `.github/scripts/analyze-repo.js` — TypeScript/JavaScript runtime module.
-- `.github/scripts/assemble_report_context.py` — project file (py).
-- `.github/scripts/catalog_games_for_ai.py` — project file (py).
-- `.github/scripts/check-root-hygiene.sh` — project file (sh).
-- `.github/scripts/check_workflow_masking.py` — project file (py).
-- `.github/scripts/dreamengin_core.py` — project file (py).
-- `.github/scripts/humanai_audit.py` — project file (py).
-- `.github/scripts/issue-bot.js` — TypeScript/JavaScript runtime module.
-- `.github/scripts/run-readme-autosync.mjs` — TypeScript/JavaScript runtime module.
-- `.github/scripts/scan_dreamengin_context.py` — project file (py).
-- `.github/scripts/scan_gameengin_context.py` — project file (py).
-- `.github/scripts/validate_game_sandbox.py` — project file (py).
-- `.github/scripts/validate_report_agent_spec.py` — project file (py).
-- `.github/workflows/Repo Audit Auto Fix.yml` — project file (yml).
-- `.github/workflows/ScanArcCleanup.yml` — project file (yml).
-- `.github/workflows/autofixvercelbuild.yml` — project file (yml).
-- `.github/workflows/bot-pr-automerge.yml` — project file (yml).
-- `.github/workflows/bouncer.yml` — project file (yml).
-- `.github/workflows/cleanup-dead-code.yml` — project file (yml).
-- `.github/workflows/codeql.yml` — project file (yml).
-- `.github/workflows/copilot-setup-steps.yml` — project file (yml).
-- `.github/workflows/daydream-all.yml` — project file (yml).
-- `.github/workflows/daydream-brand-engin.yml` — project file (yml).
-- `.github/workflows/daydream-code-engin.yml` — project file (yml).
-- `.github/workflows/daydream-create-engin.yml` — project file (yml).
-- `.github/workflows/daydream-engin-build-cycle.yml` — project file (yml).
-- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file (yml).
-- `.github/workflows/daydream-games-engin.yml` — project file (yml).
-- `.github/workflows/daydream-lab-engin.yml` — project file (yml).
-- `.github/workflows/daydream-music-engin.yml` — project file (yml).
-- `.github/workflows/db-extension-audit.yml` — project file (yml).
-- `.github/workflows/db-extension-check.yml` — project file (yml).
-- `.github/workflows/deploy-artifact.yml` — project file (yml).
-- `.github/workflows/docs-auto-update.yml` — project file (yml).
-- `.github/workflows/dreamengin-preflight.yml` — project file (yml).
-- `.github/workflows/elite-gameengin-evolution.yml` — project file (yml).
-- `.github/workflows/engin-all.yml` — project file (yml).
-- `.github/workflows/exportrepo.yml` — project file (yml).
-- `.github/workflows/full-audit.yml` — project file (yml).
-- `.github/workflows/game-engin-patrol.yml` — project file (yml).
-- `.github/workflows/game-library-research.yml` — project file (yml).
-- `.github/workflows/gameengin-ai-agent.yml` — project file (yml).
-- `.github/workflows/gameengin-artisan.yml` — project file (yml).
-- `.github/workflows/gameengin-maestro.yml` — project file (yml).
-- `.github/workflows/gameengin-mechanic.yml` — project file (yml).
-- `.github/workflows/gameengin-prophet.yml` — project file (yml).
-- `.github/workflows/gameengin-upgrader.yml` — project file (yml).
-- `.github/workflows/gameengin-writer.yml` — project file (yml).
-- `.github/workflows/games-library-ai-agent.yml` — project file (yml).
-- `.github/workflows/garbageman.yml` — project file (yml).
-- `.github/workflows/generatesupabasetypes.yml` — project file (yml).
-- `.github/workflows/github-actions.yml` — project file (yml).
-- `.github/workflows/humanai-army-audit.yml` — project file (yml).
-- `.github/workflows/humanai-audit.yml` — project file (yml).
-- `.github/workflows/idari-daily.yml` — project file (yml).
-- `.github/workflows/issue-bot.yml` — project file (yml).
-- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file (yml).
-- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file (yml).
-- `.github/workflows/neural_decision_engine.yml` — project file (yml).
-- `.github/workflows/optimize-dreamengin.yml` — project file (yml).
-- `.github/workflows/orphan-guard.yml` — project file (yml).
-- `.github/workflows/portfolio-optimization.yml` — project file (yml).
-- `.github/workflows/preflight.yml` — project file (yml).
-- `.github/workflows/print-codebase.yml` — project file (yml).
-- `.github/workflows/readme-autosync.yml` — project file (yml).
-- `.github/workflows/refreshlock.yml` — project file (yml).
-- `.github/workflows/repo-snapshot.yml` — project file (yml).
-- `.github/workflows/report-driven-coding-agent.yml` — project file (yml).
-- `.github/workflows/resilient-engine-smoke.yml` — project file (yml).
-- `.github/workflows/root-hygiene.yml` — project file (yml).
-- `.github/workflows/spec-engin-ai-agent.yml` — project file (yml).
-- `.github/workflows/sql-migration-guard.yml` — project file (yml).
-- `.github/workflows/sync-build-memory.yml` — project file (yml).
-- `.github/workflows/type-audit.yml` — project file (yml).
-- `.github/workflows/unzip-fonts.yml` — project file (yml).
-- `.github/workflows/update-embed-feed.yml` — project file (yml).
-- `.github/workflows/update-repo-state.yml` — project file (yml).
-- `.github/workflows/vercel-deploy.yml` — project file (yml).
-- `.github/workflows/visual-schematic.yml` — project file (yml).
-- `.github/workflows/visual-schematicpages.yml` — project file (yml).
-- `AGENTS.md` — documentation file.
-- `docs/ACTION_AUDIT.md` — documentation file.
-- `docs/ACTIVITY_FIRST_PROTOCOL.md` — documentation file.
-- `docs/ADD_WORKFLOW.md` — documentation file.
-- `docs/AGENT_PLAYBOOK.md` — documentation file.
-- `docs/AI_MAP.md` — documentation file.
-- `docs/ARCHITECTURE.md` — documentation file.
-- `docs/AUTH_SETUP.md` — documentation file.
-- `docs/AXIOMS.md` — documentation file.
-- `docs/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `docs/BOOGIEMAN_POLICY.md` — documentation file.
-- `docs/BUGS.md` — documentation file.
-- `docs/CHILD_SAFETY_POLICY.md` — documentation file.
-- `docs/CONNECTORS.md` — documentation file.
-- `docs/CONNECTOR_MATRIX.md` — documentation file.
-- `docs/CONSTITUTION.md` — documentation file.
-- `docs/COPILOT_TOOLKIT.md` — documentation file.
-- `docs/DREAMGAME_FORMAT.md` — documentation file.
-- `docs/DR_EAMS.md` — documentation file.
-- `docs/DUALSENSE_EXAMPLE.md` — documentation file.
-- `docs/DUALSENSE_INTEGRATION.md` — documentation file.
-- `docs/ENGIN_RUNTIME.md` — documentation file.
-- `docs/FEATURE_STATUS.md` — documentation file.
-- `docs/GENERATION_LAW.md` — documentation file.
-- `docs/GITHUB_CODING_AGENT.md` — documentation file.
-- `docs/GOLD_BUTTON_DUAL_RUNTIME.md` — documentation file.
-- `docs/GOLD_BUTTON_QUICK_REF.md` — documentation file.
-- `docs/HANDOFF.md` — documentation file.
-- `docs/IDARI_CONTRACT.md` — documentation file.
-- `docs/ISSUE_FIXES.md` — documentation file.
-- `docs/LAW.md` — documentation file.
-- `docs/MODULARITY_VIOLATION_LOG.md` — documentation file.
-- `docs/NAMESPACE_PROTOCOL.md` — documentation file.
-- `docs/NAMING_AUTHORITY.md` — documentation file.
-- `docs/OBSERVABILITY.md` — documentation file.
-- `docs/PHASE9_IMPLEMENTATION.md` — documentation file.
-- `docs/POLICY_TESTS.md` — documentation file.
-- `docs/PRINCIPLES_UPDATE.md` — documentation file.
-- `docs/PRODUCT_DEFINITION.md` — documentation file.
-- `docs/REPO_COMPANION.md` — documentation file.
-- `docs/REPO_STATE_ANALYZER.md` — documentation file.
-- `docs/REPO_STRUCTURE_CONTRACT.md` — documentation file.
-- `docs/REVIEW_QUEUE.md` — documentation file.
-- `docs/SECURITY.md` — documentation file.
-- `docs/THEME.md` — documentation file.
-- `docs/TRIAGE_LOG.md` — documentation file.
-- `docs/UNIVERSAL_ENGINE.md` — documentation file.
-- `docs/WASM_GPU_VM_SUMMARY.md` — documentation file.
-- `docs/WIDGET_SYSTEM_V2.md` — documentation file.
-- `docs/alignment/DOCS_CHANGE_TRACKER.md` — documentation file.
-- `docs/alignment/REPO_TO_SPEC.md` — documentation file.
-- `docs/architecture/IMPLEMENTATION_NOTES.md` — documentation file.
-- `docs/architecture/dreamengin_phase2.md` — documentation file.
-- `docs/archive/.gitkeep` — project file (no extension).
-- `docs/dreamdm_bar_pass1.md` — documentation file.
-- `docs/dreamdm_bar_pass2.md` — documentation file.
-- `docs/dreamdm_messaging_phase2.md` — documentation file.
-- `docs/dreamengin_phase1.md` — documentation file.
-- `docs/dreamengin_phase6.md` — documentation file.
-- `docs/dreamengin_phase8.md` — documentation file.
-- `docs/engin_workflows.md` — documentation file.
-- `docs/engineering/guardrails.md` — documentation file.
-- `docs/enginpipe/README.md` — documentation file.
-- `docs/guides/GITHUB_PUSH_GUIDE.md` — documentation file.
-- `docs/guides/README.agent.md` — documentation file.
-- `docs/icons.md` — documentation file.
-- `docs/issue-552-readme-section-bot-ai-agent-quick-reference.md` — documentation file.
-- `docs/issue-556-readme-section-bot-canonical-route-system.md` — documentation file.
-- `docs/issue-560-readme-section-bot-runtime-model.md` — documentation file.
-- `docs/issue-565-readme-section-bot-3-os-layer-naming-law-canonic.md` — documentation file.
-- `docs/issue-571-readme-section-bot-9-daydream-pair-system-6-dayd.md` — documentation file.
-- `docs/issue-573-readme-section-bot-11-games-gameengin.md` — documentation file.
-- `docs/issue-600-readme-section-bot-recent-changes.md` — documentation file.
-- `docs/issue-601-readme-section-bot-repository-state-analysis.md` — documentation file.
-- `docs/issue-602-readme-section-bot-homedream-system.md` — documentation file.
-- `docs/issue-603-readme-section-bot-core-surfaces.md` — documentation file.
-- `docs/issue-604-readme-section-bot-current-implementation-status.md` — documentation file.
-- `docs/issue-605-readme-section-bot-daydream-surfaces.md` — documentation file.
-- `docs/issue-606-readme-section-bot-daydream-engin-network-model.md` — documentation file.
-- `docs/issue-607-readme-section-bot-dreamdmbar-interaction-rail-r.md` — documentation file.
-- `docs/issue-608-readme-section-bot-1-product-law-16-foundational.md` — documentation file.
-- `docs/issue-609-readme-section-bot-6-homedream-core-system-priva.md` — documentation file.
-- `docs/issue-610-readme-section-bot-10-music-starmakerengin.md` — documentation file.
-- `docs/issue-611-readme-section-bot-12-lab-labengin.md` — documentation file.
-- `docs/issue-612-readme-section-bot-13-code-codeengin.md` — documentation file.
-- `docs/issue-613-readme-section-bot-7-edit-profiledream-core-syst.md` — documentation file.
-- `docs/issue-617-readme-section-bot-8-view-profile-public-shared-.md` — documentation file.
-- `docs/issue-620-readme-section-bot-what-this-is.md` — documentation file.
-- `docs/issue-621-readme-section-bot-start-here.md` — documentation file.
-- `docs/issue-622-readme-section-bot-structure.md` — documentation file.
-- `docs/issue-623-readme-section-bot-root-rules.md` — documentation file.
-- `docs/issue-647-readme-section-bot-how-to-regenerate-this-spec.md` — documentation file.
-- `docs/logs/README_PATCH.md` — documentation file.
-- `docs/mobile-nextgen-web-gaming-engine-spec.md` — documentation file.
-- `docs/mobile-ps5-web-gaming-engine-spec.md` — documentation file.
-- `docs/policy/theboogie.md` — documentation file.
-- `docs/wasm_gpu_vm_spec.md` — documentation file.
+- `.github/PULL_REQUEST_TEMPLATE.md` — documentation.
+- `.github/actions/resilient-engine/action.yml` — project file.
+- `.github/actions/setup-node/action.yml` — project file.
+- `.github/agents/Spec-Engin HyperSICC.agent.md` — documentation.
+- `.github/agents/dreamengin.agent.md` — documentation.
+- `.github/agents/error-tracker.agent.md` — documentation.
+- `.github/agents/gameengin-ai-agent.yml` — project file.
+- `.github/agents/gameengin.md` — documentation.
+- `.github/agents/humanAI.agent.md` — documentation.
+- `.github/agents/idari.agent.md` — documentation.
+- `.github/agents/my-agent.agent.md` — documentation.
+- `.github/agents/newagent.agent.md` — documentation.
+- `.github/agents/videogameAi.md` — documentation.
+- `.github/copilot-instructions.md` — documentation.
+- `.github/issue-triage/issue-552.md` — documentation.
+- `.github/issue-triage/issue-556.md` — documentation.
+- `.github/issue-triage/issue-560.md` — documentation.
+- `.github/issue-triage/issue-565.md` — documentation.
+- `.github/issue-triage/issue-571.md` — documentation.
+- `.github/issue-triage/issue-573.md` — documentation.
+- `.github/issue-triage/issue-600.md` — documentation.
+- `.github/issue-triage/issue-601.md` — documentation.
+- `.github/issue-triage/issue-602.md` — documentation.
+- `.github/issue-triage/issue-603.md` — documentation.
+- `.github/issue-triage/issue-604.md` — documentation.
+- `.github/issue-triage/issue-605.md` — documentation.
+- `.github/issue-triage/issue-606.md` — documentation.
+- `.github/issue-triage/issue-607.md` — documentation.
+- `.github/issue-triage/issue-608.md` — documentation.
+- `.github/issue-triage/issue-609.md` — documentation.
+- `.github/issue-triage/issue-610.md` — documentation.
+- `.github/issue-triage/issue-611.md` — documentation.
+- `.github/issue-triage/issue-612.md` — documentation.
+- `.github/issue-triage/issue-613.md` — documentation.
+- `.github/issue-triage/issue-617.md` — documentation.
+- `.github/issue-triage/issue-620.md` — documentation.
+- `.github/issue-triage/issue-621.md` — documentation.
+- `.github/issue-triage/issue-622.md` — documentation.
+- `.github/issue-triage/issue-623.md` — documentation.
+- `.github/issue-triage/issue-647.md` — documentation.
+- `.github/issue-triage/issue-753.md` — documentation.
+- `.github/issue-triage/issue-754.md` — documentation.
+- `.github/pull_request_template.md` — documentation.
+- `.github/ruleset/autofixvercelbuild.yml` — project file.
+- `.github/ruleset/bot-pr-automerge.yml` — project file.
+- `.github/ruleset/bouncer.yml` — project file.
+- `.github/ruleset/copilot-setup-steps.yml` — project file.
+- `.github/ruleset/daydream-all.yml` — project file.
+- `.github/ruleset/daydream-brand-engin.yml` — project file.
+- `.github/ruleset/daydream-code-engin.yml` — project file.
+- `.github/ruleset/daydream-create-engin.yml` — project file.
+- `.github/ruleset/daydream-engin-build-cycle.yml` — project file.
+- `.github/ruleset/daydream-engin-sicc-refinement.yml` — project file.
+- `.github/ruleset/daydream-games-engin.yml` — project file.
+- `.github/ruleset/daydream-lab-engin.yml` — project file.
+- `.github/ruleset/daydream-music-engin.yml` — project file.
+- `.github/ruleset/db-extension-audit.yml` — project file.
+- `.github/ruleset/db-extension-check.yml` — project file.
+- `.github/ruleset/deploy-artifact.yml` — project file.
+- `.github/ruleset/docs-auto-update.yml` — project file.
+- `.github/ruleset/dreamengin-preflight.yml` — project file.
+- `.github/ruleset/elite-gameengin-evolution.yml` — project file.
+- `.github/ruleset/engin-all.yml` — project file.
+- `.github/ruleset/exportrepo.yml` — project file.
+- `.github/ruleset/game-engin-patrol.yml` — project file.
+- `.github/ruleset/game-library-research.yml` — project file.
+- `.github/ruleset/gameengin-ai-agent.yml` — project file.
+- `.github/ruleset/gameengin-artisan.yml` — project file.
+- `.github/ruleset/gameengin-maestro.yml` — project file.
+- `.github/ruleset/gameengin-mechanic.yml` — project file.
+- `.github/ruleset/gameengin-prophet.yml` — project file.
+- `.github/ruleset/gameengin-upgrader.yml` — project file.
+- `.github/ruleset/gameengin-writer.yml` — project file.
+- `.github/ruleset/games-library-ai-agent.yml` — project file.
+- `.github/ruleset/garbageman.yml` — project file.
+- `.github/ruleset/generatesupabasetypes.yml` — project file.
+- `.github/ruleset/github-actions.yml` — project file.
+- `.github/ruleset/humanai-army-audit.yml` — project file.
+- `.github/ruleset/humanai-audit.yml` — project file.
+- `.github/ruleset/idari-daily.yml` — project file.
+- `.github/ruleset/issue-bot.yml` — project file.
+- `.github/ruleset/mobile-nextgen-spec-evolution.yml` — project file.
+- `.github/ruleset/mobile-ps5-spec-evolution.yml` — project file.
+- `.github/ruleset/neural-decision-engine.yml` — project file.
+- `.github/ruleset/optimize-dreamengin.yml` — project file.
+- `.github/ruleset/portfolio-optimization.yml` — project file.
+- `.github/ruleset/preflight.yml` — project file.
+- `.github/ruleset/print-codebase.yml` — project file.
+- `.github/ruleset/readme-autosync.yml` — project file.
+- `.github/ruleset/refreshlock.yml` — project file.
+- `.github/ruleset/repo-snapshot.yml` — project file.
+- `.github/ruleset/report-driven-coding-agent.yml` — project file.
+- `.github/ruleset/root-hygiene.yml` — project file.
+- `.github/ruleset/spec-engin-ai-agent.yml` — project file.
+- `.github/ruleset/sql-migration-guard.yml` — project file.
+- `.github/ruleset/sync-build-memory.yml` — project file.
+- `.github/ruleset/update-embed-feed.yml` — project file.
+- `.github/ruleset/update-repo-state.yml` — project file.
+- `.github/ruleset/vercel-deploy.yml` — project file.
+- `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
+- `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
+- `.github/scripts/ai_implement.py` — project file.
+- `.github/scripts/ai_neural_decision.py` — project file.
+- `.github/scripts/ai_propose.py` — project file.
+- `.github/scripts/ai_report_propose.py` — project file.
+- `.github/scripts/analyze-repo.js` — TypeScript module.
+- `.github/scripts/assemble_report_context.py` — project file.
+- `.github/scripts/catalog_games_for_ai.py` — project file.
+- `.github/scripts/check-root-hygiene.sh` — project file.
+- `.github/scripts/check_workflow_masking.py` — project file.
+- `.github/scripts/dreamengin_core.py` — project file.
+- `.github/scripts/humanai_audit.py` — project file.
+- `.github/scripts/issue-bot.js` — TypeScript module.
+- `.github/scripts/run-readme-autosync.mjs` — project file.
+- `.github/scripts/scan_dreamengin_context.py` — project file.
+- `.github/scripts/scan_gameengin_context.py` — project file.
+- `.github/scripts/validate_game_sandbox.py` — project file.
+- `.github/scripts/validate_report_agent_spec.py` — project file.
+- `.github/workflows/Repo Audit Auto Fix.yml` — project file.
+- `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/autofixvercelbuild.yml` — project file.
+- `.github/workflows/bot-pr-automerge.yml` — project file.
+- `.github/workflows/bouncer.yml` — project file.
+- `.github/workflows/cleanup-dead-code.yml` — project file.
+- `.github/workflows/codeql.yml` — project file.
+- `.github/workflows/copilot-setup-steps.yml` — project file.
+- `.github/workflows/daydream-all.yml` — project file.
+- `.github/workflows/daydream-brand-engin.yml` — project file.
+- `.github/workflows/daydream-code-engin.yml` — project file.
+- `.github/workflows/daydream-create-engin.yml` — project file.
+- `.github/workflows/daydream-engin-build-cycle.yml` — project file.
+- `.github/workflows/daydream-engin-sicc-refinement.yml` — project file.
+- `.github/workflows/daydream-games-engin.yml` — project file.
+- `.github/workflows/daydream-lab-engin.yml` — project file.
+- `.github/workflows/daydream-music-engin.yml` — project file.
+- `.github/workflows/db-extension-audit.yml` — project file.
+- `.github/workflows/db-extension-check.yml` — project file.
+- `.github/workflows/deploy-artifact.yml` — project file.
+- `.github/workflows/docs-auto-update.yml` — project file.
+- `.github/workflows/dreamengin-preflight.yml` — project file.
+- `.github/workflows/elite-gameengin-evolution.yml` — project file.
+- `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/exportrepo.yml` — project file.
+- `.github/workflows/full-audit.yml` — project file.
+- `.github/workflows/game-engin-patrol.yml` — project file.
+- `.github/workflows/game-library-research.yml` — project file.
+- `.github/workflows/gameengin-ai-agent.yml` — project file.
+- `.github/workflows/gameengin-artisan.yml` — project file.
+- `.github/workflows/gameengin-maestro.yml` — project file.
+- `.github/workflows/gameengin-mechanic.yml` — project file.
+- `.github/workflows/gameengin-prophet.yml` — project file.
+- `.github/workflows/gameengin-upgrader.yml` — project file.
+- `.github/workflows/gameengin-writer.yml` — project file.
+- `.github/workflows/games-library-ai-agent.yml` — project file.
+- `.github/workflows/garbageman.yml` — project file.
+- `.github/workflows/generatesupabasetypes.yml` — project file.
+- `.github/workflows/github-actions.yml` — project file.
+- `.github/workflows/humanai-army-audit.yml` — project file.
+- `.github/workflows/humanai-audit.yml` — project file.
+- `.github/workflows/idari-daily.yml` — project file.
+- `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
+- `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
+- `.github/workflows/neural_decision_engine.yml` — project file.
+- `.github/workflows/optimize-dreamengin.yml` — project file.
+- `.github/workflows/orphan-guard.yml` — project file.
+- `.github/workflows/portfolio-optimization.yml` — project file.
+- `.github/workflows/preflight.yml` — project file.
+- `.github/workflows/print-codebase.yml` — project file.
+- `.github/workflows/readme-autosync.yml` — project file.
+- `.github/workflows/refreshlock.yml` — project file.
+- `.github/workflows/registry-sync.yml` — project file.
+- `.github/workflows/repo-snapshot.yml` — project file.
+- `.github/workflows/report-driven-coding-agent.yml` — project file.
+- `.github/workflows/resilient-engine-smoke.yml` — project file.
+- `.github/workflows/root-hygiene.yml` — project file.
+- `.github/workflows/spec-engin-ai-agent.yml` — project file.
+- `.github/workflows/sql-migration-guard.yml` — project file.
+- `.github/workflows/sync-build-memory.yml` — project file.
+- `.github/workflows/type-audit.yml` — project file.
+- `.github/workflows/unzip-fonts.yml` — project file.
+- `.github/workflows/update-embed-feed.yml` — project file.
+- `.github/workflows/update-repo-state.yml` — project file.
+- `.github/workflows/vercel-deploy.yml` — project file.
+- `.github/workflows/visual-schematic.yml` — project file.
+- `.github/workflows/visual-schematicpages.yml` — project file.
+- `AGENTS.md` — documentation.
+- `docs/ACTION_AUDIT.md` — documentation.
+- `docs/ACTIVITY_FIRST_PROTOCOL.md` — documentation.
+- `docs/ADD_WORKFLOW.md` — documentation.
+- `docs/AGENT_PLAYBOOK.md` — documentation.
+- `docs/AI_MAP.md` — documentation.
+- `docs/ARCHITECTURE.md` — documentation.
+- `docs/AUTH_SETUP.md` — documentation.
+- `docs/AXIOMS.md` — documentation.
+- `docs/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `docs/BOOGIEMAN_POLICY.md` — documentation.
+- `docs/BUGS.md` — documentation.
+- `docs/CHILD_SAFETY_POLICY.md` — documentation.
+- `docs/CONNECTORS.md` — documentation.
+- `docs/CONNECTOR_MATRIX.md` — documentation.
+- `docs/CONSTITUTION.md` — documentation.
+- `docs/COPILOT_TOOLKIT.md` — documentation.
+- `docs/DREAMGAME_FORMAT.md` — documentation.
+- `docs/DR_EAMS.md` — documentation.
+- `docs/DUALSENSE_EXAMPLE.md` — documentation.
+- `docs/DUALSENSE_INTEGRATION.md` — documentation.
+- `docs/ENGIN_RUNTIME.md` — documentation.
+- `docs/FEATURE_STATUS.md` — documentation.
+- `docs/GENERATION_LAW.md` — documentation.
+- `docs/GITHUB_CODING_AGENT.md` — documentation.
+- `docs/GOLD_BUTTON_DUAL_RUNTIME.md` — documentation.
+- `docs/GOLD_BUTTON_QUICK_REF.md` — documentation.
+- `docs/HANDOFF.md` — documentation.
+- `docs/IDARI_CONTRACT.md` — documentation.
+- `docs/ISSUE_FIXES.md` — documentation.
+- `docs/LAW.md` — documentation.
+- `docs/MODULARITY_VIOLATION_LOG.md` — documentation.
+- `docs/NAMESPACE_PROTOCOL.md` — documentation.
+- `docs/NAMING_AUTHORITY.md` — documentation.
+- `docs/OBSERVABILITY.md` — documentation.
+- `docs/PHASE9_IMPLEMENTATION.md` — documentation.
+- `docs/POLICY_TESTS.md` — documentation.
+- `docs/PRINCIPLES_UPDATE.md` — documentation.
+- `docs/PRODUCT_DEFINITION.md` — documentation.
+- `docs/REPO_COMPANION.md` — documentation.
+- `docs/REPO_STATE_ANALYZER.md` — documentation.
+- `docs/REPO_STRUCTURE_CONTRACT.md` — documentation.
+- `docs/REVIEW_QUEUE.md` — documentation.
+- `docs/SECURITY.md` — documentation.
+- `docs/THEME.md` — documentation.
+- `docs/TRIAGE_LOG.md` — documentation.
+- `docs/UNIVERSAL_ENGINE.md` — documentation.
+- `docs/WASM_GPU_VM_SUMMARY.md` — documentation.
+- `docs/WIDGET_SYSTEM_V2.md` — documentation.
+- `docs/alignment/DOCS_CHANGE_TRACKER.md` — documentation.
+- `docs/alignment/REPO_TO_SPEC.md` — documentation.
+- `docs/archive/.gitkeep` — project file.
+- `docs/dreamdm_bar_pass1.md` — documentation.
+- `docs/dreamdm_bar_pass2.md` — documentation.
+- `docs/dreamdm_messaging_phase2.md` — documentation.
+- `docs/dreamengin_phase1.md` — documentation.
+- `docs/dreamengin_phase6.md` — documentation.
+- `docs/dreamengin_phase8.md` — documentation.
+- `docs/engin_workflows.md` — documentation.
+- `docs/engineering/guardrails.md` — documentation.
+- `docs/enginpipe/README.md` — documentation.
+- `docs/guides/GITHUB_PUSH_GUIDE.md` — documentation.
+- `docs/guides/README.agent.md` — documentation.
+- `docs/icons.md` — documentation.
+- `docs/issue-552-readme-section-bot-ai-agent-quick-reference.md` — documentation.
+- `docs/issue-556-readme-section-bot-canonical-route-system.md` — documentation.
+- `docs/issue-560-readme-section-bot-runtime-model.md` — documentation.
+- `docs/issue-565-readme-section-bot-3-os-layer-naming-law-canonic.md` — documentation.
+- `docs/issue-571-readme-section-bot-9-daydream-pair-system-6-dayd.md` — documentation.
+- `docs/issue-573-readme-section-bot-11-games-gameengin.md` — documentation.
+- `docs/issue-600-readme-section-bot-recent-changes.md` — documentation.
+- `docs/issue-601-readme-section-bot-repository-state-analysis.md` — documentation.
+- `docs/issue-602-readme-section-bot-homedream-system.md` — documentation.
+- `docs/issue-603-readme-section-bot-core-surfaces.md` — documentation.
+- `docs/issue-604-readme-section-bot-current-implementation-status.md` — documentation.
+- `docs/issue-605-readme-section-bot-daydream-surfaces.md` — documentation.
+- `docs/issue-606-readme-section-bot-daydream-engin-network-model.md` — documentation.
+- `docs/issue-607-readme-section-bot-dreamdmbar-interaction-rail-r.md` — documentation.
+- `docs/issue-608-readme-section-bot-1-product-law-16-foundational.md` — documentation.
+- `docs/issue-609-readme-section-bot-6-homedream-core-system-priva.md` — documentation.
+- `docs/issue-610-readme-section-bot-10-music-starmakerengin.md` — documentation.
+- `docs/issue-611-readme-section-bot-12-lab-labengin.md` — documentation.
+- `docs/issue-612-readme-section-bot-13-code-codeengin.md` — documentation.
+- `docs/issue-613-readme-section-bot-7-edit-profiledream-core-syst.md` — documentation.
+- `docs/issue-617-readme-section-bot-8-view-profile-public-shared-.md` — documentation.
+- `docs/issue-620-readme-section-bot-what-this-is.md` — documentation.
+- `docs/issue-621-readme-section-bot-start-here.md` — documentation.
+- `docs/issue-622-readme-section-bot-structure.md` — documentation.
+- `docs/issue-623-readme-section-bot-root-rules.md` — documentation.
+- `docs/issue-647-readme-section-bot-how-to-regenerate-this-spec.md` — documentation.
+- `docs/logs/README_PATCH.md` — documentation.
+- `docs/mobile-nextgen-web-gaming-engine-spec.md` — documentation.
+- `docs/mobile-ps5-web-gaming-engine-spec.md` — documentation.
+- `docs/policy/theboogie.md` — documentation.
+- `docs/wasm_gpu_vm_spec.md` — documentation.
 
 </details>
 
