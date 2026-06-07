@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T00:57:10.433Z
+Generated: 2026-06-07T03:22:03.222Z
 
 ---
 
@@ -11502,7 +11502,7 @@ _No style files for this feature._
 | `./EnginIOAdapter` | `EnginIOAdapter`, `EnginSyncTransport`, `LocalStorageAdapter`, `MemorySyncTransport` |
 | `./EnginRuleSetContract` | `CompatibilityNegotiationResult`, `EnginAction`, `EnginRuleSetContract`, `EnginRuntimeFeature`, `negotiateRuleSetCompatibility`, `validateRuleSetState` |
 | `./EnginSnapshotFingerprint` | `fingerprintEnginSnapshot` |
-| `./HotRuntime` | `HotRuntime`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
+| `./HotRuntime` | `HotActionMetadata`, `HotLaneCommand`, `HotRuntime`, `HotRuntimeLane`, `MoldableModuleFrame`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
 | `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
 
 ## `lib/engin-runtime/EnginSnapshotFingerprint.ts`

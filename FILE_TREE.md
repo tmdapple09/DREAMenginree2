@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T00:57:10.557Z
+Generated: 2026-06-07T03:22:03.355Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -8950,7 +8950,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── negotiateRuleSetCompatibility  ← ./EnginRuleSetContract
 │   │   │   ├── validateRuleSetState  ← ./EnginRuleSetContract
 │   │   │   ├── fingerprintEnginSnapshot  ← ./EnginSnapshotFingerprint
+│   │   │   ├── HotActionMetadata  ← ./HotRuntime
+│   │   │   ├── HotLaneCommand  ← ./HotRuntime
 │   │   │   ├── HotRuntime  ← ./HotRuntime
+│   │   │   ├── HotRuntimeLane  ← ./HotRuntime
+│   │   │   ├── MoldableModuleFrame  ← ./HotRuntime
 │   │   │   ├── WebGPUComputeMeasurement  ← ./HotRuntime
 │   │   │   ├── WebGPUInitializationResult  ← ./HotRuntime
 │   │   │   ├── PremiumRuntimeQuality  ← ./PremiumRuntimeQuality
