@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T04:20:53.558Z
+Generated: 2026-06-07T04:30:04.118Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -12910,7 +12910,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
 │   │   │   │   ├── (dynamic)  ← @/engins/CodeEngin/orchestrator/dream.index
 │   │   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
-│   │   │   │   ├── (dynamic)  ← @/engins/dream.panel.AnalyticsEngin
 │   │   │   │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
 │   │   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
 │   │   │   │   ├── (dynamic)  ← @/engins/engin.CodeEngin

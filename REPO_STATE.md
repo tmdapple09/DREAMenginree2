@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T04:20:53.431Z
+Generated: 2026-06-07T04:30:04.002Z
 
 ---
 
@@ -13226,7 +13226,6 @@ _No style files for this feature._
 | `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession` | _(dynamic import)_ |
 | `@/engins/CodeEngin/orchestrator/dream.index` | _(dynamic import)_ |
 | `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
-| `@/engins/dream.panel.AnalyticsEngin` | _(dynamic import)_ |
 | `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
 | `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
 | `@/engins/engin.CodeEngin` | _(dynamic import)_ |
@@ -14659,7 +14658,6 @@ _No style files for this feature._
 - `@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession`
 - `@/engins/CodeEngin/orchestrator/dream.index`
 - `@/engins/dream.ForgeEngin`
-- `@/engins/dream.panel.AnalyticsEngin`
 - `@/engins/dream.QuantumCircuitCanvas`
 - `@/engins/engin.BrandingEngin`
 - `@/engins/engin.CodeEngin`
