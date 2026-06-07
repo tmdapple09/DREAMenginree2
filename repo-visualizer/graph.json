@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T05:27:59.248Z",
+  "generatedAt": "2026-06-07T07:09:29.810Z",
   "root": ".",
   "nodes": [
     {
@@ -18936,7 +18936,7 @@
       "path": "components/games/dream.hud.LegacyGameHUD.tsx",
       "parent": "folder:components/games",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -19156,7 +19156,7 @@
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "parent": "folder:components/games",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -53782,7 +53782,7 @@
       "path": "lib/widgets/WidgetEngine.tsx",
       "parent": "folder:lib/widgets",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -59374,7 +59374,7 @@
       "type": "function",
       "path": "scripts/wire-orphans.mjs",
       "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 51,
+      "loc": 182,
       "isOrphan": true,
       "exported": false
     },
@@ -59384,137 +59384,37 @@
       "type": "function",
       "path": "scripts/wire-orphans.mjs",
       "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 55,
+      "loc": 186,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/wire-orphans.mjs#inferEngine",
-      "label": "inferEngine",
+      "id": "function:scripts/wire-orphans.mjs#startsWithAny",
+      "label": "startsWithAny",
       "type": "function",
       "path": "scripts/wire-orphans.mjs",
       "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 60,
+      "loc": 191,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/wire-orphans.mjs#walkDirectory",
-      "label": "walkDirectory",
+      "id": "function:scripts/wire-orphans.mjs#pathContainsAny",
+      "label": "pathContainsAny",
       "type": "function",
       "path": "scripts/wire-orphans.mjs",
       "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 73,
+      "loc": 195,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/wire-orphans.mjs#collectScannedFiles",
-      "label": "collectScannedFiles",
+      "id": "function:scripts/wire-orphans.mjs#asTemplateLiteral",
+      "label": "asTemplateLiteral",
       "type": "function",
       "path": "scripts/wire-orphans.mjs",
       "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 102,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#detectExports",
-      "label": "detectExports",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 226,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#classifySlot",
-      "label": "classifySlot",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 265,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#toRegistryId",
-      "label": "toRegistryId",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 302,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#asImportLiteral",
-      "label": "asImportLiteral",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 306,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#buildLoaderLine",
-      "label": "buildLoaderLine",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 311,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#buildGeneratedModule",
-      "label": "buildGeneratedModule",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 322,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#buildGeneratedIndex",
-      "label": "buildGeneratedIndex",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 337,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#writeFileSafely",
-      "label": "writeFileSafely",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 370,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#buildRegistry",
-      "label": "buildRegistry",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 375,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/wire-orphans.mjs#runFromCli",
-      "label": "runFromCli",
-      "type": "function",
-      "path": "scripts/wire-orphans.mjs",
-      "parent": "file:scripts/wire-orphans.mjs",
-      "loc": 438,
+      "loc": 199,
       "isOrphan": true,
       "exported": false
     },
@@ -60222,6 +60122,56 @@
       "tags": []
     },
     {
+      "id": "file:src/engin/generated/dreamdmbar.ts",
+      "label": "dreamdmbar.ts",
+      "type": "ts",
+      "path": "src/engin/generated/dreamdmbar.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:src/engin/generated/dreamr.ts",
+      "label": "dreamr.ts",
+      "type": "ts",
+      "path": "src/engin/generated/dreamr.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:src/engin/generated/dreamsurfaces.ts",
+      "label": "dreamsurfaces.ts",
+      "type": "ts",
+      "path": "src/engin/generated/dreamsurfaces.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:src/engin/generated/engins.ts",
+      "label": "engins.ts",
+      "type": "ts",
+      "path": "src/engin/generated/engins.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:src/engin/generated/homedream.ts",
+      "label": "homedream.ts",
+      "type": "ts",
+      "path": "src/engin/generated/homedream.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:src/engin/generated/hooks.ts",
       "label": "hooks.ts",
       "type": "ts",
@@ -60237,7 +60187,7 @@
       "type": "function",
       "path": "src/engin/generated/index.ts",
       "parent": "file:src/engin/generated/index.ts",
-      "loc": 17,
+      "loc": 39,
       "isOrphan": true,
       "exported": true
     },
@@ -60246,6 +60196,16 @@
       "label": "index.ts",
       "type": "ts",
       "path": "src/engin/generated/index.ts",
+      "parent": "folder:src/engin/generated",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:src/engin/generated/osArchitectureMap.ts",
+      "label": "osArchitectureMap.ts",
+      "type": "ts",
+      "path": "src/engin/generated/osArchitectureMap.ts",
       "parent": "folder:src/engin/generated",
       "loc": null,
       "isOrphan": false,
@@ -85305,6 +85265,401 @@
       "kind": "import"
     },
     {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:dreamdmbar/dream.GlowingLight.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/barInteractions.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/bridgeSeamFlow.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/DreamSystemContext.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useDreamBarContext.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useDreamDMConversations.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useDreamDMDraft.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useDreamDMMessages.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useDreamSearch.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useMessagingCore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useModuleBarIntent.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:lib/dreamdm/useNotifications.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:app/dreamr/page.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:components/dreamr/dream.CloseFriendsSettings.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:components/dreamr/dream.panel.DreamRChannelPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/closeFriendsVisibility.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/dreamrfeed.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/feedCursor.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/socialHumanityScore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/swipeCalibration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/swipePersonalization.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamr.ts",
+      "target": "file:lib/dreamr/torridityLedger.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.connectorlayer.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.DraggableDream.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.featurelayer.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.GlobalDragLayer.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.outputlayer.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.PlatformErrorReporter.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.shell.DreamShell.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.shell.SharedDreamShell.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.SlideOverPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.widget.SuperDreamWidget.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dream.window.JourneyDreamWindow.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dreamsurface.dreamspace.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dreamsurface.shell.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:components/dreams/dreamsurface.window.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/connectionVerbs.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/DreamWindowLifecycle.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/enginConnectionNetwork.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/runtimeRegion.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dream-window/useDreamWindowActions.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/drag.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/dreamIntentBus.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/DreamRegistry.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/profileProjection.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/dreams/useDreamsRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/CrossWidgetPosting.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/feed-resolver.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/parse.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/parseConfig.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/useWidget.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/WidgetBus.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/WidgetEngine.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/WidgetEventBus.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/WidgetLinkGraph.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamsurfaces.ts",
+      "target": "file:lib/widgets/widgetRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/dream.ForgeEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/dream.QuantumCircuitCanvas.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.BrandingEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.CodeEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.ContentEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.GameEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.LabEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/engin.StarMakerEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/portfolio/dream.PortfolioEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/homedream.ts",
+      "target": "file:app/homedream/page.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/homedream.ts",
+      "target": "file:lib/home-buttons/button-groups.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/homedream.ts",
+      "target": "file:lib/home-buttons/contextual-home.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:src/engin/generated/hooks.ts",
       "target": "file:hooks/use-spatial.ts",
       "kind": "import"
@@ -85366,12 +85721,37 @@
     },
     {
       "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/engins.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/index.ts",
       "target": "file:src/engin/generated/rulesets.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/index.ts",
       "target": "file:src/engin/generated/surfaces.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/dreamsurfaces.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/dreamr.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/dreamdmbar.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/homedream.ts",
       "kind": "import"
     },
     {
@@ -85405,78 +85785,83 @@
       "kind": "import"
     },
     {
+      "source": "file:src/engin/generated/index.ts",
+      "target": "file:src/engin/generated/osArchitectureMap.ts",
+      "kind": "reexport"
+    },
+    {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "target": "file:lib/engins/brand/brandEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:lib/engins/brand/useBrandEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:lib/engins/code/codeEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:lib/engins/code/useCodeEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "target": "file:lib/engins/content/contentEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "target": "file:lib/engins/content/useContentEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/dream.ForgeEngin.tsx",
+      "target": "file:lib/engins/game/gameEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/dream.QuantumCircuitCanvas.tsx",
+      "target": "file:lib/engins/game/index.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.BrandingEngin.tsx",
+      "target": "file:lib/engins/game/useGameEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.CodeEngin.tsx",
+      "target": "file:lib/engins/lab/labEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.ContentEngin.tsx",
+      "target": "file:lib/engins/lab/useLabEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.GameEngin.tsx",
+      "target": "file:lib/engins/music/starMakerEnginRuleSet.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.LabEngin.tsx",
+      "target": "file:lib/engins/music/useStarMakerEnginRuntime.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/engin.StarMakerEngin.tsx",
+      "target": "file:lib/engins/useEnginWorkflow.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/rulesets.ts",
-      "target": "file:engins/portfolio/dream.PortfolioEngin.tsx",
+      "target": "file:lib/engins/workflowEngine.ts",
       "kind": "import"
     },
     {
@@ -86356,11 +86741,6 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:app/dreamr/page.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/dreamspace/page.tsx",
       "kind": "import"
     },
@@ -86572,11 +86952,6 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/gameengin/page.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:app/homedream/page.tsx",
       "kind": "import"
     },
     {
@@ -87286,96 +87661,6 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreamr/dream.CloseFriendsSettings.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreamr/dream.panel.DreamRChannelPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.connectorlayer.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.DraggableDream.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.featurelayer.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.GlobalDragLayer.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.outputlayer.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.PlatformErrorReporter.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.shell.DreamShell.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.shell.SharedDreamShell.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.SlideOverPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.widget.SuperDreamWidget.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dream.window.JourneyDreamWindow.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dreamsurface.shell.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dreams/dreamsurface.window.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/engines/brand/dream.BrandEnginApp.tsx",
       "kind": "import"
     },
@@ -87711,6 +87996,11 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/games/dream.hud.LegacyGameHUD.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/games/dream.hud.MobileGameHUD.tsx",
       "kind": "import"
     },
@@ -87752,6 +88042,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/games/dream.remote.GameRemoteSurface.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/games/dream.remote.LegacyGameRemote.tsx",
       "kind": "import"
     },
     {
@@ -88746,86 +89041,6 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/connectionVerbs.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/DreamWindowLifecycle.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/enginConnectionNetwork.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/index.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/runtimeRegion.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dream-window/useDreamWindowActions.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/barInteractions.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/bridgeSeamFlow.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useDreamBarContext.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useDreamDMConversations.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useDreamDMDraft.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useDreamDMMessages.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useDreamSearch.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useMessagingCore.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useModuleBarIntent.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamdm/useNotifications.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/dreamengin/DrEamsAnimator.ts",
       "kind": "import"
     },
@@ -88876,56 +89091,6 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/closeFriendsVisibility.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/feedCursor.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/socialHumanityScore.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/swipeCalibration.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/swipePersonalization.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreamr/torridityLedger.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreams/drag.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreams/profileProjection.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreams/types.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/dreams/useDreamsRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/engin-runtime/EnginBaseState.ts",
       "kind": "import"
     },
@@ -88936,12 +89101,42 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginDomainCores.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/engin-runtime/EnginEventBus.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/engin-runtime/EnginIOAdapter.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
       "kind": "import"
     },
     {
@@ -88956,7 +89151,27 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/HotRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/engin-runtime/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/InternalMetrics.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
       "kind": "import"
     },
     {
@@ -88987,81 +89202,6 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/enginpipe/telemetry/events.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/brand/brandEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/brand/useBrandEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/code/useCodeEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/content/contentEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/content/useContentEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/game/gameEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/game/index.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/game/useGameEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/lab/labEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/lab/useLabEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/music/starMakerEnginRuleSet.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/music/useStarMakerEnginRuntime.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/useEnginWorkflow.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/engins/workflowEngine.ts",
       "kind": "import"
     },
     {
@@ -89567,16 +89707,6 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/h265-encoder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/home-buttons/button-groups.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/home-buttons/contextual-home.ts",
       "kind": "import"
     },
     {
@@ -90322,51 +90452,6 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/webgpu/useWebGPUDirector.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/CrossWidgetPosting.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/feed-resolver.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/parse.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/parseConfig.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/useWidget.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/WidgetBus.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/WidgetEventBus.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/WidgetLinkGraph.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/widgets/widgetRegistry.ts",
       "kind": "import"
     },
     {
@@ -100361,7 +100446,7 @@
     },
     {
       "source": "file:scripts/check-orphans.mjs",
-      "target": "function:scripts/wire-orphans.mjs#buildRegistry",
+      "target": "file:scripts/wire-orphans.mjs",
       "kind": "call"
     },
     {
