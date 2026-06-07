@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T03:41:40.042Z
+Generated: 2026-06-07T04:16:07.863Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -6634,32 +6634,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useCallback  ← react
 │   │   ├── useEffect  ← react
 │   │   ├── useMemo  ← react
-│   │   ├── useState  ← react
-│   │   ├── → (default)
-│   │   └── ∅ unused: (default)
-│   ├── dream.panel.AnalyticsEngin.tsx ⚠ ∅
-│   │   ├── ActivityProfile  ← @/components/activity/dream.ActivityProfile
-│   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
-│   │   ├── ⬡ CrossEnginStatusPanel  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
-│   │   ├── GetPlatformMetricsResponse  ← @/lib/activity/types
-│   │   ├── PLATFORM_HEALTH_TARGETS  ← @/lib/activity/types
-│   │   ├── SkipCredit  ← @/lib/activity/types
-│   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
-│   │   ├── useForgeActivity  ← @/lib/forge/useForgeActivity
-│   │   ├── useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
-│   │   ├── createClient  ⚠ @/lib/supabase/client
-│   │   ├── SupabaseClient  ← @supabase/supabase-js
-│   │   ├── Activity  ← lucide-react
-│   │   ├── ArrowLeft  ← lucide-react
-│   │   ├── BarChart2  ← lucide-react
-│   │   ├── DollarSign  ← lucide-react
-│   │   ├── Eye  ← lucide-react
-│   │   ├── RefreshCw  ← lucide-react
-│   │   ├── Shield  ← lucide-react
-│   │   ├── TrendingUp  ← lucide-react
-│   │   ├── Zap  ← lucide-react
-│   │   ├── ⬡ Link  ← next/link
-│   │   ├── useEffect  ← react
 │   │   ├── useState  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)

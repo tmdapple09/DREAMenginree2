@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T03:41:39.918Z
+Generated: 2026-06-07T04:16:07.741Z
 
 ---
 
@@ -10358,23 +10358,6 @@ _No style files for this feature._
 |--------|---------------|
 | `react` | `useCallback`, `useEffect`, `useMemo`, `useRef` |
 
-## `engins/dream.panel.AnalyticsEngin.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
-| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
-| `@/components/dreamengin/dream.panel.CrossEnginStatusPanel` | `⬡ CrossEnginStatusPanel` |
-| `@/lib/activity/types` | `GetPlatformMetricsResponse`, `PLATFORM_HEALTH_TARGETS`, `SkipCredit` |
-| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
-| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
-| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
-| `@/lib/supabase/client` | `createClient` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-| `lucide-react` | `Activity`, `ArrowLeft`, `BarChart2`, `DollarSign`, `Eye`, `RefreshCw`, `Shield`, `TrendingUp`, `Zap` |
-| `next/link` | `⬡ Link` |
-| `react` | `useEffect`, `useState` |
-
 ## `engins/engin.BrandingEngin.tsx`
 
 | Module | Connected via |
@@ -16944,10 +16927,6 @@ _No style files for this feature._
 
 - `engins/dream.QuantumCircuitCanvas.tsx`
 
-## `engins/dream.panel.AnalyticsEngin.tsx/`
-
-- `engins/dream.panel.AnalyticsEngin.tsx`
-
 ## `engins/engin.BrandingEngin.tsx/`
 
 - `engins/engin.BrandingEngin.tsx`
@@ -17604,7 +17583,6 @@ _No style files for this feature._
 - `coresurfaces/dreamsurface.ViewProfile.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 - `engine/io.ts`
-- `engins/dream.panel.AnalyticsEngin.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
 - `engins/engin.ContentEngin.tsx`
@@ -17852,7 +17830,6 @@ _No circular dependencies detected._
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
-| `engins/dream.panel.AnalyticsEngin.tsx` | 12 | HIGH_COUPLING |
 | `lib/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
 | `app/api/ai/boogieman/route.ts` | 11 | HIGH_COUPLING |
@@ -18496,7 +18473,6 @@ _No circular dependencies detected._
 | `daydreams/music/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `daydreams/music/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `engins/CodeEngin/orchestrator/dream.index.tsx` | `@/engins/CodeEngin/orchestrator` | `⬡ CodeEnginOrchestrator` |
-| `engins/dream.panel.AnalyticsEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `engins/engin.CodeEngin.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -18912,7 +18888,6 @@ _No circular dependencies detected._
 | `engins/autoopen/dream.AutoOpenGameEngin.tsx` | `(default)` |
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `(default)` |
-| `engins/dream.panel.AnalyticsEngin.tsx` | `(default)` |
 | `engins/engin.BrandingEngin.tsx` | `(default)` |
 | `engins/engin.CodeEngin.tsx` | `(default)` |
 | `engins/engin.ContentEngin.tsx` | `(default)` |
@@ -21080,9 +21055,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── dream.ForgeEngin.tsx ∅
-│   │   └── ∅ unused: (default)
-│   ├── dream.panel.AnalyticsEngin.tsx ⚠ ∅
-│   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: (default)
 │   ├── dream.QuantumCircuitCanvas.tsx ∅
 │   │   └── ∅ unused: (default)
