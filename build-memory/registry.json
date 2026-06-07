@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-06-02T03:57:00.381Z",
+  "generatedAt": "2026-06-07T05:35:28.580Z",
   "totals": {
     "surface": 296,
-    "route-surface": 264,
-    "engine-ruleset": 26,
+    "route-surface": 263,
+    "engine-ruleset": 25,
     "connector": 26,
     "brain-node": 67,
     "brain-doc": 18,
     "cartridge": 8,
     "persona": 6,
-    "migration": 55,
+    "migration": 56,
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 62,
-    "engine-utility": 350
+    "engine-utility": 361
   },
   "entries": [
     {
@@ -994,16 +994,6 @@
       "id": "app/connectors/page",
       "slot": "route-surface",
       "path": "app/connectors/page.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default",
-        "metadata"
-      ]
-    },
-    {
-      "id": "app/daydream/analytics/page",
-      "slot": "route-surface",
-      "path": "app/daydream/analytics/page.tsx",
       "engine": "Universal",
       "exports": [
         "default",
@@ -2597,15 +2587,6 @@
       ]
     },
     {
-      "id": "components/daydream/dreamsurface.daydream.AnalyticsDaydream",
-      "slot": "surface",
-      "path": "components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default"
-      ]
-    },
-    {
       "id": "components/daydream/dreamsurface.daydream.BrandDaydream",
       "slot": "surface",
       "path": "components/daydream/dreamsurface.daydream.BrandDaydream.tsx",
@@ -4155,6 +4136,16 @@
       ]
     },
     {
+      "id": "components/games/dream.remote.GameRemoteSurface",
+      "slot": "surface",
+      "path": "components/games/dream.remote.GameRemoteSurface.tsx",
+      "engine": "GameEngin",
+      "exports": [
+        "default",
+        "GameInputAction"
+      ]
+    },
+    {
       "id": "components/games/dream.remote.LegacyGameRemote",
       "slot": "surface",
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
@@ -5425,15 +5416,6 @@
       "id": "engins/dream.ForgeEngin",
       "slot": "engine-ruleset",
       "path": "engins/dream.ForgeEngin.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default"
-      ]
-    },
-    {
-      "id": "engins/dream.panel.AnalyticsEngin",
-      "slot": "engine-ruleset",
-      "path": "engins/dream.panel.AnalyticsEngin.tsx",
       "engine": "Universal",
       "exports": [
         "default"
@@ -7847,6 +7829,17 @@
       ]
     },
     {
+      "id": "lib/dreams/dreamIntentBus",
+      "slot": "engine-utility",
+      "path": "lib/dreams/dreamIntentBus.ts",
+      "engine": "Universal",
+      "exports": [
+        "DreamIntentContext",
+        "DreamIntentResult",
+        "registerDreamIntentHandler"
+      ]
+    },
+    {
       "id": "lib/dreams/profileProjection",
       "slot": "engine-utility",
       "path": "lib/dreams/profileProjection.ts",
@@ -7863,11 +7856,30 @@
       "path": "lib/dreams/types.ts",
       "engine": "Universal",
       "exports": [
+        "createDream",
+        "Dream",
+        "DREAM_KINDS",
+        "DREAM_RENDER_MODES",
+        "DREAM_SURFACES",
+        "DREAM_VISIBILITIES",
+        "dreamCan",
         "DreamCapabilityMap",
+        "DreamKind",
         "DreamLayer",
+        "DreamPermissions",
+        "DreamPlacement",
         "DreamProjection",
+        "DreamRenderMode",
+        "DrEamsIntent",
+        "DrEamsIntentType",
         "DreamSurface",
-        "DreamVisibility"
+        "DreamSurfaceAdapter",
+        "DreamVisibility",
+        "isDream",
+        "NO_PERMISSIONS",
+        "OWNER_PERMISSIONS",
+        "resolveDreamSurfaceAdapter",
+        "VIEWER_PERMISSIONS"
       ]
     },
     {
@@ -7897,7 +7909,12 @@
         "EnginLifecycle",
         "isDomainObject",
         "isEnginBaseState",
+        "isJsonObject",
         "isJsonSerializable",
+        "JsonArray",
+        "JsonObject",
+        "JsonPrimitive",
+        "JsonValue",
         "patchBaseState"
       ]
     },
@@ -7920,6 +7937,164 @@
       ]
     },
     {
+      "id": "lib/engin-runtime/EnginCapabilityExecution",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
+      "engine": "Universal",
+      "exports": [
+        "AudioTrackMixer",
+        "CodeEditPatch",
+        "CodeEditRingBuffer",
+        "CollaborationDeltaPacker",
+        "createEnginCapabilityExecutionKernel",
+        "EnginCapabilityExecutionKernel",
+        "EnginExecutionPlan",
+        "ExecutionSubsystem",
+        "GeometryBatcher",
+        "GeometryBatchInput",
+        "GeometryBatchPlan",
+        "getEnginExecutionPlan",
+        "MidiEventRingBuffer",
+        "ParticleSoAKernel",
+        "Ray3",
+        "RayBox",
+        "RayGridAccelerator",
+        "RayHit",
+        "VectorPathCache"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginCapabilityScorecard",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
+      "engine": "Universal",
+      "exports": [
+        "createEnginCapabilityScorecard",
+        "EnginCapabilityScorecard",
+        "EnginCapabilityScorecardEntry",
+        "MetricMeasurement",
+        "MetricStatus"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginCapabilityTargets",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
+      "engine": "Universal",
+      "exports": [
+        "acceptanceValueForTarget",
+        "CANONICAL_ENGIN_ALIASES",
+        "CANONICAL_ENGIN_IDS",
+        "CanonicalEnginId",
+        "capabilityProfileMatchesRuleSet",
+        "CapabilityProfileValidation",
+        "CapabilityTargetDimension",
+        "CapabilityTargetDirection",
+        "CapabilityTargetEvaluation",
+        "CapabilityTargetUnit",
+        "createCustomEnginCapabilityProfile",
+        "CustomEnginProfileId",
+        "ENGIN_CAPABILITY_PROFILES",
+        "EnginCapabilityProfile",
+        "EnginCapabilityTarget",
+        "EnginProfileId",
+        "evaluateCapabilityTarget",
+        "getEnginCapabilityProfile",
+        "isCanonicalEnginId",
+        "isCustomEnginProfileId",
+        "isEnginProfileId",
+        "toCustomEnginProfileId",
+        "validateCanonicalEnginCapabilityProfiles",
+        "validateEnginCapabilityProfile"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginDomainCores",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginDomainCores.ts",
+      "engine": "Universal",
+      "exports": [
+        "AssetManifestLoader",
+        "BrandCollaborationDeltaPacker",
+        "BrandCollaborationSyncProbe",
+        "BrandFileHydrator",
+        "BrandFileOpenProbe",
+        "BrandLocalApplyQueue",
+        "BrandPaletteCache",
+        "BrandPatchLog",
+        "BrandSdfGlyphAtlas",
+        "BrandTypeScaleCache",
+        "BrandVectorPathCache",
+        "BrandVectorRenderProbe",
+        "CacheStorageRuntime",
+        "CodeDiagnosticWorkerBridge",
+        "CodeEditorHotState",
+        "CodeEditRingBuffer",
+        "CodeExecutionWorkerBridge",
+        "CodeKeystrokeBenchmark",
+        "CodePieceTableDocument",
+        "CodeSnapshotCompactor",
+        "CodeStartupHydrator",
+        "CollaborationApplyQueue",
+        "CollaborationDeltaPacker",
+        "CollaborationRevisionClock",
+        "ContentGeometryBufferRegistry",
+        "ContentGpuCapabilityProbe",
+        "ContentMaterialBufferRegistry",
+        "ContentProgressiveOutputBuffer",
+        "ContentRayAccelerationStructure",
+        "ContentRenderBenchmark",
+        "ContentRenderJobQueue",
+        "ContentSceneSnapshot",
+        "ContentTileRenderer4K",
+        "ContentWebGPURenderPath",
+        "ContentWorkerRenderBridge",
+        "CrdtPatchModel",
+        "createCanonicalScorecards",
+        "DeterministicMergePatchModel",
+        "GameFrameBudgetProbe",
+        "GameFrustumCuller",
+        "GameGeometryBufferRegistry",
+        "GameGeometryThroughputBenchmark",
+        "GameInputRingBuffer",
+        "GameInstanceBufferManager",
+        "GameLODSelector",
+        "GameMaterialBucketBuffer",
+        "GamePhysicsCommandBuffer",
+        "GameRenderLoop",
+        "GameWebGPUDevice",
+        "IdleMemoryProbe",
+        "IndexedDbBlobStore",
+        "LabCollisionBenchmark",
+        "LabCollisionCandidateBuffer",
+        "LabCollisionKernel",
+        "LabComputeShaderRegistry",
+        "LabGpuDispatchProbe",
+        "LabGpuParticleBuffers",
+        "LabParticleBenchmark1M",
+        "LabParticleBenchmark64K",
+        "LabParticleSoABuffer",
+        "LabSimulationClock",
+        "LabSimulationWorkerBridge",
+        "LabSpatialHashGrid",
+        "LabWasmSimdFallback",
+        "LabWebGPUComputePipeline",
+        "LazyEnginHydrator",
+        "MidiEventRingBuffer",
+        "StarMakerAudioCommandQueue",
+        "StarMakerAudioWorkletBridge",
+        "StarMakerAudioWorkletProcessor",
+        "StarMakerLatencyProbe",
+        "StarMakerMeteringDecoupler",
+        "StarMakerMixerKernel",
+        "StarMakerTrackBufferPool",
+        "StarMakerTransportClock",
+        "StartupBudgetProbe",
+        "StreamingAssetLoader",
+        "TransportLatencyProbe"
+      ]
+    },
+    {
       "id": "lib/engin-runtime/EnginEventBus",
       "slot": "engine-utility",
       "path": "lib/engin-runtime/EnginEventBus.ts",
@@ -7927,8 +8102,19 @@
       "exports": [
         "createEnginEventBus",
         "EnginEventBus",
+        "EnginEventHandler",
         "EnginEventMap",
         "EnginLifecycleEvents"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginHardwareCapabilities",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
+      "engine": "Universal",
+      "exports": [
+        "EnginHardwareCapabilities",
+        "fallbackEnginHardwareCapabilities"
       ]
     },
     {
@@ -7939,8 +8125,24 @@
       "exports": [
         "EnginIOAdapter",
         "enginStorageKey",
+        "EnginSyncDirection",
+        "EnginSyncFrame",
+        "EnginSyncTransport",
         "LocalStorageAdapter",
-        "MemoryAdapter"
+        "MemoryAdapter",
+        "MemorySyncTransport"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginPerformanceProbe",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
+      "engine": "Universal",
+      "exports": [
+        "EnginPerformanceProbe",
+        "gpuMeasurementOrHardwareDependent",
+        "IdleMemoryProbe",
+        "StartupBudgetProbe"
       ]
     },
     {
@@ -7949,12 +8151,20 @@
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "engine": "Universal",
       "exports": [
+        "CompatibilityNegotiationResult",
         "ConstraintResult",
         "EnginAction",
+        "EnginCompatibilityRange",
         "EnginConstraint",
         "EnginRuleSetContract",
+        "EnginRuleSetManifest",
         "EnginRuleSetParams",
-        "EnginTransform"
+        "EnginRuleSetSchema",
+        "EnginRuntimeFeature",
+        "EnginTransform",
+        "negotiateRuleSetCompatibility",
+        "validateRuleSetManifest",
+        "validateRuleSetState"
       ]
     },
     {
@@ -7963,8 +8173,67 @@
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "engine": "Universal",
       "exports": [
+        "ENGIN_RUNTIME_FEATURES",
+        "ENGIN_RUNTIME_VERSION",
+        "EnginHardwareAccelerationState",
         "EnginRuntime",
-        "EnginRuntimeOptions"
+        "EnginRuntimeOptions",
+        "RuntimeWorkFlushResult"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/EnginSnapshotFingerprint",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
+      "engine": "Universal",
+      "exports": [
+        "fingerprintBytesWithWasm",
+        "fingerprintEnginSnapshot",
+        "hashBytesFNV1A",
+        "stableStringifySnapshot",
+        "WasmFingerprintExports"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/HotRuntime",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/HotRuntime.ts",
+      "engine": "Universal",
+      "exports": [
+        "AudioWorkletRuntime",
+        "BinaryCommandBus",
+        "BinaryCommandPacket",
+        "CoalescedCommandQueue",
+        "CommandRingBuffer",
+        "DeferredPersistenceQueue",
+        "DeferredSyncQueue",
+        "GpuBufferKind",
+        "GpuBufferRegistry",
+        "HotActionClassifier",
+        "HotActionKind",
+        "HotActionMetadata",
+        "HotLaneCommand",
+        "HotLaneScheduler",
+        "HotRuntime",
+        "HotRuntimeLane",
+        "HotRuntimePriority",
+        "JsonSafeGpuAdapterInfo",
+        "MoldableModuleFrame",
+        "MoldableModuleGpuBridge",
+        "MoldableModuleOperation",
+        "RevisionCoalescer",
+        "ShaderKernelDefinition",
+        "ShaderKernelRegistry",
+        "SnapshotCompactor",
+        "TypedMemoryArena",
+        "WasmKernelRuntime",
+        "WebGPUComputeMeasurement",
+        "WebGPUDeviceRuntime",
+        "WebGPUDispatchOptions",
+        "WebGPUInitializationResult",
+        "WebGPUInitializeOptions",
+        "WebGPUInitState",
+        "WorkerPoolRuntime"
       ]
     },
     {
@@ -7973,22 +8242,111 @@
       "path": "lib/engin-runtime/index.ts",
       "engine": "Universal",
       "exports": [
+        "acceptanceValueForTarget",
+        "AudioTrackMixer",
+        "AudioWorkletRuntime",
         "authorizeDomainCapability",
+        "BinaryCommandBus",
+        "CANONICAL_ENGIN_IDS",
+        "capabilityProfileMatchesRuleSet",
+        "CodeEditRingBuffer",
+        "CollaborationDeltaPacker",
+        "CommandRingBuffer",
         "createBaseState",
+        "createCustomEnginCapabilityProfile",
         "createDomainObject",
+        "createEnginCapabilityExecutionKernel",
+        "createEnginCapabilityScorecard",
         "createEnginEventBus",
         "createEnginRuntime",
+        "createPremiumRuntimeQuality",
         "DEFAULT_USER_CAPABILITIES",
+        "DeferredPersistenceQueue",
+        "DeferredSyncQueue",
         "DENY_ALL",
+        "detectEnginHardwareCapabilities",
+        "detectWasmSimdSupport",
+        "DevOnlyBenchmarkRunner",
+        "ENGIN_CAPABILITY_PROFILES",
+        "ENGIN_RUNTIME_FEATURES",
+        "ENGIN_RUNTIME_VERSION",
+        "EnginCapabilityExecutionKernel",
+        "EnginPerformanceProbe",
         "EnginRuntime",
         "enginStorageKey",
+        "evaluateCapabilityTarget",
+        "fallbackEnginHardwareCapabilities",
+        "fingerprintBytesWithWasm",
+        "fingerprintEnginSnapshot",
         "gateCapability",
+        "GeometryBatcher",
+        "getEnginCapabilityProfile",
+        "getEnginExecutionPlan",
+        "GpuBufferRegistry",
+        "gpuMeasurementOrHardwareDependent",
+        "hashBytesFNV1A",
+        "HotActionClassifier",
+        "HotRuntime",
+        "IdleMemoryProbe",
+        "InternalOnlyMetricStore",
+        "isCanonicalEnginId",
+        "isCustomEnginProfileId",
         "isDomainObject",
         "isEnginBaseState",
+        "isEnginProfileId",
+        "isJsonObject",
+        "isJsonSerializable",
         "LocalStorageAdapter",
         "MemoryAdapter",
+        "MemorySyncTransport",
         "mergeCapabilities",
-        "patchBaseState"
+        "MidiEventRingBuffer",
+        "negotiateRuleSetCompatibility",
+        "ParticleSoAKernel",
+        "patchBaseState",
+        "RayGridAccelerator",
+        "RevisionCoalescer",
+        "SnapshotCompactor",
+        "stableStringifySnapshot",
+        "StartupBudgetProbe",
+        "toCustomEnginProfileId",
+        "TypedMemoryArena",
+        "UserFacingMetricLeakTest",
+        "validateCanonicalEnginCapabilityProfiles",
+        "validateEnginCapabilityProfile",
+        "validatePremiumRuntimeQuality",
+        "validateRuleSetManifest",
+        "validateRuleSetState",
+        "VectorPathCache",
+        "WasmKernelRuntime",
+        "WebGPUDeviceRuntime",
+        "WorkerPoolRuntime"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/InternalMetrics",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/InternalMetrics.ts",
+      "engine": "Universal",
+      "exports": [
+        "DevOnlyBenchmarkRunner",
+        "InternalOnlyMetricStore",
+        "UserFacingMetricLeakTest"
+      ]
+    },
+    {
+      "id": "lib/engin-runtime/PremiumRuntimeQuality",
+      "slot": "engine-utility",
+      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
+      "engine": "Universal",
+      "exports": [
+        "createPremiumRuntimeQuality",
+        "PremiumLayerTier",
+        "PremiumRuntimeMaterial",
+        "PremiumRuntimeQuality",
+        "PremiumRuntimeQualityInput",
+        "PremiumRuntimeQualityValidation",
+        "validatePremiumRuntimeQuality"
       ]
     },
     {
@@ -9760,6 +10118,7 @@
         "BTNode",
         "BTStatus",
         "ClientSidePrediction",
+        "ComputationFocus",
         "ComputeDispatch",
         "ComputeKernel",
         "ComputeShaderPipeline",
@@ -9782,6 +10141,7 @@
         "PhysicsBodyDef",
         "PhysicsBodyType",
         "PhysicsConstraint",
+        "PhysicsDensityStats",
         "PhysicsMaterial",
         "PhysicsMaterialSystem",
         "PredictionState",
@@ -10274,17 +10634,20 @@
         "emitMobileLookDelta",
         "emitMobileMove",
         "emitMobileShoot",
-        "fireLegacyGameInput",
-        "getLegacyActionForMobileButton",
-        "getLegacyMoveAction",
+        "fireGameRemoteInput",
+        "GameRemoteInputAction",
+        "getRemoteActionForMobileButton",
+        "getRemoteMoveAction",
         "MOBILE_HUD_BUTTON_RING",
         "MobileControlVector",
+        "MobileEventDetail",
         "MobileGameControlHandlers",
         "MobileHudButton",
         "MobileHudMode",
         "MobileHudRingButtonDefinition",
         "normalizeStickVector",
         "registerMobileGameControls",
+        "RemoteMoveAction",
         "useRegisterMobileGameControls"
       ]
     },
@@ -11047,6 +11410,7 @@
       "path": "lib/music/starmakerDaw.ts",
       "engine": "Universal",
       "exports": [
+        "analyzeStereoPcm",
         "AUDIO_QUALITY_PRESETS",
         "AudioQualityConfig",
         "audioQualityLabel",
@@ -11067,18 +11431,26 @@
         "createInitialSessionView",
         "createInitialWarpState",
         "createMidiNote",
+        "encodeWav24Bit",
         "isBlackKey",
         "MidiNote",
         "midiPitchToName",
         "PIANO_ROLL_DEFAULTS",
         "PianoRollQuantize",
         "PianoRollState",
+        "RealtimeStarMakerAudioEngine",
+        "renderStarMakerPattern",
         "SampleRateHz",
         "SessionClip",
         "SessionScene",
         "SessionTrack",
         "SessionViewState",
         "snapToGrid",
+        "StarMakerAudioDiagnostics",
+        "StarMakerSequencerMixer",
+        "StarMakerSequencerQuality",
+        "StarMakerSequencerSnapshot",
+        "StarMakerStereoPcm",
         "TAKE_COLORS",
         "TakeRating",
         "WarpMarker",
@@ -13061,7 +13433,9 @@
       "slot": "engine-utility",
       "path": "lib/webgpu.ts",
       "engine": "Universal",
-      "exports": []
+      "exports": [
+        "WebGPURuntimeInitialization"
+      ]
     },
     {
       "id": "lib/webgpu/adaptiveQuality",
@@ -13784,6 +14158,13 @@
       "id": "supabase/migrations/20260516000300_shared_dream_sessions",
       "slot": "migration",
       "path": "supabase/migrations/20260516000300_shared_dream_sessions.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260605015234_auto_scaffold",
+      "slot": "migration",
+      "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
       "engine": "Universal",
       "exports": []
     }
