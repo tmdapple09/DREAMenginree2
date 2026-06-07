@@ -66,11 +66,19 @@ export type CartridgeCapability =
 
 export interface CartridgeInputEvent {
   key: string;
-  type: 'keydown' | 'keyup' | 'touchstart' | 'touchend' | 'gamepad';
+  type: 'keydown' | 'keyup' | 'touchstart' | 'touchend' | 'gamepad' | 'remote';
   preventDefault: () => void;
   gamepadButton?: number;
   touchX?: number;
   touchY?: number;
+  /** Unified GameRemote / mobile / controller action name. */
+  action?: string;
+  /** Whether the action is pressed/active or released/inactive. */
+  active?: boolean;
+  /** Source of the normalized input event. */
+  source?: 'keyboard' | 'touch' | 'gamepad' | 'dualsense' | 'remote' | 'mobile';
+  /** Current cartridge receiving the event, when emitted by GameRuntime. */
+  cartridgeId?: string;
 }
 
 // ── Save State ────────────────────────────────────────────────────────────────

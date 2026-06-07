@@ -14,3 +14,5 @@ export {
 export {
     CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, type CartridgeLoader
 } from './loaders';
+
+export { assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders } from './loaders';

@@ -7,12 +7,9 @@
  * Lives at /engines/games/scores.
  */
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Loader2, RefreshCw, Share2, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { toErrorMessage } from '@/lib/utils';
 interface GameScore {
   id: string;
   game: string;
@@ -30,28 +27,45 @@ export default function ScoresPanel( ){
   async function loadScores( ){
     setLoading(true);
     setError(null);
-    const supabase = createClient();
-    const user = await safeGetUser(supabase);
-    if (!user) { setLoading(false); return; }
-    const { data, error: err } = await supabase
-      .from('game_scores')
-      .select('id, game, score, created_at, shared')
-      .eq('user_id', user.id)
-      .order('score', { ascending: false })
-      .limit(50);
-    if (err) setError(toErrorMessage(err));
-    else setScores(data ?? []);
-    setLoading(false);
+    try {
+      const response = await fetch('/api/game-scores?mine=1&limit=50', { cache: 'no-store' });
+      const payload = await response.json() as { data?: GameScore[] | null; error?: string | null };
+      if (!response.ok || payload.error) {
+        setError(payload.error ?? 'Failed to load GameEngin scores.');
+        setScores([]);
+      } else {
+        setScores(payload.data ?? []);
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to load GameEngin scores.');
+      setScores([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { loadScores(); }, []);
 
   async function shareScore(id: string ){
     setSharing(id);
-    const supabase = createClient();
-    await supabase.from('game_scores').update({ shared: true }).eq('id', id);
-    setScores((prev) => prev.map((s) => s.id === id ? { ...s, shared: true } : s));
-    setSharing(null);
+    setError(null);
+    try {
+      const response = await fetch('/api/game-scores', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, shared: true }),
+      });
+      const payload = await response.json() as { data?: GameScore | null; error?: string | null };
+      if (!response.ok || payload.error) {
+        setError(payload.error ?? 'Failed to share score.');
+        return;
+      }
+      setScores((prev) => prev.map((s) => s.id === id ? { ...s, shared: true } : s));
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to share score.');
+    } finally {
+      setSharing(null);
+    }
   }
 
   const formatGame = (g: string) =>

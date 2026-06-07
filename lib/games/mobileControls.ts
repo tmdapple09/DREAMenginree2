@@ -99,7 +99,7 @@ export function getRemoteMoveAction(vector: MobileControlVector, deadZone = 0.24
 }
 
 export function fireGameRemoteInput(action: GameRemoteInputAction, active: boolean): void {
-  emitWindowEvent('de-game-input', { action, active });
+  emitWindowEvent('de-game-input', { action, active, source: 'mobile' });
   broadcastGameInput(action, active);
 }
 

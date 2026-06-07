@@ -32,7 +32,7 @@ import type {
     GameEngineAPI,
     GravityPreset,
 } from './cartridge';
-import { ENGINE_VERSION, GRAVITY_VALUES } from './cartridge';
+import { ENGINE_VERSION, GRAVITY_VALUES, engineSatisfies } from './cartridge';
 import { createAchievementsAPI } from './cartridges/achievementEngine';
 import {
     stubAssetsAPI,
@@ -41,6 +41,7 @@ import {
     stubNetworkAPI,
 } from './cartridges/apiStubs';
 import { createSaveAPI } from './cartridges/saveState';
+import { createGameEnginExecutionKernel, type GameEnginExecutionKernel } from './executionWiring';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -54,15 +55,24 @@ const MAX_DISPLAY_FPS = 999;
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
+export interface GameRuntimeCrash {
+  name?: string;
+  message?: string;
+  stack?: string;
+  gameplay?: Record<string, unknown>;
+}
+
 export interface GameRuntimeProps {
   cartridge: GameCartridge | null;
   physicsConfig: { gravity: GravityPreset; friction: number } | null;
   onFrame?: (fps: number) => void;
+  /** Optional crash bridge used by GameEngin and cartridge routes to open the Brain crash report flow. */
+  onCrash?: (crash: GameRuntimeCrash) => void;
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameRuntimeProps) {
+export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash }: GameRuntimeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Mutable refs for RAF loop state
@@ -77,15 +87,23 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
   const frameTimesRef      = useRef<number[]>([]);
   const fpsIntervalRef     = useRef(0);
   const cleanupRef         = useRef<(() => void) | null>(null);
+  const mountedCartridgeRef = useRef<GameCartridge | null>(null);
   const physicsRef         = useRef(physicsConfig);
   const onFrameRef         = useRef(onFrame);
+  const onCrashRef         = useRef(onCrash);
   const scoreChannelRef    = useRef(
     createLocalChannel<{ type: 'game:score-submit'; gameId: string; score: number; level?: number }>('engine:game-scores'),
   );
+  const executionKernelRef = useRef<GameEnginExecutionKernel | null>(null);
+
+  if (executionKernelRef.current === null) {
+    executionKernelRef.current = createGameEnginExecutionKernel();
+  }
 
   // Keep refs in sync
   physicsRef.current  = physicsConfig;
   onFrameRef.current  = onFrame;
+  onCrashRef.current  = onCrash;
 
   // ── Build the complete GameEngineAPI ───────────────────────────────────────
 
@@ -210,6 +228,33 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
     };
   }, []);
 
+  const reportRuntimeCrash = useCallback((error: unknown, gameplay?: Record<string, unknown>) => {
+    const err = error instanceof Error ? error : new Error(String(error));
+    const crash = {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+      gameplay,
+    };
+    executionKernelRef.current?.onCrash({
+      cartridgeId: typeof gameplay?.cartridgeId === 'string' ? gameplay.cartridgeId : undefined,
+      phase: typeof gameplay?.phase === 'string' ? gameplay.phase : undefined,
+      message: err.message,
+      stack: err.stack,
+    });
+    onCrashRef.current?.(crash);
+  }, []);
+
+
+  const persistCartridgeSnapshot = useCallback((mountedCartridge: GameCartridge) => {
+    if (!mountedCartridge.serialize || !(mountedCartridge.capabilities ?? []).includes('save-state')) return;
+    try {
+      void createSaveAPI(mountedCartridge.id).autoSave(mountedCartridge.serialize());
+    } catch (error: unknown) {
+      reportRuntimeCrash(error, { cartridgeId: mountedCartridge.id, phase: 'autosave' });
+    }
+  }, [reportRuntimeCrash]);
+
   // ── Keyboard input wiring ──────────────────────────────────────────────────
 
   useEffect(() => {
@@ -221,6 +266,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
       const payload = {
         key: e.key,
         type,
+        source: 'keyboard' as const,
         preventDefault: () => e.preventDefault(),
       };
       
@@ -232,6 +278,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
       
       // Successfully emits the narrower keyboard type
       dreamOSBus.emit('game:input', payload);
+      executionKernelRef.current?.onInput(payload as CartridgeInputEvent);
     };
 
     const onKeyDown = (e: KeyboardEvent) => { keysDown.add(e.key);    dispatch('keydown', e); };
@@ -244,6 +291,37 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
       window.removeEventListener('keyup',   onKeyUp);
     };
   }, []);
+
+  // ── GameRemote / mobile / controller input wiring ─────────────────────────
+  // GameRemote already emits `de-game-input`; normalize that event into the
+  // GameRuntime API so cartridges can subscribe through `api.input.on()` instead
+  // of each game wiring a separate window listener.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<{ action?: string; active?: boolean; source?: string }>).detail;
+      const action = detail?.action;
+      const active = detail?.active;
+      if (typeof action !== 'string' || typeof active !== 'boolean') return;
+
+      const payload: CartridgeInputEvent = {
+        key: action,
+        type: 'remote',
+        action,
+        active,
+        source: detail?.source === 'mobile' ? 'mobile' : detail?.source === 'gamepad' ? 'gamepad' : 'remote',
+        cartridgeId: cartridge?.id,
+        preventDefault: () => {},
+      };
+
+      dreamOSBus.emit('game:input', payload);
+      executionKernelRef.current?.onInput(payload);
+    };
+
+    window.addEventListener('de-game-input', handler as EventListener);
+    return () => window.removeEventListener('de-game-input', handler as EventListener);
+  }, [cartridge?.id]);
 
   // ── Fixed-timestep RAF loop ────────────────────────────────────────────────
 
@@ -275,14 +353,23 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
         elapsedRef.current     += FIXED_DT;
         const dtSec      = FIXED_DT / 1000;
         const elapsedSec = elapsedRef.current / 1000;
-        dreamOSBus.emit('engine:tick', { dt: dtSec, elapsed: elapsedSec });
-        for (const cb of tickCallbacksRef.current) cb(dtSec, elapsedSec);
+        try {
+          dreamOSBus.emit('engine:tick', { dt: dtSec, elapsed: elapsedSec });
+          for (const cb of tickCallbacksRef.current) cb(dtSec, elapsedSec);
+        } catch (error: unknown) {
+          reportRuntimeCrash(error, { cartridgeId: cartridge.id, phase: 'tick' });
+        }
       }
 
       // Render pass (once per frame)
       const renderDt = rawDt / 1000;
-      dreamOSBus.emit('engine:render', { dt: renderDt });
-      for (const cb of renderCallbacksRef.current) cb(renderDt);
+      try {
+        dreamOSBus.emit('engine:render', { dt: renderDt });
+        for (const cb of renderCallbacksRef.current) cb(renderDt);
+        executionKernelRef.current?.onFrame({ dt: renderDt, cartridgeId: cartridge.id });
+      } catch (error: unknown) {
+        reportRuntimeCrash(error, { cartridgeId: cartridge.id, phase: 'render' });
+      }
 
       const frameMs = performance.now() - frameStart;
       frameTimesRef.current.push(frameMs);
@@ -307,7 +394,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
       cancelAnimationFrame(rafIdRef.current);
       clearInterval(fpsIntervalRef.current);
     };
-  }, [cartridge]);
+  }, [cartridge, reportRuntimeCrash]);
 
   // ── Cartridge mount / hot-swap ─────────────────────────────────────────────
 
@@ -317,8 +404,10 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
 
     // Unmount previous cartridge
     if (cleanupRef.current) {
+      if (mountedCartridgeRef.current) persistCartridgeSnapshot(mountedCartridgeRef.current);
       cleanupRef.current();
       cleanupRef.current = null;
+      mountedCartridgeRef.current = null;
     }
 
     // Clear callbacks from previous cartridge
@@ -326,21 +415,43 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame }: GameR
     renderCallbacksRef.current.clear();
     inputListenersRef.current.clear();
 
-    // Build a fresh API scoped to this cartridge and mount
-    const api     = buildAPI(cartridge);
-    const cleanup = cartridge.mount(container, api);
-    cleanupRef.current = cleanup;
+    // Build a fresh API scoped to this cartridge and mount. Route mount failures
+    // into the same crash flow as async runtime failures.
+    try {
+      if (cartridge.minEngineVersion && !engineSatisfies(cartridge.minEngineVersion)) {
+        throw new Error(`Cartridge ${cartridge.id} requires GameEngin ${cartridge.minEngineVersion}, but runtime is ${ENGINE_VERSION}.`);
+      }
+
+      const api     = buildAPI(cartridge);
+      const cleanup = cartridge.mount(container, api);
+      cleanupRef.current = cleanup;
+      mountedCartridgeRef.current = cartridge;
+      executionKernelRef.current?.onCartridgeMounted(cartridge);
+      dreamOSBus.emit('game:cartridge-mounted' as Parameters<typeof dreamOSBus.emit>[0], {
+        cartridgeId: cartridge.id,
+        cartridgeLabel: cartridge.id,
+      } as unknown as Parameters<typeof dreamOSBus.emit>[1]);
+    } catch (error: unknown) {
+      reportRuntimeCrash(error, { cartridgeId: cartridge.id, phase: 'mount' });
+    }
 
     return () => {
       if (cleanupRef.current) {
+        const mountedCartridge = mountedCartridgeRef.current ?? cartridge;
+        persistCartridgeSnapshot(mountedCartridge);
         cleanupRef.current();
         cleanupRef.current = null;
+        mountedCartridgeRef.current = null;
+        executionKernelRef.current?.onCartridgeUnmounted(mountedCartridge);
+        dreamOSBus.emit('game:cartridge-unmounted' as Parameters<typeof dreamOSBus.emit>[0], {
+          cartridgeId: mountedCartridge.id,
+        } as unknown as Parameters<typeof dreamOSBus.emit>[1]);
       }
       tickCallbacksRef.current.clear();
       renderCallbacksRef.current.clear();
       inputListenersRef.current.clear();
     };
-  }, [cartridge, buildAPI]);
+  }, [cartridge, buildAPI, reportRuntimeCrash, persistCartridgeSnapshot]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 

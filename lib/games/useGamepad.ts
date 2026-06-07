@@ -104,7 +104,7 @@ const BUTTON_MAP: (GameAction | null)[] = [
 
 function fire(action: GameAction, active: boolean): boolean | undefined {
   if (typeof window === 'undefined') return;
-  window.dispatchEvent(new CustomEvent('de-game-input', { detail: { action, active } }));
+  window.dispatchEvent(new CustomEvent('de-game-input', { detail: { action, active, source: 'gamepad' } }));
 }
 
 // ── DualSense detection helper ───────────────────────────────────────────────

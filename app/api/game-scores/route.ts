@@ -1,45 +1,62 @@
+import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import { toErrorMessage } from '@/lib/utils';
-const VALID_GAMES = [
-  'platformer', 'word-sprint', 'memory-grid', 'speed-tap',
-  'rts', 'tower-defense', 'space-shooter', 'snake', 'breakout',
-  'flappy', 'match3', 'tetris', 'pong', 'minesweeper', 'chess',
-  'racing', 'trivia', 'rpg', 'rhythm', 'maze', 'solitaire',
-] as const;
+const VALID_GAME_IDS = CARTRIDGE_MANIFEST.map((entry) => entry.id);
+const VALID_GAMES = new Set(VALID_GAME_IDS);
 
 const PostScoreSchema = z.object({
-  game: z.enum(VALID_GAMES, {
-    error: `game must be one of: ${VALID_GAMES.join(', ')}`,
+  game: z.string().refine((game) => VALID_GAMES.has(game), {
+    message: `game must be one of: ${VALID_GAME_IDS.join(', ')}`,
   }),
   score: z.number().int().min(0, { message: 'score must be a non-negative integer' }),
   level: z.number().int().min(1).optional(),
 });
 
 // GET /api/game-scores?game=<name>&limit=<n>
-// Returns top N scores for the given game, enriched with player handle
+// Returns top N scores for a cartridge id.
+// GET /api/game-scores?mine=1&limit=<n> returns the signed-in user's GameEngin scores.
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const game = searchParams.get('game');
   const limitParam = searchParams.get('limit');
+  const mine = searchParams.get('mine') === '1' || searchParams.get('mine') === 'true';
+  const limit = Math.min(Math.max(parseInt(limitParam ?? '10', 10) || 10, 1), 50);
+  const supabase = await createServerClient();
+
+  if (mine) {
+    const user = await safeGetUser(supabase);
+    if (!user) {
+      return NextResponse.json({ data: null, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { data, error } = await supabase
+      .from('game_scores')
+      .select('id, user_id, game, score, level, achieved_at, created_at, shared')
+      .eq('user_id', user.id)
+      .order('score', { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
+    }
+
+    return NextResponse.json({ data: data ?? [], error: null });
+  }
 
   if (!game) {
     return NextResponse.json({ data: null, error: 'game is required' }, { status: 400 });
   }
 
-  if (!VALID_GAMES.includes(game as (typeof VALID_GAMES)[number])) {
+  if (!VALID_GAMES.has(game)) {
     return NextResponse.json(
-      { data: null, error: `game must be one of: ${VALID_GAMES.join(', ')}` },
+      { data: null, error: `game must be one of: ${VALID_GAME_IDS.join(', ')}` },
       { status: 400 }
     );
   }
-
-  const limit = Math.min(Math.max(parseInt(limitParam ?? '10', 10) || 10, 1), 50);
-
-  const supabase = await createServerClient();
 
   // Fetch top scores for the game
   const { data: scores, error: scoresError } = await supabase
@@ -76,6 +93,49 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }));
 
   return NextResponse.json({ data: enriched, error: null });
+}
+
+
+// PATCH /api/game-scores
+// Body: { id, shared } — auth required. Used by GameEngin score sharing UI.
+export async function PATCH(req: NextRequest): Promise<NextResponse> {
+  const supabase = await createServerClient();
+  const user = await safeGetUser(supabase);
+
+  if (!user) {
+    return NextResponse.json({ data: null, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ data: null, error: 'Invalid JSON body' }, { status: 400 });
+  }
+
+  const parsed = z.object({
+    id: z.string().min(1),
+    shared: z.boolean(),
+  }).safeParse(body);
+
+  if (!parsed.success) {
+    const message = parsed.error.issues.map((i) => i.message).join('; ');
+    return NextResponse.json({ data: null, error: message }, { status: 422 });
+  }
+
+  const { data, error } = await supabase
+    .from('game_scores')
+    .update({ shared: parsed.data.shared })
+    .eq('id', parsed.data.id)
+    .eq('user_id', user.id)
+    .select('id, user_id, game, score, level, achieved_at, created_at, shared')
+    .single();
+
+  if (error) {
+    return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
+  }
+
+  return NextResponse.json({ data, error: null });
 }
 
 // POST /api/game-scores

@@ -29,7 +29,7 @@ const Loading = () => (
 );
 
 // ── Dynamically imported games (ssr:false — all use canvas / browser APIs) ──
-const BabylonSideScroller = dynamicImport(() => import('@/components/games/dream.BabylonSideScroller'), { ssr: false, loading: Loading });
+const MadmaxiGame          = dynamicImport(() => import('@/components/games/madmaxi'),                   { ssr: false, loading: Loading });
 const NeonDrift           = dynamicImport(() => import('@/components/games/dream.NeonDrift'),           { ssr: false, loading: Loading });
 const EchoArena           = dynamicImport(() => import('@/components/games/dream.EchoArena'),           { ssr: false, loading: Loading });
 // ── Fusion cartridges — replace 25 source games ─────────────────────────────
@@ -49,7 +49,7 @@ export interface GameDef extends GameCatalogEntry {
 }
 
 const GAME_COMPONENTS: Record<string, React.ComponentType> = {
-  platformer: BabylonSideScroller,
+  platformer: MadmaxiGame,
   'neon-drift': NeonDrift,
   'echo-arena': EchoArena,
   'null-cathedral': NullCathedral,

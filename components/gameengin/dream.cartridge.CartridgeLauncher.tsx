@@ -199,6 +199,14 @@ export default function CartridgeLauncher({
               <GameRuntime
                 cartridge={cartridge}
                 physicsConfig={{ gravity, friction }}
+                onCrash={(runtimeCrash) => {
+                  setCrash((prev) => prev ?? {
+                    cartridgeId: manifest.id,
+                    cartridgeLabel: manifest.label,
+                    error: runtimeCrash,
+                    gameplay: runtimeCrash.gameplay,
+                  });
+                }}
               />
             </CartridgeErrorBoundary>
           )}

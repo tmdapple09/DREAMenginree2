@@ -8,6 +8,7 @@
  */
 
 import type { GameCartridge } from '../cartridge';
+import { CARTRIDGE_MANIFEST, getCartridgeManifest } from './manifest';
 import { defineReactCartridgeLoader } from './reactCartridge';
 
 import { toErrorMessage } from '@/lib/utils';
@@ -17,7 +18,7 @@ const load = defineReactCartridgeLoader;
 
 export const CARTRIDGE_LOADERS: Readonly<Record<string, CartridgeLoader>> = {
   // ── Legacy flagships kept ─────────────────────────────────────────────────
-  'platformer':            load('platformer',            () => import('@/components/games/dream.BabylonSideScroller')),
+  'platformer':            load('platformer',            () => import('@/components/games/madmaxi')),
   'neon-drift':            load('neon-drift',            () => import('@/components/games/dream.NeonDrift')),
   'echo-arena':            load('echo-arena',            () => import('@/components/games/dream.EchoArena')),
 
@@ -37,7 +38,29 @@ export const CARTRIDGE_LOADERS: Readonly<Record<string, CartridgeLoader>> = {
   'defuse-ritual':         load('defuse-ritual',         () => import('@/components/games/dream.DefuseRitual')),
 };
 
+export function getMissingCartridgeLoaders(): string[] {
+  return CARTRIDGE_MANIFEST
+    .map((entry) => entry.id)
+    .filter((id) => !(id in CARTRIDGE_LOADERS));
+}
+
+export function getOrphanCartridgeLoaders(): string[] {
+  const manifestIds = new Set(CARTRIDGE_MANIFEST.map((entry) => entry.id));
+  return Object.keys(CARTRIDGE_LOADERS).filter((id) => !manifestIds.has(id));
+}
+
+export function assertCartridgeLoadersReady(): void {
+  const missing = getMissingCartridgeLoaders();
+  if (missing.length > 0) {
+    throw new Error(`GameEngin cartridge manifest has no loaders for: ${missing.join(', ')}`);
+  }
+}
+
 export async function loadCartridge(id: string): Promise<GameCartridge> {
+  const manifest = getCartridgeManifest(id);
+  if (!manifest) {
+    throw new Error(`Cartridge failed to load: ${id}. No manifest is registered for this cartridge id.`);
+  }
   const loader = CARTRIDGE_LOADERS[id];
   if (!loader) {
     throw new Error(`Cartridge failed to load: ${id}. No loader is registered for this cartridge id.`);

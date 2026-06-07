@@ -1,6 +1,7 @@
 'use client';
 
 import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
+import { assertCartridgeLoadersReady } from '@/lib/gameengin/cartridges/loaders';
 import { moduleRegistry } from '@/lib/runtime/moduleRegistry';
 import type { ModuleManifest } from '@/types/module-manifest';
 
@@ -27,6 +28,7 @@ function manifestToModule(entry: (typeof CARTRIDGE_MANIFEST)[number]): ModuleMan
 }
 
 export function registerCartridges(): string[] {
+  assertCartridgeLoadersReady();
   const ids: string[] = [];
   for (const entry of CARTRIDGE_MANIFEST) {
     const manifest = manifestToModule(entry);

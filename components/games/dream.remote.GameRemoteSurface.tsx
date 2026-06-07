@@ -41,7 +41,7 @@ export type GameInputAction =
 
 function fireAction(action: GameInputAction, active: boolean): void {
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('de-game-input', { detail: { action, active } }));
+    window.dispatchEvent(new CustomEvent('de-game-input', { detail: { action, active, source: 'remote' } }));
   }
   broadcastGameInput(action, active);
 }

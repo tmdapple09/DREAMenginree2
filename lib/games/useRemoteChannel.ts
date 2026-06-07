@@ -46,7 +46,7 @@ function getBroadcastChannel(): BroadcastChannel | null {
  */
 export function broadcastGameInput(action: string, active: boolean): void {
   try {
-    getBroadcastChannel()?.postMessage({ action, active });
+    getBroadcastChannel()?.postMessage({ action, active, source: 'remote' });
   } catch {
     // BroadcastChannel not supported or closed — silent fallback
   }
@@ -71,7 +71,7 @@ export function useRemoteChannel( ){
       const { action, active } = e.data ?? {};
       if (typeof action === 'string' && typeof active === 'boolean') {
         window.dispatchEvent(
-          new CustomEvent('de-game-input', { detail: { action, active } }),
+          new CustomEvent('de-game-input', { detail: { action, active, source: 'remote' } }),
         );
       }
     };

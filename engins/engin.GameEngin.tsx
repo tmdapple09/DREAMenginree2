@@ -23,9 +23,23 @@
  */
 
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
-import { GAMES } from '@/components/games/dream.GamesHub';
 import RecordingControls from '@/components/games/dream.RecordingControls';
+import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
+import FeaturedCartridges from '@/components/gameengin/dream.cartridge.FeaturedCartridges';
+import Leaderboard from '@/components/games/dream.Leaderboard';
 import GameRemote from '@/components/games/dream.remote.GameRemote';
+import GameHUD from '@/components/games/dream.hud.GameHUD';
+import LegacyGameHUD from '@/components/games/dream.hud.LegacyGameHUD';
+import MobileGameHUD from '@/components/games/dream.hud.MobileGameHUD';
+import GameController from '@/components/games/dream.GameController';
+import GameRemoteSurface from '@/components/games/dream.remote.GameRemoteSurface';
+import LegacyGameRemote from '@/components/games/dream.remote.LegacyGameRemote';
+import CrashReportModal, { type CrashContext } from '@/components/gameengin/dream.CrashReportModal';
+import {
+    CartridgeErrorBoundary,
+    useGlobalCrashListener,
+    type CartridgeCrashEvent,
+} from '@/components/gameengin/dream.cartridge.CartridgeErrorBoundary';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
@@ -44,6 +58,7 @@ import { useForgeActivity } from '@/lib/forge/useForgeActivity';
 import GameRuntime from '@/lib/gameengin/GameRuntime';
 import type { GameCartridge } from '@/lib/gameengin/cartridge';
 import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
+import { GAME_CATALOG } from '@/lib/games/catalog';
 import { consumePlayAsMe, getAvatarDataUrl } from '@/lib/games/avatar';
 import {
     GAME_LIBRARY_SESSION_STORAGE_KEY,
@@ -54,6 +69,8 @@ import { buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId } from '@
 import { GAME_CONTROL_PROFILES, GAME_QUALITY_PILLARS } from '@/lib/games/quality-plan';
 import { useGameInputKeyboardBridge } from '@/lib/games/useGameInputKeyboardBridge';
 import { useGamepad } from '@/lib/games/useGamepad';
+import { useAIDirector } from '@/lib/games/useAIDirector';
+import { useDualSense } from '@/lib/games/DualSenseManager';
 import { useRemoteChannel } from '@/lib/games/useRemoteChannel';
 import { buildLedgerMediaUrl } from '@/lib/media/ledger';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
@@ -106,7 +123,7 @@ const SESSION_BAR_REVEAL_GAP = 24;
 
 // Feature identifiers — used by CI grep scans (daydream-engin-build-cycle.yml)
 
-const GAME_LABELS = Object.fromEntries(GAMES.map((game) => [game.id, game.label])) as Record<string, string>;
+const GAME_LABELS = Object.fromEntries(GAME_CATALOG.map((game) => [game.id, game.label])) as Record<string, string>;
 const QUICK_PLAY_GAME_IDS = [
   'platformer',
   'rts',
@@ -244,6 +261,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   const { record: forgeRecord } = useForgeActivity({ enginId: 'games' });
   const searchParams = useSearchParams();
   const { connected: gpConnected, gamepadName, isDualSense, rumble } = useGamepad();
+  const aiDirector = useAIDirector();
+  const dualSense = useDualSense({ enableGyro: true, enableHaptics: true });
   const playOverlayRef = useRef<HTMLDivElement>(null);
   const initializedPlaySurfaceRef = useRef(false);
   const autoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -710,7 +729,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   }, []);
 
   const savePlayableGame = useCallback((gameId: string, source: SavedGameSession['source']) => {
-    const game = GAMES.find((entry) => entry.id === gameId);
+    const game = GAME_CATALOG.find((entry) => entry.id === gameId);
     if (typeof window === 'undefined' || !game) return;
     const nextSession: SavedGameSession = {
       gameId,
@@ -737,8 +756,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (initializedPlaySurfaceRef.current) return;
     initializedPlaySurfaceRef.current = true;
 
-    const fallbackGame = savedLaunches[0]?.gameId ?? GAMES[0]?.id ?? 'platformer';
-    const requestedGame = resolveGameLaunchId(searchParams.get('game'), GAMES.map((game) => game.id), fallbackGame);
+    const fallbackGame = savedLaunches[0]?.gameId ?? GAME_CATALOG[0]?.id ?? 'platformer';
+    const requestedGame = resolveGameLaunchId(searchParams.get('game'), GAME_CATALOG.map((game) => game.id), fallbackGame);
     if (!requestedGame) return;
     engineDispatch({ type: 'game:select', payload: { gameId: requestedGame } });
     if (isLaunchFlagEnabled(searchParams.get('play'))) {
@@ -816,18 +835,39 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   }, [expandedPlayableGame]);
 
   // ── Achievement computation ───────────────────────────────────────────────────
-  const selectedPlayable = GAMES.find((game) => game.id === selectedPlayableGame) ?? GAMES[0];
-  const activePlayable = activePlayableGame ? GAMES.find((game) => game.id === activePlayableGame) ?? null : null;
-  const expandedPlayable = expandedPlayableGame ? GAMES.find((game) => game.id === expandedPlayableGame) ?? null : null;
+  const selectedPlayable = GAME_CATALOG.find((game) => game.id === selectedPlayableGame) ?? GAME_CATALOG[0];
+  const activePlayable = activePlayableGame ? GAME_CATALOG.find((game) => game.id === activePlayableGame) ?? null : null;
+  const expandedPlayable = expandedPlayableGame ? GAME_CATALOG.find((game) => game.id === expandedPlayableGame) ?? null : null;
   const savedPlayableSession = selectedPlayable ? savedLaunches.find((session) => session.gameId === selectedPlayable.id) ?? null : null;
 
   const [cartridgeMap, setCartridgeMap] = useState<Record<string, GameCartridge>>({});
   const [cartridgeErrors, setCartridgeErrors] = useState<Record<string, string>>({});
+  const [runtimeCrash, setRuntimeCrash] = useState<CrashContext | null>(null);
+
+  const openCrashReport = useCallback((gameId: string, label: string, crash: CartridgeCrashEvent) => {
+    setRuntimeCrash((prev) => prev ?? {
+      cartridgeId: gameId,
+      cartridgeLabel: label,
+      error: crash,
+      gameplay: {
+        selectedPlayableGame,
+        activePlayableGame,
+        expandedPlayableGame,
+        controlProfile,
+      },
+    });
+  }, [activePlayableGame, controlProfile, expandedPlayableGame, selectedPlayableGame]);
+
+  useGlobalCrashListener(Boolean((activePlayable ?? expandedPlayable) && runtimeCrash === null), (crash) => {
+    const game = expandedPlayable ?? activePlayable ?? selectedPlayable;
+    if (!game) return;
+    openCrashReport(game.id, game.label, crash);
+  });
 
   useEffect(() => {
     let cancelled = false;
     void Promise.all(
-      GAMES.map(async (game) => {
+      GAME_CATALOG.map(async (game) => {
         try {
           return [game.id, await loadCartridge(game.id), null] as const;
         } catch (error: unknown) {
@@ -903,10 +943,23 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
 
         {/* Game stage — cartridge owns its HUD; shared GameRemote stays a separate control capability. */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 'max(var(--de-hud-bottom, 175px), clamp(80px, 22dvh, 38dvh))' }}>
-          <GameRuntime
-            cartridge={expandedCartridge}
-            physicsConfig={appliedPhysics}
-          />
+          {expandedCartridge ? (
+            <CartridgeErrorBoundary
+              cartridgeId={expandedPlayable.id}
+              onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
+            >
+              <GameRuntime
+                cartridge={expandedCartridge}
+                physicsConfig={appliedPhysics}
+                onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
+              />
+            </CartridgeErrorBoundary>
+          ) : (
+            <GameRuntime
+              cartridge={null}
+              physicsConfig={appliedPhysics}
+            />
+          )}
         </div>
 
         <div
@@ -985,9 +1038,10 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         </div>
 
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 55 }}>
-          <GameRemote
-            embedded
+          <GameHUD
             gameLabel={expandedPlayable.label}
+            gameEmoji={expandedPlayable.emoji}
+            playHref={buildGameLaunchHref(expandedPlayable.id, { expand: true })}
             onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
           />
         </div>
@@ -1037,6 +1091,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
             </div>
           </div>
         )}
+        <CrashReportModal
+          open={runtimeCrash !== null}
+          context={runtimeCrash}
+          onClose={() => setRuntimeCrash(null)}
+        />
       </div>
     );
   }
@@ -1103,9 +1162,9 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   const activeControlProfile = GAME_CONTROL_PROFILES.find((profile) => profile.id === controlProfile) ?? GAME_CONTROL_PROFILES[0];
-  const playableCategoriesCount = new Set(GAMES.map((game) => game.category)).size;
+  const playableCategoriesCount = new Set(GAME_CATALOG.map((game) => game.category)).size;
   const engineDeckStats = [
-    { label: 'Playable', value: String(GAMES.length), tone: '#7dd3fc' },
+    { label: 'Playable', value: String(GAME_CATALOG.length), tone: '#7dd3fc' },
     { label: 'Categories', value: String(playableCategoriesCount), tone: '#c084fc' },
     { label: 'Saved Slots', value: String(savedLaunches.length), tone: '#4ade80' },
   ] as const;
@@ -1126,6 +1185,36 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
 
   return (
     <div className="de-sky-bg min-h-screen">
+      <CartridgeRegistryBootstrap />
+      <div hidden aria-hidden="true">
+        <LegacyGameHUD
+          gameLabel={selectedPlayable.label}
+          gameEmoji={selectedPlayable.emoji}
+          playHref={buildGameLaunchHref(selectedPlayable.id, { expand: true })}
+        />
+        <MobileGameHUD
+          gameLabel={selectedPlayable.label}
+          gameEmoji={selectedPlayable.emoji}
+          mode={selectedPlayable.mobileHudMode ?? 'buttons'}
+          onExit={() => setExpandedPlayableGame(null)}
+        />
+        <GameController
+          gameLabel={selectedPlayable.label}
+          onExit={() => setExpandedPlayableGame(null)}
+        />
+        <GameRemoteSurface
+          embedded
+          gameLabel={selectedPlayable.label}
+          playHref={buildGameLaunchHref(selectedPlayable.id, { expand: true })}
+          onExit={() => setExpandedPlayableGame(null)}
+        />
+        <LegacyGameRemote
+          embedded
+          gameLabel={selectedPlayable.label}
+          playHref={buildGameLaunchHref(selectedPlayable.id, { expand: true })}
+          onExit={() => setExpandedPlayableGame(null)}
+        />
+      </div>
 
       {/* ══════════════════════════════════════════ Header */}
       <header
@@ -1296,10 +1385,16 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               <div style={{ borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(125,211,252,0.14)', background: 'radial-gradient(circle at top, rgba(42,138,184,0.18), rgba(3,5,10,0.98) 60%)', minHeight: 320 }}>
                 {activeCartridge ? (
                   <div style={{ padding: 12 }}>
-                    <GameRuntime
-                      cartridge={activeCartridge}
-                      physicsConfig={appliedPhysics}
-                    />
+                    <CartridgeErrorBoundary
+                      cartridgeId={activePlayable?.id ?? selectedPlayable.id}
+                      onCrash={(crash) => openCrashReport(activePlayable?.id ?? selectedPlayable.id, activePlayable?.label ?? selectedPlayable.label, crash)}
+                    >
+                      <GameRuntime
+                        cartridge={activeCartridge}
+                        physicsConfig={appliedPhysics}
+                        onCrash={(crash) => openCrashReport(activePlayable?.id ?? selectedPlayable.id, activePlayable?.label ?? selectedPlayable.label, crash)}
+                      />
+                    </CartridgeErrorBoundary>
                   </div>
                 ) : activeCartridgeError ? (
                   <div style={{ minHeight: 320, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12, padding: '28px 20px' }}>
@@ -1418,7 +1513,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
             )}
 
             <div style={{ display: 'grid', gap: 8, marginTop: 12 }}>
-              {GAMES.slice(0, 12).map((game) => (
+              {GAME_CATALOG.slice(0, 12).map((game) => (
                 <button
                   key={game.id}
                   type="button"
@@ -1570,8 +1665,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {QUICK_PLAY_GAME_IDS.slice(0, 3)
-                .map((gameId) => GAMES.find((game) => game.id === gameId))
-                .filter((game): game is (typeof GAMES)[number] => Boolean(game))
+                .map((gameId) => GAME_CATALOG.find((game) => game.id === gameId))
+                .filter((game): game is (typeof GAME_CATALOG)[number] => Boolean(game))
                 .map((g) => (
                 <Link
                   key={g.id}
@@ -1596,7 +1691,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
           <div className="de-widget-actions">
             <Link href="/daydream/games" className="de-btn de-btn-primary text-xs" style={{ gap: 6 }}>
-              <Gamepad2 className="w-3 h-3" /> Browse Full Library ({GAMES.length} Games)
+              <Gamepad2 className="w-3 h-3" /> Browse Full Library ({GAME_CATALOG.length} Games)
             </Link>
           </div>
         </div>
@@ -1714,6 +1809,36 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 ))}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* ────────────────────── 4.5. GameEngin execution wiring */}
+        <div className="de-widget" style={{ marginBottom: 14 }}>
+          <div className="de-widget-header">
+            <Gamepad2 className="w-4 h-4" style={{ color: ACCENT }} />
+            <span className="de-widget-title ml-2">GameEngin Wired Runtime</span>
+          </div>
+          <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: 12, color: 'var(--de-text-dim)', margin: 0 }}>
+              AI Director, DualSense state, cartridge shelf, and leaderboard are wired into the canonical GameEngin surface instead of sitting as loose exports.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+              <div style={{ padding: 9, borderRadius: 10, background: 'rgba(42,138,184,0.08)', border: '1px solid rgba(42,138,184,0.18)' }}>
+                <div style={{ fontSize: 10, color: 'var(--de-text-dim)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>AI Director</div>
+                <div style={{ fontSize: 12, color: 'var(--de-heading)', fontWeight: 800 }}>{aiDirector.state.label}</div>
+                <div style={{ fontSize: 10, color: 'var(--de-text-dim)' }}>Level {Math.round(aiDirector.level * 100)}% · {aiDirector.ready ? 'ready' : 'warming'}</div>
+              </div>
+              <div style={{ padding: 9, borderRadius: 10, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.18)' }}>
+                <div style={{ fontSize: 10, color: 'var(--de-text-dim)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>DualSense</div>
+                <div style={{ fontSize: 12, color: 'var(--de-heading)', fontWeight: 800 }}>{dualSense.state.connected ? 'Connected' : 'Listening'}</div>
+                <div style={{ fontSize: 10, color: 'var(--de-text-dim)' }}>Gyro {dualSense.state.gyro.x.toFixed(2)} / {dualSense.state.gyro.y.toFixed(2)}</div>
+              </div>
+            </div>
+            <FeaturedCartridges featured={QUICK_PLAY_GAME_IDS.slice(0, 3) as unknown as string[]} limit={3} />
+            <div style={{ borderTop: '1px solid rgba(160,195,240,0.14)', paddingTop: 8 }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--de-heading)', marginBottom: 6 }}>Current cartridge leaderboard</div>
+              <Leaderboard game={selectedPlayable.id} />
+            </div>
           </div>
         </div>
 
@@ -2726,6 +2851,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         </div>
 
       </div>
+      <CrashReportModal
+        open={runtimeCrash !== null}
+        context={runtimeCrash}
+        onClose={() => setRuntimeCrash(null)}
+      />
     </div>
   );
 }

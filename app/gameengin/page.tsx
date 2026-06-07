@@ -8,5 +8,5 @@ import { redirect } from 'next/navigation';
  * catalogue so users discover the platform's library in one click.
  */
 export default function GameEnginIndexPage(): never {
-  redirect('/gameengin/cartridges');
+  redirect('/gameengin/cartridges?openEngin=1');
 }
