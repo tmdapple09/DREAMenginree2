@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T04:58:24.093Z
+Generated: 2026-06-07T06:08:50.463Z
 
 ---
 
@@ -12992,6 +12992,11 @@ _No style files for this feature._
 | `./brain` | `brain` |
 | `./cartridges` | `cartridges` |
 | `./connectors` | `connectors` |
+| `./dreamdmbar` | `dreamdmbar` |
+| `./dreamr` | `dreamr` |
+| `./dreamsurfaces` | `dreamsurfaces` |
+| `./engins` | `engins` |
+| `./homedream` | `homedream` |
 | `./hooks` | `hooks` |
 | `./personas` | `personas` |
 | `./rulesets` | `rulesets` |
@@ -13686,6 +13691,7 @@ _No style files for this feature._
 | `@/components/games/dream.GamesHub` | _(dynamic import)_ |
 | `@/components/games/dream.Glassfall` | _(dynamic import)_ |
 | `@/components/games/dream.hud.GameHUD` | _(dynamic import)_ |
+| `@/components/games/dream.hud.LegacyGameHUD` | _(dynamic import)_ |
 | `@/components/games/dream.hud.MobileGameHUD` | _(dynamic import)_ |
 | `@/components/games/dream.Leaderboard` | _(dynamic import)_ |
 | `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
@@ -13695,6 +13701,7 @@ _No style files for this feature._
 | `@/components/games/dream.RecordingControls` | _(dynamic import)_ |
 | `@/components/games/dream.remote.GameRemote` | _(dynamic import)_ |
 | `@/components/games/dream.remote.GameRemoteSurface` | _(dynamic import)_ |
+| `@/components/games/dream.remote.LegacyGameRemote` | _(dynamic import)_ |
 | `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
 | `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
 | `@/components/games/madmaxi/audio` | _(dynamic import)_ |
@@ -13931,16 +13938,27 @@ _No style files for this feature._
 | `@/lib/dreamr/swipePersonalization` | _(dynamic import)_ |
 | `@/lib/dreamr/torridityLedger` | _(dynamic import)_ |
 | `@/lib/dreams/drag` | _(dynamic import)_ |
+| `@/lib/dreams/dreamIntentBus` | _(dynamic import)_ |
 | `@/lib/dreams/profileProjection` | _(dynamic import)_ |
 | `@/lib/dreams/types` | _(dynamic import)_ |
 | `@/lib/dreams/useDreamsRuntime` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginBaseState` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginCapabilities` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginCapabilityExecution` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginCapabilityScorecard` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginDomainCores` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginEventBus` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginHardwareCapabilities` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginIOAdapter` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginPerformanceProbe` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginRuleSetContract` | _(dynamic import)_ |
 | `@/lib/engin-runtime/EnginRuntime` | _(dynamic import)_ |
+| `@/lib/engin-runtime/EnginSnapshotFingerprint` | _(dynamic import)_ |
+| `@/lib/engin-runtime/HotRuntime` | _(dynamic import)_ |
 | `@/lib/engin-runtime/index` | _(dynamic import)_ |
+| `@/lib/engin-runtime/InternalMetrics` | _(dynamic import)_ |
+| `@/lib/engin-runtime/PremiumRuntimeQuality` | _(dynamic import)_ |
 | `@/lib/engine/index` | _(dynamic import)_ |
 | `@/lib/enginpipe/artifact/manifest` | _(dynamic import)_ |
 | `@/lib/enginpipe/index` | _(dynamic import)_ |
@@ -15114,6 +15132,7 @@ _No style files for this feature._
 - `@/components/games/dream.GamesHub`
 - `@/components/games/dream.Glassfall`
 - `@/components/games/dream.hud.GameHUD`
+- `@/components/games/dream.hud.LegacyGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.Leaderboard`
 - `@/components/games/dream.LexiconSolitaire`
@@ -15123,6 +15142,7 @@ _No style files for this feature._
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.remote.GameRemote`
 - `@/components/games/dream.remote.GameRemoteSurface`
+- `@/components/games/dream.remote.LegacyGameRemote`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/madmaxi/audio`
@@ -15357,16 +15377,27 @@ _No style files for this feature._
 - `@/lib/dreamr/swipePersonalization`
 - `@/lib/dreamr/torridityLedger`
 - `@/lib/dreams/drag`
+- `@/lib/dreams/dreamIntentBus`
 - `@/lib/dreams/profileProjection`
 - `@/lib/dreams/types`
 - `@/lib/dreams/useDreamsRuntime`
 - `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/engin-runtime/EnginCapabilities`
+- `@/lib/engin-runtime/EnginCapabilityExecution`
+- `@/lib/engin-runtime/EnginCapabilityScorecard`
+- `@/lib/engin-runtime/EnginCapabilityTargets`
+- `@/lib/engin-runtime/EnginDomainCores`
 - `@/lib/engin-runtime/EnginEventBus`
+- `@/lib/engin-runtime/EnginHardwareCapabilities`
 - `@/lib/engin-runtime/EnginIOAdapter`
+- `@/lib/engin-runtime/EnginPerformanceProbe`
 - `@/lib/engin-runtime/EnginRuleSetContract`
 - `@/lib/engin-runtime/EnginRuntime`
+- `@/lib/engin-runtime/EnginSnapshotFingerprint`
+- `@/lib/engin-runtime/HotRuntime`
 - `@/lib/engin-runtime/index`
+- `@/lib/engin-runtime/InternalMetrics`
+- `@/lib/engin-runtime/PremiumRuntimeQuality`
 - `@/lib/engine/index`
 - `@/lib/enginpipe/artifact/manifest`
 - `@/lib/enginpipe/index`
@@ -17424,6 +17455,7 @@ _No style files for this feature._
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
+- `scripts/wire-orphans.mjs`
 - `src/engin/generated/surfaces.ts`
 - `src/engin/generated/systems.ts`
 - `types/dreamArtifact.ts`
@@ -17704,6 +17736,7 @@ _No style files for this feature._
 - `readme-autosync.ts`
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
+- `scripts/wire-orphans.mjs`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
 - `src/engin/generated/systems.ts`
@@ -17734,6 +17767,7 @@ _No circular dependencies detected._
 | `engins/engin.LabEngin.tsx` | 18 |
 | `components/dream.HomeFeed.tsx` | 17 |
 | `lib/engin-runtime/index.ts` | 17 |
+| `scripts/wire-orphans.mjs` | 17 |
 | `app/daydream/games/page.tsx` | 16 |
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
@@ -17753,7 +17787,6 @@ _No circular dependencies detected._
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
 | `app/view-profile/page.tsx` | 12 |
-| `components/daydream/dream.shell.DaydreamShell.tsx` | 12 |
 
 ---
 
@@ -17773,6 +17806,7 @@ _No circular dependencies detected._
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
 | `lib/engin-runtime/index.ts` | 17 | HIGH_COUPLING |
+| `scripts/wire-orphans.mjs` | 17 | HIGH_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
@@ -17809,7 +17843,6 @@ _No circular dependencies detected._
 | `daydreams/music/page.tsx` | 11 | HIGH_COUPLING |
 | `lib/dreamenginOS/index.ts` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
 | `lib/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
-| `scripts/wire-orphans.mjs` | 11 | HIGH_COUPLING |
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
@@ -18497,14 +18530,20 @@ _No circular dependencies detected._
 | `scripts/gameengin/prophet-run.ts` | `../../lib/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
 | `scripts/gameengin/upgrader-run.ts` | `../../lib/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
 | `scripts/gameengin/writer-run.ts` | `../../lib/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
+| `scripts/wire-orphans.mjs` | `./engins` | `engins` |
 | `scripts/wire-orphans.mjs` | `./rulesets` | `rulesets` |
 | `scripts/wire-orphans.mjs` | `./surfaces` | `surfaces` |
+| `scripts/wire-orphans.mjs` | `./dreamsurfaces` | `dreamsurfaces` |
+| `scripts/wire-orphans.mjs` | `./dreamr` | `dreamr` |
+| `scripts/wire-orphans.mjs` | `./dreamdmbar` | `dreamdmbar` |
+| `scripts/wire-orphans.mjs` | `./homedream` | `homedream` |
 | `scripts/wire-orphans.mjs` | `./connectors` | `connectors` |
 | `scripts/wire-orphans.mjs` | `./cartridges` | `cartridges` |
 | `scripts/wire-orphans.mjs` | `./brain` | `brain` |
 | `scripts/wire-orphans.mjs` | `./personas` | `personas` |
 | `scripts/wire-orphans.mjs` | `./systems` | `systems` |
 | `scripts/wire-orphans.mjs` | `./hooks` | `hooks` |
+| `scripts/wire-orphans.mjs` | `./osArchitectureMap` | `(unknown — bare import)` |
 | `src/components/dream.DreamEnginLogo.tsx` | `@/lib/babylon/useDreamLogoScene` | `DreamLogoSceneOptions`, `useDreamLogoScene` |
 | `src/components/dream.DreamEnginLogo.tsx` | `@/components/DreamEnginLogo` | `DreamEnginLogo` |
 | `src/engin/core/index.ts` | `@/lib/supabase/client` | `createClient` |
@@ -19143,7 +19182,7 @@ _No circular dependencies detected._
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
 | `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
-| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry` |
+| `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureMap` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
 | `src/components/dream.LogoHero.tsx` | `(default)` |
 | `src/components/dream.Nav.tsx` | `(default)` |
@@ -19330,6 +19369,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── print-codebase.yml
 │       ├── readme-autosync.yml
 │       ├── refreshlock.yml
+│       ├── registry-sync.yml
 │       ├── Repo Audit Auto Fix.yml
 │       ├── repo-snapshot.yml
 │       ├── report-driven-coding-agent.yml
@@ -22183,15 +22223,21 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── vercel-ignore.cjs
 │   ├── vercel-preflight.cjs
 │   └── wire-orphans.mjs ⚠ ∅
+│       ├── ⚠ ./engins  (engins)
 │       ├── ⚠ ./rulesets  (rulesets)
 │       ├── ⚠ ./surfaces  (surfaces)
+│       ├── ⚠ ./dreamsurfaces  (dreamsurfaces)
+│       ├── ⚠ ./dreamr  (dreamr)
+│       ├── ⚠ ./dreamdmbar  (dreamdmbar)
+│       ├── ⚠ ./homedream  (homedream)
 │       ├── ⚠ ./connectors  (connectors)
 │       ├── ⚠ ./cartridges  (cartridges)
 │       ├── ⚠ ./brain  (brain)
 │       ├── ⚠ ./personas  (personas)
 │       ├── ⚠ ./systems  (systems)
 │       ├── ⚠ ./hooks  (hooks)
-│       └── ∅ unused: $, hydrateEngineRegistry
+│       ├── ⚠ ./osArchitectureMap  ((unknown — bare import))
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅

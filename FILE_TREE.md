@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T04:58:24.233Z
+Generated: 2026-06-07T06:08:50.592Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -155,6 +155,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── print-codebase.yml
 │       ├── readme-autosync.yml
 │       ├── refreshlock.yml
+│       ├── registry-sync.yml
 │       ├── Repo Audit Auto Fix.yml
 │       ├── repo-snapshot.yml
 │       ├── report-driven-coding-agent.yml
@@ -12584,6 +12585,11 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── brain  ⚠ ./brain
 │       ├── cartridges  ⚠ ./cartridges
 │       ├── connectors  ⚠ ./connectors
+│       ├── dreamdmbar  ⚠ ./dreamdmbar
+│       ├── dreamr  ⚠ ./dreamr
+│       ├── dreamsurfaces  ⚠ ./dreamsurfaces
+│       ├── engins  ⚠ ./engins
+│       ├── homedream  ⚠ ./homedream
 │       ├── hooks  ⚠ ./hooks
 │       ├── personas  ⚠ ./personas
 │       ├── rulesets  ⚠ ./rulesets
@@ -12595,7 +12601,9 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → $
 │       ├── → buildRegistry
 │       ├── → hydrateEngineRegistry
-│       └── ∅ unused: $, hydrateEngineRegistry
+│       ├── → osArchitectureMap
+│       ├── (unknown — bare import)  ⚠ ./osArchitectureMap
+│       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureMap
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -13367,6 +13375,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.GamesHub
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Glassfall
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.GameHUD
+│   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.LegacyGameHUD
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.MobileGameHUD
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Leaderboard
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.LexiconSolitaire
@@ -13376,6 +13385,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.RecordingControls
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemote
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemoteSurface
+│   │   │   │   ├── (dynamic)  ← @/components/games/dream.remote.LegacyGameRemote
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.SerpentSiege
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.VoidlineGP
 │   │   │   │   ├── (dynamic)  ← @/components/games/madmaxi/audio
@@ -13609,16 +13619,27 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/dreamr/swipePersonalization
 │   │   │       ├── (dynamic)  ← @/lib/dreamr/torridityLedger
 │   │   │       ├── (dynamic)  ← @/lib/dreams/drag
+│   │   │       ├── (dynamic)  ← @/lib/dreams/dreamIntentBus
 │   │   │       ├── (dynamic)  ← @/lib/dreams/profileProjection
 │   │   │       ├── (dynamic)  ← @/lib/dreams/types
 │   │   │       ├── (dynamic)  ← @/lib/dreams/useDreamsRuntime
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginBaseState
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilityExecution
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilityScorecard
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginCapabilityTargets
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginDomainCores
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginEventBus
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginHardwareCapabilities
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginPerformanceProbe
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginRuntime
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/EnginSnapshotFingerprint
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/HotRuntime
 │   │   │       ├── (dynamic)  ← @/lib/engin-runtime/index
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/InternalMetrics
+│   │   │       ├── (dynamic)  ← @/lib/engin-runtime/PremiumRuntimeQuality
 │   │   │       ├── (dynamic)  ← @/lib/engine/index
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/artifact/manifest
 │   │   │       ├── (dynamic)  ← @/lib/enginpipe/index
