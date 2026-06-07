@@ -1,19 +1,25 @@
 name: Sync Engine Registry
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: sync-engine-registry-${{ github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   update-registry:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -23,16 +29,31 @@ jobs:
       - name: Run Registry Wire-Up
         run: node scripts/wire-orphans.mjs
 
+      - name: Upload generated Engin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: engin-generated-${{ github.ref_name }}
+          path: |
+            src/engin/generated/**
+            build-memory/registry.json
+            build-memory/os-architecture-map.md
+          retention-days: 14
+          if-no-files-found: error
+
       - name: Push Updates
         run: |
           git config user.name "DREAMengin-Bot"
           git config user.email "bot@dreamengin.com"
-          
-          # Adds everything in the generated folder and the registry file
-          git add src/engin/generated/ build-memory/registry.json
-          
-          # Only commit/push if there are changes
+
+          git add src/engin/generated/ build-memory/registry.json build-memory/os-architecture-map.md
+
           if ! git diff --staged --quiet; then
             git commit -m "chore: update engine registry [skip ci]"
-            git push origin HEAD:${{ github.ref }}
+
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}"
+
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          else
+            echo "No generated changes to commit."
           fi
