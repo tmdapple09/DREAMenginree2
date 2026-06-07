@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T04:19:06.810Z
+Generated: 2026-06-07T04:20:53.558Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3452,18 +3452,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⬡ LabEngin  ← @/engins/engin.LabEngin
 │   │   │   ├── ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
 │   │   │   ├── useRouter  ← next/navigation
-│   │   │   ├── → (default)
-│   │   │   └── ∅ unused: (default)
-│   │   ├── dreamsurface.daydream.AnalyticsDaydream.tsx ∅
-│   │   │   ├── ActivityProfile  ← @/components/activity/dream.ActivityProfile
-│   │   │   ├── ⬡ OpenDaydreamSideBButton  ← @/components/daydream/dream.OpenDaydreamSideBButton
-│   │   │   ├── BarChart2  ← lucide-react
-│   │   │   ├── ChevronRight  ← lucide-react
-│   │   │   ├── Eye  ← lucide-react
-│   │   │   ├── Star  ← lucide-react
-│   │   │   ├── TrendingUp  ← lucide-react
-│   │   │   ├── Zap  ← lucide-react
-│   │   │   ├── ⬡ Link  ← next/link
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx ⚠ ∅

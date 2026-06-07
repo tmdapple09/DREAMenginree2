@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T04:19:06.681Z
+Generated: 2026-06-07T04:20:53.431Z
 
 ---
 
@@ -8210,15 +8210,6 @@ _No style files for this feature._
 | `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useState` |
 
-## `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/components/activity/dream.ActivityProfile` | `ActivityProfile` |
-| `@/components/daydream/dream.OpenDaydreamSideBButton` | `⬡ OpenDaydreamSideBButton` |
-| `lucide-react` | `BarChart2`, `ChevronRight`, `Eye`, `Star`, `TrendingUp`, `Zap` |
-| `next/link` | `⬡ Link` |
-
 ## `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
 
 | Module | Connected via |
@@ -16406,7 +16397,6 @@ _No style files for this feature._
 - `components/daydream/dream.StandaloneEnginSurface.tsx`
 - `components/daydream/dream.constellationmap.tsx`
 - `components/daydream/dream.shell.DaydreamShell.tsx`
-- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx`
 - `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
 - `components/daydream/starmaker/dream.panel.CompingPanel.tsx`
 - `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`
@@ -18601,7 +18591,6 @@ _No circular dependencies detected._
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | `(default)` |
 | `components/daydream/dream.constellationmap.tsx` | `(default)` |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | `(default)` |
-| `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` | `(default)` |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `(default)` |
 | `components/daydream/starmaker/dream.panel.CompingPanel.tsx` | `(default)` |
 | `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` | `(default)` |
@@ -20365,8 +20354,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.shell.DaydreamShell.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.StandaloneEnginSurface.tsx ∅
-│   │   │   └── ∅ unused: (default)
-│   │   ├── dreamsurface.daydream.AnalyticsDaydream.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx ⚠ ∅
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)
