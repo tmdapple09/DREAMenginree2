@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T07:16:59.337Z",
+  "generatedAt": "2026-06-07T13:09:22.565Z",
   "root": ".",
   "nodes": [
     {
@@ -13124,6 +13124,16 @@
       "tags": []
     },
     {
+      "id": "file:build-memory/os-architecture-map.md",
+      "label": "os-architecture-map.md",
+      "type": "doc",
+      "path": "build-memory/os-architecture-map.md",
+      "parent": "folder:build-memory",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:build-memory/registry.json",
       "label": "registry.json",
       "type": "config",
@@ -25302,6 +25312,16 @@
       "type": "doc",
       "path": "fonts/fonts.md",
       "parent": "folder:fonts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:gameengin_inventory_files_execution_wired.zip",
+      "label": "gameengin_inventory_files_execution_wired.zip",
+      "type": "file",
+      "path": "gameengin_inventory_files_execution_wired.zip",
+      "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
       "tags": []

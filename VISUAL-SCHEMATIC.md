@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2042
+- **Total files:** 2044
 - **Total function/class nodes:** 3871
 - **Total edges:** 7284
-- **Orphan nodes:** 3287
+- **Orphan nodes:** 3289
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4756,6 +4756,7 @@ _File-level graph omitted: 557 files exceeds Mermaid render budget. See table ab
 | `build-memory/actions.json` | config |
 | `build-memory/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `build-memory/events.json` | config |
+| `build-memory/os-architecture-map.md` | doc |
 | `build-memory/routes.json` | config |
 | `build-memory/schema.json` | config |
 | `build-memory/ui-surfaces.json` | config |
@@ -4918,6 +4919,7 @@ _File-level graph omitted: 557 files exceeds Mermaid render budget. See table ab
 | `fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf` | file |
 | `fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf` | file |
 | `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
+| `gameengin_inventory_files_execution_wired.zip` | file |
 | `GameENGINspec.md` | doc |
 | `generate-readme.ts` | ts |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
