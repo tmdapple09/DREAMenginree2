@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-05T17:48:41.553Z",
+  "generated_at": "2026-06-07T04:19:22.913Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 121,
+  "count": 120,
   "surfaces": [
     {
       "type": "page",
@@ -117,22 +117,6 @@
         {
           "name": "ConnectorsClient",
           "from": "./dream.ConnectorsClient"
-        }
-      ]
-    },
-    {
-      "type": "page",
-      "path": "/daydream/analytics",
-      "file": "app/daydream/analytics/page.tsx",
-      "component": "AnalyticsDaydreamPage",
-      "imports": [
-        {
-          "name": "AnalyticsDaydream",
-          "from": "@/components/daydream/dreamsurface.daydream.AnalyticsDaydream"
-        },
-        {
-          "name": "AuthenticatedPageHeader",
-          "from": "@/components/ui/dream.AuthenticatedPageHeader"
         }
       ]
     },
