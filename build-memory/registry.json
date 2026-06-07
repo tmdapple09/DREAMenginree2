@@ -1,9 +1,16 @@
 {
-  "generatedAt": "2026-06-07T05:35:28.580Z",
+  "generatedAt": "2026-06-07T06:15:26.728Z",
   "totals": {
-    "surface": 296,
-    "route-surface": 263,
+    "core-surface": 2,
+    "daydream": 0,
+    "surface": 276,
+    "route-surface": 261,
+    "dreamsurface": 37,
+    "engin": 15,
     "engine-ruleset": 25,
+    "dreamr": 11,
+    "dreamdmbar": 13,
+    "homedream": 3,
     "connector": 26,
     "brain-node": 67,
     "brain-doc": 18,
@@ -14,7 +21,7 @@
     "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 62,
-    "engine-utility": 361
+    "engine-utility": 308
   },
   "entries": [
     {
@@ -1341,7 +1348,7 @@
       "id": "app/dreamdmbar/_components/HomeDreamRegion",
       "slot": "route-surface",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "default"
       ]
@@ -1368,7 +1375,7 @@
       "id": "app/dreamdmbar/homedream/page",
       "slot": "route-surface",
       "path": "app/dreamdmbar/homedream/page.tsx",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "default"
       ]
@@ -1393,9 +1400,9 @@
     },
     {
       "id": "app/dreamr/page",
-      "slot": "route-surface",
+      "slot": "dreamr",
       "path": "app/dreamr/page.tsx",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "default",
         "metadata"
@@ -1820,9 +1827,9 @@
     },
     {
       "id": "app/homedream/page",
-      "slot": "route-surface",
+      "slot": "homedream",
       "path": "app/homedream/page.tsx",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "default"
       ]
@@ -3210,7 +3217,7 @@
     },
     {
       "id": "components/dreamr/dream.CloseFriendsSettings",
-      "slot": "surface",
+      "slot": "dreamr",
       "path": "components/dreamr/dream.CloseFriendsSettings.tsx",
       "engine": "Universal",
       "exports": [
@@ -3219,7 +3226,7 @@
     },
     {
       "id": "components/dreamr/dream.panel.DreamRChannelPanel",
-      "slot": "surface",
+      "slot": "dreamr",
       "path": "components/dreamr/dream.panel.DreamRChannelPanel.tsx",
       "engine": "Universal",
       "exports": [
@@ -3228,7 +3235,7 @@
     },
     {
       "id": "components/dreamr/dream.panel.DreamRCreatorPanel",
-      "slot": "surface",
+      "slot": "dreamr",
       "path": "components/dreamr/dream.panel.DreamRCreatorPanel.tsx",
       "engine": "Universal",
       "exports": [
@@ -3237,7 +3244,7 @@
     },
     {
       "id": "components/dreams/dream.connectorlayer",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.connectorlayer.tsx",
       "engine": "Universal",
       "exports": [
@@ -3247,7 +3254,7 @@
     },
     {
       "id": "components/dreams/dream.DraggableDream",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.DraggableDream.tsx",
       "engine": "Universal",
       "exports": [
@@ -3256,7 +3263,7 @@
     },
     {
       "id": "components/dreams/dream.featurelayer",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.featurelayer.tsx",
       "engine": "Universal",
       "exports": [
@@ -3266,7 +3273,7 @@
     },
     {
       "id": "components/dreams/dream.GlobalDragLayer",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.GlobalDragLayer.tsx",
       "engine": "Universal",
       "exports": [
@@ -3275,7 +3282,7 @@
     },
     {
       "id": "components/dreams/dream.outputlayer",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.outputlayer.tsx",
       "engine": "Universal",
       "exports": [
@@ -3287,7 +3294,7 @@
     },
     {
       "id": "components/dreams/dream.panel.RuntimeMemoryHUD",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
       "engine": "Universal",
       "exports": [
@@ -3296,7 +3303,7 @@
     },
     {
       "id": "components/dreams/dream.PlatformErrorReporter",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.PlatformErrorReporter.tsx",
       "engine": "Universal",
       "exports": [
@@ -3305,7 +3312,7 @@
     },
     {
       "id": "components/dreams/dream.shell.DreamShell",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.shell.DreamShell.tsx",
       "engine": "Universal",
       "exports": [
@@ -3314,7 +3321,7 @@
     },
     {
       "id": "components/dreams/dream.shell.SharedDreamShell",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.shell.SharedDreamShell.tsx",
       "engine": "Universal",
       "exports": [
@@ -3325,7 +3332,7 @@
     },
     {
       "id": "components/dreams/dream.SlideOverPanel",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.SlideOverPanel.tsx",
       "engine": "Universal",
       "exports": [
@@ -3334,7 +3341,7 @@
     },
     {
       "id": "components/dreams/dream.widget.SuperDreamWidget",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.widget.SuperDreamWidget.tsx",
       "engine": "Universal",
       "exports": [
@@ -3344,7 +3351,7 @@
     },
     {
       "id": "components/dreams/dream.window.JourneyDreamWindow",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dream.window.JourneyDreamWindow.tsx",
       "engine": "Universal",
       "exports": [
@@ -3353,7 +3360,7 @@
     },
     {
       "id": "components/dreams/dreamsurface.dreamspace",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "engine": "Universal",
       "exports": [
@@ -3365,7 +3372,7 @@
     },
     {
       "id": "components/dreams/dreamsurface.shell",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dreamsurface.shell.tsx",
       "engine": "Universal",
       "exports": [
@@ -3376,7 +3383,7 @@
     },
     {
       "id": "components/dreams/dreamsurface.window",
-      "slot": "surface",
+      "slot": "dreamsurface",
       "path": "components/dreams/dreamsurface.window.tsx",
       "engine": "Universal",
       "exports": [
@@ -5231,7 +5238,7 @@
     },
     {
       "id": "coresurfaces/dreamsurface.EditProfileDream",
-      "slot": "surface",
+      "slot": "core-surface",
       "path": "coresurfaces/dreamsurface.EditProfileDream.tsx",
       "engine": "Universal",
       "exports": [
@@ -5240,7 +5247,7 @@
     },
     {
       "id": "coresurfaces/dreamsurface.ViewProfile",
-      "slot": "surface",
+      "slot": "core-surface",
       "path": "coresurfaces/dreamsurface.ViewProfile.tsx",
       "engine": "Universal",
       "exports": [
@@ -5353,8 +5360,29 @@
       ]
     },
     {
+      "id": "dreamdmbar/dream.GlowingLight",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/dream.GlowingLight.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "default",
+        "GlowingLightProps"
+      ]
+    },
+    {
+      "id": "dreamdmbar/dreamsurface.dreamdmbar",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "BAR_H",
+        "default",
+        "NAV_H"
+      ]
+    },
+    {
       "id": "engins/autoopen/dream.AutoOpenGameEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5363,7 +5391,7 @@
     },
     {
       "id": "engins/CodeEngin/core/parser",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/CodeEngin/core/parser.ts",
       "engine": "CodeEngin",
       "exports": [
@@ -5375,7 +5403,7 @@
     },
     {
       "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "engine": "CodeEngin",
       "exports": [
@@ -5384,7 +5412,7 @@
     },
     {
       "id": "engins/CodeEngin/modules/ai-co-pilot/index",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
       "engine": "CodeEngin",
       "exports": [
@@ -5394,7 +5422,7 @@
     },
     {
       "id": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
       "engine": "CodeEngin",
       "exports": [
@@ -5405,7 +5433,7 @@
     },
     {
       "id": "engins/CodeEngin/orchestrator/dream.index",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
       "engine": "CodeEngin",
       "exports": [
@@ -5414,7 +5442,7 @@
     },
     {
       "id": "engins/dream.ForgeEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/dream.ForgeEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5423,7 +5451,7 @@
     },
     {
       "id": "engins/dream.QuantumCircuitCanvas",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/dream.QuantumCircuitCanvas.tsx",
       "engine": "Universal",
       "exports": [
@@ -5435,7 +5463,7 @@
     },
     {
       "id": "engins/engin.BrandingEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.BrandingEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5444,7 +5472,7 @@
     },
     {
       "id": "engins/engin.CodeEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.CodeEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5453,7 +5481,7 @@
     },
     {
       "id": "engins/engin.ContentEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.ContentEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5462,7 +5490,7 @@
     },
     {
       "id": "engins/engin.GameEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.GameEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5471,7 +5499,7 @@
     },
     {
       "id": "engins/engin.LabEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.LabEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5480,7 +5508,7 @@
     },
     {
       "id": "engins/engin.StarMakerEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/engin.StarMakerEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -5489,7 +5517,7 @@
     },
     {
       "id": "engins/portfolio/dream.PortfolioEngin",
-      "slot": "engine-ruleset",
+      "slot": "engin",
       "path": "engins/portfolio/dream.PortfolioEngin.tsx",
       "engine": "Universal",
       "exports": [
@@ -7246,9 +7274,9 @@
     },
     {
       "id": "lib/dream-window/connectionVerbs",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/connectionVerbs.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "CONNECTION_VERBS",
         "ConnectionAction",
@@ -7267,9 +7295,9 @@
     },
     {
       "id": "lib/dream-window/DreamWindowLifecycle",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/DreamWindowLifecycle.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "activateDreamWindow",
         "bindDreamWindow",
@@ -7292,9 +7320,9 @@
     },
     {
       "id": "lib/dream-window/enginConnectionNetwork",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/enginConnectionNetwork.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "ALL_CONNECTION_PATHS",
         "EnginConnectionPath",
@@ -7305,9 +7333,9 @@
     },
     {
       "id": "lib/dream-window/index",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/index.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "activateDreamWindow",
         "activateSurface",
@@ -7345,9 +7373,9 @@
     },
     {
       "id": "lib/dream-window/runtimeRegion",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/runtimeRegion.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "activateSurface",
         "DEFAULT_RUNTIME_REGION_STATE",
@@ -7366,9 +7394,9 @@
     },
     {
       "id": "lib/dream-window/useDreamWindowActions",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dream-window/useDreamWindowActions.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "useDreamWindowActions",
         "UseDreamWindowActionsReturn"
@@ -7376,9 +7404,9 @@
     },
     {
       "id": "lib/dreamdm/barInteractions",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/barInteractions.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "BAR_FLING_LINE_RATIO",
         "BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS",
@@ -7441,9 +7469,9 @@
     },
     {
       "id": "lib/dreamdm/bridgeSeamFlow",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/bridgeSeamFlow.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "_resetIdCounter",
         "channelColor",
@@ -7458,10 +7486,28 @@
       ]
     },
     {
+      "id": "lib/dreamdm/DreamSystemContext",
+      "slot": "dreamdmbar",
+      "path": "lib/dreamdm/DreamSystemContext.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "BarIntent",
+        "BarIntentMode",
+        "DEFAULT_BAR_INTENT",
+        "DEFAULT_WORLD_FOCUS",
+        "DreamSystemProvider",
+        "HomeData",
+        "ModuleBarAction",
+        "RuntimeCallbacks",
+        "useDreamSystem",
+        "WorldFocusState"
+      ]
+    },
+    {
       "id": "lib/dreamdm/useDreamBarContext",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useDreamBarContext.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "detectSurface",
         "DreamBarContext",
@@ -7472,9 +7518,9 @@
     },
     {
       "id": "lib/dreamdm/useDreamDMConversations",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useDreamDMConversations.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "DMConversation",
         "useDreamDMConversations"
@@ -7482,9 +7528,9 @@
     },
     {
       "id": "lib/dreamdm/useDreamDMDraft",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useDreamDMDraft.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "cleanupStaleDrafts",
         "DraftPayload",
@@ -7495,9 +7541,9 @@
     },
     {
       "id": "lib/dreamdm/useDreamDMMessages",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useDreamDMMessages.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "DMMessage",
         "useDreamDMMessages"
@@ -7505,9 +7551,9 @@
     },
     {
       "id": "lib/dreamdm/useDreamSearch",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useDreamSearch.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "SearchResult",
         "SearchResultType",
@@ -7517,9 +7563,9 @@
     },
     {
       "id": "lib/dreamdm/useMessagingCore",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useMessagingCore.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "MediaType",
         "SendMessageParams",
@@ -7529,9 +7575,9 @@
     },
     {
       "id": "lib/dreamdm/useModuleBarIntent",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useModuleBarIntent.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "useModuleBarIntent",
         "UseModuleBarIntentResult"
@@ -7539,9 +7585,9 @@
     },
     {
       "id": "lib/dreamdm/useNotifications",
-      "slot": "engine-utility",
+      "slot": "dreamdmbar",
       "path": "lib/dreamdm/useNotifications.ts",
-      "engine": "Universal",
+      "engine": "DreamDMBar",
       "exports": [
         "useNotifications"
       ]
@@ -7721,19 +7767,29 @@
     },
     {
       "id": "lib/dreamr/closeFriendsVisibility",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/closeFriendsVisibility.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "filterByCloseFriends",
         "VisibilityCandidate"
       ]
     },
     {
+      "id": "lib/dreamr/dreamrfeed",
+      "slot": "dreamr",
+      "path": "lib/dreamr/dreamrfeed.tsx",
+      "engine": "DreamR",
+      "exports": [
+        "default",
+        "DREAMR_TOPICS"
+      ]
+    },
+    {
       "id": "lib/dreamr/feedCursor",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/feedCursor.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "deriveNextCursor",
         "FeedPaginationParams",
@@ -7743,9 +7799,9 @@
     },
     {
       "id": "lib/dreamr/socialHumanityScore",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/socialHumanityScore.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "HumanityScore",
         "SocialHumanityInput"
@@ -7753,9 +7809,9 @@
     },
     {
       "id": "lib/dreamr/swipeCalibration",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/swipeCalibration.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "calibrateDevice",
         "CalibrationProfile",
@@ -7767,9 +7823,9 @@
     },
     {
       "id": "lib/dreamr/swipePersonalization",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/swipePersonalization.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "canRecordDreamRView",
         "contentTypePreferenceKey",
@@ -7789,9 +7845,9 @@
     },
     {
       "id": "lib/dreamr/torridityLedger",
-      "slot": "engine-utility",
+      "slot": "dreamr",
       "path": "lib/dreamr/torridityLedger.ts",
-      "engine": "Universal",
+      "engine": "DreamR",
       "exports": [
         "calculateOriginality",
         "calculateRank",
@@ -7815,9 +7871,9 @@
     },
     {
       "id": "lib/dreams/drag",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dreams/drag.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "DREAM_DRAG_MIME",
         "DreamDragData",
@@ -7830,9 +7886,9 @@
     },
     {
       "id": "lib/dreams/dreamIntentBus",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dreams/dreamIntentBus.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "DreamIntentContext",
         "DreamIntentResult",
@@ -7840,10 +7896,21 @@
       ]
     },
     {
+      "id": "lib/dreams/DreamRegistry",
+      "slot": "dreamsurface",
+      "path": "lib/dreams/DreamRegistry.tsx",
+      "engine": "DreamSurface",
+      "exports": [
+        "DreamRegistry",
+        "getDreamComponent",
+        "RegisteredDreamComponent"
+      ]
+    },
+    {
       "id": "lib/dreams/profileProjection",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dreams/profileProjection.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "canRenderProjection",
         "createDreamProjection",
@@ -7852,9 +7919,9 @@
     },
     {
       "id": "lib/dreams/types",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dreams/types.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "createDream",
         "Dream",
@@ -7884,9 +7951,9 @@
     },
     {
       "id": "lib/dreams/useDreamsRuntime",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/dreams/useDreamsRuntime.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "DreamsRuntime",
         "DreamsRuntimeState",
@@ -8445,7 +8512,7 @@
     },
     {
       "id": "lib/engins/brand/brandEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/brand/brandEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8460,7 +8527,7 @@
     },
     {
       "id": "lib/engins/brand/useBrandEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/brand/useBrandEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8471,7 +8538,7 @@
     },
     {
       "id": "lib/engins/code/codeEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8487,7 +8554,7 @@
     },
     {
       "id": "lib/engins/code/useCodeEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/code/useCodeEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8498,7 +8565,7 @@
     },
     {
       "id": "lib/engins/content/contentEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8513,7 +8580,7 @@
     },
     {
       "id": "lib/engins/content/useContentEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/content/useContentEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8524,7 +8591,7 @@
     },
     {
       "id": "lib/engins/game/gameEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/game/gameEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8543,7 +8610,7 @@
     },
     {
       "id": "lib/engins/game/index",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/game/index.ts",
       "engine": "Universal",
       "exports": [
@@ -8553,7 +8620,7 @@
     },
     {
       "id": "lib/engins/game/useGameEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/game/useGameEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8564,7 +8631,7 @@
     },
     {
       "id": "lib/engins/lab/labEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/lab/labEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8580,7 +8647,7 @@
     },
     {
       "id": "lib/engins/lab/useLabEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/lab/useLabEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8591,7 +8658,7 @@
     },
     {
       "id": "lib/engins/music/starMakerEnginRuleSet",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/music/starMakerEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
@@ -8605,7 +8672,7 @@
     },
     {
       "id": "lib/engins/music/useStarMakerEnginRuntime",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/music/useStarMakerEnginRuntime.ts",
       "engine": "Universal",
       "exports": [
@@ -8616,7 +8683,7 @@
     },
     {
       "id": "lib/engins/useEnginWorkflow",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/useEnginWorkflow.ts",
       "engine": "Universal",
       "exports": [
@@ -8626,7 +8693,7 @@
     },
     {
       "id": "lib/engins/workflowEngine",
-      "slot": "engine-utility",
+      "slot": "engine-ruleset",
       "path": "lib/engins/workflowEngine.ts",
       "engine": "Universal",
       "exports": [
@@ -11003,9 +11070,9 @@
     },
     {
       "id": "lib/home-buttons/button-groups",
-      "slot": "engine-utility",
+      "slot": "homedream",
       "path": "lib/home-buttons/button-groups.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "BUTTON_GROUPS",
         "ButtonGroupName",
@@ -11014,9 +11081,9 @@
     },
     {
       "id": "lib/home-buttons/contextual-home",
-      "slot": "engine-utility",
+      "slot": "homedream",
       "path": "lib/home-buttons/contextual-home.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "HOME_BOTTOM_THRESHOLD",
         "HOME_TOP_THRESHOLD",
@@ -13518,9 +13585,9 @@
     },
     {
       "id": "lib/widgets/CrossWidgetPosting",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/CrossWidgetPosting.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "CrossWidgetPostingEngine",
         "MSG_TYPE_FOCUS_REQUEST",
@@ -13535,18 +13602,18 @@
     },
     {
       "id": "lib/widgets/feed-resolver",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/feed-resolver.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "getFeedChannelKey"
       ]
     },
     {
       "id": "lib/widgets/parse",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/parse.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "parseEmbedConfig",
         "parseSocialEmbedConfig",
@@ -13559,9 +13626,9 @@
     },
     {
       "id": "lib/widgets/parseConfig",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/parseConfig.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "inferProviderFromUrl",
         "parseSocialEmbedWidgetConfig",
@@ -13572,9 +13639,9 @@
     },
     {
       "id": "lib/widgets/useWidget",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/useWidget.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "chainWidgets",
         "emitWidget",
@@ -13587,18 +13654,28 @@
     },
     {
       "id": "lib/widgets/WidgetBus",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/WidgetBus.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "default"
       ]
     },
     {
+      "id": "lib/widgets/WidgetEngine",
+      "slot": "dreamsurface",
+      "path": "lib/widgets/WidgetEngine.tsx",
+      "engine": "DreamSurface",
+      "exports": [
+        "WidgetLibrary",
+        "WidgetSpec"
+      ]
+    },
+    {
       "id": "lib/widgets/WidgetEventBus",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/WidgetEventBus.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "widgetEventBus",
         "WidgetEventBus",
@@ -13608,9 +13685,9 @@
     },
     {
       "id": "lib/widgets/WidgetLinkGraph",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/WidgetLinkGraph.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "CapabilityMask",
         "WidgetLink",
@@ -13620,9 +13697,9 @@
     },
     {
       "id": "lib/widgets/widgetRegistry",
-      "slot": "engine-utility",
+      "slot": "dreamsurface",
       "path": "lib/widgets/widgetRegistry.ts",
-      "engine": "Universal",
+      "engine": "DreamSurface",
       "exports": [
         "ConnectorRequirement",
         "ConnectorState",
@@ -13701,7 +13778,7 @@
       "id": "src/dream/rulesets/homedream/dream.homedream.constants",
       "slot": "engine-ruleset",
       "path": "src/dream/rulesets/homedream/dream.homedream.constants.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "HOMEDREAM_FRAME_BUDGET_MS",
         "HOMEDREAM_GRAVITY",
@@ -13713,7 +13790,7 @@
       "id": "src/dream/rulesets/homedream/dream.homedream.physics",
       "slot": "engine-ruleset",
       "path": "src/dream/rulesets/homedream/dream.homedream.physics.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "HOMEDREAM_PHYSICS_CONSTRAINTS",
         "PhysicsConstraint",
@@ -13724,7 +13801,7 @@
       "id": "src/dream/rulesets/homedream/dream.homedream.transforms",
       "slot": "engine-ruleset",
       "path": "src/dream/rulesets/homedream/dream.homedream.transforms.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "applyDelta",
         "createInitialState",
@@ -13736,7 +13813,7 @@
       "id": "src/dream/rulesets/homedream/index",
       "slot": "engine-ruleset",
       "path": "src/dream/rulesets/homedream/index.ts",
-      "engine": "Universal",
+      "engine": "HomeDream",
       "exports": [
         "applyDelta",
         "createInitialState",

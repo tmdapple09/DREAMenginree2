@@ -6,8 +6,13 @@ interface EngineWithRegistry {
   registry: { hydrate: (config: Record<string, unknown>) => void };
 }
 
+import { engins } from './engins';
 import { rulesets } from './rulesets';
 import { surfaces } from './surfaces';
+import { dreamsurfaces } from './dreamsurfaces';
+import { dreamr } from './dreamr';
+import { dreamdmbar } from './dreamdmbar';
+import { homedream } from './homedream';
 import { connectors } from './connectors';
 import { cartridges } from './cartridges';
 import { brain } from './brain';
@@ -15,10 +20,18 @@ import { personas } from './personas';
 import { systems } from './systems';
 import { hooks } from './hooks';
 
+export { osArchitectureMap } from './osArchitectureMap';
+export type { OsArchitectureMap } from './osArchitectureMap';
+
 export function hydrateEngineRegistry(engine: EngineWithRegistry): void {
   engine.registry.hydrate({
+    engins,
     rulesets,
     surfaces,
+    dreamsurfaces,
+    dreamr,
+    dreamdmbar,
+    homedream,
     connectors,
     cartridges,
     brain,
