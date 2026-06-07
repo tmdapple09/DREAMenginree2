@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T04:30:04.118Z
+Generated: 2026-06-07T04:33:57.579Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -13056,7 +13056,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/auth/update-password/page
 │   │   │   │   ├── (dynamic)  ← @/app/connectors/dream.ConnectorsClient
 │   │   │   │   ├── (dynamic)  ← @/app/connectors/page
-│   │   │   │   ├── (dynamic)  ← @/app/daydream/analytics/page
 │   │   │   │   ├── (dynamic)  ← @/app/daydream/brand/engin/page
 │   │   │   │   ├── (dynamic)  ← @/app/daydream/brand/page
 │   │   │   │   ├── (dynamic)  ← @/app/daydream/code/engin/page
@@ -13218,7 +13217,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/dream.OpenDaydreamSideBButton
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/dream.shell.DaydreamShell
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/dream.StandaloneEnginSurface
-│   │   │   │   ├── (dynamic)  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.CompingPanel
 │   │   │   │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel

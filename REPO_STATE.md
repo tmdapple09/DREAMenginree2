@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T04:30:04.002Z
+Generated: 2026-06-07T04:33:57.456Z
 
 ---
 
@@ -13375,7 +13375,6 @@ _No style files for this feature._
 | `@/app/auth/update-password/page` | _(dynamic import)_ |
 | `@/app/connectors/dream.ConnectorsClient` | _(dynamic import)_ |
 | `@/app/connectors/page` | _(dynamic import)_ |
-| `@/app/daydream/analytics/page` | _(dynamic import)_ |
 | `@/app/daydream/brand/engin/page` | _(dynamic import)_ |
 | `@/app/daydream/brand/page` | _(dynamic import)_ |
 | `@/app/daydream/code/engin/page` | _(dynamic import)_ |
@@ -13537,7 +13536,6 @@ _No style files for this feature._
 | `@/components/daydream/dream.OpenDaydreamSideBButton` | _(dynamic import)_ |
 | `@/components/daydream/dream.shell.DaydreamShell` | _(dynamic import)_ |
 | `@/components/daydream/dream.StandaloneEnginSurface` | _(dynamic import)_ |
-| `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream` | _(dynamic import)_ |
 | `@/components/daydream/dreamsurface.daydream.BrandDaydream` | _(dynamic import)_ |
 | `@/components/daydream/starmaker/dream.panel.CompingPanel` | _(dynamic import)_ |
 | `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel` | _(dynamic import)_ |
@@ -14805,7 +14803,6 @@ _No style files for this feature._
 - `@/app/auth/update-password/page`
 - `@/app/connectors/dream.ConnectorsClient`
 - `@/app/connectors/page`
-- `@/app/daydream/analytics/page`
 - `@/app/daydream/brand/engin/page`
 - `@/app/daydream/brand/page`
 - `@/app/daydream/code/engin/page`
@@ -14967,7 +14964,6 @@ _No style files for this feature._
 - `@/components/daydream/dream.OpenDaydreamSideBButton`
 - `@/components/daydream/dream.shell.DaydreamShell`
 - `@/components/daydream/dream.StandaloneEnginSurface`
-- `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream`
 - `@/components/daydream/dreamsurface.daydream.BrandDaydream`
 - `@/components/daydream/starmaker/dream.panel.CompingPanel`
 - `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel`
