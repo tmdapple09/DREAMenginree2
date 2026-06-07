@@ -16,29 +16,23 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '25'
+          node-version: '25.9.0'
 
       - name: Run Registry Wire-Up
         run: node scripts/wire-orphans.mjs
 
-      - name: Check for Registry Changes
-        id: git-check
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit Registry Updates
-        if: steps.git-check.outputs.changes == 'true'
+      - name: Push Updates
         run: |
           git config user.name "DREAMengin-Bot"
           git config user.email "bot@dreamengin.com"
-          # Pull latest to avoid conflict with local pushes
-          git pull origin main --rebase
+          
+          # Adds everything in the generated folder and the registry file
           git add src/engin/generated/ build-memory/registry.json
-          git commit -m "chore: auto-sync registry state [skip ci]"
-          git push origin main
+          
+          # Only commit/push if there are changes
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update engine registry [skip ci]"
+            git push origin HEAD:${{ github.ref }}
+          fi
