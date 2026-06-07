@@ -8,7 +8,6 @@ export const rulesets = {
   "engins/CodeEngin/modules/ai-co-pilot/useAgentSession": () => import("@/engins/CodeEngin/modules/ai-co-pilot/useAgentSession"),
   "engins/CodeEngin/orchestrator/dream.index": () => import("@/engins/CodeEngin/orchestrator/dream.index"),
   "engins/dream.ForgeEngin": () => import("@/engins/dream.ForgeEngin"),
-  "engins/dream.panel.AnalyticsEngin": () => import("@/engins/dream.panel.AnalyticsEngin"),
   "engins/dream.QuantumCircuitCanvas": () => import("@/engins/dream.QuantumCircuitCanvas"),
   "engins/engin.BrandingEngin": () => import("@/engins/engin.BrandingEngin"),
   "engins/engin.CodeEngin": () => import("@/engins/engin.CodeEngin"),
