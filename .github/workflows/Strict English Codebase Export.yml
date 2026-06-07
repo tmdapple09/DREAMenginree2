@@ -3,14 +3,10 @@ name: Strict English Codebase Export
 on:
   workflow_dispatch:
     inputs:
-      include_binary_placeholders:
-        description: "Create strict-English placeholder files for binary assets"
-        required: false
-        default: "true"
       max_file_bytes:
         description: "Maximum text file size to translate"
         required: false
-        default: "750000"
+        default: "10000000"
 
 permissions:
   contents: read
@@ -21,9 +17,9 @@ concurrency:
 
 jobs:
   strict-english-codebase-export:
-    name: Mirror repo as strict English line map
+    name: Mirror repo as strict English line translations
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
 
     steps:
       - name: Checkout repository
@@ -36,23 +32,20 @@ jobs:
         with:
           node-version: '25.9.0'
 
-      - name: Generate strict English codebase mirror
+      - name: Generate strict English translated mirror
         env:
-          INCLUDE_BINARY_PLACEHOLDERS: ${{ inputs.include_binary_placeholders }}
           MAX_FILE_BYTES: ${{ inputs.max_file_bytes }}
         run: |
           cat > export-strict-english-codebase.mjs <<'NODE'
           import fs from "node:fs";
           import path from "node:path";
-          import crypto from "node:crypto";
 
           const repoRoot = process.cwd();
           const outRoot = path.join(repoRoot, "build-memory", "strict-english-codebase");
           const manifestPath = path.join(repoRoot, "build-memory", "strict-english-codebase-manifest.json");
           const summaryPath = path.join(repoRoot, "build-memory", "strict-english-codebase-summary.md");
-
-          const includeBinaryPlaceholders = String(process.env.INCLUDE_BINARY_PLACEHOLDERS || "true") === "true";
-          const maxFileBytes = Number(process.env.MAX_FILE_BYTES || "750000");
+          const assetListPath = path.join(repoRoot, "build-memory", "strict-english-asset-files.txt");
+          const maxFileBytes = Number(process.env.MAX_FILE_BYTES || "10000000");
 
           const ignoredDirectories = new Set([
             ".git",
@@ -68,10 +61,6 @@ jobs:
             "reports",
             "test-output",
             "build-memory/strict-english-codebase",
-          ]);
-
-          const ignoredFiles = new Set([
-            "build-memory/strict-english-codebase.zip",
           ]);
 
           const textExtensions = new Set([
@@ -99,17 +88,18 @@ jobs:
             ".dockerignore",
             ".toml",
             ".xml",
-            ".svg",
             ".csv",
           ]);
 
-          const binaryExtensions = new Set([
+          const assetExtensions = new Set([
             ".png",
             ".jpg",
             ".jpeg",
             ".gif",
             ".webp",
             ".ico",
+            ".glb",
+            ".gltf",
             ".mp4",
             ".mov",
             ".mp3",
@@ -127,24 +117,28 @@ jobs:
             ".bin",
           ]);
 
-          function ensureDir(filePath) {
-            fs.mkdirSync(path.dirname(filePath), { recursive: true });
-          }
-
           function toPosix(filePath) {
             return filePath.split(path.sep).join("/");
+          }
+
+          function ensureDir(filePath) {
+            fs.mkdirSync(path.dirname(filePath), { recursive: true });
           }
 
           function shouldIgnore(relativePath) {
             const posix = toPosix(relativePath);
 
-            if (ignoredFiles.has(posix)) return true;
-
             for (const ignored of ignoredDirectories) {
-              if (posix === ignored || posix.startsWith(`${ignored}/`)) return true;
+              if (posix === ignored || posix.startsWith(`${ignored}/`)) {
+                return true;
+              }
             }
 
             return false;
+          }
+
+          function isAssetFile(filePath) {
+            return assetExtensions.has(path.extname(filePath).toLowerCase());
           }
 
           function isProbablyText(filePath, buffer) {
@@ -153,8 +147,7 @@ jobs:
 
             if (textExtensions.has(ext)) return true;
             if (textExtensions.has(base)) return true;
-            if (binaryExtensions.has(ext)) return false;
-
+            if (assetExtensions.has(ext)) return false;
             if (buffer.includes(0)) return false;
 
             const sample = buffer.subarray(0, Math.min(buffer.length, 4096));
@@ -166,94 +159,122 @@ jobs:
               const isPrintable = byte >= 32 && byte <= 126;
               const isUtf8Likely = byte >= 128;
 
-              if (!isTab && !isNewline && !isPrintable && !isUtf8Likely) suspicious += 1;
+              if (!isTab && !isNewline && !isPrintable && !isUtf8Likely) {
+                suspicious += 1;
+              }
             }
 
             return suspicious / Math.max(sample.length, 1) < 0.02;
           }
 
-          function describeBlankLine() {
-            return "This line is blank. The line separates nearby instructions or text.";
+          function splitPhysicalLines(text) {
+            const normalized = text.replace(/\r\n/g, "\n");
+
+            if (normalized.length === 0) {
+              return [];
+            }
+
+            const lines = normalized.split("\n");
+
+            if (lines.length > 0 && lines[lines.length - 1] === "") {
+              lines.pop();
+            }
+
+            return lines;
           }
 
-          function describeComment(trimmed) {
-            const cleaned = trimmed
+          function cleanComment(trimmed) {
+            return trimmed
               .replace(/^\/\//, "")
               .replace(/^\/\*/, "")
               .replace(/^\*/, "")
               .replace(/\*\/$/, "")
               .replace(/^#/, "")
               .trim();
-
-            if (!cleaned) return "This line is a comment marker. The line does not run as program behavior.";
-
-            return `This line is a note for humans. The note says: ${cleaned}`;
           }
 
-          function describeImport(trimmed) {
-            const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
-            const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
-            const source = fromMatch?.[1] || bareMatch?.[1];
+          function strictEnglishForLine(line, filePath) {
+            const trimmed = line.trim();
+            const ext = path.extname(filePath).toLowerCase();
 
-            if (source) {
-              return `This line brings code from ${source} into this file. The imported code can be used by later lines.`;
+            if (!trimmed) return "";
+
+            if (
+              trimmed.startsWith("//") ||
+              trimmed.startsWith("/*") ||
+              trimmed.startsWith("*") ||
+              trimmed.startsWith("#")
+            ) {
+              const note = cleanComment(trimmed);
+              return note ? `Human note: ${note}.` : "Comment marker.";
             }
 
-            return "This line brings outside code into this file. The imported code can be used by later lines.";
-          }
+            if (trimmed.startsWith("import ")) {
+              const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
+              const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
+              const source = fromMatch?.[1] || bareMatch?.[1];
 
-          function describeExport(trimmed) {
-            if (/^export\s+default\s+function\s+/.test(trimmed)) {
+              return source
+                ? `Bring code from ${source} into this file.`
+                : "Bring outside code into this file.";
+            }
+
+            if (trimmed.startsWith("export default function ")) {
               const name = trimmed.match(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/)?.[1];
               return name
-                ? `This line makes the function named ${name} the main thing other files receive from this file.`
-                : "This line makes one function the main thing other files receive from this file.";
+                ? `Make ${name} the main function other files receive from this file.`
+                : "Make this function the main thing other files receive from this file.";
             }
 
-            if (/^export\s+default\s+/.test(trimmed)) {
-              return "This line makes one value the main thing other files receive from this file.";
+            if (trimmed.startsWith("export default ")) {
+              return "Make this value the main thing other files receive from this file.";
             }
 
-            if (/^export\s+(type|interface)\s+/.test(trimmed)) {
-              const kind = trimmed.match(/^export\s+(type|interface)\s+/)?.[1];
-              const name = trimmed.match(/^export\s+(?:type|interface)\s+([A-Za-z0-9_$]+)/)?.[1];
+            if (trimmed.startsWith("export type ")) {
+              const name = trimmed.match(/^export\s+type\s+([A-Za-z0-9_$]+)/)?.[1];
               return name
-                ? `This line makes the ${kind} named ${name} available to other files.`
-                : `This line makes a ${kind} available to other files.`;
+                ? `Make the type rule named ${name} available to other files.`
+                : "Make this type rule available to other files.";
             }
 
-            if (/^export\s+(const|let|var)\s+/.test(trimmed)) {
-              const name = trimmed.match(/^export\s+(?:const|let|var)\s+([A-Za-z0-9_$]+)/)?.[1];
+            if (trimmed.startsWith("export interface ")) {
+              const name = trimmed.match(/^export\s+interface\s+([A-Za-z0-9_$]+)/)?.[1];
               return name
-                ? `This line creates ${name} and makes ${name} available to other files.`
-                : "This line creates a value and makes the value available to other files.";
+                ? `Make the shape named ${name} available to other files.`
+                : "Make this shape available to other files.";
             }
 
-            if (/^export\s+function\s+/.test(trimmed)) {
+            if (trimmed.startsWith("export function ")) {
               const name = trimmed.match(/^export\s+function\s+([A-Za-z0-9_$]+)/)?.[1];
               return name
-                ? `This line creates the function named ${name} and makes ${name} available to other files.`
-                : "This line creates a function and makes the function available to other files.";
+                ? `Create the action named ${name} and make the action available to other files.`
+                : "Create this action and make the action available to other files.";
             }
 
-            if (/^export\s+/.test(trimmed)) {
-              return "This line makes named code from this file available to other files.";
+            if (trimmed.startsWith("export const ")) {
+              const name = trimmed.match(/^export\s+const\s+([A-Za-z0-9_$]+)/)?.[1];
+              return name
+                ? `Create the value named ${name} and make the value available to other files.`
+                : "Create this value and make the value available to other files.";
             }
 
-            return null;
-          }
+            if (trimmed.startsWith("export ")) {
+              return "Make named code from this file available to other files.";
+            }
 
-          function describeDeclaration(trimmed) {
-            const valueMatch = trimmed.match(/^(const|let|var)\s+([A-Za-z0-9_$]+)/);
-            if (valueMatch) {
-              const kind = valueMatch[1];
-              const name = valueMatch[2];
+            const constMatch = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
+            if (constMatch) {
+              return `Create the value named ${constMatch[1]}.`;
+            }
 
-              if (kind === "const") {
-                return `This line creates ${name}. The name ${name} must not be reassigned later in this scope.`;
-              }
+            const letMatch = trimmed.match(/^let\s+([A-Za-z0-9_$]+)/);
+            if (letMatch) {
+              return `Create the changeable value named ${letMatch[1]}.`;
+            }
 
-              return `This line creates ${name}. The name ${name} may be reassigned later in this scope.`;
+            const varMatch = trimmed.match(/^var\s+([A-Za-z0-9_$]+)/);
+            if (varMatch) {
+              return `Create the changeable value named ${varMatch[1]}.`;
             }
 
             const functionMatch = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
@@ -262,335 +283,133 @@ jobs:
               const name = functionMatch[2];
 
               return isAsync
-                ? `This line starts the async function named ${name}. The function may wait for asynchronous work before finishing.`
-                : `This line starts the function named ${name}. Later lines define what the function does.`;
+                ? `Start the asynchronous action named ${name}.`
+                : `Start the action named ${name}.`;
             }
 
             const interfaceMatch = trimmed.match(/^interface\s+([A-Za-z0-9_$]+)/);
             if (interfaceMatch) {
-              return `This line starts the shape named ${interfaceMatch[1]}. Later lines define the required and optional fields.`;
+              return `Start the shape named ${interfaceMatch[1]}.`;
             }
 
             const typeMatch = trimmed.match(/^type\s+([A-Za-z0-9_$]+)/);
             if (typeMatch) {
-              return `This line starts the type rule named ${typeMatch[1]}. The rule describes what values are allowed.`;
+              return `Start the type rule named ${typeMatch[1]}.`;
             }
 
             const classMatch = trimmed.match(/^class\s+([A-Za-z0-9_$]+)/);
             if (classMatch) {
-              return `This line starts the class named ${classMatch[1]}. Later lines define the data and actions owned by this class.`;
+              return `Start the class named ${classMatch[1]}.`;
             }
 
-            return null;
-          }
+            if (/^if\s*\(/.test(trimmed)) return "Check whether the condition is true.";
+            if (/^else\s+if\s*\(/.test(trimmed)) return "Check another condition only after the earlier condition fails.";
+            if (/^else\b/.test(trimmed)) return "Run this fallback only when the earlier condition fails.";
+            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) return "Repeat the next block for each allowed step.";
+            if (/^while\s*\(/.test(trimmed)) return "Repeat the next block while the condition remains true.";
+            if (/^switch\s*\(/.test(trimmed)) return "Choose one path from a fixed set of possible paths.";
+            if (/^case\s+/.test(trimmed)) return "Name one allowed path inside the choice block.";
+            if (/^default\s*:/.test(trimmed)) return "Name the fallback path inside the choice block.";
+            if (/^try\b/.test(trimmed)) return "Start protected work that may fail.";
+            if (/^catch\b/.test(trimmed)) return "Handle a failure from protected work.";
+            if (/^finally\b/.test(trimmed)) return "Run cleanup after protected work ends.";
+            if (/^return\b/.test(trimmed)) return "Send a result back to the caller and stop this path.";
 
-          function describeControlFlow(trimmed) {
-            if (/^if\s*\(/.test(trimmed)) {
-              return "This line starts a condition. The following block runs only when the condition is true.";
+            if (trimmed.includes("useState(")) return "Create or read state that can change the visible surface.";
+            if (trimmed.includes("useEffect(")) return "Start work that runs after rendering when its requirements change.";
+            if (trimmed.includes("useMemo(")) return "Create a remembered value that changes only when its requirements change.";
+            if (trimmed.includes("useCallback(")) return "Create a remembered action that changes only when its requirements change.";
+            if (trimmed.includes("useRef(")) return "Create a reference that can hold a value without forcing a visible update.";
+
+            if (ext === ".json" && /^"[^"]+"\s*:/.test(trimmed)) {
+              const key = trimmed.match(/^"([^"]+)"/)?.[1];
+              return `Define the JSON field named ${key}.`;
             }
 
-            if (/^else\s+if\s*\(/.test(trimmed)) {
-              return "This line starts another condition. The following block runs only when earlier conditions failed and this condition is true.";
+            if ((ext === ".yml" || ext === ".yaml") && /^[A-Za-z0-9_-]+\s*:/.test(trimmed)) {
+              const key = trimmed.split(":")[0].trim();
+              return `Define the YAML setting named ${key}.`;
             }
 
-            if (/^else\b/.test(trimmed)) {
-              return "This line starts the fallback block. The fallback block runs when the earlier condition did not pass.";
+            if ((ext === ".yml" || ext === ".yaml") && /^-\s+/.test(trimmed)) {
+              return "Add one item to the current YAML list.";
             }
 
-            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) {
-              return "This line starts a repeated action. The following block runs once for each allowed step.";
+            if (ext === ".sql") {
+              const upper = trimmed.toUpperCase();
+
+              if (upper.startsWith("CREATE TABLE")) return "Start a database table creation rule.";
+              if (upper.startsWith("ALTER TABLE")) return "Start a database table change rule.";
+              if (upper.startsWith("CREATE INDEX")) return "Start a database index creation rule.";
+              if (upper.startsWith("INSERT INTO")) return "Start a database insert rule.";
+              if (upper.startsWith("SELECT")) return "Start a database read rule.";
+              if (upper.startsWith("UPDATE")) return "Start a database update rule.";
+              if (upper.startsWith("DELETE")) return "Start a database delete rule.";
             }
 
-            if (/^while\s*\(/.test(trimmed)) {
-              return "This line starts a repeated action. The following block keeps running while the condition remains true.";
+            if (ext === ".sh" || ext === ".bash") {
+              if (trimmed.startsWith("#!")) return "Select the program that runs this script.";
+              if (trimmed.startsWith("cd ")) return "Change the current working folder.";
+              if (trimmed.startsWith("mkdir ")) return "Create one or more folders.";
+              if (trimmed.startsWith("echo ")) return "Write text to command output or to a file.";
+              if (trimmed.startsWith("pnpm ")) return "Run a pnpm command.";
+              if (trimmed.startsWith("npm ")) return "Run an npm command.";
+              if (trimmed.startsWith("node ")) return "Run a Node.js script.";
+              if (trimmed.startsWith("git ")) return "Run a Git command.";
             }
 
-            if (/^switch\s*\(/.test(trimmed)) {
-              return "This line starts a choice block. Later cases decide which block runs.";
+            const jsxOpen = trimmed.match(/^<([A-Za-z0-9_.$-]+)/);
+            if (jsxOpen) {
+              return `Start the visible element or component named ${jsxOpen[1]}.`;
             }
 
-            if (/^case\s+/.test(trimmed)) {
-              return "This line names one allowed choice inside a choice block.";
+            const jsxClose = trimmed.match(/^<\/([A-Za-z0-9_.$-]+)>/);
+            if (jsxClose) {
+              return `End the visible element or component named ${jsxClose[1]}.`;
             }
 
-            if (/^default\s*:/.test(trimmed)) {
-              return "This line names the fallback choice inside a choice block.";
-            }
+            if (trimmed === "{" || trimmed.endsWith("{")) return "Start a block.";
+            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "End the current block.";
+            if (trimmed === "[" || trimmed.endsWith("[")) return "Start a list.";
+            if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "End the current list.";
 
-            if (/^try\b/.test(trimmed)) {
-              return "This line starts protected work. If the work fails, a catch block may handle the failure.";
-            }
-
-            if (/^catch\b/.test(trimmed)) {
-              return "This line starts failure handling for protected work.";
-            }
-
-            if (/^finally\b/.test(trimmed)) {
-              return "This line starts cleanup work. The cleanup runs after protected work succeeds or fails.";
-            }
-
-            return null;
-          }
-
-          function describeReact(trimmed) {
-            if (trimmed.includes("useState(")) {
-              return "This line creates or uses state. State stores a value that can change the visible surface when updated.";
-            }
-
-            if (trimmed.includes("useEffect(")) {
-              return "This line starts an effect. The effect runs after rendering when its listed conditions require it.";
-            }
-
-            if (trimmed.includes("useMemo(")) {
-              return "This line creates a remembered value. The value is recalculated only when its listed conditions change.";
-            }
-
-            if (trimmed.includes("useCallback(")) {
-              return "This line creates a remembered action. The action is recreated only when its listed conditions change.";
-            }
-
-            if (trimmed.includes("useRef(")) {
-              return "This line creates a reference. The reference can hold a value without forcing a visual update.";
-            }
-
-            return null;
-          }
-
-          function describeReturn(trimmed) {
-            if (/^return\b/.test(trimmed)) {
-              return "This line sends a result back to the caller and stops the current function path.";
-            }
-
-            return null;
-          }
-
-          function describeAssignment(trimmed) {
             if (/^[A-Za-z0-9_.$[\]]+\s*=/.test(trimmed)) {
               const name = trimmed.split("=")[0].trim();
-              return `This line sets ${name} to a new value.`;
-            }
-
-            return null;
-          }
-
-          function describeObjectOrArray(trimmed) {
-            if (trimmed === "{" || trimmed.endsWith("{")) {
-              return "This line opens a block. Later lines belong to this block until the matching closing mark.";
-            }
-
-            if (trimmed === "}" || trimmed === "};" || trimmed === "}," || trimmed === ")") {
-              return "This line closes the current block.";
-            }
-
-            if (trimmed === "[" || trimmed.endsWith("[")) {
-              return "This line opens a list. Later lines add items to this list until the matching closing mark.";
-            }
-
-            if (trimmed === "]" || trimmed === "];" || trimmed === "],") {
-              return "This line closes the current list.";
+              return `Set ${name} to a new value.`;
             }
 
             if (/^[A-Za-z0-9_$'"]+\s*:/.test(trimmed)) {
               const key = trimmed.split(":")[0].trim().replace(/^["']|["']$/g, "");
-              return `This line defines the field named ${key}.`;
+              return `Define the field named ${key}.`;
             }
 
-            return null;
+            if (trimmed.endsWith(";")) return "Perform one complete instruction.";
+            if (trimmed.endsWith(",")) return "Provide one item or field inside the current structure.";
+
+            return "Continue the current instruction or text.";
           }
 
-          function describeJsx(trimmed) {
-            const openTag = trimmed.match(/^<([A-Za-z0-9_.$-]+)/);
-            if (openTag) {
-              return `This line starts a visible element or component named ${openTag[1]}.`;
-            }
+          function translateTextFile(relativePath, buffer) {
+            const text = buffer.toString("utf8");
+            const lines = splitPhysicalLines(text);
 
-            const closeTag = trimmed.match(/^<\/([A-Za-z0-9_.$-]+)>/);
-            if (closeTag) {
-              return `This line closes the visible element or component named ${closeTag[1]}.`;
-            }
-
-            if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
-              return "This line inserts a calculated value into the visible output.";
-            }
-
-            return null;
-          }
-
-          function describeYamlOrJson(trimmed, ext) {
-            if (ext === ".json") {
-              if (/^"[^"]+"\s*:/.test(trimmed)) {
-                const key = trimmed.match(/^"([^"]+)"/)?.[1];
-                return `This line defines the JSON field named ${key}.`;
-              }
-            }
-
-            if (ext === ".yml" || ext === ".yaml") {
-              if (/^[A-Za-z0-9_-]+\s*:/.test(trimmed)) {
-                const key = trimmed.split(":")[0].trim();
-                return `This line defines the YAML setting named ${key}.`;
-              }
-
-              if (/^-\s+/.test(trimmed)) {
-                return "This line adds one item to the current YAML list.";
-              }
-            }
-
-            return null;
-          }
-
-          function describeSql(trimmed) {
-            const upper = trimmed.toUpperCase();
-
-            if (upper.startsWith("CREATE TABLE")) return "This line starts a database table creation rule.";
-            if (upper.startsWith("ALTER TABLE")) return "This line starts a database table change rule.";
-            if (upper.startsWith("CREATE INDEX")) return "This line starts a database index creation rule.";
-            if (upper.startsWith("INSERT INTO")) return "This line starts a database insert rule.";
-            if (upper.startsWith("SELECT")) return "This line starts a database read rule.";
-            if (upper.startsWith("UPDATE")) return "This line starts a database update rule.";
-            if (upper.startsWith("DELETE")) return "This line starts a database delete rule.";
-
-            return null;
-          }
-
-          function describeShell(trimmed) {
-            if (trimmed.startsWith("#!")) return "This line selects the program that runs this script.";
-            if (trimmed.startsWith("cd ")) return "This line changes the current working folder.";
-            if (trimmed.startsWith("mkdir ")) return "This line creates one or more folders.";
-            if (trimmed.startsWith("echo ")) return "This line writes text to the command output or to a file.";
-            if (trimmed.startsWith("pnpm ")) return "This line runs a pnpm command.";
-            if (trimmed.startsWith("npm ")) return "This line runs an npm command.";
-            if (trimmed.startsWith("node ")) return "This line runs a Node.js script.";
-            if (trimmed.startsWith("git ")) return "This line runs a Git command.";
-
-            return null;
-          }
-
-          function strictEnglishForLine(line, filePath) {
-            const trimmed = line.trim();
-            const ext = path.extname(filePath).toLowerCase();
-
-            if (!trimmed) return describeBlankLine();
-
-            if (
-              trimmed.startsWith("//") ||
-              trimmed.startsWith("/*") ||
-              trimmed.startsWith("*") ||
-              trimmed.startsWith("#")
-            ) {
-              return describeComment(trimmed);
-            }
-
-            const handlers = [
-              () => describeYamlOrJson(trimmed, ext),
-              () => ext === ".sql" ? describeSql(trimmed) : null,
-              () => [".sh", ".bash"].includes(ext) ? describeShell(trimmed) : null,
-              () => /^import\b/.test(trimmed) ? describeImport(trimmed) : null,
-              () => describeExport(trimmed),
-              () => describeDeclaration(trimmed),
-              () => describeControlFlow(trimmed),
-              () => describeReact(trimmed),
-              () => describeReturn(trimmed),
-              () => describeAssignment(trimmed),
-              () => describeObjectOrArray(trimmed),
-              () => describeJsx(trimmed),
-            ];
-
-            for (const handler of handlers) {
-              const result = handler();
-              if (result) return result;
-            }
-
-            if (trimmed.endsWith(";")) {
-              return "This line performs one complete instruction.";
-            }
-
-            if (trimmed.endsWith(",")) {
-              return "This line provides one item or field inside a larger structure.";
-            }
-
-            return "This line contributes code or text to the current file. The exact effect depends on the surrounding lines.";
-          }
-
-          function translateTextFile(relativePath, absolutePath, buffer) {
-            const text = buffer.toString("utf8").replace(/\r\n/g, "\n");
-            const lines = text.split("\n");
-            const outPath = path.join(outRoot, `${relativePath}.strict-english.md`);
-
+            const outPath = path.join(outRoot, `${relativePath}.strict-english.txt`);
             ensureDir(outPath);
 
-            const content = [
-              `# ${relativePath}`,
-              "",
-              "This file mirrors the original repository path.",
-              "Each numbered entry contains one original line and one strict plain-English sentence.",
-              "",
-              ...lines.map((line, index) => {
-                const lineNumber = index + 1;
-                const explanation = strictEnglishForLine(line, relativePath);
+            const translatedLines = lines.map((line) => {
+              if (line.trim() === "") return "";
+              return strictEnglishForLine(line, relativePath);
+            });
 
-                return [
-                  `## Line ${lineNumber}`,
-                  "",
-                  "Original:",
-                  "",
-                  "```text",
-                  line.length ? line : "[blank line]",
-                  "```",
-                  "",
-                  `Strict English: ${explanation}`,
-                  "",
-                ].join("\n");
-              }),
-            ].join("\n");
-
-            fs.writeFileSync(outPath, content);
+            fs.writeFileSync(outPath, translatedLines.join("\n"));
 
             return {
               path: relativePath,
               output: toPosix(path.relative(outRoot, outPath)),
-              kind: "text",
-              lines: lines.length,
+              kind: "translated-text",
+              sourceLines: lines.length,
+              translatedLines: translatedLines.length,
               bytes: buffer.length,
-            };
-          }
-
-          function translateBinaryPlaceholder(relativePath, buffer) {
-            const outPath = path.join(outRoot, `${relativePath}.strict-english.md`);
-            ensureDir(outPath);
-
-            const hash = crypto.createHash("sha256").update(buffer).digest("hex");
-
-            const content = [
-              `# ${relativePath}`,
-              "",
-              "This file mirrors the original repository path.",
-              "",
-              "## Line 1",
-              "",
-              "Original:",
-              "",
-              "```text",
-              "[binary asset]",
-              "```",
-              "",
-              "Strict English: This file is a binary asset. The file has no readable source-code lines. The asset must be preserved by the repository and interpreted by software that understands this file type.",
-              "",
-              "Asset facts:",
-              "",
-              `- Size in bytes: ${buffer.length}`,
-              `- SHA-256: ${hash}`,
-              "",
-            ].join("\n");
-
-            fs.writeFileSync(outPath, content);
-
-            return {
-              path: relativePath,
-              output: toPosix(path.relative(outRoot, outPath)),
-              kind: "binary-placeholder",
-              lines: 1,
-              bytes: buffer.length,
-              sha256: hash,
             };
           }
 
@@ -622,13 +441,28 @@ jobs:
 
           const files = walk(repoRoot);
           const manifest = [];
+          const assetFiles = [];
+
           let translatedTextFiles = 0;
-          let translatedBinaryPlaceholders = 0;
           let skippedLargeFiles = 0;
+          let skippedAssetFiles = 0;
           let skippedBinaryFiles = 0;
+          let totalSourceLines = 0;
+          let totalTranslatedLines = 0;
 
           for (const file of files) {
             const buffer = fs.readFileSync(file.absolutePath);
+
+            if (isAssetFile(file.relativePath)) {
+              skippedAssetFiles += 1;
+              assetFiles.push(file.relativePath);
+              manifest.push({
+                path: file.relativePath,
+                kind: "asset-file-listed-only",
+                bytes: buffer.length,
+              });
+              continue;
+            }
 
             if (buffer.length > maxFileBytes) {
               skippedLargeFiles += 1;
@@ -640,24 +474,26 @@ jobs:
               continue;
             }
 
-            if (isProbablyText(file.relativePath, buffer)) {
-              manifest.push(translateTextFile(file.relativePath, file.absolutePath, buffer));
-              translatedTextFiles += 1;
+            if (!isProbablyText(file.relativePath, buffer)) {
+              skippedBinaryFiles += 1;
+              assetFiles.push(file.relativePath);
+              manifest.push({
+                path: file.relativePath,
+                kind: "binary-file-listed-only",
+                bytes: buffer.length,
+              });
               continue;
             }
 
-            if (includeBinaryPlaceholders) {
-              manifest.push(translateBinaryPlaceholder(file.relativePath, buffer));
-              translatedBinaryPlaceholders += 1;
-            } else {
-              skippedBinaryFiles += 1;
-              manifest.push({
-                path: file.relativePath,
-                kind: "skipped-binary-file",
-                bytes: buffer.length,
-              });
-            }
+            const entry = translateTextFile(file.relativePath, buffer);
+
+            translatedTextFiles += 1;
+            totalSourceLines += entry.sourceLines;
+            totalTranslatedLines += entry.translatedLines;
+            manifest.push(entry);
           }
+
+          fs.writeFileSync(assetListPath, assetFiles.sort().join("\n") + (assetFiles.length ? "\n" : ""));
 
           fs.writeFileSync(
             manifestPath,
@@ -668,10 +504,14 @@ jobs:
                 sourceSha: process.env.GITHUB_SHA || null,
                 outputRoot: "build-memory/strict-english-codebase",
                 translatedTextFiles,
-                translatedBinaryPlaceholders,
                 skippedLargeFiles,
+                skippedAssetFiles,
                 skippedBinaryFiles,
                 totalSeenFiles: files.length,
+                totalSourceLines,
+                totalTranslatedLines,
+                lineRule: "Each source line produces exactly one translated line. Blank source lines produce blank translated lines.",
+                assetRule: "Image, model, font, media, archive, wasm, and other binary assets are listed by file path only.",
                 files: manifest,
               },
               null,
@@ -687,28 +527,28 @@ jobs:
               `Generated at: ${new Date().toISOString()}`,
               "",
               `Text files translated: ${translatedTextFiles}`,
-              `Binary placeholders written: ${translatedBinaryPlaceholders}`,
+              `Asset files listed only: ${skippedAssetFiles}`,
+              `Other binary files listed only: ${skippedBinaryFiles}`,
               `Large files skipped: ${skippedLargeFiles}`,
-              `Binary files skipped: ${skippedBinaryFiles}`,
               `Total files seen: ${files.length}`,
+              `Total source lines translated: ${totalSourceLines}`,
+              `Total strict-English lines written: ${totalTranslatedLines}`,
               "",
-              "Output rule:",
+              "Rules:",
               "",
-              "Each source file is mirrored into the same folder path under `strict-english-codebase/`.",
-              "Each output filename keeps the original filename and adds `.strict-english.md`.",
-              "",
-              "Line rule:",
-              "",
-              "Each source line becomes one numbered section.",
-              "Each numbered section contains the original line and one strict plain-English sentence.",
+              "- Each source line produces exactly one translated line.",
+              "- Blank source lines produce blank translated lines.",
+              "- Translated files do not include original code.",
+              "- Image, model, font, media, archive, wasm, and other binary assets are listed by file path only.",
               "",
             ].join("\n")
           );
 
           console.log(`Text files translated: ${translatedTextFiles}`);
-          console.log(`Binary placeholders written: ${translatedBinaryPlaceholders}`);
-          console.log(`Large files skipped: ${skippedLargeFiles}`);
-          console.log(`Binary files skipped: ${skippedBinaryFiles}`);
+          console.log(`Asset files listed only: ${skippedAssetFiles}`);
+          console.log(`Other binary files listed only: ${skippedBinaryFiles}`);
+          console.log(`Total source lines translated: ${totalSourceLines}`);
+          console.log(`Total strict-English lines written: ${totalTranslatedLines}`);
           NODE
 
           node export-strict-english-codebase.mjs
@@ -716,7 +556,11 @@ jobs:
       - name: Create downloadable zip
         run: |
           cd build-memory
-          zip -r strict-english-codebase.zip strict-english-codebase strict-english-codebase-manifest.json strict-english-codebase-summary.md
+          zip -r strict-english-codebase.zip \
+            strict-english-codebase \
+            strict-english-codebase-manifest.json \
+            strict-english-codebase-summary.md \
+            strict-english-asset-files.txt
 
       - name: Upload strict English codebase zip
         uses: actions/upload-artifact@v4
