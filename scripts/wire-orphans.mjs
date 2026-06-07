@@ -86,6 +86,100 @@ const GENERATED_SLOT_FILES = {
   hooks: ['hook'],
 };
 
+const ARCHITECTURE_STAGES = [
+  {
+    id: 'user-action',
+    label: 'User Action / Agent / CI',
+    paths: [],
+    slots: [],
+    receivesFrom: [],
+    dispatchesTo: ['surface-shell'],
+    description: 'External user, agent, or CI action enters the DREAMengin OS flow.',
+  },
+  {
+    id: 'surface-shell',
+    label: 'Surface / Shell',
+    paths: ['components/', 'app/', 'coresurfaces/', 'daydreams/', 'lib/dreams/', 'lib/dream-window/', 'lib/widgets/'],
+    slots: ['core-surface', 'daydream', 'surface', 'route-surface', 'dreamsurface'],
+    receivesFrom: ['user-action'],
+    dispatchesTo: ['engin-dispatcher'],
+    description: 'User-facing shell and surface layer. It dispatches intent into the runtime.',
+  },
+  {
+    id: 'engin-dispatcher',
+    label: 'EnginDispatcher',
+    paths: ['lib/runtime/EnginDispatcher.ts'],
+    slots: [],
+    receivesFrom: ['surface-shell'],
+    dispatchesTo: ['module-registry'],
+    description: 'Runtime dispatcher that receives intent and looks up the module key.',
+  },
+  {
+    id: 'module-registry',
+    label: 'Module Registry',
+    paths: ['lib/runtime/moduleRegistry.ts', 'src/engin/generated/'],
+    slots: ['dreamr', 'dreamdmbar', 'homedream', 'connector', 'dr-eams-tool'],
+    receivesFrom: ['engin-dispatcher'],
+    dispatchesTo: ['engin-logic'],
+    description: 'Generated and runtime registry layer. It resolves slot + id into the generated router lane.',
+  },
+  {
+    id: 'engin-logic',
+    label: 'Engin Logic',
+    paths: ['engins/', 'lib/engins/', 'lib/engin-runtime/', 'lib/gameengin/brain/', 'lib/gameengin/cartridges/', 'public/cartridges/'],
+    slots: ['engin', 'engine-ruleset', 'brain-node', 'brain-doc', 'cartridge', 'persona'],
+    receivesFrom: ['module-registry'],
+    dispatchesTo: ['state-mutation-bus'],
+    description: 'Engin modules, rule-sets, brain nodes, cartridges, and Engin runtime behavior.',
+  },
+  {
+    id: 'state-mutation-bus',
+    label: 'State Mutation + Bus',
+    paths: ['lib/runtime/dreamOSBus.ts', 'lib/runtime/', 'lib/hooks/', 'hooks/', 'lib/gameengin/', 'lib/games/'],
+    slots: ['hook', 'engine-system', 'engine-utility'],
+    receivesFrom: ['engin-logic'],
+    dispatchesTo: ['rerender-persistence'],
+    description: 'State mutation, bus events, hooks, engine utilities, and runtime systems.',
+  },
+  {
+    id: 'rerender-persistence',
+    label: 'Re-render / Persistence',
+    paths: ['supabase/', 'supabase/migrations/', 'build-memory/', 'lib/vm/', 'lib/runtime/'],
+    slots: ['migration', 'memory'],
+    receivesFrom: ['state-mutation-bus'],
+    dispatchesTo: [],
+    description: 'Persistence, migration, runtime memory, VM support, and re-render backing state.',
+  },
+];
+
+const SLOT_TO_STAGE = {
+  'core-surface': 'surface-shell',
+  daydream: 'surface-shell',
+  surface: 'surface-shell',
+  'route-surface': 'surface-shell',
+  dreamsurface: 'surface-shell',
+
+  dreamr: 'module-registry',
+  dreamdmbar: 'module-registry',
+  homedream: 'module-registry',
+  connector: 'module-registry',
+  'dr-eams-tool': 'module-registry',
+
+  engin: 'engin-logic',
+  'engine-ruleset': 'engin-logic',
+  'brain-node': 'engin-logic',
+  'brain-doc': 'engin-logic',
+  cartridge: 'engin-logic',
+  persona: 'engin-logic',
+
+  hook: 'state-mutation-bus',
+  'engine-system': 'state-mutation-bus',
+  'engine-utility': 'state-mutation-bus',
+
+  migration: 'rerender-persistence',
+  memory: 'rerender-persistence',
+};
+
 function normalizeRel(relPath) {
   return relPath.split(path.sep).join('/');
 }
@@ -109,7 +203,7 @@ function asTemplateLiteral(value) {
     .replace(/`/g, '\\`')
     .replace(/\$\{/g, '\\${');
 
-  return `String.raw\`${escaped}\``;
+  return `\`${escaped}\``;
 }
 
 function inferEngine(relPath) {
@@ -503,8 +597,22 @@ import { personas } from './personas';
 import { systems } from './systems';
 import { hooks } from './hooks';
 
-export { osArchitectureFlow, osArchitectureMap } from './osArchitectureMap';
-export type { OsArchitectureMap } from './osArchitectureMap';
+export {
+  osArchitectureFlow,
+  osArchitectureGraph,
+  osArchitectureMap,
+  osArchitectureStageEntries,
+  osGeneratedRouters,
+  osSlotCounts,
+} from './osArchitectureMap';
+
+export type {
+  OsArchitectureGraph,
+  OsArchitectureMap,
+  OsArchitectureStageEntries,
+  OsGeneratedRouters,
+  OsSlotCounts,
+} from './osArchitectureMap';
 
 export function hydrateEngineRegistry(engine: EngineWithRegistry): void {
   engine.registry.hydrate({
@@ -534,6 +642,67 @@ function buildSlotSummary(registry) {
     .join('\n');
 }
 
+function buildGeneratedRouters() {
+  return Object.fromEntries(
+    Object.entries(GENERATED_SLOT_FILES).map(([name, slots]) => [
+      name,
+      {
+        file: `src/engin/generated/${name}.ts`,
+        slots,
+      },
+    ]),
+  );
+}
+
+function buildArchitectureGraph(registry) {
+  return {
+    flow: OS_ARCHITECTURE_FLOW,
+    stages: ARCHITECTURE_STAGES,
+    slotToStage: SLOT_TO_STAGE,
+    generatedRouters: buildGeneratedRouters(),
+    slotCounts: registry.totals ?? {},
+  };
+}
+
+function buildArchitectureStageEntries(registry) {
+  const stageEntries = Object.fromEntries(
+    ARCHITECTURE_STAGES.map((stage) => [stage.id, []]),
+  );
+
+  stageEntries.unmapped = [];
+
+  for (const entry of registry.entries ?? []) {
+    const stageId = SLOT_TO_STAGE[entry.slot] ?? 'unmapped';
+
+    stageEntries[stageId].push({
+      id: entry.id,
+      slot: entry.slot,
+      path: entry.path,
+      engine: entry.engine,
+    });
+  }
+
+  return stageEntries;
+}
+
+function buildRouterSummaryMarkdown() {
+  return Object.entries(buildGeneratedRouters())
+    .map(([name, config]) => `| \`src/engin/generated/${name}.ts\` | ${config.slots.map((slot) => `\`${slot}\``).join(', ')} |`)
+    .join('\n');
+}
+
+function buildStageSummaryMarkdown() {
+  return ARCHITECTURE_STAGES
+    .map((stage) => {
+      const slots = stage.slots.length > 0 ? stage.slots.map((slot) => `\`${slot}\``).join(', ') : '—';
+      const paths = stage.paths.length > 0 ? stage.paths.map((stagePath) => `\`${stagePath}\``).join(', ') : '—';
+      const next = stage.dispatchesTo.length > 0 ? stage.dispatchesTo.map((stageId) => `\`${stageId}\``).join(', ') : '—';
+
+      return `| \`${stage.id}\` | ${stage.label} | ${paths} | ${slots} | ${next} |`;
+    })
+    .join('\n');
+}
+
 function buildOsArchitectureMap(registry) {
   return `# DREAMengin OS Architecture Map
 
@@ -548,6 +717,12 @@ ${OS_ARCHITECTURE_FLOW}
 | Slot | Count |
 | --- | ---: |
 ${buildSlotSummary(registry)}
+
+## Architecture Stages
+
+| Stage ID | Label | Paths | Slots | Dispatches To |
+| --- | --- | --- | --- | --- |
+${buildStageSummaryMarkdown()}
 
 ## Shell Classification
 
@@ -568,31 +743,52 @@ ${buildSlotSummary(registry)}
 | \`lib/dream-window/\` | \`dreamsurface\` |
 | \`lib/widgets/\` | \`dreamsurface\` |
 
-## Generated Modules
+## Generated Router Lanes
 
 | Generated File | Slots |
 | --- | --- |
-| \`src/engin/generated/engins.ts\` | \`engin\` |
-| \`src/engin/generated/rulesets.ts\` | \`engine-ruleset\` |
-| \`src/engin/generated/surfaces.ts\` | \`core-surface\`, \`daydream\`, \`surface\`, \`route-surface\` |
-| \`src/engin/generated/dreamsurfaces.ts\` | \`dreamsurface\` |
-| \`src/engin/generated/dreamr.ts\` | \`dreamr\` |
-| \`src/engin/generated/dreamdmbar.ts\` | \`dreamdmbar\` |
-| \`src/engin/generated/homedream.ts\` | \`homedream\` |
-| \`src/engin/generated/osArchitectureMap.ts\` | generated architecture map export |
+${buildRouterSummaryMarkdown()}
+
+## Machine-Usable Exports
+
+\`src/engin/generated/osArchitectureMap.ts\` exports:
+
+| Export | Purpose |
+| --- | --- |
+| \`osArchitectureFlow\` | Human-readable canonical OS flow diagram |
+| \`osArchitectureMap\` | Markdown architecture map |
+| \`osArchitectureGraph\` | Machine-readable stage graph |
+| \`osArchitectureStageEntries\` | Registry entries grouped by OS stage |
+| \`osGeneratedRouters\` | Generated router file map |
+| \`osSlotCounts\` | Live slot totals from the registry |
 `;
 }
 
 function buildGeneratedOsArchitectureMapModule(registry) {
+  const architectureGraph = buildArchitectureGraph(registry);
+  const architectureStageEntries = buildArchitectureStageEntries(registry);
+  const generatedRouters = buildGeneratedRouters();
   const map = buildOsArchitectureMap(registry);
 
   return `${GENERATED_HEADER}
 
 export const osArchitectureFlow = ${asTemplateLiteral(OS_ARCHITECTURE_FLOW)};
 
+export const osSlotCounts = ${JSON.stringify(registry.totals ?? {}, null, 2)} as const;
+
+export const osGeneratedRouters = ${JSON.stringify(generatedRouters, null, 2)} as const;
+
+export const osArchitectureGraph = ${JSON.stringify(architectureGraph, null, 2)} as const;
+
+export const osArchitectureStageEntries = ${JSON.stringify(architectureStageEntries, null, 2)} as const;
+
 export const osArchitectureMap = ${asTemplateLiteral(map)};
 
 export type OsArchitectureMap = typeof osArchitectureMap;
+export type OsSlotCounts = typeof osSlotCounts;
+export type OsGeneratedRouters = typeof osGeneratedRouters;
+export type OsArchitectureGraph = typeof osArchitectureGraph;
+export type OsArchitectureStageEntries = typeof osArchitectureStageEntries;
 `;
 }
 
