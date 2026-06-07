@@ -156,6 +156,7 @@ export const systems = {
   "lib/gameengin/core": () => import("@/lib/gameengin/core"),
   "lib/gameengin/dream-engine": () => import("@/lib/gameengin/dream-engine"),
   "lib/gameengin/dreamr-loader": () => import("@/lib/gameengin/dreamr-loader"),
+  "lib/gameengin/executionWiring": () => import("@/lib/gameengin/executionWiring"),
   "lib/gameengin/gameEnginRuntime": () => import("@/lib/gameengin/gameEnginRuntime"),
   "lib/gameengin/generative-audio": () => import("@/lib/gameengin/generative-audio"),
   "lib/gameengin/index": () => import("@/lib/gameengin/index"),

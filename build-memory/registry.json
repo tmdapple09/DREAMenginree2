@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T13:09:25.086Z",
+  "generatedAt": "2026-06-07T20:27:48.388Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 62,
+    "engine-system": 63,
     "engine-utility": 308
   },
   "entries": [
@@ -9907,6 +9907,7 @@
       "path": "lib/gameengin/cartridges/index.ts",
       "engine": "GameEngin",
       "exports": [
+        "assertCartridgeLoadersReady",
         "CARTRIDGE_LOADERS",
         "CARTRIDGE_MANIFEST",
         "CartridgeLoader",
@@ -9915,6 +9916,8 @@
         "getCartridgeCategories",
         "getCartridgeIds",
         "getCartridgeManifest",
+        "getMissingCartridgeLoaders",
+        "getOrphanCartridgeLoaders",
         "loadCartridge"
       ]
     },
@@ -9924,9 +9927,12 @@
       "path": "lib/gameengin/cartridges/loaders.ts",
       "engine": "GameEngin",
       "exports": [
+        "assertCartridgeLoadersReady",
         "CARTRIDGE_LOADERS",
         "CartridgeLoader",
-        "getCartridgeIds"
+        "getCartridgeIds",
+        "getMissingCartridgeLoaders",
+        "getOrphanCartridgeLoaders"
       ]
     },
     {
@@ -10034,6 +10040,19 @@
       ]
     },
     {
+      "id": "lib/gameengin/executionWiring",
+      "slot": "engine-system",
+      "path": "lib/gameengin/executionWiring.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "createGameEnginExecutionKernel",
+        "GameEnginExecutionCrash",
+        "GameEnginExecutionFrame",
+        "GameEnginExecutionKernel",
+        "GameEnginExecutionKernelSnapshot"
+      ]
+    },
+    {
       "id": "lib/gameengin/gameEnginRuntime",
       "slot": "engine-system",
       "path": "lib/gameengin/gameEnginRuntime.ts",
@@ -10073,25 +10092,39 @@
         "AdvancedPhysicsWorld",
         "AIDirector",
         "AnimationStateMachine",
+        "assertCartridgeLoadersReady",
         "AssetStreamManager",
         "BehaviorTreeEngine",
         "CARTRIDGE_MANIFEST",
         "ClientSidePrediction",
         "ComputeShaderPipeline",
+        "createGameEnginExecutionKernel",
         "createReactGameCartridge",
         "defineReactCartridgeLoader",
         "detectCapabilities",
         "DreamEngine",
         "ECSWorld",
         "EliteGameEngine",
+        "GAMEENGIN_CAPABILITY_LANES",
+        "GAMEENGIN_WORK_PACKET",
+        "GAMEENGIN_WORK_PACKET_BY_TARGET",
+        "GameEnginCapabilityLane",
         "GameEnginPlatform",
+        "GameEnginWiringTarget",
+        "GameEnginWorkPacketEntry",
         "GameRuntime",
         "getCartridgeCategories",
+        "getCartridgeIds",
         "getCartridgeManifest",
+        "getGameEnginWorkPacketByTarget",
+        "getGameEnginWorkPacketEntry",
+        "getMissingCartridgeLoaders",
+        "getOrphanCartridgeLoaders",
         "GlobalIllumProbes",
         "GPUProfiler",
         "GRAVITY_VALUES",
         "isLoopRunning",
+        "loadCartridge",
         "LODSystem",
         "mapJoystickToAsset",
         "OctreeBVH",
