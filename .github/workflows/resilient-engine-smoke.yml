@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: resilient-engine-smoke-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   workflow-guardrails:
@@ -56,3 +60,133 @@ jobs:
             exit 1
           fi
           echo "✅ resilient-engine correctly failed on an intentional error."
+
+  typescript-turbopack-autofix:
+    name: TypeScript/Turbopack scan, autofix, rebase, push
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25.9.0'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Registry Wire-Up
+        run: node scripts/wire-orphans.mjs
+
+      - name: Run ESLint autofix
+        continue-on-error: true
+        run: |
+          mkdir -p build-memory/typecheck
+
+          pnpm exec eslint . \
+            --fix \
+            --ext .js,.jsx,.ts,.tsx,.mjs,.cjs \
+            > build-memory/typecheck/eslint-autofix.log 2>&1
+
+          cat build-memory/typecheck/eslint-autofix.log || true
+
+      - name: Run Prettier autofix
+        continue-on-error: true
+        run: |
+          mkdir -p build-memory/typecheck
+
+          pnpm exec prettier . --write \
+            > build-memory/typecheck/prettier-autofix.log 2>&1
+
+          cat build-memory/typecheck/prettier-autofix.log || true
+
+      - name: Scan TypeScript errors
+        continue-on-error: true
+        run: |
+          mkdir -p build-memory/typecheck
+
+          pnpm exec tsc --noEmit --pretty false \
+            > build-memory/typecheck/typescript-errors.log 2>&1
+
+          cat build-memory/typecheck/typescript-errors.log || true
+
+      - name: Scan Next/Turbopack build errors
+        continue-on-error: true
+        run: |
+          mkdir -p build-memory/typecheck
+
+          pnpm build \
+            > build-memory/typecheck/turbopack-build-errors.log 2>&1
+
+          cat build-memory/typecheck/turbopack-build-errors.log || true
+
+      - name: Extract files with TypeScript, syntax, or build errors
+        run: |
+          mkdir -p build-memory/typecheck
+
+          {
+            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/typescript-errors.log || true
+            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/turbopack-build-errors.log || true
+            grep -Eo '([A-Za-z0-9_./@{}()[\]-]+\.(ts|tsx|js|jsx|mjs|cjs))' build-memory/typecheck/eslint-autofix.log || true
+          } \
+            | sed 's#^\./##' \
+            | sed 's#^@/##' \
+            | sort -u \
+            > build-memory/typecheck/error-files.txt
+
+          echo "Files reported by TypeScript/Turbopack/ESLint:"
+          cat build-memory/typecheck/error-files.txt || true
+
+      - name: Upload generated Engin folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: engin-generated-${{ github.ref_name }}
+          path: |
+            src/engin/generated/**
+            build-memory/registry.json
+            build-memory/os-architecture-map.md
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Upload TypeScript and build error report
+        uses: actions/upload-artifact@v4
+        with:
+          name: typescript-build-errors-${{ github.ref_name }}
+          path: |
+            build-memory/typecheck/**
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Commit autofix and generated updates
+        run: |
+          git config user.name "DREAMengin-Bot"
+          git config user.email "bot@dreamengin.com"
+
+          git add .
+
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: autofix TypeScript surface and refresh engine registry [skip ci]"
+          else
+            echo "No autofix changes to commit."
+          fi
+
+      - name: Rebase and push updates
+        run: |
+          git fetch origin "${GITHUB_REF_NAME}"
+          git rebase "origin/${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
+
+      - name: Final TypeScript check
+        run: pnpm exec tsc --noEmit --pretty false
+
+      - name: Final Next/Turbopack build check
+        run: pnpm build
