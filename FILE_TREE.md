@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-06T22:33:58.702Z
+Generated: 2026-06-07T00:57:10.557Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -8783,6 +8783,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → validateEnginCapabilityProfile
 │   │   │   └── ∅ unused: isCustomEnginProfileId, isEnginProfileId, CANONICAL_ENGIN_ALIASES, toCustomEnginProfileId
 │   │   ├── EnginDomainCores.ts ∅
+│   │   │   ├── JsonObject  ← ./EnginBaseState
 │   │   │   ├── AudioTrackMixer  ← ./EnginCapabilityExecution
 │   │   │   ├── CollaborationDeltaPacker  ← ./EnginCapabilityExecution
 │   │   │   ├── GeometryBatcher  ← ./EnginCapabilityExecution
@@ -8950,6 +8951,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── validateRuleSetState  ← ./EnginRuleSetContract
 │   │   │   ├── fingerprintEnginSnapshot  ← ./EnginSnapshotFingerprint
 │   │   │   ├── HotRuntime  ← ./HotRuntime
+│   │   │   ├── WebGPUComputeMeasurement  ← ./HotRuntime
+│   │   │   ├── WebGPUInitializationResult  ← ./HotRuntime
 │   │   │   ├── PremiumRuntimeQuality  ← ./PremiumRuntimeQuality
 │   │   │   ├── createPremiumRuntimeQuality  ← ./PremiumRuntimeQuality
 │   │   │   ├── validatePremiumRuntimeQuality  ← ./PremiumRuntimeQuality
@@ -8970,19 +8973,23 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── EnginAction  ← ./EnginRuleSetContract
 │   │   │   ├── → AudioWorkletRuntime
 │   │   │   ├── → BinaryCommandBus
+│   │   │   ├── → CoalescedCommandQueue
 │   │   │   ├── → CommandRingBuffer
 │   │   │   ├── → DeferredPersistenceQueue
 │   │   │   ├── → DeferredSyncQueue
 │   │   │   ├── → GpuBufferRegistry
 │   │   │   ├── → HotActionClassifier
+│   │   │   ├── → HotLaneScheduler
 │   │   │   ├── → HotRuntime
+│   │   │   ├── → MoldableModuleGpuBridge
 │   │   │   ├── → RevisionCoalescer
+│   │   │   ├── → ShaderKernelRegistry
 │   │   │   ├── → SnapshotCompactor
 │   │   │   ├── → TypedMemoryArena
 │   │   │   ├── → WasmKernelRuntime
 │   │   │   ├── → WebGPUDeviceRuntime
 │   │   │   ├── → WorkerPoolRuntime
-│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue
+│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, CoalescedCommandQueue, HotLaneScheduler, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue, ShaderKernelRegistry, MoldableModuleGpuBridge
 │   │   ├── index.ts ∅
 │   │   │   ├── EnginAction  ← ./EnginRuleSetContract
 │   │   │   ├── EnginRuleSetContract  ← ./EnginRuleSetContract
@@ -9069,7 +9076,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → validatePremiumRuntimeQuality
 │   │   │   ├── → validateRuleSetManifest
 │   │   │   ├── → validateRuleSetState
-│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WebGPUDeviceRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
 │   │   ├── InternalMetrics.ts ∅
 │   │   │   ├── EnginCapabilityScorecard  ← ./EnginCapabilityScorecard
 │   │   │   ├── → DevOnlyBenchmarkRunner
@@ -9167,6 +9174,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── BrandEnginAction  ← ./brandEnginRuleSet
 │   │   │       ├── BrandEnginDerivedState  ← ./brandEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -9193,6 +9201,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── CodeEnginAction  ← ./codeEnginRuleSet
 │   │   │       ├── CodeEnginDerivedState  ← ./codeEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -9219,6 +9228,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ContentEnginAction  ← ./contentEnginRuleSet
 │   │   │       ├── ContentEnginDerivedState  ← ./contentEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -9250,6 +9260,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── GameEnginAction  ← ./gameEnginRuleSet
 │   │   │       ├── GameEnginDerivedState  ← ./gameEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -9276,6 +9287,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── LabEnginAction  ← ./labEnginRuleSet
 │   │   │       ├── LabEnginDerivedState  ← ./labEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -9302,6 +9314,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── StarMakerEnginAction  ← ./starMakerEnginRuleSet
 │   │   │       ├── StarMakerEnginDerivedState  ← ./starMakerEnginRuleSet
 │   │   │       ├── MemoryAdapter  ← @/lib/engin-runtime/EnginIOAdapter
+│   │   │       ├── EnginHardwareAccelerationState  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntime  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── EnginRuntimeOptions  ← @/lib/engin-runtime/EnginRuntime
 │   │   │       ├── useCallback  ← react
@@ -12258,8 +12271,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: formatDate, generateDedupeHash, isError
 │   └── webgpu.ts ∅
 │       ├── → getRendererBackend
+│       ├── → initializeWebGPURuntime
 │       ├── → isWebGPUAvailable
-│       └── ∅ unused: getRendererBackend
+│       └── ∅ unused: initializeWebGPURuntime, getRendererBackend
 ├── misc
 │   └── images
 │       ├── arm2_transparent.png
@@ -14617,6 +14631,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── vi  ← vitest
 │   │   ├── (dynamic)  ← @/components/dreamengin/dream.DREAMenginOS
 │   │   └── (dynamic)  ← @/lib/babylon/createEngine
+│   ├── dreamengin-unfakeable-performance-integrity.gate.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── → runCanonicalPerformanceBenchmarks
 │   ├── dreamnav.tau.test.ts
 │   │   ├── NavState  ← @/lib/dreamnav/tau
 │   │   ├── tau  ← @/lib/dreamnav/tau
@@ -14849,6 +14869,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── TransportLatencyProbe  ← @/lib/engin-runtime
 │   │   ├── TypedMemoryArena  ← @/lib/engin-runtime
 │   │   ├── UserFacingMetricLeakTest  ← @/lib/engin-runtime
+│   │   ├── WebGPUDeviceRuntime  ← @/lib/engin-runtime
 │   │   ├── createCanonicalScorecards  ← @/lib/engin-runtime
 │   │   ├── createCustomEnginCapabilityProfile  ← @/lib/engin-runtime
 │   │   ├── createEnginCapabilityScorecard  ← @/lib/engin-runtime

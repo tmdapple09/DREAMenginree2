@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-06T22:33:58.599Z
+Generated: 2026-06-07T00:57:10.433Z
 
 ---
 
@@ -11453,6 +11453,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `./EnginBaseState` | `JsonObject` |
 | `./EnginCapabilityExecution` | `AudioTrackMixer`, `CollaborationDeltaPacker`, `GeometryBatcher`, `MidiEventRingBuffer`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache` |
 | `./EnginCapabilityScorecard` | `EnginCapabilityScorecard`, `MetricMeasurement`, `createEnginCapabilityScorecard` |
 | `./EnginCapabilityTargets` | `ENGIN_CAPABILITY_PROFILES` |
@@ -11501,7 +11502,7 @@ _No style files for this feature._
 | `./EnginIOAdapter` | `EnginIOAdapter`, `EnginSyncTransport`, `LocalStorageAdapter`, `MemorySyncTransport` |
 | `./EnginRuleSetContract` | `CompatibilityNegotiationResult`, `EnginAction`, `EnginRuleSetContract`, `EnginRuntimeFeature`, `negotiateRuleSetCompatibility`, `validateRuleSetState` |
 | `./EnginSnapshotFingerprint` | `fingerprintEnginSnapshot` |
-| `./HotRuntime` | `HotRuntime` |
+| `./HotRuntime` | `HotRuntime`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
 | `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
 
 ## `lib/engin-runtime/EnginSnapshotFingerprint.ts`
@@ -11578,7 +11579,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./brandEnginRuleSet` | `BRAND_ENGIN_RULE_SET`, `BrandEnginAction`, `BrandEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/code/codeEnginRuleSet.ts`
@@ -11596,7 +11597,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./codeEnginRuleSet` | `CODE_ENGIN_RULE_SET`, `CodeEnginAction`, `CodeEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/content/contentEnginRuleSet.ts`
@@ -11614,7 +11615,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./contentEnginRuleSet` | `CONTENT_ENGIN_RULE_SET`, `ContentEnginAction`, `ContentEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/game/gameEnginRuleSet.ts`
@@ -11632,7 +11633,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./gameEnginRuleSet` | `GAME_ENGIN_RULE_SET`, `GameEnginAction`, `GameEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/lab/labEnginRuleSet.ts`
@@ -11650,7 +11651,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./labEnginRuleSet` | `LAB_ENGIN_RULE_SET`, `LabEnginAction`, `LabEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/music/starMakerEnginRuleSet.ts`
@@ -11668,7 +11669,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./starMakerEnginRuleSet` | `STAR_MAKER_ENGIN_RULE_SET`, `StarMakerEnginAction`, `StarMakerEnginDerivedState` |
 | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `lib/engins/useEnginWorkflow.ts`
@@ -17974,6 +17975,7 @@ _No circular dependencies detected._
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
+| `lib/engin-runtime/EnginDomainCores.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/game-controller.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
@@ -18024,7 +18026,6 @@ _No circular dependencies detected._
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
 | `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
-| `lib/engin-runtime/EnginDomainCores.ts` | 6 | MEDIUM_COUPLING |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
@@ -19031,9 +19032,9 @@ _No circular dependencies detected._
 | `lib/engin-runtime/EnginRuleSetContract.ts` | `validateRuleSetManifest` |
 | `lib/engin-runtime/EnginRuntime.ts` | `ENGIN_RUNTIME_VERSION`, `ENGIN_RUNTIME_FEATURES` |
 | `lib/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
-| `lib/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue` |
+| `lib/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `CoalescedCommandQueue`, `HotLaneScheduler`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `ShaderKernelRegistry`, `MoldableModuleGpuBridge` |
 | `lib/engin-runtime/InternalMetrics.ts` | `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `DevOnlyBenchmarkRunner` |
-| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `GpuBufferRegistry`, `WasmKernelRuntime`, `WebGPUDeviceRuntime`, `WorkerPoolRuntime`, `detectWasmSimdSupport`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `AudioTrackMixer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
+| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `GpuBufferRegistry`, `WasmKernelRuntime`, `WorkerPoolRuntime`, `detectWasmSimdSupport`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `AudioTrackMixer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
 | `lib/engine/index.ts` | `UniversalEngine` |
 | `lib/enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema` |
 | `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
@@ -19183,7 +19184,7 @@ _No circular dependencies detected._
 | `lib/web3/engagement.ts` | `trackEngagement`, `getEngagementStats`, `applyOptimisticEngagement`, `getOptimisticDelta`, `clearOptimisticDelta` |
 | `lib/web3/index.ts` | `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `Web3Error`, `Web3Client`, `applyOptimisticEngagement`, `clearOptimisticDelta`, `getEngagementStats`, `getOptimisticDelta`, `getFromIpfs`, `isIpfsCid`, `pinCid`, `resolveIpfsUrl`, `uploadFileToIpfs` |
 | `lib/web3/ipfs.ts` | `uploadToIpfs`, `uploadFileToIpfs`, `getFromIpfs`, `pinCid`, `resolveIpfsUrl`, `isIpfsCid` |
-| `lib/webgpu.ts` | `getRendererBackend` |
+| `lib/webgpu.ts` | `initializeWebGPURuntime`, `getRendererBackend` |
 | `lib/webgpu/adaptiveQuality.ts` | `getBatteryState`, `getDeviceMemoryGB`, `getCoreCount`, `gatherDeviceSignals` |
 | `lib/webgpu/director.ts` | `webGPUDirector` |
 | `lib/webgpu/useWebGPUDirector.ts` | `useWebGPUDirector`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildSceneObjects`, `defaultCameraSignals`, `defaultDirectorMetrics`, `CameraSignals`, `CameraState`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics` |
@@ -21495,9 +21496,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── EnginSnapshotFingerprint.ts ∅
 │   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
 │   │   ├── HotRuntime.ts ∅
-│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue
+│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, CoalescedCommandQueue, HotLaneScheduler, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue, ShaderKernelRegistry, MoldableModuleGpuBridge
 │   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WebGPUDeviceRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
 │   │   ├── InternalMetrics.ts ∅
 │   │   │   └── ∅ unused: InternalOnlyMetricStore, UserFacingMetricLeakTest, DevOnlyBenchmarkRunner
 │   │   └── PremiumRuntimeQuality.ts
@@ -22142,7 +22143,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── utils.ts ∅
 │   │   └── ∅ unused: formatDate, generateDedupeHash, isError
 │   └── webgpu.ts ∅
-│       └── ∅ unused: getRendererBackend
+│       └── ∅ unused: initializeWebGPURuntime, getRendererBackend
 ├── misc
 │   └── images
 │       ├── arm2_transparent.png
@@ -22423,6 +22424,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dreamdm-draft.test.ts
 │   ├── dreamdm-messaging-phase2.test.ts
 │   ├── dreamengin-os.test.ts
+│   ├── dreamengin-unfakeable-performance-integrity.gate.test.ts
 │   ├── dreamnav.tau.test.ts
 │   ├── dreamr-algorithm-velocity.test.ts
 │   ├── dreamr-algorithm.test.ts
