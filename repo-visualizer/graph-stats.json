@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-06-05T02:42:50.809Z",
-  "totalFiles": 2026,
-  "totalNodes": 6751,
-  "totalEdges": 7206,
-  "totalFunctionAndClassNodes": 3698,
-  "orphanCount": 3136,
+  "generatedAt": "2026-06-07T05:19:55.838Z",
+  "totalFiles": 2036,
+  "totalNodes": 6943,
+  "totalEdges": 7259,
+  "totalFunctionAndClassNodes": 3881,
+  "orphanCount": 3299,
   "countsByType": {
-    "folder": 583,
+    "folder": 582,
     "file": 112,
     "doc": 227,
-    "config": 221,
-    "function": 3539,
+    "config": 222,
+    "function": 3618,
     "python": 14,
-    "class": 159,
+    "class": 263,
     "js": 8,
     "mjs": 29,
-    "route": 235,
-    "ts": 789,
-    "tsx": 320,
+    "route": 234,
+    "ts": 801,
+    "tsx": 318,
     "css": 8,
     "cjs": 4,
     "sql-table": 149,
@@ -27,7 +27,7 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 559,
+      "degree": 557,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
@@ -41,21 +41,21 @@
     },
     {
       "id": "file:lib/supabase/safeGetUser.ts",
-      "degree": 352,
+      "degree": 350,
       "label": "safeGetUser.ts",
       "type": "ts",
       "path": "lib/supabase/safeGetUser.ts"
     },
     {
       "id": "file:lib/supabase/server.ts",
-      "degree": 351,
+      "degree": 349,
       "label": "server.ts",
       "type": "ts",
       "path": "lib/supabase/server.ts"
     },
     {
       "id": "function:lib/supabase/safeGetUser.ts#safeGetUser",
-      "degree": 191,
+      "degree": 190,
       "label": "safeGetUser",
       "type": "function",
       "path": "lib/supabase/safeGetUser.ts"
@@ -69,7 +69,7 @@
     },
     {
       "id": "function:lib/supabase/server.ts#createServerClient",
-      "degree": 180,
+      "degree": 179,
       "label": "createServerClient",
       "type": "function",
       "path": "lib/supabase/server.ts"
@@ -83,14 +83,14 @@
     },
     {
       "id": "file:lib/dev-bypass.ts",
-      "degree": 86,
+      "degree": 84,
       "label": "dev-bypass.ts",
       "type": "ts",
       "path": "lib/dev-bypass.ts"
     },
     {
       "id": "file:lib/supabase/client.ts",
-      "degree": 75,
+      "degree": 74,
       "label": "client.ts",
       "type": "ts",
       "path": "lib/supabase/client.ts"
