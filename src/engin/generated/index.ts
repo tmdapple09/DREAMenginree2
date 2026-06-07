@@ -20,7 +20,7 @@ import { personas } from './personas';
 import { systems } from './systems';
 import { hooks } from './hooks';
 
-export { osArchitectureMap } from './osArchitectureMap';
+export { osArchitectureFlow, osArchitectureMap } from './osArchitectureMap';
 export type { OsArchitectureMap } from './osArchitectureMap';
 
 export function hydrateEngineRegistry(engine: EngineWithRegistry): void {
