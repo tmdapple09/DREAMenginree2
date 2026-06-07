@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T04:16:07.863Z
+Generated: 2026-06-07T04:19:06.810Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1568,19 +1568,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → (default)
 │   │       └── → metadata
 │   ├── daydream  [Daydream System]
-│   │   ├── analytics  [Daydream System]
-│   │   │   └── page.tsx ⚠
-│   │   │       ├── ⬡ AnalyticsDaydream  ← @/components/daydream/dreamsurface.daydream.AnalyticsDaydream
-│   │   │       ├── ⬡ AuthenticatedPageHeader  ← @/components/ui/dream.AuthenticatedPageHeader
-│   │   │       ├── isDevBypassActive  ← @/lib/dev-bypass
-│   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
-│   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
-│   │   │       ├── BarChart2  ← lucide-react
-│   │   │       ├── redirect  ← next/navigation
-│   │   │       ├── connection  ← next/server
-│   │   │       ├── (dynamic)  ← @/engins/dream.panel.AnalyticsEngin
-│   │   │       ├── → (default)
-│   │   │       └── → metadata
 │   │   ├── brand  [BrandEngin, Daydream System]
 │   │   │   ├── engin  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx

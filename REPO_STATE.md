@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T04:16:07.741Z
+Generated: 2026-06-07T04:19:06.681Z
 
 ---
 
@@ -2236,7 +2236,6 @@ _No style files for this feature._
 
 ## Pages
 
-- `app/daydream/analytics/page.tsx`
 - `app/daydream/brand/engin/page.tsx`
 - `app/daydream/brand/page.tsx`
 - `app/daydream/code/engin/page.tsx`
@@ -5037,7 +5036,6 @@ _No style files for this feature._
 
 | Route | File | Notes |
 |-------|------|-------|
-| `/daydream/analytics` | `app/daydream/analytics/page.tsx` |  |
 | `/daydream/brand` | `app/daydream/brand/page.tsx` |  |
 | `/daydream/brand/engin` | `app/daydream/brand/engin/page.tsx` |  |
 | `/daydream/code` | `app/daydream/code/page.tsx` |  |
@@ -6593,20 +6591,6 @@ _No style files for this feature._
 | `next/link` | `⬡ Link` |
 | `next/navigation` | `redirect` |
 | `next/server` | `connection` |
-
-## `app/daydream/analytics/page.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/components/daydream/dreamsurface.daydream.AnalyticsDaydream` | `⬡ AnalyticsDaydream` |
-| `@/components/ui/dream.AuthenticatedPageHeader` | `⬡ AuthenticatedPageHeader` |
-| `@/lib/dev-bypass` | `isDevBypassActive` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/supabase/server` | `createServerClient` |
-| `lucide-react` | `BarChart2` |
-| `next/navigation` | `redirect` |
-| `next/server` | `connection` |
-| `@/engins/dream.panel.AnalyticsEngin` | _(dynamic import)_ |
 
 ## `app/daydream/brand/engin/page.tsx`
 
@@ -14317,10 +14301,6 @@ _No style files for this feature._
 
 - `@/lib/child-safety/imageClassifier`
 
-## `app/daydream/analytics/page.tsx`
-
-- `@/engins/dream.panel.AnalyticsEngin`
-
 ## `app/daydream/games/page.tsx`
 
 - `@/engins/engin.GameEngin`
@@ -16168,7 +16148,6 @@ _No style files for this feature._
 
 ## `app/daydream/`
 
-- `app/daydream/analytics/page.tsx`
 - `app/daydream/brand/page.tsx`
 - `app/daydream/code/page.tsx`
 - `app/daydream/constellation/dream.ConstellationClient.tsx`
@@ -17848,7 +17827,6 @@ _No circular dependencies detected._
 | `lib/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
 | `scripts/wire-orphans.mjs` | 11 | HIGH_COUPLING |
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
-| `app/daydream/analytics/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
@@ -18284,8 +18262,6 @@ _No circular dependencies detected._
 | `app/auth/update-password/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/connectors/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/connectors/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `app/daydream/analytics/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
-| `app/daydream/analytics/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/daydream/brand/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/brand/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/daydream/code/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -19884,10 +19860,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── daydream  [Daydream System]
-│   │   ├── analytics  [Daydream System]
-│   │   │   └── page.tsx ⚠
-│   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── brand  [BrandEngin, Daydream System]
 │   │   │   ├── engin  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx
