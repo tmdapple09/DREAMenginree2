@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T07:01:39.777Z
+Generated: 2026-06-07T20:27:26.736Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -984,6 +984,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── → POST
 │   │   ├── game-scores
 │   │   │   └── route.ts ⚠
+│   │   │       ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
 │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
 │   │   │       ├── toErrorMessage  ← @/lib/utils
@@ -991,6 +992,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── NextResponse  ← next/server
 │   │   │       ├── z  ← zod
 │   │   │       ├── → GET
+│   │   │       ├── → PATCH
 │   │   │       └── → POST
 │   │   ├── gameengin
 │   │   │   └── crash-report
@@ -3062,6 +3064,8 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → writeSnapshot
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── typecheck  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   └── error-files.txt
 │   ├── actions.json
 │   ├── events.json
 │   ├── registry.json
@@ -3999,10 +4003,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   ├── useState  ← react
 │   │   │   │   │   ├── → (default)
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   └── dream.panel.ScoresPanel.tsx ⚠ ∅
-│   │   │   │       ├── createClient  ⚠ @/lib/supabase/client
-│   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
-│   │   │   │       ├── toErrorMessage  ← @/lib/utils
+│   │   │   │   └── dream.panel.ScoresPanel.tsx ∅
 │   │   │   │       ├── Loader2  ← lucide-react
 │   │   │   │       ├── RefreshCw  ← lucide-react
 │   │   │   │       ├── Share2  ← lucide-react
@@ -4375,6 +4376,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.CartridgeRegistryBootstrap.tsx ∅
 │   │   │   ├── registerCartridges  ← @/lib/gameengin/registerCartridges
+│   │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
@@ -4638,7 +4640,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
 │   │   │   ├── useState  ← react
-│   │   │   ├── (dynamic)  ← @/components/games/dream.BabylonSideScroller
+│   │   │   ├── (dynamic)  ← @/components/games/madmaxi
 │   │   │   ├── (dynamic)  ← @/components/games/dream.NeonDrift
 │   │   │   ├── (dynamic)  ← @/components/games/dream.EchoArena
 │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
@@ -6812,9 +6814,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── engin.GameEngin.tsx ⚠ ∅
 │   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
-│   │   ├── GAMES  ← @/components/games/dream.GamesHub
+│   │   ├── ⬡ CartridgeRegistryBootstrap  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
+│   │   ├── CartridgeCrashEvent  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   ├── CartridgeErrorBoundary  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   ├── useGlobalCrashListener  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│   │   ├── ⬡ FeaturedCartridges  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
+│   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
+│   │   ├── ⬡ Leaderboard  ← @/components/games/dream.Leaderboard
 │   │   ├── ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
+│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
+│   │   ├── ⬡ LegacyGameHUD  ← @/components/games/dream.hud.LegacyGameHUD
+│   │   ├── ⬡ MobileGameHUD  ← @/components/games/dream.hud.MobileGameHUD
 │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
+│   │   ├── ⬡ GameRemoteSurface  ← @/components/games/dream.remote.GameRemoteSurface
+│   │   ├── ⬡ LegacyGameRemote  ← @/components/games/dream.remote.LegacyGameRemote
 │   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
 │   │   ├── useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── EngineBase  ← @/lib/dreamenginOS
@@ -6834,8 +6847,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
 │   │   ├── GameCartridge  ← @/lib/gameengin/cartridge
 │   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   ├── useDualSense  ← @/lib/games/DualSenseManager
 │   │   ├── consumePlayAsMe  ← @/lib/games/avatar
 │   │   ├── getAvatarDataUrl  ← @/lib/games/avatar
+│   │   ├── GAME_CATALOG  ← @/lib/games/catalog
 │   │   ├── GAME_LIBRARY_SESSION_STORAGE_KEY  ← @/lib/games/library-state
 │   │   ├── MAX_SAVED_GAME_SESSIONS  ← @/lib/games/library-state
 │   │   ├── SavedGameSession  ← @/lib/games/library-state
@@ -6844,6 +6859,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── resolveGameLaunchId  ← @/lib/games/navigation
 │   │   ├── GAME_CONTROL_PROFILES  ← @/lib/games/quality-plan
 │   │   ├── GAME_QUALITY_PILLARS  ← @/lib/games/quality-plan
+│   │   ├── useAIDirector  ← @/lib/games/useAIDirector
 │   │   ├── useGameInputKeyboardBridge  ← @/lib/games/useGameInputKeyboardBridge
 │   │   ├── useGamepad  ← @/lib/games/useGamepad
 │   │   ├── useRemoteChannel  ← @/lib/games/useRemoteChannel
@@ -9663,16 +9679,21 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → CartridgeLoader
 │   │   │   │   ├── → CartridgeManifestEntry
 │   │   │   │   ├── → CartridgeRenderMode
+│   │   │   │   ├── → assertCartridgeLoadersReady
 │   │   │   │   ├── → getCartridgeCategories
 │   │   │   │   ├── → getCartridgeIds
 │   │   │   │   ├── → getCartridgeManifest
+│   │   │   │   ├── → getMissingCartridgeLoaders
+│   │   │   │   ├── → getOrphanCartridgeLoaders
 │   │   │   │   ├── → loadCartridge
-│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader
+│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader, assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders
 │   │   │   ├── loaders.ts
 │   │   │   │   ├── GameCartridge  ← ../cartridge
+│   │   │   │   ├── CARTRIDGE_MANIFEST  ← ./manifest
+│   │   │   │   ├── getCartridgeManifest  ← ./manifest
 │   │   │   │   ├── defineReactCartridgeLoader  ← ./reactCartridge
 │   │   │   │   ├── toErrorMessage  ← @/lib/utils
-│   │   │   │   ├── (dynamic)  ← @/components/games/dream.BabylonSideScroller
+│   │   │   │   ├── (dynamic)  ← @/components/games/madmaxi
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NeonDrift
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.EchoArena
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
@@ -9685,7 +9706,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.LexiconSolitaire
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.DefuseRitual
 │   │   │   │   ├── → CARTRIDGE_LOADERS
+│   │   │   │   ├── → assertCartridgeLoadersReady
 │   │   │   │   ├── → getCartridgeIds
+│   │   │   │   ├── → getMissingCartridgeLoaders
+│   │   │   │   ├── → getOrphanCartridgeLoaders
 │   │   │   │   └── → loadCartridge
 │   │   │   ├── manifest.ts
 │   │   │   │   ├── → CARTRIDGE_MANIFEST
@@ -9725,7 +9749,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → COMBO_WINDOW_MS
 │   │   │   │   ├── → ComboMachine
 │   │   │   │   ├── → MULTITOUCH_WINDOW_MS
-│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS, ComboMachine
+│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS
 │   │   │   ├── index.ts
 │   │   │   ├── layout.ts ∅
 │   │   │   │   ├── → HUD_ALLOWED_ELEMENTS
@@ -9737,7 +9761,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → isHudElementAllowed
 │   │   │   │   ├── → layoutFor
 │   │   │   │   ├── → radiusMmToPx
-│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, radiusMmToPx, HUD_ALLOWED_ELEMENTS, isHudElementAllowed, layoutFor
+│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, HUD_ALLOWED_ELEMENTS
 │   │   │   ├── moves.ts ∅
 │   │   │   │   ├── → ALL_COMBOS
 │   │   │   │   ├── → BASE_COMBOS
@@ -9747,12 +9771,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → SPRINT_COMBOS
 │   │   │   │   ├── → SPRINT_MOVES
 │   │   │   │   ├── → maxComboLength
-│   │   │   │   └── ∅ unused: FACE_BUTTONS, BASE_MOVES, SPRINT_MOVES, BASE_COMBOS, SPRINT_COMBOS
+│   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
 │   │   │   └── sprintDetector.ts ∅
 │   │   │       ├── → DOUBLE_TAP_WINDOW_MS
 │   │   │       ├── → SPRINT_MOVE_THRESHOLD
 │   │   │       ├── → SprintDetector
-│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD, SprintDetector
+│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   ├── → BehaviorTreeEngine
@@ -9805,20 +9829,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → TerrainEngine
 │   │   │       ├── → TerrainSystem
 │   │   │       └── ∅ unused: GlobalIllumProbes, ProceduralWorldGen, TerrainEngine, TerrainSystem, GIProbeSystem
-│   │   ├── accessibility-ai.ts ∅
+│   │   ├── accessibility-ai.ts
 │   │   │   ├── → ColorVisionAdapter
 │   │   │   ├── → MotionReductionAI
-│   │   │   ├── → RealtimeCaptioner
-│   │   │   └── ∅ unused: RealtimeCaptioner, MotionReductionAI, ColorVisionAdapter
+│   │   │   └── → RealtimeCaptioner
 │   │   ├── ai-director.ts
 │   │   │   ├── (dynamic)  ← @tensorflow/tfjs
 │   │   │   ├── (dynamic)  ← @tensorflow/tfjs-backend-webgpu
 │   │   │   └── → AIDirector
-│   │   ├── ai-npcs.ts ∅
+│   │   ├── ai-npcs.ts
 │   │   │   ├── → EmergentDialogue
 │   │   │   ├── → LLMNPCBrain
-│   │   │   ├── → NPCPersonalityStore
-│   │   │   └── ∅ unused: LLMNPCBrain, EmergentDialogue, NPCPersonalityStore
+│   │   │   └── → NPCPersonalityStore
 │   │   ├── brain-reader.ts ∅
 │   │   │   ├── createHash  ← node:crypto
 │   │   │   ├── * as fs  ← node:fs
@@ -9882,22 +9904,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → hasCartridgeMagic
 │   │   │   ├── → validateManifest
 │   │   │   └── ∅ unused: CARTRIDGE_MIME, CARTRIDGE_EXT, QualityTierSchema, RenderModeSchema, PermissionSchema, CartridgeManifestSchema
-│   │   ├── cartridge.ts ∅
+│   │   ├── cartridge.ts
 │   │   │   ├── → ENGINE_VERSION
 │   │   │   ├── → GRAVITY_VALUES
-│   │   │   ├── → engineSatisfies
-│   │   │   └── ∅ unused: engineSatisfies
+│   │   │   └── → engineSatisfies
 │   │   ├── cartridgeLoader.ts ∅
 │   │   │   ├── → DreamrCartridgeArchive
 │   │   │   ├── → DreamrFileEntry
 │   │   │   ├── → loadDreamrCartridgeFromResponse
 │   │   │   ├── → parseDreamrArchive
 │   │   │   └── ∅ unused: loadDreamrCartridgeFromResponse, DreamrCartridgeArchive, DreamrFileEntry
-│   │   ├── cloud-compute.ts ∅
+│   │   ├── cloud-compute.ts
 │   │   │   ├── → EdgeOffloadRouter
 │   │   │   ├── → RemoteRenderHandoff
-│   │   │   ├── → ResultVerifier
-│   │   │   └── ∅ unused: EdgeOffloadRouter, RemoteRenderHandoff, ResultVerifier
+│   │   │   └── → ResultVerifier
 │   │   ├── control-mappings.ts ⚠ ∅
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   │   ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
@@ -9946,6 +9966,77 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → loadDreamrCartridgeFromResponse
 │   │   │   ├── → parseDreamrArchive
 │   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
+│   │   ├── executionWiring.ts
+│   │   │   ├── ColorVisionAdapter  ← ./accessibility-ai
+│   │   │   ├── MotionReductionAI  ← ./accessibility-ai
+│   │   │   ├── RealtimeCaptioner  ← ./accessibility-ai
+│   │   │   ├── AIDirector  ← ./ai-director
+│   │   │   ├── PlayerSignals  ← ./ai-director
+│   │   │   ├── EmergentDialogue  ← ./ai-npcs
+│   │   │   ├── LLMNPCBrain  ← ./ai-npcs
+│   │   │   ├── NPCPersonalityStore  ← ./ai-npcs
+│   │   │   ├── CartridgeInputEvent  ← ./cartridge
+│   │   │   ├── ENGINE_VERSION  ← ./cartridge
+│   │   │   ├── GameCartridge  ← ./cartridge
+│   │   │   ├── engineSatisfies  ← ./cartridge
+│   │   │   ├── * as DreamrCartridgeLoader  ← ./cartridgeLoader
+│   │   │   ├── * as CartridgeIndex  ← ./cartridges/index
+│   │   │   ├── CARTRIDGE_LOADERS  ← ./cartridges/loaders
+│   │   │   ├── assertCartridgeLoadersReady  ← ./cartridges/loaders
+│   │   │   ├── getMissingCartridgeLoaders  ← ./cartridges/loaders
+│   │   │   ├── getOrphanCartridgeLoaders  ← ./cartridges/loaders
+│   │   │   ├── CARTRIDGE_MANIFEST  ← ./cartridges/manifest
+│   │   │   ├── EdgeOffloadRouter  ← ./cloud-compute
+│   │   │   ├── RemoteRenderHandoff  ← ./cloud-compute
+│   │   │   ├── ResultVerifier  ← ./cloud-compute
+│   │   │   ├── * as ControlMappings  ← ./control-mappings
+│   │   │   ├── * as DreamEngineModule  ← ./dream-engine
+│   │   │   ├── * as LegacyGameRuntime  ← ./gameEnginRuntime
+│   │   │   ├── AdaptiveMusicEngine  ← ./generative-audio
+│   │   │   ├── NeuralFoley  ← ./generative-audio
+│   │   │   ├── FrameGenerator  ← ./neural-render
+│   │   │   ├── NeuralTextureCompression  ← ./neural-render
+│   │   │   ├── NeuralUpscaler  ← ./neural-render
+│   │   │   ├── NeuralDenoiser  ← ./path-tracing
+│   │   │   ├── PathTracer  ← ./path-tracing
+│   │   │   ├── RestirGI  ← ./path-tracing
+│   │   │   ├── detectCapabilities  ← ./platform
+│   │   │   ├── BehaviorAnticipator  ← ./predictive-stream
+│   │   │   ├── MLPrefetchModel  ← ./predictive-stream
+│   │   │   ├── BiomeSynthesizer  ← ./procgen
+│   │   │   ├── ChunkScheduler  ← ./procgen
+│   │   │   ├── WaveFunctionCollapse  ← ./procgen
+│   │   │   ├── ComboMachine  ← ./remote/comboMachine
+│   │   │   ├── isHudElementAllowed  ← ./remote/layout
+│   │   │   ├── layoutFor  ← ./remote/layout
+│   │   │   ├── radiusMmToPx  ← ./remote/layout
+│   │   │   ├── ALL_COMBOS  ← ./remote/moves
+│   │   │   ├── BASE_MOVES  ← ./remote/moves
+│   │   │   ├── FACE_BUTTONS  ← ./remote/moves
+│   │   │   ├── FaceButton  ← ./remote/moves
+│   │   │   ├── MULTITOUCH_COMBOS  ← ./remote/moves
+│   │   │   ├── SPRINT_MOVES  ← ./remote/moves
+│   │   │   ├── SprintDetector  ← ./remote/sprintDetector
+│   │   │   ├── * as AISystems  ← ./systems/ai
+│   │   │   ├── * as AnimationSystems  ← ./systems/animation
+│   │   │   ├── * as AssetSystems  ← ./systems/assets
+│   │   │   ├── * as LODSystems  ← ./systems/lod
+│   │   │   ├── * as NetworkSystems  ← ./systems/network
+│   │   │   ├── * as PhysicsSystems  ← ./systems/physics
+│   │   │   ├── * as PoolingSystems  ← ./systems/pooling
+│   │   │   ├── * as RenderingSystems  ← ./systems/rendering
+│   │   │   ├── * as SpatialSystems  ← ./systems/spatial
+│   │   │   ├── * as WorldSystems  ← ./systems/world
+│   │   │   ├── * as UnifiedLoopHook  ← ./useUnifiedLoop
+│   │   │   ├── * as RuntimeShell  ← ./webgpu-runtime-shell
+│   │   │   ├── WorldStateCRDT  ← ./world-crdt
+│   │   │   ├── HandTrackingInput  ← ./xr
+│   │   │   ├── PassthroughComposite  ← ./xr
+│   │   │   ├── WebXRSession  ← ./xr
+│   │   │   ├── * as GameRuleSetIndex  ← @/lib/engins/game
+│   │   │   ├── * as LucidAvenueWorld  ← @/lib/games/lucid-avenue-world
+│   │   │   ├── invokeMadMaxiSnapshotTransfer  ← @/lib/runtime/madMaxiSnapshotBridge
+│   │   │   └── → createGameEnginExecutionKernel
 │   │   ├── gameEnginRuntime.ts ∅
 │   │   │   ├── EventBus  ← ../eventBus
 │   │   │   ├── createEventBus  ← ../eventBus
@@ -9960,12 +10051,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── GameCartridge  ← ./cartridge
 │   │   │   ├── GameEngineAPI  ← ./cartridge
 │   │   │   ├── GravityPreset  ← ./cartridge
+│   │   │   ├── engineSatisfies  ← ./cartridge
 │   │   │   ├── createAchievementsAPI  ← ./cartridges/achievementEngine
 │   │   │   ├── stubAssetsAPI  ← ./cartridges/apiStubs
 │   │   │   ├── stubAudioAPI  ← ./cartridges/apiStubs
 │   │   │   ├── stubHapticsAPI  ← ./cartridges/apiStubs
 │   │   │   ├── stubNetworkAPI  ← ./cartridges/apiStubs
 │   │   │   ├── createSaveAPI  ← ./cartridges/saveState
+│   │   │   ├── GameEnginExecutionKernel  ← ./executionWiring
+│   │   │   ├── createGameEnginExecutionKernel  ← ./executionWiring
 │   │   │   ├── recordEmission  ← @/lib/runtime/channelMetrics
 │   │   │   ├── dreamOSBus  ← @/lib/runtime/dreamOSBus
 │   │   │   ├── createLocalChannel  ← @/lib/runtime/runtimeChannel
@@ -9976,10 +10070,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useRef  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── generative-audio.ts ∅
+│   │   ├── generative-audio.ts
 │   │   │   ├── → AdaptiveMusicEngine
-│   │   │   ├── → NeuralFoley
-│   │   │   └── ∅ unused: AdaptiveMusicEngine, NeuralFoley
+│   │   │   └── → NeuralFoley
 │   │   ├── index.ts ∅
 │   │   │   ├── ...  ← @/lib/gameengin
 │   │   │   ├── AIDirector  ← @/lib/gameengin
@@ -9999,6 +10092,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → DreamEngine
 │   │   │   ├── → ECSWorld
 │   │   │   ├── → EliteGameEngine
+│   │   │   ├── → GAMEENGIN_CAPABILITY_LANES
+│   │   │   ├── → GAMEENGIN_WORK_PACKET
+│   │   │   ├── → GAMEENGIN_WORK_PACKET_BY_TARGET
 │   │   │   ├── → GPUProfiler
 │   │   │   ├── → GRAVITY_VALUES
 │   │   │   ├── → GameEnginPlatform
@@ -10018,27 +10114,33 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → WGSLShaderManager
 │   │   │   ├── → WorkerJobSystem
 │   │   │   ├── → activeGameCount
+│   │   │   ├── → assertCartridgeLoadersReady
+│   │   │   ├── → createGameEnginExecutionKernel
 │   │   │   ├── → createReactGameCartridge
 │   │   │   ├── → defineReactCartridgeLoader
 │   │   │   ├── → detectCapabilities
 │   │   │   ├── → getCartridgeCategories
+│   │   │   ├── → getCartridgeIds
 │   │   │   ├── → getCartridgeManifest
+│   │   │   ├── → getGameEnginWorkPacketByTarget
+│   │   │   ├── → getGameEnginWorkPacketEntry
+│   │   │   ├── → getMissingCartridgeLoaders
+│   │   │   ├── → getOrphanCartridgeLoaders
 │   │   │   ├── → isLoopRunning
+│   │   │   ├── → loadCartridge
 │   │   │   ├── → mapJoystickToAsset
 │   │   │   ├── → registerGame
 │   │   │   ├── → unregisterGame
 │   │   │   ├── → useUnifiedLoop
-│   │   │   └── ∅ unused: mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem
-│   │   ├── neural-render.ts ∅
+│   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
+│   │   ├── neural-render.ts
 │   │   │   ├── → FrameGenerator
 │   │   │   ├── → NeuralTextureCompression
-│   │   │   ├── → NeuralUpscaler
-│   │   │   └── ∅ unused: NeuralUpscaler, NeuralTextureCompression, FrameGenerator
-│   │   ├── path-tracing.ts ∅
+│   │   │   └── → NeuralUpscaler
+│   │   ├── path-tracing.ts
 │   │   │   ├── → NeuralDenoiser
 │   │   │   ├── → PathTracer
-│   │   │   ├── → RestirGI
-│   │   │   └── ∅ unused: PathTracer, RestirGI, NeuralDenoiser
+│   │   │   └── → RestirGI
 │   │   ├── platform.ts ∅
 │   │   │   ├── AIDirector  ← ./ai-director
 │   │   │   ├── GRAVITY_VALUES  ← ./cartridge
@@ -10053,7 +10155,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── Scene  ← @babylonjs/core
 │   │   │   ├── → GameEnginPlatform
 │   │   │   ├── → detectCapabilities
-│   │   │   └── ∅ unused: detectCapabilities, GameEnginPlatform
+│   │   │   └── ∅ unused: GameEnginPlatform
 │   │   ├── post-fx.ts
 │   │   │   ├── PerformanceBudget  ← ./core
 │   │   │   ├── Camera  ← @babylonjs/core
@@ -10085,16 +10187,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → TypedEventBus
 │   │   │   ├── → WGSLShaderManager
 │   │   │   └── → WorkerJobSystem
-│   │   ├── predictive-stream.ts ∅
+│   │   ├── predictive-stream.ts
 │   │   │   ├── → BehaviorAnticipator
-│   │   │   ├── → MLPrefetchModel
-│   │   │   └── ∅ unused: MLPrefetchModel, BehaviorAnticipator
-│   │   ├── procgen.ts ∅
+│   │   │   └── → MLPrefetchModel
+│   │   ├── procgen.ts
 │   │   │   ├── → BiomeSynthesizer
 │   │   │   ├── → ChunkScheduler
-│   │   │   ├── → WaveFunctionCollapse
-│   │   │   └── ∅ unused: WaveFunctionCollapse, BiomeSynthesizer, ChunkScheduler
+│   │   │   └── → WaveFunctionCollapse
 │   │   ├── registerCartridges.ts
+│   │   │   ├── assertCartridgeLoadersReady  ← @/lib/gameengin/cartridges/loaders
 │   │   │   ├── CARTRIDGE_MANIFEST  ← @/lib/gameengin/cartridges/manifest
 │   │   │   ├── moduleRegistry  ← @/lib/runtime/moduleRegistry
 │   │   │   ├── ModuleManifest  ← @/types/module-manifest
@@ -10122,12 +10223,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── world-crdt.ts ∅
 │   │   │   ├── → EventualConsistencyBridge
 │   │   │   ├── → WorldStateCRDT
-│   │   │   └── ∅ unused: WorldStateCRDT, EventualConsistencyBridge
-│   │   └── xr.ts ∅
+│   │   │   └── ∅ unused: EventualConsistencyBridge
+│   │   └── xr.ts
 │   │       ├── → HandTrackingInput
 │   │       ├── → PassthroughComposite
-│   │       ├── → WebXRSession
-│   │       └── ∅ unused: WebXRSession, HandTrackingInput, PassthroughComposite
+│   │       └── → WebXRSession
 │   ├── games  [GameEngin]
 │   │   ├── avatar.ts ∅
 │   │   │   ├── → AVATAR_CREATED_KEY
@@ -10154,7 +10254,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   ├── → DualSenseManager
 │   │   │   ├── → useDualSense
-│   │   │   └── ∅ unused: useDualSense, DualSenseManager
+│   │   │   └── ∅ unused: DualSenseManager
 │   │   ├── gameControllerButtons.ts
 │   │   │   ├── → BTN_DOUBLE_TAP_MAX_MS
 │   │   │   ├── → BTN_LONG_PRESS_MS
@@ -10257,7 +10357,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → GAME_CONTROL_PROFILES
 │   │   │   ├── → GAME_ENGINE_STANDARDS
 │   │   │   └── → GAME_QUALITY_PILLARS
-│   │   ├── useAIDirector.ts ∅
+│   │   ├── useAIDirector.ts
 │   │   │   ├── AIDirector  ← @/lib/gameengin/ai-director
 │   │   │   ├── DirectorState  ← @/lib/gameengin/ai-director
 │   │   │   ├── PlayerSignals  ← @/lib/gameengin/ai-director
@@ -10265,8 +10365,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
 │   │   │   ├── useState  ← react
-│   │   │   ├── → useAIDirector
-│   │   │   └── ∅ unused: useAIDirector
+│   │   │   └── → useAIDirector
 │   │   ├── useGameInputKeyboardBridge.ts
 │   │   │   ├── GameInputAction  ← @/components/games/dream.remote.GameRemote
 │   │   │   ├── useEffect  ← react
@@ -13007,12 +13106,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── systems  ← ./systems
 │   │   │   │   ├── → hydrateEngineRegistry
 │   │   │   │   ├── → osArchitectureFlow
+│   │   │   │   ├── → osArchitectureGraph
 │   │   │   │   ├── → osArchitectureMap
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
+│   │   │   │   ├── → osArchitectureStageEntries
+│   │   │   │   ├── → osGeneratedRouters
+│   │   │   │   ├── → osSlotCounts
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureGraph, osArchitectureMap, osArchitectureStageEntries, osGeneratedRouters, osSlotCounts
 │   │   │   ├── osArchitectureMap.ts ∅
 │   │   │   │   ├── → osArchitectureFlow
+│   │   │   │   ├── → osArchitectureGraph
 │   │   │   │   ├── → osArchitectureMap
-│   │   │   │   └── ∅ unused: osArchitectureFlow, osArchitectureMap
+│   │   │   │   ├── → osArchitectureStageEntries
+│   │   │   │   ├── → osGeneratedRouters
+│   │   │   │   ├── → osSlotCounts
+│   │   │   │   └── ∅ unused: osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   │   └── → personas
 │   │   │   ├── rulesets.ts

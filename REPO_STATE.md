@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T07:01:39.645Z
+Generated: 2026-06-07T20:27:26.600Z
 
 ---
 
@@ -847,6 +847,7 @@ _No style files for this feature._
 - `lib/gameengin/core.ts`
 - `lib/gameengin/dream-engine.ts`
 - `lib/gameengin/dreamr-loader.ts`
+- `lib/gameengin/executionWiring.ts`
 - `lib/gameengin/gameEnginRuntime.ts`
 - `lib/gameengin/generative-audio.ts`
 - `lib/gameengin/index.ts`
@@ -1011,18 +1012,24 @@ _No style files for this feature._
 - `./GameRuntime`
 - `./MyGame`
 - `./_fx/canvasFx`
+- `./accessibility-ai`
 - `./ai`
 - `./ai-director`
+- `./ai-npcs`
 - `./animation`
 - `./assets`
 - `./audio`
 - `./authoredZonePacks`
 - `./cartridge`
+- `./cartridgeLoader`
 - `./cartridges/achievementEngine`
 - `./cartridges/apiStubs`
+- `./cartridges/index`
+- `./cartridges/loaders`
 - `./cartridges/manifest`
 - `./cartridges/reactCartridge`
 - `./cartridges/saveState`
+- `./cloud-compute`
 - `./comboMachine`
 - `./config`
 - `./control-mappings`
@@ -1033,7 +1040,10 @@ _No style files for this feature._
 - `./dream.MadmaxiGame`
 - `./dream.cartridge.CartridgeErrorBoundary`
 - `./dreamr-loader`
+- `./executionWiring`
 - `./gameEnginRuleSet`
+- `./gameEnginRuntime`
+- `./generative-audio`
 - `./layout`
 - `./levels`
 - `./loaders`
@@ -1043,34 +1053,60 @@ _No style files for this feature._
 - `./materials`
 - `./moves`
 - `./network`
+- `./neural-render`
 - `./panels/dream.panel.BuilderPanel`
 - `./panels/dream.panel.LibraryPanel`
 - `./panels/dream.panel.ScoresPanel`
+- `./path-tracing`
 - `./physics`
 - `./platform`
 - `./pooling`
 - `./post-fx`
 - `./power-systems`
+- `./predictive-stream`
+- `./procgen`
 - `./reactCartridge`
+- `./remote/comboMachine`
+- `./remote/layout`
+- `./remote/moves`
+- `./remote/sprintDetector`
 - `./rendering`
 - `./spatial`
 - `./sprintDetector`
+- `./systems/ai`
+- `./systems/animation`
+- `./systems/assets`
+- `./systems/lod`
+- `./systems/network`
+- `./systems/physics`
+- `./systems/pooling`
+- `./systems/rendering`
+- `./systems/spatial`
+- `./systems/world`
 - `./types`
 - `./unifiedLoop`
 - `./useUnifiedLoop`
 - `./vfx`
+- `./webgpu-runtime-shell`
 - `./world`
+- `./world-crdt`
+- `./xr`
 - `@/components/daydream/dream.JourneyTrail`
 - `@/components/engines/shared`
+- `@/components/gameengin/dream.CartridgeRegistryBootstrap`
+- `@/components/gameengin/dream.CrashReportModal`
+- `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
+- `@/components/gameengin/dream.cartridge.FeaturedCartridges`
 - `@/components/gameengin/input/DualSenseManager`
 - `@/components/games/dream.AvenueOfMirrors`
 - `@/components/games/dream.BabylonSideScroller`
 - `@/components/games/dream.DefuseRitual`
 - `@/components/games/dream.EchoArena`
 - `@/components/games/dream.EnginFracture`
+- `@/components/games/dream.GameController`
 - `@/components/games/dream.GameController.module.css`
-- `@/components/games/dream.GamesHub`
 - `@/components/games/dream.Glassfall`
+- `@/components/games/dream.Leaderboard`
 - `@/components/games/dream.LexiconSolitaire`
 - `@/components/games/dream.NeonDrift`
 - `@/components/games/dream.NiteFlyerSolarHymn`
@@ -1078,9 +1114,14 @@ _No style files for this feature._
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
+- `@/components/games/dream.hud.GameHUD`
+- `@/components/games/dream.hud.LegacyGameHUD`
+- `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
 - `@/components/games/dream.remote.GameRemote`
 - `@/components/games/dream.remote.GameRemoteSurface`
+- `@/components/games/dream.remote.LegacyGameRemote`
+- `@/components/games/madmaxi`
 - `@/engins/engin.GameEngin`
 - `@/lib/babylon/createEngine`
 - `@/lib/daydream/useDaydreamPersistence`
@@ -1093,6 +1134,7 @@ _No style files for this feature._
 - `@/lib/engin-runtime/EnginRuleSetContract`
 - `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
+- `@/lib/engins/game`
 - `@/lib/engins/game/gameEnginRuleSet`
 - `@/lib/engins/game/useGameEnginRuntime`
 - `@/lib/forge/forgeIntelligence`
@@ -1108,6 +1150,7 @@ _No style files for this feature._
 - `@/lib/gameengin/post-fx`
 - `@/lib/gameengin/registerCartridges`
 - `@/lib/gameengin/systems`
+- `@/lib/games/DualSenseManager`
 - `@/lib/games/avatar`
 - `@/lib/games/catalog`
 - `@/lib/games/gameControllerButtons`
@@ -1115,10 +1158,12 @@ _No style files for this feature._
 - `@/lib/games/gameControllerRight`
 - `@/lib/games/hooks`
 - `@/lib/games/library-state`
+- `@/lib/games/lucid-avenue-world`
 - `@/lib/games/mobileControls`
 - `@/lib/games/navigation`
 - `@/lib/games/performance-baseline`
 - `@/lib/games/quality-plan`
+- `@/lib/games/useAIDirector`
 - `@/lib/games/useGameInputKeyboardBridge`
 - `@/lib/games/useGamepad`
 - `@/lib/games/useImmersiveGameLayout`
@@ -1133,6 +1178,7 @@ _No style files for this feature._
 - `@/lib/runtime/dreamOSBus`
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/runtime/instanceManager`
+- `@/lib/runtime/madMaxiSnapshotBridge`
 - `@/lib/runtime/moduleRegistry`
 - `@/lib/runtime/runtimeChannel`
 - `@/lib/runtime/sharedResourcePool`
@@ -1147,18 +1193,18 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (4 files) · **Supabase** (4 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (5 files) · **Supabase** (3 files) · **Event Bus** (9 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
 
 ### Dual Runtime files
 
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `engins/engin.GameEngin.tsx`
 - `lib/gameengin/GameRuntime.tsx`
 - `lib/games/DualSenseManager.ts`
 
 ### Supabase files
 
-- `components/engines/games/panels/dream.panel.ScoresPanel.tsx`
 - `engins/engin.GameEngin.tsx`
 - `lib/gameengin/control-mappings.ts`
 - `lib/gameengin/dream-engine.ts`
@@ -1166,6 +1212,7 @@ _No style files for this feature._
 ### Event Bus files
 
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `components/games/dream.GameController.tsx`
 - `engins/engin.GameEngin.tsx`
 - `lib/engins/game/useGameEnginRuntime.ts`
@@ -6045,6 +6092,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
 | `@/lib/utils` | `toErrorMessage` |
@@ -8996,9 +9044,6 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/utils` | `toErrorMessage` |
 | `lucide-react` | `Loader2`, `RefreshCw`, `Share2`, `Trophy` |
 | `react` | `useEffect`, `useState` |
 
@@ -9208,6 +9253,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin/registerCartridges` | `registerCartridges` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
 | `react` | `useEffect` |
 
 ## `components/gameengin/dream.CrashReportModal.tsx`
@@ -9315,7 +9361,7 @@ _No style files for this feature._
 | `framer-motion` | `AnimatePresence`, `motion` |
 | `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-| `@/components/games/dream.BabylonSideScroller` | _(dynamic import)_ |
+| `@/components/games/madmaxi` | _(dynamic import)_ |
 | `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
 | `@/components/games/dream.EchoArena` | _(dynamic import)_ |
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
@@ -10420,9 +10466,18 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
-| `@/components/games/dream.GamesHub` | `GAMES` |
+| `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
+| `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary` | `CartridgeCrashEvent`, `CartridgeErrorBoundary`, `useGlobalCrashListener` |
+| `@/components/gameengin/dream.cartridge.FeaturedCartridges` | `⬡ FeaturedCartridges` |
+| `@/components/games/dream.GameController` | `⬡ GameController` |
+| `@/components/games/dream.Leaderboard` | `⬡ Leaderboard` |
 | `@/components/games/dream.RecordingControls` | `⬡ RecordingControls` |
+| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
+| `@/components/games/dream.hud.LegacyGameHUD` | `⬡ LegacyGameHUD` |
+| `@/components/games/dream.hud.MobileGameHUD` | `⬡ MobileGameHUD` |
 | `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
+| `@/components/games/dream.remote.GameRemoteSurface` | `⬡ GameRemoteSurface` |
+| `@/components/games/dream.remote.LegacyGameRemote` | `⬡ LegacyGameRemote` |
 | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
 | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
@@ -10434,10 +10489,13 @@ _No style files for this feature._
 | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
 | `@/lib/gameengin/cartridge` | `GameCartridge` |
 | `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `@/lib/games/DualSenseManager` | `useDualSense` |
 | `@/lib/games/avatar` | `consumePlayAsMe`, `getAvatarDataUrl` |
+| `@/lib/games/catalog` | `GAME_CATALOG` |
 | `@/lib/games/library-state` | `GAME_LIBRARY_SESSION_STORAGE_KEY`, `MAX_SAVED_GAME_SESSIONS`, `SavedGameSession` |
 | `@/lib/games/navigation` | `buildGameLaunchHref`, `isLaunchFlagEnabled`, `resolveGameLaunchId` |
 | `@/lib/games/quality-plan` | `GAME_CONTROL_PROFILES`, `GAME_QUALITY_PILLARS` |
+| `@/lib/games/useAIDirector` | `useAIDirector` |
 | `@/lib/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
 | `@/lib/games/useGamepad` | `useGamepad` |
 | `@/lib/games/useRemoteChannel` | `useRemoteChannel` |
@@ -11747,10 +11805,11 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./cartridge` | `AchievementDefinition`, `CartridgeInputEvent`, `ENGINE_VERSION`, `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI`, `GravityPreset` |
+| `./cartridge` | `AchievementDefinition`, `CartridgeInputEvent`, `ENGINE_VERSION`, `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI`, `GravityPreset`, `engineSatisfies` |
 | `./cartridges/achievementEngine` | `createAchievementsAPI` |
 | `./cartridges/apiStubs` | `stubAssetsAPI`, `stubAudioAPI`, `stubHapticsAPI`, `stubNetworkAPI` |
 | `./cartridges/saveState` | `createSaveAPI` |
+| `./executionWiring` | `GameEnginExecutionKernel`, `createGameEnginExecutionKernel` |
 | `@/lib/runtime/channelMetrics` | `recordEmission` |
 | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
 | `@/lib/runtime/runtimeChannel` | `createLocalChannel` |
@@ -11795,9 +11854,10 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `GameCartridge` |
+| `./manifest` | `CARTRIDGE_MANIFEST`, `getCartridgeManifest` |
 | `./reactCartridge` | `defineReactCartridgeLoader` |
 | `@/lib/utils` | `toErrorMessage` |
-| `@/components/games/dream.BabylonSideScroller` | _(dynamic import)_ |
+| `@/components/games/madmaxi` | _(dynamic import)_ |
 | `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
 | `@/components/games/dream.EchoArena` | _(dynamic import)_ |
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
@@ -11856,6 +11916,50 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/gameengin/cartridge-manifest` | `CARTRIDGE_MAGIC`, `CartridgeManifest`, `validateManifest` |
 
+## `lib/gameengin/executionWiring.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./accessibility-ai` | `ColorVisionAdapter`, `MotionReductionAI`, `RealtimeCaptioner` |
+| `./ai-director` | `AIDirector`, `PlayerSignals` |
+| `./ai-npcs` | `EmergentDialogue`, `LLMNPCBrain`, `NPCPersonalityStore` |
+| `./cartridge` | `CartridgeInputEvent`, `ENGINE_VERSION`, `GameCartridge`, `engineSatisfies` |
+| `./cartridgeLoader` | `* as DreamrCartridgeLoader` |
+| `./cartridges/index` | `* as CartridgeIndex` |
+| `./cartridges/loaders` | `CARTRIDGE_LOADERS`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
+| `./cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `./cloud-compute` | `EdgeOffloadRouter`, `RemoteRenderHandoff`, `ResultVerifier` |
+| `./control-mappings` | `* as ControlMappings` |
+| `./dream-engine` | `* as DreamEngineModule` |
+| `./gameEnginRuntime` | `* as LegacyGameRuntime` |
+| `./generative-audio` | `AdaptiveMusicEngine`, `NeuralFoley` |
+| `./neural-render` | `FrameGenerator`, `NeuralTextureCompression`, `NeuralUpscaler` |
+| `./path-tracing` | `NeuralDenoiser`, `PathTracer`, `RestirGI` |
+| `./platform` | `detectCapabilities` |
+| `./predictive-stream` | `BehaviorAnticipator`, `MLPrefetchModel` |
+| `./procgen` | `BiomeSynthesizer`, `ChunkScheduler`, `WaveFunctionCollapse` |
+| `./remote/comboMachine` | `ComboMachine` |
+| `./remote/layout` | `isHudElementAllowed`, `layoutFor`, `radiusMmToPx` |
+| `./remote/moves` | `ALL_COMBOS`, `BASE_MOVES`, `FACE_BUTTONS`, `FaceButton`, `MULTITOUCH_COMBOS`, `SPRINT_MOVES` |
+| `./remote/sprintDetector` | `SprintDetector` |
+| `./systems/ai` | `* as AISystems` |
+| `./systems/animation` | `* as AnimationSystems` |
+| `./systems/assets` | `* as AssetSystems` |
+| `./systems/lod` | `* as LODSystems` |
+| `./systems/network` | `* as NetworkSystems` |
+| `./systems/physics` | `* as PhysicsSystems` |
+| `./systems/pooling` | `* as PoolingSystems` |
+| `./systems/rendering` | `* as RenderingSystems` |
+| `./systems/spatial` | `* as SpatialSystems` |
+| `./systems/world` | `* as WorldSystems` |
+| `./useUnifiedLoop` | `* as UnifiedLoopHook` |
+| `./webgpu-runtime-shell` | `* as RuntimeShell` |
+| `./world-crdt` | `WorldStateCRDT` |
+| `./xr` | `HandTrackingInput`, `PassthroughComposite`, `WebXRSession` |
+| `@/lib/engins/game` | `* as GameRuleSetIndex` |
+| `@/lib/games/lucid-avenue-world` | `* as LucidAvenueWorld` |
+| `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
+
 ## `lib/gameengin/gameEnginRuntime.ts`
 
 | Module | Connected via |
@@ -11894,6 +11998,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/gameengin/cartridges/loaders` | `assertCartridgeLoadersReady` |
 | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 | `@/lib/runtime/moduleRegistry` | `moduleRegistry` |
 | `@/types/module-manifest` | `ModuleManifest` |
@@ -14405,7 +14510,7 @@ _No style files for this feature._
 
 ## `components/games/dream.GamesHub.tsx`
 
-- `@/components/games/dream.BabylonSideScroller`
+- `@/components/games/madmaxi`
 - `@/components/games/dream.NeonDrift`
 - `@/components/games/dream.EchoArena`
 - `@/components/games/dream.NullCathedral`
@@ -14503,7 +14608,7 @@ _No style files for this feature._
 
 ## `lib/gameengin/cartridges/loaders.ts`
 
-- `@/components/games/dream.BabylonSideScroller`
+- `@/components/games/madmaxi`
 - `@/components/games/dream.NeonDrift`
 - `@/components/games/dream.EchoArena`
 - `@/components/games/dream.NullCathedral`
@@ -17465,6 +17570,7 @@ _No style files for this feature._
 - `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`
 - `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.NeuralSeamCanvas.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
@@ -17623,7 +17729,6 @@ _No style files for this feature._
 - `components/dream.ProfileEditor.tsx`
 - `components/dream.universal_asset_registry.tsx`
 - `components/engines/code/panels/dream.panel.ProjectsPanel.tsx`
-- `components/engines/games/panels/dream.panel.ScoresPanel.tsx`
 - `components/panels/dream.panel.DataPanel.tsx`
 - `components/panels/dream.panel.MarketplacePanel.tsx`
 - `components/panels/dream.panel.ProfilePanel.tsx`
@@ -17723,6 +17828,7 @@ _No style files for this feature._
 - `components/dreams/dream.panel.RuntimeMemoryHUD.tsx`
 - `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
+- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `components/games/dream.GameController.tsx`
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
@@ -17771,6 +17877,7 @@ _No style files for this feature._
 - `scripts/generate-repo-state.mjs`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
+- `src/engin/generated/osArchitectureMap.ts`
 - `types/dreamArtifact.ts`
 
 ---
@@ -17816,7 +17923,8 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 34 |
+| `engins/engin.GameEngin.tsx` | 47 |
+| `lib/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/engin.ContentEngin.tsx` | 25 |
@@ -17828,6 +17936,7 @@ _No circular dependencies detected._
 | `lib/engin-runtime/index.ts` | 17 |
 | `scripts/wire-orphans.mjs` | 17 |
 | `app/daydream/games/page.tsx` | 16 |
+| `lib/gameengin/index.ts` | 16 |
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
@@ -17835,7 +17944,6 @@ _No circular dependencies detected._
 | `engins/dream.ForgeEngin.tsx` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
-| `lib/gameengin/index.ts` | 14 |
 | `src/engin/generated/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
 | `app/layout.tsx` | 13 |
@@ -17845,7 +17953,6 @@ _No circular dependencies detected._
 | `app/api/connectors/[provider]/verify/route.ts` | 12 |
 | `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 | `app/daydream/forge/page.tsx` | 12 |
-| `app/dreamdmbar/layout.tsx` | 12 |
 
 ---
 
@@ -17855,7 +17962,8 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 34 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 47 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `lib/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -17867,6 +17975,7 @@ _No circular dependencies detected._
 | `lib/engin-runtime/index.ts` | 17 | HIGH_COUPLING |
 | `scripts/wire-orphans.mjs` | 17 | HIGH_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
+| `lib/gameengin/index.ts` | 16 | HIGH_COUPLING |
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
@@ -17874,7 +17983,6 @@ _No circular dependencies detected._
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
-| `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `src/engin/generated/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
 | `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
@@ -17913,6 +18021,7 @@ _No circular dependencies detected._
 | `daydreams/lab/page.tsx` | 10 | MEDIUM_COUPLING |
 | `lib/dreamr/dreamrfeed.tsx` | 10 | MEDIUM_COUPLING |
 | `lib/engin-runtime/EnginRuntime.ts` | 10 | MEDIUM_COUPLING, EVENT_BUS |
+| `lib/gameengin/GameRuntime.tsx` | 10 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/ads/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/api/account/delete-data/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/account/delete-dream/route.ts` | 9 | MEDIUM_COUPLING |
@@ -17931,7 +18040,6 @@ _No circular dependencies detected._
 | `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
 | `components/home/dream.ActiveModuleSurface.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
-| `lib/gameengin/GameRuntime.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `tests/engin-capability-targets.test.ts` | 9 | MEDIUM_COUPLING |
 | `tests/engin-runtime-core.test.ts` | 9 | MEDIUM_COUPLING, EVENT_BUS |
 | `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
@@ -18023,6 +18131,7 @@ _No circular dependencies detected._
 | `app/api/dream-windows/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/dreams/feed/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/feed/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/game-scores/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/music/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/profile/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/projects/route.ts` | 6 | MEDIUM_COUPLING |
@@ -18075,6 +18184,7 @@ _No circular dependencies detected._
 | `lib/engins/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/feed/useLiveFeed.ts` | 4 | EVENT_BUS |
 | `lib/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
+| `lib/gameengin/registerCartridges.ts` | 4 | RUNTIME_REGISTRY |
 | `lib/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, DUAL_RUNTIME, ZUSTAND_STATE |
 | `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
@@ -18088,9 +18198,9 @@ _No circular dependencies detected._
 | `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
-| `lib/gameengin/registerCartridges.ts` | 3 | RUNTIME_REGISTRY |
 | `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
 | `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
@@ -18127,7 +18237,7 @@ _No circular dependencies detected._
 | `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
 | `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/social/livekit.ts` | 0 | EVENT_BUS |
-| `src/engin/generated/osArchitectureMap.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `src/engin/generated/osArchitectureMap.ts` | 0 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 
@@ -18495,8 +18605,6 @@ _No circular dependencies detected._
 | `components/dream.universal_asset_registry.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `components/engines/games/panels/dream.panel.ScoresPanel.tsx` | `@/lib/supabase/client` | `createClient` |
-| `components/engines/games/panels/dream.panel.ScoresPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `components/panels/dream.panel.DataPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.MarketplacePanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.ProfilePanel.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -19078,34 +19186,25 @@ _No circular dependencies detected._
 | `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
 | `lib/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
 | `lib/gameengin/GameRuntime.tsx` | `(default)` |
-| `lib/gameengin/accessibility-ai.ts` | `RealtimeCaptioner`, `MotionReductionAI`, `ColorVisionAdapter` |
-| `lib/gameengin/ai-npcs.ts` | `LLMNPCBrain`, `EmergentDialogue`, `NPCPersonalityStore` |
 | `lib/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
 | `lib/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema` |
-| `lib/gameengin/cartridge.ts` | `engineSatisfies` |
 | `lib/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
 | `lib/gameengin/cartridges/achievementEngine.ts` | `purgeCartridgeAchievements`, `getUnlockedCount` |
 | `lib/gameengin/cartridges/apiStubs.ts` | `stubSaveAPI`, `stubAchievementsAPI` |
-| `lib/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader` |
+| `lib/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
 | `lib/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `useGameEngineAPI`, `createReactGameCartridge`, `CARTRIDGE_LOADERS` |
 | `lib/gameengin/cartridges/saveState.ts` | `purgeCartridgeSaves`, `getSaveStorageBytes` |
-| `lib/gameengin/cloud-compute.ts` | `EdgeOffloadRouter`, `RemoteRenderHandoff`, `ResultVerifier` |
 | `lib/gameengin/control-mappings.ts` | `mapJoystickToAsset` |
 | `lib/gameengin/core.ts` | `ECSWorld` |
 | `lib/gameengin/dream-engine.ts` | `DreamEngine` |
 | `lib/gameengin/dreamr-loader.ts` | `parseDreamrArchive`, `loadDreamrCartridgeFromResponse` |
 | `lib/gameengin/gameEnginRuntime.ts` | `loadDreamGame` |
-| `lib/gameengin/generative-audio.ts` | `AdaptiveMusicEngine`, `NeuralFoley` |
-| `lib/gameengin/index.ts` | `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem` |
-| `lib/gameengin/neural-render.ts` | `NeuralUpscaler`, `NeuralTextureCompression`, `FrameGenerator` |
-| `lib/gameengin/path-tracing.ts` | `PathTracer`, `RestirGI`, `NeuralDenoiser` |
-| `lib/gameengin/platform.ts` | `detectCapabilities`, `GameEnginPlatform` |
-| `lib/gameengin/predictive-stream.ts` | `MLPrefetchModel`, `BehaviorAnticipator` |
-| `lib/gameengin/procgen.ts` | `WaveFunctionCollapse`, `BiomeSynthesizer`, `ChunkScheduler` |
-| `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS`, `ComboMachine` |
-| `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `radiusMmToPx`, `HUD_ALLOWED_ELEMENTS`, `isHudElementAllowed`, `layoutFor` |
-| `lib/gameengin/remote/moves.ts` | `FACE_BUTTONS`, `BASE_MOVES`, `SPRINT_MOVES`, `BASE_COMBOS`, `SPRINT_COMBOS` |
-| `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD`, `SprintDetector` |
+| `lib/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
+| `lib/gameengin/platform.ts` | `GameEnginPlatform` |
+| `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
+| `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
+| `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
+| `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -19119,15 +19218,13 @@ _No circular dependencies detected._
 | `lib/gameengin/unifiedLoop.ts` | `activeGameCount`, `isLoopRunning`, `_resetLoop` |
 | `lib/gameengin/useUnifiedLoop.ts` | `useUnifiedLoop` |
 | `lib/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
-| `lib/gameengin/world-crdt.ts` | `WorldStateCRDT`, `EventualConsistencyBridge` |
-| `lib/gameengin/xr.ts` | `WebXRSession`, `HandTrackingInput`, `PassthroughComposite` |
-| `lib/games/DualSenseManager.ts` | `useDualSense`, `DualSenseManager` |
+| `lib/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
+| `lib/games/DualSenseManager.ts` | `DualSenseManager` |
 | `lib/games/avatar.ts` | `AVATAR_IMAGE_KEY`, `AVATAR_CREATED_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `setAvatarDataUrl`, `hasAvatar`, `clearAvatar`, `resizeImageToDataUrl` |
 | `lib/games/catalog.ts` | `GAME_CATALOG_IDS` |
 | `lib/games/hooks.ts` | `useKeySet`, `useGamePerformanceBaseline` |
 | `lib/games/lucid-avenue-world.ts` | `LUCID_AVENUE_TOTAL_SHARDS`, `LUCID_AVENUE_TOTAL_FLAGS`, `LUCID_AVENUE_TOTAL_CONTRACTS`, `LUCID_AVENUE_6900_TARGET`, `LUCID_AVENUE_DISTRICTS`, `createInitialLucidAvenueState`, `getLucidAvenueDistrict`, `getLucidAvenuePatrolPositions`, `getLucidAvenueMissionChecklist`, `getLucidAvenueRouteContracts`, `calculateLucidAvenueScore`, `getLucidAvenueCompletionPercent`, `getLucidAvenueStoryBeat`, `isSamePosition`, `moveLucidAvenuePlayer`, `waitLucidAvenueTurn`, `scanLucidAvenue`, `jamLucidAvenueGrid`, `deployLucidAvenueVehicle`, `fastTravelLucidAvenue`, `getLucidAvenueHint`, `requestLucidAvenueHint`, `interactInLucidAvenue`, `getLucidAvenuePatrolPathKeys`, `getLucidAvenueObjectiveKeys` |
 | `lib/games/mobileControls.ts` | `registerMobileGameControls` |
-| `lib/games/useAIDirector.ts` | `useAIDirector` |
 | `lib/games/useImmersiveGameLayout.ts` | `getImmersiveCanvasStyle`, `getImmersiveStageStyle`, `getImmersiveOverlayStyle` |
 | `lib/gct/anomaly-detection.ts` | `detectAnomalies` |
 | `lib/gct/audio-fingerprint.ts` | `audioToVector`, `identifySong` |
@@ -19266,8 +19363,8 @@ _No circular dependencies detected._
 | `src/engin/core/engin.ledger.ts` | `createLedger` |
 | `src/engin/core/engin.renderloop.ts` | `createRenderLoop` |
 | `src/engin/core/index.ts` | `UniversalEngine`, `engine`, `appendEntry`, `createLedger`, `createEventBus`, `createRenderLoop`, `createSession`, `validateSession` |
-| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureMap` |
-| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureFlow`, `osArchitectureMap` |
+| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
+| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
 | `supabaseClient.ts` | `supabase` |
@@ -20370,6 +20467,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── mad-maxi-player.ts ∅
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   ├── typecheck  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   └── error-files.txt
 │   ├── actions.json
 │   ├── events.json
 │   ├── registry.json
@@ -20579,9 +20678,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   └── ∅ unused: (default)
 │   │   │   │   ├── dream.panel.LibraryPanel.tsx ∅
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   └── dream.panel.ScoresPanel.tsx ⚠ ∅
-│   │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   └── dream.panel.ScoresPanel.tsx ∅
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.GameEnginApp.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -21713,7 +21810,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── apiStubs.ts ∅
 │   │   │   │   └── ∅ unused: stubSaveAPI, stubAchievementsAPI
 │   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader
+│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader, assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders
 │   │   │   ├── loaders.ts
 │   │   │   ├── manifest.ts
 │   │   │   ├── reactCartridge.ts ∅
@@ -21722,14 +21819,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── remote  [GameEngin]
 │   │   │   ├── comboMachine.ts ∅
-│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS, ComboMachine
+│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS
 │   │   │   ├── index.ts
 │   │   │   ├── layout.ts ∅
-│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, radiusMmToPx, HUD_ALLOWED_ELEMENTS, isHudElementAllowed, layoutFor
+│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, HUD_ALLOWED_ELEMENTS
 │   │   │   ├── moves.ts ∅
-│   │   │   │   └── ∅ unused: FACE_BUTTONS, BASE_MOVES, SPRINT_MOVES, BASE_COMBOS, SPRINT_COMBOS
+│   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
 │   │   │   └── sprintDetector.ts ∅
-│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD, SprintDetector
+│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem
@@ -21752,21 +21849,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: OctreeBVH, SpatialAudioDSP
 │   │   │   └── world.ts ∅
 │   │   │       └── ∅ unused: GlobalIllumProbes, ProceduralWorldGen, TerrainEngine, TerrainSystem, GIProbeSystem
-│   │   ├── accessibility-ai.ts ∅
-│   │   │   └── ∅ unused: RealtimeCaptioner, MotionReductionAI, ColorVisionAdapter
+│   │   ├── accessibility-ai.ts
 │   │   ├── ai-director.ts
-│   │   ├── ai-npcs.ts ∅
-│   │   │   └── ∅ unused: LLMNPCBrain, EmergentDialogue, NPCPersonalityStore
+│   │   ├── ai-npcs.ts
 │   │   ├── brain-reader.ts ∅
 │   │   │   └── ∅ unused: readMechanic, readInspiration, readPrinciple, logRDSession
 │   │   ├── cartridge-manifest.ts ∅
 │   │   │   └── ∅ unused: CARTRIDGE_MIME, CARTRIDGE_EXT, QualityTierSchema, RenderModeSchema, PermissionSchema, CartridgeManifestSchema
-│   │   ├── cartridge.ts ∅
-│   │   │   └── ∅ unused: engineSatisfies
+│   │   ├── cartridge.ts
 │   │   ├── cartridgeLoader.ts ∅
 │   │   │   └── ∅ unused: loadDreamrCartridgeFromResponse, DreamrCartridgeArchive, DreamrFileEntry
-│   │   ├── cloud-compute.ts ∅
-│   │   │   └── ∅ unused: EdgeOffloadRouter, RemoteRenderHandoff, ResultVerifier
+│   │   ├── cloud-compute.ts
 │   │   ├── control-mappings.ts ⚠ ∅
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
@@ -21779,26 +21872,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DreamEngine
 │   │   ├── dreamr-loader.ts ∅
 │   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
+│   │   ├── executionWiring.ts
 │   │   ├── gameEnginRuntime.ts ∅
 │   │   │   └── ∅ unused: loadDreamGame
 │   │   ├── GameRuntime.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── generative-audio.ts ∅
-│   │   │   └── ∅ unused: AdaptiveMusicEngine, NeuralFoley
+│   │   ├── generative-audio.ts
 │   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem
-│   │   ├── neural-render.ts ∅
-│   │   │   └── ∅ unused: NeuralUpscaler, NeuralTextureCompression, FrameGenerator
-│   │   ├── path-tracing.ts ∅
-│   │   │   └── ∅ unused: PathTracer, RestirGI, NeuralDenoiser
+│   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
+│   │   ├── neural-render.ts
+│   │   ├── path-tracing.ts
 │   │   ├── platform.ts ∅
-│   │   │   └── ∅ unused: detectCapabilities, GameEnginPlatform
+│   │   │   └── ∅ unused: GameEnginPlatform
 │   │   ├── post-fx.ts
 │   │   ├── power-systems.ts
-│   │   ├── predictive-stream.ts ∅
-│   │   │   └── ∅ unused: MLPrefetchModel, BehaviorAnticipator
-│   │   ├── procgen.ts ∅
-│   │   │   └── ∅ unused: WaveFunctionCollapse, BiomeSynthesizer, ChunkScheduler
+│   │   ├── predictive-stream.ts
+│   │   ├── procgen.ts
 │   │   ├── registerCartridges.ts
 │   │   ├── unifiedLoop.ts ∅
 │   │   │   └── ∅ unused: activeGameCount, isLoopRunning, _resetLoop
@@ -21807,16 +21896,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── webgpu-runtime-shell.ts ∅
 │   │   │   └── ∅ unused: canUseWebGPU, planRuntimeShellHandoff
 │   │   ├── world-crdt.ts ∅
-│   │   │   └── ∅ unused: WorldStateCRDT, EventualConsistencyBridge
-│   │   └── xr.ts ∅
-│   │       └── ∅ unused: WebXRSession, HandTrackingInput, PassthroughComposite
+│   │   │   └── ∅ unused: EventualConsistencyBridge
+│   │   └── xr.ts
 │   ├── games  [GameEngin]
 │   │   ├── avatar.ts ∅
 │   │   │   └── ∅ unused: AVATAR_IMAGE_KEY, AVATAR_CREATED_KEY, AVATAR_PLAY_AS_ME_KEY, setAvatarDataUrl, hasAvatar, clearAvatar, resizeImageToDataUrl
 │   │   ├── catalog.ts ∅
 │   │   │   └── ∅ unused: GAME_CATALOG_IDS
 │   │   ├── DualSenseManager.ts ∅
-│   │   │   └── ∅ unused: useDualSense, DualSenseManager
+│   │   │   └── ∅ unused: DualSenseManager
 │   │   ├── gameControllerButtons.ts
 │   │   ├── gameControllerLeft.ts
 │   │   ├── gameControllerRight.ts
@@ -21830,8 +21918,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── navigation.ts
 │   │   ├── performance-baseline.ts
 │   │   ├── quality-plan.ts
-│   │   ├── useAIDirector.ts ∅
-│   │   │   └── ∅ unused: useAIDirector
+│   │   ├── useAIDirector.ts
 │   │   ├── useGameInputKeyboardBridge.ts
 │   │   ├── useGamepad.ts
 │   │   ├── useImmersiveGameLayout.ts ∅
@@ -22375,9 +22462,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── homedream.ts
 │   │   │   ├── hooks.ts
 │   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureMap
+│   │   │   │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureGraph, osArchitectureMap, osArchitectureStageEntries, osGeneratedRouters, osSlotCounts
 │   │   │   ├── osArchitectureMap.ts ∅
-│   │   │   │   └── ∅ unused: osArchitectureFlow, osArchitectureMap
+│   │   │   │   └── ∅ unused: osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
 │   │   │   ├── personas.ts
 │   │   │   ├── rulesets.ts
 │   │   │   ├── surfaces.ts
