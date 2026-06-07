@@ -1,15 +1,8 @@
 name: Sync Engine Registry
 
 on:
-  push:
-    branches: [ main ]
-    # Only trigger if changes occurred in source folders
-    paths:
-      - 'components/**'
-      - 'engins/**'
-      - 'lib/**'
-      - 'app/**'
-      - 'scripts/wire-orphans.mjs'
+  # This makes the "Run workflow" button appear in your Actions tab
+  workflow_dispatch: 
 
 permissions:
   contents: write
