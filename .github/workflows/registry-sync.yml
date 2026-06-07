@@ -1,0 +1,50 @@
+name: Sync Engine Registry
+
+on:
+  push:
+    branches: [ main ]
+    # Only trigger if changes occurred in source folders
+    paths:
+      - 'components/**'
+      - 'engins/**'
+      - 'lib/**'
+      - 'app/**'
+      - 'scripts/wire-orphans.mjs'
+
+permissions:
+  contents: write
+
+jobs:
+  update-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Registry Wire-Up
+        run: node scripts/wire-orphans.mjs
+
+      - name: Check for Registry Changes
+        id: git-check
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit Registry Updates
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "DREAMengin-Bot"
+          git config user.email "bot@dreamengin.com"
+          git add src/engin/generated/ build-memory/registry.json
+          git commit -m "chore: auto-sync registry state [skip ci]"
+          git push
