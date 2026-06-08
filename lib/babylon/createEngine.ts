@@ -35,6 +35,12 @@ export interface BabylonEngineOptions {
   antialias?: boolean;
   preserveDrawingBuffer?: boolean;
   stencil?: boolean;
+  /**
+   * WebGPU is the default rendering standard. Set to false only when a
+   * cartridge has negotiated a known Babylon/WebGPU incompatibility and must
+   * launch through the stable WebGL backend instead of crashing.
+   */
+  preferWebGPU?: boolean;
 }
 
 export interface BabylonEngineResult {
@@ -81,7 +87,12 @@ export async function createBabylonEngine(
   canvas: HTMLCanvasElement,
   options: BabylonEngineOptions = {}
 ): Promise<BabylonEngineResult> {
-  const { antialias = true, preserveDrawingBuffer = true, stencil = true } = options;
+  const {
+    antialias = true,
+    preserveDrawingBuffer = true,
+    stencil = true,
+    preferWebGPU = true,
+  } = options;
 
   const { WebGPUEngine, Engine } = await import('@babylonjs/core');
 
@@ -90,14 +101,18 @@ export async function createBabylonEngine(
   // then let Babylon create the rendering engine.
   let webGPUSupported = false;
   let webgpuReason: string | undefined;
-  try {
-    const browserProbe = await probeBrowserWebGPU();
-    webgpuReason = browserProbe.reason;
-    webGPUSupported = browserProbe.supported && (await WebGPUEngine.IsSupportedAsync);
-    if (browserProbe.supported && !webGPUSupported) webgpuReason = 'Babylon WebGPUEngine reported unsupported.';
-  } catch (error) {
-    webGPUSupported = false;
-    webgpuReason = error instanceof Error ? error.message : String(error);
+  if (!preferWebGPU) {
+    webgpuReason = 'WebGPU disabled by runtime compatibility negotiation.';
+  } else {
+    try {
+      const browserProbe = await probeBrowserWebGPU();
+      webgpuReason = browserProbe.reason;
+      webGPUSupported = browserProbe.supported && (await WebGPUEngine.IsSupportedAsync);
+      if (browserProbe.supported && !webGPUSupported) webgpuReason = 'Babylon WebGPUEngine reported unsupported.';
+    } catch (error) {
+      webGPUSupported = false;
+      webgpuReason = error instanceof Error ? error.message : String(error);
+    }
   }
 
   if (webGPUSupported) {
