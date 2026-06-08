@@ -69,6 +69,7 @@ import type {
     GameCartridge,
     GameEngineAPI,
     GravityPreset,
+    RuntimeBackendDiagnostics,
 } from './cartridge';
 
 import { ENGINE_VERSION, GRAVITY_VALUES, engineSatisfies } from './cartridge';
@@ -109,6 +110,8 @@ export interface GameRuntimeProps {
   onFrame?: (fps: number) => void;
   /** Optional crash bridge used by GameEngin and cartridge routes to open the Brain crash report flow. */
   onCrash?: (crash: GameRuntimeCrash) => void;
+  /** Backend/warmup diagnostics negotiated by the launch shell before mount. */
+  bootstrapDiagnostics?: RuntimeBackendDiagnostics;
 }
 
 // ── Source Grammar: Actions ─────────────────────────────────────────────────
@@ -117,7 +120,7 @@ export interface GameRuntimeProps {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash }: GameRuntimeProps) {
+export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash, bootstrapDiagnostics }: GameRuntimeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Mutable refs for RAF loop state
@@ -140,6 +143,15 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     createLocalChannel<{ type: 'game:score-submit'; gameId: string; score: number; level?: number }>('engine:game-scores'),
   );
   const executionKernelRef = useRef<GameEnginExecutionKernel | null>(null);
+  const diagnosticsRef = useRef<RuntimeBackendDiagnostics>({
+    selectedBackend: 'dom',
+    warmupComplete: false,
+    warmupProgress: 0,
+    secureContext: false,
+    workerSupported: false,
+    offscreenCanvasSupported: false,
+    spans: [],
+  });
 
   if (executionKernelRef.current === null) {
     executionKernelRef.current = createGameEnginExecutionKernel();
@@ -149,6 +161,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
   physicsRef.current  = physicsConfig;
   onFrameRef.current  = onFrame;
   onCrashRef.current  = onCrash;
+  if (bootstrapDiagnostics) diagnosticsRef.current = bootstrapDiagnostics;
 
   // ── Build the complete GameEngineAPI ───────────────────────────────────────
 
@@ -266,6 +279,21 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       save:         saveAPI,
       achievements: achievementsAPI,
 
+      runtime: {
+        getBackendDiagnostics() {
+          return diagnosticsRef.current;
+        },
+        markWarmupSpan(id, status, message) {
+          const spans = diagnosticsRef.current.spans.map((span) => (span.id === id ? { ...span, status, message, ms: span.ms ?? performance.now() } : span));
+          diagnosticsRef.current = {
+            ...diagnosticsRef.current,
+            spans,
+            warmupComplete: spans.every((span) => span.status === 'complete' || span.status === 'failed'),
+            warmupProgress: spans.length === 0 ? 1 : spans.filter((span) => span.status === 'complete' || span.status === 'failed').length / spans.length,
+          };
+        },
+      },
+
       audio:   stubAudioAPI,
       haptics: stubHapticsAPI,
       assets:  stubAssetsAPI,
@@ -279,7 +307,13 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       name: err.name,
       message: err.message,
       stack: err.stack,
-      gameplay,
+      gameplay: {
+        ...gameplay,
+        backend: diagnosticsRef.current.selectedBackend,
+        fallbackReason: diagnosticsRef.current.fallbackReason,
+        warmupComplete: diagnosticsRef.current.warmupComplete,
+        engineSpans: diagnosticsRef.current.spans.slice(-8),
+      },
     };
     executionKernelRef.current?.onCrash({
       cartridgeId: typeof gameplay?.cartridgeId === 'string' ? gameplay.cartridgeId : undefined,

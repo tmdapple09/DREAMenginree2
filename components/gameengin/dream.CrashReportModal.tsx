@@ -27,7 +27,7 @@ export interface CrashContext {
   version?: string;
   /** Captured at the moment the modal opened. */
   error?: { name?: string; message?: string; stack?: string };
-  /** Free-form gameplay context (current scene, last input, etc). */
+  /** Free-form gameplay context (current scene, last input, backend, save schema, recent spans, etc). */
   gameplay?: Record<string, unknown>;
 }
 
@@ -166,6 +166,24 @@ export default function CrashReportModal({
         <p style={{ margin: '0 0 14px', fontSize: 11, color: '#94a3b8', fontFamily: 'ui-monospace, monospace' }}>
           {errLabel}
         </p>
+
+
+        {context.gameplay && (
+          <div style={{ margin: '0 0 14px', padding: 10, borderRadius: 10, background: 'rgba(15, 23, 42, 0.72)', border: '1px solid rgba(148, 163, 184, 0.18)', fontSize: 11, color: '#cbd5e1' }}>
+            <div style={{ fontSize: 10, color: '#94a3b8', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6 }}>Engine diagnostics</div>
+            <div>Backend: <strong>{String(context.gameplay.backend ?? 'unknown')}</strong></div>
+            {context.gameplay.fallbackReason ? <div>Fallback: {String(context.gameplay.fallbackReason)}</div> : null}
+            <div>Save schema: {String(context.gameplay.saveSchemaVersion ?? 'unknown')}</div>
+            <div>Bundles: {Array.isArray(context.gameplay.lastActiveBundleIds) ? context.gameplay.lastActiveBundleIds.join(', ') : 'unknown'}</div>
+            <button
+              type="button"
+              onClick={() => window.location.assign(`${window.location.pathname}?backend=fallback&recover=1`)}
+              style={{ ...btnStyle('#334155', '#e2e8f0'), marginTop: 8 }}
+            >
+              Reload in fallback backend
+            </button>
+          </div>
+        )}
 
         {send.kind === 'sent' ? (
           <div role="status" style={{ padding: 14, fontSize: 13, color: '#bbf7d0' }}>

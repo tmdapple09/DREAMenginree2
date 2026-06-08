@@ -158,10 +158,12 @@ export function useGamepad(): GamepadStatus {
     if (!gamepad) return;
 
     // Haptic Actuator API (supported on Android Chrome, desktop browsers)
-    const actuators = (gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator }).hapticActuators || (gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator }).vibrationActuator;
-    if (actuators && actuators.length > 0) {
+    const haptics = gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator };
+    const actuator = haptics.hapticActuators?.[0] ?? haptics.vibrationActuator;
+    const pulseActuator = actuator as (GamepadHapticActuator & { pulse?: (value: number, duration: number) => Promise<boolean> }) | undefined;
+    if (pulseActuator?.pulse) {
       const clampedIntensity = Math.max(0, Math.min(1, intensity));
-      actuators[0].pulse(clampedIntensity, duration / 1000);
+      pulseActuator.pulse(clampedIntensity, duration / 1000);
       return;
     }
 

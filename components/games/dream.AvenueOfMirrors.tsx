@@ -12,6 +12,7 @@
  */
 
 import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useGameEngineAPI } from '@/lib/gameengin/cartridges/reactCartridge';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const MAP_N = 16;
@@ -36,7 +37,15 @@ const COL = {
   panel: 'rgba(12,18,20,0.85)',
 } as const;
 
-function newMaze(): number[][] {
+function createSeededRandom(seed: number): () => number {
+  let state = seed >>> 0;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
+}
+
+function newMaze(rng: () => number = createSeededRandom(0xa0f2026)): number[][] {
   // Recursive backtracker
   const m: number[][] = Array.from({ length: MAP_N }, () => Array<number>(MAP_N).fill(1));
   const stack: Array<[number, number]> = [[1, 1]];
@@ -49,7 +58,7 @@ function newMaze(): number[][] {
       if (nx > 0 && nx < MAP_N - 1 && ny > 0 && ny < MAP_N - 1 && m[ny][nx] === 1) opts.push([nx, ny]);
     }
     if (opts.length === 0) { stack.pop(); continue; }
-    const [nx, ny] = opts[Math.floor(Math.random() * opts.length)];
+    const [nx, ny] = opts[Math.floor(rng() * opts.length)];
     m[(y + ny) / 2][(x + nx) / 2] = 0;
     m[ny][nx] = 0;
     stack.push([nx, ny]);
@@ -57,21 +66,24 @@ function newMaze(): number[][] {
   return m;
 }
 
-function makeGlyphGrid(size: number): string[][] {
+function makeGlyphGrid(size: number, rng: () => number): string[][] {
   const glyphs = ['◆', '○', '△', '✕', '▽', '◐', '✦', '▫', '☉', '⌬'];
   const grid: string[][] = [];
   for (let r = 0; r < size; r++) {
     const row: string[] = [];
-    for (let c = 0; c < size; c++) row.push(glyphs[Math.floor(Math.random() * glyphs.length)]);
+    for (let c = 0; c < size; c++) row.push(glyphs[Math.floor(rng() * glyphs.length)]);
     grid.push(row);
   }
   return grid;
 }
 
 export default function AvenueOfMirrors( ){
+  const api = useGameEngineAPI();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, phaseRef, setPhase] = useGamePhase<Phase>('menu');
-  const mazeRef = useRef<number[][]>(newMaze());
+  const rngRef = useRef(createSeededRandom(0xa0f2026));
+  const elapsedMsRef = useRef(0);
+  const mazeRef = useRef<number[][]>(newMaze(rngRef.current));
   const playerRef = useRef({ x: 1.5, y: 1.5, angle: 0 });
   const keysRef = useRef<Set<string>>(new Set());
   const watchersRef = useRef<Array<{ x: number; y: number }>>([]);
@@ -84,7 +96,9 @@ export default function AvenueOfMirrors( ){
   const submit = useSubmitScore('avenue-of-mirrors');
 
   const start = useCallback(() => {
-    mazeRef.current = newMaze();
+    rngRef.current = createSeededRandom(0xa0f2026);
+    elapsedMsRef.current = 0;
+    mazeRef.current = newMaze(rngRef.current);
     playerRef.current = { x: 1.5, y: 1.5, angle: 0 };
     watchersRef.current = [];
     mirrorsClearedRef.current = 0;
@@ -94,13 +108,13 @@ export default function AvenueOfMirrors( ){
   useGameAutoStart(phase === 'menu' ? start : null);
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(scoreRef.current); }, [phase, submit]);
 
-  // Input
+  // Input is owned by GameRuntime. This cartridge only subscribes.
   useEffect(() => {
-    const down = (e: KeyboardEvent) => { keysRef.current.add(e.key); if (e.key.startsWith('Arrow') || e.key === ' ') e.preventDefault(); };
-    const up = (e: KeyboardEvent) => keysRef.current.delete(e.key);
-    window.addEventListener('keydown', down); window.addEventListener('keyup', up);
-    return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); };
-  }, []);
+    if (!api) return;
+    const offDown = api.input.on('keydown', (e) => { keysRef.current.add(e.key); if (e.key.startsWith('Arrow') || e.key === ' ') e.preventDefault(); });
+    const offUp = api.input.on('keyup', (e) => keysRef.current.delete(e.key));
+    return () => { offDown(); offUp(); };
+  }, [api]);
 
   // Trigger Mirror event when you reach the maze exit (bottom-right)
   const checkMirror = useCallback(() => {
@@ -108,21 +122,22 @@ export default function AvenueOfMirrors( ){
     const exitX = MAP_N - 2, exitY = MAP_N - 2;
     if (Math.hypot(p.x - exitX, p.y - exitY) < 1.0) {
       const size = Math.min(6, 4 + mirrorsClearedRef.current);
-      memoryRef.current = { grid: makeGlyphGrid(size), reveal: 5, gridSize: size };
+      memoryRef.current = { grid: makeGlyphGrid(size, rngRef.current), reveal: 5, gridSize: size };
       setRecallGuess(Array.from({ length: size }, () => Array<string>(size).fill('')));
       setMemoryProgress(0);
       setPhase('memorize');
     }
   }, [setPhase]);
 
-  // Loop
+  // Loop is owned by GameRuntime; Avenue subscribes for deterministic updates.
   useEffect(() => {
+    if (!api) return;
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
-    let raf = 0; let lastT = performance.now();
 
-    const loop = (t: number) => {
-      const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
+    return api.loop.onRender((frameDt) => {
+      const dt = Math.min(0.05, frameDt);
+      elapsedMsRef.current += dt * 1000;
 
       if (phaseRef.current === 'walking') {
         const p = playerRef.current; const k = keysRef.current;
@@ -138,12 +153,12 @@ export default function AvenueOfMirrors( ){
         else if (mazeRef.current[Math.floor(ny)]?.[Math.floor(p.x)] === 0) p.y = ny;
 
         // Reshape geometry behind the player every 4 seconds
-        if (t - lastReshapeRef.current > 4000) {
-          lastReshapeRef.current = t;
+        if (elapsedMsRef.current - lastReshapeRef.current > 4000) {
+          lastReshapeRef.current = elapsedMsRef.current;
           // Carve / fill a few random cells far from player
           for (let i = 0; i < 6; i++) {
-            const rx = 1 + Math.floor(Math.random() * (MAP_N - 2));
-            const ry = 1 + Math.floor(Math.random() * (MAP_N - 2));
+            const rx = 1 + Math.floor(rngRef.current() * (MAP_N - 2));
+            const ry = 1 + Math.floor(rngRef.current() * (MAP_N - 2));
             if (Math.hypot(rx - p.x, ry - p.y) > 4 && (rx !== MAP_N - 2 || ry !== MAP_N - 2)) {
               mazeRef.current[ry][rx] = mazeRef.current[ry][rx] === 1 ? 0 : 1;
             }
@@ -207,11 +222,8 @@ export default function AvenueOfMirrors( ){
         }
       }
 
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [phaseRef, checkMirror, setPhase]);
+    });
+  }, [api, phaseRef, checkMirror, setPhase]);
 
   // Memorize phase — count down reveal
   useEffect(() => {
@@ -238,18 +250,18 @@ export default function AvenueOfMirrors( ){
       scoreRef.current += 200 + mirrorsClearedRef.current * 50;
       if (mirrorsClearedRef.current >= 3) { setPhase('victory'); return; }
       // Reset maze for next layer
-      mazeRef.current = newMaze();
+      mazeRef.current = newMaze(rngRef.current);
       playerRef.current = { x: 1.5, y: 1.5, angle: 0 };
       setPhase('walking');
     } else if (ratio > 0.5) {
       scoreRef.current += Math.floor(80 * ratio);
-      mazeRef.current = newMaze();
+      mazeRef.current = newMaze(rngRef.current);
       playerRef.current = { x: 1.5, y: 1.5, angle: 0 };
       setPhase('walking');
     } else {
       // Watcher spawn
       watchersRef.current.push({ x: MAP_N - 2.5, y: MAP_N - 2.5 });
-      mazeRef.current = newMaze();
+      mazeRef.current = newMaze(rngRef.current);
       playerRef.current = { x: 1.5, y: 1.5, angle: 0 };
       setPhase('walking');
     }

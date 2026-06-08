@@ -20,7 +20,7 @@
 
 // ── Engine version ─────────────────────────────────────────────────────────────
 
-export const ENGINE_VERSION = '2.0.0';
+export const ENGINE_VERSION = '3.0.0';
 
 /** Compare semver strings. Returns true if engine satisfies minVersion. */
 export function engineSatisfies(minVersion: string): boolean {
@@ -60,7 +60,85 @@ export type CartridgeCapability =
   | 'ai-director'       // in-engine adaptive difficulty AI
   | 'shader-custom'     // WGSL shader injection at runtime
   | 'replay'            // deterministic input recording + playback
-  | 'cloud-save';       // Supabase-backed remote save state
+  | 'cloud-save'        // Supabase-backed remote save state
+  | 'workers'           // typed workers / transferable queues
+  | 'offscreen-canvas'  // OffscreenCanvas renderer path
+  | 'webgpu'            // WebGPU renderer or compute backend
+  | 'webgl2';           // WebGL2 fallback renderer
+
+
+// ── Renderer backend negotiation ─────────────────────────────────────────────
+
+export type RendererBackendId = 'babylon-webgpu' | 'babylon-webgl2' | 'webgpu' | 'webgl2' | 'canvas2d' | 'dom';
+
+export type CartridgeRendererFamily = 'babylon' | 'webgpu' | 'canvas' | 'dom';
+
+export interface CartridgeBackendRequirements {
+  /** Ordered list. First entry is the cartridge's ideal backend. */
+  preferred: RendererBackendId[];
+  /** Backends that are allowed to run this cartridge if preferred negotiation fails. */
+  requiredBackends?: RendererBackendId[];
+  /** Features that must exist before mount; the launcher surfaces failures. */
+  requiredFeatures?: string[];
+  /** Features that unlock higher quality but do not block launch. */
+  optionalFeatures?: string[];
+  /** Human-readable reason shown when falling back from the preferred backend. */
+  fallbackReason?: string;
+}
+
+export interface CartridgeQualityDefaults {
+  tier: 'low' | 'balanced' | 'high' | 'ultra';
+  targetFps: 30 | 60 | 90 | 120;
+  maxDevicePixelRatio: number;
+  maxTextureMegabytes?: number;
+}
+
+export interface CartridgeWorkerEntry {
+  id: string;
+  url: string;
+  type: 'module' | 'classic';
+  stage: 'asset-decode' | 'simulation' | 'compute-prep' | 'netcode' | 'audio';
+  transferable?: boolean;
+}
+
+export interface CartridgeWarmupPipeline {
+  id: string;
+  backend: RendererBackendId;
+  label: string;
+  kind: 'render' | 'compute' | 'material' | 'asset';
+  blocking: boolean;
+}
+
+export interface CartridgeWarmupPlan {
+  pipelines: CartridgeWarmupPipeline[];
+  shaderRegistryId?: string;
+  assetBundleIds?: string[];
+  maxBlockingMs?: number;
+}
+
+export interface RuntimeBackendDiagnostics {
+  selectedBackend: RendererBackendId;
+  preferredBackend?: RendererBackendId;
+  fallbackReason?: string;
+  warmupComplete: boolean;
+  warmupProgress: number;
+  secureContext: boolean;
+  workerSupported: boolean;
+  offscreenCanvasSupported: boolean;
+  deviceLabel?: string;
+  limits?: Record<string, number>;
+  spans: Array<{ id: string; label: string; status: 'pending' | 'running' | 'complete' | 'failed'; ms?: number; message?: string }>;
+}
+
+export interface CartridgeInputProfile {
+  keyboard?: boolean;
+  touch?: boolean;
+  gamepad?: boolean;
+  remote?: boolean;
+  actions?: readonly string[];
+}
+
+export type CartridgeOrientationPreference = 'any' | 'portrait' | 'landscape';
 
 // ── Input Event ───────────────────────────────────────────────────────────────
 
@@ -254,6 +332,12 @@ export interface GameEngineAPI {
   /** Achievement engine. Only active when 'achievements' capability is declared. */
   achievements: CartridgeAchievementsAPI;
 
+  /** Runtime diagnostics negotiated before the cartridge mounted. */
+  runtime: {
+    getBackendDiagnostics: () => RuntimeBackendDiagnostics;
+    markWarmupSpan: (id: string, status: RuntimeBackendDiagnostics['spans'][number]['status'], message?: string) => void;
+  };
+
   /** Web Audio API wrapper. Only active when 'spatial-audio' capability is declared. */
   audio: CartridgeAudioAPI;
 
@@ -293,6 +377,33 @@ export interface GameCartridge {
    * log a warning in development.
    */
   capabilities?: CartridgeCapability[];
+
+  /** Backend and feature contract. The launcher/runtime negotiates this before mount. */
+  backendRequirements?: CartridgeBackendRequirements;
+
+  /** Fallback backend used when negotiation cannot satisfy the first preferred backend. */
+  fallbackBackend?: RendererBackendId;
+
+  /** Versioned cartridge bundle manifest id. */
+  bundleManifestId?: string;
+
+  /** Save schema version used by save migrations and crash reports. */
+  saveSchemaVersion?: number;
+
+  /** Normalized input capabilities exposed to the shared InputRouter. */
+  inputProfile?: CartridgeInputProfile;
+
+  /** Mobile shell orientation preference. */
+  orientationPreference?: CartridgeOrientationPreference;
+
+  /** Default quality budget before measured telemetry adjusts it. */
+  qualityDefaults?: CartridgeQualityDefaults;
+
+  /** Worker graph declared by the cartridge manifest. */
+  workerEntries?: CartridgeWorkerEntry[];
+
+  /** Pipelines/materials/assets that must warm before first control moments. */
+  warmupPlan?: CartridgeWarmupPlan;
 
   /**
    * Mount the game into the given container element.

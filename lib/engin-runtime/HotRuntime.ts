@@ -697,12 +697,12 @@ export class WebGPUDeviceRuntime {
     const kernel = this.kernels.get(kernelId);
     if (!kernel) return null;
 
-    const module = this.device.createShaderModule({ code: kernel.code });
-    this.shaderModules.set(kernelId, module);
-    return module;
+    const shaderModule = this.device.createShaderModule({ code: kernel.code });
+    this.shaderModules.set(kernelId, shaderModule);
+    return shaderModule;
   }
 
-  createComputePipeline(kernelId: string, entryPoint?: string): GPUComputePipeline | null {
+  async createComputePipeline(kernelId: string, entryPoint?: string): Promise<GPUComputePipeline | null> {
     if (!this.device) return null;
 
     const kernel = this.kernels.get(kernelId);
@@ -713,13 +713,19 @@ export class WebGPUDeviceRuntime {
     const cached = this.computePipelines.get(cacheKey);
     if (cached) return cached;
 
-    const module = this.createShaderModule(kernelId);
-    if (!module) return null;
+    const shaderModule = this.createShaderModule(kernelId);
+    if (!shaderModule) return null;
 
-    const pipeline = this.device.createComputePipeline({
+    this.device.pushErrorScope('validation');
+    const pipeline = await this.device.createComputePipelineAsync({
+      label: `hot-runtime:${cacheKey}`,
       layout: 'auto',
-      compute: { module, entryPoint: resolvedEntry },
+      compute: { module: shaderModule, entryPoint: resolvedEntry },
     });
+    const validation = await this.device.popErrorScope();
+    if (validation) {
+      throw new Error(`HotRuntime compute pipeline warmup failed for ${cacheKey}: ${validation.message}`);
+    }
 
     this.computePipelines.set(cacheKey, pipeline);
     return pipeline;
@@ -943,7 +949,7 @@ export class WebGPUDeviceRuntime {
       `,
     });
 
-    const pipeline = this.createComputePipeline('benchmark.compute-dispatch');
+    const pipeline = await this.createComputePipeline('benchmark.compute-dispatch');
     if (!pipeline) {
       buffer.destroy();
       return null;

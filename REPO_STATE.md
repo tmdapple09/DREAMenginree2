@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-08T06:42:54.999Z
+Generated: 2026-06-08T20:32:45.788Z
 
 ---
 
@@ -838,6 +838,7 @@ _No style files for this feature._
 - `lib/gameengin/accessibility-ai.ts`
 - `lib/gameengin/ai-director.ts`
 - `lib/gameengin/ai-npcs.ts`
+- `lib/gameengin/backendNegotiator.ts`
 - `lib/gameengin/brain-reader.ts`
 - `lib/gameengin/cartridge-manifest.ts`
 - `lib/gameengin/cartridge.ts`
@@ -1141,10 +1142,12 @@ _No style files for this feature._
 - `@/lib/gameengin`
 - `@/lib/gameengin/GameRuntime`
 - `@/lib/gameengin/ai-director`
+- `@/lib/gameengin/backendNegotiator`
 - `@/lib/gameengin/cartridge`
 - `@/lib/gameengin/cartridge-manifest`
 - `@/lib/gameengin/cartridges/loaders`
 - `@/lib/gameengin/cartridges/manifest`
+- `@/lib/gameengin/cartridges/reactCartridge`
 - `@/lib/gameengin/dreamr-loader`
 - `@/lib/gameengin/post-fx`
 - `@/lib/gameengin/registerCartridges`
@@ -1192,7 +1195,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (5 files) · **Supabase** (3 files) · **Event Bus** (9 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (5 files) · **Supabase** (3 files) · **Event Bus** (10 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
 
 ### Dual Runtime files
 
@@ -1212,6 +1215,7 @@ _No style files for this feature._
 
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
+- `components/games/dream.AvenueOfMirrors.tsx`
 - `components/games/dream.GameController.tsx`
 - `engins/engin.GameEngin.tsx`
 - `lib/engins/game/useGameEnginRuntime.ts`
@@ -9283,8 +9287,9 @@ _No style files for this feature._
 |--------|---------------|
 | `./dream.cartridge.CartridgeErrorBoundary` | `CartridgeCrashEvent`, `CartridgeErrorBoundary`, `useGlobalCrashListener` |
 | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
-| `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
-| `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `@/lib/gameengin/backendNegotiator` | `negotiateRendererBackend`, `serverBootstrapDiagnostics` |
+| `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset`, `RuntimeBackendDiagnostics` |
+| `@/lib/gameengin/cartridges/loaders` | `LoadedCartridgeBundle`, `loadCartridgeBundle` |
 | `@/lib/gameengin/cartridges/manifest` | `CartridgeManifestEntry` |
 | `@/lib/utils` | `toErrorMessage` |
 | `next/link` | `⬡ Link` |
@@ -9307,6 +9312,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/gameengin/cartridges/reactCartridge` | `useGameEngineAPI` |
 | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -11803,7 +11809,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./cartridge` | `AchievementDefinition`, `CartridgeInputEvent`, `ENGINE_VERSION`, `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI`, `GravityPreset`, `engineSatisfies` |
+| `./cartridge` | `AchievementDefinition`, `CartridgeInputEvent`, `ENGINE_VERSION`, `GRAVITY_VALUES`, `GameCartridge`, `GameEngineAPI`, `GravityPreset`, `RuntimeBackendDiagnostics`, `engineSatisfies` |
 | `./cartridges/achievementEngine` | `createAchievementsAPI` |
 | `./cartridges/apiStubs` | `stubAssetsAPI`, `stubAudioAPI`, `stubHapticsAPI`, `stubNetworkAPI` |
 | `./cartridges/saveState` | `createSaveAPI` |
@@ -11820,6 +11826,13 @@ _No style files for this feature._
 |--------|---------------|
 | `@tensorflow/tfjs` | _(dynamic import)_ |
 | `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
+
+## `lib/gameengin/backendNegotiator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./cartridge` | `RendererBackendId`, `RuntimeBackendDiagnostics` |
+| `./cartridges/manifest` | `CartridgeManifestEntry` |
 
 ## `lib/gameengin/brain-reader.ts`
 
@@ -11852,7 +11865,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `GameCartridge` |
-| `./manifest` | `CARTRIDGE_MANIFEST`, `getCartridgeManifest` |
+| `./manifest` | `CARTRIDGE_MANIFEST`, `CartridgeManifestEntry`, `getCartridgeManifest` |
 | `./reactCartridge` | `defineReactCartridgeLoader` |
 | `@/lib/utils` | `toErrorMessage` |
 | `@/components/games/madmaxi` | _(dynamic import)_ |
@@ -11868,10 +11881,17 @@ _No style files for this feature._
 | `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
 | `@/components/games/dream.DefuseRitual` | _(dynamic import)_ |
 
+## `lib/gameengin/cartridges/manifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `CartridgeInputProfile`, `CartridgeOrientationPreference`, `CartridgeQualityDefaults`, `CartridgeRendererFamily`, `CartridgeWarmupPlan`, `CartridgeWorkerEntry`, `RendererBackendId` |
+
 ## `lib/gameengin/cartridges/reactCartridge.ts`
 
 | Module | Connected via |
 |--------|---------------|
+| `./manifest` | `CartridgeManifestEntry`, `getCartridgeManifest` |
 | `@/lib/gameengin/cartridge` | `GameCartridge`, `GameEngineAPI` |
 | `react` | `ComponentType`, `createContext`, `createElement`, `useContext` |
 | `react-dom/client` | `Root`, `createRoot` |
@@ -12978,6 +12998,18 @@ _No style files for this feature._
 | `../../lib/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
+
+## `scripts/gameengin/smoke-webgl.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+
+## `scripts/gameengin/smoke-webgpu.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 
 ## `scripts/gameengin/upgrader-run.ts`
 
@@ -17829,6 +17861,7 @@ _No style files for this feature._
 - `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
+- `components/games/dream.AvenueOfMirrors.tsx`
 - `components/games/dream.GameController.tsx`
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
@@ -18015,6 +18048,7 @@ _No circular dependencies detected._
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
 | `daydreams/code/page.tsx` | 10 | MEDIUM_COUPLING |
 | `daydreams/create/page.tsx` | 10 | MEDIUM_COUPLING |
@@ -18036,7 +18070,6 @@ _No circular dependencies detected._
 | `app/settings/safety/page.tsx` | 9 | MEDIUM_COUPLING |
 | `components/dream.OSShellActivator.tsx` | 9 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `components/dreamengin/dreamsurface.dreamengin.tsx` | 9 | MEDIUM_COUPLING |
-| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 9 | MEDIUM_COUPLING |
 | `components/games/dream.NeonDrift.tsx` | 9 | MEDIUM_COUPLING |
 | `components/home/dream.ActiveModuleSurface.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `daydreams/brand/page.tsx` | 9 | MEDIUM_COUPLING |
@@ -18199,6 +18232,7 @@ _No circular dependencies detected._
 | `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `components/games/dream.AvenueOfMirrors.tsx` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
@@ -19192,7 +19226,7 @@ _No circular dependencies detected._
 | `lib/gameengin/cartridges/achievementEngine.ts` | `purgeCartridgeAchievements`, `getUnlockedCount` |
 | `lib/gameengin/cartridges/apiStubs.ts` | `stubSaveAPI`, `stubAchievementsAPI` |
 | `lib/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
-| `lib/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `useGameEngineAPI`, `createReactGameCartridge`, `CARTRIDGE_LOADERS` |
+| `lib/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `createReactCartridgeHost`, `CARTRIDGE_LOADERS`, `createReactGameCartridge` |
 | `lib/gameengin/cartridges/saveState.ts` | `purgeCartridgeSaves`, `getSaveStorageBytes` |
 | `lib/gameengin/control-mappings.ts` | `mapJoystickToAsset` |
 | `lib/gameengin/core.ts` | `ECSWorld` |
@@ -21815,7 +21849,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── loaders.ts
 │   │   │   ├── manifest.ts
 │   │   │   ├── reactCartridge.ts ∅
-│   │   │   │   └── ∅ unused: GameEngineAPIContext, useGameEngineAPI, createReactGameCartridge, CARTRIDGE_LOADERS
+│   │   │   │   └── ∅ unused: GameEngineAPIContext, createReactCartridgeHost, CARTRIDGE_LOADERS, createReactGameCartridge
 │   │   │   └── saveState.ts ∅
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── remote  [GameEngin]
@@ -21853,6 +21887,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── accessibility-ai.ts
 │   │   ├── ai-director.ts
 │   │   ├── ai-npcs.ts
+│   │   ├── backendNegotiator.ts
 │   │   ├── brain-reader.ts ∅
 │   │   │   └── ∅ unused: readMechanic, readInspiration, readPrinciple, logRDSession
 │   │   ├── cartridge-manifest.ts ∅
@@ -22325,6 +22360,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: packageCartridge
 │   │   ├── prophet-run.ts ⚠
 │   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (isOriginal, listMechanics, logRDSession, readGenreDNA, signatureHash)
+│   │   ├── smoke-webgl.ts
+│   │   ├── smoke-webgpu.ts
 │   │   ├── upgrader-run.ts ⚠
 │   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (AgentName, getLastTouched, listCartridges, listMechanics, listTechniques, logRDSession, readUpgradeRules, recordUpgrade)
 │   │   └── writer-run.ts ⚠
@@ -22769,9 +22806,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: supabase
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
+├── tsconfig.app.json
+├── tsconfig.base.json
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
+├── tsconfig.server.json
+├── tsconfig.test.json
+├── tsconfig.worker.json
 ├── vercel.json
 └── vitest.config.ts ∅
     └── ∅ unused: (default)

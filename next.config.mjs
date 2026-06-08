@@ -142,6 +142,7 @@ const nextConfig = {
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(self), payment=()" },
+      { key: "Service-Worker-Allowed", value: "/" },
     ];
 
     const sabIsolationHeaders = [
@@ -161,6 +162,29 @@ const nextConfig = {
       {
         source: "/engines/:path*",
         headers: sabIsolationHeaders,
+      },
+      {
+        source: "/gameengin/:path*",
+        headers: [
+          ...sabIsolationHeaders,
+          { key: "Cache-Control", value: "no-store, must-revalidate" },
+          { key: "X-GameEngin-Runtime", value: "v3-backend-negotiated" },
+        ],
+      },
+      {
+        source: "/gameengin/bundles/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+        ],
+      },
+      {
+        source: "/gameengin/workers/:path*",
+        headers: [
+          ...sabIsolationHeaders,
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Content-Type", value: "text/javascript; charset=utf-8" },
+        ],
       },
     ];
   },
