@@ -147,6 +147,7 @@ export const systems = {
   "lib/gameengin/accessibility-ai": () => import("@/lib/gameengin/accessibility-ai"),
   "lib/gameengin/ai-director": () => import("@/lib/gameengin/ai-director"),
   "lib/gameengin/ai-npcs": () => import("@/lib/gameengin/ai-npcs"),
+  "lib/gameengin/backendNegotiator": () => import("@/lib/gameengin/backendNegotiator"),
   "lib/gameengin/brain-reader": () => import("@/lib/gameengin/brain-reader"),
   "lib/gameengin/cartridge-manifest": () => import("@/lib/gameengin/cartridge-manifest"),
   "lib/gameengin/cartridge": () => import("@/lib/gameengin/cartridge"),

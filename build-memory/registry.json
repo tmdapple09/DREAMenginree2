@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-08T06:43:22.246Z",
+  "generatedAt": "2026-06-08T20:40:07.737Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 63,
+    "engine-system": 64,
     "engine-utility": 308
   },
   "entries": [
@@ -9138,6 +9138,15 @@
       ]
     },
     {
+      "id": "lib/gameengin/backendNegotiator",
+      "slot": "engine-system",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "serverBootstrapDiagnostics"
+      ]
+    },
+    {
       "id": "lib/gameengin/brain-reader",
       "slot": "engine-system",
       "path": "lib/gameengin/brain-reader.ts",
@@ -9847,20 +9856,30 @@
         "CartridgeAchievementsAPI",
         "CartridgeAssetsAPI",
         "CartridgeAudioAPI",
+        "CartridgeBackendRequirements",
         "CartridgeCapability",
         "CartridgeHapticsAPI",
         "CartridgeInputEvent",
+        "CartridgeInputProfile",
         "CartridgeNetworkAPI",
+        "CartridgeOrientationPreference",
+        "CartridgeQualityDefaults",
+        "CartridgeRendererFamily",
         "CartridgeSaveAPI",
         "CartridgeSaveSlot",
         "CartridgeSessionPlayer",
         "CartridgeSoundOptions",
+        "CartridgeWarmupPipeline",
+        "CartridgeWarmupPlan",
+        "CartridgeWorkerEntry",
         "ENGINE_VERSION",
         "engineSatisfies",
         "GameCartridge",
         "GameEngineAPI",
         "GRAVITY_VALUES",
-        "GravityPreset"
+        "GravityPreset",
+        "RendererBackendId",
+        "RuntimeBackendDiagnostics"
       ]
     },
     {
@@ -9932,7 +9951,8 @@
         "CartridgeLoader",
         "getCartridgeIds",
         "getMissingCartridgeLoaders",
-        "getOrphanCartridgeLoaders"
+        "getOrphanCartridgeLoaders",
+        "LoadedCartridgeBundle"
       ]
     },
     {
@@ -9942,6 +9962,8 @@
       "engine": "GameEngin",
       "exports": [
         "CARTRIDGE_MANIFEST",
+        "CartridgeAssetPolicy",
+        "CartridgeLaunchMetadata",
         "CartridgeManifestEntry",
         "CartridgeRenderMode",
         "getCartridgeCategories",
@@ -9955,6 +9977,7 @@
       "engine": "GameEngin",
       "exports": [
         "CARTRIDGE_LOADERS",
+        "createReactCartridgeHost",
         "createReactGameCartridge",
         "defineReactCartridgeLoader",
         "GameEngineAPIContext",
