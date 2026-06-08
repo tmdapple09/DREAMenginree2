@@ -61,18 +61,57 @@ jobs:
           ]);
 
           const textExtensions = new Set([
-            ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
-            ".json", ".md", ".mdx", ".yml", ".yaml",
-            ".css", ".scss", ".html", ".txt", ".sql",
-            ".sh", ".bash", ".env", ".example", ".gitignore",
-            ".dockerignore", ".toml", ".xml", ".csv",
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".json",
+            ".md",
+            ".mdx",
+            ".yml",
+            ".yaml",
+            ".css",
+            ".scss",
+            ".html",
+            ".txt",
+            ".sql",
+            ".sh",
+            ".bash",
+            ".env",
+            ".example",
+            ".gitignore",
+            ".dockerignore",
+            ".toml",
+            ".xml",
+            ".csv",
           ]);
 
           const assetExtensions = new Set([
-            ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico",
-            ".glb", ".gltf", ".mp4", ".mov", ".mp3", ".wav",
-            ".ogg", ".wasm", ".zip", ".gz", ".tar", ".pdf",
-            ".ttf", ".otf", ".woff", ".woff2", ".bin",
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".webp",
+            ".ico",
+            ".glb",
+            ".gltf",
+            ".mp4",
+            ".mov",
+            ".mp3",
+            ".wav",
+            ".ogg",
+            ".wasm",
+            ".zip",
+            ".gz",
+            ".tar",
+            ".pdf",
+            ".ttf",
+            ".otf",
+            ".woff",
+            ".woff2",
+            ".bin",
           ]);
 
           function toPosix(filePath) {
@@ -87,7 +126,9 @@ jobs:
             const posix = toPosix(relativePath);
 
             for (const ignored of ignoredDirectories) {
-              if (posix === ignored || posix.startsWith(`${ignored}/`)) return true;
+              if (posix === ignored || posix.startsWith(`${ignored}/`)) {
+                return true;
+              }
             }
 
             return false;
@@ -115,7 +156,9 @@ jobs:
               const isPrintable = byte >= 32 && byte <= 126;
               const isUtf8Likely = byte >= 128;
 
-              if (!isTab && !isNewline && !isPrintable && !isUtf8Likely) suspicious += 1;
+              if (!isTab && !isNewline && !isPrintable && !isUtf8Likely) {
+                suspicious += 1;
+              }
             }
 
             return suspicious / Math.max(sample.length, 1) < 0.02;
@@ -131,7 +174,9 @@ jobs:
             const endedWithNewline = normalized.endsWith("\n");
             const lines = normalized.split("\n");
 
-            if (endedWithNewline) lines.pop();
+            if (endedWithNewline) {
+              lines.pop();
+            }
 
             return { lines, endedWithNewline };
           }
@@ -175,7 +220,6 @@ jobs:
               .replace(/\.$/, "");
 
             if (!clean) return "";
-
             if (clean === "Starts" || clean === "Ends") return `${clean}.`;
 
             return `Force ${clean}. if True.`;
@@ -242,14 +286,22 @@ jobs:
               .replace(/["'`]/g, "")
               .replace(/[;]+/g, "")
               .replace(/[{}]/g, " ")
-              .replace(/$begin:math:display$\/g\, \" Ordered Group \"\)
-              \.replace\(\/$end:math:display$/g, " Close Ordered Group ")
-              .replace(/$begin:math:text$\/g\, \" \"\)
-              \.replace\(\/$end:math:text$/g, " ")
-              .replace(/,/g, " ")
-              .replace(/\?/g, " Optional ")
-              .replace(/:/g, " Receives ")
-              .replace(/\./g, " ")
+              .split("[")
+              .join(" Ordered Group ")
+              .split("]")
+              .join(" Close Ordered Group ")
+              .split("(")
+              .join(" ")
+              .split(")")
+              .join(" ")
+              .split(",")
+              .join(" ")
+              .split("?")
+              .join(" Optional ")
+              .split(":")
+              .join(" Receives ")
+              .split(".")
+              .join(" ")
               .replace(/\s+/g, " ")
               .trim();
 
@@ -262,38 +314,54 @@ jobs:
 
           function explainImport(trimmed) {
             const source = sourceFromImport(trimmed);
-            return source ? force(`Current File Receive ${source}`) : force("Current File Receive Outside Names");
+            return source
+              ? force(`Current File Receive ${source}`)
+              : force("Current File Receive Outside Names");
           }
 
           function explainExport(trimmed) {
             if (trimmed.startsWith("export default function ")) {
               const name = nameFrom(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name ? force(`Current File Share Main Action ${readableName(name)}`) : force("Current File Share Main Action");
+              return name
+                ? force(`Current File Share Main Action ${readableName(name)}`)
+                : force("Current File Share Main Action");
             }
 
-            if (trimmed.startsWith("export default ")) return force("Current File Share Main Result");
+            if (trimmed.startsWith("export default ")) {
+              return force("Current File Share Main Result");
+            }
 
             if (trimmed.startsWith("export type ")) {
               const name = nameFrom(/^export\s+type\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name ? force(`Current File Share Allowed Rule ${readableName(name)}`) : force("Current File Share Allowed Rule");
+              return name
+                ? force(`Current File Share Allowed Rule ${readableName(name)}`)
+                : force("Current File Share Allowed Rule");
             }
 
             if (trimmed.startsWith("export interface ")) {
               const name = nameFrom(/^export\s+interface\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name ? force(`Current File Share Data Shape ${readableName(name)}`) : force("Current File Share Data Shape");
+              return name
+                ? force(`Current File Share Data Shape ${readableName(name)}`)
+                : force("Current File Share Data Shape");
             }
 
             if (trimmed.startsWith("export function ")) {
               const name = nameFrom(/^export\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name ? force(`Current File Share Action ${readableName(name)}`) : force("Current File Share Action");
+              return name
+                ? force(`Current File Share Action ${readableName(name)}`)
+                : force("Current File Share Action");
             }
 
             if (trimmed.startsWith("export const ")) {
               const name = nameFrom(/^export\s+const\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name ? force(`Current File Share ${readableName(name)}`) : force("Current File Share Value");
+              return name
+                ? force(`Current File Share ${readableName(name)}`)
+                : force("Current File Share Value");
             }
 
-            if (trimmed.startsWith("export ")) return force(literalEnglish(trimmed));
+            if (trimmed.startsWith("export ")) {
+              return force(literalEnglish(trimmed));
+            }
 
             return null;
           }
@@ -321,7 +389,9 @@ jobs:
             }
 
             const setNoValue = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
-            if (setNoValue) return force(`Set ${readableName(setNoValue[1])}`);
+            if (setNoValue) {
+              return force(`Set ${readableName(setNoValue[1])}`);
+            }
 
             const startMatch = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
             if (startMatch) {
@@ -337,13 +407,17 @@ jobs:
             }
 
             const startNoValue = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)/);
-            if (startNoValue) return force(`Start ${readableName(startNoValue[2])}`);
+            if (startNoValue) {
+              return force(`Start ${readableName(startNoValue[2])}`);
+            }
 
             const action = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
             if (action) {
               const waits = Boolean(action[1]);
               const name = readableName(action[2]);
-              return waits ? force(`${name} Action Starts And Can Wait`) : force(`${name} Action Starts`);
+              return waits
+                ? force(`${name} Action Starts And Can Wait`)
+                : force(`${name} Action Starts`);
             }
 
             const shape = trimmed.match(/^interface\s+([A-Za-z0-9_$]+)/);
