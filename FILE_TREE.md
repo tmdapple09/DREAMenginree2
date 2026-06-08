@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-08T06:42:55.127Z
+Generated: 2026-06-08T20:32:45.919Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4358,9 +4358,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── CartridgeErrorBoundary  ← ./dream.cartridge.CartridgeErrorBoundary
 │   │   │   ├── useGlobalCrashListener  ← ./dream.cartridge.CartridgeErrorBoundary
 │   │   │   ├── ⬡ GameRuntime  ← @/lib/gameengin/GameRuntime
+│   │   │   ├── negotiateRendererBackend  ← @/lib/gameengin/backendNegotiator
+│   │   │   ├── serverBootstrapDiagnostics  ← @/lib/gameengin/backendNegotiator
 │   │   │   ├── GameCartridge  ← @/lib/gameengin/cartridge
 │   │   │   ├── GravityPreset  ← @/lib/gameengin/cartridge
-│   │   │   ├── loadCartridge  ← @/lib/gameengin/cartridges/loaders
+│   │   │   ├── RuntimeBackendDiagnostics  ← @/lib/gameengin/cartridge
+│   │   │   ├── LoadedCartridgeBundle  ← @/lib/gameengin/cartridges/loaders
+│   │   │   ├── loadCartridgeBundle  ← @/lib/gameengin/cartridges/loaders
 │   │   │   ├── CartridgeManifestEntry  ← @/lib/gameengin/cartridges/manifest
 │   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── ⬡ Link  ← next/link
@@ -4536,6 +4540,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.AvenueOfMirrors.tsx ∅
+│   │   │   ├── useGameEngineAPI  ← @/lib/gameengin/cartridges/reactCartridge
 │   │   │   ├── useGameAutoStart  ← @/lib/games/hooks
 │   │   │   ├── useGamePhase  ← @/lib/games/hooks
 │   │   │   ├── useSubmitScore  ← @/lib/games/hooks
@@ -9690,6 +9695,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── loaders.ts
 │   │   │   │   ├── GameCartridge  ← ../cartridge
 │   │   │   │   ├── CARTRIDGE_MANIFEST  ← ./manifest
+│   │   │   │   ├── CartridgeManifestEntry  ← ./manifest
 │   │   │   │   ├── getCartridgeManifest  ← ./manifest
 │   │   │   │   ├── defineReactCartridgeLoader  ← ./reactCartridge
 │   │   │   │   ├── toErrorMessage  ← @/lib/utils
@@ -9710,12 +9716,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → getCartridgeIds
 │   │   │   │   ├── → getMissingCartridgeLoaders
 │   │   │   │   ├── → getOrphanCartridgeLoaders
-│   │   │   │   └── → loadCartridge
+│   │   │   │   ├── → loadCartridge
+│   │   │   │   └── → loadCartridgeBundle
 │   │   │   ├── manifest.ts
+│   │   │   │   ├── CartridgeInputProfile  ← ../cartridge
+│   │   │   │   ├── CartridgeOrientationPreference  ← ../cartridge
+│   │   │   │   ├── CartridgeQualityDefaults  ← ../cartridge
+│   │   │   │   ├── CartridgeRendererFamily  ← ../cartridge
+│   │   │   │   ├── CartridgeWarmupPlan  ← ../cartridge
+│   │   │   │   ├── CartridgeWorkerEntry  ← ../cartridge
+│   │   │   │   ├── RendererBackendId  ← ../cartridge
 │   │   │   │   ├── → CARTRIDGE_MANIFEST
 │   │   │   │   ├── → getCartridgeCategories
 │   │   │   │   └── → getCartridgeManifest
 │   │   │   ├── reactCartridge.ts ∅
+│   │   │   │   ├── CartridgeManifestEntry  ← ./manifest
+│   │   │   │   ├── getCartridgeManifest  ← ./manifest
 │   │   │   │   ├── GameCartridge  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── GameEngineAPI  ← @/lib/gameengin/cartridge
 │   │   │   │   ├── ComponentType  ← react
@@ -9727,10 +9743,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← ./MyGame
 │   │   │   │   ├── → CARTRIDGE_LOADERS
 │   │   │   │   ├── → GameEngineAPIContext
+│   │   │   │   ├── → createReactCartridgeHost
 │   │   │   │   ├── → createReactGameCartridge
 │   │   │   │   ├── → defineReactCartridgeLoader
 │   │   │   │   ├── → useGameEngineAPI
-│   │   │   │   └── ∅ unused: GameEngineAPIContext, useGameEngineAPI, createReactGameCartridge, CARTRIDGE_LOADERS
+│   │   │   │   └── ∅ unused: GameEngineAPIContext, createReactCartridgeHost, CARTRIDGE_LOADERS, createReactGameCartridge
 │   │   │   └── saveState.ts ∅
 │   │   │       ├── CartridgeSaveAPI  ← ../cartridge
 │   │   │       ├── CartridgeSaveSlot  ← ../cartridge
@@ -9841,6 +9858,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → EmergentDialogue
 │   │   │   ├── → LLMNPCBrain
 │   │   │   └── → NPCPersonalityStore
+│   │   ├── backendNegotiator.ts
+│   │   │   ├── RendererBackendId  ← ./cartridge
+│   │   │   ├── RuntimeBackendDiagnostics  ← ./cartridge
+│   │   │   ├── CartridgeManifestEntry  ← ./cartridges/manifest
+│   │   │   ├── → negotiateRendererBackend
+│   │   │   └── → serverBootstrapDiagnostics
 │   │   ├── brain-reader.ts ∅
 │   │   │   ├── createHash  ← node:crypto
 │   │   │   ├── * as fs  ← node:fs
@@ -10051,6 +10074,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── GameCartridge  ← ./cartridge
 │   │   │   ├── GameEngineAPI  ← ./cartridge
 │   │   │   ├── GravityPreset  ← ./cartridge
+│   │   │   ├── RuntimeBackendDiagnostics  ← ./cartridge
 │   │   │   ├── engineSatisfies  ← ./cartridge
 │   │   │   ├── createAchievementsAPI  ← ./cartridges/achievementEngine
 │   │   │   ├── stubAssetsAPI  ← ./cartridges/apiStubs
@@ -12484,6 +12508,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── signatureHash  ⚠ ../../lib/gameengin/brain-reader.js
 │   │   │   ├── * as fs  ← node:fs
 │   │   │   └── * as path  ← node:path
+│   │   ├── smoke-webgl.ts
+│   │   │   └── CARTRIDGE_MANIFEST  ← ../../lib/gameengin/cartridges/manifest
+│   │   ├── smoke-webgpu.ts
+│   │   │   └── CARTRIDGE_MANIFEST  ← ../../lib/gameengin/cartridges/manifest
 │   │   ├── upgrader-run.ts ⚠
 │   │   │   ├── AgentName  ⚠ ../../lib/gameengin/brain-reader.js
 │   │   │   ├── getLastTouched  ⚠ ../../lib/gameengin/brain-reader.js
@@ -16806,9 +16834,14 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
 │   └── (dynamic)  ← tailwindcss
+├── tsconfig.app.json
+├── tsconfig.base.json
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
+├── tsconfig.server.json
+├── tsconfig.test.json
+├── tsconfig.worker.json
 ├── vercel.json
 └── vitest.config.ts ∅
     ├── defineConfig  ← vitest/config
