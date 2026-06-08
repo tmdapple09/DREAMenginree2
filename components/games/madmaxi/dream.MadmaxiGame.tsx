@@ -99,7 +99,7 @@ export default function BabylonSideScroller( ){
   const [level,  setLevel]    = useState(1);
   const [score,  setScore]    = useState(0);
   const [lives,  setLives]    = useState(3);
-  const vpadRef  = useRef({ left: false, right: false, jump: false, dash: false, shoot: false });
+  const vpadRef  = useRef({ left: false, right: false, jump: false, dash: false, shoot: false, sprint: false });
   const [bestScore, setBestScore] = useState(() => {
     try { return parseInt(localStorage.getItem('madmaxi_best') ?? '0', 10); }
     catch { return 0; }
@@ -296,6 +296,8 @@ export default function BabylonSideScroller( ){
         vp.jump = active;
       if (action === 'dash' || action === 'r1')
         vp.dash = active;
+      if (action === 'sprint')
+        vp.sprint = active;
       if (action === 'attack' || action === 'shoot' || action === 'jump-shoot')
         vp.shoot = active;
       vpadRef.current = vp;
@@ -647,7 +649,7 @@ interface GameCallbacks {
   }) => void;
 }
 
-type VPad = { left: boolean; right: boolean; jump: boolean; dash: boolean; shoot: boolean };
+type VPad = { left: boolean; right: boolean; jump: boolean; dash: boolean; shoot: boolean; sprint: boolean };
 
 type RuntimeCarry = {
   sessionSeed: number;
@@ -680,7 +682,7 @@ type MadmaxiPlayerRig = {
 class GameCore {
   private disposed = false;
   private keys: Set<string> = new Set();
-  private vpad: VPad = { left: false, right: false, jump: false, dash: false, shoot: false };
+  private vpad: VPad = { left: false, right: false, jump: false, dash: false, shoot: false, sprint: false };
   private godTier = new DreamEngineGodTierSystem();
 
   // physics state (logical pixels, Y-down)
@@ -2639,6 +2641,7 @@ class GameCore {
     const isRight = this.keys.has('ArrowRight') || this.keys.has('KeyD')  || this.vpad.right;
     const isJump  = this.keys.has('ArrowUp')    || this.keys.has('KeyW')  || this.keys.has('Space') || this.vpad.jump;
     const isDash  = this.vpad.dash;
+    const isSprint = this.vpad.sprint;
     const isShoot = this.keys.has('KeyJ') || this.keys.has('KeyX') || this.vpad.shoot;
 
     if (this.superFrames > 0) this.superFrames--;
@@ -2679,7 +2682,7 @@ class GameCore {
       const by = -(this.py + 20 - GH / 2) / PX_PER_BU;
       this.vfx?.dashTrail(new (this.bjs!.Vector3)(bx, by, 0), dashColor);
     } else {
-      const baseWalk = this.superFrames > 0 ? WALK_SPD * 1.45 : WALK_SPD;
+      const baseWalk = (this.superFrames > 0 ? WALK_SPD * 1.45 : WALK_SPD) * (isSprint ? 1.65 : 1);
       this.pvx = isRight ? baseWalk * PX_PER_BU
                 : isLeft  ? -baseWalk * PX_PER_BU
                 : 0;

@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-07T20:27:26.736Z
+Generated: 2026-06-08T04:31:51.374Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -6822,7 +6822,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
 │   │   ├── ⬡ Leaderboard  ← @/components/games/dream.Leaderboard
 │   │   ├── ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
-│   │   ├── ⬡ GameHUD  ← @/components/games/dream.hud.GameHUD
 │   │   ├── ⬡ LegacyGameHUD  ← @/components/games/dream.hud.LegacyGameHUD
 │   │   ├── ⬡ MobileGameHUD  ← @/components/games/dream.hud.MobileGameHUD
 │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
@@ -13846,6 +13845,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/core
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/dream-engine
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/dreamr-loader
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/executionWiring
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/gameEnginRuntime
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/generative-audio
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/index

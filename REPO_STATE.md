@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-07T20:27:26.600Z
+Generated: 2026-06-08T04:31:51.240Z
 
 ---
 
@@ -1114,7 +1114,6 @@ _No style files for this feature._
 - `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
-- `@/components/games/dream.hud.GameHUD`
 - `@/components/games/dream.hud.LegacyGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
@@ -10472,7 +10471,6 @@ _No style files for this feature._
 | `@/components/games/dream.GameController` | `⬡ GameController` |
 | `@/components/games/dream.Leaderboard` | `⬡ Leaderboard` |
 | `@/components/games/dream.RecordingControls` | `⬡ RecordingControls` |
-| `@/components/games/dream.hud.GameHUD` | `⬡ GameHUD` |
 | `@/components/games/dream.hud.LegacyGameHUD` | `⬡ LegacyGameHUD` |
 | `@/components/games/dream.hud.MobileGameHUD` | `⬡ MobileGameHUD` |
 | `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
@@ -14167,6 +14165,7 @@ _No style files for this feature._
 | `@/lib/gameengin/core` | _(dynamic import)_ |
 | `@/lib/gameengin/dream-engine` | _(dynamic import)_ |
 | `@/lib/gameengin/dreamr-loader` | _(dynamic import)_ |
+| `@/lib/gameengin/executionWiring` | _(dynamic import)_ |
 | `@/lib/gameengin/gameEnginRuntime` | _(dynamic import)_ |
 | `@/lib/gameengin/generative-audio` | _(dynamic import)_ |
 | `@/lib/gameengin/index` | _(dynamic import)_ |
@@ -15627,6 +15626,7 @@ _No style files for this feature._
 - `@/lib/gameengin/core`
 - `@/lib/gameengin/dream-engine`
 - `@/lib/gameengin/dreamr-loader`
+- `@/lib/gameengin/executionWiring`
 - `@/lib/gameengin/gameEnginRuntime`
 - `@/lib/gameengin/generative-audio`
 - `@/lib/gameengin/index`
@@ -17923,7 +17923,7 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 47 |
+| `engins/engin.GameEngin.tsx` | 46 |
 | `lib/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
@@ -17962,7 +17962,7 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 47 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 46 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |

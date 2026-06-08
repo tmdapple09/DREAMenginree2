@@ -28,7 +28,6 @@ import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRe
 import FeaturedCartridges from '@/components/gameengin/dream.cartridge.FeaturedCartridges';
 import Leaderboard from '@/components/games/dream.Leaderboard';
 import GameRemote from '@/components/games/dream.remote.GameRemote';
-import GameHUD from '@/components/games/dream.hud.GameHUD';
 import LegacyGameHUD from '@/components/games/dream.hud.LegacyGameHUD';
 import MobileGameHUD from '@/components/games/dream.hud.MobileGameHUD';
 import GameController from '@/components/games/dream.GameController';
@@ -747,10 +746,28 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   const openPlayableGamePage = useCallback((gameId: string, options: { expand?: boolean } = {}) => {
     savePlayableGame(gameId, options.expand ? 'fullscreen' : 'library-screen');
     if (typeof window === 'undefined') return;
-    window.localStorage.setItem(GAME_LIBRARY_SESSION_STORAGE_KEY, gameId);
     window.localStorage.setItem('de:games:last-launch', gameId);
-    window.location.assign(buildGameLaunchHref(gameId, { play: true, expand: options.expand }));
-  }, [savePlayableGame]);
+
+    if (options.expand) {
+      engineDispatch({ type: 'game:select', payload: { gameId } });
+      engineDispatch({ type: 'game:session-start', payload: { gameId } });
+      setShowEnginSplash(true);
+      setRuntimeCrash(null);
+      setExpandedPlayableGame(gameId);
+      if (consumePlayAsMe()) {
+        const url = getAvatarDataUrl();
+        if (url) setAvatarDataUrl(url);
+      }
+      const fullscreenTarget = document.documentElement;
+      if (document.fullscreenElement === null && 'requestFullscreen' in fullscreenTarget) {
+        void fullscreenTarget.requestFullscreen().catch(() => undefined);
+      }
+      queuePlayableGameStart();
+      return;
+    }
+
+    window.location.assign(buildGameLaunchHref(gameId, { play: true }));
+  }, [engineDispatch, queuePlayableGameStart, savePlayableGame]);
 
   useEffect(() => {
     if (initializedPlaySurfaceRef.current) return;
@@ -856,7 +873,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         controlProfile,
       },
     });
-  }, [activePlayableGame, controlProfile, expandedPlayableGame, selectedPlayableGame]);
+  }, [activePlayableGame, controlProfile, expandedPlayableGame, selectedPlayableGame, setRuntimeCrash]);
 
   useGlobalCrashListener(Boolean((activePlayable ?? expandedPlayable) && runtimeCrash === null), (crash) => {
     const game = expandedPlayable ?? activePlayable ?? selectedPlayable;
@@ -866,27 +883,25 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    void Promise.all(
-      GAME_CATALOG.map(async (game) => {
-        try {
-          return [game.id, await loadCartridge(game.id), null] as const;
-        } catch (error: unknown) {
+    for (const game of GAME_CATALOG) {
+      void loadCartridge(game.id)
+        .then((cartridge) => {
+          if (cancelled) return;
+          setCartridgeMap((prev) => ({ ...prev, [game.id]: cartridge }));
+          setCartridgeErrors((prev) => {
+            if (!(game.id in prev)) return prev;
+            const next = { ...prev };
+            delete next[game.id];
+            return next;
+          });
+        })
+        .catch((error: unknown) => {
+          if (cancelled) return;
           const message = error instanceof Error ? toErrorMessage(error) : 'Unknown cartridge loader failure.';
           console.warn(`[GameEngin] Failed to load cartridge "${game.id}"`, error);
-          return [game.id, null, message] as const;
-        }
-      }),
-    ).then((entries) => {
-      if (cancelled) return;
-      const nextMap: Record<string, GameCartridge> = {};
-      const nextErrors: Record<string, string> = {};
-      for (const [id, cartridge, error] of entries) {
-        if (cartridge) nextMap[id] = cartridge;
-        if (error) nextErrors[id] = error;
-      }
-      setCartridgeMap(nextMap);
-      setCartridgeErrors(nextErrors);
-    });
+          setCartridgeErrors((prev) => ({ ...prev, [game.id]: message }));
+        });
+    }
 
     return () => {
       cancelled = true;
@@ -906,6 +921,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     expandedPlayable && cartridgeMap[expandedPlayable.id]
       ? cartridgeMap[expandedPlayable.id]
       : null;
+  const expandedCartridgeError: string | null =
+    expandedPlayable ? cartridgeErrors[expandedPlayable.id] ?? null : null;
 
   const achievements = ACHIEVEMENT_DEFS.map((def) => {
     let unlocked = def.unlockFn(scores);
@@ -954,11 +971,21 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
               />
             </CartridgeErrorBoundary>
+          ) : expandedCartridgeError ? (
+            <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: '#fecaca', padding: 24, textAlign: 'center' }}>
+              <div style={{ maxWidth: 460, display: 'grid', gap: 10 }}>
+                <div style={{ fontSize: 28 }}>⚠️</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: '#f8fbff' }}>{expandedPlayable.label} failed to load</div>
+                <div style={{ fontSize: 12, lineHeight: 1.6 }}>{expandedCartridgeError}</div>
+              </div>
+            </div>
           ) : (
-            <GameRuntime
-              cartridge={null}
-              physicsConfig={appliedPhysics}
-            />
+            <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: 'rgba(220,235,255,0.82)', background: '#000' }}>
+              <div style={{ display: 'grid', gap: 12, justifyItems: 'center' }}>
+                <div style={{ fontSize: 42 }}>{expandedPlayable.emoji}</div>
+                <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Loading {expandedPlayable.label}</div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -1038,9 +1065,9 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         </div>
 
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 55 }}>
-          <GameHUD
+          <GameRemote
+            embedded
             gameLabel={expandedPlayable.label}
-            gameEmoji={expandedPlayable.emoji}
             playHref={buildGameLaunchHref(expandedPlayable.id, { expand: true })}
             onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
           />
