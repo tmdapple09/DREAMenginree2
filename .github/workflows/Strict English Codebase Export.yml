@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   strict-english-codebase-csv-export:
-    name: Export repo mirror as strict English CSV files
+    name: Export repo-shaped strict English CSV mirror
     runs-on: ubuntu-latest
     timeout-minutes: 240
 
@@ -191,15 +191,16 @@ jobs:
           }
 
           function readableName(name) {
-            if (!name) return "unnamed value";
+            if (!name) return "";
 
-            return name
+            return String(name)
               .replace(/^use([A-Z])/, "use $1")
               .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
               .replace(/[_-]+/g, " ")
               .replace(/[{}()[\].]/g, " ")
               .replace(/\s+/g, " ")
-              .trim();
+              .trim()
+              .toLowerCase();
           }
 
           function cleanComment(trimmed) {
@@ -216,8 +217,81 @@ jobs:
             return text.match(pattern)?.[1] || null;
           }
 
-          function quotedValue(text) {
-            return text.match(/["'`]([^"'`]+)["'`]/)?.[1] || null;
+          function sourceFromImport(trimmed) {
+            const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
+            const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
+
+            return fromMatch?.[1] || bareMatch?.[1] || "";
+          }
+
+          function translateOperators(text) {
+            return text
+              .replace(/===/g, " is exactly ")
+              .replace(/!==/g, " is not ")
+              .replace(/>=/g, " is at least ")
+              .replace(/<=/g, " is at most ")
+              .replace(/&&/g, " and ")
+              .replace(/\|\|/g, " or ")
+              .replace(/=>/g, " gives ")
+              .replace(/==/g, " is ")
+              .replace(/!=/g, " is not ")
+              .replace(/>/g, " is greater than ")
+              .replace(/</g, " is less than ")
+              .replace(/=/g, " to ");
+          }
+
+          function stripSyntax(text) {
+            return text
+              .replace(/["'`]/g, "")
+              .replace(/[;]+/g, "")
+              .replace(/[{}]/g, " ")
+              .replace(/$begin:math:display$\/g\, \" ordered group \"\)
+              \.replace\(\/$end:math:display$/g, " close ordered group ")
+              .replace(/$begin:math:text$\/g\, \" \"\)
+              \.replace\(\/$end:math:text$/g, " ")
+              .replace(/,/g, " ")
+              .replace(/\?/g, " optional ")
+              .replace(/:/g, " receives ")
+              .replace(/\./g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+
+          function literalEnglish(line) {
+            const trimmed = line.trim();
+
+            if (!trimmed) return "";
+
+            let text = trimmed;
+
+            text = text.replace(/\bconst\b/g, "set");
+            text = text.replace(/\blet\b/g, "start");
+            text = text.replace(/\bvar\b/g, "start");
+            text = text.replace(/\breturn\b/g, "give back");
+            text = text.replace(/\bif\b/g, "only when");
+            text = text.replace(/\belse\b/g, "otherwise");
+            text = text.replace(/\bfor\b/g, "for every");
+            text = text.replace(/\bwhile\b/g, "while");
+            text = text.replace(/\bawait\b/g, "wait for");
+            text = text.replace(/\basync\b/g, "waiting");
+            text = text.replace(/\btrue\b/g, "enabled");
+            text = text.replace(/\bfalse\b/g, "disabled");
+            text = text.replace(/\bnull\b/g, "empty");
+            text = text.replace(/\bundefined\b/g, "unavailable");
+            text = text.replace(/\bnew\b/g, "create");
+            text = text.replace(/\bimport\b/g, "receive");
+            text = text.replace(/\bexport\b/g, "share");
+            text = text.replace(/\bfrom\b/g, "from");
+            text = text.replace(/\bdefault\b/g, "main");
+            text = text.replace(/\btype\b/g, "allowed rule");
+            text = text.replace(/\binterface\b/g, "data shape");
+            text = text.replace(/\bclass\b/g, "reusable unit");
+            text = text.replace(/\bfunction\b/g, "action");
+
+            text = translateOperators(text);
+            text = stripSyntax(text);
+
+            return text ? `${text}.` : "";
           }
 
           function explainComment(trimmed) {
@@ -226,123 +300,116 @@ jobs:
           }
 
           function explainImport(trimmed) {
-            const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
-            const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
-            const source = fromMatch?.[1] || bareMatch?.[1];
+            const source = sourceFromImport(trimmed);
 
-            return source
-              ? `Current file receives needed names from ${source}.`
-              : "Current file receives needed outside names.";
+            if (source) {
+              return `receive needed names from ${source}.`;
+            }
+
+            return literalEnglish(trimmed);
           }
 
           function explainExport(trimmed) {
             if (trimmed.startsWith("export default function ")) {
               const name = nameFrom(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive ${readableName(name)} as the main action from current file.`
-                : "Other files receive the main action from current file.";
+
+              if (name) return `share main action ${readableName(name)}.`;
+              return literalEnglish(trimmed);
             }
 
             if (trimmed.startsWith("export default ")) {
-              return "Other files receive the main value from current file.";
+              return "share main result.";
             }
 
             if (trimmed.startsWith("export type ")) {
               const name = nameFrom(/^export\s+type\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive allowed value rule ${readableName(name)} from current file.`
-                : "Other files receive an allowed value rule from current file.";
+
+              if (name) return `share allowed rule ${readableName(name)}.`;
+              return literalEnglish(trimmed);
             }
 
             if (trimmed.startsWith("export interface ")) {
               const name = nameFrom(/^export\s+interface\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive data shape ${readableName(name)} from current file.`
-                : "Other files receive a data shape from current file.";
+
+              if (name) return `share data shape ${readableName(name)}.`;
+              return literalEnglish(trimmed);
             }
 
             if (trimmed.startsWith("export function ")) {
               const name = nameFrom(/^export\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Current file creates action ${readableName(name)} for other files.`
-                : "Current file creates an action for other files.";
+
+              if (name) return `share action ${readableName(name)}.`;
+              return literalEnglish(trimmed);
             }
 
             if (trimmed.startsWith("export const ")) {
               const name = nameFrom(/^export\s+const\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Current file creates fixed value ${readableName(name)} for other files.`
-                : "Current file creates a fixed value for other files.";
+
+              if (name) return `share ${readableName(name)}.`;
+              return literalEnglish(trimmed);
             }
 
             if (trimmed.startsWith("export ")) {
-              return "Current file shares named values with other files.";
+              return literalEnglish(trimmed);
             }
 
             return null;
           }
 
           function explainDeclaration(trimmed) {
-            const fixed = trimmed.match(/^const\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
-            if (fixed) {
-              const name = readableName(fixed[1]);
-              const value = fixed[2].trim();
+            const setMatch = trimmed.match(/^const\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+            if (setMatch) {
+              const name = readableName(setMatch[1]);
+              const value = setMatch[2].trim();
 
-              if (value.includes(".map(")) return `${name} becomes one result for every item in a named list.`;
-              if (value.includes(".filter(")) return `${name} becomes only the items that pass a named requirement.`;
-              if (value.includes(".find(")) return `${name} becomes the first item that passes a named requirement.`;
-              if (value.includes(".some(")) return `${name} becomes true when at least one item passes a named requirement.`;
-              if (value.includes(".every(")) return `${name} becomes true only when every item passes a named requirement.`;
-              if (value.includes("await ")) return `${name} becomes the completed result of waiting work.`;
-              if (value === "true") return `${name} starts enabled.`;
-              if (value === "false") return `${name} starts disabled.`;
-              if (value === "null") return `${name} starts empty.`;
-              if (value === "undefined") return `${name} starts unavailable.`;
-              if (value.startsWith("[")) return `${name} starts as an ordered group.`;
-              if (value.startsWith("{")) return `${name} starts as a named group.`;
-              if (value.includes("=>")) return `${name} becomes a named action.`;
+              if (value.includes(".every(")) return `set ${name} to every named item passing a requirement.`;
+              if (value.includes(".some(")) return `set ${name} to at least one named item passing a requirement.`;
+              if (value.includes(".map(")) return `set ${name} to one result for every named item.`;
+              if (value.includes(".filter(")) return `set ${name} to only named items that pass a requirement.`;
+              if (value.includes(".find(")) return `set ${name} to first named item that passes a requirement.`;
+              if (value.includes("await ")) return `set ${name} to completed waiting result.`;
+              if (value === "true") return `set ${name} to enabled.`;
+              if (value === "false") return `set ${name} to disabled.`;
+              if (value === "null") return `set ${name} to empty.`;
+              if (value === "undefined") return `set ${name} to unavailable.`;
+              if (value.startsWith("[")) return `set ${name} to ordered group.`;
+              if (value.startsWith("{")) return `set ${name} to named group.`;
 
-              return `${name} receives a fixed value.`;
+              return `set ${name} to ${literalEnglish(value).replace(/\.$/, "")}.`;
             }
 
-            const fixedNoValue = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
-            if (fixedNoValue) {
-              return `${readableName(fixedNoValue[1])} receives a fixed value.`;
+            const setNoValue = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
+            if (setNoValue) return `set ${readableName(setNoValue[1])}.`;
+
+            const startMatch = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+            if (startMatch) {
+              const name = readableName(startMatch[2]);
+              const value = startMatch[3].trim();
+
+              if (value === "true") return `start ${name} as enabled.`;
+              if (value === "false") return `start ${name} as disabled.`;
+              if (value === "null") return `start ${name} as empty.`;
+              if (value === "undefined") return `start ${name} as unavailable.`;
+
+              return `start ${name} as ${literalEnglish(value).replace(/\.$/, "")}.`;
             }
 
-            const changeable = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
-            if (changeable) {
-              const name = readableName(changeable[2]);
-              const value = changeable[3].trim();
-
-              if (value === "true") return `${name} starts enabled and may change.`;
-              if (value === "false") return `${name} starts disabled and may change.`;
-              if (value === "null") return `${name} starts empty and may change.`;
-              if (value === "undefined") return `${name} starts unavailable and may change.`;
-
-              return `${name} receives a changeable value.`;
-            }
-
-            const changeableNoValue = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)/);
-            if (changeableNoValue) {
-              return `${readableName(changeableNoValue[2])} receives a changeable value.`;
-            }
+            const startNoValue = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)/);
+            if (startNoValue) return `start ${readableName(startNoValue[2])}.`;
 
             const action = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
             if (action) {
               const waits = Boolean(action[1]);
               const name = readableName(action[2]);
 
-              return waits
-                ? `${name} action starts and may wait for outside work.`
-                : `${name} action starts.`;
+              return waits ? `${name} action starts and can wait.` : `${name} action starts.`;
             }
 
             const shape = trimmed.match(/^interface\s+([A-Za-z0-9_$]+)/);
             if (shape) return `${readableName(shape[1])} data shape starts.`;
 
             const rule = trimmed.match(/^type\s+([A-Za-z0-9_$]+)/);
-            if (rule) return `${readableName(rule[1])} allowed value rule starts.`;
+            if (rule) return `${readableName(rule[1])} allowed rule starts.`;
 
             const unit = trimmed.match(/^class\s+([A-Za-z0-9_$]+)/);
             if (unit) return `${readableName(unit[1])} reusable unit starts.`;
@@ -353,22 +420,21 @@ jobs:
           function explainCondition(trimmed) {
             const inside = trimmed.match(/^if\s*$begin:math:text$\(\.\*\)$end:math:text$\s*\{?$/)?.[1];
 
-            if (!inside) return "Named condition must pass before following group runs.";
+            if (!inside) return literalEnglish(trimmed);
 
             if (inside.includes("&&")) {
-              return "Every named requirement must pass before following group runs.";
+              return `${literalEnglish(inside).replace(/\.$/, "")} all must pass.`;
             }
 
             if (inside.includes("||")) {
-              return "At least one named requirement must pass before following group runs.";
+              return `${literalEnglish(inside).replace(/\.$/, "")} at least one must pass.`;
             }
 
             if (inside.startsWith("!")) {
-              const target = inside.slice(1).replace(/[()]/g, "").trim();
-              return `${readableName(target)} must be absent or false before following group runs.`;
+              return `${readableName(inside.slice(1))} must be absent or disabled.`;
             }
 
-            return `${readableName(inside)} must pass before following group runs.`;
+            return `${literalEnglish(inside).replace(/\.$/, "")} must pass.`;
           }
 
           function explainAssignment(trimmed) {
@@ -378,12 +444,12 @@ jobs:
             const target = readableName(match[1]);
             const value = match[2].trim();
 
-            if (value === "true") return `${target} becomes enabled.`;
-            if (value === "false") return `${target} becomes disabled.`;
-            if (value === "null") return `${target} becomes empty.`;
-            if (value === "undefined") return `${target} becomes unavailable.`;
+            if (value === "true") return `change ${target} to enabled.`;
+            if (value === "false") return `change ${target} to disabled.`;
+            if (value === "null") return `change ${target} to empty.`;
+            if (value === "undefined") return `change ${target} to unavailable.`;
 
-            return `${target} receives a new value.`;
+            return `change ${target} to ${literalEnglish(value).replace(/\.$/, "")}.`;
           }
 
           function explainYaml(trimmed) {
@@ -391,12 +457,12 @@ jobs:
               const key = trimmed.split(":")[0].trim();
               const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim();
 
-              if (rest) return `${readableName(key)} setting receives ${rest}.`;
-              return `${readableName(key)} setting starts.`;
+              if (rest) return `${readableName(key)} receives ${literalEnglish(rest).replace(/\.$/, "")}.`;
+              return `${readableName(key)} starts.`;
             }
 
             if (/^-\s+/.test(trimmed)) {
-              return "Current list receives one item.";
+              return `add ${literalEnglish(trimmed.replace(/^-\s+/, "")).replace(/\.$/, "")}.`;
             }
 
             return null;
@@ -407,12 +473,12 @@ jobs:
               const key = trimmed.match(/^"([^"]+)"/)?.[1];
               const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
 
-              if (rest === "true") return `${readableName(key)} field is enabled.`;
-              if (rest === "false") return `${readableName(key)} field is disabled.`;
-              if (rest === "null") return `${readableName(key)} field is empty.`;
-              if (rest) return `${readableName(key)} field receives ${rest}.`;
+              if (rest === "true") return `${readableName(key)} is enabled.`;
+              if (rest === "false") return `${readableName(key)} is disabled.`;
+              if (rest === "null") return `${readableName(key)} is empty.`;
+              if (rest) return `${readableName(key)} receives ${literalEnglish(rest).replace(/\.$/, "")}.`;
 
-              return `${readableName(key)} field starts.`;
+              return `${readableName(key)} starts.`;
             }
 
             return null;
@@ -421,33 +487,33 @@ jobs:
           function explainSql(trimmed) {
             const upper = trimmed.toUpperCase();
 
-            if (upper.startsWith("CREATE TABLE")) return "Database table creation starts.";
-            if (upper.startsWith("ALTER TABLE")) return "Database table change starts.";
-            if (upper.startsWith("CREATE INDEX")) return "Database lookup helper creation starts.";
-            if (upper.startsWith("INSERT INTO")) return "Database receives new stored data.";
-            if (upper.startsWith("SELECT")) return "Database read request starts.";
-            if (upper.startsWith("UPDATE")) return "Database stored data change starts.";
-            if (upper.startsWith("DELETE")) return "Database stored data removal starts.";
-            if (upper.startsWith("WHERE")) return "Database rule limits affected rows.";
-            if (upper.startsWith("ORDER BY")) return "Database result order receives a rule.";
-            if (upper.startsWith("GROUP BY")) return "Database results receive grouping.";
-            if (upper.startsWith("RETURNING")) return "Database sends selected changed rows back.";
+            if (upper.startsWith("CREATE TABLE")) return "create database table.";
+            if (upper.startsWith("ALTER TABLE")) return "change database table.";
+            if (upper.startsWith("CREATE INDEX")) return "create database lookup helper.";
+            if (upper.startsWith("INSERT INTO")) return "add stored database data.";
+            if (upper.startsWith("SELECT")) return "read database data.";
+            if (upper.startsWith("UPDATE")) return "change stored database data.";
+            if (upper.startsWith("DELETE")) return "remove stored database data.";
+            if (upper.startsWith("WHERE")) return "limit affected database rows.";
+            if (upper.startsWith("ORDER BY")) return "order database results.";
+            if (upper.startsWith("GROUP BY")) return "group database results.";
+            if (upper.startsWith("RETURNING")) return "send changed database rows back.";
 
             return null;
           }
 
           function explainShell(trimmed) {
-            if (trimmed.startsWith("#!")) return "Script runner receives a selection.";
-            if (trimmed.startsWith("cd ")) return "Current command folder changes.";
-            if (trimmed.startsWith("mkdir ")) return "Folder creation command runs.";
-            if (trimmed.startsWith("echo ")) return "Text output command runs.";
-            if (trimmed.startsWith("pnpm ")) return "Package command runs.";
-            if (trimmed.startsWith("npm ")) return "Package command runs.";
-            if (trimmed.startsWith("node ")) return "Node script command runs.";
-            if (trimmed.startsWith("git ")) return "Repository command runs.";
-            if (trimmed.startsWith("rm ")) return "Removal command runs.";
-            if (trimmed.startsWith("cp ")) return "Copy command runs.";
-            if (trimmed.startsWith("mv ")) return "Move command runs.";
+            if (trimmed.startsWith("#!")) return "select script runner.";
+            if (trimmed.startsWith("cd ")) return "change command folder.";
+            if (trimmed.startsWith("mkdir ")) return "create folder.";
+            if (trimmed.startsWith("echo ")) return `write ${literalEnglish(trimmed.slice(5)).replace(/\.$/, "")}.`;
+            if (trimmed.startsWith("pnpm ")) return `run package command ${trimmed.slice(5)}.`;
+            if (trimmed.startsWith("npm ")) return `run package command ${trimmed.slice(4)}.`;
+            if (trimmed.startsWith("node ")) return `run node command ${trimmed.slice(5)}.`;
+            if (trimmed.startsWith("git ")) return `run repository command ${trimmed.slice(4)}.`;
+            if (trimmed.startsWith("rm ")) return "remove file or folder.";
+            if (trimmed.startsWith("cp ")) return "copy file or folder.";
+            if (trimmed.startsWith("mv ")) return "move file or folder.";
 
             return null;
           }
@@ -476,29 +542,26 @@ jobs:
             if (declared) return declared;
 
             if (/^if\s*\(/.test(trimmed)) return explainCondition(trimmed);
-            if (/^else\s+if\s*\(/.test(trimmed)) return "Next named condition receives a check only after earlier condition fails.";
-            if (/^else\b/.test(trimmed)) return "Fallback group runs only after earlier condition fails.";
-            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) return "Following group repeats for each allowed step.";
-            if (/^while\s*\(/.test(trimmed)) return "Following group repeats while named condition remains true.";
-            if (/^switch\s*\(/.test(trimmed)) return "One path must be chosen from fixed possible paths.";
-            if (/^case\s+/.test(trimmed)) return "Current path names one allowed choice.";
-            if (/^default\s*:/.test(trimmed)) return "Fallback path handles all unmatched choices.";
-            if (/^try\b/.test(trimmed)) return "Protected work starts.";
-            if (/^catch\b/.test(trimmed)) return "Failure handling starts.";
-            if (/^finally\b/.test(trimmed)) return "Cleanup work starts after protected work ends.";
+            if (/^else\s+if\s*\(/.test(trimmed)) return "otherwise check next requirement.";
+            if (/^else\b/.test(trimmed)) return "otherwise run next group.";
+            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) return literalEnglish(trimmed);
+            if (/^while\s*\(/.test(trimmed)) return literalEnglish(trimmed);
+            if (/^switch\s*\(/.test(trimmed)) return "choose one matching path.";
+            if (/^case\s+/.test(trimmed)) return literalEnglish(trimmed);
+            if (/^default\s*:/.test(trimmed)) return "use fallback path.";
+            if (/^try\b/.test(trimmed)) return "start protected work.";
+            if (/^catch\b/.test(trimmed)) return "handle failed work.";
+            if (/^finally\b/.test(trimmed)) return "finish with cleanup work.";
 
             if (/^return\b/.test(trimmed)) {
-              if (trimmed.includes("null")) return "Current action sends empty result back.";
-              if (trimmed.includes("false")) return "Current action sends disabled result back.";
-              if (trimmed.includes("true")) return "Current action sends enabled result back.";
-              return "Current action sends result back.";
+              return literalEnglish(trimmed);
             }
 
-            if (trimmed.includes("useState(")) return "Visible surface receives remembered changeable state.";
-            if (trimmed.includes("useEffect(")) return "After-render work starts when listed requirements change.";
-            if (trimmed.includes("useMemo(")) return "Remembered value updates only when listed requirements change.";
-            if (trimmed.includes("useCallback(")) return "Remembered action updates only when listed requirements change.";
-            if (trimmed.includes("useRef(")) return "Stable reference stores value without forcing visible update.";
+            if (trimmed.includes("useState(")) return literalEnglish(trimmed);
+            if (trimmed.includes("useEffect(")) return literalEnglish(trimmed);
+            if (trimmed.includes("useMemo(")) return literalEnglish(trimmed);
+            if (trimmed.includes("useCallback(")) return literalEnglish(trimmed);
+            if (trimmed.includes("useRef(")) return literalEnglish(trimmed);
 
             if (ext === ".json") {
               const json = explainJson(trimmed);
@@ -521,15 +584,15 @@ jobs:
             }
 
             const jsxOpen = trimmed.match(/^<([A-Za-z0-9_.$-]+)/);
-            if (jsxOpen) return `${readableName(jsxOpen[1])} visible element starts.`;
+            if (jsxOpen) return `${readableName(jsxOpen[1])} visible part starts.`;
 
             const jsxClose = trimmed.match(/^<\/([A-Za-z0-9_.$-]+)>/);
-            if (jsxClose) return `${readableName(jsxClose[1])} visible element ends.`;
+            if (jsxClose) return `${readableName(jsxClose[1])} visible part ends.`;
 
-            if (trimmed === "{" || trimmed.endsWith("{")) return "Named group starts.";
-            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "Current named group ends.";
-            if (trimmed === "[" || trimmed.endsWith("[")) return "Ordered group starts.";
-            if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "Current ordered group ends.";
+            if (trimmed === "{" || trimmed.endsWith("{")) return "start group.";
+            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "end group.";
+            if (trimmed === "[" || trimmed.endsWith("[")) return "start ordered group.";
+            if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "end ordered group.";
 
             const assigned = explainAssignment(trimmed);
             if (assigned) return assigned;
@@ -538,21 +601,15 @@ jobs:
               const key = trimmed.split(":")[0].trim().replace(/^["']|["']$/g, "");
               const value = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
 
-              if (value === "true") return `${readableName(key)} field is enabled.`;
-              if (value === "false") return `${readableName(key)} field is disabled.`;
-              if (value === "null") return `${readableName(key)} field is empty.`;
-              if (value) return `${readableName(key)} field receives ${value}.`;
+              if (value === "true") return `${readableName(key)} is enabled.`;
+              if (value === "false") return `${readableName(key)} is disabled.`;
+              if (value === "null") return `${readableName(key)} is empty.`;
+              if (value) return `${readableName(key)} receives ${literalEnglish(value).replace(/\.$/, "")}.`;
 
-              return `${readableName(key)} field starts.`;
+              return `${readableName(key)} starts.`;
             }
 
-            if (trimmed.endsWith(";")) return "Current instruction completes.";
-            if (trimmed.endsWith(",")) return "Current structure receives one item or field.";
-
-            const quoted = quotedValue(trimmed);
-            if (quoted) return `Current line contains ${quoted}.`;
-
-            return "Current instruction continues.";
+            return literalEnglish(trimmed);
           }
 
           function translateFile(relativePath, buffer) {
@@ -566,6 +623,10 @@ jobs:
               const lineNumber = index + 1;
               const translation = strictLine(line, relativePath);
 
+              if (line.trim() === "") {
+                return `${lineNumber},`;
+              }
+
               return `${lineNumber},${csvCell(translation)}`;
             });
 
@@ -576,6 +637,12 @@ jobs:
             }
 
             fs.writeFileSync(outPath, output);
+          }
+
+          function representAsset(relativePath) {
+            const outPath = path.join(outRoot, relativePath);
+            ensureDir(outPath);
+            fs.writeFileSync(outPath, "");
           }
 
           function walk(directory) {
@@ -607,7 +674,7 @@ jobs:
           const files = walk(repoRoot);
 
           let translated = 0;
-          let listedAsset = 0;
+          let representedAssets = 0;
           let skippedLarge = 0;
           let skippedBinary = 0;
 
@@ -615,7 +682,8 @@ jobs:
             const buffer = fs.readFileSync(file.absolutePath);
 
             if (isAssetFile(file.relativePath)) {
-              listedAsset += 1;
+              representAsset(file.relativePath);
+              representedAssets += 1;
               continue;
             }
 
@@ -625,6 +693,7 @@ jobs:
             }
 
             if (!isProbablyText(file.relativePath, buffer)) {
+              representAsset(file.relativePath);
               skippedBinary += 1;
               continue;
             }
@@ -633,10 +702,10 @@ jobs:
             translated += 1;
           }
 
-          console.log(`Translated text files: ${translated}`);
-          console.log(`Asset files left out: ${listedAsset}`);
-          console.log(`Large files left out: ${skippedLarge}`);
-          console.log(`Other binary files left out: ${skippedBinary}`);
+          console.log(`translated text files: ${translated}`);
+          console.log(`asset filenames represented: ${representedAssets}`);
+          console.log(`large files skipped: ${skippedLarge}`);
+          console.log(`other binary filenames represented: ${skippedBinary}`);
           NODE
 
           node export-strict-english-csv-repo.mjs
