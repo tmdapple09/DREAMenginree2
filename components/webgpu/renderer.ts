@@ -48,6 +48,7 @@ export class WebGPURenderer {
   private blurVBuf!: GPUBuffer;   // blur dir (0,1) — constant
 
   // pipelines
+  private pipelineCache = new Map<string, GPUComputePipeline | GPURenderPipeline>();
   private cpPipe!: GPUComputePipeline;
   private lemnPipe!: GPURenderPipeline;
   private partPipe!: GPURenderPipeline;
@@ -97,8 +98,12 @@ export class WebGPURenderer {
     this.fmt = gpu.getPreferredCanvasFormat() as GPUTextureFormat;
     this.ctx.configure({ device: this.dev, format: this.fmt, alphaMode: 'opaque' });
 
+    this.dev.lost.then((info) => {
+      console.warn('WebGPU device lost', info.reason, info.message);
+    });
+
     this._mkBuffers();
-    this._mkPipelines();
+    await this._mkPipelines();
     this._seedParticles();
   }
 
@@ -139,15 +144,13 @@ export class WebGPURenderer {
 
   // ── Pipeline creation ─────────────────────────────────────────────────────
 
-  private _mkPipelines() {
+  private async _mkPipelines() {
     const d = this.dev;
 
-    // 1. Compute
-    this.cpPipe = d.createComputePipeline({
-      layout: 'auto',
-      compute: { module: d.createShaderModule({ code: COMPUTE_WGSL }), entryPoint: 'main' },
-    });
+    d.pushErrorScope('validation');
+    d.pushErrorScope('internal');
 
+    const shaderModule = (label: string, code: string) => d.createShaderModule({ label, code });
     const additive: GPUBlendState = {
       color: { srcFactor: 'src-alpha', dstFactor: 'one', operation: 'add' },
       alpha: { srcFactor: 'one',       dstFactor: 'one', operation: 'add' },
@@ -157,67 +160,71 @@ export class WebGPURenderer {
       alpha: { srcFactor: 'one',       dstFactor: 'one', operation: 'add' },
     };
 
-    // 2. Lemniscate ribbon
-    this.lemnPipe = d.createRenderPipeline({
-      layout: 'auto',
-      vertex:   { module: d.createShaderModule({ code: LEMN_VERT_WGSL }),     entryPoint: 'vs_main' },
-      fragment: {
-        module:  d.createShaderModule({ code: LEMN_FRAG_WGSL }),
-        entryPoint: 'fs_main',
-        targets: [{ format: HDR_FMT, blend: additiveOpaque }],
-      },
-      primitive: { topology: 'triangle-strip' },
-    });
+    const fsVert = shaderModule('dreamengin.fs.vert', FS_VERT_WGSL);
+    const render = async (key: string, descriptor: GPURenderPipelineDescriptor) => {
+      const cached = this.pipelineCache.get(key) as GPURenderPipeline | undefined;
+      if (cached) return cached;
+      const pipeline = await d.createRenderPipelineAsync({ label: key, ...descriptor });
+      this.pipelineCache.set(key, pipeline);
+      return pipeline;
+    };
+    const compute = async (key: string, descriptor: GPUComputePipelineDescriptor) => {
+      const cached = this.pipelineCache.get(key) as GPUComputePipeline | undefined;
+      if (cached) return cached;
+      const pipeline = await d.createComputePipelineAsync({ label: key, ...descriptor });
+      this.pipelineCache.set(key, pipeline);
+      return pipeline;
+    };
 
-    // 3. Particle quads
-    this.partPipe = d.createRenderPipeline({
-      layout: 'auto',
-      vertex:   { module: d.createShaderModule({ code: PARTICLE_VERT_WGSL }), entryPoint: 'vs_main' },
-      fragment: {
-        module:  d.createShaderModule({ code: PARTICLE_FRAG_WGSL }),
-        entryPoint: 'fs_main',
-        targets: [{ format: HDR_FMT, blend: additive }],
-      },
-      primitive: { topology: 'triangle-list' },
-    });
+    [
+      this.cpPipe,
+      this.lemnPipe,
+      this.partPipe,
+      this.brightPipe,
+      this.blurPipe,
+      this.compPipe,
+    ] = await Promise.all([
+      compute('dreamengin.compute.particles', {
+        layout: 'auto',
+        compute: { module: shaderModule('dreamengin.compute.particles.wgsl', COMPUTE_WGSL), entryPoint: 'main' },
+      }),
+      render('dreamengin.render.lemniscate', {
+        layout: 'auto',
+        vertex:   { module: shaderModule('dreamengin.lemn.vert.wgsl', LEMN_VERT_WGSL), entryPoint: 'vs_main' },
+        fragment: { module: shaderModule('dreamengin.lemn.frag.wgsl', LEMN_FRAG_WGSL), entryPoint: 'fs_main', targets: [{ format: HDR_FMT, blend: additiveOpaque }] },
+        primitive: { topology: 'triangle-strip' },
+      }),
+      render('dreamengin.render.particles', {
+        layout: 'auto',
+        vertex:   { module: shaderModule('dreamengin.particle.vert.wgsl', PARTICLE_VERT_WGSL), entryPoint: 'vs_main' },
+        fragment: { module: shaderModule('dreamengin.particle.frag.wgsl', PARTICLE_FRAG_WGSL), entryPoint: 'fs_main', targets: [{ format: HDR_FMT, blend: additive }] },
+        primitive: { topology: 'triangle-list' },
+      }),
+      render('dreamengin.render.bright', {
+        layout: 'auto',
+        vertex:   { module: fsVert, entryPoint: 'vs_main' },
+        fragment: { module: shaderModule('dreamengin.bright.frag.wgsl', BRIGHT_FRAG_WGSL), entryPoint: 'fs_main', targets: [{ format: HDR_FMT }] },
+        primitive: { topology: 'triangle-list' },
+      }),
+      render('dreamengin.render.blur', {
+        layout: 'auto',
+        vertex:   { module: fsVert, entryPoint: 'vs_main' },
+        fragment: { module: shaderModule('dreamengin.blur.frag.wgsl', BLUR_FRAG_WGSL), entryPoint: 'fs_main', targets: [{ format: HDR_FMT }] },
+        primitive: { topology: 'triangle-list' },
+      }),
+      render('dreamengin.render.composite', {
+        layout: 'auto',
+        vertex:   { module: fsVert, entryPoint: 'vs_main' },
+        fragment: { module: shaderModule('dreamengin.composite.frag.wgsl', COMPOSITE_FRAG_WGSL), entryPoint: 'fs_main', targets: [{ format: this.fmt }] },
+        primitive: { topology: 'triangle-list' },
+      }),
+    ]);
 
-    const fsVert = d.createShaderModule({ code: FS_VERT_WGSL });
-
-    // 4. Bright pass
-    this.brightPipe = d.createRenderPipeline({
-      layout: 'auto',
-      vertex:   { module: fsVert, entryPoint: 'vs_main' },
-      fragment: {
-        module:  d.createShaderModule({ code: BRIGHT_FRAG_WGSL }),
-        entryPoint: 'fs_main',
-        targets: [{ format: HDR_FMT }],
-      },
-      primitive: { topology: 'triangle-list' },
-    });
-
-    // 5. Blur (reused for H and V passes, different bind groups)
-    this.blurPipe = d.createRenderPipeline({
-      layout: 'auto',
-      vertex:   { module: fsVert, entryPoint: 'vs_main' },
-      fragment: {
-        module:  d.createShaderModule({ code: BLUR_FRAG_WGSL }),
-        entryPoint: 'fs_main',
-        targets: [{ format: HDR_FMT }],
-      },
-      primitive: { topology: 'triangle-list' },
-    });
-
-    // 6. Composite → canvas
-    this.compPipe = d.createRenderPipeline({
-      layout: 'auto',
-      vertex:   { module: fsVert, entryPoint: 'vs_main' },
-      fragment: {
-        module:  d.createShaderModule({ code: COMPOSITE_FRAG_WGSL }),
-        entryPoint: 'fs_main',
-        targets: [{ format: this.fmt }],
-      },
-      primitive: { topology: 'triangle-list' },
-    });
+    const internal = await d.popErrorScope();
+    const validation = await d.popErrorScope();
+    if (internal || validation) {
+      throw new Error(`WebGPU pipeline warmup failed: ${(internal ?? validation)?.message ?? 'unknown pipeline error'}`);
+    }
   }
 
   // ── Particle seed ─────────────────────────────────────────────────────────
@@ -232,9 +239,11 @@ export class WebGPURenderer {
       data[b + 1] = 0.65 * Math.sin(t) * Math.cos(t) / d;
       data[b + 2] = 0;
       data[b + 3] = 0;
-      data[b + 4] = Math.random() * 2.0;
+      const seed = ((i * 1664525 + 1013904223) >>> 0) / 0xffffffff;
+      const seed2 = (((i + 17) * 22695477 + 1) >>> 0) / 0xffffffff;
+      data[b + 4] = seed * 2.0;
       data[b + 5] = data[b + 4];
-      data[b + 6] = Math.random();
+      data[b + 6] = seed2;
       data[b + 7] = 0;
     }
     this.dev.queue.writeBuffer(this.pBuf, 0, data);

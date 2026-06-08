@@ -1,18 +1,20 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "noEmit": true,
-    "strict": true
+    "tsBuildInfoFile": ".next/tsconfig.games.tsbuildinfo"
   },
   "include": [
     "next-env.d.ts",
-    "games/**/*.ts",
-    "games/**/*.tsx",
     "components/games/**/*.ts",
     "components/games/**/*.tsx",
+    "components/gameengin/**/*.ts",
+    "components/gameengin/**/*.tsx",
     "lib/games/**/*.ts",
     "lib/games/**/*.tsx",
-    "app/daydream/games/**/*.ts",
-    "app/daydream/games/**/*.tsx"
-  ]
+    "lib/gameengin/**/*.ts",
+    "lib/gameengin/**/*.tsx",
+    "app/gameengin/**/*.ts",
+    "app/gameengin/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "tests/**", "app/api/**", "lib/gameengin/brain/**", "lib/gameengin/brain-reader.ts"]
 }

@@ -80,6 +80,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (statement.trim().length === 0) {
     return NextResponse.json({ error: 'player_statement is required' }, { status: 400 });
   }
+
+  const context = typeof safe.context === 'object' && safe.context !== null
+    ? (safe.context as Record<string, unknown>)
+    : undefined;
+  const requiredContext = ['backend', 'deviceInfo', 'cartridgeBuildVersion', 'saveSchemaVersion', 'lastActiveBundleIds', 'lastEngineSpans'];
+  const missingContext = requiredContext.filter((key) => context?.[key] === undefined);
+  if (missingContext.length > 0) {
+    return NextResponse.json({ error: `missing crash context: ${missingContext.join(', ')}` }, { status: 400 });
+  }
+
   if (!isActiveCartridge(cartridgeId)) {
     // Inactive / unknown cartridge: this is Upgrader's domain, not Maestro's.
     return NextResponse.json(
@@ -96,9 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       error: typeof safe.error === 'object' && safe.error !== null
         ? (safe.error as { name?: string; message?: string; stack?: string })
         : undefined,
-      context: typeof safe.context === 'object' && safe.context !== null
-        ? (safe.context as Record<string, unknown>)
-        : undefined,
+      context,
     });
     return NextResponse.json({ ok: true, stored: filePath.split(/[\\/]/).slice(-3).join('/') }, { status: 201 });
   } catch (err: unknown) {

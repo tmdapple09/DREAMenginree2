@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "@webgpu/types"
+    ],
+    "tsBuildInfoFile": ".next/tsconfig.server.tsbuildinfo"
+  },
+  "include": [
+    "next-env.d.ts",
+    "app/api/gameengin/**/*.ts",
+    "lib/gameengin/brain-reader.ts",
+    "lib/utils.ts",
+    "scripts/gameengin/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tests/**",
+    "components/**",
+    "engins/**"
+  ]
+}

@@ -2044,13 +2044,10 @@ class GameCore {
         preserveDrawingBuffer: true,
         stencil: true,
         antialias: true,
-        // MADMAXI launches through the stable WebGL backend because Babylon 9's
-        // WebGPU path can create an invalid GPUBindGroup during this cartridge's
-        // PBR/post-process startup before all launch textures are resident.
-        // This is a per-cartridge compatibility negotiation, not an engine shim:
-        // GameEngin still uses the shared Babylon factory and reports the exact
-        // fallback reason through BabylonEngineResult.webgpuReason.
-        preferWebGPU: false,
+        // MADMAXI now launches through the shared WebGPU-first Babylon factory.
+        // The factory performs async adapter/device negotiation and falls back to
+        // WebGL2 with a reported reason if WebGPU initialization degrades.
+        preferWebGPU: true,
       }),
       import('@babylonjs/core'),
     ]);

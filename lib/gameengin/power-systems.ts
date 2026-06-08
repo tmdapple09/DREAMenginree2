@@ -187,11 +187,14 @@ export class ComputeShaderPipeline {
     const dev = this.device as GPUDevice | null;
     if (!dev) return false;
     const shaderModule = dev.createShaderModule({ label: kernel.label, code: kernel.wgsl });
-    const pipeline = dev.createComputePipeline({
+    dev.pushErrorScope('validation');
+    const pipeline = await dev.createComputePipelineAsync({
       label: kernel.label,
       layout: 'auto',
       compute: { module: shaderModule, entryPoint: 'main' },
     });
+    const validation = await dev.popErrorScope();
+    if (validation) throw new Error(`Compute kernel ${kernel.label} failed async warmup: ${validation.message}`);
     this.kernels.set(kernel.label, { pipeline, workgroupSize: kernel.workgroupSize });
     return true;
   }
