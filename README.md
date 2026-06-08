@@ -2182,6 +2182,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 │   └── workflows
 │       ├── Repo Audit Auto Fix.yml
 │       ├── ScanArcCleanup.yml
+│       ├── Strict English Codebase Export.yml
 │       ├── autofixvercelbuild.yml
 │       ├── bot-pr-automerge.yml
 │       ├── bouncer.yml
@@ -2277,10 +2278,9 @@ Agents & Workflow provides shared infrastructure used across the platform.
     ├── feature-build
     │   └── generate-features.mjs
     ├── fix-audit.js
-    ├── gameengin
-… (25 more files)
+… (26 more files)
 ```
-<details><summary>Agents & Workflow file index (145 files)</summary>
+<details><summary>Agents & Workflow file index (146 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
@@ -2303,6 +2303,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `.github/scripts/validate_report_agent_spec.py` — project file.
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file.
 - `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/Strict English Codebase Export.yml` — project file.
 - `.github/workflows/autofixvercelbuild.yml` — project file.
 - `.github/workflows/bot-pr-automerge.yml` — project file.
 - `.github/workflows/bouncer.yml` — project file.
@@ -2533,6 +2534,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 │   └── workflows
 │       ├── Repo Audit Auto Fix.yml
 │       ├── ScanArcCleanup.yml
+│       ├── Strict English Codebase Export.yml
 │       ├── autofixvercelbuild.yml
 │       ├── bot-pr-automerge.yml
 │       ├── bouncer.yml
@@ -2601,10 +2603,11 @@ Infra & Ops provides shared infrastructure used across the platform.
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (69 files)</summary>
+<details><summary>Infra & Ops file index (70 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file.
 - `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/Strict English Codebase Export.yml` — project file.
 - `.github/workflows/autofixvercelbuild.yml` — project file.
 - `.github/workflows/bot-pr-automerge.yml` — project file.
 - `.github/workflows/bouncer.yml` — project file.
@@ -3421,9 +3424,9 @@ Contributing provides shared infrastructure used across the platform.
 │   │   ├── check_workflow_masking.py
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
-… (161 more files)
+… (162 more files)
 ```
-<details><summary>Contributing file index (281 files)</summary>
+<details><summary>Contributing file index (282 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation.
 - `.github/actions/resilient-engine/action.yml` — project file.
@@ -3545,6 +3548,7 @@ Contributing provides shared infrastructure used across the platform.
 - `.github/scripts/validate_report_agent_spec.py` — project file.
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file.
 - `.github/workflows/ScanArcCleanup.yml` — project file.
+- `.github/workflows/Strict English Codebase Export.yml` — project file.
 - `.github/workflows/autofixvercelbuild.yml` — project file.
 - `.github/workflows/bot-pr-automerge.yml` — project file.
 - `.github/workflows/bouncer.yml` — project file.
