@@ -1,11 +1,35 @@
 'use client';
 
-interface Post {
-  id: string;
-  content?: string;
-  created_at?: string;
-  [key: string]: unknown;
-}
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: components/runtime/dream.RuntimeView.tsx.
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+/** Existing Engin capabilities mounted directly inside recursive runtime surfaces. */
+const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
+  StarMakerEngin: dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false }),
+  GameEngin: dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false }),
+  LabEngin: dynamic(() => import('@/engins/engin.LabEngin'), { ssr: false }),
+  CodeEngin: dynamic(() => import('@/engins/engin.CodeEngin'), { ssr: false }),
+  BrandingEngin: dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false }),
+  ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
+  ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
+};
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
 
 /**
  * RuntimeView
@@ -23,32 +47,70 @@ interface Post {
  */
 
 import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
+
 import DreamsSpacePanel from '@/components/dreams/dreamsurface.dreamspace';
+
 import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
+
 import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
+
 import { getEnginByName } from '@/lib/forge/forgeRegistry';
+
 import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
+
 import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+
 import dynamic from 'next/dynamic';
+
 import React, { useCallback, useEffect, useState } from 'react';
 
 // ── Panel components (loaded in-region, never as overlays) ───────────────────
 import AlgorithmPanel from '@/components/panels/dream.panel.AlgorithmPanel';
+
 import AppearancePanel from '@/components/panels/dream.panel.AppearancePanel';
+
 import ConnectorsPanel from '@/components/panels/dream.panel.ConnectorsPanel';
+
 import ControlsPanel from '@/components/panels/dream.panel.ControlsPanel';
+
 import DataPanel from '@/components/panels/dream.panel.DataPanel';
+
 import FeedSettingsPanel from '@/components/panels/dream.panel.FeedSettingsPanel';
+
 import HelpPanel from '@/components/panels/dream.panel.HelpPanel';
+
 import MarketplacePanel from '@/components/panels/dream.panel.MarketplacePanel';
+
 import PrivacyPanel from '@/components/panels/dream.panel.PrivacyPanel';
+
 import ProfilePanel from '@/components/panels/dream.panel.ProfilePanel';
+
 import SafetyPanel from '@/components/panels/dream.panel.SafetyPanel';
+
 import SettingsPanel from '@/components/panels/dream.panel.SettingsPanel';
+
 import WidgetsPanel from '@/components/panels/dream.panel.WidgetsPanel';
+
 import { getDreamComponent } from '@/lib/dreams/DreamRegistry';
+
 import type { SystemPanelId } from '@/lib/panels/panelTypes';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+interface Post {
+  id: string;
+  content?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
 
 interface RuntimeViewProps {
   world: RuntimeWorld;
@@ -82,16 +144,9 @@ interface RuntimeViewProps {
 /** Engin name → canonical daydream route */
 type EnginSurfaceProps = { onBack: () => void; instanceId?: string };
 
-/** Existing Engin capabilities mounted directly inside recursive runtime surfaces. */
-const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
-  StarMakerEngin: dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false }),
-  GameEngin: dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false }),
-  LabEngin: dynamic(() => import('@/engins/engin.LabEngin'), { ssr: false }),
-  CodeEngin: dynamic(() => import('@/engins/engin.CodeEngin'), { ssr: false }),
-  BrandingEngin: dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false }),
-  ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
-  ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
-};
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 function getEnginFallbackRoute(name: string): string {
   return getEnginByName(name)?.daydreamHref ?? '/dreamdmbar/homedream';
@@ -382,3 +437,15 @@ export default function RuntimeView({
   // Fallback
   return null;
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

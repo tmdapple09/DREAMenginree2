@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/memory.ts.
+
 /**
  * DREAMengin Shared Memory Map — Conform Mode
  *
@@ -36,6 +44,15 @@
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 /** Total shared memory size: 16 MB */
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
 export const MEMORY_SIZE = 16 * 1024 * 1024; // 16,777,216 bytes
 
 /** Maximum number of shader workers that may be spawned. */
@@ -107,6 +124,178 @@ export const HOMEDREAM_PRIVATE_OFFSET: number =
  */
 export const PUBLIC_VIEW_LIMIT = HOMEDREAM_PRIVATE_OFFSET;
 
+/** Singleton instance — allocated once per runtime context */
+let _memoryMap: ConformMemoryMap | null = null;
+
+// ── EnginSAB — Shader Worker shared memory layout ────────────────────────────
+//
+// Layout (SoA, 3-axis + per-entity type byte + seam control slots + telemetry + seam ext):
+//
+//   [0       – 39,999]  OFFSET_POS_X          posX[10,000]    Float32
+//   [40,000  – 79,999]  OFFSET_POS_Y          posY[10,000]    Float32
+//   [80,000  – 119,999] OFFSET_POS_Z          posZ[10,000]    Float32
+//   [120,000 – 159,999] OFFSET_VEL_X          velX[10,000]    Float32
+//   [160,000 – 199,999] OFFSET_VEL_Y          velY[10,000]    Float32
+//   [200,000 – 239,999] OFFSET_VEL_Z          velZ[10,000]    Float32
+//   [240,000 – 249,999] OFFSET_DAYDREAM_TYPE   type[10,000]   Uint8 (daydream class)
+//   [250,000 – 250,003] OFFSET_DREAMDM_BAR_Y  seam Y Int32    (seam ctrl slot 0)
+//   [250,004 – 250,007] OFFSET_DREAMDM_BAR_X  seam X Int32    (seam ctrl slot 1)
+//   [250,008 – 250,519] OFFSET_TELEMETRY      Float64 (64 slots, 8-byte aligned)
+//   [250,520 – 250,523] OFFSET_LOCKED_STATE   lock flag Int32 (seam ctrl slot 2)
+//   [250,524 – 250,527] OFFSET_AXIS_STATE     axis flag Int32 (seam ctrl slot 3)
+//
+// SAB_BYTES = OFFSET_AXIS_STATE + 4 = 250,528
+//
+// Seam ctrl logical indices (SEAM_CTRL_IDX_*):
+//   0 = BAR_Y (portrait seam ratio × BAR_Y_SCALE)
+//   1 = BAR_X (landscape seam ratio × BAR_Y_SCALE)
+//   2 = LOCKED (0 = unlocked / STATE_NAV, 1 = STATE_LOCKED)
+//   3 = AXIS   (0 = Portrait / Y-axis, 1 = Landscape / X-axis)
+//
+// Architecture: docs/ARCHITECTURE.md §1 (Runtime regions)
+
+const _ENGIN_ENTITY_COUNT  = 10_000;
+
+const _ENGIN_F32_BYTES     = 4;
+
+const _ENGIN_CHANNEL_BYTES = _ENGIN_ENTITY_COUNT * _ENGIN_F32_BYTES; // 40,000
+
+/** Byte offset of the posX SoA channel. */
+export const OFFSET_POS_X: number = 0;
+
+/** Byte offset of the posY SoA channel. */
+export const OFFSET_POS_Y: number = OFFSET_POS_X + _ENGIN_CHANNEL_BYTES;      // 40,000
+
+/** Byte offset of the posZ SoA channel. */
+export const OFFSET_POS_Z: number = OFFSET_POS_Y + _ENGIN_CHANNEL_BYTES;      // 80,000
+
+/** Byte offset of the velX SoA channel. */
+export const OFFSET_VEL_X: number = OFFSET_POS_Z + _ENGIN_CHANNEL_BYTES;      // 120,000
+
+/** Byte offset of the velY SoA channel. */
+export const OFFSET_VEL_Y: number = OFFSET_VEL_X + _ENGIN_CHANNEL_BYTES;      // 160,000
+
+/** Byte offset of the velZ SoA channel. */
+export const OFFSET_VEL_Z: number = OFFSET_VEL_Y + _ENGIN_CHANNEL_BYTES;      // 200,000
+
+/** Byte offset of the daydream-type byte array (Uint8, one per entity). */
+export const OFFSET_DAYDREAM_TYPE: number = OFFSET_VEL_Z + _ENGIN_CHANNEL_BYTES; // 240,000
+
+/**
+ * Byte offset of the DreamDM Bar Y-axis seam slot (Int32, 1 element).
+ * Fixed at 250,000 — 4-byte aligned.  Portrait / Y-axis seam ratio × BAR_Y_SCALE.
+ * Seam control logical index 0 (SEAM_CTRL_IDX_BAR_Y).
+ */
+export const OFFSET_DREAMDM_BAR_Y = 250_000;
+
+/**
+ * Byte offset of the DreamDM Bar X-axis seam slot (Int32, 1 element).
+ * Fixed at 250,004 — 4-byte aligned, uses the gap between BAR_Y and TELEMETRY.
+ * Landscape / X-axis seam ratio × BAR_Y_SCALE.
+ * Seam control logical index 1 (SEAM_CTRL_IDX_BAR_X).
+ */
+export const OFFSET_DREAMDM_BAR_X = 250_004;
+
+/**
+ * Byte offset of the SAB Telemetry Zone (Float64, MAX_WORKERS elements).
+ * Fixed at 250,008 — 8-byte aligned.
+ */
+export const OFFSET_TELEMETRY = 250_008;
+
+/**
+ * Byte offset of the DreamDM Bar lock-state flag (Int32, 1 element).
+ * Placed after the telemetry zone at 250,520 — 4-byte aligned.
+ * 0 = unlocked (STATE_NAV / STATE_MANIPULATE), 1 = STATE_LOCKED.
+ * Seam control logical index 2 (SEAM_CTRL_IDX_LOCKED).
+ *
+ * The Wasm physics worker reads this flag to switch between dynamic constraint
+ * recalculation (0) and a static collision plane (1), reducing tick cost when
+ * the seam is locked.
+ */
+export const OFFSET_LOCKED_STATE = 250_520;
+
+/**
+ * Byte offset of the DreamDM Bar axis-orientation flag (Int32, 1 element).
+ * At 250,524 — 4-byte aligned.
+ * 0 = Portrait (Y-axis seam), 1 = Landscape (X-axis seam).
+ * Seam control logical index 3 (SEAM_CTRL_IDX_AXIS).
+ */
+export const OFFSET_AXIS_STATE = 250_524;
+
+/** Total size of the EnginSAB in bytes (250,528 — divisible by 8). */
+export const SAB_BYTES = OFFSET_AXIS_STATE + 4; // 250,528
+
+// ── Seam control logical indices (Int32 slot numbers within the seam layout) ──
+//
+// These constants mirror the spec's OFFSET_DREAMDM_BAR_*_INT32 indices and map
+// the conceptual "control buffer slot" to the actual byte-offset constants above.
+// They are intentionally not Int32Array element indices into a single contiguous
+// array (the telemetry zone sits between slots 1 and 2); use the individual
+// accessor functions below instead.
+
+/** Logical seam control slot 0 — DreamDM Bar Y-axis seam ratio (portrait). */
+export const SEAM_CTRL_IDX_BAR_Y    = 0;
+
+/** Logical seam control slot 1 — DreamDM Bar X-axis seam ratio (landscape). */
+export const SEAM_CTRL_IDX_BAR_X    = 1;
+
+/** Logical seam control slot 2 — Lock state (0 = unlocked, 1 = STATE_LOCKED). */
+export const SEAM_CTRL_IDX_LOCKED   = 2;
+
+/** Logical seam control slot 3 — Axis orientation (0 = Portrait/Y, 1 = Landscape/X). */
+export const SEAM_CTRL_IDX_AXIS     = 3;
+
+/**
+ * Snap-to-centre threshold: if the seam is within ±5 % of the screen centre
+ * on pointer-up, it snaps back to 50 % (STATE_NAV).
+ */
+export const SNAP_THRESHOLD_RATIO = 0.05;
+
+/**
+ * Fixed-point scale factor for the DreamDM Bar y-offset stored in the SAB.
+ * Encodes pixel offsets as integers: `Math.round(px * BAR_Y_SCALE)`.
+ * Provides 0.01 px precision — sufficient for sub-pixel animation.
+ */
+export const BAR_Y_SCALE = 100;
+
+// ── Convenience aliases (previously ENGIN_OFFSET_* names) ────────────────────
+// Kept for internal use; the canonical names above are the public API.
+/** @internal */ export const ENGIN_OFFSET_POS_X         = OFFSET_POS_X;
+
+/** @internal */ export const ENGIN_OFFSET_POS_Y         = OFFSET_POS_Y;
+
+/** @internal */ export const ENGIN_OFFSET_POS_Z         = OFFSET_POS_Z;
+
+/** @internal */ export const ENGIN_OFFSET_VEL_X         = OFFSET_VEL_X;
+
+/** @internal */ export const ENGIN_OFFSET_VEL_Y         = OFFSET_VEL_Y;
+
+/** @internal */ export const ENGIN_OFFSET_VEL_Z         = OFFSET_VEL_Z;
+
+/** @internal */ export const ENGIN_OFFSET_DREAMDM_BAR_Y = OFFSET_DREAMDM_BAR_Y;
+
+/** @internal */ export const ENGIN_OFFSET_DREAMDM_BAR_X = OFFSET_DREAMDM_BAR_X;
+
+/** @internal */ export const ENGIN_OFFSET_LOCKED_STATE  = OFFSET_LOCKED_STATE;
+
+/** @internal */ export const ENGIN_OFFSET_AXIS_STATE    = OFFSET_AXIS_STATE;
+
+/** @internal */ export const ENGIN_OFFSET_TELEMETRY     = OFFSET_TELEMETRY;
+
+/** @internal */ export const ENGIN_SAB_SIZE             = SAB_BYTES;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
 // ── Conform Mode memory map ───────────────────────────────────────────────────
 
 /**
@@ -129,8 +318,59 @@ export interface ConformMemoryMap {
   readonly velZ: Float32Array;
 }
 
-/** Singleton instance — allocated once per runtime context */
-let _memoryMap: ConformMemoryMap | null = null;
+// ── TheBoogieMan.Ai memory policy guard ───────────────────────────────────────
+
+/**
+ * Result of a BoogieMan memory access policy check.
+ */
+export interface MemoryPolicyResult {
+  /** Whether the access is permitted */
+  allowed: boolean;
+  /** Policy rule code — 'OK' on success, or the violated rule on denial */
+  ruleCode: 'OK' | 'C29_PRIVACY' | 'MEM_PRIVATE_ACCESS';
+  /** Human-readable denial reason (undefined when allowed) */
+  reason?: string;
+}
+
+/**
+ * A non-overlapping slice of entity indices assigned to one shader worker.
+ */
+export interface Workgroup {
+  /** Zero-based worker index (matches telemetry slot). */
+  workerIndex: number;
+  /** First entity index assigned to this worker (inclusive). */
+  startIndex: number;
+  /** One past the last entity index (exclusive). */
+  endIndex: number;
+}
+
+// ── Improvement 49: getEntityBounds ──────────────────────────────────────────
+
+/**
+ * Return the byte-level extent of a workgroup across all SoA channels.
+ * Useful for allocating sub-views or verifying workgroup memory isolation.
+ *
+ * All six 3-axis channels (posX/Y/Z, velX/Y/Z) are included so that callers
+ * get a structurally complete picture of the EnginSAB layout for the workgroup.
+ */
+export interface EntityBounds {
+  posXStart: number;
+  posXEnd: number;
+  posYStart: number;
+  posYEnd: number;
+  posZStart: number;
+  posZEnd: number;
+  velXStart: number;
+  velXEnd: number;
+  velYStart: number;
+  velYEnd: number;
+  velZStart: number;
+  velZEnd: number;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 /**
  * Returns (or allocates) the singleton Conform Mode shared memory map.
@@ -205,20 +445,6 @@ export function readBarSeam(): number {
   return encoded / BAR_SEAM_SCALE;
 }
 
-// ── TheBoogieMan.Ai memory policy guard ───────────────────────────────────────
-
-/**
- * Result of a BoogieMan memory access policy check.
- */
-export interface MemoryPolicyResult {
-  /** Whether the access is permitted */
-  allowed: boolean;
-  /** Policy rule code — 'OK' on success, or the violated rule on denial */
-  ruleCode: 'OK' | 'C29_PRIVACY' | 'MEM_PRIVATE_ACCESS';
-  /** Human-readable denial reason (undefined when allowed) */
-  reason?: string;
-}
-
 /**
  * TheBoogieMan.Ai memory access guard — Conform Mode policy enforcement.
  *
@@ -264,126 +490,6 @@ export function boogieMemoryGuard(
   }
 
   return { allowed: true, ruleCode: 'OK' };
-}
-
-// ── EnginSAB — Shader Worker shared memory layout ────────────────────────────
-//
-// Layout (SoA, 3-axis + per-entity type byte + seam control slots + telemetry + seam ext):
-//
-//   [0       – 39,999]  OFFSET_POS_X          posX[10,000]    Float32
-//   [40,000  – 79,999]  OFFSET_POS_Y          posY[10,000]    Float32
-//   [80,000  – 119,999] OFFSET_POS_Z          posZ[10,000]    Float32
-//   [120,000 – 159,999] OFFSET_VEL_X          velX[10,000]    Float32
-//   [160,000 – 199,999] OFFSET_VEL_Y          velY[10,000]    Float32
-//   [200,000 – 239,999] OFFSET_VEL_Z          velZ[10,000]    Float32
-//   [240,000 – 249,999] OFFSET_DAYDREAM_TYPE   type[10,000]   Uint8 (daydream class)
-//   [250,000 – 250,003] OFFSET_DREAMDM_BAR_Y  seam Y Int32    (seam ctrl slot 0)
-//   [250,004 – 250,007] OFFSET_DREAMDM_BAR_X  seam X Int32    (seam ctrl slot 1)
-//   [250,008 – 250,519] OFFSET_TELEMETRY      Float64 (64 slots, 8-byte aligned)
-//   [250,520 – 250,523] OFFSET_LOCKED_STATE   lock flag Int32 (seam ctrl slot 2)
-//   [250,524 – 250,527] OFFSET_AXIS_STATE     axis flag Int32 (seam ctrl slot 3)
-//
-// SAB_BYTES = OFFSET_AXIS_STATE + 4 = 250,528
-//
-// Seam ctrl logical indices (SEAM_CTRL_IDX_*):
-//   0 = BAR_Y (portrait seam ratio × BAR_Y_SCALE)
-//   1 = BAR_X (landscape seam ratio × BAR_Y_SCALE)
-//   2 = LOCKED (0 = unlocked / STATE_NAV, 1 = STATE_LOCKED)
-//   3 = AXIS   (0 = Portrait / Y-axis, 1 = Landscape / X-axis)
-//
-// Architecture: docs/ARCHITECTURE.md §1 (Runtime regions)
-
-const _ENGIN_ENTITY_COUNT  = 10_000;
-const _ENGIN_F32_BYTES     = 4;
-const _ENGIN_CHANNEL_BYTES = _ENGIN_ENTITY_COUNT * _ENGIN_F32_BYTES; // 40,000
-
-/** Byte offset of the posX SoA channel. */
-export const OFFSET_POS_X: number = 0;
-/** Byte offset of the posY SoA channel. */
-export const OFFSET_POS_Y: number = OFFSET_POS_X + _ENGIN_CHANNEL_BYTES;      // 40,000
-/** Byte offset of the posZ SoA channel. */
-export const OFFSET_POS_Z: number = OFFSET_POS_Y + _ENGIN_CHANNEL_BYTES;      // 80,000
-/** Byte offset of the velX SoA channel. */
-export const OFFSET_VEL_X: number = OFFSET_POS_Z + _ENGIN_CHANNEL_BYTES;      // 120,000
-/** Byte offset of the velY SoA channel. */
-export const OFFSET_VEL_Y: number = OFFSET_VEL_X + _ENGIN_CHANNEL_BYTES;      // 160,000
-/** Byte offset of the velZ SoA channel. */
-export const OFFSET_VEL_Z: number = OFFSET_VEL_Y + _ENGIN_CHANNEL_BYTES;      // 200,000
-/** Byte offset of the daydream-type byte array (Uint8, one per entity). */
-export const OFFSET_DAYDREAM_TYPE: number = OFFSET_VEL_Z + _ENGIN_CHANNEL_BYTES; // 240,000
-/**
- * Byte offset of the DreamDM Bar Y-axis seam slot (Int32, 1 element).
- * Fixed at 250,000 — 4-byte aligned.  Portrait / Y-axis seam ratio × BAR_Y_SCALE.
- * Seam control logical index 0 (SEAM_CTRL_IDX_BAR_Y).
- */
-export const OFFSET_DREAMDM_BAR_Y = 250_000;
-/**
- * Byte offset of the DreamDM Bar X-axis seam slot (Int32, 1 element).
- * Fixed at 250,004 — 4-byte aligned, uses the gap between BAR_Y and TELEMETRY.
- * Landscape / X-axis seam ratio × BAR_Y_SCALE.
- * Seam control logical index 1 (SEAM_CTRL_IDX_BAR_X).
- */
-export const OFFSET_DREAMDM_BAR_X = 250_004;
-/**
- * Byte offset of the SAB Telemetry Zone (Float64, MAX_WORKERS elements).
- * Fixed at 250,008 — 8-byte aligned.
- */
-export const OFFSET_TELEMETRY = 250_008;
-/**
- * Byte offset of the DreamDM Bar lock-state flag (Int32, 1 element).
- * Placed after the telemetry zone at 250,520 — 4-byte aligned.
- * 0 = unlocked (STATE_NAV / STATE_MANIPULATE), 1 = STATE_LOCKED.
- * Seam control logical index 2 (SEAM_CTRL_IDX_LOCKED).
- *
- * The Wasm physics worker reads this flag to switch between dynamic constraint
- * recalculation (0) and a static collision plane (1), reducing tick cost when
- * the seam is locked.
- */
-export const OFFSET_LOCKED_STATE = 250_520;
-/**
- * Byte offset of the DreamDM Bar axis-orientation flag (Int32, 1 element).
- * At 250,524 — 4-byte aligned.
- * 0 = Portrait (Y-axis seam), 1 = Landscape (X-axis seam).
- * Seam control logical index 3 (SEAM_CTRL_IDX_AXIS).
- */
-export const OFFSET_AXIS_STATE = 250_524;
-
-/** Total size of the EnginSAB in bytes (250,528 — divisible by 8). */
-export const SAB_BYTES = OFFSET_AXIS_STATE + 4; // 250,528
-
-// ── Seam control logical indices (Int32 slot numbers within the seam layout) ──
-//
-// These constants mirror the spec's OFFSET_DREAMDM_BAR_*_INT32 indices and map
-// the conceptual "control buffer slot" to the actual byte-offset constants above.
-// They are intentionally not Int32Array element indices into a single contiguous
-// array (the telemetry zone sits between slots 1 and 2); use the individual
-// accessor functions below instead.
-
-/** Logical seam control slot 0 — DreamDM Bar Y-axis seam ratio (portrait). */
-export const SEAM_CTRL_IDX_BAR_Y    = 0;
-/** Logical seam control slot 1 — DreamDM Bar X-axis seam ratio (landscape). */
-export const SEAM_CTRL_IDX_BAR_X    = 1;
-/** Logical seam control slot 2 — Lock state (0 = unlocked, 1 = STATE_LOCKED). */
-export const SEAM_CTRL_IDX_LOCKED   = 2;
-/** Logical seam control slot 3 — Axis orientation (0 = Portrait/Y, 1 = Landscape/X). */
-export const SEAM_CTRL_IDX_AXIS     = 3;
-
-/**
- * Snap-to-centre threshold: if the seam is within ±5 % of the screen centre
- * on pointer-up, it snaps back to 50 % (STATE_NAV).
- */
-export const SNAP_THRESHOLD_RATIO = 0.05;
-
-/**
- * A non-overlapping slice of entity indices assigned to one shader worker.
- */
-export interface Workgroup {
-  /** Zero-based worker index (matches telemetry slot). */
-  workerIndex: number;
-  /** First entity index assigned to this worker (inclusive). */
-  startIndex: number;
-  /** One past the last entity index (exclusive). */
-  endIndex: number;
 }
 
 /**
@@ -459,13 +565,6 @@ export function f32DreamDMBarY(sab: SharedArrayBuffer): Float32Array {
 }
 
 /**
- * Fixed-point scale factor for the DreamDM Bar y-offset stored in the SAB.
- * Encodes pixel offsets as integers: `Math.round(px * BAR_Y_SCALE)`.
- * Provides 0.01 px precision — sufficient for sub-pixel animation.
- */
-export const BAR_Y_SCALE = 100;
-
-/**
  * Return an Int32Array (1 element) at the DreamDM Bar Y slot.
  *
  * Use with `Atomics.store` / `Atomics.load` so cross-thread reads and writes
@@ -516,21 +615,6 @@ export function f64Telemetry(sab: SharedArrayBuffer): Float64Array {
   return new Float64Array(sab, OFFSET_TELEMETRY, MAX_WORKERS);
 }
 
-// ── Convenience aliases (previously ENGIN_OFFSET_* names) ────────────────────
-// Kept for internal use; the canonical names above are the public API.
-/** @internal */ export const ENGIN_OFFSET_POS_X         = OFFSET_POS_X;
-/** @internal */ export const ENGIN_OFFSET_POS_Y         = OFFSET_POS_Y;
-/** @internal */ export const ENGIN_OFFSET_POS_Z         = OFFSET_POS_Z;
-/** @internal */ export const ENGIN_OFFSET_VEL_X         = OFFSET_VEL_X;
-/** @internal */ export const ENGIN_OFFSET_VEL_Y         = OFFSET_VEL_Y;
-/** @internal */ export const ENGIN_OFFSET_VEL_Z         = OFFSET_VEL_Z;
-/** @internal */ export const ENGIN_OFFSET_DREAMDM_BAR_Y = OFFSET_DREAMDM_BAR_Y;
-/** @internal */ export const ENGIN_OFFSET_DREAMDM_BAR_X = OFFSET_DREAMDM_BAR_X;
-/** @internal */ export const ENGIN_OFFSET_LOCKED_STATE  = OFFSET_LOCKED_STATE;
-/** @internal */ export const ENGIN_OFFSET_AXIS_STATE    = OFFSET_AXIS_STATE;
-/** @internal */ export const ENGIN_OFFSET_TELEMETRY     = OFFSET_TELEMETRY;
-/** @internal */ export const ENGIN_SAB_SIZE             = SAB_BYTES;
-
 // ── Improvement 48: isSABAvailable ───────────────────────────────────────────
 
 /**
@@ -551,30 +635,6 @@ export function isSABAvailable(): boolean {
   } catch {
     return false;
   }
-}
-
-// ── Improvement 49: getEntityBounds ──────────────────────────────────────────
-
-/**
- * Return the byte-level extent of a workgroup across all SoA channels.
- * Useful for allocating sub-views or verifying workgroup memory isolation.
- *
- * All six 3-axis channels (posX/Y/Z, velX/Y/Z) are included so that callers
- * get a structurally complete picture of the EnginSAB layout for the workgroup.
- */
-export interface EntityBounds {
-  posXStart: number;
-  posXEnd: number;
-  posYStart: number;
-  posYEnd: number;
-  posZStart: number;
-  posZEnd: number;
-  velXStart: number;
-  velXEnd: number;
-  velYStart: number;
-  velYEnd: number;
-  velZStart: number;
-  velZEnd: number;
 }
 
 export function getEntityBounds(wg: Workgroup): EntityBounds {
@@ -632,3 +692,15 @@ export function getWorkerCount(): number {
       : 2;
   return Math.min(Math.max(concurrency - 1, 1), MAX_WORKERS);
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

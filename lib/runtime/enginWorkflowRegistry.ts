@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/enginWorkflowRegistry.ts.
+
 /**
  * lib/runtime/enginWorkflowRegistry.ts
  *
@@ -18,7 +26,13 @@
  * Privacy: only IDs / primitives cross Engin boundaries (AXIOM 4).
  */
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 // ── Engin key type ─────────────────────────────────────────────────────────────
 
@@ -31,61 +45,6 @@ export const ENGIN_KEYS = [
   'content',
   'forge',
 ] as const;
-
-export type EnginKey = (typeof ENGIN_KEYS)[number];
-
-// ── Artifact type ──────────────────────────────────────────────────────────────
-
-export type WorkflowArtifactType =
-  | 'stem'
-  | 'track'
-  | 'script'
-  | 'notebook'
-  | '3d-asset'
-  | 'clip'
-  | 'dataset'
-  | 'post'
-  | 'brand-kit'
-  | 'any';
-
-// ── Workflow definition ────────────────────────────────────────────────────────
-
-export interface WorkflowDefinition {
-  /** Unique workflow identifier — used for targeted execution and UI labelling. */
-  id: string;
-  /** Source Engin key. */
-  from: EnginKey;
-  /** Target Engin key. */
-  to: EnginKey;
-  /** Short human-readable name shown in seam UI. */
-  label: string;
-  /** What actually happens when this workflow fires. */
-  description: string;
-  /** Artifact types that trigger this workflow. */
-  artifactTypes: readonly WorkflowArtifactType[];
-  /** Bridge channel the event fires on (e.g. 'lab', 'games', 'music'). */
-  bridgeChannel: string;
-  /** Exact event name emitted on the bridge (e.g. 'lab:stem-visualization-requested'). */
-  bridgeEvent: string;
-  /**
-   * Execute the workflow by firing bridge.emitDurable on the target channel.
-   * The durable queue ensures delivery even if the target Engin is offline.
-   */
-  execute(payload: Record<string, unknown>): void;
-}
-
-// ── Helper: factory for workflow definitions ───────────────────────────────────
-
-function defineWorkflow(
-  spec: Omit<WorkflowDefinition, 'execute'>,
-): WorkflowDefinition {
-  return {
-    ...spec,
-    execute(payload): void {
-      bridge.emitDurable(spec.bridgeChannel, spec.bridgeEvent, payload);
-    },
-  };
-}
 
 // ── Registry ───────────────────────────────────────────────────────────────────
 
@@ -529,6 +488,88 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
   }),
 ];
 
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+export type EnginKey = (typeof ENGIN_KEYS)[number];
+
+// ── Artifact type ──────────────────────────────────────────────────────────────
+
+export type WorkflowArtifactType =
+  | 'stem'
+  | 'track'
+  | 'script'
+  | 'notebook'
+  | '3d-asset'
+  | 'clip'
+  | 'dataset'
+  | 'post'
+  | 'brand-kit'
+  | 'any';
+
+// ── Workflow definition ────────────────────────────────────────────────────────
+
+export interface WorkflowDefinition {
+  /** Unique workflow identifier — used for targeted execution and UI labelling. */
+  id: string;
+  /** Source Engin key. */
+  from: EnginKey;
+  /** Target Engin key. */
+  to: EnginKey;
+  /** Short human-readable name shown in seam UI. */
+  label: string;
+  /** What actually happens when this workflow fires. */
+  description: string;
+  /** Artifact types that trigger this workflow. */
+  artifactTypes: readonly WorkflowArtifactType[];
+  /** Bridge channel the event fires on (e.g. 'lab', 'games', 'music'). */
+  bridgeChannel: string;
+  /** Exact event name emitted on the bridge (e.g. 'lab:stem-visualization-requested'). */
+  bridgeEvent: string;
+  /**
+   * Execute the workflow by firing bridge.emitDurable on the target channel.
+   * The durable queue ensures delivery even if the target Engin is offline.
+   */
+  execute(payload: Record<string, unknown>): void;
+}
+
+// ── Improvement 45: getWorkflowStats ─────────────────────────────────────────
+
+export interface WorkflowStats {
+  total: number;
+  bySource: Record<string, number>;
+  byTarget: Record<string, number>;
+  byArtifactType: Record<string, number>;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
+// ── Helper: factory for workflow definitions ───────────────────────────────────
+
+function defineWorkflow(
+  spec: Omit<WorkflowDefinition, 'execute'>,
+): WorkflowDefinition {
+  return {
+    ...spec,
+    execute(payload): void {
+      bridge.emitDurable(spec.bridgeChannel, spec.bridgeEvent, payload);
+    },
+  };
+}
+
 // ── Public API ─────────────────────────────────────────────────────────────────
 
 /**
@@ -587,15 +628,6 @@ export function getWorkflowsByArtifactType(type: WorkflowArtifactType): Workflow
   );
 }
 
-// ── Improvement 45: getWorkflowStats ─────────────────────────────────────────
-
-export interface WorkflowStats {
-  total: number;
-  bySource: Record<string, number>;
-  byTarget: Record<string, number>;
-  byArtifactType: Record<string, number>;
-}
-
 /**
  * Return aggregate statistics about the registered workflow set.
  * Useful for analytics and debugging the seam configuration.
@@ -625,3 +657,15 @@ export function getWorkflowStats(): WorkflowStats {
 export function workflowExists(id: string): boolean {
   return WORKFLOWS.some((w) => w.id === id);
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

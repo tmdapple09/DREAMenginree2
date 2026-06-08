@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-08T04:32:24.336Z
+Generated: 2026-06-08T05:19:08.516Z
 
 ---
 
@@ -19166,7 +19166,7 @@ _No circular dependencies detected._
 | `lib/dreams/profileProjection.ts` | `createDreamProjection` |
 | `lib/dreams/types.ts` | `DREAM_SURFACES`, `DREAM_KINDS`, `DREAM_RENDER_MODES`, `DREAM_VISIBILITIES` |
 | `lib/engin-runtime/EnginCapabilityExecution.ts` | `getEnginExecutionPlan`, `CodeEditRingBuffer` |
-| `lib/engin-runtime/EnginCapabilityTargets.ts` | `isCustomEnginProfileId`, `isEnginProfileId`, `CANONICAL_ENGIN_ALIASES`, `toCustomEnginProfileId` |
+| `lib/engin-runtime/EnginCapabilityTargets.ts` | `CANONICAL_ENGIN_ALIASES`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId` |
 | `lib/engin-runtime/EnginDomainCores.ts` | `CodePieceTableDocument`, `CodeEditorHotState`, `CodeDiagnosticWorkerBridge`, `CodeExecutionWorkerBridge`, `CodeSnapshotCompactor`, `CodeStartupHydrator`, `CodeKeystrokeBenchmark`, `GameWebGPUDevice`, `GameRenderLoop`, `GameInstanceBufferManager`, `GameGeometryBufferRegistry`, `GameMaterialBucketBuffer`, `GameFrustumCuller`, `GameLODSelector`, `GameInputRingBuffer`, `GamePhysicsCommandBuffer`, `GameFrameBudgetProbe`, `GameGeometryThroughputBenchmark`, `StarMakerAudioWorkletProcessor`, `StarMakerAudioWorkletBridge`, `StarMakerTrackBufferPool`, `StarMakerAudioCommandQueue`, `StarMakerTransportClock`, `StarMakerMixerKernel`, `StarMakerMeteringDecoupler`, `StarMakerLatencyProbe`, `ContentRenderJobQueue`, `ContentWorkerRenderBridge`, `ContentWebGPURenderPath`, `ContentTileRenderer4K`, `ContentRayAccelerationStructure`, `ContentGeometryBufferRegistry`, `ContentMaterialBufferRegistry`, `ContentProgressiveOutputBuffer`, `ContentGpuCapabilityProbe`, `ContentRenderBenchmark`, `BrandVectorPathCache`, `BrandSdfGlyphAtlas`, `BrandPaletteCache`, `BrandTypeScaleCache`, `BrandFileHydrator`, `BrandCollaborationDeltaPacker`, `BrandPatchLog`, `BrandLocalApplyQueue`, `BrandVectorRenderProbe`, `BrandFileOpenProbe`, `BrandCollaborationSyncProbe`, `LabParticleSoABuffer`, `LabSpatialHashGrid`, `LabCollisionCandidateBuffer`, `LabCollisionKernel`, `LabWebGPUComputePipeline`, `LabComputeShaderRegistry`, `LabGpuParticleBuffers`, `LabWasmSimdFallback`, `LabSimulationWorkerBridge`, `LabSimulationClock`, `LabParticleBenchmark64K`, `LabParticleBenchmark1M`, `LabCollisionBenchmark`, `LabGpuDispatchProbe`, `CollaborationApplyQueue`, `CollaborationRevisionClock`, `TransportLatencyProbe`, `DeterministicMergePatchModel`, `CrdtPatchModel`, `AssetManifestLoader`, `LazyEnginHydrator`, `StreamingAssetLoader`, `IndexedDbBlobStore`, `CacheStorageRuntime`, `createCanonicalScorecards`, `runCanonicalPerformanceBenchmarks`, `CodeEditRingBuffer`, `MidiEventRingBuffer`, `CollaborationDeltaPacker`, `StartupBudgetProbe`, `IdleMemoryProbe` |
 | `lib/engin-runtime/EnginHardwareCapabilities.ts` | `detectWasmSimdSupport`, `detectEnginHardwareCapabilities`, `fallbackEnginHardwareCapabilities` |
 | `lib/engin-runtime/EnginPerformanceProbe.ts` | `gpuMeasurementOrHardwareDependent` |
@@ -19274,7 +19274,7 @@ _No circular dependencies detected._
 | `lib/routing/surfaces.ts` | `PUBLIC_SURFACE_PREFIXES`, `SAB_ISOLATED_ROUTE_PREFIXES`, `isSabIsolatedPath` |
 | `lib/runtime/EnginDispatcher.ts` | `initWasmEngine` |
 | `lib/runtime/channelMetrics.ts` | `recordError`, `getAllChannelMetrics`, `resetChannelMetrics` |
-| `lib/runtime/dreamOSBus.ts` | `isIntentEnvelope`, `isInformationDomain`, `CAPABILITY_DESCRIPTORS`, `INFORMATION_DOMAINS` |
+| `lib/runtime/dreamOSBus.ts` | `CAPABILITY_DESCRIPTORS`, `isIntentEnvelope`, `isInformationDomain`, `INFORMATION_DOMAINS` |
 | `lib/runtime/dualRuntime.ts` | `TORUS_DOMAINS`, `TORUS_WIDTH`, `TORUS_HEIGHT`, `TORUS_FOCUS_MAP`, `RUNTIME_REGIONS` |
 | `lib/runtime/enginWorkflowRegistry.ts` | `getWorkflowsByArtifactType`, `getWorkflowStats`, `workflowExists` |
 | `lib/runtime/instanceManager.ts` | `persistInstanceList`, `spawnDualInstances` |
@@ -21604,7 +21604,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: getEnginExecutionPlan, CodeEditRingBuffer
 │   │   ├── EnginCapabilityScorecard.ts
 │   │   ├── EnginCapabilityTargets.ts ∅
-│   │   │   └── ∅ unused: isCustomEnginProfileId, isEnginProfileId, CANONICAL_ENGIN_ALIASES, toCustomEnginProfileId
+│   │   │   └── ∅ unused: CANONICAL_ENGIN_ALIASES, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId
 │   │   ├── EnginDomainCores.ts ∅
 │   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, runCanonicalPerformanceBenchmarks, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
 │   │   ├── EnginEventBus.ts
@@ -22081,7 +22081,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: recordError, getAllChannelMetrics, resetChannelMetrics
 │   │   ├── coercionTable.ts
 │   │   ├── dreamOSBus.ts ∅
-│   │   │   └── ∅ unused: isIntentEnvelope, isInformationDomain, CAPABILITY_DESCRIPTORS, INFORMATION_DOMAINS
+│   │   │   └── ∅ unused: CAPABILITY_DESCRIPTORS, isIntentEnvelope, isInformationDomain, INFORMATION_DOMAINS
 │   │   ├── dropTargetRegistry.ts
 │   │   ├── dualRuntime.ts ∅
 │   │   │   └── ∅ unused: TORUS_DOMAINS, TORUS_WIDTH, TORUS_HEIGHT, TORUS_FOCUS_MAP, RUNTIME_REGIONS

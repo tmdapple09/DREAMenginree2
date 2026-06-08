@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/runtimeChannel.ts.
+
 /**
  * runtimeChannel — solo-parity adapter for shared runtimes.
  *
@@ -21,7 +29,27 @@
  * Solo == Co-op with one peer. That is the entire point.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 export type RuntimeChannelEvent = Record<string, unknown>;
 
@@ -46,6 +74,42 @@ export interface RuntimeChannelOptions {
   /** Bound retained transport history so long-lived channels cannot leak memory. */
   replayLimit?: number;
 }
+
+/**
+ * Realtime channel options — kept minimal so we can grow the surface
+ * incrementally without breaking solo callers.
+ */
+export interface RealtimeChannel<T extends RuntimeChannelEvent> {
+  on: (
+    type: 'broadcast',
+    opts: { event: string },
+    callback: (payload: { payload: T }) => void,
+  ) => RealtimeChannel<T>;
+  send: (message: {
+    type: 'broadcast';
+    event: string;
+    payload: T;
+  }) => Promise<unknown>;
+  subscribe: (callback?: (status: string) => void) => unknown;
+  unsubscribe: () => Promise<unknown>;
+}
+
+export interface RealtimeClient<T extends RuntimeChannelEvent> {
+  channel: (name: string) => RealtimeChannel<T>;
+}
+
+export interface RealtimeChannelOptions<
+  T extends RuntimeChannelEvent = RuntimeChannelEvent,
+> extends RuntimeChannelOptions {
+  /** Inject the configured realtime client owned by the runtime infrastructure. */
+  client?: RealtimeClient<T>;
+  /** Broadcast event name. Defaults to `'message'`. */
+  eventName?: string;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 function getReplayLimit(options: RuntimeChannelOptions): number {
   const replayLimit = options.replayLimit ?? 100;
@@ -119,38 +183,6 @@ export function createLocalChannel<
       listeners.clear();
     },
   };
-}
-
-/**
- * Realtime channel options — kept minimal so we can grow the surface
- * incrementally without breaking solo callers.
- */
-export interface RealtimeChannel<T extends RuntimeChannelEvent> {
-  on: (
-    type: 'broadcast',
-    opts: { event: string },
-    callback: (payload: { payload: T }) => void,
-  ) => RealtimeChannel<T>;
-  send: (message: {
-    type: 'broadcast';
-    event: string;
-    payload: T;
-  }) => Promise<unknown>;
-  subscribe: (callback?: (status: string) => void) => unknown;
-  unsubscribe: () => Promise<unknown>;
-}
-
-export interface RealtimeClient<T extends RuntimeChannelEvent> {
-  channel: (name: string) => RealtimeChannel<T>;
-}
-
-export interface RealtimeChannelOptions<
-  T extends RuntimeChannelEvent = RuntimeChannelEvent,
-> extends RuntimeChannelOptions {
-  /** Inject the configured realtime client owned by the runtime infrastructure. */
-  client?: RealtimeClient<T>;
-  /** Broadcast event name. Defaults to `'message'`. */
-  eventName?: string;
 }
 
 /**
@@ -243,3 +275,15 @@ export async function createRuntimeChannel<
   if (mode === 'solo') return createLocalChannel<T>(id);
   return createRealtimeChannel<T>(id, options);
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

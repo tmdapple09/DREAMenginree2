@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: components/runtime/dream.shell.RuntimeShell.tsx.
+
 /**
  * RuntimeShell
  *
@@ -18,14 +26,38 @@
  * always receives a correctly-sized box and needs no internal inset clipping.
  */
 
-import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
-import React, { useCallback, useEffect, useState } from 'react';
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 const MIN_ZOOM = 0.5;
+
 const MAX_ZOOM = 2.5;
+
 const ZOOM_STEP = 0.15;
+
 /** Height of the in-region iframe chrome bar (Back button + title) */
 const CHROME_BAR_H = 44;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
+
+import React, { useCallback, useEffect, useState } from 'react';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 interface RuntimeShellProps {
   /** World content rendered when no iframe is open */
@@ -37,6 +69,10 @@ interface RuntimeShellProps {
   /** Optional label shown in the iframe chrome bar */
   iframeTitle?: string;
 }
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 export default function RuntimeShell({
   children,
@@ -290,3 +326,15 @@ export default function RuntimeShell({
     </div>
   );
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

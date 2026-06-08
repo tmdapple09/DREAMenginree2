@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/useSharedEnginChannel.ts.
+
 /**
  * lib/runtime/useSharedEnginChannel.ts — Pass 5
  *
@@ -25,11 +33,35 @@
  * Architecture: docs/ARCHITECTURE.md §5 (Pass 5 — Shared Dream wiring).
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import type { EnginName } from '@/lib/runtime/instanceManager';
+
 import { buildInstanceKey, promoteInstanceToRealtime, useInstanceManager } from '@/lib/runtime/instanceManager';
+
 import { createLocalChannel, type RuntimeChannel, type RuntimeChannelEvent } from '@/lib/runtime/runtimeChannel';
+
 import type { RuntimeId } from '@/types/module-manifest';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -60,6 +92,10 @@ export interface SharedEnginChannelResult<T extends RuntimeChannelEvent = Runtim
   /** Number of peers in the session (always 1 for solo). */
   peerCount: number;
 }
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 
@@ -150,3 +186,15 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
 
   return { channel, publish, subscribe, isConnected, peerCount };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

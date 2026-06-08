@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/dream-window/runtimeRegion.ts.
+
 /**
  * runtimeRegion — Dual-runtime spatial model
  *
@@ -18,12 +26,59 @@
  * Law: docs/LAW.md §OS-layer naming law
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ---------------------------------------------------------------------------
+// Default state
+// ---------------------------------------------------------------------------
+
+/**
+ * The default runtime region state:
+ * - Surface Space is dominant, showing HomeDream Surface
+ * - DreamSpace has no mounted windows
+ * - Seam is at position 0 (bar at bottom), labelled 'DreamDM Bar'
+ */
+export const DEFAULT_RUNTIME_REGION_STATE: RuntimeRegionState = {
+  surfaceSpace: {
+    activeSurface: SURFACE_NAMES.HOME_DREAM_SURFACE,
+    region: RUNTIME_REGIONS.SURFACE_SPACE,
+    isDominant: true,
+  },
+  dreamSpace: {
+    mountedWindows: [],
+    region: RUNTIME_REGIONS.DREAM_SPACE,
+    isDominant: false,
+  },
+  seam: {
+    position: 0,
+    label: 'DreamDM Bar',
+  },
+};
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import {
     RUNTIME_REGIONS,
     SURFACE_NAMES,
     type DreamWindowState,
     type RuntimeSeamName,
 } from '@/lib/identity/canonical-names';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ---------------------------------------------------------------------------
 // Sub-types
@@ -90,32 +145,9 @@ export interface RuntimeRegionState {
   seam: SeamState;
 }
 
-// ---------------------------------------------------------------------------
-// Default state
-// ---------------------------------------------------------------------------
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
-/**
- * The default runtime region state:
- * - Surface Space is dominant, showing HomeDream Surface
- * - DreamSpace has no mounted windows
- * - Seam is at position 0 (bar at bottom), labelled 'DreamDM Bar'
- */
-export const DEFAULT_RUNTIME_REGION_STATE: RuntimeRegionState = {
-  surfaceSpace: {
-    activeSurface: SURFACE_NAMES.HOME_DREAM_SURFACE,
-    region: RUNTIME_REGIONS.SURFACE_SPACE,
-    isDominant: true,
-  },
-  dreamSpace: {
-    mountedWindows: [],
-    region: RUNTIME_REGIONS.DREAM_SPACE,
-    isDominant: false,
-  },
-  seam: {
-    position: 0,
-    label: 'DreamDM Bar',
-  },
-};
+// Runtime functions, classes, handlers, and state transitions.
 
 // ---------------------------------------------------------------------------
 // State transitions (pure functions — return new state, never mutate)
@@ -233,6 +265,18 @@ export function getSurfaceSpaceSurface(state: RuntimeRegionState): string {
 export function isDreamSpaceDominant(state: RuntimeRegionState): boolean {
   return state.dreamSpace.isDominant;
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
 
 // Re-export canonical constants
 export { RUNTIME_REGIONS };

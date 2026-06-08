@@ -1,4 +1,13 @@
 'use client';
+
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/useDualRuntimePersistence.ts.
+
 /**
  * useDualRuntimePersistence — persists DualRuntimeState to OPFS with localStorage fallback.
  *
@@ -15,7 +24,24 @@
  * Privacy: runtime layout is not user-generated content; local storage only.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const STORAGE_KEY = 'de-dual-runtime-state';
+
+const OPFS_FILENAME = 'de-dual-runtime-state.json';
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { useCallback, useEffect, useState } from 'react';
+
 import {
     DEFAULT_DUAL_RUNTIME,
     makeHomeActiveTop,
@@ -25,8 +51,25 @@ import {
     type RuntimeWorld,
 } from './dualRuntime';
 
-const STORAGE_KEY = 'de-dual-runtime-state';
-const OPFS_FILENAME = 'de-dual-runtime-state.json';
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+export interface UseDualRuntimePersistenceReturn {
+  state: DualRuntimeState;
+  setTopWorld: (world: RuntimeWorld) => void;
+  setBottomWorld: (world: RuntimeWorld) => void;
+  swapDominant: () => void;
+  goHome: () => void;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 /** Serialize RuntimeWorld to/from a JSON-safe form */
 function serializeWorld(world: RuntimeWorld): string {
@@ -104,14 +147,6 @@ async function readStateOpfs(): Promise<string | null> {
   }
 }
 
-export interface UseDualRuntimePersistenceReturn {
-  state: DualRuntimeState;
-  setTopWorld: (world: RuntimeWorld) => void;
-  setBottomWorld: (world: RuntimeWorld) => void;
-  swapDominant: () => void;
-  goHome: () => void;
-}
-
 /**
  * useDualRuntimePersistence
  *
@@ -161,3 +196,14 @@ export function useDualRuntimePersistence(): UseDualRuntimePersistenceReturn {
   return { state, setTopWorld, setBottomWorld, swapDominant, goHome };
 }
 
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

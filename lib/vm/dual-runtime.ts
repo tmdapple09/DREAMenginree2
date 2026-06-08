@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/vm/dual-runtime.ts.
+
 /**
  * lib/vm/dual-runtime.ts — DualRuntime Orchestrator
  *
@@ -16,6 +24,18 @@
  *   vm:stats-update        — periodic telemetry
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import type {
     VMBusEventMap,
     VMBusEventName,
@@ -25,7 +45,16 @@ import type {
     VMStatsUpdatePayload,
     VMWorkloadSubmittedPayload,
 } from './bus-events';
+
 import { InterVMChannel, type VMEvent } from './inter-vm-messaging';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -49,6 +78,10 @@ export interface VMRuntimeStats {
 }
 
 type BusHandler<K extends VMBusEventName> = (payload: VMBusEventMap[K]) => void;
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 // ─── Internal VMRuntime ───────────────────────────────────────────────────────
 
@@ -258,3 +291,15 @@ export class DualRuntime {
 // ─── Singleton ────────────────────────────────────────────────────────────────
 
 export const dualRuntime = new DualRuntime();
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

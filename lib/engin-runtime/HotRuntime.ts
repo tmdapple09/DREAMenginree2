@@ -1,5 +1,34 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/HotRuntime.ts.
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import type { EnginAction } from './EnginRuleSetContract';
+
 import type { EnginExecutionPlan } from './EnginCapabilityExecution';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 export type HotActionKind =
   | 'keystroke'
@@ -93,6 +122,67 @@ export interface MoldableModuleFrame {
   readonly revision: number;
   readonly timestamp?: number;
 }
+
+export type WebGPUInitState = 'idle' | 'ready' | 'unavailable' | 'failed' | 'lost';
+
+export interface WebGPUInitializationResult {
+  readonly ready: boolean;
+  readonly state: WebGPUInitState;
+  readonly reason?: string;
+  readonly adapterInfo?: JsonSafeGpuAdapterInfo;
+  readonly maxTextureDimension2D?: number;
+  readonly powerPreference?: GPUPowerPreference;
+  readonly initializedAt?: string;
+}
+
+export interface JsonSafeGpuAdapterInfo {
+  readonly vendor?: string;
+  readonly architecture?: string;
+  readonly device?: string;
+  readonly description?: string;
+}
+
+export interface WebGPUComputeMeasurement {
+  readonly dispatchLatencyMs: number;
+  readonly estimatedTflops: number;
+  readonly invocations: number;
+  readonly workgroups: number;
+  readonly operationsPerInvocation: number;
+  readonly samples: number[];
+}
+
+export interface WebGPUDispatchOptions {
+  readonly invocations?: number;
+  readonly samples?: number;
+  readonly operationsPerInvocation?: number;
+}
+
+export interface WebGPUInitializeOptions {
+  readonly powerPreference?: GPUPowerPreference;
+  readonly force?: boolean;
+}
+
+export interface ShaderKernelDefinition {
+  readonly id: string;
+  readonly code: string;
+  readonly entryPoint?: string;
+}
+
+export type GpuBufferKind =
+  | 'particles'
+  | 'transforms'
+  | 'meshes'
+  | 'materials'
+  | 'tiles'
+  | 'compute'
+  | 'module-transfer'
+  | 'module-shape'
+  | 'touch-input'
+  | 'runtime-surface';
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 export class HotActionClassifier {
   private readonly byPrefix: ReadonlyArray<[string, HotActionKind]> = [
@@ -456,6 +546,7 @@ export class BinaryCommandBus {
 }
 
 export class DeferredPersistenceQueue<T> extends CommandRingBuffer<T> {}
+
 export class DeferredSyncQueue<T> extends CommandRingBuffer<T> {}
 
 export class SnapshotCompactor<T> {
@@ -494,51 +585,6 @@ export class WorkerPoolRuntime {
     if (this.workers.length < this.maxWorkers) this.workers.push(worker);
     else worker.terminate();
   }
-}
-
-export type WebGPUInitState = 'idle' | 'ready' | 'unavailable' | 'failed' | 'lost';
-
-export interface WebGPUInitializationResult {
-  readonly ready: boolean;
-  readonly state: WebGPUInitState;
-  readonly reason?: string;
-  readonly adapterInfo?: JsonSafeGpuAdapterInfo;
-  readonly maxTextureDimension2D?: number;
-  readonly powerPreference?: GPUPowerPreference;
-  readonly initializedAt?: string;
-}
-
-export interface JsonSafeGpuAdapterInfo {
-  readonly vendor?: string;
-  readonly architecture?: string;
-  readonly device?: string;
-  readonly description?: string;
-}
-
-export interface WebGPUComputeMeasurement {
-  readonly dispatchLatencyMs: number;
-  readonly estimatedTflops: number;
-  readonly invocations: number;
-  readonly workgroups: number;
-  readonly operationsPerInvocation: number;
-  readonly samples: number[];
-}
-
-export interface WebGPUDispatchOptions {
-  readonly invocations?: number;
-  readonly samples?: number;
-  readonly operationsPerInvocation?: number;
-}
-
-export interface WebGPUInitializeOptions {
-  readonly powerPreference?: GPUPowerPreference;
-  readonly force?: boolean;
-}
-
-export interface ShaderKernelDefinition {
-  readonly id: string;
-  readonly code: string;
-  readonly entryPoint?: string;
 }
 
 export class ShaderKernelRegistry {
@@ -949,18 +995,6 @@ export class WebGPUDeviceRuntime {
   }
 }
 
-export type GpuBufferKind =
-  | 'particles'
-  | 'transforms'
-  | 'meshes'
-  | 'materials'
-  | 'tiles'
-  | 'compute'
-  | 'module-transfer'
-  | 'module-shape'
-  | 'touch-input'
-  | 'runtime-surface';
-
 export class GpuBufferRegistry {
   private readonly buffers = new Map<string, GPUBuffer>();
 
@@ -1132,3 +1166,15 @@ function performanceNow(): number {
     ? performance.now()
     : Date.now();
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/index.ts.
+
 /**
  * lib/engin-runtime/index.ts
  *
@@ -6,6 +14,66 @@
  * Usage:
  *   import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
  */
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ─── Factory helper ───────────────────────────────────────────────────────────
+
+import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
+
+import type { EnginRuntimeOptions } from './EnginRuntime';
+
+import { EnginRuntime } from './EnginRuntime';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
+/**
+ * createEnginRuntime(ruleSet, options?)
+ *
+ * Convenience factory — identical to `new EnginRuntime(...)` but avoids
+ * callers needing to import the class directly.
+ */
+export function createEnginRuntime<
+  A extends EnginAction = EnginAction,
+  DomainEvents extends Record<string, object> = Record<string, object>,
+>(
+  ruleSet: EnginRuleSetContract<A>,
+  options?: EnginRuntimeOptions,
+): EnginRuntime<A, DomainEvents> {
+  return new EnginRuntime<A, DomainEvents>(ruleSet, options);
+}
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
 
 export {
   createBaseState,
@@ -16,6 +84,7 @@ export {
   isJsonSerializable,
   patchBaseState,
 } from './EnginBaseState';
+
 export type {
   CreateDomainObjectInput,
   DomainObject,
@@ -29,6 +98,7 @@ export type {
 } from './EnginBaseState';
 
 export { createEnginEventBus } from './EnginEventBus';
+
 export type {
   EnginEventBus,
   EnginEventMap,
@@ -41,6 +111,7 @@ export {
   MemoryAdapter,
   MemorySyncTransport,
 } from './EnginIOAdapter';
+
 export type {
   EnginIOAdapter,
   EnginSyncDirection,
@@ -55,6 +126,7 @@ export {
   gateCapability,
   mergeCapabilities,
 } from './EnginCapabilities';
+
 export type {
   CapabilityGateResult,
   DomainAuthorizationContext,
@@ -68,6 +140,7 @@ export {
   validateRuleSetManifest,
   validateRuleSetState,
 } from './EnginRuleSetContract';
+
 export type {
   CompatibilityNegotiationResult,
   ConstraintResult,
@@ -88,12 +161,14 @@ export {
   hashBytesFNV1A,
   stableStringifySnapshot,
 } from './EnginSnapshotFingerprint';
+
 export type { WasmFingerprintExports } from './EnginSnapshotFingerprint';
 
 export {
   createPremiumRuntimeQuality,
   validatePremiumRuntimeQuality,
 } from './PremiumRuntimeQuality';
+
 export type {
   PremiumLayerTier,
   PremiumRuntimeMaterial,
@@ -101,9 +176,6 @@ export type {
   PremiumRuntimeQualityInput,
   PremiumRuntimeQualityValidation,
 } from './PremiumRuntimeQuality';
-
-
-
 
 export {
   AudioWorkletRuntime,
@@ -121,12 +193,15 @@ export {
   WebGPUDeviceRuntime,
   WorkerPoolRuntime,
 } from './HotRuntime';
+
 export type { BinaryCommandPacket, GpuBufferKind, HotActionKind, JsonSafeGpuAdapterInfo, WebGPUComputeMeasurement, WebGPUDispatchOptions, WebGPUInitializationResult, WebGPUInitializeOptions, WebGPUInitState } from './HotRuntime';
 
 export { detectEnginHardwareCapabilities, detectWasmSimdSupport, fallbackEnginHardwareCapabilities } from './EnginHardwareCapabilities';
+
 export type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
 
 export { createEnginCapabilityScorecard } from './EnginCapabilityScorecard';
+
 export type { EnginCapabilityScorecard, EnginCapabilityScorecardEntry, MetricMeasurement, MetricStatus } from './EnginCapabilityScorecard';
 
 export { EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent } from './EnginPerformanceProbe';
@@ -148,6 +223,7 @@ export {
   createEnginCapabilityExecutionKernel,
   getEnginExecutionPlan,
 } from './EnginCapabilityExecution';
+
 export type {
   CodeEditPatch,
   EnginExecutionPlan,
@@ -174,6 +250,7 @@ export {
   validateCanonicalEnginCapabilityProfiles,
   validateEnginCapabilityProfile,
 } from './EnginCapabilityTargets';
+
 export type {
   CanonicalEnginId,
   CustomEnginProfileId,
@@ -192,26 +269,5 @@ export {
   ENGIN_RUNTIME_VERSION,
   EnginRuntime,
 } from './EnginRuntime';
+
 export type { EnginRuntimeOptions } from './EnginRuntime';
-
-// ─── Factory helper ───────────────────────────────────────────────────────────
-
-import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
-import type { EnginRuntimeOptions } from './EnginRuntime';
-import { EnginRuntime } from './EnginRuntime';
-
-/**
- * createEnginRuntime(ruleSet, options?)
- *
- * Convenience factory — identical to `new EnginRuntime(...)` but avoids
- * callers needing to import the class directly.
- */
-export function createEnginRuntime<
-  A extends EnginAction = EnginAction,
-  DomainEvents extends Record<string, object> = Record<string, object>,
->(
-  ruleSet: EnginRuleSetContract<A>,
-  options?: EnginRuntimeOptions,
-): EnginRuntime<A, DomainEvents> {
-  return new EnginRuntime<A, DomainEvents>(ruleSet, options);
-}

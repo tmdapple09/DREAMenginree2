@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/EnginCapabilities.ts.
+
 /**
  * lib/engin-runtime/EnginCapabilities.ts
  *
@@ -14,11 +22,62 @@
  * Architecture: docs/AXIOMS.md §4 — security by default.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+/** All capabilities denied — safe starting point. */
+export const DENY_ALL: EnginCapabilityMap = new Proxy(
+  {} as EnginCapabilityMap,
+  {
+    get: () => false,
+  },
+);
+
+/** Predefined set for a standard authenticated user. */
+export const DEFAULT_USER_CAPABILITIES: EnginCapabilityMap = Object.freeze({
+  'state:read': true,
+  'state:write': true,
+  'persistence:local': true,
+  'persistence:remote': false,
+  'session:start': true,
+  'session:end': true,
+  'session:pause': true,
+  'session:resume': true,
+  'scores:read': true,
+  'scores:publish': true,
+  'world:edit': true,
+  'world:save': true,
+  'assets:load': true,
+  'assets:upload': false,
+  'bridge:emit': true,
+  'bridge:listen': true,
+  'scripts:edit': false,
+  'scripts:run': false,
+  'co-op:enable': false,
+} as Record<EnginCapability, boolean> as EnginCapabilityMap);
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import {
   isDomainObject,
   type DomainObject,
   type JsonValue,
 } from './EnginBaseState';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ─── Capability identifiers ───────────────────────────────────────────────────
 
@@ -56,37 +115,6 @@ export type EnginCapability =
 
 export type EnginCapabilityMap = Readonly<Record<EnginCapability, boolean>>;
 
-/** All capabilities denied — safe starting point. */
-export const DENY_ALL: EnginCapabilityMap = new Proxy(
-  {} as EnginCapabilityMap,
-  {
-    get: () => false,
-  },
-);
-
-/** Predefined set for a standard authenticated user. */
-export const DEFAULT_USER_CAPABILITIES: EnginCapabilityMap = Object.freeze({
-  'state:read': true,
-  'state:write': true,
-  'persistence:local': true,
-  'persistence:remote': false,
-  'session:start': true,
-  'session:end': true,
-  'session:pause': true,
-  'session:resume': true,
-  'scores:read': true,
-  'scores:publish': true,
-  'world:edit': true,
-  'world:save': true,
-  'assets:load': true,
-  'assets:upload': false,
-  'bridge:emit': true,
-  'bridge:listen': true,
-  'scripts:edit': false,
-  'scripts:run': false,
-  'co-op:enable': false,
-} as Record<EnginCapability, boolean> as EnginCapabilityMap);
-
 // ─── Runtime gate ─────────────────────────────────────────────────────────────
 
 export interface CapabilityGateResult {
@@ -94,6 +122,34 @@ export interface CapabilityGateResult {
   /** Populated when granted === false. */
   reason?: string;
 }
+
+// ─── Domain authorization ────────────────────────────────────────────────────
+
+export type DomainCapability =
+  | 'read'
+  | 'write'
+  | 'share'
+  | 'move'
+  | 'duplicate'
+  | 'publish'
+  | 'destroy'
+  | 'admin';
+
+export interface DomainAuthorizationContext {
+  actorId: string;
+  runtimeId: string;
+  surfaceRuntimeIds: ReadonlyArray<string>;
+  collaboration: {
+    active: boolean;
+    participantIds: ReadonlyArray<string>;
+    editorIds: ReadonlyArray<string>;
+  };
+  admin?: boolean;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 /**
  * gateCapability(map, capability)
@@ -124,30 +180,6 @@ export function mergeCapabilities(
     ...(base as Record<string, boolean>),
     ...overrides,
   }) as EnginCapabilityMap;
-}
-
-// ─── Domain authorization ────────────────────────────────────────────────────
-
-export type DomainCapability =
-  | 'read'
-  | 'write'
-  | 'share'
-  | 'move'
-  | 'duplicate'
-  | 'publish'
-  | 'destroy'
-  | 'admin';
-
-export interface DomainAuthorizationContext {
-  actorId: string;
-  runtimeId: string;
-  surfaceRuntimeIds: ReadonlyArray<string>;
-  collaboration: {
-    active: boolean;
-    participantIds: ReadonlyArray<string>;
-    editorIds: ReadonlyArray<string>;
-  };
-  admin?: boolean;
 }
 
 /** The single capability check for runtime-owned domain objects. */
@@ -225,3 +257,15 @@ export function authorizeDomainCapability(
     reason: `Capability '${action}' is not granted for this domain object.`,
   };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

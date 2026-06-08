@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/EnginCapabilityTargets.ts.
+
 /**
  * lib/engin-runtime/EnginCapabilityTargets.ts
  *
@@ -8,124 +16,15 @@
  * degradation levers without exposing raw performance targets to users.
  */
 
-export type CanonicalEnginId = 'code' | 'games' | 'music' | 'create' | 'brand' | 'lab';
-export type CustomEnginProfileId = string & { readonly __customEnginProfileId?: unique symbol };
-export type EnginProfileId = CanonicalEnginId | CustomEnginProfileId;
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
 
-export type CapabilityTargetDimension =
-  | 'install-footprint'
-  | 'idle-memory'
-  | 'input-latency'
-  | 'startup-time'
-  | 'geometry-throughput'
-  | 'gpu-render-latency'
-  | 'viewport-framerate'
-  | 'viewport-resolution'
-  | 'audio-latency'
-  | 'track-count'
-  | 'audio-bit-depth'
-  | 'audio-sample-rate'
-  | 'midi-latency'
-  | 'round-trip-audio'
-  | 'ray-intersection'
-  | 'offline-frame-render'
-  | 'gpu-compute-throughput'
-  | 'ui-response'
-  | 'vector-render-latency'
-  | 'file-open-time'
-  | 'collaboration-sync'
-  | 'physics-loop-64k'
-  | 'physics-loop-1m'
-  | 'collision-detection'
-  | 'gpu-compute-latency';
+// Runtime law comments and invariants stay attached to the code they govern.
 
-export type CapabilityTargetUnit =
-  | 'mb'
-  | 'ms'
-  | 'fps'
-  | 'k'
-  | 'polygons-per-frame'
-  | 'tracks'
-  | 'bit'
-  | 'khz'
-  | 'seconds'
-  | 'tflops'
-  | 'ns';
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
-export type CapabilityTargetDirection = 'at-most' | 'at-least';
-
-export interface EnginCapabilityTarget {
-  readonly dimension: CapabilityTargetDimension;
-  readonly direction: CapabilityTargetDirection;
-  readonly target: number;
-  readonly unit: CapabilityTargetUnit;
-  /** Minimum normalized progress that counts as acceptable. */
-  readonly minimumProgress: number;
-  readonly preferredTarget?: number;
-}
-
-export interface EnginCapabilityProfile {
-  readonly enginId: EnginProfileId;
-  readonly targets: ReadonlyArray<EnginCapabilityTarget>;
-  /** Architecture decisions the Engin must honor to move toward the targets. */
-  readonly levers: ReadonlyArray<string>;
-}
-
-export interface CapabilityTargetEvaluation extends EnginCapabilityTarget {
-  readonly acceptanceValue: number;
-  readonly acceptanceDescription: string;
-}
-
-export interface CapabilityProfileValidation {
-  readonly valid: boolean;
-  readonly enginId: EnginProfileId;
-  readonly evaluations: ReadonlyArray<CapabilityTargetEvaluation>;
-  readonly reason?: string;
-}
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 const MINIMUM_PROGRESS = 0.8;
-
-function atMost(
-  dimension: CapabilityTargetDimension,
-  target: number,
-  unit: CapabilityTargetUnit,
-  preferredTarget?: number,
-): EnginCapabilityTarget {
-  return Object.freeze({
-    dimension,
-    direction: 'at-most',
-    target,
-    unit,
-    minimumProgress: MINIMUM_PROGRESS,
-    ...(preferredTarget === undefined ? {} : { preferredTarget }),
-  });
-}
-
-function atLeast(
-  dimension: CapabilityTargetDimension,
-  target: number,
-  unit: CapabilityTargetUnit,
-): EnginCapabilityTarget {
-  return Object.freeze({
-    dimension,
-    direction: 'at-least',
-    target,
-    unit,
-    minimumProgress: MINIMUM_PROGRESS,
-  });
-}
-
-function profile(
-  enginId: EnginProfileId,
-  targets: ReadonlyArray<EnginCapabilityTarget>,
-  levers: ReadonlyArray<string>,
-): EnginCapabilityProfile {
-  return Object.freeze({
-    enginId,
-    targets: Object.freeze([...targets]),
-    levers: Object.freeze([...levers]),
-  });
-}
 
 export const ENGIN_CAPABILITY_PROFILES: Readonly<Record<CanonicalEnginId, EnginCapabilityProfile>> = Object.freeze({
   code: profile(
@@ -231,6 +130,150 @@ export const CANONICAL_ENGIN_IDS: readonly CanonicalEnginId[] = Object.freeze([
   'lab',
 ]);
 
+export const CANONICAL_ENGIN_ALIASES: Readonly<Record<CanonicalEnginId, ReadonlyArray<string>>> = Object.freeze({
+  code: Object.freeze(['code', 'CodeEngin']),
+  games: Object.freeze(['games', 'game', 'GameEngin']),
+  music: Object.freeze(['music', 'starmaker', 'StarMakerEngin']),
+  create: Object.freeze(['create', 'content', 'ContentEngin']),
+  brand: Object.freeze(['brand', 'branding', 'BrandingEngin']),
+  lab: Object.freeze(['lab', 'LabEngin']),
+});
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+export type CanonicalEnginId = 'code' | 'games' | 'music' | 'create' | 'brand' | 'lab';
+
+export type CustomEnginProfileId = string & { readonly __customEnginProfileId?: unique symbol };
+
+export type EnginProfileId = CanonicalEnginId | CustomEnginProfileId;
+
+export type CapabilityTargetDimension =
+  | 'install-footprint'
+  | 'idle-memory'
+  | 'input-latency'
+  | 'startup-time'
+  | 'geometry-throughput'
+  | 'gpu-render-latency'
+  | 'viewport-framerate'
+  | 'viewport-resolution'
+  | 'audio-latency'
+  | 'track-count'
+  | 'audio-bit-depth'
+  | 'audio-sample-rate'
+  | 'midi-latency'
+  | 'round-trip-audio'
+  | 'ray-intersection'
+  | 'offline-frame-render'
+  | 'gpu-compute-throughput'
+  | 'ui-response'
+  | 'vector-render-latency'
+  | 'file-open-time'
+  | 'collaboration-sync'
+  | 'physics-loop-64k'
+  | 'physics-loop-1m'
+  | 'collision-detection'
+  | 'gpu-compute-latency';
+
+export type CapabilityTargetUnit =
+  | 'mb'
+  | 'ms'
+  | 'fps'
+  | 'k'
+  | 'polygons-per-frame'
+  | 'tracks'
+  | 'bit'
+  | 'khz'
+  | 'seconds'
+  | 'tflops'
+  | 'ns';
+
+export type CapabilityTargetDirection = 'at-most' | 'at-least';
+
+export interface EnginCapabilityTarget {
+  readonly dimension: CapabilityTargetDimension;
+  readonly direction: CapabilityTargetDirection;
+  readonly target: number;
+  readonly unit: CapabilityTargetUnit;
+  /** Minimum normalized progress that counts as acceptable. */
+  readonly minimumProgress: number;
+  readonly preferredTarget?: number;
+}
+
+export interface EnginCapabilityProfile {
+  readonly enginId: EnginProfileId;
+  readonly targets: ReadonlyArray<EnginCapabilityTarget>;
+  /** Architecture decisions the Engin must honor to move toward the targets. */
+  readonly levers: ReadonlyArray<string>;
+}
+
+export interface CapabilityTargetEvaluation extends EnginCapabilityTarget {
+  readonly acceptanceValue: number;
+  readonly acceptanceDescription: string;
+}
+
+export interface CapabilityProfileValidation {
+  readonly valid: boolean;
+  readonly enginId: EnginProfileId;
+  readonly evaluations: ReadonlyArray<CapabilityTargetEvaluation>;
+  readonly reason?: string;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
+function atMost(
+  dimension: CapabilityTargetDimension,
+  target: number,
+  unit: CapabilityTargetUnit,
+  preferredTarget?: number,
+): EnginCapabilityTarget {
+  return Object.freeze({
+    dimension,
+    direction: 'at-most',
+    target,
+    unit,
+    minimumProgress: MINIMUM_PROGRESS,
+    ...(preferredTarget === undefined ? {} : { preferredTarget }),
+  });
+}
+
+function atLeast(
+  dimension: CapabilityTargetDimension,
+  target: number,
+  unit: CapabilityTargetUnit,
+): EnginCapabilityTarget {
+  return Object.freeze({
+    dimension,
+    direction: 'at-least',
+    target,
+    unit,
+    minimumProgress: MINIMUM_PROGRESS,
+  });
+}
+
+function profile(
+  enginId: EnginProfileId,
+  targets: ReadonlyArray<EnginCapabilityTarget>,
+  levers: ReadonlyArray<string>,
+): EnginCapabilityProfile {
+  return Object.freeze({
+    enginId,
+    targets: Object.freeze([...targets]),
+    levers: Object.freeze([...levers]),
+  });
+}
+
 export function acceptanceValueForTarget(target: EnginCapabilityTarget): number {
   return target.direction === 'at-least'
     ? target.target * target.minimumProgress
@@ -320,15 +363,6 @@ export function isEnginProfileId(value: string): value is EnginProfileId {
   return value.trim().length > 0;
 }
 
-export const CANONICAL_ENGIN_ALIASES: Readonly<Record<CanonicalEnginId, ReadonlyArray<string>>> = Object.freeze({
-  code: Object.freeze(['code', 'CodeEngin']),
-  games: Object.freeze(['games', 'game', 'GameEngin']),
-  music: Object.freeze(['music', 'starmaker', 'StarMakerEngin']),
-  create: Object.freeze(['create', 'content', 'ContentEngin']),
-  brand: Object.freeze(['brand', 'branding', 'BrandingEngin']),
-  lab: Object.freeze(['lab', 'LabEngin']),
-});
-
 export function toCustomEnginProfileId(rawId: string): CustomEnginProfileId {
   const normalized = rawId.trim().replace(/[^a-z0-9._-]+/gi, '-').replace(/^-+|-+$/g, '');
   if (!normalized) throw new Error('Custom Engin id is required.');
@@ -387,3 +421,15 @@ export function validateCanonicalEnginCapabilityProfiles(): CapabilityProfileVal
     validateEnginCapabilityProfile(ENGIN_CAPABILITY_PROFILES[enginId]),
   );
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

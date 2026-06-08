@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/seamClipboard.ts.
+
 /**
  * lib/runtime/seamClipboard.ts
  *
@@ -34,14 +42,13 @@
  * only bridge — there is no cycle.
  */
 
-import type { RuntimeRegion } from '@/lib/identity/canonical-names';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import {
-    ENGIN_KEYS,
-    findWorkflows,
-    type EnginKey,
-} from '@/lib/runtime/enginWorkflowRegistry';
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 // ── Engin key normaliser ───────────────────────────────────────────────────────
 
@@ -77,24 +84,33 @@ const _ENGIN_ALIAS_MAP: Readonly<Record<string, EnginKey>> = {
   games: 'game',
 };
 
-function _toEnginKey(value: unknown): EnginKey | null {
-  if (typeof value !== 'string') return null;
-  // Direct hit — exact case
-  const direct = _ENGIN_ALIAS_MAP[value];
-  if (direct !== undefined) return direct;
-  // Case-insensitive hit
-  const lc = value.toLowerCase();
-  const lcHit = _ENGIN_ALIAS_MAP[lc];
-  if (lcHit !== undefined) return lcHit;
-  // If it is already a valid EnginKey (covers the const array exhaustively)
-  if ((ENGIN_KEYS as readonly string[]).includes(lc)) return lc as EnginKey;
-  // Strip trailing 'Engin' / 'engin' suffix and retry
-  const stripped = lc.replace(/engin$/, '');
-  if ((ENGIN_KEYS as readonly string[]).includes(stripped)) return stripped as EnginKey;
-  const strippedHit = _ENGIN_ALIAS_MAP[stripped];
-  if (strippedHit !== undefined) return strippedHit;
-  return null;
-}
+// ── Improvement 37: payload size guard ───────────────────────────────────────
+/** Maximum allowed payload content size in bytes (512 KB). */
+const MAX_PAYLOAD_BYTES = 512 * 1024;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+
+import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+
+import {
+    ENGIN_KEYS,
+    findWorkflows,
+    type EnginKey,
+} from '@/lib/runtime/enginWorkflowRegistry';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ── Payload type ──────────────────────────────────────────────────────────────
 
@@ -116,11 +132,31 @@ export interface SeamClipboardPayload {
 // ── Subscriber type ───────────────────────────────────────────────────────────
 
 type SeamClipboardListener = (payload: SeamClipboardPayload) => void;
+
 type UnsubscribeFn = () => void;
 
-// ── Improvement 37: payload size guard ───────────────────────────────────────
-/** Maximum allowed payload content size in bytes (512 KB). */
-const MAX_PAYLOAD_BYTES = 512 * 1024;
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
+function _toEnginKey(value: unknown): EnginKey | null {
+  if (typeof value !== 'string') return null;
+  // Direct hit — exact case
+  const direct = _ENGIN_ALIAS_MAP[value];
+  if (direct !== undefined) return direct;
+  // Case-insensitive hit
+  const lc = value.toLowerCase();
+  const lcHit = _ENGIN_ALIAS_MAP[lc];
+  if (lcHit !== undefined) return lcHit;
+  // If it is already a valid EnginKey (covers the const array exhaustively)
+  if ((ENGIN_KEYS as readonly string[]).includes(lc)) return lc as EnginKey;
+  // Strip trailing 'Engin' / 'engin' suffix and retry
+  const stripped = lc.replace(/engin$/, '');
+  if ((ENGIN_KEYS as readonly string[]).includes(stripped)) return stripped as EnginKey;
+  const strippedHit = _ENGIN_ALIAS_MAP[stripped];
+  if (strippedHit !== undefined) return strippedHit;
+  return null;
+}
 
 class SeamClipboard {
   private current: SeamClipboardPayload | null = null;
@@ -254,3 +290,15 @@ class SeamClipboard {
 
 /** Singleton cross-runtime seam clipboard. */
 export const seamClipboard = new SeamClipboard();
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

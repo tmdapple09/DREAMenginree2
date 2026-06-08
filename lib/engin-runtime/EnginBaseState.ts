@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/EnginBaseState.ts.
+
 /**
  * lib/engin-runtime/EnginBaseState.ts
  *
@@ -12,6 +20,38 @@
 
 // ─── Lifecycle ────────────────────────────────────────────────────────────────
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const DOMAIN_OBJECT_KEYS = new Set([
+  'id',
+  'type',
+  'ownerId',
+  'runtimeId',
+  'visibility',
+  'createdAt',
+  'updatedAt',
+  'version',
+  'data',
+]);
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
 export type EnginLifecycle =
   | 'idle'
   | 'starting'
@@ -23,10 +63,13 @@ export type EnginLifecycle =
 // ─── JSON-safe runtime values ────────────────────────────────────────────────
 
 export type JsonPrimitive = string | number | boolean | null;
+
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+
 export interface JsonObject {
   readonly [key: string]: JsonValue | undefined;
 }
+
 export type JsonArray = readonly JsonValue[];
 
 type RuntimeInspectableValue = unknown;
@@ -52,21 +95,47 @@ export type DomainObject<TType extends string, TData extends JsonValue> = {
   data: TData;
 };
 
+export interface CreateDomainObjectInput<
+  TType extends string,
+  TData extends JsonValue,
+> {
+  id: string;
+  type: TType;
+  ownerId: string;
+  runtimeId: string;
+  visibility: DomainVisibility;
+  data: TData;
+  now?: string;
+}
+
+// ─── Base state record ────────────────────────────────────────────────────────
+
+/**
+ * EnginBaseState — the immutable core state owned by every engine instance.
+ *
+ * The engine never exposes this directly; the active rule-set transforms it
+ * into a domain-specific DerivedState.
+ */
+export interface EnginBaseState<TDomain extends JsonObject = JsonObject> {
+  /** Canonical engine identifier (e.g. 'games', 'music', 'code'). */
+  readonly enginId: string;
+  /** Current lifecycle stage. */
+  readonly lifecycle: EnginLifecycle;
+  /** ISO-8601 timestamp of the last state mutation. */
+  readonly updatedAt: string;
+  /** Monotonically increasing action counter (for optimistic-UI purposes). */
+  readonly revision: number;
+  /** Arbitrary key-value bag owned by the active rule-set. */
+  readonly domain: Readonly<TDomain>;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
 function isNonEmptyString(value: RuntimeInspectableValue): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
-
-const DOMAIN_OBJECT_KEYS = new Set([
-  'id',
-  'type',
-  'ownerId',
-  'runtimeId',
-  'visibility',
-  'createdAt',
-  'updatedAt',
-  'version',
-  'data',
-]);
 
 function hasExactDomainObjectKeys(value: object): boolean {
   const keys = Object.keys(value);
@@ -140,19 +209,6 @@ export function isDomainObject(
   );
 }
 
-export interface CreateDomainObjectInput<
-  TType extends string,
-  TData extends JsonValue,
-> {
-  id: string;
-  type: TType;
-  ownerId: string;
-  runtimeId: string;
-  visibility: DomainVisibility;
-  data: TData;
-  now?: string;
-}
-
 export function createDomainObject<TType extends string, TData extends JsonValue>(
   input: CreateDomainObjectInput<TType, TData>,
 ): DomainObject<TType, TData> {
@@ -171,27 +227,6 @@ export function createDomainObject<TType extends string, TData extends JsonValue
   if (!isDomainObject(object))
     throw new Error('Cannot create an invalid domain object envelope.');
   return object;
-}
-
-// ─── Base state record ────────────────────────────────────────────────────────
-
-/**
- * EnginBaseState — the immutable core state owned by every engine instance.
- *
- * The engine never exposes this directly; the active rule-set transforms it
- * into a domain-specific DerivedState.
- */
-export interface EnginBaseState<TDomain extends JsonObject = JsonObject> {
-  /** Canonical engine identifier (e.g. 'games', 'music', 'code'). */
-  readonly enginId: string;
-  /** Current lifecycle stage. */
-  readonly lifecycle: EnginLifecycle;
-  /** ISO-8601 timestamp of the last state mutation. */
-  readonly updatedAt: string;
-  /** Monotonically increasing action counter (for optimistic-UI purposes). */
-  readonly revision: number;
-  /** Arbitrary key-value bag owned by the active rule-set. */
-  readonly domain: Readonly<TDomain>;
 }
 
 export function isEnginBaseState(
@@ -244,3 +279,15 @@ export function patchBaseState<TDomain extends JsonObject = JsonObject>(
     updatedAt: new Date().toISOString(),
   };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
