@@ -30,7 +30,7 @@ const mockWebGPUEngine = {
 
 const MockEngine = vi.fn(function (this: typeof mockWebGLEngine) {
   Object.assign(this, mockWebGLEngine);
-}) as any as new (...args: unknown[]) => typeof mockWebGLEngine;
+}) as unknown as new (...args: unknown[]) => typeof mockWebGLEngine;
 const MockWebGPUEngine = {
   IsSupportedAsync: Promise.resolve(false),
   CreateAsync: vi.fn().mockResolvedValue(mockWebGPUEngine),
@@ -86,6 +86,16 @@ describe('createBabylonEngine', () => {
       canvas,
       expect.objectContaining({ powerPreference: 'high-performance' })
     );
+  });
+
+  it('honors runtime compatibility negotiation that disables WebGPU', async () => {
+    MockWebGPUEngine.IsSupportedAsync = Promise.resolve(true);
+    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const result = await createBabylonEngine(canvas, { preferWebGPU: false });
+    expect(result.isWebGPU).toBe(false);
+    expect(result.webgpuReason).toBe('WebGPU disabled by runtime compatibility negotiation.');
+    expect(MockWebGPUEngine.CreateAsync).not.toHaveBeenCalled();
+    expect(MockEngine).toHaveBeenCalled();
   });
 
   it('falls back to WebGL if WebGPUEngine.CreateAsync throws', async () => {
