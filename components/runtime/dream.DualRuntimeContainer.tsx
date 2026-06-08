@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: components/runtime/dream.DualRuntimeContainer.tsx.
+
 /**
  * DualRuntimeContainer
  *
@@ -23,6 +31,20 @@
  * Architecture: docs/ARCHITECTURE.md §1 (Runtime regions)
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const DualRuntimeContext = createContext<DualRuntimeContextValue | null>(null);
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import {
     type DualRuntimeState,
     type RuntimeWorld,
@@ -34,7 +56,16 @@ import {
     setRuntimeWorld,
     swapDominantRuntime,
 } from '@/lib/runtime/dualRuntime';
+
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 interface DualRuntimeContextValue {
   state: DualRuntimeState;
@@ -78,16 +109,18 @@ interface DualRuntimeContextValue {
   focusInViewport: (viewport: 'top' | 'bottom', anchorId: string) => void;
 }
 
-const DualRuntimeContext = createContext<DualRuntimeContextValue | null>(null);
+interface DualRuntimeContainerProps {
+  children: React.ReactNode;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 export function useDualRuntime(): DualRuntimeContextValue {
   const ctx = useContext(DualRuntimeContext);
   if (!ctx) throw new Error('useDualRuntime must be used within DualRuntimeContainer');
   return ctx;
-}
-
-interface DualRuntimeContainerProps {
-  children: React.ReactNode;
 }
 
 export default function DualRuntimeContainer({ children }: DualRuntimeContainerProps) {
@@ -183,3 +216,15 @@ export default function DualRuntimeContainer({ children }: DualRuntimeContainerP
     </DualRuntimeContext.Provider>
   );
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

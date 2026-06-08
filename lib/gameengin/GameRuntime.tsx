@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/gameengin/GameRuntime.tsx.
+
 /**
  * lib/gameengin/GameRuntime.tsx
  *
@@ -20,11 +28,41 @@
  * These three layers never overlap. Do not add score/lives/game info here.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+/** Fixed timestep target: 60fps = 16.667ms per tick */
+const FIXED_DT = 1000 / 60;
+
+/** Maximum frames to accumulate before capping (prevents spiral of death) */
+const MAX_ACCUMULATED_FRAMES = 5;
+
+const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
+
+/** Cap sampled FPS before forwarding optional internal diagnostics. */
+const MAX_DISPLAY_FPS = 999;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { recordEmission } from '@/lib/runtime/channelMetrics';
+
 import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+
 import { createLocalChannel } from '@/lib/runtime/runtimeChannel';
+
 import { acquireSharedResource, releaseSharedResource } from '@/lib/runtime/sharedResourcePool';
+
 import { useCallback, useEffect, useRef } from 'react';
+
 import type {
     AchievementDefinition,
     CartridgeInputEvent,
@@ -32,26 +70,29 @@ import type {
     GameEngineAPI,
     GravityPreset,
 } from './cartridge';
+
 import { ENGINE_VERSION, GRAVITY_VALUES, engineSatisfies } from './cartridge';
+
 import { createAchievementsAPI } from './cartridges/achievementEngine';
+
 import {
     stubAssetsAPI,
     stubAudioAPI,
     stubHapticsAPI,
     stubNetworkAPI,
 } from './cartridges/apiStubs';
+
 import { createSaveAPI } from './cartridges/saveState';
+
 import { createGameEnginExecutionKernel, type GameEnginExecutionKernel } from './executionWiring';
 
-// ── Constants ────────────────────────────────────────────────────────────────
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
-/** Fixed timestep target: 60fps = 16.667ms per tick */
-const FIXED_DT = 1000 / 60;
-/** Maximum frames to accumulate before capping (prevents spiral of death) */
-const MAX_ACCUMULATED_FRAMES = 5;
-const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
-/** Cap sampled FPS before forwarding optional internal diagnostics. */
-const MAX_DISPLAY_FPS = 999;
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
@@ -69,6 +110,10 @@ export interface GameRuntimeProps {
   /** Optional crash bridge used by GameEngin and cartridge routes to open the Brain crash report flow. */
   onCrash?: (crash: GameRuntimeCrash) => void;
 }
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 // ── Component ────────────────────────────────────────────────────────────────
 
@@ -465,3 +510,15 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     </div>
   );
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/instanceManager.ts.
+
 /**
  * lib/runtime/instanceManager.ts — Pass 4
  *
@@ -22,97 +30,15 @@
  * Architecture: docs/ARCHITECTURE.md §4 (Pass 4 — multi-instance Engin manager).
  */
 
-import type { RuntimeChannel } from '@/lib/runtime/runtimeChannel';
-import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
-import type { RuntimeId } from '@/types/module-manifest';
-import { create } from 'zustand';
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// Runtime law comments and invariants stay attached to the code they govern.
 
-export type EnginName =
-  | 'StarMakerEngin'
-  | 'GameEngin'
-  | 'LabEngin'
-  | 'CodeEngin'
-  | 'BrandingEngin'
-  | 'ContentEngin'
-  | 'ForgeEngin'
-  | (string & {});
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
-export type InstanceMode = 'solo' | 'coop';
-
-/** A single managed Engin instance. */
-export interface EnginInstance {
-  /** Unique key: `${enginName}:${instanceId}` */
-  key: string;
-  /** Which Engin this is. */
-  enginName: EnginName;
-  /** Short stable instance ID (uuid or user-supplied). */
-  instanceId: string;
-  /** Which runtime region this instance lives in. */
-  region: RuntimeId;
-  /** Collaboration mode for this instance. */
-  mode: InstanceMode;
-  /** Channel for inter-instance communication (same-Engin co-op). */
-  channel: RuntimeChannel;
-  /** Wall-clock ms when this instance was created. */
-  createdAt: number;
-}
-
-// ── Store shape ───────────────────────────────────────────────────────────────
-
-interface InstanceManagerState {
-  /** All active instances, keyed by instance key. */
-  instances: Record<string, EnginInstance>;
-  /**
-   * Spawn a new Engin instance.
-   * Returns the existing instance if the key is already registered.
-   */
-  spawn: (
-    enginName: EnginName,
-    instanceId: string,
-    region: RuntimeId,
-    mode?: InstanceMode,
-  ) => EnginInstance;
-  createInstance: (options: {
-    enginName: EnginName;
-    instanceId: string;
-    region: RuntimeId;
-    mode?: InstanceMode;
-  }) => EnginInstance;
-  /**
-   * Destroy an instance and release its channel.
-   * No-op if the instance doesn't exist.
-   */
-  destroy: (key: string) => void;
-  /** Return all instances for a given Engin name. */
-  getInstancesForEngin: (enginName: EnginName) => EnginInstance[];
-  /** Return all instances in a given runtime region. */
-  getInstancesForRegion: (region: RuntimeId) => EnginInstance[];
-  /**
-   * Promote a solo instance to co-op by swapping its LocalChannel for a
-   * RealtimeChannel. The caller is responsible for providing the new channel
-   * (use createRealtimeChannel from runtimeChannel.ts).
-   */
-  promoteToCoOp: (key: string, channel: RuntimeChannel) => void;
-  persistLocal: () => void;
-  restoreLocal: () => void;
-}
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 const LS_KEY = 'dreamengin:engin-instances';
-
-type PersistedInstance = Omit<EnginInstance, 'channel'>;
-
-function serializeInstances(instances: Record<string, EnginInstance>): PersistedInstance[] {
-  return Object.values(instances).map((instance) => ({
-    key: instance.key,
-    enginName: instance.enginName,
-    instanceId: instance.instanceId,
-    region: instance.region,
-    mode: instance.mode,
-    createdAt: instance.createdAt,
-  }));
-}
 
 // ── Zustand store ─────────────────────────────────────────────────────────────
 
@@ -218,6 +144,115 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
   },
 }));
 
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+import type { RuntimeChannel } from '@/lib/runtime/runtimeChannel';
+
+import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
+
+import type { RuntimeId } from '@/types/module-manifest';
+
+import { create } from 'zustand';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+export type EnginName =
+  | 'StarMakerEngin'
+  | 'GameEngin'
+  | 'LabEngin'
+  | 'CodeEngin'
+  | 'BrandingEngin'
+  | 'ContentEngin'
+  | 'ForgeEngin'
+  | (string & {});
+
+export type InstanceMode = 'solo' | 'coop';
+
+/** A single managed Engin instance. */
+export interface EnginInstance {
+  /** Unique key: `${enginName}:${instanceId}` */
+  key: string;
+  /** Which Engin this is. */
+  enginName: EnginName;
+  /** Short stable instance ID (uuid or user-supplied). */
+  instanceId: string;
+  /** Which runtime region this instance lives in. */
+  region: RuntimeId;
+  /** Collaboration mode for this instance. */
+  mode: InstanceMode;
+  /** Channel for inter-instance communication (same-Engin co-op). */
+  channel: RuntimeChannel;
+  /** Wall-clock ms when this instance was created. */
+  createdAt: number;
+}
+
+// ── Store shape ───────────────────────────────────────────────────────────────
+
+interface InstanceManagerState {
+  /** All active instances, keyed by instance key. */
+  instances: Record<string, EnginInstance>;
+  /**
+   * Spawn a new Engin instance.
+   * Returns the existing instance if the key is already registered.
+   */
+  spawn: (
+    enginName: EnginName,
+    instanceId: string,
+    region: RuntimeId,
+    mode?: InstanceMode,
+  ) => EnginInstance;
+  createInstance: (options: {
+    enginName: EnginName;
+    instanceId: string;
+    region: RuntimeId;
+    mode?: InstanceMode;
+  }) => EnginInstance;
+  /**
+   * Destroy an instance and release its channel.
+   * No-op if the instance doesn't exist.
+   */
+  destroy: (key: string) => void;
+  /** Return all instances for a given Engin name. */
+  getInstancesForEngin: (enginName: EnginName) => EnginInstance[];
+  /** Return all instances in a given runtime region. */
+  getInstancesForRegion: (region: RuntimeId) => EnginInstance[];
+  /**
+   * Promote a solo instance to co-op by swapping its LocalChannel for a
+   * RealtimeChannel. The caller is responsible for providing the new channel
+   * (use createRealtimeChannel from runtimeChannel.ts).
+   */
+  promoteToCoOp: (key: string, channel: RuntimeChannel) => void;
+  persistLocal: () => void;
+  restoreLocal: () => void;
+}
+
+type PersistedInstance = Omit<EnginInstance, 'channel'>;
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
+function serializeInstances(instances: Record<string, EnginInstance>): PersistedInstance[] {
+  return Object.values(instances).map((instance) => ({
+    key: instance.key,
+    enginName: instance.enginName,
+    instanceId: instance.instanceId,
+    region: instance.region,
+    mode: instance.mode,
+    createdAt: instance.createdAt,
+  }));
+}
+
 // ── Convenience helpers ───────────────────────────────────────────────────────
 
 /**
@@ -301,3 +336,15 @@ export function spawnDualInstances(
   const b = spawn(enginName, idB, regionB, 'solo');
   return [a, b];
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/EnginDispatcher.ts.
+
 /**
  * lib/runtime/EnginDispatcher.ts
  *
@@ -26,6 +34,22 @@
  * guarded behind typeof checks so this module is safe to import server-side.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ─── Singleton ────────────────────────────────────────────────────────────────
+
+let _instance: EnginDispatcher | null = null;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import {
     BAR_Y_SCALE,
     buildWorkgroups,
@@ -40,6 +64,14 @@ import {
     SNAP_THRESHOLD_RATIO,
     type Workgroup,
 } from './memory';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ─── Message protocol ─────────────────────────────────────────────────────────
 
@@ -100,6 +132,7 @@ export type WorkerToDispatcherMessage =
 // Backward-compat aliases — prefer the directional names above.
 /** @deprecated Use DispatcherToWorkerMessage */
 export type WorkerOutboundMessage = DispatcherToWorkerMessage;
+
 /** @deprecated Use WorkerToDispatcherMessage */
 export type WorkerInboundMessage  = WorkerToDispatcherMessage;
 
@@ -140,6 +173,21 @@ export interface WasmEngineExports {
     resonance: number,
   ) => void;
 }
+
+// ─── Dispatcher state ─────────────────────────────────────────────────────────
+
+export interface DispatcherStats {
+  /** Number of active shader workers. */
+  workerCount: number;
+  /** Microseconds-per-tick for each worker slot (index = workerIndex). */
+  microsecondsPerTick: readonly number[];
+  /** Total bounds violations caught since init. */
+  boundsViolations: number;
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 /**
  * Fetch, instantiate, and return the AssemblyScript Wasm physics engine.
@@ -206,21 +254,6 @@ export async function initWasmEngine(
     return null;
   }
 }
-
-// ─── Dispatcher state ─────────────────────────────────────────────────────────
-
-export interface DispatcherStats {
-  /** Number of active shader workers. */
-  workerCount: number;
-  /** Microseconds-per-tick for each worker slot (index = workerIndex). */
-  microsecondsPerTick: readonly number[];
-  /** Total bounds violations caught since init. */
-  boundsViolations: number;
-}
-
-// ─── Singleton ────────────────────────────────────────────────────────────────
-
-let _instance: EnginDispatcher | null = null;
 
 /**
  * EnginDispatcher — singleton orchestrator for the shader worker pool.
@@ -697,3 +730,15 @@ export class EnginDispatcher {
     }
   }
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

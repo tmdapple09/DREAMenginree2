@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/EnginCapabilityExecution.ts.
+
 /**
  * lib/engin-runtime/EnginCapabilityExecution.ts
  *
@@ -6,7 +14,72 @@
  * runtime move toward those targets without putting raw metrics in UI copy.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = Object.freeze({
+  code: executionPlan({
+    enginId: 'code',
+    realtimeActionTypes: ['code:cell-update', 'code:cell-activate', 'code:zoom-set'],
+    syncCadenceRevisions: 8,
+    subsystems: ['coalesced-runtime-work', 'typed-array-state'],
+    workerPreferred: true,
+  }),
+  games: executionPlan({
+    enginId: 'games',
+    realtimeActionTypes: ['game:control-profile', 'game:immersive-toggle', 'game:physics-apply'],
+    syncCadenceRevisions: 4,
+    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
+    workerPreferred: true,
+  }),
+  music: executionPlan({
+    enginId: 'music',
+    realtimeActionTypes: ['music:bpm-set', 'music:volume-set', 'music:transport-start', 'music:transport-stop', 'music:track-toggle'],
+    syncCadenceRevisions: 16,
+    subsystems: ['coalesced-runtime-work', 'audio-worklet-buffer', 'midi-ring-buffer', 'typed-array-state'],
+    workerPreferred: true,
+  }),
+  create: executionPlan({
+    enginId: 'create',
+    realtimeActionTypes: ['content:item-add', 'content:asset-stage', 'content:render-preview'],
+    syncCadenceRevisions: 4,
+    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
+    workerPreferred: true,
+  }),
+  brand: executionPlan({
+    enginId: 'brand',
+    realtimeActionTypes: ['brand:asset-add', 'brand:metrics-refresh', 'brand:check-received'],
+    syncCadenceRevisions: 4,
+    subsystems: ['coalesced-runtime-work', 'vector-cache', 'collaboration-delta-pack'],
+    workerPreferred: false,
+  }),
+  lab: executionPlan({
+    enginId: 'lab',
+    realtimeActionTypes: ['lab:sim-start', 'lab:physics-received', 'lab:chart-type'],
+    syncCadenceRevisions: 2,
+    subsystems: ['coalesced-runtime-work', 'particle-struct-of-arrays', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
+    workerPreferred: true,
+  }),
+});
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile, type EnginProfileId } from './EnginCapabilityTargets';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 export type ExecutionSubsystem =
   | 'coalesced-runtime-work'
@@ -72,6 +145,10 @@ export interface RayHit {
   readonly distance: number;
 }
 
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
 function executionPlan(plan: EnginExecutionPlan): EnginExecutionPlan {
   return Object.freeze({
     ...plan,
@@ -89,51 +166,6 @@ function defaultPlan(enginId: string): EnginExecutionPlan {
   workerPreferred: false,
   });
 }
-
-const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = Object.freeze({
-  code: executionPlan({
-    enginId: 'code',
-    realtimeActionTypes: ['code:cell-update', 'code:cell-activate', 'code:zoom-set'],
-    syncCadenceRevisions: 8,
-    subsystems: ['coalesced-runtime-work', 'typed-array-state'],
-    workerPreferred: true,
-  }),
-  games: executionPlan({
-    enginId: 'games',
-    realtimeActionTypes: ['game:control-profile', 'game:immersive-toggle', 'game:physics-apply'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-  music: executionPlan({
-    enginId: 'music',
-    realtimeActionTypes: ['music:bpm-set', 'music:volume-set', 'music:transport-start', 'music:transport-stop', 'music:track-toggle'],
-    syncCadenceRevisions: 16,
-    subsystems: ['coalesced-runtime-work', 'audio-worklet-buffer', 'midi-ring-buffer', 'typed-array-state'],
-    workerPreferred: true,
-  }),
-  create: executionPlan({
-    enginId: 'create',
-    realtimeActionTypes: ['content:item-add', 'content:asset-stage', 'content:render-preview'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-  brand: executionPlan({
-    enginId: 'brand',
-    realtimeActionTypes: ['brand:asset-add', 'brand:metrics-refresh', 'brand:check-received'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'vector-cache', 'collaboration-delta-pack'],
-    workerPreferred: false,
-  }),
-  lab: executionPlan({
-    enginId: 'lab',
-    realtimeActionTypes: ['lab:sim-start', 'lab:physics-received', 'lab:chart-type'],
-    syncCadenceRevisions: 2,
-    subsystems: ['coalesced-runtime-work', 'particle-struct-of-arrays', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-});
 
 function clampPositiveInteger(value: number, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
@@ -392,3 +424,15 @@ export function createEnginCapabilityExecutionKernel(
 ): EnginCapabilityExecutionKernel {
   return new EnginCapabilityExecutionKernel(profile);
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/coercionTable.ts.
+
 /**
  * lib/runtime/coercionTable.ts — Pass 6
  *
@@ -19,6 +27,53 @@
 // ── Drop types ────────────────────────────────────────────────────────────────
 
 /** The canonical payload types recognised by the Universal Editor. */
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── MIME → DreamDropType mapping ──────────────────────────────────────────────
+
+/** Maps known MIME type prefixes/exact values to canonical DreamDropTypes. */
+const MIME_MAP: Array<[pattern: RegExp, type: DreamDropType]> = [
+  [/^image\//,           'image'],
+  [/^video\//,           'video'],
+  [/^audio\//,           'audio'],
+  [/^text\/html$/,       'text/code'],
+  [/^text\/css$/,        'text/code'],
+  [/^text\/javascript$/, 'text/code'],
+  [/^application\/json$/, 'text/code'],
+  [/^text\/plain$/,      'text/code'],
+  [/^application\/x-dream-engin-state$/, 'engin-state'],
+];
+
+// ── File-extension fallback ───────────────────────────────────────────────────
+
+const EXT_MAP: Record<string, DreamDropType> = {
+  jpg: 'image', jpeg: 'image', png: 'image', gif: 'image', webp: 'image', svg: 'image', avif: 'image',
+  mp4: 'video', webm: 'video', mov: 'video', mkv: 'video',
+  mp3: 'audio', wav: 'audio', ogg: 'audio', flac: 'audio', aac: 'audio',
+  js: 'text/code', ts: 'text/code', tsx: 'text/code', jsx: 'text/code',
+  css: 'text/code', html: 'text/code', json: 'text/code', md: 'text/code',
+  txt: 'text/code',
+};
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
 export type DreamDropType =
   | 'image'
   | 'video'
@@ -42,20 +97,9 @@ export interface DreamDrop {
   timestamp: number;
 }
 
-// ── MIME → DreamDropType mapping ──────────────────────────────────────────────
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
-/** Maps known MIME type prefixes/exact values to canonical DreamDropTypes. */
-const MIME_MAP: Array<[pattern: RegExp, type: DreamDropType]> = [
-  [/^image\//,           'image'],
-  [/^video\//,           'video'],
-  [/^audio\//,           'audio'],
-  [/^text\/html$/,       'text/code'],
-  [/^text\/css$/,        'text/code'],
-  [/^text\/javascript$/, 'text/code'],
-  [/^application\/json$/, 'text/code'],
-  [/^text\/plain$/,      'text/code'],
-  [/^application\/x-dream-engin-state$/, 'engin-state'],
-];
+// Runtime functions, classes, handlers, and state transitions.
 
 function mimeToDropType(mime: string): DreamDropType {
   for (const [pattern, type] of MIME_MAP) {
@@ -63,17 +107,6 @@ function mimeToDropType(mime: string): DreamDropType {
   }
   return 'unknown';
 }
-
-// ── File-extension fallback ───────────────────────────────────────────────────
-
-const EXT_MAP: Record<string, DreamDropType> = {
-  jpg: 'image', jpeg: 'image', png: 'image', gif: 'image', webp: 'image', svg: 'image', avif: 'image',
-  mp4: 'video', webm: 'video', mov: 'video', mkv: 'video',
-  mp3: 'audio', wav: 'audio', ogg: 'audio', flac: 'audio', aac: 'audio',
-  js: 'text/code', ts: 'text/code', tsx: 'text/code', jsx: 'text/code',
-  css: 'text/code', html: 'text/code', json: 'text/code', md: 'text/code',
-  txt: 'text/code',
-};
 
 function extToDropType(filename: string): DreamDropType {
   const ext = filename.split('.').pop()?.toLowerCase() ?? '';
@@ -196,3 +229,15 @@ export function classifyDrop(drop: DreamDrop): string {
   };
   return labels[drop.type] ?? 'Unknown';
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

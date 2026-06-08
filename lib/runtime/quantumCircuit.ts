@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/quantumCircuit.ts.
+
 /**
  * lib/runtime/quantumCircuit.ts
  *
@@ -9,13 +17,14 @@
  */
 
 // ── Re-export the result type so bridge and callers share one definition ──────
-export type { QuantumComputeResult } from './dualRuntimeBridge';
 
-// ── Internal complex-number primitives ────────────────────────────────────────
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
 
-type Complex = [number, number];
-type Gate2x2 = [Complex, Complex, Complex, Complex];
-type StateVector = Complex[];
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 const INV_SQRT2 = 1 / Math.SQRT2;
 
@@ -23,6 +32,46 @@ const GATE_H: Gate2x2 = [
   [INV_SQRT2, 0], [INV_SQRT2, 0],
   [INV_SQRT2, 0], [-INV_SQRT2, 0],
 ];
+
+// ── Portfolio QUBO cost (assets: returns, sigma, correlations) ────────────────
+
+const ASSET_RETURNS = [0.12, 0.09, 0.15];
+
+const ASSET_SIGMA   = [0.20, 0.15, 0.25];
+
+const ASSET_CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]] as const;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+// ── Public API ────────────────────────────────────────────────────────────────
+
+import type { QuantumComputeResult } from './dualRuntimeBridge';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+// ── Internal complex-number primitives ────────────────────────────────────────
+
+type Complex = [number, number];
+
+type Gate2x2 = [Complex, Complex, Complex, Complex];
+
+type StateVector = Complex[];
+
+// ── Circuit builders ──────────────────────────────────────────────────────────
+
+type CircuitOp = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 function gateRx(theta: number): Gate2x2 {
   const c = Math.cos(theta / 2), s = Math.sin(theta / 2);
@@ -80,12 +129,6 @@ function applyCNOT(sv: StateVector, numQubits: number, ctrl: number, tgt: number
   return next;
 }
 
-// ── Portfolio QUBO cost (assets: returns, sigma, correlations) ────────────────
-
-const ASSET_RETURNS = [0.12, 0.09, 0.15];
-const ASSET_SIGMA   = [0.20, 0.15, 0.25];
-const ASSET_CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]] as const;
-
 function quboCost(bits: boolean[]): number {
   let cost = 0;
   bits.forEach((selected, i: number) => {
@@ -104,10 +147,6 @@ function quboCost(bits: boolean[]): number {
   }
   return cost;
 }
-
-// ── Circuit builders ──────────────────────────────────────────────────────────
-
-type CircuitOp = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
 
 function buildCircuit(n: number, algo: string, ansatz: string): CircuitOp[] {
   const ops: CircuitOp[] = [];
@@ -140,10 +179,6 @@ function buildCircuit(n: number, algo: string, ansatz: string): CircuitOp[] {
 
   return ops;
 }
-
-// ── Public API ────────────────────────────────────────────────────────────────
-
-import type { QuantumComputeResult } from './dualRuntimeBridge';
 
 /**
  * Run a quantum circuit simulation and return the measurement result.
@@ -196,3 +231,17 @@ export function runQuantumCircuit(
     computedAt: Date.now(),
   };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
+
+export type { QuantumComputeResult } from './dualRuntimeBridge';

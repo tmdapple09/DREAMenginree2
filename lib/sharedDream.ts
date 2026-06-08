@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/sharedDream.ts.
+
 /**
  * lib/sharedDream.ts
  *
@@ -5,7 +13,20 @@
  * in lib/collaboration.
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import type { SupabaseClient } from '@/engine/io';
+
 import {
     broadcastControlSignal as collabBroadcastControlSignal,
     broadcastCursor as collabBroadcastCursor,
@@ -25,18 +46,36 @@ import {
     type SessionRole,
 } from '@/lib/collaboration';
 
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
 export type SharedDreamSession = CollabSession;
+
 export type DreamEventType = CollabEventType;
+
 export type DreamBroadcastPayload = CollabPayload;
+
 export type DreamEventHandler = CollabEventHandler;
+
 export type DreamSessionRole = SessionRole;
+
 export type DreamSessionMode = CollabMode;
+
 export type DreamPresenceUpdate = PresenceUpdateData;
 
 export interface SharedDreamSessionOptions {
   role?: SessionRole;
   mode?: CollabMode;
 }
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 async function connectSharedDream(
   channelId: string,
@@ -132,6 +171,18 @@ export function broadcastPresenceUpdate(
 export async function leaveSharedDreamSession(session: SharedDreamSession): Promise<void> {
   await session.leave();
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
 
 // ── Persistent session hook ───────────────────────────────────────────────────
 export {

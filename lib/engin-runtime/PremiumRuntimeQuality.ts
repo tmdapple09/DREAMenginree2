@@ -1,7 +1,49 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/engin-runtime/PremiumRuntimeQuality.ts.
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const VERSION_RE = /^\d+\.\d+\.\d+$/;
+
+const FINGERPRINT_RE = /^[0-9a-f]{8}$/i;
+
+const QUALITY_TIERS: readonly PremiumLayerTier[] = ['standard', 'premium', 'cinematic'];
+
+const MATERIALS: readonly PremiumRuntimeMaterial[] = [
+  'standard-glass',
+  'glass-chrome-glow',
+  'cinematic-glass-chrome-glow',
+];
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { type EnginBaseState, type JsonObject } from './EnginBaseState';
+
 import type { EnginRuntimeFeature } from './EnginRuleSetContract';
 
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
 export type PremiumLayerTier = 'standard' | 'premium' | 'cinematic';
+
 export type PremiumRuntimeMaterial = 'standard-glass' | 'glass-chrome-glow' | 'cinematic-glass-chrome-glow';
 
 export interface PremiumRuntimeQuality extends JsonObject {
@@ -30,14 +72,9 @@ export interface PremiumRuntimeQualityValidation {
   reason?: string;
 }
 
-const VERSION_RE = /^\d+\.\d+\.\d+$/;
-const FINGERPRINT_RE = /^[0-9a-f]{8}$/i;
-const QUALITY_TIERS: readonly PremiumLayerTier[] = ['standard', 'premium', 'cinematic'];
-const MATERIALS: readonly PremiumRuntimeMaterial[] = [
-  'standard-glass',
-  'glass-chrome-glow',
-  'cinematic-glass-chrome-glow',
-];
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 function tierForSnapshotCount(snapshotCount: number): PremiumLayerTier {
   if (snapshotCount >= 12) return 'cinematic';
@@ -144,3 +181,15 @@ export function validatePremiumRuntimeQuality(
   }
   return { valid: true };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

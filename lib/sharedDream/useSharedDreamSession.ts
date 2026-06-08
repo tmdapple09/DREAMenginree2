@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/sharedDream/useSharedDreamSession.ts.
+
 /**
  * lib/sharedDream/useSharedDreamSession.ts
  *
@@ -39,9 +47,31 @@
  *   if (saved?.selectedGame) setSelectedGame(saved.selectedGame as string);
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { createClient } from '@/lib/supabase/client';
+
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 export interface SharedDreamMember {
   userId: string;
@@ -101,6 +131,10 @@ export interface UseSharedDreamSessionResult {
 // triggering N separate DB writes. All updates are merged and written as one
 // JSONB patch after the debounce settles.
 type EnginStateBuffer = Record<string, Record<string, unknown>>;
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 export function useSharedDreamSession({
   sessionId: propSessionId,
@@ -313,3 +347,15 @@ export function useSharedDreamSession({
     logActivity,
   };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

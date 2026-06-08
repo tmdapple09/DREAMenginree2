@@ -1,28 +1,122 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/dreamOSBus.ts.
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const MAX_ARTIFACTS = 48;
+
+/**
+ * DreamDMBar is the permanent exchange capability, not merely its divider seam.
+ * These descriptors expose the behavior that already lives in the existing bar
+ * surface so the orchestrator can discover it by meaning without importing UI
+ * files or creating a second DreamDMBar registry.
+ */
+const DREAMDM_BAR_CAPABILITIES: readonly CapabilityDescriptor[] = [
+  { id: 'DreamDMBar', domains: ['communication', 'identity', 'logic', 'memory'], kind: 'orchestrator' },
+  { id: 'DreamDMBar.messaging', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.search', domains: ['communication', 'identity', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.notifications', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.navigation', domains: ['logic', 'memory'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.context-actions', domains: ['logic', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.surface-exchange', domains: ['memory', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
+  { id: 'DreamDMBar.dr-eams', domains: ['ai', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
+] as const;
+
+const informationDomainSet = new Set<string>(INFORMATION_DOMAINS);
+
+/** Existing capabilities classified by the information they already work with. */
+export const CAPABILITY_DESCRIPTORS: readonly CapabilityDescriptor[] = [
+  ...ENGIN_REGISTRY.map(({ name: id, domains }) => ({ id, domains, kind: 'engin' as const })),
+  ...DREAMDM_BAR_CAPABILITIES,
+  { id: 'ComputeRuntime', domains: ['logic', 'physics', 'ai'], kind: 'runtime' },
+  { id: 'SharedDreamRuntime', domains: ['memory', 'communication'], kind: 'runtime' },
+  { id: 'DreamSystemContext', domains: ['memory'], kind: 'service' },
+  { id: 'HomeDream', domains: ['visual', 'memory', 'communication'], kind: 'surface' },
+  { id: 'DreamSpace', domains: ['visual', 'memory'], kind: 'surface' },
+  { id: 'DreamR', domains: ['communication', 'identity', 'logic'], kind: 'surface' },
+  { id: 'DualRuntime', domains: ['memory', 'logic'], kind: 'runtime' },
+  { id: 'GameRemote', domains: ['physics', 'logic'], kind: 'service' },
+  { id: 'WebGPUDirector', domains: ['visual', 'physics', 'logic'], kind: 'service' },
+  { id: 'WasmGpuVM', domains: ['logic', 'physics', 'memory'], kind: 'runtime' },
+  { id: 'NeuralSeamCanvas', domains: ['visual', 'ai'], kind: 'surface' },
+  { id: 'EnginDispatcher', domains: ['logic'], kind: 'service' },
+  { id: 'safeGetUser', domains: ['identity'], kind: 'service' },
+  { id: 'Idari', domains: ['ai', 'logic'], kind: 'agent' },
+  { id: AI_AGENTS.DR_EAMS, domains: ['ai', 'logic'], kind: 'agent' },
+] as const;
+
+const capabilityById = new Map(
+  CAPABILITY_DESCRIPTORS.map((capability) => [capability.id, capability]),
+);
+
+const channelCapabilityIds: Record<DualRuntimeChannel, string> = {
+  music: 'StarMakerEngin',
+  game: 'GameEngin',
+  games: 'GameEngin',
+  lab: 'LabEngin',
+  code: 'CodeEngin',
+  brand: 'BrandingEngin',
+  content: 'ContentEngin',
+  create: 'ContentEngin',
+  compute: 'ComputeRuntime',
+  shared_dream: 'SharedDreamRuntime',
+};
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { AI_AGENTS, type RuntimeRegion } from '@/lib/identity/canonical-names';
+
 import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+
 import {
   bridge,
   type AnyBridgeEmission,
   type DualRuntimeChannel,
 } from '@/lib/runtime/dualRuntimeBridge';
+
 import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
+
 import {
   ENGIN_REGISTRY,
   INFORMATION_DOMAINS,
   type InformationDomain,
 } from '@/lib/forge/forgeRegistry';
+
 import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
+
 import {
   isDomainObject,
   type DomainObject,
   type JsonObject,
   type JsonValue,
 } from '@/lib/engin-runtime/EnginBaseState';
+
 import {
   authorizeDomainCapability,
   type DomainAuthorizationContext,
   type DomainCapability,
 } from '@/lib/engin-runtime/EnginCapabilities';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 export type IntentPriority = 'low' | 'normal' | 'high' | 'system';
 
@@ -45,43 +139,10 @@ export type IntentEnvelope<
 >;
 
 type IntentHandler = (intent: IntentEnvelope) => void | Promise<void>;
-type IntentValidator = (intent: IntentEnvelope) => boolean;
-type IntentDispatchResult = { handled: boolean; replayed: boolean };
 
-export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
-  if (!isDomainObject(value)) return false;
-  const data = value.data;
-  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
-  const intent = data as IntentEnvelope['data'];
-  return (
-    typeof intent.sourceRuntimeId === 'string' &&
-    intent.sourceRuntimeId.trim().length > 0 &&
-    intent.sourceRuntimeId === value.runtimeId &&
-    (intent.targetRuntimeId === undefined ||
-      (typeof intent.targetRuntimeId === 'string' &&
-        intent.targetRuntimeId.trim().length > 0)) &&
-    typeof intent.actorId === 'string' &&
-    intent.actorId.trim().length > 0 &&
-    intent.actorId === value.ownerId &&
-    (intent.capability === 'read' ||
-      intent.capability === 'write' ||
-      intent.capability === 'share' ||
-      intent.capability === 'move' ||
-      intent.capability === 'duplicate' ||
-      intent.capability === 'publish' ||
-      intent.capability === 'destroy' ||
-      intent.capability === 'admin') &&
-    Array.isArray(intent.domains) &&
-    intent.domains.length > 0 &&
-    intent.domains.every(isInformationDomain) &&
-    (intent.priority === 'low' ||
-      intent.priority === 'normal' ||
-      intent.priority === 'high' ||
-      intent.priority === 'system') &&
-    'payload' in intent
-  );
-}
+type IntentValidator = (intent: IntentEnvelope) => boolean;
+
+type IntentDispatchResult = { handled: boolean; replayed: boolean };
 
 export type DreamOSArtifactKind =
   | 'event'
@@ -139,19 +200,16 @@ type PublishRuntimeContextInput = Omit<
   RuntimeContext,
   'updatedAt' | 'aiContext' | 'subsystemId'
 >;
+
 type RuntimeContextStore = ReadonlyMap<RuntimeRegion, RuntimeContext>;
 
 type SnapshotListener = (snapshot: DreamOSSnapshot) => void;
+
 type DreamOSCustomEventName = keyof DreamArtifactBusEventMap;
+
 type DreamOSCustomEventHandler<K extends DreamOSCustomEventName> = (
   payload: DreamArtifactBusEventMap[K],
 ) => void;
-
-const MAX_ARTIFACTS = 48;
-
-/** Centers are semantic descriptions of existing capabilities, never new systems. */
-export { INFORMATION_DOMAINS };
-export type { InformationDomain };
 
 export type CapabilityKind =
   | 'engin'
@@ -172,66 +230,48 @@ export interface CapabilityDescriptor {
   parentId?: string;
 }
 
-/**
- * DreamDMBar is the permanent exchange capability, not merely its divider seam.
- * These descriptors expose the behavior that already lives in the existing bar
- * surface so the orchestrator can discover it by meaning without importing UI
- * files or creating a second DreamDMBar registry.
- */
-const DREAMDM_BAR_CAPABILITIES: readonly CapabilityDescriptor[] = [
-  { id: 'DreamDMBar', domains: ['communication', 'identity', 'logic', 'memory'], kind: 'orchestrator' },
-  { id: 'DreamDMBar.messaging', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.search', domains: ['communication', 'identity', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.notifications', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.navigation', domains: ['logic', 'memory'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.context-actions', domains: ['logic', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.surface-exchange', domains: ['memory', 'logic'], kind: 'service', parentId: 'DreamDMBar' },
-  { id: 'DreamDMBar.dr-eams', domains: ['ai', 'communication'], kind: 'service', parentId: 'DreamDMBar' },
-] as const;
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
-const informationDomainSet = new Set<string>(INFORMATION_DOMAINS);
+// Runtime functions, classes, handlers, and state transitions.
+
+export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  if (!isDomainObject(value)) return false;
+  const data = value.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+  const intent = data as IntentEnvelope['data'];
+  return (
+    typeof intent.sourceRuntimeId === 'string' &&
+    intent.sourceRuntimeId.trim().length > 0 &&
+    intent.sourceRuntimeId === value.runtimeId &&
+    (intent.targetRuntimeId === undefined ||
+      (typeof intent.targetRuntimeId === 'string' &&
+        intent.targetRuntimeId.trim().length > 0)) &&
+    typeof intent.actorId === 'string' &&
+    intent.actorId.trim().length > 0 &&
+    intent.actorId === value.ownerId &&
+    (intent.capability === 'read' ||
+      intent.capability === 'write' ||
+      intent.capability === 'share' ||
+      intent.capability === 'move' ||
+      intent.capability === 'duplicate' ||
+      intent.capability === 'publish' ||
+      intent.capability === 'destroy' ||
+      intent.capability === 'admin') &&
+    Array.isArray(intent.domains) &&
+    intent.domains.length > 0 &&
+    intent.domains.every(isInformationDomain) &&
+    (intent.priority === 'low' ||
+      intent.priority === 'normal' ||
+      intent.priority === 'high' ||
+      intent.priority === 'system') &&
+    'payload' in intent
+  );
+}
 
 export function isInformationDomain(value: unknown): value is InformationDomain {
   return typeof value === 'string' && informationDomainSet.has(value);
 }
-
-/** Existing capabilities classified by the information they already work with. */
-export const CAPABILITY_DESCRIPTORS: readonly CapabilityDescriptor[] = [
-  ...ENGIN_REGISTRY.map(({ name: id, domains }) => ({ id, domains, kind: 'engin' as const })),
-  ...DREAMDM_BAR_CAPABILITIES,
-  { id: 'ComputeRuntime', domains: ['logic', 'physics', 'ai'], kind: 'runtime' },
-  { id: 'SharedDreamRuntime', domains: ['memory', 'communication'], kind: 'runtime' },
-  { id: 'DreamSystemContext', domains: ['memory'], kind: 'service' },
-  { id: 'HomeDream', domains: ['visual', 'memory', 'communication'], kind: 'surface' },
-  { id: 'DreamSpace', domains: ['visual', 'memory'], kind: 'surface' },
-  { id: 'DreamR', domains: ['communication', 'identity', 'logic'], kind: 'surface' },
-  { id: 'DualRuntime', domains: ['memory', 'logic'], kind: 'runtime' },
-  { id: 'GameRemote', domains: ['physics', 'logic'], kind: 'service' },
-  { id: 'WebGPUDirector', domains: ['visual', 'physics', 'logic'], kind: 'service' },
-  { id: 'WasmGpuVM', domains: ['logic', 'physics', 'memory'], kind: 'runtime' },
-  { id: 'NeuralSeamCanvas', domains: ['visual', 'ai'], kind: 'surface' },
-  { id: 'EnginDispatcher', domains: ['logic'], kind: 'service' },
-  { id: 'safeGetUser', domains: ['identity'], kind: 'service' },
-  { id: 'Idari', domains: ['ai', 'logic'], kind: 'agent' },
-  { id: AI_AGENTS.DR_EAMS, domains: ['ai', 'logic'], kind: 'agent' },
-] as const;
-
-const capabilityById = new Map(
-  CAPABILITY_DESCRIPTORS.map((capability) => [capability.id, capability]),
-);
-
-const channelCapabilityIds: Record<DualRuntimeChannel, string> = {
-  music: 'StarMakerEngin',
-  game: 'GameEngin',
-  games: 'GameEngin',
-  lab: 'LabEngin',
-  code: 'CodeEngin',
-  brand: 'BrandingEngin',
-  content: 'ContentEngin',
-  create: 'ContentEngin',
-  compute: 'ComputeRuntime',
-  shared_dream: 'SharedDreamRuntime',
-};
 
 export function getCapabilityDescriptor(id: string): CapabilityDescriptor | null {
   return capabilityById.get(id) ?? null;
@@ -653,3 +693,20 @@ class DreamOSBusImpl {
 }
 
 export const dreamOSBus = new DreamOSBusImpl();
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
+
+/** Centers are semantic descriptions of existing capabilities, never new systems. */
+export { INFORMATION_DOMAINS };
+
+export type { InformationDomain };

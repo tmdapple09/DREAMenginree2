@@ -1,7 +1,77 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/dualRuntimeBridge.ts.
+
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+const _IS2 = 1 / Math.SQRT2;
+
+const _GATE_H: _Gate = [[_IS2,0],[_IS2,0],[_IS2,0],[-_IS2,0]];
+
+const _RETURNS = [0.12, 0.09, 0.15], _SIGMA = [0.20, 0.15, 0.25];
+
+const _CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]];
+
+// ── Inter-VM ring buffer constants ────────────────────────────────────────────
+const VM_QUEUE_CAPACITY = 256;
+
+const VM_MESSAGE_SIZE   = 1024;
+
+const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; // +8 for producer/consumer indices
+
+// ── Shared memory bus constants ───────────────────────────────────────────────
+
+const ENTRY_WORDS = 4; // channel:event, payloadPtr, payloadLen, reserved
+
+const ENTRY_BYTES = ENTRY_WORDS * 4;
+
+const PAYLOAD_PREFIX_BYTES = 4; // length prefix stored before JSON payload
+
+const DEFAULT_ALLOC_START = 1 * 1024 * 1024; // 1 MB offset to avoid clobbering static data
+
+const POLL_INTERVAL_MS = 0; // as fast as possible; the timer is coalesced by the browser/event loop
+
+const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
+
+// ── Improvement 31: durable queue max size ────────────────────────────────────
+/** Maximum number of entries kept in the durable queue. Oldest dropped entries
+ *  are purged first when the limit is exceeded to prevent unbounded memory growth. */
+const MAX_DURABLE_QUEUE_SIZE = 200;
+
+// ── Improvement 35: emission counter ─────────────────────────────────────────
+/** Monotonically increasing count of all emissions (emit + emitDurable). */
+let _totalEmissions = 0;
+
+/** Run eviction every N emissions to avoid the per-emit overhead on busy buses. */
+const EVICT_EVERY_N = 50;
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import { invokeMadMaxiSnapshotTransfer } from '@/lib/runtime/madMaxiSnapshotBridge';
+
 import { EventEmitter } from 'events';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ── Channel types ──────────────────────────────────────────────────────────────
 
@@ -47,17 +117,81 @@ export interface VMWorkload {
 // Dispatched automatically on bridge.emit('lab', 'quantum:run', payload).
 
 type _C = [number, number];
+
 type _Gate = [_C, _C, _C, _C];
+
 type _SV = _C[];
 
-const _IS2 = 1 / Math.SQRT2;
-const _GATE_H: _Gate = [[_IS2,0],[_IS2,0],[_IS2,0],[-_IS2,0]];
+type _Op = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
+
+// ── Event schema types (intentionally loose — channels define their own events) ─
+
+export type ChannelEventKey<_C extends DualRuntimeChannel> = string;
+
+export type ChannelEventPayload<_C extends DualRuntimeChannel, _K extends string> = Record<string, unknown>;
+
+export type BridgeEventHandler<P = Record<string, unknown>> = (payload: P) => void;
+
+export type UnsubscribeFn = () => void;
+
+// ── Peer state ────────────────────────────────────────────────────────────────
+
+export interface PeerState {
+  channel: string;
+  subscriberCount: number;
+  lastActivityAt: number | null;
+}
+
+// ── Emission record ───────────────────────────────────────────────────────────
+
+export interface AnyBridgeEmission {
+  channel: string;
+  event: string;
+  payload: Record<string, unknown>;
+  emittedAt: number;
+}
+
+// ── Durable delivery types ────────────────────────────────────────────────────
+
+/** Lifecycle of a durable emission. */
+export type AckStatus = 'pending' | 'acked' | 'dropped';
+
+/**
+ * An emission that requires delivery acknowledgement.
+ * Stored in the bridge's durable queue until acked or explicitly dropped.
+ */
+export interface QueuedEmission extends AnyBridgeEmission {
+  /** Unique ID for this emission — returned by emitDurable. */
+  id: string;
+  status: AckStatus;
+  enqueuedAt: number;
+  /** Timestamp at which ack() was called, if status is 'acked'. */
+  ackedAt?: number;
+  /** Time-to-live in ms. After this the entry is eligible for cleanup. */
+  ttlMs: number;
+}
+
+type WasmExports = {
+  enqueue: (channel: number, event: number, ptr: number, len: number) => number;
+  dequeue: (outPtr: number) => number;
+  reset?: () => void;
+  __heap_base?: WebAssembly.Global;
+};
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 function _gateRx(t: number): _Gate { const c=Math.cos(t/2),s=Math.sin(t/2); return [[c,0],[0,-s],[0,-s],[c,0]]; }
+
 function _gateRy(t: number): _Gate { const c=Math.cos(t/2),s=Math.sin(t/2); return [[c,0],[-s,0],[s,0],[c,0]]; }
+
 function _gateRz(t: number): _Gate { const c=Math.cos(t/2),s=Math.sin(t/2); return [[c,-s],[0,0],[0,0],[c,s]]; }
+
 function _groundState(n: number): _SV { const sv = Array.from({length: 1 << n}, (): _C => [0, 0]); sv[0] = [1, 0]; return sv as _SV; }
+
 function _cmul([r1, i1]: _C, [r2, i2]: _C): _C { return [r1*r2-i1*i2, r1*i2+i1*r2]; }
+
 function _cadd([r1, i1]: _C, [r2, i2]: _C): _C { return [r1+r2, i1+i2]; }
 
 function _applyGate1(sv: _SV, n: number, q: number, u: _Gate): _SV {
@@ -82,9 +216,6 @@ function _applyCNOT(sv: _SV, n: number, ctrl: number, tgt: number): _SV {
   return next;
 }
 
-const _RETURNS = [0.12, 0.09, 0.15], _SIGMA = [0.20, 0.15, 0.25];
-const _CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]];
-
 function _quboCost(bits: boolean[]): number {
   let c = 0;
   bits.forEach((b, i: number) => { if (b) c -= _RETURNS[i] ?? 0.1; });
@@ -94,8 +225,6 @@ function _quboCost(bits: boolean[]): number {
         c += 0.5 * (_SIGMA[i] ?? 0.2) * (_SIGMA[j] ?? 0.2) * ((_CORR[i] ?? [])[j] ?? 0.2);
   return c;
 }
-
-type _Op = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
 
 function _buildCircuit(n: number, algo: string, ansatz: string): _Op[] {
   const ops: _Op[] = [];
@@ -148,82 +277,6 @@ function _runCircuit(numQubits: number, algo: string, ansatz: string): QuantumCo
     expectationValue: ev, computedAt: Date.now(),
   };
 }
-
-// ── Inter-VM ring buffer constants ────────────────────────────────────────────
-const VM_QUEUE_CAPACITY = 256;
-const VM_MESSAGE_SIZE   = 1024;
-const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; // +8 for producer/consumer indices
-
-// ── Event schema types (intentionally loose — channels define their own events) ─
-
-export type ChannelEventKey<_C extends DualRuntimeChannel> = string;
-export type ChannelEventPayload<_C extends DualRuntimeChannel, _K extends string> = Record<string, unknown>;
-export type BridgeEventHandler<P = Record<string, unknown>> = (payload: P) => void;
-export type UnsubscribeFn = () => void;
-
-// ── Peer state ────────────────────────────────────────────────────────────────
-
-export interface PeerState {
-  channel: string;
-  subscriberCount: number;
-  lastActivityAt: number | null;
-}
-
-// ── Emission record ───────────────────────────────────────────────────────────
-
-export interface AnyBridgeEmission {
-  channel: string;
-  event: string;
-  payload: Record<string, unknown>;
-  emittedAt: number;
-}
-
-// ── Durable delivery types ────────────────────────────────────────────────────
-
-/** Lifecycle of a durable emission. */
-export type AckStatus = 'pending' | 'acked' | 'dropped';
-
-/**
- * An emission that requires delivery acknowledgement.
- * Stored in the bridge's durable queue until acked or explicitly dropped.
- */
-export interface QueuedEmission extends AnyBridgeEmission {
-  /** Unique ID for this emission — returned by emitDurable. */
-  id: string;
-  status: AckStatus;
-  enqueuedAt: number;
-  /** Timestamp at which ack() was called, if status is 'acked'. */
-  ackedAt?: number;
-  /** Time-to-live in ms. After this the entry is eligible for cleanup. */
-  ttlMs: number;
-}
-
-// ── Shared memory bus constants ───────────────────────────────────────────────
-
-const ENTRY_WORDS = 4; // channel:event, payloadPtr, payloadLen, reserved
-const ENTRY_BYTES = ENTRY_WORDS * 4;
-const PAYLOAD_PREFIX_BYTES = 4; // length prefix stored before JSON payload
-const DEFAULT_ALLOC_START = 1 * 1024 * 1024; // 1 MB offset to avoid clobbering static data
-const POLL_INTERVAL_MS = 0; // as fast as possible; the timer is coalesced by the browser/event loop
-const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
-
-// ── Improvement 31: durable queue max size ────────────────────────────────────
-/** Maximum number of entries kept in the durable queue. Oldest dropped entries
- *  are purged first when the limit is exceeded to prevent unbounded memory growth. */
-const MAX_DURABLE_QUEUE_SIZE = 200;
-
-// ── Improvement 35: emission counter ─────────────────────────────────────────
-/** Monotonically increasing count of all emissions (emit + emitDurable). */
-let _totalEmissions = 0;
-/** Run eviction every N emissions to avoid the per-emit overhead on busy buses. */
-const EVICT_EVERY_N = 50;
-
-type WasmExports = {
-  enqueue: (channel: number, event: number, ptr: number, len: number) => number;
-  dequeue: (outPtr: number) => number;
-  reset?: () => void;
-  __heap_base?: WebAssembly.Global;
-};
 
 class DualRuntimeBridge extends EventEmitter {
   private readonly channelState: Map<string, unknown> = new Map();
@@ -870,3 +923,15 @@ export const enginBridge = new DualRuntimeBridge();
 
 /** Canonical alias used throughout the codebase. */
 export const bridge = enginBridge;
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.

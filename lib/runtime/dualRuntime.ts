@@ -1,3 +1,11 @@
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/dualRuntime.ts.
+
 /**
  * Dual Runtime System
  *
@@ -22,11 +30,77 @@
  * Law: docs/LAW.md §OS-layer naming law
  */
 
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// ---------------------------------------------------------------------------
+// Default state
+// ---------------------------------------------------------------------------
+
+export const DEFAULT_DUAL_RUNTIME: DualRuntimeState = {
+  surfaceSpaceWorld: SURFACE_NAMES.HOME_DREAM_SURFACE,
+  dreamSpaceWorld:   RUNTIME_REGIONS.DREAM_SPACE,
+  dominantRegion:    RUNTIME_REGIONS.SURFACE_SPACE,
+};
+
+// ---------------------------------------------------------------------------
+// Torus world map — the "one page / wrap-around navigation" model
+// ---------------------------------------------------------------------------
+
+/**
+ * The DREAMengin world is modelled as a torus: a 2-D grid that wraps in both
+ * axes. Navigating left/right moves through domains; navigating up/down moves
+ * between Surface mode (y=0) and Engin mode (y=1).
+ *
+ * Each (x, y) cell maps to a focusKey that drives what both viewports show.
+ *
+ *   x  Domain     y=0 (surface)        y=1 (engin)
+ *   0  home        home                 home
+ *   1  dreamr      dreamr.feed          dreamr.channel
+ *   2  games       games.library        games.play
+ *   3  music       music.surface        music.engin
+ *   4  code        code.surface         code.engin
+ *   5  brand       brand.surface        brand.engin
+ */
+export const TORUS_DOMAINS = ['home', 'dreamr', 'games', 'music', 'code', 'brand'] as const;
+
+export const TORUS_WIDTH  = TORUS_DOMAINS.length; // wraps on X
+
+export const TORUS_HEIGHT = 2;                     // wraps on Y (0=surface, 1=engin)
+
+/** Map from (domain, y) → focusKey */
+export const TORUS_FOCUS_MAP: Record<TorusDomain, [surface: string, engin: string]> = {
+  home:   ['home',             'home'],
+  dreamr: ['dreamr.feed',      'dreamr.channel'],
+  games:  ['games.library',    'games.play'],
+  music:  ['music.surface',    'music.engin'],
+  code:   ['code.surface',     'code.engin'],
+  brand:  ['brand.surface',    'brand.engin'],
+};
+
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
 import {
     RUNTIME_REGIONS,
     SURFACE_NAMES,
 } from '@/lib/identity/canonical-names';
+
 import type { SystemPanelId } from '@/lib/panels/panelTypes';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
 
 // ---------------------------------------------------------------------------
 // RuntimeWorld — canonical string literals + object variants
@@ -67,15 +141,11 @@ export interface DualRuntimeState {
   dominantRegion: 'Surface Space' | 'DreamSpace';
 }
 
-// ---------------------------------------------------------------------------
-// Default state
-// ---------------------------------------------------------------------------
+export type TorusDomain = (typeof TORUS_DOMAINS)[number];
 
-export const DEFAULT_DUAL_RUNTIME: DualRuntimeState = {
-  surfaceSpaceWorld: SURFACE_NAMES.HOME_DREAM_SURFACE,
-  dreamSpaceWorld:   RUNTIME_REGIONS.DREAM_SPACE,
-  dominantRegion:    RUNTIME_REGIONS.SURFACE_SPACE,
-};
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
 
 // ---------------------------------------------------------------------------
 // Pure state transition functions
@@ -182,41 +252,6 @@ export function worldsEqual(a: RuntimeWorld, b: RuntimeWorld): boolean {
   return false;
 }
 
-// ---------------------------------------------------------------------------
-// Torus world map — the "one page / wrap-around navigation" model
-// ---------------------------------------------------------------------------
-
-/**
- * The DREAMengin world is modelled as a torus: a 2-D grid that wraps in both
- * axes. Navigating left/right moves through domains; navigating up/down moves
- * between Surface mode (y=0) and Engin mode (y=1).
- *
- * Each (x, y) cell maps to a focusKey that drives what both viewports show.
- *
- *   x  Domain     y=0 (surface)        y=1 (engin)
- *   0  home        home                 home
- *   1  dreamr      dreamr.feed          dreamr.channel
- *   2  games       games.library        games.play
- *   3  music       music.surface        music.engin
- *   4  code        code.surface         code.engin
- *   5  brand       brand.surface        brand.engin
- */
-export const TORUS_DOMAINS = ['home', 'dreamr', 'games', 'music', 'code', 'brand'] as const;
-export type TorusDomain = (typeof TORUS_DOMAINS)[number];
-
-export const TORUS_WIDTH  = TORUS_DOMAINS.length; // wraps on X
-export const TORUS_HEIGHT = 2;                     // wraps on Y (0=surface, 1=engin)
-
-/** Map from (domain, y) → focusKey */
-export const TORUS_FOCUS_MAP: Record<TorusDomain, [surface: string, engin: string]> = {
-  home:   ['home',             'home'],
-  dreamr: ['dreamr.feed',      'dreamr.channel'],
-  games:  ['games.library',    'games.play'],
-  music:  ['music.surface',    'music.engin'],
-  code:   ['code.surface',     'code.engin'],
-  brand:  ['brand.surface',    'brand.engin'],
-};
-
 /** Compute the focusKey for a given torus position */
 export function torusFocusKey(x: number, y: number): string {
   // The modulo + addition guards against negative x values from moveTorus.
@@ -238,6 +273,18 @@ export function moveTorus(
   const ny = ((y + dy) % TORUS_HEIGHT + TORUS_HEIGHT) % TORUS_HEIGHT;
   return { x: nx, y: ny };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
 
 // Re-export canonical name constants for consumers
 export { RUNTIME_REGIONS, SURFACE_NAMES };

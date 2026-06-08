@@ -1,5 +1,13 @@
 'use client';
 
+// ── Source Grammar: Directive ─────────────────────────────────────────────────
+
+// Framework directives stay physically first when required.
+
+// ── Source Grammar: Identity ─────────────────────────────────────────────────
+
+// Runtime file: lib/runtime/moduleRegistry.ts.
+
 /**
  * lib/runtime/moduleRegistry.ts
  *
@@ -17,28 +25,13 @@
  * Performance impact: neutral — Zustand store; no polling loops.
  */
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
-import { create } from 'zustand';
+// ── Source Grammar: Rules ─────────────────────────────────────────────────
 
-// ── Store shape ────────────────────────────────────────────────────────────────
+// Runtime law comments and invariants stay attached to the code they govern.
 
-interface ModuleRegistryState {
-  /** Flat record of all known modules, keyed by module ID. */
-  modules: Record<string, ModuleManifest>;
-  /** Register a module in the registry (upserts). */
-  registerModule: (manifest: ModuleManifest) => void;
-  /** Remove a module from the registry entirely. */
-  unregisterModule: (id: string) => void;
-  /**
-   * Transfer a module to targetRuntime.
-   * Updates sourceRuntime in-place and publishes to the bridge so other
-   * surfaces can react. Returns false if the target is not in compatibleRuntimes.
-   */
-  transferModule: (id: string, targetRuntime: RuntimeId) => boolean;
-  /** Return all modules whose sourceRuntime matches the given runtime. */
-  getModulesForRuntime: (runtime: RuntimeId) => ModuleManifest[];
-}
+// ── Source Grammar: Memory ─────────────────────────────────────────────────
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
 
 // ── Zustand store ─────────────────────────────────────────────────────────────
 
@@ -106,6 +99,53 @@ export const moduleRegistry = {
   },
 };
 
+// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
+
+// Imports and external modules this runtime file depends on.
+
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+
+import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
+
+import { create } from 'zustand';
+
+// ── Helper: build a ModuleManifest from a WidgetInstance ─────────────────────
+
+import type { WidgetInstance } from '@/types/widgets';
+
+import { getWidgetType } from '@/types/widgets';
+
+// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+
+// Top-level runtime registration and connection seams.
+
+// ── Source Grammar: Contracts ─────────────────────────────────────────────────
+
+// Types, interfaces, and schemas accepted or provided by this file.
+
+// ── Store shape ────────────────────────────────────────────────────────────────
+
+interface ModuleRegistryState {
+  /** Flat record of all known modules, keyed by module ID. */
+  modules: Record<string, ModuleManifest>;
+  /** Register a module in the registry (upserts). */
+  registerModule: (manifest: ModuleManifest) => void;
+  /** Remove a module from the registry entirely. */
+  unregisterModule: (id: string) => void;
+  /**
+   * Transfer a module to targetRuntime.
+   * Updates sourceRuntime in-place and publishes to the bridge so other
+   * surfaces can react. Returns false if the target is not in compatibleRuntimes.
+   */
+  transferModule: (id: string, targetRuntime: RuntimeId) => boolean;
+  /** Return all modules whose sourceRuntime matches the given runtime. */
+  getModulesForRuntime: (runtime: RuntimeId) => ModuleManifest[];
+}
+
+// ── Source Grammar: Actions ─────────────────────────────────────────────────
+
+// Runtime functions, classes, handlers, and state transitions.
+
 // ── Bridge subscription — receive transfers from remote runtimes ───────────────
 
 /**
@@ -123,11 +163,6 @@ export function subscribeRegistryToTransferEvents(): () => void {
     useModuleRegistry.getState().registerModule(manifest);
   });
 }
-
-// ── Helper: build a ModuleManifest from a WidgetInstance ─────────────────────
-
-import type { WidgetInstance } from '@/types/widgets';
-import { getWidgetType } from '@/types/widgets';
 
 /**
  * Derive a ModuleManifest from a WidgetInstance so existing Dream Windows can
@@ -154,3 +189,15 @@ export function manifestFromWidget(
     },
   };
 }
+
+// ── Source Grammar: Output ─────────────────────────────────────────────────
+
+// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+
+// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
+
+// Teardown remains paired inside the lifecycle actions that allocate resources.
+
+// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
+
+// Exported declarations and re-export barrels are this file's public surface.
