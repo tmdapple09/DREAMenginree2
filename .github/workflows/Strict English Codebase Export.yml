@@ -1,4 +1,4 @@
-name: Strict English Codebase Export
+name: Strict English Codebase CSV Export
 
 on:
   workflow_dispatch:
@@ -12,12 +12,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: strict-english-codebase-export-${{ github.ref_name }}
+  group: strict-english-codebase-csv-export-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
-  strict-english-codebase-export:
-    name: Mirror repo as strict English line translations
+  strict-english-codebase-csv-export:
+    name: Export repo mirror as strict English CSV files
     runs-on: ubuntu-latest
     timeout-minutes: 240
 
@@ -32,19 +32,16 @@ jobs:
         with:
           node-version: "25.9.0"
 
-      - name: Generate strict English translated mirror
+      - name: Generate strict English CSV repo mirror
         env:
           MAX_FILE_BYTES: ${{ inputs.max_file_bytes }}
         run: |
-          cat > export-strict-english-codebase.mjs <<'NODE'
+          cat > export-strict-english-csv-repo.mjs <<'NODE'
           import fs from "node:fs";
           import path from "node:path";
 
           const repoRoot = process.cwd();
-          const outRoot = path.join(repoRoot, "build-memory", "strict-english-codebase");
-          const manifestPath = path.join(repoRoot, "build-memory", "strict-english-codebase-manifest.json");
-          const summaryPath = path.join(repoRoot, "build-memory", "strict-english-codebase-summary.md");
-          const assetListPath = path.join(repoRoot, "build-memory", "strict-english-asset-files.txt");
+          const outRoot = path.join(repoRoot, "build-memory", "strict-english-csv-repo");
           const maxFileBytes = Number(process.env.MAX_FILE_BYTES || "10000000");
 
           const ignoredDirectories = new Set([
@@ -60,7 +57,7 @@ jobs:
             "temp",
             "reports",
             "test-output",
-            "build-memory/strict-english-codebase",
+            "build-memory",
           ]);
 
           const textExtensions = new Set([
@@ -171,17 +168,38 @@ jobs:
             const normalized = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
             if (normalized.length === 0) {
-              return { lines: [], sourceEndedWithNewline: false };
+              return { lines: [], endedWithNewline: false };
             }
 
-            const sourceEndedWithNewline = normalized.endsWith("\n");
+            const endedWithNewline = normalized.endsWith("\n");
             const lines = normalized.split("\n");
 
-            if (sourceEndedWithNewline) {
+            if (endedWithNewline) {
               lines.pop();
             }
 
-            return { lines, sourceEndedWithNewline };
+            return { lines, endedWithNewline };
+          }
+
+          function csvCell(value) {
+            const clean = String(value ?? "")
+              .replace(/\r?\n|\r/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+
+            return `"${clean.replace(/"/g, '""')}"`;
+          }
+
+          function readableName(name) {
+            if (!name) return "unnamed value";
+
+            return name
+              .replace(/^use([A-Z])/, "use $1")
+              .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+              .replace(/[_-]+/g, " ")
+              .replace(/[{}()[\].]/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
           }
 
           function cleanComment(trimmed) {
@@ -198,7 +216,243 @@ jobs:
             return text.match(pattern)?.[1] || null;
           }
 
-          function strictEnglishForLine(line, filePath) {
+          function quotedValue(text) {
+            return text.match(/["'`]([^"'`]+)["'`]/)?.[1] || null;
+          }
+
+          function explainComment(trimmed) {
+            const note = cleanComment(trimmed);
+            return note ? `${note}.` : "";
+          }
+
+          function explainImport(trimmed) {
+            const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
+            const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
+            const source = fromMatch?.[1] || bareMatch?.[1];
+
+            return source
+              ? `Current file receives needed names from ${source}.`
+              : "Current file receives needed outside names.";
+          }
+
+          function explainExport(trimmed) {
+            if (trimmed.startsWith("export default function ")) {
+              const name = nameFrom(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
+              return name
+                ? `Other files receive ${readableName(name)} as the main action from current file.`
+                : "Other files receive the main action from current file.";
+            }
+
+            if (trimmed.startsWith("export default ")) {
+              return "Other files receive the main value from current file.";
+            }
+
+            if (trimmed.startsWith("export type ")) {
+              const name = nameFrom(/^export\s+type\s+([A-Za-z0-9_$]+)/, trimmed);
+              return name
+                ? `Other files receive allowed value rule ${readableName(name)} from current file.`
+                : "Other files receive an allowed value rule from current file.";
+            }
+
+            if (trimmed.startsWith("export interface ")) {
+              const name = nameFrom(/^export\s+interface\s+([A-Za-z0-9_$]+)/, trimmed);
+              return name
+                ? `Other files receive data shape ${readableName(name)} from current file.`
+                : "Other files receive a data shape from current file.";
+            }
+
+            if (trimmed.startsWith("export function ")) {
+              const name = nameFrom(/^export\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
+              return name
+                ? `Current file creates action ${readableName(name)} for other files.`
+                : "Current file creates an action for other files.";
+            }
+
+            if (trimmed.startsWith("export const ")) {
+              const name = nameFrom(/^export\s+const\s+([A-Za-z0-9_$]+)/, trimmed);
+              return name
+                ? `Current file creates fixed value ${readableName(name)} for other files.`
+                : "Current file creates a fixed value for other files.";
+            }
+
+            if (trimmed.startsWith("export ")) {
+              return "Current file shares named values with other files.";
+            }
+
+            return null;
+          }
+
+          function explainDeclaration(trimmed) {
+            const fixed = trimmed.match(/^const\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+            if (fixed) {
+              const name = readableName(fixed[1]);
+              const value = fixed[2].trim();
+
+              if (value.includes(".map(")) return `${name} becomes one result for every item in a named list.`;
+              if (value.includes(".filter(")) return `${name} becomes only the items that pass a named requirement.`;
+              if (value.includes(".find(")) return `${name} becomes the first item that passes a named requirement.`;
+              if (value.includes(".some(")) return `${name} becomes true when at least one item passes a named requirement.`;
+              if (value.includes(".every(")) return `${name} becomes true only when every item passes a named requirement.`;
+              if (value.includes("await ")) return `${name} becomes the completed result of waiting work.`;
+              if (value === "true") return `${name} starts enabled.`;
+              if (value === "false") return `${name} starts disabled.`;
+              if (value === "null") return `${name} starts empty.`;
+              if (value === "undefined") return `${name} starts unavailable.`;
+              if (value.startsWith("[")) return `${name} starts as an ordered group.`;
+              if (value.startsWith("{")) return `${name} starts as a named group.`;
+              if (value.includes("=>")) return `${name} becomes a named action.`;
+
+              return `${name} receives a fixed value.`;
+            }
+
+            const fixedNoValue = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
+            if (fixedNoValue) {
+              return `${readableName(fixedNoValue[1])} receives a fixed value.`;
+            }
+
+            const changeable = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+            if (changeable) {
+              const name = readableName(changeable[2]);
+              const value = changeable[3].trim();
+
+              if (value === "true") return `${name} starts enabled and may change.`;
+              if (value === "false") return `${name} starts disabled and may change.`;
+              if (value === "null") return `${name} starts empty and may change.`;
+              if (value === "undefined") return `${name} starts unavailable and may change.`;
+
+              return `${name} receives a changeable value.`;
+            }
+
+            const changeableNoValue = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)/);
+            if (changeableNoValue) {
+              return `${readableName(changeableNoValue[2])} receives a changeable value.`;
+            }
+
+            const action = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
+            if (action) {
+              const waits = Boolean(action[1]);
+              const name = readableName(action[2]);
+
+              return waits
+                ? `${name} action starts and may wait for outside work.`
+                : `${name} action starts.`;
+            }
+
+            const shape = trimmed.match(/^interface\s+([A-Za-z0-9_$]+)/);
+            if (shape) return `${readableName(shape[1])} data shape starts.`;
+
+            const rule = trimmed.match(/^type\s+([A-Za-z0-9_$]+)/);
+            if (rule) return `${readableName(rule[1])} allowed value rule starts.`;
+
+            const unit = trimmed.match(/^class\s+([A-Za-z0-9_$]+)/);
+            if (unit) return `${readableName(unit[1])} reusable unit starts.`;
+
+            return null;
+          }
+
+          function explainCondition(trimmed) {
+            const inside = trimmed.match(/^if\s*$begin:math:text$\(\.\*\)$end:math:text$\s*\{?$/)?.[1];
+
+            if (!inside) return "Named condition must pass before following group runs.";
+
+            if (inside.includes("&&")) {
+              return "Every named requirement must pass before following group runs.";
+            }
+
+            if (inside.includes("||")) {
+              return "At least one named requirement must pass before following group runs.";
+            }
+
+            if (inside.startsWith("!")) {
+              const target = inside.slice(1).replace(/[()]/g, "").trim();
+              return `${readableName(target)} must be absent or false before following group runs.`;
+            }
+
+            return `${readableName(inside)} must pass before following group runs.`;
+          }
+
+          function explainAssignment(trimmed) {
+            const match = trimmed.match(/^([A-Za-z0-9_.$[\]]+)\s*=\s*(.+?);?$/);
+            if (!match) return null;
+
+            const target = readableName(match[1]);
+            const value = match[2].trim();
+
+            if (value === "true") return `${target} becomes enabled.`;
+            if (value === "false") return `${target} becomes disabled.`;
+            if (value === "null") return `${target} becomes empty.`;
+            if (value === "undefined") return `${target} becomes unavailable.`;
+
+            return `${target} receives a new value.`;
+          }
+
+          function explainYaml(trimmed) {
+            if (/^[A-Za-z0-9_-]+\s*:/.test(trimmed)) {
+              const key = trimmed.split(":")[0].trim();
+              const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim();
+
+              if (rest) return `${readableName(key)} setting receives ${rest}.`;
+              return `${readableName(key)} setting starts.`;
+            }
+
+            if (/^-\s+/.test(trimmed)) {
+              return "Current list receives one item.";
+            }
+
+            return null;
+          }
+
+          function explainJson(trimmed) {
+            if (/^"[^"]+"\s*:/.test(trimmed)) {
+              const key = trimmed.match(/^"([^"]+)"/)?.[1];
+              const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
+
+              if (rest === "true") return `${readableName(key)} field is enabled.`;
+              if (rest === "false") return `${readableName(key)} field is disabled.`;
+              if (rest === "null") return `${readableName(key)} field is empty.`;
+              if (rest) return `${readableName(key)} field receives ${rest}.`;
+
+              return `${readableName(key)} field starts.`;
+            }
+
+            return null;
+          }
+
+          function explainSql(trimmed) {
+            const upper = trimmed.toUpperCase();
+
+            if (upper.startsWith("CREATE TABLE")) return "Database table creation starts.";
+            if (upper.startsWith("ALTER TABLE")) return "Database table change starts.";
+            if (upper.startsWith("CREATE INDEX")) return "Database lookup helper creation starts.";
+            if (upper.startsWith("INSERT INTO")) return "Database receives new stored data.";
+            if (upper.startsWith("SELECT")) return "Database read request starts.";
+            if (upper.startsWith("UPDATE")) return "Database stored data change starts.";
+            if (upper.startsWith("DELETE")) return "Database stored data removal starts.";
+            if (upper.startsWith("WHERE")) return "Database rule limits affected rows.";
+            if (upper.startsWith("ORDER BY")) return "Database result order receives a rule.";
+            if (upper.startsWith("GROUP BY")) return "Database results receive grouping.";
+            if (upper.startsWith("RETURNING")) return "Database sends selected changed rows back.";
+
+            return null;
+          }
+
+          function explainShell(trimmed) {
+            if (trimmed.startsWith("#!")) return "Script runner receives a selection.";
+            if (trimmed.startsWith("cd ")) return "Current command folder changes.";
+            if (trimmed.startsWith("mkdir ")) return "Folder creation command runs.";
+            if (trimmed.startsWith("echo ")) return "Text output command runs.";
+            if (trimmed.startsWith("pnpm ")) return "Package command runs.";
+            if (trimmed.startsWith("npm ")) return "Package command runs.";
+            if (trimmed.startsWith("node ")) return "Node script command runs.";
+            if (trimmed.startsWith("git ")) return "Repository command runs.";
+            if (trimmed.startsWith("rm ")) return "Removal command runs.";
+            if (trimmed.startsWith("cp ")) return "Copy command runs.";
+            if (trimmed.startsWith("mv ")) return "Move command runs.";
+
+            return null;
+          }
+
+          function strictLine(line, filePath) {
             const trimmed = line.trim();
             const ext = path.extname(filePath).toLowerCase();
 
@@ -210,115 +464,35 @@ jobs:
               trimmed.startsWith("*") ||
               trimmed.startsWith("#")
             ) {
-              const note = cleanComment(trimmed);
-              return note ? `Human note states ${note}.` : "Human note marker exists.";
+              return explainComment(trimmed);
             }
 
-            if (trimmed.startsWith("import ")) {
-              const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
-              const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
-              const source = fromMatch?.[1] || bareMatch?.[1];
+            if (trimmed.startsWith("import ")) return explainImport(trimmed);
 
-              return source
-                ? `Current file receives outside names from ${source}.`
-                : "Current file receives outside names.";
-            }
+            const exported = explainExport(trimmed);
+            if (exported) return exported;
 
-            if (trimmed.startsWith("export default function ")) {
-              const name = nameFrom(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive ${name} as the main action from current file.`
-                : "Other files receive the main action from current file.";
-            }
+            const declared = explainDeclaration(trimmed);
+            if (declared) return declared;
 
-            if (trimmed.startsWith("export default ")) {
-              return "Other files receive the main value from current file.";
-            }
-
-            if (trimmed.startsWith("export type ")) {
-              const name = nameFrom(/^export\s+type\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive allowed value rule ${name} from current file.`
-                : "Other files receive an allowed value rule from current file.";
-            }
-
-            if (trimmed.startsWith("export interface ")) {
-              const name = nameFrom(/^export\s+interface\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Other files receive data shape ${name} from current file.`
-                : "Other files receive a data shape from current file.";
-            }
-
-            if (trimmed.startsWith("export function ")) {
-              const name = nameFrom(/^export\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Current file creates action ${name} for other files.`
-                : "Current file creates an action for other files.";
-            }
-
-            if (trimmed.startsWith("export const ")) {
-              const name = nameFrom(/^export\s+const\s+([A-Za-z0-9_$]+)/, trimmed);
-              return name
-                ? `Current file creates fixed value ${name} for other files.`
-                : "Current file creates a fixed value for other files.";
-            }
-
-            if (trimmed.startsWith("export ")) {
-              return "Current file makes named values available to other files.";
-            }
-
-            const constMatch = nameFrom(/^const\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (constMatch) {
-              return `Current scope creates fixed value ${constMatch}.`;
-            }
-
-            const letMatch = nameFrom(/^let\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (letMatch) {
-              return `Current scope creates changeable value ${letMatch}.`;
-            }
-
-            const varMatch = nameFrom(/^var\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (varMatch) {
-              return `Current scope creates changeable value ${varMatch}.`;
-            }
-
-            const functionMatch = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
-            if (functionMatch) {
-              const isAsync = Boolean(functionMatch[1]);
-              const name = functionMatch[2];
-
-              return isAsync
-                ? `Action ${name} starts and may wait for outside work.`
-                : `Action ${name} starts.`;
-            }
-
-            const interfaceMatch = nameFrom(/^interface\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (interfaceMatch) {
-              return `Data shape ${interfaceMatch} starts.`;
-            }
-
-            const typeMatch = nameFrom(/^type\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (typeMatch) {
-              return `Allowed value rule ${typeMatch} starts.`;
-            }
-
-            const classMatch = nameFrom(/^class\s+([A-Za-z0-9_$]+)/, trimmed);
-            if (classMatch) {
-              return `Reusable unit ${classMatch} starts.`;
-            }
-
-            if (/^if\s*\(/.test(trimmed)) return "Condition must pass before following block runs.";
-            if (/^else\s+if\s*\(/.test(trimmed)) return "Next condition receives a check only after earlier condition fails.";
-            if (/^else\b/.test(trimmed)) return "Fallback block runs only after earlier condition fails.";
-            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) return "Following block repeats for each allowed step.";
-            if (/^while\s*\(/.test(trimmed)) return "Following block repeats while condition remains true.";
+            if (/^if\s*\(/.test(trimmed)) return explainCondition(trimmed);
+            if (/^else\s+if\s*\(/.test(trimmed)) return "Next named condition receives a check only after earlier condition fails.";
+            if (/^else\b/.test(trimmed)) return "Fallback group runs only after earlier condition fails.";
+            if (/^for\s*\(/.test(trimmed) || /^for\s+/.test(trimmed)) return "Following group repeats for each allowed step.";
+            if (/^while\s*\(/.test(trimmed)) return "Following group repeats while named condition remains true.";
             if (/^switch\s*\(/.test(trimmed)) return "One path must be chosen from fixed possible paths.";
             if (/^case\s+/.test(trimmed)) return "Current path names one allowed choice.";
             if (/^default\s*:/.test(trimmed)) return "Fallback path handles all unmatched choices.";
             if (/^try\b/.test(trimmed)) return "Protected work starts.";
             if (/^catch\b/.test(trimmed)) return "Failure handling starts.";
             if (/^finally\b/.test(trimmed)) return "Cleanup work starts after protected work ends.";
-            if (/^return\b/.test(trimmed)) return "Current action sends result back to caller.";
+
+            if (/^return\b/.test(trimmed)) {
+              if (trimmed.includes("null")) return "Current action sends empty result back.";
+              if (trimmed.includes("false")) return "Current action sends disabled result back.";
+              if (trimmed.includes("true")) return "Current action sends enabled result back.";
+              return "Current action sends result back.";
+            }
 
             if (trimmed.includes("useState(")) return "Visible surface receives remembered changeable state.";
             if (trimmed.includes("useEffect(")) return "After-render work starts when listed requirements change.";
@@ -326,101 +500,82 @@ jobs:
             if (trimmed.includes("useCallback(")) return "Remembered action updates only when listed requirements change.";
             if (trimmed.includes("useRef(")) return "Stable reference stores value without forcing visible update.";
 
-            if (ext === ".json" && /^"[^"]+"\s*:/.test(trimmed)) {
-              const key = trimmed.match(/^"([^"]+)"/)?.[1];
-              return `Data field ${key} receives a definition.`;
+            if (ext === ".json") {
+              const json = explainJson(trimmed);
+              if (json) return json;
             }
 
-            if ((ext === ".yml" || ext === ".yaml") && /^[A-Za-z0-9_-]+\s*:/.test(trimmed)) {
-              const key = trimmed.split(":")[0].trim();
-              return `Setting ${key} receives a definition.`;
-            }
-
-            if ((ext === ".yml" || ext === ".yaml") && /^-\s+/.test(trimmed)) {
-              return "Current list receives one item.";
+            if (ext === ".yml" || ext === ".yaml") {
+              const yaml = explainYaml(trimmed);
+              if (yaml) return yaml;
             }
 
             if (ext === ".sql") {
-              const upper = trimmed.toUpperCase();
-
-              if (upper.startsWith("CREATE TABLE")) return "Database table creation starts.";
-              if (upper.startsWith("ALTER TABLE")) return "Database table change starts.";
-              if (upper.startsWith("CREATE INDEX")) return "Database lookup helper creation starts.";
-              if (upper.startsWith("INSERT INTO")) return "Database receives new stored data.";
-              if (upper.startsWith("SELECT")) return "Database read request starts.";
-              if (upper.startsWith("UPDATE")) return "Database stored data change starts.";
-              if (upper.startsWith("DELETE")) return "Database stored data removal starts.";
+              const sql = explainSql(trimmed);
+              if (sql) return sql;
             }
 
             if (ext === ".sh" || ext === ".bash") {
-              if (trimmed.startsWith("#!")) return "Script runner receives a selection.";
-              if (trimmed.startsWith("cd ")) return "Current command folder changes.";
-              if (trimmed.startsWith("mkdir ")) return "Folder creation command runs.";
-              if (trimmed.startsWith("echo ")) return "Text output command runs.";
-              if (trimmed.startsWith("pnpm ")) return "Package command runs.";
-              if (trimmed.startsWith("npm ")) return "Package command runs.";
-              if (trimmed.startsWith("node ")) return "Node script command runs.";
-              if (trimmed.startsWith("git ")) return "Repository command runs.";
+              const shell = explainShell(trimmed);
+              if (shell) return shell;
             }
 
             const jsxOpen = trimmed.match(/^<([A-Za-z0-9_.$-]+)/);
-            if (jsxOpen) {
-              return `Visible element ${jsxOpen[1]} starts.`;
-            }
+            if (jsxOpen) return `${readableName(jsxOpen[1])} visible element starts.`;
 
             const jsxClose = trimmed.match(/^<\/([A-Za-z0-9_.$-]+)>/);
-            if (jsxClose) {
-              return `Visible element ${jsxClose[1]} ends.`;
-            }
+            if (jsxClose) return `${readableName(jsxClose[1])} visible element ends.`;
 
-            if (trimmed === "{" || trimmed.endsWith("{")) return "Grouped instructions start.";
-            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "Current grouped instructions end.";
+            if (trimmed === "{" || trimmed.endsWith("{")) return "Named group starts.";
+            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "Current named group ends.";
             if (trimmed === "[" || trimmed.endsWith("[")) return "Ordered group starts.";
             if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "Current ordered group ends.";
 
-            if (/^[A-Za-z0-9_.$[\]]+\s*=/.test(trimmed)) {
-              const name = trimmed.split("=")[0].trim();
-              return `${name} receives a new value.`;
-            }
+            const assigned = explainAssignment(trimmed);
+            if (assigned) return assigned;
 
             if (/^[A-Za-z0-9_$'"]+\s*:/.test(trimmed)) {
               const key = trimmed.split(":")[0].trim().replace(/^["']|["']$/g, "");
-              return `Field ${key} receives a definition.`;
+              const value = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
+
+              if (value === "true") return `${readableName(key)} field is enabled.`;
+              if (value === "false") return `${readableName(key)} field is disabled.`;
+              if (value === "null") return `${readableName(key)} field is empty.`;
+              if (value) return `${readableName(key)} field receives ${value}.`;
+
+              return `${readableName(key)} field starts.`;
             }
 
             if (trimmed.endsWith(";")) return "Current instruction completes.";
             if (trimmed.endsWith(",")) return "Current structure receives one item or field.";
 
+            const quoted = quotedValue(trimmed);
+            if (quoted) return `Current line contains ${quoted}.`;
+
             return "Current instruction continues.";
           }
 
-          function translateTextFile(relativePath, buffer) {
+          function translateFile(relativePath, buffer) {
             const text = buffer.toString("utf8");
-            const { lines, sourceEndedWithNewline } = splitPhysicalLines(text);
+            const { lines, endedWithNewline } = splitPhysicalLines(text);
 
-            const outPath = path.join(outRoot, `${relativePath}.strict-english.txt`);
+            const outPath = path.join(outRoot, `${relativePath}.csv`);
             ensureDir(outPath);
 
-            const translatedLines = lines.map((line) => {
-              if (line.trim() === "") return "";
-              return strictEnglishForLine(line, relativePath);
+            const rows = lines.map((line, index) => {
+              const lineNumber = index + 1;
+              const translation = strictLine(line, relativePath);
+
+              return `${lineNumber},${csvCell(translation)}`;
             });
 
-            let output = translatedLines.join("\n");
-            if (sourceEndedWithNewline && translatedLines.length > 0) {
+            let output = rows.join("\n");
+
+            if (endedWithNewline && rows.length > 0) {
               output += "\n";
             }
 
             fs.writeFileSync(outPath, output);
-
-            return {
-              path: relativePath,
-              output: toPosix(path.relative(outRoot, outPath)),
-              kind: "translated-text",
-              sourceLines: lines.length,
-              translatedLines: translatedLines.length,
-              bytes: buffer.length,
-            };
           }
 
           function walk(directory) {
@@ -450,132 +605,46 @@ jobs:
           fs.mkdirSync(outRoot, { recursive: true });
 
           const files = walk(repoRoot);
-          const manifest = [];
-          const assetFiles = [];
 
-          let translatedTextFiles = 0;
-          let skippedLargeFiles = 0;
-          let skippedAssetFiles = 0;
-          let skippedBinaryFiles = 0;
-          let totalSourceLines = 0;
-          let totalTranslatedLines = 0;
+          let translated = 0;
+          let listedAsset = 0;
+          let skippedLarge = 0;
+          let skippedBinary = 0;
 
           for (const file of files) {
             const buffer = fs.readFileSync(file.absolutePath);
 
             if (isAssetFile(file.relativePath)) {
-              skippedAssetFiles += 1;
-              assetFiles.push(file.relativePath);
-              manifest.push({
-                path: file.relativePath,
-                kind: "asset-file-listed-only",
-                bytes: buffer.length,
-              });
+              listedAsset += 1;
               continue;
             }
 
             if (buffer.length > maxFileBytes) {
-              skippedLargeFiles += 1;
-              manifest.push({
-                path: file.relativePath,
-                kind: "skipped-large-file",
-                bytes: buffer.length,
-              });
+              skippedLarge += 1;
               continue;
             }
 
             if (!isProbablyText(file.relativePath, buffer)) {
-              skippedBinaryFiles += 1;
-              assetFiles.push(file.relativePath);
-              manifest.push({
-                path: file.relativePath,
-                kind: "binary-file-listed-only",
-                bytes: buffer.length,
-              });
+              skippedBinary += 1;
               continue;
             }
 
-            const entry = translateTextFile(file.relativePath, buffer);
-
-            translatedTextFiles += 1;
-            totalSourceLines += entry.sourceLines;
-            totalTranslatedLines += entry.translatedLines;
-            manifest.push(entry);
+            translateFile(file.relativePath, buffer);
+            translated += 1;
           }
 
-          fs.writeFileSync(assetListPath, assetFiles.sort().join("\n") + (assetFiles.length ? "\n" : ""));
-
-          fs.writeFileSync(
-            manifestPath,
-            JSON.stringify(
-              {
-                generatedAt: new Date().toISOString(),
-                sourceBranch: process.env.GITHUB_REF_NAME || null,
-                sourceSha: process.env.GITHUB_SHA || null,
-                outputRoot: "build-memory/strict-english-codebase",
-                translatedTextFiles,
-                skippedLargeFiles,
-                skippedAssetFiles,
-                skippedBinaryFiles,
-                totalSeenFiles: files.length,
-                totalSourceLines,
-                totalTranslatedLines,
-                lineRule: "Each source line produces exactly one translated line. Blank source lines produce blank translated lines.",
-                assetRule: "Image, model, font, media, archive, wasm, and other binary assets are listed by file path only.",
-                files: manifest,
-              },
-              null,
-              2
-            )
-          );
-
-          fs.writeFileSync(
-            summaryPath,
-            [
-              "# Strict English Codebase Export",
-              "",
-              `Generated at: ${new Date().toISOString()}`,
-              "",
-              `Text files translated: ${translatedTextFiles}`,
-              `Asset files listed only: ${skippedAssetFiles}`,
-              `Other binary files listed only: ${skippedBinaryFiles}`,
-              `Large files skipped: ${skippedLargeFiles}`,
-              `Total files seen: ${files.length}`,
-              `Total source lines translated: ${totalSourceLines}`,
-              `Total strict-English lines written: ${totalTranslatedLines}`,
-              "",
-              "Rules:",
-              "",
-              "- Each source line produces exactly one translated line.",
-              "- Blank source lines produce blank translated lines.",
-              "- Translated files do not include original code.",
-              "- Image, model, font, media, archive, wasm, and other binary assets are listed by file path only.",
-              "",
-            ].join("\n")
-          );
-
-          console.log(`Text files translated: ${translatedTextFiles}`);
-          console.log(`Asset files listed only: ${skippedAssetFiles}`);
-          console.log(`Other binary files listed only: ${skippedBinaryFiles}`);
-          console.log(`Total source lines translated: ${totalSourceLines}`);
-          console.log(`Total strict-English lines written: ${totalTranslatedLines}`);
+          console.log(`Translated text files: ${translated}`);
+          console.log(`Asset files left out: ${listedAsset}`);
+          console.log(`Large files left out: ${skippedLarge}`);
+          console.log(`Other binary files left out: ${skippedBinary}`);
           NODE
 
-          node export-strict-english-codebase.mjs
+          node export-strict-english-csv-repo.mjs
 
-      - name: Create downloadable zip
-        run: |
-          cd build-memory
-          zip -r strict-english-codebase.zip \
-            strict-english-codebase \
-            strict-english-codebase-manifest.json \
-            strict-english-codebase-summary.md \
-            strict-english-asset-files.txt
-
-      - name: Upload strict English codebase zip
+      - name: Upload strict English CSV repo artifact
         uses: actions/upload-artifact@v4
         with:
-          name: strict-english-codebase-${{ github.run_id }}
-          path: build-memory/strict-english-codebase.zip
+          name: strict-english-csv-repo-${{ github.run_id }}
+          path: build-memory/strict-english-csv-repo
           retention-days: 30
           if-no-files-found: error
