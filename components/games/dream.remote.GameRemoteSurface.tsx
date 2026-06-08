@@ -37,6 +37,7 @@ export type GameInputAction =
   | 'move-stop'
   | 'jump' | 'duck' | 'spin' | 'shoot'
   | 'jump-spin' | 'jump-shoot' | 'l2' | 'r1' | 'l3' | 'r3'
+  | 'sprint'
   | 'pause';
 
 function fireAction(action: GameInputAction, active: boolean): void {
@@ -47,7 +48,7 @@ function fireAction(action: GameInputAction, active: boolean): void {
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const LEFT_PAD_R    = 70;   // outer pad radius (px)
+const LEFT_PAD_R    = 52;   // left movement stick stays smaller so the right action stick has priority
 const RIGHT_PAD_R   = 70;   // right analog is intentionally larger for readability
 const LEFT_KNOB_R   = 20;   // inner knob radius
 const RIGHT_KNOB_R  = 20;   // slightly larger knob for action stick
@@ -152,6 +153,8 @@ function Stick({
   const pressStartRef   = useRef<{ x: number; y: number; clickFired: boolean } | null>(null);
   const clickTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeActionRef = useRef<GameInputAction | null>(null);
+  const holdActionRef   = useRef<GameInputAction | null>(null);
+  const releaseJumpRef  = useRef(false);
   const prevDirRef      = useRef<Dir8 | null>(null);
 
   const clearClickTimer = useCallback(() => {
@@ -168,17 +171,20 @@ function Stick({
     centerRef.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
     pressStartRef.current = { x: e.clientX, y: e.clientY, clickFired: false };
     setActive(true);
-    if (clickAction) {
+    if (clickAction || side === 'right') {
       clearClickTimer();
       clickTimerRef.current = setTimeout(() => {
         const start = pressStartRef.current;
-        if (!start || start.clickFired || prevDirRef.current) return;
+        if (!start || start.clickFired) return;
+        const holdAction: GameInputAction = side === 'right' ? 'sprint' : clickAction!;
+        if (side !== 'right' && prevDirRef.current) return;
         start.clickFired = true;
-        setButtonAction(clickAction);
-        fireAction(clickAction, true);
+        holdActionRef.current = holdAction;
+        setButtonAction(holdAction);
+        fireAction(holdAction, true);
       }, 420);
     }
-  }, [clearClickTimer, clickAction]);
+  }, [clearClickTimer, clickAction, side]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -190,7 +196,7 @@ function Stick({
     setKnob(clamped);
 
     const start = pressStartRef.current;
-    if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > DEAD) {
+    if (side !== 'right' && start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > DEAD) {
       clearClickTimer();
     }
 
@@ -202,12 +208,20 @@ function Stick({
         fireAction(activeActionRef.current, false);
         if (side === 'left') fireAction('move-stop', false);
       }
-      // Start new action
+      // Start new action. MADMAXI uses the right stick as a release-to-jump
+      // trigger, so jump directions are armed here and fired on pointer release.
       if (newDir) {
         const map = side === 'right' ? RIGHT_MAP[newDir] : LEFT_MAP[newDir];
-        activeActionRef.current = map.action;
-        fireAction(map.action, true);
+        const armsReleaseJump = side === 'right' && (map.action === 'jump' || map.action === 'jump-spin' || map.action === 'jump-shoot');
+        releaseJumpRef.current = armsReleaseJump;
+        if (armsReleaseJump) {
+          activeActionRef.current = null;
+        } else {
+          activeActionRef.current = map.action;
+          fireAction(map.action, true);
+        }
       } else {
+        releaseJumpRef.current = false;
         activeActionRef.current = null;
         if (side === 'left') fireAction('move-stop', false);
       }
@@ -224,12 +238,19 @@ function Stick({
       fireAction(activeActionRef.current, false);
       if (side === 'left') fireAction('move-stop', false);
       activeActionRef.current = null;
-    } else if (clickAction && start && !start.clickFired) {
+    }
+    if (releaseJumpRef.current) {
+      fireAction('jump', true);
+      fireAction('jump', false);
+    } else if (side !== 'right' && clickAction && start && !start.clickFired) {
       fireAction(clickAction, true);
       fireAction(clickAction, false);
-    } else if (clickAction && start?.clickFired) {
-      fireAction(clickAction, false);
     }
+    if (holdActionRef.current) {
+      fireAction(holdActionRef.current, false);
+      holdActionRef.current = null;
+    }
+    releaseJumpRef.current = false;
     setButtonAction(null);
     prevDirRef.current = null;
     pressStartRef.current = null;
@@ -244,9 +265,11 @@ function Stick({
   const activeInfo = dir ? map[dir] : null;
   const dirLabel   = activeInfo ? activeInfo.label : null;
   const buttonLabel = buttonAction
-    ? buttonAction === clickAction
-      ? side === 'right' ? 'Press jump' : 'Press'
-      : (Object.values(RIGHT_MAP).find((info) => info.action === buttonAction)?.label ?? buttonAction)
+    ? buttonAction === 'sprint'
+      ? 'SPRINT'
+      : buttonAction === clickAction
+        ? side === 'right' ? 'Press' : 'Press'
+        : (Object.values(RIGHT_MAP).find((info) => info.action === buttonAction)?.label ?? buttonAction)
     : null;
   const labelColor = side === 'right' && dir
     ? RIGHT_MAP[dir].color
@@ -364,16 +387,13 @@ export default function GameRemote({
   const { connected: gpConnected, gamepadName } = useGamepad();
   const searchParams = useSearchParams();
   const [remoteState, setRemoteState] = useState<'idle' | 'active' | 'collapsed'>('idle');
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const activateRemote = useCallback(() => {
-    setRemoteState((current) => current === 'collapsed' ? current : 'active');
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    idleTimerRef.current = setTimeout(() => setRemoteState((current) => current === 'collapsed' ? current : 'idle'), 1200);
+  const hideRemoteWhileTouching = useCallback(() => {
+    setRemoteState((current) => current === 'collapsed' ? current : 'idle');
   }, []);
 
-  useEffect(() => () => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+  const revealRemoteAfterTouch = useCallback(() => {
+    setRemoteState((current) => current === 'collapsed' ? current : 'active');
   }, []);
 
   const gpNameLower = gamepadName.toLowerCase();
@@ -422,8 +442,9 @@ export default function GameRemote({
     <div
       className="de-game-overlay-material de-runtime-seam"
       data-game-remote-state={remoteState}
-      onPointerDownCapture={activateRemote}
-      onPointerMoveCapture={activateRemote}
+      onPointerDownCapture={hideRemoteWhileTouching}
+      onPointerUpCapture={revealRemoteAfterTouch}
+      onPointerCancelCapture={revealRemoteAfterTouch}
       style={{
       position: 'relative',
       minHeight: embedded ? undefined : '100dvh',
