@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-08T04:32:24.470Z
+Generated: 2026-06-08T05:19:08.637Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -8747,7 +8747,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → toCustomEnginProfileId
 │   │   │   ├── → validateCanonicalEnginCapabilityProfiles
 │   │   │   ├── → validateEnginCapabilityProfile
-│   │   │   └── ∅ unused: isCustomEnginProfileId, isEnginProfileId, CANONICAL_ENGIN_ALIASES, toCustomEnginProfileId
+│   │   │   └── ∅ unused: CANONICAL_ENGIN_ALIASES, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId
 │   │   ├── EnginDomainCores.ts ∅
 │   │   │   ├── JsonObject  ← ./EnginBaseState
 │   │   │   ├── AudioTrackMixer  ← ./EnginCapabilityExecution
@@ -11290,7 +11290,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → getCapabilityDescriptor
 │   │   │   ├── → isInformationDomain
 │   │   │   ├── → isIntentEnvelope
-│   │   │   └── ∅ unused: isIntentEnvelope, isInformationDomain, CAPABILITY_DESCRIPTORS, INFORMATION_DOMAINS
+│   │   │   └── ∅ unused: CAPABILITY_DESCRIPTORS, isIntentEnvelope, isInformationDomain, INFORMATION_DOMAINS
 │   │   ├── dropTargetRegistry.ts
 │   │   │   ├── DreamDrop  ← @/lib/runtime/coercionTable
 │   │   │   ├── DreamDropType  ← @/lib/runtime/coercionTable
