@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:22:20.976Z
+Generated: 2026-06-09T05:22:49.988Z
 
 ---
 
@@ -894,6 +894,7 @@ _No style files for this feature._
 - `lib/gameengin/runtime/FrameBudget.ts`
 - `lib/gameengin/runtime/FrameClock.ts`
 - `lib/gameengin/runtime/RuntimeQuality.ts`
+- `lib/gameengin/runtime/index.ts`
 
 ### `lib/gameengin/systems/`
 
@@ -1022,9 +1023,11 @@ _No style files for this feature._
 - `../eventBus`
 - `../power-systems`
 - `./FrameBudget`
+- `./FrameClock`
 - `./GameRuntime`
 - `./InputRouter`
 - `./MyGame`
+- `./RuntimeQuality`
 - `./_fx/canvasFx`
 - `./accessibility-ai`
 - `./ai`
@@ -19285,6 +19288,7 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
 | `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
+| `lib/gameengin/runtime/index.ts` | `GAMEENGIN_FRAME_BUDGETS`, `resolveFrameBudget`, `GameEnginFrameClock`, `decideRuntimeQuality` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -21918,6 +21922,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
 │   │   │   ├── FrameClock.ts ∅
 │   │   │   │   └── ∅ unused: GameEnginFrameClock
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget, GameEnginFrameClock, decideRuntimeQuality
 │   │   │   └── RuntimeQuality.ts
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅

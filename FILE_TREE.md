@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:22:21.112Z
+Generated: 2026-06-09T05:22:50.129Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9812,6 +9812,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── resolveFrameBudget  ← ./FrameBudget
 │   │   │   │   ├── → GameEnginFrameClock
 │   │   │   │   └── ∅ unused: GameEnginFrameClock
+│   │   │   ├── index.ts ∅
+│   │   │   │   ├── → GAMEENGIN_FRAME_BUDGETS
+│   │   │   │   ├── → GameEnginFrameClock
+│   │   │   │   ├── → decideRuntimeQuality
+│   │   │   │   ├── → resolveFrameBudget
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget, GameEnginFrameClock, decideRuntimeQuality
 │   │   │   └── RuntimeQuality.ts
 │   │   │       └── → decideRuntimeQuality
 │   │   ├── systems  [GameEngin]
