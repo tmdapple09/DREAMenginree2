@@ -14,11 +14,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref_name }}
 
       - name: Unzip -> sync code -> commit
         shell: bash
         run: |
           set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME}"
+          echo "Working branch: $BRANCH"
+
+          # Make sure local branch is current before applying the zip
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
 
           # 1. Find the zip file
           shopt -s nullglob
@@ -67,9 +75,10 @@ jobs:
           git add -A
           git diff --cached --quiet && echo "No code changes to commit." && exit 0
           git commit -m "chore: apply code updates from zip [skip ci] [skip vercel]"
-          
-          # 6. THE FIX: Pull latest changes first to prevent push rejections
-          git pull --rebase
-          
+
+          # 6. Rebase onto latest remote branch before push
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
+
           # 7. Push the updated codebase back to GitHub
-          git push || true
+          git push origin "HEAD:$BRANCH"
