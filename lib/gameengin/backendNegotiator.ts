@@ -2,16 +2,24 @@
 
 import type { RuntimeBackendDiagnostics, RendererBackendId } from './cartridge';
 import type { CartridgeManifestEntry } from './cartridges/manifest';
+import { decideRuntimeQuality } from './runtime/RuntimeQuality';
 
 type NavigatorWithGPU = Navigator & { gpu?: GPU };
 
 function hasWebGL2(): boolean {
   try {
     const canvas = document.createElement('canvas');
-    return Boolean(canvas.getContext('webgl2'));
+    return Boolean(canvas.getContext('webgl2', { powerPreference: 'high-performance' }));
   } catch {
     return false;
   }
+}
+
+function unsupportedReason(backend: RendererBackendId): string {
+  if ((backend === 'webgpu' || backend === 'babylon-webgpu') && !window.isSecureContext) return 'WebGPU requires HTTPS or localhost.';
+  if (backend === 'webgpu' || backend === 'babylon-webgpu') return 'navigator.gpu unavailable.';
+  if (backend === 'webgl2' || backend === 'babylon-webgl2') return 'WebGL2 context unavailable.';
+  return 'Backend probe failed.';
 }
 
 function supportedBackend(backend: RendererBackendId): boolean {
@@ -41,7 +49,7 @@ export async function negotiateRendererBackend(manifest: CartridgeManifestEntry)
     if (span) {
       span.status = supported ? 'complete' : 'failed';
       span.ms = Math.max(1, Math.round(performance.now() - started));
-      if (!supported) span.message = candidate.includes('webgpu') && !window.isSecureContext ? 'WebGPU requires a secure context.' : 'Backend probe failed.';
+      if (!supported) span.message = unsupportedReason(candidate);
     }
     if (supported) {
       selectedBackend = candidate;
@@ -49,9 +57,7 @@ export async function negotiateRendererBackend(manifest: CartridgeManifestEntry)
     }
   }
 
-  if (selectedBackend !== preferredBackend) {
-    fallbackReason = `${preferredBackend} unavailable; negotiated ${selectedBackend}.`;
-  }
+  if (selectedBackend !== preferredBackend) fallbackReason = `${preferredBackend} unavailable; negotiated ${selectedBackend}.`;
 
   let deviceLabel: string | undefined;
   let limits: Record<string, number> | undefined;
@@ -62,6 +68,10 @@ export async function negotiateRendererBackend(manifest: CartridgeManifestEntry)
       limits = Object.fromEntries(Object.entries(adapter.limits).filter(([, value]) => typeof value === 'number')) as Record<string, number>;
     }
   }
+
+  const webgpuReady = selectedBackend.includes('webgpu');
+  const quality = decideRuntimeQuality(16.67, webgpuReady);
+  spans.push({ id: `quality:${quality.quality}`, label: `Runtime quality ${quality.quality}`, status: 'complete', message: quality.reason, ms: Math.max(1, Math.round(performance.now() - started)) });
 
   return {
     selectedBackend,
