@@ -11,6 +11,7 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
 
 env:
   NODE_VERSION: '25'
@@ -197,6 +198,15 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   # ==========================================
+  # Deploy to Vercel (Production)
+  # ──────────────────────────────────────────
+  # Vercel deployments are handled automatically by the Vercel GitHub
+  # integration — no VERCEL_TOKEN or CLI steps needed here.
+  # Pushing to the `completedream` branch is sufficient; Vercel watches
+  # that branch and triggers a production deployment on every push.
+  # ==========================================
+
+  # ==========================================
   # Deploy to Kubernetes (Optional)
   # ==========================================
   deploy-k8s:
@@ -342,44 +352,27 @@ jobs:
           # Add Slack/Discord webhook here
 
   # ==========================================
-  # Export JSON Report 
+  # Export EVERYTHING to JSON
   # ==========================================
-  generate-json-report:
-    name: Generate & Upload JSON Report
+  export-all-logs:
+    name: Export EVERYTHING to JSON
     runs-on: ubuntu-latest
     if: always()
     needs: [quality, verify, database, security, docker, deploy-k8s, smoke-tests, drift-check, build-probe, notify]
     steps:
-      - name: Create JSON Report
+      - name: Aggregate all logs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          REPORT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          cat > pipeline-results.json << EOF
-          {
-            "pipeline": "DREAMengin CI/CD",
-            "repository": "${{ github.repository }}",
-            "run_id": "${{ github.run_id }}",
-            "actor": "${{ github.actor }}",
-            "ref": "${{ github.ref }}",
-            "timestamp": "$REPORT_DATE",
-            "full_job_status": {
-              "quality": "${{ needs.quality.result }}",
-              "verify": "${{ needs.verify.result }}",
-              "database": "${{ needs.database.result }}",
-              "security": "${{ needs.security.result }}",
-              "docker": "${{ needs.docker.result }}",
-              "deploy_k8s": "${{ needs.deploy-k8s.result }}",
-              "smoke_tests": "${{ needs.smoke-tests.result }}",
-              "drift_check": "${{ needs.drift-check.result }}",
-              "build_probe": "${{ needs.build-probe.result }}",
-              "notify": "${{ needs.notify.result }}"
-            }
-          }
-          EOF
-          cat pipeline-results.json
+          # Fetch the log for every job in this specific run and consolidate
+          gh run view ${{ github.run_id }} --log-failed --log > pipeline-full-data.log
+          
+          # Wrap the entire log stream into a JSON object
+          python3 -c "import json, sys; print(json.dumps({'run_id': '${{ github.run_id }}', 'full_pipeline_log': sys.stdin.read()}, ensure_ascii=False))" < pipeline-full-data.log > pipeline-results.json
 
-      - name: Upload JSON Report
+      - name: Upload Massive JSON
         uses: actions/upload-artifact@v4
         with:
-          name: pipeline-results-json
+          name: full-pipeline-data
           path: pipeline-results.json
           retention-days: 7
