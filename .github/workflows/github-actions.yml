@@ -197,15 +197,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   # ==========================================
-  # Deploy to Vercel (Production)
-  # ──────────────────────────────────────────
-  # Vercel deployments are handled automatically by the Vercel GitHub
-  # integration — no VERCEL_TOKEN or CLI steps needed here.
-  # Pushing to the `completedream` branch is sufficient; Vercel watches
-  # that branch and triggers a production deployment on every push.
-  # ==========================================
-
-  # ==========================================
   # Deploy to Kubernetes (Optional)
   # ==========================================
   deploy-k8s:
@@ -369,17 +360,22 @@ jobs:
             "run_id": "${{ github.run_id }}",
             "actor": "${{ github.actor }}",
             "ref": "${{ github.ref }}",
-            "status": "${{ job.status }}",
             "timestamp": "$REPORT_DATE",
-            "results": {
+            "full_job_status": {
               "quality": "${{ needs.quality.result }}",
               "verify": "${{ needs.verify.result }}",
+              "database": "${{ needs.database.result }}",
               "security": "${{ needs.security.result }}",
               "docker": "${{ needs.docker.result }}",
-              "drift_check": "${{ needs.drift-check.result }}"
+              "deploy_k8s": "${{ needs.deploy-k8s.result }}",
+              "smoke_tests": "${{ needs.smoke-tests.result }}",
+              "drift_check": "${{ needs.drift-check.result }}",
+              "build_probe": "${{ needs.build-probe.result }}",
+              "notify": "${{ needs.notify.result }}"
             }
           }
           EOF
+          cat pipeline-results.json
 
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
