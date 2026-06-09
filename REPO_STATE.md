@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:24:57.637Z
+Generated: 2026-06-09T05:25:28.546Z
 
 ---
 
@@ -893,6 +893,10 @@ _No style files for this feature._
 - `lib/gameengin/remote/layout.ts`
 - `lib/gameengin/remote/moves.ts`
 - `lib/gameengin/remote/sprintDetector.ts`
+
+### `lib/gameengin/render/`
+
+- `lib/gameengin/render/ShaderRegistry.ts`
 
 ### `lib/gameengin/runtime/`
 
@@ -12074,6 +12078,12 @@ _No style files for this feature._
 |--------|---------------|
 | `./moves` | `ALL_COMBOS`, `Combo`, `FaceButton`, `MULTITOUCH_COMBOS`, `MultiTouchCombo`, `maxComboLength` |
 
+## `lib/gameengin/render/ShaderRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `RendererBackendId` |
+
 ## `lib/gameengin/runtime/FrameClock.ts`
 
 | Module | Connected via |
@@ -19307,6 +19317,7 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
 | `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
+| `lib/gameengin/render/ShaderRegistry.ts` | `GameEnginShaderRegistry` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
 | `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
 | `lib/gameengin/runtime/index.ts` | `resolveFrameBudget` |
@@ -21942,6 +21953,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
 │   │   │   └── sprintDetector.ts ∅
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
+│   │   ├── render  [GameEngin]
+│   │   │   └── ShaderRegistry.ts ∅
+│   │   │       └── ∅ unused: GameEnginShaderRegistry
 │   │   ├── runtime  [GameEngin]
 │   │   │   ├── FrameBudget.ts ∅
 │   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS

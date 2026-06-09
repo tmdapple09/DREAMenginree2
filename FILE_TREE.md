@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:24:57.766Z
+Generated: 2026-06-09T05:25:28.667Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9813,6 +9813,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → SPRINT_MOVE_THRESHOLD
 │   │   │       ├── → SprintDetector
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
+│   │   ├── render  [GameEngin]
+│   │   │   └── ShaderRegistry.ts ∅
+│   │   │       ├── RendererBackendId  ← ../cartridge
+│   │   │       ├── → GameEnginShaderRegistry
+│   │   │       └── ∅ unused: GameEnginShaderRegistry
 │   │   ├── runtime  [GameEngin]
 │   │   │   ├── FrameBudget.ts ∅
 │   │   │   │   ├── → GAMEENGIN_FRAME_BUDGETS
