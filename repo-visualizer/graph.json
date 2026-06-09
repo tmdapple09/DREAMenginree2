@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T04:36:02.195Z",
+  "generatedAt": "2026-06-09T05:02:32.249Z",
   "root": ".",
   "nodes": [
     {
@@ -42180,7 +42180,7 @@
       "path": "lib/gameengin/input/index.ts",
       "parent": "folder:lib/gameengin/input",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -42808,6 +42808,55 @@
       "type": "ts",
       "path": "lib/gameengin/remote/sprintDetector.ts",
       "parent": "folder:lib/gameengin/remote",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:lib/gameengin/runtime",
+      "label": "runtime",
+      "type": "folder",
+      "path": "lib/gameengin/runtime",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:lib/gameengin/runtime/FrameBudget.ts#resolveFrameBudget",
+      "label": "resolveFrameBudget",
+      "type": "function",
+      "path": "lib/gameengin/runtime/FrameBudget.ts",
+      "parent": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "loc": 17,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "label": "FrameBudget.ts",
+      "type": "ts",
+      "path": "lib/gameengin/runtime/FrameBudget.ts",
+      "parent": "folder:lib/gameengin/runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/gameengin/runtime/RuntimeQuality.ts#decideRuntimeQuality",
+      "label": "decideRuntimeQuality",
+      "type": "function",
+      "path": "lib/gameengin/runtime/RuntimeQuality.ts",
+      "parent": "file:lib/gameengin/runtime/RuntimeQuality.ts",
+      "loc": 7,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/runtime/RuntimeQuality.ts",
+      "label": "RuntimeQuality.ts",
+      "type": "ts",
+      "path": "lib/gameengin/runtime/RuntimeQuality.ts",
+      "parent": "folder:lib/gameengin/runtime",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -90112,6 +90161,11 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/input/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/input/InputRouter.ts",
       "kind": "import"
     },
@@ -90178,6 +90232,16 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/remote/sprintDetector.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/runtime/RuntimeQuality.ts",
       "kind": "import"
     },
     {

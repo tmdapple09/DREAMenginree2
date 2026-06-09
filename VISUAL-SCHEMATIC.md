@@ -8,16 +8,16 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2057
-- **Total function/class nodes:** 3892
-- **Total edges:** 7397
-- **Orphan nodes:** 3276
+- **Total files:** 2059
+- **Total function/class nodes:** 3894
+- **Total edges:** 7400
+- **Orphan nodes:** 3277
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
   app["app"] -->|1230| lib["lib"]
-  src["src"] -->|542| lib["lib"]
+  src["src"] -->|545| lib["lib"]
   components["components"] -->|316| lib["lib"]
   src["src"] -->|294| components["components"]
   app["app"] -->|286| components["components"]
@@ -60,7 +60,7 @@ graph LR
 
 #### File-Level Connectivity (auto-generated)
 
-<details><summary>lib/ (561 files)</summary>
+<details><summary>lib/ (563 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -573,6 +573,9 @@ graph LR
 | `lib/gameengin/brain/technique-library/modeling/silhouette-first.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/brain/technique-library/optimization/texture-atlasing.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/brain/upgrade-history/prioritization-rules.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
+| `lib/gameengin/input/index.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/input/InputRouter.ts` |
+| `lib/gameengin/runtime/FrameBudget.ts` | ts | 0 | 1 | `src/engin/generated/systems.ts` | — |
+| `lib/gameengin/runtime/RuntimeQuality.ts` | ts | 0 | 1 | `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/systems/index.ts` | ts | 10 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/systems/ai.ts`, `lib/gameengin/systems/animation.ts`, `lib/gameengin/systems/assets.ts` |
 | `lib/gestures/useTouchGestures.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gestures/touchGestures.ts` |
 | `lib/home-buttons/button-groups.ts` | ts | 0 | 1 | `src/engin/generated/homedream.ts` | — |
@@ -621,7 +624,6 @@ graph LR
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/work-queue/README.md` | doc | 0 | 0 | — | — |
-| `lib/gameengin/input/index.ts` | ts | 1 | 0 | — | `lib/gameengin/input/InputRouter.ts` |
 | `lib/navigation/README.md` | doc | 0 | 0 | — | — |
 | `lib/optimizer/README.md` | doc | 0 | 0 | — | — |
 | `lib/vm/README.md` | doc | 0 | 0 | — | — |
@@ -1519,7 +1521,7 @@ graph LR
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 25 | 1 | `src/engin/generated/index.ts` | `lib/engins/brand/brandEnginRuleSet.ts`, `lib/engins/brand/useBrandEnginRuntime.ts`, `lib/engins/code/codeEnginRuleSet.ts` |
 | `src/engin/generated/surfaces.ts` | ts | 538 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
-| `src/engin/generated/systems.ts` | ts | 373 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
+| `src/engin/generated/systems.ts` | ts | 376 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
 | `src/engin/state/base.json` | config | 0 | 1 | `src/engin/core/index.ts` | — |
 | `src/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `src/components/dream.DreamEnginLogo.tsx` | tsx | 0 | 0 | — | — |
@@ -3156,6 +3158,7 @@ graph LR
   f_lib_gameengin_executionWiring_ts["executionWiring.ts"]
   f_lib_gameengin_generative_audio_ts["generative-audio.ts"]
   f_lib_gameengin_index_ts["index.ts"]
+  f_lib_gameengin_input_index_ts["index.ts"]
   f_lib_gameengin_input_InputRouter_ts["InputRouter.ts"]
   f_lib_gameengin_neural_render_ts["neural-render.ts"]
   f_lib_gameengin_path_tracing_ts["path-tracing.ts"]
@@ -3170,6 +3173,8 @@ graph LR
   f_lib_gameengin_remote_layout_ts["layout.ts"]
   f_lib_gameengin_remote_moves_ts["moves.ts"]
   f_lib_gameengin_remote_sprintDetector_ts["sprintDetector.ts"]
+  f_lib_gameengin_runtime_FrameBudget_ts["FrameBudget.ts"]
+  f_lib_gameengin_runtime_RuntimeQuality_ts["RuntimeQuality.ts"]
   f_lib_gameengin_systems_ai_ts["ai.ts"]
   f_lib_gameengin_systems_animation_ts["animation.ts"]
   f_lib_gameengin_systems_assets_ts["assets.ts"]
@@ -4330,6 +4335,7 @@ graph LR
   f_src_engin_generated_systems_ts --> f_lib_gameengin_gameEnginRuntime_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_generative_audio_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_index_ts
+  f_src_engin_generated_systems_ts --> f_lib_gameengin_input_index_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_input_InputRouter_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_neural_render_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_path_tracing_ts
@@ -4344,6 +4350,8 @@ graph LR
   f_src_engin_generated_systems_ts --> f_lib_gameengin_remote_layout_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_remote_moves_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_remote_sprintDetector_ts
+  f_src_engin_generated_systems_ts --> f_lib_gameengin_runtime_FrameBudget_ts
+  f_src_engin_generated_systems_ts --> f_lib_gameengin_runtime_RuntimeQuality_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_systems_ai_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_systems_animation_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_systems_assets_ts
@@ -4634,9 +4642,9 @@ _File-level graph omitted: 299 files exceeds Mermaid render budget. See table ab
 
 </details>
 
-<details><summary>lib/ — 561 files</summary>
+<details><summary>lib/ — 563 files</summary>
 
-_File-level graph omitted: 561 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 563 files exceeds Mermaid render budget. See table above._
 
 </details>
 
@@ -4985,7 +4993,6 @@ _File-level graph omitted: 561 files exceeds Mermaid render budget. See table ab
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc |
 | `lib/gameengin/brain/work-queue/README.md` | doc |
-| `lib/gameengin/input/index.ts` | ts |
 | `lib/navigation/README.md` | doc |
 | `lib/optimizer/README.md` | doc |
 | `lib/vm/README.md` | doc |
