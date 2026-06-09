@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:26:53.236Z
+Generated: 2026-06-09T05:27:40.414Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9848,7 +9848,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: AnimationStateMachine, ReplayBuffer, TypedEventBus, AnimationFSM, EventBus
 │   │   │   ├── assets.ts ∅
 │   │   │   │   ├── → AssetStreamManager
-│   │   │   │   └── ∅ unused: AssetStreamManager
+│   │   │   │   ├── → assertValidBundleManifest
+│   │   │   │   ├── → bundleWeightBytes
+│   │   │   │   ├── → planBundleCache
+│   │   │   │   └── ∅ unused: AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, planBundleCache
 │   │   │   ├── index.ts
 │   │   │   │   ├── OctreeBVH  ← @/lib/gameengin/systems
 │   │   │   │   └── ResourcePool  ← @/lib/gameengin/systems

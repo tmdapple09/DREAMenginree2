@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:26:53.094Z
+Generated: 2026-06-09T05:27:40.278Z
 
 ---
 
@@ -1031,6 +1031,8 @@ _No style files for this feature._
 
 ### Internal imports
 
+- `../assets/BundleCache`
+- `../assets/BundleManifest`
 - `../cartridge`
 - `../eventBus`
 - `../power-systems`
@@ -19323,7 +19325,7 @@ _No circular dependencies detected._
 | `lib/gameengin/runtime/index.ts` | `resolveFrameBudget` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
-| `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
+| `lib/gameengin/systems/assets.ts` | `AssetStreamManager`, `assertValidBundleManifest`, `bundleWeightBytes`, `planBundleCache` |
 | `lib/gameengin/systems/lod.ts` | `LODSystem` |
 | `lib/gameengin/systems/network.ts` | `ClientSidePrediction`, `RollbackNetcode` |
 | `lib/gameengin/systems/physics.ts` | `AdvancedPhysicsWorld`, `PhysicsMaterialSystem` |
@@ -21967,7 +21969,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── animation.ts ∅
 │   │   │   │   └── ∅ unused: AnimationStateMachine, ReplayBuffer, TypedEventBus, AnimationFSM, EventBus
 │   │   │   ├── assets.ts ∅
-│   │   │   │   └── ∅ unused: AssetStreamManager
+│   │   │   │   └── ∅ unused: AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, planBundleCache
 │   │   │   ├── index.ts
 │   │   │   ├── lod.ts ∅
 │   │   │   │   └── ∅ unused: LODSystem
