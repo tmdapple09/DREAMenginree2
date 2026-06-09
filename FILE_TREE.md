@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T04:55:51.385Z
+Generated: 2026-06-09T05:05:04.442Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9806,7 +9806,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── FrameBudget.ts ∅
 │   │   │   │   ├── → GAMEENGIN_FRAME_BUDGETS
 │   │   │   │   ├── → resolveFrameBudget
-│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
+│   │   │   ├── FrameClock.ts ∅
+│   │   │   │   ├── GameEnginQualityTier  ← ./FrameBudget
+│   │   │   │   ├── resolveFrameBudget  ← ./FrameBudget
+│   │   │   │   ├── → GameEnginFrameClock
+│   │   │   │   └── ∅ unused: GameEnginFrameClock
 │   │   │   └── RuntimeQuality.ts ∅
 │   │   │       ├── → decideRuntimeQuality
 │   │   │       └── ∅ unused: decideRuntimeQuality
@@ -13911,6 +13916,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/moves
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/sprintDetector
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameBudget
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/RuntimeQuality
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/animation
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/assets
