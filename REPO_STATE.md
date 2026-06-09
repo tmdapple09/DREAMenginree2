@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T04:43:32.800Z
+Generated: 2026-06-09T04:55:51.244Z
 
 ---
 
@@ -892,6 +892,7 @@ _No style files for this feature._
 ### `lib/gameengin/runtime/`
 
 - `lib/gameengin/runtime/FrameBudget.ts`
+- `lib/gameengin/runtime/RuntimeQuality.ts`
 
 ### `lib/gameengin/systems/`
 
@@ -14233,6 +14234,7 @@ _No style files for this feature._
 | `@/lib/gameengin/remote/layout` | _(dynamic import)_ |
 | `@/lib/gameengin/remote/moves` | _(dynamic import)_ |
 | `@/lib/gameengin/remote/sprintDetector` | _(dynamic import)_ |
+| `@/lib/gameengin/runtime/FrameBudget` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/ai` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/animation` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/assets` | _(dynamic import)_ |
@@ -15697,6 +15699,7 @@ _No style files for this feature._
 - `@/lib/gameengin/remote/layout`
 - `@/lib/gameengin/remote/moves`
 - `@/lib/gameengin/remote/sprintDetector`
+- `@/lib/gameengin/runtime/FrameBudget`
 - `@/lib/gameengin/systems/ai`
 - `@/lib/gameengin/systems/animation`
 - `@/lib/gameengin/systems/assets`
@@ -19264,6 +19267,7 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS`, `resolveFrameBudget` |
+| `lib/gameengin/runtime/RuntimeQuality.ts` | `decideRuntimeQuality` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -21893,8 +21897,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── sprintDetector.ts ∅
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── runtime  [GameEngin]
-│   │   │   └── FrameBudget.ts ∅
-│   │   │       └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
+│   │   │   ├── FrameBudget.ts ∅
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
+│   │   │   └── RuntimeQuality.ts ∅
+│   │   │       └── ∅ unused: decideRuntimeQuality
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem

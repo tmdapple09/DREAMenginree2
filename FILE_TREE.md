@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T04:43:32.936Z
+Generated: 2026-06-09T04:55:51.385Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9803,10 +9803,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → SprintDetector
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── runtime  [GameEngin]
-│   │   │   └── FrameBudget.ts ∅
-│   │   │       ├── → GAMEENGIN_FRAME_BUDGETS
-│   │   │       ├── → resolveFrameBudget
-│   │   │       └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
+│   │   │   ├── FrameBudget.ts ∅
+│   │   │   │   ├── → GAMEENGIN_FRAME_BUDGETS
+│   │   │   │   ├── → resolveFrameBudget
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
+│   │   │   └── RuntimeQuality.ts ∅
+│   │   │       ├── → decideRuntimeQuality
+│   │   │       └── ∅ unused: decideRuntimeQuality
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   ├── → BehaviorTreeEngine
@@ -13907,6 +13910,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/layout
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/moves
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/sprintDetector
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameBudget
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/animation
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/assets
