@@ -2278,9 +2278,9 @@ Agents & Workflow provides shared infrastructure used across the platform.
     ├── feature-build
     │   └── generate-features.mjs
     ├── fix-audit.js
-… (26 more files)
+… (28 more files)
 ```
-<details><summary>Agents & Workflow file index (146 files)</summary>
+<details><summary>Agents & Workflow file index (148 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
@@ -2400,6 +2400,8 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `scripts/gameengin/mechanic-run.ts` — TypeScript module.
 - `scripts/gameengin/package-cartridge.ts` — TypeScript module.
 - `scripts/gameengin/prophet-run.ts` — TypeScript module.
+- `scripts/gameengin/smoke-webgl.ts` — TypeScript module.
+- `scripts/gameengin/smoke-webgpu.ts` — TypeScript module.
 - `scripts/gameengin/upgrader-run.ts` — TypeScript module.
 - `scripts/gameengin/writer-run.ts` — TypeScript module.
 - `scripts/generate-mobile-nextgen-spec.mjs` — project file.
