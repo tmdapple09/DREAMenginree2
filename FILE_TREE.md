@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-08T20:39:42.888Z
+Generated: 2026-06-09T04:18:41.775Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9755,6 +9755,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → getSaveStorageBytes
 │   │   │       ├── → purgeCartridgeSaves
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
+│   │   ├── input  [GameEngin]
+│   │   │   └── InputRouter.ts ∅
+│   │   │       ├── CartridgeInputEvent  ← ../cartridge
+│   │   │       ├── → GameRuntimeInputRouter
+│   │   │       └── ∅ unused: GameRuntimeInputRouter
 │   │   ├── remote  [GameEngin]
 │   │   │   ├── comboMachine.ts ∅
 │   │   │   │   ├── ALL_COMBOS  ← ./moves
@@ -13865,6 +13870,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/accessibility-ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/ai-director
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/ai-npcs
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/backendNegotiator
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/brain-reader
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/cartridge-manifest
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/cartridge
@@ -16841,6 +16847,7 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tsconfig.json
 ├── tsconfig.server.json
 ├── tsconfig.test.json
+├── tsconfig.tsbuildinfo
 ├── tsconfig.worker.json
 ├── vercel.json
 └── vitest.config.ts ∅

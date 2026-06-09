@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-08T20:39:42.762Z
+Generated: 2026-06-09T04:18:41.654Z
 
 ---
 
@@ -875,6 +875,10 @@ _No style files for this feature._
 - `lib/gameengin/cartridges/manifest.ts`
 - `lib/gameengin/cartridges/reactCartridge.ts`
 - `lib/gameengin/cartridges/saveState.ts`
+
+### `lib/gameengin/input/`
+
+- `lib/gameengin/input/InputRouter.ts`
 
 ### `lib/gameengin/remote/`
 
@@ -11990,6 +11994,12 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/gameengin` | `...`, `AIDirector`, `AdvancedPhysicsWorld`, `ComputeShaderPipeline`, `EliteGameEngine`, `PostFXManager`, `RollbackNetcode` |
 
+## `lib/gameengin/input/InputRouter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `CartridgeInputEvent` |
+
 ## `lib/gameengin/platform.ts`
 
 | Module | Connected via |
@@ -14188,6 +14198,7 @@ _No style files for this feature._
 | `@/lib/gameengin/accessibility-ai` | _(dynamic import)_ |
 | `@/lib/gameengin/ai-director` | _(dynamic import)_ |
 | `@/lib/gameengin/ai-npcs` | _(dynamic import)_ |
+| `@/lib/gameengin/backendNegotiator` | _(dynamic import)_ |
 | `@/lib/gameengin/brain-reader` | _(dynamic import)_ |
 | `@/lib/gameengin/cartridge-manifest` | _(dynamic import)_ |
 | `@/lib/gameengin/cartridge` | _(dynamic import)_ |
@@ -15649,6 +15660,7 @@ _No style files for this feature._
 - `@/lib/gameengin/accessibility-ai`
 - `@/lib/gameengin/ai-director`
 - `@/lib/gameengin/ai-npcs`
+- `@/lib/gameengin/backendNegotiator`
 - `@/lib/gameengin/brain-reader`
 - `@/lib/gameengin/cartridge-manifest`
 - `@/lib/gameengin/cartridge`
@@ -19234,6 +19246,7 @@ _No circular dependencies detected._
 | `lib/gameengin/dreamr-loader.ts` | `parseDreamrArchive`, `loadDreamrCartridgeFromResponse` |
 | `lib/gameengin/gameEnginRuntime.ts` | `loadDreamGame` |
 | `lib/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
+| `lib/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
 | `lib/gameengin/platform.ts` | `GameEnginPlatform` |
 | `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
 | `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
@@ -21852,6 +21865,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: GameEngineAPIContext, createReactCartridgeHost, CARTRIDGE_LOADERS, createReactGameCartridge
 │   │   │   └── saveState.ts ∅
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
+│   │   ├── input  [GameEngin]
+│   │   │   └── InputRouter.ts ∅
+│   │   │       └── ∅ unused: GameRuntimeInputRouter
 │   │   ├── remote  [GameEngin]
 │   │   │   ├── comboMachine.ts ∅
 │   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS
@@ -22813,6 +22829,7 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tsconfig.json
 ├── tsconfig.server.json
 ├── tsconfig.test.json
+├── tsconfig.tsbuildinfo
 ├── tsconfig.worker.json
 ├── vercel.json
 └── vitest.config.ts ∅
