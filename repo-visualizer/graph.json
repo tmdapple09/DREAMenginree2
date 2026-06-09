@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T04:20:24.485Z",
+  "generatedAt": "2026-06-09T04:36:02.195Z",
   "root": ".",
   "nodes": [
     {
@@ -42170,6 +42170,16 @@
       "path": "lib/gameengin/input/InputRouter.ts",
       "parent": "folder:lib/gameengin/input",
       "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:lib/gameengin/input/index.ts",
+      "label": "index.ts",
+      "type": "ts",
+      "path": "lib/gameengin/input/index.ts",
+      "parent": "folder:lib/gameengin/input",
+      "loc": null,
       "isOrphan": true,
       "tags": []
     },
@@ -84001,6 +84011,11 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/input/index.ts",
+      "target": "file:lib/gameengin/input/InputRouter.ts",
+      "kind": "reexport"
+    },
+    {
       "source": "file:lib/gameengin/platform.ts",
       "target": "file:lib/gameengin/ai-director.ts",
       "kind": "import"
@@ -90093,6 +90108,11 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/input/InputRouter.ts",
       "kind": "import"
     },
     {

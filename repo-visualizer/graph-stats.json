@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-09T04:20:24.485Z",
-  "totalFiles": 2056,
-  "totalNodes": 6976,
-  "totalEdges": 7395,
+  "generatedAt": "2026-06-09T04:36:02.195Z",
+  "totalFiles": 2057,
+  "totalNodes": 6977,
+  "totalEdges": 7397,
   "totalFunctionAndClassNodes": 3892,
   "orphanCount": 3276,
   "countsByType": {
@@ -16,7 +16,7 @@
     "js": 8,
     "mjs": 29,
     "route": 234,
-    "ts": 812,
+    "ts": 813,
     "tsx": 318,
     "css": 8,
     "cjs": 4,
@@ -34,7 +34,7 @@
     },
     {
       "id": "file:src/engin/generated/systems.ts",
-      "degree": 373,
+      "degree": 374,
       "label": "systems.ts",
       "type": "ts",
       "path": "src/engin/generated/systems.ts"

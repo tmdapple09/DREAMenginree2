@@ -8,16 +8,16 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2056
+- **Total files:** 2057
 - **Total function/class nodes:** 3892
-- **Total edges:** 7395
+- **Total edges:** 7397
 - **Orphan nodes:** 3276
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
   app["app"] -->|1230| lib["lib"]
-  src["src"] -->|541| lib["lib"]
+  src["src"] -->|542| lib["lib"]
   components["components"] -->|316| lib["lib"]
   src["src"] -->|294| components["components"]
   app["app"] -->|286| components["components"]
@@ -60,7 +60,7 @@ graph LR
 
 #### File-Level Connectivity (auto-generated)
 
-<details><summary>lib/ (560 files)</summary>
+<details><summary>lib/ (561 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -416,6 +416,7 @@ graph LR
 | `lib/gameengin/cloud-compute.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/generative-audio.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/index.ts` | ts | 15 | 2 | `components/games/dream.NeonDrift.tsx`, `src/engin/generated/systems.ts` | `lib/gameengin/control-mappings.ts`, `lib/gameengin/core.ts`, `lib/gameengin/dream-engine.ts` |
+| `lib/gameengin/input/InputRouter.ts` | ts | 1 | 2 | `lib/gameengin/input/index.ts`, `src/engin/generated/systems.ts` | `lib/gameengin/cartridge.ts` |
 | `lib/gameengin/neural-render.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/path-tracing.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/predictive-stream.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
@@ -620,7 +621,7 @@ graph LR
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/work-queue/README.md` | doc | 0 | 0 | — | — |
-| `lib/gameengin/input/InputRouter.ts` | ts | 1 | 0 | — | `lib/gameengin/cartridge.ts` |
+| `lib/gameengin/input/index.ts` | ts | 1 | 0 | — | `lib/gameengin/input/InputRouter.ts` |
 | `lib/navigation/README.md` | doc | 0 | 0 | — | — |
 | `lib/optimizer/README.md` | doc | 0 | 0 | — | — |
 | `lib/vm/README.md` | doc | 0 | 0 | — | — |
@@ -1518,7 +1519,7 @@ graph LR
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 25 | 1 | `src/engin/generated/index.ts` | `lib/engins/brand/brandEnginRuleSet.ts`, `lib/engins/brand/useBrandEnginRuntime.ts`, `lib/engins/code/codeEnginRuleSet.ts` |
 | `src/engin/generated/surfaces.ts` | ts | 538 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
-| `src/engin/generated/systems.ts` | ts | 372 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
+| `src/engin/generated/systems.ts` | ts | 373 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
 | `src/engin/state/base.json` | config | 0 | 1 | `src/engin/core/index.ts` | — |
 | `src/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `src/components/dream.DreamEnginLogo.tsx` | tsx | 0 | 0 | — | — |
@@ -3155,6 +3156,7 @@ graph LR
   f_lib_gameengin_executionWiring_ts["executionWiring.ts"]
   f_lib_gameengin_generative_audio_ts["generative-audio.ts"]
   f_lib_gameengin_index_ts["index.ts"]
+  f_lib_gameengin_input_InputRouter_ts["InputRouter.ts"]
   f_lib_gameengin_neural_render_ts["neural-render.ts"]
   f_lib_gameengin_path_tracing_ts["path-tracing.ts"]
   f_lib_gameengin_platform_ts["platform.ts"]
@@ -4328,6 +4330,7 @@ graph LR
   f_src_engin_generated_systems_ts --> f_lib_gameengin_gameEnginRuntime_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_generative_audio_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_index_ts
+  f_src_engin_generated_systems_ts --> f_lib_gameengin_input_InputRouter_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_neural_render_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_path_tracing_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_platform_ts
@@ -4631,9 +4634,9 @@ _File-level graph omitted: 299 files exceeds Mermaid render budget. See table ab
 
 </details>
 
-<details><summary>lib/ — 560 files</summary>
+<details><summary>lib/ — 561 files</summary>
 
-_File-level graph omitted: 560 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 561 files exceeds Mermaid render budget. See table above._
 
 </details>
 
@@ -4982,7 +4985,7 @@ _File-level graph omitted: 560 files exceeds Mermaid render budget. See table ab
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc |
 | `lib/gameengin/brain/work-queue/README.md` | doc |
-| `lib/gameengin/input/InputRouter.ts` | ts |
+| `lib/gameengin/input/index.ts` | ts |
 | `lib/navigation/README.md` | doc |
 | `lib/optimizer/README.md` | doc |
 | `lib/vm/README.md` | doc |
