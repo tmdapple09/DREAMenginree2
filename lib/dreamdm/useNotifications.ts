@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
@@ -12,7 +14,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * docs/dreamdm_bar_pass2.md §2.3 — Unread Count and Notification Integration
  */
 
-'use client';
 
 const POLL_INTERVAL_MS = 60_000;
 // ── Improvement 85: adaptive polling ────────────────────────────────────────

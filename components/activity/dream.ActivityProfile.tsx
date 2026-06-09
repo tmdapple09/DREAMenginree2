@@ -1,3 +1,5 @@
+'use client';
+
 import { formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor } from '@/lib/activity/aqs';
 import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/lib/activity/types';
 import { useEffect, useState } from 'react';
@@ -9,7 +11,6 @@ import { TierBadge } from './dream.TierBadge';
 // Displays user activity metrics: Views, AQS, Real Shit Rate, Activity Points.
 // Per ACTIVITY_FIRST_PROTOCOL.md §IV (User Metrics)
 
-'use client';
 
 interface ActivityProfileProps {
   userId: string;

@@ -1,3 +1,5 @@
+'use client';
+
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
 import { createClient } from '@/lib/supabase/client';
@@ -31,7 +33,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *   - Both channels are torn down cleanly on unmount.
  */
 
-'use client';
 
 /** Unified feed post shape used by HomeFeed and the realtime hook. */
 export interface FeedPost {

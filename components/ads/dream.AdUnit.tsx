@@ -1,3 +1,5 @@
+'use client';
+
 import { AdType } from '@/lib/activity/types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -8,7 +10,6 @@ import { useEffect, useState } from 'react';
 // Displays ads with skip credit system and AD badge.
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
 
-'use client';
 
 interface AdUnitProps {
   adId: string;

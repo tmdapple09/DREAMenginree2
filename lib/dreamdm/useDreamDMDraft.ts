@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
@@ -19,7 +21,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * docs/dreamdm_bar_pass2.md §2.2 — Draft Persistence
  */
 
-'use client';
 
 const MAX_DRAFT_CHARS = 4999;
 const STORAGE_PREFIX = 'de-dm-draft:';

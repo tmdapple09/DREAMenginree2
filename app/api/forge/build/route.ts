@@ -1,3 +1,26 @@
+/**
+ * app/api/forge/build/route.ts
+ *
+ * ForgeEngin — AI Anything Builder endpoint.
+ *
+ * Accepts: POST { prompt: string }
+ * Returns: text/event-stream (SSE) with ForgeLogEvent JSON objects.
+ *
+ * Pipeline (real AI mode — 4 Groq rounds):
+ *   1. Dr. Eams  — vivid creative brainstorm (400 tokens)
+ *   2. IDARi     — task JSON + idariMessage reply to Dr. Eams
+ *   3. BoogieMan — safety / policy check (aborts on rejection)
+ *   4. GENERATE  — IDARi produces actual artifact content (800 tokens)
+ *   5. result + done
+ *
+ * Simulation mode (no GROQ_API_KEY): deterministic but rich — multi-paragraph
+ * Dr. Eams, IDARi replies to Dr. Eams, realistic fake code/JSON artifacts,
+ * detailed execution steps.
+ *
+ * Architecture: server-side only (no client directive). No new Supabase tables.
+ * Rate limiting: client-side (localStorage) + in-memory Map TTL here.
+ */
+
 import { groqChat, type GroqMessage } from '@/lib/ai/groq';
 import { AI_MODELS } from '@/lib/ai/triad';
 import type { ForgeLogEvent } from '@/lib/forge/forgeBuild';
@@ -5,6 +28,223 @@ import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
 import { toErrorMessage } from '@/lib/utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+
+// ── Persistent rate-limit via Supabase (falls back to in-memory for local dev)
+//    1 build per calendar day per IP/token.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+const dbReady     = Boolean(supabaseUrl && serviceKey);
+
+function getServiceClient() {
+  if (!dbReady) return null;
+  return createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+}
+
+/** Local fallback Map<token, 'YYYY-MM-DD'> */
+const buildRateMap = new Map<string, string>();
+
+function todayUTC(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+async function checkAndRecordRateLimit(token: string): Promise<boolean> {
+  const today = todayUTC();
+  const db = getServiceClient();
+
+  if (!db) {
+    if (buildRateMap.get(token) === today) return false;
+    buildRateMap.set(token, today);
+    if (buildRateMap.size > 5000) {
+      for (const [k, v] of buildRateMap.entries()) {
+        if (v !== today) buildRateMap.delete(k);
+      }
+    }
+    return true;
+  }
+
+  const { data: existing } = await db
+    .from('forge_rate_limits')
+    .select('built_date')
+    .eq('token', token)
+    .single();
+
+  if (existing && (existing as { built_date: string }).built_date === today) {
+    return false;
+  }
+
+  await db.from('forge_rate_limits').upsert(
+    { token, built_date: today },
+    { onConflict: 'token' },
+  );
+  return true;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function safeJsonParse(text: string): Record<string, unknown> | null {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const match = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/```\s*([\s\S]*?)```/);
+    if (match?.[1]) {
+      try { return JSON.parse(match[1]); } catch { /* fall through */ }
+    }
+    const objMatch = text.match(/\{[\s\S]*\}/);
+    if (objMatch) {
+      try { return JSON.parse(objMatch[0]); } catch { /* fall through */ }
+    }
+    return null;
+  }
+}
+
+function encodeSSE(event: ForgeLogEvent): Uint8Array {
+  return new TextEncoder().encode(`data: ${JSON.stringify(event)}\n\n`);
+}
+
+// ── Artifact meta helpers ─────────────────────────────────────────────────────
+
+interface ArtifactMeta {
+  language: string;
+  filename: string;
+  generateInstruction: string;
+}
+
+function getArtifactMeta(enginId: string, prompt: string): ArtifactMeta {
+  const ts = Date.now();
+  const slug = prompt.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 24);
+  switch (enginId) {
+    case 'games':
+      return {
+        language: 'json',
+        filename: `scenes/ForgeLevel_${ts}.json`,
+        generateInstruction:
+          'a complete Babylon.js scene config JSON with player spawn, terrain tiles, enemy spawns, collectibles, scoreboard settings, and lighting setup',
+      };
+    case 'music':
+      return {
+        language: 'json',
+        filename: `sessions/ForgeTrack_${ts}.json`,
+        generateInstruction:
+          'a complete DAW session JSON with BPM, key signature, 4 tracks (drums/bass/chords/melody), MIDI note arrays, effect chains, and mix settings',
+      };
+    case 'code':
+      return {
+        language: 'typescript',
+        filename: `notebooks/ForgeScript_${slug}_${ts}.ts`,
+        generateInstruction:
+          'production-quality TypeScript module with full type annotations, error handling, and JSDoc comments',
+      };
+    case 'lab':
+      return {
+        language: 'python',
+        filename: `experiments/ForgeExperiment_${slug}_${ts}.py`,
+        generateInstruction:
+          'a complete Python script for data analysis or simulation with typed functions, numpy/random usage, and result output',
+      };
+    case 'brand':
+      return {
+        language: 'json',
+        filename: `brand/ForgePalette_${ts}.json`,
+        generateInstruction:
+          'a complete brand identity JSON with primary/secondary/accent/neutral colors, typography stack, spacing scale, and brand voice',
+      };
+    case 'create':
+      return {
+        language: 'markdown',
+        filename: `content/ForgeDraft_${slug}_${ts}.md`,
+        generateInstruction:
+          'a complete markdown content draft with title, intro hook, 3 body sections, call-to-action, and hashtags',
+      };
+    default:
+      return {
+        language: 'json',
+        filename: `forge/ForgeOutput_${ts}.json`,
+        generateInstruction: 'a structured JSON config object with all relevant fields',
+      };
+  }
+}
+
+// ── Simulation content generators ─────────────────────────────────────────────
+
+function getSimulatedArtifact(enginId: string, prompt: string): string {
+  const shortPrompt = prompt.slice(0, 48);
+  switch (enginId) {
+    case 'games':
+      return JSON.stringify({
+        scene: 'desert_plateau',
+        title: shortPrompt,
+        sky: { color: '#e8c57a', fog: 0.004 },
+        player: { startX: 128, startY: 300, abilities: ['dash', 'double_jump'], maxHealth: 100 },
+        terrain: { width: 2048, tileSet: 'desert_v2', platforms: [
+          { x: 0, y: 400, w: 400 }, { x: 500, y: 320, w: 200 }, { x: 800, y: 380, w: 300 },
+        ]},
+        enemies: [
+          { type: 'dune_crawler', count: 5, patrol: true, damage: 15 },
+          { type: 'sand_golem', count: 2, patrol: false, damage: 30 },
+        ],
+        collectibles: [{ type: 'gem', points: 100, count: 12 }, { type: 'health_pack', count: 3 }],
+        scoreboard: { enabled: true, key: 'de:games:highscore:desert_plateau', displayTop: 5 },
+      }, null, 2);
+    case 'music':
+      return JSON.stringify({
+        title: shortPrompt,
+        bpm: 88,
+        key: 'A_minor',
+        genre: 'lo-fi hip-hop',
+        bars: 8,
+        tracks: [
+          { name: 'drums', type: 'beat', pattern: [1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0], velocity: 0.8 },
+          { name: 'bass', type: 'bass', notes: ['A2','A2','C3','C3','E3','G3','A2','A2'], duration: '8n' },
+          { name: 'chords', type: 'piano', notes: ['Am7','C','G','Fmaj7'], duration: '2n', swing: 0.2 },
+          { name: 'melody', type: 'rhodes', notes: ['E4','D4','C4','A3'], duration: '4n', reverb: 0.6 },
+        ],
+        effects: { vinyl_crackle: 0.3, room_reverb: 0.4, tape_saturation: 0.2, lowpass_cutoff: 8000 },
+        master: { volume: -6, compression: { threshold: -18, ratio: 4 } },
+      }, null, 2);
+    case 'code':
+      return `/**
+ * ForgeEngin generated — ${shortPrompt}
+ * CodeEngin · TypeScript
+ */
+
+interface RetryOptions {
+  retries?: number;
+  backoffMs?: number;
+  timeout?: number;
+}
+
+/** Fetch with exponential backoff retry and per-request timeout. */
+export async function fetchWithRetry(
+  url: string,
+  init?: RequestInit,
+  { retries = 3, backoffMs = 500, timeout = 8000 }: RetryOptions = {}
+): Promise<Response> {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+    try {
+      const res = await fetch(url, { ...init, signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok) return res;
+      if (attempt < retries - 1) {
+        await sleep(backoffMs * 2 ** attempt);
+      }
+    } catch (err: unknown) {
+      clearTimeout(timer);
+      if (attempt === retries - 1) throw err;
+      await sleep(backoffMs * 2 ** attempt);
+    }
+  }
+  throw new Error(\`fetchWithRetry: all \${retries} attempts failed for \${url}\`);
+}
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));`;
+    case 'lab':
+      return `# ForgeEngin generated — ${shortPrompt}
+# LabEngin · Python
+
 import random
 import math
 from typing import List, Tuple
@@ -39,6 +279,7 @@ def monte_carlo_gbm(
     mean_val = sum(results) / N
     variance = sum((x - mean_val) ** 2 for x in results) / N
     return mean_val, math.sqrt(variance), sample_path
+
 
 if __name__ == '__main__':
     mean, std, path = monte_carlo_gbm(S0=100, mu=0.08, sigma=0.20, T=1.0)
@@ -107,6 +348,8 @@ We're just getting started. Drop a comment, share your thoughts, and let's build
       return JSON.stringify({ enginId, prompt: shortPrompt, status: 'generated', ts: Date.now() }, null, 2);
   }
 }
+
+// ── Simulation mode (no GROQ_API_KEY) ────────────────────────────────────────
 
 interface SimTask {
   enginId: string;
@@ -205,237 +448,6 @@ function buildSimulation(prompt: string): SimResult {
     create: `Dr. Eams, the content brief is clear and actionable. I'll generate the full markdown draft and stage it to \`de:forge:staged-draft\` for ContentEngin. LinkedIn-length main copy + repurposable sections + 5 hashtags. Platform limits all satisfied. Architecture validates — no DB changes. Executing 4-step task list now.`,
   };
 
-/**
- * app/api/forge/build/route.ts
- *
- * ForgeEngin — AI Anything Builder endpoint.
- *
- * Accepts: POST { prompt: string }
- * Returns: text/event-stream (SSE) with ForgeLogEvent JSON objects.
- *
- * Pipeline (real AI mode — 4 Groq rounds):
- *   1. Dr. Eams  — vivid creative brainstorm (400 tokens)
- *   2. IDARi     — task JSON + idariMessage reply to Dr. Eams
- *   3. BoogieMan — safety / policy check (aborts on rejection)
- *   4. GENERATE  — IDARi produces actual artifact content (800 tokens)
- *   5. result + done
- *
- * Simulation mode (no GROQ_API_KEY): deterministic but rich — multi-paragraph
- * Dr. Eams, IDARi replies to Dr. Eams, realistic fake code/JSON artifacts,
- * detailed execution steps.
- *
- * Architecture: server-side only (no client directive). No new Supabase tables.
- * Rate limiting: client-side (localStorage) + in-memory Map TTL here.
- */
-
-//    1 build per calendar day per IP/token.
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
-const dbReady     = Boolean(supabaseUrl && serviceKey);
-
-function getServiceClient() {
-  if (!dbReady) return null;
-  return createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-}
-
-/** Local fallback Map<token, 'YYYY-MM-DD'> */
-const buildRateMap = new Map<string, string>();
-
-function todayUTC(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
-async function checkAndRecordRateLimit(token: string): Promise<boolean> {
-  const today = todayUTC();
-  const db = getServiceClient();
-
-  if (!db) {
-    if (buildRateMap.get(token) === today) return false;
-    buildRateMap.set(token, today);
-    if (buildRateMap.size > 5000) {
-      for (const [k, v] of buildRateMap.entries()) {
-        if (v !== today) buildRateMap.delete(k);
-      }
-    }
-    return true;
-  }
-
-  const { data: existing } = await db
-    .from('forge_rate_limits')
-    .select('built_date')
-    .eq('token', token)
-    .single();
-
-  if (existing && (existing as { built_date: string }).built_date === today) {
-    return false;
-  }
-
-  await db.from('forge_rate_limits').upsert(
-    { token, built_date: today },
-    { onConflict: 'token' },
-  );
-  return true;
-}
-
-function safeJsonParse(text: string): Record<string, unknown> | null {
-  try {
-    return JSON.parse(text);
-  } catch {
-    const match = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/```\s*([\s\S]*?)```/);
-    if (match?.[1]) {
-      try { return JSON.parse(match[1]); } catch { /* fall through */ }
-    }
-    const objMatch = text.match(/\{[\s\S]*\}/);
-    if (objMatch) {
-      try { return JSON.parse(objMatch[0]); } catch { /* fall through */ }
-    }
-    return null;
-  }
-}
-
-function encodeSSE(event: ForgeLogEvent): Uint8Array {
-  return new TextEncoder().encode(`data: ${JSON.stringify(event)}\n\n`);
-}
-
-interface ArtifactMeta {
-  language: string;
-  filename: string;
-  generateInstruction: string;
-}
-
-function getArtifactMeta(enginId: string, prompt: string): ArtifactMeta {
-  const ts = Date.now();
-  const slug = prompt.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 24);
-  switch (enginId) {
-    case 'games':
-      return {
-        language: 'json',
-        filename: `scenes/ForgeLevel_${ts}.json`,
-        generateInstruction:
-          'a complete Babylon.js scene config JSON with player spawn, terrain tiles, enemy spawns, collectibles, scoreboard settings, and lighting setup',
-      };
-    case 'music':
-      return {
-        language: 'json',
-        filename: `sessions/ForgeTrack_${ts}.json`,
-        generateInstruction:
-          'a complete DAW session JSON with BPM, key signature, 4 tracks (drums/bass/chords/melody), MIDI note arrays, effect chains, and mix settings',
-      };
-    case 'code':
-      return {
-        language: 'typescript',
-        filename: `notebooks/ForgeScript_${slug}_${ts}.ts`,
-        generateInstruction:
-          'production-quality TypeScript module with full type annotations, error handling, and JSDoc comments',
-      };
-    case 'lab':
-      return {
-        language: 'python',
-        filename: `experiments/ForgeExperiment_${slug}_${ts}.py`,
-        generateInstruction:
-          'a complete Python script for data analysis or simulation with typed functions, numpy/random usage, and result output',
-      };
-    case 'brand':
-      return {
-        language: 'json',
-        filename: `brand/ForgePalette_${ts}.json`,
-        generateInstruction:
-          'a complete brand identity JSON with primary/secondary/accent/neutral colors, typography stack, spacing scale, and brand voice',
-      };
-    case 'create':
-      return {
-        language: 'markdown',
-        filename: `content/ForgeDraft_${slug}_${ts}.md`,
-        generateInstruction:
-          'a complete markdown content draft with title, intro hook, 3 body sections, call-to-action, and hashtags',
-      };
-    default:
-      return {
-        language: 'json',
-        filename: `forge/ForgeOutput_${ts}.json`,
-        generateInstruction: 'a structured JSON config object with all relevant fields',
-      };
-  }
-}
-
-function getSimulatedArtifact(enginId: string, prompt: string): string {
-  const shortPrompt = prompt.slice(0, 48);
-  switch (enginId) {
-    case 'games':
-      return JSON.stringify({
-        scene: 'desert_plateau',
-        title: shortPrompt,
-        sky: { color: '#e8c57a', fog: 0.004 },
-        player: { startX: 128, startY: 300, abilities: ['dash', 'double_jump'], maxHealth: 100 },
-        terrain: { width: 2048, tileSet: 'desert_v2', platforms: [
-          { x: 0, y: 400, w: 400 }, { x: 500, y: 320, w: 200 }, { x: 800, y: 380, w: 300 },
-        ]},
-        enemies: [
-          { type: 'dune_crawler', count: 5, patrol: true, damage: 15 },
-          { type: 'sand_golem', count: 2, patrol: false, damage: 30 },
-        ],
-        collectibles: [{ type: 'gem', points: 100, count: 12 }, { type: 'health_pack', count: 3 }],
-        scoreboard: { enabled: true, key: 'de:games:highscore:desert_plateau', displayTop: 5 },
-      }, null, 2);
-    case 'music':
-      return JSON.stringify({
-        title: shortPrompt,
-        bpm: 88,
-        key: 'A_minor',
-        genre: 'lo-fi hip-hop',
-        bars: 8,
-        tracks: [
-          { name: 'drums', type: 'beat', pattern: [1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0], velocity: 0.8 },
-          { name: 'bass', type: 'bass', notes: ['A2','A2','C3','C3','E3','G3','A2','A2'], duration: '8n' },
-          { name: 'chords', type: 'piano', notes: ['Am7','C','G','Fmaj7'], duration: '2n', swing: 0.2 },
-          { name: 'melody', type: 'rhodes', notes: ['E4','D4','C4','A3'], duration: '4n', reverb: 0.6 },
-        ],
-        effects: { vinyl_crackle: 0.3, room_reverb: 0.4, tape_saturation: 0.2, lowpass_cutoff: 8000 },
-        master: { volume: -6, compression: { threshold: -18, ratio: 4 } },
-      }, null, 2);
-    case 'code':
-      return `/**
- * ForgeEngin generated — ${shortPrompt}
- * CodeEngin · TypeScript
- */
-
-interface RetryOptions {
-  retries?: number;
-  backoffMs?: number;
-  timeout?: number;
-}
-
-/** Fetch with exponential backoff retry and per-request timeout. */
-export async function fetchWithRetry(
-  url: string,
-  init?: RequestInit,
-  { retries = 3, backoffMs = 500, timeout = 8000 }: RetryOptions = {}
-): Promise<Response> {
-  for (let attempt = 0; attempt < retries; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeout);
-    try {
-      const res = await fetch(url, { ...init, signal: controller.signal });
-      clearTimeout(timer);
-      if (res.ok) return res;
-      if (attempt < retries - 1) {
-        await sleep(backoffMs * 2 ** attempt);
-      }
-    } catch (err: unknown) {
-      clearTimeout(timer);
-      if (attempt === retries - 1) throw err;
-      await sleep(backoffMs * 2 ** attempt);
-    }
-  }
-  throw new Error(\`fetchWithRetry: all \${retries} attempts failed for \${url}\`);
-}
-
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));`;
-    case 'lab':
-      return `# ForgeEngin generated — ${shortPrompt}
-# LabEngin · Python
-
   const idariTasksMap: Record<string, SimTask[]> = {
     games: [
       { enginId: 'games', action: 'scaffold', detail: `Initialise GameEngin workspace — load Babylon.js scene template for "${prompt.slice(0, 40)}"` },
@@ -504,6 +516,8 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));`;
     artifactFilename,
   };
 }
+
+// ── Real AI orchestration ─────────────────────────────────────────────────────
 
 async function callEams(prompt: string): Promise<string> {
   const engineList = ENGIN_REGISTRY
@@ -683,6 +697,8 @@ async function callGenerate(
     return getSimulatedArtifact(enginId, prompt);
   }
 }
+
+// ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<NextResponse | Response> {
   // Validate body

@@ -1,3 +1,5 @@
+'use client';
+
 import { getTierDescription, getTierDisplayName } from '@/lib/activity/scoring';
 import { ActivityTier } from '@/lib/activity/types';
 
@@ -7,7 +9,6 @@ import { ActivityTier } from '@/lib/activity/types';
 // Displays activity tier classification (0-6) as a badge.
 // Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
 
-'use client';
 
 interface TierBadgeProps {
   tier: ActivityTier;

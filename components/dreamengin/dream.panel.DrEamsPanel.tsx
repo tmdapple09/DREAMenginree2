@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -6,7 +6,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 // Available to ALL authenticated users — connects to /api/ai/eams.
 // Dr. Eams is the friendly user companion in the AI triad.
 
-'use client';
 
 interface DrEamsPanelProps {
   onClose: () => void;

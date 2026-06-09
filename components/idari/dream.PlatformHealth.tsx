@@ -1,3 +1,5 @@
+'use client';
+
 import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
 import { PLATFORM_HEALTH_TARGETS } from '@/lib/activity/types';
 import { useEffect, useState } from 'react';
@@ -8,7 +10,6 @@ import { useEffect, useState } from 'react';
 // Displays platform health metrics and targets.
 // Per ACTIVITY_FIRST_PROTOCOL.md §IV (Platform Health Metrics) & §IX (Success Conditions)
 
-'use client';
 
 export function PlatformHealth( ){
   const [metrics, setMetrics] = useState<GetPlatformMetricsResponse | null>(null);

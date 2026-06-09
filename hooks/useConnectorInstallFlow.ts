@@ -1,3 +1,5 @@
+'use client';
+
 import { getConnectorDef } from '@/lib/connectors/connectorRegistry';
 import {
     consumeDeferredPrompt,
@@ -19,7 +21,6 @@ import { useCallback, useRef, useState } from 'react';
 //   // After connector auth succeeds:
 //   flow.onConnectSuccess('youtube', 'YouTube');
 
-'use client';
 
 export interface ConnectorInstallFlowOptions {
   /** Live slot grid — used for slot detection (req 31-33) */

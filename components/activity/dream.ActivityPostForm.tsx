@@ -1,3 +1,5 @@
+'use client';
+
 import { calculateActivityPoints, getTierDescription } from '@/lib/activity/scoring';
 import { ActivityTier, VerificationMethod } from '@/lib/activity/types';
 import { useState } from 'react';
@@ -9,7 +11,6 @@ import { TierBadge } from './dream.TierBadge';
 // Form for creating posts with activity tier classification and verification.
 // Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
 
-'use client';
 
 interface ActivityPostFormProps {
   onSubmit: (data: ActivityPostData) => Promise<void>;

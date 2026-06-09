@@ -1,3 +1,5 @@
+'use client';
+
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag } from 'lucide-react';
@@ -16,7 +18,6 @@ import { toErrorMessage } from '@/lib/utils';
 //
 // Pattern mirrors app/shop/sell/page.tsx for consistency.
 
-'use client';
 
 const CATEGORIES = [
   { value: 'widget',    label: '🧩 Dream',    desc: 'Dream module for HomeDream' },

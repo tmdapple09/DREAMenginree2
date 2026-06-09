@@ -1,3 +1,5 @@
+'use client';
+
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { createClient } from '@/lib/supabase/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -18,7 +20,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * docs/dreamdm_bar_pass2.md §2.1 — Realtime Messaging
  */
 
-'use client';
 
 export interface DMMessage {
   id: string;

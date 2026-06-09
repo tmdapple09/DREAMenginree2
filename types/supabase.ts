@@ -1136,36 +1136,6 @@ export type Database = {
           },
         ]
       }
-      data_audit_ledger: {
-        Row: {
-          action: string
-          changed_at: string | null
-          changed_by_user_id: string | null
-          delta_changes: Json
-          id: string
-          record_id: string
-          table_name: string
-        }
-        Insert: {
-          action: string
-          changed_at?: string | null
-          changed_by_user_id?: string | null
-          delta_changes: Json
-          id?: string
-          record_id: string
-          table_name: string
-        }
-        Update: {
-          action?: string
-          changed_at?: string | null
-          changed_by_user_id?: string | null
-          delta_changes?: Json
-          id?: string
-          record_id?: string
-          table_name?: string
-        }
-        Relationships: []
-      }
       dream_content: {
         Row: {
           content: Json
@@ -1427,49 +1397,6 @@ export type Database = {
           },
         ]
       }
-      feed_timelines: {
-        Row: {
-          author_id: string
-          created_at: string
-          post_id: string
-          user_id: string
-        }
-        Insert: {
-          author_id: string
-          created_at: string
-          post_id: string
-          user_id: string
-        }
-        Update: {
-          author_id?: string
-          created_at?: string
-          post_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "feed_timelines_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "feed_timelines_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "app_posts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "feed_timelines_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       flagged_content: {
         Row: {
           action_taken: string | null
@@ -1625,63 +1552,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
-      }
-      home_feed_cache: {
-        Row: {
-          creator_id: string
-          inserted_at: string
-          payload_hint: Json
-          reasons: Json
-          score: number
-          source_created_at: string
-          source_id: string
-          source_type: string
-          updated_at: string
-          viewer_id: string
-          visibility: string
-        }
-        Insert: {
-          creator_id: string
-          inserted_at?: string
-          payload_hint?: Json
-          reasons?: Json
-          score?: number
-          source_created_at?: string
-          source_id: string
-          source_type: string
-          updated_at?: string
-          viewer_id: string
-          visibility?: string
-        }
-        Update: {
-          creator_id?: string
-          inserted_at?: string
-          payload_hint?: Json
-          reasons?: Json
-          score?: number
-          source_created_at?: string
-          source_id?: string
-          source_type?: string
-          updated_at?: string
-          viewer_id?: string
-          visibility?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "home_feed_cache_creator_id_fkey"
-            columns: ["creator_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "home_feed_cache_viewer_id_fkey"
-            columns: ["viewer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       idempotency_keys: {
         Row: {
@@ -3036,71 +2906,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      alg_delete_source_from_feed: {
-        Args: { p_source_id: string; p_source_type: string }
-        Returns: undefined
-      }
-      alg_fanout_source: {
-        Args: {
-          p_creator_id: string
-          p_payload_hint?: Json
-          p_reason?: string
-          p_score?: number
-          p_source_created_at: string
-          p_source_id: string
-          p_source_type: string
-          p_visibility?: string
-        }
-        Returns: undefined
-      }
-      alg_feed_is_blocked: {
-        Args: { p_creator_id: string; p_viewer_id: string }
-        Returns: boolean
-      }
-      alg_fetch_cached_feed: {
-        Args: { max_limit?: number; target_user_id: string }
-        Returns: Json
-      }
-      alg_fetch_home_feed: {
-        Args: {
-          p_cursor_created_at?: string
-          p_cursor_score?: number
-          p_cursor_source_id?: string
-          p_limit?: number
-        }
-        Returns: Json
-      }
-      alg_jsonb_diff: { Args: { new_val: Json; old_val: Json }; Returns: Json }
-      alg_put_feed_item: {
-        Args: {
-          p_creator_id: string
-          p_payload_hint?: Json
-          p_reason?: string
-          p_score?: number
-          p_source_created_at: string
-          p_source_id: string
-          p_source_type: string
-          p_viewer_id: string
-          p_visibility?: string
-        }
-        Returns: undefined
-      }
-      alg_rebuild_all_home_feeds: {
-        Args: { p_limit_per_source?: number }
-        Returns: Json
-      }
-      alg_rebuild_my_home_feed: {
-        Args: { p_limit_per_source?: number }
-        Returns: Json
-      }
-      alg_seed_creator_to_viewer: {
-        Args: {
-          p_creator_id: string
-          p_limit_per_source?: number
-          p_viewer_id: string
-        }
-        Returns: undefined
-      }
       bootstrap_user_spaces: { Args: { p_user_id: string }; Returns: undefined }
       check_ai_rate_limit: {
         Args: {
@@ -3287,3 +3092,4 @@ export const Constants = {
     },
   },
 } as const
+

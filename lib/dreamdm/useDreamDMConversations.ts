@@ -1,3 +1,5 @@
+'use client';
+
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { createClient } from '@/lib/supabase/client';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,7 +15,6 @@ import { useCallback, useEffect, useState } from 'react';
  * docs/dreamdm_bar_pass2.md §4 — Hook layer
  */
 
-'use client';
 
 export interface DMConversation {
   id: string;
