@@ -9,9 +9,9 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 ### Auto-Generated Repository Overview
 
 - **Total files:** 2070
-- **Total function/class nodes:** 3924
+- **Total function/class nodes:** 3941
 - **Total edges:** 7423
-- **Orphan nodes:** 3301
+- **Orphan nodes:** 3312
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -29,8 +29,8 @@ graph LR
   engins["engins"] -->|27| components["components"]
   tests["tests"] -->|24| components["components"]
   components["components"] -->|22| engins["engins"]
-  app["app"] -->|19| engins["engins"]
   daydreams["daydreams"] -->|19| components["components"]
+  app["app"] -->|18| engins["engins"]
   daydreams["daydreams"] -->|16| lib["lib"]
   lib["lib"] -->|15| components["components"]
   src["src"] -->|15| engins["engins"]
@@ -41,7 +41,7 @@ graph LR
   lib["lib"] -->|9| engine["engine"]
   src["src"] -->|9| hooks["hooks"]
   app["app"] -->|8| styles["styles"]
-  daydreams["daydreams"] -->|8| engins["engins"]
+  daydreams["daydreams"] -->|7| engins["engins"]
   tests["tests"] -->|7| types["types"]
   src["src"] -->|6| daydreams["daydreams"]
   components["components"] -->|5| app["app"]
@@ -4939,7 +4939,7 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `DREAMengin-code-only-unknown-payload-fixed.zip` | file |
+| `DREAMengin-code-only-build-errors-usestate-fixed.zip` | file |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
