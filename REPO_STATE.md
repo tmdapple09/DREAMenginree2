@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:26:11.664Z
+Generated: 2026-06-09T05:26:53.094Z
 
 ---
 
@@ -997,6 +997,7 @@ _No style files for this feature._
 - `tests/gameengin-asset-pipeline.test.ts`
 - `tests/gameengin-cartridges.test.ts`
 - `tests/gameengin-crash-modal.test.ts`
+- `tests/gameengin-input-router.test.ts`
 - `tests/gameengin-loop.test.ts`
 - `tests/gameengin-power-systems.test.ts`
 - `tests/gameengin-progression.test.ts`
@@ -19312,7 +19313,6 @@ _No circular dependencies detected._
 | `lib/gameengin/gameEnginRuntime.ts` | `loadDreamGame` |
 | `lib/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
 | `lib/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
-| `lib/gameengin/input/index.ts` | `GameRuntimeInputRouter` |
 | `lib/gameengin/platform.ts` | `GameEnginPlatform` |
 | `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
 | `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
@@ -21938,8 +21938,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── saveState.ts ∅
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── input  [GameEngin]
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: GameRuntimeInputRouter
+│   │   │   ├── index.ts
 │   │   │   └── InputRouter.ts ∅
 │   │   │       └── ∅ unused: GameRuntimeInputRouter
 │   │   ├── remote  [GameEngin]
@@ -22729,6 +22728,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── gameengin-asset-pipeline.test.ts
 │   ├── gameengin-cartridges.test.ts
 │   ├── gameengin-crash-modal.test.ts
+│   ├── gameengin-input-router.test.ts
 │   ├── gameengin-loop.test.ts
 │   ├── gameengin-power-systems.test.ts
 │   ├── gameengin-progression.test.ts

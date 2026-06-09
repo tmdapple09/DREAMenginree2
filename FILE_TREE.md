@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:26:11.803Z
+Generated: 2026-06-09T05:26:53.236Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9766,9 +9766,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → purgeCartridgeSaves
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── input  [GameEngin]
-│   │   │   ├── index.ts ∅
-│   │   │   │   ├── → GameRuntimeInputRouter
-│   │   │   │   └── ∅ unused: GameRuntimeInputRouter
+│   │   │   ├── index.ts
+│   │   │   │   └── → GameRuntimeInputRouter
 │   │   │   └── InputRouter.ts ∅
 │   │   │       ├── CartridgeInputEvent  ← ../cartridge
 │   │   │       ├── → GameRuntimeInputRouter
@@ -15402,6 +15401,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
 │   │   └── (dynamic)  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│   ├── gameengin-input-router.test.ts
+│   │   ├── CartridgeInputEvent  ← @/lib/gameengin/cartridge
+│   │   ├── GameRuntimeInputRouter  ← @/lib/gameengin/input
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
 │   ├── gameengin-loop.test.ts
 │   │   ├── POST  ← @/app/api/gameengin/crash-report/route
 │   │   ├── ActiveProjects  ← @/lib/gameengin/brain-reader
