@@ -1,4 +1,12 @@
 'use client';
+
+import { useEffect, useRef } from 'react';
+import {
+    registerGame,
+    unregisterGame,
+    type LoopPriority,
+} from './unifiedLoop';
+
 /**
  * lib/gameengin/useUnifiedLoop.ts
  *
@@ -20,13 +28,6 @@
  *   useUnifiedLoop('rts-game',  (dt) => step(dt), 'HIGH',   phase === 'playing');
  *   useUnifiedLoop('hud-anim',  (dt) => anim(dt), 'LOW',    true);
  */
-
-import { useEffect, useRef } from 'react';
-import {
-    registerGame,
-    unregisterGame,
-    type LoopPriority,
-} from './unifiedLoop';
 
 /**
  * Register a game tick function with the unified loop for the component's
@@ -63,6 +64,6 @@ export function useUnifiedLoop(
     return (): void => {
       unregisterGame(id);
     };
-  }, [id, priority, active]);  
+  }, [id, priority, active]);
   // ↑ tickFn intentionally excluded — changes are handled via ref above.
 }

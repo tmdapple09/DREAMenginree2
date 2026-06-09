@@ -1,5 +1,6 @@
-// SURFACE: dreamsurface.Mission  (framework-mandated basename: page.tsx)
 import Link from 'next/link';
+
+// SURFACE: dreamsurface.Mission  (framework-mandated basename: page.tsx)
 
 export default function MissionPage( ){
   return (

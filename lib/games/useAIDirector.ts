@@ -1,4 +1,8 @@
 'use client';
+
+import { AIDirector, type DirectorState, type PlayerSignals } from '@/lib/gameengin/ai-director';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * lib/games/useAIDirector.ts
  *
@@ -22,9 +26,6 @@
  *   2. Calls `director.init()` once on mount — loads TF.js + warms up the backend.
  *   3. Exposes a stable `update` callback and reactive `level` / `state` values.
  */
-
-import { AIDirector, type DirectorState, type PlayerSignals } from '@/lib/gameengin/ai-director';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DEFAULT_STATE: DirectorState = {
   challengeLevel: 0.35,

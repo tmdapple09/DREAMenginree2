@@ -1,5 +1,22 @@
 'use client';
 
+import {
+    Activity,
+    AlertCircle,
+    AlertTriangle, CheckCircle,
+    ChevronRight,
+    Clock,
+    Eye, Hash,
+    RefreshCw,
+    Shield,
+    ShieldCheck,
+    Trash2,
+    Upload,
+    XCircle,
+} from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * ChildSafetyPanel — Admin UI for the child safety enforcement system.
  *
@@ -18,23 +35,6 @@
  * Architecture: AXIOM 4 Security by Default — no end-user access; admin only.
  */
 
-import {
-    Activity,
-    AlertCircle,
-    AlertTriangle, CheckCircle,
-    ChevronRight,
-    Clock,
-    Eye, Hash,
-    RefreshCw,
-    Shield,
-    ShieldCheck,
-    Trash2,
-    Upload,
-    XCircle,
-} from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES (mirroring the DB schema — no raw content fields)
 // ============================================================================
@@ -120,7 +120,6 @@ interface ChildSafetyPanelProps {
 export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
   const [activeTab, setActiveTab] = useState<'queue' | 'hashes'>('queue');
 
-  // ── Queue state ──────────────────────────────────────────────────────────
   const [statusFilter, setStatusFilter] = useState<string>('PENDING_REVIEW');
   const [incidents, setIncidents] = useState<ChildSafetyIncident[]>([]);
   const [counts, setCounts] = useState<IncidentCounts>({ pending: 0, submitted: 0, failed: 0, actioned: 0, dismissed: 0 });
@@ -128,17 +127,14 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
 
-  // ── Hash upload state ────────────────────────────────────────────────────
   const [hashInput, setHashInput] = useState('');
   const [hashSource, setHashSource] = useState('NCMEC');
   const [uploadingHashes, setUploadingHashes] = useState(false);
   const [hashUploadResult, setHashUploadResult] = useState<{ inserted: number; submitted: number } | null>(null);
   const [hashError, setHashError] = useState<string | null>(null);
 
-  // ── General error ────────────────────────────────────────────────────────
   const [error, setError] = useState<string | null>(null);
 
-  // ── Fetch incidents ──────────────────────────────────────────────────────
   const fetchIncidents = useCallback(async (status = statusFilter) => {
     setLoadingQueue(true);
     setError(null);
@@ -154,7 +150,6 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
     }
   }, [statusFilter]);
 
-  // ── Fetch counts for all statuses ────────────────────────────────────────
   const fetchCounts = useCallback(async () => {
     const statuses: [string, keyof IncidentCounts][] = [
       ['PENDING_REVIEW', 'pending'],
@@ -185,7 +180,6 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
     void fetchCounts();
   }, [isAdmin, statusFilter, fetchIncidents, fetchCounts]);
 
-  // ── Review an incident ───────────────────────────────────────────────────
   const reviewIncident = async (incidentId: string, newStatus: string) => {
     setError(null);
     try {
@@ -210,7 +204,6 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
     }
   };
 
-  // ── Upload known-bad hashes ──────────────────────────────────────────────
   const uploadHashes = async () => {
     setHashError(null);
     setHashUploadResult(null);

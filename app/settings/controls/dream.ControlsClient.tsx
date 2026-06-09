@@ -1,14 +1,14 @@
 'use client';
 
-/**
- * ControlsClient — interactive home button behavior settings.
- * Persists to localStorage. Constitution Rule 6-7.
- */
-
 import { ArrowLeft, Check, Sliders } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PositionIndicatorToggle from './dream.PositionIndicatorToggle';
+
+/**
+ * ControlsClient — interactive home button behavior settings.
+ * Persists to localStorage. Constitution Rule 6-7.
+ */
 
 type TimeoutHandle = ReturnType<typeof setTimeout>;
 

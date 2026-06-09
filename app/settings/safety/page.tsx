@@ -1,8 +1,3 @@
-// SURFACE: dreamsurface.SettingsSafety  (framework-mandated basename: page.tsx)
-// app/settings/safety/page.tsx
-// "Policy & Safety" settings page (req 11, 14, 90–91).
-// Shows the user's safety log, appeal options, and a link to the policy.
-
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
 import { createServerClient } from '@/lib/supabase/server';
@@ -12,6 +7,11 @@ import { AlertTriangle, ChevronRight, Download, FileText, Shield } from 'lucide-
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.SettingsSafety  (framework-mandated basename: page.tsx)
+// app/settings/safety/page.tsx
+// "Policy & Safety" settings page (req 11, 14, 90–91).
+// Shows the user's safety log, appeal options, and a link to the policy.
 
 export const metadata = { title: 'Policy & Safety – Dreamengin Settings' };
 
@@ -33,7 +33,7 @@ export default async function SafetySettingsPage( ){
 
   // policy_events is not yet in the generated Supabase schema types;
   // cast to any until the table is added to the type generation pipeline.
-   
+
   const { data: logData } = await (supabase as SupabaseClient)
     .from('policy_events')
     .select('event_id, timestamp, action, rule_code, category, expiry, policy_version')

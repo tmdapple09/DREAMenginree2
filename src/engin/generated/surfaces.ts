@@ -409,7 +409,7 @@ export const surfaces = {
   "components/gameengin/dream.CrashReportModal": () => import("@/components/gameengin/dream.CrashReportModal"),
   "components/gameengin/input/DualSenseManager": () => import("@/components/gameengin/input/DualSenseManager"),
   "components/games/_fx/canvasFx": () => import("@/components/games/_fx/canvasFx"),
-  "components/games/dream.AvenueOfMirrors": () => import("@/components/games/dream.AvenueOfMirrors"),
+  "components/games/dream.MadMaxiWildfall": () => import("@/components/games/dream.MadMaxiWildfall"),
   "components/games/dream.BabylonSideScroller": () => import("@/components/games/dream.BabylonSideScroller"),
   "components/games/dream.DefuseRitual": () => import("@/components/games/dream.DefuseRitual"),
   "components/games/dream.EchoArena": () => import("@/components/games/dream.EchoArena"),
@@ -543,3 +543,4 @@ export const surfaces = {
 };
 
 export type SurfacesMap = typeof surfaces;
+

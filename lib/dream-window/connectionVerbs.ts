@@ -1,3 +1,11 @@
+import {
+    CONNECTION_VERBS,
+    isRejectedConnectionVerb,
+    isValidConnectionVerb,
+    REJECTED_CONNECTION_VERBS,
+    type ConnectionVerb,
+} from '@/lib/identity/canonical-names';
+
 /**
  * connectionVerbs — Canonical connection verb system
  *
@@ -12,17 +20,7 @@
  * Law: docs/LAW.md §OS-layer naming law — use canonical verbs only.
  */
 
-import {
-    CONNECTION_VERBS,
-    isRejectedConnectionVerb,
-    isValidConnectionVerb,
-    REJECTED_CONNECTION_VERBS,
-    type ConnectionVerb,
-} from '@/lib/identity/canonical-names';
-
-// ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 /**
  * A fully-typed connection action between two runtime entities.
@@ -53,9 +51,7 @@ export interface ConnectionResult {
   action: ConnectionAction;
 }
 
-// ---------------------------------------------------------------------------
 // Core dispatch
-// ---------------------------------------------------------------------------
 
 /**
  * Dispatch a connection action.
@@ -95,9 +91,7 @@ export function dispatch(action: ConnectionAction): ConnectionResult {
   };
 }
 
-// ---------------------------------------------------------------------------
 // Action factory helper
-// ---------------------------------------------------------------------------
 
 function buildAction(
   verb: ConnectionVerb,
@@ -108,9 +102,7 @@ function buildAction(
   return { verb, sourceId, targetId, ...(context !== undefined ? { context } : {}) };
 }
 
-// ---------------------------------------------------------------------------
 // Action factories — one per canonical verb
-// ---------------------------------------------------------------------------
 
 /**
  * Create a `bind` ConnectionAction.
@@ -231,5 +223,6 @@ export function createConnectAcrossAction(
 }
 
 // Re-export canonical constants for consumers who import only from this module.
+
 export { CONNECTION_VERBS, isValidConnectionVerb, REJECTED_CONNECTION_VERBS };
 export type { ConnectionVerb };

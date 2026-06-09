@@ -24,8 +24,6 @@ export interface NormalizedPost {
   visibility: 'public' | 'private' | 'close_friends';
 }
 
-// ── Mastodon ──────────────────────────────────────────────────────────────────
-
 export interface MastodonStatus {
   id: string;
   content: string;
@@ -60,8 +58,6 @@ export function normalizeMastodonPost(status: MastodonStatus): NormalizedPost {
   };
 }
 
-// ── Nostr ─────────────────────────────────────────────────────────────────────
-
 export interface NostrEvent {
   id: string;
   pubkey: string;
@@ -91,8 +87,6 @@ export function normalizeNostrEvent(
     visibility: 'public',
   };
 }
-
-// ── Bluesky ───────────────────────────────────────────────────────────────────
 
 export interface BlueskyPost {
   uri: string;

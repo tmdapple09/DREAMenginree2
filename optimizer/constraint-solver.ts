@@ -1,3 +1,10 @@
+import type {
+    Constraint,
+    ConstraintSolverOptions,
+    OptimizationItem,
+    RankedItem,
+} from './types';
+
 /**
  * DREAMengin Constraint Solver
  *
@@ -6,13 +13,6 @@
  * - minimize cost
  * - subject to constraints
  */
-
-import type {
-    Constraint,
-    ConstraintSolverOptions,
-    OptimizationItem,
-    RankedItem,
-} from './types';
 
 export class ConstraintSolver {
   private options: ConstraintSolverOptions;

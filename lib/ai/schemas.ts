@@ -1,7 +1,7 @@
+import { z } from 'zod';
+
 // lib/ai/schemas.ts
 // Zod 4 schemas for tri-agent AI system
-
-import { z } from 'zod';
 
 // ============================================================================
 // AGENT & UI CONTEXT SCHEMAS

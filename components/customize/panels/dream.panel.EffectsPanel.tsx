@@ -68,8 +68,6 @@ export default function EffectsPanel( ){
   );
 }
 
-// ── Reusable slider row ───────────────────────────────────────────────────────
-
 function SliderRow({
   label, value, displaySuffix,
   min, max, step,

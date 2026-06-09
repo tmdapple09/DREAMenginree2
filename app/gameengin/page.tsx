@@ -1,5 +1,6 @@
-// SURFACE: dreamsurface.Gameengin  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
+
+// SURFACE: dreamsurface.Gameengin  (framework-mandated basename: page.tsx)
 
 /**
  * /gameengin → /gameengin/cartridges

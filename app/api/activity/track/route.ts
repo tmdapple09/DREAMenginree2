@@ -1,9 +1,3 @@
-// app/api/activity/track/route.ts
-// Phase 9 — Track Activity Endpoint
-//
-// Records user activity with tier classification and optional verification.
-// Awards activity points based on tier per ACTIVITY_FIRST_PROTOCOL.md §II
-
 import { calculateActivityPoints, calculateDecayDate } from '@/lib/activity/scoring';
 import type {
     ActivityVerification,
@@ -15,6 +9,12 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+
+// app/api/activity/track/route.ts
+// Phase 9 — Track Activity Endpoint
+//
+// Records user activity with tier classification and optional verification.
+// Awards activity points based on tier per ACTIVITY_FIRST_PROTOCOL.md §II
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

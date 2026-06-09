@@ -1,5 +1,14 @@
 'use client';
 
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    type ReactNode,
+} from 'react';
+import { createEventBus, type EventBus } from '../../eventBus';
+
 /**
  * lib/enginpipe/shell/ArtifactSlot.tsx
  *
@@ -16,15 +25,6 @@
  * snapshot lifecycle, performance probes) have a single attachment
  * point.
  */
-
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    type ReactNode,
-} from 'react';
-import { createEventBus, type EventBus } from '../../eventBus';
 
 export interface ArtifactSlotContextValue {
   /** Stable identifier for the currently-mounted artifact. */

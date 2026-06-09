@@ -1,3 +1,5 @@
+import type { AbstractEngine } from '@babylonjs/core';
+
 /**
  * lib/babylon/createEngine.ts
  *
@@ -28,8 +30,6 @@
  * Usage:
  *   const engine = await createBabylonEngine(canvas, { antialias: true });
  */
-
-import type { AbstractEngine } from '@babylonjs/core';
 
 export interface BabylonEngineOptions {
   antialias?: boolean;

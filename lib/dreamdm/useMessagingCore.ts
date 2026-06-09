@@ -1,5 +1,11 @@
 'use client';
 
+import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
+import { createClient } from '@/lib/supabase/client';
+import { useCallback, useState } from 'react';
+import type { DMMessage } from './useDreamDMMessages';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * useMessagingCore — shared message send / attachment logic for DreamDM.
  *
@@ -19,12 +25,6 @@
  * docs/dreamdm_messaging_phase2.md §4 — useMessagingCore
  */
 
-import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
-import { createClient } from '@/lib/supabase/client';
-import { useCallback, useState } from 'react';
-import type { DMMessage } from './useDreamDMMessages';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type MediaType = 'image' | 'video' | 'audio' | 'file';
@@ -63,8 +63,6 @@ export interface UseMessagingCoreReturn {
   clearSendError: () => void;
 }
 
-// ── Hook ──────────────────────────────────────────────────────────────────────
-
 export function useMessagingCore(
   /** Called immediately with an optimistic message before server confirmation */
   onOptimistic?: (msg: DMMessage) => void,
@@ -75,8 +73,6 @@ export function useMessagingCore(
 ): UseMessagingCoreReturn {
   const [isSending, setIsSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
-
-  // ── File helpers ──────────────────────────────────────────────────────────
 
   const validateFile = useCallback((file: File): string | null => {
     if (file.size > MAX_FILE_BYTES) return 'File must be smaller than 50 MB';
@@ -89,8 +85,6 @@ export function useMessagingCore(
     if (file.type.startsWith('audio/')) return 'audio';
     return 'file';
   }, []);
-
-  // ── Upload ────────────────────────────────────────────────────────────────
 
   const uploadFile = useCallback(
     async (file: File, userId: string): Promise<{ url: string; type: MediaType }> => {
@@ -112,8 +106,6 @@ export function useMessagingCore(
     [getFileType],
   );
 
-  // ── Send ──────────────────────────────────────────────────────────────────
-
   const sendMessage = useCallback(
     async (params: SendMessageParams): Promise<DMMessage | null> => {
       const { conversationId, recipientId, content, file, userId } = params;
@@ -121,7 +113,6 @@ export function useMessagingCore(
       if (!content.trim() && !file) return null;
       if (!conversationId)            return null;
 
-      // ── Demo conversations — optimistic only, no network call ─────────────
       if (conversationId.startsWith('demo-')) {
         const optimistic: DMMessage = {
           id:         `temp-${Date.now()}`,

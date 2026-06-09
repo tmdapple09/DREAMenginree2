@@ -194,12 +194,12 @@ export interface DreamInstance {
   instance_id: string;
   widget_id: string;
   owner_id: string;
-  
+
   // Surface placement
   surface: Surface;
   surface_key: number; // faceIndex or profileSpaceId or 0 for home
   slot_index: number; // 0..7 for slotted surfaces, -1 for free placement
-  
+
   // Presentation and transform
   presentation: PresentationMode;
   transform_x: number;
@@ -207,14 +207,14 @@ export interface DreamInstance {
   transform_scale: number;
   transform_rotation: number;
   transform_opacity: number;
-  
+
   // Z-ordering and focus
   z_index: number;
   focus_rank: number;
-  
+
   // Runtime state
   runtime_flags: number; // uint32
-  
+
   created_at: string;
   updated_at: string;
 }
@@ -319,10 +319,10 @@ export interface WidgetEngineState {
   instances: Map<string, WidgetInstance>;
   definitions: Map<string, WidgetDefinition>;
   resolved: Map<string, HostResolved>;
-  
+
   // Active gesture state
   activeGesture: boolean;
-  
+
   // Current surface
   currentSurface: Surface;
   currentSurfaceKey: number;
@@ -348,7 +348,7 @@ export function validateFeedHostConfig(config: Partial<FeedHostConfig>): FeedHos
   const scope = config.scope ?? FeedScope.SELF;
   const target_user_id = scope === FeedScope.SELF ? null : config.target_user_id ?? null;
   const limit = Math.max(5, Math.min(200, config.limit ?? 25));
-  
+
   return {
     scope,
     target_user_id,

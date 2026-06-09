@@ -1,3 +1,7 @@
+import type { Counter, Histogram, UpDownCounter } from '@opentelemetry/api';
+import { SpanStatusCode, type Span } from '@opentelemetry/api';
+import { getMeter, getTracer } from './otel';
+
 // lib/observability/otelBridge.ts
 //
 // Bridges the in-process collector (ring buffers) to OpenTelemetry exporters.
@@ -9,15 +13,7 @@
 //
 // This module records **only** system-level signals — no PII, no user content.
 
-import type { Counter, Histogram, UpDownCounter } from '@opentelemetry/api';
-import { SpanStatusCode, type Span } from '@opentelemetry/api';
-import { getMeter, getTracer } from './otel';
-
-// ── Singleton guard ───────────────────────────────────────────────────────────
-
 let _bridgeReady = false;
-
-// ── OTel instruments (created lazily) ─────────────────────────────────────────
 
 let _logCounter: Counter | null = null;
 let _metricGauge: Histogram | null = null;
@@ -106,8 +102,6 @@ function ensureInstruments(): void {
   });
 }
 
-// ── Bridge functions (called from patched collector) ──────────────────────────
-
 /**
  * Forward a log entry to OTel metrics.
  * We record log counts by level as a counter — actual log content is NOT
@@ -182,8 +176,6 @@ export function otelRequestEnd(): void {
   ensureInstruments();
   _activeRequests!.add(-1);
 }
-
-// ── Initialisation ────────────────────────────────────────────────────────────
 
 /**
  * Activate the OTel bridge. Safe to call multiple times — only the first

@@ -29,8 +29,6 @@ const RIGHT_JOY_ZONE = 0.40;
 // Fraction of dock width used as the joystick travel radius (how far stick can move)
 const JOYSTICK_TRAVEL_RATIO = 0.65;
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
 function loadPersisted(key: string, fallback: number, min?: number, max?: number): number {
   try {
     const v = parseFloat(localStorage.getItem(key) ?? '');
@@ -114,7 +112,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
 
   const interactiveButtons = MOBILE_HUD_BUTTON_RING.filter((b) => b.interactive);
 
-  // ── Emit CSS var so game stage clears the remote ──────────────────────────
   useEffect(() => {
     const dockH = 170;
     const readoutH = 40;
@@ -124,7 +121,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     return () => { document.documentElement.style.removeProperty('--de-hud-bottom'); };
   }, [remoteScale, offsetY, remoteState]);
 
-  // ── Touch activity → opacity ──────────────────────────────────────────────
   const markTouchStart = useCallback(() => {
     if (touchFadeTimerRef.current !== null) {
       clearTimeout(touchFadeTimerRef.current);
@@ -141,7 +137,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     }, TOUCH_FEEDBACK_DECAY_MS);
   }, []);
 
-  // ── Stick sync ────────────────────────────────────────────────────────────
   const syncStickCap = useCallback((cap: HTMLDivElement | null, vector: MobileControlVector) => {
     if (!cap) return;
     cap.style.transform = getStickTransform(vector);
@@ -190,7 +185,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     ));
   }, []);
 
-  // ── Left stick ────────────────────────────────────────────────────────────
   const handleLeftTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (leftTouchIdRef.current !== null) return;
@@ -222,7 +216,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     }
   }, [releaseLeftStick]);
 
-  // ── Button helpers ────────────────────────────────────────────────────────
   const updateButtonPressed = useCallback((buttonId: string, active: boolean) => {
     setPressedButtons((prev) => {
       if ((prev[buttonId] ?? false) === active) return prev;
@@ -257,7 +250,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     return null;
   }, [interactiveButtons]);
 
-  // ── Right dock — combined joystick + buttons ──────────────────────────────
   const handleRightDockTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
     Array.from(event.changedTouches).forEach((touch) => {
@@ -319,7 +311,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     Array.from(event.changedTouches).forEach((t) => releaseRightDockTouch(t.identifier, t.clientX, t.clientY));
   }, [releaseRightDockTouch]);
 
-  // ── Pause / Exit ──────────────────────────────────────────────────────────
   const handlePausePress = useCallback(() => {
     setPausePressed(true);
     markTouchStart();
@@ -333,7 +324,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     fireGameRemoteInput('pause', false);
   }, [markTouchEnd]);
 
-  // ── Size control ──────────────────────────────────────────────────────────
   const adjustScale = useCallback((delta: number) => {
     setRemoteScale((prev) => {
       const next = Math.min(SCALE_MAX, Math.max(SCALE_MIN, Math.round((prev + delta) * 10) / 10));
@@ -341,8 +331,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
       return next;
     });
   }, []);
-
-  // ── Drag to reposition ────────────────────────────────────────────────────
 
   const handleDragMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     if (!dragStartRef.current) return;
@@ -357,7 +345,6 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     markTouchEnd();
   }, [markTouchEnd]);
 
-  // ── Cleanup ───────────────────────────────────────────────────────────────
   useEffect(() => () => {
     if (touchFadeTimerRef.current !== null) clearTimeout(touchFadeTimerRef.current);
     if (activeMoveActionRef.current) fireGameRemoteInput(activeMoveActionRef.current, false);

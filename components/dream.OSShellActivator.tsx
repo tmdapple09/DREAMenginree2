@@ -1,5 +1,15 @@
 'use client';
 
+import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
+import type { SystemPanelId } from '@/lib/panels/panelTypes';
+import { isPublicSurfacePath } from '@/lib/routing/surfaces';
+import { EnginDispatcher } from '@/lib/runtime/EnginDispatcher';
+import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { usePathname } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
+
 /**
  * OSShellActivator — global, route-aware DreamDM Bar activator.
  *
@@ -31,16 +41,6 @@
  *     this activator stays out of the way to avoid double-registration.
  */
 
-import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-import { isPublicSurfacePath } from '@/lib/routing/surfaces';
-import { EnginDispatcher } from '@/lib/runtime/EnginDispatcher';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { usePathname } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
-
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
 
 /** No route owns a special bridge; shell callbacks are global from root layout. */
@@ -66,7 +66,6 @@ export default function OSShellActivator( ){
     OWN_BRIDGE_ROUTES.has(pathname ?? '') ||
     !homeData?.userId;
 
-  // ── Callback wiring ────────────────────────────────────────────────────
   // Mirrors DreamBarDataBridge so the bar/menus behave identically on every
   // authenticated route. No homeData mutation here.
 

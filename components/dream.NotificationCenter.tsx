@@ -1,23 +1,5 @@
 'use client';
 
-/**
- * NotificationCenter — wired to the real /api/notifications backend.
- *
- * Architecture justification:
- *   - docs/AXIOMS.md: every visible action must do something real.
- *     This component previously showed five hardcoded demo notifications.
- *     It now renders live data from lib/notifications/useNotifications.ts.
- *   - docs/ARCHITECTURE.md §8: Gold / light-blue design system; badge uses
- *     the canonical gold accent to signal an actionable live state.
- *   - docs/LAW.md §3: every visible action must do something real.
- *
- * Can be used standalone (renders its own trigger bell) or in controlled
- * mode when `isOpen` + `onClose` are provided by a parent (e.g.
- * HomeDreamSurface, which controls its own Bell button and badge).
- *
- * Performance: render-on-demand; no render loops. The hook polls every 30 s.
- */
-
 import type { UiNotification, UiNotificationType } from '@/lib/notifications/notificationHelpers';
 import { useNotifications } from '@/lib/notifications/useNotifications';
 import {
@@ -36,9 +18,25 @@ import {
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-// ---------------------------------------------------------------------------
+/**
+ * NotificationCenter — wired to the real /api/notifications backend.
+ *
+ * Architecture justification:
+ *   - docs/AXIOMS.md: every visible action must do something real.
+ *     This component previously showed five hardcoded demo notifications.
+ *     It now renders live data from lib/notifications/useNotifications.ts.
+ *   - docs/ARCHITECTURE.md §8: Gold / light-blue design system; badge uses
+ *     the canonical gold accent to signal an actionable live state.
+ *   - docs/LAW.md §3: every visible action must do something real.
+ *
+ * Can be used standalone (renders its own trigger bell) or in controlled
+ * mode when `isOpen` + `onClose` are provided by a parent (e.g.
+ * HomeDreamSurface, which controls its own Bell button and badge).
+ *
+ * Performance: render-on-demand; no render loops. The hook polls every 30 s.
+ */
+
 // Icon map
-// ---------------------------------------------------------------------------
 
 function NotifIcon({ type }: {type: UiNotificationType}) {
   switch (type) {
@@ -53,9 +51,7 @@ function NotifIcon({ type }: {type: UiNotificationType}) {
   }
 }
 
-// ---------------------------------------------------------------------------
 // Timestamp formatter
-// ---------------------------------------------------------------------------
 
 function formatTs(ts: Date): string {
   const diff = Date.now() - ts.getTime();
@@ -68,9 +64,7 @@ function formatTs(ts: Date): string {
   return `${d}d ago`;
 }
 
-// ---------------------------------------------------------------------------
 // Single notification row
-// ---------------------------------------------------------------------------
 
 interface NotifRowProps {
   n: UiNotification;
@@ -176,9 +170,7 @@ function NotifRow({ n, onRead, onDelete }: NotifRowProps) {
   );
 }
 
-// ---------------------------------------------------------------------------
 // Props
-// ---------------------------------------------------------------------------
 
 interface NotificationCenterProps {
   /**
@@ -189,9 +181,7 @@ interface NotificationCenterProps {
   onClose?: () => void;
 }
 
-// ---------------------------------------------------------------------------
 // Main component
-// ---------------------------------------------------------------------------
 
 export default function NotificationCenter({ isOpen: controlledOpen, onClose }: NotificationCenterProps) {
   // Self-contained open/close when not controlled externally
@@ -212,9 +202,7 @@ export default function NotificationCenter({ isOpen: controlledOpen, onClose }: 
 
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // ---------------------------------------------------------------------------
   // Render
-  // ---------------------------------------------------------------------------
 
   const panel = open && (
     <>

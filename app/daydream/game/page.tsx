@@ -1,6 +1,7 @@
-// SURFACE: dreamsurface.DaydreamGame  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamGame  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: 'GameEngin Session – DREAMengin',

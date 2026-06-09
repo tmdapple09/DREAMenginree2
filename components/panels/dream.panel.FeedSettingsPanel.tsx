@@ -1,10 +1,5 @@
 'use client';
 
-/**
- * FeedSettingsPanel — inline feed preferences, extracted from FeedSettingsClient.
- * Same logic, no page chrome (no min-h-screen, no header with back Links).
- */
-
 import {
     ALL_TOPICS,
     DEFAULT_TOPIC_IDS,
@@ -13,6 +8,11 @@ import {
 } from '@/lib/feed/feedTopics';
 import { Check } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+
+/**
+ * FeedSettingsPanel — inline feed preferences, extracted from FeedSettingsClient.
+ * Same logic, no page chrome (no min-h-screen, no header with back Links).
+ */
 
 const STORAGE_KEY = 'de-feed-settings';
 

@@ -8,15 +8,6 @@
 
 // Re-export all constants from the core policy file so callers can import
 // from either location without duplication.
-export {
-    BOOGIE_POLICY_VERSION, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS,
-    ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES
-} from '@/lib/ai/boogie-policy';
-
-export type {
-    BoogiePolicyVersion, EnforcementAction,
-    EnforcementScope, RuleCode, StrikeSeverityLevel
-} from '@/lib/ai/boogie-policy';
 
 // ============================================================================
 // POLICY CATEGORY ENUM (req 24–25)
@@ -291,3 +282,12 @@ export function onBoogieManEvent(
   window.addEventListener('dreamengin:boogieman', listener);
   return () => window.removeEventListener('dreamengin:boogieman', listener);
 }
+
+export {
+    BOOGIE_POLICY_VERSION, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS,
+    ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES
+} from '@/lib/ai/boogie-policy';
+export type {
+    BoogiePolicyVersion, EnforcementAction,
+    EnforcementScope, RuleCode, StrikeSeverityLevel
+} from '@/lib/ai/boogie-policy';

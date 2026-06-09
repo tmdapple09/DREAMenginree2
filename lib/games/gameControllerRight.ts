@@ -58,3 +58,4 @@ export function computeAimDelta(
 ): { dx: number; dy: number } {
   return { dx: nextX - prevX, dy: nextY - prevY };
 }
+

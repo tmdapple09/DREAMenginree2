@@ -1,8 +1,13 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+  isEnginBaseState,
+  type EnginBaseState,
+  type JsonObject,
+  type JsonValue,
+} from './EnginBaseState';
+import type { EnginCapability } from './EnginCapabilities';
+import type { EnginCapabilityProfile } from './EnginCapabilityTargets';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/EnginRuleSetContract.ts.
 
@@ -22,40 +27,17 @@
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const VERSION_RE = /^\d+\.\d+\.\d+$/;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import {
-  isEnginBaseState,
-  type EnginBaseState,
-  type JsonObject,
-  type JsonValue,
-} from './EnginBaseState';
-
-import type { EnginCapability } from './EnginCapabilities';
-
-import type { EnginCapabilityProfile } from './EnginCapabilityTargets';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ─── Actions ─────────────────────────────────────────────────────────────────
 
 /** Discriminated union describing every action a rule-set can handle. */
 export interface EnginAction<
@@ -65,8 +47,6 @@ export interface EnginAction<
   type: Type;
   payload?: Payload;
 }
-
-// ─── Manifest / schema / compatibility ──────────────────────────────────────
 
 export type EnginRuntimeFeature =
   | 'lifecycle-hooks'
@@ -111,8 +91,6 @@ export interface CompatibilityNegotiationResult {
   reason?: string;
 }
 
-// ─── Rule-set parameters ──────────────────────────────────────────────────────
-
 export interface EnginRuleSetParams {
   /** Canonical engine identifier. Must match the shell EngineId. */
   enginId: string;
@@ -126,8 +104,6 @@ export interface EnginRuleSetParams {
   [key: string]: JsonValue;
 }
 
-// ─── Constraint ───────────────────────────────────────────────────────────────
-
 export interface ConstraintResult {
   valid: boolean;
   /** Populated when valid === false. */
@@ -140,8 +116,6 @@ export type EnginConstraint<A extends EnginAction = EnginAction> = (
   action: A,
 ) => ConstraintResult;
 
-// ─── Transform ────────────────────────────────────────────────────────────────
-
 /**
  * A transform function: pure mapping from current state + action to next state.
  * MUST NOT cause side-effects.
@@ -150,8 +124,6 @@ export type EnginTransform<A extends EnginAction = EnginAction> = (
   state: EnginBaseState,
   action: A,
 ) => EnginBaseState;
-
-// ─── Rule-set contract ────────────────────────────────────────────────────────
 
 /**
  * EnginRuleSetContract<A>
@@ -204,8 +176,6 @@ export interface EnginRuleSetContract<A extends EnginAction = EnginAction> {
    */
   deriveState(state: EnginBaseState): JsonObject;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -307,14 +277,8 @@ export function validateRuleSetState<A extends EnginAction>(
   return schema.validateDomain?.(state.domain) ?? { valid: true };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

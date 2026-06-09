@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-
 type Profile = {
   display_name: string;
   handle: string;
@@ -77,7 +76,7 @@ export default function EditProfileDreamPage( ){
         router.push('/login');
       }
     })();
-   
+
   }, []);
 
   const isDirty = !!initialProfile && (
@@ -121,7 +120,6 @@ export default function EditProfileDreamPage( ){
       });
       localStorage.setItem('de-profile-widget-order', JSON.stringify(widgets));
 
-      // ── Phase 6 item 7: Log visibility-change events to TheBoogieMan ────────
       // On a private save, detect Dream Windows whose visibility changed and log
       // VISIBILITY_CHANGE events (no update_mapping — draft not yet published).
       // Per dreamengin_phase6.md point 7: log ALL privacy-adjacent decisions.

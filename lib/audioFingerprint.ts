@@ -1,3 +1,5 @@
+import { TORRIDITY_DP, TORRIDITY_N } from './torridity';
+
 /**
  * Audio Fingerprint — Fingerprint-Based Sound Isolation
  *
@@ -8,10 +10,6 @@
  * Torridity constants (n=2.1, ΔP=0.1) are used to filter low-energy
  * peaks below a dynamic threshold.
  */
-
-import { TORRIDITY_DP, TORRIDITY_N } from './torridity';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 /** A single frequency peak. */
 export interface Peak {
@@ -60,8 +58,6 @@ export interface MatchResult {
   similarityScore: number;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const DEFAULT_FFT_SIZE        = 2048;
 const DEFAULT_SLICE_DURATION  = 0.1;   // 100 ms per slice
 const DEFAULT_TOP_K           = 5;
@@ -71,8 +67,6 @@ const DEFAULT_TOP_K           = 5;
  *   threshold = ΔP * n   (0.1 * 2.1 = 0.21 of max magnitude)
  */
 const PEAK_THRESHOLD_FRACTION = TORRIDITY_DP * TORRIDITY_N; // 0.21
-
-// ─── buildPeakMap ─────────────────────────────────────────────────────────────
 
 /**
  * buildPeakMap(audioBuffer, topK)
@@ -138,8 +132,6 @@ export function buildPeakMap(audioBuffer: AudioBuffer, topK = DEFAULT_TOP_K): Pe
   };
 }
 
-// ─── Fingerprint helpers ──────────────────────────────────────────────────────
-
 function peaksInWindow(peakMap: PeakMap, startSec: number, endSec: number): Peak[] {
   const startSlice = Math.floor(startSec / peakMap.sliceDurationSec);
   const endSlice   = Math.ceil(endSec / peakMap.sliceDurationSec);
@@ -161,8 +153,6 @@ function buildSignature(peaks: Peak[], fftSize: number): number[] {
   return norm > 0 ? vec.map((v) => v / norm) : vec;
 }
 
-// ─── recordReferenceFingerprint ──────────────────────────────────────────────
-
 /**
  * recordReferenceFingerprint(peakMap, startTime, endTime)
  *
@@ -179,8 +169,6 @@ export function recordReferenceFingerprint(
   const id          = `fp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   return { id, startTime, endTime, peakMap: { ...peakMap, peaks: windowPeaks }, signature };
 }
-
-// ─── matchFingerprint ────────────────────────────────────────────────────────
 
 /**
  * matchFingerprint(fingerprint, candidatePeakMap, threshold)
@@ -216,8 +204,6 @@ export function matchFingerprint(
 
   return results;
 }
-
-// ─── createFingerprintIsolator ───────────────────────────────────────────────
 
 /**
  * createFingerprintIsolator()
@@ -271,8 +257,6 @@ export function createFingerprintIsolator( ){
     },
   };
 }
-
-// ─── extractAudioChunks ──────────────────────────────────────────────────────
 
 /**
  * extractAudioChunks(audioBuffer, timeSlices)

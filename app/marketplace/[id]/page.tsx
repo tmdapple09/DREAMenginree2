@@ -1,3 +1,13 @@
+import MarketplaceRequestButton from '@/components/marketplace/dream.MarketplaceRequestButton';
+import DreamWord from '@/components/ui/dream.DreamWord';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { ArrowLeft, Calendar, ShoppingBag, Tag, User } from 'lucide-react';
+import Link from 'next/link';
+import { notFound, redirect } from 'next/navigation';
+import { connection } from 'next/server';
+
 // SURFACE: dreamsurface.MarketplaceId  (framework-mandated basename: page.tsx)
 /**
  * DreamMarketplace slot detail surface — /marketplace/[id]
@@ -12,17 +22,6 @@
  * Security: authenticated users only; item must be published OR owned by the viewer.
  * Architecture: ARCHITECTURE.md §5 (projection boundaries), LAW.md §2 (nothing public by default).
  */
-
-import MarketplaceRequestButton from '@/components/marketplace/dream.MarketplaceRequestButton';
-import DreamWord from '@/components/ui/dream.DreamWord';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { ArrowLeft, Calendar, ShoppingBag, Tag, User } from 'lucide-react';
-import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
-import { connection } from 'next/server';
-
 
 const CATEGORY_EMOJI: Record<string, string> = {
   theme: '🎨', themes: '🎨',
@@ -44,7 +43,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
   if (!user) redirect('/login');
 
   // Fetch the item — must be published OR owned by the current viewer
-   
+
   const db = supabase as SupabaseClient;
   const { data: item, error } = await db
     .from('marketplace_items')

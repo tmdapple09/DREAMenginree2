@@ -1,14 +1,14 @@
-// =====================================================
-// Dream Feed Resolver API Route
-// Resolves feed data for dream instances
-// =====================================================
-
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { resolveFeedHost } from '@/lib/widgets/feed-resolver';
 import { HostKind, type DreamDefinition, type DreamInstance, type FeedHostConfig } from '@/types/widget-system-v2';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
+
+// =====================================================
+// Dream Feed Resolver API Route
+// Resolves feed data for dream instances
+// =====================================================
 
 // Type for joined query result
 type DreamInstanceWithDefinition = DreamInstance & {
@@ -21,7 +21,7 @@ async function resolveFeedForInstance(
   userId: string
 ) {
   const supabase = await createServerClient();
-  
+
   // Fetch dream instance and definition
   const { data: instance, error: instanceError } = await (supabase as SupabaseClient)
     .from('dream_instances')
@@ -32,18 +32,18 @@ async function resolveFeedForInstance(
     .eq('instance_id', instanceId)
     .eq('owner_id', userId)
     .single();
-  
+
   if (instanceError || !instance) {
     return {
       error: 'Dream instance not found',
       status: 404,
     };
   }
-  
+
   // Proper type assertion for joined data
   const instanceWithDef = instance as unknown as DreamInstanceWithDefinition;
   const definition = instanceWithDef.dream_definitions;
-  
+
   // Only handle feed dreams
   if (definition.host_kind !== HostKind.HOST_FEED_VIEW) {
     return {
@@ -51,11 +51,11 @@ async function resolveFeedForInstance(
       status: 400,
     };
   }
-  
+
   // Resolve feed
   const hostConfig = definition.host_config as FeedHostConfig;
   const resolved = await resolveFeedHost(userId, hostConfig);
-  
+
   return {
     data: resolved,
     status: 200,
@@ -66,36 +66,36 @@ export async function POST(request: NextRequest ): Promise<NextResponse> {
   await connection();
   try {
     const supabase = await createServerClient();
-    
+
     // Get authenticated user
     const user = await safeGetUser(supabase);
-    
+
     if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
-    
+
     const body = await request.json();
     const { instance_id } = body;
-    
+
     if (!instance_id) {
       return NextResponse.json(
         { error: 'instance_id is required' },
         { status: 400 }
       );
     }
-    
+
     const result = await resolveFeedForInstance(instance_id, user.id);
-    
+
     if (result.error) {
       return NextResponse.json(
         { error: result.error },
         { status: result.status }
       );
     }
-    
+
     return NextResponse.json(result.data);
   } catch (error: unknown) {
     console.error('Dream feed resolver error:', error);
@@ -110,36 +110,36 @@ export async function GET(request: NextRequest ): Promise<NextResponse> {
   await connection();
   try {
     const supabase = await createServerClient();
-    
+
     // Get authenticated user
     const user = await safeGetUser(supabase);
-    
+
     if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
-    
+
     const { searchParams } = new URL(request.url);
     const instance_id = searchParams.get('instance_id');
-    
+
     if (!instance_id) {
       return NextResponse.json(
         { error: 'instance_id is required' },
         { status: 400 }
       );
     }
-    
+
     const result = await resolveFeedForInstance(instance_id, user.id);
-    
+
     if (result.error) {
       return NextResponse.json(
         { error: result.error },
         { status: result.status }
       );
     }
-    
+
     return NextResponse.json(result.data);
   } catch (error: unknown) {
     console.error('Dream feed resolver error:', error);

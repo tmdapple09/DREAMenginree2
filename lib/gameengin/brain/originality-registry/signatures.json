@@ -4,9 +4,15 @@
   "signatures": [
     {
       "hash": "sha256:platformer+coyote-time+double-jump+dash+parry",
-      "cartridge_ids": ["mad-maxi"],
+      "cartridge_ids": [
+        "mad-maxi"
+      ],
       "closest_known_game": "Hollow Knight (similar movement suite)",
-      "differentiation_factors": ["neon wasteland aesthetic", "father-son narrative", "procedural level pulse"],
+      "differentiation_factors": [
+        "neon wasteland aesthetic",
+        "father-son narrative",
+        "procedural level pulse"
+      ],
       "novelty_score": 0.72
     }
   ]

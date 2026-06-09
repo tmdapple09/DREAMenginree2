@@ -1,11 +1,11 @@
-// lib/ai/capability-gate.ts
-// RBAC + ABAC Capability Gate
-// DB-backed authorization checks
-
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ActorContext, IntentType } from '@/types/ai-system';
+
+// lib/ai/capability-gate.ts
+// RBAC + ABAC Capability Gate
+// DB-backed authorization checks
 
 // ============================================================================
 // ROLE RANKS

@@ -1,10 +1,10 @@
+import type { BoogieManAgent } from "@/types/ai";
+
 // lib/agents/boogieManAI.ts
 // Section 13: BoogieManAI — Policy / Enforcement
 //
 // BoogieManAI enforces platform policies.
 // It lives inside widgets, not above the system.
-
-import type { BoogieManAgent } from "@/types/ai";
 
 export const BOOGIEMAN_EVENT = "dreamengin:boogieman";
 

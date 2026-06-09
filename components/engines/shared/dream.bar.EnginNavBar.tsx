@@ -1,14 +1,14 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
 /**
  * EnginNavBar — Horizontal sub-route navigation bar for engine apps.
  *
  * Renders a row of tab-style links for an engine's internal pages.
  * Active link is highlighted using the engine's accent color.
  */
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export interface NavItem {
   href: string;

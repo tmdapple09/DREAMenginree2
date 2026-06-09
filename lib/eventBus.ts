@@ -12,8 +12,6 @@
  *   bus.destroy(); // clears all handlers
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export type EventHandler<T = unknown> = (payload: T) => void;
 
 export interface EventBus<Events extends Record<string, unknown> = Record<string, unknown>> {
@@ -25,8 +23,6 @@ export interface EventBus<Events extends Record<string, unknown> = Record<string
   /** Whether destroy() has been called. */
   readonly destroyed: boolean;
 }
-
-// ─── Factory ─────────────────────────────────────────────────────────────────
 
 /**
  * createEventBus<T>()
@@ -70,8 +66,6 @@ export function createEventBus<
     },
   };
 }
-
-// ─── Dual-Runtime Hub ─────────────────────────────────────────────────────────
 
 /**
  * createDualRuntimeHub(busA, busB)

@@ -19,8 +19,6 @@ import {
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export type WidgetType =
   | "bio"
   | "activity"
@@ -84,7 +82,6 @@ export const DEFAULT_WIDGETS: Widget[] = [
   { id: "quote", type: "quote", size: "small" },
 ];
 
-// ── Canonical aliases (preferred for new code) ────────────────────────────
 export type DreamType = WidgetType;
 export type DreamSize = WidgetSize;
 export type DreamBgStyle = WidgetBgStyle;
@@ -125,8 +122,6 @@ const BG_STYLES: { value: WidgetBgStyle; label: string }[] = [
   { value: "dark", label: "Dark" },
 ];
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
-
 function getWidgetLabel(type: WidgetType): string {
   return {
     bio: "Bio Card",
@@ -157,7 +152,6 @@ function getDefaultSize(type: WidgetType): WidgetSize {
   return LARGE_DEFAULT_TYPES.has(type) ? "large" : "small";
 }
 
-// ── Layout / content constants ─────────────────────────────────────────────────
 const MIN_SMALL_WIDGET_HEIGHT = 120;
 const BIO_SMALL_TRUNCATE = 35; // chars shown in compact bio
 const BIO_LARGE_TRUNCATE = 55;
@@ -191,8 +185,6 @@ function getTextColor(style: WidgetBgStyle): string {
 function getDimColor(style: WidgetBgStyle): string {
   return style === "dark" ? "rgba(255,255,255,0.55)" : "#999";
 }
-
-// ── Dot-grid icon (iOS-style drag/settings handle) ────────────────────────────
 
 function DotGrid() {
   return (
@@ -278,8 +270,6 @@ function BarChart({ data, color }: { data: number[]; color: string }) {
     </div>
   );
 }
-
-// ── Widget Config Sheet ────────────────────────────────────────────────────────
 
 function WidgetConfigSheet({
   widget,
@@ -730,8 +720,6 @@ function WidgetConfigSheet({
   );
 }
 
-// ── Connector-sourced widget shell ────────────────────────────────────────────
-
 function ConnectorSourcedWidget({
   symbol,
   brandColor,
@@ -840,8 +828,6 @@ function ConnectorSourcedWidget({
     </div>
   );
 }
-
-// ── Widget content (size-aware) ────────────────────────────────────────────────
 
 interface WidgetContentProps {
   type: WidgetType;
@@ -1053,7 +1039,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── Activity ─────────────────────────────────────────────────────────────
     case "activity": {
       if (!isLarge) {
         return (
@@ -1127,7 +1112,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── Followers ─────────────────────────────────────────────────────────────
     case "followers": {
       const fmt = (n: number) =>
         n >= 1000 ? `${(n / 1000).toFixed(1)}K` : String(n || 0);
@@ -1256,7 +1240,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── Photos ────────────────────────────────────────────────────────────────
     case "photos": {
       const count = isLarge ? 4 : 3;
       const cols = isLarge ? 2 : 3;
@@ -1304,7 +1287,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── LinkedIn ──────────────────────────────────────────────────────────────
     case "linkedin": {
       return (
         <div>
@@ -1378,7 +1360,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── Twitter ───────────────────────────────────────────────────────────────
     case "twitter": {
       if (!isLarge) {
         return (
@@ -1527,7 +1508,6 @@ function WidgetContent(p: WidgetContentProps) {
       );
     }
 
-    // ── Quote ─────────────────────────────────────────────────────────────────
     case "quote": {
       return (
         <div
@@ -1562,8 +1542,6 @@ function WidgetContent(p: WidgetContentProps) {
         </div>
       );
     }
-
-    // ── Connector widgets ─────────────────────────────────────────────────────
 
     case "instagram":
       return (
@@ -1709,8 +1687,6 @@ function WidgetContent(p: WidgetContentProps) {
       return null;
   }
 }
-
-// ── Main component ─────────────────────────────────────────────────────────────
 
 interface ProfileWidgetGridProps {
   displayName: string;

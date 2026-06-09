@@ -1,14 +1,14 @@
 'use client';
 
+import { Info, Play, RotateCcw, Zap } from 'lucide-react';
+import { useCallback, useState } from 'react';
+
 /**
  * QuantumPanel — Quantum circuit designer for the Lab Engine app.
  *
  * Drag-and-drop gate canvas with live measurement simulation.
  * Lives at /engines/lab/quantum.
  */
-
-import { Info, Play, RotateCcw, Zap } from 'lucide-react';
-import { useCallback, useState } from 'react';
 
 type GateType = 'H' | 'X' | 'Y' | 'Z' | 'CNOT' | 'T' | 'S' | 'M';
 

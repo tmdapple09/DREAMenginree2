@@ -1,4 +1,8 @@
 'use client';
+
+import { getGsap } from '@/lib/gsap/gsap';
+import { useEffect, useRef } from 'react';
+
 /**
  * lib/gsap/useGsapScrollReveal.ts
  *
@@ -25,9 +29,6 @@
  *   once       — fire only once (default: true)
  *   children   — animate children instead of the root    (default: true)
  */
-
-import { getGsap } from '@/lib/gsap/gsap';
-import { useEffect, useRef } from 'react';
 
 export interface ScrollRevealOptions {
   /** Entry direction. 'up' slides in from below (most common). */

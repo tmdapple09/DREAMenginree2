@@ -1,3 +1,8 @@
+import { normaliseFacebook } from '@/lib/connectors/normalise';
+import { facebookPageRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/facebook.ts
  *
@@ -22,11 +27,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normaliseFacebook } from '@/lib/connectors/normalise';
-import { facebookPageRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface FacebookCredentials {
   /** Page ID, page username, or full Facebook page URL */
   page: string;

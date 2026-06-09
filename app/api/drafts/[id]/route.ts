@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
 /**
  * app/api/drafts/[id]/route.ts
  *
@@ -13,15 +19,6 @@
  * ACTION_AUDIT.md — was labelled 🟡 fake-wired (no backend for drafts).
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-
-
-// ── Validation ───────────────────────────────────────────────────────────────
-
 const CONTENT_TYPES = [
   'post', 'video', 'story', 'thread',
   'caption', 'tweet_thread', 'bio', 'script',
@@ -33,8 +30,6 @@ const PatchDraftSchema = z.object({
   title: z.string().max(200).nullable().optional(),
   scheduled_at: z.string().datetime({ offset: true }).nullable().optional(),
 }).strict();
-
-// ── DELETE /api/drafts/:id ───────────────────────────────────────────────────
 
 export async function DELETE(
   _req: NextRequest,
@@ -49,7 +44,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   // Verify ownership before deleting
@@ -75,8 +69,6 @@ export async function DELETE(
 
   return new NextResponse(null, { status: 204 });
 }
-
-// ── PATCH /api/drafts/:id ────────────────────────────────────────────────────
 
 export async function PATCH(
   req: NextRequest,
@@ -106,7 +98,6 @@ export async function PATCH(
     );
   }
 
-   
   const db = supabase as SupabaseClient;
 
   // Verify ownership before updating

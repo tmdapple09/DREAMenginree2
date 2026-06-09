@@ -78,8 +78,6 @@ export class MLPrefetchModel {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface BehaviorPrediction {
   chunkId: string;
   probability: number;

@@ -105,9 +105,9 @@ export function NodeCluster({
             const pos = nodePositions.get(node.id);
             const centerX = containerRef.current?.clientWidth ? containerRef.current.clientWidth / 2 : 0;
             const centerY = containerRef.current?.clientHeight ? containerRef.current.clientHeight / 2 : 0;
-            
+
             if (!pos) return null;
-            
+
             return (
               <line
                 key={`line-${node.id}`}
@@ -131,7 +131,7 @@ export function NodeCluster({
 
       {/* Center hub */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                    w-12 h-12 rounded-full bg-primary/20 border border-primary/40
                    flex items-center justify-center"
         style={{

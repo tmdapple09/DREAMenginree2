@@ -1,3 +1,13 @@
+import { writeAuditLog } from '@/lib/ai/audit';
+import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogieman';
+import { jsonApiError } from '@/lib/api/route';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
 // app/api/ai/boogieman/privacy-event/route.ts
 //
 // TheBoogieMan.Ai — privacy event logging endpoint.
@@ -19,19 +29,6 @@
 //
 // Access: all authenticated users (the event describes THEIR own content).
 
-import { writeAuditLog } from '@/lib/ai/audit';
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogieman';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
-
-
-// ── Request schema ───────────────────────────────────────────────────────────
-
 const PrivacyEventSchema = z.object({
   event_type: z.enum([
     'VISIBILITY_CHANGE',    // User changed visibility on a Dream Window or content item
@@ -48,8 +45,6 @@ const PrivacyEventSchema = z.object({
 });
 
 type PrivacyEvent = z.infer<typeof PrivacyEventSchema>;
-
-// ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -111,7 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Optionally update the visibility_mappings record.
   let mappingUpdated = false;
   if (event.update_mapping) {
-     
+
     const { error: upsertError } = await (supabase as SupabaseClient)
       .from('visibility_mappings')
       .upsert(

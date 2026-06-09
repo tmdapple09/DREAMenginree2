@@ -46,8 +46,6 @@ export interface DirectorState {
   label: string;
 }
 
-// ─── AI Director ─────────────────────────────────────────────────────────────
-
 export class AIDirector {
   private challengeLevel = 0.35; // start slightly easy
   private tfReady = false;

@@ -1,5 +1,10 @@
 'use client';
 
+import { InviteFlow, SharedDreamProvider } from '@/components/shared-dream';
+import { ChevronLeft, X } from 'lucide-react';
+import Link from 'next/link';
+import { type ReactNode, useEffect, useRef } from 'react';
+
 /**
  * EnginAppShell — Full-screen immersive shell for all six DREAMengin engines.
  *
@@ -11,11 +16,6 @@
  *   engineName   → displayed in the header bar
  *   engineEmoji  → visual identity in the header
  */
-
-import { InviteFlow, SharedDreamProvider } from '@/components/shared-dream';
-import { ChevronLeft, X } from 'lucide-react';
-import Link from 'next/link';
-import { type ReactNode, useEffect, useRef } from 'react';
 
 export interface EnginAppShellProps {
   engineName: string;

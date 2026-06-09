@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect, useId, useRef, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * components/gameengin/dream.CrashReportModal.tsx
  *
@@ -13,9 +16,6 @@
  * Two-Project Rule (only active cartridges accepted) and the 16 KB cap.
  */
 
-import { useEffect, useId, useRef, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 /** Mirrors `CRASH_REPORT_MAX_BYTES` in lib/gameengin/brain-reader.ts. */
 export const CRASH_REPORT_MAX_BYTES = 16 * 1024;
 /** Hard cap on the textarea so the player can't paste a megabyte of text. */
@@ -166,7 +166,6 @@ export default function CrashReportModal({
         <p style={{ margin: '0 0 14px', fontSize: 11, color: '#94a3b8', fontFamily: 'ui-monospace, monospace' }}>
           {errLabel}
         </p>
-
 
         {context.gameplay && (
           <div style={{ margin: '0 0 14px', padding: 10, borderRadius: 10, background: 'rgba(15, 23, 42, 0.72)', border: '1px solid rgba(148, 163, 184, 0.18)', fontSize: 11, color: '#cbd5e1' }}>

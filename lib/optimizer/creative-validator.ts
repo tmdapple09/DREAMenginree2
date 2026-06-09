@@ -1,13 +1,13 @@
-/**
- * Creative Option Validation
- * Hard safety checks to filter out options that break the system
- */
-
 import type {
     CreativeOption,
     CreativeValidationResult,
     HardFailureReason,
 } from './types';
+
+/**
+ * Creative Option Validation
+ * Hard safety checks to filter out options that break the system
+ */
 
 /**
  * Validate a creative option against hard failure rules

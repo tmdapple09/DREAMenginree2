@@ -66,3 +66,4 @@ export default function IconList({ items, iconSize = 32, className = '' }: Props
     </ul>
   );
 }
+

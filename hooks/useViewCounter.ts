@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 /**
  * useViewCounter — records a view for a feed post after it has been
  * visible (in the viewport) for at least DWELL_MS milliseconds (spec §3).
@@ -12,8 +14,6 @@
  *                  not necessarily the root post; the server resolves the root).
  * @param enabled — set false to suppress tracking (e.g. own profile preview).
  */
-
-import { useEffect, useRef } from 'react';
 
 /** Minimum time the post must be in the viewport before a view is counted. */
 const DWELL_MS = 3000;

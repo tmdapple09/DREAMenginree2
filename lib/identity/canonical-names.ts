@@ -11,9 +11,7 @@
  * See docs/NAMING_AUTHORITY.md for the full written authority.
  */
 
-// ---------------------------------------------------------------------------
 // Platform name
-// ---------------------------------------------------------------------------
 
 export const PLATFORM_NAME = 'DREAMengin' as const;
 
@@ -30,9 +28,7 @@ export const REJECTED_PLATFORM_VARIANTS = [
   'DreamEngine',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Core surface names
-// ---------------------------------------------------------------------------
 
 export const CORE_SURFACES = {
   HOME_DREAM: 'HomeDream',
@@ -71,9 +67,7 @@ export const REJECTED_CORE_SURFACE_NAMES = [
   'profile-page',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Daydream domain names (Side A)
-// ---------------------------------------------------------------------------
 
 export const DAYDREAM_DOMAINS = {
   MUSIC: 'Music',
@@ -95,9 +89,7 @@ export const DAYDREAM_ROUTES: Record<DaydreamDomain, string> = {
   Create: '/daydream/create',
 };
 
-// ---------------------------------------------------------------------------
 // Engin control surface names (Side B)
-// ---------------------------------------------------------------------------
 
 export const ENGIN_SURFACES = {
   MUSIC: 'StarMakerEngin',
@@ -137,9 +129,7 @@ export const REJECTED_ENGIN_NAMES = [
   'CreateEngin',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Platform module names
-// ---------------------------------------------------------------------------
 
 export const PLATFORM_MODULES = {
   DREAM_DM: 'DreamDM',
@@ -173,9 +163,7 @@ export const REJECTED_MODULE_NAMES = [
   'ads',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // AI agent names
-// ---------------------------------------------------------------------------
 
 export const AI_AGENTS = {
   DR_EAMS: 'Dr. Eams',
@@ -191,9 +179,7 @@ export const AI_ROUTES: Record<AIAgent, string> = {
   'TheBoogieMan.Ai': '/api/ai/boogieman',
 };
 
-// ---------------------------------------------------------------------------
 // OS-layer system description
-// ---------------------------------------------------------------------------
 
 /**
  * Canonical product-type description. DREAMengin is not a conventional
@@ -205,9 +191,7 @@ export const PRODUCT_DESCRIPTION =
 export const PRODUCT_DESCRIPTION_FULL =
   'customizable, privacy-first, dual-runtime spatial operating environment for creating, sharing, organizing, and connecting modular runtime containers across personal, creative, and social spaces' as const;
 
-// ---------------------------------------------------------------------------
 // Runtime regions
-// ---------------------------------------------------------------------------
 
 export const RUNTIME_REGIONS = {
   SURFACE_SPACE: 'Surface Space',
@@ -229,9 +213,7 @@ export const RUNTIME_SEAM_NAMES = [
 
 export type RuntimeSeamName = (typeof RUNTIME_SEAM_NAMES)[number];
 
-// ---------------------------------------------------------------------------
 // Full canonical Surface names (with "Surface" suffix for lived spaces)
-// ---------------------------------------------------------------------------
 
 export const SURFACE_NAMES = {
   HOME_DREAM_SURFACE: 'HomeDream Surface',
@@ -268,9 +250,7 @@ export const ROUTE_LAW_NAMING_PREFERENCES = [
 
 export type RouteLawPreferredName = (typeof ROUTE_LAW_NAMING_PREFERENCES)[number];
 
-// ---------------------------------------------------------------------------
 // Dream Window — modular runtime containers
-// ---------------------------------------------------------------------------
 
 /** The canonical term for modular runtime containers. Never "widget" or "card". */
 export const DREAM_WINDOW = 'Dream Window' as const;
@@ -302,9 +282,7 @@ export const DREAM_WINDOW_REQUIRED_FIELDS = [
   'activeState',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Connection language — canonical verbs for runtime attachment
-// ---------------------------------------------------------------------------
 
 export const CONNECTION_VERBS = [
   'bind',
@@ -325,9 +303,7 @@ export const REJECTED_CONNECTION_VERBS = [
   'launch card',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Multi-surface connection network counts
-// ---------------------------------------------------------------------------
 
 export const NETWORK_COUNTS = {
   DAYDREAM_SURFACES: 6,
@@ -349,9 +325,7 @@ export const NETWORK_WORK_TYPES = [
 
 export type NetworkWorkType = (typeof NETWORK_WORK_TYPES)[number];
 
-// ---------------------------------------------------------------------------
 // OS-layer rejected UI terms (soft / web-app-coded language)
-// ---------------------------------------------------------------------------
 
 /**
  * These terms must not be used when the canonical OS-layer term exists.
@@ -375,9 +349,7 @@ export const REJECTED_OS_TERMS = [
   'launch card',   // use: activate / mount
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Validation functions
-// ---------------------------------------------------------------------------
 
 /**
  * Returns true if the given string is the canonical platform name.
@@ -545,9 +517,7 @@ export function validateName(name: string): string[] {
   return violations;
 }
 
-// ---------------------------------------------------------------------------
 // Complete canonical name registry (for enumeration and export)
-// ---------------------------------------------------------------------------
 
 export const ALL_CANONICAL_NAMES = {
   platform: PLATFORM_NAME,

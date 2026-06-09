@@ -18,8 +18,6 @@
  * new cartridges from running on engines that can't serve their needs.
  */
 
-// ── Engine version ─────────────────────────────────────────────────────────────
-
 export const ENGINE_VERSION = '3.0.0';
 
 /** Compare semver strings. Returns true if engine satisfies minVersion. */
@@ -32,8 +30,6 @@ export function engineSatisfies(minVersion: string): boolean {
   return pat >= rPat;
 }
 
-// ── Gravity presets ────────────────────────────────────────────────────────────
-
 export type GravityPreset = 'moon' | 'earth' | 'mars' | 'jupiter';
 
 export const GRAVITY_VALUES: Record<GravityPreset, number> = {
@@ -42,8 +38,6 @@ export const GRAVITY_VALUES: Record<GravityPreset, number> = {
   mars: 3.7,
   jupiter: 24.8,
 };
-
-// ── Cartridge capabilities ─────────────────────────────────────────────────────
 
 /**
  * Every optional engine service a cartridge may declare it uses.
@@ -65,9 +59,6 @@ export type CartridgeCapability =
   | 'offscreen-canvas'  // OffscreenCanvas renderer path
   | 'webgpu'            // WebGPU renderer or compute backend
   | 'webgl2';           // WebGL2 fallback renderer
-
-
-// ── Renderer backend negotiation ─────────────────────────────────────────────
 
 export type RendererBackendId = 'babylon-webgpu' | 'babylon-webgl2' | 'webgpu' | 'webgl2' | 'canvas2d' | 'dom';
 
@@ -140,8 +131,6 @@ export interface CartridgeInputProfile {
 
 export type CartridgeOrientationPreference = 'any' | 'portrait' | 'landscape';
 
-// ── Input Event ───────────────────────────────────────────────────────────────
-
 export interface CartridgeInputEvent {
   key: string;
   type: 'keydown' | 'keyup' | 'touchstart' | 'touchend' | 'gamepad' | 'remote';
@@ -158,8 +147,6 @@ export interface CartridgeInputEvent {
   /** Current cartridge receiving the event, when emitted by GameRuntime. */
   cartridgeId?: string;
 }
-
-// ── Save State ────────────────────────────────────────────────────────────────
 
 export interface CartridgeSaveSlot {
   slot: number;             // 0-based slot index
@@ -180,8 +167,6 @@ export interface CartridgeSaveAPI {
   /** Auto-save to slot 0 (called by runtime on cartridge eject). */
   autoSave(data: unknown): Promise<void>;
 }
-
-// ── Achievements ──────────────────────────────────────────────────────────────
 
 export interface AchievementDefinition {
   id: string;
@@ -209,8 +194,6 @@ export interface CartridgeAchievementsAPI {
   getAll(): Promise<AchievementState[]>;
 }
 
-// ── Audio ─────────────────────────────────────────────────────────────────────
-
 export interface CartridgeSoundOptions {
   volume?: number;       // 0.0–1.0, defaults to 1.0
   loop?: boolean;
@@ -237,8 +220,6 @@ export interface CartridgeAudioAPI {
   fadeOut(durationMs?: number): void;
 }
 
-// ── Haptics ───────────────────────────────────────────────────────────────────
-
 export interface CartridgeHapticsAPI {
   /** Rumble the primary gamepad (0.0–1.0 intensity, duration in ms). */
   rumble(intensity: number, durationMs: number): void;
@@ -247,8 +228,6 @@ export interface CartridgeHapticsAPI {
   /** Heavy impact — collisions, explosions. */
   impact(): void;
 }
-
-// ── Assets ────────────────────────────────────────────────────────────────────
 
 export interface CartridgeAssetsAPI {
   /**
@@ -264,8 +243,6 @@ export interface CartridgeAssetsAPI {
    */
   resolve(relativePath: string): string;
 }
-
-// ── Network ───────────────────────────────────────────────────────────────────
 
 export interface CartridgeSessionPlayer {
   id: string;
@@ -285,8 +262,6 @@ export interface CartridgeNetworkAPI {
   /** Current players in the session (including local). */
   getPlayers(): CartridgeSessionPlayer[];
 }
-
-// ── GameEngineAPI v2 ─────────────────────────────────────────────────────────
 
 export interface GameEngineAPI {
   /** Engine version string — cartridges can inspect this for compatibility. */
@@ -350,8 +325,6 @@ export interface GameEngineAPI {
   /** Multiplayer network. Only active when 'multiplayer' capability is declared. */
   network: CartridgeNetworkAPI;
 }
-
-// ── GameCartridge v2 ─────────────────────────────────────────────────────────
 
 export interface GameCartridge {
   /** Unique game identifier matching the manifest id. */

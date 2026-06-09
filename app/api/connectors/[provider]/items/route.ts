@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/connectors/[provider]/items/route.ts
  *
@@ -8,19 +14,13 @@
  *   connector sync -> feed_items storage -> actual widget display
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
 ) {
   const { provider } = await params;
   const supabase = await createServerClient();
-   
+
   const db = supabase as SupabaseClient;
 
   const user = await safeGetUser(supabase);

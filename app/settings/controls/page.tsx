@@ -1,9 +1,10 @@
-// SURFACE: dreamsurface.SettingsControls  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import ControlsClient from './dream.ControlsClient';
+
+// SURFACE: dreamsurface.SettingsControls  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Controls – Dreamengin Settings' };
 

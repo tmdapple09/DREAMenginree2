@@ -1,5 +1,10 @@
 'use client';
 
+import { ALL_TOPICS, DEFAULT_TOPIC_IDS, loadActiveTopicIds, topicIdsToQueries } from '@/lib/feed/feedTopics';
+import type { FeedPost } from '@/lib/feed/useLiveFeed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * lib/feed/useYouTubeLiveFeed.ts
  *
@@ -22,13 +27,6 @@
  *    HomeFeed so YouTube cards render with zero additional template code.
  */
 
-import { ALL_TOPICS, DEFAULT_TOPIC_IDS, loadActiveTopicIds, topicIdsToQueries } from '@/lib/feed/feedTopics';
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
-import type { UnifiedFeedItem } from '@/types/connector';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Constants ─────────────────────────────────────────────────────────────────
-
 const FEED_MAX = 30;
 const REFRESH_INTERVAL_DEFAULT_S = 15;
 const REFRESH_INTERVAL_ALL_S = 10;
@@ -43,8 +41,6 @@ const ENRICHMENT_QUERIES: string[] = [
   'popular music videos 2024',
   'trending videos',
 ];
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 /** Convert a UnifiedFeedItem (YouTube) → FeedPost so HomeFeed can render it. */
 function ytItemToFeedPost(item: UnifiedFeedItem): FeedPost {
@@ -88,16 +84,12 @@ async function fetchYtQuery(
   }
 }
 
-// ── Return type ───────────────────────────────────────────────────────────────
-
 export interface UseYouTubeLiveFeedReturn {
   ytPosts: FeedPost[];
   isRefreshing: boolean;
   nextRefreshIn: number;
   refresh: () => void;
 }
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
   const [ytPosts, setYtPosts] = useState<FeedPost[]>([]);
@@ -120,8 +112,6 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
   const seenIdsRef    = useRef<Set<string>>(new Set());
   const refreshingRef = useRef(false);
   const mountedRef    = useRef(true);
-
-  // ── Initial load: all active queries in parallel ──────────────────────────
 
   useEffect(() => {
     mountedRef.current = true;
@@ -177,8 +167,6 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
     };
   }, [getQueries]);
 
-  // ── Slide in one new item, drop the oldest ────────────────────────────────
-
   const slideOne = useCallback(async () => {
     if (refreshingRef.current) return;
     refreshingRef.current = true;
@@ -217,8 +205,6 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
       if (mountedRef.current) setIsRefreshing(false);
     }
   }, [getQueries]);
-
-  // ── Auto-refresh: interval depends on how many topics are active ──────────
 
   useEffect(() => {
     const intervalMs = getRefreshInterval() * 1_000;

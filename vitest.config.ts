@@ -1,6 +1,7 @@
-// vitest.config.ts
 import path from 'path';
 import { defineConfig } from 'vitest/config';
+
+// vitest.config.ts
 
 export default defineConfig({
   test: {

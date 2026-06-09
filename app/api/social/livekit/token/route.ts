@@ -1,3 +1,9 @@
+import { generateServerToken, LiveKitError } from '@/lib/social/livekit';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * POST /api/social/livekit/token
  *
@@ -9,12 +15,6 @@
  * Response: { token: string; wsUrl: string; roomName: string; identity: string }
  */
 
-import { generateServerToken, LiveKitError } from '@/lib/social/livekit';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

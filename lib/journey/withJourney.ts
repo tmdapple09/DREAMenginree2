@@ -1,3 +1,6 @@
+import { logJourneyDot } from '@/lib/journey/journeyDots';
+import type { JourneyDotKind } from '@/types/journey';
+
 /**
  * lib/journey/withJourney.ts
  *
@@ -19,9 +22,6 @@
  *   - Transparent: if the wrapped fn throws, the error propagates normally.
  *   - Lightweight: adds zero latency to the critical path (dot fires asynchronously).
  */
-
-import { logJourneyDot } from '@/lib/journey/journeyDots';
-import type { JourneyDotKind } from '@/types/journey';
 
 export interface JourneyMeta {
   kind: JourneyDotKind | string;

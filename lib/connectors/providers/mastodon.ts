@@ -1,3 +1,6 @@
+import { normaliseMastodon } from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/mastodon.ts
  *
@@ -10,9 +13,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseMastodon } from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export interface MastodonCredentials {
   instance_url: string;

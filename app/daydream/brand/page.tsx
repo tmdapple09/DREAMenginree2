@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamBrand  (framework-mandated basename: page.tsx)
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import BrandDaydream from '@/components/daydream/dreamsurface.daydream.BrandDaydream';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
@@ -9,6 +8,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Palette } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamBrand  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Brand Daydream – Dreamengin', description: 'Build and manage your personal brand identity.' };
 

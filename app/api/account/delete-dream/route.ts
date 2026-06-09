@@ -1,3 +1,13 @@
+import { runTriadConsensus } from '@/lib/agents/agentBus';
+import { writeAuditLog } from '@/lib/ai/audit';
+import { jsonApiError } from '@/lib/api/route';
+import { createServerClient, createServiceClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
 // app/api/account/delete-dream/route.ts
 // "Delete My Dream" (delete account) endpoint.
 // Deletes all user data including profile, then the auth identity.
@@ -9,22 +19,10 @@
 // (SUPABASE_SERVICE_ROLE_KEY). createServiceClient() uses it when configured.
 // Without it, data rows are still removed but the auth identity persists.
 
-import { runTriadConsensus } from '@/lib/agents/agentBus';
-import { writeAuditLog } from '@/lib/ai/audit';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient, createServiceClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
-
-
 const DeleteDreamBodySchema = z.object({
   confirm: z.literal('DELETE_MY_DREAM'),
   reason: z.string().max(500).optional(),
 });
-
 
 export async function POST(req: NextRequest ): Promise<Response> {
   const requestStart = Date.now();
@@ -53,7 +51,6 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const deleted: string[] = [];
   const errors: string[] = [];
 
-  // ── AI Triad Consensus Gate (Phase 8 §H Point 69) ────────────────────────
   // Account deletion is a major irreversible system action. All three agents
   // must approve before any data is removed.
   const consensus = await runTriadConsensus({
@@ -80,7 +77,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
   }
 
   // Run all independent table deletes in parallel (dependency-safe: none reference each other)
-   
+
   const supabaseAny = supabase as SupabaseClient;
   const tableResults = await Promise.all([
     supabase.from('feed_rules').delete().eq('user_id', user.id),

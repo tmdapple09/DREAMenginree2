@@ -1,4 +1,11 @@
 'use client';
+
+import {
+    CARTRIDGE_MANIFEST,
+    type CartridgeManifestEntry,
+} from '@/lib/gameengin/cartridges/manifest';
+import Link from 'next/link';
+
 /**
  * components/gameengin/dream.cartridge.FeaturedCartridges.tsx
  *
@@ -8,12 +15,6 @@
  * Pulls from the existing CARTRIDGE_MANIFEST. Pure presentation; the full
  * filterable browser lives in `CartridgeBrowser.tsx`.
  */
-
-import {
-    CARTRIDGE_MANIFEST,
-    type CartridgeManifestEntry,
-} from '@/lib/gameengin/cartridges/manifest';
-import Link from 'next/link';
 
 export interface FeaturedCartridgesProps {
   /** Explicit cartridge ids to feature, in order. Defaults to flagship tier. */

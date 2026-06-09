@@ -1,42 +1,22 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { AudioTrackMixer, MidiEventRingBuffer, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, CollaborationDeltaPacker, GeometryBatcher } from './EnginCapabilityExecution';
+import { CommandRingBuffer, SnapshotCompactor, WorkerPoolRuntime, WebGPUDeviceRuntime, GpuBufferRegistry, AudioWorkletRuntime, WasmKernelRuntime } from './HotRuntime';
+import { EnginPerformanceProbe, StartupBudgetProbe, IdleMemoryProbe } from './EnginPerformanceProbe';
+import { createEnginCapabilityScorecard, type EnginCapabilityScorecard, type MetricMeasurement } from './EnginCapabilityScorecard';
+import { ENGIN_CAPABILITY_PROFILES } from './EnginCapabilityTargets';
+import type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
+import type { JsonObject } from './EnginBaseState';
 
 // Framework directives stay physically first when required.
 
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
 // Runtime file: lib/engin-runtime/EnginDomainCores.ts.
-
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
 
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
 
 // Imports and external modules this runtime file depends on.
 
-import { AudioTrackMixer, MidiEventRingBuffer, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, CollaborationDeltaPacker, GeometryBatcher } from './EnginCapabilityExecution';
-
-import { CommandRingBuffer, SnapshotCompactor, WorkerPoolRuntime, WebGPUDeviceRuntime, GpuBufferRegistry, AudioWorkletRuntime, WasmKernelRuntime } from './HotRuntime';
-
-import { EnginPerformanceProbe, StartupBudgetProbe, IdleMemoryProbe } from './EnginPerformanceProbe';
-
-import { createEnginCapabilityScorecard, type EnginCapabilityScorecard, type MetricMeasurement } from './EnginCapabilityScorecard';
-
-import { ENGIN_CAPABILITY_PROFILES } from './EnginCapabilityTargets';
-
-import type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
-
-import type { JsonObject } from './EnginBaseState';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -64,8 +44,6 @@ interface BenchmarkEvidence extends JsonObject {
   readonly sourceHash?: string;
   readonly challengeSeed?: number;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -769,18 +747,11 @@ export async function runCanonicalPerformanceBenchmarks(
   );
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.
 
 export { CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker } from './EnginCapabilityExecution';
-
 export { StartupBudgetProbe, IdleMemoryProbe };

@@ -1,8 +1,8 @@
+import { z } from 'zod';
+
 // types/ai-system.ts
 // DREAMENGIN AI SYSTEM v2026.0 - Core Type Definitions
 // Strict TypeScript types for the three-agent AI system
-
-import { z } from 'zod';
 
 // ============================================================================
 // ACTOR CONTEXT (SERVER-OWNED)

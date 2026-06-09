@@ -83,8 +83,6 @@ export class AdaptiveMusicEngine {
   get currentTension(): number { return this.tension; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export type FoleyCategory = 'footstep' | 'impact' | 'rustle' | 'whoosh' | 'splash';
 
 export interface FoleyParams {

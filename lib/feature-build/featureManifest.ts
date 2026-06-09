@@ -1,3 +1,5 @@
+import type { DaydreamDomain, EnginSurface } from '@/lib/identity/canonical-names';
+
 /**
  * lib/feature-build/featureManifest.ts
  *
@@ -19,10 +21,6 @@
  * Architecture: docs/ARCHITECTURE.md §1 (Daydream pair system).
  * Naming: lib/identity/canonical-names.ts (DaydreamDomain, EnginSurface).
  */
-
-import type { DaydreamDomain, EnginSurface } from '@/lib/identity/canonical-names';
-
-// ─── Feature status ───────────────────────────────────────────────────────────
 
 /**
  * implemented — fully built, tested, stable.
@@ -49,8 +47,6 @@ export interface FeatureEntry {
   /** Relative repo paths to search for detectPattern (empty = whole repo) */
   detectPaths: string[];
 }
-
-// ─── Pair manifest ────────────────────────────────────────────────────────────
 
 export interface DaydreamEnginManifest {
   domain: DaydreamDomain;
@@ -91,8 +87,6 @@ export interface DaydreamEnginManifest {
   coop?: boolean | { affordances: string[] };
 }
 
-// ─── Music / StarMakerEngin ───────────────────────────────────────────────────
-
 const MUSIC_MANIFEST: DaydreamEnginManifest = {
   domain: 'Music',
   engin: 'StarMakerEngin',
@@ -129,8 +123,6 @@ const MUSIC_MANIFEST: DaydreamEnginManifest = {
   },
 };
 
-// ─── Games / GameEngin ────────────────────────────────────────────────────────
-
 const GAMES_MANIFEST: DaydreamEnginManifest = {
   domain: 'Games',
   engin: 'GameEngin',
@@ -162,8 +154,6 @@ const GAMES_MANIFEST: DaydreamEnginManifest = {
   ],
 };
 
-// ─── Lab / LabEngin ───────────────────────────────────────────────────────────
-
 const LAB_MANIFEST: DaydreamEnginManifest = {
   domain: 'Lab',
   engin: 'LabEngin',
@@ -191,8 +181,6 @@ const LAB_MANIFEST: DaydreamEnginManifest = {
     'Metric cards consistent border-radius and shadow depth',
   ],
 };
-
-// ─── Code / CodeEngin ────────────────────────────────────────────────────────
 
 const CODE_MANIFEST: DaydreamEnginManifest = {
   domain: 'Code',
@@ -227,8 +215,6 @@ const CODE_MANIFEST: DaydreamEnginManifest = {
   },
 };
 
-// ─── Brand / BrandingEngin ────────────────────────────────────────────────────
-
 const BRAND_MANIFEST: DaydreamEnginManifest = {
   domain: 'Brand',
   engin: 'BrandingEngin',
@@ -257,8 +243,6 @@ const BRAND_MANIFEST: DaydreamEnginManifest = {
     'Brand color picker with live preview',
   ],
 };
-
-// ─── Create / ContentEngin ────────────────────────────────────────────────────
 
 const CREATE_MANIFEST: DaydreamEnginManifest = {
   domain: 'Create',
@@ -294,8 +278,6 @@ const CREATE_MANIFEST: DaydreamEnginManifest = {
     affordances: ['presence', 'broadcast', 'hand-off', 'co-edit'],
   },
 };
-
-// ─── Manifest registry ────────────────────────────────────────────────────────
 
 /** All 6 Daydream+Engin pair manifests in canonical domain order. */
 export const FEATURE_MANIFESTS: readonly DaydreamEnginManifest[] = [

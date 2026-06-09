@@ -8,8 +8,6 @@
 // Part of the AI-assisted observability and remediation loop described in
 // docs/ARCHITECTURE.md §13 and the IDARi system spec.
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export interface LogEntry {
@@ -54,8 +52,6 @@ export interface TelemetrySnapshot {
   collected_at: string;
 }
 
-// ── Ring buffer ───────────────────────────────────────────────────────────────
-
 const MAX_ENTRIES = 500;
 
 /** Module-level singletons — one collector per process. */
@@ -77,8 +73,6 @@ function pushCapped<T>(buffer: T[], entry: T): void {
   }
 }
 
-// ── OTel bridge (lazy-loaded, server-only) ────────────────────────────────────
-
 let _otelBridge: typeof import('./otelBridge') | null = null;
 
 /**
@@ -90,15 +84,13 @@ function getOtelBridge(): typeof import('./otelBridge') | null {
   if (typeof window !== 'undefined') return null; // browser — skip
   try {
     // Dynamic require so the browser bundle never includes OTel SDK code
-     
+
     _otelBridge = require('./otelBridge') as typeof import('./otelBridge');
   } catch {
     _otelBridge = null;
   }
   return _otelBridge;
 }
-
-// ── Collection API ────────────────────────────────────────────────────────────
 
 /**
  * Record a log entry in the observability collector.
@@ -168,8 +160,6 @@ export function collectTrace(
   getOtelBridge()?.otelRecordTrace(name, duration_ms, status, tags);
 }
 
-// ── Query ─────────────────────────────────────────────────────────────────────
-
 /**
  * Return a snapshot of all telemetry within the last `windowMs` milliseconds.
  * Defaults to the last 5 minutes.
@@ -201,8 +191,6 @@ export function clearBuffers(): void {
   _counter = 0;
 }
 
-// ── Improvement 21: collectBatchLogs ─────────────────────────────────────────
-
 /**
  * Push multiple log entries in one call — useful when replaying buffered
  * server-side logs client-side after hydration.
@@ -214,8 +202,6 @@ export function collectBatchLogs(
     collectLog(e.level, e.message, e.context, e.source);
   }
 }
-
-// ── Improvement 22: getErrorRate ──────────────────────────────────────────────
 
 /**
  * Compute errors-per-minute within the given window.
@@ -229,8 +215,6 @@ export function getErrorRate(windowMs: number = 5 * 60 * 1000): number {
   const windowMinutes = windowMs / 60_000;
   return windowMinutes > 0 ? errorCount / windowMinutes : 0;
 }
-
-// ── Improvement 23: getP95Latency ─────────────────────────────────────────────
 
 /**
  * Return the P95 latency (ms) across all trace spans in the given window.
@@ -247,8 +231,6 @@ export function getP95Latency(windowMs: number = 5 * 60 * 1000): number {
   return durations[Math.min(idx, durations.length - 1)];
 }
 
-// ── Improvement 24: groupTracesByTraceId ──────────────────────────────────────
-
 /**
  * Group trace spans by their `trace_id` for distributed request tracing.
  * Returns a Map keyed by trace_id, each value being the spans in arrival order.
@@ -264,8 +246,6 @@ export function groupTracesByTraceId(windowMs: number = 5 * 60 * 1000): Map<stri
   }
   return result;
 }
-
-// ── Improvement 25: getLogCountsBySeverity ────────────────────────────────────
 
 export interface LogSeverityCounts {
   debug: number;

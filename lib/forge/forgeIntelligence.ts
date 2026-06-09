@@ -1,3 +1,12 @@
+import {
+    CREATIVE_ENGINES,
+    ENGIN_REGISTRY,
+    FORGE_HISTORY_KEY,
+    FORGE_WORKFLOWS,
+    type EnginEntry,
+    type ForgeWorkflow,
+} from './forgeRegistry';
+
 /**
  * Forge Intelligence — Predictive Next-Step Engine
  *
@@ -12,17 +21,6 @@
  *
  * Performance impact: pure in-memory pattern matching — no network, no render loops.
  */
-
-import {
-    CREATIVE_ENGINES,
-    ENGIN_REGISTRY,
-    FORGE_HISTORY_KEY,
-    FORGE_WORKFLOWS,
-    type EnginEntry,
-    type ForgeWorkflow,
-} from './forgeRegistry';
-
-// ── Activity History ──────────────────────────────────────────────────────────
 
 export interface ForgeHistoryEntry {
   /** Engine id */
@@ -78,8 +76,6 @@ export function clearForgeHistory(): void {
   try { localStorage.removeItem(HISTORY_STORAGE_KEY); } catch { /* silent */ }
 }
 
-// ── Pattern Detection ─────────────────────────────────────────────────────────
-
 /**
  * Transition map: tracks how often engine A is followed by engine B.
  * Key: "fromId→toId", Value: count
@@ -126,8 +122,6 @@ export function predictNextEngines(
     confidence: totalOutgoing > 0 ? c.count / totalOutgoing : 0,
   }));
 }
-
-// ── Contextual Suggestions ────────────────────────────────────────────────────
 
 export interface ForgeSuggestion {
   /** What type of suggestion */
@@ -232,8 +226,6 @@ export function generateSuggestions(
   return suggestions;
 }
 
-// ── Natural Language Goal Parser ──────────────────────────────────────────────
-
 /**
  * Keyword-to-engine mapping for natural language goal parsing.
  */
@@ -333,8 +325,6 @@ function generateStepDescription(engineId: string, goal: string): string {
   }
 }
 
-// ── Cross-Engine Asset Transfer ───────────────────────────────────────────────
-
 export interface ForgeTransferEntry {
   /** Unique transfer id */
   id: string;
@@ -412,8 +402,6 @@ export function clearForgeTransfers(): void {
   try { localStorage.removeItem(TRANSFER_STORAGE_KEY); } catch { /* silent */ }
 }
 
-// ── User-Created Workflows ────────────────────────────────────────────────────
-
 const CUSTOM_WORKFLOWS_KEY = 'de:forge:custom-workflows';
 
 /**
@@ -467,8 +455,6 @@ export function clearCustomWorkflows(): void {
   if (typeof window === 'undefined') return;
   try { localStorage.removeItem(CUSTOM_WORKFLOWS_KEY); } catch { /* silent */ }
 }
-
-// ── Workflow Step Tracking & Failure Recovery ─────────────────────────────────
 
 export interface WorkflowStepStatus {
   workflowId: string;

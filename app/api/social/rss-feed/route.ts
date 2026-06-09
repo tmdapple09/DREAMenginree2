@@ -1,3 +1,30 @@
+import {
+    DEFAULT_NITTER_INSTANCE,
+    devtoUserRssUrl,
+    facebookPageRssUrl,
+    githubUserAtomUrl,
+    hackerNewsRssUrl,
+    hackerNewsUserRssUrl,
+    mastodonUserRssUrl,
+    mediumUserRssUrl,
+    nostrGatewayRssUrl,
+    parseRssFeed,
+    pinterestRssUrl,
+    podcastRssUrl,
+    redditSubredditRssUrl,
+    redditUserRssUrl,
+    substackRssUrl,
+    tiktokProfileRssUrl,
+    tumblrRssUrl,
+    twitterNitterRssUrl,
+    youtubeChannelRssUrl,
+    youtubePlaylistRssUrl,
+    type RssProvider,
+} from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/social/rss-feed/route.ts
  *
@@ -40,33 +67,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/social) used here; no direct DB writes.
  */
 
-import {
-    DEFAULT_NITTER_INSTANCE,
-    devtoUserRssUrl,
-    facebookPageRssUrl,
-    githubUserAtomUrl,
-    hackerNewsRssUrl,
-    hackerNewsUserRssUrl,
-    mastodonUserRssUrl,
-    mediumUserRssUrl,
-    nostrGatewayRssUrl,
-    parseRssFeed,
-    pinterestRssUrl,
-    podcastRssUrl,
-    redditSubredditRssUrl,
-    redditUserRssUrl,
-    substackRssUrl,
-    tiktokProfileRssUrl,
-    tumblrRssUrl,
-    twitterNitterRssUrl,
-    youtubeChannelRssUrl,
-    youtubePlaylistRssUrl,
-    type RssProvider,
-} from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── SSRF guard ────────────────────────────────────────────────────────────
 
 const BLOCKED_HOST_PATTERNS = [
@@ -93,8 +93,6 @@ function isBlockedHost(urlStr: string): boolean {
     return true; // unparseable → block
   }
 }
-
-// ── Feed URL resolver ──────────────────────────────────────────────────────
 
 function resolveFeedUrl(
   provider: RssProvider,
@@ -203,8 +201,6 @@ function resolveFeedUrl(
       return { url: '', error: `Unknown provider: ${provider as string}` };
   }
 }
-
-// ── Route handler ──────────────────────────────────────────────────────────
 
 const VALID_PROVIDERS: RssProvider[] = [
   'youtube', 'reddit', 'mastodon', 'github', 'nostr',

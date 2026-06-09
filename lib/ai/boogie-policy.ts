@@ -263,3 +263,4 @@ export const RECOVER_STEPS: Record<EnforcementScope, string> = {
   MARKETPLACE:    'Review your listings for policy compliance. Contact support if you believe this is an error.',
   TEMPLATE_SHARE: 'Remove any suspicious links or unrecognized widget fields from your template before sharing.',
 };
+

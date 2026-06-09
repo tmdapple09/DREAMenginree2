@@ -1,10 +1,5 @@
 'use client';
 
-/**
- * SettingsPanel — inline settings navigation panel.
- * Opens sub-panels via openPanel() — no routing whatsoever.
- */
-
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import type { SystemPanelId } from '@/lib/panels/panelTypes';
 import { createClient } from '@/lib/supabase/client';
@@ -24,6 +19,11 @@ import {
     User
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+/**
+ * SettingsPanel — inline settings navigation panel.
+ * Opens sub-panels via openPanel() — no routing whatsoever.
+ */
 
 const NAV_GROUPS: Array<{
   heading: string;

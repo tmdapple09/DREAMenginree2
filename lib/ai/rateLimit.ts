@@ -1,7 +1,7 @@
+import { createServerClient } from '@/lib/supabase/server';
+
 // lib/ai/rateLimit.ts
 // Rate limiter using Supabase RPC function
-
-import { createServerClient } from '@/lib/supabase/server';
 
 type RateLimitRpcPayload = {
   allowed?: boolean;

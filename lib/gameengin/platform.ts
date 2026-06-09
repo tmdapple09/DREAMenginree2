@@ -1,3 +1,10 @@
+import type { Camera, Scene } from '@babylonjs/core';
+import { AIDirector } from './ai-director';
+import type { GameCartridge, GameEngineAPI } from './cartridge';
+import { GRAVITY_VALUES } from './cartridge';
+import { EliteGameEngine, type FrameTelemetry, type PerformanceBudget, type QualityTier } from './core';
+import { PostFXManager } from './post-fx';
+
 /**
  * lib/gameengin/platform.ts
  *
@@ -28,15 +35,6 @@
  *   4. **Game-agnostic** — the platform itself never assumes "what game" is
  *      running. It is the OS layer; cartridges are the apps.
  */
-
-import type { Camera, Scene } from '@babylonjs/core';
-import { AIDirector } from './ai-director';
-import type { GameCartridge, GameEngineAPI } from './cartridge';
-import { GRAVITY_VALUES } from './cartridge';
-import { EliteGameEngine, type FrameTelemetry, type PerformanceBudget, type QualityTier } from './core';
-import { PostFXManager } from './post-fx';
-
-// ── Capability detection ─────────────────────────────────────────────────────
 
 /**
  * Snapshot of what the host browser/device can do for the platform.
@@ -117,8 +115,6 @@ export function detectCapabilities(): PlatformCapabilities {
   };
 }
 
-// ── Quick-resume snapshot ────────────────────────────────────────────────────
-
 const QUICK_RESUME_PREFIX = 'gameengin:quick-resume:';
 
 /** Generic shape for quick-resume payloads. Cartridges define their own data. */
@@ -127,8 +123,6 @@ export interface QuickResumeEntry<T = unknown> {
   savedAt: number;
   data: T;
 }
-
-// ── Boot options ─────────────────────────────────────────────────────────────
 
 export interface PlatformBootOptions {
   /** Enable the AI Director (loads TF.js lazily). Default: true. */
@@ -140,8 +134,6 @@ export interface PlatformBootOptions {
   /** Initial 0–1 friction value for cartridges. */
   friction?: number;
 }
-
-// ── GameEnginPlatform ────────────────────────────────────────────────────────
 
 /**
  * The console-class GameEngin Platform. One instance per page.
@@ -171,7 +163,7 @@ export class GameEnginPlatform {
   private _telemetry: FrameTelemetry | null = null;
   private _disposed = false;
   private _elapsed = 0;
-  
+
   private _onKey = (ev: KeyboardEvent, type: 'keydown' | 'keyup') => {
     if (type === 'keydown') this._heldKeys.add(ev.key);
     else this._heldKeys.delete(ev.key);
@@ -269,8 +261,6 @@ export class GameEnginPlatform {
     this._friction = Math.max(0, Math.min(1, value01));
   }
 
-  // ── Cartridge bay ──────────────────────────────────────────────────────────
-
   /**
    * Mount a cartridge into the platform. The platform supplies a container
    * div automatically (sibling to the canvas) and a fully-wired GameEngineAPI.
@@ -314,8 +304,6 @@ export class GameEnginPlatform {
     return this._activeCartridge?.id ?? null;
   }
 
-  // ── Quick resume ───────────────────────────────────────────────────────────
-
   /**
    * Save a quick-resume snapshot for the active (or named) cartridge. The
    * platform handles storage; cartridges stay focused on data shape.
@@ -352,8 +340,6 @@ export class GameEnginPlatform {
     }
   }
 
-  // ── Teardown ───────────────────────────────────────────────────────────────
-
   dispose(): void {
     if (this._disposed) return;
     this._disposed = true;
@@ -367,8 +353,6 @@ export class GameEnginPlatform {
     this.postFx = null;
   }
 
-  // ── Internal: build the GameEngineAPI handed to a cartridge ────────────────
-
   private _buildCartridgeApi(): GameEngineAPI {
     const physics = {} as GameEngineAPI['physics'];
     Object.defineProperties(physics, {
@@ -378,7 +362,7 @@ export class GameEnginPlatform {
 
     return {
       engineVersion: '1.0.0',
-      
+
       save: {
         write: async (key: string, data: unknown) => { this.saveQuickResume(data); },
         read: async <T,>(key: string) => {
@@ -417,7 +401,7 @@ export class GameEnginPlatform {
         send: () => {},
         onMessage: () => () => {},
       },
-      
+
       loop: {
         onTick: (cb: (dt: number, elapsed: number) => void) => {
           this._tickSubs.add(cb);
@@ -428,9 +412,9 @@ export class GameEnginPlatform {
           return () => this._renderSubs.delete(cb);
         },
       },
-      
+
       physics,
-      
+
       input: {
         on: (event: string, cb: (payload: Record<string, unknown>) => void) => {
           let bucket = this._inputSubs.get(event);
@@ -444,7 +428,7 @@ export class GameEnginPlatform {
         },
         isKeyDown: (key: string) => this._heldKeys.has(key),
       },
-      
+
       score: {
         submit: async (gameId: string, value: number, level?: number) => {
           if (typeof window === 'undefined') return;
@@ -459,12 +443,12 @@ export class GameEnginPlatform {
           }
         },
       },
-      
+
       pool: {
         acquire: <T,>(factory: () => T) => factory(),
         release: () => { /* no-op default */ },
       },
-      
+
       telemetry: {
         reportFrame: () => { /* engine drives telemetry */ },
       },

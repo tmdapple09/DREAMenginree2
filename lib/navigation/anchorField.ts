@@ -1,17 +1,17 @@
+import type { Vector3 } from './manifold';
+import { SINGULARITY_THRESHOLD } from './manifold';
+
 // Home Anchor Field Module
 // Section 8: Home Anchor Field
 // Anchor emits attractor field that biases navigation toward home
 
-import type { Vector3 } from './manifold';
-import { SINGULARITY_THRESHOLD } from './manifold';
-
 /**
  * Section 8.1: Potential Function
- * 
+ *
  * U(p) = k / ||p - p_home||
- * 
+ *
  * Gradient: F = -∇U
- * 
+ *
  * Used to bias navigation
  */
 
@@ -38,18 +38,18 @@ export function computePotential(
   config: AnchorFieldConfig = DEFAULT_ANCHOR_CONFIG
 ): number {
   const { strength, homePosition } = config;
-  
+
   // Compute distance to home
   const dx = position.x - homePosition.x;
   const dy = position.y - homePosition.y;
   const dz = position.z - homePosition.z;
   const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-  
+
   // Avoid division by zero
   if (distance < SINGULARITY_THRESHOLD) {
     return 0;
   }
-  
+
   // U(p) = k / ||p - p_home||
   return strength / distance;
 }
@@ -57,7 +57,7 @@ export function computePotential(
 /**
  * Compute gradient of potential (force field)
  * F = -∇U
- * 
+ *
  * ∇U = -k * (p - p_home) / ||p - p_home||³
  * F = k * (p - p_home) / ||p - p_home||³
  */
@@ -66,26 +66,26 @@ export function computeForceField(
   config: AnchorFieldConfig = DEFAULT_ANCHOR_CONFIG
 ): Vector3 {
   const { strength, homePosition, maxDistance } = config;
-  
+
   // Compute displacement from home
   const dx = position.x - homePosition.x;
   const dy = position.y - homePosition.y;
   const dz = position.z - homePosition.z;
   const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-  
+
   // No force at home position
   if (distance < SINGULARITY_THRESHOLD) {
     return { x: 0, y: 0, z: 0 };
   }
-  
+
   // Limit force at large distances
   const effectiveDistance = Math.min(distance, maxDistance);
   const distanceCubed = effectiveDistance * effectiveDistance * effectiveDistance;
-  
+
   // F = k * (p - p_home) / ||p - p_home||³
   // Note: Force points toward home (negative gradient)
   const forceMagnitude = strength / distanceCubed;
-  
+
   return {
     x: -forceMagnitude * dx,
     y: -forceMagnitude * dy,
@@ -95,10 +95,10 @@ export function computeForceField(
 
 /**
  * Section 8.2: Recenter Algorithm
- * 
+ *
  * If idle > t:
  *   applyForce(F)
- * 
+ *
  * User drifts home naturally
  */
 export interface RecenterState {
@@ -155,15 +155,15 @@ export function computeAttractorForce(
   const dy = target.y - position.y;
   const dz = target.z - position.z;
   const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-  
+
   // Avoid singularity at target
   if (distance < minDistance) {
     return { x: 0, y: 0, z: 0 };
   }
-  
+
   // F ∝ 1/r²
   const forceMagnitude = strength / (distance * distance);
-  
+
   // Normalize direction and scale by force magnitude
   return {
     x: (dx / distance) * forceMagnitude,
@@ -203,10 +203,10 @@ export function computeRecenterInterpolation(
   // No interpolation needed if too close or too far
   if (distance <= minDistance) return 0;
   if (distance >= maxDistance) return 1;
-  
+
   // Smooth interpolation between min and max
   const t = (distance - minDistance) / (maxDistance - minDistance);
-  
+
   // Smoothstep: 3t² - 2t³
   return t * t * (3 - 2 * t);
 }
@@ -219,10 +219,10 @@ export function distanceToHome(
   config: AnchorFieldConfig = DEFAULT_ANCHOR_CONFIG
 ): number {
   const { homePosition } = config;
-  
+
   const dx = position.x - homePosition.x;
   const dy = position.y - homePosition.y;
   const dz = position.z - homePosition.z;
-  
+
   return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }

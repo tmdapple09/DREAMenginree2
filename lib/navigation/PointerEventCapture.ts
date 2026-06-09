@@ -26,7 +26,7 @@ export class PointerEventCapture {
   private element: HTMLElement | Document;
   private onMove: PointerEventCallback | null;
   private onEnd: PointerEventCallback | null;
-  
+
   constructor(element: HTMLElement | Document = document) {
     this.element = element;
     this.state = {
@@ -41,52 +41,52 @@ export class PointerEventCapture {
     this.activePointers = new Map();
     this.onMove = null;
     this.onEnd = null;
-    
+
     this.handlePointerDown = this.handlePointerDown.bind(this);
     this.handlePointerMove = this.handlePointerMove.bind(this);
     this.handlePointerUp = this.handlePointerUp.bind(this);
     this.handlePointerCancel = this.handlePointerCancel.bind(this);
   }
-  
+
   // Start capturing events
   start(onMove: PointerEventCallback, onEnd: PointerEventCallback): void {
     this.onMove = onMove;
     this.onEnd = onEnd;
-    
+
     this.element.addEventListener('pointerdown', this.handlePointerDown as EventListener);
     this.element.addEventListener('pointermove', this.handlePointerMove as EventListener);
     this.element.addEventListener('pointerup', this.handlePointerUp as EventListener);
     this.element.addEventListener('pointercancel', this.handlePointerCancel as EventListener);
   }
-  
+
   // Stop capturing events
   stop(): void {
     this.element.removeEventListener('pointerdown', this.handlePointerDown as EventListener);
     this.element.removeEventListener('pointermove', this.handlePointerMove as EventListener);
     this.element.removeEventListener('pointerup', this.handlePointerUp as EventListener);
     this.element.removeEventListener('pointercancel', this.handlePointerCancel as EventListener);
-    
+
     this.onMove = null;
     this.onEnd = null;
   }
-  
+
   private handlePointerDown(e: PointerEvent): void {
     e.preventDefault();
-    
+
     // Max 2 active pointers
     if (this.activePointers.size >= 2) {
       return;
     }
-    
+
     // Set pointer capture for smooth tracking
     if ('setPointerCapture' in e.target!) {
       (e.target as Element).setPointerCapture(e.pointerId);
     }
-    
+
     const now = performance.now();
     const index = this.activePointers.size;
     this.activePointers.set(e.pointerId, index);
-    
+
     if (index === 0) {
       this.state.p0x = e.clientX;
       this.state.p0y = e.clientY;
@@ -96,20 +96,20 @@ export class PointerEventCapture {
       this.state.p1y = e.clientY;
       this.state.p1t = now;
     }
-    
+
     this.state.activeCount = this.activePointers.size;
   }
-  
+
   private handlePointerMove(e: PointerEvent): void {
     e.preventDefault();
-    
+
     const index = this.activePointers.get(e.pointerId);
     if (index === undefined) {
       return;
     }
-    
+
     const now = performance.now();
-    
+
     if (index === 0) {
       this.state.p0x = e.clientX;
       this.state.p0y = e.clientY;
@@ -119,38 +119,38 @@ export class PointerEventCapture {
       this.state.p1y = e.clientY;
       this.state.p1t = now;
     }
-    
+
     if (this.onMove) {
       this.onMove(this.state);
     }
   }
-  
+
   private handlePointerUp(e: PointerEvent): void {
     e.preventDefault();
     this.removePointer(e.pointerId);
-    
+
     if (this.onEnd) {
       this.onEnd(this.state);
     }
   }
-  
+
   private handlePointerCancel(e: PointerEvent): void {
     e.preventDefault();
     this.removePointer(e.pointerId);
-    
+
     if (this.onEnd) {
       this.onEnd(this.state);
     }
   }
-  
+
   private removePointer(pointerId: number): void {
     const index = this.activePointers.get(pointerId);
     if (index === undefined) {
       return;
     }
-    
+
     this.activePointers.delete(pointerId);
-    
+
     // If we removed pointer 0 and pointer 1 exists, swap them
     if (index === 0 && this.activePointers.size === 1) {
       // Find the remaining pointer
@@ -164,10 +164,10 @@ export class PointerEventCapture {
         }
       }
     }
-    
+
     this.state.activeCount = this.activePointers.size;
   }
-  
+
   // Get current pointer state
   getState(): PointerState {
     return { ...this.state };

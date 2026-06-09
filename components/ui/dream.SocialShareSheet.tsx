@@ -1,5 +1,9 @@
 'use client';
 
+import { PROFILE_SHARE_PLATFORMS, type SocialPlatform } from '@/lib/social/platforms';
+import { Check, Copy, ExternalLink, X } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * SocialShareSheet
  *
@@ -14,10 +18,6 @@
  *     text="Check out this profile on DREAMengin"
  *   />
  */
-
-import { PROFILE_SHARE_PLATFORMS, type SocialPlatform } from '@/lib/social/platforms';
-import { Check, Copy, ExternalLink, X } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
 
 interface SocialShareSheetProps {
   open: boolean;

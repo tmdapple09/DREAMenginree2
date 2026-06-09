@@ -16,7 +16,7 @@ interface WidgetBubbleProps {
   widget: {
     id: string;
     type: string;
-     
+
     config_json: unknown;
   };
 }
@@ -108,4 +108,4 @@ export default function WidgetBubble({ widget }: WidgetBubbleProps) {
       </div>
     </div>
   );
-} 
+}

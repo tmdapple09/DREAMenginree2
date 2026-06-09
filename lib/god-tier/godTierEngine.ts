@@ -201,8 +201,6 @@ export type GodTierState = {
   childContentFilter: ChildContentFilter;
 };
 
-// ─── Ring average ─────────────────────────────────────────────────────────────
-
 export class RingAverage {
   // Float32Array gives typed, cache-friendly storage for the ring buffer
   // with no boxing overhead — values are always numeric (frame times in ms).
@@ -703,7 +701,6 @@ export class DreamEngineGodTierSystem {
     const boot     = maxAssumptionBoot(device);
     const pressure = framePressureShield(runtime);
 
-    // ── Auto-level-boost: if we've been stuck at level 1 for 10+ frames,
     //    forcibly reset the resolution scale to base maximum so the engine
     //    climbs back to level 5.
     const rawLevel = computeAlgorithmLevel(boot.globalIntensity, pressure.pressureLevel);
@@ -974,6 +971,7 @@ export function defaultRouteSignals(route: string = '/'): RouteSignals {
    that imports from godTierEngine can also reach the
    DREAM_ENGINE_WEBGPU_DIRECTOR without a second import path.
    ========================================================= */
+
 export {
     WebGPUDirector, applyDirectorFrame,
     babylonMeshToSceneObject, buildPassPlan, buildSceneObjects, classifyObject, classifyPressure, decideObject, defaultCameraSignals, defaultDirectorMetrics, resolveFrameBudget, resolveResolutionScale, resolveTemporalState, scoreObject, webGPUDirector, type CameraSignals, type CameraState, type DirectorBabylonEngine, type DirectorBabylonMesh, type DirectorBabylonScene, type DirectorFrame, type FrameBudget, type MeshHints, type ObjectDecision, type PassConfig, type PassName, type PassPlan, type Pressure,

@@ -1,3 +1,8 @@
+import type { LiveKitRoomInfo } from '@/lib/social/livekit';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * GET /api/social/livekit/room?roomName=<name>
  *
@@ -5,11 +10,6 @@
  * Returns 404 with an empty participant list when the room doesn't exist yet
  * so callers can treat "no room" as zero participants rather than an error.
  */
-
-import type { LiveKitRoomInfo } from '@/lib/social/livekit';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

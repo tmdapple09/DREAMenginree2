@@ -1,31 +1,5 @@
 'use client';
 
-/**
- * components/dreams/dreamsurface.dreamspace.tsx
- *
- * Dreams Space — the DreamSpace world panel.
- *
- * Rendered whenever a runtime region's world is set to 'DreamSpace'.
- * Either the Surface Space or the DreamSpace region can load this world,
- * allowing two independent DreamSpace sessions simultaneously (e.g. two
- * Daydreams or Engins open at the same time in separate runtime regions).
- *
- * Each mounted instance maintains its own independent navigation state
- * (active service, detail URL, etc.) — opening content in one region does
- * not affect the other.
- *
- * Pinned apps + feeds across the dual runtime.
- *
- * Permanent iOS-style app windows are the priority content of the Dreams Space.
- * The 6 Daydream surfaces plus Engin apps (Shop, Marketplace, Ads, Links) are
- * pinned as permanent windows, organized like an iOS home screen, and remain
- * in place until the user changes them.
- *
- * Architecture note (docs/AXIOMS.md §3 — every visible action must do
- * something real): app icons now navigate to the real canonical routes via
- * router.push() instead of embedding them in dead-end iframes.
- */
-
 import DreamSpace from '@/app/dreamdmbar/_components/DreamSpaceRegion';
 import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import SpatialProfileSpace from '@/components/spatial/dream.ProfileSpace';
@@ -54,6 +28,32 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+/**
+ * components/dreams/dreamsurface.dreamspace.tsx
+ *
+ * Dreams Space — the DreamSpace world panel.
+ *
+ * Rendered whenever a runtime region's world is set to 'DreamSpace'.
+ * Either the Surface Space or the DreamSpace region can load this world,
+ * allowing two independent DreamSpace sessions simultaneously (e.g. two
+ * Daydreams or Engins open at the same time in separate runtime regions).
+ *
+ * Each mounted instance maintains its own independent navigation state
+ * (active service, detail URL, etc.) — opening content in one region does
+ * not affect the other.
+ *
+ * Pinned apps + feeds across the dual runtime.
+ *
+ * Permanent iOS-style app windows are the priority content of the Dreams Space.
+ * The 6 Daydream surfaces plus Engin apps (Shop, Marketplace, Ads, Links) are
+ * pinned as permanent windows, organized like an iOS home screen, and remain
+ * in place until the user changes them.
+ *
+ * Architecture note (docs/AXIOMS.md §3 — every visible action must do
+ * something real): app icons now navigate to the real canonical routes via
+ * router.push() instead of embedding them in dead-end iframes.
+ */
 
 /** Called to open a URL inside the runtime region (no full-page navigation). */
 type OpenUrlFn = (url: string, title?: string) => void;

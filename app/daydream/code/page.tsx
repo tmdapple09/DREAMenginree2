@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamCode  (framework-mandated basename: page.tsx)
 import OpenDaydreamSideBButton from "@/components/daydream/dream.OpenDaydreamSideBButton";
 import DaydreamShell, {
   type DaydreamWidget,
@@ -12,6 +11,8 @@ import { Code2, FileCode2, FolderOpen, Play, Upload } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
+
+// SURFACE: dreamsurface.DaydreamCode  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: "Code Daydream – Dreamengin",

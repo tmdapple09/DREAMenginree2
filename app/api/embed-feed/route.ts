@@ -1,3 +1,9 @@
+import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
+import { loadEmbedFeed } from '@/lib/feeds/embedFeedLoader';
+import { createServerClient } from '@/lib/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/embed-feed/route.ts
  *
@@ -21,12 +27,6 @@
  * AXIOM 4 — Security by Default: no secrets are returned in the response.
  */
 
-import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
-import { loadEmbedFeed } from '@/lib/feeds/embedFeedLoader';
-import { createServerClient } from '@/lib/supabase/server';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 export interface EmbedFeedResponse {
   ok: boolean;
   items: EmbedFeedItem[];
@@ -41,7 +41,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<EmbedFeedRespo
   const rawLimit = parseInt(searchParams.get('limit') ?? '20', 10);
   const limit = Math.min(Math.max(1, isNaN(rawLimit) ? 20 : rawLimit), 50);
 
-  // ── Try Supabase first ───────────────────────────────────────────────────
   try {
     const db = await createServerClient();
 
@@ -85,7 +84,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<EmbedFeedRespo
     // Fall through to JSON fallback
   }
 
-  // ── JSON fallback ────────────────────────────────────────────────────────
   const feed = loadEmbedFeed();
   const items = provider
     ? feed.items.filter((i: EmbedFeedItem) => i.provider === provider).slice(0, limit)

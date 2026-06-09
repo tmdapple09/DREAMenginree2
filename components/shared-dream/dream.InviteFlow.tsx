@@ -1,5 +1,8 @@
 "use client";
 
+import { useCallback, useState } from "react";
+import { useSharedDream } from "./dream.SharedDreamProvider";
+
 /**
  * components/shared-dream/dream.InviteFlow.tsx — §38 Invite Flow
  *
@@ -9,17 +12,10 @@
  *   3. Accept flow initialises sync automatically (handled via URL param)
  */
 
-import { useCallback, useState } from "react";
-import { useSharedDream } from "./dream.SharedDreamProvider";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface InviteFlowProps {
   /** Optional className for the trigger button. */
   className?: string;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function InviteFlow({ className = "" }: InviteFlowProps) {
   const { getInviteLink, connected } = useSharedDream();

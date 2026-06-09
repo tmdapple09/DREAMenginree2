@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * POST /api/posts/[id]/view
  *
@@ -19,11 +24,6 @@
  * This endpoint is idempotent — safe to call on every qualifying impression.
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -38,7 +38,6 @@ export async function POST(
 
   const db = supabase as SupabaseClient;
 
-  // ── 1. Fetch the viewed post ──────────────────────────────────────────────
   const { data: viewedPost, error: postErr } = await db
     .from('app_posts')
     .select('id, user_id, original_post_id, view_count')
@@ -49,7 +48,6 @@ export async function POST(
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  // ── 2. Resolve root post ──────────────────────────────────────────────────
   // Follow the chain: if this post is itself a share, find the root.
   let rootPostId: string = viewedPost.original_post_id ?? viewedPost.id;
 
@@ -71,7 +69,6 @@ export async function POST(
     rootPostId = current.id;
   }
 
-  // ── 3. Fetch root post author ─────────────────────────────────────────────
   const { data: rootPost } = await db
     .from('app_posts')
     .select('id, user_id, view_count')
@@ -85,12 +82,10 @@ export async function POST(
   const originalAuthorId: string = rootPost.user_id;
   const sharerId: string = viewedPost.user_id; // author of the viewed instance
 
-  // ── 4. Viewer exclusions ──────────────────────────────────────────────────
   if (user.id === originalAuthorId || user.id === sharerId) {
     return NextResponse.json({ ok: true, counted: false, reason: 'excluded_viewer' });
   }
 
-  // ── 5. Determine if this is the sharer's first share ─────────────────────
   // The sharer's first share is the oldest post they have referencing this root.
   let isFirstShare: boolean;
 
@@ -110,7 +105,6 @@ export async function POST(
     isFirstShare = oldestShareId === postId;
   }
 
-  // ── 6. Apply counting rules ───────────────────────────────────────────────
   if (isFirstShare) {
     // Rule c: always counts for new viewers (already excluded author + sharer above).
     await db

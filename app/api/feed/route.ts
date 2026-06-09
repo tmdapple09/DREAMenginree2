@@ -1,3 +1,10 @@
+import { sortByVisibilityScore } from '@/lib/activity/visibility-score';
+import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 // app/api/feed/route.ts
 // Phase 8 §A — Unified HomeDream feed resolver.
 // Phase 9 — Updated to use Activity-First Protocol visibility score ranking
@@ -21,14 +28,6 @@
 //   before   — ISO timestamp cursor for pagination
 //   provider — filter connector items to a specific provider
 //   sort     — "activity" (default, Phase 9: by visibility_score) | "recent" | "trending"
-
-import { sortByVisibilityScore } from '@/lib/activity/visibility-score';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 
 // Unified feed item shape returned by this route.
 export interface UnifiedFeedEntry {
@@ -68,9 +67,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const entries: UnifiedFeedEntry[] = [];
 
-  // ── Stream 1: feed_items (connector-synced content) ──────────────────────
   {
-     
+
     const db = supabase as SupabaseClient;
     let q = db
       .from('feed_items')
@@ -107,10 +105,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // ── Stream 2: app_posts (public posts from followed users + own posts) ─────
   {
     // Collect followed user IDs
-     
+
     const db = supabase as SupabaseClient;
     const { data: follows } = await supabase
       .from('follows')
@@ -180,7 +177,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // ── Merge + sort ──────────────────────────────────────────────────────────
   // Phase 9: Activity-First Protocol — sort by visibility_score when sort=activity
   if (sort === 'activity') {
     // Use visibility score algorithm (AQS-based ranking)

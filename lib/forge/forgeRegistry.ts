@@ -9,8 +9,6 @@
  * components/daydream/dream.StandaloneEnginSurface.tsx
  */
 
-// ── Engin Catalog ─────────────────────────────────────────────────────────────
-
 /** Centers describe information concerns; they are not services or runtimes. */
 export const INFORMATION_DOMAINS = [
   'audio',
@@ -140,8 +138,6 @@ export function getEnginByName(name: string): EnginEntry | null {
   return ENGIN_REGISTRY.find((engin) => engin.name === name) ?? null;
 }
 
-// ── Activity Pulse ────────────────────────────────────────────────────────────
-
 export interface ForgeActivityPulse {
   enginId: string;
   /** ISO timestamp of last activity */
@@ -243,8 +239,6 @@ export function formatRelativeTime(isoStr: string): string {
   if (elapsed < 86400_000) return `${Math.floor(elapsed / 3600_000)}h ago`;
   return `${Math.floor(elapsed / 86400_000)}d ago`;
 }
-
-// ── Cross-Engine Workflows ────────────────────────────────────────────────────
 
 export interface ForgeWorkflow {
   /** Unique workflow id */

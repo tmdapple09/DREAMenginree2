@@ -8,8 +8,6 @@
  *   vm:stats-update        — periodic VM telemetry snapshot
  */
 
-// ─── Payload Types ────────────────────────────────────────────────────────────
-
 export interface VMWorkloadSubmittedPayload {
   workloadId:  string;
   region:      'top' | 'bottom';
@@ -46,8 +44,6 @@ export interface VMStatsUpdatePayload {
   stats:     VMStatsPayload;
   updatedAt: number;
 }
-
-// ─── Event Map ────────────────────────────────────────────────────────────────
 
 export interface VMBusEventMap {
   'vm:workload-submitted': VMWorkloadSubmittedPayload;

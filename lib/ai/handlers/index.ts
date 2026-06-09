@@ -1,16 +1,9 @@
-// lib/ai/handlers/index.ts
-// Handler Registry - Register all intent handlers
-
 import { registerHandler } from '../tool-router';
-
-// Import navigation handlers
 import {
     handleHomeAnchorSetState,
     handleHomeMenuOpen,
     handleNavDelta,
 } from './navigation';
-
-// Import dream handlers
 import {
     handleDreamAddFromPreset,
     handleDreamConfigPatch,
@@ -19,8 +12,6 @@ import {
     handleDreamRemove,
     handleDreamReorder,
 } from './dreams';
-
-// Import social handlers
 import {
     handleDraftSave,
     handleFollowUser,
@@ -28,6 +19,15 @@ import {
     handlePostLike,
     handleSearch,
 } from './social';
+
+// lib/ai/handlers/index.ts
+// Handler Registry - Register all intent handlers
+
+// Import navigation handlers
+
+// Import dream handlers
+
+// Import social handlers
 
 // ============================================================================
 // REGISTER ALL HANDLERS

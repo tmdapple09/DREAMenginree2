@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * components/gameengin/dream.cartridge.CartridgeLauncher.tsx
- *
- * Mounts a single GameEngin cartridge via the platform's GameRuntime host.
- * Used by /gameengin/cartridges/[id]. On unmount the runtime cleans up the
- * cartridge automatically.
- */
-
 import GameRuntime from "@/lib/gameengin/GameRuntime";
 import type { GameCartridge, GravityPreset, RuntimeBackendDiagnostics } from "@/lib/gameengin/cartridge";
 import { loadCartridgeBundle, type LoadedCartridgeBundle } from "@/lib/gameengin/cartridges/loaders";
@@ -21,8 +13,16 @@ import {
   useGlobalCrashListener,
   type CartridgeCrashEvent,
 } from "./dream.cartridge.CartridgeErrorBoundary";
-
 import { toErrorMessage } from "@/lib/utils";
+
+/**
+ * components/gameengin/dream.cartridge.CartridgeLauncher.tsx
+ *
+ * Mounts a single GameEngin cartridge via the platform's GameRuntime host.
+ * Used by /gameengin/cartridges/[id]. On unmount the runtime cleans up the
+ * cartridge automatically.
+ */
+
 export interface CartridgeLauncherProps {
   manifest: CartridgeManifestEntry;
   /** Initial gravity preset for the cartridge (defaults to 'earth'). */
@@ -182,7 +182,6 @@ export default function CartridgeLauncher({
           {manifest.description}
         </p>
 
-
         <div
           style={{
             display: "grid",
@@ -282,7 +281,6 @@ export default function CartridgeLauncher({
     </div>
   );
 }
-
 
 function DiagnosticPill({ label, value, tone }: { label: string; value: string; tone: "ok" | "warn" }) {
   return (

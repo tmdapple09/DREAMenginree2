@@ -15,8 +15,6 @@ import type { DreamArtifact } from '@/types/dreamArtifact';
 import { Settings2 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-// ─── Asset icon helpers ───────────────────────────────────────────────────────
-
 function assetIcon(type: AssetType): string {
   switch (type) {
     case 'audio': return '🎵';
@@ -44,7 +42,6 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
   const [previewAsset, setPreviewAsset] = useState<AssetEntry | null>(null);
   const [visibleSuggestionIds, setVisibleSuggestionIds] = useState(() => new Set(SUGGESTED_DREAMS.map((dream) => dream.id)));
 
-  // ── Ledger asset grid ─────────────────────────────────────────────────────
   const os = useOS();
   const [assetTick, setAssetTick] = useState(0);
   useEffect(() => {
@@ -53,7 +50,7 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
   }, [os.bus]);
   const ledgerAssets = useMemo(
     () => getAllByKind(os.ledger, 'asset'),
-     
+
     [os.ledger, assetTick]
   );
 
@@ -235,7 +232,7 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
               </button>
             </div>
             {previewAsset.type === 'audio' && (
-               
+
               <audio controls src={previewAsset.url} style={{ width: '100%', borderRadius: 8 }} />
             )}
             {previewAsset.type === 'image' && (

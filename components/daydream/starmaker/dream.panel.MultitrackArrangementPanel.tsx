@@ -2,7 +2,6 @@
 
 import { ChevronDown, ChevronRight, Layers3, Pause, Play, Plus } from 'lucide-react';
 import { useEffect, useState, type CSSProperties } from 'react';
-
 import {
     ARRANGEMENT_BARS,
     type ArrangementClip,
@@ -92,7 +91,6 @@ function disclosureToggleStyle(active: boolean): CSSProperties {
       : '0 10px 20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.04)',
   };
 }
-
 
 interface Props {
   hasAudio: boolean;

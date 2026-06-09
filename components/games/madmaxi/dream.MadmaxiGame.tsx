@@ -1,34 +1,9 @@
 'use client';
 
-/**
- * BabylonSideScroller — MADMAXI · Babylon.js 3-D side-scrolling platformer.
- *
- * MADMAXI is the DREAMengin robot hero (inspired by the landing-page Dr. Eams
- * character: gold metallic body, cyan visor, animated arms & legs).
- *
- * Mechanics:
- *  • Collect 9 SILVER coins + 1 GOLD coin (the Dream Star) to clear each level.
- *  • When the 9th silver coin is collected the camera zooms toward the Gold Star.
- *  • Stomp enemies (or boss) to earn combo multipliers.
- *  • Double-jump, coyote-time, dash with i-frames.
- *
- * Level structure:
- *  • The first two levels of every 10-level zone band are authored set-pieces.
- *  • The remaining non-boss levels in that band resume procedural generation.
- *  • Every 10th level is a boss arena (15 unique bosses, 15 themed zones).
- *  • Session-seeded RNG — unique each run, same layout on level retry.
- *
- * Tech:
- *  • Babylon.js @babylonjs/core v8 — glow, PBR, shadows, bloom post-process.
- *  • Shared GameRemote CustomEvent bridge (de-game-input).
- */
-
 import { createBabylonEngine } from '@/lib/babylon/createEngine';
 import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
 import { useImmersiveGameLayout } from '@/lib/games/useImmersiveGameLayout';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-// Side-effect import: registers the glTF/GLB loader on Babylon's SceneLoader so
-// the MADMAXI authored hero mesh (`/models/madmaxi.glb`) can be imported at runtime.
 import {
     DreamEngineGodTierSystem,
     applyGodTierToBabylon,
@@ -58,7 +33,32 @@ import { createScanLineTexture, makeDetailMat, type ScanLineTexture } from './ma
 import type { CoinDef, EnemyDef, HazardDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef } from './types';
 import { createMadmaxiVfx, type VfxKit, type VfxTier } from './vfx';
 
-// ─── Game constants ──────────────────────────────────────────────────────────
+/**
+ * BabylonSideScroller — MADMAXI · Babylon.js 3-D side-scrolling platformer.
+ *
+ * MADMAXI is the DREAMengin robot hero (inspired by the landing-page Dr. Eams
+ * character: gold metallic body, cyan visor, animated arms & legs).
+ *
+ * Mechanics:
+ *  • Collect 9 SILVER coins + 1 GOLD coin (the Dream Star) to clear each level.
+ *  • When the 9th silver coin is collected the camera zooms toward the Gold Star.
+ *  • Stomp enemies (or boss) to earn combo multipliers.
+ *  • Double-jump, coyote-time, dash with i-frames.
+ *
+ * Level structure:
+ *  • The first two levels of every 10-level zone band are authored set-pieces.
+ *  • The remaining non-boss levels in that band resume procedural generation.
+ *  • Every 10th level is a boss arena (15 unique bosses, 15 themed zones).
+ *  • Session-seeded RNG — unique each run, same layout on level retry.
+ *
+ * Tech:
+ *  • Babylon.js @babylonjs/core v8 — glow, PBR, shadows, bloom post-process.
+ *  • Shared GameRemote CustomEvent bridge (de-game-input).
+ */
+
+// Side-effect import: registers the glTF/GLB loader on Babylon's SceneLoader so
+// the MADMAXI authored hero mesh (`/models/madmaxi.glb`) can be imported at runtime.
+
 const GW = 800; // logical canvas width
 const GH = 480; // logical canvas height
 const GRAV          = 0.048;   // units / frame² (upward phase)
@@ -90,7 +90,6 @@ const PX_PER_BU = 40 / WORLD_SCALE; // = 16
 const SESSION_SEED: number =
   typeof window !== 'undefined' ? (Math.floor(Math.random() * 2147483647) || 1) : 1;
 
-// ─── Component ───────────────────────────────────────────────────────────────
 export default function BabylonSideScroller( ){
   const immersive = useImmersiveGameLayout();
   const canvasRef  = useRef<HTMLCanvasElement>(null);
@@ -153,7 +152,6 @@ export default function BabylonSideScroller( ){
     if (status === 'dead' && lives === 0) submitScore(score, level);
   }, [status, lives, score, level, submitScore]);
 
-  // ── Start / restart ────────────────────────────────────────────────────────
   const startGame = useCallback((lv: number, sc: number, li: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -235,7 +233,6 @@ export default function BabylonSideScroller( ){
   }, [superSeconds]);
   useGameAutoStart(status === 'title' ? () => startGame(1, 0, 3) : null);
 
-  // ── Key events ─────────────────────────────────────────────────────────────
   useEffect(() => {
     const keysDown = new Set<string>();
     const down = (e: KeyboardEvent) => {
@@ -282,7 +279,6 @@ export default function BabylonSideScroller( ){
     };
   }, [status, startGame]);
 
-  // ── GameRemote bridge ──────────────────────────────────────────────────────
   useEffect(() => {
     const handler = (e: Event) => {
       const { action, active } = (e as CustomEvent<{ action: string; active: boolean }>).detail;
@@ -307,10 +303,8 @@ export default function BabylonSideScroller( ){
     return () => window.removeEventListener('de-game-input', handler);
   }, []);
 
-  // ── Cleanup ────────────────────────────────────────────────────────────────
   useEffect(() => () => { gameRef.current?.destroy(); }, []);
 
-  // ── Button shared style ────────────────────────────────────────────────────
   const btnBase: React.CSSProperties = {
     border: 'none', borderRadius: 10, cursor: 'pointer',
     fontWeight: 800, fontSize: 14, userSelect: 'none',
@@ -632,7 +626,6 @@ export default function BabylonSideScroller( ){
   );
 }
 
-// ─── GameCore — owns the Babylon.js engine lifecycle ─────────────────────────
 interface GameCallbacks {
   onScore:      (s: number) => void;
   onDie:        (livesLeft: number) => void;
@@ -698,16 +691,13 @@ class GameCore {
   private facingR    = true;
   private invincible = 0; // frames
 
-  // ── Dash system ────────────────────────────────────────────────────────
   private dashFrames = 0;   // frames of active dash remaining
   private dashCool   = 0;   // cooldown frames remaining
   private dashDir    = 1;   // direction (+1 or -1)
 
-  // ── Combo system ───────────────────────────────────────────────────────
   private comboCount     = 0;       // consecutive kills in window
   private comboTimestamp = 0;       // ms timestamp of last kill
 
-  // ── Boss projectiles ───────────────────────────────────────────────────
   private projectiles: {
     x: number; y: number;
     vx: number; vy: number;
@@ -754,7 +744,6 @@ class GameCore {
   private hazardMeshes: (import('@babylonjs/core').Mesh | null)[] = [];
   private powerUpMeshes: (import('@babylonjs/core').Mesh | null)[] = [];
 
-  // ── Coin collection tracking ────────────────────────────────────────────
   private totalRegularCoins  = 0;   // number of non-goal coins in this level
   private collectedRegularCoins = 0; // coins picked up so far
   // Camera zoom toward goal after 9th coin
@@ -841,7 +830,6 @@ class GameCore {
     const isBoss = !!en.boss;
     const W = WORLD_SCALE;
 
-    // ── Helper: build an emissive PBR material with optional clearCoat ──────
     const emissiveMat = (
       name: string,
       rgb: [number, number, number],
@@ -862,7 +850,6 @@ class GameCore {
       return m;
     };
 
-    // ── Build the parent primitive (matches legacy collision/visual size) ──
     const buildParent = (): import('@babylonjs/core').Mesh => {
       if (isBoss) {
         const diameter = 0.85 * W * (en.size ?? 1.8);
@@ -894,7 +881,6 @@ class GameCore {
 
     const parent = buildParent();
 
-    // ── Parent body material ────────────────────────────────────────────────
     const parentMat = new BJS.PBRMaterial(`emat_${ei}`, scene);
     if (isBoss && en.bossColor) {
       const [r, g, b]    = en.bossColor;
@@ -985,7 +971,6 @@ class GameCore {
       }
     }
 
-    // ── Decoration helper: attach a child mesh, set material, parent it ─────
     const attach = (child: import('@babylonjs/core').Mesh, mat: import('@babylonjs/core').Material, addToGlow = true) => {
       child.material = mat;
       child.parent = parent;
@@ -1047,7 +1032,6 @@ class GameCore {
       return parent;
     }
 
-    // ── Per-kind decorations for non-boss enemies ──────────────────────────
     const kind = en.kind ?? 'runner';
     switch (kind) {
       case 'runner': {
@@ -1718,8 +1702,6 @@ class GameCore {
     }
   }
 
-  // ─── 2020-fidelity scene helpers ──────────────────────────────────────────
-
   /**
    * Build a CSP-safe fallback environment texture by drawing a vertical
    * gradient into a DynamicTexture and binding it as an EquirectangularReflection
@@ -2063,7 +2045,6 @@ class GameCore {
     const zone = ZONES[getZoneIdx(this.level)];
     scene.clearColor = new BJS.Color4(zone.sky[0], zone.sky[1], zone.sky[2], 1);
 
-    // ── Camera (FreeCamera, side-view looking in +Z direction) ──────────────
     // Pulled back WORLD_SCALE× so the on-screen appearance is unchanged despite
     // the world being 2.5× physically larger in Babylon units.
     const cam = new BJS.FreeCamera('cam', new BJS.Vector3(0, 5.25 * WORLD_SCALE, -28 * WORLD_SCALE), scene);
@@ -2071,7 +2052,6 @@ class GameCore {
     cam.fov = 0.85; // Mario 64-like wider FOV for more visible 3D depth
     this.camMesh = cam;
 
-    // ── Lighting — full landing-hero 4-source setup ──────────────────────────
     // Hemispherical fill — matches landing hero hemi.intensity
     const ambient = new BJS.HemisphericLight('amb', new BJS.Vector3(0, 1, 0), scene);
     ambient.intensity  = 1.08;
@@ -2102,7 +2082,6 @@ class GameCore {
     rimLight.diffuse   = new BJS.Color3(0.28, 0.70, 1.0);
     rimLight.specular  = new BJS.Color3(0.14, 0.35, 0.60);
 
-    // ── Shadows — high-res PCF with contact hardening ────────────────────────
     const shadowGen = new BJS.ShadowGenerator(4096, sun);
     shadowGen.usePercentageCloserFiltering = true;
     shadowGen.filteringQuality = BJS.ShadowGenerator.QUALITY_HIGH;
@@ -2113,7 +2092,6 @@ class GameCore {
     shadowGen.transparencyShadow = true;
     this.shadowGen = shadowGen;
 
-    // ── Environment (IBL) — identical to landing hero ─────────────────────────
     // Studio.env is the same prefiltered HDR used by DrEamsBabylonHero; this is
     // the single largest quality delta between the landing page and the game.
     // If the CDN is blocked (CSP / offline), fall back to a synthesized
@@ -2140,7 +2118,6 @@ class GameCore {
       }
     }, 4500);
 
-    // ── Volumetric-style fog tinted to the zone palette ───────────────────────
     // Exponential-squared falloff gives a soft, painterly haze that flatters
     // the skyline bands and adds depth cueing without a custom shader.
     scene.fogMode = BJS.Scene.FOGMODE_EXP2;
@@ -2148,11 +2125,9 @@ class GameCore {
     this.fogBaseDensity = 0.012;
     scene.fogDensity = this.fogBaseDensity;
 
-    // ── Glow layer — landing-hero kernel & intensity ───────────────────────────
     const glow = new BJS.GlowLayer('glow', scene, { mainTextureFixedSize: 512, blurKernelSize: 24 });
     glow.intensity = 0.72;
 
-    // ── Post-processing pipeline — landing-hero grade ────────────────────────
     const pipeline = new BJS.DefaultRenderingPipeline('madmaxi-pipeline', true, scene, [cam]);
     this.pipeline = pipeline;
     pipeline.samples = 4;
@@ -2193,7 +2168,6 @@ class GameCore {
     pipeline.grain.intensity = 3;
     pipeline.grain.animated = true;
 
-    // ── SSAO — screen-space ambient occlusion for realistic depth ────────────
     try {
       const ssao = new BJS.SSAO2RenderingPipeline('madmaxi-ssao', scene, { ssaoRatio: 0.5, blurRatio: 1.0 });
       ssao.radius = 1.8 * WORLD_SCALE;
@@ -2205,7 +2179,6 @@ class GameCore {
       this.ssaoPipeline = ssao;
     } catch { /* SSAO graceful fallback */ }
 
-    // ── Sky backdrop — premium multi-layer with zone colour ──────────────────
     // Deep background wash — wide PBR emissive plane behind everything
     const bg = BJS.MeshBuilder.CreatePlane('bg', { width: 160 * WORLD_SCALE, height: 60 * WORLD_SCALE }, scene);
     bg.position = new BJS.Vector3(0, 8 * WORLD_SCALE, 16 * WORLD_SCALE);
@@ -2243,12 +2216,10 @@ class GameCore {
       this.skylineBands.push({ mesh: band, baseX: 0, parallax, pulseOffset: idx * 1.8 });
     });
 
-    // ── Skydome — large inverted sphere with a vertical zone-tinted gradient.
     // Uses a DynamicTexture rather than a custom shader so it remains
     // CSP/asset-free and identical across every Babylon backend.
     this.skyDome = this.buildSkydome(BJS, scene, zone);
 
-    // ── New parallax depth layers ────────────────────────────────────────────
     // Distant mountain silhouettes — low-poly extruded ribbons. Behind the
     // bands, in front of the dome. Tinted toward the sky so they read as
     // "atmospheric perspective" silhouettes rather than solid geometry.
@@ -2288,7 +2259,6 @@ class GameCore {
       }
     }
 
-    // ── Platform meshes — landing-hero grade PBR with clearCoat ───────────────
     for (const p of this.platforms) {
       const bw = p.w / PX_PER_BU;
       const bh = p.h / PX_PER_BU;
@@ -2333,7 +2303,6 @@ class GameCore {
       shadowGen.addShadowCaster(mesh, false);
       this.platMeshes.push(mesh);
 
-      // ── Top-edge emissive trim (non-ground only) ───────────────────────
       // Thin glowing strip along the top face — adds architectural definition
       // and makes platforms read like floating tech panels instead of slabs.
       if (p.type !== 'goal' && p.y !== 400) {
@@ -2360,7 +2329,6 @@ class GameCore {
       }
     }
 
-    // ── Coin meshes — landing-hero grade PBR gem/metal ────────────────────────
     const goalMat = new BJS.PBRMaterial('goalMat', scene);
     goalMat.albedoColor  = new BJS.Color3(1.0, 0.85, 0.10);
     goalMat.metallic     = 1.0;
@@ -2409,7 +2377,6 @@ class GameCore {
       }
     }
 
-    // ── Hazard meshes — landing-hero grade PBR ────────────────────────────────
     for (let hi = 0; hi < this.hazards.length; hi++) {
       const hz = this.hazards[hi];
       let mesh: import('@babylonjs/core').Mesh;
@@ -2448,7 +2415,6 @@ class GameCore {
       this.hazardMeshes.push(mesh);
     }
 
-    // ── Power-up meshes — high-emissive PBR with clearCoat ────────────────────
     for (let pi = 0; pi < this.powerUps.length; pi++) {
       const p = this.powerUps[pi];
       const mesh = BJS.MeshBuilder.CreateTorus(`power_${pi}`, {
@@ -2473,7 +2439,6 @@ class GameCore {
       this.powerUpMeshes.push(mesh);
     }
 
-    // ── Enemy meshes ──────────────────────────────────────────────────────────
     // Composite "monster" rigs: the original primitive (sized to match the
     // hitbox) is the PARENT mesh. Decoration meshes (eyes, fangs, horns, wings,
     // spikes, mandibles, thrusters, …) are parented to it so they inherit
@@ -2489,7 +2454,6 @@ class GameCore {
       void isBoss; // (kept for future per-boss tweaks; visual handled inside builder)
     }
 
-    // ── MADMAXI Robot player ─────────────────────────────────────────────────
     this.buildLandingGradePlayerRig(BJS, scene, shadowGen, glow);
     // Fire-and-forget upgrade: try to import the authored MADMAXI GLB and
     // parent it under the procedural rig root. Falls back silently to the
@@ -2497,7 +2461,6 @@ class GameCore {
     // never blocked on a network asset.
     void this.loadMadmaxiGlbAsync(BJS, scene, shadowGen);
 
-    // ── Particle system (landing/jump dust) ────────────────────────────────
     const dust = new BJS.ParticleSystem('dust', 60, scene);
     // Use a 1x1 white data-URI texture for cross-origin-safe particles
     dust.particleTexture  = new BJS.Texture(
@@ -2521,10 +2484,8 @@ class GameCore {
     dust.start();
     this.dustPS = dust;
 
-    // ── 2020-fidelity VFX kit (sparks, dash trail, landing ring, coin starburst, embers)
     this.vfx = createMadmaxiVfx(BJS, scene, glow);
 
-    // ── Render loop + God Tier ─────────────────────────────────────────────
     let lastGtMs = 0;
     engine.runRenderLoop(() => {
       if (this.disposed) return;
@@ -2639,7 +2600,6 @@ class GameCore {
     });
   }
 
-  // ── Physics & logic tick ──────────────────────────────────────────────────
   private tick() {
     if (!this.engine || !this.scene) return;
     if (this.dying) return;
@@ -2668,7 +2628,6 @@ class GameCore {
 
     if (isShoot) this.firePlayerLaser();
 
-    // ── Dash system ────────────────────────────────────────────────────────
     if (this.dashCool > 0) this.dashCool--;
     if (isDash && this.dashCool === 0 && this.dashFrames === 0) {
       this.dashDir    = this.facingR ? 1 : -1;
@@ -2678,7 +2637,6 @@ class GameCore {
       this.cbs.onDash?.();
     }
 
-    // ── Horizontal movement ────────────────────────────────────────────────
     if (this.dashFrames > 0) {
       this.pvx = this.dashDir * DASH_SPD * PX_PER_BU;
       this.dashFrames--;
@@ -2721,7 +2679,6 @@ class GameCore {
     // World bounds (clamp left, don't scroll past right until goal)
     if (this.px < 0) { this.px = 0; this.pvx = 0; }
 
-    // ── Platform collisions ───────────────────────────────────────────────
     const wasOnGround = this.onGround;
     this.onGround = false;
 
@@ -2845,7 +2802,6 @@ class GameCore {
       this.cbs.onProgress?.(Math.min(100, Math.round((this.px / this.worldW) * 100)));
     }
 
-    // ── Coin collection ────────────────────────────────────────────────────
     const CW = 18, PCX = this.px + PW / 2, PCY = this.py + PH / 2;
     for (let i = 0; i < this.coins.length; i++) {
       const c = this.coins[i];
@@ -2899,7 +2855,6 @@ class GameCore {
       }
     }
 
-    // ── Power-up collection ────────────────────────────────────────────────
     for (let i = 0; i < this.powerUps.length; i++) {
       const p = this.powerUps[i];
       if (p.collected) continue;
@@ -2911,7 +2866,6 @@ class GameCore {
       }
     }
 
-    // ── Hazard collisions / updates ────────────────────────────────────────
     for (let i = 0; i < this.hazards.length; i++) {
       const hz = this.hazards[i];
       if (hz.type === 'spike') {
@@ -2934,7 +2888,6 @@ class GameCore {
       }
     }
 
-    // ── Enemy collisions ──────────────────────────────────────────────────
     if (this.invincible > 0) this.invincible--;
 
     for (let i = 0; i < this.enemies.length; i++) {
@@ -3076,7 +3029,6 @@ class GameCore {
         }
       }
 
-      // ── Boss / sniper projectile firing ────────────────────────────────
       if ((en.boss && en.alive && this.animTick % 80 === 0) || (en.kind === 'sniper' && en.alive && this.animTick % 130 === 0)) {
         // Boss or sniper fires a projectile toward the player
         const PW2 = 28;
@@ -3138,7 +3090,6 @@ class GameCore {
       }
     }
 
-    // ── Projectile updates ───────────────────────────────────────────────
     for (let p = this.projectiles.length - 1; p >= 0; p--) {
       const proj = this.projectiles[p];
       proj.life--;
@@ -3205,12 +3156,10 @@ class GameCore {
       }
     }
 
-    // ── Smooth camera follow ─────────────────────────────────────────────
     const targetCamX = this.px - GW / 3;
     const maxCamX    = this.worldW - GW;
     this.camX += (Math.max(0, Math.min(maxCamX, targetCamX)) - this.camX) * 0.09;
 
-    // ── Sync Babylon meshes ──────────────────────────────────────────────
     this.syncMeshes();
   }
 
@@ -3361,7 +3310,6 @@ class GameCore {
       }
     }
 
-    // ── MADMAXI Robot player ──────────────────────────────────────────────
     const PW = 28 * (this.giantFrames > 0 ? 1.45 : 1), PH = 40 * (this.giantFrames > 0 ? 1.45 : 1);
     const { bx: pbx, by: pby } = toB(this.px, this.py, PW, PH);
     const isMoving  = Math.abs(this.pvx) > 0.5;
@@ -3446,7 +3394,6 @@ class GameCore {
       }
     }
 
-    // ── Camera Y zoom when all silver coins collected ──────────────────────
     if (this.coinFlashFrames > 0) {
       this.coinFlashFrames--;
       // First 30 frames: zoom out (camera moves up by up to 3.5×WORLD_SCALE BU)
@@ -3479,7 +3426,6 @@ class GameCore {
       sil.mesh.position.x = sil.baseX - camBX * sil.parallax;
     }
 
-    // ── 2020 parallax extras ───────────────────────────────────────────────
     for (const mb of this.mountainBands) {
       mb.mesh.position.x = mb.baseX - camBX * mb.parallax;
     }
@@ -3507,7 +3453,6 @@ class GameCore {
       this.skyDome.position.z = this.camMesh.position.z;
     }
 
-    // ── Visor / screen scan-line UV scroll, eye blink, chest-core emissive pulse ─
     this.visorScanLine?.advance(this.animTick);
     this.screenScanLine?.advance(this.animTick);
     if (this.playerRig) {
@@ -3530,14 +3475,12 @@ class GameCore {
       }
     }
 
-    // ── Speed-scaled chromatic aberration ─────────────────────────────────
     if (this.pipeline?.chromaticAberrationEnabled) {
       const t = Math.min(1, Math.abs(this.pvx) / Math.max(0.01, DASH_SPD * PX_PER_BU));
       this.speedT += (t - this.speedT) * 0.15;
       this.pipeline.chromaticAberration.aberrationAmount = 6 + this.speedT * 14;
     }
 
-    // ── VFX tick (drives landing-ring fade, dash-trail decay) ─────────────
     this.vfx?.tick();
 
     // Camera follows player smoothly in X; zooms up on coin flash

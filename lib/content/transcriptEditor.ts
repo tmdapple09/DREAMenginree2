@@ -49,9 +49,7 @@ export interface SearchResult {
   charOffset: number;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Parsers
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Parse an SRT string into transcript segments. */
 export function parseSRT(srt: string): TranscriptSegment[] {
@@ -119,9 +117,7 @@ export function parseVTT(vtt: string): TranscriptSegment[] {
   return segments;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Editing
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Compute timeline cuts when words are deleted from the transcript.
@@ -184,9 +180,7 @@ export function applyEditsToSegments(
   return result;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Export
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Export segments back to SRT format.
@@ -204,9 +198,7 @@ export function exportSRT(segments: TranscriptSegment[]): string {
     .join('\n\n');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Search
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Full-text search across all transcript words.
@@ -261,9 +253,7 @@ export function annotateSearchMatches(
   }));
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Utilities
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Flatten all segments back to plain text for display.
@@ -280,9 +270,7 @@ export function totalDurationMs(segments: TranscriptSegment[]): number {
   return segments[segments.length - 1].endMs - segments[0].startMs;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 function srtTimeToMs(h: string, m: string, s: string, ms: string): number {
   return (
@@ -345,4 +333,3 @@ function countSyllables(word: string): number {
   const matches = cleaned.match(/[aeiouy]{1,2}/g);
   return Math.max(1, matches?.length ?? 1);
 }
-

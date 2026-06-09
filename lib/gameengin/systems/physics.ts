@@ -10,15 +10,10 @@
  * Import from this path for tree-shaken physics-only bundles.
  */
 
-// ─── Classes ─────────────────────────────────────────────────────────────────
-
 export {
     AdvancedPhysicsWorld,
     PhysicsMaterialSystem
 } from '../power-systems';
-
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export type {
     MaterialPair, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, RaycastResult, ShapeType
 } from '../power-systems';

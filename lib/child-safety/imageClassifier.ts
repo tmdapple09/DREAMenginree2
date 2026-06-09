@@ -1,3 +1,6 @@
+import { groqChat } from '@/lib/ai/groq';
+import { toErrorMessage } from '@/lib/utils';
+
 // lib/child-safety/imageClassifier.ts
 // TheBoogieMan.Ai — LLM Image Classification Layer
 //
@@ -22,9 +25,6 @@
 //
 // The result is merged into ChildSafetyResult by the caller (scan endpoint).
 
-import { groqChat } from '@/lib/ai/groq';
-
-import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES
 // ============================================================================

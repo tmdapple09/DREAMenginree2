@@ -1,5 +1,15 @@
 'use client';
 
+import {
+    type AudioTake,
+    type CompingState,
+    type TakeRating,
+    TAKE_COLORS,
+    createDemoTake,
+} from '@/lib/music/starmakerDaw';
+import { Mic2, Plus, Star, Trash2, Wand2 } from 'lucide-react';
+import { type CSSProperties, useCallback, useState } from 'react';
+
 /**
  * CompingPanel — Pro Tools-style comping / takes manager.
  *
@@ -11,18 +21,6 @@
  *  - Add new demo take / remove selected take
  *  - "Auto Comp" button that picks the highest-rated active takes
  */
-
-import {
-    type AudioTake,
-    type CompingState,
-    type TakeRating,
-    TAKE_COLORS,
-    createDemoTake,
-} from '@/lib/music/starmakerDaw';
-import { Mic2, Plus, Star, Trash2, Wand2 } from 'lucide-react';
-import { type CSSProperties, useCallback, useState } from 'react';
-
-// ─── Theme ────────────────────────────────────────────────────────────────────
 
 const T = {
   bg:          '#0d0f17',
@@ -51,14 +49,10 @@ const sectionHeaderStyle: CSSProperties = {
 
 const WAVEFORM_BARS = 60;
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface CompingPanelProps {
   state: CompingState;
   onStateChange: (next: CompingState) => void;
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function fmtTimestamp(ms: number): string {
   const d = new Date(ms);
@@ -88,8 +82,6 @@ function StarRating({
     </div>
   );
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function CompingPanel({ state, onStateChange }: CompingPanelProps) {
   const [isOpen, setIsOpen] = useState(false);

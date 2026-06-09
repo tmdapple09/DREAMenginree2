@@ -13,7 +13,11 @@
   },
   "genre": "platformer",
   "subgenre": "momentum-runner",
-  "core_mechanics": ["dash", "wall-slide", "coyote-time"],
+  "core_mechanics": [
+    "dash",
+    "wall-slide",
+    "coyote-time"
+  ],
   "scope": {
     "mode": "single-player",
     "estimated_player_minutes": 35,

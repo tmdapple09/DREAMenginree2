@@ -1,3 +1,6 @@
+import { normaliseGitHub } from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/github.ts
  *
@@ -13,9 +16,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseGitHub } from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 const GH_API = 'https://api.github.com';
 

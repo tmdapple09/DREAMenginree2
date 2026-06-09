@@ -1,3 +1,6 @@
+import type { SupabaseClient } from '@/engine/io';
+import type { Fingerprint, PeakMap } from './audioFingerprint';
+
 /**
  * Ledger — Universal Metadata Store
  *
@@ -10,11 +13,6 @@
  *   storePeakMap(ledger, 'song-1', peakMap);
  *   const entry = getLedgerEntry(ledger, 'song-1');
  */
-
-import type { SupabaseClient } from '@/engine/io';
-import type { Fingerprint, PeakMap } from './audioFingerprint';
-
-// ─── Entry Types ─────────────────────────────────────────────────────────────
 
 export interface PeakMapEntry {
   kind: 'peakMap';
@@ -58,8 +56,6 @@ export interface TorridityEntry {
   createdAt: string;
 }
 
-// ─── Shared Asset Entry ───────────────────────────────────────────────────────
-
 /** Supported asset types in the shared asset ledger (visualised file system). */
 export type AssetType = 'audio' | 'image' | '3d' | 'code';
 
@@ -96,16 +92,12 @@ export type LedgerEntry =
   | TorridityEntry
   | AssetEntry;
 
-// ─── Ledger Structure ────────────────────────────────────────────────────────
-
 export interface Ledger {
   entries: Map<string, LedgerEntry>;
   supabase?: SupabaseClient;
   /** Table name for Supabase persistence (default: 'ledger_entries'). */
   tableName: string;
 }
-
-// ─── Factory ─────────────────────────────────────────────────────────────────
 
 /**
  * createLedger(supabase?, tableName?)
@@ -120,8 +112,6 @@ export function createLedger(
 ): Ledger {
   return { entries: new Map(), supabase, tableName };
 }
-
-// ─── Internal helpers ────────────────────────────────────────────────────────
 
 function now(): string {
   return new Date().toISOString();
@@ -141,8 +131,6 @@ async function persist(ledger: Ledger, entry: LedgerEntry): Promise<void> {
   }
 }
 
-// ─── CRUD helpers ─────────────────────────────────────────────────────────────
-
 export function getLedgerEntry(ledger: Ledger, id: string): LedgerEntry | undefined {
   return ledger.entries.get(id);
 }
@@ -160,8 +148,6 @@ export function getAllByKind<K extends LedgerEntry['kind']>(
   return results;
 }
 
-// ─── storePeakMap ────────────────────────────────────────────────────────────
-
 /**
  * storePeakMap(ledger, songId, peakMap)
  *
@@ -178,8 +164,6 @@ export function storePeakMap(
   void persist(ledger, entry);
   return id;
 }
-
-// ─── storeFingerprint ────────────────────────────────────────────────────────
 
 /**
  * storeFingerprint(ledger, fingerprintId, fingerprint)
@@ -202,8 +186,6 @@ export function storeFingerprint(
   return id;
 }
 
-// ─── storeSampleMetadata ──────────────────────────────────────────────────────
-
 /**
  * storeSampleMetadata(ledger, sampleId, meta)
  */
@@ -224,8 +206,6 @@ export function storeSampleMetadata(
   void persist(ledger, entry);
   return id;
 }
-
-// ─── storeTorridityRank ───────────────────────────────────────────────────────
 
 /**
  * storeTorridityRank(ledger, contentId, views, mass, rank)
@@ -251,8 +231,6 @@ export function storeTorridityRank(
   void persist(ledger, entry);
   return id;
 }
-
-// ─── storeAsset ───────────────────────────────────────────────────────────────
 
 /**
  * storeAsset(ledger, fields)
@@ -289,8 +267,6 @@ export function storeAsset(
   void persist(ledger, entry);
   return id;
 }
-
-// ─── recordView ────────────────────────────────────────────────────────────────
 
 /**
  * recordView(ledger, contentId)

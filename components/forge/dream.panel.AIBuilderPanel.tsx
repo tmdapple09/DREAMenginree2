@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * components/forge/dream.panel.AIBuilderPanel.tsx
- *
- * ForgeEngin — AI Anything Builder UI panel.
- *
- * Self-contained React component that renders the "AI Anything Builder" UI.
- * Matches the ForgeEngin dark command-center aesthetic exactly.
- *
- * Architecture: 'use client' component. Communicates with /api/forge/build
- * via the useForgeBuild hook only. No direct server calls from this file.
- */
-
 import { canBuildToday, readForgeBuilds, type ForgeBuildRecord, type ForgeLogEvent } from '@/lib/forge/forgeBuild';
 import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
 import { useForgeBuild } from '@/lib/forge/useForgeBuild';
@@ -33,7 +21,18 @@ import {
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-// ── Design tokens (matches ForgeEngin FORGE object) ──────────────────────────
+/**
+ * components/forge/dream.panel.AIBuilderPanel.tsx
+ *
+ * ForgeEngin — AI Anything Builder UI panel.
+ *
+ * Self-contained React component that renders the "AI Anything Builder" UI.
+ * Matches the ForgeEngin dark command-center aesthetic exactly.
+ *
+ * Architecture: 'use client' component. Communicates with /api/forge/build
+ * via the useForgeBuild hook only. No direct server calls from this file.
+ */
+
 const FORGE = {
   bg:     '#0a0a0f',
   panel:  'rgba(255,255,255,0.04)',
@@ -60,8 +59,6 @@ const AGENT_INITIALS: Record<string, string> = {
   'TheBoogieMan.Ai':   'BM',
 };
 
-// ── Phase system ──────────────────────────────────────────────────────────────
-
 const PHASES = ['Parsing', 'Dr. Eams', 'IDARi', 'Safety', 'Generating', 'Staging', 'Done'] as const;
 
 function getPhaseIndexFromStep(step: string): number {
@@ -74,8 +71,6 @@ function getPhaseIndexFromStep(step: string): number {
   if (step.includes('Build complete'))        return 6;
   return -1;
 }
-
-// ── Phase progress bar ────────────────────────────────────────────────────────
 
 function PhaseBar({ activePhase }: {activePhase: number}) {
   return (
@@ -147,8 +142,6 @@ function PhaseBar({ activePhase }: {activePhase: number}) {
     </div>
   );
 }
-
-// ── Code block renderer ───────────────────────────────────────────────────────
 
 type CodeLogEvent = Extract<ForgeLogEvent, { type: 'code' }>;
 
@@ -254,8 +247,6 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
   );
 }
 
-// ── Example prompt chips ──────────────────────────────────────────────────────
-
 const EXAMPLE_CHIPS = [
   { emoji: '🎮', text: 'Desert platformer with dash ability and scoreboard' },
   { emoji: '🎵', text: 'Lo-fi hip-hop beat with vinyl crackle and chord progressions' },
@@ -307,8 +298,6 @@ function buildMarkdownSummary(logs: ForgeLogEvent[], prompt: string): string {
   }
   return lines.join('\n');
 }
-
-// ── Log entry renderer ────────────────────────────────────────────────────────
 
 function LogEntry({
   event,
@@ -524,8 +513,6 @@ function LogEntry({
   return null;
 }
 
-// ── Build history item ────────────────────────────────────────────────────────
-
 function HistoryItem({ record, onLaunch }: {record: ForgeBuildRecord; onLaunch: (href: string) => void}) {
   const enginEntry = ENGIN_REGISTRY.find((e) => e.id === record.primaryEnginId);
   const elapsed = Date.now() - new Date(record.createdAt).getTime();
@@ -571,8 +558,6 @@ function HistoryItem({ record, onLaunch }: {record: ForgeBuildRecord; onLaunch: 
     </div>
   );
 }
-
-// ── Main component ────────────────────────────────────────────────────────────
 
 export default function AIBuilderPanel( ){
   const router = useRouter();

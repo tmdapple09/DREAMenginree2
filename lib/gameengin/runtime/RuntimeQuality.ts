@@ -10,3 +10,4 @@ export function decideRuntimeQuality(frameMs: number, webgpuReady: boolean): Gam
   if (frameMs > 24) return { quality: 'balanced', reason: 'frame-pressure' };
   return { quality: 'high', reason: 'healthy-frame-budget' };
 }
+

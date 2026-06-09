@@ -1,4 +1,8 @@
 'use client';
+
+import { getGsap } from '@/lib/gsap/gsap';
+import { useCallback, useRef, useState } from 'react';
+
 /**
  * lib/gsap/useGsapFlip.ts
  *
@@ -16,9 +20,6 @@
  *
  *   <div ref={containerRef}>…</div>
  */
-
-import { getGsap } from '@/lib/gsap/gsap';
-import { useCallback, useRef, useState } from 'react';
 
 export function useGsapFlip( ){
   const containerRef = useRef<HTMLDivElement | null>(null);

@@ -1,10 +1,3 @@
-/**
- * lib/vm/snapshot.ts — VM State Serialization and Snapshot Management
- *
- * Implements the binary snapshot format from the spec for VM state migration,
- * checkpointing, and debugging.
- */
-
 import type {
     BindGroupHandle,
     BufferHandle,
@@ -16,6 +9,13 @@ import type {
     WasmMemorySnapshot,
 } from './types';
 import type { WasmGpuVM } from './wasmGpuVM';
+
+/**
+ * lib/vm/snapshot.ts — VM State Serialization and Snapshot Management
+ *
+ * Implements the binary snapshot format from the spec for VM state migration,
+ * checkpointing, and debugging.
+ */
 
 const SNAPSHOT_MAGIC = 'VMSN';
 const SNAPSHOT_VERSION = 1;
@@ -302,8 +302,6 @@ export class SnapshotManager {
       return new Uint8Array(Number(size));
     }
   }
-
-  // ─── Binary encoding helpers ──────────────────────────────────────────────
 
   private static encodeString(str: string): Uint8Array {
     return new TextEncoder().encode(str);

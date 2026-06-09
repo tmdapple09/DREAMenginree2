@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 /**
  * PortfolioOptimizationScene
  *
@@ -15,9 +17,6 @@
  * between frames.  Freezes when tab is backgrounded (RAF auto-throttles).
  */
 
-import { useEffect, useRef } from 'react';
-
-// ── palette (matches DREAMengin design tokens) ─────────────────────────────
 const BLUE    = '#2a8ab8';
 const GOLD    = '#c8981a';
 const PURPLE  = '#8b5cf6';
@@ -29,10 +28,8 @@ const CYAN    = '#06b6d4';
 
 const PALETTE = [BLUE, GOLD, PURPLE, GREEN, SKY, PINK, AMBER, CYAN, BLUE, GOLD];
 
-// ── asset ticker labels ─────────────────────────────────────────────────────
 const TICKERS = ['AAPL', 'MSFT', 'GOOG', 'AMZN', 'TSLA', 'BTC', 'ETH', 'GLD', 'SPY', 'BND'];
 
-// ── types ───────────────────────────────────────────────────────────────────
 interface AssetNode {
   orbitRadius: number;
   orbitSpeed:  number;
@@ -54,7 +51,6 @@ interface DataParticle {
   color:    string;
 }
 
-// ── helpers ─────────────────────────────────────────────────────────────────
 function hex2rgba(hex: string, a: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -74,7 +70,7 @@ export default function PortfolioOptimizationScene( ){
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-     
+
     const ctx = canvas.getContext('2d')!;
     if (!ctx) return;
 
@@ -85,7 +81,6 @@ export default function PortfolioOptimizationScene( ){
     let nodes: AssetNode[] = [];
     let particles: DataParticle[] = [];
 
-    // ── build scene geometry ─────────────────────────────────────────────
     function buildScene( ){
       cx = canvas!.width  / 2;
       cy = canvas!.height / 2;
@@ -125,14 +120,12 @@ export default function PortfolioOptimizationScene( ){
       });
     }
 
-    // ── resize ───────────────────────────────────────────────────────────
     function resize( ){
       canvas!.width  = window.innerWidth;
       canvas!.height = window.innerHeight;
       buildScene();
     }
 
-    // ── drawing helpers ──────────────────────────────────────────────────
     function drawOrbitalRings( ){
       const base  = Math.min(cx, cy);
       const rings = [0.44, 0.26];
@@ -338,7 +331,6 @@ export default function PortfolioOptimizationScene( ){
       ctx.letterSpacing = '0em';
     }
 
-    // ── main loop ────────────────────────────────────────────────────────
     function frame( ){
       time += 0.016;
       ctx.clearRect(0, 0, canvas!.width, canvas!.height);

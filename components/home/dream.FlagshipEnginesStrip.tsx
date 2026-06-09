@@ -1,5 +1,16 @@
 'use client';
 
+import {
+    computeMomentum,
+    getLevelColor,
+    getLevelEmoji,
+    type MomentumSnapshot,
+} from '@/lib/forge/forgeMomentum';
+import { getEnginById } from '@/lib/forge/forgeRegistry';
+import { Activity, ChevronRight, Flame, Gamepad2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 /**
  * FlagshipEnginesStrip — Two flagship engins on the HomeDream Surface.
  *
@@ -22,17 +33,6 @@
  *   - docs/ARCHITECTURE.md §8 — gold / blue / white premium palette.
  *   - docs/PRODUCT_DEFINITION.md — flagship engins surface on HomeDream.
  */
-
-import {
-    computeMomentum,
-    getLevelColor,
-    getLevelEmoji,
-    type MomentumSnapshot,
-} from '@/lib/forge/forgeMomentum';
-import { getEnginById } from '@/lib/forge/forgeRegistry';
-import { Activity, ChevronRight, Flame, Gamepad2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 interface FlagshipEnginesStripProps {
   /** Compact viewport flag (mobile / narrow). */

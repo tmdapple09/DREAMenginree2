@@ -1,5 +1,4 @@
 "use client";
-// SURFACE: dreamsurface.Join  (framework-mandated basename: page.tsx)
 
 import PasswordField from "@/components/auth/dream.PasswordField";
 import { createClient } from "@/lib/supabase/client";
@@ -8,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+
+// SURFACE: dreamsurface.Join  (framework-mandated basename: page.tsx)
 
 // Shared input style — matches the de-widget design system
 const INPUT_STYLE: React.CSSProperties = {
@@ -37,7 +38,6 @@ export default function JoinPage( ){
   const [error, setError]             = useState<string | null>(null);
   const [notice, setNotice]           = useState<string | null>(null);
   const [oauthProviders, setOauthProviders] = useState<{ google: boolean | null; github: boolean | null } | null>(null);
-
 
   useEffect(() => {
     fetch("/api/auth/providers")

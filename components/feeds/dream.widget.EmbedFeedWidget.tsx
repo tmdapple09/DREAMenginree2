@@ -1,5 +1,10 @@
 'use client';
 
+import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
+import { ExternalLink, Eye, Hash, RefreshCw } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * components/feeds/dream.widget.EmbedFeedWidget.tsx
  *
@@ -26,11 +31,6 @@
  * ARCHITECTURE.md §3 — Component layer; no DB calls; fetches from /api/embed-feed.
  */
 
-import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
-import { ExternalLink, Eye, Hash, RefreshCw } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 type Provider = 'all' | 'youtube' | 'instagram';
@@ -47,8 +47,6 @@ interface FeedState {
   loading: boolean;
   error: string | null;
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function relativeTime(iso: string): string {
   if (!iso) return '';
@@ -70,8 +68,6 @@ function formatViews(n: number): string {
   return `${n.toLocaleString()} views`;
 }
 
-// ── Instagram embed script loader ─────────────────────────────────────────────
-
 function useInstagramEmbedScript(hasInstagram: boolean ){
   useEffect(() => {
     if (!hasInstagram) return;
@@ -89,8 +85,6 @@ function useInstagramEmbedScript(hasInstagram: boolean ){
     document.body.appendChild(script);
   }, [hasInstagram]);
 }
-
-// ── Skeleton card ─────────────────────────────────────────────────────────────
 
 function SkeletonCard( ){
   return (
@@ -111,8 +105,6 @@ function SkeletonCard( ){
     </div>
   );
 }
-
-// ── Embed card ────────────────────────────────────────────────────────────────
 
 function EmbedCard({ item }: {item: EmbedFeedItem}) {
   const isYouTube   = item.provider === 'youtube';
@@ -248,8 +240,6 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
-
 export default function EmbedFeedWidget({
   defaultProvider = 'all',
   limit = 20,
@@ -301,7 +291,6 @@ export default function EmbedFeedWidget({
   const hasInstagram = state.items.some((i) => i.provider === 'instagram');
   useInstagramEmbedScript(hasInstagram);
 
-  // ── Provider tabs ──────────────────────────────────────────────────────────
   const tabs: { id: Provider; label: string; icon: string }[] = [
     { id: 'all',       label: 'All',       icon: '✨' },
     { id: 'youtube',   label: 'YouTube',   icon: '📺' },

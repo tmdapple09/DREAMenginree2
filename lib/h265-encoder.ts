@@ -14,8 +14,6 @@
  *    Codec priority: H.265 MP4 → H.264 MP4 → VP9 WebM → H.264 WebM.
  */
 
-// ─── Shared types ─────────────────────────────────────────────────────────────
-
 export type H265Preset = 'speed' | 'balanced' | 'quality';
 export type PixelFormat = 'rgba8' | 'bgra8' | 'nv12' | 'i420';
 export type BackendKind = 'webcodecs' | 'wasm';
@@ -86,8 +84,6 @@ const DEFAULT_OPTIONS: Required<EncoderOptions> = {
   allowCPUFallback: true,
   backend: 'webcodecs',
 };
-
-// ─── H265Encoder ──────────────────────────────────────────────────────────────
 
 export class H265Encoder {
   private opts: Required<EncoderOptions>;
@@ -204,16 +200,12 @@ export class H265Encoder {
   }
 }
 
-// ─── BackendFactory ───────────────────────────────────────────────────────────
-
 class BackendFactory {
   static async create(kind: BackendKind): Promise<IEncoderBackend> {
     if (kind === 'wasm') return new WasmFallbackBackend();
     return new WebCodecsBackend();
   }
 }
-
-// ─── WebCodecsBackend ─────────────────────────────────────────────────────────
 
 class WebCodecsBackend implements IEncoderBackend {
   private encoder: VideoEncoder | null = null;
@@ -327,8 +319,6 @@ class WebCodecsBackend implements IEncoderBackend {
   }
 }
 
-// ─── WasmFallbackBackend ──────────────────────────────────────────────────────
-
 class WasmFallbackBackend implements IEncoderBackend {
   async init(_config: Required<EncoderOptions>): Promise<void> {}
 
@@ -360,7 +350,6 @@ class WasmFallbackBackend implements IEncoderBackend {
   }
 }
 
-// ─── GameCapture ──────────────────────────────────────────────────────────────
 //
 // Practical game-session recorder. Uses canvas.captureStream() + MediaRecorder
 // so the browser handles muxing. Produces a Blob (MP4 or WebM) that can be

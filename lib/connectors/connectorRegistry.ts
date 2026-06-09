@@ -250,7 +250,6 @@ export const CONNECTOR_REGISTRY: ReadonlyArray<ConnectorDef> = [
     ],
   },
 
-  // ── TIER 2: Gated (requires approval or paid plan) ─────────────────────
   {
     id: 'twitter',
     name: 'X / Twitter',
@@ -358,7 +357,6 @@ export const CONNECTOR_REGISTRY: ReadonlyArray<ConnectorDef> = [
     ],
   },
 
-  // ── TIER 3: Explicitly unsupported ────────────────────────────────────
   {
     id: 'snapchat',
     name: 'Snapchat',
@@ -392,7 +390,6 @@ export const CONNECTOR_REGISTRY: ReadonlyArray<ConnectorDef> = [
     ],
   },
 
-  // ── Additional RSS-based Tier 1 providers ─────────────────────────────
   {
     id: 'medium',
     name: 'Medium',

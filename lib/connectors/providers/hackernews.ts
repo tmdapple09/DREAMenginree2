@@ -1,3 +1,11 @@
+import { normaliseHackerNews } from '@/lib/connectors/normalise';
+import {
+    hackerNewsRssUrl,
+    hackerNewsUserRssUrl,
+    parseRssFeed,
+} from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/hackernews.ts
  *
@@ -13,14 +21,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseHackerNews } from '@/lib/connectors/normalise';
-import {
-    hackerNewsRssUrl,
-    hackerNewsUserRssUrl,
-    parseRssFeed,
-} from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export type HNFeedType = 'best' | 'newest' | 'ask' | 'show' | 'jobs';
 

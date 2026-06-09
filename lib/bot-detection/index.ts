@@ -1,3 +1,5 @@
+import { isBotSession, type BotSessionResult, type SwipeRecord } from '@/lib/botDetection';
+
 /**
  * lib/bot-detection/index.ts — §36 Bot Detection & Physical Turing Test
  *
@@ -19,15 +21,6 @@
  * §36.3 Perfect Line Trap: avgDev <1.5 px → freeze 3-5 s; streak ≥2 → block
  * §36.4 Detection Rate: ~96% true positive (simulated advanced bots)
  */
-
-// ── Re-export core API ────────────────────────────────────────────────────────
-
-export {
-    analyzeSwipe, isBotSession, tallyView, type BotSessionResult, type Point,
-    type SwipeAnalysis, type SwipeRecord, type ViewTally
-} from '@/lib/botDetection';
-
-// ── Detection thresholds (§36.1) ──────────────────────────────────────────────
 
 /** Minimum mean perpendicular deviation expected from a human swipe (px). */
 export const HUMAN_MIN_DEVIATION_PX = 1.5;
@@ -58,8 +51,6 @@ export const HUMAN_MIN_SLOG_VEL_VAR = 0.5;
 
 /** Bot slog-transformed velocity variance upper bound. */
 export const BOT_MAX_SLOG_VEL_VAR = 0.3;
-
-// ── §36.2 View timer helpers ──────────────────────────────────────────────────
 
 /** Minimum view duration (ms) to count as genuine engagement. */
 export const VIEW_TALLY_THRESHOLD_MS = 4000;
@@ -94,8 +85,6 @@ export function createViewTimer(
     },
   };
 }
-
-// ── §36.3 Perfect-line trap class ─────────────────────────────────────────────
 
 /** Threshold below which a swipe is considered "unnaturally straight". */
 export const PERFECT_LINE_THRESHOLD_PX = 1.5;
@@ -157,10 +146,6 @@ export class PerfectLineTrap {
   }
 }
 
-// ── §36 BotSessionTracker ─────────────────────────────────────────────────────
-
-import { isBotSession, type BotSessionResult, type SwipeRecord } from '@/lib/botDetection';
-
 /**
  * BotSessionTracker
  *
@@ -205,3 +190,8 @@ export class BotSessionTracker {
     return this.history.length;
   }
 }
+
+export {
+    analyzeSwipe, isBotSession, tallyView, type BotSessionResult, type Point,
+    type SwipeAnalysis, type SwipeRecord, type ViewTally
+} from '@/lib/botDetection';

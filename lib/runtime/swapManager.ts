@@ -1,8 +1,4 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
-
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/swapManager.ts.
 
@@ -18,11 +14,7 @@
  *   de-lab-swap   →  Lab  Daydream (LabDreamIDE)
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -33,21 +25,13 @@ const SWAP_KEYS = {
 
 const ALL_DOMAINS = Object.keys(SWAP_KEYS) as SwapDomain[];
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
 export type SwapDomain = keyof typeof SWAP_KEYS;
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -86,8 +70,6 @@ export function toggleSwap(domain: SwapDomain): boolean {
   return next;
 }
 
-// ── Improvement 40: clearSwap ─────────────────────────────────────────────────
-
 /**
  * Reset the swap state for a domain to its default (false = editor on top).
  * Safe to call server-side.
@@ -101,8 +83,6 @@ export function clearSwap(domain: SwapDomain): void {
   }
 }
 
-// ── Improvement 41: getAllSwapStates ──────────────────────────────────────────
-
 /**
  * Read the swap state for every registered domain in one call.
  * Returns a Record<SwapDomain, boolean> so callers don't need to call
@@ -114,8 +94,6 @@ export function getAllSwapStates(): Record<SwapDomain, boolean> {
   ) as Record<SwapDomain, boolean>;
 }
 
-// ── Improvement 42: resetAllSwaps ────────────────────────────────────────────
-
 /**
  * Clear the swap state for every registered domain (set to default false).
  * Useful during sign-out or when resetting the workspace to defaults.
@@ -126,14 +104,8 @@ export function resetAllSwaps(): void {
   }
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

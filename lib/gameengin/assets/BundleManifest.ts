@@ -36,3 +36,4 @@ export function assertValidBundleManifest(value: GameEnginBundleManifest): void 
 export function bundleWeightBytes(manifest: GameEnginBundleManifest): number {
   return manifest.assets.reduce((sum, asset) => sum + Math.max(0, asset.bytes ?? 0), 0);
 }
+

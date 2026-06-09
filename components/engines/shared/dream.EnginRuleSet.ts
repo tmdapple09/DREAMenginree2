@@ -1,3 +1,7 @@
+import type { ComponentType } from 'react';
+import type { EngineId } from './dream.EnginProvider';
+import type { NavItem } from './dream.bar.EnginNavBar';
+
 /**
  * dream.EnginRuleSet.ts
  *
@@ -16,10 +20,6 @@
  * Architecture: docs/ARCHITECTURE.md §0 — DreamR-first / stable core + swappable rule-sets.
  * Naming: docs/NAMING_AUTHORITY.md §4 — Runtimes MUST end in "Engin".
  */
-
-import type { ComponentType } from 'react';
-import type { EngineId } from './dream.EnginProvider';
-import type { NavItem } from './dream.bar.EnginNavBar';
 
 /**
  * Describes a single Engin runtime.

@@ -1,3 +1,5 @@
+import Parser from "rss-parser";
+
 /**
  * lib/social-feed.ts
  *
@@ -15,10 +17,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/)
  */
 
-import Parser from "rss-parser";
-
-// ── Types ─────────────────────────────────────────────────────────────────
-
 export type SocialSource = "instagram" | "x" | "tiktok" | "youtube";
 
 export type SocialFeedItem = {
@@ -33,8 +31,6 @@ export type SocialFeedItem = {
   description: string | null;
 };
 
-// ── Parser singleton ──────────────────────────────────────────────────────
-
 const parser = new Parser({
   customFields: {
     item: [
@@ -46,14 +42,10 @@ const parser = new Parser({
   },
 });
 
-// ── HTML helpers ──────────────────────────────────────────────────────────
-
 export function stripHtml(input?: string | null ){
   if (!input) return "";
   return input.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
-
-// ── Image extraction ──────────────────────────────────────────────────────
 
 export function extractFirstImage(item: Record<string, any>): string | null {
   // 1) enclosure
@@ -83,8 +75,6 @@ export function extractFirstImage(item: Record<string, any>): string | null {
 
   return null;
 }
-
-// ── Feed fetcher ──────────────────────────────────────────────────────────
 
 /**
  * Fetches a public RSS / Atom feed and returns normalised SocialFeedItems.

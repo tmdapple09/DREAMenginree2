@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
 /**
  * POST /api/dreamr/tally
  *
@@ -26,12 +32,6 @@
  * Privacy: only the viewer's own rows are written; no cross-user reads.
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-
 const TallyBodySchema = z.object({
   contentId: z.string().min(1).max(256),
   sharerId:  z.string().min(1).max(256),
@@ -55,7 +55,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   const { contentId, sharerId } = parsed.data;
 
-  // ── 2. Auth ──────────────────────────────────────────────────────────────
   let viewerId: string;
   try {
     const supabase = await createServerClient();
@@ -65,7 +64,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     viewerId = user.id;
 
-    // ── 3. Upsert tally row ───────────────────────────────────────────────
     // Upsert is idempotent: the same (content, sharer, viewer) triple only
     // ever writes one row. Re-publishing the same content just refreshes
     // tallied_at which is acceptable and keeps the table from bloating.

@@ -1,5 +1,9 @@
 'use client';
 
+import { AlertCircle, Mic, Play, Square, Upload } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * StudioPanel — Recording studio panel for the Music Engine app.
  *
@@ -7,10 +11,6 @@
  * and loading recordings into the DAW. Lives at /engines/music/studio.
  */
 
-import { AlertCircle, Mic, Play, Square, Upload } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 type RecordState = 'idle' | 'recording' | 'stopped';
 
 interface Recording {

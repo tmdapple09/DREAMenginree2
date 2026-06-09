@@ -1,3 +1,5 @@
+import type { LoopIteration, LoopStatus } from '@/lib/agents/idariLoop';
+
 /**
  * lib/observability/healthTrend.ts
  *
@@ -10,10 +12,6 @@
  *  79. getMTTR             — mean time to recovery (failed → resolved)
  *  80. exportHealthReport  — structured report for export / dashboards
  */
-
-import type { LoopIteration, LoopStatus } from '@/lib/agents/idariLoop';
-
-// ── Improvement 76: updateHealthTrend / rolling state ─────────────────────────
 
 export type HealthStatus = 'healthy' | 'degraded' | 'critical';
 
@@ -40,8 +38,6 @@ export function updateHealthTrend(status: HealthStatus): void {
 export function clearHealthTrend(): void {
   _trendBuffer.length = 0;
 }
-
-// ── Improvement 77: getHealthTrend ────────────────────────────────────────────
 
 export type HealthTrend = 'improving' | 'stable' | 'degrading';
 
@@ -73,8 +69,6 @@ export function getHealthTrend(windowSize = 20): HealthTrend {
   return 'stable';
 }
 
-// ── Improvement 78: getHealthScore ────────────────────────────────────────────
-
 /**
  * Compute a 0-100 health score from recent loop iterations.
  * 100 = all iterations resolved, 0 = all iterations failed.
@@ -93,8 +87,6 @@ export function getHealthScore(iterations: readonly LoopIteration[]): number {
   }
   return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 100;
 }
-
-// ── Improvement 79: getMTTR ───────────────────────────────────────────────────
 
 /**
  * Compute the Mean Time To Recovery (MTTR) in milliseconds.
@@ -120,8 +112,6 @@ export function getMTTR(iterations: readonly LoopIteration[]): number | null {
   if (recoveryTimes.length === 0) return null;
   return recoveryTimes.reduce((a, b) => a + b, 0) / recoveryTimes.length;
 }
-
-// ── Improvement 80: exportHealthReport ───────────────────────────────────────
 
 export interface HealthReport {
   generatedAt: string;

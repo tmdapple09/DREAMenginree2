@@ -14,7 +14,6 @@ import path from 'path';
 // NOTE: Do not add `export const runtime = 'nodejs'` here — it is incompatible
 // with nextConfig.cacheComponents (Turbopack build error in Next.js 16+).
 
-// ── File-tree builder ────────────────────────────────────────────────────────
 const ALLOWED_TOP_DIRS = ['app', 'components', 'lib', 'hooks', 'types', 'styles'] as const;
 type AllowedTopDir = (typeof ALLOWED_TOP_DIRS)[number];
 const ALLOWED_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.css', '.json', '.md', '.mjs', '.cjs']);
@@ -69,7 +68,6 @@ function allowedRoot(topDir: AllowedTopDir): string {
   }
 }
 
-// ── Path-safety guard ────────────────────────────────────────────────────────
 function resolveAllowedFile(relPath: string): { abs: string; rel: string } | null {
   if (path.isAbsolute(relPath)) return null;
   const normalized = path.normalize(relPath).replaceAll(path.sep, '/');
@@ -87,12 +85,10 @@ function resolveAllowedFile(relPath: string): { abs: string; rel: string } | nul
   };
 }
 
-// ── Deny helper ──────────────────────────────────────────────────────────────
 function deny(msg: string, status: number): NextResponse {
   return NextResponse.json({ error: msg }, { status });
 }
 
-// ── Route handler ────────────────────────────────────────────────────────────
 export async function POST(request: Request ): Promise<NextResponse> {
   // 1. Block blacklisted domains immediately — no information leakage
   if (isDomainBlocked(request)) {

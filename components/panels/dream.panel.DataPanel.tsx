@@ -1,15 +1,15 @@
 'use client';
 
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { createClient } from '@/lib/supabase/client';
+import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
+import { useCallback, useState } from 'react';
+
 /**
  * DataPanel — Data & Privacy settings rendered in Surface Space.
  * Real export API call and account deletion flow.
  * Back → openInSurface('settings'). No routing.
  */
-
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { createClient } from '@/lib/supabase/client';
-import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
-import { useCallback, useState } from 'react';
 
 export default function DataPanel( ){
   const { openInSurface } = useDreamSystem();

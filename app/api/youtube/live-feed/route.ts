@@ -1,3 +1,8 @@
+import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/providers/youtube';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/youtube/live-feed/route.ts
  *
@@ -17,11 +22,6 @@
  * AXIOM 4 — Security by Default: API key stays server-side; never echoed.
  */
 
-import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/providers/youtube';
-import type { UnifiedFeedItem } from '@/types/connector';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeLiveFeedResponse {
   ok: boolean;
   items: UnifiedFeedItem[];

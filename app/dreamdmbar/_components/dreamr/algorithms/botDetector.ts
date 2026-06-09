@@ -1,3 +1,5 @@
+import { slog, TORRIDITY_LEDGER_CONFIG } from '@/lib/dreamr/torridityLedger';
+
 /**
  * botDetector — Physical Turing Test for DreamR swipe interactions.
  *
@@ -16,10 +18,6 @@
  * Architecture: dreamdmbar/homedream/dreamr/algorithms/
  * Called by: DreamRCore before writing to torridityLedger
  */
-
-import { slog, TORRIDITY_LEDGER_CONFIG } from '@/lib/dreamr/torridityLedger';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
 
 /** A single touch sample from a swipe gesture. */
 export interface TouchPoint {
@@ -50,8 +48,6 @@ export interface SwipePathScore {
   /** True when botScore ≥ TORRIDITY_LEDGER_CONFIG.botScoreThreshold (0.55). */
   isBot: boolean;
 }
-
-// ─── Internal helpers ────────────────────────────────────────────────────────
 
 /** Perpendicular distances from each interior touch point to the chord
  *  connecting the first and last point of the swipe. */
@@ -168,8 +164,6 @@ function velocityFeatures(points: TouchPoint[]): { variance: number; jerk: numbe
   return { variance: slog(rawVariance), jerk: slog(avgJerk) };
 }
 
-// ─── Public API ──────────────────────────────────────────────────────────────
-
 /**
  * Score a swipe path against the Physical Turing Test.
  *
@@ -240,8 +234,6 @@ export function isSwipeBot(points: TouchPoint[], recentPaths: number[][] = []): 
   return scoreSwipePath(points, recentPaths).isBot;
 }
 
-// ─── Legacy interaction-signal API (kept for backward compatibility) ─────────
-
 export interface InteractionSignal {
   userId: string;
   videoId: string;
@@ -265,4 +257,3 @@ export function scoreBotLikelihood(signal: InteractionSignal): number {
 export function isLikelyBot(signal: InteractionSignal, threshold = 0.7): boolean {
   return scoreBotLikelihood(signal) >= threshold;
 }
-

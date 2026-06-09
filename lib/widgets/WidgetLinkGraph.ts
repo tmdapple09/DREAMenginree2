@@ -1,7 +1,7 @@
 // WidgetLinkGraph - Persisted widget connection graph
 // Supports widget-to-widget communication with capability-based permissions
 
-export type CapabilityMask = 
+export type CapabilityMask =
   | 'CAN_SEND_TEXT'
   | 'CAN_SEND_MEDIA'
   | 'CAN_SEND_POST'
@@ -28,11 +28,11 @@ export interface WidgetLinkNode {
  */
 export class WidgetLinkGraph {
   private nodes: Map<string, WidgetLinkNode>;
-  
+
   constructor() {
     this.nodes = new Map();
   }
-  
+
   /**
    * Initialize graph from persisted data
    */
@@ -42,7 +42,7 @@ export class WidgetLinkGraph {
       this.nodes.set(node.widgetId, node);
     });
   }
-  
+
   /**
    * Add a widget to the graph
    */
@@ -55,7 +55,7 @@ export class WidgetLinkGraph {
       });
     }
   }
-  
+
   /**
    * Add a link from source to target with capabilities
    */
@@ -68,12 +68,12 @@ export class WidgetLinkGraph {
     // Ensure both widgets exist in graph
     this.addWidget(sourceWidgetId);
     this.addWidget(targetWidgetId);
-    
+
     const linkId = `link_${sourceWidgetId}_${targetWidgetId}_${Date.now()}`;
-    
+
     const sourceNode = this.nodes.get(sourceWidgetId)!;
     const targetNode = this.nodes.get(targetWidgetId)!;
-    
+
     // Add outgoing link
     sourceNode.outgoingLinks.push({
       linkId,
@@ -81,15 +81,15 @@ export class WidgetLinkGraph {
       capabilities,
       actionMap
     });
-    
+
     // Add incoming reference
     if (!targetNode.incomingLinks.includes(sourceWidgetId)) {
       targetNode.incomingLinks.push(sourceWidgetId);
     }
-    
+
     return linkId;
   }
-  
+
   /**
    * Remove a link by ID
    */
@@ -99,7 +99,7 @@ export class WidgetLinkGraph {
       if (linkIndex !== -1) {
         const link = node.outgoingLinks[linkIndex];
         node.outgoingLinks.splice(linkIndex, 1);
-        
+
         // Remove incoming reference if no other links exist
         const targetNode = this.nodes.get(link.targetWidgetId);
         if (targetNode) {
@@ -112,13 +112,13 @@ export class WidgetLinkGraph {
             );
           }
         }
-        
+
         return true;
       }
     }
     return false;
   }
-  
+
   /**
    * Check if a link exists with specific capability
    */
@@ -129,14 +129,14 @@ export class WidgetLinkGraph {
   ): boolean {
     const sourceNode = this.nodes.get(sourceWidgetId);
     if (!sourceNode) return false;
-    
+
     return sourceNode.outgoingLinks.some(
-      link => 
+      link =>
         link.targetWidgetId === targetWidgetId &&
         link.capabilities.includes(capability)
     );
   }
-  
+
   /**
    * Get all outgoing links for a widget
    */
@@ -144,7 +144,7 @@ export class WidgetLinkGraph {
     const node = this.nodes.get(widgetId);
     return node ? node.outgoingLinks : [];
   }
-  
+
   /**
    * Get all incoming links for a widget
    */
@@ -152,7 +152,7 @@ export class WidgetLinkGraph {
     const node = this.nodes.get(widgetId);
     return node ? node.incomingLinks : [];
   }
-  
+
   /**
    * Get action handler for a link
    */
@@ -163,14 +163,14 @@ export class WidgetLinkGraph {
   ): string | null {
     const sourceNode = this.nodes.get(sourceWidgetId);
     if (!sourceNode) return null;
-    
+
     const link = sourceNode.outgoingLinks.find(
       l => l.targetWidgetId === targetWidgetId
     );
-    
+
     return link?.actionMap[action] || null;
   }
-  
+
   /**
    * Validate a message can be sent
    */
@@ -181,14 +181,14 @@ export class WidgetLinkGraph {
   ): boolean {
     return this.hasCapability(sourceWidgetId, targetWidgetId, requiredCapability);
   }
-  
+
   /**
    * Export graph for persistence
    */
   export(): WidgetLinkNode[] {
     return Array.from(this.nodes.values());
   }
-  
+
   /**
    * Clear all links (for testing)
    */

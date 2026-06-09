@@ -19,13 +19,13 @@ export class WidgetEventBus {
   private listeners: Map<string, WidgetMsgCallback[]>;
   private messageQueue: WidgetMsg[];
   private isProcessing: boolean;
-  
+
   constructor() {
     this.listeners = new Map();
     this.messageQueue = [];
     this.isProcessing = false;
   }
-  
+
   /**
    * Subscribe to messages for a specific widget
    */
@@ -33,10 +33,10 @@ export class WidgetEventBus {
     if (!this.listeners.has(widgetId)) {
       this.listeners.set(widgetId, []);
     }
-    
+
     const callbacks = this.listeners.get(widgetId)!;
     callbacks.push(callback);
-    
+
     // Return unsubscribe function
     return () => {
       const index = callbacks.indexOf(callback);
@@ -45,19 +45,19 @@ export class WidgetEventBus {
       }
     };
   }
-  
+
   /**
    * Emit a message (synchronous enqueue, asynchronous processing)
    */
   emit(msg: WidgetMsg): void {
     this.messageQueue.push(msg);
-    
+
     // Schedule processing outside gesture frames
     if (!this.isProcessing) {
       this.scheduleProcessing();
     }
   }
-  
+
   /**
    * Send a message from one widget to another
    */
@@ -75,14 +75,14 @@ export class WidgetEventBus {
       timestamp: Date.now()
     });
   }
-  
+
   /**
    * Schedule message processing outside gesture frames
    * Prefers requestIdleCallback for non-urgent messages to avoid blocking
    */
   private scheduleProcessing(): void {
     this.isProcessing = true;
-    
+
     // Use requestIdleCallback for idle processing (preferred for non-urgent messages)
     if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(() => this.processMessages());
@@ -94,7 +94,7 @@ export class WidgetEventBus {
       setTimeout(() => this.processMessages(), 0);
     }
   }
-  
+
   /**
    * Process queued messages
    */
@@ -103,7 +103,7 @@ export class WidgetEventBus {
     while (this.messageQueue.length > 0) {
       const msg = this.messageQueue.shift()!;
       const callbacks = this.listeners.get(msg.toWidgetId);
-      
+
       if (callbacks) {
         callbacks.forEach((callback) => {
           try {
@@ -114,10 +114,10 @@ export class WidgetEventBus {
         });
       }
     }
-    
+
     this.isProcessing = false;
   }
-  
+
   /**
    * Clear all listeners (for cleanup)
    */
@@ -126,7 +126,7 @@ export class WidgetEventBus {
     this.messageQueue = [];
     this.isProcessing = false;
   }
-  
+
   /**
    * Get queue size (for debugging)
    */

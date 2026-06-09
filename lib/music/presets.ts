@@ -57,8 +57,6 @@ export interface ProjectTemplate {
   instrument: InstrumentPreset;
 }
 
-// ─── Beat Presets ─────────────────────────────────────────────────────────────
-
 const T = true;
 const F = false;
 
@@ -291,8 +289,6 @@ export const BEAT_PRESETS: BeatPreset[] = [
   },
 ];
 
-// ─── Instrument Presets ────────────────────────────────────────────────────────
-
 export const INSTRUMENT_PRESETS: InstrumentPreset[] = [
   {
     id: 'init-synth',
@@ -386,8 +382,6 @@ export const INSTRUMENT_PRESETS: InstrumentPreset[] = [
   },
 ];
 
-// ─── Project Templates ─────────────────────────────────────────────────────────
-
 export const PROJECT_TEMPLATES: ProjectTemplate[] = [
   {
     id: 'blank',
@@ -445,8 +439,6 @@ export const PROJECT_TEMPLATES: ProjectTemplate[] = [
     instrument: INSTRUMENT_PRESETS.find((p) => p.id === 'lead-saw')!,
   },
 ];
-
-// ─── Helpers ───────────────────────────────────────────────────────────────────
 
 export const GENRE_LIST = [...new Set(BEAT_PRESETS.map((p) => p.genre))];
 

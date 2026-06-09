@@ -39,8 +39,6 @@ export interface PieceManifest {
   role: 'source' | 'processor' | 'output';
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 function p(id: string, label: string, type: PortType): Port {
   return { id, label, type };
 }
@@ -56,8 +54,6 @@ function piece(
 ): PieceManifest {
   return { id, label, category, description, role, inputPorts, outputPorts };
 }
-
-// ── Audio Pieces ──────────────────────────────────────────────────────────────
 
 const AUDIO_PIECES: PieceManifest[] = [
   piece('audio.mic-input', 'Mic Input', 'Audio', 'Live microphone capture', 'source',
@@ -102,8 +98,6 @@ const AUDIO_PIECES: PieceManifest[] = [
     [p('map', 'Peak Map', 'data'), p('start', 'Start', 'data'), p('end', 'End', 'data')], [p('fp', 'Fingerprint', 'data')]),
 ];
 
-// ── Visual Pieces ─────────────────────────────────────────────────────────────
-
 const VISUAL_PIECES: PieceManifest[] = [
   piece('visual.camera', 'Camera Input', 'Visual', 'Device camera capture', 'source',
     [], [p('video', 'Video', 'video')]),
@@ -137,8 +131,6 @@ const VISUAL_PIECES: PieceManifest[] = [
     [p('a', 'Video A', 'video'), p('b', 'Video B', 'video'), p('t', 'Time', 'data')], [p('out', 'Video', 'video')]),
 ];
 
-// ── AI Pieces ─────────────────────────────────────────────────────────────────
-
 const AI_PIECES: PieceManifest[] = [
   piece('ai.chat', 'AI Chat', 'AI', 'Conversational AI panel', 'processor',
     [p('prompt', 'Prompt', 'data')], [p('response', 'Response', 'data')]),
@@ -165,8 +157,6 @@ const AI_PIECES: PieceManifest[] = [
   piece('ai.bot-detector', 'Bot Detector', 'AI', 'Swipe-physics bot detection', 'processor',
     [p('swipes', 'Swipe Data', 'data')], [p('score', 'Bot Score', 'data'), p('blocked', 'Blocked', 'event')]),
 ];
-
-// ── Game Pieces ───────────────────────────────────────────────────────────────
 
 const GAME_PIECES: PieceManifest[] = [
   piece('game.loop', 'Game Loop', 'Game', 'Fixed-timestep game update loop', 'source',
@@ -199,8 +189,6 @@ const GAME_PIECES: PieceManifest[] = [
     [p('state', 'State', 'data')], [p('loaded', 'Loaded State', 'data')]),
 ];
 
-// ── Social Pieces ─────────────────────────────────────────────────────────────
-
 const SOCIAL_PIECES: PieceManifest[] = [
   piece('social.feed', 'Dream Feed', 'Social', 'Scrollable content feed with torridity ranking', 'source',
     [], [p('items', 'Feed Items', 'data'), p('view', 'View', 'video')]),
@@ -227,8 +215,6 @@ const SOCIAL_PIECES: PieceManifest[] = [
   piece('social.marketplace', 'DreamMarketplace', 'Social', 'Publish/browse engine assemblies', 'output',
     [p('assembly', 'Assembly', 'data')], [p('listing', 'Listing', 'data')]),
 ];
-
-// ── Utility Pieces ────────────────────────────────────────────────────────────
 
 const UTILITY_PIECES: PieceManifest[] = [
   piece('util.timer', 'Timer', 'Utility', 'Interval / one-shot timer', 'source',
@@ -269,8 +255,6 @@ const UTILITY_PIECES: PieceManifest[] = [
     [p('views', 'Views', 'data'), p('mass', 'Mass', 'data')], [p('rank', 'Rank', 'data')]),
 ];
 
-// ── Runtime Pieces ────────────────────────────────────────────────────────────
-
 const RUNTIME_PIECES: PieceManifest[] = [
   piece('runtime.dual-hub', 'Dual Runtime Hub', 'Runtime',
     'Bridge between TOO VM (HomeDream) and BOTTOM VM (DreamSpace). Creates two independent buses and forwards messages between sides.',
@@ -292,8 +276,6 @@ const RUNTIME_PIECES: PieceManifest[] = [
   piece('runtime.event-bus', 'Local Event Bus', 'Runtime', 'Isolated createEventBus() instance', 'processor',
     [], [p('bus', 'Bus', 'data')]),
 ];
-
-// ── Full Registry ─────────────────────────────────────────────────────────────
 
 export const PIECE_REGISTRY: PieceManifest[] = [
   ...AUDIO_PIECES,

@@ -1,4 +1,8 @@
 'use client';
+
+import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * DEFUSE RITUAL — fusion of speed-tap + minesweeper.
  *
@@ -7,9 +11,6 @@
  * the safe glyph order — tap them in sequence. Hit a mine → lose 2 seconds
  * AND the brand on your hand grows. Clear all safe tiles before time burns out.
  */
-
-import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const N = 6;
 const TOTAL_TILES = N * N;

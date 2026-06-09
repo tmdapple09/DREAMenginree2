@@ -1,3 +1,6 @@
+import type { FeedItemMedia, UnifiedFeedItem } from '@/types/connector';
+import Parser from 'rss-parser';
+
 /**
  * lib/social/rss-feed.ts
  *
@@ -31,11 +34,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/)
  */
 
-import type { FeedItemMedia, UnifiedFeedItem } from '@/types/connector';
-import Parser from 'rss-parser';
-
-// ── Custom field map ──────────────────────────────────────────────────────
-
 /**
  * rss-parser custom fields we care about for image extraction.
  * `keepArray: true` preserves multi-value elements (e.g. multiple media:content tags).
@@ -49,8 +47,6 @@ const RSS_CUSTOM_FIELDS = {
     ['description', 'description'],
   ],
 };
-
-// ── Provider types ────────────────────────────────────────────────────────
 
 /**
  * Providers that expose public RSS / Atom feeds DREAMengin can parse without
@@ -73,8 +69,6 @@ export type RssProvider =
   | 'tumblr'
   | 'tiktok';
 
-// ── Feed config ───────────────────────────────────────────────────────────
-
 export interface RssFeedConfig {
   /** Provider slug — matches ConnectorDef.id */
   provider: RssProvider;
@@ -91,8 +85,6 @@ export interface RssFeedConfig {
    */
   authorName?: string;
 }
-
-// ── Provider URL builders ─────────────────────────────────────────────────
 
 /**
  * Returns the public RSS feed URL for a YouTube channel.
@@ -312,8 +304,6 @@ export function podcastRssUrl(feedUrl: string): string {
   return feedUrl;
 }
 
-// ── Core parser ───────────────────────────────────────────────────────────
-
 // Lazily-created singleton; each call shares the same Parser instance.
 let _parser: Parser | null = null;
 
@@ -360,8 +350,6 @@ export async function parseRssFeed(
 
   return items.map((item: Record<string, unknown>) => normaliseRssItem(item, config, channelTitle));
 }
-
-// ── Item normaliser ───────────────────────────────────────────────────────
 
 /**
  * Normalises a single rss-parser output item into UnifiedFeedItem.
@@ -412,8 +400,6 @@ export function normaliseRssItem(
   };
 }
 
-// ── Image extraction ──────────────────────────────────────────────────────
-
 /**
  * Extracts the first usable image URL from an rss-parser item.
  *
@@ -424,7 +410,7 @@ export function normaliseRssItem(
  *  4. media:group → media:thumbnail[url]
  *  5. <img src> inside content:encoded / description HTML
  */
- 
+
 export function extractFirstImage(item: Record<string, unknown>): string | null {
   // 1) enclosure
   const enclosure = item.enclosure as { url?: string } | undefined;
@@ -435,7 +421,7 @@ export function extractFirstImage(item: Record<string, unknown>): string | null 
   // 2) media:content (array)
   if (Array.isArray(item.mediaContent)) {
     const url = item.mediaContent.find(
-       
+
       (x: Record<string, unknown>) => (x as { $?: { url?: string } })?.$?.url && isImageLike((x as { $?: { url?: string } }).$!.url!),
     ) as unknown as { $?: { url?: string } } | undefined;
     const urlResult = url?.$?.url;
@@ -447,7 +433,7 @@ export function extractFirstImage(item: Record<string, unknown>): string | null 
 
   // 3) media:thumbnail (array)
   if (Array.isArray(item.mediaThumbnail)) {
-     
+
     const url = (item.mediaThumbnail.find((x: Record<string, unknown>) => (x?.$ as { url?: string } | undefined)?.url) as { $?: { url?: string } } | undefined)?.$?.url;
     if (url) return url;
   }
@@ -474,8 +460,6 @@ export function extractFirstImage(item: Record<string, unknown>): string | null 
 
   return null;
 }
-
-// ── Internal helpers ──────────────────────────────────────────────────────
 
 /**
  * Strips HTML tags and decodes common HTML entities, returning plain text.

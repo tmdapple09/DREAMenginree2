@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from 'react';
+
 // DrEamsPanel.tsx — Dr. Eams user-facing AI chat panel.
 // Available to ALL authenticated users — connects to /api/ai/eams.
 // Dr. Eams is the friendly user companion in the AI triad.
 
 'use client';
-
-import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface DrEamsPanelProps {
   onClose: () => void;
@@ -22,7 +22,6 @@ const QUICK_ACTIONS = [
   { label: '🧩 Add a widget',        prompt: 'How do I add and arrange widgets on my home?' },
 ];
 
-/* ── Dr. Eams avatar ── */
 function DrEamsAvatar({ size = 44 }: {size?: number}) {
   return (
     <div
@@ -45,7 +44,6 @@ function DrEamsAvatar({ size = 44 }: {size?: number}) {
   );
 }
 
-/* ── Typing indicator ── */
 function TypingDots( ){
   return (
     <div style={{ display: 'flex', gap: 4, alignItems: 'center', padding: '10px 14px' }}>

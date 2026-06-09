@@ -1,7 +1,3 @@
-// lib/ai/boogie-verifier.ts
-// THE BOOGIE MAN - Policy Enforcement & Risk Scoring Engine
-// Deterministic verifier for all AI intents
-
 import { createServerClient } from '@/lib/supabase/server';
 import {
     ActorContext,
@@ -14,6 +10,10 @@ import {
     ReasonCode,
 } from '@/types/ai-system';
 import type { SupabaseClient } from '@supabase/supabase-js';
+
+// lib/ai/boogie-verifier.ts
+// THE BOOGIE MAN - Policy Enforcement & Risk Scoring Engine
+// Deterministic verifier for all AI intents
 
 // ============================================================================
 // POLICY CONFIGURATION
@@ -386,7 +386,7 @@ export async function verifyIntents(
   let policy: PolicyVersion = DEFAULT_POLICY;
 
   try {
-     
+
     const { data } = await (supabase as SupabaseClient)
       .from('policy_versions')
       .select('version, rules_json, weights, thresholds')

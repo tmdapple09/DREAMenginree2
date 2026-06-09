@@ -1,4 +1,10 @@
 'use client';
+
+import type { WidgetType } from '@/types/widgets';
+import { ArrowRight, Check, Plug, Search, X } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+
 /**
  * ConnectorWidgetPicker
  * ---------------------
@@ -8,13 +14,6 @@
  * HARD RULE: connectors whose widget type is already in the grid
  * are permanently disabled and cannot be tapped.
  */
-
-import type { WidgetType } from '@/types/widgets';
-import { ArrowRight, Check, Plug, Search, X } from 'lucide-react';
-import Link from 'next/link';
-import { useMemo, useState } from 'react';
-
-// ── Top-10 connector definitions ─────────────────────────────────────────────
 
 export interface PickerConnector {
   id: string;
@@ -123,8 +122,6 @@ export const TOP_10_CONNECTORS: PickerConnector[] = [
     widgetType: 'snapchat',
   },
 ];
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export interface ConnectorWidgetPickerProps {
   /** Widget types already present in the grid — these connectors are DISABLED */
@@ -413,8 +410,6 @@ export default function ConnectorWidgetPicker({
     </>
   );
 }
-
-// ── Connector card ────────────────────────────────────────────────────────────
 
 function ConnectorCard({
   connector, isAdded, onTap,

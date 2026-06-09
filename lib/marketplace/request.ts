@@ -1,3 +1,5 @@
+import { MARKETPLACE_CONTACT_TABLE } from './listings';
+
 /**
  * lib/marketplace/request.ts
  *
@@ -11,12 +13,7 @@
  * Phase 8 §E:   Point 46 — "Request" contact flow routes to real system action
  */
 
-import { MARKETPLACE_CONTACT_TABLE } from './listings';
-
 // Re-export so callers can import from a single file
-export { MARKETPLACE_CONTACT_TABLE };
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type ContactRequestInput = {
   item_id:  string;
@@ -35,8 +32,6 @@ export type ContactRequestValidationResult = {
   valid:  boolean;
   errors: string[];
 };
-
-// ── Validation ────────────────────────────────────────────────────────────────
 
 /** Maximum message length for a contact request. */
 export const CONTACT_REQUEST_MESSAGE_MAX = 1000;
@@ -88,3 +83,5 @@ export function buildContactRequestRecord(
     status:       'pending',
   };
 }
+
+export { MARKETPLACE_CONTACT_TABLE };

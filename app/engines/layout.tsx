@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // SURFACE: dream.shell.EnginesLayout  (framework-mandated basename: layout.tsx)
 /**
  * app/engines/layout.tsx
@@ -8,8 +10,6 @@
  * Each engine provides its own full-screen shell via EnginAppShell.
  * The only shared layer here is the <html> body background color.
  */
-
-import type { ReactNode } from 'react';
 
 export default function EnginesRootLayout({ children }: {children: ReactNode}) {
   return (

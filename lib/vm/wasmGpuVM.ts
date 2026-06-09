@@ -1,3 +1,17 @@
+import { BufferManager } from './bufferManager';
+import { PipelineCache } from './pipelineCache';
+import type {
+    BindGroupHandle,
+    BufferHandle,
+    ComputePipelineDescriptor,
+    PipelineHandle,
+    VMConfig,
+    VMPerformanceCounters,
+    VMState,
+    VMSyscalls,
+} from './types';
+import { DEFAULT_VM_CONFIG } from './types';
+
 /**
  * lib/vm/wasmGpuVM.ts — WASM+GPU Virtual Machine Core
  *
@@ -12,20 +26,6 @@
  * - Pipeline caching and performance counters
  * - Snapshot/restore for state migration
  */
-
-import { BufferManager } from './bufferManager';
-import { PipelineCache } from './pipelineCache';
-import type {
-    BindGroupHandle,
-    BufferHandle,
-    ComputePipelineDescriptor,
-    PipelineHandle,
-    VMConfig,
-    VMPerformanceCounters,
-    VMState,
-    VMSyscalls,
-} from './types';
-import { DEFAULT_VM_CONFIG } from './types';
 
 export class WasmGpuVM {
   private readonly state: VMState;
@@ -178,8 +178,6 @@ export class WasmGpuVM {
     this.pipelineCache.close();
     this.state.device.destroy();
   }
-
-  // ─── Syscall Implementation ────────────────────────────────────────────────
 
   private createSyscalls(): VMSyscalls {
     return {

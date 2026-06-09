@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
@@ -7,9 +6,10 @@ import { ArrowLeft, DollarSign, Info, LayoutGrid, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
+// SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
+
 export default function CreateAdSlotPage( ){
   const [placement, setPlacement] = useState('sidebar_banner');
   const [priceDay, setPriceDay] = useState('5.00');

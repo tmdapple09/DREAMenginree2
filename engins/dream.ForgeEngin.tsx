@@ -1,19 +1,5 @@
 'use client';
 
-/**
- * ForgeEngin — The Meta-Creation Engine
- *
- * A unified launch deck and status matrix for all 8 creative engines.
- * Shows activity pulses, last-opened timestamps, cross-engine linkages,
- * and provides one-tap launch into any engine's Side B.
- *
- * Design: Dark command-center aesthetic. Status cards glow based on
- * activity heat. The grid breathes — hotter engines pulse brighter.
- *
- * Architecture: Follows the same pattern as GameEngin, StarMakerEngin etc.
- * Receives an `onBack` callback to flip back to Side A.
- */
-
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import BrandLogo from '@/components/dream.BrandLogo';
 import AIBuilderPanel from '@/components/forge/dream.panel.AIBuilderPanel';
@@ -91,7 +77,20 @@ import {
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
+/**
+ * ForgeEngin — The Meta-Creation Engine
+ *
+ * A unified launch deck and status matrix for all 8 creative engines.
+ * Shows activity pulses, last-opened timestamps, cross-engine linkages,
+ * and provides one-tap launch into any engine's Side B.
+ *
+ * Design: Dark command-center aesthetic. Status cards glow based on
+ * activity heat. The grid breathes — hotter engines pulse brighter.
+ *
+ * Architecture: Follows the same pattern as GameEngin, StarMakerEngin etc.
+ * Receives an `onBack` callback to flip back to Side A.
+ */
+
 const FORGE = {
   bg:     '#0a0a0f',
   panel:  'rgba(255,255,255,0.04)',
@@ -102,8 +101,6 @@ const FORGE = {
   gold:   '#c8981a',
   glow:   'rgba(239,68,68,0.18)',
 } as const;
-
-// ── Pulse Monitor — channel color-coding for cross-engine event feed ──────────
 
 // All typed events per channel — used for exhaustive bridge subscription.
 // ForgeEngin is the meta-layer; it watches every event on every channel.
@@ -1384,7 +1381,7 @@ export default function ForgeEngin({ onBack }: Props) {
             FORGE PHILOSOPHY
           </div>
           <div style={{ fontSize: 13, lineHeight: 1.7, color: FORGE.dim }}>
-            Every engine in DREAMengin is a standalone creative tool. The Forge is the meta-layer — 
+            Every engine in DREAMengin is a standalone creative tool. The Forge is the meta-layer —
             it watches them all, shows their pulse, and helps you orchestrate cross-engine workflows.
             The Forge never replaces an engine. It connects them.
           </div>
@@ -1399,8 +1396,6 @@ export default function ForgeEngin({ onBack }: Props) {
     </ArtifactSlot>
   );
 }
-
-// ── Sub-components ────────────────────────────────────────────────────────────
 
 function PulseCard({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent: string }) {
   return (
@@ -1573,8 +1568,6 @@ function EngineDetailPanel({ engine, heat, lastActive, activity }: { engine: Eng
   );
 }
 
-// ── Cross-Engine Linkages ─────────────────────────────────────────────────────
-
 const LINKAGES = [
   {
     engines: ['music', 'games'] as const,
@@ -1602,8 +1595,6 @@ const LINKAGES = [
     desc: 'StarMaker stems and mixes embed directly into ContentEngin posts.',
   },
 ] as const;
-
-// ── Suggestion Card ───────────────────────────────────────────────────────────
 
 function SuggestionCard({ suggestion }: {suggestion: ForgeSuggestion}) {
   return (
@@ -1650,8 +1641,6 @@ function SuggestionCard({ suggestion }: {suggestion: ForgeSuggestion}) {
     </div>
   );
 }
-
-// ── Active Workflow Panel ─────────────────────────────────────────────────────
 
 function ActiveWorkflowPanel({ run, allWorkflows, onCompleteStep, onFailStep, onDismiss }: { run: WorkflowRunState; allWorkflows: readonly ForgeWorkflow[]; onCompleteStep: (i: number) => void; onFailStep: (i: number) => void; onDismiss: () => void }) {
   const workflow = allWorkflows.find((w) => w.id === run.workflowId);
@@ -1790,8 +1779,6 @@ function ActiveWorkflowPanel({ run, allWorkflows, onCompleteStep, onFailStep, on
     </div>
   );
 }
-
-// ── Workflow Card ─────────────────────────────────────────────────────────────
 
 function WorkflowCard({ workflow, onStart, onDelete, isCustom }: { workflow: ForgeWorkflow; onStart?: () => void; onDelete?: () => void; isCustom?: boolean }) {
   const [expanded, setExpanded] = useState(false);

@@ -26,3 +26,4 @@ export function useDreamNav(): DreamNavCtx {
   if (!ctx) throw new Error('useDreamNav must be used inside <DreamNavProvider>');
   return ctx;
 }
+

@@ -1,16 +1,5 @@
 'use client';
 
-/**
- * ForgeDreamCanvas — Visual Assembly Builder
- *
- * - Left sidebar: component inventory grouped by category
- * - Central canvas: draggable piece boxes with input/output ports
- * - Wiring: click output port → drag to input port → wire created
- * - Test button: runAssembly via sandbox
- * - Save: serializeAssembly → JSON download
- * - Uses local event bus, NOT global bridge
- */
-
 import {
     useCallback,
     useEffect,
@@ -35,8 +24,19 @@ import {
     type AtomicPiece,
     type Wire,
 } from '../lib/forge/engineForge';
-
 import { toErrorMessage } from '@/lib/utils';
+
+/**
+ * ForgeDreamCanvas — Visual Assembly Builder
+ *
+ * - Left sidebar: component inventory grouped by category
+ * - Central canvas: draggable piece boxes with input/output ports
+ * - Wiring: click output port → drag to input port → wire created
+ * - Test button: runAssembly via sandbox
+ * - Save: serializeAssembly → JSON download
+ * - Uses local event bus, NOT global bridge
+ */
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface PlacedPiece {
@@ -53,15 +53,11 @@ interface PendingWire {
   my: number;
 }
 
-// ─── Default sandbox ──────────────────────────────────────────────────────────
-
 const DEFAULT_SANDBOX: AssemblySandbox = {
   execute(piece, inputs) {
     return { pieceId: piece.id, name: piece.name, inputs, output: `[${piece.name} output]` };
   },
 };
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function ForgeDreamCanvas( ){
   const [activeCategory, setActiveCategory] = useState<ComponentCategory>('Audio & Music');
@@ -88,7 +84,6 @@ export function ForgeDreamCanvas( ){
     return () => bus.off('executed', handleExec);
   }, []);
 
-  // ── Sidebar: add piece to canvas ──
   const addPiece = useCallback((comp: AtomicComponent) => {
     const piece: AtomicPiece = atomicPieceFromComponent(comp, 'any');
     setPlaced((prev) => [
@@ -97,7 +92,6 @@ export function ForgeDreamCanvas( ){
     ]);
   }, []);
 
-  // ── Piece drag (mouse) ──
   const startDrag = useCallback(
     (e: MouseEvent<HTMLDivElement>, pieceId: string) => {
       e.stopPropagation();
@@ -146,7 +140,6 @@ export function ForgeDreamCanvas( ){
     if (pendingWire) setPendingWire(null);
   }, [pendingWire]);
 
-  // ── Port click → start wiring ──
   const startWire = useCallback(
     (e: MouseEvent, fromPieceId: string, fromPortId: string) => {
       e.stopPropagation();
@@ -163,7 +156,6 @@ export function ForgeDreamCanvas( ){
     []
   );
 
-  // ── Input port click → complete wire ──
   const completeWire = useCallback(
     (e: MouseEvent, toPieceId: string, toPortId: string) => {
       e.stopPropagation();
@@ -183,14 +175,12 @@ export function ForgeDreamCanvas( ){
     [pendingWire]
   );
 
-  // ── Validate ──
   const validate = useCallback(() => {
     const pieces = placed.map((p) => p.piece);
     const result = validateAssembly(pieces, wires);
     setValidationMsg(result.valid ? '✅ Valid assembly' : result.errors.join('\n'));
   }, [placed, wires]);
 
-  // ── Run ──
   const run = useCallback(() => {
     const pieces = placed.map((p) => p.piece);
     try {
@@ -204,7 +194,6 @@ export function ForgeDreamCanvas( ){
     }
   }, [placed, wires]);
 
-  // ── Save ──
   const save = useCallback(() => {
     const pieces = placed.map((p) => p.piece);
     const json   = serializeAssembly({ id: `forge_${Date.now()}`, pieces, wires });
@@ -217,7 +206,6 @@ export function ForgeDreamCanvas( ){
     URL.revokeObjectURL(url);
   }, [placed, wires]);
 
-  // ── Save to Supabase ──
   const saveToSupabase = useCallback(async (publish = false) => {
     const pieces = placed.map((p) => p.piece);
     const json   = serializeAssembly({ id: `forge_${Date.now()}`, pieces, wires });
@@ -246,7 +234,6 @@ export function ForgeDreamCanvas( ){
     }
   }, [placed, wires]);
 
-  // ── Clear ──
   const clear = useCallback(() => {
     setPlaced([]);
     setWires([]);
@@ -254,8 +241,6 @@ export function ForgeDreamCanvas( ){
     setRunResult('');
     setValidationMsg('');
   }, []);
-
-  // ─── Render ────────────────────────────────────────────────────────────────
 
   const categoryPieces = getByCategory(activeCategory);
 

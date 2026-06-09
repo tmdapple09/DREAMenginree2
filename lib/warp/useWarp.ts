@@ -1,5 +1,8 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { WarpEffect, WarpEngine, WarpEngineOptions } from './warpEngine';
+
 /**
  * useWarp — React hook that drives a WarpEngine on an HTML5 Canvas.
  *
@@ -7,9 +10,6 @@
  *   const { canvasRef, isRunning, toggle, setEffect } = useWarp({ effect: 'flow' });
  *   return <canvas ref={canvasRef} />;
  */
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { WarpEffect, WarpEngine, WarpEngineOptions } from './warpEngine';
 
 // Passive 30 fps cap (≈33.33 ms/frame). Keeps the ambient effect smooth
 // while ~halving CPU/GPU/battery cost on mobile vs. an uncapped rAF loop.
@@ -45,7 +45,7 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
   // Initialise engine once
   useEffect(() => {
     engineRef.current = new WarpEngine(engineOpts);
-     
+
   }, []);
 
   // Resize handler

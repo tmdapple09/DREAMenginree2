@@ -35,8 +35,6 @@ export interface SentinelEntry {
   storedAt: number;
 }
 
-// ── DB helpers ─────────────────────────────────────────────────────────────────
-
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
@@ -144,8 +142,6 @@ export async function checkSentinels(): Promise<string[]> {
   return missing;
 }
 
-// ── Improvement 52: listStoredOriginals ──────────────────────────────────────
-
 /**
  * Return all OriginalRecords currently in IndexedDB.
  * Useful for building a "My stored originals" management UI.
@@ -159,8 +155,6 @@ export async function listStoredOriginals(): Promise<OriginalRecord[]> {
     req.onerror = () => reject(req.error);
   });
 }
-
-// ── Improvement 53: cleanupExpiredOriginals ───────────────────────────────────
 
 /**
  * Remove all OriginalRecords older than `maxAgeMs` milliseconds.
@@ -176,8 +170,6 @@ export async function cleanupExpiredOriginals(maxAgeMs: number): Promise<string[
   }
   return expired.map((r) => r.assetId);
 }
-
-// ── Improvement 54: getStorageStats ──────────────────────────────────────────
 
 export interface StorageStats {
   count: number;
@@ -204,8 +196,6 @@ export async function getStorageStats(): Promise<StorageStats> {
     newestStoredAt: Math.max(...timestamps),
   };
 }
-
-// ── Improvement 55: hasOriginal ───────────────────────────────────────────────
 
 /**
  * Returns true when an original with the given assetId exists in IndexedDB.

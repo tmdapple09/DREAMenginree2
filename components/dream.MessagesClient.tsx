@@ -97,7 +97,6 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
   const supabase = createClient();
   const router = useRouter();
 
-  // ── Universal search + Dr. Eams toggle (shared with DreamDM Bar) ──────────
   const { results: searchSuggestions, isSearching: isSuggesting, drEamsMode, toggleDrEams, clearResults: clearSuggestions } =
     useDreamSearch(searchQuery);
 
@@ -125,7 +124,7 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
   // Only re-run when conversation changes. `draft` is intentionally excluded:
   // we read it once on conversation select; subsequent draft changes are driven
   // by user input via handleMessageChange/handleSubjectChange.
-   
+
   }, [selectedConv?.id]);
 
   useEffect(() => {

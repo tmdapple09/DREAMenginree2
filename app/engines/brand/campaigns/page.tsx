@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesBrandCampaigns  (framework-mandated basename: page.tsx)
 import CampaignsPanel from '@/components/engines/brand/panels/dream.panel.CampaignsPanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -6,6 +5,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesBrandCampaigns  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Campaigns – BrandingEngin', description: 'Campaign ROI calculator and manager.' };
 

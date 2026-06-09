@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+
 /**
  * dream.QuantumCircuitCanvas — shared engin component.
  *
@@ -27,8 +29,6 @@
  * Performance:  RAF runs only while `active`; freezes on idle to save battery.
  */
 
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-
 // A complex number is a pair [real, imaginary].
 type C = [number, number];
 
@@ -38,7 +38,6 @@ function cmag2([r, i]: C): number { return r * r + i * i; }
 
 const IS2 = 1 / Math.SQRT2; // 1/√2
 
-// ── Quantum gates (2×2 unitary matrices, row-major: [u00, u01, u10, u11]) ──────
 type Gate = [C, C, C, C];
 
 const GATE_H: Gate = [[IS2, 0], [IS2, 0], [IS2, 0], [-IS2, 0]];
@@ -59,7 +58,6 @@ function gateRz(theta: number): Gate {
   return [[c, -s], [0, 0], [0, 0], [c, s]];
 }
 
-// ── State vector ───────────────────────────────────────────────────────────────
 // A pure n-qubit state is 2^n complex amplitudes. Basis ordering: qubit 0 is MSB.
 // e.g. |q0 q1 q2⟩ = |010⟩ → index 2 (binary 010).
 type SV = C[];
@@ -104,7 +102,6 @@ function applyCNOT(sv: SV, n: number, ctrl: number, tgt: number): SV {
   return next;
 }
 
-// ── Gate operation types ───────────────────────────────────────────────────────
 export type GateOp =
   | { kind: 'H';  q: number; label: string }
   | { kind: 'Rx' | 'Ry' | 'Rz'; q: number; theta: number; label: string }
@@ -118,7 +115,6 @@ function applyOp(sv: SV, n: number, op: GateOp): SV {
   return applyGate1(sv, n, op.q, gateRz(op.theta)); // Rz
 }
 
-// ── Circuit builders ───────────────────────────────────────────────────────────
 //
 // QAOA (p=1): cost unitary U_C(γ) ∘ mixer U_B(β)
 //   U_C uses Rz(γ) on each qubit and CNOT pairs to encode the QUBO cost.
@@ -210,7 +206,6 @@ function makeCircuit(n: number, algorithm: string, ansatz: string): GateOp[] {
   return buildRealAmplitudes(n, t1, t2);
 }
 
-// ── Measurement result type ────────────────────────────────────────────────────
 export interface QuantumMeasurementResult {
   /** Full probability distribution over all 2^n basis states. */
   probabilities: number[];
@@ -240,7 +235,6 @@ function buildMeasurementResult(ps: number[], n: number): QuantumMeasurementResu
   };
 }
 
-// ── Greedy gate-column scheduler ───────────────────────────────────────────────
 // Assigns each gate to the earliest column where none of its qubits are occupied.
 function scheduleColumns(ops: GateOp[], n: number): number[] {
   const lastCol = new Array<number>(n).fill(-1);
@@ -252,7 +246,6 @@ function scheduleColumns(ops: GateOp[], n: number): number[] {
   });
 }
 
-// ── Canvas renderer ────────────────────────────────────────────────────────────
 const BG_COLOR   = 'rgba(7, 10, 17, 0.98)';
 const WIRE_COLOR = '#1a2535';
 const DIM_COLOR  = '#2d3d52';
@@ -350,7 +343,6 @@ function renderFrame(
   const gateH     = Math.min(13, wireSpacing * 0.58);
   const gateW     = Math.min(22, colW * 0.75);
 
-  // ── Qubit labels + wires ──────────────────────────────────────────────────
   for (let q = 0; q < n; q++) {
     const y = (wireYs[q] as number);
     ctx.fillStyle = '#5a7a9a';
@@ -363,7 +355,6 @@ function renderFrame(
     ctx.beginPath(); ctx.moveTo(LEFT - 4, y); ctx.lineTo(W - RIGHT, y); ctx.stroke();
   }
 
-  // ── Gate symbols ──────────────────────────────────────────────────────────
   for (let i = 0; i < ops.length; i++) {
     const op     = ops[i];
     const col    = cols[i];
@@ -379,14 +370,12 @@ function renderFrame(
     }
   }
 
-  // ── Measure symbols at end of each wire ───────────────────────────────────
   const mx    = W - RIGHT + 10;
   const done  = step >= ops.length;
   for (let q = 0; q < n; q++) {
     drawMeasureBox(ctx, mx, (wireYs[q] as number), 6, done ? accent : DIM_COLOR);
   }
 
-  // ── Probability histogram ─────────────────────────────────────────────────
   const ps    = measurementProbs(sv);
   const count = 1 << n;
   const barW  = (W - 6) / count;
@@ -427,7 +416,6 @@ function renderFrame(
   }
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
 export interface QuantumCircuitCanvasProps {
   active: boolean;
   accentColor: string;
@@ -531,4 +519,3 @@ export default function QuantumCircuitCanvas({
     />
   );
 }
-

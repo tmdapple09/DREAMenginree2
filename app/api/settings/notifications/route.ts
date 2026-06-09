@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/settings/notifications/route.ts
  *
@@ -12,13 +18,6 @@
  *   - Requires authenticated user; returns 401 otherwise
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -26,7 +25,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   const { data, error } = await db
@@ -39,7 +37,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
-   
   const notifications = (data?.data as Record<string, unknown>)?.notifications ?? null;
   return NextResponse.json({ ok: true, notifications });
 }
@@ -62,7 +59,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Invalid settings object' }, { status: 400 });
   }
 
-   
   const db2 = supabase as SupabaseClient;
 
   // Fetch existing settings first to merge
@@ -72,7 +68,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id)
     .maybeSingle();
 
-   
   const currentData = (existing?.data as Record<string, unknown>) ?? {};
   const merged = { ...currentData, notifications: body };
 

@@ -1,8 +1,4 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
-
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/EnginBaseState.ts.
 
@@ -18,13 +14,7 @@
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel owns state.
  */
 
-// ─── Lifecycle ────────────────────────────────────────────────────────────────
-
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -40,15 +30,9 @@ const DOMAIN_OBJECT_KEYS = new Set([
   'data',
 ]);
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -59,8 +43,6 @@ export type EnginLifecycle =
   | 'paused'
   | 'stopping'
   | 'stopped';
-
-// ─── JSON-safe runtime values ────────────────────────────────────────────────
 
 export type JsonPrimitive = string | number | boolean | null;
 
@@ -73,8 +55,6 @@ export interface JsonObject {
 export type JsonArray = readonly JsonValue[];
 
 type RuntimeInspectableValue = unknown;
-
-// ─── Universal domain object envelope ────────────────────────────────────────
 
 /** Explicit visibility for every runtime-owned domain object. */
 export type DomainVisibility = 'local' | 'shared' | 'global';
@@ -108,8 +88,6 @@ export interface CreateDomainObjectInput<
   now?: string;
 }
 
-// ─── Base state record ────────────────────────────────────────────────────────
-
 /**
  * EnginBaseState — the immutable core state owned by every engine instance.
  *
@@ -128,8 +106,6 @@ export interface EnginBaseState<TDomain extends JsonObject = JsonObject> {
   /** Arbitrary key-value bag owned by the active rule-set. */
   readonly domain: Readonly<TDomain>;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -250,8 +226,6 @@ export function isEnginBaseState(
   );
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
 /** Create the initial base state for an engine. */
 export function createBaseState(enginId: string): EnginBaseState {
   return {
@@ -280,14 +254,8 @@ export function patchBaseState<TDomain extends JsonObject = JsonObject>(
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

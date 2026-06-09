@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamCreate  (framework-mandated basename: page.tsx)
 import OpenDaydreamSideBButton from '@/components/daydream/dream.OpenDaydreamSideBButton';
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
@@ -10,6 +9,8 @@ import { PlusCircle, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamCreate  (framework-mandated basename: page.tsx)
 
 const WIDGETS: DaydreamWidget[] = [
   { id: 'note',      emoji: '📝', label: 'Quick Note',   desc: 'Capture a thought instantly',  color: '#f59e0b', href: '/engines/create/editor' },
@@ -103,4 +104,3 @@ export default async function CreateDaydreamPage( ){
     </DaydreamShell>
   );
 }
-

@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.DreamEffects  (framework-mandated basename: page.tsx)
 
 import { useGsapEntrance } from '@/lib/gsap/useGsapEntrance';
 import { cn } from '@/lib/utils';
@@ -7,6 +6,8 @@ import { motion } from 'framer-motion';
 import { Layers, Monitor, Sparkles, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useRef } from 'react';
+
+// SURFACE: dreamsurface.DreamEffects  (framework-mandated basename: page.tsx)
 
 /* Lazy-load the R3F scene so the heavy Three.js bundle is only pulled
    when the user actually visits this page. SSR is disabled because
@@ -16,7 +17,6 @@ const DreamScene = dynamic(
   { ssr: false },
 );
 
-/* ------------------------------------------------------------------ */
 /*  Feature cards shown below the 3-D scene                            */
 /* ------------------------------------------------------------------ */
 const features = [
@@ -42,7 +42,6 @@ const features = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
 /*  Page component                                                     */
 /* ------------------------------------------------------------------ */
 export default function DreamEffectsPage( ){
@@ -54,7 +53,6 @@ export default function DreamEffectsPage( ){
     y: 26,
     ease: 'power3.out',
   });
-
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white">

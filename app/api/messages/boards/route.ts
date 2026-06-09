@@ -3,7 +3,6 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-
 const PostSchema = z.object({
   board_id: z.string().uuid(),
   content: z.string().min(1).max(5000),

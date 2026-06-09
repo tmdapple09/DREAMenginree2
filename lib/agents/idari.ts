@@ -1,3 +1,5 @@
+import type { IDARiAgent } from "@/types/ai";
+
 // lib/agents/idari.ts
 // Section 13: IDARi — Admin AI: Debugger / Overseer
 //
@@ -6,8 +8,6 @@
 //
 // Output format: patch plans (cause → impact → fix → verification).
 // See requirements #1–13, #23 from the IDARi system spec.
-
-import type { IDARiAgent } from "@/types/ai";
 
 export const IDARI_EVENT = "dreamengin:idari";
 
@@ -26,11 +26,9 @@ export interface IDARiResult {
   details?: Record<string, unknown>;
 }
 
-// ---------------------------------------------------------------------------
 // PatchPlan — IDARi's primary output format (req #11, #12, #13).
 // Every fix is expressed as: cause → impact → fix → verification.
 // Rollback steps are required for any change rated "high" or "critical".
-// ---------------------------------------------------------------------------
 
 export type PatchRisk = "low" | "medium" | "high" | "critical";
 
@@ -80,10 +78,8 @@ export function createPatchPlan(
   return { ...plan, created_at: new Date().toISOString() };
 }
 
-// ---------------------------------------------------------------------------
 // Generation Law — Phase 8 runtime-complete scope enforcement.
 // Provides deterministic pre-flight scoring used by IDARi system instructions.
-// ---------------------------------------------------------------------------
 
 export type GenerationLawMode = "CREATE" | "CONFORM" | "PATCH_ONLY";
 
@@ -184,11 +180,9 @@ export function formatGenerationLawLoadCheck(
   return `LOAD_CHECK: ${assessment.score.toFixed(1)} | MODE: ${assessment.mode}`;
 }
 
-// ---------------------------------------------------------------------------
 // KnownIssue — IDARi's "known issues" log (req #23).
 // Issues that are identified but not yet patched are tracked here so nothing
 // gets silently dropped.
-// ---------------------------------------------------------------------------
 
 export type KnownIssueStatus = "open" | "in_progress" | "resolved" | "wont_fix";
 
@@ -230,9 +224,7 @@ export function updateKnownIssueStatus(
   };
 }
 
-// ---------------------------------------------------------------------------
 // Agent factory + event bus (existing, unchanged).
-// ---------------------------------------------------------------------------
 
 export function createIDARiAgent(widgetId?: string): IDARiAgent {
   return {
@@ -266,11 +258,9 @@ export function onIDARiEvent(
   return () => window.removeEventListener(IDARI_EVENT, listener);
 }
 
-// ---------------------------------------------------------------------------
 // SpecCheck — IDARi verifies spec requirements before building or upgrading
 // any part of the platform (mirrors portfolio-optimizer "build" job pattern).
 // Every build / upgrade cycle must pass spec-check before changes are applied.
-// ---------------------------------------------------------------------------
 
 /** Status of a single spec requirement. */
 export type SpecRequirementStatus = "met" | "partial" | "missing";
@@ -329,12 +319,10 @@ export function evaluateSpecRequirements(
   };
 }
 
-// ---------------------------------------------------------------------------
 // VercelBuildResult — IDARi records whether the codebase builds cleanly on the
 // Vercel-equivalent runtime (mirrors portfolio-optimizer "optimize" job that
 // runs only after the "build" job passes).
 // 2026 target runtime: Node 24, pnpm 10.30.0, Next.js 16+.
-// ---------------------------------------------------------------------------
 
 /** Known 2026 Vercel-compatible runtime targets (docs/ARCHITECTURE.md §10). */
 export const VERCEL_2026_RUNTIME = {

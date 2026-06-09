@@ -1,3 +1,16 @@
+import { blueskyVerify } from '@/lib/connectors/providers/bluesky';
+import { githubVerify } from '@/lib/connectors/providers/github';
+import { mastodonVerify } from '@/lib/connectors/providers/mastodon';
+import { nostrVerify } from '@/lib/connectors/providers/nostr';
+import { redditVerify } from '@/lib/connectors/providers/reddit';
+import { youtubeVerify } from '@/lib/connectors/providers/youtube';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { ConnectorConnectResponse } from '@/types/connector';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/connectors/[provider]/connect/route.ts
  *
@@ -12,26 +25,13 @@
  * ARCHITECTURE.md §5 — Privacy and projection boundaries.
  */
 
-import { blueskyVerify } from '@/lib/connectors/providers/bluesky';
-import { githubVerify } from '@/lib/connectors/providers/github';
-import { mastodonVerify } from '@/lib/connectors/providers/mastodon';
-import { nostrVerify } from '@/lib/connectors/providers/nostr';
-import { redditVerify } from '@/lib/connectors/providers/reddit';
-import { youtubeVerify } from '@/lib/connectors/providers/youtube';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { ConnectorConnectResponse } from '@/types/connector';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
 ): Promise<NextResponse<ConnectorConnectResponse>> {
   const { provider } = await params;
   const supabase = await createServerClient();
-   
+
   const db = supabase as SupabaseClient;
 
   // Auth check — only authenticated users may connect
@@ -49,7 +49,6 @@ export async function POST(
 
   const credentials = (body as { credentials?: Record<string, string> }).credentials ?? (body as Record<string, string>);
 
-  // ── Verify credentials with provider ───────────────────────────────────
   let verifiedAt: string | null = null;
   let lastError: string | null = null;
   let status: ConnectorConnectResponse['status'] = 'error';
@@ -98,7 +97,6 @@ export async function POST(
     status = 'error';
   }
 
-  // ── Upsert connector_accounts row ──────────────────────────────────────
   // token_blob stores credentials server-side only.
   // We never return token_blob in the response.
   // db is cast to `any` because connector_accounts is a new table not yet in the generated Supabase types.

@@ -15,9 +15,10 @@
  */
 
 // Shared
-export * from './shared';
 
 // Engine apps
+
+export * from './shared';
 export * from './brand';
 export * from './code';
 export * from './create';

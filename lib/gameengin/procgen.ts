@@ -20,8 +20,6 @@ function mulberry32(seed: number): () => number {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface WFCTile {
   id: string;
   /** Edge socket descriptors per side (N, E, S, W). */
@@ -129,8 +127,6 @@ export class WaveFunctionCollapse {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export type BiomeId = 'plains' | 'forest' | 'desert' | 'tundra' | 'ocean' | 'mountain';
 
 export interface BiomeSample {
@@ -192,8 +188,6 @@ export class BiomeSynthesizer {
     return total / max;
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface ChunkJob {
   id: string;

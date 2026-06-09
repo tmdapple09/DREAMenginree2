@@ -1,16 +1,15 @@
-// app/api/blocks/route.ts
-// Block / unblock users and retrieve the caller's block list.
-// RLS on user_blocks enforces owner-only access at the DB layer.
-// Constitution Art. I Rule 1 — privacy by default; blocks are private.
-
 import { jsonApiError } from '@/lib/api/route';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
+// app/api/blocks/route.ts
+// Block / unblock users and retrieve the caller's block list.
+// RLS on user_blocks enforces owner-only access at the DB layer.
+// Constitution Art. I Rule 1 — privacy by default; blocks are private.
+
 const BlockBodySchema = z.object({
   blocked_id: z.string().uuid(),
 });

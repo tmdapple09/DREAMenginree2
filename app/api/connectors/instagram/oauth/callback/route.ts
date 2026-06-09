@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/instagram/oauth/callback/route.ts
  *
@@ -19,12 +25,6 @@
  * AXIOM 4 — Security by Default: token never returned to the browser.
  * ARCHITECTURE.md §3 — All OAuth token exchange is server-side.
  */
-
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
 
 const IG_TOKEN_URL      = 'https://api.instagram.com/oauth/access_token';
 const IG_LONG_TOKEN_URL = 'https://graph.instagram.com/access_token';
@@ -52,14 +52,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const origin = url.origin;
   const connectorsUrl = `${origin}/connectors`;
 
-  // ── Handle provider-side errors ──────────────────────────────────────────
   if (error) {
     const dest = new URL(connectorsUrl);
     dest.searchParams.set('ig_error', error);
     return NextResponse.redirect(dest);
   }
 
-  // ── CSRF state check ────────────────────────────────────────────────────
   const cookieStore = await cookies();
   const storedState = cookieStore.get('ig_oauth_state')?.value ?? '';
   cookieStore.delete('ig_oauth_state');
@@ -70,7 +68,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Auth check ───────────────────────────────────────────────────────────
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
   if (!user) {
@@ -89,7 +86,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Step 1: Exchange code for short-lived token ──────────────────────────
   let shortToken: string;
   try {
     const body = new URLSearchParams({
@@ -115,7 +111,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Step 2: Exchange short-lived for long-lived token (60 days) ──────────
   let longToken: string;
   let expiresIn = 5184000; // 60 days default
   try {
@@ -136,8 +131,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     longToken = shortToken;
   }
 
-  // ── Store token in connector_accounts ────────────────────────────────────
-   
   const db = supabase as SupabaseClient;
   const now = new Date().toISOString();
 
@@ -167,7 +160,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Success ───────────────────────────────────────────────────────────────
   const dest = new URL(connectorsUrl);
   dest.searchParams.set('ig_connected', '1');
   return NextResponse.redirect(dest);

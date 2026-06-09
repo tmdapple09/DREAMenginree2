@@ -2,8 +2,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 const DEFAULT_LAYOUT = { home: { dreams: [] }, dreamspace: { dreams: [] }, hidden: [] };
 
 function normalizeLayout(input: unknown ){

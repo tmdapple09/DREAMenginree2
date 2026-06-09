@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-
 export const metadata = {
   title: 'ViewProfile – DREAMengin',
   description: 'Preview your public profile exactly as visitors see it.',
@@ -112,7 +111,6 @@ export default async function ViewProfilePage( ){
 
   const profile = rawProfile as unknown as Profile;
 
-  // ── Phase 8 §B Point 21: Query dream_windows with explicit visibility filter ──
   // Only shared/public records are fetched. The query NEVER includes private records.
   // RLS policies on dream_windows enforce this at the DB layer as well.
   let dreamWindowRecords: Array<{
@@ -131,7 +129,6 @@ export default async function ViewProfilePage( ){
     // dream_windows table may not exist yet
   }
 
-  // ── Phase 6 item 8: Consult visibility_mappings as authoritative source ──
   // Per dreamengin_phase6.md point 13: the visibility_mappings table must be
   // consulted before any content is rendered on ViewProfile.
   // If the table has records for this user, they override the widget's own

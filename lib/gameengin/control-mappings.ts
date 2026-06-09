@@ -1,5 +1,8 @@
 'use client';
 
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+
 /**
  * lib/gameengin/control-mappings.ts
  *
@@ -13,9 +16,6 @@
  * Security: owner_id is set server-side via RLS; the insert only succeeds
  *   for the currently authenticated user (AXIOM 4 / SECURITY.md).
  */
-
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
 
 export interface ControlMapping {
   id: string;

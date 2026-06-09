@@ -1,5 +1,17 @@
 'use client';
 
+import type { ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent } from '@/lib/forge/forgeBuild';
+import {
+    canBuildToday,
+    isForgeLogEvent,
+    recordBuildToday,
+    saveForgeBuild,
+    stageForgeArtifact,
+} from '@/lib/forge/forgeBuild';
+import { useCallback, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/forge/useForgeBuild.ts
  *
@@ -11,20 +23,6 @@
  * Architecture: client-side only ('use client'). All AI calls are server-side.
  */
 
-import type { ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent } from '@/lib/forge/forgeBuild';
-import {
-    canBuildToday,
-    isForgeLogEvent,
-    recordBuildToday,
-    saveForgeBuild,
-    stageForgeArtifact,
-} from '@/lib/forge/forgeBuild';
-import { useCallback, useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
-import { toErrorMessage } from '@/lib/utils';
-export type { ForgeBuildState } from '@/lib/forge/forgeBuild';
-
 export interface UseForgeBuildReturn {
   state: import('@/lib/forge/forgeBuild').ForgeBuildState;
   logs: ForgeLogEvent[];
@@ -33,8 +31,6 @@ export interface UseForgeBuildReturn {
   reset: () => void;
   rateLimitError: string | null;
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 /** Map enginId → ForgeArtifactType */
 const ARTIFACT_TYPE_MAP: Record<string, ForgeArtifactType> = {
@@ -59,8 +55,6 @@ function buildArtifact(codeEvent: CodeEvent, enginId: string): ForgeArtifact {
     language: codeEvent.language,
   };
 }
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useForgeBuild(): UseForgeBuildReturn {
   const [state, setState] = useState<import('@/lib/forge/forgeBuild').ForgeBuildState>('idle');
@@ -226,7 +220,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
         setState('error');
       }
     })();
-   
+
   // Intentionally empty: `submit` is a stable function closure that captures the
   // latest `prompt` and `state` values at call time via functional setState patterns.
   // Adding them as dependencies would cause an infinite re-render loop because
@@ -235,3 +229,5 @@ export function useForgeBuild(): UseForgeBuildReturn {
 
   return { state, logs, result, submit, reset, rateLimitError };
 }
+
+export type { ForgeBuildState } from '@/lib/forge/forgeBuild';

@@ -1,3 +1,7 @@
+import type { RealtimePostgresInsertPayload } from '@/engine/io';
+import { createClient } from '@/lib/supabase/client';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * useDreamDMConversations — fetch and subscribe to the current user's DreamDM
  * conversation list.
@@ -10,10 +14,6 @@
  */
 
 'use client';
-
-import type { RealtimePostgresInsertPayload } from '@/engine/io';
-import { createClient } from '@/lib/supabase/client';
-import { useCallback, useEffect, useState } from 'react';
 
 export interface DMConversation {
   id: string;
@@ -57,7 +57,6 @@ export function useDreamDMConversations(userId: string, initial: DMConversation[
 
       if (error || !data) return;
 
-       
       interface ConvRow {
         id: string;
         updated_at: string;

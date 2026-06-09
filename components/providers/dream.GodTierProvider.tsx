@@ -1,5 +1,8 @@
 'use client';
 
+import { useGodTier } from '@/lib/god-tier/useGodTier';
+import { usePathname } from 'next/navigation';
+
 /**
  * GodTierProvider — mounts the useGodTier hook at the app root.
  *
@@ -7,9 +10,6 @@
  * every animation frame, making all --gt-* tokens live everywhere in the app.
  * It has no visible UI of its own; it is purely a side-effect provider.
  */
-
-import { useGodTier } from '@/lib/god-tier/useGodTier';
-import { usePathname } from 'next/navigation';
 
 export default function GodTierProvider( ){
   const pathname = usePathname();

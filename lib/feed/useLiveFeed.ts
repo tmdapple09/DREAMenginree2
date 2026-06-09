@@ -1,3 +1,8 @@
+import type { RealtimePostgresInsertPayload } from '@/engine/io';
+import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
+import { createClient } from '@/lib/supabase/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * lib/feed/useLiveFeed.ts
  *
@@ -28,13 +33,6 @@
 
 'use client';
 
-import type { RealtimePostgresInsertPayload } from '@/engine/io';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
-import { createClient } from '@/lib/supabase/client';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Public types ───────────────────────────────────────────────────────────────
-
 /** Unified feed post shape used by HomeFeed and the realtime hook. */
 export interface FeedPost {
   id: string;
@@ -64,7 +62,6 @@ export interface FeedPost {
   /** Original post URL for connector items (mastodon, youtube, …) */
   permalink?: string;
 
-  // ── DreamR transparency payload ────────────────────────────────────────────
   // Populated by the DreamR feed routes (rankFeed → ScoredPost). All optional
   // because connector items, realtime-arrival posts, and pre-DreamR feeds may
   // not carry them.
@@ -104,8 +101,6 @@ export interface UseLiveFeedReturn {
   updatePost: (id: string, changes: Partial<FeedPost>) => void;
 }
 
-// ── Hook ───────────────────────────────────────────────────────────────────────
-
 export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFeedReturn {
   const [posts, setPosts] = useState<FeedPost[]>(initialPosts);
   // Posts from other users held in a queue until the user taps the banner
@@ -115,8 +110,6 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
   // Keep a stable ref to the channel so we can tear it down cleanly
   const postsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
   const itemsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
-
-  // ── Stable callbacks ────────────────────────────────────────────────────────
 
   const flushNew = useCallback(() => {
     setQueued((prev) => {
@@ -147,14 +140,11 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, ...changes } : p)));
   }, []);
 
-  // ── Realtime subscriptions ─────────────────────────────────────────────────
-
   useEffect(() => {
     if (!userId) return;
 
     const supabase = createClient();
 
-    // ── Channel 1: app_posts (public posts from any user) ──────────────────
     const postsChannel = supabase
       .channel(`homedream-posts:${userId}`)
       .on(
@@ -180,7 +170,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
               .single();
 
           if (!data) return;
-           
+
           const d = data as any;
 
           const newPost: FeedPost = {
@@ -243,7 +233,6 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
 
     postsChannelRef.current = postsChannel;
 
-    // ── Channel 2: feed_items (Widget System V2 schema: preview/title) ─────
     const itemsChannel = supabase
       .channel(`homedream-items:${userId}`)
       .on(
@@ -255,7 +244,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
         },
         (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
           const raw = payload.new as any;
-           
+
           const p = (raw.preview ?? {}) as any;
           const firstMedia = Array.isArray(p.media) && p.media.length > 0 ? p.media[0] : null;
 

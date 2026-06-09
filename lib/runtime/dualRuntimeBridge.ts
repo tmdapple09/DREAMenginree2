@@ -1,18 +1,13 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { invokeMadMaxiSnapshotTransfer } from '@/lib/runtime/madMaxiSnapshotBridge';
+import { EventEmitter } from 'events';
 
 // Framework directives stay physically first when required.
 
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
 // Runtime file: lib/runtime/dualRuntimeBridge.ts.
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -24,14 +19,11 @@ const _RETURNS = [0.12, 0.09, 0.15], _SIGMA = [0.20, 0.15, 0.25];
 
 const _CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]];
 
-// ── Inter-VM ring buffer constants ────────────────────────────────────────────
 const VM_QUEUE_CAPACITY = 256;
 
 const VM_MESSAGE_SIZE   = 1024;
 
 const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; // +8 for producer/consumer indices
-
-// ── Shared memory bus constants ───────────────────────────────────────────────
 
 const ENTRY_WORDS = 4; // channel:event, payloadPtr, payloadLen, reserved
 
@@ -45,35 +37,21 @@ const POLL_INTERVAL_MS = 0; // as fast as possible; the timer is coalesced by th
 
 const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
 
-// ── Improvement 31: durable queue max size ────────────────────────────────────
 /** Maximum number of entries kept in the durable queue. Oldest dropped entries
  *  are purged first when the limit is exceeded to prevent unbounded memory growth. */
 const MAX_DURABLE_QUEUE_SIZE = 200;
 
-// ── Improvement 35: emission counter ─────────────────────────────────────────
 /** Monotonically increasing count of all emissions (emit + emitDurable). */
 let _totalEmissions = 0;
 
 /** Run eviction every N emissions to avoid the per-emit overhead on busy buses. */
 const EVICT_EVERY_N = 50;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import { invokeMadMaxiSnapshotTransfer } from '@/lib/runtime/madMaxiSnapshotBridge';
-
-import { EventEmitter } from 'events';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Channel types ──────────────────────────────────────────────────────────────
 
 export type DualRuntimeChannel =
   | 'code'
@@ -87,10 +65,8 @@ export type DualRuntimeChannel =
   | 'compute'
   | 'shared_dream';
 
-// ── VM region ─────────────────────────────────────────────────────────────────
 export type VMRegion = 'top' | 'bottom';
 
-// ── Quantum compute result ────────────────────────────────────────────────────
 export interface QuantumComputeResult {
   algorithm: string;
   ansatz: string;
@@ -103,7 +79,6 @@ export interface QuantumComputeResult {
   computedAt: number;
 }
 
-// ── VM workload ───────────────────────────────────────────────────────────────
 export interface VMWorkload {
   id: string;
   region: VMRegion;
@@ -112,7 +87,6 @@ export interface VMWorkload {
   priority: number;
 }
 
-// ── Quantum circuit compute engine (inline) ───────────────────────────────────
 // Pure complex-number state vector simulation; no canvas, no components.
 // Dispatched automatically on bridge.emit('lab', 'quantum:run', payload).
 
@@ -124,8 +98,6 @@ type _SV = _C[];
 
 type _Op = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
 
-// ── Event schema types (intentionally loose — channels define their own events) ─
-
 export type ChannelEventKey<_C extends DualRuntimeChannel> = string;
 
 export type ChannelEventPayload<_C extends DualRuntimeChannel, _K extends string> = Record<string, unknown>;
@@ -134,15 +106,11 @@ export type BridgeEventHandler<P = Record<string, unknown>> = (payload: P) => vo
 
 export type UnsubscribeFn = () => void;
 
-// ── Peer state ────────────────────────────────────────────────────────────────
-
 export interface PeerState {
   channel: string;
   subscriberCount: number;
   lastActivityAt: number | null;
 }
-
-// ── Emission record ───────────────────────────────────────────────────────────
 
 export interface AnyBridgeEmission {
   channel: string;
@@ -150,8 +118,6 @@ export interface AnyBridgeEmission {
   payload: Record<string, unknown>;
   emittedAt: number;
 }
-
-// ── Durable delivery types ────────────────────────────────────────────────────
 
 /** Lifecycle of a durable emission. */
 export type AckStatus = 'pending' | 'acked' | 'dropped';
@@ -177,8 +143,6 @@ type WasmExports = {
   reset?: () => void;
   __heap_base?: WebAssembly.Global;
 };
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -296,7 +260,6 @@ class DualRuntimeBridge extends EventEmitter {
   private readonly encoder = new TextEncoder();
   private readonly decoder = new TextDecoder();
 
-  // ── Dual VM upgrade ───────────────────────────────────────────────────────
   private _vmTop:    unknown = null;
   private _vmBottom: unknown = null;
   private _vmInterQueue: {
@@ -327,8 +290,6 @@ class DualRuntimeBridge extends EventEmitter {
       }
     });
   }
-
-  // ── WASM bridge initialisation ─────────────────────────────────────────----
 
   private async initWasm(): Promise<void> {
     if (this.busOnline) return;
@@ -493,8 +454,6 @@ class DualRuntimeBridge extends EventEmitter {
     return true;
   }
 
-  // ── Channel emission ───────────────────────────────────────────────────────
-
   /** Emit an event on a named channel. Primary public API for cross-Engin events. */
   emit(channel: string, event: string, payload: Record<string, unknown>): boolean {
     this.enqueueEnvelope(channel, event, payload);
@@ -513,8 +472,6 @@ class DualRuntimeBridge extends EventEmitter {
     return this.channelState.get(channel) ?? null;
   }
 
-  // ── Event subscriptions ────────────────────────────────────────────────────
-
   /** Subscribe to a specific channel:event. Returns an unsubscribe function. */
   subscribe(
     channel: string,
@@ -530,8 +487,6 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  // ── Peer activity ──────────────────────────────────────────────────────────
-
   /** Subscribe to peer-activity changes. Returns an unsubscribe function. */
   subscribePeerActivity(callback: (peers: ReadonlyArray<PeerState>) => void): UnsubscribeFn {
     this.peerListeners.add(callback);
@@ -544,15 +499,11 @@ class DualRuntimeBridge extends EventEmitter {
     return Array.from(this.peers.values());
   }
 
-  // ── Emission activity ──────────────────────────────────────────────────────
-
   /** Subscribe to all bridge emissions (any channel/event). Used by dreamOSBus. */
   subscribeEventActivity(callback: (emission: AnyBridgeEmission) => void): UnsubscribeFn {
     this.emissionListeners.add(callback);
     return () => { this.emissionListeners.delete(callback); };
   }
-
-  // ── Durable delivery ──────────────────────────────────────────────────────
 
   /**
    * Emit a cross-Engin event that requires delivery acknowledgement.
@@ -636,8 +587,6 @@ class DualRuntimeBridge extends EventEmitter {
     return Array.from(this.durableQueue.values());
   }
 
-  // ── Improvement 34: getStats ──────────────────────────────────────────────
-
   /**
    * Return a point-in-time snapshot of bridge statistics.
    * Useful for health-check endpoints and performance dashboards.
@@ -670,8 +619,6 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  // ── Improvement 36: hasSubscribers ───────────────────────────────────────
-
   /**
    * Returns true when at least one subscriber is active on the given channel.
    * Avoids firing expensive computations when no one is listening.
@@ -679,8 +626,6 @@ class DualRuntimeBridge extends EventEmitter {
   hasSubscribers(channel: string): boolean {
     return (this.peers.get(channel)?.subscriberCount ?? 0) > 0;
   }
-
-  // ── Dual VM API ───────────────────────────────────────────────────────────
 
   /**
    * Initialize the top and bottom WASM+GPU VMs plus the inter-VM
@@ -770,8 +715,6 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  // ── Test / teardown helpers ────────────────────────────────────────────────
-
   /**
    * Remove all listeners, peers, channel state, and durable queue entries.
    * Intended for test teardown only — do not call in production code.
@@ -786,8 +729,6 @@ class DualRuntimeBridge extends EventEmitter {
     _totalEmissions = 0;
     if (this.wasm?.reset) this.wasm.reset();
   }
-
-  // ── Private helpers ────────────────────────────────────────────────────────
 
   /** Remove durable queue entries that have exceeded their TTL. */
   private _evictExpired(): void {
@@ -924,14 +865,8 @@ export const enginBridge = new DualRuntimeBridge();
 /** Canonical alias used throughout the codebase. */
 export const bridge = enginBridge;
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

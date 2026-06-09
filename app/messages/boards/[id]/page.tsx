@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.MessagesBoardsId  (framework-mandated basename: page.tsx)
 import BoardComposer from '@/components/messaging/dream.BoardComposer';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
@@ -7,6 +6,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.MessagesBoardsId  (framework-mandated basename: page.tsx)
 
 interface Props { params: Promise<{ id: string }> }
 

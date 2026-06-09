@@ -8,6 +8,13 @@
  */
 
 // 1. Artifact container — manifest schema
+
+// 4. Telemetry & feedback loop
+
+// 8. Adaptive quality tier system
+
+// 11. Hot-swap runtime shell primitive
+
 export {
     ArtifactPermissionSchema,
     EnginArtifactManifestSchema, createManifest, parseManifest,
@@ -17,8 +24,6 @@ export type {
     ArtifactPermission,
     EnginArtifactManifest
 } from './artifact/manifest';
-
-// 4. Telemetry & feedback loop
 export { createTelemetryClient } from './telemetry/client';
 export type {
     TelemetryClient,
@@ -32,8 +37,6 @@ export {
 export type {
     TelemetryEvent, TelemetryEventType
 } from './telemetry/events';
-
-// 8. Adaptive quality tier system
 export {
     DEFAULT_TIER_CONFIG, detectCapabilityTier,
     getTierConfig, scoreCapabilities,
@@ -45,8 +48,6 @@ export type {
     CapabilityScreen, QualityTier,
     QualityTierConfig
 } from './quality/tiers';
-
-// 11. Hot-swap runtime shell primitive
 export {
     ArtifactSlot,
     useArtifactSlot,

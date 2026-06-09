@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesCodeProjects  (framework-mandated basename: page.tsx)
 import ProjectsPanel from '@/components/engines/code/panels/dream.panel.ProjectsPanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -6,6 +5,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesCodeProjects  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Projects – CodeEngin', description: 'Your code projects.' };
 

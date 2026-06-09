@@ -1,17 +1,4 @@
 'use client';
-/**
- * app/connectors/dream.ConnectorsClient.tsx
- *
- * Phase 5 — Client-side connector manager.
- * Loads real connector statuses from /api/connectors/status on mount so
- * previously connected services show their actual state from connector_accounts.
- * Shows Sync Now button for connected tier-1 providers.
- *
- * Groups: Tier 1 (Supported), Tier 2 (Requires Approval / Setup), Tier 3 (Unsupported).
- *
- * ARCHITECTURE.md §3 — Component layer; logic lives in lib/ and API routes.
- * AXIOMS.md §3 — Every visible action does something real.
- */
 
 import type { FeedSlice } from '@/components/connectors/dream.AddSliceSheet';
 import AddSliceSheet from '@/components/connectors/dream.AddSliceSheet';
@@ -29,6 +16,20 @@ import { getWidgetTypeDef } from '@/lib/widgets/widgetRegistry';
 import { RefreshCw } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+/**
+ * app/connectors/dream.ConnectorsClient.tsx
+ *
+ * Phase 5 — Client-side connector manager.
+ * Loads real connector statuses from /api/connectors/status on mount so
+ * previously connected services show their actual state from connector_accounts.
+ * Shows Sync Now button for connected tier-1 providers.
+ *
+ * Groups: Tier 1 (Supported), Tier 2 (Requires Approval / Setup), Tier 3 (Unsupported).
+ *
+ * ARCHITECTURE.md §3 — Component layer; logic lives in lib/ and API routes.
+ * AXIOMS.md §3 — Every visible action does something real.
+ */
+
 // Demo initial grid: 6 slots, all empty
 const DEMO_GRID: SlotGrid = { totalSlots: 6, filledSlots: new Set() };
 
@@ -38,8 +39,6 @@ const DEFAULT_STATUSES: Record<string, ConnectorStatus> = Object.fromEntries(
 );
 
 const TIER1_IDS = new Set(CONNECTOR_REGISTRY.filter((c) => c.tier === 'tier1').map((c) => c.id));
-
-// ── Sync button ────────────────────────────────────────────────────────────
 
 function SyncButton({ connectorId, connectorName }: {connectorId: string; connectorName: string}) {
   const [syncing, setSyncing] = useState(false);
@@ -95,8 +94,6 @@ function SyncButton({ connectorId, connectorName }: {connectorId: string; connec
     </div>
   );
 }
-
-// ── Main component ─────────────────────────────────────────────────────────
 
 export default function ConnectorsClient( ){
   const [menuOpen] = useState(false);
@@ -185,7 +182,7 @@ export default function ConnectorsClient( ){
       }
       if (bestSlot >= 0) handlePlacementDone(bestSlot);
     }
-     
+
   }, [flow.placementRequest?.widgetId, flow.placementRequest?.noSlotAvailable]);
 
   // Group connectors by tier for display

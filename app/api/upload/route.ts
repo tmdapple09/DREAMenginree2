@@ -1,6 +1,5 @@
 import { createHash } from 'crypto';
 import { gunzipSync, gzipSync } from 'zlib';
-
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';

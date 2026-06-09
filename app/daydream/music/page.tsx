@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamMusic  (framework-mandated basename: page.tsx)
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import SoundRecorder from '@/components/music/dream.SoundRecorder';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -6,10 +5,12 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Music, Sparkles } from 'lucide-react';
 import { redirect } from 'next/navigation';
-// Stream 8.3 — Bundle split: StarMakerEngin only loads when Side B mounts.
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import dynamic from 'next/dynamic';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamMusic  (framework-mandated basename: page.tsx)
+// Stream 8.3 — Bundle split: StarMakerEngin only loads when Side B mounts.
 const StarMakerEngin = dynamic(() => import('@/engins/engin.StarMakerEngin'), {
   loading: () => (
     <div className="flex items-center justify-center h-64">

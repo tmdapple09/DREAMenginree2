@@ -180,8 +180,6 @@ export default function ColorPanel( ){
   );
 }
 
-// ── Reusable slide-up panel shell ─────────────────────────────────────────────
-
 export function SlidePanel({
   title, children, onClose,
 }: {

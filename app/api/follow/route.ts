@@ -2,8 +2,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 type Profile = {
   id: string;
   handle: string | null;
@@ -154,7 +154,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('id', user.id)
     .single();
 
-   
   await (supabase as SupabaseClient).from('notifications').insert({
     user_id: target_id,
     type: 'follow',

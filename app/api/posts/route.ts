@@ -8,8 +8,8 @@ import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 function normalizePostMedia<T extends Record<string, unknown>>(post: T): T & { media_url: string | null } {
   return {
     ...post,
@@ -36,7 +36,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const feed   = searchParams.get('feed');   // 'following' | null
   const sort   = searchParams.get('sort');   // 'trending'  | null
 
-  // ── Following feed: restrict to users the caller follows ─────────────────
   // Hard limit: last 500 posts total across all followed users (spec §1).
   if (feed === 'following') {
     const requestedLimit = parseInt(searchParams.get('limit') ?? '20', 10);
@@ -88,7 +87,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ posts: posts.map((post) => normalizePostMedia(post)), total_cap: 500 });
   }
 
-  // ── Trending feed: order by likes_count DESC, then recent ─────────────────
   if (sort === 'trending') {
     const limit  = Math.min(parseInt(searchParams.get('limit')  ?? '20', 10), 50);
     const offset = parseInt(searchParams.get('offset') ?? '0', 10);
@@ -104,7 +102,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ posts: (posts ?? []).map((post) => normalizePostMedia(post)) });
   }
 
-  // ── Default feed: public posts ordered by recency ─────────────────────────
   const limit  = Math.min(parseInt(searchParams.get('limit')  ?? '20', 10), 50);
   const offset = parseInt(searchParams.get('offset') ?? '0', 10);
   const { data: posts, error } = await supabase
@@ -143,7 +140,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 });
   }
 
-  // ── Rate limiting (spec §4) ───────────────────────────────────────────────
   // Close-friends posts: 50 per 5 minutes.
   // Public posts: 10 per 5 minutes.
   const isCloseFriendsPost = post_visibility === 'close_friends';
@@ -166,7 +162,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   // ─────────────────────────────────────────────────────────────────────────
 
-  // ── TheBoogieMan child safety scan (zero-tolerance) ──────────────────────
   const childSafetyResult = scanContent({ text: content });
   if (childSafetyResult.flagged) {
     const contentHash = createHash('sha256').update(content).digest('hex');
@@ -186,7 +181,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── TheBoogieMan media image scan (LLM + hash) — real-time ───────────────
   // Scans each image attached to the post before it is written to the DB.
   // Graceful degradation: if Groq is not configured or fetch fails, scan
   // returns CLEAN (skipped) so the post is never blocked by transient errors.
@@ -233,7 +227,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // Also create a feed item for the user
-   
+
   await (supabase as SupabaseClient).from('feed_items').insert({
     user_id: user.id,
     type: 'post',

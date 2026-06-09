@@ -1,5 +1,12 @@
 'use client';
 
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * ProjectsPanel — Project manager for the Code Engine app.
  *
@@ -7,13 +14,6 @@
  * Lives at /engines/code/projects.
  */
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 interface Project {
   id: string;
   title: string;

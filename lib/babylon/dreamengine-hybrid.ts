@@ -1,18 +1,18 @@
+import * as BABYLON from "@babylonjs/core";
+
 /**
  * dreamenginOS: PRODUCTION HYBRID 3D OVERLAY
  * ARCHITECTURE: 47 Subsystems | Next.js 16 | Babylon.js 9.0
  * GOVERNANCE: χ-Load Generation Law (n=2.1)
  */
 
-import * as BABYLON from "@babylonjs/core";
-
 export const initHybridEngine = async (canvas: HTMLCanvasElement) => {
     // 1. ASYNC ENGINE INIT
     const engine = new BABYLON.WebGPUEngine(canvas);
     await engine.initAsync();
-    
+
     const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color4(0, 0, 0, 0); 
+    scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
 
     // 2. CAMERA & LIGHTS
     const camera = new BABYLON.FreeCamera("ui_cam", new BABYLON.Vector3(0, 0, -10), scene);
@@ -31,8 +31,8 @@ export const initHybridEngine = async (canvas: HTMLCanvasElement) => {
     const create3DButton = (x: number, y: number) => {
         const name = `dream_btn_${btnId++}`;
         const button = BABYLON.MeshBuilder.CreateBox(name, {
-            width: 2.2, 
-            height: 0.9, 
+            width: 2.2,
+            height: 0.9,
             depth: 0.4
         }, scene);
 
@@ -66,24 +66,24 @@ export const initHybridEngine = async (canvas: HTMLCanvasElement) => {
  * χ-LOAD INTERACTION (Physics-Correct Scaling)
  */
 export const onGrab = (mesh: BABYLON.Mesh) => {
-    const n = 2.1; 
+    const n = 2.1;
     const frameRate = 60;
-    
+
     // We clone the current scaling to prevent mutation mid-animation
     const startScale = mesh.scaling.clone();
-    
+
     // Target is 1.5x (Thumb Visibility)
     // The 'n' constant governs the easing speed relative to the mass
-    const duration = Math.floor(20 * n); 
+    const duration = Math.floor(20 * n);
 
     BABYLON.Animation.CreateAndStartAnimation(
-        "ch_load_pop", 
-        mesh, 
-        "scaling", 
-        frameRate, 
-        duration, 
-        startScale, 
-        new BABYLON.Vector3(1.5, 1.5, 1.5), 
+        "ch_load_pop",
+        mesh,
+        "scaling",
+        frameRate,
+        duration,
+        startScale,
+        new BABYLON.Vector3(1.5, 1.5, 1.5),
         BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 };

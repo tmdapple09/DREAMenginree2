@@ -1,14 +1,14 @@
 'use client';
 
+import { Calculator, DollarSign, Plus, Trash2, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * CampaignsPanel — Campaign ROI calculator and manager for the Brand Engine app.
  *
  * Live CPM/CPC/ROI calculations, campaign list management.
  * Lives at /engines/brand/campaigns.
  */
-
-import { Calculator, DollarSign, Plus, Trash2, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
 
 interface Campaign {
   id: string;

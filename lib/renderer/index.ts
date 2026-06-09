@@ -10,13 +10,6 @@
  *   const renderer = createRenderer('canvas2d', canvasEl);
  */
 
-export { Canvas2DRenderer } from './Canvas2DRenderer';
-export { FrustumCuller } from './FrustumCuller';
-export type { Rect } from './FrustumCuller';
-export type { IRenderer, TextStyle } from './IRenderer';
-
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
 /**
  * Create a renderer of the specified type.
  *
@@ -41,3 +34,8 @@ export function createRenderer(type: 'canvas2d', canvas: HTMLCanvasElement): imp
   // Exhaustive guard — add new types above before reaching here
   throw new Error(`createRenderer: unsupported renderer type '${String(type)}'`);
 }
+
+export { Canvas2DRenderer } from './Canvas2DRenderer';
+export { FrustumCuller } from './FrustumCuller';
+export type { Rect } from './FrustumCuller';
+export type { IRenderer, TextStyle } from './IRenderer';

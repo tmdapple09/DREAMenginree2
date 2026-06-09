@@ -19,3 +19,4 @@ export function computeDelta<T extends object>(prev: T, next: T): StateDelta<T> 
 export function mergeDelta<T>(base: T, delta: Partial<T>): T {
   return { ...base, ...delta };
 }
+

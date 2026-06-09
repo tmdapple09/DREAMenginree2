@@ -1,16 +1,4 @@
 "use client";
-// SURFACE: dreamsurface.SettingsSecurity  (framework-mandated basename: page.tsx)
-
-/**
- * Security Settings page.
- *
- * - Change Password → triggers Supabase password reset email (real action)
- * - Two-Factor Authentication → informational state, Supabase MFA enrollment
- * - Recovery Keys → informational, links to Supabase support
- *
- * Architecture justification: Constitution Rule 6-7 (every visible action must
- * do something real). No fake demo sessions shown.
- */
 
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
 import { createClient } from "@/lib/supabase/client";
@@ -26,8 +14,21 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-
 import { toErrorMessage } from "@/lib/utils";
+
+// SURFACE: dreamsurface.SettingsSecurity  (framework-mandated basename: page.tsx)
+
+/**
+ * Security Settings page.
+ *
+ * - Change Password → triggers Supabase password reset email (real action)
+ * - Two-Factor Authentication → informational state, Supabase MFA enrollment
+ * - Recovery Keys → informational, links to Supabase support
+ *
+ * Architecture justification: Constitution Rule 6-7 (every visible action must
+ * do something real). No fake demo sessions shown.
+ */
+
 export default function SecuritySettingsPage() {
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState("");

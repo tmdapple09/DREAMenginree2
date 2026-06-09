@@ -9,14 +9,12 @@
 
 export type ConstraintPriority = 'critical' | 'high' | 'medium' | 'low';
 
-// ---------------------------------------------------------------------------
 // RuntimeContext — optional caller-provided signal set.
 //
 // Pass this to the DreamOptimizer constructor so that all ranking methods can
 // use real device/user/layout data instead of fixed neutral fallbacks.
 // Every field is optional; missing fields fall back to their documented
 // neutral defaults so existing callers need zero changes.
-// ---------------------------------------------------------------------------
 
 /**
  * Device form-factor hint supplied by the caller (e.g. via a User-Agent check

@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 /**
  * DaydreamPulseStrip
  *
@@ -13,10 +15,6 @@
  *   - docs/LAW.md Product law 3 — Every visible action does something real.
  */
 
-import { useRouter } from 'next/navigation';
-
-// ── Canonical Daydream surface definitions (docs/ARCHITECTURE.md §1) ──────────
-
 const DAYDREAMS = [
   { id: 'music',     emoji: '🎵', label: 'Music',     href: '/daydream/music',     accent: '#8b5cf6' },
   { id: 'games',     emoji: '🎮', label: 'Games',     href: '/daydream/games',     accent: '#22c55e' },
@@ -27,8 +25,6 @@ const DAYDREAMS = [
   { id: 'analytics', emoji: '📊', label: 'Analytics', href: '/daydream/analytics', accent: '#6366f1' },
   { id: 'forge',     emoji: '🔥', label: 'Forge',     href: '/daydream/forge',     accent: '#ef4444' },
 ] as const;
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 interface DaydreamPulseStripProps {
   onOpenDaydream?: (href: string, label: string) => void;

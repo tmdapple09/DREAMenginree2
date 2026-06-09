@@ -1,3 +1,6 @@
+import { createClient } from '@/lib/supabase/client';
+import type { ActivityTier } from './types';
+
 // lib/activity/visibility-score.ts
 // Phase 9 — Feed Ranking Algorithm (Visibility Score)
 //
@@ -5,9 +8,6 @@
 // Formula: (AQS × tier_multiplier) + verification_strength + innovation_bonus
 //
 // Per ACTIVITY_FIRST_PROTOCOL.md §III (Algorithm & Visibility)
-
-import { createClient } from '@/lib/supabase/client';
-import type { ActivityTier } from './types';
 
 /**
  * Calculate visibility score for a post

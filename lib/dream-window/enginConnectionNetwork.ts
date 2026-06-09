@@ -1,3 +1,12 @@
+import {
+    DAYDREAM_DOMAINS,
+    ENGIN_SURFACES,
+    NETWORK_COUNTS,
+    type ConnectionVerb,
+    type DaydreamDomain,
+    type EnginSurface,
+} from '@/lib/identity/canonical-names';
+
 /**
  * enginConnectionNetwork — Multi-surface Engin connection network
  *
@@ -29,18 +38,7 @@
  * Validated at module-load time: throws if path count ≠ NETWORK_COUNTS.CONNECTION_PATHS.
  */
 
-import {
-    DAYDREAM_DOMAINS,
-    ENGIN_SURFACES,
-    NETWORK_COUNTS,
-    type ConnectionVerb,
-    type DaydreamDomain,
-    type EnginSurface,
-} from '@/lib/identity/canonical-names';
-
-// ---------------------------------------------------------------------------
 // Type
-// ---------------------------------------------------------------------------
 
 /**
  * A single named connection path in the Engin connection network.
@@ -58,9 +56,7 @@ export interface EnginConnectionPath {
   label: string;
 }
 
-// ---------------------------------------------------------------------------
 // Path ID builder (stable, deterministic)
-// ---------------------------------------------------------------------------
 
 function pathId(domain: DaydreamDomain, engin: EnginSurface, verb: ConnectionVerb): string {
   const d = domain.toLowerCase().replace(/\s+/g, '-');
@@ -73,9 +69,7 @@ function buildLabel(domain: DaydreamDomain, engin: EnginSurface, verb: Connectio
   return `${domain} Daydream Surface → ${engin} (${verb})`;
 }
 
-// ---------------------------------------------------------------------------
 // The 11 canonical connection paths
-// ---------------------------------------------------------------------------
 
 export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
   // ── Music (3 paths) ──────────────────────────────────────────────────────
@@ -101,7 +95,6 @@ export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
     label:           buildLabel(DAYDREAM_DOMAINS.MUSIC, ENGIN_SURFACES.CODE, 'connect across'),
   },
 
-  // ── Games (3 paths) ──────────────────────────────────────────────────────
   {
     id: pathId(DAYDREAM_DOMAINS.GAMES, ENGIN_SURFACES.GAMES, 'bind'),
     daydreamSurface: DAYDREAM_DOMAINS.GAMES,
@@ -124,7 +117,6 @@ export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
     label:           buildLabel(DAYDREAM_DOMAINS.GAMES, ENGIN_SURFACES.CODE, 'connect across'),
   },
 
-  // ── Brand (3 paths) ──────────────────────────────────────────────────────
   {
     id: pathId(DAYDREAM_DOMAINS.BRAND, ENGIN_SURFACES.BRAND, 'bind'),
     daydreamSurface: DAYDREAM_DOMAINS.BRAND,
@@ -147,7 +139,6 @@ export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
     label:           buildLabel(DAYDREAM_DOMAINS.BRAND, ENGIN_SURFACES.LAB, 'connect across'),
   },
 
-  // ── Create (1 path) ──────────────────────────────────────────────────────
   {
     id: pathId(DAYDREAM_DOMAINS.CREATE, ENGIN_SURFACES.CREATE, 'bind'),
     daydreamSurface: DAYDREAM_DOMAINS.CREATE,
@@ -156,7 +147,6 @@ export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
     label:           buildLabel(DAYDREAM_DOMAINS.CREATE, ENGIN_SURFACES.CREATE, 'bind'),
   },
 
-  // ── Lab (1 path) ─────────────────────────────────────────────────────────
   {
     id: pathId(DAYDREAM_DOMAINS.LAB, ENGIN_SURFACES.LAB, 'bind'),
     daydreamSurface: DAYDREAM_DOMAINS.LAB,
@@ -166,9 +156,7 @@ export const ALL_CONNECTION_PATHS: readonly EnginConnectionPath[] = [
   },
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Module-load validation
-// ---------------------------------------------------------------------------
 
 if (ALL_CONNECTION_PATHS.length !== NETWORK_COUNTS.CONNECTION_PATHS) {
   throw new Error(
@@ -178,9 +166,7 @@ if (ALL_CONNECTION_PATHS.length !== NETWORK_COUNTS.CONNECTION_PATHS) {
   );
 }
 
-// ---------------------------------------------------------------------------
 // Query helpers
-// ---------------------------------------------------------------------------
 
 /**
  * Returns all connection paths that originate from a given Daydream domain.

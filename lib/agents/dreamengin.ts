@@ -9,9 +9,7 @@
 // environment. This agent validates that every surface, Dream Window,
 // route, and interaction aligns with that identity.
 
-// ---------------------------------------------------------------------------
 // Core Identity — What DREAMengin IS
-// ---------------------------------------------------------------------------
 
 /** DREAMengin is a dual-runtime spatial operating environment. */
 export const IDENTITY = {
@@ -22,9 +20,7 @@ export const IDENTITY = {
   radiusFamily: [6, 10, 14, 18, 24, 32, 9999] as const,
 } as const;
 
-// ---------------------------------------------------------------------------
 // Product Axioms — Non-negotiable truths
-// ---------------------------------------------------------------------------
 
 export const AXIOMS = [
   'Nothing is public by default.',
@@ -36,9 +32,7 @@ export const AXIOMS = [
   'No platform system may bypass privacy rules.',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Canonical Vocabulary — Say THIS, not THAT
-// ---------------------------------------------------------------------------
 
 export const VOCABULARY: ReadonlyArray<{ canonical: string; forbidden: string[] }> = [
   { canonical: 'surface',            forbidden: ['page'] },
@@ -54,9 +48,7 @@ export const VOCABULARY: ReadonlyArray<{ canonical: string; forbidden: string[] 
   { canonical: 'connection path',   forbidden: ['pair'] },
 ];
 
-// ---------------------------------------------------------------------------
 // Core Surfaces — The only stable entry points
-// ---------------------------------------------------------------------------
 
 export const CORE_SURFACES = {
   HomeDream:        { route: '/dreamdmbar',          privacy: 'private' },
@@ -68,9 +60,7 @@ export const CORE_SURFACES = {
   DreamAds:         { route: '/ads',                 privacy: 'mixed' },
 } as const;
 
-// ---------------------------------------------------------------------------
 // Daydream Network — 6 surfaces × 6 engins × 11 connection paths
-// ---------------------------------------------------------------------------
 
 export const DAYDREAM_SURFACES = [
   { name: 'Music Daydream',  route: '/daydream/music',  engin: 'StarMakerEngin' },
@@ -84,9 +74,7 @@ export const DAYDREAM_SURFACES = [
 /** A Daydream can invoke multiple Engins. An Engin can support multiple Daydreams. */
 export const CONNECTION_PATH_COUNT = 11;
 
-// ---------------------------------------------------------------------------
 // Design Tokens — Gold / Light-Blue / White
-// ---------------------------------------------------------------------------
 
 export const DESIGN_TOKENS = {
   gold:      { meaning: 'save, confirm, action, premium emphasis',  hex: '#c8a84e' },
@@ -94,9 +82,7 @@ export const DESIGN_TOKENS = {
   white:     { meaning: 'base surface, clarity, space',              hex: '#ffffff' },
 } as const;
 
-// ---------------------------------------------------------------------------
 // Privacy Model — The source of truth for visibility defaults
-// ---------------------------------------------------------------------------
 
 export type PrivacyDefault = 'private' | 'public-output' | 'mixed';
 
@@ -116,9 +102,7 @@ export const PRIVACY_RULES: ReadonlyArray<PrivacyRule> = [
   { surface: 'DreamAds',         defaultVisibility: 'mixed',         rule: 'Transparent, user-controlled ad spaces.' },
 ];
 
-// ---------------------------------------------------------------------------
 // Navigation Rules — Depth, not page switching
-// ---------------------------------------------------------------------------
 
 export const NAVIGATION_RULES = [
   'Navigation must feel like depth, not page switching.',
@@ -129,16 +113,12 @@ export const NAVIGATION_RULES = [
   'Single tap: open dual menus.',
 ] as const;
 
-// ---------------------------------------------------------------------------
 // Dream Window States — The four canonical lifecycle states
-// ---------------------------------------------------------------------------
 
 export const DREAM_WINDOW_STATES = ['Unbound', 'Bound', 'Mounted', 'Collapsed'] as const;
 export type DreamWindowState = (typeof DREAM_WINDOW_STATES)[number];
 
-// ---------------------------------------------------------------------------
 // AI Triad — Three agents, strict roles
-// ---------------------------------------------------------------------------
 
 export const AI_TRIAD = {
   DrEams:       { role: 'User assistant / routing / discovery', audience: 'All authenticated users', route: '/api/ai/eams' },
@@ -146,9 +126,7 @@ export const AI_TRIAD = {
   TheBoogieMan: { role: 'Policy enforcer + system overwatch',   audience: 'System / Admins only',     route: '/api/ai/boogieman' },
 } as const;
 
-// ---------------------------------------------------------------------------
 // DreamDM Bar — The runtime seam between two live worlds
-// ---------------------------------------------------------------------------
 
 export const DREAMDM_BAR = {
   purpose: 'Persistent interaction rail and draggable spatial divider between Surface Space and Dream Space.',
@@ -166,9 +144,7 @@ export const DREAMDM_BAR = {
   ],
 } as const;
 
-// ---------------------------------------------------------------------------
 // Validation Engine — The agent's active capability
-// ---------------------------------------------------------------------------
 
 export type ViolationSeverity = 'info' | 'warning' | 'violation';
 
@@ -313,9 +289,7 @@ export function validateCredentialSafety(field: {
   return violations;
 }
 
-// ---------------------------------------------------------------------------
 // Event System — client-side event bridge
-// ---------------------------------------------------------------------------
 
 export const DREAMENGIN_EVENT = 'dreamengin:agent';
 

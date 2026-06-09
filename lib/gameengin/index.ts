@@ -10,81 +10,6 @@
  *   import { RollbackNetcode, ComputeShaderPipeline, AdvancedPhysicsWorld, ... } from '@/lib/gameengin';
  */
 
-export { mapJoystickToAsset } from './control-mappings';
-export type { ControlMapping } from './control-mappings';
-export { ECSWorld, EliteGameEngine } from './core';
-export { DreamEngine } from './dream-engine';
-export type { GameAsset, GlobalRegistryEntry, WasmOutput } from './dream-engine';
-
-// ── Unified game loop ─────────────────────────────────────────────────────────
-export type {
-    Component, EntityId, FrameCallback, FrameTelemetry, PerformanceBudget, QualityChangeCallback, QualityTier, System
-} from './core';
-export {
-    activeGameCount,
-    isLoopRunning, registerGame,
-    unregisterGame
-} from './unifiedLoop';
-export type { LoopPriority } from './unifiedLoop';
-export { useUnifiedLoop } from './useUnifiedLoop';
-
-export { AIDirector } from './ai-director';
-export type { DirectorState, PlayerSignals } from './ai-director';
-
-export { PostFXManager } from './post-fx';
-
-// ── Console-class platform facade ────────────────────────────────────────────
-export { GameEnginPlatform, detectCapabilities } from './platform';
-export type {
-    PlatformBootOptions, PlatformCapabilities, QuickResumeEntry
-} from './platform';
-
-// ── Game Cartridge Runtime ───────────────────────────────────────────────────
-export { GRAVITY_VALUES } from './cartridge';
-export type {
-    CartridgeInputEvent, GameCartridge,
-    GameEngineAPI,
-    GravityPreset
-} from './cartridge';
-export { createReactGameCartridge, defineReactCartridgeLoader } from './cartridges/reactCartridge';
-export { default as GameRuntime } from './GameRuntime';
-export type { GameRuntimeProps } from './GameRuntime';
-
-// ── Cartridge bay — every repo game packaged as a GameCartridge ──────────────
-export {
-    CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest
-} from './cartridges/manifest';
-export {
-    assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge,
-} from './cartridges/loaders';
-export type {
-    CartridgeManifestEntry,
-    CartridgeRenderMode
-} from './cartridges/manifest';
-
-// ── Power Systems (20 state-of-the-art 2026+ engine subsystems) ──────────────
-export {
-    AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem
-} from './power-systems';
-
-export type {
-    AABB, AnimState, AnimTransition, AnimationClip, AssetHandle, AssetState, AssetType, AudioSourceDef, BTContext,
-    BTNode, BTStatus, ComputeDispatch, ComputeKernel, EventMap, GIProbe, InputFrame, Job, JobPriority, JobResult, LODLevel,
-    LODObject, ListenerState, MaterialPair, NetInput, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PredictionState, ProfileFrame, ProfileSpan, RaycastResult, ReplayMeta, RollbackConfig, SHCoeffs, ServerSnapshot,
-    ShaderVariant, ShapeType, SpatialEntry, TerrainPage, WorldChunk, WorldGenConfig
-} from './power-systems';
-
-
-// ── Execution wiring kernel ─────────────────────────────────────────────────
-export { createGameEnginExecutionKernel } from './executionWiring';
-export type {
-  GameEnginExecutionCrash,
-  GameEnginExecutionFrame,
-  GameEnginExecutionKernel,
-  GameEnginExecutionKernelSnapshot,
-} from './executionWiring';
-
-// ── GameEngin capability wiring map ─────────────────────────────────────────
 // This is the public machine-readable spine for the GameEngin work packet.
 // It gives pages, Daydreams, agents, and CI one place to see the canonical
 // runtime lanes without hard-coding folder assumptions.
@@ -117,8 +42,6 @@ export const GAMEENGIN_CAPABILITY_LANES = {
 
 export type GameEnginCapabilityLane = keyof typeof GAMEENGIN_CAPABILITY_LANES;
 
-
-// ── GameEngin inventory work packet wiring map ──────────────────────────────
 // Generated from the source-read GameEngin CSV wiring plan. This makes every
 // file in the GameEngin work packet addressable by contract instead of by
 // folder guesswork. Agents, CI, and runtime tooling can use this to see the
@@ -1349,7 +1272,7 @@ export const GAMEENGIN_WORK_PACKET = [
     "acceptanceCheck": "Support file is reachable through a named export, generated router, or runtime import from its owning contract."
   },
   {
-    "path": "lib/games/lucid-avenue-world.ts",
+    "path": "lib/games/madmaxi-wildfall-world.ts",
     "kind": "file",
     "contextGroup": "Game support runtime/library",
     "wiringTarget": "gameengin_support_file",
@@ -3239,7 +3162,7 @@ export const GAMEENGIN_WORK_PACKET = [
     "acceptanceCheck": "Games do not each reinvent score/input/persistence contracts."
   },
   {
-    "path": "components/games/dream.AvenueOfMirrors.tsx",
+    "path": "components/games/dream.MadMaxiWildfall.tsx",
     "kind": "file",
     "contextGroup": "Playable game/cartridge surface",
     "wiringTarget": "playable_game_surface",
@@ -3677,7 +3600,7 @@ export const GAMEENGIN_WORK_PACKET_BY_TARGET = {
     "lib/games/catalog.ts",
     "lib/games/hooks.ts",
     "lib/games/library-state.ts",
-    "lib/games/lucid-avenue-world.ts",
+    "lib/games/madmaxi-wildfall-world.ts",
     "lib/games/navigation.ts",
     "lib/games/performance-baseline.ts",
     "lib/games/quality-plan.ts",
@@ -3886,7 +3809,7 @@ export const GAMEENGIN_WORK_PACKET_BY_TARGET = {
   "playable_game_surface": [
     "components/games/dream.EnginFracture.tsx",
     "components/games/css-modules.d.ts",
-    "components/games/dream.AvenueOfMirrors.tsx",
+    "components/games/dream.MadMaxiWildfall.tsx",
     "components/games/dream.BabylonSideScroller.tsx",
     "components/games/dream.DefuseRitual.tsx",
     "components/games/dream.EchoArena.tsx",
@@ -3943,3 +3866,61 @@ export function getGameEnginWorkPacketByTarget(target: GameEnginWiringTarget): r
 export function getGameEnginWorkPacketEntry(path: string): GameEnginWorkPacketEntry | undefined {
   return GAMEENGIN_WORK_PACKET.find((entry) => entry.path === path);
 }
+
+export { mapJoystickToAsset } from './control-mappings';
+export type { ControlMapping } from './control-mappings';
+export { ECSWorld, EliteGameEngine } from './core';
+export { DreamEngine } from './dream-engine';
+export type { GameAsset, GlobalRegistryEntry, WasmOutput } from './dream-engine';
+export type {
+    Component, EntityId, FrameCallback, FrameTelemetry, PerformanceBudget, QualityChangeCallback, QualityTier, System
+} from './core';
+export {
+    activeGameCount,
+    isLoopRunning, registerGame,
+    unregisterGame
+} from './unifiedLoop';
+export type { LoopPriority } from './unifiedLoop';
+export { useUnifiedLoop } from './useUnifiedLoop';
+export { AIDirector } from './ai-director';
+export type { DirectorState, PlayerSignals } from './ai-director';
+export { PostFXManager } from './post-fx';
+export { GameEnginPlatform, detectCapabilities } from './platform';
+export type {
+    PlatformBootOptions, PlatformCapabilities, QuickResumeEntry
+} from './platform';
+export { GRAVITY_VALUES } from './cartridge';
+export type {
+    CartridgeInputEvent, GameCartridge,
+    GameEngineAPI,
+    GravityPreset
+} from './cartridge';
+export { createReactGameCartridge, defineReactCartridgeLoader } from './cartridges/reactCartridge';
+export { default as GameRuntime } from './GameRuntime';
+export type { GameRuntimeProps } from './GameRuntime';
+export {
+    CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest
+} from './cartridges/manifest';
+export {
+    assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge,
+} from './cartridges/loaders';
+export type {
+    CartridgeManifestEntry,
+    CartridgeRenderMode
+} from './cartridges/manifest';
+export {
+    AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem
+} from './power-systems';
+export type {
+    AABB, AnimState, AnimTransition, AnimationClip, AssetHandle, AssetState, AssetType, AudioSourceDef, BTContext,
+    BTNode, BTStatus, ComputeDispatch, ComputeKernel, EventMap, GIProbe, InputFrame, Job, JobPriority, JobResult, LODLevel,
+    LODObject, ListenerState, MaterialPair, NetInput, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PredictionState, ProfileFrame, ProfileSpan, RaycastResult, ReplayMeta, RollbackConfig, SHCoeffs, ServerSnapshot,
+    ShaderVariant, ShapeType, SpatialEntry, TerrainPage, WorldChunk, WorldGenConfig
+} from './power-systems';
+export { createGameEnginExecutionKernel } from './executionWiring';
+export type {
+  GameEnginExecutionCrash,
+  GameEnginExecutionFrame,
+  GameEnginExecutionKernel,
+  GameEnginExecutionKernelSnapshot,
+} from './executionWiring';

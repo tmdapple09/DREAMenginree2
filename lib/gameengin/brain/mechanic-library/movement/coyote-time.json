@@ -2,11 +2,24 @@
   "name": "Coyote Time",
   "category": "movement",
   "description": "Brief grace window after leaving a ledge during which a jump still registers as ground-jump.",
-  "emotional_impact": ["forgiveness", "fairness"],
+  "emotional_impact": [
+    "forgiveness",
+    "fairness"
+  ],
   "implementation": {
-    "parameters": { "frames": 6, "fps_assumed": 60 },
+    "parameters": {
+      "frames": 6,
+      "fps_assumed": 60
+    },
     "interaction": "Decrements every fixed-step tick once `onGround` becomes false."
   },
-  "games_using": ["Celeste", "Super Meat Boy", "Hollow Knight"],
-  "fun_heuristics": { "reduces_unfair_deaths": 0.95, "perceived_responsiveness": 0.8 }
+  "games_using": [
+    "Celeste",
+    "Super Meat Boy",
+    "Hollow Knight"
+  ],
+  "fun_heuristics": {
+    "reduces_unfair_deaths": 0.95,
+    "perceived_responsiveness": 0.8
+  }
 }

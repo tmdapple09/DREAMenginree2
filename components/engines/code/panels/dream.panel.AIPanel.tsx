@@ -1,5 +1,9 @@
 'use client';
 
+import { Bot, CheckCheck, Copy, Loader2, Send, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { describe, it, expect, vi } from 'vitest';
+
 /**
  * AIPanel — AI code assistant panel for the Code Engine app.
  *
@@ -7,9 +11,6 @@
  * refactoring suggestions, and debugging help.
  * Lives at /engines/code/ai.
  */
-
-import { Bot, CheckCheck, Copy, Loader2, Send, Sparkles } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
 
 interface Message {
   id: string;
@@ -48,7 +49,6 @@ This approach uses concurrent batch processing to improve throughput while contr
   tests: `Here are comprehensive unit tests:
 
 \`\`\`typescript
-import { describe, it, expect, vi } from 'vitest';
 
 describe('processData', () => {
   it('processes all items', async () => {

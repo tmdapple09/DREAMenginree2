@@ -1,3 +1,6 @@
+import { normaliseNostr } from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/nostr.ts
  *
@@ -17,9 +20,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseNostr } from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export interface NostrCredentials {
   pubkey: string;

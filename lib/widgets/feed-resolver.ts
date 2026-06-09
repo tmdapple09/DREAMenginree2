@@ -1,3 +1,14 @@
+import { createServerClient } from '@/lib/supabase/server';
+import {
+    FeedScope,
+    HostKind,
+    HostResolvedStatus,
+    type FeedHostConfig,
+    type FeedItemSummary,
+    type HostResolved,
+} from '@/types/widget-system-v2';
+import { toErrorMessage } from '@/lib/utils';
+
 interface FeedItemRow {
   id: string;
   user_id: string;
@@ -13,17 +24,6 @@ interface FeedItemRow {
 // Resolves feed data for widgets with SELF/FOLLOW scopes
 // =====================================================
 
-import { createServerClient } from '@/lib/supabase/server';
-import {
-    FeedScope,
-    HostKind,
-    HostResolvedStatus,
-    type FeedHostConfig,
-    type FeedItemSummary,
-    type HostResolved,
-} from '@/types/widget-system-v2';
-
-import { toErrorMessage } from '@/lib/utils';
 // =====================================================
 // 1. FEED RESOLVER
 // =====================================================
@@ -33,7 +33,7 @@ export async function resolveFeedHost(
   hostConfig: FeedHostConfig
 ): Promise<HostResolved> {
   const supabase = await createServerClient();
-  
+
   try {
     // Verify scope and permissions
     const scopeValid = await verifyScopePermissions(supabase, ownerId, hostConfig);
@@ -44,11 +44,11 @@ export async function resolveFeedHost(
         error_message: 'Access denied: follow relationship required',
       };
     }
-    
+
     // Determine target user ID based on scope
     const targetUserId =
       hostConfig.scope === FeedScope.SELF ? ownerId : hostConfig.target_user_id;
-    
+
     if (!targetUserId) {
       return {
         kind: HostKind.HOST_FEED_VIEW,
@@ -56,28 +56,28 @@ export async function resolveFeedHost(
         error_message: 'Invalid configuration: target_user_id required for FOLLOW scope',
       };
     }
-    
+
     // Build query for feed items
-     
+
     let query = (supabase as SupabaseClient)
       .from('feed_items')
       .select('id, user_id, ts, title, summary, url, media_json, tags_json, visibility, importance_score')
       .eq('user_id' as never, targetUserId)
       .order('ts', { ascending: false })
       .limit(hostConfig.limit);
-    
+
     // Apply filters
     if (hostConfig.filters.tags && Array.isArray(hostConfig.filters.tags) && hostConfig.filters.tags.length > 0) {
       query = query.contains('tags_json', hostConfig.filters.tags);
     }
-    
+
     if (hostConfig.filters.project_id) {
       query = query.eq('project_id' as never, hostConfig.filters.project_id);
     }
-    
+
     // Execute query
     const { data: feedItems, error } = await query.returns<FeedItemRow[]>();
-    
+
     if (error) {
       console.error('Feed resolver error:', error);
       return {
@@ -86,17 +86,16 @@ export async function resolveFeedHost(
         error_message: toErrorMessage(error),
       };
     }
-    
+
     // Transform to FeedItemSummary format and fetch engagement counts
     const items: FeedItemSummary[] = await Promise.all((feedItems || []).map(async (item: FeedItemRow) => {
       // Fetch engagement counts for this item
-       
+
       const { data: engagementData } = await (supabase as SupabaseClient)
         .from('content_engagement' as never)
         .select('engagement_type')
         .eq('content_id' as never, item.id);
 
-       
       const engagementCounts = (engagementData || []).reduce((acc: { likes: number; comments: number; shares: number }, eng: { engagement_type: string }) => {
         if (eng.engagement_type === 'like') acc.likes++;
         else if (eng.engagement_type === 'comment') acc.comments++;
@@ -114,7 +113,7 @@ export async function resolveFeedHost(
         visibility: item.visibility as 'public' | 'followers' | 'private',
       };
     }));
-    
+
     return {
       kind: HostKind.HOST_FEED_VIEW,
       status: HostResolvedStatus.OK,
@@ -149,20 +148,20 @@ async function verifyScopePermissions(
   if (hostConfig.scope === FeedScope.SELF) {
     return true;
   }
-  
+
   // FOLLOW scope: verify relationship
   if (hostConfig.scope === FeedScope.FOLLOW) {
     const targetUserId = hostConfig.target_user_id;
-    
+
     if (!targetUserId) {
       return false;
     }
-    
+
     // User can always view their own feed
     if (ownerId === targetUserId) {
       return true;
     }
-    
+
     // Verify follow relationship exists
     const { data, error } = await supabase
       .from('follows')
@@ -170,14 +169,14 @@ async function verifyScopePermissions(
       .eq('follower_id', ownerId)
       .eq('following_id', targetUserId)
       .single();
-    
+
     if (error || !data) {
       return false;
     }
-    
+
     return true;
   }
-  
+
   return false;
 }
 
@@ -189,22 +188,22 @@ function extractMediaPreviewUrl(mediaJson: unknown): string | undefined {
   if (!mediaJson || typeof mediaJson !== 'object') {
     return undefined;
   }
-  
+
   const media = mediaJson as any;
-  
+
   // Try to extract first image/video URL
   if (Array.isArray(media.images) && media.images.length > 0) {
     return media.images[0];
   }
-  
+
   if (Array.isArray(media.videos) && media.videos.length > 0) {
     return media.videos[0];
   }
-  
+
   if (typeof media.thumbnail === 'string') {
     return media.thumbnail;
   }
-  
+
   return undefined;
 }
 
@@ -213,7 +212,7 @@ function generateETag(items: FeedItemSummary[]): string {
   if (items.length === 0) {
     return `"empty-${Date.now()}"`;
   }
-  
+
   const lastUpdated = items[0].created_at;
   return `"${items.length}-${lastUpdated}"`;
 }
@@ -342,13 +341,13 @@ export async function subscribeFeedRealtime(
   const supabase = await createServerClient();
   const targetUserId =
     hostConfig.scope === FeedScope.SELF ? ownerId : hostConfig.target_user_id;
-  
+
   if (!targetUserId) {
     return () => {};
   }
-  
+
   const channelKey = getFeedChannelKey(hostConfig.scope, targetUserId);
-  
+
   const channel = supabase
     .channel(channelKey)
     .on(
@@ -374,7 +373,7 @@ export async function subscribeFeedRealtime(
       }
     )
     .subscribe();
-  
+
   // Return unsubscribe function
   return () => {
     supabase.removeChannel(channel);

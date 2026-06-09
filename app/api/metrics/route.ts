@@ -1,3 +1,7 @@
+import { getPrometheusMetrics } from '@/lib/observability/otel';
+import { initOtelBridge } from '@/lib/observability/otelBridge';
+import { NextRequest, NextResponse, connection } from 'next/server';
+
 // app/api/metrics/route.ts
 //
 // Prometheus-compatible /metrics endpoint.
@@ -14,10 +18,6 @@
 //   The endpoint is open — acceptable only on localhost or Vercel IP-allowlisted deployments.
 //
 // This endpoint exposes ONLY system/service metrics — never user data, PII, or secrets.
-
-import { getPrometheusMetrics } from '@/lib/observability/otel';
-import { initOtelBridge } from '@/lib/observability/otelBridge';
-import { NextRequest, NextResponse, connection } from 'next/server';
 
 // Ensure the OTel bridge is active so all collector events are mirrored.
 initOtelBridge();

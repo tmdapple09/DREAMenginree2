@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * DreamRChannelPanel — neomorphic slide-in panel for YouTube channel + similar content.
- *
- * Opens when the user swipes left on a YouTube/video card in the DreamRFeed.
- * Shows:
- *   - Channel identity (name from post.profiles.display_name)
- *   - More videos from that exact channel (fetched via /api/youtube/channel)
- *   - Similar / topic-related videos section
- *
- * Visual language: DreamR neomorphism (identical to DreamRCreatorPanel).
- */
-
 import type { FeedPost } from '@/lib/feed/useLiveFeed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import {
@@ -25,7 +13,17 @@ import {
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// ── Design tokens ──────────────────────────────────────────────────────────────
+/**
+ * DreamRChannelPanel — neomorphic slide-in panel for YouTube channel + similar content.
+ *
+ * Opens when the user swipes left on a YouTube/video card in the DreamRFeed.
+ * Shows:
+ *   - Channel identity (name from post.profiles.display_name)
+ *   - More videos from that exact channel (fetched via /api/youtube/channel)
+ *   - Similar / topic-related videos section
+ *
+ * Visual language: DreamR neomorphism (identical to DreamRCreatorPanel).
+ */
 
 const DR = {
   bg:          '#e8eff6',
@@ -46,8 +44,6 @@ function nmI(s: number = 4): string {
   return `inset ${-s}px ${-s}px ${s*2}px ${DR.shadowLight}, inset ${s}px ${s}px ${s*2.4}px ${DR.shadowDark}`;
 }
 
-// ── Helper: extract YouTube video ID from permalink ────────────────────────────
-
 function extractVideoId(permalink: string): string | null {
   try {
     const u = new URL(permalink);
@@ -63,11 +59,6 @@ function embedUrl(permalink: string): string | null {
   const id = extractVideoId(permalink);
   return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
 }
-
-// ── Mini video thumbnail ───────────────────────────────────────────────────────
-
-
-// ── VideoRow — compact list item ───────────────────────────────────────────────
 
 function VideoRow({ item }: {item: UnifiedFeedItem}) {
   const thumb = item.media[0]?.thumbnail_url ?? null;
@@ -112,8 +103,6 @@ function VideoRow({ item }: {item: UnifiedFeedItem}) {
     </div>
   );
 }
-
-// ── Main component ─────────────────────────────────────────────────────────────
 
 interface Props {
   /** The YouTube post card that was swiped left */

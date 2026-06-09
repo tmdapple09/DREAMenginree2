@@ -1,5 +1,4 @@
 "use client";
-// SURFACE: dreamsurface.Login  (framework-mandated basename: page.tsx)
 
 import PasswordField from "@/components/auth/dream.PasswordField";
 import { resolveSafeNextPath } from "@/lib/auth/nextRedirect";
@@ -9,6 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
+
+// SURFACE: dreamsurface.Login  (framework-mandated basename: page.tsx)
 
 // Shared input style — matches the rest of the de-widget design system
 const INPUT_STYLE: React.CSSProperties = {

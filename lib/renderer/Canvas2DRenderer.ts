@@ -1,3 +1,6 @@
+import { FrustumCuller, type Rect } from './FrustumCuller';
+import type { IRenderer, TextStyle } from './IRenderer';
+
 /**
  * lib/renderer/Canvas2DRenderer.ts
  *
@@ -23,11 +26,6 @@
  *   renderer.present(); // no-op for Canvas 2D
  */
 
-import { FrustumCuller, type Rect } from './FrustumCuller';
-import type { IRenderer, TextStyle } from './IRenderer';
-
-// ─── Canvas2DRenderer ─────────────────────────────────────────────────────────
-
 export class Canvas2DRenderer implements IRenderer {
   /**
    * Direct access to the underlying CanvasRenderingContext2D.
@@ -41,11 +39,8 @@ export class Canvas2DRenderer implements IRenderer {
   private readonly _culler = new FrustumCuller();
   private _viewport: Rect;
 
-  // ── Draw-call stats (reset on each clear()) ──────────────────────────────
   private _totalDraws = 0;
   private _skippedDraws = 0;
-
-  // ─────────────────────────────────────────────────────────────────────────
 
   constructor(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
@@ -56,8 +51,6 @@ export class Canvas2DRenderer implements IRenderer {
     this.ctx = ctx;
     this._viewport = { x: 0, y: 0, w: canvas.width, h: canvas.height };
   }
-
-  // ── IRenderer: Viewport ──────────────────────────────────────────────────
 
   get width(): number { return this._canvas.width; }
   get height(): number { return this._canvas.height; }
@@ -70,8 +63,6 @@ export class Canvas2DRenderer implements IRenderer {
   setViewport(vp: Rect): void {
     this._viewport = { ...vp };
   }
-
-  // ── IRenderer: Lifecycle ─────────────────────────────────────────────────
 
   /**
    * Clear the entire canvas and reset per-frame draw-call counters.
@@ -94,8 +85,6 @@ export class Canvas2DRenderer implements IRenderer {
   dispose(): void {
     // Nothing to clean up for the Canvas 2D backend.
   }
-
-  // ── IRenderer: Primitives ────────────────────────────────────────────────
 
   /**
    * Draw a filled axis-aligned rectangle.
@@ -141,8 +130,6 @@ export class Canvas2DRenderer implements IRenderer {
     this.ctx.textBaseline = style?.textBaseline ?? 'alphabetic';
     this.ctx.fillText(text, x, y);
   }
-
-  // ── Diagnostics ──────────────────────────────────────────────────────────
 
   /**
    * Per-frame culling statistics.

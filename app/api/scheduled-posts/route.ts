@@ -2,8 +2,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 /**
  * /api/scheduled-posts
  *
@@ -30,12 +30,9 @@ import { toErrorMessage } from '@/lib/utils';
  * is regenerated.
  */
 
- 
 type AnyClient = SupabaseClient;
 
-// ---------------------------------------------------------------------------
 // GET — list scheduled posts
-// ---------------------------------------------------------------------------
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -56,9 +53,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ posts: data ?? [] });
 }
 
-// ---------------------------------------------------------------------------
 // POST — create a scheduled post
-// ---------------------------------------------------------------------------
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -91,9 +86,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ post: data }, { status: 201 });
 }
 
-// ---------------------------------------------------------------------------
 // PUT — update an existing scheduled post
-// ---------------------------------------------------------------------------
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -123,9 +116,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ post: data });
 }
 
-// ---------------------------------------------------------------------------
 // DELETE — remove a scheduled post
-// ---------------------------------------------------------------------------
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -144,4 +135,3 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ success: true });
 }
-

@@ -1,9 +1,3 @@
-// app/api/ads/view/route.ts
-// Phase 9 — Track Ad View Endpoint
-//
-// Records verified ad views for CPV (Cost Per View) billing.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
-
 import { qualifiesForPremiumCPV } from '@/lib/activity/aqs';
 import { calculateActivityRevenueSplit } from '@/lib/activity/revenueSplit';
 import { calculateSkipCreditsEarned } from '@/lib/activity/skipCredits';
@@ -16,6 +10,12 @@ import { CPV_PRICING, CPVTier } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
+
+// app/api/ads/view/route.ts
+// Phase 9 — Track Ad View Endpoint
+//
+// Records verified ad views for CPV (Cost Per View) billing.
+// Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
 
 type ActivitySupabaseClient = {
   rpc: <T>(

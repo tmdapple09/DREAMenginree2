@@ -1,3 +1,9 @@
+import type { ConnectorStatus } from '@/lib/connectors/connectorRegistry';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/status/route.ts
  *
@@ -16,13 +22,6 @@
  *   - token_blob is never selected
  */
 
-import type { ConnectorStatus } from '@/lib/connectors/connectorRegistry';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
-
-
 export interface ConnectorStatusEntry {
   status: ConnectorStatus;
   last_synced_at: string | null;
@@ -36,7 +35,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, statuses: {} }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   const { data, error } = await db

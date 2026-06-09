@@ -1,38 +1,12 @@
 'use client';
 
-/**
- * GameEngin — Side B control layer for the Games Daydream.
- *
- * Responsibilities (README spec §9.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Show the user's personal best scores per game (from `game_scores` table).
- *   - Allow one-tap publish of high scores to the leaderboard (real Supabase write).
- *   - Surface the "Play Now" entry points for all live games.
- *   - Run games through the GameEngin session shell and separate shared GameRemote.
- *   - DualSense controller support: Bluetooth pairing (Android 12+, iOS 14.5+), haptic feedback, gyro steering.
- *   - Functional World Builder: 5×5 tile-grid editor, save to state, bridge emit on save.
- *   - Achievement System: 8 achievements, score-driven unlock logic.
- *   - Physics Config: gravity preset selector + friction slider, apply to world state.
- *   - Game Scripts: textarea editor, language selector, bridge emit on save (premium).
- *   - Cross-Engin Sync Panel: live status display for all 5 sibling Engins.
- *
- * Security: reads only rows owned by the authenticated user (RLS enforced
- * server-side; user_id filter added client-side as defence-in-depth).
- * Follows AXIOM 3 (every element enables real action) and AXIOM 4 (security by default).
- * Architecture justification: ARCHITECTURE.md §1 (Daydream pair system), §8 (design language).
- * Performance impact: all new widgets are pure local state — zero extra network calls.
- */
-
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
-import RecordingControls from '@/components/games/dream.RecordingControls';
 import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
 import FeaturedCartridges from '@/components/gameengin/dream.cartridge.FeaturedCartridges';
 import Leaderboard from '@/components/games/dream.Leaderboard';
 import GameRemote from '@/components/games/dream.remote.GameRemote';
 import LegacyGameHUD from '@/components/games/dream.hud.LegacyGameHUD';
 import MobileGameHUD from '@/components/games/dream.hud.MobileGameHUD';
-import GameController from '@/components/games/dream.GameController';
-import GameRemoteSurface from '@/components/games/dream.remote.GameRemoteSurface';
-import LegacyGameRemote from '@/components/games/dream.remote.LegacyGameRemote';
 import CrashReportModal, { type CrashContext } from '@/components/gameengin/dream.CrashReportModal';
 import {
     CartridgeErrorBoundary,
@@ -79,7 +53,6 @@ import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
 import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
 import { createClient } from '@/lib/supabase/client';
 import {
-    ArrowLeft,
     Award,
     FileCode,
     Gamepad2,
@@ -95,8 +68,30 @@ import {
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ArtifactSlot } from '@/lib/enginpipe';
+import { toErrorMessage } from '@/lib/utils';
 
-// ── Interfaces ─────────────────────────────────────────────────────────────────
+/**
+ * GameEngin — Side B control layer for the Games Daydream.
+ *
+ * Responsibilities (README spec §9.2 / ARCHITECTURE.md §1 Daydream pairs):
+ *   - Show the user's personal best scores per game (from `game_scores` table).
+ *   - Allow one-tap publish of high scores to the leaderboard (real Supabase write).
+ *   - Surface the "Play Now" entry points for all live games.
+ *   - Run games through the GameEngin session shell and separate shared GameRemote.
+ *   - DualSense controller support: Bluetooth pairing (Android 12+, iOS 14.5+), haptic feedback, gyro steering.
+ *   - Functional World Builder: 5×5 tile-grid editor, save to state, bridge emit on save.
+ *   - Achievement System: 8 achievements, score-driven unlock logic.
+ *   - Physics Config: gravity preset selector + friction slider, apply to world state.
+ *   - Game Scripts: textarea editor, language selector, bridge emit on save (premium).
+ *   - Cross-Engin Sync Panel: live status display for all 5 sibling Engins.
+ *
+ * Security: reads only rows owned by the authenticated user (RLS enforced
+ * server-side; user_id filter added client-side as defence-in-depth).
+ * Follows AXIOM 3 (every element enables real action) and AXIOM 4 (security by default).
+ * Architecture justification: ARCHITECTURE.md §1 (Daydream pair system), §8 (design language).
+ * Performance impact: all new widgets are pure local state — zero extra network calls.
+ */
 
 interface Props {
   onBack: () => void;
@@ -111,8 +106,6 @@ interface AchievementDef {
   /** Pure function — does not check savedWorld / savedScript; those are patched after */
   unlockFn: (scores: GameScore[]) => boolean;
 }
-
-// ── Constants ──────────────────────────────────────────────────────────────────
 
 const ACCENT = '#2a8ab8';
 // const ACCENT_LEGACY = '#3b82f6'; // old blue — kept for reference
@@ -198,14 +191,14 @@ const ACHIEVEMENT_DEFS: AchievementDef[] = [
     id: 'world-builder',
     icon: '🗺️',
     name: 'World Builder',
-    description: 'Save your first custom world in World Builder.',
+    description: 'Commit your first custom world in World Builder.',
     unlockFn: () => false, // overridden below using savedWorld state
   },
   {
     id: 'code-runner',
     icon: '💻',
     name: 'Code Runner',
-    description: 'Save your first game script.',
+    description: 'Commit your first game script.',
     unlockFn: () => false, // overridden below using savedScript state
   },
   {
@@ -228,19 +221,12 @@ const CROSS_ENGIN_CHANNELS = [
   { name: 'Brand',  label: 'BrandingEngin',   status: 'Achievement sharing ready', emoji: '📣' },
 ] as const;
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
-
 function makeEmptyGrid(): TileType[][] {
   return Array.from({ length: 5 }, () =>
     Array.from({ length: 5 }, (): TileType => 'empty'),
   );
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
-
-import { ArtifactSlot } from '@/lib/enginpipe';
-
-import { toErrorMessage } from '@/lib/utils';
 /**
  * Default export wraps the inner component in a generic Engin Pipe
  * `<ArtifactSlot>` so future cross-Engin features (telemetry tagging,
@@ -266,23 +252,18 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   const initializedPlaySurfaceRef = useRef(false);
   const autoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── World focus integration (torus navigation) ──────────────────────────────
   const { worldFocus, setFocus } = useDreamSystem();
 
-  // ── Universal Engin Runtime ───────────────────────────────────────────────────
   const { state: engineState, dispatch: engineDispatch } = useGameEnginRuntime();
 
-  // ── OS Shell: upgradeEngine wiring ──
   const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
   useEffect(() => {
     upgradeEngine({ id: 'game', name: 'GameEngin' }, ['bridge', 'telemetry'])
       .then((upgraded) => { osRef.current = upgraded; });
   }, []);
 
-  // ── OS Shell: local event bus ──
   const busRef = useRef(createEventBus());
 
-  // ── .dreamgame file picker state ──
   const [dreamGameFile, setDreamGameFile] = useState<{ name: string; size: number } | null>(null);
   const dreamGameInputRef = useRef<HTMLInputElement>(null);
 
@@ -298,7 +279,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   useRemoteChannel();
   useGameInputKeyboardBridge();
 
-  // ── DualSense haptic feedback support ───────────────────────────────────────
   // Expose rumble function globally so games can access it via window.gamepadRumble
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -316,7 +296,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     };
   }, [gpConnected, isDualSense, rumble]);
 
-  // ── Existing state ───────────────────────────────────────────────────────────
   // Domain state is sourced from the universal EnginRuntime; UI-only state stays local.
   const scores              = engineState.scores;
   const controlProfile      = engineState.controlProfile;
@@ -333,7 +312,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   /** Avatar image data URL — set when the user chose "Play as Yourself" */
   const [avatarDataUrl, setAvatarDataUrl] = useState<string | null>(null);
 
-  // ── Co-op channel (multiplayer lobby sync) ────────────────────────────────
   const [instanceId] = useState(
     () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
   );
@@ -370,25 +348,19 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     },
   });
 
-
-
-  // ── World Builder state ──────────────────────────────────────────────────────
   const [worldName,     setWorldName]     = useState('');
   const [worldGrid,     setWorldGrid]     = useState<TileType[][]>(makeEmptyGrid);
   const [selectedTile,  setSelectedTile]  = useState<TileType>('ground');
   // savedWorld is now sourced from engineState (set via game:world-save dispatch)
 
-  // ── Physics Config state ─────────────────────────────────────────────────────
   // physicsConfig = editing buffer (local); appliedPhysics = committed version (also dispatched to engine)
   const [physicsConfig,   setPhysicsConfig]   = useState<PhysicsConfig>({ gravity: 'earth', friction: 50 });
   const [appliedPhysics,  setAppliedPhysics]  = useState<PhysicsConfig | null>(null);
 
-  // ── Game Scripts state ───────────────────────────────────────────────────────
   // scriptState = editing buffer (local); savedScript = committed version (also dispatched to engine)
   const [scriptState,  setScriptState]  = useState<ScriptState>({ code: STARTER_SCRIPT, language: 'GameScript' });
   const [savedScript,  setSavedScript]  = useState<string | null>(null);
 
-  // ── World focus: respond to games.play focus key ─────────────────────────────
   // When the world focus moves to 'games.play' (e.g. from a DreamR feed click
   // or a torus navigation), auto-select the game specified in worldSelection.
   useEffect(() => {
@@ -400,7 +372,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     }
   }, [worldFocus.focusKey, worldFocus.worldSelection, selectedPlayableGame, engineDispatch]);
 
-  // ── World focus: announce library view when mounted ──────────────────────────
   useEffect(() => {
     // Announce to the world that this engin region is the games.library.
     // Other components can read worldFocus.focusKey to know the bottom viewport
@@ -410,7 +381,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     }
   }, []); // intentionally empty — runs only on mount to announce region
 
-  // ── Supabase scores fetch ────────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
     const supabase = createClient();
@@ -432,13 +402,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Personal bests (group by game, keep highest) ─────────────────────────────
   const bestByGame = scores.reduce<Record<string, number>>((acc, s) => {
     if (acc[s.game] === undefined || s.score > acc[s.game]) acc[s.game] = s.score;
     return acc;
   }, {});
 
-  // ── Share to Leaderboard ─────────────────────────────────────────────────────
   async function handleShare(scoreId: string ){
     setSharing(scoreId);
     forgeRecord('Shared game score');
@@ -454,10 +422,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     setSharing(null);
   }
 
-  // ── Share Game Clip to ContentEngin ─────────────────────────────────────────
-
-  // ── Share Achievement Campaign to BrandingEngin ──────────────────────────────
-
   function handleControlProfileSelect(profileId: string ){
     engineDispatch({ type: 'game:control-profile', payload: { profile: profileId } });
     void sharedChannel.publish({ type: 'game:control-profile', profileId });
@@ -471,7 +435,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     );
   }
 
-  // ── World Builder ─────────────────────────────────────────────────────────────
   const handleTileClick = useCallback((row: number, col: number) => {
     setWorldGrid((prev) => {
       const next = prev.map((r) => [...r]);
@@ -480,11 +443,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     });
   }, [selectedTile]);
 
-  function handleSaveWorld( ){
+  function handleCommitWorld( ){
     if (!worldName.trim()) return;
     const snapshot = worldGrid.map((r) => [...r]);
     engineDispatch({ type: 'game:world-save', payload: { world: { name: worldName.trim(), grid: snapshot } } });
-    forgeRecord('Saved world: ' + worldName.trim());
+    forgeRecord('Committed world: ' + worldName.trim());
     recordForgeTransfer('games', 'create', 'level', 'GameEngin world → ContentEngin');
     // Real bridge event: world level exported — Create/Brand Engins may consume it.
     bridge.emit('games', 'games:asset-exported', {
@@ -494,18 +457,16 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     });
   }
 
-  // ── Physics Config ────────────────────────────────────────────────────────────
   function handleApplyPhysics( ){
     setAppliedPhysics({ ...physicsConfig });
     engineDispatch({ type: 'game:physics-apply', payload: { config: { ...physicsConfig } } });
   }
 
-  // ── Game Scripts ──────────────────────────────────────────────────────────────
   function handleSaveScript( ){
     setSavedScript(scriptState.code);
     engineDispatch({ type: 'game:script-save', payload: { code: scriptState.code, language: scriptState.language } });
-    forgeRecord('Saved game script');
-    // Task requirement: emit 'games:score-shared' on Save Script.
+    forgeRecord('Committed game script');
+    // Task requirement: emit 'games:score-shared' on Commit Script.
     // 'games:score-shared' is a planned addition to GamesChannelEvents; cast used
     // until the bridge type map is formally extended.
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
@@ -516,7 +477,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     recordForgeTransfer('games', 'code', 'asset', 'Game script saved → CodeEngin');
   }
 
-  // ── Multiplayer Lobby state ──────────────────────────────────────────────────
   const [lobbyActive, setLobbyActive] = useState(false);
   const [lobbyCode, setLobbyCode] = useState('');
   const [lobbyPlayers, setLobbyPlayers] = useState<string[]>([]);
@@ -529,7 +489,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     });
   }, [controlProfile, selectedPlayableGame, sharedChannel.publish]);
 
-  // ── Tournament Mode state ────────────────────────────────────────────────────
   const [bracket, setBracket] = useState<Array<{ player1: string; player2: string; winner: string | null }>>([
     { player1: 'Dr. Eams', player2: 'Player 2', winner: null },
     { player1: 'Player 3', player2: 'Player 4', winner: null },
@@ -537,7 +496,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     { player1: 'Player 7', player2: 'Player 8', winner: null },
   ]);
 
-  // ── Game Analytics state ─────────────────────────────────────────────────────
   const [analyticsData] = useState<Array<{ label: string; value: string; trend: 'up' | 'down' | 'flat' }>>([
     { label: 'Avg Session', value: '12m 30s', trend: 'up' },
     { label: 'Win Rate',    value: '64%',     trend: 'up' },
@@ -545,7 +503,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     { label: 'Games Today', value: '7',       trend: 'down' },
   ]);
 
-  // ── Replay System state ──────────────────────────────────────────────────────
   const [replayRecording, setReplayRecording] = useState(false);
   const [replays, setReplays] = useState<Array<{ id: string; game: string; duration: string; date: string }>>([
     { id: 'rp-1', game: 'MADMAXI',     duration: '4:12', date: '2025-01-10' },
@@ -553,14 +510,12 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     { id: 'rp-3', game: 'BLOCK STACK', duration: '2:58', date: '2025-01-08' },
   ]);
 
-  // ── Social Challenge state ───────────────────────────────────────────────────
   const [challengeSent, setChallengeSent] = useState(false);
   const [activeChallenges, setActiveChallenges] = useState<Array<{ id: string; from: string; game: string; score: number }>>([
     { id: 'ch-1', from: 'StarPlayer99', game: 'MADMAXI', score: 24800 },
     { id: 'ch-2', from: 'CodeWizard42', game: 'Neon Drift', score: 11200 },
   ]);
 
-  // ── Speedrun Timer ────────────────────────────────────────────────────────────
   const [srActive, setSrActive]   = useState(false);
   const [srMs, setSrMs]           = useState(0);
   const [srSplits, setSrSplits]   = useState<number[]>([]);
@@ -581,9 +536,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(3,'0')}`;
   }
 
-
-
-  // ── Daily Quests ─────────────────────────────────────────────────────────────
   const initialQuests = [
     { id: 'q1', quest: 'Play 3 games today', xp: 100, done: false },
     { id: 'q2', quest: 'Clear a run in MADMAXI', xp: 200, done: false },
@@ -621,7 +573,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     });
   }
 
-  // ── Dream Economy ─────────────────────────────────────────────────────────────
   const [coins, setCoins] = useState(() => {
     if (typeof window === 'undefined') return 2840;
     return parseInt(localStorage.getItem('de-dream-coins') ?? '2840', 10);
@@ -630,7 +581,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (typeof window !== 'undefined') localStorage.setItem('de-dream-coins', String(coins));
   }, [coins]);
 
-  // ── Season Pass ───────────────────────────────────────────────────────────────
   const [seasonXP, setSeasonXP] = useState(() => {
     if (typeof window === 'undefined') return 4200;
     return parseInt(localStorage.getItem('de-season-xp') ?? '4200', 10);
@@ -644,8 +594,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     });
   }
 
-
-  // Saves and restores the GameEngin workspace state across sessions.
+  // Persists and restores the GameEngin workspace state across sessions.
   type GameSavedState = {
     worldGrid?: TileType[][];
     worldName?: string;
@@ -685,7 +634,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (gameRestoring) return;
     persistGameState({ worldGrid, worldName, physicsConfig, scriptState });
   // persistGameState is stable (useCallback); eslint-disable-next-line
-    
+
   }, [worldGrid, worldName, physicsConfig, scriptState, gameRestoring]);
 
   const syncedMusicClip = savedMusicState?.ledgerAudio ?? null;
@@ -741,7 +690,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     window.localStorage.setItem(GAME_LIBRARY_SESSION_STORAGE_KEY, JSON.stringify(updated));
     setSavedLaunches(updated);
   }, [savedLaunches]);
-
 
   const openPlayableGamePage = useCallback((gameId: string, options: { expand?: boolean } = {}) => {
     savePlayableGame(gameId, options.expand ? 'fullscreen' : 'library-screen');
@@ -851,7 +799,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     }
   }, [expandedPlayableGame]);
 
-  // ── Achievement computation ───────────────────────────────────────────────────
   const selectedPlayable = GAME_CATALOG.find((game) => game.id === selectedPlayableGame) ?? GAME_CATALOG[0];
   const activePlayable = activePlayableGame ? GAME_CATALOG.find((game) => game.id === activePlayableGame) ?? null : null;
   const expandedPlayable = expandedPlayableGame ? GAME_CATALOG.find((game) => game.id === expandedPlayableGame) ?? null : null;
@@ -923,6 +870,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       : null;
   const expandedCartridgeError: string | null =
     expandedPlayable ? cartridgeErrors[expandedPlayable.id] ?? null : null;
+  const expandedPlayableUsesRemote = expandedPlayable ? expandedPlayable.renderMode !== 'dom' : false;
 
   const achievements = ACHIEVEMENT_DEFS.map((def) => {
     let unlocked = def.unlockFn(scores);
@@ -932,7 +880,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   });
   const unlockedAchievements = achievements.filter((a) => a.unlocked);
 
-  // ── Cross-Engin: CodeEngin script deploy receiver ──
   const [dismissedScript, setDismissedScript] = useState<string | null>(null);
   const scriptPrompt = gameBridge.lastScriptDeploy !== null && gameBridge.lastScriptDeploy !== dismissedScript
     ? gameBridge.lastScriptDeploy
@@ -958,35 +905,38 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           />
         )}
 
-        {/* Game stage — cartridge owns its HUD; shared GameRemote stays a separate control capability. */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 'max(var(--de-hud-bottom, 175px), clamp(80px, 22dvh, 38dvh))' }}>
-          {expandedCartridge ? (
-            <CartridgeErrorBoundary
-              cartridgeId={expandedPlayable.id}
-              onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
-            >
-              <GameRuntime
-                cartridge={expandedCartridge}
-                physicsConfig={appliedPhysics}
+        <style>{GAMEENGIN_PLAY_SURFACE_CSS}</style>
+
+        <div className="de-gameplay-stage-area">
+          <div className="de-gameplay-stage-frame">
+            {expandedCartridge ? (
+              <CartridgeErrorBoundary
+                cartridgeId={expandedPlayable.id}
                 onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
-              />
-            </CartridgeErrorBoundary>
-          ) : expandedCartridgeError ? (
-            <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: '#fecaca', padding: 24, textAlign: 'center' }}>
-              <div style={{ maxWidth: 460, display: 'grid', gap: 10 }}>
-                <div style={{ fontSize: 28 }}>⚠️</div>
-                <div style={{ fontSize: 16, fontWeight: 900, color: '#f8fbff' }}>{expandedPlayable.label} failed to load</div>
-                <div style={{ fontSize: 12, lineHeight: 1.6 }}>{expandedCartridgeError}</div>
+              >
+                <GameRuntime
+                  cartridge={expandedCartridge}
+                  physicsConfig={appliedPhysics}
+                  onCrash={(crash) => openCrashReport(expandedPlayable.id, expandedPlayable.label, crash)}
+                />
+              </CartridgeErrorBoundary>
+            ) : expandedCartridgeError ? (
+              <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: '#fecaca', padding: 24, textAlign: 'center' }}>
+                <div style={{ maxWidth: 460, display: 'grid', gap: 10 }}>
+                  <div style={{ fontSize: 28 }}>⚠️</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, color: '#f8fbff' }}>{expandedPlayable.label} failed to load</div>
+                  <div style={{ fontSize: 12, lineHeight: 1.6 }}>{expandedCartridgeError}</div>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: 'rgba(220,235,255,0.82)', background: '#000' }}>
-              <div style={{ display: 'grid', gap: 12, justifyItems: 'center' }}>
-                <div style={{ fontSize: 42 }}>{expandedPlayable.emoji}</div>
-                <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Loading {expandedPlayable.label}</div>
+            ) : (
+              <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: 'rgba(220,235,255,0.82)', background: '#000' }}>
+                <div style={{ display: 'grid', gap: 12, justifyItems: 'center' }}>
+                  <div style={{ fontSize: 42 }}>{expandedPlayable.emoji}</div>
+                  <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Loading {expandedPlayable.label}</div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <div
@@ -1039,39 +989,25 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           />
         </div>
 
-        <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 55, display: 'flex', alignItems: 'center', gap: 6 }}>
-          <button
-            type="button"
-            onClick={() => setExpandedPlayableGame(null)}
-            style={{ background: 'rgba(3, 7, 18, 0.72)', border: '1px solid rgba(160,195,240,0.20)', borderRadius: 999, padding: '6px 12px', cursor: 'pointer', color: 'rgba(220,235,255,0.92)', fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
-          >
-            ← Back
-          </button>
-          <button
-            type="button"
-            onClick={() => savePlayableGame(expandedPlayable.id, 'fullscreen')}
-            style={{ background: 'rgba(3,7,18,0.72)', border: '1px solid rgba(74,222,128,0.24)', borderRadius: 999, padding: '6px 10px', cursor: 'pointer', color: '#4ade80', fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
-            title="Save session"
-          >
-            Save
-          </button>
+        <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 55, display: 'flex', alignItems: 'center', gap: 6, pointerEvents: 'none' }}>
           <span
             title={gpConnected ? gamepadName : 'Press any button on your controller to connect'}
             style={{ fontSize: 9, fontWeight: 800, padding: '4px 8px', borderRadius: 999, background: 'rgba(3,7,18,0.72)', color: gpConnected ? '#4ade80' : 'rgba(160,195,240,0.45)', border: gpConnected ? '1px solid rgba(74,222,128,0.25)' : '1px solid rgba(160,195,240,0.12)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
           >
             {gpConnected ? (isDualSense ? '🎮' : '🕹') : '🎮'}
           </span>
-          <RecordingControls containerRef={playOverlayRef} />
         </div>
 
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 55 }}>
-          <GameRemote
-            embedded
-            gameLabel={expandedPlayable.label}
-            playHref={buildGameLaunchHref(expandedPlayable.id, { expand: true })}
-            onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
-          />
-        </div>
+        {expandedPlayableUsesRemote && (
+          <div className="de-gameplay-remote-zone">
+            <GameRemote
+              embedded
+              gameLabel={expandedPlayable.label}
+              playHref={buildGameLaunchHref(expandedPlayable.id, { expand: true })}
+              onExit={() => { setExpandedPlayableGame(null); setAvatarDataUrl(null); }}
+            />
+          </div>
+        )}
 
         {/* ── Avatar overlay — shown when user chose "Play as Yourself" ── */}
         {avatarDataUrl && (
@@ -1127,7 +1063,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     );
   }
 
-  // ── Lobby handlers ───────────────────────────────────────────────────────────
   function handleCreateRoom( ){
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     setLobbyCode(code);
@@ -1143,7 +1078,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     );
   }
 
-  // ── Tournament handlers ──────────────────────────────────────────────────────
   function handlePickWinner(matchIndex: number, winner: string | null): void {
     setBracket((prev) => prev.map((m, i: number) => i === matchIndex ? { ...m, winner } : m));
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
@@ -1151,7 +1085,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     );
   }
 
-  // ── Replay handlers ──────────────────────────────────────────────────────────
   function handleReplayToggle( ){
     const next = !replayRecording;
     setReplayRecording(next);
@@ -1170,7 +1103,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     }
   }
 
-  // ── Social Challenge handlers ────────────────────────────────────────────────
   function handleSendChallenge( ){
     setChallengeSent(true);
     forgeRecord('Sent game challenge');
@@ -1187,25 +1119,25 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     );
   }
 
-  // ── Render ────────────────────────────────────────────────────────────────────
   const activeControlProfile = GAME_CONTROL_PROFILES.find((profile) => profile.id === controlProfile) ?? GAME_CONTROL_PROFILES[0];
   const playableCategoriesCount = new Set(GAME_CATALOG.map((game) => game.category)).size;
   const engineDeckStats = [
     { label: 'Playable', value: String(GAME_CATALOG.length), tone: '#7dd3fc' },
     { label: 'Categories', value: String(playableCategoriesCount), tone: '#c084fc' },
-    { label: 'Saved Slots', value: String(savedLaunches.length), tone: '#4ade80' },
+    { label: 'Checkpoint Slots', value: String(savedLaunches.length), tone: '#4ade80' },
   ] as const;
   const selectedPlayableUsesEnhancedVisuals = selectedPlayable.id === 'neon-drift' || selectedPlayable.id === 'echo-arena';
+  const selectedPlayableUsesRemote = selectedPlayable.renderMode !== 'dom';
   const selectedPlayableCapabilities = [
     'Fullscreen boot',
-    'Shared GameRemote',
+    ...(selectedPlayableUsesRemote ? ['Shared GameRemote'] : []),
     'Quick resume',
     `${activeControlProfile.label} controls`,
     ...(selectedPlayableUsesEnhancedVisuals ? ['Adaptive quality'] : []),
   ];
   const selectedPlayableStatus = [
     `${selectedPlayable.category} class`,
-    savedPlayableSession ? 'Saved to memory deck' : 'Ready for first save',
+    savedPlayableSession ? 'Checkpoint in memory deck' : 'Ready for first checkpoint',
     activePlayable ? 'Live on play screen' : 'Standby',
     ...(selectedPlayableUsesEnhancedVisuals ? ['Enhanced visuals active'] : []),
   ];
@@ -1225,22 +1157,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           mode={selectedPlayable.mobileHudMode ?? 'buttons'}
           onExit={() => setExpandedPlayableGame(null)}
         />
-        <GameController
-          gameLabel={selectedPlayable.label}
-          onExit={() => setExpandedPlayableGame(null)}
-        />
-        <GameRemoteSurface
-          embedded
-          gameLabel={selectedPlayable.label}
-          playHref={buildGameLaunchHref(selectedPlayable.id, { expand: true })}
-          onExit={() => setExpandedPlayableGame(null)}
-        />
-        <LegacyGameRemote
-          embedded
-          gameLabel={selectedPlayable.label}
-          playHref={buildGameLaunchHref(selectedPlayable.id, { expand: true })}
-          onExit={() => setExpandedPlayableGame(null)}
-        />
       </div>
 
       {/* ══════════════════════════════════════════ Header */}
@@ -1249,18 +1165,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
         style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}
       >
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            className="p-2 -ml-2 rounded-full"
-            style={{
-              background: 'rgba(160,195,240,0.15)', border: 'none',
-              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-            aria-label="Back to Games"
-          >
-            <ArrowLeft className="w-4 h-4" style={{ color: 'var(--de-text)' }} />
-          </button>
+
           <div
             style={{
               width: 20, height: 20, borderRadius: 6, flexShrink: 0,
@@ -1528,14 +1433,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               <button type="button" onClick={() => openPlayableGamePage(selectedPlayable.id)} className="de-btn de-btn-ghost text-xs" style={{ gap: 6, borderColor: 'rgba(125,211,252,0.22)', color: '#7dd3fc' }}>
                 ▶ Run in GameEngin
               </button>
-              <button type="button" onClick={() => savePlayableGame(selectedPlayable.id, 'library-screen')} className="de-btn de-btn-ghost text-xs" style={{ gap: 6, borderColor: 'rgba(74,222,128,0.22)', color: '#4ade80' }}>
-                💾 Save state
-              </button>
             </div>
 
             {savedPlayableSession && (
               <div style={{ fontSize: 11, color: '#4ade80', fontWeight: 700, marginBottom: 12 }}>
-                Last saved: {savedPlayableSession.label} · {new Date(savedPlayableSession.savedAt).toLocaleString()}
+                Last checkpoint: {savedPlayableSession.label} · {new Date(savedPlayableSession.savedAt).toLocaleString()}
               </div>
             )}
 
@@ -1561,7 +1463,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                   <span style={{ fontSize: 20, lineHeight: 1 }}>{game.emoji}</span>
                   <span style={{ flex: 1, fontSize: 13, fontWeight: 700 }}>{game.label}</span>
                   {savedLaunches.some((session) => session.gameId === game.id) && (
-                    <span style={{ fontSize: 10, fontWeight: 700, color: '#4ade80' }}>Saved</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: '#4ade80' }}>Checkpointed</span>
                   )}
                 </button>
               ))}
@@ -1902,7 +1804,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 className="ml-auto text-xs font-semibold px-2 py-1 rounded-full"
                 style={{ background: 'rgba(34,197,94,0.12)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)' }}
               >
-                ✓ Saved
+                ✓ Committed
               </span>
             ) : (
               <span
@@ -2006,7 +1908,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               </div>
             </div>
 
-            {/* Saved world confirmation */}
+            {/* Committed world confirmation */}
             {savedWorld && (
               <div
                 style={{
@@ -2023,12 +1925,12 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           <div className="de-widget-actions" style={{ gap: 8 }}>
             <button
               type="button"
-              onClick={handleSaveWorld}
+              onClick={handleCommitWorld}
               disabled={!worldName.trim()}
               className="de-btn de-btn-primary text-xs"
               style={{ gap: 6, opacity: worldName.trim() ? 1 : 0.45, cursor: worldName.trim() ? 'pointer' : 'not-allowed' }}
             >
-              <Map className="w-3 h-3" /> Save World
+              <Map className="w-3 h-3" /> Commit World
             </button>
             <Link
               href="/daydream/games"
@@ -2317,7 +2219,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               className="de-btn de-btn-primary text-xs"
               style={{ gap: 6 }}
             >
-              <FileCode className="w-3 h-3" /> Save Script
+              <FileCode className="w-3 h-3" /> Commit Script
             </button>
           </div>
         </div>
@@ -2544,67 +2446,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
         </div>
 
-        {/* ── Replay System ── */}
-        <div className="de-widget" style={{ marginTop: 14 }}>
-          <div className="de-widget-header">
-            <Play className="w-4 h-4" style={{ color: ACCENT }} />
-            <span className="de-widget-title ml-2">Replay System</span>
-            {replayRecording && (
-              <span
-                className="ml-auto text-xs font-semibold px-2 py-1 rounded-full"
-                style={{ background: 'rgba(239,68,68,0.12)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.25)' }}
-              >
-                ● REC
-              </span>
-            )}
-          </div>
-          <div className="de-widget-body">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              {replays.map((r) => (
-                <div
-                  key={r.id}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '9px 12px', borderRadius: 10,
-                    background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(160,195,240,0.18)',
-                  }}
-                >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-heading)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {r.game}
-                    </div>
-                    <div style={{ fontSize: 10, color: 'var(--de-text-dim)', marginTop: 1 }}>
-                      {r.duration} · {r.date}
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    aria-label={`Watch replay of ${r.game}`}
-                    style={{
-                      padding: '4px 10px', borderRadius: 7, fontSize: 10, fontWeight: 700,
-                      border: `1px solid ${ACCENT}35`, background: `${ACCENT}12`, color: ACCENT,
-                      cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0,
-                    }}
-                  >
-                    ▶ Watch
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="de-widget-actions">
-            <button
-              type="button"
-              onClick={handleReplayToggle}
-              className={replayRecording ? 'de-btn de-btn-ghost' : 'de-btn de-btn-primary'}
-              aria-label={replayRecording ? 'Stop recording replay' : 'Start recording replay'}
-              style={{ transition: 'all 0.15s' }}
-            >
-              {replayRecording ? '■ Stop' : '● Record'}
-            </button>
-          </div>
-        </div>
-
         {/* ── Social Challenge ── */}
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
@@ -2819,8 +2660,6 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
           </div>
         </div>
 
-
-
         {/* ── .dreamgame File Picker ── */}
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
@@ -3019,3 +2858,66 @@ function EnginBootSplash({
     </div>
   );
 }
+
+const GAMEENGIN_PLAY_SURFACE_CSS = `
+.de-gameplay-stage-area {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #000;
+}
+.de-gameplay-stage-frame {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+.de-gameplay-stage-frame > * {
+  width: 100%;
+  height: 100%;
+}
+.de-gameplay-remote-zone {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 55;
+  pointer-events: auto;
+}
+@media (orientation: portrait) {
+  .de-gameplay-stage-area {
+    align-items: start;
+    height: 75dvh;
+    padding: env(safe-area-inset-top, 0px) 0 0;
+  }
+  .de-gameplay-stage-frame {
+    width: min(100vw, calc(75dvh * 9 / 16));
+    height: min(75dvh, calc(100vw * 16 / 9));
+    aspect-ratio: 9 / 16;
+  }
+  .de-gameplay-remote-zone {
+    height: 25dvh;
+    min-height: 190px;
+  }
+}
+@media (orientation: landscape) {
+  .de-gameplay-stage-area {
+    left: 15vw;
+    right: 15vw;
+    top: 0;
+    bottom: 0;
+  }
+  .de-gameplay-stage-frame {
+    width: 70vw;
+    height: min(100dvh, calc(70vw * 9 / 16));
+    aspect-ratio: 16 / 9;
+  }
+  .de-gameplay-remote-zone {
+    position: absolute;
+    inset: 0;
+    z-index: 55;
+    pointer-events: none;
+  }
+  .de-gameplay-remote-zone > * {
+    pointer-events: auto;
+  }
+}
+`;

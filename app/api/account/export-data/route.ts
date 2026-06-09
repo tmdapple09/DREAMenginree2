@@ -1,3 +1,9 @@
+import { jsonApiError } from '@/lib/api/route';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 // app/api/account/export-data/route.ts
 // "Export My Data" endpoint — GDPR/privacy-by-design export (AXIOM 5).
 //
@@ -10,13 +16,6 @@
 //   AXIOM 5 (Privacy by Design) — users must be able to retrieve their data.
 //   LAW.md §2 — nothing is exposed without auth; this route is auth-gated.
 //   ARCHITECTURE.md §10 — Next.js App Router, Supabase SSR client.
-
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 
 // Tables to export, each with the column name that identifies the owner.
 const EXPORT_TARGETS: Array<{ table: string; ownerCol: string }> = [
@@ -38,7 +37,6 @@ export async function GET(_req: NextRequest ): Promise<Response> {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to export your data.');
   }
 
-   
   const supabaseAny = supabase as SupabaseClient;
 
   const exportData: Record<string, unknown[] | null> = {};

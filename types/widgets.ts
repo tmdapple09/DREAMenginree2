@@ -113,8 +113,6 @@ export interface SubWidgetRef {
   order: number;
 }
 
-// -------- helpers --------
-
 export function getWidgetType(widget: unknown): WidgetType | undefined {
   if (!widget || typeof widget !== 'object') return undefined;
   const w = widget as any;
@@ -139,7 +137,6 @@ export function getWidgetConfig(widget: unknown): Record<string, unknown> {
   return {};
 }
 
-// -------- type guards (fix the “never” error) --------
 export function isWidgetInstance(widget: unknown): widget is WidgetInstance {
   return !!widget && typeof widget === "object" && "id" in (widget as any);
 }

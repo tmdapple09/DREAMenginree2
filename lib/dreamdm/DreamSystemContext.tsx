@@ -1,5 +1,25 @@
 'use client';
 
+import { DEFAULT_SPLIT_RATIO } from '@/lib/dreamdm/barInteractions';
+import type { SystemPanelId } from '@/lib/panels/panelTypes';
+import {
+    moveTorus as computeMoveTorus,
+    torusFocusKey,
+} from '@/lib/runtime/dualRuntime';
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+    type Dispatch,
+    type ReactNode,
+    type SetStateAction,
+} from 'react';
+
 /**
  * DreamSystemContext — global state for system overlays and runtime dispatch.
  *
@@ -22,28 +42,6 @@
  *   - homeData: user profile + posts, always populated after auth
  */
 
-import { DEFAULT_SPLIT_RATIO } from '@/lib/dreamdm/barInteractions';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-import {
-    moveTorus as computeMoveTorus,
-    torusFocusKey,
-} from '@/lib/runtime/dualRuntime';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-    type Dispatch,
-    type ReactNode,
-    type SetStateAction,
-} from 'react';
-
-// ── Home data shared by DreamBarDataBridge into PersistentDreamBar ───────────
-
 type ProfileLike = {
   id?: string;
   handle?: string | null;
@@ -57,8 +55,6 @@ export interface HomeData {
   initialPosts: unknown[];
   isAdmin: boolean;
 }
-
-// ── Bar intent types ──────────────────────────────────────────────────────────
 
 /**
  * The DreamDM Bar operates in one of these intent modes.
@@ -95,8 +91,6 @@ export interface BarIntent {
 
 export const DEFAULT_BAR_INTENT: BarIntent = { mode: 'default' };
 
-// ── World Focus — torus navigation state ─────────────────────────────────────
-
 /**
  * World focus state: where in the "one page / torus world" the user is.
  *
@@ -122,8 +116,6 @@ export const DEFAULT_WORLD_FOCUS: WorldFocusState = {
   torusY:            0,
   dominantViewport:  'top',
 };
-
-// ── Callback types ────────────────────────────────────────────────────────────
 
 type ReturnHomeFn     = () => void;
 type OpenInSurfaceFn  = (id: SystemPanelId) => void;
@@ -152,8 +144,6 @@ export interface RuntimeCallbacks {
    */
   returnDreamSpace?: () => void;
 }
-
-// ── Context shape ─────────────────────────────────────────────────────────────
 
 interface DreamSystemContextValue {
   /** Whether the dual bottom menu is open */
@@ -211,8 +201,6 @@ interface DreamSystemContextValue {
   homeData: HomeData | null;
   setHomeData: Dispatch<SetStateAction<HomeData | null>>;
 
-  // ── World Focus / Torus Navigation ────────────────────────────────────────
-
   /**
    * Current world focus state (torus position + focused region key).
    * All components can read this to understand what the user is looking at.
@@ -246,8 +234,6 @@ interface DreamSystemContextValue {
    */
   setDominantViewport: (viewport: 'top' | 'bottom') => void;
 }
-
-// ── Context + provider ────────────────────────────────────────────────────────
 
 const DreamSystemContext = createContext<DreamSystemContextValue>({
   bothMenusOpen:              false,
@@ -288,7 +274,6 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
   const [isBarMinimized, setIsBarMinimized]      = useState(false);
   const [homeData,      setHomeData]             = useState<HomeData | null>(null);
 
-  // ── World Focus / Torus Navigation state ─────────────────────────────────
   const [worldFocus, setWorldFocusState] = useState<WorldFocusState>(DEFAULT_WORLD_FOCUS);
 
   // Bootstrap homeData from Supabase on any authenticated page so both
@@ -349,8 +334,6 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
 
   const setBarIntent   = useCallback((intent: BarIntent) => setBarIntentState(intent), []);
   const clearBarIntent = useCallback(() => setBarIntentState(DEFAULT_BAR_INTENT), []);
-
-  // ── World Focus handlers ─────────────────────────────────────────────────
 
   const setFocus = useCallback((
     key: string,

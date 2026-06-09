@@ -1,3 +1,19 @@
+import { writeAuditLog } from '@/lib/ai/audit';
+import { BOOGIE_POLICY_VERSION, boogieEnforce } from '@/lib/ai/boogieman';
+import { checkRateLimit } from '@/lib/ai/rateLimit';
+import { isOwnerEmail } from '@/lib/ai/triad';
+import { jsonApiError } from '@/lib/api/route';
+import { isZeroTolerance, scanContent } from '@/lib/child-safety/childSafetyDetector';
+import { classifyImage } from '@/lib/child-safety/imageClassifier';
+import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { createHash } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
 // app/api/ai/boogieman/child-safety/route.ts
 // TheBoogieMan.Ai — Child Safety Scan Endpoint
 //
@@ -14,22 +30,6 @@
 // (posts route, messages route, upload route) — never directly.
 //
 // Rate limit: 120 req/min (automated callers need higher budget).
-
-import { writeAuditLog } from '@/lib/ai/audit';
-import { BOOGIE_POLICY_VERSION, boogieEnforce } from '@/lib/ai/boogieman';
-import { checkRateLimit } from '@/lib/ai/rateLimit';
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { isZeroTolerance, scanContent } from '@/lib/child-safety/childSafetyDetector';
-import { classifyImage } from '@/lib/child-safety/imageClassifier';
-import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { createHash } from 'crypto';
-import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
 
 // ============================================================================
 // REQUEST SCHEMA
@@ -131,10 +131,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // ── Load known-bad hash set ──────────────────────────────────────────────
   const knownBadHashes = await loadKnownBadHashes(supabase);
 
-  // ── Layer 4: LLM image classification (runs before scanContent) ──────────
   // classifyImage is async so we run it here and pass the result into scanContent.
   let imageClassification: import('@/lib/child-safety/imageClassifier').ImageClassificationResult | undefined;
   if (request.imageBase64) {
@@ -144,7 +142,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── Run child safety detector ────────────────────────────────────────────
   const detection = scanContent({
     text: request.text,
     mediaHashes: request.mediaHashes,
@@ -152,7 +149,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     imageClassification,
   });
 
-  // ── If clean, return early ───────────────────────────────────────────────
   if (!detection.flagged) {
     return NextResponse.json(
       {
@@ -167,7 +163,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── Enforce via BoogieMan ─────────────────────────────────────────────────
   const enforcement = boogieEnforce({
     userId: request.reportedUserId,
     ruleCode: detection.rule_code!,
@@ -177,7 +172,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     blastRadius: 1,
   });
 
-  // ── Report to NCMEC + write to DB ─────────────────────────────────────────
   const contentHash = request.text
     ? createHash('sha256').update(request.text).digest('hex')
     : undefined;
@@ -214,7 +208,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // ── Write audit log ───────────────────────────────────────────────────────
   await writeAuditLog({
     request_id,
     user_id: user.id,

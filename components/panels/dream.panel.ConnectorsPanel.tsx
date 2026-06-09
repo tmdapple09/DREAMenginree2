@@ -1,12 +1,12 @@
 'use client';
 
+import ConnectorsClient from '@/app/connectors/dream.ConnectorsClient';
+import { Plug } from 'lucide-react';
+
 /**
  * ConnectorsPanel — inline connector management.
  * ConnectorsClient is already a pure client component — use it directly.
  */
-
-import ConnectorsClient from '@/app/connectors/dream.ConnectorsClient';
-import { Plug } from 'lucide-react';
 
 export default function ConnectorsPanel( ){
   return (

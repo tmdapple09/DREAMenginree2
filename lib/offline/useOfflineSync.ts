@@ -1,5 +1,13 @@
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
+import {
+    isOnline,
+    onConnectivityChange,
+    processSyncQueue,
+    type SyncQueueEntry,
+} from './offlineCache';
+
 /**
  * lib/offline/useOfflineSync.ts
  *
@@ -12,14 +20,6 @@
  *   - docs/LAW.md §3: every visible action must do something real.
  *     The offline indicator reflects true connectivity state.
  */
-
-import { useCallback, useEffect, useState } from 'react';
-import {
-    isOnline,
-    onConnectivityChange,
-    processSyncQueue,
-    type SyncQueueEntry,
-} from './offlineCache';
 
 export interface UseOfflineSyncReturn {
   /** Whether the browser is currently online */

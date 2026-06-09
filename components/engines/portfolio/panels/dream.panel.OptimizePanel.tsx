@@ -1,17 +1,17 @@
 'use client';
 
+import QuantumCircuitCanvas, {
+    type QuantumMeasurementResult,
+} from '@/engins/dream.QuantumCircuitCanvas';
+import { Activity, Cpu, Loader2, ShieldCheck, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * OptimizePanel — Algorithm configuration + quantum run for the Portfolio Engine.
  *
  * Full Markowitz / QUBO optimization runner with algorithm, backend, and ansatz
  * pickers. Lives at /engines/portfolio/optimize.
  */
-
-import QuantumCircuitCanvas, {
-    type QuantumMeasurementResult,
-} from '@/engins/dream.QuantumCircuitCanvas';
-import { Activity, Cpu, Loader2, ShieldCheck, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
 
 type Algorithm = 'vqe' | 'qaoa';
 type Backend   = 'local_simulator' | 'ibm_quantum';

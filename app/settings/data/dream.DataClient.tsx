@@ -1,15 +1,15 @@
 'use client';
 
+import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useState } from 'react';
+
 /**
  * DataClient — wires the "Request Data Export" button to the real API.
  *
  * Constitution Rule 6-7: every visible button must do something real.
  * GET /api/account/export-data returns a JSON snapshot that the browser saves.
  */
-
-import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
-import Link from 'next/link';
-import { useCallback, useState } from 'react';
 
 export default function DataClient( ){
   const [exporting, setExporting] = useState(false);

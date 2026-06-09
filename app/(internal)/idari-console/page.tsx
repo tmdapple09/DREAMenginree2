@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.Admin  (framework-mandated basename: page.tsx)
 import ChildSafetyPanel from '@/components/dream.panel.ChildSafetyPanel';
 import IDariPanel from '@/components/dream.panel.IDariPanel';
 import { createUpgradeReadinessSnapshot } from '@/lib/admin/upgrade-readiness';
@@ -22,6 +21,8 @@ import {
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.Admin  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Admin – Dreamengin' };
 

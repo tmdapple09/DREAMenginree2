@@ -1,10 +1,12 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { EnginName } from '@/lib/runtime/instanceManager';
+import { buildInstanceKey, promoteInstanceToRealtime, useInstanceManager } from '@/lib/runtime/instanceManager';
+import { createLocalChannel, type RuntimeChannel, type RuntimeChannelEvent } from '@/lib/runtime/runtimeChannel';
+import type { RuntimeId } from '@/types/module-manifest';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/useSharedEnginChannel.ts.
 
@@ -33,37 +35,15 @@
  * Architecture: docs/ARCHITECTURE.md §5 (Pass 5 — Shared Dream wiring).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { EnginName } from '@/lib/runtime/instanceManager';
-
-import { buildInstanceKey, promoteInstanceToRealtime, useInstanceManager } from '@/lib/runtime/instanceManager';
-
-import { createLocalChannel, type RuntimeChannel, type RuntimeChannelEvent } from '@/lib/runtime/runtimeChannel';
-
-import type { RuntimeId } from '@/types/module-manifest';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface SharedEnginChannelOptions {
   enginName: EnginName;
@@ -93,11 +73,7 @@ export interface SharedEnginChannelResult<T extends RuntimeChannelEvent = Runtim
   peerCount: number;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeChannelEvent>({
   enginName,
@@ -109,8 +85,6 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
   const channelRef = useRef<RuntimeChannel<T> | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [peerCount,   setPeerCount]   = useState(1);
-
-  // ── Spawn or retrieve instance ─────────────────────────────────────────────
 
   useEffect(() => {
     const instance = spawn(enginName, instanceId, region, mode);
@@ -133,7 +107,7 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
       // We do NOT destroy the instance on unmount — instances outlive component
       // renders so state is preserved when the Engin remounts in another region.
     };
-   
+
   }, [enginName, instanceId, region]);
 
   useEffect(() => {
@@ -144,8 +118,6 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
     void promoteInstanceToRealtime(key);
   }, [enginName, instanceId, mode]);
 
-  // ── Re-sync channelRef when manager promotes an instance to co-op ─────────
-
   useEffect(() => {
     const key = `${enginName}:${instanceId}`;
     const instance = instances[key];
@@ -153,8 +125,6 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
       channelRef.current = instance.channel as unknown as RuntimeChannel<T>;
     }
   }, [enginName, instanceId, instances]);
-
-  // ── publish ────────────────────────────────────────────────────────────────
 
   const publish = useCallback(
     async (event: T) => {
@@ -164,8 +134,6 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
     },
     [],
   );
-
-  // ── subscribe ──────────────────────────────────────────────────────────────
 
   const subscribe = useCallback(
     (listener: (event: T) => void): (() => void) => {
@@ -187,14 +155,8 @@ export function useSharedEnginChannel<T extends RuntimeChannelEvent = RuntimeCha
   return { channel, publish, subscribe, isConnected, peerCount };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

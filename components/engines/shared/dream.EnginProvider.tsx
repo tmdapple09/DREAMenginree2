@@ -1,5 +1,7 @@
 'use client';
 
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+
 /**
  * EnginProvider — Lightweight context provider for an engine app.
  *
@@ -11,8 +13,6 @@
  * Usage: wrap the engine's layout with <EnginProvider> so all child panels
  * can call useEngin() to read shared state without prop-drilling.
  */
-
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type EngineId = 'games' | 'music' | 'code' | 'lab' | 'brand' | 'create' | 'portfolio';
 

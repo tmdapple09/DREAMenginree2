@@ -1,3 +1,8 @@
+import { normalisePinterest } from '@/lib/connectors/normalise';
+import { parseRssFeed, pinterestRssUrl } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/pinterest.ts
  *
@@ -16,11 +21,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normalisePinterest } from '@/lib/connectors/normalise';
-import { parseRssFeed, pinterestRssUrl } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface PinterestCredentials {
   username: string;
   /** Optional specific board slug. If omitted, fetches all public pins. */

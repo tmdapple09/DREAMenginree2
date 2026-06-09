@@ -63,9 +63,7 @@ export interface SocialFeedWidgetConfig {
   };
 }
 
-// ---------------------------------------------------------------------------
 // Dreamengin widget typing helpers used by lib/widgets/parse.ts
-// ---------------------------------------------------------------------------
 
 export type DreamenginWidgetType =
   | 'youtube'

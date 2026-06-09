@@ -5,3 +5,4 @@ export {
     MADMAXI_SUPER_STREAK, default, getEnemyKindForIndex, getMadmaxiEnemyCount, getMadmaxiLevelDefinition, getPowerUpForIndex,
     isMadmaxiAuthoredLevel
 } from './madmaxi';
+

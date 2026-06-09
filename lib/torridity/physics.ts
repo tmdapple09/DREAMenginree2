@@ -1,3 +1,5 @@
+import { a0Perception, deltaP, n } from './constants';
+
 /**
  * lib/torridity/physics.ts — §37 Torridity Physics Functions
  *
@@ -10,10 +12,6 @@
  *   decayFactor(ageHours)   — time-based decay via mu
  *   throttlingGate(mass, feedSlots) — low-mass content visibility cap
  */
-
-import { a0Perception, deltaP, n } from './constants';
-
-// ─── MOND Interpolation ───────────────────────────────────────────────────────
 
 /**
  * mu(x)
@@ -28,8 +26,6 @@ export function mu(x: number): number {
   return ax / Math.pow(1 + Math.pow(ax, n), 1 / n);
 }
 
-// ─── Content Mass ─────────────────────────────────────────────────────────────
-
 /**
  * contentMass(buildTime, uniqueAssets)
  *
@@ -40,8 +36,6 @@ export function mu(x: number): number {
 export function contentMass(buildTime: number, uniqueAssets: number): number {
   return Math.log1p(buildTime * 0.5 + uniqueAssets * 2);
 }
-
-// ─── Torridity Rank ───────────────────────────────────────────────────────────
 
 /**
  * torridityRank(views, mass)
@@ -58,8 +52,6 @@ export function torridityRank(views: number, mass: number): number {
   return Math.log1p(factor * views);
 }
 
-// ─── Decay Factor ─────────────────────────────────────────────────────────────
-
 /**
  * decayFactor(ageHours)
  *
@@ -72,8 +64,6 @@ export function torridityRank(views: number, mass: number): number {
 export function decayFactor(ageHours: number): number {
   return mu(ageHours / 24);
 }
-
-// ─── Throttling Gate ──────────────────────────────────────────────────────────
 
 /**
  * throttlingGate(mass, feedSlots, massThreshold?)
@@ -91,8 +81,6 @@ export function throttlingGate(
   if (mass >= massThreshold) return feedSlots;
   return Math.max(1, Math.floor(feedSlots * deltaP));
 }
-
-// ─── Batch Ranking ───────────────────────────────────────────────────────────
 
 export interface ContentItem {
   id:           string;

@@ -1,5 +1,9 @@
 'use client';
 
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * useDaydreamPersistence — saves AND restores full workspace state for a Daydream Engin.
  *
@@ -21,10 +25,6 @@
  *   49 — workspace states persist; users restore to last working state on session load
  *   50 — back-navigation preserves context; state survives flip A↔B and route changes
  */
-
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface UseDaydreamPersistenceOptions {
   /**
@@ -77,7 +77,6 @@ export function useDaydreamPersistence<T = Record<string, unknown>>(
   const [isRestoring, setIsRestoring] = useState(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── Load state from DB on mount ──────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
 
@@ -110,7 +109,6 @@ export function useDaydreamPersistence<T = Record<string, unknown>>(
     };
   }, [daydreamType]);
 
-  // ── Persist state to DB (debounced 800 ms) ───────────────────────────────────
   const persistState = useCallback(
     (payload: T) => {
       if (debounceRef.current) clearTimeout(debounceRef.current);

@@ -12,8 +12,6 @@
  * Phase 8 §E:   Points 42, 43, 44
  */
 
-// ── Schema constants ──────────────────────────────────────────────────────────
-
 /** Canonical Supabase table name for DreamMarketplace listings. */
 export const MARKETPLACE_TABLE = 'marketplace_items' as const;
 
@@ -39,8 +37,6 @@ export const MARKETPLACE_TAGS_MAX = 10;
 /** Maximum tag character length. */
 export const MARKETPLACE_TAG_MAX_LENGTH = 40;
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export type MarketplaceListingInput = {
   title: string;
   description?: string;
@@ -64,8 +60,6 @@ export type ValidationResult = {
   valid: boolean;
   errors: string[];
 };
-
-// ── Validation ────────────────────────────────────────────────────────────────
 
 /**
  * Validates raw inbound body for a new marketplace listing.
@@ -112,8 +106,6 @@ export function validateMarketplaceListing(body: unknown): ValidationResult {
   return { valid: errors.length === 0, errors };
 }
 
-// ── Normalization ─────────────────────────────────────────────────────────────
-
 /**
  * Maps validated client body to a DB-ready insert payload.
  * Price stored as integer cents (no float rounding issues).
@@ -141,8 +133,6 @@ export function normalizeMarketplaceListing(
     is_published: false,
   };
 }
-
-// ── Slot detail helpers ───────────────────────────────────────────────────────
 
 /**
  * Returns the canonical detail route for a marketplace listing.

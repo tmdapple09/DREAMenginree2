@@ -1,11 +1,11 @@
-// lib/ai/handlers/navigation.ts
-// Navigation Intent Handlers
-
 import {
     HomeAnchorSetStatePayload,
     NavDeltaPayload,
 } from '@/types/ai-system';
 import { ToolHandler } from '../tool-router';
+
+// lib/ai/handlers/navigation.ts
+// Navigation Intent Handlers
 
 // ============================================================================
 // NAV_DELTA Handler

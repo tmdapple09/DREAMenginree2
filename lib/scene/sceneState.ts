@@ -1,3 +1,14 @@
+import {
+    deleteScene,
+    enqueueSyncAction,
+    getScene,
+    listScenes,
+    saveScene,
+    type CachedScene,
+    type SceneObject,
+    type SceneSnapshot,
+} from '@/lib/offline/offlineCache';
+
 /**
  * lib/scene/sceneState.ts
  *
@@ -17,21 +28,7 @@
  *     on the hot path.
  */
 
-import {
-    deleteScene,
-    enqueueSyncAction,
-    getScene,
-    listScenes,
-    saveScene,
-    type CachedScene,
-    type SceneObject,
-    type SceneSnapshot,
-} from '@/lib/offline/offlineCache';
-
 // Re-export types for consumers
-export type { CachedScene, SceneObject, SceneSnapshot };
-
-// ─── Scene snapshot helpers ───────────────────────────────────────────────────
 
 /**
  * Create a minimal default scene snapshot (empty canvas, default camera).
@@ -105,8 +102,6 @@ export async function listPersistedScenes(): Promise<string[]> {
   return scenes.map((s) => s.id);
 }
 
-// ─── Scene diffing (for sync optimisation) ────────────────────────────────────
-
 /**
  * Compare two snapshots and return true if they differ meaningfully.
  * Used to avoid writing identical state on every frame.
@@ -142,8 +137,6 @@ export function scenesAreDifferent(
 
   return false;
 }
-
-// ─── Auto-save throttle helper ────────────────────────────────────────────────
 
 /**
  * Creates a throttled auto-save function that persists the scene at most
@@ -184,3 +177,5 @@ export function createAutoSave(sceneId: string, intervalMs = 2000 ){
   save.flush = flush;
   return save;
 }
+
+export type { CachedScene, SceneObject, SceneSnapshot };

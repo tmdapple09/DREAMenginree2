@@ -1,10 +1,13 @@
 "use client";
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { bridge } from "@/lib/runtime/dualRuntimeBridge";
+import { useSharedDreamSession } from "@/lib/sharedDream/useSharedDreamSession";
+import React, { useCallback, useEffect, useState } from "react";
+import { InviteFlow } from "./dream.InviteFlow";
+import { SharedDreamCanvas } from "./dream.SharedDreamCanvas";
+import { SharedDreamProvider } from "./dream.SharedDreamProvider";
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: components/shared-dream/dream.SharedDreamRuntime.tsx.
 
@@ -30,15 +33,9 @@
  *   - saveEnginState called when Engin publishes via useEnginCoopSync
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Engin slot config ────────────────────────────────────────────────────────
 
 const ENGIN_SLOTS = [
   {
@@ -79,33 +76,13 @@ const ENGIN_SLOTS = [
   },
 ] as const;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { bridge } from "@/lib/runtime/dualRuntimeBridge";
-
-import { useSharedDreamSession } from "@/lib/sharedDream/useSharedDreamSession";
-
-import React, { useCallback, useEffect, useState } from "react";
-
-import { InviteFlow } from "./dream.InviteFlow";
-
-import { SharedDreamCanvas } from "./dream.SharedDreamCanvas";
-
-import { SharedDreamProvider } from "./dream.SharedDreamProvider";
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
 type EnginKey = (typeof ENGIN_SLOTS)[number]["key"];
-
-// ── Inner (inside SharedDreamProvider) ───────────────────────────────────────
 
 interface InnerProps {
   savedEnginState: Record<string, Record<string, unknown>>;
@@ -123,8 +100,6 @@ interface InnerProps {
   ) => void;
 }
 
-// ── Public export ─────────────────────────────────────────────────────────────
-
 export interface SharedDreamRuntimeProps {
   /** UUID of an existing shared_dream_sessions row. Omit to create a new session. */
   sessionId?: string;
@@ -132,11 +107,7 @@ export interface SharedDreamRuntimeProps {
   onSessionCreated?: (sessionId: string) => void;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function timeAgo(iso: string): string {
   const ms = Date.now() - new Date(iso).getTime();
@@ -443,14 +414,8 @@ export default function SharedDreamRuntime({
   );
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

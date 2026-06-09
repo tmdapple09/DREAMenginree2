@@ -2,7 +2,11 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": ".next/tsconfig.app.tsbuildinfo",
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -17,5 +21,11 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "tests/**", "assembly/**", "exports/**", "scripts/archive/**"]
+  "exclude": [
+    "node_modules",
+    "tests/**",
+    "assembly/**",
+    "exports/**",
+    "scripts/archive/**"
+  ]
 }

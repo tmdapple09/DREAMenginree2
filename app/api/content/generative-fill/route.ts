@@ -2,8 +2,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 import { toErrorMessage } from '@/lib/utils';
+
 const MaskSchema = z.object({
   x: z.number().min(0).max(1),
   y: z.number().min(0).max(1),

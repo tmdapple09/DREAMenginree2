@@ -1,5 +1,8 @@
 'use client';
 
+import { Component, useEffect, type ErrorInfo, type ReactNode } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx
  *
@@ -12,9 +15,6 @@
  * usable while the player writes their report.
  */
 
-import { Component, useEffect, type ErrorInfo, type ReactNode } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface CartridgeCrashEvent {
   name?: string;
   message?: string;

@@ -1,21 +1,4 @@
 'use client';
-/**
- * lib/engins/useEnginWorkflow.ts
- *
- * React hook — manages one EnginWorkflow instance per Engin per user.
- *
- * Spec: docs/engin_workflows.md §7
- *
- * I/O contract:
- *   - localStorage: primary persistence (zero-latency restore)
- *   - bridge.emit: emitted on handoff (fire-and-forget)
- *   - logJourneyDot: emitted on milestone stage transitions (fire-and-forget)
- *
- * Rules:
- *   - Stage transitions require explicit user calls — never auto-advance.
- *   - Handoffs only emit when stage === 'export'.
- *   - localStorage key: `engin_workflow:<workflowId>`
- */
 
 import { logJourneyDot } from '@/lib/journey/journeyDots';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
@@ -33,7 +16,23 @@ import {
     HANDOFF_PATHS,
 } from './workflowEngine';
 
-// ─── Storage helpers (localStorage, best-effort) ─────────────────────────────
+/**
+ * lib/engins/useEnginWorkflow.ts
+ *
+ * React hook — manages one EnginWorkflow instance per Engin per user.
+ *
+ * Spec: docs/engin_workflows.md §7
+ *
+ * I/O contract:
+ *   - localStorage: primary persistence (zero-latency restore)
+ *   - bridge.emit: emitted on handoff (fire-and-forget)
+ *   - logJourneyDot: emitted on milestone stage transitions (fire-and-forget)
+ *
+ * Rules:
+ *   - Stage transitions require explicit user calls — never auto-advance.
+ *   - Handoffs only emit when stage === 'export'.
+ *   - localStorage key: `engin_workflow:<workflowId>`
+ */
 
 function storageKey(workflowId: string): string {
   return `engin_workflow:${workflowId}`;
@@ -58,8 +57,6 @@ function saveToStorage(workflow: EnginWorkflow): void {
     // Best-effort — never throw from storage writes.
   }
 }
-
-// ─── Milestone Journey Trail emission ────────────────────────────────────────
 
 function emitMilestone(
   prev: EnginWorkflow,
@@ -95,8 +92,6 @@ function emitMilestone(
     });
   }
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export interface EnginWorkflowHook {
   /** Current workflow state. null = no workflow loaded. */

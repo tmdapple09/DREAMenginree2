@@ -1,9 +1,20 @@
+import { writeAuditLog } from '@/lib/ai/audit';
+import { BOOGIE_POLICY_VERSION, boogieEvaluate } from '@/lib/ai/boogieman';
+import { checkRateLimit } from '@/lib/ai/rateLimit';
+import { boogiePolicyCheck, isOwnerEmail } from '@/lib/ai/triad';
+import { jsonApiError } from '@/lib/api/route';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
 // app/api/ai/boogieman/route.ts
 // TheBoogieMan.Ai policy endpoint — admin-only system overwatch.
 // Runs both LLM policy check (boogiePolicyCheck) and rule engine (boogieEvaluate).
 // Every audit log entry carries policy_version + rule_code (req 3, 18).
 //
-// ── ENFORCEMENT TRIGGER LOGIC ────────────────────────────────────────────────
 //
 // TheBoogieMan enforces policy in two complementary layers:
 //
@@ -26,20 +37,6 @@
 //   Audit log: every request — allowed or blocked — is written to ai_audit_log
 //   with policy_version, request_id, user_id, latency_ms, and block reason.
 //
-// ─────────────────────────────────────────────────────────────────────────────
-
-import { writeAuditLog } from '@/lib/ai/audit';
-import { BOOGIE_POLICY_VERSION, boogieEvaluate } from '@/lib/ai/boogieman';
-import { checkRateLimit } from '@/lib/ai/rateLimit';
-import { boogiePolicyCheck, isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
-
 
 const BoogieRequestSchema = z.object({
   message: z.string().min(1).max(4000),
@@ -47,7 +44,6 @@ const BoogieRequestSchema = z.object({
   to_eams: z.boolean().optional(),
   summary: z.string().optional(),
 });
-
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -73,7 +69,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 
-   
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
     .select('role')

@@ -22,59 +22,59 @@ export const FULLSCREEN_DEPTH = 2;
  */
 export class NavStateBuffer {
   private buffer: Int32Array;
-  
+
   constructor() {
     // Allocate once, never reallocate
     this.buffer = new Int32Array(4);
     this.reset();
   }
-  
+
   reset(): void {
     this.buffer[0] = LAYER_HOME;
     this.buffer[1] = 0;
     this.buffer[2] = -1;
     this.buffer[3] = 0;
   }
-  
+
   // Getters (no allocation)
   get layer(): number {
     return this.buffer[0];
   }
-  
+
   get face(): number {
     return this.buffer[1];
   }
-  
+
   get slot(): number {
     return this.buffer[2];
   }
-  
+
   get depth(): number {
     return this.buffer[3];
   }
-  
+
   // Setters (direct mutation)
   set layer(value: number) {
     this.buffer[0] = value;
   }
-  
+
   set face(value: number) {
     this.buffer[1] = value;
   }
-  
+
   set slot(value: number) {
     this.buffer[2] = value;
   }
-  
+
   set depth(value: number) {
     this.buffer[3] = value;
   }
-  
+
   // Atomic operations
   incrementDepth(): void {
     this.buffer[3] += 1;
   }
-  
+
   decrementDepth(): boolean {
     if (this.buffer[3] > 0) {
       this.buffer[3] -= 1;
@@ -82,16 +82,16 @@ export class NavStateBuffer {
     }
     return false;
   }
-  
+
   rotateFace(delta: number): void {
     this.buffer[1] = (this.buffer[1] + delta + 6) % 6;
   }
-  
+
   // Snapshot for ReturnStack (returns copy, not reference)
   snapshot(): Int32Array {
     return new Int32Array(this.buffer);
   }
-  
+
   // Restore from snapshot
   restore(snapshot: Int32Array): void {
     this.buffer[0] = snapshot[0];
@@ -99,7 +99,7 @@ export class NavStateBuffer {
     this.buffer[2] = snapshot[2];
     this.buffer[3] = snapshot[3];
   }
-  
+
   // Invariant checking
   isValid(): boolean {
     return (
@@ -108,17 +108,17 @@ export class NavStateBuffer {
       (this.slot === -1 || (this.slot >= 0 && this.slot <= 7))
     );
   }
-  
+
   // Profile activation check
   isProfileActive(): boolean {
     return this.layer === LAYER_PROFILE && this.depth === PROFILE_DEPTH;
   }
-  
+
   // Fullscreen check
   isFullscreen(): boolean {
     return this.depth >= FULLSCREEN_DEPTH;
   }
-  
+
   // String representation for debugging
   toString(): string {
     const layerNames = ['HOME', 'CUBE', 'PROFILE', 'WIDGET', 'DREAM'];

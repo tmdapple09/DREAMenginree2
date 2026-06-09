@@ -1,4 +1,8 @@
 'use client';
+
+import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import { useEffect, useRef, useState } from 'react';
+
 // components/connectors/dream.widget.ConnectWidgetPrompt.tsx
 // Compact "Add {Service} as a Dream?" prompt (req 11-20)
 //
@@ -10,9 +14,6 @@
 // • Dismisses when a menu opens (req 14) — caller passes menuOpen prop
 // • Offers "Add" and "Not now" only — no surprise auto-add (req 4, 12)
 // • Optionally offers "Add as Feed Slice" (req 51)
-
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
-import { useEffect, useRef, useState } from 'react';
 
 const AUTO_DISMISS_MS = 8000;
 
@@ -59,13 +60,13 @@ export default function ConnectWidgetPrompt({
   useEffect(() => {
     timerRef.current = setTimeout(() => dismiss(), AUTO_DISMISS_MS);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-     
+
   }, []);
 
   // Dismiss when any menu opens (req 14)
   useEffect(() => {
     if (menuOpen) dismiss();
-     
+
   }, [menuOpen]);
 
   function dismiss( ){

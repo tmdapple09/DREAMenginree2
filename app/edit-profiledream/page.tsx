@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.EditProfiledream  (framework-mandated basename: page.tsx)
 
 import { ActivityProfile } from '@/components/activity/dream.ActivityProfile';
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
@@ -11,6 +10,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+// SURFACE: dreamsurface.EditProfiledream  (framework-mandated basename: page.tsx)
 
 type Profile = {
   display_name: string;
@@ -81,7 +81,7 @@ export default function EditProfileDreamPage( ){
         router.push('/login');
       }
     })();
-   
+
   }, []);
 
   const isDirty = !!initialProfile && (
@@ -125,7 +125,6 @@ export default function EditProfileDreamPage( ){
       });
       localStorage.setItem('de-profile-widget-order', JSON.stringify(widgets));
 
-      // ── Phase 6 item 7: Log visibility-change events to TheBoogieMan ────────
       // On a private save, detect Dream Windows whose visibility changed and log
       // VISIBILITY_CHANGE events (no update_mapping — draft not yet published).
       // Per dreamengin_phase6.md point 7: log ALL privacy-adjacent decisions.

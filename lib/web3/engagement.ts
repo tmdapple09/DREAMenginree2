@@ -1,3 +1,12 @@
+import { web3Client } from './client';
+import {
+    DEFAULT_CHAIN_ID,
+    EngagementPayload,
+    EngagementStats,
+    SUPPORTED_CHAINS,
+    Web3Error,
+} from './types';
+
 /**
  * lib/web3/engagement.ts
  *
@@ -14,20 +23,7 @@
  * endpoint instead and the tx is recorded as "off-chain".
  */
 
-import { web3Client } from './client';
-import {
-    DEFAULT_CHAIN_ID,
-    EngagementPayload,
-    EngagementStats,
-    SUPPORTED_CHAINS,
-    Web3Error,
-} from './types';
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const BACKEND_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api';
-
-// ─── Off-chain fallback ───────────────────────────────────────────────────────
 
 async function trackOffChain(payload: EngagementPayload): Promise<void> {
   const res = await fetch(`${BACKEND_BASE}/engagement/track`, {
@@ -69,8 +65,6 @@ async function fetchStatsOffChain(contentId: string): Promise<EngagementStats> {
   };
 }
 
-// ─── On-chain write (stub — wired when contract is deployed) ─────────────────
-
 /**
  * Emit an engagement event to the on-chain contract.
  * Returns the tx hash on success or null if no contract is configured.
@@ -107,8 +101,6 @@ async function trackOnChain(
   void payload;
   return null;
 }
-
-// ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
  * Record an engagement action (like, repost, comment) for `contentId`.
@@ -158,8 +150,6 @@ export async function getEngagementStats(
 ): Promise<EngagementStats> {
   return fetchStatsOffChain(contentId);
 }
-
-// ─── Optimistic engagement cache ──────────────────────────────────────────────
 
 /**
  * In-memory optimistic cache used by `useEngagement` to provide instant

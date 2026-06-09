@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // SURFACE: dream.shell.EnginesGamesLayout  (framework-mandated basename: layout.tsx)
 /**
  * app/engines/games/layout.tsx
@@ -5,8 +7,6 @@
  * Layout for the GameEngin standalone app.
  * Full-screen immersive shell — no shared nav or footer.
  */
-
-import type { ReactNode } from 'react';
 
 export const metadata = {
   title: 'GameEngin – DREAMengin',

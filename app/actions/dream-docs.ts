@@ -1,20 +1,19 @@
 'use server';
 
-/**
- * app/actions/dream-docs.ts
- * Admin-only server actions for creating, publishing, and managing DreamDocs.
- */
-
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { embedDocSection } from '@/lib/dream-docs/embed';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Json } from '@/types/supabase';
-
 import { toErrorMessage } from '@/lib/utils';
+
+/**
+ * app/actions/dream-docs.ts
+ * Admin-only server actions for creating, publishing, and managing DreamDocs.
+ */
+
 // ---------------------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------------------
 
 async function requireAdmin(): Promise<{ userId: string }> {
   const supabase = await createServerClient();
@@ -44,9 +43,7 @@ async function requireAdmin(): Promise<{ userId: string }> {
   return { userId: user.id };
 }
 
-// ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 export interface CreateDreamDocInput {
   path: string;
@@ -66,10 +63,6 @@ export interface UpsertDocSectionInput {
   /** When true, triggers async embedding generation after upsert. */
   generateEmbedding?: boolean;
 }
-
-// ---------------------------------------------------------------------------
-// Actions
-// ---------------------------------------------------------------------------
 
 /**
  * Create a new DreamDoc (top-level document).

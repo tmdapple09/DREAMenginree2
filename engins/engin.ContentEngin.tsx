@@ -1,31 +1,5 @@
 'use client';
 
-/**
- * ContentEngin — Side B control layer for the Create Daydream.
- *
- * Responsibilities (README spec §13.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Recent Drafts: fetch latest 5 rows from the `notes` table.
- *   - Content Calendar: 7-day scheduler with inline add forms.
- *   - Publishing Queue: manage and publish/remove scheduled items via POST /api/posts.
- *   - Smart Draft Generator: template-based draft text + save to POST /api/drafts.
- *   - Cross-Platform Targets: toggle + broadcast via dualRuntimeBridge.
- *   - Transcript Editor (Descript-style): SRT/VTT upload + word-level edit.
- *   - Generative Fill (Adobe Firefly-style): AI image/frame fill via /api/content/generative-fill.
- *   - Voice Clone & TTS (ElevenLabs-style): clone voice, read script.
- *   - Real-time SEO Scorer: keyword density, readability, engagement estimates.
- *   - Human Review toggle: confirm-before-apply + rollback stack.
- *   - Brand Memory: upload guidelines, persist in Supabase.
- *   - Creativity Slider: randomness/human-touch overlay.
- *   - Quick Compose: one-prompt rough-cut generator.
- *
- * Follows AXIOM 3 (every element enables real action) and LAW.md §3 (no fake buttons).
- *
- * ACTION_AUDIT.md alignment:
- *   - publishItem now calls POST /api/posts (was fake-wired: local state only).
- *   - saveDraft now calls POST /api/drafts (was fake-wired: no /api/drafts route).
- *   - scheduled_at is passed to /api/drafts so schedule posts persist server-side.
- */
-
 import { ActivityPostForm, type ActivityPostData } from '@/components/activity/dream.ActivityPostForm';
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import type { CompGraph, NodeType } from '@/lib/composite/compositor';
@@ -95,8 +69,34 @@ import {
 } from 'lucide-react';
 import NextImage from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
+/**
+ * ContentEngin — Side B control layer for the Create Daydream.
+ *
+ * Responsibilities (README spec §13.2 / ARCHITECTURE.md §1 Daydream pairs):
+ *   - Recent Drafts: fetch latest 5 rows from the `notes` table.
+ *   - Content Calendar: 7-day scheduler with inline add forms.
+ *   - Publishing Queue: manage and publish/remove scheduled items via POST /api/posts.
+ *   - Smart Draft Generator: template-based draft text + save to POST /api/drafts.
+ *   - Cross-Platform Targets: toggle + broadcast via dualRuntimeBridge.
+ *   - Transcript Editor (Descript-style): SRT/VTT upload + word-level edit.
+ *   - Generative Fill (Adobe Firefly-style): AI image/frame fill via /api/content/generative-fill.
+ *   - Voice Clone & TTS (ElevenLabs-style): clone voice, read script.
+ *   - Real-time SEO Scorer: keyword density, readability, engagement estimates.
+ *   - Human Review toggle: confirm-before-apply + rollback stack.
+ *   - Brand Memory: upload guidelines, persist in Supabase.
+ *   - Creativity Slider: randomness/human-touch overlay.
+ *   - Quick Compose: one-prompt rough-cut generator.
+ *
+ * Follows AXIOM 3 (every element enables real action) and LAW.md §3 (no fake buttons).
+ *
+ * ACTION_AUDIT.md alignment:
+ *   - publishItem now calls POST /api/posts (was fake-wired: local state only).
+ *   - saveDraft now calls POST /api/drafts (was fake-wired: no /api/drafts route).
+ *   - scheduled_at is passed to /api/drafts so schedule posts persist server-side.
+ */
+
 interface Props {
   onBack: () => void;
   instanceId?: string;
@@ -157,7 +157,6 @@ const btnBase: React.CSSProperties = {
   fontSize: 12, padding: '5px 12px', transition: 'opacity 0.12s',
 };
 
-// ── Pre-Edit constants ────────────────────────────────────────────────────────
 const BRIEF_CONTENT_TYPES = ['Reel', 'Carousel', 'Static Post', 'YouTube Video', 'YouTube Short', 'Blog Post', 'Email', 'Podcast Episode', 'Story'] as const;
 type BriefContentType = typeof BRIEF_CONTENT_TYPES[number];
 
@@ -200,7 +199,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const contentBridge = useContentEnginBridge();
   const { record: forgeRecord } = useForgeActivity({ enginId: 'create' });
 
-  // ── OS Shell ──
   const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
   useEffect(() => {
     upgradeEngine({ id: 'content', name: 'ContentEngin' }, ['bridge', 'telemetry'])
@@ -208,14 +206,11 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   }, []);
   const busRef = useRef(createEventBus());
 
-  // ── EnginRuntime kernel (content rule-set) ──
   const { state: enginState, dispatch: enginDispatch, ready: enginReady } = useContentEnginRuntime();
 
-  // ── Workflow (create:draft — default workflow) ──
   const { loadWorkflow } = useEnginWorkflow();
   useEffect(() => { loadWorkflow('create:draft'); }, [loadWorkflow]);
 
-  // ── 3D Figure from Photos state ──
   const [figure3DPhotos, setFigure3DPhotos]         = useState<string[]>([]);
   const [figure3DStatus, setFigure3DStatus]         = useState<'idle' | 'processing' | 'done'>('idle');
   const figure3DInputRef = useRef<HTMLInputElement>(null);
@@ -232,11 +227,9 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setFigure3DStatus('done'), 2000);
   }
 
-  // ── Existing: Recent Drafts ──
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ── Multi-connection: receive stem-ready from StarMakerEngin (Phase 8 §F Point 57) ──
   // Music Daydream → ContentEngin connection path: when a stem is prepared in StarMakerEngin,
   // ContentEngin surfaces a prompt to write a track description draft.
   // Subscription is handled by useContentEnginBridge — read state from the hook.
@@ -245,19 +238,16 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     ? { stemType: contentBridge.lastStem, url: contentBridge.lastStemUrl ?? '' }
     : null;
 
-  // ── Cross-Engin: GameEngin game-clip receiver ──
   const [dismissedGameClip, setDismissedGameClip] = useState<string | null>(null);
   const gameClipPrompt = contentBridge.lastGameClip !== null && contentBridge.lastGameClip !== dismissedGameClip
     ? contentBridge.lastGameClip
     : null;
 
-  // ── Cross-Engin: CodeEngin notebook publish receiver ──
   const [dismissedNotebook, setDismissedNotebook] = useState<string | null>(null);
   const notebookPrompt = contentBridge.lastNotebookPublish !== null && contentBridge.lastNotebookPublish !== dismissedNotebook
     ? contentBridge.lastNotebookPublish
     : null;
 
-  // ── Activity Post state ──
   const [activityPostMsg, setActivityPostMsg] = useState('');
   const activityPostTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -301,7 +291,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     return () => { cancelled = true; };
   }, []);
 
-  // ── Content Calendar ──
   const [calendarItems, setCalendarItems] = useState<Record<string, CalendarItem[]>>(
     () => Object.fromEntries(DAYS.map((d) => [d, []]))
   );
@@ -329,7 +318,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setCalendarItems((prev) => ({ ...prev, [day]: prev[day].filter((i) => i.id !== id) }));
   }
 
-  // ── Publishing Queue ──
   const [publishedCount, setPublishedCount] = useState(0);
   const [publishMsg, setPublishMsg] = useState('');
   const publishTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -399,7 +387,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     publishTimerRef.current = setTimeout(() => setPublishMsg(''), 4000);
   }
 
-  // ── Smart Draft Generator ──
   const [draftType, setDraftType] = useState<DraftType>('Caption');
   const [draftTopic, setDraftTopic] = useState('');
   const [draft, setDraft] = useState('');
@@ -460,7 +447,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     draftSaveTimerRef.current = setTimeout(() => setDraftSaveMsg(''), 4000);
   }
 
-  // ── Cross-Platform Targets ──
   const [selectedPlatforms, setSelectedPlatforms] = useState<Set<string>>(new Set());
   const [broadcastMsg, setBroadcastMsg] = useState('');
   const [isBroadcasting, setIsBroadcasting] = useState(false);
@@ -523,19 +509,14 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }
   }
 
-  // ── Media Vault Link — no state needed ─────────────────────────────────────
-
-  // ── AI Caption state ────────────────────────────────────────────────────────
   const [captionTopic, setCaptionTopic]     = useState('');
   const [captionResult, setCaptionResult]   = useState('');
   const [captionLoading, setCaptionLoading] = useState(false);
 
-  // ── Collab Draft state ───────────────────────────────────────────────────────
   const [collabDraftActive, setCollabDraftActive]   = useState(false);
   const [collabDraftCode, setCollabDraftCode]       = useState('');
   const [collabDraftUsers] = useState<string[]>(['You', 'Co-Author']);
 
-  // ── Co-op channel ─────────────────────────────────────────────────────────
   const [instanceId] = useState(
     () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
   );
@@ -552,7 +533,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     },
   });
 
-  // ── Content Analytics state ──────────────────────────────────────────────────
   const [analyticsMetrics] = useState<Array<{ label: string; value: string; icon: string }>>([
     { label: 'Reach',   value: '24.3K', icon: '📡' },
     { label: 'Clicks',  value: '1,847', icon: '🖱️' },
@@ -560,7 +540,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     { label: 'Shares',  value: '89',    icon: '🔁' },
   ]);
 
-  // ── Template Gallery state ───────────────────────────────────────────────────
   const [templates] = useState<Array<{ id: string; name: string; type: string; preview: string }>>([
     { id: 'tpl-1', name: 'Viral Hook',         type: 'Caption',  preview: '🔥 [Hook] + [Value] + [CTA]' },
     { id: 'tpl-2', name: 'Tutorial Thread',    type: 'Thread',   preview: '🧵 Step-by-step breakdown…' },
@@ -570,18 +549,15 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   ]);
   const [templateSearch, setTemplateSearch] = useState('');
 
-  // ── Short Video Editor state ─────────────────────────────────────────────────
   const [videoTitle, setVideoTitle]           = useState('');
   const [videoDuration, setVideoDuration]     = useState<15 | 30 | 60 | 90>(30);
   const [videoCaptions, setVideoCaptions]     = useState('');
   const [videoPublishReady, setVideoPublishReady] = useState(false);
 
-  // ── Hashtag Optimizer state ──────────────────────────────────────────────────
   const [hashtagTopic, setHashtagTopic]   = useState('');
   const [hashtags, setHashtags]           = useState<string[]>([]);
   const [hashtagLoading, setHashtagLoading] = useState(false);
 
-  // ── Viral Hook copy feedback ──────────────────────────────────────────────────
   const [copiedHook, setCopiedHook] = useState<number | null>(null);
   const [hookTopic, setHookTopic] = useState('');
   const [hookLoading, setHookLoading] = useState(false);
@@ -593,16 +569,13 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setCopiedHook(null), 1400);
   }
 
-  // ── SEO Title Scorer (live input) ─────────────────────────────────────────────
   const [seoInput, setSeoInput] = useState('');
   const [seoLoading, setSeoLoading] = useState(false);
   const [seoResult, setSeoResult] = useState<{ score: number; reasons: string[] } | null>(null);
   const [seoSaveMsg, setSeoSaveMsg] = useState('');
 
-  // ── Multi-Platform Scheduler countdown ───────────────────────────────────────
   const [schedulerNow] = useState(() => new Date());
 
-  // ── Transcript Editor state ───────────────────────────────────────────────────
   type TranscriptSegment = import('@/lib/content/transcriptEditor').TranscriptSegment;
   const [transcriptSegments, setTranscriptSegments] = useState<TranscriptSegment[]>([]);
   const [transcriptView, setTranscriptView] = useState<'transcript' | 'waveform'>('transcript');
@@ -694,7 +667,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     ? annotateSearchMatches(transcriptSegments, transcriptSearch)
     : transcriptSegments;
 
-  // ── Generative Fill state ─────────────────────────────────────────────────────
   const [fillPrompt, setFillPrompt] = useState('');
   const [fillLoading, setFillLoading] = useState(false);
   const [fillMsg, setFillMsg] = useState('');
@@ -738,7 +710,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }
   }
 
-  // ── Voice Clone state ─────────────────────────────────────────────────────────
   type VoiceProfile = { id: string; name: string; createdAt: string };
   const [voiceName, setVoiceName] = useState('');
   const [voiceProfileId, setVoiceProfileId] = useState('');
@@ -834,7 +805,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }
   }
 
-  // ── Real-time SEO Scorer (advanced) state ─────────────────────────────────────
   const [advSeoTitle, setAdvSeoTitle] = useState('');
   const [advSeoBody, setAdvSeoBody] = useState('');
   const [advSeoKeywords, setAdvSeoKeywords] = useState('');
@@ -868,7 +838,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     URL.revokeObjectURL(url);
   }
 
-
   const [humanReviewEnabled, setHumanReviewEnabled] = useState(false);
   const [pendingReviewItems, setPendingReviewItems] = useState<Array<{ id: string; label: string; content: string }>>([]);
 
@@ -880,7 +849,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setPendingReviewItems((prev) => prev.filter((i) => i.id !== id));
   }
 
-  // ── Brand Memory state ────────────────────────────────────────────────────────
   const [brandGuidelinesText, setBrandGuidelinesText] = useState('');
   const [brandSaveMsg, setBrandSaveMsg] = useState('');
   const [brandSaving, setBrandSaving] = useState(false);
@@ -914,10 +882,8 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }
   }
 
-  // ── Creativity Slider state ───────────────────────────────────────────────────
   const [creativityLevel, setCreativityLevel] = useState(50);
 
-  // ── Quick Compose state ───────────────────────────────────────────────────────
   const [quickComposePrompt, setQuickComposePrompt] = useState('');
   const [quickComposeLoading, setQuickComposeLoading] = useState(false);
   const [quickComposeResult, setQuickComposeResult] = useState<{
@@ -995,7 +961,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }
   }
 
-  // ── VFX Compositing state ──────────────────────────────────────────────────
   // Six panels: Motion Capture, FX Simulation, 2.5D Compositor,
   //             Rotoscope, Node Compositor, Matchmover.
 
@@ -1184,7 +1149,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setNodeMsg(`✅ ${type} node added.`);
   }
 
-
   // Matchmover (Syntheyes / 3DEqualizer-inspired)
   const [cameraTrack, setCameraTrack] = useState<CameraTrack>(() =>
     createTrack('Shot_001_Camera', 1920, 1080, 100, 24)
@@ -1220,7 +1184,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTrackMsg('✅ Track exported as CSV.');
   }
 
-  // ── Daydream Persistence (Phase 8 §F, pts 49-56) ─────────────────────────────
   // Saves and restores the ContentEngin workspace state across sessions.
   type ContentSavedState = {
     calendarItems?: Record<string, Array<{ id: string; type: string; title: string; scheduled_at?: string }>>;
@@ -1256,10 +1219,9 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
       selectedPlatforms: [...selectedPlatforms],
     });
   // persistContentState is stable (useCallback); eslint-disable-next-line
-    
+
   }, [calendarItems, draftTopic, draftType, selectedPlatforms, contentRestoring]);
 
-  // ── Auto Repurposer state ─────────────────────────────────────────────────────
   type RepurposeOutputItem = {
     platform: string;
     format: string;
@@ -1271,7 +1233,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [repurposeMsg, setRepurposeMsg] = useState('');
   const [repurseCopied, setRepurseCopied] = useState<number | null>(null);
 
-  // ── Predictive Scheduling state ───────────────────────────────────────────────
   type PredictSuggestionItem = {
     type: string;
     title: string;
@@ -1284,7 +1245,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [predictGaps, setPredictGaps] = useState<string[]>([]);
   const [predictLoaded, setPredictLoaded] = useState(false);
 
-  // ── Creative Brief Builder state ──────────────────────────────────────────────
   const [briefProject, setBriefProject] = useState('');
   const [briefType, setBriefType] = useState<BriefContentType>(BRIEF_CONTENT_TYPES[0]);
   const [briefPlatforms, setBriefPlatforms] = useState<Set<string>>(new Set());
@@ -1296,12 +1256,10 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [briefSaving, setBriefSaving] = useState(false);
   const [briefSaveMsg, setBriefSaveMsg] = useState('');
 
-  // ── Asset Collector state ─────────────────────────────────────────────────────
   const [assets, setAssets] = useState<CollectedAsset[]>([]);
   const [assetNewName, setAssetNewName] = useState('');
   const [assetNewCat, setAssetNewCat] = useState<AssetCategory>(ASSET_CATEGORIES[0]);
 
-  // ── Audio Prep state ──────────────────────────────────────────────────────────
   const [audioMood, setAudioMood] = useState<AudioMood>(AUDIO_MOODS[0]);
   const [audioBpm, setAudioBpm] = useState(120);
   const [audioVoBrief, setAudioVoBrief] = useState('');
@@ -1309,16 +1267,13 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [audioSfxInput, setAudioSfxInput] = useState('');
   const [audioSpecPlatform, setAudioSpecPlatform] = useState('Instagram Reel');
 
-  // ── Platform Specs state ──────────────────────────────────────────────────────
   const [specsFilter, setSpecsFilter] = useState('');
 
-  // ── Content Pipeline state ────────────────────────────────────────────────────
   const [pipelineItems, setPipelineItems] = useState<PipelineItem[]>([]);
   const [pipeNewTitle, setPipeNewTitle] = useState('');
   const [pipeNewType, setPipeNewType] = useState('📱');
   const [pipeNewPlatform, setPipeNewPlatform] = useState('Instagram');
 
-  // ── Storyboard Builder state ──────────────────────────────────────────────────
   type StoryboardFrame = {
     id: string;
     scene: string;
@@ -1333,7 +1288,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   ]);
   const [sbCopied, setSbCopied] = useState(false);
 
-  // ── AI Production Plan state ──────────────────────────────────────────────────
   type ProductionPlan = {
     title: string;
     preProd: string[];
@@ -1348,7 +1302,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [planResult, setPlanResult] = useState<ProductionPlan | null>(null);
   const [planSaveMsg, setPlanSaveMsg] = useState('');
 
-  // ── Character Brief state ─────────────────────────────────────────────────────
   const CHAR_ROLES = ['Hero', 'Lead', 'Support', 'Villain', 'Comic Relief', 'Background'] as const;
   const CHAR_ANIM_TYPES = ['Maya 3D Character', 'Unreal Sequencer Character', 'Toon Boom Harmony Cut-out', 'TVPaint Frame-by-Frame', 'Motion Capture Retarget'] as const;
   const CHAR_RIG_LEVELS = ['Light', 'Standard', 'Advanced', 'Feature Film'] as const;
@@ -1364,7 +1317,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [charSaving, setCharSaving] = useState(false);
   const [charSaveMsg, setCharSaveMsg] = useState('');
 
-  // ── Scene / Set Design Brief state ────────────────────────────────────────────
   const SCENE_TYPES = ['Unreal Virtual Production', '2D Painted Background', '2D Harmony Layout', '3D Environment', 'Live Action Set'] as const;
   const LIGHTING_TYPES = ['Day', 'Golden Hour', 'Blue Hour', 'Night', 'Studio', 'Practical Neon'] as const;
   const [sceneName, setSceneName] = useState('');
@@ -1377,7 +1329,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [sceneSaving, setSceneSaving] = useState(false);
   const [sceneSaveMsg, setSceneSaveMsg] = useState('');
 
-  // ── Brand Voice Guard state ───────────────────────────────────────────────────
   type BrandVoiceResult = {
     score: number;
     onBrand: string[];
@@ -1389,7 +1340,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   const [bvLoading, setBvLoading] = useState(false);
   const [bvResult, setBvResult] = useState<BrandVoiceResult | null>(null);
 
-  // ── AI Caption handler ───────────────────────────────────────────────────────
   function handleGenerateCaption( ){
     if (!captionTopic.trim()) return;
     setCaptionLoading(true);
@@ -1407,7 +1357,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }, 1200);
   }
 
-  // ── Collab Draft handler ─────────────────────────────────────────────────────
   function handleCollabDraftToggle( ){
     if (!collabDraftActive) {
       const code = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -1419,14 +1368,12 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setCollabDraftActive((prev) => !prev);
   }
 
-  // ── Template apply handler ───────────────────────────────────────────────────
   function handleTemplateApply(id: string ){
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'create', 'content:template-apply', { id },
     );
   }
 
-  // ── Video prepare handler ────────────────────────────────────────────────────
   function handleVideoPrepare( ){
     if (!videoTitle.trim()) return;
     setVideoPublishReady(true);
@@ -1436,7 +1383,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     recordForgeTransfer('create', 'brand', 'video-asset', `Video export → BrandEngin (${videoTitle})`);
   }
 
-  // ── Hashtag optimizer handler ────────────────────────────────────────────────
   function handleOptimizeHashtags( ){
     if (!hashtagTopic.trim()) return;
     setHashtagLoading(true);
@@ -1460,19 +1406,12 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     }, 900);
   }
 
-  // ── Analytics refresh handler ────────────────────────────────────────────────
   function handleAnalyticsRefresh( ){
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'create', 'content:analytics-refresh', {},
     );
   }
 
-  // ── Auto Repurposer handler ───────────────────────────────────────────────────
-
-
-  // ── Predictive Scheduling handler ─────────────────────────────────────────────
-
-  // ── Creative Brief: save handler ─────────────────────────────────────────────
   async function handleSaveBrief( ){
     if (!briefProject.trim()) return;
     setBriefSaving(true);
@@ -1501,7 +1440,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setBriefSaveMsg(''), 5000);
   }
 
-  // ── Asset Collector handlers ──────────────────────────────────────────────────
   function addAsset( ){
     if (!assetNewName.trim()) return;
     setAssets((prev) => [...prev, { id: Date.now().toString(), name: assetNewName.trim(), category: assetNewCat, status: 'Needed' }]);
@@ -1514,7 +1452,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setAssets((prev) => prev.filter((a) => a.id !== id));
   }
 
-  // ── Audio Prep handlers ───────────────────────────────────────────────────────
   function addSfx( ){
     if (!audioSfxInput.trim()) return;
     setAudioSfxList((prev) => [...prev, audioSfxInput.trim()]);
@@ -1522,7 +1459,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   }
   function removeSfx(i: number ){ setAudioSfxList((prev) => prev.filter((_, idx: number) => idx !== i)); }
 
-  // ── Content Pipeline handlers ─────────────────────────────────────────────────
   function addPipelineItem( ){
     if (!pipeNewTitle.trim()) return;
     setPipelineItems((prev) => [...prev, { id: Date.now().toString(), title: pipeNewTitle.trim(), type: pipeNewType, platform: pipeNewPlatform, stage: 'Concept' }]);
@@ -1537,7 +1473,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
   }
   function removePipelineItem(id: string ){ setPipelineItems((prev) => prev.filter((p) => p.id !== id)); }
 
-  // ── Character Brief Builder handler ──────────────────────────────────────────
   const CHAR_SIM_OPTIONS = ['Cloth / Fabric Simulation', 'Hair / Fur Simulation', 'Facial Blend Shapes / Morphs', 'Muscle Simulation', 'Fluid / VFX Layer', 'Crowd / Instanced Version'];
   async function handleSaveCharBrief( ){
     if (!charName.trim()) return;
@@ -1567,7 +1502,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setCharSaveMsg(''), 4000);
   }
 
-  // ── Scene & Set Design Brief handler ─────────────────────────────────────────
   async function handleSaveSceneBrief( ){
     if (!sceneName.trim()) return;
     setSceneSaving(true);
@@ -1594,7 +1528,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setSceneSaveMsg(''), 4000);
   }
 
-  // ── Storyboard Builder handlers ───────────────────────────────────────────────
   const SB_SHOT_TYPES = ['Wide', 'Medium', 'Close-up', 'Extreme Close-up', 'Over Shoulder', 'POV', 'Overhead', 'Low Angle', 'Drone'];
   function addSbFrame( ){
     setSbFrames((prev) => [...prev, { id: Date.now().toString(), scene: `Scene ${prev.length + 1}`, shot: 'Medium', action: '', audio: '', duration: 5 }]);
@@ -1614,7 +1547,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     setTimeout(() => setSbCopied(false), 2000);
   }
 
-  // ── AI Production Plan handlers ───────────────────────────────────────────────
   function buildProductionPlan(idea: string, type: string, platform: string): Record<string, unknown> {
     const t = idea.trim() || 'your content idea';
     return {
@@ -1694,8 +1626,6 @@ export default function ContentEngin({ onBack, instanceId: instanceIdProp }: Pro
     } catch { setPlanSaveMsg('⚠️ Save failed'); }
     setTimeout(() => setPlanSaveMsg(''), 4000);
   }
-
-  // ── Brand Voice Guard handler ─────────────────────────────────────────────────
 
   return (
     <ArtifactSlot artifactId="engin:content">

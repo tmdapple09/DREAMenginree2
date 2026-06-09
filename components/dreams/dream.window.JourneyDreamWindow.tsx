@@ -1,5 +1,8 @@
 'use client';
 
+import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
+import Link from 'next/link';
+
 /**
  * JourneyDreamWindow — compact Journey Trail Dream Window.
  *
@@ -11,9 +14,6 @@
  *   Layer 3 — Feature    (compact 5-dot trail)
  *   Layer 4 — Output     (link to full journey in BrandingEngin)
  */
-
-import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
-import Link from 'next/link';
 
 export default function JourneyDreamWindow( ){
   return (

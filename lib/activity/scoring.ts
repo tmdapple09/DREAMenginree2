@@ -1,9 +1,3 @@
-// lib/activity/scoring.ts
-// Phase 9 — Activity Scoring System
-//
-// Implements tier-based activity point calculation, verification strength,
-// and innovation bonus logic per ACTIVITY_FIRST_PROTOCOL.md §II
-
 import {
     ActivityTier,
     INNOVATION_BONUS,
@@ -11,6 +5,12 @@ import {
     VERIFICATION_STRENGTH,
     VerificationMethod,
 } from './types';
+
+// lib/activity/scoring.ts
+// Phase 9 — Activity Scoring System
+//
+// Implements tier-based activity point calculation, verification strength,
+// and innovation bonus logic per ACTIVITY_FIRST_PROTOCOL.md §II
 
 /**
  * Base points awarded for each activity tier

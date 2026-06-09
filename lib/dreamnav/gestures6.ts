@@ -65,3 +65,4 @@ export function createGestureArbiter(emit: (a: Action) => void, opts: Options = 
 
   return { onPointerDown, onPointerMove, onPointerUp, onPointerCancel };
 }
+

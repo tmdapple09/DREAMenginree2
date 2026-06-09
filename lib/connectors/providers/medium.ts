@@ -1,3 +1,7 @@
+import { normaliseMedium } from '@/lib/connectors/normalise';
+import { mediumUserRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/medium.ts
  *
@@ -11,10 +15,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseMedium } from '@/lib/connectors/normalise';
-import { mediumUserRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export interface MediumCredentials {
   username: string;

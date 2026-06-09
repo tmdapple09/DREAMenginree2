@@ -1,6 +1,10 @@
 {
   "genre": "Episodic",
-  "subgenres": ["narrative-adventure", "visual-novel", "interactive-drama"],
+  "subgenres": [
+    "narrative-adventure",
+    "visual-novel",
+    "interactive-drama"
+  ],
   "core_mechanic": "Story unfolds across discrete chapters released over time; the choice is the verb.",
   "emotional_core": "investment",
   "player_motivation": "See how the story responds to me, then come back for the next beat.",
@@ -16,7 +20,10 @@
   },
   "progression_model": {
     "structure_type": "episodic",
-    "progression_gates": ["story-trigger", "chapter-release"],
+    "progression_gates": [
+      "story-trigger",
+      "chapter-release"
+    ],
     "completion_definition": "All chapters played; true endings unlocked through specific choice combinations.",
     "content_cadence": "Per chapter drop (weeks to months apart); recap and 'previously on' bridge gaps."
   },

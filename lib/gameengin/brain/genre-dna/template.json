@@ -5,7 +5,11 @@
   "emotional_core": "",
   "player_motivation": "",
   "essential_feel": {},
-  "pacing_profile": { "early": "", "mid": "", "late": "" },
+  "pacing_profile": {
+    "early": "",
+    "mid": "",
+    "late": ""
+  },
   "progression_model": {
     "structure_type": "linear",
     "progression_gates": [],

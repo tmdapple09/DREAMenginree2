@@ -40,8 +40,6 @@ const WIDGETS: DaydreamWidget[] = [
   { id: 'brand',       emoji: '🎨', label: 'Brand Hub',      desc: 'Your artist identity',         color: '#0ea5e9', href: '/daydream/brand' },
 ];
 
-// ── Release pipeline stages ─────────────────────────────────────────────────
-
 const PIPELINE_STAGES = [
   { id: 'idea',    label: 'Idea',    emoji: '💡', color: '#6366f1', desc: 'Capture concepts, voice memos, loops' },
   { id: 'demo',    label: 'Demo',    emoji: '🎛️', color: '#00bcd4', desc: 'Beat + reference vocal, rough arrangement' },
@@ -50,8 +48,6 @@ const PIPELINE_STAGES = [
   { id: 'master',  label: 'Master',  emoji: '💿', color: '#ec4899', desc: 'Loudness, limiter, final chain' },
   { id: 'live',    label: 'Live',    emoji: '🚀', color: '#22c55e', desc: 'Published on all platforms' },
 ] as const;
-
-// ── Distribution platforms ───────────────────────────────────────────────────
 
 const DIST_PLATFORMS = [
   { name: 'Spotify',       icon: '🎧', score: 72, color: '#1ed760' },
@@ -62,8 +58,6 @@ const DIST_PLATFORMS = [
   { name: 'SoundCloud',    icon: '☁️',  score: 77, color: '#ff5500' },
 ] as const;
 
-// ── Monetization items ───────────────────────────────────────────────────────
-
 const MONETIZE_ITEMS = [
   { label: 'Streaming Royalties',  icon: <TrendingUp className="w-4 h-4" />,  status: 'active',   color: '#22c55e' },
   { label: 'Split Sheets',         icon: <Share2 className="w-4 h-4" />,       status: 'setup',    color: '#00bcd4' },
@@ -73,8 +67,6 @@ const MONETIZE_ITEMS = [
   { label: 'Brand Placements',     icon: <Globe className="w-4 h-4" />,        status: 'pending',  color: '#f59e0b' },
 ] as const;
 
-// ── Promo schedule ───────────────────────────────────────────────────────────
-
 const PROMO_TIMELINE = [
   { day: '-14d', label: 'Tease clip',      platform: 'TikTok / IG Reels',  done: true  },
   { day: '-7d',  label: 'Cover art drop',  platform: 'Instagram / Twitter', done: true  },
@@ -83,8 +75,6 @@ const PROMO_TIMELINE = [
   { day: '+3d',  label: 'Reaction video',  platform: 'YouTube Shorts',     done: false },
   { day: '+7d',  label: 'Playlist pitches',platform: 'Spotify Editorial',  done: false },
 ] as const;
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 export default async function MusicArtistHubPage( ){
   await connection();
@@ -355,8 +345,6 @@ export default async function MusicArtistHubPage( ){
     </DaydreamShell>
   );
 }
-
-// ── Section wrapper component ─────────────────────────────────────────────────
 
 function Section({
   title, icon, badge, badgeColor, children,

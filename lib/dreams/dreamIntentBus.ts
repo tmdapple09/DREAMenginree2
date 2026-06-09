@@ -1,11 +1,3 @@
-/**
- * lib/dreams/dreamIntentBus.ts
- *
- * Typed Dream intents routed through the existing dreamOSBus. This file is a
- * typed seam, not a second bus: dispatch and handler registration both delegate
- * to dreamOSBus.dispatchIntent/registerIntent.
- */
-
 import {
   createDomainObject,
   type JsonObject,
@@ -16,7 +8,13 @@ import type { InformationDomain, IntentEnvelope } from '@/lib/runtime/dreamOSBus
 import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
 import type { DrEamsIntentType } from './types';
 
-// ─── Intent → capability mapping ──────────────────────────────────────────────
+/**
+ * lib/dreams/dreamIntentBus.ts
+ *
+ * Typed Dream intents routed through the existing dreamOSBus. This file is a
+ * typed seam, not a second bus: dispatch and handler registration both delegate
+ * to dreamOSBus.dispatchIntent/registerIntent.
+ */
 
 const INTENT_CAPABILITY_MAP: Record<DrEamsIntentType['type'], DomainCapability> = {
   'dream:open':        'read',
@@ -35,8 +33,6 @@ const INTENT_CAPABILITY_MAP: Record<DrEamsIntentType['type'], DomainCapability> 
   'dream:transfer':    'move',
   'dream:state-patch': 'write',
 };
-
-// ─── Intent domain mapping ────────────────────────────────────────────────────
 
 const INTENT_DOMAINS: Record<DrEamsIntentType['type'], InformationDomain[]> = {
   'dream:open':        ['visual', 'logic'],
@@ -91,8 +87,6 @@ function createDreamIntentId(
     stableJson(payloadToJson(intent.payload)),
   ].join(':');
 }
-
-// ─── dispatchDreamIntent ──────────────────────────────────────────────────────
 
 export interface DreamIntentContext {
   /** The authenticated user performing the action. */
@@ -154,8 +148,6 @@ export async function dispatchDreamIntent(
 
   return dreamOSBus.dispatchIntent(envelope, authContext);
 }
-
-// ─── Handler registration helpers ────────────────────────────────────────────
 
 type DreamIntentHandler<T extends DrEamsIntentType['type']> = (
   payload: Extract<DrEamsIntentType, { type: T }>['payload'],

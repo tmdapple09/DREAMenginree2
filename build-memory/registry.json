@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T07:24:06.865Z",
+  "generatedAt": "2026-06-09T05:36:25.672Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -3969,9 +3969,9 @@
       ]
     },
     {
-      "id": "components/games/dream.AvenueOfMirrors",
+      "id": "components/games/dream.MadMaxiWildfall",
       "slot": "surface",
-      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "path": "components/games/dream.MadMaxiWildfall.tsx",
       "engine": "GameEngin",
       "exports": [
         "default"
@@ -10803,9 +10803,9 @@
       ]
     },
     {
-      "id": "lib/games/lucid-avenue-world",
+      "id": "lib/games/madmaxi-wildfall-world",
       "slot": "engine-system",
-      "path": "lib/games/lucid-avenue-world.ts",
+      "path": "lib/games/madmaxi-wildfall-world.ts",
       "engine": "Universal",
       "exports": [
         "CachePickup",
@@ -14408,3 +14408,4 @@
     }
   ]
 }
+

@@ -37,7 +37,6 @@ const CUE_SHAPES: Record<MadmaxiAudioCue, { offset: number; duration: number; sl
   hurt: { offset: -15, duration: 0.16, slide: 0.82, volumeScale: 1.3 },
 };
 
-// ── BGM: procedural looping soundtrack per zone ──────────────────────────────
 // Each zone theme drives a layered synth loop: bass drone, arpeggio, and rhythm.
 // The sequence repeats every 4 bars (≈ 8 s at 120 BPM).
 const BGM_BPM = 120;
@@ -66,8 +65,6 @@ export class MadmaxiAudioController {
     this.stopBGM();
     this.ctx = null;
   }
-
-  // ── Background music ───────────────────────────────────────────────────────
 
   startBGM() {
     if (this.bgmActive) return;
@@ -122,7 +119,6 @@ export class MadmaxiAudioController {
     const profile = AUDIO_PROFILES[this.theme] ?? AUDIO_PROFILES['meadow pulse choir'];
     const now = this.ctx.currentTime;
 
-    // ── Layer 1: Bass drone (sustained low note) ─────────────────────────
     this.scheduleNote({
       freq: profile.base * 0.5,
       waveform: 'triangle',
@@ -132,7 +128,6 @@ export class MadmaxiAudioController {
       slide: 1.002,
     });
 
-    // ── Layer 2: Arpeggio (8th-note pulse) ───────────────────────────────
     const eighthNote = BGM_BAR_SECONDS / 2; // duration of an 8th note
     for (let bar = 0; bar < BGM_LOOP_BARS; bar++) {
       for (let step = 0; step < ARP_PATTERN.length; step++) {
@@ -149,7 +144,6 @@ export class MadmaxiAudioController {
       }
     }
 
-    // ── Layer 3: Rhythmic pulse (kick-like) ──────────────────────────────
     const subdivDur = BGM_BAR_SECONDS / 8;
     for (let bar = 0; bar < BGM_LOOP_BARS; bar++) {
       for (const hit of RHYTHM_HITS) {
@@ -196,8 +190,6 @@ export class MadmaxiAudioController {
       osc.stop(opts.startTime + opts.duration + 0.02);
     } catch { /* ignore */ }
   }
-
-  // ── SFX cues ───────────────────────────────────────────────────────────────
 
   playCue(cue: MadmaxiAudioCue) {
     if (typeof window === 'undefined') return;

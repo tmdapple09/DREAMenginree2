@@ -60,9 +60,9 @@ export default function DrEamsVoiceAssistant( ){
   const [speechSupported, setSpeechSupported] = useState<boolean | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-   
+
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-   
+
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -101,7 +101,6 @@ export default function DrEamsVoiceAssistant( ){
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-     
     const SpeechRecognitionImpl = ((window as unknown as Record<string, unknown>).SpeechRecognition || (window as unknown as Record<string, unknown>).webkitSpeechRecognition) as (new () => SpeechRecognition) | undefined;
 
     // Detect browser support once
@@ -113,14 +112,13 @@ export default function DrEamsVoiceAssistant( ){
       recognition.interimResults = true;
       recognition.lang = 'en-US';
 
-       
       recognition.onresult = (event: SpeechRecognitionEvent) => {
         let interimTranscript = '';
         let finalTranscript = '';
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript.trim().toLowerCase();
-          
+
           if (event.results[i].isFinal) {
             finalTranscript += transcript + ' ';
           } else {
@@ -135,7 +133,7 @@ export default function DrEamsVoiceAssistant( ){
         if (!isListening && (fullTranscript.includes('hey doc') || fullTranscript.includes('hey doctor'))) {
           handleWakeWord();
           setTranscriptBuffer('');
-        } 
+        }
         // Process command if actively listening
         else if (isListening && finalTranscript.trim()) {
           processVoiceCommand(finalTranscript.trim());
@@ -184,7 +182,7 @@ export default function DrEamsVoiceAssistant( ){
     setIsOpen(true);
     setIsMinimized(false);
     speak('Yes? How can I help you?');
-    
+
     // Haptic feedback
     if ('vibrate' in navigator) {
       navigator.vibrate([50, 100, 50]);
@@ -236,8 +234,8 @@ export default function DrEamsVoiceAssistant( ){
 
     // Try to use a male voice for Dr. Eams
     const voices = synthRef.current.getVoices();
-     
-    const maleVoice = voices.find((voice: SpeechSynthesisVoice) => 
+
+    const maleVoice = voices.find((voice: SpeechSynthesisVoice) =>
       voice.name.includes('Male') || voice.name.includes('Daniel') || voice.name.includes('David')
     );
     if (maleVoice) {
@@ -436,21 +434,20 @@ export default function DrEamsVoiceAssistant( ){
     setIsLoading(true);
 
     const response = await executeCommand(input);
-    
+
     const aiMessage: Message = {
       id: (Date.now() + 1).toString(),
       role: 'assistant',
       content: response,
       timestamp: new Date()
     };
-    
+
     setMessages((prev) => [...prev, aiMessage]);
     if (speechEnabled) {
       speak(response);
     }
     setIsLoading(false);
   };
-
 
   if (!isOpen) {
     return (
@@ -464,7 +461,7 @@ export default function DrEamsVoiceAssistant( ){
             </span>
           </div>
         )}
-        
+
         {/* Main button */}
         <button
           onClick={() => setIsOpen(true)}
@@ -534,8 +531,8 @@ export default function DrEamsVoiceAssistant( ){
           {/* Voice status banner */}
           {voiceEnabled && (
             <div className={`px-4 py-2 text-center text-sm border-b border-slate-200 dark:border-slate-700 ${
-              isListening 
-                ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400' 
+              isListening
+                ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
                 : 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
             }`}>
               {isListening ? (

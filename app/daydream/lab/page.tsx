@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamLab  (framework-mandated basename: page.tsx)
 import DaydreamShell, {
   type DaydreamWidget,
 } from "@/components/daydream/dream.shell.DaydreamShell";
@@ -8,12 +7,14 @@ import { safeGetUser } from "@/lib/supabase/safeGetUser";
 import { FlaskConical, Play } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-// Stream 8.3 — Bundle split: LabEngin only loads when Side B mounts.
-// docs/ARCHITECTURE.md §10 — render-on-demand, minimal initial bundle.
 import OpenDaydreamSideBButton from "@/components/daydream/dream.OpenDaydreamSideBButton";
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
 import dynamic from "next/dynamic";
 import { connection } from "next/server";
+
+// SURFACE: dreamsurface.DaydreamLab  (framework-mandated basename: page.tsx)
+// Stream 8.3 — Bundle split: LabEngin only loads when Side B mounts.
+// docs/ARCHITECTURE.md §10 — render-on-demand, minimal initial bundle.
 const LabEngin = dynamic(() => import("@/engins/engin.LabEngin"), {
   loading: () => (
     <div className="flex items-center justify-center h-64">

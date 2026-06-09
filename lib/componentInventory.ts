@@ -5,8 +5,6 @@
  * Used by Engin Forge and ForgeDreamCanvas for the piece palette.
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export type ComponentCategory =
   | 'Audio & Music'
   | 'Games & Play'
@@ -26,8 +24,6 @@ export interface AtomicComponent {
   description: string;
   category: ComponentCategory;
 }
-
-// ─── Inventory ───────────────────────────────────────────────────────────────
 
 export const COMPONENT_INVENTORY: AtomicComponent[] = [
   // ── Audio & Music (23) ────────────────────────────────────────────────────
@@ -55,7 +51,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'am-22', name: 'Chord Detector',           category: 'Audio & Music', description: 'Identifies chord root and quality from pitch classes.' },
   { id: 'am-23', name: 'Audio Stem Bus',           category: 'Audio & Music', description: 'Routes multiple stems to master output with per-stem gain.' },
 
-  // ── Games & Play (22) ──────────────────────────────────────────────────────
   { id: 'gp-01', name: 'Game Manifest Loader',     category: 'Games & Play', description: 'Loads .dreamgame ZIP: WASM + assets + manifest.json.' },
   { id: 'gp-02', name: 'WASM Module Loader',       category: 'Games & Play', description: 'Instantiates WebAssembly modules with memory management.' },
   { id: 'gp-03', name: 'WebGPU Renderer',          category: 'Games & Play', description: 'Initialises WebGPU adapter + pipeline for game rendering.' },
@@ -79,7 +74,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'gp-21', name: 'Multiplayer Sync',         category: 'Games & Play', description: 'Client-side prediction + server reconciliation layer.' },
   { id: 'gp-22', name: 'Achievement Engine',       category: 'Games & Play', description: 'Tracks progress and unlocks achievements with notifications.' },
 
-  // ── Visuals & 3D (12) ─────────────────────────────────────────────────────
   { id: 'v3-01', name: 'Babylon.js Scene',         category: 'Visuals & 3D', description: 'Base Babylon.js engine + scene + camera setup.' },
   { id: 'v3-02', name: 'GLTF Model Loader',        category: 'Visuals & 3D', description: 'Loads and displays GLTF/GLB 3D assets.' },
   { id: 'v3-03', name: 'Audio Visualizer 3D',      category: 'Visuals & 3D', description: 'FFT bars/spheres synced to Web Audio AnalyserNode.' },
@@ -93,7 +87,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'v3-11', name: 'CSS 3D Transform',         category: 'Visuals & 3D', description: 'Hardware-accelerated 3D transforms for UI elements.' },
   { id: 'v3-12', name: 'R3F Scene Bridge',         category: 'Visuals & 3D', description: 'React Three Fiber bridge for declarative 3D scenes.' },
 
-  // ── Coding & Automation (16) ──────────────────────────────────────────────
   { id: 'ca-01', name: 'Code Editor',              category: 'Coding & Automation', description: 'Monaco-based in-app code editor with syntax highlighting.' },
   { id: 'ca-02', name: 'Script Runner',            category: 'Coding & Automation', description: 'Executes JavaScript in sandboxed VM context.' },
   { id: 'ca-03', name: 'Workflow Builder',         category: 'Coding & Automation', description: 'Visual node-graph for automation flows.' },
@@ -111,7 +104,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'ca-15', name: 'Conditional Branch',       category: 'Coding & Automation', description: 'If/else routing node for workflow conditionals.' },
   { id: 'ca-16', name: 'Webhook Receiver',         category: 'Coding & Automation', description: 'Listens for inbound webhooks and routes to handlers.' },
 
-  // ── Social & Sharing (12) ─────────────────────────────────────────────────
   { id: 'ss-01', name: 'Feed Card',                category: 'Social & Sharing', description: 'Rich content card with reactions, share, and view tally.' },
   { id: 'ss-02', name: 'Comment Thread',           category: 'Social & Sharing', description: 'Nested comment system with real-time updates.' },
   { id: 'ss-03', name: 'Reaction Bar',             category: 'Social & Sharing', description: 'Emoji reaction picker and aggregate counter.' },
@@ -125,7 +117,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'ss-11', name: 'Shared Dream Session',     category: 'Social & Sharing', description: 'Supabase Realtime broadcast for co-creation.' },
   { id: 'ss-12', name: 'Collab Cursor',            category: 'Social & Sharing', description: 'Shows remote cursor positions in shared canvas.' },
 
-  // ── Data & Analytics (9) ──────────────────────────────────────────────────
   { id: 'da-01', name: 'Ledger Store',             category: 'Data & Analytics', description: 'Universal metadata store for audio, torridity, and samples.' },
   { id: 'da-02', name: 'Torridity Ranker',         category: 'Data & Analytics', description: 'MOND-based feed ranking with visibility throttle.' },
   { id: 'da-03', name: 'Chart Renderer',           category: 'Data & Analytics', description: 'Line/bar/scatter chart with responsive D3-style layout.' },
@@ -136,7 +127,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'da-08', name: 'Retention Funnel',         category: 'Data & Analytics', description: 'Visualises user flow drop-off across stages.' },
   { id: 'da-09', name: 'ι-Engine Dashboard',       category: 'Data & Analytics', description: 'Displays invention force scores for active passes.' },
 
-  // ── Publishing & Commerce (8) ─────────────────────────────────────────────
   { id: 'pc-01', name: 'Post Composer',            category: 'Publishing & Commerce', description: 'Rich text + media post editor with preview.' },
   { id: 'pc-02', name: 'Asset Uploader',           category: 'Publishing & Commerce', description: 'Drag-drop file upload to Supabase Storage.' },
   { id: 'pc-03', name: 'Product Listing',          category: 'Publishing & Commerce', description: 'Digital product card with price and checkout CTA.' },
@@ -146,7 +136,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'pc-07', name: 'SEO Meta Injector',        category: 'Publishing & Commerce', description: 'Injects Open Graph + Twitter card meta tags.' },
   { id: 'pc-08', name: 'Versioned Release',        category: 'Publishing & Commerce', description: 'Tags, changelogs, and release notes manager.' },
 
-  // ── AI & Intelligence (8) ─────────────────────────────────────────────────
   { id: 'ai-01', name: 'Dr. Eams Assistant',       category: 'AI & Intelligence', description: 'Voice + text AI assistant with platform context.' },
   { id: 'ai-02', name: 'IDARi Recommender',        category: 'AI & Intelligence', description: 'Personalised content ranking via TensorFlow.js.' },
   { id: 'ai-03', name: 'TheBoogieMan Moderator',   category: 'AI & Intelligence', description: 'Policy-aware content moderation agent.' },
@@ -156,7 +145,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'ai-07', name: 'Sentiment Analyser',       category: 'AI & Intelligence', description: 'Real-time sentiment scoring on text inputs.' },
   { id: 'ai-08', name: 'Generation Law Evaluator', category: 'AI & Intelligence', description: 'Computes ι-force and routes to FLOW/SYNTHESIZE/MANIFEST.' },
 
-  // ── Input & Controls (6) ──────────────────────────────────────────────────
   { id: 'ic-01', name: 'Swipe Gesture Handler',    category: 'Input & Controls', description: 'Touch swipe with slog-based physics deceleration.' },
   { id: 'ic-02', name: 'Tap-Hold-Move',            category: 'Input & Controls', description: '≥300ms hold → drag → edge-transfer between runtimes.' },
   { id: 'ic-03', name: 'Gamepad Mapper',           category: 'Input & Controls', description: 'Maps gamepad buttons/axes to configurable actions.' },
@@ -164,13 +152,11 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'ic-05', name: 'Spatial Pointer',          category: 'Input & Controls', description: 'XR/spatial pointer input for immersive runtimes.' },
   { id: 'ic-06', name: 'Keyboard Shortcut Bus',    category: 'Input & Controls', description: 'Global + scoped keyboard shortcut registry.' },
 
-  // ── Storage & Syncing (4) ─────────────────────────────────────────────────
   { id: 'sto-01', name: 'Supabase DB Connector',  category: 'Storage & Syncing', description: 'CRUD operations against Supabase Postgres tables.' },
   { id: 'sto-02', name: 'IndexedDB Cache',         category: 'Storage & Syncing', description: 'Local-first offline cache with sync queue.' },
   { id: 'sto-03', name: 'Realtime Subscriptions',  category: 'Storage & Syncing', description: 'Supabase Realtime row-level change subscriptions.' },
   { id: 'sto-04', name: 'Storage Uploader',        category: 'Storage & Syncing', description: 'Chunked multipart upload to Supabase Storage.' },
 
-  // ── Science & Simulation (6) ──────────────────────────────────────────────
   { id: 'sci-01', name: 'MOND Gravity Sim',        category: 'Science & Simulation', description: 'Interactive MOND galaxy-rotation curve simulator.' },
   { id: 'sci-02', name: 'Torridity Field Map',     category: 'Science & Simulation', description: 'Visualises torridity rank as a gravity field.' },
   { id: 'sci-03', name: 'Fluid Dynamics',          category: 'Science & Simulation', description: 'Navier-Stokes fluid sim on WebGPU compute shaders.' },
@@ -178,8 +164,6 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'sci-05', name: 'Orbital Mechanics',       category: 'Science & Simulation', description: 'N-body gravitational simulation with slog scaling.' },
   { id: 'sci-06', name: 'Signal Processor',        category: 'Science & Simulation', description: 'DSP pipeline: filter, FFT, convolution, envelope.' },
 ];
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /**
  * getByCategory(category)

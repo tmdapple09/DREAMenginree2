@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.Marketplace  (framework-mandated basename: page.tsx)
 import MarketplaceListingCard from '@/components/marketplace/dream.MarketplaceListingCard';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import DreamWord from '@/components/ui/dream.DreamWord';
@@ -8,6 +7,8 @@ import { PlusCircle, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.Marketplace  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'DreamMarketplace – Dreamengin', description: 'Discover themes, Dreams, and tools from the community.' };
 

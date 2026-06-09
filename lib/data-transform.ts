@@ -12,8 +12,6 @@ export const DATA_PHYSICS: DataPhysicsConfig = Object.freeze({
 
 const PARTICIPATION_DEVIATION_SCALE = 0.01;
 
-// ── Improvement 1: guard encodeToLedger against NaN/Infinity ─────────────────
-
 /**
  * Logarithmically encode a buffer for the ledger.
  * NaN and ±Infinity inputs are clamped to 0 before encoding so they never
@@ -40,8 +38,6 @@ export function applyPhysicsFilter(encodedBuffer: readonly number[]): number[] {
   });
 }
 
-// ── Improvement 2: guard decodeFromLedger against NaN/Infinity ───────────────
-
 /**
  * Inverse of encodeToLedger — restores original values from the ledger.
  * NaN and ±Infinity inputs are clamped to 0 before decoding.
@@ -52,8 +48,6 @@ export function decodeFromLedger(buffer: readonly number[]): number[] {
     return Math.sign(value) * Math.expm1(Math.abs(value));
   });
 }
-
-// ── Improvement 3: normalizeBuffer ───────────────────────────────────────────
 
 /**
  * Min-max normalize a buffer to the range [0, 1].
@@ -69,8 +63,6 @@ export function normalizeBuffer(buffer: readonly number[]): number[] {
   if (range === 0) return buffer.map(() => 0);
   return buffer.map((v) => (isFinite(v) ? (v - min) / range : 0));
 }
-
-// ── Improvement 4: computeBufferStats ────────────────────────────────────────
 
 export interface BufferStats {
   count: number;
@@ -104,8 +96,6 @@ export function computeBufferStats(buffer: readonly number[]): BufferStats {
     sum,
   };
 }
-
-// ── Improvement 5: zscore ─────────────────────────────────────────────────────
 
 /**
  * Compute Z-scores for each value in the buffer (how many std deviations from

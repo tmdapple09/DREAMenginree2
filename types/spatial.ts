@@ -19,13 +19,13 @@ export interface Space {
 // CONTENT OBJECT TYPES (Stored privately in HOME)
 // =============================================================================
 
-export type ContentType = 
-  | "image" 
-  | "video" 
-  | "audio" 
-  | "text" 
-  | "file" 
-  | "link" 
+export type ContentType =
+  | "image"
+  | "video"
+  | "audio"
+  | "text"
+  | "file"
+  | "link"
   | "embed";
 
 export type ContentVisibility = "private" | "shared";
@@ -96,7 +96,7 @@ export type WidgetType =
 export type WidgetVisibility = "private" | "public" | "followers";
 
 // Link type for overlap between HOME and PROFILE
-export type OverlapLinkType = 
+export type OverlapLinkType =
   | "copy"      // Content is copied (snapshot)
   | "linked"    // Content updates live
   | "snapshot"; // One-time snapshot, never updates
@@ -216,7 +216,7 @@ export interface NavigationState {
   totalWidgets: number;
   // Direction of last navigation
   lastDirection?: "left" | "right";
-  
+
   // Gesture-driven navigation extensions
   layer?: number;   // 0=HOME,1=CUBE,2=PROFILE,3=WIDGET,4=DREAM
   face?: number;    // 0-5 for cube faces

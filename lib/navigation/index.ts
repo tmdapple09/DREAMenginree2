@@ -1,4 +1,15 @@
 // Index file for navigation module
+
+// StructureLedger — precomputed conserved navigation structure
+
+// Quaternion Math (Section 3)
+
+// Manifold Smoothing (Section 4)
+
+// Physics Model (Section 5)
+
+// Home Anchor Field (Section 8)
+
 export { AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK } from './AnchorStateBuffer';
 export { AnchorWidgetStorage } from './AnchorWidgetStorage';
 export { GestureFrameComputer } from './GestureFrameComputer';
@@ -10,7 +21,6 @@ export { SpatialNavigationEngine } from './SpatialNavigationEngine';
 export { TransformSolver } from './TransformSolver';
 export { useNavigation } from './useNavigation';
 export { WidgetBindingType, WidgetInstanceMemory, WidgetPresentation, WidgetVisibility } from './WidgetInstanceMemory';
-
 export type { AnchorWidgetState, HomeSlotMapping, PriorityWidget } from './AnchorWidgetStorage';
 export type { GestureFrame } from './GestureFrameComputer';
 export type { ResolvedIntent } from './GestureIntentResolver';
@@ -19,18 +29,8 @@ export type { EngineConfig, EngineEventCallback, EngineEventType } from './Spati
 export type { TransformOutput, ViewportMetrics } from './TransformSolver';
 export type { NavigationState, UseNavigationOptions } from './useNavigation';
 export type { WidgetInstanceRecord, WidgetTransformState } from './WidgetInstanceMemory';
-
-// StructureLedger — precomputed conserved navigation structure
 export { ledgerStats, matchState, resolveTransition } from './StructureLedger';
-
-// Quaternion Math (Section 3)
 export * from './quaternion';
-
-// Manifold Smoothing (Section 4)
 export * from './manifold';
-
-// Physics Model (Section 5)
 export * from './physics';
-
-// Home Anchor Field (Section 8)
 export * from './anchorField';

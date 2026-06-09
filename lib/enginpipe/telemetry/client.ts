@@ -1,3 +1,8 @@
+import {
+    parseTelemetryEvent,
+    type TelemetryEvent,
+} from './events';
+
 /**
  * lib/enginpipe/telemetry/client.ts
  *
@@ -10,11 +15,6 @@
  * Failure mode: the client never throws. Errors are returned in the
  * result object so callers can decide whether to log or retry.
  */
-
-import {
-    parseTelemetryEvent,
-    type TelemetryEvent,
-} from './events';
 
 /** Minimal Supabase client shape we depend on. */
 export interface TelemetrySupabaseClient {

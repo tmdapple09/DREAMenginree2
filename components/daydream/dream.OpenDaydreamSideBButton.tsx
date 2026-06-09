@@ -15,3 +15,4 @@ export default function OpenDaydreamSideBButton({ label }: Props) {
     </button>
   );
 }
+

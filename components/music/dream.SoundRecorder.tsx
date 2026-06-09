@@ -2,8 +2,8 @@
 
 import { Download, Mic, Pause, Play, Square, Trash2, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
 type RecorderState = 'idle' | 'recording' | 'recorded';
 
 interface Recording {
@@ -280,7 +280,7 @@ export default function SoundRecorder( ){
       if (timerRef.current) clearInterval(timerRef.current);
       urlsToRevoke.forEach((url) => URL.revokeObjectURL(url));
     };
-   
+
   }, [recordings]);
 
   return (

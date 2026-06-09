@@ -7,8 +7,8 @@ import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
 import { Camera, Check, Image as ImageIcon, Link as LinkIcon, Palette, User, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useRef, useState } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
 interface ProfileData {
   id: string;
   handle: string;
@@ -28,7 +28,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     display_name: profile.display_name || '',
     bio: profile.bio || '',
@@ -87,7 +87,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
 
       // Update local state
       setFormData((prev) => ({ ...prev, avatar_url: mediaUrl }));
-      
+
       alert('Avatar updated successfully!');
     } catch (error: unknown) {
       console.error('Avatar upload error:', error);
@@ -136,7 +136,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
       if (updateError) throw updateError;
 
       setFormData((prev) => ({ ...prev, cover_image_url: mediaUrl }));
-      
+
       alert('Cover image updated successfully!');
     } catch (error: unknown) {
       console.error('Cover upload error:', error);
@@ -227,7 +227,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
               <ImageIcon className="w-12 h-12 text-white opacity-50" />
             </div>
           )}
-          
+
           <button
             onClick={() => coverInputRef.current?.click()}
             disabled={uploadingCover}
@@ -240,7 +240,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
             )}
             <span className="hidden sm:inline">Change Cover</span>
           </button>
-          
+
           <input
             ref={coverInputRef}
             type="file"
@@ -269,7 +269,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
                   {getInitials(formData.display_name || profile.handle)}
                 </div>
               )}
-              
+
               <button
                 onClick={() => avatarInputRef.current?.click()}
                 disabled={uploadingAvatar}
@@ -281,7 +281,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
                   <Camera className="w-5 h-5 text-slate-900 dark:text-white" />
                 )}
               </button>
-              
+
               <input
                 ref={avatarInputRef}
                 type="file"

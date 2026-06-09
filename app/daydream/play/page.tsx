@@ -1,7 +1,8 @@
-// SURFACE: dreamsurface.DaydreamPlay  (framework-mandated basename: page.tsx)
 import { buildGameLaunchHref, DEFAULT_GAME_ID } from '@/lib/games/navigation';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamPlay  (framework-mandated basename: page.tsx)
 
 /**
  * Legacy play daydream route — repurposed to the Games Daydream.

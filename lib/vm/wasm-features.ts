@@ -6,8 +6,6 @@
  *   multi-memory, exceptions, tail-call, reference-types.
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface WasmFeatureSet {
   /** WASM SIMD (128-bit vector operations). */
   simd: boolean;
@@ -24,8 +22,6 @@ export interface WasmFeatureSet {
   /** Reference-types proposal (externref / funcref). */
   referenceTypes: boolean;
 }
-
-// ─── Feature detection helpers ────────────────────────────────────────────────
 
 function tryValidate(bytes: number[]): boolean {
   try {
@@ -109,8 +105,6 @@ function detectReferenceTypes(): boolean {
     0x0a, 0x04, 0x01, 0x02, 0x00, 0x0b,
   ]);
 }
-
-// ─── Public API ───────────────────────────────────────────────────────────────
 
 let _cached: WasmFeatureSet | null = null;
 

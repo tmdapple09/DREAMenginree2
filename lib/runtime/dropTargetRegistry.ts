@@ -1,8 +1,7 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { DreamDrop, DreamDropType } from '@/lib/runtime/coercionTable';
+import type { RuntimeId } from '@/types/module-manifest';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/dropTargetRegistry.ts.
 
@@ -21,31 +20,15 @@
  * Architecture: docs/ARCHITECTURE.md §6 (Pass 6 — Universal drag/drop).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { DreamDrop, DreamDropType } from '@/lib/runtime/coercionTable';
-
-import type { RuntimeId } from '@/types/module-manifest';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface DropTarget {
   /** Unique identifier for this target. */
@@ -63,11 +46,7 @@ export interface DropTarget {
   onDrop: (drop: DreamDrop) => void;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Registry ──────────────────────────────────────────────────────────────────
 
 class DropTargetRegistry {
   private readonly _targets = new Map<string, DropTarget>();
@@ -129,14 +108,8 @@ class DropTargetRegistry {
 /** Singleton registry for the entire DREAMengin session. */
 export const dropTargetRegistry = new DropTargetRegistry();
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

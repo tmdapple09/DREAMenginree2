@@ -1,3 +1,5 @@
+import type { DaydreamEnginManifest, FeatureStatus } from './featureManifest';
+
 /**
  * lib/feature-build/buildCycle.ts
  *
@@ -14,18 +16,12 @@
  * CI workflows run code scans to verify the manifest is accurate and report progress.
  */
 
-import type { DaydreamEnginManifest, FeatureStatus } from './featureManifest';
-
-// ─── Phase ────────────────────────────────────────────────────────────────────
-
 /**
  * BUILD   → core feature integration; usable fraction below refineThreshold.
  * UPGRADE → enough is live for users to act on; concurrent build + SICC refinement.
  * REFINE  → feature-complete; improving Synchronized · Intuitive · Cohesive · Coherent UI.
  */
 export type BuildPhase = 'BUILD' | 'UPGRADE' | 'REFINE';
-
-// ─── Progress snapshot ────────────────────────────────────────────────────────
 
 export interface BuildCycleState {
   domain: string;
@@ -42,8 +38,6 @@ export interface BuildCycleState {
    *  Answers "what can the user do with what we have?" */
   usablePct: number;
 }
-
-// ─── Core functions ───────────────────────────────────────────────────────────
 
 /**
  * Determine the phase for a Daydream+Engin pair.

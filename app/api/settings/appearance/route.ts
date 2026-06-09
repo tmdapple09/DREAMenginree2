@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/settings/appearance/route.ts
  *
@@ -17,13 +23,6 @@
  * Architecture: ARCHITECTURE.md §10 (App Router, Supabase SSR client).
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -31,7 +30,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   const { data, error } = await db
@@ -44,7 +42,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
-   
   const appearance = (data?.data as Record<string, unknown>)?.appearance ?? null;
   return NextResponse.json({ ok: true, appearance });
 }
@@ -67,7 +64,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Invalid settings object' }, { status: 400 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   // Read existing settings first to merge (don't overwrite other keys like privacy)
@@ -77,7 +73,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id)
     .maybeSingle();
 
-   
   const existingData = (existing?.data as Record<string, unknown>) ?? {};
   const merged = { ...existingData, appearance: body };
 

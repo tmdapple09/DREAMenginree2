@@ -1,3 +1,14 @@
+import {
+    isAdminLocked,
+    isOwner,
+    triggerAdminLockout,
+} from '@/lib/admin/lockout';
+import { groqChat, type GroqMessage } from '@/lib/ai/groq';
+import { AI_MODELS } from '@/lib/ai/triad';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextResponse } from 'next/server';
+
 /**
  * /api/admin/ai-chat
  *
@@ -10,23 +21,9 @@
  *  3. One wrong password → permanent lockout via shared lockout module
  */
 
-import {
-    isAdminLocked,
-    isOwner,
-    triggerAdminLockout,
-} from '@/lib/admin/lockout';
-import { groqChat, type GroqMessage } from '@/lib/ai/groq';
-import { AI_MODELS } from '@/lib/ai/triad';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextResponse } from 'next/server';
-
-
 function deny(msg: string, status: number) {
   return NextResponse.json({ error: msg }, { status });
 }
-
-// ── System prompts ────────────────────────────────────────────────────────────
 
 // IDARi speaks in actionable engineering terms: cause → impact → fix → verification.
 // It outputs patch plans (file list + minimal diffs), not vague advice.
@@ -67,8 +64,6 @@ You help the owner understand platform rules, evaluate content decisions, and re
 You log all decisions with timestamps and actor identity.
 You flag policy risks (privacy, abuse vectors) proactively.
 Be clear, fair, and thorough. The person you are speaking with is the owner/admin of the platform.`;
-
-// ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request ): Promise<NextResponse> {
   // 1. Check permanent lockout (isAdminLocked is async)

@@ -1,4 +1,9 @@
 'use client';
+
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ParticlePool, ScreenShake, drawDitherFog, prefersReducedMotion } from './_fx/canvasFx';
+
 /**
  * NULL CATHEDRAL — fusion of chess + RPG + minesweeper.
  *
@@ -12,10 +17,6 @@
  * on near-black, dithered shadows. Real menu → play → victory/defeat states.
  */
 
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ParticlePool, ScreenShake, drawDitherFog, prefersReducedMotion } from './_fx/canvasFx';
-
 type PieceKind = 'P' | 'N' | 'B' | 'R' | 'Q' | 'K';
 type Side = 'iren' | 'castle';
 type MineKind = 'standard' | 'spread' | 'time';
@@ -28,7 +29,6 @@ const CELL = 56;        // px
 const SIZE = N * CELL;  // canvas pixel size of board
 const MINE_COUNT = 7;
 
-// ── Palette (Bloodborne-on-PS2 stained gloom) ──────────────────────────────
 const COL = {
   bgTop:    '#0b0a14',
   bgBot:    '#181020',
@@ -164,7 +164,6 @@ function colMineHints(mines: boolean[][]): number[] {
   return out;
 }
 
-// ── Component ───────────────────────────────────────────────────────────────
 export default function NullCathedral( ){
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, phaseRef, setPhase] = useGamePhase<Phase>('menu');
@@ -203,7 +202,6 @@ export default function NullCathedral( ){
   // Submit on terminal phase
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(score); }, [phase, score, submit]);
 
-  // ── Render loop ────────────────────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
@@ -349,7 +347,6 @@ export default function NullCathedral( ){
     return () => cancelAnimationFrame(raf);
   }, [selected, moves, turn]);
 
-  // ── Click handling ─────────────────────────────────────────────────────────
   const onCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (phaseRef.current !== 'playing' || turn !== 'iren') return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -509,7 +506,6 @@ export default function NullCathedral( ){
     return () => clearTimeout(t);
   }, [phase, turn, movePiece, setPhase]);
 
-  // ── UI ─────────────────────────────────────────────────────────────────────
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: 16, background: 'linear-gradient(180deg, #06050a 0%, #11091a 100%)', color: '#e8e0d0', minHeight: '100%', fontFamily: '"Iowan Old Style", "Palatino", serif' }}>
       <div style={{ position: 'relative', width: '100%', maxWidth: SIZE }}>

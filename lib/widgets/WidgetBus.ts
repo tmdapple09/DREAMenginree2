@@ -1,4 +1,3 @@
-
 type Callback = (payload: unknown) => void;
 
 class WidgetBus {
@@ -25,8 +24,6 @@ class WidgetBus {
     }
   }
 
-  // --- Shared memory ---
-
   setMemory(key: string, value: unknown) {
     this.memory[key] = value;
     this.emit(`memory:${key}`, value);
@@ -40,15 +37,11 @@ class WidgetBus {
     delete this.memory[key];
   }
 
-  // --- Trigger chains ---
-
   chain(channels: string[], payload: unknown) {
     for (const ch of channels) {
       this.emit(ch, payload);
     }
   }
-
-  // --- Sub-widget spawning ---
 
   spawnChild(parentId: string, childId: string) {
     if (!this.children[parentId]) {

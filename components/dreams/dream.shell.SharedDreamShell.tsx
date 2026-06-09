@@ -1,5 +1,17 @@
 "use client";
 
+import { useSharedDream } from "@/hooks/useSharedDream";
+import type { DreamBroadcastPayload } from "@/lib/sharedDream";
+import { Mic, MicOff, X } from "lucide-react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { toErrorMessage } from "@/lib/utils";
+
 /**
  * SharedDreamShell — Real-time collaborative Engin wrapper
  *
@@ -15,18 +27,6 @@
  * Audio call: WebRTC getUserMedia — microphone only, no server relay.
  */
 
-import { useSharedDream } from "@/hooks/useSharedDream";
-import type { DreamBroadcastPayload } from "@/lib/sharedDream";
-import { Mic, MicOff, X } from "lucide-react";
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
-
-import { toErrorMessage } from "@/lib/utils";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SharedDreamShellProps {
@@ -47,8 +47,6 @@ interface PeerCursor {
   color: string;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const PEER_COLORS = [
   "#fbbf24",
   "#34d399",
@@ -65,8 +63,6 @@ function peerColor(peerId: string): string {
   }
   return PEER_COLORS[hash % PEER_COLORS.length] ?? "#fbbf24";
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function SharedDreamShell({
   channelId,
@@ -96,7 +92,6 @@ export function SharedDreamShell({
   const shellRef = useRef<HTMLDivElement>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
 
-  // ── Listen for incoming events ──
   useEffect(() => {
     const unsub = onEvent((payload: DreamBroadcastPayload) => {
       if (payload.type === "cursor") {
@@ -121,7 +116,6 @@ export function SharedDreamShell({
     return unsub;
   }, [onEvent]);
 
-  // ── Broadcast cursor position on mouse move ──
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const el = shellRef.current;
@@ -134,7 +128,6 @@ export function SharedDreamShell({
     [broadcastCursor],
   );
 
-  // ── Audio call toggle ──
   const toggleAudio = useCallback(async () => {
     if (isAudioActive) {
       audioStreamRef.current?.getTracks().forEach((t) => t.stop());
@@ -159,7 +152,6 @@ export function SharedDreamShell({
     }
   }, [isAudioActive, broadcast]);
 
-  // ── Copy invite link ──
   const copyInvite = useCallback(async () => {
     const inviteLink = getInviteLink();
     if (!inviteLink) return;
@@ -168,7 +160,6 @@ export function SharedDreamShell({
     setTimeout(() => setInviteCopied(false), 2000);
   }, [getInviteLink]);
 
-  // ── Cleanup ──
   useEffect(() => {
     broadcastPresenceUpdate({
       status: isConnected ? "active" : "idle",
@@ -185,8 +176,6 @@ export function SharedDreamShell({
 
   // Suppress unused-variable warning; session is used for presence awareness
   void session;
-
-  // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div

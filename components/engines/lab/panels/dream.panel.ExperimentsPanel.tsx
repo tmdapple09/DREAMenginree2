@@ -1,14 +1,14 @@
 'use client';
 
+import { Loader2, Play, RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * ExperimentsPanel — Standalone experiments runner for the Lab Engine app.
  *
  * Run 4 simulation types, view results, and push to data viz.
  * Lives at /engines/lab/experiments.
  */
-
-import { Loader2, Play, RotateCcw } from 'lucide-react';
-import { useState } from 'react';
 
 type SimState = 'idle' | 'running' | 'complete';
 

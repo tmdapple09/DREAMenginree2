@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * DreamRCreatorPanel — neomorphic slide-in "more from this creator" panel.
- *
- * Opens when the user swipes left on any DreamR feed card.
- * Shows: creator identity card, follow, connected socials, their recent posts
- * (grid), and a "More like this" discovery strip.
- *
- * Visual language: DreamR neomorphism
- *  Base: #e8eff6 pearl-sky  |  Sky: #5ba8d4  |  Gold: #c8981a
- *  Font: Plus Jakarta Sans (--font-dreamr)
- *  Shadow pair: -5px -5px 12px rgba(255,255,255,0.88), 5px 5px 14px rgba(163,189,218,0.42)
- */
-
 import type { FeedPost } from "@/lib/feed/useLiveFeed";
 import {
   ExternalLink,
@@ -31,7 +18,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-// ── Design tokens ──────────────────────────────────────────────────────────────
+/**
+ * DreamRCreatorPanel — neomorphic slide-in "more from this creator" panel.
+ *
+ * Opens when the user swipes left on any DreamR feed card.
+ * Shows: creator identity card, follow, connected socials, their recent posts
+ * (grid), and a "More like this" discovery strip.
+ *
+ * Visual language: DreamR neomorphism
+ *  Base: #e8eff6 pearl-sky  |  Sky: #5ba8d4  |  Gold: #c8981a
+ *  Font: Plus Jakarta Sans (--font-dreamr)
+ *  Shadow pair: -5px -5px 12px rgba(255,255,255,0.88), 5px 5px 14px rgba(163,189,218,0.42)
+ */
 
 const DR = {
   bg: "#e8eff6",
@@ -53,8 +51,6 @@ function nmInset(size: number = 4): string {
   return `inset ${-size}px ${-size}px ${size * 2}px ${DR.shadowLight}, inset ${size}px ${size}px ${size * 2.4}px ${DR.shadowDark}`;
 }
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 interface CreatorPost {
   id: string;
   content: string;
@@ -72,8 +68,6 @@ interface Props {
   post: FeedPost;
   onClose: () => void;
 }
-
-// ── Helpers ────────────────────────────────────────────────────────────────────
 
 function relTime(iso: string): string {
   const s = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -113,8 +107,6 @@ function SocialBadge({ provider }: { provider: string }) {
     </div>
   );
 }
-
-// ── Component ──────────────────────────────────────────────────────────────────
 
 export default function DreamRCreatorPanel({ post, onClose }: Props) {
   const creator = post.profiles;

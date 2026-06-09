@@ -1,18 +1,3 @@
-/**
- * lib/engins/content/contentEnginRuleSet.ts
- *
- * ContentEngin Rule-Set — the ONLY place ContentEngin domain logic lives.
- *
- * Domain: content creation (drafts, calendar, publish queue, SEO, generative fill,
- * voice clone, creativity slider, brand memory).
- * Handoff kind: create:brand-check → BrandingEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
-
 import {
     patchBaseState,
     type EnginBaseState,
@@ -29,7 +14,20 @@ import type {
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
-// ─── Calendar / queue types ───────────────────────────────────────────────────
+/**
+ * lib/engins/content/contentEnginRuleSet.ts
+ *
+ * ContentEngin Rule-Set — the ONLY place ContentEngin domain logic lives.
+ *
+ * Domain: content creation (drafts, calendar, publish queue, SEO, generative fill,
+ * voice clone, creativity slider, brand memory).
+ * Handoff kind: create:brand-check → BrandingEngin.
+ *
+ * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
+ * The EnginRuntime handles all of that.
+ *
+ * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
+ */
 
 export type ContentType = 'Post' | 'Video' | 'Story' | 'Thread';
 
@@ -45,11 +43,7 @@ export interface ContentDraft extends JsonObject {
   title: string;
 }
 
-// ─── Platform targets ─────────────────────────────────────────────────────────
-
 export type Platform = 'Feed' | 'Stories' | 'DreamDM' | 'Twitter' | 'Instagram' | 'TikTok';
-
-// ─── Domain state shape ───────────────────────────────────────────────────────
 
 export interface ContentEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
@@ -63,8 +57,6 @@ export interface ContentEnginDerivedState extends JsonObject {
   stemPayload: JsonObject | null;
 }
 
-// ─── Action discriminated union ───────────────────────────────────────────────
-
 export type ContentEnginAction =
   | EnginAction<'content:drafts-loaded',   { drafts: ContentDraft[] }>
   | EnginAction<'content:item-add',        { item: CalendarItem }>
@@ -76,8 +68,6 @@ export type ContentEnginAction =
   | EnginAction<'content:brand-check',     Record<string, never>>
   | EnginAction<'content:stem-received',   { payload: JsonObject }>;
 
-// ─── Default domain state ─────────────────────────────────────────────────────
-
 const DEFAULT_DOMAIN: Omit<ContentEnginDerivedState, 'lifecycle'> = {
   drafts: [],
   publishQueue: [],
@@ -88,8 +78,6 @@ const DEFAULT_DOMAIN: Omit<ContentEnginDerivedState, 'lifecycle'> = {
   brandCheckReady: false,
   stemPayload: null,
 };
-
-// ─── Constraints ──────────────────────────────────────────────────────────────
 
 const itemAddConstraint: EnginConstraint<ContentEnginAction> = (
   _state,
@@ -114,8 +102,6 @@ const creativityConstraint: EnginConstraint<ContentEnginAction> = (
   }
   return { valid: true };
 };
-
-// ─── Transform ────────────────────────────────────────────────────────────────
 
 function transform(state: EnginBaseState, action: ContentEnginAction): EnginBaseState {
   const domain = (state.domain as Partial<typeof DEFAULT_DOMAIN>);
@@ -179,8 +165,6 @@ function transform(state: EnginBaseState, action: ContentEnginAction): EnginBase
   }
 }
 
-// ─── deriveState ──────────────────────────────────────────────────────────────
-
 function deriveState(state: EnginBaseState): ContentEnginDerivedState {
   const d = state.domain as Partial<typeof DEFAULT_DOMAIN>;
   return {
@@ -196,15 +180,12 @@ function deriveState(state: EnginBaseState): ContentEnginDerivedState {
   };
 }
 
-// ─── Rule-set params ──────────────────────────────────────────────────────────
-
 const PARAMS: EnginRuleSetParams = {
   enginId: 'create',
   name: 'ContentEngin',
   layoutMode: 'standard',
   accentColor: '#f97316',
 };
-
 
 const MANIFEST: EnginRuleSetManifest<ContentEnginAction> = {
   id: PARAMS.enginId,
@@ -228,8 +209,6 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'bridge:emit',
   'bridge:listen',
 ];
-
-// ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const CONTENT_ENGIN_RULE_SET: EnginRuleSetContract<ContentEnginAction> = {
   manifest: MANIFEST,

@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+
 /**
  * DualBottomMenu — slides up from the bottom as two side-by-side panels.
  *
@@ -9,11 +12,6 @@
  * Single-tap the gold button → open both radial menus.
  * Tap the dim backdrop or any item → closes.
  */
-
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-
-/* ── Types ─────────────────────────────────────────────────────────────────── */
 
 export type SystemMenuAction =
   | 'profiles'
@@ -33,8 +31,6 @@ type Props = {
   onClose: () => void;
   onSystemAction: (action: SystemMenuAction) => void;
 };
-
-/* ── Data ───────────────────────────────────────────────────────────────────── */
 
 /** Left panel: the 6 Daydreams (spec §7.2 domain list) */
 const DAYDREAM_ITEMS: Array<{ icon: string; label: string; route: string; color: string }> = [
@@ -57,8 +53,6 @@ const SYSTEM_ITEMS: Array<{ id: SystemMenuAction; icon: string; label: string }>
   { id: 'appearance',    icon: '🎨', label: 'Appearance'    },
   { id: 'logout',        icon: '↪',  label: 'Log Out'        },
 ];
-
-/* ── Sub-components ─────────────────────────────────────────────────────────── */
 
 function PanelItem({
   icon,
@@ -176,8 +170,6 @@ function Panel({
     </div>
   );
 }
-
-/* ── Main export ────────────────────────────────────────────────────────────── */
 
 export default function DualBottomMenu({ open, onClose, onSystemAction }: Props) {
   const router = useRouter();

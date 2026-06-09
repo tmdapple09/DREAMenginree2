@@ -1,15 +1,15 @@
 'use client';
 
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { Hash, Palette, Save, Type } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * IdentityPanel — Brand identity editor for the Brand Engine app.
  *
  * Set brand name, tagline, accent colors, and logo emoji.
  * Lives at /engines/brand/identity.
  */
-
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { Hash, Palette, Save, Type } from 'lucide-react';
-import { useState } from 'react';
 
 const PRESET_PALETTES = [
   { name: 'Electric',  colors: ['#f472b6', '#a855f7', '#22d3ee'] },

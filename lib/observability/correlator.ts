@@ -1,3 +1,5 @@
+import type { LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan } from './collector';
+
 // lib/observability/correlator.ts
 //
 // Signal correlator — analyses a TelemetrySnapshot and produces a ranked list
@@ -5,10 +7,6 @@
 //
 // Three detectors run independently; their results are merged and sorted by
 // severity before being returned as a CorrelationResult.
-
-import type { LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan } from './collector';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type AnomalySeverity = 'low' | 'medium' | 'high';
 export type AnomalyType =
@@ -36,11 +34,7 @@ export interface CorrelationResult {
   summary: string;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 const SEVERITY_ORDER: Record<AnomalySeverity, number> = { high: 0, medium: 1, low: 2 };
-
-// ── Detector: error spikes ────────────────────────────────────────────────────
 
 /**
  * Detect 30-second windows where 3 or more errors/warnings cluster together.
@@ -71,8 +65,6 @@ export function detectErrorSpikes(logs: LogEntry[]): AnomalySignal[] {
   }
   return signals;
 }
-
-// ── Detector: latency spikes ──────────────────────────────────────────────────
 
 /**
  * Per span name: flag when p95 latency is >3× the p50 AND absolute p95 > 1 s,
@@ -122,8 +114,6 @@ export function detectLatencySpikes(traces: TraceSpan[]): AnomalySignal[] {
   return signals;
 }
 
-// ── Detector: metric anomalies ────────────────────────────────────────────────
-
 /**
  * For each metric name, flag outliers that deviate more than 2.5 standard
  * deviations from the mean — provided the stddev is itself large relative to
@@ -162,10 +152,6 @@ export function detectMetricAnomalies(metrics: MetricPoint[]): AnomalySignal[] {
   return signals;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
-
-// ── Improvement 26: CorrelateOptions with configurable thresholds ─────────────
-
 export interface CorrelateOptions {
   /**
    * Minimum number of error/warn entries in a 30-second window to count as a
@@ -178,8 +164,6 @@ export interface CorrelateOptions {
    */
   sustainedErrorRateThreshold?: number;
 }
-
-// ── Improvement 27: detectSustainedErrorRate ──────────────────────────────────
 
 /**
  * Fire a 'high' severity signal when the error+warn fraction across the

@@ -7,8 +7,8 @@ export interface GameRuntimeInputRouterOptions {
 }
 
 interface RemoteInputDetail {
-  readonly action?: string;
-  readonly active?: boolean;
+  readonly action: string;
+  readonly active: boolean;
   readonly source?: string;
 }
 
@@ -102,3 +102,4 @@ export class GameRuntimeInputRouter {
     }
   }
 }
+

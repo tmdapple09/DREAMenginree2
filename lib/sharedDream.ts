@@ -1,32 +1,4 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
-
-// Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
-// Runtime file: lib/sharedDream.ts.
-
-/**
- * lib/sharedDream.ts
- *
- * Backward-compatible facade over the canonical collaboration engine
- * in lib/collaboration.
- */
-
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
-// Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
-// Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
-// Imports and external modules this runtime file depends on.
-
 import type { SupabaseClient } from '@/engine/io';
-
 import {
     broadcastControlSignal as collabBroadcastControlSignal,
     broadcastCursor as collabBroadcastCursor,
@@ -46,11 +18,24 @@ import {
     type SessionRole,
 } from '@/lib/collaboration';
 
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
+// Framework directives stay physically first when required.
+
+// Runtime file: lib/sharedDream.ts.
+
+/**
+ * lib/sharedDream.ts
+ *
+ * Backward-compatible facade over the canonical collaboration engine
+ * in lib/collaboration.
+ */
+
+// Runtime law comments and invariants stay attached to the code they govern.
+
+// Module-owned constants, caches, refs, and mutable runtime memory.
+
+// Imports and external modules this runtime file depends on.
 
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -72,8 +57,6 @@ export interface SharedDreamSessionOptions {
   role?: SessionRole;
   mode?: CollabMode;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -172,19 +155,12 @@ export async function leaveSharedDreamSession(session: SharedDreamSession): Prom
   await session.leave();
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
-
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
 
 // Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
-
 // Exported declarations and re-export barrels are this file's public surface.
 
-// ── Persistent session hook ───────────────────────────────────────────────────
 export {
     useSharedDreamSession, type SharedDreamActivityEntry, type SharedDreamMember, type UseSharedDreamSessionOptions,
     type UseSharedDreamSessionResult

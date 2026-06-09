@@ -17,9 +17,7 @@
  * React, Next.js, or Supabase) so they can be unit-tested in isolation.
  */
 
-// ---------------------------------------------------------------------------
 // DB row shape (mirrors what /api/notifications returns)
-// ---------------------------------------------------------------------------
 
 export type DbNotificationContent = Record<string, unknown>;
 
@@ -33,9 +31,7 @@ export interface DbNotificationRow {
   created_at: string;
 }
 
-// ---------------------------------------------------------------------------
 // UI notification shape (what the NotificationCenter consumes)
-// ---------------------------------------------------------------------------
 
 /**
  * Canonical UI notification types that map to the design system icons.
@@ -62,9 +58,7 @@ export interface UiNotification {
   actionUrl?: string;
 }
 
-// ---------------------------------------------------------------------------
 // Type mapping
-// ---------------------------------------------------------------------------
 
 /** Map a raw DB type string to a canonical UI type. */
 export function mapNotificationType(dbType: string): UiNotificationType {
@@ -80,9 +74,7 @@ export function mapNotificationType(dbType: string): UiNotificationType {
   return 'other';
 }
 
-// ---------------------------------------------------------------------------
 // Title derivation
-// ---------------------------------------------------------------------------
 
 /** Return a short, human-readable title for each notification type. */
 export function getNotificationTitle(type: UiNotificationType): string {
@@ -99,9 +91,7 @@ export function getNotificationTitle(type: UiNotificationType): string {
   }
 }
 
-// ---------------------------------------------------------------------------
 // Action URL derivation
-// ---------------------------------------------------------------------------
 
 /**
  * Derive a navigation URL for a notification based on its type and content.
@@ -166,9 +156,7 @@ export function getNotificationActionUrl(
   }
 }
 
-// ---------------------------------------------------------------------------
 // Message text extraction
-// ---------------------------------------------------------------------------
 
 /**
  * Extract a human-readable message string from a DB notification row.
@@ -204,9 +192,7 @@ export function extractNotificationMessage(
   return 'You have a new notification.';
 }
 
-// ---------------------------------------------------------------------------
 // Row → UI normalisation
-// ---------------------------------------------------------------------------
 
 /**
  * Convert a raw Supabase `notifications` row into a typed `UiNotification`
@@ -230,9 +216,7 @@ export function normalizeDbRow(row: DbNotificationRow): UiNotification {
   };
 }
 
-// ---------------------------------------------------------------------------
 // Aggregate helpers
-// ---------------------------------------------------------------------------
 
 /** Count unread notifications in a list. */
 export function getUnreadCount(notifications: UiNotification[]): number {

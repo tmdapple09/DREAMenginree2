@@ -1,11 +1,11 @@
+import { createClient } from '@/lib/supabase/client';
+import type { UserMetrics } from './types';
+
 // lib/activity/aqs.ts
 // Phase 9 — Activity Quality Score Calculator
 //
 // Implements AQS calculation algorithm per ACTIVITY_FIRST_PROTOCOL.md §III
 // Formula: (Activity Points × Views per Post) ÷ Days Active
-
-import { createClient } from '@/lib/supabase/client';
-import type { UserMetrics } from './types';
 
 /**
  * Calculate Activity Quality Score (AQS) for a user

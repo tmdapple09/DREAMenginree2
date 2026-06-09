@@ -1,5 +1,10 @@
 'use client';
 
+import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '@/lib/media/ledger';
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/gameengin/dream-engine.ts
  *
@@ -16,11 +21,6 @@
  *   Client-side uid filtering is defence-in-depth (AXIOM 4 / SECURITY.md).
  */
 
-import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '@/lib/media/ledger';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface GameAsset {
@@ -50,10 +50,6 @@ export interface WasmOutput {
   rig: Uint8Array;
   dna: unknown;
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-// ── DreamEngine ───────────────────────────────────────────────────────────────
 
 export const DreamEngine = {
   /**

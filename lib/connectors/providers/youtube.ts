@@ -1,3 +1,12 @@
+import {
+    deduplicateFeedItems,
+    normaliseYouTubePlaylistItem,
+    normaliseYouTubeSearchResult,
+    type YouTubePlaylistItem,
+    type YouTubeSearchItem,
+} from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/youtube.ts
  *
@@ -13,15 +22,6 @@
  *
  * No DB calls here. No React imports. Pure provider integration only.
  */
-
-import {
-    deduplicateFeedItems,
-    normaliseYouTubePlaylistItem,
-    normaliseYouTubeSearchResult,
-    type YouTubePlaylistItem,
-    type YouTubeSearchItem,
-} from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 const YT_API = 'https://www.googleapis.com/youtube/v3';
 const GOOGLE_USERINFO_API = 'https://www.googleapis.com/oauth2/v2/userinfo';

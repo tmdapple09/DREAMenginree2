@@ -1,4 +1,13 @@
 #!/usr/bin/env node
+
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  runReadmeAutosync,
+  SECTION_REGISTRY,
+} from './readme-autosync';
+
 /**
  * scripts/generate-readme.ts
  *
@@ -18,15 +27,6 @@
  * This file exists so workflows that invoke `scripts/generate-readme.ts`
  * have a stable entry point regardless of which invocation style they use.
  */
-
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-import {
-  runReadmeAutosync,
-  SECTION_REGISTRY,
-} from './readme-autosync';
 
 const __filename = fileURLToPath(import.meta.url);
 

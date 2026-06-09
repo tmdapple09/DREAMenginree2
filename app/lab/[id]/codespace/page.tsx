@@ -1,9 +1,10 @@
 'use client';
-// SURFACE: dreamsurface.LabIdCodespace  (framework-mandated basename: page.tsx)
 
 import { ArrowLeft, Check, Copy, Download, ExternalLink, RefreshCw, Terminal, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { use, useCallback, useRef, useState } from 'react';
+
+// SURFACE: dreamsurface.LabIdCodespace  (framework-mandated basename: page.tsx)
 
 type Language = 'html' | 'css' | 'js' | 'python';
 

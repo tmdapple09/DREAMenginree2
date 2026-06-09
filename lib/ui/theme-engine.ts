@@ -4,8 +4,6 @@
  * All values are applied via CSS custom properties on <html>.
  */
 
-// ── Preset definitions ──────────────────────────────────────────────────────
-
 export interface ThemePreset {
   id: string;
   label: string;
@@ -72,8 +70,6 @@ export const DEFAULT_OVERRIDES: UserOverrides = {
   accentHue: -1,    // use preset default
 };
 
-// ── Dream Ice (default -- matches mockups) ──────────────────────────────────
-
 const DREAM_ICE: ThemeTokens = {
   bgStart: '#dce8f8',
   bgMid: '#c5d8f0',
@@ -111,8 +107,6 @@ const DREAM_ICE: ThemeTokens = {
   hslAccentForeground: '215 55% 15%',
   starfieldStyle: 'light',
 };
-
-// ── Dream Dark (current) ────────────────────────────────────────────────────
 
 const DREAM_DARK: ThemeTokens = {
   bgStart: '#0a1b4d',
@@ -152,8 +146,6 @@ const DREAM_DARK: ThemeTokens = {
   starfieldStyle: 'dark',
 };
 
-// ── Dream Midnight ──────────────────────────────────────────────────────────
-
 const DREAM_MIDNIGHT: ThemeTokens = {
   ...DREAM_DARK,
   bgStart: '#0a0a1a',
@@ -165,8 +157,6 @@ const DREAM_MIDNIGHT: ThemeTokens = {
   accentGlow: '#818cf8',
   hslPrimary: '239 84% 67%',
 };
-
-// ── Dream Sunset ────────────────────────────────────────────────────────────
 
 const DREAM_SUNSET: ThemeTokens = {
   ...DREAM_ICE,
@@ -199,8 +189,6 @@ const DREAM_SUNSET: ThemeTokens = {
   hslAccentForeground: '30 60% 95%',
 };
 
-// ── All presets ─────────────────────────────────────────────────────────────
-
 export const THEME_PRESETS: ThemePreset[] = [
   { id: 'dream-ice',      label: 'Dream Ice',      tokens: DREAM_ICE },
   { id: 'dream-dark',     label: 'Dream Dark',     tokens: DREAM_DARK },
@@ -211,8 +199,6 @@ export const THEME_PRESETS: ThemePreset[] = [
 export function getPreset(id: string): ThemePreset {
   return THEME_PRESETS.find((p) => p.id === id) ?? THEME_PRESETS[0];
 }
-
-// ── Apply theme to DOM ──────────────────────────────────────────────────────
 
 export function applyTheme(presetId: string, overrides: UserOverrides = DEFAULT_OVERRIDES): void {
   if (typeof document === 'undefined') return;
@@ -266,8 +252,6 @@ export function applyTheme(presetId: string, overrides: UserOverrides = DEFAULT_
   el.style.setProperty('--user-blur', `${blur}px`);
   el.style.setProperty('--starfield-style', t.starfieldStyle);
 }
-
-// ── Persistence ─────────────────────────────────────────────────────────────
 
 const STORAGE_KEY = 'dreamengin-theme';
 

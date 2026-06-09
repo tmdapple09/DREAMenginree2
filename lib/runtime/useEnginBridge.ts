@@ -1,10 +1,9 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/useEnginBridge.ts.
 
@@ -19,31 +18,15 @@
  * Privacy: only IDs / primitives cross Engin boundaries (AXIOM 4).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-
-import { useEffect, useState } from 'react';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ─── CodeEngin — subscribes to music, games, lab, create, brand ──────────────
 
 export interface CodeEnginBridgeState {
   lastBpm: number | null;
@@ -66,8 +49,6 @@ export interface CodeEnginBridgeState {
     seam: string;
   };
 }
-
-// ─── GameEngin — subscribes to music, code, lab, create, brand ───────────────
 
 export interface GameEnginBridgeState {
   lastBpm: number | null;
@@ -96,8 +77,6 @@ export interface GameEnginBridgeState {
   };
 }
 
-// ─── StarMakerEngin — subscribes to games, code, lab, create, brand ──────────
-
 export interface StarMakerEnginBridgeState {
   lastGameSession: string | null;
   lastCodeBuild: string | null;
@@ -117,8 +96,6 @@ export interface StarMakerEnginBridgeState {
     seam: string;
   };
 }
-
-// ─── LabEngin — subscribes to music, games, code, create, brand ──────────────
 
 export interface LabEnginBridgeState {
   lastStem: string | null;
@@ -142,8 +119,6 @@ export interface LabEnginBridgeState {
   };
 }
 
-// ─── BrandingEngin — subscribes to music, games, code, lab, create ───────────
-
 export interface BrandingEnginBridgeState {
   lastTrack: string | null;
   lastAchievement: string | null;
@@ -165,8 +140,6 @@ export interface BrandingEnginBridgeState {
     seam: string;
   };
 }
-
-// ─── ContentEngin — subscribes to music, games, code, lab, brand ─────────────
 
 export interface ContentEnginBridgeState {
   lastStem: string | null;
@@ -194,8 +167,6 @@ export interface ContentEnginBridgeState {
     seam: string;
   };
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -647,14 +618,8 @@ export function useContentEnginBridge(): ContentEnginBridgeState {
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

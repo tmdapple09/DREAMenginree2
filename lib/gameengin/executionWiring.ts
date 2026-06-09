@@ -1,13 +1,3 @@
-/**
- * lib/gameengin/executionWiring.ts
- *
- * Internal execution wiring for the GameEngin packet.
- *
- * This is not a discovery registry. It is the runtime bridge that imports the
- * exported GameEngin subsystems and gives GameRuntime one callable kernel for
- * input, frame, cartridge lifecycle, crash, and capability checks.
- */
-
 import { RealtimeCaptioner, MotionReductionAI, ColorVisionAdapter } from './accessibility-ai';
 import { AIDirector, type PlayerSignals } from './ai-director';
 import { EmergentDialogue, LLMNPCBrain, NPCPersonalityStore } from './ai-npcs';
@@ -45,9 +35,18 @@ import * as RenderingSystems from './systems/rendering';
 import * as SpatialSystems from './systems/spatial';
 import * as WorldSystems from './systems/world';
 import * as GameRuleSetIndex from '@/lib/engins/game';
-import * as LucidAvenueWorld from '@/lib/games/lucid-avenue-world';
+import * as LucidAvenueWorld from '@/lib/games/madmaxi-wildfall-world';
 import * as UnifiedLoopHook from './useUnifiedLoop';
 
+/**
+ * lib/gameengin/executionWiring.ts
+ *
+ * Internal execution wiring for the GameEngin packet.
+ *
+ * This is not a discovery registry. It is the runtime bridge that imports the
+ * exported GameEngin subsystems and gives GameRuntime one callable kernel for
+ * input, frame, cartridge lifecycle, crash, and capability checks.
+ */
 
 export interface GameEnginExecutionFrame {
   dt: number;

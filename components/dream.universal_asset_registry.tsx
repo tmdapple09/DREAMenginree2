@@ -1,36 +1,5 @@
 "use client";
 
-/**
- * UniversalAssetRegistry — Platform-wide asset discovery and management surface.
- *
- * The Universal Asset Registry (UAR) is the single UI surface for viewing,
- * searching, filtering, managing, and inspecting every object registered in
- * the Global Association Layer (GAL) — the "Everything to Everything" hub.
- *
- * Data sources:
- *   - global_registry  — the GAL hub (object_type, internal_id, label, owner_id)
- *   - game_assets      — enriched data for game_asset entries (mesh, rig, DNA)
- *   - control_mappings — input bindings attached to assets
- *
- * Capabilities:
- *   1. Dashboard — aggregate counts by object type, total assets, recent activity
- *   2. Search & Filter — full-text search + category tabs + sort options
- *   3. Asset Grid — type-aware cards with icons, labels, timestamps
- *   4. Detail Panel — expandable per-asset: DNA viewer, bindings, image, metadata
- *   5. CRUD — register new assets via GAL API, edit labels, delete entries
- *   6. Control Mapping Viewer — shows joystick/button bindings per game_asset
- *   7. Realtime — Supabase channel subscription for live registry updates
- *   8. Forge Integration — records activity pulses for the Forge dashboard
- *
- * Security:
- *   - All queries filter by auth.uid() (defence-in-depth on top of RLS).
- *   - owner_id is never accepted from client input for writes.
- *   - GAL sync delegates to POST /api/gal which resolves owner from session.
- *
- * Architecture: docs/ARCHITECTURE.md §3 — component layer.
- * Naming: docs/NAMING_AUTHORITY.md — uses canonical vocabulary throughout.
- */
-
 import { useForgeActivity } from "@/lib/forge/useForgeActivity";
 import { createClient } from "@/lib/supabase/client";
 import { safeGetUser } from "@/lib/supabase/safeGetUser";
@@ -68,8 +37,39 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
 import { toErrorMessage } from "@/lib/utils";
+
+/**
+ * UniversalAssetRegistry — Platform-wide asset discovery and management surface.
+ *
+ * The Universal Asset Registry (UAR) is the single UI surface for viewing,
+ * searching, filtering, managing, and inspecting every object registered in
+ * the Global Association Layer (GAL) — the "Everything to Everything" hub.
+ *
+ * Data sources:
+ *   - global_registry  — the GAL hub (object_type, internal_id, label, owner_id)
+ *   - game_assets      — enriched data for game_asset entries (mesh, rig, DNA)
+ *   - control_mappings — input bindings attached to assets
+ *
+ * Capabilities:
+ *   1. Dashboard — aggregate counts by object type, total assets, recent activity
+ *   2. Search & Filter — full-text search + category tabs + sort options
+ *   3. Asset Grid — type-aware cards with icons, labels, timestamps
+ *   4. Detail Panel — expandable per-asset: DNA viewer, bindings, image, metadata
+ *   5. CRUD — register new assets via GAL API, edit labels, delete entries
+ *   6. Control Mapping Viewer — shows joystick/button bindings per game_asset
+ *   7. Realtime — Supabase channel subscription for live registry updates
+ *   8. Forge Integration — records activity pulses for the Forge dashboard
+ *
+ * Security:
+ *   - All queries filter by auth.uid() (defence-in-depth on top of RLS).
+ *   - owner_id is never accepted from client input for writes.
+ *   - GAL sync delegates to POST /api/gal which resolves owner from session.
+ *
+ * Architecture: docs/ARCHITECTURE.md §3 — component layer.
+ * Naming: docs/NAMING_AUTHORITY.md — uses canonical vocabulary throughout.
+ */
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 /** A row from the global_registry table (GAL hub). */
@@ -119,8 +119,6 @@ type SortMode = "newest" | "oldest" | "alphabetical" | "type";
 
 /** View mode for the asset grid. */
 type ViewMode = "grid" | "list";
-
-// ── Constants ─────────────────────────────────────────────────────────────────
 
 const ACCENT = "#c8981a"; // Gold — canonical DREAMengin premium accent
 
@@ -203,8 +201,6 @@ function formatTimestamp(iso: string): string {
   }
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 export interface UniversalAssetRegistryProps {
   /** Optional compact mode — hides the header and reduces padding. */
   compact?: boolean;
@@ -221,41 +217,33 @@ export default function UniversalAssetRegistry({
 }: UniversalAssetRegistryProps) {
   const { record: forgeRecord } = useForgeActivity({ enginId: "registry" });
 
-  // ── Core state ──────────────────────────────────────────────────────────────
   const [entries, setEntries] = useState<EnrichedEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ── Search & filter ─────────────────────────────────────────────────────────
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("newest");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [showFilters, setShowFilters] = useState(false);
 
-  // ── Detail panel ────────────────────────────────────────────────────────────
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // ── CRUD state ──────────────────────────────────────────────────────────────
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editLabel, setEditLabel] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
 
-  // ── Register new asset ──────────────────────────────────────────────────────
   const [showRegister, setShowRegister] = useState(false);
   const [newType, setNewType] = useState("");
   const [newInternalId, setNewInternalId] = useState("");
   const [newLabel, setNewLabel] = useState("");
   const [registering, setRegistering] = useState(false);
 
-  // ── Refs ────────────────────────────────────────────────────────────────────
   const channelRef = useRef<ReturnType<
     ReturnType<typeof createClient>["channel"]
   > | null>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
-
-  // ── Data fetching ───────────────────────────────────────────────────────────
 
   const fetchRegistry = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -346,12 +334,10 @@ export default function UniversalAssetRegistry({
     }
   }, []);
 
-  // ── Initial load ────────────────────────────────────────────────────────────
   useEffect(() => {
     fetchRegistry();
   }, [fetchRegistry]);
 
-  // ── Realtime subscription ───────────────────────────────────────────────────
   useEffect(() => {
     const supabase = createClient();
     const channel = supabase
@@ -372,7 +358,6 @@ export default function UniversalAssetRegistry({
     };
   }, [fetchRegistry]);
 
-  // ── Computed: unique categories ─────────────────────────────────────────────
   const categories = useMemo(() => {
     const types = new Map<string, number>();
     for (const e of entries) {
@@ -383,7 +368,6 @@ export default function UniversalAssetRegistry({
       .map(([type, count]) => ({ type, count, ...getTypeMeta(type) }));
   }, [entries]);
 
-  // ── Computed: filtered & sorted entries ─────────────────────────────────────
   const filteredEntries = useMemo(() => {
     let result = entries;
 
@@ -430,7 +414,6 @@ export default function UniversalAssetRegistry({
     return result;
   }, [entries, activeCategory, searchQuery, sortMode]);
 
-  // ── Stats ───────────────────────────────────────────────────────────────────
   const stats = useMemo(() => {
     const total = entries.length;
     const gameAssets = entries.filter(
@@ -454,8 +437,6 @@ export default function UniversalAssetRegistry({
       typeCount: categories.length,
     };
   }, [entries, categories]);
-
-  // ── CRUD handlers ───────────────────────────────────────────────────────────
 
   const handleRegister = useCallback(async () => {
     if (!newType.trim() || !newInternalId.trim() || !newLabel.trim()) return;
@@ -553,8 +534,6 @@ export default function UniversalAssetRegistry({
   const toggleExpand = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
   }, []);
-
-  // ── Render helpers ──────────────────────────────────────────────────────────
 
   const renderStatCard = (
     label: string,
@@ -1160,8 +1139,6 @@ export default function UniversalAssetRegistry({
       </div>
     );
   };
-
-  // ── Main render ─────────────────────────────────────────────────────────────
 
   return (
     <div
@@ -1829,8 +1806,6 @@ export default function UniversalAssetRegistry({
     </div>
   );
 }
-
-// ── Shared inline styles (detail panel fields) ────────────────────────────────
 
 const detailFieldStyle: React.CSSProperties = {
   padding: "8px 10px",

@@ -8,8 +8,6 @@
  * (cross-origin isolated pages not required in single-threaded mode).
  */
 
-// ─── VM Event Union ───────────────────────────────────────────────────────────
-
 export type VMEvent =
   | { type: 'workload-submitted'; workloadId: string; region: 'top' | 'bottom'; timestamp: number }
   | { type: 'compute-complete';   workloadId: string; region: 'top' | 'bottom'; durationMs: number; timestamp: number }
@@ -17,7 +15,6 @@ export type VMEvent =
   | { type: 'stats-update';       region: 'top' | 'bottom'; stats: Record<string, unknown>; timestamp: number }
   | { type: 'custom';             name: string; payload: unknown; timestamp: number };
 
-// ─── Ring-buffer layout ───────────────────────────────────────────────────────
 //
 // [0..3]    producer index (Int32, atomic)
 // [4..7]    consumer index (Int32, atomic)
@@ -28,8 +25,6 @@ export type VMEvent =
 const HEADER_BYTES   = 8;
 const SLOT_BYTES     = 512;  // max JSON message size
 const DEFAULT_SLOTS  = 64;
-
-// ─── InterVMChannel ───────────────────────────────────────────────────────────
 
 export class InterVMChannel {
   private readonly buf:          SharedArrayBuffer | ArrayBuffer;
@@ -59,8 +54,6 @@ export class InterVMChannel {
     this.producerIdx = new Int32Array(this.buf, 0, 1);
     this.consumerIdx = new Int32Array(this.buf, 4, 1);
   }
-
-  // ── Write ──────────────────────────────────────────────────────────────────
 
   /**
    * Enqueue a VMEvent.
@@ -95,8 +88,6 @@ export class InterVMChannel {
     return true;
   }
 
-  // ── Read ───────────────────────────────────────────────────────────────────
-
   /**
    * Dequeue one VMEvent. Returns null if the queue is empty.
    */
@@ -124,8 +115,6 @@ export class InterVMChannel {
     }
   }
 
-  // ── Subscribe ──────────────────────────────────────────────────────────────
-
   /**
    * Register a callback to receive VMEvents as they arrive.
    * Returns an unsubscribe function.
@@ -139,14 +128,10 @@ export class InterVMChannel {
     };
   }
 
-  // ── Lifecycle ─────────────────────────────────────────────────────────────
-
   destroy(): void {
     this._stopPoll();
     this.subscribers.clear();
   }
-
-  // ── Internal ──────────────────────────────────────────────────────────────
 
   private _startPoll(): void {
     if (this._pollHandle) return;

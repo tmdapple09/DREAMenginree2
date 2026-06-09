@@ -1,14 +1,12 @@
+import type { AtomicComponent } from '../componentInventory';
+import { createEventBus, type EventBus } from '../eventBus';
+
 /**
  * Engin Forge — NGN Engin Assembly System
  *
  * Defines AtomicPiece, EngineAssembly, Wire, and all forge operations.
  * Integrates with componentInventory for the piece palette.
  */
-
-import type { AtomicComponent } from '../componentInventory';
-import { createEventBus, type EventBus } from '../eventBus';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface Port {
   id: string;
@@ -65,8 +63,6 @@ export interface ValidationResult {
   errors: string[];
 }
 
-// ─── Validation ───────────────────────────────────────────────────────────────
-
 /**
  * validateAssembly(pieces, wires)
  *
@@ -107,8 +103,6 @@ export function validateAssembly(
   return { valid: errors.length === 0, errors };
 }
 
-// ─── createAssembly ───────────────────────────────────────────────────────────
-
 /**
  * createAssembly(pieces, wires)
  *
@@ -129,8 +123,6 @@ export function createAssembly(
 
   return { id, pieces: [...pieces], wires: [...wires], bus };
 }
-
-// ─── runAssembly ─────────────────────────────────────────────────────────────
 
 /**
  * runAssembly(assembly, sandbox)
@@ -193,8 +185,6 @@ export function runAssembly(
   return (result ?? {}) as Record<string, unknown>;
 }
 
-// ─── serializeAssembly ────────────────────────────────────────────────────────
-
 /**
  * serializeAssembly(assembly)
  *
@@ -220,8 +210,6 @@ export function deserializeAssembly(json: string): EngineAssembly {
   const bus    = createEventBus<AssemblyEvents>();
   return { ...parsed, bus };
 }
-
-// ─── fromComponentInventory ───────────────────────────────────────────────────
 
 /**
  * atomicPieceFromComponent(component, role?)

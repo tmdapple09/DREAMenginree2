@@ -1,10 +1,6 @@
-// SURFACE: dream.shell.RootLayout  (framework-mandated basename: layout.tsx)
 import '@/styles/globals.css';
-// Stream 5.1 — View Transitions API for surface switching
 import '@/styles/view-transitions.css';
-// Stream 5.2 — CSS Container Queries for Dream Windows
 import '@/styles/dream-shell.css';
-// HomeDream surface styles: gold-button, dream-widget-card, dream-widget-empty
 import CommandPalette from '@/components/dream.CommandPalette';
 import GlobalOverlays from '@/components/dream.GlobalOverlays';
 import ThemeApplicator from '@/components/dream.ThemeApplicator';
@@ -19,6 +15,11 @@ import '@/styles/home-dream.css';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
+
+// SURFACE: dream.shell.RootLayout  (framework-mandated basename: layout.tsx)
+// Stream 5.1 — View Transitions API for surface switching
+// Stream 5.2 — CSS Container Queries for Dream Windows
+// HomeDream surface styles: gold-button, dream-widget-card, dream-widget-empty
 
 // DreamSystemProvider and DualRuntimeContainer remain mounted at root so every
 // surface has shared runtime context. DMBar mounts under app/dreamdmbar/layout.

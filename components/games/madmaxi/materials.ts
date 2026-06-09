@@ -1,3 +1,5 @@
+import type * as BJSNS from '@babylonjs/core';
+
 /**
  * MADMAXI · materials.ts
  *
@@ -10,8 +12,6 @@
  * on first request via `getSharedNoiseTexture` and re-used across all
  * materials. Disposing the scene disposes the textures automatically.
  */
-
-import type * as BJSNS from '@babylonjs/core';
 
 type BJS = typeof BJSNS;
 type Scene = BJSNS.Scene;

@@ -1,5 +1,9 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
+import type { BarIntentMode } from './DreamSystemContext';
+
 /**
  * useDreamBarContext — detects the active surface from the current pathname
  * and returns the appropriate dream-bar behaviour for that context.
@@ -30,12 +34,6 @@
  *  bar input, placeholder, and action button match the user's chosen mode.
  */
 
-import { usePathname } from 'next/navigation';
-import { useMemo } from 'react';
-import type { BarIntentMode } from './DreamSystemContext';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export type DreamBarSurface =
   | 'messages'
   | 'feed'
@@ -62,8 +60,6 @@ export interface DreamBarContext {
   iconHint: 'send' | 'pen-line' | 'code' | 'bot' | 'music' | 'sparkles' | 'search' | 'message-circle';
 }
 
-// ── Surface detection (pure function — testable without React) ────────────────
-
 export function detectSurface(pathname: string): DreamBarSurface {
   const p = pathname.toLowerCase();
 
@@ -77,8 +73,6 @@ export function detectSurface(pathname: string): DreamBarSurface {
 
   return 'general';
 }
-
-// ── Context map ───────────────────────────────────────────────────────────────
 
 const CONTEXT_MAP: Record<DreamBarSurface, Omit<DreamBarContext, 'surface'>> = {
   messages: {
@@ -131,8 +125,6 @@ const CONTEXT_MAP: Record<DreamBarSurface, Omit<DreamBarContext, 'surface'>> = {
   },
 };
 
-// ── Intent overrides (pure function — testable without React) ─────────────────
-
 /**
  * Resolves bar context overrides when a BarIntentMode is active.
  * Returns undefined for 'default' (no override — use surface context).
@@ -174,8 +166,6 @@ export function resolveIntentOverride(
       return undefined;
   }
 }
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useDreamBarContext(
   intentMode?: BarIntentMode,

@@ -81,9 +81,7 @@ export type Homography = [
   number, number, number,
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Public API
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Create a new empty CameraTrack for a shot.
@@ -235,9 +233,7 @@ export function trackSummary(track: CameraTrack): string {
   return `"${track.name}" — ${track.trackPoints.length} points, ${totalSamples} samples, ${solved} solved — ${status}`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal: closed-form 4-point DLT homography
-// ─────────────────────────────────────────────────────────────────────────────
 
 function dlt4PointSolve(
   src: [[number, number], [number, number], [number, number], [number, number]],

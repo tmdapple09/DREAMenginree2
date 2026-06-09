@@ -1,3 +1,8 @@
+import { normaliseTumblr } from '@/lib/connectors/normalise';
+import { parseRssFeed, tumblrRssUrl } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/tumblr.ts
  *
@@ -18,11 +23,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normaliseTumblr } from '@/lib/connectors/normalise';
-import { parseRssFeed, tumblrRssUrl } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface TumblrCredentials {
   /** Tumblr blog username (e.g. "myblog") or full URL (e.g. "https://myblog.tumblr.com") */
   username: string;

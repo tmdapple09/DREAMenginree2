@@ -1,3 +1,7 @@
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { useCallback, useEffect, useRef } from 'react';
+
 /**
  * useDaydreamState — persists Side A / Side B state for a Daydream to Supabase.
  *
@@ -11,10 +15,6 @@
  * Privacy: reads and writes only the current user's row (user_id = auth.uid()).
  * Nothing in daydream_states is shared publicly (LAW.md §2, AXIOM 5).
  */
-
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { useCallback, useEffect, useRef } from 'react';
 
 export type DaydreamSide = 'A' | 'B';
 

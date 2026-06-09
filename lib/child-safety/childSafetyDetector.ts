@@ -195,7 +195,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
   const mediaHashes = input.mediaHashes ?? [];
   const knownBadHashes = input.knownBadHashes ?? new Set<string>();
 
-  // ── Layer 0: Minor-to-adult image block (rule C32_MINOR_IMAGE) ──────────
   // Any image sent from a minor (age 13–17) to an adult (age 18+) is ALWAYS
   // blocked. No exceptions. This check runs before all other layers.
   if (
@@ -217,7 +216,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
     };
   }
 
-  // ── Layer 1: Hash-based CSAM check (highest priority) ───────────────────
   const hashMatch = mediaHashes.length > 0 && checkHashes(mediaHashes, knownBadHashes);
   if (hashMatch) {
     return {
@@ -231,7 +229,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
     };
   }
 
-  // ── Layer 2: CSAM text signals ──────────────────────────────────────────
   const csamResult = scanForPatterns(text, CSAM_TEXT_PATTERNS);
   if (csamResult.matchedLabels.length > 0) {
     const severity = normaliseWeight(csamResult.totalWeight, 2.0);
@@ -247,7 +244,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
     };
   }
 
-  // ── Layer 3: Grooming / predator behaviour signals ──────────────────────
   const groomResult = scanForPatterns(text, GROOMING_PATTERNS);
   if (groomResult.matchedLabels.length > 0) {
     const severity = normaliseWeight(groomResult.totalWeight, 3.0);
@@ -263,7 +259,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
     };
   }
 
-  // ── Layer 4: LLM image classification (pre-computed by caller) ───────────
   const imgResult = input.imageClassification;
   if (imgResult && !imgResult.skipped && imgResult.flagged) {
     return {
@@ -277,7 +272,6 @@ export function scanContent(input: ScanInput): ChildSafetyResult {
     };
   }
 
-  // ── Clean ────────────────────────────────────────────────────────────────
   return {
     flagged: false,
     rule_code: null,

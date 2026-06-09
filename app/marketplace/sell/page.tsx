@@ -1,3 +1,11 @@
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 // SURFACE: dreamsurface.MarketplaceSell  (framework-mandated basename: page.tsx)
 // app/marketplace/sell/page.tsx
 // DreamMarketplace — List an Item form.
@@ -10,15 +18,6 @@
 
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
-
-import { toErrorMessage } from '@/lib/utils';
 const CATEGORIES = [
   { value: 'widget',    label: '🧩 Dream',    desc: 'Dream module for HomeDream' },
   { value: 'theme',     label: '🎨 Theme',     desc: 'Color scheme / glass preset' },
@@ -30,7 +29,6 @@ export default function MarketplaceSellPage( ){
   const supabase = createClient();
   const router   = useRouter();
 
-  // ── Auth gate ─────────────────────────────────────────────────
   useEffect(() => {
     const checkAuth = async () => {
       const user = await safeGetUser(supabase);
@@ -38,10 +36,9 @@ export default function MarketplaceSellPage( ){
     };
     void checkAuth();
   // supabase and router are stable; eslint wants them but they never change
-   
+
   }, []);
 
-  // ── Form state ────────────────────────────────────────────────
   const [title,       setTitle]       = useState('');
   const [description, setDescription] = useState('');
   const [category,    setCategory]    = useState('widget');
@@ -52,7 +49,6 @@ export default function MarketplaceSellPage( ){
   const [error,     setError]     = useState('');
   const [success,   setSuccess]   = useState(false);
 
-  // ── Submit ────────────────────────────────────────────────────
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');

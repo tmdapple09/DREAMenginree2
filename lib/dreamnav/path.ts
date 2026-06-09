@@ -57,7 +57,7 @@ export async function dispatchTauPath(
   const stepMs = opts?.stepMs ?? 140;
   for (const a of actions) {
     dispatch(a);
-     
+
     await new Promise<void>((r) => setTimeout(r, stepMs));
   }
 }

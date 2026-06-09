@@ -1,3 +1,11 @@
+import type {
+    CreativeCandidate,
+    OptimizeroResult,
+    OptimizeroWeights,
+    ScoredCandidate,
+} from './creative-optimizero';
+import { CreativeOptimizero, DEFAULT_WEIGHTS } from './creative-optimizero';
+
 /**
  * DREAMengin Babylon.js + Creative Optimizero Integration
  *
@@ -7,14 +15,6 @@
  */
 
 'use client';
-
-import type {
-    CreativeCandidate,
-    OptimizeroResult,
-    OptimizeroWeights,
-    ScoredCandidate,
-} from './creative-optimizero';
-import { CreativeOptimizero, DEFAULT_WEIGHTS } from './creative-optimizero';
 
 /**
  * Represents a 3D UI element candidate in Babylon.js space

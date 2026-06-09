@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * useNotifications — fetch unread notification count for the current user.
  *
@@ -11,8 +13,6 @@
  */
 
 'use client';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const POLL_INTERVAL_MS = 60_000;
 // ── Improvement 85: adaptive polling ────────────────────────────────────────

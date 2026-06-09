@@ -1,3 +1,6 @@
+import type { Camera, Scene } from '@babylonjs/core';
+import type { PerformanceBudget } from './core';
+
 /**
  * lib/gameengin/post-fx.ts
  *
@@ -25,9 +28,6 @@
  *   fx.applyBudget(budget);
  *   fx.dispose();
  */
-
-import type { Camera, Scene } from '@babylonjs/core';
-import type { PerformanceBudget } from './core';
 
 export class PostFXManager {
   private scene: Scene;

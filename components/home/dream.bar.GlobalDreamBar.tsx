@@ -1,5 +1,13 @@
 'use client';
 
+import DrEamsPanel from '@/components/dreamengin/dream.panel.DrEamsPanel';
+import DualBottomMenu, { type SystemMenuAction } from '@/components/menus/dream.menu.DualBottomMenu';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { runHomeAction } from '@/lib/home-buttons/contextual-home';
+import { isPublicSurfacePath } from '@/lib/routing/surfaces';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback } from 'react';
+
 /**
  * GlobalDreamBar — global overlay menus only.
  *
@@ -12,14 +20,6 @@
  * Hidden on public/pre-login routes so unauthenticated users never see
  * system menus.
  */
-
-import DrEamsPanel from '@/components/dreamengin/dream.panel.DrEamsPanel';
-import DualBottomMenu, { type SystemMenuAction } from '@/components/menus/dream.menu.DualBottomMenu';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { runHomeAction } from '@/lib/home-buttons/contextual-home';
-import { isPublicSurfacePath } from '@/lib/routing/surfaces';
-import { usePathname, useRouter } from 'next/navigation';
-import { useCallback } from 'react';
 
 export default function GlobalDreamBar( ){
   const pathname = usePathname();
@@ -36,8 +36,6 @@ export default function GlobalDreamBar( ){
     splitRatio,
     setFocus,
   } = useDreamSystem();
-
-  // ── Go home (from "go-home" menu action) ─────────────────────────────────
 
   const handleHome = useCallback(() => {
     closeBothMenus();
@@ -56,7 +54,6 @@ export default function GlobalDreamBar( ){
     }
   }, [closeBothMenus, closeDrEams, setFocus, runtimeCallbacks, router, splitRatio]);
 
-  // ── System menu actions — prefer SPA panel when HomeSystem is active,
   //    fall back to route navigation otherwise so links always work.   ──────
 
   const handleSystemAction = useCallback((action: SystemMenuAction) => {
@@ -81,7 +78,6 @@ export default function GlobalDreamBar( ){
     if (action === 'appearance')    { hasSpaCallbacks ? openInSurface('settings/appearance') : router.push('/settings/appearance');   return; }
   }, [openDrEams, handleHome, openInSurface, runtimeCallbacks, router]);
 
-  // ── Hide on public / pre-login routes ────────────────────────────────────
   if (isPublicSurfacePath(pathname)) return null;
 
   return (

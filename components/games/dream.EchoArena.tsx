@@ -1,13 +1,5 @@
 'use client';
-/**
- * EchoArena — WebGPU-powered top-down arena shooter
- * Category: Shooter / Arcade
- *
- * High-performance WebGPU rendering with Babylon.js
- * DualSense controller support (Bluetooth mobile + USB desktop)
- * Gyroscope aiming for natural mobile gameplay
- * Haptic rumble feedback on shooting
- */
+
 import { DualSenseManager } from '@/components/gameengin/input/DualSenseManager';
 import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
 import { useRegisterMobileGameControls } from '@/lib/games/mobileControls';
@@ -17,6 +9,16 @@ import {
 } from '@/lib/games/performance-baseline';
 import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+/**
+ * EchoArena — WebGPU-powered top-down arena shooter
+ * Category: Shooter / Arcade
+ *
+ * High-performance WebGPU rendering with Babylon.js
+ * DualSense controller support (Bluetooth mobile + USB desktop)
+ * Gyroscope aiming for natural mobile gameplay
+ * Haptic rumble feedback on shooting
+ */
 
 type Phase = 'menu' | 'playing' | 'gameover';
 
@@ -146,7 +148,6 @@ export default function EchoArena( ){
         const camera = new BABYLON.ArcRotateCamera('cam', 0, 0.5, 40, BABYLON.Vector3.Zero(), scene);
         camera.attachControl(canvasRef.current, true);
 
-        // ── Lighting — realistic multi-source setup ─────────────────────────
         const hemiLight = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
         hemiLight.intensity = 0.35;
         hemiLight.diffuse = new BABYLON.Color3(0.4, 0.5, 0.9);
@@ -178,7 +179,6 @@ export default function EchoArena( ){
         try { scene.createDefaultEnvironment({ createGround: false, createSkybox: false }); } catch { /* graceful */ }
         scene.environmentIntensity = 0.6;
 
-        // ── Arena floor — PBR metallic reflective ───────────────────────────
         floor = BABYLON.MeshBuilder.CreateGround('arena', { width: 50, height: 50 }, scene);
         const floorMat = new BABYLON.PBRMaterial('floor', scene);
         floorMat.albedoColor = new BABYLON.Color3(0.06, 0.06, 0.28);
@@ -202,7 +202,6 @@ export default function EchoArena( ){
         player.material = playerMat;
         shadowGen.addShadowCaster(player, true);
 
-        // ── Post-processing pipeline ────────────────────────────────────────
         try {
           const pipeline = new BABYLON.DefaultRenderingPipeline('echo-pipeline', true, scene, [camera]);
           pipeline.samples = 4;
@@ -226,7 +225,6 @@ export default function EchoArena( ){
           glow.intensity = 0.65;
         } catch { /* post-fx optional */ }
 
-        // ── SSAO for depth ──────────────────────────────────────────────────
         try {
           const ssao = new BABYLON.SSAO2RenderingPipeline('echo-ssao', scene, { ssaoRatio: 0.5, blurRatio: 1.0 });
           ssao.radius = 1.5;

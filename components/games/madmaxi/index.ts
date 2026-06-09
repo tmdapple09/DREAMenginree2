@@ -1,7 +1,6 @@
 export {
     default
 } from './dream.MadmaxiGame';
-
 export {
     MADMAXI_ENEMY_KINDS,
     MADMAXI_POWERUP_KINDS,
@@ -15,7 +14,6 @@ export {
     getZoneIdx,
     isBossLevel
 } from './config';
-
 export {
     getMadmaxiLevelDefinition,
     isMadmaxiAuthoredLevel

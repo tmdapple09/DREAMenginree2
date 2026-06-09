@@ -1,7 +1,7 @@
+import { AdType, SKIP_CREDIT_REWARDS } from './types';
+
 // lib/activity/skipCredits.ts
 // Pure skip-credit helpers for the Activity-First ad system.
-
-import { AdType, SKIP_CREDIT_REWARDS } from './types';
 
 export const SKIP_CREDIT_SPEND_PER_AD = 1;
 export const MIN_WATCHED_PERCENT_FOR_CREDIT = 95;

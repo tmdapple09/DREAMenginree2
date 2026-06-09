@@ -1,3 +1,12 @@
+import type { ReconcileResult } from '@/lib/connectors/reconcile';
+import { reconcileConnector } from '@/lib/connectors/reconcile';
+import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
+import { isCronAuthorised } from '@/lib/connectors/webhookVerification';
+import { createServiceClient } from '@/lib/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/connectors/cron/route.ts
  *
@@ -19,15 +28,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/connectors) handles provider calls.
  */
 
-import type { ReconcileResult } from '@/lib/connectors/reconcile';
-import { reconcileConnector } from '@/lib/connectors/reconcile';
-import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
-import { isCronAuthorised } from '@/lib/connectors/webhookVerification';
-import { createServiceClient } from '@/lib/supabase/server';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 const DEFAULT_BATCH_SIZE = 50;
 const MAX_BATCH_SIZE = 100;
 
@@ -64,7 +64,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 });
   }
 
-  // ── Supabase service-role client (bypasses RLS) ──────────────────────────
   let db;
   try {
     db = await createServiceClient();
@@ -73,10 +72,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
     return NextResponse.json({ error: `Service client unavailable: ${msg}` }, { status: 503 });
   }
 
-   
   const anyDb = db as SupabaseClient;
 
-  // ── Fetch all connected accounts for supported providers ─────────────────
   const batchSize = getCronBatchSize();
   const { data: accounts, error: fetchError } = await anyDb
     .from('connector_accounts')
@@ -104,7 +101,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
     });
   }
 
-  // ── Reconcile each account ───────────────────────────────────────────────
   // Process sequentially to avoid stampeding provider APIs.
   const results: ReconcileResult[] = [];
   for (const account of accounts) {

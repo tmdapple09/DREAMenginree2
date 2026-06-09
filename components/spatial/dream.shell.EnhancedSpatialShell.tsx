@@ -33,13 +33,13 @@ export default function EnhancedSpatialShell({
   const engineRef = useRef<SpatialNavigationEngine | null>(null);
   const [navState, setNavState] = useState({ layer: 0, face: 0, slot: -1, depth: 0 });
   const [activeWidgets, setActiveWidgets] = useState<WidgetInstanceRecord[]>([]);
-  
+
   // Memoize widgets to prevent reinitialization
   const widgets = useMemo(() => {
     if (initialWidgets.length > 0) {
       return initialWidgets;
     }
-    
+
     // Create default widgets
     return [
       {
@@ -68,19 +68,19 @@ export default function EnhancedSpatialShell({
       },
     ];
   }, [userId, handle, displayName, avatarUrl, bio, initialWidgets]);
-  
+
   // Initialize engine
   useEffect(() => {
     if (!containerRef.current) return;
-    
+
     const engine = new SpatialNavigationEngine({
       element: document,
       enablePersistence: true,
     });
-    
+
     // Initialize with widgets
     engine.getWidgetMemory().initialize(widgets);
-    
+
     // Listen to navigation changes
     const handleNavChange = (data: unknown) => {
       const snapshot = (data as { state: Int32Array }).state;
@@ -90,21 +90,21 @@ export default function EnhancedSpatialShell({
         slot: snapshot[2],
         depth: snapshot[3],
       });
-      
+
       // Update active widgets based on layer
       if (snapshot[0] === LAYER_HOME) {
         engine.getWidgetMemory().switchToHome();
       } else if (snapshot[0] === LAYER_PROFILE) {
         engine.getWidgetMemory().switchToProfile();
       }
-      
+
       setActiveWidgets(engine.getWidgetMemory().getActiveWidgetsSorted());
     };
-    
+
     engine.on('navchange', handleNavChange);
     engine.restore();
     engine.start();
-    
+
     engineRef.current = engine;
     setActiveWidgets(engine.getWidgetMemory().getActiveWidgetsSorted());
 

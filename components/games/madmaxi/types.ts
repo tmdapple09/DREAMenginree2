@@ -99,3 +99,4 @@ export interface LevelDef {
   vfxTheme?: string;
   isAuthored?: boolean;
 }
+

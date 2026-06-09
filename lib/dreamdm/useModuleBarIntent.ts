@@ -1,5 +1,9 @@
 'use client';
 
+import type { ModuleBarAction } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useCallback } from 'react';
+
 /**
  * lib/dreamdm/useModuleBarIntent.ts — Pass 3
  *
@@ -31,12 +35,6 @@
  * Architecture: docs/ARCHITECTURE.md §3 (Pass 3 — inline bubbles → DreamDM Bar).
  * Guardrail: no new floating component. The bus IS the context surface.
  */
-
-import type { ModuleBarAction } from '@/lib/dreamdm/DreamSystemContext';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { useCallback } from 'react';
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export interface UseModuleBarIntentResult {
   /**

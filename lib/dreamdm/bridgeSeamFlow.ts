@@ -22,8 +22,6 @@
  *   - Carries the emission channel's accent color
  */
 
-// ── Channel color palette ──────────────────────────────────────────────────────
-
 /**
  * Canonical channel → CSS hex color map.
  * These match the per-Engin accent colors used across DREAMengin.
@@ -46,8 +44,6 @@ export const SEAM_DEFAULT_COLOR = '#c8981a';
 export function channelColor(channel: string): string {
   return SEAM_CHANNEL_COLORS[channel] ?? SEAM_DEFAULT_COLOR;
 }
-
-// ── Particle type ─────────────────────────────────────────────────────────────
 
 export interface SeamParticle {
   /** Unique sequential ID. */
@@ -93,8 +89,6 @@ export interface SeamParticle {
   /** Whether this is an ambient idle particle (no real emission behind it). */
   isIdle: boolean;
 }
-
-// ── Particle factory ──────────────────────────────────────────────────────────
 
 let _nextId = 0;
 
@@ -157,8 +151,6 @@ export function createIdleParticle(startX: number): SeamParticle {
     isIdle: true,
   };
 }
-
-// ── Physics tick ──────────────────────────────────────────────────────────────
 
 /**
  * Advance all particles by `dtMs` milliseconds.

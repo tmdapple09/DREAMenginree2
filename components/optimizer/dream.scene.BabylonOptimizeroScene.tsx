@@ -1,14 +1,5 @@
 "use client";
 
-/**
- * DREAMengin Babylon Creative Optimizero Demo
- *
- * Demonstrates the Creative Optimizero algorithm applied to Babylon.js UI rendering.
- * Shows how different UI elements are scored, ranked, and selected based on the algorithm.
- */
-
-'use client';
-
 import { createBabylonEngine } from '@/lib/babylon/createEngine';
 import {
     DreamEngineGodTierSystem,
@@ -26,6 +17,15 @@ import {
 } from '@/lib/optimizer/babylon-optimizero';
 import { CHAOS_WEIGHTS, DEFAULT_WEIGHTS, STABLE_WEIGHTS, type OptimizeroResult, type OptimizeroWeights } from '@/lib/optimizer/creative-optimizero';
 import { useEffect, useRef, useState } from 'react';
+
+/**
+ * DREAMengin Babylon Creative Optimizero Demo
+ *
+ * Demonstrates the Creative Optimizero algorithm applied to Babylon.js UI rendering.
+ * Shows how different UI elements are scored, ranked, and selected based on the algorithm.
+ */
+
+'use client';
 
 type WeightPreset = 'default' | 'chaos' | 'stable' | 'custom';
 

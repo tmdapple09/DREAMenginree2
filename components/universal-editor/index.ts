@@ -7,12 +7,10 @@
 export {
     useTapHoldMove, type Position, type TapHoldMoveBindings, type TapHoldMoveOptions
 } from './useTapHoldMove';
-
 export {
     UniversalEditorWrapper,
     type UniversalEditorWrapperProps
 } from './dream.UniversalEditorWrapper';
-
 export {
     UniversalEditor,
     type UniversalEditorProps

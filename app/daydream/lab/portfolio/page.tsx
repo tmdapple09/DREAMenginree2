@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamLabPortfolio  (framework-mandated basename: page.tsx)
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import PortfolioEngin from '@/engins/portfolio/dream.PortfolioEngin';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -8,6 +7,8 @@ import { ArrowLeft, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamLabPortfolio  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: 'Optimizero – DREAMengin',
@@ -23,7 +24,6 @@ const WIDGETS: DaydreamWidget[] = [
   { id: 'share',     emoji: '🔗',  label: 'Share Results',     desc: 'Post an optimization insight',         color: '#ec4899', href: '/daydream/create'                 },
 ];
 
-// ── accent colour for this Daydream ────────────────────────────
 const ACCENT = '#2a8ab8';
 
 export default async function OptimizeroPage( ){

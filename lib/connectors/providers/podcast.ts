@@ -1,3 +1,8 @@
+import { normalisePodcast } from '@/lib/connectors/normalise';
+import { parseRssFeed } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/podcast.ts
  *
@@ -19,11 +24,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normalisePodcast } from '@/lib/connectors/normalise';
-import { parseRssFeed } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface PodcastCredentials {
   /** Full RSS / Atom feed URL — must be publicly accessible */
   feed_url: string;
@@ -158,4 +158,3 @@ export function podcastCredentialFields( ){
     },
   ];
 }
-

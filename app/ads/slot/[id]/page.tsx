@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.AdsSlotId  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { AdSlot } from '@/types/ads';
@@ -7,6 +6,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.AdsSlotId  (framework-mandated basename: page.tsx)
 
 export default async function AdSlotPage({ params }: { params: Promise<{ id: string }> }) {
   await connection();

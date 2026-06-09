@@ -1,10 +1,5 @@
 "use client";
 
-// components/dreamengin/dreamsurface.dreamengin.tsx
-// Top-level Dreamengin orchestration: kernel scene, home controls, and overlay menus.
-
-'use client';
-
 import { DreamNavProvider } from '@/components/dreamnav/dreamsurface.dreamnav';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,6 +9,11 @@ import HomeControls from './dream.HomeControls';
 import NexusMenu from './dream.menu.NexusMenu';
 import OutdreamMenu from './dream.menu.OutdreamMenu';
 import DrEamsPanel from './dream.panel.DrEamsPanel';
+
+// components/dreamengin/dreamsurface.dreamengin.tsx
+// Top-level Dreamengin orchestration: kernel scene, home controls, and overlay menus.
+
+'use client';
 
 export default function DreamenginApp( ){
   const pathname = usePathname();

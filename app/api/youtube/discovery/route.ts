@@ -1,3 +1,8 @@
+import { getYouTubeApiKey, youtubeDiscovery } from '@/lib/connectors/providers/youtube';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/youtube/discovery/route.ts
  *
@@ -16,11 +21,6 @@
  * AXIOM 4 — Security by Default: API key stays server-side; never returned.
  */
 
-import { getYouTubeApiKey, youtubeDiscovery } from '@/lib/connectors/providers/youtube';
-import type { UnifiedFeedItem } from '@/types/connector';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeDiscoveryResponse {
   ok: boolean;
   items: UnifiedFeedItem[];

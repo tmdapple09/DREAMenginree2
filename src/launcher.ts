@@ -1,3 +1,8 @@
+import demoGameConfig from './configs/demoGameConfig';
+import type { GameConfig } from './core/GameEnginCore';
+import { GameEnginConfigError, GameEnginCore } from './core/GameEnginCore';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * src/launcher.ts
  *
@@ -22,11 +27,6 @@
  *   module is executed in a browser environment with a #gameCanvas element.
  */
 
-import demoGameConfig from './configs/demoGameConfig';
-import type { GameConfig } from './core/GameEnginCore';
-import { GameEnginConfigError, GameEnginCore } from './core/GameEnginCore';
-
-import { toErrorMessage } from '@/lib/utils';
 // ─── launch() ────────────────────────────────────────────────────────────────
 
 /**
@@ -71,8 +71,6 @@ export async function launch(
 
   return { core, stop };
 }
-
-// ─── autoLaunch() ────────────────────────────────────────────────────────────
 
 /**
  * autoLaunch()

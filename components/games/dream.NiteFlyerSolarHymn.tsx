@@ -1,4 +1,8 @@
 'use client';
+
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef } from 'react';
+
 /**
  * NITE FLYER: SOLAR HYMN — fusion of flappy + pong + dreamquest.
  *
@@ -6,9 +10,6 @@
  * in a celestial Pong duel — your wings retract into a paddle and you must
  * out-rally a moon-king. Three chapters → final dialogue with The Long Pause.
  */
-
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef } from 'react';
 
 const W = 720;
 const H = 400;
@@ -139,7 +140,6 @@ export default function NiteFlyerSolarHymn( ){
         if (bossScoreRef.current >= 5) setPhase('defeat');
       }
 
-      // ── Render ───────────────────────────────────────────────────────────
       // Twilight gradient
       const grad = ctx.createLinearGradient(0, 0, 0, H);
       grad.addColorStop(0, COL.skyTop); grad.addColorStop(0.55, COL.skyMid); grad.addColorStop(1, COL.skyBot);

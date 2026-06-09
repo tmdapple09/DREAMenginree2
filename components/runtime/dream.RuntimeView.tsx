@@ -1,18 +1,36 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
+import DreamsSpacePanel from '@/components/dreams/dreamsurface.dreamspace';
+import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
+import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
+import { getEnginByName } from '@/lib/forge/forgeRegistry';
+import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+import type { RuntimeRegionKey } from '@/types/dreamArtifact';
+import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+import dynamic from 'next/dynamic';
+import React, { useCallback, useEffect, useState } from 'react';
+import AlgorithmPanel from '@/components/panels/dream.panel.AlgorithmPanel';
+import AppearancePanel from '@/components/panels/dream.panel.AppearancePanel';
+import ConnectorsPanel from '@/components/panels/dream.panel.ConnectorsPanel';
+import ControlsPanel from '@/components/panels/dream.panel.ControlsPanel';
+import DataPanel from '@/components/panels/dream.panel.DataPanel';
+import FeedSettingsPanel from '@/components/panels/dream.panel.FeedSettingsPanel';
+import HelpPanel from '@/components/panels/dream.panel.HelpPanel';
+import MarketplacePanel from '@/components/panels/dream.panel.MarketplacePanel';
+import PrivacyPanel from '@/components/panels/dream.panel.PrivacyPanel';
+import ProfilePanel from '@/components/panels/dream.panel.ProfilePanel';
+import SafetyPanel from '@/components/panels/dream.panel.SafetyPanel';
+import SettingsPanel from '@/components/panels/dream.panel.SettingsPanel';
+import WidgetsPanel from '@/components/panels/dream.panel.WidgetsPanel';
+import { getDreamComponent } from '@/lib/dreams/DreamRegistry';
+import type { SystemPanelId } from '@/lib/panels/panelTypes';
 
 // Framework directives stay physically first when required.
 
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
 // Runtime file: components/runtime/dream.RuntimeView.tsx.
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -26,8 +44,6 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
   ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
   ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
 };
-
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
 
 // Imports and external modules this runtime file depends on.
 
@@ -46,62 +62,7 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
  * feature component directly inside the region. No routing. No overlays.
  */
 
-import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
-
-import DreamsSpacePanel from '@/components/dreams/dreamsurface.dreamspace';
-
-import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
-
-import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
-
-import { getEnginByName } from '@/lib/forge/forgeRegistry';
-
-import type { RuntimeRegion } from '@/lib/identity/canonical-names';
-
-import type { RuntimeRegionKey } from '@/types/dreamArtifact';
-
-import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
-
-import dynamic from 'next/dynamic';
-
-import React, { useCallback, useEffect, useState } from 'react';
-
-// ── Panel components (loaded in-region, never as overlays) ───────────────────
-import AlgorithmPanel from '@/components/panels/dream.panel.AlgorithmPanel';
-
-import AppearancePanel from '@/components/panels/dream.panel.AppearancePanel';
-
-import ConnectorsPanel from '@/components/panels/dream.panel.ConnectorsPanel';
-
-import ControlsPanel from '@/components/panels/dream.panel.ControlsPanel';
-
-import DataPanel from '@/components/panels/dream.panel.DataPanel';
-
-import FeedSettingsPanel from '@/components/panels/dream.panel.FeedSettingsPanel';
-
-import HelpPanel from '@/components/panels/dream.panel.HelpPanel';
-
-import MarketplacePanel from '@/components/panels/dream.panel.MarketplacePanel';
-
-import PrivacyPanel from '@/components/panels/dream.panel.PrivacyPanel';
-
-import ProfilePanel from '@/components/panels/dream.panel.ProfilePanel';
-
-import SafetyPanel from '@/components/panels/dream.panel.SafetyPanel';
-
-import SettingsPanel from '@/components/panels/dream.panel.SettingsPanel';
-
-import WidgetsPanel from '@/components/panels/dream.panel.WidgetsPanel';
-
-import { getDreamComponent } from '@/lib/dreams/DreamRegistry';
-
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -122,7 +83,7 @@ interface RuntimeViewProps {
     display_name?: string | null;
     avatar_url?: string | null;
   } | null;
-   
+
   posts?: Post[];
   isAdmin?: boolean;
   onOpenDrEams: () => void;
@@ -143,8 +104,6 @@ interface RuntimeViewProps {
 
 /** Engin name → canonical daydream route */
 type EnginSurfaceProps = { onBack: () => void; instanceId?: string };
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -182,10 +141,9 @@ export default function RuntimeView({
   }, []);
 
   // Reset iframe whenever the world changes so stale pages don't linger.
-   
+
   useEffect(() => { setIframeUrl(null); setIframeTitle(''); }, [world]);
 
-  /* ── Shared outer wrapper style ─────────────────────────────────────────── */
   const outerStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
@@ -200,7 +158,6 @@ export default function RuntimeView({
     contain: 'layout paint size',
   };
 
-  /* ── Home runtime ────────────────────────────────────────────────────────── */
   if (world === 'HomeDream Surface') {
     return (
       <div style={outerStyle}>
@@ -226,7 +183,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── DreamSpace runtime ──────────────────────────────────────────────────── */
   if (world === 'DreamSpace') {
     return (
       <div
@@ -254,7 +210,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── View Profile Surface runtime ───────────────────────────────────────── */
   if (world === 'View Profile Surface') {
     if (profile?.id && profile?.handle) {
       return (
@@ -297,7 +252,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── Dream runtime — open the dream URL in-region ───────────────────────── */
   if (typeof world === 'object' && world.type === 'dream') {
     const DreamComponent = getDreamComponent(world.id);
     return (
@@ -321,7 +275,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── Engin runtime — mount the existing capability directly in-region ───── */
   if (typeof world === 'object' && world.type === 'engin') {
     const EnginSurface = ENGIN_SURFACES[world.name];
     if (EnginSurface) {
@@ -359,7 +312,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── Custom runtime — open the custom path in-region iframe ─────────────── */
   if (typeof world === 'object' && world.type === 'custom') {
     return (
       <div style={outerStyle}>
@@ -396,7 +348,6 @@ export default function RuntimeView({
     );
   }
 
-  /* ── Panel world — a system feature loaded in-region via world dispatch ─── */
   if (typeof world === 'object' && world.type === 'panel') {
     const PANEL_MAP: Record<SystemPanelId, React.ReactNode> = {
       'settings':             <SettingsPanel />,
@@ -438,14 +389,8 @@ export default function RuntimeView({
   return null;
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

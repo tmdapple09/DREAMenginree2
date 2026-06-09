@@ -18,3 +18,4 @@ export const GAMEENGIN_FRAME_BUDGETS: Record<GameEnginQualityTier, GameEnginFram
 export function resolveFrameBudget(tier: GameEnginQualityTier | undefined): GameEnginFrameBudget {
   return GAMEENGIN_FRAME_BUDGETS[tier ?? 'balanced'];
 }
+

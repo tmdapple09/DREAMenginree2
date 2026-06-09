@@ -1,11 +1,10 @@
+import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
+import { NextResponse } from 'next/server';
+
 // app/api/ai/boogieman/status/route.ts
 // TheBoogieMan.Ai — policy health endpoint (req 65).
 // Dr. Eams queries this to surface enforcement status to users (req 66, 67).
 // Public-read: returns ok/degraded/offline + current policy version.
-
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
-import { NextResponse } from 'next/server';
-
 
 export async function GET( ): Promise<NextResponse> {
   const simulationMode = process.env.BOOGIE_SIMULATION_MODE === 'true';

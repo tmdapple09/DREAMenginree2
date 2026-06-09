@@ -21,7 +21,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     pointerId: -1,
     element: null as HTMLElement | null
   });
-  
+
   /**
    * Check if pointer is over anchor drop zone
    */
@@ -33,7 +33,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
       y <= anchorRect.y1
     );
   }, [anchorRect]);
-  
+
   /**
    * Handle pointer down - start drag
    */
@@ -44,57 +44,57 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     if (!target.classList.contains('drag-handle')) {
       return;
     }
-    
+
     e.preventDefault();
-    
+
     const dragState = dragStateRef.current;
     dragState.startX = e.clientX;
     dragState.startY = e.clientY;
     dragState.pointerId = e.pointerId;
     // Store the draggable container (currentTarget) for transform updates
     dragState.element = e.currentTarget as HTMLElement;
-    
+
     setIsDragging(true);
-    
+
     if (dragState.element) {
       dragState.element.setPointerCapture(e.pointerId);
     }
   }, []);
-  
+
   /**
    * Handle pointer move - track drag
    */
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return;
-    
+
     const dragState = dragStateRef.current;
     if (dragState.pointerId !== e.pointerId) return;
-    
+
     const dx = e.clientX - dragState.startX;
     const dy = e.clientY - dragState.startY;
-    
+
     // Update element position
     if (dragState.element) {
       dragState.element.style.transform = `translate(${dx}px, ${dy}px)`;
     }
-    
+
     // Check if over anchor
     const overAnchor = checkOverAnchor(e.clientX, e.clientY);
     setIsOverAnchor(overAnchor);
   }, [isDragging, checkOverAnchor]);
-  
+
   /**
    * Handle pointer up - complete drag or close
    */
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return;
-    
+
     const dragState = dragStateRef.current;
     if (dragState.pointerId !== e.pointerId) return;
-    
+
     // Check if released over anchor
     const overAnchor = checkOverAnchor(e.clientX, e.clientY);
-    
+
     if (overAnchor) {
       // Close widget
       onClose();
@@ -104,36 +104,36 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
         dragState.element.style.transform = '';
       }
     }
-    
+
     // Reset state
     setIsDragging(false);
     setIsOverAnchor(false);
-    
+
     if (dragState.element) {
       dragState.element.releasePointerCapture(e.pointerId);
     }
   }, [isDragging, checkOverAnchor, onClose]);
-  
+
   /**
    * Handle pointer cancel
    */
   const handlePointerCancel = useCallback((e: React.PointerEvent) => {
     const dragState = dragStateRef.current;
     if (dragState.pointerId !== e.pointerId) return;
-    
+
     // Reset position
     if (dragState.element) {
       dragState.element.style.transform = '';
     }
-    
+
     setIsDragging(false);
     setIsOverAnchor(false);
-    
+
     if (dragState.element) {
       dragState.element.releasePointerCapture(e.pointerId);
     }
   }, []);
-  
+
   return (
     <div
       className={`
@@ -148,7 +148,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
       style={{ touchAction: 'none' }}
     >
       {children}
-      
+
       {/* Visual feedback when over anchor */}
       {isOverAnchor && (
         <div className="fixed inset-0 bg-purple-500 bg-opacity-20 pointer-events-none animate-pulse" />

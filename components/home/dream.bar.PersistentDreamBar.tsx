@@ -1,7 +1,19 @@
 'use client';
 
-type Post = { id: string; content?: string; created_at?: string; [key: string]: unknown };
+import NeuralSeamCanvas from '@/components/home/dream.NeuralSeamCanvas';
+import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
+import RuntimeView from '@/components/runtime/dream.RuntimeView';
+import DreamDMBar from '@/dreamdmbar/dreamsurface.dreamdmbar';
+import { useDreamLayout } from '@/hooks/useDreamLayout';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
+import { useOS } from '@/lib/dreamenginOS/OSContext';
+import { parseDreamDragData, surfaceForRuntime, transferDream, type DreamRuntime } from '@/lib/dreams/drag';
+import { isPublicSurfacePath } from '@/lib/routing/surfaces';
+import { usePathname } from 'next/navigation';
+import React, { useCallback, useEffect, useState } from 'react';
 
+type Post = { id: string; content?: string; created_at?: string; [key: string]: unknown };
 
 /**
  * PersistentDreamBar — Shell-First DreamDMBar wrapper and home container.
@@ -30,19 +42,6 @@ type Post = { id: string; content?: string; created_at?: string; [key: string]: 
  * Hidden on public / pre-login routes only.
  */
 
-import NeuralSeamCanvas from '@/components/home/dream.NeuralSeamCanvas';
-import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
-import RuntimeView from '@/components/runtime/dream.RuntimeView';
-import DreamDMBar from '@/dreamdmbar/dreamsurface.dreamdmbar';
-import { useDreamLayout } from '@/hooks/useDreamLayout';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
-import { useOS } from '@/lib/dreamenginOS/OSContext';
-import { parseDreamDragData, surfaceForRuntime, transferDream, type DreamRuntime } from '@/lib/dreams/drag';
-import { isPublicSurfacePath } from '@/lib/routing/surfaces';
-import { usePathname } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
-
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
 
 export default function PersistentDreamBar( ){
@@ -69,8 +68,6 @@ export default function PersistentDreamBar( ){
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
-
-  // ── All callbacks before any early return (Rules of Hooks) ───────────────
 
   const revealSplitRuntime = useCallback((nextRatio = DEFAULT_WORKFLOW_SPLIT) => {
     setIsBarMinimized(false);
@@ -201,7 +198,6 @@ export default function PersistentDreamBar( ){
     pathname.startsWith('/dreamdmbar/');
   const isHomeActive = runtimeCallbacks !== null || isHomeRoute;
 
-  // ── Layout ────────────────────────────────────────────────────────────────
   //
   // Bar minimize rule: collapsing the bar means DIVIDER_H → 0. The region
   // CSS heights still reference splitRatio so both runtimes stay at their
@@ -214,8 +210,6 @@ export default function PersistentDreamBar( ){
   const seamOffset      = viewportHeight > 0
     ? Math.round(((viewportHeight - dividerHeight) * runtimeSplitRatio) + dividerHeight / 2)
     : undefined;
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <>

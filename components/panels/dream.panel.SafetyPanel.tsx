@@ -1,11 +1,5 @@
 'use client';
 
-/**
- * SafetyPanel — Policy & Safety rendered in Surface Space.
- * Fetches real policy_events from Supabase client-side.
- * Back → openInSurface('settings'). No routing.
- */
-
 import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import { createClient } from '@/lib/supabase/client';
@@ -13,6 +7,12 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, ChevronRight, FileText, Loader2, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+/**
+ * SafetyPanel — Policy & Safety rendered in Surface Space.
+ * Fetches real policy_events from Supabase client-side.
+ * Back → openInSurface('settings'). No routing.
+ */
 
 interface PolicyEvent {
   event_id: string; timestamp: string; action: string;
@@ -30,7 +30,7 @@ export default function SafetyPanel( ){
         const sb = createClient();
         const user = await safeGetUser(sb);
         if (!user) { setLoading(false); return; }
-         
+
         const { data } = await (sb as SupabaseClient)
           .from('policy_events')
           .select('event_id, timestamp, action, rule_code, category, expiry, policy_version')

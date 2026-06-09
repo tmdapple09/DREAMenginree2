@@ -1,20 +1,5 @@
 'use client';
 
-/**
- * LabEngin — Side B control layer for the Lab Daydream.
- *
- * Responsibilities (README spec §9.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Surface active experiments from the `physics_experiments` table.
- *   - Provide a direct entry point to start a new experiment.
- *   - Show a Simulation Status placeholder ready for future runtime data.
- *   - Simulation Runner: run deterministic browser simulation kernels with numeric results.
- *   - Data Visualization Panel: chart type selector + ASCII preview + export.
- *   - Cross-Engin Sync: live status indicators for Code, Game, Music channels.
- *
- * Security: filters by creator_id = auth.uid() as defence-in-depth on top of
- * server-side RLS. Follows AXIOM 4 (security by default).
- */
-
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import { ForgeDreamCanvas } from '@/components/dream.ForgeDreamCanvas';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
@@ -30,9 +15,6 @@ import { useLabEnginBridge } from '@/lib/runtime/useEnginBridge';
 import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
 import { createClient } from '@/lib/supabase/client';
 import { useEffect, useRef, useState } from 'react';
-// Shared engin component — real quantum circuit simulator (QAOA / VQE,
-// complex-number gate math, state-vector evolution). Available to every
-// engin from this single canonical path.
 import QuantumCircuitCanvas, {
     type QuantumMeasurementResult,
 } from '@/engins/dream.QuantumCircuitCanvas';
@@ -52,8 +34,27 @@ import {
     RefreshCw,
 } from 'lucide-react';
 import Link from 'next/link';
-
 import { toErrorMessage } from '@/lib/utils';
+
+/**
+ * LabEngin — Side B control layer for the Lab Daydream.
+ *
+ * Responsibilities (README spec §9.2 / ARCHITECTURE.md §1 Daydream pairs):
+ *   - Surface active experiments from the `physics_experiments` table.
+ *   - Provide a direct entry point to start a new experiment.
+ *   - Show a Simulation Status placeholder ready for future runtime data.
+ *   - Simulation Runner: run deterministic browser simulation kernels with numeric results.
+ *   - Data Visualization Panel: chart type selector + ASCII preview + export.
+ *   - Cross-Engin Sync: live status indicators for Code, Game, Music channels.
+ *
+ * Security: filters by creator_id = auth.uid() as defence-in-depth on top of
+ * server-side RLS. Follows AXIOM 4 (security by default).
+ */
+
+// Shared engin component — real quantum circuit simulator (QAOA / VQE,
+// complex-number gate math, state-vector evolution). Available to every
+// engin from this single canonical path.
+
 interface Props {
   onBack: () => void;
   instanceId?: string;
@@ -65,7 +66,6 @@ interface Experiment {
   status: string;
 }
 
-// ── Simulation Runner types ────────────────────────────────────────────────────
 type SimState = 'idle' | 'running' | 'complete';
 type SimKind = 'particle' | 'fluid' | 'quantum' | 'neural';
 
@@ -186,7 +186,6 @@ function runBrowserSimulation(kind: SimKind, seed = Date.now()): SimResult {
   return { summary: `Neural mini-train · epochs=48 · loss=${roundMetric(loss, 4)} · accuracy=${roundMetric(accuracy * 100, 2)}%`, metrics: { epochs: 48, loss: roundMetric(loss, 5), accuracy: roundMetric(accuracy, 4), learningRate: 0.003 }, samples };
 }
 
-// ── Chart types ────────────────────────────────────────────────────────────────
 type ChartType = 'line' | 'bar' | 'scatter';
 
 const CHART_PREVIEWS: Record<ChartType, string> = {
@@ -230,7 +229,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
   const labBridge = useLabEnginBridge();
   const { record: forgeRecord } = useForgeActivity({ enginId: 'lab' });
 
-  // ── OS Shell: upgradeEngine wiring ──
   const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
   useEffect(() => {
     upgradeEngine({ id: 'lab', name: 'LabEngin' }, ['bridge', 'telemetry'])
@@ -238,29 +236,22 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
   }, []);
   const busRef = useRef(createEventBus());
 
-  // ── EnginRuntime kernel (lab rule-set) ──
   const { state: enginState, dispatch: enginDispatch, ready: enginReady } = useLabEnginRuntime();
 
-  // ── Workflow (lab:experiment — default workflow) ──
   const { loadWorkflow } = useEnginWorkflow();
   useEffect(() => { loadWorkflow('lab:experiment'); }, [loadWorkflow]);
 
-  // ── Engin Forge panel state ──
   const [showForge, setShowForge] = useState(false);
 
-  // ── Existing state ─────────────────────────────────────────────────────────
   const [experiments, setExperiments] = useState<Experiment[]>([]);
   const [loading, setLoading]         = useState(true);
 
-  // ── Simulation Runner state ────────────────────────────────────────────────
   const [simStates, setSimStates]   = useState<Record<string, SimState>>({});
   const [simResults, setSimResults] = useState<Record<string, SimResult>>({});
 
-  // ── Data Visualization state ───────────────────────────────────────────────
   const [chartType, setChartType]   = useState<ChartType>('line');
   const [exportFlash, setExportFlash] = useState(false);
 
-  // ── Load experiments ───────────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
     const supabase = createClient();
@@ -283,7 +274,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     return () => { cancelled = true; };
   }, []);
 
-  // ── Simulation runner ──────────────────────────────────────────────────────
   function runSim(id: string ){
     setSimStates((prev) => ({ ...prev, [id]: 'running' }));
     forgeRecord(`Ran simulation ${id}`);
@@ -298,7 +288,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     }, 1200);
   }
 
-  // ── Export handler ─────────────────────────────────────────────────────────
   function handleExportData( ){
     forgeRecord('Exported data');
     recordForgeTransfer('lab', 'code', 'dataset', 'Lab data export → CodeEngin');
@@ -320,11 +309,9 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
 
   const active = experiments.filter((e) => e.status === 'running' || e.status === 'draft');
 
-  // ── Collab Lab state ────────────────────────────────────────────────────────
   const [collabLabActive, setCollabLabActive] = useState(false);
   const [collabLabCode, setCollabLabCode] = useState('');
 
-  // ── Co-op channel ─────────────────────────────────────────────────────────
   const [instanceId] = useState(
     () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
   );
@@ -341,15 +328,12 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     },
   });
 
-  // ── AI Hypothesis state ──────────────────────────────────────────────────────
   const [hypothesisLoading, setHypothesisLoading] = useState(false);
   const [hypotheses, setHypotheses] = useState<string[]>([]);
 
-  // ── Molecule Viewer state ────────────────────────────────────────────────────
   const [selectedMolecule, setSelectedMolecule] = useState('H2O');
   const [moleculeDisplay, setMoleculeDisplay] = useState('O\n H   H');
 
-  // ── Dataset Browser state ────────────────────────────────────────────────────
   const [datasets] = useState<Array<{ name: string; rows: string; domain: string }>>([
     { name: 'NASA Climate Data',    rows: '2.4M', domain: 'Climate Science' },
     { name: 'CERN Particle Events', rows: '890K', domain: 'Particle Physics' },
@@ -358,7 +342,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
   ]);
   const [selectedDataset, setSelectedDataset] = useState<string | null>(null);
 
-  // ── Published Results state ──────────────────────────────────────────────────
   const [publishedResults, setPublishedResults] = useState<Array<{ id: string; title: string; date: string }>>([
     { id: 'res-1', title: 'Fluid Viscosity under Oscillatory Shear', date: '2025-01-08' },
     { id: 'res-2', title: 'Neural Synchronization Latency Study',    date: '2025-01-05' },
@@ -366,10 +349,8 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
   const [publishingResult, setPublishingResult] = useState(false);
   const [newResultTitle, setNewResultTitle] = useState('');
 
-  // ── Quantum measure state ────────────────────────────────────────────────────
   const [quantumMeasured, setQuantumMeasured] = useState(false);
 
-  // ── Feature Flags (real toggles) ─────────────────────────────────────────────
   const [featureFlags, setFeatureFlags] = useState<Record<string, boolean>>({
     'webgpu-shadows':   true,
     'tfjs-telemetry':   true,
@@ -381,7 +362,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     setFeatureFlags((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  // ── Resource Monitor (live animated) ─────────────────────────────────────────
   const [resources, setResources] = useState({ cpu: 38, gpu: 62, mem: 54, vram: 41 });
   useEffect(() => {
     const id = setInterval(() => {
@@ -395,7 +375,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     return () => clearInterval(id);
   }, []);
 
-  // ── Benchmark Suite (runnable) ────────────────────────────────────────────────
   const [benchRunning, setBenchRunning] = useState(false);
   const [benchResults, setBenchResults] = useState<Array<{ name: string; score: string; unit: string }>>([]);
   const [benchSaveMsg, setBenchSaveMsg] = useState('');
@@ -416,7 +395,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     }
   }
 
-  // ── Daydream Persistence (Phase 8 §F, pts 49-53) ─────────────────────────────
   // Saves and restores the LabEngin workspace state across sessions.
   type LabSavedState = {
     chartType?: ChartType;
@@ -447,17 +425,15 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     if (labRestoring) return;
     persistLabState({ chartType, selectedMolecule, hypotheses, publishedResults });
   // persistLabState is stable (useCallback); eslint-disable-next-line
-   
+
   }, [chartType, selectedMolecule, hypotheses, publishedResults, labRestoring]);
 
-  // ── Molecule data ────────────────────────────────────────────────────────────
   const MOLECULE_DATA: Record<string, string> = {
     'H2O':     'O\n H   H',
     'CO2':     'O=C=O',
     'C6H12O6': 'CH2OH-CHOH-CHOH-CHOH-CHOH-CHO\n(Glucose)',
   };
 
-  // ── Collab lab handler ───────────────────────────────────────────────────────
   function handleStartCollabLab( ){
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     setCollabLabCode(code);
@@ -467,7 +443,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     );
   }
 
-  // ── Hypothesis handler ───────────────────────────────────────────────────────
   function handleGenerateHypotheses( ){
     setHypothesisLoading(true);
     setHypotheses([]);
@@ -484,7 +459,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     }, 1200);
   }
 
-  // ── Molecule handler ─────────────────────────────────────────────────────────
   function handleSelectMolecule(mol: string ){
     setSelectedMolecule(mol);
     setMoleculeDisplay(MOLECULE_DATA[mol] ?? '');
@@ -496,7 +470,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     );
   }
 
-  // ── Quantum measure handler ─────────────────────────────────────────────────
   const [quantumRunning, setQuantumRunning] = useState(false);
   const [quantumResult, setQuantumResult]   = useState<QuantumMeasurementResult | null>(null);
   function handleQuantumMeasure(result?: QuantumMeasurementResult ){
@@ -517,7 +490,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     recordForgeTransfer('lab', 'code', 'quantum-result', 'Quantum circuit measurement → CodeEngin');
   }
 
-  // ── Dataset handler ──────────────────────────────────────────────────────────
   function handleImportDataset(name: string ){
     setSelectedDataset(name);
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
@@ -525,7 +497,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     );
   }
 
-  // ── Lab mode (tabs) ──────────────────────────────────────────────────────────
   type LabMode = 'overview' | 'split' | 'viz' | 'forge';
   const [labMode, setLabMode]         = useState<LabMode>('overview');
   const [splitCode, setSplitCode]     = useState(`# Lab Dream — Split IDE\n# Select a simulation, then Run ▶\n\nimport numpy as np\ndata = np.array([1, 4, 9, 16, 25, 36, 49])\nprint("Mean:", data.mean())\nprint("Std: ", data.std().round(2))\nprint("\\n✅ Experiment complete")`);
@@ -559,7 +530,6 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     }, 140 * (i + 1)));
   }
 
-  // ── Publish result handler ───────────────────────────────────────────────────
   function handlePublishResult(title: string ){
     if (!title.trim()) return;
     setPublishingResult(true);

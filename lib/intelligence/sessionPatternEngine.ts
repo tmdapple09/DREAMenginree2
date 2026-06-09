@@ -89,8 +89,6 @@ function labelFor(subsystemId: string): string {
   return SUBSYSTEM_LABELS[subsystemId] ?? `⬡ ${subsystemId}`;
 }
 
-// ─── Session Pattern Engine ───────────────────────────────────────────────────
-
 export class SessionPatternEngine {
   /** Bigram counts: transitions[from][to] = count */
   private readonly transitions = new Map<string, Map<string, number>>();
@@ -100,8 +98,6 @@ export class SessionPatternEngine {
   private readonly subsystemsSeen: string[] = [];
 
   private tfReady = false;
-
-  // ── Lifecycle ────────────────────────────────────────────────────────────
 
   async init(): Promise<void> {
     try {
@@ -122,8 +118,6 @@ export class SessionPatternEngine {
       // TF.js not available; use normalised counts directly.
     }
   }
-
-  // ── Ingestion ────────────────────────────────────────────────────────────
 
   /**
    * Ingest a subsystem activation event.
@@ -146,8 +140,6 @@ export class SessionPatternEngine {
       fromMap.set(subsystemId, (fromMap.get(subsystemId) ?? 0) + 1);
     }
   }
-
-  // ── Prediction ───────────────────────────────────────────────────────────
 
   /**
    * Predict the top-N most likely next subsystem activations given the current
@@ -250,8 +242,6 @@ export class SessionPatternEngine {
     this.subsystemsSeen.length = 0;
   }
 
-  // ── Persistence ───────────────────────────────────────────────────────────
-
   /**
    * Exports the learned bigram transition matrix as a plain JSON-serialisable
    * object. Use together with importMatrix() to persist the engine across
@@ -283,8 +273,6 @@ export class SessionPatternEngine {
     }
   }
 
-  // ── Cold-start helpers ────────────────────────────────────────────────────
-
   private coldStartDefaults(subsystemId: string): [string, number][] {
     return COLD_START_WEIGHTS[subsystemId] ?? DEFAULT_COLD_START;
   }
@@ -299,8 +287,6 @@ export class SessionPatternEngine {
       }));
   }
 
-  // ── TF.js normalisation ───────────────────────────────────────────────────
-
   /**
    * Uses TF.js softmax-like normalisation for sharper probability separation
    * compared to raw frequency division.
@@ -314,7 +300,7 @@ export class SessionPatternEngine {
       // Lazy require — tf is already loaded at this point.
       // Dynamic require is intentional: avoids top-level TF.js import
       // which would cause SSR issues in Next.js.
-       
+
       const tf = require('@tensorflow/tfjs') as typeof import('@tensorflow/tfjs');
 
       const rawProbs = entries.map(([, count]) => count / total);

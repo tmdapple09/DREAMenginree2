@@ -1,7 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-
 interface PlatformErrorRow {
   id: string;
   source: string;

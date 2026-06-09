@@ -1,3 +1,11 @@
+import { reconcileConnector } from '@/lib/connectors/reconcile';
+import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { ConnectorSyncResponse } from '@/types/connector';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/[provider]/sync/route.ts
  *
@@ -16,21 +24,13 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/connectors) handles provider calls.
  */
 
-import { reconcileConnector } from '@/lib/connectors/reconcile';
-import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { ConnectorSyncResponse } from '@/types/connector';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
 ): Promise<NextResponse<ConnectorSyncResponse>> {
   const { provider } = await params;
   const supabase = await createServerClient();
-   
+
   const db = supabase as SupabaseClient;
 
   const user = await safeGetUser(supabase);

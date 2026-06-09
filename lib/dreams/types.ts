@@ -1,3 +1,5 @@
+import { isJsonObject, isJsonSerializable, type JsonObject } from '@/lib/engin-runtime/EnginBaseState';
+
 /**
  * lib/dreams/types.ts
  *
@@ -23,10 +25,6 @@
  *   · deletable · attachable · fullscreenable · postable · remixable
  */
 
-
-import { isJsonObject, isJsonSerializable, type JsonObject } from '@/lib/engin-runtime/EnginBaseState';
-
-// ─── Dream surface ────────────────────────────────────────────────────────────
 /** Canonical surface names where a Dream can be placed or rendered. */
 export type DreamSurface =
   | 'homedream'
@@ -39,7 +37,6 @@ export type DreamSurface =
   | 'edit-profiledream'
   | 'view-profile';
 
-// ─── Dream kind ───────────────────────────────────────────────────────────────
 /**
  * What kind of object a Dream is.
  * Kind declares the Dream's nature — not how it renders on a surface.
@@ -64,7 +61,6 @@ export type DreamKind =
   | 'collection'   // group of Dreams
   | 'stream';      // live feed/content stream
 
-// ─── Dream render mode ────────────────────────────────────────────────────────
 /**
  * How a Dream renders on the active surface.
  * Render mode is a presentation decision, not identity.
@@ -82,7 +78,6 @@ export type DreamRenderMode =
   | 'embed'          // embedded inline object
   | 'overlay';       // floating overlay layer
 
-// ─── Dream visibility ─────────────────────────────────────────────────────────
 /** Who can see this Dream. Defaults to 'private'. */
 export type DreamVisibility = 'private' | 'followers' | 'public' | 'shared';
 
@@ -158,11 +153,9 @@ function oneOf<T extends string>(value: unknown, allowed: readonly T[]): value i
   return typeof value === 'string' && allowed.includes(value as T);
 }
 
-// ─── Dream layer (legacy — kept for DreamBarDataBridge compat) ────────────────
 /** @deprecated Use DreamKind + DreamRenderMode instead. */
 export type DreamLayer = 'shell' | 'connector' | 'feature' | 'output';
 
-// ─── Dream permissions ────────────────────────────────────────────────────────
 /**
  * The set of actions the current user is permitted to perform on a Dream.
  * Every permission is false by default — explicit grant required.
@@ -226,7 +219,6 @@ export const NO_PERMISSIONS: Readonly<DreamPermissions> = Object.freeze({
   remixable: false,
 });
 
-// ─── Dream placement ──────────────────────────────────────────────────────────
 /** Where a Dream is positioned on a surface that supports spatial placement. */
 export interface DreamPlacement {
   surface: DreamSurface;
@@ -237,7 +229,6 @@ export interface DreamPlacement {
   zIndex: number;
 }
 
-// ─── Dream capability map ─────────────────────────────────────────────────────
 /**
  * Runtime capability binding — which engin/provider powers this Dream and
  * what capabilities it exposes through the runtime.
@@ -251,7 +242,6 @@ export interface DreamCapabilityMap {
   capabilities: string[];
 }
 
-// ─── Dream projection ─────────────────────────────────────────────────────────
 /**
  * How a Dream projects its identity onto a surface.
  * Used by Profile, HomeDream, and DreamR surfaces to render a filtered view.
@@ -264,7 +254,6 @@ export interface DreamProjection {
   updatedAt?: string;
 }
 
-// ─── Dream surface adapter ────────────────────────────────────────────────────
 /**
  * How a Dream appears when rendered on a specific surface.
  * Different surfaces can render the same Dream differently without
@@ -279,7 +268,6 @@ export interface DreamSurfaceAdapter {
   config?: JsonObject;
 }
 
-// ─── Core Dream model ─────────────────────────────────────────────────────────
 /**
  * Dream — the universal user-facing object model.
  *
@@ -301,7 +289,6 @@ export interface Dream {
   /** What kind of object this Dream is (nature, not presentation). */
   kind: DreamKind;
 
-  // ── Ownership ─────────────────────────────────────────────────────────────
   /** User ID of the owner. Null for system/built-in Dreams. */
   ownerId: string | null;
   /**
@@ -314,15 +301,12 @@ export interface Dream {
    */
   origin: 'system' | 'user' | 'marketplace' | 'shared' | 'remix';
 
-  // ── Visibility ────────────────────────────────────────────────────────────
   /** Visibility — who can see this Dream. */
   visibility: DreamVisibility;
 
-  // ── Permissions ───────────────────────────────────────────────────────────
   /** What the current user is permitted to do with this Dream. */
   permissions: DreamPermissions;
 
-  // ── Render surface ────────────────────────────────────────────────────────
   /** The active surface where this Dream is currently placed. */
   activeSurface: DreamSurface | null;
   /** How this Dream renders on its active surface. */
@@ -330,25 +314,20 @@ export interface Dream {
   /** Surface-specific adapter overrides for different rendering contexts. */
   surfaceAdapters?: DreamSurfaceAdapter[];
 
-  // ── Placement ─────────────────────────────────────────────────────────────
   /** Spatial placement when the Dream is on a positional surface. */
   placement?: DreamPlacement;
 
-  // ── Capability binding ────────────────────────────────────────────────────
   /** Which engin/provider powers this Dream. */
   capability: DreamCapabilityMap;
 
-  // ── State ─────────────────────────────────────────────────────────────────
   /** Dream lifecycle state. */
   state: 'idle' | 'active' | 'minimized' | 'loading' | 'error';
   /** Domain-specific state bag (game state, note content, music session, etc.). */
   domainState: JsonObject;
 
-  // ── Rules ─────────────────────────────────────────────────────────────────
   /** Engin rule-set ID powering this Dream's behavior (if simulation/game). */
   ruleSetId?: string;
 
-  // ── Metadata ──────────────────────────────────────────────────────────────
   createdAt: string;
   updatedAt: string;
   /** Tags for search, discovery, and filtering. */
@@ -357,7 +336,6 @@ export interface Dream {
   previewUrl?: string;
 }
 
-// ─── Dream intent types ───────────────────────────────────────────────────────
 /**
  * DrEamsIntentType — the canonical typed intent payloads that flow through
  * the EnginDispatcher and dreamOSBus when acting on Dreams.
@@ -384,8 +362,6 @@ export type DrEamsIntentType =
 
 /** Narrow a DrEamsIntentType to a specific intent type string. */
 export type DrEamsIntent<T extends DrEamsIntentType['type']> = Extract<DrEamsIntentType, { type: T }>;
-
-// ─── Dream factory helpers ────────────────────────────────────────────────────
 
 /** Create a minimal Dream with required fields and safe defaults. */
 export function createDream(

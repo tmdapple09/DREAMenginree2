@@ -28,9 +28,7 @@ export type ToolResult = {
   };
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Action name literals (matches capabilities.yaml)
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type SetupAction = 'setup.check';
 
@@ -87,9 +85,7 @@ export type DrEamsActionName =
   | PolicyAction
   | CurationAction;
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Typed input shapes per action
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type SetupCheckInput = { scope?: 'app' | 'supabase' | 'vercel' };
 export type NavOpenPublicProfileInput = { handle: string };
@@ -103,11 +99,8 @@ export type PolicySuggestFixInput = { violation_type: string };
 export type CurationRefreshSliceInput = { slice_id: string };
 export type SystemBugReportInput = { description: string; reproduction_steps?: string };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Main interface
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface DrEamsTools {
   run(req: ToolRequest): Promise<ToolResult>;
 }
-

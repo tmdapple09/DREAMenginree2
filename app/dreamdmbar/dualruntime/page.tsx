@@ -1,10 +1,10 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import SharedDreamRuntime from '@/components/shared-dream/dream.SharedDreamRuntime';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: app/dreamdmbar/dualruntime/page.tsx.
 
@@ -30,35 +30,17 @@
  *            refresh re-joins the same session instead of creating another).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const SESSION_STORAGE_KEY = 'dreamengin:dualruntime:session-id';
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import SharedDreamRuntime from '@/components/shared-dream/dream.SharedDreamRuntime';
-
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-
-import { useEffect, useState } from 'react';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -112,14 +94,8 @@ export default function DreamDMBarDualRuntimePage( ){
   );
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

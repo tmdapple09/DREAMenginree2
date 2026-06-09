@@ -1,3 +1,7 @@
+import type { PatchRisk } from '@/lib/agents/idari';
+import type { TelemetrySnapshot } from './collector';
+import type { AnomalySignal } from './correlator';
+
 // lib/observability/rootCauseAnalyzer.ts
 //
 // Pattern-matched root cause inference for the IDARi observability loop.
@@ -6,12 +10,6 @@
 // messages) against a priority-ordered list of known error patterns. The first
 // matching pattern wins and provides a ready-made recommended_action. When no
 // pattern matches, the top anomaly signal drives a generic fallback analysis.
-
-import type { PatchRisk } from '@/lib/agents/idari';
-import type { TelemetrySnapshot } from './collector';
-import type { AnomalySignal } from './correlator';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type RootCauseConfidence = 'high' | 'medium' | 'low';
 
@@ -29,8 +27,6 @@ export interface RootCauseAnalysis {
   /** Up to 5 evidence strings surfaced from the telemetry. */
   evidence_summary: string[];
 }
-
-// ── Known error patterns ──────────────────────────────────────────────────────
 
 interface KnownPattern {
   pattern: RegExp;
@@ -152,8 +148,6 @@ const KNOWN_PATTERNS: KnownPattern[] = [
     risk: 'medium',
   },
 ];
-
-// ── Main ──────────────────────────────────────────────────────────────────────
 
 /**
  * Infer the most likely root cause from anomaly signals and raw log messages.

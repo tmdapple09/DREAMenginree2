@@ -1,8 +1,13 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import {
+    ENGIN_KEYS,
+    findWorkflows,
+    type EnginKey,
+} from '@/lib/runtime/enginWorkflowRegistry';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/seamClipboard.ts.
 
@@ -42,15 +47,9 @@
  * only bridge — there is no cycle.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Engin key normaliser ───────────────────────────────────────────────────────
 
 /**
  * Maps the many ways an engin name might appear in a drag payload to the
@@ -84,35 +83,14 @@ const _ENGIN_ALIAS_MAP: Readonly<Record<string, EnginKey>> = {
   games: 'game',
 };
 
-// ── Improvement 37: payload size guard ───────────────────────────────────────
 /** Maximum allowed payload content size in bytes (512 KB). */
 const MAX_PAYLOAD_BYTES = 512 * 1024;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { RuntimeRegion } from '@/lib/identity/canonical-names';
-
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-
-import {
-    ENGIN_KEYS,
-    findWorkflows,
-    type EnginKey,
-} from '@/lib/runtime/enginWorkflowRegistry';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Payload type ──────────────────────────────────────────────────────────────
 
 export type SeamClipboardMimeType = 'text/plain' | 'application/json' | 'application/x-dream-artifact';
 
@@ -129,13 +107,9 @@ export interface SeamClipboardPayload {
   timestamp: number;
 }
 
-// ── Subscriber type ───────────────────────────────────────────────────────────
-
 type SeamClipboardListener = (payload: SeamClipboardPayload) => void;
 
 type UnsubscribeFn = () => void;
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -271,7 +245,6 @@ class SeamClipboard {
     return () => { this.listeners.delete(handler); };
   }
 
-  // ── Improvement 39: getSubscriberCount ───────────────────────────────────
   /** Return the number of active subscribers. Useful for debugging. */
   getSubscriberCount(): number {
     return this.listeners.size;
@@ -291,14 +264,8 @@ class SeamClipboard {
 /** Singleton cross-runtime seam clipboard. */
 export const seamClipboard = new SeamClipboard();
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

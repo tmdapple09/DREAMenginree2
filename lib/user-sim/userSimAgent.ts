@@ -1,16 +1,3 @@
-// lib/user-sim/userSimAgent.ts
-// User Sim AI — simulates real user personas navigating the DREAMengin product.
-//
-// The agent has four systems:
-//   1. Persona Brain   — models how different people think and behave
-//   2. Perception      — reads a PerceptionFrame (screenshot + DOM signals)
-//   3. Behaviour Policy — picks the next AgentAction from signals + persona
-//   4. Audit Judge     — writes AuditFinding entries after each step / journey
-//
-// Persona-driven behaviour includes intentional randomness (e.g. distracted multitasker
-// pausing unpredictably) — mock Math.random in tests when you need reproducibility.
-// No network calls, no DB access.
-
 import type {
     AgentAction,
     AuditFinding,
@@ -24,6 +11,19 @@ import type {
     SimStep,
 } from '@/types/user-sim';
 import { v4 as uuidv4 } from 'uuid';
+
+// lib/user-sim/userSimAgent.ts
+// User Sim AI — simulates real user personas navigating the DREAMengin product.
+//
+// The agent has four systems:
+//   1. Persona Brain   — models how different people think and behave
+//   2. Perception      — reads a PerceptionFrame (screenshot + DOM signals)
+//   3. Behaviour Policy — picks the next AgentAction from signals + persona
+//   4. Audit Judge     — writes AuditFinding entries after each step / journey
+//
+// Persona-driven behaviour includes intentional randomness (e.g. distracted multitasker
+// pausing unpredictably) — mock Math.random in tests when you need reproducibility.
+// No network calls, no DB access.
 
 // ============================================================================
 // 1. PERSONA BRAIN
@@ -148,7 +148,6 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   const elements = frame.visible_elements;
   const total = elements.length;
 
-  // ── friction ────────────────────────────────────────────────────────────────
   // Elevated by: no CTAs, small tap-targets, missing labels.
   const ctaCount = elements.filter((e) => e.is_cta).length;
   const smallTargets = elements.filter(
@@ -165,19 +164,16 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   ];
   const friction = clamp01(frictionFactors.reduce((a, b) => a + b, 0));
 
-  // ── confusion ───────────────────────────────────────────────────────────────
   // Elevated by: multiple competing CTAs (> 3), very high element density.
   const competingCtas = Math.max(0, ctaCount - 3);
   const densityFactor = total > 30 ? 0.3 : total > 15 ? 0.15 : 0;
   const confusion = clamp01(competingCtas * 0.1 + densityFactor);
 
-  // ── layout clarity ──────────────────────────────────────────────────────────
   // Inverse of confusion plus a bonus for labelled CTAs.
   const labelledCtas = elements.filter((e) => e.is_cta && e.label).length;
   const clarityBonus = ctaCount > 0 ? (labelledCtas / ctaCount) * 0.4 : 0;
   const layout_clarity = clamp01(1 - confusion + clarityBonus - friction * 0.3);
 
-  // ── trust signals ───────────────────────────────────────────────────────────
   // Proxy: HTTPS in URL + presence of terms/privacy/security text in element labels.
   const httpsPresent = frame.url.startsWith('https://') ? 0.4 : 0;
   const trustKeywords = ['privacy', 'secure', 'verified', 'trusted', 'policy'];
@@ -186,7 +182,6 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   ).length;
   const trust_signals = clamp01(httpsPresent + Math.min(trustHits * 0.15, 0.6));
 
-  // ── mobile reachability ─────────────────────────────────────────────────────
   // Simplistic model: if viewport width ≤ 480 (mobile), check whether CTAs
   // are in the bottom 40% of the viewport (thumb zone).  Without positional
   // data we use tap-target size as a proxy.
@@ -200,7 +195,6 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
       : 0.5
     : 1.0;
 
-  // ── broken / misleading heuristics ─────────────────────────────────────────
   const brokenKeywords = ['error', '404', '500', 'loading…', 'undefined'];
   const misleadingKeywords = ['free*', 'limited offer', 'act now', 'you must'];
   const ui_appears_broken = elements.some((e) =>
@@ -364,7 +358,6 @@ export function judgeStep(
     });
   };
 
-  // ── No primary CTA ──────────────────────────────────────────────────────────
   const ctaCount = frame.visible_elements.filter((e) => e.is_cta).length;
   if (ctaCount === 0) {
     push(
@@ -377,7 +370,6 @@ export function judgeStep(
     );
   }
 
-  // ── Small tap targets ───────────────────────────────────────────────────────
   const smallTargets = frame.visible_elements.filter(
     (e) => e.tap_target_px !== null && e.tap_target_px < MIN_TAP_TARGET_PX,
   );
@@ -392,7 +384,6 @@ export function judgeStep(
     );
   }
 
-  // ── Unlabelled interactive elements ────────────────────────────────────────
   const unlabelled = frame.visible_elements.filter(
     (e) =>
       (e.tag === 'button' || e.tag === 'a' || e.tag === 'input') &&
@@ -410,7 +401,6 @@ export function judgeStep(
     );
   }
 
-  // ── Low trust signals for trust-sensitive persona ───────────────────────────
   if (signals.trust_signals < persona.trust_threshold) {
     push(
       'Insufficient trust signals for this persona',
@@ -422,7 +412,6 @@ export function judgeStep(
     );
   }
 
-  // ── Mobile reachability ─────────────────────────────────────────────────────
   if (frame.viewport.width <= 480 && signals.mobile_reachability < 0.6) {
     push(
       'Primary CTA not easily reachable on mobile',
@@ -434,7 +423,6 @@ export function judgeStep(
     );
   }
 
-  // ── Broken UI ───────────────────────────────────────────────────────────────
   if (signals.ui_appears_broken) {
     push(
       'UI appears broken or contains unresolved error state',
@@ -446,7 +434,6 @@ export function judgeStep(
     );
   }
 
-  // ── Dark patterns ───────────────────────────────────────────────────────────
   if (signals.ui_appears_misleading) {
     push(
       'Potentially misleading copy detected',
@@ -458,7 +445,6 @@ export function judgeStep(
     );
   }
 
-  // ── High confusion ──────────────────────────────────────────────────────────
   if (signals.confusion > 0.5) {
     push(
       'Page presents too many competing calls-to-action',
@@ -470,7 +456,6 @@ export function judgeStep(
     );
   }
 
-  // ── Accessibility focus (accessibility-sensitive persona only) ─────────────
   if (persona.accessibility_priority) {
     const nonFocusable = frame.visible_elements.filter(
       (e) =>

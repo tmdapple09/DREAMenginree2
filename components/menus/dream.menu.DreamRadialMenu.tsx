@@ -1,5 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import MenuPanel, { type MenuItem } from './dream.panel.MenuPanel';
+
 // Stream 5.4 — Popover API type augmentation
 // Extends React's HTMLAttributes to include the 'popover' attribute.
 // The DOM lib already declares 'hint' as a valid value; we match that here.
@@ -8,10 +12,6 @@ declare module 'react' {
     popover?: 'auto' | 'hint' | 'manual' | '';
   }
 }
-
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
-import MenuPanel, { type MenuItem } from './dream.panel.MenuPanel';
 
 type Props = {
   open: boolean;

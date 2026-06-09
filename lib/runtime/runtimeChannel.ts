@@ -1,8 +1,6 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/runtimeChannel.ts.
 
@@ -29,25 +27,13 @@
  * Solo == Co-op with one peer. That is the entire point.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -106,8 +92,6 @@ export interface RealtimeChannelOptions<
   /** Broadcast event name. Defaults to `'message'`. */
   eventName?: string;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -276,14 +260,8 @@ export async function createRuntimeChannel<
   return createRealtimeChannel<T>(id, options);
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

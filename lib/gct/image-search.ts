@@ -27,3 +27,4 @@ export async function findSimilarImages(
   const matches = await engine.search(queryImage, templates, threshold);
   return matches.sort((a, b) => b.correlation - a.correlation);
 }
+

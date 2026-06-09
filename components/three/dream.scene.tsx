@@ -8,7 +8,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useRef } from 'react';
 import * as THREE from 'three';
 
-/* ------------------------------------------------------------------ */
 /*  Slowly rotating group used as a scene container                    */
 /* ------------------------------------------------------------------ */
 function RotatingGroup({ children }: {children: React.ReactNode}) {
@@ -23,7 +22,6 @@ function RotatingGroup({ children }: {children: React.ReactNode}) {
   return <group ref={group}>{children}</group>;
 }
 
-/* ------------------------------------------------------------------ */
 /*  OrbitalStar — a small glowing sphere that orbits the crystal       */
 /*  using Drei's <Float> for a gentle hover and <Trail> for a comet    */
 /*  tail effect.                                                        */
@@ -61,7 +59,6 @@ function OrbitalStar({ radius, speed, offset, color }: OrbitalStarProps) {
   );
 }
 
-/* ------------------------------------------------------------------ */
 /*  DreamScene                                                         */
 /*                                                                    */
 /*  A self-contained React Three Fiber canvas showcasing:              */

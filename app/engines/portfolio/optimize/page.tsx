@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesPortfolioOptimize  (framework-mandated basename: page.tsx)
 import OptimizePanel from '@/components/engines/portfolio/panels/dream.panel.OptimizePanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -6,6 +5,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesPortfolioOptimize  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Optimize – PortfolioEngin', description: 'Run quantum portfolio optimization.' };
 

@@ -1,3 +1,14 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type {
+    Reality,
+    RealityActivityEntry,
+    RealityActivityKind,
+    RealityEnginSlot,
+    RealityMember,
+    RealityMode,
+    RealitySnapshot,
+} from './types';
+
 /**
  * lib/reality/realityStore.ts
  *
@@ -15,24 +26,9 @@
  * See: supabase/migrations/20260516000200_collaborative_realities.sql
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
-import type {
-    Reality,
-    RealityActivityEntry,
-    RealityActivityKind,
-    RealityEnginSlot,
-    RealityMember,
-    RealityMode,
-    RealitySnapshot,
-} from './types';
-
-// ── helpers ───────────────────────────────────────────────────────────────────
-
 function buildChannelId(realityId: string): string {
   return `reality:${realityId}`;
 }
-
-// ── Reality CRUD ──────────────────────────────────────────────────────────────
 
 /** Load a single Reality by ID. Returns null if not found. */
 export async function getRealityById(
@@ -127,8 +123,6 @@ export async function touchReality(
     .eq('id', realityId);
 }
 
-// ── Membership ────────────────────────────────────────────────────────────────
-
 /** Join a Reality. Upserts the membership row (idempotent). */
 export async function joinReality(
   supabase: SupabaseClient,
@@ -186,8 +180,6 @@ export async function listMembers(
     isOnline: new Date(row.last_seen_at as string).getTime() > cutoff,
   }));
 }
-
-// ── Snapshots ─────────────────────────────────────────────────────────────────
 
 /**
  * Save a Reality state snapshot.
@@ -247,8 +239,6 @@ export async function loadLatestSnapshot(
   };
 }
 
-// ── Activity log ──────────────────────────────────────────────────────────────
-
 /** Append an activity entry to the Reality's timeline. */
 export async function appendActivity(
   supabase: SupabaseClient,
@@ -301,8 +291,6 @@ export async function loadActivity(
     createdAt: row.created_at as string,
   }));
 }
-
-// ── Row mapper ────────────────────────────────────────────────────────────────
 
 function rowToReality(row: Record<string, unknown>): Reality {
   return {

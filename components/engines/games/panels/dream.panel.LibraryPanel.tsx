@@ -1,17 +1,17 @@
 'use client';
 
+import { GAME_CATALOG } from '@/lib/games/catalog';
+import { buildGameLaunchHref } from '@/lib/games/navigation';
+import { Filter, Play, Search } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
 /**
  * LibraryPanel — Standalone Game Library browser for the Games Engine app.
  *
  * Surfaces all available games with category filters, quick-launch buttons,
  * and a recent sessions list. Lives at /engines/games/library.
  */
-
-import { GAME_CATALOG } from '@/lib/games/catalog';
-import { buildGameLaunchHref } from '@/lib/games/navigation';
-import { Filter, Play, Search } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
 
 const CATEGORIES = ['All', ...Array.from(new Set(GAME_CATALOG.map((g) => g.category ?? 'Other')))];
 

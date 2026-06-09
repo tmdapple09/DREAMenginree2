@@ -11,8 +11,6 @@
  * delegates to the server-side Groq/Claude models instead.
  */
 
-// ─── Public types ─────────────────────────────────────────────────────────────
-
 export interface ParseError {
   line: number;
   col: number;
@@ -40,8 +38,6 @@ export interface ParseResult {
   structurallyValid: boolean;
 }
 
-// ─── Language normalisation ───────────────────────────────────────────────────
-
 const LANG_ALIASES: Record<string, string> = {
   ts: 'typescript', tsx: 'typescript',
   js: 'javascript', jsx: 'javascript', mjs: 'javascript', cjs: 'javascript',
@@ -68,8 +64,6 @@ function normaliseLanguage(raw: string): string {
   const lower = raw.toLowerCase().trim();
   return LANG_ALIASES[lower] ?? lower;
 }
-
-// ─── Per-language symbol extractors ──────────────────────────────────────────
 
 function extractTSSymbols(lines: string[]): ParsedSymbol[] {
   const symbols: ParsedSymbol[] = [];
@@ -155,8 +149,6 @@ function extractRustSymbols(lines: string[]): ParsedSymbol[] {
   return symbols;
 }
 
-// ─── Bracket / paren balance checker ─────────────────────────────────────────
-
 function checkBracketBalance(content: string, lang: string): ParseError[] {
   if (!['typescript','javascript','json','rust','go','cpp','c','java','csharp'].includes(lang)) {
     return [];
@@ -214,8 +206,6 @@ function checkBracketBalance(content: string, lang: string): ParseError[] {
   return errors;
 }
 
-// ─── JSON validator ───────────────────────────────────────────────────────────
-
 function checkJSON(content: string): ParseError[] {
   try {
     JSON.parse(content);
@@ -229,8 +219,6 @@ function checkJSON(content: string): ParseError[] {
     return [{ line: 1, col: 1, message: msg, severity: 'error' }];
   }
 }
-
-// ─── Python indentation check ─────────────────────────────────────────────────
 
 function checkPythonIndent(lines: string[]): ParseError[] {
   const warnings: ParseError[] = [];
@@ -254,8 +242,6 @@ function checkPythonIndent(lines: string[]): ParseError[] {
   });
   return warnings;
 }
-
-// ─── Main export ──────────────────────────────────────────────────────────────
 
 /**
  * parseCode(content, language)

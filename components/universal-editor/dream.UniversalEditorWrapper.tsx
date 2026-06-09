@@ -1,5 +1,9 @@
 'use client';
 
+import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
+import React, { useCallback, useState } from 'react';
+import { useTapHoldMove, type Position } from './useTapHoldMove';
+
 /**
  * components/universal-editor/dream.UniversalEditorWrapper.tsx — §39
  *
@@ -11,12 +15,6 @@
  *   - Ghost cursor indicator at drag position
  */
 
-import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
-import React, { useCallback, useState } from 'react';
-import { useTapHoldMove, type Position } from './useTapHoldMove';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface UniversalEditorWrapperProps {
   manifest:    ModuleManifest;
   children:    React.ReactNode;
@@ -24,8 +22,6 @@ export interface UniversalEditorWrapperProps {
   onTransfer?: (manifest: ModuleManifest, targetRuntime: RuntimeId) => void;
   className?:  string;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function UniversalEditorWrapper({
   manifest,

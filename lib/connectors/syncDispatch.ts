@@ -1,3 +1,13 @@
+import 'server-only';
+import { blueskySync } from '@/lib/connectors/providers/bluesky';
+import { githubSync } from '@/lib/connectors/providers/github';
+import { instagramSync } from '@/lib/connectors/providers/instagram';
+import { mastodonSync } from '@/lib/connectors/providers/mastodon';
+import { nostrSync } from '@/lib/connectors/providers/nostr';
+import { redditSync } from '@/lib/connectors/providers/reddit';
+import { youtubeSync } from '@/lib/connectors/providers/youtube';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/syncDispatch.ts
  *
@@ -14,17 +24,6 @@
  * AXIOM 4 — Security by Default: token_blob credentials never leave the server.
  * ARCHITECTURE.md §3 — Logic layer (lib/connectors).
  */
-
-import 'server-only';
-
-import { blueskySync } from '@/lib/connectors/providers/bluesky';
-import { githubSync } from '@/lib/connectors/providers/github';
-import { instagramSync } from '@/lib/connectors/providers/instagram';
-import { mastodonSync } from '@/lib/connectors/providers/mastodon';
-import { nostrSync } from '@/lib/connectors/providers/nostr';
-import { redditSync } from '@/lib/connectors/providers/reddit';
-import { youtubeSync } from '@/lib/connectors/providers/youtube';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 /**
  * The set of provider ids that dispatchSync handles.

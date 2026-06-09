@@ -1,5 +1,10 @@
 'use client';
 
+import type { GameCartridge, GameEngineAPI } from '@/lib/gameengin/cartridge';
+import { getCartridgeManifest, type CartridgeManifestEntry } from './manifest';
+import { createContext, createElement, useContext, type ComponentType } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
+
 /**
  * lib/gameengin/cartridges/reactCartridge.ts
  *
@@ -13,13 +18,6 @@
  *  - Cleanup unmounts the React root and removes the wrapper div.
  *  - Any render/lifecycle errors are caught by CartridgeErrorBoundary (outer).
  */
-
-import type { GameCartridge, GameEngineAPI } from '@/lib/gameengin/cartridge';
-import { getCartridgeManifest, type CartridgeManifestEntry } from './manifest';
-import { createContext, createElement, useContext, type ComponentType } from 'react';
-import { createRoot, type Root } from 'react-dom/client';
-
-// ── GameEngineAPI context ─────────────────────────────────────────────────────
 
 /**
  * React context that carries the GameEngineAPI into the cartridge component
@@ -46,8 +44,6 @@ export const GameEngineAPIContext = createContext<GameEngineAPI | null>(null);
 export function useGameEngineAPI(): GameEngineAPI | null {
   return useContext(GameEngineAPIContext);
 }
-
-// ── Factory ───────────────────────────────────────────────────────────────────
 
 /**
  * Wrap a React component as a GameCartridge.

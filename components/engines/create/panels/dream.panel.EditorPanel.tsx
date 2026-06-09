@@ -1,14 +1,14 @@
 'use client';
 
+import { Bold, Hash, Italic, Link2, List, Save, Sparkles } from 'lucide-react';
+import { useRef, useState } from 'react';
+
 /**
  * EditorPanel — Rich content editor for the Content Engine app.
  *
  * Template-based draft generator with formatting toolbar.
  * Lives at /engines/create/editor.
  */
-
-import { Bold, Hash, Italic, Link2, List, Save, Sparkles } from 'lucide-react';
-import { useRef, useState } from 'react';
 
 type ContentType = 'Post' | 'Thread' | 'Story' | 'Video';
 

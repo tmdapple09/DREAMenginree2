@@ -1,3 +1,5 @@
+import type { SupabaseClient } from '@/engine/io';
+
 /**
  * lib/dreamr/closeFriendsVisibility.ts
  *
@@ -15,8 +17,6 @@
  *         arbitrary viewer we need the inverse (which posters have THIS
  *         viewer on their list). That requires the service role.
  */
-
-import type { SupabaseClient } from '@/engine/io';
 
 export interface VisibilityCandidate {
   user_id?: string | null;

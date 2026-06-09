@@ -1,4 +1,9 @@
 'use client';
+
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
+
 /**
  * SERPENT SIEGE — fusion of snake + tower-defense + RTS.
  *
@@ -8,10 +13,6 @@
  * funnel down lanes from the north toward the Mother Egg. You can re-route
  * mid-wave but cannot cross your own body. Defend or the brood dies.
  */
-
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
 
 const COLS = 22;
 const ROWS = 16;
@@ -302,7 +303,6 @@ export default function SerpentSiege( ){
       headAngVelRef.current *= Math.exp(-6 * dt);
       headAngleRef.current += headAngVelRef.current * dt;
 
-      // ── Render ───────────────────────────────────────────────────────────
       ctx.save();
       shakeRef.current.apply(ctx, reducedMotionRef.current ? 0.2 : 1);
 

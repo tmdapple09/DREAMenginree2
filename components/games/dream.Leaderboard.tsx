@@ -165,3 +165,4 @@ export default function Leaderboard({ game }: Props) {
     </ol>
   );
 }
+

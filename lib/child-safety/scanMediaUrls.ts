@@ -1,3 +1,9 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { createHash } from 'crypto';
+import type { ChildSafetyResult } from './childSafetyDetector';
+import { scanContent } from './childSafetyDetector';
+import { classifyImage } from './imageClassifier';
+
 // lib/child-safety/scanMediaUrls.ts
 // TheBoogieMan.Ai — Real-Time Media URL Scanner
 //
@@ -21,12 +27,6 @@
 //     supabase,
 //   });
 //   if (result.flagged) { /* block the content */ }
-
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { createHash } from 'crypto';
-import type { ChildSafetyResult } from './childSafetyDetector';
-import { scanContent } from './childSafetyDetector';
-import { classifyImage } from './imageClassifier';
 
 // ============================================================================
 // CONSTANTS
@@ -63,7 +63,7 @@ const EXT_TO_MIME: Record<string, ImageMime> = {
 
 // Minimal Supabase client shape needed for hash registry lookup
 interface SupabaseLike {
-   
+
   from: (table: string) => any;
 }
 
@@ -208,7 +208,6 @@ export async function scanMediaUrlsForChildSafety(
 
     const { buffer, mime } = fetched;
 
-    // ── Layer 1: Hash check ────────────────────────────────────────────────
     const imageHash = createHash('sha256').update(buffer).digest('hex');
     const hashResult = scanContent({
       mediaHashes: [imageHash],
@@ -220,7 +219,6 @@ export async function scanMediaUrlsForChildSafety(
       return hashResult;
     }
 
-    // ── Layer 4: LLM image classification ─────────────────────────────────
     const imageBase64 = buffer.toString('base64');
     const imgClassification = await classifyImage(imageBase64, mime ?? 'image/jpeg');
 

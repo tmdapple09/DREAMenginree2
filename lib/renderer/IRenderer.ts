@@ -10,8 +10,6 @@
  * never needs to change when the backend is swapped.
  */
 
-// ─── Text style ───────────────────────────────────────────────────────────────
-
 /** Subset of Canvas 2D text properties used by IRenderer.drawText(). */
 export interface TextStyle {
   /** CSS font string, e.g. `'bold 12px monospace'`. */
@@ -23,8 +21,6 @@ export interface TextStyle {
   /** Vertical text baseline. */
   textBaseline?: CanvasTextBaseline;
 }
-
-// ─── IRenderer ───────────────────────────────────────────────────────────────
 
 /**
  * Abstract renderer interface.
@@ -61,8 +57,6 @@ export interface IRenderer {
   /** Release any GPU/canvas resources held by this renderer. */
   dispose(): void;
 
-  // ── Primitives ─────────────────────────────────────────────────────────────
-
   /**
    * Draw a filled axis-aligned rectangle.
    * @param x     - left edge in logical pixels
@@ -90,8 +84,6 @@ export interface IRenderer {
    * @param style - optional text styling
    */
   drawText(x: number, y: number, text: string, style?: TextStyle): void;
-
-  // ── Viewport ───────────────────────────────────────────────────────────────
 
   /** Logical pixel width of the render surface. */
   readonly width: number;

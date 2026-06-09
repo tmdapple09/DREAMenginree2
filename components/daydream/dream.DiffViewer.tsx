@@ -1,18 +1,5 @@
 'use client';
 
-/**
- * components/daydream/dream.DiffViewer.tsx
- *
- * A full-featured inline diff viewer for the CodeEngin tab.
- *
- * Features:
- *   1. Full-file mode (default) — entire file visible with change highlights.
- *   2. Collapsed mode — unchanged regions folded; click "Expand all" to restore.
- *   3. Jump navigation — ‹ prev / next › buttons move between diff hunks.
- *   4. Auto-scroll to first diff when switching from collapsed → expanded.
- *   5. Scroll-margin minimap — right-side strip showing diff hunk positions.
- */
-
 import {
     buildFullFileLines,
     buildScrollMarkers,
@@ -27,7 +14,18 @@ import {
 import { ChevronDown, ChevronsUpDown, ChevronUp, Minimize2 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+/**
+ * components/daydream/dream.DiffViewer.tsx
+ *
+ * A full-featured inline diff viewer for the CodeEngin tab.
+ *
+ * Features:
+ *   1. Full-file mode (default) — entire file visible with change highlights.
+ *   2. Collapsed mode — unchanged regions folded; click "Expand all" to restore.
+ *   3. Jump navigation — ‹ prev / next › buttons move between diff hunks.
+ *   4. Auto-scroll to first diff when switching from collapsed → expanded.
+ *   5. Scroll-margin minimap — right-side strip showing diff hunk positions.
+ */
 
 const ACCENT = '#3b7dd8';
 const ADD_BG  = 'rgba(34,197,94,0.13)';
@@ -39,16 +37,12 @@ const COLLAPSED_BG = 'rgba(100,116,139,0.08)';
 const MINIMAP_W = 10;         // px width of scroll-margin minimap strip
 const LINE_H    = 20;         // approximate rendered line height in px
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface DiffViewerProps {
   /** Raw unified diff text.  Defaults to the built-in demo diff. */
   diffText?: string;
   /** Initial mode: true = show full file, false = show hunks only */
   defaultFullFile?: boolean;
 }
-
-// ─── Helper: line background ──────────────────────────────────────────────────
 
 function lineBg(line: FullFileLine): string {
   if (line.collapsed)         return COLLAPSED_BG;
@@ -71,8 +65,6 @@ function lineFg(line: FullFileLine): string {
   return 'var(--de-text)';
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function DiffViewer({
   diffText = DEMO_DIFF,
   defaultFullFile = true,
@@ -81,29 +73,23 @@ export default function DiffViewer({
   const files: DiffFile[] = useMemo(() => parseUnifiedDiff(diffText), [diffText]);
   const file = files[0] ?? null;
 
-  // ── View mode: full (not collapsed) vs collapsed ────────────────────────────
   // fullFile=true means "expand all lines" (no collapsed placeholders)
   const [fullFile, setFullFile] = useState(defaultFullFile);
 
-  // ── Active (focused) hunk ───────────────────────────────────────────────────
   const [activeHunk, setActiveHunk] = useState(0);
 
-  // ── Scroll container ref ────────────────────────────────────────────────────
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // ── Computed lines ──────────────────────────────────────────────────────────
   const lines: FullFileLine[] = useMemo(
     () => (file ? buildFullFileLines(file, !fullFile) : []),
     [file, fullFile],
   );
 
-  // ── Scroll markers ──────────────────────────────────────────────────────────
   const markers = useMemo(
     () => (file ? buildScrollMarkers(file, lines.length) : []),
     [file, lines.length],
   );
 
-  // ── Hunk start line indices (for scrolling) ─────────────────────────────────
   const hunkLineIndex: number[] = useMemo(() => {
     const idx: number[] = [];
     lines.forEach((l, i: number) => {
@@ -112,7 +98,6 @@ export default function DiffViewer({
     return idx;
   }, [lines]);
 
-  // ── Scroll to active hunk ───────────────────────────────────────────────────
   const scrollToHunk = useCallback((hunkIdx: number) => {
     const lineIdx = hunkLineIndex[hunkIdx] ?? 0;
     const container = scrollRef.current;
@@ -121,16 +106,14 @@ export default function DiffViewer({
     container.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }, [hunkLineIndex]);
 
-  // ── When expanding to full file, auto-scroll to first diff ─────────────────
   useEffect(() => {
     if (fullFile && file && file.hunks.length > 0) {
       scrollToHunk(firstHunkIndex(file));
     }
   // Run only when fullFile transitions true (expand)
-   
+
   }, [fullFile]);
 
-  // ── Navigation handlers ─────────────────────────────────────────────────────
   const handlePrev = useCallback(() => {
     if (!file) return;
     const next = prevHunkIndex(file, activeHunk);
@@ -145,18 +128,15 @@ export default function DiffViewer({
     scrollToHunk(next);
   }, [file, activeHunk, scrollToHunk]);
 
-  // ── Toggle full/collapsed ───────────────────────────────────────────────────
   const toggleFullFile = useCallback(() => {
     setFullFile((prev: boolean) => !prev);
   }, []);
 
-  // ── Minimap click — jump to hunk ────────────────────────────────────────────
   const handleMinimapClick = useCallback((hunkIdx: number) => {
     setActiveHunk(hunkIdx);
     scrollToHunk(hunkIdx);
   }, [scrollToHunk]);
 
-  // ── No diff ─────────────────────────────────────────────────────────────────
   if (!file) {
     return (
       <div style={{ padding: 16, color: CTX_FG, fontSize: 12 }}>
@@ -354,8 +334,6 @@ export default function DiffViewer({
     </div>
   );
 }
-
-// ─── Shared nav-button style ─────────────────────────────────────────────────
 
 function navBtnStyle(disabled: boolean): CSSProperties {
   return {

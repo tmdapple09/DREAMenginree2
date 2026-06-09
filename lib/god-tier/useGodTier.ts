@@ -1,16 +1,5 @@
 'use client';
 
-/**
- * useGodTier — React hook that drives the DreamEngineGodTierSystem.
- *
- * Collects real device / runtime / UX signals and runs the orchestrator
- * every animation frame, injecting CSS custom properties onto the root
- * element so every component can respond to the current GodTierState.
- *
- * Usage:
- *   const { state, uiTokens } = useGodTier({ route: '/showcase', activeTask: 'hero_showcase' });
- */
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     defaultDeviceSignals,
@@ -26,6 +15,17 @@ import {
     type UIElementSnapshot,
     type UXSignals,
 } from './godTierEngine';
+
+/**
+ * useGodTier — React hook that drives the DreamEngineGodTierSystem.
+ *
+ * Collects real device / runtime / UX signals and runs the orchestrator
+ * every animation frame, injecting CSS custom properties onto the root
+ * element so every component can respond to the current GodTierState.
+ *
+ * Usage:
+ *   const { state, uiTokens } = useGodTier({ route: '/showcase', activeTask: 'hero_showcase' });
+ */
 
 export interface UseGodTierOptions {
   /** Current route path, e.g. '/showcase'. */
@@ -76,26 +76,20 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     childSafetyMode = false,
   } = opts;
 
-  // ── Engine instance (stable across renders) ─────────────────────────────────
   const systemRef = useRef<DreamEngineGodTierSystem>(new DreamEngineGodTierSystem());
 
-  // ── Device signals (computed once per mount) ─────────────────────────────────
   const deviceRef = useRef<DeviceSignals>(defaultDeviceSignals());
 
-  // ── Runtime metrics (updated every frame) ────────────────────────────────────
   const runtimeRef = useRef<RuntimeMetrics>(defaultRuntimeMetrics());
   const frameTsRef = useRef<number>(0);
   const frameHistoryRef = useRef<number[]>([]);
   const MAX_FRAME_HISTORY = 24;
 
-  // ── UX signals (mutated by recordX helpers) ───────────────────────────────────
   const uxRef = useRef<UXSignals>(defaultUXSignals());
 
-  // ── State ─────────────────────────────────────────────────────────────────────
   const [state, setState] = useState<GodTierState | null>(null);
   const [uiTokens, setUiTokens] = useState<ReturnType<typeof getGodTierUiTokens> | null>(null);
 
-  // ── Cadence: orchestrator + CSS-var write throttle ───────────────────────────
   // Setting CSS custom properties on <html> invalidates style for the entire
   // document, so we run the orchestrator at most every UPDATE_INTERVAL_MS
   // (≈4 Hz) instead of every animation frame, and only call setProperty for
@@ -105,7 +99,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
   const UPDATE_INTERVAL_MS = 250;
   const lastReactUpdateRef = useRef<number>(0);
 
-  // ── Volatile inputs into refs so the rAF callback identity stays stable ─────
   // Without this, `tick` (and the rAF effect that depends on it) re-creates
   // whenever a parent passes a new `nextLikelyRoutes`/`meshes`/`ui` array
   // literal — which silently cancels and reschedules the loop on every render.
@@ -116,7 +109,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     route, activeTask, primaryIntent, nextLikelyRoutes, meshes, ui, childSafetyMode,
   };
 
-  // ── Frame measurement ─────────────────────────────────────────────────────────
   const rafRef = useRef<number | null>(null);
 
   const tick = useCallback((ts: number) => {
@@ -195,7 +187,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     rafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  // ── Scroll velocity tracking ───────────────────────────────────────────────
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let lastScrollTs = performance.now();
@@ -215,7 +206,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // ── Pointer velocity tracking ──────────────────────────────────────────────
   useEffect(() => {
     let lastX = 0, lastY = 0, lastTs = 0;
 
@@ -236,7 +226,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     return () => window.removeEventListener('pointermove', onMove);
   }, []);
 
-  // ── rAF loop ───────────────────────────────────────────────────────────────
   useEffect(() => {
     // Refresh device signals on mount
     deviceRef.current = defaultDeviceSignals();
@@ -275,7 +264,6 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     };
   }, [tick]);
 
-  // ── UX helper callbacks ────────────────────────────────────────────────────
   const recordTap = useCallback((kind: 'normal' | 'repeat' | 'rage' | 'dead') => {
     const ux = uxRef.current;
     if (kind === 'repeat') ux.repeatTapCount += 1;

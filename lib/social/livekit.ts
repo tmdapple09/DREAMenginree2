@@ -14,8 +14,6 @@
  *   – Auth errors are surfaced as typed LiveKitError — callers decide UX.
  */
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export type LiveKitConnectionState =
   | 'disconnected'
   | 'connecting'
@@ -62,8 +60,6 @@ export class LiveKitError extends Error {
   }
 }
 
-// ─── Token fetcher (calls server-side route) ─────────────────────────────────
-
 /**
  * Request a LiveKit access token for `roomName` from the Next.js API.
  * The server validates the session and calls the backend livekitService.
@@ -91,8 +87,6 @@ export async function fetchLiveKitToken(
 
   return res.json() as Promise<LiveKitTokenResponse>;
 }
-
-// ─── Room info fetcher ───────────────────────────────────────────────────────
 
 /**
  * Fetch current room participant list from the Next.js API.
@@ -124,8 +118,6 @@ export async function fetchRoomInfo(
   return res.json() as Promise<LiveKitRoomInfo>;
 }
 
-// ─── Client-side room state manager ─────────────────────────────────────────
-
 type RoomEventType =
   | 'participantJoined'
   | 'participantLeft'
@@ -156,8 +148,6 @@ export class LiveKitRoomManager {
     };
   }
 
-  // ── Event emitter ──────────────────────────────────────────────────────────
-
   on<T = unknown>(event: RoomEventType, listener: RoomEventListener<T>): this {
     if (!this.listeners.has(event)) this.listeners.set(event, new Set());
     this.listeners.get(event)!.add(listener as RoomEventListener);
@@ -172,8 +162,6 @@ export class LiveKitRoomManager {
   private emit<T = unknown>(event: RoomEventType, payload: T): void {
     this.listeners.get(event)?.forEach((cb) => cb(payload));
   }
-
-  // ── Connection lifecycle ───────────────────────────────────────────────────
 
   async connect(identity: string): Promise<void> {
     this.setConnectionState('connecting');
@@ -196,8 +184,6 @@ export class LiveKitRoomManager {
     this.setConnectionState('disconnected');
     this.state = { ...this.state, participants: [], participantCount: 0 };
   }
-
-  // ── State management ───────────────────────────────────────────────────────
 
   getState(): Readonly<LiveKitRoomInfo> {
     return this.state;
@@ -250,8 +236,6 @@ export class LiveKitRoomManager {
     }
   }
 }
-
-// ─── Next.js API route helpers (server-side only) ────────────────────────────
 
 /**
  * Generate a LiveKit token on the server.

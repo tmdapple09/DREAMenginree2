@@ -46,42 +46,72 @@
       "short_name": "Home",
       "description": "Your private daily surface",
       "url": "/homedream",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "DreamDM",
       "short_name": "Messages",
       "description": "Messages and conversations",
       "url": "/messages",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Music Daydream",
       "short_name": "Music",
       "description": "Create, organize and release music",
       "url": "/daydream/music",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Games Daydream",
       "short_name": "Games",
       "description": "Play and build games",
       "url": "/daydream/games",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Create Daydream",
       "short_name": "Create",
       "description": "Content creation tools",
       "url": "/daydream/create",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Code Daydream",
       "short_name": "Code",
       "description": "Build and ship code",
       "url": "/daydream/code",
-      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/logo-icon.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
   "screenshots": [

@@ -1,3 +1,11 @@
+import {
+    CRASH_REPORT_MAX_BYTES,
+    isActiveCartridge,
+    recordCrashReport,
+} from '@/lib/gameengin/brain-reader';
+import { NextResponse, type NextRequest } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/gameengin/crash-report/route.ts
  *
@@ -16,14 +24,6 @@
  *   - cartridge_id must be a slug; player_statement must be non-empty.
  */
 
-import {
-    CRASH_REPORT_MAX_BYTES,
-    isActiveCartridge,
-    recordCrashReport,
-} from '@/lib/gameengin/brain-reader';
-import { NextResponse, type NextRequest } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 const ALLOWED_KEYS = new Set([
   'cartridge_id',
   'player_statement',

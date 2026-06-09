@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.Lab  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
@@ -7,6 +6,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.Lab  (framework-mandated basename: page.tsx)
 
 // No demo projects - users see their actual projects only
 

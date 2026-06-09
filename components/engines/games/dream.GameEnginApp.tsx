@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import GameEngin from '@/engins/engin.GameEngin';
+
 /**
  * GameEnginApp — Full-screen app shell for the Games Engine.
  *
@@ -9,9 +12,6 @@
  *   /engines/games/scores   → scores & leaderboard
  *   /engines/games/builder  → world builder tool
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import GameEngin from '@/engins/engin.GameEngin';
 
 export default makeEnginApp({
   id: 'games',

@@ -74,8 +74,6 @@ export interface SessionStorageBackend {
 
 const MAX_STORED_SESSIONS = 5;
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
-
 function summariseSession(s: StoredSession): SessionSummary {
   const unique = [...new Set(s.activations)];
   const freq = new Map<string, number>();
@@ -130,8 +128,6 @@ function buildDiff(last: StoredSession, current: StoredSession): SessionDiff {
   return { newSubsystems, droppedSubsystems, continueFrom, recommendation };
 }
 
-// ─── IndexedDB backend ────────────────────────────────────────────────────────
-
 const DB_NAME = 'dreamengin-continuity';
 const STORE_NAME = 'sessions';
 const DB_VERSION = 1;
@@ -179,8 +175,6 @@ async function createIDBBackend(): Promise<SessionStorageBackend> {
   };
 }
 
-// ─── LocalStorage backend ────────────────────────────────────────────────────
-
 const LS_KEY = 'dreamengin-continuity-sessions';
 
 function createLSBackend(): SessionStorageBackend {
@@ -204,16 +198,12 @@ function createLSBackend(): SessionStorageBackend {
   };
 }
 
-// ─── In-memory backend (SSR / test / non-browser contexts) ───────────────────
-
 function createMemoryBackend(): SessionStorageBackend {
   return {
     async read(): Promise<StoredSession[]> { return []; },
     async write(): Promise<void> { /* no-op */ },
   };
 }
-
-// ─── Session Continuity ───────────────────────────────────────────────────────
 
 /**
  * Manages cross-session persistence for DREAMengin.
@@ -243,8 +233,6 @@ export class SessionContinuity {
     };
   }
 
-  // ── Lifecycle ────────────────────────────────────────────────────────────
-
   async init(): Promise<void> {
     if (!this.backend) {
       this.backend = await this.resolveBackend();
@@ -272,8 +260,6 @@ export class SessionContinuity {
     return createMemoryBackend();
   }
 
-  // ── Current session updates ───────────────────────────────────────────────
-
   /** Record a subsystem activation into the current session. */
   recordActivation(subsystemId: string): void {
     this.currentSession.activations.push(subsystemId);
@@ -285,8 +271,6 @@ export class SessionContinuity {
     this.currentSession.artifactKinds = [...new Set(kinds)];
     this.currentSession.lastArtifactTitle = lastTitle;
   }
-
-  // ── Persistence ───────────────────────────────────────────────────────────
 
   /**
    * Persist the current session state. Call periodically (e.g. on blur,
@@ -302,8 +286,6 @@ export class SessionContinuity {
       // Persistence failure is non-fatal.
     }
   }
-
-  // ── Query ─────────────────────────────────────────────────────────────────
 
   /** Returns the last completed session (the one before the current one). */
   getLastSession(): StoredSession | null {

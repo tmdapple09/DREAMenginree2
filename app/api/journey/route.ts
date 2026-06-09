@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { Json } from '@/types/supabase';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 // app/api/journey/route.ts
 // Journey Trail API — private, owner-only reads and writes.
 //
@@ -12,13 +18,6 @@
 //   GET  /api/journey?limit=N       → cap results (default 100, max 200)
 //   POST /api/journey               → insert a new journey dot (owner-only via RLS)
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { Json } from '@/types/supabase';
-import { NextRequest, NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 // ── GET ───────────────────────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
@@ -63,8 +62,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   return NextResponse.json({ dots: data ?? [] });
 }
-
-// ── POST ──────────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

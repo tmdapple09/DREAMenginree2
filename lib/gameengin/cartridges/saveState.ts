@@ -1,3 +1,5 @@
+import type { CartridgeSaveAPI, CartridgeSaveSlot } from '../cartridge';
+
 /**
  * lib/gameengin/cartridges/saveState.ts
  *
@@ -15,8 +17,6 @@
  * to match the CartridgeSaveAPI contract and allow future migration to
  * IndexedDB without changing cartridge code.
  */
-
-import type { CartridgeSaveAPI, CartridgeSaveSlot } from '../cartridge';
 
 const PREFIX = 'dreamge:save';
 const MAX_SLOTS = 8;

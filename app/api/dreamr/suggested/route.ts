@@ -1,3 +1,18 @@
+import {
+    rankFeed,
+    scoreDreamRPost,
+    type ScoredPost,
+} from '@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm';
+import {
+    filterByCloseFriends,
+    loadVisibilityCircle,
+} from '@/lib/dreamr/closeFriendsVisibility';
+import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * GET /api/dreamr/suggested
  *
@@ -22,21 +37,6 @@
  *   feed route, so suggested-content can never leak past the poster's CF wall.
  */
 
-import {
-    rankFeed,
-    scoreDreamRPost,
-    type ScoredPost,
-} from '@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm';
-import {
-    filterByCloseFriends,
-    loadVisibilityCircle,
-} from '@/lib/dreamr/closeFriendsVisibility';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -48,7 +48,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const db = supabase as SupabaseClient;
 
-  // ── Who does the user already follow? ────────────────────────────────────
   const { data: follows } = await supabase
     .from('follows')
     .select('following_id')
@@ -61,7 +60,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const excludeIds = [...followedIds, user.id];
   const circle = await loadVisibilityCircle(user.id);
 
-  // ── Suggested CONTENT ─────────────────────────────────────────────────────
   if (type === 'content') {
     // NOTE: DB column is `view_count` (singular); algorithm field is `views_count`.
     const { data: rows } = await db
@@ -106,7 +104,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ suggestions: ranked }, { headers: { 'Cache-Control': 'no-store' } });
   }
 
-  // ── Suggested CREATORS ────────────────────────────────────────────────────
   if (type === 'creators') {
     // Pull a wider pool of recent public posts so we can score the body of
     // each creator's recent work, not just count them. We need content +

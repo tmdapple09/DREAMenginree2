@@ -1,10 +1,11 @@
-// SURFACE: dreamsurface.EnginesLab  (framework-mandated basename: page.tsx)
 import LabEnginApp from '@/components/engines/lab/dream.LabEnginApp';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesLab  (framework-mandated basename: page.tsx)
 export default async function LabEnginAppPage( ){
   await connection();
   const supabase = await createServerClient();

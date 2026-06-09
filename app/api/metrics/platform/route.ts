@@ -1,13 +1,13 @@
+import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
+import { createServerClient, createServiceClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+
 // app/api/metrics/platform/route.ts
 // Phase 9 — Get Platform Health Metrics Endpoint
 //
 // Retrieves platform-wide health metrics for IDARi dashboard.
 // Per ACTIVITY_FIRST_PROTOCOL.md §IV (Platform Health Metrics)
-
-import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
-import { createServerClient, createServiceClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextRequest, NextResponse } from 'next/server';
 
 type UserMetricAggregateRow = {
   user_id: string | null;

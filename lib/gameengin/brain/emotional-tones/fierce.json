@@ -5,8 +5,18 @@
     "[short imperative]. [short imperative].",
     "[single declarative]."
   ],
-  "vocabulary_lean": ["move", "down", "now", "enough", "never"],
-  "vocabulary_avoid": ["please", "maybe", "soft"],
+  "vocabulary_lean": [
+    "move",
+    "down",
+    "now",
+    "enough",
+    "never"
+  ],
+  "vocabulary_avoid": [
+    "please",
+    "maybe",
+    "soft"
+  ],
   "example_lines": [
     "Move. Down.",
     "Enough."

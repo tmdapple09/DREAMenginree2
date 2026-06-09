@@ -3,7 +3,6 @@
 import { Bell, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 import DreamRSection from '@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr';
 import BrandLogo from '@/components/dream.BrandLogo';
 import HomeFeed from '@/components/dream.HomeFeed';

@@ -1,5 +1,9 @@
 'use client';
 
+import { cacheAsset, enqueueSyncAction } from '@/lib/offline/offlineCache';
+import { useCallback, useState, type ReactNode } from 'react';
+import { v4 as uuid } from 'uuid';
+
 /**
  * components/dreamengin/dream.CanvasDropZone.tsx
  *
@@ -19,12 +23,6 @@
  *   - docs/ARCHITECTURE.md §8: Gold/blue design system.
  *     The drop overlay uses the canonical gold accent.
  */
-
-import { cacheAsset, enqueueSyncAction } from '@/lib/offline/offlineCache';
-import { useCallback, useState, type ReactNode } from 'react';
-import { v4 as uuid } from 'uuid';
-
-// ─── File classification ──────────────────────────────────────────────────────
 
 export type AssetCategory = 'image' | 'audio' | '3d' | 'unknown';
 
@@ -55,8 +53,6 @@ function getMimeType(file: File): string {
   return map[ext] ?? 'application/octet-stream';
 }
 
-// ─── Accepted file extensions ─────────────────────────────────────────────────
-
 const ALL_ACCEPTED = [
   ...Array.from(IMAGE_EXTS),
   ...Array.from(AUDIO_EXTS),
@@ -67,8 +63,6 @@ export function isAcceptedFile(filename: string): boolean {
   const ext = filename.split('.').pop()?.toLowerCase() ?? '';
   return ALL_ACCEPTED.includes(ext);
 }
-
-// ─── Import event ─────────────────────────────────────────────────────────────
 
 export interface AssetImportPayload {
   id: string;
@@ -83,8 +77,6 @@ export interface AssetImportPayload {
  * Engins listen for this to add the asset to the active scene.
  */
 export const ASSET_IMPORT_EVENT = 'dreamengin:asset-import';
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 interface CanvasDropZoneProps {
   children: ReactNode;

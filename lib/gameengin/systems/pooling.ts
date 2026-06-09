@@ -1,3 +1,5 @@
+import { ResourcePool } from '../power-systems';
+
 /**
  * lib/gameengin/systems/pooling.ts
  *
@@ -9,13 +11,7 @@
  * Re-exports ResourcePool from power-systems; ObjectPoolingSystem is new here.
  */
 
-import { ResourcePool } from '../power-systems';
-
-export { ResourcePool } from '../power-systems';
-
-// ─────────────────────────────────────────────────────────────────────────────
 //  ObjectPoolingSystem — named registry of ResourcePool instances
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Higher-level manager for multiple named ResourcePool instances.
@@ -29,7 +25,7 @@ export { ResourcePool } from '../power-systems';
  */
 export class ObjectPoolingSystem {
   // Use a mapped record keyed by name, value typed as generic pool.
-   
+
   private pools = new Map<string, ResourcePool<Record<string, unknown>>>();
 
   /**
@@ -67,7 +63,9 @@ export class ObjectPoolingSystem {
   get stats(): Record<string, ReturnType<ResourcePool<object>['stats']['valueOf']>> {
     const out: Record<string, unknown> = {};
     for (const [name, pool] of this.pools) out[name] = pool.stats;
-     
+
     return out as Record<string, object>;
   }
 }
+
+export { ResourcePool } from '../power-systems';

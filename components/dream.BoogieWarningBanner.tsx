@@ -1,13 +1,14 @@
 'use client';
-// components/dream.BoogieWarningBanner.tsx
-// Warning UI component used whenever TheBoogieMan.AI issues an enforcement action.
-// Includes "Why was I warned?" (req 12) and "Appeal" (req 13) links.
-// Uses factual, calm tone (req H64). Never reveals internals (req H63).
 
 import type { PolicyResult } from '@/lib/policy/boogiePolicy';
 import { AlertTriangle, ExternalLink, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+
+// components/dream.BoogieWarningBanner.tsx
+// Warning UI component used whenever TheBoogieMan.AI issues an enforcement action.
+// Includes "Why was I warned?" (req 12) and "Appeal" (req 13) links.
+// Uses factual, calm tone (req H64). Never reveals internals (req H63).
 
 interface BoogieWarningBannerProps {
   /** The PolicyResult that triggered this warning. */

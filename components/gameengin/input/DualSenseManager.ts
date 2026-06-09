@@ -1,3 +1,5 @@
+import * as BABYLON from '@babylonjs/core';
+
 /**
  * components/gameengin/input/DualSenseManager.ts
  *
@@ -16,8 +18,6 @@
  * Architecture: Integrates with existing dual-runtime, DreamDM Bar drag,
  * and spatial multitasking (game keeps rendering while messaging/resizing).
  */
-
-import * as BABYLON from '@babylonjs/core';
 
 export interface DualSenseState {
   leftStick: { x: number; y: number };

@@ -1,3 +1,5 @@
+import type { CollabMode, SessionRole } from '@/lib/collaboration';
+
 /**
  * lib/reality/types.ts
  *
@@ -17,10 +19,6 @@
  * Security: AXIOM 4 — RLS enforced server-side, user_id filters client-side.
  * Privacy: AXIOM 5 — activity timeline is scoped to members only.
  */
-
-import type { CollabMode, SessionRole } from '@/lib/collaboration';
-
-// ── Reality identity ──────────────────────────────────────────────────────────
 
 /** Who can join a Reality without an explicit invite. */
 export type RealityMode = 'open' | 'invite_only' | 'private';
@@ -58,8 +56,6 @@ export interface Reality {
   lastActivityAt: string;
 }
 
-// ── Reality membership ────────────────────────────────────────────────────────
-
 /** A user's membership record in a Reality. */
 export interface RealityMember {
   realityId: string;
@@ -73,8 +69,6 @@ export interface RealityMember {
   /** Whether the member is connected right now (derived from presence). */
   isOnline: boolean;
 }
-
-// ── Reality snapshots ─────────────────────────────────────────────────────────
 
 /**
  * A point-in-time snapshot of the entire Reality state.
@@ -92,8 +86,6 @@ export interface RealitySnapshot {
   enginStates: Record<string, Record<string, unknown>>;
   capturedAt: string;
 }
-
-// ── Reality activity ──────────────────────────────────────────────────────────
 
 export type RealityActivityKind =
   | 'member_joined'
@@ -116,8 +108,6 @@ export interface RealityActivityEntry {
   meta: Record<string, unknown>;
   createdAt: string;
 }
-
-// ── Runtime context ───────────────────────────────────────────────────────────
 
 /** What the RealityContext exposes to consumers. */
 export interface RealityContextValue {

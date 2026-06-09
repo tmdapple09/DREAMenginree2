@@ -1,3 +1,5 @@
+import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
+
 /**
  * lib/supabase/realtime.ts — Supabase Realtime integration for DREAMengin.
  *
@@ -17,11 +19,7 @@
  * Architecture justification: docs/ARCHITECTURE.md §6 (Realtime layer).
  */
 
-import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
-
-// ---------------------------------------------------------------------------
 // DreamR Pulse — live human media heartbeat
-// ---------------------------------------------------------------------------
 
 /** A single DreamR pulse event broadcast to followers. */
 export interface DreamRPulse {
@@ -108,9 +106,7 @@ export interface DreamRHandle {
   unsubscribe: () => void;
 }
 
-// ---------------------------------------------------------------------------
 // Live Messaging — DreamDM conversations
-// ---------------------------------------------------------------------------
 
 /** A typed DreamDM message sent over the realtime channel. */
 export interface LiveMessage {
@@ -197,9 +193,7 @@ export interface LiveMessageHandle {
   unsubscribe: () => void;
 }
 
-// ---------------------------------------------------------------------------
 // Presence types
-// ---------------------------------------------------------------------------
 
 export type PresenceStatus = 'online' | 'away' | 'typing' | 'offline';
 
@@ -218,9 +212,7 @@ export interface PresenceState {
   lastSeen: string;
 }
 
-// ---------------------------------------------------------------------------
 // Presence tracking helper
-// ---------------------------------------------------------------------------
 
 /**
  * Track a user's presence in a channel (typing, online/away).

@@ -2,7 +2,11 @@
   "name": "Dash",
   "category": "movement",
   "description": "Brief, high-velocity directional burst with iframes.",
-  "emotional_impact": ["expression", "tension-release", "mastery"],
+  "emotional_impact": [
+    "expression",
+    "tension-release",
+    "mastery"
+  ],
   "implementation": {
     "state_machine": "ANY -> DASH -> POST_DASH_RECOVER",
     "parameters": {
@@ -18,9 +22,21 @@
       "afterimage_count": 4,
       "sound": "sfx_dash"
     },
-    "haptic_feedback": { "pattern": [40, 20, 40], "weak_magnitude": 0.5, "strong_magnitude": 0.2 }
+    "haptic_feedback": {
+      "pattern": [
+        40,
+        20,
+        40
+      ],
+      "weak_magnitude": 0.5,
+      "strong_magnitude": 0.2
+    }
   },
-  "games_using": ["Celeste", "Hades", "Hollow Knight"],
+  "games_using": [
+    "Celeste",
+    "Hades",
+    "Hollow Knight"
+  ],
   "fun_heuristics": {
     "skill_ceiling_increase": 0.85,
     "supports_sequence_break": 0.7,

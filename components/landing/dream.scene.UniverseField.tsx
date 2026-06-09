@@ -11,12 +11,9 @@ const TAU = Math.PI * 2;
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const LIGHT_PRESSURE_COEFF = 0.00000045;
 
-// ------------------------------------------------------------
 // TORRIDITY PHYSICS – Your exact functions
-// ------------------------------------------------------------
 const a0 = 1.2e-10; // m/s^2 – critical acceleration
 const n = MOND_N;   // 2.1
-
 
 function nu_T(y: number): number {
   if (y <= 0) return 1;
@@ -27,19 +24,17 @@ function nu_T(y: number): number {
 
 function torridityAccel(gN: number): number {
   const y = gN / a0;
-  if (y < 1e-12) return Math.sqrt(a0 * gN); 
+  if (y < 1e-12) return Math.sqrt(a0 * gN);
   return gN * nu_T(y);
 }
 
-// ------------------------------------------------------------
 // COSMOLOGY FROM YOUR CHARGE‑FLIP THEORY
-// ------------------------------------------------------------
-const H0 = 67.4;                
-const Omega_m0 = 0.315;        
+const H0 = 67.4;
+const Omega_m0 = 0.315;
 
-const z_flip = 0.7;            
-const flip_width = 0.1;        
-const Omega_L0 = 1 - Omega_m0; 
+const z_flip = 0.7;
+const flip_width = 0.1;
+const Omega_L0 = 1 - Omega_m0;
 
 const a_flip = 1 / (1 + z_flip);
 function darkEnergyDensity(a: number): number {
@@ -64,7 +59,7 @@ const AGE_STEPS = 2000;
 let ageTable: { t: number; a: number }[] = [];
 
 function buildAgeTable( ){
-  const T_PRESENT = 13.8e9; 
+  const T_PRESENT = 13.8e9;
   const dt = T_PRESENT / AGE_STEPS;
   ageTable = [{ t: 0, a: 1e-6 }];
   let a = 1e-6;
@@ -98,9 +93,7 @@ function getScaleFactor(ageYears: number): number {
   return a0 + (a1 - a0) * ((ageYears - t0) / (t1 - t0));
 }
 
-// ------------------------------------------------------------
 // COMPONENT
-// ------------------------------------------------------------
 export interface UniverseFieldProps {
   scaled?: boolean;
 }
@@ -141,7 +134,7 @@ export default function UniverseField(_props: UniverseFieldProps ){
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const context = canvas.getContext('2d', { alpha: false, desynchronized: true });
     if (!context) return;
     const ctx = context;
@@ -161,8 +154,8 @@ export default function UniverseField(_props: UniverseFieldProps ){
 
     let raf = 0;
     let lastNow = performance.now();
-    let universeAgeYears = 0; 
-    const COSMIC_SPEED = 5e8; 
+    let universeAgeYears = 0;
+    const COSMIC_SPEED = 5e8;
     const particleCount = clamp(Math.floor((width * height) / 820), MIN_PARTICLES, MAX_PARTICLES);
 
     const x = new Float32Array(particleCount);
@@ -197,22 +190,22 @@ export default function UniverseField(_props: UniverseFieldProps ){
         galaxyIdx[i] = i % GALAXY_COUNT;
         orbitRadius[i] = Math.pow(hash(i + 50), 0.58) * (0.13 + hash(i + 60) * 0.39);
         orbitPhase[i] = hash(i + 70) * TAU;
-        
+
         const typeRoll = hash(i + 999);
         if (i % Math.floor(particleCount / GALAXY_COUNT) === 0) {
-          celestialType[i] = 1;  
+          celestialType[i] = 1;
           size[i] = 3.5;
           color[i] = `hsla(260, 100%, 2%, `;
         } else if (typeRoll < 0.001) {
-          celestialType[i] = 2;  
+          celestialType[i] = 2;
           size[i] = 1.8;
           color[i] = `hsla(190, 100%, 80%, `;
         } else if (typeRoll < 0.05) {
-          celestialType[i] = 3;  
+          celestialType[i] = 3;
           size[i] = 0.8;
           color[i] = `hsla(45, 100%, 70%, `;
         } else {
-          celestialType[i] = 0;  
+          celestialType[i] = 0;
           size[i] = 0.5 + hash(i) * 1.5;
           color[i] = `hsla(${34 + hash(i) * 50}, 100%, 70%, `;
         }
@@ -224,11 +217,11 @@ export default function UniverseField(_props: UniverseFieldProps ){
 
     function update(dt: number ){
       universeAgeYears += dt * COSMIC_SPEED;
-      const a = getScaleFactor(universeAgeYears); 
-      const formation = smoothstep(5, 15, universeAgeYears / 1e9); 
+      const a = getScaleFactor(universeAgeYears);
+      const formation = smoothstep(5, 15, universeAgeYears / 1e9);
 
       const safeDt = Math.min(dt, 1/30);
-      
+
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#01030a';
       ctx.fillRect(0, 0, width, height);
@@ -255,19 +248,19 @@ export default function UniverseField(_props: UniverseFieldProps ){
         const g = galaxies[galaxyIdx[i]];
         const radius = orbitRadius[i] * Math.min(width, height) * 0.5 * formation;
         const angle = orbitPhase[i] + universeAgeYears * g.spin + radius * 0.001;
-        
+
         const targetX = centerX + Math.cos(angle) * radius * g.tiltX;
         const targetY = centerY + Math.sin(angle) * radius * g.tiltY;
 
         const dx = targetX - x[i];
         const dy = targetY - y[i];
         const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-        
+
         const gN = 0.05;
         const g_actual = torridityAccel(gN);
         const ax = (dx / dist) * g_actual;
         const ay = (dy / dist) * g_actual;
-        
+
         const lpScale = LIGHT_PRESSURE_COEFF * brightness[i];
         const lpX = (dx / dist) * lpScale;
         const lpY = (dy / dist) * lpScale;
@@ -294,7 +287,7 @@ export default function UniverseField(_props: UniverseFieldProps ){
 
         const alpha = brightness[i] * clamp(universeAgeYears / 5e9, 0, 1);
         ctx.fillStyle = `${color[i]}${alpha})`;
-        
+
         if (celestialType[i] === 2) {
           pulseTimer[i] += safeDt * 5;
           ctx.save();
@@ -307,7 +300,7 @@ export default function UniverseField(_props: UniverseFieldProps ){
 
         ctx.fillRect(rx, ry, size[i], size[i]);
       }
-      
+
       if (hash(universeAgeYears) > 0.98) {
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.beginPath();
@@ -336,10 +329,10 @@ export default function UniverseField(_props: UniverseFieldProps ){
   }, []); // Added dependency array to run only once on component mount
 
   return (
-    <canvas 
-      ref={canvasRef} 
+    <canvas
+      ref={canvasRef}
       data-mond-n={MOND_N}
-      style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 0 }} 
+      style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 0 }}
     />
   );
 }

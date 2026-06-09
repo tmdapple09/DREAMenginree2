@@ -1,4 +1,5 @@
 'use client';
+
 import type { WidgetInstance } from '@/types/widgets';
 
 interface DreamWidgetGridProps {

@@ -1,5 +1,17 @@
 'use client';
 
+import {
+    type MidiNote,
+    type PianoRollQuantize,
+    type PianoRollState,
+    createMidiNote,
+    isBlackKey,
+    midiPitchToName,
+    snapToGrid,
+} from '@/lib/music/starmakerDaw';
+import { ChevronDown, ChevronUp, Piano } from 'lucide-react';
+import { useCallback, useState } from 'react';
+
 /**
  * PianoRollPanel — FL Studio / Logic Pro style MIDI note editor.
  *
@@ -13,20 +25,6 @@
  *  - Octave scroll (−/+ buttons)
  *  - Note count and range readout
  */
-
-import {
-    type MidiNote,
-    type PianoRollQuantize,
-    type PianoRollState,
-    createMidiNote,
-    isBlackKey,
-    midiPitchToName,
-    snapToGrid,
-} from '@/lib/music/starmakerDaw';
-import { ChevronDown, ChevronUp, Piano } from 'lucide-react';
-import { useCallback, useState } from 'react';
-
-// ─── Theme tokens ─────────────────────────────────────────────────────────────
 
 const T = {
   bg:          '#0d0f17',
@@ -48,15 +46,11 @@ const PITCH_ROW_H = 12;   // px per pitch row
 const BEAT_COL_W = 32;    // px per beat column
 const KEY_W = 52;         // px for piano keyboard strip
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface PianoRollPanelProps {
   state: PianoRollState;
   bpm: number;
   onStateChange: (next: PianoRollState) => void;
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function sectionHeader(label: string, extra?: React.ReactNode): React.ReactNode {
   return (
@@ -85,8 +79,6 @@ function pill(color: string, text: React.ReactNode): React.ReactNode {
     </span>
   );
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollPanelProps) {
   const [isOpen, setIsOpen] = useState(false);

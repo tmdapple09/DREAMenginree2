@@ -13,7 +13,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const threshold = 80;
   const maxPull = 120;
 
@@ -33,10 +33,10 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
 
     const handleTouchMove = (e: TouchEvent) => {
       if (startY === 0 || isRefreshing) return;
-      
+
       currentY = e.touches[0].clientY;
       const distance = currentY - startY;
-      
+
       if (distance > 0 && window.scrollY === 0) {
         e.preventDefault();
         const dampedDistance = Math.min(distance * 0.5, maxPull);
@@ -47,12 +47,12 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
     const handleTouchEnd = async () => {
       if (pullDistance >= threshold && !isRefreshing) {
         setIsRefreshing(true);
-        
+
         // Haptic feedback
         if ('vibrate' in navigator) {
           navigator.vibrate([10, 50, 10]);
         }
-        
+
         try {
           await onRefresh();
         } catch (error: unknown) {
@@ -66,7 +66,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       } else {
         setPullDistance(0);
       }
-      
+
       startY = 0;
       setTouchStart(0);
     };
@@ -108,8 +108,8 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
         >
           <RefreshCw
             className={`w-6 h-6 ${
-              pullDistance >= threshold 
-                ? 'text-blue-600 dark:text-blue-400' 
+              pullDistance >= threshold
+                ? 'text-blue-600 dark:text-blue-400'
                 : 'text-slate-400'
             }`}
           />

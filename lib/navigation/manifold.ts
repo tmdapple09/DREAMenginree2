@@ -19,15 +19,15 @@ export const SINGULARITY_THRESHOLD = 1e-6;
 
 /**
  * Section 4.1: Cubic → Spherical Projection
- * 
+ *
  * Raw cube vector c ∈ [-1,1]³
  * Map to sphere: s = c / ||c||
  * Then interpolate: p = lerp(c, s, λ)
- * 
+ *
  * λ ∈ [0,1]
  * λ → 1 when zoomed out (more spherical)
  * λ → 0 when zoomed in (more cubic)
- * 
+ *
  * Creates "round cube" effect
  */
 export function projectCubicToSphere(
@@ -36,25 +36,25 @@ export function projectCubicToSphere(
 ): Vector3 {
   // Clamp lambda to [0, 1]
   lambda = Math.max(0, Math.min(1, lambda));
-  
+
   // Calculate sphere position: s = c / ||c||
   const magnitude = Math.sqrt(
     cubePos.x * cubePos.x +
     cubePos.y * cubePos.y +
     cubePos.z * cubePos.z
   );
-  
+
   // Handle zero vector
   if (magnitude < VECTOR_ZERO_THRESHOLD) {
     return { x: 0, y: 0, z: 0 };
   }
-  
+
   const spherePos: Vector3 = {
     x: cubePos.x / magnitude,
     y: cubePos.y / magnitude,
     z: cubePos.z / magnitude,
   };
-  
+
   // Linear interpolation: p = lerp(c, s, λ)
   return {
     x: cubePos.x + lambda * (spherePos.x - cubePos.x),
@@ -71,7 +71,7 @@ export function projectCubicToSphere(
 export function computeLambda(depth: number, maxDepth: number = 5): number {
   // Normalize depth to [0, 1]
   const normalizedDepth = Math.min(depth / maxDepth, 1);
-  
+
   // Invert: higher depth = more zoomed out = higher lambda
   return normalizedDepth;
 }
@@ -79,10 +79,10 @@ export function computeLambda(depth: number, maxDepth: number = 5): number {
 /**
  * Section 2.2: Face Parameterization
  * Map to spherical coordinates
- * 
+ *
  * θ ∈ [0, π]
  * φ ∈ [0, 2π]
- * 
+ *
  * Mapping:
  * x = sin(θ) cos(φ)
  * y = sin(θ) sin(φ)
@@ -90,20 +90,20 @@ export function computeLambda(depth: number, maxDepth: number = 5): number {
  */
 export function cartesianToSpherical(v: Vector3): SphericalCoords {
   const r = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  
+
   if (r < VECTOR_ZERO_THRESHOLD) {
     return { theta: 0, phi: 0 };
   }
-  
+
   // θ = arccos(z / r)
   const theta = Math.acos(Math.max(-1, Math.min(1, v.z / r)));
-  
+
   // φ = atan2(y, x)
   const phi = Math.atan2(v.y, v.x);
-  
+
   // Normalize phi to [0, 2π]
   const normalizedPhi = phi < 0 ? phi + 2 * Math.PI : phi;
-  
+
   return { theta, phi: normalizedPhi };
 }
 
@@ -121,7 +121,7 @@ export function sphericalToCartesian(coords: SphericalCoords, radius: number = 1
 /**
  * Section 4.2: Edge Blending
  * At face borders, blend smoothly between faces
- * 
+ *
  * blendWidth = ε
  * weight = smoothstep(0, ε, distToEdge)
  * position = mix(faceA, faceB, weight)
@@ -129,7 +129,7 @@ export function sphericalToCartesian(coords: SphericalCoords, radius: number = 1
 export function smoothstep(edge0: number, edge1: number, x: number): number {
   // Clamp x to [edge0, edge1]
   const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
-  
+
   // Smooth interpolation: 3t² - 2t³
   return t * t * (3 - 2 * t);
 }
@@ -146,7 +146,7 @@ export function distanceToEdge(faceX: number, faceY: number): number {
   const distRight = 1 - faceX;   // Distance to right edge (1)
   const distBottom = faceY + 1;  // Distance to bottom edge (-1)
   const distTop = 1 - faceY;     // Distance to top edge (1)
-  
+
   // Return minimum distance
   return Math.min(distLeft, distRight, distBottom, distTop);
 }
@@ -162,7 +162,7 @@ export function blendFaceEdge(
 ): Vector3 {
   // Compute blend weight using smoothstep
   const weight = smoothstep(0, blendWidth, edgeDistance);
-  
+
   // Linear blend: result = faceA * (1 - weight) + faceB * weight
   return {
     x: faceA.x + weight * (faceB.x - faceA.x),
@@ -173,13 +173,13 @@ export function blendFaceEdge(
 
 /**
  * Section 2.3: Slot Position in Polar Layout
- * 
+ *
  * For each face f, slot i ∈ {0..7}
- * 
+ *
  * Polar layout:
  * r = baseRadius
  * α = i * (2π / 8)
- * 
+ *
  * slotPosition: s_i = r * (cos α, sin α, 0)
  */
 export function computeSlotPosition(
@@ -189,10 +189,10 @@ export function computeSlotPosition(
 ): { x: number; y: number } {
   // Ensure slot index is in valid range
   const slot = ((slotIndex % totalSlots) + totalSlots) % totalSlots;
-  
+
   // Compute angle: α = i * (2π / 8)
   const alpha = slot * (2 * Math.PI / totalSlots);
-  
+
   // Compute position in polar coordinates
   return {
     x: baseRadius * Math.cos(alpha),
@@ -203,10 +203,10 @@ export function computeSlotPosition(
 /**
  * Section 11: Widget Mount Geometry
  * Each widget rendered on curved quad
- * 
+ *
  * Surface: z = κ(x² + y²)
  * κ = curvature constant
- * 
+ *
  * Gives lens effect
  */
 export function computeWidgetCurvature(
@@ -222,11 +222,11 @@ export function computeWidgetCurvature(
  */
 export function normalizeVector(v: Vector3): Vector3 {
   const length = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  
+
   if (length < VECTOR_ZERO_THRESHOLD) {
     return { x: 0, y: 0, z: 0 };
   }
-  
+
   return {
     x: v.x / length,
     y: v.y / length,

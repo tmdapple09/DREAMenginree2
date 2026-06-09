@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import BrandingEngin from '@/engins/engin.BrandingEngin';
+
 /**
  * BrandEnginApp — Full-screen app shell for the Brand Engine.
  *
@@ -8,9 +11,6 @@
  *   /engines/brand/identity   → brand identity editor
  *   /engines/brand/campaigns  → campaign ROI calculator
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import BrandingEngin from '@/engins/engin.BrandingEngin';
 
 export default makeEnginApp({
   id: 'brand',

@@ -153,3 +153,4 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
     </div>
   );
 }
+

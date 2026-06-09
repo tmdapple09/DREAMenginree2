@@ -1,7 +1,7 @@
+import { createServerClient } from '@/lib/supabase/server';
+
 // lib/ai/idempotency.ts
 // Idempotency key checker to prevent duplicate intent execution
-
-import { createServerClient } from '@/lib/supabase/server';
 
 interface CheckIdempotencyInput {
   key: string;
@@ -23,7 +23,7 @@ export async function checkIdempotency(
 ): Promise<CheckIdempotencyResult> {
   try {
     const supabase = await createServerClient();
-    
+
     const { error } = await supabase
       .from('idempotency_keys')
       .insert({
@@ -31,18 +31,18 @@ export async function checkIdempotency(
         user_id: input.userId,
         intent_type: input.intentType,
       });
-    
+
     if (error) {
       // Check if it's a unique constraint violation (replay)
       if (error.code === '23505') {
         return { allowed: false, isReplay: true };
       }
-      
+
       console.error('[idempotency] Error inserting key:', error);
       // Fail-closed: if we can't verify idempotency, deny
       return { allowed: false, isReplay: false };
     }
-    
+
     return { allowed: true, isReplay: false };
   } catch (error: unknown) {
     console.error('[idempotency] Unexpected error:', error);

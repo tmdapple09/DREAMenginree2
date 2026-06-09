@@ -115,3 +115,4 @@ export const DreamRegistry: Record<string, RegisteredDreamComponent> = {
 export function getDreamComponent(type?: string): RegisteredDreamComponent {
   return (type && DreamRegistry[type]) || DreamRegistry.default;
 }
+

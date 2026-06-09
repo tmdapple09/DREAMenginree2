@@ -1,4 +1,10 @@
 'use client';
+
+import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
+import { useDreamWindowActions } from '@/lib/dream-window/useDreamWindowActions';
+import type { CreateDreamWindowBody, DreamWindowRecord } from '@/types/dream-window';
+import { useCallback, useMemo, useState } from 'react';
+
 /**
  * components/dreams/dream.widget.SuperDreamWidget.tsx
  *
@@ -17,14 +23,7 @@
  * Privacy: all windows filtered by visibility before rendering (Point 21).
  */
 
-import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-import { useDreamWindowActions } from '@/lib/dream-window/useDreamWindowActions';
-import type { CreateDreamWindowBody, DreamWindowRecord } from '@/types/dream-window';
-import { useCallback, useMemo, useState } from 'react';
-
-// ---------------------------------------------------------------------------
 // Compatibility cluster definitions
-// ---------------------------------------------------------------------------
 
 /**
  * Auto-composition compatibility rules.
@@ -73,9 +72,7 @@ function groupIntoClusters(windows: DreamWindowRecord[]): ClusterGroup[] {
   return Array.from(groups.values());
 }
 
-// ---------------------------------------------------------------------------
 // Sub-components
-// ---------------------------------------------------------------------------
 
 function DreamWindowTile({
   window: w,
@@ -213,9 +210,7 @@ function ClusterCard({ group, onRemove, onBind, onCollapse }: { group: ClusterGr
   );
 }
 
-// ---------------------------------------------------------------------------
 // Main component
-// ---------------------------------------------------------------------------
 
 export interface SuperDreamWidgetProps {
   /** Optional filter: only show Dream Windows of these types */

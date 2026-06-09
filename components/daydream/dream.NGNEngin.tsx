@@ -1,21 +1,5 @@
 'use client';
 
-/**
- * NGNEngin — Visual Engine Builder (Engin Forge)
- *
- * Repurposed from ForgeEngin concept: a drag-and-drop visual builder
- * where users compose engines from 120+ atomic pieces, connect ports,
- * test in sandbox, and publish to DreamMarketplace.
- *
- * Rules:
- *  - Min 3 pieces (source + processor + output)
- *  - Max 30 pieces per engine
- *  - Each assembly has its own local event bus
- *  - "Dual Runtime Hub" piece enables cross-side communication
- *
- * Feature 41.
- */
-
 import { bridgeBuses, createEventBus } from '@/lib/event-bus';
 import {
     addConnection,
@@ -63,8 +47,24 @@ import {
     type DragEvent,
     type MouseEvent as ReactMouseEvent,
 } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
+/**
+ * NGNEngin — Visual Engine Builder (Engin Forge)
+ *
+ * Repurposed from ForgeEngin concept: a drag-and-drop visual builder
+ * where users compose engines from 120+ atomic pieces, connect ports,
+ * test in sandbox, and publish to DreamMarketplace.
+ *
+ * Rules:
+ *  - Min 3 pieces (source + processor + output)
+ *  - Max 30 pieces per engine
+ *  - Each assembly has its own local event bus
+ *  - "Dual Runtime Hub" piece enables cross-side communication
+ *
+ * Feature 41.
+ */
+
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const T = {
@@ -80,8 +80,6 @@ const T = {
   error:    '#ff5e5e',
   success:  '#4ade80',
 };
-
-// ── Category icons ─────────────────────────────────────────────────────────────
 
 const CAT_ICON: Record<PieceCategory, React.ReactNode> = {
   Audio:   <Music   size={13} />,
@@ -103,15 +101,11 @@ const CAT_COLOR: Record<PieceCategory, string> = {
   Runtime: '#7c6cff',
 };
 
-// ── Role badge ────────────────────────────────────────────────────────────────
-
 const ROLE_COLOR: Record<PieceManifest['role'], string> = {
   source:    '#34d399',
   processor: '#60a5fa',
   output:    '#fb923c',
 };
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 interface Props {
   onBack?: () => void;
@@ -147,8 +141,6 @@ export default function NGNEngin({ onBack }: Props) {
   const errors = validateAssembly(assembly);
   const valid  = errors.length === 0;
 
-  // ── Sidebar helpers ──────────────────────────────────────────────────────────
-
   const filteredPieces = useCallback((cat: PieceCategory): PieceManifest[] => {
     const base = getPiecesByCategory(cat);
     if (!search) return base;
@@ -163,8 +155,6 @@ export default function NGNEngin({ onBack }: Props) {
       return next;
     });
   };
-
-  // ── Canvas drag-drop ─────────────────────────────────────────────────────────
 
   const handleCanvasDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -198,8 +188,6 @@ export default function NGNEngin({ onBack }: Props) {
 
   const handleCanvasMouseUp = () => setDraggingId(null);
 
-  // ── Port wiring ──────────────────────────────────────────────────────────────
-
   const handlePortClick = (instanceId: string, portId: string, isInput: boolean) => {
     if (!isInput && !pending) {
       setPending({ fromInstanceId: instanceId, fromPortId: portId });
@@ -210,8 +198,6 @@ export default function NGNEngin({ onBack }: Props) {
       setPending(null);
     }
   };
-
-  // ── Actions ──────────────────────────────────────────────────────────────────
 
   const handleSave = () => {
     const json = serializeAssembly(assembly);
@@ -230,8 +216,6 @@ export default function NGNEngin({ onBack }: Props) {
     const encoded = btoa(encodeURIComponent(json));
     setShareUrl(`${window.location.origin}/marketplace?assembly=${encoded}`);
   };
-
-  // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
     <div style={{ display: 'flex', height: '100%', background: T.bg, color: T.text, fontFamily: 'inherit', overflow: 'hidden' }}>
@@ -501,8 +485,6 @@ export default function NGNEngin({ onBack }: Props) {
     </div>
   );
 }
-
-// ── PlacedPieceCard ───────────────────────────────────────────────────────────
 
 const T2 = {
   bg:       '#09090f',

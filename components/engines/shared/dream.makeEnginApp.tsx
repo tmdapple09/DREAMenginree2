@@ -1,5 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import EnginNavBar from './dream.bar.EnginNavBar';
+import type { EnginRuleSet } from './dream.EnginRuleSet';
+import EnginAppShell from './dream.shell.EnginAppShell';
+
 /**
  * dream.makeEnginApp.tsx
  *
@@ -27,11 +32,6 @@
  *
  * Architecture: docs/ARCHITECTURE.md §0 — stable core + swappable rule-sets.
  */
-
-import { useRouter } from 'next/navigation';
-import EnginNavBar from './dream.bar.EnginNavBar';
-import type { EnginRuleSet } from './dream.EnginRuleSet';
-import EnginAppShell from './dream.shell.EnginAppShell';
 
 /**
  * Returns a React component that renders the full Engin shell for the given

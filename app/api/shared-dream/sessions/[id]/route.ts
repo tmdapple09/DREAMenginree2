@@ -1,15 +1,15 @@
-// app/api/shared-dream/sessions/[id]/route.ts
-// GET   — load session + members + recent activity (securely checked)
-// PATCH — save merged engin state (called by useSharedDreamSession.flushBuffer)
-
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { createServerClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
+// app/api/shared-dream/sessions/[id]/route.ts
+// GET   — load session + members + recent activity (securely checked)
+// PATCH — save merged engin state (called by useSharedDreamSession.flushBuffer)
+
 // Escape hatch for missing database types to prevent "Type instantiation is excessively deep"
- 
+
 type AnyClient = SupabaseClient;
 
 interface SharedDreamSession {

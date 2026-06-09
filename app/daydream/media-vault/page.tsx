@@ -1,6 +1,7 @@
-// SURFACE: dreamsurface.DaydreamMediaVault  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamMediaVault  (framework-mandated basename: page.tsx)
 
 /**
  * Legacy media-vault daydream route — repurposed to the Create Daydream.

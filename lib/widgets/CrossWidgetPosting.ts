@@ -1,10 +1,10 @@
+import { widgetEventBus, type WidgetMsg } from './WidgetEventBus';
+import { WidgetLinkGraph } from './WidgetLinkGraph';
+import { toErrorMessage } from '@/lib/utils';
+
 // CrossWidgetPosting - Server-validated cross-widget posting system
 // Implements POST_REQUEST validation and platform publishing
 
-import { widgetEventBus, type WidgetMsg } from './WidgetEventBus';
-import { WidgetLinkGraph } from './WidgetLinkGraph';
-
-import { toErrorMessage } from '@/lib/utils';
 // Message types
 export const MSG_TYPE_POST_REQUEST = 1;
 export const MSG_TYPE_POST_RESULT = 2;
@@ -42,19 +42,19 @@ export interface PostResultPayload {
 export class CrossWidgetPostingEngine {
   private linkGraph: WidgetLinkGraph;
   private widgetCapabilities: Map<string, WidgetCapabilityConfig>;
-  
+
   constructor(linkGraph: WidgetLinkGraph) {
     this.linkGraph = linkGraph;
     this.widgetCapabilities = new Map();
   }
-  
+
   /**
    * Register widget capabilities
    */
   registerWidget(widgetId: string, capabilities: WidgetCapabilityConfig): void {
     this.widgetCapabilities.set(widgetId, capabilities);
   }
-  
+
   /**
    * Validate a POST_REQUEST message
    */
@@ -69,7 +69,7 @@ export class CrossWidgetPostingEngine {
         reason: 'No POST link exists from source to target'
       };
     }
-    
+
     // Check if target supports POST_SINK
     const targetCapabilities = this.widgetCapabilities.get(targetWidgetId);
     if (!targetCapabilities?.canReceivePost) {
@@ -78,10 +78,10 @@ export class CrossWidgetPostingEngine {
         reason: 'Target widget does not support receiving posts'
       };
     }
-    
+
     return { valid: true };
   }
-  
+
   /**
    * Handle a POST_REQUEST message
    */
@@ -89,7 +89,7 @@ export class CrossWidgetPostingEngine {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
     const payload = msg.payload as PostRequestPayload;
-    
+
     // Validate request
     const validation = this.validatePostRequest(sourceWidgetId, targetWidgetId);
     if (!validation.valid) {
@@ -100,7 +100,7 @@ export class CrossWidgetPostingEngine {
       });
       return;
     }
-    
+
     // Call server-validated publish API — auth session, rate limits, and audit
     // logging are all enforced server-side in POST /api/posts.
     try {
@@ -137,7 +137,7 @@ export class CrossWidgetPostingEngine {
       });
     }
   }
-  
+
   /**
    * Send POST_RESULT message
    */
@@ -153,7 +153,7 @@ export class CrossWidgetPostingEngine {
       result
     );
   }
-  
+
   /**
    * Handle incoming messages
    */
@@ -162,58 +162,58 @@ export class CrossWidgetPostingEngine {
       case MSG_TYPE_POST_REQUEST:
         this.handlePostRequest(msg);
         break;
-      
+
       case MSG_TYPE_SEND_TEXT:
         this.handleSendText(msg);
         break;
-      
+
       case MSG_TYPE_SEND_MEDIA:
         this.handleSendMedia(msg);
         break;
-      
+
       default:
         console.warn('Unknown message type:', msg.type);
     }
   }
-  
+
   /**
    * Handle SEND_TEXT message
    */
   private handleSendText(msg: WidgetMsg): void {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
-    
+
     if (!this.linkGraph.hasCapability(sourceWidgetId, targetWidgetId, 'CAN_SEND_TEXT')) {
       console.warn('No CAN_SEND_TEXT capability');
       return;
     }
-    
+
     console.log('SEND_TEXT:', {
       source: sourceWidgetId,
       target: targetWidgetId,
       payload: msg.payload
     });
   }
-  
+
   /**
    * Handle SEND_MEDIA message
    */
   private handleSendMedia(msg: WidgetMsg): void {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
-    
+
     if (!this.linkGraph.hasCapability(sourceWidgetId, targetWidgetId, 'CAN_SEND_MEDIA')) {
       console.warn('No CAN_SEND_MEDIA capability');
       return;
     }
-    
+
     console.log('SEND_MEDIA:', {
       source: sourceWidgetId,
       target: targetWidgetId,
       payload: msg.payload
     });
   }
-  
+
   /**
    * Create a posting link between widgets
    */

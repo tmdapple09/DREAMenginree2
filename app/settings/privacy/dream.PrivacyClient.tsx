@@ -1,5 +1,9 @@
 'use client';
 
+import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX, X } from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * PrivacyClient — interactive privacy settings persisted to Supabase.
  *
@@ -11,10 +15,6 @@
  * Architecture justification: ARCHITECTURE.md §10 (client-side preference
  * state), CONSTITUTION.md Rule 6 (every visible action does something real).
  */
-
-import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX, X } from 'lucide-react';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'de-privacy-settings';
 

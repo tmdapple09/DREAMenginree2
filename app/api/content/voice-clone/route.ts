@@ -3,8 +3,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 import { toErrorMessage } from '@/lib/utils';
+
 const CloneSchema = z.object({
   action: z.literal('clone'),
   sampleBase64: z.string().min(10).max(10_000_000),
@@ -91,7 +91,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const elevenLabsKey = process.env.ELEVENLABS_API_KEY;
   const db = supabase as unknown as SupabaseDb;
 
-  // ── clone ────────────────────────────────────────────────────────────────
   if (parsed.data.action === 'clone') {
     const { voiceName, sampleBase64 } = parsed.data;
 
@@ -162,7 +161,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // ── list ────────────────────────────────────────────────────────────────
   if (parsed.data.action === 'list') {
     if (elevenLabsKey) {
       try {
@@ -206,7 +204,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ profiles });
   }
 
-  // ── delete ───────────────────────────────────────────────────────────────
   if (parsed.data.action === 'delete') {
     const { voiceId } = parsed.data;
 
@@ -237,7 +234,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ message: `Voice profile "${voiceId}" deleted.` });
   }
 
-  // ── tts ─────────────────────────────────────────────────────────────────
   const { text, voiceId, stability = 0.5, similarityBoost = 0.75 } = parsed.data;
 
   if (elevenLabsKey) {

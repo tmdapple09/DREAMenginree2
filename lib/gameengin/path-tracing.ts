@@ -120,8 +120,6 @@ export class PathTracer {
   get bvhSize(): number  { return this.bvh.length; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface Reservoir {
   sample: number;       // sampled light index
   weightSum: number;    // sum of resampling weights
@@ -185,8 +183,6 @@ export class RestirGI {
 
   get spatialReuseRadius(): number { return this.spatialRadius; }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface DenoiserConfig {
   /** Target latency budget in milliseconds. Higher allows bigger model. */

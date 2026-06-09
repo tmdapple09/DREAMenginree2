@@ -6,8 +6,6 @@
  * If the card leaves before 4 s → cancels silently.
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface ViewTallyTimer {
   /** Cancel the pending tally (card left viewport). */
   cancel(): void;
@@ -15,11 +13,7 @@ export interface ViewTallyTimer {
   readonly active: boolean;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 export const VIEW_TALLY_DURATION_MS = 4000;
-
-// ─── Factory ─────────────────────────────────────────────────────────────────
 
 /**
  * createViewTallyTimer(onTally, onCancel?)
@@ -53,8 +47,6 @@ export function createViewTallyTimer(
     },
   };
 }
-
-// ─── React-friendly hook helper ───────────────────────────────────────────────
 
 /**
  * ViewTallyTracker

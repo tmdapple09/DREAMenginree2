@@ -17,9 +17,7 @@
  * The shader is written in WGSL and designed for WebGPU-native execution.
  */
 
-// ---------------------------------------------------------------------------
 // Neural Post-Process shader (WGSL)
-// ---------------------------------------------------------------------------
 
 /**
  * Uniforms for the neural post-process pass.
@@ -46,8 +44,6 @@ struct NeuralUniforms {
 @group(0) @binding(1) var outputTex : texture_storage_2d<rgba8unorm, write>;
 @group(0) @binding(2) var<uniform> u : NeuralUniforms;
 
-// ── Utility functions ─────────────────────────────────────────────────────
-
 fn luminance(c: vec3<f32>) -> f32 {
   return dot(c, vec3<f32>(0.2126, 0.7152, 0.0722));
 }
@@ -65,7 +61,6 @@ fn softClamp(x: f32, limit: f32) -> f32 {
   return limit * tanh(x / limit);
 }
 
-// ── Edge-aware sharpening (CAS-inspired) ──────────────────────────────────
 //
 // Contrast Adaptive Sharpening samples a 3×3 neighbourhood and boosts
 // edges proportionally to local contrast while preserving flat regions.
@@ -96,7 +91,6 @@ fn casSharp(center: vec3<f32>, neighbours: array<vec3<f32>, 8>, strength: f32) -
   return center + detail * strength * (0.5 + contrast * 0.5);
 }
 
-// ── Temporal neighbourhood denoise ────────────────────────────────────────
 //
 // Approximated: averages the 3×3 neighbourhood weighted by luminance
 // similarity to the center pixel. True temporal denoising would require
@@ -122,7 +116,6 @@ fn neighbourDenoise(coord: vec2<i32>, center: vec3<f32>, strength: f32) -> vec3<
   return mix(center, denoised, strength);
 }
 
-// ── Gold / sky colour grading ─────────────────────────────────────────────
 //
 // Applies the DREAMengin signature colour palette:
 //   - Gold tint in highlights (warm, jeweller's gold #D4AF37)
@@ -144,7 +137,6 @@ fn dreamenginGrade(c: vec3<f32>, goldBias: f32, skyBias: f32) -> vec3<f32> {
   return graded;
 }
 
-// ── Neumorphic vignette ───────────────────────────────────────────────────
 //
 // Soft dark-edge vignette with a subtle animated breathing pulse
 // that matches the Neumorphic Dark aesthetic of the design system.
@@ -156,8 +148,6 @@ fn neuVignette(uv: vec2<f32>, time: f32) -> f32 {
   let pulse = 1.0 + sin(time * 1.57) * 0.02;
   return saturate(1.0 - dist * pulse);
 }
-
-// ── Main compute kernel ───────────────────────────────────────────────────
 
 @compute @workgroup_size(8, 8)
 fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
@@ -198,9 +188,7 @@ fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
 }
 `;
 
-// ---------------------------------------------------------------------------
 // Neural Post-Process uniform buffer layout
-// ---------------------------------------------------------------------------
 
 /** Byte layout of the NeuralUniforms struct (32 bytes, 16-byte aligned). */
 export const NEURAL_UNIFORM_SIZE = 32;
@@ -229,9 +217,7 @@ export function createNeuralUniforms(params: {
   ]);
 }
 
-// ---------------------------------------------------------------------------
 // Pipeline builder
-// ---------------------------------------------------------------------------
 
 /**
  * Create the neural post-processing compute pipeline.

@@ -1,8 +1,4 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
-
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/channelMetrics.ts.
 
@@ -29,27 +25,15 @@
  *   // { emissionCount: 1, errorCount: 0, avgLatencyMs: 12, lastActivityAt: ... }
  */
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const _state = new Map<string, _ChannelState>();
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -70,8 +54,6 @@ export interface ChannelMetrics {
   lastActivityAt: number | null;
 }
 
-// ── Internal state ─────────────────────────────────────────────────────────────
-
 interface _ChannelState {
   emissionCount: number;
   errorCount: number;
@@ -79,8 +61,6 @@ interface _ChannelState {
   latencySamples: number;
   lastActivityAt: number | null;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -92,8 +72,6 @@ function _ensure(channel: string): _ChannelState {
   }
   return s;
 }
-
-// ── Improvement 68: recordEmission ────────────────────────────────────────────
 
 /**
  * Record an emission on `channel`.
@@ -109,8 +87,6 @@ export function recordEmission(channel: string, latencyMs?: number): void {
   }
 }
 
-// ── Improvement 69: recordError ───────────────────────────────────────────────
-
 /**
  * Record an error on `channel`.
  * Increments both the error count and the last-activity timestamp.
@@ -120,8 +96,6 @@ export function recordError(channel: string): void {
   s.errorCount++;
   s.lastActivityAt = Date.now();
 }
-
-// ── Improvement 70: getChannelMetrics ─────────────────────────────────────────
 
 /**
  * Return the current metrics for a single channel.
@@ -141,8 +115,6 @@ export function getChannelMetrics(channel: string): ChannelMetrics {
   };
 }
 
-// ── Improvement 71: getAllChannelMetrics ──────────────────────────────────────
-
 /**
  * Return a snapshot of metrics for every channel that has been used.
  * Sorted by emission count descending (most active first).
@@ -153,8 +125,6 @@ export function getAllChannelMetrics(): ChannelMetrics[] {
     .sort((a, b) => b.emissionCount - a.emissionCount);
 }
 
-// ── Improvement 72: resetChannelMetrics ──────────────────────────────────────
-
 /**
  * Clear all recorded metrics.
  * Intended for test teardown and explicit reset scenarios.
@@ -163,14 +133,8 @@ export function resetChannelMetrics(): void {
   _state.clear();
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

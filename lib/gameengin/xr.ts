@@ -83,8 +83,6 @@ export class WebXRSession {
   get didFallBack(): boolean { return this.fallbackInvoked; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export type HandJoint =
   | 'wrist'
   | 'thumb-tip' | 'index-tip' | 'middle-tip' | 'ring-tip' | 'pinky-tip';
@@ -130,8 +128,6 @@ export class HandTrackingInput {
     for (const sub of this.subscribers) sub(side, action);
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface SpatialAnchor {
   id: string;

@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 
 export default function EnginShell({ children }: {children: React.ReactNode}) {
@@ -11,7 +12,7 @@ export default function EnginShell({ children }: {children: React.ReactNode}) {
           <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
         </div>
       </nav>
-      
+
       <section className="p-4 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {children}
       </section>

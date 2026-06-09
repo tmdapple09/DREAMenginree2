@@ -11,5 +11,7 @@
     },
     "guidance": "Always offer an accessibility toggle to disable."
   },
-  "fun_heuristics": { "perceived_impact": 0.9 }
+  "fun_heuristics": {
+    "perceived_impact": 0.9
+  }
 }

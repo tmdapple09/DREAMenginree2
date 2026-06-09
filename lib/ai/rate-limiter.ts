@@ -1,7 +1,7 @@
+import { createServerClient } from '@/lib/supabase/server';
+
 // lib/ai/rate-limiter.ts
 // Rate Limiting Service
-
-import { createServerClient } from '@/lib/supabase/server';
 
 // ============================================================================
 // RATE LIMIT CHECK

@@ -4,7 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/* ------------------------------------------------------------------ */
 /*  Neon Glow Shader Material                                         */
 /*                                                                    */
 /*  A custom ShaderMaterial that produces a pulsating neon glow        */

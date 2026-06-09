@@ -1,12 +1,12 @@
+import { groqChat, type GroqMessage } from '@/lib/ai/groq';
+import { IntentSchema, type Intent, type IntentType } from '@/lib/ai/schemas';
+import { v4 as uuidv4 } from 'uuid';
+
 // lib/ai/triad.ts
 // Dr. Eams (user AI) + Idari (builder AI) + Boogie (policy AI)
 //
 // This module intentionally keeps the orchestration server-side.
 // The UI should only ever talk to Dr. Eams endpoints.
-
-import { groqChat, type GroqMessage } from '@/lib/ai/groq';
-import { IntentSchema, type Intent, type IntentType } from '@/lib/ai/schemas';
-import { v4 as uuidv4 } from 'uuid';
 
 export const AI_MODELS = {
   // User-facing agent — override via GROQ_MODEL_EAMS_FAST / GROQ_MODEL_EAMS_HEAVY
@@ -51,11 +51,9 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
   }
 }
 
-// ---------------------------------------------------------------------------
 // Phase 8 §A — Canonical routes for Dr. Eams navigation resolution (Point 9).
 // These are the only valid NAV_DELTA route values Dr. Eams may propose.
 // Any route not in this list is rejected at the intent-validation layer.
-// ---------------------------------------------------------------------------
 
 export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
   // Core surfaces
@@ -90,9 +88,7 @@ export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
   '/onboarding',
 ]);
 
-// ---------------------------------------------------------------------------
 // Dr. Eams: create a concise reply + up to 3 JSON intents.
-// ---------------------------------------------------------------------------
 
 // Subset of CODE_VOCABULARY terms inlined so triad.ts remains self-contained.
 // Full vocabulary lives in lib/code/drEamsCodeAssist.ts.
@@ -247,9 +243,7 @@ export async function planWithEams(input: {
   };
 }
 
-// ---------------------------------------------------------------------------
 // Idari: sanity-check / shrink / normalize. (LLM optional; rule-based default)
-// ---------------------------------------------------------------------------
 
 // User-facing intents — safe for any authenticated actor.
 const USER_ALLOWED_INTENT_TYPES: IntentType[] = [
@@ -290,9 +284,7 @@ export function validateWithIdari(
   return { intents: filtered, notes };
 }
 
-// ---------------------------------------------------------------------------
 // Boogie: policy layer. Use existing rule engine elsewhere; this is LLM helper.
-// ---------------------------------------------------------------------------
 
 export async function boogiePolicyCheck(input: {
   actorRole: 'user' | 'admin' | 'owner';

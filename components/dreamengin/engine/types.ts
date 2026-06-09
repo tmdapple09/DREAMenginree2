@@ -1,6 +1,6 @@
-// components/dreamengin/engine/types.ts
-
 import type { UnitComplex } from './math';
+
+// components/dreamengin/engine/types.ts
 
 export type Depth = 0 | 1;
 

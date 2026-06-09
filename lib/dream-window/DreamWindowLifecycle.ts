@@ -1,3 +1,9 @@
+import {
+    DREAM_WINDOW_STATES,
+    type ConnectionVerb,
+    type DreamWindowState,
+} from '@/lib/identity/canonical-names';
+
 /**
  * DreamWindowLifecycle — Dream Window state machine
  *
@@ -25,15 +31,7 @@
  * Naming: All state strings sourced from DREAM_WINDOW_STATES (canonical-names.ts).
  */
 
-import {
-    DREAM_WINDOW_STATES,
-    type ConnectionVerb,
-    type DreamWindowState,
-} from '@/lib/identity/canonical-names';
-
-// ---------------------------------------------------------------------------
 // Dream Window instance type
-// ---------------------------------------------------------------------------
 
 export interface DreamWindowSize {
   width: number;
@@ -97,9 +95,7 @@ export interface DreamWindowInstance {
   activeState: DreamWindowState;
 }
 
-// ---------------------------------------------------------------------------
 // Transition helpers
-// ---------------------------------------------------------------------------
 
 function assertState(
   instance: DreamWindowInstance,
@@ -115,9 +111,7 @@ function assertState(
   }
 }
 
-// ---------------------------------------------------------------------------
 // State machine transitions
-// ---------------------------------------------------------------------------
 
 /**
  * Bind a Dream Window.
@@ -213,9 +207,7 @@ export function unbindDreamWindow(instance: DreamWindowInstance): DreamWindowIns
   return { ...instance, activeState: DREAM_WINDOW_STATES.UNBOUND };
 }
 
-// ---------------------------------------------------------------------------
 // Convenience factory
-// ---------------------------------------------------------------------------
 
 /**
  * Create a new Dream Window instance in the Unbound state.
@@ -234,9 +226,7 @@ export function createDreamWindowInstance(
   };
 }
 
-// ---------------------------------------------------------------------------
 // Layer validation — Point 20 (Shell→Connector→Feature→Output enforcement)
-// ---------------------------------------------------------------------------
 
 /**
  * The four canonical layers that every Dream Window must pass through.
@@ -306,6 +296,6 @@ export function validateDreamWindowLayers(
 
 // Re-export canonical constants so consumers can use this module as a single
 // import point for Dream Window lifecycle work.
+
 export { DREAM_WINDOW_STATES };
 export type { DreamWindowState };
-

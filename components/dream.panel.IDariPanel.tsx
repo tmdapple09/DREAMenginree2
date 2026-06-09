@@ -1,5 +1,18 @@
 'use client';
 
+import { emitIdariEvent } from '@/lib/agents/agentBus';
+import {
+    AlertCircle,
+    CheckCircle,
+    Pause,
+    Play,
+    RefreshCw, Shield,
+    Sparkles,
+    Zap,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * IDariPanel — admin control panel for the IDARi AI system.
  *
@@ -15,19 +28,6 @@
  * IDARI_CONTRACT.md — admin-only; never surfaced to regular users.
  */
 
-import { emitIdariEvent } from '@/lib/agents/agentBus';
-import {
-    AlertCircle,
-    CheckCircle,
-    Pause,
-    Play,
-    RefreshCw, Shield,
-    Sparkles,
-    Zap,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 interface IdariLog {
   timestamp: Date;
   action: string;
@@ -130,7 +130,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
       stopPolling();
       document.removeEventListener('visibilitychange', onVisibility);
     };
-   
+
   }, [autoRefresh, isRunning, refreshInterval]);
 
   const addLog = (action: string, status: IdariLog['status'], details?: string) => {

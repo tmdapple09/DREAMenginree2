@@ -1,5 +1,9 @@
 'use client';
 
+import { CheckCircle, Loader2, Send } from 'lucide-react';
+import { useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * components/marketplace/dream.MarketplaceRequestButton.tsx
  *
@@ -10,10 +14,6 @@
  * Phase 8 §E:   Point 46 — contact/request flow routes to real system action
  */
 
-import { CheckCircle, Loader2, Send } from 'lucide-react';
-import { useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 type Props = {
   itemId:    string;
   itemTitle: string;

@@ -30,7 +30,7 @@ export class AnchorWidgetStorage {
   private static readonly STORAGE_KEY = 'anchor_widget_state';
   private static readonly HOME_SLOTS_COUNT = 8;
   private static readonly PRIORITY_WIDGETS_COUNT = 12;
-  
+
   /**
    * Initialize default home slots (all blank)
    */
@@ -40,50 +40,50 @@ export class AnchorWidgetStorage {
       widgetId: null
     }));
   }
-  
+
   /**
    * Load anchor widget state from storage
    */
   static async load(): Promise<AnchorWidgetState | null> {
     try {
       if (typeof window === 'undefined') return null;
-      
+
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (!stored) return null;
-      
+
       const data = JSON.parse(stored);
-      
+
       // Reconstruct Int32Array if present
       if (data.navSnapshot) {
         data.navSnapshot = new Int32Array(data.navSnapshot);
       }
-      
+
       return data;
     } catch (error: unknown) {
       console.error('Failed to load anchor widget state:', error);
       return null;
     }
   }
-  
+
   /**
    * Save anchor widget state to storage
    */
   static async save(state: AnchorWidgetState): Promise<void> {
     try {
       if (typeof window === 'undefined') return;
-      
+
       // Convert Int32Array to regular array for JSON
       const stateToStore = {
         ...state,
         navSnapshot: state.navSnapshot ? Array.from(state.navSnapshot) : null
       };
-      
+
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(stateToStore));
     } catch (error: unknown) {
       console.error('Failed to save anchor widget state:', error);
     }
   }
-  
+
   /**
    * Save state with idle callback (non-blocking)
    */
@@ -95,7 +95,7 @@ export class AnchorWidgetStorage {
       setTimeout(() => this.save(state), 100);
     }
   }
-  
+
   /**
    * Get widget ID for a home slot
    */
@@ -103,7 +103,7 @@ export class AnchorWidgetStorage {
     const slot = state.homeSlots.find((s) => s.slotIndex === slotIndex);
     return slot?.widgetId || null;
   }
-  
+
   /**
    * Set widget ID for a home slot
    */
@@ -119,13 +119,13 @@ export class AnchorWidgetStorage {
       state.homeSlots.push({ slotIndex, widgetId });
     }
   }
-  
+
   /**
    * Update priority widgets based on focus and usage
    */
   static updatePriorities(state: AnchorWidgetState, focusedWidgetId: string): void {
     const existing = state.priorityWidgets.find((w) => w.widgetId === focusedWidgetId);
-    
+
     if (existing) {
       existing.lastFocused = Date.now();
       existing.usageCount = (existing.usageCount || 0) + 1;
@@ -137,21 +137,21 @@ export class AnchorWidgetStorage {
         usageCount: 1
       });
     }
-    
+
     // Sort by pinned first, then by lastFocused
     state.priorityWidgets.sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
       return b.lastFocused - a.lastFocused;
     });
-    
+
     // Keep only top N
     state.priorityWidgets = state.priorityWidgets.slice(
       0,
       this.PRIORITY_WIDGETS_COUNT
     );
   }
-  
+
   /**
    * Create initial state
    */
@@ -165,7 +165,7 @@ export class AnchorWidgetStorage {
       navSnapshot: null
     };
   }
-  
+
   /**
    * Clear all stored state (for testing)
    */

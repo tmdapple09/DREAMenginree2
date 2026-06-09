@@ -247,3 +247,4 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
     </div>
   );
 }
+

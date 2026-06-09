@@ -148,3 +148,4 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
     </WidgetCard>
   );
 }
+

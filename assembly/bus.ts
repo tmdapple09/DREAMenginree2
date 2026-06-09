@@ -61,3 +61,4 @@ export function reset(): void {
   head = 0;
   tail = 0;
 }
+

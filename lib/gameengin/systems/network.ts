@@ -9,14 +9,9 @@
  * Re-exports from power-systems so existing imports continue to work.
  */
 
-// ─── Classes ─────────────────────────────────────────────────────────────────
-
 export {
     ClientSidePrediction, RollbackNetcode
 } from '../power-systems';
-
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export type {
     NetInput, PredictionState, RollbackConfig, ServerSnapshot
 } from '../power-systems';

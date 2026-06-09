@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.SettingsAlgorithm  (framework-mandated basename: page.tsx)
 import AlgorithmEngine from '@/components/feed/dream.AlgorithmEngine';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { createServerClient } from '@/lib/supabase/server';
@@ -6,6 +5,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Cpu } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.SettingsAlgorithm  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: 'My Algorithm – Dreamengin',

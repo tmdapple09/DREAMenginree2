@@ -1,14 +1,14 @@
 'use client';
 
+import { Layers, Minus, Pause, Play, Plus, SkipBack } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * ArrangePanel — Arrangement overview for the Music Engine app.
  *
  * Shows a visual timeline of the current project's clips, tempo map,
  * and structure sections. Lives at /engines/music/arrange.
  */
-
-import { Layers, Minus, Pause, Play, Plus, SkipBack } from 'lucide-react';
-import { useState } from 'react';
 
 interface Section {
   id: string;
@@ -55,7 +55,6 @@ export default function ArrangePanel( ){
       },
     ]);
   }
-
 
   return (
     <div className="h-full overflow-y-auto p-4 md:p-6">

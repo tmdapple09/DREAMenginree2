@@ -1,5 +1,8 @@
 'use client';
 
+import { useWarp } from '@/lib/warp/useWarp';
+import type { WarpEffect } from '@/lib/warp/warpEngine';
+
 /**
  * WarpCanvas — a full-viewport fixed canvas overlay that renders the
  * WarpEngine particle simulation as a subtle background effect on every
@@ -8,9 +11,6 @@
  * It sits at z-index 0, behind all page content, with pointer-events:none
  * so it never intercepts clicks or touches.
  */
-
-import { useWarp } from '@/lib/warp/useWarp';
-import type { WarpEffect } from '@/lib/warp/warpEngine';
 
 export interface WarpCanvasProps {
   /** Which visual effect to render. Default: 'flow'. */

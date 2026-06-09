@@ -35,3 +35,4 @@ export function computeLeftStickVector(
     y: Number(((dy / dist) * scale).toFixed(4)),
   };
 }
+

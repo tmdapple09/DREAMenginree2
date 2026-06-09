@@ -9,16 +9,12 @@
  *   5. velocityVarianceJerk(path,timestamps) — slog-transformed velocity stats
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface PathPoint {
   x: number;
   y: number;
 }
 
 export type Path = PathPoint[];
-
-// ─── Internal helpers ─────────────────────────────────────────────────────────
 
 /** Natural log of (1 + |x|) * sign(x) — symmetric log for human-scale values. */
 function slog(x: number): number {
@@ -74,8 +70,6 @@ function resample(path: Path, n: number): Path {
   return out;
 }
 
-// ─── §36 Metric 1: perpendicularDeviation ────────────────────────────────────
-
 /**
  * perpendicularDeviation(path)
  *
@@ -92,8 +86,6 @@ export function perpendicularDeviation(path: Path): number {
   const deviations = inner.map((p) => perpDist(p, p0, dx, dy, len));
   return deviations.reduce((s, d) => s + d, 0) / deviations.length;
 }
-
-// ─── §36 Metric 2: crossSwipeSimilarity ──────────────────────────────────────
 
 /**
  * crossSwipeSimilarity(paths)
@@ -125,8 +117,6 @@ export function crossSwipeSimilarity(paths: Path[]): number {
   return pairs > 0 ? Math.max(0, Math.min(1, totalSim / pairs)) : 0;
 }
 
-// ─── §36 Metric 3: coarseGrainInvariance ─────────────────────────────────────
-
 /**
  * coarseGrainInvariance(path)
  *
@@ -145,8 +135,6 @@ export function coarseGrainInvariance(path: Path): number {
     perpendicularDeviation(first) - perpendicularDeviation(second),
   );
 }
-
-// ─── §36 Metric 4: deviationEntropy ──────────────────────────────────────────
 
 /**
  * deviationEntropy(path)
@@ -183,8 +171,6 @@ export function deviationEntropy(path: Path): number {
   // Normalise by log2(N_BINS)
   return entropy / Math.log2(N_BINS);
 }
-
-// ─── §36 Metric 5: velocityVarianceJerk ──────────────────────────────────────
 
 export interface VelocityStats {
   variance: number;

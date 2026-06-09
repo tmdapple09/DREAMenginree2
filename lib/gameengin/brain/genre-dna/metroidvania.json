@@ -1,6 +1,9 @@
 {
   "genre": "Metroidvania",
-  "subgenres": ["action-adventure", "exploration"],
+  "subgenres": [
+    "action-adventure",
+    "exploration"
+  ],
   "core_mechanic": "Interconnected world unlocked through ability-gated traversal.",
   "emotional_core": "wonder",
   "player_motivation": "Map the world; convert mystery into mastery.",
@@ -17,16 +20,23 @@
   },
   "progression_model": {
     "structure_type": "metroidvania",
-    "progression_gates": ["ability-unlock", "key-item", "story-trigger"],
+    "progression_gates": [
+      "ability-unlock",
+      "key-item",
+      "story-trigger"
+    ],
     "completion_definition": "Multiple endings tied to map completion percentage; true ending requires sequence-break or hidden ability.",
     "content_cadence": "Per ability unlock; each new traversal verb opens 2-3 previously-visible locked rooms."
   },
-  "canonical_examples":[
+  "canonical_examples": [
     {
       "title": "Hollow Knight",
       "year": 2017,
       "what_makes_it_special": "Atmospheric world, hand-crafted rooms, deep optional content.",
-      "mechanical_innovations": ["charm system", "dream nail interactions"],
+      "mechanical_innovations": [
+        "charm system",
+        "dream nail interactions"
+      ],
       "emotional_impact": "Lonely majesty earned through persistence."
     }
   ],

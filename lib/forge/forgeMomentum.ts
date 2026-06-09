@@ -1,3 +1,5 @@
+import { CREATIVE_ENGINES, FORGE_HISTORY_KEY } from './forgeRegistry';
+
 /**
  * Forge Momentum — Creative Velocity Scoring System
  *
@@ -14,10 +16,6 @@
  * Architecture: Pure computation from forgeRegistry/forgeIntelligence data.
  * No Supabase writes — local telemetry only.
  */
-
-import { CREATIVE_ENGINES, FORGE_HISTORY_KEY } from './forgeRegistry';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface MomentumDimension {
   /** Dimension name */
@@ -58,15 +56,11 @@ export type MomentumLevel =
   | 'BLAZING'
   | 'TRANSCENDENT';
 
-// ── History Entry type (mirrors ForgeHistoryEntry from forgeIntelligence) ─────
-
 interface HistoryEntry {
   enginId: string;
   label: string;
   timestamp: string;
 }
-
-// ── Constants ─────────────────────────────────────────────────────────────────
 
 const MS_PER_DAY = 86_400_000;
 const MS_PER_HOUR = 3_600_000;
@@ -81,8 +75,6 @@ const DEPTH_MARKERS = [
 
 /** Actions that are just navigations (not counted as deep work) */
 const SHALLOW_MARKERS = ['entered', 'activated', 'opened'];
-
-// ── Core Computation ──────────────────────────────────────────────────────────
 
 /**
  * Read history entries from localStorage.

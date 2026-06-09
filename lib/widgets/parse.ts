@@ -1,6 +1,3 @@
-// lib/widgets/parse.ts
-// No zod dependency: manual runtime validation + safe defaults.
-
 import type {
     DreamenginWidgetType,
     EmbedWidgetConfig,
@@ -12,6 +9,9 @@ import type {
     TypedWidget,
     YouTubeWidgetConfig,
 } from '@/types/widgetConfigs';
+
+// lib/widgets/parse.ts
+// No zod dependency: manual runtime validation + safe defaults.
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);

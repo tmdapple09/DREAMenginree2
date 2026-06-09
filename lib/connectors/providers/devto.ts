@@ -1,3 +1,7 @@
+import { normaliseDevto } from '@/lib/connectors/normalise';
+import { devtoUserRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/devto.ts
  *
@@ -11,10 +15,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseDevto } from '@/lib/connectors/normalise';
-import { devtoUserRssUrl, parseRssFeed } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export interface DevtoCredentials {
   username: string;

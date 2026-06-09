@@ -124,3 +124,4 @@ export function UniversalEditor({ target, onSaved }: UniversalEditorProps) {
     </section>
   );
 }
+

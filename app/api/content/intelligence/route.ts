@@ -3,9 +3,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
 const IntelligenceSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('viral-hooks'),

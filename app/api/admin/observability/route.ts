@@ -1,3 +1,14 @@
+import { isOwnerEmail } from '@/lib/ai/triad';
+import { jsonApiError } from '@/lib/api/route';
+import { getBufferStats, getSnapshot } from '@/lib/observability/collector';
+import { correlate } from '@/lib/observability/correlator';
+import { buildImmediateRemediationAction } from '@/lib/observability/immediateAction';
+import { inferRootCause } from '@/lib/observability/rootCauseAnalyzer';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 // app/api/admin/observability/route.ts
 //
 // Admin-only endpoint that returns the current telemetry snapshot and
@@ -10,18 +21,6 @@
 //
 // Intended usage: IDariPanel polls this endpoint to display the live
 // observability dashboard in the admin UI.
-
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { getBufferStats, getSnapshot } from '@/lib/observability/collector';
-import { correlate } from '@/lib/observability/correlator';
-import { buildImmediateRemediationAction } from '@/lib/observability/immediateAction';
-import { inferRootCause } from '@/lib/observability/rootCauseAnalyzer';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   // Service availability guard — matches /api/ai/idari
@@ -42,7 +41,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   // Admin/owner gate
-   
+
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
     .select('role')

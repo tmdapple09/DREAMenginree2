@@ -1,15 +1,5 @@
 'use client';
 
-interface CIStage { name: string; passed: boolean; output: string; }
-interface CIResults { status: string; stages: CIStage[]; }
-interface SecAdvisory { title: string; severity: string; package: string; vulnerable_versions: string; patched_versions: string; }
-interface SecResults { summary?: { total?: number; high?: number; moderate?: number; low?: number }; advisories?: SecAdvisory[]; }
-
-/**
- * CodeEngin – Real IDE with real CI and real security scanner
- * All features are real. No mock data.
- */
-
 import DiffViewer from '@/components/daydream/dream.DiffViewer';
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import CrossEnginStatusPanel from '@/components/dreamengin/dream.panel.CrossEnginStatusPanel';
@@ -53,92 +43,6 @@ import Link from 'next/link';
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseCode } from './CodeEngin/core/parser';
 import { AgentPanel } from './CodeEngin/modules/ai-co-pilot';
-
-// ----------------------------------------------------------------------
-// Types
-// ----------------------------------------------------------------------
-
-interface Props { onBack: () => void; instanceId?: string; }
-type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
-type CellStatus = 'idle' | 'running' | 'done' | 'error';
-
-interface NotebookCell {
-  id: string;
-  language: CellLanguage;
-  code: string;
-  output: string | null;
-  status: CellStatus;
-  error?: string;
-}
-
-interface Project { id: string; title: string; visibility: string; }
-type ActiveTab = 'notebook' | 'ci' | 'security' | 'projects' | 'connections' | 'diff';
-
-interface ShellHubDevice {
-  uid: string;
-  name: string;
-  info?: { pretty_name?: string; arch?: string };
-  online: boolean;
-}
-
-// ----------------------------------------------------------------------
-// Constants
-// ----------------------------------------------------------------------
-
-const ACCENT = '#3b7dd8';
-// const ACCENT_LEGACY = '#22d3ee'; // old cyan — kept for reference
-// const ACCENT_GRADIENT_LEGACY = 'linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%)';
-const CELL_BG = '#1a1a2e';
-const CODE_FG = '#e2e8f0';
-const OUT_OK = '#4ade80';
-const OUT_ERR = '#f87171';
-
-const ZOOM_MIN = 0.6, ZOOM_MAX = 2.0, ZOOM_STEP = 0.1, ZOOM_BASE_FONT = 13;
-const LANGUAGE_OPTIONS: CellLanguage[] = ['python', 'javascript', 'typescript', 'bash'];
-const LANGUAGE_LABEL: Record<CellLanguage, string> = {
-  python: 'Python', javascript: 'JavaScript', typescript: 'TypeScript', bash: 'Bash',
-};
-const NOTEBOOK_STORAGE_KEY = 'de-codegen-cells';
-const SHELLHUB_DEFAULT_URL = 'https://cloud.shellhub.io';
-
-const DEMO_CELLS: NotebookCell[] = [
-  { id: 'demo-1', language: 'python', code: '# Python (real execution)\nprint("Hello from Pyodide!")\n2 + 2', output: null, status: 'idle' },
-  { id: 'demo-2', language: 'javascript', code: '// JavaScript\nconsole.log("Hello from JS");\n[1,2,3].map((x) => x*2)', output: null, status: 'idle' },
-  { id: 'demo-3', language: 'typescript', code: '// TypeScript\nconst greet = (name: string): string => `Hello ${name}`;\ngreet("World")', output: null, status: 'idle' },
-];
-
-// ----------------------------------------------------------------------
-// REAL CODE EXECUTION (Pyodide CDN, no install)
-// ----------------------------------------------------------------------
-
-interface PyodideInstance {
-  runPythonAsync(code: string): Promise<unknown>;
-  globals: { get(key: string): unknown };
-  loadPackage(pkg: string | string[]): Promise<void>;
-}
-let pyodideInstance: PyodideInstance | null = null;
-let pyodidePromise: Promise<unknown> | null = null;
-
-async function loadPyodide( ){
-  if (pyodideInstance) return pyodideInstance;
-  if (pyodidePromise) return pyodidePromise;
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
-  await new Promise((resolve, reject) => {
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-  // @ts-expect-error - pyodide loader injected at runtime
-  pyodidePromise = globalThis.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
-  pyodideInstance = await pyodidePromise as PyodideInstance;
-  return pyodideInstance;
-}
-
-async function executePython(code: string): Promise<string> {
-  try {
-    const pyodide = await loadPyodide() as { runPython: (code: string) => unknown; runPythonAsync: (code: string) => Promise<unknown> };
-    pyodide.runPython(`
 import sys
 from io import StringIO
 sys.stdout = StringIO()
@@ -187,9 +91,7 @@ async function runCellCode(language: CellLanguage, code: string): Promise<string
   }
 }
 
-// ----------------------------------------------------------------------
 // CRASH RECOVERY (REAL)
-// ----------------------------------------------------------------------
 
 interface CrashReport {
   file: string;
@@ -266,9 +168,7 @@ function CrashRecoveryPanel({ cells }: {cells: NotebookCell[]}) {
   );
 }
 
-// ----------------------------------------------------------------------
 // TASK MANAGER (REAL)
-// ----------------------------------------------------------------------
 
 interface TaskItem {
   id: string;
@@ -342,9 +242,7 @@ function TaskJobManager( ){
   );
 }
 
-// ----------------------------------------------------------------------
 // CI & SECURITY HELPERS (REAL API CALLS)
-// ----------------------------------------------------------------------
 
 async function callCI(apiKey: string): Promise<CIResults> {
   const res = await fetch('/api/ci/run', {
@@ -362,9 +260,7 @@ async function callSecurityScan(apiKey: string): Promise<SecResults> {
   return res.json();
 }
 
-// ----------------------------------------------------------------------
 // AI ASSIST — routes through /api/ai/eams (server-side; GROQ_API_KEY never touches the client)
-// ----------------------------------------------------------------------
 
 async function callEamsAssist(prompt: string, codeContext?: string, language?: CellLanguage): Promise<string> {
   const body: Record<string, unknown> = {
@@ -391,9 +287,7 @@ async function callEamsAssist(prompt: string, codeContext?: string, language?: C
   }
 }
 
-// ----------------------------------------------------------------------
 // MAIN COMPONENT
-// ----------------------------------------------------------------------
 
 export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props) {
   const { record: forgeRecord } = useForgeActivity({ enginId: 'code' });
@@ -403,7 +297,6 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
   const { savedState: savedCodeState, isRestoring: codeRestoring, persistState: persistCodeState } = useDaydreamPersistence<CodeSavedState>({ daydreamType: 'code' });
   const codeRestoredRef = useRef(false);
 
-  // ── OS Shell ──
   const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
   useEffect(() => {
     upgradeEngine({ id: 'code', name: 'CodeEngin' }, ['bridge', 'telemetry'])
@@ -411,19 +304,15 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
   }, []);
   const busRef = useRef(createEventBus());
 
-  // ── EnginRuntime kernel (code rule-set) ──
   const { state: enginState, dispatch: enginDispatch, ready: enginReady } = useCodeEnginRuntime();
 
-  // ── Workflow (code:sprint — default workflow) ──
   const { loadWorkflow } = useEnginWorkflow();
   useEffect(() => { loadWorkflow('code:sprint'); }, [loadWorkflow]);
 
-  // ── Pair programming state ──
   const [pairSessionId] = useState(() => `code-${Date.now()}`);
   const [pairActive, setPairActive] = useState(false);
   const pairDream = useSharedDream(pairActive ? pairSessionId : '');
 
-  // ── Co-op channel ─────────────────────────────────────────────────────────
   const [instanceId] = useState(
     () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
   );
@@ -445,7 +334,6 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     },
   });
 
-  // ── Cross-Engin: LabEngin dataset export receiver ──
   const [dismissedDataset, setDismissedDataset] = useState<string | null>(null);
   const datasetPrompt = codeBridge.lastLabDataset !== null && codeBridge.lastLabDataset !== dismissedDataset
     ? codeBridge.lastLabDataset
@@ -593,7 +481,6 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     bridge.emit('code', 'code:cell-executed', { cellId: 'ai-assist', language: 'typescript', outputType: 'text' });
   };
 
-  // ── Publish Notebook to ContentEngin ──────────────────────────────────────────
   const publishNotebook = () => {
     forgeRecord('Published notebook to Content');
     recordForgeTransfer('code', 'create', 'notebook', 'CodeEngin notebook → ContentEngin');
@@ -611,7 +498,6 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     });
   };
 
-  // ── Deploy Script to GameEngin ────────────────────────────────────────────────
   const deployScriptToGame = (cellId: string) => {
     const cell = cells.find((c) => c.id === cellId);
     if (!cell) return;
@@ -1186,3 +1072,93 @@ export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props)
     </ArtifactSlot>
   );
 }
+
+interface CIStage { name: string; passed: boolean; output: string; }
+interface CIResults { status: string; stages: CIStage[]; }
+interface SecAdvisory { title: string; severity: string; package: string; vulnerable_versions: string; patched_versions: string; }
+interface SecResults { summary?: { total?: number; high?: number; moderate?: number; low?: number }; advisories?: SecAdvisory[]; }
+
+/**
+ * CodeEngin – Real IDE with real CI and real security scanner
+ * All features are real. No mock data.
+ */
+
+// Types
+
+interface Props { onBack: () => void; instanceId?: string; }
+type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
+type CellStatus = 'idle' | 'running' | 'done' | 'error';
+
+interface NotebookCell {
+  id: string;
+  language: CellLanguage;
+  code: string;
+  output: string | null;
+  status: CellStatus;
+  error?: string;
+}
+
+interface Project { id: string; title: string; visibility: string; }
+type ActiveTab = 'notebook' | 'ci' | 'security' | 'projects' | 'connections' | 'diff';
+
+interface ShellHubDevice {
+  uid: string;
+  name: string;
+  info?: { pretty_name?: string; arch?: string };
+  online: boolean;
+}
+
+// Constants
+
+const ACCENT = '#3b7dd8';
+// const ACCENT_LEGACY = '#22d3ee'; // old cyan — kept for reference
+// const ACCENT_GRADIENT_LEGACY = 'linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%)';
+const CELL_BG = '#1a1a2e';
+const CODE_FG = '#e2e8f0';
+const OUT_OK = '#4ade80';
+const OUT_ERR = '#f87171';
+
+const ZOOM_MIN = 0.6, ZOOM_MAX = 2.0, ZOOM_STEP = 0.1, ZOOM_BASE_FONT = 13;
+const LANGUAGE_OPTIONS: CellLanguage[] = ['python', 'javascript', 'typescript', 'bash'];
+const LANGUAGE_LABEL: Record<CellLanguage, string> = {
+  python: 'Python', javascript: 'JavaScript', typescript: 'TypeScript', bash: 'Bash',
+};
+const NOTEBOOK_STORAGE_KEY = 'de-codegen-cells';
+const SHELLHUB_DEFAULT_URL = 'https://cloud.shellhub.io';
+
+const DEMO_CELLS: NotebookCell[] = [
+  { id: 'demo-1', language: 'python', code: '# Python (real execution)\nprint("Hello from Pyodide!")\n2 + 2', output: null, status: 'idle' },
+  { id: 'demo-2', language: 'javascript', code: '// JavaScript\nconsole.log("Hello from JS");\n[1,2,3].map((x) => x*2)', output: null, status: 'idle' },
+  { id: 'demo-3', language: 'typescript', code: '// TypeScript\nconst greet = (name: string): string => `Hello ${name}`;\ngreet("World")', output: null, status: 'idle' },
+];
+
+// REAL CODE EXECUTION (Pyodide CDN, no install)
+
+interface PyodideInstance {
+  runPythonAsync(code: string): Promise<unknown>;
+  globals: { get(key: string): unknown };
+  loadPackage(pkg: string | string[]): Promise<void>;
+}
+let pyodideInstance: PyodideInstance | null = null;
+let pyodidePromise: Promise<unknown> | null = null;
+
+async function loadPyodide( ){
+  if (pyodideInstance) return pyodideInstance;
+  if (pyodidePromise) return pyodidePromise;
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
+  await new Promise((resolve, reject) => {
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+  // @ts-expect-error - pyodide loader injected at runtime
+  pyodidePromise = globalThis.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
+  pyodideInstance = await pyodidePromise as PyodideInstance;
+  return pyodideInstance;
+}
+
+async function executePython(code: string): Promise<string> {
+  try {
+    const pyodide = await loadPyodide() as { runPython: (code: string) => unknown; runPythonAsync: (code: string) => Promise<unknown> };
+    pyodide.runPython(`

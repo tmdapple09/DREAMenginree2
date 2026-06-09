@@ -6,8 +6,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 // ── Minor-to-adult image blocking helpers ─────────────────────────────────
 
 /**
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   if (conversationId) {
     // Fetch messages for a specific conversation
-     
+
     const { data: messages, error } = await (supabase as SupabaseClient)
       .from('messages')
       .select(`
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   // Fetch all conversations for the user
-   
+
   const { data: conversations, error } = await (supabase as SupabaseClient)
     .from('conversations')
     .select(`
@@ -115,7 +115,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Message content is required' }, { status: 400 });
   }
 
-  // ── Look up sender and recipient ages for minor-adult enforcement ─────────
   const senderAge = await getUserAge(supabase, user.id);
   const recipientAge = recipient_id ? await getUserAge(supabase, recipient_id) : null;
 
@@ -123,7 +122,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const recipientIsAdult = typeof recipientAge === 'number' && recipientAge >= 18;
   const hasImage = media_url && typeof media_url === 'string' && media_type === 'image';
 
-  // ── C32_MINOR_IMAGE: any image from a minor to an adult is ALWAYS blocked ─
   if (hasImage && senderIsMinor && recipientIsAdult) {
     const contentRef = `minor_image:${user.id.slice(0, 8)}`;
     reportChildSafetyIncident({
@@ -148,7 +146,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── TheBoogieMan child safety scan (zero-tolerance) ──────────────────────
   // Also pass sender/recipient ages so scanContent can detect image solicitation
   // from adults to minors (rule C33_SOLICITING_IMAGES via grooming patterns).
   const childSafetyResult = scanContent({ text: content });
@@ -169,7 +166,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── TheBoogieMan media image scan (LLM + hash) — real-time ───────────────
   // Only runs when an image attachment is present in the message.
   if (media_url && typeof media_url === 'string' && media_type === 'image') {
     const mediaSafetyResult = await scanMediaUrlsForChildSafety({
@@ -237,10 +233,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (media_url) messageRow.media_url = media_url;
   if (media_type) messageRow.media_type = media_type;
 
-   
   const { data: message, error } = await (supabase as SupabaseClient)
     .from('messages')
-     
+
     .insert(messageRow as Record<string, unknown>)
     .select(`
       *,
@@ -261,7 +256,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Create notification for recipient
   const recipientId = conversation_id ? null : recipient_id;
   if (recipientId) {
-     
+
     await (supabase as SupabaseClient).from('notifications').insert({
       user_id: recipientId,
       type: 'message',

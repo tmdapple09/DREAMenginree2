@@ -1,5 +1,9 @@
 'use client';
 
+import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
+import { createClient } from '@/lib/supabase/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * useDreamSearch — universal search hook shared by DreamDMessaging and DreamDM Bar.
  *
@@ -24,12 +28,6 @@
  *
  * docs/dreamdm_messaging_phase2.md §3 — useDreamSearch
  */
-
-import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
-import { createClient } from '@/lib/supabase/client';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type SearchResultType =
   | 'person'
@@ -66,13 +64,10 @@ export interface UseDreamSearchReturn {
   clearResults: () => void;
 }
 
-// ── Constants ────────────────────────────────────────────────────────────────
-
 const DR_EAMS_KEY  = 'de-dreams-mode';
 const DEBOUNCE_MS  = 300;
 const MAX_RESULTS  = 8;
 const PER_TYPE     = 5;
-
 
 const SEARCH_DESTINATIONS: readonly SearchResult[] = [
   { id: 'home', type: 'destination', label: 'HomeDream', sublabel: 'Home', href: '/dreamdmbar' },
@@ -95,8 +90,6 @@ function getLocalSearchResults(query: string): SearchResult[] {
   );
 }
 
-// ── Hook ──────────────────────────────────────────────────────────────────────
-
 export function useDreamSearch(query: string): UseDreamSearchReturn {
   const [results,     setResults]     = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -104,7 +97,6 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── Restore Dr. Eams preference from localStorage ─────────────────────────
   useEffect(() => {
     try {
       if (localStorage.getItem(DR_EAMS_KEY) === 'true') {
@@ -113,7 +105,6 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
     } catch { /* SSR or private-browse — ignore */ }
   }, []);
 
-  // ── Toggle Dr. Eams mode ───────────────────────────────────────────────────
   const toggleDrEams = useCallback(() => {
     setDrEamsMode((prev) => {
       const next = !prev;
@@ -122,10 +113,8 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
     });
   }, []);
 
-  // ── Clear results ──────────────────────────────────────────────────────────
   const clearResults = useCallback(() => setResults([]), []);
 
-  // ── Debounced search ───────────────────────────────────────────────────────
   useEffect(() => {
     const trimmed = query.trim();
 
@@ -145,7 +134,6 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
         const q        = trimmed.toLowerCase();
         const combined: SearchResult[] = getLocalSearchResults(q);
 
-        // ── 1. Profiles (people / pages / friends) ──────────────────────────
         const { data: profiles } = await supabase
           .from('profiles')
           .select('id, display_name, handle, avatar_url')
@@ -166,7 +154,6 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
           }
         }
 
-        // ── 2. Conversations (matched by other participant name / handle) ───
         const { data: convs } = await supabase
           .from('conversations')
           .select(`
@@ -206,7 +193,6 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
           }
         }
 
-        // ── 3. Message boards ───────────────────────────────────────────────
         // Query board titles if the table exists (graceful failure otherwise)
         try {
           const { data: boards } = await supabase

@@ -1,5 +1,17 @@
 "use client";
 
+import {
+    buildDreamDMUrl,
+    buildDrEamsRequest,
+    matchNavSuggestions,
+    parseDrEamsReply,
+    truncatePreview,
+    type NavSuggestion,
+} from '@/lib/dreamengin/drEamsSearch';
+import { ArrowRight, MessageCircle, Search, Sparkles, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * components/dreamengin/dream.bar.DrEamsSearchBar.tsx
  *
@@ -29,21 +41,7 @@
 
 'use client';
 
-import {
-    buildDreamDMUrl,
-    buildDrEamsRequest,
-    matchNavSuggestions,
-    parseDrEamsReply,
-    truncatePreview,
-    type NavSuggestion,
-} from '@/lib/dreamengin/drEamsSearch';
-import { ArrowRight, MessageCircle, Search, Sparkles, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-// ---------------------------------------------------------------------------
 // Sub-components
-// ---------------------------------------------------------------------------
 
 function DrEamsBadge({ size = 28 }: {size?: number}) {
   return (
@@ -89,9 +87,7 @@ function SpinningDot( ){
   );
 }
 
-// ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 type InlineReply = {
   text: string;
@@ -104,9 +100,7 @@ export interface DrEamsSearchBarProps {
   onOpenDrEams: () => void;
 }
 
-// ---------------------------------------------------------------------------
 // DrEamsSearchBar
-// ---------------------------------------------------------------------------
 
 export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) {
   const router = useRouter();
@@ -126,8 +120,6 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
 
   const showAskChip = query.trim().length > 0;
   const hasDropdown = dropOpen && (suggestions.length > 0 || showAskChip);
-
-  // ── Ask Dr. Eams ──────────────────────────────────────────────────────────
 
   const askDrEams = useCallback(async (q: string) => {
     const trimmed = q.trim();
@@ -157,8 +149,6 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     }
   }, [loading]);
 
-  // ── Nav suggestion click ──────────────────────────────────────────────────
-
   const selectSuggestion = useCallback((s: NavSuggestion) => {
     setDropOpen(false);
     setQuery('');
@@ -169,8 +159,6 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
       onOpenDrEams();
     }
   }, [router, onOpenDrEams]);
-
-  // ── Keyboard handling ─────────────────────────────────────────────────────
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter' || !query.trim()) return;
@@ -186,8 +174,6 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     void askDrEams(query);
   }, [query, suggestions, askDrEams, selectSuggestion]);
 
-  // ── Close dropdown on outside pointer ────────────────────────────────────
-
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -197,8 +183,6 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
-
-  // ── Clear state when user starts typing again ─────────────────────────────
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -213,16 +197,12 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     inputRef.current?.focus();
   }, []);
 
-  // ── "Send to DreamDM" handler ─────────────────────────────────────────────
-
   const sendToDreamDM = useCallback(() => {
     if (!reply) return;
     const url = buildDreamDMUrl(reply.query);
     setReply(null);
     router.push(url);
   }, [reply, router]);
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   const pillBorderColor = reply
     ? 'rgba(74,144,217,0.40)'

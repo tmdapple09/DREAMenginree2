@@ -1,13 +1,13 @@
 'use client';
 
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { ArrowLeft, BookOpen, HelpCircle, MessageCircle, Wand2 } from 'lucide-react';
+
 /**
  * HelpPanel — Help & Onboarding rendered in Surface Space.
  * Real guide content. Dr. Eams integration. Onboarding wizard link.
  * Back → openInSurface('settings'). No routing.
  */
-
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { ArrowLeft, BookOpen, HelpCircle, MessageCircle, Wand2 } from 'lucide-react';
 
 const GUIDES = [
   { icon: '🔒', title: 'How to use the Home Buttons',     desc: 'Drag the blue + gold buttons together to lock, then tap to open menus.' },

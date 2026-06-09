@@ -9,52 +9,49 @@ type KeyboardInput = {
 };
 
 export const GAME_INPUT_KEYBOARD_MAP: Partial<Record<GameInputAction, KeyboardInput[]>> = {
-  'move-left': [{ key: 'ArrowLeft', code: 'ArrowLeft' }],
-  'move-right': [{ key: 'ArrowRight', code: 'ArrowRight' }],
-  'move-up': [{ key: 'ArrowUp', code: 'ArrowUp' }],
-  'move-down': [{ key: 'ArrowDown', code: 'ArrowDown' }],
-  'move-up-left': [
-    { key: 'ArrowUp', code: 'ArrowUp' },
-    { key: 'ArrowLeft', code: 'ArrowLeft' },
-  ],
-  'move-up-right': [
-    { key: 'ArrowUp', code: 'ArrowUp' },
-    { key: 'ArrowRight', code: 'ArrowRight' },
-  ],
-  'move-down-left': [
-    { key: 'ArrowDown', code: 'ArrowDown' },
-    { key: 'ArrowLeft', code: 'ArrowLeft' },
-  ],
-  'move-down-right': [
-    { key: 'ArrowDown', code: 'ArrowDown' },
-    { key: 'ArrowRight', code: 'ArrowRight' },
-  ],
-  jump: [{ key: 'ArrowUp', code: 'ArrowUp' }],
-  duck: [{ key: 'ArrowDown', code: 'ArrowDown' }],
-  spin: [{ key: 'z', code: 'KeyZ' }],
-  shoot: [{ key: ' ', code: 'Space' }],
+  'move-left': [{ key: 'a', code: 'KeyA' }],
+  'move-right': [{ key: 'd', code: 'KeyD' }],
+  'strafe-left': [{ key: 'a', code: 'KeyA' }],
+  'strafe-right': [{ key: 'd', code: 'KeyD' }],
+  'move-up': [{ key: 'w', code: 'KeyW' }],
+  'move-down': [{ key: 's', code: 'KeyS' }],
+  'look-up': [{ key: 'PageUp', code: 'PageUp' }],
+  'look-down': [{ key: 'PageDown', code: 'PageDown' }],
+  'turn-left': [{ key: 'ArrowLeft', code: 'ArrowLeft' }],
+  'turn-right': [{ key: 'ArrowRight', code: 'ArrowRight' }],
+  ability: [{ key: ' ', code: 'Space' }],
+  swap: [{ key: 'Shift', code: 'ShiftLeft' }],
+  strike: [{ key: 'Enter', code: 'Enter' }],
+  guard: [{ key: 'q', code: 'KeyQ' }],
+  dash: [{ key: 'Control', code: 'ControlLeft' }],
+  jump: [{ key: ' ', code: 'Space' }],
+  duck: [{ key: 's', code: 'KeyS' }],
+  spin: [{ key: 'q', code: 'KeyQ' }],
+  shoot: [{ key: 'Enter', code: 'Enter' }],
   'jump-spin': [
-    { key: 'ArrowUp', code: 'ArrowUp' },
-    { key: 'z', code: 'KeyZ' },
+    { key: ' ', code: 'Space' },
+    { key: 'q', code: 'KeyQ' },
   ],
   'jump-shoot': [
-    { key: 'ArrowUp', code: 'ArrowUp' },
     { key: ' ', code: 'Space' },
+    { key: 'Enter', code: 'Enter' },
   ],
-  l2: [{ key: 'Shift', code: 'ShiftLeft' }],
-  r1: [{ key: 'x', code: 'KeyX' }],
+  l2: [{ key: 'q', code: 'KeyQ' }],
+  r1: [{ key: 'Control', code: 'ControlLeft' }],
   pause: [{ key: 'Escape', code: 'Escape' }],
 };
 
 const DIRECTIONAL_ACTIONS: GameInputAction[] = [
   'move-left',
   'move-right',
+  'strafe-left',
+  'strafe-right',
   'move-up',
   'move-down',
-  'move-up-left',
-  'move-up-right',
-  'move-down-left',
-  'move-down-right',
+  'look-up',
+  'look-down',
+  'turn-left',
+  'turn-right',
 ];
 
 function emitKeyboardEvent(type: 'keydown' | 'keyup', input: KeyboardInput): void {

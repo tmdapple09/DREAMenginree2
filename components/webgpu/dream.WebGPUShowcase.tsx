@@ -1,5 +1,10 @@
 'use client';
 
+import { isWebGPUAvailable } from '@/lib/webgpu';
+import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { WebGPURenderer } from './renderer';
+
 /**
  * WebGPUShowcase — top-line GPU experience page.
  *
@@ -15,13 +20,6 @@
  * Quick-launch cards: Games, Daydreams, Engines, Messaging
  * iPhone-optimised: safe-area insets, DPR clamped to 2, GPU-composited layers
  */
-
-import { isWebGPUAvailable } from '@/lib/webgpu';
-import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { WebGPURenderer } from './renderer';
-
-// ── Constants ────────────────────────────────────────────────────────────────
 
 const GOLD   = '#e8c040';
 const CYAN   = '#5de8ff';
@@ -64,8 +62,6 @@ const SECTIONS = [
   },
 ];
 
-// ── GPU canvas (WebGPU-first, Canvas2D fallback) ──────────────────────────────
-
 function useGPUCanvas(
   canvasRef:    React.RefObject<HTMLCanvasElement | null>,
   setFps:       (fps: number) => void,
@@ -79,7 +75,6 @@ function useGPUCanvas(
     let raf = 0;
     let webgpuRenderer: WebGPURenderer | null = null;
 
-    // ── WebGPU path ────────────────────────────────────────────────────────
     const tryWebGPU = async () => {
       try {
         const r = await WebGPURenderer.create(canvas);
@@ -120,7 +115,6 @@ function useGPUCanvas(
       }
     };
 
-    // ── Canvas2D fallback ──────────────────────────────────────────────────
     const startCanvas2D = () => {
       if (destroyed) return;
       const ctx = canvas.getContext('2d');
@@ -209,8 +203,6 @@ function useGPUCanvas(
   }, [canvasRef, setFps, setGpuActive]);
 }
 
-// ── Section card ──────────────────────────────────────────────────────────────
-
 function SectionCard({
   emoji, label, desc, color, href,
 }: { emoji: string; label: string; desc: string; color: string; href: string }) {
@@ -260,8 +252,6 @@ function SectionCard({
     </Link>
   );
 }
-
-// ── Main component ────────────────────────────────────────────────────────────
 
 export default function WebGPUShowcase( ){
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -313,7 +303,6 @@ export default function WebGPUShowcase( ){
             DREAMengin
           </span>
         </Link>
-
 
       </div>
 

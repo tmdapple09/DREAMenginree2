@@ -1,3 +1,5 @@
+import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
+
 /**
  * types/module-manifest.ts
  *
@@ -10,8 +12,6 @@
  * Architecture: docs/ARCHITECTURE.md §4 — Universal Dream Window model.
  * Naming: uses canonical 'runtime' vocabulary per docs/LAW.md route law.
  */
-
-import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
 
 /** All runtimes a module may declare as source or target. */
 export type RuntimeId =

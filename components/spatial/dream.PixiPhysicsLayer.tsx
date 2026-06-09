@@ -145,3 +145,4 @@ export default function PixiPhysicsLayer({ worldWidth, worldHeight, onTransform 
     />
   );
 }
+

@@ -1,10 +1,10 @@
-// SURFACE: dreamsurface.Messages  (framework-mandated basename: page.tsx)
 import MessagesClient from '@/components/dream.MessagesClient';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.Messages  (framework-mandated basename: page.tsx)
 
 interface MessagesPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -37,8 +37,8 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
 
   // Get the other participant for each conversation
   const formattedConversations = (conversations || []).map((conv) => {
-    const otherParticipant = conv.participant1_id === user.id 
-      ? conv.participant2 
+    const otherParticipant = conv.participant1_id === user.id
+      ? conv.participant2
       : conv.participant1;
     return {
       id: conv.id,
@@ -50,7 +50,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
   const displayConversations = formattedConversations;
 
   return (
-    <MessagesClient 
+    <MessagesClient
       userId={user.id}
       initialConversations={displayConversations}
       fromDrEams={fromDrEams}

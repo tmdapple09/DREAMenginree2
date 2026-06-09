@@ -1,3 +1,14 @@
+import {
+    SHELLHUB_DEFAULT_SERVER,
+    shellhubListDevices,
+    type ShellHubDevice,
+} from '@/lib/connectors/providers/shellhub';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/shellhub/devices/route.ts
  *
@@ -15,18 +26,6 @@
  *   - ShellHub API key is never returned in the response
  */
 
-import {
-    SHELLHUB_DEFAULT_SERVER,
-    shellhubListDevices,
-    type ShellHubDevice,
-} from '@/lib/connectors/providers/shellhub';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 export interface ShellHubDevicesResponse {
   ok: boolean;
   /** Sanitized server URL (no credentials) — safe to return to the client */
@@ -37,7 +36,7 @@ export interface ShellHubDevicesResponse {
 
 export async function GET(): Promise<NextResponse<ShellHubDevicesResponse>> {
   const supabase = await createServerClient();
-   
+
   const db = supabase as SupabaseClient;
 
   const user = await safeGetUser(supabase);

@@ -14,8 +14,6 @@
  *     Tag pills use the blue "live state" colour.
  */
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 /** Maximum number of tags per post */
 export const MAX_TAGS_PER_POST = 10;
 
@@ -24,8 +22,6 @@ export const MAX_TAG_LENGTH = 32;
 
 /** Regex for a valid tag body (no # prefix) */
 const TAG_BODY_RE = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface Hashtag {
   /** Tag text without the # prefix, lowercased */
@@ -41,8 +37,6 @@ export interface TrendingTag {
   /** Momentum-weighted score (recent usage counts more) */
   momentum: number;
 }
-
-// ─── Extraction ───────────────────────────────────────────────────────────────
 
 /**
  * Extract hashtags from a text string.
@@ -88,8 +82,6 @@ export function validateTag(raw: string): string | null {
   if (!TAG_BODY_RE.test(trimmed)) return null;
   return trimmed.toLowerCase();
 }
-
-// ─── Trending calculation ─────────────────────────────────────────────────────
 
 interface TagUsage {
   tag: string;
@@ -137,8 +129,6 @@ export function calculateTrending(
 
   return results.slice(0, limit);
 }
-
-// ─── Formatting ───────────────────────────────────────────────────────────────
 
 /**
  * Format a tag for display with # prefix.

@@ -1,4 +1,8 @@
 'use client';
+
+import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * LEXICON SOLITAIRE — fusion of solitaire + word-sprint + trivia.
  *
@@ -9,9 +13,6 @@
  *
  * Render: DOM (Tailwind), parchment palette, library candle gold.
  */
-
-import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useState } from 'react';
 
 interface Card { letter: string; id: string; }
 type Phase = 'menu' | 'playing' | 'victory' | 'defeat';

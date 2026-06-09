@@ -1,6 +1,7 @@
-// SURFACE: dreamsurface.DaydreamGamesEngin  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.DaydreamGamesEngin  (framework-mandated basename: page.tsx)
 
 interface GamesEnginRedirectPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;

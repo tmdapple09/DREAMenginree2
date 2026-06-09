@@ -1,19 +1,5 @@
 "use client";
 
-/**
- * CodeDreamIDE — Code Workspace split view for the Code Daydream (Side A).
- *
- * Layout:
- *   [ Engine strip ]
- *   [ Language / mode bar ]
- *   [ Code editor (left) | Live preview / output (right) ]
- *   [ Dr. Eams quick assist bar ]
- *
- * Follows the existing DREAMengin coding patterns (no eval, simulation only).
- * All engine outputs are simulated; the Dr. Eams call uses /api/ai/eams
- * with code_context so that the backend AI can respond in code-assist mode.
- */
-
 import { bridge as dualRuntimeBridge } from "@/lib/runtime/dualRuntimeBridge";
 import { getSwap, toggleSwap } from "@/lib/runtime/swapManager";
 import {
@@ -33,8 +19,38 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import dream_engine as de
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+# Load a scene
+scene = de.Scene(engine='game')
+player = scene.add_entity('player', mesh='humanoid')
+player.set_position(0, 1.5, 0)
+
+# Run physics
+scene.gravity = -9.8
+scene.step(frames=60)
+
+print(f"Player position: {player.position}")`,
+
+  javascript: `// DREAMengin Code Dream — JavaScript
+// Connect to an Engine below, then Run ▶
+
+const engine = await DreamEngine.connect('game');
+import { DreamEngine, Scene, Mesh } from '@dreamengin/sdk';
+
+/**
+ * CodeDreamIDE — Code Workspace split view for the Code Daydream (Side A).
+ *
+ * Layout:
+ *   [ Engine strip ]
+ *   [ Language / mode bar ]
+ *   [ Code editor (left) | Live preview / output (right) ]
+ *   [ Dr. Eams quick assist bar ]
+ *
+ * Follows the existing DREAMengin coding patterns (no eval, simulation only).
+ * All engine outputs are simulated; the Dr. Eams call uses /api/ai/eams
+ * with code_context so that the backend AI can respond in code-assist mode.
+ */
 
 type Language = "python" | "javascript" | "typescript" | "bash";
 type EngineId = "game" | "lab" | "sim" | "asset" | "none";
@@ -49,8 +65,6 @@ interface EngineConn {
   description: string;
   icon: React.ReactNode;
 }
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 const ACCENT = "#6366f1";
 const CODE_BG = "#0d1117";
@@ -119,23 +133,6 @@ const DEMO_CODE: Record<Language, string> = {
   python: `# DREAMengin Code Dream
 # Connect to any Engine below, then Run ▶
 
-import dream_engine as de
-
-# Load a scene
-scene = de.Scene(engine='game')
-player = scene.add_entity('player', mesh='humanoid')
-player.set_position(0, 1.5, 0)
-
-# Run physics
-scene.gravity = -9.8
-scene.step(frames=60)
-
-print(f"Player position: {player.position}")`,
-
-  javascript: `// DREAMengin Code Dream — JavaScript
-// Connect to an Engine below, then Run ▶
-
-const engine = await DreamEngine.connect('game');
 const scene  = engine.createScene();
 
 const box = scene.createMesh('box', { size: 1 });
@@ -149,8 +146,6 @@ console.log('Entities:', scene.entityCount);`,
 
   typescript: `// DREAMengin Code Dream — TypeScript
 // Connect to an Engine below, then Run ▶
-
-import { DreamEngine, Scene, Mesh } from '@dreamengin/sdk';
 
 const engine: DreamEngine = await DreamEngine.connect('game');
 const scene:  Scene       = engine.createScene();
@@ -182,8 +177,6 @@ pnpm exec vitest run --reporter=verbose
 
 echo "✅ All systems go!"`,
 };
-
-// ─── Simulated engine outputs ─────────────────────────────────────────────────
 
 function getMockOutput(
   language: Language,
@@ -292,8 +285,6 @@ function getMockOutput(
   }
 }
 
-// ─── ASCII visualizations ─────────────────────────────────────────────────────
-
 function AsciiHeatmap({
   cols = 32,
   rows = 6,
@@ -379,8 +370,6 @@ function AsciiBarChart({
     </div>
   );
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function CodeDreamIDE() {
   const [language, setLanguage] = useState<Language>("python");

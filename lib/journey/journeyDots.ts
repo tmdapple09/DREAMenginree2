@@ -1,3 +1,5 @@
+import type { LogJourneyDotInput } from '@/types/journey';
+
 // lib/journey/journeyDots.ts
 // Journey Trail helpers — log and query dots for the user's creative course.
 //
@@ -16,8 +18,6 @@
 //                     label: 'You entered the Music Daydream Surface for the first time.',
 //                     significance: 1.0, domain_color: '#8b5cf6', metadata: {} });
 //   }
-
-import type { LogJourneyDotInput } from '@/types/journey';
 
 /**
  * Log a new journey dot.

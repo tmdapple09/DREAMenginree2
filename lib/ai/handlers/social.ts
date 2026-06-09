@@ -1,6 +1,3 @@
-// lib/ai/handlers/social.ts
-// Social and Content Intent Handlers
-
 import {
     DraftSavePayload,
     FollowUserPayload,
@@ -10,6 +7,9 @@ import {
 } from '@/types/ai-system';
 import { randomUUID } from 'crypto';
 import { ToolHandler } from '../tool-router';
+
+// lib/ai/handlers/social.ts
+// Social and Content Intent Handlers
 
 // ============================================================================
 // POST_CREATE Handler

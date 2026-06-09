@@ -1,10 +1,30 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { recordEmission } from '@/lib/runtime/channelMetrics';
+import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { createLocalChannel } from '@/lib/runtime/runtimeChannel';
+import { acquireSharedResource, releaseSharedResource } from '@/lib/runtime/sharedResourcePool';
+import { useCallback, useEffect, useRef } from 'react';
+import type {
+    AchievementDefinition,
+    CartridgeInputEvent,
+    GameCartridge,
+    GameEngineAPI,
+    GravityPreset,
+    RuntimeBackendDiagnostics,
+} from './cartridge';
+import { ENGINE_VERSION, GRAVITY_VALUES, engineSatisfies } from './cartridge';
+import { createAchievementsAPI } from './cartridges/achievementEngine';
+import {
+    stubAssetsAPI,
+    stubAudioAPI,
+    stubHapticsAPI,
+    stubNetworkAPI,
+} from './cartridges/apiStubs';
+import { createSaveAPI } from './cartridges/saveState';
+import { createGameEnginExecutionKernel, type GameEnginExecutionKernel } from './executionWiring';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/gameengin/GameRuntime.tsx.
 
@@ -28,15 +48,9 @@
  * These three layers never overlap. Do not add score/lives/game info here.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Constants ────────────────────────────────────────────────────────────────
 
 /** Fixed timestep target: 60fps = 16.667ms per tick */
 const FIXED_DT = 1000 / 60;
@@ -49,53 +63,11 @@ const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
 /** Cap sampled FPS before forwarding optional internal diagnostics. */
 const MAX_DISPLAY_FPS = 999;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import { recordEmission } from '@/lib/runtime/channelMetrics';
-
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-
-import { createLocalChannel } from '@/lib/runtime/runtimeChannel';
-
-import { acquireSharedResource, releaseSharedResource } from '@/lib/runtime/sharedResourcePool';
-
-import { useCallback, useEffect, useRef } from 'react';
-
-import type {
-    AchievementDefinition,
-    CartridgeInputEvent,
-    GameCartridge,
-    GameEngineAPI,
-    GravityPreset,
-    RuntimeBackendDiagnostics,
-} from './cartridge';
-
-import { ENGINE_VERSION, GRAVITY_VALUES, engineSatisfies } from './cartridge';
-
-import { createAchievementsAPI } from './cartridges/achievementEngine';
-
-import {
-    stubAssetsAPI,
-    stubAudioAPI,
-    stubHapticsAPI,
-    stubNetworkAPI,
-} from './cartridges/apiStubs';
-
-import { createSaveAPI } from './cartridges/saveState';
-
-import { createGameEnginExecutionKernel, type GameEnginExecutionKernel } from './executionWiring';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Props ────────────────────────────────────────────────────────────────────
 
 export interface GameRuntimeCrash {
   name?: string;
@@ -114,11 +86,7 @@ export interface GameRuntimeProps {
   bootstrapDiagnostics?: RuntimeBackendDiagnostics;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Component ────────────────────────────────────────────────────────────────
 
 export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash, bootstrapDiagnostics }: GameRuntimeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -162,8 +130,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
   onFrameRef.current  = onFrame;
   onCrashRef.current  = onCrash;
   if (bootstrapDiagnostics) diagnosticsRef.current = bootstrapDiagnostics;
-
-  // ── Build the complete GameEngineAPI ───────────────────────────────────────
 
   const buildAPI = useCallback((forCartridge: GameCartridge): GameEngineAPI => {
     const cartridgeId  = forCartridge.id;
@@ -324,7 +290,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     onCrashRef.current?.(crash);
   }, []);
 
-
   const persistCartridgeSnapshot = useCallback((mountedCartridge: GameCartridge) => {
     if (!mountedCartridge.serialize || !(mountedCartridge.capabilities ?? []).includes('save-state')) return;
     try {
@@ -333,8 +298,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       reportRuntimeCrash(error, { cartridgeId: mountedCartridge.id, phase: 'autosave' });
     }
   }, [reportRuntimeCrash]);
-
-  // ── Keyboard input wiring ──────────────────────────────────────────────────
 
   useEffect(() => {
     const keysDown       = keysDownRef.current;
@@ -348,13 +311,13 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
         source: 'keyboard' as const,
         preventDefault: () => e.preventDefault(),
       };
-      
+
       const listeners = inputListeners.get(type);
       if (listeners) {
         // Cast here since the listeners expect the wider union type
         for (const cb of listeners) cb(payload as CartridgeInputEvent);
       }
-      
+
       // Successfully emits the narrower keyboard type
       dreamOSBus.emit('game:input', payload);
       executionKernelRef.current?.onInput(payload as CartridgeInputEvent);
@@ -371,7 +334,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     };
   }, []);
 
-  // ── GameRemote / mobile / controller input wiring ─────────────────────────
   // GameRemote already emits `de-game-input`; normalize that event into the
   // GameRuntime API so cartridges can subscribe through `api.input.on()` instead
   // of each game wiring a separate window listener.
@@ -401,8 +363,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     window.addEventListener('de-game-input', handler as EventListener);
     return () => window.removeEventListener('de-game-input', handler as EventListener);
   }, [cartridge?.id]);
-
-  // ── Fixed-timestep RAF loop ────────────────────────────────────────────────
 
   useEffect(() => {
     if (!cartridge) return;
@@ -475,8 +435,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     };
   }, [cartridge, reportRuntimeCrash]);
 
-  // ── Cartridge mount / hot-swap ─────────────────────────────────────────────
-
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !cartridge) return;
@@ -532,8 +490,6 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     };
   }, [cartridge, buildAPI, reportRuntimeCrash, persistCartridgeSnapshot]);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
-
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {/* ── Game container — cartridges mount into this div ── */}
@@ -545,14 +501,8 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
   );
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

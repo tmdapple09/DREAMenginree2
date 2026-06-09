@@ -86,3 +86,4 @@ export function publishGamePerformanceBaseline(detail: GamePerformanceBaseline):
   if (typeof window === 'undefined') return;
   window.dispatchEvent(new CustomEvent<GamePerformanceBaseline>(DE_GAME_PERFORMANCE_BASELINE, { detail }));
 }
+

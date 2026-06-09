@@ -1,3 +1,5 @@
+import { storeOriginal } from './indexedDBStore';
+
 /**
  * lib/assets/assetOptimizer.ts
  *
@@ -25,10 +27,6 @@
  *   // result.optimised  — Blob ready for upload
  *   // result.assetId    — UUID to retrieve original from IndexedDB
  */
-
-import { storeOriginal } from './indexedDBStore';
-
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 export type OptimisationQuality = 'high' | 'balanced' | 'performance';
 
@@ -63,8 +61,6 @@ export interface OptimisationResult {
   /** Human-readable method (e.g. 'canvas-avif', 'webcodecs-h264'). */
   method: string;
 }
-
-// ── Worker singleton ───────────────────────────────────────────────────────────
 
 let workerInstance: Worker | null = null;
 let jobCounter = 0;
@@ -102,8 +98,6 @@ function getWorker(): Worker {
   }
   return workerInstance;
 }
-
-// ── Main export ────────────────────────────────────────────────────────────────
 
 /**
  * Optimises a file using a Web Worker and stores the original in IndexedDB.

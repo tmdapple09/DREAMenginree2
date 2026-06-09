@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesGamesScores  (framework-mandated basename: page.tsx)
 import ScoresPanel from '@/components/engines/games/panels/dream.panel.ScoresPanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { buildLoginRedirectPath } from '@/lib/auth/nextRedirect';
@@ -7,6 +6,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesGamesScores  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Scores – GameEngin', description: 'Your personal best scores.' };
 

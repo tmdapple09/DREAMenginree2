@@ -18,8 +18,6 @@
  * Architecture: docs/ARCHITECTURE.md §7 (Pass 7 — consent + settings + audit).
  */
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export type ConsentDomain =
   | 'network:coop'        // participate in co-op sessions
   | 'network:realtime'    // use Supabase Realtime channels
@@ -50,8 +48,6 @@ export interface AuditEntry {
   timestamp: string;
 }
 
-// ── acceptIncoming policy (decision #7) ──────────────────────────────────────
-
 /**
  * Returns the effective accept-incoming decision for a source peer.
  *
@@ -65,8 +61,6 @@ export function resolveAcceptPolicy(
   if (userOverride === 'granted') return 'granted';
   return inSession ? 'granted' : 'prompt';
 }
-
-// ── ConsentManager ────────────────────────────────────────────────────────────
 
 const LS_KEY = 'dream:consent';
 const SETTINGS_LS_KEY = 'dream:settings';
@@ -112,8 +106,6 @@ export class ConsentManager {
     this._loadFromLocalStorage();
   }
 
-  // ── Session ─────────────────────────────────────────────────────────────────
-
   /** Attach the active session ID so consent entries can reference it. */
   setSessionId(id: string): void {
     this._sessionId = id;
@@ -122,8 +114,6 @@ export class ConsentManager {
   clearSession(): void {
     this._sessionId = null;
   }
-
-  // ── Consent ─────────────────────────────────────────────────────────────────
 
   /** Return the cached decision for a domain. Defaults to 'prompt'. */
   get(domain: ConsentDomain): ConsentDecision {
@@ -167,8 +157,6 @@ export class ConsentManager {
     return Array.from(this._cache.values());
   }
 
-  // ── Settings (key/value) ─────────────────────────────────────────────────────
-
   getSetting(key: string, fallback?: string): string | undefined {
     return this._settings.get(key) ?? fallback;
   }
@@ -192,8 +180,6 @@ export class ConsentManager {
     this._settings.forEach((v: string, k: string) => { obj[k] = v; });
     return obj;
   }
-
-  // ── Audit ────────────────────────────────────────────────────────────────────
 
   /** Append an arbitrary audit entry (e.g. co-op transfer, module drop). */
   audit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): void {
@@ -298,8 +284,6 @@ export class ConsentManager {
       this._persistSettings();
     }
   }
-
-  // ── Private ──────────────────────────────────────────────────────────────────
 
   private _appendAudit(entry: AuditEntry): void {
     this._auditLog.push(entry);

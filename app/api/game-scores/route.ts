@@ -3,8 +3,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 import { toErrorMessage } from '@/lib/utils';
+
 const VALID_GAME_IDS = CARTRIDGE_MANIFEST.map((entry) => entry.id);
 const VALID_GAMES = new Set(VALID_GAME_IDS);
 
@@ -94,7 +94,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   return NextResponse.json({ data: enriched, error: null });
 }
-
 
 // PATCH /api/game-scores
 // Body: { id, shared } — auth required. Used by GameEngin score sharing UI.

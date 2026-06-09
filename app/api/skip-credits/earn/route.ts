@@ -1,9 +1,3 @@
-// app/api/skip-credits/earn/route.ts
-// Phase 9 — Earn Skip Credits Endpoint
-//
-// Awards skip credits for watching ads.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
-
 import type {
     EarnSkipCreditsRequest,
     EarnSkipCreditsResponse,
@@ -12,6 +6,12 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+
+// app/api/skip-credits/earn/route.ts
+// Phase 9 — Earn Skip Credits Endpoint
+//
+// Awards skip credits for watching ads.
+// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

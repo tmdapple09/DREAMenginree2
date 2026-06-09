@@ -1,8 +1,11 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+    RUNTIME_REGIONS,
+    SURFACE_NAMES,
+    type DreamWindowState,
+    type RuntimeSeamName,
+} from '@/lib/identity/canonical-names';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/dream-window/runtimeRegion.ts.
 
@@ -26,17 +29,11 @@
  * Law: docs/LAW.md §OS-layer naming law
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ---------------------------------------------------------------------------
 // Default state
-// ---------------------------------------------------------------------------
 
 /**
  * The default runtime region state:
@@ -61,28 +58,13 @@ export const DEFAULT_RUNTIME_REGION_STATE: RuntimeRegionState = {
   },
 };
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import {
-    RUNTIME_REGIONS,
-    SURFACE_NAMES,
-    type DreamWindowState,
-    type RuntimeSeamName,
-} from '@/lib/identity/canonical-names';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
 
-// ---------------------------------------------------------------------------
 // Sub-types
-// ---------------------------------------------------------------------------
 
 /**
  * A lightweight reference to a Dream Window currently mounted in DreamSpace.
@@ -145,13 +127,9 @@ export interface RuntimeRegionState {
   seam: SeamState;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
 
-// ---------------------------------------------------------------------------
 // State transitions (pure functions — return new state, never mutate)
-// ---------------------------------------------------------------------------
 
 /**
  * Set the active surface in Surface Space.
@@ -266,17 +244,12 @@ export function isDreamSpaceDominant(state: RuntimeRegionState): boolean {
   return state.dreamSpace.isDominant;
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.
 
 // Re-export canonical constants
+
 export { RUNTIME_REGIONS };

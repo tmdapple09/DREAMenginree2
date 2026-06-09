@@ -1,3 +1,27 @@
+import type { AbstractEngine, Scene } from '@babylonjs/core';
+import {
+    AdvancedPhysicsWorld,
+    AnimationStateMachine,
+    AssetStreamManager,
+    BehaviorTreeEngine,
+    ClientSidePrediction,
+    ComputeShaderPipeline,
+    GlobalIllumProbes,
+    GPUProfiler,
+    LODSystem,
+    OctreeBVH,
+    PhysicsMaterialSystem,
+    ProceduralWorldGen,
+    ReplayBuffer,
+    ResourcePool,
+    RollbackNetcode,
+    SpatialAudioDSP,
+    TerrainEngine,
+    TypedEventBus,
+    WGSLShaderManager,
+    WorkerJobSystem,
+} from './power-systems';
+
 /**
  * lib/gameengin/core.ts
  *
@@ -27,32 +51,6 @@
  *   elite.dispose();
  */
 
-import type { AbstractEngine, Scene } from '@babylonjs/core';
-import {
-    AdvancedPhysicsWorld,
-    AnimationStateMachine,
-    AssetStreamManager,
-    BehaviorTreeEngine,
-    ClientSidePrediction,
-    ComputeShaderPipeline,
-    GlobalIllumProbes,
-    GPUProfiler,
-    LODSystem,
-    OctreeBVH,
-    PhysicsMaterialSystem,
-    ProceduralWorldGen,
-    ReplayBuffer,
-    ResourcePool,
-    RollbackNetcode,
-    SpatialAudioDSP,
-    TerrainEngine,
-    TypedEventBus,
-    WGSLShaderManager,
-    WorkerJobSystem,
-} from './power-systems';
-
-// ─── ECS Types ────────────────────────────────────────────────────────────────
-
 export type EntityId = number;
 
 export interface Component {
@@ -65,15 +63,11 @@ export interface System {
   update(world: ECSWorld, dt: number): void;
 }
 
-// ─── ECS World ────────────────────────────────────────────────────────────────
-
 export class ECSWorld {
   private _nextId = 1;
   private _entities = new Set<EntityId>();
   private _components = new Map<EntityId, Map<string, Component>>();
   private _systems: System[] = [];
-
-  // ── Entity management ────────────────────────────────────────────────────
 
   createEntity(): EntityId {
     const id = this._nextId++;
@@ -86,8 +80,6 @@ export class ECSWorld {
     this._entities.delete(id);
     this._components.delete(id);
   }
-
-  // ── Component CRUD ───────────────────────────────────────────────────────
 
   addComponent<C extends Component>(entity: EntityId, component: C): void {
     this._components.get(entity)?.set(component.type, component);
@@ -105,8 +97,6 @@ export class ECSWorld {
     return this._components.get(entity)?.has(type) ?? false;
   }
 
-  // ── Query ────────────────────────────────────────────────────────────────
-
   /** Returns all entity IDs that have ALL the listed component types. */
   query(...types: string[]): EntityId[] {
     const result: EntityId[] = [];
@@ -115,8 +105,6 @@ export class ECSWorld {
     }
     return result;
   }
-
-  // ── Systems ──────────────────────────────────────────────────────────────
 
   addSystem(system: System): void {
     this._systems.push(system);
@@ -135,8 +123,6 @@ export class ECSWorld {
     this._nextId = 1;
   }
 }
-
-// ─── Performance Budget ───────────────────────────────────────────────────────
 
 export type QualityTier = 'ultra' | 'high' | 'medium' | 'low';
 
@@ -241,8 +227,6 @@ const QUALITY_PRESETS: Record<QualityTier, PerformanceBudget> = {
   },
 };
 
-// ─── Frame Telemetry ──────────────────────────────────────────────────────────
-
 export interface FrameTelemetry {
   fps: number;
   avgFps: number;
@@ -255,15 +239,12 @@ export interface FrameTelemetry {
   particleCount: number;
 }
 
-// ─── EliteGameEngine ──────────────────────────────────────────────────────────
-
 export type FrameCallback = (dt: number, telemetry: FrameTelemetry) => void;
 export type QualityChangeCallback = (budget: PerformanceBudget) => void;
 
 export class EliteGameEngine {
   readonly world = new ECSWorld();
 
-  // ── 20 Power Systems ─────────────────────────────────────────────────────
   /** System 1: Deterministic rollback netcode for lag-free multiplayer. */
   readonly netcode = new RollbackNetcode({ maxRollbackFrames: 8, tickRateHz: 60 });
   /** System 2: WebGPU compute shader pipeline (physics/particles on GPU). */

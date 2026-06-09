@@ -1,7 +1,3 @@
-// app/api/ai/eams/route.ts
-// Canonical Dr. Eams endpoint — user-facing AI agent.
-// AI keys are server-side only (Vercel env vars, never client).
-
 import { writeAuditLog } from '@/lib/ai/audit';
 import { boogieEvaluate } from '@/lib/ai/boogieman';
 import { makeConfirmToken } from '@/lib/ai/confirm';
@@ -15,7 +11,9 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-
+// app/api/ai/eams/route.ts
+// Canonical Dr. Eams endpoint — user-facing AI agent.
+// AI keys are server-side only (Vercel env vars, never client).
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -50,7 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const rateRpm = await getCurrentRPM(user.id, '/api/ai/eams');
 
   // Determine actor role
-   
+
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
     .select('role')
@@ -94,7 +92,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       if (recentPosts && recentPosts.length > 0) {
         const postsText = recentPosts
-           
+
           .map((p) =>
             `- "${String(p.content ?? '').slice(0, 80)}" (${p.visibility ?? 'unknown'}, ${p.created_at ? new Date(p.created_at).toLocaleDateString() : 'unknown'})`
           )
@@ -103,7 +101,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
 
       // Also fetch follower/following counts
-       
+
       const { count: followersCount } = await supabase
         .from('follows')
         .select('*', { count: 'exact', head: true })

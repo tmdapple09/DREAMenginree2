@@ -22,14 +22,10 @@
 export const SHELLHUB_DEFAULT_SERVER = 'https://cloud.shellhub.io';
 const SHELLHUB_API_BASE = '/api/v1';
 
-// ─── Credential shape ────────────────────────────────────────────────────────
-
 export interface ShellHubCredentials {
   server_url: string;
   api_key: string;
 }
-
-// ─── Response shapes from ShellHub API ──────────────────────────────────────
 
 export interface ShellHubDevice {
   uid: string;
@@ -48,8 +44,6 @@ export interface ShellHubDevice {
   last_seen: string;
   namespace: string;
 }
-
-// ─── Internal helper ─────────────────────────────────────────────────────────
 
 /**
  * Make an authenticated request to a ShellHub API endpoint.
@@ -93,8 +87,6 @@ async function shellhubFetch<T>(
 
   return res.json() as Promise<T>;
 }
-
-// ─── Public API ──────────────────────────────────────────────────────────────
 
 /**
  * Verify credentials by fetching the first page of devices.

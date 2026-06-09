@@ -1,11 +1,11 @@
+import type { ReactNode } from 'react';
+
 // SURFACE: dream.shell.EnginesMusicLayout  (framework-mandated basename: layout.tsx)
 /**
  * app/engines/music/layout.tsx
  *
  * Layout for the StarMakerEngin standalone app.
  */
-
-import type { ReactNode } from 'react';
 
 export const metadata = {
   title: 'StarMakerEngin – DREAMengin',

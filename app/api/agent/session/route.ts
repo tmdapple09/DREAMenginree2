@@ -3,10 +3,8 @@ import { codeEnginHostTools } from '@/lib/agentOS/hostTools';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-// ---------------------------------------------------------------------------
 // Supabase service-role client for server-side session persistence.
 // Falls back to in-memory map when Supabase is not configured (local dev).
-// ---------------------------------------------------------------------------
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
@@ -69,9 +67,7 @@ async function deleteSession(sessionId: string): Promise<void> {
   await db.from('agent_sessions').delete().eq('id', sessionId);
 }
 
-// ---------------------------------------------------------------------------
 // Route handler
-// ---------------------------------------------------------------------------
 
 export async function POST(req: Request ): Promise<NextResponse> {
   const body = (await req.json()) as {

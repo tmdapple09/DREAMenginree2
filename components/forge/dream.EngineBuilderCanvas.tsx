@@ -1,28 +1,5 @@
 'use client';
 
-/**
- * components/forge/dream.EngineBuilderCanvas.tsx — §41 Engin Forge (NGN Engin)
- *
- * Visual engine builder as described in spec §41.
- *
- * §41.1 Layout:
- *   - Left sidebar: 120+ atomic pieces (from componentInventory) by category
- *   - Central canvas: drag pieces, connect input/output ports
- *   - Each piece has a manifest and a local event bus
- *
- * §41.2 Rules:
- *   - Minimum 3 pieces (source + processor + output), max 30
- *   - Test in sandbox (isolated component)
- *   - Save assembly as JSON, share/publish to DreamMarketplace
- *
- * §41.3 Dual Runtime Hub:
- *   - "Dual Runtime Hub" piece enables cross-side communication
- *
- * §42 Local Event Bus:
- *   - Each assembly gets its own createEventBus() instance
- *   - Modules communicate only when explicitly wired
- */
-
 import {
     COMPONENT_INVENTORY,
     type AtomicComponent,
@@ -54,7 +31,28 @@ import {
 } from 'lucide-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
+/**
+ * components/forge/dream.EngineBuilderCanvas.tsx — §41 Engin Forge (NGN Engin)
+ *
+ * Visual engine builder as described in spec §41.
+ *
+ * §41.1 Layout:
+ *   - Left sidebar: 120+ atomic pieces (from componentInventory) by category
+ *   - Central canvas: drag pieces, connect input/output ports
+ *   - Each piece has a manifest and a local event bus
+ *
+ * §41.2 Rules:
+ *   - Minimum 3 pieces (source + processor + output), max 30
+ *   - Test in sandbox (isolated component)
+ *   - Save assembly as JSON, share/publish to DreamMarketplace
+ *
+ * §41.3 Dual Runtime Hub:
+ *   - "Dual Runtime Hub" piece enables cross-side communication
+ *
+ * §42 Local Event Bus:
+ *   - Each assembly gets its own createEventBus() instance
+ *   - Modules communicate only when explicitly wired
+ */
 
 const C = {
   bg:       '#0a0a0f',
@@ -74,8 +72,6 @@ const C = {
   hub:      '#f97316',   // orange — dual runtime hub
 } as const;
 
-// ── Category colours ──────────────────────────────────────────────────────────
-
 const CATEGORY_COLORS: Record<string, string> = {
   'Audio & Music':          '#ec4899',
   'Games & Play':           '#3b82f6',
@@ -90,14 +86,10 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Science & Simulation':   '#f43f5e',
 };
 
-// ── Canvas piece state (adds position + role override) ────────────────────────
-
 interface CanvasPiece extends AtomicPiece {
   x: number;
   y: number;
 }
-
-// ── Wire-drawing state ────────────────────────────────────────────────────────
 
 interface WireInProgress {
   fromPieceId: string;
@@ -108,16 +100,12 @@ interface WireInProgress {
   toY:         number;
 }
 
-// ── §41 DUAL RUNTIME HUB piece ────────────────────────────────────────────────
-
 const DUAL_RUNTIME_HUB: AtomicComponent = {
   id:          'forge-dual-runtime-hub',
   name:        'Dual Runtime Hub',
   description: '§41.3 Enables cross-side communication between HomeDream and DreamSpace VMs.',
   category:    'Science & Simulation',
 };
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export interface EngineBuilderCanvasProps {
   /** Called with the JSON-serialised assembly when the user saves. */
@@ -136,8 +124,6 @@ export default function EngineBuilderCanvas({
     new Set(['Audio & Music']),
   );
   const [searchQuery, setSearchQuery] = useState('');
-
-  // ── Canvas state ──────────────────────────────────────────────────────────
 
   const [pieces, setPieces] = useState<CanvasPiece[]>(() => {
     if (initialJson) {
@@ -174,8 +160,6 @@ export default function EngineBuilderCanvas({
 
   const canvasRef = useRef<SVGSVGElement>(null);
 
-  // ── Derived ────────────────────────────────────────────────────────────────
-
   const categories = useMemo(
     () => Array.from(new Set(COMPONENT_INVENTORY.map((c) => c.category))),
     [],
@@ -192,8 +176,6 @@ export default function EngineBuilderCanvas({
   }, [searchQuery]);
 
   const validation = useMemo(() => validateAssembly(pieces, wires), [pieces, wires]);
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
 
   function showToast(msg: string, ok = true ){
     setToast({ msg, ok });
@@ -217,8 +199,6 @@ export default function EngineBuilderCanvas({
     if (role === 'processor') return C.processor;
     return C.hub;
   }
-
-  // ── Actions ────────────────────────────────────────────────────────────────
 
   const addPiece = useCallback((component: AtomicComponent) => {
     if (pieces.length >= 30) {
@@ -318,8 +298,6 @@ export default function EngineBuilderCanvas({
     }
   }, []);
 
-  // ── Drag handlers ─────────────────────────────────────────────────────────
-
   const onPiecePointerDown = useCallback(
     (e: React.PointerEvent, pieceId: string) => {
       if ((e.target as HTMLElement).dataset.port) return;
@@ -362,8 +340,6 @@ export default function EngineBuilderCanvas({
     setDragPieceId(null);
     if (wireInProgress) setWireInProgress(null);
   }, [wireInProgress]);
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   const PIECE_W  = 160;
   const PIECE_H  = 80;
@@ -802,8 +778,6 @@ export default function EngineBuilderCanvas({
     </div>
   );
 }
-
-// ── Toolbar button helper ─────────────────────────────────────────────────────
 
 function ToolbarBtn({
   icon, label, onClick, accent, danger,

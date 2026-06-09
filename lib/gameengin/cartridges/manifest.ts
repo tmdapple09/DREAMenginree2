@@ -1,3 +1,5 @@
+import type { CartridgeInputProfile, CartridgeOrientationPreference, CartridgeQualityDefaults, CartridgeRendererFamily, CartridgeWarmupPlan, CartridgeWorkerEntry, RendererBackendId } from '../cartridge';
+
 /**
  * lib/gameengin/cartridges/manifest.ts
  *
@@ -8,8 +10,6 @@
  * loader registry, and GameEngin runtime shelf. The synchronisation is enforced
  * by `tests/gameengin-cartridges.test.ts`.
  */
-
-import type { CartridgeInputProfile, CartridgeOrientationPreference, CartridgeQualityDefaults, CartridgeRendererFamily, CartridgeWarmupPlan, CartridgeWorkerEntry, RendererBackendId } from '../cartridge';
 
 export type CartridgeRenderMode = 'canvas' | 'webgpu' | 'babylon' | 'dom';
 
@@ -76,7 +76,7 @@ function launchFor(id: string, renderMode: CartridgeRenderMode, tier: CartridgeM
       touch: true,
       gamepad: tier === 'flagship',
       remote: true,
-      actions: ['move', 'confirm', 'cancel', 'pause', 'primary', 'secondary'],
+      actions: ['move-up', 'move-down', 'strafe-left', 'strafe-right', 'look-up', 'look-down', 'turn-left', 'turn-right', 'ability', 'swap', 'strike', 'guard', 'dash', 'pause'],
     },
     orientationPreference: renderMode === 'dom' ? 'any' : 'landscape',
     qualityDefaults: {
@@ -124,7 +124,6 @@ export const CARTRIDGE_MANIFEST: readonly CartridgeManifestEntry[] = [
     subtitle: 'WebGPU · DualSense Ready',
     description: 'WebGPU arena shooter — DualSense gyro aim, top-down combat, high-performance 3D rendering' }),
 
-  // ── Fusion flagships — replace 25 source cartridges ──────────────────────
   cartridge({ id: 'null-cathedral', label: 'NULL CATHEDRAL', emoji: '♟', category: 'Tactics RPG', color: '#d4af37', renderMode: 'canvas', tier: 'flagship',
     subtitle: 'Chess + RPG + Minesweeper · Deductive sacrifice',
     description: 'A grim tactical RPG where every battle is a chess match played over a buried minefield of repressed memories — Iren Vespa descends the Cathedral of Null to find her sister before CASTLE overwrites her' }),
@@ -134,25 +133,23 @@ export const CARTRIDGE_MANIFEST: readonly CartridgeManifestEntry[] = [
   cartridge({ id: 'serpent-siege', label: 'SERPENT SIEGE', emoji: '🐍', category: 'Strategy', color: '#5fbf4d', renderMode: 'canvas', tier: 'flagship',
     subtitle: 'Snake + TD + RTS · Body-as-build-order',
     description: 'A tower-defense RTS where your army is one sentient serpent — every body segment is a tower whose type is set by the terrain beneath it. Defend the Mother Egg from the Vermillion Choir' }),
-  cartridge({ id: 'avenue-of-mirrors', label: 'AVENUE OF MIRRORS', emoji: '🪞', category: 'Adventure', color: '#7fb6b1', renderMode: 'canvas', tier: 'flagship',
-    subtitle: 'Lucid Avenue + Maze + Memory · Navigational amnesia',
-    description: 'A first-person dream-walk where the maze rebuilds itself the moment you stop looking, and you only navigate by glyph-grids you must memorize. The Compositor wants you forgotten' }),
+  cartridge({ id: 'avenue-of-mirrors', label: 'MadMaxi: WILDFALL', emoji: '🪞', category: 'Expedition RPG', color: '#7fb6b1', renderMode: 'canvas', tier: 'flagship',
+    subtitle: 'Avenue of Mirrors · opening expedition · memory maze',
+    description: 'MadMaxi: WILDFALL begins inside Avenue of Mirrors: four heroes cross five hostile Mirror zones, recover relics, survive Watchers, and unlock the first expedition gate' }),
   cartridge({ id: 'engin-fracture', label: 'ENGIN: FRACTURE', emoji: '⚙️', category: 'Fighting', color: '#8aa9ff', renderMode: 'canvas', tier: 'flagship',
     subtitle: 'ENGIN Battle + DREAMwars + Avatar Maker · Built-is-fought',
     description: '1v1 mech fighter where every avatar-maker silhouette choice is a frame-data decision, wrapped in a season-long Lattice/Choir/Kindling faction war. Pilot Vesh defects mid-season' }),
 
-  // ── Advanced fusion cartridges ───────────────────────────────────────────
   cartridge({ id: 'glassfall', label: 'GLASSFALL', emoji: '🔻', category: 'Puzzle', color: '#ff7da8', renderMode: 'canvas', tier: 'advanced',
     subtitle: 'Breakout + Tetris + Match-3 · Carve the falling tower',
     description: 'A vertical action-puzzler — bounce shards up into falling tetrominos to chip free gems, settle them into 3-matches, push back the rising garbage. Climb the Architect\'s tower' }),
-  cartridge({ id: 'nite-flyer-solar-hymn', label: 'NITE FLYER: SOLAR HYMN', emoji: '🌙', category: 'Adventure', color: '#c47bd6', renderMode: 'canvas', tier: 'advanced',
+  cartridge({ id: 'nite-flyer-solar-hymn', label: 'NITE FLYER: SOLAR HYMN', emoji: '🌙', category: 'Expedition RPG', color: '#c47bd6', renderMode: 'canvas', tier: 'advanced',
     subtitle: 'Flappy + Pong + DREAMquest · Out-rally a god',
     description: 'Side-scrolling dream-courier adventure — flap through painted chapters, deliver one last letter to The Long Pause, then face moon-king bosses in cosmic Pong duels' }),
   cartridge({ id: 'lexicon-solitaire', label: 'LEXICON SOLITAIRE', emoji: '📜', category: 'Card', color: '#d6b27a', renderMode: 'dom', tier: 'advanced',
     subtitle: 'Solitaire + Word Sprint + Trivia · Spell to fight',
     description: 'Narrative deckbuilder — lay Klondike cascades, spell words across legal chains to cast spells, answer library trivia for relic-cards. Lin Argo chases the Redactor through five dying libraries' }),
 
-  // ── Classic fusion cartridge ─────────────────────────────────────────────
   cartridge({ id: 'defuse-ritual', label: 'DEFUSE RITUAL', emoji: '🕯', category: 'Arcade', color: '#f0c674', renderMode: 'dom', tier: 'classic',
     subtitle: 'Speed-Tap + Minesweeper · Deduction under panic',
     description: 'Nine seconds. A minesweeper grid overlays a candle-lit temple floor. Tap only the safe tiles in the glyph-order shown on the wall — mistakes shorten the timer and brand your hand' }),

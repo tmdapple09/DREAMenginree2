@@ -1,5 +1,11 @@
 'use client';
 
+import type { GameCartridge } from '../cartridge';
+import type { CartridgeManifestEntry } from './manifest';
+import { CARTRIDGE_MANIFEST, getCartridgeManifest } from './manifest';
+import { defineReactCartridgeLoader } from './reactCartridge';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/gameengin/cartridges/loaders.ts
  *
@@ -7,12 +13,6 @@
  * repository. Keep in sync with `./manifest.ts`.
  */
 
-import type { GameCartridge } from '../cartridge';
-import type { CartridgeManifestEntry } from './manifest';
-import { CARTRIDGE_MANIFEST, getCartridgeManifest } from './manifest';
-import { defineReactCartridgeLoader } from './reactCartridge';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface LoadedCartridgeBundle {
   cartridge: GameCartridge;
   manifest: CartridgeManifestEntry;
@@ -31,19 +31,16 @@ export const CARTRIDGE_LOADERS: Readonly<Record<string, CartridgeLoader>> = {
   'neon-drift':            load('neon-drift',            () => import('@/components/games/dream.NeonDrift')),
   'echo-arena':            load('echo-arena',            () => import('@/components/games/dream.EchoArena')),
 
-  // ── Fusion flagships ──────────────────────────────────────────────────────
   'null-cathedral':        load('null-cathedral',        () => import('@/components/games/dream.NullCathedral')),
   'voidline-gp':           load('voidline-gp',           () => import('@/components/games/dream.VoidlineGP')),
   'serpent-siege':         load('serpent-siege',         () => import('@/components/games/dream.SerpentSiege')),
-  'avenue-of-mirrors':     load('avenue-of-mirrors',     () => import('@/components/games/dream.AvenueOfMirrors')),
+  'avenue-of-mirrors':     load('avenue-of-mirrors',     () => import('@/components/games/dream.MadMaxiWildfall')),
   'engin-fracture':        load('engin-fracture',        () => import('@/components/games/dream.EnginFracture')),
 
-  // ── Advanced fusions ──────────────────────────────────────────────────────
   'glassfall':             load('glassfall',             () => import('@/components/games/dream.Glassfall')),
   'nite-flyer-solar-hymn': load('nite-flyer-solar-hymn', () => import('@/components/games/dream.NiteFlyerSolarHymn')),
   'lexicon-solitaire':     load('lexicon-solitaire',     () => import('@/components/games/dream.LexiconSolitaire')),
 
-  // ── Classic fusion ────────────────────────────────────────────────────────
   'defuse-ritual':         load('defuse-ritual',         () => import('@/components/games/dream.DefuseRitual')),
 };
 

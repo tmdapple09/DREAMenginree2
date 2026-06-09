@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/posts/[id]/route.ts
  *
@@ -15,12 +20,6 @@
  * LAW.md §3 — every visible action must do something real.
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -35,7 +34,7 @@ export async function DELETE(
   }
 
   // Fetch post to verify ownership — never trust client-supplied user_id
-   
+
   const db = supabase as SupabaseClient;
   const { data: post, error: fetchError } = await db
     .from('app_posts')

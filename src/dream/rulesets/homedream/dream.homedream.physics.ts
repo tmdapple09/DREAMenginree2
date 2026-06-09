@@ -1,7 +1,7 @@
+import { HOMEDREAM_GRAVITY } from './dream.homedream.constants';
+
 // dream.homedream.physics — physics constraint definitions for HomeDream
 // No engin imports. Pure definitions only.
-
-import { HOMEDREAM_GRAVITY } from './dream.homedream.constants';
 
 export interface PhysicsConstraint {
   entityType: string;

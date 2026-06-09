@@ -1,20 +1,5 @@
 "use client";
 
-/**
- * LabDreamIDE — Split input/output IDE for the Lab Daydream (Side A).
- *
- * Layout:
- *   [ Sim selector strip ]
- *   [ Language bar ]
- *   [ Script editor (left) | Results output + visualizations (right) ]
- *   [ Visualization panel: heatmap · density · neural activation ]
- *
- * Python/JS/Bash input on the left; real-time streaming results
- * + 3 high-density visualizations on the right.
- *
- * No eval — all execution is simulated on the client.
- */
-
 import { bridge as dualRuntimeBridge } from "@/lib/runtime/dualRuntimeBridge";
 import { getSwap, toggleSwap } from "@/lib/runtime/swapManager";
 import {
@@ -31,70 +16,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type Language = "python" | "javascript" | "bash";
-type SimId = "particle" | "fluid" | "quantum" | "neural" | "none";
-type VizType = "heatmap" | "density" | "activation";
-type RunStatus = "idle" | "running" | "done" | "error";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const ACCENT = "#22c55e";
-const CODE_BG = "#0d1117";
-const CODE_FG = "#e2e8f0";
-const OUT_OK = "#4ade80";
-const OUT_ERR = "#f87171";
-
-const SIMS: Array<{
-  id: SimId;
-  name: string;
-  emoji: string;
-  color: string;
-  result: string;
-}> = [
-  { id: "none", name: "Standalone", emoji: "🖥️", color: "#94a3b8", result: "" },
-  {
-    id: "particle",
-    name: "Particle",
-    emoji: "⚛️",
-    color: "#22c55e",
-    result: "1 024 particles, avg v = 12.4 m/s, KE = 0.83 J",
-  },
-  {
-    id: "fluid",
-    name: "Fluid",
-    emoji: "🌊",
-    color: "#0ea5e9",
-    result: "Flow stable Re = 4 200, viscosity = 0.001 Pa·s",
-  },
-  {
-    id: "quantum",
-    name: "Quantum",
-    emoji: "🔬",
-    color: "#8b5cf6",
-    result: "Fidelity: 0.94 · depth: 12 · gates: 24 · qubits: 8",
-  },
-  {
-    id: "neural",
-    name: "Neural",
-    emoji: "🧠",
-    color: "#ec4899",
-    result: "Convergence: 0.003 · epochs: 100 · accuracy: 97.2%",
-  },
-];
-
-const LANGUAGES: Array<{ id: Language; label: string; emoji: string }> = [
-  { id: "python", label: "Python", emoji: "🐍" },
-  { id: "javascript", label: "JavaScript", emoji: "📜" },
-  { id: "bash", label: "Bash", emoji: "🖥️" },
-];
-
-const DEMO_CODE: Record<Language, string> = {
-  python: `# Lab Dream — Python IDE
-# Select a simulation above, then Run ▶
-
 import numpy as np
 
 # Sample data
@@ -114,31 +35,6 @@ print("\\n✅ Experiment complete")`,
 // Select a simulation above, then Run ▶
 
 const data = [1, 4, 9, 16, 25, 36, 49];
-const mean = data.reduce((a, b) => a + b, 0) / data.length;
-const std  = Math.sqrt(data.map((x) => (x - mean) ** 2).reduce((a, b) => a + b) / data.length);
-
-console.log('Data:', data);
-console.log('Mean:', mean.toFixed(2));
-console.log('Std: ', std.toFixed(2));
-
-for (let i = 0; i < 3; i++) {
-  const result = (Math.random() - 0.5) * 2;
-  console.log(\`Trial \${i+1}: \${result.toFixed(4)}\`);
-}
-console.log('\\n✅ Experiment complete');`,
-
-  bash: `#!/usr/bin/env bash
-# Lab Dream — Bash
-# Select a simulation above, then Run ▶
-
-set -e
-echo "== Lab Dream Pipeline =="
-
-echo "Installing dependencies…"
-pip install numpy scipy --quiet
-
-echo "Running experiment…"
-python3 -c "
 import numpy as np
 data = np.random.normal(0, 1, 1000)
 print(f'n=1000  mean={data.mean():.3f}  std={data.std():.3f}')
@@ -164,8 +60,6 @@ const VIZ_TYPES: Array<{ id: VizType; label: string; desc: string }> = [
     desc: "Per-layer activation strength",
   },
 ];
-
-// ─── ASCII helpers ────────────────────────────────────────────────────────────
 
 function asciiHeatmap(cols: number, rows: number, seed: number): string {
   const chars = ["░", "▒", "▓", "█"];
@@ -226,8 +120,6 @@ function asciiActivation(layers: number[], seed: number): string {
   return lines.join("\n");
 }
 
-// ─── Simulated output generation ──────────────────────────────────────────────
-
 function getMockOutput(language: Language, simId: SimId): string[] {
   const ts = () => new Date().toISOString().slice(11, 19);
   const sim = SIMS.find((s) => s.id === simId);
@@ -284,8 +176,6 @@ function getMockOutput(language: Language, simId: SimId): string[] {
       ];
   }
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function LabDreamIDE() {
   const [language, setLanguage] = useState<Language>("python");
@@ -1320,3 +1210,103 @@ export default function LabDreamIDE() {
     </div>
   );
 }
+
+/**
+ * LabDreamIDE — Split input/output IDE for the Lab Daydream (Side A).
+ *
+ * Layout:
+ *   [ Sim selector strip ]
+ *   [ Language bar ]
+ *   [ Script editor (left) | Results output + visualizations (right) ]
+ *   [ Visualization panel: heatmap · density · neural activation ]
+ *
+ * Python/JS/Bash input on the left; real-time streaming results
+ * + 3 high-density visualizations on the right.
+ *
+ * No eval — all execution is simulated on the client.
+ */
+
+type Language = "python" | "javascript" | "bash";
+type SimId = "particle" | "fluid" | "quantum" | "neural" | "none";
+type VizType = "heatmap" | "density" | "activation";
+type RunStatus = "idle" | "running" | "done" | "error";
+
+const ACCENT = "#22c55e";
+const CODE_BG = "#0d1117";
+const CODE_FG = "#e2e8f0";
+const OUT_OK = "#4ade80";
+const OUT_ERR = "#f87171";
+
+const SIMS: Array<{
+  id: SimId;
+  name: string;
+  emoji: string;
+  color: string;
+  result: string;
+}> = [
+  { id: "none", name: "Standalone", emoji: "🖥️", color: "#94a3b8", result: "" },
+  {
+    id: "particle",
+    name: "Particle",
+    emoji: "⚛️",
+    color: "#22c55e",
+    result: "1 024 particles, avg v = 12.4 m/s, KE = 0.83 J",
+  },
+  {
+    id: "fluid",
+    name: "Fluid",
+    emoji: "🌊",
+    color: "#0ea5e9",
+    result: "Flow stable Re = 4 200, viscosity = 0.001 Pa·s",
+  },
+  {
+    id: "quantum",
+    name: "Quantum",
+    emoji: "🔬",
+    color: "#8b5cf6",
+    result: "Fidelity: 0.94 · depth: 12 · gates: 24 · qubits: 8",
+  },
+  {
+    id: "neural",
+    name: "Neural",
+    emoji: "🧠",
+    color: "#ec4899",
+    result: "Convergence: 0.003 · epochs: 100 · accuracy: 97.2%",
+  },
+];
+
+const LANGUAGES: Array<{ id: Language; label: string; emoji: string }> = [
+  { id: "python", label: "Python", emoji: "🐍" },
+  { id: "javascript", label: "JavaScript", emoji: "📜" },
+  { id: "bash", label: "Bash", emoji: "🖥️" },
+];
+
+const DEMO_CODE: Record<Language, string> = {
+  python: `# Lab Dream — Python IDE
+# Select a simulation above, then Run ▶
+
+const mean = data.reduce((a, b) => a + b, 0) / data.length;
+const std  = Math.sqrt(data.map((x) => (x - mean) ** 2).reduce((a, b) => a + b) / data.length);
+
+console.log('Data:', data);
+console.log('Mean:', mean.toFixed(2));
+console.log('Std: ', std.toFixed(2));
+
+for (let i = 0; i < 3; i++) {
+  const result = (Math.random() - 0.5) * 2;
+  console.log(\`Trial \${i+1}: \${result.toFixed(4)}\`);
+}
+console.log('\\n✅ Experiment complete');`,
+
+  bash: `#!/usr/bin/env bash
+# Lab Dream — Bash
+# Select a simulation above, then Run ▶
+
+set -e
+echo "== Lab Dream Pipeline =="
+
+echo "Installing dependencies…"
+pip install numpy scipy --quiet
+
+echo "Running experiment…"
+python3 -c "

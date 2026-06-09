@@ -1,19 +1,5 @@
 "use client";
 
-/**
- * HomeFeed — Live feed component for the HomeDream Surface.
- *
- * Phase 8 §A: Upgraded from static on-mount fetch to full Supabase Realtime
- * push-based live feed via useLiveFeed (lib/feed/useLiveFeed.ts).
- *
- * New behaviour:
- *   - Realtime channel subscribes to app_posts INSERT/UPDATE + feed_items INSERT
- *   - A green live dot in the tab bar shows the channel is connected
- *   - When other users post, a "N new posts" banner appears; tap to flush
- *   - Own posts prepend immediately (seamless with optimistic insert)
- *   - Like/comment counts sync via UPDATE events (no re-fetch)
- */
-
 import { AdUnit } from "@/components/ads/dream.AdUnit";
 import FeedVideoCard from "@/components/feed/dream.FeedVideoCard";
 import EditableAvatar from "@/components/profile/dream.EditableAvatar";
@@ -60,8 +46,22 @@ import {
   useRef,
   useState,
 } from "react";
-
 import { toErrorMessage } from "@/lib/utils";
+
+/**
+ * HomeFeed — Live feed component for the HomeDream Surface.
+ *
+ * Phase 8 §A: Upgraded from static on-mount fetch to full Supabase Realtime
+ * push-based live feed via useLiveFeed (lib/feed/useLiveFeed.ts).
+ *
+ * New behaviour:
+ *   - Realtime channel subscribes to app_posts INSERT/UPDATE + feed_items INSERT
+ *   - A green live dot in the tab bar shows the channel is connected
+ *   - When other users post, a "N new posts" banner appears; tap to flush
+ *   - Own posts prepend immediately (seamless with optimistic insert)
+ *   - Like/comment counts sync via UPDATE events (no re-fetch)
+ */
+
 interface Comment {
   id: string;
   content: string;
@@ -484,7 +484,6 @@ export default function HomeFeed({
 
   const isCompactEmbedded = embedded && isCompactRuntimeViewport(viewportWidth);
 
-  // ── Merge platform posts with YouTube live items ───────────────────────────
   // Insert 1 YouTube card after every 3 platform posts; remaining yt items
   // append at the end. YouTube items are stable across renders — only
   // ytPosts reference changes when the sliding window updates.

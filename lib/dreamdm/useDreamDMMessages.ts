@@ -1,3 +1,7 @@
+import type { RealtimePostgresInsertPayload } from '@/engine/io';
+import { createClient } from '@/lib/supabase/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * useDreamDMMessages — fetch and subscribe to messages for a DreamDM conversation.
  *
@@ -15,10 +19,6 @@
  */
 
 'use client';
-
-import type { RealtimePostgresInsertPayload } from '@/engine/io';
-import { createClient } from '@/lib/supabase/client';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface DMMessage {
   id: string;
@@ -132,7 +132,7 @@ export function useDreamDMMessages(
       setMessages(demoMessages);
     }
   // demoMessages is defined outside the component (stable reference)
-   
+
   }, [conversationId, isDemoConversation]);
 
   return { messages, isLoading, addOptimistic, replaceOptimistic, removeOptimistic };

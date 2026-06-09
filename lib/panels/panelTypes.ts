@@ -43,3 +43,4 @@ export const PANEL_META: Record<SystemPanelId, PanelMeta> = {
   'settings/help':        { id: 'settings/help',        label: 'Help & Onboarding' },
   'settings/safety':      { id: 'settings/safety',      label: 'Policy & Safety' },
 };
+

@@ -1,4 +1,14 @@
 'use client';
+
+import type { MotionProps } from 'framer-motion';
+import {
+    useMotionTemplate,
+    useMotionValue,
+    useSpring,
+    useTransform,
+} from 'framer-motion';
+import { useRef } from 'react';
+
 /**
  * lib/hooks/useMotionTilt.ts
  *
@@ -26,15 +36,6 @@
  * Usage (with options):
  *   const tilt = useMotionTilt({ maxTilt: 12, scale: 1.06, glare: true });
  */
-
-import type { MotionProps } from 'framer-motion';
-import {
-    useMotionTemplate,
-    useMotionValue,
-    useSpring,
-    useTransform,
-} from 'framer-motion';
-import { useRef } from 'react';
 
 export interface MotionTiltOptions {
   /** Maximum tilt angle in degrees (default: 10). */

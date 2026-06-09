@@ -7,8 +7,6 @@
  * ProfileShareButton, HomeFeed, and PlatformBadge.
  */
 
-// ─── Platform definition ─────────────────────────────────────────────────────
-
 export interface SocialPlatform {
   /** Canonical slug used as a key everywhere (e.g. "twitter") */
   id: string;
@@ -38,8 +36,6 @@ export interface SocialPlatform {
   /** Optional: prefix for the profile page (e.g. "https://twitter.com/") */
   profileUrlPrefix?: string;
 }
-
-// ─── Platform registry ───────────────────────────────────────────────────────
 
 export const SOCIAL_PLATFORMS: SocialPlatform[] = [
   {
@@ -238,8 +234,6 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     buildShareUrl: (url) => url,
   },
 ];
-
-// ─── Lookup helpers ──────────────────────────────────────────────────────────
 
 /** Map from platform id → SocialPlatform for O(1) access */
 export const PLATFORM_MAP: Record<string, SocialPlatform> = Object.fromEntries(

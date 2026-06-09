@@ -66,3 +66,4 @@ export function slogEntropy(xs: number[]): number {
   const probs = transformed.map((v) => v / total);
   return -probs.reduce((acc, p) => (p > 0 ? acc + p * Math.log(p) : acc), 0);
 }
+

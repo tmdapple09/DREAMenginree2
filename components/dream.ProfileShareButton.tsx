@@ -70,3 +70,4 @@ export default function ProfileShareButton({ url, text }: ProfileShareButtonProp
     </>
   );
 }
+

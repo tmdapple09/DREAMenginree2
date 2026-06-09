@@ -1,8 +1,9 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { RuntimeChannel } from '@/lib/runtime/runtimeChannel';
+import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
+import type { RuntimeId } from '@/types/module-manifest';
+import { create } from 'zustand';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/instanceManager.ts.
 
@@ -30,17 +31,11 @@
  * Architecture: docs/ARCHITECTURE.md §4 (Pass 4 — multi-instance Engin manager).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const LS_KEY = 'dreamengin:engin-instances';
-
-// ── Zustand store ─────────────────────────────────────────────────────────────
 
 export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
   instances: {},
@@ -144,27 +139,11 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
   },
 }));
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { RuntimeChannel } from '@/lib/runtime/runtimeChannel';
-
-import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
-
-import type { RuntimeId } from '@/types/module-manifest';
-
-import { create } from 'zustand';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type EnginName =
   | 'StarMakerEngin'
@@ -195,8 +174,6 @@ export interface EnginInstance {
   /** Wall-clock ms when this instance was created. */
   createdAt: number;
 }
-
-// ── Store shape ───────────────────────────────────────────────────────────────
 
 interface InstanceManagerState {
   /** All active instances, keyed by instance key. */
@@ -238,8 +215,6 @@ interface InstanceManagerState {
 
 type PersistedInstance = Omit<EnginInstance, 'channel'>;
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
 
 function serializeInstances(instances: Record<string, EnginInstance>): PersistedInstance[] {
@@ -252,8 +227,6 @@ function serializeInstances(instances: Record<string, EnginInstance>): Persisted
     createdAt: instance.createdAt,
   }));
 }
-
-// ── Convenience helpers ───────────────────────────────────────────────────────
 
 /**
  * buildInstanceKey(enginName, instanceId)
@@ -337,14 +310,8 @@ export function spawnDualInstances(
   return [a, b];
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

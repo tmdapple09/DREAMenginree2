@@ -1,3 +1,10 @@
+import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/dream-windows/route.ts
  *
@@ -14,16 +21,8 @@
  * Privacy: visibility defaults to 'private' (docs/AXIOMS.md §product integrity)
  */
 
-import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // The 10 required fields (Phase 8 §B Point 12)
-// ---------------------------------------------------------------------------
 
 const REQUIRED_FIELDS = [
   'id',
@@ -49,9 +48,7 @@ function validateRequiredFields(
   });
 }
 
-// ---------------------------------------------------------------------------
 // GET — list Dream Windows
-// ---------------------------------------------------------------------------
 
 /**
  * GET /api/dream-windows
@@ -74,7 +71,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
   }
 
   // RLS enforces visibility rules — the DB will only return permitted rows.
-   
+
   const { data: dreamWindows, error } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .select('*')
@@ -87,9 +84,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
   return NextResponse.json({ dreamWindows: dreamWindows ?? [] });
 }
 
-// ---------------------------------------------------------------------------
 // POST — create Dream Window
-// ---------------------------------------------------------------------------
 
 /**
  * POST /api/dream-windows
@@ -123,7 +118,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  // ── 10-field validation (Point 12) ──────────────────────────────────────
   const missingFields = validateRequiredFields(body);
   if (missingFields.length > 0) {
     return NextResponse.json(
@@ -136,7 +130,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── owner_id enforcement (Point 15) ─────────────────────────────────────
   if (body.owner_id !== user.id) {
     return NextResponse.json(
       { error: 'Forbidden — owner_id must match the authenticated user' },
@@ -144,7 +137,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── Validate activeState ─────────────────────────────────────────────────
   const validStates = Object.values(DREAM_WINDOW_STATES) as string[];
   if (!validStates.includes(body.activeState as string)) {
     return NextResponse.json(
@@ -156,7 +148,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── Validate visibility ──────────────────────────────────────────────────
   const validVisibility = ['private', 'shared', 'public'];
   if (!validVisibility.includes(body.visibility as string)) {
     return NextResponse.json(
@@ -168,8 +159,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // ── Insert ───────────────────────────────────────────────────────────────
-   
   const { data: dreamWindow, error } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .insert({

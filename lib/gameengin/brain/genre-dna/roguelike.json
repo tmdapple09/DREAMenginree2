@@ -1,6 +1,10 @@
 {
   "genre": "Roguelike",
-  "subgenres": ["roguelite", "deck-builder", "action-roguelike"],
+  "subgenres": [
+    "roguelite",
+    "deck-builder",
+    "action-roguelike"
+  ],
   "core_mechanic": "Procedural runs with permadeath and meta-progression carry-over.",
   "emotional_core": "tension",
   "player_motivation": "Translate accumulated knowledge into longer runs.",
@@ -16,11 +20,15 @@
   },
   "progression_model": {
     "structure_type": "run-based",
-    "progression_gates": ["meta-currency", "procedural-difficulty", "ability-unlock"],
+    "progression_gates": [
+      "meta-currency",
+      "procedural-difficulty",
+      "ability-unlock"
+    ],
     "completion_definition": "Infinite replay; soft-credits on first clear, true ending after N successful runs, ascension/heat layers carry indefinitely.",
     "content_cadence": "Every run; new biome/build/perk unlocks gated by meta-currency tiers."
   },
-  "canonical_examples":[
+  "canonical_examples": [
     {
       "title": "Dead Cells",
       "year": 2018,

@@ -41,3 +41,4 @@ export class GameEnginFrameClock {
     this.elapsedMs = 0;
   }
 }
+

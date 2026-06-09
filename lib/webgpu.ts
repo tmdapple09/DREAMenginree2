@@ -74,3 +74,4 @@ export async function getRendererBackend(): Promise<'webgpu' | 'webgl2' | 'webgl
   if (canvas.getContext('webgl2')) return 'webgl2';
   return 'webgl';
 }
+

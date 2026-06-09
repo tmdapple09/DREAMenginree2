@@ -1,3 +1,9 @@
+import type { TrackViewRequest, TrackViewResponse } from '@/lib/activity/types';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 // app/api/views/track/route.ts
 // Phase 9 — Track View Endpoint
 //
@@ -6,12 +12,6 @@
 //
 // Stream 7.2 — BoogieMan fraud detection (ACTIVITY_FIRST_PROTOCOL.md §V)
 // Enhanced bot detection and per-user/per-post hourly rate-limit.
-
-import type { TrackViewRequest, TrackViewResponse } from '@/lib/activity/types';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // ── Fraud detection via TheBoogieMan.Ai — ACTIVITY_FIRST_PROTOCOL.md §V ──
     const fingerprint = {
       userAgent: req.headers.get('user-agent') ?? '',
       ip: req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.headers.get('x-real-ip') ?? '',

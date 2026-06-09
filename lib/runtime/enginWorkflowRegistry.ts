@@ -1,8 +1,6 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/enginWorkflowRegistry.ts.
 
@@ -26,15 +24,9 @@
  * Privacy: only IDs / primitives cross Engin boundaries (AXIOM 4).
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Engin key type ─────────────────────────────────────────────────────────────
 
 export const ENGIN_KEYS = [
   'starmaker',
@@ -46,11 +38,8 @@ export const ENGIN_KEYS = [
   'forge',
 ] as const;
 
-// ── Registry ───────────────────────────────────────────────────────────────────
-
 const WORKFLOWS: readonly WorkflowDefinition[] = [
 
-  // ── StarMakerEngin → LabEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'starmaker-to-lab:stem-analyze',
     from: 'starmaker',
@@ -65,7 +54,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'lab:stem-visualization-requested',
   }),
 
-  // ── StarMakerEngin → ContentEngin ────────────────────────────────────────────
   defineWorkflow({
     id: 'starmaker-to-content:attach-track',
     from: 'starmaker',
@@ -79,7 +67,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:music-attached',
   }),
 
-  // ── StarMakerEngin → GameEngin ───────────────────────────────────────────────
   defineWorkflow({
     id: 'starmaker-to-game:adaptive-soundtrack',
     from: 'starmaker',
@@ -93,7 +80,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:soundtrack-requested',
   }),
 
-  // ── StarMakerEngin → BrandingEngin ───────────────────────────────────────────
   defineWorkflow({
     id: 'starmaker-to-brand:track-release',
     from: 'starmaker',
@@ -107,7 +93,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'brand:music-release-requested',
   }),
 
-  // ── CodeEngin → GameEngin ────────────────────────────────────────────────────
   defineWorkflow({
     id: 'code-to-game:deploy-script',
     from: 'code',
@@ -121,7 +106,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:script-deploy-requested',
   }),
 
-  // ── CodeEngin → LabEngin ─────────────────────────────────────────────────────
   defineWorkflow({
     id: 'code-to-lab:run-experiment',
     from: 'code',
@@ -135,7 +119,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'lab:code-experiment-requested',
   }),
 
-  // ── CodeEngin → ContentEngin ─────────────────────────────────────────────────
   defineWorkflow({
     id: 'code-to-content:export-notebook',
     from: 'code',
@@ -149,7 +132,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:notebook-publish-requested',
   }),
 
-  // ── ForgeEngin → GameEngin ───────────────────────────────────────────────────
   defineWorkflow({
     id: 'forge-to-game:import-3d-asset',
     from: 'forge',
@@ -163,7 +145,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:asset-import-requested',
   }),
 
-  // ── ForgeEngin → ContentEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'forge-to-content:embed-3d',
     from: 'forge',
@@ -177,7 +158,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:asset-embedded',
   }),
 
-  // ── ForgeEngin → StarMakerEngin ──────────────────────────────────────────────
   defineWorkflow({
     id: 'forge-to-starmaker:visualizer-scene',
     from: 'forge',
@@ -191,7 +171,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'music:visualizer-scene-requested',
   }),
 
-  // ── ForgeEngin → LabEngin ────────────────────────────────────────────────────
   defineWorkflow({
     id: 'forge-to-lab:simulate-asset',
     from: 'forge',
@@ -205,7 +184,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'lab:asset-simulation-requested',
   }),
 
-  // ── GameEngin → ContentEngin ─────────────────────────────────────────────────
   defineWorkflow({
     id: 'game-to-content:export-clip',
     from: 'game',
@@ -219,7 +197,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:game-clip-embedded',
   }),
 
-  // ── GameEngin → BrandingEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'game-to-brand:achievement-campaign',
     from: 'game',
@@ -233,7 +210,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'brand:achievement-campaign-requested',
   }),
 
-  // ── GameEngin → CodeEngin ────────────────────────────────────────────────────
   defineWorkflow({
     id: 'game-to-code:export-script',
     from: 'game',
@@ -247,7 +223,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'code:game-script-imported',
   }),
 
-  // ── LabEngin → CodeEngin ─────────────────────────────────────────────────────
   defineWorkflow({
     id: 'lab-to-code:export-dataset',
     from: 'lab',
@@ -261,7 +236,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'code:lab-dataset-received',
   }),
 
-  // ── LabEngin → StarMakerEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'lab-to-starmaker:sonify',
     from: 'lab',
@@ -275,7 +249,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'music:sonification-requested',
   }),
 
-  // ── LabEngin → ForgeEngin ────────────────────────────────────────────────────
   defineWorkflow({
     id: 'lab-to-forge:generate-3d',
     from: 'lab',
@@ -289,7 +262,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'code:lab-to-forge-requested',
   }),
 
-  // ── ContentEngin → BrandingEngin ─────────────────────────────────────────────
   defineWorkflow({
     id: 'content-to-brand:campaign-asset',
     from: 'content',
@@ -303,7 +275,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'brand:content-campaign-requested',
   }),
 
-  // ── ContentEngin → GameEngin ─────────────────────────────────────────────────
   defineWorkflow({
     id: 'content-to-game:world-lore',
     from: 'content',
@@ -317,7 +288,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:lore-content-received',
   }),
 
-  // ── BrandingEngin → ContentEngin ─────────────────────────────────────────────
   defineWorkflow({
     id: 'brand-to-content:apply-kit',
     from: 'brand',
@@ -331,7 +301,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:brand-kit-applied',
   }),
 
-  // ── BrandingEngin → GameEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'brand-to-game:sponsor-skin',
     from: 'brand',
@@ -345,9 +314,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:brand-skin-requested',
   }),
 
-  // ── 2026 NEW WORKFLOWS ───────────────────────────────────────────────────────
-
-  // ── CodeEngin → StarMakerEngin ───────────────────────────────────────────────
   defineWorkflow({
     id: 'code-to-starmaker:generative-audio',
     from: 'code',
@@ -361,7 +327,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'music:generative-audio-requested',
   }),
 
-  // ── LabEngin → GameEngin ─────────────────────────────────────────────────────
   defineWorkflow({
     id: 'lab-to-game:physics-simulation',
     from: 'lab',
@@ -375,7 +340,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'games:physics-sim-imported',
   }),
 
-  // ── ContentEngin → StarMakerEngin ────────────────────────────────────────────
   defineWorkflow({
     id: 'content-to-starmaker:podcast-audio',
     from: 'content',
@@ -389,7 +353,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'music:podcast-production-requested',
   }),
 
-  // ── ForgeEngin → LabEngin ────────────────────────────────────────────────────
   defineWorkflow({
     id: 'forge-to-lab:material-analysis',
     from: 'forge',
@@ -403,7 +366,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'lab:material-analysis-requested',
   }),
 
-  // ── GameEngin → ForgeEngin ───────────────────────────────────────────────────
   defineWorkflow({
     id: 'game-to-forge:export-level',
     from: 'game',
@@ -417,7 +379,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'code:game-level-exported',
   }),
 
-  // ── StarMakerEngin → LabEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'starmaker-to-lab:audio-analysis',
     from: 'starmaker',
@@ -431,7 +392,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'lab:audio-analysis-requested',
   }),
 
-  // ── LabEngin → ContentEngin ──────────────────────────────────────────────────
   defineWorkflow({
     id: 'lab-to-content:research-paper',
     from: 'lab',
@@ -445,7 +405,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'create:research-paper-requested',
   }),
 
-  // ── BrandingEngin → StarMakerEngin ───────────────────────────────────────────
   defineWorkflow({
     id: 'brand-to-starmaker:sonic-branding',
     from: 'brand',
@@ -459,7 +418,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'music:sonic-branding-requested',
   }),
 
-  // ── CodeEngin → BrandingEngin ────────────────────────────────────────────────
   defineWorkflow({
     id: 'code-to-brand:analytics-dashboard',
     from: 'code',
@@ -473,7 +431,6 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
     bridgeEvent: 'brand:analytics-dashboard-requested',
   }),
 
-  // ── ContentEngin → LabEngin ──────────────────────────────────────────────────
   defineWorkflow({
     id: 'content-to-lab:ab-testing',
     from: 'content',
@@ -488,23 +445,13 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
   }),
 ];
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
 export type EnginKey = (typeof ENGIN_KEYS)[number];
-
-// ── Artifact type ──────────────────────────────────────────────────────────────
 
 export type WorkflowArtifactType =
   | 'stem'
@@ -517,8 +464,6 @@ export type WorkflowArtifactType =
   | 'post'
   | 'brand-kit'
   | 'any';
-
-// ── Workflow definition ────────────────────────────────────────────────────────
 
 export interface WorkflowDefinition {
   /** Unique workflow identifier — used for targeted execution and UI labelling. */
@@ -544,8 +489,6 @@ export interface WorkflowDefinition {
   execute(payload: Record<string, unknown>): void;
 }
 
-// ── Improvement 45: getWorkflowStats ─────────────────────────────────────────
-
 export interface WorkflowStats {
   total: number;
   bySource: Record<string, number>;
@@ -553,11 +496,7 @@ export interface WorkflowStats {
   byArtifactType: Record<string, number>;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Helper: factory for workflow definitions ───────────────────────────────────
 
 function defineWorkflow(
   spec: Omit<WorkflowDefinition, 'execute'>,
@@ -569,8 +508,6 @@ function defineWorkflow(
     },
   };
 }
-
-// ── Public API ─────────────────────────────────────────────────────────────────
 
 /**
  * Find all workflows that connect a given source Engin to a target Engin.
@@ -616,8 +553,6 @@ export function allWorkflows(): readonly WorkflowDefinition[] {
   return WORKFLOWS;
 }
 
-// ── Improvement 44: getWorkflowsByArtifactType ────────────────────────────────
-
 /**
  * Return all workflows that accept the given artifact type (or 'any').
  * Useful when the drag payload has a known type but the target Engin is unknown.
@@ -648,8 +583,6 @@ export function getWorkflowStats(): WorkflowStats {
   return { total: WORKFLOWS.length, bySource, byTarget, byArtifactType };
 }
 
-// ── Improvement 46: workflowExists ───────────────────────────────────────────
-
 /**
  * Returns true when a workflow with the given ID is registered.
  * Slightly faster than findWorkflowById(id) !== undefined for boolean checks.
@@ -658,14 +591,8 @@ export function workflowExists(id: string): boolean {
   return WORKFLOWS.some((w) => w.id === id);
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,10 @@
+import 'server-only';
+import type { SupabaseClient } from '@/engine/io';
+import type { Database } from '@/types/supabase';
+import { deduplicateFeedItems } from './normalise';
+import { dispatchSync } from './syncDispatch';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/reconcile.ts
  *
@@ -18,14 +25,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/connectors)
  */
 
-import 'server-only';
-
-import type { SupabaseClient } from '@/engine/io';
-import type { Database } from '@/types/supabase';
-import { deduplicateFeedItems } from './normalise';
-import { dispatchSync } from './syncDispatch';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface ReconcileResult {
   ok: boolean;
   provider: string;
@@ -76,10 +75,8 @@ export async function reconcileConnector(
   tokenBlob: Record<string, unknown>,
 ): Promise<ReconcileResult> {
   const now = new Date().toISOString();
-   
-  const anyDb = db as SupabaseClient;
 
-  // ── 1. Dispatch ────────────────────────────────────────────────────────────
+  const anyDb = db as SupabaseClient;
 
   let items;
   try {
@@ -99,11 +96,7 @@ export async function reconcileConnector(
     return { ok: false, provider, userId, fetched: 0, stored: 0, last_synced_at: now, error: msg };
   }
 
-  // ── 2. Dedup ───────────────────────────────────────────────────────────────
-
   const deduped = deduplicateFeedItems(items);
-
-  // ── 3. Upsert feed_items ──────────────────────────────────────────────────
 
   let stored = 0;
   if (deduped.length > 0) {
@@ -132,8 +125,6 @@ export async function reconcileConnector(
     }
     stored = count ?? deduped.length;
   }
-
-  // ── 4. Update connector_accounts metadata ─────────────────────────────────
 
   await anyDb
     .from('connector_accounts')

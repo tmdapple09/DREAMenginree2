@@ -1,12 +1,12 @@
+import type { DreamNode, DreamState, MoveDirection } from './dream-state';
+import { getStateForNode, move } from './dream-state';
+
 // StructureLedger — precomputed conserved navigation structure
 //
 // Phase 1: All 13 DreamState objects are built once at module load.
 // Phase 2: All 78 (node × direction) transitions are resolved and stored.
 // Runtime: matchState() and resolveTransition() are both O(1) map reads.
 //          Nothing is constructed on demand; only the entry point is returned.
-
-import type { DreamNode, DreamState, MoveDirection } from './dream-state';
-import { getStateForNode, move } from './dream-state';
 
 const ALL_NODES: readonly DreamNode[] = [
   '0',
@@ -18,22 +18,18 @@ const ALL_DIRECTIONS: readonly MoveDirection[] = [
   'forward', 'backward', 'left', 'right', 'zoomIn', 'zoomOut',
 ];
 
-// -------------------------------------------------------------------
 // Ledger 1 — state ledger
 // Maps every DreamNode → its frozen DreamState object.
 // Conserved structure: these 13 states never change for the lifetime
 // of the engine.
-// -------------------------------------------------------------------
 const STATE_LEDGER: ReadonlyMap<DreamNode, Readonly<DreamState>> = new Map(
   ALL_NODES.map((node) => [node, Object.freeze(getStateForNode(node))])
 );
 
-// -------------------------------------------------------------------
 // Ledger 2 — transition ledger
 // Maps `${node}:${direction}` → next DreamNode.
 // All 78 (13 nodes × 6 directions) outcomes are precomputed here so
 // that no move() logic runs at navigation time.
-// -------------------------------------------------------------------
 const TRANSITION_LEDGER: ReadonlyMap<string, DreamNode> = (() => {
   const map = new Map<string, DreamNode>();
   for (const node of ALL_NODES) {
@@ -45,9 +41,7 @@ const TRANSITION_LEDGER: ReadonlyMap<string, DreamNode> = (() => {
   return map;
 })();
 
-// -------------------------------------------------------------------
 // Public API
-// -------------------------------------------------------------------
 
 /**
  * Return the pre-built, frozen DreamState for a node.

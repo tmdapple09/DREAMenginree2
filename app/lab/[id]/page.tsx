@@ -1,10 +1,11 @@
-// SURFACE: dreamsurface.LabId  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Code, Download, FileText, FlaskConical, Terminal } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.LabId  (framework-mandated basename: page.tsx)
 
 interface LabProjectPageProps {
   params: Promise<{ id: string }>;
@@ -33,7 +34,6 @@ type Project = {
   profiles: Profile | null;
   attachments: Attachment[] | null;
 };
-
 
 export default async function LabProjectPage({ params }: LabProjectPageProps) {
   await connection();

@@ -1,15 +1,15 @@
 'use client';
 
+import PositionIndicatorToggle from '@/app/settings/controls/dream.PositionIndicatorToggle';
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { ArrowLeft, Check, Sliders } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * ControlsPanel — Home button behavior settings rendered in Surface Space.
  * Same real localStorage-persisted logic as ControlsClient.
  * Back → openInSurface('settings'). No routing.
  */
-
-import PositionIndicatorToggle from '@/app/settings/controls/dream.PositionIndicatorToggle';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { ArrowLeft, Check, Sliders } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'de-controls-settings';
 

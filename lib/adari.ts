@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 /**
  * Adari build enforcement utilities — v2.0.0
  *
@@ -8,8 +11,6 @@
  * v2 runtime files. WheelLayout / WidgetEngine / WidgetBus / useWidget were
  * v1-era enforcement targets; they are now legacy archives, not required files.
  */
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
 
 export type AdariCheck = {
   id: string;

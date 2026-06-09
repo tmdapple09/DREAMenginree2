@@ -16,10 +16,6 @@
  * Architecture: docs/ARCHITECTURE.md §3 — logic layer (lib/).
  */
 
-// ── Physics / Lab telemetry (browser-safe, RLS-protected) ────────────────────
-export { logPhysicsExperiment } from './lab';
-
-// ── Social feed ───────────────────────────────────────────────────────────────
 // The canonical feed lives in app/api/feed/route.ts.
 // This helper fetches from that route so callers don't need the URL.
 
@@ -62,8 +58,6 @@ export async function getFeed(opts?: {
   }
 }
 
-// ── Global Association Layer — GAL registry sync (server-delegated) ───────────
-
 export type RegistryEntry = {
   id: string;
   object_type: string;
@@ -100,8 +94,6 @@ export async function syncToGlobalRegistry(
     return { data: null, error: 'Registry sync failed.' };
   }
 }
-
-// ── Monetization — Ad order processing (server-delegated) ─────────────────────
 
 export type AdOrderResult = {
   id: string;
@@ -141,3 +133,5 @@ export async function processAdOrder(
     return { data: null, error: 'Ad order failed.' };
   }
 }
+
+export { logPhysicsExperiment } from './lab';

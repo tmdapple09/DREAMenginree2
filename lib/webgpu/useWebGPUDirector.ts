@@ -1,5 +1,20 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    WebGPUDirector,
+    applyDirectorFrame,
+    buildSceneObjects,
+    type CameraSignals,
+    type CameraState,
+    type DirectorBabylonEngine,
+    type DirectorBabylonMesh,
+    type DirectorBabylonScene,
+    type DirectorFrame,
+    type MeshHints,
+    type RuntimeMetrics,
+} from './director';
+
 /**
  * useWebGPUDirector — React hook that drives the DREAM_ENGINE_WEBGPU_DIRECTOR.
  *
@@ -24,22 +39,6 @@
  * ```
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    WebGPUDirector,
-    applyDirectorFrame,
-    buildSceneObjects,
-    type CameraSignals,
-    type CameraState,
-    type DirectorBabylonEngine,
-    type DirectorBabylonMesh,
-    type DirectorBabylonScene,
-    type DirectorFrame,
-    type MeshHints,
-    type RuntimeMetrics,
-} from './director';
-
-// ─── Minimal Babylon types needed by the hook ────────────────────────────────
 // We keep these as duck types so the hook does not hard-depend on @babylonjs/core.
 
 type BabylonPerformanceMonitor = {
@@ -53,8 +52,6 @@ type BabylonEngineWithMonitor = DirectorBabylonEngine & {
 type BabylonSceneWithMeshes = DirectorBabylonScene & {
   meshes: DirectorBabylonMesh[];
 };
-
-// ─── Options ─────────────────────────────────────────────────────────────────
 
 export interface UseWebGPUDirectorOptions {
   /** Ref to the live Babylon engine (may be null until the canvas is ready). */
@@ -110,8 +107,6 @@ export interface UseWebGPUDirectorOptions {
   devicePixelRatio?: number;
 }
 
-// ─── Return value ─────────────────────────────────────────────────────────────
-
 export interface UseWebGPUDirectorReturn {
   /** Latest DirectorFrame. `null` until the first tick completes. */
   frame: DirectorFrame | null;
@@ -123,8 +118,6 @@ export interface UseWebGPUDirectorReturn {
    */
   tick: () => void;
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useWebGPUDirector(
   options: UseWebGPUDirectorOptions,
@@ -210,8 +203,6 @@ export function useWebGPUDirector(
 
   return { frame, tick: runTick };
 }
-
-// ─── Re-exports for callers that only import from this file ───────────────────
 
 export {
     WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals,

@@ -1,3 +1,5 @@
+import { CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY } from './forgeRegistry';
+
 /**
  * Forge Rituals — Auto-Detected Recurring Workflow Patterns
  *
@@ -12,10 +14,6 @@
  *
  * Architecture: Pure computation from Forge history. No Supabase writes.
  */
-
-import { CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY } from './forgeRegistry';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type RitualType = 'time-pattern' | 'sequence' | 'session' | 'affinity';
 
@@ -49,16 +47,11 @@ export interface RitualSnapshot {
   computedAt: string;
 }
 
-// ── History Entry type ────────────────────────────────────────────────────────
-
 interface HistoryEntry {
   enginId: string;
   label: string;
   timestamp: string;
 }
-
-// ── Constants ─────────────────────────────────────────────────────────────────
-
 
 /** Minimum occurrences to consider a pattern a ritual */
 const MIN_OCCURRENCES = 2;
@@ -70,8 +63,6 @@ const TIME_BUCKETS = [
   { label: 'evening',   start: 17, end: 21, emoji: '🌆' },
   { label: 'night',     start: 21, end: 5,  emoji: '🌙' },
 ] as const;
-
-// ── Core Detection ────────────────────────────────────────────────────────────
 
 /**
  * Read history entries from localStorage.

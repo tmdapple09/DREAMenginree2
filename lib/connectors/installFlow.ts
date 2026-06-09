@@ -1,11 +1,9 @@
+import { getWidgetTypesForConnector } from '@/lib/widgets/widgetRegistry';
+
 // lib/connectors/installFlow.ts
 // Core logic for the Connect → Widget Install flow (req 1-40, 71-90)
 //
 // This module is pure (no React, no DOM) so it is fully unit-testable.
-
-import { getWidgetTypesForConnector } from '@/lib/widgets/widgetRegistry';
-
-// ── Slot helpers (req 31-33) ──────────────────────────────────────────────
 
 export interface SlotGrid {
   totalSlots: number;
@@ -31,7 +29,6 @@ export function findBestSlot(grid: SlotGrid): number {
   return empty[0];
 }
 
-// ── Suggested Widgets store (req 8-9, 34-35) ─────────────────────────────
 // In-memory store used as primary; persisted to localStorage when available.
 
 const SESSION_DISMISSED = new Set<string>(); // req 10: no repeats in same session
@@ -164,7 +161,6 @@ export function _resetInstallFlowState(): void {
   if (_autoLockTimer !== null) { clearTimeout(_autoLockTimer); _autoLockTimer = null; }
 }
 
-// ── Prompt deferred queue (req 16-17) ────────────────────────────────────
 // Prompts deferred because a menu / popup is open are queued here.
 
 interface DeferredPrompt {
@@ -183,7 +179,6 @@ export function consumeDeferredPrompt(): DeferredPrompt | null {
   return p;
 }
 
-// ── Placement queue (req 33-34) ───────────────────────────────────────────
 interface QueuedPlacement {
   widgetId: string;
   connectorId: string;
@@ -203,7 +198,6 @@ export function peekPlacementQueue(): QueuedPlacement[] {
   return [..._placementQueue];
 }
 
-// ── Auto-lock timer (req 84-89) ───────────────────────────────────────────
 const AUTO_LOCK_DELAY_MS = 1200; // req 88: consistent 1.2s
 
 let _autoLockTimer: ReturnType<typeof setTimeout> | null = null;
@@ -231,8 +225,6 @@ export function cancelAutoLock(): void {
     _autoLockTimer = null;
   }
 }
-
-// ── Connect success handler (req 1-20, 51-60) ────────────────────────────
 
 export interface ConnectSuccessOptions {
   /** Whether a menu is currently open (req 16) */

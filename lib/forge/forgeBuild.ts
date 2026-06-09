@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 /**
  * lib/forge/forgeBuild.ts
  *
@@ -6,10 +8,6 @@
  *
  * Architecture: follows the forgeRegistry.ts pattern (localStorage + SSR guard).
  */
-
-import { v4 as uuidv4 } from 'uuid';
-
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 export type ForgeBuildState = 'idle' | 'running' | 'done' | 'error';
 
@@ -68,13 +66,9 @@ export interface ForgeBuildRecord {
   artifact?: ForgeArtifact;
 }
 
-// ── Storage keys ───────────────────────────────────────────────────────────────
-
 const BUILDS_KEY = 'de:forge:builds';
 const RATE_KEY = 'de:forge:build:last-date';
 const MAX_BUILDS = 10;
-
-// ── Type guard utility ─────────────────────────────────────────────────────────
 
 /**
  * Type guard: narrow an unknown value to ForgeLogEvent.
@@ -116,8 +110,6 @@ export function isForgeLogEvent(value: unknown): value is ForgeLogEvent {
   }
 }
 
-// ── Build persistence ──────────────────────────────────────────────────────────
-
 /**
  * Persist a build record to localStorage (keep last MAX_BUILDS).
  */
@@ -158,8 +150,6 @@ export function clearForgeBuilds(): void {
   }
 }
 
-// ── Daily rate-limit ───────────────────────────────────────────────────────────
-
 /**
  * Returns true when the user has NOT yet built today.
  * Uses `new Date().toDateString()` as the day key — locale-stable.
@@ -186,8 +176,6 @@ export function recordBuildToday(): void {
     // silent
   }
 }
-
-// ── Artifact staging ───────────────────────────────────────────────────────────
 
 /** Minimal notebook cell shape matching CodeEngin's de-codegen-cells format */
 interface NotebookCell {

@@ -1,11 +1,11 @@
+import { z } from 'zod';
+
 // types/user-sim.ts
 // User Sim AI — type definitions for the simulated-user testing agent.
 //
 // The agent models real-world user personas, perceives UI state on every step,
 // applies a behaviour policy to pick the next action, and writes audit findings
 // after each step and at the end of a journey.
-
-import { z } from 'zod';
 
 // ============================================================================
 // PERSONA BRAIN

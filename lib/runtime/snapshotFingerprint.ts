@@ -1,8 +1,6 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { TelemetrySnapshot } from '@/lib/observability/collector';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/snapshotFingerprint.ts.
 
@@ -18,29 +16,15 @@
  *  75. createFingerprintCache — LRU-style cache for fingerprint → analysis reuse
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { TelemetrySnapshot } from '@/lib/observability/collector';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Improvement 75: createFingerprintCache ────────────────────────────────────
 
 export interface FingerprintCacheEntry<T> {
   fingerprint: string;
@@ -61,11 +45,7 @@ export interface FingerprintCache<T> {
   readonly size: number;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Improvement 73: fingerprintSnapshot ──────────────────────────────────────
 
 /**
  * Produce a short stable fingerprint string from the key dimensions of a
@@ -93,8 +73,6 @@ export function fingerprintSnapshot(snapshot: TelemetrySnapshot): string {
     snapshot.logs.filter((l) => l.level === 'error').length
   }:${hash.toString(16)}`;
 }
-
-// ── Improvement 74: snapshotsAreEquivalent ────────────────────────────────────
 
 /**
  * Return true when two fingerprints represent equivalent snapshots.
@@ -159,14 +137,8 @@ export function createFingerprintCache<T>(maxSize = 20): FingerprintCache<T> {
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

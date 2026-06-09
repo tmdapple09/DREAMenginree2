@@ -1,8 +1,8 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 // GET - Fetch notifications
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -41,9 +41,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  return NextResponse.json({ 
-    notifications, 
-    unread_count: unreadCount || 0 
+  return NextResponse.json({
+    notifications,
+    unread_count: unreadCount || 0
   });
 }
 

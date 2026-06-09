@@ -50,7 +50,7 @@ export class WidgetInstanceMemory {
   private activeIndicesPointer: number[]; // Points to either home or profile
   private sortedCache: WidgetInstanceRecord[] | null; // Cache for sorted widgets
   private sortedCacheDirty: boolean;
-  
+
   constructor() {
     this.instances = [];
     this.homeIndices = [];
@@ -59,17 +59,17 @@ export class WidgetInstanceMemory {
     this.sortedCache = null;
     this.sortedCacheDirty = true;
   }
-  
+
   /**
    * Initialize with widget instances
    */
   initialize(instances: WidgetInstanceRecord[]): void {
     this.instances = instances;
-    
+
     // Build index lists
     this.homeIndices = [];
     this.profileIndices = [];
-    
+
     instances.forEach((instance, index: number) => {
       if (instance.context === 'HOME') {
         this.homeIndices.push(index);
@@ -77,11 +77,11 @@ export class WidgetInstanceMemory {
         this.profileIndices.push(index);
       }
     });
-    
+
     // Default to home
     this.activeIndicesPointer = this.homeIndices;
   }
-  
+
   /**
    * Switch to Profile context (O(1) pointer swap)
    */
@@ -89,7 +89,7 @@ export class WidgetInstanceMemory {
     this.activeIndicesPointer = this.profileIndices;
     this.sortedCacheDirty = true;
   }
-  
+
   /**
    * Switch to Home context (O(1) pointer swap)
    */
@@ -97,21 +97,21 @@ export class WidgetInstanceMemory {
     this.activeIndicesPointer = this.homeIndices;
     this.sortedCacheDirty = true;
   }
-  
+
   /**
    * Get active widget instances
    */
   getActiveWidgets(): WidgetInstanceRecord[] {
     return this.activeIndicesPointer.map((index) => this.instances[index]);
   }
-  
+
   /**
    * Get widget by instance ID
    */
   getWidget(instanceId: string): WidgetInstanceRecord | undefined {
     return this.instances.find((w) => w.instanceId === instanceId);
   }
-  
+
   /**
    * Update widget transform state
    */
@@ -122,7 +122,7 @@ export class WidgetInstanceMemory {
       this.sortedCacheDirty = true;
     }
   }
-  
+
   /**
    * Update widget presentation mode
    */
@@ -133,7 +133,7 @@ export class WidgetInstanceMemory {
       this.sortedCacheDirty = true;
     }
   }
-  
+
   /**
    * Get widgets sorted by z-index (cached)
    */
@@ -141,37 +141,37 @@ export class WidgetInstanceMemory {
     if (!this.sortedCacheDirty && this.sortedCache) {
       return this.sortedCache;
     }
-    
+
     const active = this.getActiveWidgets();
     this.sortedCache = active.slice().sort((a, b) => a.zIndex - b.zIndex);
     this.sortedCacheDirty = false;
     return this.sortedCache;
   }
-  
+
   /**
    * Remove widget from active indices (for DOCKED presentation)
    */
   removeFromActive(instanceId: string): void {
     const widgetIndex = this.instances.findIndex((w) => w.instanceId === instanceId);
     if (widgetIndex === -1) return;
-    
+
     const activeIndex = this.activeIndicesPointer.indexOf(widgetIndex);
     if (activeIndex !== -1) {
       this.activeIndicesPointer.splice(activeIndex, 1);
       this.sortedCacheDirty = true;
     }
   }
-  
+
   /**
    * Add widget to active indices
    */
   addToActive(instanceId: string): void {
     const widgetIndex = this.instances.findIndex((w) => w.instanceId === instanceId);
     if (widgetIndex === -1) return;
-    
+
     const widget = this.instances[widgetIndex];
     const targetIndices = widget.context === 'HOME' ? this.homeIndices : this.profileIndices;
-    
+
     if (!targetIndices.includes(widgetIndex)) {
       targetIndices.push(widgetIndex);
       this.sortedCacheDirty = true;

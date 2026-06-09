@@ -1,3 +1,5 @@
+import { PLATFORM_MAP, type SocialPlatform } from './platforms';
+
 /**
  * lib/social/crossPost.ts
  *
@@ -12,10 +14,6 @@
  * Privacy: no user data is sent to external platforms. The share URL is
  * a standard web share intent that the user controls.
  */
-
-import { PLATFORM_MAP, type SocialPlatform } from './platforms';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface DreamSharePayload {
   /** Dream / post ID */
@@ -37,8 +35,6 @@ export interface CrossPostTarget {
   platform: SocialPlatform;
   shareUrl: string;
 }
-
-// ─── Share URL targets supported for one-click cross-post ─────────────────────
 
 const CROSS_POST_PLATFORM_IDS = [
   'twitter',
@@ -130,8 +126,6 @@ export async function nativeShare(payload: DreamSharePayload): Promise<boolean> 
 
   return false;
 }
-
-// ─── OG Meta helpers (for rich link previews) ─────────────────────────────────
 
 /**
  * Build Open Graph meta tags for a Dream page.

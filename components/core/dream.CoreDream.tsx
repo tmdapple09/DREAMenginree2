@@ -1,15 +1,15 @@
 'use client';
 
+import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
+import Link from 'next/link';
+import React, { useRef, useState } from 'react';
+
 interface Post {
   id: string;
   content?: string;
   created_at?: string;
   [key: string]: unknown;
 }
-
-import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
-import Link from 'next/link';
-import React, { useRef, useState } from 'react';
 
 type CoreFace = 'home' | 'profile';
 
@@ -26,11 +26,10 @@ type Props = {
     display_name?: string | null;
     avatar_url?: string | null;
   } | null;
-   
+
   posts?: Post[];
 };
 
-/* ── Recent activity agent definitions ── */
 const RECENT_AGENTS = [
   {
     id: 'dr-eams',
@@ -61,15 +60,6 @@ const RECENT_AGENTS = [
   },
 ] as const;
 
-/* ── Shared section header row ── */
-
-/* ── Feed post card ── */
-
-/* ── Recent Activity agent card ── */
-
-/* ── Key Metrics cards ── */
-
-/* ── Home face — delegates to HomeDreamSurface ── */
 function HomeFace({ onOpenDrEams, onOpenDreamSpace, profile, posts, isAdmin }: { onOpenDrEams: () => void; onOpenDreamSpace?: () => void; profile: Props['profile']; isAdmin?: boolean; posts?: Post[] }) {
   return (
     <HomeDreamSurface
@@ -82,7 +72,6 @@ function HomeFace({ onOpenDrEams, onOpenDreamSpace, profile, posts, isAdmin }: {
   );
 }
 
-/* ── Profile face ── */
 function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onToggleFace: () => void}) {
   const name   = profile?.display_name || 'Dreamer';
   const handle = profile?.handle || 'dreamer';
@@ -211,7 +200,6 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
   );
 }
 
-/* ── WallBanner (used in profile face only) ── */
 function WallBanner( ){
   const [wallImage, setWallImage] = useState<string | null>(() => {
     try {
@@ -262,7 +250,6 @@ function WallBanner( ){
   );
 }
 
-/* ── Main export ── */
 export default function CoreDream({ face, isOpen, onToggleFace, onClose: _onClose, onOpenDrEams, onOpenDreamSpace, isAdmin, profile, posts }: Props) {
   if (!isOpen) return null;
 

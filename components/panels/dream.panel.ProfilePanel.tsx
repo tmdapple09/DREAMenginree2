@@ -1,17 +1,17 @@
 'use client';
 
-/**
- * ProfilePanel — inline Edit ProfileDream panel.
- * Same logic as app/edit-profiledream/page.tsx but rendered within PanelHost.
- * No page chrome (no min-h-screen, no sticky header with back Links).
- */
-
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Eye, Loader2, Share2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+/**
+ * ProfilePanel — inline Edit ProfileDream panel.
+ * Same logic as app/edit-profiledream/page.tsx but rendered within PanelHost.
+ * No page chrome (no min-h-screen, no sticky header with back Links).
+ */
 
 type Profile = {
   display_name: string;
@@ -71,7 +71,7 @@ export default function ProfilePanel( ){
       } catch { /* auth/network failure — stay in loading=false state */ }
       finally { setIsLoading(false); }
     })();
-   
+
   }, []);
 
   const isDirty = !!initialProfile && (

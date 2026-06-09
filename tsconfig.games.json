@@ -16,5 +16,11 @@
     "app/gameengin/**/*.ts",
     "app/gameengin/**/*.tsx"
   ],
-  "exclude": ["node_modules", "tests/**", "app/api/**", "lib/gameengin/brain/**", "lib/gameengin/brain-reader.ts"]
+  "exclude": [
+    "node_modules",
+    "tests/**",
+    "app/api/**",
+    "lib/gameengin/brain/**",
+    "lib/gameengin/brain-reader.ts"
+  ]
 }

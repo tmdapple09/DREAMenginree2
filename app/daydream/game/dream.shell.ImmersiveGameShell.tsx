@@ -1,5 +1,19 @@
 'use client';
 
+import GameRemote from '@/components/games/dream.remote.GameRemote';
+import GameRuntime from '@/lib/gameengin/GameRuntime';
+import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
+import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
+import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
+import {
+    buildGameLaunchHref,
+    DEFAULT_GAME_ID,
+    resolveGameLaunchId,
+} from '@/lib/games/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * ImmersiveGameShell — True full-screen game launcher with PS5-style boot
  * sequence and the separate shared GameRemote control capability.
@@ -22,20 +36,6 @@
  * After boot dismissal: the cartridge renders its HUD and GameRemote stays separate.
  */
 
-import GameRemote from '@/components/games/dream.remote.GameRemote';
-import GameRuntime from '@/lib/gameengin/GameRuntime';
-import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
-import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
-import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import {
-    buildGameLaunchHref,
-    DEFAULT_GAME_ID,
-    resolveGameLaunchId,
-} from '@/lib/games/navigation';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Boot-sequence keyframe CSS ────────────────────────────────────────────────
 
 const BOOT_KEYFRAMES = `
@@ -78,20 +78,15 @@ const BOOT_KEYFRAMES = `
 }
 `;
 
-// ── Layout constants ──────────────────────────────────────────────────────────
-
 const DEFAULT_HUD_BOTTOM             = '175px';
 const MIN_STAGE_BOTTOM_CLEARANCE     = 'clamp(80px, 22dvh, 38dvh)';
 const LANDSCAPE_MIN_STAGE_BOTTOM     = 'clamp(56px, 14dvh, 24dvh)';
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ImmersiveGameShell() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const rootRef      = useRef<HTMLDivElement>(null);
 
-  // ── Resolve game from manifest ───────────────────────────────────────────
   const gameId = resolveGameLaunchId(
     searchParams.get('game'),
     CARTRIDGE_MANIFEST.map((c) => c.id),
@@ -102,9 +97,6 @@ export default function ImmersiveGameShell() {
     [gameId],
   );
 
-
-
-  // ── Cartridge loading ────────────────────────────────────────────────────
   const [cartridge, setCartridge] = useState<GameCartridge | null>(null);
   const [cartridgeError, setCartridgeError] = useState<string | null>(null);
 
@@ -122,12 +114,10 @@ export default function ImmersiveGameShell() {
     return () => { cancelled = true; };
   }, [gameId]);
 
-  // ── Boot sequence state ──────────────────────────────────────────────────
   const [bootPhase, setBootPhase] = useState<1 | 2 | 3 | 4>(1);
   const [fadingOut, setFadingOut] = useState(false);
   const [bootDone,  setBootDone]  = useState(false);
 
-  // ── Landscape detection ──────────────────────────────────────────────────
   const [isLandscape, setIsLandscape] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth > window.innerHeight,
   );
@@ -139,7 +129,6 @@ export default function ImmersiveGameShell() {
     return () => mql.removeEventListener('change', handler);
   }, []);
 
-  // ── Suppress layout chrome ───────────────────────────────────────────────
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -152,7 +141,6 @@ export default function ImmersiveGameShell() {
     };
   }, []);
 
-  // ── Inject boot keyframes once ───────────────────────────────────────────
   useEffect(() => {
     if (typeof document === 'undefined') return;
     const id = 'de-boot-keyframes';
@@ -164,14 +152,12 @@ export default function ImmersiveGameShell() {
     }
   }, []);
 
-  // ── Persist last-played ──────────────────────────────────────────────────
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('de:games:last-launch', game.id);
     }
   }, [game.id]);
 
-  // ── Phase progression timers ─────────────────────────────────────────────
   useEffect(() => {
     setBootPhase(1);
     setFadingOut(false);
@@ -182,7 +168,6 @@ export default function ImmersiveGameShell() {
     return () => { window.clearTimeout(t1); window.clearTimeout(t2); window.clearTimeout(t3); };
   }, [game.id]);
 
-  // ── Dismiss helpers ──────────────────────────────────────────────────────
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dismissBoot = useCallback(async () => {
@@ -211,7 +196,6 @@ export default function ImmersiveGameShell() {
     return () => window.removeEventListener('keydown', handler);
   }, [bootPhase, bootDone, fadingOut, dismissBoot]);
 
-  // ── Derived ──────────────────────────────────────────────────────────────
   const accent      = game.color;
   const stageBottom = isLandscape ? LANDSCAPE_MIN_STAGE_BOTTOM : MIN_STAGE_BOTTOM_CLEARANCE;
   const physicsConfig = useMemo<{ gravity: GravityPreset; friction: number }>(

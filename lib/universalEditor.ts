@@ -1,18 +1,12 @@
+import { createEventBus, type EventBus } from './eventBus';
+import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
+
 /**
  * Universal Editor — Module Manifest + Transfer Protocol
  *
  * Defines the cross-runtime module manifest type and the local event
  * bus factory used by engine assemblies.
  */
-
-import { createEventBus, type EventBus } from './eventBus';
-
-// ─── Canonical Module Manifest ───────────────────────────────────────────────
-
-import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
-export type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
-
-// ─── Assembly-Scoped Event Bus ────────────────────────────────────────────────
 
 export type AssemblyEvents = Record<string, unknown>;
 
@@ -25,8 +19,6 @@ export type AssemblyEvents = Record<string, unknown>;
 export function createLocalEventBus(): EventBus<AssemblyEvents> {
   return createEventBus<AssemblyEvents>();
 }
-
-// ─── Transfer Validation ──────────────────────────────────────────────────────
 
 /**
  * canTransfer(manifest, targetRuntime)
@@ -54,3 +46,5 @@ export function transferModule(
   }
   return { ...manifest, sourceRuntime: targetRuntime };
 }
+
+export type { ModuleManifest, RuntimeId } from '@/types/module-manifest';

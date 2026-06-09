@@ -1,39 +1,5 @@
 'use client';
 
-/**
- * DreamRFeed — the DreamR Human Media Platform feed.
- *
- * UX architecture (the algorithm made tangible):
- *   SCROLL UP/DOWN   → everyone gets their moment — new post, new voice,
- *                      ranked by creativity/originality/artistry not clout
- *   SWIPE LEFT       → you choose to go deeper into one creator's world
- *                      • DreamR post   → DreamRCreatorPanel (creator's posts + socials)
- *                      • YouTube card  → DreamRChannelPanel (more from channel + similar)
- *   SWIPE RIGHT      → see less from that creator/content type; the card is
- *                      recycled locally without earning a real view here
- *
- * Topic channels:
- *   A horizontal scrollable strip lets users switch between topics.
- *   Selecting a topic fetches YouTube videos for that topic (live, auto-refreshing)
- *   and interleaves them (1 every 3 native posts) into the snap-scroll feed.
- *
- * Video cards:
- *   YouTube posts show a thumbnail with a play button.
- *   Tap → inline embed (autoplay). ⤢ → fullscreen overlay.
- *
- * Feed composition (every ~4 posts):
- *   3 regular/video posts — DreamR-algorithm-ranked
- *   1 YouTube video card  — from active topic
- *
- * Privacy model:
- *   VIEWS   — only public metric shown (eye chip on each card)
- *   LIKES   — interactive heart, zero count shown publicly
- *   COMMENTS — button accessible, no count shown
- *   All other metrics — creator Signal tab only
- *
- * Visual: DreamR neomorphism, Handcrafted Expresso Beans, pearl-sky base.
- */
-
 import DreamRChannelPanel from '@/components/dreamr/dream.panel.DreamRChannelPanel';
 import DreamRCreatorPanel from '@/components/dreamr/dream.panel.DreamRCreatorPanel';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
@@ -73,7 +39,39 @@ import {
     useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 
-// ── Design tokens ──────────────────────────────────────────────────────────────
+/**
+ * DreamRFeed — the DreamR Human Media Platform feed.
+ *
+ * UX architecture (the algorithm made tangible):
+ *   SCROLL UP/DOWN   → everyone gets their moment — new post, new voice,
+ *                      ranked by creativity/originality/artistry not clout
+ *   SWIPE LEFT       → you choose to go deeper into one creator's world
+ *                      • DreamR post   → DreamRCreatorPanel (creator's posts + socials)
+ *                      • YouTube card  → DreamRChannelPanel (more from channel + similar)
+ *   SWIPE RIGHT      → see less from that creator/content type; the card is
+ *                      recycled locally without earning a real view here
+ *
+ * Topic channels:
+ *   A horizontal scrollable strip lets users switch between topics.
+ *   Selecting a topic fetches YouTube videos for that topic (live, auto-refreshing)
+ *   and interleaves them (1 every 3 native posts) into the snap-scroll feed.
+ *
+ * Video cards:
+ *   YouTube posts show a thumbnail with a play button.
+ *   Tap → inline embed (autoplay). ⤢ → fullscreen overlay.
+ *
+ * Feed composition (every ~4 posts):
+ *   3 regular/video posts — DreamR-algorithm-ranked
+ *   1 YouTube video card  — from active topic
+ *
+ * Privacy model:
+ *   VIEWS   — only public metric shown (eye chip on each card)
+ *   LIKES   — interactive heart, zero count shown publicly
+ *   COMMENTS — button accessible, no count shown
+ *   All other metrics — creator Signal tab only
+ *
+ * Visual: DreamR neomorphism, Handcrafted Expresso Beans, pearl-sky base.
+ */
 
 const DR = {
   bg:          '#e8eff6',
@@ -98,8 +96,6 @@ const REDISTRIBUTION_EXPLANATION =
 function nmR(s = 5 ){ return `${-s}px ${-s}px ${s*2.4}px ${DR.shadowLight}, ${s}px ${s}px ${s*2.8}px ${DR.shadowDark}`; }
 function nmI(s = 4 ){ return `inset ${-s}px ${-s}px ${s*2}px ${DR.shadowLight}, inset ${s}px ${s}px ${s*2.4}px ${DR.shadowDark}`; }
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface SuggestedCreator {
   id: string;
   handle: string;
@@ -122,8 +118,6 @@ interface DreamRFeedProps {
   initialPosts: FeedPost[];
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 function relTime(iso: string): string {
   const s = (Date.now() - new Date(iso).getTime()) / 1000;
   if (s < 60)    return `${Math.floor(s)}s`;
@@ -145,7 +139,6 @@ function redistributionMessage(creator: string, type: string): string {
   return `Showing you less ${type} from ${creator}; ${REDISTRIBUTION_EXPLANATION}`;
 }
 
-// ── Topic channels ─────────────────────────────────────────────────────────────
 // Featured top-10 topics for the DreamR channel strip (plus "All").
 // Each maps to a YouTube search query.
 
@@ -198,8 +191,6 @@ function ytItemToFeedPost(item: UnifiedFeedItem): FeedPost {
   };
 }
 
-// ── Action button ──────────────────────────────────────────────────────────────
-
 function ActionBtn({
   icon, onClick, dark, active, ariaLabel,
 }: { icon: React.ReactNode; onClick: () => void; dark: boolean; active?: boolean; ariaLabel: string }) {
@@ -215,10 +206,6 @@ function ActionBtn({
     >{icon}</button>
   );
 }
-
-// ── Regular post card ─────────────────────────────────────────────────────────
-
-// ── YouTube / Video post card (snap-scroll) ───────────────────────────────────
 
 interface VideoCardProps {
   post: FeedPost;
@@ -395,8 +382,6 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
   );
 }
 
-// ── Regular post card ─────────────────────────────────────────────────────────
-
 interface CardProps {
   post: FeedPost;
   isActive: boolean;
@@ -569,8 +554,6 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
   );
 }
 
-// ── Suggested CONTENT card ────────────────────────────────────────────────────
-
 function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPost; onSwipeLeft: () => void; onSwipeRight: () => void}) {
   const touchStart = useRef<{ x: number; y: number; at: number } | null>(null);
   const caption = post.content?.slice(0, 120) ?? '';
@@ -646,8 +629,6 @@ function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPo
   );
 }
 
-// ── Suggested CREATOR card ────────────────────────────────────────────────────
-
 function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
   const [following, setFollowing] = useState(false);
 
@@ -702,8 +683,6 @@ function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
   );
 }
 
-// ── Main feed ─────────────────────────────────────────────────────────────────
-
 export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   // ── State ─────────────────────────────────────────────────────────────────
   const [posts,         setPosts]       = useState<FeedPost[]>(initialPosts);
@@ -732,7 +711,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   const [ytLoading,     setYtLoading]   = useState(false);
   const [ytRefreshing,  setYtRefreshing] = useState(false);
 
-  // ── World focus integration ───────────────────────────────────────────────
   const { setFocus } = useDreamSystem();
 
   const scrollRef  = useRef<HTMLDivElement>(null);
@@ -783,12 +761,10 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     }
   }, [initialPosts, userId]);
 
-  // ── Fetch DreamR-ranked native feed ──────────────────────────────────────
   useEffect(() => {
     void loadDreamRPage('replace');
   }, [loadDreamRPage]);
 
-  // ── Fetch suggested content/creators (for interstitial cards) ─────────────
   useEffect(() => {
     if (!userId) return;
     fetch('/api/dreamr/suggested?type=content&limit=4')
@@ -805,7 +781,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       .catch(() => {});
   }, [userId]);
 
-  // ── Fetch YouTube videos for active topic ──────────────────────────────
   const fetchYtTopic = useCallback(async (topic: (typeof DREAMR_TOPICS)[number], refreshing = false) => {
     if (refreshing) setYtRefreshing(true); else setYtLoading(true);
     try {
@@ -839,7 +814,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     return () => clearInterval(timer);
   }, [activeTopic, fetchYtTopic]);
 
-  // ── Live poll for new native posts (every 60 s) ────────────────────────
   useEffect(() => {
     if (!userId) return;
     setIsLive(true);
@@ -866,13 +840,11 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     }
   }, []);
 
-  // ── Load more posts when near the end ────────────────────────────────
   const loadMore = useCallback(() => {
     if (loadingMore || !hasMore || !userId) return;
     void loadDreamRPage('append');
   }, [hasMore, loadDreamRPage, loadingMore, userId]);
 
-  // ── Interleave: native posts + YouTube topic videos + suggested ──────
   // Pattern: 3 native posts → 1 YouTube video, then periodically a suggested card
   const feedItems = useMemo((): FeedItem[] => {
     const items: FeedItem[] = [];
@@ -935,7 +907,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     return () => clearTimeout(timer);
   }, [activeIdx, personalizedFeedItems, recordDreamRView]);
 
-  // ── World focus: emit selection when active card changes ─────────────────
   useEffect(() => {
     const item = personalizedFeedItems[activeIdx];
     if (!item) return;
@@ -953,7 +924,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     setActiveIdx(Math.max(0, personalizedFeedItems.length - 1));
   }, [activeIdx, personalizedFeedItems.length]);
 
-  // ── Keyboard navigation (↑/↓ / j/k for desktop) ──────────────────────
   useEffect(() => {
     const el = scrollRef.current; if (!el) return;
     const onKey = (e: KeyboardEvent) => {
@@ -1005,7 +975,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     }
   }, []);
 
-  // ── Swipe-left routing ─────────────────────────────────────────────────
   const handleSwipeLeft = useCallback((post: FeedPost) => {
     setSwipePrefs((prev) => nextSwipePreferences(prev, post, 'more'));
     setRedistributionNotice(null);
@@ -1035,7 +1004,6 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     });
   }, [activeIdx, personalizedFeedItems.length]);
 
-  // ── Empty state ────────────────────────────────────────────────────────
   if (personalizedFeedItems.length === 0 && !ytLoading) {
     return (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: DR.bg, fontFamily: DR.font }}>

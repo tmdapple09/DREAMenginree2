@@ -1,3 +1,13 @@
+import {
+    createPerformanceBaselineSampler,
+    DE_GAME_PERFORMANCE_BASELINE,
+    resolveRendererBackend,
+    type GamePerformanceBaseline,
+    type GameRenderMode,
+} from '@/lib/games/performance-baseline';
+import { isWebGPUAvailable } from '@/lib/webgpu';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * lib/games/hooks.ts
  *
@@ -11,16 +21,6 @@
  * These hooks extract both patterns so each game only declares its own
  * game-specific state on top of these shared primitives.
  */
-
-import {
-    createPerformanceBaselineSampler,
-    DE_GAME_PERFORMANCE_BASELINE,
-    resolveRendererBackend,
-    type GamePerformanceBaseline,
-    type GameRenderMode,
-} from '@/lib/games/performance-baseline';
-import { isWebGPUAvailable } from '@/lib/webgpu';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Listens for the global `de-game-start` CustomEvent and calls `startFn`

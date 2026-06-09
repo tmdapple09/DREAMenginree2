@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/youtube/oauth/callback/route.ts
  *
@@ -18,12 +24,6 @@
  * AXIOM 4 — Security by Default: token_blob never returned to the browser.
  * ARCHITECTURE.md §3 — All OAuth token exchange happens server-side.
  */
-
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
 
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
@@ -46,14 +46,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const origin = url.origin;
   const connectorsUrl = `${origin}/connectors`;
 
-  // ── Handle provider-side errors ──────────────────────────────────────────
   if (error) {
     const dest = new URL(connectorsUrl);
     dest.searchParams.set('yt_error', error);
     return NextResponse.redirect(dest);
   }
 
-  // ── CSRF state check ────────────────────────────────────────────────────
   const cookieStore = await cookies();
   const storedState = cookieStore.get('yt_oauth_state')?.value ?? '';
   cookieStore.delete('yt_oauth_state');
@@ -64,14 +62,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Auth check — user must be signed in ─────────────────────────────────
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.redirect(`${origin}/login?next=/connectors`);
   }
 
-  // ── Exchange code for tokens ─────────────────────────────────────────────
   const clientId     = process.env.GOOGLE_CLIENT_ID     ?? '';
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET ?? '';
   const siteUrl      = process.env.NEXT_PUBLIC_SITE_URL ?? '';
@@ -110,8 +106,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Store token in connector_accounts ────────────────────────────────────
-   
   const db = supabase as SupabaseClient;
   const now = new Date().toISOString();
 
@@ -145,7 +139,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(dest);
   }
 
-  // ── Success — redirect back to connectors page ────────────────────────────
   const dest = new URL(connectorsUrl);
   dest.searchParams.set('yt_connected', '1');
   return NextResponse.redirect(dest);

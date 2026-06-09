@@ -1,3 +1,14 @@
+import { createPatchPlan, type PatchPlan, type PatchRisk } from '@/lib/agents/idari';
+import { getSnapshot, type TelemetrySnapshot } from '@/lib/observability/collector';
+import { correlate, type CorrelationResult } from '@/lib/observability/correlator';
+import {
+    buildImmediateRemediationAction,
+    type ImmediateRemediationAction,
+} from '@/lib/observability/immediateAction';
+import { inferRootCause, type RootCauseAnalysis } from '@/lib/observability/rootCauseAnalyzer';
+import { v4 as uuidv4 } from 'uuid';
+import { toErrorMessage } from '@/lib/utils';
+
 // lib/agents/idariLoop.ts
 //
 // IDARi Observability Remediation Loop
@@ -10,20 +21,8 @@
 // The loop can run client-side (browser) or server-side.
 // Pure functions at the bottom are unit-testable without any HTTP calls.
 
-import { createPatchPlan, type PatchPlan, type PatchRisk } from '@/lib/agents/idari';
-import { getSnapshot, type TelemetrySnapshot } from '@/lib/observability/collector';
-import { correlate, type CorrelationResult } from '@/lib/observability/correlator';
-import {
-    buildImmediateRemediationAction,
-    type ImmediateRemediationAction,
-} from '@/lib/observability/immediateAction';
-import { inferRootCause, type RootCauseAnalysis } from '@/lib/observability/rootCauseAnalyzer';
-import { v4 as uuidv4 } from 'uuid';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-// ── Improvement 61: stopped_by_signal status ─────────────────────────────────
 export type LoopStatus =
   | 'idle'
   | 'collecting'
@@ -95,8 +94,6 @@ export interface RemediationLoopOptions {
   skipUnchangedSnapshots?: boolean;
 }
 
-// ── Prompt builder ────────────────────────────────────────────────────────────
-
 /**
  * Build a context-enriched IDARi prompt that injects the telemetry summary,
  * anomaly list, and root cause analysis into the message.
@@ -159,8 +156,6 @@ export function buildIdariPrompt(
   return lines.join('\n');
 }
 
-// ── Fallback patch plan ───────────────────────────────────────────────────────
-
 /**
  * Build a deterministic PatchPlan from the root cause analysis.
  * Used when the AI is unavailable or when the system is degraded but not
@@ -204,16 +199,12 @@ export function buildFallbackPatchPlan(
   });
 }
 
-// ── Single iteration ──────────────────────────────────────────────────────────
-
-// ── Improvement 59: snapshot fingerprint for diffing ─────────────────────────
 function _fingerprintSnapshot(snapshot: TelemetrySnapshot): string {
   return `${snapshot.logs.length}:${snapshot.metrics.length}:${snapshot.traces.length}:${
     snapshot.logs.filter((l) => l.level === 'error').length
   }`;
 }
 
-// ── Improvement 58: retry AI call with exponential backoff ────────────────────
 async function _callAiWithRetry(
   callAi: (msg: string) => Promise<string>,
   prompt: string,
@@ -234,7 +225,6 @@ async function _callAiWithRetry(
   throw lastErr;
 }
 
-// ── Improvement 57: iteration timeout ────────────────────────────────────────
 function _withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(
@@ -319,7 +309,6 @@ async function _runLoopIterationInternal(
       const immediate_action = buildImmediateRemediationAction(rootCause);
       const patch_plan: PatchPlan | undefined = buildFallbackPatchPlan(rootCause, id, immediate_action);
 
-      // ── Improvement 59: skip AI when snapshot unchanged ───────────────────
       const snapshotChanged = !skipUnchangedSnapshots || fingerprint !== _prevFingerprint;
 
       if (callAi && patch_plan && snapshotChanged) {
@@ -382,8 +371,6 @@ async function _runLoopIterationInternal(
   return _withTimeout(doIteration(), iterationTimeoutMs);
 }
 
-// ── Multi-iteration driver ────────────────────────────────────────────────────
-
 /**
  * Run the IDARi remediation loop for up to `maxIterations` iterations.
  *
@@ -424,8 +411,6 @@ export async function runRemediationLoop(
 
   return iterations;
 }
-
-// ── Improvement 60: getLoopHealthSummary ─────────────────────────────────────
 
 export interface LoopHealthSummary {
   total: number;

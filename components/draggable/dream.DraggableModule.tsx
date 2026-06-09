@@ -1,5 +1,9 @@
 'use client';
 
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * components/draggable/dream.DraggableModule.tsx
  *
@@ -23,12 +27,6 @@
  * detection batched via requestAnimationFrame.
  */
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Constants ─────────────────────────────────────────────────────────────────
-
 /** Hold duration before drag mode activates (ms). */
 const HOLD_MS = 300;
 /** Pixels from screen edge that triggers an edge-transfer zone. */
@@ -38,8 +36,6 @@ const EDGE_HOLD_MS = 500;
 /** Pixels of movement before hold is cancelled (prevents accidental lifts). */
 const MOVE_CANCEL_PX = 8;
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface DraggableModuleProps {
   manifest: ModuleManifest;
   children: React.ReactNode;
@@ -47,8 +43,6 @@ interface DraggableModuleProps {
   /** Called when a transfer completes successfully. */
   onTransfer?: (manifest: ModuleManifest, targetRuntime: RuntimeId) => void;
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function DraggableModule({
   manifest,
@@ -62,7 +56,6 @@ export default function DraggableModule({
   const [edgeSide, setEdgeSide] = useState<'left' | 'right' | null>(null);
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
 
-  // ── Refs (don't need re-render) ───────────────────────────────────────────
   const rootRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startPos = useRef({ x: 0, y: 0 });
@@ -70,8 +63,6 @@ export default function DraggableModule({
   const edgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafHandle = useRef<number | null>(null);
   const capturedPointerId = useRef<number | null>(null);
-
-  // ── Helpers ───────────────────────────────────────────────────────────────
 
   const cancelHoldTimer = useCallback(() => {
     if (holdTimer.current !== null) {
@@ -106,8 +97,6 @@ export default function DraggableModule({
       rafHandle.current = null;
     }
   }, [cancelEdgeTimer]);
-
-  // ── Transfer logic ────────────────────────────────────────────────────────
 
   const resolveTargetRuntime = useCallback(
     (clientX: number): RuntimeId | null => {
@@ -161,8 +150,6 @@ export default function DraggableModule({
     },
     [manifest, cancelDrag, cancelEdgeTimer, onTransfer],
   );
-
-  // ── Pointer event handlers ────────────────────────────────────────────────
 
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -239,8 +226,6 @@ export default function DraggableModule({
     cancelDrag();
   }, [cancelHoldTimer, cancelDrag]);
 
-  // ── Keyboard accessibility ────────────────────────────────────────────────
-
   useEffect(() => {
     const el = rootRef.current;
     if (!el || !manifest.ui.movable) return;
@@ -259,16 +244,12 @@ export default function DraggableModule({
     return () => el.removeEventListener('keydown', handleKeyDown);
   }, [manifest.ui.movable, performTransfer]);
 
-  // ── Screen-edge aria announcement ─────────────────────────────────────────
-
   const edgeLabel =
     edgeSide === 'left'
       ? 'Approaching left edge — release to transfer to HomeDream'
       : edgeSide === 'right'
         ? 'Approaching right edge — release to transfer to DreamSpace'
         : undefined;
-
-  // ── Derived styles — all GPU-composited ──────────────────────────────────
 
   const transform = lifted
     ? `translate3d(${translate.x}px,${translate.y}px,0) scale(1.05)`

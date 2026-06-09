@@ -22,7 +22,7 @@ export function UniverseCard({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!interactive || !cardRef.current) return;
-    
+
     const rect = cardRef.current.getBoundingClientRect();
     setMousePos({
       x: e.clientX - rect.left,

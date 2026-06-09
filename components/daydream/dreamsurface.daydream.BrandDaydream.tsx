@@ -1,5 +1,27 @@
 'use client';
 
+import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
+import { useForgeActivity } from '@/lib/forge/useForgeActivity';
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import {
+    BarChart2,
+    BookOpen,
+    DollarSign,
+    Eye,
+    Layers,
+    Megaphone,
+    Minus,
+    Palette,
+    Share2,
+    TrendingDown,
+    TrendingUp,
+    Users,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
 /**
  * BrandDaydreamDashboard — Side A interactive dashboard for the Brand Daydream.
  *
@@ -29,31 +51,8 @@
  * Connected to dual-runtime bridge and Forge intelligence.
  */
 
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import {
-    BarChart2,
-    BookOpen,
-    DollarSign,
-    Eye,
-    Layers,
-    Megaphone,
-    Minus,
-    Palette,
-    Share2,
-    TrendingDown,
-    TrendingUp,
-    Users,
-} from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
 const ACCENT = '#ec4899';
 
-// ── Types ────────────────────────────────────────────────────────────────────
 interface ProfileData {
   handle: string;
   display_name: string | null;
@@ -69,7 +68,6 @@ interface Metric {
   trend: Trend;
 }
 
-// ── Static data ───────────────────────────────────────────────────────────────
 const PALETTE_PRESETS = [
   ['#ec4899', '#f9a8d4', '#c026d3', '#fbbf24', '#1e1b4b', '#f0fdf4'],
   ['#2a8ab8', '#bae6fd', '#0284c7', '#f59e0b', '#0f172a', '#f8fafc'],
@@ -133,7 +131,6 @@ const PRESS_KIT_ITEMS = [
   { label: 'Social Links',   status: '🔗', detail: 'Connect platforms to include' },
 ];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 const healthScore = Math.round(
   BRAND_HEALTH_DIMENSIONS.reduce((s, d) => s + d.score, 0) / BRAND_HEALTH_DIMENSIONS.length,
 );
@@ -144,11 +141,9 @@ function TrendIcon({ trend }: {trend: Trend}) {
   return <Minus className="w-3 h-3" style={{ color: 'var(--de-text-dim)' }} />;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
 export default function BrandDaydream( ){
   const { record: forgeRecord } = useForgeActivity({ enginId: 'brand' });
 
-  // ── Profile ────────────────────────────────────────────────────────────────
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
@@ -171,7 +166,6 @@ export default function BrandDaydream( ){
     return () => { cancelled = true; };
   }, []);
 
-  // ── Analytics ──────────────────────────────────────────────────────────────
   const [metrics, setMetrics] = useState<Metric[]>([
     { id: 'reach',  label: 'Reach',            value: '—',   trend: 'flat' },
     { id: 'eng',    label: 'Engagement Rate',   value: '—',   trend: 'flat' },
@@ -195,7 +189,6 @@ export default function BrandDaydream( ){
     forgeRecord('Refreshed brand analytics');
   }
 
-  // ── Color palette ──────────────────────────────────────────────────────────
   const [paletteIdx, setPaletteIdx] = useState(0);
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const currentPalette = PALETTE_PRESETS[paletteIdx % PALETTE_PRESETS.length];
@@ -206,7 +199,6 @@ export default function BrandDaydream( ){
     setTimeout(() => setCopiedColor(null), 1200);
   }
 
-  // ── Bio copy ───────────────────────────────────────────────────────────────
   const [copiedBio, setCopiedBio] = useState<string | null>(null);
   function copyBio(platform: string, text: string): void {
     navigator.clipboard?.writeText(text).catch(() => {});
@@ -214,7 +206,6 @@ export default function BrandDaydream( ){
     setTimeout(() => setCopiedBio(null), 1400);
   }
 
-  // ── Pitch copy ─────────────────────────────────────────────────────────────
   const [pitchCopied, setPitchCopied] = useState(false);
   function copyPitch( ){
     const text = `Hi [Sponsor], I'm ${profile?.display_name ?? 'a creator'} with ${profile?.follower_count ?? 0} followers. Engagement 5.2%. Let's collab.`;

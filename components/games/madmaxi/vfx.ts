@@ -1,3 +1,5 @@
+import type * as BJSNS from '@babylonjs/core';
+
 /**
  * MADMAXI · vfx.ts
  *
@@ -9,8 +11,6 @@
  * No new external assets are added; particle textures are 1×1 PNG data URIs
  * coloured at runtime via Babylon's `colorGradients` API.
  */
-
-import type * as BJSNS from '@babylonjs/core';
 
 type BJS = typeof BJSNS;
 type Scene = BJSNS.Scene;
@@ -86,7 +86,6 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
   });
   sparks.start();
 
-  // ─── Dash trail ────────────────────────────────────────────────────────
   const dashTrail = makePS(BJS, scene, 'madmaxi_dash_trail', {
     capacity: 60,
     minSize: 0.10, maxSize: 0.34,
@@ -97,7 +96,6 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
   });
   dashTrail.start();
 
-  // ─── Coin starburst ────────────────────────────────────────────────────
   const coinBurst = makePS(BJS, scene, 'madmaxi_coin_burst', {
     capacity: 40,
     minSize: 0.08, maxSize: 0.20,
@@ -108,7 +106,6 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
   });
   coinBurst.start();
 
-  // ─── Boss-enrage embers ────────────────────────────────────────────────
   const embers = makePS(BJS, scene, 'madmaxi_embers', {
     capacity: 60,
     minSize: 0.08, maxSize: 0.22,
@@ -118,7 +115,6 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
     dir1: [-0.5, 0.4, -0.3], dir2: [0.5, 1.6, 0.3],
   });
 
-  // ─── Landing ring ──────────────────────────────────────────────────────
   // A flat disc that expands and fades. Lives outside the particle system so
   // we can give it a precise pop-in/pop-out animation curve.
   const ringDiameter = 0.6;

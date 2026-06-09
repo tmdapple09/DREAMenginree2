@@ -1,5 +1,9 @@
 'use client';
 
+import { Loader2, Search, UserMinus, UserPlus, Users, X } from 'lucide-react';
+import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * CloseFriendsSettings — manage the Close Friends list (spec §4).
  *
@@ -9,10 +13,6 @@
  * Close-friends posts are only visible to users in this list; they bypass
  * the public rate limit (50/5 min vs 10/5 min for public posts).
  */
-
-import { Loader2, Search, UserMinus, UserPlus, Users, X } from 'lucide-react';
-import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
 
 interface Friend {
   friend_id: string;
@@ -44,7 +44,6 @@ export default function CloseFriendsSettings( ){
 
   const [actionId, setActionId] = useState<string | null>(null);
 
-  // ── Load current close friends ─────────────────────────────────────────────
   const loadFriends = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -62,7 +61,6 @@ export default function CloseFriendsSettings( ){
 
   useEffect(() => { void loadFriends(); }, [loadFriends]);
 
-  // ── Search for users ───────────────────────────────────────────────────────
   const handleSearch = useCallback(async (query: string) => {
     setSearchQuery(query);
     if (query.trim().length < 2) {
@@ -82,7 +80,6 @@ export default function CloseFriendsSettings( ){
     }
   }, []);
 
-  // ── Add a friend ───────────────────────────────────────────────────────────
   const addFriend = useCallback(async (friendId: string) => {
     setActionId(friendId);
     try {
@@ -105,7 +102,6 @@ export default function CloseFriendsSettings( ){
     }
   }, [loadFriends]);
 
-  // ── Remove a friend ────────────────────────────────────────────────────────
   const removeFriend = useCallback(async (friendId: string) => {
     setActionId(friendId);
     try {

@@ -3,7 +3,6 @@
 import { Bot, Maximize2, Minimize2, Send, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-
 import { onIdariEvent } from '@/lib/agents/agentBus';
 import { getDrEamsMode, onDrEamsModeChange } from '@/lib/agents/drEamsMode';
 import { hasTaught, markTaught, onTeach } from '@/lib/agents/teachBus';

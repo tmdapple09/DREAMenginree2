@@ -1,13 +1,5 @@
 'use client';
 
-/**
- * React hooks for DREAMengin's shared responsive system.
- *
- * Pair with `lib/ui/responsive.ts` (pure utilities). These hooks are the
- * recommended way to make any client component adaptable / dynamic /
- * scalable without ad-hoc `window.innerWidth` listeners.
- */
-
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import {
     BREAKPOINTS,
@@ -19,6 +11,14 @@ import {
     pickByBreakpoint,
     readViewportWidth,
 } from '../ui/responsive';
+
+/**
+ * React hooks for DREAMengin's shared responsive system.
+ *
+ * Pair with `lib/ui/responsive.ts` (pure utilities). These hooks are the
+ * recommended way to make any client component adaptable / dynamic /
+ * scalable without ad-hoc `window.innerWidth` listeners.
+ */
 
 type Listener = () => void;
 

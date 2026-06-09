@@ -3,7 +3,10 @@
   "category": "structural",
   "description": "The open world loads and unloads tiles around the player so the entire space appears seamless.",
   "structural_role": "open-world-runtime",
-  "applies_to_structures": ["open-world", "sandbox"],
+  "applies_to_structures": [
+    "open-world",
+    "sandbox"
+  ],
   "implementation": {
     "data_model": "tile grid + LOD rings + async loader",
     "parameters": {
@@ -18,5 +21,7 @@
     "Stutter spikes when crossing tile boundaries",
     "Loading screens disguised as elevators"
   ],
-  "fun_heuristics": { "immersion": 0.9 }
+  "fun_heuristics": {
+    "immersion": 0.9
+  }
 }

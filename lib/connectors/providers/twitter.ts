@@ -1,3 +1,8 @@
+import { normaliseTwitter } from '@/lib/connectors/normalise';
+import { DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/twitter.ts
  *
@@ -18,11 +23,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normaliseTwitter } from '@/lib/connectors/normalise';
-import { DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface TwitterCredentials {
   username: string;
   /** Optional Nitter instance URL. Defaults to https://nitter.net */

@@ -14,5 +14,9 @@
     "emissive: pulse mask at 0.5-1.0 Hz for living-neon feel"
   ],
   "tinting_guidance": "Cyan and magenta pair well in the same scene; avoid yellow-green which reads as toxic.",
-  "use_cases": ["Mad Maxi visor glow", "wasteland graffiti strips", "interactable triggers"]
+  "use_cases": [
+    "Mad Maxi visor glow",
+    "wasteland graffiti strips",
+    "interactable triggers"
+  ]
 }

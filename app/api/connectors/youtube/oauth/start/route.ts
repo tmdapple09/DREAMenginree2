@@ -1,3 +1,6 @@
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/youtube/oauth/start/route.ts
  *
@@ -17,9 +20,6 @@
  * AXIOM 4 — Security by Default: client_secret is never sent in this request.
  * ARCHITECTURE.md §3 — Auth flow lives in API routes, not the component layer.
  */
-
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 

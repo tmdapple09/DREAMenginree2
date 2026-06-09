@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesCodeAi  (framework-mandated basename: page.tsx)
 import AIPanel from '@/components/engines/code/panels/dream.panel.AIPanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -6,6 +5,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesCodeAi  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'AI Assistant – CodeEngin', description: 'AI-powered code assistant.' };
 

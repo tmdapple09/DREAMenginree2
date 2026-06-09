@@ -13,5 +13,9 @@
     "normal: gentle wind-carved curves, no sharp edges"
   ],
   "tinting_guidance": "Lift highlights toward bone-white at noon; deepen shadows toward burnt-sienna at dusk.",
-  "use_cases": ["wasteland cliffs", "ruined columns", "dune surfaces"]
+  "use_cases": [
+    "wasteland cliffs",
+    "ruined columns",
+    "dune surfaces"
+  ]
 }

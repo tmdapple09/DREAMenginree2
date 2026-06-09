@@ -1,3 +1,8 @@
+import { calculateActivityPoints, getTierDescription } from '@/lib/activity/scoring';
+import { ActivityTier, VerificationMethod } from '@/lib/activity/types';
+import { useState } from 'react';
+import { TierBadge } from './dream.TierBadge';
+
 // components/activity/dream.ActivityPostForm.tsx
 // Phase 9 — Activity Post Form
 //
@@ -5,11 +10,6 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
 
 'use client';
-
-import { calculateActivityPoints, getTierDescription } from '@/lib/activity/scoring';
-import { ActivityTier, VerificationMethod } from '@/lib/activity/types';
-import { useState } from 'react';
-import { TierBadge } from './dream.TierBadge';
 
 interface ActivityPostFormProps {
   onSubmit: (data: ActivityPostData) => Promise<void>;

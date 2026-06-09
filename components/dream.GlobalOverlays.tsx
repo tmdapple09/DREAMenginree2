@@ -1,5 +1,7 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 // SURFACE: dream.shell.GlobalOverlays
 //
 // Client-side wrapper that lazy-loads the four global overlay surfaces that
@@ -9,8 +11,6 @@
 // in a Client Component. This wrapper keeps the public-paint critical path
 // light by deferring decorative / admin-only surfaces until after hydration,
 // which preserves the H1 perf intent that the original inline imports had.
-
-import dynamic from 'next/dynamic';
 
 const GlobalCustomizeUI = dynamic(
   () => import('@/components/customize/dream.GlobalCustomizeUI'),

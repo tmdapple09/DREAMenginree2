@@ -1,14 +1,14 @@
 'use client';
 
+import { Info, Play, RotateCcw, Zap } from 'lucide-react';
+import { useCallback, useState } from 'react';
+
 /**
  * PortfolioQuantumPanel — Quantum circuit designer tuned for portfolio optimization.
  *
  * Gate canvas with QAOA / VQE context. Simulates asset-selection bitstrings.
  * Lives at /engines/portfolio/quantum.
  */
-
-import { Info, Play, RotateCcw, Zap } from 'lucide-react';
-import { useCallback, useState } from 'react';
 
 const ACCENT = '#2a8ab8';
 const PURPLE = '#8b5cf6';

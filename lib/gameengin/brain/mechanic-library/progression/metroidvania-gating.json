@@ -2,7 +2,11 @@
   "name": "Metroidvania Gating",
   "category": "progression",
   "description": "World areas locked behind specific traversal abilities granted by milestone events.",
-  "emotional_impact": ["wonder", "anticipation", "validation"],
+  "emotional_impact": [
+    "wonder",
+    "anticipation",
+    "validation"
+  ],
   "implementation": {
     "structure": "DAG of (room → required_ability)",
     "parameters": {
@@ -11,6 +15,13 @@
       "shortcut_to_hub_after_unlock": true
     }
   },
-  "games_using": ["Metroid", "Hollow Knight", "Ori"],
-  "fun_heuristics": { "exploration_payoff": 0.9, "memorability": 0.85 }
+  "games_using": [
+    "Metroid",
+    "Hollow Knight",
+    "Ori"
+  ],
+  "fun_heuristics": {
+    "exploration_payoff": 0.9,
+    "memorability": 0.85
+  }
 }

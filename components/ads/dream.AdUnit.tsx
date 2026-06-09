@@ -1,3 +1,7 @@
+import { AdType } from '@/lib/activity/types';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
 // components/ads/dream.AdUnit.tsx
 // Phase 9 — Ad Unit Component
 //
@@ -5,10 +9,6 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
 
 'use client';
-
-import { AdType } from '@/lib/activity/types';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 interface AdUnitProps {
   adId: string;

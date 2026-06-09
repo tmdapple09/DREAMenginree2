@@ -1,7 +1,3 @@
-// app/api/ai/execute/route.ts
-// Execute validated intents after confirmation.
-// Maps each IntentType to a real server-side action or client-side dispatch payload.
-
 import { writeAuditLog } from '@/lib/ai/audit';
 import { verifyConfirmToken } from '@/lib/ai/confirm';
 import { checkRateLimit } from '@/lib/ai/rateLimit';
@@ -12,12 +8,14 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
+// app/api/ai/execute/route.ts
+// Execute validated intents after confirmation.
+// Maps each IntentType to a real server-side action or client-side dispatch payload.
+
 // ---------------------------------------------------------------------------
 // Intent dispatch table
-// ---------------------------------------------------------------------------
 
 type DispatchResult = {
   executed: boolean;
@@ -61,14 +59,12 @@ async function dispatchIntent(
       return { executed: true, action_type: 'navigate', action_payload: { route } };
     }
 
-    // ── Open the home anchor menu ──
     case 'HOME_MENU_OPEN':
     case 'HOME_ANCHOR_SET_STATE': {
       const state = typeof payload.state === 'number' ? payload.state : 1;
       return { executed: true, action_type: 'home_menu_open', action_payload: { state } };
     }
 
-    // ── Navigate to a dream / preview one ──
     case 'DREAM_OPEN':
     case 'DREAM_PREVIEW': {
       const dream_id = typeof payload.dream_id === 'string' ? payload.dream_id : null;
@@ -79,7 +75,6 @@ async function dispatchIntent(
       };
     }
 
-    // ── Patch dream config ──
     case 'DREAM_CONFIG_PATCH': {
       const dream_id = typeof payload.dream_id === 'string' ? payload.dream_id : null;
       if (!dream_id) return { executed: false, error: 'dream_id required for DREAM_CONFIG_PATCH' };
@@ -94,7 +89,6 @@ async function dispatchIntent(
       return { executed: true, action_type: 'dream_config_patch', action_payload: { dream_id, patch } };
     }
 
-    // ── Reorder dreams ──
     case 'DREAM_REORDER': {
       const order = Array.isArray(payload.order) ? payload.order as string[] : null;
       if (!order) return { executed: false, error: 'order array required for DREAM_REORDER' };
@@ -110,19 +104,16 @@ async function dispatchIntent(
       return { executed: true, action_type: 'dream_reorder', action_payload: { order } };
     }
 
-    // ── Search: return query for client to execute ──
     case 'SEARCH': {
       const query = typeof payload.query === 'string' ? payload.query : '';
       return { executed: true, action_type: 'search', action_payload: { query, route: `/search?q=${encodeURIComponent(query)}` } };
     }
 
-    // ── Navigate to create post ──
     case 'POST_CREATE': {
       const prefill = typeof payload.body === 'string' ? payload.body : '';
       return { executed: true, action_type: 'navigate', action_payload: { route: '/create', prefill } };
     }
 
-    // ── Admin diagnostics ──
     case 'DIAG_SCHEMA_SNAPSHOT': {
       if (actorRole !== 'admin' && actorRole !== 'owner') {
         return { executed: false, error: 'Admin role required for DIAG_SCHEMA_SNAPSHOT' };
@@ -148,9 +139,7 @@ async function dispatchIntent(
   }
 }
 
-// ---------------------------------------------------------------------------
 // Route handler
-// ---------------------------------------------------------------------------
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();

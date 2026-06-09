@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import ContentEngin from '@/engins/engin.ContentEngin';
+
 /**
  * CreateEnginApp — Full-screen app shell for the Content Creation Engine.
  *
@@ -9,9 +12,6 @@
  *   /engines/create/calendar  → content calendar
  *   /engines/create/queue     → publishing queue
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import ContentEngin from '@/engins/engin.ContentEngin';
 
 export default makeEnginApp({
   id: 'create',

@@ -1,5 +1,10 @@
 'use client';
 
+import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { SessionContinuity, type SessionDiff, type SessionSummary } from './sessionContinuity';
+import { SessionPatternEngine, type PatternEngineState, type PredictedNext } from './sessionPatternEngine';
+
 /**
  * lib/intelligence/useSessionIntelligence.ts
  *
@@ -29,11 +34,6 @@
  *   // Or with an explicit subsystem override:
  *   const { predictions } = useSessionIntelligence('CodeEngin');
  */
-
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { SessionContinuity, type SessionDiff, type SessionSummary } from './sessionContinuity';
-import { SessionPatternEngine, type PatternEngineState, type PredictedNext } from './sessionPatternEngine';
 
 /** localStorage key used to persist the bigram transition matrix across sessions. */
 export const PATTERN_MATRIX_LS_KEY = 'dreamengin-pattern-matrix';

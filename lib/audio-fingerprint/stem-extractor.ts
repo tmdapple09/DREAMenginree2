@@ -1,3 +1,5 @@
+import type { TimeSlice } from './fingerprint';
+
 /**
  * lib/audio-fingerprint/stem-extractor.ts — §40 Stem Extractor
  *
@@ -15,10 +17,6 @@
  *                        clicks.  Falls back to extractStem() when
  *                        OfflineAudioContext is unavailable (SSR / old browsers).
  */
-
-import type { TimeSlice } from './fingerprint';
-
-// ─── Synchronous (copy-paste, no Web Audio render) ────────────────────────────
 
 /**
  * extractStem — synchronous slice stitcher.
@@ -61,8 +59,6 @@ export function extractStem(audioBuffer: AudioBuffer, slices: TimeSlice[]): Audi
 
   return output;
 }
-
-// ─── Async (OfflineAudioContext render — best quality) ────────────────────────
 
 const FADE_SAMPLES = 220; // ~5 ms at 44100 Hz
 

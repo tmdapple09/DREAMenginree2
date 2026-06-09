@@ -1,3 +1,10 @@
+import type { DreamWindowInstance } from '@/lib/dream-window/DreamWindowLifecycle';
+import { DREAM_WINDOW_STATES, validateDreamWindowLayers } from '@/lib/dream-window/DreamWindowLifecycle';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/dream-windows/[id]/route.ts
  *
@@ -14,16 +21,7 @@
  * Privacy: visibility defaults to 'private' (docs/AXIOMS.md §product integrity)
  */
 
-import type { DreamWindowInstance } from '@/lib/dream-window/DreamWindowLifecycle';
-import { DREAM_WINDOW_STATES, validateDreamWindowLayers } from '@/lib/dream-window/DreamWindowLifecycle';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-// ---------------------------------------------------------------------------
 // GET — fetch single Dream Window
-// ---------------------------------------------------------------------------
 
 /**
  * GET /api/dream-windows/[id]
@@ -45,7 +43,7 @@ export async function GET(
 
   // RLS on dream_windows table enforces visibility — this query will return
   // null/empty if the record is private and the caller is not the owner.
-   
+
   const { data: dreamWindow, error } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .select('*')
@@ -59,9 +57,7 @@ export async function GET(
   return NextResponse.json({ dreamWindow });
 }
 
-// ---------------------------------------------------------------------------
 // PATCH — update Dream Window fields
-// ---------------------------------------------------------------------------
 
 /**
  * PATCH /api/dream-windows/[id]
@@ -91,8 +87,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // ── Fetch existing record to verify ownership ────────────────────────────
-   
   const { data: existing, error: fetchError } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .select('*')
@@ -103,7 +97,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'Dream Window not found' }, { status: 404 });
   }
 
-  // ── owner_id enforcement (Point 15) ─────────────────────────────────────
   if (existing.owner_id !== user.id) {
     return NextResponse.json(
       { error: 'Forbidden — only the owner may update this Dream Window' },
@@ -118,7 +111,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  // ── Build the update payload ─────────────────────────────────────────────
   const update: Record<string, unknown> = {};
 
   if (body.active_state !== undefined) {
@@ -177,7 +169,6 @@ export async function PATCH(
     update.destination_rules = body.destination_rules;
   }
 
-  // ── Layer validation on mount (Point 20) ────────────────────────────────
   if (update.active_state === DREAM_WINDOW_STATES.MOUNTED) {
     // Merge existing config with any config update to get the effective config
     const effectiveConfig = {
@@ -214,8 +205,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
   }
 
-  // ── Apply update ─────────────────────────────────────────────────────────
-   
   const { data: dreamWindow, error: updateError } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .update(update)
@@ -230,9 +219,7 @@ export async function PATCH(
   return NextResponse.json({ dreamWindow });
 }
 
-// ---------------------------------------------------------------------------
 // DELETE — atomic Dream Window removal (Point 22)
-// ---------------------------------------------------------------------------
 
 /**
  * DELETE /api/dream-windows/[id]
@@ -263,8 +250,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // ── Fetch to verify ownership ────────────────────────────────────────────
-   
   const { data: existing, error: fetchError } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .select('id, owner_id')
@@ -275,7 +260,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Dream Window not found' }, { status: 404 });
   }
 
-  // ── owner_id enforcement (Point 15) ─────────────────────────────────────
   if (existing.owner_id !== user.id) {
     return NextResponse.json(
       { error: 'Forbidden — only the owner may delete this Dream Window' },
@@ -283,9 +267,8 @@ export async function DELETE(
     );
   }
 
-  // ── Step 1: Delete the dream_windows row ────────────────────────────────
   // dream_window_projections are removed via ON DELETE CASCADE (FK: source_id).
-   
+
   const { error: deleteError } = await (supabase as SupabaseClient)
     .from('dream_windows')
     .delete()
@@ -295,9 +278,8 @@ export async function DELETE(
     return NextResponse.json({ error: deleteError.message }, { status: 500 });
   }
 
-  // ── Step 2: Delete from visibility_mappings WHERE content_id = id ────────
   // Best-effort cleanup — the main record is already gone.
-   
+
   const { error: visError } = await (supabase as SupabaseClient)
     .from('visibility_mappings')
     .delete()

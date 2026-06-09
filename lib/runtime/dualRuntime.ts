@@ -1,8 +1,10 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+    RUNTIME_REGIONS,
+    SURFACE_NAMES,
+} from '@/lib/identity/canonical-names';
+import type { SystemPanelId } from '@/lib/panels/panelTypes';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/dualRuntime.ts.
 
@@ -30,17 +32,11 @@
  * Law: docs/LAW.md §OS-layer naming law
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ---------------------------------------------------------------------------
 // Default state
-// ---------------------------------------------------------------------------
 
 export const DEFAULT_DUAL_RUNTIME: DualRuntimeState = {
   surfaceSpaceWorld: SURFACE_NAMES.HOME_DREAM_SURFACE,
@@ -48,9 +44,7 @@ export const DEFAULT_DUAL_RUNTIME: DualRuntimeState = {
   dominantRegion:    RUNTIME_REGIONS.SURFACE_SPACE,
 };
 
-// ---------------------------------------------------------------------------
 // Torus world map — the "one page / wrap-around navigation" model
-// ---------------------------------------------------------------------------
 
 /**
  * The DREAMengin world is modelled as a torus: a 2-D grid that wraps in both
@@ -83,28 +77,13 @@ export const TORUS_FOCUS_MAP: Record<TorusDomain, [surface: string, engin: strin
   brand:  ['brand.surface',    'brand.engin'],
 };
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import {
-    RUNTIME_REGIONS,
-    SURFACE_NAMES,
-} from '@/lib/identity/canonical-names';
-
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
 
-// ---------------------------------------------------------------------------
 // RuntimeWorld — canonical string literals + object variants
-// ---------------------------------------------------------------------------
 
 /**
  * A RuntimeWorld value identifies what a runtime region is currently showing.
@@ -124,9 +103,7 @@ export type RuntimeWorld =
   | { type: 'panel'; name: SystemPanelId }       // in-region feature panel
   | { type: 'custom'; path: string };
 
-// ---------------------------------------------------------------------------
 // DualRuntimeState
-// ---------------------------------------------------------------------------
 
 export interface DualRuntimeState {
   /** The world currently shown in the Surface Space region (upper) */
@@ -143,13 +120,9 @@ export interface DualRuntimeState {
 
 export type TorusDomain = (typeof TORUS_DOMAINS)[number];
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
 
-// ---------------------------------------------------------------------------
 // Pure state transition functions
-// ---------------------------------------------------------------------------
 
 /**
  * Set the world shown in a specific runtime region.
@@ -274,17 +247,12 @@ export function moveTorus(
   return { x: nx, y: ny };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.
 
 // Re-export canonical name constants for consumers
+
 export { RUNTIME_REGIONS, SURFACE_NAMES };

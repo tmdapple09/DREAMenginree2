@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import CodeEngin from '@/engins/engin.CodeEngin';
+
 /**
  * CodeEnginApp — Full-screen app shell for the Code Engine.
  *
@@ -9,9 +12,6 @@
  *   /engines/code/projects  → project manager
  *   /engines/code/ai        → AI code assistant
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import CodeEngin from '@/engins/engin.CodeEngin';
 
 export default makeEnginApp({
   id: 'code',

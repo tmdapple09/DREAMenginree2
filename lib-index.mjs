@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+
+import fs from "node:fs";
+import path from "node:path";
+
 /**
  * DREAMengin Lib Index
  *
@@ -15,9 +19,6 @@
  * This script is report-only.
  * It never moves, deletes, or rewrites production source files.
  */
-
-import fs from "node:fs";
-import path from "node:path";
 
 const ROOT = process.cwd();
 const LIB_DIR = path.join(ROOT, "lib");

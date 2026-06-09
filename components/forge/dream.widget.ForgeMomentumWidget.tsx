@@ -1,14 +1,14 @@
 'use client';
 
+import { computeMomentum, getLevelColor, getLevelEmoji, type MomentumSnapshot } from '@/lib/forge/forgeMomentum';
+import { useEffect, useState } from 'react';
+
 /**
  * ForgeMomentumWidget — Client-side momentum score display for Side A.
  *
  * Reads Forge activity history from localStorage and renders a compact
  * creative momentum overview. Refreshes every 15 seconds.
  */
-
-import { computeMomentum, getLevelColor, getLevelEmoji, type MomentumSnapshot } from '@/lib/forge/forgeMomentum';
-import { useEffect, useState } from 'react';
 
 export default function ForgeMomentumWidget( ){
   const [snap, setSnap] = useState<MomentumSnapshot | null>(null);

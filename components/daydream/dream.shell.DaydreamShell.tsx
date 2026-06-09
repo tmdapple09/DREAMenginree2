@@ -100,10 +100,9 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
       const timer = window.setTimeout(() => flip(), 80);
       return () => window.clearTimeout(timer);
     }
-   
+
   }, []);
 
-  // ── Journey Trail — surface_first_entry instrumentation ──────────────────
   // Fires once the first time this surface is ever visited by the user.
   // Deduplicated by kind + surface together so each surface produces exactly one dot.
   useEffect(() => {
@@ -119,7 +118,7 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
         metadata:     { engin: enginName },
       });
     })();
-   
+
   }, [title, enginName, accentColor]);
 
   const contentStyle: React.CSSProperties = {};
@@ -235,7 +234,6 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
   );
 }
 
-/* ── Engin Surface — Side B ── */
 function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { enginName: string; title: string; accentColor: string; widgets: DaydreamWidget[]; onBack: () => void }) {
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(155deg, #050508 0%, #08101e 45%, #0a0f1c 75%, #050508 100%)', position: 'relative', overflow: 'hidden' }}>
@@ -341,7 +339,6 @@ function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { engi
   );
 }
 
-/* ── Engin Pill Dual-Button Controls (spec §7.1 / §14.3) ── */
 function EnginPillControls({ enginName, accentColor, onBack }: { enginName: string; accentColor: string; onBack: () => void }) {
   return (
     <div style={{
@@ -402,7 +399,6 @@ function EnginPillControls({ enginName, accentColor, onBack }: { enginName: stri
   );
 }
 
-/* ── Single marble bubble widget ── */
 function MarbleWidget({ w }: {w: DaydreamWidget}) {
   const tile = (
     <div

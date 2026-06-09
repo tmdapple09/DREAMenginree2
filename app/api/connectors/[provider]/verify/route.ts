@@ -1,3 +1,16 @@
+import { blueskyVerify } from '@/lib/connectors/providers/bluesky';
+import { githubVerify } from '@/lib/connectors/providers/github';
+import { mastodonVerify } from '@/lib/connectors/providers/mastodon';
+import { nostrVerify } from '@/lib/connectors/providers/nostr';
+import { redditVerify } from '@/lib/connectors/providers/reddit';
+import { youtubeVerify } from '@/lib/connectors/providers/youtube';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { ConnectorVerifyResponse } from '@/types/connector';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/connectors/[provider]/verify/route.ts
  *
@@ -13,19 +26,6 @@
  * ARCHITECTURE.md §3 — Logic layer (lib/) handles provider calls.
  */
 
-import { blueskyVerify } from '@/lib/connectors/providers/bluesky';
-import { githubVerify } from '@/lib/connectors/providers/github';
-import { mastodonVerify } from '@/lib/connectors/providers/mastodon';
-import { nostrVerify } from '@/lib/connectors/providers/nostr';
-import { redditVerify } from '@/lib/connectors/providers/reddit';
-import { youtubeVerify } from '@/lib/connectors/providers/youtube';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { ConnectorVerifyResponse } from '@/types/connector';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 const VERIFY_CACHE_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function GET(
@@ -34,7 +34,7 @@ export async function GET(
 ): Promise<NextResponse<ConnectorVerifyResponse>> {
   const { provider } = await params;
   const supabase = await createServerClient();
-   
+
   const db = supabase as SupabaseClient;
 
   const user = await safeGetUser(supabase);

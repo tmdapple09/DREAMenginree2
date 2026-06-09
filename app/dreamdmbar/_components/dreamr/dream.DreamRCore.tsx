@@ -1,4 +1,8 @@
 'use client';
+
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { useEffect } from 'react';
+
 /**
  * DreamRCore — the "Brain" reactor for the DreamR remote-control architecture.
  *
@@ -12,9 +16,6 @@
  *
  * Privacy: no raw user data in bridge payloads — only IDs (AXIOM 4).
  */
-
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { useEffect } from 'react';
 
 interface Props {
   sharerId: string;

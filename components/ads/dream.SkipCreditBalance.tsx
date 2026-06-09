@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 // components/ads/dream.SkipCreditBalance.tsx
 // Phase 9 — Skip Credit Balance Display
 //
@@ -5,8 +7,6 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
 
 'use client';
-
-import { useEffect, useState } from 'react';
 
 export function SkipCreditBalance( ){
   const [balance, setBalance] = useState<number>(0);

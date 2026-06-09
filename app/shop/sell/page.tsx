@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.ShopSell  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
@@ -8,9 +7,10 @@ import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
+// SURFACE: dreamsurface.ShopSell  (framework-mandated basename: page.tsx)
+
 export default function SellItemPage( ){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

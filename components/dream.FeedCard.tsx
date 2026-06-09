@@ -40,7 +40,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [copyDone, setCopyDone] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
+
   const source = item.source || item.type || 'app';
   const isDemo = item.id.startsWith('demo-');
 
@@ -57,11 +57,11 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
 
   const mediaUrl = typeof item.url === 'string' ? item.url : undefined;
   const mediaProvider = inferProviderFromUrl(mediaUrl);
-  
+
   // Fetch initial like status
   useEffect(() => {
     if (isDemo || !userId) return;
-    
+
     fetch(`/api/likes?content_type=post&content_id=${item.id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -70,7 +70,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
       })
       .catch(() => {});
   }, [item.id, userId, isDemo]);
-  
+
   const getSourceIcon = () => {
     switch (source) {
       case 'youtube':
@@ -97,19 +97,19 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
 
   const handleLike = async () => {
     if (isLikeLoading) return;
-    
+
     if (isDemo) {
       setIsLiked(!isLiked);
       setLikes((prev) => isLiked ? prev - 1 : prev + 1);
       return;
     }
-    
+
     setIsLikeLoading(true);
     const wasLiked = isLiked;
-    
+
     setIsLiked(!wasLiked);
     setLikes((prev) => wasLiked ? prev - 1 : prev + 1);
-    
+
     try {
       if (wasLiked) {
         const res = await fetch(`/api/likes?content_type=post&content_id=${item.id}`, { method: 'DELETE' });

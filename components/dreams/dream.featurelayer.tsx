@@ -18,3 +18,4 @@ export default function DreamFeatureLayer({
   const allowed = requires.every((capability) => capabilities.includes(capability));
   return <>{allowed ? children : fallback}</>;
 }
+

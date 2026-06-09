@@ -229,7 +229,6 @@ export class DrEamsAnimator {
     );
   }
 
-  // --- Interaction hit zones (normalized 0..1 in sprite space) ---
   // You can tune these numbers to match your character.
   public handlePointer(xPx: number, yPx: number) {
     this.markActive();

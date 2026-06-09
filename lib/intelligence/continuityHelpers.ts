@@ -1,3 +1,5 @@
+import { ENGIN_REGISTRY, type EnginEntry, type ForgeActivityPulse } from '@/lib/forge/forgeRegistry';
+
 /**
  * lib/intelligence/continuityHelpers.ts
  *
@@ -18,10 +20,6 @@
  * Privacy: all inputs are local-client data only — no network calls.
  */
 
-import { ENGIN_REGISTRY, type EnginEntry, type ForgeActivityPulse } from '@/lib/forge/forgeRegistry';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export interface ResumeDest {
   /** Canonical daydream surface route, e.g. '/daydream/code'. */
   href: string;
@@ -32,8 +30,6 @@ export interface ResumeDest {
   /** Accent colour from the Engin registry. */
   accent: string;
 }
-
-// ── Internal helpers ──────────────────────────────────────────────────────────
 
 /**
  * Attempt to find an ENGIN_REGISTRY entry by either:
@@ -60,8 +56,6 @@ function entryToResumeDest(entry: EnginEntry): ResumeDest {
     accent: entry.accent,
   };
 }
-
-// ── Public API ────────────────────────────────────────────────────────────────
 
 /**
  * Resolve the single best resume destination for the "Resume Dream" affordance.
@@ -98,8 +92,6 @@ export function resolveResumeDest(
 
   return null;
 }
-
-// ── Artifact kind helpers ─────────────────────────────────────────────────────
 
 /** Short human-readable badge for a DreamOSArtifactKind. */
 export function formatArtifactKind(kind: string): string {

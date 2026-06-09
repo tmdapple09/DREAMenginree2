@@ -1,5 +1,12 @@
 'use client';
 
+import { useEffect, useRef, type RefObject } from 'react';
+import {
+    GestureRecogniser,
+    type GestureCallbacks,
+    type GestureConfig,
+} from './touchGestures';
+
 /**
  * lib/gestures/useTouchGestures.ts
  *
@@ -18,13 +25,6 @@
  *     },
  *   });
  */
-
-import { useEffect, useRef, type RefObject } from 'react';
-import {
-    GestureRecogniser,
-    type GestureCallbacks,
-    type GestureConfig,
-} from './touchGestures';
 
 /**
  * useTouchGestures — attach gesture recognition to a DOM element.

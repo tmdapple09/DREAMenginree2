@@ -1,26 +1,5 @@
 "use client";
 
-/**
- * DreamRSection — The DreamR Station inside HomeDream.
- *
- * Five neomorphic tabs, each surfacing a real dreamengin capability under
- * the DreamR "Human Media Platform" brand:
- *
- *  📡 Feed     — Vertical snap-scroll DreamRFeed (swipe-left for creator panel)
- *  ✦  Create   — Cross-platform post composer (text, image, video, audio)
- *  🧬 Platform — Unified creator identity: profile card + all connected networks
- *  📊 Signal   — Real analytics (views, likes, followers, comments) + time range
- *  🌟 Journey  — Creative dot-trail: your history across dreamengin surfaces
- *
- * The Journey tab is the uniquely dreamengin feature: no other social platform
- * shows you the creative history BEHIND your content. Your music sessions, game
- * sessions, lab experiments, code commits — all dots on your DreamR timeline.
- *
- * Visual language: neomorphism on pearl-sky base (#e8eff6),
- * sky-blue (#5ba8d4) and gold (#c8981a) accents,
- * Plus Jakarta Sans (--font-dreamr) throughout.
- */
-
 import DreamRCore from "@/app/dreamdmbar/_components/dreamr/dream.DreamRCore";
 import JourneyTrail from "@/components/daydream/dream.JourneyTrail";
 import DreamRFeed from "@/lib/dreamr/dreamrfeed";
@@ -54,7 +33,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// ── Design tokens ──────────────────────────────────────────────────────────────
+/**
+ * DreamRSection — The DreamR Station inside HomeDream.
+ *
+ * Five neomorphic tabs, each surfacing a real dreamengin capability under
+ * the DreamR "Human Media Platform" brand:
+ *
+ *  📡 Feed     — Vertical snap-scroll DreamRFeed (swipe-left for creator panel)
+ *  ✦  Create   — Cross-platform post composer (text, image, video, audio)
+ *  🧬 Platform — Unified creator identity: profile card + all connected networks
+ *  📊 Signal   — Real analytics (views, likes, followers, comments) + time range
+ *  🌟 Journey  — Creative dot-trail: your history across dreamengin surfaces
+ *
+ * The Journey tab is the uniquely dreamengin feature: no other social platform
+ * shows you the creative history BEHIND your content. Your music sessions, game
+ * sessions, lab experiments, code commits — all dots on your DreamR timeline.
+ *
+ * Visual language: neomorphism on pearl-sky base (#e8eff6),
+ * sky-blue (#5ba8d4) and gold (#c8981a) accents,
+ * Plus Jakarta Sans (--font-dreamr) throughout.
+ */
 
 const DR = {
   bg: "#e8eff6",
@@ -75,8 +73,6 @@ function nmRaised(s: number = 5) {
 function nmInset(s: number = 4) {
   return `inset ${-s}px ${-s}px ${s * 2}px ${DR.shadowLight}, inset ${s}px ${s}px ${s * 2.4}px ${DR.shadowDark}`;
 }
-
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 type Tab = "feed" | "create" | "platform" | "signal" | "journey";
 
@@ -117,8 +113,6 @@ interface DreamRSectionProps {
   onOpenUrl?: (url: string, title?: string) => void;
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
-
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "feed", label: "Feed", icon: <Radio size={16} /> },
   { id: "create", label: "Create", icon: <PlusCircle size={16} /> },
@@ -152,10 +146,6 @@ function TrendIcon({ v }: { v: number }) {
   if (v < 0) return <TrendingDown size={12} style={{ color: "#ef4444" }} />;
   return <Minus size={12} style={{ color: DR.textDim }} />;
 }
-
-// ── Sub-views ──────────────────────────────────────────────────────────────────
-
-// ── Create tab ────────────────────────────────────────────────────────────────
 
 function CreateTab({
   userId,
@@ -663,8 +653,6 @@ function CreateTab({
   );
 }
 
-// ── Platform tab ──────────────────────────────────────────────────────────────
-
 function PlatformTab({
   profile,
   onOpenUrl,
@@ -1087,7 +1075,6 @@ function PlatformTab({
   );
 }
 
-// ── Signal tab (real analytics — creator-only) ────────────────────────────────
 // Privacy model:
 //   VIEWS   = the only public metric, shown on feed cards.
 //   All other metrics (likes, comments, followers) = private to this tab only.
@@ -1696,8 +1683,6 @@ function SignalTab() {
   );
 }
 
-// ── Journey tab ────────────────────────────────────────────────────────────────
-
 function JourneyTab() {
   return (
     <div style={{ padding: "20px 18px 0", fontFamily: DR.font }}>
@@ -1786,8 +1771,6 @@ function JourneyTab() {
     </div>
   );
 }
-
-// ── Main DreamRSection ─────────────────────────────────────────────────────────
 
 export default function DreamRSection({
   userId: authenticatedUserId,

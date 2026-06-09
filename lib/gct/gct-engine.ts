@@ -34,7 +34,7 @@ type PreparedInput = {
 export class GCTEngine {
   private config: Required<GCTConfig>;
   private gpuAvailable = false;
-   
+
   private device: GPUDevice | null = null;
 
   constructor(config: GCTConfig = {}) {

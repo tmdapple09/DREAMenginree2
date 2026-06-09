@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * components/gameengin/dream.cartridge.CartridgeBrowser.tsx
- *
- * Browsable cartridge catalogue rendered at /gameengin/cartridges.
- * Lists every game in `CARTRIDGE_MANIFEST` with search, category, and tier
- * filters, and a launch link straight into `/gameengin/cartridges/[id]`.
- */
-
 import {
   CARTRIDGE_MANIFEST,
   getCartridgeCategories,
@@ -15,6 +7,14 @@ import {
 } from "@/lib/gameengin/cartridges/manifest";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+
+/**
+ * components/gameengin/dream.cartridge.CartridgeBrowser.tsx
+ *
+ * Browsable cartridge catalogue rendered at /gameengin/cartridges.
+ * Lists every game in `CARTRIDGE_MANIFEST` with search, category, and tier
+ * filters, and a launch link straight into `/gameengin/cartridges/[id]`.
+ */
 
 const ALL = "All";
 const TIER_ORDER = ["flagship", "advanced", "classic", "casual"] as const;
@@ -230,8 +230,6 @@ export default function CartridgeBrowser({
   );
 }
 
-// ── Filter pill row ─────────────────────────────────────────────────────────
-
 function FilterRow({
   label,
   options,
@@ -290,8 +288,6 @@ function FilterRow({
     </div>
   );
 }
-
-// ── Card ────────────────────────────────────────────────────────────────────
 
 function CartridgeCard({
   cartridge: c,

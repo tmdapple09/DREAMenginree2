@@ -4,7 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/* ------------------------------------------------------------------ */
 /*  Refractor Shader                                                   */
 /*                                                                    */
 /*  A GPU-driven refraction / distortion post-effect that bends and    */

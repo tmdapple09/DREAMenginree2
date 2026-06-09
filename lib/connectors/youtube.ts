@@ -1,6 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import 'server-only';
-
 import { createServiceClient } from '@/lib/supabase/server';
 
 export async function pollYouTube(userId: string, accessToken: string): Promise<void> {

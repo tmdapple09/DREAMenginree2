@@ -1,5 +1,8 @@
 "use client";
 
+import React, { useCallback } from "react";
+import { useSharedDream } from "./dream.SharedDreamProvider";
+
 /**
  * components/shared-dream/dream.SharedDreamCanvas.tsx — §38 Shared Dream Canvas
  *
@@ -13,19 +16,12 @@
  *   sharedContent — rendered inside the shared (top) section
  */
 
-import React, { useCallback } from "react";
-import { useSharedDream } from "./dream.SharedDreamProvider";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface SharedDreamCanvasProps {
   componentId: string;
   children?: React.ReactNode;
   sharedContent?: React.ReactNode;
   className?: string;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function SharedDreamCanvas({
   componentId,

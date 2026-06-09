@@ -1,9 +1,9 @@
+import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
+import { createServerClient } from '@/lib/supabase/server';
+
 // lib/ai/audit.ts
 // Audit log writer for admin_audit_log table.
 // Enforcement events are append-only; corrections are new events referencing prior events (req 20).
-
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
-import { createServerClient } from '@/lib/supabase/server';
 
 interface WriteAuditLogInput {
   request_id: string;

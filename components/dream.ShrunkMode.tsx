@@ -14,7 +14,7 @@ interface ShrunkModeProps {
 export function ShrunkMode({ priorityWidgets, onWidgetSelect }: ShrunkModeProps) {
   // Display up to 12 widgets
   const displayWidgets = priorityWidgets.slice(0, 12);
-  
+
   return (
     <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40">
       <div className="bg-white rounded-3xl shadow-2xl p-4 border border-gray-200">
@@ -26,7 +26,7 @@ export function ShrunkMode({ priorityWidgets, onWidgetSelect }: ShrunkModeProps)
               onSelect={onWidgetSelect}
             />
           ))}
-          
+
           {/* Fill empty slots */}
           {Array.from({ length: Math.max(0, 12 - displayWidgets.length) }).map((_, index: number) => (
             <div

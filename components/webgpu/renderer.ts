@@ -1,18 +1,3 @@
-/**
- * WebGPURenderer — raw WebGPU multi-pass renderer for DREAMengin.
- *
- * Pipeline order per frame:
- *   1. Compute pass  — particle attractor physics (2048 particles, GPU-only)
- *   2. Scene pass    — lemniscate ribbon + particle quads → HDR rgba16float
- *   3. Bright pass   — luminance threshold extract → bloomTex0
- *   4. Blur H pass   — horizontal Gaussian → bloomTex1
- *   5. Blur V pass   — vertical   Gaussian → bloomTex0
- *   6. Composite     — scene + bloom, ACES tone-map, chrom-ab, vignette → canvas
- *
- * The blur direction buffers are written ONCE at init (constant), avoiding
- * any per-frame CPU→GPU overhead beyond the 16-byte uniform update.
- */
-
 import {
     BLUR_FRAG_WGSL,
     BRIGHT_FRAG_WGSL,
@@ -28,12 +13,25 @@ import {
     PARTICLE_VERT_WGSL,
 } from './shaders';
 
+/**
+ * WebGPURenderer — raw WebGPU multi-pass renderer for DREAMengin.
+ *
+ * Pipeline order per frame:
+ *   1. Compute pass  — particle attractor physics (2048 particles, GPU-only)
+ *   2. Scene pass    — lemniscate ribbon + particle quads → HDR rgba16float
+ *   3. Bright pass   — luminance threshold extract → bloomTex0
+ *   4. Blur H pass   — horizontal Gaussian → bloomTex1
+ *   5. Blur V pass   — vertical   Gaussian → bloomTex0
+ *   6. Composite     — scene + bloom, ACES tone-map, chrom-ab, vignette → canvas
+ *
+ * The blur direction buffers are written ONCE at init (constant), avoiding
+ * any per-frame CPU→GPU overhead beyond the 16-byte uniform update.
+ */
+
 const HDR_FMT: GPUTextureFormat = 'rgba16float';
 const PARTICLE_STRIDE = 32; // 8 × f32
 
 type NavWithGPU = Navigator & { readonly gpu: GPU };
-
-// ─── Public API ───────────────────────────────────────────────────────────────
 
 export class WebGPURenderer {
   // core
@@ -75,8 +73,6 @@ export class WebGPURenderer {
   private h = 1;
   public time = 0;
 
-  // ── Factory ───────────────────────────────────────────────────────────────
-
   private constructor() {}
 
   static async create(canvas: HTMLCanvasElement): Promise<WebGPURenderer> {
@@ -84,8 +80,6 @@ export class WebGPURenderer {
     await r._init(canvas);
     return r;
   }
-
-  // ── Initialisation ────────────────────────────────────────────────────────
 
   private async _init(canvas: HTMLCanvasElement) {
     const gpu = (navigator as NavWithGPU).gpu;
@@ -106,8 +100,6 @@ export class WebGPURenderer {
     await this._mkPipelines();
     this._seedParticles();
   }
-
-  // ── Buffer creation ───────────────────────────────────────────────────────
 
   private _mkBuffers() {
     const d = this.dev;
@@ -141,8 +133,6 @@ export class WebGPURenderer {
       addressModeV: 'clamp-to-edge',
     });
   }
-
-  // ── Pipeline creation ─────────────────────────────────────────────────────
 
   private async _mkPipelines() {
     const d = this.dev;
@@ -227,8 +217,6 @@ export class WebGPURenderer {
     }
   }
 
-  // ── Particle seed ─────────────────────────────────────────────────────────
-
   private _seedParticles() {
     const data = new Float32Array(N_PARTICLES * 8);
     for (let i = 0; i < N_PARTICLES; i++) {
@@ -248,8 +236,6 @@ export class WebGPURenderer {
     }
     this.dev.queue.writeBuffer(this.pBuf, 0, data);
   }
-
-  // ── Resize ────────────────────────────────────────────────────────────────
 
   resize(w: number, h: number) {
     if (w === this.w && h === this.h) return;
@@ -273,8 +259,6 @@ export class WebGPURenderer {
 
     this._rebuildBGs();
   }
-
-  // ── Bind groups ───────────────────────────────────────────────────────────
 
   private _rebuildBGs() {
     const d = this.dev;
@@ -322,8 +306,6 @@ export class WebGPURenderer {
     ]);
   }
 
-  // ── Frame ─────────────────────────────────────────────────────────────────
-
   frame(dt: number) {
     this.time += dt;
     const d = this.dev;
@@ -333,7 +315,6 @@ export class WebGPURenderer {
 
     const enc = d.createCommandEncoder({ label: 'frame' });
 
-    // ── 1. Compute: particle physics ─────────────────────────────────────
     {
       const cp = enc.beginComputePass();
       cp.setPipeline(this.cpPipe);
@@ -342,7 +323,6 @@ export class WebGPURenderer {
       cp.end();
     }
 
-    // ── 2. Scene: lemniscate + particles → HDR ───────────────────────────
     {
       const rp = enc.beginRenderPass({
         colorAttachments: [{
@@ -362,7 +342,6 @@ export class WebGPURenderer {
       rp.end();
     }
 
-    // ── 3. Bright pass: hdr → bloom0 ─────────────────────────────────────
     {
       const rp = enc.beginRenderPass({
         colorAttachments: [{
@@ -376,7 +355,6 @@ export class WebGPURenderer {
       rp.end();
     }
 
-    // ── 4. Blur H: bloom0 → bloom1 ───────────────────────────────────────
     {
       const rp = enc.beginRenderPass({
         colorAttachments: [{
@@ -390,7 +368,6 @@ export class WebGPURenderer {
       rp.end();
     }
 
-    // ── 5. Blur V: bloom1 → bloom0 ───────────────────────────────────────
     {
       const rp = enc.beginRenderPass({
         colorAttachments: [{
@@ -404,7 +381,6 @@ export class WebGPURenderer {
       rp.end();
     }
 
-    // ── 6. Composite → canvas ─────────────────────────────────────────────
     {
       const rp = enc.beginRenderPass({
         colorAttachments: [{
@@ -420,8 +396,6 @@ export class WebGPURenderer {
 
     d.queue.submit([enc.finish()]);
   }
-
-  // ── Cleanup ───────────────────────────────────────────────────────────────
 
   destroy() {
     this.hdrTex?.destroy();

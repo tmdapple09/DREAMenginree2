@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.ViewProfile  (framework-mandated basename: page.tsx)
 import { ActivityProfile } from '@/components/activity/dream.ActivityProfile';
 import ProfileShareButton from '@/components/dream.ProfileShareButton';
 import ProfileWidgetGrid, { DEFAULT_DREAMS, type ProfileDream } from '@/components/profile/dream.widget.ProfileWidgetGrid';
@@ -12,6 +11,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
 
+// SURFACE: dreamsurface.ViewProfile  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: 'ViewProfile – DREAMengin',
@@ -115,7 +115,6 @@ export default async function ViewProfilePage( ){
 
   const profile = rawProfile as unknown as Profile;
 
-  // ── Phase 8 §B Point 21: Query dream_windows with explicit visibility filter ──
   // Only shared/public records are fetched. The query NEVER includes private records.
   // RLS policies on dream_windows enforce this at the DB layer as well.
   let dreamWindowRecords: Array<{
@@ -134,7 +133,6 @@ export default async function ViewProfilePage( ){
     // dream_windows table may not exist yet
   }
 
-  // ── Phase 6 item 8: Consult visibility_mappings as authoritative source ──
   // Per dreamengin_phase6.md point 13: the visibility_mappings table must be
   // consulted before any content is rendered on ViewProfile.
   // If the table has records for this user, they override the widget's own

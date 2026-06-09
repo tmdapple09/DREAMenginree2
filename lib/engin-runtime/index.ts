@@ -1,8 +1,8 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
+import type { EnginRuntimeOptions } from './EnginRuntime';
+import { EnginRuntime } from './EnginRuntime';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/index.ts.
 
@@ -15,35 +15,15 @@
  *   import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-// ─── Factory helper ───────────────────────────────────────────────────────────
-
-import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
-
-import type { EnginRuntimeOptions } from './EnginRuntime';
-
-import { EnginRuntime } from './EnginRuntime';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -63,15 +43,9 @@ export function createEnginRuntime<
   return new EnginRuntime<A, DomainEvents>(ruleSet, options);
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.
 
@@ -84,7 +58,6 @@ export {
   isJsonSerializable,
   patchBaseState,
 } from './EnginBaseState';
-
 export type {
   CreateDomainObjectInput,
   DomainObject,
@@ -96,29 +69,24 @@ export type {
   JsonValue,
   EnginLifecycle,
 } from './EnginBaseState';
-
 export { createEnginEventBus } from './EnginEventBus';
-
 export type {
   EnginEventBus,
   EnginEventMap,
   EnginLifecycleEvents,
 } from './EnginEventBus';
-
 export {
   enginStorageKey,
   LocalStorageAdapter,
   MemoryAdapter,
   MemorySyncTransport,
 } from './EnginIOAdapter';
-
 export type {
   EnginIOAdapter,
   EnginSyncDirection,
   EnginSyncFrame,
   EnginSyncTransport,
 } from './EnginIOAdapter';
-
 export {
   authorizeDomainCapability,
   DEFAULT_USER_CAPABILITIES,
@@ -126,7 +94,6 @@ export {
   gateCapability,
   mergeCapabilities,
 } from './EnginCapabilities';
-
 export type {
   CapabilityGateResult,
   DomainAuthorizationContext,
@@ -134,13 +101,11 @@ export type {
   EnginCapability,
   EnginCapabilityMap,
 } from './EnginCapabilities';
-
 export {
   negotiateRuleSetCompatibility,
   validateRuleSetManifest,
   validateRuleSetState,
 } from './EnginRuleSetContract';
-
 export type {
   CompatibilityNegotiationResult,
   ConstraintResult,
@@ -154,21 +119,17 @@ export type {
   EnginRuleSetParams,
   EnginTransform,
 } from './EnginRuleSetContract';
-
 export {
   fingerprintBytesWithWasm,
   fingerprintEnginSnapshot,
   hashBytesFNV1A,
   stableStringifySnapshot,
 } from './EnginSnapshotFingerprint';
-
 export type { WasmFingerprintExports } from './EnginSnapshotFingerprint';
-
 export {
   createPremiumRuntimeQuality,
   validatePremiumRuntimeQuality,
 } from './PremiumRuntimeQuality';
-
 export type {
   PremiumLayerTier,
   PremiumRuntimeMaterial,
@@ -176,7 +137,6 @@ export type {
   PremiumRuntimeQualityInput,
   PremiumRuntimeQualityValidation,
 } from './PremiumRuntimeQuality';
-
 export {
   AudioWorkletRuntime,
   BinaryCommandBus,
@@ -193,23 +153,14 @@ export {
   WebGPUDeviceRuntime,
   WorkerPoolRuntime,
 } from './HotRuntime';
-
 export type { BinaryCommandPacket, GpuBufferKind, HotActionKind, JsonSafeGpuAdapterInfo, WebGPUComputeMeasurement, WebGPUDispatchOptions, WebGPUInitializationResult, WebGPUInitializeOptions, WebGPUInitState } from './HotRuntime';
-
 export { detectEnginHardwareCapabilities, detectWasmSimdSupport, fallbackEnginHardwareCapabilities } from './EnginHardwareCapabilities';
-
 export type { EnginHardwareCapabilities } from './EnginHardwareCapabilities';
-
 export { createEnginCapabilityScorecard } from './EnginCapabilityScorecard';
-
 export type { EnginCapabilityScorecard, EnginCapabilityScorecardEntry, MetricMeasurement, MetricStatus } from './EnginCapabilityScorecard';
-
 export { EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent } from './EnginPerformanceProbe';
-
 export { DevOnlyBenchmarkRunner, InternalOnlyMetricStore, UserFacingMetricLeakTest } from './InternalMetrics';
-
 export * from './EnginDomainCores';
-
 export {
   AudioTrackMixer,
   CodeEditRingBuffer,
@@ -223,7 +174,6 @@ export {
   createEnginCapabilityExecutionKernel,
   getEnginExecutionPlan,
 } from './EnginCapabilityExecution';
-
 export type {
   CodeEditPatch,
   EnginExecutionPlan,
@@ -234,7 +184,6 @@ export type {
   RayBox,
   RayHit,
 } from './EnginCapabilityExecution';
-
 export {
   CANONICAL_ENGIN_IDS,
   ENGIN_CAPABILITY_PROFILES,
@@ -250,7 +199,6 @@ export {
   validateCanonicalEnginCapabilityProfiles,
   validateEnginCapabilityProfile,
 } from './EnginCapabilityTargets';
-
 export type {
   CanonicalEnginId,
   CustomEnginProfileId,
@@ -263,11 +211,9 @@ export type {
   EnginCapabilityProfile,
   EnginCapabilityTarget,
 } from './EnginCapabilityTargets';
-
 export {
   ENGIN_RUNTIME_FEATURES,
   ENGIN_RUNTIME_VERSION,
   EnginRuntime,
 } from './EnginRuntime';
-
 export type { EnginRuntimeOptions } from './EnginRuntime';

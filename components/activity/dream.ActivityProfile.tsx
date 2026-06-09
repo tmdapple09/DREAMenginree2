@@ -1,3 +1,8 @@
+import { formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor } from '@/lib/activity/aqs';
+import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/lib/activity/types';
+import { useEffect, useState } from 'react';
+import { TierBadge } from './dream.TierBadge';
+
 // components/activity/dream.ActivityProfile.tsx
 // Phase 9 — Activity Profile Display
 //
@@ -5,11 +10,6 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §IV (User Metrics)
 
 'use client';
-
-import { formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor } from '@/lib/activity/aqs';
-import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/lib/activity/types';
-import { useEffect, useState } from 'react';
-import { TierBadge } from './dream.TierBadge';
 
 interface ActivityProfileProps {
   userId: string;

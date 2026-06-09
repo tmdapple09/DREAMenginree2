@@ -24,8 +24,6 @@ export const ROWS = 9;
 export const FRAME_W = 96;
 export const FRAME_H = 96;
 
-// ─── Icon name union ────────────────────────────────────────────────────────
-
 export type IconName =
   // row 0 — major social
   | 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube'
@@ -56,8 +54,6 @@ export type IconName =
   | 'document' | 'list' | 'edit' | 'more' | 'trash' | 'settings2'
   // fallback
   | 'dot';
-
-// ─── Icon grid coordinates ───────────────────────────────────────────────────
 
 export const ICONS: Record<IconName, { col: number; row: number }> = {
   // row 0
@@ -170,8 +166,6 @@ export const ICONS: Record<IconName, { col: number; row: number }> = {
 };
 
 export const ICON_ENTRIES = Object.entries(ICONS) as [IconName, { col: number; row: number }][];
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /** Returns the CSS background-position offset (negative px) for a named icon. */
 export function getIconPos(name: IconName): { x: number; y: number } {

@@ -16,3 +16,4 @@ export const lambda = 1.71;
 
 /** Scaled MOND acceleration constant for human-perception UI gravity. */
 export const a0Perception = 0.05;
+

@@ -35,3 +35,4 @@ export type AdOrder = {
   status?: string;
   ad_listings?: AdListing;
 };
+

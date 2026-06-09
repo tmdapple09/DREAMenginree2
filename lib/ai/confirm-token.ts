@@ -1,9 +1,9 @@
-// lib/ai/confirm-token.ts
-// Two-Phase Commit - Confirm Token Service
-
 import { createServerClient } from '@/lib/supabase/server';
 import { UIContext } from '@/types/ai-system';
 import { createHmac } from 'crypto';
+
+// lib/ai/confirm-token.ts
+// Two-Phase Commit - Confirm Token Service
 
 // ============================================================================
 // GENERATE CONFIRM TOKEN

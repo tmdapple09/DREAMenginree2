@@ -109,8 +109,6 @@ function compareTs(a: CRDTRecord<unknown>['ts'], b: CRDTRecord<unknown>['ts']): 
   return a.replica < b.replica ? -1 : a.replica > b.replica ? 1 : 0;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface BridgeTransport<T> {
   send(records: CRDTRecord<T>[]): Promise<void>;
   /** Caller invokes this when remote records arrive. */

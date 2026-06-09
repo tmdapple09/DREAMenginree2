@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { getDrEamsMode, onDrEamsModeChange, setDrEamsMode } from '@/lib/agents/drEamsMode'
 import { emitTeach } from '@/lib/agents/teachBus'

@@ -1,14 +1,14 @@
 'use client';
 
+import { BarChart2, Download, Layers, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * DataVizPanel — Data visualization panel for the Lab Engine app.
  *
  * ASCII chart previews with chart type selector and CSV export.
  * Lives at /engines/lab/data.
  */
-
-import { BarChart2, Download, Layers, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
 
 type ChartType = 'bar' | 'line' | 'scatter';
 

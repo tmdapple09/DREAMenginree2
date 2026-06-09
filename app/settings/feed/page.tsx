@@ -1,7 +1,7 @@
-// SURFACE: dreamsurface.SettingsFeed  (framework-mandated basename: page.tsx)
 import { permanentRedirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.SettingsFeed  (framework-mandated basename: page.tsx)
 
 /**
  * Canonical feed wiring settings URL: /settings/feed

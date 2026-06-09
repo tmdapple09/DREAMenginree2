@@ -1,3 +1,5 @@
+import { bridge, type VMRegion, type VMWorkload } from '@/lib/runtime/dualRuntimeBridge';
+
 /**
  * lib/vm/dualVMCoordinator.ts
  *
@@ -5,10 +7,6 @@
  * This file is a thin backwards-compat proxy so existing imports keep working.
  * All real logic lives in lib/runtime/dualRuntimeBridge.ts.
  */
-
-import { bridge, type VMRegion, type VMWorkload } from '@/lib/runtime/dualRuntimeBridge';
-
-export type { VMRegion, VMWorkload };
 
 export interface DualVMConfig {
   enableInterVMCommunication?: boolean;
@@ -46,3 +44,5 @@ export function destroyDualVMCoordinator(): void {
     _initialized = false;
   }
 }
+
+export type { VMRegion, VMWorkload };

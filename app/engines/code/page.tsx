@@ -1,10 +1,11 @@
-// SURFACE: dreamsurface.EnginesCode  (framework-mandated basename: page.tsx)
 import CodeEnginApp from '@/components/engines/code/dream.CodeEnginApp';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesCode  (framework-mandated basename: page.tsx)
 export default async function CodeEnginAppPage( ){
   await connection();
   const supabase = await createServerClient();

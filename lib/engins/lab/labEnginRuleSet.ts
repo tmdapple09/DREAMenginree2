@@ -1,18 +1,3 @@
-/**
- * lib/engins/lab/labEnginRuleSet.ts
- *
- * LabEngin Rule-Set — the ONLY place LabEngin domain logic lives.
- *
- * Domain: physics experiments, simulation runner, quantum circuits,
- * data visualization, and cross-Engin dataset/research exports.
- * Handoff kinds: lab:dataset-export → CodeEngin, lab:research-export → ContentEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
-
 import {
     patchBaseState,
     type EnginBaseState,
@@ -29,16 +14,25 @@ import type {
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
-// ─── Simulation types ─────────────────────────────────────────────────────────
+/**
+ * lib/engins/lab/labEnginRuleSet.ts
+ *
+ * LabEngin Rule-Set — the ONLY place LabEngin domain logic lives.
+ *
+ * Domain: physics experiments, simulation runner, quantum circuits,
+ * data visualization, and cross-Engin dataset/research exports.
+ * Handoff kinds: lab:dataset-export → CodeEngin, lab:research-export → ContentEngin.
+ *
+ * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
+ * The EnginRuntime handles all of that.
+ *
+ * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
+ */
 
 export type SimulationKind = 'particle' | 'fluid' | 'quantum' | 'neural';
 export type SimState = 'idle' | 'running' | 'complete';
 
-// ─── Chart type ───────────────────────────────────────────────────────────────
-
 export type ChartType = 'line' | 'bar' | 'scatter';
-
-// ─── Experiment ───────────────────────────────────────────────────────────────
 
 export interface Experiment extends JsonObject {
   id: string;
@@ -46,15 +40,11 @@ export interface Experiment extends JsonObject {
   status: 'draft' | 'running' | 'complete' | 'failed';
 }
 
-// ─── Simulation result ────────────────────────────────────────────────────────
-
 export interface SimulationResult extends JsonObject {
   kind: SimulationKind;
   result: string;
   completedAt: string;
 }
-
-// ─── Domain state shape ───────────────────────────────────────────────────────
 
 export interface LabEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
@@ -68,8 +58,6 @@ export interface LabEnginDerivedState extends JsonObject {
   physicsPayload: JsonObject | null;
 }
 
-// ─── Action discriminated union ───────────────────────────────────────────────
-
 export type LabEnginAction =
   | EnginAction<'lab:experiments-loaded',   { experiments: Experiment[] }>
   | EnginAction<'lab:experiment-update',    { id: string; status: Experiment['status'] }>
@@ -81,8 +69,6 @@ export type LabEnginAction =
   | EnginAction<'lab:research-export-ready', Record<string, never>>
   | EnginAction<'lab:physics-received',     { payload: JsonObject }>;
 
-// ─── Default domain state ─────────────────────────────────────────────────────
-
 const DEFAULT_DOMAIN: Omit<LabEnginDerivedState, 'lifecycle'> = {
   experiments: [],
   activeSimulation: null,
@@ -93,8 +79,6 @@ const DEFAULT_DOMAIN: Omit<LabEnginDerivedState, 'lifecycle'> = {
   researchExportReady: false,
   physicsPayload: null,
 };
-
-// ─── Constraints ──────────────────────────────────────────────────────────────
 
 const simStartConstraint: EnginConstraint<LabEnginAction> = (
   state,
@@ -112,8 +96,6 @@ const simStartConstraint: EnginConstraint<LabEnginAction> = (
   }
   return { valid: true };
 };
-
-// ─── Transform ────────────────────────────────────────────────────────────────
 
 function transform(state: EnginBaseState, action: LabEnginAction): EnginBaseState {
   const domain = (state.domain as Partial<typeof DEFAULT_DOMAIN>);
@@ -182,8 +164,6 @@ function transform(state: EnginBaseState, action: LabEnginAction): EnginBaseStat
   }
 }
 
-// ─── deriveState ──────────────────────────────────────────────────────────────
-
 function deriveState(state: EnginBaseState): LabEnginDerivedState {
   const d = state.domain as Partial<typeof DEFAULT_DOMAIN>;
   return {
@@ -199,8 +179,6 @@ function deriveState(state: EnginBaseState): LabEnginDerivedState {
   };
 }
 
-// ─── Rule-set params ──────────────────────────────────────────────────────────
-
 const PARAMS: EnginRuleSetParams = {
   enginId: 'lab',
   name: 'LabEngin',
@@ -208,7 +186,6 @@ const PARAMS: EnginRuleSetParams = {
   accentColor: '#22c55e',
   simulationBudgetMs: 16,
 };
-
 
 const MANIFEST: EnginRuleSetManifest<LabEnginAction> = {
   id: PARAMS.enginId,
@@ -233,8 +210,6 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'bridge:emit',
   'bridge:listen',
 ];
-
-// ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const LAB_ENGIN_RULE_SET: EnginRuleSetContract<LabEnginAction> = {
   manifest: MANIFEST,

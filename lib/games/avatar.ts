@@ -79,3 +79,4 @@ export function consumePlayAsMe(): boolean {
   if (flag) window.localStorage.removeItem(AVATAR_PLAY_AS_ME_KEY);
   return flag;
 }
+

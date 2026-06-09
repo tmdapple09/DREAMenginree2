@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 /**
  * useRemoteChannel — BroadcastChannel bridge for cross-tab game remote control.
  *
@@ -14,8 +16,6 @@
  *   - Call `broadcastGameInput(action, active)` from GameRemote's `fireAction`
  *     to send inputs to all listening tabs.
  */
-
-import { useEffect } from 'react';
 
 const CHANNEL_NAME = 'de-game-remote';
 

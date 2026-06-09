@@ -1,19 +1,4 @@
 "use client";
-/**
- * components/connectors/dream.ConnectorRow.tsx
- *
- * Phase 5 — Truthful connector status row.
- * Never fakes "Connected" via a setTimeout.
- * Calls /api/connectors/{provider}/connect and reflects real server response.
- * Providers with oauthStartUrl use OAuth redirect — no raw token paste.
- *
- * Status badges use the DREAMengin palette (gold / light-blue / muted).
- * No traffic-light (red/yellow/green) colors.
- *
- * ARCHITECTURE.md §3 — Component layer; no DB calls.
- * ARCHITECTURE.md §8 — Gold / light blue / white design system.
- * AXIOMS.md §3 — Every visible action must do something real.
- */
 
 import type {
   ConnectorDef,
@@ -30,7 +15,21 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-// ── Status badge (DREAMengin palette — gold / light-blue / muted) ─────────
+/**
+ * components/connectors/dream.ConnectorRow.tsx
+ *
+ * Phase 5 — Truthful connector status row.
+ * Never fakes "Connected" via a setTimeout.
+ * Calls /api/connectors/{provider}/connect and reflects real server response.
+ * Providers with oauthStartUrl use OAuth redirect — no raw token paste.
+ *
+ * Status badges use the DREAMengin palette (gold / light-blue / muted).
+ * No traffic-light (red/yellow/green) colors.
+ *
+ * ARCHITECTURE.md §3 — Component layer; no DB calls.
+ * ARCHITECTURE.md §8 — Gold / light blue / white design system.
+ * AXIOMS.md §3 — Every visible action must do something real.
+ */
 
 function StatusBadge({ status }: { status: ConnectorStatus }) {
   const map: Record<
@@ -100,8 +99,6 @@ function StatusBadge({ status }: { status: ConnectorStatus }) {
   );
 }
 
-// ── Credential field types ─────────────────────────────────────────────────
-
 interface CredentialField {
   key: string;
   label: string;
@@ -109,8 +106,6 @@ interface CredentialField {
   type: "text" | "password" | "url";
   hint?: string;
 }
-
-// ── Credential modal ───────────────────────────────────────────────────────
 
 function CredentialModal({
   connector,
@@ -247,8 +242,6 @@ function CredentialModal({
   );
 }
 
-// ── Credential fields per provider ────────────────────────────────────────
-
 function getCredentialFields(provider: string): CredentialField[] {
   switch (provider) {
     case "mastodon":
@@ -324,8 +317,6 @@ function getCredentialFields(provider: string): CredentialField[] {
       ];
   }
 }
-
-// ── Main row component ─────────────────────────────────────────────────────
 
 export interface ConnectorRowProps {
   connector: ConnectorDef;

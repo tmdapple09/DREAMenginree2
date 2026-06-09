@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * lib/games/useGamepad.ts
  *
@@ -48,10 +50,6 @@
  * will respond immediately.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Types ────────────────────────────────────────────────────────────────────
-
 /** Subset of GameInputAction that this hook can emit. */
 type GameAction =
   | 'move-left' | 'move-right' | 'move-up' | 'move-down'
@@ -70,8 +68,6 @@ export interface GamepadStatus {
   /** Rumble/haptic feedback function (intensity: 0-1, duration in ms). */
   rumble: (intensity: number, duration?: number) => void;
 }
-
-// ── Constants ─────────────────────────────────────────────────────────────────
 
 /** Analog stick dead-zone — inputs below this are ignored. */
 const DEAD = 0.25;
@@ -100,14 +96,10 @@ const BUTTON_MAP: (GameAction | null)[] = [
   'move-right', // 15 D-Pad Right
 ];
 
-// ── Fire helper ───────────────────────────────────────────────────────────────
-
 function fire(action: GameAction, active: boolean): boolean | undefined {
   if (typeof window === 'undefined') return;
   window.dispatchEvent(new CustomEvent('de-game-input', { detail: { action, active, source: 'gamepad' } }));
 }
-
-// ── DualSense detection helper ───────────────────────────────────────────────
 
 function checkIsDualSense(gamepadId: string): boolean {
   const id = gamepadId.toLowerCase();
@@ -118,8 +110,6 @@ function checkIsDualSense(gamepadId: string): boolean {
     id.includes('ps5')
   );
 }
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useGamepad(): GamepadStatus {
   const [status, setStatus] = useState<GamepadStatus>({
@@ -147,8 +137,6 @@ export function useGamepad(): GamepadStatus {
   /** Current gamepad index for haptic feedback. */
   const gamepadIndexRef = useRef(-1);
 
-  // ── Rumble/Haptic feedback function ──────────────────────────────────────
-
   const rumble = useCallback((intensity: number, duration: number = 100) => {
     if (typeof navigator === 'undefined' || !navigator.getGamepads) return;
 
@@ -173,12 +161,9 @@ export function useGamepad(): GamepadStatus {
     }
   }, []);
 
-  // ── Connect / disconnect listeners ───────────────────────────────────────
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // ── Poll (defined inside effect so rAF self-reference is stable) ────────
     function poll( ){
       if (typeof navigator === 'undefined') return;
 
@@ -193,7 +178,6 @@ export function useGamepad(): GamepadStatus {
         return;
       }
 
-      // ── Buttons ──────────────────────────────────────────────────────────
       for (let i = 0; i < gp.buttons.length; i++) {
         const pressed = gp.buttons[i].pressed || gp.buttons[i].value > 0.5;
         const was     = buttonState.current[i] ?? false;
@@ -204,7 +188,6 @@ export function useGamepad(): GamepadStatus {
         }
       }
 
-      // ── Left analog stick ────────────────────────────────────────────────
       const ax = gp.axes[0] ?? 0; // X
       const ay = gp.axes[1] ?? 0; // Y
 
@@ -228,11 +211,9 @@ export function useGamepad(): GamepadStatus {
 
       axisState.current = { left: nowLeft, right: nowRight, up: nowUp };
 
-      // ── Schedule next frame ─────────────────────────────────────────────
       rafRef.current = requestAnimationFrame(poll);
     }
 
-    // ── Start / stop helpers ─────────────────────────────────────────────
     function startPolling( ){
       if (polling.current) return;
       polling.current = true;

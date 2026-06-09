@@ -4,10 +4,10 @@
 
 /**
  * Section 5.1: Motion Equation
- * 
+ *
  * Navigation behaves like damped spring:
  * θ'' + 2ζωθ' + ω²θ = F(t)
- * 
+ *
  * Where:
  * - θ = rotation
  * - ζ = damping (critically damped: ζ = 1)
@@ -47,7 +47,7 @@ export function computeAcceleration(
   config: PhysicsConfig = DEFAULT_PHYSICS_CONFIG
 ): number {
   const { damping, naturalFrequency } = config;
-  
+
   // θ'' = F(t) - 2ζωθ' - ω²θ
   return (
     force -
@@ -67,7 +67,7 @@ export function updatePhysicsState(
   config: PhysicsConfig = DEFAULT_PHYSICS_CONFIG
 ): PhysicsState {
   const acceleration = computeAcceleration(state, force, config);
-  
+
   return {
     position: state.position + state.velocity * dt,
     velocity: state.velocity + acceleration * dt,
@@ -86,7 +86,7 @@ export function applyInertialDecay(
   config: PhysicsConfig = DEFAULT_PHYSICS_CONFIG
 ): number {
   const { frictionConstant } = config;
-  
+
   // v(t) = v0 * e^(-βt)
   return velocity * Math.exp(-frictionConstant * dt);
 }
@@ -95,7 +95,7 @@ export function applyInertialDecay(
  * Section 5.3: Snap Stabilization
  * If |θ| < δ: snapToGrid()
  * δ = 0.02 rad (approximately 1.15 degrees)
- * 
+ *
  * This threshold is chosen to:
  * - Be imperceptible to users (below visual motion threshold)
  * - Prevent micro-jitter during idle states
@@ -146,34 +146,34 @@ export function rk4Integration(
 ): PhysicsState {
   // RK4 for velocity
   const k1v = computeAcceleration(state, force, config);
-  
+
   const k2State = {
     position: state.position + state.velocity * dt / 2,
     velocity: state.velocity + k1v * dt / 2,
     acceleration: 0,
   };
   const k2v = computeAcceleration(k2State, force, config);
-  
+
   const k3State = {
     position: state.position + k2State.velocity * dt / 2,
     velocity: state.velocity + k2v * dt / 2,
     acceleration: 0,
   };
   const k3v = computeAcceleration(k3State, force, config);
-  
+
   const k4State = {
     position: state.position + k3State.velocity * dt,
     velocity: state.velocity + k3v * dt,
     acceleration: 0,
   };
   const k4v = computeAcceleration(k4State, force, config);
-  
+
   // Weighted average
   const newVelocity = state.velocity + (dt / 6) * (k1v + 2 * k2v + 2 * k3v + k4v);
   const newPosition = state.position + (dt / 6) * (
     state.velocity + 2 * k2State.velocity + 2 * k3State.velocity + k4State.velocity
   );
-  
+
   return {
     position: newPosition,
     velocity: newVelocity,

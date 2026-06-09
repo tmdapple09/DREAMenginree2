@@ -4,7 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/* ------------------------------------------------------------------ */
 /*  Lightning Wing Shader                                              */
 /*                                                                    */
 /*  Generates animated electric / lightning arcs that form a wing-like */

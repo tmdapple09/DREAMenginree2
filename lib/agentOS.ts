@@ -1,3 +1,5 @@
+import type { CodeEnginHostTools } from './agentOS/hostTools';
+
 /**
  * AgentOS singleton – local implementation.
  *
@@ -10,11 +12,7 @@
  * are faithfully mirrored at the interface level.
  */
 
-import type { CodeEnginHostTools } from './agentOS/hostTools';
-
-// ---------------------------------------------------------------------------
 // Internal types
-// ---------------------------------------------------------------------------
 
 interface SessionOptions {
   hostTools?: Partial<CodeEnginHostTools>;
@@ -87,9 +85,7 @@ class AgentSession {
   }
 }
 
-// ---------------------------------------------------------------------------
 // AgentOS manager
-// ---------------------------------------------------------------------------
 
 class AgentOsManager {
   private sessions = new Map<string, AgentSession>();
@@ -115,9 +111,7 @@ class AgentOsManager {
   }
 }
 
-// ---------------------------------------------------------------------------
 // Singleton
-// ---------------------------------------------------------------------------
 
 let vm: AgentOsManager | null = null;
 
@@ -131,4 +125,3 @@ export async function getAgentOS(): Promise<AgentOsManager> {
   }
   return vm;
 }
-

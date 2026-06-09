@@ -1,19 +1,7 @@
-// src/engin/core/index.ts
-
 import baseStateSeed from '@/src/engin/state/base.json';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
 
-export { appendEntry, createLedger } from './engin.ledger';
-export type { DreamLedger, LedgerEntry } from './engin.ledger';
-
-export { createEventBus } from './engin.eventbus';
-export type { EnginEvent, EventBus } from './engin.eventbus';
-
-export { createRenderLoop } from './engin.renderloop';
-export type { RenderFrame, RenderLoop } from './engin.renderloop';
-
-export { createSession, validateSession } from './engin.auth';
-export type { EnginSession } from './engin.auth';
+// src/engin/core/index.ts
 
 export type RegistrySlot =
   | 'surface'
@@ -478,3 +466,12 @@ export class UniversalEngine {
 }
 
 export const engine = new UniversalEngine();
+
+export { appendEntry, createLedger } from './engin.ledger';
+export type { DreamLedger, LedgerEntry } from './engin.ledger';
+export { createEventBus } from './engin.eventbus';
+export type { EnginEvent, EventBus } from './engin.eventbus';
+export { createRenderLoop } from './engin.renderloop';
+export type { RenderFrame, RenderLoop } from './engin.renderloop';
+export { createSession, validateSession } from './engin.auth';
+export type { EnginSession } from './engin.auth';

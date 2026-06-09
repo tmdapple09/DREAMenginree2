@@ -1,8 +1,19 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+    BAR_Y_SCALE,
+    buildWorkgroups,
+    createEnginSAB,
+    f64Telemetry,
+    int32AxisState,
+    int32DreamDMBarX,
+    int32DreamDMBarY,
+    int32LockedState,
+    MAX_WORKERS,
+    SAB_BYTES,
+    SNAP_THRESHOLD_RATIO,
+    type Workgroup,
+} from './memory';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/EnginDispatcher.ts.
 
@@ -34,46 +45,17 @@
  * guarded behind typeof checks so this module is safe to import server-side.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ─── Singleton ────────────────────────────────────────────────────────────────
-
 let _instance: EnginDispatcher | null = null;
-
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
 
 // Imports and external modules this runtime file depends on.
 
-import {
-    BAR_Y_SCALE,
-    buildWorkgroups,
-    createEnginSAB,
-    f64Telemetry,
-    int32AxisState,
-    int32DreamDMBarX,
-    int32DreamDMBarY,
-    int32LockedState,
-    MAX_WORKERS,
-    SAB_BYTES,
-    SNAP_THRESHOLD_RATIO,
-    type Workgroup,
-} from './memory';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ─── Message protocol ─────────────────────────────────────────────────────────
 
 /** Sent from dispatcher → worker on startup. */
 export interface WorkerInitMessage {
@@ -136,8 +118,6 @@ export type WorkerOutboundMessage = DispatcherToWorkerMessage;
 /** @deprecated Use WorkerToDispatcherMessage */
 export type WorkerInboundMessage  = WorkerToDispatcherMessage;
 
-// ─── Wasm engine ──────────────────────────────────────────────────────────────
-
 /**
  * Exports provided by the compiled `engin-shader.wasm` AssemblyScript module.
  */
@@ -174,8 +154,6 @@ export interface WasmEngineExports {
   ) => void;
 }
 
-// ─── Dispatcher state ─────────────────────────────────────────────────────────
-
 export interface DispatcherStats {
   /** Number of active shader workers. */
   workerCount: number;
@@ -184,8 +162,6 @@ export interface DispatcherStats {
   /** Total bounds violations caught since init. */
   boundsViolations: number;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -299,8 +275,6 @@ export class EnginDispatcher {
     _instance = null;
   }
 
-  // ─── Lifecycle ──────────────────────────────────────────────────────────────
-
   /**
    * Allocate the SAB, spawn workers, and distribute Workgroups.
    *
@@ -400,8 +374,6 @@ export class EnginDispatcher {
     this._wasmExports = null;
   }
 
-  // ─── Wasm Engine ────────────────────────────────────────────────────────────
-
   /**
    * Load the AssemblyScript Wasm physics engine and bind it to this dispatcher's SAB.
    *
@@ -442,8 +414,6 @@ export class EnginDispatcher {
 
     return this._wasmExports !== null;
   }
-
-  // ─── Visual field shaping ────────────────────────────────────────────────
 
   /**
    * Shape glow/particle intensity buffers for OS surfaces and games.
@@ -496,8 +466,6 @@ export class EnginDispatcher {
     }
     return false;
   }
-
-  // ─── Dual-Runtime Seam ──────────────────────────────────────────────────────
 
   /**
    * Write the DreamDM Bar y-offset (CSS pixels) into the SAB atomically.
@@ -630,8 +598,6 @@ export class EnginDispatcher {
    */
   static readonly SNAP_THRESHOLD_RATIO = SNAP_THRESHOLD_RATIO;
 
-  // ─── Telemetry ──────────────────────────────────────────────────────────────
-
   /**
    * Current dispatcher statistics snapshot.
    * microsecondsPerTick[i] is read directly from the SAB Telemetry Zone.
@@ -675,8 +641,6 @@ export class EnginDispatcher {
   get wasmExports(): WasmEngineExports | null {
     return this._wasmExports;
   }
-
-  // ─── Private ────────────────────────────────────────────────────────────────
 
   /**
    * Notify all workers that a seam control slot has been updated.
@@ -731,14 +695,8 @@ export class EnginDispatcher {
   }
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

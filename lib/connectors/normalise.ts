@@ -1,3 +1,5 @@
+import type { FeedItemMedia, UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/normalise.ts
  *
@@ -14,10 +16,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer (lib/)
  */
-
-import type { FeedItemMedia, UnifiedFeedItem } from '@/types/connector';
-
-// ── Mastodon ──────────────────────────────────────────────────────────────
 
 interface MastodonMediaAttachment {
   type: string;
@@ -70,8 +68,6 @@ export function normaliseMastodon(
     raw: status,
   };
 }
-
-// ── Bluesky (AT Protocol) ─────────────────────────────────────────────────
 
 interface BlueskyFeedViewPost {
   post: {
@@ -141,8 +137,6 @@ export function normaliseBluesky(feedItem: BlueskyFeedViewPost): UnifiedFeedItem
   };
 }
 
-// ── GitHub ────────────────────────────────────────────────────────────────
-
 interface GitHubEvent {
   id: string;
   type?: string;
@@ -198,8 +192,6 @@ export function normaliseGitHub(event: GitHubEvent): UnifiedFeedItem {
   };
 }
 
-// ── Reddit ────────────────────────────────────────────────────────────────
-
 interface RedditPost {
   data: {
     id: string;
@@ -245,8 +237,6 @@ export function normaliseReddit(post: RedditPost): UnifiedFeedItem {
   };
 }
 
-// ── Nostr ─────────────────────────────────────────────────────────────────
-
 interface NostrEvent {
   id: string;
   pubkey: string;
@@ -278,8 +268,6 @@ export function normaliseNostr(event: NostrEvent): UnifiedFeedItem {
     raw: event,
   };
 }
-
-// ── YouTube ───────────────────────────────────────────────────────────────
 
 type ThumbnailMap = Record<string, { url?: string }>;
 
@@ -387,8 +375,6 @@ export function normaliseYouTubeSearchResult(item: YouTubeSearchItem): UnifiedFe
     raw: item,
   };
 }
-
-// ── Generic RSS-backed providers ────────────────────────────────────────────
 
 interface GenericRssItem {
   guid?: string;
@@ -502,8 +488,6 @@ export function normaliseTwitter(item: GenericRssItem, username: string): Unifie
   return normaliseGenericRssItem('twitter', item, `@${username}`, `@${username}`);
 }
 
-// ── Dedup helper ──────────────────────────────────────────────────────────
-
 /**
  * Deduplicates a list of UnifiedFeedItems by (provider, external_id).
  * The first occurrence wins; duplicates are dropped.
@@ -517,8 +501,6 @@ export function deduplicateFeedItems(items: UnifiedFeedItem[]): UnifiedFeedItem[
     return true;
   });
 }
-
-// ── Internal helpers ──────────────────────────────────────────────────────
 
 /** Strip HTML tags from a string, returning plain text. */
 export function stripHtml(html: string): string {

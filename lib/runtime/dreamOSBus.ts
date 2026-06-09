@@ -1,16 +1,34 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { AI_AGENTS, type RuntimeRegion } from '@/lib/identity/canonical-names';
+import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+import {
+  bridge,
+  type AnyBridgeEmission,
+  type DualRuntimeChannel,
+} from '@/lib/runtime/dualRuntimeBridge';
+import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
+import {
+  ENGIN_REGISTRY,
+  INFORMATION_DOMAINS,
+  type InformationDomain,
+} from '@/lib/forge/forgeRegistry';
+import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
+import {
+  isDomainObject,
+  type DomainObject,
+  type JsonObject,
+  type JsonValue,
+} from '@/lib/engin-runtime/EnginBaseState';
+import {
+  authorizeDomainCapability,
+  type DomainAuthorizationContext,
+  type DomainCapability,
+} from '@/lib/engin-runtime/EnginCapabilities';
 
 // Framework directives stay physically first when required.
 
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
 // Runtime file: lib/runtime/dreamOSBus.ts.
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -73,48 +91,9 @@ const channelCapabilityIds: Record<DualRuntimeChannel, string> = {
   shared_dream: 'SharedDreamRuntime',
 };
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { AI_AGENTS, type RuntimeRegion } from '@/lib/identity/canonical-names';
-
-import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
-
-import {
-  bridge,
-  type AnyBridgeEmission,
-  type DualRuntimeChannel,
-} from '@/lib/runtime/dualRuntimeBridge';
-
-import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
-
-import {
-  ENGIN_REGISTRY,
-  INFORMATION_DOMAINS,
-  type InformationDomain,
-} from '@/lib/forge/forgeRegistry';
-
-import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
-
-import {
-  isDomainObject,
-  type DomainObject,
-  type JsonObject,
-  type JsonValue,
-} from '@/lib/engin-runtime/EnginBaseState';
-
-import {
-  authorizeDomainCapability,
-  type DomainAuthorizationContext,
-  type DomainCapability,
-} from '@/lib/engin-runtime/EnginCapabilities';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -229,8 +208,6 @@ export interface CapabilityDescriptor {
   /** Parent capability when this is one discoverable facet of a larger capability. */
   parentId?: string;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -495,8 +472,6 @@ class DreamOSBusImpl {
     this.notify();
   }
 
-  // ── Improvement 62: getArtifact ───────────────────────────────────────────
-
   /**
    * O(1) lookup of an artifact by its ID.
    * Returns null when the artifact is not in the bus.
@@ -504,8 +479,6 @@ class DreamOSBusImpl {
   getArtifact(id: string): DreamOSSharedArtifact | null {
     return this.artifacts.get(id) ?? null;
   }
-
-  // ── Improvement 63: removeArtifact ───────────────────────────────────────
 
   /**
    * Remove a specific artifact from the bus and notify subscribers.
@@ -517,8 +490,6 @@ class DreamOSBusImpl {
     this.notify();
   }
 
-  // ── Improvement 64: clearArtifacts ───────────────────────────────────────
-
   /**
    * Remove all artifacts without touching runtime contexts.
    * Useful for resetting content between test cases or user sessions.
@@ -527,8 +498,6 @@ class DreamOSBusImpl {
     this.artifacts.clear();
     this.notify();
   }
-
-  // ── Improvement 65: getArtifactsByKind ───────────────────────────────────
 
   /**
    * Return all artifacts with the given kind, sorted newest-first.
@@ -540,8 +509,6 @@ class DreamOSBusImpl {
       .sort((a, b) => b.updatedAt - a.updatedAt);
   }
 
-  // ── Improvement 66: getArtifactCount ─────────────────────────────────────
-
   /**
    * Return the number of artifacts currently in the bus.
    * Cheaper than getSnapshot().artifacts.length — no array allocation.
@@ -549,8 +516,6 @@ class DreamOSBusImpl {
   getArtifactCount(): number {
     return this.artifacts.size;
   }
-
-  // ── Improvement 67: watchArtifact ────────────────────────────────────────
 
   /**
    * Subscribe to changes on a single artifact by ID.
@@ -694,19 +659,13 @@ class DreamOSBusImpl {
 
 export const dreamOSBus = new DreamOSBusImpl();
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.
 
 /** Centers are semantic descriptions of existing capabilities, never new systems. */
-export { INFORMATION_DOMAINS };
 
+export { INFORMATION_DOMAINS };
 export type { InformationDomain };

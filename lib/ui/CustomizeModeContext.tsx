@@ -14,8 +14,6 @@ import React, {
     createContext, useCallback, useContext, useMemo, useState,
 } from 'react';
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 export interface CustomizeModeContextValue {
   /** Whether the user is currently in customize mode */
   isCustomizeMode: boolean;
@@ -53,8 +51,6 @@ export function useCustomizeMode(): CustomizeModeContextValue {
   if (!ctx) throw new Error('useCustomizeMode must be used inside CustomizeModeProvider');
   return ctx;
 }
-
-// ── Provider ───────────────────────────────────────────────────────────────────
 
 export function CustomizeModeProvider({ children }: {children: React.ReactNode}) {
   const [isCustomizeMode, setIsCustomizeMode] = useState(false);

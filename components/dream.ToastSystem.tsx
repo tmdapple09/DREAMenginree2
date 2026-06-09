@@ -1,14 +1,14 @@
 'use client';
 
+import { AlertCircle, CheckCircle, Info, X, XCircle } from 'lucide-react';
+import { createContext, useContext, useState } from 'react';
+
 /**
  * ToastSystem — glass-surface toasts matching DREAMengin design language.
  *
  * Architecture: THEME.md (Gold=action · Sky-blue=connected · White=clarity)
  * Uses inline styles for self-contained rendering with zero CSS class deps.
  */
-
-import { AlertCircle, CheckCircle, Info, X, XCircle } from 'lucide-react';
-import { createContext, useContext, useState } from 'react';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 

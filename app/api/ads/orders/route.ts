@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/ads/orders/route.ts
  *
@@ -24,14 +30,7 @@
  *   500  { error: string }
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 const PLATFORM_SHARE_PERCENT = 0.10; // 10% DREAMengin platform cut
-
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

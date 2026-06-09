@@ -25,20 +25,14 @@
 
 'use strict';
 
-// ── Quality config ────────────────────────────────────────────────────────────
-
 const QUALITY_CONFIG = {
   high:        { imageMaxPx: 2048, imageQuality: 0.9, videoBitrate: 4_000_000, audioKbps: 192 },
   balanced:    { imageMaxPx: 1024, imageQuality: 0.8, videoBitrate: 2_000_000, audioKbps: 128 },
   performance: { imageMaxPx: 720,  imageQuality: 0.6, videoBitrate: 1_000_000, audioKbps: 64  },
 };
 
-// ── Job registry ──────────────────────────────────────────────────────────────
-
 /** @type {Map<number, object>} */
 const jobs = new Map();
-
-// ── Message handler ───────────────────────────────────────────────────────────
 
 self.onmessage = async function (e) {
   const msg = e.data;
@@ -80,8 +74,6 @@ self.onmessage = async function (e) {
   }
 };
 
-// ── Asset type detection ──────────────────────────────────────────────────────
-
 function detectType(mimeType, fileName) {
   if (mimeType.startsWith('image/')) return 'image';
   if (mimeType.startsWith('video/')) return 'video';
@@ -91,13 +83,9 @@ function detectType(mimeType, fileName) {
   return 'unknown';
 }
 
-// ── Progress helper ───────────────────────────────────────────────────────────
-
 function progress(jobId, pct) {
   self.postMessage({ jobId, type: 'progress', payload: pct });
 }
-
-// ── Main processor ────────────────────────────────────────────────────────────
 
 async function processAsset(jobId, job) {
   const type = detectType(job.mimeType, job.fileName);
@@ -120,7 +108,6 @@ async function processAsset(jobId, job) {
   }
 }
 
-// ── Image optimisation ────────────────────────────────────────────────────────
 // Uses OffscreenCanvas to resize and convert to AVIF (preferred) or WebP.
 
 async function optimiseImage(jobId, job, cfg) {
@@ -177,7 +164,6 @@ async function optimiseImage(jobId, job, cfg) {
   };
 }
 
-// ── Video optimisation ────────────────────────────────────────────────────────
 // Uses VideoDecoder / VideoEncoder (WebCodecs) where available.
 // Falls back to passing the video through unchanged (graceful degradation).
 
@@ -225,7 +211,6 @@ async function optimiseVideo(jobId, job, cfg) {
   };
 }
 
-// ── Audio optimisation ────────────────────────────────────────────────────────
 // Decodes and re-encodes audio using Web Audio API (AudioContext in worker).
 // Falls back to passthrough if AudioContext is unavailable in worker scope.
 
@@ -253,7 +238,6 @@ async function optimiseAudio(jobId, job, cfg) {
   };
 }
 
-// ── 3D asset optimisation ─────────────────────────────────────────────────────
 // Passes through unchanged; a production implementation would apply
 // Draco geometry compression via WASM (draco3d.wasm).
 
@@ -271,8 +255,6 @@ async function optimise3D(jobId, job) {
     method:        'passthrough-3d',
   };
 }
-
-// ── Passthrough ───────────────────────────────────────────────────────────────
 
 function passThrough(job) {
   const blob = new Blob([job.buffer], { type: job.mimeType });

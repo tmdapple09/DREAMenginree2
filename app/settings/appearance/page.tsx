@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.SettingsAppearance  (framework-mandated basename: page.tsx)
 
 import { THEME_PRESETS as GRADIENT_PRESETS, applyTheme, applyVoidTheme, isVoidThemeActive, type DeTheme } from '@/components/dream.ThemeApplicator';
 import { useTheme } from '@/components/providers/dream.ThemeProvider';
@@ -9,7 +8,8 @@ import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/* ── VOID / OLED Dark Theme Toggle ── */
+// SURFACE: dreamsurface.SettingsAppearance  (framework-mandated basename: page.tsx)
+
 function VoidThemeSection( ){
   const [isVoid, setIsVoid] = useState(false);
 
@@ -97,7 +97,6 @@ function VoidThemeSection( ){
   );
 }
 
-/* ── Gradient Preset Picker ── */
 function GradientThemePicker( ){
   const [active, setActive] = useState(() => {
     if (typeof window === 'undefined') return 'default';
@@ -168,8 +167,6 @@ function GradientThemePicker( ){
   );
 }
 
-
-/* ── Slider component (styled with Dream tokens) ── */
 function Slider({
   label,
   value,
@@ -217,7 +214,6 @@ function Slider({
   );
 }
 
-/* ── Preset cards ── */
 function PresetCard({
   preset,
   isActive,
@@ -271,7 +267,6 @@ function PresetCard({
   );
 }
 
-/* ── Background Image Section ── */
 function BgImageSection( ){
   const [bgImage, setBgImage] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
@@ -388,7 +383,6 @@ export default function AppearanceSettingsPage( ){
   const { presetId, overrides, setPreset, setOverrides, resetOverrides } = useTheme();
   const { enterCustomizeMode } = useCustomizeMode();
 
-  // ── DB sync: load appearance settings on mount (Phase 8 §I Point 83) ──
   useEffect(() => {
     fetch('/api/settings/appearance')
       .then((r) => r.json())
@@ -399,10 +393,9 @@ export default function AppearanceSettingsPage( ){
         }
       })
       .catch(() => { /* localStorage values remain */ });
-   
+
   }, []);
 
-  // ── DB sync: save on presetId or overrides change (Phase 8 §I Point 83) ──
   // Debounce to avoid rapid writes during slider drags
   const debounceSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
@@ -415,7 +408,7 @@ export default function AppearanceSettingsPage( ){
       }).catch(() => { /* localStorage cache remains */ });
     }, 800);
     return () => { if (debounceSaveTimerRef.current) clearTimeout(debounceSaveTimerRef.current); };
-   
+
   }, [presetId, overrides]);
 
   const handleBrightness = useCallback((v: number) => setOverrides({ brightness: v }), [setOverrides]);

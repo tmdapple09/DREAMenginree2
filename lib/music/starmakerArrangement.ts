@@ -38,3 +38,4 @@ export const ARRANGEMENT_TRACKS: ArrangementTrackState[] = [
 ];
 
 export const ARRANGEMENT_SOURCE_COLORS = ['#00d0f0', '#a855f7', '#22c55e', '#f97316', '#ec4899', '#38bdf8'] as const;
+

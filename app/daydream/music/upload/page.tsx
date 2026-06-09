@@ -1,5 +1,4 @@
 'use client';
-// SURFACE: dreamsurface.MusicUpload  (framework-mandated basename: page.tsx)
 
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
@@ -7,9 +6,10 @@ import { ArrowLeft, Info, Loader2, Music, Upload, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-
 import { toErrorMessage } from '@/lib/utils';
+
+// SURFACE: dreamsurface.MusicUpload  (framework-mandated basename: page.tsx)
+
 export default function UploadMusicPage( ){
   const [title, setTitle] = useState('');
   const [embedUrl, setEmbedUrl] = useState('');

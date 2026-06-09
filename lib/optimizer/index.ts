@@ -1,8 +1,3 @@
-/**
- * DREAMengin Optimization Framework
- * Main optimizer interface for all DREAMengin modules
- */
-
 import { ConstraintSolver } from './constraint-solver';
 import { validateCreativeOption } from './creative-validator';
 import type {
@@ -24,6 +19,11 @@ import type {
     WidgetPriority,
     HardFailureReason,
 } from './types';
+
+/**
+ * DREAMengin Optimization Framework
+ * Main optimizer interface for all DREAMengin modules
+ */
 
 export class DreamOptimizer {
   private solver: ConstraintSolver;
@@ -635,11 +635,9 @@ export class DreamOptimizer {
     return this.context.sourcePreferences?.[source] ?? 0.7;
   }
 
-  // ---------------------------------------------------------------------------
   // RuntimeContext helpers — derive normalised 0–1 scores from the injected
   // signals.  Each method documents its fallback so callers know what value
   // to expect when the corresponding RuntimeContext field is absent.
-  // ---------------------------------------------------------------------------
 
   /**
    * Screen-size score derived from `viewportWidth`.

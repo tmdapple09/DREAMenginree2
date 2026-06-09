@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { ChildSafetyResult } from './childSafetyDetector';
+import { toErrorMessage } from '@/lib/utils';
+
 // lib/child-safety/ncmecReporter.ts
 // NCMEC CyberTipline Reporter
 //
@@ -19,11 +24,6 @@
 //
 // See: https://www.missingkids.org/gethelpnow/cybertipline/esp
 
-import { createServerClient } from '@/lib/supabase/server';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import type { ChildSafetyResult } from './childSafetyDetector';
-
-import { toErrorMessage } from '@/lib/utils';
 // ============================================================================
 // TYPES
 // ============================================================================

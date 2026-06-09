@@ -1,13 +1,13 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+
 // app/api/skip-credits/balance/route.ts
 // Phase 9 — Get Skip Credits Balance Endpoint
 //
 // Retrieves user's skip credit balance.
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
-
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
 
 export async function GET(): Promise<NextResponse> {
   const supabase = await createServerClient();

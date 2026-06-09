@@ -1,5 +1,12 @@
 'use client';
 
+import type { FeedPost } from '@/lib/feed/useLiveFeed';
+import {
+    ChevronLeft, ChevronRight,
+    Maximize2, Minimize2, X, Youtube,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+
 /**
  * FeedVideoCard — In-feed video player card.
  *
@@ -12,15 +19,6 @@
  *    listener is registered as non-passive so it can call preventDefault).
  *  - Works for both YouTube videos and user-posted video URLs.
  */
-
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
-import {
-    ChevronLeft, ChevronRight,
-    Maximize2, Minimize2, X, Youtube,
-} from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-
-// ── helpers ────────────────────────────────────────────────────────────────────
 
 function extractYouTubeId(url: string): string | null {
   try {
@@ -51,8 +49,6 @@ function isDirectVideo(url: string): boolean {
   return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url);
 }
 
-// ── types ──────────────────────────────────────────────────────────────────────
-
 export interface FeedVideoCardProps {
   /** The video post this card is anchored to in the feed. */
   post: FeedPost;
@@ -67,8 +63,6 @@ export interface FeedVideoCardProps {
    */
   videoIndex: number;
 }
-
-// ── component ──────────────────────────────────────────────────────────────────
 
 export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideoCardProps) {
   const [currentIndex, setCurrentIndex] = useState(videoIndex);
@@ -93,7 +87,6 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allVideos.length - 1;
 
-  // ── Swipe gesture ────────────────────────────────────────────────────────────
   // We attach the touchmove listener with { passive: false } so we can call
   // preventDefault and stop the page from scrolling while the user is doing a
   // horizontal swipe across the card.
@@ -165,8 +158,6 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       el.removeEventListener('touchend', onTouchEnd);
     };
   }, [allVideos.length, hasPrev, hasNext]);
-
-  // ── sub-components ───────────────────────────────────────────────────────────
 
   const PlayButton = ({ size = 52 }: { size?: number }) => (
     <div
@@ -337,8 +328,6 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
     );
   };
 
-  // ── Fullscreen modal ─────────────────────────────────────────────────────────
-
   if (isExpanded) {
     return (
       <>
@@ -444,8 +433,6 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       </>
     );
   }
-
-  // ── Inline card ──────────────────────────────────────────────────────────────
 
   return (
     <div

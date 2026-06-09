@@ -11,22 +11,17 @@
  * `AnimationFSM` and `EventBus` are canonical short-form aliases.
  */
 
-// ─── Classes ─────────────────────────────────────────────────────────────────
+/** Alias: AnimationFSM → AnimationStateMachine. */
+
+/** Alias: EventBus → TypedEventBus. */
 
 export {
     AnimationStateMachine,
     ReplayBuffer,
     TypedEventBus
 } from '../power-systems';
-
-/** Alias: AnimationFSM → AnimationStateMachine. */
 export { AnimationStateMachine as AnimationFSM } from '../power-systems';
-
-/** Alias: EventBus → TypedEventBus. */
 export { TypedEventBus as EventBus } from '../power-systems';
-
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export type {
     AnimState, AnimTransition, AnimationClip, EventMap, InputFrame,
     ReplayMeta

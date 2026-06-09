@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * POST /api/posts/[id]/save
  * DELETE /api/posts/[id]/save
@@ -11,12 +17,6 @@
  * DELETE removes the post from saved_posts for this user.
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 const MAX_SAVED_POSTS = 25;
 
 export async function POST(
@@ -56,7 +56,6 @@ export async function POST(
     return NextResponse.json({ ok: true, already_saved: true });
   }
 
-  // ── FIFO: evict oldest if at capacity ─────────────────────────────────────
   const { count: savedCount } = await db
     .from('saved_posts')
     .select('id', { count: 'exact', head: true })
@@ -77,7 +76,6 @@ export async function POST(
     }
   }
 
-  // ── Insert the new save ───────────────────────────────────────────────────
   const { error: insertErr } = await db
     .from('saved_posts')
     .insert({ user_id: user.id, post_id: postId, saved_at: new Date().toISOString() });

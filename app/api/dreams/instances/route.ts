@@ -1,12 +1,11 @@
-// app/api/dreams/instances/route.ts
-// Dream System V2 — surface instance listing
-
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { Surface } from '@/types/widget-system-v2';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
+// app/api/dreams/instances/route.ts
+// Dream System V2 — surface instance listing
 
 type SurfaceName = 'HOME' | 'FACE' | 'PROFILE' | 'DOCK';
 

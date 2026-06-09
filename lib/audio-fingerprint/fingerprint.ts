@@ -1,8 +1,8 @@
+import type { FrequencyPeak, PeakMap } from './peak-map';
+
 /**
  * lib/audio-fingerprint/fingerprint.ts — §40 Fingerprint Record & Match
  */
-
-import type { FrequencyPeak, PeakMap } from './peak-map';
 
 export interface TimeSlice { startTimeSec: number; endTimeSec: number; similarityScore: number; }
 export interface Fingerprint { id: string; startTime: number; endTime: number; peakMap: PeakMap; signature: number[]; }

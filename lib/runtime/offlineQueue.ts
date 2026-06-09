@@ -1,16 +1,10 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { toErrorMessage } from '@/lib/utils';
 
 // Framework directives stay physically first when required.
 
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
 // Runtime file: lib/runtime/offlineQueue.ts.
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -40,21 +34,11 @@ const MAX_QUEUE_SIZE = 200;
 
 const MAX_RETRY_ATTEMPTS = 5;
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import { toErrorMessage } from '@/lib/utils';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 export type OfflineActionType =
   | 'message:send'
@@ -89,11 +73,7 @@ export interface QueueStatus {
   oldestEnqueuedAt: number | null;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Persistence helpers ────────────────────────────────────────────────────────
 
 function _load(): OfflineAction[] {
   if (typeof localStorage === 'undefined') return [];
@@ -114,8 +94,6 @@ function _save(queue: OfflineAction[]): void {
     console.warn('[offlineQueue] Failed to persist queue', err);
   }
 }
-
-// ── Improvement 88: enqueue ───────────────────────────────────────────────────
 
 /**
  * Add a typed action to the offline queue.
@@ -161,8 +139,6 @@ export function enqueue(
   return id;
 }
 
-// ── Improvement 89: dequeue ───────────────────────────────────────────────────
-
 /**
  * Remove a successfully completed action from the queue by ID.
  * No-op when the ID is not found.
@@ -171,8 +147,6 @@ export function dequeue(id: string): void {
   const queue = _load().filter((a) => a.id !== id);
   _save(queue);
 }
-
-// ── Improvement 90: flushQueue ────────────────────────────────────────────────
 
 /**
  * Attempt to replay all pending actions in the queue.
@@ -222,8 +196,6 @@ export async function flushQueue(
   return { succeeded, failed, skipped };
 }
 
-// ── Improvement 91: getQueueStatus ────────────────────────────────────────────
-
 /**
  * Return a point-in-time status summary of the offline queue.
  * Safe to call server-side (returns zeroed stats).
@@ -250,8 +222,6 @@ export function getQueueStatus(): QueueStatus {
 
   return { pending, replaying, failed, total: queue.length, oldestEnqueuedAt };
 }
-
-// ── Improvement 92: listenOnline ──────────────────────────────────────────────
 
 /**
  * Register a navigator `online` event listener that automatically calls
@@ -289,14 +259,8 @@ export function isOnline(): boolean {
   return navigator.onLine !== false;
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,12 @@
+import { isOwnerEmail } from '@/lib/ai/triad';
+import { jsonApiError } from '@/lib/api/route';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { toErrorMessage } from '@/lib/utils';
+
 // app/api/admin/child-safety/route.ts
 // Admin endpoint for child safety incident review queue and hash registry management.
 //
@@ -7,16 +16,6 @@
 //
 // Access: admin + owner only.
 
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-
-
-import { toErrorMessage } from '@/lib/utils';
 const VALID_STATUSES = [
   'PENDING_REVIEW',
   'NCMEC_SUBMITTED',
@@ -104,7 +103,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const data = parsed.data;
 
-  // ── Review an incident ─────────────────────────────────────────────────
   if (data.action === 'review') {
     const { error } = await (supabase as SupabaseClient)
       .from('child_safety_incidents')
@@ -120,7 +118,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: true, incident_id: data.incident_id, status: data.status });
   }
 
-  // ── Add known-bad hashes ───────────────────────────────────────────────
   if (data.action === 'add_hashes') {
     const rows = data.hashes.map((h) => ({
       hash_sha256: h.hash_sha256.toLowerCase(),

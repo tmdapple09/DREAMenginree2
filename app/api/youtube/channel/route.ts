@@ -1,3 +1,8 @@
+import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/providers/youtube';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * GET /api/youtube/channel
  *
@@ -14,11 +19,6 @@
  * AXIOM 4 — Security by Default: API key stays server-side; never returned.
  */
 
-import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/providers/youtube';
-import type { UnifiedFeedItem } from '@/types/connector';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface YouTubeChannelResponse {
   ok: boolean;
   channelVideos: UnifiedFeedItem[];

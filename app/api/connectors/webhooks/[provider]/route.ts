@@ -1,3 +1,15 @@
+import {
+    supportsWebhook,
+    supportsWebhookVerification,
+} from '@/lib/connectors/deliveryStrategy';
+import {
+    extractMetaWebhookChallenge,
+    extractYouTubeWebSubChallenge,
+} from '@/lib/connectors/webhookVerification';
+import { createClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/connectors/webhooks/[provider]/route.ts
  *
@@ -29,18 +41,6 @@
  * ARCHITECTURE.md §3 — Logic layer helpers are in lib/connectors/webhookVerification.ts
  */
 
-import {
-    supportsWebhook,
-    supportsWebhookVerification,
-} from '@/lib/connectors/deliveryStrategy';
-import {
-    extractMetaWebhookChallenge,
-    extractYouTubeWebSubChallenge,
-} from '@/lib/connectors/webhookVerification';
-import { createClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Service-role client (bypasses RLS for server-side webhook writes) ─────────
 
 function createServiceClient( ){
@@ -49,8 +49,6 @@ function createServiceClient( ){
   if (!url || !key) return null;
   return createClient(url, key);
 }
-
-// ── YouTube Atom XML parser ────────────────────────────────────────────────────
 
 interface YouTubeWebhookEntry {
   videoId: string;
@@ -83,8 +81,6 @@ function parseYouTubeAtom(xml: string): YouTubeWebhookEntry | null {
   return { videoId, channelId, title, link, published, authorName };
 }
 
-// ── Instagram webhook payload types ──────────────────────────────────────────
-
 interface InstagramChange {
   field: string;
   value: {
@@ -109,8 +105,6 @@ interface InstagramWebhookPayload {
   entry: InstagramWebhookEntry[];
 }
 
-// ── HMAC verification for Meta/Instagram ─────────────────────────────────────
-
 async function verifyInstagramSignature(
   rawBody: string,
   signatureHeader: string | null,
@@ -129,8 +123,6 @@ async function verifyInstagramSignature(
   const actual = Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, '0')).join('');
   return actual === expected;
 }
-
-// ── GET — Subscription verification ──────────────────────────────────────────
 
 export async function GET(
   req: NextRequest,
@@ -188,8 +180,6 @@ export async function GET(
   );
 }
 
-// ── POST — Payload ingestion ──────────────────────────────────────────────────
-
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
@@ -205,7 +195,6 @@ export async function POST(
 
   const rawBody = await req.text().catch(() => '');
 
-  // ── YouTube ingestion ──────────────────────────────────────────────────
   if (provider === 'youtube') {
     const entry = parseYouTubeAtom(rawBody);
     if (!entry) {
@@ -265,7 +254,6 @@ export async function POST(
     return NextResponse.json({ ok: true, provider, ingested: inserts.length });
   }
 
-  // ── Instagram ingestion ────────────────────────────────────────────────
   if (provider === 'instagram') {
     const appSecret = process.env.INSTAGRAM_CLIENT_SECRET ?? '';
     if (appSecret) {

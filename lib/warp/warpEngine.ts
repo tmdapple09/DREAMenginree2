@@ -15,9 +15,7 @@
  * composable compute primitive.
  */
 
-// ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 export interface WarpVec2 {
   x: number;
@@ -62,9 +60,7 @@ export type WarpKernel = (particle: WarpParticle, ctx: WarpContext) => void;
 /** Named effect presets understood by the engine. */
 export type WarpEffect = 'particles' | 'field' | 'flow' | 'orbit';
 
-// ---------------------------------------------------------------------------
 // Built-in kernels
-// ---------------------------------------------------------------------------
 
 /** Integrate velocity → position. */
 export const integrateKernel: WarpKernel = (p: WarpParticle, { dt }) => {
@@ -158,9 +154,7 @@ export const wrapBoundaryKernel: WarpKernel = (p: WarpParticle, { width, height 
   if (p.pos.y > height) p.pos.y -= height;
 };
 
-// ---------------------------------------------------------------------------
 // Kernel sets per effect
-// ---------------------------------------------------------------------------
 
 const EFFECT_KERNELS: Record<WarpEffect, WarpKernel[]> = {
   particles: [gravityKernel, turbulenceKernel, dampingKernel, integrateKernel, decayKernel, wrapBoundaryKernel],
@@ -169,9 +163,7 @@ const EFFECT_KERNELS: Record<WarpEffect, WarpKernel[]> = {
   orbit:     [spiralKernel, dampingKernel, integrateKernel, decayKernel, wrapBoundaryKernel],
 };
 
-// ---------------------------------------------------------------------------
 // Palette helpers
-// ---------------------------------------------------------------------------
 
 const PALETTES: Record<WarpEffect, string[]> = {
   particles: ['#7eb8f7', '#a78bfa', '#38bdf8', '#818cf8', '#c084fc'],
@@ -185,9 +177,7 @@ function randomColor(effect: WarpEffect): string {
   return palette[Math.floor(Math.random() * palette.length)];
 }
 
-// ---------------------------------------------------------------------------
 // Particle factory
-// ---------------------------------------------------------------------------
 
 /**
  * Spawn a single particle appropriate for a given effect.
@@ -222,9 +212,7 @@ export function spawnParticle(effect: WarpEffect, width: number, height: number)
   };
 }
 
-// ---------------------------------------------------------------------------
 // WarpEngine class
-// ---------------------------------------------------------------------------
 
 export interface WarpEngineOptions {
   /** Maximum live particles. Default: 320. */

@@ -104,3 +104,4 @@ export const ALL_COMBOS: readonly Combo[] = Object.freeze([...BASE_COMBOS, ...SP
 export function maxComboLength(combos: readonly Combo[] = ALL_COMBOS): number {
   return combos.reduce((m, c) => Math.max(m, c.sequence.length), 0);
 }
+

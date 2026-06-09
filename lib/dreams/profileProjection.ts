@@ -24,3 +24,4 @@ export function createDreamProjection({
 export function canRenderProjection(projection: DreamProjection, explicitShare = false) {
   return projection.visibility !== 'private' && explicitShare;
 }
+

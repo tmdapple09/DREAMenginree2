@@ -1,3 +1,6 @@
+import { createClient } from '@/lib/supabase/client';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/platform/lab.ts
  *
@@ -11,9 +14,6 @@
  * use lib/supabase/client for direct RLS-gated writes.
  */
 
-import { createClient } from '@/lib/supabase/client';
-
-import { toErrorMessage } from '@/lib/utils';
 /**
  * Persists a WASM/physics tick telemetry snapshot to a physics_experiments row.
  *

@@ -1,4 +1,8 @@
 'use client';
+
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * ENGIN: FRACTURE — fusion of engin-battle + dreamwars + avatar-maker.
  *
@@ -9,9 +13,6 @@
  *
  * Render: 2-D canvas, OS-scaffolding arena, Dreamcast-saturation grid floor.
  */
-
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Phase = 'menu' | 'build' | 'fight' | 'victory' | 'defeat';
 type Faction = 'lattice' | 'choir' | 'kindling';
@@ -170,7 +171,6 @@ export default function EnginFracture( ){
         }
       }
 
-      // ── Render ───────────────────────────────────────────────────────────
       // Saturation grid floor
       ctx.fillStyle = '#0a0d1c'; ctx.fillRect(0, 0, W, H);
       const grad = ctx.createLinearGradient(0, GROUND, 0, H);

@@ -1,3 +1,11 @@
+import {
+    buildContactRequestRecord,
+    validateContactRequest,
+} from '@/lib/marketplace/request';
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/marketplace/request/route.ts
  *
@@ -15,14 +23,6 @@
  * Architecture: docs/ARCHITECTURE.md §10 — server client for all DB writes
  * Phase 8 §E:   Point 46 — no placeholder handler; real system action
  */
-
-import {
-    buildContactRequestRecord,
-    validateContactRequest,
-} from '@/lib/marketplace/request';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

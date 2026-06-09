@@ -1,3 +1,12 @@
+import { metrics, trace, type Meter, type Tracer } from '@opentelemetry/api';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { resourceFromAttributes } from '@opentelemetry/resources';
+import { MeterProvider } from '@opentelemetry/sdk-metrics';
+import { BatchSpanProcessor, NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+
 // lib/observability/otel.ts
 //
 // Production-grade OpenTelemetry initialisation for DREAMengin.
@@ -15,17 +24,6 @@
 //   OTEL_EXPORTER_OTLP_ENDPOINT   – if set, traces export via OTLP/HTTP
 //   OTEL_METRICS_EXPORTER          – 'prometheus' (default) | 'none'
 
-import { metrics, trace, type Meter, type Tracer } from '@opentelemetry/api';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { MeterProvider } from '@opentelemetry/sdk-metrics';
-import { BatchSpanProcessor, NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-
-// ── Singleton state ───────────────────────────────────────────────────────────
-
 let _initialised = false;
 let _promExporter: PrometheusExporter | null = null;
 let _meter: Meter | null = null;
@@ -33,8 +31,6 @@ let _tracer: Tracer | null = null;
 
 const SERVICE_NAME = process.env.OTEL_SERVICE_NAME ?? 'dreamengin';
 const SERVICE_VERSION = process.env.npm_package_version ?? '2.0.0';
-
-// ── Init ──────────────────────────────────────────────────────────────────────
 
 function ensureInit(): void {
   if (_initialised) return;
@@ -45,7 +41,6 @@ function ensureInit(): void {
     [ATTR_SERVICE_VERSION]: SERVICE_VERSION,
   });
 
-  // ── Metrics (Prometheus exporter) ──────────────────────────────────────────
   const metricsExporterEnv = process.env.OTEL_METRICS_EXPORTER ?? 'prometheus';
 
   if (metricsExporterEnv !== 'none') {
@@ -59,7 +54,6 @@ function ensureInit(): void {
     metrics.setGlobalMeterProvider(meterProvider);
   }
 
-  // ── Traces (OTLP/HTTP when configured) ─────────────────────────────────────
   const otlpEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
   const spanProcessors = otlpEndpoint
     ? [new BatchSpanProcessor(new OTLPTraceExporter({ url: `${otlpEndpoint}/v1/traces` }))]
@@ -74,8 +68,6 @@ function ensureInit(): void {
   _meter = metrics.getMeter(SERVICE_NAME, SERVICE_VERSION);
   _tracer = trace.getTracer(SERVICE_NAME, SERVICE_VERSION);
 }
-
-// ── Public API ────────────────────────────────────────────────────────────────
 
 /** Return the global OTel Meter (creates instruments lazily). */
 export function getMeter(): Meter {

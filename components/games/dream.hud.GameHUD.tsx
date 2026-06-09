@@ -21,3 +21,4 @@ interface GameHUDProps {
 export default function GameHUD({ gameLabel, playHref, onExit }: GameHUDProps) {
   return <GameRemote embedded gameLabel={gameLabel} playHref={playHref} onExit={onExit} />;
 }
+

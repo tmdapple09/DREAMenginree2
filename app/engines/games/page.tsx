@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.EnginesGames  (framework-mandated basename: page.tsx)
 import GameEnginApp from '@/components/engines/games/dream.GameEnginApp';
 import { buildLoginRedirectPath } from '@/lib/auth/nextRedirect';
 import { isDevBypassActive } from '@/lib/dev-bypass';
@@ -7,6 +6,7 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
+// SURFACE: dreamsurface.EnginesGames  (framework-mandated basename: page.tsx)
 
 interface GamesEnginAppPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;

@@ -27,8 +27,6 @@
  * Performance target: ≤ 1 ms/tick for 10,000 entities at 60 fps.
  */
 
-// ─── tickPhysicsSIMD ─────────────────────────────────────────────────────────
-
 /**
  * Optimised physics tick using f32x4 SIMD.
  *
@@ -73,8 +71,6 @@ export function tickPhysicsSIMD(
   }
 }
 
-// ─── processAudioBufferSIMD ───────────────────────────────────────────────────
-
 /**
  * SIMD-accelerated audio gain pass for the StarMaker daydream.
  *
@@ -106,8 +102,6 @@ export function processAudioBufferSIMD(
   }
 }
 
-// ─── hashBytesFNV1A ──────────────────────────────────────────────────────────
-
 /**
  * Deterministic byte fingerprint for runtime snapshots and sync frames.
  *
@@ -128,8 +122,6 @@ export function hashBytesFNV1A(ptr: i32, count: i32): u32 {
   }
   return hash;
 }
-
-// ─── shapeGlowFieldSIMD ──────────────────────────────────────────────────────
 
 /**
  * Premium visual field shaper for glow/particle intensity buffers.

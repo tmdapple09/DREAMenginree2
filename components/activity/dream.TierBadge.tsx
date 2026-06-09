@@ -1,3 +1,6 @@
+import { getTierDescription, getTierDisplayName } from '@/lib/activity/scoring';
+import { ActivityTier } from '@/lib/activity/types';
+
 // components/activity/dream.TierBadge.tsx
 // Phase 9 — Activity Tier Badge
 //
@@ -5,9 +8,6 @@
 // Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
 
 'use client';
-
-import { getTierDescription, getTierDisplayName } from '@/lib/activity/scoring';
-import { ActivityTier } from '@/lib/activity/types';
 
 interface TierBadgeProps {
   tier: ActivityTier;

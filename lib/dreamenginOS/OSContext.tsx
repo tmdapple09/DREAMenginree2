@@ -1,4 +1,12 @@
 'use client';
+
+import React, { createContext, useContext, useMemo } from 'react';
+import type { EventBus } from '../eventBus';
+import { createEventBus } from '../eventBus';
+import type { Ledger } from '../ledger';
+import { createLedger } from '../ledger';
+import { upgradeEngine } from './index';
+
 /**
  * OSContext — DREAMenginOS React Context
  *
@@ -15,15 +23,6 @@
  *   os.bus     // cross-surface event bus
  */
 
-import React, { createContext, useContext, useMemo } from 'react';
-import type { EventBus } from '../eventBus';
-import { createEventBus } from '../eventBus';
-import type { Ledger } from '../ledger';
-import { createLedger } from '../ledger';
-import { upgradeEngine } from './index';
-
-// ─── OS Instance shape ────────────────────────────────────────────────────────
-
 export interface OSInstance {
   /** Shared asset + metadata ledger. */
   ledger: Ledger;
@@ -36,11 +35,7 @@ export interface OSInstance {
   upgradeEngine: typeof upgradeEngine;
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-
 const OSContext = createContext<OSInstance | null>(null);
-
-// ─── Provider ─────────────────────────────────────────────────────────────────
 
 /**
  * OSProvider
@@ -60,8 +55,6 @@ export function OSProvider({ children }: {children: React.ReactNode}) {
 
   return <OSContext.Provider value={os}>{children}</OSContext.Provider>;
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 /**
  * useOS()

@@ -1,16 +1,3 @@
-// lib/ai/boogieman.ts
-// TheBoogieMan.Ai — deterministic policy engine.
-//
-// Every enforcement decision:
-//   1. References a rule_code defined in docs/policy/theboogie.md
-//   2. Carries BOOGIE_POLICY_VERSION so events are traceable to a published rule
-//   3. Produces DUAL OUTPUT: user-safe explanation + internal audit event (req 16)
-//   4. Uses the least-force action that reduces risk below threshold (req 37)
-//   5. Never issues a permanent ban autonomously (req 9, 43)
-//
-// Simulation mode: set BOOGIE_SIMULATION_MODE=true to produce audit events and
-// UI banners without actually restricting accounts (req 61, 62).
-
 import { v4 as uuidv4 } from 'uuid';
 import {
     BOOGIE_POLICY_VERSION,
@@ -29,7 +16,18 @@ import type {
     EnforcementScope, Intent
 } from './schemas';
 
-export { BOOGIE_POLICY_VERSION };
+// lib/ai/boogieman.ts
+// TheBoogieMan.Ai — deterministic policy engine.
+//
+// Every enforcement decision:
+//   1. References a rule_code defined in docs/policy/theboogie.md
+//   2. Carries BOOGIE_POLICY_VERSION so events are traceable to a published rule
+//   3. Produces DUAL OUTPUT: user-safe explanation + internal audit event (req 16)
+//   4. Uses the least-force action that reduces risk below threshold (req 37)
+//   5. Never issues a permanent ban autonomously (req 9, 43)
+//
+// Simulation mode: set BOOGIE_SIMULATION_MODE=true to produce audit events and
+// UI banners without actually restricting accounts (req 61, 62).
 
 // ============================================================================
 // SIMULATION MODE (req 61, 62) — never enable in production
@@ -462,3 +460,5 @@ export function boogieEvaluate(input: BoogieEvaluateInput): BoogieOutput {
     policy_version: BOOGIE_POLICY_VERSION,
   };
 }
+
+export { BOOGIE_POLICY_VERSION };

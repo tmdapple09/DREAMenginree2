@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.DaydreamForge  (framework-mandated basename: page.tsx)
 import DaydreamShell, {
   type DaydreamWidget,
 } from "@/components/daydream/dream.shell.DaydreamShell";
@@ -13,6 +12,8 @@ import { Activity, Flame, Layers, TrendingUp, Zap } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
+
+// SURFACE: dreamsurface.DaydreamForge  (framework-mandated basename: page.tsx)
 
 export const metadata = {
   title: "Forge Daydream – DREAMengin",

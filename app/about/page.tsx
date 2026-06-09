@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.About  (framework-mandated basename: page.tsx)
 import PlatformBadge from '@/components/ui/dream.PlatformBadge';
 import {
     ArrowLeft,
@@ -18,6 +17,8 @@ import {
     Users
 } from 'lucide-react';
 import Link from 'next/link';
+
+// SURFACE: dreamsurface.About  (framework-mandated basename: page.tsx)
 
 export default function AboutPage( ){
 

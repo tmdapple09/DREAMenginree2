@@ -1,14 +1,14 @@
 'use client';
 
+import { Calendar, ChevronLeft, ChevronRight, Clock, Plus, X } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * CalendarPanel — 7-day content calendar for the Content Engine app.
  *
  * Add, view, and schedule content across the week.
  * Lives at /engines/create/calendar.
  */
-
-import { Calendar, ChevronLeft, ChevronRight, Clock, Plus, X } from 'lucide-react';
-import { useState } from 'react';
 
 type ContentType = 'Post' | 'Video' | 'Story' | 'Thread';
 

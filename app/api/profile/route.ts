@@ -3,8 +3,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { Database } from '@/types/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 // GET - Fetch profile
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;

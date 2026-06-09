@@ -8,7 +8,6 @@ export {
     GAME_ENGIN_RULE_SET,
     GRAVITY_VALUES
 } from './gameEnginRuleSet';
-
 export type {
     GameEnginAction,
     GameEnginDerivedState,

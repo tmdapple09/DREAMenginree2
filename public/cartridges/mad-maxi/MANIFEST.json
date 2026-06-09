@@ -7,7 +7,11 @@
   "version": "1.0.0",
   "entry": "logic/main.wasm",
   "render_mode": "webgpu",
-  "permissions": ["storage", "haptics", "gamepad"],
+  "permissions": [
+    "storage",
+    "haptics",
+    "gamepad"
+  ],
   "cover_art": "assets/cover.basis",
   "min_quality_tier": "medium",
   "target_frame_rate": 60,
@@ -18,9 +22,20 @@
     "gameengin_runtime": ">=1.0.0"
   },
   "metadata": {
-    "genre": ["platformer", "action"],
+    "genre": [
+      "platformer",
+      "action"
+    ],
     "estimated_playtime_minutes": 240,
-    "player_count": [1],
-    "tags": ["neon", "emotional", "procedural", "side-scroller", "empowerment"]
+    "player_count": [
+      1
+    ],
+    "tags": [
+      "neon",
+      "emotional",
+      "procedural",
+      "side-scroller",
+      "empowerment"
+    ]
   }
 }

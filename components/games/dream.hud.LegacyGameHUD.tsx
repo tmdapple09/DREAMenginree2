@@ -1,5 +1,9 @@
 'use client';
 
+import GameRemote from '@/components/games/dream.remote.GameRemote';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
+
 /**
  * GameHUD — Floating translucent controller overlay for ImmersiveGameShell.
  *
@@ -10,10 +14,6 @@
  *
  * EXIT always navigates to /daydream/games via Next.js router.
  */
-
-import GameRemote from '@/components/games/dream.remote.GameRemote';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
 
 interface GameHUDProps {
   gameLabel: string;

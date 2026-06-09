@@ -1,4 +1,9 @@
 'use client';
+
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
+import { useCallback, useEffect, useRef } from 'react';
+import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
+
 /**
  * GLASSFALL — fusion of breakout + tetris + match-3.
  *
@@ -10,10 +15,6 @@
  *
  * Render: 2-D canvas, dithered stained-crystal sunset, pixel-rim outlines.
  */
-
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useCallback, useEffect, useRef } from 'react';
-import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
 
 const COLS = 12;
 const ROWS = 18;
@@ -284,7 +285,6 @@ export default function Glassfall( ){
         shakeRef.current.step(dt);
       }
 
-      // ── Render ───────────────────────────────────────────────────────────
       // Sunset gradient (with sun-disc + cloud silhouettes parallax)
       const grad = ctx.createLinearGradient(0, 0, 0, H);
       grad.addColorStop(0, '#411541'); grad.addColorStop(0.6, '#a3346e'); grad.addColorStop(1, '#1a0c1a');
@@ -361,7 +361,6 @@ export default function Glassfall( ){
       particlesRef.current.draw(ctx);
       ctx.restore();
 
-      // ── Minimal HUD ── score chip top-right + thin garbage-rise meter on side
       // Score chip
       ctx.fillStyle = 'rgba(0,0,0,0.5)';
       ctx.fillRect(W - 88, 6, 82, 18);

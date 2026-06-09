@@ -1,5 +1,8 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * KonamiDream — Global easter egg that activates HYPER DREAM MODE.
  *
@@ -14,9 +17,6 @@
  * Architecture: Zero dependencies beyond React + framer-motion
  * (both already in the bundle). No audio, no heavy assets.
  */
-
-import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
 
 const KONAMI = [
   'ArrowUp', 'ArrowUp',

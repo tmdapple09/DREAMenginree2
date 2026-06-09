@@ -1,12 +1,5 @@
 "use client";
 
-// components/dreamengin/dream.scene.BabylonGameScene.tsx
-// Babylon.js v8 real-time 3D scene for the GameEngin.
-// God Tier Engine integrated — hardware scaling, image processing, mesh policy.
-// WebGPU Director integrated — per-object LOD, shadow, and freeze decisions.
-
-'use client';
-
 import { createBabylonEngine } from '@/lib/babylon/createEngine';
 import {
     DreamEngineGodTierSystem,
@@ -23,6 +16,13 @@ import {
     defaultCameraSignals,
 } from '@/lib/webgpu/director';
 import { useEffect, useRef } from 'react';
+
+// components/dreamengin/dream.scene.BabylonGameScene.tsx
+// Babylon.js v8 real-time 3D scene for the GameEngin.
+// God Tier Engine integrated — hardware scaling, image processing, mesh policy.
+// WebGPU Director integrated — per-object LOD, shadow, and freeze decisions.
+
+'use client';
 
 interface BabylonGameSceneProps {
   onGameSelect?: (gameId: string) => void;
@@ -188,7 +188,6 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
           const perf = (engine as import('@babylonjs/core').Engine).performanceMonitor;
           const avgFrame = perf ? perf.averageFrameTime : 16.6;
 
-          // ── God Tier: hardware scaling + image processing ──────────────────
           const gtState = godTierRef.current.update({
             device:  defaultDeviceSignals(),
             runtime: {
@@ -223,7 +222,6 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
           });
           applyGodTierToBabylon(engine, scene as unknown as import('@/lib/god-tier/godTierEngine').BabylonSceneLike, gtState, window.devicePixelRatio ?? 1);
 
-          // ── WebGPU Director: per-object freeze / shadow / LOD ──────────────
           const dirObjects = buildSceneObjects(
             scene.meshes as unknown as import('@/lib/webgpu/director').DirectorBabylonMesh[],
             (m) => ({

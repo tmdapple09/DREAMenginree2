@@ -1,8 +1,10 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+  isDomainObject,
+  type DomainObject,
+  type JsonValue,
+} from './EnginBaseState';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/EnginCapabilities.ts.
 
@@ -22,11 +24,7 @@
  * Architecture: docs/AXIOMS.md §4 — security by default.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -61,25 +59,11 @@ export const DEFAULT_USER_CAPABILITIES: EnginCapabilityMap = Object.freeze({
   'co-op:enable': false,
 } as Record<EnginCapability, boolean> as EnginCapabilityMap);
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import {
-  isDomainObject,
-  type DomainObject,
-  type JsonValue,
-} from './EnginBaseState';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ─── Capability identifiers ───────────────────────────────────────────────────
 
 export type EnginCapability =
   // Persistence
@@ -111,19 +95,13 @@ export type EnginCapability =
   // Custom capability for rule-set extension
   | `custom:${string}`;
 
-// ─── Capability map ───────────────────────────────────────────────────────────
-
 export type EnginCapabilityMap = Readonly<Record<EnginCapability, boolean>>;
-
-// ─── Runtime gate ─────────────────────────────────────────────────────────────
 
 export interface CapabilityGateResult {
   granted: boolean;
   /** Populated when granted === false. */
   reason?: string;
 }
-
-// ─── Domain authorization ────────────────────────────────────────────────────
 
 export type DomainCapability =
   | 'read'
@@ -146,8 +124,6 @@ export interface DomainAuthorizationContext {
   };
   admin?: boolean;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -258,14 +234,8 @@ export function authorizeDomainCapability(
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

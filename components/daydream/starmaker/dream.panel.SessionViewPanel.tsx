@@ -1,5 +1,12 @@
 'use client';
 
+import {
+    type SessionTrack,
+    type SessionViewState,
+} from '@/lib/music/starmakerDaw';
+import { Mic2, Radio, Square, StopCircle, Volume2 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * SessionViewPanel — Ableton Live-style clip launcher (Session View).
  *
@@ -13,15 +20,6 @@
  *  - Beat-sync indicator (flashing when clip is playing)
  *  - Inspired by Ableton Live Session View
  */
-
-import {
-    type SessionTrack,
-    type SessionViewState,
-} from '@/lib/music/starmakerDaw';
-import { Mic2, Radio, Square, StopCircle, Volume2 } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ─── Theme ────────────────────────────────────────────────────────────────────
 
 const T = {
   bg:          '#0d0f17',
@@ -42,15 +40,11 @@ const CELL_W = 104;
 const CELL_H = 40;
 const HEADER_H = 68;
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface SessionViewPanelProps {
   state: SessionViewState;
   bpm: number;
   onStateChange: (next: SessionViewState) => void;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SessionViewPanel({ state, bpm, onStateChange }: SessionViewPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +72,6 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
       tracks: tracks.map((tr) => tr.id === trackId ? { ...tr, ...patch } : tr),
     });
   }, [state, tracks, onStateChange]);
-
 
   function handleClipClick(trackId: string, clipIndex: number): number | undefined {
     const track = tracks.find((t) => t.id === trackId);

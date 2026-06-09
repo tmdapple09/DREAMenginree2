@@ -2,7 +2,10 @@
   "game_title": "Celeste",
   "release_year": 2018,
   "developer": "Maddy Makes Games",
-  "genre": ["platformer", "precision"],
+  "genre": [
+    "platformer",
+    "precision"
+  ],
   "what_makes_it_special": "Flawless integration of narrative theme (overcoming anxiety) with gameplay difficulty. Accessibility options without compromising core experience.",
   "mechanical_innovations": [
     {

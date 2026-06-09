@@ -11,9 +11,7 @@
  * DOM, Next.js, or network access.
  */
 
-// ---------------------------------------------------------------------------
 // Navigation suggestion catalogue
-// ---------------------------------------------------------------------------
 
 export type NavSuggestion = {
   label: string;
@@ -49,9 +47,7 @@ export function matchNavSuggestions(query: string, limit = 5): NavSuggestion[] {
   return NAV_SUGGESTIONS.filter((s) => s.label.toLowerCase().includes(q)).slice(0, limit);
 }
 
-// ---------------------------------------------------------------------------
 // Dr. Eams API request builder
-// ---------------------------------------------------------------------------
 
 /** Minimal body for POST /api/ai/eams that satisfies DrEamsRunBodySchema. */
 export type DrEamsRequestBody = {
@@ -73,9 +69,7 @@ export function buildDrEamsRequest(query: string, route = '/homedream'): DrEamsR
   };
 }
 
-// ---------------------------------------------------------------------------
 // Dr. Eams API response parser
-// ---------------------------------------------------------------------------
 
 /** Parsed reply extracted from the /api/ai/eams JSON response. */
 export type DrEamsParsedReply = {
@@ -116,9 +110,7 @@ export function parseDrEamsReply(data: unknown): DrEamsParsedReply {
   };
 }
 
-// ---------------------------------------------------------------------------
 // DreamDM URL builder
-// ---------------------------------------------------------------------------
 
 /**
  * Builds the /messages URL that pre-fills the DreamDM composer with context
@@ -136,9 +128,7 @@ export function buildDreamDMUrl(query: string): string {
   return `/messages?${params.toString()}`;
 }
 
-// ---------------------------------------------------------------------------
 // Truncation helper
-// ---------------------------------------------------------------------------
 
 /**
  * Truncates a string to `maxChars` and appends `…` if cut.

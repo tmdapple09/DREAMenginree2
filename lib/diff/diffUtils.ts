@@ -10,8 +10,6 @@
  *   - Scroll-margin metadata (proportion of each hunk in the full file)
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export type DiffLineType = 'added' | 'removed' | 'context' | 'hunk-header';
 
 export interface DiffLine {
@@ -49,8 +47,6 @@ export interface DiffFile {
   /** Total removed lines across all hunks */
   removedCount: number;
 }
-
-// ─── Parser ───────────────────────────────────────────────────────────────────
 
 const HUNK_HEADER_RE = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(.*)/;
 
@@ -138,8 +134,6 @@ function finalise(file: DiffFile): DiffFile {
   return file;
 }
 
-// ─── Full-file view helpers ───────────────────────────────────────────────────
-
 export interface FullFileLine extends DiffLine {
   /** True when this line belongs to a collapsed context region */
   collapsed: boolean;
@@ -175,7 +169,6 @@ export function buildFullFileLines(
     const hunk = file.hunks[hi];
     const isFirst = hi === 0;
 
-    // -- lines before this hunk (gap from previous hunk or file start) --
     if (isFirst && hunk.newStart > 1) {
       const gapSize = hunk.newStart - 1;
       if (collapsed) {
@@ -195,7 +188,6 @@ export function buildFullFileLines(
       }
     }
 
-    // -- hunk lines --
     for (let li = 0; li < hunk.lines.length; li++) {
       const line = hunk.lines[li];
       result.push({
@@ -221,8 +213,6 @@ function makePlaceholder(startLine: number, count: number): FullFileLine {
   };
 }
 
-// ─── Navigation helpers ───────────────────────────────────────────────────────
-
 /**
  * Return the index of the first hunk in the file, or -1 if there are none.
  */
@@ -247,8 +237,6 @@ export function nextHunkIndex(file: DiffFile, current: number): number {
   if (file.hunks.length === 0) return -1;
   return (current + 1) % file.hunks.length;
 }
-
-// ─── Scroll-margin helpers ────────────────────────────────────────────────────
 
 export interface HunkScrollMarker {
   /** 0-based hunk index */
@@ -281,8 +269,6 @@ export function buildScrollMarkers(
   });
 }
 
-// ─── Demo diff ────────────────────────────────────────────────────────────────
-
 /**
  * A self-contained demo unified diff used by DiffViewer in demo mode.
  */
@@ -295,16 +281,16 @@ export const DEMO_DIFF = `--- a/lib/diff/diffUtils.ts
 + *
 + * Supports full-file view, hunk navigation, and scroll-margin metadata.
   */
- 
+
 -export type DiffLineType = 'added' | 'removed' | 'context';
 +export type DiffLineType = 'added' | 'removed' | 'context' | 'hunk-header';
- 
+
  export interface DiffLine {
    type: DiffLineType;
 @@ -42,6 +45,15 @@ export interface DiffFile {
    removedCount: number;
  }
- 
+
 +// ─── Full-file helpers ────────────────────────────────────────────────────────
 +
 +export interface FullFileLine extends DiffLine {
@@ -314,7 +300,7 @@ export const DEMO_DIFF = `--- a/lib/diff/diffUtils.ts
 +}
 +
  // ─── Parser ───────────────────────────────────────────────────────────────────
- 
+
  const HUNK_HEADER_RE = /^@@ -(\d+)(?:,(\d+))? \\+(\d+)(?:,(\d+))? @@(.*)/;
 @@ -89,3 +101,18 @@ function finalise(file: DiffFile): DiffFile {
    file.hunks = file.hunks.map((h, i: number) => ({ ...h, index: i }));

@@ -1,6 +1,5 @@
 'use client';
 
-
 interface DreamNavControlsProps {
   onBothMenus: () => void;
 }

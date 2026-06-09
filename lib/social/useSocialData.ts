@@ -1,3 +1,7 @@
+import type { NormalizedPost } from '@/lib/social/normalizers';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/social/useSocialData.ts
  *
@@ -17,10 +21,6 @@
 
 'use client';
 
-import type { NormalizedPost } from '@/lib/social/normalizers';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import { toErrorMessage } from '@/lib/utils';
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type SocialPlatformFilter = 'all' | 'mastodon' | 'nostr' | 'bluesky';
@@ -40,13 +40,9 @@ export interface SocialDataState {
   currentPlatform: SocialPlatformFilter;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const BACKEND_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/social';
 const DEFAULT_LIMIT = 30;
 const POLL_INTERVAL_MS = 60_000; // refresh every 60 s in the background
-
-// ─── Fetch helpers ────────────────────────────────────────────────────────────
 
 async function fetchPlatformFeed(
   platform: SocialPlatformFilter,
@@ -130,8 +126,6 @@ function countByPlatform(
     >
   );
 }
-
-// ─── Hook ────────────────────────────────────────────────────────────────────
 
 /**
  * Aggregated decentralized social feed hook.

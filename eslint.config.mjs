@@ -1,3 +1,6 @@
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals"
+import nextTypescript from "eslint-config-next/typescript"
+
 /**
  * eslint.config.mjs — flat ESLint config for DREAMengin (Next.js 16 + ESLint 9)
  *
@@ -7,8 +10,6 @@
  *
  * Architecture justification: ARCHITECTURE.md §10 (Next.js 16, pnpm 10).
  */
-import nextCoreWebVitals from "eslint-config-next/core-web-vitals"
-import nextTypescript from "eslint-config-next/typescript"
 
 const eslintConfig = [
   ...nextCoreWebVitals,

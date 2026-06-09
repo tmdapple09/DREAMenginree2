@@ -1,5 +1,9 @@
 'use client';
 
+import { useTapHoldMove } from '@/hooks/useTapHoldMove';
+import type { ModuleManifest, RuntimeId } from '@/lib/universalEditor';
+import React, { useRef } from 'react';
+
 /**
  * DreamWindowShell — Universal drag-to-transfer wrapper for Dream modules
  *
@@ -14,10 +18,6 @@
  *     <MyModuleContent />
  *   </DreamWindowShell>
  */
-
-import { useTapHoldMove } from '@/hooks/useTapHoldMove';
-import type { ModuleManifest, RuntimeId } from '@/lib/universalEditor';
-import React, { useRef } from 'react';
 
 export interface DreamWindowShellProps {
   /** Module manifest describing this window's type and compatible runtimes. */

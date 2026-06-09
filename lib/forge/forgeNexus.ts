@@ -1,3 +1,5 @@
+import { CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY } from './forgeRegistry';
+
 /**
  * Forge Nexus — Engine Connection Graph & Flow Analysis
  *
@@ -12,10 +14,6 @@
  *
  * Architecture: Pure computation from Forge history. No Supabase writes.
  */
-
-import { CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY } from './forgeRegistry';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface NexusEdge {
   /** Source engine id */
@@ -77,15 +75,11 @@ export interface NexusSnapshot {
   computedAt: string;
 }
 
-// ── History Entry type ────────────────────────────────────────────────────────
-
 interface HistoryEntry {
   enginId: string;
   label: string;
   timestamp: string;
 }
-
-// ── Core Computation ──────────────────────────────────────────────────────────
 
 /**
  * Read history entries from localStorage.

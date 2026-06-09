@@ -25,12 +25,8 @@
  *   unregisterGame('my-game');
  */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 /** Execution priority tier for a registered game. */
 export type LoopPriority = 'CRITICAL' | 'HIGH' | 'NORMAL' | 'LOW';
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 /** Target frame time in milliseconds (1000 / 60). */
 const FRAME_BUDGET_MS = 1000 / 60; // 16.67 ms
@@ -46,8 +42,6 @@ const PRIORITY_ORDER: Record<LoopPriority, number> = {
   LOW:      3,
 };
 
-// ─── Internal state ───────────────────────────────────────────────────────────
-
 interface GameEntry {
   readonly id: string;
   readonly tickFn: (dt: number) => void;
@@ -62,8 +56,6 @@ let _rafHandle = 0;
 let _lastTime = 0;
 /** Whether the unified loop RAF is currently running. */
 let _running = false;
-
-// ─── Private helpers ──────────────────────────────────────────────────────────
 
 function _sortEntries(): void {
   _entries.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
@@ -94,7 +86,7 @@ function _tick(now: number): void {
     } catch (err: unknown) {
       // One game crashing must not stop others — log and continue.
       if (typeof console !== 'undefined') {
-         
+
         console.error(`[UnifiedLoop] uncaught error in game '${entry.id}':`, err);
       }
     }
@@ -115,8 +107,6 @@ function _stopLoop(): void {
   _rafHandle = 0;
   _lastTime  = 0;
 }
-
-// ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
  * Register a game with the unified loop.

@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 // app/api/home-layout/route.ts
 // Phase 8 §A Point 4 — Dream Window layout configuration for HomeDream Surface.
 //
@@ -18,13 +24,6 @@
 // Architecture: docs/ARCHITECTURE.md §3 — layout config in Supabase.
 // Privacy (AXIOM 5): layout is user-scoped; RLS prevents cross-user reads.
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 interface LayoutSlot {
   id: string;
   type: string;
@@ -61,7 +60,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
-   
   const layout = ((data as Record<string, unknown>)?.home_layout as HomeLayout | null) ?? { slots: [] };
   return NextResponse.json({ ok: true, layout });
 }
@@ -97,7 +95,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const layout: HomeLayout = { slots };
 
-   
   const { error: updateError } = await (supabase as SupabaseClient)
     .from('profiles')
     .update({ home_layout: layout })

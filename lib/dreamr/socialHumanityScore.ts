@@ -162,7 +162,7 @@ export async function computeSocialHumanityScore(input: SocialHumanityInput): Pr
     location: 0.10,
   };
 
-  const rawScore = 
+  const rawScore =
     followScore * weights.follow +
     messageScore * weights.message +
     mutualScore * weights.mutual +

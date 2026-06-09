@@ -21,8 +21,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
 type Profile = {
   id: string;
   handle: string;
@@ -80,7 +80,6 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
   const handle      = profile.handle;
   const displayName = profile.display_name || handle;
 
-  /* ── Save edits ── */
   const saveEdits = useCallback(async () => {
     setSaving(true); setSaveErr('');
     const { error } = await supabase
@@ -100,7 +99,6 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
     setTimeout(() => setSaved(false), 2500);
   }, [draft, profile.id, supabase]);
 
-  /* ── Toggle widget visibility ── */
   const toggleWidget = useCallback((id: string) => {
     setVisibility((prev) => {
       const next = { ...prev, [id]: !(prev[id] !== false) };
@@ -109,7 +107,6 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
     });
   }, []);
 
-  /* ── Copy share link ── */
   const copyLink = useCallback(() => {
     navigator.clipboard.writeText(`https://dreamengin.app/u/${handle}`).catch(() => {});
     setCopied(true);

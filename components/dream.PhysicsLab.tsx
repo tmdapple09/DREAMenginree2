@@ -18,7 +18,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
-
 interface CCCParameters {
   layers: number;
   coherenceThreshold: number;
@@ -53,7 +52,7 @@ export default function PhysicsLab( ){
   const [isSaving, setIsSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   const router = useRouter();
-  
+
   const [cccParams, setCCCParams] = useState<CCCParameters>({
     layers: 99,
     coherenceThreshold: 0.75,
@@ -109,7 +108,7 @@ export default function PhysicsLab( ){
 
   const runExperiment = async () => {
     setIsRunning(true);
-    
+
     const newRun: ExperimentRun = {
       id: `run-${Date.now()}`,
       runNumber: currentRun,
@@ -117,7 +116,7 @@ export default function PhysicsLab( ){
       inputData: { ...cccParams, hypothesis, methodology },
       startedAt: new Date(),
     };
-    
+
     setExperiments((prev) => [newRun, ...prev]);
 
     // Simulate CCC calculation
@@ -145,7 +144,7 @@ export default function PhysicsLab( ){
         completedAt: new Date(),
       };
 
-      setExperiments((prev) => 
+      setExperiments((prev) =>
         prev.map((exp) => exp.id === newRun.id ? completedRun : exp)
       );
       setIsRunning(false);
@@ -159,7 +158,7 @@ export default function PhysicsLab( ){
     const layerCoherence = params.layers / 99;
     const thresholdFactor = params.coherenceThreshold;
     const transferImpact = params.transferCoefficient;
-    
+
     return Math.min(0.95, layerCoherence * thresholdFactor * transferImpact);
   };
 
@@ -167,7 +166,7 @@ export default function PhysicsLab( ){
     // CCC treats entropy as redistribution, not loss
     const boundaryEffect = params.boundaryCondition === 'closed' ? 1.0 : 0.8;
     const budgetUtilization = params.entropyBudget;
-    
+
     return boundaryEffect * budgetUtilization * (Math.random() * 0.4 + 0.6);
   };
 
@@ -175,7 +174,7 @@ export default function PhysicsLab( ){
     // Information flows through layers with transfer coefficient
     const flowRate = params.transferCoefficient;
     const layerResistance = 1 / params.layers;
-    
+
     return flowRate * (1 - layerResistance) * (Math.random() * 0.3 + 0.7);
   };
 
@@ -183,7 +182,7 @@ export default function PhysicsLab( ){
     // Boundary records increase as information reaches junction
     const junctionStrength = params.boundaryCondition === 'closed' ? 1.0 : 0.6;
     const recordingFidelity = params.spectralWindowWidth;
-    
+
     return junctionStrength * (1 + recordingFidelity) * (Math.random() * 0.2 + 0.8);
   };
 

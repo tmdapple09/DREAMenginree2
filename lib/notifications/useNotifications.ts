@@ -1,5 +1,18 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    applyOptimisticDelete,
+    applyOptimisticMarkAll,
+    applyOptimisticRead,
+    getUnreadCount,
+    normalizeDbRow,
+    sortByRecent,
+    type DbNotificationRow,
+    type UiNotification,
+} from './notificationHelpers';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/notifications/useNotifications.ts
  *
@@ -21,19 +34,6 @@
  * (docs/ARCHITECTURE.md §10 "render-on-demand pattern").
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    applyOptimisticDelete,
-    applyOptimisticMarkAll,
-    applyOptimisticRead,
-    getUnreadCount,
-    normalizeDbRow,
-    sortByRecent,
-    type DbNotificationRow,
-    type UiNotification,
-} from './notificationHelpers';
-
-import { toErrorMessage } from '@/lib/utils';
 // Poll every 30 s — unobtrusive; follows render-on-demand spirit
 const POLL_INTERVAL_MS = 30_000;
 
@@ -62,8 +62,6 @@ export function useNotifications(): UseNotificationsReturn {
   const [error,         setError]         = useState<string | null>(null);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // ── Fetch from API ────────────────────────────────────────────────────────
 
   const fetchNotifications = useCallback(async () => {
     try {
@@ -101,8 +99,6 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }, []);
 
-  // ── Initial load + polling ────────────────────────────────────────────────
-
   useEffect(() => {
     void fetchNotifications();
 
@@ -116,8 +112,6 @@ export function useNotifications(): UseNotificationsReturn {
       }
     };
   }, [fetchNotifications]);
-
-  // ── Mark single as read ───────────────────────────────────────────────────
 
   const markAsRead = useCallback(async (id: string) => {
     // Optimistic update first
@@ -136,8 +130,6 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }, [fetchNotifications]);
 
-  // ── Mark all as read ──────────────────────────────────────────────────────
-
   const markAllAsRead = useCallback(async () => {
     setNotifications((prev) => applyOptimisticMarkAll(prev));
 
@@ -153,8 +145,6 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }, [fetchNotifications]);
 
-  // ── Delete one notification ───────────────────────────────────────────────
-
   const deleteNotification = useCallback(async (id: string) => {
     setNotifications((prev) => applyOptimisticDelete(prev, id));
 
@@ -167,8 +157,6 @@ export function useNotifications(): UseNotificationsReturn {
       void fetchNotifications();
     }
   }, [fetchNotifications]);
-
-  // ── Expose ────────────────────────────────────────────────────────────────
 
   return {
     notifications,

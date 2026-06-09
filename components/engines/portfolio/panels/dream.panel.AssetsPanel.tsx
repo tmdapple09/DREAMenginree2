@@ -1,5 +1,8 @@
 'use client';
 
+import { CheckCircle2, Circle, RefreshCw, TrendingDown, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * AssetsPanel — Asset universe selector for the Portfolio Engine.
  *
@@ -7,9 +10,6 @@
  * feed into the Optimize panel's QUBO formulation.
  * Lives at /engines/portfolio/assets.
  */
-
-import { CheckCircle2, Circle, RefreshCw, TrendingDown, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
 
 const ACCENT = '#2a8ab8';
 

@@ -1,3 +1,8 @@
+import { normaliseTikTok } from '@/lib/connectors/normalise';
+import { parseRssFeed, tiktokProfileRssUrl } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/connectors/providers/tiktok.ts
  *
@@ -19,11 +24,6 @@
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
 
-import { normaliseTikTok } from '@/lib/connectors/normalise';
-import { parseRssFeed, tiktokProfileRssUrl } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
-
-import { toErrorMessage } from '@/lib/utils';
 export interface TikTokCredentials {
   username: string;
   /** Optional RSSHub instance URL. Defaults to https://rsshub.app */

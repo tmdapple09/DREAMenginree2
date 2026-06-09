@@ -1,3 +1,6 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/supabase/vector.ts — pgvector semantic search for Dr. Eams discovery.
  *
@@ -16,12 +19,8 @@
  * discovery relies on public-visibility content only.
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
-
-import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 /** Content types that can have embeddings attached. */
 export type EmbeddableContentType =
@@ -52,9 +51,7 @@ export interface SimilarityResult {
   distance: number;
 }
 
-// ---------------------------------------------------------------------------
 // Upsert embedding
-// ---------------------------------------------------------------------------
 
 export interface UpsertEmbeddingParams {
   client: SupabaseClient;
@@ -98,9 +95,7 @@ export async function upsertEmbedding({
   return { id: (data as { id: string }).id, error: null };
 }
 
-// ---------------------------------------------------------------------------
 // Similarity search  (via Supabase RPC — pgvector cosine distance)
-// ---------------------------------------------------------------------------
 
 export interface SimilaritySearchParams {
   client: SupabaseClient;
@@ -155,9 +150,7 @@ export async function searchSimilar({
   return { results, error: null };
 }
 
-// ---------------------------------------------------------------------------
 // Delete embedding
-// ---------------------------------------------------------------------------
 
 /**
  * Remove an embedding for a content item.
@@ -176,9 +169,7 @@ export async function deleteEmbedding(
   return { error: error?.message ?? null };
 }
 
-// ---------------------------------------------------------------------------
 // AI Triad consensus log
-// ---------------------------------------------------------------------------
 
 export type TriadVote = 'approve' | 'reject' | 'abstain';
 export type ConsensusOutcome = 'approved' | 'rejected' | 'escalated';

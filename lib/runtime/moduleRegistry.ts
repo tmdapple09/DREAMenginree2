@@ -1,10 +1,12 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
+import { create } from 'zustand';
+import type { WidgetInstance } from '@/types/widgets';
+import { getWidgetType } from '@/types/widgets';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/moduleRegistry.ts.
 
@@ -25,15 +27,9 @@
  * Performance impact: neutral — Zustand store; no polling loops.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
 
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
 // Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Zustand store ─────────────────────────────────────────────────────────────
 
 export const useModuleRegistry = create<ModuleRegistryState>((set, get) => ({
   modules: {},
@@ -99,31 +95,11 @@ export const moduleRegistry = {
   },
 };
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-
-import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
-
-import { create } from 'zustand';
-
-// ── Helper: build a ModuleManifest from a WidgetInstance ─────────────────────
-
-import type { WidgetInstance } from '@/types/widgets';
-
-import { getWidgetType } from '@/types/widgets';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Store shape ────────────────────────────────────────────────────────────────
 
 interface ModuleRegistryState {
   /** Flat record of all known modules, keyed by module ID. */
@@ -142,11 +118,7 @@ interface ModuleRegistryState {
   getModulesForRuntime: (runtime: RuntimeId) => ModuleManifest[];
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Bridge subscription — receive transfers from remote runtimes ───────────────
 
 /**
  * Call this once (e.g. from a root provider) to wire the registry into the
@@ -190,14 +162,8 @@ export function manifestFromWidget(
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

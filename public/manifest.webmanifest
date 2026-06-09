@@ -21,7 +21,11 @@
       "purpose": "any"
     }
   ],
-  "categories": ["social", "entertainment", "productivity"],
+  "categories": [
+    "social",
+    "entertainment",
+    "productivity"
+  ],
   "screenshots": [],
   "prefer_related_applications": false
 }

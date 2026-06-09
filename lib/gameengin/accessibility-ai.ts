@@ -94,8 +94,6 @@ export class RealtimeCaptioner {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface MotionMetrics {
   /** Average angular velocity (rad/s) over the recent window. */
   angularVelocity: number;
@@ -156,8 +154,6 @@ export class MotionReductionAI {
   get reductionsApplied(): number { return this.appliedReductions; }
   get currentLevel(): 'off' | 'mild' | 'strict' { return this.level; }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type ColorVisionType = 'normal' | 'protan' | 'deutan' | 'tritan';
 

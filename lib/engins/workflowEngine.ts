@@ -13,8 +13,6 @@
  *   - Handoffs may only fire from export stage.
  */
 
-// ─── Engin identity ───────────────────────────────────────────────────────────
-
 export type EnginId =
   | 'music'
   | 'games'
@@ -22,8 +20,6 @@ export type EnginId =
   | 'code'
   | 'brand'
   | 'create';
-
-// ─── Workflow stage ───────────────────────────────────────────────────────────
 
 export type WorkflowStage = 'draft' | 'active' | 'review' | 'export';
 
@@ -42,8 +38,6 @@ export function isValidTransition(from: WorkflowStage, to: WorkflowStage): boole
   const ti = STAGE_ORDER.indexOf(to);
   return ti === fi + 1;
 }
-
-// ─── Cross-Engin handoff paths ────────────────────────────────────────────────
 
 export type HandoffKind =
   | 'music:stem-ready'
@@ -89,8 +83,6 @@ export function handoffsFrom(enginId: EnginId): readonly HandoffPath[] {
   return HANDOFF_PATHS.filter((p) => p.from === enginId);
 }
 
-// ─── Workflow definition (catalog entry) ──────────────────────────────────────
-
 export interface WorkflowDef {
   /** Namespaced ID: `<enginId>:<slug>` */
   readonly id: string;
@@ -134,8 +126,6 @@ export function findWorkflowDef(workflowId: string): WorkflowDef | undefined {
   return WORKFLOW_CATALOG.find((w) => w.id === workflowId);
 }
 
-// ─── Live workflow instance ───────────────────────────────────────────────────
-
 export interface EnginWorkflow {
   /** Namespaced ID — matches WorkflowDef.id */
   readonly id: string;
@@ -152,8 +142,6 @@ export interface EnginWorkflow {
   /** ISO 8601 timestamp — when the stage last changed */
   updatedAt: string;
 }
-
-// ─── Factory ──────────────────────────────────────────────────────────────────
 
 /**
  * Create a new EnginWorkflow instance in `draft` stage.
@@ -178,8 +166,6 @@ export function createWorkflow(workflowId: string, now?: string): EnginWorkflow 
     updatedAt: ts,
   };
 }
-
-// ─── Transitions ─────────────────────────────────────────────────────────────
 
 export type StageTransitionResult =
   | { ok: true; workflow: EnginWorkflow }
@@ -245,8 +231,6 @@ export function abandonWorkflow(workflow: EnginWorkflow, now?: string): EnginWor
   return { ...workflow, abandoned: true, updatedAt: ts };
 }
 
-// ─── Handoff eligibility ──────────────────────────────────────────────────────
-
 export interface HandoffEligibility {
   readonly eligible: boolean;
   /** Populated only when eligible is true */
@@ -284,8 +268,6 @@ export function checkHandoffEligibility(workflow: EnginWorkflow): HandoffEligibi
   }
   return { eligible: true, availablePaths };
 }
-
-// ─── Utility ──────────────────────────────────────────────────────────────────
 
 /**
  * Returns a short human-readable summary string for a workflow.

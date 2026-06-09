@@ -5,8 +5,18 @@
     "[present-tense observation]. [pause]. [acceptance]",
     "[fragment]. [fragment]."
   ],
-  "vocabulary_lean": ["long", "heavy", "again", "enough", "rest"],
-  "vocabulary_avoid": ["bright", "sprint", "celebrate"],
+  "vocabulary_lean": [
+    "long",
+    "heavy",
+    "again",
+    "enough",
+    "rest"
+  ],
+  "vocabulary_avoid": [
+    "bright",
+    "sprint",
+    "celebrate"
+  ],
   "example_lines": [
     "Long day. Longer night.",
     "Boots are heavy. So is everything."

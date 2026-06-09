@@ -1,8 +1,6 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile, type EnginProfileId } from './EnginCapabilityTargets';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/EnginCapabilityExecution.ts.
 
@@ -14,11 +12,7 @@
  * runtime move toward those targets without putting raw metrics in UI copy.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -67,17 +61,9 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = 
   }),
 });
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile, type EnginProfileId } from './EnginCapabilityTargets';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -144,8 +130,6 @@ export interface RayHit {
   readonly index: number;
   readonly distance: number;
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -425,14 +409,8 @@ export function createEnginCapabilityExecutionKernel(
   return new EnginCapabilityExecutionKernel(profile);
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

@@ -1,3 +1,5 @@
+import type { gsap as GsapType } from 'gsap';
+
 /**
  * lib/gsap/gsap.ts
  *
@@ -17,8 +19,6 @@
  *     });
  *   }, []);
  */
-
-import type { gsap as GsapType } from 'gsap';
 
 let _gsap: typeof GsapType | null = null;
 

@@ -1,4 +1,8 @@
 'use client';
+
+import { getGsap } from '@/lib/gsap/gsap';
+import { useEffect, useRef } from 'react';
+
 /**
  * lib/gsap/useGsapEntrance.ts
  *
@@ -14,9 +18,6 @@
  *     {items.map(…)}
  *   </div>
  */
-
-import { getGsap } from '@/lib/gsap/gsap';
-import { useEffect, useRef } from 'react';
 
 /**
  * Plays a staggered from-below fade-in on every direct child of `containerRef`.
@@ -72,6 +73,6 @@ export function useGsapEntrance(
         clearProps: 'willChange',
       });
     });
-     
+
   }, deps);
 }

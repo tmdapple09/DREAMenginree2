@@ -1,6 +1,7 @@
-// SURFACE: dreamsurface.UHandle  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.UHandle  (framework-mandated basename: page.tsx)
 
 /**
  * Legacy /u/[handle] route — redirects to canonical /profile/[handle].

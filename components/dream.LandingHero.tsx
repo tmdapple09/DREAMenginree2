@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react';
 import { calibrateDevice, type CalibrationSample } from '@/lib/dreamr/swipeCalibration';
 import LandingProductStatement from '@/components/landing/dream.LandingProductStatement';
 
-// ── Gesture calibration state ────────────────────────────────────────────────
-
 interface CalibrationState {
   samples: CalibrationSample[];
   calibrated: boolean;
@@ -20,8 +18,6 @@ interface CalibrationState {
     travelPx: number;
   } | null;
 }
-
-// ── Component ────────────────────────────────────────────────────────────────
 
 export default function LandingHero() {
   const calibrationRef = useRef<CalibrationState>({

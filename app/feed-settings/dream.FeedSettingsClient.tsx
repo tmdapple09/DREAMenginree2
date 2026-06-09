@@ -1,5 +1,9 @@
 'use client';
 
+import { ArrowLeft, Check, Loader2, Plus, Rss, Sliders } from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * FeedSettingsClient — interactive feed preference toggles with database persistence.
  *
@@ -10,10 +14,6 @@
  * Settings are persisted to /api/settings/feed (profiles.feed_preferences column).
  * localStorage is used only as a write-through cache for instant UI responsiveness.
  */
-
-import { ArrowLeft, Check, Loader2, Plus, Rss, Sliders } from 'lucide-react';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'de-feed-settings';
 

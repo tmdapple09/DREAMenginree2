@@ -11,8 +11,6 @@
  * scan the codebase and report pass/fail per check.
  */
 
-// ─── Dimensions ───────────────────────────────────────────────────────────────
-
 export type SICCDimension = 'synchronized' | 'intuitive' | 'cohesive' | 'coherent';
 
 export interface UIQualityCheck {
@@ -27,8 +25,6 @@ export interface UIQualityCheck {
   /** Repo-relative paths to search. Empty = whole repo. */
   detectPaths: string[];
 }
-
-// ─── Global SICC checks (apply to every surface) ─────────────────────────────
 
 export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
   // ── Synchronized ──────────────────────────────────────────────────────────
@@ -57,7 +53,6 @@ export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
     detectPaths: ['styles'],
   },
 
-  // ── Intuitive ─────────────────────────────────────────────────────────────
   {
     id: 'aria-labels',
     dimension: 'intuitive',
@@ -83,7 +78,6 @@ export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
     detectPaths: ['components'],
   },
 
-  // ── Cohesive ──────────────────────────────────────────────────────────────
   {
     id: 'accent-token',
     dimension: 'cohesive',
@@ -109,7 +103,6 @@ export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
     detectPaths: ['components/daydream', 'components/dreams'],
   },
 
-  // ── Coherent ──────────────────────────────────────────────────────────────
   {
     id: 'canonical-naming',
     dimension: 'coherent',
@@ -135,8 +128,6 @@ export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
     detectPaths: ['components/daydream'],
   },
 ] as const;
-
-// ─── Per-dimension helpers ────────────────────────────────────────────────────
 
 /** Filter global criteria to a single SICC dimension. */
 export function getCriteriaForDimension(dim: SICCDimension): UIQualityCheck[] {

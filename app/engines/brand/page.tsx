@@ -1,10 +1,11 @@
-// SURFACE: dreamsurface.EnginesBrand  (framework-mandated basename: page.tsx)
 import BrandEnginApp from '@/components/engines/brand/dream.BrandEnginApp';
 import { isDevBypassActive } from '@/lib/dev-bypass';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.EnginesBrand  (framework-mandated basename: page.tsx)
 export default async function BrandEnginAppPage( ){
   await connection();
   const supabase = await createServerClient();

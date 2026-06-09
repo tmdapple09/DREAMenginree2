@@ -1,15 +1,15 @@
-// app/api/shared-dream/sessions/route.ts
-// GET  — list sessions the current user is a member of
-// POST — create a new named session
-
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { createServerClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
+// app/api/shared-dream/sessions/route.ts
+// GET  — list sessions the current user is a member of
+// POST — create a new named session
+
 // Escape hatch for missing database types to prevent "Type instantiation is excessively deep"
- 
+
 type AnyClient = SupabaseClient;
 
 const CreateSchema = z.object({

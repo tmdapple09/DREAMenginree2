@@ -1,3 +1,6 @@
+import { normaliseBluesky } from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/bluesky.ts
  *
@@ -13,9 +16,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseBluesky } from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 const BSKY_PDS = 'https://bsky.social';
 

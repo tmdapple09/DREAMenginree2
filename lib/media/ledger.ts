@@ -276,3 +276,4 @@ export async function downloadBlobFromLedgerStorage(
   }
   return decodeLedgerBlob(data);
 }
+

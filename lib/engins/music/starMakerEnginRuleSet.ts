@@ -1,17 +1,3 @@
-/**
- * lib/engins/music/starMakerEnginRuleSet.ts
- *
- * StarMakerEngin Rule-Set — the ONLY place StarMakerEngin domain logic lives.
- *
- * Domain: music production (BPM, key, stems, releases, playback).
- * Handoff kinds: music:stem-ready → ContentEngin, music:brand-audio-brief → BrandingEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
-
 import {
     patchBaseState,
     type EnginBaseState,
@@ -28,11 +14,21 @@ import type {
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
-// ─── Playback quality modes ───────────────────────────────────────────────────
+/**
+ * lib/engins/music/starMakerEnginRuleSet.ts
+ *
+ * StarMakerEngin Rule-Set — the ONLY place StarMakerEngin domain logic lives.
+ *
+ * Domain: music production (BPM, key, stems, releases, playback).
+ * Handoff kinds: music:stem-ready → ContentEngin, music:brand-audio-brief → BrandingEngin.
+ *
+ * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
+ * The EnginRuntime handles all of that.
+ *
+ * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
+ */
 
 export type PlaybackQualityMode = 'normal' | 'hq' | 'offline';
-
-// ─── Stem channel ─────────────────────────────────────────────────────────────
 
 export interface StemChannel extends JsonObject {
   id: string;
@@ -41,16 +37,12 @@ export interface StemChannel extends JsonObject {
   muted: boolean;
 }
 
-// ─── Release entry ────────────────────────────────────────────────────────────
-
 export interface MusicRelease extends JsonObject {
   id: string;
   title: string;
   visibility: 'private' | 'public';
   created_at: string;
 }
-
-// ─── Domain state shape ───────────────────────────────────────────────────────
 
 export interface StarMakerEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
@@ -66,8 +58,6 @@ export interface StarMakerEnginDerivedState extends JsonObject {
   audioBriefReady: boolean;
 }
 
-// ─── Action discriminated union ───────────────────────────────────────────────
-
 export type StarMakerEnginAction =
   | EnginAction<'music:bpm-set',          { bpm: number }>
   | EnginAction<'music:key-set',          { key: string; isMinor: boolean }>
@@ -81,8 +71,6 @@ export type StarMakerEnginAction =
   | EnginAction<'music:release-publish',  { releaseId: string }>
   | EnginAction<'music:playback-mode',    { mode: PlaybackQualityMode }>
   | EnginAction<'music:audio-brief-ready', Record<string, never>>;
-
-// ─── Default domain state ─────────────────────────────────────────────────────
 
 const DEFAULT_STEMS: StemChannel[] = [
   { id: 'kick',  name: 'Kick',   volume: 80, muted: false },
@@ -103,8 +91,6 @@ const DEFAULT_DOMAIN: Omit<StarMakerEnginDerivedState, 'lifecycle'> = {
   playbackMode: 'normal',
   audioBriefReady: false,
 };
-
-// ─── Constraints ──────────────────────────────────────────────────────────────
 
 const bpmConstraint: EnginConstraint<StarMakerEnginAction> = (
   _state,
@@ -141,8 +127,6 @@ const volumeConstraint: EnginConstraint<StarMakerEnginAction> = (
   }
   return { valid: true };
 };
-
-// ─── Transform ────────────────────────────────────────────────────────────────
 
 function transform(state: EnginBaseState, action: StarMakerEnginAction): EnginBaseState {
   const domain = (state.domain as Partial<typeof DEFAULT_DOMAIN>);
@@ -220,8 +204,6 @@ function transform(state: EnginBaseState, action: StarMakerEnginAction): EnginBa
   }
 }
 
-// ─── deriveState ──────────────────────────────────────────────────────────────
-
 function deriveState(state: EnginBaseState): StarMakerEnginDerivedState {
   const d = state.domain as Partial<typeof DEFAULT_DOMAIN>;
   return {
@@ -239,15 +221,12 @@ function deriveState(state: EnginBaseState): StarMakerEnginDerivedState {
   };
 }
 
-// ─── Rule-set params ──────────────────────────────────────────────────────────
-
 const PARAMS: EnginRuleSetParams = {
   enginId: 'music',
   name: 'StarMakerEngin',
   layoutMode: 'standard',
   accentColor: '#a855f7',
 };
-
 
 const MANIFEST: EnginRuleSetManifest<StarMakerEnginAction> = {
   id: PARAMS.enginId,
@@ -273,8 +252,6 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'bridge:emit',
   'bridge:listen',
 ];
-
-// ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const STAR_MAKER_ENGIN_RULE_SET: EnginRuleSetContract<StarMakerEnginAction> = {
   manifest: MANIFEST,

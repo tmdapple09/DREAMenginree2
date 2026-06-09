@@ -226,3 +226,4 @@ export default function UniversalWidget({ service = null, title, sliceName }: Un
     </WidgetCard>
   );
 }
+

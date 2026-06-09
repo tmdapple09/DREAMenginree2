@@ -1,6 +1,3 @@
-// lib/ai/handlers/dreams.ts
-// Dream Management Intent Handlers
-
 import {
     DreamAddFromPresetPayload,
     DreamConfigPatchPayload,
@@ -10,6 +7,9 @@ import {
     DreamReorderPayload,
 } from '@/types/ai-system';
 import { ToolHandler } from '../tool-router';
+
+// lib/ai/handlers/dreams.ts
+// Dream Management Intent Handlers
 
 // ============================================================================
 // DREAM_PREVIEW Handler

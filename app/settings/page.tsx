@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.Settings  (framework-mandated basename: page.tsx)
 import { isOwnerEmail } from '@/lib/ai/triad';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
@@ -21,6 +20,8 @@ import {
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.Settings  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Settings – Dreamengin' };
 

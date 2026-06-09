@@ -106,3 +106,4 @@ export default function LedgerChart({ data, width = 800, height = 360 }: Props) 
     </div>
   );
 }
+

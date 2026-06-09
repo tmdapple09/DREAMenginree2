@@ -1,3 +1,12 @@
+import type {
+    CartridgeAchievementsAPI,
+    CartridgeAssetsAPI,
+    CartridgeAudioAPI,
+    CartridgeHapticsAPI,
+    CartridgeNetworkAPI,
+    CartridgeSaveAPI,
+} from '../cartridge';
+
 /**
  * lib/gameengin/cartridges/apiStubs.ts
  *
@@ -11,15 +20,6 @@
  * sensible defaults so cartridge code never needs to null-check the api object.
  */
 
-import type {
-    CartridgeAchievementsAPI,
-    CartridgeAssetsAPI,
-    CartridgeAudioAPI,
-    CartridgeHapticsAPI,
-    CartridgeNetworkAPI,
-    CartridgeSaveAPI,
-} from '../cartridge';
-
 function warn(capability: string, method: string): void {
   if (process.env.NODE_ENV !== 'production') {
     console.warn(
@@ -29,8 +29,6 @@ function warn(capability: string, method: string): void {
   }
 }
 
-// ── Save ──────────────────────────────────────────────────────────────────────
-
 export const stubSaveAPI: CartridgeSaveAPI = {
   async list()             { warn('save', 'list'); return []; },
   async load()             { warn('save', 'load'); return null; },
@@ -39,15 +37,11 @@ export const stubSaveAPI: CartridgeSaveAPI = {
   async autoSave()         { warn('save', 'autoSave'); },
 };
 
-// ── Achievements ──────────────────────────────────────────────────────────────
-
 export const stubAchievementsAPI: CartridgeAchievementsAPI = {
   async unlock()           { warn('achievements', 'unlock'); },
   async progress()         { warn('achievements', 'progress'); },
   async getAll()           { warn('achievements', 'getAll'); return []; },
 };
-
-// ── Audio ─────────────────────────────────────────────────────────────────────
 
 export const stubAudioAPI: CartridgeAudioAPI = {
   async resume()           { warn('audio', 'resume'); },
@@ -59,23 +53,17 @@ export const stubAudioAPI: CartridgeAudioAPI = {
   fadeOut()                { warn('audio', 'fadeOut'); },
 };
 
-// ── Haptics ───────────────────────────────────────────────────────────────────
-
 export const stubHapticsAPI: CartridgeHapticsAPI = {
   rumble()                 { warn('haptics', 'rumble'); },
   tap()                    { warn('haptics', 'tap'); },
   impact()                 { warn('haptics', 'impact'); },
 };
 
-// ── Assets ────────────────────────────────────────────────────────────────────
-
 export const stubAssetsAPI: CartridgeAssetsAPI = {
   prefetch()               { warn('assets', 'prefetch'); },
   get()                    { warn('assets', 'get'); return null; },
   resolve(path: string)    { warn('assets', 'resolve'); return path; },
 };
-
-// ── Network ───────────────────────────────────────────────────────────────────
 
 export const stubNetworkAPI: CartridgeNetworkAPI = {
   async joinSession()      { warn('network', 'joinSession'); return ''; },

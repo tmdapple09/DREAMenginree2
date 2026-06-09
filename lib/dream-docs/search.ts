@@ -1,10 +1,10 @@
+import { createServerClient } from '@/lib/supabase/server';
+
 /**
  * lib/dream-docs/search.ts
  * Dr. Eams knowledge base semantic search.
  * Used by the AI bar to answer "how do I..." questions.
  */
-
-import { createServerClient } from '@/lib/supabase/server';
 
 export interface DreamDocSearchResult {
   sectionId: number;

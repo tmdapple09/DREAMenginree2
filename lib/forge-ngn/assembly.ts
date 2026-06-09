@@ -1,3 +1,6 @@
+import type { PieceManifest } from './piece-registry';
+import { getPiece } from './piece-registry';
+
 /**
  * NGN Engin — Engine Assembly
  *
@@ -10,11 +13,6 @@
  *
  * Feature 41.
  */
-
-import type { PieceManifest } from './piece-registry';
-import { getPiece } from './piece-registry';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export interface PlacedPiece {
   /** Unique instance id (UUID) */
@@ -52,12 +50,8 @@ export type AssemblyValidationError =
   | { code: 'missing-output'; message: string }
   | { code: 'unknown-piece'; pieceId: string; message: string };
 
-// ── Constants ─────────────────────────────────────────────────────────────────
-
 export const MIN_PIECES = 3;
 export const MAX_PIECES = 30;
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function uuid(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -65,8 +59,6 @@ function uuid(): string {
   }
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
-
-// ── Factory ───────────────────────────────────────────────────────────────────
 
 export function createAssembly(name: string, description = ''): EngineAssembly {
   return {
@@ -79,8 +71,6 @@ export function createAssembly(name: string, description = ''): EngineAssembly {
     updatedAt: Date.now(),
   };
 }
-
-// ── Piece CRUD ────────────────────────────────────────────────────────────────
 
 export function addPiece(
   assembly: EngineAssembly,
@@ -132,8 +122,6 @@ export function movePiece(
   };
 }
 
-// ── Connection CRUD ───────────────────────────────────────────────────────────
-
 export function addConnection(
   assembly: EngineAssembly,
   fromInstanceId: string,
@@ -162,8 +150,6 @@ export function removeConnection(
     updatedAt: Date.now(),
   };
 }
-
-// ── Validation ────────────────────────────────────────────────────────────────
 
 export function validateAssembly(
   assembly: EngineAssembly,
@@ -212,8 +198,6 @@ export function validateAssembly(
 export function isValidAssembly(assembly: EngineAssembly): boolean {
   return validateAssembly(assembly).length === 0;
 }
-
-// ── JSON Serialization ────────────────────────────────────────────────────────
 
 export function serializeAssembly(assembly: EngineAssembly): string {
   return JSON.stringify(assembly, null, 2);

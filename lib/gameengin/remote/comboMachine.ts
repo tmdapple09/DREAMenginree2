@@ -1,3 +1,12 @@
+import {
+    ALL_COMBOS,
+    maxComboLength,
+    MULTITOUCH_COMBOS,
+    type Combo,
+    type FaceButton,
+    type MultiTouchCombo,
+} from './moves';
+
 /**
  * lib/gameengin/remote/comboMachine.ts
  *
@@ -17,15 +26,6 @@
  * `consume()` result as the highest-priority combo recognised at that
  * instant. Returning a combo also resets the sequence buffer.
  */
-
-import {
-    ALL_COMBOS,
-    maxComboLength,
-    MULTITOUCH_COMBOS,
-    type Combo,
-    type FaceButton,
-    type MultiTouchCombo,
-} from './moves';
 
 export const COMBO_WINDOW_MS = 350;
 export const MULTITOUCH_WINDOW_MS = 60;

@@ -1,12 +1,12 @@
+import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
+import { AlertTriangle, ArrowLeft, ArrowUpRight, Bell, BookOpen, ChevronRight, Eye, FileText, Info, Scale, Shield } from 'lucide-react';
+import Link from 'next/link';
+
 // SURFACE: dreamsurface.Policy  (framework-mandated basename: page.tsx)
 // app/policy/page.tsx
 // TheBoogieMan.Ai — public policy page (req 6–15, K99).
 // Readable, versioned, accessible without login, linked from footer + Settings.
 // Source of truth: docs/BOOGIEMAN_POLICY.md — this page mirrors it.
-
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
-import { AlertTriangle, ArrowLeft, ArrowUpRight, Bell, BookOpen, ChevronRight, Eye, FileText, Info, Scale, Shield } from 'lucide-react';
-import Link from 'next/link';
 
 export const metadata = {
   title: 'Community + Safety Policy – Dreamengin',
@@ -343,8 +343,6 @@ export default function PolicyPage( ){
     </div>
   );
 }
-
-// ---- helpers ----------------------------------------------------------------
 
 function PolicyTable({ rows }: {rows: [string, string, string][]}) {
   return (

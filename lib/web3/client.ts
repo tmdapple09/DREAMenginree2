@@ -1,3 +1,14 @@
+import {
+    DEFAULT_CHAIN_ID,
+    SUPPORTED_CHAINS,
+    WalletAccount,
+    WalletConnectionState,
+    WalletProvider,
+    Web3Error,
+    type ChainConfig,
+} from './types';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/web3/client.ts
  *
@@ -14,17 +25,6 @@
  * degrades gracefully to a typed error rather than crashing.
  */
 
-import {
-    DEFAULT_CHAIN_ID,
-    SUPPORTED_CHAINS,
-    WalletAccount,
-    WalletConnectionState,
-    WalletProvider,
-    Web3Error,
-    type ChainConfig,
-} from './types';
-
-import { toErrorMessage } from '@/lib/utils';
 // ─── EIP-1193 minimal types ───────────────────────────────────────────────────
 
 interface Eip1193Provider {
@@ -39,8 +39,6 @@ declare global {
   }
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 function toChecksumAddress(address: string): string {
   // Minimal EIP-55 checksum — safe fallback until a full impl is added.
   return address;
@@ -52,8 +50,6 @@ function detectProviderType(provider: Eip1193Provider): WalletProvider {
   if (p?.isCoinbaseWallet) return 'coinbase';
   return 'injected';
 }
-
-// ─── Web3Client ───────────────────────────────────────────────────────────────
 
 type ClientEventType =
   | 'accountChanged'
@@ -69,8 +65,6 @@ export class Web3Client {
   private connectionState: WalletConnectionState = 'disconnected';
   private listeners = new Map<ClientEventType, Set<ClientListener>>();
 
-  // ── Event emitter ────────────────────────────────────────────────────────
-
   on<T = unknown>(event: ClientEventType, listener: ClientListener<T>): this {
     if (!this.listeners.has(event)) this.listeners.set(event, new Set());
     this.listeners.get(event)!.add(listener as ClientListener);
@@ -85,8 +79,6 @@ export class Web3Client {
   private emit<T = unknown>(event: ClientEventType, payload: T): void {
     this.listeners.get(event)?.forEach((cb) => cb(payload));
   }
-
-  // ── State accessors ──────────────────────────────────────────────────────
 
   getAccount(): WalletAccount | null {
     return this.account;
@@ -104,8 +96,6 @@ export class Web3Client {
     const id = chainId ?? this.account?.chainId ?? DEFAULT_CHAIN_ID;
     return SUPPORTED_CHAINS[id] ?? null;
   }
-
-  // ── Connection ───────────────────────────────────────────────────────────
 
   /**
    * Connect to the injected browser wallet.
@@ -168,8 +158,6 @@ export class Web3Client {
     this.emit('disconnected', undefined);
   }
 
-  // ── Network switching ────────────────────────────────────────────────────
-
   async switchChain(chainId: number): Promise<void> {
     if (!this.provider) throw new Web3Error('Not connected', 'WALLET_NOT_FOUND');
 
@@ -207,8 +195,6 @@ export class Web3Client {
     }
   }
 
-  // ── Personal sign (used for auth challenges) ─────────────────────────────
-
   async signMessage(message: string): Promise<string> {
     if (!this.provider || !this.account) {
       throw new Web3Error('Not connected', 'WALLET_NOT_FOUND');
@@ -224,8 +210,6 @@ export class Web3Client {
 
     return signature;
   }
-
-  // ── Provider listeners ────────────────────────────────────────────────────
 
   private readonly onAccountsChanged = (accounts: string[]) => {
     const addrs = accounts as string[];
@@ -268,8 +252,6 @@ export class Web3Client {
     this.emit('connectionStateChanged', { prev, next });
   }
 }
-
-// ─── Singleton ────────────────────────────────────────────────────────────────
 
 /** Application-level singleton — import this everywhere instead of `new Web3Client()`. */
 export const web3Client = new Web3Client();

@@ -1,3 +1,12 @@
+import {
+    coarseGrainInvariance,
+    crossSwipeSimilarity,
+    deviationEntropy,
+    perpendicularDeviation,
+    velocityVarianceJerk,
+    type Path,
+} from './swipe-physics';
+
 /**
  * lib/bot-detection/detector.ts — §36 BotDetector Class
  *
@@ -8,17 +17,6 @@
  *   If mean deviation < 1.5 px → freeze UI 3–5 s.
  *   Second consecutive perfect swipe → flag as bot.
  */
-
-import {
-    coarseGrainInvariance,
-    crossSwipeSimilarity,
-    deviationEntropy,
-    perpendicularDeviation,
-    velocityVarianceJerk,
-    type Path,
-} from './swipe-physics';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SwipeRecord {
   path:       Path;
@@ -31,8 +29,6 @@ export interface BotScore {
   flags:      string[];
 }
 
-// ─── Thresholds ───────────────────────────────────────────────────────────────
-
 const PERFECT_LINE_PX        = 1.5;
 const BOT_DEVIATION_PX       = 0.8;
 const BOT_CROSS_SIM          = 0.95;
@@ -43,14 +39,10 @@ const FREEZE_MIN_MS           = 3000;
 const FREEZE_MAX_MS           = 5000;
 const BOT_CONFIDENCE_THRESHOLD = 0.6;
 
-// ─── BotDetector ─────────────────────────────────────────────────────────────
-
 export class BotDetector {
   private readonly history: SwipeRecord[] = [];
   private perfectLineStreak    = 0;
   private frozenUntilMs        = 0;
-
-  // ── Public API ─────────────────────────────────────────────────────────────
 
   /** Add a swipe to the history. Also runs the Perfect Line Trap. */
   recordSwipe(path: Path, timestamps: number[]): 'ok' | 'freeze' | 'block' {

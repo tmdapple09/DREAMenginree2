@@ -13,7 +13,7 @@
  *       a. Reads the DreamDM Bar y-offset from the SAB (Dual-Runtime Seam).
  *       b. Applies f32x4.add velocity integration to posX/posY/posZ for
  *          every entity in the assigned [startIndex, endIndex) range.
- *       c. Validates every write index before touching the SAB (IDARi / 
+ *       c. Validates every write index before touching the SAB (IDARi /
  *          TheBoogieMan audit — no write outside assigned range).
  *       d. Records µs/tick in the SAB Telemetry Zone (OFFSET_TELEMETRY + workerIndex * 8).
  *       e. Posts a 'tick' message to the dispatcher with the telemetry value.
@@ -27,7 +27,6 @@
  * When served from public/ as a static asset the compiled JS is used directly.
  */
 
-// ─── SAB layout constants (kept local to avoid bundler import issues) ─────────
 // These mirror lib/runtime/memory.ts — keep in sync.
 
 const ENTITY_COUNT      = 10_000;
@@ -48,8 +47,6 @@ const OFFSET_AXIS_STATE   = 250_524;  // Int32 — 0=Portrait/Y, 1=Landscape/X
 
 /** Fixed-point scale for the bar seam slots — mirrors BAR_Y_SCALE in memory.ts. */
 const BAR_Y_SCALE = 100;
-
-// ─── Worker state ─────────────────────────────────────────────────────────────
 
 interface Workgroup {
   workerIndex: number;
@@ -75,8 +72,6 @@ let barX: Int32Array;      // Int32 for Atomics.load — landscape seam
 let lockedState: Int32Array; // 0 = unlocked, 1 = STATE_LOCKED
 let axisState: Int32Array;   // 0 = Portrait/Y, 1 = Landscape/X
 let telemetry: Float64Array;
-
-// ─── Wasm SIMD stub ───────────────────────────────────────────────────────────
 
 /**
  * Simulated f32x4.add — adds velocity to position for four entities at a time.
@@ -110,8 +105,6 @@ function wasmSIMDAddF32x4(
     pArr[i] += vArr[i];
   }
 }
-
-// ─── Wasm engine (optional) ───────────────────────────────────────────────────
 
 interface WasmExports {
   tickPhysicsSIMD: (posPtr: number, velPtr: number, count: number, deltaTime: number) => void;
@@ -162,8 +155,6 @@ async function tryLoadWasm(wasmUrl: string, memory: WebAssembly.Memory | null): 
   }
 }
 
-// ─── Bounds guard (IDARi / TheBoogieMan audit) ────────────────────────────────
-
 /**
  * Verify that index falls within the worker's assigned Workgroup.
  * Posts a 'bounds_violation' message and returns false if the index is unsafe.
@@ -180,8 +171,6 @@ function assertInBounds(index: number): boolean {
   });
   return false;
 }
-
-// ─── Physics tick ─────────────────────────────────────────────────────────────
 
 function tick(): void {
   if (!workgroup || !sab) return;
@@ -276,15 +265,11 @@ function tick(): void {
   });
 }
 
-// ─── RAF loop ─────────────────────────────────────────────────────────────────
-
 function rafLoop(): void {
   if (!running) return;
   tick();
   rafHandle = requestAnimationFrame(rafLoop);
 }
-
-// ─── Message handler ──────────────────────────────────────────────────────────
 
 self.onmessage = (evt: MessageEvent) => {
   const msg = evt.data as {

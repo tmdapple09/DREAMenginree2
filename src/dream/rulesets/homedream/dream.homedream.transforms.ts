@@ -1,7 +1,7 @@
+import { HOMEDREAM_WORLD_ID } from './dream.homedream.constants';
+
 // dream.homedream.transforms — state transformation functions
 // Pure functions only. No side effects. No engin imports.
-
-import { HOMEDREAM_WORLD_ID } from './dream.homedream.constants';
 
 export interface EntityState {
   id: string;

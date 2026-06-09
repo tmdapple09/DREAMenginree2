@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 /**
  * lib/enginpipe/artifact/manifest.ts
  *
@@ -17,8 +19,6 @@
  *
  * Server-safe: pure TypeScript, no React, no DOM.
  */
-
-import { z } from 'zod';
 
 /** All recognised permission scopes an artifact may request. */
 export const ArtifactPermissionSchema = z.enum([

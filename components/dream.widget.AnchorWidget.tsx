@@ -33,11 +33,11 @@ export function AnchorWidget({
   // Persistent state buffers (outside React)
   const anchorStateRef = useRef<AnchorStateBuffer>(new AnchorStateBuffer());
   const anchorState = anchorStateRef.current;
-  
+
   // Hit target rect (cached)
   const hitRectRef = useRef({ x0: 0, y0: 0, x1: 0, y1: 0 });
   const dropRectRef = useRef({ x0: 0, y0: 0, x1: 0, y1: 0 });
-  
+
   // Gesture state
   const gestureStateRef = useRef({
     isActive: false,
@@ -46,20 +46,20 @@ export function AnchorWidget({
     startTime: 0,
     pointerId: -1
   });
-  
+
   // Force re-render when state changes
   const [, forceUpdate] = useState(0);
   const triggerUpdate = useCallback(() => forceUpdate((v) => v + 1), []);
-  
+
   // Container ref
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   /**
    * Update cached rects on mount and resize
    */
   const updateCachedRects = useCallback(() => {
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     hitRectRef.current = {
       x0: rect.left,
@@ -67,7 +67,7 @@ export function AnchorWidget({
       x1: rect.right,
       y1: rect.bottom
     };
-    
+
     // Drop rect is slightly larger for easier targeting
     const padding = 20;
     dropRectRef.current = {
@@ -76,23 +76,21 @@ export function AnchorWidget({
       x1: rect.right + padding,
       y1: rect.bottom + padding
     };
-    
+
     // Notify parent of rect update
     onRectUpdate?.(dropRectRef.current);
   }, [onRectUpdate]);
-  
-  
-  
+
   /**
    * Handle tap behavior
    */
   const handleTap = useCallback(() => {
     const mode = anchorState.mode;
-    
+
     if (mode === MODE_HOME) {
       // Open Home and return to HOME-safe state
       anchorState.isOpen = true;
-      
+
       // Pop ReturnStack until HOME-safe
       const snapshot = returnStack.popUntilLayer(LAYER_HOME);
       if (snapshot) {
@@ -111,52 +109,52 @@ export function AnchorWidget({
       // Restore previous mode
       anchorState.restoreFromShrunk();
       anchorState.isOpen = true;
-      
+
       // If restoring to PROFILE, ensure correct NavState
       if (anchorState.mode === MODE_PROFILE) {
         navStateBuffer.layer = LAYER_PROFILE;
         navStateBuffer.depth = PROFILE_DEPTH;
       }
     }
-    
+
     triggerUpdate();
   }, [anchorState, navStateBuffer, returnStack, triggerUpdate]);
-  
+
   /**
    * Handle hold behavior (Dream selector)
    */
   const handleHold = useCallback(() => {
     if (anchorState.isOpen) return; // Only fire when closed
-    
+
     anchorState.holdLatch = HOLD_FIRED;
-    
+
     // Open Dream selector overlay
     onDreamSelectorOpen?.();
-    
+
     triggerUpdate();
   }, [anchorState, onDreamSelectorOpen, triggerUpdate]);
-  
+
   /**
    * Pointer down handler
    */
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
-    
+
     const gesture = gestureStateRef.current;
     gesture.isActive = true;
     gesture.startX = e.clientX;
     gesture.startY = e.clientY;
     gesture.startTime = Date.now();
     gesture.pointerId = e.pointerId;
-    
+
     // Capture pointer
     if (containerRef.current) {
       containerRef.current.setPointerCapture(e.pointerId);
     }
-    
+
     // Start hold detection
     anchorState.holdLatch = HOLD_HOLDING;
-    
+
     // Check for hold after threshold
     setTimeout(() => {
       const elapsed = Date.now() - gesture.startTime;
@@ -169,18 +167,18 @@ export function AnchorWidget({
       }
     }, HOLD_THRESHOLD_MS);
   }, [anchorState, handleHold]);
-  
+
   /**
    * Pointer up handler
    */
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     const gesture = gestureStateRef.current;
     if (!gesture.isActive || gesture.pointerId !== e.pointerId) return;
-    
+
     const dx = Math.abs(e.clientX - gesture.startX);
     const dy = Math.abs(e.clientY - gesture.startY);
     const elapsed = Date.now() - gesture.startTime;
-    
+
     // Recognize tap if:
     // - holdLatch is not FIRED
     // - movement within TAP_SLOP
@@ -193,31 +191,31 @@ export function AnchorWidget({
     ) {
       handleTap();
     }
-    
+
     // Reset gesture state
     gesture.isActive = false;
     anchorState.holdLatch = HOLD_IDLE;
-    
+
     if (containerRef.current) {
       containerRef.current.releasePointerCapture(e.pointerId);
     }
   }, [anchorState, handleTap]);
-  
+
   /**
    * Pointer cancel handler
    */
   const handlePointerCancel = useCallback((e: React.PointerEvent) => {
     const gesture = gestureStateRef.current;
     if (gesture.pointerId !== e.pointerId) return;
-    
+
     gesture.isActive = false;
     anchorState.holdLatch = HOLD_IDLE;
-    
+
     if (containerRef.current) {
       containerRef.current.releasePointerCapture(e.pointerId);
     }
   }, [anchorState]);
-  
+
   /**
    * Load persisted state on mount
    */
@@ -228,37 +226,37 @@ export function AnchorWidget({
         anchorState.mode = stored.mode;
         anchorState.prevMode = stored.prevMode;
         anchorState.isOpen = stored.isOpen;
-        
+
         if (stored.navSnapshot) {
           navStateBuffer.restore(stored.navSnapshot);
         }
-        
+
         triggerUpdate();
       }
     };
-    
+
     loadState();
   }, [anchorState, navStateBuffer, triggerUpdate]);
-  
+
   /**
    * Update rects on mount and resize
    */
   useEffect(() => {
     updateCachedRects();
-    
+
     const handleResize = () => {
       updateCachedRects();
     };
-    
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
     };
   }, [updateCachedRects]);
-  
+
   /**
    * Persist state on changes (idle callback)
    */
@@ -269,17 +267,17 @@ export function AnchorWidget({
       state.prevMode = anchorState.prevMode;
       state.isOpen = anchorState.isOpen;
       state.navSnapshot = navStateBuffer.snapshot();
-      
+
       AnchorWidgetStorage.saveIdle(state);
     };
-    
+
     saveState();
   }, [anchorState.mode, anchorState.prevMode, anchorState.isOpen, navStateBuffer]);
-  
+
   // Render based on current mode
   const modeNames = ['HOME', 'PROFILE', 'SHRUNK'];
   const currentModeName = modeNames[anchorState.mode] || 'UNKNOWN';
-  
+
   return (
     <div
       ref={containerRef}

@@ -43,3 +43,4 @@ export interface BoogieManAgent extends AIAgent {
 }
 
 export type AnyAIAgent = DrEamsAgent | IDARiAgent | BoogieManAgent;
+

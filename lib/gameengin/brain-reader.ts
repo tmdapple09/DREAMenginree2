@@ -1,3 +1,7 @@
+import { createHash } from 'node:crypto';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
 /**
  * lib/gameengin/brain-reader.ts
  *
@@ -7,10 +11,6 @@
  * Used by the autonomous studio agent scripts under scripts/gameengin/.
  * Server-only — uses node:fs / node:path / node:crypto.
  */
-
-import { createHash } from 'node:crypto';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 
 export const BRAIN_ROOT = path.join(process.cwd(), 'lib', 'gameengin', 'brain');
 
@@ -212,9 +212,7 @@ export function logRDSession(agent: string, topic: string, findings: unknown): s
   return filePath;
 }
 
-// ---------------------------------------------------------------------------
 // v2 — Expanded agent profiles (Maestro / Artisan / Mechanic / Writer / Upgrader)
-// ---------------------------------------------------------------------------
 
 const CARTRIDGES_ROOT = path.join(process.cwd(), 'public', 'cartridges');
 
@@ -239,8 +237,6 @@ export function listCartridges(): string[] {
     })
     .sort();
 }
-
-// --- Artisan ---------------------------------------------------------------
 
 export interface TechniqueEntry {
   name: string;
@@ -317,8 +313,6 @@ export function recordAssetGeneration(entry: Omit<AssetRegistryEntry, 'generated
   return filePath;
 }
 
-// --- Writer ---------------------------------------------------------------
-
 export interface CharacterVoice {
   cartridge_id: string;
   character: string;
@@ -380,8 +374,6 @@ export function readNarrativePacing(): NarrativePacing {
   return readJSON<NarrativePacing>(path.join(BRAIN_ROOT, 'narrative-pacing', 'default.json'));
 }
 
-// --- Mechanic -------------------------------------------------------------
-
 export interface BuildHistoryEntry {
   cartridge_id: string;
   source: string;
@@ -401,8 +393,6 @@ export function recordBuild(entry: Omit<BuildHistoryEntry, 'built_at'>): string 
   fs.writeFileSync(filePath, JSON.stringify({ ...entry, built_at: iso }, null, 2));
   return filePath;
 }
-
-// --- Maestro --------------------------------------------------------------
 
 export type AgentName = 'prophet' | 'artisan' | 'mechanic' | 'writer' | 'upgrader';
 
@@ -458,8 +448,6 @@ export function getLastTouched(cartridgeId: string, agent: AgentName): string | 
   return latest;
 }
 
-// --- Upgrader -------------------------------------------------------------
-
 export interface UpgradePrioritizationRules {
   version: number;
   weights: Record<string, number>;
@@ -491,8 +479,6 @@ export function recordUpgrade(entry: Omit<UpgradeHistoryEntry, 'generated_at'>):
   fs.writeFileSync(filePath, JSON.stringify({ ...entry, generated_at: iso }, null, 2));
   return filePath;
 }
-
-// --- Two-Project Rule (active-projects ledger) ----------------------------
 
 export type ProjectFocus = 'primary' | 'parallel';
 
@@ -552,8 +538,6 @@ export function isActiveCartridge(cartridgeId: string): boolean {
   return readActiveProjects().slots.some((s) => s.cartridge_id === cartridgeId);
 }
 
-// --- Crash Reports (player → Maestro feedback loop) -----------------------
-
 export interface CrashReportInput {
   cartridge_id: string;
   player_statement: string;
@@ -607,8 +591,6 @@ export function listCrashReports(cartridgeId: string): CrashReportEntry[] {
     .sort()
     .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) as CrashReportEntry);
 }
-
-// --- Game Architect (Concept Library + Concept Patterns) ------------------
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
@@ -729,8 +711,6 @@ export function readVisionStatement(visionId: string): VisionStatement | null {
   return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as VisionStatement;
 }
 
-// --- Cartridge Status (active / improving / stable) -----------------------
-
 export type CartridgeStatus = 'active' | 'improving' | 'stable';
 
 const VALID_CARTRIDGE_STATUS: readonly CartridgeStatus[] = ['active', 'improving', 'stable'] as const;
@@ -775,8 +755,6 @@ export function setCartridgeStatus(cartridgeId: string, status: CartridgeStatus)
 export function listCartridgesByStatus(status: CartridgeStatus): string[] {
   return listCartridges().filter((id) => readCartridgeStatus(id) === status);
 }
-
-// --- Progression State (modern game-structure aware ledger) ---------------
 
 export interface ProgressionStateInput {
   cartridge_id: string;

@@ -1,6 +1,7 @@
-// SURFACE: dreamsurface.Profile  (framework-mandated basename: page.tsx)
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.Profile  (framework-mandated basename: page.tsx)
 
 /**
  * Legacy profile route — redirects to canonical EditProfileDream.

@@ -1,3 +1,6 @@
+import { normaliseReddit } from '@/lib/connectors/normalise';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/reddit.ts
  *
@@ -17,9 +20,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseReddit } from '@/lib/connectors/normalise';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 const REDDIT_API = 'https://oauth.reddit.com';
 

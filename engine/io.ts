@@ -6,5 +6,6 @@
  * lib/dreamr, lib/feed, lib/ledger, lib/sharedDream) import SupabaseClient
  * through this path to stay decoupled from the concrete Supabase package.
  */
+
 export type { SupabaseClient } from '@supabase/supabase-js';
 export type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';

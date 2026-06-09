@@ -1,9 +1,4 @@
 'use client';
-/**
- * GamesHub — Client-side games collection showcasing the playable catalog.
- * Lazy-loads each game component to keep the initial bundle small.
- * Every finished game is wired here immediately after completion.
- */
 
 import { getAvatarDataUrl, setPlayAsMe } from '@/lib/games/avatar';
 import { GAME_CATALOG, type GameCatalogEntry } from '@/lib/games/catalog';
@@ -22,13 +17,18 @@ import dynamicImport from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+/**
+ * GamesHub — Client-side games collection showcasing the playable catalog.
+ * Lazy-loads each game component to keep the initial bundle small.
+ * Every finished game is wired here immediately after completion.
+ */
+
 const Loading = () => (
   <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--de-text-dim)', fontSize: 13 }}>
     Loading game…
   </div>
 );
 
-// ── Dynamically imported games (ssr:false — all use canvas / browser APIs) ──
 const MadmaxiGame          = dynamicImport(() => import('@/components/games/madmaxi'),                   { ssr: false, loading: Loading });
 const NeonDrift           = dynamicImport(() => import('@/components/games/dream.NeonDrift'),           { ssr: false, loading: Loading });
 const EchoArena           = dynamicImport(() => import('@/components/games/dream.EchoArena'),           { ssr: false, loading: Loading });
@@ -36,7 +36,7 @@ const EchoArena           = dynamicImport(() => import('@/components/games/dream
 const NullCathedral       = dynamicImport(() => import('@/components/games/dream.NullCathedral'),       { ssr: false, loading: Loading });
 const VoidlineGP          = dynamicImport(() => import('@/components/games/dream.VoidlineGP'),          { ssr: false, loading: Loading });
 const SerpentSiege        = dynamicImport(() => import('@/components/games/dream.SerpentSiege'),        { ssr: false, loading: Loading });
-const AvenueOfMirrors     = dynamicImport(() => import('@/components/games/dream.AvenueOfMirrors'),     { ssr: false, loading: Loading });
+const MadMaxiWildfall     = dynamicImport(() => import('@/components/games/dream.MadMaxiWildfall'),     { ssr: false, loading: Loading });
 const EnginFracture       = dynamicImport(() => import('@/components/games/dream.EnginFracture'),       { ssr: false, loading: Loading });
 const Glassfall           = dynamicImport(() => import('@/components/games/dream.Glassfall'),           { ssr: false, loading: Loading });
 const NiteFlyerSolarHymn  = dynamicImport(() => import('@/components/games/dream.NiteFlyerSolarHymn'),  { ssr: false, loading: Loading });
@@ -55,7 +55,7 @@ const GAME_COMPONENTS: Record<string, React.ComponentType> = {
   'null-cathedral': NullCathedral,
   'voidline-gp': VoidlineGP,
   'serpent-siege': SerpentSiege,
-  'avenue-of-mirrors': AvenueOfMirrors,
+  'avenue-of-mirrors': MadMaxiWildfall,
   'engin-fracture': EnginFracture,
   glassfall: Glassfall,
   'nite-flyer-solar-hymn': NiteFlyerSolarHymn,
@@ -77,7 +77,6 @@ const ENGINE_CAPABILITY_CHIPS = [
   'Powered by DREAMengin',
 ] as const;
 
-// ── Tilt-enabled game card ────────────────────────────────────────────────────
 // Extracted as a proper component so `useMotionTilt` (a hook) can be called
 // once per card — hooks cannot be called inside a .map() callback.
 
@@ -341,7 +340,6 @@ export default function GamesHub( ){
     };
   }, []);
 
-  // ── Library — pick a game and play ────────────────────────────────────────
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div

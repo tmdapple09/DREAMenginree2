@@ -1,4 +1,9 @@
 'use client';
+
+import { handlePlacementCancel, handlePlacementDone } from '@/lib/connectors/installFlow';
+import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import { useCallback, useEffect, useState } from 'react';
+
 // components/connectors/dream.PlacementMode.tsx
 // Short placement mode overlay (req 36-40)
 //
@@ -7,10 +12,6 @@
 // • Does NOT change navigation mode — UI-local (req 38)
 // • Respects scroll, does not steal gestures from feeds (req 39)
 // • Exits to LOCKED safe mode (req 40)
-
-import { handlePlacementCancel, handlePlacementDone } from '@/lib/connectors/installFlow';
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
-import { useCallback, useEffect, useState } from 'react';
 
 export interface PlacedWidget {
   widgetId: string;
@@ -71,7 +72,7 @@ export default function PlacementMode({
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-     
+
   }, []);
 
   return (

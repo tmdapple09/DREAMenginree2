@@ -1,12 +1,12 @@
+import type { BufferHandle, GPUBufferDescriptor, VMPerformanceCounters, VMResourceQuotas } from './types';
+import { GPUBufferUsageFlags, VMErrorCode } from './types';
+
 /**
  * lib/vm/bufferManager.ts — GPU Buffer Management
  *
  * Manages GPUBuffer allocation, mapping, and lifecycle for the WASM+GPU VM.
  * Enforces resource quotas and tracks memory usage.
  */
-
-import type { BufferHandle, GPUBufferDescriptor, VMPerformanceCounters, VMResourceQuotas } from './types';
-import { GPUBufferUsageFlags, VMErrorCode } from './types';
 
 export class BufferManager {
   private readonly buffers = new Map<BufferHandle, GPUBufferDescriptor>();

@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 /**
  * lib/enginpipe/telemetry/events.ts
  *
@@ -10,8 +12,6 @@
  *
  * Server-safe: pure TypeScript, no React, no DOM.
  */
-
-import { z } from 'zod';
 
 /** The six canonical event types from §4. */
 export const TelemetryEventTypeSchema = z.enum([

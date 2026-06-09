@@ -1,14 +1,14 @@
 'use client';
 
+import { Loader2, RefreshCw, Share2, Trophy } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 /**
  * ScoresPanel — Personal best scores & leaderboard view for the Games Engine app.
  *
  * Reads from the `game_scores` Supabase table (RLS enforced).
  * Lives at /engines/games/scores.
  */
-
-import { Loader2, RefreshCw, Share2, Trophy } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface GameScore {
   id: string;

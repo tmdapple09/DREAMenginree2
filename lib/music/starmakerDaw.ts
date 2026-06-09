@@ -11,8 +11,6 @@
  * Pure data types & helpers — no side effects, safe for SSR and workers.
  */
 
-// ─── MIDI / Piano Roll ────────────────────────────────────────────────────────
-
 /** Standard MIDI note (0 = C-2, 60 = C4, 127 = G9). */
 export interface MidiNote {
   id: string;
@@ -107,8 +105,6 @@ export function snapToGrid(beat: number, quantize: PianoRollQuantize): number {
   return Math.round(beat / div) * div;
 }
 
-// ─── Comping / Takes ──────────────────────────────────────────────────────────
-
 export type TakeRating = 0 | 1 | 2 | 3;
 
 /** A single recorded audio take for a track or vocal line. */
@@ -193,8 +189,6 @@ export function createInitialCompingState(takeCount: number = 3): CompingState {
   );
   return { takes, compRegions: [], totalDurationSec };
 }
-
-// ─── Session View (Ableton-style clip launcher) ────────────────────────────────
 
 export interface SessionClip {
   id: string;
@@ -329,8 +323,6 @@ export function createInitialSessionView(): SessionViewState {
   return { tracks, scenes, soloTrackId: null };
 }
 
-// ─── Automation ───────────────────────────────────────────────────────────────
-
 export interface AutomationPoint {
   /** Beat position. */
   beat: number;
@@ -381,8 +373,6 @@ export function createInitialAutomationState(): AutomationState {
   return { lanes: [vocalsLane], mode: "read" };
 }
 
-// ─── Warp Markers ─────────────────────────────────────────────────────────────
-
 export interface WarpMarker {
   id: string;
   /** Sample position in the original audio (0-1 normalized). */
@@ -428,8 +418,6 @@ export function computeWarpPlaybackRate(
   if (originalBpm <= 0) return 1;
   return targetBpm / originalBpm;
 }
-
-// ─── High-Resolution Audio ────────────────────────────────────────────────────
 
 export type BitDepth = 16 | 24 | 32;
 export type SampleRateHz = 44100 | 48000 | 88200 | 96000 | 176400 | 192000;
@@ -480,8 +468,6 @@ export const AUDIO_QUALITY_PRESETS: Record<string, AudioQualityConfig> = {
 export function audioQualityLabel(cfg: AudioQualityConfig): string {
   return `${cfg.bitDepth}-bit / ${cfg.sampleRate >= 1000 ? `${cfg.sampleRate / 1000}kHz` : `${cfg.sampleRate}Hz`}`;
 }
-
-// ─── Browser audio engine / offline renderer ─────────────────────────────────
 
 export type StarMakerSequencerQuality = "idea" | "streaming" | "studio";
 

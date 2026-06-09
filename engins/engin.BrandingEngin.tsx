@@ -1,21 +1,5 @@
 'use client';
 
-/**
- * BrandingEngin — Side B control layer for the Brand Daydream.
- *
- * Responsibilities (README spec §11.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Brand Kit: link to appearance settings and public profile.
- *   - Analytics: link to algorithm/signal settings.
- *   - Campaigns: direct entry point to DreamAds create flow.
- *   - Audience: fetch follower count from the `follows` table.
- *   - Brand Analytics: 4 metric cards with Refresh.
- *   - A/B Test Manager: create, pause, pick winner.
- *   - Campaign ROI Calculator: live CPM/CPC/ROI from inputs.
- *
- * Security: profile and follower count are read for auth.uid() only.
- * Follows AXIOM 4 (security by default) and AXIOM 5 (privacy by design).
- */
-
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import { useSharedDream } from '@/hooks/useSharedDream';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
@@ -36,6 +20,22 @@ import { ArrowLeft, BarChart2, BookOpen, DollarSign, Eye, FlaskConical, Layers, 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+/**
+ * BrandingEngin — Side B control layer for the Brand Daydream.
+ *
+ * Responsibilities (README spec §11.2 / ARCHITECTURE.md §1 Daydream pairs):
+ *   - Brand Kit: link to appearance settings and public profile.
+ *   - Analytics: link to algorithm/signal settings.
+ *   - Campaigns: direct entry point to DreamAds create flow.
+ *   - Audience: fetch follower count from the `follows` table.
+ *   - Brand Analytics: 4 metric cards with Refresh.
+ *   - A/B Test Manager: create, pause, pick winner.
+ *   - Campaign ROI Calculator: live CPM/CPC/ROI from inputs.
+ *
+ * Security: profile and follower count are read for auth.uid() only.
+ * Follows AXIOM 4 (security by default) and AXIOM 5 (privacy by design).
+ */
+
 interface Props {
   onBack: () => void;
   instanceId?: string;
@@ -47,7 +47,6 @@ interface ProfileData {
   follower_count: number;
 }
 
-// ── Brand Analytics ────────────────────────────────────────────────────────────
 interface AnalyticMetric {
   id: string;
   label: string;
@@ -56,7 +55,6 @@ interface AnalyticMetric {
   icon: React.ReactNode;
 }
 
-// ── A/B Test ───────────────────────────────────────────────────────────────────
 interface ABTest {
   id: string;
   name: string;
@@ -75,7 +73,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   const brandBridge = useBrandingEnginBridge();
   const { record: forgeRecord } = useForgeActivity({ enginId: 'brand' });
 
-  // ── OS Shell ──
   const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
   useEffect(() => {
     upgradeEngine({ id: 'brand', name: 'BrandingEngin' }, ['bridge', 'telemetry'])
@@ -83,19 +80,15 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   }, []);
   const busRef = useRef(createEventBus());
 
-  // ── EnginRuntime kernel (brand rule-set) ──
   const { state: enginState, dispatch: enginDispatch, ready: enginReady } = useBrandEnginRuntime();
 
-  // ── Workflow (brand:campaign — default workflow) ──
   const { loadWorkflow } = useEnginWorkflow();
   useEffect(() => { loadWorkflow('brand:campaign'); }, [loadWorkflow]);
 
-  // ── Shared Dream Analytics state ──
   const [sharedAnalyticsId] = useState(() => `brand-analytics-${Date.now()}`);
   const [sharedAnalyticsActive, setSharedAnalyticsActive] = useState(false);
   const sharedAnalytics = useSharedDream(sharedAnalyticsActive ? sharedAnalyticsId : '');
 
-  // ── Co-op channel ─────────────────────────────────────────────────────────
   const [instanceId] = useState(
     () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
   );
@@ -108,10 +101,8 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     onPeerState: (_evt) => { /* brand analytics are read-only; peer sync is view-only */ },
   });
 
-  // ── Daydream state persistence (Phase 8 §F Point 55) ──
   const { persistState } = useDaydreamState({ daydreamType: 'brand', side: 'B' });
 
-  // ── Daydream DB persistence with restore (Phase 8 §F pts 49, 55) ──
   type BrandSavedState = { abTests?: ABTest[]; assets?: Array<{ id: string; name: string; type: 'logo' | 'color' | 'font'; value: string }> };
   const {
     savedState: savedBrandState,
@@ -121,11 +112,9 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
 
   const brandRestoredRef = useRef(false);
 
-  // ── Existing state ─────────────────────────────────────────────────────────
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // ── Brand Analytics state ──────────────────────────────────────────────────
   const [metrics, setMetrics] = useState<AnalyticMetric[]>([
     { id: 'reach',    label: 'Reach',            value: '—', trend: 'flat', icon: <Users className="w-4 h-4" /> },
     { id: 'eng',      label: 'Engagement Rate',  value: '—', trend: 'flat', icon: <TrendingUp className="w-4 h-4" /> },
@@ -133,24 +122,20 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     { id: 'growth',   label: 'Follower Growth',  value: '—', trend: 'flat', icon: <Megaphone className="w-4 h-4" /> },
   ]);
 
-  // ── Cross-Engin: GameEngin achievement campaign receiver ──
   const [dismissedAchievement, setDismissedAchievement] = useState<string | null>(null);
   const achievementPrompt = brandBridge.lastAchievement !== null && brandBridge.lastAchievement !== dismissedAchievement
     ? brandBridge.lastAchievement
     : null;
 
-  // ── A/B Test state ─────────────────────────────────────────────────────────
   const [abTests, setAbTests]     = useState<ABTest[]>([]);
   const [abName, setAbName]       = useState('');
   const [abVarA, setAbVarA]       = useState('');
   const [abVarB, setAbVarB]       = useState('');
 
-  // ── ROI Calculator state ───────────────────────────────────────────────────
   const [budget, setBudget]           = useState('');
   const [impressions, setImpressions] = useState('');
   const [conversions, setConversions] = useState('');
 
-  // ── Load profile ───────────────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
     const supabase = createClient();
@@ -180,7 +165,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
 
   const analyticsBucketsRef = useRef(new Map<string, AnalyticMetric>());
 
-  // ── Refresh analytics ──────────────────────────────────────────────────────
   function refreshAnalytics( ){
     const nextMetrics: AnalyticMetric[] = [
       { id: 'reach',  label: 'Reach',           value: '12.4K', trend: 'up',   icon: <Users className="w-4 h-4" /> },
@@ -206,7 +190,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     recordForgeTransfer('brand', 'create', 'analytics-snapshot', 'Brand analytics snapshot → ContentEngin insights');
   }
 
-  // ── Launch A/B Test ────────────────────────────────────────────────────────
   function launchTest( ){
     if (!abName.trim()) return;
     const t: ABTest = { id: crypto.randomUUID(), name: abName.trim(), variantA: abVarA.trim(), variantB: abVarB.trim(), paused: false };
@@ -218,7 +201,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     recordForgeTransfer('brand', 'create', 'campaign', `Campaign "${t.name}" launched → ContentEngin variants`);
   }
 
-  // ── ROI calculations ───────────────────────────────────────────────────────
   const budgetN      = parseFloat(budget)      || 0;
   const impressionsN = parseFloat(impressions) || 0;
   const conversionsN = parseFloat(conversions) || 0;
@@ -226,7 +208,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   const cpc  = conversionsN > 0 ? (budgetN / conversionsN).toFixed(2) : '—';
   const roi  = budgetN > 0      ? (((conversionsN * 10 - budgetN) / budgetN) * 100).toFixed(1) : '—';
 
-  // ── Audience Segments state ──────────────────────────────────────────────────
   const [segments, setSegments] = useState<Array<{ id: string; name: string; size: number; tags: string[] }>>([
     { id: 'seg-1', name: 'Power Creators',  size: 4200, tags: ['video', 'daily-poster'] },
     { id: 'seg-2', name: 'Music Fans',      size: 1850, tags: ['music', 'stream'] },
@@ -234,14 +215,12 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   ]);
   const [newSegName, setNewSegName] = useState('');
 
-  // ── Brand Voice AI state ─────────────────────────────────────────────────────
   const [voicePrompt, setVoicePrompt]         = useState('');
   const [voiceSuggestion, setVoiceSuggestion] = useState('');
   const [voiceLoading, setVoiceLoading]       = useState(false);
   // multi-connection path: Brand → ContentEngin
   const [contentBridgeSending, setContentBridgeSending] = useState(false);
 
-  // ── Competitor Watch state ───────────────────────────────────────────────────
   const [competitors, setCompetitors] = useState<Array<{ handle: string; followers: string; lastPost: string }>>([
     { handle: '@creativebrand',  followers: '84.2K', lastPost: '2h ago' },
     { handle: '@designmaster',   followers: '210K',  lastPost: '5h ago' },
@@ -249,7 +228,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   ]);
   const [watchHandle, setWatchHandle] = useState('');
 
-  // ── Asset Library state ──────────────────────────────────────────────────────
   const [assets, setAssets] = useState<Array<{ id: string; name: string; type: 'logo' | 'color' | 'font'; value: string }>>([
     { id: 'as-1', name: 'Primary Logo',    type: 'logo',  value: 'DREAMengin.svg' },
     { id: 'as-2', name: 'Brand Pink',      type: 'color', value: '#ec4899' },
@@ -264,7 +242,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   }, { logo: [], color: [], font: [] }), [assets]);
   const sharedAnalyticsPeerIds = useMemo(() => Object.keys(sharedAnalytics.peers), [sharedAnalytics.peers]);
 
-  // ── Color Palette Generator (regeneratable) ───────────────────────────────────
   const PALETTE_PRESETS = [
     ['#ec4899','#f9a8d4','#c026d3','#fbbf24','#1e1b4b','#f0fdf4'],
     ['#2a8ab8','#bae6fd','#0284c7','#f59e0b','#0f172a','#f8fafc'],
@@ -281,10 +258,8 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     setTimeout(() => setCopiedColor(null), 1200);
   }
 
-  // ── Game Engine Visual Preset active selection ────────────────────────────────
   const [activePreset, setActivePreset] = useState('Brand Pink');
 
-  // ── Load brand_kit_items from DB on mount ─────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
     const supabase = createClient();
@@ -304,22 +279,19 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     return () => { cancelled = true; };
   }, []);
 
-  // ── Restore workspace state from DB once on mount ─────────────────────────────
   useEffect(() => {
     if (brandRestoring || brandRestoredRef.current || !savedBrandState) return;
     brandRestoredRef.current = true;
     if (savedBrandState.abTests && savedBrandState.abTests.length > 0) setAbTests(savedBrandState.abTests);
   }, [brandRestoring, savedBrandState]);
 
-  // ── Persist brand workspace state to Supabase (Phase 8 §F Point 55) ──
   useEffect(() => {
     if (brandRestoring) return;
     persistState({ side: 'B', assets });
     persistBrandState({ abTests, assets });
-   
+
   }, [assets, abTests, brandRestoring]);
 
-  // ── Segment handler ───────────────────────────────────────────────────────────
   function handleCreateSegment( ){
     if (!newSegName.trim()) return;
     const seg = {
@@ -336,7 +308,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     recordForgeTransfer('brand', 'create', 'audience-segment', `Audience segment "${seg.name}" → ContentEngin targeting`);
   }
 
-  // ── Voice AI handler ─────────────────────────────────────────────────────────
   function handleVoiceGenerate( ){
     if (!voicePrompt.trim()) return;
     setVoiceLoading(true);
@@ -355,7 +326,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     }, 1200);
   }
 
-  // ── Competitor handler ────────────────────────────────────────────────────────
   function handleAddCompetitor( ){
     const handle = watchHandle.trim().startsWith('@') ? watchHandle.trim() : `@${watchHandle.trim()}`;
     if (!watchHandle.trim()) return;
@@ -366,7 +336,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     );
   }
 
-  // ── Asset handler — inserts to brand_kit_items with optimistic update ────────
   async function handleSaveAsset( ){
     if (!newAssetName.trim() || !newAssetValue.trim()) return;
     forgeRecord('Saved brand asset');
@@ -401,7 +370,6 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     } catch { /* non-blocking — optimistic item remains */ }
   }
 
-  // ── Send to ContentEngin (multi-connection: Brand → ContentEngin) ─────────────
   // multi-connection path: Brand → ContentEngin via /api/drafts + bridge event
   async function handleSendToContentEngin( ){
     if (!voiceSuggestion.trim()) return;

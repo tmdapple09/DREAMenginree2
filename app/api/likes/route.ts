@@ -1,8 +1,8 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 // Note: This API supports liking various content types: posts, music, projects
 // The likes are stored in a generic likes table with content_type and content_id
 
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .eq('content_type', contentType)
       .eq('content_id', contentId)
       .single();
-    
+
     hasLiked = !!like;
   }
 
@@ -94,9 +94,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Update like count on the content table (optional RPC, ignore if it doesn't exist)
   if (content_type === 'post') {
     try {
-      await supabase.rpc('increment_likes', { 
-        table_name: 'app_posts', 
-        row_id: content_id 
+      await supabase.rpc('increment_likes', {
+        table_name: 'app_posts',
+        row_id: content_id
       });
     } catch {
       // Ignore if RPC doesn't exist, we'll use count query instead
@@ -110,10 +110,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('content_type', content_type)
     .eq('content_id', content_id);
 
-  return NextResponse.json({ 
-    success: true, 
+  return NextResponse.json({
+    success: true,
     like_count: newCount || 1,
-    has_liked: true 
+    has_liked: true
   }, { status: 201 });
 }
 
@@ -152,9 +152,9 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('content_type', contentType)
     .eq('content_id', contentId);
 
-  return NextResponse.json({ 
-    success: true, 
+  return NextResponse.json({
+    success: true,
     like_count: newCount || 0,
-    has_liked: false 
+    has_liked: false
   });
 }

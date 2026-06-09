@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+
 /**
  * app/api/connectors/[provider]/disconnect/route.ts
  *
@@ -17,12 +22,6 @@
  * ACTION_AUDIT.md — was labelled 🟠 drifted (disconnect handler not confirmed).
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
@@ -40,7 +39,6 @@ export async function DELETE(
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   // Verify the connector account exists for this user before attempting delete

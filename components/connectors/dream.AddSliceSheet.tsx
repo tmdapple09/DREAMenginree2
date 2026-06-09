@@ -1,4 +1,8 @@
 'use client';
+
+import type { ConnectorDef, SliceTypeDef } from '@/lib/connectors/connectorRegistry';
+import { useState } from 'react';
+
 // components/connectors/dream.AddSliceSheet.tsx
 // "Add as Feed Slice" flow (req 51-60)
 //
@@ -6,9 +10,6 @@
 // Max 5 slice types shown (req 56)
 // Preview shows exactly what will appear (req 57)
 // Removing a slice does NOT disconnect the connector (req 60)
-
-import type { ConnectorDef, SliceTypeDef } from '@/lib/connectors/connectorRegistry';
-import { useState } from 'react';
 
 export interface FeedSlice {
   id: string;

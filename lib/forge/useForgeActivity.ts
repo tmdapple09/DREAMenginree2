@@ -1,5 +1,8 @@
 'use client';
 
+import { useCallback, useEffect, useRef } from 'react';
+import { recordForgeActivity } from './forgeRegistry';
+
 /**
  * useForgeActivity — client-side hook for recording Forge activity pulses.
  *
@@ -13,9 +16,6 @@
  * via the Forge meta-creation layer.  No Supabase writes — this is local
  * telemetry only (no privacy impact).
  */
-
-import { useCallback, useEffect, useRef } from 'react';
-import { recordForgeActivity } from './forgeRegistry';
 
 export interface UseForgeActivityOptions {
   /** Machine id matching ENGIN_REGISTRY — e.g. 'games', 'music', 'code' */

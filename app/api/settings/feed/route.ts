@@ -1,3 +1,9 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 // app/api/settings/feed/route.ts
 // Phase 8 §A — Feed preference settings persisted to the database.
 //
@@ -16,13 +22,6 @@
 //     sortOrder?: "recent" | "trending"
 //   }
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-
-
-import { toErrorMessage } from '@/lib/utils';
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -41,7 +40,6 @@ export async function GET( ): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: toErrorMessage(error) }, { status: 500 });
   }
 
-   
   const prefs = ((data as Record<string, unknown>)?.feed_preferences as Record<string, unknown>) ?? {};
   return NextResponse.json({ ok: true, preferences: prefs });
 }
@@ -77,7 +75,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (allowed.has(k)) safe[k] = v;
   }
 
-   
   const { error: updateError } = await (supabase as SupabaseClient)
     .from('profiles')
     .update({ feed_preferences: safe })

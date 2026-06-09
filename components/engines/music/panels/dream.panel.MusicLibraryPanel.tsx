@@ -1,14 +1,14 @@
 'use client';
 
+import { ChevronRight, Drum, FolderOpen, Music2, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+
 /**
  * MusicLibraryPanel — Preset & sample library for the Music Engine app.
  *
  * Browse genre presets, instrument kits, and project templates.
  * Lives at /engines/music/library.
  */
-
-import { ChevronRight, Drum, FolderOpen, Music2, Sparkles } from 'lucide-react';
-import { useState } from 'react';
 
 interface LibraryItem {
   id: string;

@@ -1,3 +1,5 @@
+import { createServiceClient } from '@/lib/supabase/server';
+
 /**
  * lib/admin/lockout.ts
  *
@@ -17,8 +19,6 @@
  * To unlock: update the `admin_lock` row in the Supabase dashboard
  * (set locked = false) — no code change required.
  */
-
-import { createServiceClient } from '@/lib/supabase/server';
 
 // Process-level cache — avoids a DB hit on every request.
 // null  = unknown (need to check DB)
@@ -79,7 +79,6 @@ export async function triggerAdminLockout(): Promise<void> {
   }
 }
 
-// ── Owner gate ───────────────────────────────────────────────────────────────
 export const OWNER_EMAIL = process.env.OWNER_EMAIL || 'Appthemanger@gmail.com';
 
 /** Returns true only for the owner's email (case-insensitive). */
@@ -88,7 +87,6 @@ export function isOwner(email?: string | null): boolean {
   return email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 }
 
-// ── Blocked domains ──────────────────────────────────────────────────────────
 // Add domains here to permanently reject all admin-API requests that originate
 // from them.  theboogieman.ai is intentionally NOT blocked here — the owner
 // needs to reach BoogieMan AI from that domain.  The one-strike password

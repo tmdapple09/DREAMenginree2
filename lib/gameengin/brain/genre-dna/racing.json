@@ -1,6 +1,10 @@
 {
   "genre": "Racing",
-  "subgenres": ["arcade", "simulation", "kart"],
+  "subgenres": [
+    "arcade",
+    "simulation",
+    "kart"
+  ],
   "core_mechanic": "Continuous high-speed traversal of a circuit with traffic / opponents.",
   "emotional_core": "empowerment",
   "player_motivation": "Find the perfect line; compress lap times.",
@@ -16,11 +20,14 @@
   },
   "progression_model": {
     "structure_type": "linear",
-    "progression_gates": ["championship-tier", "vehicle-unlock"],
+    "progression_gates": [
+      "championship-tier",
+      "vehicle-unlock"
+    ],
     "completion_definition": "All championships podium-finished; ghost-replay leaderboards extend skill ceiling indefinitely.",
     "content_cadence": "Per championship tier; new track + vehicle class on each tier clear."
   },
-  "canonical_examples":[
+  "canonical_examples": [
     {
       "title": "Hotshot Racing",
       "year": 2020,

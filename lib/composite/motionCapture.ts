@@ -62,9 +62,7 @@ export interface ClipSummary {
   jointNames: string[];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Public API
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Parse a BVH file string into a MocapClip.
@@ -253,9 +251,7 @@ export function clipSummary(clip: MocapClip): ClipSummary {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findJoint(root: Joint, name: string): Joint | null {
   if (root.name === name) return root;

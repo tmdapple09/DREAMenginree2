@@ -75,3 +75,4 @@ export class SprintDetector {
     return { ...this.state };
   }
 }
+

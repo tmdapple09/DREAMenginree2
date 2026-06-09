@@ -1,4 +1,18 @@
 #!/usr/bin/env node
+
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { basename, extname, join, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  Project,
+  SourceFile,
+  SyntaxKind,
+  Node,
+  ArrowFunction,
+  FunctionDeclaration,
+  FunctionExpression,
+} from 'ts-morph';
+
 /**
  * readme-autosync.ts
  *
@@ -21,22 +35,7 @@
  *  CLI  --changed-files <path>  [--summary-file <path>]
  */
 
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
-import { basename, extname, join, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import {
-  Project,
-  SourceFile,
-  SyntaxKind,
-  Node,
-  ArrowFunction,
-  FunctionDeclaration,
-  FunctionExpression,
-} from 'ts-morph';
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Registry types (kept from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface SubsectionDescriptor {
   id: string;
@@ -59,9 +58,7 @@ export interface AutosyncSummary {
   readmeChanged: boolean;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Architecture model — structured before markdown is emitted
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface ExportedSymbol {
   name: string;
@@ -103,9 +100,7 @@ export interface SubsystemModel {
   integrationPoints: string[];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Section registry (unchanged from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const SECTION_REGISTRY: SectionDescriptor[] = [
   {
@@ -163,9 +158,7 @@ export const SECTION_REGISTRY: SectionDescriptor[] = [
   { id: 'license', title: 'License', globs: ['LICENSE'] },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Path utilities (kept from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = resolve(__filename, '..');
@@ -261,9 +254,7 @@ function buildTreeLines(files: string[], maxLines = 120): string[] {
   return lines;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // ts-morph project — lazily initialised once per run
-// ─────────────────────────────────────────────────────────────────────────────
 
 let _project: Project | null = null;
 
@@ -288,9 +279,7 @@ function getSourceFile(absPath: string): SourceFile | undefined {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: exports
-// ─────────────────────────────────────────────────────────────────────────────
 
 function isReactComponent(name: string, sf: SourceFile): boolean {
   // Heuristic: PascalCase name whose function body contains JSX
@@ -358,9 +347,7 @@ export function analyzeExports(filePath: string): ExportedSymbol[] {
   return symbols;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: imports
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function analyzeImports(filePath: string): ImportEdge[] {
   const abs = join(ROOT, filePath);
@@ -393,9 +380,7 @@ export function analyzeImports(filePath: string): ImportEdge[] {
   return edges;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: routes (Next.js app-dir)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function httpMethodsFromFile(filePath: string): string[] {
   const abs = join(ROOT, filePath);
@@ -427,9 +412,7 @@ export function analyzeRoutes(files: string[]): RouteEntry[] {
   return routes.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: components and hooks
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function analyzeComponents(exports: ExportedSymbol[]): string[] {
   return [...new Set(exports.filter((e) => e.kind === 'component').map((e) => e.name))].sort();
@@ -439,9 +422,7 @@ export function analyzeHooks(exports: ExportedSymbol[]): string[] {
   return [...new Set(exports.filter((e) => e.kind === 'hook').map((e) => e.name))].sort();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: cross-subsystem dependency graph
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function analyzeDependencies(
   edges: ImportEdge[],
@@ -469,9 +450,7 @@ export function analyzeDependencies(
   return [...depIds].sort();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Analyzer: full subsystem — combines all above
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function analyzeSubsystem(
   descriptor: SectionDescriptor | SubsectionDescriptor,
@@ -519,10 +498,8 @@ export function analyzeSubsystem(
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Architectural narrative inference
 // (Evidence-based, never generic filler)
-// ─────────────────────────────────────────────────────────────────────────────
 
 interface Narrative {
   responsibilities: string[];
@@ -589,8 +566,6 @@ function inferArchitecturalNarrative(
   const hasTest = files.some((f) => /test|spec|vitest|playwright/.test(f));
   const hasInfra = files.some((f) => /terraform|docker|prometheus|grafana|vercel/.test(f));
 
-  // ── Responsibilities ──────────────────────────────────────────────────────
-
   if (pageRoutes.length > 0) {
     responsibilities.push(
       `User-facing surfaces: ${pageRoutes.slice(0, 5).map((r) => r.path).join(', ')}${pageRoutes.length > 5 ? `, +${pageRoutes.length - 5} more` : ''}`,
@@ -627,8 +602,6 @@ function inferArchitecturalNarrative(
   if (hasTest) responsibilities.push('Quality assurance and integration coverage');
   if (hasInfra) responsibilities.push('Infrastructure provisioning and operational observability');
 
-  // ── Capabilities ────────────────────────────────────────────────────────
-
   if (hooks.length > 0) {
     capabilities.push(`Exposes ${hooks.slice(0, 6).join(', ')} as composable React hooks`);
   }
@@ -658,8 +631,6 @@ function inferArchitecturalNarrative(
   if (files.length === 0) {
     capabilities.push('No source files currently matched — section registered but unpopulated');
   }
-
-  // ── Integration points ───────────────────────────────────────────────────
 
   if (dependsOn.includes('dual-runtimes') || dependsOn.includes('the-engins')) {
     integrationPoints.push('Integrates with the Dual Runtime layer for execution orchestration');
@@ -692,9 +663,7 @@ function inferArchitecturalNarrative(
   return { responsibilities, capabilities, integrationPoints };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Prose generator — subsystem-level description paragraph
-// ─────────────────────────────────────────────────────────────────────────────
 
 function generateSubsystemDescription(model: SubsystemModel): string {
   const { title, files, routes, components, hooks, exports, dependsOn, usedBy } = model;
@@ -752,9 +721,7 @@ function generateSubsystemDescription(model: SubsystemModel): string {
   return parts.join(' ');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Markdown builder — replaces the old buildSectionBlock / buildSubsectionBlock
-// ─────────────────────────────────────────────────────────────────────────────
 
 function fmtList(items: string[]): string {
   return items.length ? items.map((i) => `- ${i}`).join('\n') : '- _none detected_';
@@ -907,9 +874,7 @@ function renderSectionMarkdown(
   return sections.join('\n') + '\n';
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // replaceSection / upsertSubsectionInSection (kept from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function findSectionBounds(readme: string, title: string): { start: number; end: number } | null {
   const headingPattern = new RegExp(`(^|\\n)## ${escapeRegExp(title)}\\s*\\n`, 'm');
@@ -947,9 +912,7 @@ export function upsertSubsectionInSection(
   return `${sectionBody.slice(0, subsectionStart)}${replacement.trim()}\n\n${sectionBody.slice(subsectionEnd).replace(/^\n+/, '')}`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // computeAffected (kept from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function inferDynamicSections(changedFiles: string[], registry: SectionDescriptor[]): SectionDescriptor[] {
   const handledTopLevels = new Set(
@@ -993,9 +956,7 @@ export function computeAffected(
   return affected;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // runReadmeAutosync — main entry point (workflow unchanged, engine replaced)
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile?: string }): AutosyncSummary {
   if (!existsSync(README_PATH)) throw new Error(`README not found at ${README_PATH}`);
@@ -1065,9 +1026,7 @@ export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile
   return summary;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CLI entry (unchanged from original)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function parseArg(name: string): string | undefined {
   const index = process.argv.indexOf(name);

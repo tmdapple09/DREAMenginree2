@@ -12,3 +12,4 @@ export const cartridges = {
 };
 
 export type CartridgesMap = typeof cartridges;
+

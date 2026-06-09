@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import StarMakerEngin from '@/engins/engin.StarMakerEngin';
+
 /**
  * MusicEnginApp — Full-screen app shell for the Music Engine (StarMakerEngin).
  *
@@ -9,9 +12,6 @@
  *   /engines/music/arrange  → arrangement view
  *   /engines/music/library  → preset library
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import StarMakerEngin from '@/engins/engin.StarMakerEngin';
 
 export default makeEnginApp({
   id: 'music',

@@ -1,10 +1,11 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import type { EnginName } from '@/lib/runtime/instanceManager';
+import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
+import type { RuntimeId } from '@/types/module-manifest';
+import { useEffect } from 'react';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/runtime/useEnginCoopSync.ts.
 
@@ -35,35 +36,15 @@
  *   // publishes the snapshot automatically when `active` flips to true.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
-
-import type { EnginName } from '@/lib/runtime/instanceManager';
-
-import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
-
-import type { RuntimeId } from '@/types/module-manifest';
-
-import { useEffect } from 'react';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
 
 // Top-level runtime registration and connection seams.
 
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
 // Types, interfaces, and schemas accepted or provided by this file.
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 export type CoopEvent = { type: string; [key: string]: unknown };
 
@@ -95,11 +76,7 @@ export interface UseEnginCoopSyncResult {
   isCoopActive: boolean;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
-
-// ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useEnginCoopSync({
   enginName,
@@ -116,17 +93,13 @@ export function useEnginCoopSync({
     mode: active ? 'coop' : 'solo',
   });
 
-  // ── When collab becomes active: publish our state so late-joining peers sync ─
-
   useEffect(() => {
     if (!active) return;
     const snapshot = stateSnapshot();
     void publish(snapshot);
   // stateSnapshot intentionally excluded — fire once on activation only.
-   
-  }, [active, publish]);
 
-  // ── Subscribe to peer events for the lifetime of an active session ────────
+  }, [active, publish]);
 
   useEffect(() => {
     if (!active || !onPeerState) return;
@@ -139,14 +112,8 @@ export function useEnginCoopSync({
   return { publish, isCoopActive: active };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

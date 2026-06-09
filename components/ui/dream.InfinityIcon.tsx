@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 /**
  * InfinityIcon — SVG brand infinity mark for DREAMengin.
  *
@@ -12,7 +14,6 @@
  *   'gold'      — gold left lobe + cyan right lobe (brand colours, image 2)
  *   'dark'      — white/silver symbol for use on dark/gold backgrounds (image 1)
  */
-import React from 'react';
 
 // Lemniscate ribbon path in a 100 × 50 viewBox.
 // The bezier ribbon weaves through the centre creating the X-crossing effect.
@@ -113,7 +114,6 @@ export default function InfinityIcon({
     );
   }
 
-  // ── circle / squircle badge container ────────────────────────────────────────
   const radius = variant === 'circle' ? '50%' : `${Math.round(size * 0.22)}px`;
   const bg     = colorScheme === 'dark'
     ? '#0a0a0a'

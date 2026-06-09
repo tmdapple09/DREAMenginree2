@@ -2,8 +2,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { toErrorMessage } from '@/lib/utils';
+
 /**
  * /api/favorites
  *
@@ -30,12 +30,10 @@ import { toErrorMessage } from '@/lib/utils';
  */
 
 // Helper to get a type-escaped handle on tables not yet in the generated schema
- 
+
 type AnyClient = SupabaseClient;
 
-// ---------------------------------------------------------------------------
 // GET — check whether an item is already saved
-// ---------------------------------------------------------------------------
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -60,9 +58,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ saved: !!data });
 }
 
-// ---------------------------------------------------------------------------
 // POST — save an item
-// ---------------------------------------------------------------------------
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -89,9 +85,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ saved: true }, { status: 201 });
 }
 
-// ---------------------------------------------------------------------------
 // DELETE — unsave an item
-// ---------------------------------------------------------------------------
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -115,4 +109,3 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ saved: false });
 }
-

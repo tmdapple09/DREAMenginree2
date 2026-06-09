@@ -33,3 +33,4 @@ export const GAME_CATALOG: readonly GameCatalogEntry[] = CARTRIDGE_MANIFEST.map(
 }));
 
 export const GAME_CATALOG_IDS = GAME_CATALOG.map((game) => game.id);
+

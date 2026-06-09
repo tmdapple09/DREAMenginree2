@@ -1,18 +1,3 @@
-/**
- * lib/engins/code/codeEnginRuleSet.ts
- *
- * CodeEngin Rule-Set — the ONLY place CodeEngin domain logic lives.
- *
- * Domain: polyglot notebook execution (Python/JS/TS/Bash), CI pipeline,
- * security scanning, and cross-Engin module injection.
- * Handoff kind: code:module-inject → GameEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
-
 import {
     patchBaseState,
     type EnginBaseState,
@@ -29,7 +14,20 @@ import type {
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
-// ─── Cell types ───────────────────────────────────────────────────────────────
+/**
+ * lib/engins/code/codeEnginRuleSet.ts
+ *
+ * CodeEngin Rule-Set — the ONLY place CodeEngin domain logic lives.
+ *
+ * Domain: polyglot notebook execution (Python/JS/TS/Bash), CI pipeline,
+ * security scanning, and cross-Engin module injection.
+ * Handoff kind: code:module-inject → GameEngin.
+ *
+ * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
+ * The EnginRuntime handles all of that.
+ *
+ * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
+ */
 
 export type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
 export type CellStatus   = 'idle' | 'running' | 'done' | 'error';
@@ -43,8 +41,6 @@ export interface NotebookCell extends JsonObject {
   error?: string;
 }
 
-// ─── CI / security types ──────────────────────────────────────────────────────
-
 export type CiStatus = 'idle' | 'running' | 'passed' | 'failed';
 
 export interface SecurityFinding extends JsonObject {
@@ -52,8 +48,6 @@ export interface SecurityFinding extends JsonObject {
   message: string;
   file?: string;
 }
-
-// ─── Domain state shape ───────────────────────────────────────────────────────
 
 export interface CodeEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
@@ -65,8 +59,6 @@ export interface CodeEnginDerivedState extends JsonObject {
   moduleInjected: boolean;
   zoom: number;
 }
-
-// ─── Action discriminated union ───────────────────────────────────────────────
 
 export type CodeEnginAction =
   | EnginAction<'code:cell-add',        { cell: NotebookCell }>
@@ -81,8 +73,6 @@ export type CodeEnginAction =
   | EnginAction<'code:security-scan',   { findings: SecurityFinding[] }>
   | EnginAction<'code:module-inject',   Record<string, never>>
   | EnginAction<'code:zoom-set',        { zoom: number }>;
-
-// ─── Default domain state ─────────────────────────────────────────────────────
 
 const DEFAULT_CELLS: NotebookCell[] = [
   {
@@ -111,8 +101,6 @@ const DEFAULT_DOMAIN: Omit<CodeEnginDerivedState, 'lifecycle'> = {
   zoom: 1.0,
 };
 
-// ─── Constraints ──────────────────────────────────────────────────────────────
-
 const cellAddConstraint: EnginConstraint<CodeEnginAction> = (
   _state,
   action,
@@ -136,8 +124,6 @@ const zoomConstraint: EnginConstraint<CodeEnginAction> = (
   }
   return { valid: true };
 };
-
-// ─── Transform ────────────────────────────────────────────────────────────────
 
 function transform(state: EnginBaseState, action: CodeEnginAction): EnginBaseState {
   const domain = (state.domain as Partial<typeof DEFAULT_DOMAIN>);
@@ -218,8 +204,6 @@ function transform(state: EnginBaseState, action: CodeEnginAction): EnginBaseSta
   }
 }
 
-// ─── deriveState ──────────────────────────────────────────────────────────────
-
 function deriveState(state: EnginBaseState): CodeEnginDerivedState {
   const d = state.domain as Partial<typeof DEFAULT_DOMAIN>;
   return {
@@ -234,15 +218,12 @@ function deriveState(state: EnginBaseState): CodeEnginDerivedState {
   };
 }
 
-// ─── Rule-set params ──────────────────────────────────────────────────────────
-
 const PARAMS: EnginRuleSetParams = {
   enginId: 'code',
   name: 'CodeEngin',
   layoutMode: 'standard',
   accentColor: '#3b7dd8',
 };
-
 
 const MANIFEST: EnginRuleSetManifest<CodeEnginAction> = {
   id: PARAMS.enginId,
@@ -268,8 +249,6 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'bridge:emit',
   'bridge:listen',
 ];
-
-// ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const CODE_ENGIN_RULE_SET: EnginRuleSetContract<CodeEnginAction> = {
   manifest: MANIFEST,

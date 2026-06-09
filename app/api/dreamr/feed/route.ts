@@ -1,3 +1,5 @@
+import { dreamrFeedHandler } from '@/app/dreamdmbar/_components/dreamr/api/feedHandler';
+
 /**
  * GET /api/dreamr/feed  ← live HTTP boundary
  *
@@ -43,7 +45,5 @@
  * in consecutive slots, so the feed always feels like a wide open stage
  * where everyone gets their moment.
  */
-
-import { dreamrFeedHandler } from '@/app/dreamdmbar/_components/dreamr/api/feedHandler';
 
 export const GET = dreamrFeedHandler;

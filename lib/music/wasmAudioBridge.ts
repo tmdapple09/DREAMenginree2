@@ -18,9 +18,7 @@
  * Performance target: < 0.5 ms per 128-sample block at 44.1 kHz.
  */
 
-// ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 /** Exports from the compiled AssemblyScript Wasm module. */
 interface EnginWasmExports {
@@ -69,9 +67,7 @@ export interface WasmAudioBridge {
   dispose: () => void;
 }
 
-// ---------------------------------------------------------------------------
 // Wasm loader
-// ---------------------------------------------------------------------------
 
 let cachedExports: EnginWasmExports | null = null;
 let loadAttempted = false;
@@ -113,9 +109,7 @@ async function loadWasmModule(): Promise<EnginWasmExports | null> {
   }
 }
 
-// ---------------------------------------------------------------------------
 // JS fallback implementations
-// ---------------------------------------------------------------------------
 
 function jsApplyGain(buffer: Float32Array, gain: number): void {
   // Process 4 at a time for cache-friendly access (mirrors SIMD semantics).
@@ -147,9 +141,7 @@ function jsMixDown(
   }
 }
 
-// ---------------------------------------------------------------------------
 // Wasm-accelerated implementations
-// ---------------------------------------------------------------------------
 
 function wasmApplyGain(
   exports: EnginWasmExports,
@@ -169,9 +161,7 @@ function wasmApplyGain(
   buffer.set(wasmView.subarray(0, buffer.length));
 }
 
-// ---------------------------------------------------------------------------
 // Public factory
-// ---------------------------------------------------------------------------
 
 /**
  * Create a WasmAudioBridge instance.

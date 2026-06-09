@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.SettingsAccount  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Calendar, Mail, Shield, Trash2, User } from 'lucide-react';
@@ -7,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import DangerZoneActions from './dream.DangerZoneActions';
 
+// SURFACE: dreamsurface.SettingsAccount  (framework-mandated basename: page.tsx)
 
 export default async function AccountSettingsPage( ){
   await connection();

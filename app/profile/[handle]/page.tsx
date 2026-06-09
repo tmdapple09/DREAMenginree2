@@ -1,4 +1,3 @@
-// SURFACE: dreamsurface.ProfileHandle  (framework-mandated basename: page.tsx)
 import { ActivityProfile } from '@/components/activity/dream.ActivityProfile';
 import ProfileShareButton from '@/components/dream.ProfileShareButton';
 import FollowButton from '@/components/feed/dream.FollowButton';
@@ -14,6 +13,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
+
+// SURFACE: dreamsurface.ProfileHandle  (framework-mandated basename: page.tsx)
 // This route is dynamically rendered in a PPR-compatible way.
 //
 // Dynamic rendering is achieved via `connection()` from 'next/server' in
@@ -37,7 +38,6 @@ type Profile = {
 interface ProfilePageProps {
   params: Promise<{ handle: string }>;
 }
-
 
 // Static metadata is provided by the parent /profile route layout.
 // We deliberately omit `generateMetadata` here, because exporting one
@@ -83,7 +83,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const isOwner = currentUser?.id === profile.id;
   const displayName = profile.display_name || profile.handle;
 
-  // ── Phase 8 §B Point 21: Enforce dream_windows visibility at query level ──
   // Non-owners ONLY receive records with visibility = 'shared' or 'public'.
   // The query never includes 'private' records for non-owners.
   // RLS policies on dream_windows enforce this at the DB layer as well.

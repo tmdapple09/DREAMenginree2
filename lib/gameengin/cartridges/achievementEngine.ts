@@ -1,3 +1,9 @@
+import type {
+    AchievementDefinition,
+    AchievementState,
+    CartridgeAchievementsAPI,
+} from '../cartridge';
+
 /**
  * lib/gameengin/cartridges/achievementEngine.ts
  *
@@ -15,12 +21,6 @@
  *
  * Storage key: dreamge:ach:<cartridgeId>
  */
-
-import type {
-    AchievementDefinition,
-    AchievementState,
-    CartridgeAchievementsAPI,
-} from '../cartridge';
 
 const PREFIX = 'dreamge:ach';
 

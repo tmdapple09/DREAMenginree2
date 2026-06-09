@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
+
 // app/api/marketplace/route.ts
 // DreamMarketplace API — GET (browse) + POST (list an item).
 //
@@ -7,11 +12,6 @@
 // RLS: marketplace_items table RLS ensures sellers can only write their own rows
 //   and only published rows (or their own) are readable.
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { NextRequest, NextResponse } from 'next/server';
-
-import { toErrorMessage } from '@/lib/utils';
 // ── GET /api/marketplace?category=<category> ─────────────────────────
 // Returns all published marketplace items, optionally filtered by category.
 // Joins with profiles to surface seller handle + display name.
@@ -59,7 +59,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ items: items ?? [] });
 }
 
-// ── POST /api/marketplace ─────────────────────────────────────────────
 // Auth-gated. Inserts a new marketplace_item for the current user.
 // is_published is always false — admin publishes after review.
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -86,7 +85,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     tags?: string;
   };
 
-  // ── Input validation (server-side, Axiom 4) ──
   const trimmedTitle = (title ?? '').trim();
   if (!trimmedTitle || trimmedTitle.length === 0) {
     return NextResponse.json({ error: 'Title is required.' }, { status: 400 });

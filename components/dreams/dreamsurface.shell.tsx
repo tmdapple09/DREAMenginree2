@@ -1,11 +1,11 @@
 'use client';
+
+import React, { Component, useEffect, useRef, useState } from 'react';
+
 // components/dreams/dreamsurface.shell.tsx
 // Canonical Layer 1 shell — the real implementation per docs/ARCHITECTURE.md §4.
 // DreamShell is the source of truth; WidgetShell is the backward-compat shim.
 
-import React, { Component, useEffect, useRef, useState } from 'react';
-
-// ── Error Boundary ─────────────────────────────────────────────────────────
 interface EBState { hasError: boolean; }
 class DreamErrorBoundary extends Component<{ children: React.ReactNode; title: string }, EBState> {
   constructor(props: { children: React.ReactNode; title: string }) {
@@ -41,7 +41,6 @@ class DreamErrorBoundary extends Component<{ children: React.ReactNode; title: s
   }
 }
 
-// ── Skeleton rows ──────────────────────────────────────────────────────────
 function SkeletonRow({ width = '100%' }: {width?: string}) {
   return (
     <div style={{
@@ -51,7 +50,6 @@ function SkeletonRow({ width = '100%' }: {width?: string}) {
   );
 }
 
-// ── DreamShell props ───────────────────────────────────────────────────────
 export type DreamDataState = 'loading' | 'ready' | 'error' | 'reconnect_required';
 
 export interface DreamShellProps {

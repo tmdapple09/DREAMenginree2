@@ -5,8 +5,8 @@ import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 import { toErrorMessage } from '@/lib/utils';
+
 const PostCommentSchema = z.object({
   post_id: z.string().uuid({ message: 'post_id must be a valid UUID' }),
   content: z
@@ -97,7 +97,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const { post_id, content } = parsed.data;
 
-  // ── TheBoogieMan child safety scan (zero-tolerance) ──────────────────────
   const childSafetyResult = scanContent({ text: content });
   if (childSafetyResult.flagged) {
     const contentHash = createHash('sha256').update(content).digest('hex');

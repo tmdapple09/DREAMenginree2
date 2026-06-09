@@ -1,3 +1,5 @@
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/instagram.ts
  *
@@ -17,8 +19,6 @@
  * AXIOM 4 — Security by Default: secrets stay server-side.
  * ARCHITECTURE.md §3 — Logic layer; no React imports.
  */
-
-import type { UnifiedFeedItem } from '@/types/connector';
 
 const IG_API = 'https://graph.instagram.com';
 
@@ -46,8 +46,6 @@ interface InstagramMediaListResponse {
   data?: InstagramMedia[];
 }
 
-// ── Internal fetch helpers ────────────────────────────────────────────────────
-
 async function fetchInstagramJson<T>(path: string, accessToken: string): Promise<T> {
   const separator = path.includes('?') ? '&' : '?';
   const url = `${IG_API}${path}${separator}access_token=${encodeURIComponent(accessToken)}`;
@@ -58,8 +56,6 @@ async function fetchInstagramJson<T>(path: string, accessToken: string): Promise
   }
   return res.json() as Promise<T>;
 }
-
-// ── Normaliser ────────────────────────────────────────────────────────────────
 
 function normaliseInstagramMedia(item: InstagramMedia): UnifiedFeedItem {
   const caption = item.caption ?? '';
@@ -79,8 +75,6 @@ function normaliseInstagramMedia(item: InstagramMedia): UnifiedFeedItem {
     raw:           item,
   };
 }
-
-// ── Public API ────────────────────────────────────────────────────────────────
 
 /**
  * Verifies Instagram credentials by calling /me.

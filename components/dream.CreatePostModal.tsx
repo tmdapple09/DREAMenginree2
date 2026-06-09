@@ -5,8 +5,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Image as ImageIcon, Loader2, Music, Send, Trash2, Video, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-
 import { toErrorMessage } from '@/lib/utils';
+
 interface CreatePostModalProps {
   onClose: () => void;
   userId: string;
@@ -45,7 +45,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
 
       // Create preview URL
       const previewUrl = URL.createObjectURL(file);
-      
+
       setUploadedMedia((prev) => [...prev, {
         type,
         url: previewUrl,
@@ -276,7 +276,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
               >
                 <Music className="w-5 h-5" />
               </button>
-              
+
               <div className="ml-2">
                 <select
                   value={visibility}

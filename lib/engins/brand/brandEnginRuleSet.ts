@@ -1,18 +1,3 @@
-/**
- * lib/engins/brand/brandEnginRuleSet.ts
- *
- * BrandingEngin Rule-Set — the ONLY place BrandingEngin domain logic lives.
- *
- * Domain: brand kit, analytics, A/B testing, campaign ROI, audience,
- * and cross-Engin campaign/audio brief handoffs.
- * Handoff kinds: brand:campaign-draft → ContentEngin, brand:audio-brief → StarMakerEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
-
 import {
     patchBaseState,
     type EnginBaseState,
@@ -29,7 +14,20 @@ import type {
     EnginRuleSetParams,
 } from '@/lib/engin-runtime/EnginRuleSetContract';
 
-// ─── Profile ──────────────────────────────────────────────────────────────────
+/**
+ * lib/engins/brand/brandEnginRuleSet.ts
+ *
+ * BrandingEngin Rule-Set — the ONLY place BrandingEngin domain logic lives.
+ *
+ * Domain: brand kit, analytics, A/B testing, campaign ROI, audience,
+ * and cross-Engin campaign/audio brief handoffs.
+ * Handoff kinds: brand:campaign-draft → ContentEngin, brand:audio-brief → StarMakerEngin.
+ *
+ * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
+ * The EnginRuntime handles all of that.
+ *
+ * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
+ */
 
 export interface BrandProfile extends JsonObject {
   handle: string;
@@ -37,16 +35,12 @@ export interface BrandProfile extends JsonObject {
   followerCount: number;
 }
 
-// ─── Analytic metric ──────────────────────────────────────────────────────────
-
 export interface AnalyticMetric extends JsonObject {
   id: string;
   label: string;
   value: string;
   trend: 'up' | 'down' | 'flat';
 }
-
-// ─── A/B test ─────────────────────────────────────────────────────────────────
 
 export interface ABTest extends JsonObject {
   id: string;
@@ -57,16 +51,12 @@ export interface ABTest extends JsonObject {
   winner?: 'A' | 'B';
 }
 
-// ─── Brand asset ──────────────────────────────────────────────────────────────
-
 export interface BrandAsset extends JsonObject {
   id: string;
   name: string;
   type: 'logo' | 'color' | 'font';
   value: string;
 }
-
-// ─── Domain state shape ───────────────────────────────────────────────────────
 
 export interface BrandEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
@@ -79,8 +69,6 @@ export interface BrandEnginDerivedState extends JsonObject {
   brandCheckPayload: JsonObject | null;
 }
 
-// ─── Action discriminated union ───────────────────────────────────────────────
-
 export type BrandEnginAction =
   | EnginAction<'brand:profile-loaded',    { profile: BrandProfile }>
   | EnginAction<'brand:metrics-refresh',   { metrics: AnalyticMetric[] }>
@@ -91,8 +79,6 @@ export type BrandEnginAction =
   | EnginAction<'brand:campaign-draft',    Record<string, never>>
   | EnginAction<'brand:audio-brief',       Record<string, never>>
   | EnginAction<'brand:check-received',    { payload: JsonObject }>;
-
-// ─── Default domain state ─────────────────────────────────────────────────────
 
 const DEFAULT_METRICS: AnalyticMetric[] = [
   { id: 'reach',  label: 'Reach',           value: '—', trend: 'flat' },
@@ -110,8 +96,6 @@ const DEFAULT_DOMAIN: Omit<BrandEnginDerivedState, 'lifecycle'> = {
   audioBriefReady: false,
   brandCheckPayload: null,
 };
-
-// ─── Constraints ──────────────────────────────────────────────────────────────
 
 const abTestAddConstraint: EnginConstraint<BrandEnginAction> = (
   _state,
@@ -136,8 +120,6 @@ const winnerConstraint: EnginConstraint<BrandEnginAction> = (
   }
   return { valid: true };
 };
-
-// ─── Transform ────────────────────────────────────────────────────────────────
 
 function transform(state: EnginBaseState, action: BrandEnginAction): EnginBaseState {
   const domain = (state.domain as Partial<typeof DEFAULT_DOMAIN>);
@@ -203,8 +185,6 @@ function transform(state: EnginBaseState, action: BrandEnginAction): EnginBaseSt
   }
 }
 
-// ─── deriveState ──────────────────────────────────────────────────────────────
-
 function deriveState(state: EnginBaseState): BrandEnginDerivedState {
   const d = state.domain as Partial<typeof DEFAULT_DOMAIN>;
   return {
@@ -219,15 +199,12 @@ function deriveState(state: EnginBaseState): BrandEnginDerivedState {
   };
 }
 
-// ─── Rule-set params ──────────────────────────────────────────────────────────
-
 const PARAMS: EnginRuleSetParams = {
   enginId: 'brand',
   name: 'BrandingEngin',
   layoutMode: 'standard',
   accentColor: '#ec4899',
 };
-
 
 const MANIFEST: EnginRuleSetManifest<BrandEnginAction> = {
   id: PARAMS.enginId,
@@ -251,8 +228,6 @@ const REQUIRED_CAPABILITIES: ReadonlyArray<EnginCapability> = [
   'bridge:emit',
   'bridge:listen',
 ];
-
-// ─── Exported rule-set ────────────────────────────────────────────────────────
 
 export const BRAND_ENGIN_RULE_SET: EnginRuleSetContract<BrandEnginAction> = {
   manifest: MANIFEST,

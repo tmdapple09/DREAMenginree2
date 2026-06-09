@@ -2,7 +2,6 @@
 // TheBoogieMan.Ai — Minor-Adult Message Context Evaluator
 //
 // PURPOSE
-// -------
 // When a minor (age 13–17) and an adult (18+) exchange messages, this module
 // evaluates the context of the conversation to determine whether it is a
 // legitimate safe relationship or a potentially inappropriate interaction.
@@ -29,7 +28,6 @@
 // harbor conditions, CIPA, state-level age-appropriate design codes).
 //
 // CHILD SAFETY LAWS REFERENCE
-// ----------------------------
 // • PROTECT Act (18 U.S.C. §2256): Prohibits CSAM and virtual images of minors in
 //   sexual conduct. Zero-tolerance; mandatory NCMEC reporting.
 // • COPPA (15 U.S.C. §6501–6506): Children under 13 require verifiable parental
@@ -292,7 +290,6 @@ export function evaluateMessageContext(input: MessageContextInput): MessageConte
 
   const auditSignals: string[] = [];
 
-  // ── Immediate: adult solicited images from minor ─────────────────────────
   if (adultSolicitedImages) {
     auditSignals.push('adult_solicited_images');
     return {
@@ -308,7 +305,6 @@ export function evaluateMessageContext(input: MessageContextInput): MessageConte
     };
   }
 
-  // ── Scan for suspicious patterns in messages ──────────────────────────────
   const suspiciousResult = scanMessages(recentMessages, SUSPICIOUS_PATTERNS);
   const { contextType, safeSignals, totalSafeWeight } = scanMessagesForContext(recentMessages);
 
@@ -322,8 +318,6 @@ export function evaluateMessageContext(input: MessageContextInput): MessageConte
   // If adult has prior flags, apply stricter evaluation
   const priorFlagMultiplier = 1 + (adultPriorFlags * 0.5);
   const adjustedSuspiciousWeight = suspiciousWeight * priorFlagMultiplier;
-
-  // ── Decision logic ────────────────────────────────────────────────────────
 
   // Case 1: Strong suspicious signals + no safe context → block and escalate
   if (adjustedSuspiciousWeight >= 1.5 && !hasSafeContext) {

@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef } from 'react';
+
 /**
  * useTap — canonical single-tap hook.
  *
@@ -14,7 +16,6 @@
  * If you find yourself reaching for `onDoubleClick` or implementing a tap
  * counter outside the home particle, stop — it is a contract violation.
  */
-import { useCallback, useEffect, useRef } from 'react';
 
 export interface UseTapOptions {
   /** Disable the handler without unmounting it. */

@@ -1,8 +1,61 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import {
+  createBaseState,
+  isEnginBaseState,
+  patchBaseState,
+  type EnginBaseState,
+  type EnginLifecycle,
+  type JsonObject,
+} from './EnginBaseState';
+import {
+  DEFAULT_USER_CAPABILITIES,
+  gateCapability,
+  type EnginCapabilityMap,
+} from './EnginCapabilities';
+import {
+  createEnginEventBus,
+  type EnginEventBus,
+  type EnginLifecycleEvents,
+} from './EnginEventBus';
+import {
+  LocalStorageAdapter,
+  MemorySyncTransport,
+  type EnginIOAdapter,
+  type EnginSyncTransport,
+} from './EnginIOAdapter';
+import {
+  capabilityProfileMatchesRuleSet,
+  validateEnginCapabilityProfile,
+  type CapabilityProfileValidation,
+} from './EnginCapabilityTargets';
+import {
+  createEnginCapabilityExecutionKernel,
+  type EnginCapabilityExecutionKernel,
+} from './EnginCapabilityExecution';
+import {
+  HotRuntime,
+  type HotActionMetadata,
+  type HotLaneCommand,
+  type HotRuntimeLane,
+  type MoldableModuleFrame,
+  type WebGPUComputeMeasurement,
+  type WebGPUInitializationResult,
+} from './HotRuntime';
+import { fingerprintEnginSnapshot } from './EnginSnapshotFingerprint';
+import {
+  createPremiumRuntimeQuality,
+  validatePremiumRuntimeQuality,
+  type PremiumRuntimeQuality,
+} from './PremiumRuntimeQuality';
+import {
+  negotiateRuleSetCompatibility,
+  validateRuleSetState,
+  type CompatibilityNegotiationResult,
+  type EnginAction,
+  type EnginRuntimeFeature,
+  type EnginRuleSetContract,
+} from './EnginRuleSetContract';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/engin-runtime/EnginRuntime.ts.
 
@@ -24,11 +77,7 @@
  * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel.
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
@@ -56,81 +105,9 @@ const LIFECYCLE_TRANSITIONS: Readonly<
   stopped: [],
 };
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import {
-  createBaseState,
-  isEnginBaseState,
-  patchBaseState,
-  type EnginBaseState,
-  type EnginLifecycle,
-  type JsonObject,
-} from './EnginBaseState';
-
-import {
-  DEFAULT_USER_CAPABILITIES,
-  gateCapability,
-  type EnginCapabilityMap,
-} from './EnginCapabilities';
-
-import {
-  createEnginEventBus,
-  type EnginEventBus,
-  type EnginLifecycleEvents,
-} from './EnginEventBus';
-
-import {
-  LocalStorageAdapter,
-  MemorySyncTransport,
-  type EnginIOAdapter,
-  type EnginSyncTransport,
-} from './EnginIOAdapter';
-
-import {
-  capabilityProfileMatchesRuleSet,
-  validateEnginCapabilityProfile,
-  type CapabilityProfileValidation,
-} from './EnginCapabilityTargets';
-
-import {
-  createEnginCapabilityExecutionKernel,
-  type EnginCapabilityExecutionKernel,
-} from './EnginCapabilityExecution';
-
-import {
-  HotRuntime,
-  type HotActionMetadata,
-  type HotLaneCommand,
-  type HotRuntimeLane,
-  type MoldableModuleFrame,
-  type WebGPUComputeMeasurement,
-  type WebGPUInitializationResult,
-} from './HotRuntime';
-
-import { fingerprintEnginSnapshot } from './EnginSnapshotFingerprint';
-
-import {
-  createPremiumRuntimeQuality,
-  validatePremiumRuntimeQuality,
-  type PremiumRuntimeQuality,
-} from './PremiumRuntimeQuality';
-
-import {
-  negotiateRuleSetCompatibility,
-  validateRuleSetState,
-  type CompatibilityNegotiationResult,
-  type EnginAction,
-  type EnginRuntimeFeature,
-  type EnginRuleSetContract,
-} from './EnginRuleSetContract';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -163,8 +140,6 @@ export interface RuntimeWorkFlushResult {
     | 'restore'
     | 'manual';
 }
-
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
 
 // Runtime functions, classes, handlers, and state transitions.
 
@@ -826,14 +801,8 @@ export class EnginRuntime<
   }
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

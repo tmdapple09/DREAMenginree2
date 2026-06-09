@@ -10,5 +10,7 @@
       "deadzone_units": 0.5
     }
   },
-  "fun_heuristics": { "perceived_responsiveness": 0.8 }
+  "fun_heuristics": {
+    "perceived_responsiveness": 0.8
+  }
 }

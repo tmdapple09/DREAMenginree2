@@ -1,10 +1,11 @@
-// SURFACE: dreamsurface.MessagesBoards  (framework-mandated basename: page.tsx)
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Layout, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+
+// SURFACE: dreamsurface.MessagesBoards  (framework-mandated basename: page.tsx)
 
 export const metadata = { title: 'Boards – Dreamengin' };
 

@@ -1,9 +1,9 @@
 'use client';
+
 import type { Point } from '@/lib/botDetection';
 import { analyzeSwipe, tallyView } from '@/lib/botDetection';
 import { enginBridge } from '@/lib/runtime/dualRuntimeBridge';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-export { DREAMR_TOPICS } from '@/lib/dreamr/dreamrfeed';
 
 export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: string, sharerId: string, viewerId: string}) {
   const [hasTallied, setHasTallied] = useState(false);
@@ -33,7 +33,7 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
   useEffect(() => {
     if (!hasTallied) {
       const path = `${videoId}-${sharerId}-${viewerId}`;
-      enginBridge.emitToChannel('CHECK_DISCOVERY', { 
+      enginBridge.emitToChannel('CHECK_DISCOVERY', {
         path,
         callback: (isUnique: boolean) => {
           if (isUnique) {
@@ -106,7 +106,7 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
           className="relative bg-[#02050A] rounded-[39px] p-8 border border-white/5 overflow-hidden"
           style={{ opacity: frozen ? 0.4 : 1, transition: 'opacity 0.3s ease', pointerEvents: frozen ? 'none' : 'auto' }}
         >
-          
+
           {/* HEADER: Gold Branding Only */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-[#FFD700] font-black text-xl italic uppercase tracking-tighter">DreamR</h2>
@@ -114,13 +114,13 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
           </div>
 
           {/* VIEWPORT: The Content Area */}
-          <div 
+          <div
             onTouchStart={(e) => handleTouch(e, 'start')}
             onTouchMove={(e) => handleTouch(e, 'move')}
             onTouchEnd={(e) => handleTouch(e, 'end')}
-            style={{ 
-              transform: `translateX(${dragX}px)`, 
-              transition: dragX === 0 ? 'transform 0.6s cubic-bezier(0.2, 1, 0.2, 1)' : 'none' 
+            style={{
+              transform: `translateX(${dragX}px)`,
+              transition: dragX === 0 ? 'transform 0.6s cubic-bezier(0.2, 1, 0.2, 1)' : 'none'
             }}
             className="relative aspect-[3/4] rounded-3xl mb-8 bg-black border border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,1)]"
           >
@@ -136,7 +136,7 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </button>
-              
+
               {/* COMMENT */}
               <button onClick={() => enginBridge.emitToChannel('COMMENT', { videoId })} className="text-white/20 hover:text-white transition-colors">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -154,3 +154,5 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
     </div>
   );
 }
+
+export { DREAMR_TOPICS } from '@/lib/dreamr/dreamrfeed';

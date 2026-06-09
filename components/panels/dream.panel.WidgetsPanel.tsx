@@ -1,17 +1,17 @@
 'use client';
 
-/**
- * WidgetsPanel — Dream widget management rendered in Surface Space.
- * Real client-side state with Supabase fetch for persisted widget config.
- * Back → openInSurface('settings'). No routing.
- */
-
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
 import { createClient } from '@/lib/supabase/client';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { ArrowLeft, Eye, EyeOff, LayoutGrid, Loader2, Pin } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+/**
+ * WidgetsPanel — Dream widget management rendered in Surface Space.
+ * Real client-side state with Supabase fetch for persisted widget config.
+ * Back → openInSurface('settings'). No routing.
+ */
 
 interface WidgetEntry { name: string; pinned: boolean; visible: boolean; }
 

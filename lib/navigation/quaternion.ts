@@ -1,8 +1,8 @@
+import { VECTOR_ZERO_THRESHOLD } from './manifold';
+
 // Quaternion Math Library
 // Section 3: Quaternion Rotation Engine
 // All rotations use quaternions, NO Euler angles
-
-import { VECTOR_ZERO_THRESHOLD } from './manifold';
 
 /**
  * Quaternion: q = (w, xi, yj, zk)
@@ -32,7 +32,7 @@ export function fromAxisAngle(axis: { x: number; y: number; z: number }, angle: 
   const halfAngle = angle / 2;
   const sinHalf = Math.sin(halfAngle);
   const cosHalf = Math.cos(halfAngle);
-  
+
   return {
     w: cosHalf,
     x: axis.x * sinHalf,
@@ -44,12 +44,12 @@ export function fromAxisAngle(axis: { x: number; y: number; z: number }, angle: 
 /**
  * Create quaternion from gesture swipe vector
  * Section 3.2: Rotation From Gesture
- * 
+ *
  * Given swipe vector v = (dx, dy):
  * - Map to axis: a = normalize((dy, -dx, 0))
  * - Angle: θ = k * |v|
  * - Quaternion: q = [cos(θ/2), a * sin(θ/2)]
- * 
+ *
  * @param dx - horizontal swipe delta
  * @param dy - vertical swipe delta
  * @param sensitivity - sensitivity constant k
@@ -57,17 +57,17 @@ export function fromAxisAngle(axis: { x: number; y: number; z: number }, angle: 
 export function fromGestureSwipe(dx: number, dy: number, sensitivity: number = 0.01): Quaternion {
   // Swipe magnitude
   const magnitude = Math.sqrt(dx * dx + dy * dy);
-  
+
   if (magnitude < 0.001) {
     return identityQuaternion();
   }
-  
+
   // Map to rotation axis (perpendicular to swipe)
   // Note: dy maps to x, -dx maps to y for intuitive rotation
   const axisX = dy;
   const axisY = -dx;
   const axisZ = 0;
-  
+
   // Normalize axis
   const axisLength = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
   const normalizedAxis = {
@@ -75,17 +75,17 @@ export function fromGestureSwipe(dx: number, dy: number, sensitivity: number = 0
     y: axisY / axisLength,
     z: axisZ / axisLength,
   };
-  
+
   // Compute angle from magnitude
   const angle = sensitivity * magnitude;
-  
+
   return fromAxisAngle(normalizedAxis, angle);
 }
 
 /**
  * Quaternion multiplication (composition of rotations)
  * Section 3.3: orientation_next = q ⊗ orientation_current
- * 
+ *
  * @param q1 - first quaternion
  * @param q2 - second quaternion
  * @returns Product q1 ⊗ q2
@@ -106,12 +106,12 @@ export function multiply(q1: Quaternion, q2: Quaternion): Quaternion {
  */
 export function normalize(q: Quaternion): Quaternion {
   const length = Math.sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
-  
+
   // Handle edge case
   if (length < VECTOR_ZERO_THRESHOLD) {
     return identityQuaternion();
   }
-  
+
   return {
     w: q.w / length,
     x: q.x / length,
@@ -143,7 +143,7 @@ export function isValid(q: Quaternion): boolean {
  */
 export function toRotationMatrix(q: Quaternion): number[][] {
   const { w, x, y, z } = q;
-  
+
   return [
     [
       1 - 2 * (y * y + z * z),
@@ -169,13 +169,13 @@ export function toRotationMatrix(q: Quaternion): number[][] {
 export function rotateVector(q: Quaternion, v: { x: number; y: number; z: number }): { x: number; y: number; z: number } {
   // Convert vector to quaternion
   const vq: Quaternion = { w: 0, x: v.x, y: v.y, z: v.z };
-  
+
   // Compute q * v * q^-1 (conjugate for unit quaternions)
   const qConj: Quaternion = { w: q.w, x: -q.x, y: -q.y, z: -q.z };
-  
+
   const temp = multiply(q, vq);
   const result = multiply(temp, qConj);
-  
+
   return { x: result.x, y: result.y, z: result.z };
 }
 
@@ -186,17 +186,17 @@ export function rotateVector(q: Quaternion, v: { x: number; y: number; z: number
 export function slerp(q1: Quaternion, q2: Quaternion, t: number): Quaternion {
   // Clamp t to [0, 1]
   t = Math.max(0, Math.min(1, t));
-  
+
   // Compute cosine of angle between quaternions
   let dot = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
-  
+
   // If negative, negate one quaternion to take shorter path
   let q2Copy = { ...q2 };
   if (dot < 0) {
     dot = -dot;
     q2Copy = { w: -q2.w, x: -q2.x, y: -q2.y, z: -q2.z };
   }
-  
+
   // If quaternions are very close, use linear interpolation
   if (dot > 0.9995) {
     return normalize({
@@ -206,13 +206,13 @@ export function slerp(q1: Quaternion, q2: Quaternion, t: number): Quaternion {
       z: q1.z + t * (q2Copy.z - q1.z),
     });
   }
-  
+
   // Compute angle and perform slerp
   const theta = Math.acos(dot);
   const sinTheta = Math.sin(theta);
   const w1 = Math.sin((1 - t) * theta) / sinTheta;
   const w2 = Math.sin(t * theta) / sinTheta;
-  
+
   return {
     w: w1 * q1.w + w2 * q2Copy.w,
     x: w1 * q1.x + w2 * q2Copy.x,
@@ -227,22 +227,22 @@ export function slerp(q1: Quaternion, q2: Quaternion, t: number): Quaternion {
  */
 export function toEulerAngles(q: Quaternion): { pitch: number; yaw: number; roll: number } {
   const { w, x, y, z } = q;
-  
+
   // Roll (x-axis rotation)
   const sinr_cosp = 2 * (w * x + y * z);
   const cosr_cosp = 1 - 2 * (x * x + y * y);
   const roll = Math.atan2(sinr_cosp, cosr_cosp);
-  
+
   // Pitch (y-axis rotation)
   const sinp = 2 * (w * y - z * x);
   const pitch = Math.abs(sinp) >= 1
     ? Math.sign(sinp) * Math.PI / 2 // Use 90 degrees if out of range
     : Math.asin(sinp);
-  
+
   // Yaw (z-axis rotation)
   const siny_cosp = 2 * (w * z + x * y);
   const cosy_cosp = 1 - 2 * (y * y + z * z);
   const yaw = Math.atan2(siny_cosp, cosy_cosp);
-  
+
   return { pitch, yaw, roll };
 }

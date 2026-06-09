@@ -1,3 +1,10 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * app/api/drafts/route.ts
  *
@@ -23,14 +30,6 @@
  * ACTION_AUDIT.md — was labelled 🟡 fake-wired (drafts written to local state only).
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-
-
-import { toErrorMessage } from '@/lib/utils';
 // ── Validation ──────────────────────────────────────────────────────────────
 
 const CONTENT_TYPES = [
@@ -45,8 +44,6 @@ const CreateDraftSchema = z.object({
   scheduled_at: z.string().datetime({ offset: true }).nullable().optional(),
 });
 
-// ── GET /api/drafts ──────────────────────────────────────────────────────────
-
 export async function GET(_req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -55,7 +52,6 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-   
   const db = supabase as SupabaseClient;
 
   const { data: drafts, error } = await db
@@ -71,8 +67,6 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
 
   return NextResponse.json({ drafts: drafts ?? [] });
 }
-
-// ── POST /api/drafts ─────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -99,7 +93,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const { content, content_type, title, scheduled_at } = parseResult.data;
 
-   
   const db = supabase as SupabaseClient;
 
   const now = new Date().toISOString();

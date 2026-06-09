@@ -1,14 +1,14 @@
 'use client';
 
+import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+
 /**
  * PrivacyPanel — Privacy settings rendered in Surface Space.
  * Real toggles persisted to localStorage. Real appeal API call.
  * Back → openInSurface('settings'). No routing.
  */
-
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'de-privacy-settings';
 

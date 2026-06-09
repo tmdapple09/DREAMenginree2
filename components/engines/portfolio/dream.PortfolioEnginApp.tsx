@@ -1,5 +1,8 @@
 'use client';
 
+import { makeEnginApp } from '@/components/engines/shared';
+import PortfolioEngin from '@/engins/portfolio/dream.PortfolioEngin';
+
 /**
  * PortfolioEnginApp — Full-screen app shell for the Portfolio Engine.
  *
@@ -9,9 +12,6 @@
  *   /engines/portfolio/assets   → asset universe selector
  *   /engines/portfolio/quantum  → quantum circuit canvas
  */
-
-import { makeEnginApp } from '@/components/engines/shared';
-import PortfolioEngin from '@/engins/portfolio/dream.PortfolioEngin';
 
 export default makeEnginApp({
   id: 'portfolio',

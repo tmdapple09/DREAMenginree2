@@ -1,4 +1,7 @@
 'use client';
+
+import React from 'react';
+
 // components/widgets/dream.widget.WidgetPlaceholder.tsx
 // Empty slot placeholder (req 64-70)
 //
@@ -9,8 +12,6 @@
 //   (parent must pass isPublicView and not render this component if true)
 // • Does not block navigation or scroll (req 69-70) — pointer-events only on card
 // • Can be removed in Edit Layout (req 67) — parent passes onRemove
-
-import React from 'react';
 
 export interface WidgetPlaceholderProps {
   /** Called when user taps the placeholder — should open Dream Library (req 66) */

@@ -1,3 +1,9 @@
+import {
+    calculateRank,
+    derivePostMassMeta,
+    getPostMass,
+} from '@/lib/dreamr/torridityLedger';
+
 /**
  * DreamR Algorithm — humanistic feed scoring.
  *
@@ -22,12 +28,6 @@
  *
  * All functions are pure — no I/O, fully testable.
  */
-
-import {
-    calculateRank,
-    derivePostMassMeta,
-    getPostMass,
-} from '@/lib/dreamr/torridityLedger';
 
 export interface ScoredPost {
   id: string;
@@ -72,8 +72,6 @@ export interface DreamRSignals {
   trendImpact:      number;  // 0-1 (the minimal trends signal)
 }
 
-// ── Weights (must sum to 1.0) ─────────────────────────────────────────────────
-
 export const DREAMR_WEIGHTS: Record<keyof DreamRSignals, number> = {
   contentDepth:   0.22,
   originalMedia:  0.22,
@@ -82,8 +80,6 @@ export const DREAMR_WEIGHTS: Record<keyof DreamRSignals, number> = {
   freshness:      0.13,
   trendImpact:    0.10,
 };
-
-// ── Individual signal scorers ─────────────────────────────────────────────────
 
 /**
  * contentDepth — rewards crafted writing.
@@ -244,8 +240,6 @@ export const DREAMR_REASONS: Record<keyof DreamRSignals, string> = {
   trendImpact:    'gaining traction',
 };
 
-// ── Composite scorer ─────────────────────────────────────────────────────────
-
 export function scoreDreamRPost(post: ScoredPost): {
   score: number;
   signals: DreamRSignals;
@@ -275,7 +269,6 @@ export function scoreDreamRPost(post: ScoredPost): {
     0,
   ) * 100;
 
-  // ── View-velocity bonus ───────────────────────────────────────────────────
   // Additive, capped at +2.5 (out of 100) so a runaway-velocity post can edge
   // past a similarly-scored slow burner without ever overpowering creativity
   // signals. Deliberately kept modest — DreamR's promise is "creativity, not

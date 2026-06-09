@@ -54,9 +54,7 @@ export interface ListVoiceProfilesResult {
   profiles: VoiceProfile[];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Remote API helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function cloneVoice(req: VoiceCloneRequest): Promise<VoiceCloneResult> {
   const res = await fetch('/api/content/voice-clone', {
@@ -120,9 +118,7 @@ export async function deleteVoiceProfile(voiceId: string): Promise<{ message: st
   return res.json() as Promise<{ message: string }>;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Browser-native Web Speech API fallback
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Speak text using the browser's built-in Web Speech API.
@@ -171,9 +167,7 @@ export function getBrowserVoices(): SpeechSynthesisVoice[] {
   return window.speechSynthesis.getVoices();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // File helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Convert an audio File to base64 (browser only). */
 export function audioFileToBase64(file: File): Promise<string> {
@@ -193,4 +187,3 @@ export function estimateDurationSeconds(text: string, wordsPerMinute = 150): num
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
   return wordCount / (wordsPerMinute / 60);
 }
-

@@ -11,14 +11,10 @@
  *   4. Filter below the torridity-derived energy threshold
  */
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const DEFAULT_FFT_SIZE       = 2048;
 const DEFAULT_SLICE_DURATION = 0.1;   // 100 ms per frame
 const DEFAULT_TOP_K          = 5;     // peaks per frame
 const PEAK_THRESHOLD_FRAC    = 0.21;  // 0.1 * 2.1 (torridity ΔP * n)
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface FrequencyPeak {
   /** Frequency bin index. */
@@ -49,8 +45,6 @@ export interface PeakMap {
   /** All extracted peaks. */
   peaks:         FrequencyPeak[];
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
  * Compute a simple magnitude spectrum for a float32 frame using
@@ -88,8 +82,6 @@ function topKIndices(arr: Float32Array, k: number): number[] {
   indexed.sort((a, b) => b.v - a.v);
   return indexed.slice(0, k).map((x) => x.i);
 }
-
-// ─── buildPeakMap ─────────────────────────────────────────────────────────────
 
 /**
  * buildPeakMap(audioBuffer, options?)

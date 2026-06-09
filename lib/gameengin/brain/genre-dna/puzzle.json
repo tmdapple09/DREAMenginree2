@@ -1,6 +1,10 @@
 {
   "genre": "Puzzle",
-  "subgenres": ["physics", "logic", "narrative"],
+  "subgenres": [
+    "physics",
+    "logic",
+    "narrative"
+  ],
   "core_mechanic": "Discrete or continuous problem-solving against a fixed ruleset.",
   "emotional_core": "wonder",
   "player_motivation": "Reach the 'aha' insight moment.",
@@ -16,11 +20,14 @@
   },
   "progression_model": {
     "structure_type": "episodic",
-    "progression_gates": ["puzzle-cleared", "rule-unlock"],
+    "progression_gates": [
+      "puzzle-cleared",
+      "rule-unlock"
+    ],
     "completion_definition": "All required puzzles solved; optional bonus rooms and meta-puzzles unlock a true ending.",
     "content_cadence": "Per puzzle world / chapter; one new mechanic per world."
   },
-  "canonical_examples":[
+  "canonical_examples": [
     {
       "title": "Baba Is You",
       "year": 2019,

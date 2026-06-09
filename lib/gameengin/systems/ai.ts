@@ -11,18 +11,13 @@
  * `BehaviorTreeSystem` is an alias for the canonical `BehaviorTreeEngine`.
  */
 
-// ─── Classes ─────────────────────────────────────────────────────────────────
+/** Alias: BehaviorTreeSystem → BehaviorTreeEngine. */
 
 export {
     BehaviorTreeEngine,
     WorkerJobSystem
 } from '../power-systems';
-
-/** Alias: BehaviorTreeSystem → BehaviorTreeEngine. */
 export { BehaviorTreeEngine as BehaviorTreeSystem } from '../power-systems';
-
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export type {
     BTContext,
     BTNode, BTStatus, Job, JobPriority, JobResult

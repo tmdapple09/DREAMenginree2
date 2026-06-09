@@ -101,3 +101,4 @@ export function serverBootstrapDiagnostics(manifest: CartridgeManifestEntry): Ru
     spans: manifest.launch.warmupPlan.pipelines.map((pipeline) => ({ id: pipeline.id, label: pipeline.label, status: 'pending' })),
   };
 }
+

@@ -19,9 +19,26 @@ export type RemoteMoveAction =
   | 'move-up-left'
   | 'move-up-right'
   | 'move-down-left'
-  | 'move-down-right';
+  | 'move-down-right'
+  | 'strafe-left'
+  | 'strafe-right';
 
-export type GameRemoteInputAction = RemoteMoveAction | 'move-stop' | 'jump' | 'r1' | 'shoot' | 'pause';
+export type GameRemoteInputAction = RemoteMoveAction
+  | 'move-stop'
+  | 'look-up'
+  | 'look-down'
+  | 'turn-left'
+  | 'turn-right'
+  | 'look-stop'
+  | 'ability'
+  | 'swap'
+  | 'strike'
+  | 'guard'
+  | 'dash'
+  | 'jump'
+  | 'r1'
+  | 'shoot'
+  | 'pause';
 
 export interface MobileGameControlHandlers {
   onMove?: (directionVector: MobileControlVector) => void;
@@ -167,3 +184,4 @@ export function useRegisterMobileGameControls(handlers: MobileGameControlHandler
     return registerMobileGameControls(listener);
   }, [Boolean(handlers)]);
 }
+

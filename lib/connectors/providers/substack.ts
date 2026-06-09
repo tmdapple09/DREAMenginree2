@@ -1,3 +1,7 @@
+import { normaliseSubstack } from '@/lib/connectors/normalise';
+import { parseRssFeed, substackRssUrl } from '@/lib/social/rss-feed';
+import type { UnifiedFeedItem } from '@/types/connector';
+
 /**
  * lib/connectors/providers/substack.ts
  *
@@ -14,10 +18,6 @@
  *
  * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
  */
-
-import { normaliseSubstack } from '@/lib/connectors/normalise';
-import { parseRssFeed, substackRssUrl } from '@/lib/social/rss-feed';
-import type { UnifiedFeedItem } from '@/types/connector';
 
 export interface SubstackCredentials {
   /** Subdomain slug (e.g. "mynewsletter") or full publication URL */

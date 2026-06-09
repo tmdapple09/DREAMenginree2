@@ -9,5 +9,8 @@
       "smoothing_ms": 250
     }
   },
-  "fun_heuristics": { "reaction_time_gain": 0.7, "fairness": 0.85 }
+  "fun_heuristics": {
+    "reaction_time_gain": 0.7,
+    "fairness": 0.85
+  }
 }

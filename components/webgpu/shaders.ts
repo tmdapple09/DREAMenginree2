@@ -19,8 +19,6 @@ export const N_LEMN_VERTS = (N_LEMN_SEGS + 1) * 2;
 /** Vertices for particle quads: 6 verts each (2 triangles). */
 export const N_PARTICLE_VERTS = N_PARTICLES * 6;
 
-// ─── shared WGSL blocks ───────────────────────────────────────────────────────
-
 const STRUCTS = /* wgsl */`
 struct Uniforms {
   time   : f32,
@@ -52,8 +50,6 @@ fn lemn_tan(t: f32) -> vec2<f32> {
 const HASH = /* wgsl */`
 fn hash(n: f32) -> f32 { return fract(sin(n) * 43758.5453); }
 `;
-
-// ─── 1. Compute: particle physics ────────────────────────────────────────────
 
 export const COMPUTE_WGSL = /* wgsl */`
 ${STRUCTS}
@@ -98,8 +94,6 @@ fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
   particles[idx] = p;
 }
 `;
-
-// ─── 2a. Lemniscate ribbon vertex ─────────────────────────────────────────────
 
 export const LEMN_VERT_WGSL = /* wgsl */`
 ${STRUCTS}
@@ -158,8 +152,6 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
   return vec4<f32>(col * 3.8, 1.0);   // HDR: intentionally > 1
 }
 `;
-
-// ─── 2b. Particle quads vertex ────────────────────────────────────────────────
 
 export const PARTICLE_VERT_WGSL = /* wgsl */`
 ${STRUCTS}
@@ -231,8 +223,6 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
 }
 `;
 
-// ─── shared full-screen triangle vertex ──────────────────────────────────────
-
 export const FS_VERT_WGSL = /* wgsl */`
 struct VSOut {
   @builtin(position) clip : vec4<f32>,
@@ -249,8 +239,6 @@ fn vs_main(@builtin(vertex_index) vi : u32) -> VSOut {
   return out;
 }
 `;
-
-// ─── 3. Bright pass ───────────────────────────────────────────────────────────
 
 export const BRIGHT_FRAG_WGSL = /* wgsl */`
 @group(0) @binding(0) var tex : texture_2d<f32>;
@@ -269,8 +257,6 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
   return vec4<f32>(c.rgb * k, 1.0);
 }
 `;
-
-// ─── 4/5. Separable Gaussian blur ────────────────────────────────────────────
 
 export const BLUR_FRAG_WGSL = /* wgsl */`
 struct BlurDir { dir : vec2<f32>, _p : vec2<f32>, }
@@ -299,8 +285,6 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
   return acc;
 }
 `;
-
-// ─── 6. Composite: tone-map + chromatic aberration + vignette + γ ────────────
 
 export const COMPOSITE_FRAG_WGSL = /* wgsl */`
 @group(0) @binding(0) var scene_tex : texture_2d<f32>;

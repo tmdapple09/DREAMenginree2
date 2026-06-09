@@ -34,3 +34,4 @@ export default function IDariButton({ isAdmin }: IDariButtonProps) {
     </button>
   );
 }
+

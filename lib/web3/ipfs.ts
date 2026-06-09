@@ -1,3 +1,5 @@
+import { IpfsContent, IpfsUploadResult, Web3Error } from './types';
+
 /**
  * lib/web3/ipfs.ts
  *
@@ -12,21 +14,13 @@
  * read-only and doesn't require credentials.
  */
 
-import { IpfsContent, IpfsUploadResult, Web3Error } from './types';
-
-// ─── Config ───────────────────────────────────────────────────────────────────
-
 const IPFS_API_BASE = '/api/social/ipfs';
 const PUBLIC_GATEWAY =
   process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 function cidToGatewayUrl(cid: string): string {
   return `${PUBLIC_GATEWAY}/${cid}`;
 }
-
-// ─── Upload ───────────────────────────────────────────────────────────────────
 
 /**
  * Upload arbitrary string content to IPFS via the backend proxy.
@@ -92,8 +86,6 @@ export async function uploadFileToIpfs(file: File): Promise<IpfsUploadResult> {
   };
 }
 
-// ─── Retrieval ────────────────────────────────────────────────────────────────
-
 /**
  * Retrieve content by CID.
  * Tries the backend proxy first; falls back to the public gateway.
@@ -129,8 +121,6 @@ export async function getFromIpfs(cid: string): Promise<IpfsContent> {
   return { cid, content, mimeType };
 }
 
-// ─── Pin ──────────────────────────────────────────────────────────────────────
-
 /**
  * Pin a CID to prevent garbage collection.
  * Returns true if the pin succeeded, false if the backend was unreachable.
@@ -148,8 +138,6 @@ export async function pinCid(cid: string): Promise<boolean> {
     return false;
   }
 }
-
-// ─── URL helpers ──────────────────────────────────────────────────────────────
 
 /**
  * Resolve an ipfs:// URI or bare CID to a public HTTP URL.

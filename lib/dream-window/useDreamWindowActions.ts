@@ -1,4 +1,14 @@
 'use client';
+
+import type {
+    CreateDreamWindowBody,
+    DreamWindowRecord,
+    PatchDreamWindowBody,
+} from '@/types/dream-window';
+import { useCallback, useEffect, useState } from 'react';
+import { DREAM_WINDOW_STATES } from './DreamWindowLifecycle';
+import { toErrorMessage } from '@/lib/utils';
+
 /**
  * lib/dream-window/useDreamWindowActions.ts
  *
@@ -17,18 +27,8 @@
  * Phase 8 Section B: Point 16 — all actions write to DB.
  */
 
-import type {
-    CreateDreamWindowBody,
-    DreamWindowRecord,
-    PatchDreamWindowBody,
-} from '@/types/dream-window';
-import { useCallback, useEffect, useState } from 'react';
-import { DREAM_WINDOW_STATES } from './DreamWindowLifecycle';
-
-import { toErrorMessage } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 // Types
-// ---------------------------------------------------------------------------
 
 export interface UseDreamWindowActionsReturn {
   /** Current list of Dream Window records for the authenticated user */
@@ -122,16 +122,12 @@ export async function patchDreamWindow(
   return result.ok ? result.data : null;
 }
 
-// ---------------------------------------------------------------------------
 // Hook implementation
-// ---------------------------------------------------------------------------
 
 export function useDreamWindowActions(): UseDreamWindowActionsReturn {
   const [dreamWindows, setDreamWindows] = useState<DreamWindowRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // ── Load on mount ──────────────────────────────────────────────────────
 
   const loadWindows = useCallback(async () => {
     setIsLoading(true);
@@ -156,8 +152,6 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
     loadWindows();
   }, [loadWindows]);
 
-  // ── Add ────────────────────────────────────────────────────────────────
-
   const addWindow = useCallback(async (
     body: CreateDreamWindowBody,
   ): Promise<DreamWindowRecord | null> => {
@@ -179,8 +173,6 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
     }
   }, []);
 
-  // ── Remove ─────────────────────────────────────────────────────────────
-
   const removeWindow = useCallback(async (id: string): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
@@ -200,8 +192,6 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       setIsLoading(false);
     }
   }, []);
-
-  // ── Generic state transition ───────────────────────────────────────────
 
   const patchState = useCallback(async (
     id: string,
@@ -254,8 +244,6 @@ export function useDreamWindowActions(): UseDreamWindowActionsReturn {
       setIsLoading(false);
     }
   }, []);
-
-  // ── Lifecycle transition methods ───────────────────────────────────────
 
   const bindWindow = useCallback(
     (id: string) => patchState(id, DREAM_WINDOW_STATES.BOUND),

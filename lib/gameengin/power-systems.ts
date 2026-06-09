@@ -30,9 +30,7 @@
  * 20.  PhysicsMaterialSystem   — surface-pair material table (friction/restitution/sound)
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  1. ROLLBACK NETCODE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface NetInput {
   tick: number;
@@ -132,9 +130,7 @@ export class RollbackNetcode {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  2. GPU COMPUTE PIPELINE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface ComputeKernel {
   label: string;
@@ -236,9 +232,7 @@ export class ComputeShaderPipeline {
   dispose(): void { (this.device as GPUDevice | null)?.destroy(); this.device = null; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  3. ADVANCED PHYSICS WORLD
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type PhysicsBodyType = 'dynamic' | 'static' | 'kinematic';
 export type ShapeType = 'box' | 'sphere' | 'capsule' | 'mesh' | 'convex';
@@ -651,9 +645,7 @@ export interface PhysicsConstraint {
   limits?: [number, number];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  4. OCTREE / BVH SPATIAL PARTITIONING
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface AABB {
   min: [number, number, number];
@@ -786,9 +778,7 @@ export class OctreeBVH {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  5. WORKER JOB SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type JobPriority = 'high' | 'normal' | 'low';
 
@@ -862,9 +852,7 @@ export class WorkerJobSystem {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  6. PROCEDURAL WORLD GENERATOR
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface WorldGenConfig {
   seed: number;
@@ -989,7 +977,6 @@ export class ProceduralWorldGen {
   evictChunk(x: number, z: number): void { this.chunkCache.delete(`${x},${z}`); }
   get cachedChunks(): number { return this.chunkCache.size; }
 
-  // ── Simplex 2D (Roberts' grad permutation) ──────────────────────────────
   private _simplex2(x: number, y: number): number {
     const F2 = 0.5 * (Math.sqrt(3) - 1);
     const G2 = (3 - Math.sqrt(3)) / 6;
@@ -1043,9 +1030,7 @@ export class ProceduralWorldGen {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  7. SPATIAL AUDIO DSP
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface AudioSourceDef {
   id: string;
@@ -1197,9 +1182,7 @@ export class SpatialAudioDSP {
   dispose(): void { this.sources.forEach((_, id: string) => this.removeSource(id)); this.ctx?.close(); this.ctx = null; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  8. REPLAY BUFFER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface InputFrame {
   tick: number;
@@ -1302,9 +1285,7 @@ export class ReplayBuffer {
   get isRecording(): boolean { return this.recording; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  9. BEHAVIOR TREE ENGINE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type BTStatus = 'success' | 'failure' | 'running';
 
@@ -1416,9 +1397,7 @@ export class BehaviorTreeEngine {
   get registeredTrees(): string[] { return [...this.trees.keys()]; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  10. GPU PROFILER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface ProfileSpan {
   label: string;
@@ -1511,9 +1490,7 @@ export class GPUProfiler {
   get stats() { return { frames: this.frames.length, avgMs: this.avgFrameMs(), hotSpot: this.hotSpot() }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  11. TYPED EVENT BUS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type EventMap = Record<string, unknown>;
 
@@ -1587,9 +1564,7 @@ export class TypedEventBus<M extends EventMap = EventMap> {
   dispose(): void { this.listeners.clear(); this.history = []; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  12. ANIMATION STATE MACHINE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface AnimationClip {
   id: string;
@@ -1697,9 +1672,7 @@ export class AnimationStateMachine {
   get stats() { return { clips: this.clips.size, transitions: this.transitions.length, agents: this.agentStates.size }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  13. LOD SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface LODLevel {
   minDist: number;
@@ -1762,9 +1735,7 @@ export class LODSystem {
   get stats() { return { objects: this.objects.size, updateCount: this.updateCount, density: this.lastDensityStats }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  14. CLIENT-SIDE PREDICTION
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface PredictionState {
   tick: number;
@@ -1828,9 +1799,7 @@ export class ClientSidePrediction {
   get stats() { return { buffered: this.predictedStates.length, reconciliations: this.reconciliationCount, maxDivergence: this.maxDivergence }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  15. RESOURCE POOL
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Zero-allocation fixed-capacity object pool.
@@ -1871,9 +1840,7 @@ export class ResourcePool<T extends { reset?(): void }> {
   get stats() { return { pool: this.pool.length, active: this.active.size, acquireCount: this.acquireCount, missCount: this.missCount }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  16. WGSL SHADER MANAGER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface ShaderVariant {
   key: string;
@@ -1934,9 +1901,7 @@ export class WGSLShaderManager {
   dispose(): void { this.cache.clear(); this.sources.clear(); this.device = null; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  17. TERRAIN ENGINE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface TerrainPage {
   lod: number;      // 0 = highest detail
@@ -2033,9 +1998,7 @@ export class TerrainEngine {
   dispose(): void { this.pageCache.clear(); }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  18. GLOBAL ILLUMINATION PROBES (SPHERICAL HARMONICS)
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** 9-coefficient L2 spherical harmonics probe (RGB). */
 export type SHCoeffs = Float32Array; // length 27 (9 × RGB)
@@ -2143,9 +2106,7 @@ export class GlobalIllumProbes {
   get stats() { return { probes: this.probes.size, dirtyProbes: this.getDirtyProbes().length }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  19. ASSET STREAM MANAGER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type AssetType = 'mesh' | 'texture' | 'audio' | 'shader' | 'script';
 export type AssetState = 'unloaded' | 'queued' | 'loading' | 'loaded' | 'error';
@@ -2248,9 +2209,7 @@ export class AssetStreamManager {
   get stats() { return { assets: this.assets.size, queued: this.queue.length, active: this.active.size, loadedMB: (this.loadedBytes / 1024 / 1024).toFixed(2), loadCount: this.loadCount, deferredCount: this.deferredCount }; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  20. PHYSICS MATERIAL SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface PhysicsMaterial {
   id: string;

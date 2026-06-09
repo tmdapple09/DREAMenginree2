@@ -1,44 +1,83 @@
 'use client';
 
-/**
- * GameRemote — dual analog-stick game controller for the Games Daydream (Side B).
- *
- * Per ARCHITECTURE.md §18 (Universal Mobile Remote):
- *   Left stick  → 8 directions → movement (left/right/up/down/diagonals)
- *   Right stick → 8 directions → PS5-style actions:
- *       up          = × JUMP
- *       down        = △ DUCK
- *       left        = □ SPIN
- *       right       = ○ SHOOT
- *       up-left     = L1  Jump+Spin
- *       up-right    = R2  Jump+Shoot
- *       down-left   = L2  Duck hold
- *       down-right  = R1  Dash/Dodge
- *
- * Events fired on window: CustomEvent('de-game-input', { detail: { action, active } })
- * The game canvas (DrEamsGameCanvas) listens for these events as a third input method
- * alongside keyboard and on-canvas touch zones.
- *
- * Sticks snap back to center on pointer release (spring easing via CSS transition).
- * Direction label appears above each stick while dragging past the dead zone.
- */
-
-import { buildGameLaunchHref, DEFAULT_GAME_ID } from '@/lib/games/navigation';
 import { useGamepad } from '@/lib/games/useGamepad';
 import { broadcastGameInput } from '@/lib/games/useRemoteChannel';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+/**
+ * GameRemote — single shared controller surface for GameEngin cartridges.
+ *
+ * Left stick: forward / backward / strafe left / strafe right.
+ * Right stick: look up / look down / rotate left / rotate right.
+ * Ring buttons: ability, swap, strike, guard, dash, pause.
+ */
+
 export type GameInputAction =
-  | 'move-left' | 'move-right' | 'move-up' | 'move-down'
-  | 'move-up-left' | 'move-up-right' | 'move-down-left' | 'move-down-right'
-  | 'move-stop'
-  | 'jump' | 'duck' | 'spin' | 'shoot'
-  | 'jump-spin' | 'jump-shoot' | 'l2' | 'r1' | 'l3' | 'r3'
-  | 'sprint'
-  | 'pause';
+  | 'move-up' | 'move-down' | 'move-left' | 'move-right'
+  | 'strafe-left' | 'strafe-right' | 'move-stop'
+  | 'look-up' | 'look-down' | 'turn-left' | 'turn-right' | 'look-stop'
+  | 'ability' | 'swap' | 'strike' | 'guard' | 'dash'
+  | 'jump' | 'duck' | 'spin' | 'shoot' | 'jump-spin' | 'jump-shoot'
+  | 'l2' | 'r1' | 'l3' | 'r3' | 'sprint' | 'pause';
+
+type Dir8 = 'right' | 'down-right' | 'down' | 'down-left' | 'left' | 'up-left' | 'up' | 'up-right';
+
+interface GameRemoteProps {
+  onBack?: () => void;
+  embedded?: boolean;
+  playHref?: string;
+  gameLabel?: string;
+  onPlay?: () => void;
+  onExit?: () => void;
+  exitHref?: string;
+  enabled?: boolean;
+  scale?: number;
+}
+
+interface StickProps {
+  side: 'left' | 'right';
+  label: string;
+  scale: number;
+  accent: string;
+}
+
+const DEAD_ZONE = 16;
+const LEFT_PAD_RADIUS = 58;
+const RIGHT_PAD_RADIUS = 66;
+const KNOB_RADIUS = 19;
+const LEFT_MAX = 46;
+const RIGHT_MAX = 50;
+
+const LEFT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
+  up: { action: 'move-up', label: 'FORWARD' },
+  down: { action: 'move-down', label: 'BACK' },
+  left: { action: 'strafe-left', label: 'STRAFE LEFT' },
+  right: { action: 'strafe-right', label: 'STRAFE RIGHT' },
+  'up-left': { action: 'move-up', label: 'FORWARD' },
+  'up-right': { action: 'move-up', label: 'FORWARD' },
+  'down-left': { action: 'move-down', label: 'BACK' },
+  'down-right': { action: 'move-down', label: 'BACK' },
+};
+
+const RIGHT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
+  up: { action: 'look-up', label: 'LOOK UP' },
+  down: { action: 'look-down', label: 'LOOK DOWN' },
+  left: { action: 'turn-left', label: 'ROTATE LEFT' },
+  right: { action: 'turn-right', label: 'ROTATE RIGHT' },
+  'up-left': { action: 'turn-left', label: 'ROTATE LEFT' },
+  'up-right': { action: 'turn-right', label: 'ROTATE RIGHT' },
+  'down-left': { action: 'turn-left', label: 'ROTATE LEFT' },
+  'down-right': { action: 'turn-right', label: 'ROTATE RIGHT' },
+};
+
+const RING_BUTTONS: readonly Array<{ sym: string; label: string; action: GameInputAction; color: string; top: number; left: number }> = [
+  { sym: 'A', label: 'Ability', action: 'ability', color: '#38bdf8', top: 0, left: 103 },
+  { sym: 'SW', label: 'Swap', action: 'swap', color: '#a78bfa', top: 48, left: 18 },
+  { sym: 'ST', label: 'Strike', action: 'strike', color: '#f87171', top: 48, left: 188 },
+  { sym: 'G', label: 'Guard', action: 'guard', color: '#4ade80', top: 156, left: 18 },
+  { sym: 'D', label: 'Dash', action: 'dash', color: '#fbbf24', top: 156, left: 188 },
+  { sym: '⏸', label: 'Pause', action: 'pause', color: '#94a3b8', top: 206, left: 103 },
+];
 
 function fireAction(action: GameInputAction, active: boolean): void {
   if (typeof window !== 'undefined') {
@@ -47,752 +86,371 @@ function fireAction(action: GameInputAction, active: boolean): void {
   broadcastGameInput(action, active);
 }
 
-// ── Constants ─────────────────────────────────────────────────────────────────
-const LEFT_PAD_R    = 52;   // left movement stick stays smaller so the right action stick has priority
-const RIGHT_PAD_R   = 70;   // right analog is intentionally larger for readability
-const LEFT_KNOB_R   = 20;   // inner knob radius
-const RIGHT_KNOB_R  = 20;   // slightly larger knob for action stick
-const LEFT_MAX_DISP = 50;   // max knob displacement from center
-const RIGHT_MAX_DISP= 50;   // larger travel to match larger right stick
-const DEAD     = 16;   // dead-zone: no action below this displacement
-
-const REMOTE_ACTION_PILLS = [
-  { sym: '×', label: 'Jump', action: 'jump' as GameInputAction, color: '#38bdf8' },
-  { sym: '○', label: 'Shoot', action: 'shoot' as GameInputAction, color: '#f87171' },
-  { sym: '□', label: 'Spin', action: 'spin' as GameInputAction, color: '#fbbf24' },
-  { sym: '△', label: 'Duck', action: 'duck' as GameInputAction, color: '#4ade80' },
-  { sym: 'L1', label: 'J+Spin', action: 'jump-spin' as GameInputAction, color: '#a78bfa' },
-  { sym: 'R2', label: 'J+Shot', action: 'jump-shoot' as GameInputAction, color: '#a78bfa' },
-  { sym: 'L2', label: 'Hold', action: 'l2' as GameInputAction, color: '#818cf8' },
-  { sym: 'R1', label: 'Dash', action: 'r1' as GameInputAction, color: '#818cf8' },
-] as const;
-
-const RIGHT_STICK_RING_BUTTONS = [
-  { sym: '×', label: 'Jump', action: 'jump' as GameInputAction, color: '#38bdf8', top: 0, left: 72 },
-  { sym: 'L1', label: 'Jump+Spin', action: 'jump-spin' as GameInputAction, color: '#a78bfa', top: 30, left: 10 },
-  { sym: 'R2', label: 'Jump+Shot', action: 'jump-shoot' as GameInputAction, color: '#a78bfa', top: 30, left: 134 },
-  { sym: '□', label: 'Spin', action: 'spin' as GameInputAction, color: '#fbbf24', top: 76, left: 0 },
-  { sym: '○', label: 'Shoot', action: 'shoot' as GameInputAction, color: '#f87171', top: 76, left: 144 },
-  { sym: 'L2', label: 'Hold', action: 'l2' as GameInputAction, color: '#818cf8', top: 124, left: 18 },
-  { sym: 'R1', label: 'Dash', action: 'r1' as GameInputAction, color: '#818cf8', top: 124, left: 126 },
-  { sym: '△', label: 'Duck', action: 'duck' as GameInputAction, color: '#4ade80', top: 146, left: 72 },
-] as const;
-
-// ── Direction helpers ─────────────────────────────────────────────────────────
-type Dir8 = 'right' | 'down-right' | 'down' | 'down-left' | 'left' | 'up-left' | 'up' | 'up-right';
-
 function angleToDir(dx: number, dy: number): Dir8 | null {
   const dist = Math.hypot(dx, dy);
-  if (dist < DEAD) return null;
-  const a = Math.atan2(dy, dx) * (180 / Math.PI); // -180..180, right=0, down=90
-  if (a > -22.5   && a <=  22.5)  return 'right';
-  if (a >  22.5   && a <=  67.5)  return 'down-right';
-  if (a >  67.5   && a <= 112.5)  return 'down';
-  if (a >  112.5  && a <= 157.5)  return 'down-left';
-  if (a >  157.5  || a <= -157.5) return 'left';
-  if (a > -157.5  && a <= -112.5) return 'up-left';
-  if (a > -112.5  && a <=  -67.5) return 'up';
-  if (a >  -67.5  && a <=  -22.5) return 'up-right';
-  return null;
+  if (dist < DEAD_ZONE) return null;
+  const a = Math.atan2(dy, dx) * (180 / Math.PI);
+  if (a > -22.5 && a <= 22.5) return 'right';
+  if (a > 22.5 && a <= 67.5) return 'down-right';
+  if (a > 67.5 && a <= 112.5) return 'down';
+  if (a > 112.5 && a <= 157.5) return 'down-left';
+  if (a > 157.5 || a <= -157.5) return 'left';
+  if (a > -157.5 && a <= -112.5) return 'up-left';
+  if (a > -112.5 && a <= -67.5) return 'up';
+  return 'up-right';
 }
 
-function clampToCircle(v: { x: number; y: number }, maxR: number): { x: number; y: number } {
-  const d = Math.hypot(v.x, v.y);
-  return d > maxR ? { x: (v.x / d) * maxR, y: (v.y / d) * maxR } : v;
+function clampToCircle(x: number, y: number, radius: number): { x: number; y: number } {
+  const d = Math.hypot(x, y);
+  if (d <= radius || d === 0) return { x, y };
+  return { x: (x / d) * radius, y: (y / d) * radius };
 }
 
-// ── Mapping tables ────────────────────────────────────────────────────────────
-const RIGHT_MAP: Record<Dir8, { action: GameInputAction; label: string; sym: string; color: string }> = {
-  'up':         { action: 'jump',       label: 'JUMP',       sym: '×',  color: '#38bdf8' },
-  'down':       { action: 'duck',       label: 'DUCK',       sym: '△',  color: '#4ade80' },
-  'left':       { action: 'spin',       label: 'SPIN',       sym: '□',  color: '#fbbf24' },
-  'right':      { action: 'shoot',      label: 'SHOOT',      sym: '○',  color: '#f87171' },
-  'up-left':    { action: 'jump-spin',  label: 'JUMP+SPIN',  sym: 'L1', color: '#a78bfa' },
-  'up-right':   { action: 'jump-shoot', label: 'JUMP+SHOT',  sym: 'R2', color: '#a78bfa' },
-  'down-left':  { action: 'l2',         label: 'DUCK HOLD',  sym: 'L2', color: '#818cf8' },
-  'down-right': { action: 'r1',         label: 'DASH',       sym: 'R1', color: '#818cf8' },
-};
-
-const LEFT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
-  'left':       { action: 'move-left',       label: '◀ LEFT'  },
-  'right':      { action: 'move-right',      label: 'RIGHT ▶' },
-  'up':         { action: 'move-up',         label: '▲ UP'    },
-  'down':       { action: 'move-down',       label: '▼ DOWN'  },
-  'up-left':    { action: 'move-up-left',    label: '↖'       },
-  'up-right':   { action: 'move-up-right',   label: '↗'       },
-  'down-left':  { action: 'move-down-left',  label: '↙'       },
-  'down-right': { action: 'move-down-right', label: '↘'       },
-};
-
-// ── Single thumbstick ─────────────────────────────────────────────────────────
-interface StickProps {
-  side: 'left' | 'right';
-  accentColor: string;
-  label: string;
-  scale?: number;
-  clickAction?: GameInputAction;
-}
-
-function Stick({
-  side,
-  accentColor,
-  label,
-  scale = 1,
-  clickAction,
-}: StickProps) {
-  const padRadius = (side === 'right' ? RIGHT_PAD_R : LEFT_PAD_R) * scale;
-  const knobRadius = (side === 'right' ? RIGHT_KNOB_R : LEFT_KNOB_R) * scale;
-  const maxDisp = (side === 'right' ? RIGHT_MAX_DISP : LEFT_MAX_DISP) * scale;
-
-  const [knob, setKnob]     = useState({ x: 0, y: 0 });
-  const [dir, setDir]       = useState<Dir8 | null>(null);
-  const [active, setActive] = useState(false);
-  const [buttonAction, setButtonAction] = useState<GameInputAction | null>(null);
-
-  const centerRef       = useRef<{ x: number; y: number } | null>(null);
-  const pressStartRef   = useRef<{ x: number; y: number; clickFired: boolean } | null>(null);
-  const clickTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
+function Stick({ side, label, scale, accent }: StickProps) {
+  const padRadius = (side === 'left' ? LEFT_PAD_RADIUS : RIGHT_PAD_RADIUS) * scale;
+  const maxDisp = (side === 'left' ? LEFT_MAX : RIGHT_MAX) * scale;
+  const knobRadius = KNOB_RADIUS * scale;
   const activeActionRef = useRef<GameInputAction | null>(null);
-  const holdActionRef   = useRef<GameInputAction | null>(null);
-  const releaseJumpRef  = useRef(false);
-  const prevDirRef      = useRef<Dir8 | null>(null);
+  const prevDirRef = useRef<Dir8 | null>(null);
+  const centerRef = useRef<{ x: number; y: number } | null>(null);
+  const [knob, setKnob] = useState({ x: 0, y: 0 });
+  const [readout, setReadout] = useState('');
 
-  const clearClickTimer = useCallback(() => {
-    if (clickTimerRef.current) {
-      clearTimeout(clickTimerRef.current);
-      clickTimerRef.current = null;
-    }
-  }, []);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-    const rect = e.currentTarget.getBoundingClientRect();
-    centerRef.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-    pressStartRef.current = { x: e.clientX, y: e.clientY, clickFired: false };
-    setActive(true);
-    if (clickAction || side === 'right') {
-      clearClickTimer();
-      clickTimerRef.current = setTimeout(() => {
-        const start = pressStartRef.current;
-        if (!start || start.clickFired) return;
-        const holdAction: GameInputAction = side === 'right' ? 'sprint' : clickAction!;
-        if (side !== 'right' && prevDirRef.current) return;
-        start.clickFired = true;
-        holdActionRef.current = holdAction;
-        setButtonAction(holdAction);
-        fireAction(holdAction, true);
-      }, 420);
-    }
-  }, [clearClickTimer, clickAction, side]);
-
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!centerRef.current) return;
-
-    const rawDx = e.clientX - centerRef.current.x;
-    const rawDy = e.clientY - centerRef.current.y;
-    const clamped = clampToCircle({ x: rawDx, y: rawDy }, maxDisp);
-    setKnob(clamped);
-
-    const start = pressStartRef.current;
-    if (side !== 'right' && start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > DEAD) {
-      clearClickTimer();
-    }
-
-    const newDir = angleToDir(rawDx, rawDy);
-
-    if (newDir !== prevDirRef.current) {
-      // Release previous action
-      if (prevDirRef.current && activeActionRef.current) {
-        fireAction(activeActionRef.current, false);
-        if (side === 'left') fireAction('move-stop', false);
-      }
-      // Start new action. MADMAXI uses the right stick as a release-to-jump
-      // trigger, so jump directions are armed here and fired on pointer release.
-      if (newDir) {
-        const map = side === 'right' ? RIGHT_MAP[newDir] : LEFT_MAP[newDir];
-        const armsReleaseJump = side === 'right' && (map.action === 'jump' || map.action === 'jump-spin' || map.action === 'jump-shoot');
-        releaseJumpRef.current = armsReleaseJump;
-        if (armsReleaseJump) {
-          activeActionRef.current = null;
-        } else {
-          activeActionRef.current = map.action;
-          fireAction(map.action, true);
-        }
-      } else {
-        releaseJumpRef.current = false;
-        activeActionRef.current = null;
-        if (side === 'left') fireAction('move-stop', false);
-      }
-      prevDirRef.current = newDir;
-    }
-
-    setDir(newDir);
-  }, [clearClickTimer, maxDisp, side]);
-
-  const handlePointerUp = useCallback(() => {
-    clearClickTimer();
-    const start = pressStartRef.current;
-    if (activeActionRef.current) {
-      fireAction(activeActionRef.current, false);
-      if (side === 'left') fireAction('move-stop', false);
-      activeActionRef.current = null;
-    }
-    if (releaseJumpRef.current) {
-      fireAction('jump', true);
-      fireAction('jump', false);
-    } else if (side !== 'right' && clickAction && start && !start.clickFired) {
-      fireAction(clickAction, true);
-      fireAction(clickAction, false);
-    }
-    if (holdActionRef.current) {
-      fireAction(holdActionRef.current, false);
-      holdActionRef.current = null;
-    }
-    releaseJumpRef.current = false;
-    setButtonAction(null);
+  const releaseActive = useCallback(() => {
+    if (activeActionRef.current) fireAction(activeActionRef.current, false);
+    if (side === 'left') fireAction('move-stop', true), fireAction('move-stop', false);
+    if (side === 'right') fireAction('look-stop', true), fireAction('look-stop', false);
+    activeActionRef.current = null;
     prevDirRef.current = null;
-    pressStartRef.current = null;
-    centerRef.current  = null;
+    centerRef.current = null;
     setKnob({ x: 0, y: 0 });
-    setDir(null);
-    setActive(false);
-  }, [clearClickTimer, clickAction, side]);
+    setReadout('');
+  }, [side]);
 
-
-  const map        = side === 'right' ? RIGHT_MAP : LEFT_MAP;
-  const activeInfo = dir ? map[dir] : null;
-  const dirLabel   = activeInfo ? activeInfo.label : null;
-  const buttonLabel = buttonAction
-    ? buttonAction === 'sprint'
-      ? 'SPRINT'
-      : buttonAction === clickAction
-        ? side === 'right' ? 'Press' : 'Press'
-        : (Object.values(RIGHT_MAP).find((info) => info.action === buttonAction)?.label ?? buttonAction)
-    : null;
-  const labelColor = side === 'right' && dir
-    ? RIGHT_MAP[dir].color
-    : 'rgba(255,255,255,0.9)';
+  const move = useCallback((clientX: number, clientY: number) => {
+    if (!centerRef.current) return;
+    const rawX = clientX - centerRef.current.x;
+    const rawY = clientY - centerRef.current.y;
+    const nextKnob = clampToCircle(rawX, rawY, maxDisp);
+    const dir = angleToDir(rawX, rawY);
+    const map = side === 'left' ? LEFT_MAP : RIGHT_MAP;
+    if (dir !== prevDirRef.current) {
+      if (activeActionRef.current) fireAction(activeActionRef.current, false);
+      if (dir) {
+        activeActionRef.current = map[dir].action;
+        setReadout(map[dir].label);
+        fireAction(map[dir].action, true);
+      } else {
+        activeActionRef.current = null;
+        setReadout('');
+      }
+      prevDirRef.current = dir;
+    }
+    setKnob(nextKnob);
+  }, [maxDisp, side]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, userSelect: 'none' }}>
-      {/* Axis label */}
-      <div style={{
-        fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-        color: 'rgba(160,195,240,0.45)', textTransform: 'uppercase',
-      }}>{label}</div>
-
-      {/* Direction readout */}
-      <div style={{
-        height: 18,
-        fontSize: 11, fontWeight: 800, letterSpacing: '0.06em',
-        color: (buttonLabel || dirLabel) ? labelColor : 'transparent',
-        textShadow: (buttonLabel || dirLabel) ? '0 1px 8px rgba(0,0,0,0.5)' : 'none',
-        transition: 'color 0.08s',
-        whiteSpace: 'nowrap',
-      }}>
-        {buttonLabel ?? dirLabel ?? '·'}
-      </div>
-
-      {/* Outer ring */}
+    <div className="de-game-remote-stickWrap" style={{ ['--stick-scale' as string]: scale }}>
+      <div className="de-game-remote-stickLabel">{label}</div>
+      <div className="de-game-remote-readout">{readout || '·'}</div>
       <div
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        className="de-game-remote-stick"
+        onPointerDown={(event) => {
+          event.preventDefault();
+          event.currentTarget.setPointerCapture(event.pointerId);
+          const rect = event.currentTarget.getBoundingClientRect();
+          centerRef.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+          move(event.clientX, event.clientY);
+        }}
+        onPointerMove={(event) => { event.preventDefault(); move(event.clientX, event.clientY); }}
+        onPointerUp={releaseActive}
+        onPointerCancel={releaseActive}
         style={{
-          width: padRadius * 2, height: padRadius * 2,
-          borderRadius: '50%',
-          background: active ? 'rgba(200,232,255,0.12)' : 'rgba(220,232,248,0.06)',
-          border: `2px solid ${active ? accentColor + '66' : 'rgba(160,195,240,0.2)'}`,
-          boxShadow: active
-            ? `0 0 24px ${accentColor}33, inset 0 0 12px rgba(255,255,255,0.04)`
-            : '0 4px 24px rgba(0,0,0,0.25)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          position: 'relative',
-          touchAction: 'none',
-          cursor: 'grab',
-          transition: 'border-color 0.12s, background 0.12s, box-shadow 0.12s',
+          width: padRadius * 2,
+          height: padRadius * 2,
+          borderColor: `${accent}66`,
+          background: `radial-gradient(circle at center, ${accent}1f, rgba(6,12,23,0.86))`,
         }}
       >
-        {/* Cardinal tick marks — subtle direction indicators for both sticks */}
-        {[0, 90, 180, 270].map((deg, i: number) => {
-          const rad = (deg * Math.PI) / 180;
-          const r = padRadius - 8;
-          const tx = Math.cos(rad) * r + padRadius;
-          const ty = Math.sin(rad) * r + padRadius;
-          const dirAtDeg = (['right', 'down', 'left', 'up'] as Dir8[])[i];
-          const isActive = side === 'right' && dir === dirAtDeg;
-          return (
-            <div key={deg} style={{
-              position: 'absolute',
-              left: tx - 2, top: ty - 2,
-              width: 4, height: 4,
-              borderRadius: '50%',
-              background: isActive ? accentColor : 'rgba(160,195,240,0.25)',
-              transition: 'background 0.08s',
-              pointerEvents: 'none',
-            }} />
-          );
-        })}
-
-        {/* Inner knob — follows finger, spring-snaps to center on release */}
-        <div style={{
-          position: 'absolute',
-          left: padRadius + knob.x - knobRadius,
-          top:  padRadius + knob.y - knobRadius,
-          width: knobRadius * 2,
-          height: knobRadius * 2,
-          borderRadius: '50%',
-          background: active
-            ? `radial-gradient(circle at 38% 38%, ${accentColor}ee, ${accentColor}88)`
-            : 'radial-gradient(circle at 38% 38%, rgba(220,235,255,0.92), rgba(160,195,240,0.65))',
-          boxShadow: active
-            ? `0 2px 14px ${accentColor}66, 0 0 0 2px ${accentColor}33`
-            : '0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
-          // Spring back on release (active=false → transition kicks in)
-          transition: active ? 'background 0.08s' : 'left 0.18s cubic-bezier(0.34,1.56,0.64,1), top 0.18s cubic-bezier(0.34,1.56,0.64,1), background 0.1s',
-          pointerEvents: 'none',
-        }} />
+        <div
+          className="de-game-remote-knob"
+          style={{
+            left: padRadius + knob.x - knobRadius,
+            top: padRadius + knob.y - knobRadius,
+            width: knobRadius * 2,
+            height: knobRadius * 2,
+            background: `linear-gradient(145deg, ${accent}, rgba(226,232,240,0.88))`,
+          }}
+        />
       </div>
-
     </div>
   );
 }
 
-// ── GameRemote ────────────────────────────────────────────────────────────────
-interface GameRemoteProps {
-  onBack?: () => void;
-  embedded?: boolean;
-  playHref?: string;
-  gameLabel?: string;
-  onPlay?: () => void;
-  /** Called when the embedded EXIT button is pressed. */
-  onExit?: () => void;
-  /** If provided and onExit is absent, EXIT button renders as a navigation link. */
-  exitHref?: string;
+function RingButton({ sym, label, action, color, top, left, scale }: (typeof RING_BUTTONS)[number] & { scale: number }) {
+  const size = Math.max(34, 30 * scale);
+  const fire = (active: boolean) => fireAction(action, active);
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      className="de-game-remote-ringButton"
+      onPointerDown={(event) => { event.preventDefault(); fire(true); }}
+      onPointerUp={(event) => { event.preventDefault(); fire(false); }}
+      onPointerCancel={(event) => { event.preventDefault(); fire(false); }}
+      onPointerLeave={(event) => { event.preventDefault(); fire(false); }}
+      style={{
+        top: top * scale,
+        left: left * scale,
+        width: size,
+        height: size,
+        color,
+        borderColor: `${color}88`,
+        background: `${color}20`,
+      }}
+    >
+      {sym}
+    </button>
+  );
 }
 
-export default function GameRemote({
-  onBack,
-  embedded = false,
-  playHref,
-  gameLabel,
-  onPlay,
-  onExit,
-  exitHref,
-}: GameRemoteProps) {
+export default function GameRemote({ embedded = false, gameLabel, onExit, enabled = true, scale = 1 }: GameRemoteProps) {
   const { connected: gpConnected, gamepadName } = useGamepad();
-  const searchParams = useSearchParams();
-  const [remoteState, setRemoteState] = useState<'idle' | 'active' | 'collapsed'>('idle');
+  if (!enabled) return null;
 
-  const hideRemoteWhileTouching = useCallback(() => {
-    setRemoteState((current) => current === 'collapsed' ? current : 'idle');
-  }, []);
-
-  const revealRemoteAfterTouch = useCallback(() => {
-    setRemoteState((current) => current === 'collapsed' ? current : 'active');
-  }, []);
-
+  const embeddedScale = embedded ? scale * 0.9 : scale;
+  const rightClusterScale = embedded ? scale * 0.92 : scale;
   const gpNameLower = gamepadName.toLowerCase();
-  const isDualSense = gpNameLower.includes('dualsense')
-    || gpNameLower.includes('playstation')
-    || gpNameLower.includes('ps5')
-    || gpNameLower.includes('ps4');
-  const resolvedPlayHref = playHref ?? buildGameLaunchHref(searchParams.get('game') ?? DEFAULT_GAME_ID, { play: true });
-  const handleEmbeddedPlay = useCallback(() => {
-    if (onPlay) {
-      onPlay();
-      return;
-    }
-    window.dispatchEvent(new CustomEvent('de-game-start'));
-  }, [onPlay]);
-
-  const outerPaddingX = embedded ? 18 : 20;
-  const bottomPadding = embedded ? 28 : 56;
-  const cardMargin = embedded ? '0 18px 18px' : '0 20px 20px';
-  const rightClusterScale = embedded ? 0.84 : 1;
-  const rightClusterSize = 190 * rightClusterScale;
-  const rightButtonSize = 28 * rightClusterScale;
-  const rightButtonFontSize = embedded ? 9 : 11;
-
-  if (remoteState === 'collapsed') {
-    return (
-      <div style={{ position: 'relative', pointerEvents: 'none', minHeight: embedded ? 52 : '100dvh' }}>
-        <button
-          type="button"
-          aria-label="Show game remote"
-          onClick={() => setRemoteState('active')}
-          style={{
-            position: 'absolute', right: 12, bottom: 12, pointerEvents: 'auto',
-            width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(200,152,26,0.56)',
-            background: 'rgba(7,16,30,0.84)', color: '#fef08a', cursor: 'pointer', fontSize: 18,
-            boxShadow: '0 8px 22px rgba(0,0,0,0.34)',
-          }}
-        >
-          🎮
-        </button>
-      </div>
-    );
-  }
+  const isDualSense = gpNameLower.includes('dualsense') || gpNameLower.includes('playstation') || gpNameLower.includes('ps5') || gpNameLower.includes('ps4');
 
   return (
-    <div
-      className="de-game-overlay-material de-runtime-seam"
-      data-game-remote-state={remoteState}
-      onPointerDownCapture={hideRemoteWhileTouching}
-      onPointerUpCapture={revealRemoteAfterTouch}
-      onPointerCancelCapture={revealRemoteAfterTouch}
-      style={{
-      position: 'relative',
-      minHeight: embedded ? undefined : '100dvh',
-      background: 'linear-gradient(160deg, #07101e 0%, #0b1a30 55%, #07101e 100%)',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      borderRadius: embedded ? 20 : undefined,
-      border: embedded ? '1px solid rgba(160,195,240,0.12)' : undefined,
-      boxShadow: embedded ? '0 16px 48px rgba(0,0,0,0.28)' : undefined,
-      opacity: remoteState === 'active' ? 0.3 : 0.01,
-      transition: 'opacity 180ms ease',
-    }}>
-      <button
-        type="button"
-        aria-label="Hide game remote"
-        onClick={() => setRemoteState('collapsed')}
-        style={{
-          position: 'absolute', top: 8, right: 8, zIndex: 5, padding: '4px 9px', borderRadius: 999,
-          border: '1px solid rgba(160,195,240,0.24)', background: 'rgba(7,16,30,0.72)',
-          color: 'rgba(220,235,255,0.82)', cursor: 'pointer', fontSize: 10, fontWeight: 800,
-        }}
-      >
-        Hide
-      </button>
-      {!embedded && (
-        <header style={{
-          display: 'flex', alignItems: 'center', gap: 12,
-          padding: '14px 20px',
-          borderBottom: '1px solid rgba(160,195,240,0.08)',
-          flexShrink: 0,
-        }}>
-          <button
-            type="button"
-            onClick={onBack}
-            aria-label="Back to daydream (Side A)"
-            style={{
-              width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-              background: 'rgba(220,232,248,0.08)',
-              border: '1px solid rgba(160,195,240,0.18)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', color: 'rgba(220,235,255,0.8)', fontSize: 16,
-            }}
-          >
-            ←
+    <div className="de-game-remote" data-embedded={embedded ? 'true' : 'false'}>
+      <style>{REMOTE_CSS}</style>
+      <div className="de-game-remote-topline">
+        <div>
+          <div className="de-game-remote-eyebrow">Shared Game Remote</div>
+          <div className="de-game-remote-title">{gameLabel ? `${gameLabel} controls` : 'Game controls'}</div>
+        </div>
+        <div className="de-game-remote-device">{gpConnected ? (isDualSense ? 'DualSense linked' : 'Pad linked') : 'Touch ready'}</div>
+        {embedded && onExit && (
+          <button type="button" className="de-game-remote-exit" onClick={onExit} aria-label="Exit game">
+            Exit
           </button>
-          <span style={{
-            fontSize: 13, fontWeight: 700, letterSpacing: '0.08em',
-            color: 'rgba(220,235,255,0.8)', textTransform: 'uppercase',
-          }}>Game Remote</span>
-
-          <span
-            title={gpConnected ? gamepadName : 'Press any button on your controller to connect'}
-            style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: '0.07em',
-              padding: '2px 8px', borderRadius: 999,
-              background: gpConnected ? 'rgba(74,222,128,0.12)' : 'rgba(160,195,240,0.06)',
-              color: gpConnected ? '#4ade80' : 'rgba(160,195,240,0.32)',
-              border: gpConnected
-                ? '1px solid rgba(74,222,128,0.30)'
-                : '1px solid rgba(160,195,240,0.10)',
-              transition: 'all 0.3s',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {gpConnected
-              ? (isDualSense ? '🎮 DualSense' : '🕹 Pad')
-              : '🎮 No pad'}
-          </span>
-
-          <span style={{
-            marginLeft: 'auto', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-            color: 'rgba(160,195,240,0.4)', textTransform: 'uppercase',
-            padding: '2px 8px', borderRadius: 999,
-            border: '1px solid rgba(160,195,240,0.12)',
-          }}>Side B</span>
-        </header>
-      )}
-
-      {embedded && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 12,
-          padding: '14px 18px 0',
-          flexWrap: 'wrap',
-          flexShrink: 0,
-        }}>
-          <div>
-            <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(160,195,240,0.45)' }}>
-              Shared Remote
-            </div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: '#f8fbff', marginTop: 4 }}>
-              {gameLabel ? `${gameLabel} controls` : 'Inline game controls'}
-            </div>
-          </div>
-          <span
-            title={gpConnected ? gamepadName : 'Press any button on your controller to connect'}
-            style={{
-              fontSize: 10, fontWeight: 700, letterSpacing: '0.07em',
-              padding: '4px 10px', borderRadius: 999,
-              background: gpConnected ? 'rgba(74,222,128,0.12)' : 'rgba(160,195,240,0.06)',
-              color: gpConnected ? '#4ade80' : 'rgba(160,195,240,0.5)',
-              border: gpConnected
-                ? '1px solid rgba(74,222,128,0.30)'
-                : '1px solid rgba(160,195,240,0.10)',
-              transition: 'all 0.3s',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {gpConnected
-              ? (isDualSense ? '🎮 DualSense linked' : '🕹 Pad linked')
-              : '🎮 Remote ready'}
-          </span>
-
-          {/* EXIT button — only rendered when embedded and an exit action is provided */}
-          {embedded && (onExit || exitHref) && (
-            onExit ? (
-              <button
-                type="button"
-                onClick={onExit}
-                style={{
-                  padding: '6px 14px', borderRadius: 8,
-                  background: 'rgba(239,68,68,0.14)',
-                  border: '1px solid rgba(239,68,68,0.4)',
-                  color: '#ef4444', fontSize: 11, fontWeight: 800,
-                  letterSpacing: '0.08em', cursor: 'pointer', flexShrink: 0,
-                }}
-              >
-                ✕ Exit
-              </button>
-            ) : (
-              <Link
-                href={exitHref!}
-                style={{
-                  padding: '6px 14px', borderRadius: 8,
-                  background: 'rgba(239,68,68,0.14)',
-                  border: '1px solid rgba(239,68,68,0.4)',
-                  color: '#ef4444', fontSize: 11, fontWeight: 800,
-                  letterSpacing: '0.08em', textDecoration: 'none', flexShrink: 0,
-                }}
-              >
-                ✕ Exit
-              </Link>
-            )
-          )}
-        </div>
-      )}
-
-      {!embedded && (
-        <div style={{
-          display: 'flex', gap: 8, flexWrap: 'wrap',
-          padding: `10px ${outerPaddingX}px 0`,
-          flexShrink: 0,
-        }}>
-          {REMOTE_ACTION_PILLS.map(({ sym, label, color }) => (
-            <div key={sym} style={{
-              display: 'flex', alignItems: 'center', gap: 4,
-              padding: '2px 7px', borderRadius: 999,
-              background: 'rgba(255,255,255,0.03)',
-              border: `1px solid ${color}28`,
-            }}>
-              <span style={{ fontSize: 10, fontWeight: 900, color }}>{sym}</span>
-              <span style={{ fontSize: 9, color: 'rgba(220,235,255,0.45)' }}>{label}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Sticks + center controls + original right action cluster */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: embedded ? 'center' : 'flex-end',
-        justifyContent: 'space-between',
-        gap: embedded ? 12 : 0,
-        padding: embedded
-          ? `12px ${outerPaddingX}px ${bottomPadding}px`
-          : `0 ${outerPaddingX}px ${bottomPadding}px`,
-      }}>
-        {/* LEFT stick */}
-        <Stick
-          side="left"
-          accentColor="#2a8ab8"
-          label="Move"
-          scale={embedded ? 0.78 : 1}
-          clickAction="l3"
-        />
-
-        {/* Center controls */}
-        <div style={{
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', gap: 10,
-          paddingBottom: embedded ? 0 : 24,
-        }}>
-          {/* Pause / menu button */}
+        )}
+      </div>
+      <div className="de-game-remote-controls">
+        <Stick side="left" label="Move / Strafe" accent="#2a8ab8" scale={embeddedScale} />
+        <div className="de-game-remote-center">
           <button
             type="button"
-            aria-label="Pause / menu"
+            className="de-game-remote-pause"
             onPointerDown={() => fireAction('pause', true)}
             onPointerUp={() => fireAction('pause', false)}
             onPointerCancel={() => fireAction('pause', false)}
-            onPointerLeave={() => fireAction('pause', false)}
-            style={{
-              width: 38, height: 38, borderRadius: '50%',
-              background: 'rgba(160,195,240,0.06)',
-              border: '1.5px solid rgba(160,195,240,0.18)',
-              color: 'rgba(220,235,255,0.65)',
-              fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', flexShrink: 0,
-            }}
-            title="Pause"
           >
             ⏸
           </button>
-
-          {/* Play button — fires de-game-start when embedded (starts the active game inline);
-              falls back to navigation link on the standalone remote page */}
-          {embedded ? (
-            <button
-              type="button"
-              onClick={handleEmbeddedPlay}
-              style={{
-                fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                color: '#c8981a', cursor: 'pointer',
-                padding: '4px 10px', borderRadius: 999,
-                border: '1px solid rgba(200,152,26,0.3)',
-                background: 'rgba(200,152,26,0.07)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              ▶ PLAY
-            </button>
-          ) : (
-            <Link
-              href={resolvedPlayHref}
-              style={{
-                fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                color: '#c8981a', textDecoration: 'none',
-                padding: '4px 10px', borderRadius: 999,
-                border: '1px solid rgba(200,152,26,0.3)',
-                background: 'rgba(200,152,26,0.07)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              ▶ PLAY
-            </Link>
-          )}
+          <div className="de-game-remote-map">L: move + strafe<br />R: camera + rotate</div>
         </div>
-
-        {/* RIGHT side: larger analog with buttons wrapped around it like the original remote */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            position: 'relative',
-            width: rightClusterSize,
-            height: rightClusterSize,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <Stick
-              side="right"
-              accentColor="#c8981a"
-              label="Actions"
-              scale={rightClusterScale}
-              clickAction="r3"
-            />
-
-            {RIGHT_STICK_RING_BUTTONS.map(({ sym, label, action, color, top, left }) => (
-              <button
-                key={sym}
-                type="button"
-                aria-label={label}
-                onPointerDown={(e) => { e.preventDefault(); fireAction(action, true); }}
-                onPointerUp={(e)   => { e.preventDefault(); fireAction(action, false); }}
-                onPointerCancel={(e) => { e.preventDefault(); fireAction(action, false); }}
-                onPointerLeave={(e)  => { e.preventDefault(); fireAction(action, false); }}
-                onTouchStart={(e)  => { e.preventDefault(); fireAction(action, true); }}
-                onTouchEnd={(e)    => { e.preventDefault(); fireAction(action, false); }}
-                onTouchCancel={(e) => { e.preventDefault(); fireAction(action, false); }}
-                style={{
-                  position: 'absolute',
-                  top: top * rightClusterScale,
-                  left: left * rightClusterScale,
-                  width: rightButtonSize,
-                  height: rightButtonSize,
-                  borderRadius: '50%',
-                  background: `${color}18`,
-                  border: `1.5px solid ${color}55`,
-                  color,
-                  fontSize: rightButtonFontSize,
-                  fontWeight: 900,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer',
-                  touchAction: 'none',
-                  WebkitTapHighlightColor: 'transparent',
-                  boxShadow: '0 2px 12px rgba(5, 10, 20, 0.35)',
-                  transition: 'background 0.08s, border-color 0.08s, transform 0.08s',
-                }}
-              >
-                {sym}
-              </button>
-            ))}
-          </div>
+        <div className="de-game-remote-rightCluster" style={{ width: 240 * rightClusterScale, height: 240 * rightClusterScale }}>
+          <Stick side="right" label="Camera / Rotate" accent="#c8981a" scale={rightClusterScale} />
+          {RING_BUTTONS.map((button) => <RingButton key={button.action} {...button} scale={rightClusterScale} />)}
         </div>
       </div>
-
-      {!embedded && (
-        <div style={{
-          margin: cardMargin,
-          borderRadius: 14,
-          background: 'rgba(255,255,255,0.025)',
-          border: '1px solid rgba(160,195,240,0.08)',
-          padding: '10px 14px',
-          display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: '3px 16px',
-          flexShrink: 0,
-        }}>
-          {([
-            ['L-stick', 'Move / press'],
-            ['×',       'Jump'],
-            ['△',       'Duck'],
-            ['□',       'Spin'],
-            ['○',       'Shoot'],
-            ['R-stick', 'Aim / press jump'],
-            ['R-stick ↗', 'Jump+Shoot'],
-          ] as [string, string][]).map(([ctrl, action]) => (
-            <div key={ctrl} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-              <span style={{ fontSize: 10, color: 'rgba(160,195,240,0.45)', minWidth: 58 }}>{ctrl}</span>
-              <span style={{ fontSize: 10, fontWeight: 600, color: 'rgba(220,235,255,0.65)' }}>{action}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Physical controller hint */}
-      {!gpConnected && (
-        <p style={{
-          margin: embedded ? '0 18px 16px' : '0 20px 18px', textAlign: 'center',
-          fontSize: 10, color: 'rgba(160,195,240,0.32)', lineHeight: 1.5,
-        }}>
-          {embedded
-            ? 'Remote inputs are mirrored into the shared game channel so the active game responds immediately.'
-            : '🎮 PS5 DualSense / Xbox controller? Press any button to connect via Gamepad API'}
-        </p>
-      )}
     </div>
   );
 }
+
+const REMOTE_CSS = `
+.de-game-remote {
+  --remote-bg: rgba(2, 6, 23, 0.92);
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  background: linear-gradient(160deg, #020617 0%, #07101e 55%, #020617 100%);
+  border: 1px solid rgba(160,195,240,0.14);
+  color: #e5efff;
+  overflow: hidden;
+  touch-action: none;
+  box-sizing: border-box;
+}
+.de-game-remote[data-embedded="true"] {
+  min-height: 100%;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+.de-game-remote-topline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 4px;
+}
+.de-game-remote-eyebrow {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(160,195,240,.52);
+}
+.de-game-remote-title {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #f8fbff;
+}
+.de-game-remote-device {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(220,235,255,.62);
+  border: 1px solid rgba(160,195,240,.16);
+  border-radius: 999px;
+  padding: 5px 9px;
+  white-space: nowrap;
+}
+.de-game-remote-exit {
+  border: 1px solid rgba(248,113,113,.42);
+  background: rgba(127,29,29,.22);
+  color: #fecaca;
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.de-game-remote-controls {
+  display: grid;
+  grid-template-columns: minmax(118px, 1fr) minmax(56px, .36fr) minmax(180px, 1fr);
+  align-items: center;
+  justify-items: center;
+  gap: clamp(8px, 2vw, 18px);
+  padding: 4px 16px 14px;
+}
+.de-game-remote-stickWrap {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  user-select: none;
+}
+.de-game-remote-stickLabel {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(160,195,240,.52);
+}
+.de-game-remote-readout {
+  min-height: 16px;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(248,251,255,.82);
+  white-space: nowrap;
+}
+.de-game-remote-stick {
+  position: relative;
+  border-radius: 999px;
+  border: 2px solid;
+  box-shadow: inset 0 0 18px rgba(255,255,255,.04), 0 12px 28px rgba(0,0,0,.34);
+  touch-action: none;
+}
+.de-game-remote-knob {
+  position: absolute;
+  border-radius: 999px;
+  box-shadow: 0 5px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.5);
+  pointer-events: none;
+}
+.de-game-remote-center {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.de-game-remote-pause {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(160,195,240,.22);
+  background: rgba(160,195,240,.08);
+  color: rgba(235,245,255,.78);
+  font-weight: 900;
+}
+.de-game-remote-map {
+  font-size: 9px;
+  line-height: 1.35;
+  text-align: center;
+  color: rgba(160,195,240,.48);
+  white-space: nowrap;
+}
+.de-game-remote-rightCluster {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.de-game-remote-rightCluster > .de-game-remote-stickWrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.de-game-remote-ringButton {
+  position: absolute;
+  border-radius: 999px;
+  border: 1.5px solid;
+  font-size: 10px;
+  font-weight: 950;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+}
+@media (orientation: landscape) {
+  .de-game-remote[data-embedded="true"] {
+    border: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-topline {
+    position: absolute;
+    left: 15vw;
+    right: 15vw;
+    bottom: env(safe-area-inset-bottom, 0px);
+    padding: 8px 14px;
+    pointer-events: auto;
+    background: rgba(2,6,23,.72);
+    border-top: 1px solid rgba(160,195,240,.12);
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-controls {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 15vw 70vw 15vw;
+    padding: 0;
+    pointer-events: none;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-stickWrap,
+  .de-game-remote[data-embedded="true"] .de-game-remote-rightCluster,
+  .de-game-remote[data-embedded="true"] .de-game-remote-center {
+    pointer-events: auto;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-center {
+    align-self: end;
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 48px);
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-stick {
+    transform: scale(1.12);
+  }
+}
+@media (orientation: portrait) {
+  .de-game-remote[data-embedded="true"] .de-game-remote-topline {
+    padding-top: 8px;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-controls {
+    grid-template-columns: 1fr .26fr 1fr;
+    padding: 0 10px 10px;
+    gap: 8px;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-device {
+    display: none;
+  }
+}
+`;

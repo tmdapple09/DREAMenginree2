@@ -21,10 +21,10 @@ interface ProfileSpaceProps {
 export function ProfileSpace({ widgets, onWidgetFocus, onWidgetClose, anchorRect }: ProfileSpaceProps) {
   // Sort widgets by z-index
   const sortedWidgets = [...widgets].sort((a, b) => a.zIndex - b.zIndex);
-  
+
   // Default anchor rect if not provided
   const defaultAnchorRect = anchorRect || { x0: 0, y0: 0, x1: 100, y1: 100 };
-  
+
   return (
     <div className="w-full h-full relative overflow-hidden bg-gradient-to-br from-indigo-50 to-purple-50">
       {sortedWidgets.map((widget) => (
@@ -36,7 +36,7 @@ export function ProfileSpace({ widgets, onWidgetFocus, onWidgetClose, anchorRect
           anchorRect={defaultAnchorRect}
         />
       ))}
-      
+
       {widgets.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-gray-400">
@@ -59,10 +59,10 @@ interface ProfileWidgetProps {
 
 function ProfileWidget({ widget, onFocus, onClose, anchorRect }: ProfileWidgetProps) {
   const { transformState, visibility, presentation } = widget;
-  
+
   // Hide if not active
   if (visibility !== 'ACTIVE') return null;
-  
+
   const widgetContent = (
     <div className={`
       rounded-2xl shadow-lg bg-white border-2 border-purple-300
@@ -79,7 +79,7 @@ function ProfileWidget({ widget, onFocus, onClose, anchorRect }: ProfileWidgetPr
       </div>
     </div>
   );
-  
+
   return (
     <DragToAnchorClose
       anchorRect={anchorRect}

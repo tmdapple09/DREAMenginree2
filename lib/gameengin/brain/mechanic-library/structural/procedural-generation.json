@@ -3,7 +3,11 @@
   "category": "structural",
   "description": "Levels, encounters, or biomes are assembled from hand-authored chunks at run-time using deterministic rules.",
   "structural_role": "content-generator",
-  "applies_to_structures": ["run-based", "open-world", "sandbox"],
+  "applies_to_structures": [
+    "run-based",
+    "open-world",
+    "sandbox"
+  ],
   "implementation": {
     "data_model": "weighted graph of chunks + adjacency rules + seed",
     "parameters": {
@@ -18,5 +22,8 @@
     "Dead-end rooms with no traversal payoff",
     "Layouts that softlock without diagnostic"
   ],
-  "fun_heuristics": { "replayability": 0.95, "surprise": 0.7 }
+  "fun_heuristics": {
+    "replayability": 0.95,
+    "surprise": 0.7
+  }
 }

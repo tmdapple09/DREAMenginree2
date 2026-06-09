@@ -2,7 +2,10 @@
   "name": "Wall Slide",
   "category": "movement",
   "description": "Slow descent + jump-off when contacting a vertical surface.",
-  "emotional_impact": ["control", "expression"],
+  "emotional_impact": [
+    "control",
+    "expression"
+  ],
   "implementation": {
     "state_machine": "AIR -> WALL_CONTACT -> WALL_SLIDE -> WALL_JUMP",
     "parameters": {
@@ -11,9 +14,25 @@
       "wall_jump_force_y": 8.5,
       "wall_jump_lockout_ms": 120
     },
-    "visual_feedback": { "particles": "wall_dust", "sound": "sfx_wall_slide" },
-    "haptic_feedback": { "pattern": [25], "weak_magnitude": 0.2, "strong_magnitude": 0.05 }
+    "visual_feedback": {
+      "particles": "wall_dust",
+      "sound": "sfx_wall_slide"
+    },
+    "haptic_feedback": {
+      "pattern": [
+        25
+      ],
+      "weak_magnitude": 0.2,
+      "strong_magnitude": 0.05
+    }
   },
-  "games_using": ["Super Meat Boy", "Celeste", "Hollow Knight"],
-  "fun_heuristics": { "skill_ceiling_increase": 0.7, "vertical_traversal_unlock": 0.9 }
+  "games_using": [
+    "Super Meat Boy",
+    "Celeste",
+    "Hollow Knight"
+  ],
+  "fun_heuristics": {
+    "skill_ceiling_increase": 0.7,
+    "vertical_traversal_unlock": 0.9
+  }
 }

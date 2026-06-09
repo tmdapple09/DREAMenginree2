@@ -1,10 +1,10 @@
 'use client';
+
 // components/widgets/dream.AddDreamCTA.tsx
 // "Add a Dream" primary CTA for empty first layer (req 62-63)
 //
 // • Shown centred when layer is completely empty (req 62)
 // • Becomes smaller / disappears after first widget is installed (req 63)
-
 
 export interface AddDreamCTAProps {
   /** Whether any widgets have been installed yet */

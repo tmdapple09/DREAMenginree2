@@ -90,3 +90,4 @@ Output quality: Synchronized. Intuitive. Coherent. Cohesive. Always complete.
 - Source: app/ components/ lib/
 - Preflight: pnpm preflight
 - 4 pre-existing test failures in dreamdm-bar-interactions.test.ts — leave them alone
+

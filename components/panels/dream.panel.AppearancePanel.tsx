@@ -1,11 +1,5 @@
 'use client';
 
-/**
- * AppearancePanel — Theme & Appearance settings rendered in Surface Space.
- * Real functionality: gradient themes, preset cards, custom adjustments.
- * Back button calls openInSurface('settings') — no routing.
- */
-
 import { THEME_PRESETS as GRADIENT_PRESETS, applyTheme, type DeTheme } from '@/components/dream.ThemeApplicator';
 import { useTheme } from '@/components/providers/dream.ThemeProvider';
 import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
@@ -14,7 +8,11 @@ import { DEFAULT_OVERRIDES, THEME_PRESETS } from '@/lib/ui/theme-engine';
 import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-// ── Gradient theme picker (same logic as appearance page) ────────────────────
+/**
+ * AppearancePanel — Theme & Appearance settings rendered in Surface Space.
+ * Real functionality: gradient themes, preset cards, custom adjustments.
+ * Back button calls openInSurface('settings') — no routing.
+ */
 
 function GradientThemePicker( ){
   const [active, setActive] = useState('default');
@@ -58,8 +56,6 @@ function GradientThemePicker( ){
   );
 }
 
-// ── Slider control ────────────────────────────────────────────────────────────
-
 function Slider({ label, value, min, max, step, onChange }: {label: string; value: number; min: number; max: number; step: number; onChange: (v: number) => void}) {
   return (
     <div style={{ marginBottom: 16 }}>
@@ -74,8 +70,6 @@ function Slider({ label, value, min, max, step, onChange }: {label: string; valu
   );
 }
 
-// ── Preset card ───────────────────────────────────────────────────────────────
-
 function PresetCard({ preset, isActive, onSelect }: {preset: (typeof THEME_PRESETS)[number]; isActive: boolean; onSelect: () => void}) {
   return (
     <button type="button" onClick={onSelect} style={{
@@ -89,8 +83,6 @@ function PresetCard({ preset, isActive, onSelect }: {preset: (typeof THEME_PRESE
     </button>
   );
 }
-
-// ── Main panel ────────────────────────────────────────────────────────────────
 
 export default function AppearancePanel( ){
   const { openInSurface }                               = useDreamSystem();

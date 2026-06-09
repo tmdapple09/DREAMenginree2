@@ -73,9 +73,7 @@ export interface InterpolatedShape {
   feather: number;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Public API
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Create an empty RotoProject.
@@ -268,9 +266,7 @@ export function keyframeList(layer: RotoLayer): number[] {
   return layer.keyframes.map((k) => k.frame);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal
-// ─────────────────────────────────────────────────────────────────────────────
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;

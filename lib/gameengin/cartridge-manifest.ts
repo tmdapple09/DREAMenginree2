@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 /**
  * lib/gameengin/cartridge-manifest.ts
  *
@@ -7,8 +9,6 @@
  * Server-safe (no React, no DOM) so it can be consumed by tests, the packager
  * script, and the runtime loader.
  */
-
-import { z } from 'zod';
 
 /** Magic bytes "DRMR" at the start of the decompressed TAR — spec §1.1 */
 export const CARTRIDGE_MAGIC = new Uint8Array([0x44, 0x52, 0x4d, 0x52]);

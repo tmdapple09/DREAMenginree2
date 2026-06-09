@@ -1,3 +1,11 @@
+import type {
+    DestinationRule,
+    DreamWindowConfig,
+    DreamWindowPosition,
+    DreamWindowSize,
+    DreamWindowState,
+} from '@/lib/dream-window/DreamWindowLifecycle';
+
 /**
  * types/dream-window.ts
  *
@@ -18,24 +26,7 @@
  * Phase 8 Section B: Point 19 — canonical type authority.
  */
 
-// ── Re-export lifecycle types from the state machine ─────────────────────────
 // Also import locally so they can be used in this file's interface definitions
-import type {
-    DestinationRule,
-    DreamWindowConfig,
-    DreamWindowPosition,
-    DreamWindowSize,
-    DreamWindowState,
-} from '@/lib/dream-window/DreamWindowLifecycle';
-
-export type {
-    DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize
-} from '@/lib/dream-window/DreamWindowLifecycle';
-
-export { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-export type { DreamWindowState } from '@/lib/dream-window/DreamWindowLifecycle';
-
-// ── Database record shape ─────────────────────────────────────────────────────
 
 /**
  * A Dream Window record as stored in (and returned from) the database.
@@ -75,8 +66,6 @@ export interface DreamWindowRecord {
   updated_at: string;
 }
 
-// ── API request/response shapes ───────────────────────────────────────────────
-
 /**
  * Body shape accepted by POST /api/dream-windows.
  * All 10 required fields must be present (validated at API layer — Point 12).
@@ -107,3 +96,9 @@ export interface PatchDreamWindowBody {
   source_bindings?: string[];
   destination_rules?: DestinationRule[];
 }
+
+export type {
+    DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize
+} from '@/lib/dream-window/DreamWindowLifecycle';
+export { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
+export type { DreamWindowState } from '@/lib/dream-window/DreamWindowLifecycle';

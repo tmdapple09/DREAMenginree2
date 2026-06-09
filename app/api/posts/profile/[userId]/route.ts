@@ -1,3 +1,8 @@
+import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { type NextRequest, NextResponse } from 'next/server';
+
 /**
  * GET /api/posts/profile/[userId]
  *
@@ -12,11 +17,6 @@
  * close-friends list, close_friends posts are hidden.
  */
 
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { type NextRequest, NextResponse } from 'next/server';
-
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ userId: string }> },
@@ -29,7 +29,6 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // ── Determine if viewer is in subject's close-friends list ────────────────
   const isOwner = user.id === userId;
   let isCloseFriend = false;
 
@@ -43,7 +42,6 @@ export async function GET(
     isCloseFriend = !!cfRow;
   }
 
-  // ── Fetch saved posts (up to 25) ──────────────────────────────────────────
   const { data: savedRows } = await (supabase as SupabaseClient)
     .from('saved_posts')
     .select('post_id, saved_at, app_posts!inner(*, profiles!inner(id, handle, display_name, avatar_url))')
@@ -65,7 +63,6 @@ export async function GET(
     savedPosts.push({ ...post, is_saved: true });
   }
 
-  // ── Fill remaining slots with ephemeral posts ─────────────────────────────
   const ephemeralSlots = Math.max(0, 50 - savedPosts.length);
   const ephemeralPosts: unknown[] = [];
 

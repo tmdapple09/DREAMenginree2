@@ -1,3 +1,9 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { createServerClientWithCustomCookies } from '@/lib/supabase/server';
+import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from '@/lib/supabase/config';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+
 /**
  * DREAMengin — Next.js 16 Edge Proxy
  *
@@ -12,13 +18,6 @@
  * this file (proxy.ts) and the export must be named `proxy`.
  */
 
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { createServerClientWithCustomCookies } from '@/lib/supabase/server';
-import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from '@/lib/supabase/config';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-
-// ── Blocked hosts ─────────────────────────────────────────────────────────────
 const BLOCKED_HOST = 'theboogieman.ai';
 
 export async function proxy(request: NextRequest) {

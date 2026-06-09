@@ -1,10 +1,11 @@
 "use client";
-// SURFACE: dreamsurface.AuthResetPassword  (framework-mandated basename: page.tsx)
 
 import { createClient } from "@/lib/supabase/client";
 import { buildAuthCallbackUrl } from "@/lib/supabase/config";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+
+// SURFACE: dreamsurface.AuthResetPassword  (framework-mandated basename: page.tsx)
 
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",

@@ -7,8 +7,6 @@
  * GPUTimeSlicer                — per-VM GPU time budget allocator
  */
 
-// ─── Memory Bounds Checking ───────────────────────────────────────────────────
-
 export class MemoryBoundsError extends Error {
   constructor(ptr: number, len: number, max: number) {
     super(
@@ -34,8 +32,6 @@ export function checkBounds(ptr: number, len: number, max: number): void {
     throw new MemoryBoundsError(ptr, len, max);
   }
 }
-
-// ─── Syscall Allow-List ───────────────────────────────────────────────────────
 
 export const SYSCALL_ALLOWLIST = [
   'vm_buffer_create',
@@ -75,8 +71,6 @@ export function isSyscallAllowed(
   if (allowList === null) return true;
   return (allowList as string[]).includes(syscall);
 }
-
-// ─── GPU Time Slicer ─────────────────────────────────────────────────────────
 
 export interface TimeBudget {
   vmId:       string;

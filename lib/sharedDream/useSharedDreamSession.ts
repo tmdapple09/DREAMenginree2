@@ -1,10 +1,10 @@
 'use client';
 
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
+import { createClient } from '@/lib/supabase/client';
+import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
 
 // Runtime file: lib/sharedDream/useSharedDreamSession.ts.
 
@@ -47,29 +47,13 @@
  *   if (saved?.selectedGame) setSelectedGame(saved.selectedGame as string);
  */
 
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
 // Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
 // Imports and external modules this runtime file depends on.
 
-import { createClient } from '@/lib/supabase/client';
-
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
 // Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
 
 // Types, interfaces, and schemas accepted or provided by this file.
 
@@ -132,8 +116,6 @@ export interface UseSharedDreamSessionResult {
 // JSONB patch after the debounce settles.
 type EnginStateBuffer = Record<string, Record<string, unknown>>;
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
-
 // Runtime functions, classes, handlers, and state transitions.
 
 export function useSharedDreamSession({
@@ -152,8 +134,6 @@ export function useSharedDreamSession({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const userIdRef = useRef<string | null>(null);
   const sessionIdRef = useRef<string | null>(propSessionId ?? null);
-
-  // ── Bootstrap: load or create session ────────────────────────────────────
 
   useEffect(() => {
     let cancelled = false;
@@ -266,8 +246,6 @@ export function useSharedDreamSession({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [propSessionId]);
 
-  // ── Flush buffer to DB (debounced) ────────────────────────────────────────
-
   const flushBuffer = useCallback(async () => {
     const sid = sessionIdRef.current;
     if (!sid || Object.keys(bufferRef.current).length === 0) return;
@@ -282,16 +260,12 @@ export function useSharedDreamSession({
       .eq('id', sid);
   }, []);
 
-  // ── saveEnginState: merge into buffer then debounce flush ─────────────────
-
   const saveEnginState = useCallback((enginKey: string, state: Record<string, unknown>) => {
     bufferRef.current = { ...bufferRef.current, [enginKey]: state };
     setSavedEnginState((prev) => ({ ...prev, [enginKey]: state }));
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => { void flushBuffer(); }, 1000);
   }, [flushBuffer]);
-
-  // ── logActivity ───────────────────────────────────────────────────────────
 
   const logActivity = useCallback((kind: string, label: string, meta: Record<string, unknown> = {}) => {
     const sid = sessionIdRef.current;
@@ -314,8 +288,6 @@ export function useSharedDreamSession({
       meta,
     });
   }, []);
-
-  // ── Flush on unmount (user leaving) ──────────────────────────────────────
 
   useEffect(() => {
     return () => {
@@ -348,14 +320,8 @@ export function useSharedDreamSession({
   };
 }
 
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
 // Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
 // Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
 
 // Exported declarations and re-export barrels are this file's public surface.

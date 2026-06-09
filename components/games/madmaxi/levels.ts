@@ -20,8 +20,6 @@ export function getMadmaxiLevelDefinition(level: number, sessionSeed: number): L
   return makeProceduralLevel(level, sessionSeed);
 }
 
-export { isMadmaxiAuthoredLevel };
-
 function makeProceduralLevel(level: number, sessionSeed: number): LevelDef {
   const rng = seededRng(((sessionSeed ^ (level * LEVEL_SEED_KEY + 7)) | 1) >>> 0);
   const zoneIdx = getZoneIdx(level);
@@ -207,3 +205,5 @@ function makeBossLevel(level: number): LevelDef {
     isBossLevel: true,
   };
 }
+
+export { isMadmaxiAuthoredLevel };

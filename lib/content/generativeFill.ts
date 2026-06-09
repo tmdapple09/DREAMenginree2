@@ -46,9 +46,7 @@ export interface ImageAnalysis {
   averageBrightness: number;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Remote API helper
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Request a generative fill from the server.
@@ -94,9 +92,7 @@ export async function requestGenerativeFill(
   throw lastError ?? new Error('Generative fill failed');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Browser-side canvas utilities
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Generate a black-and-white mask PNG (base64) from a selection rectangle.
@@ -201,9 +197,7 @@ export function analyzeImageColors(img: HTMLImageElement, topN = 5): ImageAnalys
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // File helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Convert a File to a base64 data URL (browser only). */
 export function fileToBase64(file: File): Promise<string> {
@@ -220,11 +214,8 @@ export function fileToBase64(file: File): Promise<string> {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal
-// ─────────────────────────────────────────────────────────────────────────────
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-

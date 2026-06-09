@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 /**
  * useDreamDMDraft — localStorage-backed draft persistence for DreamDM.
  *
@@ -18,8 +20,6 @@
  */
 
 'use client';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const MAX_DRAFT_CHARS = 4999;
 const STORAGE_PREFIX = 'de-dm-draft:';
@@ -75,8 +75,6 @@ function writeDraft(conversationId: string, payload: DraftPayload): void {
   }
 }
 
-// ── Improvement 82: listAllDraftIds ───────────────────────────────────────────
-
 /**
  * Return the conversation IDs of all drafts currently in localStorage.
  * Useful for rendering a "You have unsent drafts" indicator or a draft manager UI.
@@ -92,8 +90,6 @@ export function listAllDraftIds(): string[] {
   }
   return ids;
 }
-
-// ── Improvement 83: cleanupStaleDrafts ───────────────────────────────────────
 
 /**
  * Remove draft entries older than `maxAgeDays` days from localStorage.
@@ -113,8 +109,6 @@ export function cleanupStaleDrafts(maxAgeDays: number): string[] {
   }
   return removed;
 }
-
-// ── Improvement 84: getDraftAge ───────────────────────────────────────────────
 
 /**
  * Return how old the draft for a conversation is in milliseconds, or null
@@ -174,7 +168,6 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
     };
   }, []);
 
-  // ── Improvement 84: draftAgeMs ────────────────────────────────────────────
   const draftAgeMs = draft?.savedAt ? Date.now() - draft.savedAt : null;
 
   return { draft, saveDraft, clearDraft, draftRestored, draftAgeMs };
