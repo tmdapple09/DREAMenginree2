@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:25:28.546Z
+Generated: 2026-06-09T05:26:11.664Z
 
 ---
 
@@ -994,6 +994,7 @@ _No style files for this feature._
 - `tests/game-quality-plan.test.ts`
 - `tests/game-remote-regression.test.ts`
 - `tests/gameengin-architect.test.ts`
+- `tests/gameengin-asset-pipeline.test.ts`
 - `tests/gameengin-cartridges.test.ts`
 - `tests/gameengin-crash-modal.test.ts`
 - `tests/gameengin-loop.test.ts`
@@ -18300,6 +18301,7 @@ _No circular dependencies detected._
 | `lib/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
 | `readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/generate-readme.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `tests/gameengin-asset-pipeline.test.ts` | 4 | RUNTIME_REGISTRY |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/draggable/dream.DraggableModule.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
@@ -19295,7 +19297,6 @@ _No circular dependencies detected._
 | `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
 | `lib/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
 | `lib/gameengin/GameRuntime.tsx` | `(default)` |
-| `lib/gameengin/assets/BundleCache.ts` | `planBundleCache` |
 | `lib/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
 | `lib/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema` |
 | `lib/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
@@ -19317,7 +19318,6 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
 | `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
-| `lib/gameengin/render/ShaderRegistry.ts` | `GameEnginShaderRegistry` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
 | `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
 | `lib/gameengin/runtime/index.ts` | `resolveFrameBudget` |
@@ -21817,8 +21817,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── piece-registry.ts
 │   ├── gameengin  [GameEngin]
 │   │   ├── assets  [GameEngin]
-│   │   │   ├── BundleCache.ts ∅
-│   │   │   │   └── ∅ unused: planBundleCache
+│   │   │   ├── BundleCache.ts
 │   │   │   └── BundleManifest.ts
 │   │   ├── brain  [GameEngin]
 │   │   │   ├── asset-registry  [GameEngin]
@@ -21954,8 +21953,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── sprintDetector.ts ∅
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── render  [GameEngin]
-│   │   │   └── ShaderRegistry.ts ∅
-│   │   │       └── ∅ unused: GameEnginShaderRegistry
+│   │   │   └── ShaderRegistry.ts
 │   │   ├── runtime  [GameEngin]
 │   │   │   ├── FrameBudget.ts ∅
 │   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
@@ -22728,6 +22726,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── game-quality-plan.test.ts
 │   ├── game-remote-regression.test.ts
 │   ├── gameengin-architect.test.ts
+│   ├── gameengin-asset-pipeline.test.ts
 │   ├── gameengin-cartridges.test.ts
 │   ├── gameengin-crash-modal.test.ts
 │   ├── gameengin-loop.test.ts

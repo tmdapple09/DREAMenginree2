@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:25:28.667Z
+Generated: 2026-06-09T05:26:11.803Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9551,12 +9551,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── → getPiecesByCategory
 │   ├── gameengin  [GameEngin]
 │   │   ├── assets  [GameEngin]
-│   │   │   ├── BundleCache.ts ∅
+│   │   │   ├── BundleCache.ts
 │   │   │   │   ├── GameEnginBundleManifest  ← ./BundleManifest
 │   │   │   │   ├── assertValidBundleManifest  ← ./BundleManifest
 │   │   │   │   ├── bundleWeightBytes  ← ./BundleManifest
-│   │   │   │   ├── → planBundleCache
-│   │   │   │   └── ∅ unused: planBundleCache
+│   │   │   │   └── → planBundleCache
 │   │   │   └── BundleManifest.ts
 │   │   │       ├── RendererBackendId  ← ../cartridge
 │   │   │       ├── → assertValidBundleManifest
@@ -9814,10 +9813,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → SprintDetector
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
 │   │   ├── render  [GameEngin]
-│   │   │   └── ShaderRegistry.ts ∅
+│   │   │   └── ShaderRegistry.ts
 │   │   │       ├── RendererBackendId  ← ../cartridge
-│   │   │       ├── → GameEnginShaderRegistry
-│   │   │       └── ∅ unused: GameEnginShaderRegistry
+│   │   │       └── → GameEnginShaderRegistry
 │   │   ├── runtime  [GameEngin]
 │   │   │   ├── FrameBudget.ts ∅
 │   │   │   │   ├── → GAMEENGIN_FRAME_BUDGETS
@@ -15369,6 +15367,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── * as path  ← node:path
 │   │   ├── afterEach  ← vitest
 │   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-asset-pipeline.test.ts
+│   │   ├── planBundleCache  ← @/lib/gameengin/assets/BundleCache
+│   │   ├── GameEnginBundleManifest  ← @/lib/gameengin/assets/BundleManifest
+│   │   ├── assertValidBundleManifest  ← @/lib/gameengin/assets/BundleManifest
+│   │   ├── bundleWeightBytes  ← @/lib/gameengin/assets/BundleManifest
+│   │   ├── GameEnginShaderRegistry  ← @/lib/gameengin/render/ShaderRegistry
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
