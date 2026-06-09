@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:23:24.462Z
+Generated: 2026-06-09T05:24:19.914Z
 
 ---
 
@@ -865,6 +865,10 @@ _No style files for this feature._
 - `lib/gameengin/webgpu-runtime-shell.ts`
 - `lib/gameengin/world-crdt.ts`
 - `lib/gameengin/xr.ts`
+
+### `lib/gameengin/assets/`
+
+- `lib/gameengin/assets/BundleManifest.ts`
 
 ### `lib/gameengin/cartridges/`
 
@@ -11847,6 +11851,12 @@ _No style files for this feature._
 | `@tensorflow/tfjs` | _(dynamic import)_ |
 | `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
 
+## `lib/gameengin/assets/BundleManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../cartridge` | `RendererBackendId` |
+
 ## `lib/gameengin/backendNegotiator.ts`
 
 | Module | Connected via |
@@ -19267,6 +19277,7 @@ _No circular dependencies detected._
 | `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
 | `lib/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
 | `lib/gameengin/GameRuntime.tsx` | `(default)` |
+| `lib/gameengin/assets/BundleManifest.ts` | `assertValidBundleManifest`, `bundleWeightBytes` |
 | `lib/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
 | `lib/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema` |
 | `lib/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
@@ -21786,6 +21797,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── index.ts
 │   │   └── piece-registry.ts
 │   ├── gameengin  [GameEngin]
+│   │   ├── assets  [GameEngin]
+│   │   │   └── BundleManifest.ts ∅
+│   │   │       └── ∅ unused: assertValidBundleManifest, bundleWeightBytes
 │   │   ├── brain  [GameEngin]
 │   │   │   ├── asset-registry  [GameEngin]
 │   │   │   ├── build-history  [GameEngin]

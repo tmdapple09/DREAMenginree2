@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:23:24.588Z
+Generated: 2026-06-09T05:24:20.045Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9550,6 +9550,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → getPiece
 │   │       └── → getPiecesByCategory
 │   ├── gameengin  [GameEngin]
+│   │   ├── assets  [GameEngin]
+│   │   │   └── BundleManifest.ts ∅
+│   │   │       ├── RendererBackendId  ← ../cartridge
+│   │   │       ├── → assertValidBundleManifest
+│   │   │       ├── → bundleWeightBytes
+│   │   │       └── ∅ unused: assertValidBundleManifest, bundleWeightBytes
 │   │   ├── brain  [GameEngin]
 │   │   │   ├── asset-registry  [GameEngin]
 │   │   │   ├── build-history  [GameEngin]
