@@ -15,4 +15,3 @@ export const dreamr = {
 };
 
 export type DreamrMap = typeof dreamr;
-
