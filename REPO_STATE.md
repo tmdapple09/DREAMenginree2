@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:24:19.914Z
+Generated: 2026-06-09T05:24:57.637Z
 
 ---
 
@@ -868,6 +868,7 @@ _No style files for this feature._
 
 ### `lib/gameengin/assets/`
 
+- `lib/gameengin/assets/BundleCache.ts`
 - `lib/gameengin/assets/BundleManifest.ts`
 
 ### `lib/gameengin/cartridges/`
@@ -1027,6 +1028,7 @@ _No style files for this feature._
 - `../cartridge`
 - `../eventBus`
 - `../power-systems`
+- `./BundleManifest`
 - `./FrameBudget`
 - `./FrameClock`
 - `./GameRuntime`
@@ -11851,6 +11853,12 @@ _No style files for this feature._
 | `@tensorflow/tfjs` | _(dynamic import)_ |
 | `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
 
+## `lib/gameengin/assets/BundleCache.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./BundleManifest` | `GameEnginBundleManifest`, `assertValidBundleManifest`, `bundleWeightBytes` |
+
 ## `lib/gameengin/assets/BundleManifest.ts`
 
 | Module | Connected via |
@@ -19277,7 +19285,7 @@ _No circular dependencies detected._
 | `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
 | `lib/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
 | `lib/gameengin/GameRuntime.tsx` | `(default)` |
-| `lib/gameengin/assets/BundleManifest.ts` | `assertValidBundleManifest`, `bundleWeightBytes` |
+| `lib/gameengin/assets/BundleCache.ts` | `planBundleCache` |
 | `lib/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
 | `lib/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema` |
 | `lib/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
@@ -21798,8 +21806,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── piece-registry.ts
 │   ├── gameengin  [GameEngin]
 │   │   ├── assets  [GameEngin]
-│   │   │   └── BundleManifest.ts ∅
-│   │   │       └── ∅ unused: assertValidBundleManifest, bundleWeightBytes
+│   │   │   ├── BundleCache.ts ∅
+│   │   │   │   └── ∅ unused: planBundleCache
+│   │   │   └── BundleManifest.ts
 │   │   ├── brain  [GameEngin]
 │   │   │   ├── asset-registry  [GameEngin]
 │   │   │   ├── build-history  [GameEngin]
