@@ -4,18 +4,13 @@
  * ASSET STREAMING SYSTEM
  *
  * Focused module: priority-queue progressive LOD asset streaming manager.
- * Sorts pending fetches by priority + LOD level; enforces max-concurrent
- * budget; supports cancellation + LRU eviction.
- *
- * Re-exports from power-systems so existing imports continue to work.
+ * Adds bundle manifest/cache contracts for glTF/KTX2/meshopt/WGSL cartridge delivery.
  */
 
-// ─── Classes ─────────────────────────────────────────────────────────────────
-
 export { AssetStreamManager } from '../power-systems';
+export { assertValidBundleManifest, bundleWeightBytes } from '../assets/BundleManifest';
+export { planBundleCache } from '../assets/BundleCache';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-export type {
-    AssetHandle, AssetState, AssetType
-} from '../power-systems';
+export type { AssetHandle, AssetState, AssetType } from '../power-systems';
+export type { GameEnginAssetEntry, GameEnginAssetKind, GameEnginBundleManifest } from '../assets/BundleManifest';
+export type { GameEnginBundleCacheDecision, GameEnginBundleCacheOptions } from '../assets/BundleCache';
