@@ -161,6 +161,7 @@ export const systems = {
   "lib/gameengin/gameEnginRuntime": () => import("@/lib/gameengin/gameEnginRuntime"),
   "lib/gameengin/generative-audio": () => import("@/lib/gameengin/generative-audio"),
   "lib/gameengin/index": () => import("@/lib/gameengin/index"),
+  "lib/gameengin/input/InputRouter": () => import("@/lib/gameengin/input/InputRouter"),
   "lib/gameengin/neural-render": () => import("@/lib/gameengin/neural-render"),
   "lib/gameengin/path-tracing": () => import("@/lib/gameengin/path-tracing"),
   "lib/gameengin/platform": () => import("@/lib/gameengin/platform"),

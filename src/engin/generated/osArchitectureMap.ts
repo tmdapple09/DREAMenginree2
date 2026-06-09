@@ -40,7 +40,7 @@ export const osSlotCounts = {
   "memory": 6,
   "dr-eams-tool": 3,
   "hook": 12,
-  "engine-system": 64,
+  "engine-system": 65,
   "engine-utility": 308
 } as const;
 
@@ -408,7 +408,7 @@ export const osArchitectureGraph = {
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 64,
+    "engine-system": 65,
     "engine-utility": 308
   }
 } as const;
@@ -6064,6 +6064,12 @@ export const osArchitectureStageEntries = {
       "engine": "GameEngin"
     },
     {
+      "id": "lib/gameengin/input/InputRouter",
+      "slot": "engine-system",
+      "path": "lib/gameengin/input/InputRouter.ts",
+      "engine": "GameEngin"
+    },
+    {
       "id": "lib/gameengin/neural-render",
       "slot": "engine-system",
       "path": "lib/gameengin/neural-render.ts",
@@ -7780,7 +7786,7 @@ User Action / Agent / CI
 | memory | 6 |
 | dr-eams-tool | 3 |
 | hook | 12 |
-| engine-system | 64 |
+| engine-system | 65 |
 | engine-utility | 308 |
 
 ## Architecture Stages
