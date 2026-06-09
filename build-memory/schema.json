@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-07T19:16:02.043Z",
+  "generated_at": "2026-06-09T07:57:07.860Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
     "supabase/migrations/"
   ],
-  "count": 149,
+  "count": 152,
   "tables": [
     {
       "table": "activity_points",
@@ -1938,6 +1938,40 @@
       "source": "20260129000000_upgrade_schema.sql"
     },
     {
+      "table": "data_audit_ledger",
+      "columns": [
+        {
+          "name": "action",
+          "type": "string"
+        },
+        {
+          "name": "changed_at",
+          "type": "string | null"
+        },
+        {
+          "name": "changed_by_user_id",
+          "type": "string | null"
+        },
+        {
+          "name": "delta_changes",
+          "type": "Json"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "name": "record_id",
+          "type": "string"
+        },
+        {
+          "name": "table_name",
+          "type": "string"
+        }
+      ],
+      "source": "types/supabase.ts"
+    },
+    {
       "table": "daydream_states",
       "columns": [
         {
@@ -2778,6 +2812,28 @@
       "source": "types/supabase.ts"
     },
     {
+      "table": "feed_timelines",
+      "columns": [
+        {
+          "name": "author_id",
+          "type": "string"
+        },
+        {
+          "name": "created_at",
+          "type": "string"
+        },
+        {
+          "name": "post_id",
+          "type": "string"
+        },
+        {
+          "name": "user_id",
+          "type": "string"
+        }
+      ],
+      "source": "types/supabase.ts"
+    },
+    {
       "table": "flagged_content",
       "columns": [
         {
@@ -3158,6 +3214,56 @@
         }
       ],
       "source": "20260401000001_platform_utilities.sql"
+    },
+    {
+      "table": "home_feed_cache",
+      "columns": [
+        {
+          "name": "creator_id",
+          "type": "string"
+        },
+        {
+          "name": "inserted_at",
+          "type": "string"
+        },
+        {
+          "name": "payload_hint",
+          "type": "Json"
+        },
+        {
+          "name": "reasons",
+          "type": "Json"
+        },
+        {
+          "name": "score",
+          "type": "number"
+        },
+        {
+          "name": "source_created_at",
+          "type": "string"
+        },
+        {
+          "name": "source_id",
+          "type": "string"
+        },
+        {
+          "name": "source_type",
+          "type": "string"
+        },
+        {
+          "name": "updated_at",
+          "type": "string"
+        },
+        {
+          "name": "viewer_id",
+          "type": "string"
+        },
+        {
+          "name": "visibility",
+          "type": "string"
+        }
+      ],
+      "source": "types/supabase.ts"
     },
     {
       "table": "idempotency_keys",
@@ -5531,4 +5637,3 @@
     }
   ]
 }
-
