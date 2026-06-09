@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:27:40.278Z
+Generated: 2026-06-09T05:35:59.633Z
 
 ---
 
@@ -9348,7 +9348,7 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/gameengin/cartridges/reactCartridge` | `useGameEngineAPI` |
 | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+| `react` | `CSSProperties`, `ReactNode`, `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `components/games/dream.DefuseRitual.tsx`
 
@@ -14255,6 +14255,8 @@ _No style files for this feature._
 | `@/lib/gameengin/accessibility-ai` | _(dynamic import)_ |
 | `@/lib/gameengin/ai-director` | _(dynamic import)_ |
 | `@/lib/gameengin/ai-npcs` | _(dynamic import)_ |
+| `@/lib/gameengin/assets/BundleCache` | _(dynamic import)_ |
+| `@/lib/gameengin/assets/BundleManifest` | _(dynamic import)_ |
 | `@/lib/gameengin/backendNegotiator` | _(dynamic import)_ |
 | `@/lib/gameengin/brain-reader` | _(dynamic import)_ |
 | `@/lib/gameengin/cartridge-manifest` | _(dynamic import)_ |
@@ -14284,8 +14286,10 @@ _No style files for this feature._
 | `@/lib/gameengin/remote/layout` | _(dynamic import)_ |
 | `@/lib/gameengin/remote/moves` | _(dynamic import)_ |
 | `@/lib/gameengin/remote/sprintDetector` | _(dynamic import)_ |
+| `@/lib/gameengin/render/ShaderRegistry` | _(dynamic import)_ |
 | `@/lib/gameengin/runtime/FrameBudget` | _(dynamic import)_ |
 | `@/lib/gameengin/runtime/FrameClock` | _(dynamic import)_ |
+| `@/lib/gameengin/runtime/index` | _(dynamic import)_ |
 | `@/lib/gameengin/runtime/RuntimeQuality` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/ai` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/animation` | _(dynamic import)_ |
@@ -15722,6 +15726,8 @@ _No style files for this feature._
 - `@/lib/gameengin/accessibility-ai`
 - `@/lib/gameengin/ai-director`
 - `@/lib/gameengin/ai-npcs`
+- `@/lib/gameengin/assets/BundleCache`
+- `@/lib/gameengin/assets/BundleManifest`
 - `@/lib/gameengin/backendNegotiator`
 - `@/lib/gameengin/brain-reader`
 - `@/lib/gameengin/cartridge-manifest`
@@ -15751,8 +15757,10 @@ _No style files for this feature._
 - `@/lib/gameengin/remote/layout`
 - `@/lib/gameengin/remote/moves`
 - `@/lib/gameengin/remote/sprintDetector`
+- `@/lib/gameengin/render/ShaderRegistry`
 - `@/lib/gameengin/runtime/FrameBudget`
 - `@/lib/gameengin/runtime/FrameClock`
+- `@/lib/gameengin/runtime/index`
 - `@/lib/gameengin/runtime/RuntimeQuality`
 - `@/lib/gameengin/systems/ai`
 - `@/lib/gameengin/systems/animation`

@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:27:40.414Z
+Generated: 2026-06-09T05:35:59.767Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4544,6 +4544,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useGameAutoStart  ← @/lib/games/hooks
 │   │   │   ├── useGamePhase  ← @/lib/games/hooks
 │   │   │   ├── useSubmitScore  ← @/lib/games/hooks
+│   │   │   ├── CSSProperties  ← react
+│   │   │   ├── ReactNode  ← react
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
@@ -13911,6 +13913,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/accessibility-ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/ai-director
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/ai-npcs
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/assets/BundleCache
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/assets/BundleManifest
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/backendNegotiator
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/brain-reader
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/cartridge-manifest
@@ -13940,8 +13944,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/layout
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/moves
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/sprintDetector
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/render/ShaderRegistry
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameBudget
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameClock
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/index
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/RuntimeQuality
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/animation
