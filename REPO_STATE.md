@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:16:19.376Z
+Generated: 2026-06-09T05:22:20.976Z
 
 ---
 
@@ -11848,6 +11848,7 @@ _No style files for this feature._
 |--------|---------------|
 | `./cartridge` | `RendererBackendId`, `RuntimeBackendDiagnostics` |
 | `./cartridges/manifest` | `CartridgeManifestEntry` |
+| `./runtime/RuntimeQuality` | `decideRuntimeQuality` |
 
 ## `lib/gameengin/brain-reader.ts`
 

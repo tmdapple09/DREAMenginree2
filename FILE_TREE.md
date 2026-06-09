@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:16:19.511Z
+Generated: 2026-06-09T05:22:21.112Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9882,6 +9882,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── RendererBackendId  ← ./cartridge
 │   │   │   ├── RuntimeBackendDiagnostics  ← ./cartridge
 │   │   │   ├── CartridgeManifestEntry  ← ./cartridges/manifest
+│   │   │   ├── decideRuntimeQuality  ← ./runtime/RuntimeQuality
 │   │   │   ├── → negotiateRendererBackend
 │   │   │   └── → serverBootstrapDiagnostics
 │   │   ├── brain-reader.ts ∅
