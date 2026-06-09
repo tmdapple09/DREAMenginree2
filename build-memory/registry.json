@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T04:35:42.989Z",
+  "generatedAt": "2026-06-09T04:43:54.863Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 66,
+    "engine-system": 67,
     "engine-utility": 308
   },
   "entries": [
@@ -10423,6 +10423,18 @@
         "DOUBLE_TAP_WINDOW_MS",
         "SPRINT_MOVE_THRESHOLD",
         "SprintDetector"
+      ]
+    },
+    {
+      "id": "lib/gameengin/runtime/FrameBudget",
+      "slot": "engine-system",
+      "path": "lib/gameengin/runtime/FrameBudget.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "GAMEENGIN_FRAME_BUDGETS",
+        "GameEnginFrameBudget",
+        "GameEnginQualityTier",
+        "resolveFrameBudget"
       ]
     },
     {
