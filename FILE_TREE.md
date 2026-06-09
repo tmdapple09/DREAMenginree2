@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:22:50.129Z
+Generated: 2026-06-09T05:23:24.588Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9817,7 +9817,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → GameEnginFrameClock
 │   │   │   │   ├── → decideRuntimeQuality
 │   │   │   │   ├── → resolveFrameBudget
-│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget, GameEnginFrameClock, decideRuntimeQuality
+│   │   │   │   └── ∅ unused: resolveFrameBudget
 │   │   │   └── RuntimeQuality.ts
 │   │   │       └── → decideRuntimeQuality
 │   │   ├── systems  [GameEngin]
@@ -15461,6 +15461,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── isHudElementAllowed  ← @/lib/gameengin/remote
 │   │   ├── layoutFor  ← @/lib/gameengin/remote
 │   │   ├── radiusMmToPx  ← @/lib/gameengin/remote
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── gameengin-runtime-upgrade.test.ts
+│   │   ├── GAMEENGIN_FRAME_BUDGETS  ← @/lib/gameengin/runtime
+│   │   ├── GameEnginFrameClock  ← @/lib/gameengin/runtime
+│   │   ├── decideRuntimeQuality  ← @/lib/gameengin/runtime
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest

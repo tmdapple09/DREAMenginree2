@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:22:49.988Z
+Generated: 2026-06-09T05:23:24.462Z
 
 ---
 
@@ -991,6 +991,7 @@ _No style files for this feature._
 - `tests/gameengin-power-systems.test.ts`
 - `tests/gameengin-progression.test.ts`
 - `tests/gameengin-remote.test.ts`
+- `tests/gameengin-runtime-upgrade.test.ts`
 - `tests/gameengin-spec.test.ts`
 - `tests/madmaxi-accessibility-tuning.test.ts`
 - `tests/madmaxi-authored-levels.test.ts`
@@ -4787,6 +4788,7 @@ _No style files for this feature._
 - `tests/engin-hot-runtime-wiring.test.ts`
 - `tests/engin-runtime-core.test.ts`
 - `tests/engin-workflow.test.ts`
+- `tests/gameengin-runtime-upgrade.test.ts`
 - `tests/runtime-channel.test.ts`
 - `tests/runtime-container.test.ts`
 - `tests/runtime-viewport.test.ts`
@@ -19288,7 +19290,7 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
 | `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
-| `lib/gameengin/runtime/index.ts` | `GAMEENGIN_FRAME_BUDGETS`, `resolveFrameBudget`, `GameEnginFrameClock`, `decideRuntimeQuality` |
+| `lib/gameengin/runtime/index.ts` | `resolveFrameBudget` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -21923,7 +21925,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── FrameClock.ts ∅
 │   │   │   │   └── ∅ unused: GameEnginFrameClock
 │   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget, GameEnginFrameClock, decideRuntimeQuality
+│   │   │   │   └── ∅ unused: resolveFrameBudget
 │   │   │   └── RuntimeQuality.ts
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
@@ -22695,6 +22697,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── gameengin-power-systems.test.ts
 │   ├── gameengin-progression.test.ts
 │   ├── gameengin-remote.test.ts
+│   ├── gameengin-runtime-upgrade.test.ts
 │   ├── gameengin-spec.test.ts
 │   ├── games-daydream-page-auth.test.ts
 │   ├── god-tier-engine.test.ts
