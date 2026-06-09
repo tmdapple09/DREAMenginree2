@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T05:14:32.851Z",
+  "generatedAt": "2026-06-09T07:23:58.569Z",
   "root": ".",
   "nodes": [
     {
@@ -3476,6 +3476,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMengin-code-only-file-grammar-rewritten.zip",
+      "label": "DREAMengin-code-only-file-grammar-rewritten.zip",
+      "type": "file",
+      "path": "DREAMengin-code-only-file-grammar-rewritten.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -18502,7 +18512,27 @@
       "type": "function",
       "path": "components/games/dream.AvenueOfMirrors.tsx",
       "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
-      "loc": 68,
+      "loc": 72,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.AvenueOfMirrors.tsx#moveBlocked",
+      "label": "moveBlocked",
+      "type": "function",
+      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "loc": 76,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.AvenueOfMirrors.tsx#actionKey",
+      "label": "actionKey",
+      "type": "function",
+      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "loc": 80,
       "isOrphan": true,
       "exported": false
     },
@@ -18512,9 +18542,29 @@
       "type": "function",
       "path": "components/games/dream.AvenueOfMirrors.tsx",
       "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
-      "loc": 79,
+      "loc": 89,
       "isOrphan": true,
       "exported": true
+    },
+    {
+      "id": "function:components/games/dream.AvenueOfMirrors.tsx#GlyphGrid",
+      "label": "GlyphGrid",
+      "type": "function",
+      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "loc": 336,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/games/dream.AvenueOfMirrors.tsx#Pad",
+      "label": "Pad",
+      "type": "function",
+      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "loc": 341,
+      "isOrphan": true,
+      "exported": false
     },
     {
       "id": "file:components/games/dream.AvenueOfMirrors.tsx",
@@ -39686,12 +39736,81 @@
       "tags": []
     },
     {
+      "id": "folder:lib/gameengin/assets",
+      "label": "assets",
+      "type": "folder",
+      "path": "lib/gameengin/assets",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:lib/gameengin/assets/BundleCache.ts#planBundleCache",
+      "label": "planBundleCache",
+      "type": "function",
+      "path": "lib/gameengin/assets/BundleCache.ts",
+      "parent": "file:lib/gameengin/assets/BundleCache.ts",
+      "loc": 16,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/assets/BundleCache.ts",
+      "label": "BundleCache.ts",
+      "type": "ts",
+      "path": "lib/gameengin/assets/BundleCache.ts",
+      "parent": "folder:lib/gameengin/assets",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/gameengin/assets/BundleManifest.ts#assertValidBundleManifest",
+      "label": "assertValidBundleManifest",
+      "type": "function",
+      "path": "lib/gameengin/assets/BundleManifest.ts",
+      "parent": "file:lib/gameengin/assets/BundleManifest.ts",
+      "loc": 25,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/assets/BundleManifest.ts#bundleWeightBytes",
+      "label": "bundleWeightBytes",
+      "type": "function",
+      "path": "lib/gameengin/assets/BundleManifest.ts",
+      "parent": "file:lib/gameengin/assets/BundleManifest.ts",
+      "loc": 35,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/assets/BundleManifest.ts",
+      "label": "BundleManifest.ts",
+      "type": "ts",
+      "path": "lib/gameengin/assets/BundleManifest.ts",
+      "parent": "folder:lib/gameengin/assets",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:lib/gameengin/backendNegotiator.ts#hasWebGL2",
       "label": "hasWebGL2",
       "type": "function",
       "path": "lib/gameengin/backendNegotiator.ts",
       "parent": "file:lib/gameengin/backendNegotiator.ts",
-      "loc": 7,
+      "loc": 8,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/backendNegotiator.ts#unsupportedReason",
+      "label": "unsupportedReason",
+      "type": "function",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "parent": "file:lib/gameengin/backendNegotiator.ts",
+      "loc": 17,
       "isOrphan": true,
       "exported": false
     },
@@ -39701,7 +39820,7 @@
       "type": "function",
       "path": "lib/gameengin/backendNegotiator.ts",
       "parent": "file:lib/gameengin/backendNegotiator.ts",
-      "loc": 16,
+      "loc": 24,
       "isOrphan": true,
       "exported": false
     },
@@ -39711,7 +39830,7 @@
       "type": "function",
       "path": "lib/gameengin/backendNegotiator.ts",
       "parent": "file:lib/gameengin/backendNegotiator.ts",
-      "loc": 25,
+      "loc": 33,
       "isOrphan": false,
       "exported": true
     },
@@ -39721,7 +39840,7 @@
       "type": "function",
       "path": "lib/gameengin/backendNegotiator.ts",
       "parent": "file:lib/gameengin/backendNegotiator.ts",
-      "loc": 80,
+      "loc": 90,
       "isOrphan": false,
       "exported": true
     },
@@ -42035,12 +42154,22 @@
       "tags": []
     },
     {
+      "id": "function:lib/gameengin/gameEnginRuntime.ts#fetchArrayBuffer",
+      "label": "fetchArrayBuffer",
+      "type": "function",
+      "path": "lib/gameengin/gameEnginRuntime.ts",
+      "parent": "file:lib/gameengin/gameEnginRuntime.ts",
+      "loc": 49,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/gameengin/gameEnginRuntime.ts#loadDreamGame",
       "label": "loadDreamGame",
       "type": "function",
       "path": "lib/gameengin/gameEnginRuntime.ts",
       "parent": "file:lib/gameengin/gameEnginRuntime.ts",
-      "loc": 92,
+      "loc": 55,
       "isOrphan": true,
       "exported": true
     },
@@ -42050,7 +42179,7 @@
       "type": "class",
       "path": "lib/gameengin/gameEnginRuntime.ts",
       "parent": "file:lib/gameengin/gameEnginRuntime.ts",
-      "loc": 156,
+      "loc": 97,
       "isOrphan": false,
       "exported": true
     },
@@ -42813,6 +42942,35 @@
       "tags": []
     },
     {
+      "id": "folder:lib/gameengin/render",
+      "label": "render",
+      "type": "folder",
+      "path": "lib/gameengin/render",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "class:lib/gameengin/render/ShaderRegistry.ts#GameEnginShaderRegistry",
+      "label": "GameEnginShaderRegistry",
+      "type": "class",
+      "path": "lib/gameengin/render/ShaderRegistry.ts",
+      "parent": "file:lib/gameengin/render/ShaderRegistry.ts",
+      "loc": 20,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/render/ShaderRegistry.ts",
+      "label": "ShaderRegistry.ts",
+      "type": "ts",
+      "path": "lib/gameengin/render/ShaderRegistry.ts",
+      "parent": "folder:lib/gameengin/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:lib/gameengin/runtime",
       "label": "runtime",
       "type": "folder",
@@ -42868,7 +43026,7 @@
       "path": "lib/gameengin/runtime/RuntimeQuality.ts",
       "parent": "file:lib/gameengin/runtime/RuntimeQuality.ts",
       "loc": 7,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42876,6 +43034,16 @@
       "label": "RuntimeQuality.ts",
       "type": "ts",
       "path": "lib/gameengin/runtime/RuntimeQuality.ts",
+      "parent": "folder:lib/gameengin/runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:lib/gameengin/runtime/index.ts",
+      "label": "index.ts",
+      "type": "ts",
+      "path": "lib/gameengin/runtime/index.ts",
       "parent": "folder:lib/gameengin/runtime",
       "loc": null,
       "isOrphan": false,
@@ -67295,6 +67463,16 @@
       "tags": []
     },
     {
+      "id": "file:tests/gameengin-asset-pipeline.test.ts",
+      "label": "gameengin-asset-pipeline.test.ts",
+      "type": "ts",
+      "path": "tests/gameengin-asset-pipeline.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/gameengin-cartridges.test.ts",
       "label": "gameengin-cartridges.test.ts",
       "type": "ts",
@@ -67309,6 +67487,26 @@
       "label": "gameengin-crash-modal.test.ts",
       "type": "ts",
       "path": "tests/gameengin-crash-modal.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "class:tests/gameengin-input-router.test.ts#FakeWindow",
+      "label": "FakeWindow",
+      "type": "class",
+      "path": "tests/gameengin-input-router.test.ts",
+      "parent": "file:tests/gameengin-input-router.test.ts",
+      "loc": 4,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "file:tests/gameengin-input-router.test.ts",
+      "label": "gameengin-input-router.test.ts",
+      "type": "ts",
+      "path": "tests/gameengin-input-router.test.ts",
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
@@ -67369,6 +67567,16 @@
       "label": "gameengin-remote.test.ts",
       "type": "ts",
       "path": "tests/gameengin-remote.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/gameengin-runtime-upgrade.test.ts",
+      "label": "gameengin-runtime-upgrade.test.ts",
+      "type": "ts",
+      "path": "tests/gameengin-runtime-upgrade.test.ts",
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
@@ -83620,6 +83828,16 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/assets/BundleCache.ts",
+      "target": "file:lib/gameengin/assets/BundleManifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/assets/BundleManifest.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/backendNegotiator.ts",
       "target": "file:lib/gameengin/cartridge.ts",
       "kind": "import"
@@ -83627,6 +83845,11 @@
     {
       "source": "file:lib/gameengin/backendNegotiator.ts",
       "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/backendNegotiator.ts",
+      "target": "file:lib/gameengin/runtime/RuntimeQuality.ts",
       "kind": "import"
     },
     {
@@ -84000,6 +84223,16 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/gameEnginRuntime.ts",
+      "target": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/gameEnginRuntime.ts",
+      "target": "file:lib/gameengin/runtime/RuntimeQuality.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/index.ts",
       "target": "file:lib/gameengin/control-mappings.ts",
       "kind": "reexport"
@@ -84155,9 +84388,29 @@
       "kind": "reexport"
     },
     {
+      "source": "file:lib/gameengin/render/ShaderRegistry.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/runtime/FrameClock.ts",
       "target": "file:lib/gameengin/runtime/FrameBudget.ts",
       "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/runtime/index.ts",
+      "target": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/runtime/index.ts",
+      "target": "file:lib/gameengin/runtime/FrameClock.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/runtime/index.ts",
+      "target": "file:lib/gameengin/runtime/RuntimeQuality.ts",
+      "kind": "reexport"
     },
     {
       "source": "file:lib/gameengin/systems/ai.ts",
@@ -84172,6 +84425,16 @@
     {
       "source": "file:lib/gameengin/systems/assets.ts",
       "target": "file:lib/gameengin/power-systems.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/systems/assets.ts",
+      "target": "file:lib/gameengin/assets/BundleManifest.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/systems/assets.ts",
+      "target": "file:lib/gameengin/assets/BundleCache.ts",
       "kind": "reexport"
     },
     {
@@ -90116,6 +90379,16 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/assets/BundleCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/assets/BundleManifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/backendNegotiator.ts",
       "kind": "import"
     },
@@ -90261,12 +90534,22 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/render/ShaderRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/runtime/FrameBudget.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/runtime/FrameClock.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/runtime/index.ts",
       "kind": "import"
     },
     {
@@ -92030,6 +92313,21 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "file:lib/gameengin/assets/BundleManifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "file:lib/gameengin/assets/BundleCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "file:lib/gameengin/render/ShaderRegistry.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/gameengin-cartridges.test.ts",
       "target": "file:lib/gameengin/cartridges/manifest.ts",
       "kind": "import"
@@ -92070,6 +92368,16 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/gameengin-input-router.test.ts",
+      "target": "file:lib/gameengin/input/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/gameengin-input-router.test.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/gameengin-loop.test.ts",
       "target": "file:lib/gameengin/brain-reader.ts",
       "kind": "import"
@@ -92092,6 +92400,11 @@
     {
       "source": "file:tests/gameengin-remote.test.ts",
       "target": "file:lib/gameengin/remote/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/gameengin-runtime-upgrade.test.ts",
+      "target": "file:lib/gameengin/runtime/index.ts",
       "kind": "import"
     },
     {
@@ -100440,6 +100753,21 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/gameengin/assets/BundleCache.ts",
+      "target": "function:lib/gameengin/assets/BundleManifest.ts#assertValidBundleManifest",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/assets/BundleCache.ts",
+      "target": "function:lib/gameengin/assets/BundleManifest.ts#bundleWeightBytes",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/backendNegotiator.ts",
+      "target": "function:lib/gameengin/runtime/RuntimeQuality.ts#decideRuntimeQuality",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/gameengin/cartridges/loaders.ts",
       "target": "function:lib/gameengin/cartridges/manifest.ts#getCartridgeManifest",
       "kind": "call"
@@ -100772,6 +101100,16 @@
     {
       "source": "file:lib/gameengin/executionWiring.ts",
       "target": "function:lib/runtime/madMaxiSnapshotBridge.ts#invokeMadMaxiSnapshotTransfer",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/gameEnginRuntime.ts",
+      "target": "function:lib/gameengin/runtime/FrameBudget.ts#resolveFrameBudget",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/gameEnginRuntime.ts",
+      "target": "function:lib/gameengin/runtime/RuntimeQuality.ts#decideRuntimeQuality",
       "kind": "call"
     },
     {
@@ -103295,6 +103633,26 @@
       "kind": "call"
     },
     {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "function:lib/gameengin/assets/BundleManifest.ts#assertValidBundleManifest",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "function:lib/gameengin/assets/BundleManifest.ts#bundleWeightBytes",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "function:lib/gameengin/assets/BundleCache.ts#planBundleCache",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/gameengin-asset-pipeline.test.ts",
+      "target": "class:lib/gameengin/render/ShaderRegistry.ts#GameEnginShaderRegistry",
+      "kind": "call"
+    },
+    {
       "source": "file:tests/gameengin-cartridges.test.ts",
       "target": "function:lib/gameengin/cartridges/loaders.ts#getCartridgeIds",
       "kind": "call"
@@ -103312,6 +103670,11 @@
     {
       "source": "file:tests/gameengin-cartridges.test.ts",
       "target": "function:lib/gameengin/cartridges/loaders.ts#loadCartridge",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/gameengin-input-router.test.ts",
+      "target": "file:lib/gameengin/input/index.ts",
       "kind": "call"
     },
     {
@@ -103462,6 +103825,11 @@
     {
       "source": "file:tests/gameengin-remote.test.ts",
       "target": "file:lib/gameengin/remote/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/gameengin-runtime-upgrade.test.ts",
+      "target": "file:lib/gameengin/runtime/index.ts",
       "kind": "call"
     },
     {
