@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T04:18:41.654Z
+Generated: 2026-06-09T04:43:32.800Z
 
 ---
 
@@ -879,6 +879,7 @@ _No style files for this feature._
 ### `lib/gameengin/input/`
 
 - `lib/gameengin/input/InputRouter.ts`
+- `lib/gameengin/input/index.ts`
 
 ### `lib/gameengin/remote/`
 
@@ -887,6 +888,10 @@ _No style files for this feature._
 - `lib/gameengin/remote/layout.ts`
 - `lib/gameengin/remote/moves.ts`
 - `lib/gameengin/remote/sprintDetector.ts`
+
+### `lib/gameengin/runtime/`
+
+- `lib/gameengin/runtime/FrameBudget.ts`
 
 ### `lib/gameengin/systems/`
 
@@ -1015,6 +1020,7 @@ _No style files for this feature._
 - `../eventBus`
 - `../power-systems`
 - `./GameRuntime`
+- `./InputRouter`
 - `./MyGame`
 - `./_fx/canvasFx`
 - `./accessibility-ai`
@@ -14212,6 +14218,8 @@ _No style files for this feature._
 | `@/lib/gameengin/gameEnginRuntime` | _(dynamic import)_ |
 | `@/lib/gameengin/generative-audio` | _(dynamic import)_ |
 | `@/lib/gameengin/index` | _(dynamic import)_ |
+| `@/lib/gameengin/input/index` | _(dynamic import)_ |
+| `@/lib/gameengin/input/InputRouter` | _(dynamic import)_ |
 | `@/lib/gameengin/neural-render` | _(dynamic import)_ |
 | `@/lib/gameengin/path-tracing` | _(dynamic import)_ |
 | `@/lib/gameengin/platform` | _(dynamic import)_ |
@@ -15674,6 +15682,8 @@ _No style files for this feature._
 - `@/lib/gameengin/gameEnginRuntime`
 - `@/lib/gameengin/generative-audio`
 - `@/lib/gameengin/index`
+- `@/lib/gameengin/input/index`
+- `@/lib/gameengin/input/InputRouter`
 - `@/lib/gameengin/neural-render`
 - `@/lib/gameengin/path-tracing`
 - `@/lib/gameengin/platform`
@@ -19247,11 +19257,13 @@ _No circular dependencies detected._
 | `lib/gameengin/gameEnginRuntime.ts` | `loadDreamGame` |
 | `lib/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
 | `lib/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
+| `lib/gameengin/input/index.ts` | `GameRuntimeInputRouter` |
 | `lib/gameengin/platform.ts` | `GameEnginPlatform` |
 | `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
 | `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
 | `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
+| `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS`, `resolveFrameBudget` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -21866,6 +21878,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── saveState.ts ∅
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── input  [GameEngin]
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: GameRuntimeInputRouter
 │   │   │   └── InputRouter.ts ∅
 │   │   │       └── ∅ unused: GameRuntimeInputRouter
 │   │   ├── remote  [GameEngin]
@@ -21878,6 +21892,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
 │   │   │   └── sprintDetector.ts ∅
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
+│   │   ├── runtime  [GameEngin]
+│   │   │   └── FrameBudget.ts ∅
+│   │   │       └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem

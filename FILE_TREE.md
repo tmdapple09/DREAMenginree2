@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T04:18:41.775Z
+Generated: 2026-06-09T04:43:32.936Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9756,6 +9756,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → purgeCartridgeSaves
 │   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
 │   │   ├── input  [GameEngin]
+│   │   │   ├── index.ts ∅
+│   │   │   │   ├── → GameRuntimeInputRouter
+│   │   │   │   └── ∅ unused: GameRuntimeInputRouter
 │   │   │   └── InputRouter.ts ∅
 │   │   │       ├── CartridgeInputEvent  ← ../cartridge
 │   │   │       ├── → GameRuntimeInputRouter
@@ -9799,6 +9802,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → SPRINT_MOVE_THRESHOLD
 │   │   │       ├── → SprintDetector
 │   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
+│   │   ├── runtime  [GameEngin]
+│   │   │   └── FrameBudget.ts ∅
+│   │   │       ├── → GAMEENGIN_FRAME_BUDGETS
+│   │   │       ├── → resolveFrameBudget
+│   │   │       └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   ├── → BehaviorTreeEngine
@@ -13884,6 +13892,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/gameEnginRuntime
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/generative-audio
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/index
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/input/index
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/input/InputRouter
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/neural-render
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/path-tracing
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/platform
