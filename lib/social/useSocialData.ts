@@ -1,3 +1,5 @@
+'use client';
+
 import type { NormalizedPost } from '@/lib/social/normalizers';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/lib/utils';
@@ -19,7 +21,6 @@ import { toErrorMessage } from '@/lib/utils';
  *   – The hook is SSR-safe: it performs no fetches on the server.
  */
 
-'use client';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

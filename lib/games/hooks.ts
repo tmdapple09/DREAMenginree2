@@ -1,3 +1,5 @@
+'use client';
+
 import {
     createPerformanceBaselineSampler,
     DE_GAME_PERFORMANCE_BASELINE,

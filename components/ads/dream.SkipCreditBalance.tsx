@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 // components/ads/dream.SkipCreditBalance.tsx
@@ -6,7 +8,6 @@ import { useEffect, useState } from 'react';
 // Shows user's skip credit balance in header/nav.
 // Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
 
-'use client';
 
 export function SkipCreditBalance( ){
   const [balance, setBalance] = useState<number>(0);

@@ -1,3 +1,5 @@
+'use client';
+
 import type {
     CreativeCandidate,
     OptimizeroResult,
@@ -14,7 +16,6 @@ import { CreativeOptimizero, DEFAULT_WEIGHTS } from './creative-optimizero';
  * Determines how UI elements should render and move around in 3D space.
  */
 
-'use client';
 
 /**
  * Represents a 3D UI element candidate in Babylon.js space
