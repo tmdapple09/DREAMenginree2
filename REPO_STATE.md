@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:05:04.300Z
+Generated: 2026-06-09T05:16:19.376Z
 
 ---
 
@@ -1085,6 +1085,8 @@ _No style files for this feature._
 - `./remote/moves`
 - `./remote/sprintDetector`
 - `./rendering`
+- `./runtime/FrameBudget`
+- `./runtime/RuntimeQuality`
 - `./spatial`
 - `./sprintDetector`
 - `./systems/ai`
@@ -11996,6 +11998,8 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../eventBus` | `EventBus`, `createEventBus` |
+| `./runtime/FrameBudget` | `GameEnginQualityTier`, `resolveFrameBudget` |
+| `./runtime/RuntimeQuality` | `decideRuntimeQuality` |
 
 ## `lib/gameengin/index.ts`
 
@@ -14243,6 +14247,7 @@ _No style files for this feature._
 | `@/lib/gameengin/remote/moves` | _(dynamic import)_ |
 | `@/lib/gameengin/remote/sprintDetector` | _(dynamic import)_ |
 | `@/lib/gameengin/runtime/FrameBudget` | _(dynamic import)_ |
+| `@/lib/gameengin/runtime/FrameClock` | _(dynamic import)_ |
 | `@/lib/gameengin/runtime/RuntimeQuality` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/ai` | _(dynamic import)_ |
 | `@/lib/gameengin/systems/animation` | _(dynamic import)_ |
@@ -15709,6 +15714,7 @@ _No style files for this feature._
 - `@/lib/gameengin/remote/moves`
 - `@/lib/gameengin/remote/sprintDetector`
 - `@/lib/gameengin/runtime/FrameBudget`
+- `@/lib/gameengin/runtime/FrameClock`
 - `@/lib/gameengin/runtime/RuntimeQuality`
 - `@/lib/gameengin/systems/ai`
 - `@/lib/gameengin/systems/animation`
@@ -18270,6 +18276,7 @@ _No circular dependencies detected._
 | `components/games/dream.AvenueOfMirrors.tsx` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
+| `lib/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
 | `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
 | `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `lib/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
@@ -18298,7 +18305,6 @@ _No circular dependencies detected._
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
 | `lib/collaboration/index.ts` | 1 | EVENT_BUS |
 | `lib/dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `lib/gameengin/gameEnginRuntime.ts` | 1 | EVENT_BUS |
 | `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `lib/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
 | `lib/event-bus/index.ts` | 0 | EVENT_BUS |
@@ -19278,7 +19284,6 @@ _No circular dependencies detected._
 | `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
 | `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
 | `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
-| `lib/gameengin/runtime/RuntimeQuality.ts` | `decideRuntimeQuality` |
 | `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
 | `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
 | `lib/gameengin/systems/assets.ts` | `AssetStreamManager` |
@@ -21912,8 +21917,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
 │   │   │   ├── FrameClock.ts ∅
 │   │   │   │   └── ∅ unused: GameEnginFrameClock
-│   │   │   └── RuntimeQuality.ts ∅
-│   │   │       └── ∅ unused: decideRuntimeQuality
+│   │   │   └── RuntimeQuality.ts
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem

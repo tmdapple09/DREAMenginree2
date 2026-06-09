@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:05:04.442Z
+Generated: 2026-06-09T05:16:19.511Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -9812,9 +9812,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── resolveFrameBudget  ← ./FrameBudget
 │   │   │   │   ├── → GameEnginFrameClock
 │   │   │   │   └── ∅ unused: GameEnginFrameClock
-│   │   │   └── RuntimeQuality.ts ∅
-│   │   │       ├── → decideRuntimeQuality
-│   │   │       └── ∅ unused: decideRuntimeQuality
+│   │   │   └── RuntimeQuality.ts
+│   │   │       └── → decideRuntimeQuality
 │   │   ├── systems  [GameEngin]
 │   │   │   ├── ai.ts ∅
 │   │   │   │   ├── → BehaviorTreeEngine
@@ -10084,6 +10083,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── gameEnginRuntime.ts ∅
 │   │   │   ├── EventBus  ← ../eventBus
 │   │   │   ├── createEventBus  ← ../eventBus
+│   │   │   ├── GameEnginQualityTier  ← ./runtime/FrameBudget
+│   │   │   ├── resolveFrameBudget  ← ./runtime/FrameBudget
+│   │   │   ├── decideRuntimeQuality  ← ./runtime/RuntimeQuality
 │   │   │   ├── → GameEnginRuntime
 │   │   │   ├── → loadDreamGame
 │   │   │   └── ∅ unused: loadDreamGame
@@ -13916,6 +13918,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/moves
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/remote/sprintDetector
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameBudget
+│   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/FrameClock
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/runtime/RuntimeQuality
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/ai
 │   │   │       ├── (dynamic)  ← @/lib/gameengin/systems/animation
