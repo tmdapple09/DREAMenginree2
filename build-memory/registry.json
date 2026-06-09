@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T04:51:05.125Z",
+  "generatedAt": "2026-06-09T04:56:12.538Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 67,
+    "engine-system": 68,
     "engine-utility": 308
   },
   "entries": [
@@ -10435,6 +10435,17 @@
         "GameEnginFrameBudget",
         "GameEnginQualityTier",
         "resolveFrameBudget"
+      ]
+    },
+    {
+      "id": "lib/gameengin/runtime/RuntimeQuality",
+      "slot": "engine-system",
+      "path": "lib/gameengin/runtime/RuntimeQuality.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "decideRuntimeQuality",
+        "GameEnginRuntimeQuality",
+        "GameEnginRuntimeQualityDecision"
       ]
     },
     {
