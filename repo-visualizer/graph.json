@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-08T01:19:56.514Z",
+  "generatedAt": "2026-06-09T04:20:24.485Z",
   "root": ".",
   "nodes": [
     {
@@ -9956,7 +9956,7 @@
       "type": "function",
       "path": "app/dreamdmbar/dualruntime/page.tsx",
       "parent": "file:app/dreamdmbar/dualruntime/page.tsx",
-      "loc": 30,
+      "loc": 64,
       "isOrphan": false,
       "exported": true
     },
@@ -16401,7 +16401,7 @@
       "type": "function",
       "path": "components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
       "parent": "file:components/dreams/dream.panel.RuntimeMemoryHUD.tsx",
-      "loc": 33,
+      "loc": 67,
       "isOrphan": true,
       "exported": true
     },
@@ -18165,7 +18165,7 @@
       "type": "function",
       "path": "components/gameengin/dream.CrashReportModal.tsx",
       "parent": "file:components/gameengin/dream.CrashReportModal.tsx",
-      "loc": 247,
+      "loc": 265,
       "isOrphan": true,
       "exported": false
     },
@@ -18265,9 +18265,19 @@
       "type": "function",
       "path": "components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
       "parent": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
-      "loc": 32,
+      "loc": 33,
       "isOrphan": true,
       "exported": true
+    },
+    {
+      "id": "function:components/gameengin/dream.cartridge.CartridgeLauncher.tsx#DiagnosticPill",
+      "label": "DiagnosticPill",
+      "type": "function",
+      "path": "components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
+      "parent": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
+      "loc": 286,
+      "isOrphan": true,
+      "exported": false
     },
     {
       "id": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
@@ -18467,12 +18477,22 @@
       "tags": []
     },
     {
+      "id": "function:components/games/dream.AvenueOfMirrors.tsx#createSeededRandom",
+      "label": "createSeededRandom",
+      "type": "function",
+      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "loc": 39,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/games/dream.AvenueOfMirrors.tsx#newMaze",
       "label": "newMaze",
       "type": "function",
       "path": "components/games/dream.AvenueOfMirrors.tsx",
       "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
-      "loc": 38,
+      "loc": 47,
       "isOrphan": true,
       "exported": false
     },
@@ -18482,7 +18502,7 @@
       "type": "function",
       "path": "components/games/dream.AvenueOfMirrors.tsx",
       "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
-      "loc": 59,
+      "loc": 68,
       "isOrphan": true,
       "exported": false
     },
@@ -18492,7 +18512,7 @@
       "type": "function",
       "path": "components/games/dream.AvenueOfMirrors.tsx",
       "parent": "file:components/games/dream.AvenueOfMirrors.tsx",
-      "loc": 70,
+      "loc": 79,
       "isOrphan": true,
       "exported": true
     },
@@ -19092,7 +19112,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 41,
+      "loc": 42,
       "isOrphan": true,
       "exported": false
     },
@@ -19102,7 +19122,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 82,
+      "loc": 83,
       "isOrphan": true,
       "exported": false
     },
@@ -19112,7 +19132,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 97,
+      "loc": 98,
       "isOrphan": true,
       "exported": false
     },
@@ -19122,7 +19142,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 134,
+      "loc": 135,
       "isOrphan": true,
       "exported": false
     },
@@ -19132,7 +19152,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 354,
+      "loc": 377,
       "isOrphan": true,
       "exported": true
     },
@@ -19421,7 +19441,7 @@
       "type": "class",
       "path": "components/games/madmaxi/dream.MadmaxiGame.tsx",
       "parent": "file:components/games/madmaxi/dream.MadmaxiGame.tsx",
-      "loc": 679,
+      "loc": 681,
       "isOrphan": true,
       "exported": false
     },
@@ -20987,7 +21007,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 82,
+      "loc": 119,
       "isOrphan": false,
       "exported": true
     },
@@ -20997,7 +21017,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 92,
+      "loc": 125,
       "isOrphan": true,
       "exported": true
     },
@@ -21017,7 +21037,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 95,
+      "loc": 150,
       "isOrphan": true,
       "exported": false
     },
@@ -21027,7 +21047,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 99,
+      "loc": 154,
       "isOrphan": true,
       "exported": true
     },
@@ -21047,7 +21067,7 @@
       "type": "function",
       "path": "components/runtime/dream.shell.RuntimeShell.tsx",
       "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 40,
+      "loc": 76,
       "isOrphan": true,
       "exported": true
     },
@@ -21227,7 +21247,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 76,
+      "loc": 140,
       "isOrphan": true,
       "exported": false
     },
@@ -21237,7 +21257,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 84,
+      "loc": 148,
       "isOrphan": true,
       "exported": false
     },
@@ -21247,7 +21267,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 117,
+      "loc": 163,
       "isOrphan": true,
       "exported": false
     },
@@ -21257,7 +21277,7 @@
       "type": "function",
       "path": "components/shared-dream/dream.SharedDreamRuntime.tsx",
       "parent": "file:components/shared-dream/dream.SharedDreamRuntime.tsx",
-      "loc": 345,
+      "loc": 382,
       "isOrphan": true,
       "exported": true
     },
@@ -24454,7 +24474,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 233,
+      "loc": 232,
       "isOrphan": true,
       "exported": false
     },
@@ -24464,7 +24484,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 251,
+      "loc": 250,
       "isOrphan": true,
       "exported": true
     },
@@ -24474,7 +24494,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 258,
+      "loc": 257,
       "isOrphan": true,
       "exported": false
     },
@@ -24484,7 +24504,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 2866,
+      "loc": 2893,
       "isOrphan": true,
       "exported": false
     },
@@ -25594,7 +25614,7 @@
       "type": "function",
       "path": "hooks/useSharedDream.ts",
       "parent": "file:hooks/useSharedDream.ts",
-      "loc": 53,
+      "loc": 88,
       "isOrphan": true,
       "exported": false
     },
@@ -25604,7 +25624,7 @@
       "type": "function",
       "path": "hooks/useSharedDream.ts",
       "parent": "file:hooks/useSharedDream.ts",
-      "loc": 57,
+      "loc": 92,
       "isOrphan": false,
       "exported": true
     },
@@ -28643,7 +28663,7 @@
       "type": "function",
       "path": "lib/babylon/createEngine.ts",
       "parent": "file:lib/babylon/createEngine.ts",
-      "loc": 49,
+      "loc": 55,
       "isOrphan": true,
       "exported": false
     },
@@ -28653,7 +28673,7 @@
       "type": "function",
       "path": "lib/babylon/createEngine.ts",
       "parent": "file:lib/babylon/createEngine.ts",
-      "loc": 80,
+      "loc": 86,
       "isOrphan": false,
       "exported": true
     },
@@ -33256,7 +33276,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 132,
+      "loc": 164,
       "isOrphan": false,
       "exported": true
     },
@@ -33266,7 +33286,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 154,
+      "loc": 186,
       "isOrphan": false,
       "exported": true
     },
@@ -33276,7 +33296,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 176,
+      "loc": 208,
       "isOrphan": false,
       "exported": true
     },
@@ -33286,7 +33306,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 201,
+      "loc": 233,
       "isOrphan": false,
       "exported": true
     },
@@ -33296,7 +33316,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 223,
+      "loc": 255,
       "isOrphan": false,
       "exported": true
     },
@@ -33306,7 +33326,7 @@
       "type": "function",
       "path": "lib/dream-window/runtimeRegion.ts",
       "parent": "file:lib/dream-window/runtimeRegion.ts",
-      "loc": 233,
+      "loc": 265,
       "isOrphan": false,
       "exported": true
     },
@@ -35199,7 +35219,7 @@
       "type": "function",
       "path": "lib/dreams/useDreamsRuntime.ts",
       "parent": "file:lib/dreams/useDreamsRuntime.ts",
-      "loc": 43,
+      "loc": 75,
       "isOrphan": false,
       "exported": true
     },
@@ -35228,7 +35248,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 54,
+      "loc": 135,
       "isOrphan": true,
       "exported": false
     },
@@ -35238,7 +35258,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 70,
+      "loc": 139,
       "isOrphan": true,
       "exported": false
     },
@@ -35248,7 +35268,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 78,
+      "loc": 147,
       "isOrphan": true,
       "exported": false
     },
@@ -35258,7 +35278,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 88,
+      "loc": 157,
       "isOrphan": false,
       "exported": true
     },
@@ -35268,7 +35288,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 108,
+      "loc": 177,
       "isOrphan": false,
       "exported": true
     },
@@ -35278,7 +35298,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 117,
+      "loc": 186,
       "isOrphan": false,
       "exported": true
     },
@@ -35288,7 +35308,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 155,
+      "loc": 211,
       "isOrphan": true,
       "exported": true
     },
@@ -35298,7 +35318,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 196,
+      "loc": 231,
       "isOrphan": false,
       "exported": true
     },
@@ -35308,7 +35328,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 221,
+      "loc": 256,
       "isOrphan": false,
       "exported": true
     },
@@ -35318,7 +35338,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
-      "loc": 235,
+      "loc": 270,
       "isOrphan": false,
       "exported": true
     },
@@ -35338,7 +35358,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 104,
+      "loc": 160,
       "isOrphan": false,
       "exported": true
     },
@@ -35348,7 +35368,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 119,
+      "loc": 175,
       "isOrphan": false,
       "exported": true
     },
@@ -35358,7 +35378,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilities.ts",
-      "loc": 154,
+      "loc": 186,
       "isOrphan": false,
       "exported": true
     },
@@ -35378,7 +35398,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 74,
+      "loc": 151,
       "isOrphan": true,
       "exported": false
     },
@@ -35388,7 +35408,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 82,
+      "loc": 159,
       "isOrphan": true,
       "exported": false
     },
@@ -35398,7 +35418,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 137,
+      "loc": 169,
       "isOrphan": true,
       "exported": false
     },
@@ -35408,7 +35428,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 141,
+      "loc": 173,
       "isOrphan": true,
       "exported": true
     },
@@ -35418,7 +35438,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 221,
+      "loc": 253,
       "isOrphan": true,
       "exported": false
     },
@@ -35428,7 +35448,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 389,
+      "loc": 421,
       "isOrphan": false,
       "exported": true
     },
@@ -35438,7 +35458,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 147,
+      "loc": 179,
       "isOrphan": true,
       "exported": true
     },
@@ -35448,7 +35468,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 177,
+      "loc": 209,
       "isOrphan": false,
       "exported": true
     },
@@ -35458,7 +35478,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 204,
+      "loc": 236,
       "isOrphan": false,
       "exported": true
     },
@@ -35468,7 +35488,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 245,
+      "loc": 277,
       "isOrphan": false,
       "exported": true
     },
@@ -35478,7 +35498,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 269,
+      "loc": 301,
       "isOrphan": false,
       "exported": true
     },
@@ -35488,7 +35508,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 304,
+      "loc": 336,
       "isOrphan": true,
       "exported": true
     },
@@ -35498,7 +35518,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 320,
+      "loc": 352,
       "isOrphan": true,
       "exported": true
     },
@@ -35508,7 +35528,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 331,
+      "loc": 363,
       "isOrphan": false,
       "exported": true
     },
@@ -35518,7 +35538,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 359,
+      "loc": 391,
       "isOrphan": true,
       "exported": true
     },
@@ -35538,7 +35558,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
-      "loc": 44,
+      "loc": 77,
       "isOrphan": true,
       "exported": false
     },
@@ -35548,7 +35568,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityScorecard.ts",
-      "loc": 50,
+      "loc": 83,
       "isOrphan": false,
       "exported": true
     },
@@ -35568,7 +35588,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 87,
+      "loc": 234,
       "isOrphan": true,
       "exported": false
     },
@@ -35578,7 +35598,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 103,
+      "loc": 250,
       "isOrphan": true,
       "exported": false
     },
@@ -35588,7 +35608,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 117,
+      "loc": 264,
       "isOrphan": true,
       "exported": false
     },
@@ -35598,7 +35618,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 233,
+      "loc": 276,
       "isOrphan": false,
       "exported": true
     },
@@ -35608,7 +35628,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 239,
+      "loc": 282,
       "isOrphan": false,
       "exported": true
     },
@@ -35618,7 +35638,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 251,
+      "loc": 294,
       "isOrphan": false,
       "exported": true
     },
@@ -35628,7 +35648,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 310,
+      "loc": 353,
       "isOrphan": false,
       "exported": true
     },
@@ -35638,7 +35658,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 314,
+      "loc": 357,
       "isOrphan": true,
       "exported": true
     },
@@ -35648,7 +35668,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 318,
+      "loc": 361,
       "isOrphan": true,
       "exported": true
     },
@@ -35658,7 +35678,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 331,
+      "loc": 365,
       "isOrphan": true,
       "exported": true
     },
@@ -35668,7 +35688,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 337,
+      "loc": 371,
       "isOrphan": false,
       "exported": true
     },
@@ -35678,7 +35698,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 357,
+      "loc": 391,
       "isOrphan": true,
       "exported": false
     },
@@ -35688,7 +35708,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 367,
+      "loc": 401,
       "isOrphan": false,
       "exported": true
     },
@@ -35698,7 +35718,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 378,
+      "loc": 412,
       "isOrphan": false,
       "exported": true
     },
@@ -35708,7 +35728,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:lib/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 384,
+      "loc": 418,
       "isOrphan": false,
       "exported": true
     },
@@ -35728,7 +35748,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 196,
+      "loc": 316,
       "isOrphan": true,
       "exported": false
     },
@@ -35738,7 +35758,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 218,
+      "loc": 338,
       "isOrphan": true,
       "exported": false
     },
@@ -35748,7 +35768,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 244,
+      "loc": 364,
       "isOrphan": true,
       "exported": false
     },
@@ -35758,7 +35778,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 262,
+      "loc": 382,
       "isOrphan": true,
       "exported": false
     },
@@ -35768,7 +35788,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 283,
+      "loc": 403,
       "isOrphan": true,
       "exported": false
     },
@@ -35778,7 +35798,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 289,
+      "loc": 409,
       "isOrphan": true,
       "exported": false
     },
@@ -35788,7 +35808,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 299,
+      "loc": 419,
       "isOrphan": true,
       "exported": true
     },
@@ -35798,7 +35818,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 399,
+      "loc": 500,
       "isOrphan": true,
       "exported": false
     },
@@ -35808,7 +35828,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 405,
+      "loc": 506,
       "isOrphan": true,
       "exported": false
     },
@@ -35818,7 +35838,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 416,
+      "loc": 517,
       "isOrphan": true,
       "exported": false
     },
@@ -35828,7 +35848,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 421,
+      "loc": 522,
       "isOrphan": true,
       "exported": false
     },
@@ -35838,7 +35858,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 448,
+      "loc": 549,
       "isOrphan": true,
       "exported": false
     },
@@ -35848,7 +35868,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 460,
+      "loc": 561,
       "isOrphan": true,
       "exported": false
     },
@@ -35858,7 +35878,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 487,
+      "loc": 588,
       "isOrphan": true,
       "exported": false
     },
@@ -35868,7 +35888,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 514,
+      "loc": 615,
       "isOrphan": true,
       "exported": false
     },
@@ -35878,7 +35898,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 531,
+      "loc": 632,
       "isOrphan": true,
       "exported": false
     },
@@ -35888,7 +35908,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 558,
+      "loc": 659,
       "isOrphan": true,
       "exported": false
     },
@@ -35898,7 +35918,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 579,
+      "loc": 680,
       "isOrphan": true,
       "exported": false
     },
@@ -35908,7 +35928,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 604,
+      "loc": 705,
       "isOrphan": true,
       "exported": false
     },
@@ -35918,7 +35938,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 623,
+      "loc": 724,
       "isOrphan": true,
       "exported": false
     },
@@ -35928,7 +35948,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 649,
+      "loc": 750,
       "isOrphan": true,
       "exported": true
     },
@@ -35938,7 +35958,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 11,
+      "loc": 71,
       "isOrphan": true,
       "exported": true
     },
@@ -35948,7 +35968,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 117,
+      "loc": 176,
       "isOrphan": true,
       "exported": true
     },
@@ -35958,7 +35978,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 118,
+      "loc": 178,
       "isOrphan": true,
       "exported": true
     },
@@ -35968,7 +35988,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 119,
+      "loc": 180,
       "isOrphan": true,
       "exported": true
     },
@@ -35978,7 +35998,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 120,
+      "loc": 182,
       "isOrphan": true,
       "exported": true
     },
@@ -35988,7 +36008,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 121,
+      "loc": 184,
       "isOrphan": true,
       "exported": true
     },
@@ -35998,7 +36018,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 122,
+      "loc": 186,
       "isOrphan": true,
       "exported": true
     },
@@ -36008,7 +36028,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 123,
+      "loc": 188,
       "isOrphan": true,
       "exported": true
     },
@@ -36018,7 +36038,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 125,
+      "loc": 190,
       "isOrphan": true,
       "exported": true
     },
@@ -36028,7 +36048,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 126,
+      "loc": 192,
       "isOrphan": true,
       "exported": true
     },
@@ -36038,7 +36058,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 127,
+      "loc": 194,
       "isOrphan": true,
       "exported": true
     },
@@ -36048,7 +36068,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 128,
+      "loc": 196,
       "isOrphan": true,
       "exported": true
     },
@@ -36058,7 +36078,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 129,
+      "loc": 198,
       "isOrphan": true,
       "exported": true
     },
@@ -36068,7 +36088,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 130,
+      "loc": 200,
       "isOrphan": true,
       "exported": true
     },
@@ -36078,7 +36098,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 131,
+      "loc": 202,
       "isOrphan": true,
       "exported": true
     },
@@ -36088,7 +36108,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 132,
+      "loc": 204,
       "isOrphan": true,
       "exported": true
     },
@@ -36098,7 +36118,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 133,
+      "loc": 206,
       "isOrphan": true,
       "exported": true
     },
@@ -36108,7 +36128,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 134,
+      "loc": 208,
       "isOrphan": true,
       "exported": true
     },
@@ -36118,7 +36138,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 135,
+      "loc": 210,
       "isOrphan": true,
       "exported": true
     },
@@ -36128,7 +36148,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 137,
+      "loc": 212,
       "isOrphan": true,
       "exported": true
     },
@@ -36138,7 +36158,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 138,
+      "loc": 214,
       "isOrphan": true,
       "exported": true
     },
@@ -36148,7 +36168,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 139,
+      "loc": 216,
       "isOrphan": true,
       "exported": true
     },
@@ -36158,7 +36178,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 140,
+      "loc": 218,
       "isOrphan": true,
       "exported": true
     },
@@ -36168,7 +36188,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 141,
+      "loc": 220,
       "isOrphan": true,
       "exported": true
     },
@@ -36178,7 +36198,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 142,
+      "loc": 222,
       "isOrphan": true,
       "exported": true
     },
@@ -36188,7 +36208,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 143,
+      "loc": 224,
       "isOrphan": true,
       "exported": true
     },
@@ -36198,7 +36218,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 146,
+      "loc": 226,
       "isOrphan": true,
       "exported": true
     },
@@ -36208,7 +36228,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 147,
+      "loc": 228,
       "isOrphan": true,
       "exported": true
     },
@@ -36218,7 +36238,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 148,
+      "loc": 230,
       "isOrphan": true,
       "exported": true
     },
@@ -36228,7 +36248,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 149,
+      "loc": 232,
       "isOrphan": true,
       "exported": true
     },
@@ -36238,7 +36258,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 150,
+      "loc": 234,
       "isOrphan": true,
       "exported": true
     },
@@ -36248,7 +36268,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 151,
+      "loc": 236,
       "isOrphan": true,
       "exported": true
     },
@@ -36258,7 +36278,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 152,
+      "loc": 238,
       "isOrphan": true,
       "exported": true
     },
@@ -36268,7 +36288,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 153,
+      "loc": 240,
       "isOrphan": true,
       "exported": true
     },
@@ -36278,7 +36298,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 154,
+      "loc": 242,
       "isOrphan": true,
       "exported": true
     },
@@ -36288,7 +36308,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 155,
+      "loc": 244,
       "isOrphan": true,
       "exported": true
     },
@@ -36298,7 +36318,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 156,
+      "loc": 246,
       "isOrphan": true,
       "exported": true
     },
@@ -36308,7 +36328,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 158,
+      "loc": 248,
       "isOrphan": true,
       "exported": true
     },
@@ -36318,7 +36338,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 159,
+      "loc": 250,
       "isOrphan": true,
       "exported": true
     },
@@ -36328,7 +36348,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 160,
+      "loc": 252,
       "isOrphan": true,
       "exported": true
     },
@@ -36338,7 +36358,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 161,
+      "loc": 254,
       "isOrphan": true,
       "exported": true
     },
@@ -36348,7 +36368,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 162,
+      "loc": 256,
       "isOrphan": true,
       "exported": true
     },
@@ -36358,7 +36378,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 163,
+      "loc": 258,
       "isOrphan": true,
       "exported": true
     },
@@ -36368,7 +36388,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 164,
+      "loc": 260,
       "isOrphan": true,
       "exported": true
     },
@@ -36378,7 +36398,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 165,
+      "loc": 262,
       "isOrphan": true,
       "exported": true
     },
@@ -36388,7 +36408,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 166,
+      "loc": 264,
       "isOrphan": true,
       "exported": true
     },
@@ -36398,7 +36418,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 167,
+      "loc": 266,
       "isOrphan": true,
       "exported": true
     },
@@ -36408,7 +36428,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 168,
+      "loc": 268,
       "isOrphan": true,
       "exported": true
     },
@@ -36418,7 +36438,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 170,
+      "loc": 270,
       "isOrphan": true,
       "exported": true
     },
@@ -36428,7 +36448,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 171,
+      "loc": 272,
       "isOrphan": true,
       "exported": true
     },
@@ -36438,7 +36458,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 172,
+      "loc": 274,
       "isOrphan": true,
       "exported": true
     },
@@ -36448,7 +36468,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 173,
+      "loc": 276,
       "isOrphan": true,
       "exported": true
     },
@@ -36458,7 +36478,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 174,
+      "loc": 278,
       "isOrphan": true,
       "exported": true
     },
@@ -36468,7 +36488,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 175,
+      "loc": 280,
       "isOrphan": true,
       "exported": true
     },
@@ -36478,7 +36498,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 176,
+      "loc": 282,
       "isOrphan": true,
       "exported": true
     },
@@ -36488,7 +36508,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 177,
+      "loc": 284,
       "isOrphan": true,
       "exported": true
     },
@@ -36498,7 +36518,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 178,
+      "loc": 286,
       "isOrphan": true,
       "exported": true
     },
@@ -36508,7 +36528,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 179,
+      "loc": 288,
       "isOrphan": true,
       "exported": true
     },
@@ -36518,7 +36538,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 180,
+      "loc": 290,
       "isOrphan": true,
       "exported": true
     },
@@ -36528,7 +36548,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 181,
+      "loc": 292,
       "isOrphan": true,
       "exported": true
     },
@@ -36538,7 +36558,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 182,
+      "loc": 294,
       "isOrphan": true,
       "exported": true
     },
@@ -36548,7 +36568,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 183,
+      "loc": 296,
       "isOrphan": true,
       "exported": true
     },
@@ -36558,7 +36578,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 185,
+      "loc": 298,
       "isOrphan": true,
       "exported": true
     },
@@ -36568,7 +36588,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 186,
+      "loc": 300,
       "isOrphan": true,
       "exported": true
     },
@@ -36578,7 +36598,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 187,
+      "loc": 302,
       "isOrphan": true,
       "exported": true
     },
@@ -36588,7 +36608,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 188,
+      "loc": 304,
       "isOrphan": true,
       "exported": true
     },
@@ -36598,7 +36618,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 189,
+      "loc": 306,
       "isOrphan": true,
       "exported": true
     },
@@ -36608,7 +36628,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 191,
+      "loc": 308,
       "isOrphan": true,
       "exported": true
     },
@@ -36618,7 +36638,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 192,
+      "loc": 310,
       "isOrphan": true,
       "exported": true
     },
@@ -36628,7 +36648,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 193,
+      "loc": 312,
       "isOrphan": true,
       "exported": true
     },
@@ -36638,7 +36658,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginDomainCores.ts",
       "parent": "file:lib/engin-runtime/EnginDomainCores.ts",
-      "loc": 194,
+      "loc": 314,
       "isOrphan": true,
       "exported": true
     },
@@ -36658,7 +36678,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginEventBus.ts",
       "parent": "file:lib/engin-runtime/EnginEventBus.ts",
-      "loc": 57,
+      "loc": 89,
       "isOrphan": false,
       "exported": true
     },
@@ -36678,7 +36698,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
-      "loc": 17,
+      "loc": 49,
       "isOrphan": true,
       "exported": true
     },
@@ -36688,7 +36708,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
-      "loc": 27,
+      "loc": 59,
       "isOrphan": true,
       "exported": true
     },
@@ -36698,7 +36718,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
       "parent": "file:lib/engin-runtime/EnginHardwareCapabilities.ts",
-      "loc": 59,
+      "loc": 91,
       "isOrphan": true,
       "exported": true
     },
@@ -36718,7 +36738,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 42,
+      "loc": 99,
       "isOrphan": false,
       "exported": true
     },
@@ -36728,7 +36748,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 54,
+      "loc": 111,
       "isOrphan": false,
       "exported": true
     },
@@ -36738,7 +36758,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 110,
+      "loc": 167,
       "isOrphan": false,
       "exported": true
     },
@@ -36748,7 +36768,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginIOAdapter.ts",
       "parent": "file:lib/engin-runtime/EnginIOAdapter.ts",
-      "loc": 165,
+      "loc": 198,
       "isOrphan": false,
       "exported": true
     },
@@ -36768,7 +36788,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
       "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
-      "loc": 46,
+      "loc": 81,
       "isOrphan": true,
       "exported": true
     },
@@ -36778,7 +36798,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
       "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
-      "loc": 65,
+      "loc": 100,
       "isOrphan": true,
       "exported": false
     },
@@ -36788,7 +36808,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
       "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
-      "loc": 4,
+      "loc": 38,
       "isOrphan": false,
       "exported": true
     },
@@ -36798,7 +36818,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
       "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
-      "loc": 43,
+      "loc": 77,
       "isOrphan": true,
       "exported": true
     },
@@ -36808,7 +36828,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
       "parent": "file:lib/engin-runtime/EnginPerformanceProbe.ts",
-      "loc": 45,
+      "loc": 79,
       "isOrphan": true,
       "exported": true
     },
@@ -36828,7 +36848,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 77,
+      "loc": 211,
       "isOrphan": true,
       "exported": false
     },
@@ -36838,7 +36858,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 82,
+      "loc": 216,
       "isOrphan": true,
       "exported": false
     },
@@ -36848,7 +36868,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 99,
+      "loc": 226,
       "isOrphan": true,
       "exported": true
     },
@@ -36858,7 +36878,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 125,
+      "loc": 252,
       "isOrphan": false,
       "exported": true
     },
@@ -36868,7 +36888,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuleSetContract.ts",
       "parent": "file:lib/engin-runtime/EnginRuleSetContract.ts",
-      "loc": 173,
+      "loc": 300,
       "isOrphan": false,
       "exported": true
     },
@@ -36888,7 +36908,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 129,
+      "loc": 170,
       "isOrphan": true,
       "exported": false
     },
@@ -36898,7 +36918,7 @@
       "type": "class",
       "path": "lib/engin-runtime/EnginRuntime.ts",
       "parent": "file:lib/engin-runtime/EnginRuntime.ts",
-      "loc": 143,
+      "loc": 184,
       "isOrphan": false,
       "exported": true
     },
@@ -36918,7 +36938,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "loc": 14,
+      "loc": 46,
       "isOrphan": true,
       "exported": false
     },
@@ -36928,7 +36948,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "loc": 28,
+      "loc": 60,
       "isOrphan": true,
       "exported": true
     },
@@ -36938,7 +36958,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "loc": 38,
+      "loc": 70,
       "isOrphan": true,
       "exported": true
     },
@@ -36948,7 +36968,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "loc": 47,
+      "loc": 79,
       "isOrphan": false,
       "exported": true
     },
@@ -36958,7 +36978,7 @@
       "type": "function",
       "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
       "parent": "file:lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "loc": 52,
+      "loc": 84,
       "isOrphan": true,
       "exported": true
     },
@@ -36978,7 +36998,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 158,
+      "loc": 248,
       "isOrphan": true,
       "exported": false
     },
@@ -36988,7 +37008,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 186,
+      "loc": 276,
       "isOrphan": true,
       "exported": false
     },
@@ -36998,7 +37018,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 205,
+      "loc": 295,
       "isOrphan": true,
       "exported": false
     },
@@ -37008,7 +37028,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 225,
+      "loc": 315,
       "isOrphan": true,
       "exported": false
     },
@@ -37018,7 +37038,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 416,
+      "loc": 506,
       "isOrphan": true,
       "exported": false
     },
@@ -37028,7 +37048,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 563,
+      "loc": 609,
       "isOrphan": true,
       "exported": false
     },
@@ -37038,7 +37058,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 569,
+      "loc": 615,
       "isOrphan": true,
       "exported": false
     },
@@ -37048,7 +37068,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 1037,
+      "loc": 1077,
       "isOrphan": true,
       "exported": false
     },
@@ -37058,7 +37078,7 @@
       "type": "function",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 1129,
+      "loc": 1169,
       "isOrphan": true,
       "exported": false
     },
@@ -37068,7 +37088,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 96,
+      "loc": 186,
       "isOrphan": true,
       "exported": true
     },
@@ -37078,7 +37098,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 246,
+      "loc": 336,
       "isOrphan": true,
       "exported": true
     },
@@ -37088,7 +37108,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 271,
+      "loc": 361,
       "isOrphan": true,
       "exported": true
     },
@@ -37098,7 +37118,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 316,
+      "loc": 406,
       "isOrphan": true,
       "exported": true
     },
@@ -37108,7 +37128,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 349,
+      "loc": 439,
       "isOrphan": true,
       "exported": true
     },
@@ -37118,7 +37138,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 420,
+      "loc": 510,
       "isOrphan": true,
       "exported": true
     },
@@ -37128,7 +37148,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 442,
+      "loc": 532,
       "isOrphan": true,
       "exported": true
     },
@@ -37138,7 +37158,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 457,
+      "loc": 547,
       "isOrphan": true,
       "exported": true
     },
@@ -37148,7 +37168,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 459,
+      "loc": 549,
       "isOrphan": true,
       "exported": true
     },
@@ -37158,7 +37178,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 460,
+      "loc": 551,
       "isOrphan": true,
       "exported": true
     },
@@ -37168,7 +37188,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 479,
+      "loc": 570,
       "isOrphan": false,
       "exported": true
     },
@@ -37178,7 +37198,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 543,
+      "loc": 589,
       "isOrphan": true,
       "exported": true
     },
@@ -37188,7 +37208,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 589,
+      "loc": 635,
       "isOrphan": false,
       "exported": true
     },
@@ -37198,7 +37218,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 963,
+      "loc": 1003,
       "isOrphan": true,
       "exported": true
     },
@@ -37208,7 +37228,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 991,
+      "loc": 1031,
       "isOrphan": true,
       "exported": true
     },
@@ -37218,7 +37238,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 1058,
+      "loc": 1098,
       "isOrphan": false,
       "exported": true
     },
@@ -37228,7 +37248,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 1069,
+      "loc": 1109,
       "isOrphan": true,
       "exported": true
     },
@@ -37238,7 +37258,7 @@
       "type": "class",
       "path": "lib/engin-runtime/HotRuntime.ts",
       "parent": "file:lib/engin-runtime/HotRuntime.ts",
-      "loc": 1080,
+      "loc": 1120,
       "isOrphan": true,
       "exported": true
     },
@@ -37258,7 +37278,7 @@
       "type": "class",
       "path": "lib/engin-runtime/InternalMetrics.ts",
       "parent": "file:lib/engin-runtime/InternalMetrics.ts",
-      "loc": 2,
+      "loc": 34,
       "isOrphan": true,
       "exported": true
     },
@@ -37268,7 +37288,7 @@
       "type": "class",
       "path": "lib/engin-runtime/InternalMetrics.ts",
       "parent": "file:lib/engin-runtime/InternalMetrics.ts",
-      "loc": 9,
+      "loc": 41,
       "isOrphan": true,
       "exported": true
     },
@@ -37278,7 +37298,7 @@
       "type": "class",
       "path": "lib/engin-runtime/InternalMetrics.ts",
       "parent": "file:lib/engin-runtime/InternalMetrics.ts",
-      "loc": 16,
+      "loc": 48,
       "isOrphan": true,
       "exported": true
     },
@@ -37298,7 +37318,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 41,
+      "loc": 78,
       "isOrphan": true,
       "exported": false
     },
@@ -37308,7 +37328,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 47,
+      "loc": 84,
       "isOrphan": true,
       "exported": false
     },
@@ -37318,7 +37338,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 53,
+      "loc": 90,
       "isOrphan": true,
       "exported": false
     },
@@ -37328,7 +37348,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 57,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -37338,7 +37358,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 61,
+      "loc": 98,
       "isOrphan": false,
       "exported": true
     },
@@ -37348,7 +37368,7 @@
       "type": "function",
       "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
       "parent": "file:lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "loc": 94,
+      "loc": 131,
       "isOrphan": false,
       "exported": true
     },
@@ -37368,7 +37388,7 @@
       "type": "function",
       "path": "lib/engin-runtime/index.ts",
       "parent": "file:lib/engin-runtime/index.ts",
-      "loc": 209,
+      "loc": 56,
       "isOrphan": false,
       "exported": true
     },
@@ -37690,7 +37710,7 @@
       "type": "function",
       "path": "lib/engins/brand/useBrandEnginRuntime.ts",
       "parent": "file:lib/engins/brand/useBrandEnginRuntime.ts",
-      "loc": 32,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -37749,7 +37769,7 @@
       "type": "function",
       "path": "lib/engins/code/useCodeEnginRuntime.ts",
       "parent": "file:lib/engins/code/useCodeEnginRuntime.ts",
-      "loc": 32,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -37808,7 +37828,7 @@
       "type": "function",
       "path": "lib/engins/content/useContentEnginRuntime.ts",
       "parent": "file:lib/engins/content/useContentEnginRuntime.ts",
-      "loc": 32,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -37877,7 +37897,7 @@
       "type": "function",
       "path": "lib/engins/game/useGameEnginRuntime.ts",
       "parent": "file:lib/engins/game/useGameEnginRuntime.ts",
-      "loc": 37,
+      "loc": 74,
       "isOrphan": false,
       "exported": true
     },
@@ -37936,7 +37956,7 @@
       "type": "function",
       "path": "lib/engins/lab/useLabEnginRuntime.ts",
       "parent": "file:lib/engins/lab/useLabEnginRuntime.ts",
-      "loc": 32,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -37995,7 +38015,7 @@
       "type": "function",
       "path": "lib/engins/music/useStarMakerEnginRuntime.ts",
       "parent": "file:lib/engins/music/useStarMakerEnginRuntime.ts",
-      "loc": 32,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -39551,7 +39571,7 @@
       "type": "function",
       "path": "lib/gameengin/GameRuntime.tsx",
       "parent": "file:lib/gameengin/GameRuntime.tsx",
-      "loc": 74,
+      "loc": 122,
       "isOrphan": true,
       "exported": true
     },
@@ -39660,6 +39680,56 @@
       "label": "ai-npcs.ts",
       "type": "ts",
       "path": "lib/gameengin/ai-npcs.ts",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/gameengin/backendNegotiator.ts#hasWebGL2",
+      "label": "hasWebGL2",
+      "type": "function",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "parent": "file:lib/gameengin/backendNegotiator.ts",
+      "loc": 7,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/backendNegotiator.ts#supportedBackend",
+      "label": "supportedBackend",
+      "type": "function",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "parent": "file:lib/gameengin/backendNegotiator.ts",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/backendNegotiator.ts#negotiateRendererBackend",
+      "label": "negotiateRendererBackend",
+      "type": "function",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "parent": "file:lib/gameengin/backendNegotiator.ts",
+      "loc": 25,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/backendNegotiator.ts#serverBootstrapDiagnostics",
+      "label": "serverBootstrapDiagnostics",
+      "type": "function",
+      "path": "lib/gameengin/backendNegotiator.ts",
+      "parent": "file:lib/gameengin/backendNegotiator.ts",
+      "loc": 80,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/backendNegotiator.ts",
+      "label": "backendNegotiator.ts",
+      "type": "ts",
+      "path": "lib/gameengin/backendNegotiator.ts",
       "parent": "folder:lib/gameengin",
       "loc": null,
       "isOrphan": false,
@@ -41522,7 +41592,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 40,
+      "loc": 49,
       "isOrphan": false,
       "exported": true
     },
@@ -41532,7 +41602,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 46,
+      "loc": 55,
       "isOrphan": false,
       "exported": true
     },
@@ -41542,7 +41612,17 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 51,
+      "loc": 60,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/gameengin/cartridges/loaders.ts#loadCartridgeBundle",
+      "label": "loadCartridgeBundle",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/loaders.ts",
+      "parent": "file:lib/gameengin/cartridges/loaders.ts",
+      "loc": 67,
       "isOrphan": false,
       "exported": true
     },
@@ -41552,7 +41632,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 58,
+      "loc": 91,
       "isOrphan": false,
       "exported": true
     },
@@ -41562,7 +41642,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/loaders.ts",
       "parent": "file:lib/gameengin/cartridges/loaders.ts",
-      "loc": 75,
+      "loc": 96,
       "isOrphan": false,
       "exported": true
     },
@@ -41577,12 +41657,32 @@
       "tags": []
     },
     {
+      "id": "function:lib/gameengin/cartridges/manifest.ts#launchFor",
+      "label": "launchFor",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/manifest.ts",
+      "parent": "file:lib/gameengin/cartridges/manifest.ts",
+      "loc": 51,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/cartridges/manifest.ts#cartridge",
+      "label": "cartridge",
+      "type": "function",
+      "path": "lib/gameengin/cartridges/manifest.ts",
+      "parent": "file:lib/gameengin/cartridges/manifest.ts",
+      "loc": 106,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/gameengin/cartridges/manifest.ts#getCartridgeManifest",
       "label": "getCartridgeManifest",
       "type": "function",
       "path": "lib/gameengin/cartridges/manifest.ts",
       "parent": "file:lib/gameengin/cartridges/manifest.ts",
-      "loc": 77,
+      "loc": 162,
       "isOrphan": false,
       "exported": true
     },
@@ -41592,7 +41692,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/manifest.ts",
       "parent": "file:lib/gameengin/cartridges/manifest.ts",
-      "loc": 82,
+      "loc": 167,
       "isOrphan": false,
       "exported": true
     },
@@ -41612,17 +41712,17 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/reactCartridge.ts",
       "parent": "file:lib/gameengin/cartridges/reactCartridge.ts",
-      "loc": 45,
-      "isOrphan": true,
+      "loc": 46,
+      "isOrphan": false,
       "exported": true
     },
     {
-      "id": "function:lib/gameengin/cartridges/reactCartridge.ts#createReactGameCartridge",
-      "label": "createReactGameCartridge",
+      "id": "function:lib/gameengin/cartridges/reactCartridge.ts#createReactCartridgeHost",
+      "label": "createReactCartridgeHost",
       "type": "function",
       "path": "lib/gameengin/cartridges/reactCartridge.ts",
       "parent": "file:lib/gameengin/cartridges/reactCartridge.ts",
-      "loc": 59,
+      "loc": 60,
       "isOrphan": true,
       "exported": true
     },
@@ -41632,7 +41732,7 @@
       "type": "function",
       "path": "lib/gameengin/cartridges/reactCartridge.ts",
       "parent": "file:lib/gameengin/cartridges/reactCartridge.ts",
-      "loc": 108,
+      "loc": 132,
       "isOrphan": true,
       "exported": true
     },
@@ -41940,7 +42040,7 @@
       "type": "function",
       "path": "lib/gameengin/gameEnginRuntime.ts",
       "parent": "file:lib/gameengin/gameEnginRuntime.ts",
-      "loc": 60,
+      "loc": 92,
       "isOrphan": true,
       "exported": true
     },
@@ -41950,7 +42050,7 @@
       "type": "class",
       "path": "lib/gameengin/gameEnginRuntime.ts",
       "parent": "file:lib/gameengin/gameEnginRuntime.ts",
-      "loc": 124,
+      "loc": 156,
       "isOrphan": false,
       "exported": true
     },
@@ -42022,6 +42122,55 @@
       "parent": "folder:lib/gameengin",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:lib/gameengin/input",
+      "label": "input",
+      "type": "folder",
+      "path": "lib/gameengin/input",
+      "parent": "folder:lib/gameengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:lib/gameengin/input/InputRouter.ts#remoteSource",
+      "label": "remoteSource",
+      "type": "function",
+      "path": "lib/gameengin/input/InputRouter.ts",
+      "parent": "file:lib/gameengin/input/InputRouter.ts",
+      "loc": 14,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/gameengin/input/InputRouter.ts#isRemoteInputDetail",
+      "label": "isRemoteInputDetail",
+      "type": "function",
+      "path": "lib/gameengin/input/InputRouter.ts",
+      "parent": "file:lib/gameengin/input/InputRouter.ts",
+      "loc": 20,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "class:lib/gameengin/input/InputRouter.ts#GameRuntimeInputRouter",
+      "label": "GameRuntimeInputRouter",
+      "type": "class",
+      "path": "lib/gameengin/input/InputRouter.ts",
+      "parent": "file:lib/gameengin/input/InputRouter.ts",
+      "loc": 26,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/input/InputRouter.ts",
+      "label": "InputRouter.ts",
+      "type": "ts",
+      "path": "lib/gameengin/input/InputRouter.ts",
+      "parent": "folder:lib/gameengin/input",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -42160,7 +42309,7 @@
       "type": "function",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 290,
+      "loc": 293,
       "isOrphan": true,
       "exported": false
     },
@@ -42170,7 +42319,7 @@
       "type": "function",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 294,
+      "loc": 297,
       "isOrphan": true,
       "exported": false
     },
@@ -42180,7 +42329,7 @@
       "type": "function",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 301,
+      "loc": 304,
       "isOrphan": true,
       "exported": false
     },
@@ -42190,7 +42339,7 @@
       "type": "function",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 306,
+      "loc": 309,
       "isOrphan": true,
       "exported": false
     },
@@ -42200,7 +42349,7 @@
       "type": "function",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 316,
+      "loc": 319,
       "isOrphan": true,
       "exported": false
     },
@@ -42230,7 +42379,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 331,
+      "loc": 334,
       "isOrphan": false,
       "exported": true
     },
@@ -42240,7 +42389,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 676,
+      "loc": 679,
       "isOrphan": false,
       "exported": true
     },
@@ -42250,7 +42399,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 813,
+      "loc": 816,
       "isOrphan": false,
       "exported": true
     },
@@ -42260,7 +42409,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 890,
+      "loc": 893,
       "isOrphan": false,
       "exported": true
     },
@@ -42270,7 +42419,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1074,
+      "loc": 1077,
       "isOrphan": false,
       "exported": true
     },
@@ -42280,7 +42429,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1222,
+      "loc": 1225,
       "isOrphan": false,
       "exported": true
     },
@@ -42290,7 +42439,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1341,
+      "loc": 1344,
       "isOrphan": false,
       "exported": true
     },
@@ -42300,7 +42449,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1441,
+      "loc": 1444,
       "isOrphan": false,
       "exported": true
     },
@@ -42310,7 +42459,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1530,
+      "loc": 1533,
       "isOrphan": false,
       "exported": true
     },
@@ -42320,7 +42469,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1620,
+      "loc": 1623,
       "isOrphan": false,
       "exported": true
     },
@@ -42330,7 +42479,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1724,
+      "loc": 1727,
       "isOrphan": false,
       "exported": true
     },
@@ -42340,7 +42489,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1784,
+      "loc": 1787,
       "isOrphan": false,
       "exported": true
     },
@@ -42350,7 +42499,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1838,
+      "loc": 1841,
       "isOrphan": true,
       "exported": true
     },
@@ -42360,7 +42509,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1887,
+      "loc": 1890,
       "isOrphan": false,
       "exported": true
     },
@@ -42370,7 +42519,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 1953,
+      "loc": 1956,
       "isOrphan": false,
       "exported": true
     },
@@ -42380,7 +42529,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 2057,
+      "loc": 2060,
       "isOrphan": false,
       "exported": true
     },
@@ -42390,7 +42539,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 2167,
+      "loc": 2170,
       "isOrphan": false,
       "exported": true
     },
@@ -42400,7 +42549,7 @@
       "type": "class",
       "path": "lib/gameengin/power-systems.ts",
       "parent": "file:lib/gameengin/power-systems.ts",
-      "loc": 2275,
+      "loc": 2278,
       "isOrphan": false,
       "exported": true
     },
@@ -42908,7 +43057,7 @@
       "type": "function",
       "path": "lib/gameengin/webgpu-runtime-shell.ts",
       "parent": "file:lib/gameengin/webgpu-runtime-shell.ts",
-      "loc": 12,
+      "loc": 44,
       "isOrphan": true,
       "exported": true
     },
@@ -42918,7 +43067,7 @@
       "type": "function",
       "path": "lib/gameengin/webgpu-runtime-shell.ts",
       "parent": "file:lib/gameengin/webgpu-runtime-shell.ts",
-      "loc": 16,
+      "loc": 48,
       "isOrphan": true,
       "exported": true
     },
@@ -49019,7 +49168,7 @@
       "type": "function",
       "path": "lib/runtime/EnginDispatcher.ts",
       "parent": "file:lib/runtime/EnginDispatcher.ts",
-      "loc": 169,
+      "loc": 217,
       "isOrphan": true,
       "exported": true
     },
@@ -49029,7 +49178,7 @@
       "type": "class",
       "path": "lib/runtime/EnginDispatcher.ts",
       "parent": "file:lib/runtime/EnginDispatcher.ts",
-      "loc": 235,
+      "loc": 268,
       "isOrphan": true,
       "exported": true
     },
@@ -49049,7 +49198,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 54,
+      "loc": 86,
       "isOrphan": true,
       "exported": false
     },
@@ -49059,7 +49208,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 70,
+      "loc": 102,
       "isOrphan": false,
       "exported": true
     },
@@ -49069,7 +49218,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 86,
+      "loc": 118,
       "isOrphan": true,
       "exported": true
     },
@@ -49079,7 +49228,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 98,
+      "loc": 130,
       "isOrphan": true,
       "exported": true
     },
@@ -49089,7 +49238,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 118,
+      "loc": 150,
       "isOrphan": true,
       "exported": true
     },
@@ -49099,7 +49248,7 @@
       "type": "function",
       "path": "lib/runtime/channelMetrics.ts",
       "parent": "file:lib/runtime/channelMetrics.ts",
-      "loc": 130,
+      "loc": 162,
       "isOrphan": true,
       "exported": true
     },
@@ -49119,7 +49268,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 59,
+      "loc": 103,
       "isOrphan": true,
       "exported": false
     },
@@ -49129,7 +49278,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 77,
+      "loc": 110,
       "isOrphan": true,
       "exported": false
     },
@@ -49139,7 +49288,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 84,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -49149,7 +49298,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 102,
+      "loc": 135,
       "isOrphan": false,
       "exported": true
     },
@@ -49159,7 +49308,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 149,
+      "loc": 182,
       "isOrphan": false,
       "exported": true
     },
@@ -49169,7 +49318,7 @@
       "type": "function",
       "path": "lib/runtime/coercionTable.ts",
       "parent": "file:lib/runtime/coercionTable.ts",
-      "loc": 187,
+      "loc": 220,
       "isOrphan": false,
       "exported": true
     },
@@ -49189,7 +49338,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 50,
+      "loc": 236,
       "isOrphan": true,
       "exported": true
     },
@@ -49199,7 +49348,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 193,
+      "loc": 271,
       "isOrphan": true,
       "exported": true
     },
@@ -49209,7 +49358,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 235,
+      "loc": 275,
       "isOrphan": false,
       "exported": true
     },
@@ -49219,7 +49368,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 239,
+      "loc": 279,
       "isOrphan": false,
       "exported": true
     },
@@ -49229,7 +49378,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 247,
+      "loc": 287,
       "isOrphan": false,
       "exported": true
     },
@@ -49239,7 +49388,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 256,
+      "loc": 296,
       "isOrphan": true,
       "exported": false
     },
@@ -49249,7 +49398,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 260,
+      "loc": 300,
       "isOrphan": true,
       "exported": false
     },
@@ -49259,7 +49408,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 264,
+      "loc": 304,
       "isOrphan": true,
       "exported": false
     },
@@ -49269,7 +49418,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 271,
+      "loc": 311,
       "isOrphan": true,
       "exported": false
     },
@@ -49279,7 +49428,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 279,
+      "loc": 319,
       "isOrphan": true,
       "exported": false
     },
@@ -49289,7 +49438,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 293,
+      "loc": 333,
       "isOrphan": false,
       "exported": true
     },
@@ -49299,7 +49448,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 308,
+      "loc": 348,
       "isOrphan": true,
       "exported": false
     },
@@ -49309,7 +49458,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 319,
+      "loc": 359,
       "isOrphan": true,
       "exported": false
     },
@@ -49319,7 +49468,7 @@
       "type": "function",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 328,
+      "loc": 368,
       "isOrphan": true,
       "exported": false
     },
@@ -49329,7 +49478,7 @@
       "type": "class",
       "path": "lib/runtime/dreamOSBus.ts",
       "parent": "file:lib/runtime/dreamOSBus.ts",
-      "loc": 338,
+      "loc": 378,
       "isOrphan": true,
       "exported": false
     },
@@ -49349,7 +49498,7 @@
       "type": "class",
       "path": "lib/runtime/dropTargetRegistry.ts",
       "parent": "file:lib/runtime/dropTargetRegistry.ts",
-      "loc": 38,
+      "loc": 71,
       "isOrphan": true,
       "exported": false
     },
@@ -49369,7 +49518,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 89,
+      "loc": 159,
       "isOrphan": false,
       "exported": true
     },
@@ -49379,7 +49528,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 104,
+      "loc": 174,
       "isOrphan": false,
       "exported": true
     },
@@ -49389,7 +49538,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 118,
+      "loc": 188,
       "isOrphan": false,
       "exported": true
     },
@@ -49399,7 +49548,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 133,
+      "loc": 203,
       "isOrphan": false,
       "exported": true
     },
@@ -49409,7 +49558,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 150,
+      "loc": 220,
       "isOrphan": false,
       "exported": true
     },
@@ -49419,7 +49568,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 162,
+      "loc": 232,
       "isOrphan": false,
       "exported": true
     },
@@ -49429,7 +49578,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 172,
+      "loc": 242,
       "isOrphan": false,
       "exported": true
     },
@@ -49439,7 +49588,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 221,
+      "loc": 256,
       "isOrphan": false,
       "exported": true
     },
@@ -49449,7 +49598,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntime.ts",
       "parent": "file:lib/runtime/dualRuntime.ts",
-      "loc": 231,
+      "loc": 266,
       "isOrphan": false,
       "exported": true
     },
@@ -49469,7 +49618,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 55,
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
@@ -49479,7 +49628,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 57,
+      "loc": 186,
       "isOrphan": true,
       "exported": false
     },
@@ -49489,7 +49638,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 58,
+      "loc": 188,
       "isOrphan": true,
       "exported": false
     },
@@ -49499,7 +49648,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 59,
+      "loc": 190,
       "isOrphan": true,
       "exported": false
     },
@@ -49509,7 +49658,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 60,
+      "loc": 192,
       "isOrphan": true,
       "exported": false
     },
@@ -49519,7 +49668,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 61,
+      "loc": 194,
       "isOrphan": true,
       "exported": false
     },
@@ -49529,7 +49678,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 62,
+      "loc": 196,
       "isOrphan": true,
       "exported": false
     },
@@ -49539,7 +49688,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 75,
+      "loc": 209,
       "isOrphan": true,
       "exported": false
     },
@@ -49549,7 +49698,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 87,
+      "loc": 218,
       "isOrphan": true,
       "exported": false
     },
@@ -49559,7 +49708,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 99,
+      "loc": 228,
       "isOrphan": true,
       "exported": false
     },
@@ -49569,7 +49718,7 @@
       "type": "function",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 127,
+      "loc": 256,
       "isOrphan": true,
       "exported": false
     },
@@ -49579,7 +49728,7 @@
       "type": "class",
       "path": "lib/runtime/dualRuntimeBridge.ts",
       "parent": "file:lib/runtime/dualRuntimeBridge.ts",
-      "loc": 227,
+      "loc": 280,
       "isOrphan": true,
       "exported": false
     },
@@ -49599,7 +49748,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 78,
+      "loc": 561,
       "isOrphan": true,
       "exported": false
     },
@@ -49609,7 +49758,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 538,
+      "loc": 579,
       "isOrphan": false,
       "exported": true
     },
@@ -49619,7 +49768,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 546,
+      "loc": 587,
       "isOrphan": false,
       "exported": true
     },
@@ -49629,7 +49778,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 558,
+      "loc": 599,
       "isOrphan": false,
       "exported": true
     },
@@ -49639,7 +49788,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 574,
+      "loc": 615,
       "isOrphan": false,
       "exported": true
     },
@@ -49649,7 +49798,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 584,
+      "loc": 625,
       "isOrphan": true,
       "exported": true
     },
@@ -49659,7 +49808,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 603,
+      "loc": 635,
       "isOrphan": true,
       "exported": true
     },
@@ -49669,7 +49818,7 @@
       "type": "function",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
       "parent": "file:lib/runtime/enginWorkflowRegistry.ts",
-      "loc": 625,
+      "loc": 657,
       "isOrphan": true,
       "exported": true
     },
@@ -49689,7 +49838,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 105,
+      "loc": 244,
       "isOrphan": true,
       "exported": false
     },
@@ -49699,7 +49848,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 229,
+      "loc": 264,
       "isOrphan": false,
       "exported": true
     },
@@ -49709,7 +49858,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 232,
+      "loc": 267,
       "isOrphan": false,
       "exported": true
     },
@@ -49719,7 +49868,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 241,
+      "loc": 276,
       "isOrphan": false,
       "exported": true
     },
@@ -49729,7 +49878,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 246,
+      "loc": 281,
       "isOrphan": true,
       "exported": true
     },
@@ -49739,7 +49888,7 @@
       "type": "function",
       "path": "lib/runtime/instanceManager.ts",
       "parent": "file:lib/runtime/instanceManager.ts",
-      "loc": 285,
+      "loc": 320,
       "isOrphan": true,
       "exported": true
     },
@@ -49762,7 +49911,7 @@
       "type": "function",
       "path": "lib/runtime/isAuthRelatedError.ts",
       "parent": "file:lib/runtime/isAuthRelatedError.ts",
-      "loc": 46,
+      "loc": 78,
       "isOrphan": false,
       "exported": true
     },
@@ -49782,7 +49931,7 @@
       "type": "function",
       "path": "lib/runtime/madMaxiSnapshotBridge.ts",
       "parent": "file:lib/runtime/madMaxiSnapshotBridge.ts",
-      "loc": 9,
+      "loc": 41,
       "isOrphan": true,
       "exported": false
     },
@@ -49792,7 +49941,7 @@
       "type": "function",
       "path": "lib/runtime/madMaxiSnapshotBridge.ts",
       "parent": "file:lib/runtime/madMaxiSnapshotBridge.ts",
-      "loc": 28,
+      "loc": 60,
       "isOrphan": false,
       "exported": true
     },
@@ -49812,7 +49961,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 141,
+      "loc": 381,
       "isOrphan": false,
       "exported": true
     },
@@ -49822,7 +49971,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 165,
+      "loc": 405,
       "isOrphan": false,
       "exported": true
     },
@@ -49832,7 +49981,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 184,
+      "loc": 424,
       "isOrphan": false,
       "exported": true
     },
@@ -49842,7 +49991,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 202,
+      "loc": 442,
       "isOrphan": false,
       "exported": true
     },
@@ -49852,7 +50001,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 236,
+      "loc": 462,
       "isOrphan": false,
       "exported": true
     },
@@ -49862,7 +50011,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 396,
+      "loc": 502,
       "isOrphan": false,
       "exported": true
     },
@@ -49872,7 +50021,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 406,
+      "loc": 512,
       "isOrphan": false,
       "exported": true
     },
@@ -49882,7 +50031,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 430,
+      "loc": 536,
       "isOrphan": false,
       "exported": true
     },
@@ -49892,7 +50041,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 438,
+      "loc": 544,
       "isOrphan": false,
       "exported": true
     },
@@ -49902,7 +50051,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 446,
+      "loc": 552,
       "isOrphan": false,
       "exported": true
     },
@@ -49912,7 +50061,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 457,
+      "loc": 563,
       "isOrphan": false,
       "exported": true
     },
@@ -49922,7 +50071,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 475,
+      "loc": 574,
       "isOrphan": false,
       "exported": true
     },
@@ -49932,7 +50081,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 486,
+      "loc": 585,
       "isOrphan": false,
       "exported": true
     },
@@ -49942,7 +50091,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 496,
+      "loc": 595,
       "isOrphan": false,
       "exported": true
     },
@@ -49952,7 +50101,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 507,
+      "loc": 606,
       "isOrphan": false,
       "exported": true
     },
@@ -49962,7 +50111,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 515,
+      "loc": 614,
       "isOrphan": false,
       "exported": true
     },
@@ -49972,7 +50121,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 544,
+      "loc": 628,
       "isOrphan": true,
       "exported": true
     },
@@ -49982,7 +50131,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 579,
+      "loc": 639,
       "isOrphan": true,
       "exported": true
     },
@@ -49992,7 +50141,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 604,
+      "loc": 664,
       "isOrphan": true,
       "exported": true
     },
@@ -50002,7 +50151,7 @@
       "type": "function",
       "path": "lib/runtime/memory.ts",
       "parent": "file:lib/runtime/memory.ts",
-      "loc": 628,
+      "loc": 688,
       "isOrphan": true,
       "exported": true
     },
@@ -50022,7 +50171,7 @@
       "type": "function",
       "path": "lib/runtime/moduleRegistry.ts",
       "parent": "file:lib/runtime/moduleRegistry.ts",
-      "loc": 117,
+      "loc": 157,
       "isOrphan": true,
       "exported": true
     },
@@ -50032,7 +50181,7 @@
       "type": "function",
       "path": "lib/runtime/moduleRegistry.ts",
       "parent": "file:lib/runtime/moduleRegistry.ts",
-      "loc": 136,
+      "loc": 171,
       "isOrphan": true,
       "exported": true
     },
@@ -50052,7 +50201,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 63,
+      "loc": 97,
       "isOrphan": true,
       "exported": false
     },
@@ -50062,7 +50211,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 74,
+      "loc": 108,
       "isOrphan": true,
       "exported": false
     },
@@ -50072,7 +50221,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 94,
+      "loc": 128,
       "isOrphan": false,
       "exported": true
     },
@@ -50082,7 +50231,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 136,
+      "loc": 170,
       "isOrphan": false,
       "exported": true
     },
@@ -50092,7 +50241,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 153,
+      "loc": 187,
       "isOrphan": false,
       "exported": true
     },
@@ -50102,7 +50251,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 197,
+      "loc": 231,
       "isOrphan": false,
       "exported": true
     },
@@ -50112,7 +50261,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 234,
+      "loc": 268,
       "isOrphan": true,
       "exported": true
     },
@@ -50122,7 +50271,7 @@
       "type": "function",
       "path": "lib/runtime/offlineQueue.ts",
       "parent": "file:lib/runtime/offlineQueue.ts",
-      "loc": 253,
+      "loc": 287,
       "isOrphan": false,
       "exported": true
     },
@@ -50142,7 +50291,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 26,
+      "loc": 75,
       "isOrphan": true,
       "exported": false
     },
@@ -50152,7 +50301,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 31,
+      "loc": 80,
       "isOrphan": true,
       "exported": false
     },
@@ -50162,7 +50311,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 36,
+      "loc": 85,
       "isOrphan": true,
       "exported": false
     },
@@ -50172,7 +50321,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 41,
+      "loc": 90,
       "isOrphan": true,
       "exported": false
     },
@@ -50182,7 +50331,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 47,
+      "loc": 96,
       "isOrphan": true,
       "exported": false
     },
@@ -50192,7 +50341,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 51,
+      "loc": 100,
       "isOrphan": true,
       "exported": false
     },
@@ -50202,7 +50351,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 55,
+      "loc": 104,
       "isOrphan": true,
       "exported": false
     },
@@ -50212,7 +50361,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 68,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -50222,7 +50371,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 88,
+      "loc": 131,
       "isOrphan": true,
       "exported": false
     },
@@ -50232,7 +50381,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 111,
+      "loc": 150,
       "isOrphan": true,
       "exported": false
     },
@@ -50242,7 +50391,7 @@
       "type": "function",
       "path": "lib/runtime/quantumCircuit.ts",
       "parent": "file:lib/runtime/quantumCircuit.ts",
-      "loc": 155,
+      "loc": 190,
       "isOrphan": true,
       "exported": true
     },
@@ -50262,7 +50411,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 49,
+      "loc": 113,
       "isOrphan": true,
       "exported": false
     },
@@ -50272,7 +50421,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 58,
+      "loc": 122,
       "isOrphan": true,
       "exported": false
     },
@@ -50282,7 +50431,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 67,
+      "loc": 131,
       "isOrphan": true,
       "exported": false
     },
@@ -50292,7 +50441,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 83,
+      "loc": 147,
       "isOrphan": false,
       "exported": true
     },
@@ -50302,7 +50451,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 164,
+      "loc": 196,
       "isOrphan": true,
       "exported": true
     },
@@ -50312,7 +50461,7 @@
       "type": "function",
       "path": "lib/runtime/runtimeChannel.ts",
       "parent": "file:lib/runtime/runtimeChannel.ts",
-      "loc": 236,
+      "loc": 268,
       "isOrphan": false,
       "exported": true
     },
@@ -50332,7 +50481,7 @@
       "type": "class",
       "path": "lib/runtime/runtimeContainer.ts",
       "parent": "file:lib/runtime/runtimeContainer.ts",
-      "loc": 7,
+      "loc": 39,
       "isOrphan": false,
       "exported": true
     },
@@ -50352,7 +50501,7 @@
       "type": "function",
       "path": "lib/runtime/seamClipboard.ts",
       "parent": "file:lib/runtime/seamClipboard.ts",
-      "loc": 79,
+      "loc": 141,
       "isOrphan": true,
       "exported": false
     },
@@ -50362,7 +50511,7 @@
       "type": "class",
       "path": "lib/runtime/seamClipboard.ts",
       "parent": "file:lib/runtime/seamClipboard.ts",
-      "loc": 124,
+      "loc": 160,
       "isOrphan": true,
       "exported": false
     },
@@ -50382,7 +50531,7 @@
       "type": "function",
       "path": "lib/runtime/sharedResourcePool.ts",
       "parent": "file:lib/runtime/sharedResourcePool.ts",
-      "loc": 2,
+      "loc": 34,
       "isOrphan": false,
       "exported": true
     },
@@ -50392,7 +50541,7 @@
       "type": "function",
       "path": "lib/runtime/sharedResourcePool.ts",
       "parent": "file:lib/runtime/sharedResourcePool.ts",
-      "loc": 10,
+      "loc": 42,
       "isOrphan": false,
       "exported": true
     },
@@ -50412,7 +50561,7 @@
       "type": "function",
       "path": "lib/runtime/snapshotFingerprint.ts",
       "parent": "file:lib/runtime/snapshotFingerprint.ts",
-      "loc": 25,
+      "loc": 78,
       "isOrphan": true,
       "exported": true
     },
@@ -50422,7 +50571,7 @@
       "type": "function",
       "path": "lib/runtime/snapshotFingerprint.ts",
       "parent": "file:lib/runtime/snapshotFingerprint.ts",
-      "loc": 51,
+      "loc": 104,
       "isOrphan": true,
       "exported": true
     },
@@ -50432,7 +50581,7 @@
       "type": "function",
       "path": "lib/runtime/snapshotFingerprint.ts",
       "parent": "file:lib/runtime/snapshotFingerprint.ts",
-      "loc": 87,
+      "loc": 119,
       "isOrphan": true,
       "exported": true
     },
@@ -50452,7 +50601,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 26,
+      "loc": 58,
       "isOrphan": false,
       "exported": true
     },
@@ -50462,7 +50611,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 38,
+      "loc": 70,
       "isOrphan": false,
       "exported": true
     },
@@ -50472,7 +50621,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 51,
+      "loc": 83,
       "isOrphan": false,
       "exported": true
     },
@@ -50482,7 +50631,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 63,
+      "loc": 95,
       "isOrphan": false,
       "exported": true
     },
@@ -50492,7 +50641,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 79,
+      "loc": 111,
       "isOrphan": false,
       "exported": true
     },
@@ -50502,7 +50651,7 @@
       "type": "function",
       "path": "lib/runtime/swapManager.ts",
       "parent": "file:lib/runtime/swapManager.ts",
-      "loc": 91,
+      "loc": 123,
       "isOrphan": false,
       "exported": true
     },
@@ -50522,7 +50671,7 @@
       "type": "function",
       "path": "lib/runtime/useDragSurface.ts",
       "parent": "file:lib/runtime/useDragSurface.ts",
-      "loc": 49,
+      "loc": 85,
       "isOrphan": true,
       "exported": true
     },
@@ -50542,7 +50691,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntime.ts",
       "parent": "file:lib/runtime/useDualRuntime.ts",
-      "loc": 86,
+      "loc": 120,
       "isOrphan": true,
       "exported": true
     },
@@ -50562,7 +50711,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 32,
+      "loc": 75,
       "isOrphan": true,
       "exported": false
     },
@@ -50572,7 +50721,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 36,
+      "loc": 79,
       "isOrphan": true,
       "exported": false
     },
@@ -50582,7 +50731,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 47,
+      "loc": 90,
       "isOrphan": true,
       "exported": false
     },
@@ -50592,7 +50741,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 54,
+      "loc": 97,
       "isOrphan": true,
       "exported": false
     },
@@ -50602,7 +50751,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 75,
+      "loc": 118,
       "isOrphan": true,
       "exported": false
     },
@@ -50612,7 +50761,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 90,
+      "loc": 133,
       "isOrphan": true,
       "exported": false
     },
@@ -50622,7 +50771,7 @@
       "type": "function",
       "path": "lib/runtime/useDualRuntimePersistence.ts",
       "parent": "file:lib/runtime/useDualRuntimePersistence.ts",
-      "loc": 126,
+      "loc": 161,
       "isOrphan": true,
       "exported": true
     },
@@ -50642,7 +50791,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 15,
+      "loc": 201,
       "isOrphan": true,
       "exported": false
     },
@@ -50652,7 +50801,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 43,
+      "loc": 205,
       "isOrphan": false,
       "exported": true
     },
@@ -50662,7 +50811,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 142,
+      "loc": 275,
       "isOrphan": false,
       "exported": true
     },
@@ -50672,7 +50821,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 249,
+      "loc": 360,
       "isOrphan": true,
       "exported": true
     },
@@ -50682,7 +50831,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 337,
+      "loc": 424,
       "isOrphan": false,
       "exported": true
     },
@@ -50692,7 +50841,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 431,
+      "loc": 494,
       "isOrphan": false,
       "exported": true
     },
@@ -50702,7 +50851,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginBridge.ts",
       "parent": "file:lib/runtime/useEnginBridge.ts",
-      "loc": 530,
+      "loc": 564,
       "isOrphan": false,
       "exported": true
     },
@@ -50722,7 +50871,7 @@
       "type": "function",
       "path": "lib/runtime/useEnginCoopSync.ts",
       "parent": "file:lib/runtime/useEnginCoopSync.ts",
-      "loc": 68,
+      "loc": 103,
       "isOrphan": false,
       "exported": true
     },
@@ -50742,7 +50891,7 @@
       "type": "function",
       "path": "lib/runtime/useSharedEnginChannel.ts",
       "parent": "file:lib/runtime/useSharedEnginChannel.ts",
-      "loc": 65,
+      "loc": 101,
       "isOrphan": false,
       "exported": true
     },
@@ -50900,7 +51049,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 40,
+      "loc": 79,
       "isOrphan": true,
       "exported": false
     },
@@ -50910,7 +51059,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 61,
+      "loc": 100,
       "isOrphan": false,
       "exported": true
     },
@@ -50920,7 +51069,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 70,
+      "loc": 109,
       "isOrphan": true,
       "exported": true
     },
@@ -50930,7 +51079,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 79,
+      "loc": 118,
       "isOrphan": false,
       "exported": true
     },
@@ -50940,7 +51089,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 87,
+      "loc": 126,
       "isOrphan": false,
       "exported": true
     },
@@ -50950,7 +51099,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 91,
+      "loc": 130,
       "isOrphan": false,
       "exported": true
     },
@@ -50960,7 +51109,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 95,
+      "loc": 134,
       "isOrphan": false,
       "exported": true
     },
@@ -50970,7 +51119,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 99,
+      "loc": 138,
       "isOrphan": false,
       "exported": true
     },
@@ -50980,7 +51129,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 108,
+      "loc": 147,
       "isOrphan": false,
       "exported": true
     },
@@ -50990,7 +51139,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 116,
+      "loc": 155,
       "isOrphan": false,
       "exported": true
     },
@@ -51000,7 +51149,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 124,
+      "loc": 163,
       "isOrphan": false,
       "exported": true
     },
@@ -51010,7 +51159,7 @@
       "type": "function",
       "path": "lib/sharedDream.ts",
       "parent": "file:lib/sharedDream.ts",
-      "loc": 131,
+      "loc": 170,
       "isOrphan": false,
       "exported": true
     },
@@ -51039,7 +51188,7 @@
       "type": "function",
       "path": "lib/sharedDream/useSharedDreamSession.ts",
       "parent": "file:lib/sharedDream/useSharedDreamSession.ts",
-      "loc": 104,
+      "loc": 138,
       "isOrphan": false,
       "exported": true
     },
@@ -52304,7 +52453,7 @@
       "type": "function",
       "path": "lib/ui/runtimeViewport.ts",
       "parent": "file:lib/ui/runtimeViewport.ts",
-      "loc": 7,
+      "loc": 38,
       "isOrphan": false,
       "exported": true
     },
@@ -52314,7 +52463,7 @@
       "type": "function",
       "path": "lib/ui/runtimeViewport.ts",
       "parent": "file:lib/ui/runtimeViewport.ts",
-      "loc": 11,
+      "loc": 42,
       "isOrphan": false,
       "exported": true
     },
@@ -52842,7 +52991,7 @@
       "type": "class",
       "path": "lib/vm/dual-runtime.ts",
       "parent": "file:lib/vm/dual-runtime.ts",
-      "loc": 54,
+      "loc": 87,
       "isOrphan": true,
       "exported": false
     },
@@ -52852,7 +53001,7 @@
       "type": "class",
       "path": "lib/vm/dual-runtime.ts",
       "parent": "file:lib/vm/dual-runtime.ts",
-      "loc": 105,
+      "loc": 138,
       "isOrphan": true,
       "exported": true
     },
@@ -57414,6 +57563,26 @@
       "label": "prophet-run.ts",
       "type": "ts",
       "path": "scripts/gameengin/prophet-run.ts",
+      "parent": "folder:scripts/gameengin",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:scripts/gameengin/smoke-webgl.ts",
+      "label": "smoke-webgl.ts",
+      "type": "ts",
+      "path": "scripts/gameengin/smoke-webgl.ts",
+      "parent": "folder:scripts/gameengin",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:scripts/gameengin/smoke-webgpu.ts",
+      "label": "smoke-webgpu.ts",
+      "type": "ts",
+      "path": "scripts/gameengin/smoke-webgpu.ts",
       "parent": "folder:scripts/gameengin",
       "loc": null,
       "isOrphan": true,
@@ -68816,6 +68985,26 @@
       "tags": []
     },
     {
+      "id": "file:tsconfig.app.json",
+      "label": "tsconfig.app.json",
+      "type": "config",
+      "path": "tsconfig.app.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:tsconfig.base.json",
+      "label": "tsconfig.base.json",
+      "type": "config",
+      "path": "tsconfig.base.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:tsconfig.games.json",
       "label": "tsconfig.games.json",
       "type": "config",
@@ -68843,6 +69032,46 @@
       "parent": "folder:.",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tsconfig.server.json",
+      "label": "tsconfig.server.json",
+      "type": "config",
+      "path": "tsconfig.server.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:tsconfig.test.json",
+      "label": "tsconfig.test.json",
+      "type": "config",
+      "path": "tsconfig.test.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:tsconfig.tsbuildinfo",
+      "label": "tsconfig.tsbuildinfo",
+      "type": "file",
+      "path": "tsconfig.tsbuildinfo",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:tsconfig.worker.json",
+      "label": "tsconfig.worker.json",
+      "type": "config",
+      "path": "tsconfig.worker.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -78913,6 +79142,11 @@
     },
     {
       "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
+      "target": "file:lib/gameengin/backendNegotiator.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
       "target": "file:lib/gameengin/cartridges/manifest.ts",
       "kind": "import"
     },
@@ -78939,6 +79173,11 @@
     {
       "source": "file:components/games/dream.AvenueOfMirrors.tsx",
       "target": "file:lib/games/hooks.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "target": "file:lib/gameengin/cartridges/reactCartridge.ts",
       "kind": "import"
     },
     {
@@ -80994,11 +81233,6 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:components/games/dream.remote.GameRemote.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.GameEngin.tsx",
-      "target": "file:components/games/dream.hud.GameHUD.tsx",
       "kind": "import"
     },
     {
@@ -83307,6 +83541,16 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/backendNegotiator.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/backendNegotiator.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/cartridgeLoader.ts",
       "target": "file:lib/gameengin/dreamr-loader.ts",
       "kind": "reexport"
@@ -83412,8 +83656,18 @@
       "kind": "import"
     },
     {
+      "source": "file:lib/gameengin/cartridges/manifest.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/cartridges/reactCartridge.ts",
       "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/gameengin/cartridges/reactCartridge.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
       "kind": "import"
     },
     {
@@ -83740,6 +83994,11 @@
       "source": "file:lib/gameengin/index.ts",
       "target": "file:lib/gameengin/executionWiring.ts",
       "kind": "reexport"
+    },
+    {
+      "source": "file:lib/gameengin/input/InputRouter.ts",
+      "target": "file:lib/gameengin/cartridge.ts",
+      "kind": "import"
     },
     {
       "source": "file:lib/gameengin/platform.ts",
@@ -85039,6 +85298,16 @@
     {
       "source": "file:scripts/check-orphans.mjs",
       "target": "file:scripts/wire-orphans.mjs",
+      "kind": "import"
+    },
+    {
+      "source": "file:scripts/gameengin/smoke-webgl.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:scripts/gameengin/smoke-webgpu.ts",
+      "target": "file:lib/gameengin/cartridges/manifest.ts",
       "kind": "import"
     },
     {
@@ -89754,6 +90023,11 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/ai-npcs.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/backendNegotiator.ts",
       "kind": "import"
     },
     {
@@ -96723,17 +96997,32 @@
     },
     {
       "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
+      "target": "function:lib/gameengin/backendNegotiator.ts#serverBootstrapDiagnostics",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
       "target": "function:components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx#useGlobalCrashListener",
       "kind": "call"
     },
     {
       "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
-      "target": "function:lib/gameengin/cartridges/loaders.ts#loadCartridge",
+      "target": "function:lib/gameengin/cartridges/loaders.ts#loadCartridgeBundle",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
+      "target": "function:lib/gameengin/backendNegotiator.ts#negotiateRendererBackend",
       "kind": "call"
     },
     {
       "source": "file:components/gameengin/dream.cartridge.CartridgeLauncher.tsx",
       "target": "function:lib/utils.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/games/dream.AvenueOfMirrors.tsx",
+      "target": "function:lib/gameengin/cartridges/reactCartridge.ts#useGameEngineAPI",
       "kind": "call"
     },
     {
@@ -98588,6 +98877,16 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:lib/games/avatar.ts#consumePlayAsMe",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:lib/games/avatar.ts#getAvatarDataUrl",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "function:lib/games/navigation.ts#buildGameLaunchHref",
       "kind": "call"
     },
@@ -98599,16 +98898,6 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "function:lib/games/navigation.ts#isLaunchFlagEnabled",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.GameEngin.tsx",
-      "target": "function:lib/games/avatar.ts#consumePlayAsMe",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.GameEngin.tsx",
-      "target": "function:lib/games/avatar.ts#getAvatarDataUrl",
       "kind": "call"
     },
     {
@@ -100044,6 +100333,11 @@
     {
       "source": "file:lib/gameengin/cartridges/loaders.ts",
       "target": "function:lib/utils.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/cartridges/reactCartridge.ts",
+      "target": "function:lib/gameengin/cartridges/manifest.ts#getCartridgeManifest",
       "kind": "call"
     },
     {
