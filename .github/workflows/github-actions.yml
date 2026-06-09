@@ -257,7 +257,6 @@ jobs:
 
   # ==========================================
   # Build Memory Drift Check
-  # (was check-build-memory-drift.yml)
   # ==========================================
   drift-check:
     name: Build Memory Drift
@@ -289,7 +288,6 @@ jobs:
 
   # ==========================================
   # Vercel Build Probe
-  # (was vercel-build-probe.yml)
   # ==========================================
   build-probe:
     name: Vercel Build Probe
@@ -363,15 +361,23 @@ jobs:
     steps:
       - name: Create JSON Report
         run: |
-          cat << 'EOF' > pipeline-results.json
+          REPORT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          cat > pipeline-results.json << EOF
           {
             "pipeline": "DREAMengin CI/CD",
             "repository": "${{ github.repository }}",
             "run_id": "${{ github.run_id }}",
             "actor": "${{ github.actor }}",
             "ref": "${{ github.ref }}",
-            "status": "execution_completed",
-            "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            "status": "${{ job.status }}",
+            "timestamp": "$REPORT_DATE",
+            "results": {
+              "quality": "${{ needs.quality.result }}",
+              "verify": "${{ needs.verify.result }}",
+              "security": "${{ needs.security.result }}",
+              "docker": "${{ needs.docker.result }}",
+              "drift_check": "${{ needs.drift-check.result }}"
+            }
           }
           EOF
 
