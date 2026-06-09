@@ -1,43 +1,8 @@
-// ── Source Grammar: Directive ─────────────────────────────────────────────────
-
-// Framework directives stay physically first when required.
-
-// ── Source Grammar: Identity ─────────────────────────────────────────────────
-
-// Runtime file: lib/gameengin/gameEnginRuntime.ts.
-
-/**
- * GameEngin Runtime — Dream Game Loader
- *
- * Manages loading of .dreamgame packages (ZIP: WASM + assets + manifest.json),
- * WebGPU initialisation, and input routing.
- *
- * .dreamgame format is documented in docs/DREAMGAME_FORMAT.md
- */
-
-// ── Source Grammar: Rules ─────────────────────────────────────────────────
-
-// Runtime law comments and invariants stay attached to the code they govern.
-
-// ── Source Grammar: Memory ─────────────────────────────────────────────────
-
-// Module-owned constants, caches, refs, and mutable runtime memory.
-
-// ── Source Grammar: Dependencies ─────────────────────────────────────────────────
-
-// Imports and external modules this runtime file depends on.
-
 import { createEventBus, type EventBus } from '../eventBus';
+import { resolveFrameBudget, type GameEnginQualityTier } from './runtime/FrameBudget';
+import { decideRuntimeQuality } from './runtime/RuntimeQuality';
 
-// ── Source Grammar: Wiring ─────────────────────────────────────────────────
-
-// Top-level runtime registration and connection seams.
-
-// ── Source Grammar: Contracts ─────────────────────────────────────────────────
-
-// Types, interfaces, and schemas accepted or provided by this file.
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+export type DreamGameBackend = 'webgpu' | 'webgl2' | 'canvas2d' | 'dom';
 
 export interface DreamGameManifest {
   id: string;
@@ -46,85 +11,71 @@ export interface DreamGameManifest {
   wasmUrl: string;
   assetUrls: string[];
   compatibleRuntime: 'GameEngin';
-  /** Entry point export name in the WASM module (default: 'start'). */
   entryPoint?: string;
-  /** Minimum required WebGPU feature flags. */
   requiredFeatures?: string[];
+  preferredBackend?: DreamGameBackend;
+  fallbackBackend?: DreamGameBackend;
+  qualityTier?: GameEnginQualityTier;
+  bundleManifestId?: string;
+  saveSchemaVersion?: number;
 }
 
 export interface DreamGameInstance {
   manifest: DreamGameManifest;
   wasmInstance: WebAssembly.Instance;
   assets: Map<string, ArrayBuffer>;
-  /** Call to start the game loop. */
   start(): void;
-  /** Call to cleanly stop. */
   stop(): void;
 }
 
 export type InputType = 'touch' | 'mouse' | 'keyboard' | 'gamepad' | 'dualsense';
-
 export type InputHandler = (event: Record<string, unknown>) => void;
 
-// ─── Events emitted by the runtime ───────────────────────────────────────────
-
-export interface GameEnginEvents extends Record<string, unknown> {
-  gameLoaded:    { manifest: DreamGameManifest };
-  gameStarted:   { id: string };
-  gameStopped:   { id: string };
-  inputReceived: { type: InputType; event: unknown };
-  error:         { message: string; cause?: unknown };
+export interface GameEnginBackendState {
+  readonly backend: DreamGameBackend;
+  readonly ready: boolean;
+  readonly reason?: string;
+  readonly quality: ReturnType<typeof decideRuntimeQuality>;
 }
 
-// ── Source Grammar: Actions ─────────────────────────────────────────────────
+export interface GameEnginEvents extends Record<string, unknown> {
+  gameLoaded: { manifest: DreamGameManifest };
+  gameStarted: { id: string };
+  gameStopped: { id: string };
+  inputReceived: { type: InputType; event: unknown };
+  backendReady: GameEnginBackendState;
+  error: { message: string; cause?: unknown };
+}
 
-// Runtime functions, classes, handlers, and state transitions.
+async function fetchArrayBuffer(url: string, signal?: AbortSignal): Promise<ArrayBuffer> {
+  const response = await fetch(url, { signal });
+  if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.status}`);
+  return response.arrayBuffer();
+}
 
-// ─── loadDreamGame ────────────────────────────────────────────────────────────
-
-/**
- * loadDreamGame(manifest)
- *
- * Loads a DreamGame from its manifest (WASM module + assets).
- * In a real deployment, wasmUrl and assetUrls would point to the
- * extracted contents of the .dreamgame ZIP.
- */
-export async function loadDreamGame(
-  manifest: DreamGameManifest
-): Promise<DreamGameInstance> {
-  // ── Load WASM ──
+export async function loadDreamGame(manifest: DreamGameManifest, signal?: AbortSignal): Promise<DreamGameInstance> {
   let wasmInstance: WebAssembly.Instance;
   try {
-    const response   = await fetch(manifest.wasmUrl);
-    const wasmBuffer = await response.arrayBuffer();
+    const wasmBuffer = await fetchArrayBuffer(manifest.wasmUrl, signal);
     const { instance } = await WebAssembly.instantiate(wasmBuffer, {
       env: {
-        // Minimal import object — games should extend via their own imports
         memory: new WebAssembly.Memory({ initial: 16 }),
         abort: (_msg: number, _file: number, _line: number, _col: number) => {
-          throw new Error(`WASM abort at line ${_line}:${_col}`);
+          throw new Error(`WASM stopped at ${_line}:${_col}`);
         },
       },
     });
     wasmInstance = instance;
-  } catch (err: unknown) {
-    throw new Error(`Failed to load WASM from ${manifest.wasmUrl}: ${String(err)}`);
+  } catch (error: unknown) {
+    throw new Error(`Failed to load WASM for ${manifest.id}: ${String(error)}`);
   }
 
-  // ── Load assets ──
   const assets = new Map<string, ArrayBuffer>();
-  await Promise.all(
-    manifest.assetUrls.map(async (url) => {
-      const resp   = await fetch(url);
-      const buffer = await resp.arrayBuffer();
-      assets.set(url, buffer);
-    })
-  );
+  await Promise.all(manifest.assetUrls.map(async (url) => assets.set(url, await fetchArrayBuffer(url, signal))));
 
-  // ── Build instance ──
   let running = false;
-  const exports = wasmInstance.exports as any;
-  const entry   = manifest.entryPoint ?? 'start';
+  const exports = wasmInstance.exports as Record<string, unknown>;
+  const entry = manifest.entryPoint ?? 'start';
 
   return {
     manifest,
@@ -133,65 +84,65 @@ export async function loadDreamGame(
     start() {
       if (running) return;
       running = true;
-      if (typeof exports[entry] === 'function') {
-        (exports[entry] as () => void)();
-      }
+      const start = exports[entry];
+      if (typeof start === 'function') (start as () => void)();
     },
     stop() {
       running = false;
-      const stopFn = exports['stop'];
-      if (typeof stopFn === 'function') (stopFn as () => void)();
+      const stop = exports.stop;
+      if (typeof stop === 'function') (stop as () => void)();
     },
   };
 }
 
-// ─── GameEnginRuntime ────────────────────────────────────────────────────────
-
-/**
- * GameEnginRuntime
- *
- * Top-level runtime class that manages WebGPU initialisation,
- * game loading, and input routing for the GameEngin runtime.
- */
 export class GameEnginRuntime {
   private canvas: HTMLCanvasElement | null = null;
-   
-  private device: unknown = null;
+  private device: GPUDevice | null = null;
   private activeGame: DreamGameInstance | null = null;
+  private readonly inputHandlers = new Map<InputType, Set<InputHandler>>();
+  private readonly listenerTeardowns: Array<() => void> = [];
+  private loadingController: AbortController | null = null;
+  private gamepadPollId: number | null = null;
   readonly bus: EventBus<GameEnginEvents>;
-  private inputHandlers = new Map<InputType, Set<InputHandler>>();
 
   constructor() {
     this.bus = createEventBus<GameEnginEvents>();
   }
 
-  // ── WebGPU Init ──
-
-  async initWebGPU(canvas: HTMLCanvasElement): Promise<void> {
+  async initWebGPU(canvas: HTMLCanvasElement, qualityTier: GameEnginQualityTier = 'balanced'): Promise<GameEnginBackendState> {
     this.canvas = canvas;
+    const budget = resolveFrameBudget(qualityTier);
+    const quality = decideRuntimeQuality(budget.frameBudgetMs, Boolean(navigator.gpu));
 
     if (!navigator.gpu) {
-      this.bus.emit('error', { message: 'WebGPU not supported in this environment.' });
-      return;
+      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-unavailable', quality };
+      this.bus.emit('backendReady', state);
+      return state;
     }
 
     const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
     if (!adapter) {
-      this.bus.emit('error', { message: 'No WebGPU adapter found.' });
-      return;
+      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-adapter-unavailable', quality };
+      this.bus.emit('backendReady', state);
+      return state;
     }
 
     const gpuDevice = await adapter.requestDevice();
     this.device = gpuDevice;
-    gpuDevice.lost.then((info: { reason: string }) => {
+    gpuDevice.lost.then((info) => {
       this.bus.emit('error', { message: `WebGPU device lost: ${info.reason}` });
+      this.device = null;
     });
+
+    const state = { backend: 'webgpu' as const, ready: true, quality };
+    this.bus.emit('backendReady', state);
+    return state;
   }
 
-  // ── Game Loading ──
-
   async loadGame(manifest: DreamGameManifest): Promise<void> {
-    const game = await loadDreamGame(manifest);
+    this.loadingController?.abort();
+    this.loadingController = new AbortController();
+    const game = await loadDreamGame(manifest, this.loadingController.signal);
     this.activeGame = game;
     this.bus.emit('gameLoaded', { manifest });
   }
@@ -209,93 +160,84 @@ export class GameEnginRuntime {
     this.activeGame = null;
   }
 
-  // ── Input Routing ──
-
-  /**
-   * registerInputHandler(type, handler)
-   *
-   * Registers a handler for a specific input type.
-   * Multiple handlers per type are supported.
-   */
   registerInputHandler(type: InputType, handler: InputHandler): () => void {
     if (!this.inputHandlers.has(type)) {
       this.inputHandlers.set(type, new Set());
-      this._attachDomListener(type);
+      this.attachDomListener(type);
     }
     this.inputHandlers.get(type)!.add(handler);
-
-    return () => {
-      this.inputHandlers.get(type)?.delete(handler);
-    };
+    return () => this.inputHandlers.get(type)?.delete(handler);
   }
 
-  private _attachDomListener(type: InputType): void {
+  private attachDomListener(type: InputType): void {
     if (!this.canvas) return;
-
     const dispatch = (event: unknown) => {
-      this.inputHandlers.get(type)?.forEach((h) => h(event as Record<string, unknown>));
+      this.inputHandlers.get(type)?.forEach((handler) => handler(event as Record<string, unknown>));
       this.bus.emit('inputReceived', { type, event });
     };
-    const domDispatch = dispatch as EventListener;
+    const listener = dispatch as EventListener;
 
-    switch (type) {
-      case 'touch':
-        this.canvas.addEventListener('touchstart',  domDispatch, { passive: true });
-        this.canvas.addEventListener('touchmove',   domDispatch, { passive: true });
-        this.canvas.addEventListener('touchend',    domDispatch, { passive: true });
-        break;
-      case 'mouse':
-        this.canvas.addEventListener('mousedown',  domDispatch);
-        this.canvas.addEventListener('mousemove',  domDispatch);
-        this.canvas.addEventListener('mouseup',    domDispatch);
-        break;
-      case 'keyboard':
-        window.addEventListener('keydown', domDispatch);
-        window.addEventListener('keyup',   domDispatch);
-        break;
-      case 'gamepad':
-      case 'dualsense':
-        // Gamepad polling via requestAnimationFrame
-        this._startGamepadPolling(type, dispatch);
-        break;
+    if (type === 'touch') {
+      this.canvas.addEventListener('touchstart', listener, { passive: true });
+      this.canvas.addEventListener('touchmove', listener, { passive: true });
+      this.canvas.addEventListener('touchend', listener, { passive: true });
+      this.listenerTeardowns.push(() => {
+        this.canvas?.removeEventListener('touchstart', listener);
+        this.canvas?.removeEventListener('touchmove', listener);
+        this.canvas?.removeEventListener('touchend', listener);
+      });
+      return;
     }
+
+    if (type === 'mouse') {
+      this.canvas.addEventListener('mousedown', listener);
+      this.canvas.addEventListener('mousemove', listener);
+      this.canvas.addEventListener('mouseup', listener);
+      this.listenerTeardowns.push(() => {
+        this.canvas?.removeEventListener('mousedown', listener);
+        this.canvas?.removeEventListener('mousemove', listener);
+        this.canvas?.removeEventListener('mouseup', listener);
+      });
+      return;
+    }
+
+    if (type === 'keyboard') {
+      window.addEventListener('keydown', listener);
+      window.addEventListener('keyup', listener);
+      this.listenerTeardowns.push(() => {
+        window.removeEventListener('keydown', listener);
+        window.removeEventListener('keyup', listener);
+      });
+      return;
+    }
+
+    this.startGamepadPolling(type, dispatch);
   }
 
-  private _gamepadPollId: number | null = null;
-
-  private _startGamepadPolling(type: InputType, dispatch: InputHandler): void {
+  private startGamepadPolling(type: InputType, dispatch: InputHandler): void {
     const poll = () => {
       const gamepads = navigator.getGamepads?.() ?? [];
-      for (const gp of gamepads) {
-        if (!gp) continue;
-        const isDualSense = gp.id.toLowerCase().includes('dualsense') ||
-                            gp.id.toLowerCase().includes('ps5');
-        if (type === 'dualsense' && !isDualSense) continue;
-        if (type === 'gamepad'   &&  isDualSense) continue;
-        dispatch(gp as unknown as Record<string, unknown>);
+      for (const pad of gamepads) {
+        if (!pad) continue;
+        const label = pad.id.toLowerCase();
+        const dualsense = label.includes('dualsense') || label.includes('ps5');
+        if (type === 'dualsense' && !dualsense) continue;
+        if (type === 'gamepad' && dualsense) continue;
+        dispatch(pad as unknown as Record<string, unknown>);
       }
-      this._gamepadPollId = requestAnimationFrame(poll);
+      this.gamepadPollId = requestAnimationFrame(poll);
     };
-    this._gamepadPollId = requestAnimationFrame(poll);
+    this.gamepadPollId = requestAnimationFrame(poll);
   }
 
   dispose(): void {
+    this.loadingController?.abort();
     this.stopGame();
-    this.bus.destroy();
+    for (const teardown of this.listenerTeardowns.splice(0)) teardown();
     this.inputHandlers.clear();
-    if (this._gamepadPollId !== null) cancelAnimationFrame(this._gamepadPollId);
-    (this.device as { destroy?: () => void } | null)?.destroy?.();
+    if (this.gamepadPollId !== null) cancelAnimationFrame(this.gamepadPollId);
+    this.device?.destroy?.();
+    this.device = null;
+    this.bus.destroy();
   }
 }
-
-// ── Source Grammar: Output ─────────────────────────────────────────────────
-
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
-
-// ── Source Grammar: Cleanup ─────────────────────────────────────────────────
-
-// Teardown remains paired inside the lifecycle actions that allocate resources.
-
-// ── Source Grammar: Public Surface ─────────────────────────────────────────────────
-
-// Exported declarations and re-export barrels are this file's public surface.
