@@ -8,16 +8,16 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2059
-- **Total function/class nodes:** 3894
-- **Total edges:** 7400
+- **Total files:** 2060
+- **Total function/class nodes:** 3895
+- **Total edges:** 7403
 - **Orphan nodes:** 3277
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
   app["app"] -->|1230| lib["lib"]
-  src["src"] -->|545| lib["lib"]
+  src["src"] -->|546| lib["lib"]
   components["components"] -->|316| lib["lib"]
   src["src"] -->|294| components["components"]
   app["app"] -->|286| components["components"]
@@ -60,7 +60,7 @@ graph LR
 
 #### File-Level Connectivity (auto-generated)
 
-<details><summary>lib/ (563 files)</summary>
+<details><summary>lib/ (564 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -422,6 +422,7 @@ graph LR
 | `lib/gameengin/predictive-stream.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/procgen.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/remote/index.ts` | ts | 4 | 2 | `src/engin/generated/systems.ts`, `tests/gameengin-remote.test.ts` | `lib/gameengin/remote/comboMachine.ts`, `lib/gameengin/remote/layout.ts`, `lib/gameengin/remote/moves.ts` |
+| `lib/gameengin/runtime/FrameBudget.ts` | ts | 0 | 2 | `lib/gameengin/runtime/FrameClock.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/webgpu-runtime-shell.ts` | ts | 1 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | `lib/gameengin/dreamr-loader.ts` |
 | `lib/gameengin/world-crdt.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/xr.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
@@ -574,7 +575,7 @@ graph LR
 | `lib/gameengin/brain/technique-library/optimization/texture-atlasing.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/brain/upgrade-history/prioritization-rules.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/input/index.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/input/InputRouter.ts` |
-| `lib/gameengin/runtime/FrameBudget.ts` | ts | 0 | 1 | `src/engin/generated/systems.ts` | — |
+| `lib/gameengin/runtime/FrameClock.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/runtime/FrameBudget.ts` |
 | `lib/gameengin/runtime/RuntimeQuality.ts` | ts | 0 | 1 | `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/systems/index.ts` | ts | 10 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/systems/ai.ts`, `lib/gameengin/systems/animation.ts`, `lib/gameengin/systems/assets.ts` |
 | `lib/gestures/useTouchGestures.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gestures/touchGestures.ts` |
@@ -1521,7 +1522,7 @@ graph LR
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 25 | 1 | `src/engin/generated/index.ts` | `lib/engins/brand/brandEnginRuleSet.ts`, `lib/engins/brand/useBrandEnginRuntime.ts`, `lib/engins/code/codeEnginRuleSet.ts` |
 | `src/engin/generated/surfaces.ts` | ts | 538 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
-| `src/engin/generated/systems.ts` | ts | 376 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
+| `src/engin/generated/systems.ts` | ts | 377 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
 | `src/engin/state/base.json` | config | 0 | 1 | `src/engin/core/index.ts` | — |
 | `src/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `src/components/dream.DreamEnginLogo.tsx` | tsx | 0 | 0 | — | — |
@@ -3174,6 +3175,7 @@ graph LR
   f_lib_gameengin_remote_moves_ts["moves.ts"]
   f_lib_gameengin_remote_sprintDetector_ts["sprintDetector.ts"]
   f_lib_gameengin_runtime_FrameBudget_ts["FrameBudget.ts"]
+  f_lib_gameengin_runtime_FrameClock_ts["FrameClock.ts"]
   f_lib_gameengin_runtime_RuntimeQuality_ts["RuntimeQuality.ts"]
   f_lib_gameengin_systems_ai_ts["ai.ts"]
   f_lib_gameengin_systems_animation_ts["animation.ts"]
@@ -4351,6 +4353,7 @@ graph LR
   f_src_engin_generated_systems_ts --> f_lib_gameengin_remote_moves_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_remote_sprintDetector_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_runtime_FrameBudget_ts
+  f_src_engin_generated_systems_ts --> f_lib_gameengin_runtime_FrameClock_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_runtime_RuntimeQuality_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_systems_ai_ts
   f_src_engin_generated_systems_ts --> f_lib_gameengin_systems_animation_ts
@@ -4642,9 +4645,9 @@ _File-level graph omitted: 299 files exceeds Mermaid render budget. See table ab
 
 </details>
 
-<details><summary>lib/ — 563 files</summary>
+<details><summary>lib/ — 564 files</summary>
 
-_File-level graph omitted: 563 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 564 files exceeds Mermaid render budget. See table above._
 
 </details>
 

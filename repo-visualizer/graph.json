@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T05:02:32.249Z",
+  "generatedAt": "2026-06-09T05:14:32.851Z",
   "root": ".",
   "nodes": [
     {
@@ -42828,7 +42828,7 @@
       "path": "lib/gameengin/runtime/FrameBudget.ts",
       "parent": "file:lib/gameengin/runtime/FrameBudget.ts",
       "loc": 17,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42836,6 +42836,26 @@
       "label": "FrameBudget.ts",
       "type": "ts",
       "path": "lib/gameengin/runtime/FrameBudget.ts",
+      "parent": "folder:lib/gameengin/runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "class:lib/gameengin/runtime/FrameClock.ts#GameEnginFrameClock",
+      "label": "GameEnginFrameClock",
+      "type": "class",
+      "path": "lib/gameengin/runtime/FrameClock.ts",
+      "parent": "file:lib/gameengin/runtime/FrameClock.ts",
+      "loc": 9,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:lib/gameengin/runtime/FrameClock.ts",
+      "label": "FrameClock.ts",
+      "type": "ts",
+      "path": "lib/gameengin/runtime/FrameClock.ts",
       "parent": "folder:lib/gameengin/runtime",
       "loc": null,
       "isOrphan": false,
@@ -84135,6 +84155,11 @@
       "kind": "reexport"
     },
     {
+      "source": "file:lib/gameengin/runtime/FrameClock.ts",
+      "target": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/gameengin/systems/ai.ts",
       "target": "file:lib/gameengin/power-systems.ts",
       "kind": "reexport"
@@ -90237,6 +90262,11 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/gameengin/runtime/FrameBudget.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameengin/runtime/FrameClock.ts",
       "kind": "import"
     },
     {
@@ -100767,6 +100797,11 @@
     {
       "source": "file:lib/gameengin/remote/comboMachine.ts",
       "target": "function:lib/gameengin/remote/moves.ts#maxComboLength",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/gameengin/runtime/FrameClock.ts",
+      "target": "function:lib/gameengin/runtime/FrameBudget.ts#resolveFrameBudget",
       "kind": "call"
     },
     {
