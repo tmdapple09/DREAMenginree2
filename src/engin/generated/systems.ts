@@ -177,6 +177,7 @@ export const systems = {
   "lib/gameengin/remote/moves": () => import("@/lib/gameengin/remote/moves"),
   "lib/gameengin/remote/sprintDetector": () => import("@/lib/gameengin/remote/sprintDetector"),
   "lib/gameengin/runtime/FrameBudget": () => import("@/lib/gameengin/runtime/FrameBudget"),
+  "lib/gameengin/runtime/FrameClock": () => import("@/lib/gameengin/runtime/FrameClock"),
   "lib/gameengin/runtime/RuntimeQuality": () => import("@/lib/gameengin/runtime/RuntimeQuality"),
   "lib/gameengin/systems/ai": () => import("@/lib/gameengin/systems/ai"),
   "lib/gameengin/systems/animation": () => import("@/lib/gameengin/systems/animation"),
