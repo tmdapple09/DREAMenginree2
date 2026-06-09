@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T05:14:33.576Z",
+  "generatedAt": "2026-06-09T05:28:58.906Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 69,
+    "engine-system": 73,
     "engine-utility": 308
   },
   "entries": [
@@ -9138,6 +9138,30 @@
       ]
     },
     {
+      "id": "lib/gameengin/assets/BundleCache",
+      "slot": "engine-system",
+      "path": "lib/gameengin/assets/BundleCache.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "GameEnginBundleCacheDecision",
+        "GameEnginBundleCacheOptions",
+        "planBundleCache"
+      ]
+    },
+    {
+      "id": "lib/gameengin/assets/BundleManifest",
+      "slot": "engine-system",
+      "path": "lib/gameengin/assets/BundleManifest.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "assertValidBundleManifest",
+        "bundleWeightBytes",
+        "GameEnginAssetEntry",
+        "GameEnginAssetKind",
+        "GameEnginBundleManifest"
+      ]
+    },
+    {
       "id": "lib/gameengin/backendNegotiator",
       "slot": "engine-system",
       "path": "lib/gameengin/backendNegotiator.ts",
@@ -10081,8 +10105,10 @@
       "path": "lib/gameengin/gameEnginRuntime.ts",
       "engine": "GameEngin",
       "exports": [
+        "DreamGameBackend",
         "DreamGameInstance",
         "DreamGameManifest",
+        "GameEnginBackendState",
         "GameEnginEvents",
         "GameEnginRuntime",
         "InputHandler",
@@ -10426,6 +10452,18 @@
       ]
     },
     {
+      "id": "lib/gameengin/render/ShaderRegistry",
+      "slot": "engine-system",
+      "path": "lib/gameengin/render/ShaderRegistry.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "GameEnginShaderCompileKey",
+        "GameEnginShaderRegistry",
+        "GameEnginShaderSource",
+        "GameEnginShaderStage"
+      ]
+    },
+    {
       "id": "lib/gameengin/runtime/FrameBudget",
       "slot": "engine-system",
       "path": "lib/gameengin/runtime/FrameBudget.ts",
@@ -10445,6 +10483,18 @@
       "exports": [
         "GameEnginFrameClock",
         "GameEnginFrameTick"
+      ]
+    },
+    {
+      "id": "lib/gameengin/runtime/index",
+      "slot": "engine-system",
+      "path": "lib/gameengin/runtime/index.ts",
+      "engine": "GameEngin",
+      "exports": [
+        "decideRuntimeQuality",
+        "GAMEENGIN_FRAME_BUDGETS",
+        "GameEnginFrameClock",
+        "resolveFrameBudget"
       ]
     },
     {
@@ -10488,7 +10538,10 @@
       "path": "lib/gameengin/systems/assets.ts",
       "engine": "GameEngin",
       "exports": [
-        "AssetStreamManager"
+        "assertValidBundleManifest",
+        "AssetStreamManager",
+        "bundleWeightBytes",
+        "planBundleCache"
       ]
     },
     {

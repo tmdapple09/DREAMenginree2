@@ -40,7 +40,7 @@ export const osSlotCounts = {
   "memory": 6,
   "dr-eams-tool": 3,
   "hook": 12,
-  "engine-system": 69,
+  "engine-system": 73,
   "engine-utility": 308
 } as const;
 
@@ -408,7 +408,7 @@ export const osArchitectureGraph = {
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 69,
+    "engine-system": 73,
     "engine-utility": 308
   }
 } as const;
@@ -5980,6 +5980,18 @@ export const osArchitectureStageEntries = {
       "engine": "GameEngin"
     },
     {
+      "id": "lib/gameengin/assets/BundleCache",
+      "slot": "engine-system",
+      "path": "lib/gameengin/assets/BundleCache.ts",
+      "engine": "GameEngin"
+    },
+    {
+      "id": "lib/gameengin/assets/BundleManifest",
+      "slot": "engine-system",
+      "path": "lib/gameengin/assets/BundleManifest.ts",
+      "engine": "GameEngin"
+    },
+    {
       "id": "lib/gameengin/backendNegotiator",
       "slot": "engine-system",
       "path": "lib/gameengin/backendNegotiator.ts",
@@ -6154,6 +6166,12 @@ export const osArchitectureStageEntries = {
       "engine": "GameEngin"
     },
     {
+      "id": "lib/gameengin/render/ShaderRegistry",
+      "slot": "engine-system",
+      "path": "lib/gameengin/render/ShaderRegistry.ts",
+      "engine": "GameEngin"
+    },
+    {
       "id": "lib/gameengin/runtime/FrameBudget",
       "slot": "engine-system",
       "path": "lib/gameengin/runtime/FrameBudget.ts",
@@ -6163,6 +6181,12 @@ export const osArchitectureStageEntries = {
       "id": "lib/gameengin/runtime/FrameClock",
       "slot": "engine-system",
       "path": "lib/gameengin/runtime/FrameClock.ts",
+      "engine": "GameEngin"
+    },
+    {
+      "id": "lib/gameengin/runtime/index",
+      "slot": "engine-system",
+      "path": "lib/gameengin/runtime/index.ts",
       "engine": "GameEngin"
     },
     {
@@ -7810,7 +7834,7 @@ User Action / Agent / CI
 | memory | 6 |
 | dr-eams-tool | 3 |
 | hook | 12 |
-| engine-system | 69 |
+| engine-system | 73 |
 | engine-utility | 308 |
 
 ## Architecture Stages
