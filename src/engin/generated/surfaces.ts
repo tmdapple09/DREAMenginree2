@@ -409,7 +409,7 @@ export const surfaces = {
   "components/gameengin/dream.CrashReportModal": () => import("@/components/gameengin/dream.CrashReportModal"),
   "components/gameengin/input/DualSenseManager": () => import("@/components/gameengin/input/DualSenseManager"),
   "components/games/_fx/canvasFx": () => import("@/components/games/_fx/canvasFx"),
-  "components/games/dream.AvenueOfMirrors": () => import("@/components/games/dream.AvenueOfMirrors"),
+  "components/games/dream.MadMaxiWildfall": () => import("@/components/games/dream.MadMaxiWildfall"),
   "components/games/dream.BabylonSideScroller": () => import("@/components/games/dream.BabylonSideScroller"),
   "components/games/dream.DefuseRitual": () => import("@/components/games/dream.DefuseRitual"),
   "components/games/dream.EchoArena": () => import("@/components/games/dream.EchoArena"),
@@ -422,7 +422,6 @@ export const surfaces = {
   "components/games/dream.hud.MobileGameHUD": () => import("@/components/games/dream.hud.MobileGameHUD"),
   "components/games/dream.Leaderboard": () => import("@/components/games/dream.Leaderboard"),
   "components/games/dream.LexiconSolitaire": () => import("@/components/games/dream.LexiconSolitaire"),
-  "components/games/dream.MadMaxiWildfall": () => import("@/components/games/dream.MadMaxiWildfall"),
   "components/games/dream.NeonDrift": () => import("@/components/games/dream.NeonDrift"),
   "components/games/dream.NiteFlyerSolarHymn": () => import("@/components/games/dream.NiteFlyerSolarHymn"),
   "components/games/dream.NullCathedral": () => import("@/components/games/dream.NullCathedral"),
@@ -544,3 +543,4 @@ export const surfaces = {
 };
 
 export type SurfacesMap = typeof surfaces;
+

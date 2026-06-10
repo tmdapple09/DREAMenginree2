@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-09T08:54:15.147Z",
+  "generatedAt": "2026-06-09T05:36:25.672Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
-    "surface": 277,
+    "surface": 276,
     "route-surface": 261,
     "dreamsurface": 37,
     "engin": 15,
@@ -20,7 +20,7 @@
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 74,
+    "engine-system": 73,
     "engine-utility": 308
   },
   "entries": [
@@ -3969,9 +3969,9 @@
       ]
     },
     {
-      "id": "components/games/dream.AvenueOfMirrors",
+      "id": "components/games/dream.MadMaxiWildfall",
       "slot": "surface",
-      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "path": "components/games/dream.MadMaxiWildfall.tsx",
       "engine": "GameEngin",
       "exports": [
         "default"
@@ -4097,15 +4097,6 @@
       ]
     },
     {
-      "id": "components/games/dream.MadMaxiWildfall",
-      "slot": "surface",
-      "path": "components/games/dream.MadMaxiWildfall.tsx",
-      "engine": "GameEngin",
-      "exports": [
-        "default"
-      ]
-    },
-    {
       "id": "components/games/dream.NeonDrift",
       "slot": "surface",
       "path": "components/games/dream.NeonDrift.tsx",
@@ -4167,7 +4158,8 @@
       "path": "components/games/dream.remote.LegacyGameRemote.tsx",
       "engine": "GameEngin",
       "exports": [
-        "default"
+        "default",
+        "GameInputAction"
       ]
     },
     {
@@ -10811,9 +10803,9 @@
       ]
     },
     {
-      "id": "lib/games/lucid-avenue-world",
+      "id": "lib/games/madmaxi-wildfall-world",
       "slot": "engine-system",
-      "path": "lib/games/lucid-avenue-world.ts",
+      "path": "lib/games/madmaxi-wildfall-world.ts",
       "engine": "Universal",
       "exports": [
         "CachePickup",
@@ -10856,39 +10848,6 @@
         "scanLucidAvenue",
         "ShardPickup",
         "waitLucidAvenueTurn"
-      ]
-    },
-    {
-      "id": "lib/games/madmaxi-wildfall-world",
-      "slot": "engine-system",
-      "path": "lib/games/madmaxi-wildfall-world.ts",
-      "engine": "Universal",
-      "exports": [
-        "activateWildfallHeroAbility",
-        "castWildfallRay",
-        "createWildfallRng",
-        "createWildfallState",
-        "currentWildfallZone",
-        "isWildfallPassable",
-        "makeWildfallGlyphGrid",
-        "resolveWildfallMirror",
-        "stepWildfall",
-        "switchWildfallHero",
-        "WILDFALL_HEROES",
-        "WILDFALL_ZONES",
-        "WildfallAction",
-        "wildfallBillboards",
-        "WildfallHero",
-        "WildfallHeroId",
-        "wildfallHeroWeapon",
-        "WildfallInputFrame",
-        "WildfallPhase",
-        "WildfallRelic",
-        "WildfallState",
-        "WildfallVec2",
-        "WildfallWatcher",
-        "WildfallZone",
-        "WildfallZoneId"
       ]
     },
     {
@@ -14449,3 +14408,4 @@
     }
   ]
 }
+

@@ -2866,9 +2866,12 @@ const GAMEENGIN_PLAY_SURFACE_CSS = `
   display: grid;
   place-items: center;
   background: #000;
+  overflow: hidden;
 }
 .de-gameplay-stage-frame {
   position: relative;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #000;
 }
@@ -2878,46 +2881,51 @@ const GAMEENGIN_PLAY_SURFACE_CSS = `
 }
 .de-gameplay-remote-zone {
   position: absolute;
-  inset: auto 0 0 0;
+  inset: 0;
   z-index: 55;
+  pointer-events: none;
+}
+.de-gameplay-remote-zone > * {
   pointer-events: auto;
 }
 @media (orientation: portrait) {
   .de-gameplay-stage-area {
-    align-items: start;
-    height: 75dvh;
-    padding: env(safe-area-inset-top, 0px) 0 0;
+    inset: 0;
+    align-items: stretch;
+    justify-items: stretch;
+    height: 100dvh;
+    padding: 0;
   }
   .de-gameplay-stage-frame {
-    width: min(100vw, calc(75dvh * 9 / 16));
-    height: min(75dvh, calc(100vw * 16 / 9));
-    aspect-ratio: 9 / 16;
+    width: 100vw;
+    height: 100dvh;
+    max-width: 100vw;
+    max-height: 100dvh;
+    aspect-ratio: auto;
   }
   .de-gameplay-remote-zone {
-    height: 25dvh;
-    min-height: 190px;
+    inset: 0;
+    height: auto;
+    min-height: 0;
   }
 }
 @media (orientation: landscape) {
   .de-gameplay-stage-area {
-    left: 15vw;
-    right: 15vw;
-    top: 0;
-    bottom: 0;
+    inset: 0;
+    align-items: stretch;
+    justify-items: stretch;
+    height: 100dvh;
+    padding: 0;
   }
   .de-gameplay-stage-frame {
-    width: 70vw;
-    height: min(100dvh, calc(70vw * 9 / 16));
-    aspect-ratio: 16 / 9;
+    width: 100vw;
+    height: 100dvh;
+    max-width: 100vw;
+    max-height: 100dvh;
+    aspect-ratio: auto;
   }
   .de-gameplay-remote-zone {
-    position: absolute;
     inset: 0;
-    z-index: 55;
-    pointer-events: none;
-  }
-  .de-gameplay-remote-zone > * {
-    pointer-events: auto;
   }
 }
 `;

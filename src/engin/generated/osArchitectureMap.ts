@@ -23,7 +23,7 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 2,
   "daydream": 0,
-  "surface": 277,
+  "surface": 276,
   "route-surface": 261,
   "dreamsurface": 37,
   "engin": 15,
@@ -40,7 +40,7 @@ export const osSlotCounts = {
   "memory": 6,
   "dr-eams-tool": 3,
   "hook": 12,
-  "engine-system": 74,
+  "engine-system": 73,
   "engine-utility": 308
 } as const;
 
@@ -391,7 +391,7 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 2,
     "daydream": 0,
-    "surface": 277,
+    "surface": 276,
     "route-surface": 261,
     "dreamsurface": 37,
     "engin": 15,
@@ -408,7 +408,7 @@ export const osArchitectureGraph = {
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 74,
+    "engine-system": 73,
     "engine-utility": 308
   }
 } as const;
@@ -2955,9 +2955,9 @@ export const osArchitectureStageEntries = {
       "engine": "GameEngin"
     },
     {
-      "id": "components/games/dream.AvenueOfMirrors",
+      "id": "components/games/dream.MadMaxiWildfall",
       "slot": "surface",
-      "path": "components/games/dream.AvenueOfMirrors.tsx",
+      "path": "components/games/dream.MadMaxiWildfall.tsx",
       "engine": "GameEngin"
     },
     {
@@ -3030,12 +3030,6 @@ export const osArchitectureStageEntries = {
       "id": "components/games/dream.LexiconSolitaire",
       "slot": "surface",
       "path": "components/games/dream.LexiconSolitaire.tsx",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "components/games/dream.MadMaxiWildfall",
-      "slot": "surface",
-      "path": "components/games/dream.MadMaxiWildfall.tsx",
       "engine": "GameEngin"
     },
     {
@@ -6346,12 +6340,6 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "lib/games/lucid-avenue-world",
-      "slot": "engine-system",
-      "path": "lib/games/lucid-avenue-world.ts",
-      "engine": "Universal"
-    },
-    {
       "id": "lib/games/madmaxi-wildfall-world",
       "slot": "engine-system",
       "path": "lib/games/madmaxi-wildfall-world.ts",
@@ -7829,7 +7817,7 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 2 |
 | daydream | 0 |
-| surface | 277 |
+| surface | 276 |
 | route-surface | 261 |
 | dreamsurface | 37 |
 | engin | 15 |
@@ -7846,7 +7834,7 @@ User Action / Agent / CI
 | memory | 6 |
 | dr-eams-tool | 3 |
 | hook | 12 |
-| engine-system | 74 |
+| engine-system | 73 |
 | engine-utility | 308 |
 
 ## Architecture Stages
@@ -7917,3 +7905,4 @@ export type OsSlotCounts = typeof osSlotCounts;
 export type OsGeneratedRouters = typeof osGeneratedRouters;
 export type OsArchitectureGraph = typeof osArchitectureGraph;
 export type OsArchitectureStageEntries = typeof osArchitectureStageEntries;
+

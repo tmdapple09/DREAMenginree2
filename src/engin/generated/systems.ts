@@ -207,7 +207,6 @@ export const systems = {
   "lib/games/gameControllerRight": () => import("@/lib/games/gameControllerRight"),
   "lib/games/hooks": () => import("@/lib/games/hooks"),
   "lib/games/library-state": () => import("@/lib/games/library-state"),
-  "lib/games/lucid-avenue-world": () => import("@/lib/games/lucid-avenue-world"),
   "lib/games/madmaxi-wildfall-world": () => import("@/lib/games/madmaxi-wildfall-world"),
   "lib/games/mobileControls": () => import("@/lib/games/mobileControls"),
   "lib/games/navigation": () => import("@/lib/games/navigation"),
@@ -386,3 +385,4 @@ export const systems = {
 };
 
 export type SystemsMap = typeof systems;
+

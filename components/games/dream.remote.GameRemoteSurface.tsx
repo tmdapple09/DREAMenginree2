@@ -9,7 +9,8 @@ import { useCallback, useRef, useState } from 'react';
  *
  * Left stick: forward / backward / strafe left / strafe right.
  * Right stick: look up / look down / rotate left / rotate right.
- * Ring buttons: ability, swap, strike, guard, dash, pause.
+ * Right ring: 8-button clock map around the right stick.
+ * Center button: game menu / pause surface.
  */
 
 export type GameInputAction =
@@ -18,7 +19,9 @@ export type GameInputAction =
   | 'look-up' | 'look-down' | 'turn-left' | 'turn-right' | 'look-stop'
   | 'ability' | 'swap' | 'strike' | 'guard' | 'dash'
   | 'jump' | 'duck' | 'spin' | 'shoot' | 'jump-spin' | 'jump-shoot'
-  | 'l2' | 'r1' | 'l3' | 'r3' | 'sprint' | 'pause';
+  | 'x' | 'circle' | 'triangle' | 'square'
+  | 'l1' | 'l2' | 'r1' | 'r2' | 'l3' | 'r3'
+  | 'sprint' | 'pause' | 'record-save';
 
 type Dir8 = 'right' | 'down-right' | 'down' | 'down-left' | 'left' | 'up-left' | 'up' | 'up-right';
 
@@ -70,13 +73,17 @@ const RIGHT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
   'down-right': { action: 'turn-right', label: 'ROTATE RIGHT' },
 };
 
-const RING_BUTTONS: readonly Array<{ sym: string; label: string; action: GameInputAction; color: string; top: number; left: number }> = [
-  { sym: 'A', label: 'Ability', action: 'ability', color: '#38bdf8', top: 0, left: 103 },
-  { sym: 'SW', label: 'Swap', action: 'swap', color: '#a78bfa', top: 48, left: 18 },
-  { sym: 'ST', label: 'Strike', action: 'strike', color: '#f87171', top: 48, left: 188 },
-  { sym: 'G', label: 'Guard', action: 'guard', color: '#4ade80', top: 156, left: 18 },
-  { sym: 'D', label: 'Dash', action: 'dash', color: '#fbbf24', top: 156, left: 188 },
-  { sym: '⏸', label: 'Pause', action: 'pause', color: '#94a3b8', top: 206, left: 103 },
+const RING_BUTTONS: ReadonlyArray<{ sym: string; label: string; action: GameInputAction; color: string; top: number; left: number }> = [
+  // Clock map around the right joystick:
+  // 12=X, 1–2=R1, 3=Circle, 4–5=R2, 6=Triangle, 7–8=L2, 9=Square, 10–11=L1.
+  { sym: 'X',  label: 'X',        action: 'jump',       color: '#38bdf8', top: 0,   left: 112 },
+  { sym: 'R1', label: 'R1',       action: 'r1',       color: '#818cf8', top: 31,  left: 194 },
+  { sym: '○',  label: 'Circle',   action: 'shoot',      color: '#f87171', top: 112, left: 226 },
+  { sym: 'R2', label: 'R2',       action: 'jump-shoot', color: '#f97316', top: 194, left: 194 },
+  { sym: '△',  label: 'Triangle', action: 'duck',       color: '#4ade80', top: 226, left: 112 },
+  { sym: 'L2', label: 'L2',       action: 'l2',       color: '#a78bfa', top: 194, left: 30 },
+  { sym: '□',  label: 'Square',   action: 'spin',       color: '#38bdf8', top: 112, left: 0 },
+  { sym: 'L1', label: 'L1',       action: 'jump-spin',  color: '#fbbf24', top: 31,  left: 30 },
 ];
 
 function fireAction(action: GameInputAction, active: boolean): void {
@@ -119,7 +126,13 @@ function Stick({ side, label, scale, accent }: StickProps) {
   const releaseActive = useCallback(() => {
     if (activeActionRef.current) fireAction(activeActionRef.current, false);
     if (side === 'left') fireAction('move-stop', true), fireAction('move-stop', false);
-    if (side === 'right') fireAction('look-stop', true), fireAction('look-stop', false);
+    if (side === 'right') {
+      fireAction('look-stop', true);
+      fireAction('look-stop', false);
+      fireAction('sprint', false);
+      fireAction('jump', true);
+      fireAction('jump', false);
+    }
     activeActionRef.current = null;
     prevDirRef.current = null;
     centerRef.current = null;
@@ -160,6 +173,7 @@ function Stick({ side, label, scale, accent }: StickProps) {
           event.currentTarget.setPointerCapture(event.pointerId);
           const rect = event.currentTarget.getBoundingClientRect();
           centerRef.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+          if (side === 'right') fireAction('sprint', true);
           move(event.clientX, event.clientY);
         }}
         onPointerMove={(event) => { event.preventDefault(); move(event.clientX, event.clientY); }}
@@ -214,17 +228,61 @@ function RingButton({ sym, label, action, color, top, left, scale }: (typeof RIN
   );
 }
 
-export default function GameRemote({ embedded = false, gameLabel, onExit, enabled = true, scale = 1 }: GameRemoteProps) {
+export default function GameRemote({ embedded = false, gameLabel, onBack, onExit, enabled = true, scale = 1 }: GameRemoteProps) {
   const { connected: gpConnected, gamepadName } = useGamepad();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
   if (!enabled) return null;
 
-  const embeddedScale = embedded ? scale * 0.9 : scale;
-  const rightClusterScale = embedded ? scale * 0.92 : scale;
+  const embeddedScale = embedded ? scale * 0.94 : scale;
+  const rightClusterScale = embedded ? scale * 0.96 : scale;
   const gpNameLower = gamepadName.toLowerCase();
   const isDualSense = gpNameLower.includes('dualsense') || gpNameLower.includes('playstation') || gpNameLower.includes('ps5') || gpNameLower.includes('ps4');
 
+  const pulseAction = (action: GameInputAction) => {
+    fireAction(action, true);
+    if (typeof window !== 'undefined') window.setTimeout(() => fireAction(action, false), 0);
+    else fireAction(action, false);
+  };
+
+  const openGameMenu = () => {
+    setMenuOpen(true);
+    pulseAction('pause');
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('de-game-menu', { detail: { open: true, source: 'remote' } }));
+    }
+  };
+
+  const closeGameMenu = () => {
+    setMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('de-game-menu', { detail: { open: false, source: 'remote' } }));
+    }
+  };
+
+  const handleBack = () => {
+    closeGameMenu();
+    if (onExit) onExit();
+    else if (onBack) onBack();
+  };
+
+  const handleRecordSave = () => {
+    pulseAction('record-save');
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('de-game-record-save', { detail: { source: 'remote', gameLabel } }));
+    }
+  };
+
   return (
-    <div className="de-game-remote" data-embedded={embedded ? 'true' : 'false'}>
+    <div
+      className="de-game-remote"
+      data-embedded={embedded ? 'true' : 'false'}
+      data-touching={isTouching ? 'true' : 'false'}
+      data-menu-open={menuOpen ? 'true' : 'false'}
+      onPointerDownCapture={() => setIsTouching(true)}
+      onPointerUpCapture={() => setIsTouching(false)}
+      onPointerCancelCapture={() => setIsTouching(false)}
+    >
       <style>{REMOTE_CSS}</style>
       <div className="de-game-remote-topline">
         <div>
@@ -244,19 +302,31 @@ export default function GameRemote({ embedded = false, gameLabel, onExit, enable
           <button
             type="button"
             className="de-game-remote-pause"
-            onPointerDown={() => fireAction('pause', true)}
-            onPointerUp={() => fireAction('pause', false)}
-            onPointerCancel={() => fireAction('pause', false)}
+            aria-label="Open game menu"
+            onClick={(event) => {
+              event.preventDefault();
+              if (menuOpen) closeGameMenu();
+              else openGameMenu();
+            }}
           >
             ⏸
           </button>
           <div className="de-game-remote-map">L: move + strafe<br />R: camera + rotate</div>
         </div>
-        <div className="de-game-remote-rightCluster" style={{ width: 240 * rightClusterScale, height: 240 * rightClusterScale }}>
+        <div className="de-game-remote-rightCluster" style={{ width: 270 * rightClusterScale, height: 270 * rightClusterScale }}>
           <Stick side="right" label="Camera / Rotate" accent="#c8981a" scale={rightClusterScale} />
           {RING_BUTTONS.map((button) => <RingButton key={button.action} {...button} scale={rightClusterScale} />)}
         </div>
       </div>
+      {menuOpen && (
+        <div className="de-game-remote-menu" role="dialog" aria-label="Game menu">
+          <div className="de-game-remote-menuCard">
+            <div className="de-game-remote-menuTitle">Game menu</div>
+            <button type="button" className="de-game-remote-menuButton" onClick={handleBack}>Back</button>
+            <button type="button" className="de-game-remote-menuButton" onClick={handleRecordSave}>Record / Save</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -276,15 +346,18 @@ const REMOTE_CSS = `
 }
 .de-game-remote[data-embedded="true"] {
   min-height: 100%;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
 }
 .de-game-remote-topline {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px 4px;
+}
+.de-game-remote[data-embedded="true"] .de-game-remote-topline {
+  display: none;
 }
 .de-game-remote-eyebrow {
   font-size: 9px;
@@ -322,11 +395,21 @@ const REMOTE_CSS = `
 }
 .de-game-remote-controls {
   display: grid;
-  grid-template-columns: minmax(118px, 1fr) minmax(56px, .36fr) minmax(180px, 1fr);
+  grid-template-columns: minmax(118px, 1fr) minmax(56px, .36fr) minmax(206px, 1fr);
   align-items: center;
   justify-items: center;
   gap: clamp(8px, 2vw, 18px);
   padding: 4px 16px 14px;
+}
+.de-game-remote[data-embedded="true"] .de-game-remote-controls {
+  opacity: .42;
+  transition: opacity 130ms ease;
+}
+.de-game-remote[data-embedded="true"][data-touching="true"][data-menu-open="false"] .de-game-remote-controls {
+  opacity: 0;
+}
+.de-game-remote[data-embedded="true"][data-menu-open="true"] .de-game-remote-controls {
+  opacity: .82;
 }
 .de-game-remote-stickWrap {
   display: grid;
@@ -403,53 +486,100 @@ const REMOTE_CSS = `
   place-items: center;
   touch-action: none;
 }
+.de-game-remote-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  background: rgba(2,6,23,.28);
+}
+.de-game-remote-menuCard {
+  display: grid;
+  gap: 10px;
+  min-width: 172px;
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(160,195,240,.22);
+  background: rgba(2,6,23,.86);
+  box-shadow: 0 16px 48px rgba(0,0,0,.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.de-game-remote-menuTitle {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: rgba(226,232,240,.78);
+}
+.de-game-remote-menuButton {
+  border: 1px solid rgba(160,195,240,.22);
+  background: rgba(160,195,240,.10);
+  color: #f8fbff;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 900;
+}
 @media (orientation: landscape) {
-  .de-game-remote[data-embedded="true"] {
-    border: 0;
-    background: transparent;
-    pointer-events: none;
-  }
-  .de-game-remote[data-embedded="true"] .de-game-remote-topline {
-    position: absolute;
-    left: 15vw;
-    right: 15vw;
-    bottom: env(safe-area-inset-bottom, 0px);
-    padding: 8px 14px;
-    pointer-events: auto;
-    background: rgba(2,6,23,.72);
-    border-top: 1px solid rgba(160,195,240,.12);
-  }
   .de-game-remote[data-embedded="true"] .de-game-remote-controls {
     position: fixed;
     inset: 0;
-    display: grid;
-    grid-template-columns: 15vw 70vw 15vw;
+    display: block;
     padding: 0;
     pointer-events: none;
   }
-  .de-game-remote[data-embedded="true"] .de-game-remote-stickWrap,
-  .de-game-remote[data-embedded="true"] .de-game-remote-rightCluster,
-  .de-game-remote[data-embedded="true"] .de-game-remote-center {
+  .de-game-remote[data-embedded="true"] .de-game-remote-controls > .de-game-remote-stickWrap:first-child {
+    position: absolute;
+    left: max(20px, 4vw);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 56px);
+    pointer-events: auto;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-rightCluster {
+    position: absolute;
+    right: max(18px, 3vw);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 36px);
     pointer-events: auto;
   }
   .de-game-remote[data-embedded="true"] .de-game-remote-center {
-    align-self: end;
-    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 48px);
-  }
-  .de-game-remote[data-embedded="true"] .de-game-remote-stick {
-    transform: scale(1.12);
+    position: absolute;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+    transform: translateX(-50%);
+    pointer-events: auto;
   }
 }
 @media (orientation: portrait) {
-  .de-game-remote[data-embedded="true"] .de-game-remote-topline {
-    padding-top: 8px;
-  }
   .de-game-remote[data-embedded="true"] .de-game-remote-controls {
-    grid-template-columns: 1fr .26fr 1fr;
-    padding: 0 10px 10px;
-    gap: 8px;
+    position: fixed;
+    inset: 0;
+    display: block;
+    padding: 0;
+    pointer-events: none;
   }
-  .de-game-remote[data-embedded="true"] .de-game-remote-device {
+  .de-game-remote[data-embedded="true"] .de-game-remote-controls > .de-game-remote-stickWrap:first-child {
+    position: absolute;
+    left: max(12px, 3vw);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
+    pointer-events: auto;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-rightCluster {
+    position: absolute;
+    right: max(-4px, 1vw);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 76px);
+    pointer-events: auto;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-center {
+    position: absolute;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 36px);
+    transform: translateX(-50%);
+    pointer-events: auto;
+  }
+  .de-game-remote[data-embedded="true"] .de-game-remote-device,
+  .de-game-remote[data-embedded="true"] .de-game-remote-map {
     display: none;
   }
 }

@@ -16,3 +16,4 @@ export const hooks = {
 };
 
 export type HooksMap = typeof hooks;
+
