@@ -1,10 +1,17 @@
 import {
+  attachCoherenceReport,
   createBaseState,
+  createCoherenceCapacity,
+  createCoherenceReport,
+  createRuntimeLoad,
   isEnginBaseState,
   patchBaseState,
+  type CoherenceCapacity,
   type EnginBaseState,
   type EnginLifecycle,
   type JsonObject,
+  type RuntimeCoherenceReport,
+  type RuntimeLoad,
 } from './EnginBaseState';
 import {
   DEFAULT_USER_CAPABILITIES,
@@ -90,6 +97,7 @@ export const ENGIN_RUNTIME_FEATURES: readonly EnginRuntimeFeature[] = [
   'sync-transport',
   'state-snapshotting',
   'compatibility-negotiation',
+  'coherence-under-load',
 ] as const;
 
 const DEFAULT_MAX_SNAPSHOTS = 48;
@@ -118,6 +126,7 @@ export interface EnginRuntimeOptions {
   syncTransport?: EnginSyncTransport;
   runtimeId?: string;
   maxSnapshots?: number;
+  coherenceCapacity?: Partial<CoherenceCapacity>;
 }
 
 export interface EnginHardwareAccelerationState {
@@ -157,6 +166,36 @@ function cloneState(state: EnginBaseState): EnginBaseState {
   return clone;
 }
 
+
+function decayRuntimeLoad(load: RuntimeLoad): RuntimeLoad {
+  return createRuntimeLoad({
+    eventPressure: load.eventPressure * 0.64,
+    stateDrift: load.stateDrift * 0.5,
+    conflictCount: load.conflictCount * 0.78,
+    latencyPressure: load.latencyPressure * 0.55,
+    invalidMutationCount: load.invalidMutationCount * 0.82,
+    unresolvedIntentCount: load.unresolvedIntentCount * 0.82,
+  });
+}
+
+function mergeRuntimeLoad(current: RuntimeLoad, patch: Partial<RuntimeLoad>): RuntimeLoad {
+  const decayed = decayRuntimeLoad(current);
+  return createRuntimeLoad({
+    eventPressure: Math.max(decayed.eventPressure, patch.eventPressure ?? 0),
+    stateDrift: Math.max(decayed.stateDrift, patch.stateDrift ?? 0),
+    conflictCount: Math.max(decayed.conflictCount, patch.conflictCount ?? 0),
+    latencyPressure: Math.max(decayed.latencyPressure, patch.latencyPressure ?? 0),
+    invalidMutationCount: Math.max(
+      decayed.invalidMutationCount,
+      patch.invalidMutationCount ?? 0,
+    ),
+    unresolvedIntentCount: Math.max(
+      decayed.unresolvedIntentCount,
+      patch.unresolvedIntentCount ?? 0,
+    ),
+  });
+}
+
 export class EnginRuntime<
   A extends EnginAction = EnginAction,
   DomainEvents extends Record<string, object> = Record<string, object>,
@@ -180,6 +219,11 @@ export class EnginRuntime<
   private _lastRuntimeWorkFlushedRevision = 0;
   private _queuedRuntimeWorkRevision: number | null = null;
   private _queuedRuntimeWorkReason: RuntimeWorkFlushResult['reason'] | null = null;
+  private _runtimeLoad: RuntimeLoad = createRuntimeLoad();
+  private readonly _coherenceCapacity: CoherenceCapacity;
+  private _lastCoherenceReport: RuntimeCoherenceReport;
+  private _lastActionAt = 0;
+  private _lastCoherenceSnapshotRevision = -1;
 
   private readonly _lifecycleHooks = new Set<
     (lifecycle: EnginLifecycle, state: Readonly<EnginBaseState>) => void
@@ -237,12 +281,28 @@ export class EnginRuntime<
     this._sync = options.syncTransport ?? new MemorySyncTransport();
     this._runtimeId = options.runtimeId ?? ruleSet.params.enginId;
     this._maxSnapshots = Math.max(1, Math.floor(options.maxSnapshots ?? DEFAULT_MAX_SNAPSHOTS));
+    this._coherenceCapacity = createCoherenceCapacity(options.coherenceCapacity);
     this._state = createBaseState(ruleSet.params.enginId);
+    this._lastCoherenceReport = createCoherenceReport(
+      this._runtimeLoad,
+      this._coherenceCapacity,
+      this._state.revision,
+    );
+    this._state = attachCoherenceReport(this._state, this._lastCoherenceReport);
     this.bus = createEnginEventBus<DomainEvents>();
   }
 
   get state(): Readonly<EnginBaseState> {
     return this._state;
+  }
+
+  get coherence(): RuntimeCoherenceReport {
+    return {
+      ...this._lastCoherenceReport,
+      load: { ...this._lastCoherenceReport.load },
+      capacity: { ...this._lastCoherenceReport.capacity },
+      reasons: [...this._lastCoherenceReport.reasons],
+    };
   }
 
   getDerivedState(): JsonObject {
@@ -364,6 +424,7 @@ export class EnginRuntime<
     }
 
     this._state = cloneState(snapshot);
+    this.applyRuntimeCoherence({ stateDrift: 0 }, 'restore:snapshot');
 
     this._emitLifecycle('engin:state', {
       enginId: this._state.enginId,
@@ -387,6 +448,8 @@ export class EnginRuntime<
         payload as Parameters<typeof this.bus.emit>[1],
       );
 
+    this.recordActionPressure();
+
     const capabilityKey = (action as A & { __capability?: string }).__capability;
 
     if (typeof capabilityKey === 'string') {
@@ -396,6 +459,7 @@ export class EnginRuntime<
       );
 
       if (!gate.granted) {
+        this.recordRejectedAction('capability-denied');
         _emit('engin:error', {
           enginId: this._state.enginId,
           message: gate.reason ?? 'Action denied: capability not granted.',
@@ -405,6 +469,7 @@ export class EnginRuntime<
     }
 
     if (!this._ruleSet.manifest.schema.actionTypes.includes(action.type)) {
+      this.recordRejectedAction('undeclared-action');
       _emit('engin:error', {
         enginId: this._state.enginId,
         message: `Action '${action.type}' is not allowed by the active rule-set schema.`,
@@ -416,6 +481,7 @@ export class EnginRuntime<
       this._ruleSet.manifest.schema.validateAction?.(action) ?? { valid: true };
 
     if (!actionSchemaResult.valid) {
+      this.recordRejectedAction('schema-validation');
       _emit('engin:error', {
         enginId: this._state.enginId,
         message: actionSchemaResult.reason ?? 'Action failed rule-set schema validation.',
@@ -427,6 +493,7 @@ export class EnginRuntime<
       const result = constraint(this._state, action);
 
       if (!result.valid) {
+        this.recordRejectedAction('constraint-conflict');
         _emit('engin:error', {
           enginId: this._state.enginId,
           message: result.reason ?? 'Action rejected by constraint.',
@@ -435,7 +502,9 @@ export class EnginRuntime<
       }
     }
 
+    const currentRevision = this._state.revision;
     const next = this._ruleSet.transform(this._state, action);
+    const stateDrift = Math.max(0, Math.abs(next.revision - currentRevision - 1));
     const stateSchemaResult = validateRuleSetState(
       next,
       this._ruleSet.manifest.schema,
@@ -446,10 +515,13 @@ export class EnginRuntime<
       next.enginId !== this._state.enginId ||
       !stateSchemaResult.valid
     ) {
+      this.recordRejectedAction('invalid-transform');
+      this.rememberSnapshot(this._state);
       throw new Error('Rule-set transform returned an invalid Engin base state.');
     }
 
     this._state = next;
+    this.applyRuntimeCoherence({ stateDrift }, `action:${action.type}`);
 
     _emit('engin:state', {
       enginId: this._state.enginId,
@@ -459,6 +531,97 @@ export class EnginRuntime<
     this.afterActionApplied(action, metadata);
 
     return this._state.revision === next.revision;
+  }
+
+  reportRuntimePressure(
+    load: Partial<RuntimeLoad>,
+    reason = 'external-runtime-pressure',
+  ): RuntimeCoherenceReport {
+    return this.applyRuntimeCoherence(load, reason);
+  }
+
+  private recordActionPressure(): void {
+    const now = Date.now();
+    const elapsed = this._lastActionAt > 0 ? now - this._lastActionAt : 0;
+    this._lastActionAt = now;
+    const eventPressure = elapsed > 0 ? 1000 / Math.max(1, elapsed) : 0;
+    this.applyRuntimeCoherence({ eventPressure, latencyPressure: Math.max(0, elapsed) }, 'action-pressure');
+  }
+
+  private recordRejectedAction(reason: string): RuntimeCoherenceReport {
+    return this.applyRuntimeCoherence({
+      conflictCount: this._runtimeLoad.conflictCount + 1,
+      invalidMutationCount: this._runtimeLoad.invalidMutationCount + 1,
+    }, reason);
+  }
+
+  private applyRuntimeCoherence(
+    load: Partial<RuntimeLoad>,
+    reason: string,
+  ): RuntimeCoherenceReport {
+    this._runtimeLoad = mergeRuntimeLoad(this._runtimeLoad, load);
+    const reasons = [
+      reason,
+      ...createCoherenceReport(this._runtimeLoad, this._coherenceCapacity, this._state.revision).reasons,
+    ];
+    const report = createCoherenceReport(
+      this._runtimeLoad,
+      this._coherenceCapacity,
+      this._state.revision,
+      Array.from(new Set(reasons)),
+    );
+
+    const previous = this._lastCoherenceReport;
+    this._lastCoherenceReport = report;
+    this._state = attachCoherenceReport(this._state, report);
+
+    if (
+      previous.state !== report.state ||
+      previous.transform !== report.transform ||
+      previous.revision !== report.revision
+    ) {
+      this._emitLifecycle('engin:coherence', {
+        enginId: this._state.enginId,
+        report,
+      });
+    }
+
+    this.enactCoherenceTransform(report);
+
+    return report;
+  }
+
+  private enactCoherenceTransform(report: RuntimeCoherenceReport): void {
+    if (this._state.lifecycle === 'stopped') return;
+
+    if (
+      report.transform === 'snapshot' &&
+      this._lastCoherenceSnapshotRevision !== this._state.revision
+    ) {
+      this.rememberSnapshot(this._state);
+      this._lastCoherenceSnapshotRevision = this._state.revision;
+      return;
+    }
+
+    if (
+      report.transform === 'stabilize' &&
+      this._state.revision > this._lastRuntimeWorkFlushedRevision
+    ) {
+      this._queuedRuntimeWorkRevision = Math.max(
+        this._queuedRuntimeWorkRevision ?? 0,
+        this._state.revision,
+      );
+      this._queuedRuntimeWorkReason = 'microtask';
+      this.scheduleRuntimeWork();
+      return;
+    }
+
+    if (
+      (report.transform === 'redistribute' || report.transform === 'degrade') &&
+      this._state.revision > this._lastRuntimeWorkFlushedRevision
+    ) {
+      this.flushRuntimeWork('manual');
+    }
   }
 
   private afterActionApplied(action: A, metadata: HotActionMetadata): void {
@@ -784,6 +947,7 @@ export class EnginRuntime<
     if (!schemaResult.valid) return false;
 
     this._state = restoredState;
+    this.applyRuntimeCoherence({ stateDrift: 0 }, 'restore:domain-state');
 
     this._emitLifecycle('engin:restored', {
       enginId: this._state.enginId,

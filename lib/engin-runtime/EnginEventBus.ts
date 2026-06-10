@@ -1,3 +1,4 @@
+import type { RuntimeCoherenceReport } from './EnginBaseState';
 // Framework directives stay physically first when required.
 
 // Runtime file: lib/engin-runtime/EnginEventBus.ts.
@@ -27,6 +28,7 @@ export interface EnginLifecycleEvents extends Record<string, object> {
   'engin:stopped': { enginId: string };
   'engin:error': { enginId: string; message: string; cause?: string };
   'engin:state': { enginId: string; revision: number };
+  'engin:coherence': { enginId: string; report: RuntimeCoherenceReport };
   'engin:persisted': { enginId: string; key: string };
   'engin:restored': { enginId: string; key: string };
 }

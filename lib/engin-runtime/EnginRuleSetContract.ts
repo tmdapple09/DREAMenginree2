@@ -54,7 +54,8 @@ export type EnginRuntimeFeature =
   | 'strict-intent-routing'
   | 'sync-transport'
   | 'state-snapshotting'
-  | 'compatibility-negotiation';
+  | 'compatibility-negotiation'
+  | 'coherence-under-load';
 
 export interface EnginCompatibilityRange {
   /** Minimum ι-Engine runtime version this ruleset can run on. */

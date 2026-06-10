@@ -13,10 +13,15 @@ import {
 } from '@/lib/forge/forgeRegistry';
 import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
 import {
+  createCoherenceCapacity,
+  createCoherenceReport,
+  createRuntimeLoad,
   isDomainObject,
   type DomainObject,
   type JsonObject,
   type JsonValue,
+  type RuntimeCoherenceReport,
+  type RuntimeLoad,
 } from '@/lib/engin-runtime/EnginBaseState';
 import {
   authorizeDomainCapability,
@@ -33,6 +38,14 @@ import {
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const MAX_ARTIFACTS = 48;
+
+const INTENT_BUS_COHERENCE_CAPACITY = createCoherenceCapacity({
+  maxEventPressure: 36,
+  maxConflictCount: 4,
+  maxLatencyPressure: 320,
+  maxInvalidMutations: 3,
+  maxUnresolvedIntents: 6,
+});
 
 /**
  * DreamDMBar is the permanent exchange capability, not merely its divider seam.
@@ -211,6 +224,30 @@ export interface CapabilityDescriptor {
 
 // Runtime functions, classes, handlers, and state transitions.
 
+function decayIntentLoad(load: RuntimeLoad): RuntimeLoad {
+  return createRuntimeLoad({
+    eventPressure: load.eventPressure * 0.62,
+    stateDrift: load.stateDrift * 0.5,
+    conflictCount: load.conflictCount * 0.78,
+    latencyPressure: load.latencyPressure * 0.55,
+    invalidMutationCount: load.invalidMutationCount * 0.82,
+    unresolvedIntentCount: load.unresolvedIntentCount * 0.82,
+  });
+}
+
+function mergeIntentLoad(current: RuntimeLoad, patch: Partial<RuntimeLoad>): RuntimeLoad {
+  const decayed = decayIntentLoad(current);
+  return createRuntimeLoad({
+    eventPressure: Math.max(decayed.eventPressure, patch.eventPressure ?? 0),
+    stateDrift: Math.max(decayed.stateDrift, patch.stateDrift ?? 0),
+    conflictCount: Math.max(decayed.conflictCount, patch.conflictCount ?? 0),
+    latencyPressure: Math.max(decayed.latencyPressure, patch.latencyPressure ?? 0),
+    invalidMutationCount: Math.max(decayed.invalidMutationCount, patch.invalidMutationCount ?? 0),
+    unresolvedIntentCount: Math.max(decayed.unresolvedIntentCount, patch.unresolvedIntentCount ?? 0),
+  });
+}
+
+
 export function isIntentEnvelope(value: unknown): value is IntentEnvelope {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   if (!isDomainObject(value)) return false;
@@ -366,6 +403,14 @@ class DreamOSBusImpl {
     string,
     Promise<IntentDispatchResult>
   >();
+  private intentLoad = createRuntimeLoad();
+  private lastIntentAt = 0;
+  private intentCoherence: RuntimeCoherenceReport = createCoherenceReport(
+    createRuntimeLoad(),
+    INTENT_BUS_COHERENCE_CAPACITY,
+    0,
+    ['intent-bus:init'],
+  );
   private readonly customEventListeners = new Map<
     DreamOSCustomEventName,
     Set<(payload: DreamArtifactBusEventMap[DreamOSCustomEventName]) => void>
@@ -410,8 +455,13 @@ class DreamOSBusImpl {
       intent.data.targetRuntimeId &&
       !context.surfaceRuntimeIds.includes(intent.data.targetRuntimeId)
     ) {
+      this.recordIntentPressure('target-outside-surface', {
+        conflictCount: this.intentLoad.conflictCount + 1,
+        unresolvedIntentCount: this.intentLoad.unresolvedIntentCount + 1,
+      });
       throw new Error('Intent target runtime is outside the active surface scope.');
     }
+    this.recordIntentArrival(intent);
     if (this.handledIntentIds.has(intent.id))
       return { handled: true, replayed: true };
     const pending = this.pendingIntents.get(intent.id);
@@ -420,21 +470,37 @@ class DreamOSBusImpl {
       return { handled: true, replayed: true };
     }
     const registration = this.intentHandlers.get(intent.type);
-    if (!registration)
+    if (!registration) {
+      this.recordIntentPressure('unresolved-intent', {
+        unresolvedIntentCount: this.intentLoad.unresolvedIntentCount + 1,
+      });
       throw new Error(
         `No deterministic handler registered for intent '${intent.type}'.`,
       );
+    }
     if (
       registration.domains &&
       !registration.domains.some((domain) => intent.data.domains.includes(domain))
     ) {
+      this.recordIntentPressure('domain-conflict', {
+        conflictCount: this.intentLoad.conflictCount + 1,
+        unresolvedIntentCount: this.intentLoad.unresolvedIntentCount + 1,
+      });
       throw new Error(`Intent '${intent.type}' has no domain handled by its registered capability.`);
     }
-    if (!registration.validate(intent))
+    if (!registration.validate(intent)) {
+      this.recordIntentPressure('intent-schema-invalid', {
+        invalidMutationCount: this.intentLoad.invalidMutationCount + 1,
+        unresolvedIntentCount: this.intentLoad.unresolvedIntentCount + 1,
+      });
       throw new Error(`Intent '${intent.type}' failed schema validation.`);
+    }
 
     const execution = (async (): Promise<IntentDispatchResult> => {
       await registration.handle(intent);
+      this.recordIntentPressure('intent-handled', {
+        unresolvedIntentCount: Math.max(0, this.pendingIntents.size - 1),
+      });
       this.handledIntentIds.add(intent.id);
       this.upsertArtifact({
         id: `intent:${intent.id}`,
@@ -607,6 +673,13 @@ class DreamOSBusImpl {
     this.runtimeContexts = createRuntimeContextContainer();
     this.handledIntentIds.clear();
     this.pendingIntents.clear();
+    this.intentLoad = createRuntimeLoad();
+    this.intentCoherence = createCoherenceReport(
+      this.intentLoad,
+      INTENT_BUS_COHERENCE_CAPACITY,
+      0,
+      ['intent-bus:clear'],
+    );
     this.intentHandlers.clear();
     this.notify();
   }
@@ -631,6 +704,53 @@ class DreamOSBusImpl {
       },
       updatedAt: emission.emittedAt,
     });
+  }
+
+  getIntentCoherence(): RuntimeCoherenceReport {
+    return {
+      ...this.intentCoherence,
+      load: { ...this.intentCoherence.load },
+      capacity: { ...this.intentCoherence.capacity },
+      reasons: [...this.intentCoherence.reasons],
+    };
+  }
+
+  private recordIntentArrival(intent: IntentEnvelope): RuntimeCoherenceReport {
+    const now = Date.now();
+    const elapsed = this.lastIntentAt > 0 ? now - this.lastIntentAt : 0;
+    this.lastIntentAt = now;
+    return this.recordIntentPressure(`intent:${intent.type}`, {
+      eventPressure: elapsed > 0 ? 1000 / Math.max(1, elapsed) : 0,
+      latencyPressure: elapsed,
+      unresolvedIntentCount: this.pendingIntents.size,
+    });
+  }
+
+  private recordIntentPressure(
+    reason: string,
+    load: Partial<RuntimeLoad>,
+  ): RuntimeCoherenceReport {
+    this.intentLoad = mergeIntentLoad(this.intentLoad, load);
+    this.intentCoherence = createCoherenceReport(
+      this.intentLoad,
+      INTENT_BUS_COHERENCE_CAPACITY,
+      this.handledIntentIds.size + this.pendingIntents.size,
+      Array.from(new Set([reason])),
+    );
+
+    if (this.intentCoherence.state === 'coherent') return this.intentCoherence;
+
+    this.upsertArtifact({
+      id: 'coherence:dreamOS:intent-bus',
+      kind: 'event',
+      title: 'Runtime Coherence · Intent Bus',
+      sourceSubsystem: 'DreamOSBus',
+      relatedSubsystems: getCapabilitiesForDomains(['logic']).map((capability) => capability.id),
+      domains: ['logic', 'memory'],
+      payload: { coherence: this.intentCoherence },
+    });
+
+    return this.intentCoherence;
   }
 
   private notify(): void {

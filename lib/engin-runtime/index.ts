@@ -50,15 +50,26 @@ export function createEnginRuntime<
 // Exported declarations and re-export barrels are this file's public surface.
 
 export {
+  attachCoherenceReport,
   createBaseState,
+  createCoherenceCapacity,
+  createCoherenceReport,
   createDomainObject,
+  createRuntimeLoad,
+  evaluateCoherence,
+  explainCoherencePressure,
   isDomainObject,
   isEnginBaseState,
   isJsonObject,
   isJsonSerializable,
+  isRuntimeCoherenceReport,
   patchBaseState,
+  resolveCoherenceTransform,
 } from './EnginBaseState';
 export type {
+  CoherenceCapacity,
+  CoherenceState,
+  CoherenceTransform,
   CreateDomainObjectInput,
   DomainObject,
   DomainVisibility,
@@ -68,6 +79,8 @@ export type {
   JsonPrimitive,
   JsonValue,
   EnginLifecycle,
+  RuntimeCoherenceReport,
+  RuntimeLoad,
 } from './EnginBaseState';
 export { createEnginEventBus } from './EnginEventBus';
 export type {
