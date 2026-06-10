@@ -7,4 +7,3 @@ export const homedream = {
 };
 
 export type HomedreamMap = typeof homedream;
-
