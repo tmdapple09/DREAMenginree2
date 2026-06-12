@@ -1,0 +1,479 @@
+name: Export repo files as CSV and JSON zips
+
+on:
+  workflow_dispatch:
+    inputs:
+      strict_counts:
+        description: "Fail if exported extension counts do not match the expected counts"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  export-repo-files:
+    name: Export repo files to artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Convert repo files into CSV and JSON artifact folders
+        shell: bash
+        env:
+          STRICT_COUNTS: ${{ github.event.inputs.strict_counts || 'false' }}
+        run: |
+          python <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import csv
+          import hashlib
+          import json
+          import os
+          import re
+          import shutil
+          from collections import Counter
+          from pathlib import Path
+          from typing import Any
+
+          ROOT = Path.cwd()
+
+          EXPORT_ROOT = ROOT / "repo-export-artifacts"
+          CSV_ROOT = EXPORT_ROOT / "csv-export"
+          JSON_ROOT = EXPORT_ROOT / "json-export"
+
+          EXPECTED_COUNTS: dict[str, int] = {
+              ".ts": 923,
+              ".tsx": 438,
+              ".md": 219,
+              ".json": 88,
+              ".mjs": 29,
+              ".py": 14,
+              ".css": 8,
+              ".js": 8,
+              ".sh": 6,
+              ".svg": 10,
+              ".wasm": 3,
+              ".html": 3,
+          }
+
+          EXPORT_EXTENSIONS = set(EXPECTED_COUNTS)
+
+          OTHER_CONFIG_OR_CODE_EXTENSIONS = {
+              ".cjs",
+              ".cts",
+              ".mts",
+              ".jsx",
+              ".mdx",
+              ".yaml",
+              ".yml",
+              ".toml",
+              ".lock",
+              ".sql",
+              ".prisma",
+              ".graphql",
+              ".gql",
+          }
+
+          OTHER_CONFIG_OR_CODE_FILENAMES = {
+              "Dockerfile",
+              "Makefile",
+              "Procfile",
+              "Caddyfile",
+              "nginx.conf",
+              ".gitignore",
+              ".dockerignore",
+              ".npmrc",
+              ".nvmrc",
+              ".prettierrc",
+              ".eslintignore",
+              ".prettierignore",
+              ".browserslistrc",
+              "package.json",
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "bun.lockb",
+              "turbo.json",
+              "vercel.json",
+              "netlify.toml",
+              "next.config.js",
+              "next.config.mjs",
+              "next.config.ts",
+              "postcss.config.js",
+              "postcss.config.mjs",
+              "postcss.config.ts",
+              "tailwind.config.js",
+              "tailwind.config.mjs",
+              "tailwind.config.ts",
+              "eslint.config.js",
+              "eslint.config.mjs",
+              "eslint.config.ts",
+              "vitest.config.js",
+              "vitest.config.mjs",
+              "vitest.config.ts",
+              "playwright.config.js",
+              "playwright.config.ts",
+              "tsconfig.json",
+              "jsconfig.json",
+              "components.json",
+          }
+
+          # Existing root docs only. This workflow does not generate or rebuild these.
+          REQUIRED_ROOT_DOCS = [
+              "readme.md",
+              "Architecture.md",
+              "File_tree.md",
+          ]
+
+          IGNORE_DIRS = {
+              ".git",
+              "node_modules",
+              ".next",
+              "out",
+              "dist",
+              "build",
+              "coverage",
+              ".vercel",
+              ".turbo",
+              ".cache",
+              ".parcel-cache",
+              ".pnpm-store",
+              ".yarn",
+              ".swc",
+              "__pycache__",
+              ".pytest_cache",
+              ".mypy_cache",
+              ".ruff_cache",
+              "repo-export-artifacts",
+          }
+
+          SAFE_ENV_FILES = {
+              ".env.example",
+              ".env.sample",
+              ".env.template",
+              ".env.local.example",
+              ".env.development.example",
+              ".env.production.example",
+          }
+
+          def relative(path: Path) -> str:
+              return path.relative_to(ROOT).as_posix()
+
+          def has_ignored_parent(path: Path) -> bool:
+              return any(part in IGNORE_DIRS for part in path.relative_to(ROOT).parts)
+
+          def is_secret_env_file(path: Path) -> bool:
+              name = path.name
+              if name in SAFE_ENV_FILES:
+                  return False
+              return name == ".env" or name.startswith(".env.")
+
+          def should_export(path: Path) -> bool:
+              if not path.is_file():
+                  return False
+
+              if has_ignored_parent(path):
+                  return False
+
+              if is_secret_env_file(path):
+                  return False
+
+              suffix = path.suffix.lower()
+              name = path.name
+
+              if suffix in EXPORT_EXTENSIONS:
+                  return True
+
+              if suffix in OTHER_CONFIG_OR_CODE_EXTENSIONS:
+                  return True
+
+              if name in OTHER_CONFIG_OR_CODE_FILENAMES:
+                  return True
+
+              return False
+
+          def is_binary_file(data: bytes, suffix: str) -> bool:
+              if suffix == ".wasm":
+                  return True
+              return b"\x00" in data[:4096]
+
+          def safe_output_name(rel_path: str, suffix: str) -> str:
+              safe = rel_path.replace("\\", "/")
+              safe = re.sub(r"[^A-Za-z0-9._/-]+", "_", safe)
+              safe = safe.replace("/", "__")
+              digest = hashlib.sha256(rel_path.encode("utf-8")).hexdigest()[:12]
+
+              if len(safe) > 180:
+                  safe = safe[-180:]
+
+              return f"{safe}.{digest}{suffix}"
+
+          def read_record(path: Path) -> dict[str, Any]:
+              rel_path = relative(path)
+              data = path.read_bytes()
+              suffix = path.suffix.lower()
+              binary = is_binary_file(data, suffix)
+
+              if binary:
+                  content_text = ""
+                  content_base64 = base64.b64encode(data).decode("ascii")
+                  encoding = "base64"
+              else:
+                  try:
+                      content_text = data.decode("utf-8")
+                      encoding = "utf-8"
+                  except UnicodeDecodeError:
+                      content_text = data.decode("utf-8", errors="replace")
+                      encoding = "utf-8-replacement"
+
+                  content_base64 = ""
+
+              return {
+                  "path": rel_path,
+                  "file_name": path.name,
+                  "extension": suffix if suffix else "[no extension]",
+                  "size_bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest(),
+                  "is_binary": binary,
+                  "encoding": encoding,
+                  "content_text": content_text,
+                  "content_base64": content_base64,
+              }
+
+          def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", encoding="utf-8", newline="") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+          def copy_required_root_docs() -> list[dict[str, Any]]:
+              report: list[dict[str, Any]] = []
+              missing: list[str] = []
+
+              for doc_name in REQUIRED_ROOT_DOCS:
+                  src = ROOT / doc_name
+
+                  if not src.is_file():
+                      missing.append(doc_name)
+                      report.append({
+                          "file": doc_name,
+                          "found": False,
+                          "copied_to": "",
+                      })
+                      continue
+
+                  for export_root in (CSV_ROOT, JSON_ROOT):
+                      dst = export_root / "root-docs" / doc_name
+                      dst.parent.mkdir(parents=True, exist_ok=True)
+                      shutil.copy2(src, dst)
+
+                  report.append({
+                      "file": doc_name,
+                      "found": True,
+                      "copied_to": f"root-docs/{doc_name}",
+                  })
+
+              if missing:
+                  raise FileNotFoundError(
+                      "Missing required root docs: " + ", ".join(missing)
+                  )
+
+              return report
+
+          if EXPORT_ROOT.exists():
+              shutil.rmtree(EXPORT_ROOT)
+
+          CSV_ROOT.mkdir(parents=True, exist_ok=True)
+          JSON_ROOT.mkdir(parents=True, exist_ok=True)
+
+          files = sorted(
+              [path for path in ROOT.rglob("*") if should_export(path)],
+              key=lambda path: relative(path).lower(),
+          )
+
+          records = [read_record(path) for path in files]
+
+          fieldnames = [
+              "path",
+              "file_name",
+              "extension",
+              "size_bytes",
+              "sha256",
+              "is_binary",
+              "encoding",
+              "content_text",
+              "content_base64",
+          ]
+
+          # CSV ZIP CONTENTS:
+          # - all-files.csv
+          # - files/*.csv, one CSV for each exported source/config file
+          # - root-docs/readme.md, root-docs/Architecture.md, root-docs/File_tree.md copied from repo root
+          # - manifest files
+          write_csv(CSV_ROOT / "all-files.csv", records, fieldnames)
+
+          for record in records:
+              out_name = safe_output_name(record["path"], ".csv")
+              write_csv(CSV_ROOT / "files" / out_name, [record], fieldnames)
+
+          # JSON ZIP CONTENTS:
+          # - all-files.json
+          # - files/*.json, one JSON for each exported source/config file
+          # - root-docs/readme.md, root-docs/Architecture.md, root-docs/File_tree.md copied from repo root
+          # - manifest files
+          (JSON_ROOT / "all-files.json").write_text(
+              json.dumps(records, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          for record in records:
+              out_name = safe_output_name(record["path"], ".json")
+              out_path = JSON_ROOT / "files" / out_name
+              out_path.parent.mkdir(parents=True, exist_ok=True)
+              out_path.write_text(
+                  json.dumps(record, ensure_ascii=False, indent=2),
+                  encoding="utf-8",
+              )
+
+          root_doc_report = copy_required_root_docs()
+
+          counts = Counter(record["extension"] for record in records)
+
+          primary_rows: list[dict[str, Any]] = []
+          mismatches: list[dict[str, Any]] = []
+
+          for extension, expected in EXPECTED_COUNTS.items():
+              actual = counts.get(extension, 0)
+              status = "ok" if actual == expected else "mismatch"
+              row = {
+                  "extension": extension,
+                  "expected": expected,
+                  "actual": actual,
+                  "status": status,
+              }
+              primary_rows.append(row)
+              if status == "mismatch":
+                  mismatches.append(row)
+
+          other_rows = [
+              {
+                  "extension": extension,
+                  "actual": actual,
+              }
+              for extension, actual in sorted(counts.items())
+              if extension not in EXPECTED_COUNTS
+          ]
+
+          write_csv(
+              CSV_ROOT / "manifest" / "primary-extension-counts.csv",
+              primary_rows,
+              ["extension", "expected", "actual", "status"],
+          )
+
+          write_csv(
+              CSV_ROOT / "manifest" / "other-config-code-counts.csv",
+              other_rows,
+              ["extension", "actual"],
+          )
+
+          write_csv(
+              CSV_ROOT / "manifest" / "root-docs-copied.csv",
+              root_doc_report,
+              ["file", "found", "copied_to"],
+          )
+
+          manifest = {
+              "repository": os.getenv("GITHUB_REPOSITORY", ""),
+              "commit": os.getenv("GITHUB_SHA", ""),
+              "run_id": os.getenv("GITHUB_RUN_ID", ""),
+              "total_exported_files": len(records),
+              "expected_counts": EXPECTED_COUNTS,
+              "actual_counts": dict(sorted(counts.items())),
+              "primary_extension_count_report": primary_rows,
+              "other_config_code_count_report": other_rows,
+              "root_docs_copied_from_repo_root": root_doc_report,
+              "note": "Root docs are copied as existing files only. This workflow does not generate README, Architecture, or File_tree markdown.",
+              "excluded": {
+                  "directories": sorted(IGNORE_DIRS),
+                  "env_files": "Real .env files are excluded. Example/sample/template env files are allowed.",
+              },
+          }
+
+          (CSV_ROOT / "manifest" / "manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          (JSON_ROOT / "manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          summary = [
+              "# Repo export complete",
+              "",
+              f"Total exported files: **{len(records)}**",
+              "",
+              "Root docs copied directly from repo root:",
+              "",
+              "- `readme.md`",
+              "- `Architecture.md`",
+              "- `File_tree.md`",
+              "",
+              "No root docs were generated.",
+              "",
+              "## Primary extension counts",
+              "",
+              "| Extension | Expected | Actual | Status |",
+              "|---|---:|---:|---|",
+          ]
+
+          for row in primary_rows:
+              summary.append(
+                  f"| `{row['extension']}` | {row['expected']} | {row['actual']} | {row['status']} |"
+              )
+
+          summary_text = "\n".join(summary) + "\n"
+          print(summary_text)
+
+          step_summary = os.getenv("GITHUB_STEP_SUMMARY")
+          if step_summary:
+              Path(step_summary).write_text(summary_text, encoding="utf-8")
+
+          strict_counts = os.getenv("STRICT_COUNTS", "false").lower() == "true"
+          if strict_counts and mismatches:
+              raise SystemExit("Strict count check failed. See primary-extension-counts.csv.")
+          PY
+
+      - name: Upload CSV ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-csv-export
+          path: repo-export-artifacts/csv-export
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 9
+
+      - name: Upload JSON ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-json-export
+          path: repo-export-artifacts/json-export
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 9
