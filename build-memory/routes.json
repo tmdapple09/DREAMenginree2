@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-12T14:21:36.206Z",
+  "generated_at": "2026-06-12T20:31:54.553Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 113,
+  "count": 119,
   "routes": [
     {
       "path": "/api/account/delete-data",
@@ -181,6 +181,50 @@
         "GET",
         "POST",
         "DELETE"
+      ]
+    },
+    {
+      "path": "/api/codeengin/diagnostics",
+      "file": "app/api/codeengin/diagnostics/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/codeengin/file",
+      "file": "app/api/codeengin/file/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/codeengin/git",
+      "file": "app/api/codeengin/git/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/codeengin/run",
+      "file": "app/api/codeengin/run/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/codeengin/search",
+      "file": "app/api/codeengin/search/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/codeengin/workspace",
+      "file": "app/api/codeengin/workspace/route.ts",
+      "methods": [
+        "GET",
+        "POST"
       ]
     },
     {

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-12T14:21:36.206Z",
+  "generated_at": "2026-06-12T20:31:54.553Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 114,
+  "count": 120,
   "actions": [
     {
       "file": "app/actions/dream-docs.ts",
@@ -216,6 +216,56 @@
         "GET",
         "POST",
         "DELETE"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/diagnostics/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/file/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/git/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/run/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "GET",
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/search/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/workspace/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "GET",
+        "POST"
       ],
       "exports": []
     },
