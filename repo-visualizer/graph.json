@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T10:17:34.518Z",
+  "generatedAt": "2026-06-12T11:01:36.925Z",
   "root": ".",
   "nodes": [
     {
@@ -3502,10 +3502,10 @@
       "tags": []
     },
     {
-      "id": "file:DREAMenginree2-appcode-only-fixed.zip",
-      "label": "DREAMenginree2-appcode-only-fixed.zip",
+      "id": "file:DREAMenginree2-appcode-only-broad-fixed.zip",
+      "label": "DREAMenginree2-appcode-only-broad-fixed.zip",
       "type": "file",
-      "path": "DREAMenginree2-appcode-only-fixed.zip",
+      "path": "DREAMenginree2-appcode-only-broad-fixed.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -6464,8 +6464,7 @@
         "api-handler",
         "supabase-table:feed_items",
         "supabase-table:follows",
-        "supabase-table:app_posts",
-        "supabase-table:views"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -7019,6 +7018,7 @@
         "supabase-table:conversations",
         "supabase-table:conversations",
         "supabase-table:conversations",
+        "supabase-table:conversations",
         "supabase-table:messages",
         "supabase-table:conversations",
         "supabase-table:notifications"
@@ -7367,7 +7367,7 @@
       "type": "function",
       "path": "app/api/posts/[id]/view/route.ts",
       "parent": "file:app/api/posts/[id]/view/route.ts",
-      "loc": 26,
+      "loc": 15,
       "isOrphan": false,
       "exported": true
     },
@@ -7384,12 +7384,7 @@
         "supabase-table:app_posts",
         "supabase-table:app_posts",
         "supabase-table:app_posts",
-        "supabase-table:app_posts",
-        "supabase-table:app_posts",
-        "supabase-table:post_views",
-        "supabase-table:post_views",
-        "supabase-table:app_posts",
-        "supabase-table:post_views"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -8426,7 +8421,7 @@
       "type": "function",
       "path": "app/api/views/track/route.ts",
       "parent": "file:app/api/views/track/route.ts",
-      "loc": 15,
+      "loc": 12,
       "isOrphan": false,
       "exported": true
     },
@@ -8441,8 +8436,7 @@
       "tags": [
         "api-handler",
         "supabase-table:app_posts",
-        "supabase-table:views",
-        "supabase-table:views"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -64834,7 +64828,7 @@
       "path": "supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "parent": "file:supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
@@ -65115,7 +65109,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
@@ -106643,11 +106637,6 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:app/api/feed/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#views",
-      "kind": "sql-reference"
-    },
-    {
       "source": "file:app/api/follow/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#follows",
       "kind": "sql-reference"
@@ -106790,11 +106779,6 @@
     {
       "source": "file:app/api/posts/[id]/view/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/posts/[id]/view/route.ts",
-      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#post_views",
       "kind": "sql-reference"
     },
     {
@@ -106960,11 +106944,6 @@
     {
       "source": "file:app/api/views/track/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/views/track/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#views",
       "kind": "sql-reference"
     },
     {
