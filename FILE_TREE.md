@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-09T05:35:59.767Z
+Generated: 2026-06-12T04:51:04.247Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4601,32 +4601,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.GameController.module.css
 │   │   ├── dream.GameController.tsx ∅
-│   │   │   ├── ButtonInteractionManager  ← @/lib/games/gameControllerButtons
-│   │   │   ├── CONTROLLER_BUTTON_DEFS  ← @/lib/games/gameControllerButtons
-│   │   │   ├── ControllerButton  ← @/lib/games/gameControllerButtons
-│   │   │   ├── LEFT_STICK_RADIUS_PX  ← @/lib/games/gameControllerLeft
-│   │   │   ├── StickVector  ← @/lib/games/gameControllerLeft
-│   │   │   ├── computeLeftStickVector  ← @/lib/games/gameControllerLeft
-│   │   │   ├── AUTO_FIRE_DELAY_MS  ← @/lib/games/gameControllerRight
-│   │   │   ├── AUTO_FIRE_INTERVAL_MS  ← @/lib/games/gameControllerRight
-│   │   │   ├── RIGHT_RESET_TIMEOUT_MS  ← @/lib/games/gameControllerRight
-│   │   │   ├── computeAimDelta  ← @/lib/games/gameControllerRight
-│   │   │   ├── evaluateRightStickTap  ← @/lib/games/gameControllerRight
-│   │   │   ├── MobileControlVector  ← @/lib/games/mobileControls
-│   │   │   ├── emitMobileButton  ← @/lib/games/mobileControls
-│   │   │   ├── emitMobileJump  ← @/lib/games/mobileControls
-│   │   │   ├── emitMobileLookDelta  ← @/lib/games/mobileControls
-│   │   │   ├── emitMobileMove  ← @/lib/games/mobileControls
-│   │   │   ├── emitMobileShoot  ← @/lib/games/mobileControls
-│   │   │   ├── fireGameRemoteInput  ← @/lib/games/mobileControls
-│   │   │   ├── getRemoteMoveAction  ← @/lib/games/mobileControls
-│   │   │   ├── useCallback  ← react
-│   │   │   ├── useEffect  ← react
-│   │   │   ├── useMemo  ← react
-│   │   │   ├── useRef  ← react
-│   │   │   ├── useState  ← react
-│   │   │   ├── → (default)
-│   │   │   └── ∅ unused: (default)
+│   │   │   ├── → default
+│   │   │   └── ∅ unused: default
 │   │   ├── dream.GamesHub.tsx ∅
 │   │   │   ├── getAvatarDataUrl  ← @/lib/games/avatar
 │   │   │   ├── setPlayAsMe  ← @/lib/games/avatar
@@ -4654,7 +4630,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
 │   │   │   ├── (dynamic)  ← @/components/games/dream.VoidlineGP
 │   │   │   ├── (dynamic)  ← @/components/games/dream.SerpentSiege
-│   │   │   ├── (dynamic)  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   ├── (dynamic)  ← @/components/games/dream.MadMaxiWildfall
 │   │   │   ├── (dynamic)  ← @/components/games/dream.EnginFracture
 │   │   │   ├── (dynamic)  ← @/components/games/dream.Glassfall
 │   │   │   ├── (dynamic)  ← @/components/games/dream.NiteFlyerSolarHymn
@@ -4722,6 +4698,32 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.MadMaxiWildfall.tsx ∅
+│   │   │   ├── useGameEngineAPI  ← @/lib/gameengin/cartridges/reactCartridge
+│   │   │   ├── useGameAutoStart  ← @/lib/games/hooks
+│   │   │   ├── useGamePhase  ← @/lib/games/hooks
+│   │   │   ├── useSubmitScore  ← @/lib/games/hooks
+│   │   │   ├── WILDFALL_HEROES  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── WILDFALL_ZONES  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── WildfallHeroId  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── WildfallInputFrame  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── WildfallState  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── activateWildfallHeroAbility  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── castWildfallRay  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── createWildfallState  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── currentWildfallZone  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── resolveWildfallMirror  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── stepWildfall  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── switchWildfallHero  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── wildfallBillboards  ← @/lib/games/madmaxi-wildfall-world
+│   │   │   ├── CSSProperties  ← react
+│   │   │   ├── ReactNode  ← react
+│   │   │   ├── useCallback  ← react
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.NeonDrift.tsx ∅
 │   │   │   ├── DualSenseManager  ← @/components/gameengin/input/DualSenseManager
 │   │   │   ├── EliteGameEngine  ← @/lib/gameengin
@@ -4776,12 +4778,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → default
 │   │   │   └── ∅ unused: default
 │   │   ├── dream.remote.GameRemoteSurface.tsx ∅
-│   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
-│   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
-│   │   │   ├── useGamepad  ← @/lib/games/useGamepad
+│   │   │   ├── ButtonInteractionManager  ← @/lib/games/gameControllerButtons
+│   │   │   ├── ControllerButton  ← @/lib/games/gameControllerButtons
 │   │   │   ├── broadcastGameInput  ← @/lib/games/useRemoteChannel
-│   │   │   ├── ⬡ Link  ← next/link
-│   │   │   ├── useSearchParams  ← next/navigation
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
@@ -4789,18 +4788,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.LegacyGameRemote.tsx ∅
-│   │   │   ├── DEFAULT_GAME_ID  ← @/lib/games/navigation
-│   │   │   ├── buildGameLaunchHref  ← @/lib/games/navigation
-│   │   │   ├── useGamepad  ← @/lib/games/useGamepad
-│   │   │   ├── broadcastGameInput  ← @/lib/games/useRemoteChannel
-│   │   │   ├── ⬡ Link  ← next/link
-│   │   │   ├── useSearchParams  ← next/navigation
-│   │   │   ├── useCallback  ← react
-│   │   │   ├── useEffect  ← react
-│   │   │   ├── useRef  ← react
-│   │   │   ├── useState  ← react
-│   │   │   ├── → (default)
-│   │   │   └── ∅ unused: (default)
+│   │   │   ├── → default
+│   │   │   └── ∅ unused: default
 │   │   ├── dream.SerpentSiege.tsx ∅
 │   │   │   ├── ParticlePool  ← ./_fx/canvasFx
 │   │   │   ├── ScreenShake  ← ./_fx/canvasFx
@@ -6827,14 +6816,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── CartridgeErrorBoundary  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
 │   │   ├── useGlobalCrashListener  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
 │   │   ├── ⬡ FeaturedCartridges  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
-│   │   ├── ⬡ GameController  ← @/components/games/dream.GameController
 │   │   ├── ⬡ Leaderboard  ← @/components/games/dream.Leaderboard
-│   │   ├── ⬡ RecordingControls  ← @/components/games/dream.RecordingControls
 │   │   ├── ⬡ LegacyGameHUD  ← @/components/games/dream.hud.LegacyGameHUD
 │   │   ├── ⬡ MobileGameHUD  ← @/components/games/dream.hud.MobileGameHUD
 │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
-│   │   ├── ⬡ GameRemoteSurface  ← @/components/games/dream.remote.GameRemoteSurface
-│   │   ├── ⬡ LegacyGameRemote  ← @/components/games/dream.remote.LegacyGameRemote
 │   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
 │   │   ├── useDreamSystem  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── EngineBase  ← @/lib/dreamenginOS
@@ -6878,7 +6863,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useSharedEnginChannel  ← @/lib/runtime/useSharedEnginChannel
 │   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   ├── toErrorMessage  ← @/lib/utils
-│   │   ├── ArrowLeft  ← lucide-react
 │   │   ├── Award  ← lucide-react
 │   │   ├── FileCode  ← lucide-react
 │   │   ├── Gamepad2  ← lucide-react
@@ -8697,14 +8681,24 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── useState  ← react
 │   │       └── → useDreamsRuntime
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts
+│   │   ├── EnginBaseState.ts ∅
+│   │   │   ├── → DEFAULT_COHERENCE_CAPACITY
+│   │   │   ├── → attachCoherenceReport
 │   │   │   ├── → createBaseState
+│   │   │   ├── → createCoherenceCapacity
+│   │   │   ├── → createCoherenceReport
 │   │   │   ├── → createDomainObject
+│   │   │   ├── → createRuntimeLoad
+│   │   │   ├── → evaluateCoherence
+│   │   │   ├── → explainCoherencePressure
 │   │   │   ├── → isDomainObject
 │   │   │   ├── → isEnginBaseState
 │   │   │   ├── → isJsonObject
 │   │   │   ├── → isJsonSerializable
-│   │   │   └── → patchBaseState
+│   │   │   ├── → isRuntimeCoherenceReport
+│   │   │   ├── → patchBaseState
+│   │   │   ├── → resolveCoherenceTransform
+│   │   │   └── ∅ unused: isRuntimeCoherenceReport, DEFAULT_COHERENCE_CAPACITY, evaluateCoherence, explainCoherencePressure, resolveCoherenceTransform
 │   │   ├── EnginCapabilities.ts
 │   │   │   ├── DomainObject  ← ./EnginBaseState
 │   │   │   ├── JsonValue  ← ./EnginBaseState
@@ -8859,6 +8853,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → runCanonicalPerformanceBenchmarks
 │   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, runCanonicalPerformanceBenchmarks, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
 │   │   ├── EnginEventBus.ts
+│   │   │   ├── RuntimeCoherenceReport  ← ./EnginBaseState
 │   │   │   └── → createEnginEventBus
 │   │   ├── EnginHardwareCapabilities.ts ∅
 │   │   │   ├── JsonObject  ← ./EnginBaseState
@@ -8895,10 +8890,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → validateRuleSetState
 │   │   │   └── ∅ unused: validateRuleSetManifest
 │   │   ├── EnginRuntime.ts ∅
+│   │   │   ├── CoherenceCapacity  ← ./EnginBaseState
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
 │   │   │   ├── EnginLifecycle  ← ./EnginBaseState
 │   │   │   ├── JsonObject  ← ./EnginBaseState
+│   │   │   ├── RuntimeCoherenceReport  ← ./EnginBaseState
+│   │   │   ├── RuntimeLoad  ← ./EnginBaseState
+│   │   │   ├── attachCoherenceReport  ← ./EnginBaseState
 │   │   │   ├── createBaseState  ← ./EnginBaseState
+│   │   │   ├── createCoherenceCapacity  ← ./EnginBaseState
+│   │   │   ├── createCoherenceReport  ← ./EnginBaseState
+│   │   │   ├── createRuntimeLoad  ← ./EnginBaseState
 │   │   │   ├── isEnginBaseState  ← ./EnginBaseState
 │   │   │   ├── patchBaseState  ← ./EnginBaseState
 │   │   │   ├── DEFAULT_USER_CAPABILITIES  ← ./EnginCapabilities
@@ -9014,9 +9016,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → WebGPUDeviceRuntime
 │   │   │   ├── → WorkerPoolRuntime
 │   │   │   ├── → acceptanceValueForTarget
+│   │   │   ├── → attachCoherenceReport
 │   │   │   ├── → authorizeDomainCapability
 │   │   │   ├── → capabilityProfileMatchesRuleSet
 │   │   │   ├── → createBaseState
+│   │   │   ├── → createCoherenceCapacity
+│   │   │   ├── → createCoherenceReport
 │   │   │   ├── → createCustomEnginCapabilityProfile
 │   │   │   ├── → createDomainObject
 │   │   │   ├── → createEnginCapabilityExecutionKernel
@@ -9024,10 +9029,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createEnginEventBus
 │   │   │   ├── → createEnginRuntime
 │   │   │   ├── → createPremiumRuntimeQuality
+│   │   │   ├── → createRuntimeLoad
 │   │   │   ├── → detectEnginHardwareCapabilities
 │   │   │   ├── → detectWasmSimdSupport
 │   │   │   ├── → enginStorageKey
 │   │   │   ├── → evaluateCapabilityTarget
+│   │   │   ├── → evaluateCoherence
+│   │   │   ├── → explainCoherencePressure
 │   │   │   ├── → fallbackEnginHardwareCapabilities
 │   │   │   ├── → fingerprintBytesWithWasm
 │   │   │   ├── → fingerprintEnginSnapshot
@@ -9043,9 +9051,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → isEnginProfileId
 │   │   │   ├── → isJsonObject
 │   │   │   ├── → isJsonSerializable
+│   │   │   ├── → isRuntimeCoherenceReport
 │   │   │   ├── → mergeCapabilities
 │   │   │   ├── → negotiateRuleSetCompatibility
 │   │   │   ├── → patchBaseState
+│   │   │   ├── → resolveCoherenceTransform
 │   │   │   ├── → stableStringifySnapshot
 │   │   │   ├── → toCustomEnginProfileId
 │   │   │   ├── → validateCanonicalEnginCapabilityProfiles
@@ -9053,7 +9063,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → validatePremiumRuntimeQuality
 │   │   │   ├── → validateRuleSetManifest
 │   │   │   ├── → validateRuleSetState
-│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   │   └── ∅ unused: attachCoherenceReport, createBaseState, createCoherenceCapacity, createCoherenceReport, createDomainObject, createRuntimeLoad, evaluateCoherence, explainCoherencePressure, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, isRuntimeCoherenceReport, patchBaseState, resolveCoherenceTransform, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
 │   │   ├── InternalMetrics.ts ∅
 │   │   │   ├── EnginCapabilityScorecard  ← ./EnginCapabilityScorecard
 │   │   │   ├── → DevOnlyBenchmarkRunner
@@ -9717,7 +9727,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.VoidlineGP
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.SerpentSiege
-│   │   │   │   ├── (dynamic)  ← @/components/games/dream.AvenueOfMirrors
+│   │   │   │   ├── (dynamic)  ← @/components/games/dream.MadMaxiWildfall
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.EnginFracture
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Glassfall
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NiteFlyerSolarHymn
@@ -10102,7 +10112,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── PassthroughComposite  ← ./xr
 │   │   │   ├── WebXRSession  ← ./xr
 │   │   │   ├── * as GameRuleSetIndex  ← @/lib/engins/game
-│   │   │   ├── * as LucidAvenueWorld  ← @/lib/games/lucid-avenue-world
+│   │   │   ├── * as LucidAvenueWorld  ← @/lib/games/madmaxi-wildfall-world
 │   │   │   ├── invokeMadMaxiSnapshotTransfer  ← @/lib/runtime/madMaxiSnapshotBridge
 │   │   │   └── → createGameEnginExecutionKernel
 │   │   ├── gameEnginRuntime.ts ∅
@@ -10339,14 +10349,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → LEFT_STICK_DEAD_ZONE
 │   │   │   ├── → LEFT_STICK_RADIUS_PX
 │   │   │   └── → computeLeftStickVector
-│   │   ├── gameControllerRight.ts
+│   │   ├── gameControllerRight.ts ∅
 │   │   │   ├── → AUTO_FIRE_DELAY_MS
 │   │   │   ├── → AUTO_FIRE_INTERVAL_MS
 │   │   │   ├── → RIGHT_RESET_TIMEOUT_MS
 │   │   │   ├── → RIGHT_TAP_MAX_MS
 │   │   │   ├── → RIGHT_TAP_MAX_PX
 │   │   │   ├── → computeAimDelta
-│   │   │   └── → evaluateRightStickTap
+│   │   │   ├── → evaluateRightStickTap
+│   │   │   └── ∅ unused: AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS
 │   │   ├── hooks.ts ∅
 │   │   │   ├── DE_GAME_PERFORMANCE_BASELINE  ← @/lib/games/performance-baseline
 │   │   │   ├── GamePerformanceBaseline  ← @/lib/games/performance-baseline
@@ -10396,6 +10407,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → scanLucidAvenue
 │   │   │   ├── → waitLucidAvenueTurn
 │   │   │   └── ∅ unused: LUCID_AVENUE_TOTAL_SHARDS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, createInitialLucidAvenueState, getLucidAvenueDistrict, getLucidAvenuePatrolPositions, getLucidAvenueMissionChecklist, getLucidAvenueRouteContracts, calculateLucidAvenueScore, getLucidAvenueCompletionPercent, getLucidAvenueStoryBeat, isSamePosition, moveLucidAvenuePlayer, waitLucidAvenueTurn, scanLucidAvenue, jamLucidAvenueGrid, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueHint, requestLucidAvenueHint, interactInLucidAvenue, getLucidAvenuePatrolPathKeys, getLucidAvenueObjectiveKeys
+│   │   ├── madmaxi-wildfall-world.ts ∅
+│   │   │   ├── → WILDFALL_HEROES
+│   │   │   ├── → WILDFALL_ZONES
+│   │   │   ├── → activateWildfallHeroAbility
+│   │   │   ├── → castWildfallRay
+│   │   │   ├── → createWildfallRng
+│   │   │   ├── → createWildfallState
+│   │   │   ├── → currentWildfallZone
+│   │   │   ├── → isWildfallPassable
+│   │   │   ├── → makeWildfallGlyphGrid
+│   │   │   ├── → resolveWildfallMirror
+│   │   │   ├── → stepWildfall
+│   │   │   ├── → switchWildfallHero
+│   │   │   ├── → wildfallBillboards
+│   │   │   ├── → wildfallHeroWeapon
+│   │   │   └── ∅ unused: createWildfallRng, makeWildfallGlyphGrid, isWildfallPassable, wildfallHeroWeapon
 │   │   ├── mobileControls.ts ∅
 │   │   │   ├── broadcastGameInput  ← @/lib/games/useRemoteChannel
 │   │   │   ├── useEffect  ← react
@@ -10413,7 +10440,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → normalizeStickVector
 │   │   │   ├── → registerMobileGameControls
 │   │   │   ├── → useRegisterMobileGameControls
-│   │   │   └── ∅ unused: registerMobileGameControls
+│   │   │   └── ∅ unused: registerMobileGameControls, emitMobileLookDelta, emitMobileJump, emitMobileShoot
 │   │   ├── navigation.ts
 │   │   │   ├── → DEFAULT_GAME_ID
 │   │   │   ├── → buildGameLaunchHref
@@ -11338,6 +11365,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── JsonValue  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── RuntimeCoherenceReport  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── RuntimeLoad  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createCoherenceCapacity  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createCoherenceReport  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createRuntimeLoad  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── isDomainObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
 │   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
@@ -11543,6 +11575,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createRuntimeChannel
 │   │   │   └── ∅ unused: createRealtimeChannel
 │   │   ├── runtimeContainer.ts
+│   │   │   ├── CoherenceCapacity  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── RuntimeCoherenceReport  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── RuntimeLoad  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createCoherenceCapacity  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createCoherenceReport  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createRuntimeLoad  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   └── → RuntimeContainer
 │   │   ├── seamClipboard.ts
 │   │   │   ├── RuntimeRegion  ← @/lib/identity/canonical-names
@@ -13647,6 +13685,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.hud.MobileGameHUD
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.Leaderboard
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.LexiconSolitaire
+│   │   │   │   ├── (dynamic)  ← @/components/games/dream.MadMaxiWildfall
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NeonDrift
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NiteFlyerSolarHymn
 │   │   │   │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
@@ -13974,6 +14013,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/games/hooks
 │   │   │       ├── (dynamic)  ← @/lib/games/library-state
 │   │   │       ├── (dynamic)  ← @/lib/games/lucid-avenue-world
+│   │   │       ├── (dynamic)  ← @/lib/games/madmaxi-wildfall-world
 │   │   │       ├── (dynamic)  ← @/lib/games/mobileControls
 │   │   │       ├── (dynamic)  ← @/lib/games/navigation
 │   │   │       ├── (dynamic)  ← @/lib/games/performance-baseline
