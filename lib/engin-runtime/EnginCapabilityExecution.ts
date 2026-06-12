@@ -1,4 +1,9 @@
-import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile, type EnginProfileId } from './EnginCapabilityTargets';
+import {
+  isCanonicalEnginId,
+  type CanonicalEnginId,
+  type EnginCapabilityProfile,
+  type EnginProfileId,
+} from "./EnginCapabilityTargets";
 
 // Framework directives stay physically first when required.
 
@@ -16,50 +21,101 @@ import { isCanonicalEnginId, type CanonicalEnginId, type EnginCapabilityProfile,
 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
-const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = Object.freeze({
-  code: executionPlan({
-    enginId: 'code',
-    realtimeActionTypes: ['code:cell-update', 'code:cell-activate', 'code:zoom-set'],
-    syncCadenceRevisions: 8,
-    subsystems: ['coalesced-runtime-work', 'typed-array-state'],
-    workerPreferred: true,
-  }),
-  games: executionPlan({
-    enginId: 'games',
-    realtimeActionTypes: ['game:control-profile', 'game:immersive-toggle', 'game:physics-apply'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-  music: executionPlan({
-    enginId: 'music',
-    realtimeActionTypes: ['music:bpm-set', 'music:volume-set', 'music:transport-start', 'music:transport-stop', 'music:track-toggle'],
-    syncCadenceRevisions: 16,
-    subsystems: ['coalesced-runtime-work', 'audio-worklet-buffer', 'midi-ring-buffer', 'typed-array-state'],
-    workerPreferred: true,
-  }),
-  create: executionPlan({
-    enginId: 'create',
-    realtimeActionTypes: ['content:item-add', 'content:asset-stage', 'content:render-preview'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'instanced-geometry', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-  brand: executionPlan({
-    enginId: 'brand',
-    realtimeActionTypes: ['brand:asset-add', 'brand:metrics-refresh', 'brand:check-received'],
-    syncCadenceRevisions: 4,
-    subsystems: ['coalesced-runtime-work', 'vector-cache', 'collaboration-delta-pack'],
-    workerPreferred: false,
-  }),
-  lab: executionPlan({
-    enginId: 'lab',
-    realtimeActionTypes: ['lab:sim-start', 'lab:physics-received', 'lab:chart-type'],
-    syncCadenceRevisions: 2,
-    subsystems: ['coalesced-runtime-work', 'particle-struct-of-arrays', 'deterministic-aabb-ray-scan', 'gpu-compute-dispatch'],
-    workerPreferred: true,
-  }),
-});
+const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> =
+  Object.freeze({
+    code: executionPlan({
+      enginId: "code",
+      realtimeActionTypes: [
+        "code:cell-update",
+        "code:cell-activate",
+        "code:zoom-set",
+      ],
+      syncCadenceRevisions: 8,
+      subsystems: ["coalesced-runtime-work", "typed-array-state"],
+      workerPreferred: true,
+    }),
+    games: executionPlan({
+      enginId: "games",
+      realtimeActionTypes: [
+        "game:control-profile",
+        "game:immersive-toggle",
+        "game:physics-apply",
+      ],
+      syncCadenceRevisions: 4,
+      subsystems: [
+        "coalesced-runtime-work",
+        "instanced-geometry",
+        "deterministic-aabb-ray-scan",
+        "gpu-compute-dispatch",
+      ],
+      workerPreferred: true,
+    }),
+    music: executionPlan({
+      enginId: "music",
+      realtimeActionTypes: [
+        "music:bpm-set",
+        "music:volume-set",
+        "music:transport-start",
+        "music:transport-stop",
+        "music:track-toggle",
+      ],
+      syncCadenceRevisions: 16,
+      subsystems: [
+        "coalesced-runtime-work",
+        "audio-worklet-buffer",
+        "midi-ring-buffer",
+        "typed-array-state",
+      ],
+      workerPreferred: true,
+    }),
+    create: executionPlan({
+      enginId: "create",
+      realtimeActionTypes: [
+        "content:item-add",
+        "content:asset-stage",
+        "content:render-preview",
+      ],
+      syncCadenceRevisions: 4,
+      subsystems: [
+        "coalesced-runtime-work",
+        "instanced-geometry",
+        "deterministic-aabb-ray-scan",
+        "gpu-compute-dispatch",
+      ],
+      workerPreferred: true,
+    }),
+    brand: executionPlan({
+      enginId: "brand",
+      realtimeActionTypes: [
+        "brand:asset-add",
+        "brand:metrics-refresh",
+        "brand:check-received",
+      ],
+      syncCadenceRevisions: 4,
+      subsystems: [
+        "coalesced-runtime-work",
+        "vector-cache",
+        "collaboration-delta-pack",
+      ],
+      workerPreferred: false,
+    }),
+    lab: executionPlan({
+      enginId: "lab",
+      realtimeActionTypes: [
+        "lab:sim-start",
+        "lab:physics-received",
+        "lab:chart-type",
+      ],
+      syncCadenceRevisions: 2,
+      subsystems: [
+        "coalesced-runtime-work",
+        "particle-struct-of-arrays",
+        "deterministic-aabb-ray-scan",
+        "gpu-compute-dispatch",
+      ],
+      workerPreferred: true,
+    }),
+  });
 
 // Imports and external modules this runtime file depends on.
 
@@ -68,16 +124,16 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> = 
 // Types, interfaces, and schemas accepted or provided by this file.
 
 export type ExecutionSubsystem =
-  | 'coalesced-runtime-work'
-  | 'typed-array-state'
-  | 'instanced-geometry'
-  | 'deterministic-aabb-ray-scan'
-  | 'audio-worklet-buffer'
-  | 'midi-ring-buffer'
-  | 'vector-cache'
-  | 'collaboration-delta-pack'
-  | 'particle-struct-of-arrays'
-  | 'gpu-compute-dispatch';
+  | "coalesced-runtime-work"
+  | "typed-array-state"
+  | "instanced-geometry"
+  | "deterministic-aabb-ray-scan"
+  | "audio-worklet-buffer"
+  | "midi-ring-buffer"
+  | "vector-cache"
+  | "collaboration-delta-pack"
+  | "particle-struct-of-arrays"
+  | "gpu-compute-dispatch";
 
 export interface EnginExecutionPlan {
   readonly enginId: string;
@@ -141,13 +197,13 @@ function executionPlan(plan: EnginExecutionPlan): EnginExecutionPlan {
   });
 }
 
-function defaultPlan(enginId: string): EnginExecutionPlan {
+function defaultPlan(enginId: EnginProfileId): EnginExecutionPlan {
   return executionPlan({
-  enginId,
-  realtimeActionTypes: [],
-  syncCadenceRevisions: 1,
-  subsystems: ['coalesced-runtime-work'],
-  workerPreferred: false,
+    enginId,
+    realtimeActionTypes: [],
+    syncCadenceRevisions: 1,
+    subsystems: ["coalesced-runtime-work"],
+    workerPreferred: false,
   });
 }
 
@@ -155,7 +211,9 @@ function clampPositiveInteger(value: number, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
 }
 
-export function getEnginExecutionPlan(enginId: EnginProfileId): EnginExecutionPlan {
+export function getEnginExecutionPlan(
+  enginId: EnginProfileId,
+): EnginExecutionPlan {
   return isCanonicalEnginId(enginId)
     ? EXECUTION_PLANS[enginId]
     : defaultPlan(enginId);
@@ -167,7 +225,9 @@ export class CodeEditRingBuffer {
   private filled = 0;
 
   constructor(capacity = 2048) {
-    this.patches = new Array<CodeEditPatch>(clampPositiveInteger(capacity, 2048));
+    this.patches = new Array<CodeEditPatch>(
+      clampPositiveInteger(capacity, 2048),
+    );
   }
 
   push(patch: CodeEditPatch): void {
@@ -177,7 +237,8 @@ export class CodeEditRingBuffer {
   }
 
   drain(): CodeEditPatch[] {
-    const start = (this.cursor - this.filled + this.patches.length) % this.patches.length;
+    const start =
+      (this.cursor - this.filled + this.patches.length) % this.patches.length;
     const out: CodeEditPatch[] = [];
     for (let offset = 0; offset < this.filled; offset += 1) {
       out.push(this.patches[(start + offset) % this.patches.length]);
@@ -193,10 +254,16 @@ export class CodeEditRingBuffer {
 
 export class GeometryBatcher {
   buildPlan(input: GeometryBatchInput): GeometryBatchPlan {
-    const sourceMeshPolygons = clampPositiveInteger(input.sourceMeshPolygons, 1);
+    const sourceMeshPolygons = clampPositiveInteger(
+      input.sourceMeshPolygons,
+      1,
+    );
     const instances = clampPositiveInteger(input.instances, 1);
     const materialBuckets = clampPositiveInteger(input.materialBuckets, 1);
-    const maxInstancesPerDraw = clampPositiveInteger(input.maxInstancesPerDraw ?? 65_535, 65_535);
+    const maxInstancesPerDraw = clampPositiveInteger(
+      input.maxInstancesPerDraw ?? 65_535,
+      65_535,
+    );
     const instanceBatches = Math.ceil(instances / maxInstancesPerDraw);
     const drawCalls = instanceBatches * materialBuckets;
     const totalPolygons = sourceMeshPolygons * instances;
@@ -229,7 +296,8 @@ export class RayGridAccelerator {
     for (let index = 0; index < this.boxes.length; index += 1) {
       const distance = intersectAabb(ray, this.boxes[index]);
       if (distance === null) continue;
-      if (!nearest || distance < nearest.distance) nearest = { index, distance };
+      if (!nearest || distance < nearest.distance)
+        nearest = { index, distance };
     }
     return nearest;
   }
@@ -264,7 +332,10 @@ export class AudioTrackMixer {
   readonly gains: Float32Array;
 
   constructor(trackCount = 256, quantumFrames = 128) {
-    this.samples = new Float32Array(clampPositiveInteger(trackCount, 256) * clampPositiveInteger(quantumFrames, 128));
+    this.samples = new Float32Array(
+      clampPositiveInteger(trackCount, 256) *
+        clampPositiveInteger(quantumFrames, 128),
+    );
     this.gains = new Float32Array(clampPositiveInteger(trackCount, 256));
     this.gains.fill(1);
   }
@@ -285,7 +356,9 @@ export class AudioTrackMixer {
 
 export class MidiEventRingBuffer {
   private readonly capacity: number;
-  private readonly queue: Array<[timestamp: number, note: number, velocity: number]> = [];
+  private readonly queue: Array<
+    [timestamp: number, note: number, velocity: number]
+  > = [];
   constructor(capacity = 4096) {
     this.capacity = clampPositiveInteger(capacity, 4096);
   }
@@ -335,7 +408,11 @@ export class VectorPathCache {
 }
 
 export class CollaborationDeltaPacker {
-  pack(sequence: number, actorHash: number, payloadBytes: Uint8Array): Uint8Array {
+  pack(
+    sequence: number,
+    actorHash: number,
+    payloadBytes: Uint8Array,
+  ): Uint8Array {
     const out = new Uint8Array(8 + payloadBytes.length);
     const view = new DataView(out.buffer);
     view.setUint32(0, sequence, true);
@@ -399,7 +476,10 @@ export class EnginCapabilityExecutionKernel {
   }
 
   shouldDeferRuntimeWork(actionType: string): boolean {
-    return this.isRealtimeAction(actionType) && this.plan.subsystems.includes('coalesced-runtime-work');
+    return (
+      this.isRealtimeAction(actionType) &&
+      this.plan.subsystems.includes("coalesced-runtime-work")
+    );
   }
 }
 
