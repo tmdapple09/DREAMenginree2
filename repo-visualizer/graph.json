@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T05:14:51.466Z",
+  "generatedAt": "2026-06-12T05:16:12.425Z",
   "root": ".",
   "nodes": [
     {
@@ -25579,34 +25579,6 @@
       "type": "ts",
       "path": "generate-readme.ts",
       "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "folder:github",
-      "label": "github",
-      "type": "folder",
-      "path": "github",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "folder:github/workflows",
-      "label": "workflows",
-      "type": "folder",
-      "path": "github/workflows",
-      "parent": "folder:github",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "file:github/workflows/export-repo-to-artifacts.yml",
-      "label": "export-repo-to-artifacts.yml",
-      "type": "config",
-      "path": "github/workflows/export-repo-to-artifacts.yml",
-      "parent": "folder:github/workflows",
       "loc": null,
       "isOrphan": true,
       "tags": []
