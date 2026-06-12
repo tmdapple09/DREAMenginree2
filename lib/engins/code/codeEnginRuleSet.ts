@@ -27,6 +27,7 @@ export type CellStatus = 'idle' | 'running' | 'done' | 'error';
 export type SourceLanguage = CellLanguage | 'json' | 'css' | 'markdown' | 'text';
 export type CiStatus = 'idle' | 'running' | 'passed' | 'failed';
 export type DiagnosticSeverity = 'error' | 'warning' | 'info';
+export type CodeRuntimeMode = 'local' | 'connected' | 'blocked';
 
 export interface NotebookCell extends JsonObject {
   id: string;
@@ -79,6 +80,9 @@ export interface CodeEnginDerivedState extends JsonObject {
   terminal: CodeTerminalEntry[];
   activeProjectId: string | null;
   ciStatus: CiStatus;
+  runtimeMode: CodeRuntimeMode;
+  lastRunStatus: CiStatus;
+  projectGraphStale: boolean;
   securityFindings: SecurityFinding[];
   moduleInjected: boolean;
   zoom: number;
@@ -102,6 +106,9 @@ export type CodeEnginAction =
   | EnginAction<'code:project-select', { projectId: string }>
   | EnginAction<'code:ci-start', Record<string, never>>
   | EnginAction<'code:ci-result', { status: 'passed' | 'failed' }>
+  | EnginAction<'code:runtime-status', { mode: CodeRuntimeMode }>
+  | EnginAction<'code:run-result', { status: 'passed' | 'failed'; command: string; output?: string }>
+  | EnginAction<'code:graph-refreshed', Record<string, never>>
   | EnginAction<'code:security-scan', { findings: SecurityFinding[] }>
   | EnginAction<'code:module-inject', Record<string, never>>
   | EnginAction<'code:zoom-set', { zoom: number }>;
@@ -136,6 +143,9 @@ const DEFAULT_DOMAIN: Omit<CodeEnginDerivedState, 'lifecycle'> = {
   terminal: [],
   activeProjectId: null,
   ciStatus: 'idle',
+  runtimeMode: 'local',
+  lastRunStatus: 'idle',
+  projectGraphStale: true,
   securityFindings: [],
   moduleInjected: false,
   zoom: 1.0,
@@ -262,6 +272,22 @@ function transform(state: EnginBaseState, action: CodeEnginAction): EnginBaseSta
       const { status } = (action as EnginAction<'code:ci-result', { status: 'passed' | 'failed' }>).payload!;
       return patchBaseState(state, { domain: { ...domain, ciStatus: status } });
     }
+    case 'code:runtime-status': {
+      const { mode } = (action as EnginAction<'code:runtime-status', { mode: CodeRuntimeMode }>).payload!;
+      return patchBaseState(state, { domain: { ...domain, runtimeMode: mode } });
+    }
+    case 'code:run-result': {
+      const { status, command, output } = (action as EnginAction<'code:run-result', { status: 'passed' | 'failed'; command: string; output?: string }>).payload!;
+      const entry: CodeTerminalEntry = {
+        id: `run-${Date.now().toString(36)}`,
+        kind: status === 'passed' ? 'success' : 'error',
+        text: output ? `${command}: ${output}` : `${command}: ${status}`,
+        timestamp: new Date().toISOString(),
+      };
+      return patchBaseState(state, { domain: { ...domain, lastRunStatus: status, terminal: [...((domain.terminal ?? []) as CodeTerminalEntry[]), entry].slice(-80) } });
+    }
+    case 'code:graph-refreshed':
+      return patchBaseState(state, { domain: { ...domain, projectGraphStale: false } });
     case 'code:security-scan': {
       const { findings } = (action as EnginAction<'code:security-scan', { findings: SecurityFinding[] }>).payload!;
       return patchBaseState(state, { domain: { ...domain, securityFindings: findings } });
@@ -290,6 +316,9 @@ function deriveState(state: EnginBaseState): CodeEnginDerivedState {
     terminal: (d.terminal ?? DEFAULT_DOMAIN.terminal) as CodeTerminalEntry[],
     activeProjectId: (d.activeProjectId ?? DEFAULT_DOMAIN.activeProjectId) as string | null,
     ciStatus: (d.ciStatus ?? DEFAULT_DOMAIN.ciStatus) as CiStatus,
+    runtimeMode: (d.runtimeMode ?? DEFAULT_DOMAIN.runtimeMode) as CodeRuntimeMode,
+    lastRunStatus: (d.lastRunStatus ?? DEFAULT_DOMAIN.lastRunStatus) as CiStatus,
+    projectGraphStale: (d.projectGraphStale ?? DEFAULT_DOMAIN.projectGraphStale) as boolean,
     securityFindings: (d.securityFindings ?? DEFAULT_DOMAIN.securityFindings) as SecurityFinding[],
     moduleInjected: (d.moduleInjected ?? DEFAULT_DOMAIN.moduleInjected) as boolean,
     zoom: (d.zoom ?? DEFAULT_DOMAIN.zoom) as number,
@@ -321,6 +350,9 @@ const ACTION_TYPES: CodeEnginAction['type'][] = [
   'code:project-select',
   'code:ci-start',
   'code:ci-result',
+  'code:runtime-status',
+  'code:run-result',
+  'code:graph-refreshed',
   'code:security-scan',
   'code:module-inject',
   'code:zoom-set',
@@ -329,10 +361,10 @@ const ACTION_TYPES: CodeEnginAction['type'][] = [
 const MANIFEST: EnginRuleSetManifest<CodeEnginAction> = {
   id: PARAMS.enginId,
   name: PARAMS.name,
-  version: '1.1.0',
+  version: '1.2.0',
   schema: {
     actionTypes: ACTION_TYPES,
-    domainVersion: 2,
+    domainVersion: 3,
   },
   compatibility: {
     minRuntimeVersion: '1.0.0',

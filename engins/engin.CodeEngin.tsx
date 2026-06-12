@@ -50,7 +50,7 @@ type SourceLanguage =
   | 'text';
 
 type BottomPanel = 'terminal' | 'problems' | 'outline' | 'diff' | 'assist';
-type CommandKind = 'check' | 'build' | 'run' | 'format' | 'snapshot' | 'game' | 'content' | 'component';
+type CommandKind = 'load' | 'save' | 'check' | 'server-check' | 'build' | 'typecheck' | 'test' | 'run' | 'format' | 'snapshot' | 'git' | 'game' | 'content' | 'component';
 
 type DiagnosticSeverity = 'error' | 'warning' | 'info';
 
@@ -125,11 +125,17 @@ const DARK_PANEL: CSSProperties = {
 };
 
 const COMMANDS: CommandDefinition[] = [
-  { id: 'check', label: 'Run workspace diagnostics', hint: 'Parse files, surface problems, and update the problems panel.' },
-  { id: 'build', label: 'Build readiness check', hint: 'Fail fast on diagnostics and report source health.' },
+  { id: 'load', label: 'Load real project tree', hint: 'Read editable app files from the CodeEngin workspace API.' },
+  { id: 'save', label: 'Save active file to project', hint: 'Persist the active editor file through the CodeEngin file API.' },
+  { id: 'check', label: 'Run local workspace diagnostics', hint: 'Parse files in the current editor state and surface problems.' },
+  { id: 'server-check', label: 'Run server workspace diagnostics', hint: 'Scan project files through the CodeEngin diagnostics API.' },
+  { id: 'build', label: 'Run production build', hint: 'Run the allowlisted pnpm build command on the server.' },
+  { id: 'typecheck', label: 'Run TypeScript typecheck', hint: 'Run the allowlisted pnpm typecheck command on the server.' },
+  { id: 'test', label: 'Run test suite', hint: 'Run the allowlisted pnpm test command on the server.' },
   { id: 'run', label: 'Run active file', hint: 'Execute JavaScript/TypeScript locally or validate JSON.' },
   { id: 'format', label: 'Format active file', hint: 'Trim trailing whitespace and pretty-print JSON.' },
   { id: 'snapshot', label: 'Save workspace snapshot', hint: 'Capture current files for rollback and diff.' },
+  { id: 'git', label: 'Show git status', hint: 'Read git branch and working-tree status.' },
   { id: 'game', label: 'Deploy active script to GameEngin', hint: 'Send the selected file through the runtime bridge.' },
   { id: 'content', label: 'Publish workspace to ContentEngin', hint: 'Send a project summary through Forge transfer.' },
   { id: 'component', label: 'Create React component', hint: 'Add a new editable component file.' },
@@ -344,6 +350,92 @@ async function callEamsAssist(prompt: string, codeContext?: string, language?: S
   }
 }
 
+
+type CodeEnginApiFileNode = {
+  name: string;
+  type: 'file' | 'directory';
+  path: string;
+  children?: CodeEnginApiFileNode[];
+};
+
+type CodeEnginApiDiagnostic = {
+  id?: string;
+  path: string;
+  line: number;
+  col: number;
+  severity: DiagnosticSeverity;
+  message: string;
+  source?: string;
+};
+
+type CodeEnginApiRunResult = {
+  command: string;
+  args: string[];
+  code: number;
+  stdout: string;
+  stderr: string;
+  durationMs: number;
+  timedOut: boolean;
+};
+
+async function postCodeEnginApi<T>(url: string, body: Record<string, unknown> = {}): Promise<T> {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({})) as { ok?: boolean; error?: string } & T;
+  if (!res.ok || data.ok === false) {
+    throw new Error(data.error || `CodeEngin API failed (${res.status})`);
+  }
+  return data as T;
+}
+
+async function getCodeEnginApi<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  const data = await res.json().catch(() => ({})) as { ok?: boolean; error?: string } & T;
+  if (!res.ok || data.ok === false) {
+    throw new Error(data.error || `CodeEngin API failed (${res.status})`);
+  }
+  return data as T;
+}
+
+function flattenCodeEnginTree(nodes: CodeEnginApiFileNode[]): string[] {
+  const paths: string[] = [];
+  const walk = (items: CodeEnginApiFileNode[]) => {
+    items.forEach((item) => {
+      if (item.type === 'file') paths.push(item.path);
+      if (item.children?.length) walk(item.children);
+    });
+  };
+  walk(nodes);
+  return paths.sort((a, b) => a.localeCompare(b));
+}
+
+function filePlaceholdersFromTree(nodes: CodeEnginApiFileNode[]): WorkspaceFile[] {
+  return flattenCodeEnginTree(nodes).map((path) => ({
+    path,
+    language: languageFromPath(path),
+    content: '',
+    dirty: false,
+    readonly: true,
+    updatedAt: nowIso(),
+  }));
+}
+
+function mergeServerFile(prev: CodeWorkspaceState, file: WorkspaceFile): CodeWorkspaceState {
+  const exists = prev.files.some((candidate) => candidate.path === file.path);
+  const files = exists
+    ? prev.files.map((candidate) => candidate.path === file.path ? file : candidate)
+    : [...prev.files, file];
+  return {
+    ...prev,
+    files: sortFiles(files),
+    activePath: file.path,
+    openTabs: prev.openTabs.includes(file.path) ? prev.openTabs : [...prev.openTabs, file.path],
+  };
+}
+
 function groupFiles(files: WorkspaceFile[]): Array<[string, WorkspaceFile[]]> {
   const groups = new Map<string, WorkspaceFile[]>();
   sortFiles(files).forEach((file) => {
@@ -383,6 +475,8 @@ export default function CodeEngin({ onBack }: Props) {
   const [assistResponse, setAssistResponse] = useState('');
   const [assistLoading, setAssistLoading] = useState(false);
   const [datasetDismissed, setDatasetDismissed] = useState<string | null>(null);
+  const [serverMode, setServerMode] = useState<'local' | 'connected' | 'blocked'>('local');
+  const [serverDiagnostics, setServerDiagnostics] = useState<EditorDiagnostic[]>([]);
 
   useEffect(() => {
     loadWorkflow('code:sprint');
@@ -422,13 +516,13 @@ export default function CodeEngin({ onBack }: Props) {
     [workspace.activePath, workspace.files],
   );
 
-  const diagnostics = useMemo(() => collectDiagnostics(workspace.files).sort((a, b) => {
+  const diagnostics = useMemo(() => [...collectDiagnostics(workspace.files), ...serverDiagnostics].sort((a, b) => {
     const bySeverity = severityRank(a.severity) - severityRank(b.severity);
     if (bySeverity !== 0) return bySeverity;
     const byPath = a.path.localeCompare(b.path);
     if (byPath !== 0) return byPath;
     return a.line - b.line;
-  }), [workspace.files]);
+  }), [serverDiagnostics, workspace.files]);
 
   const activeDiagnostics = useMemo(
     () => diagnostics.filter((diagnostic) => diagnostic.path === activeFile.path),
@@ -480,6 +574,61 @@ export default function CodeEngin({ onBack }: Props) {
       openTabs: prev.openTabs.includes(path) ? prev.openTabs : [...prev.openTabs, path],
     }));
   }, []);
+
+  const loadServerWorkspace = useCallback(async () => {
+    setBottomPanel('terminal');
+    appendTerminal('input', 'codeengin workspace load');
+    try {
+      const data = await getCodeEnginApi<{ overview: { tree: CodeEnginApiFileNode[]; fileCount: number } }>('/api/codeengin/workspace');
+      const placeholders = filePlaceholdersFromTree(data.overview.tree);
+      if (placeholders.length === 0) {
+        appendTerminal('warning', 'CodeEngin API returned an empty workspace tree. Keeping local workspace.');
+        return;
+      }
+      setWorkspace((prev: CodeWorkspaceState) => {
+        const existing = new Map<string, WorkspaceFile>(prev.files.map((file: WorkspaceFile) => [file.path, file]));
+        const files: WorkspaceFile[] = placeholders.map((file: WorkspaceFile) => {
+          const loaded = existing.get(file.path);
+          return loaded?.content ? { ...loaded, readonly: false } : file;
+        });
+        const activePath = files.some((file: WorkspaceFile) => file.path === prev.activePath) ? prev.activePath : files[0].path;
+        const openTabs = prev.openTabs
+          .filter((path: string) => files.some((file: WorkspaceFile) => file.path === path))
+          .slice(0, 12)
+          .concat(activePath)
+          .filter((path: string, index: number, arr: string[]) => arr.indexOf(path) === index);
+        return {
+          ...prev,
+          files: sortFiles(files),
+          activePath,
+          openTabs,
+        };
+      });
+      setServerMode('connected');
+      appendTerminal('success', `Loaded real project tree: ${data.overview.fileCount} editable file(s). Open a file to read its content.`);
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Workspace API unavailable: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal]);
+
+  const openProjectFile = useCallback(async (path: string) => {
+    openFile(path);
+    const cached = workspace.files.find((file) => file.path === path);
+    if (cached?.content && cached.readonly !== true) return;
+    try {
+      const data = await postCodeEnginApi<{ file: { path: string; content: string; updatedAt?: string } }>('/api/codeengin/file', { action: 'read', path });
+      const file = makeFile(data.file.path, data.file.content);
+      file.dirty = false;
+      file.readonly = false;
+      file.updatedAt = data.file.updatedAt ?? nowIso();
+      setWorkspace((prev) => mergeServerFile(prev, file));
+      setServerMode('connected');
+      appendTerminal('info', `Opened ${data.file.path} from project filesystem.`);
+    } catch (error: unknown) {
+      appendTerminal('warning', `Opened ${path} from local workspace only: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal, openFile, workspace.files]);
 
   const closeTab = useCallback((path: string) => {
     setWorkspace((prev) => {
@@ -566,6 +715,80 @@ export default function CodeEngin({ onBack }: Props) {
     }
   }, [appendTerminal, diagnostics.length, errorCount, warningCount]);
 
+  const saveActiveFileToServer = useCallback(async () => {
+    setBottomPanel('terminal');
+    appendTerminal('input', `save ${activeFile.path}`);
+    try {
+      const data = await postCodeEnginApi<{ file: { path: string; content: string; updatedAt?: string } }>('/api/codeengin/file', {
+        action: 'write',
+        path: activeFile.path,
+        content: activeFile.content,
+      });
+      const saved = makeFile(data.file.path, data.file.content);
+      saved.dirty = false;
+      saved.readonly = false;
+      saved.updatedAt = data.file.updatedAt ?? nowIso();
+      setWorkspace((prev) => mergeServerFile(prev, saved));
+      setServerMode('connected');
+      appendTerminal('success', `Saved ${data.file.path} to the project filesystem.`);
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Save failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [activeFile.content, activeFile.path, appendTerminal]);
+
+  const runServerDiagnostics = useCallback(async () => {
+    setBottomPanel('problems');
+    appendTerminal('input', 'codeengin diagnostics workspace');
+    try {
+      const data = await postCodeEnginApi<{ diagnostics: CodeEnginApiDiagnostic[] }>('/api/codeengin/diagnostics', { scope: 'workspace' });
+      const mapped: EditorDiagnostic[] = data.diagnostics.map((diagnostic, index) => ({
+        id: diagnostic.id ?? `server:${diagnostic.path}:${diagnostic.line}:${diagnostic.col}:${index}`,
+        path: diagnostic.path,
+        line: diagnostic.line,
+        col: diagnostic.col,
+        severity: diagnostic.severity,
+        message: `${diagnostic.source ? `[${diagnostic.source}] ` : ''}${diagnostic.message}`,
+      }));
+      setServerDiagnostics(mapped);
+      setServerMode('connected');
+      const errors = mapped.filter((diagnostic) => diagnostic.severity === 'error').length;
+      const warnings = mapped.filter((diagnostic) => diagnostic.severity === 'warning').length;
+      appendTerminal(errors > 0 ? 'error' : warnings > 0 ? 'warning' : 'success', `Server diagnostics returned ${errors} error(s), ${warnings} warning(s), ${mapped.length - errors - warnings} info item(s).`);
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Server diagnostics failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal]);
+
+  const runServerCommand = useCallback(async (command: 'build' | 'typecheck' | 'test') => {
+    setBottomPanel('terminal');
+    appendTerminal('input', `pnpm ${command}`);
+    try {
+      const data = await postCodeEnginApi<{ result: CodeEnginApiRunResult }>('/api/codeengin/run', { command });
+      const output = [data.result.stdout, data.result.stderr].filter(Boolean).join('\n').trim();
+      appendTerminal(data.result.code === 0 ? 'success' : 'error', `${data.result.command} ${data.result.args.join(' ')} exited ${data.result.code} in ${data.result.durationMs}ms${data.result.timedOut ? ' (timed out)' : ''}`);
+      if (output) appendTerminal(data.result.code === 0 ? 'info' : 'error', output.slice(0, 5000));
+      setServerMode('connected');
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Runner failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal]);
+
+  const showGitStatus = useCallback(async () => {
+    setBottomPanel('terminal');
+    appendTerminal('input', 'git status --short --branch');
+    try {
+      const data = await postCodeEnginApi<{ result: { code: number; stdout: string; stderr: string } }>('/api/codeengin/git', { action: 'status' });
+      appendTerminal(data.result.code === 0 ? 'info' : 'error', (data.result.stdout || data.result.stderr || 'No git output.').trim());
+      setServerMode('connected');
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Git status failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal]);
+
   const buildCheck = useCallback(() => {
     setBottomPanel('terminal');
     appendTerminal('input', 'codeengin build-check');
@@ -651,15 +874,21 @@ export default function CodeEngin({ onBack }: Props) {
   const runCommand = useCallback((kind: CommandKind) => {
     setCommandOpen(false);
     setCommandQuery('');
+    if (kind === 'load') void loadServerWorkspace();
+    if (kind === 'save') void saveActiveFileToServer();
     if (kind === 'check') runDiagnostics();
-    if (kind === 'build') buildCheck();
+    if (kind === 'server-check') void runServerDiagnostics();
+    if (kind === 'build') void runServerCommand('build');
+    if (kind === 'typecheck') void runServerCommand('typecheck');
+    if (kind === 'test') void runServerCommand('test');
     if (kind === 'run') runActiveFile();
     if (kind === 'format') formatActiveFile();
     if (kind === 'snapshot') saveSnapshot('Command snapshot');
+    if (kind === 'git') void showGitStatus();
     if (kind === 'game') deployToGame();
     if (kind === 'content') publishToContent();
     if (kind === 'component') createComponent();
-  }, [buildCheck, createComponent, deployToGame, formatActiveFile, publishToContent, runActiveFile, runDiagnostics, saveSnapshot]);
+  }, [createComponent, deployToGame, formatActiveFile, loadServerWorkspace, publishToContent, runActiveFile, runDiagnostics, runServerCommand, runServerDiagnostics, saveActiveFileToServer, saveSnapshot, showGitStatus]);
 
   const handleAiAssist = useCallback(async () => {
     const prompt = assistPrompt.trim();
@@ -691,7 +920,7 @@ export default function CodeEngin({ onBack }: Props) {
       }
       if (meta && event.key.toLowerCase() === 's') {
         event.preventDefault();
-        saveSnapshot('Keyboard save');
+        void saveActiveFileToServer();
       }
       if (meta && event.key === 'Enter') {
         event.preventDefault();
@@ -700,7 +929,7 @@ export default function CodeEngin({ onBack }: Props) {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [runActiveFile, saveSnapshot]);
+  }, [runActiveFile, saveActiveFileToServer]);
 
   const filteredCommands = COMMANDS.filter((command) => {
     const query = commandQuery.trim().toLowerCase();
@@ -739,7 +968,10 @@ export default function CodeEngin({ onBack }: Props) {
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <span style={statusPillStyle(errorCount > 0)}>{errorCount > 0 ? <XCircle size={13} /> : <CheckCircle size={13} />}{errorCount} errors</span>
               <span style={statusPillStyle(warningCount > 0)}><Shield size={13} />{warningCount} warnings</span>
+              <span style={{ borderRadius: 999, padding: '5px 9px', fontSize: 11, fontWeight: 800, background: serverMode === 'connected' ? 'rgba(34,197,94,0.11)' : serverMode === 'blocked' ? 'rgba(239,68,68,0.10)' : `${ACCENT}12`, color: serverMode === 'connected' ? '#15803d' : serverMode === 'blocked' ? '#b91c1c' : ACCENT, border: serverMode === 'connected' ? '1px solid rgba(34,197,94,0.20)' : serverMode === 'blocked' ? '1px solid rgba(239,68,68,0.18)' : `1px solid ${ACCENT}24` }}>{serverMode === 'connected' ? 'runtime connected' : serverMode === 'blocked' ? 'runtime blocked' : 'local mode'}</span>
               <span style={{ borderRadius: 999, padding: '5px 9px', fontSize: 11, fontWeight: 800, background: `${ACCENT}16`, color: ACCENT, border: `1px solid ${ACCENT}30` }}>{dirtyCount} dirty</span>
+              <button type="button" onClick={() => void loadServerWorkspace()} style={{ border: `1px solid ${ACCENT}38`, background: 'rgba(255,255,255,0.62)', color: ACCENT, borderRadius: 999, padding: '8px 12px', fontWeight: 900, fontSize: 12, cursor: 'pointer' }}>Load repo</button>
+              <button type="button" onClick={() => void saveActiveFileToServer()} style={{ border: `1px solid ${ACCENT}38`, background: `${ACCENT}14`, color: ACCENT, borderRadius: 999, padding: '8px 12px', fontWeight: 900, fontSize: 12, cursor: 'pointer' }}>Save file</button>
               <button type="button" onClick={() => setCommandOpen(true)} style={{ border: `1px solid ${ACCENT}38`, background: `${ACCENT}14`, color: ACCENT, borderRadius: 999, padding: '8px 12px', fontWeight: 900, fontSize: 12, cursor: 'pointer' }}>⌘K Command</button>
             </div>
           </div>
@@ -780,7 +1012,7 @@ export default function CodeEngin({ onBack }: Props) {
                       const fileDiagnostics = diagnostics.filter((diagnostic) => diagnostic.path === file.path);
                       const hasError = fileDiagnostics.some((diagnostic) => diagnostic.severity === 'error');
                       return (
-                        <button key={file.path} type="button" onClick={() => openFile(file.path)} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, border: workspace.activePath === file.path ? `1px solid ${ACCENT}45` : '1px solid transparent', borderRadius: 10, padding: '8px 9px', marginBottom: 3, background: workspace.activePath === file.path ? `${ACCENT}12` : 'transparent', cursor: 'pointer', textAlign: 'left' }}>
+                        <button key={file.path} type="button" onClick={() => void openProjectFile(file.path)} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, border: workspace.activePath === file.path ? `1px solid ${ACCENT}45` : '1px solid transparent', borderRadius: 10, padding: '8px 9px', marginBottom: 3, background: workspace.activePath === file.path ? `${ACCENT}12` : 'transparent', cursor: 'pointer', textAlign: 'left' }}>
                           <span style={{ fontSize: 13 }}>{file.language === 'json' ? '{}' : file.language === 'css' ? '#' : file.language === 'markdown' ? 'md' : '<>'}</span>
                           <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12, fontWeight: workspace.activePath === file.path ? 900 : 700, color: '#1e293b' }}>{basename(file.path)}</span>
                           {file.dirty && <span style={{ color: ACCENT, fontSize: 16, lineHeight: 0 }}>•</span>}
@@ -799,7 +1031,7 @@ export default function CodeEngin({ onBack }: Props) {
                   const file = workspace.files.find((candidate) => candidate.path === path);
                   if (!file) return null;
                   return (
-                    <button key={path} type="button" onClick={() => openFile(path)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: workspace.activePath === path ? `1px solid ${ACCENT}42` : '1px solid rgba(82,113,157,0.16)', borderRadius: 10, padding: '7px 8px', background: workspace.activePath === path ? '#fff' : 'rgba(255,255,255,0.45)', fontSize: 12, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                    <button key={path} type="button" onClick={() => void openProjectFile(path)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: workspace.activePath === path ? `1px solid ${ACCENT}42` : '1px solid rgba(82,113,157,0.16)', borderRadius: 10, padding: '7px 8px', background: workspace.activePath === path ? '#fff' : 'rgba(255,255,255,0.45)', fontSize: 12, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                       {basename(path)} {file.dirty && <span style={{ color: ACCENT }}>•</span>}
                       <span role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); closeTab(path); }} onKeyDown={(event) => { if (event.key === 'Enter') closeTab(path); }} style={{ display: 'grid', placeItems: 'center' }}><X size={12} /></span>
                     </button>
@@ -841,7 +1073,7 @@ export default function CodeEngin({ onBack }: Props) {
                       {(activeDiagnostics.length > 0 ? activeDiagnostics : diagnostics).length === 0 ? (
                         <div style={{ color: '#15803d', fontWeight: 900, fontSize: 13 }}>No problems found.</div>
                       ) : (activeDiagnostics.length > 0 ? activeDiagnostics : diagnostics).slice(0, 80).map((diagnostic) => (
-                        <button key={diagnostic.id} type="button" onClick={() => openFile(diagnostic.path)} style={{ width: '100%', display: 'flex', gap: 8, alignItems: 'flex-start', border: 'none', borderBottom: '1px solid rgba(82,113,157,0.10)', background: 'transparent', padding: '8px 0', textAlign: 'left', cursor: 'pointer' }}>
+                        <button key={diagnostic.id} type="button" onClick={() => void openProjectFile(diagnostic.path)} style={{ width: '100%', display: 'flex', gap: 8, alignItems: 'flex-start', border: 'none', borderBottom: '1px solid rgba(82,113,157,0.10)', background: 'transparent', padding: '8px 0', textAlign: 'left', cursor: 'pointer' }}>
                           {diagnostic.severity === 'error' ? <XCircle size={14} color="#dc2626" /> : diagnostic.severity === 'warning' ? <Bug size={14} color="#b45309" /> : <ListChecks size={14} color={ACCENT} />}
                           <span style={{ flex: 1, fontSize: 12 }}><strong>{diagnostic.path}:{diagnostic.line}</strong> — {diagnostic.message}</span>
                         </button>
