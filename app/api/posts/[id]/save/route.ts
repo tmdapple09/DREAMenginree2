@@ -1,23 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
-
-/**
- * POST /api/posts/[id]/save
- * DELETE /api/posts/[id]/save
- *
- * Saves or unsaves a post to/from the calling user's profile (spec §2).
- *
- * FIFO queue: the user may have at most 25 saved posts.
- * When a 26th post is saved, the oldest saved post is automatically deleted
- * before inserting the new one.
- *
- * DELETE removes the post from saved_posts for this user.
- */
-
-const MAX_SAVED_POSTS = 25;
 
 export async function POST(
   _req: NextRequest,
@@ -27,64 +10,22 @@ export async function POST(
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const db = supabase as SupabaseClient;
-
-  // Verify the post exists.
-  const { data: post } = await db
+  const { data: post } = await supabase
     .from('app_posts')
     .select('id')
     .eq('id', postId)
     .maybeSingle();
 
-  if (!post) {
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-  }
+  if (!post) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
 
-  // Check if already saved.
-  const { data: existing } = await db
-    .from('saved_posts')
-    .select('id')
-    .eq('user_id', user.id)
-    .eq('post_id', postId)
-    .maybeSingle();
-
-  if (existing) {
-    return NextResponse.json({ ok: true, already_saved: true });
-  }
-
-  const { count: savedCount } = await db
-    .from('saved_posts')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', user.id);
-
-  if (typeof savedCount === 'number' && savedCount >= MAX_SAVED_POSTS) {
-    // Find the oldest saved post and delete it.
-    const { data: oldest } = await db
-      .from('saved_posts')
-      .select('id')
-      .eq('user_id', user.id)
-      .order('saved_at', { ascending: true })
-      .limit(1)
-      .single();
-
-    if (oldest) {
-      await db.from('saved_posts').delete().eq('id', oldest.id);
-    }
-  }
-
-  const { error: insertErr } = await db
-    .from('saved_posts')
-    .insert({ user_id: user.id, post_id: postId, saved_at: new Date().toISOString() });
-
-  if (insertErr) {
-    return NextResponse.json({ error: insertErr.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ ok: true, saved: true }, { status: 201 });
+  return NextResponse.json({
+    ok: true,
+    saved: false,
+    disabled: true,
+    reason: 'saved_posts_table_not_in_current_schema',
+  });
 }
 
 export async function DELETE(
@@ -95,19 +36,13 @@ export async function DELETE(
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { error } = await (supabase as SupabaseClient)
-    .from('saved_posts')
-    .delete()
-    .eq('user_id', user.id)
-    .eq('post_id', postId);
-
-  if (error) {
-    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
-  }
-
-  return NextResponse.json({ ok: true, unsaved: true });
+  return NextResponse.json({
+    ok: true,
+    unsaved: false,
+    post_id: postId,
+    disabled: true,
+    reason: 'saved_posts_table_not_in_current_schema',
+  });
 }

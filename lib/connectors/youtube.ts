@@ -51,28 +51,33 @@ async function fetchChannelVideos(userId: string, accessToken: string, channelId
 
     // Map to feed_items and insert
     for (const item of data.items || []) {
+      const publishedAt = item.snippet.publishedAt ?? new Date().toISOString();
+      const thumbnailUrl = item.snippet.thumbnails?.medium?.url ?? null;
       const feedItem = {
-        user_id: userId,
-        source: 'youtube',
-        source_account_id: channelId,
-        external_id: item.id.videoId,
-        ts: new Date(item.snippet.publishedAt).toISOString(),
+        feed_widget_id: `user:${userId}`,
+        source_widget_id: `youtube:${item.id.videoId}`,
         title: item.snippet.title,
-        summary: item.snippet.description,
-        url: `https://youtube.com/watch?v=${item.id.videoId}`,
-        media_json: {
-          thumbnail: item.snippet.thumbnails?.medium?.url,
-          channelTitle: item.snippet.channelTitle,
+        preview: {
+          provider: 'youtube',
+          source: 'connector',
+          user_id: userId,
+          external_id: item.id.videoId,
+          content_text: item.snippet.title,
+          permalink: `https://youtube.com/watch?v=${item.id.videoId}`,
+          published_at: publishedAt,
+          media_url: thumbnailUrl,
+          media: thumbnailUrl ? [{ url: thumbnailUrl, type: 'image' }] : [],
+          raw: {
+            thumbnail: thumbnailUrl,
+            channelTitle: item.snippet.channelTitle,
+          },
         },
-        tags_json: [],
-        dedupe_hash: `${userId}-youtube-${item.id.videoId}`,
-        visibility: 'private',
-      }
+        created_at: publishedAt,
+      };
 
-      // Insert with upsert to handle duplicates
       await supabase
         .from('feed_items')
-        .upsert(feedItem, { onConflict: 'dedupe_hash', ignoreDuplicates: true })
+        .insert(feedItem)
     }
 
   } catch (error: unknown) {

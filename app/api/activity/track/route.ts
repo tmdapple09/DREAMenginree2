@@ -46,35 +46,28 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const points = calculateActivityPoints(tier);
     const decayTimestamp = calculateDecayDate();
 
-    // Create verification record if evidence provided
+    // Current schema has activity_points.verification_id but not the legacy
+    // activity_verification table. Preserve verification evidence in the API
+    // response and still record the activity point.
     let verificationId: string | undefined;
     let verification: ActivityVerification | undefined = undefined;
 
     if (verification_method && evidence_url) {
       const verificationStrength = VERIFICATION_STRENGTH[verification_method] ?? 0;
-
-      const verificationResult = await (supabase as SupabaseClient)
-        .from('activity_verification')
-        .insert({
-          user_id: user.id,
-          tier,
-          verification_method,
-          verification_strength: verificationStrength,
-          evidence_url,
-          evidence_metadata: evidence_metadata ?? {},
-          verified: verification_method === 'on_platform', // Auto-verify on-platform
-          verified_at: verification_method === 'on_platform' ? new Date().toISOString() : null,
-          verified_by: verification_method === 'on_platform' ? 'auto' : null,
-        })
-        .select()
-        .single();
-
-      if (verificationResult.error) {
-        console.error('[TrackActivity] Verification error:', verificationResult.error);
-      } else {
-        verificationId = verificationResult.data?.id;
-        verification = verificationResult.data;
-      }
+      verification = {
+        id: `inline:${Date.now()}`,
+        user_id: user.id,
+        tier,
+        verification_method,
+        verification_strength: verificationStrength,
+        evidence_url,
+        evidence_metadata: evidence_metadata ?? {},
+        verified: verification_method === 'on_platform',
+        verified_at: verification_method === 'on_platform' ? new Date().toISOString() : undefined,
+        verified_by: verification_method === 'on_platform' ? 'auto' : undefined,
+        created_at: new Date().toISOString(),
+      } as ActivityVerification;
+      verificationId = undefined;
     }
 
     // Create activity point record

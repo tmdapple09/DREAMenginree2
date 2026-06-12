@@ -226,13 +226,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Also create a feed item for the user
+  const postRow = post as Record<string, unknown>;
+  const postId = String(postRow.id ?? 'unknown-post');
+  const firstMediaUrl = getPrimaryPostMediaUrl(postRow);
 
   await (supabase as SupabaseClient).from('feed_items').insert({
-    user_id: user.id,
-    type: 'post',
-    content: { text: content.trim(), post_id: (post as Record<string, unknown>).id },
-    ts: new Date().toISOString(),
+    feed_widget_id: `user:${user.id}`,
+    source_widget_id: `app-post:${postId}`,
+    title: content.trim().slice(0, 100),
+    preview: {
+      provider: 'dreamengin',
+      source: 'app_post',
+      user_id: user.id,
+      post_id: postId,
+      content_text: content.trim(),
+      media_url: firstMediaUrl,
+      media: firstMediaUrl ? [{ url: firstMediaUrl, type: 'image' }] : [],
+      published_at: typeof postRow.created_at === 'string' ? postRow.created_at : new Date().toISOString(),
+      raw: postRow,
+    },
   });
 
   return NextResponse.json({ post }, { status: 201 });

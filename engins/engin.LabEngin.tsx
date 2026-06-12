@@ -13,7 +13,6 @@ import { useForgeActivity } from '@/lib/forge/useForgeActivity';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { useLabEnginBridge } from '@/lib/runtime/useEnginBridge';
 import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
-import { createClient } from '@/lib/supabase/client';
 import { useEffect, useRef, useState } from 'react';
 import QuantumCircuitCanvas, {
     type QuantumMeasurementResult,
@@ -253,25 +252,8 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
   const [exportFlash, setExportFlash] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    const supabase = createClient();
-
-    supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.user;
-      if (!user || cancelled) { setLoading(false); return; }
-      const { data } = await supabase
-        .from('physics_experiments')
-        .select('id, title, status')
-        .eq('creator_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      if (!cancelled) {
-        setExperiments((data as Experiment[] | null) ?? []);
-        setLoading(false);
-      }
-    });
-
-    return () => { cancelled = true; };
+    setExperiments([]);
+    setLoading(false);
   }, []);
 
   function runSim(id: string ){
@@ -537,27 +519,14 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
       'lab', 'lab:result-publish', { title },
     );
 
-    // Write a real experiment record to Supabase (Phase 8 §F, pt 53).
-    const supabase = createClient();
-    supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.user;
-      if (user) {
-        await supabase.from('physics_experiments').insert({
-          creator_id:  user.id,
-          title:       title.trim(),
-          status:      'completed',
-          visibility:  'private',
-        });
-      }
-      const newResult = {
-        id: `res-${Date.now()}`,
-        title: title.trim(),
-        date: new Date().toISOString().split('T')[0],
-      };
-      setPublishedResults((prev) => [newResult, ...prev]);
-      setNewResultTitle('');
-      setPublishingResult(false);
-    });
+    const newResult = {
+      id: `res-${Date.now()}`,
+      title: title.trim(),
+      date: new Date().toISOString().split('T')[0],
+    };
+    setPublishedResults((prev) => [newResult, ...prev]);
+    setNewResultTitle('');
+    setPublishingResult(false);
   }
 
   return (

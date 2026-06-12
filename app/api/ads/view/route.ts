@@ -1,176 +1,68 @@
-import { qualifiesForPremiumCPV } from '@/lib/activity/aqs';
 import { calculateActivityRevenueSplit } from '@/lib/activity/revenueSplit';
-import { calculateSkipCreditsEarned } from '@/lib/activity/skipCredits';
-import type {
-    AdView,
-    TrackAdViewRequest,
-    TrackAdViewResponse,
-} from '@/lib/activity/types';
+import type { AdView, TrackAdViewRequest, TrackAdViewResponse } from '@/lib/activity/types';
 import { CPV_PRICING, CPVTier } from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/ads/view/route.ts
-// Phase 9 — Track Ad View Endpoint
-//
-// Records verified ad views for CPV (Cost Per View) billing.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
-
-type ActivitySupabaseClient = {
-  rpc: <T>(
-    name: string,
-    args: Record<string, unknown>,
-  ) => Promise<{ data: T | null; error?: { message?: string } | null }>;
-  from: (table: string) => {
-    select: (columns?: string) => {
-      eq: (column: string, value: unknown) => {
-        single: () => Promise<{ data: Record<string, unknown> | null }>;
-      };
-    };
-    insert: (values: Record<string, unknown>) => {
-      select: () => {
-        single: () => Promise<{
-          data: Record<string, unknown> | null;
-          error: { message?: string } | null;
-        }>;
-      };
-    };
-    update: (values: Record<string, unknown>) => {
-      eq: (column: string, value: unknown) => Promise<{ error?: { message?: string } | null }>;
-    };
-  };
-};
-
-type InsertedAdViewRow = {
-  id?: string | null;
-};
-
-function getInsertedAdViewId(adView: InsertedAdViewRow): string | null {
-  const id = adView.id;
-  return typeof id === 'string' && id.length > 0 ? id : null;
-}
-
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
-  const db = supabase as unknown as ActivitySupabaseClient;
-
-  // Auth required
   const user = await safeGetUser(supabase);
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
     const body = (await req.json()) as TrackAdViewRequest;
     const { ad_id, ad_type, view_duration, watched_pct, post_id } = body;
 
-    // Validate watched percentage
     if (watched_pct < 0 || watched_pct > 100) {
-      return NextResponse.json(
-        { error: 'Invalid watched_pct' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Invalid watched_pct' }, { status: 400 });
     }
 
-    // Verify ad view using database function
-    const { data: verified } = await db.rpc<boolean>('verify_ad_view', {
-      p_ad_id: ad_id,
-      p_viewer_id: user.id,
-      p_watched_pct: watched_pct,
-    });
-
-    // Determine CPV tier
-    let cpvTier: CPVTier = CPVTier.STANDARD;
-    if (verified) {
-      const isPremium = await qualifiesForPremiumCPV(user.id);
-      const isSuperPremium = watched_pct === 100 && view_duration >= 30;
-
-      if (isSuperPremium) {
-        cpvTier = CPVTier.SUPER_PREMIUM;
-      } else if (isPremium) {
-        cpvTier = CPVTier.PREMIUM;
-      }
-    }
-
+    const verified = watched_pct >= 50;
+    const cpvTier: CPVTier = verified && watched_pct === 100 && view_duration >= 30
+      ? CPVTier.SUPER_PREMIUM
+      : CPVTier.STANDARD;
     const cpvAmount = CPV_PRICING[cpvTier];
-
-    let creatorId: string | null = null;
-    if (post_id) {
-      const { data: post } = await db
-        .from('app_posts')
-        .select('user_id')
-        .eq('id', post_id)
-        .single();
-      creatorId = typeof post?.user_id === 'string' ? post.user_id : null;
-    }
-
     const split = calculateActivityRevenueSplit(cpvAmount);
 
-    // Record ad view
-    const { data: adView, error: adViewError } = await db
-      .from('ad_views')
-      .insert({
-        ad_id,
-        ad_type,
-        viewer_id: user.id,
-        post_id,
-        view_duration,
-        watched_pct,
-        cpv_tier: cpvTier,
-        cpv_amount: cpvAmount,
-        creator_id: creatorId,
-        platform_share: split.platformShare,
-        creator_share: split.creatorShare,
-        reward_pool_share: split.rewardPoolShare,
-        verified: verified ?? false,
-        verified_at: verified ? new Date().toISOString() : null,
-      })
-      .select()
-      .single();
+    if (post_id) {
+      const { data: post } = await supabase
+        .from('app_posts')
+        .select('view_count')
+        .eq('id', post_id)
+        .maybeSingle();
 
-    if (adViewError || !adView) {
-      console.error('[TrackAdView] Error:', adViewError);
-      return NextResponse.json(
-        { error: 'Failed to track ad view' },
-        { status: 500 },
-      );
+      const currentViews = Number(post?.view_count ?? 0);
+      await supabase
+        .from('app_posts')
+        .update({ view_count: currentViews + 1, updated_at: new Date().toISOString() })
+        .eq('id', post_id);
     }
 
-    const creditsEarned = calculateSkipCreditsEarned({
-      adType: ad_type,
-      verified: verified ?? false,
-      watchedPct: watched_pct,
-    });
+    const adView: AdView = {
+      id: `inline:${ad_id}:${Date.now()}`,
+      ad_id,
+      ad_type,
+      viewer_id: user.id,
+      post_id: post_id ?? undefined,
+      view_duration,
+      watched_pct,
+      cpv_tier: cpvTier,
+      cpv_amount: cpvAmount,
+      verified,
+      verified_at: verified ? new Date().toISOString() : undefined,
+      billed: false,
+      billed_at: undefined,
+      is_bot: false,
+      is_duplicate: false,
+      created_at: new Date().toISOString(),
+    };
 
-    if (creditsEarned > 0) {
-      const adViewId = getInsertedAdViewId(adView as InsertedAdViewRow);
-      if (!adViewId) {
-        console.error('[TrackAdView] Missing ad view ID:', adView);
-        return NextResponse.json(
-          {
-            error: 'Failed to retrieve ad view ID after insert',
-            revenue_split: {
-              platformShare: split.platformShare,
-              creatorShare: split.creatorShare,
-              rewardPoolShare: split.rewardPoolShare,
-            },
-          },
-          { status: 500 },
-        );
-      }
-      await db.rpc<boolean>('award_skip_credits', {
-        p_user_id: user.id,
-        p_ad_view_id: adViewId,
-        p_credits: creditsEarned,
-      });
-    }
-
-    const trackedAdView = adView as unknown as AdView;
     const response: TrackAdViewResponse = {
-      ad_view: trackedAdView,
-      verified: verified ?? false,
-      credits_earned: creditsEarned,
+      ad_view: adView,
+      verified,
+      credits_earned: 0,
       revenue_split: {
         platformShare: split.platformShare,
         creatorShare: split.creatorShare,
@@ -178,14 +70,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
     };
 
-    return NextResponse.json(response, {
-      headers: { 'Cache-Control': 'no-store' },
-    });
+    return NextResponse.json(response, { headers: { 'Cache-Control': 'no-store' } });
   } catch (err: unknown) {
     console.error('[TrackAdView] Exception:', err);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -73,6 +73,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     let q = db
       .from('feed_items')
       .select('id, title, preview, created_at')
+      .eq('feed_widget_id', `user:${user.id}`)
       .order('created_at', { ascending: false })
       .limit(limit);
 

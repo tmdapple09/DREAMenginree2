@@ -101,16 +101,23 @@ export async function reconcileConnector(
   let stored = 0;
   if (deduped.length > 0) {
     const rows = deduped.map((item) => ({
-      user_id: userId,
-      provider: item.provider,
-      external_id: item.external_id,
-      payload: item,
-      published_at: item.published_at || null,
+      feed_widget_id: `user:${userId}`,
+      source_widget_id: `${item.provider}:${item.external_id}`,
+      title: item.content_text?.slice(0, 140) ?? item.external_id,
+      preview: {
+        ...item,
+        source: 'connector',
+        user_id: userId,
+        provider: item.provider,
+        external_id: item.external_id,
+        published_at: item.published_at || null,
+      },
+      created_at: item.published_at || now,
     }));
 
     const { error: upsertError, count } = await anyDb
       .from('feed_items')
-      .upsert(rows, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true, count: 'exact' });
+      .insert(rows, { count: 'exact' });
 
     if (upsertError) {
       return {

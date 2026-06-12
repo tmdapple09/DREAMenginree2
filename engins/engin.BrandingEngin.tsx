@@ -261,28 +261,15 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   const [activePreset, setActivePreset] = useState('Brand Pink');
 
   useEffect(() => {
-    let cancelled = false;
-    const supabase = createClient();
-    void (async () => {
-      const user = await safeGetUser(supabase);
-      if (!user || cancelled) return;
-      const { data } = await supabase
-        .from('brand_kit_items')
-        .select('id, name, type, value')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(50);
-      if (!cancelled && data && (data as unknown[]).length > 0) {
-        setAssets(data as Array<{ id: string; name: string; type: 'logo' | 'color' | 'font'; value: string }>);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []);
+    if (brandRestoring || !savedBrandState?.assets || savedBrandState.assets.length === 0) return;
+    setAssets(savedBrandState.assets);
+  }, [brandRestoring, savedBrandState]);
 
   useEffect(() => {
     if (brandRestoring || brandRestoredRef.current || !savedBrandState) return;
     brandRestoredRef.current = true;
     if (savedBrandState.abTests && savedBrandState.abTests.length > 0) setAbTests(savedBrandState.abTests);
+    if (savedBrandState.assets && savedBrandState.assets.length > 0) setAssets(savedBrandState.assets);
   }, [brandRestoring, savedBrandState]);
 
   useEffect(() => {
@@ -353,21 +340,8 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'brand', 'brand:asset-save', { name: optimisticAsset.name, type: 'logo', value: optimisticAsset.value },
     );
-    // Real DB write — correct optimistic id with DB id
-    try {
-      const supabase = createClient();
-      const user = await safeGetUser(supabase);
-      if (user) {
-        const { data } = await supabase
-          .from('brand_kit_items')
-          .insert({ user_id: user.id, name: optimisticAsset.name, type: optimisticAsset.type, value: optimisticAsset.value })
-          .select('id')
-          .single();
-        if (data?.id) {
-          setAssets((prev) => prev.map((a) => a.id === optimisticId ? { ...a, id: data.id } : a));
-        }
-      }
-    } catch { /* non-blocking — optimistic item remains */ }
+    // Brand kit persistence is handled by daydream state because brand_kit_items is not in the current typed schema.
+    void optimisticId;
   }
 
   // multi-connection path: Brand → ContentEngin via /api/drafts + bridge event
