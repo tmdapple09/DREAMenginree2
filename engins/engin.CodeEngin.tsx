@@ -87,6 +87,8 @@ interface Snapshot {
 }
 
 interface CodeWorkspaceState {
+  workspaceId?: string;
+  workspaceName?: string;
   files: WorkspaceFile[];
   openTabs: string[];
   activePath: string;
@@ -100,7 +102,7 @@ interface CommandDefinition {
 }
 
 const ACCENT = '#3b7dd8';
-const STORAGE_KEY = 'dreamengin.codeengin.workspace.v2';
+const STORAGE_KEY = 'dreamengin.codeengin.workspace.v3';
 const SNAPSHOT_LIMIT = 8;
 const FONT_MIN = 11;
 const FONT_MAX = 18;
@@ -125,8 +127,8 @@ const DARK_PANEL: CSSProperties = {
 };
 
 const COMMANDS: CommandDefinition[] = [
-  { id: 'load', label: 'Load real project tree', hint: 'Read editable app files from the CodeEngin workspace API.' },
-  { id: 'save', label: 'Save active file to project', hint: 'Persist the active editor file through the CodeEngin file API.' },
+  { id: 'load', label: 'Load current user workspace', hint: 'Read files only from the workspace you created or uploaded.' },
+  { id: 'save', label: 'Save active file to workspace', hint: 'Persist the active editor file only inside your owned workspace.' },
   { id: 'check', label: 'Run local workspace diagnostics', hint: 'Parse files in the current editor state and surface problems.' },
   { id: 'server-check', label: 'Run server workspace diagnostics', hint: 'Scan project files through the CodeEngin diagnostics API.' },
   { id: 'build', label: 'Run production build', hint: 'Run the allowlisted pnpm build command on the server.' },
@@ -460,6 +462,7 @@ export default function CodeEngin({ onBack }: Props) {
   const { loadWorkflow } = useEnginWorkflow();
   const restoredRef = useRef(false);
   const editorRef = useRef<HTMLTextAreaElement | null>(null);
+  const uploadInputRef = useRef<HTMLInputElement | null>(null);
 
   const [workspace, setWorkspace] = useState<CodeWorkspaceState>(() => loadWorkspace());
   const [fontSize, setFontSize] = useState(13);
@@ -467,7 +470,7 @@ export default function CodeEngin({ onBack }: Props) {
   const [newPath, setNewPath] = useState('components/NewModule.tsx');
   const [bottomPanel, setBottomPanel] = useState<BottomPanel>('terminal');
   const [terminal, setTerminal] = useState<TerminalLine[]>(() => [
-    terminalLine('info', 'CodeEngin workspace mounted. Run diagnostics or open the command palette.'),
+    terminalLine('info', 'CodeEngin mounted in local scratch mode. Create or upload a workspace before server file access is enabled.'),
   ]);
   const [commandOpen, setCommandOpen] = useState(false);
   const [commandQuery, setCommandQuery] = useState('');
@@ -496,6 +499,8 @@ export default function CodeEngin({ onBack }: Props) {
       : files[0].path;
     const openTabs = savedState.openTabs?.filter((path) => files.some((file) => file.path === path)) ?? [activePath];
     setWorkspace({
+      workspaceId: typeof savedState.workspaceId === 'string' ? savedState.workspaceId : undefined,
+      workspaceName: typeof savedState.workspaceName === 'string' ? savedState.workspaceName : undefined,
       files,
       activePath,
       openTabs: openTabs.length > 0 ? openTabs : [activePath],
@@ -536,6 +541,8 @@ export default function CodeEngin({ onBack }: Props) {
   const datasetPrompt = codeBridge.lastLabDataset !== null && codeBridge.lastLabDataset !== datasetDismissed
     ? codeBridge.lastLabDataset
     : null;
+  const activeWorkspaceId = workspace.workspaceId ?? '';
+  const hasServerWorkspace = activeWorkspaceId.length > 0;
 
   const visibleFiles = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -575,11 +582,70 @@ export default function CodeEngin({ onBack }: Props) {
     }));
   }, []);
 
+  const createServerWorkspace = useCallback(async () => {
+    setBottomPanel('terminal');
+    appendTerminal('input', 'codeengin workspace create');
+    try {
+      const data = await postCodeEnginApi<{ workspace: { id: string; name: string }; overview: { tree: CodeEnginApiFileNode[]; fileCount: number } }>('/api/codeengin/workspace', {
+        action: 'create',
+        name: 'CodeEngin Project',
+      });
+      const placeholders = filePlaceholdersFromTree(data.overview.tree);
+      setWorkspace((prev) => ({
+        ...prev,
+        workspaceId: data.workspace.id,
+        workspaceName: data.workspace.name,
+        files: placeholders.length > 0 ? placeholders : prev.files,
+        activePath: placeholders[0]?.path ?? prev.activePath,
+        openTabs: placeholders[0]?.path ? [placeholders[0].path] : prev.openTabs,
+      }));
+      setServerMode('connected');
+      appendTerminal('success', `Created user workspace ${data.workspace.name}. No DREAMengin source was opened.`);
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Workspace create failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, [appendTerminal]);
+
+  const uploadWorkspaceZip = useCallback(async (file: File | null | undefined) => {
+    if (!file) return;
+    setBottomPanel('terminal');
+    appendTerminal('input', `codeengin workspace upload ${file.name}`);
+    try {
+      const form = new FormData();
+      form.append('repoZip', file);
+      form.append('name', file.name.replace(/\.zip$/i, ''));
+      const res = await fetch('/api/codeengin/upload', { method: 'POST', body: form });
+      const data = await res.json().catch(() => ({})) as { ok?: boolean; error?: string; workspace?: { id: string; name: string }; overview?: { tree: CodeEnginApiFileNode[]; fileCount: number } };
+      if (!res.ok || data.ok === false || !data.workspace || !data.overview) throw new Error(data.error || `Upload failed (${res.status})`);
+      const placeholders = filePlaceholdersFromTree(data.overview.tree);
+      setWorkspace((prev) => ({
+        ...prev,
+        workspaceId: data.workspace!.id,
+        workspaceName: data.workspace!.name,
+        files: placeholders.length > 0 ? placeholders : prev.files,
+        activePath: placeholders[0]?.path ?? prev.activePath,
+        openTabs: placeholders[0]?.path ? [placeholders[0].path] : prev.openTabs,
+      }));
+      setServerMode('connected');
+      appendTerminal('success', `Uploaded ${file.name} into an isolated user workspace with ${data.overview.fileCount} editable file(s).`);
+    } catch (error: unknown) {
+      setServerMode('blocked');
+      appendTerminal('error', `Workspace upload failed: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      if (uploadInputRef.current) uploadInputRef.current.value = '';
+    }
+  }, [appendTerminal]);
+
   const loadServerWorkspace = useCallback(async () => {
     setBottomPanel('terminal');
     appendTerminal('input', 'codeengin workspace load');
+    if (!activeWorkspaceId) {
+      appendTerminal('warning', 'No user workspace loaded. Create a project or upload a repo ZIP first.');
+      return;
+    }
     try {
-      const data = await getCodeEnginApi<{ overview: { tree: CodeEnginApiFileNode[]; fileCount: number } }>('/api/codeengin/workspace');
+      const data = await getCodeEnginApi<{ overview: { tree: CodeEnginApiFileNode[]; fileCount: number } }>(`/api/codeengin/workspace?workspaceId=${encodeURIComponent(activeWorkspaceId)}`);
       const placeholders = filePlaceholdersFromTree(data.overview.tree);
       if (placeholders.length === 0) {
         appendTerminal('warning', 'CodeEngin API returned an empty workspace tree. Keeping local workspace.');
@@ -610,14 +676,14 @@ export default function CodeEngin({ onBack }: Props) {
       setServerMode('blocked');
       appendTerminal('error', `Workspace API unavailable: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [appendTerminal]);
+  }, [activeWorkspaceId, appendTerminal]);
 
   const openProjectFile = useCallback(async (path: string) => {
     openFile(path);
     const cached = workspace.files.find((file) => file.path === path);
     if (cached?.content && cached.readonly !== true) return;
     try {
-      const data = await postCodeEnginApi<{ file: { path: string; content: string; updatedAt?: string } }>('/api/codeengin/file', { action: 'read', path });
+      const data = await postCodeEnginApi<{ file: { path: string; content: string; updatedAt?: string } }>('/api/codeengin/file', { action: 'read', workspaceId: activeWorkspaceId, path });
       const file = makeFile(data.file.path, data.file.content);
       file.dirty = false;
       file.readonly = false;
@@ -628,7 +694,7 @@ export default function CodeEngin({ onBack }: Props) {
     } catch (error: unknown) {
       appendTerminal('warning', `Opened ${path} from local workspace only: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [appendTerminal, openFile, workspace.files]);
+  }, [activeWorkspaceId, appendTerminal, openFile, workspace.files]);
 
   const closeTab = useCallback((path: string) => {
     setWorkspace((prev) => {
@@ -718,9 +784,14 @@ export default function CodeEngin({ onBack }: Props) {
   const saveActiveFileToServer = useCallback(async () => {
     setBottomPanel('terminal');
     appendTerminal('input', `save ${activeFile.path}`);
+    if (!activeWorkspaceId) {
+      appendTerminal('warning', 'No user workspace loaded. This file is only saved in local scratch state.');
+      return;
+    }
     try {
       const data = await postCodeEnginApi<{ file: { path: string; content: string; updatedAt?: string } }>('/api/codeengin/file', {
         action: 'write',
+        workspaceId: activeWorkspaceId,
         path: activeFile.path,
         content: activeFile.content,
       });
@@ -735,13 +806,18 @@ export default function CodeEngin({ onBack }: Props) {
       setServerMode('blocked');
       appendTerminal('error', `Save failed: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [activeFile.content, activeFile.path, appendTerminal]);
+  }, [activeFile.content, activeFile.path, activeWorkspaceId, appendTerminal]);
 
   const runServerDiagnostics = useCallback(async () => {
     setBottomPanel('problems');
     appendTerminal('input', 'codeengin diagnostics workspace');
+    if (!activeWorkspaceId) {
+      appendTerminal('warning', 'No user workspace loaded. Running local diagnostics only.');
+      runDiagnostics();
+      return;
+    }
     try {
-      const data = await postCodeEnginApi<{ diagnostics: CodeEnginApiDiagnostic[] }>('/api/codeengin/diagnostics', { scope: 'workspace' });
+      const data = await postCodeEnginApi<{ diagnostics: CodeEnginApiDiagnostic[] }>('/api/codeengin/diagnostics', { scope: 'workspace', workspaceId: activeWorkspaceId });
       const mapped: EditorDiagnostic[] = data.diagnostics.map((diagnostic, index) => ({
         id: diagnostic.id ?? `server:${diagnostic.path}:${diagnostic.line}:${diagnostic.col}:${index}`,
         path: diagnostic.path,
@@ -759,13 +835,17 @@ export default function CodeEngin({ onBack }: Props) {
       setServerMode('blocked');
       appendTerminal('error', `Server diagnostics failed: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [appendTerminal]);
+  }, [activeWorkspaceId, appendTerminal, runDiagnostics]);
 
   const runServerCommand = useCallback(async (command: 'build' | 'typecheck' | 'test') => {
     setBottomPanel('terminal');
     appendTerminal('input', `pnpm ${command}`);
+    if (!activeWorkspaceId) {
+      appendTerminal('warning', 'No user workspace loaded. Server commands do not run against DREAMengin source.');
+      return;
+    }
     try {
-      const data = await postCodeEnginApi<{ result: CodeEnginApiRunResult }>('/api/codeengin/run', { command });
+      const data = await postCodeEnginApi<{ result: CodeEnginApiRunResult }>('/api/codeengin/run', { workspaceId: activeWorkspaceId, command });
       const output = [data.result.stdout, data.result.stderr].filter(Boolean).join('\n').trim();
       appendTerminal(data.result.code === 0 ? 'success' : 'error', `${data.result.command} ${data.result.args.join(' ')} exited ${data.result.code} in ${data.result.durationMs}ms${data.result.timedOut ? ' (timed out)' : ''}`);
       if (output) appendTerminal(data.result.code === 0 ? 'info' : 'error', output.slice(0, 5000));
@@ -774,20 +854,24 @@ export default function CodeEngin({ onBack }: Props) {
       setServerMode('blocked');
       appendTerminal('error', `Runner failed: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [appendTerminal]);
+  }, [activeWorkspaceId, appendTerminal]);
 
   const showGitStatus = useCallback(async () => {
     setBottomPanel('terminal');
     appendTerminal('input', 'git status --short --branch');
+    if (!activeWorkspaceId) {
+      appendTerminal('warning', 'No user workspace loaded. Git status only runs inside uploaded/imported workspaces.');
+      return;
+    }
     try {
-      const data = await postCodeEnginApi<{ result: { code: number; stdout: string; stderr: string } }>('/api/codeengin/git', { action: 'status' });
+      const data = await postCodeEnginApi<{ result: { code: number; stdout: string; stderr: string } }>('/api/codeengin/git', { workspaceId: activeWorkspaceId, action: 'status' });
       appendTerminal(data.result.code === 0 ? 'info' : 'error', (data.result.stdout || data.result.stderr || 'No git output.').trim());
       setServerMode('connected');
     } catch (error: unknown) {
       setServerMode('blocked');
       appendTerminal('error', `Git status failed: ${error instanceof Error ? error.message : String(error)}`);
     }
-  }, [appendTerminal]);
+  }, [activeWorkspaceId, appendTerminal]);
 
   const buildCheck = useCallback(() => {
     setBottomPanel('terminal');
@@ -963,7 +1047,7 @@ export default function CodeEngin({ onBack }: Props) {
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: 18, fontWeight: 900, letterSpacing: '-0.03em', color: '#172033' }}>CodeEngin</div>
-              <div style={{ fontSize: 11, color: 'rgba(30,41,59,0.68)', fontWeight: 700 }}>Workspace IDE · Runtime actions · Cross-Engin handoff</div>
+              <div style={{ fontSize: 11, color: 'rgba(30,41,59,0.68)', fontWeight: 700 }}>User workspace IDE · Upload/create project · Cross-Engin handoff</div>
             </div>
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <span style={statusPillStyle(errorCount > 0)}>{errorCount > 0 ? <XCircle size={13} /> : <CheckCircle size={13} />}{errorCount} errors</span>
@@ -1128,6 +1212,7 @@ export default function CodeEngin({ onBack }: Props) {
                   <div><strong>Lines:</strong> {activeFile.content.split('\n').length}</div>
                   <div><strong>Symbols:</strong> {activeSymbols.length}</div>
                   <div><strong>Status:</strong> {activeFile.dirty ? 'Unsaved changes' : 'Snapshot clean'}</div>
+                  <div><strong>Workspace:</strong> {workspace.workspaceName ?? 'local scratch only'}</div>
                 </div>
                 <button type="button" onClick={() => deleteFile(activeFile.path)} disabled={workspace.files.length <= 1} style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(239,68,68,0.20)', background: 'rgba(239,68,68,0.08)', color: '#b91c1c', borderRadius: 10, padding: '8px 10px', fontWeight: 900, fontSize: 12, cursor: workspace.files.length <= 1 ? 'not-allowed' : 'pointer' }}><Trash2 size={13} />Delete file</button>
               </section>

@@ -41,56 +41,28 @@ function extractExports(source: string): string[] {
 
 function resolveInternal(fromPath: string, specifier: string, fileSet: Set<string>): string | null {
   if (!specifier.startsWith('.') && !specifier.startsWith('@/')) return null;
-  const base = specifier.startsWith('@/')
-    ? specifier.slice(2)
-    : path.posix.normalize(path.posix.join(path.posix.dirname(fromPath), specifier));
-  const candidates = [
-    base,
-    `${base}.ts`,
-    `${base}.tsx`,
-    `${base}.js`,
-    `${base}.jsx`,
-    `${base}.mjs`,
-    `${base}.cjs`,
-    `${base}.json`,
-    `${base}/index.ts`,
-    `${base}/index.tsx`,
-    `${base}/index.js`,
-    `${base}/index.jsx`,
-  ];
+  const base = specifier.startsWith('@/') ? specifier.slice(2) : path.posix.normalize(path.posix.join(path.posix.dirname(fromPath), specifier));
+  const candidates = [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}.mjs`, `${base}.cjs`, `${base}.json`, `${base}/index.ts`, `${base}/index.tsx`, `${base}/index.js`, `${base}/index.jsx`];
   return candidates.find((candidate) => fileSet.has(candidate)) ?? null;
 }
 
-export async function buildProjectGraph(startPath = ''): Promise<CodeEnginProjectGraph> {
-  const files = await listEditableFiles(startPath);
+export async function buildProjectGraph(workspaceId: string, ownerId: string, startPath = ''): Promise<CodeEnginProjectGraph> {
+  const files = await listEditableFiles(workspaceId, ownerId, startPath);
   const fileSet = new Set(files);
   const nodes: CodeEnginGraphNode[] = [];
   const edges: CodeEnginGraphEdge[] = [];
-
   for (const filePath of files) {
-    const file = await readProjectFile(filePath).catch(() => null);
+    const file = await readProjectFile(workspaceId, ownerId, filePath).catch(() => null);
     if (!file) continue;
     const imports = extractImports(file.content);
     const parsed = parseCode(file.content, languageFromPath(filePath));
     const symbols: CodeEnginSymbol[] = parsed.symbols.map((symbol) => ({ ...symbol, path: filePath }));
     nodes.push({ path: filePath, imports, exports: extractExports(file.content), symbols });
-
     for (const specifier of imports) {
       const isInternal = specifier.startsWith('.') || specifier.startsWith('@/');
       const resolved = isInternal ? resolveInternal(filePath, specifier, fileSet) : null;
-      edges.push({
-        from: filePath,
-        to: resolved,
-        specifier,
-        resolved: !isInternal || Boolean(resolved),
-        type: isInternal ? 'internal' : 'package',
-      });
+      edges.push({ from: filePath, to: resolved, specifier, resolved: !isInternal || Boolean(resolved), type: isInternal ? 'internal' : 'package' });
     }
   }
-
-  return {
-    nodes,
-    edges,
-    unresolved: edges.filter((edge) => edge.type === 'internal' && !edge.resolved),
-  };
+  return { nodes, edges, unresolved: edges.filter((edge) => edge.type === 'internal' && !edge.resolved) };
 }

@@ -1,8 +1,6 @@
-export type CodeEnginNodeType = 'file' | 'directory';
-
 export interface CodeEnginFileNode {
   name: string;
-  type: CodeEnginNodeType;
+  type: 'file' | 'directory';
   path: string;
   sizeBytes?: number;
   updatedAt?: string;
@@ -14,7 +12,7 @@ export interface CodeEnginFileRecord {
   content: string;
   sizeBytes: number;
   updatedAt: string;
-  sha256?: string;
+  sha256: string;
 }
 
 export interface CodeEnginDiagnostic {
@@ -24,14 +22,15 @@ export interface CodeEnginDiagnostic {
   col: number;
   severity: 'error' | 'warning' | 'info';
   message: string;
-  source: 'parser' | 'typescript' | 'eslint' | 'runtime' | 'codeengin';
+  source: string;
 }
 
 export interface CodeEnginSymbol {
-  kind: string;
   name: string;
+  kind: string;
   line: number;
-  path: string;
+  col: number;
+  path?: string;
 }
 
 export interface CodeEnginGraphNode {
@@ -72,8 +71,17 @@ export interface CodeEnginSearchHit {
   preview: string;
 }
 
-export interface CodeEnginWorkspaceOverview {
+export interface CodeEnginWorkspaceMeta {
+  id: string;
+  ownerId: string;
+  name: string;
   root: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CodeEnginWorkspaceOverview {
+  workspace: Pick<CodeEnginWorkspaceMeta, 'id' | 'name' | 'createdAt' | 'updatedAt'>;
   tree: CodeEnginFileNode[];
   fileCount: number;
   generatedAt: string;

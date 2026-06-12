@@ -1,16 +1,12 @@
 import { spawn } from 'child_process';
-import { getCodeEnginProjectRoot } from './pathSafety';
+import { getWorkspaceMeta } from './workspaceStore';
 
-interface GitResult {
-  command: string;
-  code: number;
-  stdout: string;
-  stderr: string;
-}
+interface GitResult { command: string; code: number; stdout: string; stderr: string; }
 
-function runGit(args: string[]): Promise<GitResult> {
+async function runGit(workspaceId: string, ownerId: string, args: string[]): Promise<GitResult> {
+  const workspace = await getWorkspaceMeta(workspaceId, ownerId);
   return new Promise((resolve) => {
-    const child = spawn('git', args, { cwd: getCodeEnginProjectRoot(), shell: false });
+    const child = spawn('git', args, { cwd: workspace.root, shell: false });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (data: Buffer) => { stdout += data.toString(); });
@@ -20,14 +16,6 @@ function runGit(args: string[]): Promise<GitResult> {
   });
 }
 
-export async function getGitStatus(): Promise<GitResult> {
-  return runGit(['status', '--short', '--branch']);
-}
-
-export async function getGitDiff(filePath?: string): Promise<GitResult> {
-  return filePath ? runGit(['diff', '--', filePath]) : runGit(['diff']);
-}
-
-export async function getGitLog(): Promise<GitResult> {
-  return runGit(['log', '--oneline', '-n', '25']);
-}
+export async function getGitStatus(workspaceId: string, ownerId: string): Promise<GitResult> { return runGit(workspaceId, ownerId, ['status', '--short', '--branch']); }
+export async function getGitDiff(workspaceId: string, ownerId: string, filePath?: string): Promise<GitResult> { return filePath ? runGit(workspaceId, ownerId, ['diff', '--', filePath]) : runGit(workspaceId, ownerId, ['diff']); }
+export async function getGitLog(workspaceId: string, ownerId: string): Promise<GitResult> { return runGit(workspaceId, ownerId, ['log', '--oneline', '-n', '25']); }

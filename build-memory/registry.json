@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T14:21:45.866Z",
+  "generatedAt": "2026-06-12T09:43:39.643Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -5484,9 +5484,7 @@
       "path": "engins/engin.CodeEngin.tsx",
       "engine": "Universal",
       "exports": [
-        "default",
-        "labDatasetId",
-        "RuntimeIntent"
+        "default"
       ]
     },
     {
@@ -8578,16 +8576,10 @@
         "CellStatus",
         "CiStatus",
         "CODE_ENGIN_RULE_SET",
-        "CodeDiagnostic",
         "CodeEnginAction",
         "CodeEnginDerivedState",
-        "CodeTerminalEntry",
-        "CodeWorkspaceFile",
-        "default",
-        "DiagnosticSeverity",
         "NotebookCell",
-        "SecurityFinding",
-        "SourceLanguage"
+        "SecurityFinding"
       ]
     },
     {

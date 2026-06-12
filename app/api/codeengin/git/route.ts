@@ -5,16 +5,11 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
-    await assertCodeEnginAccess(request);
-    const body = (await request.json().catch(() => ({}))) as { action?: 'status' | 'diff' | 'log'; path?: string };
+    const user = await assertCodeEnginAccess(request);
+    const body = (await request.json().catch(() => ({}))) as { workspaceId?: string; action?: 'status' | 'diff' | 'log'; path?: string };
+    if (!body.workspaceId) throw new Error('Missing workspaceId. Git only runs inside an owned user workspace.');
     const action = body.action ?? 'status';
-    const result = action === 'diff'
-      ? await getGitDiff(body.path)
-      : action === 'log'
-        ? await getGitLog()
-        : await getGitStatus();
+    const result = action === 'diff' ? await getGitDiff(body.workspaceId, user.id, body.path) : action === 'log' ? await getGitLog(body.workspaceId, user.id) : await getGitStatus(body.workspaceId, user.id);
     return NextResponse.json({ ok: true, result });
-  } catch (error: unknown) {
-    return NextResponse.json({ ok: false, error: safeErrorMessage(error) }, { status: 400 });
-  }
+  } catch (error: unknown) { return NextResponse.json({ ok: false, error: safeErrorMessage(error) }, { status: 400 }); }
 }
