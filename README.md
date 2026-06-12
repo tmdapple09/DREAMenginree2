@@ -2205,6 +2205,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 │       ├── dreamengin-preflight.yml
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
+│       ├── export-repo-to-artifacts.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -2224,6 +2225,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 │       ├── humanai-audit.yml
 │       ├── idari-daily.yml
 │       ├── issue-bot.yml
+│       ├── massivejson.yml
 │       ├── mobile-nextgen-spec-evolution.yml
 │       ├── mobile-ps5-spec-evolution.yml
 │       ├── neural_decision_engine.yml
@@ -2276,11 +2278,9 @@ Agents & Workflow provides shared infrastructure used across the platform.
     ├── deploy.sh
     ├── export-full-code.mjs
     ├── feature-build
-    │   └── generate-features.mjs
-    ├── fix-audit.js
-… (28 more files)
+… (30 more files)
 ```
-<details><summary>Agents & Workflow file index (148 files)</summary>
+<details><summary>Agents & Workflow file index (150 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
@@ -2326,6 +2326,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `.github/workflows/dreamengin-preflight.yml` — project file.
 - `.github/workflows/elite-gameengin-evolution.yml` — project file.
 - `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/export-repo-to-artifacts.yml` — project file.
 - `.github/workflows/exportrepo.yml` — project file.
 - `.github/workflows/full-audit.yml` — project file.
 - `.github/workflows/game-engin-patrol.yml` — project file.
@@ -2345,6 +2346,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `.github/workflows/humanai-audit.yml` — project file.
 - `.github/workflows/idari-daily.yml` — project file.
 - `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/massivejson.yml` — project file.
 - `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
 - `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
 - `.github/workflows/neural_decision_engine.yml` — project file.
@@ -2559,6 +2561,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 │       ├── dreamengin-preflight.yml
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
+│       ├── export-repo-to-artifacts.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -2578,6 +2581,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 │       ├── humanai-audit.yml
 │       ├── idari-daily.yml
 │       ├── issue-bot.yml
+│       ├── massivejson.yml
 │       ├── mobile-nextgen-spec-evolution.yml
 │       ├── mobile-ps5-spec-evolution.yml
 │       ├── neural_decision_engine.yml
@@ -2605,7 +2609,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 │       └── visual-schematicpages.yml
 └── vercel.json
 ```
-<details><summary>Infra & Ops file index (70 files)</summary>
+<details><summary>Infra & Ops file index (72 files)</summary>
 
 - `.github/workflows/Repo Audit Auto Fix.yml` — project file.
 - `.github/workflows/ScanArcCleanup.yml` — project file.
@@ -2632,6 +2636,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 - `.github/workflows/dreamengin-preflight.yml` — project file.
 - `.github/workflows/elite-gameengin-evolution.yml` — project file.
 - `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/export-repo-to-artifacts.yml` — project file.
 - `.github/workflows/exportrepo.yml` — project file.
 - `.github/workflows/full-audit.yml` — project file.
 - `.github/workflows/game-engin-patrol.yml` — project file.
@@ -2651,6 +2656,7 @@ Infra & Ops provides shared infrastructure used across the platform.
 - `.github/workflows/humanai-audit.yml` — project file.
 - `.github/workflows/idari-daily.yml` — project file.
 - `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/massivejson.yml` — project file.
 - `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
 - `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
 - `.github/workflows/neural_decision_engine.yml` — project file.
@@ -3426,9 +3432,9 @@ Contributing provides shared infrastructure used across the platform.
 │   │   ├── check_workflow_masking.py
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
-… (162 more files)
+… (164 more files)
 ```
-<details><summary>Contributing file index (282 files)</summary>
+<details><summary>Contributing file index (284 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation.
 - `.github/actions/resilient-engine/action.yml` — project file.
@@ -3573,6 +3579,7 @@ Contributing provides shared infrastructure used across the platform.
 - `.github/workflows/dreamengin-preflight.yml` — project file.
 - `.github/workflows/elite-gameengin-evolution.yml` — project file.
 - `.github/workflows/engin-all.yml` — project file.
+- `.github/workflows/export-repo-to-artifacts.yml` — project file.
 - `.github/workflows/exportrepo.yml` — project file.
 - `.github/workflows/full-audit.yml` — project file.
 - `.github/workflows/game-engin-patrol.yml` — project file.
@@ -3592,6 +3599,7 @@ Contributing provides shared infrastructure used across the platform.
 - `.github/workflows/humanai-audit.yml` — project file.
 - `.github/workflows/idari-daily.yml` — project file.
 - `.github/workflows/issue-bot.yml` — project file.
+- `.github/workflows/massivejson.yml` — project file.
 - `.github/workflows/mobile-nextgen-spec-evolution.yml` — project file.
 - `.github/workflows/mobile-ps5-spec-evolution.yml` — project file.
 - `.github/workflows/neural_decision_engine.yml` — project file.
