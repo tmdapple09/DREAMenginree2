@@ -42,10 +42,26 @@ export async function GET(
     isCloseFriend = !!cfRow;
   }
 
-  // saved_posts is not present in the current exported schema. Keep the
-  // profile feed alive by returning the owner's visible app_posts only.
+  const { data: savedRows } = await (supabase as SupabaseClient)
+    .from('saved_posts')
+    .select('post_id, saved_at, app_posts!inner(*, profiles!inner(id, handle, display_name, avatar_url))')
+    .eq('user_id', userId)
+    .order('saved_at', { ascending: false })
+    .limit(25);
+
   const savedSet = new Set<string>();
   const savedPosts: unknown[] = [];
+
+  for (const row of savedRows ?? []) {
+    interface PostJoin { id: string; content?: string; created_at?: string; post_visibility?: string; [key: string]: unknown; }
+    const postRaw = row.app_posts;
+    const post = (Array.isArray(postRaw) ? postRaw[0] : postRaw) as PostJoin | null;
+    if (!post) continue;
+    // Apply visibility filter
+    if (post.post_visibility === 'close_friends' && !isOwner && !isCloseFriend) continue;
+    savedSet.add(String(post.id));
+    savedPosts.push({ ...post, is_saved: true });
+  }
 
   const ephemeralSlots = Math.max(0, 50 - savedPosts.length);
   const ephemeralPosts: unknown[] = [];

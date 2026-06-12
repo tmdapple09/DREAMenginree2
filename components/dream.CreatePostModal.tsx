@@ -119,40 +119,29 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
 
       setUploadProgress('Creating post...');
 
-      const firstMediaUrl = mediaUrls.images[0] ?? mediaUrls.videos[0] ?? mediaUrls.audio[0] ?? null;
-      const firstMediaType = mediaUrls.images[0] ? 'image' : mediaUrls.videos[0] ? 'video' : mediaUrls.audio[0] ? 'audio' : null;
-
-      const { data: post, error } = await supabase
+      const { error } = await supabase
         .from('app_posts')
         .insert({
           user_id: userId,
           content,
           visibility,
-          media_json: mediaUrls,
-        })
-        .select('id, created_at')
-        .single();
+          media_json: mediaUrls
+        });
 
       if (!error) {
-        const postId = post?.id ?? crypto.randomUUID();
+        // Also create a feed item for the post
         await supabase
           .from('feed_items')
           .insert({
-            feed_widget_id: `user:${userId}`,
-            source_widget_id: `app-post:${postId}`,
+            user_id: userId,
+            source: 'app',
+            external_id: crypto.randomUUID(),
             title: content.slice(0, 100),
-            preview: {
-              provider: 'dreamengin',
-              source: 'app_post',
-              user_id: userId,
-              post_id: postId,
-              content_text: content,
-              visibility,
-              media_url: firstMediaUrl,
-              media: firstMediaUrl && firstMediaType ? [{ url: firstMediaUrl, type: firstMediaType }] : [],
-              media_json: mediaUrls,
-              published_at: post?.created_at ?? new Date().toISOString(),
-            },
+            summary: content,
+            ts: new Date().toISOString(),
+            dedupe_hash: `${userId}-app-${Date.now()}`,
+            visibility: visibility,
+            media_json: mediaUrls
           });
 
         setContent('');

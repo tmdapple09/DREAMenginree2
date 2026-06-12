@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *
  * Subscribes to two Supabase Realtime channels:
  *   1. `homedream-posts:{userId}` — INSERT + UPDATE on app_posts (visibility=public)
- *   2. `homedream-items:{userId}` — INSERT on feed_items (feed_widget_id=eq.user:{userId})
+ *   2. `homedream-items:{userId}` — INSERT on feed_items (user_id=eq.{userId})
  *
  * New posts from OTHER users are queued (not auto-prepended) so the user
  * doesn't lose their scroll position. A "N new posts" tap-to-show banner
@@ -25,7 +25,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *   - lib/ Logic layer per GENERATION_LAW §3.1
  *   - Same Realtime pattern as useDreamDMMessages (lib/dreamdm/)
  *   - docs/ARCHITECTURE.md §10 — no JS timers; events drive everything
- *   - docs/AXIOMS.md Axiom 5 — feed_items scoped by feed_widget_id via RLS
+ *   - docs/AXIOMS.md Axiom 5 — feed_items scoped to user_id via RLS
  *
  * Performance:
  *   - INSERT handler does one single-row SELECT to hydrate the profile join.
@@ -166,7 +166,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           // (the realtime payload does not include joined columns)
             const { data } = await supabase
               .from('app_posts')
-              .select('id, content, visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)')
+              .select('id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)')
               .eq('id', postId)
               .single();
 
@@ -182,7 +182,6 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
             created_at:     d.created_at,
             likes_count:    d.likes_count    ?? 0,
             comments_count: d.comments_count ?? 0,
-            views_count:    d.view_count     ?? 0,
             profiles: {
               handle:       d.profiles.handle,
               display_name: d.profiles.display_name ?? null,
@@ -223,7 +222,6 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
                     ...p,
                     likes_count:    (raw.likes_count    as number | undefined) ?? p.likes_count,
                     comments_count: (raw.comments_count as number | undefined) ?? p.comments_count,
-                    views_count:    (raw.view_count     as number | undefined) ?? p.views_count,
                   }
                 : p,
             ),
@@ -244,7 +242,6 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           event: 'INSERT',
           schema: 'public',
           table: 'feed_items',
-          filter: `feed_widget_id=eq.user:${userId}`,
         },
         (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
           const raw = payload.new as any;

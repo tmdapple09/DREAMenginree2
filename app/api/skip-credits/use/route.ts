@@ -1,33 +1,80 @@
-import type { UseSkipCreditsRequest, UseSkipCreditsResponse, SkipCredit } from '@/lib/activity/types';
+import type {
+    UseSkipCreditsRequest,
+    UseSkipCreditsResponse,
+} from '@/lib/activity/types';
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-function zeroSkipCredit(userId: string): SkipCredit {
-  return {
-    user_id: userId,
-    credits_balance: 0,
-    earned_total: 0,
-    spent_total: 0,
-    updated_at: new Date().toISOString(),
-  };
-}
+// app/api/skip-credits/use/route.ts
+// Phase 9 — Use Skip Credits Endpoint
+//
+// Spends skip credits to skip ads.
+// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
+
+  // Auth required
   const user = await safeGetUser(supabase);
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  await req.json().catch(() => ({} as UseSkipCreditsRequest));
+  try {
+    const body = (await req.json()) as UseSkipCreditsRequest;
+    const { ad_id } = body;
 
-  const skipCredit = zeroSkipCredit(user.id);
-  const response: UseSkipCreditsResponse & { disabled: true; reason: string } = {
-    skip_credit: skipCredit,
-    credits_spent: 0,
-    new_balance: 0,
-    disabled: true,
-    reason: 'skip_credits_table_not_in_current_schema',
-  };
+    // Get current credits
+    const { data: credits } = await (supabase as SupabaseClient)
+      .from('skip_credits')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
 
-  return NextResponse.json(response, { headers: { 'Cache-Control': 'no-store' } });
+    if (!credits || credits.credits_balance < 1) {
+      return NextResponse.json(
+        { error: 'Insufficient credits' },
+        { status: 400 },
+      );
+    }
+
+    // Spend 1 credit
+    const { data: updatedCredits, error: updateError } = await (supabase as SupabaseClient)
+      .from('skip_credits')
+      .update({
+        credits_balance: credits.credits_balance - 1,
+        spent_total: credits.spent_total + 1,
+        last_spent_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('user_id', user.id)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('[UseSkipCredits] Update error:', updateError);
+      return NextResponse.json(
+        { error: 'Failed to spend credits' },
+        { status: 500 },
+      );
+    }
+
+    const response: UseSkipCreditsResponse = {
+      skip_credit: updatedCredits,
+      credits_spent: 1,
+      new_balance: updatedCredits.credits_balance,
+    };
+
+    return NextResponse.json(response, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
+  } catch (err: unknown) {
+    console.error('[UseSkipCredits] Exception:', err);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
+  }
 }

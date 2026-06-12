@@ -1,3 +1,5 @@
+import { createClient } from '@/lib/supabase/client';
+import { toErrorMessage } from '@/lib/utils';
 
 /**
  * lib/platform/lab.ts
@@ -24,8 +26,17 @@ export async function logPhysicsExperiment(
   experimentId: string,
   tickData: Record<string, unknown>,
 ): Promise<void> {
-  void experimentId;
-  void tickData;
-  // The current typed schema export does not include physics_experiments.
-  // Keep this helper safe as a no-op until LabEngin persistence is backed by a current table contract.
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from('physics_experiments')
+    .update({
+      performance_metrics: tickData,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', experimentId);
+
+  if (error) {
+    console.error('Physics telemetry log failed:', toErrorMessage(error));
+  }
 }

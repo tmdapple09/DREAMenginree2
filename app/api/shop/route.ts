@@ -102,23 +102,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
+  // Create feed item
+
   await (supabase as SupabaseClient).from('feed_items').insert({
-    feed_widget_id: `user:${user.id}`,
-    source_widget_id: `merch:${item.id}`,
-    title: item.name ?? item.title ?? title.trim(),
-    preview: {
-      provider: 'dreamengin',
-      source: 'merch',
-      user_id: user.id,
-      item_id: item.id,
-      price: item.price,
-      content_text: item.description ?? item.name ?? item.title ?? title.trim(),
-      media_url: item.image_url ?? null,
-      media: item.image_url ? [{ url: item.image_url, type: 'image' }] : [],
-      permalink: `/shop/${item.id}`,
-      published_at: item.created_at ?? new Date().toISOString(),
-      raw: item,
-    },
+    user_id: user.id,
+    type: 'merch',
+    content: { title: item.name, item_id: item.id, price: item.price },
+    ts: new Date().toISOString(),
   });
 
   return NextResponse.json({ item }, { status: 201 });

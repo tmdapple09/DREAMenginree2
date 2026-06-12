@@ -1,21 +1,9 @@
-import { useCallback, useRef, type RefObject } from 'react';
-
-// Babylon.js dependency removed — logo now uses the lightweight canvas/CSS shell.
+// Babylon.js dependency removed — logo now uses CSS animations via LogoHero component
 export interface DreamLogoSceneOptions {
-  dreamSrc?: string;
-  enginSrc?: string;
+  dreamSrc?: string
+  enginSrc?: string
 }
 
-export interface DreamLogoSceneController {
-  canvasRef: RefObject<HTMLCanvasElement | null>;
-  pause: () => void;
-  resume: () => void;
-}
-
-export function useDreamLogoScene(_options: DreamLogoSceneOptions = {}): DreamLogoSceneController {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pause = useCallback(() => {}, []);
-  const resume = useCallback(() => {}, []);
-
-  return { canvasRef, pause, resume };
+export function useDreamLogoScene( ){
+  return { canvasRef: null as React.RefObject<HTMLCanvasElement> | null, pause: () => {}, resume: () => {} }
 }

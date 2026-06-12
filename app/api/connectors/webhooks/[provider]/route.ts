@@ -225,13 +225,11 @@ export async function POST(
 
     const now = new Date().toISOString();
     const inserts = matching.map((a: { user_id: string }) => ({
-      feed_widget_id: `user:${a.user_id}`,
-      source_widget_id: `youtube:${entry.videoId}`,
-      title: entry.title,
-      preview: {
+      user_id: a.user_id,
+      provider: 'youtube',
+      external_id: entry.videoId,
+      payload: {
         provider: 'youtube',
-        source: 'connector',
-        user_id: a.user_id,
         external_id: entry.videoId,
         author_handle: entry.channelId,
         author_name: entry.authorName || entry.channelId,
@@ -241,12 +239,13 @@ export async function POST(
         media: [],
         raw: { videoId: entry.videoId, channelId: entry.channelId, title: entry.title },
       },
-      created_at: entry.published || now,
+      published_at: entry.published,
+      created_at: now,
     }));
 
     const { error } = await db
       .from('feed_items')
-      .insert(inserts);
+      .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
     if (error) {
       console.error('[webhook:youtube] feed_items upsert error', { error: toErrorMessage(error) });
@@ -319,13 +318,11 @@ export async function POST(
           : now;
 
         const inserts = matching.map((a: { user_id: string }) => ({
-          feed_widget_id: `user:${a.user_id}`,
-          source_widget_id: `instagram:${mediaId}`,
-          title: caption || `Instagram ${mediaId}`,
-          preview: {
+          user_id: a.user_id,
+          provider: 'instagram',
+          external_id: mediaId,
+          payload: {
             provider: 'instagram',
-            source: 'connector',
-            user_id: a.user_id,
             external_id: mediaId,
             author_handle: instagramAccountId,
             author_name: instagramAccountId,
@@ -335,12 +332,13 @@ export async function POST(
             media: [],
             raw: change.value,
           },
-          created_at: publishedAt || now,
+          published_at: publishedAt,
+          created_at: now,
         }));
 
         const { error } = await db
           .from('feed_items')
-          .insert(inserts);
+          .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
         if (error) {
           console.error('[webhook:instagram] feed_items upsert error', { error: toErrorMessage(error) });

@@ -1,6 +1,8 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { toErrorMessage } from '@/lib/utils';
 
 function runServerBenchmarks( ){
   const start = performance.now();
@@ -28,17 +30,22 @@ export async function POST(_req: NextRequest ): Promise<NextResponse> {
   }
 
   const results = runServerBenchmarks();
+  const db = supabase as SupabaseClient;
   const title = `Benchmark Run — ${new Date().toISOString()}`;
-
-  return NextResponse.json({
-    results,
-    record: {
-      id: `inline-benchmark-${Date.now()}`,
+  const { data: record, error } = await db
+    .from('physics_experiments')
+    .insert({
+      creator_id: user.id,
       title,
       status: 'completed',
-      persisted: false,
-      reason: 'physics_experiments table is not present in the current typed schema',
-      user_id: user.id,
-    },
-  });
+      visibility: 'private',
+    })
+    .select('id, title, status')
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
+  }
+
+  return NextResponse.json({ results, record });
 }

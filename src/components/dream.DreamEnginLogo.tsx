@@ -1,6 +1,7 @@
 "use client";
 
-import { useDreamLogoScene, type DreamLogoSceneOptions } from "@/src/lib/babylon/useDreamLogoScene";
+import { useDreamLogoScene, type DreamLogoSceneOptions } from "@/lib/babylon/useDreamLogoScene";
+import { useRef } from "react";
 
 interface DreamEnginLogoProps extends DreamLogoSceneOptions {
   /** Canvas width in CSS pixels (default 320) */
@@ -13,15 +14,36 @@ interface DreamEnginLogoProps extends DreamLogoSceneOptions {
 /**
  * DreamEnginLogo
  * ──────────────
- * Renders the animated DREAMengin logo inside a lightweight canvas shell.
+ * Renders the animated DREAMengin logo inside a Babylon.js WebGL canvas.
+ *
+ * Usage
+ * -----
+ * ```tsx
+ * import { DreamEnginLogo } from "@/components/DreamEnginLogo";
+ *
+ * export default function LandingPage() {
+ *   return (
+ *     <main>
+ *       <DreamEnginLogo width={480} height={240} />
+ *     </main>
+ *   );
+ * }
+ * ```
+ *
+ * Texture notes
+ * -------------
+ * Textures are loaded with NEAREST sampling so crisp pixel art / vector
+ * exports stay sharp at any canvas size. Babylon does NOT apply bilinear
+ * blur when this mode is set.
  */
 export function DreamEnginLogo({
   width = 320,
   height = 160,
   className,
-  ...sceneOptions
 }: DreamEnginLogoProps) {
-  const { canvasRef } = useDreamLogoScene(sceneOptions);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useDreamLogoScene();
 
   return (
     <canvas

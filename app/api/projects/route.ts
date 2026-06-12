@@ -116,25 +116,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Create feed item if public
   if (visibility === 'public') {
-    const projectRow = project as Record<string, unknown>;
-    const projectId = String(projectRow.id ?? 'unknown-project');
-    const projectTitle = String(projectRow.title ?? title.trim());
 
     await (supabase as SupabaseClient).from('feed_items').insert({
-      feed_widget_id: `user:${user.id}`,
-      source_widget_id: `project:${projectId}`,
-      title: projectTitle,
-      preview: {
-        provider: 'dreamengin',
-        source: 'project',
-        user_id: user.id,
-        project_id: projectId,
-        content_text: String(projectRow.description ?? projectTitle),
-        visibility,
-        permalink: `/projects/${projectId}`,
-        published_at: typeof projectRow.created_at === 'string' ? projectRow.created_at : new Date().toISOString(),
-        raw: projectRow,
-      },
+      user_id: user.id,
+      type: 'project',
+      content: { title: (project as Record<string, unknown>).title, project_id: (project as Record<string, unknown>).id },
+      ts: new Date().toISOString(),
     });
   }
 

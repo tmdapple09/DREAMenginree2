@@ -1,23 +1,8 @@
 'use client';
 
-interface CIStage { name: string; passed: boolean; output: string; }
-interface CIResults { status: string; stages: CIStage[]; }
-interface SecAdvisory { title: string; severity: string; package: string; vulnerable_versions: string; patched_versions: string; }
-interface SecResults { summary?: { total?: number; high?: number; moderate?: number; low?: number }; advisories?: SecAdvisory[]; }
-
-/**
- * CodeEngin – Real IDE with real CI and real security scanner
- * All features are real. No mock data.
- */
-
-import DiffViewer from '@/components/daydream/dream.DiffViewer';
-import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import CrossEnginStatusPanel from '@/components/dreamengin/dream.panel.CrossEnginStatusPanel';
-import { useSharedDream } from '@/hooks/useSharedDream';
 import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
 import { useDaydreamState } from '@/lib/daydream/useDaydreamState';
-import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
-import { createEventBus, upgradeEngine } from '@/lib/dreamenginOS';
 import { ArtifactSlot } from '@/lib/enginpipe';
 import { useCodeEnginRuntime } from '@/lib/engins/code/useCodeEnginRuntime';
 import { useEnginWorkflow } from '@/lib/engins/useEnginWorkflow';
@@ -25,1164 +10,959 @@ import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
 import { useForgeActivity } from '@/lib/forge/useForgeActivity';
 import { bridge } from '@/lib/runtime/dualRuntimeBridge';
 import { useCodeEnginBridge } from '@/lib/runtime/useEnginBridge';
-import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
-import { createClient } from '@/lib/supabase/client';
 import {
-    ArrowLeft, ArrowLeftRight,
-    BarChart2,
-    Bot,
-    Bug,
-    CheckCircle,
-    Clipboard,
-    Code2,
-    Copy,
-    ListChecks,
-    Loader2,
-    MousePointer2,
-    Plus,
-    Scissors,
-    Shield,
-    Terminal,
-    Trash2,
-    X,
-    XCircle,
-    Zap,
-    ZoomIn, ZoomOut,
+  ArrowLeft,
+  Bot,
+  Bug,
+  CheckCircle,
+  Clipboard,
+  Code2,
+  Copy,
+  ListChecks,
+  Loader2,
+  Plus,
+  Shield,
+  Terminal,
+  Trash2,
+  X,
+  XCircle,
+  Zap,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
-import Link from 'next/link';
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { parseCode } from './CodeEngin/core/parser';
 import { AgentPanel } from './CodeEngin/modules/ai-co-pilot';
+import { parseCode, type ParseError, type ParsedSymbol } from './CodeEngin/core/parser';
 
-// ----------------------------------------------------------------------
-// Types
-// ----------------------------------------------------------------------
+interface Props {
+  onBack: () => void;
+  instanceId?: string;
+}
 
-interface Props { onBack: () => void; instanceId?: string; }
-type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
-type CellStatus = 'idle' | 'running' | 'done' | 'error';
+type SourceLanguage =
+  | 'typescript'
+  | 'javascript'
+  | 'python'
+  | 'bash'
+  | 'json'
+  | 'css'
+  | 'markdown'
+  | 'text';
 
-interface NotebookCell {
+type BottomPanel = 'terminal' | 'problems' | 'outline' | 'diff' | 'assist';
+type CommandKind = 'check' | 'build' | 'run' | 'format' | 'snapshot' | 'game' | 'content' | 'component';
+
+type DiagnosticSeverity = 'error' | 'warning' | 'info';
+
+interface WorkspaceFile {
+  path: string;
+  language: SourceLanguage;
+  content: string;
+  dirty: boolean;
+  readonly?: boolean;
+  updatedAt: string;
+}
+
+interface EditorDiagnostic {
   id: string;
-  language: CellLanguage;
-  code: string;
-  output: string | null;
-  status: CellStatus;
-  error?: string;
+  path: string;
+  line: number;
+  col: number;
+  severity: DiagnosticSeverity;
+  message: string;
 }
 
-interface Project { id: string; title: string; visibility: string; }
-type ActiveTab = 'notebook' | 'ci' | 'security' | 'projects' | 'connections' | 'diff';
-
-interface ShellHubDevice {
-  uid: string;
-  name: string;
-  info?: { pretty_name?: string; arch?: string };
-  online: boolean;
+interface TerminalLine {
+  id: string;
+  kind: 'input' | 'info' | 'success' | 'warning' | 'error';
+  text: string;
+  timestamp: string;
 }
 
-// ----------------------------------------------------------------------
-// Constants
-// ----------------------------------------------------------------------
+interface Snapshot {
+  id: string;
+  label: string;
+  createdAt: string;
+  files: WorkspaceFile[];
+}
+
+interface CodeWorkspaceState {
+  files: WorkspaceFile[];
+  openTabs: string[];
+  activePath: string;
+  snapshots: Snapshot[];
+}
+
+interface CommandDefinition {
+  id: CommandKind;
+  label: string;
+  hint: string;
+}
 
 const ACCENT = '#3b7dd8';
-// const ACCENT_LEGACY = '#22d3ee'; // old cyan — kept for reference
-// const ACCENT_GRADIENT_LEGACY = 'linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%)';
-const CELL_BG = '#1a1a2e';
-const CODE_FG = '#e2e8f0';
-const OUT_OK = '#4ade80';
-const OUT_ERR = '#f87171';
+const STORAGE_KEY = 'dreamengin.codeengin.workspace.v2';
+const SNAPSHOT_LIMIT = 8;
+const FONT_MIN = 11;
+const FONT_MAX = 18;
 
-const ZOOM_MIN = 0.6, ZOOM_MAX = 2.0, ZOOM_STEP = 0.1, ZOOM_BASE_FONT = 13;
-const LANGUAGE_OPTIONS: CellLanguage[] = ['python', 'javascript', 'typescript', 'bash'];
-const LANGUAGE_LABEL: Record<CellLanguage, string> = {
-  python: 'Python', javascript: 'JavaScript', typescript: 'TypeScript', bash: 'Bash',
+const SHELL: CSSProperties = {
+  minHeight: '100vh',
+  background: 'linear-gradient(180deg, rgba(232,239,249,0.96), rgba(206,219,239,0.92))',
+  color: 'var(--de-text)',
 };
-const NOTEBOOK_STORAGE_KEY = 'de-codegen-cells';
-const SHELLHUB_DEFAULT_URL = 'https://cloud.shellhub.io';
 
-const DEMO_CELLS: NotebookCell[] = [
-  { id: 'demo-1', language: 'python', code: '# Python (real execution)\nprint("Hello from Pyodide!")\n2 + 2', output: null, status: 'idle' },
-  { id: 'demo-2', language: 'javascript', code: '// JavaScript\nconsole.log("Hello from JS");\n[1,2,3].map((x) => x*2)', output: null, status: 'idle' },
-  { id: 'demo-3', language: 'typescript', code: '// TypeScript\nconst greet = (name: string): string => `Hello ${name}`;\ngreet("World")', output: null, status: 'idle' },
+const PANEL: CSSProperties = {
+  background: 'rgba(246,249,253,0.86)',
+  border: '1px solid rgba(82,113,157,0.22)',
+  borderRadius: 18,
+  boxShadow: '0 18px 42px rgba(29,43,68,0.10)',
+};
+
+const DARK_PANEL: CSSProperties = {
+  background: '#111827',
+  border: '1px solid rgba(148,163,184,0.22)',
+  color: '#e5e7eb',
+};
+
+const COMMANDS: CommandDefinition[] = [
+  { id: 'check', label: 'Run workspace diagnostics', hint: 'Parse files, surface problems, and update the problems panel.' },
+  { id: 'build', label: 'Build readiness check', hint: 'Fail fast on diagnostics and report source health.' },
+  { id: 'run', label: 'Run active file', hint: 'Execute JavaScript/TypeScript locally or validate JSON.' },
+  { id: 'format', label: 'Format active file', hint: 'Trim trailing whitespace and pretty-print JSON.' },
+  { id: 'snapshot', label: 'Save workspace snapshot', hint: 'Capture current files for rollback and diff.' },
+  { id: 'game', label: 'Deploy active script to GameEngin', hint: 'Send the selected file through the runtime bridge.' },
+  { id: 'content', label: 'Publish workspace to ContentEngin', hint: 'Send a project summary through Forge transfer.' },
+  { id: 'component', label: 'Create React component', hint: 'Add a new editable component file.' },
 ];
 
-// ----------------------------------------------------------------------
-// REAL CODE EXECUTION (Pyodide CDN, no install)
-// ----------------------------------------------------------------------
+const DEFAULT_FILES: WorkspaceFile[] = [
+  {
+    path: 'app/page.tsx',
+    language: 'typescript',
+    dirty: false,
+    updatedAt: new Date(0).toISOString(),
+    content: `import DreamButton from '@/components/DreamButton';\n\nexport default function HomePage() {\n  return (\n    <main className="min-h-screen p-6">\n      <h1>DREAMengin</h1>\n      <DreamButton label="Open runtime" />\n    </main>\n  );\n}\n`,
+  },
+  {
+    path: 'components/DreamButton.tsx',
+    language: 'typescript',
+    dirty: false,
+    updatedAt: new Date(0).toISOString(),
+    content: `interface DreamButtonProps {\n  label: string;\n}\n\nexport default function DreamButton({ label }: DreamButtonProps) {\n  return <button type="button">{label}</button>;\n}\n`,
+  },
+  {
+    path: 'lib/runtime/intent.ts',
+    language: 'typescript',
+    dirty: false,
+    updatedAt: new Date(0).toISOString(),
+    content: `export type RuntimeIntent = {\n  type: string;\n  payload?: Record<string, unknown>;\n};\n\nexport function createIntent(type: string, payload: Record<string, unknown> = {}): RuntimeIntent {\n  return { type, payload };\n}\n`,
+  },
+  {
+    path: 'package.json',
+    language: 'json',
+    dirty: false,
+    updatedAt: new Date(0).toISOString(),
+    content: `{"scripts":{"check":"next lint && tsc --noEmit","build":"next build"},"dependencies":{}}\n`,
+  },
+];
 
-interface PyodideInstance {
-  runPythonAsync(code: string): Promise<unknown>;
-  globals: { get(key: string): unknown };
-  loadPackage(pkg: string | string[]): Promise<void>;
+function nowIso(): string {
+  return new Date().toISOString();
 }
-let pyodideInstance: PyodideInstance | null = null;
-let pyodidePromise: Promise<unknown> | null = null;
 
-async function loadPyodide( ){
-  if (pyodideInstance) return pyodideInstance;
-  if (pyodidePromise) return pyodidePromise;
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
-  await new Promise((resolve, reject) => {
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-  // @ts-expect-error - pyodide loader injected at runtime
-  pyodidePromise = globalThis.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
-  pyodideInstance = await pyodidePromise as PyodideInstance;
-  return pyodideInstance;
+function safeId(prefix: string): string {
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-async function executePython(code: string): Promise<string> {
+function languageFromPath(path: string): SourceLanguage {
+  const lower = path.toLowerCase();
+  if (lower.endsWith('.tsx') || lower.endsWith('.ts')) return 'typescript';
+  if (lower.endsWith('.jsx') || lower.endsWith('.js') || lower.endsWith('.mjs') || lower.endsWith('.cjs')) return 'javascript';
+  if (lower.endsWith('.py')) return 'python';
+  if (lower.endsWith('.sh') || lower.endsWith('.bash')) return 'bash';
+  if (lower.endsWith('.json')) return 'json';
+  if (lower.endsWith('.css')) return 'css';
+  if (lower.endsWith('.md') || lower.endsWith('.mdx')) return 'markdown';
+  return 'text';
+}
+
+function basename(path: string): string {
+  return path.split('/').pop() || path;
+}
+
+function folderName(path: string): string {
+  const parts = path.split('/');
+  return parts.length > 1 ? parts.slice(0, -1).join('/') : 'root';
+}
+
+function sortFiles(files: WorkspaceFile[]): WorkspaceFile[] {
+  return [...files].sort((a, b) => a.path.localeCompare(b.path));
+}
+
+function makeFile(path: string, content = ''): WorkspaceFile {
+  return {
+    path,
+    language: languageFromPath(path),
+    content,
+    dirty: true,
+    updatedAt: nowIso(),
+  };
+}
+
+function loadWorkspace(): CodeWorkspaceState {
+  if (typeof window === 'undefined') {
+    return { files: DEFAULT_FILES, openTabs: ['app/page.tsx'], activePath: 'app/page.tsx', snapshots: [] };
+  }
+
   try {
-    const pyodide = await loadPyodide() as { runPython: (code: string) => unknown; runPythonAsync: (code: string) => Promise<unknown> };
-    pyodide.runPython(`
-import sys
-from io import StringIO
-sys.stdout = StringIO()
-    `);
-    await pyodide.runPythonAsync(code);
-    const output = pyodide.runPython('sys.stdout.getvalue()');
-    let lastExpr = '';
-    try { lastExpr = String(pyodide.runPython('_') || ''); } catch {}
-    return output + (lastExpr ? (output ? '\n' : '') + lastExpr : '');
-  } catch (err: unknown) {
-    return `Error: ${(err as Error).message}`;
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) throw new Error('No saved workspace');
+    const parsed = JSON.parse(raw) as Partial<CodeWorkspaceState>;
+    const files = Array.isArray(parsed.files) && parsed.files.length > 0
+      ? parsed.files.map((file) => ({ ...file, language: languageFromPath(file.path), dirty: Boolean(file.dirty) }))
+      : DEFAULT_FILES;
+    const activePath = typeof parsed.activePath === 'string' && files.some((file) => file.path === parsed.activePath)
+      ? parsed.activePath
+      : files[0].path;
+    const openTabs = Array.isArray(parsed.openTabs)
+      ? parsed.openTabs.filter((path) => files.some((file) => file.path === path))
+      : [activePath];
+    return {
+      files: sortFiles(files),
+      openTabs: openTabs.length > 0 ? openTabs : [activePath],
+      activePath,
+      snapshots: Array.isArray(parsed.snapshots) ? parsed.snapshots.slice(0, SNAPSHOT_LIMIT) : [],
+    };
+  } catch {
+    return { files: DEFAULT_FILES, openTabs: ['app/page.tsx'], activePath: 'app/page.tsx', snapshots: [] };
   }
 }
 
-function executeJavaScript(code: string): string {
+function diagnosticsForFile(file: WorkspaceFile): EditorDiagnostic[] {
+  const result = parseCode(file.content, file.language);
+  const mapped = [...result.errors, ...result.warnings].map((issue: ParseError, index) => ({
+    id: `${file.path}:${issue.line}:${issue.col}:${index}`,
+    path: file.path,
+    line: issue.line,
+    col: issue.col,
+    severity: issue.severity,
+    message: issue.message,
+  }));
+
+  const heuristicDiagnostics: EditorDiagnostic[] = [];
+  file.content.split('\n').forEach((line, index) => {
+    if (/console\.log\(/.test(line)) {
+      heuristicDiagnostics.push({
+        id: `${file.path}:console:${index}`,
+        path: file.path,
+        line: index + 1,
+        col: Math.max(1, line.indexOf('console.log') + 1),
+        severity: 'info',
+        message: 'Console logging is fine for a scratch run, but remove it before shipping.',
+      });
+    }
+    if (/\bany\b/.test(line) && file.language === 'typescript') {
+      heuristicDiagnostics.push({
+        id: `${file.path}:any:${index}`,
+        path: file.path,
+        line: index + 1,
+        col: Math.max(1, line.indexOf('any') + 1),
+        severity: 'warning',
+        message: 'Avoid any unless this boundary is intentionally untyped.',
+      });
+    }
+  });
+
+  return [...mapped, ...heuristicDiagnostics];
+}
+
+function symbolsForFile(file: WorkspaceFile): ParsedSymbol[] {
+  return parseCode(file.content, file.language).symbols;
+}
+
+function collectDiagnostics(files: WorkspaceFile[]): EditorDiagnostic[] {
+  return files.flatMap(diagnosticsForFile);
+}
+
+function terminalLine(kind: TerminalLine['kind'], text: string): TerminalLine {
+  return { id: safeId('term'), kind, text, timestamp: new Date().toLocaleTimeString() };
+}
+
+function stripSimpleTypeScript(source: string): string {
+  return source
+    .replace(/^\s*import\s+[^;]+;?\s*$/gm, '')
+    .replace(/^\s*export\s+/gm, '')
+    .replace(/interface\s+[A-Za-z_$][\w$]*\s*\{[\s\S]*?\}\s*/g, '')
+    .replace(/type\s+[A-Za-z_$][\w$]*\s*=\s*[^;]+;/g, '')
+    .replace(/:\s*[A-Za-z_$][\w$<>,\s|&.[\]{}?:]*(?=[,)=;])/g, '')
+    .replace(/as\s+[A-Za-z_$][\w$<>,\s|&.[\]{}?:]*/g, '');
+}
+
+function runJavaScriptSource(source: string, language: SourceLanguage): string {
+  const code = language === 'typescript' ? stripSimpleTypeScript(source) : source;
+  const logs: string[] = [];
+  const originalLog = console.log;
   try {
-    const logs: string[] = [];
-    const originalLog = console.log;
-    console.log = (...args) => { logs.push(args.map(String).join(' ')); originalLog(...args); };
+    console.log = (...args: unknown[]) => {
+      logs.push(args.map((value) => typeof value === 'string' ? value : JSON.stringify(value)).join(' '));
+      originalLog(...args);
+    };
     const result = new Function(code)();
+    if (result !== undefined) logs.push(String(result));
+    return logs.join('\n') || 'Executed successfully. No output was returned.';
+  } finally {
     console.log = originalLog;
-    let output = logs.join('\n');
-    if (result !== undefined) output += (output ? '\n' : '') + String(result);
-    return output || 'Executed successfully (no output)';
-  } catch (err: unknown) {
-    return `Error: ${(err as Error).message}`;
   }
 }
 
-function executeTypeScript(code: string): string {
-  const jsCode = code.replace(/: \w+/g, '').replace(/interface\s+\w+\s*\{[^}]*\}/g, '');
-  return executeJavaScript(jsCode);
-}
-
-function executeBash(code: string): string {
-  return 'Bash execution requires a backend sandbox. Use Python or JavaScript.';
-}
-
-async function runCellCode(language: CellLanguage, code: string): Promise<string> {
-  switch (language) {
-    case 'python': return await executePython(code);
-    case 'javascript': return executeJavaScript(code);
-    case 'typescript': return executeTypeScript(code);
-    case 'bash': return executeBash(code);
-    default: return 'Unsupported language';
-  }
-}
-
-// ----------------------------------------------------------------------
-// CRASH RECOVERY (REAL)
-// ----------------------------------------------------------------------
-
-interface CrashReport {
-  file: string;
-  line: number;
-  column: number;
-  failedCode: string;
-  errorMessage: string;
-  timestamp: Date;
-}
-
-function CrashRecoveryPanel({ cells }: {cells: NotebookCell[]}) {
-  const [crashes, setCrashes] = useState<CrashReport[]>(() => {
-    try { const saved = localStorage.getItem('de_crash_logs'); return saved ? JSON.parse(saved) : []; } catch { return []; }
-  });
-
-  useEffect(() => {
-    const handleError = (event: ErrorEvent) => {
-      let failedCode = `Error at ${event.filename}:${event.lineno}\n${event.message}`;
-      const matchingCell = cells.find((cell) => event.message.includes(cell.code.slice(0, 100)) || event.filename?.includes('cell'));
-      if (matchingCell) failedCode = matchingCell.code;
-
-      const newCrash: CrashReport = {
-        file: event.filename || 'unknown',
-        line: event.lineno || 0,
-        column: event.colno || 0,
-        failedCode,
-        errorMessage: event.message,
-        timestamp: new Date(),
-      };
-      setCrashes((prev) => {
-        const updated = [newCrash, ...prev].slice(0, 20);
-        localStorage.setItem('de_crash_logs', JSON.stringify(updated));
-        return updated;
-      });
-      bridge.emit('code', 'code:crash-detected', {
-        file: newCrash.file,
-        line: newCrash.line,
-        error: newCrash.errorMessage,
-        codeSnippet: newCrash.failedCode.slice(0, 500),
-        timestamp: newCrash.timestamp.toISOString(),
-      });
-    };
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, [cells]);
-
-  const copyToClipboard = (crash: CrashReport) => {
-    const text = `File: ${crash.file}\nLine: ${crash.line}\nError: ${crash.errorMessage}\n\nFailed Code:\n${crash.failedCode}`;
-    navigator.clipboard.writeText(text);
-    alert('✅ Copied! Paste into Grok/Groq to fix');
-  };
-
-  return (
-    <div>
-      {crashes.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 20, color: 'var(--de-text-dim)' }}>✅ No crashes captured.</div>
-      ) : (
-        crashes.map((crash, i: number) => (
-          <div key={i} style={{ marginBottom: 12, padding: 12, borderRadius: 8, background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#f87171' }}>{crash.file}:{crash.line}</span>
-              <span style={{ fontSize: 10, color: 'var(--de-text-dim)' }}>{crash.timestamp.toLocaleTimeString()}</span>
-            </div>
-            <div style={{ fontSize: 12, color: '#f87171', marginBottom: 8 }}>❌ {crash.errorMessage}</div>
-            <pre style={{ background: '#1a1a2e', padding: 8, borderRadius: 6, fontSize: 11, fontFamily: 'monospace', color: '#fbbf24', overflow: 'auto', marginBottom: 8, maxHeight: 150 }}>{crash.failedCode}</pre>
-            <button onClick={() => copyToClipboard(crash)} style={{ padding: '6px 12px', borderRadius: 6, fontSize: 11, background: '#3b7dd8', color: '#fff', border: 'none', cursor: 'pointer' }}>📋 Copy code + error</button>
-          </div>
-        ))
-      )}
-      {crashes.length > 0 && (
-        <button onClick={() => { localStorage.removeItem('de_crash_logs'); setCrashes([]); }} style={{ marginTop: 8, fontSize: 10, background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}>Clear all</button>
-      )}
-    </div>
-  );
-}
-
-// ----------------------------------------------------------------------
-// TASK MANAGER (REAL)
-// ----------------------------------------------------------------------
-
-interface TaskItem {
-  id: string;
-  title: string;
-  file: string;
-  priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'in-progress' | 'done';
-  createdAt: Date;
-}
-
-function TaskJobManager( ){
-  const [tasks, setTasks] = useState<TaskItem[]>(() => {
-    try { const saved = localStorage.getItem('de_tasks'); return saved ? JSON.parse(saved) : []; } catch { return []; }
-  });
-  const [newTitle, setNewTitle] = useState('');
-  const [filter, setFilter] = useState<'all' | 'pending' | 'in-progress' | 'done'>('all');
-
-  useEffect(() => {
-    localStorage.setItem('de_tasks', JSON.stringify(tasks));
-    bridge.emit('code', 'code:tasks-updated', { tasks });
-  }, [tasks]);
-
-  const addTask = () => {
-    if (!newTitle.trim()) return;
-    const newTask: TaskItem = {
-      id: Date.now().toString(),
-      title: newTitle.trim(),
-      file: 'Unknown',
-      priority: 'medium',
-      status: 'pending',
-      createdAt: new Date(),
-    };
-    setTasks((prev) => [newTask, ...prev]);
-    setNewTitle('');
-  };
-
-  const toggleStatus = (id: string) => {
-    setTasks((prev) => prev.map((t) => t.id === id ? { ...t, status: t.status === 'done' ? 'pending' : t.status === 'pending' ? 'in-progress' : 'done' } : t));
-  };
-
-  const deleteTask = (id: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  const priorityColor = { high: '#ef4444', medium: '#f59e0b', low: '#22c55e' };
-  const filtered = filter === 'all' ? tasks : tasks.filter((t) => t.status === filter);
-
-  return (
-    <div>
-      <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
-        <input type="text" placeholder="New task..." value={newTitle} onChange={e => setNewTitle(e.target.value)} onKeyDown={e => e.key === 'Enter' && addTask()} style={{ flex: 1, padding: '6px 10px', borderRadius: 8, border: '1px solid rgba(160,195,240,0.35)', background: 'rgba(255,255,255,0.7)' }} />
-        <button onClick={addTask} style={{ padding: '6px 12px', borderRadius: 8, background: '#22c55e', color: '#fff', border: 'none', cursor: 'pointer' }}>Add</button>
-      </div>
-      <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
-        {(['all', 'pending', 'in-progress', 'done'] as const).map((f) => (
-          <button key={f} onClick={() => setFilter(f)} style={{ padding: '3px 10px', borderRadius: 6, fontSize: 11, background: filter === f ? '#3b7dd8' : 'rgba(160,195,240,0.15)', color: filter === f ? '#fff' : 'var(--de-text)', border: 'none', cursor: 'pointer' }}>{f} ({tasks.filter((t) => f === 'all' ? true : t.status === f).length})</button>
-        ))}
-      </div>
-      {filtered.map((task) => (
-        <div key={task.id} style={{ padding: '8px 10px', borderRadius: 8, marginBottom: 6, background: task.status === 'done' ? 'rgba(34,197,94,0.05)' : 'rgba(255,255,255,0.5)', border: '1px solid rgba(160,195,240,0.15)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button onClick={() => toggleStatus(task.id)} style={{ fontSize: 16, background: 'none', border: 'none', cursor: 'pointer' }}>{task.status === 'pending' ? '⏳' : task.status === 'in-progress' ? '⚡' : '✅'}</button>
-            <span style={{ flex: 1, fontSize: 12, textDecoration: task.status === 'done' ? 'line-through' : 'none' }}>{task.title}</span>
-            <span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 4, background: `${priorityColor[task.priority]}20`, color: priorityColor[task.priority] }}>{task.priority}</span>
-            <button onClick={() => deleteTask(task.id)} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}><Trash2 size={12} /></button>
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--de-text-dim)', marginTop: 4 }}>📄 {task.file}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ----------------------------------------------------------------------
-// CI & SECURITY HELPERS (REAL API CALLS)
-// ----------------------------------------------------------------------
-
-async function callCI(apiKey: string): Promise<CIResults> {
-  const res = await fetch('/api/ci/run', {
-    method: 'POST',
-    headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-  });
-  return res.json();
-}
-
-async function callSecurityScan(apiKey: string): Promise<SecResults> {
-  const res = await fetch('/api/security/scan', {
-    method: 'POST',
-    headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-  });
-  return res.json();
-}
-
-// ----------------------------------------------------------------------
-// AI ASSIST — routes through /api/ai/eams (server-side; GROQ_API_KEY never touches the client)
-// ----------------------------------------------------------------------
-
-async function callEamsAssist(prompt: string, codeContext?: string, language?: CellLanguage): Promise<string> {
+async function callEamsAssist(prompt: string, codeContext?: string, language?: SourceLanguage): Promise<string> {
   const body: Record<string, unknown> = {
     message: prompt,
     ui: { route: '/daydream/code' },
   };
+
   if (codeContext && language) {
-    body.code_context = { language, selected_code: codeContext.slice(0, 2000) };
+    body.code_context = { language, selected_code: codeContext.slice(0, 4000) };
   }
+
   try {
     const res = await fetch('/api/ai/eams', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
+
     if (!res.ok) {
       if (res.status === 401) return 'Sign in to use AI code assist.';
       return `AI assistant error (${res.status}).`;
     }
+
     const data = await res.json() as { response_text?: string };
     return data.response_text || 'No response from AI.';
   } catch (err: unknown) {
-    return `AI assistant error: ${err instanceof Error ? (err as Error).message : String(err)}`;
+    return `AI assistant error: ${err instanceof Error ? err.message : String(err)}`;
   }
 }
 
-// ----------------------------------------------------------------------
-// MAIN COMPONENT
-// ----------------------------------------------------------------------
+function groupFiles(files: WorkspaceFile[]): Array<[string, WorkspaceFile[]]> {
+  const groups = new Map<string, WorkspaceFile[]>();
+  sortFiles(files).forEach((file) => {
+    const folder = folderName(file.path);
+    groups.set(folder, [...(groups.get(folder) ?? []), file]);
+  });
+  return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
+}
 
-export default function CodeEngin({ onBack, instanceId: instanceIdProp }: Props) {
+function severityRank(severity: DiagnosticSeverity): number {
+  if (severity === 'error') return 0;
+  if (severity === 'warning') return 1;
+  return 2;
+}
+
+export default function CodeEngin({ onBack }: Props) {
   const { record: forgeRecord } = useForgeActivity({ enginId: 'code' });
   const codeBridge = useCodeEnginBridge();
-  const { persistState } = useDaydreamState({ daydreamType: 'code', side: 'B' });
-  type CodeSavedState = { cells?: Array<{ id: string; language: string; source: string }> };
-  const { savedState: savedCodeState, isRestoring: codeRestoring, persistState: persistCodeState } = useDaydreamPersistence<CodeSavedState>({ daydreamType: 'code' });
-  const codeRestoredRef = useRef(false);
-
-  // ── OS Shell ──
-  const osRef = useRef<UpgradedEngine<EngineBase> | null>(null);
-  useEffect(() => {
-    upgradeEngine({ id: 'code', name: 'CodeEngin' }, ['bridge', 'telemetry'])
-      .then((u) => { osRef.current = u; });
-  }, []);
-  const busRef = useRef(createEventBus());
-
-  // ── EnginRuntime kernel (code rule-set) ──
-  const { state: enginState, dispatch: enginDispatch, ready: enginReady } = useCodeEnginRuntime();
-
-  // ── Workflow (code:sprint — default workflow) ──
+  const { persistState: persistDaydreamState } = useDaydreamState({ daydreamType: 'code', side: 'B' });
+  const { savedState, isRestoring, persistState } = useDaydreamPersistence<Partial<CodeWorkspaceState>>({ daydreamType: 'code' });
+  const { state: enginState, ready: enginReady, hardwareAcceleration } = useCodeEnginRuntime({ useMemoryAdapter: true });
   const { loadWorkflow } = useEnginWorkflow();
-  useEffect(() => { loadWorkflow('code:sprint'); }, [loadWorkflow]);
+  const restoredRef = useRef(false);
+  const editorRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // ── Pair programming state ──
-  const [pairSessionId] = useState(() => `code-${Date.now()}`);
-  const [pairActive, setPairActive] = useState(false);
-  const pairDream = useSharedDream(pairActive ? pairSessionId : '');
-
-  // ── Co-op channel ─────────────────────────────────────────────────────────
-  const [instanceId] = useState(
-    () => instanceIdProp ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
-  );
-  useEnginCoopSync({
-    enginName: 'CodeEngin',
-    instanceId,
-    region: 'engin:code',
-    active: pairActive,
-    stateSnapshot: () => ({ type: 'code:state', cells: cells.map((c) => ({ id: c.id, language: c.language, code: c.code })) }),
-    onPeerState: (evt) => {
-      if (evt.type === 'code:state' && Array.isArray(evt.cells)) {
-        const peerCells = evt.cells as Array<{ id: string; code: string; language: string }>;
-        const peerById = new Map(peerCells.map((peer) => [peer.id, peer]));
-        setCells((prev) => prev.map((c) => {
-          const peer = peerById.get(c.id);
-          return peer ? { ...c, code: peer.code, language: peer.language as typeof c.language } : c;
-        }));
-      }
-    },
-  });
-
-  // ── Cross-Engin: LabEngin dataset export receiver ──
-  const [dismissedDataset, setDismissedDataset] = useState<string | null>(null);
-  const datasetPrompt = codeBridge.lastLabDataset !== null && codeBridge.lastLabDataset !== dismissedDataset
-    ? codeBridge.lastLabDataset
-    : null;
-
-  // Notebook state
-  const [cells, setCells] = useState<NotebookCell[]>(() => {
-    try { const raw = localStorage.getItem(NOTEBOOK_STORAGE_KEY); if (raw) { const parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length > 0) return parsed; } } catch {}
-    return DEMO_CELLS.map((c) => ({ ...c }));
-  });
-  const cellIndexById = useMemo(() => new Map(cells.map((cell, index) => [cell.id, index])), [cells]);
-
-  // Persistence
-  useEffect(() => {
-    if (codeRestoring || codeRestoredRef.current || !savedCodeState) return;
-    codeRestoredRef.current = true;
-    if (savedCodeState.cells && savedCodeState.cells.length > 0) {
-      setCells((prev) => savedCodeState.cells!.map((saved) => {
-        const existing = prev.find((c) => c.id === saved.id);
-        return existing ? { ...existing, code: saved.source, language: saved.language as CellLanguage } : { ...saved, code: saved.source, status: 'idle', output: null, language: saved.language as CellLanguage };
-      }));
-    }
-  }, [codeRestoring, savedCodeState]);
-
-  useEffect(() => {
-    if (codeRestoring) return;
-    const snapshot = cells.map((c) => ({ id: c.id, language: c.language, source: c.code }));
-    persistState({ side: 'B', cells: snapshot });
-    persistCodeState({ cells: snapshot });
-    localStorage.setItem(NOTEBOOK_STORAGE_KEY, JSON.stringify(cells));
-  }, [cells, codeRestoring]);
-
-  // UI state
-  const [activeTab, setActiveTab] = useState<ActiveTab>('notebook');
-  const [codeZoom, setCodeZoom] = useState(1.0);
-  const [swappedLayout, setSwappedLayout] = useState(false);
-  const [liveModeActive, setLiveModeActive] = useState(false);
-  const liveModeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [workspace, setWorkspace] = useState<CodeWorkspaceState>(() => loadWorkspace());
+  const [fontSize, setFontSize] = useState(13);
+  const [search, setSearch] = useState('');
+  const [newPath, setNewPath] = useState('components/NewModule.tsx');
+  const [bottomPanel, setBottomPanel] = useState<BottomPanel>('terminal');
+  const [terminal, setTerminal] = useState<TerminalLine[]>(() => [
+    terminalLine('info', 'CodeEngin workspace mounted. Run diagnostics or open the command palette.'),
+  ]);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [commandQuery, setCommandQuery] = useState('');
   const [assistPrompt, setAssistPrompt] = useState('');
   const [assistResponse, setAssistResponse] = useState('');
   const [assistLoading, setAssistLoading] = useState(false);
-  const lastFocusedRef = useRef<HTMLTextAreaElement | null>(null);
+  const [datasetDismissed, setDatasetDismissed] = useState<string | null>(null);
 
-  // CI state
-  const [ciRunning, setCiRunning] = useState(false);
-  const [ciResults, setCiResults] = useState<CIResults | null>(null);
-  const [ciError, setCiError] = useState<string | null>(null);
+  useEffect(() => {
+    loadWorkflow('code:sprint');
+  }, [loadWorkflow]);
 
-  // Security state
-  const [secRunning, setSecRunning] = useState(false);
-  const [secResults, setSecResults] = useState<SecResults | null>(null);
-  const [secError, setSecError] = useState<string | null>(null);
+  useEffect(() => {
+    if (isRestoring || restoredRef.current || !savedState?.files?.length) return;
+    restoredRef.current = true;
+    const files = sortFiles(savedState.files.map((file) => ({
+      ...file,
+      language: languageFromPath(file.path),
+      dirty: Boolean(file.dirty),
+      updatedAt: file.updatedAt ?? nowIso(),
+    })));
+    const activePath = savedState.activePath && files.some((file) => file.path === savedState.activePath)
+      ? savedState.activePath
+      : files[0].path;
+    const openTabs = savedState.openTabs?.filter((path) => files.some((file) => file.path === path)) ?? [activePath];
+    setWorkspace({
+      files,
+      activePath,
+      openTabs: openTabs.length > 0 ? openTabs : [activePath],
+      snapshots: savedState.snapshots?.slice(0, SNAPSHOT_LIMIT) ?? [],
+    });
+  }, [isRestoring, savedState]);
 
-  // Project manager state
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loadingProjects, setLoadingProjects] = useState(true);
-  const [newProjectName, setNewProjectName] = useState('');
-  const [newProjectLang, setNewProjectLang] = useState<CellLanguage>('python');
-  const [creating, setCreating] = useState(false);
-  const [user, setUser] = useState<{ id: string } | null>(null);
-
-  // ShellHub state
-  const [shellhubStatus, setShellhubStatus] = useState<'idle' | 'checking' | 'connected' | 'not_connected' | 'error'>('idle');
-  const [shellhubConnecting, setShellhubConnecting] = useState(false);
-  const [shellhubDisconnecting, setShellhubDisconnecting] = useState(false);
-  const [shellhubConnectError, setShellhubConnectError] = useState<string | null>(null);
-  const [shellhubServerDraft, setShellhubServerDraft] = useState(SHELLHUB_DEFAULT_URL);
-  const [shellhubApiKeyDraft, setShellhubApiKeyDraft] = useState('');
-  const [shellhubConnectedServer, setShellhubConnectedServer] = useState(SHELLHUB_DEFAULT_URL);
-  const [shellhubDevices, setShellhubDevices] = useState<ShellHubDevice[]>([]);
-  const [shellhubDevicesLoading, setShellhubDevicesLoading] = useState(false);
-  const [shellhubDevicesError, setShellhubDevicesError] = useState<string | null>(null);
-
-  // Zoom
-  const zoomIn = () => setCodeZoom((z) => Math.min(ZOOM_MAX, z + ZOOM_STEP));
-  const zoomOut = () => setCodeZoom((z) => Math.max(ZOOM_MIN, z - ZOOM_STEP));
-  const zoomReset = () => setCodeZoom(1.0);
-
-  // Run a cell (real execution)
-  const runCell = useCallback(async (cellId: string, language: CellLanguage, code: string) => {
-    setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, status: 'running', output: null, error: undefined } : c));
-    try {
-      // ── Pre-flight parse: surface structural errors before sending to runtime ──
-      if (language === 'typescript' || language === 'javascript' || language === 'python') {
-        const parsed = parseCode(code, language);
-        if (!parsed.structurallyValid && parsed.errors.length > 0) {
-          const errorLines = parsed.errors
-            .map((e) => `  Line ${e.line}:${e.col} — ${e.message}`)
-            .join('\n');
-          setCells((prev) => prev.map((c) =>
-            c.id === cellId
-              ? { ...c, status: 'error', output: `Parse error(s) found:\n${errorLines}`, error: errorLines }
-              : c
-          ));
-          return;
-        }
-      }
-      const output = await runCellCode(language, code);
-      setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, status: 'done', output } : c));
-      bridge.emit('code', 'code:cell-executed', { cellId, language, outputType: 'text' });
-    } catch (err: unknown) {
-      setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, status: 'error', output: (err as Error).message, error: (err as Error).message } : c));
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(workspace));
     }
+    persistState(workspace);
+    persistDaydreamState({ side: 'B', workspaceFiles: workspace.files.length, activePath: workspace.activePath });
+  }, [persistDaydreamState, persistState, workspace]);
+
+  const activeFile = useMemo(
+    () => workspace.files.find((file) => file.path === workspace.activePath) ?? workspace.files[0],
+    [workspace.activePath, workspace.files],
+  );
+
+  const diagnostics = useMemo(() => collectDiagnostics(workspace.files).sort((a, b) => {
+    const bySeverity = severityRank(a.severity) - severityRank(b.severity);
+    if (bySeverity !== 0) return bySeverity;
+    const byPath = a.path.localeCompare(b.path);
+    if (byPath !== 0) return byPath;
+    return a.line - b.line;
+  }), [workspace.files]);
+
+  const activeDiagnostics = useMemo(
+    () => diagnostics.filter((diagnostic) => diagnostic.path === activeFile.path),
+    [activeFile.path, diagnostics],
+  );
+
+  const activeSymbols = useMemo(() => symbolsForFile(activeFile), [activeFile]);
+  const errorCount = diagnostics.filter((diagnostic) => diagnostic.severity === 'error').length;
+  const warningCount = diagnostics.filter((diagnostic) => diagnostic.severity === 'warning').length;
+  const dirtyCount = workspace.files.filter((file) => file.dirty).length;
+  const datasetPrompt = codeBridge.lastLabDataset !== null && codeBridge.lastLabDataset !== datasetDismissed
+    ? codeBridge.lastLabDataset
+    : null;
+
+  const visibleFiles = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return workspace.files;
+    return workspace.files.filter((file) => file.path.toLowerCase().includes(q) || file.content.toLowerCase().includes(q));
+  }, [search, workspace.files]);
+
+  const latestSnapshot = workspace.snapshots[0] ?? null;
+  const snapshotFile = latestSnapshot?.files.find((file) => file.path === activeFile.path);
+  const diffLines = useMemo(() => {
+    if (!snapshotFile) return ['No snapshot exists for this file yet.'];
+    const before = snapshotFile.content.split('\n');
+    const after = activeFile.content.split('\n');
+    const max = Math.max(before.length, after.length);
+    const lines: string[] = [];
+    for (let i = 0; i < max; i++) {
+      if ((before[i] ?? '') === (after[i] ?? '')) continue;
+      if (before[i] !== undefined) lines.push(`- ${i + 1}: ${before[i]}`);
+      if (after[i] !== undefined) lines.push(`+ ${i + 1}: ${after[i]}`);
+      if (lines.length >= 80) {
+        lines.push('…diff truncated');
+        break;
+      }
+    }
+    return lines.length > 0 ? lines : ['No changes from latest snapshot.'];
+  }, [activeFile.content, activeFile.path, snapshotFile]);
+
+  const appendTerminal = useCallback((kind: TerminalLine['kind'], text: string) => {
+    setTerminal((prev) => [...prev, terminalLine(kind, text)].slice(-80));
   }, []);
 
-  // Add/delete cells
-  const addCell = () => {
-    setCells((prev) => [...prev, { id: newCellId(), language: 'python', code: '', output: null, status: 'idle' }]);
-  };
-  const deleteCell = (cellId: string) => {
-    setCells((prev) => prev.filter((c) => c.id !== cellId));
-  };
-  const updateCellCode = (cellId: string, code: string) => {
-    setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, code } : c));
-  };
-  const updateCellLanguage = (cellId: string, language: CellLanguage) => {
-    setCells((prev) => prev.map((c) => c.id === cellId ? { ...c, language, output: null, status: 'idle' } : c));
-  };
+  const openFile = useCallback((path: string) => {
+    setWorkspace((prev) => ({
+      ...prev,
+      activePath: path,
+      openTabs: prev.openTabs.includes(path) ? prev.openTabs : [...prev.openTabs, path],
+    }));
+  }, []);
 
-  // Live mode effect
-  useEffect(() => {
-    if (!liveModeActive) return;
-    if (liveModeTimerRef.current) clearTimeout(liveModeTimerRef.current);
-    const activeCellId = lastFocusedRef.current?.getAttribute('data-cell-id');
-    const activeCell = cells.find((c) => c.id === activeCellId) || cells[0];
-    if (activeCell && activeCell.status !== 'running') {
-      liveModeTimerRef.current = setTimeout(() => {
-        runCell(activeCell.id, activeCell.language, activeCell.code);
-      }, 500);
+  const closeTab = useCallback((path: string) => {
+    setWorkspace((prev) => {
+      const openTabs = prev.openTabs.filter((tab) => tab !== path);
+      const activePath = prev.activePath === path
+        ? openTabs[openTabs.length - 1] ?? prev.files[0]?.path ?? path
+        : prev.activePath;
+      return { ...prev, openTabs: openTabs.length > 0 ? openTabs : [activePath], activePath };
+    });
+  }, []);
+
+  const updateActiveFile = useCallback((content: string) => {
+    setWorkspace((prev) => ({
+      ...prev,
+      files: prev.files.map((file) => file.path === prev.activePath
+        ? { ...file, content, dirty: true, updatedAt: nowIso() }
+        : file),
+    }));
+  }, []);
+
+  const createFile = useCallback((path: string, content = '') => {
+    const cleanPath = path.trim().replace(/^\/+/, '');
+    if (!cleanPath) return;
+    setWorkspace((prev) => {
+      if (prev.files.some((file) => file.path === cleanPath)) {
+        return { ...prev, activePath: cleanPath, openTabs: prev.openTabs.includes(cleanPath) ? prev.openTabs : [...prev.openTabs, cleanPath] };
+      }
+      const file = makeFile(cleanPath, content);
+      return {
+        ...prev,
+        files: sortFiles([...prev.files, file]),
+        activePath: cleanPath,
+        openTabs: [...prev.openTabs, cleanPath],
+      };
+    });
+    appendTerminal('success', `Created ${cleanPath}`);
+  }, [appendTerminal]);
+
+  const deleteFile = useCallback((path: string) => {
+    setWorkspace((prev) => {
+      if (prev.files.length <= 1) return prev;
+      const files = prev.files.filter((file) => file.path !== path);
+      const openTabs = prev.openTabs.filter((tab) => tab !== path);
+      const activePath = prev.activePath === path ? files[0].path : prev.activePath;
+      return { ...prev, files, openTabs: openTabs.length > 0 ? openTabs : [activePath], activePath };
+    });
+    appendTerminal('warning', `Deleted ${path}`);
+  }, [appendTerminal]);
+
+  const saveSnapshot = useCallback((label = 'Manual snapshot') => {
+    setWorkspace((prev) => {
+      const snapshot: Snapshot = {
+        id: safeId('snapshot'),
+        label,
+        createdAt: nowIso(),
+        files: prev.files.map((file) => ({ ...file, dirty: false })),
+      };
+      return {
+        ...prev,
+        files: prev.files.map((file) => ({ ...file, dirty: false })),
+        snapshots: [snapshot, ...prev.snapshots].slice(0, SNAPSHOT_LIMIT),
+      };
+    });
+    appendTerminal('success', `Snapshot saved: ${label}`);
+  }, [appendTerminal]);
+
+  const restoreSnapshot = useCallback((snapshot: Snapshot) => {
+    setWorkspace((prev) => ({
+      ...prev,
+      files: sortFiles(snapshot.files.map((file) => ({ ...file, dirty: false }))),
+      activePath: snapshot.files.some((file) => file.path === prev.activePath) ? prev.activePath : snapshot.files[0]?.path ?? prev.activePath,
+      openTabs: prev.openTabs.filter((path) => snapshot.files.some((file) => file.path === path)),
+    }));
+    appendTerminal('warning', `Restored snapshot: ${snapshot.label}`);
+  }, [appendTerminal]);
+
+  const runDiagnostics = useCallback(() => {
+    const total = diagnostics.length;
+    setBottomPanel('problems');
+    if (total === 0) {
+      appendTerminal('success', 'Diagnostics passed. No structural issues found.');
+    } else {
+      appendTerminal(errorCount > 0 ? 'error' : 'warning', `Diagnostics found ${errorCount} error(s), ${warningCount} warning(s), ${total - errorCount - warningCount} info item(s).`);
     }
-    return () => { if (liveModeTimerRef.current) clearTimeout(liveModeTimerRef.current); };
-  }, [cells, liveModeActive, runCell]);
+  }, [appendTerminal, diagnostics.length, errorCount, warningCount]);
 
-  // AI Assist
-  const handleAiAssist = async () => {
-    if (!assistPrompt.trim()) return;
+  const buildCheck = useCallback(() => {
+    setBottomPanel('terminal');
+    appendTerminal('input', 'codeengin build-check');
+    if (errorCount > 0) {
+      appendTerminal('error', `Build readiness failed: ${errorCount} blocking diagnostic(s).`);
+      return;
+    }
+    appendTerminal('success', `Build readiness passed across ${workspace.files.length} file(s).`);
+    appendTerminal('info', `Runtime ready: ${enginReady ? 'yes' : 'initializing'} · Hardware acceleration: ${hardwareAcceleration?.webgpu.ready ? 'available' : 'not reported'}`);
+  }, [appendTerminal, enginReady, errorCount, hardwareAcceleration?.webgpu.ready, workspace.files.length]);
+
+  const runActiveFile = useCallback(() => {
+    setBottomPanel('terminal');
+    appendTerminal('input', `run ${activeFile.path}`);
+    const blocking = diagnosticsForFile(activeFile).filter((diagnostic) => diagnostic.severity === 'error');
+    if (blocking.length > 0) {
+      appendTerminal('error', `Execution blocked by ${blocking.length} structural error(s).`);
+      return;
+    }
+    try {
+      if (activeFile.language === 'javascript' || activeFile.language === 'typescript') {
+        appendTerminal('success', runJavaScriptSource(activeFile.content, activeFile.language));
+        bridge.emit('code', 'code:file-ran', { path: activeFile.path, language: activeFile.language });
+        return;
+      }
+      if (activeFile.language === 'json') {
+        JSON.parse(activeFile.content);
+        appendTerminal('success', 'JSON parsed successfully.');
+        return;
+      }
+      appendTerminal('warning', `${activeFile.language} execution needs a server or WASM sandbox. Diagnostics still run locally.`);
+    } catch (err: unknown) {
+      appendTerminal('error', err instanceof Error ? err.message : String(err));
+    }
+  }, [activeFile, appendTerminal]);
+
+  const formatActiveFile = useCallback(() => {
+    let next = activeFile.content
+      .split('\n')
+      .map((line) => line.trimEnd())
+      .join('\n');
+    if (activeFile.language === 'json') {
+      try {
+        next = `${JSON.stringify(JSON.parse(next), null, 2)}\n`;
+      } catch {
+        appendTerminal('error', 'Cannot format invalid JSON.');
+        return;
+      }
+    }
+    updateActiveFile(next.endsWith('\n') ? next : `${next}\n`);
+    appendTerminal('success', `Formatted ${activeFile.path}`);
+  }, [activeFile.content, activeFile.language, activeFile.path, appendTerminal, updateActiveFile]);
+
+  const deployToGame = useCallback(() => {
+    recordForgeTransfer('code', 'games', 'script', `CodeEngin ${activeFile.path} → GameEngin`);
+    forgeRecord(`Deployed ${activeFile.path} to GameEngin`);
+    bridge.emit('games', 'games:script-deploy-requested', {
+      scriptId: safeId('script'),
+      timestamp: nowIso(),
+      path: activeFile.path,
+      language: activeFile.language,
+      code: activeFile.content,
+    });
+    appendTerminal('success', `Sent ${activeFile.path} to GameEngin.`);
+  }, [activeFile.content, activeFile.language, activeFile.path, appendTerminal, forgeRecord]);
+
+  const publishToContent = useCallback(() => {
+    recordForgeTransfer('code', 'create', 'workspace', 'CodeEngin workspace → ContentEngin');
+    forgeRecord('Published CodeEngin workspace to ContentEngin');
+    bridge.emit('create', 'create:notebook-publish-requested', {
+      workspaceId: safeId('workspace'),
+      timestamp: nowIso(),
+      files: workspace.files.map((file) => ({ path: file.path, language: file.language, lines: file.content.split('\n').length })),
+    });
+    appendTerminal('success', 'Workspace summary sent to ContentEngin.');
+  }, [appendTerminal, forgeRecord, workspace.files]);
+
+  const createComponent = useCallback(() => {
+    const componentName = `DreamModule${workspace.files.length + 1}`;
+    createFile(`components/${componentName}.tsx`, `interface ${componentName}Props {\n  title: string;\n}\n\nexport default function ${componentName}({ title }: ${componentName}Props) {\n  return <section>{title}</section>;\n}\n`);
+  }, [createFile, workspace.files.length]);
+
+  const runCommand = useCallback((kind: CommandKind) => {
+    setCommandOpen(false);
+    setCommandQuery('');
+    if (kind === 'check') runDiagnostics();
+    if (kind === 'build') buildCheck();
+    if (kind === 'run') runActiveFile();
+    if (kind === 'format') formatActiveFile();
+    if (kind === 'snapshot') saveSnapshot('Command snapshot');
+    if (kind === 'game') deployToGame();
+    if (kind === 'content') publishToContent();
+    if (kind === 'component') createComponent();
+  }, [buildCheck, createComponent, deployToGame, formatActiveFile, publishToContent, runActiveFile, runDiagnostics, saveSnapshot]);
+
+  const handleAiAssist = useCallback(async () => {
+    const prompt = assistPrompt.trim();
+    if (!prompt) return;
     setAssistLoading(true);
     setAssistResponse('');
-    const activeCellId = lastFocusedRef.current?.getAttribute('data-cell-id');
-    const activeCell = cells.find((c) => c.id === activeCellId) || cells[0];
-    const codeContext = activeCell?.code || '';
-    const response = await callEamsAssist(assistPrompt, codeContext, activeCell?.language);
-    setAssistResponse(response);
-    setAssistLoading(false);
-    bridge.emit('code', 'code:cell-executed', { cellId: 'ai-assist', language: 'typescript', outputType: 'text' });
-  };
-
-  // ── Publish Notebook to ContentEngin ──────────────────────────────────────────
-  const publishNotebook = () => {
-    forgeRecord('Published notebook to Content');
-    recordForgeTransfer('code', 'create', 'notebook', 'CodeEngin notebook → ContentEngin');
-    const cellSummary = cells.map((c) => ({
-      language: c.language,
-      codeSnippet: c.code.slice(0, 100),
-      hasOutput: c.output !== null,
-    }));
-    bridge.emit('create', 'create:notebook-publish-requested', {
-      notebookId: `notebook-${Date.now()}`,
-      timestamp: new Date().toISOString(),
-      cellCount: cells.length,
-      languages: Array.from(new Set(cells.map((c) => c.language))),
-      cells: cellSummary,
-    });
-  };
-
-  // ── Deploy Script to GameEngin ────────────────────────────────────────────────
-  const deployScriptToGame = (cellId: string) => {
-    const cell = cells.find((c) => c.id === cellId);
-    if (!cell) return;
-    forgeRecord('Deployed script to Game');
-    recordForgeTransfer('code', 'games', 'script', 'CodeEngin script → GameEngin');
-    bridge.emit('games', 'games:script-deploy-requested', {
-      scriptId: `script-${Date.now()}`,
-      timestamp: new Date().toISOString(),
-      language: cell.language,
-      code: cell.code,
-      hasOutput: cell.output !== null,
-    });
-  };
-
-  // CI Runner
-  const handleRunCI = async () => {
-    setCiRunning(true);
-    setCiError(null);
-    setCiResults(null);
+    setBottomPanel('assist');
     try {
-      const apiKey = process.env.CI_API_KEY || '';
-      if (!apiKey) throw new Error('CI_API_KEY not set in environment');
-      const data = await callCI(apiKey);
-      setCiResults(data);
-    } catch (err: unknown) {
-      setCiError((err as Error).message);
+      const response = await callEamsAssist(prompt, activeFile.content, activeFile.language);
+      setAssistResponse(response);
+      appendTerminal('info', 'AI assist returned a response.');
     } finally {
-      setCiRunning(false);
+      setAssistLoading(false);
     }
-  };
+  }, [activeFile.content, activeFile.language, appendTerminal, assistPrompt]);
 
-  // Security Scanner
-  const handleSecurityScan = async () => {
-    setSecRunning(true);
-    setSecError(null);
-    setSecResults(null);
-    try {
-      const apiKey = process.env.CI_API_KEY || '';
-      if (!apiKey) throw new Error('CI_API_KEY not set in environment');
-      const data = await callSecurityScan(apiKey);
-      setSecResults(data);
-    } catch (err: unknown) {
-      setSecError((err as Error).message);
-    } finally {
-      setSecRunning(false);
-    }
-  };
+  const insertDatasetCell = useCallback(() => {
+    if (!datasetPrompt) return;
+    createFile(`lab/dataset-${datasetPrompt}.ts`, `export const labDatasetId = '${datasetPrompt}';\n\nexport async function loadDataset() {\n  return { id: labDatasetId, source: 'LabEngin' };\n}\n`);
+    setDatasetDismissed(datasetPrompt);
+  }, [createFile, datasetPrompt]);
 
-  // Load user and projects from Supabase
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(async (res: { data: { user: import('@supabase/supabase-js').User | null }; error: import('@supabase/supabase-js').AuthError | null }) => {
-      const u = res.data.user;
-      if (!u) { setLoadingProjects(false); return; }
-      setUser(u);
-      const { data } = await supabase.from('projects').select('id, title, visibility').eq('owner_id', u.id).order('created_at', { ascending: false }).limit(15);
-      setProjects((data as Project[]) || []);
-      setLoadingProjects(false);
-    });
-  }, []);
-
-  const createProject = async () => {
-    if (!newProjectName.trim() || !user || creating) return;
-    setCreating(true);
-    const supabase = createClient();
-    const { data, error } = await supabase.from('projects').insert({ title: newProjectName.trim(), visibility: 'private', owner_id: user.id }).select('id, title, visibility').single();
-    if (!error && data) setProjects((prev) => [data as Project, ...prev]);
-    setCreating(false);
-    setNewProjectName('');
-  };
-
-  // ShellHub connection logic
-  const handleShellHubConnect = async () => {
-    const serverUrl = shellhubServerDraft.trim() || SHELLHUB_DEFAULT_URL;
-    const apiKey = shellhubApiKeyDraft.trim();
-    if (!apiKey) { setShellhubConnectError('API key required.'); return; }
-    setShellhubConnecting(true);
-    setShellhubConnectError(null);
-    try {
-      const res = await fetch('/api/connectors/shellhub/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credentials: { server_url: serverUrl, api_key: apiKey } }),
-      });
-      const data = await res.json() as { ok: boolean; message?: string };
-      if (data.ok) {
-        setShellhubStatus('connected');
-        setShellhubConnectedServer(serverUrl);
-        setShellhubApiKeyDraft('');
-        setShellhubDevices([]);
-        fetchShellhubDevices();
-      } else {
-        setShellhubConnectError(data.message ?? 'Connection failed.');
+    const handler = (event: KeyboardEvent) => {
+      const meta = event.metaKey || event.ctrlKey;
+      if (meta && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setCommandOpen(true);
       }
-    } catch (err: unknown) { setShellhubConnectError('Network error'); } finally { setShellhubConnecting(false); }
-  };
-
-  const handleShellHubDisconnect = async () => {
-    setShellhubDisconnecting(true);
-    try { await fetch('/api/connectors/shellhub/connect', { method: 'DELETE' }); } finally {
-      setShellhubDisconnecting(false);
-      setShellhubStatus('not_connected');
-      setShellhubDevices([]);
-    }
-  };
-
-  const fetchShellhubDevices = async () => {
-    if (shellhubStatus !== 'connected') return;
-    setShellhubDevicesLoading(true);
-    setShellhubDevicesError(null);
-    try {
-      const res = await fetch('/api/shellhub/devices');
-      const data = await res.json();
-      if (data.ok && Array.isArray(data.devices)) {
-        setShellhubDevices(data.devices);
-        if (data.server_url) setShellhubConnectedServer(data.server_url);
-      } else {
-        setShellhubDevicesError(data.error ?? 'Failed to load devices.');
+      if (meta && event.key.toLowerCase() === 's') {
+        event.preventDefault();
+        saveSnapshot('Keyboard save');
       }
-    } catch (err: unknown) { setShellhubDevicesError('Network error'); } finally { setShellhubDevicesLoading(false); }
-  };
+      if (meta && event.key === 'Enter') {
+        event.preventDefault();
+        runActiveFile();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [runActiveFile, saveSnapshot]);
 
-  useEffect(() => {
-    if (activeTab === 'connections' && shellhubStatus === 'idle') {
-      setShellhubStatus('checking');
-      fetch('/api/connectors/status')
-        .then((r) => r.json())
-        .then((data) => setShellhubStatus(data?.statuses?.shellhub === 'connected' ? 'connected' : 'not_connected'))
-        .catch(() => setShellhubStatus('not_connected'));
-    }
-  }, [activeTab, shellhubStatus]);
-
-  useEffect(() => {
-    if (shellhubStatus === 'connected') fetchShellhubDevices();
-  }, [shellhubStatus]);
-
-  function newCellId( ){ return `cell-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`; }
-
-  // Styles
-  const tabStyle = (id: ActiveTab): CSSProperties => ({
-    padding: '6px 14px', borderRadius: 999, border: activeTab === id ? `1.5px solid ${ACCENT}` : '1px solid rgba(160,195,240,0.30)',
-    background: activeTab === id ? `${ACCENT}18` : 'rgba(255,255,255,0.45)', color: activeTab === id ? ACCENT : 'var(--de-text)',
-    fontSize: 12, fontWeight: activeTab === id ? 700 : 500, cursor: 'pointer', transition: 'all 0.15s',
+  const filteredCommands = COMMANDS.filter((command) => {
+    const query = commandQuery.trim().toLowerCase();
+    if (!query) return true;
+    return command.label.toLowerCase().includes(query) || command.hint.toLowerCase().includes(query);
   });
 
-  const codeToolBtnStyle = (disabled: boolean) => ({
-    display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', borderRadius: 7,
-    border: '1px solid rgba(160,195,240,0.35)', background: 'rgba(0,0,0,0.03)',
-    color: disabled ? 'rgba(100,116,139,0.35)' : 'var(--de-text)', cursor: disabled ? 'not-allowed' : 'pointer',
-    fontSize: 12, transition: 'background 0.12s', flexShrink: 0,
+  const statusPillStyle = (bad: boolean): CSSProperties => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 6,
+    borderRadius: 999,
+    padding: '5px 9px',
+    fontSize: 11,
+    fontWeight: 800,
+    background: bad ? 'rgba(239,68,68,0.10)' : 'rgba(34,197,94,0.11)',
+    color: bad ? '#b91c1c' : '#15803d',
+    border: bad ? '1px solid rgba(239,68,68,0.18)' : '1px solid rgba(34,197,94,0.20)',
   });
-
-  const smartSelBtnStyle: CSSProperties = {
-    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 7,
-    border: '1px solid rgba(160,195,240,0.30)', background: 'rgba(255,255,255,0.55)',
-    color: 'var(--de-text)', cursor: 'pointer', fontSize: 11, fontWeight: 600,
-    transition: 'background 0.12s', whiteSpace: 'nowrap',
-  };
-
-  const selBtnStyle: CSSProperties = {
-    display: 'flex', alignItems: 'center', gap: 5, padding: '5px 9px', borderRadius: 8,
-    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
-    color: '#e2e8f0', cursor: 'pointer', fontSize: 11, fontWeight: 600,
-    transition: 'background 0.12s', whiteSpace: 'nowrap',
-  };
-
-  // Selection mode state (simplified)
-  const [selectMode, setSelectMode] = useState(false);
-  const [selectionBar, setSelectionBar] = useState<{ visible: boolean; x: number; y: number; text: string }>({ visible: false, x: 0, y: 0, text: '' });
-  const [drEamsCheckResult, setDrEamsCheckResult] = useState('');
-  const [findTarget, setFindTarget] = useState('');
-  const [replaceWith, setReplaceWith] = useState('');
-  const [findResults, setFindResults] = useState<{ scope: 'cell' | 'codebase'; total: number } | null>(null);
-
-  const closeSelectionBar = () => setSelectionBar((prev) => ({ ...prev, visible: false }));
-  const handleSelCopy = () => { if (selectionBar.text) navigator.clipboard?.writeText(selectionBar.text); closeSelectionBar(); };
-  const handleSelCut = () => { if (selectionBar.text && lastFocusedRef.current) { navigator.clipboard?.writeText(selectionBar.text); const ta = lastFocusedRef.current; const { selectionStart: s, selectionEnd: e, value } = ta; const newVal = value.slice(0, s) + value.slice(e); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set?.call(ta, newVal); ta.dispatchEvent(new Event('input', { bubbles: true })); ta.setSelectionRange(s, s); } closeSelectionBar(); };
-  const handleSelPaste = async () => { const text = await navigator.clipboard?.readText().catch(() => ''); if (text && lastFocusedRef.current) { const ta = lastFocusedRef.current; const { selectionStart: s, selectionEnd: e, value } = ta; const newVal = value.slice(0, s) + text + value.slice(e); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set?.call(ta, newVal); ta.dispatchEvent(new Event('input', { bubbles: true })); ta.setSelectionRange(s + text.length, s + text.length); } closeSelectionBar(); };
-  const handleSelDelete = () => { if (lastFocusedRef.current) { const ta = lastFocusedRef.current; const { selectionStart: s, selectionEnd: e, value } = ta; const newVal = value.slice(0, s) + value.slice(e); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set?.call(ta, newVal); ta.dispatchEvent(new Event('input', { bubbles: true })); ta.setSelectionRange(s, s); } closeSelectionBar(); };
-  const handleSelDrEams = () => { const code = selectionBar.text; setDrEamsCheckResult(''); closeSelectionBar(); setTimeout(() => { const issues = []; if (/console\.log/.test(code)) issues.push('Remove debug console.log'); if (/var /.test(code)) issues.push('Use const/let instead of var'); if (/==(?!=)/.test(code)) issues.push('Use === instead of =='); setDrEamsCheckResult(issues.length === 0 ? '✅ Looks good!' : `⚠️ ${issues.length} suggestion(s):\n${issues.map((i) => `• ${i}`).join('\n')}`); }, 400); };
-
-  const toggleSelectMode = () => setSelectMode((prev) => { if (prev) window.getSelection()?.removeAllRanges(); return !prev; });
-  useEffect(() => {
-    if (!selectMode) { setSelectionBar((prev) => ({ ...prev, visible: false })); setDrEamsCheckResult(''); return; }
-    const handler = (e: MouseEvent) => { const text = window.getSelection()?.toString().trim() || ''; if (text) setSelectionBar({ visible: true, x: e.clientX, y: e.clientY - 60, text }); else setSelectionBar((prev) => ({ ...prev, visible: false })); };
-    document.addEventListener('mouseup', handler);
-    return () => document.removeEventListener('mouseup', handler);
-  }, [selectMode]);
-
-  const handleSelectAll = () => { const ta = lastFocusedRef.current; if (ta) { ta.focus(); ta.setSelectionRange(0, ta.value.length); setSelectionBar({ visible: false, x: 0, y: 0, text: ta.value }); } };
-  const handleSelectLine = () => { const ta = lastFocusedRef.current; if (ta) { const val = ta.value, cursor = ta.selectionStart; let s = cursor; while (s > 0 && val[s-1] !== '\n') s--; let e = cursor; while (e < val.length && val[e] !== '\n') e++; ta.setSelectionRange(s, e); setSelectionBar({ visible: false, x: 0, y: 0, text: val.slice(s, e) }); } };
-  const handleSelectBlock = () => { const ta = lastFocusedRef.current; if (ta) { const val = ta.value, cursor = ta.selectionStart; let start = -1, end = -1, depth = 0; for (let i = cursor; i >= 0; i--) { if (val[i] === '}') depth++; else if (val[i] === '{') { if (depth === 0) { start = i; break; } depth--; } } depth = 0; for (let i = cursor; i < val.length; i++) { if (val[i] === '{') depth++; else if (val[i] === '}') { if (depth === 0) { end = i+1; break; } depth--; } } if (start !== -1 && end !== -1) { ta.setSelectionRange(start, end); setSelectionBar({ visible: false, x: 0, y: 0, text: val.slice(start, end) }); } } };
-  const activeDependencyFrontier = useCallback((symbol: string, sourceCells = cells) => {
-    const activeId = lastFocusedRef.current?.getAttribute('data-cell-id') ?? '';
-    const activeIndex = sourceCells === cells
-      ? cellIndexById.get(activeId) ?? 0
-      : sourceCells.findIndex((cell) => cell.id === activeId);
-    const safeIndex = Math.max(0, activeIndex);
-    const cleanSymbol = symbol.trim();
-    const candidateIndexes = new Set<number>([safeIndex]);
-    for (let offset = 1; offset <= 2; offset++) {
-      if (safeIndex - offset >= 0) candidateIndexes.add(safeIndex - offset);
-      if (safeIndex + offset < sourceCells.length) candidateIndexes.add(safeIndex + offset);
-    }
-    return [...candidateIndexes]
-      .map((index) => {
-        const cell = sourceCells[index];
-        const graphDistance = cell.id === activeId ? 0 : cell.code.includes(cleanSymbol) ? 1 : Math.abs(index - safeIndex);
-        const editWeight = cell.id === activeId ? 1 : Math.exp(-(Math.abs(index - safeIndex) ** 2) / (2 * 2 * 2));
-        const dependencyWeight = 1 / (1 + graphDistance);
-        const executionWeight = cell.status === 'running' || cell.status === 'error' ? 1 : 0.75;
-        return { cell, weight: editWeight * dependencyWeight * executionWeight };
-      })
-      .filter((entry) => entry.cell && entry.weight >= 0.1)
-      .sort((a, b) => b.weight - a.weight);
-  }, [cellIndexById, cells]);
-
-  const handleSelectVariable = (scope: 'cell' | 'codebase') => {
-    const ta = lastFocusedRef.current;
-    const raw = selectionBar.text || (() => {
-      if (!ta) return '';
-      const val = ta.value, c = ta.selectionStart;
-      let s = c;
-      while (s > 0 && /\w/.test(val[s - 1])) s--;
-      let e = c;
-      while (e < val.length && /\w/.test(val[e])) e++;
-      return val.slice(s, e);
-    })();
-    if (!raw.trim()) return;
-    setFindTarget(raw.trim());
-    setReplaceWith('');
-    const rx = new RegExp(`\\b${raw.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
-    if (scope === 'cell' && ta) {
-      setFindResults({ scope: 'cell', total: (ta.value.match(rx) || []).length });
-    } else {
-      const frontier = activeDependencyFrontier(raw.trim());
-      const total = frontier.reduce((acc, { cell }) => acc + (cell.code.match(rx) || []).length, 0);
-      setFindResults({ scope: 'codebase', total });
-    }
-    closeSelectionBar();
-  };
-
-  const handleReplaceAll = (scope: 'cell' | 'codebase') => {
-    if (!findTarget) return;
-    const rx = new RegExp(`\\b${findTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
-    if (scope === 'cell') {
-      const ta = lastFocusedRef.current;
-      const targetId = ta?.getAttribute('data-cell-id') || '';
-      setCells((prev) => prev.map((c) => c.id === targetId ? { ...c, code: c.code.replace(rx, replaceWith) } : c));
-    } else {
-      setCells((prev) => {
-        const ids = new Set(activeDependencyFrontier(findTarget, prev).map(({ cell }) => cell.id));
-        return prev.map((c) => ids.has(c.id) ? { ...c, code: c.code.replace(rx, replaceWith) } : c);
-      });
-    }
-    setFindResults(null);
-    setFindTarget('');
-    setReplaceWith('');
-  };
 
   return (
     <ArtifactSlot artifactId="engin:code">
-    <div className="de-sky-bg min-h-screen">
-      <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
-          <button onClick={onBack} className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)', border: 'none', cursor: 'pointer' }}>
-            <ArrowLeft className="w-4 h-4" style={{ color: 'var(--de-text)' }} />
-          </button>
-          <div style={{ width: 20, height: 20, borderRadius: 6, background: `linear-gradient(135deg, ${ACCENT}, rgba(200,152,26,0.8))` }} />
-          <div><div style={{ fontSize: 17, fontWeight: 800, color: 'var(--de-heading)' }}>CodeEngin</div><div style={{ fontSize: 11, color: 'var(--de-text-dim)' }}>Code · Control Layer</div></div>
-          <span className="ml-auto text-xs font-semibold px-2 py-1 rounded-full" style={{ background: `${ACCENT}18`, color: ACCENT, border: `1px solid ${ACCENT}35` }}>Side B</span>
-        </div>
-      </header>
+      <div style={SHELL}>
+        <header style={{ position: 'sticky', top: 0, zIndex: 40, borderBottom: '1px solid rgba(82,113,157,0.20)', background: 'rgba(232,239,249,0.92)', backdropFilter: 'blur(18px)' }}>
+          <div style={{ maxWidth: 1440, margin: '0 auto', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button type="button" onClick={onBack} aria-label="Back" style={{ border: '1px solid rgba(82,113,157,0.20)', background: 'rgba(255,255,255,0.55)', borderRadius: 12, width: 38, height: 38, display: 'grid', placeItems: 'center', cursor: 'pointer' }}>
+              <ArrowLeft size={17} />
+            </button>
+            <div style={{ width: 34, height: 34, borderRadius: 12, background: `linear-gradient(135deg, ${ACCENT}, rgba(17,24,39,0.82))`, display: 'grid', placeItems: 'center', color: '#fff' }}>
+              <Code2 size={18} />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 18, fontWeight: 900, letterSpacing: '-0.03em', color: '#172033' }}>CodeEngin</div>
+              <div style={{ fontSize: 11, color: 'rgba(30,41,59,0.68)', fontWeight: 700 }}>Workspace IDE · Runtime actions · Cross-Engin handoff</div>
+            </div>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+              <span style={statusPillStyle(errorCount > 0)}>{errorCount > 0 ? <XCircle size={13} /> : <CheckCircle size={13} />}{errorCount} errors</span>
+              <span style={statusPillStyle(warningCount > 0)}><Shield size={13} />{warningCount} warnings</span>
+              <span style={{ borderRadius: 999, padding: '5px 9px', fontSize: 11, fontWeight: 800, background: `${ACCENT}16`, color: ACCENT, border: `1px solid ${ACCENT}30` }}>{dirtyCount} dirty</span>
+              <button type="button" onClick={() => setCommandOpen(true)} style={{ border: `1px solid ${ACCENT}38`, background: `${ACCENT}14`, color: ACCENT, borderRadius: 999, padding: '8px 12px', fontWeight: 900, fontSize: 12, cursor: 'pointer' }}>⌘K Command</button>
+            </div>
+          </div>
+        </header>
 
-      <div className="max-w-2xl mx-auto px-4 pb-32" style={{ paddingTop: 20 }}>
-
-        {/* ── Lab → CodeEngin Dataset Export receiver ── */}
-        {datasetPrompt && (
-          <div className="de-widget" style={{ marginBottom: 14, borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.04)' }}>
-            <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 16 }}>🔬→💻</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-heading)' }}>
-                    LabEngin exported a dataset
-                  </div>
-                  <div style={{ fontSize: 11, color: 'var(--de-text-dim)', lineHeight: 1.5 }}>
-                    Dataset #{datasetPrompt} — load into notebook for analysis?
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setDismissedDataset(codeBridge.lastLabDataset)}
-                  style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'var(--de-text-dim)' }}
-                  aria-label="Dismiss"
-                >✕</button>
+        <main style={{ maxWidth: 1440, margin: '0 auto', padding: 16 }}>
+          {datasetPrompt && (
+            <section style={{ ...PANEL, padding: 14, marginBottom: 14, display: 'flex', gap: 12, alignItems: 'center', borderColor: 'rgba(16,185,129,0.28)' }}>
+              <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(16,185,129,0.12)', display: 'grid', placeItems: 'center' }}>🔬</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 900, color: '#0f172a' }}>LabEngin exported a dataset</div>
+                <div style={{ fontSize: 12, color: 'rgba(30,41,59,0.68)' }}>Dataset #{datasetPrompt} can be turned into a typed loader file.</div>
               </div>
-            </div>
-          </div>
-        )}
+              <button type="button" onClick={insertDatasetCell} style={{ border: 'none', borderRadius: 10, background: '#059669', color: '#fff', padding: '9px 12px', fontWeight: 900, cursor: 'pointer' }}>Create loader</button>
+              <button type="button" onClick={() => setDatasetDismissed(datasetPrompt)} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}><X size={16} /></button>
+            </section>
+          )}
 
-        {/* Tab bar */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 18, flexWrap: 'wrap' }}>
-          {[
-            { id: 'notebook', label: '📔 Notebook' },
-            { id: 'ci', label: '🔧 CI Pipeline' },
-            { id: 'security', label: '🔒 Security Scan' },
-            { id: 'projects', label: '📁 Projects' },
-            { id: 'connections', label: '🔗 Connections' },
-            { id: 'diff', label: '⟦⟧ Diff Viewer' },
-          ].map((tab) => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id as ActiveTab)} style={tabStyle(tab.id as ActiveTab)}>{tab.label}</button>
-          ))}
-        </div>
-
-        {/* Toolbar */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, flexWrap: 'wrap', padding: '6px 10px', borderRadius: 10, background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(160,195,240,0.22)' }}>
-          <button onClick={zoomOut} disabled={codeZoom <= ZOOM_MIN} style={codeToolBtnStyle(codeZoom <= ZOOM_MIN)}><ZoomOut size={13} /></button>
-          <button onClick={zoomReset} style={{ ...codeToolBtnStyle(false), minWidth: 42, justifyContent: 'center', fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: codeZoom !== 1.0 ? ACCENT : 'var(--de-text-dim)' }}>{Math.round(codeZoom * 100)}%</button>
-          <button onClick={zoomIn} disabled={codeZoom >= ZOOM_MAX} style={codeToolBtnStyle(codeZoom >= ZOOM_MAX)}><ZoomIn size={13} /></button>
-          <span style={{ width: 1, height: 18, background: 'rgba(160,195,240,0.3)', margin: '0 4px' }} />
-          <button onClick={toggleSelectMode} style={{ ...codeToolBtnStyle(false), gap: 6, background: selectMode ? `${ACCENT}18` : 'rgba(0,0,0,0.03)', borderColor: selectMode ? ACCENT : 'rgba(160,195,240,0.35)', color: selectMode ? ACCENT : 'var(--de-text)', fontWeight: selectMode ? 700 : 500, paddingRight: 10 }}><MousePointer2 size={13} /><span style={{ fontSize: 11 }}>{selectMode ? 'Selecting…' : 'Select'}</span>{selectMode && <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, flexShrink: 0, animation: 'de-pulse 1.2s ease-in-out infinite' }} />}</button>
-          <button onClick={() => setSwappedLayout((prev) => !prev)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 9px', borderRadius: 7, border: `1.5px solid ${swappedLayout ? ACCENT : 'rgba(160,195,240,0.35)'}`, background: swappedLayout ? `${ACCENT}12` : 'rgba(0,0,0,0.03)', color: swappedLayout ? ACCENT : 'var(--de-text)', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}><ArrowLeftRight className="w-3.5 h-3.5" /><span>Swap</span></button>
-          <button onClick={() => setLiveModeActive((prev) => !prev)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 9px', borderRadius: 7, border: `1.5px solid ${liveModeActive ? '#f59e0b' : 'rgba(160,195,240,0.35)'}`, background: liveModeActive ? 'rgba(245,158,11,0.12)' : 'rgba(0,0,0,0.03)', color: liveModeActive ? '#f59e0b' : 'var(--de-text)', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>{liveModeActive ? <Zap className="w-3.5 h-3.5" /> : <MousePointer2 className="w-3.5 h-3.5" />}<span>{liveModeActive ? 'Live' : 'Manual'}</span>{liveModeActive && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: 'de-pulse 1s infinite', marginLeft: 2 }} />}</button>
-          {drEamsCheckResult && <div style={{ flex: 1, padding: '4px 10px', borderRadius: 8, background: drEamsCheckResult.startsWith('✅') ? 'rgba(34,197,94,0.08)' : 'rgba(245,158,11,0.08)', border: `1px solid ${drEamsCheckResult.startsWith('✅') ? 'rgba(34,197,94,0.25)' : 'rgba(245,158,11,0.25)'}`, fontSize: 11 }}>{drEamsCheckResult}<button onClick={() => setDrEamsCheckResult('')} style={{ marginLeft: 8, background: 'none', border: 'none', cursor: 'pointer' }}>✕</button></div>}
-        </div>
-
-        {/* Selection bar */}
-        {selectMode && selectionBar.visible && (
-          <div style={{ position: 'fixed', left: selectionBar.x, top: selectionBar.y, zIndex: 9999, display: 'flex', gap: 4, padding: '6px 8px', borderRadius: 12, background: 'rgba(15,15,30,0.96)', border: '1px solid rgba(59,125,216,0.4)', backdropFilter: 'blur(12px)' }}>
-            <button onClick={handleSelCopy} style={selBtnStyle}><Copy size={13} /><span>Copy</span></button>
-            <button onClick={handleSelCut} style={selBtnStyle}><Scissors size={13} /><span>Cut</span></button>
-            <button onClick={handleSelPaste} style={selBtnStyle}><Clipboard size={13} /><span>Paste</span></button>
-            <button onClick={handleSelDelete} style={{ ...selBtnStyle, color: '#f87171' }}><Trash2 size={13} /><span>Delete</span></button>
-            <span style={{ width: 1, height: 18, background: 'rgba(255,255,255,0.12)', margin: '0 2px' }} />
-            <button onClick={handleSelDrEams} style={{ ...selBtnStyle, color: '#a78bfa' }}><Bot size={13} /><span>Dr. Eams</span></button>
-            <button onClick={closeSelectionBar} style={{ ...selBtnStyle, color: 'rgba(255,255,255,0.35)' }}><X size={12} /></button>
-          </div>
-        )}
-
-        {/* Smart select bar */}
-        {selectMode && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 8, padding: '7px 10px', borderRadius: 10, background: `${ACCENT}0a`, border: `1px dashed ${ACCENT}40`, alignItems: 'center' }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: ACCENT }}>Smart Select:</span>
-            <button onClick={handleSelectAll} style={smartSelBtnStyle}>⬛ All</button>
-            <button onClick={handleSelectLine} style={smartSelBtnStyle}>☰ Line</button>
-            <button onClick={handleSelectBlock} style={smartSelBtnStyle}>{'{ }'} Block</button>
-            <span style={{ width: 1, height: 16, background: `${ACCENT}30`, margin: '0 2px' }} />
-            <button onClick={() => handleSelectVariable('cell')} style={{ ...smartSelBtnStyle, color: ACCENT, borderColor: `${ACCENT}45` }}>$var in cell</button>
-            <button onClick={() => handleSelectVariable('codebase')} style={{ ...smartSelBtnStyle, color: '#a78bfa', borderColor: 'rgba(167,139,250,0.4)' }}>$var in codebase</button>
-            {!lastFocusedRef.current && <span style={{ fontSize: 10, color: 'var(--de-text-dim)' }}>click inside a cell first</span>}
-          </div>
-        )}
-
-        {/* Find & replace panel */}
-        {findResults && findTarget && (
-          <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 12, background: 'rgba(59,125,216,0.06)', border: `1px solid ${ACCENT}30` }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: ACCENT }}>Find &amp; Replace</span>
-              <span style={{ fontSize: 10, padding: '1px 7px', borderRadius: 999, background: findResults.total > 0 ? `${ACCENT}15` : 'rgba(248,113,113,0.12)', color: findResults.total > 0 ? ACCENT : '#f87171' }}>{findResults.total} occurrence(s) of "{findTarget}"</span>
-              <button onClick={() => { setFindResults(null); setFindTarget(''); setReplaceWith(''); }} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
-            </div>
-            <div style={{ display: 'flex', gap: 6 }}>
-              <input type="text" value={replaceWith} onChange={e => setReplaceWith(e.target.value)} placeholder="Replace with..." style={{ flex: 1, padding: '6px 10px', borderRadius: 8, border: `1px solid ${ACCENT}25` }} />
-              <button onClick={() => handleReplaceAll('cell')} disabled={!replaceWith} style={{ padding: '6px 12px', borderRadius: 8, background: replaceWith ? ACCENT : 'rgba(160,195,240,0.1)', color: replaceWith ? '#fff' : 'var(--de-text-dim)', border: 'none', cursor: replaceWith ? 'pointer' : 'not-allowed' }}>Replace in cell</button>
-              <button onClick={() => handleReplaceAll('codebase')} disabled={!replaceWith} style={{ padding: '6px 12px', borderRadius: 8, background: replaceWith ? '#a78bfa' : 'rgba(160,195,240,0.1)', color: replaceWith ? '#fff' : 'var(--de-text-dim)', border: 'none', cursor: replaceWith ? 'pointer' : 'not-allowed' }}>Replace in codebase</button>
-            </div>
-          </div>
-        )}
-
-        {/* Notebook Tab */}
-        {activeTab === 'notebook' && (
-          <div className="de-widget">
-            <div className="de-widget-header"><span className="de-widget-title">Live Notebook</span><span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 999, background: `${ACCENT}12`, color: ACCENT }}>{cells.length} cells</span></div>
-            <div className="de-widget-body" style={{ padding: 0 }}>
-              {cells.map((cell, idx: number) => (
-                <div key={cell.id} style={{ borderBottom: idx < cells.length-1 ? '1px solid rgba(160,195,240,0.15)' : 'none', padding: '12px 16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <select value={cell.language} onChange={e => updateCellLanguage(cell.id, e.target.value as CellLanguage)} style={{ fontSize: 11, fontWeight: 600, padding: '3px 8px', borderRadius: 6, background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(160,195,240,0.35)' }}>
-                      {LANGUAGE_OPTIONS.map((lang) => <option key={lang} value={lang}>{LANGUAGE_LABEL[lang]}</option>)}
-                    </select>
-                    {cell.status === 'running' && <Loader2 className="w-3.5 h-3.5 animate-spin" style={{ color: '#f59e0b' }} />}
-                    {cell.status === 'done' && <CheckCircle className="w-3.5 h-3.5" style={{ color: '#22c55e' }} />}
-                    {cell.status === 'error' && <XCircle className="w-3.5 h-3.5" style={{ color: OUT_ERR }} />}
-                    <span style={{ flex: 1 }} />
-                    <button onClick={() => runCell(cell.id, cell.language, cell.code)} disabled={cell.status === 'running'} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 6, fontSize: 12, fontWeight: 700, background: cell.status === 'running' ? 'rgba(59,125,216,0.08)' : `${ACCENT}18`, color: cell.status === 'running' ? 'var(--de-text-dim)' : ACCENT, border: `1px solid ${cell.status === 'running' ? 'rgba(160,195,240,0.2)' : `${ACCENT}35`}` }}>{cell.status === 'running' ? '⟳ Running' : '▶ Run'}</button>
-                    <button onClick={() => deleteCell(cell.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 26, height: 26, borderRadius: 6, background: 'rgba(248,113,113,0.08)', color: OUT_ERR, cursor: 'pointer' }}><X className="w-3.5 h-3.5" /></button>
+          <section style={{ display: 'grid', gridTemplateColumns: '280px minmax(0, 1fr) 320px', gap: 14, alignItems: 'stretch' }}>
+            <aside style={{ ...PANEL, overflow: 'hidden', minHeight: 680 }}>
+              <div style={{ padding: 14, borderBottom: '1px solid rgba(82,113,157,0.16)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                  <Clipboard size={15} />
+                  <strong style={{ fontSize: 13 }}>Explorer</strong>
+                  <span style={{ marginLeft: 'auto', fontSize: 11, color: 'rgba(30,41,59,0.60)', fontWeight: 800 }}>{workspace.files.length}</span>
+                </div>
+                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search files or code" style={{ width: '100%', border: '1px solid rgba(82,113,157,0.22)', borderRadius: 10, padding: '9px 10px', background: 'rgba(255,255,255,0.65)', outline: 'none', fontSize: 12 }} />
+                <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                  <input value={newPath} onChange={(event) => setNewPath(event.target.value)} placeholder="path/to/file.ts" style={{ flex: 1, minWidth: 0, border: '1px solid rgba(82,113,157,0.18)', borderRadius: 9, padding: '7px 8px', fontSize: 11 }} />
+                  <button type="button" onClick={() => createFile(newPath)} style={{ width: 34, border: 'none', borderRadius: 9, background: ACCENT, color: '#fff', display: 'grid', placeItems: 'center', cursor: 'pointer' }}><Plus size={14} /></button>
+                </div>
+              </div>
+              <div style={{ maxHeight: 545, overflow: 'auto', padding: '8px 8px 14px' }}>
+                {groupFiles(visibleFiles).map(([folder, files]) => (
+                  <div key={folder} style={{ marginBottom: 10 }}>
+                    <div style={{ padding: '6px 7px', fontSize: 10, fontWeight: 900, color: 'rgba(30,41,59,0.55)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{folder}</div>
+                    {files.map((file) => {
+                      const fileDiagnostics = diagnostics.filter((diagnostic) => diagnostic.path === file.path);
+                      const hasError = fileDiagnostics.some((diagnostic) => diagnostic.severity === 'error');
+                      return (
+                        <button key={file.path} type="button" onClick={() => openFile(file.path)} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, border: workspace.activePath === file.path ? `1px solid ${ACCENT}45` : '1px solid transparent', borderRadius: 10, padding: '8px 9px', marginBottom: 3, background: workspace.activePath === file.path ? `${ACCENT}12` : 'transparent', cursor: 'pointer', textAlign: 'left' }}>
+                          <span style={{ fontSize: 13 }}>{file.language === 'json' ? '{}' : file.language === 'css' ? '#' : file.language === 'markdown' ? 'md' : '<>'}</span>
+                          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12, fontWeight: workspace.activePath === file.path ? 900 : 700, color: '#1e293b' }}>{basename(file.path)}</span>
+                          {file.dirty && <span style={{ color: ACCENT, fontSize: 16, lineHeight: 0 }}>•</span>}
+                          {hasError && <XCircle size={13} color="#dc2626" />}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <textarea value={cell.code} onChange={e => updateCellCode(cell.id, e.target.value)} onFocus={e => { lastFocusedRef.current = e.currentTarget; }} data-cell-id={cell.id} rows={Math.max(3, cell.code.split('\n').length + 1)} spellCheck={false} style={{ width: '100%', background: CELL_BG, color: CODE_FG, fontFamily: '"Fira Code", monospace', fontSize: ZOOM_BASE_FONT * codeZoom, lineHeight: 1.6, padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)', resize: 'vertical', outline: 'none', whiteSpace: 'pre', overflowX: 'auto' }} />
-                  {cell.output && (
-                    <div style={{ marginTop: 6, background: '#0f0f1a', border: `1px solid ${cell.status === 'error' ? 'rgba(248,113,113,0.25)' : 'rgba(74,222,128,0.18)'}`, borderRadius: 8, padding: '8px 12px' }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 4, color: cell.status === 'error' ? OUT_ERR : OUT_OK }}>{cell.status === 'error' ? 'ERROR' : 'OUTPUT'}</div>
-                      <pre style={{ margin: 0, fontFamily: '"Fira Code", monospace', fontSize: Math.round(12 * codeZoom), color: cell.status === 'error' ? OUT_ERR : OUT_OK, whiteSpace: 'pre-wrap' }}>{cell.output}</pre>
+                ))}
+              </div>
+            </aside>
+
+            <section style={{ ...PANEL, overflow: 'hidden', minHeight: 680, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, minHeight: 45, padding: '7px 10px', borderBottom: '1px solid rgba(82,113,157,0.16)', overflowX: 'auto' }}>
+                {workspace.openTabs.map((path) => {
+                  const file = workspace.files.find((candidate) => candidate.path === path);
+                  if (!file) return null;
+                  return (
+                    <button key={path} type="button" onClick={() => openFile(path)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: workspace.activePath === path ? `1px solid ${ACCENT}42` : '1px solid rgba(82,113,157,0.16)', borderRadius: 10, padding: '7px 8px', background: workspace.activePath === path ? '#fff' : 'rgba(255,255,255,0.45)', fontSize: 12, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                      {basename(path)} {file.dirty && <span style={{ color: ACCENT }}>•</span>}
+                      <span role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); closeTab(path); }} onKeyDown={(event) => { if (event.key === 'Enter') closeTab(path); }} style={{ display: 'grid', placeItems: 'center' }}><X size={12} /></span>
+                    </button>
+                  );
+                })}
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <button type="button" onClick={() => setFontSize((size) => Math.max(FONT_MIN, size - 1))} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}><ZoomOut size={15} /></button>
+                  <span style={{ fontSize: 11, fontWeight: 900 }}>{fontSize}px</span>
+                  <button type="button" onClick={() => setFontSize((size) => Math.min(FONT_MAX, size + 1))} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}><ZoomIn size={15} /></button>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '48px minmax(0, 1fr)', flex: 1, minHeight: 0, ...DARK_PANEL }}>
+                <pre aria-hidden="true" style={{ margin: 0, padding: '14px 8px', textAlign: 'right', color: '#64748b', borderRight: '1px solid rgba(148,163,184,0.14)', overflow: 'hidden', userSelect: 'none', fontSize, lineHeight: 1.55, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
+                  {activeFile.content.split('\n').map((_, index) => index + 1).join('\n')}
+                </pre>
+                <textarea ref={editorRef} value={activeFile.content} onChange={(event) => updateActiveFile(event.target.value)} spellCheck={false} style={{ width: '100%', minHeight: 430, resize: 'none', border: 'none', outline: 'none', padding: 14, background: '#111827', color: '#e5e7eb', fontSize, lineHeight: 1.55, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', tabSize: 2 }} />
+              </div>
+
+              <div style={{ borderTop: '1px solid rgba(82,113,157,0.16)', background: 'rgba(255,255,255,0.58)' }}>
+                <div style={{ display: 'flex', gap: 6, padding: 8, overflowX: 'auto', alignItems: 'center' }}>
+                  {(['terminal', 'problems', 'outline', 'diff', 'assist'] as BottomPanel[]).map((panel) => (
+                    <button key={panel} type="button" onClick={() => setBottomPanel(panel)} style={{ border: bottomPanel === panel ? `1px solid ${ACCENT}42` : '1px solid rgba(82,113,157,0.16)', background: bottomPanel === panel ? `${ACCENT}12` : 'rgba(255,255,255,0.55)', color: bottomPanel === panel ? ACCENT : '#334155', borderRadius: 999, padding: '6px 10px', fontWeight: 900, fontSize: 11, textTransform: 'capitalize', cursor: 'pointer' }}>{panel}</button>
+                  ))}
+                  <button type="button" onClick={runActiveFile} style={{ marginLeft: 'auto', border: 'none', background: ACCENT, color: '#fff', borderRadius: 10, padding: '8px 11px', fontWeight: 900, fontSize: 12, display: 'inline-flex', gap: 6, alignItems: 'center', cursor: 'pointer' }}><Zap size={14} />Run</button>
+                </div>
+                <div style={{ minHeight: 170, maxHeight: 220, overflow: 'auto', padding: 12, borderTop: '1px solid rgba(82,113,157,0.10)' }}>
+                  {bottomPanel === 'terminal' && (
+                    <div style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', fontSize: 12 }}>
+                      {terminal.map((line) => (
+                        <div key={line.id} style={{ color: line.kind === 'error' ? '#dc2626' : line.kind === 'success' ? '#15803d' : line.kind === 'warning' ? '#b45309' : line.kind === 'input' ? ACCENT : '#334155', marginBottom: 5 }}>
+                          <span style={{ opacity: 0.55 }}>[{line.timestamp}]</span> {line.kind === 'input' ? '$ ' : ''}{line.text}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {bottomPanel === 'problems' && (
+                    <div>
+                      {(activeDiagnostics.length > 0 ? activeDiagnostics : diagnostics).length === 0 ? (
+                        <div style={{ color: '#15803d', fontWeight: 900, fontSize: 13 }}>No problems found.</div>
+                      ) : (activeDiagnostics.length > 0 ? activeDiagnostics : diagnostics).slice(0, 80).map((diagnostic) => (
+                        <button key={diagnostic.id} type="button" onClick={() => openFile(diagnostic.path)} style={{ width: '100%', display: 'flex', gap: 8, alignItems: 'flex-start', border: 'none', borderBottom: '1px solid rgba(82,113,157,0.10)', background: 'transparent', padding: '8px 0', textAlign: 'left', cursor: 'pointer' }}>
+                          {diagnostic.severity === 'error' ? <XCircle size={14} color="#dc2626" /> : diagnostic.severity === 'warning' ? <Bug size={14} color="#b45309" /> : <ListChecks size={14} color={ACCENT} />}
+                          <span style={{ flex: 1, fontSize: 12 }}><strong>{diagnostic.path}:{diagnostic.line}</strong> — {diagnostic.message}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {bottomPanel === 'outline' && (
+                    <div>
+                      {activeSymbols.length === 0 ? <div style={{ color: 'rgba(30,41,59,0.62)', fontSize: 12 }}>No symbols detected in this file.</div> : activeSymbols.map((symbol, index) => (
+                        <div key={`${symbol.name}-${symbol.line}-${index}`} style={{ display: 'flex', gap: 8, padding: '6px 0', fontSize: 12, borderBottom: '1px solid rgba(82,113,157,0.10)' }}>
+                          <span style={{ width: 74, color: ACCENT, fontWeight: 900 }}>{symbol.kind}</span>
+                          <strong>{symbol.name}</strong>
+                          <span style={{ marginLeft: 'auto', color: 'rgba(30,41,59,0.55)' }}>L{symbol.line}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {bottomPanel === 'diff' && (
+                    <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontSize: 12, lineHeight: 1.55, color: '#334155' }}>{diffLines.join('\n')}</pre>
+                  )}
+                  {bottomPanel === 'assist' && (
+                    <div>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <input value={assistPrompt} onChange={(event) => setAssistPrompt(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void handleAiAssist(); }} placeholder="Ask Dr. Eams to explain, refactor, or generate a patch" style={{ flex: 1, border: '1px solid rgba(82,113,157,0.20)', borderRadius: 10, padding: '9px 10px', fontSize: 12 }} />
+                        <button type="button" onClick={() => void handleAiAssist()} disabled={assistLoading || !assistPrompt.trim()} style={{ border: 'none', borderRadius: 10, padding: '9px 12px', background: assistLoading || !assistPrompt.trim() ? 'rgba(82,113,157,0.16)' : ACCENT, color: assistLoading || !assistPrompt.trim() ? 'rgba(30,41,59,0.55)' : '#fff', fontWeight: 900, cursor: assistLoading || !assistPrompt.trim() ? 'not-allowed' : 'pointer' }}>{assistLoading ? <Loader2 size={14} className="animate-spin" /> : 'Ask'}</button>
+                      </div>
+                      {assistResponse && <pre style={{ margin: '10px 0 0', whiteSpace: 'pre-wrap', background: 'rgba(59,125,216,0.08)', border: `1px solid ${ACCENT}20`, borderRadius: 12, padding: 12, fontSize: 12, lineHeight: 1.55 }}>{assistResponse}</pre>}
                     </div>
                   )}
                 </div>
-              ))}
-            </div>
-            <div className="de-widget-actions">
-              <button onClick={addCell} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, background: `${ACCENT}12`, color: ACCENT, border: `1px dashed ${ACCENT}45` }}><Plus className="w-3.5 h-3.5" /> Add Cell</button>
-              <button onClick={publishNotebook} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, background: 'rgba(251,146,60,0.1)', color: '#fb923c', border: '1px dashed rgba(251,146,60,0.4)' }} title="Publish notebook summary to ContentEngin">📤 Publish Notebook</button>
-              {cells[0] && <button onClick={() => deployScriptToGame(cells[0].id)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, background: 'rgba(59,130,246,0.1)', color: '#3b82f6', border: '1px dashed rgba(59,130,246,0.4)' }} title="Deploy active cell script to GameEngin">🎮 Deploy to Game</button>}
-            </div>
-          </div>
-        )}
+              </div>
+            </section>
 
-        {/* CI Tab */}
-        {activeTab === 'ci' && (
-          <div className="de-widget">
-            <div className="de-widget-header"><BarChart2 className="w-4 h-4" style={{ color: ACCENT }} /><span className="de-widget-title ml-2">CI Pipeline</span></div>
-            <div className="de-widget-body">
-              <button onClick={handleRunCI} disabled={ciRunning} style={{ marginBottom: 16, padding: '8px 16px', background: ACCENT, color: '#fff', border: 'none', borderRadius: 8, cursor: ciRunning ? 'not-allowed' : 'pointer' }}>
-                {ciRunning ? <Loader2 className="animate-spin" /> : 'Run CI (lint, typecheck, test, build)'}
-              </button>
-              {ciError && <div style={{ color: OUT_ERR, marginBottom: 12 }}>Error: {ciError}</div>}
-              {ciResults && (
-                <div>
-                  <div style={{ marginBottom: 8 }}>Overall status: <strong style={{ color: ciResults.status === 'passing' ? OUT_OK : OUT_ERR }}>{ciResults.status.toUpperCase()}</strong></div>
-                  {ciResults.stages.map((stage: CIStage, i: number) => (
-                    <div key={i} style={{ marginBottom: 12, padding: 8, borderRadius: 8, background: stage.passed ? 'rgba(34,197,94,0.05)' : 'rgba(248,113,113,0.05)', border: `1px solid ${stage.passed ? 'rgba(34,197,94,0.2)' : 'rgba(248,113,113,0.2)'}` }}>
-                      <div style={{ fontWeight: 700, marginBottom: 4 }}>{stage.name} {stage.passed ? <CheckCircle size={12} style={{ color: OUT_OK, display: 'inline', marginLeft: 6 }} /> : <XCircle size={12} style={{ color: OUT_ERR, display: 'inline', marginLeft: 6 }} />}</div>
-                      <pre style={{ fontSize: 10, whiteSpace: 'pre-wrap', wordBreak: 'break-all', margin: 0 }}>{stage.output}</pre>
-                    </div>
-                  ))}
+            <aside style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <section style={{ ...PANEL, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}><Terminal size={15} /><strong style={{ fontSize: 13 }}>Actions</strong></div>
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <button type="button" onClick={runDiagnostics} style={actionButtonStyle()}><ListChecks size={14} />Run diagnostics</button>
+                  <button type="button" onClick={buildCheck} style={actionButtonStyle()}><CheckCircle size={14} />Build readiness</button>
+                  <button type="button" onClick={formatActiveFile} style={actionButtonStyle()}><Code2 size={14} />Format active file</button>
+                  <button type="button" onClick={() => saveSnapshot('Manual save')} style={actionButtonStyle()}><Copy size={14} />Save snapshot</button>
+                  <button type="button" onClick={deployToGame} style={actionButtonStyle()}><Zap size={14} />Send to GameEngin</button>
+                  <button type="button" onClick={publishToContent} style={actionButtonStyle()}><Clipboard size={14} />Publish to ContentEngin</button>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
+              </section>
 
-        {/* Security Tab */}
-        {activeTab === 'security' && (
-          <div className="de-widget">
-            <div className="de-widget-header"><Shield className="w-4 h-4" style={{ color: ACCENT }} /><span className="de-widget-title ml-2">Security Scanner</span></div>
-            <div className="de-widget-body">
-              <button onClick={handleSecurityScan} disabled={secRunning} style={{ marginBottom: 16, padding: '8px 16px', background: ACCENT, color: '#fff', border: 'none', borderRadius: 8, cursor: secRunning ? 'not-allowed' : 'pointer' }}>
-                {secRunning ? <Loader2 className="animate-spin" /> : 'Run Security Audit (pnpm audit)'}
-              </button>
-              {secError && <div style={{ color: OUT_ERR, marginBottom: 12 }}>Error: {secError}</div>}
-              {secResults && (
-                <div>
-                  <div style={{ marginBottom: 8 }}>Total vulnerabilities: <strong>{secResults.summary?.total || 0}</strong> (High: {secResults.summary?.high || 0}, Moderate: {secResults.summary?.moderate || 0}, Low: {secResults.summary?.low || 0})</div>
-                  {secResults.advisories && secResults.advisories.length > 0 ? (
-                    secResults.advisories.map((adv: SecAdvisory, i: number) => (
-                      <div key={i} style={{ marginBottom: 8, padding: 8, borderRadius: 8, background: 'rgba(248,113,113,0.05)', border: '1px solid rgba(248,113,113,0.2)' }}>
-                        <div><strong>{adv.title}</strong> – {adv.severity.toUpperCase()}</div>
-                        <div>Package: {adv.package}</div>
-                        <div>Vulnerable versions: {adv.vulnerable_versions}</div>
-                        <div>Patched versions: {adv.patched_versions}</div>
-                      </div>
-                    ))
-                  ) : <div>No vulnerabilities found. ✅</div>}
+              <section style={{ ...PANEL, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}><Code2 size={15} /><strong style={{ fontSize: 13 }}>Active File</strong></div>
+                <div style={{ fontSize: 12, color: '#334155', display: 'grid', gap: 7 }}>
+                  <div><strong>Path:</strong> {activeFile.path}</div>
+                  <div><strong>Language:</strong> {activeFile.language}</div>
+                  <div><strong>Lines:</strong> {activeFile.content.split('\n').length}</div>
+                  <div><strong>Symbols:</strong> {activeSymbols.length}</div>
+                  <div><strong>Status:</strong> {activeFile.dirty ? 'Unsaved changes' : 'Snapshot clean'}</div>
                 </div>
-              )}
+                <button type="button" onClick={() => deleteFile(activeFile.path)} disabled={workspace.files.length <= 1} style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(239,68,68,0.20)', background: 'rgba(239,68,68,0.08)', color: '#b91c1c', borderRadius: 10, padding: '8px 10px', fontWeight: 900, fontSize: 12, cursor: workspace.files.length <= 1 ? 'not-allowed' : 'pointer' }}><Trash2 size={13} />Delete file</button>
+              </section>
+
+              <section style={{ ...PANEL, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}><Copy size={15} /><strong style={{ fontSize: 13 }}>Snapshots</strong></div>
+                {workspace.snapshots.length === 0 ? (
+                  <div style={{ fontSize: 12, color: 'rgba(30,41,59,0.62)' }}>No snapshots yet.</div>
+                ) : workspace.snapshots.map((snapshot) => (
+                  <button key={snapshot.id} type="button" onClick={() => restoreSnapshot(snapshot)} style={{ width: '100%', border: '1px solid rgba(82,113,157,0.14)', borderRadius: 10, padding: 9, marginBottom: 7, background: 'rgba(255,255,255,0.48)', textAlign: 'left', cursor: 'pointer' }}>
+                    <div style={{ fontSize: 12, fontWeight: 900 }}>{snapshot.label}</div>
+                    <div style={{ fontSize: 10, color: 'rgba(30,41,59,0.55)' }}>{new Date(snapshot.createdAt).toLocaleString()} · {snapshot.files.length} files</div>
+                  </button>
+                ))}
+              </section>
+
+              <section style={{ ...PANEL, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}><Bot size={15} /><strong style={{ fontSize: 13 }}>Agent</strong></div>
+                <AgentPanel />
+              </section>
+
+              <section style={{ ...PANEL, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}><Shield size={15} /><strong style={{ fontSize: 13 }}>Runtime Channels</strong></div>
+                <CrossEnginStatusPanel excludeChannel="code" />
+                <div style={{ marginTop: 10, fontSize: 11, color: 'rgba(30,41,59,0.58)' }}>
+                  Rule-set lifecycle: {enginState.lifecycle ?? 'unknown'} · Runtime: {enginReady ? 'ready' : 'starting'}
+                </div>
+              </section>
+            </aside>
+          </section>
+        </main>
+
+        {commandOpen && (
+          <div role="dialog" aria-modal="true" style={{ position: 'fixed', inset: 0, zIndex: 80, background: 'rgba(15,23,42,0.44)', display: 'grid', placeItems: 'start center', paddingTop: '10vh' }} onClick={() => setCommandOpen(false)}>
+            <div style={{ width: 'min(720px, calc(100vw - 28px))', ...PANEL, overflow: 'hidden', background: '#f8fafc' }} onClick={(event) => event.stopPropagation()}>
+              <div style={{ padding: 14, borderBottom: '1px solid rgba(82,113,157,0.14)' }}>
+                <input autoFocus value={commandQuery} onChange={(event) => setCommandQuery(event.target.value)} placeholder="Run command or search action" style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', fontSize: 16, fontWeight: 800, color: '#0f172a' }} />
+              </div>
+              <div style={{ maxHeight: 420, overflow: 'auto', padding: 8 }}>
+                {filteredCommands.map((command) => (
+                  <button key={command.id} type="button" onClick={() => runCommand(command.id)} style={{ width: '100%', border: 'none', borderRadius: 12, background: 'transparent', padding: 12, textAlign: 'left', cursor: 'pointer' }}>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: '#172033' }}>{command.label}</div>
+                    <div style={{ fontSize: 11, color: 'rgba(30,41,59,0.62)', marginTop: 3 }}>{command.hint}</div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
-
-        {/* Projects Tab */}
-        {activeTab === 'projects' && (
-          <>
-            <div className="de-widget" style={{ marginBottom: 14 }}>
-              <div className="de-widget-header"><span className="de-widget-title">New Project</span></div>
-              <div className="de-widget-body">
-                <input type="text" placeholder="Project name" value={newProjectName} onChange={e => setNewProjectName(e.target.value)} onKeyDown={e => e.key === 'Enter' && createProject()} style={{ width: '100%', padding: '8px 12px', borderRadius: 8, marginBottom: 8, background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(160,195,240,0.4)' }} />
-                <select value={newProjectLang} onChange={e => setNewProjectLang(e.target.value as CellLanguage)} style={{ width: '100%', padding: '7px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(160,195,240,0.4)' }}>{LANGUAGE_OPTIONS.map((lang) => <option key={lang} value={lang}>{LANGUAGE_LABEL[lang]}</option>)}</select>
-              </div>
-              <div className="de-widget-actions"><button onClick={createProject} disabled={!newProjectName.trim() || creating || !user} style={{ padding: '8px 16px', borderRadius: 8, background: (!newProjectName.trim() || creating || !user) ? 'rgba(59,125,216,0.08)' : ACCENT, color: (!newProjectName.trim() || creating || !user) ? 'var(--de-text-dim)' : '#fff', border: 'none', cursor: 'pointer' }}>{creating ? <Loader2 className="animate-spin" /> : 'Create Project'}</button><Link href="/engines/code/projects" className="de-btn de-btn-ghost">Open Codespace →</Link></div>
-            </div>
-            <div className="de-widget">
-              <div className="de-widget-header"><span className="de-widget-title">Your Projects</span>{projects.length > 0 && <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 999, background: `${ACCENT}12`, color: ACCENT }}>{projects.length}</span>}</div>
-              <div className="de-widget-body">
-                {loadingProjects ? <Loader2 className="animate-spin" /> : projects.length === 0 ? <div>No projects yet.</div> : projects.map((p) => <div key={p.id} style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.5)', marginBottom: 8 }}><Code2 className="w-4 h-4" style={{ color: ACCENT }} /> {p.title} <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 999, background: p.visibility === 'public' ? 'rgba(34,197,94,0.12)' : 'rgba(160,195,240,0.18)' }}>{p.visibility}</span></div>)}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Connections Tab */}
-        {activeTab === 'connections' && (
-          <>
-            <div className="de-widget" style={{ marginBottom: 14 }}>
-              <div className="de-widget-header"><span className="de-widget-title">Cross-Engin Connections</span></div>
-              <div className="de-widget-body"><CrossEnginStatusPanel excludeChannel="code" /></div>
-            </div>
-            <div className="de-widget">
-              <div className="de-widget-header"><span className="de-widget-title">ShellHub</span>{shellhubStatus === 'connected' && <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 700, color: '#22c55e' }}>● Connected</span>}</div>
-              <div className="de-widget-body">
-                {shellhubStatus !== 'connected' ? (
-                  <div><input type="url" value={shellhubServerDraft} onChange={e => setShellhubServerDraft(e.target.value)} placeholder="Server URL" style={{ width: '100%', marginBottom: 8, padding: '8px', borderRadius: 8, border: '1px solid rgba(160,195,240,0.35)' }} /><input type="password" value={shellhubApiKeyDraft} onChange={e => setShellhubApiKeyDraft(e.target.value)} placeholder="API Key" style={{ width: '100%', marginBottom: 8, padding: '8px', borderRadius: 8, border: '1px solid rgba(160,195,240,0.35)' }} /><button onClick={handleShellHubConnect} disabled={shellhubConnecting} style={{ padding: '8px 16px', background: ACCENT, color: '#fff', border: 'none', borderRadius: 8 }}>{shellhubConnecting ? 'Connecting...' : 'Connect ShellHub'}</button>{shellhubConnectError && <div style={{ color: '#f87171' }}>{shellhubConnectError}</div>}</div>
-                ) : (
-                  <div><button onClick={handleShellHubDisconnect} disabled={shellhubDisconnecting} style={{ marginBottom: 12, padding: '6px 12px', background: '#f87171', color: '#fff', border: 'none', borderRadius: 6 }}>{shellhubDisconnecting ? 'Disconnecting...' : 'Disconnect'}</button><div>{shellhubDevicesLoading ? <Loader2 className="animate-spin" /> : shellhubDevices.map((d) => <div key={d.uid} style={{ padding: '8px', borderBottom: '1px solid #eee' }}><Terminal size={14} /> {d.name} {d.online ? <span style={{ color: '#22c55e' }}>● Online</span> : <span style={{ color: '#64748b' }}>○ Offline</span>}</div>)}</div></div>
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Diff Viewer Tab */}
-        {activeTab === 'diff' && (
-          <div className="de-widget"><div className="de-widget-header"><span className="de-widget-title">Diff Viewer</span></div><div className="de-widget-body"><DiffViewer defaultFullFile /></div></div>
-        )}
-
-        {/* AI Assist */}
-        <div className="de-widget" style={{ marginTop: 14 }}>
-          <div className="de-widget-header"><Bot className="w-4 h-4" /><span className="de-widget-title ml-2">AI Code Assist</span></div>
-          <div className="de-widget-body">
-            <div style={{ display: 'flex', gap: 8 }}><input type="text" placeholder="Ask Dr. Eams..." value={assistPrompt} onChange={e => setAssistPrompt(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAiAssist()} style={{ flex: 1, padding: '8px 12px', borderRadius: 8, border: `1px solid ${ACCENT}30` }} /><button onClick={handleAiAssist} disabled={assistLoading || !assistPrompt.trim()} style={{ padding: '8px 14px', borderRadius: 8, background: ACCENT, color: '#fff', border: 'none', cursor: 'pointer' }}>{assistLoading ? <Loader2 className="animate-spin" /> : 'Ask'}</button></div>
-            {assistResponse && <div style={{ marginTop: 8, padding: '10px 12px', borderRadius: 8, background: `${ACCENT}08`, border: `1px solid ${ACCENT}20`, fontSize: 12, whiteSpace: 'pre-wrap' }}>{assistResponse}</div>}
-          </div>
-        </div>
-
-        {/* AI Co‑pilot (agent-os powered) */}
-        <div style={{ marginTop: 14 }}>
-          <AgentPanel />
-        </div>
-
-        {/* Crash Recovery */}
-        <div className="de-widget" style={{ margin: '14px 0' }}>
-          <div className="de-widget-header"><Bug className="w-4 h-4" style={{ color: '#f87171' }} /><span className="de-widget-title ml-2">Crash Recovery</span><span style={{ marginLeft: 'auto', fontSize: 10, color: '#f87171' }}>appthemanger@gmail.com</span></div>
-          <div className="de-widget-body"><CrashRecoveryPanel cells={cells} /></div>
-        </div>
-
-        {/* Task Manager */}
-        <div className="de-widget" style={{ margin: '14px 0' }}>
-          <div className="de-widget-header"><ListChecks className="w-4 h-4" style={{ color: '#22c55e' }} /><span className="de-widget-title ml-2">App Editing Job List</span></div>
-          <div className="de-widget-body"><TaskJobManager /></div>
-        </div>
-
-        {/* Pair Programming */}
-        <div className="de-widget" style={{ margin: '14px 0' }}>
-          <div className="de-widget-header">
-            <ArrowLeftRight className="w-4 h-4" style={{ color: ACCENT }} />
-            <span className="de-widget-title ml-2">Pair Programming</span>
-            {pairActive && (
-              <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 700, color: '#22c55e' }}>
-                ● {pairDream.isConnected ? `Live · ${Object.keys(pairDream.peers).length} peer(s)` : 'Connecting…'}
-              </span>
-            )}
-          </div>
-          <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <p style={{ fontSize: 11, color: 'var(--de-text-dim)', margin: 0 }}>
-              Share this session for real-time cursor and edit synchronisation.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setPairActive((v) => !v);
-                osRef.current?.telemetry?.log('pair programming toggled');
-                busRef.current.emit('code:pair-session', { active: !pairActive, sessionId: pairSessionId });
-              }}
-              style={{
-                padding: '9px 16px', borderRadius: 9, border: `1px solid ${ACCENT}40`,
-                background: pairActive ? `${ACCENT}22` : `${ACCENT}10`,
-                color: ACCENT, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              {pairActive ? '⏹ Stop Pair Session' : '▶ Start Pair Session'}
-            </button>
-            {pairActive && (
-              <div style={{ fontSize: 10, color: 'var(--de-text-dim)', wordBreak: 'break-all' }}>
-                Session ID: <code style={{ color: ACCENT }}>{pairSessionId}</code>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Journey Trail */}
-        <div className="de-widget"><div className="de-widget-header"><span className="de-widget-title">Journey</span></div><div className="de-widget-body"><JourneyTrail compact /></div></div>
       </div>
-    </div>
     </ArtifactSlot>
   );
+}
+
+function actionButtonStyle(): CSSProperties {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    border: '1px solid rgba(82,113,157,0.16)',
+    background: 'rgba(255,255,255,0.62)',
+    color: '#172033',
+    borderRadius: 11,
+    padding: '9px 10px',
+    fontWeight: 900,
+    fontSize: 12,
+    cursor: 'pointer',
+    textAlign: 'left',
+  };
 }

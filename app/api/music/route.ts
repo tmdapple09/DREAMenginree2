@@ -89,22 +89,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
+  // Create feed item
+
   await (supabase as SupabaseClient).from('feed_items').insert({
-    feed_widget_id: `user:${user.id}`,
-    source_widget_id: `music:${release.id}`,
-    title: release.title,
-    preview: {
-      provider: 'dreamengin',
-      source: 'music_release',
-      user_id: user.id,
-      release_id: release.id,
-      content_text: release.description ?? release.title,
-      media_url: release.cover_url ?? null,
-      media: release.cover_url ? [{ url: release.cover_url, type: 'image' }] : [],
-      permalink: `/music/${release.id}`,
-      published_at: release.created_at ?? new Date().toISOString(),
-      raw: release,
-    },
+    user_id: user.id,
+    type: 'music',
+    content: { title: release.title, release_id: release.id },
+    ts: new Date().toISOString(),
   });
 
   return NextResponse.json({ release }, { status: 201 });

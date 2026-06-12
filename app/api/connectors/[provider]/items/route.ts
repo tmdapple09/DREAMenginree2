@@ -1,23 +1,29 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/lib/utils';
 
 /**
- * GET /api/connectors/[provider]/items
+ * app/api/connectors/[provider]/items/route.ts
  *
+ * Read-only helper route for widget rendering.
  * Returns the user's most recently synced normalised items for a provider.
- * feed_items currently stores connector payloads under preview, scoped by
- * feed_widget_id = user:{id}.
+ *
+ * This is the missing bridge between:
+ *   connector sync -> feed_items storage -> actual widget display
  */
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
-): Promise<NextResponse> {
+) {
   const { provider } = await params;
-  const db = await createServerClient();
-  const user = await safeGetUser(db);
+  const supabase = await createServerClient();
 
+  const db = supabase as SupabaseClient;
+
+  const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ ok: false, items: [], error: 'Unauthorised' }, { status: 401 });
   }
@@ -30,10 +36,11 @@ export async function GET(
 
   const { data, error } = await db
     .from('feed_items')
-    .select('preview, created_at')
-    .eq('feed_widget_id', `user:${user.id}`)
-    .order('created_at', { ascending: false })
-    .limit(Math.max(limit * 4, 24));
+    .select('payload, published_at')
+    .eq('user_id', user.id)
+    .eq('provider', provider)
+    .order('published_at', { ascending: false })
+    .limit(limit);
 
   if (error) {
     return NextResponse.json(
@@ -43,15 +50,8 @@ export async function GET(
   }
 
   const items = (data ?? [])
-    .map((row: { preview?: unknown; created_at?: string | null }) => {
-      const preview = row.preview;
-      return preview && typeof preview === 'object'
-        ? { ...(preview as Record<string, unknown>), created_at: row.created_at }
-        : null;
-    })
-    .filter((item): item is Record<string, unknown> => Boolean(item))
-    .filter((item) => item.provider === provider)
-    .slice(0, limit);
+    .map((row: { payload?: unknown }) => row.payload)
+    .filter(Boolean);
 
   return NextResponse.json({
     ok: true,

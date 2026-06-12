@@ -87,7 +87,6 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
         supabase
           .from('feed_items')
           .select('id, title, preview, created_at')
-          .eq('feed_widget_id', `user:${user.id}`)
           .order('created_at', { ascending: false })
           .limit(20),
         supabase
