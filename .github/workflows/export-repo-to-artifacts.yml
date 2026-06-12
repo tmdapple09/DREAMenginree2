@@ -1,4 +1,4 @@
-name: Export listed repo file types to CSV and JSON
+name: Export application code to CSV and JSON
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  export-listed-file-types:
+  export-application-code:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Build CSV and JSON exports
+      - name: Build application-code CSV and JSON exports
         shell: bash
         run: |
           python3 <<'PY'
@@ -32,33 +32,51 @@ jobs:
 
           ROOT = Path.cwd()
 
-          OUT = ROOT / "repo-file-export"
+          OUT = ROOT / "repo-application-code-export"
           CSV_OUT = OUT / "csv"
           JSON_OUT = OUT / "json"
 
-          FILE_EXTENSIONS = {
+          APPLICATION_EXTENSIONS = {
               ".ts",
               ".tsx",
-              ".md",
-              ".json",
-              ".mjs",
-              ".py",
-              ".css",
               ".js",
-              ".sh",
-              ".svg",
-              ".wasm",
-              ".html",
+              ".jsx",
+              ".mjs",
+              ".css",
+              ".json",
           }
 
-          REQUIRED_ROOT_DOCS = [
-              "README.md",
-              "ARCHITECTURE.md",
-              "FILE_TREE.md",
-          ]
+          APPLICATION_ROOTS = {
+              "app",
+              "pages",
+              "components",
+              "coresurfaces",
+              "daydreams",
+              "engins",
+              "hooks",
+              "lib",
+              "src",
+              "store",
+              "stores",
+              "contexts",
+              "providers",
+              "services",
+              "styles",
+              "types",
+              "utils",
+          }
+
+          ROOT_APPLICATION_FILES = {
+              "middleware.ts",
+              "middleware.tsx",
+              "middleware.js",
+              "middleware.jsx",
+              "next-env.d.ts",
+          }
 
           IGNORE_DIRS = {
               ".git",
+              ".github",
               "node_modules",
               ".next",
               "out",
@@ -77,7 +95,35 @@ jobs:
               ".mypy_cache",
               ".ruff_cache",
               "repo-file-export",
+              "repo-application-code-export",
+              "docs",
+              "documentation",
+              "research",
+              "scripts",
+              "script",
+              "public",
+              "migrations",
+              "migration",
+              "supabase",
+              "test",
+              "tests",
+              "__tests__",
+              "__mocks__",
+              "fixtures",
+              "fixture",
+              "e2e",
+              "playwright-report",
+              "test-results",
           }
+
+          IGNORE_FILE_PATTERNS = (
+              ".test.",
+              ".spec.",
+              ".stories.",
+              ".story.",
+              ".mock.",
+              ".fixture.",
+          )
 
           SAFE_ENV_FILES = {
               ".env.example",
@@ -101,31 +147,50 @@ jobs:
                   return False
               return name == ".env" or name.startswith(".env.")
 
+          def ignored_file_name(path: Path) -> bool:
+              lower_name = path.name.lower()
+              return any(pattern in lower_name for pattern in IGNORE_FILE_PATTERNS)
+
+          def inside_application_root(path: Path) -> bool:
+              parts = path.relative_to(ROOT).parts
+
+              if not parts:
+                  return False
+
+              if len(parts) == 1:
+                  return path.name in ROOT_APPLICATION_FILES
+
+              return parts[0] in APPLICATION_ROOTS
+
           def included(path: Path) -> bool:
               return (
                   path.is_file()
                   and not ignored(path)
                   and not secret_env(path)
-                  and path.suffix.lower() in FILE_EXTENSIONS
+                  and not ignored_file_name(path)
+                  and inside_application_root(path)
+                  and path.suffix.lower() in APPLICATION_EXTENSIONS
               )
 
-          def binary_file(data: bytes, suffix: str) -> bool:
-              return suffix == ".wasm" or b"\x00" in data[:4096]
+          def binary_file(data: bytes) -> bool:
+              return b"\x00" in data[:4096]
 
           def safe_name(source_path: str, new_ext: str) -> str:
               safe = source_path.replace("\\", "/")
               safe = re.sub(r"[^A-Za-z0-9._/-]+", "_", safe)
               safe = safe.replace("/", "__")
               digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:12]
+
               if len(safe) > 180:
                   safe = safe[-180:]
+
               return f"{safe}.{digest}{new_ext}"
 
           def read_record(path: Path) -> dict:
               data = path.read_bytes()
               source_path = rel(path)
               suffix = path.suffix.lower()
-              is_binary = binary_file(data, suffix)
+              is_binary = binary_file(data)
 
               if is_binary:
                   content_text = ""
@@ -138,6 +203,7 @@ jobs:
                   except UnicodeDecodeError:
                       content_text = data.decode("utf-8", errors="replace")
                       encoding = "utf-8-replacement"
+
                   content_base64 = ""
 
               return {
@@ -154,6 +220,7 @@ jobs:
 
           def write_csv(path: Path, rows: list[dict]) -> None:
               path.parent.mkdir(parents=True, exist_ok=True)
+
               fieldnames = [
                   "path",
                   "file_name",
@@ -171,18 +238,6 @@ jobs:
                   writer.writeheader()
                   writer.writerows(rows)
 
-          def copy_root_docs() -> None:
-              for doc in REQUIRED_ROOT_DOCS:
-                  source = ROOT / doc
-
-                  if not source.is_file():
-                      raise FileNotFoundError(f"Required root doc missing: {doc}")
-
-                  for folder in (CSV_OUT, JSON_OUT):
-                      target = folder / "root-docs" / doc
-                      target.parent.mkdir(parents=True, exist_ok=True)
-                      shutil.copy2(source, target)
-
           if OUT.exists():
               shutil.rmtree(OUT)
 
@@ -196,13 +251,13 @@ jobs:
 
           records = [read_record(path) for path in files]
 
-          write_csv(CSV_OUT / "all-files.csv", records)
+          write_csv(CSV_OUT / "application-code.csv", records)
 
           for record in records:
               output_name = safe_name(record["path"], ".csv")
               write_csv(CSV_OUT / "files" / output_name, [record])
 
-          (JSON_OUT / "all-files.json").write_text(
+          (JSON_OUT / "application-code.json").write_text(
               json.dumps(records, ensure_ascii=False, indent=2),
               encoding="utf-8",
           )
@@ -216,21 +271,21 @@ jobs:
                   encoding="utf-8",
               )
 
-          copy_root_docs()
-
           manifest = {
-              "included_extensions": sorted(FILE_EXTENSIONS),
-              "root_docs_copied_exactly": REQUIRED_ROOT_DOCS,
+              "purpose": "Application code only export",
+              "included_extensions": sorted(APPLICATION_EXTENSIONS),
+              "included_roots": sorted(APPLICATION_ROOTS),
+              "included_root_files": sorted(ROOT_APPLICATION_FILES),
+              "excluded_dirs": sorted(IGNORE_DIRS),
+              "excluded_file_patterns": list(IGNORE_FILE_PATTERNS),
               "total_files_converted": len(records),
               "csv_export": {
-                  "combined": "all-files.csv",
+                  "combined": "application-code.csv",
                   "per_file_folder": "files/",
-                  "root_docs_folder": "root-docs/",
               },
               "json_export": {
-                  "combined": "all-files.json",
+                  "combined": "application-code.json",
                   "per_file_folder": "files/",
-                  "root_docs_folder": "root-docs/",
               },
           }
 
@@ -244,19 +299,17 @@ jobs:
               encoding="utf-8",
           )
 
-          summary = f"""# Repo file export complete
+          summary = f"""# Application code export complete
 
-          Converted file types:
+          Included file types:
 
-          `{", ".join(sorted(FILE_EXTENSIONS))}`
+          `{", ".join(sorted(APPLICATION_EXTENSIONS))}`
 
-          Total files converted: **{len(records)}**
+          Included roots:
 
-          Root docs copied exactly from repo root:
+          `{", ".join(sorted(APPLICATION_ROOTS))}`
 
-          - `README.md`
-          - `ARCHITECTURE.md`
-          - `FILE_TREE.md`
+          Total application files converted: **{len(records)}**
           """
 
           print(summary)
@@ -266,20 +319,20 @@ jobs:
               Path(step_summary).write_text(summary, encoding="utf-8")
           PY
 
-      - name: Upload CSV artifact zip
+      - name: Upload application-code CSV artifact zip
         uses: actions/upload-artifact@v4
         with:
-          name: repo-files-csv
-          path: repo-file-export/csv
+          name: repo-application-code-csv
+          path: repo-application-code-export/csv
           if-no-files-found: error
           retention-days: 14
           compression-level: 9
 
-      - name: Upload JSON artifact zip
+      - name: Upload application-code JSON artifact zip
         uses: actions/upload-artifact@v4
         with:
-          name: repo-files-json
-          path: repo-file-export/json
+          name: repo-application-code-json
+          path: repo-application-code-export/json
           if-no-files-found: error
           retention-days: 14
           compression-level: 9
