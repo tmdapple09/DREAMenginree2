@@ -9,21 +9,21 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 ### Auto-Generated Repository Overview
 
 - **Total files:** 2072
-- **Total function/class nodes:** 3961
-- **Total edges:** 7434
-- **Orphan nodes:** 3328
+- **Total function/class nodes:** 3964
+- **Total edges:** 7408
+- **Orphan nodes:** 3334
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
-  app["app"] -->|1229| lib["lib"]
+  app["app"] -->|1221| lib["lib"]
   src["src"] -->|551| lib["lib"]
   components["components"] -->|311| lib["lib"]
   src["src"] -->|295| components["components"]
   app["app"] -->|286| components["components"]
   tests["tests"] -->|264| lib["lib"]
   src["src"] -->|256| app["app"]
-  engins["engins"] -->|126| lib["lib"]
+  engins["engins"] -->|125| lib["lib"]
   lib["lib"] -->|55| types["types"]
   app["app"] -->|42| types["types"]
   engins["engins"] -->|27| components["components"]
@@ -66,8 +66,8 @@ graph LR
 |---|---|---|---|---|---|
 | `lib/supabase/safeGetUser.ts` | ts | 0 | 190 | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx`, `app/actions/dream-docs.ts` | — |
 | `lib/supabase/server.ts` | ts | 2 | 186 | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` | `types/supabase.ts`, `lib/supabase/config.ts` |
-| `lib/utils.ts` | ts | 0 | 123 | `app/actions/dream-docs.ts`, `app/ads/create/page.tsx`, `app/api/account/delete-data/route.ts` | — |
-| `lib/supabase/client.ts` | ts | 1 | 61 | `app/ads/create/page.tsx`, `app/auth/reset-password/page.tsx`, `app/auth/update-password/page.tsx` | `lib/supabase/config.ts` |
+| `lib/utils.ts` | ts | 0 | 120 | `app/actions/dream-docs.ts`, `app/ads/create/page.tsx`, `app/api/account/delete-data/route.ts` | — |
+| `lib/supabase/client.ts` | ts | 1 | 59 | `app/ads/create/page.tsx`, `app/auth/reset-password/page.tsx`, `app/auth/update-password/page.tsx` | `lib/supabase/config.ts` |
 | `lib/dev-bypass.ts` | ts | 0 | 44 | `app/(internal)/idari-console/page.tsx`, `app/daydream/brand/page.tsx`, `app/daydream/code/page.tsx` | — |
 | `lib/runtime/dualRuntimeBridge.ts` | ts | 2 | 35 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`, `components/daydream/dream.CodeDreamIDE.tsx` | `lib/runtime/madMaxiSnapshotBridge.ts`, `lib/vm/wasmGpuVM.ts` |
 | `lib/dreamdm/DreamSystemContext.tsx` | tsx | 5 | 27 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `app/dreamdmbar/dreamspace/page.tsx`, `app/dreamdmbar/dualruntime/page.tsx` | `lib/dreamdm/barInteractions.ts`, `lib/panels/panelTypes.ts`, `lib/runtime/dualRuntime.ts` |
@@ -175,7 +175,6 @@ graph LR
 | `lib/ui/theme-engine.ts` | ts | 0 | 5 | `app/settings/appearance/page.tsx`, `components/dreamengin/dream.widget.AppearanceWidget.tsx`, `components/panels/dream.panel.AppearancePanel.tsx` | — |
 | `lib/vm/wasmGpuVM.ts` | ts | 3 | 5 | `lib/runtime/dualRuntimeBridge.ts`, `lib/vm/index.ts`, `lib/vm/snapshot.ts` | `lib/vm/bufferManager.ts`, `lib/vm/pipelineCache.ts`, `lib/vm/types.ts` |
 | `lib/web3/types.ts` | ts | 0 | 5 | `lib/web3/client.ts`, `lib/web3/engagement.ts`, `lib/web3/index.ts` | — |
-| `lib/activity/aqs.ts` | ts | 2 | 4 | `app/api/ads/view/route.ts`, `components/activity/dream.ActivityProfile.tsx`, `src/engin/generated/systems.ts` | `lib/supabase/client.ts`, `lib/activity/types.ts` |
 | `lib/admin/lockout.ts` | ts | 1 | 4 | `app/api/admin/ai-chat/route.ts`, `app/api/admin/code-files/route.ts`, `src/engin/generated/systems.ts` | `lib/supabase/server.ts` |
 | `lib/agents/teachBus.ts` | ts | 0 | 4 | `components/dream.AIAssistant.tsx`, `components/dream.DrEamsModeToggle.tsx`, `components/dream.ThemeToggle.tsx` | — |
 | `lib/artifactStore.ts` | ts | 1 | 4 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `components/home/dream.ActiveModuleSurface.tsx`, `src/engin/generated/systems.ts` | `types/dreamArtifact.ts` |
@@ -242,8 +241,8 @@ graph LR
 | `lib/vm/pipelineCache.ts` | ts | 0 | 4 | `lib/vm/index.ts`, `lib/vm/wasmGpuVM.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/warp/warpEngine.ts` | ts | 0 | 4 | `components/warp/dream.WarpCanvas.tsx`, `lib/warp/useWarp.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/activeModulesStore.ts` | ts | 1 | 3 | `components/home/dream.ActiveModuleSurface.tsx`, `src/engin/generated/systems.ts`, `tests/modular-os-stores.test.ts` | `types/dreamArtifact.ts` |
+| `lib/activity/aqs.ts` | ts | 2 | 3 | `components/activity/dream.ActivityProfile.tsx`, `src/engin/generated/systems.ts`, `tests/activity-first-protocol.test.ts` | `lib/supabase/client.ts`, `lib/activity/types.ts` |
 | `lib/activity/revenueSplit.ts` | ts | 0 | 3 | `app/api/ads/view/route.ts`, `src/engin/generated/systems.ts`, `tests/activity-revenue-split.test.ts` | — |
-| `lib/activity/skipCredits.ts` | ts | 1 | 3 | `app/api/ads/view/route.ts`, `src/engin/generated/systems.ts`, `tests/skip-credits.test.ts` | `lib/activity/types.ts` |
 | `lib/activity/visibility-score.ts` | ts | 2 | 3 | `app/api/feed/route.ts`, `src/engin/generated/systems.ts`, `tests/activity-first-protocol.test.ts` | `lib/supabase/client.ts`, `lib/activity/types.ts` |
 | `lib/admin/upgrade-readiness.ts` | ts | 3 | 3 | `app/(internal)/idari-console/page.tsx`, `src/engin/generated/systems.ts`, `tests/admin-upgrade-readiness.test.ts` | `lib/agents/idari.ts`, `lib/feature-build/index.ts`, `lib/setup/checks.ts` |
 | `lib/agentOS/hostTools.ts` | ts | 0 | 3 | `app/api/agent/session/route.ts`, `lib/agentOS.ts`, `src/engin/generated/systems.ts` | — |
@@ -348,7 +347,7 @@ graph LR
 | `lib/optimizer/babylon-optimizero.ts` | ts | 1 | 3 | `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx`, `src/engin/generated/systems.ts`, `tests/babylon-optimizero.test.ts` | `lib/optimizer/creative-optimizero.ts` |
 | `lib/optimizer/constraint-solver.ts` | ts | 1 | 3 | `lib/optimizer/index.ts`, `src/engin/generated/systems.ts`, `tests/optimizer.test.ts` | `lib/optimizer/types.ts` |
 | `lib/optimizer/creative-validator.ts` | ts | 1 | 3 | `lib/optimizer/index.ts`, `src/engin/generated/systems.ts`, `tests/optimizer.test.ts` | `lib/optimizer/types.ts` |
-| `lib/platform/lab.ts` | ts | 2 | 3 | `lib/platform/index.ts`, `src/engin/generated/systems.ts`, `tests/platform-utils.test.ts` | `lib/supabase/client.ts`, `lib/utils.ts` |
+| `lib/platform/lab.ts` | ts | 0 | 3 | `lib/platform/index.ts`, `src/engin/generated/systems.ts`, `tests/platform-utils.test.ts` | — |
 | `lib/renderer/FrustumCuller.ts` | ts | 0 | 3 | `lib/renderer/Canvas2DRenderer.ts`, `lib/renderer/index.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/runtime/dropTargetRegistry.ts` | ts | 2 | 3 | `lib/runtime/useDragSurface.ts`, `src/engin/generated/systems.ts`, `tests/drop-target-registry.test.ts` | `lib/runtime/coercionTable.ts`, `types/module-manifest.ts` |
 | `lib/runtime/enginWorkflowRegistry.ts` | ts | 1 | 3 | `lib/runtime/seamClipboard.ts`, `src/engin/generated/systems.ts`, `tests/seam-clipboard.test.ts` | `lib/runtime/dualRuntimeBridge.ts` |
@@ -366,6 +365,7 @@ graph LR
 | `lib/vm/snapshot.ts` | ts | 2 | 3 | `lib/vm/index.ts`, `src/engin/generated/systems.ts`, `tests/wasm-gpu-vm.test.ts` | `lib/vm/types.ts`, `lib/vm/wasmGpuVM.ts` |
 | `lib/web3/client.ts` | ts | 2 | 3 | `lib/web3/engagement.ts`, `lib/web3/index.ts`, `src/engin/generated/systems.ts` | `lib/web3/types.ts`, `lib/utils.ts` |
 | `lib/webgpu.ts` | ts | 0 | 3 | `components/webgpu/dream.WebGPUShowcase.tsx`, `lib/games/hooks.ts`, `src/engin/generated/systems.ts` | — |
+| `lib/activity/skipCredits.ts` | ts | 1 | 2 | `src/engin/generated/systems.ts`, `tests/skip-credits.test.ts` | `lib/activity/types.ts` |
 | `lib/adari.ts` | ts | 0 | 2 | `scripts/postbuild.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/agentOS.ts` | ts | 1 | 2 | `app/api/agent/session/route.ts`, `src/engin/generated/systems.ts` | `lib/agentOS/hostTools.ts` |
 | `lib/agents/boogieManAI.ts` | ts | 1 | 2 | `src/engin/core/index.ts`, `src/engin/generated/systems.ts` | `types/ai.ts` |
@@ -961,7 +961,7 @@ graph LR
 | `app/api/content/voice-clone/route.ts` | route | 4 | 2 | `src/engin/generated/surfaces.ts`, `tests/contentengin-features.test.ts` | `lib/content/voiceClone.ts`, `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/api/gal/route.ts` | route | 3 | 2 | `src/engin/generated/surfaces.ts`, `tests/platform-utils.test.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
 | `app/api/gameengin/crash-report/route.ts` | route | 2 | 2 | `src/engin/generated/surfaces.ts`, `tests/gameengin-loop.test.ts` | `lib/gameengin/brain-reader.ts`, `lib/utils.ts` |
-| `app/api/lab/benchmarks/route.ts` | route | 3 | 2 | `src/engin/generated/surfaces.ts`, `tests/content-intelligence-routes.test.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
+| `app/api/lab/benchmarks/route.ts` | route | 2 | 2 | `src/engin/generated/surfaces.ts`, `tests/content-intelligence-routes.test.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/daydream/constellation/dream.ConstellationClient.tsx` | tsx | 1 | 2 | `app/daydream/constellation/page.tsx`, `src/engin/generated/surfaces.ts` | `components/daydream/dream.constellationmap.tsx` |
 | `app/daydream/games/page.tsx` | route | 12 | 2 | `src/engin/generated/surfaces.ts`, `tests/games-daydream-page-auth.test.ts` | `components/games/dream.GamesHub.tsx`, `lib/dev-bypass.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | tsx | 7 | 2 | `app/dreamdmbar/layout.tsx`, `src/engin/generated/surfaces.ts` | `components/runtime/dream.DualRuntimeContainer.tsx`, `lib/dreamdm/DreamSystemContext.tsx`, `lib/dreamdm/barInteractions.ts` |
@@ -993,7 +993,7 @@ graph LR
 | `app/api/admin/child-safety/route.ts` | route | 5 | 1 | `src/engin/generated/surfaces.ts` | `lib/ai/triad.ts`, `lib/api/route.ts`, `lib/supabase/server.ts` |
 | `app/api/admin/code-files/route.ts` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/admin/lockout.ts`, `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/api/admin/observability/route.ts` | route | 8 | 1 | `src/engin/generated/surfaces.ts` | `lib/ai/triad.ts`, `lib/api/route.ts`, `lib/observability/collector.ts` |
-| `app/api/ads/view/route.ts` | route | 6 | 1 | `src/engin/generated/surfaces.ts` | `lib/activity/aqs.ts`, `lib/activity/revenueSplit.ts`, `lib/activity/skipCredits.ts` |
+| `app/api/ads/view/route.ts` | route | 4 | 1 | `src/engin/generated/surfaces.ts` | `lib/activity/revenueSplit.ts`, `lib/activity/types.ts`, `lib/supabase/server.ts` |
 | `app/api/agent/session/route.ts` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/agentOS.ts`, `lib/agentOS/hostTools.ts` |
 | `app/api/ai/boogieman/child-safety/route.ts` | route | 10 | 1 | `src/engin/generated/surfaces.ts` | `lib/ai/audit.ts`, `lib/ai/boogieman.ts`, `lib/ai/rateLimit.ts` |
 | `app/api/ai/boogieman/privacy-event/route.ts` | route | 5 | 1 | `src/engin/generated/surfaces.ts` | `lib/ai/audit.ts`, `lib/ai/boogieman.ts`, `lib/api/route.ts` |
@@ -1054,7 +1054,7 @@ graph LR
 | `app/api/notifications/route.ts` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
 | `app/api/platform/errors/route.ts` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
 | `app/api/posts/[id]/route.ts` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
-| `app/api/posts/[id]/save/route.ts` | route | 3 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts`, `lib/utils.ts` |
+| `app/api/posts/[id]/save/route.ts` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/api/posts/[id]/view/route.ts` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/api/posts/profile/[userId]/route.ts` | route | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/supabase/server.ts`, `lib/supabase/safeGetUser.ts` |
 | `app/api/posts/route.ts` | route | 8 | 1 | `src/engin/generated/surfaces.ts` | `lib/child-safety/childSafetyDetector.ts`, `lib/child-safety/ncmecReporter.ts`, `lib/child-safety/scanMediaUrls.ts` |
@@ -1533,14 +1533,14 @@ graph LR
 | `src/engin/generated/surfaces.ts` | ts | 539 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
 | `src/engin/generated/systems.ts` | ts | 382 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
 | `src/engin/state/base.json` | config | 0 | 1 | `src/engin/core/index.ts` | — |
+| `src/lib/babylon/useDreamLogoScene.ts` | ts | 0 | 1 | `src/components/dream.DreamEnginLogo.tsx` | — |
 | `src/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
-| `src/components/dream.DreamEnginLogo.tsx` | tsx | 0 | 0 | — | — |
+| `src/components/dream.DreamEnginLogo.tsx` | tsx | 1 | 0 | — | `src/lib/babylon/useDreamLogoScene.ts` |
 | `src/components/dream.LogoHero.tsx` | tsx | 0 | 0 | — | — |
 | `src/components/dream.Nav.tsx` | tsx | 0 | 0 | — | — |
 | `src/dreamsurface/index.ts` | ts | 2 | 0 | — | `src/dreamsurface/dreamsurface.bridge.ts`, `src/dreamsurface/dreamsurface.delta.ts` |
 | `src/launcher.ts` | ts | 3 | 0 | — | `src/configs/demoGameConfig.ts`, `src/core/GameEnginCore.ts`, `lib/utils.ts` |
 | `src/lib/ai/client.ts` | ts | 0 | 0 | — | — |
-| `src/lib/babylon/useDreamLogoScene.ts` | ts | 0 | 0 | — | — |
 
 </details>
 
@@ -1579,7 +1579,7 @@ graph LR
 | `engins/engin.BrandingEngin.tsx` | tsx | 15 | 6 | `app/daydream/brand/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/brand/dream.BrandEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `hooks/useSharedDream.ts`, `lib/daydream/useDaydreamPersistence.ts` |
 | `engins/engin.CodeEngin.tsx` | tsx | 18 | 6 | `app/daydream/code/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/code/dream.CodeEnginApp.tsx` | `components/daydream/dream.DiffViewer.tsx`, `components/daydream/dream.JourneyTrail.tsx`, `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` |
 | `engins/engin.ContentEngin.tsx` | tsx | 22 | 6 | `app/daydream/create/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/create/dream.CreateEnginApp.tsx` | `components/activity/dream.ActivityPostForm.tsx`, `components/daydream/dream.JourneyTrail.tsx`, `lib/composite/compositor.ts` |
-| `engins/engin.LabEngin.tsx` | tsx | 15 | 6 | `app/daydream/lab/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/lab/dream.LabEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/dream.ForgeDreamCanvas.tsx`, `lib/daydream/useDaydreamPersistence.ts` |
+| `engins/engin.LabEngin.tsx` | tsx | 14 | 6 | `app/daydream/lab/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/lab/dream.LabEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/dream.ForgeDreamCanvas.tsx`, `lib/daydream/useDaydreamPersistence.ts` |
 | `engins/dream.ForgeEngin.tsx` | tsx | 11 | 4 | `app/daydream/forge/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/runtime/dream.RuntimeView.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/dream.BrandLogo.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | tsx | 0 | 4 | `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`, `engins/engin.LabEngin.tsx`, `engins/portfolio/dream.PortfolioEngin.tsx` | — |
 | `engins/autoopen/dream.AutoOpenGameEngin.tsx` | tsx | 2 | 3 | `app/daydream/games/page.tsx`, `daydreams/games/page.tsx`, `src/engin/generated/engins.ts` | `lib/runtime/instanceManager.ts`, `lib/runtime/useSharedEnginChannel.ts` |
@@ -2143,7 +2143,6 @@ graph LR
   f_engins_engin_LabEngin_tsx --> f_lib_runtime_dualRuntimeBridge_ts
   f_engins_engin_LabEngin_tsx --> f_lib_runtime_useEnginBridge_ts
   f_engins_engin_LabEngin_tsx --> f_lib_runtime_useEnginCoopSync_ts
-  f_engins_engin_LabEngin_tsx --> f_lib_supabase_client_ts
   f_engins_engin_LabEngin_tsx --> f_engins_dream_QuantumCircuitCanvas_tsx
   f_engins_engin_LabEngin_tsx --> f_lib_utils_ts
   f_engins_engin_StarMakerEngin_tsx --> f_components_daydream_dream_JourneyTrail_tsx
@@ -2217,6 +2216,8 @@ graph LR
 
 ```mermaid
 graph LR
+  f_src_components_dream_DreamEnginLogo_tsx["dream.DreamEnginLogo.tsx"]
+  f_src_lib_babylon_useDreamLogoScene_ts["useDreamLogoScene.ts"]
   f_src_configs_demoGameConfig_ts["demoGameConfig.ts"]
   f_src_core_GameEnginCore_ts["GameEnginCore.ts"]
   f_lib_gameengin_core_ts["core.ts"]
@@ -3384,11 +3385,10 @@ graph LR
   f_lib_webgpu_useWebGPUDirector_ts["useWebGPUDirector.ts"]
   f_src_launcher_ts["launcher.ts"]
   f_src_Agents_MUST_READ_ARCHITECTURE_md["Agents-MUST-READ-ARCHITECTURE.md"]
-  f_src_components_dream_DreamEnginLogo_tsx["dream.DreamEnginLogo.tsx"]
   f_src_components_dream_LogoHero_tsx["dream.LogoHero.tsx"]
   f_src_components_dream_Nav_tsx["dream.Nav.tsx"]
   f_src_lib_ai_client_ts["client.ts"]
-  f_src_lib_babylon_useDreamLogoScene_ts["useDreamLogoScene.ts"]
+  f_src_components_dream_DreamEnginLogo_tsx --> f_src_lib_babylon_useDreamLogoScene_ts
   f_src_configs_demoGameConfig_ts --> f_src_core_GameEnginCore_ts
   f_src_core_GameEnginCore_ts --> f_lib_gameengin_core_ts
   f_src_core_GameEnginCore_ts --> f_lib_gameengin_gameEnginRuntime_ts
@@ -4942,7 +4942,7 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `DREAMenginree2-appcode-only-broad-fixed.zip` | file |
+| `DREAMenginree2-codeengin-ide-upgrade.zip` | file |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
@@ -5153,7 +5153,6 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `src/dreamsurface/index.ts` | ts |
 | `src/launcher.ts` | ts |
 | `src/lib/ai/client.ts` | ts |
-| `src/lib/babylon/useDreamLogoScene.ts` | ts |
 | `styles/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `styles/theme.css` | css |
 | `supabase/.temp/cli-latest` | file |

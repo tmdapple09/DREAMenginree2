@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T11:01:36.925Z",
+  "generatedAt": "2026-06-12T13:44:20.393Z",
   "root": ".",
   "nodes": [
     {
@@ -3502,10 +3502,10 @@
       "tags": []
     },
     {
-      "id": "file:DREAMenginree2-appcode-only-broad-fixed.zip",
-      "label": "DREAMenginree2-appcode-only-broad-fixed.zip",
+      "id": "file:DREAMenginree2-codeengin-ide-upgrade.zip",
+      "label": "DREAMenginree2-codeengin-ide-upgrade.zip",
       "type": "file",
-      "path": "DREAMenginree2-appcode-only-broad-fixed.zip",
+      "path": "DREAMenginree2-codeengin-ide-upgrade.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -4177,7 +4177,6 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:activity_verification",
         "supabase-table:activity_points"
       ]
     },
@@ -4463,22 +4462,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/api/ads/view/route.ts#getInsertedAdViewId",
-      "label": "getInsertedAdViewId",
-      "type": "function",
-      "path": "app/api/ads/view/route.ts",
-      "parent": "file:app/api/ads/view/route.ts",
-      "loc": 48,
-      "isOrphan": false,
-      "exported": false
-    },
-    {
       "id": "function:app/api/ads/view/route.ts#POST",
       "label": "POST",
       "type": "function",
       "path": "app/api/ads/view/route.ts",
       "parent": "file:app/api/ads/view/route.ts",
-      "loc": 53,
+      "loc": 7,
       "isOrphan": false,
       "exported": true
     },
@@ -4493,7 +4482,7 @@
       "tags": [
         "api-handler",
         "supabase-table:app_posts",
-        "supabase-table:ad_views"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -5253,7 +5242,7 @@
       "type": "function",
       "path": "app/api/connectors/[provider]/items/route.ts",
       "parent": "file:app/api/connectors/[provider]/items/route.ts",
-      "loc": 16,
+      "loc": 13,
       "isOrphan": false,
       "exported": true
     },
@@ -6808,7 +6797,7 @@
       "type": "function",
       "path": "app/api/lab/benchmarks/route.ts",
       "parent": "file:app/api/lab/benchmarks/route.ts",
-      "loc": 6,
+      "loc": 4,
       "isOrphan": false,
       "exported": false
     },
@@ -6818,7 +6807,7 @@
       "type": "function",
       "path": "app/api/lab/benchmarks/route.ts",
       "parent": "file:app/api/lab/benchmarks/route.ts",
-      "loc": 24,
+      "loc": 22,
       "isOrphan": false,
       "exported": true
     },
@@ -6831,8 +6820,7 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler",
-        "supabase-table:physics_experiments"
+        "api-handler"
       ]
     },
     {
@@ -7048,7 +7036,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 21,
+      "loc": 17,
       "isOrphan": false,
       "exported": false
     },
@@ -7058,7 +7046,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 26,
+      "loc": 22,
       "isOrphan": false,
       "exported": false
     },
@@ -7068,7 +7056,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 34,
+      "loc": 27,
       "isOrphan": false,
       "exported": true
     },
@@ -7082,6 +7070,8 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
+        "supabase-table:activity_points",
+        "supabase-table:app_posts",
         "supabase-rpc:is_admin"
       ]
     },
@@ -7319,7 +7309,7 @@
       "type": "function",
       "path": "app/api/posts/[id]/save/route.ts",
       "parent": "file:app/api/posts/[id]/save/route.ts",
-      "loc": 21,
+      "loc": 4,
       "isOrphan": false,
       "exported": true
     },
@@ -7329,7 +7319,7 @@
       "type": "function",
       "path": "app/api/posts/[id]/save/route.ts",
       "parent": "file:app/api/posts/[id]/save/route.ts",
-      "loc": 89,
+      "loc": 30,
       "isOrphan": false,
       "exported": true
     },
@@ -7343,13 +7333,7 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:app_posts",
-        "supabase-table:saved_posts",
-        "supabase-table:saved_posts",
-        "supabase-table:saved_posts",
-        "supabase-table:saved_posts",
-        "supabase-table:saved_posts",
-        "supabase-table:saved_posts"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -7426,7 +7410,6 @@
       "tags": [
         "api-handler",
         "supabase-table:close_friends",
-        "supabase-table:saved_posts",
         "supabase-table:app_posts"
       ]
     },
@@ -8019,12 +8002,22 @@
       "isOrphan": false
     },
     {
+      "id": "function:app/api/skip-credits/balance/route.ts#zeroSkipCredit",
+      "label": "zeroSkipCredit",
+      "type": "function",
+      "path": "app/api/skip-credits/balance/route.ts",
+      "parent": "file:app/api/skip-credits/balance/route.ts",
+      "loc": 4,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
       "id": "function:app/api/skip-credits/balance/route.ts#GET",
       "label": "GET",
       "type": "function",
       "path": "app/api/skip-credits/balance/route.ts",
       "parent": "file:app/api/skip-credits/balance/route.ts",
-      "loc": 11,
+      "loc": 14,
       "isOrphan": false,
       "exported": true
     },
@@ -8037,8 +8030,7 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler",
-        "supabase-table:skip_credits"
+        "api-handler"
       ]
     },
     {
@@ -8049,6 +8041,16 @@
       "parent": "folder:app/api/skip-credits",
       "loc": null,
       "isOrphan": false
+    },
+    {
+      "id": "function:app/api/skip-credits/earn/route.ts#zeroSkipCredit",
+      "label": "zeroSkipCredit",
+      "type": "function",
+      "path": "app/api/skip-credits/earn/route.ts",
+      "parent": "file:app/api/skip-credits/earn/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": false
     },
     {
       "id": "function:app/api/skip-credits/earn/route.ts#POST",
@@ -8069,11 +8071,7 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler",
-        "supabase-table:ad_views",
-        "supabase-table:skip_credits",
-        "supabase-table:skip_credits",
-        "supabase-table:skip_credits"
+        "api-handler"
       ]
     },
     {
@@ -8084,6 +8082,16 @@
       "parent": "folder:app/api/skip-credits",
       "loc": null,
       "isOrphan": false
+    },
+    {
+      "id": "function:app/api/skip-credits/use/route.ts#zeroSkipCredit",
+      "label": "zeroSkipCredit",
+      "type": "function",
+      "path": "app/api/skip-credits/use/route.ts",
+      "parent": "file:app/api/skip-credits/use/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": false
     },
     {
       "id": "function:app/api/skip-credits/use/route.ts#POST",
@@ -8104,9 +8112,7 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler",
-        "supabase-table:skip_credits",
-        "supabase-table:skip_credits"
+        "api-handler"
       ]
     },
     {
@@ -24490,9 +24496,7 @@
       "tags": [
         "supabase-create-client",
         "supabase-table:profiles",
-        "supabase-table:follows",
-        "supabase-table:brand_kit_items",
-        "supabase-table:brand_kit_items"
+        "supabase-table:follows"
       ]
     },
     {
@@ -24722,7 +24726,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 116,
+      "loc": 115,
       "isOrphan": true,
       "exported": false
     },
@@ -24732,7 +24736,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 124,
+      "loc": 123,
       "isOrphan": true,
       "exported": false
     },
@@ -24742,7 +24746,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 129,
+      "loc": 128,
       "isOrphan": true,
       "exported": false
     },
@@ -24752,7 +24756,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 227,
+      "loc": 226,
       "isOrphan": false,
       "exported": true
     },
@@ -24764,11 +24768,7 @@
       "parent": "folder:engins",
       "loc": null,
       "isOrphan": false,
-      "tags": [
-        "supabase-create-client",
-        "supabase-table:physics_experiments",
-        "supabase-table:physics_experiments"
-      ]
+      "tags": []
     },
     {
       "id": "function:engins/engin.StarMakerEngin.tsx#createEmptyBeatGrid",
@@ -26169,7 +26169,7 @@
       "path": "lib/activity/aqs.ts",
       "parent": "file:lib/activity/aqs.ts",
       "loc": 93,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -49527,7 +49527,7 @@
       "type": "function",
       "path": "lib/platform/lab.ts",
       "parent": "file:lib/platform/lab.ts",
-      "loc": 25,
+      "loc": 23,
       "isOrphan": true,
       "exported": true
     },
@@ -49539,10 +49539,7 @@
       "parent": "folder:lib/platform",
       "loc": null,
       "isOrphan": false,
-      "tags": [
-        "supabase-create-client",
-        "supabase-table:physics_experiments"
-      ]
+      "tags": []
     },
     {
       "id": "folder:lib/policy",
@@ -54928,7 +54925,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 30,
+      "loc": 20,
       "isOrphan": false,
       "exported": true
     },
@@ -54938,7 +54935,17 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 141,
+      "loc": 110,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/widgets/feed-resolver.ts#normalizeVisibility",
+      "label": "normalizeVisibility",
+      "type": "function",
+      "path": "lib/widgets/feed-resolver.ts",
+      "parent": "file:lib/widgets/feed-resolver.ts",
+      "loc": 135,
       "isOrphan": true,
       "exported": false
     },
@@ -54948,7 +54955,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 186,
+      "loc": 139,
       "isOrphan": true,
       "exported": false
     },
@@ -54958,7 +54965,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 209,
+      "loc": 152,
       "isOrphan": true,
       "exported": false
     },
@@ -54968,7 +54975,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 233,
+      "loc": 158,
       "isOrphan": true,
       "exported": true
     },
@@ -54978,7 +54985,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 290,
+      "loc": 210,
       "isOrphan": true,
       "exported": true
     },
@@ -54988,7 +54995,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 329,
+      "loc": 240,
       "isOrphan": true,
       "exported": true
     },
@@ -54998,7 +55005,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 335,
+      "loc": 244,
       "isOrphan": true,
       "exported": true
     },
@@ -60589,7 +60596,7 @@
       "type": "function",
       "path": "src/components/dream.DreamEnginLogo.tsx",
       "parent": "file:src/components/dream.DreamEnginLogo.tsx",
-      "loc": 39,
+      "loc": 18,
       "isOrphan": true,
       "exported": true
     },
@@ -61490,8 +61497,8 @@
       "type": "function",
       "path": "src/lib/babylon/useDreamLogoScene.ts",
       "parent": "file:src/lib/babylon/useDreamLogoScene.ts",
-      "loc": 6,
-      "isOrphan": true,
+      "loc": 14,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -61501,7 +61508,7 @@
       "path": "src/lib/babylon/useDreamLogoScene.ts",
       "parent": "folder:src/lib/babylon",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -62070,7 +62077,7 @@
       "path": "supabase/migrations/20260129000000_upgrade_schema.sql",
       "parent": "file:supabase/migrations/20260129000000_upgrade_schema.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#experiment_runs",
@@ -64407,7 +64414,7 @@
       "path": "supabase/migrations/20260325000000_phase8f_daydream_network.sql",
       "parent": "file:supabase/migrations/20260325000000_phase8f_daydream_network.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260325000000_phase8f_daydream_network.sql#music_outputs",
@@ -64846,7 +64853,7 @@
       "path": "supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "parent": "file:supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-policy:supabase/migrations/20260405000001_dreamr_feed_registry.sql#post_views_insert_own",
@@ -65100,7 +65107,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#views",
@@ -65118,7 +65125,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
@@ -65127,7 +65134,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#user_metrics",
@@ -71108,17 +71115,7 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
-      "target": "file:lib/activity/aqs.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
       "target": "file:lib/activity/revenueSplit.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
-      "target": "file:lib/activity/skipCredits.ts",
       "kind": "import"
     },
     {
@@ -71138,17 +71135,7 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
-      "target": "file:lib/activity/aqs.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
       "target": "file:lib/activity/revenueSplit.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
-      "target": "file:lib/activity/skipCredits.ts",
       "kind": "route-uses"
     },
     {
@@ -73098,22 +73085,12 @@
     },
     {
       "source": "file:app/api/lab/benchmarks/route.ts",
-      "target": "file:lib/utils.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/api/lab/benchmarks/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "route-uses"
     },
     {
       "source": "file:app/api/lab/benchmarks/route.ts",
       "target": "file:lib/supabase/safeGetUser.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/api/lab/benchmarks/route.ts",
-      "target": "file:lib/utils.ts",
       "kind": "route-uses"
     },
     {
@@ -73528,22 +73505,12 @@
     },
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
-      "target": "file:lib/utils.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "route-uses"
     },
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "file:lib/supabase/safeGetUser.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/api/posts/[id]/save/route.ts",
-      "target": "file:lib/utils.ts",
       "kind": "route-uses"
     },
     {
@@ -82308,11 +82275,6 @@
     },
     {
       "source": "file:engins/engin.LabEngin.tsx",
-      "target": "file:lib/supabase/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.LabEngin.tsx",
       "target": "file:engins/dream.QuantumCircuitCanvas.tsx",
       "kind": "import"
     },
@@ -85552,16 +85514,6 @@
       "kind": "reexport"
     },
     {
-      "source": "file:lib/platform/lab.ts",
-      "target": "file:lib/supabase/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:lib/platform/lab.ts",
-      "target": "file:lib/utils.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:lib/policy/boogiePolicy.ts",
       "target": "file:lib/ai/boogie-policy.ts",
       "kind": "reexport"
@@ -86224,6 +86176,11 @@
     {
       "source": "file:scripts/update-readme.mjs",
       "target": "file:scripts/update-readme-status-utils.mjs",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/components/dream.DreamEnginLogo.tsx",
+      "target": "file:src/lib/babylon/useDreamLogoScene.ts",
       "kind": "import"
     },
     {
@@ -94013,17 +93970,7 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
-      "target": "function:lib/activity/aqs.ts#qualifiesForPremiumCPV",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
       "target": "function:lib/activity/revenueSplit.ts#calculateActivityRevenueSplit",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
-      "target": "function:lib/activity/skipCredits.ts#calculateSkipCreditsEarned",
       "kind": "call"
     },
     {
@@ -94967,11 +94914,6 @@
       "kind": "call"
     },
     {
-      "source": "file:app/api/lab/benchmarks/route.ts",
-      "target": "function:lib/utils.ts#toErrorMessage",
-      "kind": "call"
-    },
-    {
       "source": "file:app/api/ledger-media/route.ts",
       "target": "function:lib/supabase/server.ts#createServerClient",
       "kind": "call"
@@ -95174,11 +95116,6 @@
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "function:lib/supabase/safeGetUser.ts#safeGetUser",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/api/posts/[id]/save/route.ts",
-      "target": "function:lib/utils.ts#toErrorMessage",
       "kind": "call"
     },
     {
@@ -99923,11 +99860,6 @@
     },
     {
       "source": "file:engins/engin.LabEngin.tsx",
-      "target": "function:lib/supabase/client.ts#createClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.LabEngin.tsx",
       "target": "function:lib/forge/forgeIntelligence.ts#recordForgeTransfer",
       "kind": "call"
     },
@@ -102022,16 +101954,6 @@
       "kind": "call"
     },
     {
-      "source": "file:lib/platform/lab.ts",
-      "target": "function:lib/supabase/client.ts#createClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:lib/platform/lab.ts",
-      "target": "function:lib/utils.ts#toErrorMessage",
-      "kind": "call"
-    },
-    {
       "source": "file:lib/reality/realityStore.ts",
       "target": "file:lib/reality/types.ts",
       "kind": "call"
@@ -102444,6 +102366,11 @@
     {
       "source": "file:scripts/update-readme.mjs",
       "target": "function:scripts/update-readme-status-utils.mjs#refreshCurrentImplementationStatusSection",
+      "kind": "call"
+    },
+    {
+      "source": "file:src/components/dream.DreamEnginLogo.tsx",
+      "target": "function:src/lib/babylon/useDreamLogoScene.ts#useDreamLogoScene",
       "kind": "call"
     },
     {
@@ -106363,11 +106290,6 @@
     },
     {
       "source": "file:app/api/activity/track/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_verification",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/activity/track/route.ts",
       "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_points",
       "kind": "sql-reference"
     },
@@ -106404,11 +106326,6 @@
     {
       "source": "file:app/api/ads/view/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/ads/view/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
       "kind": "sql-reference"
     },
     {
@@ -106677,11 +106594,6 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:app/api/lab/benchmarks/route.ts",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
-      "kind": "sql-reference"
-    },
-    {
       "source": "file:app/api/likes/route.ts",
       "target": "sql-table:supabase/migrations/20260319065444_new-migration.sql#likes",
       "kind": "sql-reference"
@@ -106733,6 +106645,16 @@
     },
     {
       "source": "file:app/api/metrics/platform/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_points",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/metrics/platform/route.ts",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/metrics/platform/route.ts",
       "target": "function:supabase/migrations/20260210_ai_core.sql#is_admin",
       "kind": "sql-reference"
     },
@@ -106772,11 +106694,6 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:app/api/posts/[id]/save/route.ts",
-      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
-      "kind": "sql-reference"
-    },
-    {
       "source": "file:app/api/posts/[id]/view/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
@@ -106784,11 +106701,6 @@
     {
       "source": "file:app/api/posts/profile/[userId]/route.ts",
       "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/posts/profile/[userId]/route.ts",
-      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
       "kind": "sql-reference"
     },
     {
@@ -106904,26 +106816,6 @@
     {
       "source": "file:app/api/shop/route.ts",
       "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/skip-credits/balance/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/skip-credits/earn/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/skip-credits/earn/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/skip-credits/use/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
       "kind": "sql-reference"
     },
     {
@@ -107212,11 +107104,6 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:engins/engin.BrandingEngin.tsx",
-      "target": "sql-table:supabase/migrations/20260325000000_phase8f_daydream_network.sql#brand_kit_items",
-      "kind": "sql-reference"
-    },
-    {
       "source": "file:engins/engin.CodeEngin.tsx",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#projects",
       "kind": "sql-reference"
@@ -107229,11 +107116,6 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "sql-table:supabase/migrations/20260305000002_leaderboard.sql#game_scores",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:engins/engin.LabEngin.tsx",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {
@@ -107499,11 +107381,6 @@
     {
       "source": "file:lib/gameengin/dream-engine.ts",
       "target": "sql-table:supabase/migrations/20260401000001_platform_utilities.sql#global_registry",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:lib/platform/lab.ts",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {
