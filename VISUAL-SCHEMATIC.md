@@ -9,17 +9,17 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 ### Auto-Generated Repository Overview
 
 - **Total files:** 2070
-- **Total function/class nodes:** 3941
-- **Total edges:** 7423
-- **Orphan nodes:** 3312
+- **Total function/class nodes:** 3961
+- **Total edges:** 7437
+- **Orphan nodes:** 3326
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
   app["app"] -->|1229| lib["lib"]
-  src["src"] -->|550| lib["lib"]
+  src["src"] -->|551| lib["lib"]
   components["components"] -->|311| lib["lib"]
-  src["src"] -->|294| components["components"]
+  src["src"] -->|295| components["components"]
   app["app"] -->|286| components["components"]
   tests["tests"] -->|264| lib["lib"]
   src["src"] -->|256| app["app"]
@@ -71,7 +71,7 @@ graph LR
 | `lib/dev-bypass.ts` | ts | 0 | 44 | `app/(internal)/idari-console/page.tsx`, `app/daydream/brand/page.tsx`, `app/daydream/code/page.tsx` | — |
 | `lib/runtime/dualRuntimeBridge.ts` | ts | 2 | 35 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx`, `components/daydream/dream.CodeDreamIDE.tsx` | `lib/runtime/madMaxiSnapshotBridge.ts`, `lib/vm/wasmGpuVM.ts` |
 | `lib/dreamdm/DreamSystemContext.tsx` | tsx | 5 | 27 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `app/dreamdmbar/dreamspace/page.tsx`, `app/dreamdmbar/dualruntime/page.tsx` | `lib/dreamdm/barInteractions.ts`, `lib/panels/panelTypes.ts`, `lib/runtime/dualRuntime.ts` |
-| `lib/engin-runtime/EnginBaseState.ts` | ts | 0 | 25 | `lib/dreams/dreamIntentBus.ts`, `lib/dreams/types.ts`, `lib/engin-runtime/EnginCapabilities.ts` | — |
+| `lib/engin-runtime/EnginBaseState.ts` | ts | 0 | 27 | `lib/dreams/dreamIntentBus.ts`, `lib/dreams/types.ts`, `lib/engin-runtime/EnginCapabilities.ts` | — |
 | `lib/forge/forgeRegistry.ts` | ts | 0 | 22 | `app/daydream/forge/page.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` | — |
 | `lib/activity/types.ts` | ts | 0 | 20 | `app/api/activity/track/route.ts`, `app/api/ads/view/route.ts`, `app/api/metrics/platform/route.ts` | — |
 | `lib/gameengin/cartridges/manifest.ts` | ts | 1 | 20 | `app/api/game-scores/route.ts`, `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `app/gameengin/cartridges/[id]/page.tsx` | `lib/gameengin/cartridge.ts` |
@@ -197,7 +197,7 @@ graph LR
 | `lib/dreamr/swipeCalibration.ts` | ts | 0 | 4 | `components/dream.LandingHero.tsx`, `lib/dreamr/torridityLedger.ts`, `src/engin/generated/dreamr.ts` | — |
 | `lib/dreams/drag.ts` | ts | 0 | 4 | `components/dreams/dream.DraggableDream.tsx`, `components/dreams/dream.GlobalDragLayer.tsx`, `components/home/dream.bar.PersistentDreamBar.tsx` | — |
 | `lib/dreams/types.ts` | ts | 1 | 4 | `lib/dreams/dreamIntentBus.ts`, `lib/dreams/profileProjection.ts`, `src/engin/generated/dreamsurfaces.ts` | `lib/engin-runtime/EnginBaseState.ts` |
-| `lib/engin-runtime/EnginEventBus.ts` | ts | 0 | 4 | `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts`, `src/engin/generated/systems.ts` | — |
+| `lib/engin-runtime/EnginEventBus.ts` | ts | 1 | 4 | `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts`, `src/engin/generated/systems.ts` | `lib/engin-runtime/EnginBaseState.ts` |
 | `lib/engin-runtime/EnginHardwareCapabilities.ts` | ts | 1 | 4 | `lib/engin-runtime/EnginDomainCores.ts`, `lib/engin-runtime/EnginPerformanceProbe.ts`, `lib/engin-runtime/index.ts` | `lib/engin-runtime/EnginBaseState.ts` |
 | `lib/engin-runtime/HotRuntime.ts` | ts | 2 | 4 | `lib/engin-runtime/EnginDomainCores.ts`, `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts` | `lib/engin-runtime/EnginRuleSetContract.ts`, `lib/engin-runtime/EnginCapabilityExecution.ts` |
 | `lib/engin-runtime/PremiumRuntimeQuality.ts` | ts | 2 | 4 | `lib/engin-runtime/EnginIOAdapter.ts`, `lib/engin-runtime/EnginRuntime.ts`, `lib/engin-runtime/index.ts` | `lib/engin-runtime/EnginBaseState.ts`, `lib/engin-runtime/EnginRuleSetContract.ts` |
@@ -323,9 +323,9 @@ graph LR
 | `lib/gameengin/unifiedLoop.ts` | ts | 0 | 3 | `lib/gameengin/index.ts`, `lib/gameengin/useUnifiedLoop.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/useUnifiedLoop.ts` | ts | 1 | 3 | `lib/gameengin/executionWiring.ts`, `lib/gameengin/index.ts`, `src/engin/generated/systems.ts` | `lib/gameengin/unifiedLoop.ts` |
 | `lib/games/avatar.ts` | ts | 0 | 3 | `components/games/dream.GamesHub.tsx`, `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts` | — |
+| `lib/games/gameControllerButtons.ts` | ts | 0 | 3 | `components/games/dream.remote.GameRemoteSurface.tsx`, `src/engin/generated/systems.ts`, `tests/game-controller.test.ts` | — |
 | `lib/games/madmaxi-wildfall-world.ts` | ts | 0 | 3 | `components/games/dream.MadMaxiWildfall.tsx`, `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/games/useGameInputKeyboardBridge.ts` | ts | 1 | 3 | `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts`, `tests/game-navigation.test.ts` | `components/games/dream.remote.GameRemote.tsx` |
-| `lib/games/useGamepad.ts` | ts | 0 | 3 | `components/games/dream.remote.GameRemoteSurface.tsx`, `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts` | — |
 | `lib/games/useImmersiveGameLayout.ts` | ts | 0 | 3 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `src/engin/generated/systems.ts` | — |
 | `lib/gestures/touchGestures.ts` | ts | 0 | 3 | `lib/gestures/useTouchGestures.ts`, `src/engin/generated/systems.ts`, `tests/phase9-touch-gestures.test.ts` | — |
 | `lib/gsap/useGsapEntrance.ts` | ts | 1 | 3 | `app/dream-effects/page.tsx`, `components/games/dream.GamesHub.tsx`, `src/engin/generated/systems.ts` | `lib/gsap/gsap.ts` |
@@ -355,7 +355,7 @@ graph LR
 | `lib/runtime/isAuthRelatedError.ts` | ts | 1 | 3 | `app/error.tsx`, `src/engin/generated/systems.ts`, `tests/is-auth-related-error.test.ts` | `lib/utils.ts` |
 | `lib/runtime/madMaxiSnapshotBridge.ts` | ts | 0 | 3 | `lib/gameengin/executionWiring.ts`, `lib/runtime/dualRuntimeBridge.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/runtime/moduleRegistry.ts` | ts | 3 | 3 | `lib/gameengin/registerCartridges.ts`, `src/engin/generated/systems.ts`, `tests/shell-cartridge-wiring.test.ts` | `lib/runtime/dualRuntimeBridge.ts`, `types/module-manifest.ts`, `types/widgets.ts` |
-| `lib/runtime/runtimeContainer.ts` | ts | 0 | 3 | `lib/runtime/dreamOSBus.ts`, `src/engin/generated/systems.ts`, `tests/runtime-container.test.ts` | — |
+| `lib/runtime/runtimeContainer.ts` | ts | 1 | 3 | `lib/runtime/dreamOSBus.ts`, `src/engin/generated/systems.ts`, `tests/runtime-container.test.ts` | `lib/engin-runtime/EnginBaseState.ts` |
 | `lib/sharedDream.ts` | ts | 3 | 3 | `components/dreams/dream.shell.SharedDreamShell.tsx`, `hooks/useSharedDream.ts`, `src/engin/generated/systems.ts` | `engine/io.ts`, `lib/collaboration/index.ts`, `lib/sharedDream/useSharedDreamSession.ts` |
 | `lib/sharedDream/useSharedDreamSession.ts` | ts | 2 | 3 | `components/shared-dream/dream.SharedDreamRuntime.tsx`, `lib/sharedDream.ts`, `src/engin/generated/systems.ts` | `lib/supabase/client.ts`, `lib/supabase/safeGetUser.ts` |
 | `lib/shop/listings.ts` | ts | 0 | 3 | `app/api/shop/route.ts`, `src/engin/generated/systems.ts`, `tests/phase8e-shop-marketplace.test.ts` | — |
@@ -432,10 +432,10 @@ graph LR
 | `lib/gameengin/world-crdt.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/gameengin/xr.ts` | ts | 0 | 2 | `lib/gameengin/executionWiring.ts`, `src/engin/generated/systems.ts` | — |
 | `lib/games/DualSenseManager.ts` | ts | 0 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts` | — |
-| `lib/games/gameControllerButtons.ts` | ts | 0 | 2 | `src/engin/generated/systems.ts`, `tests/game-controller.test.ts` | — |
 | `lib/games/gameControllerLeft.ts` | ts | 0 | 2 | `src/engin/generated/systems.ts`, `tests/game-controller.test.ts` | — |
 | `lib/games/gameControllerRight.ts` | ts | 0 | 2 | `src/engin/generated/systems.ts`, `tests/game-controller.test.ts` | — |
 | `lib/games/useAIDirector.ts` | ts | 1 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts` | `lib/gameengin/ai-director.ts` |
+| `lib/games/useGamepad.ts` | ts | 0 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/systems.ts` | — |
 | `lib/gct/anomaly-detection.ts` | ts | 1 | 2 | `lib/gct/index.ts`, `src/engin/generated/systems.ts` | `lib/gct/gct-engine.ts` |
 | `lib/gct/audio-fingerprint.ts` | ts | 1 | 2 | `lib/gct/index.ts`, `src/engin/generated/systems.ts` | `lib/gct/gct-engine.ts` |
 | `lib/gct/image-search.ts` | ts | 1 | 2 | `lib/gct/index.ts`, `src/engin/generated/systems.ts` | `lib/gct/gct-engine.ts` |
@@ -582,6 +582,7 @@ graph LR
 | `lib/gameengin/brain/technique-library/optimization/texture-atlasing.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/brain/upgrade-history/prioritization-rules.json` | config | 0 | 1 | `src/engin/generated/brain.ts` | — |
 | `lib/gameengin/systems/index.ts` | ts | 10 | 1 | `src/engin/generated/systems.ts` | `lib/gameengin/systems/ai.ts`, `lib/gameengin/systems/animation.ts`, `lib/gameengin/systems/assets.ts` |
+| `lib/games/lucid-avenue-world.ts` | ts | 0 | 1 | `src/engin/generated/systems.ts` | — |
 | `lib/gestures/useTouchGestures.ts` | ts | 1 | 1 | `src/engin/generated/systems.ts` | `lib/gestures/touchGestures.ts` |
 | `lib/home-buttons/button-groups.ts` | ts | 0 | 1 | `src/engin/generated/homedream.ts` | — |
 | `lib/hooks/useResponsive.ts` | ts | 1 | 1 | `src/engin/generated/hooks.ts` | `lib/ui/responsive.ts` |
@@ -629,7 +630,6 @@ graph LR
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc | 0 | 0 | — | — |
 | `lib/gameengin/brain/work-queue/README.md` | doc | 0 | 0 | — | — |
-| `lib/games/lucid-avenue-world.ts` | ts | 0 | 0 | — | — |
 | `lib/navigation/README.md` | doc | 0 | 0 | — | — |
 | `lib/optimizer/README.md` | doc | 0 | 0 | — | — |
 | `lib/vm/README.md` | doc | 0 | 0 | — | — |
@@ -808,7 +808,7 @@ graph LR
 | `components/games/dream.hud.LegacyGameHUD.tsx` | tsx | 1 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/surfaces.ts` | `components/games/dream.remote.GameRemote.tsx` |
 | `components/games/dream.hud.MobileGameHUD.tsx` | tsx | 2 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/surfaces.ts` | `components/games/dream.hud.MobileGameHUD.module.css`, `lib/games/mobileControls.ts` |
 | `components/games/dream.Leaderboard.tsx` | tsx | 0 | 2 | `engins/engin.GameEngin.tsx`, `src/engin/generated/surfaces.ts` | — |
-| `components/games/dream.remote.GameRemoteSurface.tsx` | tsx | 2 | 2 | `components/games/dream.remote.GameRemote.tsx`, `src/engin/generated/surfaces.ts` | `lib/games/useGamepad.ts`, `lib/games/useRemoteChannel.ts` |
+| `components/games/dream.remote.GameRemoteSurface.tsx` | tsx | 2 | 2 | `components/games/dream.remote.GameRemote.tsx`, `src/engin/generated/surfaces.ts` | `lib/games/useRemoteChannel.ts`, `lib/games/gameControllerButtons.ts` |
 | `components/games/madmaxi/audio.ts` | ts | 0 | 2 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `src/engin/generated/surfaces.ts` | — |
 | `components/games/madmaxi/authoredZonePacks.ts` | ts | 2 | 2 | `components/games/madmaxi/levels.ts`, `src/engin/generated/surfaces.ts` | `components/games/madmaxi/config.ts`, `components/games/madmaxi/types.ts` |
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | tsx | 10 | 2 | `components/games/madmaxi/index.ts`, `src/engin/generated/surfaces.ts` | `lib/babylon/createEngine.ts`, `lib/games/hooks.ts`, `lib/games/useImmersiveGameLayout.ts` |
@@ -910,6 +910,7 @@ graph LR
 | `components/engines/index.ts` | ts | 8 | 1 | `src/engin/generated/surfaces.ts` | `components/engines/shared/index.ts`, `components/engines/brand/index.ts`, `components/engines/code/index.ts` |
 | `components/feeds/dream.widget.EmbedFeedWidget.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/feeds/embedFeedLoader.ts`, `lib/utils.ts` |
 | `components/forge/dream.EngineBuilderCanvas.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/componentInventory.ts`, `lib/forge/engineForge.ts` |
+| `components/games/dream.AvenueOfMirrors.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `lib/games/hooks.ts`, `lib/gameengin/cartridges/reactCartridge.ts` |
 | `components/games/dream.GameController.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.remote.GameRemote.tsx` |
 | `components/games/dream.hud.GameHUD.tsx` | tsx | 2 | 1 | `src/engin/generated/surfaces.ts` | `components/games/dream.remote.GameRemote.tsx`, `lib/games/mobileControls.ts` |
 | `components/games/dream.hud.MobileGameHUD.module.css` | css | 0 | 1 | `components/games/dream.hud.MobileGameHUD.tsx` | — |
@@ -938,7 +939,6 @@ graph LR
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `components/gameengin/README.md` | doc | 0 | 0 | — | — |
 | `components/games/css-modules.d.ts` | ts | 0 | 0 | — | — |
-| `components/games/dream.AvenueOfMirrors.tsx` | tsx | 2 | 0 | — | `lib/games/hooks.ts`, `lib/gameengin/cartridges/reactCartridge.ts` |
 | `components/games/dream.GameController.module.css` | css | 0 | 0 | — | — |
 
 </details>
@@ -1530,8 +1530,8 @@ graph LR
 | `src/engin/generated/osArchitectureMap.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 25 | 1 | `src/engin/generated/index.ts` | `lib/engins/brand/brandEnginRuleSet.ts`, `lib/engins/brand/useBrandEnginRuntime.ts`, `lib/engins/code/codeEnginRuleSet.ts` |
-| `src/engin/generated/surfaces.ts` | ts | 538 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
-| `src/engin/generated/systems.ts` | ts | 381 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
+| `src/engin/generated/surfaces.ts` | ts | 539 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
+| `src/engin/generated/systems.ts` | ts | 382 | 1 | `src/engin/generated/index.ts` | `lib/activeModulesStore.ts`, `lib/activity/aqs.ts`, `lib/activity/boogieActivityPolicy.ts` |
 | `src/engin/state/base.json` | config | 0 | 1 | `src/engin/core/index.ts` | — |
 | `src/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `src/components/dream.DreamEnginLogo.tsx` | tsx | 0 | 0 | — | — |
@@ -2876,7 +2876,7 @@ graph LR
   f_components_gameengin_dream_CrashReportModal_tsx["dream.CrashReportModal.tsx"]
   f_components_gameengin_input_DualSenseManager_ts["DualSenseManager.ts"]
   f_components_games__fx_canvasFx_ts["canvasFx.ts"]
-  f_components_games_dream_MadMaxiWildfall_tsx["dream.MadMaxiWildfall.tsx"]
+  f_components_games_dream_AvenueOfMirrors_tsx["dream.AvenueOfMirrors.tsx"]
   f_components_games_dream_BabylonSideScroller_tsx["dream.BabylonSideScroller.tsx"]
   f_components_games_dream_DefuseRitual_tsx["dream.DefuseRitual.tsx"]
   f_components_games_dream_EchoArena_tsx["dream.EchoArena.tsx"]
@@ -2889,6 +2889,7 @@ graph LR
   f_components_games_dream_hud_MobileGameHUD_tsx["dream.hud.MobileGameHUD.tsx"]
   f_components_games_dream_Leaderboard_tsx["dream.Leaderboard.tsx"]
   f_components_games_dream_LexiconSolitaire_tsx["dream.LexiconSolitaire.tsx"]
+  f_components_games_dream_MadMaxiWildfall_tsx["dream.MadMaxiWildfall.tsx"]
   f_components_games_dream_NeonDrift_tsx["dream.NeonDrift.tsx"]
   f_components_games_dream_NiteFlyerSolarHymn_tsx["dream.NiteFlyerSolarHymn.tsx"]
   f_components_games_dream_NullCathedral_tsx["dream.NullCathedral.tsx"]
@@ -3206,6 +3207,7 @@ graph LR
   f_lib_games_gameControllerRight_ts["gameControllerRight.ts"]
   f_lib_games_hooks_ts["hooks.ts"]
   f_lib_games_library_state_ts["library-state.ts"]
+  f_lib_games_lucid_avenue_world_ts["lucid-avenue-world.ts"]
   f_lib_games_madmaxi_wildfall_world_ts["madmaxi-wildfall-world.ts"]
   f_lib_games_mobileControls_ts["mobileControls.ts"]
   f_lib_games_navigation_ts["navigation.ts"]
@@ -4051,7 +4053,7 @@ graph LR
   f_src_engin_generated_surfaces_ts --> f_components_gameengin_dream_CrashReportModal_tsx
   f_src_engin_generated_surfaces_ts --> f_components_gameengin_input_DualSenseManager_ts
   f_src_engin_generated_surfaces_ts --> f_components_games__fx_canvasFx_ts
-  f_src_engin_generated_surfaces_ts --> f_components_games_dream_MadMaxiWildfall_tsx
+  f_src_engin_generated_surfaces_ts --> f_components_games_dream_AvenueOfMirrors_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_BabylonSideScroller_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_DefuseRitual_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_EchoArena_tsx
@@ -4064,6 +4066,7 @@ graph LR
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_hud_MobileGameHUD_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_Leaderboard_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_LexiconSolitaire_tsx
+  f_src_engin_generated_surfaces_ts --> f_components_games_dream_MadMaxiWildfall_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_NeonDrift_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_NiteFlyerSolarHymn_tsx
   f_src_engin_generated_surfaces_ts --> f_components_games_dream_NullCathedral_tsx
@@ -4388,6 +4391,7 @@ graph LR
   f_src_engin_generated_systems_ts --> f_lib_games_gameControllerRight_ts
   f_src_engin_generated_systems_ts --> f_lib_games_hooks_ts
   f_src_engin_generated_systems_ts --> f_lib_games_library_state_ts
+  f_src_engin_generated_systems_ts --> f_lib_games_lucid_avenue_world_ts
   f_src_engin_generated_systems_ts --> f_lib_games_madmaxi_wildfall_world_ts
   f_src_engin_generated_systems_ts --> f_lib_games_mobileControls_ts
   f_src_engin_generated_systems_ts --> f_lib_games_navigation_ts
@@ -4826,7 +4830,6 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `components/gameengin/README.md` | doc |
 | `components/games/css-modules.d.ts` | ts |
-| `components/games/dream.AvenueOfMirrors.tsx` | tsx |
 | `components/games/dream.GameController.module.css` | css |
 | `config/advanced-game-targets.json` | config |
 | `config/Agents-MUST-READ-ARCHITECTURE.md` | doc |
@@ -4939,7 +4942,6 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `DREAMengin-remote-even-ring-matches-image.zip` | file |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
@@ -4986,6 +4988,7 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
 | `GameENGINspec.md` | doc |
 | `generate-readme.ts` | ts |
+| `github/workflows/export-repo-to-artifacts.yml` | config |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `lib-index.mjs` | mjs |
 | `lib/Agents-MUST-READ-ARCHITECTURE.md` | doc |
@@ -5008,7 +5011,6 @@ _File-level graph omitted: 569 files exceeds Mermaid render budget. See table ab
 | `lib/gameengin/brain/visual-bible/characters/mad-maxi.md` | doc |
 | `lib/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc |
 | `lib/gameengin/brain/work-queue/README.md` | doc |
-| `lib/games/lucid-avenue-world.ts` | ts |
 | `lib/navigation/README.md` | doc |
 | `lib/optimizer/README.md` | doc |
 | `lib/vm/README.md` | doc |
