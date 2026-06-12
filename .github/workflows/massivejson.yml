@@ -1,0 +1,236 @@
+name: Export listed repo file types into one massive JSON
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-one-massive-json:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build one massive JSON export
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import hashlib
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          ROOT = Path.cwd()
+
+          OUT = ROOT / "repo-massive-json-export"
+          ROOT_DOCS_OUT = OUT / "root-docs"
+
+          FILE_EXTENSIONS = {
+              ".ts",
+              ".tsx",
+              ".md",
+              ".json",
+              ".mjs",
+              ".py",
+              ".css",
+              ".js",
+              ".sh",
+              ".svg",
+              ".wasm",
+              ".html",
+          }
+
+          # These three are copied separately and are NOT placed inside all-files.json.
+          SEPARATE_ROOT_DOCS = {
+              "README.md",
+              "ARCHITECTURE.md",
+              "FILE_TREE.md",
+          }
+
+          IGNORE_DIRS = {
+              ".git",
+              "node_modules",
+              ".next",
+              "out",
+              "dist",
+              "build",
+              "coverage",
+              ".vercel",
+              ".turbo",
+              ".cache",
+              ".parcel-cache",
+              ".pnpm-store",
+              ".yarn",
+              ".swc",
+              "__pycache__",
+              ".pytest_cache",
+              ".mypy_cache",
+              ".ruff_cache",
+              "repo-massive-json-export",
+          }
+
+          SAFE_ENV_FILES = {
+              ".env.example",
+              ".env.sample",
+              ".env.template",
+              ".env.local.example",
+              ".env.development.example",
+              ".env.production.example",
+          }
+
+          def rel(path: Path) -> str:
+              return path.relative_to(ROOT).as_posix()
+
+          def ignored(path: Path) -> bool:
+              return any(part in IGNORE_DIRS for part in path.relative_to(ROOT).parts)
+
+          def secret_env(path: Path) -> bool:
+              name = path.name
+              if name in SAFE_ENV_FILES:
+                  return False
+              return name == ".env" or name.startswith(".env.")
+
+          def separate_root_doc(path: Path) -> bool:
+              return path.parent == ROOT and path.name in SEPARATE_ROOT_DOCS
+
+          def included(path: Path) -> bool:
+              return (
+                  path.is_file()
+                  and not ignored(path)
+                  and not secret_env(path)
+                  and not separate_root_doc(path)
+                  and path.suffix.lower() in FILE_EXTENSIONS
+              )
+
+          def binary_file(data: bytes, suffix: str) -> bool:
+              return suffix == ".wasm" or b"\x00" in data[:4096]
+
+          def read_record(path: Path) -> dict:
+              data = path.read_bytes()
+              source_path = rel(path)
+              suffix = path.suffix.lower()
+              is_binary = binary_file(data, suffix)
+
+              if is_binary:
+                  content_text = ""
+                  content_base64 = base64.b64encode(data).decode("ascii")
+                  encoding = "base64"
+              else:
+                  try:
+                      content_text = data.decode("utf-8")
+                      encoding = "utf-8"
+                  except UnicodeDecodeError:
+                      content_text = data.decode("utf-8", errors="replace")
+                      encoding = "utf-8-replacement"
+                  content_base64 = ""
+
+              return {
+                  "path": source_path,
+                  "file_name": path.name,
+                  "extension": suffix,
+                  "size_bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest(),
+                  "is_binary": is_binary,
+                  "encoding": encoding,
+                  "content_text": content_text,
+                  "content_base64": content_base64,
+              }
+
+          def copy_separate_root_docs() -> list[dict]:
+              copied = []
+
+              for doc in sorted(SEPARATE_ROOT_DOCS):
+                  source = ROOT / doc
+
+                  if not source.is_file():
+                      raise FileNotFoundError(f"Required root doc missing: {doc}")
+
+                  target = ROOT_DOCS_OUT / doc
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(source, target)
+
+                  copied.append({
+                      "file": doc,
+                      "copied_to": f"root-docs/{doc}",
+                  })
+
+              return copied
+
+          if OUT.exists():
+              shutil.rmtree(OUT)
+
+          OUT.mkdir(parents=True, exist_ok=True)
+
+          files = sorted(
+              [path for path in ROOT.rglob("*") if included(path)],
+              key=lambda path: rel(path).lower(),
+          )
+
+          records = [read_record(path) for path in files]
+          copied_root_docs = copy_separate_root_docs()
+
+          export = {
+              "export_kind": "single_massive_json",
+              "included_extensions": sorted(FILE_EXTENSIONS),
+              "excluded_from_all_files_json_and_copied_separately": sorted(SEPARATE_ROOT_DOCS),
+              "total_files_in_all_files_json": len(records),
+              "files": records,
+          }
+
+          (OUT / "all-files.json").write_text(
+              json.dumps(export, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          manifest = {
+              "artifact_name": "repo-files-one-massive-json",
+              "massive_json": "all-files.json",
+              "root_docs_folder": "root-docs/",
+              "root_docs_copied_separately": copied_root_docs,
+              "total_files_in_all_files_json": len(records),
+              "note": "README.md, ARCHITECTURE.md, and FILE_TREE.md are copied as separate files and are not embedded in all-files.json.",
+          }
+
+          (OUT / "manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          summary = f"""# Massive JSON export complete
+
+          Created:
+
+          - `all-files.json`
+          - `manifest.json`
+          - `root-docs/README.md`
+          - `root-docs/ARCHITECTURE.md`
+          - `root-docs/FILE_TREE.md`
+
+          Files embedded in `all-files.json`: **{len(records)}**
+
+          The three root markdown docs were copied separately, not embedded.
+          """
+
+          print(summary)
+
+          step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if step_summary:
+              Path(step_summary).write_text(summary, encoding="utf-8")
+          PY
+
+      - name: Upload massive JSON artifact zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-files-one-massive-json
+          path: repo-massive-json-export
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 9
