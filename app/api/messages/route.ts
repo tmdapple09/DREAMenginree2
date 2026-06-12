@@ -105,22 +105,90 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     media_url?: string;
     media_type?: string;
   };
+
   const { recipient_id, content, conversation_id, media_url, media_type } = body;
+  const normalizedContent = typeof content === 'string' ? content.trim() : '';
+  const normalizedMediaUrl = typeof media_url === 'string' ? media_url.trim() : '';
+  const normalizedMediaType = typeof media_type === 'string' && media_type.trim().length > 0
+    ? media_type.trim()
+    : 'file';
 
   if (!conversation_id && !recipient_id) {
     return NextResponse.json({ error: 'recipient_id or conversation_id required' }, { status: 400 });
   }
 
-  if (!content || content.trim().length === 0) {
-    return NextResponse.json({ error: 'Message content is required' }, { status: 400 });
+  if (!normalizedContent && !normalizedMediaUrl) {
+    return NextResponse.json({ error: 'Message content or media is required' }, { status: 400 });
+  }
+
+  const db = supabase as SupabaseClient;
+  let convId: string | null = conversation_id ?? null;
+  let resolvedRecipientId: string | null = recipient_id ?? null;
+
+  if (convId) {
+    const { data: conversation, error: conversationError } = await db
+      .from('conversations')
+      .select('id, participant1_id, participant2_id')
+      .eq('id', convId)
+      .single();
+
+    if (conversationError || !conversation) {
+      return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
+    }
+
+    const existingConversation = conversation as {
+      id: string;
+      participant1_id: string;
+      participant2_id: string;
+    };
+
+    if (
+      existingConversation.participant1_id !== user.id &&
+      existingConversation.participant2_id !== user.id
+    ) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    resolvedRecipientId = existingConversation.participant1_id === user.id
+      ? existingConversation.participant2_id
+      : existingConversation.participant1_id;
+  } else if (recipient_id) {
+    const { data: existing } = await db
+      .from('conversations')
+      .select('id')
+      .or(`and(participant1_id.eq.${user.id},participant2_id.eq.${recipient_id}),and(participant1_id.eq.${recipient_id},participant2_id.eq.${user.id})`)
+      .maybeSingle();
+
+    if (existing) {
+      convId = (existing as { id: string }).id;
+    } else {
+      const { data: newConv, error: convError } = await db
+        .from('conversations')
+        .insert({
+          participant1_id: user.id,
+          participant2_id: recipient_id,
+        })
+        .select('id')
+        .single();
+
+      if (convError || !newConv) {
+        return NextResponse.json({ error: toErrorMessage(convError) }, { status: 500 });
+      }
+
+      convId = (newConv as { id: string }).id;
+    }
+  }
+
+  if (!convId || !resolvedRecipientId) {
+    return NextResponse.json({ error: 'Conversation recipient could not be resolved' }, { status: 400 });
   }
 
   const senderAge = await getUserAge(supabase, user.id);
-  const recipientAge = recipient_id ? await getUserAge(supabase, recipient_id) : null;
+  const recipientAge = await getUserAge(supabase, resolvedRecipientId);
 
   const senderIsMinor = typeof senderAge === 'number' && senderAge >= 13 && senderAge < 18;
   const recipientIsAdult = typeof recipientAge === 'number' && recipientAge >= 18;
-  const hasImage = media_url && typeof media_url === 'string' && media_type === 'image';
+  const hasImage = normalizedMediaUrl.length > 0 && normalizedMediaType === 'image';
 
   if (hasImage && senderIsMinor && recipientIsAdult) {
     const contentRef = `minor_image:${user.id.slice(0, 8)}`;
@@ -146,11 +214,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Also pass sender/recipient ages so scanContent can detect image solicitation
-  // from adults to minors (rule C33_SOLICITING_IMAGES via grooming patterns).
-  const childSafetyResult = scanContent({ text: content });
+  const childSafetyResult = scanContent({ text: normalizedContent });
   if (childSafetyResult.flagged) {
-    const contentHash = createHash('sha256').update(content).digest('hex');
+    const contentHash = createHash('sha256').update(normalizedContent).digest('hex');
     reportChildSafetyIncident({
       reportedUserId: user.id,
       ruleCode: childSafetyResult.rule_code!,
@@ -166,12 +232,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Only runs when an image attachment is present in the message.
-  if (media_url && typeof media_url === 'string' && media_type === 'image') {
+  if (hasImage) {
     const mediaSafetyResult = await scanMediaUrlsForChildSafety({
-      urls: [media_url],
+      urls: [normalizedMediaUrl],
       supabase,
     });
+
     if (mediaSafetyResult.flagged) {
       reportChildSafetyIncident({
         reportedUserId: user.id,
@@ -187,56 +253,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
   }
-  // ─────────────────────────────────────────────────────────────────────────
 
-  let convId = conversation_id;
+  const messageContent = normalizedMediaUrl
+    ? [
+        normalizedContent,
+        `[Attachment: ${normalizedMediaType}] ${normalizedMediaUrl}`,
+      ].filter(Boolean).join('\n\n')
+    : normalizedContent;
 
-  // If no conversation_id, create or find existing conversation
-  if (!convId && recipient_id) {
-    // Check for existing conversation
-    const { data: existing } = await supabase
-      .from('conversations')
-      .select('id')
-      .or(`and(participant1_id.eq.${user.id},participant2_id.eq.${recipient_id}),and(participant1_id.eq.${recipient_id},participant2_id.eq.${user.id})`)
-      .single();
-
-    if (existing) {
-      convId = existing.id;
-    } else {
-      // Create new conversation
-      const { data: newConv, error: convError } = await supabase
-        .from('conversations')
-        .insert({
-          participant1_id: user.id,
-          participant2_id: recipient_id,
-        })
-        .select()
-        .single();
-
-      if (convError) {
-        return NextResponse.json({ error: convError.message }, { status: 500 });
-      }
-      convId = newConv.id;
-    }
-  }
-
-  if (!convId) {
-    return NextResponse.json({ error: 'Conversation ID is required' }, { status: 400 });
-  }
-
-  // Insert the message
-  const messageRow: Record<string, unknown> = {
+  const messageRow = {
     conversation_id: convId,
     sender_id: user.id,
-    content: content.trim(),
+    recipient_id: resolvedRecipientId,
+    content: messageContent,
   };
-  if (media_url) messageRow.media_url = media_url;
-  if (media_type) messageRow.media_type = media_type;
 
-  const { data: message, error } = await (supabase as SupabaseClient)
+  const { data: message, error } = await db
     .from('messages')
-
-    .insert(messageRow as Record<string, unknown>)
+    .insert(messageRow)
     .select(`
       *,
       sender:profiles!sender_id(id, handle, display_name, avatar_url)
@@ -247,26 +281,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Update conversation timestamp
-  await supabase
+  await db
     .from('conversations')
     .update({ updated_at: new Date().toISOString() })
     .eq('id', convId);
 
-  // Create notification for recipient
-  const recipientId = conversation_id ? null : recipient_id;
-  if (recipientId) {
-
-    await (supabase as SupabaseClient).from('notifications').insert({
-      user_id: recipientId,
-      type: 'message',
-      content: {
-        message: `New message from ${user.email}`,
-        conversation_id: convId,
-        message_id: (message as Record<string, unknown>).id,
-      },
-    });
-  }
+  await db.from('notifications').insert({
+    user_id: resolvedRecipientId,
+    type: 'message',
+    content: {
+      message: `New message from ${user.email}`,
+      conversation_id: convId,
+      message_id: (message as Record<string, unknown>).id,
+    },
+  });
 
   return NextResponse.json({ message, conversation_id: convId }, { status: 201 });
 }

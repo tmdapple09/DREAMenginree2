@@ -120,7 +120,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     let q = db
         .from('app_posts')
         .select(
-          'id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, ' +
+          'id, content, visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, ' +
           'profiles!inner(handle, display_name, avatar_url)'
         )
       .in('user_id', authorIds)
@@ -138,6 +138,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       content?: string;
       created_at: string;
       likes_count?: number;
+      view_count?: number;
       comments_count?: number;
       profiles?: {
         handle?: string;
@@ -150,13 +151,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         const p = (post as unknown) as AppPostRow;
         const profile = p.profiles ?? {};
-
-        // Phase 9: Get view count for this post
-        const { count: viewCount } = await (supabase as SupabaseClient)
-          .from('views')
-          .select('*', { count: 'exact', head: true })
-          .eq('post_id', p.id)
-          .eq('verified', true);
 
         entries.push({
           id:            p.id,
@@ -171,7 +165,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           created_at:    p.created_at,
           likes_count:   p.likes_count ?? 0,
           comments_count: p.comments_count ?? 0,
-          views_count:   viewCount ?? 0,  // Phase 9: Views are the primary metric
+          views_count:   p.view_count ?? 0,  // app_posts.view_count is the canonical view metric
         });
       }
     }

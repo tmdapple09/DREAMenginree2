@@ -138,7 +138,7 @@ export async function getVisibilityRankedFeed(
       .from('app_posts')
       .select(
         'id, content, visibility, media_url, media_urls, media_json, created_at, ' +
-        'likes_count, comments_count, ' +
+        'view_count, likes_count, comments_count, ' +
         'profiles!inner(handle, display_name, avatar_url)',
       )
       .in('user_id', authorIds)

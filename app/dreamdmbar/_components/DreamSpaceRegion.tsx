@@ -45,8 +45,10 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
   const os = useOS();
   const [assetTick, setAssetTick] = useState(0);
   useEffect(() => {
-    // Re-read ledger whenever a new asset is stored
-    return () => os.bus.off('ledger:asset:new', () => setAssetTick((n) => n + 1));
+    // Re-read ledger whenever a new asset is stored.
+    const handleLedgerAssetNew = () => setAssetTick((n) => n + 1);
+    os.bus.on('ledger:asset:new', handleLedgerAssetNew);
+    return () => os.bus.off('ledger:asset:new', handleLedgerAssetNew);
   }, [os.bus]);
   const ledgerAssets = useMemo(
     () => getAllByKind(os.ledger, 'asset'),
