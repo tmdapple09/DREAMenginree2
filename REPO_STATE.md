@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-09T05:35:59.633Z
+Generated: 2026-06-12T04:51:04.113Z
 
 ---
 
@@ -232,7 +232,6 @@ _No style files for this feature._
 
 - `events`
 - `framer-motion`
-- `go-home`
 - `lucide-react`
 - `next`
 - `pending`
@@ -665,6 +664,7 @@ _No style files for this feature._
 - `@/lib/dreamengin/osSubsystemManifest`
 - `@/lib/dreamnav/delta`
 - `@/lib/dreamnav/path`
+- `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/forge/forgeRegistry`
 - `@/lib/god-tier/godTierEngine`
 - `@/lib/identity/canonical-names`
@@ -779,6 +779,7 @@ _No style files for this feature._
 - `components/games/dream.Glassfall.tsx`
 - `components/games/dream.Leaderboard.tsx`
 - `components/games/dream.LexiconSolitaire.tsx`
+- `components/games/dream.MadMaxiWildfall.tsx`
 - `components/games/dream.NeonDrift.tsx`
 - `components/games/dream.NiteFlyerSolarHymn.tsx`
 - `components/games/dream.NullCathedral.tsx`
@@ -930,6 +931,7 @@ _No style files for this feature._
 - `lib/games/hooks.ts`
 - `lib/games/library-state.ts`
 - `lib/games/lucid-avenue-world.ts`
+- `lib/games/madmaxi-wildfall-world.ts`
 - `lib/games/mobileControls.ts`
 - `lib/games/navigation.ts`
 - `lib/games/performance-baseline.ts`
@@ -1132,20 +1134,17 @@ _No style files for this feature._
 - `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary`
 - `@/components/gameengin/dream.cartridge.FeaturedCartridges`
 - `@/components/gameengin/input/DualSenseManager`
-- `@/components/games/dream.AvenueOfMirrors`
 - `@/components/games/dream.BabylonSideScroller`
 - `@/components/games/dream.DefuseRitual`
 - `@/components/games/dream.EchoArena`
 - `@/components/games/dream.EnginFracture`
-- `@/components/games/dream.GameController`
-- `@/components/games/dream.GameController.module.css`
 - `@/components/games/dream.Glassfall`
 - `@/components/games/dream.Leaderboard`
 - `@/components/games/dream.LexiconSolitaire`
+- `@/components/games/dream.MadMaxiWildfall`
 - `@/components/games/dream.NeonDrift`
 - `@/components/games/dream.NiteFlyerSolarHymn`
 - `@/components/games/dream.NullCathedral`
-- `@/components/games/dream.RecordingControls`
 - `@/components/games/dream.SerpentSiege`
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/dream.hud.LegacyGameHUD`
@@ -1153,7 +1152,6 @@ _No style files for this feature._
 - `@/components/games/dream.hud.MobileGameHUD.module.css`
 - `@/components/games/dream.remote.GameRemote`
 - `@/components/games/dream.remote.GameRemoteSurface`
-- `@/components/games/dream.remote.LegacyGameRemote`
 - `@/components/games/madmaxi`
 - `@/engins/engin.GameEngin`
 - `@/lib/babylon/createEngine`
@@ -1189,11 +1187,9 @@ _No style files for this feature._
 - `@/lib/games/avatar`
 - `@/lib/games/catalog`
 - `@/lib/games/gameControllerButtons`
-- `@/lib/games/gameControllerLeft`
-- `@/lib/games/gameControllerRight`
 - `@/lib/games/hooks`
 - `@/lib/games/library-state`
-- `@/lib/games/lucid-avenue-world`
+- `@/lib/games/madmaxi-wildfall-world`
 - `@/lib/games/mobileControls`
 - `@/lib/games/navigation`
 - `@/lib/games/performance-baseline`
@@ -1249,7 +1245,7 @@ _No style files for this feature._
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `components/games/dream.AvenueOfMirrors.tsx`
-- `components/games/dream.GameController.tsx`
+- `components/games/dream.MadMaxiWildfall.tsx`
 - `engins/engin.GameEngin.tsx`
 - `lib/engins/game/useGameEnginRuntime.ts`
 - `lib/gameengin/GameRuntime.tsx`
@@ -9376,16 +9372,6 @@ _No style files for this feature._
 | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `components/games/dream.GameController.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/games/gameControllerButtons` | `ButtonInteractionManager`, `CONTROLLER_BUTTON_DEFS`, `ControllerButton` |
-| `@/lib/games/gameControllerLeft` | `LEFT_STICK_RADIUS_PX`, `StickVector`, `computeLeftStickVector` |
-| `@/lib/games/gameControllerRight` | `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS`, `RIGHT_RESET_TIMEOUT_MS`, `computeAimDelta`, `evaluateRightStickTap` |
-| `@/lib/games/mobileControls` | `MobileControlVector`, `emitMobileButton`, `emitMobileJump`, `emitMobileLookDelta`, `emitMobileMove`, `emitMobileShoot`, `fireGameRemoteInput`, `getRemoteMoveAction` |
-| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
-
 ## `components/games/dream.GamesHub.tsx`
 
 | Module | Connected via |
@@ -9406,7 +9392,7 @@ _No style files for this feature._
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
 | `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
 | `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
-| `@/components/games/dream.AvenueOfMirrors` | _(dynamic import)_ |
+| `@/components/games/dream.MadMaxiWildfall` | _(dynamic import)_ |
 | `@/components/games/dream.EnginFracture` | _(dynamic import)_ |
 | `@/components/games/dream.Glassfall` | _(dynamic import)_ |
 | `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
@@ -9434,6 +9420,15 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
 | `react` | `useCallback`, `useEffect`, `useState` |
+
+## `components/games/dream.MadMaxiWildfall.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/gameengin/cartridges/reactCartridge` | `useGameEngineAPI` |
+| `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `@/lib/games/madmaxi-wildfall-world` | `WILDFALL_HEROES`, `WILDFALL_ZONES`, `WildfallHeroId`, `WildfallInputFrame`, `WildfallState`, `activateWildfallHeroAbility`, `castWildfallRay`, `createWildfallState`, `currentWildfallZone`, `resolveWildfallMirror`, `stepWildfall`, `switchWildfallHero`, `wildfallBillboards` |
+| `react` | `CSSProperties`, `ReactNode`, `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `components/games/dream.NeonDrift.tsx`
 
@@ -9513,22 +9508,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
-| `@/lib/games/useGamepad` | `useGamepad` |
+| `@/lib/games/gameControllerButtons` | `ButtonInteractionManager`, `ControllerButton` |
 | `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
-| `next/link` | `⬡ Link` |
-| `next/navigation` | `useSearchParams` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `components/games/dream.remote.LegacyGameRemote.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
-| `@/lib/games/useGamepad` | `useGamepad` |
-| `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
-| `next/link` | `⬡ Link` |
-| `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `components/games/madmaxi/authoredZonePacks.ts`
@@ -10508,14 +10489,10 @@ _No style files for this feature._
 | `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
 | `@/components/gameengin/dream.cartridge.CartridgeErrorBoundary` | `CartridgeCrashEvent`, `CartridgeErrorBoundary`, `useGlobalCrashListener` |
 | `@/components/gameengin/dream.cartridge.FeaturedCartridges` | `⬡ FeaturedCartridges` |
-| `@/components/games/dream.GameController` | `⬡ GameController` |
 | `@/components/games/dream.Leaderboard` | `⬡ Leaderboard` |
-| `@/components/games/dream.RecordingControls` | `⬡ RecordingControls` |
 | `@/components/games/dream.hud.LegacyGameHUD` | `⬡ LegacyGameHUD` |
 | `@/components/games/dream.hud.MobileGameHUD` | `⬡ MobileGameHUD` |
 | `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
-| `@/components/games/dream.remote.GameRemoteSurface` | `⬡ GameRemoteSurface` |
-| `@/components/games/dream.remote.LegacyGameRemote` | `⬡ LegacyGameRemote` |
 | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
 | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
@@ -10545,7 +10522,7 @@ _No style files for this feature._
 | `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
 | `@/lib/supabase/client` | `createClient` |
 | `@/lib/utils` | `toErrorMessage` |
-| `lucide-react` | `ArrowLeft`, `Award`, `FileCode`, `Gamepad2`, `Lock`, `Map`, `Play`, `Radio`, `Share2`, `Sliders`, `Trophy`, `Unlock` |
+| `lucide-react` | `Award`, `FileCode`, `Gamepad2`, `Lock`, `Map`, `Play`, `Radio`, `Share2`, `Sliders`, `Trophy`, `Unlock` |
 | `next/link` | `⬡ Link` |
 | `next/navigation` | `useSearchParams` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
@@ -11515,6 +11492,12 @@ _No style files for this feature._
 | `./EnginPerformanceProbe` | `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe` |
 | `./HotRuntime` | `AudioWorkletRuntime`, `CommandRingBuffer`, `GpuBufferRegistry`, `SnapshotCompactor`, `WasmKernelRuntime`, `WebGPUDeviceRuntime`, `WorkerPoolRuntime` |
 
+## `lib/engin-runtime/EnginEventBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `RuntimeCoherenceReport` |
+
 ## `lib/engin-runtime/EnginHardwareCapabilities.ts`
 
 | Module | Connected via |
@@ -11548,7 +11531,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `EnginLifecycle`, `JsonObject`, `createBaseState`, `isEnginBaseState`, `patchBaseState` |
+| `./EnginBaseState` | `CoherenceCapacity`, `EnginBaseState`, `EnginLifecycle`, `JsonObject`, `RuntimeCoherenceReport`, `RuntimeLoad`, `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isEnginBaseState`, `patchBaseState` |
 | `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
 | `./EnginCapabilityExecution` | `EnginCapabilityExecutionKernel`, `createEnginCapabilityExecutionKernel` |
 | `./EnginCapabilityTargets` | `CapabilityProfileValidation`, `capabilityProfileMatchesRuleSet`, `validateEnginCapabilityProfile` |
@@ -11921,7 +11904,7 @@ _No style files for this feature._
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
 | `@/components/games/dream.VoidlineGP` | _(dynamic import)_ |
 | `@/components/games/dream.SerpentSiege` | _(dynamic import)_ |
-| `@/components/games/dream.AvenueOfMirrors` | _(dynamic import)_ |
+| `@/components/games/dream.MadMaxiWildfall` | _(dynamic import)_ |
 | `@/components/games/dream.EnginFracture` | _(dynamic import)_ |
 | `@/components/games/dream.Glassfall` | _(dynamic import)_ |
 | `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
@@ -12022,7 +12005,7 @@ _No style files for this feature._
 | `./world-crdt` | `WorldStateCRDT` |
 | `./xr` | `HandTrackingInput`, `PassthroughComposite`, `WebXRSession` |
 | `@/lib/engins/game` | `* as GameRuleSetIndex` |
-| `@/lib/games/lucid-avenue-world` | `* as LucidAvenueWorld` |
+| `@/lib/games/madmaxi-wildfall-world` | `* as LucidAvenueWorld` |
 | `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
 
 ## `lib/gameengin/gameEnginRuntime.ts`
@@ -12532,7 +12515,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isDomainObject` |
 | `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
 | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `INFORMATION_DOMAINS`, `InformationDomain` |
 | `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
@@ -12610,6 +12593,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
+
+## `lib/runtime/runtimeContainer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad` |
 
 ## `lib/runtime/seamClipboard.ts`
 
@@ -13986,6 +13975,7 @@ _No style files for this feature._
 | `@/components/games/dream.hud.MobileGameHUD` | _(dynamic import)_ |
 | `@/components/games/dream.Leaderboard` | _(dynamic import)_ |
 | `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
+| `@/components/games/dream.MadMaxiWildfall` | _(dynamic import)_ |
 | `@/components/games/dream.NeonDrift` | _(dynamic import)_ |
 | `@/components/games/dream.NiteFlyerSolarHymn` | _(dynamic import)_ |
 | `@/components/games/dream.NullCathedral` | _(dynamic import)_ |
@@ -14316,6 +14306,7 @@ _No style files for this feature._
 | `@/lib/games/hooks` | _(dynamic import)_ |
 | `@/lib/games/library-state` | _(dynamic import)_ |
 | `@/lib/games/lucid-avenue-world` | _(dynamic import)_ |
+| `@/lib/games/madmaxi-wildfall-world` | _(dynamic import)_ |
 | `@/lib/games/mobileControls` | _(dynamic import)_ |
 | `@/lib/games/navigation` | _(dynamic import)_ |
 | `@/lib/games/performance-baseline` | _(dynamic import)_ |
@@ -14624,7 +14615,7 @@ _No style files for this feature._
 - `@/components/games/dream.NullCathedral`
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/dream.SerpentSiege`
-- `@/components/games/dream.AvenueOfMirrors`
+- `@/components/games/dream.MadMaxiWildfall`
 - `@/components/games/dream.EnginFracture`
 - `@/components/games/dream.Glassfall`
 - `@/components/games/dream.NiteFlyerSolarHymn`
@@ -14722,7 +14713,7 @@ _No style files for this feature._
 - `@/components/games/dream.NullCathedral`
 - `@/components/games/dream.VoidlineGP`
 - `@/components/games/dream.SerpentSiege`
-- `@/components/games/dream.AvenueOfMirrors`
+- `@/components/games/dream.MadMaxiWildfall`
 - `@/components/games/dream.EnginFracture`
 - `@/components/games/dream.Glassfall`
 - `@/components/games/dream.NiteFlyerSolarHymn`
@@ -15459,6 +15450,7 @@ _No style files for this feature._
 - `@/components/games/dream.hud.MobileGameHUD`
 - `@/components/games/dream.Leaderboard`
 - `@/components/games/dream.LexiconSolitaire`
+- `@/components/games/dream.MadMaxiWildfall`
 - `@/components/games/dream.NeonDrift`
 - `@/components/games/dream.NiteFlyerSolarHymn`
 - `@/components/games/dream.NullCathedral`
@@ -15787,6 +15779,7 @@ _No style files for this feature._
 - `@/lib/games/hooks`
 - `@/lib/games/library-state`
 - `@/lib/games/lucid-avenue-world`
+- `@/lib/games/madmaxi-wildfall-world`
 - `@/lib/games/mobileControls`
 - `@/lib/games/navigation`
 - `@/lib/games/performance-baseline`
@@ -16976,11 +16969,11 @@ _No style files for this feature._
 - `components/games/dream.DefuseRitual.tsx`
 - `components/games/dream.EchoArena.tsx`
 - `components/games/dream.EnginFracture.tsx`
-- `components/games/dream.GameController.tsx`
 - `components/games/dream.GamesHub.tsx`
 - `components/games/dream.Glassfall.tsx`
 - `components/games/dream.Leaderboard.tsx`
 - `components/games/dream.LexiconSolitaire.tsx`
+- `components/games/dream.MadMaxiWildfall.tsx`
 - `components/games/dream.NeonDrift.tsx`
 - `components/games/dream.NiteFlyerSolarHymn.tsx`
 - `components/games/dream.NullCathedral.tsx`
@@ -16991,7 +16984,6 @@ _No style files for this feature._
 - `components/games/dream.hud.LegacyGameHUD.tsx`
 - `components/games/dream.hud.MobileGameHUD.tsx`
 - `components/games/dream.remote.GameRemoteSurface.tsx`
-- `components/games/dream.remote.LegacyGameRemote.tsx`
 - `components/games/madmaxi/dream.MadmaxiGame.tsx`
 
 ## `components/home/`
@@ -17949,7 +17941,7 @@ _No style files for this feature._
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `components/games/dream.AvenueOfMirrors.tsx`
-- `components/games/dream.GameController.tsx`
+- `components/games/dream.MadMaxiWildfall.tsx`
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
 - `components/shared-dream/dream.SharedDreamRuntime.tsx`
@@ -18043,7 +18035,7 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 46 |
+| `engins/engin.GameEngin.tsx` | 42 |
 | `lib/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
@@ -18082,7 +18074,7 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 46 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 42 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
@@ -18178,7 +18170,6 @@ _No circular dependencies detected._
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
-| `components/home/dream.bar.GlobalDreamBar.tsx` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
 | `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
 | `lib/observability/otel.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
@@ -18226,7 +18217,7 @@ _No circular dependencies detected._
 | `components/dream.AIAssistant.tsx` | 7 | MEDIUM_COUPLING |
 | `components/dream.FeedCard.tsx` | 7 | MEDIUM_COUPLING |
 | `components/forge/dream.panel.AIBuilderPanel.tsx` | 7 | MEDIUM_COUPLING |
-| `components/games/dream.GameController.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `components/home/dream.bar.GlobalDreamBar.tsx` | 7 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.AppearancePanel.tsx` | 7 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SafetyPanel.tsx` | 7 | MEDIUM_COUPLING |
 | `components/profile/dream.ProfileCanvas.tsx` | 7 | MEDIUM_COUPLING |
@@ -18277,8 +18268,6 @@ _No circular dependencies detected._
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/engines/shared/dream.makeEnginApp.tsx` | 6 | MEDIUM_COUPLING |
 | `components/games/dream.EchoArena.tsx` | 6 | MEDIUM_COUPLING |
-| `components/games/dream.remote.GameRemoteSurface.tsx` | 6 | MEDIUM_COUPLING |
-| `components/games/dream.remote.LegacyGameRemote.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.MarketplacePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.ProfilePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SettingsPanel.tsx` | 6 | MEDIUM_COUPLING |
@@ -18296,6 +18285,7 @@ _No circular dependencies detected._
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS, DUAL_RUNTIME |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `components/games/dream.MadMaxiWildfall.tsx` | 4 | EVENT_BUS |
 | `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
 | `lib/engins/content/useContentEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -19053,11 +19043,12 @@ _No circular dependencies detected._
 | `components/games/dream.DefuseRitual.tsx` | `(default)` |
 | `components/games/dream.EchoArena.tsx` | `(default)` |
 | `components/games/dream.EnginFracture.tsx` | `(default)` |
-| `components/games/dream.GameController.tsx` | `(default)` |
+| `components/games/dream.GameController.tsx` | `default` |
 | `components/games/dream.GamesHub.tsx` | `(default)` |
 | `components/games/dream.Glassfall.tsx` | `(default)` |
 | `components/games/dream.Leaderboard.tsx` | `(default)` |
 | `components/games/dream.LexiconSolitaire.tsx` | `(default)` |
+| `components/games/dream.MadMaxiWildfall.tsx` | `(default)` |
 | `components/games/dream.NeonDrift.tsx` | `(default)` |
 | `components/games/dream.NiteFlyerSolarHymn.tsx` | `(default)` |
 | `components/games/dream.NullCathedral.tsx` | `(default)` |
@@ -19069,7 +19060,7 @@ _No circular dependencies detected._
 | `components/games/dream.hud.MobileGameHUD.tsx` | `(default)` |
 | `components/games/dream.remote.GameRemote.tsx` | `default` |
 | `components/games/dream.remote.GameRemoteSurface.tsx` | `(default)` |
-| `components/games/dream.remote.LegacyGameRemote.tsx` | `(default)` |
+| `components/games/dream.remote.LegacyGameRemote.tsx` | `default` |
 | `components/games/madmaxi/config.ts` | `MADMAXI_ENEMY_KINDS`, `MADMAXI_POWERUP_KINDS`, `BOSSES` |
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | `(default)` |
 | `components/games/madmaxi/index.ts` | `default`, `TOTAL_LEVELS`, `getZoneIdx`, `isBossLevel` |
@@ -19287,6 +19278,7 @@ _No circular dependencies detected._
 | `lib/dreams/DreamRegistry.tsx` | `DreamRegistry` |
 | `lib/dreams/profileProjection.ts` | `createDreamProjection` |
 | `lib/dreams/types.ts` | `DREAM_SURFACES`, `DREAM_KINDS`, `DREAM_RENDER_MODES`, `DREAM_VISIBILITIES` |
+| `lib/engin-runtime/EnginBaseState.ts` | `isRuntimeCoherenceReport`, `DEFAULT_COHERENCE_CAPACITY`, `evaluateCoherence`, `explainCoherencePressure`, `resolveCoherenceTransform` |
 | `lib/engin-runtime/EnginCapabilityExecution.ts` | `getEnginExecutionPlan`, `CodeEditRingBuffer` |
 | `lib/engin-runtime/EnginCapabilityTargets.ts` | `CANONICAL_ENGIN_ALIASES`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId` |
 | `lib/engin-runtime/EnginDomainCores.ts` | `CodePieceTableDocument`, `CodeEditorHotState`, `CodeDiagnosticWorkerBridge`, `CodeExecutionWorkerBridge`, `CodeSnapshotCompactor`, `CodeStartupHydrator`, `CodeKeystrokeBenchmark`, `GameWebGPUDevice`, `GameRenderLoop`, `GameInstanceBufferManager`, `GameGeometryBufferRegistry`, `GameMaterialBucketBuffer`, `GameFrustumCuller`, `GameLODSelector`, `GameInputRingBuffer`, `GamePhysicsCommandBuffer`, `GameFrameBudgetProbe`, `GameGeometryThroughputBenchmark`, `StarMakerAudioWorkletProcessor`, `StarMakerAudioWorkletBridge`, `StarMakerTrackBufferPool`, `StarMakerAudioCommandQueue`, `StarMakerTransportClock`, `StarMakerMixerKernel`, `StarMakerMeteringDecoupler`, `StarMakerLatencyProbe`, `ContentRenderJobQueue`, `ContentWorkerRenderBridge`, `ContentWebGPURenderPath`, `ContentTileRenderer4K`, `ContentRayAccelerationStructure`, `ContentGeometryBufferRegistry`, `ContentMaterialBufferRegistry`, `ContentProgressiveOutputBuffer`, `ContentGpuCapabilityProbe`, `ContentRenderBenchmark`, `BrandVectorPathCache`, `BrandSdfGlyphAtlas`, `BrandPaletteCache`, `BrandTypeScaleCache`, `BrandFileHydrator`, `BrandCollaborationDeltaPacker`, `BrandPatchLog`, `BrandLocalApplyQueue`, `BrandVectorRenderProbe`, `BrandFileOpenProbe`, `BrandCollaborationSyncProbe`, `LabParticleSoABuffer`, `LabSpatialHashGrid`, `LabCollisionCandidateBuffer`, `LabCollisionKernel`, `LabWebGPUComputePipeline`, `LabComputeShaderRegistry`, `LabGpuParticleBuffers`, `LabWasmSimdFallback`, `LabSimulationWorkerBridge`, `LabSimulationClock`, `LabParticleBenchmark64K`, `LabParticleBenchmark1M`, `LabCollisionBenchmark`, `LabGpuDispatchProbe`, `CollaborationApplyQueue`, `CollaborationRevisionClock`, `TransportLatencyProbe`, `DeterministicMergePatchModel`, `CrdtPatchModel`, `AssetManifestLoader`, `LazyEnginHydrator`, `StreamingAssetLoader`, `IndexedDbBlobStore`, `CacheStorageRuntime`, `createCanonicalScorecards`, `runCanonicalPerformanceBenchmarks`, `CodeEditRingBuffer`, `MidiEventRingBuffer`, `CollaborationDeltaPacker`, `StartupBudgetProbe`, `IdleMemoryProbe` |
@@ -19297,7 +19289,7 @@ _No circular dependencies detected._
 | `lib/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
 | `lib/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `CoalescedCommandQueue`, `HotLaneScheduler`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `ShaderKernelRegistry`, `MoldableModuleGpuBridge` |
 | `lib/engin-runtime/InternalMetrics.ts` | `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `DevOnlyBenchmarkRunner` |
-| `lib/engin-runtime/index.ts` | `createBaseState`, `createDomainObject`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `patchBaseState`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `GpuBufferRegistry`, `WasmKernelRuntime`, `WorkerPoolRuntime`, `detectWasmSimdSupport`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `AudioTrackMixer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
+| `lib/engin-runtime/index.ts` | `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createDomainObject`, `createRuntimeLoad`, `evaluateCoherence`, `explainCoherencePressure`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `isRuntimeCoherenceReport`, `patchBaseState`, `resolveCoherenceTransform`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `GpuBufferRegistry`, `WasmKernelRuntime`, `WorkerPoolRuntime`, `detectWasmSimdSupport`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `AudioTrackMixer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
 | `lib/engine/index.ts` | `UniversalEngine` |
 | `lib/enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema` |
 | `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
@@ -19348,9 +19340,11 @@ _No circular dependencies detected._
 | `lib/games/DualSenseManager.ts` | `DualSenseManager` |
 | `lib/games/avatar.ts` | `AVATAR_IMAGE_KEY`, `AVATAR_CREATED_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `setAvatarDataUrl`, `hasAvatar`, `clearAvatar`, `resizeImageToDataUrl` |
 | `lib/games/catalog.ts` | `GAME_CATALOG_IDS` |
+| `lib/games/gameControllerRight.ts` | `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS` |
 | `lib/games/hooks.ts` | `useKeySet`, `useGamePerformanceBaseline` |
 | `lib/games/lucid-avenue-world.ts` | `LUCID_AVENUE_TOTAL_SHARDS`, `LUCID_AVENUE_TOTAL_FLAGS`, `LUCID_AVENUE_TOTAL_CONTRACTS`, `LUCID_AVENUE_6900_TARGET`, `LUCID_AVENUE_DISTRICTS`, `createInitialLucidAvenueState`, `getLucidAvenueDistrict`, `getLucidAvenuePatrolPositions`, `getLucidAvenueMissionChecklist`, `getLucidAvenueRouteContracts`, `calculateLucidAvenueScore`, `getLucidAvenueCompletionPercent`, `getLucidAvenueStoryBeat`, `isSamePosition`, `moveLucidAvenuePlayer`, `waitLucidAvenueTurn`, `scanLucidAvenue`, `jamLucidAvenueGrid`, `deployLucidAvenueVehicle`, `fastTravelLucidAvenue`, `getLucidAvenueHint`, `requestLucidAvenueHint`, `interactInLucidAvenue`, `getLucidAvenuePatrolPathKeys`, `getLucidAvenueObjectiveKeys` |
-| `lib/games/mobileControls.ts` | `registerMobileGameControls` |
+| `lib/games/madmaxi-wildfall-world.ts` | `createWildfallRng`, `makeWildfallGlyphGrid`, `isWildfallPassable`, `wildfallHeroWeapon` |
+| `lib/games/mobileControls.ts` | `registerMobileGameControls`, `emitMobileLookDelta`, `emitMobileJump`, `emitMobileShoot` |
 | `lib/games/useImmersiveGameLayout.ts` | `getImmersiveCanvasStyle`, `getImmersiveStageStyle`, `getImmersiveOverlayStyle` |
 | `lib/gct/anomaly-detection.ts` | `detectAnomalies` |
 | `lib/gct/audio-fingerprint.ts` | `audioToVector`, `identifySong` |
@@ -20928,7 +20922,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.GameController.module.css
 │   │   ├── dream.GameController.tsx ∅
-│   │   │   └── ∅ unused: (default)
+│   │   │   └── ∅ unused: default
 │   │   ├── dream.GamesHub.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.Glassfall.tsx ∅
@@ -20944,6 +20938,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.LexiconSolitaire.tsx ∅
 │   │   │   └── ∅ unused: (default)
+│   │   ├── dream.MadMaxiWildfall.tsx ∅
+│   │   │   └── ∅ unused: (default)
 │   │   ├── dream.NeonDrift.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.NiteFlyerSolarHymn.tsx ∅
@@ -20957,7 +20953,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.remote.GameRemoteSurface.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.LegacyGameRemote.tsx ∅
-│   │   │   └── ∅ unused: (default)
+│   │   │   └── ∅ unused: default
 │   │   ├── dream.SerpentSiege.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.VoidlineGP.tsx ∅
@@ -21724,7 +21720,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DREAM_SURFACES, DREAM_KINDS, DREAM_RENDER_MODES, DREAM_VISIBILITIES
 │   │   └── useDreamsRuntime.ts
 │   ├── engin-runtime
-│   │   ├── EnginBaseState.ts
+│   │   ├── EnginBaseState.ts ∅
+│   │   │   └── ∅ unused: isRuntimeCoherenceReport, DEFAULT_COHERENCE_CAPACITY, evaluateCoherence, explainCoherencePressure, resolveCoherenceTransform
 │   │   ├── EnginCapabilities.ts
 │   │   ├── EnginCapabilityExecution.ts ∅
 │   │   │   └── ∅ unused: getEnginExecutionPlan, CodeEditRingBuffer
@@ -21748,7 +21745,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── HotRuntime.ts ∅
 │   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, CoalescedCommandQueue, HotLaneScheduler, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue, ShaderKernelRegistry, MoldableModuleGpuBridge
 │   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: createBaseState, createDomainObject, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, patchBaseState, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
+│   │   │   └── ∅ unused: attachCoherenceReport, createBaseState, createCoherenceCapacity, createCoherenceReport, createDomainObject, createRuntimeLoad, evaluateCoherence, explainCoherencePressure, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, isRuntimeCoherenceReport, patchBaseState, resolveCoherenceTransform, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
 │   │   ├── InternalMetrics.ts ∅
 │   │   │   └── ∅ unused: InternalOnlyMetricStore, UserFacingMetricLeakTest, DevOnlyBenchmarkRunner
 │   │   └── PremiumRuntimeQuality.ts
@@ -22052,14 +22049,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DualSenseManager
 │   │   ├── gameControllerButtons.ts
 │   │   ├── gameControllerLeft.ts
-│   │   ├── gameControllerRight.ts
+│   │   ├── gameControllerRight.ts ∅
+│   │   │   └── ∅ unused: AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS
 │   │   ├── hooks.ts ∅
 │   │   │   └── ∅ unused: useKeySet, useGamePerformanceBaseline
 │   │   ├── library-state.ts
 │   │   ├── lucid-avenue-world.ts ∅
 │   │   │   └── ∅ unused: LUCID_AVENUE_TOTAL_SHARDS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, createInitialLucidAvenueState, getLucidAvenueDistrict, getLucidAvenuePatrolPositions, getLucidAvenueMissionChecklist, getLucidAvenueRouteContracts, calculateLucidAvenueScore, getLucidAvenueCompletionPercent, getLucidAvenueStoryBeat, isSamePosition, moveLucidAvenuePlayer, waitLucidAvenueTurn, scanLucidAvenue, jamLucidAvenueGrid, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueHint, requestLucidAvenueHint, interactInLucidAvenue, getLucidAvenuePatrolPathKeys, getLucidAvenueObjectiveKeys
+│   │   ├── madmaxi-wildfall-world.ts ∅
+│   │   │   └── ∅ unused: createWildfallRng, makeWildfallGlyphGrid, isWildfallPassable, wildfallHeroWeapon
 │   │   ├── mobileControls.ts ∅
-│   │   │   └── ∅ unused: registerMobileGameControls
+│   │   │   └── ∅ unused: registerMobileGameControls, emitMobileLookDelta, emitMobileJump, emitMobileShoot
 │   │   ├── navigation.ts
 │   │   ├── performance-baseline.ts
 │   │   ├── quality-plan.ts
