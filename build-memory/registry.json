@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-10T05:36:37.496Z",
+  "generatedAt": "2026-06-12T04:59:28.332Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
@@ -7975,22 +7975,36 @@
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "engine": "Universal",
       "exports": [
+        "attachCoherenceReport",
+        "CoherenceCapacity",
+        "CoherenceState",
+        "CoherenceTransform",
         "createBaseState",
+        "createCoherenceCapacity",
+        "createCoherenceReport",
         "createDomainObject",
         "CreateDomainObjectInput",
+        "createRuntimeLoad",
+        "DEFAULT_COHERENCE_CAPACITY",
         "DomainObject",
         "DomainVisibility",
         "EnginBaseState",
         "EnginLifecycle",
+        "evaluateCoherence",
+        "explainCoherencePressure",
         "isDomainObject",
         "isEnginBaseState",
         "isJsonObject",
         "isJsonSerializable",
+        "isRuntimeCoherenceReport",
         "JsonArray",
         "JsonObject",
         "JsonPrimitive",
         "JsonValue",
-        "patchBaseState"
+        "patchBaseState",
+        "resolveCoherenceTransform",
+        "RuntimeCoherenceReport",
+        "RuntimeLoad"
       ]
     },
     {
@@ -8318,6 +8332,7 @@
       "engine": "Universal",
       "exports": [
         "acceptanceValueForTarget",
+        "attachCoherenceReport",
         "AudioTrackMixer",
         "AudioWorkletRuntime",
         "authorizeDomainCapability",
@@ -8328,6 +8343,8 @@
         "CollaborationDeltaPacker",
         "CommandRingBuffer",
         "createBaseState",
+        "createCoherenceCapacity",
+        "createCoherenceReport",
         "createCustomEnginCapabilityProfile",
         "createDomainObject",
         "createEnginCapabilityExecutionKernel",
@@ -8335,6 +8352,7 @@
         "createEnginEventBus",
         "createEnginRuntime",
         "createPremiumRuntimeQuality",
+        "createRuntimeLoad",
         "DEFAULT_USER_CAPABILITIES",
         "DeferredPersistenceQueue",
         "DeferredSyncQueue",
@@ -8350,6 +8368,8 @@
         "EnginRuntime",
         "enginStorageKey",
         "evaluateCapabilityTarget",
+        "evaluateCoherence",
+        "explainCoherencePressure",
         "fallbackEnginHardwareCapabilities",
         "fingerprintBytesWithWasm",
         "fingerprintEnginSnapshot",
@@ -8371,6 +8391,7 @@
         "isEnginProfileId",
         "isJsonObject",
         "isJsonSerializable",
+        "isRuntimeCoherenceReport",
         "LocalStorageAdapter",
         "MemoryAdapter",
         "MemorySyncTransport",
@@ -8380,6 +8401,7 @@
         "ParticleSoAKernel",
         "patchBaseState",
         "RayGridAccelerator",
+        "resolveCoherenceTransform",
         "RevisionCoalescer",
         "SnapshotCompactor",
         "stableStringifySnapshot",
@@ -12757,6 +12779,7 @@
       "engine": "Universal",
       "exports": [
         "RuntimeContainer",
+        "RuntimeContainerOptions",
         "RuntimeStrategy"
       ]
     },
