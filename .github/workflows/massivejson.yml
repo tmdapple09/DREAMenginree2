@@ -36,7 +36,6 @@ jobs:
           FILE_EXTENSIONS = {
               ".ts",
               ".tsx",
-              ".md",
               ".json",
               ".mjs",
               ".py",
@@ -57,24 +56,46 @@ jobs:
 
           IGNORE_DIRS = {
               ".git",
-              "node_modules",
-              ".next",
-              "out",
-              "dist",
-              "build",
-              "coverage",
-              ".vercel",
-              ".turbo",
-              ".cache",
-              ".parcel-cache",
-              ".pnpm-store",
-              ".yarn",
-              ".swc",
-              "__pycache__",
-              ".pytest_cache",
-              ".mypy_cache",
-              ".ruff_cache",
-              "repo-massive-json-export",
+
+    "node_modules",
+
+    ".next",
+
+    "out",
+
+    "dist",
+
+    "build",
+
+    "coverage",
+
+    ".vercel",
+
+    ".turbo",
+
+    ".cache",
+
+    ".parcel-cache",
+
+    ".pnpm-store",
+
+    ".yarn",
+
+    ".swc",
+
+    "__pycache__",
+
+    ".pytest_cache",
+
+    ".mypy_cache",
+
+    ".ruff_cache",
+
+    "repo-massive-json-export",
+
+    "test",
+
+    "tests",
           }
 
           SAFE_ENV_FILES = {
