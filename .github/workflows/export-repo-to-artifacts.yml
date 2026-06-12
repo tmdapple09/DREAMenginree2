@@ -1,4 +1,4 @@
-name: Export application code to CSV and JSON
+name: Export AI intake application code
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  export-application-code:
+  export-ai-intake-application-code:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Build application-code CSV and JSON exports
+      - name: Build AI intake application-code export
         shell: bash
         run: |
           python3 <<'PY'
@@ -28,13 +28,17 @@ jobs:
           import os
           import re
           import shutil
+          from collections import Counter, defaultdict
           from pathlib import Path
+          from typing import Any
 
           ROOT = Path.cwd()
 
-          OUT = ROOT / "repo-application-code-export"
-          CSV_OUT = OUT / "csv"
-          JSON_OUT = OUT / "json"
+          OUT = ROOT / "repo-ai-intake-export"
+          FULL_OUT = OUT / "full"
+          INDEX_OUT = OUT / "index"
+          GROUPED_OUT = OUT / "by-capability"
+          CONTEXT_OUT = OUT / "repo-context"
 
           APPLICATION_EXTENSIONS = {
               ".ts",
@@ -42,6 +46,7 @@ jobs:
               ".js",
               ".jsx",
               ".mjs",
+              ".cjs",
               ".css",
               ".json",
           }
@@ -52,7 +57,9 @@ jobs:
               "components",
               "coresurfaces",
               "daydreams",
+              "dreamdmbar",
               "engins",
+              "engine",
               "hooks",
               "lib",
               "src",
@@ -72,11 +79,31 @@ jobs:
               "middleware.js",
               "middleware.jsx",
               "next-env.d.ts",
+              "package.json",
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "tsconfig.json",
+              "jsconfig.json",
+              "next.config.js",
+              "next.config.mjs",
+              "next.config.ts",
+              "postcss.config.js",
+              "postcss.config.mjs",
+              "tailwind.config.js",
+              "tailwind.config.ts",
+              "components.json",
+              "vercel.json",
           }
 
-          IGNORE_DIRS = {
+          CONTEXT_DOC_FILES = {
+              "README.md",
+              "ARCHITECTURE.md",
+              "FILE_TREE.md",
+          }
+
+          GLOBAL_IGNORE_DIRS = {
               ".git",
-              ".github",
               "node_modules",
               ".next",
               "out",
@@ -96,6 +123,13 @@ jobs:
               ".ruff_cache",
               "repo-file-export",
               "repo-application-code-export",
+              "repo-ai-intake-export",
+              "playwright-report",
+              "test-results",
+          }
+
+          ROOT_IGNORE_DIRS = {
+              ".github",
               "docs",
               "documentation",
               "research",
@@ -112,11 +146,9 @@ jobs:
               "fixtures",
               "fixture",
               "e2e",
-              "playwright-report",
-              "test-results",
           }
 
-          IGNORE_FILE_PATTERNS = (
+          TEST_OR_STORY_FILE_PATTERNS = (
               ".test.",
               ".spec.",
               ".stories.",
@@ -134,24 +166,128 @@ jobs:
               ".env.production.example",
           }
 
+          EXTRA_EXPLICIT_APP_FILES = {
+              "build-memory/registry.json",
+          }
+
+          EXTRA_EXPLICIT_PREFIXES = (
+              "public/cartridges/",
+          )
+
+          IMPORT_FROM_RE = re.compile(
+              r"""
+              (?:
+                  import\s+(?:type\s+)?(?:[\s\S]*?)\s+from\s+
+                | export\s+(?:type\s+)?(?:[\s\S]*?)\s+from\s+
+              )
+              ["']([^"']+)["']
+              """,
+              re.VERBOSE,
+          )
+
+          SIDE_EFFECT_IMPORT_RE = re.compile(
+              r"""import\s+["']([^"']+)["']"""
+          )
+
+          DYNAMIC_IMPORT_RE = re.compile(
+              r"""import\s*\(\s*["']([^"']+)["']\s*\)"""
+          )
+
+          REQUIRE_RE = re.compile(
+              r"""require\s*\(\s*["']([^"']+)["']\s*\)"""
+          )
+
+          EXPORT_SYMBOL_RE = re.compile(
+              r"""
+              export\s+
+              (?:
+                  default\s+
+              )?
+              (?:
+                  async\s+
+              )?
+              (?:
+                  function|class|const|let|var|type|interface|enum
+              )
+              \s+
+              ([A-Za-z_$][A-Za-z0-9_$]*)
+              """,
+              re.VERBOSE,
+          )
+
+          DECLARED_SYMBOL_RE = re.compile(
+              r"""
+              (?:
+                  function|class|const|let|var|type|interface|enum
+              )
+              \s+
+              ([A-Za-z_$][A-Za-z0-9_$]*)
+              """,
+              re.VERBOSE,
+          )
+
+          ROUTE_METHOD_RE = re.compile(
+              r"""
+              export\s+
+              (?:
+                  async\s+
+              )?
+              function\s+
+              (GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)
+              \b
+              |
+              export\s+const\s+
+              (GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)
+              \b
+              """,
+              re.VERBOSE,
+          )
+
           def rel(path: Path) -> str:
               return path.relative_to(ROOT).as_posix()
 
-          def ignored(path: Path) -> bool:
-              parts = path.relative_to(ROOT).parts
-              return any(part in IGNORE_DIRS for part in parts)
+          def normalize_slug(value: str) -> str:
+              value = value.lower()
+              value = re.sub(r"[^a-z0-9._-]+", "-", value)
+              value = value.strip("-")
+              return value or "unknown"
 
-          def secret_env(path: Path) -> bool:
+          def is_safe_env_file(path: Path) -> bool:
               name = path.name
               if name in SAFE_ENV_FILES:
+                  return True
+              return False
+
+          def is_secret_env_file(path: Path) -> bool:
+              name = path.name
+              if is_safe_env_file(path):
                   return False
               return name == ".env" or name.startswith(".env.")
 
-          def ignored_file_name(path: Path) -> bool:
-              lower_name = path.name.lower()
-              return any(pattern in lower_name for pattern in IGNORE_FILE_PATTERNS)
+          def has_global_ignored_part(path: Path) -> bool:
+              parts = path.relative_to(ROOT).parts
+              return any(part in GLOBAL_IGNORE_DIRS for part in parts)
 
-          def inside_application_root(path: Path) -> bool:
+          def is_under_root_ignored_dir(path: Path) -> bool:
+              parts = path.relative_to(ROOT).parts
+              return bool(parts) and parts[0] in ROOT_IGNORE_DIRS
+
+          def is_test_or_story_file(path: Path) -> bool:
+              lower_name = path.name.lower()
+              return any(pattern in lower_name for pattern in TEST_OR_STORY_FILE_PATTERNS)
+
+          def is_explicit_app_file(path: Path) -> bool:
+              source_path = rel(path)
+
+              if source_path in EXTRA_EXPLICIT_APP_FILES:
+                  return True
+
+              if source_path.startswith(EXTRA_EXPLICIT_PREFIXES) and path.name == "MANIFEST.json":
+                  return True
+
+              return False
+
+          def is_inside_application_root(path: Path) -> bool:
               parts = path.relative_to(ROOT).parts
 
               if not parts:
@@ -162,154 +298,518 @@ jobs:
 
               return parts[0] in APPLICATION_ROOTS
 
-          def included(path: Path) -> bool:
+          def included_app_file(path: Path) -> bool:
+              if not path.is_file():
+                  return False
+
+              if has_global_ignored_part(path):
+                  return False
+
+              if is_secret_env_file(path):
+                  return False
+
+              if is_test_or_story_file(path):
+                  return False
+
+              if is_explicit_app_file(path):
+                  return True
+
+              if is_under_root_ignored_dir(path):
+                  return False
+
               return (
-                  path.is_file()
-                  and not ignored(path)
-                  and not secret_env(path)
-                  and not ignored_file_name(path)
-                  and inside_application_root(path)
+                  is_inside_application_root(path)
                   and path.suffix.lower() in APPLICATION_EXTENSIONS
               )
+
+          def included_context_doc(path: Path) -> bool:
+              return path.is_file() and path.name in CONTEXT_DOC_FILES and path.parent == ROOT
 
           def binary_file(data: bytes) -> bool:
               return b"\x00" in data[:4096]
 
-          def safe_name(source_path: str, new_ext: str) -> str:
-              safe = source_path.replace("\\", "/")
-              safe = re.sub(r"[^A-Za-z0-9._/-]+", "_", safe)
-              safe = safe.replace("/", "__")
-              digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:12]
-
-              if len(safe) > 180:
-                  safe = safe[-180:]
-
-              return f"{safe}.{digest}{new_ext}"
-
-          def read_record(path: Path) -> dict:
+          def read_text_or_base64(path: Path) -> dict[str, Any]:
               data = path.read_bytes()
-              source_path = rel(path)
-              suffix = path.suffix.lower()
               is_binary = binary_file(data)
 
               if is_binary:
-                  content_text = ""
-                  content_base64 = base64.b64encode(data).decode("ascii")
-                  encoding = "base64"
-              else:
-                  try:
-                      content_text = data.decode("utf-8")
-                      encoding = "utf-8"
-                  except UnicodeDecodeError:
-                      content_text = data.decode("utf-8", errors="replace")
-                      encoding = "utf-8-replacement"
+                  return {
+                      "is_binary": True,
+                      "encoding": "base64",
+                      "content_text": "",
+                      "content_base64": base64.b64encode(data).decode("ascii"),
+                      "size_bytes": len(data),
+                      "sha256": hashlib.sha256(data).hexdigest(),
+                  }
 
-                  content_base64 = ""
+              try:
+                  content_text = data.decode("utf-8")
+                  encoding = "utf-8"
+              except UnicodeDecodeError:
+                  content_text = data.decode("utf-8", errors="replace")
+                  encoding = "utf-8-replacement"
+
+              return {
+                  "is_binary": False,
+                  "encoding": encoding,
+                  "content_text": content_text,
+                  "content_base64": "",
+                  "size_bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest(),
+              }
+
+          def extract_imports(text: str) -> list[str]:
+              imports: set[str] = set()
+
+              for regex in (
+                  IMPORT_FROM_RE,
+                  SIDE_EFFECT_IMPORT_RE,
+                  DYNAMIC_IMPORT_RE,
+                  REQUIRE_RE,
+              ):
+                  for match in regex.finditer(text):
+                      imports.add(match.group(1))
+
+              return sorted(imports)
+
+          def extract_route_methods(text: str) -> list[str]:
+              methods: set[str] = set()
+
+              for match in ROUTE_METHOD_RE.finditer(text):
+                  method = match.group(1) or match.group(2)
+                  if method:
+                      methods.add(method)
+
+              return sorted(methods)
+
+          def extract_exports(text: str) -> list[str]:
+              return sorted(set(EXPORT_SYMBOL_RE.findall(text)))
+
+          def extract_declared_symbols(text: str) -> list[str]:
+              return sorted(set(DECLARED_SYMBOL_RE.findall(text)))
+
+          def first_non_empty_lines(text: str, limit: int = 24) -> list[str]:
+              lines: list[str] = []
+
+              for line in text.splitlines():
+                  stripped = line.strip()
+                  if not stripped:
+                      continue
+                  lines.append(stripped)
+                  if len(lines) >= limit:
+                      break
+
+              return lines
+
+          def count_lines(text: str) -> int:
+              if not text:
+                  return 0
+              return text.count("\n") + 1
+
+          def classify_capability(source_path: str) -> str:
+              lower = source_path.lower()
+
+              if lower.startswith("app/api/"):
+                  return "api-route"
+
+              if "dreamdmbar" in lower or "dreamdm" in lower or "dreambar" in lower or "dmbar" in lower:
+                  return "dreamdmbar"
+
+              if "dreamr" in lower:
+                  return "dreamr"
+
+              if "homedream" in lower or "/home/" in lower or lower.startswith("components/home/"):
+                  return "homedream"
+
+              if "dreamspace" in lower or "dreamsurface" in lower:
+                  return "dreamspace"
+
+              if lower.startswith("lib/runtime/") or lower.startswith("lib/engin-runtime/") or lower.startswith("components/runtime/"):
+                  return "runtime"
+
+              if lower.startswith("engins/") or lower.startswith("lib/engins/"):
+                  return "engin"
+
+              if "gameengin" in lower or "/game/" in lower or "madmaxi" in lower or "mad-maxi" in lower:
+                  return "gameengin"
+
+              if "starmaker" in lower or "music" in lower or "audio" in lower:
+                  return "starmakerengin"
+
+              if "labengin" in lower or "/lab/" in lower or "simulation" in lower:
+                  return "labengin"
+
+              if "brandingengin" in lower or "brandengin" in lower or "/brand/" in lower:
+                  return "brandingengin"
+
+              if "contentengin" in lower or "/content/" in lower:
+                  return "contentengin"
+
+              if "feed" in lower or "timeline" in lower or "post" in lower:
+                  return "feeds"
+
+              if "supabase" in lower or "database" in lower:
+                  return "data"
+
+              if lower.startswith("app/") or lower.startswith("pages/"):
+                  return "route-surface"
+
+              if lower.startswith("components/") or lower.startswith("coresurfaces/"):
+                  return "surface"
+
+              if lower.startswith("daydreams/"):
+                  return "daydream"
+
+              if lower.startswith("hooks/"):
+                  return "hook"
+
+              if lower.startswith("types/"):
+                  return "types"
+
+              return "application-code"
+
+          def classify_kind(source_path: str, text: str) -> str:
+              lower = source_path.lower()
+
+              if lower.startswith("app/api/") and source_path.endswith("route.ts"):
+                  return "next-api-route"
+
+              if lower.startswith("app/") and source_path.endswith("page.tsx"):
+                  return "next-page"
+
+              if lower.startswith("app/") and source_path.endswith("layout.tsx"):
+                  return "next-layout"
+
+              if source_path.endswith(".tsx"):
+                  if re.search(r"\breturn\s*\(", text) or "<" in text:
+                      return "react-component"
+                  return "tsx-module"
+
+              if source_path.endswith((".ts", ".js", ".mjs", ".cjs")):
+                  return "code-module"
+
+              if source_path.endswith(".css"):
+                  return "style"
+
+              if source_path.endswith(".json"):
+                  return "json-config-or-data"
+
+              return "application-file"
+
+          def make_record(path: Path) -> dict[str, Any]:
+              source_path = rel(path)
+              payload = read_text_or_base64(path)
+              text = payload["content_text"]
+
+              imports = extract_imports(text)
+              relative_imports = sorted([item for item in imports if item.startswith(".")])
+              alias_imports = sorted([item for item in imports if item.startswith("@/")])
+              package_imports = sorted([
+                  item for item in imports
+                  if not item.startswith(".") and not item.startswith("@/")
+              ])
 
               return {
                   "path": source_path,
                   "file_name": path.name,
-                  "extension": suffix,
-                  "size_bytes": len(data),
-                  "sha256": hashlib.sha256(data).hexdigest(),
-                  "is_binary": is_binary,
-                  "encoding": encoding,
-                  "content_text": content_text,
-                  "content_base64": content_base64,
+                  "extension": path.suffix.lower(),
+                  "root": path.relative_to(ROOT).parts[0] if path.relative_to(ROOT).parts else "",
+                  "capability": classify_capability(source_path),
+                  "kind": classify_kind(source_path, text),
+                  "size_bytes": payload["size_bytes"],
+                  "sha256": payload["sha256"],
+                  "is_binary": payload["is_binary"],
+                  "encoding": payload["encoding"],
+                  "line_count": count_lines(text),
+                  "imports": imports,
+                  "relative_imports": relative_imports,
+                  "alias_imports": alias_imports,
+                  "package_imports": package_imports,
+                  "exports": extract_exports(text),
+                  "route_methods": extract_route_methods(text),
+                  "declared_symbols": extract_declared_symbols(text)[:200],
+                  "code_evidence_first_lines": first_non_empty_lines(text),
+                  "content_text": text,
+                  "content_base64": payload["content_base64"],
               }
 
-          def write_csv(path: Path, rows: list[dict]) -> None:
+          def write_json(path: Path, data: Any, pretty: bool = True) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              if pretty:
+                  path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+              else:
+                  path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+          def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", encoding="utf-8") as handle:
+                  for row in rows:
+                      handle.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")))
+                      handle.write("\n")
+
+          def write_csv_index(path: Path, rows: list[dict[str, Any]]) -> None:
               path.parent.mkdir(parents=True, exist_ok=True)
 
               fieldnames = [
                   "path",
                   "file_name",
                   "extension",
+                  "root",
+                  "capability",
+                  "kind",
                   "size_bytes",
                   "sha256",
-                  "is_binary",
-                  "encoding",
-                  "content_text",
-                  "content_base64",
+                  "line_count",
+                  "imports",
+                  "relative_imports",
+                  "alias_imports",
+                  "package_imports",
+                  "exports",
+                  "route_methods",
+                  "declared_symbols",
+                  "code_evidence_first_lines",
               ]
 
               with path.open("w", encoding="utf-8", newline="") as handle:
                   writer = csv.DictWriter(handle, fieldnames=fieldnames)
                   writer.writeheader()
-                  writer.writerows(rows)
+
+                  for row in rows:
+                      writer.writerow({
+                          key: json.dumps(row.get(key, ""), ensure_ascii=False)
+                          if isinstance(row.get(key), list)
+                          else row.get(key, "")
+                          for key in fieldnames
+                      })
+
+          def candidate_paths_for_import(current_path: str, specifier: str) -> list[str]:
+              candidates: list[Path] = []
+
+              if specifier.startswith("@/"):
+                  base = ROOT / specifier[2:]
+              elif specifier.startswith("."):
+                  base = (ROOT / current_path).parent / specifier
+              else:
+                  return []
+
+              candidates.append(base)
+
+              for ext in APPLICATION_EXTENSIONS:
+                  candidates.append(Path(str(base) + ext))
+
+              for ext in APPLICATION_EXTENSIONS:
+                  candidates.append(base / f"index{ext}")
+
+              normalized: list[str] = []
+              for candidate in candidates:
+                  try:
+                      normalized.append(candidate.resolve().relative_to(ROOT).as_posix())
+                  except ValueError:
+                      continue
+
+              return normalized
+
+          def build_import_graph(records: list[dict[str, Any]]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+              path_set = {row["path"] for row in records}
+              nodes = []
+              edges = []
+              unresolved = []
+
+              for row in records:
+                  source_path = row["path"]
+
+                  nodes.append({
+                      "path": source_path,
+                      "capability": row["capability"],
+                      "kind": row["kind"],
+                      "exports": row["exports"],
+                  })
+
+                  for specifier in row["imports"]:
+                      if not specifier.startswith(".") and not specifier.startswith("@/"):
+                          edges.append({
+                              "from": source_path,
+                              "to": None,
+                              "specifier": specifier,
+                              "type": "package",
+                              "resolved": False,
+                          })
+                          continue
+
+                      matches = [candidate for candidate in candidate_paths_for_import(source_path, specifier) if candidate in path_set]
+
+                      if matches:
+                          edges.append({
+                              "from": source_path,
+                              "to": matches[0],
+                              "specifier": specifier,
+                              "type": "internal",
+                              "resolved": True,
+                          })
+                      else:
+                          unresolved.append({
+                              "from": source_path,
+                              "specifier": specifier,
+                              "candidates_checked": candidate_paths_for_import(source_path, specifier)[:20],
+                          })
+                          edges.append({
+                              "from": source_path,
+                              "to": None,
+                              "specifier": specifier,
+                              "type": "internal",
+                              "resolved": False,
+                          })
+
+              graph = {
+                  "nodes": nodes,
+                  "edges": edges,
+                  "stats": {
+                      "node_count": len(nodes),
+                      "edge_count": len(edges),
+                      "unresolved_internal_import_count": len(unresolved),
+                  },
+              }
+
+              return graph, unresolved
+
+          def make_context_record(path: Path) -> dict[str, Any]:
+              source_path = rel(path)
+              payload = read_text_or_base64(path)
+              text = payload["content_text"]
+
+              return {
+                  "path": source_path,
+                  "file_name": path.name,
+                  "size_bytes": payload["size_bytes"],
+                  "sha256": payload["sha256"],
+                  "encoding": payload["encoding"],
+                  "line_count": count_lines(text),
+                  "content_text": text,
+              }
 
           if OUT.exists():
               shutil.rmtree(OUT)
 
-          CSV_OUT.mkdir(parents=True, exist_ok=True)
-          JSON_OUT.mkdir(parents=True, exist_ok=True)
+          FULL_OUT.mkdir(parents=True, exist_ok=True)
+          INDEX_OUT.mkdir(parents=True, exist_ok=True)
+          GROUPED_OUT.mkdir(parents=True, exist_ok=True)
+          CONTEXT_OUT.mkdir(parents=True, exist_ok=True)
 
-          files = sorted(
-              [path for path in ROOT.rglob("*") if included(path)],
+          app_files = sorted(
+              [path for path in ROOT.rglob("*") if included_app_file(path)],
               key=lambda path: rel(path).lower(),
           )
 
-          records = [read_record(path) for path in files]
-
-          write_csv(CSV_OUT / "application-code.csv", records)
-
-          for record in records:
-              output_name = safe_name(record["path"], ".csv")
-              write_csv(CSV_OUT / "files" / output_name, [record])
-
-          (JSON_OUT / "application-code.json").write_text(
-              json.dumps(records, ensure_ascii=False, indent=2),
-              encoding="utf-8",
+          context_files = sorted(
+              [path for path in ROOT.iterdir() if included_context_doc(path)],
+              key=lambda path: rel(path).lower(),
           )
 
-          for record in records:
-              output_name = safe_name(record["path"], ".json")
-              output_path = JSON_OUT / "files" / output_name
-              output_path.parent.mkdir(parents=True, exist_ok=True)
-              output_path.write_text(
-                  json.dumps(record, ensure_ascii=False, indent=2),
-                  encoding="utf-8",
-              )
+          records = [make_record(path) for path in app_files]
+          context_records = [make_context_record(path) for path in context_files]
+
+          graph, unresolved_imports = build_import_graph(records)
+
+          write_jsonl(FULL_OUT / "ai-intake.application-code.jsonl", records)
+          write_json(FULL_OUT / "ai-intake.application-code.json", records, pretty=False)
+
+          compact_records = []
+          for row in records:
+              compact = dict(row)
+              compact.pop("content_text", None)
+              compact.pop("content_base64", None)
+              compact_records.append(compact)
+
+          write_json(INDEX_OUT / "code-index.json", compact_records, pretty=True)
+          write_csv_index(INDEX_OUT / "code-index.csv", compact_records)
+
+          grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+          for row in records:
+              grouped[row["capability"]].append(row)
+
+          for capability, capability_rows in sorted(grouped.items()):
+              write_jsonl(GROUPED_OUT / f"{normalize_slug(capability)}.jsonl", capability_rows)
+
+          write_json(INDEX_OUT / "import-graph.json", graph, pretty=True)
+          write_json(INDEX_OUT / "unresolved-internal-imports.json", unresolved_imports, pretty=True)
+
+          write_jsonl(CONTEXT_OUT / "repo-context.jsonl", context_records)
+          write_json(CONTEXT_OUT / "repo-context.json", context_records, pretty=True)
+
+          extension_counts = Counter(row["extension"] for row in records)
+          capability_counts = Counter(row["capability"] for row in records)
+          kind_counts = Counter(row["kind"] for row in records)
+          root_counts = Counter(row["root"] for row in records)
 
           manifest = {
-              "purpose": "Application code only export",
+              "purpose": "AI-friendly application code intake export",
+              "notes": [
+                  "Primary full-code intake file is full/ai-intake.application-code.jsonl.",
+                  "JSONL is used so very large repositories can be streamed one file-record at a time.",
+                  "CSV is intentionally index-only. Full source content belongs in JSONL/JSON, not CSV.",
+                  "Root repo docs are exported separately under repo-context/ and are not mixed with application-code records.",
+                  "Root /supabase is excluded, but lib/supabase is preserved because it is application code.",
+              ],
               "included_extensions": sorted(APPLICATION_EXTENSIONS),
               "included_roots": sorted(APPLICATION_ROOTS),
-              "included_root_files": sorted(ROOT_APPLICATION_FILES),
-              "excluded_dirs": sorted(IGNORE_DIRS),
-              "excluded_file_patterns": list(IGNORE_FILE_PATTERNS),
-              "total_files_converted": len(records),
-              "csv_export": {
-                  "combined": "application-code.csv",
-                  "per_file_folder": "files/",
+              "included_root_application_files": sorted(ROOT_APPLICATION_FILES),
+              "extra_explicit_app_files": sorted(EXTRA_EXPLICIT_APP_FILES),
+              "extra_explicit_prefixes": list(EXTRA_EXPLICIT_PREFIXES),
+              "context_doc_files": sorted(CONTEXT_DOC_FILES),
+              "excluded_global_dirs": sorted(GLOBAL_IGNORE_DIRS),
+              "excluded_root_dirs": sorted(ROOT_IGNORE_DIRS),
+              "excluded_file_patterns": list(TEST_OR_STORY_FILE_PATTERNS),
+              "total_application_files": len(records),
+              "total_context_docs": len(context_records),
+              "total_source_lines": sum(row["line_count"] for row in records),
+              "total_source_bytes": sum(row["size_bytes"] for row in records),
+              "counts": {
+                  "by_extension": dict(sorted(extension_counts.items())),
+                  "by_capability": dict(sorted(capability_counts.items())),
+                  "by_kind": dict(sorted(kind_counts.items())),
+                  "by_root": dict(sorted(root_counts.items())),
               },
-              "json_export": {
-                  "combined": "application-code.json",
-                  "per_file_folder": "files/",
+              "outputs": {
+                  "full_jsonl": "full/ai-intake.application-code.jsonl",
+                  "full_json": "full/ai-intake.application-code.json",
+                  "code_index_json": "index/code-index.json",
+                  "code_index_csv": "index/code-index.csv",
+                  "import_graph": "index/import-graph.json",
+                  "unresolved_internal_imports": "index/unresolved-internal-imports.json",
+                  "capability_jsonl_folder": "by-capability/",
+                  "repo_context_jsonl": "repo-context/repo-context.jsonl",
+                  "repo_context_json": "repo-context/repo-context.json",
               },
           }
 
-          (CSV_OUT / "manifest.json").write_text(
-              json.dumps(manifest, ensure_ascii=False, indent=2),
-              encoding="utf-8",
-          )
+          write_json(OUT / "manifest.json", manifest, pretty=True)
 
-          (JSON_OUT / "manifest.json").write_text(
-              json.dumps(manifest, ensure_ascii=False, indent=2),
-              encoding="utf-8",
-          )
+          summary = f"""# AI intake application-code export complete
 
-          summary = f"""# Application code export complete
+          Total application files: **{len(records)}**
 
-          Included file types:
+          Total source lines: **{sum(row["line_count"] for row in records)}**
 
-          `{", ".join(sorted(APPLICATION_EXTENSIONS))}`
+          Total source bytes: **{sum(row["size_bytes"] for row in records)}**
 
-          Included roots:
+          Main intake file:
 
-          `{", ".join(sorted(APPLICATION_ROOTS))}`
+          `full/ai-intake.application-code.jsonl`
 
-          Total application files converted: **{len(records)}**
+          Index files:
+
+          - `index/code-index.csv`
+          - `index/code-index.json`
+          - `index/import-graph.json`
+          - `index/unresolved-internal-imports.json`
+
+          Capability groups:
+
+          `by-capability/`
+
+          Repo context docs:
+
+          `repo-context/`
           """
 
           print(summary)
@@ -319,20 +819,11 @@ jobs:
               Path(step_summary).write_text(summary, encoding="utf-8")
           PY
 
-      - name: Upload application-code CSV artifact zip
+      - name: Upload AI intake artifact zip
         uses: actions/upload-artifact@v4
         with:
-          name: repo-application-code-csv
-          path: repo-application-code-export/csv
-          if-no-files-found: error
-          retention-days: 14
-          compression-level: 9
-
-      - name: Upload application-code JSON artifact zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: repo-application-code-json
-          path: repo-application-code-export/json
+          name: repo-ai-intake-application-code
+          path: repo-ai-intake-export
           if-no-files-found: error
           retention-days: 14
           compression-level: 9
