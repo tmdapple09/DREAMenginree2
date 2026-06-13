@@ -60,7 +60,7 @@ export default async function CreateDaydreamPage( ){
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 6, padding: '2px 8px', borderRadius: 9999, background: 'linear-gradient(135deg, rgba(251,146,60,0.15) 0%, rgba(245,158,11,0.15) 100%)', border: '1px solid rgba(251,146,60,0.25)' }}>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#fb923c' }}>Content 2026 · Rich Text · Multi-Platform · AI Optimizer</span>
           </div>
-          <p className="text-sm" style={{ color: 'var(--de-text-dim)', margin: 0 }}>Set up your content here on Side A. Open ContentEngin (Side B) to write, schedule, and publish.</p>
+          <p className="text-sm" style={{ color: 'var(--de-text-dim)', margin: 0 }}>Create procedural game assets here on Side A. Open ContentEngin (Side B) for recipes, photo references, part trees, rigging, validation, GLB export, and ZIP bundles.</p>
         </div>
 
         {WIDGETS.map(({ emoji, label, desc, color, href }) => (
@@ -90,7 +90,7 @@ export default async function CreateDaydreamPage( ){
           </div>
           <div className="de-widget-body">
             <p style={{ fontSize: 12, color: 'var(--de-text-dim)', marginBottom: 10, lineHeight: 1.6 }}>
-              Open <strong>ContentEngin (Side B)</strong> for the full creation suite — draft composer, content calendar, publishing queue, and more.
+              Open <strong>ContentEngin (Side B)</strong> for the procedural asset studio — recipes, part trees, materials, rigging, validation, and exports.
             </p>
           </div>
           <div className="de-widget-actions">

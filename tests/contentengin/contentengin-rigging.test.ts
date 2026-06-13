@@ -1,0 +1,2 @@
+import { describe, expect, it } from 'vitest'; import { createSkeleton } from '../../lib/contentengin/rigging'; import { validateSkeleton } from '../../lib/contentengin/rigging/rigValidator';
+describe('ContentEngin rigging',()=>{ it('creates valid non-AI humanoid skeleton',()=>{ const skeleton=createSkeleton('humanoid',4); expect(skeleton?.bones.length).toBeGreaterThan(10); expect(validateSkeleton(skeleton).valid).toBe(true); }); });

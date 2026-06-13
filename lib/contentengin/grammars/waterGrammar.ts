@@ -1,0 +1,2 @@
+import { ContentRecipe, PartNode, vec3 } from '../assetTypes'; import { p, root } from './shared';
+export function buildWaterParts(recipe:ContentRecipe):PartNode[]{ return [root('Water',[p('Surface','water','water-plane',vec3(Number(recipe.parameters.widthMeters??10),Number(recipe.parameters.lengthMeters??10),.01),'mat_water','CE_WATER'),p('Foam','water','ribbon',vec3(Number(recipe.parameters.widthMeters??10),.25,.01),'mat_water','CE_WATER',vec3(0,-Number(recipe.parameters.lengthMeters??10)/2,.02))])]; }

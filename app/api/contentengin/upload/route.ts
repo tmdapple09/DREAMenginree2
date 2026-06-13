@@ -1,0 +1,2 @@
+import { NextRequest, NextResponse } from 'next/server'; import { analyzeImageBytes } from '@/lib/contentengin/photo/imageAnalyzer';
+export async function POST(req:NextRequest){ const form=await req.formData(); const file=form.get('file'); if(!(file instanceof File)) return NextResponse.json({error:'file is required'},{status:400}); const bytes=new Uint8Array(await file.arrayBuffer()); const sourceAnalysis=await analyzeImageBytes(bytes,file.name); return NextResponse.json({uploaded:false,persisted:false,sourceImagesRetained:false,sourceAnalysis}); }

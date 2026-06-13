@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-13T14:15:22.894Z
+Generated: 2026-06-13T20:39:10.613Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -872,6 +872,44 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │           ├── NextRequest  ← next/server
 │   │   │           ├── NextResponse  ← next/server
 │   │   │           ├── z  ← zod
+│   │   │           └── → POST
+│   │   ├── contentengin
+│   │   │   ├── assets
+│   │   │   │   └── [assetId]
+│   │   │   │       ├── export
+│   │   │   │       │   └── gameengin
+│   │   │   │       │       └── route.ts
+│   │   │   │       │           ├── safeSegment  ← @/lib/contentengin/pipeline/paths
+│   │   │   │       │           ├── safeUnder  ← @/lib/contentengin/pipeline/paths
+│   │   │   │       │           ├── cp  ← fs/promises
+│   │   │   │       │           ├── mkdir  ← fs/promises
+│   │   │   │       │           ├── writeFile  ← fs/promises
+│   │   │   │       │           ├── NextRequest  ← next/server
+│   │   │   │       │           ├── NextResponse  ← next/server
+│   │   │   │       │           └── → POST
+│   │   │   │       └── route.ts
+│   │   │   │           ├── safeUnder  ← @/lib/contentengin/pipeline/paths
+│   │   │   │           ├── readFile  ← fs/promises
+│   │   │   │           ├── NextResponse  ← next/server
+│   │   │   │           └── → GET
+│   │   │   ├── jobs
+│   │   │   │   ├── [jobId]
+│   │   │   │   │   └── route.ts
+│   │   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │   │       └── → GET
+│   │   │   │   └── route.ts
+│   │   │   │       ├── buildAsset  ← @/lib/contentengin/pipeline/build
+│   │   │   │       ├── writeAssetBundle  ← @/lib/contentengin/pipeline/bundle
+│   │   │   │       ├── zipDirectory  ← @/lib/contentengin/pipeline/bundle
+│   │   │   │       ├── NextRequest  ← next/server
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       ├── → GET
+│   │   │   │       └── → POST
+│   │   │   └── upload
+│   │   │       └── route.ts
+│   │   │           ├── analyzeImageBytes  ← @/lib/contentengin/photo/imageAnalyzer
+│   │   │           ├── NextRequest  ← next/server
+│   │   │           ├── NextResponse  ← next/server
 │   │   │           └── → POST
 │   │   ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── hf  [AI Systems (Boogieman / Dr.EAMS / Idari)]
@@ -2206,9 +2244,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── create  [CreateEngin]
 │   │   │   ├── calendar  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⬡ CalendarPanel  ← @/components/engines/create/panels/dream.panel.CalendarPanel
-│   │   │   │       ├── EnginAppShell  ← @/components/engines/shared
-│   │   │   │       ├── EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├── ⬡ CreateEnginApp  ← @/components/engines/create/dream.CreateEnginApp
 │   │   │   │       ├── isDevBypassActive  ← @/lib/dev-bypass
 │   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
@@ -2218,9 +2254,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── → metadata
 │   │   │   ├── editor  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⬡ EditorPanel  ← @/components/engines/create/panels/dream.panel.EditorPanel
-│   │   │   │       ├── EnginAppShell  ← @/components/engines/shared
-│   │   │   │       ├── EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├── ⬡ CreateEnginApp  ← @/components/engines/create/dream.CreateEnginApp
 │   │   │   │       ├── isDevBypassActive  ← @/lib/dev-bypass
 │   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
@@ -2230,9 +2264,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── → metadata
 │   │   │   ├── queue  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⬡ QueuePanel  ← @/components/engines/create/panels/dream.panel.QueuePanel
-│   │   │   │       ├── EnginAppShell  ← @/components/engines/shared
-│   │   │   │       ├── EnginNavBar  ← @/components/engines/shared
+│   │   │   │       ├── ⬡ CreateEnginApp  ← @/components/engines/create/dream.CreateEnginApp
 │   │   │   │       ├── isDevBypassActive  ← @/lib/dev-bypass
 │   │   │   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │   │       ├── createServerClient  ⚠ @/lib/supabase/server
@@ -3150,14 +3182,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ui-surfaces.json
 ├── components
 │   ├── activity
-│   │   ├── dream.ActivityPostForm.tsx
+│   │   ├── dream.ActivityPostForm.tsx ∅
 │   │   │   ├── TierBadge  ← ./dream.TierBadge
 │   │   │   ├── calculateActivityPoints  ← @/lib/activity/scoring
 │   │   │   ├── getTierDescription  ← @/lib/activity/scoring
 │   │   │   ├── ActivityTier  ← @/lib/activity/types
 │   │   │   ├── VerificationMethod  ← @/lib/activity/types
 │   │   │   ├── useState  ← react
-│   │   │   └── → ActivityPostForm
+│   │   │   ├── → ActivityPostForm
+│   │   │   └── ∅ unused: ActivityPostForm
 │   │   ├── dream.ActivityProfile.tsx
 │   │   │   ├── TierBadge  ← ./dream.TierBadge
 │   │   │   ├── formatAQS  ← @/lib/activity/aqs
@@ -3248,6 +3281,59 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── useEffect  ← react
 │   │       ├── useRef  ← react
 │   │       ├── useState  ← react
+│   │       ├── → (default)
+│   │       └── ∅ unused: (default)
+│   ├── contentengin
+│   │   ├── AnimationPanel.tsx ∅
+│   │   │   ├── ContentAsset  ← @/lib/contentengin/assetTypes
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── AssetPreview3D.tsx ∅
+│   │   │   ├── ContentAsset  ← @/lib/contentengin/assetTypes
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── * as THREE  ← three
+│   │   │   ├── GLTFLoader  ← three/examples/jsm/loaders/GLTFLoader.js
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── ContentEnginStudio.tsx ∅
+│   │   │   ├── ⬡ AnimationPanel  ← ./AnimationPanel
+│   │   │   ├── ⬡ AssetPreview3D  ← ./AssetPreview3D
+│   │   │   ├── ⬡ ExportPanel  ← ./ExportPanel
+│   │   │   ├── ⬡ MaterialEditor  ← ./MaterialEditor
+│   │   │   ├── ⬡ PartTreeEditor  ← ./PartTreeEditor
+│   │   │   ├── ⬡ PhotoReferencePanel  ← ./PhotoReferencePanel
+│   │   │   ├── ⬡ RecipeEditor  ← ./RecipeEditor
+│   │   │   ├── ⬡ RiggingPanel  ← ./RiggingPanel
+│   │   │   ├── ContentAsset  ← @/lib/contentengin/assetTypes
+│   │   │   ├── ContentRecipe  ← @/lib/contentengin/assetTypes
+│   │   │   ├── useContentEnginRuntime  ← @/lib/engins/content/useContentEnginRuntime
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── ExportPanel.tsx ∅
+│   │   │   ├── ContentAsset  ← @/lib/contentengin/assetTypes
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── MaterialEditor.tsx ∅
+│   │   │   ├── MaterialDef  ← @/lib/contentengin/assetTypes
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── PartTreeEditor.tsx ∅
+│   │   │   ├── PartNode  ← @/lib/contentengin/assetTypes
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── PhotoReferencePanel.tsx ∅
+│   │   │   ├── useRef  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── RecipeEditor.tsx ∅
+│   │   │   ├── ContentRecipe  ← @/lib/contentengin/assetTypes
+│   │   │   ├── ExportProfile  ← @/lib/contentengin/assetTypes
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   └── RiggingPanel.tsx ∅
+│   │       ├── ContentAsset  ← @/lib/contentengin/assetTypes
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
 │   ├── core
@@ -6781,101 +6867,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → labDatasetId
 │   │   ├── → loadDataset
 │   │   └── ∅ unused: createIntent, labDatasetId, loadDataset, (default)
-│   ├── engin.ContentEngin.tsx ⚠ ∅
-│   │   ├── ActivityPostData  ← @/components/activity/dream.ActivityPostForm
-│   │   ├── ActivityPostForm  ← @/components/activity/dream.ActivityPostForm
-│   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
-│   │   ├── CompGraph  ← @/lib/composite/compositor
-│   │   ├── NodeType  ← @/lib/composite/compositor
-│   │   ├── addNode  ← @/lib/composite/compositor
-│   │   ├── connectNodes  ← @/lib/composite/compositor
-│   │   ├── createGraph  ← @/lib/composite/compositor
-│   │   ├── createNode  ← @/lib/composite/compositor
-│   │   ├── topologicalSort  ← @/lib/composite/compositor
-│   │   ├── FxCategory  ← @/lib/composite/fxSimulation
-│   │   ├── FxSimulation  ← @/lib/composite/fxSimulation
-│   │   ├── allCategories  ← @/lib/composite/fxSimulation
-│   │   ├── createSimulation  ← @/lib/composite/fxSimulation
-│   │   ├── presetsByCategory  ← @/lib/composite/fxSimulation
-│   │   ├── CameraTrack  ← @/lib/composite/matchmover
-│   │   ├── addSample  ← @/lib/composite/matchmover
-│   │   ├── addTrackPoint  ← @/lib/composite/matchmover
-│   │   ├── createTrack  ← @/lib/composite/matchmover
-│   │   ├── estimateCameraMotion  ← @/lib/composite/matchmover
-│   │   ├── exportTrackCSV  ← @/lib/composite/matchmover
-│   │   ├── trackSummary  ← @/lib/composite/matchmover
-│   │   ├── MocapClip  ← @/lib/composite/motionCapture
-│   │   ├── clipSummary  ← @/lib/composite/motionCapture
-│   │   ├── exportBVH  ← @/lib/composite/motionCapture
-│   │   ├── parseBVH  ← @/lib/composite/motionCapture
-│   │   ├── retargetClip  ← @/lib/composite/motionCapture
-│   │   ├── RotoProject  ← @/lib/composite/rotoscope
-│   │   ├── addLayer  ← @/lib/composite/rotoscope
-│   │   ├── createProject  ← @/lib/composite/rotoscope
-│   │   ├── exportFrameSVG  ← @/lib/composite/rotoscope
-│   │   ├── interpolateShape  ← @/lib/composite/rotoscope
-│   │   ├── keyframeList  ← @/lib/composite/rotoscope
-│   │   ├── setKeyframe  ← @/lib/composite/rotoscope
-│   │   ├── publishToDreamR  ← @/lib/content/publishIntent
-│   │   ├── resolvePublishIntent  ← @/lib/content/publishIntent
-│   │   ├── scoreContent  ← @/lib/content/seoScorer
-│   │   ├── annotateSearchMatches  ← @/lib/content/transcriptEditor
-│   │   ├── applyEditsToSegments  ← @/lib/content/transcriptEditor
-│   │   ├── computeCuts  ← @/lib/content/transcriptEditor
-│   │   ├── exportSRT  ← @/lib/content/transcriptEditor
-│   │   ├── parseSRT  ← @/lib/content/transcriptEditor
-│   │   ├── parseVTT  ← @/lib/content/transcriptEditor
-│   │   ├── searchTranscript  ← @/lib/content/transcriptEditor
-│   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
-│   │   ├── EngineBase  ← @/lib/dreamenginOS
-│   │   ├── UpgradedEngine  ← @/lib/dreamenginOS
-│   │   ├── createEventBus  ← @/lib/dreamenginOS
-│   │   ├── upgradeEngine  ← @/lib/dreamenginOS
-│   │   ├── ArtifactSlot  ← @/lib/enginpipe
-│   │   ├── useContentEnginRuntime  ← @/lib/engins/content/useContentEnginRuntime
-│   │   ├── useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
-│   │   ├── recordForgeTransfer  ← @/lib/forge/forgeIntelligence
-│   │   ├── useForgeActivity  ← @/lib/forge/useForgeActivity
-│   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
-│   │   ├── useContentEnginBridge  ← @/lib/runtime/useEnginBridge
-│   │   ├── useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
-│   │   ├── createClient  ⚠ @/lib/supabase/client
-│   │   ├── toErrorMessage  ← @/lib/utils
-│   │   ├── ArrowLeft  ← lucide-react
-│   │   ├── BarChart2  ← lucide-react
-│   │   ├── Brain  ← lucide-react
-│   │   ├── Calendar  ← lucide-react
-│   │   ├── Camera  ← lucide-react
-│   │   ├── CheckCircle  ← lucide-react
-│   │   ├── ChevronDown  ← lucide-react
-│   │   ├── ChevronUp  ← lucide-react
-│   │   ├── Crosshair  ← lucide-react
-│   │   ├── Dice5  ← lucide-react
-│   │   ├── Download  ← lucide-react
-│   │   ├── FileText  ← lucide-react
-│   │   ├── Film  ← lucide-react
-│   │   ├── Flag  ← lucide-react
-│   │   ├── Hash  ← lucide-react
-│   │   ├── Image  ← lucide-react
-│   │   ├── Layers  ← lucide-react
-│   │   ├── Link2  ← lucide-react
-│   │   ├── Mic  ← lucide-react
-│   │   ├── Rocket  ← lucide-react
-│   │   ├── RotateCcw  ← lucide-react
-│   │   ├── Search  ← lucide-react
-│   │   ├── Shield  ← lucide-react
-│   │   ├── Trash2  ← lucide-react
-│   │   ├── Video  ← lucide-react
-│   │   ├── Wand2  ← lucide-react
-│   │   ├── Wrench  ← lucide-react
-│   │   ├── Zap  ← lucide-react
-│   │   ├── ⬡ NextImage  ← next/image
-│   │   ├── useCallback  ← react
-│   │   ├── useEffect  ← react
-│   │   ├── useRef  ← react
-│   │   ├── useState  ← react
-│   │   ├── (dynamic)  ← @/lib/content/transcriptEditor
-│   │   ├── (dynamic)  ← @/lib/content/seoScorer
+│   ├── engin.ContentEngin.tsx ∅
+│   │   ├── ⬡ ContentEnginStudio  ← @/components/contentengin/ContentEnginStudio
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
 │   ├── engin.GameEngin.tsx ⚠ ∅
@@ -7918,7 +7911,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → graphSummary
 │   │   │   ├── → setParam
 │   │   │   ├── → topologicalSort
-│   │   │   └── ∅ unused: disconnectInput, setParam, findNode, graphSummary
+│   │   │   └── ∅ unused: createNode, createGraph, addNode, connectNodes, disconnectInput, setParam, findNode, topologicalSort, graphSummary
 │   │   ├── fxSimulation.ts ∅
 │   │   │   ├── → FX_PRESETS
 │   │   │   ├── → allCategories
@@ -7928,7 +7921,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → presetsByCategory
 │   │   │   ├── → resetSimParams
 │   │   │   ├── → setSimParam
-│   │   │   └── ∅ unused: FX_PRESETS, getPreset, setSimParam, getSimParam, resetSimParams
+│   │   │   └── ∅ unused: FX_PRESETS, getPreset, presetsByCategory, createSimulation, setSimParam, getSimParam, resetSimParams, allCategories
 │   │   ├── matchmover.ts ∅
 │   │   │   ├── → addSample
 │   │   │   ├── → addTrackPoint
@@ -7937,7 +7930,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → estimateCameraMotion
 │   │   │   ├── → exportTrackCSV
 │   │   │   ├── → trackSummary
-│   │   │   └── ∅ unused: computeHomography
+│   │   │   └── ∅ unused: createTrack, addTrackPoint, addSample, computeHomography, estimateCameraMotion, exportTrackCSV, trackSummary
 │   │   ├── motionCapture.ts ∅
 │   │   │   ├── → clipSummary
 │   │   │   ├── → exportBVH
@@ -7945,7 +7938,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → getFramePose
 │   │   │   ├── → parseBVH
 │   │   │   ├── → retargetClip
-│   │   │   └── ∅ unused: getFramePose, findJoint
+│   │   │   └── ∅ unused: parseBVH, getFramePose, retargetClip, exportBVH, clipSummary, findJoint
 │   │   └── rotoscope.ts ∅
 │   │       ├── → addLayer
 │   │       ├── → createProject
@@ -7955,7 +7948,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → keyframeList
 │   │       ├── → removeKeyframe
 │   │       ├── → setKeyframe
-│   │       └── ∅ unused: removeKeyframe, exportShapeSVG
+│   │       └── ∅ unused: createProject, addLayer, setKeyframe, removeKeyframe, interpolateShape, exportShapeSVG, exportFrameSVG, keyframeList
 │   ├── connectors  [Connectors]
 │   │   ├── providers  [Connectors]
 │   │   │   ├── bluesky.ts ∅
@@ -8226,7 +8219,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── seoScorer.ts ∅
 │   │   │   ├── → generateReport
 │   │   │   ├── → scoreContent
-│   │   │   └── ∅ unused: generateReport
+│   │   │   └── ∅ unused: scoreContent, generateReport
 │   │   ├── transcriptEditor.ts ∅
 │   │   │   ├── → annotateSearchMatches
 │   │   │   ├── → applyEditsToSegments
@@ -8237,7 +8230,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → searchTranscript
 │   │   │   ├── → segmentsToPlainText
 │   │   │   ├── → totalDurationMs
-│   │   │   └── ∅ unused: segmentsToPlainText
+│   │   │   └── ∅ unused: computeCuts, applyEditsToSegments, exportSRT, searchTranscript, annotateSearchMatches, segmentsToPlainText
 │   │   └── voiceClone.ts ∅
 │   │       ├── → audioFileToBase64
 │   │       ├── → cloneVoice
@@ -8248,6 +8241,302 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → speakWithBrowserTTS
 │   │       ├── → textToSpeech
 │   │       └── ∅ unused: cloneVoice, textToSpeech, listVoiceProfiles, deleteVoiceProfile, speakWithBrowserTTS, getBrowserVoices, audioFileToBase64
+│   ├── contentengin  [CreateEngin]
+│   │   ├── builders  [CreateEngin]
+│   │   │   ├── geometryBuilder.ts
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── Vec3  ← ../assetTypes
+│   │   │   │   ├── flattenParts  ← ./primitiveBuilder
+│   │   │   │   └── → buildGeometry
+│   │   │   ├── meshBuilder.ts
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── flattenParts  ← ./primitiveBuilder
+│   │   │   │   ├── primitiveStats  ← ./primitiveBuilder
+│   │   │   │   └── → computeMeshMetrics
+│   │   │   ├── modifiers.ts ∅
+│   │   │   │   ├── → applyModifierMetadata
+│   │   │   │   └── ∅ unused: applyModifierMetadata
+│   │   │   ├── primitiveBuilder.ts
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── PrimitiveKind  ← ../assetTypes
+│   │   │   │   ├── Vec3  ← ../assetTypes
+│   │   │   │   ├── identityTransform  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── → createPart
+│   │   │   │   ├── → flattenParts
+│   │   │   │   ├── → primitiveStats
+│   │   │   │   └── → resetPartIds
+│   │   │   ├── textureBuilder.ts
+│   │   │   │   ├── MaterialDef  ← ../assetTypes
+│   │   │   │   └── → assignProceduralTextureNames
+│   │   │   └── uvGenerator.ts
+│   │   │       ├── PartNode  ← ../assetTypes
+│   │   │       └── → assignProceduralUv
+│   │   ├── grammars  [CreateEngin]
+│   │   │   ├── animalGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildAnimalParts
+│   │   │   ├── bicycleGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildBicycleParts
+│   │   │   ├── bridgeGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildBridgeParts
+│   │   │   ├── buildingGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildBuildingParts
+│   │   │   ├── creatureGrammar.ts ∅
+│   │   │   │   ├── → buildCreatureParts
+│   │   │   │   └── ∅ unused: buildCreatureParts
+│   │   │   ├── humanoidGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   ├── symmetrical  ← ./shared
+│   │   │   │   └── → buildHumanoidParts
+│   │   │   ├── propGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildPropParts
+│   │   │   ├── roadGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildRoadParts
+│   │   │   ├── shared.ts
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── createPart  ← ../builders/primitiveBuilder
+│   │   │   │   ├── → p
+│   │   │   │   ├── → root
+│   │   │   │   └── → symmetrical
+│   │   │   ├── terrainGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildTerrainParts
+│   │   │   ├── treeGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildTreeParts
+│   │   │   ├── vehicleGrammar.ts
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── p  ← ./shared
+│   │   │   │   ├── root  ← ./shared
+│   │   │   │   └── → buildVehicleParts
+│   │   │   └── waterGrammar.ts
+│   │   │       ├── ContentRecipe  ← ../assetTypes
+│   │   │       ├── PartNode  ← ../assetTypes
+│   │   │       ├── vec3  ← ../assetTypes
+│   │   │       ├── p  ← ./shared
+│   │   │       ├── root  ← ./shared
+│   │   │       └── → buildWaterParts
+│   │   ├── materials  [CreateEngin]
+│   │   │   ├── materialTypes.ts
+│   │   │   ├── paletteExtractor.ts ∅
+│   │   │   │   ├── → extractPalette
+│   │   │   │   ├── → rgbaToHex
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   └── proceduralMaterials.ts ∅
+│   │   │       ├── MaterialDef  ← ../assetTypes
+│   │   │       ├── → defaultMaterials
+│   │   │       ├── → material
+│   │   │       └── ∅ unused: material
+│   │   ├── photo  [CreateEngin]
+│   │   │   ├── colorCluster.ts ∅
+│   │   │   │   ├── → extractPalette
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   ├── edgeDetector.ts ∅
+│   │   │   │   ├── → buildEdgeMapFromRgba
+│   │   │   │   └── ∅ unused: buildEdgeMapFromRgba
+│   │   │   ├── imageAnalyzer.ts
+│   │   │   │   ├── ShapeRegion  ← ../assetTypes
+│   │   │   │   ├── SourceImageAnalysis  ← ../assetTypes
+│   │   │   │   ├── rgbaToHex  ← ../materials/paletteExtractor
+│   │   │   │   ├── decodePng  ← ./pngDecoder
+│   │   │   │   └── → analyzeImageBytes
+│   │   │   ├── photoToRecipe.ts ∅
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── SourceImageAnalysis  ← ../assetTypes
+│   │   │   │   ├── → photoToRecipe
+│   │   │   │   └── ∅ unused: photoToRecipe
+│   │   │   ├── pngDecoder.ts
+│   │   │   │   ├── inflateSync  ← zlib
+│   │   │   │   └── → decodePng
+│   │   │   └── regionDetector.ts ∅
+│   │   │       ├── ShapeRegion  ← ../assetTypes
+│   │   │       ├── → relabelRegion
+│   │   │       └── ∅ unused: relabelRegion
+│   │   ├── pipeline  [CreateEngin]
+│   │   │   ├── build.ts
+│   │   │   │   ├── CONTENTENGIN_VERSION  ← ../assetTypes
+│   │   │   │   ├── ContentAsset  ← ../assetTypes
+│   │   │   │   ├── ContentAssetCategory  ← ../assetTypes
+│   │   │   │   ├── resetPartIds  ← ../builders/primitiveBuilder
+│   │   │   │   ├── assignProceduralTextureNames  ← ../builders/textureBuilder
+│   │   │   │   ├── assignProceduralUv  ← ../builders/uvGenerator
+│   │   │   │   ├── buildAnimalParts  ← ../grammars/animalGrammar
+│   │   │   │   ├── buildBicycleParts  ← ../grammars/bicycleGrammar
+│   │   │   │   ├── buildBridgeParts  ← ../grammars/bridgeGrammar
+│   │   │   │   ├── buildBuildingParts  ← ../grammars/buildingGrammar
+│   │   │   │   ├── buildHumanoidParts  ← ../grammars/humanoidGrammar
+│   │   │   │   ├── buildPropParts  ← ../grammars/propGrammar
+│   │   │   │   ├── buildRoadParts  ← ../grammars/roadGrammar
+│   │   │   │   ├── buildTerrainParts  ← ../grammars/terrainGrammar
+│   │   │   │   ├── buildTreeParts  ← ../grammars/treeGrammar
+│   │   │   │   ├── buildVehicleParts  ← ../grammars/vehicleGrammar
+│   │   │   │   ├── buildWaterParts  ← ../grammars/waterGrammar
+│   │   │   │   ├── defaultMaterials  ← ../materials/proceduralMaterials
+│   │   │   │   ├── resolveRecipe  ← ../recipes/recipeResolver
+│   │   │   │   ├── createSkeleton  ← ../rigging/fitArmature
+│   │   │   │   ├── SHADERS  ← ../shaders/shaderRegistry
+│   │   │   │   ├── generateCollision  ← ./generateCollision
+│   │   │   │   ├── generateLods  ← ./generateLods
+│   │   │   │   ├── safeSegment  ← ./paths
+│   │   │   │   ├── validateAsset  ← ./validate
+│   │   │   │   └── → buildAsset
+│   │   │   ├── bundle.ts
+│   │   │   │   ├── ContentAsset  ← ../assetTypes
+│   │   │   │   ├── createGlbBuffer  ← ./exportGlb
+│   │   │   │   ├── validateAsset  ← ./validate
+│   │   │   │   ├── makeManifest  ← ./writeManifest
+│   │   │   │   ├── mkdir  ← fs/promises
+│   │   │   │   ├── readFile  ← fs/promises
+│   │   │   │   ├── readdir  ← fs/promises
+│   │   │   │   ├── stat  ← fs/promises
+│   │   │   │   ├── writeFile  ← fs/promises
+│   │   │   │   ├── → writeAssetBundle
+│   │   │   │   └── → zipDirectory
+│   │   │   ├── exportGlb.ts
+│   │   │   │   ├── ContentAsset  ← ../assetTypes
+│   │   │   │   ├── MaterialDef  ← ../assetTypes
+│   │   │   │   ├── buildGeometry  ← ../builders/geometryBuilder
+│   │   │   │   ├── → createGlbBuffer
+│   │   │   │   ├── → expectedMaterialIdsForAsset
+│   │   │   │   └── → inspectGlb
+│   │   │   ├── generateCollision.ts
+│   │   │   │   ├── CollisionBlock  ← ../assetTypes
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── flattenParts  ← ../builders/primitiveBuilder
+│   │   │   │   └── → generateCollision
+│   │   │   ├── generateLods.ts
+│   │   │   │   ├── ExportProfile  ← ../assetTypes
+│   │   │   │   ├── LodDef  ← ../assetTypes
+│   │   │   │   └── → generateLods
+│   │   │   ├── paths.ts
+│   │   │   │   ├── → safeSegment
+│   │   │   │   └── → safeUnder
+│   │   │   ├── validate.ts
+│   │   │   │   ├── ContentAsset  ← ../assetTypes
+│   │   │   │   ├── ExportProfile  ← ../assetTypes
+│   │   │   │   ├── ValidationReport  ← ../assetTypes
+│   │   │   │   ├── computeMeshMetrics  ← ../builders/meshBuilder
+│   │   │   │   ├── expectedMaterialIdsForAsset  ← ./exportGlb
+│   │   │   │   ├── inspectGlb  ← ./exportGlb
+│   │   │   │   └── → validateAsset
+│   │   │   └── writeManifest.ts ∅
+│   │   │       ├── ContentAsset  ← ../assetTypes
+│   │   │       ├── ContentAssetObject  ← ../assetTypes
+│   │   │       ├── → makeManifest
+│   │   │       ├── → wrapAsset
+│   │   │       └── ∅ unused: wrapAsset
+│   │   ├── recipes  [CreateEngin]
+│   │   │   ├── recipeResolver.ts ∅
+│   │   │   │   ├── ContentRecipe  ← ../assetTypes
+│   │   │   │   ├── ExportProfile  ← ../assetTypes
+│   │   │   │   ├── SUPPORTED_ASSET_TYPES  ← ./recipeTypes
+│   │   │   │   ├── → normalizeAssetType
+│   │   │   │   ├── → resolveRecipe
+│   │   │   │   └── ∅ unused: normalizeAssetType
+│   │   │   ├── recipeTypes.ts
+│   │   │   │   └── → SUPPORTED_ASSET_TYPES
+│   │   │   └── seededRandom.ts ∅
+│   │   │       ├── → pick
+│   │   │       ├── → seededRandom
+│   │   │       └── ∅ unused: pick
+│   │   ├── rigging  [CreateEngin]
+│   │   │   ├── templates  [CreateEngin]
+│   │   │   │   ├── bird_basic.json
+│   │   │   │   ├── fish_basic.json
+│   │   │   │   ├── humanoid_basic.json
+│   │   │   │   ├── quadruped_basic.json
+│   │   │   │   └── vehicle_mechanical.json
+│   │   │   ├── fitArmature.ts
+│   │   │   │   ├── BoneDef  ← ../assetTypes
+│   │   │   │   ├── SkeletonDef  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── RigStandard  ← ./rigTypes
+│   │   │   │   └── → createSkeleton
+│   │   │   ├── index.ts
+│   │   │   │   ├── createSkeleton  ← ./fitArmature
+│   │   │   │   ├── RiggingRequest  ← ./rigTypes
+│   │   │   │   ├── execFile  ← child_process
+│   │   │   │   ├── mkdir  ← fs/promises
+│   │   │   │   ├── promisify  ← util
+│   │   │   │   ├── → createSkeleton
+│   │   │   │   └── → runRiggingPipeline
+│   │   │   ├── landmarks.ts ∅
+│   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── Vec3  ← ../assetTypes
+│   │   │   │   ├── vec3  ← ../assetTypes
+│   │   │   │   ├── → estimateLandmarks
+│   │   │   │   └── ∅ unused: estimateLandmarks
+│   │   │   ├── rigTypes.ts
+│   │   │   └── rigValidator.ts
+│   │   │       ├── SkeletonDef  ← ../assetTypes
+│   │   │       └── → validateSkeleton
+│   │   ├── shaders  [CreateEngin]
+│   │   │   ├── shaderRegistry.ts ∅
+│   │   │   │   ├── ShaderDef  ← ../assetTypes
+│   │   │   │   ├── → SHADERS
+│   │   │   │   ├── → getShader
+│   │   │   │   └── ∅ unused: getShader
+│   │   │   └── shaderTypes.ts
+│   │   ├── assetTypes.ts
+│   │   │   ├── → CONTENTENGIN_VERSION
+│   │   │   ├── → identityTransform
+│   │   │   └── → vec3
+│   │   └── cli.ts
+│   │       ├── analyzeImageBytes  ← ./photo/imageAnalyzer
+│   │       ├── buildAsset  ← ./pipeline/build
+│   │       ├── writeAssetBundle  ← ./pipeline/bundle
+│   │       ├── zipDirectory  ← ./pipeline/bundle
+│   │       ├── validateAsset  ← ./pipeline/validate
+│   │       ├── runRiggingPipeline  ← ./rigging
+│   │       ├── cp  ← fs/promises
+│   │       ├── mkdir  ← fs/promises
+│   │       ├── readFile  ← fs/promises
+│   │       └── writeFile  ← fs/promises
 │   ├── daydream  [Daydream System]
 │   │   ├── useDaydreamPersistence.ts ⚠
 │   │   │   ├── createClient  ⚠ @/lib/supabase/client
@@ -9346,6 +9635,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── → useCodeEnginRuntime
 │   │   ├── content  [CreateEngin]
 │   │   │   ├── contentEnginRuleSet.ts
+│   │   │   │   ├── ContentAsset  ← @/lib/contentengin/assetTypes
+│   │   │   │   ├── ContentRecipe  ← @/lib/contentengin/assetTypes
+│   │   │   │   ├── ExportProfile  ← @/lib/contentengin/assetTypes
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
@@ -11823,7 +12115,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → useGameEnginBridge
 │   │   │   ├── → useLabEnginBridge
 │   │   │   ├── → useStarMakerEnginBridge
-│   │   │   └── ∅ unused: useStarMakerEnginBridge
+│   │   │   └── ∅ unused: useStarMakerEnginBridge, useContentEnginBridge
 │   │   ├── useEnginCoopSync.ts
 │   │   │   ├── EnginName  ← @/lib/runtime/instanceManager
 │   │   │   ├── useSharedEnginChannel  ← @/lib/runtime/useSharedEnginChannel
@@ -12688,6 +12980,13 @@ Legend: ⚠ broken import  ∅ unused export
 ├── scripts
 │   ├── archive
 │   │   └── validate-deployment.js
+│   ├── contentengin
+│   │   ├── blender-add-basic-animations.py
+│   │   ├── blender-auto-rig.py
+│   │   ├── blender-cleanup.py
+│   │   ├── blender-validate-rig.py
+│   │   └── validate-glb.mjs
+│   │       └── readFileSync  ← node:fs
 │   ├── feature-build
 │   │   └── generate-features.mjs
 │   │       ├── existsSync  ← fs
@@ -14400,6 +14699,47 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── theme.css
 │   └── view-transitions.css
 ├── tests
+│   ├── contentengin
+│   │   ├── contentengin-api.test.ts
+│   │   │   ├── analyzeImageBytes  ← ../../lib/contentengin/photo/imageAnalyzer
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   ├── it  ← vitest
+│   │   │   └── deflateSync  ← zlib
+│   │   ├── contentengin-export.test.ts
+│   │   │   ├── buildAsset  ← ../../lib/contentengin/pipeline/build
+│   │   │   ├── createGlbBuffer  ← ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── expectedMaterialIdsForAsset  ← ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── inspectGlb  ← ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── safeSegment  ← ../../lib/contentengin/pipeline/paths
+│   │   │   ├── validateAsset  ← ../../lib/contentengin/pipeline/validate
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
+│   │   ├── contentengin-grammars.test.ts
+│   │   │   ├── buildAsset  ← ../../lib/contentengin/pipeline/build
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
+│   │   ├── contentengin-recipes.test.ts
+│   │   │   ├── buildAsset  ← ../../lib/contentengin/pipeline/build
+│   │   │   ├── seededRandom  ← ../../lib/contentengin/recipes/seededRandom
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
+│   │   ├── contentengin-rigging.test.ts
+│   │   │   ├── createSkeleton  ← ../../lib/contentengin/rigging
+│   │   │   ├── validateSkeleton  ← ../../lib/contentengin/rigging/rigValidator
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
+│   │   └── contentengin-validation.test.ts
+│   │       ├── PartNode  ← ../../lib/contentengin/assetTypes
+│   │       ├── buildAsset  ← ../../lib/contentengin/pipeline/build
+│   │       ├── validateAsset  ← ../../lib/contentengin/pipeline/validate
+│   │       ├── describe  ← vitest
+│   │       ├── expect  ← vitest
+│   │       └── it  ← vitest
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   │   ├── expect  ← @playwright/test
