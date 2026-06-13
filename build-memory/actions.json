@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-12T20:31:54.553Z",
+  "generated_at": "2026-06-13T12:18:05.059Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 120,
+  "count": 121,
   "actions": [
     {
       "file": "app/actions/dream-docs.ts",
@@ -254,6 +254,14 @@
     },
     {
       "file": "app/api/codeengin/search/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/codeengin/upload/route.ts",
       "type": "api-route-handler",
       "http_handlers": [
         "POST"

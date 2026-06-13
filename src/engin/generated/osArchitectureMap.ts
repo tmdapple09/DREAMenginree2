@@ -24,7 +24,7 @@ export const osSlotCounts = {
   "core-surface": 2,
   "daydream": 0,
   "surface": 277,
-  "route-surface": 261,
+  "route-surface": 268,
   "dreamsurface": 37,
   "engin": 15,
   "engine-ruleset": 25,
@@ -41,7 +41,7 @@ export const osSlotCounts = {
   "dr-eams-tool": 3,
   "hook": 12,
   "engine-system": 74,
-  "engine-utility": 308
+  "engine-utility": 318
 } as const;
 
 export const osGeneratedRouters = {
@@ -392,7 +392,7 @@ export const osArchitectureGraph = {
     "core-surface": 2,
     "daydream": 0,
     "surface": 277,
-    "route-surface": 261,
+    "route-surface": 268,
     "dreamsurface": 37,
     "engin": 15,
     "engine-ruleset": 25,
@@ -409,7 +409,7 @@ export const osArchitectureGraph = {
     "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 74,
-    "engine-utility": 308
+    "engine-utility": 318
   }
 } as const;
 
@@ -612,6 +612,48 @@ export const osArchitectureStageEntries = {
       "id": "app/api/close-friends/route",
       "slot": "route-surface",
       "path": "app/api/close-friends/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/diagnostics/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/diagnostics/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/file/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/file/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/git/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/git/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/run/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/run/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/search/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/search/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/upload/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/upload/route.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/api/codeengin/workspace/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/workspace/route.ts",
       "engine": "Universal"
     },
     {
@@ -5500,6 +5542,60 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "lib/codeengin/auth",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/auth.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/diagnostics",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/diagnostics.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/git",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/git.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/pathSafety",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/pathSafety.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/projectGraph",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/projectGraph.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/runner",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/runner.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/search",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/search.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/types",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/types.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "lib/codeengin/workspaceStore",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "lib/collaboration/index",
       "slot": "engine-utility",
       "path": "lib/collaboration/index.ts",
@@ -6976,6 +7072,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "lib/runtime/iEngine",
+      "slot": "engine-utility",
+      "path": "lib/runtime/iEngine.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "lib/runtime/instanceManager",
       "slot": "engine-utility",
       "path": "lib/runtime/instanceManager.ts",
@@ -7830,7 +7932,7 @@ User Action / Agent / CI
 | core-surface | 2 |
 | daydream | 0 |
 | surface | 277 |
-| route-surface | 261 |
+| route-surface | 268 |
 | dreamsurface | 37 |
 | engin | 15 |
 | engine-ruleset | 25 |
@@ -7847,7 +7949,7 @@ User Action / Agent / CI
 | dr-eams-tool | 3 |
 | hook | 12 |
 | engine-system | 74 |
-| engine-utility | 308 |
+| engine-utility | 318 |
 
 ## Architecture Stages
 
