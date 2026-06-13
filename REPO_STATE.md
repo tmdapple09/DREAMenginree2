@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-13T12:17:50.431Z
+Generated: 2026-06-13T14:13:55.585Z
 
 ---
 
@@ -7612,7 +7612,13 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/app/dreamdmbar/_components/HomeDreamRegion` | `⬡ HomeDreamSurface` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
 | `next/navigation` | `redirect` |
+| `next/server` | `connection` |
 
 ## `app/join/page.tsx`
 
@@ -18316,6 +18322,7 @@ _No circular dependencies detected._
 | `app/engines/portfolio/assets/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/optimize/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/quantum/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/homedream/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/join/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/new/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -18769,6 +18776,8 @@ _No circular dependencies detected._
 | `app/error.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/homedream/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/homedream/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/join/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/join/page.tsx` | `@/lib/supabase/config` | `buildAuthCallbackUrl` |
 | `app/lab/[id]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -20564,7 +20573,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── page.tsx
 │   │   └── page.tsx
 │   ├── homedream  [HOME — DreamDMBar]
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   ├── join  [Auth]
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)

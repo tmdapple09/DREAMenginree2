@@ -34,7 +34,7 @@ const DREAMR_MANIFESTO = {
 interface HomeDreamSurfaceProps {
   profile: ProfileLike | null;
   posts: Post[];
-  onOpenDrEams: () => void;
+  onOpenDrEams?: () => void;
   onOpenDreamSpace?: () => void;
   onOpenInRegion?: (path: string) => void;
   onOpenUrl?: (url: string, title?: string) => void;
@@ -88,6 +88,7 @@ export default function HomeDreamSurface({
   posts,
   onOpenDrEams,
   onOpenDreamSpace,
+  onOpenInRegion,
   onOpenEngin,
   userId,
   runtimeRegion = 'surface',
@@ -101,10 +102,13 @@ export default function HomeDreamSurface({
   const name = profile?.display_name || profile?.handle || 'Dreamer';
   const isCompactViewport = isCompactRuntimeViewport(viewportWidth);
 
-  // Always navigate via Next.js router — the DreamDMBar persists across routes
-  // in layout.tsx so router.push IS the depth-navigation model the docs specify.
-  // Never use onOpenUrl (iframe approach) — iframes cause blank pages.
+  // Inside the dual runtime, open pages in the active region so menu/daydream
+  // actions feel native. Standalone HomeDream keeps normal Next.js routing.
   const openPage = (url: string, _label?: string) => {
+    if (onOpenInRegion) {
+      onOpenInRegion(url);
+      return;
+    }
     router.push(url);
   };
 
@@ -369,9 +373,9 @@ export default function HomeDreamSurface({
               <QuickLink label="Edit ProfileDream" onClick={() => openPage('/edit-profiledream', 'Edit ProfileDream')} />
               <QuickLink label="View Profile" onClick={() => openPage('/view-profile', 'View Profile')} />
               {onOpenDreamSpace && (
-                <QuickLink label="Daydreams" onClick={onOpenDreamSpace} primary />
+                <QuickLink label={runtimeRegion === 'dream' ? 'Open HomeDream Here' : 'Open DreamSpace Here'} onClick={onOpenDreamSpace} primary />
               )}
-              <QuickLink label="Dr. Eams" onClick={onOpenDrEams} />
+              <QuickLink label="Dr. Eams" onClick={() => onOpenDrEams?.()} />
             </div>
           </div>
         </div>

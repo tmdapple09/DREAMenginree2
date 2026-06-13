@@ -33,6 +33,7 @@ export default function GlobalDreamBar( ){
     closeDrEams,
     runtimeCallbacks,
     openInSurface,
+    openInDominant,
     splitRatio,
     setFocus,
   } = useDreamSystem();
@@ -86,6 +87,10 @@ export default function GlobalDreamBar( ){
         open={bothMenusOpen}
         onClose={closeBothMenus}
         onSystemAction={handleSystemAction}
+        onOpenDaydream={(route) => {
+          if (runtimeCallbacks?.openInDominant) openInDominant(route);
+          else router.push(route);
+        }}
       />
 
       {drEamsOpen && <DrEamsPanel onClose={closeDrEams} />}

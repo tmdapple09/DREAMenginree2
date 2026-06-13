@@ -30,6 +30,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
   onSystemAction: (action: SystemMenuAction) => void;
+  onOpenDaydream?: (route: string) => void;
 };
 
 /** Left panel: the 6 Daydreams (spec §7.2 domain list) */
@@ -171,7 +172,7 @@ function Panel({
   );
 }
 
-export default function DualBottomMenu({ open, onClose, onSystemAction }: Props) {
+export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDaydream }: Props) {
   const router = useRouter();
 
   // Close on Escape
@@ -243,7 +244,8 @@ export default function DualBottomMenu({ open, onClose, onSystemAction }: Props)
               onClick={() => {
                 // Navigate first; defer the menu close to the next frame so the
                 // unmount can't race the click that triggered it.
-                router.push(item.route);
+                if (onOpenDaydream) onOpenDaydream(item.route);
+                else router.push(item.route);
                 requestAnimationFrame(onClose);
               }}
             />

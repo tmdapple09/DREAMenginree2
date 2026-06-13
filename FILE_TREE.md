@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-13T12:17:50.562Z
+Generated: 2026-06-13T14:13:55.729Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -2510,8 +2510,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── redirect  ← next/navigation
 │   │       └── → (default)
 │   ├── homedream  [HOME — DreamDMBar]
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       ├── ⬡ HomeDreamSurface  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   │       ├── isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├── FeedPost  ← @/lib/feed/useLiveFeed
+│   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
+│   │       ├── createServerClient  ⚠ @/lib/supabase/server
 │   │       ├── redirect  ← next/navigation
+│   │       ├── connection  ← next/server
 │   │       └── → (default)
 │   ├── join  [Auth]
 │   │   └── page.tsx ⚠

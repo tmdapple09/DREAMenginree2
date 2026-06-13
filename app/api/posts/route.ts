@@ -65,7 +65,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const { data: rawPosts, error } = await (supabase as SupabaseClient)
       .from('app_posts')
-      .select('*, profiles!inner(id, handle, display_name, avatar_url)')
+      .select('*, profiles!app_posts_user_id_fkey(id, handle, display_name, avatar_url)')
       .in('user_id', followedIds)
       .or(`visibility.eq.public,user_id.eq.${user.id}`)
       .order('created_at', { ascending: false })
@@ -92,7 +92,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const offset = parseInt(searchParams.get('offset') ?? '0', 10);
     const { data: posts, error } = await supabase
       .from('app_posts')
-      .select('*, profiles!inner(id, handle, display_name, avatar_url)')
+      .select('*, profiles!app_posts_user_id_fkey(id, handle, display_name, avatar_url)')
       .or(`visibility.eq.public,user_id.eq.${user.id}`)
       .order('likes_count', { ascending: false })
       .order('created_at', { ascending: false })
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const offset = parseInt(searchParams.get('offset') ?? '0', 10);
   const { data: posts, error } = await supabase
     .from('app_posts')
-    .select('*, profiles!inner(id, handle, display_name, avatar_url)')
+    .select('*, profiles!app_posts_user_id_fkey(id, handle, display_name, avatar_url)')
     .or(`visibility.eq.public,user_id.eq.${user.id}`)
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
@@ -218,7 +218,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } as never)
     .select(`
       *,
-      profiles!inner(id, handle, display_name, avatar_url)
+      profiles!app_posts_user_id_fkey(id, handle, display_name, avatar_url)
     `)
     .single();
 

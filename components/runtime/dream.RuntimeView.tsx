@@ -316,33 +316,11 @@ export default function RuntimeView({
     return (
       <div style={outerStyle}>
         <RuntimeShell
-          iframeUrl={iframeUrl}
-          onCloseIframe={closeIframe}
-          iframeTitle={iframeTitle}
+          iframeUrl={world.path}
+          onCloseIframe={onBackFromRegion ?? closeIframe}
+          iframeTitle={world.path}
         >
-          <div
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              height: '100%', minHeight: '100%',
-              background: 'linear-gradient(180deg, var(--de-bg-start) 0%, var(--de-bg-mid) 42%, var(--de-bg-end) 100%)',
-            }}
-          >
-            <div className="de-glass" style={{ borderRadius: 28, padding: 32, maxWidth: 600, textAlign: 'center' }}>
-              <div className="de-tag">Custom</div>
-              <div className="de-label" style={{ fontSize: 24, marginTop: 8 }}>{world.path}</div>
-              <button
-                type="button"
-                onClick={() => openUrl(world.path, world.path)}
-                style={{
-                  display: 'inline-block', marginTop: 16, padding: '10px 24px',
-                  background: 'linear-gradient(135deg,#c8981a,#e0b830)', color: '#fff',
-                  borderRadius: 10, fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer',
-                }}
-              >
-                Navigate →
-              </button>
-            </div>
-          </div>
+          <div />
         </RuntimeShell>
       </div>
     );
