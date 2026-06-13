@@ -58,10 +58,10 @@ export function useContentEnginRuntime(
       ...runtimeOptions,
       ...(useMemoryAdapter ? { ioAdapter: new MemoryAdapter() } : {}),
     };
-    runtimeRef.current = new EnginRuntime(CONTENT_ENGIN_RULE_SET, resolvedOptions);
+    runtimeRef.current = new EnginRuntime(CONTENT_ENGIN_RULE_SET, resolvedOptions) as EnginRuntime<ContentEnginAction>;
   }
 
-  const runtime = runtimeRef.current;
+  const runtime = runtimeRef.current!;
 
   const [derivedState, setDerivedState] = useState<ContentEnginDerivedState>(
     () => runtime.getDerivedState() as unknown as ContentEnginDerivedState,

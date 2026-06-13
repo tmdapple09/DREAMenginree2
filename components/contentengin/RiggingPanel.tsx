@@ -1,0 +1,2 @@
+'use client'; import type { ContentAsset } from '@/lib/contentengin/assetTypes';
+export default function RiggingPanel({asset}:{asset:ContentAsset|null}){return <section className="ce-card"><h2>Non-AI Rigging</h2><p>{asset?.skeleton?`${asset.skeleton.standard} skeleton · ${asset.skeleton.bones.length} bones · ${asset.skeleton.maxInfluencesPerVertex} max weights`:'This asset type exports static or awaits build.'}</p></section>}

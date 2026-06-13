@@ -1,0 +1,13 @@
+import { MaterialDef } from '../assetTypes';
+export function material(id:string,name:string,baseColor:string,shaderId='CE_PBR_MOBILE',roughness=0.55,metallic=0):MaterialDef { return {id,name,shaderId,baseColor,roughness,metallic,opacity:1,normalStrength:0.35,textureSlots:{}}; }
+export function defaultMaterials(assetType:string, params:Record<string,unknown>={}):MaterialDef[]{
+ const paint=String(params.paintColor??'#d31f28');
+ const sets:Record<string,MaterialDef[]>={
+  humanoid:[material('mat_skin','Skin','#c98962','CE_SKIN'),material('mat_hair','Hair','#2b1d16','CE_HAIR'),material('mat_cloth','Cloth','#2563eb')],
+  quadruped:[material('mat_fur','Fur','#8a5a35','CE_FUR'),material('mat_eye','Eyes','#111827','CE_TOON')], bird:[material('mat_feather','Feathers','#3b82f6','CE_FOLIAGE'),material('mat_beak','Beak','#f59e0b')], fish:[material('mat_scale','Scales','#14b8a6','CE_TOON'),material('mat_fin','Fins','#60a5fa')], creature:[material('mat_creature','Creature Hide','#6d28d9','CE_TOON')],
+  car:[material('mat_vehicle_paint','Vehicle Paint',paint,'CE_PBR_MOBILE',0.32),material('mat_rubber','Rubber','#111111','CE_PBR_MOBILE',0.8),material('mat_glass','Glass','#7dd3fc','CE_GLASS',0.05),material('mat_metal','Metal','#9ca3af','CE_METAL',0.28,1)],
+  truck:[material('mat_vehicle_paint','Truck Paint',paint),material('mat_rubber','Rubber','#111111'),material('mat_glass','Glass','#7dd3fc','CE_GLASS')], bicycle:[material('mat_frame','Frame','#ef4444','CE_METAL',0.3,0.8),material('mat_rubber','Rubber','#111111')], motorcycle:[material('mat_frame','Frame','#111827','CE_METAL',0.3,0.9),material('mat_rubber','Rubber','#111111')],
+  building:[material('mat_wall','Wall','#b8aa92'),material('mat_roof','Roof','#7f1d1d'),material('mat_glass','Windows','#93c5fd','CE_GLASS')], road:[material('mat_asphalt','Asphalt','#2f2f2f'),material('mat_marking','Lane Paint','#f8fafc')], bridge:[material('mat_concrete','Concrete','#9ca3af'),material('mat_metal','Metal','#64748b','CE_METAL',0.35,1)], terrain:[material('mat_grass','Grass','#3f7d20','CE_TERRAIN'),material('mat_dirt','Dirt','#7c4a24','CE_TERRAIN')], tree:[material('mat_bark','Bark','#6b4423'),material('mat_leaf','Leaves','#2f9e44','CE_FOLIAGE')], water:[material('mat_water','Water','#38bdf8','CE_WATER',0.02)], weapon:[material('mat_blade','Blade','#cbd5e1','CE_METAL',0.2,1),material('mat_grip','Grip','#4b2e18')], furniture:[material('mat_wood','Wood','#8b5a2b'),material('mat_fabric','Fabric','#475569')], container:[material('mat_body','Container Body','#8b5a2b'),material('mat_metal','Metal','#94a3b8','CE_METAL',0.3,1)], tool:[material('mat_metal','Metal','#94a3b8','CE_METAL',0.3,1),material('mat_handle','Handle','#7c4a24')]
+ };
+ return sets[assetType]??sets.humanoid!;
+}
