@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-12T04:59:06.087Z
+Generated: 2026-06-13T14:13:55.585Z
 
 ---
 
@@ -1366,8 +1366,6 @@ _No style files for this feature._
 
 ### External packages
 
-- `@dreamengin/sdk`
-- `@supabase/supabase-js`
 - `lucide-react`
 - `next`
 - `react`
@@ -1385,16 +1383,13 @@ _No style files for this feature._
 - `./panels/dream.panel.NotebookPanel`
 - `./panels/dream.panel.ProjectsPanel`
 - `./useAgentSession`
-- `@/components/daydream/dream.DiffViewer`
-- `@/components/daydream/dream.JourneyTrail`
+- `@/components/DreamButton`
 - `@/components/dreamengin/dream.panel.CrossEnginStatusPanel`
 - `@/components/engines/shared`
 - `@/engins/CodeEngin/orchestrator`
 - `@/engins/engin.CodeEngin`
-- `@/hooks/useSharedDream`
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/daydream/useDaydreamState`
-- `@/lib/dreamenginOS`
 - `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/engin-runtime/EnginCapabilityTargets`
@@ -1409,14 +1404,13 @@ _No style files for this feature._
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/runtime/swapManager`
 - `@/lib/runtime/useEnginBridge`
-- `@/lib/runtime/useEnginCoopSync`
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
 - `@/lib/utils`
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (2 files) · **Event Bus** (3 files)
+**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (3 files)
 
 ### Dual Runtime files
 
@@ -1426,7 +1420,6 @@ _No style files for this feature._
 ### Supabase files
 
 - `components/engines/code/panels/dream.panel.ProjectsPanel.tsx`
-- `engins/engin.CodeEngin.tsx`
 
 ### Event Bus files
 
@@ -4731,6 +4724,7 @@ _No page routes for this feature._
 - `lib/runtime/dualRuntime.ts`
 - `lib/runtime/dualRuntimeBridge.ts`
 - `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/iEngine.ts`
 - `lib/runtime/instanceManager.ts`
 - `lib/runtime/isAuthRelatedError.ts`
 - `lib/runtime/madMaxiSnapshotBridge.ts`
@@ -4863,6 +4857,7 @@ _No style files for this feature._
 - `@/lib/runtime/dualRuntime`
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/runtime/enginWorkflowRegistry`
+- `@/lib/runtime/iEngine`
 - `@/lib/runtime/instanceManager`
 - `@/lib/runtime/madMaxiSnapshotBridge`
 - `@/lib/runtime/runtimeChannel`
@@ -4878,7 +4873,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (16 files) · **Supabase** (1 files) · **Event Bus** (7 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (5 files)
+**Dual Runtime** (17 files) · **Supabase** (1 files) · **Event Bus** (7 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (5 files)
 
 ### Dual Runtime files
 
@@ -4891,6 +4886,7 @@ _No style files for this feature._
 - `lib/runtime/dualRuntime.ts`
 - `lib/runtime/dualRuntimeBridge.ts`
 - `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/iEngine.ts`
 - `lib/runtime/memory.ts`
 - `lib/runtime/moduleRegistry.ts`
 - `lib/runtime/quantumCircuit.ts`
@@ -5750,7 +5746,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `child_process` | `spawn` |
+| `@/lib/codeengin/runner` | `runCiCommand` |
 | `next/server` | `NextResponse` |
 
 ## `app/api/close-friends/route.ts`
@@ -5762,6 +5758,72 @@ _No style files for this feature._
 | `@/lib/utils` | `toErrorMessage` |
 | `@supabase/supabase-js` | `SupabaseClient` |
 | `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/codeengin/diagnostics/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/diagnostics` | `diagnoseFile`, `diagnoseWorkspace` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/file/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `@/lib/codeengin/workspaceStore` | `createProjectFile`, `deleteProjectFile`, `moveProjectFile`, `readProjectFile`, `writeProjectFile` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/git/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/git` | `getGitDiff`, `getGitLog`, `getGitStatus` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/run/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `@/lib/codeengin/runner` | `listRunnerCommands`, `runCodeEnginCommand` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/search/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `@/lib/codeengin/search` | `searchWorkspace` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/upload/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `@/lib/codeengin/workspaceStore` | `createCodeEnginWorkspace`, `getWorkspaceOverview` |
+| `child_process` | `spawn` |
+| `next/server` | `NextResponse` |
+
+## `app/api/codeengin/workspace/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `@/lib/codeengin/projectGraph` | `buildProjectGraph` |
+| `@/lib/codeengin/runner` | `listRunnerCommands` |
+| `@/lib/codeengin/workspaceStore` | `createCodeEnginWorkspace`, `getWorkspaceOverview`, `listEditableFiles` |
+| `next/server` | `NextResponse` |
 
 ## `app/api/comments/route.ts`
 
@@ -6571,7 +6633,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/activity/types` | `TrackViewRequest`, `TrackViewResponse` |
+| `@/lib/activity/types` | `TrackViewRequest`, `TrackViewResponse`, `View` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
 | `@supabase/supabase-js` | `SupabaseClient` |
@@ -7550,7 +7612,13 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/app/dreamdmbar/_components/HomeDreamRegion` | `⬡ HomeDreamSurface` |
+| `@/lib/dev-bypass` | `isDevBypassActive` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
 | `next/navigation` | `redirect` |
+| `next/server` | `connection` |
 
 ## `app/join/page.tsx`
 
@@ -8211,7 +8279,6 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `@/lib/runtime/swapManager` | `getSwap`, `toggleSwap` |
-| `@dreamengin/sdk` | `DreamEngine`, `Mesh`, `Scene` |
 | `lucide-react` | `ArrowLeftRight`, `Bot`, `Box`, `CheckCircle`, `Database`, `FlaskConical`, `Gamepad2`, `Loader2`, `Monitor`, `MousePointerClick`, `Play`, `RefreshCw`, `StopCircle`, `Zap` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -9904,7 +9971,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/lib/runtime/dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `isHomeActiveTop`, `makeDreamSpaceActiveSurface`, `makeHomeActiveTop`, `makeHomeDreamSpaceActive`, `setRuntimeWorld`, `swapDominantRuntime` |
+| `@/lib/runtime/dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `isHomeActiveTop`, `makeDreamSpaceActiveSurface`, `makeHomeActiveTop`, `makeHomeDreamSpaceActive` |
+| `@/lib/runtime/iEngine` | `ActorContext`, `IntentBus`, `JsonObject`, `JsonValue`, `createIntentPacket`, `dualRuntimeManifest`, `dualRuntimeRuleSet`, `negotiateCompatibility` |
 
 ## `components/runtime/dream.RuntimeView.tsx`
 
@@ -10426,15 +10494,12 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./CodeEngin/core/parser` | `parseCode` |
+| `./CodeEngin/core/parser` | `ParseError`, `ParsedSymbol`, `parseCode` |
 | `./CodeEngin/modules/ai-co-pilot` | `AgentPanel` |
-| `@/components/daydream/dream.DiffViewer` | `⬡ DiffViewer` |
-| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/components/DreamButton` | `⬡ DreamButton` |
 | `@/components/dreamengin/dream.panel.CrossEnginStatusPanel` | `⬡ CrossEnginStatusPanel` |
-| `@/hooks/useSharedDream` | `useSharedDream` |
 | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
 | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
-| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
 | `@/lib/enginpipe` | `ArtifactSlot` |
 | `@/lib/engins/code/useCodeEnginRuntime` | `useCodeEnginRuntime` |
 | `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
@@ -10442,12 +10507,8 @@ _No style files for this feature._
 | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `@/lib/runtime/useEnginBridge` | `useCodeEnginBridge` |
-| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
-| `@/lib/supabase/client` | `createClient` |
-| `lucide-react` | `ArrowLeft`, `ArrowLeftRight`, `BarChart2`, `Bot`, `Bug`, `CheckCircle`, `Clipboard`, `Code2`, `Copy`, `ListChecks`, `Loader2`, `MousePointer2`, `Plus`, `Scissors`, `Shield`, `Terminal`, `Trash2`, `X`, `XCircle`, `Zap`, `ZoomIn`, `ZoomOut` |
-| `next/link` | `⬡ Link` |
+| `lucide-react` | `ArrowLeft`, `Bot`, `Bug`, `CheckCircle`, `Clipboard`, `Code2`, `Copy`, `ListChecks`, `Loader2`, `Plus`, `Shield`, `Terminal`, `Trash2`, `X`, `XCircle`, `Zap`, `ZoomIn`, `ZoomOut` |
 | `react` | `CSSProperties`, `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
-| `@supabase/supabase-js` | _(dynamic import)_ |
 
 ## `engins/engin.ContentEngin.tsx`
 
@@ -10739,15 +10800,6 @@ _No style files for this feature._
 |--------|---------------|
 | `./agentOS/hostTools` | `CodeEnginHostTools` |
 
-## `lib/agentOS/hostTools.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `child_process` | `exec` |
-| `fs/promises` | `readFile`, `writeFile` |
-| `util` | `promisify` |
-| `fs/promises` | _(dynamic import)_ |
-
 ## `lib/agents/agentBus.ts`
 
 | Module | Connected via |
@@ -11012,6 +11064,61 @@ _No style files for this feature._
 | `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
 | `@supabase/supabase-js` | `SupabaseClient` |
 | `crypto` | `createHash` |
+
+## `lib/codeengin/auth.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/admin/lockout` | `isOwner` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `lib/codeengin/diagnostics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginDiagnostic` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+| `@/engins/CodeEngin/core/parser` | `parseCode` |
+
+## `lib/codeengin/git.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./workspaceStore` | `getWorkspaceMeta` |
+| `child_process` | `spawn` |
+
+## `lib/codeengin/projectGraph.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginGraphEdge`, `CodeEnginGraphNode`, `CodeEnginProjectGraph`, `CodeEnginSymbol` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+| `@/engins/CodeEngin/core/parser` | `parseCode` |
+
+## `lib/codeengin/runner.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginCommandResult` |
+| `./workspaceStore` | `getWorkspaceMeta` |
+| `child_process` | `spawn` |
+
+## `lib/codeengin/search.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginSearchHit` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+
+## `lib/codeengin/workspaceStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./pathSafety` | `CODEENGIN_BLOCKED_SEGMENTS`, `assertSafeWorkspacePath`, `assertValidWorkspaceId`, `getCodeEnginWorkspacesRoot`, `getWorkspaceRoot`, `isLikelyEditableFile`, `normalizeProjectPath` |
+| `./types` | `CodeEnginFileNode`, `CodeEnginFileRecord`, `CodeEnginWorkspaceMeta`, `CodeEnginWorkspaceOverview` |
+| `crypto` | `createHash`, `randomUUID` |
+| `fs` | `Dirent` |
 
 ## `lib/collaboration/index.ts`
 
@@ -12551,6 +12658,14 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+
+## `lib/runtime/iEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue`, `createDomainObject`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
 
 ## `lib/runtime/instanceManager.ts`
 
@@ -14648,18 +14763,10 @@ _No style files for this feature._
 
 - `@/lib/supabase/client`
 
-## `engins/engin.CodeEngin.tsx`
-
-- `@supabase/supabase-js`
-
 ## `engins/engin.ContentEngin.tsx`
 
 - `@/lib/content/transcriptEditor`
 - `@/lib/content/seoScorer`
-
-## `lib/agentOS/hostTools.ts`
-
-- `fs/promises`
 
 ## `lib/agents/agentBus.ts`
 
@@ -16181,6 +16288,16 @@ _No style files for this feature._
 ## `/api/close-friends`
 
 - `app/api/close-friends/route.ts`
+
+## `/api/codeengin`
+
+- `app/api/codeengin/diagnostics/route.ts`
+- `app/api/codeengin/file/route.ts`
+- `app/api/codeengin/git/route.ts`
+- `app/api/codeengin/run/route.ts`
+- `app/api/codeengin/search/route.ts`
+- `app/api/codeengin/upload/route.ts`
+- `app/api/codeengin/workspace/route.ts`
 
 ## `/api/comments`
 
@@ -17714,6 +17831,7 @@ _No style files for this feature._
 - `lib/runtime/dualRuntime.ts`
 - `lib/runtime/dualRuntimeBridge.ts`
 - `lib/runtime/enginWorkflowRegistry.ts`
+- `lib/runtime/iEngine.ts`
 - `lib/runtime/memory.ts`
 - `lib/runtime/moduleRegistry.ts`
 - `lib/runtime/quantumCircuit.ts`
@@ -17853,7 +17971,6 @@ _No style files for this feature._
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 - `engine/io.ts`
 - `engins/engin.BrandingEngin.tsx`
-- `engins/engin.CodeEngin.tsx`
 - `engins/engin.ContentEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
@@ -17927,7 +18044,7 @@ _No style files for this feature._
 
 # Event Bus Subscribers & Emitters
 
-- `app/api/ci/run/route.ts`
+- `app/api/codeengin/upload/route.ts`
 - `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
 - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
 - `components/daydream/dream.CodeDreamIDE.tsx`
@@ -17953,6 +18070,8 @@ _No style files for this feature._
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
+- `lib/codeengin/git.ts`
+- `lib/codeengin/runner.ts`
 - `lib/collaboration/index.ts`
 - `lib/dreamdm/useDreamDMConversations.ts`
 - `lib/dreamdm/useDreamDMMessages.ts`
@@ -18040,7 +18159,6 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/engin.ContentEngin.tsx` | 25 |
-| `engins/engin.CodeEngin.tsx` | 21 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -18054,6 +18172,7 @@ _No circular dependencies detected._
 | `app/profile/[handle]/page.tsx` | 15 |
 | `daydreams/games/page.tsx` | 15 |
 | `engins/dream.ForgeEngin.tsx` | 15 |
+| `engins/engin.CodeEngin.tsx` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `src/engin/generated/index.ts` | 14 |
@@ -18079,7 +18198,6 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `engins/engin.CodeEngin.tsx` | 21 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -18093,6 +18211,7 @@ _No circular dependencies detected._
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
+| `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `src/engin/generated/index.ts` | 14 | HIGH_COUPLING |
@@ -18178,6 +18297,7 @@ _No circular dependencies detected._
 | `app/ads/create/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/ads/slot/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/api/ads/view/route.ts` | 7 | MEDIUM_COUPLING |
+| `app/api/codeengin/upload/route.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `app/api/connectors/[provider]/sync/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/connectors/cron/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/dreamr/suggested/route.ts` | 7 | MEDIUM_COUPLING |
@@ -18202,6 +18322,7 @@ _No circular dependencies detected._
 | `app/engines/portfolio/assets/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/optimize/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/quantum/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/homedream/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/join/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/new/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -18236,6 +18357,7 @@ _No circular dependencies detected._
 | `app/api/admin/ai-chat/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/admin/code-files/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/blocks/route.ts` | 6 | MEDIUM_COUPLING |
+| `app/api/codeengin/workspace/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/content/intelligence/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/content/voice-clone/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/drafts/route.ts` | 6 | MEDIUM_COUPLING |
@@ -18274,16 +18396,17 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.WidgetsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
+| `lib/codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
 | `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/shell-cartridge-wiring.test.ts` | 6 | MEDIUM_COUPLING |
-| `components/daydream/dream.CodeDreamIDE.tsx` | 5 | EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS, DUAL_RUNTIME |
+| `components/daydream/dream.CodeDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.MadMaxiWildfall.tsx` | 4 | EVENT_BUS |
 | `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -18311,6 +18434,7 @@ _No circular dependencies detected._
 | `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.AvenueOfMirrors.tsx` | 3 | EVENT_BUS |
+| `lib/codeengin/runner.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
 | `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `lib/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
@@ -18324,8 +18448,8 @@ _No circular dependencies detected._
 | `tests/phase8f-daydream-activation.test.ts` | 3 | EVENT_BUS |
 | `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/universal-visual-modularity.test.ts` | 3 | EVENT_BUS |
-| `app/api/ci/run/route.ts` | 2 | EVENT_BUS |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `lib/codeengin/git.ts` | 2 | EVENT_BUS |
 | `lib/engin-runtime/HotRuntime.ts` | 2 | RUNTIME_REGISTRY |
 | `lib/forge/engineForge.ts` | 2 | EVENT_BUS |
 | `lib/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
@@ -18652,6 +18776,8 @@ _No circular dependencies detected._
 | `app/error.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/homedream/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/homedream/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/join/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/join/page.tsx` | `@/lib/supabase/config` | `buildAuthCallbackUrl` |
 | `app/lab/[id]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -18748,7 +18874,7 @@ _No circular dependencies detected._
 | `engins/CodeEngin/orchestrator/dream.index.tsx` | `@/engins/CodeEngin/orchestrator` | `⬡ CodeEnginOrchestrator` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `engins/engin.CodeEngin.tsx` | `@/lib/supabase/client` | `createClient` |
+| `engins/engin.CodeEngin.tsx` | `@/components/DreamButton` | `⬡ DreamButton` |
 | `engins/engin.ContentEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.GameEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.LabEngin.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -18772,6 +18898,8 @@ _No circular dependencies detected._
 | `lib/api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/child-safety/ncmecReporter.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `lib/codeengin/auth.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lib/codeengin/auth.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `lib/connectors/youtube.ts` | `@/lib/supabase/server` | `createServiceClient` |
 | `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
@@ -19168,7 +19296,7 @@ _No circular dependencies detected._
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `(default)` |
 | `engins/engin.BrandingEngin.tsx` | `(default)` |
-| `engins/engin.CodeEngin.tsx` | `(default)` |
+| `engins/engin.CodeEngin.tsx` | `createIntent`, `labDatasetId`, `loadDataset`, `(default)` |
 | `engins/engin.ContentEngin.tsx` | `(default)` |
 | `engins/engin.GameEngin.tsx` | `(default)` |
 | `engins/engin.LabEngin.tsx` | `(default)` |
@@ -19222,6 +19350,10 @@ _No circular dependencies detected._
 | `lib/child-safety/childSafetyDetector.ts` | `isMinorToAdultImageBlock` |
 | `lib/child-safety/messageContextChecker.ts` | `CHILD_SAFETY_LAW_SUMMARY` |
 | `lib/code/drEamsCodeAssist.ts` | `buildCodePrompt`, `getCodeAssistCompletion` |
+| `lib/codeengin/pathSafety.ts` | `CODEENGIN_ALLOWED_EXTENSIONS` |
+| `lib/codeengin/projectGraph.ts` | `extractImports` |
+| `lib/codeengin/runner.ts` | `CODEENGIN_COMMANDS` |
+| `lib/codeengin/workspaceStore.ts` | `(default)` |
 | `lib/collaboration/index.ts` | `createLocalCollabSession`, `createSupabaseCollabSession`, `broadcastPlayhead` |
 | `lib/componentInventory.ts` | `searchComponents` |
 | `lib/composite/compositor.ts` | `disconnectInput`, `setParam`, `findNode`, `graphSummary` |
@@ -19295,6 +19427,7 @@ _No circular dependencies detected._
 | `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
 | `lib/enginpipe/shell/ArtifactSlot.tsx` | `ArtifactSlot`, `useArtifactSlot`, `useOptionalArtifactSlot` |
 | `lib/enginpipe/telemetry/events.ts` | `TelemetryEventSchema` |
+| `lib/engins/code/codeEnginRuleSet.ts` | `(default)` |
 | `lib/engins/game/index.ts` | `GAME_ENGIN_RULE_SET`, `GRAVITY_VALUES` |
 | `lib/feature-build/index.ts` | `getManifest`, `allPairsInRefinePhase`, `allPairsMovingForward`, `countFeaturesByStatus`, `countUsableFeatures`, `getBuildPhase`, `SICC_GLOBAL_CRITERIA`, `getCriteriaForDimension` |
 | `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
@@ -19397,6 +19530,7 @@ _No circular dependencies detected._
 | `lib/runtime/dreamOSBus.ts` | `CAPABILITY_DESCRIPTORS`, `isIntentEnvelope`, `isInformationDomain`, `INFORMATION_DOMAINS` |
 | `lib/runtime/dualRuntime.ts` | `TORUS_DOMAINS`, `TORUS_WIDTH`, `TORUS_HEIGHT`, `TORUS_FOCUS_MAP`, `RUNTIME_REGIONS` |
 | `lib/runtime/enginWorkflowRegistry.ts` | `getWorkflowsByArtifactType`, `getWorkflowStats`, `workflowExists` |
+| `lib/runtime/iEngine.ts` | `validateManifest` |
 | `lib/runtime/instanceManager.ts` | `persistInstanceList`, `spawnDualInstances` |
 | `lib/runtime/memory.ts` | `ENGIN_OFFSET_POS_X`, `ENGIN_OFFSET_POS_Y`, `ENGIN_OFFSET_POS_Z`, `ENGIN_OFFSET_VEL_X`, `ENGIN_OFFSET_VEL_Y`, `ENGIN_OFFSET_VEL_Z`, `ENGIN_OFFSET_DREAMDM_BAR_Y`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_LOCKED_STATE`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_TELEMETRY`, `ENGIN_SAB_SIZE`, `isSABAvailable`, `getEntityBounds`, `validateWorkgroup`, `getWorkerCount` |
 | `lib/runtime/moduleRegistry.ts` | `subscribeRegistryToTransferEvents`, `manifestFromWidget` |
@@ -19618,6 +19752,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── dreamengin-preflight.yml
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
+│       ├── export-repo-to-artifacts.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -19637,6 +19772,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── humanai-audit.yml
 │       ├── idari-daily.yml
 │       ├── issue-bot.yml
+│       ├── massivejson.yml
 │       ├── mobile-nextgen-spec-evolution.yml
 │       ├── mobile-ps5-spec-evolution.yml
 │       ├── neural_decision_engine.yml
@@ -19803,6 +19939,21 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   ├── codeengin
+│   │   │   ├── diagnostics
+│   │   │   │   └── route.ts
+│   │   │   ├── file
+│   │   │   │   └── route.ts
+│   │   │   ├── git
+│   │   │   │   └── route.ts
+│   │   │   ├── run
+│   │   │   │   └── route.ts
+│   │   │   ├── search
+│   │   │   │   └── route.ts
+│   │   │   ├── upload
+│   │   │   │   └── route.ts
+│   │   │   └── workspace
+│   │   │       └── route.ts
 │   │   ├── comments
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20422,7 +20573,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── page.tsx
 │   │   └── page.tsx
 │   ├── homedream  [HOME — DreamDMBar]
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   ├── join  [Auth]
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)
@@ -21337,8 +21490,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   └── ∅ unused: (default)
 │   ├── engin.CodeEngin.tsx ⚠ ∅
-│   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   └── ∅ unused: (default)
+│   │   ├── ⚠ @/components/DreamButton  (⬡ DreamButton)
+│   │   └── ∅ unused: createIntent, labDatasetId, loadDataset, (default)
 │   ├── engin.ContentEngin.tsx ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: (default)
@@ -21546,6 +21699,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── code  [CodeEngin]
 │   │   └── drEamsCodeAssist.ts ∅
 │   │       └── ∅ unused: buildCodePrompt, getCodeAssistCompletion
+│   ├── codeengin  [CodeEngin]
+│   │   ├── auth.ts ⚠
+│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   ├── diagnostics.ts
+│   │   ├── git.ts
+│   │   ├── pathSafety.ts ∅
+│   │   │   └── ∅ unused: CODEENGIN_ALLOWED_EXTENSIONS
+│   │   ├── projectGraph.ts ∅
+│   │   │   └── ∅ unused: extractImports
+│   │   ├── runner.ts ∅
+│   │   │   └── ∅ unused: CODEENGIN_COMMANDS
+│   │   ├── search.ts
+│   │   ├── types.ts
+│   │   └── workspaceStore.ts ∅
+│   │       └── ∅ unused: (default)
 │   ├── collaboration
 │   │   └── index.ts ∅
 │   │       └── ∅ unused: createLocalCollabSession, createSupabaseCollabSession, broadcastPlayhead
@@ -21772,7 +21941,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── brandEnginRuleSet.ts
 │   │   │   └── useBrandEnginRuntime.ts
 │   │   ├── code  [CodeEngin]
-│   │   │   ├── codeEnginRuleSet.ts
+│   │   │   ├── codeEnginRuleSet.ts ∅
+│   │   │   │   └── ∅ unused: (default)
 │   │   │   └── useCodeEnginRuntime.ts
 │   │   ├── content  [CreateEngin]
 │   │   │   ├── contentEnginRuleSet.ts
@@ -22234,6 +22404,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: initWasmEngine
 │   │   ├── enginWorkflowRegistry.ts ∅
 │   │   │   └── ∅ unused: getWorkflowsByArtifactType, getWorkflowStats, workflowExists
+│   │   ├── iEngine.ts ∅
+│   │   │   └── ∅ unused: validateManifest
 │   │   ├── instanceManager.ts ∅
 │   │   │   └── ∅ unused: persistInstanceList, spawnDualInstances
 │   │   ├── isAuthRelatedError.ts
@@ -22750,6 +22922,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── hero-sprite.test.ts
 │   ├── home-feed-home.test.ts
 │   ├── homedream-page-auth.test.ts
+│   ├── i-engine-runtime.test.ts
 │   ├── icons.test.ts
 │   ├── idari-admin-guard.test.ts
 │   ├── idari-observability-loop.test.ts

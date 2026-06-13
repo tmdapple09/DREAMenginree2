@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-12T04:59:06.223Z
+Generated: 2026-06-13T14:13:55.729Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -126,6 +126,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── dreamengin-preflight.yml
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
+│       ├── export-repo-to-artifacts.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -145,6 +146,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── humanai-audit.yml
 │       ├── idari-daily.yml
 │       ├── issue-bot.yml
+│       ├── massivejson.yml
 │       ├── mobile-nextgen-spec-evolution.yml
 │       ├── mobile-ps5-spec-evolution.yml
 │       ├── neural_decision_engine.yml
@@ -607,7 +609,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ci
 │   │   │   └── run
 │   │   │       └── route.ts
-│   │   │           ├── spawn  ← child_process
+│   │   │           ├── runCiCommand  ← @/lib/codeengin/runner
 │   │   │           ├── NextResponse  ← next/server
 │   │   │           └── → POST
 │   │   ├── close-friends
@@ -621,6 +623,72 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → DELETE
 │   │   │       ├── → GET
 │   │   │       └── → POST
+│   │   ├── codeengin
+│   │   │   ├── diagnostics
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── diagnoseFile  ← @/lib/codeengin/diagnostics
+│   │   │   │       ├── diagnoseWorkspace  ← @/lib/codeengin/diagnostics
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       └── → POST
+│   │   │   ├── file
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── createProjectFile  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── deleteProjectFile  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── moveProjectFile  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── readProjectFile  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── writeProjectFile  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       └── → POST
+│   │   │   ├── git
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── getGitDiff  ← @/lib/codeengin/git
+│   │   │   │       ├── getGitLog  ← @/lib/codeengin/git
+│   │   │   │       ├── getGitStatus  ← @/lib/codeengin/git
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       └── → POST
+│   │   │   ├── run
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── listRunnerCommands  ← @/lib/codeengin/runner
+│   │   │   │       ├── runCodeEnginCommand  ← @/lib/codeengin/runner
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       ├── → GET
+│   │   │   │       └── → POST
+│   │   │   ├── search
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── searchWorkspace  ← @/lib/codeengin/search
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       └── → POST
+│   │   │   ├── upload
+│   │   │   │   └── route.ts
+│   │   │   │       ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │   │       ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │   │       ├── createCodeEnginWorkspace  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── getWorkspaceOverview  ← @/lib/codeengin/workspaceStore
+│   │   │   │       ├── spawn  ← child_process
+│   │   │   │       ├── NextResponse  ← next/server
+│   │   │   │       └── → POST
+│   │   │   └── workspace
+│   │   │       └── route.ts
+│   │   │           ├── assertCodeEnginAccess  ← @/lib/codeengin/auth
+│   │   │           ├── safeErrorMessage  ← @/lib/codeengin/pathSafety
+│   │   │           ├── buildProjectGraph  ← @/lib/codeengin/projectGraph
+│   │   │           ├── listRunnerCommands  ← @/lib/codeengin/runner
+│   │   │           ├── createCodeEnginWorkspace  ← @/lib/codeengin/workspaceStore
+│   │   │           ├── getWorkspaceOverview  ← @/lib/codeengin/workspaceStore
+│   │   │           ├── listEditableFiles  ← @/lib/codeengin/workspaceStore
+│   │   │           ├── NextResponse  ← next/server
+│   │   │           ├── → GET
+│   │   │           └── → POST
 │   │   ├── comments
 │   │   │   └── route.ts ⚠
 │   │   │       ├── scanContent  ← @/lib/child-safety/childSafetyDetector
@@ -1468,6 +1536,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── route.ts ⚠
 │   │   │           ├── TrackViewRequest  ← @/lib/activity/types
 │   │   │           ├── TrackViewResponse  ← @/lib/activity/types
+│   │   │           ├── View  ← @/lib/activity/types
 │   │   │           ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
 │   │   │           ├── createServerClient  ⚠ @/lib/supabase/server
 │   │   │           ├── SupabaseClient  ← @supabase/supabase-js
@@ -2441,8 +2510,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── redirect  ← next/navigation
 │   │       └── → (default)
 │   ├── homedream  [HOME — DreamDMBar]
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       ├── ⬡ HomeDreamSurface  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│   │       ├── isDevBypassActive  ← @/lib/dev-bypass
+│   │       ├── FeedPost  ← @/lib/feed/useLiveFeed
+│   │       ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
+│   │       ├── createServerClient  ⚠ @/lib/supabase/server
 │   │       ├── redirect  ← next/navigation
+│   │       ├── connection  ← next/server
 │   │       └── → (default)
 │   ├── join  [Auth]
 │   │   └── page.tsx ⚠
@@ -3292,9 +3367,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   │   ├── getSwap  ← @/lib/runtime/swapManager
 │   │   │   ├── toggleSwap  ← @/lib/runtime/swapManager
-│   │   │   ├── DreamEngine  ← @dreamengin/sdk
-│   │   │   ├── Mesh  ← @dreamengin/sdk
-│   │   │   ├── Scene  ← @dreamengin/sdk
 │   │   │   ├── ArrowLeftRight  ← lucide-react
 │   │   │   ├── Bot  ← lucide-react
 │   │   │   ├── Box  ← lucide-react
@@ -5285,8 +5357,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── makeDreamSpaceActiveSurface  ← @/lib/runtime/dualRuntime
 │   │   │   ├── makeHomeActiveTop  ← @/lib/runtime/dualRuntime
 │   │   │   ├── makeHomeDreamSpaceActive  ← @/lib/runtime/dualRuntime
-│   │   │   ├── setRuntimeWorld  ← @/lib/runtime/dualRuntime
-│   │   │   ├── swapDominantRuntime  ← @/lib/runtime/dualRuntime
+│   │   │   ├── ActorContext  ← @/lib/runtime/iEngine
+│   │   │   ├── IntentBus  ← @/lib/runtime/iEngine
+│   │   │   ├── JsonObject  ← @/lib/runtime/iEngine
+│   │   │   ├── JsonValue  ← @/lib/runtime/iEngine
+│   │   │   ├── createIntentPacket  ← @/lib/runtime/iEngine
+│   │   │   ├── dualRuntimeManifest  ← @/lib/runtime/iEngine
+│   │   │   ├── dualRuntimeRuleSet  ← @/lib/runtime/iEngine
+│   │   │   ├── negotiateCompatibility  ← @/lib/runtime/iEngine
 │   │   │   ├── → (default)
 │   │   │   ├── → useDualRuntime
 │   │   │   └── ∅ unused: (default)
@@ -6659,18 +6737,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
 │   ├── engin.CodeEngin.tsx ⚠ ∅
+│   │   ├── ParseError  ← ./CodeEngin/core/parser
+│   │   ├── ParsedSymbol  ← ./CodeEngin/core/parser
 │   │   ├── parseCode  ← ./CodeEngin/core/parser
 │   │   ├── AgentPanel  ← ./CodeEngin/modules/ai-co-pilot
-│   │   ├── ⬡ DiffViewer  ← @/components/daydream/dream.DiffViewer
-│   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├── ⬡ DreamButton  ⚠ @/components/DreamButton
 │   │   ├── ⬡ CrossEnginStatusPanel  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
-│   │   ├── useSharedDream  ← @/hooks/useSharedDream
 │   │   ├── useDaydreamPersistence  ← @/lib/daydream/useDaydreamPersistence
 │   │   ├── useDaydreamState  ← @/lib/daydream/useDaydreamState
-│   │   ├── EngineBase  ← @/lib/dreamenginOS
-│   │   ├── UpgradedEngine  ← @/lib/dreamenginOS
-│   │   ├── createEventBus  ← @/lib/dreamenginOS
-│   │   ├── upgradeEngine  ← @/lib/dreamenginOS
 │   │   ├── ArtifactSlot  ← @/lib/enginpipe
 │   │   ├── useCodeEnginRuntime  ← @/lib/engins/code/useCodeEnginRuntime
 │   │   ├── useEnginWorkflow  ← @/lib/engins/useEnginWorkflow
@@ -6678,11 +6752,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useForgeActivity  ← @/lib/forge/useForgeActivity
 │   │   ├── bridge  ← @/lib/runtime/dualRuntimeBridge
 │   │   ├── useCodeEnginBridge  ← @/lib/runtime/useEnginBridge
-│   │   ├── useEnginCoopSync  ← @/lib/runtime/useEnginCoopSync
-│   │   ├── createClient  ⚠ @/lib/supabase/client
 │   │   ├── ArrowLeft  ← lucide-react
-│   │   ├── ArrowLeftRight  ← lucide-react
-│   │   ├── BarChart2  ← lucide-react
 │   │   ├── Bot  ← lucide-react
 │   │   ├── Bug  ← lucide-react
 │   │   ├── CheckCircle  ← lucide-react
@@ -6691,9 +6761,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── Copy  ← lucide-react
 │   │   ├── ListChecks  ← lucide-react
 │   │   ├── Loader2  ← lucide-react
-│   │   ├── MousePointer2  ← lucide-react
 │   │   ├── Plus  ← lucide-react
-│   │   ├── Scissors  ← lucide-react
 │   │   ├── Shield  ← lucide-react
 │   │   ├── Terminal  ← lucide-react
 │   │   ├── Trash2  ← lucide-react
@@ -6702,16 +6770,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── Zap  ← lucide-react
 │   │   ├── ZoomIn  ← lucide-react
 │   │   ├── ZoomOut  ← lucide-react
-│   │   ├── ⬡ Link  ← next/link
 │   │   ├── CSSProperties  ← react
 │   │   ├── useCallback  ← react
 │   │   ├── useEffect  ← react
 │   │   ├── useMemo  ← react
 │   │   ├── useRef  ← react
 │   │   ├── useState  ← react
-│   │   ├── (dynamic)  ← @supabase/supabase-js
 │   │   ├── → (default)
-│   │   └── ∅ unused: (default)
+│   │   ├── → createIntent
+│   │   ├── → labDatasetId
+│   │   ├── → loadDataset
+│   │   └── ∅ unused: createIntent, labDatasetId, loadDataset, (default)
 │   ├── engin.ContentEngin.tsx ⚠ ∅
 │   │   ├── ActivityPostData  ← @/components/activity/dream.ActivityPostForm
 │   │   ├── ActivityPostForm  ← @/components/activity/dream.ActivityPostForm
@@ -7248,11 +7317,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── ∅ unused: describeUpgradeBlockers, createUpgradeProposal
 │   ├── agentOS
 │   │   └── hostTools.ts
-│   │       ├── exec  ← child_process
-│   │       ├── readFile  ← fs/promises
-│   │       ├── writeFile  ← fs/promises
-│   │       ├── promisify  ← util
-│   │       ├── (dynamic)  ← fs/promises
 │   │       └── → codeEnginHostTools
 │   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   ├── agentBus.ts ∅
@@ -7740,6 +7804,88 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → matchCodeVocabulary
 │   │       ├── → parseCodeResponse
 │   │       └── ∅ unused: buildCodePrompt, getCodeAssistCompletion
+│   ├── codeengin  [CodeEngin]
+│   │   ├── auth.ts ⚠
+│   │   │   ├── isOwner  ← @/lib/admin/lockout
+│   │   │   ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
+│   │   │   ├── createServerClient  ⚠ @/lib/supabase/server
+│   │   │   └── → assertCodeEnginAccess
+│   │   ├── diagnostics.ts
+│   │   │   ├── CodeEnginDiagnostic  ← ./types
+│   │   │   ├── listEditableFiles  ← ./workspaceStore
+│   │   │   ├── readProjectFile  ← ./workspaceStore
+│   │   │   ├── parseCode  ← @/engins/CodeEngin/core/parser
+│   │   │   ├── → diagnoseFile
+│   │   │   └── → diagnoseWorkspace
+│   │   ├── git.ts
+│   │   │   ├── getWorkspaceMeta  ← ./workspaceStore
+│   │   │   ├── spawn  ← child_process
+│   │   │   ├── → getGitDiff
+│   │   │   ├── → getGitLog
+│   │   │   └── → getGitStatus
+│   │   ├── pathSafety.ts ∅
+│   │   │   ├── → CODEENGIN_ALLOWED_EXTENSIONS
+│   │   │   ├── → CODEENGIN_BLOCKED_SEGMENTS
+│   │   │   ├── → assertSafeWorkspacePath
+│   │   │   ├── → assertValidWorkspaceId
+│   │   │   ├── → getCodeEnginWorkspacesRoot
+│   │   │   ├── → getWorkspaceRoot
+│   │   │   ├── → isLikelyEditableFile
+│   │   │   ├── → normalizeProjectPath
+│   │   │   ├── → safeErrorMessage
+│   │   │   └── ∅ unused: CODEENGIN_ALLOWED_EXTENSIONS
+│   │   ├── projectGraph.ts ∅
+│   │   │   ├── CodeEnginGraphEdge  ← ./types
+│   │   │   ├── CodeEnginGraphNode  ← ./types
+│   │   │   ├── CodeEnginProjectGraph  ← ./types
+│   │   │   ├── CodeEnginSymbol  ← ./types
+│   │   │   ├── listEditableFiles  ← ./workspaceStore
+│   │   │   ├── readProjectFile  ← ./workspaceStore
+│   │   │   ├── parseCode  ← @/engins/CodeEngin/core/parser
+│   │   │   ├── → buildProjectGraph
+│   │   │   ├── → extractImports
+│   │   │   └── ∅ unused: extractImports
+│   │   ├── runner.ts ∅
+│   │   │   ├── CodeEnginCommandResult  ← ./types
+│   │   │   ├── getWorkspaceMeta  ← ./workspaceStore
+│   │   │   ├── spawn  ← child_process
+│   │   │   ├── → CODEENGIN_COMMANDS
+│   │   │   ├── → listRunnerCommands
+│   │   │   ├── → runCiCommand
+│   │   │   ├── → runCodeEnginCommand
+│   │   │   └── ∅ unused: CODEENGIN_COMMANDS
+│   │   ├── search.ts
+│   │   │   ├── CodeEnginSearchHit  ← ./types
+│   │   │   ├── listEditableFiles  ← ./workspaceStore
+│   │   │   ├── readProjectFile  ← ./workspaceStore
+│   │   │   └── → searchWorkspace
+│   │   ├── types.ts
+│   │   └── workspaceStore.ts ∅
+│   │       ├── CODEENGIN_BLOCKED_SEGMENTS  ← ./pathSafety
+│   │       ├── assertSafeWorkspacePath  ← ./pathSafety
+│   │       ├── assertValidWorkspaceId  ← ./pathSafety
+│   │       ├── getCodeEnginWorkspacesRoot  ← ./pathSafety
+│   │       ├── getWorkspaceRoot  ← ./pathSafety
+│   │       ├── isLikelyEditableFile  ← ./pathSafety
+│   │       ├── normalizeProjectPath  ← ./pathSafety
+│   │       ├── CodeEnginFileNode  ← ./types
+│   │       ├── CodeEnginFileRecord  ← ./types
+│   │       ├── CodeEnginWorkspaceMeta  ← ./types
+│   │       ├── CodeEnginWorkspaceOverview  ← ./types
+│   │       ├── createHash  ← crypto
+│   │       ├── randomUUID  ← crypto
+│   │       ├── Dirent  ← fs
+│   │       ├── → (default)
+│   │       ├── → createCodeEnginWorkspace
+│   │       ├── → createProjectFile
+│   │       ├── → deleteProjectFile
+│   │       ├── → getWorkspaceMeta
+│   │       ├── → getWorkspaceOverview
+│   │       ├── → listEditableFiles
+│   │       ├── → moveProjectFile
+│   │       ├── → readProjectFile
+│   │       ├── → writeProjectFile
+│   │       └── ∅ unused: (default)
 │   ├── collaboration
 │   │   └── index.ts ∅
 │   │       ├── SupabaseClient  ← @/engine/io
@@ -9170,7 +9316,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── useState  ← react
 │   │   │       └── → useBrandEnginRuntime
 │   │   ├── code  [CodeEngin]
-│   │   │   ├── codeEnginRuleSet.ts
+│   │   │   ├── codeEnginRuleSet.ts ∅
 │   │   │   │   ├── EnginBaseState  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/lib/engin-runtime/EnginBaseState
@@ -9182,7 +9328,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── EnginRuleSetContract  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetManifest  ← @/lib/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/lib/engin-runtime/EnginRuleSetContract
-│   │   │   │   └── → CODE_ENGIN_RULE_SET
+│   │   │   │   ├── → (default)
+│   │   │   │   ├── → CODE_ENGIN_RULE_SET
+│   │   │   │   └── ∅ unused: (default)
 │   │   │   └── useCodeEnginRuntime.ts
 │   │   │       ├── CODE_ENGIN_RULE_SET  ← ./codeEnginRuleSet
 │   │   │       ├── CodeEnginAction  ← ./codeEnginRuleSet
@@ -11454,6 +11602,27 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → getWorkflowsByArtifactType
 │   │   │   ├── → workflowExists
 │   │   │   └── ∅ unused: getWorkflowsByArtifactType, getWorkflowStats, workflowExists
+│   │   ├── iEngine.ts ∅
+│   │   │   ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── createDomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── isDomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │   │   ├── DomainAuthorizationContext  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── DomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── authorizeDomainCapability  ← @/lib/engin-runtime/EnginCapabilities
+│   │   │   ├── RuntimeWorld  ← @/lib/runtime/dualRuntime
+│   │   │   ├── → IntentBus
+│   │   │   ├── → authorizeCapability
+│   │   │   ├── → createIntentPacket
+│   │   │   ├── → createRuntimeObject
+│   │   │   ├── → dualRuntimeManifest
+│   │   │   ├── → dualRuntimeRuleSet
+│   │   │   ├── → negotiateCompatibility
+│   │   │   ├── → validateDomainObject
+│   │   │   ├── → validateManifest
+│   │   │   └── ∅ unused: validateManifest
 │   │   ├── instanceManager.ts ∅
 │   │   │   ├── RuntimeChannel  ← @/lib/runtime/runtimeChannel
 │   │   │   ├── createLocalChannel  ← @/lib/runtime/runtimeChannel
@@ -15644,6 +15813,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── it  ← vitest
 │   │   ├── vi  ← vitest
 │   │   └── (dynamic)  ← @/app/dreamdmbar/layout
+│   ├── i-engine-runtime.test.ts
+│   │   ├── DEFAULT_DUAL_RUNTIME  ← @/lib/runtime/dualRuntime
+│   │   ├── IntentBus  ← @/lib/runtime/iEngine
+│   │   ├── authorizeCapability  ← @/lib/runtime/iEngine
+│   │   ├── createIntentPacket  ← @/lib/runtime/iEngine
+│   │   ├── createRuntimeObject  ← @/lib/runtime/iEngine
+│   │   ├── dualRuntimeManifest  ← @/lib/runtime/iEngine
+│   │   ├── dualRuntimeRuleSet  ← @/lib/runtime/iEngine
+│   │   ├── negotiateCompatibility  ← @/lib/runtime/iEngine
+│   │   ├── validateDomainObject  ← @/lib/runtime/iEngine
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
 │   ├── icons.test.ts
 │   │   ├── COLS  ← @/lib/icons/sheet
 │   │   ├── FRAME_H  ← @/lib/icons/sheet
