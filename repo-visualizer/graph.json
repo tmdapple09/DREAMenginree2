@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T13:32:59.880Z",
+  "generatedAt": "2026-06-13T13:53:22.032Z",
   "root": ".",
   "nodes": [
     {
@@ -3426,6 +3426,16 @@
       "label": "CHANGELOG.md",
       "type": "doc",
       "path": "CHANGELOG.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:CONTENTenginSPEC.md",
+      "label": "CONTENTenginSPEC.md",
+      "type": "doc",
+      "path": "CONTENTenginSPEC.md",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -22801,16 +22811,6 @@
       "parent": "folder:components/widgets",
       "loc": null,
       "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:comtentenginspec.md",
-      "label": "comtentenginspec.md",
-      "type": "doc",
-      "path": "comtentenginspec.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
       "tags": []
     },
     {

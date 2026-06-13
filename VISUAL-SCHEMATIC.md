@@ -4876,11 +4876,11 @@ _File-level graph omitted: 579 files exceeds Mermaid render budget. See table ab
 | `components/gameengin/README.md` | doc |
 | `components/games/css-modules.d.ts` | ts |
 | `components/games/dream.GameController.module.css` | css |
-| `comtentenginspec.md` | doc |
 | `config/advanced-game-targets.json` | config |
 | `config/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `config/optimizer.yaml` | config |
 | `config/ui-ux-spec.yaml` | config |
+| `CONTENTenginSPEC.md` | doc |
 | `COOP_AND_SOLO_ROADMAP.md` | doc |
 | `COREARCHITECTURE.md` | doc |
 | `COREBUILDPLAN.md` | doc |
