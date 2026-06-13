@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T12:18:05.059Z",
+  "generated_at": "2026-06-13T20:41:34.623Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 120,
   "surfaces": [
@@ -604,15 +604,11 @@
       "type": "page",
       "path": "/engines/create/calendar",
       "file": "app/engines/create/calendar/page.tsx",
-      "component": "CreateCalendarPage",
+      "component": "CreateAssetStudioAliasPage",
       "imports": [
         {
-          "name": "CalendarPanel",
-          "from": "@/components/engines/create/panels/dream.panel.CalendarPanel"
-        },
-        {
-          "name": "EnginAppShell, EnginNavBar",
-          "from": "@/components/engines/shared"
+          "name": "CreateEnginApp",
+          "from": "@/components/engines/create/dream.CreateEnginApp"
         }
       ]
     },
@@ -620,15 +616,11 @@
       "type": "page",
       "path": "/engines/create/editor",
       "file": "app/engines/create/editor/page.tsx",
-      "component": "CreateEditorPage",
+      "component": "CreateAssetStudioAliasPage",
       "imports": [
         {
-          "name": "EditorPanel",
-          "from": "@/components/engines/create/panels/dream.panel.EditorPanel"
-        },
-        {
-          "name": "EnginAppShell, EnginNavBar",
-          "from": "@/components/engines/shared"
+          "name": "CreateEnginApp",
+          "from": "@/components/engines/create/dream.CreateEnginApp"
         }
       ]
     },
@@ -636,15 +628,11 @@
       "type": "page",
       "path": "/engines/create/queue",
       "file": "app/engines/create/queue/page.tsx",
-      "component": "CreateQueuePage",
+      "component": "CreateAssetStudioAliasPage",
       "imports": [
         {
-          "name": "QueuePanel",
-          "from": "@/components/engines/create/panels/dream.panel.QueuePanel"
-        },
-        {
-          "name": "EnginAppShell, EnginNavBar",
-          "from": "@/components/engines/shared"
+          "name": "CreateEnginApp",
+          "from": "@/components/engines/create/dream.CreateEnginApp"
         }
       ]
     },

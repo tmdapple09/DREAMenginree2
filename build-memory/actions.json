@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-13T12:18:05.059Z",
+  "generated_at": "2026-06-13T20:41:34.623Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 121,
+  "count": 126,
   "actions": [
     {
       "file": "app/actions/dream-docs.ts",
@@ -410,6 +410,47 @@
     },
     {
       "file": "app/api/content/voice-clone/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/contentengin/assets/[assetId]/export/gameengin/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/contentengin/assets/[assetId]/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "GET"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/contentengin/jobs/[jobId]/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "GET"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/contentengin/jobs/route.ts",
+      "type": "api-route-handler",
+      "http_handlers": [
+        "POST",
+        "GET"
+      ],
+      "exports": []
+    },
+    {
+      "file": "app/api/contentengin/upload/route.ts",
       "type": "api-route-handler",
       "http_handlers": [
         "POST"

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-13T12:18:05.059Z",
+  "generated_at": "2026-06-13T20:41:34.623Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 120,
+  "count": 125,
   "routes": [
     {
       "path": "/api/account/delete-data",
@@ -352,6 +352,42 @@
     {
       "path": "/api/content/voice-clone",
       "file": "app/api/content/voice-clone/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/contentengin/assets/[assetId]",
+      "file": "app/api/contentengin/assets/[assetId]/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/contentengin/assets/[assetId]/export/gameengin",
+      "file": "app/api/contentengin/assets/[assetId]/export/gameengin/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/contentengin/jobs",
+      "file": "app/api/contentengin/jobs/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/contentengin/jobs/[jobId]",
+      "file": "app/api/contentengin/jobs/[jobId]/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/contentengin/upload",
+      "file": "app/api/contentengin/upload/route.ts",
       "methods": [
         "POST"
       ]
