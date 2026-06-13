@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-13T14:16:59.775Z",
+  "generatedAt": "2026-06-13T20:41:42.281Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
-    "surface": 277,
-    "route-surface": 268,
+    "surface": 286,
+    "route-surface": 273,
     "dreamsurface": 37,
     "engin": 15,
     "engine-ruleset": 25,
@@ -21,7 +21,7 @@
     "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 74,
-    "engine-utility": 318
+    "engine-utility": 366
   },
   "entries": [
     {
@@ -491,6 +491,43 @@
       "id": "app/api/content/voice-clone/route",
       "slot": "route-surface",
       "path": "app/api/content/voice-clone/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/contentengin/assets/[assetId]/export/gameengin/route",
+      "slot": "route-surface",
+      "path": "app/api/contentengin/assets/[assetId]/export/gameengin/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/contentengin/assets/[assetId]/route",
+      "slot": "route-surface",
+      "path": "app/api/contentengin/assets/[assetId]/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/contentengin/jobs/[jobId]/route",
+      "slot": "route-surface",
+      "path": "app/api/contentengin/jobs/[jobId]/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/contentengin/jobs/route",
+      "slot": "route-surface",
+      "path": "app/api/contentengin/jobs/route.ts",
+      "engine": "Universal",
+      "exports": [
+        "ContentEnginJobType"
+      ]
+    },
+    {
+      "id": "app/api/contentengin/upload/route",
+      "slot": "route-surface",
+      "path": "app/api/contentengin/upload/route.ts",
       "engine": "Universal",
       "exports": []
     },
@@ -2483,6 +2520,87 @@
       "engine": "Universal",
       "exports": [
         "ConnectWidgetPromptProps",
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/AnimationPanel",
+      "slot": "surface",
+      "path": "components/contentengin/AnimationPanel.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/AssetPreview3D",
+      "slot": "surface",
+      "path": "components/contentengin/AssetPreview3D.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/ContentEnginStudio",
+      "slot": "surface",
+      "path": "components/contentengin/ContentEnginStudio.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/ExportPanel",
+      "slot": "surface",
+      "path": "components/contentengin/ExportPanel.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/MaterialEditor",
+      "slot": "surface",
+      "path": "components/contentengin/MaterialEditor.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/PartTreeEditor",
+      "slot": "surface",
+      "path": "components/contentengin/PartTreeEditor.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/PhotoReferencePanel",
+      "slot": "surface",
+      "path": "components/contentengin/PhotoReferencePanel.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/RecipeEditor",
+      "slot": "surface",
+      "path": "components/contentengin/RecipeEditor.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/RiggingPanel",
+      "slot": "surface",
+      "path": "components/contentengin/RiggingPanel.tsx",
+      "engine": "Universal",
+      "exports": [
         "default"
       ]
     },
@@ -7293,6 +7411,482 @@
       ]
     },
     {
+      "id": "lib/contentengin/assetTypes",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/assetTypes.ts",
+      "engine": "Universal",
+      "exports": [
+        "AnimationClipDef",
+        "BoneDef",
+        "CollisionBlock",
+        "CollisionShape",
+        "CollisionShapeKind",
+        "ContentAsset",
+        "ContentAssetCategory",
+        "ContentAssetObject",
+        "CONTENTENGIN_VERSION",
+        "ContentRecipe",
+        "DomainObject",
+        "ExportProfile",
+        "identityTransform",
+        "LodDef",
+        "MaterialDef",
+        "PartNode",
+        "PhysicsDef",
+        "PrimitiveKind",
+        "PrimitiveSpec",
+        "RigWeights",
+        "ShaderDef",
+        "ShapeRegion",
+        "SkeletonDef",
+        "SourceImageAnalysis",
+        "TextureSlots",
+        "Transform",
+        "ValidationReport",
+        "Vec2",
+        "vec3",
+        "Vec3",
+        "Visibility"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/geometryBuilder",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/geometryBuilder.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildGeometry",
+        "MeshGeometry"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/meshBuilder",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/meshBuilder.ts",
+      "engine": "Universal",
+      "exports": [
+        "computeMeshMetrics"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/modifiers",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/modifiers.ts",
+      "engine": "Universal",
+      "exports": [
+        "applyModifierMetadata",
+        "ModifierKind",
+        "ModifierSpec"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/primitiveBuilder",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/primitiveBuilder.ts",
+      "engine": "Universal",
+      "exports": [
+        "createPart",
+        "flattenParts",
+        "MeshStats",
+        "primitiveStats",
+        "resetPartIds"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/textureBuilder",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/textureBuilder.ts",
+      "engine": "Universal",
+      "exports": [
+        "assignProceduralTextureNames"
+      ]
+    },
+    {
+      "id": "lib/contentengin/builders/uvGenerator",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/builders/uvGenerator.ts",
+      "engine": "Universal",
+      "exports": [
+        "assignProceduralUv"
+      ]
+    },
+    {
+      "id": "lib/contentengin/cli",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/cli.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/contentengin/grammars/animalGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/animalGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildAnimalParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/bicycleGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/bicycleGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildBicycleParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/bridgeGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/bridgeGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildBridgeParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/buildingGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/buildingGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildBuildingParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/creatureGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/creatureGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildCreatureParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/humanoidGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/humanoidGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildHumanoidParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/propGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/propGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildPropParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/roadGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/roadGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildRoadParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/shared",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/shared.ts",
+      "engine": "Universal",
+      "exports": [
+        "p",
+        "root",
+        "symmetrical"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/terrainGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/terrainGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildTerrainParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/treeGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/treeGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildTreeParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/vehicleGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/vehicleGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildVehicleParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/grammars/waterGrammar",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/grammars/waterGrammar.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildWaterParts"
+      ]
+    },
+    {
+      "id": "lib/contentengin/materials/materialTypes",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/materials/materialTypes.ts",
+      "engine": "Universal",
+      "exports": [
+        "MaterialFamily"
+      ]
+    },
+    {
+      "id": "lib/contentengin/materials/paletteExtractor",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/materials/paletteExtractor.ts",
+      "engine": "Universal",
+      "exports": [
+        "extractPalette",
+        "rgbaToHex"
+      ]
+    },
+    {
+      "id": "lib/contentengin/materials/proceduralMaterials",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/materials/proceduralMaterials.ts",
+      "engine": "Universal",
+      "exports": [
+        "defaultMaterials",
+        "material"
+      ]
+    },
+    {
+      "id": "lib/contentengin/photo/colorCluster",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/colorCluster.ts",
+      "engine": "Universal",
+      "exports": [
+        "extractPalette"
+      ]
+    },
+    {
+      "id": "lib/contentengin/photo/edgeDetector",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/edgeDetector.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildEdgeMapFromRgba"
+      ]
+    },
+    {
+      "id": "lib/contentengin/photo/imageAnalyzer",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/imageAnalyzer.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/contentengin/photo/photoToRecipe",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/photoToRecipe.ts",
+      "engine": "Universal",
+      "exports": [
+        "photoToRecipe"
+      ]
+    },
+    {
+      "id": "lib/contentengin/photo/pngDecoder",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/pngDecoder.ts",
+      "engine": "Universal",
+      "exports": [
+        "DecodedPng",
+        "decodePng"
+      ]
+    },
+    {
+      "id": "lib/contentengin/photo/regionDetector",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/photo/regionDetector.ts",
+      "engine": "Universal",
+      "exports": [
+        "relabelRegion"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/build",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/build.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildAsset"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/bundle",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/bundle.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/contentengin/pipeline/exportGlb",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/exportGlb.ts",
+      "engine": "Universal",
+      "exports": [
+        "createGlbBuffer",
+        "expectedMaterialIdsForAsset",
+        "GlbInspection",
+        "inspectGlb"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/generateCollision",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/generateCollision.ts",
+      "engine": "Universal",
+      "exports": [
+        "generateCollision"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/generateLods",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/generateLods.ts",
+      "engine": "Universal",
+      "exports": [
+        "generateLods"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/paths",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/paths.ts",
+      "engine": "Universal",
+      "exports": [
+        "safeSegment",
+        "safeUnder"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/validate",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/validate.ts",
+      "engine": "Universal",
+      "exports": [
+        "validateAsset"
+      ]
+    },
+    {
+      "id": "lib/contentengin/pipeline/writeManifest",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/pipeline/writeManifest.ts",
+      "engine": "Universal",
+      "exports": [
+        "makeManifest",
+        "wrapAsset"
+      ]
+    },
+    {
+      "id": "lib/contentengin/recipes/recipeResolver",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/recipes/recipeResolver.ts",
+      "engine": "Universal",
+      "exports": [
+        "normalizeAssetType",
+        "resolveRecipe"
+      ]
+    },
+    {
+      "id": "lib/contentengin/recipes/recipeTypes",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/recipes/recipeTypes.ts",
+      "engine": "Universal",
+      "exports": [
+        "SUPPORTED_ASSET_TYPES",
+        "SupportedAssetType"
+      ]
+    },
+    {
+      "id": "lib/contentengin/recipes/seededRandom",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/recipes/seededRandom.ts",
+      "engine": "Universal",
+      "exports": [
+        "pick",
+        "seededRandom"
+      ]
+    },
+    {
+      "id": "lib/contentengin/rigging/fitArmature",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/rigging/fitArmature.ts",
+      "engine": "Universal",
+      "exports": [
+        "createSkeleton"
+      ]
+    },
+    {
+      "id": "lib/contentengin/rigging/index",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/rigging/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "createSkeleton"
+      ]
+    },
+    {
+      "id": "lib/contentengin/rigging/landmarks",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/rigging/landmarks.ts",
+      "engine": "Universal",
+      "exports": [
+        "estimateLandmarks"
+      ]
+    },
+    {
+      "id": "lib/contentengin/rigging/rigTypes",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/rigging/rigTypes.ts",
+      "engine": "Universal",
+      "exports": [
+        "RiggingRequest",
+        "RigStandard"
+      ]
+    },
+    {
+      "id": "lib/contentengin/rigging/rigValidator",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/rigging/rigValidator.ts",
+      "engine": "Universal",
+      "exports": [
+        "validateSkeleton"
+      ]
+    },
+    {
+      "id": "lib/contentengin/shaders/shaderRegistry",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/shaders/shaderRegistry.ts",
+      "engine": "Universal",
+      "exports": [
+        "getShader",
+        "SHADERS"
+      ]
+    },
+    {
+      "id": "lib/contentengin/shaders/shaderTypes",
+      "slot": "engine-utility",
+      "path": "lib/contentengin/shaders/shaderTypes.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
       "id": "lib/data-transform",
       "slot": "engine-utility",
       "path": "lib/data-transform.ts",
@@ -8752,13 +9346,9 @@
       "path": "lib/engins/content/contentEnginRuleSet.ts",
       "engine": "Universal",
       "exports": [
-        "CalendarItem",
         "CONTENT_ENGIN_RULE_SET",
-        "ContentDraft",
         "ContentEnginAction",
-        "ContentEnginDerivedState",
-        "ContentType",
-        "Platform"
+        "ContentEnginDerivedState"
       ]
     },
     {

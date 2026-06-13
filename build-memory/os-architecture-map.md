@@ -30,8 +30,8 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 2 |
 | daydream | 0 |
-| surface | 277 |
-| route-surface | 268 |
+| surface | 286 |
+| route-surface | 273 |
 | dreamsurface | 37 |
 | engin | 15 |
 | engine-ruleset | 25 |
@@ -48,7 +48,7 @@ User Action / Agent / CI
 | dr-eams-tool | 3 |
 | hook | 12 |
 | engine-system | 74 |
-| engine-utility | 318 |
+| engine-utility | 366 |
 
 ## Architecture Stages
 
