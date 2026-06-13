@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T13:47:50.713Z",
+  "generatedAt": "2026-06-13T13:32:59.880Z",
   "root": ".",
   "nodes": [
     {
@@ -3502,16 +3502,6 @@
       "tags": []
     },
     {
-      "id": "file:DREAMenginree2-codeengin-ide-upgrade.zip",
-      "label": "DREAMenginree2-codeengin-ide-upgrade.zip",
-      "type": "file",
-      "path": "DREAMenginree2-codeengin-ide-upgrade.zip",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
       "id": "file:FILE_TREE.md",
       "label": "FILE_TREE.md",
       "type": "doc",
@@ -4177,6 +4167,7 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
+        "supabase-table:activity_verification",
         "supabase-table:activity_points"
       ]
     },
@@ -4462,12 +4453,22 @@
       "isOrphan": false
     },
     {
+      "id": "function:app/api/ads/view/route.ts#getInsertedAdViewId",
+      "label": "getInsertedAdViewId",
+      "type": "function",
+      "path": "app/api/ads/view/route.ts",
+      "parent": "file:app/api/ads/view/route.ts",
+      "loc": 48,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
       "id": "function:app/api/ads/view/route.ts#POST",
       "label": "POST",
       "type": "function",
       "path": "app/api/ads/view/route.ts",
       "parent": "file:app/api/ads/view/route.ts",
-      "loc": 7,
+      "loc": 53,
       "isOrphan": false,
       "exported": true
     },
@@ -4482,7 +4483,7 @@
       "tags": [
         "api-handler",
         "supabase-table:app_posts",
-        "supabase-table:app_posts"
+        "supabase-table:ad_views"
       ]
     },
     {
@@ -5033,22 +5034,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/api/ci/run/route.ts#runCommand",
-      "label": "runCommand",
-      "type": "function",
-      "path": "app/api/ci/run/route.ts",
-      "parent": "file:app/api/ci/run/route.ts",
-      "loc": 3,
-      "isOrphan": false,
-      "exported": false
-    },
-    {
       "id": "function:app/api/ci/run/route.ts#POST",
       "label": "POST",
       "type": "function",
       "path": "app/api/ci/run/route.ts",
       "parent": "file:app/api/ci/run/route.ts",
-      "loc": 13,
+      "loc": 3,
       "isOrphan": false,
       "exported": true
     },
@@ -5116,6 +5107,272 @@
         "supabase-table:close_friends",
         "supabase-table:close_friends",
         "supabase-table:close_friends"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin",
+      "label": "codeengin",
+      "type": "folder",
+      "path": "app/api/codeengin",
+      "parent": "folder:app/api",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:app/api/codeengin/diagnostics",
+      "label": "diagnostics",
+      "type": "folder",
+      "path": "app/api/codeengin/diagnostics",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/diagnostics/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/diagnostics/route.ts",
+      "parent": "file:app/api/codeengin/diagnostics/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/diagnostics/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/diagnostics/route.ts",
+      "parent": "folder:app/api/codeengin/diagnostics",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/file",
+      "label": "file",
+      "type": "folder",
+      "path": "app/api/codeengin/file",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/file/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/file/route.ts",
+      "parent": "file:app/api/codeengin/file/route.ts",
+      "loc": 7,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/file/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/file/route.ts",
+      "parent": "folder:app/api/codeengin/file",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/git",
+      "label": "git",
+      "type": "folder",
+      "path": "app/api/codeengin/git",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/git/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/git/route.ts",
+      "parent": "file:app/api/codeengin/git/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/git/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/git/route.ts",
+      "parent": "folder:app/api/codeengin/git",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/run",
+      "label": "run",
+      "type": "folder",
+      "path": "app/api/codeengin/run",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/run/route.ts#GET",
+      "label": "GET",
+      "type": "function",
+      "path": "app/api/codeengin/run/route.ts",
+      "parent": "file:app/api/codeengin/run/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:app/api/codeengin/run/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/run/route.ts",
+      "parent": "file:app/api/codeengin/run/route.ts",
+      "loc": 10,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/run/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/run/route.ts",
+      "parent": "folder:app/api/codeengin/run",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/search",
+      "label": "search",
+      "type": "folder",
+      "path": "app/api/codeengin/search",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/search/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/search/route.ts",
+      "parent": "file:app/api/codeengin/search/route.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/search/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/search/route.ts",
+      "parent": "folder:app/api/codeengin/search",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/upload",
+      "label": "upload",
+      "type": "folder",
+      "path": "app/api/codeengin/upload",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/upload/route.ts#unzipArchive",
+      "label": "unzipArchive",
+      "type": "function",
+      "path": "app/api/codeengin/upload/route.ts",
+      "parent": "file:app/api/codeengin/upload/route.ts",
+      "loc": 8,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/codeengin/upload/route.ts#flattenSingleRootFolder",
+      "label": "flattenSingleRootFolder",
+      "type": "function",
+      "path": "app/api/codeengin/upload/route.ts",
+      "parent": "file:app/api/codeengin/upload/route.ts",
+      "loc": 18,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/codeengin/upload/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/upload/route.ts",
+      "parent": "file:app/api/codeengin/upload/route.ts",
+      "loc": 28,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/upload/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/upload/route.ts",
+      "parent": "folder:app/api/codeengin/upload",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
+      ]
+    },
+    {
+      "id": "folder:app/api/codeengin/workspace",
+      "label": "workspace",
+      "type": "folder",
+      "path": "app/api/codeengin/workspace",
+      "parent": "folder:app/api/codeengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/api/codeengin/workspace/route.ts#GET",
+      "label": "GET",
+      "type": "function",
+      "path": "app/api/codeengin/workspace/route.ts",
+      "parent": "file:app/api/codeengin/workspace/route.ts",
+      "loc": 9,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:app/api/codeengin/workspace/route.ts#POST",
+      "label": "POST",
+      "type": "function",
+      "path": "app/api/codeengin/workspace/route.ts",
+      "parent": "file:app/api/codeengin/workspace/route.ts",
+      "loc": 22,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/api/codeengin/workspace/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "path": "app/api/codeengin/workspace/route.ts",
+      "parent": "folder:app/api/codeengin/workspace",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "api-handler"
       ]
     },
     {
@@ -5242,7 +5499,7 @@
       "type": "function",
       "path": "app/api/connectors/[provider]/items/route.ts",
       "parent": "file:app/api/connectors/[provider]/items/route.ts",
-      "loc": 13,
+      "loc": 16,
       "isOrphan": false,
       "exported": true
     },
@@ -6797,7 +7054,7 @@
       "type": "function",
       "path": "app/api/lab/benchmarks/route.ts",
       "parent": "file:app/api/lab/benchmarks/route.ts",
-      "loc": 4,
+      "loc": 6,
       "isOrphan": false,
       "exported": false
     },
@@ -6807,7 +7064,7 @@
       "type": "function",
       "path": "app/api/lab/benchmarks/route.ts",
       "parent": "file:app/api/lab/benchmarks/route.ts",
-      "loc": 22,
+      "loc": 24,
       "isOrphan": false,
       "exported": true
     },
@@ -6820,7 +7077,8 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler"
+        "api-handler",
+        "supabase-table:physics_experiments"
       ]
     },
     {
@@ -7036,7 +7294,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 17,
+      "loc": 21,
       "isOrphan": false,
       "exported": false
     },
@@ -7046,7 +7304,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 22,
+      "loc": 26,
       "isOrphan": false,
       "exported": false
     },
@@ -7056,7 +7314,7 @@
       "type": "function",
       "path": "app/api/metrics/platform/route.ts",
       "parent": "file:app/api/metrics/platform/route.ts",
-      "loc": 27,
+      "loc": 34,
       "isOrphan": false,
       "exported": true
     },
@@ -7070,8 +7328,6 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:activity_points",
-        "supabase-table:app_posts",
         "supabase-rpc:is_admin"
       ]
     },
@@ -7309,7 +7565,7 @@
       "type": "function",
       "path": "app/api/posts/[id]/save/route.ts",
       "parent": "file:app/api/posts/[id]/save/route.ts",
-      "loc": 4,
+      "loc": 21,
       "isOrphan": false,
       "exported": true
     },
@@ -7319,7 +7575,7 @@
       "type": "function",
       "path": "app/api/posts/[id]/save/route.ts",
       "parent": "file:app/api/posts/[id]/save/route.ts",
-      "loc": 30,
+      "loc": 89,
       "isOrphan": false,
       "exported": true
     },
@@ -7333,7 +7589,13 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:app_posts"
+        "supabase-table:app_posts",
+        "supabase-table:saved_posts",
+        "supabase-table:saved_posts",
+        "supabase-table:saved_posts",
+        "supabase-table:saved_posts",
+        "supabase-table:saved_posts",
+        "supabase-table:saved_posts"
       ]
     },
     {
@@ -7410,6 +7672,7 @@
       "tags": [
         "api-handler",
         "supabase-table:close_friends",
+        "supabase-table:saved_posts",
         "supabase-table:app_posts"
       ]
     },
@@ -8002,22 +8265,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/api/skip-credits/balance/route.ts#zeroSkipCredit",
-      "label": "zeroSkipCredit",
-      "type": "function",
-      "path": "app/api/skip-credits/balance/route.ts",
-      "parent": "file:app/api/skip-credits/balance/route.ts",
-      "loc": 4,
-      "isOrphan": false,
-      "exported": false
-    },
-    {
       "id": "function:app/api/skip-credits/balance/route.ts#GET",
       "label": "GET",
       "type": "function",
       "path": "app/api/skip-credits/balance/route.ts",
       "parent": "file:app/api/skip-credits/balance/route.ts",
-      "loc": 14,
+      "loc": 11,
       "isOrphan": false,
       "exported": true
     },
@@ -8030,7 +8283,8 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler"
+        "api-handler",
+        "supabase-table:skip_credits"
       ]
     },
     {
@@ -8041,16 +8295,6 @@
       "parent": "folder:app/api/skip-credits",
       "loc": null,
       "isOrphan": false
-    },
-    {
-      "id": "function:app/api/skip-credits/earn/route.ts#zeroSkipCredit",
-      "label": "zeroSkipCredit",
-      "type": "function",
-      "path": "app/api/skip-credits/earn/route.ts",
-      "parent": "file:app/api/skip-credits/earn/route.ts",
-      "loc": 5,
-      "isOrphan": false,
-      "exported": false
     },
     {
       "id": "function:app/api/skip-credits/earn/route.ts#POST",
@@ -8071,7 +8315,11 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler"
+        "api-handler",
+        "supabase-table:ad_views",
+        "supabase-table:skip_credits",
+        "supabase-table:skip_credits",
+        "supabase-table:skip_credits"
       ]
     },
     {
@@ -8082,16 +8330,6 @@
       "parent": "folder:app/api/skip-credits",
       "loc": null,
       "isOrphan": false
-    },
-    {
-      "id": "function:app/api/skip-credits/use/route.ts#zeroSkipCredit",
-      "label": "zeroSkipCredit",
-      "type": "function",
-      "path": "app/api/skip-credits/use/route.ts",
-      "parent": "file:app/api/skip-credits/use/route.ts",
-      "loc": 5,
-      "isOrphan": false,
-      "exported": false
     },
     {
       "id": "function:app/api/skip-credits/use/route.ts#POST",
@@ -8112,7 +8350,9 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "api-handler"
+        "api-handler",
+        "supabase-table:skip_credits",
+        "supabase-table:skip_credits"
       ]
     },
     {
@@ -13891,7 +14131,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 180,
+      "loc": 170,
       "isOrphan": true,
       "exported": false
     },
@@ -13901,7 +14141,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 287,
+      "loc": 277,
       "isOrphan": true,
       "exported": false
     },
@@ -13911,7 +14151,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 323,
+      "loc": 313,
       "isOrphan": true,
       "exported": false
     },
@@ -13921,7 +14161,7 @@
       "type": "function",
       "path": "components/daydream/dream.CodeDreamIDE.tsx",
       "parent": "file:components/daydream/dream.CodeDreamIDE.tsx",
-      "loc": 373,
+      "loc": 363,
       "isOrphan": true,
       "exported": true
     },
@@ -14054,6 +14294,56 @@
       "loc": null,
       "isOrphan": false,
       "tags": []
+    },
+    {
+      "id": "function:components/daydream/dream.LabDreamIDE.tsx#asciiHeatmap",
+      "label": "asciiHeatmap",
+      "type": "function",
+      "path": "components/daydream/dream.LabDreamIDE.tsx",
+      "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/daydream/dream.LabDreamIDE.tsx#asciiDensity",
+      "label": "asciiDensity",
+      "type": "function",
+      "path": "components/daydream/dream.LabDreamIDE.tsx",
+      "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
+      "loc": 52,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/daydream/dream.LabDreamIDE.tsx#asciiActivation",
+      "label": "asciiActivation",
+      "type": "function",
+      "path": "components/daydream/dream.LabDreamIDE.tsx",
+      "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
+      "loc": 76,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/daydream/dream.LabDreamIDE.tsx#getMockOutput",
+      "label": "getMockOutput",
+      "type": "function",
+      "path": "components/daydream/dream.LabDreamIDE.tsx",
+      "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
+      "loc": 96,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/daydream/dream.LabDreamIDE.tsx#LabDreamIDE",
+      "label": "LabDreamIDE",
+      "type": "function",
+      "path": "components/daydream/dream.LabDreamIDE.tsx",
+      "parent": "file:components/daydream/dream.LabDreamIDE.tsx",
+      "loc": 153,
+      "isOrphan": true,
+      "exported": true
     },
     {
       "id": "file:components/daydream/dream.LabDreamIDE.tsx",
@@ -16651,7 +16941,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 222,
+      "loc": 223,
       "isOrphan": true,
       "exported": false
     },
@@ -16661,7 +16951,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 259,
+      "loc": 260,
       "isOrphan": true,
       "exported": true
     },
@@ -19332,7 +19622,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 99,
+      "loc": 100,
       "isOrphan": true,
       "exported": false
     },
@@ -19342,7 +19632,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 106,
+      "loc": 107,
       "isOrphan": true,
       "exported": false
     },
@@ -19352,7 +19642,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 120,
+      "loc": 121,
       "isOrphan": true,
       "exported": false
     },
@@ -19362,7 +19652,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 126,
+      "loc": 127,
       "isOrphan": true,
       "exported": false
     },
@@ -19372,7 +19662,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 136,
+      "loc": 137,
       "isOrphan": true,
       "exported": false
     },
@@ -19382,7 +19672,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 221,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -19392,7 +19682,7 @@
       "type": "function",
       "path": "components/games/dream.remote.GameRemoteSurface.tsx",
       "parent": "file:components/games/dream.remote.GameRemoteSurface.tsx",
-      "loc": 261,
+      "loc": 262,
       "isOrphan": true,
       "exported": true
     },
@@ -21202,12 +21492,22 @@
       "isOrphan": false
     },
     {
+      "id": "function:components/runtime/dream.DualRuntimeContainer.tsx#makeRuntimeIntent",
+      "label": "makeRuntimeIntent",
+      "type": "function",
+      "path": "components/runtime/dream.DualRuntimeContainer.tsx",
+      "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
+      "loc": 65,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/runtime/dream.DualRuntimeContainer.tsx#useDualRuntime",
       "label": "useDualRuntime",
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 102,
+      "loc": 132,
       "isOrphan": false,
       "exported": true
     },
@@ -21217,7 +21517,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 108,
+      "loc": 138,
       "isOrphan": true,
       "exported": true
     },
@@ -22501,6 +22801,16 @@
       "parent": "folder:components/widgets",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:comtentenginspec.md",
+      "label": "comtentenginspec.md",
+      "type": "doc",
+      "path": "comtentenginspec.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -24496,106 +24806,148 @@
       "tags": [
         "supabase-create-client",
         "supabase-table:profiles",
-        "supabase-table:follows"
+        "supabase-table:follows",
+        "supabase-table:brand_kit_items",
+        "supabase-table:brand_kit_items"
       ]
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#loadPyodide",
-      "label": "loadPyodide",
+      "id": "function:engins/engin.CodeEngin.tsx#nowIso",
+      "label": "nowIso",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 121,
+      "loc": 176,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#executePython",
-      "label": "executePython",
+      "id": "function:engins/engin.CodeEngin.tsx#safeId",
+      "label": "safeId",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 137,
+      "loc": 180,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#executeJavaScript",
-      "label": "executeJavaScript",
+      "id": "function:engins/engin.CodeEngin.tsx#languageFromPath",
+      "label": "languageFromPath",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 155,
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#executeTypeScript",
-      "label": "executeTypeScript",
+      "id": "function:engins/engin.CodeEngin.tsx#basename",
+      "label": "basename",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 170,
+      "loc": 196,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#executeBash",
-      "label": "executeBash",
+      "id": "function:engins/engin.CodeEngin.tsx#folderName",
+      "label": "folderName",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 175,
+      "loc": 200,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#runCellCode",
-      "label": "runCellCode",
+      "id": "function:engins/engin.CodeEngin.tsx#sortFiles",
+      "label": "sortFiles",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 179,
+      "loc": 205,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#CrashRecoveryPanel",
-      "label": "CrashRecoveryPanel",
+      "id": "function:engins/engin.CodeEngin.tsx#makeFile",
+      "label": "makeFile",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 202,
+      "loc": 209,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#TaskJobManager",
-      "label": "TaskJobManager",
+      "id": "function:engins/engin.CodeEngin.tsx#loadWorkspace",
+      "label": "loadWorkspace",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 281,
+      "loc": 219,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#callCI",
-      "label": "callCI",
+      "id": "function:engins/engin.CodeEngin.tsx#diagnosticsForFile",
+      "label": "diagnosticsForFile",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 348,
+      "loc": 248,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/engin.CodeEngin.tsx#callSecurityScan",
-      "label": "callSecurityScan",
+      "id": "function:engins/engin.CodeEngin.tsx#symbolsForFile",
+      "label": "symbolsForFile",
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 356,
+      "loc": 286,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#collectDiagnostics",
+      "label": "collectDiagnostics",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 290,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#terminalLine",
+      "label": "terminalLine",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 294,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#stripSimpleTypeScript",
+      "label": "stripSimpleTypeScript",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 298,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#runJavaScriptSource",
+      "label": "runJavaScriptSource",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 308,
       "isOrphan": true,
       "exported": false
     },
@@ -24605,7 +24957,77 @@
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 368,
+      "loc": 325,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#postCodeEnginApi",
+      "label": "postCodeEnginApi",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 382,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#getCodeEnginApi",
+      "label": "getCodeEnginApi",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 395,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#flattenCodeEnginTree",
+      "label": "flattenCodeEnginTree",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 404,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#filePlaceholdersFromTree",
+      "label": "filePlaceholdersFromTree",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 416,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#mergeServerFile",
+      "label": "mergeServerFile",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 427,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#groupFiles",
+      "label": "groupFiles",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 440,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#severityRank",
+      "label": "severityRank",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 449,
       "isOrphan": true,
       "exported": false
     },
@@ -24615,9 +25037,19 @@
       "type": "function",
       "path": "engins/engin.CodeEngin.tsx",
       "parent": "file:engins/engin.CodeEngin.tsx",
-      "loc": 397,
+      "loc": 455,
       "isOrphan": false,
       "exported": true
+    },
+    {
+      "id": "function:engins/engin.CodeEngin.tsx#actionButtonStyle",
+      "label": "actionButtonStyle",
+      "type": "function",
+      "path": "engins/engin.CodeEngin.tsx",
+      "parent": "file:engins/engin.CodeEngin.tsx",
+      "loc": 1269,
+      "isOrphan": true,
+      "exported": false
     },
     {
       "id": "file:engins/engin.CodeEngin.tsx",
@@ -24627,11 +25059,7 @@
       "parent": "folder:engins",
       "loc": null,
       "isOrphan": false,
-      "tags": [
-        "supabase-create-client",
-        "supabase-table:projects",
-        "supabase-table:projects"
-      ]
+      "tags": []
     },
     {
       "id": "function:engins/engin.ContentEngin.tsx#generateDraft",
@@ -24726,7 +25154,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 115,
+      "loc": 116,
       "isOrphan": true,
       "exported": false
     },
@@ -24736,7 +25164,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 123,
+      "loc": 124,
       "isOrphan": true,
       "exported": false
     },
@@ -24746,7 +25174,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 128,
+      "loc": 129,
       "isOrphan": true,
       "exported": false
     },
@@ -24756,7 +25184,7 @@
       "type": "function",
       "path": "engins/engin.LabEngin.tsx",
       "parent": "file:engins/engin.LabEngin.tsx",
-      "loc": 226,
+      "loc": 227,
       "isOrphan": false,
       "exported": true
     },
@@ -24768,7 +25196,11 @@
       "parent": "folder:engins",
       "loc": null,
       "isOrphan": false,
-      "tags": []
+      "tags": [
+        "supabase-create-client",
+        "supabase-table:physics_experiments",
+        "supabase-table:physics_experiments"
+      ]
     },
     {
       "id": "function:engins/engin.StarMakerEngin.tsx#createEmptyBeatGrid",
@@ -26169,7 +26601,7 @@
       "path": "lib/activity/aqs.ts",
       "parent": "file:lib/activity/aqs.ts",
       "loc": 93,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -29698,6 +30130,545 @@
       "type": "ts",
       "path": "lib/code/drEamsCodeAssist.ts",
       "parent": "folder:lib/code",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:lib/codeengin",
+      "label": "codeengin",
+      "type": "folder",
+      "path": "lib/codeengin",
+      "parent": "folder:lib",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "label": "assertCodeEnginAccess",
+      "type": "function",
+      "path": "lib/codeengin/auth.ts",
+      "parent": "file:lib/codeengin/auth.ts",
+      "loc": 10,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/auth.ts",
+      "label": "auth.ts",
+      "type": "ts",
+      "path": "lib/codeengin/auth.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/diagnostics.ts#languageFromPath",
+      "label": "languageFromPath",
+      "type": "function",
+      "path": "lib/codeengin/diagnostics.ts",
+      "parent": "file:lib/codeengin/diagnostics.ts",
+      "loc": 5,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/diagnostics.ts#diagnoseFile",
+      "label": "diagnoseFile",
+      "type": "function",
+      "path": "lib/codeengin/diagnostics.ts",
+      "parent": "file:lib/codeengin/diagnostics.ts",
+      "loc": 16,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/diagnostics.ts#diagnoseWorkspace",
+      "label": "diagnoseWorkspace",
+      "type": "function",
+      "path": "lib/codeengin/diagnostics.ts",
+      "parent": "file:lib/codeengin/diagnostics.ts",
+      "loc": 30,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/diagnostics.ts",
+      "label": "diagnostics.ts",
+      "type": "ts",
+      "path": "lib/codeengin/diagnostics.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/git.ts#runGit",
+      "label": "runGit",
+      "type": "function",
+      "path": "lib/codeengin/git.ts",
+      "parent": "file:lib/codeengin/git.ts",
+      "loc": 5,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/git.ts#getGitStatus",
+      "label": "getGitStatus",
+      "type": "function",
+      "path": "lib/codeengin/git.ts",
+      "parent": "file:lib/codeengin/git.ts",
+      "loc": 18,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/git.ts#getGitDiff",
+      "label": "getGitDiff",
+      "type": "function",
+      "path": "lib/codeengin/git.ts",
+      "parent": "file:lib/codeengin/git.ts",
+      "loc": 20,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/git.ts#getGitLog",
+      "label": "getGitLog",
+      "type": "function",
+      "path": "lib/codeengin/git.ts",
+      "parent": "file:lib/codeengin/git.ts",
+      "loc": 21,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/git.ts",
+      "label": "git.ts",
+      "type": "ts",
+      "path": "lib/codeengin/git.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#getCodeEnginWorkspacesRoot",
+      "label": "getCodeEnginWorkspacesRoot",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 10,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#assertValidWorkspaceId",
+      "label": "assertValidWorkspaceId",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 14,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#getWorkspaceRoot",
+      "label": "getWorkspaceRoot",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 22,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#normalizeProjectPath",
+      "label": "normalizeProjectPath",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 27,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#assertSafeWorkspacePath",
+      "label": "assertSafeWorkspacePath",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 33,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#isLikelyEditableFile",
+      "label": "isLikelyEditableFile",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 52,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "label": "safeErrorMessage",
+      "type": "function",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "file:lib/codeengin/pathSafety.ts",
+      "loc": 62,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/pathSafety.ts",
+      "label": "pathSafety.ts",
+      "type": "ts",
+      "path": "lib/codeengin/pathSafety.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#languageFromPath",
+      "label": "languageFromPath",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 11,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#extractImports",
+      "label": "extractImports",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 22,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#extractExports",
+      "label": "extractExports",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 32,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#symbolColumn",
+      "label": "symbolColumn",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#resolveInternal",
+      "label": "resolveInternal",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/projectGraph.ts#buildProjectGraph",
+      "label": "buildProjectGraph",
+      "type": "function",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "file:lib/codeengin/projectGraph.ts",
+      "loc": 53,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/projectGraph.ts",
+      "label": "projectGraph.ts",
+      "type": "ts",
+      "path": "lib/codeengin/projectGraph.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/runner.ts#clampOutput",
+      "label": "clampOutput",
+      "type": "function",
+      "path": "lib/codeengin/runner.ts",
+      "parent": "file:lib/codeengin/runner.ts",
+      "loc": 15,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/runner.ts#listRunnerCommands",
+      "label": "listRunnerCommands",
+      "type": "function",
+      "path": "lib/codeengin/runner.ts",
+      "parent": "file:lib/codeengin/runner.ts",
+      "loc": 20,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/runner.ts#runCodeEnginCommand",
+      "label": "runCodeEnginCommand",
+      "type": "function",
+      "path": "lib/codeengin/runner.ts",
+      "parent": "file:lib/codeengin/runner.ts",
+      "loc": 24,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/runner.ts#runCiCommand",
+      "label": "runCiCommand",
+      "type": "function",
+      "path": "lib/codeengin/runner.ts",
+      "parent": "file:lib/codeengin/runner.ts",
+      "loc": 48,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/runner.ts",
+      "label": "runner.ts",
+      "type": "ts",
+      "path": "lib/codeengin/runner.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/search.ts#searchWorkspace",
+      "label": "searchWorkspace",
+      "type": "function",
+      "path": "lib/codeengin/search.ts",
+      "parent": "file:lib/codeengin/search.ts",
+      "loc": 5,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/search.ts",
+      "label": "search.ts",
+      "type": "ts",
+      "path": "lib/codeengin/search.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:lib/codeengin/types.ts",
+      "label": "types.ts",
+      "type": "ts",
+      "path": "lib/codeengin/types.ts",
+      "parent": "folder:lib/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#sha256",
+      "label": "sha256",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 14,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#toPosix",
+      "label": "toPosix",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#exists",
+      "label": "exists",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 17,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#nowIso",
+      "label": "nowIso",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 18,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#manifestPath",
+      "label": "manifestPath",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 19,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#writeManifest",
+      "label": "writeManifest",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 20,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#createCodeEnginWorkspace",
+      "label": "createCodeEnginWorkspace",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 25,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#getWorkspaceMeta",
+      "label": "getWorkspaceMeta",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 41,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#touchWorkspace",
+      "label": "touchWorkspace",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 50,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#fileNode",
+      "label": "fileNode",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 54,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#buildTree",
+      "label": "buildTree",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 60,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#getWorkspaceOverview",
+      "label": "getWorkspaceOverview",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 81,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#readProjectFile",
+      "label": "readProjectFile",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 89,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#writeProjectFile",
+      "label": "writeProjectFile",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 99,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#createProjectFile",
+      "label": "createProjectFile",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 108,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#deleteProjectFile",
+      "label": "deleteProjectFile",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 115,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#moveProjectFile",
+      "label": "moveProjectFile",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 125,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/codeengin/workspaceStore.ts#listEditableFiles",
+      "label": "listEditableFiles",
+      "type": "function",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "file:lib/codeengin/workspaceStore.ts",
+      "loc": 136,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/codeengin/workspaceStore.ts",
+      "label": "workspaceStore.ts",
+      "type": "ts",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "parent": "folder:lib/codeengin",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -35593,7 +36564,7 @@
       "path": "lib/engin-runtime/EnginBaseState.ts",
       "parent": "file:lib/engin-runtime/EnginBaseState.ts",
       "loc": 305,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -38108,12 +39079,42 @@
       "isOrphan": false
     },
     {
+      "id": "function:lib/engins/code/codeEnginRuleSet.ts#filesFrom",
+      "label": "filesFrom",
+      "type": "function",
+      "path": "lib/engins/code/codeEnginRuleSet.ts",
+      "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "loc": 153,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engins/code/codeEnginRuleSet.ts#openTabsFrom",
+      "label": "openTabsFrom",
+      "type": "function",
+      "path": "lib/engins/code/codeEnginRuleSet.ts",
+      "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "loc": 157,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/engins/code/codeEnginRuleSet.ts#cellsFrom",
+      "label": "cellsFrom",
+      "type": "function",
+      "path": "lib/engins/code/codeEnginRuleSet.ts",
+      "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
+      "loc": 161,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:lib/engins/code/codeEnginRuleSet.ts#transform",
       "label": "transform",
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 127,
+      "loc": 195,
       "isOrphan": true,
       "exported": false
     },
@@ -38123,7 +39124,7 @@
       "type": "function",
       "path": "lib/engins/code/codeEnginRuleSet.ts",
       "parent": "file:lib/engins/code/codeEnginRuleSet.ts",
-      "loc": 206,
+      "loc": 305,
       "isOrphan": true,
       "exported": false
     },
@@ -44877,7 +45878,7 @@
       "type": "function",
       "path": "lib/games/useGameInputKeyboardBridge.ts",
       "parent": "file:lib/games/useGameInputKeyboardBridge.ts",
-      "loc": 56,
+      "loc": 76,
       "isOrphan": true,
       "exported": false
     },
@@ -44887,7 +45888,7 @@
       "type": "function",
       "path": "lib/games/useGameInputKeyboardBridge.ts",
       "parent": "file:lib/games/useGameInputKeyboardBridge.ts",
-      "loc": 65,
+      "loc": 85,
       "isOrphan": false,
       "exported": true
     },
@@ -49527,7 +50528,7 @@
       "type": "function",
       "path": "lib/platform/lab.ts",
       "parent": "file:lib/platform/lab.ts",
-      "loc": 23,
+      "loc": 25,
       "isOrphan": true,
       "exported": true
     },
@@ -49539,7 +50540,10 @@
       "parent": "folder:lib/platform",
       "loc": null,
       "isOrphan": false,
-      "tags": []
+      "tags": [
+        "supabase-create-client",
+        "supabase-table:physics_experiments"
+      ]
     },
     {
       "id": "folder:lib/policy",
@@ -50615,6 +51619,136 @@
       "label": "enginWorkflowRegistry.ts",
       "type": "ts",
       "path": "lib/runtime/enginWorkflowRegistry.ts",
+      "parent": "folder:lib/runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#validateDomainObject",
+      "label": "validateDomainObject",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 73,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#authorizeCapability",
+      "label": "authorizeCapability",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 79,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#validateManifest",
+      "label": "validateManifest",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 94,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#negotiateCompatibility",
+      "label": "negotiateCompatibility",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 106,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#createRuntimeObject",
+      "label": "createRuntimeObject",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 151,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#createIntentPacket",
+      "label": "createIntentPacket",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 157,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#withTrace",
+      "label": "withTrace",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 219,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#compareSemver",
+      "label": "compareSemver",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 226,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#toJsonValue",
+      "label": "toJsonValue",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 236,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#stableSerialize",
+      "label": "stableSerialize",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 246,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:lib/runtime/iEngine.ts#stableChecksum",
+      "label": "stableChecksum",
+      "type": "function",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 256,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "class:lib/runtime/iEngine.ts#IntentBus",
+      "label": "IntentBus",
+      "type": "class",
+      "path": "lib/runtime/iEngine.ts",
+      "parent": "file:lib/runtime/iEngine.ts",
+      "loc": 115,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:lib/runtime/iEngine.ts",
+      "label": "iEngine.ts",
+      "type": "ts",
+      "path": "lib/runtime/iEngine.ts",
       "parent": "folder:lib/runtime",
       "loc": null,
       "isOrphan": false,
@@ -54925,7 +56059,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 20,
+      "loc": 30,
       "isOrphan": false,
       "exported": true
     },
@@ -54935,17 +56069,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 110,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib/widgets/feed-resolver.ts#normalizeVisibility",
-      "label": "normalizeVisibility",
-      "type": "function",
-      "path": "lib/widgets/feed-resolver.ts",
-      "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 135,
+      "loc": 141,
       "isOrphan": true,
       "exported": false
     },
@@ -54955,7 +56079,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 139,
+      "loc": 186,
       "isOrphan": true,
       "exported": false
     },
@@ -54965,7 +56089,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 152,
+      "loc": 209,
       "isOrphan": true,
       "exported": false
     },
@@ -54975,7 +56099,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 158,
+      "loc": 233,
       "isOrphan": true,
       "exported": true
     },
@@ -54985,7 +56109,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 210,
+      "loc": 290,
       "isOrphan": true,
       "exported": true
     },
@@ -54995,7 +56119,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 240,
+      "loc": 329,
       "isOrphan": true,
       "exported": true
     },
@@ -55005,7 +56129,7 @@
       "type": "function",
       "path": "lib/widgets/feed-resolver.ts",
       "parent": "file:lib/widgets/feed-resolver.ts",
-      "loc": 244,
+      "loc": 335,
       "isOrphan": true,
       "exported": true
     },
@@ -60596,7 +61720,7 @@
       "type": "function",
       "path": "src/components/dream.DreamEnginLogo.tsx",
       "parent": "file:src/components/dream.DreamEnginLogo.tsx",
-      "loc": 18,
+      "loc": 39,
       "isOrphan": true,
       "exported": true
     },
@@ -61497,8 +62621,8 @@
       "type": "function",
       "path": "src/lib/babylon/useDreamLogoScene.ts",
       "parent": "file:src/lib/babylon/useDreamLogoScene.ts",
-      "loc": 14,
-      "isOrphan": false,
+      "loc": 6,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -61508,7 +62632,7 @@
       "path": "src/lib/babylon/useDreamLogoScene.ts",
       "parent": "folder:src/lib/babylon",
       "loc": null,
-      "isOrphan": false,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -62077,7 +63201,7 @@
       "path": "supabase/migrations/20260129000000_upgrade_schema.sql",
       "parent": "file:supabase/migrations/20260129000000_upgrade_schema.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#experiment_runs",
@@ -64414,7 +65538,7 @@
       "path": "supabase/migrations/20260325000000_phase8f_daydream_network.sql",
       "parent": "file:supabase/migrations/20260325000000_phase8f_daydream_network.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-table:supabase/migrations/20260325000000_phase8f_daydream_network.sql#music_outputs",
@@ -64853,7 +65977,7 @@
       "path": "supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "parent": "file:supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-policy:supabase/migrations/20260405000001_dreamr_feed_registry.sql#post_views_insert_own",
@@ -65107,7 +66231,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#views",
@@ -65125,7 +66249,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
@@ -65134,7 +66258,7 @@
       "path": "supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "parent": "file:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql",
       "loc": null,
-      "isOrphan": true
+      "isOrphan": false
     },
     {
       "id": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#user_metrics",
@@ -68224,6 +69348,16 @@
       "tags": []
     },
     {
+      "id": "file:tests/i-engine-runtime.test.ts",
+      "label": "i-engine-runtime.test.ts",
+      "type": "ts",
+      "path": "tests/i-engine-runtime.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/icons.test.ts",
       "label": "icons.test.ts",
       "type": "ts",
@@ -71115,7 +72249,17 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
+      "target": "file:lib/activity/aqs.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
       "target": "file:lib/activity/revenueSplit.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
+      "target": "file:lib/activity/skipCredits.ts",
       "kind": "import"
     },
     {
@@ -71135,7 +72279,17 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
+      "target": "file:lib/activity/aqs.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
       "target": "file:lib/activity/revenueSplit.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
+      "target": "file:lib/activity/skipCredits.ts",
       "kind": "route-uses"
     },
     {
@@ -71814,6 +72968,16 @@
       "kind": "route-uses"
     },
     {
+      "source": "file:app/api/ci/run/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/ci/run/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "route-uses"
+    },
+    {
       "source": "file:app/api/close-friends/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "import"
@@ -71841,6 +73005,236 @@
     {
       "source": "file:app/api/close-friends/route.ts",
       "target": "file:lib/utils.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/diagnostics.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/diagnostics.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/git.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/git.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/search.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "file:lib/codeengin/search.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/projectGraph.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/projectGraph.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "file:lib/codeengin/runner.ts",
       "kind": "route-uses"
     },
     {
@@ -73085,6 +74479,11 @@
     },
     {
       "source": "file:app/api/lab/benchmarks/route.ts",
+      "target": "file:lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/lab/benchmarks/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "route-uses"
     },
@@ -73094,6 +74493,11 @@
       "kind": "route-uses"
     },
     {
+      "source": "file:app/api/lab/benchmarks/route.ts",
+      "target": "file:lib/utils.ts",
+      "kind": "route-uses"
+    },
+    {
       "source": "file:app/api/ledger-media/route.ts",
       "target": "file:lib/media/ledger.ts",
       "kind": "import"
@@ -73505,12 +74909,22 @@
     },
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
+      "target": "file:lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "file:lib/supabase/server.ts",
       "kind": "route-uses"
     },
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "file:lib/supabase/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/api/posts/[id]/save/route.ts",
+      "target": "file:lib/utils.ts",
       "kind": "route-uses"
     },
     {
@@ -80869,6 +82283,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
+      "target": "file:lib/runtime/iEngine.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:components/runtime/dream.RuntimeView.tsx",
       "target": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "kind": "import"
@@ -81825,22 +83244,7 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:components/daydream/dream.DiffViewer.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:components/daydream/dream.JourneyTrail.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
       "target": "file:components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:hooks/useSharedDream.ts",
       "kind": "import"
     },
     {
@@ -81851,11 +83255,6 @@
     {
       "source": "file:engins/engin.CodeEngin.tsx",
       "target": "file:lib/daydream/useDaydreamState.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:lib/dreamenginOS/index.ts",
       "kind": "import"
     },
     {
@@ -81895,22 +83294,12 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:lib/runtime/useEnginCoopSync.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:lib/supabase/client.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
       "target": "file:engins/CodeEngin/core/parser.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
@@ -82271,6 +83660,11 @@
     {
       "source": "file:engins/engin.LabEngin.tsx",
       "target": "file:lib/runtime/useEnginCoopSync.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.LabEngin.tsx",
+      "target": "file:lib/supabase/client.ts",
       "kind": "import"
     },
     {
@@ -82881,6 +84275,86 @@
     {
       "source": "file:lib/child-safety/scanMediaUrls.ts",
       "target": "file:lib/child-safety/imageClassifier.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "file:lib/admin/lockout.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "file:lib/supabase/safeGetUser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "file:lib/supabase/server.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "file:lib/codeengin/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/git.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "file:lib/codeengin/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/runner.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/runner.ts",
+      "target": "file:lib/codeengin/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/search.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/search.ts",
+      "target": "file:lib/codeengin/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "file:lib/codeengin/types.ts",
       "kind": "import"
     },
     {
@@ -85514,6 +86988,16 @@
       "kind": "reexport"
     },
     {
+      "source": "file:lib/platform/lab.ts",
+      "target": "file:lib/supabase/client.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/platform/lab.ts",
+      "target": "file:lib/utils.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:lib/policy/boogiePolicy.ts",
       "target": "file:lib/ai/boogie-policy.ts",
       "kind": "reexport"
@@ -85631,6 +87115,21 @@
     {
       "source": "file:lib/runtime/enginWorkflowRegistry.ts",
       "target": "file:lib/runtime/dualRuntimeBridge.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "file:lib/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "file:lib/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "file:lib/runtime/dualRuntime.ts",
       "kind": "import"
     },
     {
@@ -86176,11 +87675,6 @@
     {
       "source": "file:scripts/update-readme.mjs",
       "target": "file:scripts/update-readme-status-utils.mjs",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/components/dream.DreamEnginLogo.tsx",
-      "target": "file:src/lib/babylon/useDreamLogoScene.ts",
       "kind": "import"
     },
     {
@@ -87631,6 +89125,41 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/api/close-friends/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/diagnostics/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/file/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/git/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/run/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/search/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/upload/route.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/api/codeengin/workspace/route.ts",
       "kind": "import"
     },
     {
@@ -90490,6 +92019,51 @@
     },
     {
       "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/auth.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/diagnostics.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/git.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/pathSafety.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/projectGraph.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/runner.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/search.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/types.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/codeengin/workspaceStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/collaboration/index.ts",
       "kind": "import"
     },
@@ -91701,6 +93275,11 @@
     {
       "source": "file:src/engin/generated/systems.ts",
       "target": "file:lib/runtime/enginWorkflowRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/runtime/iEngine.ts",
       "kind": "import"
     },
     {
@@ -92974,6 +94553,16 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "file:lib/runtime/dualRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "file:lib/runtime/iEngine.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/icons.test.ts",
       "target": "file:lib/icons/sheet.ts",
       "kind": "import"
@@ -93970,7 +95559,17 @@
     },
     {
       "source": "file:app/api/ads/view/route.ts",
+      "target": "function:lib/activity/aqs.ts#qualifiesForPremiumCPV",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
       "target": "function:lib/activity/revenueSplit.ts#calculateActivityRevenueSplit",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
+      "target": "function:lib/activity/skipCredits.ts#calculateSkipCreditsEarned",
       "kind": "call"
     },
     {
@@ -94299,6 +95898,11 @@
       "kind": "call"
     },
     {
+      "source": "file:app/api/ci/run/route.ts",
+      "target": "function:lib/codeengin/runner.ts#runCiCommand",
+      "kind": "call"
+    },
+    {
       "source": "file:app/api/close-friends/route.ts",
       "target": "function:lib/supabase/server.ts#createServerClient",
       "kind": "call"
@@ -94311,6 +95915,176 @@
     {
       "source": "file:app/api/close-friends/route.ts",
       "target": "function:lib/utils.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "function:lib/codeengin/diagnostics.ts#diagnoseFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "function:lib/codeengin/diagnostics.ts#diagnoseWorkspace",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/diagnostics/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#readProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#writeProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#createProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#deleteProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#moveProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/file/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "function:lib/codeengin/git.ts#getGitDiff",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "function:lib/codeengin/git.ts#getGitLog",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "function:lib/codeengin/git.ts#getGitStatus",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/git/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "function:lib/codeengin/runner.ts#listRunnerCommands",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/run/route.ts",
+      "target": "function:lib/codeengin/runner.ts#runCodeEnginCommand",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "function:lib/codeengin/search.ts#searchWorkspace",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/search/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#createCodeEnginWorkspace",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#getWorkspaceOverview",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/upload/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/auth.ts#assertCodeEnginAccess",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#getWorkspaceOverview",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/runner.ts#listRunnerCommands",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#safeErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#createCodeEnginWorkspace",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#listEditableFiles",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/codeengin/workspace/route.ts",
+      "target": "function:lib/codeengin/projectGraph.ts#buildProjectGraph",
       "kind": "call"
     },
     {
@@ -94914,6 +96688,11 @@
       "kind": "call"
     },
     {
+      "source": "file:app/api/lab/benchmarks/route.ts",
+      "target": "function:lib/utils.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
       "source": "file:app/api/ledger-media/route.ts",
       "target": "function:lib/supabase/server.ts#createServerClient",
       "kind": "call"
@@ -95116,6 +96895,11 @@
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
       "target": "function:lib/supabase/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/api/posts/[id]/save/route.ts",
+      "target": "function:lib/utils.ts#toErrorMessage",
       "kind": "call"
     },
     {
@@ -98820,12 +100604,17 @@
     },
     {
       "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "target": "function:lib/runtime/dualRuntime.ts#setRuntimeWorld",
+      "target": "function:lib/runtime/iEngine.ts#createIntentPacket",
       "kind": "call"
     },
     {
       "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "target": "function:lib/runtime/dualRuntime.ts#swapDominantRuntime",
+      "target": "function:lib/runtime/iEngine.ts#negotiateCompatibility",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
+      "target": "class:lib/runtime/iEngine.ts#IntentBus",
       "kind": "call"
     },
     {
@@ -99425,6 +101214,11 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.CodeEngin.tsx",
       "target": "function:lib/forge/useForgeActivity.ts#useForgeActivity",
       "kind": "call"
     },
@@ -99440,16 +101234,6 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "function:lib/dreamenginOS/index.ts#upgradeEngine",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:lib/dreamenginOS/index.ts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
       "target": "function:lib/engins/code/useCodeEnginRuntime.ts#useCodeEnginRuntime",
       "kind": "call"
     },
@@ -99460,27 +101244,7 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "function:hooks/useSharedDream.ts#useSharedDream",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "function:lib/runtime/useEnginCoopSync.ts#useEnginCoopSync",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:engins/CodeEngin/core/parser.ts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
       "target": "function:lib/forge/forgeIntelligence.ts#recordForgeTransfer",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "function:lib/supabase/client.ts#createClient",
       "kind": "call"
     },
     {
@@ -99856,6 +101620,11 @@
     {
       "source": "file:engins/engin.LabEngin.tsx",
       "target": "function:lib/engins/useEnginWorkflow.ts#useEnginWorkflow",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.LabEngin.tsx",
+      "target": "function:lib/supabase/client.ts#createClient",
       "kind": "call"
     },
     {
@@ -100336,6 +102105,101 @@
     {
       "source": "file:lib/child-safety/scanMediaUrls.ts",
       "target": "file:lib/child-safety/imageClassifier.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "function:lib/supabase/server.ts#createServerClient",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "function:lib/supabase/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/auth.ts",
+      "target": "function:lib/admin/lockout.ts#isOwner",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#readProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/diagnostics.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#listEditableFiles",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/git.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#getWorkspaceMeta",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#listEditableFiles",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#readProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/projectGraph.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/runner.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#getWorkspaceMeta",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/search.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#listEditableFiles",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/search.ts",
+      "target": "function:lib/codeengin/workspaceStore.ts#readProjectFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#getCodeEnginWorkspacesRoot",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#assertValidWorkspaceId",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#getWorkspaceRoot",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#isLikelyEditableFile",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#assertSafeWorkspacePath",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/codeengin/workspaceStore.ts",
+      "target": "function:lib/codeengin/pathSafety.ts#normalizeProjectPath",
       "kind": "call"
     },
     {
@@ -101954,6 +103818,16 @@
       "kind": "call"
     },
     {
+      "source": "file:lib/platform/lab.ts",
+      "target": "function:lib/supabase/client.ts#createClient",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/platform/lab.ts",
+      "target": "function:lib/utils.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
       "source": "file:lib/reality/realityStore.ts",
       "target": "file:lib/reality/types.ts",
       "kind": "call"
@@ -102031,6 +103905,21 @@
     {
       "source": "file:lib/runtime/enginWorkflowRegistry.ts",
       "target": "file:lib/runtime/dualRuntimeBridge.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#isDomainObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "function:lib/engin-runtime/EnginCapabilities.ts#authorizeDomainCapability",
+      "kind": "call"
+    },
+    {
+      "source": "file:lib/runtime/iEngine.ts",
+      "target": "function:lib/engin-runtime/EnginBaseState.ts#createDomainObject",
       "kind": "call"
     },
     {
@@ -102366,11 +104255,6 @@
     {
       "source": "file:scripts/update-readme.mjs",
       "target": "function:scripts/update-readme-status-utils.mjs#refreshCurrentImplementationStatusSection",
-      "kind": "call"
-    },
-    {
-      "source": "file:src/components/dream.DreamEnginLogo.tsx",
-      "target": "function:src/lib/babylon/useDreamLogoScene.ts#useDreamLogoScene",
       "kind": "call"
     },
     {
@@ -104594,6 +106478,36 @@
       "kind": "call"
     },
     {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:lib/runtime/iEngine.ts#createRuntimeObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:lib/runtime/iEngine.ts#validateDomainObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:lib/runtime/iEngine.ts#authorizeCapability",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "class:lib/runtime/iEngine.ts#IntentBus",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:lib/runtime/iEngine.ts#createIntentPacket",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:lib/runtime/iEngine.ts#negotiateCompatibility",
+      "kind": "call"
+    },
+    {
       "source": "file:tests/icons.test.ts",
       "target": "function:lib/icons/sheet.ts#getIconPos",
       "kind": "call"
@@ -106290,6 +108204,11 @@
     },
     {
       "source": "file:app/api/activity/track/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_verification",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/activity/track/route.ts",
       "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_points",
       "kind": "sql-reference"
     },
@@ -106326,6 +108245,11 @@
     {
       "source": "file:app/api/ads/view/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/ads/view/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
       "kind": "sql-reference"
     },
     {
@@ -106594,6 +108518,11 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:app/api/lab/benchmarks/route.ts",
+      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:app/api/likes/route.ts",
       "target": "sql-table:supabase/migrations/20260319065444_new-migration.sql#likes",
       "kind": "sql-reference"
@@ -106645,16 +108574,6 @@
     },
     {
       "source": "file:app/api/metrics/platform/route.ts",
-      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#activity_points",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/metrics/platform/route.ts",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/metrics/platform/route.ts",
       "target": "function:supabase/migrations/20260210_ai_core.sql#is_admin",
       "kind": "sql-reference"
     },
@@ -106694,6 +108613,11 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:app/api/posts/[id]/save/route.ts",
+      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:app/api/posts/[id]/view/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
@@ -106701,6 +108625,11 @@
     {
       "source": "file:app/api/posts/profile/[userId]/route.ts",
       "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/posts/profile/[userId]/route.ts",
+      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
       "kind": "sql-reference"
     },
     {
@@ -106816,6 +108745,26 @@
     {
       "source": "file:app/api/shop/route.ts",
       "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/skip-credits/balance/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/skip-credits/earn/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#ad_views",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/skip-credits/earn/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/skip-credits/use/route.ts",
+      "target": "sql-table:supabase/migrations/20260413000000_phase9_activity_first_protocol.sql#skip_credits",
       "kind": "sql-reference"
     },
     {
@@ -107104,8 +109053,8 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#projects",
+      "source": "file:engins/engin.BrandingEngin.tsx",
+      "target": "sql-table:supabase/migrations/20260325000000_phase8f_daydream_network.sql#brand_kit_items",
       "kind": "sql-reference"
     },
     {
@@ -107116,6 +109065,11 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "sql-table:supabase/migrations/20260305000002_leaderboard.sql#game_scores",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:engins/engin.LabEngin.tsx",
+      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {
@@ -107381,6 +109335,11 @@
     {
       "source": "file:lib/gameengin/dream-engine.ts",
       "target": "sql-table:supabase/migrations/20260401000001_platform_utilities.sql#global_registry",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:lib/platform/lab.ts",
+      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {

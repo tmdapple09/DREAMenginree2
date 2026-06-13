@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-06-12T13:47:50.713Z",
-  "totalFiles": 2072,
-  "totalNodes": 7067,
-  "totalEdges": 7408,
-  "totalFunctionAndClassNodes": 3964,
-  "orphanCount": 3334,
+  "generatedAt": "2026-06-13T13:32:59.880Z",
+  "totalFiles": 2090,
+  "totalNodes": 7178,
+  "totalEdges": 7573,
+  "totalFunctionAndClassNodes": 4048,
+  "orphanCount": 3371,
   "countsByType": {
-    "folder": 587,
-    "file": 114,
-    "doc": 229,
+    "folder": 596,
+    "file": 113,
+    "doc": 230,
     "config": 230,
-    "function": 3696,
+    "function": 3779,
     "python": 14,
-    "class": 268,
+    "class": 269,
     "js": 8,
     "mjs": 29,
-    "route": 234,
-    "ts": 824,
+    "route": 241,
+    "ts": 835,
     "tsx": 319,
     "css": 8,
     "cjs": 4,
@@ -27,56 +27,56 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 540,
+      "degree": 547,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
     },
     {
       "id": "file:src/engin/generated/systems.ts",
-      "degree": 383,
+      "degree": 393,
       "label": "systems.ts",
       "type": "ts",
       "path": "src/engin/generated/systems.ts"
     },
     {
       "id": "file:lib/supabase/server.ts",
-      "degree": 349,
+      "degree": 350,
       "label": "server.ts",
       "type": "ts",
       "path": "lib/supabase/server.ts"
     },
     {
       "id": "file:lib/supabase/safeGetUser.ts",
-      "degree": 349,
+      "degree": 350,
       "label": "safeGetUser.ts",
       "type": "ts",
       "path": "lib/supabase/safeGetUser.ts"
     },
     {
       "id": "function:lib/supabase/safeGetUser.ts#safeGetUser",
-      "degree": 189,
+      "degree": 190,
       "label": "safeGetUser",
       "type": "function",
       "path": "lib/supabase/safeGetUser.ts"
     },
     {
-      "id": "function:lib/supabase/server.ts#createServerClient",
-      "degree": 179,
-      "label": "createServerClient",
-      "type": "function",
-      "path": "lib/supabase/server.ts"
-    },
-    {
       "id": "file:lib/utils.ts",
-      "degree": 176,
+      "degree": 181,
       "label": "utils.ts",
       "type": "ts",
       "path": "lib/utils.ts"
     },
     {
+      "id": "function:lib/supabase/server.ts#createServerClient",
+      "degree": 180,
+      "label": "createServerClient",
+      "type": "function",
+      "path": "lib/supabase/server.ts"
+    },
+    {
       "id": "function:lib/utils.ts#toErrorMessage",
-      "degree": 109,
+      "degree": 112,
       "label": "toErrorMessage",
       "type": "function",
       "path": "lib/utils.ts"
