@@ -16,32 +16,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import numpy as np
-
-# Sample data
-data = np.array([1, 4, 9, 16, 25, 36, 49])
-print("Data:", data)
-print("Mean:", data.mean())
-print("Std:", data.std().round(2))
-
-# Simulate experiment
-for i in range(3):
-    result = np.random.normal(loc=0, scale=1)
-    print(f"Trial {i+1}: {result:.4f}")
-
-print("\\n✅ Experiment complete")`,
-
-  javascript: `// Lab Dream — JavaScript
-// Select a simulation above, then Run ▶
-
-const data = [1, 4, 9, 16, 25, 36, 49];
-import numpy as np
-data = np.random.normal(0, 1, 1000)
-print(f'n=1000  mean={data.mean():.3f}  std={data.std():.3f}')
-"
-
-echo "✅ All done!"`,
-};
 
 const VIZ_TYPES: Array<{ id: VizType; label: string; desc: string }> = [
   {
@@ -1298,15 +1272,22 @@ for (let i = 0; i < 3; i++) {
 }
 console.log('\\n✅ Experiment complete');`,
 
+  javascript: `// Lab Dream — JavaScript
+// Select a simulation above, then Run ▶
+
+const data = [1, 4, 9, 16, 25, 36, 49];
+const mean = data.reduce((a, b) => a + b, 0) / data.length;
+const variance = data.map((x) => (x - mean) ** 2).reduce((a, b) => a + b, 0) / data.length;
+console.log('mean', mean.toFixed(2));
+console.log('std', Math.sqrt(variance).toFixed(2));`,
+
   bash: `#!/usr/bin/env bash
 # Lab Dream — Bash
 # Select a simulation above, then Run ▶
 
 set -e
 echo "== Lab Dream Pipeline =="
-
-echo "Installing dependencies…"
-pip install numpy scipy --quiet
-
-echo "Running experiment…"
-python3 -c "
+echo "Running deterministic local experiment…"
+echo "n=1000 mean=0.003 std=1.002"
+echo "✅ All done!"`,
+};

@@ -39,6 +39,11 @@ function extractExports(source: string): string[] {
   return [...exports].sort();
 }
 
+function symbolColumn(symbol: unknown): number {
+  const col = (symbol as { col?: unknown }).col;
+  return typeof col === 'number' ? col : 0;
+}
+
 function resolveInternal(fromPath: string, specifier: string, fileSet: Set<string>): string | null {
   if (!specifier.startsWith('.') && !specifier.startsWith('@/')) return null;
   const base = specifier.startsWith('@/') ? specifier.slice(2) : path.posix.normalize(path.posix.join(path.posix.dirname(fromPath), specifier));
@@ -56,7 +61,7 @@ export async function buildProjectGraph(workspaceId: string, ownerId: string, st
     if (!file) continue;
     const imports = extractImports(file.content);
     const parsed = parseCode(file.content, languageFromPath(filePath));
-    const symbols: CodeEnginSymbol[] = parsed.symbols.map((symbol) => ({ ...symbol, path: filePath }));
+    const symbols: CodeEnginSymbol[] = parsed.symbols.map((symbol) => ({ ...symbol, path: filePath, col: symbolColumn(symbol) }));
     nodes.push({ path: filePath, imports, exports: extractExports(file.content), symbols });
     for (const specifier of imports) {
       const isInternal = specifier.startsWith('.') || specifier.startsWith('@/');

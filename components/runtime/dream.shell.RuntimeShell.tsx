@@ -103,6 +103,7 @@ export default function RuntimeShell({
 
   return (
     <div
+      className="de-runtime-premium-shell"
       style={{
         position: 'relative',
         width: '100%',
@@ -110,6 +111,7 @@ export default function RuntimeShell({
         overflow: 'hidden',
         overscrollBehavior: 'contain',
         contain: 'layout paint size',
+        background: 'linear-gradient(135deg, rgba(8,18,34,0.10), rgba(56,189,248,0.04) 46%, rgba(216,158,45,0.05))',
       }}
     >
 
@@ -280,6 +282,7 @@ export default function RuntimeShell({
          */
         <div
           data-runtime-scroll-container
+          className="de-runtime-premium-scroll"
           style={{
             position: 'absolute',
             inset: 0,

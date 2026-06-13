@@ -169,6 +169,7 @@ function AppIcon({ icon, label, color, onClick }: { icon: string; label: string;
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && press()}
       onKeyUp={(e)   => (e.key === 'Enter' || e.key === ' ') && release()}
       aria-label={`Open ${label}`}
+      className="de-dreamspace-app-icon"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -192,7 +193,7 @@ function AppIcon({ icon, label, color, onClick }: { icon: string; label: string;
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.22)',
+        boxShadow: '0 18px 45px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.30)',
         fontSize: ICON_FONT,
         lineHeight: 1,
         flexShrink: 0,

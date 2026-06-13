@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type GameInputAction =
   | 'move-up' | 'move-down' | 'move-left' | 'move-right'
+  | 'move-up-left' | 'move-up-right' | 'move-down-left' | 'move-down-right'
   | 'strafe-left' | 'strafe-right' | 'move-stop'
   | 'look-up' | 'look-down' | 'turn-left' | 'turn-right' | 'look-stop'
   | 'ability' | 'swap' | 'strike' | 'guard' | 'dash'
@@ -65,10 +66,10 @@ const LEFT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
   down: { action: 'move-down', label: 'BACK' },
   left: { action: 'strafe-left', label: 'STRAFE LEFT' },
   right: { action: 'strafe-right', label: 'STRAFE RIGHT' },
-  'up-left': { action: 'move-up', label: 'FORWARD' },
-  'up-right': { action: 'move-up', label: 'FORWARD' },
-  'down-left': { action: 'move-down', label: 'BACK' },
-  'down-right': { action: 'move-down', label: 'BACK' },
+  'up-left': { action: 'move-up-left', label: 'FORWARD LEFT' },
+  'up-right': { action: 'move-up-right', label: 'FORWARD RIGHT' },
+  'down-left': { action: 'move-down-left', label: 'BACK LEFT' },
+  'down-right': { action: 'move-down-right', label: 'BACK RIGHT' },
 };
 
 const RIGHT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {

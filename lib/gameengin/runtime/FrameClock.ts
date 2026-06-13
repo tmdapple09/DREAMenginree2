@@ -8,11 +8,13 @@ export interface GameEnginFrameTick {
 }
 
 export class GameEnginFrameClock {
-  private readonly budget = resolveFrameBudget(this.tier);
+  private readonly budget;
   private accumulatorMs = 0;
   private elapsedMs = 0;
 
-  constructor(private readonly tier: GameEnginQualityTier = 'balanced') {}
+  constructor(private readonly tier: GameEnginQualityTier = 'balanced') {
+    this.budget = resolveFrameBudget(tier);
+  }
 
   advance(rawDeltaMs: number): GameEnginFrameTick {
     const safeDelta = Math.max(0, Math.min(rawDeltaMs, this.budget.fixedStepMs * this.budget.maxStepsPerFrame));
