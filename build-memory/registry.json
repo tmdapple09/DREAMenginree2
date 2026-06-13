@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-12T09:43:39.643Z",
+  "generatedAt": "2026-06-13T12:18:19.592Z",
   "totals": {
     "core-surface": 2,
     "daydream": 0,
     "surface": 277,
-    "route-surface": 261,
+    "route-surface": 268,
     "dreamsurface": 37,
     "engin": 15,
     "engine-ruleset": 25,
@@ -21,7 +21,7 @@
     "dr-eams-tool": 3,
     "hook": 12,
     "engine-system": 74,
-    "engine-utility": 308
+    "engine-utility": 318
   },
   "entries": [
     {
@@ -321,6 +321,55 @@
       "id": "app/api/close-friends/route",
       "slot": "route-surface",
       "path": "app/api/close-friends/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/diagnostics/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/diagnostics/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/file/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/file/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/git/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/git/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/run/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/run/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/search/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/search/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/upload/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/upload/route.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "app/api/codeengin/workspace/route",
+      "slot": "route-surface",
+      "path": "app/api/codeengin/workspace/route.ts",
       "engine": "Universal",
       "exports": []
     },
@@ -5484,7 +5533,9 @@
       "path": "engins/engin.CodeEngin.tsx",
       "engine": "Universal",
       "exports": [
-        "default"
+        "default",
+        "labDatasetId",
+        "RuntimeIntent"
       ]
     },
     {
@@ -6578,6 +6629,101 @@
         "QueryIntent",
         "VOCAB_TERMS",
         "VocabEntry"
+      ]
+    },
+    {
+      "id": "lib/codeengin/auth",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/auth.ts",
+      "engine": "Universal",
+      "exports": [
+        "CodeEnginAuthenticatedUser"
+      ]
+    },
+    {
+      "id": "lib/codeengin/diagnostics",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/diagnostics.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/codeengin/git",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/git.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/codeengin/pathSafety",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/pathSafety.ts",
+      "engine": "Universal",
+      "exports": [
+        "assertSafeWorkspacePath",
+        "assertValidWorkspaceId",
+        "CODEENGIN_ALLOWED_EXTENSIONS",
+        "CODEENGIN_BLOCKED_SEGMENTS",
+        "getCodeEnginWorkspacesRoot",
+        "getWorkspaceRoot",
+        "isLikelyEditableFile",
+        "normalizeProjectPath",
+        "safeErrorMessage"
+      ]
+    },
+    {
+      "id": "lib/codeengin/projectGraph",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/projectGraph.ts",
+      "engine": "Universal",
+      "exports": [
+        "extractImports"
+      ]
+    },
+    {
+      "id": "lib/codeengin/runner",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/runner.ts",
+      "engine": "Universal",
+      "exports": [
+        "CODEENGIN_COMMANDS",
+        "listRunnerCommands",
+        "runCiCommand"
+      ]
+    },
+    {
+      "id": "lib/codeengin/search",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/search.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "lib/codeengin/types",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/types.ts",
+      "engine": "Universal",
+      "exports": [
+        "CodeEnginCommandResult",
+        "CodeEnginDiagnostic",
+        "CodeEnginFileNode",
+        "CodeEnginFileRecord",
+        "CodeEnginGraphEdge",
+        "CodeEnginGraphNode",
+        "CodeEnginProjectGraph",
+        "CodeEnginSearchHit",
+        "CodeEnginSymbol",
+        "CodeEnginWorkspaceMeta",
+        "CodeEnginWorkspaceOverview"
+      ]
+    },
+    {
+      "id": "lib/codeengin/workspaceStore",
+      "slot": "engine-utility",
+      "path": "lib/codeengin/workspaceStore.ts",
+      "engine": "Universal",
+      "exports": [
+        "default"
       ]
     },
     {
@@ -8576,10 +8722,17 @@
         "CellStatus",
         "CiStatus",
         "CODE_ENGIN_RULE_SET",
+        "CodeDiagnostic",
         "CodeEnginAction",
         "CodeEnginDerivedState",
+        "CodeRuntimeMode",
+        "CodeTerminalEntry",
+        "CodeWorkspaceFile",
+        "default",
+        "DiagnosticSeverity",
         "NotebookCell",
-        "SecurityFinding"
+        "SecurityFinding",
+        "SourceLanguage"
       ]
     },
     {
@@ -12609,6 +12762,31 @@
         "WorkflowDefinition",
         "workflowExists",
         "WorkflowStats"
+      ]
+    },
+    {
+      "id": "lib/runtime/iEngine",
+      "slot": "engine-utility",
+      "path": "lib/runtime/iEngine.ts",
+      "engine": "Universal",
+      "exports": [
+        "ActorContext",
+        "AuthorizationDecision",
+        "authorizeCapability",
+        "CapabilityAction",
+        "createIntentPacket",
+        "createRuntimeObject",
+        "dualRuntimeManifest",
+        "dualRuntimeRuleSet",
+        "EngineManifest",
+        "IntentBus",
+        "IntentPacket",
+        "negotiateCompatibility",
+        "RuntimeRuleSet",
+        "RuntimeSnapshot",
+        "SyncTransport",
+        "validateDomainObject",
+        "validateManifest"
       ]
     },
     {
