@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-13T14:13:55.729Z
+Generated: 2026-06-13T14:15:22.894Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -13466,6 +13466,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/api/blocks/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/ci/run/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/close-friends/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/diagnostics/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/file/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/git/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/run/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/search/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/upload/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/codeengin/workspace/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/comments/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/connectors/[provider]/connect/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/connectors/[provider]/disconnect/route
@@ -14040,6 +14047,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/child-safety/ncmecReporter
 │   │   │       ├── (dynamic)  ← @/lib/child-safety/scanMediaUrls
 │   │   │       ├── (dynamic)  ← @/lib/code/drEamsCodeAssist
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/auth
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/diagnostics
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/git
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/pathSafety
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/projectGraph
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/runner
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/search
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/types
+│   │   │       ├── (dynamic)  ← @/lib/codeengin/workspaceStore
 │   │   │       ├── (dynamic)  ← @/lib/collaboration/index
 │   │   │       ├── (dynamic)  ← @/lib/componentInventory
 │   │   │       ├── (dynamic)  ← @/lib/composite/compositor
@@ -14283,6 +14299,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/runtime/dualRuntimeBridge
 │   │   │       ├── (dynamic)  ← @/lib/runtime/EnginDispatcher
 │   │   │       ├── (dynamic)  ← @/lib/runtime/enginWorkflowRegistry
+│   │   │       ├── (dynamic)  ← @/lib/runtime/iEngine
 │   │   │       ├── (dynamic)  ← @/lib/runtime/instanceManager
 │   │   │       ├── (dynamic)  ← @/lib/runtime/isAuthRelatedError
 │   │   │       ├── (dynamic)  ← @/lib/runtime/madMaxiSnapshotBridge

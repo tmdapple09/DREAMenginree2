@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-13T14:13:55.585Z
+Generated: 2026-06-13T14:15:22.759Z
 
 ---
 
@@ -13702,6 +13702,13 @@ _No style files for this feature._
 | `@/app/api/blocks/route` | _(dynamic import)_ |
 | `@/app/api/ci/run/route` | _(dynamic import)_ |
 | `@/app/api/close-friends/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/diagnostics/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/file/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/git/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/run/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/search/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/upload/route` | _(dynamic import)_ |
+| `@/app/api/codeengin/workspace/route` | _(dynamic import)_ |
 | `@/app/api/comments/route` | _(dynamic import)_ |
 | `@/app/api/connectors/[provider]/connect/route` | _(dynamic import)_ |
 | `@/app/api/connectors/[provider]/disconnect/route` | _(dynamic import)_ |
@@ -14279,6 +14286,15 @@ _No style files for this feature._
 | `@/lib/child-safety/ncmecReporter` | _(dynamic import)_ |
 | `@/lib/child-safety/scanMediaUrls` | _(dynamic import)_ |
 | `@/lib/code/drEamsCodeAssist` | _(dynamic import)_ |
+| `@/lib/codeengin/auth` | _(dynamic import)_ |
+| `@/lib/codeengin/diagnostics` | _(dynamic import)_ |
+| `@/lib/codeengin/git` | _(dynamic import)_ |
+| `@/lib/codeengin/pathSafety` | _(dynamic import)_ |
+| `@/lib/codeengin/projectGraph` | _(dynamic import)_ |
+| `@/lib/codeengin/runner` | _(dynamic import)_ |
+| `@/lib/codeengin/search` | _(dynamic import)_ |
+| `@/lib/codeengin/types` | _(dynamic import)_ |
+| `@/lib/codeengin/workspaceStore` | _(dynamic import)_ |
 | `@/lib/collaboration/index` | _(dynamic import)_ |
 | `@/lib/componentInventory` | _(dynamic import)_ |
 | `@/lib/composite/compositor` | _(dynamic import)_ |
@@ -14522,6 +14538,7 @@ _No style files for this feature._
 | `@/lib/runtime/dualRuntimeBridge` | _(dynamic import)_ |
 | `@/lib/runtime/EnginDispatcher` | _(dynamic import)_ |
 | `@/lib/runtime/enginWorkflowRegistry` | _(dynamic import)_ |
+| `@/lib/runtime/iEngine` | _(dynamic import)_ |
 | `@/lib/runtime/instanceManager` | _(dynamic import)_ |
 | `@/lib/runtime/isAuthRelatedError` | _(dynamic import)_ |
 | `@/lib/runtime/madMaxiSnapshotBridge` | _(dynamic import)_ |
@@ -15169,6 +15186,13 @@ _No style files for this feature._
 - `@/app/api/blocks/route`
 - `@/app/api/ci/run/route`
 - `@/app/api/close-friends/route`
+- `@/app/api/codeengin/diagnostics/route`
+- `@/app/api/codeengin/file/route`
+- `@/app/api/codeengin/git/route`
+- `@/app/api/codeengin/run/route`
+- `@/app/api/codeengin/search/route`
+- `@/app/api/codeengin/upload/route`
+- `@/app/api/codeengin/workspace/route`
 - `@/app/api/comments/route`
 - `@/app/api/connectors/[provider]/connect/route`
 - `@/app/api/connectors/[provider]/disconnect/route`
@@ -15744,6 +15768,15 @@ _No style files for this feature._
 - `@/lib/child-safety/ncmecReporter`
 - `@/lib/child-safety/scanMediaUrls`
 - `@/lib/code/drEamsCodeAssist`
+- `@/lib/codeengin/auth`
+- `@/lib/codeengin/diagnostics`
+- `@/lib/codeengin/git`
+- `@/lib/codeengin/pathSafety`
+- `@/lib/codeengin/projectGraph`
+- `@/lib/codeengin/runner`
+- `@/lib/codeengin/search`
+- `@/lib/codeengin/types`
+- `@/lib/codeengin/workspaceStore`
 - `@/lib/collaboration/index`
 - `@/lib/componentInventory`
 - `@/lib/composite/compositor`
@@ -15987,6 +16020,7 @@ _No style files for this feature._
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/runtime/EnginDispatcher`
 - `@/lib/runtime/enginWorkflowRegistry`
+- `@/lib/runtime/iEngine`
 - `@/lib/runtime/instanceManager`
 - `@/lib/runtime/isAuthRelatedError`
 - `@/lib/runtime/madMaxiSnapshotBridge`
