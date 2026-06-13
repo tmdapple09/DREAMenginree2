@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from 'crypto';
+import type { Dirent } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
 import { assertSafeWorkspacePath, assertValidWorkspaceId, CODEENGIN_BLOCKED_SEGMENTS, getCodeEnginWorkspacesRoot, getWorkspaceRoot, isLikelyEditableFile, normalizeProjectPath } from './pathSafety';
@@ -59,7 +60,7 @@ async function fileNode(absPath: string, relPath: string): Promise<CodeEnginFile
 
 async function buildTree(absDir: string, relDir: string, depth: number): Promise<CodeEnginFileNode[]> {
   if (depth > MAX_TREE_DEPTH || treeNodeBudget <= 0) return [];
-  let entries: Awaited<ReturnType<typeof fs.readdir>>;
+  let entries: Dirent[];
   try { entries = await fs.readdir(absDir, { withFileTypes: true }); } catch { return []; }
   const nodes: CodeEnginFileNode[] = [];
   for (const entry of entries) {
@@ -139,7 +140,7 @@ export async function listEditableFiles(workspaceId: string, ownerId: string, st
   const files: string[] = [];
   async function walk(absDir: string, relDir: string, depth: number): Promise<void> {
     if (depth > MAX_TREE_DEPTH || files.length >= MAX_TREE_NODES) return;
-    let entries: Awaited<ReturnType<typeof fs.readdir>>;
+    let entries: Dirent[];
     try { entries = await fs.readdir(absDir, { withFileTypes: true }); } catch { return; }
     for (const entry of entries) {
       if (entry.name.startsWith('.') || CODEENGIN_BLOCKED_SEGMENTS.has(entry.name)) continue;

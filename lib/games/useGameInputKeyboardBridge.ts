@@ -11,6 +11,22 @@ type KeyboardInput = {
 export const GAME_INPUT_KEYBOARD_MAP: Partial<Record<GameInputAction, KeyboardInput[]>> = {
   'move-left': [{ key: 'a', code: 'KeyA' }],
   'move-right': [{ key: 'd', code: 'KeyD' }],
+  'move-up-left': [
+    { key: 'w', code: 'KeyW' },
+    { key: 'a', code: 'KeyA' },
+  ],
+  'move-up-right': [
+    { key: 'w', code: 'KeyW' },
+    { key: 'd', code: 'KeyD' },
+  ],
+  'move-down-left': [
+    { key: 's', code: 'KeyS' },
+    { key: 'a', code: 'KeyA' },
+  ],
+  'move-down-right': [
+    { key: 's', code: 'KeyS' },
+    { key: 'd', code: 'KeyD' },
+  ],
   'strafe-left': [{ key: 'a', code: 'KeyA' }],
   'strafe-right': [{ key: 'd', code: 'KeyD' }],
   'move-up': [{ key: 'w', code: 'KeyW' }],
@@ -44,6 +60,10 @@ export const GAME_INPUT_KEYBOARD_MAP: Partial<Record<GameInputAction, KeyboardIn
 const DIRECTIONAL_ACTIONS: GameInputAction[] = [
   'move-left',
   'move-right',
+  'move-up-left',
+  'move-up-right',
+  'move-down-left',
+  'move-down-right',
   'strafe-left',
   'strafe-right',
   'move-up',
