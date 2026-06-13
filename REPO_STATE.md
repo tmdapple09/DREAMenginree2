@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-13T14:15:22.759Z
+Generated: 2026-06-13T20:39:10.480Z
 
 ---
 
@@ -1964,6 +1964,12 @@ _No style files for this feature._
 - `tests/content-intelligence-routes.test.ts`
 - `tests/content-publish-intent.test.ts`
 - `tests/contentengin-features.test.ts`
+- `tests/contentengin/contentengin-api.test.ts`
+- `tests/contentengin/contentengin-export.test.ts`
+- `tests/contentengin/contentengin-grammars.test.ts`
+- `tests/contentengin/contentengin-recipes.test.ts`
+- `tests/contentengin/contentengin-rigging.test.ts`
+- `tests/contentengin/contentengin-validation.test.ts`
 
 <a name="createengin-deps"></a>
 
@@ -1972,7 +1978,6 @@ _No style files for this feature._
 ### External packages
 
 - `lucide-react`
-- `next`
 - `react`
 
 ### Internal imports
@@ -1982,52 +1987,23 @@ _No style files for this feature._
 - `./panels/dream.panel.CalendarPanel`
 - `./panels/dream.panel.EditorPanel`
 - `./panels/dream.panel.QueuePanel`
-- `@/components/activity/dream.ActivityPostForm`
-- `@/components/daydream/dream.JourneyTrail`
+- `@/components/contentengin/ContentEnginStudio`
 - `@/components/engines/shared`
 - `@/engins/engin.ContentEngin`
-- `@/lib/composite/compositor`
-- `@/lib/composite/fxSimulation`
-- `@/lib/composite/matchmover`
-- `@/lib/composite/motionCapture`
-- `@/lib/composite/rotoscope`
-- `@/lib/content/publishIntent`
-- `@/lib/content/seoScorer`
-- `@/lib/content/transcriptEditor`
-- `@/lib/daydream/useDaydreamPersistence`
-- `@/lib/dreamenginOS`
+- `@/lib/contentengin/assetTypes`
 - `@/lib/engin-runtime/EnginBaseState`
 - `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/engin-runtime/EnginCapabilityTargets`
 - `@/lib/engin-runtime/EnginIOAdapter`
 - `@/lib/engin-runtime/EnginRuleSetContract`
 - `@/lib/engin-runtime/EnginRuntime`
-- `@/lib/enginpipe`
-- `@/lib/engins/content/useContentEnginRuntime`
-- `@/lib/engins/useEnginWorkflow`
-- `@/lib/forge/forgeIntelligence`
-- `@/lib/forge/useForgeActivity`
-- `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/runtime/useEnginBridge`
-- `@/lib/runtime/useEnginCoopSync`
-- `@/lib/supabase/client`
-- `@/lib/utils`
 
 ## Special Capabilities
 
-**Dual Runtime** (1 files) · **Supabase** (1 files) · **Event Bus** (2 files)
-
-### Dual Runtime files
-
-- `engins/engin.ContentEngin.tsx`
-
-### Supabase files
-
-- `engins/engin.ContentEngin.tsx`
+**Event Bus** (1 files)
 
 ### Event Bus files
 
-- `engins/engin.ContentEngin.tsx`
 - `lib/engins/content/useContentEnginRuntime.ts`
 
 ---
@@ -6011,6 +5987,43 @@ _No style files for this feature._
 | `next/server` | `NextRequest`, `NextResponse` |
 | `zod` | `z` |
 
+## `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/pipeline/paths` | `safeSegment`, `safeUnder` |
+| `fs/promises` | `cp`, `mkdir`, `writeFile` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/contentengin/assets/[assetId]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/pipeline/paths` | `safeUnder` |
+| `fs/promises` | `readFile` |
+| `next/server` | `NextResponse` |
+
+## `app/api/contentengin/jobs/[jobId]/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/server` | `NextResponse` |
+
+## `app/api/contentengin/jobs/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/pipeline/build` | `buildAsset` |
+| `@/lib/contentengin/pipeline/bundle` | `writeAssetBundle`, `zipDirectory` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
+## `app/api/contentengin/upload/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/photo/imageAnalyzer` | `analyzeImageBytes` |
+| `next/server` | `NextRequest`, `NextResponse` |
+
 ## `app/api/dr-eams/hf/route.ts`
 
 | Module | Connected via |
@@ -7270,8 +7283,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/engines/create/panels/dream.panel.CalendarPanel` | `⬡ CalendarPanel` |
-| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/components/engines/create/dream.CreateEnginApp` | `⬡ CreateEnginApp` |
 | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
@@ -7282,8 +7294,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/engines/create/panels/dream.panel.EditorPanel` | `⬡ EditorPanel` |
-| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/components/engines/create/dream.CreateEnginApp` | `⬡ CreateEnginApp` |
 | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
@@ -7311,8 +7322,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/engines/create/panels/dream.panel.QueuePanel` | `⬡ QueuePanel` |
-| `@/components/engines/shared` | `EnginAppShell`, `EnginNavBar` |
+| `@/components/engines/create/dream.CreateEnginApp` | `⬡ CreateEnginApp` |
 | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/supabase/server` | `createServerClient` |
@@ -8212,6 +8222,73 @@ _No style files for this feature._
 | `lucide-react` | `ArrowRight`, `Check`, `Plug`, `Search`, `X` |
 | `next/link` | `⬡ Link` |
 | `react` | `useMemo`, `useState` |
+
+## `components/contentengin/AnimationPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset` |
+
+## `components/contentengin/AssetPreview3D.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset` |
+| `react` | `useEffect`, `useRef` |
+| `three` | `* as THREE` |
+| `three/examples/jsm/loaders/GLTFLoader.js` | `GLTFLoader` |
+
+## `components/contentengin/ContentEnginStudio.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./AnimationPanel` | `⬡ AnimationPanel` |
+| `./AssetPreview3D` | `⬡ AssetPreview3D` |
+| `./ExportPanel` | `⬡ ExportPanel` |
+| `./MaterialEditor` | `⬡ MaterialEditor` |
+| `./PartTreeEditor` | `⬡ PartTreeEditor` |
+| `./PhotoReferencePanel` | `⬡ PhotoReferencePanel` |
+| `./RecipeEditor` | `⬡ RecipeEditor` |
+| `./RiggingPanel` | `⬡ RiggingPanel` |
+| `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe` |
+| `@/lib/engins/content/useContentEnginRuntime` | `useContentEnginRuntime` |
+| `react` | `useState` |
+
+## `components/contentengin/ExportPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset` |
+
+## `components/contentengin/MaterialEditor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `MaterialDef` |
+
+## `components/contentengin/PartTreeEditor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `PartNode` |
+
+## `components/contentengin/PhotoReferencePanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useRef` |
+
+## `components/contentengin/RecipeEditor.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentRecipe`, `ExportProfile` |
+
+## `components/contentengin/RiggingPanel.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset` |
 
 ## `components/core/dream.CoreDream.tsx`
 
@@ -10514,33 +10591,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/activity/dream.ActivityPostForm` | `ActivityPostData`, `ActivityPostForm` |
-| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
-| `@/lib/composite/compositor` | `CompGraph`, `NodeType`, `addNode`, `connectNodes`, `createGraph`, `createNode`, `topologicalSort` |
-| `@/lib/composite/fxSimulation` | `FxCategory`, `FxSimulation`, `allCategories`, `createSimulation`, `presetsByCategory` |
-| `@/lib/composite/matchmover` | `CameraTrack`, `addSample`, `addTrackPoint`, `createTrack`, `estimateCameraMotion`, `exportTrackCSV`, `trackSummary` |
-| `@/lib/composite/motionCapture` | `MocapClip`, `clipSummary`, `exportBVH`, `parseBVH`, `retargetClip` |
-| `@/lib/composite/rotoscope` | `RotoProject`, `addLayer`, `createProject`, `exportFrameSVG`, `interpolateShape`, `keyframeList`, `setKeyframe` |
-| `@/lib/content/publishIntent` | `publishToDreamR`, `resolvePublishIntent` |
-| `@/lib/content/seoScorer` | `scoreContent` |
-| `@/lib/content/transcriptEditor` | `annotateSearchMatches`, `applyEditsToSegments`, `computeCuts`, `exportSRT`, `parseSRT`, `parseVTT`, `searchTranscript` |
-| `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
-| `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
-| `@/lib/enginpipe` | `ArtifactSlot` |
-| `@/lib/engins/content/useContentEnginRuntime` | `useContentEnginRuntime` |
-| `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
-| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
-| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `@/lib/runtime/useEnginBridge` | `useContentEnginBridge` |
-| `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `lucide-react` | `ArrowLeft`, `BarChart2`, `Brain`, `Calendar`, `Camera`, `CheckCircle`, `ChevronDown`, `ChevronUp`, `Crosshair`, `Dice5`, `Download`, `FileText`, `Film`, `Flag`, `Hash`, `Image`, `Layers`, `Link2`, `Mic`, `Rocket`, `RotateCcw`, `Search`, `Shield`, `Trash2`, `Video`, `Wand2`, `Wrench`, `Zap` |
-| `next/image` | `⬡ NextImage` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-| `@/lib/content/transcriptEditor` | _(dynamic import)_ |
-| `@/lib/content/seoScorer` | _(dynamic import)_ |
+| `@/components/contentengin/ContentEnginStudio` | `⬡ ContentEnginStudio` |
 
 ## `engins/engin.GameEngin.tsx`
 
@@ -11309,6 +11360,279 @@ _No style files for this feature._
 |--------|---------------|
 | `@/lib/supabase/client` | _(dynamic import)_ |
 
+## `lib/contentengin/builders/geometryBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `Vec3` |
+| `./primitiveBuilder` | `flattenParts` |
+
+## `lib/contentengin/builders/meshBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode` |
+| `./primitiveBuilder` | `flattenParts`, `primitiveStats` |
+
+## `lib/contentengin/builders/primitiveBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `PrimitiveKind`, `Vec3`, `identityTransform`, `vec3` |
+
+## `lib/contentengin/builders/textureBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `MaterialDef` |
+
+## `lib/contentengin/builders/uvGenerator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode` |
+
+## `lib/contentengin/cli.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./photo/imageAnalyzer` | `analyzeImageBytes` |
+| `./pipeline/build` | `buildAsset` |
+| `./pipeline/bundle` | `writeAssetBundle`, `zipDirectory` |
+| `./pipeline/validate` | `validateAsset` |
+| `./rigging` | `runRiggingPipeline` |
+| `fs/promises` | `cp`, `mkdir`, `readFile`, `writeFile` |
+
+## `lib/contentengin/grammars/animalGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/bicycleGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/bridgeGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/buildingGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/humanoidGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root`, `symmetrical` |
+
+## `lib/contentengin/grammars/propGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/roadGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/shared.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `vec3` |
+| `../builders/primitiveBuilder` | `createPart` |
+
+## `lib/contentengin/grammars/terrainGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/treeGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/vehicleGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/grammars/waterGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `lib/contentengin/materials/proceduralMaterials.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `MaterialDef` |
+
+## `lib/contentengin/photo/imageAnalyzer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShapeRegion`, `SourceImageAnalysis` |
+| `../materials/paletteExtractor` | `rgbaToHex` |
+| `./pngDecoder` | `decodePng` |
+
+## `lib/contentengin/photo/photoToRecipe.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `SourceImageAnalysis` |
+
+## `lib/contentengin/photo/pngDecoder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zlib` | `inflateSync` |
+
+## `lib/contentengin/photo/regionDetector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShapeRegion` |
+
+## `lib/contentengin/pipeline/build.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `CONTENTENGIN_VERSION`, `ContentAsset`, `ContentAssetCategory` |
+| `../builders/primitiveBuilder` | `resetPartIds` |
+| `../builders/textureBuilder` | `assignProceduralTextureNames` |
+| `../builders/uvGenerator` | `assignProceduralUv` |
+| `../grammars/animalGrammar` | `buildAnimalParts` |
+| `../grammars/bicycleGrammar` | `buildBicycleParts` |
+| `../grammars/bridgeGrammar` | `buildBridgeParts` |
+| `../grammars/buildingGrammar` | `buildBuildingParts` |
+| `../grammars/humanoidGrammar` | `buildHumanoidParts` |
+| `../grammars/propGrammar` | `buildPropParts` |
+| `../grammars/roadGrammar` | `buildRoadParts` |
+| `../grammars/terrainGrammar` | `buildTerrainParts` |
+| `../grammars/treeGrammar` | `buildTreeParts` |
+| `../grammars/vehicleGrammar` | `buildVehicleParts` |
+| `../grammars/waterGrammar` | `buildWaterParts` |
+| `../materials/proceduralMaterials` | `defaultMaterials` |
+| `../recipes/recipeResolver` | `resolveRecipe` |
+| `../rigging/fitArmature` | `createSkeleton` |
+| `../shaders/shaderRegistry` | `SHADERS` |
+| `./generateCollision` | `generateCollision` |
+| `./generateLods` | `generateLods` |
+| `./paths` | `safeSegment` |
+| `./validate` | `validateAsset` |
+
+## `lib/contentengin/pipeline/bundle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset` |
+| `./exportGlb` | `createGlbBuffer` |
+| `./validate` | `validateAsset` |
+| `./writeManifest` | `makeManifest` |
+| `fs/promises` | `mkdir`, `readFile`, `readdir`, `stat`, `writeFile` |
+
+## `lib/contentengin/pipeline/exportGlb.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `MaterialDef` |
+| `../builders/geometryBuilder` | `buildGeometry` |
+
+## `lib/contentengin/pipeline/generateCollision.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `CollisionBlock`, `PartNode` |
+| `../builders/primitiveBuilder` | `flattenParts` |
+
+## `lib/contentengin/pipeline/generateLods.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ExportProfile`, `LodDef` |
+
+## `lib/contentengin/pipeline/validate.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `ExportProfile`, `ValidationReport` |
+| `../builders/meshBuilder` | `computeMeshMetrics` |
+| `./exportGlb` | `expectedMaterialIdsForAsset`, `inspectGlb` |
+
+## `lib/contentengin/pipeline/writeManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `ContentAssetObject` |
+
+## `lib/contentengin/recipes/recipeResolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `ExportProfile` |
+| `./recipeTypes` | `SUPPORTED_ASSET_TYPES` |
+
+## `lib/contentengin/rigging/fitArmature.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `BoneDef`, `SkeletonDef`, `vec3` |
+| `./rigTypes` | `RigStandard` |
+
+## `lib/contentengin/rigging/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./fitArmature` | `createSkeleton` |
+| `./rigTypes` | `RiggingRequest` |
+| `child_process` | `execFile` |
+| `fs/promises` | `mkdir` |
+| `util` | `promisify` |
+
+## `lib/contentengin/rigging/landmarks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `Vec3`, `vec3` |
+
+## `lib/contentengin/rigging/rigValidator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `SkeletonDef` |
+
+## `lib/contentengin/shaders/shaderRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShaderDef` |
+
 ## `lib/daydream/useDaydreamPersistence.ts`
 
 | Module | Connected via |
@@ -11748,6 +12072,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe`, `ExportProfile` |
 | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
 | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
 | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
@@ -13091,6 +13416,12 @@ _No style files for this feature._
 |--------|---------------|
 | `node:fs/promises` | `readdir` |
 | `node:url` | `fileURLToPath` |
+
+## `scripts/contentengin/validate-glb.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `readFileSync` |
 
 ## `scripts/export-full-code.mjs`
 
@@ -14780,11 +15111,6 @@ _No style files for this feature._
 
 - `@/lib/supabase/client`
 
-## `engins/engin.ContentEngin.tsx`
-
-- `@/lib/content/transcriptEditor`
-- `@/lib/content/seoScorer`
-
 ## `lib/agents/agentBus.ts`
 
 - `@/lib/ai/schemas`
@@ -16359,6 +16685,14 @@ _No style files for this feature._
 - `app/api/content/transcribe/route.ts`
 - `app/api/content/voice-clone/route.ts`
 
+## `/api/contentengin`
+
+- `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts`
+- `app/api/contentengin/assets/[assetId]/route.ts`
+- `app/api/contentengin/jobs/[jobId]/route.ts`
+- `app/api/contentengin/jobs/route.ts`
+- `app/api/contentengin/upload/route.ts`
+
 ## `/api/dr-eams`
 
 - `app/api/dr-eams/hf/route.ts`
@@ -16821,6 +17155,18 @@ _No style files for this feature._
 - `components/connectors/dream.PlacementMode.tsx`
 - `components/connectors/dream.widget.ConnectWidgetPrompt.tsx`
 - `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
+
+## `components/contentengin/`
+
+- `components/contentengin/AnimationPanel.tsx`
+- `components/contentengin/AssetPreview3D.tsx`
+- `components/contentengin/ContentEnginStudio.tsx`
+- `components/contentengin/ExportPanel.tsx`
+- `components/contentengin/MaterialEditor.tsx`
+- `components/contentengin/PartTreeEditor.tsx`
+- `components/contentengin/PhotoReferencePanel.tsx`
+- `components/contentengin/RecipeEditor.tsx`
+- `components/contentengin/RiggingPanel.tsx`
 
 ## `components/core/`
 
@@ -17843,7 +18189,6 @@ _No style files for this feature._
 - `engins/dream.ForgeEngin.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
-- `engins/engin.ContentEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
@@ -18005,7 +18350,6 @@ _No style files for this feature._
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 - `engine/io.ts`
 - `engins/engin.BrandingEngin.tsx`
-- `engins/engin.ContentEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
@@ -18099,7 +18443,6 @@ _No style files for this feature._
 - `components/spatial/dream.shell.EnhancedSpatialShell.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
-- `engins/engin.ContentEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
@@ -18192,7 +18535,7 @@ _No circular dependencies detected._
 | `lib/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
-| `engins/engin.ContentEngin.tsx` | 25 |
+| `lib/contentengin/pipeline/build.ts` | 23 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -18231,7 +18574,7 @@ _No circular dependencies detected._
 | `lib/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
-| `engins/engin.ContentEngin.tsx` | 25 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `lib/contentengin/pipeline/build.ts` | 23 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -18268,6 +18611,7 @@ _No circular dependencies detected._
 | `app/daydream/code/page.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/create/page.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/lab/page.tsx` | 11 | HIGH_COUPLING |
+| `components/contentengin/ContentEnginStudio.tsx` | 11 | HIGH_COUPLING |
 | `components/dream.MessagesClient.tsx` | 11 | HIGH_COUPLING |
 | `components/dreamengin/dream.DREAMenginOS.tsx` | 11 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `components/games/dream.GamesHub.tsx` | 11 | HIGH_COUPLING |
@@ -18343,9 +18687,6 @@ _No circular dependencies detected._
 | `app/engines/code/ai/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/code/notebook/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/code/projects/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/engines/create/calendar/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/engines/create/editor/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/engines/create/queue/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/games/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/lab/data/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/lab/experiments/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -18380,6 +18721,7 @@ _No circular dependencies detected._
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
+| `lib/contentengin/cli.ts` | 7 | MEDIUM_COUPLING |
 | `lib/engin-runtime/EnginDomainCores.ts` | 7 | MEDIUM_COUPLING |
 | `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
@@ -18408,7 +18750,10 @@ _No circular dependencies detected._
 | `app/dream-effects/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/brand/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/code/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/engines/create/calendar/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/engines/create/editor/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/create/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/engines/create/queue/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/lab/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/music/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/page.tsx` | 6 | MEDIUM_COUPLING |
@@ -18431,6 +18776,8 @@ _No circular dependencies detected._
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
 | `lib/codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
+| `lib/contentengin/pipeline/bundle.ts` | 6 | MEDIUM_COUPLING |
+| `lib/contentengin/rigging/index.ts` | 6 | MEDIUM_COUPLING |
 | `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
@@ -18765,14 +19112,14 @@ _No circular dependencies detected._
 | `app/engines/code/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/engines/code/projects/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/code/projects/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `app/engines/create/calendar/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/calendar/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `app/engines/create/editor/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/engines/create/calendar/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/editor/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/create/editor/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `app/engines/create/queue/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/queue/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/create/queue/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/builder/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/builder/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/engines/games/library/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -18909,7 +19256,6 @@ _No circular dependencies detected._
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `engins/engin.CodeEngin.tsx` | `@/components/DreamButton` | `⬡ DreamButton` |
-| `engins/engin.ContentEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.GameEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.LabEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.StarMakerEngin.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -19040,6 +19386,7 @@ _No circular dependencies detected._
 | `assembly/bus.ts` | `QUEUE_SIZE`, `enqueue`, `dequeue`, `reset` |
 | `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD`, `hashBytesFNV1A`, `shapeGlowFieldSIMD` |
 | `assembly/mad-maxi-player.ts` | `init`, `handleInput`, `update`, `getSnapshotSize`, `writeSnapshot`, `loadSnapshot`, `getMemoryUsage`, `getX`, `getY`, `getVX`, `getVY`, `getOnGround`, `getJumpsUsed`, `getCoyoteTimer`, `getDashTimer`, `getTicks` |
+| `components/activity/dream.ActivityPostForm.tsx` | `ActivityPostForm` |
 | `components/ads/dream.SkipCreditBalance.tsx` | `SkipCreditBalance` |
 | `components/auth/dream.PasswordField.tsx` | `(default)` |
 | `components/connectors/dream.AddSliceSheet.tsx` | `(default)` |
@@ -19049,6 +19396,15 @@ _No circular dependencies detected._
 | `components/connectors/dream.PlacementMode.tsx` | `(default)` |
 | `components/connectors/dream.widget.ConnectWidgetPrompt.tsx` | `(default)` |
 | `components/connectors/dream.widget.ConnectorWidgetPicker.tsx` | `TOP_10_CONNECTORS`, `(default)` |
+| `components/contentengin/AnimationPanel.tsx` | `(default)` |
+| `components/contentengin/AssetPreview3D.tsx` | `(default)` |
+| `components/contentengin/ContentEnginStudio.tsx` | `(default)` |
+| `components/contentengin/ExportPanel.tsx` | `(default)` |
+| `components/contentengin/MaterialEditor.tsx` | `(default)` |
+| `components/contentengin/PartTreeEditor.tsx` | `(default)` |
+| `components/contentengin/PhotoReferencePanel.tsx` | `(default)` |
+| `components/contentengin/RecipeEditor.tsx` | `(default)` |
+| `components/contentengin/RiggingPanel.tsx` | `(default)` |
 | `components/core/dream.CoreDream.tsx` | `(default)` |
 | `components/customize/dream.GlobalCustomizeUI.tsx` | `(default)` |
 | `components/customize/dream.bar.CustomizeModeBar.tsx` | `(default)` |
@@ -19390,11 +19746,11 @@ _No circular dependencies detected._
 | `lib/codeengin/workspaceStore.ts` | `(default)` |
 | `lib/collaboration/index.ts` | `createLocalCollabSession`, `createSupabaseCollabSession`, `broadcastPlayhead` |
 | `lib/componentInventory.ts` | `searchComponents` |
-| `lib/composite/compositor.ts` | `disconnectInput`, `setParam`, `findNode`, `graphSummary` |
-| `lib/composite/fxSimulation.ts` | `FX_PRESETS`, `getPreset`, `setSimParam`, `getSimParam`, `resetSimParams` |
-| `lib/composite/matchmover.ts` | `computeHomography` |
-| `lib/composite/motionCapture.ts` | `getFramePose`, `findJoint` |
-| `lib/composite/rotoscope.ts` | `removeKeyframe`, `exportShapeSVG` |
+| `lib/composite/compositor.ts` | `createNode`, `createGraph`, `addNode`, `connectNodes`, `disconnectInput`, `setParam`, `findNode`, `topologicalSort`, `graphSummary` |
+| `lib/composite/fxSimulation.ts` | `FX_PRESETS`, `getPreset`, `presetsByCategory`, `createSimulation`, `setSimParam`, `getSimParam`, `resetSimParams`, `allCategories` |
+| `lib/composite/matchmover.ts` | `createTrack`, `addTrackPoint`, `addSample`, `computeHomography`, `estimateCameraMotion`, `exportTrackCSV`, `trackSummary` |
+| `lib/composite/motionCapture.ts` | `parseBVH`, `getFramePose`, `retargetClip`, `exportBVH`, `clipSummary`, `findJoint` |
+| `lib/composite/rotoscope.ts` | `createProject`, `addLayer`, `setKeyframe`, `removeKeyframe`, `interpolateShape`, `exportShapeSVG`, `exportFrameSVG`, `keyframeList` |
 | `lib/connectors/installFlow.ts` | `removeSuggestedWidget`, `enqueueForPlacement`, `dequeueNextPlacement`, `peekPlacementQueue` |
 | `lib/connectors/providers/bluesky.ts` | `blueskyCredentialFields` |
 | `lib/connectors/providers/devto.ts` | `devtoVerify`, `devtoSync`, `devtoCredentialFields` |
@@ -19418,9 +19774,22 @@ _No circular dependencies detected._
 | `lib/connectors/youtube.ts` | `pollYouTube` |
 | `lib/consent/consentManager.ts` | `resolveAcceptPolicy`, `ConsentManager`, `consentManager` |
 | `lib/content/generativeFill.ts` | `requestGenerativeFill`, `createMaskDataUrl`, `analyzeImageColors`, `fileToBase64` |
-| `lib/content/seoScorer.ts` | `generateReport` |
-| `lib/content/transcriptEditor.ts` | `segmentsToPlainText` |
+| `lib/content/seoScorer.ts` | `scoreContent`, `generateReport` |
+| `lib/content/transcriptEditor.ts` | `computeCuts`, `applyEditsToSegments`, `exportSRT`, `searchTranscript`, `annotateSearchMatches`, `segmentsToPlainText` |
 | `lib/content/voiceClone.ts` | `cloneVoice`, `textToSpeech`, `listVoiceProfiles`, `deleteVoiceProfile`, `speakWithBrowserTTS`, `getBrowserVoices`, `audioFileToBase64` |
+| `lib/contentengin/builders/modifiers.ts` | `applyModifierMetadata` |
+| `lib/contentengin/grammars/creatureGrammar.ts` | `buildCreatureParts` |
+| `lib/contentengin/materials/paletteExtractor.ts` | `extractPalette` |
+| `lib/contentengin/materials/proceduralMaterials.ts` | `material` |
+| `lib/contentengin/photo/colorCluster.ts` | `extractPalette` |
+| `lib/contentengin/photo/edgeDetector.ts` | `buildEdgeMapFromRgba` |
+| `lib/contentengin/photo/photoToRecipe.ts` | `photoToRecipe` |
+| `lib/contentengin/photo/regionDetector.ts` | `relabelRegion` |
+| `lib/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
+| `lib/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
+| `lib/contentengin/recipes/seededRandom.ts` | `pick` |
+| `lib/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
+| `lib/contentengin/shaders/shaderRegistry.ts` | `getShader` |
 | `lib/diff/aiEditEngine.ts` | `CODEENGIN_PRODUCTION_MODE` |
 | `lib/dream-docs/index.ts` | `searchDreamDocs`, `embedDocSection` |
 | `lib/dream-docs/search.ts` | `searchDreamDocs` |
@@ -19575,7 +19944,7 @@ _No circular dependencies detected._
 | `lib/runtime/useDragSurface.ts` | `useDragSurface` |
 | `lib/runtime/useDualRuntime.ts` | `useDualRuntime` |
 | `lib/runtime/useDualRuntimePersistence.ts` | `useDualRuntimePersistence` |
-| `lib/runtime/useEnginBridge.ts` | `useStarMakerEnginBridge` |
+| `lib/runtime/useEnginBridge.ts` | `useStarMakerEnginBridge`, `useContentEnginBridge` |
 | `lib/scene/sceneState.ts` | `persistScene`, `restoreScene`, `removeScene`, `listPersistedScenes`, `createAutoSave` |
 | `lib/setup/checks.ts` | `getSetupChecks` |
 | `lib/sharedDream.ts` | `joinSharedDreamSession`, `useSharedDreamSession`, `SharedDreamActivityEntry`, `SharedDreamMember`, `UseSharedDreamSessionOptions`, `UseSharedDreamSessionResult` |
@@ -20057,6 +20426,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   ├── contentengin
+│   │   │   ├── assets
+│   │   │   │   └── [assetId]
+│   │   │   │       ├── export
+│   │   │   │       │   └── gameengin
+│   │   │   │       │       └── route.ts
+│   │   │   │       └── route.ts
+│   │   │   ├── jobs
+│   │   │   │   ├── [jobId]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   └── upload
+│   │   │       └── route.ts
 │   │   ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── hf  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   │   └── route.ts
@@ -20502,16 +20884,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── create  [CreateEngin]
 │   │   │   ├── calendar  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── editor  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── queue  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
-│   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
@@ -20785,7 +21167,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ui-surfaces.json
 ├── components
 │   ├── activity
-│   │   ├── dream.ActivityPostForm.tsx
+│   │   ├── dream.ActivityPostForm.tsx ∅
+│   │   │   └── ∅ unused: ActivityPostForm
 │   │   ├── dream.ActivityProfile.tsx
 │   │   └── dream.TierBadge.tsx
 │   ├── ads  [Marketplace & Shop]
@@ -20809,6 +21192,25 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.widget.ConnectorWidgetPicker.tsx ∅
 │   │   │   └── ∅ unused: TOP_10_CONNECTORS, (default)
 │   │   └── dream.widget.ConnectWidgetPrompt.tsx ∅
+│   │       └── ∅ unused: (default)
+│   ├── contentengin
+│   │   ├── AnimationPanel.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── AssetPreview3D.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── ContentEnginStudio.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── ExportPanel.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── MaterialEditor.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── PartTreeEditor.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── PhotoReferencePanel.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   ├── RecipeEditor.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   └── RiggingPanel.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── core
 │   │   └── dream.CoreDream.tsx ∅
@@ -21526,8 +21928,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── engin.CodeEngin.tsx ⚠ ∅
 │   │   ├── ⚠ @/components/DreamButton  (⬡ DreamButton)
 │   │   └── ∅ unused: createIntent, labDatasetId, loadDataset, (default)
-│   ├── engin.ContentEngin.tsx ⚠ ∅
-│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   ├── engin.ContentEngin.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── engin.GameEngin.tsx ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
@@ -21754,15 +22155,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── ∅ unused: createLocalCollabSession, createSupabaseCollabSession, broadcastPlayhead
 │   ├── composite
 │   │   ├── compositor.ts ∅
-│   │   │   └── ∅ unused: disconnectInput, setParam, findNode, graphSummary
+│   │   │   └── ∅ unused: createNode, createGraph, addNode, connectNodes, disconnectInput, setParam, findNode, topologicalSort, graphSummary
 │   │   ├── fxSimulation.ts ∅
-│   │   │   └── ∅ unused: FX_PRESETS, getPreset, setSimParam, getSimParam, resetSimParams
+│   │   │   └── ∅ unused: FX_PRESETS, getPreset, presetsByCategory, createSimulation, setSimParam, getSimParam, resetSimParams, allCategories
 │   │   ├── matchmover.ts ∅
-│   │   │   └── ∅ unused: computeHomography
+│   │   │   └── ∅ unused: createTrack, addTrackPoint, addSample, computeHomography, estimateCameraMotion, exportTrackCSV, trackSummary
 │   │   ├── motionCapture.ts ∅
-│   │   │   └── ∅ unused: getFramePose, findJoint
+│   │   │   └── ∅ unused: parseBVH, getFramePose, retargetClip, exportBVH, clipSummary, findJoint
 │   │   └── rotoscope.ts ∅
-│   │       └── ∅ unused: removeKeyframe, exportShapeSVG
+│   │       └── ∅ unused: createProject, addLayer, setKeyframe, removeKeyframe, interpolateShape, exportShapeSVG, exportFrameSVG, keyframeList
 │   ├── connectors  [Connectors]
 │   │   ├── providers  [Connectors]
 │   │   │   ├── bluesky.ts ∅
@@ -21821,11 +22222,87 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: requestGenerativeFill, createMaskDataUrl, analyzeImageColors, fileToBase64
 │   │   ├── publishIntent.ts
 │   │   ├── seoScorer.ts ∅
-│   │   │   └── ∅ unused: generateReport
+│   │   │   └── ∅ unused: scoreContent, generateReport
 │   │   ├── transcriptEditor.ts ∅
-│   │   │   └── ∅ unused: segmentsToPlainText
+│   │   │   └── ∅ unused: computeCuts, applyEditsToSegments, exportSRT, searchTranscript, annotateSearchMatches, segmentsToPlainText
 │   │   └── voiceClone.ts ∅
 │   │       └── ∅ unused: cloneVoice, textToSpeech, listVoiceProfiles, deleteVoiceProfile, speakWithBrowserTTS, getBrowserVoices, audioFileToBase64
+│   ├── contentengin  [CreateEngin]
+│   │   ├── builders  [CreateEngin]
+│   │   │   ├── geometryBuilder.ts
+│   │   │   ├── meshBuilder.ts
+│   │   │   ├── modifiers.ts ∅
+│   │   │   │   └── ∅ unused: applyModifierMetadata
+│   │   │   ├── primitiveBuilder.ts
+│   │   │   ├── textureBuilder.ts
+│   │   │   └── uvGenerator.ts
+│   │   ├── grammars  [CreateEngin]
+│   │   │   ├── animalGrammar.ts
+│   │   │   ├── bicycleGrammar.ts
+│   │   │   ├── bridgeGrammar.ts
+│   │   │   ├── buildingGrammar.ts
+│   │   │   ├── creatureGrammar.ts ∅
+│   │   │   │   └── ∅ unused: buildCreatureParts
+│   │   │   ├── humanoidGrammar.ts
+│   │   │   ├── propGrammar.ts
+│   │   │   ├── roadGrammar.ts
+│   │   │   ├── shared.ts
+│   │   │   ├── terrainGrammar.ts
+│   │   │   ├── treeGrammar.ts
+│   │   │   ├── vehicleGrammar.ts
+│   │   │   └── waterGrammar.ts
+│   │   ├── materials  [CreateEngin]
+│   │   │   ├── materialTypes.ts
+│   │   │   ├── paletteExtractor.ts ∅
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   └── proceduralMaterials.ts ∅
+│   │   │       └── ∅ unused: material
+│   │   ├── photo  [CreateEngin]
+│   │   │   ├── colorCluster.ts ∅
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   ├── edgeDetector.ts ∅
+│   │   │   │   └── ∅ unused: buildEdgeMapFromRgba
+│   │   │   ├── imageAnalyzer.ts
+│   │   │   ├── photoToRecipe.ts ∅
+│   │   │   │   └── ∅ unused: photoToRecipe
+│   │   │   ├── pngDecoder.ts
+│   │   │   └── regionDetector.ts ∅
+│   │   │       └── ∅ unused: relabelRegion
+│   │   ├── pipeline  [CreateEngin]
+│   │   │   ├── build.ts
+│   │   │   ├── bundle.ts
+│   │   │   ├── exportGlb.ts
+│   │   │   ├── generateCollision.ts
+│   │   │   ├── generateLods.ts
+│   │   │   ├── paths.ts
+│   │   │   ├── validate.ts
+│   │   │   └── writeManifest.ts ∅
+│   │   │       └── ∅ unused: wrapAsset
+│   │   ├── recipes  [CreateEngin]
+│   │   │   ├── recipeResolver.ts ∅
+│   │   │   │   └── ∅ unused: normalizeAssetType
+│   │   │   ├── recipeTypes.ts
+│   │   │   └── seededRandom.ts ∅
+│   │   │       └── ∅ unused: pick
+│   │   ├── rigging  [CreateEngin]
+│   │   │   ├── templates  [CreateEngin]
+│   │   │   │   ├── bird_basic.json
+│   │   │   │   ├── fish_basic.json
+│   │   │   │   ├── humanoid_basic.json
+│   │   │   │   ├── quadruped_basic.json
+│   │   │   │   └── vehicle_mechanical.json
+│   │   │   ├── fitArmature.ts
+│   │   │   ├── index.ts
+│   │   │   ├── landmarks.ts ∅
+│   │   │   │   └── ∅ unused: estimateLandmarks
+│   │   │   ├── rigTypes.ts
+│   │   │   └── rigValidator.ts
+│   │   ├── shaders  [CreateEngin]
+│   │   │   ├── shaderRegistry.ts ∅
+│   │   │   │   └── ∅ unused: getShader
+│   │   │   └── shaderTypes.ts
+│   │   ├── assetTypes.ts
+│   │   └── cli.ts
 │   ├── daydream  [Daydream System]
 │   │   ├── useDaydreamPersistence.ts ⚠
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
@@ -22467,7 +22944,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useDualRuntimePersistence.ts ∅
 │   │   │   └── ∅ unused: useDualRuntimePersistence
 │   │   ├── useEnginBridge.ts ∅
-│   │   │   └── ∅ unused: useStarMakerEnginBridge
+│   │   │   └── ∅ unused: useStarMakerEnginBridge, useContentEnginBridge
 │   │   ├── useEnginCoopSync.ts
 │   │   └── useSharedEnginChannel.ts
 │   ├── scene
@@ -22656,6 +23133,12 @@ Legend: ⚠ broken import  ∅ unused export
 ├── scripts
 │   ├── archive
 │   │   └── validate-deployment.js
+│   ├── contentengin
+│   │   ├── blender-add-basic-animations.py
+│   │   ├── blender-auto-rig.py
+│   │   ├── blender-cleanup.py
+│   │   ├── blender-validate-rig.py
+│   │   └── validate-glb.mjs
 │   ├── feature-build
 │   │   └── generate-features.mjs
 │   ├── gameengin
@@ -22839,6 +23322,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── theme.css
 │   └── view-transitions.css
 ├── tests
+│   ├── contentengin
+│   │   ├── contentengin-api.test.ts
+│   │   ├── contentengin-export.test.ts
+│   │   ├── contentengin-grammars.test.ts
+│   │   ├── contentengin-recipes.test.ts
+│   │   ├── contentengin-rigging.test.ts
+│   │   └── contentengin-validation.test.ts
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
