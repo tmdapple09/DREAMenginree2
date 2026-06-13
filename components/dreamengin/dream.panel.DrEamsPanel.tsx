@@ -15,11 +15,52 @@ type Message = { role: 'user' | 'ai'; text: string };
 
 // Quick-action chips — shown before the first user message
 const QUICK_ACTIONS = [
-  { label: '✨ Explore Dreamengin', prompt: 'Give me a quick tour of what Dreamengin can do.' },
-  { label: '🎨 Customize my theme',  prompt: 'How do I change my theme and colors?' },
-  { label: '🔗 Connect my socials',  prompt: 'How do I connect Instagram, TikTok, or Spotify?' },
-  { label: '🧩 Add a widget',        prompt: 'How do I add and arrange widgets on my home?' },
+  { label: '✨ Tour the app', prompt: 'What is Dreamengin and where should I start?' },
+  { label: '🏠 HomeDream vs DreamSpace', prompt: 'How do HomeDream and DreamSpace work?' },
+  { label: '💬 DreamDMBar help', prompt: 'How do I use the DreamDMBar menu, messages, comments, and actions?' },
+  { label: '🧠 Engins guide', prompt: 'What are GameEngin, CodeEngin, StarMakerEngin, ForgeEngin, LabEngin, and BrandEngin?' },
 ];
+
+
+const KNOWLEDGE_BASE: Array<{ keywords: readonly string[]; answer: string }> = [
+  {
+    keywords: ['what', 'start', 'tour', 'dreamengin', 'where'],
+    answer: 'Dreamengin is a creative operating world. Start in HomeDream for your personal surface and feed, open DreamSpace for the spatial/world surface, use DreamR for social discovery, use the DreamDMBar for commands/messages/comments/actions, and open Engins when you want to create, play, code, brand, forge, experiment, or make music.',
+  },
+  {
+    keywords: ['homedream', 'home', 'personal'],
+    answer: 'HomeDream is your personal creative surface. It hosts your feed, profile entry points, widgets, movable Dreams, daydream launchers, messages, and DreamDMBar actions. A HomeDream instance can also be opened inside DreamSpace without making HomeDream responsible for the DreamDMBar.',
+  },
+  {
+    keywords: ['dreamspace', 'space', 'spatial', 'world'],
+    answer: 'DreamSpace is the expanded spatial/world surface. It is where Daydreams, Engins, apps, modules, and spatial Dreams can run as an independent runtime. You can open DreamSpace inside the Surface runtime, or open a separate HomeDream instance inside DreamSpace.',
+  },
+  {
+    keywords: ['dreamdmbar', 'dmbar', 'bar', 'menu', 'message', 'comment', 'action'],
+    answer: 'The DreamDMBar is the command and communication seam. Use the gold/menu control for Daydreams, profile/settings/feed/connectors, and Dr. Eams. It routes actions into the active runtime instead of forcing every button to leave the OS shell.',
+  },
+  {
+    keywords: ['dreamr', 'feed', 'post', 'social'],
+    answer: 'DreamR is the social layer. Feed posts are not just posts: they can become objects, media, Dreams, profile activity, and shared context. HomeDream shows the same feed model as a personal surface; DreamR shows it as the social surface.',
+  },
+  {
+    keywords: ['engin', 'gameengin', 'codeengin', 'starmaker', 'forge', 'lab', 'brand', 'content'],
+    answer: 'Engins are first-class capabilities. GameEngin runs games/cartridges with GameRemote. CodeEngin is the workbench. StarMakerEngin handles music/audio. ForgeEngin builds Dreams/modules/spaces. LabEngin experiments before graduation. BrandEngin styles identity and surfaces. ContentEngin publishes media/posts as Dream objects.',
+  },
+  {
+    keywords: ['how', 'button', 'open', 'daydream'],
+    answer: 'Use the Daydream buttons or the DreamDMBar menu. Inside the dual runtime they open inside the active runtime region; outside the shell they navigate normally. If a surface feels stuck, use Home to reset the current region or open the opposite surface from the HomeDream quick links.',
+  },
+];
+
+function answerFromDreamenginKnowledge(question: string): string | null {
+  const q = question.toLowerCase();
+  const ranked = KNOWLEDGE_BASE
+    .map((entry) => ({ entry, score: entry.keywords.reduce((sum, key) => sum + (q.includes(key) ? 1 : 0), 0) }))
+    .sort((a, b) => b.score - a.score);
+  const best = ranked[0];
+  return best && best.score > 0 ? best.entry.answer : null;
+}
 
 function DrEamsAvatar({ size = 44 }: {size?: number}) {
   return (
@@ -62,7 +103,7 @@ function TypingDots( ){
 
 export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', text: "Hey! I'm Dr. Eams — your AI companion inside Dreamengin. What are you dreaming up today? ◈" },
+    { role: 'ai', text: "Hey! I'm Dr. Eams — ask me what DreamR, HomeDream, DreamSpace, DreamDMBar, messages, comments, widgets, or any Engin does and I’ll point you to the right surface. ◈" },
   ]);
   const [input, setInput]   = useState('');
   const [loading, setLoading] = useState(false);
@@ -90,6 +131,11 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
     if (!text || loading) return;
     setInput('');
     setMessages((m) => [...m, { role: 'user', text }]);
+    const localAnswer = answerFromDreamenginKnowledge(text);
+    if (localAnswer) {
+      setMessages((m) => [...m, { role: 'ai', text: localAnswer }]);
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch('/api/ai/eams', {
@@ -114,7 +160,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
 
       setMessages((m) => [...m, { role: 'ai', text: reply }]);
     } catch {
-      setMessages((m) => [...m, { role: 'ai', text: 'Network error — please try again.' }]);
+      setMessages((m) => [...m, { role: 'ai', text: 'I could not reach the hosted AI service, but I can still answer Dreamengin product questions. Ask about HomeDream, DreamSpace, DreamR, DreamDMBar, messages, comments, widgets, or Engins.' }]);
     } finally {
       setLoading(false);
     }

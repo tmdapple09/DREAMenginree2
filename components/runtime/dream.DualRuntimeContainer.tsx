@@ -8,10 +8,18 @@ import {
     makeDreamSpaceActiveSurface,
     makeHomeActiveTop,
     makeHomeDreamSpaceActive,
-    setRuntimeWorld,
-    swapDominantRuntime,
 } from '@/lib/runtime/dualRuntime';
-import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+import {
+    IntentBus,
+    createIntentPacket,
+    dualRuntimeManifest,
+    dualRuntimeRuleSet,
+    negotiateCompatibility,
+    type ActorContext,
+    type JsonObject,
+    type JsonValue,
+} from '@/lib/runtime/iEngine';
+import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.
 
@@ -45,6 +53,28 @@ import React, { createContext, useCallback, useContext, useRef, useState } from 
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const DualRuntimeContext = createContext<DualRuntimeContextValue | null>(null);
+
+const CORE_VERSION = '1.0.0';
+const SYSTEM_ACTOR: ActorContext = {
+  actorId: 'dreamdmbar-system',
+  runtimeId: 'homedream',
+  surfaceRuntimeIds: ['homedream', 'dreamspace'],
+  collaboration: { active: false, participantIds: [], editorIds: [] },
+  isAdmin: true,
+};
+
+function makeRuntimeIntent(type: string, payload: JsonObject) {
+  return createIntentPacket({
+    id: `intent:${type}:${Date.now()}:${Math.random().toString(36).slice(2)}`,
+    type,
+    ownerId: SYSTEM_ACTOR.actorId,
+    runtimeId: SYSTEM_ACTOR.runtimeId,
+    actor: SYSTEM_ACTOR,
+    payload,
+    trace: ['DreamDMBar'],
+  });
+}
+
 
 // Imports and external modules this runtime file depends on.
 
@@ -107,6 +137,12 @@ export function useDualRuntime(): DualRuntimeContextValue {
 }
 
 export default function DualRuntimeContainer({ children }: DualRuntimeContainerProps) {
+  const compatibility = useMemo(() => negotiateCompatibility(CORE_VERSION, dualRuntimeManifest), []);
+  if (!compatibility.allowed) {
+    throw new Error(`ι-Engine compatibility failed: ${compatibility.reasons.join(', ')}`);
+  }
+
+  const intentBusRef = useRef(new IntentBus(dualRuntimeRuleSet));
   const [state, setState] = useState<DualRuntimeState>(DEFAULT_DUAL_RUNTIME);
 
   // Refs to the scroll-root elements for each viewport.
@@ -115,23 +151,27 @@ export default function DualRuntimeContainer({ children }: DualRuntimeContainerP
   const bottomViewportRef = useRef<React.RefObject<HTMLElement | null> | null>(null);
 
   const setTopRuntime = useCallback((world: RuntimeWorld) => {
-    setState((prev) => setRuntimeWorld(prev, 'top', world));
+    setState((prev) => intentBusRef.current.route(prev, makeRuntimeIntent('runtime.world.set', { viewport: 'top', world: world as unknown as JsonValue })));
   }, []);
 
   const setBottomRuntime = useCallback((world: RuntimeWorld) => {
-    setState((prev) => setRuntimeWorld(prev, 'bottom', world));
+    setState((prev) => intentBusRef.current.route(prev, makeRuntimeIntent('runtime.world.set', { viewport: 'bottom', world: world as unknown as JsonValue })));
   }, []);
 
   const swapDominance = useCallback(() => {
-    setState((prev) => swapDominantRuntime(prev));
+    setState((prev) => intentBusRef.current.route(prev, makeRuntimeIntent('runtime.dominance.swap', {})));
   }, []);
 
   const setDominantRuntime = useCallback((region: 'Surface Space' | 'DreamSpace') => {
-    setState((prev) => ({ ...prev, dominantRegion: region }));
+    setState((prev) => intentBusRef.current.route(prev, makeRuntimeIntent('runtime.dominance.set', { region })));
   }, []);
 
   const goToHome = useCallback(() => {
-    setState((prev) => makeHomeActiveTop(prev));
+    setState((prev) => {
+      const next = makeHomeActiveTop(prev);
+      intentBusRef.current.snapshot('homedream', SYSTEM_ACTOR.actorId, next);
+      return next;
+    });
   }, []);
 
   const goToHomeDreamSpace = useCallback(() => {

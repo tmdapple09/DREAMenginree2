@@ -34,7 +34,7 @@ const ALLOWED_KEYS = new Set([
 
 type CrashJsonPrimitive = string | number | boolean | null;
 type CrashJsonValue = CrashJsonPrimitive | CrashJsonValue[] | { [key: string]: CrashJsonValue };
-type CrashPayloadRecord = Record<string, CrashJsonValue | undefined>;
+type CrashPayloadRecord = { [key: string]: CrashJsonValue };
 
 interface CrashErrorPayload {
   readonly name?: string;
@@ -42,7 +42,7 @@ interface CrashErrorPayload {
   readonly stack?: string;
 }
 
-function isCrashPayloadRecord(value: CrashJsonValue): value is CrashPayloadRecord {
+function isCrashPayloadRecord(value: CrashJsonValue | null): value is CrashPayloadRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 

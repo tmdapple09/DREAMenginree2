@@ -82,14 +82,14 @@ describe('game launch navigation', () => {
 describe('shared remote keyboard bridge', () => {
   it('maps diagonal movement to combined arrow keys', () => {
     expect(GAME_INPUT_KEYBOARD_MAP['move-up-right']).toEqual([
-      { key: 'ArrowUp', code: 'ArrowUp' },
-      { key: 'ArrowRight', code: 'ArrowRight' },
+      { key: 'w', code: 'KeyW' },
+      { key: 'd', code: 'KeyD' },
     ]);
   });
 
   it('maps action buttons to keyboard-friendly fallbacks for non-native games', () => {
-    expect(GAME_INPUT_KEYBOARD_MAP.jump).toEqual([{ key: 'ArrowUp', code: 'ArrowUp' }]);
-    expect(GAME_INPUT_KEYBOARD_MAP.shoot).toEqual([{ key: ' ', code: 'Space' }]);
+    expect(GAME_INPUT_KEYBOARD_MAP.jump).toEqual([{ key: ' ', code: 'Space' }]);
+    expect(GAME_INPUT_KEYBOARD_MAP.shoot).toEqual([{ key: 'Enter', code: 'Enter' }]);
     expect(GAME_INPUT_KEYBOARD_MAP.pause).toEqual([{ key: 'Escape', code: 'Escape' }]);
   });
 });

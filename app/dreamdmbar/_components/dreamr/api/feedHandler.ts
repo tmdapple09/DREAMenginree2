@@ -79,7 +79,7 @@ export async function dreamrFeedHandler(req: NextRequest): Promise<NextResponse>
   let query = supabase
     .from('app_posts')
     .select(
-      'id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)',
+      'id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)',
     )
     .eq('visibility', 'public')
     .order('created_at', { ascending: false });

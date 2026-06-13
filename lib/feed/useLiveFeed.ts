@@ -166,7 +166,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           // (the realtime payload does not include joined columns)
             const { data } = await supabase
               .from('app_posts')
-              .select('id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)')
+              .select('id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)')
               .eq('id', postId)
               .single();
 

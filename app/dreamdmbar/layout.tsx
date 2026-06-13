@@ -112,7 +112,7 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
         .from('app_posts')
         .select(
           `*,
-        profiles!inner(handle, display_name, avatar_url)`
+        profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)`
         )
         .in('user_id', authorIds)
         .eq('visibility', 'public')

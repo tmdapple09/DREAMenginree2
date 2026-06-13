@@ -19,25 +19,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import dream_engine as de
-
-# Load a scene
-scene = de.Scene(engine='game')
-player = scene.add_entity('player', mesh='humanoid')
-player.set_position(0, 1.5, 0)
-
-# Run physics
-scene.gravity = -9.8
-scene.step(frames=60)
-
-print(f"Player position: {player.position}")`,
-
-  javascript: `// DREAMengin Code Dream — JavaScript
-// Connect to an Engine below, then Run ▶
-
-const engine = await DreamEngine.connect('game');
-import { DreamEngine, Scene, Mesh } from '@dreamengin/sdk';
-
 /**
  * CodeDreamIDE — Code Workspace split view for the Code Daydream (Side A).
  *
@@ -143,6 +124,15 @@ box.addPhysicsImpostor('box', { mass: 1 });
 
 console.log('Scene ready:', scene.id);
 console.log('Entities:', scene.entityCount);`,
+
+  javascript: `// DREAMengin Code Dream — JavaScript
+// Connect to any Engine below, then Run ▶
+
+const engine = await DreamEngine.connect('game');
+const scene = engine.createScene();
+const pulse = scene.createMesh('torus', { diameter: 1.8 });
+pulse.material = scene.createMaterial('dream-gold');
+console.log('JavaScript scene active:', scene.id);`,
 
   typescript: `// DREAMengin Code Dream — TypeScript
 // Connect to an Engine below, then Run ▶
