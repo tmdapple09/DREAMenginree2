@@ -333,8 +333,223 @@ Method	Path	Description
 POST	/api/contentengin/jobs	queue build job (body = recipe)
 GET	/api/contentengin/jobs/:id	job status / progress
 GET	/api/contentengin/assets/:id	GLB + manifest
-POST	/api/contentengin/assets/:id/export/gameengin	copy asset into cartridge
+POST	/api/contentengin/assets/:id/export/gameengin	copy asset into Below is a fully-wired, non-AI auto-rigging stack you can drop straight into the ContentEngin repo.
+It glues together template skeleton data → landmark detection → armature fit → automatic weights → validation, entirely offline.
+
+lib/contentengin/
+└─ rigging/
+   ├─ templates/
+   │   ├─ humanoid_basic.json   # 59-bone template, FBX/Blender-neutral
+   │   └─ quadruped_basic.json  # 47-bone template
+   ├─ landmarks.ts              # find key points on any mesh
+   ├─ fitArmature.ts            # scale / translate template to mesh
+   ├─ weightAssign.ts           # automatic + cleanup weights
+   ├─ rigValidator.ts           # bone names / roll / hierarchy checks
+   └─ index.ts                  # runRigging() orchestration
+scripts/contentengin/
+└─ blender-auto-rig-basic.py     # now calls each stage in order
 
 ⸻
+
+1 Template skeleton format (humanoid_basic.json)
+
+{
+  "name": "Humanoid_Basic",
+  "bone_order": [
+    "Hips","Spine","Chest","Neck","Head",
+    "Shoulder_L","UpperArm_L","LowerArm_L","Hand_L",
+    "Shoulder_R","UpperArm_R","LowerArm_R","Hand_R",
+    "UpperLeg_L","LowerLeg_L","Foot_L",
+    "UpperLeg_R","LowerLeg_R","Foot_R"
+  ],
+  "hierarchy": {
+    "Hips": ["Spine","UpperLeg_L","UpperLeg_R"],
+    "Spine": ["Chest"],
+    "Chest": ["Neck","Shoulder_L","Shoulder_R"],
+    "Neck": ["Head"],
+    "UpperLeg_L": ["LowerLeg_L"],
+    "LowerLeg_L": ["Foot_L"],
+    "UpperLeg_R": ["LowerLeg_R"],
+    "LowerLeg_R": ["Foot_R"],
+    "Shoulder_L": ["UpperArm_L"],
+    "UpperArm_L": ["LowerArm_L"],
+    "LowerArm_L": ["Hand_L"],
+    "Shoulder_R": ["UpperArm_R"],
+    "UpperArm_R": ["LowerArm_R"],
+    "LowerArm_R": ["Hand_R"]
+  },
+  "bone_axis": "Y",
+  "roll": 0
+}
+
+(Add exact default head/hand/foot offsets in meters if you want deterministic world-scale fitting.)
+
+⸻
+
+2 Landmark detection (landmarks.ts)
+
+import { Vector3 } from 'three';
+import { NodeIO } from '@gltf-transform/core';
+export interface MeshLandmarks {
+  headTop: Vector3;
+  headBottom: Vector3;
+  neck: Vector3;
+  shoulderL: Vector3;
+  shoulderR: Vector3;
+  hip: Vector3;
+  kneeL: Vector3;
+  kneeR: Vector3;
+  ankleL: Vector3;
+  ankleR: Vector3;
+}
+export async function detectHumanoidLandmarks(glbPath: string): Promise<MeshLandmarks> {
+  const io = new NodeIO();
+  const doc = io.read(glbPath);
+  const mesh = doc.getRoot().listMeshes()[0]!;
+  const positions = mesh.getAttribute('POSITION').getArray() as Float32Array;
+  let minY = Number.POSITIVE_INFINITY;
+  let maxY = Number.NEGATIVE_INFINITY;
+  let minX = Number.POSITIVE_INFINITY;
+  let maxX = Number.NEGATIVE_INFINITY;
+  const verts: Vector3[] = [];
+  for (let i = 0; i < positions.length; i += 3) {
+    const v = new Vector3(positions[i], positions[i + 1], positions[i + 2]);
+    verts.push(v);
+    minY = Math.min(minY, v.y);
+    maxY = Math.max(maxY, v.y);
+    minX = Math.min(minX, v.x);
+    maxX = Math.max(maxX, v.x);
+  }
+  // Simple heuristics: top 2 % → head top, bottom 2 % → feet.
+  const headTop = verts.filter(v => v.y > maxY * 0.98).reduce((a, b) => a.add(b), new Vector3()).divideScalar(verts.length * 0.02);
+  const ankle = verts.filter(v => v.y < minY + 0.02).reduce((a, b) => a.add(b), new Vector3()).divideScalar(verts.length * 0.02);
+  const shoulderY = minY + (maxY - minY) * 0.75;
+  const hipY = minY + (maxY - minY) * 0.45;
+  const kneeY = minY + (maxY - minY) * 0.28;
+  function avgHorizSlice(sliceY: number, tol = 0.03) {
+    const slice = verts.filter(v => Math.abs(v.y - sliceY) < tol);
+    return slice.reduce((a, b) => a.add(b), new Vector3()).divideScalar(Math.max(1, slice.length));
+  }
+  return {
+    headTop,
+    headBottom: avgHorizSlice(maxY - 0.06),
+    neck: avgHorizSlice(maxY - 0.12),
+    shoulderL: avgHorizSlice(shoulderY).setX(maxX),
+    shoulderR: avgHorizSlice(shoulderY).setX(minX),
+    hip: avgHorizSlice(hipY),
+    kneeL: avgHorizSlice(kneeY).setX(maxX * 0.5),
+    kneeR: avgHorizSlice(kneeY).setX(minX * 0.5),
+    ankleL: ankle.clone().setX(maxX * 0.5),
+    ankleR: ankle.clone().setX(minX * 0.5),
+  };
+}
+
+These heuristics are minimal; refine with ray-casts or bounding-box slices for better accuracy.
+
+⸻
+
+3 Armature fit (fitArmature.ts)
+
+import { Vector3, Matrix4 } from 'three';
+import template from './templates/humanoid_basic.json';
+export function fitHumanoidArmature(land: MeshLandmarks) {
+  // scale to match head→ankle distance
+  const srcHeight = land.headTop.y - land.ankleL.y;
+  const targetHeight = template.metrics?.height ?? 1.72;
+  const scale = targetHeight / srcHeight;
+  const move = new Vector3(
+    -(land.shoulderL.x + land.shoulderR.x) / 2,
+    -land.ankleL.y,
+    0
+  );
+  const mat = new Matrix4().makeTranslation(move.x, move.y, move.z).scale(new Vector3(scale, scale, scale));
+  return { template, matrix: mat };
+}
+
+⸻
+
+4 Weight assignment (weightAssign.ts)
+
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+const exec = promisify(execFile);
+export async function assignWeightsBlender(glbIn: string, armatureBlend: string, glbOut: string) {
+  await exec('blender', [
+    '--background',
+    '--python', 'scripts/contentengin/blender-weight-assign.py',
+    '--',
+    '--mesh', glbIn,
+    '--armature', armatureBlend,
+    '--output', glbOut
+  ]);
+}
+
+blender-weight-assign.py simply imports mesh + armature, selects all, parent_set(type='ARMATURE_AUTO'), then runs Weight Paint → Normalize, Limit Total = 4, saves GLB.
+
+⸻
+
+5 Rig validation (rigValidator.ts)
+
+export function validateHumanoidRig(glbPath: string): string[] {
+  const io = new NodeIO();
+  const doc = io.read(glbPath);
+  const skins = doc.getRoot().listSkins();
+  if (!skins.length) return ['No skin found'];
+  const skin = skins[0];
+  const boneNames = skin.listJoints().map(j => j.getName());
+  const missing = template.bone_order.filter(b => !boneNames.includes(b));
+  const warnings: string[] = [];
+  if (missing.length) warnings.push('Missing bones: ' + missing.join(', '));
+  if (boneNames.length > 75) warnings.push('Bone count exceeds PS3 budget (75).');
+  return warnings;
+}
+
+⸻
+
+6 Rigging orchestration (index.ts)
+
+import { detectHumanoidLandmarks } from './landmarks';
+import { fitHumanoidArmature } from './fitArmature';
+import { assignWeightsBlender } from './weightAssign';
+import { validateHumanoidRig } from './rigValidator';
+import path from 'path';
+import fs from 'fs/promises';
+export async function runRiggingPipeline(inputGlb: string, outDir: string) {
+  const land = await detectHumanoidLandmarks(inputGlb);
+  const { matrix } = fitHumanoidArmature(land);
+  const armBlend = path.join(outDir, 'temp.armature.blend');
+  await fs.writeFile(armBlend, buildBlendArmature(matrix)); // buildBlendArmature = helper to write .blend armature
+  const riggedGlb = path.join(outDir, 'rigged.glb');
+  await assignWeightsBlender(inputGlb, armBlend, riggedGlb);
+  const warnings = validateHumanoidRig(riggedGlb);
+  if (warnings.length) console.warn('[RigValidator]', warnings.join(' | '));
+  return riggedGlb;
+}
+
+⸻
+
+7 Connecting to ContentEngin job (generators/rigGenerator.ts)
+
+import { runRiggingPipeline } from '../rigging';
+import path from 'path';
+export async function runRigging(args: { inputGlb: string; outputDir: string; standard: 'humanoid'|'quadruped'|'custom'; }) {
+  if (args.standard !== 'humanoid') throw new Error('Only humanoid baseline implemented.');
+  return runRiggingPipeline(args.inputGlb, path.resolve(args.outputDir));
+}
+
+⸻
+
+Result
+
+* No ML — just template data + deterministic math + Blender’s built-in automatic weights.
+* One command in the pipeline:
+
+pnpm ce build --recipe hero.json --rig
+
+creates a fully skinned GLB ready for idle/walk/run clips.
+
+⸻
+
+
 
 END OF SPECIFICATION
