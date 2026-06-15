@@ -5,13 +5,6 @@ export const dreamr = {
   "components/dreamr/dream.CloseFriendsSettings": () => import("@/components/dreamr/dream.CloseFriendsSettings"),
   "components/dreamr/dream.panel.DreamRChannelPanel": () => import("@/components/dreamr/dream.panel.DreamRChannelPanel"),
   "components/dreamr/dream.panel.DreamRCreatorPanel": () => import("@/components/dreamr/dream.panel.DreamRCreatorPanel"),
-  "lib/dreamr/closeFriendsVisibility": () => import("@/lib/dreamr/closeFriendsVisibility"),
-  "lib/dreamr/dreamrfeed": () => import("@/lib/dreamr/dreamrfeed"),
-  "lib/dreamr/feedCursor": () => import("@/lib/dreamr/feedCursor"),
-  "lib/dreamr/socialHumanityScore": () => import("@/lib/dreamr/socialHumanityScore"),
-  "lib/dreamr/swipeCalibration": () => import("@/lib/dreamr/swipeCalibration"),
-  "lib/dreamr/swipePersonalization": () => import("@/lib/dreamr/swipePersonalization"),
-  "lib/dreamr/torridityLedger": () => import("@/lib/dreamr/torridityLedger"),
 };
 
 export type DreamrMap = typeof dreamr;

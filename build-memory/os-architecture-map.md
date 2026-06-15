@@ -29,26 +29,26 @@ User Action / Agent / CI
 | Slot | Count |
 | --- | ---: |
 | core-surface | 2 |
-| daydream | 0 |
+| daydream | 2 |
 | surface | 286 |
 | route-surface | 273 |
-| dreamsurface | 37 |
-| engin | 15 |
-| engine-ruleset | 25 |
-| dreamr | 11 |
+| dreamsurface | 15 |
+| engin | 141 |
+| engine-ruleset | 10 |
+| dreamr | 4 |
 | dreamdmbar | 13 |
-| homedream | 3 |
-| connector | 26 |
-| brain-node | 67 |
-| brain-doc | 18 |
-| cartridge | 8 |
+| homedream | 1 |
+| connector | 0 |
+| brain-node | 0 |
+| brain-doc | 0 |
+| cartridge | 1 |
 | persona | 6 |
 | migration | 56 |
 | memory | 6 |
 | dr-eams-tool | 3 |
 | hook | 12 |
-| engine-system | 74 |
-| engine-utility | 366 |
+| engine-system | 0 |
+| engine-utility | 0 |
 
 ## Architecture Stages
 

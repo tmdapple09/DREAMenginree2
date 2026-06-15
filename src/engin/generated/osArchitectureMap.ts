@@ -22,26 +22,26 @@ export const osArchitectureFlow = `User Action / Agent / CI
 
 export const osSlotCounts = {
   "core-surface": 2,
-  "daydream": 0,
+  "daydream": 2,
   "surface": 286,
   "route-surface": 273,
-  "dreamsurface": 37,
-  "engin": 15,
-  "engine-ruleset": 25,
-  "dreamr": 11,
+  "dreamsurface": 15,
+  "engin": 141,
+  "engine-ruleset": 10,
+  "dreamr": 4,
   "dreamdmbar": 13,
-  "homedream": 3,
-  "connector": 26,
-  "brain-node": 67,
-  "brain-doc": 18,
-  "cartridge": 8,
+  "homedream": 1,
+  "connector": 0,
+  "brain-node": 0,
+  "brain-doc": 0,
+  "cartridge": 1,
   "persona": 6,
   "migration": 56,
   "memory": 6,
   "dr-eams-tool": 3,
   "hook": 12,
-  "engine-system": 74,
-  "engine-utility": 366
+  "engine-system": 0,
+  "engine-utility": 0
 } as const;
 
 export const osGeneratedRouters = {
@@ -390,26 +390,26 @@ export const osArchitectureGraph = {
   },
   "slotCounts": {
     "core-surface": 2,
-    "daydream": 0,
+    "daydream": 2,
     "surface": 286,
     "route-surface": 273,
-    "dreamsurface": 37,
-    "engin": 15,
-    "engine-ruleset": 25,
-    "dreamr": 11,
+    "dreamsurface": 15,
+    "engin": 141,
+    "engine-ruleset": 10,
+    "dreamr": 4,
     "dreamdmbar": 13,
-    "homedream": 3,
-    "connector": 26,
-    "brain-node": 67,
-    "brain-doc": 18,
-    "cartridge": 8,
+    "homedream": 1,
+    "connector": 0,
+    "brain-node": 0,
+    "brain-doc": 0,
+    "cartridge": 1,
     "persona": 6,
     "migration": 56,
     "memory": 6,
     "dr-eams-tool": 3,
     "hook": 12,
-    "engine-system": 74,
-    "engine-utility": 366
+    "engine-system": 0,
+    "engine-utility": 0
   }
 } as const;
 
@@ -3873,136 +3873,16 @@ export const osArchitectureStageEntries = {
       "engine": "StarmakerEngin"
     },
     {
-      "id": "lib/dream-window/connectionVerbs",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/connectionVerbs.ts",
-      "engine": "DreamSurface"
+      "id": "daydreams/shared/useDaydreamPersistence",
+      "slot": "daydream",
+      "path": "daydreams/shared/useDaydreamPersistence.ts",
+      "engine": "Universal"
     },
     {
-      "id": "lib/dream-window/DreamWindowLifecycle",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/DreamWindowLifecycle.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dream-window/enginConnectionNetwork",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/enginConnectionNetwork.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dream-window/index",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/index.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dream-window/runtimeRegion",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/runtimeRegion.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dream-window/useDreamWindowActions",
-      "slot": "dreamsurface",
-      "path": "lib/dream-window/useDreamWindowActions.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/drag",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/drag.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/dreamIntentBus",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/dreamIntentBus.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/DreamRegistry",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/DreamRegistry.tsx",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/profileProjection",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/profileProjection.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/types",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/types.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/dreams/useDreamsRuntime",
-      "slot": "dreamsurface",
-      "path": "lib/dreams/useDreamsRuntime.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/CrossWidgetPosting",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/CrossWidgetPosting.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/feed-resolver",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/feed-resolver.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/parse",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/parse.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/parseConfig",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/parseConfig.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/useWidget",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/useWidget.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/WidgetBus",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/WidgetBus.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/WidgetEngine",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/WidgetEngine.tsx",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/WidgetEventBus",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/WidgetEventBus.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/WidgetLinkGraph",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/WidgetLinkGraph.ts",
-      "engine": "DreamSurface"
-    },
-    {
-      "id": "lib/widgets/widgetRegistry",
-      "slot": "dreamsurface",
-      "path": "lib/widgets/widgetRegistry.ts",
-      "engine": "DreamSurface"
+      "id": "daydreams/shared/useDaydreamState",
+      "slot": "daydream",
+      "path": "daydreams/shared/useDaydreamState.ts",
+      "engine": "Universal"
     }
   ],
   "engin-dispatcher": [],
@@ -4056,6 +3936,18 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "dreamdmbar/barInteractions",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/barInteractions.ts",
+      "engine": "DreamDMBar"
+    },
+    {
+      "id": "dreamdmbar/bridgeSeamFlow",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/bridgeSeamFlow.ts",
+      "engine": "DreamDMBar"
+    },
+    {
       "id": "dreamdmbar/dream.GlowingLight",
       "slot": "dreamdmbar",
       "path": "dreamdmbar/dream.GlowingLight.tsx",
@@ -4068,280 +3960,58 @@ export const osArchitectureStageEntries = {
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/connectors/connectorRegistry",
-      "slot": "connector",
-      "path": "lib/connectors/connectorRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/deliveryStrategy",
-      "slot": "connector",
-      "path": "lib/connectors/deliveryStrategy.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/installFlow",
-      "slot": "connector",
-      "path": "lib/connectors/installFlow.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/normalise",
-      "slot": "connector",
-      "path": "lib/connectors/normalise.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/bluesky",
-      "slot": "connector",
-      "path": "lib/connectors/providers/bluesky.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/devto",
-      "slot": "connector",
-      "path": "lib/connectors/providers/devto.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/facebook",
-      "slot": "connector",
-      "path": "lib/connectors/providers/facebook.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/github",
-      "slot": "connector",
-      "path": "lib/connectors/providers/github.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/hackernews",
-      "slot": "connector",
-      "path": "lib/connectors/providers/hackernews.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/instagram",
-      "slot": "connector",
-      "path": "lib/connectors/providers/instagram.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/mastodon",
-      "slot": "connector",
-      "path": "lib/connectors/providers/mastodon.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/medium",
-      "slot": "connector",
-      "path": "lib/connectors/providers/medium.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/nostr",
-      "slot": "connector",
-      "path": "lib/connectors/providers/nostr.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/pinterest",
-      "slot": "connector",
-      "path": "lib/connectors/providers/pinterest.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/podcast",
-      "slot": "connector",
-      "path": "lib/connectors/providers/podcast.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/reddit",
-      "slot": "connector",
-      "path": "lib/connectors/providers/reddit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/shellhub",
-      "slot": "connector",
-      "path": "lib/connectors/providers/shellhub.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/substack",
-      "slot": "connector",
-      "path": "lib/connectors/providers/substack.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/tiktok",
-      "slot": "connector",
-      "path": "lib/connectors/providers/tiktok.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/tumblr",
-      "slot": "connector",
-      "path": "lib/connectors/providers/tumblr.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/twitter",
-      "slot": "connector",
-      "path": "lib/connectors/providers/twitter.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/providers/youtube",
-      "slot": "connector",
-      "path": "lib/connectors/providers/youtube.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/reconcile",
-      "slot": "connector",
-      "path": "lib/connectors/reconcile.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/syncDispatch",
-      "slot": "connector",
-      "path": "lib/connectors/syncDispatch.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/webhookVerification",
-      "slot": "connector",
-      "path": "lib/connectors/webhookVerification.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/connectors/youtube",
-      "slot": "connector",
-      "path": "lib/connectors/youtube.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamdm/barInteractions",
+      "id": "dreamdmbar/DreamSystemContext",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/barInteractions.ts",
+      "path": "dreamdmbar/DreamSystemContext.tsx",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/bridgeSeamFlow",
+      "id": "dreamdmbar/useDreamBarContext",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/bridgeSeamFlow.ts",
+      "path": "dreamdmbar/useDreamBarContext.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/DreamSystemContext",
+      "id": "dreamdmbar/useDreamDMConversations",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/DreamSystemContext.tsx",
+      "path": "dreamdmbar/useDreamDMConversations.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useDreamBarContext",
+      "id": "dreamdmbar/useDreamDMDraft",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useDreamBarContext.ts",
+      "path": "dreamdmbar/useDreamDMDraft.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useDreamDMConversations",
+      "id": "dreamdmbar/useDreamDMMessages",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useDreamDMConversations.ts",
+      "path": "dreamdmbar/useDreamDMMessages.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useDreamDMDraft",
+      "id": "dreamdmbar/useDreamSearch",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useDreamDMDraft.ts",
+      "path": "dreamdmbar/useDreamSearch.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useDreamDMMessages",
+      "id": "dreamdmbar/useMessagingCore",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useDreamDMMessages.ts",
+      "path": "dreamdmbar/useMessagingCore.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useDreamSearch",
+      "id": "dreamdmbar/useModuleBarIntent",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useDreamSearch.ts",
+      "path": "dreamdmbar/useModuleBarIntent.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "lib/dreamdm/useMessagingCore",
+      "id": "dreamdmbar/useNotifications",
       "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useMessagingCore.ts",
+      "path": "dreamdmbar/useNotifications.ts",
       "engine": "DreamDMBar"
-    },
-    {
-      "id": "lib/dreamdm/useModuleBarIntent",
-      "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useModuleBarIntent.ts",
-      "engine": "DreamDMBar"
-    },
-    {
-      "id": "lib/dreamdm/useNotifications",
-      "slot": "dreamdmbar",
-      "path": "lib/dreamdm/useNotifications.ts",
-      "engine": "DreamDMBar"
-    },
-    {
-      "id": "lib/dreamr/closeFriendsVisibility",
-      "slot": "dreamr",
-      "path": "lib/dreamr/closeFriendsVisibility.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/dreamrfeed",
-      "slot": "dreamr",
-      "path": "lib/dreamr/dreamrfeed.tsx",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/feedCursor",
-      "slot": "dreamr",
-      "path": "lib/dreamr/feedCursor.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/socialHumanityScore",
-      "slot": "dreamr",
-      "path": "lib/dreamr/socialHumanityScore.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/swipeCalibration",
-      "slot": "dreamr",
-      "path": "lib/dreamr/swipeCalibration.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/swipePersonalization",
-      "slot": "dreamr",
-      "path": "lib/dreamr/swipePersonalization.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/dreamr/torridityLedger",
-      "slot": "dreamr",
-      "path": "lib/dreamr/torridityLedger.ts",
-      "engine": "DreamR"
-    },
-    {
-      "id": "lib/home-buttons/button-groups",
-      "slot": "homedream",
-      "path": "lib/home-buttons/button-groups.ts",
-      "engine": "HomeDream"
-    },
-    {
-      "id": "lib/home-buttons/contextual-home",
-      "slot": "homedream",
-      "path": "lib/home-buttons/contextual-home.ts",
-      "engine": "HomeDream"
     }
   ],
   "engin-logic": [
@@ -4418,6 +4088,294 @@ export const osArchitectureStageEntries = {
       "engine": "CodeEngin"
     },
     {
+      "id": "engins/contentengin/assetTypes",
+      "slot": "engin",
+      "path": "engins/contentengin/assetTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/geometryBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/geometryBuilder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/meshBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/meshBuilder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/modifiers",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/modifiers.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/primitiveBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/primitiveBuilder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/textureBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/textureBuilder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/builders/uvGenerator",
+      "slot": "engin",
+      "path": "engins/contentengin/builders/uvGenerator.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/cli",
+      "slot": "engin",
+      "path": "engins/contentengin/cli.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/animalGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/animalGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/bicycleGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/bicycleGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/bridgeGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/bridgeGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/buildingGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/buildingGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/creatureGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/creatureGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/humanoidGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/humanoidGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/propGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/propGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/roadGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/roadGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/shared",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/shared.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/terrainGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/terrainGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/treeGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/treeGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/vehicleGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/vehicleGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/grammars/waterGrammar",
+      "slot": "engin",
+      "path": "engins/contentengin/grammars/waterGrammar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/materials/materialTypes",
+      "slot": "engin",
+      "path": "engins/contentengin/materials/materialTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/materials/paletteExtractor",
+      "slot": "engin",
+      "path": "engins/contentengin/materials/paletteExtractor.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/materials/proceduralMaterials",
+      "slot": "engin",
+      "path": "engins/contentengin/materials/proceduralMaterials.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/colorCluster",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/colorCluster.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/edgeDetector",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/edgeDetector.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/imageAnalyzer",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/imageAnalyzer.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/photoToRecipe",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/photoToRecipe.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/pngDecoder",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/pngDecoder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/photo/regionDetector",
+      "slot": "engin",
+      "path": "engins/contentengin/photo/regionDetector.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/build",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/build.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/bundle",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/bundle.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/exportGlb",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/exportGlb.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/generateCollision",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/generateCollision.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/generateLods",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/generateLods.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/paths",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/paths.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/validate",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/validate.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/pipeline/writeManifest",
+      "slot": "engin",
+      "path": "engins/contentengin/pipeline/writeManifest.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/recipes/recipeResolver",
+      "slot": "engin",
+      "path": "engins/contentengin/recipes/recipeResolver.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/recipes/recipeTypes",
+      "slot": "engin",
+      "path": "engins/contentengin/recipes/recipeTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/recipes/seededRandom",
+      "slot": "engin",
+      "path": "engins/contentengin/recipes/seededRandom.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/rigging/fitArmature",
+      "slot": "engin",
+      "path": "engins/contentengin/rigging/fitArmature.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/rigging/index",
+      "slot": "engin",
+      "path": "engins/contentengin/rigging/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/rigging/landmarks",
+      "slot": "engin",
+      "path": "engins/contentengin/rigging/landmarks.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/rigging/rigTypes",
+      "slot": "engin",
+      "path": "engins/contentengin/rigging/rigTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/rigging/rigValidator",
+      "slot": "engin",
+      "path": "engins/contentengin/rigging/rigValidator.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/shaders/shaderRegistry",
+      "slot": "engin",
+      "path": "engins/contentengin/shaders/shaderRegistry.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/shaders/shaderTypes",
+      "slot": "engin",
+      "path": "engins/contentengin/shaders/shaderTypes.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/dream.ForgeEngin",
       "slot": "engin",
       "path": "engins/dream.ForgeEngin.tsx",
@@ -4466,652 +4424,478 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/gameengin/accessibility-ai",
+      "slot": "engin",
+      "path": "engins/gameengin/accessibility-ai.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/ai-director",
+      "slot": "engin",
+      "path": "engins/gameengin/ai-director.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/ai-npcs",
+      "slot": "engin",
+      "path": "engins/gameengin/ai-npcs.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/assets/BundleCache",
+      "slot": "engin",
+      "path": "engins/gameengin/assets/BundleCache.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/assets/BundleManifest",
+      "slot": "engin",
+      "path": "engins/gameengin/assets/BundleManifest.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/backendNegotiator",
+      "slot": "engin",
+      "path": "engins/gameengin/backendNegotiator.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/brain-reader",
+      "slot": "engin",
+      "path": "engins/gameengin/brain-reader.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridge-manifest",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridge-manifest.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridge",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridge.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridgeLoader",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridgeLoader.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/achievementEngine",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/achievementEngine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/apiStubs",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/apiStubs.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/index",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/loaders",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/loaders.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/manifest",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/manifest.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/reactCartridge",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/reactCartridge.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cartridges/saveState",
+      "slot": "engin",
+      "path": "engins/gameengin/cartridges/saveState.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/cloud-compute",
+      "slot": "engin",
+      "path": "engins/gameengin/cloud-compute.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/control-mappings",
+      "slot": "engin",
+      "path": "engins/gameengin/control-mappings.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/core",
+      "slot": "engin",
+      "path": "engins/gameengin/core.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/dream-engine",
+      "slot": "engin",
+      "path": "engins/gameengin/dream-engine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/dreamr-loader",
+      "slot": "engin",
+      "path": "engins/gameengin/dreamr-loader.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/executionWiring",
+      "slot": "engin",
+      "path": "engins/gameengin/executionWiring.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/gameEnginRuntime",
+      "slot": "engin",
+      "path": "engins/gameengin/gameEnginRuntime.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/GameRuntime",
+      "slot": "engin",
+      "path": "engins/gameengin/GameRuntime.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/generative-audio",
+      "slot": "engin",
+      "path": "engins/gameengin/generative-audio.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/index",
+      "slot": "engin",
+      "path": "engins/gameengin/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/input/index",
+      "slot": "engin",
+      "path": "engins/gameengin/input/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/input/InputRouter",
+      "slot": "engin",
+      "path": "engins/gameengin/input/InputRouter.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/neural-render",
+      "slot": "engin",
+      "path": "engins/gameengin/neural-render.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/path-tracing",
+      "slot": "engin",
+      "path": "engins/gameengin/path-tracing.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/platform",
+      "slot": "engin",
+      "path": "engins/gameengin/platform.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/post-fx",
+      "slot": "engin",
+      "path": "engins/gameengin/post-fx.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/power-systems",
+      "slot": "engin",
+      "path": "engins/gameengin/power-systems.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/predictive-stream",
+      "slot": "engin",
+      "path": "engins/gameengin/predictive-stream.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/procgen",
+      "slot": "engin",
+      "path": "engins/gameengin/procgen.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/registerCartridges",
+      "slot": "engin",
+      "path": "engins/gameengin/registerCartridges.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/remote/comboMachine",
+      "slot": "engin",
+      "path": "engins/gameengin/remote/comboMachine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/remote/index",
+      "slot": "engin",
+      "path": "engins/gameengin/remote/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/remote/layout",
+      "slot": "engin",
+      "path": "engins/gameengin/remote/layout.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/remote/moves",
+      "slot": "engin",
+      "path": "engins/gameengin/remote/moves.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/remote/sprintDetector",
+      "slot": "engin",
+      "path": "engins/gameengin/remote/sprintDetector.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/render/ShaderRegistry",
+      "slot": "engin",
+      "path": "engins/gameengin/render/ShaderRegistry.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/runtime/FrameBudget",
+      "slot": "engin",
+      "path": "engins/gameengin/runtime/FrameBudget.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/runtime/FrameClock",
+      "slot": "engin",
+      "path": "engins/gameengin/runtime/FrameClock.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/runtime/index",
+      "slot": "engin",
+      "path": "engins/gameengin/runtime/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/runtime/RuntimeQuality",
+      "slot": "engin",
+      "path": "engins/gameengin/runtime/RuntimeQuality.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/ai",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/ai.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/animation",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/animation.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/assets",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/assets.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/index",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/lod",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/lod.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/network",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/network.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/physics",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/physics.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/pooling",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/pooling.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/rendering",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/rendering.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/spatial",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/spatial.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/systems/world",
+      "slot": "engin",
+      "path": "engins/gameengin/systems/world.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/unifiedLoop",
+      "slot": "engin",
+      "path": "engins/gameengin/unifiedLoop.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/useUnifiedLoop",
+      "slot": "engin",
+      "path": "engins/gameengin/useUnifiedLoop.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/webgpu-runtime-shell",
+      "slot": "engin",
+      "path": "engins/gameengin/webgpu-runtime-shell.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/world-crdt",
+      "slot": "engin",
+      "path": "engins/gameengin/world-crdt.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/xr",
+      "slot": "engin",
+      "path": "engins/gameengin/xr.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/portfolio/dream.PortfolioEngin",
       "slot": "engin",
       "path": "engins/portfolio/dream.PortfolioEngin.tsx",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/brand/brandEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/brand/brandEnginRuleSet.ts",
+      "id": "engins/rulesets/brand/brandEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/brand/brandEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/brand/useBrandEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/brand/useBrandEnginRuntime.ts",
+      "id": "engins/rulesets/brand/useBrandEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/brand/useBrandEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/code/codeEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/code/codeEnginRuleSet.ts",
+      "id": "engins/rulesets/code/codeEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/code/codeEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/code/useCodeEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/code/useCodeEnginRuntime.ts",
+      "id": "engins/rulesets/code/useCodeEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/code/useCodeEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/content/contentEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/content/contentEnginRuleSet.ts",
+      "id": "engins/rulesets/content/contentEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/content/contentEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/content/useContentEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/content/useContentEnginRuntime.ts",
+      "id": "engins/rulesets/content/useContentEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/content/useContentEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/game/gameEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/game/gameEnginRuleSet.ts",
+      "id": "engins/rulesets/game/gameEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/game/gameEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/game/index",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/game/index.ts",
+      "id": "engins/rulesets/game/index",
+      "slot": "engin",
+      "path": "engins/rulesets/game/index.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/game/useGameEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/game/useGameEnginRuntime.ts",
+      "id": "engins/rulesets/game/useGameEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/game/useGameEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/lab/labEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/lab/labEnginRuleSet.ts",
+      "id": "engins/rulesets/lab/labEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/lab/labEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/lab/useLabEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/lab/useLabEnginRuntime.ts",
+      "id": "engins/rulesets/lab/useLabEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/lab/useLabEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/music/starMakerEnginRuleSet",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/music/starMakerEnginRuleSet.ts",
+      "id": "engins/rulesets/music/starMakerEnginRuleSet",
+      "slot": "engin",
+      "path": "engins/rulesets/music/starMakerEnginRuleSet.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/music/useStarMakerEnginRuntime",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/music/useStarMakerEnginRuntime.ts",
+      "id": "engins/rulesets/music/useStarMakerEnginRuntime",
+      "slot": "engin",
+      "path": "engins/rulesets/music/useStarMakerEnginRuntime.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/useEnginWorkflow",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/useEnginWorkflow.ts",
+      "id": "engins/rulesets/useEnginWorkflow",
+      "slot": "engin",
+      "path": "engins/rulesets/useEnginWorkflow.ts",
       "engine": "Universal"
     },
     {
-      "id": "lib/engins/workflowEngine",
-      "slot": "engine-ruleset",
-      "path": "lib/engins/workflowEngine.ts",
+      "id": "engins/rulesets/workflowEngine",
+      "slot": "engin",
+      "path": "engins/rulesets/workflowEngine.ts",
       "engine": "Universal"
-    },
-    {
-      "id": "lib/gameengin/brain/active-projects",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/active-projects.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/asset-registry/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/asset-registry/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/build-history/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/build-history/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/character-voices/mad-maxi",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/character-voices/mad-maxi.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/composition-principles/leading-lines-landmark",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/composition-principles/leading-lines-landmark.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/composition-principles/parallax-layers",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/composition-principles/parallax-layers.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-library/neon-courier",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/concept-library/neon-courier.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-library/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/concept-library/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-patterns/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/concept-patterns/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/crash-reports/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/crash-reports/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/dialogue-patterns/callback-anchor",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/dialogue-patterns/callback-anchor.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/dialogue-patterns/implied-subject",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/dialogue-patterns/implied-subject.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/emotional-tones/determined",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/emotional-tones/determined.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/emotional-tones/fierce",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/emotional-tones/fierce.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/emotional-tones/hopeful",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/emotional-tones/hopeful.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/emotional-tones/reflective",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/emotional-tones/reflective.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/emotional-tones/weary",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/emotional-tones/weary.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/fun-heuristics/meta-progression",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/fun-heuristics/meta-progression.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/fun-heuristics/moment-to-moment",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/fun-heuristics/moment-to-moment.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/fun-heuristics/session-loop",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/fun-heuristics/session-loop.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/action-rpg",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/action-rpg.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/episodic",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/episodic.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/live-service",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/live-service.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/metroidvania",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/metroidvania.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/open-world",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/open-world.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/platformer",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/platformer.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/puzzle",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/puzzle.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/racing",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/racing.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/roguelike",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/roguelike.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/sandbox",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/sandbox.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/genre-dna/template",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/genre-dna/template.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/inspiration-corpus/celeste",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/inspiration-corpus/celeste.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/inspiration-corpus/dead-cells",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/inspiration-corpus/dead-cells.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/inspiration-corpus/hades",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/inspiration-corpus/hades.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/inspiration-corpus/hollow-knight",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/inspiration-corpus/hollow-knight.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/inspiration-corpus/outer-wilds",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/inspiration-corpus/outer-wilds.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/material-recipes/neon-glass-tube",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/material-recipes/neon-glass-tube.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/material-recipes/rusted-iron",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/material-recipes/rusted-iron.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/material-recipes/sun-bleached-sandstone",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/material-recipes/sun-bleached-sandstone.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/camera/look-ahead",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/camera/look-ahead.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/camera/screen-shake",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/camera/screen-shake.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/camera/smooth-follow",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/camera/smooth-follow.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/combat/combo",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/combat/combo.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/combat/hit-stop",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/combat/hit-stop.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/combat/parry",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/combat/parry.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/combat/ranged",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/combat/ranged.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/movement/coyote-time",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/movement/coyote-time.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/movement/dash",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/movement/dash.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/movement/double-jump",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/movement/double-jump.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/movement/grapple",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/movement/grapple.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/movement/wall-slide",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/movement/wall-slide.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/progression/metroidvania-gating",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/progression/metroidvania-gating.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/progression/roguelike-perks",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/progression/roguelike-perks.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/progression/skill-tree",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/progression/skill-tree.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/ability-gating",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/ability-gating.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/meta-progression",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/meta-progression.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/procedural-generation",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/procedural-generation.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/run-persistence",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/run-persistence.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/season-pass",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/season-pass.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/mechanic-library/structural/world-streaming",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/mechanic-library/structural/world-streaming.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/narrative-pacing/default",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/narrative-pacing/default.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/originality-registry/signatures",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/originality-registry/signatures.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/emotional-core",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/emotional-core.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/feedback",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/feedback.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/mastery",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/mastery.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/progression",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/progression.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/responsiveness",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/responsiveness.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/principles/risk-reward",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/principles/risk-reward.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/progression-state/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/progression-state/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/rd-sessions/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/rd-sessions/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/technique-library/lighting/three-point-mood",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/technique-library/lighting/three-point-mood.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/technique-library/modeling/edge-flow",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/technique-library/modeling/edge-flow.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/technique-library/modeling/silhouette-first",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/technique-library/modeling/silhouette-first.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/technique-library/optimization/texture-atlasing",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/technique-library/optimization/texture-atlasing.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/upgrade-history/prioritization-rules",
-      "slot": "brain-node",
-      "path": "lib/gameengin/brain/upgrade-history/prioritization-rules.json",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/upgrade-history/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/upgrade-history/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/visual-bible/characters/mad-maxi",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/visual-bible/characters/mad-maxi.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/visual-bible/environments/neon-wasteland",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/visual-bible/environments/neon-wasteland.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain/work-queue/README",
-      "slot": "brain-doc",
-      "path": "lib/gameengin/brain/work-queue/README.md",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/achievementEngine",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/achievementEngine.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/apiStubs",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/apiStubs.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/index",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/loaders",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/loaders.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/manifest",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/manifest.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/reactCartridge",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/reactCartridge.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridges/saveState",
-      "slot": "cartridge",
-      "path": "lib/gameengin/cartridges/saveState.ts",
-      "engine": "GameEngin"
     },
     {
       "id": "public/cartridges/mad-maxi/MANIFEST",
@@ -5212,9 +4996,27 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "hooks/useMotionTilt",
+      "slot": "hook",
+      "path": "hooks/useMotionTilt.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "hooks/useResponsive",
+      "slot": "hook",
+      "path": "hooks/useResponsive.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "hooks/useSharedDream",
       "slot": "hook",
       "path": "hooks/useSharedDream.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "hooks/useTap",
+      "slot": "hook",
+      "path": "hooks/useTap.ts",
       "engine": "Universal"
     },
     {
@@ -5233,2664 +5035,6 @@ export const osArchitectureStageEntries = {
       "id": "hooks/useViewCounter",
       "slot": "hook",
       "path": "hooks/useViewCounter.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activeModulesStore",
-      "slot": "engine-utility",
-      "path": "lib/activeModulesStore.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/aqs",
-      "slot": "engine-utility",
-      "path": "lib/activity/aqs.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/boogieActivityPolicy",
-      "slot": "engine-utility",
-      "path": "lib/activity/boogieActivityPolicy.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/revenueSplit",
-      "slot": "engine-utility",
-      "path": "lib/activity/revenueSplit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/scoring",
-      "slot": "engine-utility",
-      "path": "lib/activity/scoring.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/skipCredits",
-      "slot": "engine-utility",
-      "path": "lib/activity/skipCredits.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/types",
-      "slot": "engine-utility",
-      "path": "lib/activity/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/activity/visibility-score",
-      "slot": "engine-utility",
-      "path": "lib/activity/visibility-score.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/adari",
-      "slot": "engine-utility",
-      "path": "lib/adari.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/admin/lockout",
-      "slot": "engine-utility",
-      "path": "lib/admin/lockout.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/admin/upgrade-readiness",
-      "slot": "engine-utility",
-      "path": "lib/admin/upgrade-readiness.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agentOS",
-      "slot": "engine-utility",
-      "path": "lib/agentOS.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agentOS/hostTools",
-      "slot": "engine-utility",
-      "path": "lib/agentOS/hostTools.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/agentBus",
-      "slot": "engine-utility",
-      "path": "lib/agents/agentBus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/boogieManAI",
-      "slot": "engine-utility",
-      "path": "lib/agents/boogieManAI.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/dreamengin",
-      "slot": "engine-utility",
-      "path": "lib/agents/dreamengin.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/drEamsMode",
-      "slot": "engine-utility",
-      "path": "lib/agents/drEamsMode.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/idari",
-      "slot": "engine-utility",
-      "path": "lib/agents/idari.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/idariLoop",
-      "slot": "engine-utility",
-      "path": "lib/agents/idariLoop.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/teachBus",
-      "slot": "engine-utility",
-      "path": "lib/agents/teachBus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/agents/uiActions",
-      "slot": "engine-utility",
-      "path": "lib/agents/uiActions.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/audit",
-      "slot": "engine-utility",
-      "path": "lib/ai/audit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/boogie-policy",
-      "slot": "engine-utility",
-      "path": "lib/ai/boogie-policy.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/boogie-verifier",
-      "slot": "engine-utility",
-      "path": "lib/ai/boogie-verifier.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/boogieman",
-      "slot": "engine-utility",
-      "path": "lib/ai/boogieman.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/capability-gate",
-      "slot": "engine-utility",
-      "path": "lib/ai/capability-gate.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/CIC",
-      "slot": "engine-utility",
-      "path": "lib/ai/CIC.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/confirm-token",
-      "slot": "engine-utility",
-      "path": "lib/ai/confirm-token.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/confirm",
-      "slot": "engine-utility",
-      "path": "lib/ai/confirm.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/groq",
-      "slot": "engine-utility",
-      "path": "lib/ai/groq.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/handlers/dreams",
-      "slot": "engine-utility",
-      "path": "lib/ai/handlers/dreams.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/handlers/index",
-      "slot": "engine-utility",
-      "path": "lib/ai/handlers/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/handlers/navigation",
-      "slot": "engine-utility",
-      "path": "lib/ai/handlers/navigation.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/handlers/social",
-      "slot": "engine-utility",
-      "path": "lib/ai/handlers/social.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/idempotency",
-      "slot": "engine-utility",
-      "path": "lib/ai/idempotency.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/rate-limiter",
-      "slot": "engine-utility",
-      "path": "lib/ai/rate-limiter.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/rateLimit",
-      "slot": "engine-utility",
-      "path": "lib/ai/rateLimit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/schemas",
-      "slot": "engine-utility",
-      "path": "lib/ai/schemas.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/tfBackend",
-      "slot": "engine-utility",
-      "path": "lib/ai/tfBackend.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/tool-router",
-      "slot": "engine-utility",
-      "path": "lib/ai/tool-router.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ai/triad",
-      "slot": "engine-utility",
-      "path": "lib/ai/triad.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/api/route",
-      "slot": "engine-utility",
-      "path": "lib/api/route.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/artifactStore",
-      "slot": "engine-utility",
-      "path": "lib/artifactStore.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/assets/assetOptimizer",
-      "slot": "engine-utility",
-      "path": "lib/assets/assetOptimizer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/assets/indexedDBStore",
-      "slot": "engine-utility",
-      "path": "lib/assets/indexedDBStore.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/audio-fingerprint/fingerprint",
-      "slot": "engine-utility",
-      "path": "lib/audio-fingerprint/fingerprint.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/audio-fingerprint/index",
-      "slot": "engine-utility",
-      "path": "lib/audio-fingerprint/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/audio-fingerprint/peak-map",
-      "slot": "engine-utility",
-      "path": "lib/audio-fingerprint/peak-map.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/audio-fingerprint/stem-extractor",
-      "slot": "engine-utility",
-      "path": "lib/audio-fingerprint/stem-extractor.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/audioFingerprint",
-      "slot": "engine-utility",
-      "path": "lib/audioFingerprint.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/auth/nextRedirect",
-      "slot": "engine-utility",
-      "path": "lib/auth/nextRedirect.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/babylon/createEngine",
-      "slot": "engine-utility",
-      "path": "lib/babylon/createEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/babylon/dreamengine-hybrid",
-      "slot": "engine-utility",
-      "path": "lib/babylon/dreamengine-hybrid.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/bot-detection/detector",
-      "slot": "engine-utility",
-      "path": "lib/bot-detection/detector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/bot-detection/index",
-      "slot": "engine-utility",
-      "path": "lib/bot-detection/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/bot-detection/swipe-physics",
-      "slot": "engine-utility",
-      "path": "lib/bot-detection/swipe-physics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/bot-detection/view-tally",
-      "slot": "engine-utility",
-      "path": "lib/bot-detection/view-tally.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/botDetection",
-      "slot": "engine-utility",
-      "path": "lib/botDetection.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/branding/logos",
-      "slot": "engine-utility",
-      "path": "lib/branding/logos.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/child-safety/childSafetyDetector",
-      "slot": "engine-utility",
-      "path": "lib/child-safety/childSafetyDetector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/child-safety/imageClassifier",
-      "slot": "engine-utility",
-      "path": "lib/child-safety/imageClassifier.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/child-safety/messageContextChecker",
-      "slot": "engine-utility",
-      "path": "lib/child-safety/messageContextChecker.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/child-safety/ncmecReporter",
-      "slot": "engine-utility",
-      "path": "lib/child-safety/ncmecReporter.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/child-safety/scanMediaUrls",
-      "slot": "engine-utility",
-      "path": "lib/child-safety/scanMediaUrls.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/code/drEamsCodeAssist",
-      "slot": "engine-utility",
-      "path": "lib/code/drEamsCodeAssist.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/auth",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/auth.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/diagnostics",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/diagnostics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/git",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/git.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/pathSafety",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/pathSafety.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/projectGraph",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/projectGraph.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/runner",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/runner.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/search",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/search.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/types",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/codeengin/workspaceStore",
-      "slot": "engine-utility",
-      "path": "lib/codeengin/workspaceStore.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/collaboration/index",
-      "slot": "engine-utility",
-      "path": "lib/collaboration/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/componentInventory",
-      "slot": "engine-utility",
-      "path": "lib/componentInventory.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/composite/compositor",
-      "slot": "engine-utility",
-      "path": "lib/composite/compositor.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/composite/fxSimulation",
-      "slot": "engine-utility",
-      "path": "lib/composite/fxSimulation.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/composite/matchmover",
-      "slot": "engine-utility",
-      "path": "lib/composite/matchmover.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/composite/motionCapture",
-      "slot": "engine-utility",
-      "path": "lib/composite/motionCapture.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/composite/rotoscope",
-      "slot": "engine-utility",
-      "path": "lib/composite/rotoscope.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/consent/consentManager",
-      "slot": "engine-utility",
-      "path": "lib/consent/consentManager.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/content/generativeFill",
-      "slot": "engine-utility",
-      "path": "lib/content/generativeFill.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/content/publishIntent",
-      "slot": "engine-utility",
-      "path": "lib/content/publishIntent.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/content/seoScorer",
-      "slot": "engine-utility",
-      "path": "lib/content/seoScorer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/content/transcriptEditor",
-      "slot": "engine-utility",
-      "path": "lib/content/transcriptEditor.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/content/voiceClone",
-      "slot": "engine-utility",
-      "path": "lib/content/voiceClone.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/assetTypes",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/assetTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/geometryBuilder",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/geometryBuilder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/meshBuilder",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/meshBuilder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/modifiers",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/modifiers.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/primitiveBuilder",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/primitiveBuilder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/textureBuilder",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/textureBuilder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/builders/uvGenerator",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/builders/uvGenerator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/cli",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/cli.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/animalGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/animalGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/bicycleGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/bicycleGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/bridgeGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/bridgeGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/buildingGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/buildingGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/creatureGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/creatureGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/humanoidGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/humanoidGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/propGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/propGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/roadGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/roadGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/shared",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/shared.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/terrainGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/terrainGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/treeGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/treeGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/vehicleGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/vehicleGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/grammars/waterGrammar",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/grammars/waterGrammar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/materials/materialTypes",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/materials/materialTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/materials/paletteExtractor",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/materials/paletteExtractor.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/materials/proceduralMaterials",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/materials/proceduralMaterials.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/colorCluster",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/colorCluster.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/edgeDetector",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/edgeDetector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/imageAnalyzer",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/imageAnalyzer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/photoToRecipe",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/photoToRecipe.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/pngDecoder",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/pngDecoder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/photo/regionDetector",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/photo/regionDetector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/build",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/build.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/bundle",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/bundle.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/exportGlb",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/exportGlb.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/generateCollision",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/generateCollision.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/generateLods",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/generateLods.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/paths",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/paths.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/validate",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/validate.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/pipeline/writeManifest",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/pipeline/writeManifest.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/recipes/recipeResolver",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/recipes/recipeResolver.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/recipes/recipeTypes",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/recipes/recipeTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/recipes/seededRandom",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/recipes/seededRandom.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/rigging/fitArmature",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/rigging/fitArmature.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/rigging/index",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/rigging/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/rigging/landmarks",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/rigging/landmarks.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/rigging/rigTypes",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/rigging/rigTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/rigging/rigValidator",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/rigging/rigValidator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/shaders/shaderRegistry",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/shaders/shaderRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/contentengin/shaders/shaderTypes",
-      "slot": "engine-utility",
-      "path": "lib/contentengin/shaders/shaderTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/data-transform",
-      "slot": "engine-utility",
-      "path": "lib/data-transform.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/daydream/useDaydreamPersistence",
-      "slot": "engine-utility",
-      "path": "lib/daydream/useDaydreamPersistence.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/daydream/useDaydreamState",
-      "slot": "engine-utility",
-      "path": "lib/daydream/useDaydreamState.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dev-bypass",
-      "slot": "engine-utility",
-      "path": "lib/dev-bypass.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/diff/aiEditEngine",
-      "slot": "engine-utility",
-      "path": "lib/diff/aiEditEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/diff/diffUtils",
-      "slot": "engine-utility",
-      "path": "lib/diff/diffUtils.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dream-docs/embed",
-      "slot": "engine-utility",
-      "path": "lib/dream-docs/embed.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dream-docs/index",
-      "slot": "engine-utility",
-      "path": "lib/dream-docs/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dream-docs/search",
-      "slot": "engine-utility",
-      "path": "lib/dream-docs/search.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamengin/DrEamsAnimator",
-      "slot": "engine-utility",
-      "path": "lib/dreamengin/DrEamsAnimator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamengin/drEamsSearch",
-      "slot": "engine-utility",
-      "path": "lib/dreamengin/drEamsSearch.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamengin/engineAssets",
-      "slot": "engine-utility",
-      "path": "lib/dreamengin/engineAssets.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamengin/osSubsystemManifest",
-      "slot": "engine-utility",
-      "path": "lib/dreamengin/osSubsystemManifest.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamenginOS/index",
-      "slot": "engine-utility",
-      "path": "lib/dreamenginOS/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamnav/delta",
-      "slot": "engine-utility",
-      "path": "lib/dreamnav/delta.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamnav/gctAssist",
-      "slot": "engine-utility",
-      "path": "lib/dreamnav/gctAssist.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamnav/gestures6",
-      "slot": "engine-utility",
-      "path": "lib/dreamnav/gestures6.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamnav/path",
-      "slot": "engine-utility",
-      "path": "lib/dreamnav/path.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/dreamnav/tau",
-      "slot": "engine-utility",
-      "path": "lib/dreamnav/tau.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginBaseState",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginBaseState.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginCapabilities",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginCapabilities.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginCapabilityExecution",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginCapabilityExecution.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginCapabilityScorecard",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginCapabilityScorecard.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginCapabilityTargets",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginCapabilityTargets.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginDomainCores",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginDomainCores.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginEventBus",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginEventBus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginHardwareCapabilities",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginHardwareCapabilities.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginIOAdapter",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginIOAdapter.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginPerformanceProbe",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginPerformanceProbe.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginRuleSetContract",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginRuleSetContract.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginRuntime",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginRuntime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/EnginSnapshotFingerprint",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/EnginSnapshotFingerprint.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/HotRuntime",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/HotRuntime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/index",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/InternalMetrics",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/InternalMetrics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engin-runtime/PremiumRuntimeQuality",
-      "slot": "engine-utility",
-      "path": "lib/engin-runtime/PremiumRuntimeQuality.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/engine/index",
-      "slot": "engine-utility",
-      "path": "lib/engine/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/enginpipe/artifact/manifest",
-      "slot": "engine-utility",
-      "path": "lib/enginpipe/artifact/manifest.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/enginpipe/index",
-      "slot": "engine-utility",
-      "path": "lib/enginpipe/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/enginpipe/quality/tiers",
-      "slot": "engine-utility",
-      "path": "lib/enginpipe/quality/tiers.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/enginpipe/telemetry/client",
-      "slot": "engine-utility",
-      "path": "lib/enginpipe/telemetry/client.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/enginpipe/telemetry/events",
-      "slot": "engine-utility",
-      "path": "lib/enginpipe/telemetry/events.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/event-bus/index",
-      "slot": "engine-utility",
-      "path": "lib/event-bus/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/eventBus",
-      "slot": "engine-utility",
-      "path": "lib/eventBus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feature-build/buildCycle",
-      "slot": "engine-utility",
-      "path": "lib/feature-build/buildCycle.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feature-build/featureManifest",
-      "slot": "engine-utility",
-      "path": "lib/feature-build/featureManifest.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feature-build/index",
-      "slot": "engine-utility",
-      "path": "lib/feature-build/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feature-build/uiQualityCriteria",
-      "slot": "engine-utility",
-      "path": "lib/feature-build/uiQualityCriteria.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feed/feedTopics",
-      "slot": "engine-utility",
-      "path": "lib/feed/feedTopics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feed/hashtags",
-      "slot": "engine-utility",
-      "path": "lib/feed/hashtags.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feed/useLiveFeed",
-      "slot": "engine-utility",
-      "path": "lib/feed/useLiveFeed.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feed/useYouTubeLiveFeed",
-      "slot": "engine-utility",
-      "path": "lib/feed/useYouTubeLiveFeed.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/feeds/embedFeedLoader",
-      "slot": "engine-utility",
-      "path": "lib/feeds/embedFeedLoader.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge-ngn/assembly",
-      "slot": "engine-utility",
-      "path": "lib/forge-ngn/assembly.ts",
-      "engine": "ForgeNGN"
-    },
-    {
-      "id": "lib/forge-ngn/index",
-      "slot": "engine-utility",
-      "path": "lib/forge-ngn/index.ts",
-      "engine": "ForgeNGN"
-    },
-    {
-      "id": "lib/forge-ngn/piece-registry",
-      "slot": "engine-utility",
-      "path": "lib/forge-ngn/piece-registry.ts",
-      "engine": "ForgeNGN"
-    },
-    {
-      "id": "lib/forge/engineForge",
-      "slot": "engine-utility",
-      "path": "lib/forge/engineForge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeBuild",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeBuild.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeIntelligence",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeIntelligence.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeMomentum",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeMomentum.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeNexus",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeNexus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeRegistry",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/forgeRituals",
-      "slot": "engine-utility",
-      "path": "lib/forge/forgeRituals.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/useForgeActivity",
-      "slot": "engine-utility",
-      "path": "lib/forge/useForgeActivity.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/forge/useForgeBuild",
-      "slot": "engine-utility",
-      "path": "lib/forge/useForgeBuild.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gameengin/accessibility-ai",
-      "slot": "engine-system",
-      "path": "lib/gameengin/accessibility-ai.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/ai-director",
-      "slot": "engine-system",
-      "path": "lib/gameengin/ai-director.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/ai-npcs",
-      "slot": "engine-system",
-      "path": "lib/gameengin/ai-npcs.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/assets/BundleCache",
-      "slot": "engine-system",
-      "path": "lib/gameengin/assets/BundleCache.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/assets/BundleManifest",
-      "slot": "engine-system",
-      "path": "lib/gameengin/assets/BundleManifest.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/backendNegotiator",
-      "slot": "engine-system",
-      "path": "lib/gameengin/backendNegotiator.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/brain-reader",
-      "slot": "engine-system",
-      "path": "lib/gameengin/brain-reader.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridge-manifest",
-      "slot": "engine-system",
-      "path": "lib/gameengin/cartridge-manifest.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridge",
-      "slot": "engine-system",
-      "path": "lib/gameengin/cartridge.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cartridgeLoader",
-      "slot": "engine-system",
-      "path": "lib/gameengin/cartridgeLoader.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/cloud-compute",
-      "slot": "engine-system",
-      "path": "lib/gameengin/cloud-compute.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/control-mappings",
-      "slot": "engine-system",
-      "path": "lib/gameengin/control-mappings.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/core",
-      "slot": "engine-system",
-      "path": "lib/gameengin/core.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/dream-engine",
-      "slot": "engine-system",
-      "path": "lib/gameengin/dream-engine.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/dreamr-loader",
-      "slot": "engine-system",
-      "path": "lib/gameengin/dreamr-loader.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/executionWiring",
-      "slot": "engine-system",
-      "path": "lib/gameengin/executionWiring.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/gameEnginRuntime",
-      "slot": "engine-system",
-      "path": "lib/gameengin/gameEnginRuntime.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/generative-audio",
-      "slot": "engine-system",
-      "path": "lib/gameengin/generative-audio.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/index",
-      "slot": "engine-system",
-      "path": "lib/gameengin/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/input/index",
-      "slot": "engine-system",
-      "path": "lib/gameengin/input/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/input/InputRouter",
-      "slot": "engine-system",
-      "path": "lib/gameengin/input/InputRouter.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/neural-render",
-      "slot": "engine-system",
-      "path": "lib/gameengin/neural-render.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/path-tracing",
-      "slot": "engine-system",
-      "path": "lib/gameengin/path-tracing.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/platform",
-      "slot": "engine-system",
-      "path": "lib/gameengin/platform.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/post-fx",
-      "slot": "engine-system",
-      "path": "lib/gameengin/post-fx.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/power-systems",
-      "slot": "engine-system",
-      "path": "lib/gameengin/power-systems.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/predictive-stream",
-      "slot": "engine-system",
-      "path": "lib/gameengin/predictive-stream.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/procgen",
-      "slot": "engine-system",
-      "path": "lib/gameengin/procgen.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/registerCartridges",
-      "slot": "engine-system",
-      "path": "lib/gameengin/registerCartridges.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/remote/comboMachine",
-      "slot": "engine-system",
-      "path": "lib/gameengin/remote/comboMachine.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/remote/index",
-      "slot": "engine-system",
-      "path": "lib/gameengin/remote/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/remote/layout",
-      "slot": "engine-system",
-      "path": "lib/gameengin/remote/layout.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/remote/moves",
-      "slot": "engine-system",
-      "path": "lib/gameengin/remote/moves.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/remote/sprintDetector",
-      "slot": "engine-system",
-      "path": "lib/gameengin/remote/sprintDetector.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/render/ShaderRegistry",
-      "slot": "engine-system",
-      "path": "lib/gameengin/render/ShaderRegistry.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/runtime/FrameBudget",
-      "slot": "engine-system",
-      "path": "lib/gameengin/runtime/FrameBudget.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/runtime/FrameClock",
-      "slot": "engine-system",
-      "path": "lib/gameengin/runtime/FrameClock.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/runtime/index",
-      "slot": "engine-system",
-      "path": "lib/gameengin/runtime/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/runtime/RuntimeQuality",
-      "slot": "engine-system",
-      "path": "lib/gameengin/runtime/RuntimeQuality.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/ai",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/ai.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/animation",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/animation.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/assets",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/assets.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/index",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/index.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/lod",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/lod.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/network",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/network.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/physics",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/physics.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/pooling",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/pooling.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/rendering",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/rendering.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/spatial",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/spatial.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/systems/world",
-      "slot": "engine-system",
-      "path": "lib/gameengin/systems/world.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/unifiedLoop",
-      "slot": "engine-system",
-      "path": "lib/gameengin/unifiedLoop.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/useUnifiedLoop",
-      "slot": "engine-system",
-      "path": "lib/gameengin/useUnifiedLoop.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/webgpu-runtime-shell",
-      "slot": "engine-system",
-      "path": "lib/gameengin/webgpu-runtime-shell.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/world-crdt",
-      "slot": "engine-system",
-      "path": "lib/gameengin/world-crdt.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/gameengin/xr",
-      "slot": "engine-system",
-      "path": "lib/gameengin/xr.ts",
-      "engine": "GameEngin"
-    },
-    {
-      "id": "lib/games/avatar",
-      "slot": "engine-system",
-      "path": "lib/games/avatar.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/catalog",
-      "slot": "engine-system",
-      "path": "lib/games/catalog.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/DualSenseManager",
-      "slot": "engine-system",
-      "path": "lib/games/DualSenseManager.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/gameControllerButtons",
-      "slot": "engine-system",
-      "path": "lib/games/gameControllerButtons.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/gameControllerLeft",
-      "slot": "engine-system",
-      "path": "lib/games/gameControllerLeft.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/gameControllerRight",
-      "slot": "engine-system",
-      "path": "lib/games/gameControllerRight.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/hooks",
-      "slot": "engine-system",
-      "path": "lib/games/hooks.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/library-state",
-      "slot": "engine-system",
-      "path": "lib/games/library-state.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/lucid-avenue-world",
-      "slot": "engine-system",
-      "path": "lib/games/lucid-avenue-world.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/madmaxi-wildfall-world",
-      "slot": "engine-system",
-      "path": "lib/games/madmaxi-wildfall-world.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/mobileControls",
-      "slot": "engine-system",
-      "path": "lib/games/mobileControls.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/navigation",
-      "slot": "engine-system",
-      "path": "lib/games/navigation.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/performance-baseline",
-      "slot": "engine-system",
-      "path": "lib/games/performance-baseline.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/quality-plan",
-      "slot": "engine-system",
-      "path": "lib/games/quality-plan.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/useAIDirector",
-      "slot": "engine-system",
-      "path": "lib/games/useAIDirector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/useGameInputKeyboardBridge",
-      "slot": "engine-system",
-      "path": "lib/games/useGameInputKeyboardBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/useGamepad",
-      "slot": "engine-system",
-      "path": "lib/games/useGamepad.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/useImmersiveGameLayout",
-      "slot": "engine-system",
-      "path": "lib/games/useImmersiveGameLayout.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/games/useRemoteChannel",
-      "slot": "engine-system",
-      "path": "lib/games/useRemoteChannel.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/anomaly-detection",
-      "slot": "engine-utility",
-      "path": "lib/gct/anomaly-detection.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/audio-fingerprint",
-      "slot": "engine-utility",
-      "path": "lib/gct/audio-fingerprint.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/gct-engine",
-      "slot": "engine-utility",
-      "path": "lib/gct/gct-engine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/image-search",
-      "slot": "engine-utility",
-      "path": "lib/gct/image-search.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/index",
-      "slot": "engine-utility",
-      "path": "lib/gct/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gct/recommendations",
-      "slot": "engine-utility",
-      "path": "lib/gct/recommendations.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/generationLaw",
-      "slot": "engine-utility",
-      "path": "lib/generationLaw.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gestures/touchGestures",
-      "slot": "engine-utility",
-      "path": "lib/gestures/touchGestures.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gestures/useTouchGestures",
-      "slot": "engine-utility",
-      "path": "lib/gestures/useTouchGestures.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/god-tier/godTierEngine",
-      "slot": "engine-utility",
-      "path": "lib/god-tier/godTierEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/god-tier/useGodTier",
-      "slot": "engine-utility",
-      "path": "lib/god-tier/useGodTier.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gsap/gsap",
-      "slot": "engine-utility",
-      "path": "lib/gsap/gsap.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gsap/useGsapEntrance",
-      "slot": "engine-utility",
-      "path": "lib/gsap/useGsapEntrance.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gsap/useGsapFlip",
-      "slot": "engine-utility",
-      "path": "lib/gsap/useGsapFlip.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/gsap/useGsapScrollReveal",
-      "slot": "engine-utility",
-      "path": "lib/gsap/useGsapScrollReveal.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/h265-encoder",
-      "slot": "engine-utility",
-      "path": "lib/h265-encoder.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/hooks/useMotionTilt",
-      "slot": "hook",
-      "path": "lib/hooks/useMotionTilt.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/hooks/useResponsive",
-      "slot": "hook",
-      "path": "lib/hooks/useResponsive.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/hooks/useTap",
-      "slot": "hook",
-      "path": "lib/hooks/useTap.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/icons/sheet",
-      "slot": "engine-utility",
-      "path": "lib/icons/sheet.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/identity/canonical-names",
-      "slot": "engine-utility",
-      "path": "lib/identity/canonical-names.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/intelligence/continuityHelpers",
-      "slot": "engine-utility",
-      "path": "lib/intelligence/continuityHelpers.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/intelligence/sessionContinuity",
-      "slot": "engine-utility",
-      "path": "lib/intelligence/sessionContinuity.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/intelligence/sessionPatternEngine",
-      "slot": "engine-utility",
-      "path": "lib/intelligence/sessionPatternEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/intelligence/useSessionIntelligence",
-      "slot": "engine-utility",
-      "path": "lib/intelligence/useSessionIntelligence.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/journey/journeyDots",
-      "slot": "engine-utility",
-      "path": "lib/journey/journeyDots.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/journey/journeyInsights",
-      "slot": "engine-utility",
-      "path": "lib/journey/journeyInsights.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/journey/withJourney",
-      "slot": "engine-utility",
-      "path": "lib/journey/withJourney.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ledger-data",
-      "slot": "engine-utility",
-      "path": "lib/ledger-data.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ledger",
-      "slot": "engine-utility",
-      "path": "lib/ledger.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/marketplace/listings",
-      "slot": "engine-utility",
-      "path": "lib/marketplace/listings.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/marketplace/request",
-      "slot": "engine-utility",
-      "path": "lib/marketplace/request.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/media/ledger",
-      "slot": "engine-utility",
-      "path": "lib/media/ledger.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/media/postMedia",
-      "slot": "engine-utility",
-      "path": "lib/media/postMedia.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/music/presets",
-      "slot": "engine-utility",
-      "path": "lib/music/presets.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/music/starmaker",
-      "slot": "engine-utility",
-      "path": "lib/music/starmaker.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/music/starmakerArrangement",
-      "slot": "engine-utility",
-      "path": "lib/music/starmakerArrangement.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/music/starmakerDaw",
-      "slot": "engine-utility",
-      "path": "lib/music/starmakerDaw.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/music/wasmAudioBridge",
-      "slot": "engine-utility",
-      "path": "lib/music/wasmAudioBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/anchorField",
-      "slot": "engine-utility",
-      "path": "lib/navigation/anchorField.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/AnchorStateBuffer",
-      "slot": "engine-utility",
-      "path": "lib/navigation/AnchorStateBuffer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/AnchorWidgetStorage",
-      "slot": "engine-utility",
-      "path": "lib/navigation/AnchorWidgetStorage.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/dream-state",
-      "slot": "engine-utility",
-      "path": "lib/navigation/dream-state.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/GestureFrameComputer",
-      "slot": "engine-utility",
-      "path": "lib/navigation/GestureFrameComputer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/GestureIntentResolver",
-      "slot": "engine-utility",
-      "path": "lib/navigation/GestureIntentResolver.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/index",
-      "slot": "engine-utility",
-      "path": "lib/navigation/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/manifold",
-      "slot": "engine-utility",
-      "path": "lib/navigation/manifold.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/NavStateBuffer",
-      "slot": "engine-utility",
-      "path": "lib/navigation/NavStateBuffer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/physics",
-      "slot": "engine-utility",
-      "path": "lib/navigation/physics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/PointerEventCapture",
-      "slot": "engine-utility",
-      "path": "lib/navigation/PointerEventCapture.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/quaternion",
-      "slot": "engine-utility",
-      "path": "lib/navigation/quaternion.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/ReturnStack",
-      "slot": "engine-utility",
-      "path": "lib/navigation/ReturnStack.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/SpatialNavigationEngine",
-      "slot": "engine-utility",
-      "path": "lib/navigation/SpatialNavigationEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/StructureLedger",
-      "slot": "engine-utility",
-      "path": "lib/navigation/StructureLedger.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/TransformSolver",
-      "slot": "engine-utility",
-      "path": "lib/navigation/TransformSolver.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/useNavigation",
-      "slot": "engine-utility",
-      "path": "lib/navigation/useNavigation.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/navigation/WidgetInstanceMemory",
-      "slot": "engine-utility",
-      "path": "lib/navigation/WidgetInstanceMemory.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/notifications/notificationHelpers",
-      "slot": "engine-utility",
-      "path": "lib/notifications/notificationHelpers.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/notifications/useNotifications",
-      "slot": "engine-utility",
-      "path": "lib/notifications/useNotifications.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/collector",
-      "slot": "engine-utility",
-      "path": "lib/observability/collector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/correlator",
-      "slot": "engine-utility",
-      "path": "lib/observability/correlator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/healthTrend",
-      "slot": "engine-utility",
-      "path": "lib/observability/healthTrend.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/immediateAction",
-      "slot": "engine-utility",
-      "path": "lib/observability/immediateAction.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/index",
-      "slot": "engine-utility",
-      "path": "lib/observability/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/otel",
-      "slot": "engine-utility",
-      "path": "lib/observability/otel.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/otelBridge",
-      "slot": "engine-utility",
-      "path": "lib/observability/otelBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/observability/rootCauseAnalyzer",
-      "slot": "engine-utility",
-      "path": "lib/observability/rootCauseAnalyzer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/offline/offlineCache",
-      "slot": "engine-utility",
-      "path": "lib/offline/offlineCache.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/offline/useOfflineSync",
-      "slot": "engine-utility",
-      "path": "lib/offline/useOfflineSync.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/babylon-optimizero",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/babylon-optimizero.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/constraint-solver",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/constraint-solver.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/creative-optimizero",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/creative-optimizero.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/creative-validator",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/creative-validator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/index",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/optimizer/types",
-      "slot": "engine-utility",
-      "path": "lib/optimizer/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/panels/panelTypes",
-      "slot": "engine-utility",
-      "path": "lib/panels/panelTypes.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/platform/index",
-      "slot": "engine-utility",
-      "path": "lib/platform/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/platform/lab",
-      "slot": "engine-utility",
-      "path": "lib/platform/lab.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/policy/boogiePolicy",
-      "slot": "engine-utility",
-      "path": "lib/policy/boogiePolicy.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/reality/realityStore",
-      "slot": "engine-utility",
-      "path": "lib/reality/realityStore.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/reality/types",
-      "slot": "engine-utility",
-      "path": "lib/reality/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/renderer/Canvas2DRenderer",
-      "slot": "engine-utility",
-      "path": "lib/renderer/Canvas2DRenderer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/renderer/FrustumCuller",
-      "slot": "engine-utility",
-      "path": "lib/renderer/FrustumCuller.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/renderer/index",
-      "slot": "engine-utility",
-      "path": "lib/renderer/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/renderer/IRenderer",
-      "slot": "engine-utility",
-      "path": "lib/renderer/IRenderer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/routing/surfaces",
-      "slot": "engine-utility",
-      "path": "lib/routing/surfaces.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/channelMetrics",
-      "slot": "engine-utility",
-      "path": "lib/runtime/channelMetrics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/coercionTable",
-      "slot": "engine-utility",
-      "path": "lib/runtime/coercionTable.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/dreamOSBus",
-      "slot": "engine-utility",
-      "path": "lib/runtime/dreamOSBus.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/dropTargetRegistry",
-      "slot": "engine-utility",
-      "path": "lib/runtime/dropTargetRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/dualRuntime",
-      "slot": "engine-utility",
-      "path": "lib/runtime/dualRuntime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/dualRuntimeBridge",
-      "slot": "engine-utility",
-      "path": "lib/runtime/dualRuntimeBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/EnginDispatcher",
-      "slot": "engine-utility",
-      "path": "lib/runtime/EnginDispatcher.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/enginWorkflowRegistry",
-      "slot": "engine-utility",
-      "path": "lib/runtime/enginWorkflowRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/iEngine",
-      "slot": "engine-utility",
-      "path": "lib/runtime/iEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/instanceManager",
-      "slot": "engine-utility",
-      "path": "lib/runtime/instanceManager.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/isAuthRelatedError",
-      "slot": "engine-utility",
-      "path": "lib/runtime/isAuthRelatedError.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/madMaxiSnapshotBridge",
-      "slot": "engine-utility",
-      "path": "lib/runtime/madMaxiSnapshotBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/memory",
-      "slot": "engine-utility",
-      "path": "lib/runtime/memory.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/moduleRegistry",
-      "slot": "engine-utility",
-      "path": "lib/runtime/moduleRegistry.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/offlineQueue",
-      "slot": "engine-utility",
-      "path": "lib/runtime/offlineQueue.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/quantumCircuit",
-      "slot": "engine-utility",
-      "path": "lib/runtime/quantumCircuit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/runtimeChannel",
-      "slot": "engine-utility",
-      "path": "lib/runtime/runtimeChannel.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/runtimeContainer",
-      "slot": "engine-utility",
-      "path": "lib/runtime/runtimeContainer.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/seamClipboard",
-      "slot": "engine-utility",
-      "path": "lib/runtime/seamClipboard.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/sharedResourcePool",
-      "slot": "engine-utility",
-      "path": "lib/runtime/sharedResourcePool.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/snapshotFingerprint",
-      "slot": "engine-utility",
-      "path": "lib/runtime/snapshotFingerprint.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/swapManager",
-      "slot": "engine-utility",
-      "path": "lib/runtime/swapManager.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useDragSurface",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useDragSurface.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useDualRuntime",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useDualRuntime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useDualRuntimePersistence",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useDualRuntimePersistence.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useEnginBridge",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useEnginBridge.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useEnginCoopSync",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useEnginCoopSync.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/runtime/useSharedEnginChannel",
-      "slot": "engine-utility",
-      "path": "lib/runtime/useSharedEnginChannel.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/scene/sceneState",
-      "slot": "engine-utility",
-      "path": "lib/scene/sceneState.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/setup/checks",
-      "slot": "engine-utility",
-      "path": "lib/setup/checks.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/sharedDream",
-      "slot": "engine-utility",
-      "path": "lib/sharedDream.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/sharedDream/useSharedDreamSession",
-      "slot": "engine-utility",
-      "path": "lib/sharedDream/useSharedDreamSession.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/shop/listings",
-      "slot": "engine-utility",
-      "path": "lib/shop/listings.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/slog",
-      "slot": "engine-utility",
-      "path": "lib/slog.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social-feed",
-      "slot": "engine-utility",
-      "path": "lib/social-feed.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/crossPost",
-      "slot": "engine-utility",
-      "path": "lib/social/crossPost.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/livekit",
-      "slot": "engine-utility",
-      "path": "lib/social/livekit.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/normalizers",
-      "slot": "engine-utility",
-      "path": "lib/social/normalizers.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/platforms",
-      "slot": "engine-utility",
-      "path": "lib/social/platforms.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/rss-feed",
-      "slot": "engine-utility",
-      "path": "lib/social/rss-feed.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/social/useSocialData",
-      "slot": "engine-utility",
-      "path": "lib/social/useSocialData.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/client",
-      "slot": "engine-utility",
-      "path": "lib/supabase/client.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/config",
-      "slot": "engine-utility",
-      "path": "lib/supabase/config.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/realtime",
-      "slot": "engine-utility",
-      "path": "lib/supabase/realtime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/safeGetUser",
-      "slot": "engine-utility",
-      "path": "lib/supabase/safeGetUser.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/server",
-      "slot": "engine-utility",
-      "path": "lib/supabase/server.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/supabase/vector",
-      "slot": "engine-utility",
-      "path": "lib/supabase/vector.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/torridity",
-      "slot": "engine-utility",
-      "path": "lib/torridity.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/torridity/constants",
-      "slot": "engine-utility",
-      "path": "lib/torridity/constants.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/torridity/index",
-      "slot": "engine-utility",
-      "path": "lib/torridity/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/torridity/physics",
-      "slot": "engine-utility",
-      "path": "lib/torridity/physics.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ui/responsive",
-      "slot": "engine-utility",
-      "path": "lib/ui/responsive.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ui/runtimeViewport",
-      "slot": "engine-utility",
-      "path": "lib/ui/runtimeViewport.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ui/skin-engine",
-      "slot": "engine-utility",
-      "path": "lib/ui/skin-engine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ui/theme-engine",
-      "slot": "engine-utility",
-      "path": "lib/ui/theme-engine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/ui/theme",
-      "slot": "engine-utility",
-      "path": "lib/ui/theme.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/universalEditor",
-      "slot": "engine-utility",
-      "path": "lib/universalEditor.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/user-sim/userSimAgent",
-      "slot": "engine-utility",
-      "path": "lib/user-sim/userSimAgent.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/utils",
-      "slot": "engine-utility",
-      "path": "lib/utils.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/bufferManager",
-      "slot": "engine-utility",
-      "path": "lib/vm/bufferManager.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/bus-events",
-      "slot": "engine-utility",
-      "path": "lib/vm/bus-events.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/dual-runtime",
-      "slot": "engine-utility",
-      "path": "lib/vm/dual-runtime.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/dualVMCoordinator",
-      "slot": "engine-utility",
-      "path": "lib/vm/dualVMCoordinator.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/index",
-      "slot": "engine-utility",
-      "path": "lib/vm/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/inter-vm-messaging",
-      "slot": "engine-utility",
-      "path": "lib/vm/inter-vm-messaging.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/pipelineCache",
-      "slot": "engine-utility",
-      "path": "lib/vm/pipelineCache.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/resource-quota",
-      "slot": "engine-utility",
-      "path": "lib/vm/resource-quota.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/security",
-      "slot": "engine-utility",
-      "path": "lib/vm/security.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/snapshot",
-      "slot": "engine-utility",
-      "path": "lib/vm/snapshot.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/types",
-      "slot": "engine-utility",
-      "path": "lib/vm/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/wasm-features",
-      "slot": "engine-utility",
-      "path": "lib/vm/wasm-features.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/vm/wasmGpuVM",
-      "slot": "engine-utility",
-      "path": "lib/vm/wasmGpuVM.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/warp/useWarp",
-      "slot": "engine-utility",
-      "path": "lib/warp/useWarp.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/warp/warpEngine",
-      "slot": "engine-utility",
-      "path": "lib/warp/warpEngine.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/web3/client",
-      "slot": "engine-utility",
-      "path": "lib/web3/client.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/web3/engagement",
-      "slot": "engine-utility",
-      "path": "lib/web3/engagement.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/web3/index",
-      "slot": "engine-utility",
-      "path": "lib/web3/index.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/web3/ipfs",
-      "slot": "engine-utility",
-      "path": "lib/web3/ipfs.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/web3/types",
-      "slot": "engine-utility",
-      "path": "lib/web3/types.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/webgpu",
-      "slot": "engine-utility",
-      "path": "lib/webgpu.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/webgpu/adaptiveQuality",
-      "slot": "engine-utility",
-      "path": "lib/webgpu/adaptiveQuality.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/webgpu/director",
-      "slot": "engine-utility",
-      "path": "lib/webgpu/director.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "lib/webgpu/useWebGPUDirector",
-      "slot": "engine-utility",
-      "path": "lib/webgpu/useWebGPUDirector.ts",
       "engine": "Universal"
     }
   ],
@@ -8302,26 +5446,26 @@ User Action / Agent / CI
 | Slot | Count |
 | --- | ---: |
 | core-surface | 2 |
-| daydream | 0 |
+| daydream | 2 |
 | surface | 286 |
 | route-surface | 273 |
-| dreamsurface | 37 |
-| engin | 15 |
-| engine-ruleset | 25 |
-| dreamr | 11 |
+| dreamsurface | 15 |
+| engin | 141 |
+| engine-ruleset | 10 |
+| dreamr | 4 |
 | dreamdmbar | 13 |
-| homedream | 3 |
-| connector | 26 |
-| brain-node | 67 |
-| brain-doc | 18 |
-| cartridge | 8 |
+| homedream | 1 |
+| connector | 0 |
+| brain-node | 0 |
+| brain-doc | 0 |
+| cartridge | 1 |
 | persona | 6 |
 | migration | 56 |
 | memory | 6 |
 | dr-eams-tool | 3 |
 | hook | 12 |
-| engine-system | 74 |
-| engine-utility | 366 |
+| engine-system | 0 |
+| engine-utility | 0 |
 
 ## Architecture Stages
 

@@ -2,8 +2,6 @@
 
 export const homedream = {
   "app/homedream/page": () => import("@/app/homedream/page"),
-  "lib/home-buttons/button-groups": () => import("@/lib/home-buttons/button-groups"),
-  "lib/home-buttons/contextual-home": () => import("@/lib/home-buttons/contextual-home"),
 };
 
 export type HomedreamMap = typeof homedream;

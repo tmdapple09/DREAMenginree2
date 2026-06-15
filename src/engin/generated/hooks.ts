@@ -6,13 +6,13 @@ export const hooks = {
   "hooks/useConnectorInstallFlow": () => import("@/hooks/useConnectorInstallFlow"),
   "hooks/useDreamLayout": () => import("@/hooks/useDreamLayout"),
   "hooks/useHideOnScroll": () => import("@/hooks/useHideOnScroll"),
+  "hooks/useMotionTilt": () => import("@/hooks/useMotionTilt"),
+  "hooks/useResponsive": () => import("@/hooks/useResponsive"),
   "hooks/useSharedDream": () => import("@/hooks/useSharedDream"),
+  "hooks/useTap": () => import("@/hooks/useTap"),
   "hooks/useTapHoldMove": () => import("@/hooks/useTapHoldMove"),
   "hooks/useTick": () => import("@/hooks/useTick"),
   "hooks/useViewCounter": () => import("@/hooks/useViewCounter"),
-  "lib/hooks/useMotionTilt": () => import("@/lib/hooks/useMotionTilt"),
-  "lib/hooks/useResponsive": () => import("@/lib/hooks/useResponsive"),
-  "lib/hooks/useTap": () => import("@/lib/hooks/useTap"),
 };
 
 export type HooksMap = typeof hooks;

@@ -562,6 +562,8 @@ export const surfaces = {
   "daydreams/games/page": () => import("@/daydreams/games/page"),
   "daydreams/lab/page": () => import("@/daydreams/lab/page"),
   "daydreams/music/page": () => import("@/daydreams/music/page"),
+  "daydreams/shared/useDaydreamPersistence": () => import("@/daydreams/shared/useDaydreamPersistence"),
+  "daydreams/shared/useDaydreamState": () => import("@/daydreams/shared/useDaydreamState"),
 };
 
 export type SurfacesMap = typeof surfaces;
