@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T06:03:09.279Z",
+  "generated_at": "2026-06-15T08:54:55.767Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 27,
   "events": [
@@ -7,8 +7,8 @@
       "event": "beforeunload",
       "payload_type": null,
       "files": [
-        "games/useRemoteChannel.ts",
-        "intelligence/useSessionIntelligence.ts",
+        "engine/intelligence/useSessionIntelligence.ts",
+        "engins/gameengin/games/useRemoteChannel.ts",
         "src/launcher.ts"
       ]
     },
@@ -16,7 +16,7 @@
       "event": "de-ctrl-button",
       "payload_type": "ButtonInteractionEvent",
       "files": [
-        "games/gameControllerButtons.ts"
+        "engins/gameengin/games/gameControllerButtons.ts"
       ]
     },
     {
@@ -27,21 +27,21 @@
         "components/games/dream.NeonDrift.tsx",
         "components/games/madmaxi/dream.MadmaxiGame.tsx",
         "engins/gameengin/GameRuntime.tsx",
-        "games/useGameInputKeyboardBridge.ts"
+        "engins/gameengin/games/useGameInputKeyboardBridge.ts"
       ]
     },
     {
       "event": "de-game-layout-change",
       "payload_type": null,
       "files": [
-        "games/useImmersiveGameLayout.ts"
+        "engins/gameengin/games/useImmersiveGameLayout.ts"
       ]
     },
     {
       "event": "de-game-start",
       "payload_type": null,
       "files": [
-        "games/hooks.ts"
+        "engins/gameengin/games/hooks.ts"
       ]
     },
     {
@@ -142,8 +142,8 @@
       "payload_type": null,
       "files": [
         "components/gameengin/input/DualSenseManager.ts",
-        "games/DualSenseManager.ts",
-        "games/useGamepad.ts"
+        "engins/gameengin/games/DualSenseManager.ts",
+        "engins/gameengin/games/useGamepad.ts"
       ]
     },
     {
@@ -151,8 +151,8 @@
       "payload_type": null,
       "files": [
         "components/gameengin/input/DualSenseManager.ts",
-        "games/DualSenseManager.ts",
-        "games/useGamepad.ts"
+        "engins/gameengin/games/DualSenseManager.ts",
+        "engins/gameengin/games/useGamepad.ts"
       ]
     },
     {
@@ -188,7 +188,7 @@
       "payload_type": null,
       "files": [
         "components/home/dream.ActiveModuleSurface.tsx",
-        "god-tier/useGodTier.ts"
+        "engine/rendering/god-tier/useGodTier.ts"
       ]
     },
     {

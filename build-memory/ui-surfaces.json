@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T06:03:09.279Z",
+  "generated_at": "2026-06-15T08:54:55.767Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 120,
   "surfaces": [
@@ -230,6 +230,10 @@
         {
           "name": "ForgeEngin",
           "from": "@/engins/dream.ForgeEngin"
+        },
+        {
+          "name": "CREATIVE_ENGINES",
+          "from": "@/engins/forgeengin/forge/forgeRegistry"
         }
       ]
     },
@@ -261,6 +265,14 @@
         {
           "name": "AutoOpenGameEngin",
           "from": "@/engins/autoopen/dream.AutoOpenGameEngin"
+        },
+        {
+          "name": "buildGameLaunchHref",
+          "from": "@/engins/gameengin/games/navigation"
+        },
+        {
+          "name": "GAME_QUALITY_PILLARS",
+          "from": "@/engins/gameengin/games/quality-plan"
         }
       ]
     },
@@ -348,7 +360,12 @@
       "path": "/daydream/play",
       "file": "app/daydream/play/page.tsx",
       "component": "PlayDaydreamLegacyPage",
-      "imports": []
+      "imports": [
+        {
+          "name": "buildGameLaunchHref, DEFAULT_GAME_ID",
+          "from": "@/engins/gameengin/games/navigation"
+        }
+      ]
     },
     {
       "type": "page",
@@ -386,6 +403,10 @@
         {
           "name": "useDualRuntime",
           "from": "@/components/runtime/dream.DualRuntimeContainer"
+        },
+        {
+          "name": "useDreamSystem",
+          "from": "@/dreamdmbar/runtime/DreamSystemContext"
         }
       ]
     },
@@ -398,6 +419,10 @@
         {
           "name": "SharedDreamRuntime",
           "from": "@/components/shared-dream/dream.SharedDreamRuntime"
+        },
+        {
+          "name": "useDreamSystem",
+          "from": "@/dreamdmbar/runtime/DreamSystemContext"
         }
       ]
     },
@@ -410,6 +435,10 @@
         {
           "name": "useDualRuntime",
           "from": "@/components/runtime/dream.DualRuntimeContainer"
+        },
+        {
+          "name": "useDreamSystem",
+          "from": "@/dreamdmbar/runtime/DreamSystemContext"
         }
       ]
     },
@@ -940,6 +969,10 @@
         {
           "name": "CartridgeLauncher",
           "from": "@/components/gameengin/dream.cartridge.CartridgeLauncher"
+        },
+        {
+          "name": "getCartridgeManifest",
+          "from": "@/engins/gameengin/cartridges/manifest"
         }
       ]
     },
@@ -1198,6 +1231,14 @@
         {
           "name": "useTheme",
           "from": "@/components/providers/dream.ThemeProvider"
+        },
+        {
+          "name": "useCustomizeMode",
+          "from": "@/components/ui-system/CustomizeModeContext"
+        },
+        {
+          "name": "THEME_PRESETS",
+          "from": "@/components/ui-system/theme-engine"
         }
       ]
     },
