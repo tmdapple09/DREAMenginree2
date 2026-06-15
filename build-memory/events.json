@@ -9,7 +9,7 @@
       "files": [
         "engine/intelligence/useSessionIntelligence.ts",
         "engins/gameengin/games/useRemoteChannel.ts",
-        "src/launcher.ts"
+        "engins/gameengin/launcher.ts"
       ]
     },
     {

@@ -1,10 +1,10 @@
-import demoGameConfig from './configs/demoGameConfig';
-import type { GameConfig } from './core/GameEnginCore';
-import { GameEnginConfigError, GameEnginCore } from './core/GameEnginCore';
+import demoGameConfig from './config/demoGameConfig';
+import type { GameConfig } from './GameEnginCore';
+import { GameEnginConfigError, GameEnginCore } from './GameEnginCore';
 import { toErrorMessage } from '@/utils/index';
 
 /**
- * src/launcher.ts
+ * engins/gameengin/launcher.ts
  *
  * DREAMengin GameEngin — Runtime Entry Point
  *
@@ -15,7 +15,7 @@ import { toErrorMessage } from '@/utils/index';
  * (or load it from a remote manifest) and pass your target canvas element.
  *
  * Usage (browser):
- *   import { launch } from '@/src/launcher';
+ *   import { launch } from '@/engins/gameengin/launcher';
  *
  *   const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
  *   const { core, stop } = await launch(canvas);

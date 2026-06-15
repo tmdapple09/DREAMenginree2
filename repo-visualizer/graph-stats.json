@@ -26,18 +26,18 @@
   },
   "topConnected": [
     {
-      "id": "file:src/engin/generated/surfaces.ts",
+      "id": "file:engine/generated/surfaces.ts",
       "degree": 547,
       "label": "surfaces.ts",
       "type": "ts",
-      "path": "src/engin/generated/surfaces.ts"
+      "path": "engine/generated/surfaces.ts"
     },
     {
-      "id": "file:src/engin/generated/systems.ts",
+      "id": "file:engine/generated/systems.ts",
       "degree": 393,
       "label": "systems.ts",
       "type": "ts",
-      "path": "src/engin/generated/systems.ts"
+      "path": "engine/generated/systems.ts"
     },
     {
       "id": "file:lib/supabase/server.ts",

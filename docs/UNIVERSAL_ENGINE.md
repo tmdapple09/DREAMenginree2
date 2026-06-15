@@ -20,7 +20,7 @@ pnpm wire:orphans
 This regenerates:
 
 - `build-memory/registry.json`
-- `src/engin/generated/*`
+- `engine/generated/*`
 
 Then verify:
 

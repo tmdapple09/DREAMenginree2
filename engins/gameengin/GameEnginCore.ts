@@ -95,6 +95,68 @@ export interface TelemetryConfig {
   minAcceptableFps?: number;
 }
 
+export type GameEnginLifecyclePhase =
+  | 'before-validate'
+  | 'after-validate'
+  | 'before-runtime'
+  | 'after-runtime'
+  | 'running'
+  | 'stopped';
+
+export type GameEnginIntentType =
+  | 'gameengin.lifecycle.snapshot'
+  | 'gameengin.lifecycle.stop'
+  | 'gameengin.quality.set';
+
+export interface GameEnginIntent {
+  type: GameEnginIntentType;
+  actorId: string;
+  runtimeId: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface GameEnginCompatibilityReport {
+  engineVersion: string;
+  configVersion: string;
+  compatible: boolean;
+  notes: string[];
+}
+
+export interface GameEnginManifest {
+  id: string;
+  type: 'gameengin.manifest';
+  ownerId: string;
+  runtimeId: string;
+  visibility: 'local' | 'shared' | 'global';
+  createdAt: string;
+  updatedAt: string;
+  version: number;
+  data: {
+    name: string;
+    configVersion: string;
+    graphics: GraphicsConfig;
+    assetCount: number;
+    intentTypes: GameEnginIntentType[];
+  };
+}
+
+export interface GameEnginSnapshot {
+  id: string;
+  type: 'gameengin.snapshot';
+  ownerId: string;
+  runtimeId: string;
+  visibility: 'local' | 'shared' | 'global';
+  createdAt: string;
+  updatedAt: string;
+  version: number;
+  data: {
+    running: boolean;
+    configId: string | null;
+    qualityTier: QualityTier | null;
+    lifecyclePhase: GameEnginLifecyclePhase;
+  };
+}
+
 /** Complete configuration object passed to `GameEnginCore.start()`. */
 export interface GameConfig {
   id: string;
@@ -140,6 +202,7 @@ export class GameEnginConfigError extends Error {
 
 const VALID_QUALITY_TIERS: QualityTier[] = ['ultra', 'high', 'medium', 'low'];
 const VALID_TRANSPORTS = ['WebSocket', 'WebRTC', 'WebTransport'] as const;
+const GAMEENGIN_CORE_VERSION = '1.1.0';
 
 /**
  * validateConfig
@@ -239,6 +302,117 @@ export class GameEnginCore {
   private runtime: GameEnginRuntime | null = null;
   private config: GameConfig | null = null;
   private running = false;
+  private lifecyclePhase: GameEnginLifecyclePhase = 'stopped';
+  private readonly lifecycleHooks = new Map<
+    GameEnginLifecyclePhase,
+    Set<(snapshot: GameEnginSnapshot) => void>
+  >();
+
+  onLifecycle(
+    phase: GameEnginLifecyclePhase,
+    hook: (snapshot: GameEnginSnapshot) => void,
+  ): () => void {
+    const hooks = this.lifecycleHooks.get(phase) ?? new Set<(snapshot: GameEnginSnapshot) => void>();
+    hooks.add(hook);
+    this.lifecycleHooks.set(phase, hooks);
+    return () => hooks.delete(hook);
+  }
+
+  private emitLifecycle(phase: GameEnginLifecyclePhase): void {
+    this.lifecyclePhase = phase;
+    const snapshot = this.snapshot();
+    for (const hook of this.lifecycleHooks.get(phase) ?? []) {
+      hook(snapshot);
+    }
+  }
+
+  createManifest(config: GameConfig): GameEnginManifest {
+    validateConfig(config);
+    const now = new Date().toISOString();
+    return {
+      id: `gameengin-manifest:${config.id}`,
+      type: 'gameengin.manifest',
+      ownerId: 'gameengin',
+      runtimeId: config.id,
+      visibility: 'local',
+      createdAt: now,
+      updatedAt: now,
+      version: 1,
+      data: {
+        name: config.name,
+        configVersion: config.version,
+        graphics: config.graphics,
+        assetCount: (config.assets?.preload?.length ?? 0) + (config.assets?.stream?.length ?? 0),
+        intentTypes: [
+          'gameengin.lifecycle.snapshot',
+          'gameengin.lifecycle.stop',
+          'gameengin.quality.set',
+        ],
+      },
+    };
+  }
+
+  negotiateCompatibility(config: GameConfig): GameEnginCompatibilityReport {
+    const notes: string[] = [];
+    validateConfig(config);
+    if (config.graphics.qualityTier === 'ultra' && config.graphics.targetFps === 120) {
+      notes.push('Ultra quality at 120 FPS requires runtime-side capability checks before launch.');
+    }
+    if (config.networking?.primaryTransport === 'WebTransport') {
+      notes.push('WebTransport is accepted, but callers should provide WebSocket fallback for older browsers.');
+    }
+    return {
+      engineVersion: GAMEENGIN_CORE_VERSION,
+      configVersion: config.version,
+      compatible: true,
+      notes,
+    };
+  }
+
+  snapshot(): GameEnginSnapshot {
+    const now = new Date().toISOString();
+    return {
+      id: `gameengin-snapshot:${this.config?.id ?? 'idle'}`,
+      type: 'gameengin.snapshot',
+      ownerId: 'gameengin',
+      runtimeId: this.config?.id ?? 'idle',
+      visibility: 'local',
+      createdAt: now,
+      updatedAt: now,
+      version: 1,
+      data: {
+        running: this.running,
+        configId: this.config?.id ?? null,
+        qualityTier: this.config?.graphics.qualityTier ?? null,
+        lifecyclePhase: this.lifecyclePhase,
+      },
+    };
+  }
+
+  routeIntent(intent: GameEnginIntent): GameEnginSnapshot | void {
+    if (!intent.actorId || intent.actorId.trim() === '') {
+      throw new GameEnginConfigError('intent.actorId must be present.');
+    }
+    if (intent.runtimeId !== (this.config?.id ?? 'idle')) {
+      throw new GameEnginConfigError('intent.runtimeId does not match the active GameEngin runtime.');
+    }
+    if (intent.type === 'gameengin.lifecycle.snapshot') return this.snapshot();
+    if (intent.type === 'gameengin.lifecycle.stop') return this.stop();
+    if (intent.type === 'gameengin.quality.set') {
+      const qualityTier = intent.payload?.qualityTier;
+      if (!VALID_QUALITY_TIERS.includes(qualityTier as QualityTier)) {
+        throw new GameEnginConfigError('intent.payload.qualityTier is not a valid quality tier.');
+      }
+      this.eliteEngine?.setQuality(qualityTier as QualityTier);
+      if (this.config) {
+        this.config = {
+          ...this.config,
+          graphics: { ...this.config.graphics, qualityTier: qualityTier as QualityTier },
+        };
+      }
+      return this.snapshot();
+    }
+  }
 
   /**
    * start(canvas, config)
@@ -256,8 +430,12 @@ export class GameEnginCore {
     }
 
     // 1. Validate before touching any subsystem
+    this.emitLifecycle('before-validate');
     validateConfig(config);
+    this.negotiateCompatibility(config);
+    this.createManifest(config);
     this.config = config;
+    this.emitLifecycle('after-validate');
 
     console.log(
       `[GameEnginCore] Initialising "${config.name}" v${config.version} …`
@@ -336,6 +514,7 @@ export class GameEnginCore {
     }
 
     // 8. Boot GameEnginRuntime (WebGPU device + input routing)
+    this.emitLifecycle('before-runtime');
     this.runtime = new GameEnginRuntime();
     await this.runtime.initWebGPU(canvas);
 
@@ -355,6 +534,8 @@ export class GameEnginCore {
     this.eliteEngine.start();
 
     this.running = true;
+    this.emitLifecycle('after-runtime');
+    this.emitLifecycle('running');
     console.log(`[GameEnginCore] ✅ "${config.name}" is running.`);
   }
 
@@ -378,6 +559,7 @@ export class GameEnginCore {
 
     this.running  = false;
     this.config   = null;
+    this.emitLifecycle('stopped');
 
     console.log('[GameEnginCore] Engine stopped.');
   }
