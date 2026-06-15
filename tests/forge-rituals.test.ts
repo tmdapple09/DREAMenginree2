@@ -25,9 +25,9 @@ import {
   detectSessionPatterns,
   detectAffinityPatterns,
   computeRituals,
-} from '@/lib/forge/forgeRituals';
+} from '@/engins/forgeengin/forge/forgeRituals';
 
-import { FORGE_HISTORY_KEY } from '@/lib/forge/forgeRegistry';
+import { FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

@@ -1,12 +1,12 @@
-import { calculateActivityPoints, calculateDecayDate } from '@/lib/activity/scoring';
+import { calculateActivityPoints, calculateDecayDate } from '@/dreamr/activity/scoring';
 import type {
     ActivityVerification,
     TrackActivityRequest,
     TrackActivityResponse,
-} from '@/lib/activity/types';
-import { VERIFICATION_STRENGTH } from '@/lib/activity/types';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/dreamr/activity/types';
+import { VERIFICATION_STRENGTH } from '@/dreamr/activity/types';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

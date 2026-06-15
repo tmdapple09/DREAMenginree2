@@ -1,6 +1,6 @@
 'use client';
 
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 
 /**
  * ProfileCustomizeButton — small client button that enters customize mode

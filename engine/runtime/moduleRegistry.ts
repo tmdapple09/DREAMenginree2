@@ -1,6 +1,6 @@
 'use client';
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { isModuleManifest, negotiateModuleCompatibility, type ModuleManifest, type RuntimeCompatibility, type RuntimeId } from '@/types/module-manifest';
 import { create } from 'zustand';
 import type { WidgetInstance } from '@/types/widgets';

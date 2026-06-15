@@ -1,7 +1,7 @@
 'use client';
 
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { createClient } from '@/lib/supabase/client';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { createClient } from '@/supabase/client/client';
 import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 

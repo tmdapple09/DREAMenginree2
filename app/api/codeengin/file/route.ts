@@ -1,6 +1,6 @@
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
-import { createProjectFile, deleteProjectFile, moveProjectFile, readProjectFile, writeProjectFile } from '@/lib/codeengin/workspaceStore';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
+import { createProjectFile, deleteProjectFile, moveProjectFile, readProjectFile, writeProjectFile } from '@/engins/codeengin/workspaceStore';
 import { NextResponse } from 'next/server';
 
 type FileBody = { action?: 'read' | 'write' | 'create' | 'delete' | 'move'; workspaceId?: string; path?: string; fromPath?: string; toPath?: string; content?: string };

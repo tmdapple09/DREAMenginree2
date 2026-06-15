@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { NextResponse } from 'next/server';
 import { promisify } from 'util';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 const execAsync = promisify(exec);
 

@@ -22,7 +22,7 @@ import {
   type PatchPlan,
   type KnownIssue,
   type SpecRequirement,
-} from '@/lib/agents/idari';
+} from '@/engine/agents/idari';
 
 // ── createPatchPlan ───────────────────────────────────────────────────────────
 

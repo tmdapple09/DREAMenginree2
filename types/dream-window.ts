@@ -4,7 +4,7 @@ import type {
     DreamWindowPosition,
     DreamWindowSize,
     DreamWindowState,
-} from '@/lib/dream-window/DreamWindowLifecycle';
+} from '@/engine/dream-window/DreamWindowLifecycle';
 
 /**
  * types/dream-window.ts
@@ -99,6 +99,6 @@ export interface PatchDreamWindowBody {
 
 export type {
     DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize
-} from '@/lib/dream-window/DreamWindowLifecycle';
-export { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-export type { DreamWindowState } from '@/lib/dream-window/DreamWindowLifecycle';
+} from '@/engine/dream-window/DreamWindowLifecycle';
+export { DREAM_WINDOW_STATES } from '@/engine/dream-window/DreamWindowLifecycle';
+export type { DreamWindowState } from '@/engine/dream-window/DreamWindowLifecycle';

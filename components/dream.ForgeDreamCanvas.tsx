@@ -12,8 +12,8 @@ import {
     getByCategory,
     type AtomicComponent,
     type ComponentCategory,
-} from '../componentInventory';
-import { createEventBus } from '../eventBus';
+} from '@/engins/forgeengin/componentInventory';
+import { createEventBus } from '@/engine/events/eventBus';
 import {
     atomicPieceFromComponent,
     createAssembly,
@@ -23,8 +23,8 @@ import {
     type AssemblySandbox,
     type AtomicPiece,
     type Wire,
-} from '../forge/engineForge';
-import { toErrorMessage } from '@/lib/utils';
+} from '@/engins/forgeengin/forge/engineForge';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * ForgeDreamCanvas — Visual Assembly Builder
@@ -211,7 +211,7 @@ export function ForgeDreamCanvas( ){
     const json   = serializeAssembly({ id: `forge_${Date.now()}`, pieces, wires });
 
     try {
-      const { createClient } = await import('../supabase/client/client');
+      const { createClient } = await import('@/supabase/client/client');
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setValidationMsg('⚠ Sign in to save to your workspace'); return; }

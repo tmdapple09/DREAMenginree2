@@ -1,8 +1,8 @@
 'use client';
 
 import RootStatusScreen from '@/components/overlays/dream.RootStatusScreen';
-import { isAuthRelatedError } from '@/lib/runtime/isAuthRelatedError';
-import { createClient } from '@/lib/supabase/client';
+import { isAuthRelatedError } from '@/engine/runtime/isAuthRelatedError';
+import { createClient } from '@/supabase/client/client';
 import { useEffect } from 'react';
 
 // SURFACE: dream.overlay.RootError  (framework-mandated basename: error.tsx)

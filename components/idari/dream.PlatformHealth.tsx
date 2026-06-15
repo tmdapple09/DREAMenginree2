@@ -1,7 +1,7 @@
 'use client';
 
-import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
-import { PLATFORM_HEALTH_TARGETS } from '@/lib/activity/types';
+import type { GetPlatformMetricsResponse } from '@/dreamr/activity/types';
+import { PLATFORM_HEALTH_TARGETS } from '@/dreamr/activity/types';
 import { useEffect, useState } from 'react';
 
 // components/idari/dream.PlatformHealth.tsx

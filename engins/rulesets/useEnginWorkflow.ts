@@ -1,7 +1,7 @@
 'use client';
 
-import { logJourneyDot } from '@/lib/journey/journeyDots';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { logJourneyDot } from '@/engine/journey/journeyDots';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useCallback, useEffect, useState } from 'react';
 import {
     type EnginWorkflow,

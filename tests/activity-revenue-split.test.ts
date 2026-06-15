@@ -4,7 +4,7 @@ import {
   ACTIVITY_REVENUE_SPLIT,
   calculateActivityRevenueSplit,
   validateActivityRevenueSplit,
-} from '@/lib/activity/revenueSplit';
+} from '@/dreamr/activity/revenueSplit';
 
 describe('Activity-First Protocol revenue split', () => {
   it('uses the 30 / 50 / 20 split from the protocol', () => {

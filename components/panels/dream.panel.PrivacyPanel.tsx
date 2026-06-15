@@ -1,6 +1,6 @@
 'use client';
 
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 

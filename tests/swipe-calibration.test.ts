@@ -5,7 +5,7 @@ import {
   getActiveProfile,
   resetCalibration,
   setActiveProfile,
-} from '@/lib/dreamr/swipeCalibration';
+} from '@/dreamr/runtime/swipeCalibration';
 
 afterEach(() => {
   resetCalibration();

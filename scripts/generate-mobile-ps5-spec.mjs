@@ -76,7 +76,7 @@ const capabilityChecklist = [
       { file: 'lib/gestures/touchGestures.ts', symbol: '', desc: 'Touch gesture abstraction layer' },
       { file: 'lib/games/DualSenseManager.ts', symbol: 'DualSenseManager', desc: 'PS5 DualSense haptics + gamepad integration' },
       { file: 'lib/gameengin/gameEnginRuntime.ts', symbol: 'dualsense', desc: 'Runtime gamepad detection (DualSense vs generic)' },
-      { file: 'lib/gameengin/control-mappings.ts', symbol: 'ControlMapping', desc: 'Persistent control mapping API' },
+      { file: 'lib/gameengin/controls/control-mappings.ts', symbol: 'ControlMapping', desc: 'Persistent control mapping API' },
     ],
   },
   {

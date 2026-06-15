@@ -1,14 +1,14 @@
-import { writeAuditLog } from '@/lib/ai/audit';
-import { verifyConfirmToken } from '@/lib/ai/confirm';
-import { checkRateLimit } from '@/lib/ai/rateLimit';
-import { ExecuteBodySchema, type Intent } from '@/lib/ai/schemas';
-import { validateWithIdari } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { writeAuditLog } from '@/dr-eams/ai/audit';
+import { verifyConfirmToken } from '@/dr-eams/ai/confirm';
+import { checkRateLimit } from '@/dr-eams/ai/rateLimit';
+import { ExecuteBodySchema, type Intent } from '@/dr-eams/ai/schemas';
+import { validateWithIdari } from '@/dr-eams/ai/triad';
+import { jsonApiError } from '@/engine/api/route';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // app/api/ai/execute/route.ts
 // Execute validated intents after confirmation.

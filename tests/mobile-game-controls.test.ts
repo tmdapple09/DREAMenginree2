@@ -5,8 +5,8 @@ import {
   getRemoteMoveAction,
   MOBILE_HUD_BUTTON_RING,
   normalizeStickVector,
-} from '@/lib/games/mobileControls';
-import { GAME_CATALOG } from '@/lib/games/catalog';
+} from '@/engins/gameengin/games/mobileControls';
+import { GAME_CATALOG } from '@/engins/gameengin/games/catalog';
 
 const REPO_ROOT = process.cwd();
 

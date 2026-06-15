@@ -5,7 +5,7 @@ import {
     DEFAULT_TOPIC_IDS,
     FEED_TOPICS_KEY,
     loadActiveTopicIds,
-} from '@/lib/feed/feedTopics';
+} from '@/dreamr/feed/feedTopics';
 import { Check } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 

@@ -15,11 +15,11 @@ import { describe, it, expect, vi } from 'vitest';
 // outside the Next.js server runtime.  Mock both to keep tests in the
 // plain Node.js vitest environment.
 vi.mock('server-only', () => ({}));
-vi.mock('@/lib/supabase/server', () => ({
+vi.mock('@/supabase/server/serverClient', () => ({
   createServiceClient: vi.fn(),
   createServerClient: vi.fn(),
 }));
-import { isOwner, isDomainBlocked, OWNER_EMAIL } from '@/lib/admin/lockout';
+import { isOwner, isDomainBlocked, OWNER_EMAIL } from '@/engine/admin/lockout';
 
 // ── isOwner ───────────────────────────────────────────────────────────────────
 

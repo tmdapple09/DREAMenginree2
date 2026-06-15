@@ -1,9 +1,9 @@
 import {
     buildContactRequestRecord,
     validateContactRequest,
-} from '@/lib/marketplace/request';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/engine/marketplace/request';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**

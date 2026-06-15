@@ -5,7 +5,7 @@ import {
     type ConnectionVerb,
     type DaydreamDomain,
     type EnginSurface,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 /**
  * enginConnectionNetwork — Multi-surface Engin connection network

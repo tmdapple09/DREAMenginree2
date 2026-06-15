@@ -1,7 +1,7 @@
 import CreateEnginApp from '@/components/engines/create/dream.CreateEnginApp';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 export const metadata = { title: 'ContentEngin Asset Studio – DREAMengin', description: 'Procedural asset creation, validation, and GLB export.' };

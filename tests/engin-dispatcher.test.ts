@@ -48,9 +48,9 @@ import {
   f64Telemetry,
   u8DaydreamType,
   createEnginSAB,
-} from '@/lib/runtime/memory';
+} from '@/engine/runtime/memory';
 
-import { EnginDispatcher } from '@/lib/runtime/EnginDispatcher';
+import { EnginDispatcher } from '@/engine/runtime/EnginDispatcher';
 
 const root = process.cwd();
 

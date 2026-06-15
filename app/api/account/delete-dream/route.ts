@@ -1,8 +1,8 @@
-import { runTriadConsensus } from '@/lib/agents/agentBus';
-import { writeAuditLog } from '@/lib/ai/audit';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient, createServiceClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { runTriadConsensus } from '@/engine/agents/agentBus';
+import { writeAuditLog } from '@/dr-eams/ai/audit';
+import { jsonApiError } from '@/engine/api/route';
+import { createServerClient, createServiceClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';

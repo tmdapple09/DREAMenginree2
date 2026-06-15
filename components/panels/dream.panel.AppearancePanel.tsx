@@ -2,9 +2,9 @@
 
 import { THEME_PRESETS as GRADIENT_PRESETS, applyTheme, type DeTheme } from '@/components/dream.ThemeApplicator';
 import { useTheme } from '@/components/providers/dream.ThemeProvider';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
-import { DEFAULT_OVERRIDES, THEME_PRESETS } from '@/lib/ui/theme-engine';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
+import { DEFAULT_OVERRIDES, THEME_PRESETS } from '@/components/ui-system/theme-engine';
 import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 

@@ -23,7 +23,7 @@ import {
   readProgressionState,
   STRUCTURE_TYPES,
   type StructureType,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 
 const PROGRESSION_DIR = path.join(BRAIN_ROOT, 'progression-state');
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { getConnectorDef } from '@/lib/connectors/connectorRegistry';
+import { getConnectorDef } from '@/engine/connectors/connectorRegistry';
 import {
     consumeDeferredPrompt,
     handleAddWidget,
@@ -8,9 +8,9 @@ import {
     handleDismissPrompt,
     handlePlaceLater,
     type SlotGrid,
-} from '@/lib/connectors/installFlow';
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
-import { getWidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+} from '@/engine/connectors/installFlow';
+import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
+import { getWidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { useCallback, useRef, useState } from 'react';
 
 // hooks/useConnectorInstallFlow.ts

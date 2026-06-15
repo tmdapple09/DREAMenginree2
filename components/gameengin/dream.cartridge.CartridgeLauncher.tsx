@@ -1,10 +1,10 @@
 "use client";
 
-import GameRuntime from "@/lib/gameengin/GameRuntime";
-import type { GameCartridge, GravityPreset, RuntimeBackendDiagnostics } from "@/lib/gameengin/cartridge";
-import { loadCartridgeBundle, type LoadedCartridgeBundle } from "@/lib/gameengin/cartridges/loaders";
-import { negotiateRendererBackend, serverBootstrapDiagnostics } from "@/lib/gameengin/backendNegotiator";
-import type { CartridgeManifestEntry } from "@/lib/gameengin/cartridges/manifest";
+import GameRuntime from "@/engins/gameengin/GameRuntime";
+import type { GameCartridge, GravityPreset, RuntimeBackendDiagnostics } from "@/engins/gameengin/cartridge";
+import { loadCartridgeBundle, type LoadedCartridgeBundle } from "@/engins/gameengin/cartridges/loaders";
+import { negotiateRendererBackend, serverBootstrapDiagnostics } from "@/engins/gameengin/backendNegotiator";
+import type { CartridgeManifestEntry } from "@/engins/gameengin/cartridges/manifest";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import CrashReportModal, { type CrashContext } from "./dream.CrashReportModal";
@@ -13,7 +13,7 @@ import {
   useGlobalCrashListener,
   type CartridgeCrashEvent,
 } from "./dream.cartridge.CartridgeErrorBoundary";
-import { toErrorMessage } from "@/lib/utils";
+import { toErrorMessage } from "@/utils/index";
 
 /**
  * components/gameengin/dream.cartridge.CartridgeLauncher.tsx

@@ -1,9 +1,9 @@
 'use client';
 
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, ChevronRight, FileText, Loader2, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';

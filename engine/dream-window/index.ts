@@ -9,10 +9,10 @@
  *   enginConnectionNetwork — 11-path multi-surface Engin connection network
  *
  * Usage:
- *   import { DreamWindowInstance, bindDreamWindow, mountDreamWindow } from '@/lib/dream-window';
- *   import { dispatch, createBindAction } from '@/lib/dream-window';
- *   import { DEFAULT_RUNTIME_REGION_STATE, activateSurface } from '@/lib/dream-window';
- *   import { ALL_CONNECTION_PATHS, getPathsForDomain } from '@/lib/dream-window';
+ *   import { DreamWindowInstance, bindDreamWindow, mountDreamWindow } from '@/engine/dream-window';
+ *   import { dispatch, createBindAction } from '@/engine/dream-window';
+ *   import { DEFAULT_RUNTIME_REGION_STATE, activateSurface } from '@/engine/dream-window';
+ *   import { ALL_CONNECTION_PATHS, getPathsForDomain } from '@/engine/dream-window';
  *
  * Architecture: docs/ARCHITECTURE.md §4
  * Naming authority: lib/identity/canonical-names.ts

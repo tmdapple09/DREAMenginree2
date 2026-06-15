@@ -6,7 +6,7 @@ import {
     type TakeRating,
     TAKE_COLORS,
     createDemoTake,
-} from '@/lib/music/starmakerDaw';
+} from '@/engins/starmakerengin/music/starmakerDaw';
 import { Mic2, Plus, Star, Trash2, Wand2 } from 'lucide-react';
 import { type CSSProperties, useCallback, useState } from 'react';
 

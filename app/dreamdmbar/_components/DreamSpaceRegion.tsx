@@ -6,11 +6,11 @@ import {
     listSystemArtifacts,
     listVisibleArtifacts,
     restoreArtifact,
-} from '@/lib/artifactStore';
-import { useOS } from '@/lib/dreamenginOS/OSContext';
-import type { AssetEntry, AssetType } from '@/lib/ledger';
-import { getAllByKind } from '@/lib/ledger';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+} from '@/engine/artifacts/artifactStore';
+import { useOS } from '@/engine/os/OSContext';
+import type { AssetEntry, AssetType } from '@/engine/ledger/ledger';
+import { getAllByKind } from '@/engine/ledger/ledger';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
 import type { DreamArtifact } from '@/types/dreamArtifact';
 import { Settings2 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';

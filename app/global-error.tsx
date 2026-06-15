@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // SURFACE: dream.overlay.GlobalError  (framework-mandated basename: global-error.tsx)
 

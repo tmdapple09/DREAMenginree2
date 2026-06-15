@@ -1,4 +1,4 @@
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
+import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
 import { AlertTriangle, ArrowLeft, ArrowUpRight, Bell, BookOpen, ChevronRight, Eye, FileText, Info, Scale, Shield } from 'lucide-react';
 import Link from 'next/link';
 

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 async function importRouteWithEnv(env: { SUPABASE_URL: string; SUPABASE_PUBLISHABLE_KEY: string }) {
   vi.resetModules();
-  vi.doMock("@/lib/supabase/config", () => ({
+  vi.doMock("@/supabase/config", () => ({
     ...env,
     SUPABASE_CONFIG: {
       url: env.SUPABASE_URL,
@@ -17,7 +17,7 @@ async function importRouteWithEnv(env: { SUPABASE_URL: string; SUPABASE_PUBLISHA
 describe("GET /api/auth/providers", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
-    vi.doUnmock("@/lib/supabase/config");
+    vi.doUnmock("@/supabase/config");
   });
 
   it("returns unknown availability when Supabase env is missing", async () => {

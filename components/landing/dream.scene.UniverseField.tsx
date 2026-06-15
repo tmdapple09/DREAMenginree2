@@ -1,6 +1,6 @@
 'use client';
 
-import { n as MOND_N } from '@/lib/torridity/constants';
+import { n as MOND_N } from '@/dreamr/torridity/constants';
 import { useEffect, useRef } from 'react';
 
 const MIN_PARTICLES = 10001;

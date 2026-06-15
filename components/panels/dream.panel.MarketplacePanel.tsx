@@ -2,8 +2,8 @@
 
 import MarketplaceListingCard from '@/components/marketplace/dream.MarketplaceListingCard';
 import DreamWord from '@/components/ui/dream.DreamWord';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { createClient } from '@/lib/supabase/client';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { createClient } from '@/supabase/client/client';
 import { Loader2, PlusCircle, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

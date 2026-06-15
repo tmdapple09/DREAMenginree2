@@ -32,7 +32,7 @@ import {
   type MoodPeriod,
   type StreakData,
   type StreakTier,
-} from '@/lib/dreamdm/barInteractions';
+} from '@/dreamdmbar/runtime/barInteractions';
 
 // ── Mood Aura System ─────────────────────────────────────────────────────────
 

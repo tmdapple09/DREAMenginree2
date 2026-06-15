@@ -1,5 +1,5 @@
-import { getPrometheusMetrics } from '@/lib/observability/otel';
-import { initOtelBridge } from '@/lib/observability/otelBridge';
+import { getPrometheusMetrics } from '@/engine/observability/otel';
+import { initOtelBridge } from '@/engine/observability/otelBridge';
 import { NextRequest, NextResponse, connection } from 'next/server';
 
 // app/api/metrics/route.ts

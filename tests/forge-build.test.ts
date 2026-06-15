@@ -36,7 +36,7 @@ import {
   type ForgeBuildState,
   type ForgeArtifact,
   type ForgeArtifactType,
-} from '@/lib/forge/forgeBuild';
+} from '@/engins/forgeengin/forge/forgeBuild';
 
 // ── Helper: minimal valid ForgeBuildRecord ───────────────────────────────────
 function makeBuildRecord(overrides: Partial<ForgeBuildRecord> = {}): ForgeBuildRecord {

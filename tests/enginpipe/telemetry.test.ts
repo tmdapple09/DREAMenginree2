@@ -11,11 +11,11 @@ import { describe, it, expect, vi } from 'vitest';
 import {
   parseTelemetryEvent,
   TelemetryEventTypeSchema,
-} from '@/lib/enginpipe/telemetry/events';
+} from '@/engins/forgeengin/enginpipe/telemetry/events';
 import {
   createTelemetryClient,
   type TelemetrySupabaseClient,
-} from '@/lib/enginpipe/telemetry/client';
+} from '@/engins/forgeengin/enginpipe/telemetry/client';
 
 function makeFakeSupabase(insertImpl?: (rows: unknown) => { error: unknown | null }) {
   const calls: { table: string; rows: unknown }[] = [];

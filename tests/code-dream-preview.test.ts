@@ -14,7 +14,7 @@ import {
   parseCodeResponse,
   matchCodeVocabulary,
   type CellLanguage,
-} from '@/lib/code/drEamsCodeAssist';
+} from '@/engins/codeengin/ai/drEamsCodeAssist';
 
 // ─── Preview engine labels ────────────────────────────────────────────────────
 

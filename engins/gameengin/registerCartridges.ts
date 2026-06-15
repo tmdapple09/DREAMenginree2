@@ -1,8 +1,8 @@
 'use client';
 
-import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import { assertCartridgeLoadersReady } from '@/lib/gameengin/cartridges/loaders';
-import { moduleRegistry } from '@/lib/runtime/moduleRegistry';
+import { CARTRIDGE_MANIFEST } from '@/engins/gameengin/cartridges/manifest';
+import { assertCartridgeLoadersReady } from '@/engins/gameengin/cartridges/loaders';
+import { moduleRegistry } from '@/engine/runtime/moduleRegistry';
 import type { ModuleManifest } from '@/types/module-manifest';
 
 function manifestToModule(entry: (typeof CARTRIDGE_MANIFEST)[number]): ModuleManifest {

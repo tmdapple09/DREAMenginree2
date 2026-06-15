@@ -28,7 +28,7 @@ import {
   formatRelativeTime,
   type EnginEntry,
   type ForgeActivityPulse,
-} from '@/lib/forge/forgeRegistry';
+} from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── Registry tests ────────────────────────────────────────────────────────────
 
@@ -312,7 +312,7 @@ import {
   clearWorkflowRun,
   getFailureRecovery,
   type ForgeHistoryEntry,
-} from '@/lib/forge/forgeIntelligence';
+} from '@/engins/forgeengin/forge/forgeIntelligence';
 
 describe('Forge History', () => {
   beforeEach(() => localStorage.clear());
@@ -493,7 +493,7 @@ describe('Custom Workflows', () => {
   beforeEach(() => localStorage.clear());
 
   it('saveCustomWorkflow stores a workflow', () => {
-    const wf: import('@/lib/forge/forgeRegistry').ForgeWorkflow = {
+    const wf: import('@/engins/forgeengin/forge/forgeRegistry').ForgeWorkflow = {
       id: 'test-1', title: 'Test', emoji: '⚡', accent: '#ef4444',
       desc: 'test', engines: ['music', 'games'], steps: ['Step A', 'Step B'],
     };
@@ -504,7 +504,7 @@ describe('Custom Workflows', () => {
   });
 
   it('deleteCustomWorkflow removes by id', () => {
-    const wf: import('@/lib/forge/forgeRegistry').ForgeWorkflow = {
+    const wf: import('@/engins/forgeengin/forge/forgeRegistry').ForgeWorkflow = {
       id: 'del-me', title: 'Del', emoji: '⚡', accent: '#ef4444',
       desc: 'test', engines: ['code'], steps: ['Step'],
     };

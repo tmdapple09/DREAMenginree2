@@ -1,6 +1,6 @@
 'use client';
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 

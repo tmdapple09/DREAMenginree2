@@ -1,4 +1,4 @@
-import type { DreamDrop, DreamDropType } from '@/lib/runtime/coercionTable';
+import type { DreamDrop, DreamDropType } from '@/engine/runtime/coercionTable';
 import type { RuntimeId } from '@/types/module-manifest';
 
 // Framework directives stay physically first when required.

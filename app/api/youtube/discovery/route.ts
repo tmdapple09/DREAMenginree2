@@ -1,7 +1,7 @@
-import { getYouTubeApiKey, youtubeDiscovery } from '@/lib/connectors/providers/youtube';
+import { getYouTubeApiKey, youtubeDiscovery } from '@/engine/connectors/providers/youtube';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/youtube/discovery/route.ts

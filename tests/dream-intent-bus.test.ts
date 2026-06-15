@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { dispatchDreamIntent, registerDreamIntentHandler } from '@/lib/dreams/dreamIntentBus';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
+import { dispatchDreamIntent, registerDreamIntentHandler } from '@/engine/dreams/dreamIntentBus';
 
 const context = {
   actorId: 'user-1',

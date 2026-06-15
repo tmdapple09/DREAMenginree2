@@ -20,7 +20,7 @@ import {
   listCrashReports,
   CRASH_REPORT_MAX_BYTES,
   type ActiveProjects,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 import { POST } from '@/app/api/gameengin/crash-report/route';
 
 const ACTIVE_PATH = path.join(BRAIN_ROOT, 'active-projects.json');

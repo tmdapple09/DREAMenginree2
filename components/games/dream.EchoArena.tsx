@@ -1,12 +1,12 @@
 'use client';
 
 import { DualSenseManager } from '@/components/gameengin/input/DualSenseManager';
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useRegisterMobileGameControls } from '@/lib/games/mobileControls';
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
+import { useRegisterMobileGameControls } from '@/engins/gameengin/games/mobileControls';
 import {
     createPerformanceBaselineSampler,
     publishGamePerformanceBaseline,
-} from '@/lib/games/performance-baseline';
+} from '@/engins/gameengin/games/performance-baseline';
 import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { AdType } from '@/lib/activity/types';
+import { AdType } from '@/dreamr/activity/types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 

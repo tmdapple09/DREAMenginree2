@@ -9,7 +9,7 @@ import {
   GestureRecogniser,
   type GestureCallbacks,
   type GestureEvent,
-} from '@/lib/gestures/touchGestures';
+} from '@/engine/gestures/touchGestures';
 
 function makeTouch(
   identifier: number,

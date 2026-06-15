@@ -4,7 +4,7 @@ import {
     DREAM_DRAG_MIME,
     serializeDreamDragData,
     type DreamDragData,
-} from '@/lib/dreams/drag';
+} from '@/engine/dreams/drag';
 import React, { useRef, useState } from 'react';
 
 interface DraggableDreamProps {

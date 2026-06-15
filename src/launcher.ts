@@ -1,7 +1,7 @@
 import demoGameConfig from './configs/demoGameConfig';
 import type { GameConfig } from './core/GameEnginCore';
 import { GameEnginConfigError, GameEnginCore } from './core/GameEnginCore';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * src/launcher.ts

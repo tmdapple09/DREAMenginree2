@@ -1,13 +1,13 @@
-import { writeAuditLog } from '@/lib/ai/audit';
-import { BOOGIE_POLICY_VERSION, boogieEnforce } from '@/lib/ai/boogieman';
-import { checkRateLimit } from '@/lib/ai/rateLimit';
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { isZeroTolerance, scanContent } from '@/lib/child-safety/childSafetyDetector';
-import { classifyImage } from '@/lib/child-safety/imageClassifier';
-import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { writeAuditLog } from '@/dr-eams/ai/audit';
+import { BOOGIE_POLICY_VERSION, boogieEnforce } from '@/dr-eams/ai/boogieman';
+import { checkRateLimit } from '@/dr-eams/ai/rateLimit';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { jsonApiError } from '@/engine/api/route';
+import { isZeroTolerance, scanContent } from '@/engine/safety/child-safety/childSafetyDetector';
+import { classifyImage } from '@/engine/safety/child-safety/imageClassifier';
+import { reportChildSafetyIncident } from '@/engine/safety/child-safety/ncmecReporter';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const knownBadHashes = await loadKnownBadHashes(supabase);
 
   // classifyImage is async so we run it here and pass the result into scanContent.
-  let imageClassification: import('@/lib/child-safety/imageClassifier').ImageClassificationResult | undefined;
+  let imageClassification: import('@/engine/safety/child-safety/imageClassifier').ImageClassificationResult | undefined;
   if (request.imageBase64) {
     imageClassification = await classifyImage(
       request.imageBase64,

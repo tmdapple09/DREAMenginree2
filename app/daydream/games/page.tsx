@@ -1,7 +1,7 @@
 import GamesHub from '@/components/games/dream.GamesHub';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { Gamepad2, Play, Sparkles, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -9,9 +9,9 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import OpenDaydreamSideBButton from '@/components/daydream/dream.OpenDaydreamSideBButton';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import AutoOpenGameEngin from '@/engins/autoopen/dream.AutoOpenGameEngin';
-import { buildLoginRedirectPath } from '@/lib/auth/nextRedirect';
-import { buildGameLaunchHref } from '@/lib/games/navigation';
-import { GAME_QUALITY_PILLARS } from '@/lib/games/quality-plan';
+import { buildLoginRedirectPath } from '@/supabase/auth/nextRedirect';
+import { buildGameLaunchHref } from '@/engins/gameengin/games/navigation';
+import { GAME_QUALITY_PILLARS } from '@/engins/gameengin/games/quality-plan';
 import dynamic from 'next/dynamic';
 import { connection } from 'next/server';
 

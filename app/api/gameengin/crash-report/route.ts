@@ -2,9 +2,9 @@ import {
     CRASH_REPORT_MAX_BYTES,
     isActiveCartridge,
     recordCrashReport,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 import { NextResponse, type NextRequest } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/gameengin/crash-report/route.ts

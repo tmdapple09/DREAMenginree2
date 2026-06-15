@@ -1,6 +1,6 @@
 'use client';
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.

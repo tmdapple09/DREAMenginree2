@@ -1,5 +1,5 @@
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import dynamic from 'next/dynamic';

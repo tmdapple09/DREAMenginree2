@@ -6,15 +6,15 @@ import {
   loadArtifacts,
   restoreArtifact,
   saveArtifact,
-} from '@/lib/artifactStore';
+} from '@/engine/artifacts/artifactStore';
 import {
   loadActiveModules,
   removeActiveModule,
   saveActiveModule,
   saveActiveModulesForRegion,
   transferActiveModuleRegion,
-} from '@/lib/activeModulesStore';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+} from '@/engine/activeModulesStore';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
 import type { DreamArtifact } from '@/types/dreamArtifact';
 
 const accountId = 'user-123';

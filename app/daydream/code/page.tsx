@@ -4,9 +4,9 @@ import DaydreamShell, {
 } from "@/components/daydream/dream.shell.DaydreamShell";
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
 import CodeEngin from "@/engins/engin.CodeEngin";
-import { isDevBypassActive } from "@/lib/dev-bypass";
-import { createServerClient } from "@/lib/supabase/server";
-import { safeGetUser } from "@/lib/supabase/safeGetUser";
+import { isDevBypassActive } from "@/engine/dev-bypass";
+import { createServerClient } from "@/supabase/server/serverClient";
+import { safeGetUser } from "@/supabase/client/safeGetUser";
 import { Code2, FileCode2, FolderOpen, Play, Upload } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -1000,7 +1000,7 @@ export default async function CodeDaydreamPage() {
                 {"{ EliteGameEngine }"}{" "}
                 <span style={{ color: "#60a5fa" }}>from</span>{" "}
                 <span style={{ color: "#86efac" }}>
-                  &apos;@/lib/gameengin&apos;
+                  &apos;@/engins/gameengin&apos;
                 </span>
                 ;<br />
                 <span style={{ color: "#c084fc" }}>const</span> entity = world.

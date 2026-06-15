@@ -1,7 +1,7 @@
 'use client';
 
-import { emitTeach } from '@/lib/agents/teachBus';
-import { getInitialDarkMode, toggleDarkMode as toggleDarkModeValue } from '@/lib/ui/theme';
+import { emitTeach } from '@/engine/agents/teachBus';
+import { getInitialDarkMode, toggleDarkMode as toggleDarkModeValue } from '@/components/ui-system/theme';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

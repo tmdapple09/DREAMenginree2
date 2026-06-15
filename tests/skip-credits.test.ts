@@ -5,8 +5,8 @@ import {
   calculateSkipCreditsEarned,
   canSpendSkipCredit,
   spendSkipCredit,
-} from '@/lib/activity/skipCredits';
-import { AdType } from '@/lib/activity/types';
+} from '@/dreamr/activity/skipCredits';
+import { AdType } from '@/dreamr/activity/types';
 
 describe('Activity-First skip credits', () => {
   it('awards one credit for verified pre-roll and post-roll ads', () => {

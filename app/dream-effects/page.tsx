@@ -1,7 +1,7 @@
 'use client';
 
-import { useGsapEntrance } from '@/lib/gsap/useGsapEntrance';
-import { cn } from '@/lib/utils';
+import { useGsapEntrance } from '@/engine/animation/gsap/useGsapEntrance';
+import { cn } from '@/utils/index';
 import { motion } from 'framer-motion';
 import { Layers, Monitor, Sparkles, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';

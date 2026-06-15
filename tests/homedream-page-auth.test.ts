@@ -19,15 +19,15 @@ vi.mock('next/server', () => ({
   connection: connectionMock,
 }));
 
-vi.mock('@/lib/supabase/server', () => ({
+vi.mock('@/supabase/server/serverClient', () => ({
   createServerClient: createServerClientMock,
 }));
 
-vi.mock('@/lib/supabase/safeGetUser', () => ({
+vi.mock('@/supabase/client/safeGetUser', () => ({
   safeGetUser: safeGetUserMock,
 }));
 
-vi.mock('@/lib/dev-bypass', () => ({
+vi.mock('@/engine/dev-bypass', () => ({
   isDevBypassActive: isDevBypassActiveMock,
 }));
 
@@ -35,11 +35,11 @@ vi.mock('@/app/dreamdmbar/_components/DreamBarDataBridge', () => ({
   default: homeSystemMock,
 }));
 
-vi.mock('@/lib/ai/triad', () => ({
+vi.mock('@/dr-eams/ai/triad', () => ({
   isOwnerEmail: vi.fn(() => false),
 }));
 
-vi.mock('@/lib/media/postMedia', () => ({
+vi.mock('@/engins/contentengin/media/postMedia', () => ({
   getPrimaryPostMediaUrl: vi.fn(() => null),
 }));
 

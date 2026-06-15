@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createLocalChannel,
   createRuntimeChannel,
-} from '@/lib/runtime/runtimeChannel';
+} from '@/engine/runtime/runtimeChannel';
 
 describe('runtimeChannel — LocalChannel (solo parity)', () => {
   it('delivers published events to all subscribers', async () => {

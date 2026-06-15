@@ -5,7 +5,7 @@ import {
   BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS,
   BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS,
   decideBarRelease,
-} from '@/lib/dreamdm/barInteractions';
+} from '@/dreamdmbar/runtime/barInteractions';
 
 describe('decideBarRelease', () => {
   const screenH = 1000;

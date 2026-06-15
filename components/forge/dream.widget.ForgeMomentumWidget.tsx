@@ -1,6 +1,6 @@
 'use client';
 
-import { computeMomentum, getLevelColor, getLevelEmoji, type MomentumSnapshot } from '@/lib/forge/forgeMomentum';
+import { computeMomentum, getLevelColor, getLevelEmoji, type MomentumSnapshot } from '@/engins/forgeengin/forge/forgeMomentum';
 import { useEffect, useState } from 'react';
 
 /**

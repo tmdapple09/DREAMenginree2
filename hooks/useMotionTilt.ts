@@ -26,7 +26,7 @@ import { useRef } from 'react';
  *   • `useMotionTemplate`— assembles the final CSS transform string
  *
  * Usage (basic):
- *   import { useMotionTilt } from '@/lib/hooks/useMotionTilt';
+ *   import { useMotionTilt } from '@/hooks/useMotionTilt';
  *
  *   function GameCard() {
  *     const tilt = useMotionTilt();

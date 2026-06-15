@@ -1,6 +1,6 @@
 'use client';
 
-import { cacheAsset, enqueueSyncAction } from '@/lib/offline/offlineCache';
+import { cacheAsset, enqueueSyncAction } from '@/engine/offline/offlineCache';
 import { useCallback, useState, type ReactNode } from 'react';
 import { v4 as uuid } from 'uuid';
 

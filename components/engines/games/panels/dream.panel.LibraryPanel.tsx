@@ -1,7 +1,7 @@
 'use client';
 
-import { GAME_CATALOG } from '@/lib/games/catalog';
-import { buildGameLaunchHref } from '@/lib/games/navigation';
+import { GAME_CATALOG } from '@/engins/gameengin/games/catalog';
+import { buildGameLaunchHref } from '@/engins/gameengin/games/navigation';
 import { Filter, Play, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';

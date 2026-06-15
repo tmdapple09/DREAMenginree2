@@ -2,11 +2,11 @@ import {
     isAdminLocked,
     isOwner,
     triggerAdminLockout,
-} from '@/lib/admin/lockout';
-import { groqChat, type GroqMessage } from '@/lib/ai/groq';
-import { AI_MODELS } from '@/lib/ai/triad';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/engine/admin/lockout';
+import { groqChat, type GroqMessage } from '@/dr-eams/ai/groq';
+import { AI_MODELS } from '@/dr-eams/ai/triad';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextResponse } from 'next/server';
 
 /**

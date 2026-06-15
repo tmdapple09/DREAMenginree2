@@ -1,14 +1,14 @@
 import {
     supportsWebhook,
     supportsWebhookVerification,
-} from '@/lib/connectors/deliveryStrategy';
+} from '@/engine/connectors/deliveryStrategy';
 import {
     extractMetaWebhookChallenge,
     extractYouTubeWebSubChallenge,
-} from '@/lib/connectors/webhookVerification';
+} from '@/engine/connectors/webhookVerification';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/connectors/webhooks/[provider]/route.ts

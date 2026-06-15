@@ -26,7 +26,7 @@ vi.stubGlobal('window', { localStorage: localStorageMock });
 import {
   ENGIN_REGISTRY,
   CREATIVE_ENGINES,
-} from '@/lib/forge/forgeRegistry';
+} from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── Source file reads for structural assertions ─────────────────────────────
 

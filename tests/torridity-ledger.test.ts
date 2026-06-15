@@ -9,7 +9,7 @@ import {
   resolveSwipeRelease,
   slog,
   verifyHumanity,
-} from '@/lib/dreamr/torridityLedger';
+} from '@/dreamr/runtime/torridityLedger';
 
 describe('Torridity Ledger', () => {
   it('applies a signed logarithmic interaction delta', () => {

@@ -20,10 +20,10 @@ import {
     youtubeChannelRssUrl,
     youtubePlaylistRssUrl,
     type RssProvider,
-} from '@/lib/social/rss-feed';
+} from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/social/rss-feed/route.ts

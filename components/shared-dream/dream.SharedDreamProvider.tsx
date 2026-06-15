@@ -20,8 +20,8 @@ import {
     type PeerInfo,
     type PresenceUpdateData,
     type SessionRole,
-} from '@/lib/collaboration';
-import { createClient } from '@/lib/supabase/client';
+} from '@/engine/collaboration/index';
+import { createClient } from '@/supabase/client/client';
 import React, {
     createContext,
     useCallback,

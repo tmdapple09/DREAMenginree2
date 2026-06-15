@@ -15,7 +15,7 @@ const src = readFileSync(join(root, 'components/dream.LandingHero.tsx'), 'utf-8'
 
 describe('landing page calibrateDevice wiring', () => {
   it('imports calibrateDevice from the swipeCalibration module', () => {
-    expect(src).toContain("from '@/lib/dreamr/swipeCalibration'");
+    expect(src).toContain("from '@/dreamr/runtime/swipeCalibration'");
     expect(src).toContain('calibrateDevice');
   });
 

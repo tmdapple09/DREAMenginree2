@@ -5,13 +5,13 @@ import {
   type DomainVisibility,
   type JsonObject,
   type JsonValue,
-} from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime/EnginBaseState';
 import {
   authorizeDomainCapability,
   type DomainAuthorizationContext,
   type DomainCapability,
-} from '@/lib/engin-runtime/EnginCapabilities';
-import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+} from '@/engine/engin-runtime/EnginCapabilities';
+import type { RuntimeWorld } from '@/engine/runtime/dualRuntime';
 
 export type { DomainObject, DomainVisibility, JsonObject, JsonValue };
 

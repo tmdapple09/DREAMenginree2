@@ -17,8 +17,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 const createBrowserClient = vi.fn();
 const createServerClient  = vi.fn();
 
-vi.mock('@/lib/supabase/client', () => ({ createClient: createBrowserClient }));
-vi.mock('@/lib/supabase/server', () => ({ createServerClient }));
+vi.mock('@/supabase/client/client', () => ({ createClient: createBrowserClient }));
+vi.mock('@/supabase/server/serverClient', () => ({ createServerClient }));
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

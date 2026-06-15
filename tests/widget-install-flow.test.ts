@@ -18,17 +18,17 @@ import {
   cancelAutoLock,
   _resetInstallFlowState,
   type SlotGrid,
-} from '@/lib/connectors/installFlow';
+} from '@/engine/connectors/installFlow';
 import {
   getWidgetTypeDef,
   getWidgetTypesForConnector,
   resolveConnectorState,
   WIDGET_REGISTRY,
-} from '@/lib/widgets/widgetRegistry';
+} from '@/engine/widgets/widgetRegistry';
 import {
   getConnectorDef,
   CONNECTOR_REGISTRY,
-} from '@/lib/connectors/connectorRegistry';
+} from '@/engine/connectors/connectorRegistry';
 
 // Reset in-memory state before each test that touches the store
 function resetStore() {

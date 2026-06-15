@@ -1,3 +1,3 @@
-import { safeUnder } from '@/lib/contentengin/pipeline/paths';
+import { safeUnder } from '@/engins/contentengin/pipeline/paths';
 import { NextResponse } from 'next/server'; import { readFile } from 'fs/promises'; import path from 'path';
 export async function GET(_:Request,{params}:{params:Promise<{assetId:string}>}){ const {assetId}=await params; try{ const manifest=JSON.parse(await readFile(path.join(safeUnder(path.join(process.cwd(),'public/contentengin/generated'),assetId),'manifest.json'),'utf8')); return NextResponse.json({assetId,persisted:false,sourceImagesRetained:false,manifest,downloads:{model:`/contentengin/generated/${assetId}/model.glb`,zip:`/contentengin/generated/${assetId}.zip`}}); }catch{return NextResponse.json({error:'asset not found or expired'},{status:404});} }

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const createServerClient = vi.fn();
 
-vi.mock('@/lib/supabase/server', () => ({
+vi.mock('@/supabase/server/serverClient', () => ({
   createServerClient,
 }));
 

@@ -3,7 +3,7 @@
 import type {
   ConnectorDef,
   ConnectorStatus,
-} from "@/lib/connectors/connectorRegistry";
+} from "@/engine/connectors/connectorRegistry";
 import {
   AlertCircle,
   CheckCircle,

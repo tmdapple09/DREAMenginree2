@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GAMEENGIN_FRAME_BUDGETS, GameEnginFrameClock, decideRuntimeQuality } from '@/lib/gameengin/runtime';
+import { GAMEENGIN_FRAME_BUDGETS, GameEnginFrameClock, decideRuntimeQuality } from '@/engins/gameengin/runtime';
 
 describe('GameEngin runtime upgrade contracts', () => {
   it('keeps mobile frame budgets machine readable', () => {

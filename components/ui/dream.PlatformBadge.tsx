@@ -1,8 +1,8 @@
 'use client';
 
 import SheetIcon from '@/components/ui/dream.SheetIcon';
-import { hasIcon } from '@/lib/icons/sheet';
-import { PLATFORM_MAP } from '@/lib/social/platforms';
+import { hasIcon } from '@/components/icons/sheet';
+import { PLATFORM_MAP } from '@/engine/social/platforms';
 import Image from 'next/image';
 
 /**

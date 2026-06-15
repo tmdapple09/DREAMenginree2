@@ -1,5 +1,5 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, Code, Download, FileText, FlaskConical, Terminal } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';

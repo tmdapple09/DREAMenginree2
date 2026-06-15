@@ -13,7 +13,7 @@ import {
   extractNotificationMessage,
   normalizeDbRow,
   type DbNotificationRow,
-} from '@/lib/notifications/notificationHelpers';
+} from '@/dreamdmbar/notifications/notificationHelpers';
 
 // ─── Remix notification type ──────────────────────────────────────────────────
 

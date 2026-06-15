@@ -1,6 +1,6 @@
-import type { GetPlatformMetricsResponse } from '@/lib/activity/types';
-import { createServerClient, createServiceClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { GetPlatformMetricsResponse } from '@/dreamr/activity/types';
+import { createServerClient, createServiceClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 // app/api/metrics/platform/route.ts

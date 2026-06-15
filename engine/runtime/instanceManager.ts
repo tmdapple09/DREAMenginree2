@@ -1,5 +1,5 @@
-import type { RuntimeChannel } from '@/lib/runtime/runtimeChannel';
-import { createLocalChannel, createRuntimeChannel } from '@/lib/runtime/runtimeChannel';
+import type { RuntimeChannel } from '@/engine/runtime/runtimeChannel';
+import { createLocalChannel, createRuntimeChannel } from '@/engine/runtime/runtimeChannel';
 import type { RuntimeId } from '@/types/module-manifest';
 import { create } from 'zustand';
 
@@ -255,7 +255,7 @@ export async function promoteInstanceToRealtime(key: string): Promise<void> {
 export async function persistInstanceList(userId: string): Promise<void> {
   const rows = serializeInstances(useInstanceManager.getState().instances);
   try {
-    const { createClient } = await import('@/lib/supabase/client');
+    const { createClient } = await import('@/supabase/client/client');
     const supabase = createClient();
     type DbResponse<T> = Promise<{ data: T | null; error: { message?: string } | null }>;
     const db = supabase as unknown as {

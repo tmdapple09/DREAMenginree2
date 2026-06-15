@@ -9,7 +9,7 @@ import {
   createDefaultSnapshot,
   scenesAreDifferent,
   type SceneSnapshot,
-} from '@/lib/scene/sceneState';
+} from '@/engine/scene/sceneState';
 
 // ─── Default snapshot ─────────────────────────────────────────────────────────
 

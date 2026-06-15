@@ -1,4 +1,4 @@
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 
 // Framework directives stay physically first when required.
 

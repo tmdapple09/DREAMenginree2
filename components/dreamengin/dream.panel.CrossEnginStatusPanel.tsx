@@ -1,6 +1,6 @@
 "use client";
 
-import { bridge, type PeerState } from "@/lib/runtime/dualRuntimeBridge";
+import { bridge, type PeerState } from "@/engine/runtime/dualRuntimeBridge";
 import { useEffect, useState } from "react";
 
 interface Props {

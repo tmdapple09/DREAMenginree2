@@ -1,6 +1,6 @@
 'use client';
 
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, BookOpen, HelpCircle, MessageCircle, Wand2 } from 'lucide-react';
 
 /**

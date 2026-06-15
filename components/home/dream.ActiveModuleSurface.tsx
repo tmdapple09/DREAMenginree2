@@ -6,12 +6,12 @@ import {
     saveActiveModule,
     saveActiveModulesForRegion,
     transferActiveModuleRegion,
-} from '@/lib/activeModulesStore';
-import { loadArtifacts, saveArtifact } from '@/lib/artifactStore';
-import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-import { useDreamWindowActions } from '@/lib/dream-window/useDreamWindowActions';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+} from '@/engine/activeModulesStore';
+import { loadArtifacts, saveArtifact } from '@/engine/artifacts/artifactStore';
+import { DREAM_WINDOW_STATES } from '@/engine/dream-window/DreamWindowLifecycle';
+import { useDreamWindowActions } from '@/engine/dream-window/useDreamWindowActions';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import type {
     ActiveModuleInstance,
     DreamArtifact,

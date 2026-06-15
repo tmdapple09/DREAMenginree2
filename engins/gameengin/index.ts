@@ -4,10 +4,10 @@
  * DREAMengin Elite Game Engine — Public API
  *
  * Single import surface for all elite engine capabilities:
- *   import { EliteGameEngine, AIDirector, PostFXManager } from '@/lib/gameengin';
+ *   import { EliteGameEngine, AIDirector, PostFXManager } from '@/engins/gameengin/index';
  *
  * Power Systems (20 advanced subsystems):
- *   import { RollbackNetcode, ComputeShaderPipeline, AdvancedPhysicsWorld, ... } from '@/lib/gameengin';
+ *   import { RollbackNetcode, ComputeShaderPipeline, AdvancedPhysicsWorld, ... } from '@/engins/gameengin/index';
  */
 
 // This is the public machine-readable spine for the GameEngin work packet.
@@ -2586,7 +2586,7 @@ export const GAMEENGIN_WORK_PACKET = [
     "acceptanceCheck": "AI, animation, assets, network, physics, rendering, spatial, world, loop, and XR systems are runtime plugins behind GameRuntime."
   },
   {
-    "path": "lib/gameengin/control-mappings.ts",
+    "path": "lib/gameengin/controls/control-mappings.ts",
     "kind": "file",
     "contextGroup": "GameEngin runtime module",
     "wiringTarget": "gameengin_support_file",
@@ -3609,7 +3609,7 @@ export const GAMEENGIN_WORK_PACKET_BY_TARGET = {
     "GameENGINspec.md",
     "supabase/migrations/20260418000000_gameengin_core.sql",
     "supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql",
-    "lib/gameengin/control-mappings.ts",
+    "lib/gameengin/controls/control-mappings.ts",
     "lib/gameengin/core.ts",
     "lib/gameengin/dream-engine.ts",
     "lib/gameengin/dreamr-loader.ts",
@@ -3867,8 +3867,8 @@ export function getGameEnginWorkPacketEntry(path: string): GameEnginWorkPacketEn
   return GAMEENGIN_WORK_PACKET.find((entry) => entry.path === path);
 }
 
-export { mapJoystickToAsset } from './control-mappings';
-export type { ControlMapping } from './control-mappings';
+export { mapJoystickToAsset } from './controls/control-mappings';
+export type { ControlMapping } from './controls/control-mappings';
 export { ECSWorld, EliteGameEngine } from './core';
 export { DreamEngine } from './dream-engine';
 export type { GameAsset, GlobalRegistryEntry, WasmOutput } from './dream-engine';

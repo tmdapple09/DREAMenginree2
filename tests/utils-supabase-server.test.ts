@@ -5,7 +5,7 @@ const supabaseServerMocks = vi.hoisted(() => ({
   createServerClientWithCookies: vi.fn(),
 }))
 
-vi.mock('@/lib/supabase/server', () => supabaseServerMocks)
+vi.mock('@/supabase/server/serverClient', () => supabaseServerMocks)
 
 import { createClient } from '@/utils/supabase/server'
 

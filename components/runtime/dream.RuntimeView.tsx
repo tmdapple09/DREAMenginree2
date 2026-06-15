@@ -4,10 +4,10 @@ import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
 import DreamsSpacePanel from '@/components/dreams/dreamsurface.dreamspace';
 import RuntimeShell from '@/components/runtime/dream.shell.RuntimeShell';
 import EnhancedSpatialShell from '@/components/spatial/dream.shell.EnhancedSpatialShell';
-import { getEnginByName } from '@/lib/forge/forgeRegistry';
-import type { RuntimeRegion } from '@/lib/identity/canonical-names';
+import { getEnginByName } from '@/engins/forgeengin/forge/forgeRegistry';
+import type { RuntimeRegion } from '@/engine/identity/canonical-names';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
-import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+import type { RuntimeWorld } from '@/engine/runtime/dualRuntime';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useState } from 'react';
 import AlgorithmPanel from '@/components/panels/dream.panel.AlgorithmPanel';
@@ -23,8 +23,8 @@ import ProfilePanel from '@/components/panels/dream.panel.ProfilePanel';
 import SafetyPanel from '@/components/panels/dream.panel.SafetyPanel';
 import SettingsPanel from '@/components/panels/dream.panel.SettingsPanel';
 import WidgetsPanel from '@/components/panels/dream.panel.WidgetsPanel';
-import { getDreamComponent } from '@/lib/dreams/DreamRegistry';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
+import { getDreamComponent } from '@/engine/dreams/DreamRegistry';
+import type { SystemPanelId } from '@/components/panels/panelTypes';
 
 // Framework directives stay physically first when required.
 

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createServerClientWithCustomCookies } from '@/lib/supabase/server';
-import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from '@/lib/supabase/config';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClientWithCustomCookies } from '@/supabase/server/serverClient';
+import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from '@/supabase/config';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 
 /**
  * DREAMengin — Next.js 16 Edge Proxy

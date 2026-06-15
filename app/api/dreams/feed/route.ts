@@ -1,6 +1,6 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { resolveFeedHost } from '@/lib/widgets/feed-resolver';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { resolveFeedHost } from '@/engine/widgets/feed-resolver';
 import { HostKind, type DreamDefinition, type DreamInstance, type FeedHostConfig } from '@/types/widget-system-v2';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';

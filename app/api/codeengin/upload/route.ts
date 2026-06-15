@@ -1,9 +1,9 @@
 import { spawn } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
-import { createCodeEnginWorkspace, getWorkspaceOverview } from '@/lib/codeengin/workspaceStore';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
+import { createCodeEnginWorkspace, getWorkspaceOverview } from '@/engins/codeengin/workspaceStore';
 import { NextResponse } from 'next/server';
 
 function unzipArchive(zipPath: string, destination: string): Promise<void> {

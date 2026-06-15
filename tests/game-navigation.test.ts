@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { buildLoginRedirectPath, resolveSafeNextPath } from '@/lib/auth/nextRedirect';
-import { buildAuthCallbackUrl } from '@/lib/supabase/config';
-import { upsertSavedGameSession } from '@/lib/games/library-state';
-import { buildGameLaunchHref, DEFAULT_GAME_ID, isLaunchFlagEnabled, resolveGameLaunchId } from '@/lib/games/navigation';
-import { GAME_INPUT_KEYBOARD_MAP } from '@/lib/games/useGameInputKeyboardBridge';
+import { buildLoginRedirectPath, resolveSafeNextPath } from '@/supabase/auth/nextRedirect';
+import { buildAuthCallbackUrl } from '@/supabase/config';
+import { upsertSavedGameSession } from '@/engins/gameengin/games/library-state';
+import { buildGameLaunchHref, DEFAULT_GAME_ID, isLaunchFlagEnabled, resolveGameLaunchId } from '@/engins/gameengin/games/navigation';
+import { GAME_INPUT_KEYBOARD_MAP } from '@/engins/gameengin/games/useGameInputKeyboardBridge';
 
 const REPO_ROOT = process.cwd();
 

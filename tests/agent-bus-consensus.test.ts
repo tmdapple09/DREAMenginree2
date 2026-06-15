@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/lib/ai/triad', () => ({
+vi.mock('@/dr-eams/ai/triad', () => ({
   planWithEams: vi.fn(),
   validateWithIdari: vi.fn(),
   boogiePolicyCheck: vi.fn(),
@@ -12,7 +12,7 @@ describe('runTriadConsensus', () => {
   });
 
   it('requires IDARi to preserve intents when Dr. Eams proposes them', async () => {
-    const triad = await import('@/lib/ai/triad');
+    const triad = await import('@/dr-eams/ai/triad');
     vi.mocked(triad.planWithEams).mockResolvedValue({
       response_text: 'do the thing',
       intents: [
@@ -35,7 +35,7 @@ describe('runTriadConsensus', () => {
       hard_block: false,
     });
 
-    const { runTriadConsensus } = await import('@/lib/agents/agentBus');
+    const { runTriadConsensus } = await import('@/engine/agents/agentBus');
     const result = await runTriadConsensus({
       message: 'open code',
       actorRole: 'user',

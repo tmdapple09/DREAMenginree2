@@ -2,9 +2,9 @@
 
 import DrEamsPanel from '@/components/dreamengin/dream.panel.DrEamsPanel';
 import DualBottomMenu, { type SystemMenuAction } from '@/components/menus/dream.menu.DualBottomMenu';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { runHomeAction } from '@/lib/home-buttons/contextual-home';
-import { isPublicSurfacePath } from '@/lib/routing/surfaces';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { runHomeAction } from '@/coresurfaces/home/buttons/contextual-home';
+import { isPublicSurfacePath } from '@/engine/routing/surfaces';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 

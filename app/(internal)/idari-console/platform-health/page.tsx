@@ -1,6 +1,6 @@
 import { PlatformHealth } from '@/components/idari/dream.PlatformHealth';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 

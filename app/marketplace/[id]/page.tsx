@@ -1,7 +1,7 @@
 import MarketplaceRequestButton from '@/components/marketplace/dream.MarketplaceRequestButton';
 import DreamWord from '@/components/ui/dream.DreamWord';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, Calendar, ShoppingBag, Tag, User } from 'lucide-react';
 import Link from 'next/link';

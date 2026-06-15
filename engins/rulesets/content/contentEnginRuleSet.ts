@@ -1,8 +1,8 @@
-import { patchBaseState, type EnginBaseState, type JsonObject } from '@/lib/engin-runtime/EnginBaseState';
-import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
-import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
-import type { ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams } from '@/lib/engin-runtime/EnginRuleSetContract';
-import type { ContentAsset, ContentRecipe, ExportProfile } from '@/lib/contentengin/assetTypes';
+import { patchBaseState, type EnginBaseState, type JsonObject } from '@/engine/engin-runtime/EnginBaseState';
+import type { EnginCapability } from '@/engine/engin-runtime/EnginCapabilities';
+import { getEnginCapabilityProfile } from '@/engine/engin-runtime/EnginCapabilityTargets';
+import type { ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams } from '@/engine/engin-runtime/EnginRuleSetContract';
+import type { ContentAsset, ContentRecipe, ExportProfile } from '@/engins/contentengin/assetTypes';
 export interface ContentEnginDerivedState { lifecycle:EnginBaseState['lifecycle']; activeRecipe:ContentRecipe|null; assets:ContentAsset[]; selectedAssetId:string|null; profile:ExportProfile; photoAnalysis:JsonObject|null; lastIntent:string|null; downloads:JsonObject|null; }
 export type ContentEnginAction = EnginAction<'contentengin:recipe-set',JsonObject>|EnginAction<'contentengin:asset-built',JsonObject>|EnginAction<'contentengin:asset-select',JsonObject>|EnginAction<'contentengin:profile-set',JsonObject>|EnginAction<'contentengin:photo-analyzed',JsonObject>|EnginAction<'contentengin:download-ready',JsonObject>;
 const DEFAULT_DOMAIN={activeRecipe:null as ContentRecipe|null,assets:[] as ContentAsset[],selectedAssetId:null as string|null,profile:'ps3' as ExportProfile,photoAnalysis:null as JsonObject|null,lastIntent:null as string|null,downloads:null as JsonObject|null};

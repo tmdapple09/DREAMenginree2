@@ -1,7 +1,7 @@
 'use client';
 
-import { getTierDescription, getTierDisplayName } from '@/lib/activity/scoring';
-import { ActivityTier } from '@/lib/activity/types';
+import { getTierDescription, getTierDisplayName } from '@/dreamr/activity/scoring';
+import { ActivityTier } from '@/dreamr/activity/types';
 
 // components/activity/dream.TierBadge.tsx
 // Phase 9 — Activity Tier Badge

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { assertValidBundleManifest, bundleWeightBytes, type GameEnginBundleManifest } from '@/lib/gameengin/assets/BundleManifest';
-import { planBundleCache } from '@/lib/gameengin/assets/BundleCache';
-import { GameEnginShaderRegistry } from '@/lib/gameengin/render/ShaderRegistry';
+import { assertValidBundleManifest, bundleWeightBytes, type GameEnginBundleManifest } from '@/engins/gameengin/assets/BundleManifest';
+import { planBundleCache } from '@/engins/gameengin/assets/BundleCache';
+import { GameEnginShaderRegistry } from '@/engins/gameengin/render/ShaderRegistry';
 
 const manifest: GameEnginBundleManifest = {
   id: 'wildfall-opening',

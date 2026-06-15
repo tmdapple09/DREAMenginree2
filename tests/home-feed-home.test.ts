@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
+import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
 
 describe('HomeDream home surface', () => {
   const dashboard = readFileSync(

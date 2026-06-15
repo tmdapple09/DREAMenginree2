@@ -21,7 +21,7 @@ import {
   judgeStep,
   judgeJourney,
   runJourney,
-} from '@/lib/user-sim/userSimAgent';
+} from '@/engine/user-sim/userSimAgent';
 
 // ── Fixture helpers ───────────────────────────────────────────────────────────
 

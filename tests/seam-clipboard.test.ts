@@ -17,7 +17,7 @@
  */
 
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import {
   findWorkflows,
   findWorkflowById,
@@ -25,11 +25,11 @@ import {
   executeWorkflow,
   ENGIN_KEYS,
   type EnginKey,
-} from '@/lib/runtime/enginWorkflowRegistry';
+} from '@/engine/runtime/enginWorkflowRegistry';
 import {
   seamClipboard,
   type SeamClipboardPayload,
-} from '@/lib/runtime/seamClipboard';
+} from '@/engine/runtime/seamClipboard';
 
 // ── Shared fixtures ────────────────────────────────────────────────────────────
 

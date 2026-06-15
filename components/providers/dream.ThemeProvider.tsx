@@ -7,7 +7,7 @@ import {
     getPreset,
     loadStoredTheme,
     saveTheme,
-} from '@/lib/ui/theme-engine';
+} from '@/components/ui-system/theme-engine';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 interface ThemeContextValue {

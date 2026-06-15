@@ -1,8 +1,8 @@
 'use client';
 
-import type { NormalizedPost } from '@/lib/social/normalizers';
+import type { NormalizedPost } from '@/engine/social/normalizers';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * lib/social/useSocialData.ts

@@ -1,7 +1,7 @@
 'use client';
 
-import { registerCartridges } from '@/lib/gameengin/registerCartridges';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
+import { registerCartridges } from '@/engins/gameengin/registerCartridges';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
 import { useEffect } from 'react';
 
 export default function CartridgeRegistryBootstrap( ){

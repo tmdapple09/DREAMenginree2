@@ -8,7 +8,7 @@ const pagePath = join(root, 'app/dream-effects/page.tsx');
 describe('Dream Effects surface', () => {
   it('uses the shared GSAP entrance hook for feature card reveals', () => {
     const src = readFileSync(pagePath, 'utf-8');
-    expect(src).toContain("import { useGsapEntrance } from '@/lib/gsap/useGsapEntrance'");
+    expect(src).toContain("import { useGsapEntrance } from '@/engine/animation/gsap/useGsapEntrance'");
     expect(src).toContain('useGsapEntrance(cardsRef');
     expect(src).toContain('ref={cardsRef}');
   });

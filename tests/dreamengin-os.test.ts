@@ -18,7 +18,7 @@ const mockEngine = {
   dispose: vi.fn(),
 };
 
-vi.mock('@/lib/babylon/createEngine', () => ({
+vi.mock('@/engine/rendering/babylon/createEngine', () => ({
   createBabylonEngine: vi.fn().mockResolvedValue({
     engine: mockEngine,
     isWebGPU: true,
@@ -76,7 +76,7 @@ describe('DREAMenginOS', () => {
   });
 
   it('createBabylonEngine is importable and mockable', async () => {
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     expect(typeof createBabylonEngine).toBe('function');
   });
 });

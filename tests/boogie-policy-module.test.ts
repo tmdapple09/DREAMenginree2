@@ -11,8 +11,8 @@ import {
   PolicyCategory,
   PolicySeverity,
   BOOGIE_POLICY_VERSION,
-} from '@/lib/policy/boogiePolicy';
-import type { PolicyResult } from '@/lib/policy/boogiePolicy';
+} from '@/engine/policy/boogiePolicy';
+import type { PolicyResult } from '@/engine/policy/boogiePolicy';
 
 // ============================================================================
 // boogieEvaluate — PolicyResult shape (req 98)

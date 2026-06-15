@@ -1,12 +1,12 @@
 'use client';
 
-import { useDreamDMDraft } from '@/lib/dreamdm/useDreamDMDraft';
-import type { DMMessage } from '@/lib/dreamdm/useDreamDMMessages';
-import { useDreamDMMessages } from '@/lib/dreamdm/useDreamDMMessages';
-import { useDreamSearch } from '@/lib/dreamdm/useDreamSearch';
-import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
-import { createClient } from '@/lib/supabase/client';
-import { formatRelativeTime, toErrorMessage } from '@/lib/utils';
+import { useDreamDMDraft } from '@/dreamdmbar/hooks/useDreamDMDraft';
+import type { DMMessage } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamDMMessages } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamSearch } from '@/dreamdmbar/hooks/useDreamSearch';
+import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
+import { createClient } from '@/supabase/client/client';
+import { formatRelativeTime, toErrorMessage } from '@/utils/index';
 import { ArrowLeft, Bot, FileText, Loader2, Mail, MessageSquare, Music, Plus, Search, Send, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

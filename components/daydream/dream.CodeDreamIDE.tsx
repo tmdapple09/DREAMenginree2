@@ -1,7 +1,7 @@
 "use client";
 
-import { bridge as dualRuntimeBridge } from "@/lib/runtime/dualRuntimeBridge";
-import { getSwap, toggleSwap } from "@/lib/runtime/swapManager";
+import { bridge as dualRuntimeBridge } from "@/engine/runtime/dualRuntimeBridge";
+import { getSwap, toggleSwap } from "@/engine/runtime/swapManager";
 import {
   ArrowLeftRight,
   Bot,

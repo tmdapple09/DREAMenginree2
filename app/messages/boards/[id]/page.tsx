@@ -1,6 +1,6 @@
 import BoardComposer from '@/components/messaging/dream.BoardComposer';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, Pin } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';

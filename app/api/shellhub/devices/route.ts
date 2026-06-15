@@ -2,12 +2,12 @@ import {
     SHELLHUB_DEFAULT_SERVER,
     shellhubListDevices,
     type ShellHubDevice,
-} from '@/lib/connectors/providers/shellhub';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/engine/connectors/providers/shellhub';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/shellhub/devices/route.ts

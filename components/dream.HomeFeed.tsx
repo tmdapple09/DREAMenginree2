@@ -4,13 +4,13 @@ import { AdUnit } from "@/components/ads/dream.AdUnit";
 import FeedVideoCard from "@/components/feed/dream.FeedVideoCard";
 import EditableAvatar from "@/components/profile/dream.EditableAvatar";
 import SocialShareSheet from "@/components/ui/dream.SocialShareSheet";
-import { AdType } from "@/lib/activity/types";
-import { useDreamSystem } from "@/lib/dreamdm/DreamSystemContext";
-import { useLiveFeed, type FeedPost } from "@/lib/feed/useLiveFeed";
-import { useYouTubeLiveFeed } from "@/lib/feed/useYouTubeLiveFeed";
-import { uploadBlobToLedgerStorage } from "@/lib/media/ledger";
-import { createClient } from "@/lib/supabase/client";
-import { isCompactRuntimeViewport } from "@/lib/ui/runtimeViewport";
+import { AdType } from "@/dreamr/activity/types";
+import { useDreamSystem } from "@/dreamdmbar/runtime/DreamSystemContext";
+import { useLiveFeed, type FeedPost } from "@/dreamr/feed/useLiveFeed";
+import { useYouTubeLiveFeed } from "@/dreamr/feed/useYouTubeLiveFeed";
+import { uploadBlobToLedgerStorage } from "@/engins/contentengin/media/ledger";
+import { createClient } from "@/supabase/client/client";
+import { isCompactRuntimeViewport } from "@/components/ui-system/runtimeViewport";
 import {
   ArrowUp,
   Bookmark,
@@ -46,7 +46,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { toErrorMessage } from "@/lib/utils";
+import { toErrorMessage } from "@/utils/index";
 
 /**
  * HomeFeed — Live feed component for the HomeDream Surface.

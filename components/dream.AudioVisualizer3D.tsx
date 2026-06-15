@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import type { Fingerprint, MatchResult, PeakMap } from '../audioFingerprint';
+import type { Fingerprint, MatchResult, PeakMap } from '@/engins/starmakerengin/audioFingerprint';
 import {
     extractAudioChunks,
     matchFingerprint,
     recordReferenceFingerprint,
-} from '../audioFingerprint';
+} from '@/engins/starmakerengin/audioFingerprint';
 
 /**
  * AudioVisualizer3D — Babylon.js 3D audio visualiser

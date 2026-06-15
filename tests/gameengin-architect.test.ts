@@ -24,7 +24,7 @@ import {
   VISION_STATEMENT_MAX_BYTES,
   VISION_BUDGET_MAX_HOURS,
   type VisionStatement,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 
 const CONCEPT_LIB = path.join(BRAIN_ROOT, 'concept-library');
 

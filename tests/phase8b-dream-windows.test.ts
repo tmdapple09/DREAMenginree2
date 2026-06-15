@@ -29,7 +29,7 @@ import {
   DREAM_WINDOW_REQUIRED_LAYERS,
   type DreamWindowInstance,
   type DreamWindowLayerValidationResult,
-} from '@/lib/dream-window/DreamWindowLifecycle';
+} from '@/engine/dream-window/DreamWindowLifecycle';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -222,7 +222,7 @@ describe('Phase 8 §B Point 15 — owner_id enforcement', () => {
 
 describe('Phase 8 §B Point 16 — useDreamWindowActions hook contract', () => {
   it('exports useDreamWindowActions from canonical path', async () => {
-    const mod = await import('@/lib/dream-window/useDreamWindowActions');
+    const mod = await import('@/engine/dream-window/useDreamWindowActions');
     expect(typeof mod.useDreamWindowActions).toBe('function');
   });
 });

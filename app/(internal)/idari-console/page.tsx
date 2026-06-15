@@ -1,10 +1,10 @@
 import ChildSafetyPanel from '@/components/dream.panel.ChildSafetyPanel';
 import IDariPanel from '@/components/dream.panel.IDariPanel';
-import { createUpgradeReadinessSnapshot } from '@/lib/admin/upgrade-readiness';
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { isDevAdminBypassActive } from '@/lib/dev-bypass';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createUpgradeReadinessSnapshot } from '@/engine/admin/upgrade-readiness';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { isDevAdminBypassActive } from '@/engine/dev-bypass';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { LucideIcon } from 'lucide-react';
 import {
     Activity,

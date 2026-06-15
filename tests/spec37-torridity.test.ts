@@ -20,7 +20,7 @@ import {
   throttledVisibility,
   rankFeed,
   type ContentItem,
-} from '@/lib/torridity';
+} from '@/dreamr/torridity';
 
 // ─── §37 Constants ────────────────────────────────────────────────────────────
 

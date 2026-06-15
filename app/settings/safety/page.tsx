@@ -1,7 +1,7 @@
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { AlertTriangle, ChevronRight, Download, FileText, Shield } from 'lucide-react';
 import Link from 'next/link';

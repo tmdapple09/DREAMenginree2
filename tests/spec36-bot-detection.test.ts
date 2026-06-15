@@ -16,8 +16,8 @@ import {
   BOT_MAX_DEVIATION_PX,
   FREEZE_MIN_MS,
   FREEZE_MAX_MS,
-} from '@/lib/bot-detection/index';
-import { analyzeSwipe, tallyView } from '@/lib/botDetection';
+} from '@/dreamr/bot-detection/index';
+import { analyzeSwipe, tallyView } from '@/dreamr/botDetection';
 
 // ─── §36.2 View timer ────────────────────────────────────────────────────────
 

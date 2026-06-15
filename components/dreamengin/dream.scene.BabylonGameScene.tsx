@@ -1,6 +1,6 @@
 "use client";
 
-import { createBabylonEngine } from '@/lib/babylon/createEngine';
+import { createBabylonEngine } from '@/engine/rendering/babylon/createEngine';
 import {
     DreamEngineGodTierSystem,
     applyGodTierToBabylon,
@@ -8,13 +8,13 @@ import {
     defaultRouteSignals,
     defaultRuntimeMetrics,
     defaultUXSignals,
-} from '@/lib/god-tier/godTierEngine';
+} from '@/engine/rendering/god-tier/godTierEngine';
 import {
     WebGPUDirector,
     applyDirectorFrame,
     buildSceneObjects,
     defaultCameraSignals,
-} from '@/lib/webgpu/director';
+} from '@/engine/rendering/webgpu/director';
 import { useEffect, useRef } from 'react';
 
 // components/dreamengin/dream.scene.BabylonGameScene.tsx
@@ -220,10 +220,10 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
             })),
             ui: [],
           });
-          applyGodTierToBabylon(engine, scene as unknown as import('@/lib/god-tier/godTierEngine').BabylonSceneLike, gtState, window.devicePixelRatio ?? 1);
+          applyGodTierToBabylon(engine, scene as unknown as import('@/engine/rendering/god-tier/godTierEngine').BabylonSceneLike, gtState, window.devicePixelRatio ?? 1);
 
           const dirObjects = buildSceneObjects(
-            scene.meshes as unknown as import('@/lib/webgpu/director').DirectorBabylonMesh[],
+            scene.meshes as unknown as import('@/engine/rendering/webgpu/director').DirectorBabylonMesh[],
             (m) => ({
               heroWeight:    m.id === 'hub' ? 1 : m.id.startsWith('orb') ? 0.7 : 0,
               semanticWeight: m.id.startsWith('orb') ? 1 : 0.3,
@@ -246,8 +246,8 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
             objects: dirObjects,
           });
           applyDirectorFrame(
-            engine as unknown as import('@/lib/webgpu/director').DirectorBabylonEngine,
-            scene as unknown as import('@/lib/webgpu/director').DirectorBabylonScene,
+            engine as unknown as import('@/engine/rendering/webgpu/director').DirectorBabylonEngine,
+            scene as unknown as import('@/engine/rendering/webgpu/director').DirectorBabylonScene,
             dirFrame,
             window.devicePixelRatio ?? 1,
           );

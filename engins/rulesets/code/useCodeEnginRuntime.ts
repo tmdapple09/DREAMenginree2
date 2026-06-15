@@ -1,8 +1,8 @@
 'use client';
 
-import { MemoryAdapter } from '@/lib/engin-runtime/EnginIOAdapter';
-import type { EnginHardwareAccelerationState, EnginRuntimeOptions } from '@/lib/engin-runtime/EnginRuntime';
-import { EnginRuntime } from '@/lib/engin-runtime/EnginRuntime';
+import { MemoryAdapter } from '@/engine/engin-runtime/EnginIOAdapter';
+import type { EnginHardwareAccelerationState, EnginRuntimeOptions } from '@/engine/engin-runtime/EnginRuntime';
+import { EnginRuntime } from '@/engine/engin-runtime/EnginRuntime';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CodeEnginAction, CodeEnginDerivedState } from './codeEnginRuleSet';
 import { CODE_ENGIN_RULE_SET } from './codeEnginRuleSet';

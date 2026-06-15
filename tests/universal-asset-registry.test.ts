@@ -41,7 +41,7 @@ const mockFrom = vi.fn().mockReturnValue({
   }),
 });
 
-vi.mock('@/lib/supabase/client', () => ({
+vi.mock('@/supabase/client/client', () => ({
   createClient: () => ({
     auth: mockAuth,
     from: mockFrom,
@@ -49,7 +49,7 @@ vi.mock('@/lib/supabase/client', () => ({
   }),
 }));
 
-vi.mock('@/lib/forge/useForgeActivity', () => ({
+vi.mock('@/engins/forgeengin/forge/useForgeActivity', () => ({
   useForgeActivity: () => ({ record: vi.fn() }),
 }));
 

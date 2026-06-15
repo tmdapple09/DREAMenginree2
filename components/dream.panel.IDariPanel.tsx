@@ -1,6 +1,6 @@
 'use client';
 
-import { emitIdariEvent } from '@/lib/agents/agentBus';
+import { emitIdariEvent } from '@/engine/agents/agentBus';
 import {
     AlertCircle,
     CheckCircle,
@@ -11,7 +11,7 @@ import {
     Zap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * IDariPanel — admin control panel for the IDARi AI system.

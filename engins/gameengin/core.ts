@@ -309,7 +309,7 @@ export class EliteGameEngine {
 
   /** Full async init — creates WebGPU or WebGL engine + scene. */
   async init(): Promise<void> {
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(this.canvas, {
       antialias: true,
       preserveDrawingBuffer: true,

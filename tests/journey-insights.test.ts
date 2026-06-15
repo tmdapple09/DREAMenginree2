@@ -22,7 +22,7 @@ import {
   detectReturnGaps,
   annotateDotsWithInsights,
   RETURN_GAP_DAYS,
-} from '@/lib/journey/journeyInsights';
+} from '@/engine/journey/journeyInsights';
 
 // ── Fixture helpers ───────────────────────────────────────────────────────────
 

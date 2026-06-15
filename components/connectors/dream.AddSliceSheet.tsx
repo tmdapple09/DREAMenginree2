@@ -1,6 +1,6 @@
 'use client';
 
-import type { ConnectorDef, SliceTypeDef } from '@/lib/connectors/connectorRegistry';
+import type { ConnectorDef, SliceTypeDef } from '@/engine/connectors/connectorRegistry';
 import { useState } from 'react';
 
 // components/connectors/dream.AddSliceSheet.tsx

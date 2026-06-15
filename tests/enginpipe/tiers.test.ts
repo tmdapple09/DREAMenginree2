@@ -11,7 +11,7 @@ import {
   getTierConfig,
   scoreCapabilities,
   tierFromScore,
-} from '@/lib/enginpipe/quality/tiers';
+} from '@/engins/forgeengin/enginpipe/quality/tiers';
 
 describe('enginpipe / quality tiers', () => {
   it('exposes the four canonical tiers in DEFAULT_TIER_CONFIG', () => {

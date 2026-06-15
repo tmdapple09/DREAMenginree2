@@ -1,6 +1,6 @@
 'use client';
 
-import { generateInviteLink } from '@/lib/collaboration';
+import { generateInviteLink } from '@/engine/collaboration/index';
 import {
     broadcastControlSignal,
     broadcastCursorPosition,
@@ -18,8 +18,8 @@ import {
     type DreamSessionMode,
     type DreamSessionRole,
     type SharedDreamSession,
-} from '@/lib/sharedDream';
-import { createClient } from '@/lib/supabase/client';
+} from '@/engine/sharedDream';
+import { createClient } from '@/supabase/client/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.

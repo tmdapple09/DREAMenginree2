@@ -10,8 +10,8 @@ import {
   resolveResumeDest,
   formatArtifactKind,
   getArtifactAccent,
-} from '@/lib/intelligence/continuityHelpers';
-import type { ForgeActivityPulse } from '@/lib/forge/forgeRegistry';
+} from '@/engine/intelligence/continuityHelpers';
+import type { ForgeActivityPulse } from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── resolveResumeDest ─────────────────────────────────────────────────────────
 

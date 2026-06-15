@@ -2,9 +2,9 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import SoundRecorder from '@/components/music/dream.SoundRecorder';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import StarMakerEngin from '@/engins/engin.StarMakerEngin';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import {
     BarChart3,
     CheckCircle,

@@ -13,7 +13,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { CANONICAL_NAV_ROUTES } from '@/lib/ai/triad';
+import { CANONICAL_NAV_ROUTES } from '@/dr-eams/ai/triad';
 
 // ── Point 9: Canonical route set validation ───────────────────────────────────
 

@@ -1,13 +1,13 @@
-import { createPatchPlan, type PatchPlan, type PatchRisk } from '@/lib/agents/idari';
-import { getSnapshot, type TelemetrySnapshot } from '@/lib/observability/collector';
-import { correlate, type CorrelationResult } from '@/lib/observability/correlator';
+import { createPatchPlan, type PatchPlan, type PatchRisk } from '@/engine/agents/idari';
+import { getSnapshot, type TelemetrySnapshot } from '@/engine/observability/collector';
+import { correlate, type CorrelationResult } from '@/engine/observability/correlator';
 import {
     buildImmediateRemediationAction,
     type ImmediateRemediationAction,
-} from '@/lib/observability/immediateAction';
-import { inferRootCause, type RootCauseAnalysis } from '@/lib/observability/rootCauseAnalyzer';
+} from '@/engine/observability/immediateAction';
+import { inferRootCause, type RootCauseAnalysis } from '@/engine/observability/rootCauseAnalyzer';
 import { v4 as uuidv4 } from 'uuid';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // lib/agents/idariLoop.ts
 //

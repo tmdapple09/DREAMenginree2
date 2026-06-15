@@ -5,7 +5,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { identityQuaternion } = require('@/lib/navigation/quaternion');
+      const { identityQuaternion } = require('@/engine/navigation/quaternion');
       return identityQuaternion();
     });
     
@@ -19,7 +19,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { fromAxisAngle, magnitude } = require('@/lib/navigation/quaternion');
+      const { fromAxisAngle, magnitude } = require('@/engine/navigation/quaternion');
       const axis = { x: 0, y: 0, z: 1 }; // Z-axis
       const angle = Math.PI / 2; // 90 degrees
       const q = fromAxisAngle(axis, angle);
@@ -39,7 +39,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { fromAxisAngle, multiply, magnitude } = require('@/lib/navigation/quaternion');
+      const { fromAxisAngle, multiply, magnitude } = require('@/engine/navigation/quaternion');
       
       // Two 90° rotations around Z-axis = 180° rotation
       const q1 = fromAxisAngle({ x: 0, y: 0, z: 1 }, Math.PI / 2);
@@ -61,7 +61,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { normalize, magnitude } = require('@/lib/navigation/quaternion');
+      const { normalize, magnitude } = require('@/engine/navigation/quaternion');
       
       // Create non-unit quaternion
       const q = { w: 2, x: 2, y: 2, z: 2 };
@@ -83,7 +83,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { fromGestureSwipe, magnitude, isValid } = require('@/lib/navigation/quaternion');
+      const { fromGestureSwipe, magnitude, isValid } = require('@/engine/navigation/quaternion');
       
       // Horizontal swipe
       const q1 = fromGestureSwipe(100, 0, 0.01);
@@ -112,7 +112,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { fromAxisAngle, multiply, normalize, magnitude } = require('@/lib/navigation/quaternion');
+      const { fromAxisAngle, multiply, normalize, magnitude } = require('@/engine/navigation/quaternion');
       
       // Simulate many small rotations (drift simulation)
       let q = { w: 1, x: 0, y: 0, z: 0 };
@@ -143,7 +143,7 @@ test.describe('Quaternion Math Library - Section 3', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { fromAxisAngle, slerp, magnitude } = require('@/lib/navigation/quaternion');
+      const { fromAxisAngle, slerp, magnitude } = require('@/engine/navigation/quaternion');
       
       // Start and end rotations
       const q1 = fromAxisAngle({ x: 0, y: 0, z: 1 }, 0);

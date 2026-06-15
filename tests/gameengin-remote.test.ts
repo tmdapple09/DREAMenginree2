@@ -30,7 +30,7 @@ import {
   DOUBLE_TAP_WINDOW_MS,
   type Combo,
   type FaceButton,
-} from '@/lib/gameengin/remote';
+} from '@/engins/gameengin/remote';
 
 describe('GameEngin standard remote — layout', () => {
   it('portrait splits screen 70 / 30', () => {

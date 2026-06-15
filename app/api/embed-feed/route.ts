@@ -1,6 +1,6 @@
-import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
-import { loadEmbedFeed } from '@/lib/feeds/embedFeedLoader';
-import { createServerClient } from '@/lib/supabase/server';
+import type { EmbedFeedItem } from '@/dreamr/feeds/embedFeedLoader';
+import { loadEmbedFeed } from '@/dreamr/feeds/embedFeedLoader';
+import { createServerClient } from '@/supabase/server/serverClient';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

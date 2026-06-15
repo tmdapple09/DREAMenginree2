@@ -1,8 +1,8 @@
 'use client';
 
 import { useDreamNav } from '@/components/dreamnav/dreamsurface.dreamnav';
-import type { Node } from '@/lib/dreamnav/delta';
-import { dispatchTauPath, findTauPath } from '@/lib/dreamnav/path';
+import type { Node } from '@/engine/dreamnav/delta';
+import { dispatchTauPath, findTauPath } from '@/engine/dreamnav/path';
 
 const ALL_DREAMS: Array<{ node: Node; label: string; icon: string; tag: string }> = [
   { node: '1b', label: 'Music',    icon: '🎵', tag: 'Day Dream · 1b' },

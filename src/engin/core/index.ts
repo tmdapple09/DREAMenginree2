@@ -1,5 +1,5 @@
 import baseStateSeed from '@/src/engin/state/base.json';
-import { createClient as createSupabaseClient } from '@/lib/supabase/client';
+import { createClient as createSupabaseClient } from '@/supabase/client/client';
 
 // src/engin/core/index.ts
 
@@ -212,64 +212,64 @@ class UnifiedIO {
 class SecuritySurface {
   readonly capabilityGate = {
     buildActorContext: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/capability-gate');
+      const mod = await import('@/dr-eams/ai/capability-gate');
       return mod.buildActorContext(...(args as Parameters<typeof mod.buildActorContext>));
     },
     authorizeIntent: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/capability-gate');
+      const mod = await import('@/dr-eams/ai/capability-gate');
       return mod.authorizeIntent(...(args as Parameters<typeof mod.authorizeIntent>));
     },
     authorizeIntents: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/capability-gate');
+      const mod = await import('@/dr-eams/ai/capability-gate');
       return mod.authorizeIntents(...(args as Parameters<typeof mod.authorizeIntents>));
     },
     hasCapability: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/capability-gate');
+      const mod = await import('@/dr-eams/ai/capability-gate');
       return mod.hasCapability(...(args as Parameters<typeof mod.hasCapability>));
     },
     meetsMinimumRole: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/capability-gate');
+      const mod = await import('@/dr-eams/ai/capability-gate');
       return mod.meetsMinimumRole(...(args as Parameters<typeof mod.meetsMinimumRole>));
     },
   };
 
   readonly confirm = {
     generateConfirmToken: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/confirm-token');
+      const mod = await import('@/dr-eams/ai/confirm-token');
       return mod.generateConfirmToken(...(args as Parameters<typeof mod.generateConfirmToken>));
     },
     verifyConfirmToken: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/confirm-token');
+      const mod = await import('@/dr-eams/ai/confirm-token');
       return mod.verifyConfirmToken(...(args as Parameters<typeof mod.verifyConfirmToken>));
     },
     storeConfirmToken: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/confirm-token');
+      const mod = await import('@/dr-eams/ai/confirm-token');
       return mod.storeConfirmToken(...(args as Parameters<typeof mod.storeConfirmToken>));
     },
     consumeConfirmToken: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/confirm-token');
+      const mod = await import('@/dr-eams/ai/confirm-token');
       return mod.consumeConfirmToken(...(args as Parameters<typeof mod.consumeConfirmToken>));
     },
   };
 
   readonly rateLimiter = {
     checkRateLimit: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/rate-limiter');
+      const mod = await import('@/dr-eams/ai/rate-limiter');
       return mod.checkRateLimit(...(args as Parameters<typeof mod.checkRateLimit>));
     },
     getCurrentRPM: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/rate-limiter');
+      const mod = await import('@/dr-eams/ai/rate-limiter');
       return mod.getCurrentRPM(...(args as Parameters<typeof mod.getCurrentRPM>));
     },
     getConfig: async () => {
-      const mod = await import('@/lib/ai/rate-limiter');
+      const mod = await import('@/dr-eams/ai/rate-limiter');
       return mod.RATE_LIMITS;
     },
   };
 
   readonly idempotency = {
     checkIdempotency: async (...args: unknown[]) => {
-      const mod = await import('@/lib/ai/idempotency');
+      const mod = await import('@/dr-eams/ai/idempotency');
       return mod.checkIdempotency(...(args as Parameters<typeof mod.checkIdempotency>));
     },
   };
@@ -277,19 +277,19 @@ class SecuritySurface {
   readonly boogieMan = {
     eventName: 'dreamengin:boogieman',
     createAgent: async (...args: unknown[]) => {
-      const mod = await import('@/lib/agents/boogieManAI');
+      const mod = await import('@/engine/agents/boogieManAI');
       return mod.createBoogieManAgent(...(args as Parameters<typeof mod.createBoogieManAgent>));
     },
     checkPolicy: async (...args: unknown[]) => {
-      const mod = await import('@/lib/agents/boogieManAI');
+      const mod = await import('@/engine/agents/boogieManAI');
       return mod.checkPolicy(...(args as Parameters<typeof mod.checkPolicy>));
     },
     emitEvent: async (...args: unknown[]) => {
-      const mod = await import('@/lib/agents/boogieManAI');
+      const mod = await import('@/engine/agents/boogieManAI');
       return mod.emitBoogieManEvent(...(args as Parameters<typeof mod.emitBoogieManEvent>));
     },
     onEvent: async (...args: unknown[]) => {
-      const mod = await import('@/lib/agents/boogieManAI');
+      const mod = await import('@/engine/agents/boogieManAI');
       return mod.onBoogieManEvent(...(args as Parameters<typeof mod.onBoogieManEvent>));
     },
   };

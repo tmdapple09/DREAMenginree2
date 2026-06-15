@@ -1,4 +1,4 @@
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // Framework directives stay physically first when required.
 

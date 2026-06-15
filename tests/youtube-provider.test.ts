@@ -31,7 +31,7 @@ describe('youtube provider discovery helpers', () => {
   it('falls back to API_KEY when YOUTUBE_API_KEY is not configured', async () => {
     process.env.API_KEY = 'shared-key';
 
-    const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/lib/connectors/providers/youtube');
+    const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/engine/connectors/providers/youtube');
 
     expect(getYouTubeApiKey()).toBe('shared-key');
     expect(getYouTubeAnalyticsApiKey()).toBe('shared-key');
@@ -42,7 +42,7 @@ describe('youtube provider discovery helpers', () => {
     process.env.YOUTUBE_API_KEY = 'youtube-key';
     process.env.YOUTUBE_ANALYTICS_API_KEY = 'youtube-analytics-key';
 
-    const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/lib/connectors/providers/youtube');
+    const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/engine/connectors/providers/youtube');
 
     expect(getYouTubeApiKey()).toBe('youtube-key');
     expect(getYouTubeAnalyticsApiKey()).toBe('youtube-analytics-key');
@@ -96,7 +96,7 @@ describe('youtube provider discovery helpers', () => {
       }), { status: 200 }));
 
     vi.stubGlobal('fetch', fetchMock);
-    const { youtubeDiscovery } = await import('@/lib/connectors/providers/youtube');
+    const { youtubeDiscovery } = await import('@/engine/connectors/providers/youtube');
 
     const items = await youtubeDiscovery('youtube-key', 3);
 
@@ -118,7 +118,7 @@ describe('youtube provider discovery helpers', () => {
       .mockResolvedValueOnce(new Response('boom', { status: 500, statusText: 'Internal Server Error' }));
 
     vi.stubGlobal('fetch', fetchMock);
-    const { youtubeDiscovery } = await import('@/lib/connectors/providers/youtube');
+    const { youtubeDiscovery } = await import('@/engine/connectors/providers/youtube');
 
     await expect(youtubeDiscovery('youtube-key', 5)).rejects.toThrow(
       'YouTube request failed: 500 Internal Server Error — boom',
@@ -143,7 +143,7 @@ describe('youtube provider discovery helpers', () => {
     );
 
     vi.stubGlobal('fetch', fetchMock);
-    const { youtubeSearchByQuery } = await import('@/lib/connectors/providers/youtube');
+    const { youtubeSearchByQuery } = await import('@/engine/connectors/providers/youtube');
 
     const items = await youtubeSearchByQuery('youtube-key', 'weed', 5);
 
@@ -164,7 +164,7 @@ describe('youtube provider discovery helpers', () => {
       new Response(JSON.stringify({ items: [] }), { status: 200 }),
     );
     vi.stubGlobal('fetch', fetchMock);
-    const { youtubeSearchByQuery } = await import('@/lib/connectors/providers/youtube');
+    const { youtubeSearchByQuery } = await import('@/engine/connectors/providers/youtube');
 
     await youtubeSearchByQuery('youtube-key', 'neil degrasse tyson', 999);
 
@@ -174,7 +174,7 @@ describe('youtube provider discovery helpers', () => {
 
   it('youtubeSearchByQuery rejects when API key is missing', async () => {
     vi.stubGlobal('fetch', vi.fn());
-    const { youtubeSearchByQuery } = await import('@/lib/connectors/providers/youtube');
+    const { youtubeSearchByQuery } = await import('@/engine/connectors/providers/youtube');
 
     await expect(youtubeSearchByQuery('', 'world news', 5)).rejects.toThrow(
       'YouTube API key is required.',

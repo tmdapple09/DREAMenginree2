@@ -20,7 +20,7 @@ import {
   CODE_VOCABULARY,
   type NLCommand,
   type CellLanguage,
-} from '@/lib/code/drEamsCodeAssist';
+} from '@/engins/codeengin/ai/drEamsCodeAssist';
 
 // ── VOCAB_TERMS sanity check ───────────────────────────────────────────────────
 

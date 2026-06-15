@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createInitialDreamState, move, returnHome, zoom } from '@/lib/navigation/dream-state';
+import { createInitialDreamState, move, returnHome, zoom } from '@/engine/navigation/dream-state';
 
 describe('dream-state transitions', () => {
   it('cycles same-direction nodes as 0 -> 3 -> 3b -> 0', () => {

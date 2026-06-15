@@ -1,6 +1,6 @@
 'use client';
 
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 
 // components/connectors/dream.NoSlotDialog.tsx
 // When no empty slot is available: "Place now" vs "Later" (req 33)

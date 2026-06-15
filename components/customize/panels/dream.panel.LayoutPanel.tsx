@@ -1,7 +1,7 @@
 'use client';
 
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
-import { type SkinLayout, type SkinShadow } from '@/lib/ui/skin-engine';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
+import { type SkinLayout, type SkinShadow } from '@/components/ui-system/skin-engine';
 import { SlidePanel } from './dream.panel.ColorPanel';
 
 const LAYOUTS: { id: SkinLayout; label: string; icon: string; desc: string }[] = [

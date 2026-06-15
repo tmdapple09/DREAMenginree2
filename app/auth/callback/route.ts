@@ -1,6 +1,6 @@
-import { resolveSafeNextPath } from "@/lib/auth/nextRedirect";
-import { SUPABASE_CONFIG } from "@/lib/supabase/config";
-import { createServerClientWithCustomCookies } from "@/lib/supabase/server";
+import { resolveSafeNextPath } from "@/supabase/auth/nextRedirect";
+import { SUPABASE_CONFIG } from "@/supabase/config";
+import { createServerClientWithCustomCookies } from "@/supabase/server/serverClient";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 

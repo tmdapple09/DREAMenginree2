@@ -1,8 +1,8 @@
 import GameEnginApp from '@/components/engines/games/dream.GameEnginApp';
-import { buildLoginRedirectPath } from '@/lib/auth/nextRedirect';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { buildLoginRedirectPath } from '@/supabase/auth/nextRedirect';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 

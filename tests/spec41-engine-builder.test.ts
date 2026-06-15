@@ -15,9 +15,9 @@ import {
   runAssembly,
   type AtomicPiece,
   type Wire,
-} from '@/lib/forge/engineForge';
-import { COMPONENT_INVENTORY } from '@/lib/componentInventory';
-import { createEventBus, createDualRuntimeHub } from '@/lib/eventBus';
+} from '@/engins/forgeengin/forge/engineForge';
+import { COMPONENT_INVENTORY } from '@/engins/forgeengin/componentInventory';
+import { createEventBus, createDualRuntimeHub } from '@/engine/events/eventBus';
 
 // ─── §41 Atomic piece catalog ─────────────────────────────────────────────────
 

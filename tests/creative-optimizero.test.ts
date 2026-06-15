@@ -13,7 +13,7 @@ import {
   type CreativeCandidate,
   type ScoreFunction,
   type HardFailCheck,
-} from '@/lib/optimizer/creative-optimizero';
+} from '@/optimizer/creative-optimizero';
 
 describe('CreativeOptimizero', () => {
   // Simple scorers for testing

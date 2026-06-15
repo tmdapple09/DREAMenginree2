@@ -18,10 +18,10 @@ import {
   CARTRIDGE_MANIFEST,
   getCartridgeManifest,
   getCartridgeCategories,
-} from '@/lib/gameengin/cartridges/manifest';
-import { CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge } from '@/lib/gameengin/cartridges/loaders';
+} from '@/engins/gameengin/cartridges/manifest';
+import { CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge } from '@/engins/gameengin/cartridges/loaders';
 import { GAMES } from '@/components/games/dream.GamesHub';
-import { GAME_CATALOG } from '@/lib/games/catalog';
+import { GAME_CATALOG } from '@/engins/gameengin/games/catalog';
 
 describe('GameEngin cartridge bay', () => {
   it('manifest is non-empty and ids are unique URL-safe slugs', () => {
@@ -57,7 +57,7 @@ describe('GameEngin cartridge bay', () => {
 
   it('GameEngin loads registered cartridges instead of wrapping components at runtime', () => {
     const engineSource = readFileSync(join(process.cwd(), 'engins', 'engin.GameEngin.tsx'), 'utf8');
-    expect(engineSource).toContain("import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';");
+    expect(engineSource).toContain("import { loadCartridge } from '@/engins/gameengin/cartridges/loaders';");
     expect(engineSource).not.toContain('wrapAsCartridge');
     expect(engineSource).not.toContain('ReactComponentCartridge');
   });

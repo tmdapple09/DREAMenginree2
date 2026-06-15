@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
+import { RuntimeContainer } from '@/engine/runtime/runtimeContainer';
 
 describe('RuntimeContainer', () => {
   it('runs injected logic without owning business rules', () => {

@@ -1,11 +1,11 @@
 'use client';
 
-import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
-import { createClient } from '@/lib/supabase/client';
+import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
+import { createClient } from '@/supabase/client/client';
 import { Image as ImageIcon, Loader2, Music, Send, Trash2, Video, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 interface CreatePostModalProps {
   onClose: () => void;

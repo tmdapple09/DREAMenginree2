@@ -1,7 +1,7 @@
-import { reconcileConnector } from '@/lib/connectors/reconcile';
-import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { reconcileConnector } from '@/engine/connectors/reconcile';
+import { DISPATCH_SUPPORTED_PROVIDERS } from '@/engine/connectors/syncDispatch';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { ConnectorSyncResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';

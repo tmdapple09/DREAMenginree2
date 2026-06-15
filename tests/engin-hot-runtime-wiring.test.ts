@@ -66,8 +66,8 @@ import {
   validateEnginCapabilityProfile,
   type EnginAction,
   type EnginRuleSetContract,
-} from '@/lib/engin-runtime';
-import { patchBaseState, type EnginBaseState } from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime';
+import { patchBaseState, type EnginBaseState } from '@/engine/engin-runtime/EnginBaseState';
 
 describe('DREAMengin hot runtime execution inventory', () => {
   it('routes hot actions through classifier, hot runtime, rings, typed memory, and deferred queues', () => {

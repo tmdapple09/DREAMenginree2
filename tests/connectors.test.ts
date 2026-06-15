@@ -18,7 +18,7 @@ import { describe, it, expect } from 'vitest';
 import {
   CONNECTOR_REGISTRY,
   getConnectorDef,
-} from '@/lib/connectors/connectorRegistry';
+} from '@/engine/connectors/connectorRegistry';
 import {
   stripHtml,
   hostFromUrl,
@@ -33,8 +33,8 @@ import {
   normaliseYouTubePlaylistItem,
   normaliseYouTubeSearchResult,
   deduplicateFeedItems,
-} from '@/lib/connectors/normalise';
-import { isValidNostrPubkey } from '@/lib/connectors/providers/nostr';
+} from '@/engine/connectors/normalise';
+import { isValidNostrPubkey } from '@/engine/connectors/providers/nostr';
 
 // ── A. ConnectorRegistry ──────────────────────────────────────────────────
 

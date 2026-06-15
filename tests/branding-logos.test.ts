@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import { getRandomLogo, resetLogoCache, LOGO_PATHS } from '@/lib/branding/logos';
+import { getRandomLogo, resetLogoCache, LOGO_PATHS } from '@/engins/brandingengin/identity/logos';
 
 describe('getRandomLogo', () => {
   beforeEach(() => {

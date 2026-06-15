@@ -2,7 +2,7 @@
 
 import { AlertCircle, Mic, Play, Square, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * StudioPanel — Recording studio panel for the Music Engine app.

@@ -1,6 +1,6 @@
-import type { QualityTier } from '@/lib/gameengin/core';
-import { EliteGameEngine } from '@/lib/gameengin/core';
-import { GameEnginRuntime } from '@/lib/gameengin/gameEnginRuntime';
+import type { QualityTier } from '@/engins/gameengin/core';
+import { EliteGameEngine } from '@/engins/gameengin/core';
+import { GameEnginRuntime } from '@/engins/gameengin/gameEnginRuntime';
 
 /**
  * src/core/GameEnginCore.ts

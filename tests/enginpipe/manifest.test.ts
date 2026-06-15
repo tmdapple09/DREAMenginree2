@@ -10,7 +10,7 @@ import {
   parseManifest,
   safeParseManifest,
   createManifest,
-} from '@/lib/enginpipe/artifact/manifest';
+} from '@/engins/forgeengin/enginpipe/artifact/manifest';
 
 describe('enginpipe / artifact manifest', () => {
   const minimal = {

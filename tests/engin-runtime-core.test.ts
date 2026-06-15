@@ -15,27 +15,27 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   createBaseState,
   patchBaseState,
-} from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime/EnginBaseState';
 import {
   gateCapability,
   mergeCapabilities,
   DEFAULT_USER_CAPABILITIES,
   DENY_ALL,
-} from '@/lib/engin-runtime/EnginCapabilities';
+} from '@/engine/engin-runtime/EnginCapabilities';
 import {
   MemoryAdapter,
   LocalStorageAdapter,
   enginStorageKey,
-} from '@/lib/engin-runtime/EnginIOAdapter';
-import { createEnginEventBus } from '@/lib/engin-runtime/EnginEventBus';
-import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
-import { CODE_ENGIN_RULE_SET } from '@/lib/engins/code/codeEnginRuleSet';
-import { createCustomEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
+} from '@/engine/engin-runtime/EnginIOAdapter';
+import { createEnginEventBus } from '@/engine/engin-runtime/EnginEventBus';
+import { EnginRuntime, createEnginRuntime } from '@/engine/engin-runtime';
+import { CODE_ENGIN_RULE_SET } from '@/engins/rulesets/code/codeEnginRuleSet';
+import { createCustomEnginCapabilityProfile } from '@/engine/engin-runtime/EnginCapabilityTargets';
 import type {
   EnginRuleSetContract,
   EnginAction,
-} from '@/lib/engin-runtime/EnginRuleSetContract';
-import type { EnginBaseState } from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime/EnginRuleSetContract';
+import type { EnginBaseState } from '@/engine/engin-runtime/EnginBaseState';
 
 // ─── Minimal stub rule-set for testing ───────────────────────────────────────
 
@@ -371,7 +371,7 @@ describe('EnginRuntime', () => {
 describe('universal domain object contract', () => {
   it('creates an explicitly owned and visible domain envelope', async () => {
     const { createDomainObject, isDomainObject } =
-      await import('@/lib/engin-runtime/EnginBaseState');
+      await import('@/engine/engin-runtime/EnginBaseState');
     const object = createDomainObject({
       id: 'asset-1',
       type: 'asset',
@@ -392,9 +392,9 @@ describe('universal domain object contract', () => {
 
   it('authorizes shared edits only with actor, runtime, scope, and collaboration grants', async () => {
     const { createDomainObject } =
-      await import('@/lib/engin-runtime/EnginBaseState');
+      await import('@/engine/engin-runtime/EnginBaseState');
     const { authorizeDomainCapability } =
-      await import('@/lib/engin-runtime/EnginCapabilities');
+      await import('@/engine/engin-runtime/EnginCapabilities');
     const object = createDomainObject({
       id: 'asset-1',
       type: 'asset',
@@ -450,7 +450,7 @@ describe('EnginRuntime recovery hooks', () => {
 describe('EnginRuntime contract hardening', () => {
   it('keeps helper-only timestamps out of the exact domain envelope', async () => {
     const { createDomainObject } =
-      await import('@/lib/engin-runtime/EnginBaseState');
+      await import('@/engine/engin-runtime/EnginBaseState');
     const object = createDomainObject({
       id: 'asset-2',
       type: 'asset',
@@ -476,9 +476,9 @@ describe('EnginRuntime contract hardening', () => {
 
   it('denies malformed authorization context instead of throwing during capability checks', async () => {
     const { createDomainObject } =
-      await import('@/lib/engin-runtime/EnginBaseState');
+      await import('@/engine/engin-runtime/EnginBaseState');
     const { authorizeDomainCapability } =
-      await import('@/lib/engin-runtime/EnginCapabilities');
+      await import('@/engine/engin-runtime/EnginCapabilities');
     const object = createDomainObject({
       id: 'asset-malformed-context',
       type: 'asset',
@@ -502,9 +502,9 @@ describe('EnginRuntime contract hardening', () => {
 
   it('does not infer admin access from ownership and keeps local objects in their runtime', async () => {
     const { createDomainObject } =
-      await import('@/lib/engin-runtime/EnginBaseState');
+      await import('@/engine/engin-runtime/EnginBaseState');
     const { authorizeDomainCapability } =
-      await import('@/lib/engin-runtime/EnginCapabilities');
+      await import('@/engine/engin-runtime/EnginCapabilities');
     const object = createDomainObject({
       id: 'asset-4',
       type: 'asset',
@@ -608,7 +608,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('publishes schema-versioned sync frames through an injected transport', async () => {
-    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const frames: Array<{
       enginId: string;
@@ -639,7 +639,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('rejects domain object envelopes with extra top-level keys', async () => {
-    const { isDomainObject } = await import('@/lib/engin-runtime');
+    const { isDomainObject } = await import('@/engine/engin-runtime');
     expect(
       isDomainObject({
         id: 'asset-extra',
@@ -657,7 +657,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('applies valid cross-runtime sync snapshots through the runtime subscriber', async () => {
-    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const sender = createEnginRuntime(counterRuleSet, {
       ioAdapter: new MemoryAdapter(),
@@ -679,7 +679,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('matches the AssemblyScript FNV-1a fingerprint algorithm in TypeScript', async () => {
-    const { hashBytesFNV1A } = await import('@/lib/engin-runtime');
+    const { hashBytesFNV1A } = await import('@/engine/engin-runtime');
     const bytes = new TextEncoder().encode('dreamengin');
     expect(hashBytesFNV1A(bytes).toString(16)).toBe('2b467b17');
   });
@@ -687,7 +687,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
 
   it('describes premium runtime quality for synced snapshots', async () => {
     const { createPremiumRuntimeQuality, fingerprintEnginSnapshot } =
-      await import('@/lib/engin-runtime');
+      await import('@/engine/engin-runtime');
     const state = createBaseState('premium-test');
     const fingerprint = fingerprintEnginSnapshot(state);
     const quality = createPremiumRuntimeQuality({
@@ -707,7 +707,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('stable snapshot strings and fingerprints ignore object key insertion order', async () => {
-    const { stableStringifySnapshot, fingerprintEnginSnapshot } = await import('@/lib/engin-runtime');
+    const { stableStringifySnapshot, fingerprintEnginSnapshot } = await import('@/engine/engin-runtime');
     const left: EnginBaseState = {
       enginId: 'test',
       lifecycle: 'running',
@@ -727,7 +727,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('rejects cross-runtime sync frames with mismatched fingerprints', async () => {
-    const { MemorySyncTransport, createPremiumRuntimeQuality } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport, createPremiumRuntimeQuality } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const receiver = createEnginRuntime(counterRuleSet, {
       ioAdapter: new MemoryAdapter(),
@@ -760,7 +760,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('rejects cross-runtime sync frames with impossible premium quality metadata', async () => {
-    const { MemorySyncTransport, createPremiumRuntimeQuality, fingerprintEnginSnapshot } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport, createPremiumRuntimeQuality, fingerprintEnginSnapshot } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const receiver = createEnginRuntime(counterRuleSet, {
       ioAdapter: new MemoryAdapter(),
@@ -795,7 +795,7 @@ describe('ι-Engine manifest, schema, compatibility, and sync transport', () => 
   });
 
   it('rejects non-JSON runtime state shapes instead of silently accepting class/function values', async () => {
-    const { isJsonSerializable, isEnginBaseState } = await import('@/lib/engin-runtime');
+    const { isJsonSerializable, isEnginBaseState } = await import('@/engine/engin-runtime');
     expect(isJsonSerializable({ ok: true, nested: [1, 'two', null] })).toBe(true);
     expect(isJsonSerializable({ when: new Date('2026-06-01T00:00:00.000Z') })).toBe(false);
     expect(isJsonSerializable({ fn: () => true })).toBe(false);
@@ -818,7 +818,7 @@ describe('EnginRuntime realtime execution fast paths', () => {
 
 
   it('flushes non-realtime actions immediately and cancels stale queued realtime work', async () => {
-    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const frames: unknown[] = [];
     transport.subscribe('code', (frame) => frames.push(frame));
@@ -846,7 +846,7 @@ describe('EnginRuntime realtime execution fast paths', () => {
   });
 
   it('coalesces realtime CodeEngin runtime work behind the execution kernel', async () => {
-    const { MemorySyncTransport } = await import('@/lib/engin-runtime');
+    const { MemorySyncTransport } = await import('@/engine/engin-runtime');
     const transport = new MemorySyncTransport();
     const frames: unknown[] = [];
     transport.subscribe('code', (frame) => frames.push(frame));

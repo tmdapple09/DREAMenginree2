@@ -1,16 +1,16 @@
-import { AI_AGENTS, type RuntimeRegion } from '@/lib/identity/canonical-names';
-import type { RuntimeWorld } from '@/lib/runtime/dualRuntime';
+import { AI_AGENTS, type RuntimeRegion } from '@/engine/identity/canonical-names';
+import type { RuntimeWorld } from '@/engine/runtime/dualRuntime';
 import {
   bridge,
   type AnyBridgeEmission,
   type DualRuntimeChannel,
-} from '@/lib/runtime/dualRuntimeBridge';
-import { RuntimeContainer } from '@/lib/runtime/runtimeContainer';
+} from '@/engine/runtime/dualRuntimeBridge';
+import { RuntimeContainer } from '@/engine/runtime/runtimeContainer';
 import {
   ENGIN_REGISTRY,
   INFORMATION_DOMAINS,
   type InformationDomain,
-} from '@/lib/forge/forgeRegistry';
+} from '@/engins/forgeengin/forge/forgeRegistry';
 import type { DreamArtifactBusEventMap } from '@/types/dreamArtifact';
 import {
   createCoherenceCapacity,
@@ -22,12 +22,12 @@ import {
   type JsonValue,
   type RuntimeCoherenceReport,
   type RuntimeLoad,
-} from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime/EnginBaseState';
 import {
   authorizeDomainCapability,
   type DomainAuthorizationContext,
   type DomainCapability,
-} from '@/lib/engin-runtime/EnginCapabilities';
+} from '@/engine/engin-runtime/EnginCapabilities';
 
 // Framework directives stay physically first when required.
 

@@ -4,7 +4,7 @@ import {
     isValidConnectionVerb,
     REJECTED_CONNECTION_VERBS,
     type ConnectionVerb,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 /**
  * connectionVerbs — Canonical connection verb system

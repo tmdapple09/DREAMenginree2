@@ -1,6 +1,6 @@
-import type { ConnectorStatus } from '@/lib/connectors/connectorRegistry';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { ConnectorStatus } from '@/engine/connectors/connectorRegistry';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 

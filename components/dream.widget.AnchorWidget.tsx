@@ -1,10 +1,10 @@
 'use client';
 
-import { AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK } from '@/lib/navigation/AnchorStateBuffer';
-import { AnchorWidgetStorage } from '@/lib/navigation/AnchorWidgetStorage';
-import { LAYER_HOME, LAYER_PROFILE, NavStateBuffer, PROFILE_DEPTH } from '@/lib/navigation/NavStateBuffer';
-import { ReturnStack } from '@/lib/navigation/ReturnStack';
-import { WidgetInstanceMemory } from '@/lib/navigation/WidgetInstanceMemory';
+import { AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK } from '@/engine/navigation/AnchorStateBuffer';
+import { AnchorWidgetStorage } from '@/engine/navigation/AnchorWidgetStorage';
+import { LAYER_HOME, LAYER_PROFILE, NavStateBuffer, PROFILE_DEPTH } from '@/engine/navigation/NavStateBuffer';
+import { ReturnStack } from '@/engine/navigation/ReturnStack';
+import { WidgetInstanceMemory } from '@/engine/navigation/WidgetInstanceMemory';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Constants

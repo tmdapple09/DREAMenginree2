@@ -1,7 +1,7 @@
 'use client';
 
 import { Component, useEffect, type ErrorInfo, type ReactNode } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx

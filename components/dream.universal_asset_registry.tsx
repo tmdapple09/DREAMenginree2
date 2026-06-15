@@ -1,8 +1,8 @@
 "use client";
 
-import { useForgeActivity } from "@/lib/forge/useForgeActivity";
-import { createClient } from "@/lib/supabase/client";
-import { safeGetUser } from "@/lib/supabase/safeGetUser";
+import { useForgeActivity } from "@/engins/forgeengin/forge/useForgeActivity";
+import { createClient } from "@/supabase/client/client";
+import { safeGetUser } from "@/supabase/client/safeGetUser";
 import {
   Box,
   Check,
@@ -37,7 +37,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { toErrorMessage } from "@/lib/utils";
+import { toErrorMessage } from "@/utils/index";
 
 /**
  * UniversalAssetRegistry — Platform-wide asset discovery and management surface.

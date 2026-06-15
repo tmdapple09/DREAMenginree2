@@ -1,5 +1,5 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { Surface } from '@/types/widget-system-v2';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';

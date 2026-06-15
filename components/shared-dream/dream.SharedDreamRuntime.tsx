@@ -1,7 +1,7 @@
 "use client";
 
-import { bridge } from "@/lib/runtime/dualRuntimeBridge";
-import { useSharedDreamSession } from "@/lib/sharedDream/useSharedDreamSession";
+import { bridge } from "@/engine/runtime/dualRuntimeBridge";
+import { useSharedDreamSession } from "@/engine/sharedDream/useSharedDreamSession";
 import React, { useCallback, useEffect, useState } from "react";
 import { InviteFlow } from "./dream.InviteFlow";
 import { SharedDreamCanvas } from "./dream.SharedDreamCanvas";

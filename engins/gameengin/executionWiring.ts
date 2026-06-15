@@ -17,9 +17,9 @@ import { SprintDetector } from './remote/sprintDetector';
 import { CARTRIDGE_MANIFEST } from './cartridges/manifest';
 import { CARTRIDGE_LOADERS, assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders } from './cartridges/loaders';
 import { ENGINE_VERSION, engineSatisfies, type CartridgeInputEvent, type GameCartridge } from './cartridge';
-import { invokeMadMaxiSnapshotTransfer } from '@/lib/runtime/madMaxiSnapshotBridge';
+import { invokeMadMaxiSnapshotTransfer } from '@/engine/runtime/madMaxiSnapshotBridge';
 import * as CartridgeIndex from './cartridges/index';
-import * as ControlMappings from './control-mappings';
+import * as ControlMappings from './controls/control-mappings';
 import * as DreamEngineModule from './dream-engine';
 import * as DreamrCartridgeLoader from './cartridgeLoader';
 import * as LegacyGameRuntime from './gameEnginRuntime';
@@ -34,8 +34,8 @@ import * as PoolingSystems from './systems/pooling';
 import * as RenderingSystems from './systems/rendering';
 import * as SpatialSystems from './systems/spatial';
 import * as WorldSystems from './systems/world';
-import * as GameRuleSetIndex from '@/lib/engins/game';
-import * as LucidAvenueWorld from '@/lib/games/madmaxi-wildfall-world';
+import * as GameRuleSetIndex from '@/engins/rulesets/game';
+import * as LucidAvenueWorld from '@/engins/gameengin/games/madmaxi-wildfall-world';
 import * as UnifiedLoopHook from './useUnifiedLoop';
 
 /**

@@ -6,7 +6,7 @@ import {
   buildReleaseStrategy,
   createMelodySuggestions,
   summarizePlaybackProfile,
-} from '@/lib/music/starmaker';
+} from '@/engins/starmakerengin/music/starmaker';
 
 import {
   midiPitchToName,
@@ -20,7 +20,7 @@ import {
   audioQualityLabel,
   AUDIO_QUALITY_PRESETS,
   PIANO_ROLL_DEFAULTS,
-} from '@/lib/music/starmakerDaw';
+} from '@/engins/starmakerengin/music/starmakerDaw';
 
 const starmakerSource = fs.readFileSync(
   path.join(process.cwd(), 'engins/engin.StarMakerEngin.tsx'),
@@ -211,7 +211,7 @@ describe('StarMaker sample editor advanced workflow', () => {
 
   it('gives arrangement its own dedicated file structure and shared model module', () => {
     expect(starmakerSource).toContain("@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel");
-    expect(starmakerSource).toContain("@/lib/music/starmakerArrangement");
+    expect(starmakerSource).toContain("@/engins/starmakerengin/music/starmakerArrangement");
     expect(arrangementModelSource).toContain('export const ARRANGEMENT_BARS = 16');
     expect(arrangementModelSource).toContain('export interface ArrangementClip');
   });
@@ -357,7 +357,7 @@ describe('PianoRollPanel', () => {
   });
 
   it('uses the starmakerDaw model module', () => {
-    expect(pianoRollSource).toContain('@/lib/music/starmakerDaw');
+    expect(pianoRollSource).toContain('@/engins/starmakerengin/music/starmakerDaw');
     expect(pianoRollSource).toContain('isBlackKey');
     expect(pianoRollSource).toContain('midiPitchToName');
     expect(pianoRollSource).toContain('snapToGrid');
@@ -380,7 +380,7 @@ describe('CompingPanel', () => {
 
   it('is inspired by Pro Tools playlist workflow', () => {
     expect(compingSource).toContain('Pro Tools Playlist comping workflow');
-    expect(compingSource).toContain('@/lib/music/starmakerDaw');
+    expect(compingSource).toContain('@/engins/starmakerengin/music/starmakerDaw');
   });
 });
 
@@ -400,7 +400,7 @@ describe('SessionViewPanel', () => {
 
   it('references Ableton Live in attribution', () => {
     expect(sessionViewSource).toContain('Ableton Live Session View');
-    expect(sessionViewSource).toContain('@/lib/music/starmakerDaw');
+    expect(sessionViewSource).toContain('@/engins/starmakerengin/music/starmakerDaw');
   });
 });
 
@@ -421,7 +421,7 @@ describe('StarMakerEngin industry-standard DAW panel integration', () => {
   });
 
   it('exports from starmakerDaw module', () => {
-    expect(starmakerSource).toContain('@/lib/music/starmakerDaw');
+    expect(starmakerSource).toContain('@/engins/starmakerengin/music/starmakerDaw');
     expect(dawModelSource).toContain('export interface MidiNote');
     expect(dawModelSource).toContain('export interface AudioTake');
     expect(dawModelSource).toContain('export interface SessionViewState');

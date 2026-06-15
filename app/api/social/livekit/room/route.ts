@@ -1,6 +1,6 @@
-import type { LiveKitRoomInfo } from '@/lib/social/livekit';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { LiveKitRoomInfo } from '@/engine/social/livekit';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**

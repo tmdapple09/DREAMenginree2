@@ -1,7 +1,7 @@
 'use client';
 
 import { useTapHoldMove } from '@/hooks/useTapHoldMove';
-import type { ModuleManifest, RuntimeId } from '@/lib/universalEditor';
+import type { ModuleManifest, RuntimeId } from '@/engine/editor/universalEditor';
 import React, { useRef } from 'react';
 
 /**

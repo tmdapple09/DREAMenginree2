@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server';
+import { createServerClient } from '@/supabase/server/serverClient';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 interface PlatformErrorRow {

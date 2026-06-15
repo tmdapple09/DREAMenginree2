@@ -1,7 +1,7 @@
-import { sortByVisibilityScore } from '@/lib/activity/visibility-score';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { sortByVisibilityScore } from '@/dreamr/activity/visibility-score';
+import { getPrimaryPostMediaUrl } from '@/engins/contentengin/media/postMedia';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

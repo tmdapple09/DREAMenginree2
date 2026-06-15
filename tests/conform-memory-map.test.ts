@@ -31,7 +31,7 @@ import {
   writeBarSeam,
   readBarSeam,
   boogieMemoryGuard,
-} from '@/lib/runtime/memory';
+} from '@/engine/runtime/memory';
 
 beforeEach(() => {
   _resetConformMemoryMap();

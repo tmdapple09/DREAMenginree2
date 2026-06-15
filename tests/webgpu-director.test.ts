@@ -26,7 +26,7 @@ import {
   type DirectorBabylonEngine,
   type DirectorBabylonScene,
   type DirectorBabylonMesh,
-} from '@/lib/webgpu/director';
+} from '@/engine/rendering/webgpu/director';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-import { BOOGIE_POLICY_VERSION } from '@/lib/ai/boogie-policy';
+import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
 import { NextResponse } from 'next/server';
 
 // app/api/ai/boogieman/status/route.ts

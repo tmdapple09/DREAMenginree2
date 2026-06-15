@@ -9,8 +9,8 @@ import {
   BabylonUIGenerator,
   BABYLON_HARD_CHECKS,
   type BabylonUICandidate,
-} from '@/lib/optimizer/babylon-optimizero';
-import { DEFAULT_WEIGHTS, CHAOS_WEIGHTS, type CreativeCandidate } from '@/lib/optimizer/creative-optimizero';
+} from '@/optimizer/babylon-optimizero';
+import { DEFAULT_WEIGHTS, CHAOS_WEIGHTS, type CreativeCandidate } from '@/optimizer/creative-optimizero';
 
 describe('BabylonUIOptimizero', () => {
   describe('BabylonOptimizeroScorers', () => {

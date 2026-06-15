@@ -1,8 +1,8 @@
 'use client';
 
 import PlatformBadge from '@/components/ui/dream.PlatformBadge';
-import { PROFILE_SHARE_PLATFORMS } from '@/lib/social/platforms';
-import { createClient } from '@/lib/supabase/client';
+import { PROFILE_SHARE_PLATFORMS } from '@/engine/social/platforms';
+import { createClient } from '@/supabase/client/client';
 import {
     BarChart3,
     Check,
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 type Profile = {
   id: string;

@@ -1,9 +1,9 @@
 "use client";
 
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
-import { createClient } from "@/lib/supabase/client";
-import { safeGetUser } from "@/lib/supabase/safeGetUser";
-import { buildAuthCallbackUrl } from "@/lib/supabase/config";
+import { createClient } from "@/supabase/client/client";
+import { safeGetUser } from "@/supabase/client/safeGetUser";
+import { buildAuthCallbackUrl } from "@/supabase/config";
 import {
   AlertTriangle,
   Check,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { toErrorMessage } from "@/lib/utils";
+import { toErrorMessage } from "@/utils/index";
 
 // SURFACE: dreamsurface.SettingsSecurity  (framework-mandated basename: page.tsx)
 

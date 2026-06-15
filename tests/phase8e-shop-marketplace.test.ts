@@ -29,7 +29,7 @@ import {
   normalizeShopListing,
   isOrderOwner,
   SHOP_ORDERS_PRIVATE_FIELDS,
-} from '@/lib/shop/listings';
+} from '@/engine/shop/listings';
 
 import {
   MARKETPLACE_TABLE,
@@ -42,13 +42,13 @@ import {
   normalizeMarketplaceListing,
   marketplaceDetailRoute,
   formatMarketplacePrice,
-} from '@/lib/marketplace/listings';
+} from '@/engine/marketplace/listings';
 
 import {
   validateContactRequest,
   buildContactRequestRecord,
   CONTACT_REQUEST_MESSAGE_MAX,
-} from '@/lib/marketplace/request';
+} from '@/engine/marketplace/request';
 
 // ── Helper: read migration file ───────────────────────────────────────────────
 

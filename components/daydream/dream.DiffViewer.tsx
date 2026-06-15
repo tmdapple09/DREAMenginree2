@@ -10,7 +10,7 @@ import {
     prevHunkIndex,
     type DiffFile,
     type FullFileLine,
-} from '@/lib/diff/diffUtils';
+} from '@/engins/codeengin/diff/diffUtils';
 import { ChevronDown, ChevronsUpDown, ChevronUp, Minimize2 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
@@ -311,7 +311,7 @@ export default function DiffViewer({
             cursor: 'pointer',
           }}
         >
-          {markers.map((m: import('@/lib/diff/diffUtils').HunkScrollMarker) => (
+          {markers.map((m: import('@/engins/codeengin/diff/diffUtils').HunkScrollMarker) => (
             <div
               key={m.hunkIndex}
               onClick={() => handleMinimapClick(m.hunkIndex)}

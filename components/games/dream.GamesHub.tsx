@@ -1,17 +1,17 @@
 'use client';
 
-import { getAvatarDataUrl, setPlayAsMe } from '@/lib/games/avatar';
-import { GAME_CATALOG, type GameCatalogEntry } from '@/lib/games/catalog';
+import { getAvatarDataUrl, setPlayAsMe } from '@/engins/gameengin/games/avatar';
+import { GAME_CATALOG, type GameCatalogEntry } from '@/engins/gameengin/games/catalog';
 import {
     GAME_LIBRARY_SELECTION_STORAGE_KEY,
     GAME_LIBRARY_SESSION_STORAGE_KEY,
     type SavedGameSession,
     upsertSavedGameSession,
-} from '@/lib/games/library-state';
-import { buildGameLaunchHref, resolveGameLaunchId } from '@/lib/games/navigation';
-import { useGsapEntrance } from '@/lib/gsap/useGsapEntrance';
-import { useGsapScrollReveal } from '@/lib/gsap/useGsapScrollReveal';
-import { useMotionTilt } from '@/lib/hooks/useMotionTilt';
+} from '@/engins/gameengin/games/library-state';
+import { buildGameLaunchHref, resolveGameLaunchId } from '@/engins/gameengin/games/navigation';
+import { useGsapEntrance } from '@/engine/animation/gsap/useGsapEntrance';
+import { useGsapScrollReveal } from '@/engine/animation/gsap/useGsapScrollReveal';
+import { useMotionTilt } from '@/hooks/useMotionTilt';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamicImport from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';

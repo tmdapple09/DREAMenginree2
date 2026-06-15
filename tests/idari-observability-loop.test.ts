@@ -19,24 +19,24 @@ import {
   type LogEntry,
   type MetricPoint,
   type TraceSpan,
-} from '@/lib/observability/collector';
+} from '@/engine/observability/collector';
 import {
   detectErrorSpikes,
   detectLatencySpikes,
   detectMetricAnomalies,
   correlate,
   type AnomalySignal,
-} from '@/lib/observability/correlator';
-import { inferRootCause } from '@/lib/observability/rootCauseAnalyzer';
-import { buildImmediateRemediationAction } from '@/lib/observability/immediateAction';
+} from '@/engine/observability/correlator';
+import { inferRootCause } from '@/engine/observability/rootCauseAnalyzer';
+import { buildImmediateRemediationAction } from '@/engine/observability/immediateAction';
 import {
   buildIdariPrompt,
   buildFallbackPatchPlan,
   runLoopIteration,
-} from '@/lib/agents/idariLoop';
-import type { TelemetrySnapshot } from '@/lib/observability/collector';
-import type { CorrelationResult } from '@/lib/observability/correlator';
-import type { RootCauseAnalysis } from '@/lib/observability/rootCauseAnalyzer';
+} from '@/engine/agents/idariLoop';
+import type { TelemetrySnapshot } from '@/engine/observability/collector';
+import type { CorrelationResult } from '@/engine/observability/correlator';
+import type { RootCauseAnalysis } from '@/engine/observability/rootCauseAnalyzer';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

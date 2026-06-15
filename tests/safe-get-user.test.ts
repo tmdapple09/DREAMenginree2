@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 
 describe('safeGetUser', () => {
   afterEach(() => {

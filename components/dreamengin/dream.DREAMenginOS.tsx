@@ -3,24 +3,24 @@
 import CanvasDropZone, {
   type AssetImportPayload,
 } from "@/components/dreamengin/dream.CanvasDropZone";
-import { onIdariEvent, type IdariEventDetail } from "@/lib/agents/agentBus";
-import { createBabylonEngine } from "@/lib/babylon/createEngine";
+import { onIdariEvent, type IdariEventDetail } from "@/engine/agents/agentBus";
+import { createBabylonEngine } from "@/engine/rendering/babylon/createEngine";
 import {
   DREAMENGIN_OS_SUBSYSTEM_MANIFEST,
   type DreamenginOSSubsystemNode,
-} from "@/lib/dreamengin/osSubsystemManifest";
-import type { RuntimeRegion } from "@/lib/identity/canonical-names";
-import { useSessionIntelligence } from "@/lib/intelligence/useSessionIntelligence";
+} from "@/engine/manifests/osSubsystemManifest";
+import type { RuntimeRegion } from "@/engine/identity/canonical-names";
+import { useSessionIntelligence } from "@/engine/intelligence/useSessionIntelligence";
 import {
   dreamOSBus,
   type DreamOSSharedArtifact,
   type RuntimeContext,
-} from "@/lib/runtime/dreamOSBus";
-import { bridge, type PeerState } from "@/lib/runtime/dualRuntimeBridge";
+} from "@/engine/runtime/dreamOSBus";
+import { bridge, type PeerState } from "@/engine/runtime/dualRuntimeBridge";
 import {
   EnginDispatcher,
   type DispatcherStats,
-} from "@/lib/runtime/EnginDispatcher";
+} from "@/engine/runtime/EnginDispatcher";
 import type { AbstractEngine, Scene as BabylonScene } from "@babylonjs/core";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 

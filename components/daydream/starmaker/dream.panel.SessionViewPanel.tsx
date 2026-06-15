@@ -3,7 +3,7 @@
 import {
     type SessionTrack,
     type SessionViewState,
-} from '@/lib/music/starmakerDaw';
+} from '@/engins/starmakerengin/music/starmakerDaw';
 import { Mic2, Radio, Square, StopCircle, Volume2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

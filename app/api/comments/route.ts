@@ -1,11 +1,11 @@
-import { scanContent } from '@/lib/child-safety/childSafetyDetector';
-import { reportChildSafetyIncident } from '@/lib/child-safety/ncmecReporter';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { scanContent } from '@/engine/safety/child-safety/childSafetyDetector';
+import { reportChildSafetyIncident } from '@/engine/safety/child-safety/ncmecReporter';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 const PostCommentSchema = z.object({
   post_id: z.string().uuid({ message: 'post_id must be a valid UUID' }),

@@ -38,7 +38,7 @@ import {
   CONFIRMATION_REQUIRED,
   type EditableCell,
   type EditPreview,
-} from '@/lib/diff/aiEditEngine';
+} from '@/engins/codeengin/diff/aiEditEngine';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 

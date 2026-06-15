@@ -1,6 +1,6 @@
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import {
     ArrowLeft,
     Bot,

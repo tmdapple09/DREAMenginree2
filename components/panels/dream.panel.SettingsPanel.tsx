@@ -1,9 +1,9 @@
 'use client';
 
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import type { SystemPanelId } from '@/components/panels/panelTypes';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import {
     Bot,
     ChevronRight,

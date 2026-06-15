@@ -1,6 +1,6 @@
 'use client';
 
-import { PROFILE_SHARE_PLATFORMS, type SocialPlatform } from '@/lib/social/platforms';
+import { PROFILE_SHARE_PLATFORMS, type SocialPlatform } from '@/engine/social/platforms';
 import { Check, Copy, ExternalLink, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 

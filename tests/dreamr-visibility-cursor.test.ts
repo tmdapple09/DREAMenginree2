@@ -15,12 +15,12 @@
 import { describe, it, expect } from 'vitest';
 import {
   filterByCloseFriends,
-} from '@/lib/dreamr/closeFriendsVisibility';
+} from '@/dreamr/runtime/closeFriendsVisibility';
 import {
   parseFeedParams,
   deriveNextCursor,
   MAX_SEEN_IDS,
-} from '@/lib/dreamr/feedCursor';
+} from '@/dreamr/runtime/feedCursor';
 
 // ── filterByCloseFriends ─────────────────────────────────────────────────────
 

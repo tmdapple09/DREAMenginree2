@@ -5,7 +5,7 @@ const ORIGINAL_ENV = process.env
 async function importSupabaseConfig(env: NodeJS.ProcessEnv) {
   vi.resetModules()
   process.env = env
-  return import('@/lib/supabase/config')
+  return import('@/supabase/config')
 }
 
 describe('lib/supabase/config', () => {

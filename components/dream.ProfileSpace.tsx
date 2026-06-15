@@ -1,6 +1,6 @@
 'use client';
 
-import type { WidgetInstanceRecord } from '@/lib/navigation/WidgetInstanceMemory';
+import type { WidgetInstanceRecord } from '@/engine/navigation/WidgetInstanceMemory';
 import { DragHandle, DragToAnchorClose } from './dream.DragToAnchorClose';
 
 interface ProfileSpaceProps {

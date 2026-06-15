@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { engine } from '@/lib/engine';
+import { engine } from '@/engine';
 
 afterEach(() => {
   engine.shutdown();

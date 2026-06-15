@@ -1,6 +1,6 @@
 'use client';
 
-import type { GameCartridge, GameEngineAPI } from '@/lib/gameengin/cartridge';
+import type { GameCartridge, GameEngineAPI } from '@/engins/gameengin/cartridge';
 import { getCartridgeManifest, type CartridgeManifestEntry } from './manifest';
 import { createContext, createElement, useContext, type ComponentType } from 'react';
 import { createRoot, type Root } from 'react-dom/client';

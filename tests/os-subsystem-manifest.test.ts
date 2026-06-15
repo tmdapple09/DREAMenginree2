@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   DREAMENGIN_OS_SUBSYSTEM_MANIFEST,
   buildDreamenginOSSubsystemManifest,
-} from '@/lib/dreamengin/osSubsystemManifest';
+} from '@/engine/manifests/osSubsystemManifest';
 
 describe('DREAMengin OS subsystem manifest', () => {
   it('registers AI, daydream, engin, connector, and runtime families', () => {

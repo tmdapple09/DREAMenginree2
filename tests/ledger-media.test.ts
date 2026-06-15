@@ -8,7 +8,7 @@ import {
   encodeBlobToLedger,
   encodeToLedger,
   encodeUint8ArrayToLedgerString,
-} from '@/lib/media/ledger';
+} from '@/engins/contentengin/media/ledger';
 
 describe('ledger media helpers', () => {
   it('round-trips numeric ledger values', () => {

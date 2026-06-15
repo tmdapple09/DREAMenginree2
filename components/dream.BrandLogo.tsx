@@ -1,6 +1,6 @@
 'use client';
 
-import { getRandomLogo, LOGO_PATHS } from '@/lib/branding/logos';
+import { getRandomLogo, LOGO_PATHS } from '@/engins/brandingengin/identity/logos';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 

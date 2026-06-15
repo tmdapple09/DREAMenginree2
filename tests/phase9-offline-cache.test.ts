@@ -16,7 +16,7 @@ import type {
   SceneSnapshot,
   SceneObject,
   SyncQueueEntry,
-} from '@/lib/offline/offlineCache';
+} from '@/engine/offline/offlineCache';
 
 // ─── Type contract tests ──────────────────────────────────────────────────────
 
@@ -98,13 +98,13 @@ describe('Offline Cache — type contracts', () => {
 
 describe('Offline Cache — connectivity', () => {
   it('isOnline returns boolean', async () => {
-    const { isOnline } = await import('@/lib/offline/offlineCache');
+    const { isOnline } = await import('@/engine/offline/offlineCache');
     // In Node, navigator.onLine may be undefined — isOnline defaults to true
     expect(typeof isOnline()).toBe('boolean');
   });
 
   it('onConnectivityChange returns unsubscribe function', async () => {
-    const { onConnectivityChange } = await import('@/lib/offline/offlineCache');
+    const { onConnectivityChange } = await import('@/engine/offline/offlineCache');
     const unsub = onConnectivityChange(() => {});
     expect(typeof unsub).toBe('function');
     unsub(); // should not throw
@@ -121,7 +121,7 @@ describe('Offline Cache — constants', () => {
       STORE_ASSETS,
       STORE_SCENES,
       STORE_SYNC_QUEUE,
-    } = await import('@/lib/offline/offlineCache');
+    } = await import('@/engine/offline/offlineCache');
 
     expect(DB_NAME).toBe('dreamengin-offline');
     expect(DB_VERSION).toBe(1);

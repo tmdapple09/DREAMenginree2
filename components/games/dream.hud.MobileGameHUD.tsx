@@ -13,7 +13,7 @@ import {
     type MobileControlVector,
     type MobileHudButton,
     type MobileHudMode,
-} from '@/lib/games/mobileControls';
+} from '@/engins/gameengin/games/mobileControls';
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

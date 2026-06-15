@@ -12,7 +12,7 @@ import { EnginRuntime } from './EnginRuntime';
  * Barrel export for the universal Engin Runtime Engine.
  *
  * Usage:
- *   import { EnginRuntime, createEnginRuntime } from '@/lib/engin-runtime';
+ *   import { EnginRuntime, createEnginRuntime } from '@/engine/engin-runtime';
  */
 
 // Runtime law comments and invariants stay attached to the code they govern.

@@ -52,7 +52,7 @@ import {
   isValidRuntimeRegion,
   isValidSurfaceName,
   isRouteLawPreferredName,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 // ---------------------------------------------------------------------------
 // Platform name

@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import type { ModuleManifest, RuntimeId } from '../universalEditor';
-import { canTransfer } from '../universalEditor';
+import type { ModuleManifest, RuntimeId } from '@/engine/editor/universalEditor';
+import { canTransfer } from '@/engine/editor/universalEditor';
 
 /**
  * useTapHoldMove — Tap / Hold / Drag-to-Edge transfer hook

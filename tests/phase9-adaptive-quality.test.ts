@@ -12,7 +12,7 @@ import {
   resolveQualityTier,
   type DeviceSignals,
   type QualityTier,
-} from '@/lib/webgpu/adaptiveQuality';
+} from '@/engine/rendering/webgpu/adaptiveQuality';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

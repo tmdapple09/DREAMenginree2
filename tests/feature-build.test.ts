@@ -16,7 +16,7 @@ import {
   FEATURE_MANIFESTS,
   getManifest,
   type DaydreamEnginManifest,
-} from '@/lib/feature-build/featureManifest';
+} from '@/engine/feature-build/featureManifest';
 
 import {
   getBuildPhase,
@@ -27,18 +27,18 @@ import {
   computeAllBuildCycleStates,
   allPairsInRefinePhase,
   allPairsMovingForward,
-} from '@/lib/feature-build/buildCycle';
+} from '@/engine/feature-build/buildCycle';
 
 import {
   SICC_GLOBAL_CRITERIA,
   SICC_DIMENSIONS,
   getCriteriaForDimension,
-} from '@/lib/feature-build/uiQualityCriteria';
+} from '@/engine/feature-build/uiQualityCriteria';
 
 import {
   DAYDREAM_DOMAINS,
   ENGIN_SURFACES,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 const VALID_DAYDREAM_DOMAINS = Object.values(DAYDREAM_DOMAINS);
 const VALID_ENGIN_SURFACES   = Object.values(ENGIN_SURFACES);

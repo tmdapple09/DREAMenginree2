@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_DUAL_RUNTIME } from '@/lib/runtime/dualRuntime';
+import { DEFAULT_DUAL_RUNTIME } from '@/engine/runtime/dualRuntime';
 import {
   IntentBus,
   authorizeCapability,
@@ -9,7 +9,7 @@ import {
   dualRuntimeRuleSet,
   negotiateCompatibility,
   validateDomainObject,
-} from '@/lib/runtime/iEngine';
+} from '@/engine/runtime/iEngine';
 
 const actor = {
   actorId: 'owner-1',

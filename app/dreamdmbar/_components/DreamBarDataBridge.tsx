@@ -1,12 +1,12 @@
 'use client';
 
 import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
-import { EnginDispatcher } from '@/lib/runtime/EnginDispatcher';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { createClient } from '@/lib/supabase/client';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
+import type { SystemPanelId } from '@/components/panels/panelTypes';
+import { EnginDispatcher } from '@/engine/runtime/EnginDispatcher';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
+import { createClient } from '@/supabase/client/client';
 import { useCallback, useEffect } from 'react';
 
 type ProfileLike = {

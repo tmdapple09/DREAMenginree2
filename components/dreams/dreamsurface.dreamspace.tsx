@@ -4,26 +4,26 @@ import DreamSpace from '@/app/dreamdmbar/_components/DreamSpaceRegion';
 import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import SpatialProfileSpace from '@/components/spatial/dream.ProfileSpace';
 import UniversalWidget from '@/components/widgets/dream.widget.UniversalWidget';
-import { useDreamsRuntime } from '@/lib/dreams/useDreamsRuntime';
+import { useDreamsRuntime } from '@/engine/dreams/useDreamsRuntime';
 import {
     generateSuggestions,
     readForgeHistory,
     type ForgeHistoryEntry,
     type ForgeSuggestion,
-} from '@/lib/forge/forgeIntelligence';
+} from '@/engins/forgeengin/forge/forgeIntelligence';
 import {
     computeMomentum,
     getLevelColor,
     type MomentumLevel,
     type MomentumSnapshot,
-} from '@/lib/forge/forgeMomentum';
+} from '@/engins/forgeengin/forge/forgeMomentum';
 import {
     ENGIN_REGISTRY,
     readForgeActivity,
     type ForgeActivityPulse,
-} from '@/lib/forge/forgeRegistry';
-import { resolveResumeDest } from '@/lib/intelligence/continuityHelpers';
-import { useSessionIntelligence } from '@/lib/intelligence/useSessionIntelligence';
+} from '@/engins/forgeengin/forge/forgeRegistry';
+import { resolveResumeDest } from '@/engine/intelligence/continuityHelpers';
+import { useSessionIntelligence } from '@/engine/intelligence/useSessionIntelligence';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';

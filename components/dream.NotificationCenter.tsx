@@ -1,7 +1,7 @@
 'use client';
 
-import type { UiNotification, UiNotificationType } from '@/lib/notifications/notificationHelpers';
-import { useNotifications } from '@/lib/notifications/useNotifications';
+import type { UiNotification, UiNotificationType } from '@/dreamdmbar/notifications/notificationHelpers';
+import { useNotifications } from '@/dreamdmbar/notifications/useNotifications';
 import {
     Bell,
     Check,

@@ -1,4 +1,4 @@
-import { createEventBus, type EventBus } from '../../eventBus';
+import { createEventBus, type EventBus } from '@/engine/events/eventBus';
 import { resolveFrameBudget, type GameEnginQualityTier } from './runtime/FrameBudget';
 import { decideRuntimeQuality } from './runtime/RuntimeQuality';
 

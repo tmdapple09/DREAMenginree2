@@ -6,7 +6,7 @@ import {
   ParticleSoAKernel,
   RayGridAccelerator,
   createEnginCapabilityExecutionKernel,
-} from '@/lib/engin-runtime/EnginCapabilityExecution';
+} from '@/engine/engin-runtime/EnginCapabilityExecution';
 import {
   CANONICAL_ENGIN_IDS,
   ENGIN_CAPABILITY_PROFILES,
@@ -15,13 +15,13 @@ import {
   createCustomEnginCapabilityProfile,
   validateCanonicalEnginCapabilityProfiles,
   validateEnginCapabilityProfile,
-} from '@/lib/engin-runtime/EnginCapabilityTargets';
-import { BRAND_ENGIN_RULE_SET } from '@/lib/engins/brand/brandEnginRuleSet';
-import { CODE_ENGIN_RULE_SET } from '@/lib/engins/code/codeEnginRuleSet';
-import { CONTENT_ENGIN_RULE_SET } from '@/lib/engins/content/contentEnginRuleSet';
-import { GAME_ENGIN_RULE_SET } from '@/lib/engins/game/gameEnginRuleSet';
-import { LAB_ENGIN_RULE_SET } from '@/lib/engins/lab/labEnginRuleSet';
-import { STAR_MAKER_ENGIN_RULE_SET } from '@/lib/engins/music/starMakerEnginRuleSet';
+} from '@/engine/engin-runtime/EnginCapabilityTargets';
+import { BRAND_ENGIN_RULE_SET } from '@/engins/rulesets/brand/brandEnginRuleSet';
+import { CODE_ENGIN_RULE_SET } from '@/engins/rulesets/code/codeEnginRuleSet';
+import { CONTENT_ENGIN_RULE_SET } from '@/engins/rulesets/content/contentEnginRuleSet';
+import { GAME_ENGIN_RULE_SET } from '@/engins/rulesets/game/gameEnginRuleSet';
+import { LAB_ENGIN_RULE_SET } from '@/engins/rulesets/lab/labEnginRuleSet';
+import { STAR_MAKER_ENGIN_RULE_SET } from '@/engins/rulesets/music/starMakerEnginRuleSet';
 
 const RULE_SETS = [
   CODE_ENGIN_RULE_SET,

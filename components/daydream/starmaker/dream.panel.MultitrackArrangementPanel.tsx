@@ -8,7 +8,7 @@ import {
     type ArrangementSource,
     type ArrangementTrackId,
     type ArrangementTrackState,
-} from '@/lib/music/starmakerArrangement';
+} from '@/engins/starmakerengin/music/starmakerArrangement';
 
 /**
  * Scope note for reviewers:

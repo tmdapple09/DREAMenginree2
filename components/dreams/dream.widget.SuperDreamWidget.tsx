@@ -1,7 +1,7 @@
 'use client';
 
-import { DREAM_WINDOW_STATES } from '@/lib/dream-window/DreamWindowLifecycle';
-import { useDreamWindowActions } from '@/lib/dream-window/useDreamWindowActions';
+import { DREAM_WINDOW_STATES } from '@/engine/dream-window/DreamWindowLifecycle';
+import { useDreamWindowActions } from '@/engine/dream-window/useDreamWindowActions';
 import type { CreateDreamWindowBody, DreamWindowRecord } from '@/types/dream-window';
 import { useCallback, useMemo, useState } from 'react';
 
