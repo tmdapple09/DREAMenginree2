@@ -24,7 +24,7 @@ import {
     logRDSession,
     readGenreDNA,
     signatureHash,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 const DEFAULT_GENRE = 'platformer';
 const DEFAULT_COMBO = ['coyote-time', 'double-jump', 'dash', 'parry'];

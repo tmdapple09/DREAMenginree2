@@ -22,7 +22,7 @@ import {
     readCharacterVoice,
     readEmotionalTone,
     readNarrativePacing,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 interface StoryBeat {
   id: string;

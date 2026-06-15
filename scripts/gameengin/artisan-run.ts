@@ -23,7 +23,7 @@ import {
     listTechniques,
     logRDSession,
     recordAssetGeneration,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 interface PromptManifest {
   cartridge_id: string;

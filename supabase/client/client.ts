@@ -1,5 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
-import { SUPABASE_CONFIG } from './config'
+import { SUPABASE_CONFIG } from '../config'
 
 export function createClient( ){
   if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) {

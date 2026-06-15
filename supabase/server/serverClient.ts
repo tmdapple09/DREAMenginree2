@@ -3,7 +3,7 @@ import { createServerClient as createSupabaseServerClient } from '@supabase/ssr'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import 'server-only'
-import { SUPABASE_CONFIG, SUPABASE_SERVICE_ROLE_KEY } from './config'
+import { SUPABASE_CONFIG, SUPABASE_SERVICE_ROLE_KEY } from '../config'
 
 type DisabledSupabaseClient = {
   auth: {

@@ -34,7 +34,7 @@ import {
     type AgentName,
     type AssignmentLogEntry,
     type CartridgeStatus,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 interface Thresholds {
   deathsPerLevelMax: number;

@@ -365,7 +365,7 @@ class DualRuntimeBridge extends EventEmitter {
     const wasmUrlStr = BUS_WASM_URL.toString();
     const wasmPath = wasmUrlStr.startsWith('file://')
       ? fileURLToPath(wasmUrlStr)
-      : resolve(process.cwd(), 'lib/bus.wasm');
+      : resolve(process.cwd(), 'engine/bus.wasm');
     const buf = await readFile(wasmPath);
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
   }

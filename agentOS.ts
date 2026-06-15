@@ -1,4 +1,4 @@
-import type { CodeEnginHostTools } from './agentOS/hostTools';
+import type { CodeEnginHostTools } from './engine/agentOS/hostTools';
 
 /**
  * AgentOS singleton – local implementation.

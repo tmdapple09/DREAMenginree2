@@ -156,7 +156,7 @@ export type {
 } from '../forge/engineForge';
 export {
     GameEnginRuntime, loadDreamGame
-} from '../gameengin/gameEnginRuntime';
+} from '../engins/gameengin/gameEnginRuntime';
 export type {
     DreamGameInstance, DreamGameManifest, GameEnginEvents, InputHandler, InputType
-} from '../gameengin/gameEnginRuntime';
+} from '../engins/gameengin/gameEnginRuntime';
