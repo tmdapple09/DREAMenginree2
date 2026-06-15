@@ -220,3 +220,10 @@ export const LAB_ENGIN_RULE_SET: EnginRuleSetContract<LabEnginAction> = {
   transform,
   deriveState,
 };
+
+export const LAB_IMPLICIT_SURFACE_POLICY = {
+  engine: 'robust-sparse-dual-contouring',
+  mobileFirstResolution: 18,
+  intents: ['lab:sim-start', 'lab:sim-complete', 'lab:physics-received'],
+  output: 'level-set simulations may publish mesh diagnostics and compact indexed mesh snapshots through the intent bus',
+} as const;
