@@ -1,3 +1,4 @@
+import { createTerrainCaveSDF as createTerrainCaveSDFInternal, meshToSnapshot as meshToSnapshotInternal, runDualContouring as runDualContouringInternal, validateMesh as validateMeshInternal } from '@/engins/isosurfaceDualContouring';
 /**
  * lib/gameengin/procgen.ts
  *
@@ -244,4 +245,11 @@ export class ChunkScheduler {
   get pending(): number { return this.queue.length; }
   get active(): number { return this.inFlight; }
   get totalCompleted(): number { return this.completed; }
+}
+
+export { DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, type DualContouringSettings, type Mesh, type MeshDiagnostics, type SDF, type Vec3 } from '@/engins/isosurfaceDualContouring';
+
+export function generateMobileTerrainCaveMesh(seed = 1) {
+  const mesh = runDualContouringInternal(createTerrainCaveSDFInternal(seed), { resolution: 18, size: 2.4, origin: { x: -1.2, y: -1.2, z: -1.2 } });
+  return meshToSnapshotInternal(mesh, validateMeshInternal(mesh));
 }
