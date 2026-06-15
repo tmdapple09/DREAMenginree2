@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-15T12:57:48.139Z",
+  "generatedAt": "2026-06-15T15:34:36.370Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
@@ -9095,13 +9095,22 @@
       "exports": [
         "analyzeImageMask",
         "AssetProcessingStatus",
+        "Bounds3",
         "BrushState",
         "buildInflatedReliefMesh",
+        "buildVertexAdjacency",
         "CameraState",
+        "centerAndScaleMesh",
+        "cloneMesh",
+        "compactMesh",
+        "computeBounds",
+        "computePlanarUVs",
+        "computeVertexNormals",
         "createImplicitAssetWorkspaceObject",
         "DEFAULT_BRUSH_STATE",
         "DEFAULT_CAMERA_STATE",
         "EditableMeshState",
+        "estimateMeshBytes",
         "ExportFormat",
         "exportGLB",
         "exportOBJ",
@@ -9112,10 +9121,18 @@
         "processImageToEditableMesh",
         "qualityFromDiagnostics",
         "repairMesh",
+        "repairMeshDetailed",
+        "RepairReport",
+        "RepairResult",
         "sculptMesh",
         "SculptTool",
         "SourceImageAsset",
-        "validateMesh"
+        "StrictMeshDiagnostics",
+        "summarizeMeshQuality",
+        "validateMesh",
+        "validateMeshStrict",
+        "Vec2",
+        "weldVertices"
       ]
     },
     {
@@ -9237,7 +9254,6 @@
       "engine": "Universal",
       "exports": [
         "CONTENT_ENGIN_RULE_SET",
-        "CONTENT_IMPLICIT_ASSET_POLICY",
         "ContentEnginAction",
         "ContentEnginDerivedState"
       ]
