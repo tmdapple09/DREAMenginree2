@@ -26,7 +26,7 @@ export const osSlotCounts = {
   "surface": 297,
   "route-surface": 273,
   "dreamsurface": 15,
-  "engin": 230,
+  "engin": 236,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -394,7 +394,7 @@ export const osArchitectureGraph = {
     "surface": 297,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 230,
+    "engin": 236,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -4412,6 +4412,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/contentengin/AssetViewport",
+      "slot": "engin",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/contentengin/builders/geometryBuilder",
       "slot": "engin",
       "path": "engins/contentengin/builders/geometryBuilder.ts",
@@ -4592,6 +4598,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/contentengin/ImplicitAssetWorkspace",
+      "slot": "engin",
+      "path": "engins/contentengin/ImplicitAssetWorkspace.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/contentengin/materials/materialTypes",
       "slot": "engin",
       "path": "engins/contentengin/materials/materialTypes.ts",
@@ -4769,6 +4781,12 @@ export const osArchitectureStageEntries = {
       "id": "engins/contentengin/shaders/shaderTypes",
       "slot": "engin",
       "path": "engins/contentengin/shaders/shaderTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/useImplicitAssetWorkspace",
+      "slot": "engin",
+      "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "engine": "Universal"
     },
     {
@@ -5441,6 +5459,24 @@ export const osArchitectureStageEntries = {
       "id": "engins/gameengin/xr",
       "slot": "engin",
       "path": "engins/gameengin/xr.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/isosurfaceAssetPipeline",
+      "slot": "engin",
+      "path": "engins/isosurfaceAssetPipeline.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/isosurfaceDualContouring",
+      "slot": "engin",
+      "path": "engins/isosurfaceDualContouring.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/labengin/implicitSurface",
+      "slot": "engin",
+      "path": "engins/labengin/implicitSurface.ts",
       "engine": "Universal"
     },
     {
@@ -6152,7 +6188,7 @@ User Action / Agent / CI
 | surface | 297 |
 | route-surface | 273 |
 | dreamsurface | 15 |
-| engin | 230 |
+| engin | 236 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |

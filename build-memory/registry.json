@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-15T09:40:18.829Z",
+  "generatedAt": "2026-06-15T12:57:48.139Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 297,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 230,
+    "engin": 236,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -6595,6 +6595,15 @@
       ]
     },
     {
+      "id": "engins/contentengin/AssetViewport",
+      "slot": "engin",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
       "id": "engins/contentengin/builders/geometryBuilder",
       "slot": "engin",
       "path": "engins/contentengin/builders/geometryBuilder.ts",
@@ -6610,6 +6619,7 @@
       "path": "engins/contentengin/builders/meshBuilder.ts",
       "engine": "Universal",
       "exports": [
+        "buildImplicitContentMesh",
         "computeMeshMetrics"
       ]
     },
@@ -6965,6 +6975,15 @@
       ]
     },
     {
+      "id": "engins/contentengin/ImplicitAssetWorkspace",
+      "slot": "engin",
+      "path": "engins/contentengin/ImplicitAssetWorkspace.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
       "id": "engins/contentengin/materials/materialTypes",
       "slot": "engin",
       "path": "engins/contentengin/materials/materialTypes.ts",
@@ -7261,6 +7280,16 @@
       "path": "engins/contentengin/shaders/shaderTypes.ts",
       "engine": "Universal",
       "exports": []
+    },
+    {
+      "id": "engins/contentengin/useImplicitAssetWorkspace",
+      "slot": "engin",
+      "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
+      "engine": "Universal",
+      "exports": [
+        "useImplicitAssetWorkspace",
+        "WorkspaceIntentLog"
+      ]
     },
     {
       "id": "engins/dream.ForgeEngin",
@@ -8722,7 +8751,18 @@
         "BiomeSynthesizer",
         "ChunkJob",
         "ChunkScheduler",
+        "createTerrainCaveSDF",
+        "DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS",
+        "DualContouringSettings",
+        "generateMobileTerrainCaveMesh",
+        "Mesh",
+        "MeshDiagnostics",
+        "meshToSnapshot",
+        "runDualContouring",
         "SchedulerConfig",
+        "SDF",
+        "validateMesh",
+        "Vec3",
         "WaveFunctionCollapse",
         "WFCTile"
       ]
@@ -9048,6 +9088,66 @@
       ]
     },
     {
+      "id": "engins/isosurfaceAssetPipeline",
+      "slot": "engin",
+      "path": "engins/isosurfaceAssetPipeline.ts",
+      "engine": "Universal",
+      "exports": [
+        "analyzeImageMask",
+        "AssetProcessingStatus",
+        "BrushState",
+        "buildInflatedReliefMesh",
+        "CameraState",
+        "createImplicitAssetWorkspaceObject",
+        "DEFAULT_BRUSH_STATE",
+        "DEFAULT_CAMERA_STATE",
+        "EditableMeshState",
+        "ExportFormat",
+        "exportGLB",
+        "exportOBJ",
+        "ImplicitAssetWorkspaceData",
+        "ImplicitAssetWorkspaceObject",
+        "MeshQualityLabel",
+        "meshToSnapshot",
+        "processImageToEditableMesh",
+        "qualityFromDiagnostics",
+        "repairMesh",
+        "sculptMesh",
+        "SculptTool",
+        "SourceImageAsset",
+        "validateMesh"
+      ]
+    },
+    {
+      "id": "engins/isosurfaceDualContouring",
+      "slot": "engin",
+      "path": "engins/isosurfaceDualContouring.ts",
+      "engine": "Universal",
+      "exports": [
+        "createSphereSDF",
+        "createTerrainCaveSDF",
+        "DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS",
+        "DualContouringSettings",
+        "Mesh",
+        "MeshDiagnostics",
+        "meshToSnapshot",
+        "runDualContouring",
+        "SDF",
+        "validateMesh",
+        "Vec3"
+      ]
+    },
+    {
+      "id": "engins/labengin/implicitSurface",
+      "slot": "engin",
+      "path": "engins/labengin/implicitSurface.ts",
+      "engine": "Universal",
+      "exports": [
+        "LabImplicitSurfaceRun",
+        "runLabImplicitSurface"
+      ]
+    },
+    {
       "id": "engins/portfolio/dream.PortfolioEngin",
       "slot": "engin",
       "path": "engins/portfolio/dream.PortfolioEngin.tsx",
@@ -9137,6 +9237,7 @@
       "engine": "Universal",
       "exports": [
         "CONTENT_ENGIN_RULE_SET",
+        "CONTENT_IMPLICIT_ASSET_POLICY",
         "ContentEnginAction",
         "ContentEnginDerivedState"
       ]
@@ -9201,6 +9302,7 @@
       "engine": "Universal",
       "exports": [
         "GAME_ENGIN_RULE_SET",
+        "GAME_IMPLICIT_WORLD_POLICY",
         "GameEnginAction",
         "GameEnginDerivedState",
         "GameScore",
@@ -9308,6 +9410,7 @@
         "ChartType",
         "Experiment",
         "LAB_ENGIN_RULE_SET",
+        "LAB_IMPLICIT_SURFACE_POLICY",
         "LabEnginAction",
         "LabEnginDerivedState",
         "SimState",
