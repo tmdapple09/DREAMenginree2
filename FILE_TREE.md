@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-15T15:33:30.834Z
+Generated: 2026-06-15T15:34:16.470Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14504,6 +14504,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/contentengin/assets/assetOptimizer
 │           │   ├── (dynamic)  ← @/engins/contentengin/assets/indexedDBStore
 │           │   ├── (dynamic)  ← @/engins/contentengin/assetTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/AssetViewport
 │           │   ├── (dynamic)  ← @/engins/contentengin/builders/geometryBuilder
 │           │   ├── (dynamic)  ← @/engins/contentengin/builders/meshBuilder
 │           │   ├── (dynamic)  ← @/engins/contentengin/builders/modifiers
@@ -14534,6 +14535,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/contentengin/grammars/treeGrammar
 │           │   ├── (dynamic)  ← @/engins/contentengin/grammars/vehicleGrammar
 │           │   ├── (dynamic)  ← @/engins/contentengin/grammars/waterGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/ImplicitAssetWorkspace
 │           │   ├── (dynamic)  ← @/engins/contentengin/materials/materialTypes
 │           │   ├── (dynamic)  ← @/engins/contentengin/materials/paletteExtractor
 │           │   ├── (dynamic)  ← @/engins/contentengin/materials/proceduralMaterials
@@ -14564,6 +14566,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/contentengin/rigging/rigValidator
 │           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderRegistry
 │           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/useImplicitAssetWorkspace
 │           │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
 │           │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
 │           │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
@@ -14676,6 +14679,9 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/gameengin/webgpu-runtime-shell
 │           │   ├── (dynamic)  ← @/engins/gameengin/world-crdt
 │           │   ├── (dynamic)  ← @/engins/gameengin/xr
+│           │   ├── (dynamic)  ← @/engins/isosurfaceAssetPipeline
+│           │   ├── (dynamic)  ← @/engins/isosurfaceDualContouring
+│           │   ├── (dynamic)  ← @/engins/labengin/implicitSurface
 │           │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/brandEnginRuleSet
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/useBrandEnginRuntime

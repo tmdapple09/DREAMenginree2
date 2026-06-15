@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-15T15:33:30.699Z
+Generated: 2026-06-15T15:34:16.337Z
 
 ---
 
@@ -13657,6 +13657,7 @@ _No style files for this feature._
 | `@/engins/contentengin/assets/assetOptimizer` | _(dynamic import)_ |
 | `@/engins/contentengin/assets/indexedDBStore` | _(dynamic import)_ |
 | `@/engins/contentengin/assetTypes` | _(dynamic import)_ |
+| `@/engins/contentengin/AssetViewport` | _(dynamic import)_ |
 | `@/engins/contentengin/builders/geometryBuilder` | _(dynamic import)_ |
 | `@/engins/contentengin/builders/meshBuilder` | _(dynamic import)_ |
 | `@/engins/contentengin/builders/modifiers` | _(dynamic import)_ |
@@ -13687,6 +13688,7 @@ _No style files for this feature._
 | `@/engins/contentengin/grammars/treeGrammar` | _(dynamic import)_ |
 | `@/engins/contentengin/grammars/vehicleGrammar` | _(dynamic import)_ |
 | `@/engins/contentengin/grammars/waterGrammar` | _(dynamic import)_ |
+| `@/engins/contentengin/ImplicitAssetWorkspace` | _(dynamic import)_ |
 | `@/engins/contentengin/materials/materialTypes` | _(dynamic import)_ |
 | `@/engins/contentengin/materials/paletteExtractor` | _(dynamic import)_ |
 | `@/engins/contentengin/materials/proceduralMaterials` | _(dynamic import)_ |
@@ -13717,6 +13719,7 @@ _No style files for this feature._
 | `@/engins/contentengin/rigging/rigValidator` | _(dynamic import)_ |
 | `@/engins/contentengin/shaders/shaderRegistry` | _(dynamic import)_ |
 | `@/engins/contentengin/shaders/shaderTypes` | _(dynamic import)_ |
+| `@/engins/contentengin/useImplicitAssetWorkspace` | _(dynamic import)_ |
 | `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
 | `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
 | `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
@@ -13829,6 +13832,9 @@ _No style files for this feature._
 | `@/engins/gameengin/webgpu-runtime-shell` | _(dynamic import)_ |
 | `@/engins/gameengin/world-crdt` | _(dynamic import)_ |
 | `@/engins/gameengin/xr` | _(dynamic import)_ |
+| `@/engins/isosurfaceAssetPipeline` | _(dynamic import)_ |
+| `@/engins/isosurfaceDualContouring` | _(dynamic import)_ |
+| `@/engins/labengin/implicitSurface` | _(dynamic import)_ |
 | `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/brandEnginRuleSet` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/useBrandEnginRuntime` | _(dynamic import)_ |
@@ -15718,6 +15724,7 @@ _No style files for this feature._
 - `@/engins/contentengin/assets/assetOptimizer`
 - `@/engins/contentengin/assets/indexedDBStore`
 - `@/engins/contentengin/assetTypes`
+- `@/engins/contentengin/AssetViewport`
 - `@/engins/contentengin/builders/geometryBuilder`
 - `@/engins/contentengin/builders/meshBuilder`
 - `@/engins/contentengin/builders/modifiers`
@@ -15748,6 +15755,7 @@ _No style files for this feature._
 - `@/engins/contentengin/grammars/treeGrammar`
 - `@/engins/contentengin/grammars/vehicleGrammar`
 - `@/engins/contentengin/grammars/waterGrammar`
+- `@/engins/contentengin/ImplicitAssetWorkspace`
 - `@/engins/contentengin/materials/materialTypes`
 - `@/engins/contentengin/materials/paletteExtractor`
 - `@/engins/contentengin/materials/proceduralMaterials`
@@ -15778,6 +15786,7 @@ _No style files for this feature._
 - `@/engins/contentengin/rigging/rigValidator`
 - `@/engins/contentengin/shaders/shaderRegistry`
 - `@/engins/contentengin/shaders/shaderTypes`
+- `@/engins/contentengin/useImplicitAssetWorkspace`
 - `@/engins/dream.ForgeEngin`
 - `@/engins/dream.QuantumCircuitCanvas`
 - `@/engins/engin.BrandingEngin`
@@ -15890,6 +15899,9 @@ _No style files for this feature._
 - `@/engins/gameengin/webgpu-runtime-shell`
 - `@/engins/gameengin/world-crdt`
 - `@/engins/gameengin/xr`
+- `@/engins/isosurfaceAssetPipeline`
+- `@/engins/isosurfaceDualContouring`
+- `@/engins/labengin/implicitSurface`
 - `@/engins/portfolio/dream.PortfolioEngin`
 - `@/engins/rulesets/brand/brandEnginRuleSet`
 - `@/engins/rulesets/brand/useBrandEnginRuntime`
