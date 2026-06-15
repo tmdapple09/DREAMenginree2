@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-13T20:41:16.614Z
+Generated: 2026-06-15T04:51:34.692Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -10436,11 +10436,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → EdgeOffloadRouter
 │   │   │   ├── → RemoteRenderHandoff
 │   │   │   └── → ResultVerifier
-│   │   ├── control-mappings.ts ⚠ ∅
-│   │   │   ├── createClient  ⚠ @/lib/supabase/client
-│   │   │   ├── safeGetUser  ⚠ @/lib/supabase/safeGetUser
-│   │   │   ├── → mapJoystickToAsset
-│   │   │   └── ∅ unused: mapJoystickToAsset
 │   │   ├── core.ts ∅
 │   │   │   ├── AdvancedPhysicsWorld  ← ./power-systems
 │   │   │   ├── AnimationStateMachine  ← ./power-systems
@@ -10484,7 +10479,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → loadDreamrCartridgeFromResponse
 │   │   │   ├── → parseDreamrArchive
 │   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
-│   │   ├── executionWiring.ts
+│   │   ├── executionWiring.ts ⚠
 │   │   │   ├── ColorVisionAdapter  ← ./accessibility-ai
 │   │   │   ├── MotionReductionAI  ← ./accessibility-ai
 │   │   │   ├── RealtimeCaptioner  ← ./accessibility-ai
@@ -10507,7 +10502,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── EdgeOffloadRouter  ← ./cloud-compute
 │   │   │   ├── RemoteRenderHandoff  ← ./cloud-compute
 │   │   │   ├── ResultVerifier  ← ./cloud-compute
-│   │   │   ├── * as ControlMappings  ← ./control-mappings
+│   │   │   ├── * as ControlMappings  ⚠ ./control-mappings
 │   │   │   ├── * as DreamEngineModule  ← ./dream-engine
 │   │   │   ├── * as LegacyGameRuntime  ← ./gameEnginRuntime
 │   │   │   ├── AdaptiveMusicEngine  ← ./generative-audio
@@ -10595,7 +10590,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── generative-audio.ts
 │   │   │   ├── → AdaptiveMusicEngine
 │   │   │   └── → NeuralFoley
-│   │   ├── index.ts ∅
+│   │   ├── index.ts ⚠ ∅
 │   │   │   ├── ...  ← @/lib/gameengin
 │   │   │   ├── AIDirector  ← @/lib/gameengin
 │   │   │   ├── AdvancedPhysicsWorld  ← @/lib/gameengin
@@ -10654,6 +10649,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → registerGame
 │   │   │   ├── → unregisterGame
 │   │   │   ├── → useUnifiedLoop
+│   │   │   ├── (unknown — bare import)  ⚠ ./control-mappings
 │   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
 │   │   ├── neural-render.ts
 │   │   │   ├── → FrameGenerator
@@ -13789,6 +13785,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/app/api/content/intelligence/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/content/transcribe/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/content/voice-clone/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/contentengin/assets/[assetId]/export/gameengin/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/contentengin/assets/[assetId]/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/contentengin/jobs/[jobId]/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/contentengin/jobs/route
+│   │   │   │   ├── (dynamic)  ← @/app/api/contentengin/upload/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dr-eams/hf/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/dr-eams/run/route
 │   │   │   │   ├── (dynamic)  ← @/app/api/drafts/[id]/route
@@ -14007,6 +14008,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── (dynamic)  ← @/components/connectors/dream.PlacementMode
 │   │   │   │   ├── (dynamic)  ← @/components/connectors/dream.widget.ConnectorWidgetPicker
 │   │   │   │   ├── (dynamic)  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/AnimationPanel
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/AssetPreview3D
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/ContentEnginStudio
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/ExportPanel
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/MaterialEditor
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/PartTreeEditor
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/PhotoReferencePanel
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/RecipeEditor
+│   │   │   │   ├── (dynamic)  ← @/components/contentengin/RiggingPanel
 │   │   │   │   ├── (dynamic)  ← @/components/core/dream.CoreDream
 │   │   │   │   ├── (dynamic)  ← @/components/customize/dream.bar.CustomizeModeBar
 │   │   │   │   ├── (dynamic)  ← @/components/customize/dream.bar.CustomizeToolbar
@@ -14368,6 +14378,54 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/lib/content/seoScorer
 │   │   │       ├── (dynamic)  ← @/lib/content/transcriptEditor
 │   │   │       ├── (dynamic)  ← @/lib/content/voiceClone
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/assetTypes
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/geometryBuilder
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/meshBuilder
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/modifiers
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/primitiveBuilder
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/textureBuilder
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/builders/uvGenerator
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/cli
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/animalGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/bicycleGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/bridgeGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/buildingGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/creatureGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/humanoidGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/propGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/roadGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/shared
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/terrainGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/treeGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/vehicleGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/grammars/waterGrammar
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/materials/materialTypes
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/materials/paletteExtractor
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/materials/proceduralMaterials
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/colorCluster
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/edgeDetector
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/imageAnalyzer
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/photoToRecipe
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/pngDecoder
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/photo/regionDetector
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/build
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/bundle
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/exportGlb
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/generateCollision
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/generateLods
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/paths
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/validate
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/pipeline/writeManifest
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/recipes/recipeResolver
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/recipes/recipeTypes
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/recipes/seededRandom
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/rigging/fitArmature
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/rigging/index
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/rigging/landmarks
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/rigging/rigTypes
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/rigging/rigValidator
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/shaders/shaderRegistry
+│   │   │       ├── (dynamic)  ← @/lib/contentengin/shaders/shaderTypes
 │   │   │       ├── (dynamic)  ← @/lib/data-transform
 │   │   │       ├── (dynamic)  ← @/lib/daydream/useDaydreamPersistence
 │   │   │       ├── (dynamic)  ← @/lib/daydream/useDaydreamState

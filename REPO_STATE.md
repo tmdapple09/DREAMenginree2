@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-13T20:41:16.478Z
+Generated: 2026-06-15T04:51:34.563Z
 
 ---
 
@@ -845,7 +845,6 @@ _No style files for this feature._
 - `lib/gameengin/cartridge.ts`
 - `lib/gameengin/cartridgeLoader.ts`
 - `lib/gameengin/cloud-compute.ts`
-- `lib/gameengin/control-mappings.ts`
 - `lib/gameengin/core.ts`
 - `lib/gameengin/dream-engine.ts`
 - `lib/gameengin/dreamr-loader.ts`
@@ -1224,7 +1223,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (5 files) · **Supabase** (3 files) · **Event Bus** (10 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (5 files) · **Supabase** (2 files) · **Event Bus** (10 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
 
 ### Dual Runtime files
 
@@ -1237,7 +1236,6 @@ _No style files for this feature._
 ### Supabase files
 
 - `engins/engin.GameEngin.tsx`
-- `lib/gameengin/control-mappings.ts`
 - `lib/gameengin/dream-engine.ts`
 
 ### Event Bus files
@@ -12365,13 +12363,6 @@ _No style files for this feature._
 |--------|---------------|
 | `../cartridge` | `CartridgeSaveAPI`, `CartridgeSaveSlot` |
 
-## `lib/gameengin/control-mappings.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-
 ## `lib/gameengin/core.ts`
 
 | Module | Connected via |
@@ -14057,6 +14048,11 @@ _No style files for this feature._
 | `@/app/api/content/intelligence/route` | _(dynamic import)_ |
 | `@/app/api/content/transcribe/route` | _(dynamic import)_ |
 | `@/app/api/content/voice-clone/route` | _(dynamic import)_ |
+| `@/app/api/contentengin/assets/[assetId]/export/gameengin/route` | _(dynamic import)_ |
+| `@/app/api/contentengin/assets/[assetId]/route` | _(dynamic import)_ |
+| `@/app/api/contentengin/jobs/[jobId]/route` | _(dynamic import)_ |
+| `@/app/api/contentengin/jobs/route` | _(dynamic import)_ |
+| `@/app/api/contentengin/upload/route` | _(dynamic import)_ |
 | `@/app/api/dr-eams/hf/route` | _(dynamic import)_ |
 | `@/app/api/dr-eams/run/route` | _(dynamic import)_ |
 | `@/app/api/drafts/[id]/route` | _(dynamic import)_ |
@@ -14275,6 +14271,15 @@ _No style files for this feature._
 | `@/components/connectors/dream.PlacementMode` | _(dynamic import)_ |
 | `@/components/connectors/dream.widget.ConnectorWidgetPicker` | _(dynamic import)_ |
 | `@/components/connectors/dream.widget.ConnectWidgetPrompt` | _(dynamic import)_ |
+| `@/components/contentengin/AnimationPanel` | _(dynamic import)_ |
+| `@/components/contentengin/AssetPreview3D` | _(dynamic import)_ |
+| `@/components/contentengin/ContentEnginStudio` | _(dynamic import)_ |
+| `@/components/contentengin/ExportPanel` | _(dynamic import)_ |
+| `@/components/contentengin/MaterialEditor` | _(dynamic import)_ |
+| `@/components/contentengin/PartTreeEditor` | _(dynamic import)_ |
+| `@/components/contentengin/PhotoReferencePanel` | _(dynamic import)_ |
+| `@/components/contentengin/RecipeEditor` | _(dynamic import)_ |
+| `@/components/contentengin/RiggingPanel` | _(dynamic import)_ |
 | `@/components/core/dream.CoreDream` | _(dynamic import)_ |
 | `@/components/customize/dream.bar.CustomizeModeBar` | _(dynamic import)_ |
 | `@/components/customize/dream.bar.CustomizeToolbar` | _(dynamic import)_ |
@@ -14639,6 +14644,54 @@ _No style files for this feature._
 | `@/lib/content/seoScorer` | _(dynamic import)_ |
 | `@/lib/content/transcriptEditor` | _(dynamic import)_ |
 | `@/lib/content/voiceClone` | _(dynamic import)_ |
+| `@/lib/contentengin/assetTypes` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/geometryBuilder` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/meshBuilder` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/modifiers` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/primitiveBuilder` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/textureBuilder` | _(dynamic import)_ |
+| `@/lib/contentengin/builders/uvGenerator` | _(dynamic import)_ |
+| `@/lib/contentengin/cli` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/animalGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/bicycleGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/bridgeGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/buildingGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/creatureGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/humanoidGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/propGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/roadGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/shared` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/terrainGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/treeGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/vehicleGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/grammars/waterGrammar` | _(dynamic import)_ |
+| `@/lib/contentengin/materials/materialTypes` | _(dynamic import)_ |
+| `@/lib/contentengin/materials/paletteExtractor` | _(dynamic import)_ |
+| `@/lib/contentengin/materials/proceduralMaterials` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/colorCluster` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/edgeDetector` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/imageAnalyzer` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/photoToRecipe` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/pngDecoder` | _(dynamic import)_ |
+| `@/lib/contentengin/photo/regionDetector` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/build` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/bundle` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/exportGlb` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/generateCollision` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/generateLods` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/paths` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/validate` | _(dynamic import)_ |
+| `@/lib/contentengin/pipeline/writeManifest` | _(dynamic import)_ |
+| `@/lib/contentengin/recipes/recipeResolver` | _(dynamic import)_ |
+| `@/lib/contentengin/recipes/recipeTypes` | _(dynamic import)_ |
+| `@/lib/contentengin/recipes/seededRandom` | _(dynamic import)_ |
+| `@/lib/contentengin/rigging/fitArmature` | _(dynamic import)_ |
+| `@/lib/contentengin/rigging/index` | _(dynamic import)_ |
+| `@/lib/contentengin/rigging/landmarks` | _(dynamic import)_ |
+| `@/lib/contentengin/rigging/rigTypes` | _(dynamic import)_ |
+| `@/lib/contentengin/rigging/rigValidator` | _(dynamic import)_ |
+| `@/lib/contentengin/shaders/shaderRegistry` | _(dynamic import)_ |
+| `@/lib/contentengin/shaders/shaderTypes` | _(dynamic import)_ |
 | `@/lib/data-transform` | _(dynamic import)_ |
 | `@/lib/daydream/useDaydreamPersistence` | _(dynamic import)_ |
 | `@/lib/daydream/useDaydreamState` | _(dynamic import)_ |
@@ -15536,6 +15589,11 @@ _No style files for this feature._
 - `@/app/api/content/intelligence/route`
 - `@/app/api/content/transcribe/route`
 - `@/app/api/content/voice-clone/route`
+- `@/app/api/contentengin/assets/[assetId]/export/gameengin/route`
+- `@/app/api/contentengin/assets/[assetId]/route`
+- `@/app/api/contentengin/jobs/[jobId]/route`
+- `@/app/api/contentengin/jobs/route`
+- `@/app/api/contentengin/upload/route`
 - `@/app/api/dr-eams/hf/route`
 - `@/app/api/dr-eams/run/route`
 - `@/app/api/drafts/[id]/route`
@@ -15754,6 +15812,15 @@ _No style files for this feature._
 - `@/components/connectors/dream.PlacementMode`
 - `@/components/connectors/dream.widget.ConnectorWidgetPicker`
 - `@/components/connectors/dream.widget.ConnectWidgetPrompt`
+- `@/components/contentengin/AnimationPanel`
+- `@/components/contentengin/AssetPreview3D`
+- `@/components/contentengin/ContentEnginStudio`
+- `@/components/contentengin/ExportPanel`
+- `@/components/contentengin/MaterialEditor`
+- `@/components/contentengin/PartTreeEditor`
+- `@/components/contentengin/PhotoReferencePanel`
+- `@/components/contentengin/RecipeEditor`
+- `@/components/contentengin/RiggingPanel`
 - `@/components/core/dream.CoreDream`
 - `@/components/customize/dream.bar.CustomizeModeBar`
 - `@/components/customize/dream.bar.CustomizeToolbar`
@@ -16116,6 +16183,54 @@ _No style files for this feature._
 - `@/lib/content/seoScorer`
 - `@/lib/content/transcriptEditor`
 - `@/lib/content/voiceClone`
+- `@/lib/contentengin/assetTypes`
+- `@/lib/contentengin/builders/geometryBuilder`
+- `@/lib/contentengin/builders/meshBuilder`
+- `@/lib/contentengin/builders/modifiers`
+- `@/lib/contentengin/builders/primitiveBuilder`
+- `@/lib/contentengin/builders/textureBuilder`
+- `@/lib/contentengin/builders/uvGenerator`
+- `@/lib/contentengin/cli`
+- `@/lib/contentengin/grammars/animalGrammar`
+- `@/lib/contentengin/grammars/bicycleGrammar`
+- `@/lib/contentengin/grammars/bridgeGrammar`
+- `@/lib/contentengin/grammars/buildingGrammar`
+- `@/lib/contentengin/grammars/creatureGrammar`
+- `@/lib/contentengin/grammars/humanoidGrammar`
+- `@/lib/contentengin/grammars/propGrammar`
+- `@/lib/contentengin/grammars/roadGrammar`
+- `@/lib/contentengin/grammars/shared`
+- `@/lib/contentengin/grammars/terrainGrammar`
+- `@/lib/contentengin/grammars/treeGrammar`
+- `@/lib/contentengin/grammars/vehicleGrammar`
+- `@/lib/contentengin/grammars/waterGrammar`
+- `@/lib/contentengin/materials/materialTypes`
+- `@/lib/contentengin/materials/paletteExtractor`
+- `@/lib/contentengin/materials/proceduralMaterials`
+- `@/lib/contentengin/photo/colorCluster`
+- `@/lib/contentengin/photo/edgeDetector`
+- `@/lib/contentengin/photo/imageAnalyzer`
+- `@/lib/contentengin/photo/photoToRecipe`
+- `@/lib/contentengin/photo/pngDecoder`
+- `@/lib/contentengin/photo/regionDetector`
+- `@/lib/contentengin/pipeline/build`
+- `@/lib/contentengin/pipeline/bundle`
+- `@/lib/contentengin/pipeline/exportGlb`
+- `@/lib/contentengin/pipeline/generateCollision`
+- `@/lib/contentengin/pipeline/generateLods`
+- `@/lib/contentengin/pipeline/paths`
+- `@/lib/contentengin/pipeline/validate`
+- `@/lib/contentengin/pipeline/writeManifest`
+- `@/lib/contentengin/recipes/recipeResolver`
+- `@/lib/contentengin/recipes/recipeTypes`
+- `@/lib/contentengin/recipes/seededRandom`
+- `@/lib/contentengin/rigging/fitArmature`
+- `@/lib/contentengin/rigging/index`
+- `@/lib/contentengin/rigging/landmarks`
+- `@/lib/contentengin/rigging/rigTypes`
+- `@/lib/contentengin/rigging/rigValidator`
+- `@/lib/contentengin/shaders/shaderRegistry`
+- `@/lib/contentengin/shaders/shaderTypes`
 - `@/lib/data-transform`
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/daydream/useDaydreamState`
@@ -18381,7 +18496,6 @@ _No style files for this feature._
 - `lib/dreamr/socialHumanityScore.ts`
 - `lib/enginpipe/telemetry/client.ts`
 - `lib/feed/useLiveFeed.ts`
-- `lib/gameengin/control-mappings.ts`
 - `lib/gameengin/dream-engine.ts`
 - `lib/ledger.ts`
 - `lib/platform/lab.ts`
@@ -19297,10 +19411,10 @@ _No circular dependencies detected._
 | `lib/dreamengin/engineAssets.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/dreamr/socialHumanityScore.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/feed/useLiveFeed.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/gameengin/control-mappings.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/gameengin/control-mappings.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `lib/gameengin/dream-engine.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/gameengin/dream-engine.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `lib/gameengin/executionWiring.ts` | `./control-mappings` | `* as ControlMappings` |
+| `lib/gameengin/index.ts` | `./control-mappings` | `(unknown — bare import)` |
 | `lib/platform/lab.ts` | `@/lib/supabase/client` | `createClient` |
 | `lib/setup/checks.ts` | `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
 | `lib/sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/client` | `createClient` |
@@ -19844,7 +19958,6 @@ _No circular dependencies detected._
 | `lib/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
 | `lib/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `createReactCartridgeHost`, `CARTRIDGE_LOADERS`, `createReactGameCartridge` |
 | `lib/gameengin/cartridges/saveState.ts` | `purgeCartridgeSaves`, `getSaveStorageBytes` |
-| `lib/gameengin/control-mappings.ts` | `mapJoystickToAsset` |
 | `lib/gameengin/core.ts` | `ECSWorld` |
 | `lib/gameengin/dream-engine.ts` | `DreamEngine` |
 | `lib/gameengin/dreamr-loader.ts` | `parseDreamrArchive`, `loadDreamrCartridgeFromResponse` |
@@ -22683,10 +22796,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── cartridgeLoader.ts ∅
 │   │   │   └── ∅ unused: loadDreamrCartridgeFromResponse, DreamrCartridgeArchive, DreamrFileEntry
 │   │   ├── cloud-compute.ts
-│   │   ├── control-mappings.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ∅ unused: mapJoystickToAsset
 │   │   ├── core.ts ∅
 │   │   │   └── ∅ unused: ECSWorld
 │   │   ├── dream-engine.ts ⚠ ∅
@@ -22695,13 +22804,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DreamEngine
 │   │   ├── dreamr-loader.ts ∅
 │   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
-│   │   ├── executionWiring.ts
+│   │   ├── executionWiring.ts ⚠
+│   │   │   └── ⚠ ./control-mappings  (* as ControlMappings)
 │   │   ├── gameEnginRuntime.ts ∅
 │   │   │   └── ∅ unused: loadDreamGame
 │   │   ├── GameRuntime.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── generative-audio.ts
-│   │   ├── index.ts ∅
+│   │   ├── index.ts ⚠ ∅
+│   │   │   ├── ⚠ ./control-mappings  ((unknown — bare import))
 │   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
 │   │   ├── neural-render.ts
 │   │   ├── path-tracing.ts
