@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T20:41:34.623Z",
+  "generated_at": "2026-06-15T06:03:09.279Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 27,
   "events": [
@@ -7,8 +7,8 @@
       "event": "beforeunload",
       "payload_type": null,
       "files": [
-        "lib/games/useRemoteChannel.ts",
-        "lib/intelligence/useSessionIntelligence.ts",
+        "games/useRemoteChannel.ts",
+        "intelligence/useSessionIntelligence.ts",
         "src/launcher.ts"
       ]
     },
@@ -16,7 +16,7 @@
       "event": "de-ctrl-button",
       "payload_type": "ButtonInteractionEvent",
       "files": [
-        "lib/games/gameControllerButtons.ts"
+        "games/gameControllerButtons.ts"
       ]
     },
     {
@@ -26,22 +26,22 @@
         "components/games/dream.EchoArena.tsx",
         "components/games/dream.NeonDrift.tsx",
         "components/games/madmaxi/dream.MadmaxiGame.tsx",
-        "lib/gameengin/GameRuntime.tsx",
-        "lib/games/useGameInputKeyboardBridge.ts"
+        "engins/gameengin/GameRuntime.tsx",
+        "games/useGameInputKeyboardBridge.ts"
       ]
     },
     {
       "event": "de-game-layout-change",
       "payload_type": null,
       "files": [
-        "lib/games/useImmersiveGameLayout.ts"
+        "games/useImmersiveGameLayout.ts"
       ]
     },
     {
       "event": "de-game-start",
       "payload_type": null,
       "files": [
-        "lib/games/hooks.ts"
+        "games/hooks.ts"
       ]
     },
     {
@@ -112,14 +112,14 @@
       "event": "dreamengin:boogieman",
       "payload_type": "PolicyResult",
       "files": [
-        "lib/policy/boogiePolicy.ts"
+        "engine/policy/boogiePolicy.ts"
       ]
     },
     {
       "event": "dreamengin:idari",
       "payload_type": null,
       "files": [
-        "lib/agents/agentBus.ts"
+        "engine/agents/agentBus.ts"
       ]
     },
     {
@@ -142,8 +142,8 @@
       "payload_type": null,
       "files": [
         "components/gameengin/input/DualSenseManager.ts",
-        "lib/games/DualSenseManager.ts",
-        "lib/games/useGamepad.ts"
+        "games/DualSenseManager.ts",
+        "games/useGamepad.ts"
       ]
     },
     {
@@ -151,23 +151,23 @@
       "payload_type": null,
       "files": [
         "components/gameengin/input/DualSenseManager.ts",
-        "lib/games/DualSenseManager.ts",
-        "lib/games/useGamepad.ts"
+        "games/DualSenseManager.ts",
+        "games/useGamepad.ts"
       ]
     },
     {
       "event": "offline",
       "payload_type": null,
       "files": [
-        "lib/offline/offlineCache.ts"
+        "engine/offline/offlineCache.ts"
       ]
     },
     {
       "event": "online",
       "payload_type": null,
       "files": [
-        "lib/offline/offlineCache.ts",
-        "lib/runtime/offlineQueue.ts"
+        "engine/offline/offlineCache.ts",
+        "engine/runtime/offlineQueue.ts"
       ]
     },
     {
@@ -180,7 +180,7 @@
         "components/home/dream.NeuralSeamCanvas.tsx",
         "components/runtime/dream.shell.RuntimeShell.tsx",
         "dreamdmbar/dreamsurface.dreamdmbar.tsx",
-        "lib/hooks/useResponsive.ts"
+        "hooks/useResponsive.ts"
       ]
     },
     {
@@ -188,7 +188,7 @@
       "payload_type": null,
       "files": [
         "components/home/dream.ActiveModuleSurface.tsx",
-        "lib/god-tier/useGodTier.ts"
+        "god-tier/useGodTier.ts"
       ]
     },
     {
