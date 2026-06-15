@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-15T12:57:16.859Z
+Generated: 2026-06-15T15:33:30.699Z
 
 ---
 
@@ -12035,9 +12035,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceAssetPipeline` | `CameraState` |
+| `@/engins/isosurfaceAssetPipeline` | `CameraState`, `computeBounds` |
 | `@/engins/isosurfaceDualContouring` | `Mesh`, `Vec3` |
-| `react` | `useEffect`, `useRef` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
 ## `engins/contentengin/ImplicitAssetWorkspace.tsx`
 
@@ -12336,10 +12336,10 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceAssetPipeline` | `BrushState`, `CameraState`, `DEFAULT_BRUSH_STATE`, `DEFAULT_CAMERA_STATE`, `EditableMeshState`, `ExportFormat`, `ImplicitAssetWorkspaceObject`, `SculptTool`, `SourceImageAsset`, `analyzeImageMask`, `createImplicitAssetWorkspaceObject`, `exportGLB`, `exportOBJ`, `meshToSnapshot`, `processImageToEditableMesh`, `qualityFromDiagnostics`, `repairMesh`, `sculptMesh`, `validateMesh` |
-| `@/engins/isosurfaceDualContouring` | `Vec3` |
+| `@/engins/isosurfaceAssetPipeline` | `BrushState`, `CameraState`, `DEFAULT_BRUSH_STATE`, `DEFAULT_CAMERA_STATE`, `EditableMeshState`, `ExportFormat`, `ImplicitAssetWorkspaceObject`, `SculptTool`, `analyzeImageMask`, `createImplicitAssetWorkspaceObject`, `exportGLB`, `exportOBJ`, `meshToSnapshot`, `processImageToEditableMesh`, `qualityFromDiagnostics`, `repairMeshDetailed`, `sculptMesh`, `summarizeMeshQuality`, `validateMeshStrict` |
+| `@/engins/isosurfaceDualContouring` | `Mesh`, `Vec3` |
 | `@/engins/rulesets/content/useContentEnginRuntime` | `useContentEnginRuntime` |
-| `react` | `useCallback`, `useMemo`, `useState` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
 
 ## `engins/dream.ForgeEngin.tsx`
 
@@ -12978,7 +12978,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engins/contentengin/assetTypes` | `DomainObject` |
-| `@/engins/isosurfaceDualContouring` | `Mesh`, `MeshDiagnostics`, `Vec3`, `createSphereSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh` |
+| `@/engins/isosurfaceDualContouring` | `Mesh`, `MeshDiagnostics`, `Vec3`, `createSphereSDF`, `meshToSnapshot`, `runDualContouring` |
 
 ## `engins/labengin/implicitSurface.ts`
 
@@ -20107,13 +20107,12 @@ _No circular dependencies detected._
 | `engins/gameengin/useUnifiedLoop.ts` | `useUnifiedLoop` |
 | `engins/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
 | `engins/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
-| `engins/isosurfaceAssetPipeline.ts` | `buildInflatedReliefMesh` |
+| `engins/isosurfaceAssetPipeline.ts` | `buildInflatedReliefMesh`, `cloneMesh`, `computeVertexNormals`, `computePlanarUVs`, `estimateMeshBytes`, `compactMesh`, `weldVertices`, `repairMesh`, `centerAndScaleMesh`, `buildVertexAdjacency`, `validateMesh` |
 | `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS` |
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
 | `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `engins/rulesets/content/contentEnginRuleSet.ts` | `CONTENT_IMPLICIT_ASSET_POLICY` |
 | `engins/rulesets/dreams/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/forge/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/game/declarative.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
@@ -23167,8 +23166,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: id, constraints, transforms, params, ruleSet, (default)
 │   │   │   └── useCodeEnginRuntime.ts
 │   │   ├── content
-│   │   │   ├── contentEnginRuleSet.ts ∅
-│   │   │   │   └── ∅ unused: CONTENT_IMPLICIT_ASSET_POLICY
+│   │   │   ├── contentEnginRuleSet.ts
 │   │   │   └── useContentEnginRuntime.ts
 │   │   ├── dreams
 │   │   │   └── index.ts ∅
@@ -23252,7 +23250,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⚠ @/supabase/config  (SUPABASE_URL)
 │   │   └── ∅ unused: (default)
 │   ├── isosurfaceAssetPipeline.ts ∅
-│   │   └── ∅ unused: buildInflatedReliefMesh
+│   │   └── ∅ unused: buildInflatedReliefMesh, cloneMesh, computeVertexNormals, computePlanarUVs, estimateMeshBytes, compactMesh, weldVertices, repairMesh, centerAndScaleMesh, buildVertexAdjacency, validateMesh
 │   └── isosurfaceDualContouring.ts ∅
 │       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
 ├── fonts
