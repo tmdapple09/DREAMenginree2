@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-15T12:57:16.994Z
+Generated: 2026-06-15T23:11:39.914Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -11827,10 +11827,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── → vec3
 │   │   ├── AssetViewport.tsx ∅
 │   │   │   ├── CameraState  ← @/engins/isosurfaceAssetPipeline
+│   │   │   ├── computeBounds  ← @/engins/isosurfaceAssetPipeline
 │   │   │   ├── Mesh  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── Vec3  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
 │   │   │   ├── useRef  ← react
+│   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── cli.ts
@@ -11858,7 +11861,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── ExportFormat  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── ImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── SculptTool  ← @/engins/isosurfaceAssetPipeline
-│   │       ├── SourceImageAsset  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── analyzeImageMask  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── createImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── exportGLB  ← @/engins/isosurfaceAssetPipeline
@@ -11866,13 +11868,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── meshToSnapshot  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── processImageToEditableMesh  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── qualityFromDiagnostics  ← @/engins/isosurfaceAssetPipeline
-│   │       ├── repairMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── repairMeshDetailed  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── sculptMesh  ← @/engins/isosurfaceAssetPipeline
-│   │       ├── validateMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── summarizeMeshQuality  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── validateMeshStrict  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── Mesh  ← @/engins/isosurfaceDualContouring
 │   │       ├── Vec3  ← @/engins/isosurfaceDualContouring
 │   │       ├── useContentEnginRuntime  ← @/engins/rulesets/content/useContentEnginRuntime
 │   │       ├── useCallback  ← react
+│   │       ├── useEffect  ← react
 │   │       ├── useMemo  ← react
+│   │       ├── useRef  ← react
 │   │       ├── useState  ← react
 │   │       └── → useImplicitAssetWorkspace
 │   ├── forgeengin
@@ -13800,21 +13806,32 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
 │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
 │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
-│   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
 │   │   ├── → DEFAULT_BRUSH_STATE
 │   │   ├── → DEFAULT_CAMERA_STATE
 │   │   ├── → analyzeImageMask
 │   │   ├── → buildInflatedReliefMesh
+│   │   ├── → buildVertexAdjacency
+│   │   ├── → centerAndScaleMesh
+│   │   ├── → cloneMesh
+│   │   ├── → compactMesh
+│   │   ├── → computeBounds
+│   │   ├── → computePlanarUVs
+│   │   ├── → computeVertexNormals
 │   │   ├── → createImplicitAssetWorkspaceObject
+│   │   ├── → estimateMeshBytes
 │   │   ├── → exportGLB
 │   │   ├── → exportOBJ
 │   │   ├── → meshToSnapshot
 │   │   ├── → processImageToEditableMesh
 │   │   ├── → qualityFromDiagnostics
 │   │   ├── → repairMesh
+│   │   ├── → repairMeshDetailed
 │   │   ├── → sculptMesh
+│   │   ├── → summarizeMeshQuality
 │   │   ├── → validateMesh
-│   │   └── ∅ unused: buildInflatedReliefMesh
+│   │   ├── → validateMeshStrict
+│   │   ├── → weldVertices
+│   │   └── ∅ unused: buildInflatedReliefMesh, cloneMesh, computeVertexNormals, computePlanarUVs, estimateMeshBytes, compactMesh, weldVertices, repairMesh, centerAndScaleMesh, buildVertexAdjacency, validateMesh
 │   └── isosurfaceDualContouring.ts ∅
 │       ├── → DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
 │       ├── → createSphereSDF
