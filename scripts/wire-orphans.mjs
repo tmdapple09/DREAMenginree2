@@ -117,7 +117,7 @@ const ARCHITECTURE_STAGES = [
   {
     id: 'module-registry',
     label: 'Module Registry',
-    paths: ['lib/runtime/moduleRegistry.ts', 'src/engin/generated/'],
+    paths: ['lib/runtime/moduleRegistry.ts', 'engine/generated/'],
     slots: ['dreamr', 'dreamdmbar', 'homedream', 'connector', 'dr-eams-tool'],
     receivesFrom: ['engin-dispatcher'],
     dispatchesTo: ['engin-logic'],
@@ -352,7 +352,7 @@ async function collectScannedFiles() {
     'lib/reality',
     'lib/renderer',
     'lib/routing',
-    'src/dream/rulesets',
+    'engins/rulesets',
     'lib/runtime',
     'lib/scene',
     'scripts',
@@ -518,7 +518,7 @@ function classifySlot(relPath) {
 
   if (relPath.startsWith('engins/') && isCode) return 'engin';
   if (relPath.startsWith('lib/engins/') && isTs) return 'engine-ruleset';
-  if (relPath.startsWith('src/dream/rulesets/')) return 'engine-ruleset';
+  if (relPath.startsWith('engins/rulesets/')) return 'engine-ruleset';
 
   if (relPath.startsWith('lib/connectors/') && isTs) return 'connector';
   if (relPath.startsWith('lib/gameengin/brain/') && isJson) return 'brain-node';
@@ -647,7 +647,7 @@ function buildGeneratedRouters() {
     Object.entries(GENERATED_SLOT_FILES).map(([name, slots]) => [
       name,
       {
-        file: `src/engin/generated/${name}.ts`,
+        file: `engine/generated/${name}.ts`,
         slots,
       },
     ]),
@@ -687,7 +687,7 @@ function buildArchitectureStageEntries(registry) {
 
 function buildRouterSummaryMarkdown() {
   return Object.entries(buildGeneratedRouters())
-    .map(([name, config]) => `| \`src/engin/generated/${name}.ts\` | ${config.slots.map((slot) => `\`${slot}\``).join(', ')} |`)
+    .map(([name, config]) => `| \`engine/generated/${name}.ts\` | ${config.slots.map((slot) => `\`${slot}\``).join(', ')} |`)
     .join('\n');
 }
 
@@ -751,7 +751,7 @@ ${buildRouterSummaryMarkdown()}
 
 ## Machine-Usable Exports
 
-\`src/engin/generated/osArchitectureMap.ts\` exports:
+\`engine/generated/osArchitectureMap.ts\` exports:
 
 | Export | Purpose |
 | --- | --- |
@@ -879,8 +879,8 @@ async function runFromCli() {
 
   console.log(`Registry generated with ${result.registry.entries.length} entries (${summary}).`);
   console.log(`OS architecture map written to build-memory/os-architecture-map.md.`);
-  console.log(`Generated OS architecture module written to src/engin/generated/osArchitectureMap.ts.`);
-  console.log(`Generated Engin/Dream modules written to src/engin/generated/.`);
+  console.log(`Generated OS architecture module written to engine/generated/osArchitectureMap.ts.`);
+  console.log(`Generated Engin/Dream modules written to engine/generated/.`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {

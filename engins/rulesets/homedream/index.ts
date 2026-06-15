@@ -1,4 +1,4 @@
-// src/dream/rulesets/homedream/index.ts — barrel for HomeDream ruleset
+// engins/rulesets/homedream/index.ts — barrel for HomeDream ruleset
 // Exports constants, transforms, physics params. No engin imports.
 
 export {

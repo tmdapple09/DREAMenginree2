@@ -12589,13 +12589,13 @@ _No style files for this feature._
 | `@/engins/gameengin/core` | `EliteGameEngine`, `QualityTier` |
 | `@/engins/gameengin/gameEnginRuntime` | `GameEnginRuntime` |
 
-## `src/dream/rulesets/homedream/dream.homedream.physics.ts`
+## `engins/rulesets/homedream/dream.homedream.physics.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./dream.homedream.constants` | `HOMEDREAM_GRAVITY` |
 
-## `src/dream/rulesets/homedream/dream.homedream.transforms.ts`
+## `engins/rulesets/homedream/dream.homedream.transforms.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12622,13 +12622,13 @@ _No style files for this feature._
 | `@/build-memory/registry.json` | _(dynamic import)_ |
 | `../generated/index` | _(dynamic import)_ |
 
-## `src/engin/generated/cartridges.ts`
+## `engine/generated/cartridges.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/public/cartridges/mad-maxi/MANIFEST.json` | _(dynamic import)_ |
 
-## `src/engin/generated/dreamdmbar.ts`
+## `engine/generated/dreamdmbar.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12646,7 +12646,7 @@ _No style files for this feature._
 | `@/dreamdmbar/useModuleBarIntent` | _(dynamic import)_ |
 | `@/dreamdmbar/useNotifications` | _(dynamic import)_ |
 
-## `src/engin/generated/dreamr.ts`
+## `engine/generated/dreamr.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12655,7 +12655,7 @@ _No style files for this feature._
 | `@/components/dreamr/dream.panel.DreamRChannelPanel` | _(dynamic import)_ |
 | `@/components/dreamr/dream.panel.DreamRCreatorPanel` | _(dynamic import)_ |
 
-## `src/engin/generated/dreamsurfaces.ts`
+## `engine/generated/dreamsurfaces.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12675,7 +12675,7 @@ _No style files for this feature._
 | `@/components/dreams/dreamsurface.shell` | _(dynamic import)_ |
 | `@/components/dreams/dreamsurface.window` | _(dynamic import)_ |
 
-## `src/engin/generated/engins.ts`
+## `engine/generated/engins.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12821,13 +12821,13 @@ _No style files for this feature._
 | `@/engins/rulesets/useEnginWorkflow` | _(dynamic import)_ |
 | `@/engins/rulesets/workflowEngine` | _(dynamic import)_ |
 
-## `src/engin/generated/homedream.ts`
+## `engine/generated/homedream.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/app/homedream/page` | _(dynamic import)_ |
 
-## `src/engin/generated/hooks.ts`
+## `engine/generated/hooks.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12844,7 +12844,7 @@ _No style files for this feature._
 | `@/hooks/useTick` | _(dynamic import)_ |
 | `@/hooks/useViewCounter` | _(dynamic import)_ |
 
-## `src/engin/generated/index.ts`
+## `engine/generated/index.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12862,22 +12862,22 @@ _No style files for this feature._
 | `./surfaces` | `surfaces` |
 | `./systems` | `systems` |
 
-## `src/engin/generated/rulesets.ts`
+## `engine/generated/rulesets.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `@/src/dream/rulesets/codeengin/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/dreamsengin/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/forgengn/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/gameengin/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/homedream/dream.homedream.constants` | _(dynamic import)_ |
-| `@/src/dream/rulesets/homedream/dream.homedream.physics` | _(dynamic import)_ |
-| `@/src/dream/rulesets/homedream/dream.homedream.transforms` | _(dynamic import)_ |
-| `@/src/dream/rulesets/homedream/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/labengin/index` | _(dynamic import)_ |
-| `@/src/dream/rulesets/starmakerengin/index` | _(dynamic import)_ |
+| `@/engins/rulesets/code` | _(dynamic import)_ |
+| `@/engins/rulesets/dreams` | _(dynamic import)_ |
+| `@/engins/rulesets/forge` | _(dynamic import)_ |
+| `@/engins/rulesets/game/declarative` | _(dynamic import)_ |
+| `@/engins/rulesets/homedream/dream.homedream.constants` | _(dynamic import)_ |
+| `@/engins/rulesets/homedream/dream.homedream.physics` | _(dynamic import)_ |
+| `@/engins/rulesets/homedream/dream.homedream.transforms` | _(dynamic import)_ |
+| `@/engins/rulesets/homedream` | _(dynamic import)_ |
+| `@/engins/rulesets/lab` | _(dynamic import)_ |
+| `@/engins/rulesets/music` | _(dynamic import)_ |
 
-## `src/engin/generated/surfaces.ts`
+## `engine/generated/surfaces.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -13445,12 +13445,12 @@ _No style files for this feature._
 | `@/daydreams/shared/useDaydreamPersistence` | _(dynamic import)_ |
 | `@/daydreams/shared/useDaydreamState` | _(dynamic import)_ |
 
-## `src/launcher.ts`
+## `engins/gameengin/launcher.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./core/GameEnginCore` | `GameConfig`, `GameEnginConfigError`, `GameEnginCore` |
-| `@/src/launcher` | `launch` |
+| `@/engins/gameengin/launcher` | `launch` |
 | `@/utils/index` | `toErrorMessage` |
 
 ## `supabaseClient.ts`
@@ -13737,11 +13737,11 @@ _No style files for this feature._
 - `@/build-memory/registry.json`
 - `../generated/index`
 
-## `src/engin/generated/cartridges.ts`
+## `engine/generated/cartridges.ts`
 
 - `@/public/cartridges/mad-maxi/MANIFEST.json`
 
-## `src/engin/generated/dreamdmbar.ts`
+## `engine/generated/dreamdmbar.ts`
 
 - `@/dreamdmbar/barInteractions`
 - `@/dreamdmbar/bridgeSeamFlow`
@@ -13757,14 +13757,14 @@ _No style files for this feature._
 - `@/dreamdmbar/useModuleBarIntent`
 - `@/dreamdmbar/useNotifications`
 
-## `src/engin/generated/dreamr.ts`
+## `engine/generated/dreamr.ts`
 
 - `@/app/dreamr/page`
 - `@/components/dreamr/dream.CloseFriendsSettings`
 - `@/components/dreamr/dream.panel.DreamRChannelPanel`
 - `@/components/dreamr/dream.panel.DreamRCreatorPanel`
 
-## `src/engin/generated/dreamsurfaces.ts`
+## `engine/generated/dreamsurfaces.ts`
 
 - `@/components/dreams/dream.connectorlayer`
 - `@/components/dreams/dream.DraggableDream`
@@ -13782,7 +13782,7 @@ _No style files for this feature._
 - `@/components/dreams/dreamsurface.shell`
 - `@/components/dreams/dreamsurface.window`
 
-## `src/engin/generated/engins.ts`
+## `engine/generated/engins.ts`
 
 - `@/engins/autoopen/dream.AutoOpenGameEngin`
 - `@/engins/CodeEngin/core/parser`
@@ -13926,11 +13926,11 @@ _No style files for this feature._
 - `@/engins/rulesets/useEnginWorkflow`
 - `@/engins/rulesets/workflowEngine`
 
-## `src/engin/generated/homedream.ts`
+## `engine/generated/homedream.ts`
 
 - `@/app/homedream/page`
 
-## `src/engin/generated/hooks.ts`
+## `engine/generated/hooks.ts`
 
 - `@/hooks/use-spatial`
 - `@/hooks/useAccount`
@@ -13945,20 +13945,20 @@ _No style files for this feature._
 - `@/hooks/useTick`
 - `@/hooks/useViewCounter`
 
-## `src/engin/generated/rulesets.ts`
+## `engine/generated/rulesets.ts`
 
-- `@/src/dream/rulesets/codeengin/index`
-- `@/src/dream/rulesets/dreamsengin/index`
-- `@/src/dream/rulesets/forgengn/index`
-- `@/src/dream/rulesets/gameengin/index`
-- `@/src/dream/rulesets/homedream/dream.homedream.constants`
-- `@/src/dream/rulesets/homedream/dream.homedream.physics`
-- `@/src/dream/rulesets/homedream/dream.homedream.transforms`
-- `@/src/dream/rulesets/homedream/index`
-- `@/src/dream/rulesets/labengin/index`
-- `@/src/dream/rulesets/starmakerengin/index`
+- `@/engins/rulesets/code`
+- `@/engins/rulesets/dreams`
+- `@/engins/rulesets/forge`
+- `@/engins/rulesets/game/declarative`
+- `@/engins/rulesets/homedream/dream.homedream.constants`
+- `@/engins/rulesets/homedream/dream.homedream.physics`
+- `@/engins/rulesets/homedream/dream.homedream.transforms`
+- `@/engins/rulesets/homedream`
+- `@/engins/rulesets/lab`
+- `@/engins/rulesets/music`
 
-## `src/engin/generated/surfaces.ts`
+## `engine/generated/surfaces.ts`
 
 - `@/app/(internal)/idari-console/page`
 - `@/app/(internal)/idari-console/platform-errors/page`
@@ -16329,8 +16329,8 @@ _No style files for this feature._
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
 - `scripts/wire-orphans.mjs`
-- `src/engin/generated/osArchitectureMap.ts`
-- `src/engin/generated/surfaces.ts`
+- `engine/generated/osArchitectureMap.ts`
+- `engine/generated/surfaces.ts`
 - `types/dreamArtifact.ts`
 
 ---
@@ -16611,7 +16611,7 @@ _No style files for this feature._
 - `scripts/wire-orphans.mjs`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
-- `src/engin/generated/osArchitectureMap.ts`
+- `engine/generated/osArchitectureMap.ts`
 
 ---
 
@@ -16650,7 +16650,7 @@ _No circular dependencies detected._
 | `engins/engin.CodeEngin.tsx` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
-| `src/engin/generated/index.ts` | 14 |
+| `engine/generated/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
 | `app/layout.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
@@ -16689,7 +16689,7 @@ _No circular dependencies detected._
 | `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
-| `src/engin/generated/index.ts` | 14 | HIGH_COUPLING |
+| `engine/generated/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
 | `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -16952,7 +16952,7 @@ _No circular dependencies detected._
 | `engine/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/social/livekit.ts` | 0 | EVENT_BUS |
 | `engins/gameengin/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
-| `src/engin/generated/osArchitectureMap.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engine/generated/osArchitectureMap.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
 
 ---
@@ -18111,16 +18111,16 @@ _No circular dependencies detected._
 | `src/components/dream.Nav.tsx` | `(default)` |
 | `src/configs/demoGameConfig.ts` | `(default)` |
 | `src/core/GameEnginCore.ts` | `validateConfig` |
-| `src/dream/rulesets/codeengin/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `src/dream/rulesets/dreamsengin/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `src/dream/rulesets/forgengn/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `src/dream/rulesets/gameengin/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `src/dream/rulesets/homedream/dream.homedream.constants.ts` | `HOMEDREAM_MAX_ENTITIES`, `HOMEDREAM_FRAME_BUDGET_MS` |
-| `src/dream/rulesets/homedream/dream.homedream.physics.ts` | `HOMEDREAM_PHYSICS_CONSTRAINTS`, `resolveConstraint` |
-| `src/dream/rulesets/homedream/dream.homedream.transforms.ts` | `createInitialState` |
-| `src/dream/rulesets/homedream/index.ts` | `HOMEDREAM_FRAME_BUDGET_MS`, `HOMEDREAM_GRAVITY`, `HOMEDREAM_MAX_ENTITIES`, `HOMEDREAM_WORLD_ID`, `applyDelta`, `createInitialState`, `HOMEDREAM_PHYSICS_CONSTRAINTS`, `resolveConstraint` |
-| `src/dream/rulesets/labengin/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
-| `src/dream/rulesets/starmakerengin/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/dreams/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/forge/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/game/declarative.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/homedream/dream.homedream.constants.ts` | `HOMEDREAM_MAX_ENTITIES`, `HOMEDREAM_FRAME_BUDGET_MS` |
+| `engins/rulesets/homedream/dream.homedream.physics.ts` | `HOMEDREAM_PHYSICS_CONSTRAINTS`, `resolveConstraint` |
+| `engins/rulesets/homedream/dream.homedream.transforms.ts` | `createInitialState` |
+| `engins/rulesets/homedream/index.ts` | `HOMEDREAM_FRAME_BUDGET_MS`, `HOMEDREAM_GRAVITY`, `HOMEDREAM_MAX_ENTITIES`, `HOMEDREAM_WORLD_ID`, `applyDelta`, `createInitialState`, `HOMEDREAM_PHYSICS_CONSTRAINTS`, `resolveConstraint` |
+| `engins/rulesets/lab/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/music/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `src/dreamsurface/dreamsurface.bridge.ts` | `createBridge` |
 | `src/dreamsurface/dreamsurface.delta.ts` | `computeDelta`, `mergeDelta` |
 | `src/dreamsurface/index.ts` | `createBridge`, `computeDelta`, `mergeDelta` |
@@ -18129,8 +18129,8 @@ _No circular dependencies detected._
 | `src/engin/core/engin.ledger.ts` | `createLedger` |
 | `src/engin/core/engin.renderloop.ts` | `createRenderLoop` |
 | `src/engin/core/index.ts` | `UniversalEngine`, `engine`, `appendEntry`, `createLedger`, `createEventBus`, `createRenderLoop`, `createSession`, `validateSession` |
-| `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
-| `src/engin/generated/osArchitectureMap.ts` | `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
+| `engine/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
+| `engine/generated/osArchitectureMap.ts` | `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
 | `supabaseClient.ts` | `supabase` |

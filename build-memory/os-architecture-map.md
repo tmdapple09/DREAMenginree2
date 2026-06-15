@@ -57,7 +57,7 @@ User Action / Agent / CI
 | `user-action` | User Action / Agent / CI | — | — | `surface-shell` |
 | `surface-shell` | Surface / Shell | `components/`, `app/`, `coresurfaces/`, `daydreams/`, `lib/dreams/`, `lib/dream-window/`, `lib/widgets/` | `core-surface`, `daydream`, `surface`, `route-surface`, `dreamsurface` | `engin-dispatcher` |
 | `engin-dispatcher` | EnginDispatcher | `lib/runtime/EnginDispatcher.ts` | — | `module-registry` |
-| `module-registry` | Module Registry | `lib/runtime/moduleRegistry.ts`, `src/engin/generated/` | `dreamr`, `dreamdmbar`, `homedream`, `connector`, `dr-eams-tool` | `engin-logic` |
+| `module-registry` | Module Registry | `lib/runtime/moduleRegistry.ts`, `engine/generated/` | `dreamr`, `dreamdmbar`, `homedream`, `connector`, `dr-eams-tool` | `engin-logic` |
 | `engin-logic` | Engin Logic | `engins/`, `lib/engins/`, `lib/engin-runtime/`, `lib/gameengin/brain/`, `lib/gameengin/cartridges/`, `public/cartridges/` | `engin`, `engine-ruleset`, `brain-node`, `brain-doc`, `cartridge`, `persona` | `state-mutation-bus` |
 | `state-mutation-bus` | State Mutation + Bus | `lib/runtime/dreamOSBus.ts`, `lib/runtime/`, `lib/hooks/`, `hooks/`, `lib/gameengin/`, `lib/games/` | `hook`, `engine-system`, `engine-utility` | `rerender-persistence` |
 | `rerender-persistence` | Re-render / Persistence | `supabase/`, `supabase/migrations/`, `build-memory/`, `lib/vm/`, `lib/runtime/` | `migration`, `memory` | — |
@@ -85,23 +85,23 @@ User Action / Agent / CI
 
 | Generated File | Slots |
 | --- | --- |
-| `src/engin/generated/engins.ts` | `engin` |
-| `src/engin/generated/rulesets.ts` | `engine-ruleset` |
-| `src/engin/generated/surfaces.ts` | `core-surface`, `daydream`, `surface`, `route-surface` |
-| `src/engin/generated/dreamsurfaces.ts` | `dreamsurface` |
-| `src/engin/generated/dreamr.ts` | `dreamr` |
-| `src/engin/generated/dreamdmbar.ts` | `dreamdmbar` |
-| `src/engin/generated/homedream.ts` | `homedream` |
-| `src/engin/generated/connectors.ts` | `connector` |
-| `src/engin/generated/cartridges.ts` | `cartridge` |
-| `src/engin/generated/brain.ts` | `brain-node`, `brain-doc` |
-| `src/engin/generated/personas.ts` | `persona` |
-| `src/engin/generated/systems.ts` | `engine-system`, `engine-utility` |
-| `src/engin/generated/hooks.ts` | `hook` |
+| `engine/generated/engins.ts` | `engin` |
+| `engine/generated/rulesets.ts` | `engine-ruleset` |
+| `engine/generated/surfaces.ts` | `core-surface`, `daydream`, `surface`, `route-surface` |
+| `engine/generated/dreamsurfaces.ts` | `dreamsurface` |
+| `engine/generated/dreamr.ts` | `dreamr` |
+| `engine/generated/dreamdmbar.ts` | `dreamdmbar` |
+| `engine/generated/homedream.ts` | `homedream` |
+| `engine/generated/connectors.ts` | `connector` |
+| `engine/generated/cartridges.ts` | `cartridge` |
+| `engine/generated/brain.ts` | `brain-node`, `brain-doc` |
+| `engine/generated/personas.ts` | `persona` |
+| `engine/generated/systems.ts` | `engine-system`, `engine-utility` |
+| `engine/generated/hooks.ts` | `hook` |
 
 ## Machine-Usable Exports
 
-`src/engin/generated/osArchitectureMap.ts` exports:
+`engine/generated/osArchitectureMap.ts` exports:
 
 | Export | Purpose |
 | --- | --- |

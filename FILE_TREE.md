@@ -13649,16 +13649,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── personas.ts
 │   │   │   │   └── → personas
 │   │   │   ├── rulesets.ts
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/codeengin/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/dreamsengin/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/forgengn/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/gameengin/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/homedream/dream.homedream.constants
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/homedream/dream.homedream.physics
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/homedream/dream.homedream.transforms
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/homedream/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/labengin/index
-│   │   │   │   ├── (dynamic)  ← @/src/dream/rulesets/starmakerengin/index
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/code
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/dreams
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/forge
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/game/declarative
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.constants
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.physics
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.transforms
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/homedream
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/lab
+│   │   │   │   ├── (dynamic)  ← @/engins/rulesets/music
 │   │   │   │   └── → rulesets
 │   │   │   ├── surfaces.ts
 │   │   │   │   ├── (dynamic)  ← @/app/(internal)/idari-console/page
@@ -14242,7 +14242,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── GameConfig  ← ./core/GameEnginCore
 │       ├── GameEnginConfigError  ← ./core/GameEnginCore
 │       ├── GameEnginCore  ← ./core/GameEnginCore
-│       ├── launch  ← @/src/launcher
+│       ├── launch  ← @/engins/gameengin/launcher
 │       ├── toErrorMessage  ← @/utils/index
 │       └── → launch
 ├── styles

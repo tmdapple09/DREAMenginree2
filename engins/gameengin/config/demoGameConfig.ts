@@ -1,7 +1,7 @@
-import type { GameConfig } from '../core/GameEnginCore';
+import type { GameConfig } from '../GameEnginCore';
 
 /**
- * src/configs/demoGameConfig.ts
+ * engins/gameengin/config/demoGameConfig.ts
  *
  * Sample game configuration that demonstrates how to initialise the
  * DREAMengin GameEnginCore.  Every subsystem parameter is documented

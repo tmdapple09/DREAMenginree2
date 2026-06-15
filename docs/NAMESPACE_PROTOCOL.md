@@ -52,11 +52,11 @@ src/
 
 ### Rule 2 — `dream.*` Rule-Set Namespace (Mutable)
 
-- **Canonical path:** `src/dream/rulesets/[game_id]/`
+- **Canonical path:** `engins/rulesets/[game_id]/`
 - **Responsibility:** All unique gameplay behaviors, physics constraints, and procedural generation parameters. Files contain **only** transformations, constants, and logic definitions.
 - **Constraint:** **FORBIDDEN** — any direct import of `engin.core.*`. All communication to engin infrastructure MUST go through `dreamsurface`.
 - **Active game_id:** `homedream` (HomeDream Surface)
-- **Barrel per game:** `src/dream/rulesets/homedream/index.ts`
+- **Barrel per game:** `engins/rulesets/homedream/index.ts`
 
 ### Rule 3 — `dreamsurface.*` Interface Namespace (Stable Bridge)
 
@@ -87,7 +87,7 @@ src/
 | Namespace | Canonical Path | Responsibility | Modifiability | Can Import From |
 |---|---|---|---|---|
 | `engin.*` | `src/engin/core/` | Universal physics, rendering, I/O, auth | Fixed (Immutable) | Nothing in `src/dream/` or `src/dreamsurface/` |
-| `dream.*` | `src/dream/rulesets/[game_id]/` | Game rules, logic, physics parameters | Swappable (Mutable) | Only `src/dreamsurface/` for engin access; internal dream files ok |
+| `dream.*` | `engins/rulesets/[game_id]/` | Game rules, logic, physics parameters | Swappable (Mutable) | Only `src/dreamsurface/` for engin access; internal dream files ok |
 | `dreamsurface.*` | `src/dreamsurface/` | Delta application & bridge | Stable (Interface) | Both `src/engin/core/` and `src/dream/` |
 
 ---
@@ -131,7 +131,7 @@ Session management and validation.
 
 Genesis State. Parsed at session start. Never mutated at runtime.
 
-### `src/dream/rulesets/homedream/dream.homedream.constants.ts`
+### `engins/rulesets/homedream/dream.homedream.constants.ts`
 
 Physics constants for the HomeDream Surface game.
 
@@ -140,7 +140,7 @@ Physics constants for the HomeDream Surface game.
 - `HOMEDREAM_FRAME_BUDGET_MS = 16.67`
 - `HOMEDREAM_WORLD_ID = 'HomeDream Surface'`
 
-### `src/dream/rulesets/homedream/dream.homedream.transforms.ts`
+### `engins/rulesets/homedream/dream.homedream.transforms.ts`
 
 Pure state transformation functions. No side effects.
 
@@ -149,7 +149,7 @@ Pure state transformation functions. No side effects.
 - `applyDelta(state, delta)` — returns new state with delta applied
 - `createInitialState()` — returns the initial HomeDream state
 
-### `src/dream/rulesets/homedream/dream.homedream.physics.ts`
+### `engins/rulesets/homedream/dream.homedream.physics.ts`
 
 Physics constraint definitions for HomeDream entities.
 
@@ -192,7 +192,7 @@ engin.core ◄── (never imports from dream.* or dreamsurface.*)
 
 ## Adding a New Ruleset
 
-1. Create `src/dream/rulesets/[game_id]/` directory
+1. Create `engins/rulesets/[game_id]/` directory
 2. Add `[game_id].constants.ts`, `[game_id].transforms.ts`, `[game_id].physics.ts`
 3. Add `index.ts` barrel export
 4. **Do not** import from `src/engin/core/` — use `src/dreamsurface/` instead

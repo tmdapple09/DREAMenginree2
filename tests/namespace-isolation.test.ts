@@ -23,15 +23,16 @@ function walkFiles(dir: string, ext = ['.ts', '.tsx']): string[] {
   return results;
 }
 
-const SRC_ROOT = resolve(__dirname, '../src');
+const RULESET_ROOT = resolve(__dirname, '../engins/rulesets');
+const ENGINE_RUNTIME_ROOT = resolve(__dirname, '../engine/runtime');
 
 describe('Namespace Isolation Gate (Rule 5)', () => {
-  it('dream.* files MUST NOT import from engin/core directly', () => {
-    const dreamFiles = walkFiles(join(SRC_ROOT, 'dream'));
+  it('rulesets files MUST NOT import from engine/runtime directly', () => {
+    const dreamFiles = walkFiles(RULESET_ROOT);
     const violations: string[] = [];
     for (const file of dreamFiles) {
       const content = readFileSync(file, 'utf-8');
-      // Match any import that resolves to engin/core (relative or alias)
+      // Match any import that resolves to engine/runtime (relative or alias)
       if (
         /from\s+['"][^'"]*engin[\\/]core[^'"]*['"]/.test(content) ||
         /from\s+['"]@\/engin\/core[^'"]*['"]/.test(content)
@@ -41,12 +42,12 @@ describe('Namespace Isolation Gate (Rule 5)', () => {
     }
     expect(
       violations,
-      `dream.* files importing engin/core directly:\n${violations.join('\n')}`
+      `ruleset files importing engine/runtime directly:\n${violations.join('\n')}`
     ).toHaveLength(0);
   });
 
-  it('engin/core files MUST NOT import from dream.* directly', () => {
-    const enginFiles = walkFiles(join(SRC_ROOT, 'engin', 'core'));
+  it('engine/runtime files MUST NOT import from rulesets directly', () => {
+    const enginFiles = walkFiles(ENGINE_RUNTIME_ROOT);
     const violations: string[] = [];
     for (const file of enginFiles) {
       const content = readFileSync(file, 'utf-8');
@@ -59,20 +60,20 @@ describe('Namespace Isolation Gate (Rule 5)', () => {
     }
     expect(
       violations,
-      `engin/core files importing dream.* directly:\n${violations.join('\n')}`
+      `engine/runtime files importing rulesets directly:\n${violations.join('\n')}`
     ).toHaveLength(0);
   });
 
-  it('dreamsurface IS allowed to import from both engin/core and dream/*', () => {
+  it('dreamsurface IS allowed to import from both engine/runtime and dream/*', () => {
     // This test just verifies the bridge file exists and imports from both sides
-    const bridgeFile = join(SRC_ROOT, 'dreamsurface', 'dreamsurface.bridge.ts');
+    const bridgeFile = join(ENGINE_RUNTIME_ROOT, 'dreamsurface', 'dreamsurface.bridge.ts');
     const content = readFileSync(bridgeFile, 'utf-8');
     expect(content).toMatch(/engin/);
     expect(content).toMatch(/dream/);
   });
 
-  it('src/engin/state/base.json must be valid JSON with genesis:true', () => {
-    const basePath = join(SRC_ROOT, 'engin', 'state', 'base.json');
+  it('engine/state/base.json must be valid JSON with genesis:true', () => {
+    const basePath = resolve(__dirname, '../engine/state/base.json');
     const raw = readFileSync(basePath, 'utf-8');
     const parsed = JSON.parse(raw);
     expect(parsed.genesis).toBe(true);

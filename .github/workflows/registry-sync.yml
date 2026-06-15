@@ -34,7 +34,7 @@ jobs:
         with:
           name: engin-generated-${{ github.ref_name }}
           path: |
-            src/engin/generated/**
+            engine/generated/**
             build-memory/registry.json
             build-memory/os-architecture-map.md
           retention-days: 14
@@ -45,7 +45,7 @@ jobs:
           git config user.name "DREAMengin-Bot"
           git config user.email "bot@dreamengin.com"
 
-          git add src/engin/generated/ build-memory/registry.json build-memory/os-architecture-map.md
+          git add engine/generated/ build-memory/registry.json build-memory/os-architecture-map.md
 
           if ! git diff --staged --quiet; then
             git commit -m "chore: update engine registry [skip ci]"

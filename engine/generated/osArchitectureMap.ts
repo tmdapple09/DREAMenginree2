@@ -46,19 +46,19 @@ export const osSlotCounts = {
 
 export const osGeneratedRouters = {
   "engins": {
-    "file": "src/engin/generated/engins.ts",
+    "file": "engine/generated/engins.ts",
     "slots": [
       "engin"
     ]
   },
   "rulesets": {
-    "file": "src/engin/generated/rulesets.ts",
+    "file": "engine/generated/rulesets.ts",
     "slots": [
       "engine-ruleset"
     ]
   },
   "surfaces": {
-    "file": "src/engin/generated/surfaces.ts",
+    "file": "engine/generated/surfaces.ts",
     "slots": [
       "core-surface",
       "daydream",
@@ -67,63 +67,63 @@ export const osGeneratedRouters = {
     ]
   },
   "dreamsurfaces": {
-    "file": "src/engin/generated/dreamsurfaces.ts",
+    "file": "engine/generated/dreamsurfaces.ts",
     "slots": [
       "dreamsurface"
     ]
   },
   "dreamr": {
-    "file": "src/engin/generated/dreamr.ts",
+    "file": "engine/generated/dreamr.ts",
     "slots": [
       "dreamr"
     ]
   },
   "dreamdmbar": {
-    "file": "src/engin/generated/dreamdmbar.ts",
+    "file": "engine/generated/dreamdmbar.ts",
     "slots": [
       "dreamdmbar"
     ]
   },
   "homedream": {
-    "file": "src/engin/generated/homedream.ts",
+    "file": "engine/generated/homedream.ts",
     "slots": [
       "homedream"
     ]
   },
   "connectors": {
-    "file": "src/engin/generated/connectors.ts",
+    "file": "engine/generated/connectors.ts",
     "slots": [
       "connector"
     ]
   },
   "cartridges": {
-    "file": "src/engin/generated/cartridges.ts",
+    "file": "engine/generated/cartridges.ts",
     "slots": [
       "cartridge"
     ]
   },
   "brain": {
-    "file": "src/engin/generated/brain.ts",
+    "file": "engine/generated/brain.ts",
     "slots": [
       "brain-node",
       "brain-doc"
     ]
   },
   "personas": {
-    "file": "src/engin/generated/personas.ts",
+    "file": "engine/generated/personas.ts",
     "slots": [
       "persona"
     ]
   },
   "systems": {
-    "file": "src/engin/generated/systems.ts",
+    "file": "engine/generated/systems.ts",
     "slots": [
       "engine-system",
       "engine-utility"
     ]
   },
   "hooks": {
-    "file": "src/engin/generated/hooks.ts",
+    "file": "engine/generated/hooks.ts",
     "slots": [
       "hook"
     ]
@@ -191,7 +191,7 @@ export const osArchitectureGraph = {
       "label": "Module Registry",
       "paths": [
         "lib/runtime/moduleRegistry.ts",
-        "src/engin/generated/"
+        "engine/generated/"
       ],
       "slots": [
         "dreamr",
@@ -305,19 +305,19 @@ export const osArchitectureGraph = {
   },
   "generatedRouters": {
     "engins": {
-      "file": "src/engin/generated/engins.ts",
+      "file": "engine/generated/engins.ts",
       "slots": [
         "engin"
       ]
     },
     "rulesets": {
-      "file": "src/engin/generated/rulesets.ts",
+      "file": "engine/generated/rulesets.ts",
       "slots": [
         "engine-ruleset"
       ]
     },
     "surfaces": {
-      "file": "src/engin/generated/surfaces.ts",
+      "file": "engine/generated/surfaces.ts",
       "slots": [
         "core-surface",
         "daydream",
@@ -326,63 +326,63 @@ export const osArchitectureGraph = {
       ]
     },
     "dreamsurfaces": {
-      "file": "src/engin/generated/dreamsurfaces.ts",
+      "file": "engine/generated/dreamsurfaces.ts",
       "slots": [
         "dreamsurface"
       ]
     },
     "dreamr": {
-      "file": "src/engin/generated/dreamr.ts",
+      "file": "engine/generated/dreamr.ts",
       "slots": [
         "dreamr"
       ]
     },
     "dreamdmbar": {
-      "file": "src/engin/generated/dreamdmbar.ts",
+      "file": "engine/generated/dreamdmbar.ts",
       "slots": [
         "dreamdmbar"
       ]
     },
     "homedream": {
-      "file": "src/engin/generated/homedream.ts",
+      "file": "engine/generated/homedream.ts",
       "slots": [
         "homedream"
       ]
     },
     "connectors": {
-      "file": "src/engin/generated/connectors.ts",
+      "file": "engine/generated/connectors.ts",
       "slots": [
         "connector"
       ]
     },
     "cartridges": {
-      "file": "src/engin/generated/cartridges.ts",
+      "file": "engine/generated/cartridges.ts",
       "slots": [
         "cartridge"
       ]
     },
     "brain": {
-      "file": "src/engin/generated/brain.ts",
+      "file": "engine/generated/brain.ts",
       "slots": [
         "brain-node",
         "brain-doc"
       ]
     },
     "personas": {
-      "file": "src/engin/generated/personas.ts",
+      "file": "engine/generated/personas.ts",
       "slots": [
         "persona"
       ]
     },
     "systems": {
-      "file": "src/engin/generated/systems.ts",
+      "file": "engine/generated/systems.ts",
       "slots": [
         "engine-system",
         "engine-utility"
       ]
     },
     "hooks": {
-      "file": "src/engin/generated/hooks.ts",
+      "file": "engine/generated/hooks.ts",
       "slots": [
         "hook"
       ]
@@ -5564,63 +5564,63 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/codeengin/index",
+      "id": "engins/rulesets/code/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/codeengin/index.ts",
+      "path": "engins/rulesets/code/index.ts",
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/dreamsengin/index",
+      "id": "engins/rulesets/dreams/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/dreamsengin/index.ts",
+      "path": "engins/rulesets/dreams/index.ts",
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/forgengn/index",
+      "id": "engins/rulesets/forge/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/forgengn/index.ts",
+      "path": "engins/rulesets/forge/index.ts",
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/gameengin/index",
+      "id": "engins/rulesets/game/declarative",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/gameengin/index.ts",
+      "path": "engins/rulesets/game/declarative.ts",
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.constants",
+      "id": "engins/rulesets/homedream/dream.homedream.constants",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.constants.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.constants.ts",
       "engine": "HomeDream"
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.physics",
+      "id": "engins/rulesets/homedream/dream.homedream.physics",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.physics.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.physics.ts",
       "engine": "HomeDream"
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.transforms",
+      "id": "engins/rulesets/homedream/dream.homedream.transforms",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.transforms.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.transforms.ts",
       "engine": "HomeDream"
     },
     {
-      "id": "src/dream/rulesets/homedream/index",
+      "id": "engins/rulesets/homedream/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/index.ts",
+      "path": "engins/rulesets/homedream/index.ts",
       "engine": "HomeDream"
     },
     {
-      "id": "src/dream/rulesets/labengin/index",
+      "id": "engins/rulesets/lab/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/labengin/index.ts",
+      "path": "engins/rulesets/lab/index.ts",
       "engine": "Universal"
     },
     {
-      "id": "src/dream/rulesets/starmakerengin/index",
+      "id": "engins/rulesets/music/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/starmakerengin/index.ts",
+      "path": "engins/rulesets/music/index.ts",
       "engine": "Universal"
     }
   ],
@@ -6134,7 +6134,7 @@ User Action / Agent / CI
 | \`user-action\` | User Action / Agent / CI | — | — | \`surface-shell\` |
 | \`surface-shell\` | Surface / Shell | \`components/\`, \`app/\`, \`coresurfaces/\`, \`daydreams/\`, \`lib/dreams/\`, \`lib/dream-window/\`, \`lib/widgets/\` | \`core-surface\`, \`daydream\`, \`surface\`, \`route-surface\`, \`dreamsurface\` | \`engin-dispatcher\` |
 | \`engin-dispatcher\` | EnginDispatcher | \`lib/runtime/EnginDispatcher.ts\` | — | \`module-registry\` |
-| \`module-registry\` | Module Registry | \`lib/runtime/moduleRegistry.ts\`, \`src/engin/generated/\` | \`dreamr\`, \`dreamdmbar\`, \`homedream\`, \`connector\`, \`dr-eams-tool\` | \`engin-logic\` |
+| \`module-registry\` | Module Registry | \`lib/runtime/moduleRegistry.ts\`, \`engine/generated/\` | \`dreamr\`, \`dreamdmbar\`, \`homedream\`, \`connector\`, \`dr-eams-tool\` | \`engin-logic\` |
 | \`engin-logic\` | Engin Logic | \`engins/\`, \`lib/engins/\`, \`lib/engin-runtime/\`, \`lib/gameengin/brain/\`, \`lib/gameengin/cartridges/\`, \`public/cartridges/\` | \`engin\`, \`engine-ruleset\`, \`brain-node\`, \`brain-doc\`, \`cartridge\`, \`persona\` | \`state-mutation-bus\` |
 | \`state-mutation-bus\` | State Mutation + Bus | \`lib/runtime/dreamOSBus.ts\`, \`lib/runtime/\`, \`lib/hooks/\`, \`hooks/\`, \`lib/gameengin/\`, \`lib/games/\` | \`hook\`, \`engine-system\`, \`engine-utility\` | \`rerender-persistence\` |
 | \`rerender-persistence\` | Re-render / Persistence | \`supabase/\`, \`supabase/migrations/\`, \`build-memory/\`, \`lib/vm/\`, \`lib/runtime/\` | \`migration\`, \`memory\` | — |
@@ -6162,23 +6162,23 @@ User Action / Agent / CI
 
 | Generated File | Slots |
 | --- | --- |
-| \`src/engin/generated/engins.ts\` | \`engin\` |
-| \`src/engin/generated/rulesets.ts\` | \`engine-ruleset\` |
-| \`src/engin/generated/surfaces.ts\` | \`core-surface\`, \`daydream\`, \`surface\`, \`route-surface\` |
-| \`src/engin/generated/dreamsurfaces.ts\` | \`dreamsurface\` |
-| \`src/engin/generated/dreamr.ts\` | \`dreamr\` |
-| \`src/engin/generated/dreamdmbar.ts\` | \`dreamdmbar\` |
-| \`src/engin/generated/homedream.ts\` | \`homedream\` |
-| \`src/engin/generated/connectors.ts\` | \`connector\` |
-| \`src/engin/generated/cartridges.ts\` | \`cartridge\` |
-| \`src/engin/generated/brain.ts\` | \`brain-node\`, \`brain-doc\` |
-| \`src/engin/generated/personas.ts\` | \`persona\` |
-| \`src/engin/generated/systems.ts\` | \`engine-system\`, \`engine-utility\` |
-| \`src/engin/generated/hooks.ts\` | \`hook\` |
+| \`engine/generated/engins.ts\` | \`engin\` |
+| \`engine/generated/rulesets.ts\` | \`engine-ruleset\` |
+| \`engine/generated/surfaces.ts\` | \`core-surface\`, \`daydream\`, \`surface\`, \`route-surface\` |
+| \`engine/generated/dreamsurfaces.ts\` | \`dreamsurface\` |
+| \`engine/generated/dreamr.ts\` | \`dreamr\` |
+| \`engine/generated/dreamdmbar.ts\` | \`dreamdmbar\` |
+| \`engine/generated/homedream.ts\` | \`homedream\` |
+| \`engine/generated/connectors.ts\` | \`connector\` |
+| \`engine/generated/cartridges.ts\` | \`cartridge\` |
+| \`engine/generated/brain.ts\` | \`brain-node\`, \`brain-doc\` |
+| \`engine/generated/personas.ts\` | \`persona\` |
+| \`engine/generated/systems.ts\` | \`engine-system\`, \`engine-utility\` |
+| \`engine/generated/hooks.ts\` | \`hook\` |
 
 ## Machine-Usable Exports
 
-\`src/engin/generated/osArchitectureMap.ts\` exports:
+\`engine/generated/osArchitectureMap.ts\` exports:
 
 | Export | Purpose |
 | --- | --- |

@@ -9514,9 +9514,9 @@
       "exports": []
     },
     {
-      "id": "src/dream/rulesets/codeengin/index",
+      "id": "engins/rulesets/code/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/codeengin/index.ts",
+      "path": "engins/rulesets/code/index.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
@@ -9528,9 +9528,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/dreamsengin/index",
+      "id": "engins/rulesets/dreams/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/dreamsengin/index.ts",
+      "path": "engins/rulesets/dreams/index.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
@@ -9542,9 +9542,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/forgengn/index",
+      "id": "engins/rulesets/forge/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/forgengn/index.ts",
+      "path": "engins/rulesets/forge/index.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
@@ -9556,9 +9556,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/gameengin/index",
+      "id": "engins/rulesets/game/declarative",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/gameengin/index.ts",
+      "path": "engins/rulesets/game/declarative.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
@@ -9570,9 +9570,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.constants",
+      "id": "engins/rulesets/homedream/dream.homedream.constants",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.constants.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.constants.ts",
       "engine": "HomeDream",
       "exports": [
         "HOMEDREAM_FRAME_BUDGET_MS",
@@ -9582,9 +9582,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.physics",
+      "id": "engins/rulesets/homedream/dream.homedream.physics",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.physics.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.physics.ts",
       "engine": "HomeDream",
       "exports": [
         "HOMEDREAM_PHYSICS_CONSTRAINTS",
@@ -9593,9 +9593,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/homedream/dream.homedream.transforms",
+      "id": "engins/rulesets/homedream/dream.homedream.transforms",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/dream.homedream.transforms.ts",
+      "path": "engins/rulesets/homedream/dream.homedream.transforms.ts",
       "engine": "HomeDream",
       "exports": [
         "applyDelta",
@@ -9605,9 +9605,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/homedream/index",
+      "id": "engins/rulesets/homedream/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/homedream/index.ts",
+      "path": "engins/rulesets/homedream/index.ts",
       "engine": "HomeDream",
       "exports": [
         "applyDelta",
@@ -9621,9 +9621,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/labengin/index",
+      "id": "engins/rulesets/lab/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/labengin/index.ts",
+      "path": "engins/rulesets/lab/index.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
@@ -9635,9 +9635,9 @@
       ]
     },
     {
-      "id": "src/dream/rulesets/starmakerengin/index",
+      "id": "engins/rulesets/music/index",
       "slot": "engine-ruleset",
-      "path": "src/dream/rulesets/starmakerengin/index.ts",
+      "path": "engins/rulesets/music/index.ts",
       "engine": "Universal",
       "exports": [
         "constraints",
