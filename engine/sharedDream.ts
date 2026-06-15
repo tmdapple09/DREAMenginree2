@@ -164,4 +164,4 @@ export async function leaveSharedDreamSession(session: SharedDreamSession): Prom
 export {
     useSharedDreamSession, type SharedDreamActivityEntry, type SharedDreamMember, type UseSharedDreamSessionOptions,
     type UseSharedDreamSessionResult
-} from './sharedDream/useSharedDreamSession';
+} from '../sharedDream/useSharedDreamSession';

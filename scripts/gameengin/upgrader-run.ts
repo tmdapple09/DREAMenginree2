@@ -33,7 +33,7 @@ import {
     readUpgradeRules,
     recordUpgrade,
     type AgentName,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 interface ManifestLite {
   id?: string;

@@ -91,6 +91,10 @@ This repo ships with the **human AI army** — an automated product audit system
 
 ---
 
+### Repository Folder Law
+
+Do not create a `lib/` folder. DREAMengin does not use `lib/` as an architecture bucket. Place files in their owning root domain: `engine/`, `engins/`, `dreamr/`, `dreamdmbar/`, `supabase/`, `hooks/`, `types/`, or `utils/`.
+
 ### DREAMENGIN ARCHITECTURE RULES (Engine + Rule-Set Model)
 
 | Rule | Law |

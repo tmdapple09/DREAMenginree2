@@ -31,7 +31,7 @@ import {
     signatureHash,
     type ConceptPattern,
     type VisionStatement,
-} from '../../lib/gameengin/brain-reader.js';
+} from '../../engins/gameengin/brain-reader.js';
 
 interface ArchitectInputs {
   visionId: string;

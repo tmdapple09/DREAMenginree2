@@ -51,7 +51,7 @@
     "gameengin:goldens": "vitest run tests/gameengin-cartridges.test.ts tests/game-quality-plan.test.ts",
     "gameengin:bundles": "tsx scripts/gameengin/package-cartridge.ts",
     "gameengin:workers": "tsc --project tsconfig.worker.json --noEmit",
-    "ce": "tsx lib/contentengin/cli.ts"
+    "ce": "tsx engins/contentengin/cli.ts"
   },
   "dependencies": {
     "@babylonjs/core": "^9.1.0",
