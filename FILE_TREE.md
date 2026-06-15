@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-15T09:39:59.279Z
+Generated: 2026-06-15T09:40:25.292Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14319,7 +14319,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → osSlotCounts
 │       ├── (unknown — bare import)  ⚠ ./osArchitectureMap
 │       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
-├── src
 ├── styles
 │   ├── dream-shell.css
 │   ├── globals.css

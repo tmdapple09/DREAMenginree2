@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-15T09:39:59.143Z
+Generated: 2026-06-15T09:40:25.154Z
 
 ---
 
@@ -21599,7 +21599,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ ./hooks  (hooks)
 │       ├── ⚠ ./osArchitectureMap  ((unknown — bare import))
 │       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
-├── src
 ├── styles
 │   ├── dream-shell.css
 │   ├── globals.css
