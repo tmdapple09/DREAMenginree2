@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-06-15T06:03:11.539Z",
+  "generatedAt": "2026-06-15T08:55:01.751Z",
   "totals": {
-    "core-surface": 2,
+    "core-surface": 4,
     "daydream": 2,
-    "surface": 286,
+    "surface": 294,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 141,
+    "engin": 217,
     "engine-ruleset": 10,
     "dreamr": 4,
-    "dreamdmbar": 13,
+    "dreamdmbar": 15,
     "homedream": 1,
     "connector": 0,
     "brain-node": 0,
@@ -18,7 +18,7 @@
     "persona": 6,
     "migration": 56,
     "memory": 6,
-    "dr-eams-tool": 3,
+    "dr-eams-tool": 25,
     "hook": 12,
     "engine-system": 0,
     "engine-utility": 0
@@ -4552,6 +4552,27 @@
       ]
     },
     {
+      "id": "components/icons/sheet",
+      "slot": "surface",
+      "path": "components/icons/sheet.ts",
+      "engine": "Universal",
+      "exports": [
+        "COLS",
+        "FRAME_H",
+        "FRAME_W",
+        "getIconPos",
+        "hasIcon",
+        "ICON_ENTRIES",
+        "IconName",
+        "ICONS",
+        "ROWS",
+        "SHEET_H",
+        "SHEET_PATH",
+        "SHEET_W",
+        "validateIconMap"
+      ]
+    },
+    {
       "id": "components/idari/dream.PlatformHealth",
       "slot": "surface",
       "path": "components/idari/dream.PlatformHealth.tsx",
@@ -4826,6 +4847,17 @@
       ]
     },
     {
+      "id": "components/panels/panelTypes",
+      "slot": "surface",
+      "path": "components/panels/panelTypes.ts",
+      "engine": "Universal",
+      "exports": [
+        "PANEL_META",
+        "PanelMeta",
+        "SystemPanelId"
+      ]
+    },
+    {
       "id": "components/profile/dream.EditableAvatar",
       "slot": "surface",
       "path": "components/profile/dream.EditableAvatar.tsx",
@@ -5082,6 +5114,98 @@
       "engine": "Universal",
       "exports": [
         "DreamScene"
+      ]
+    },
+    {
+      "id": "components/ui-system/CustomizeModeContext",
+      "slot": "surface",
+      "path": "components/ui-system/CustomizeModeContext.tsx",
+      "engine": "Universal",
+      "exports": [
+        "CustomizeModeContextValue",
+        "CustomizeModeProvider",
+        "useCustomizeMode"
+      ]
+    },
+    {
+      "id": "components/ui-system/responsive",
+      "slot": "surface",
+      "path": "components/ui-system/responsive.ts",
+      "engine": "Universal",
+      "exports": [
+        "Breakpoint",
+        "BREAKPOINT_ORDER",
+        "BREAKPOINTS",
+        "clamp",
+        "cssClamp",
+        "fluid",
+        "getBreakpoint",
+        "isAtLeast",
+        "isBelow",
+        "pickByBreakpoint",
+        "readViewportWidth"
+      ]
+    },
+    {
+      "id": "components/ui-system/runtimeViewport",
+      "slot": "surface",
+      "path": "components/ui-system/runtimeViewport.ts",
+      "engine": "Universal",
+      "exports": [
+        "COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH",
+        "getPreferredViewportHeight",
+        "isCompactRuntimeViewport"
+      ]
+    },
+    {
+      "id": "components/ui-system/skin-engine",
+      "slot": "surface",
+      "path": "components/ui-system/skin-engine.ts",
+      "engine": "Universal",
+      "exports": [
+        "AllPageSkins",
+        "applySkin",
+        "DEFAULT_SKIN",
+        "getSkinPreset",
+        "loadAllSkins",
+        "resolveSkin",
+        "saveAllSkins",
+        "SKIN_PRESETS",
+        "SkinData",
+        "SkinFont",
+        "SkinLayout",
+        "SkinPage",
+        "SkinPreset",
+        "SkinShadow"
+      ]
+    },
+    {
+      "id": "components/ui-system/theme-engine",
+      "slot": "surface",
+      "path": "components/ui-system/theme-engine.ts",
+      "engine": "Universal",
+      "exports": [
+        "applyTheme",
+        "DEFAULT_OVERRIDES",
+        "getPreset",
+        "loadStoredTheme",
+        "saveTheme",
+        "StoredTheme",
+        "THEME_PRESETS",
+        "ThemePreset",
+        "ThemeTokens",
+        "UserOverrides"
+      ]
+    },
+    {
+      "id": "components/ui-system/theme",
+      "slot": "surface",
+      "path": "components/ui-system/theme.ts",
+      "engine": "Universal",
+      "exports": [
+        "getInitialDarkMode",
+        "setDarkMode",
+        "toggleDarkMode"
       ]
     },
     {
@@ -5431,6 +5555,31 @@
       ]
     },
     {
+      "id": "coresurfaces/home/buttons/button-groups",
+      "slot": "core-surface",
+      "path": "coresurfaces/home/buttons/button-groups.ts",
+      "engine": "Universal",
+      "exports": [
+        "BUTTON_GROUPS",
+        "ButtonGroupName",
+        "ButtonItem"
+      ]
+    },
+    {
+      "id": "coresurfaces/home/buttons/contextual-home",
+      "slot": "core-surface",
+      "path": "coresurfaces/home/buttons/contextual-home.ts",
+      "engine": "Universal",
+      "exports": [
+        "HOME_BOTTOM_THRESHOLD",
+        "HOME_TOP_THRESHOLD",
+        "HomeTarget",
+        "resolveHomeTarget",
+        "runHomeAction",
+        "RuntimeHomeCallbacks"
+      ]
+    },
+    {
       "id": "daydreams/brand/page",
       "slot": "route-surface",
       "path": "daydreams/brand/page.tsx",
@@ -5522,11 +5671,306 @@
       "exports": []
     },
     {
+      "id": "dr-eams/ai/audit",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/audit.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "dr-eams/ai/boogie-policy",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogie-policy.ts",
+      "engine": "Universal",
+      "exports": [
+        "BOOGIE_POLICY_VERSION",
+        "BoogiePolicyVersion",
+        "CATEGORY_SEVERITY",
+        "DEFAULT_DURATIONS_SECONDS",
+        "ENFORCEMENT_ACTIONS",
+        "ENFORCEMENT_SCOPES",
+        "EnforcementAction",
+        "EnforcementScope",
+        "RECOVER_STEPS",
+        "RULE_CODES",
+        "RuleCode",
+        "STRIKE_EXPIRY_DAYS",
+        "STRIKE_WEIGHTS",
+        "StrikeSeverityLevel",
+        "THRESHOLDS",
+        "USER_REASON_MESSAGES"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/boogie-verifier",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogie-verifier.ts",
+      "engine": "Universal",
+      "exports": [
+        "redactSecrets"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/boogieman",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogieman.ts",
+      "engine": "Universal",
+      "exports": [
+        "BLAST_RADIUS_ESCALATION_THRESHOLD",
+        "BOOGIE_POLICY_VERSION",
+        "boogieEnforce",
+        "BoogieEnforceInput",
+        "boogieEvaluate",
+        "computeRiskScore",
+        "CONTAINMENT_ACTIONS",
+        "getStrikeExpiryDays",
+        "getStrikeWeight",
+        "selectAction"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/capability-gate",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/capability-gate.ts",
+      "engine": "Universal",
+      "exports": [
+        "getRoleRank",
+        "hasCapability",
+        "meetsMinimumRole"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/CIC",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/CIC.ts",
+      "engine": "Universal",
+      "exports": [
+        "CIC"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/confirm-token",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/confirm-token.ts",
+      "engine": "Universal",
+      "exports": [
+        "generateConfirmToken",
+        "verifyConfirmToken"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/confirm",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/confirm.ts",
+      "engine": "Universal",
+      "exports": [
+        "makeConfirmToken",
+        "verifyConfirmToken"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/groq",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/groq.ts",
+      "engine": "Universal",
+      "exports": [
+        "GroqChatOptions",
+        "GroqMessage",
+        "GroqRole"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/handlers/dreams",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/dreams.ts",
+      "engine": "Universal",
+      "exports": [
+        "handleDreamAddFromPreset",
+        "handleDreamConfigPatch",
+        "handleDreamOpen",
+        "handleDreamPreview",
+        "handleDreamRemove",
+        "handleDreamReorder"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/handlers/index",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "registerAllHandlers"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/handlers/navigation",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/navigation.ts",
+      "engine": "Universal",
+      "exports": [
+        "handleHomeAnchorSetState",
+        "handleHomeMenuOpen",
+        "handleNavDelta"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/handlers/social",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/social.ts",
+      "engine": "Universal",
+      "exports": [
+        "handleDraftSave",
+        "handleFollowUser",
+        "handlePostCreate",
+        "handlePostLike",
+        "handleSearch"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/idempotency",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/idempotency.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "dr-eams/ai/rate-limiter",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/rate-limiter.ts",
+      "engine": "Universal",
+      "exports": [
+        "RATE_LIMITS",
+        "RateLimitConfig"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/rateLimit",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/rateLimit.ts",
+      "engine": "Universal",
+      "exports": [
+        "RateLimitResult"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/schemas",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/schemas.ts",
+      "engine": "Universal",
+      "exports": [
+        "Agent",
+        "AgentSchema",
+        "AppealEntry",
+        "AppealEntrySchema",
+        "AppealRequest",
+        "AppealRequestSchema",
+        "BoogieDecision",
+        "BoogieDecisionSchema",
+        "BoogieEnforceOutput",
+        "BoogieEnforceOutputSchema",
+        "BoogieOutput",
+        "BoogieOutputSchema",
+        "BoogieResult",
+        "BoogieResultSchema",
+        "CodeContext",
+        "CodeContextSchema",
+        "DrEamsRunBody",
+        "DrEamsRunBodySchema",
+        "DrEamsRunResponse",
+        "DrEamsRunResponseSchema",
+        "EnforcementAction",
+        "EnforcementActionSchema",
+        "EnforcementScope",
+        "EnforcementScopeSchema",
+        "ExecuteBody",
+        "ExecuteBodySchema",
+        "ExecuteResponse",
+        "ExecuteResponseSchema",
+        "Intent",
+        "IntentEnvelope",
+        "IntentEnvelopeSchema",
+        "IntentSchema",
+        "IntentType",
+        "IntentTypeSchema",
+        "InternalAuditEvent",
+        "InternalAuditEventSchema",
+        "PolicyHealth",
+        "PolicyHealthSchema",
+        "StrikeEntry",
+        "StrikeEntrySchema",
+        "StrikeSeverity",
+        "StrikeSeveritySchema",
+        "UIContext",
+        "UIContextSchema",
+        "UserSafeExplanation",
+        "UserSafeExplanationSchema"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/tfBackend",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/tfBackend.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "dr-eams/ai/tool-router",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/tool-router.ts",
+      "engine": "Universal",
+      "exports": [
+        "getHandler",
+        "HandlerContext",
+        "registerHandler",
+        "ToolHandler"
+      ]
+    },
+    {
+      "id": "dr-eams/ai/triad",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/triad.ts",
+      "engine": "Universal",
+      "exports": [
+        "AI_MODELS",
+        "CANONICAL_NAV_ROUTES",
+        "getOwnerEmail",
+        "isOwnerEmail",
+        "validateWithIdari"
+      ]
+    },
+    {
+      "id": "dr-eams/animation/DrEamsAnimator",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/animation/DrEamsAnimator.ts",
+      "engine": "Universal",
+      "exports": [
+        "DrEamsAction",
+        "DrEamsAnimator"
+      ]
+    },
+    {
       "id": "dr-eams/capabilities",
       "slot": "dr-eams-tool",
       "path": "dr-eams/capabilities.yaml",
       "engine": "Universal",
       "exports": []
+    },
+    {
+      "id": "dr-eams/search/drEamsSearch",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/search/drEamsSearch.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildDreamDMUrl",
+        "buildDrEamsRequest",
+        "DrEamsParsedReply",
+        "DrEamsRequestBody",
+        "matchNavSuggestions",
+        "NAV_SUGGESTIONS",
+        "NavSuggestion",
+        "parseDrEamsReply",
+        "truncatePreview"
+      ]
     },
     {
       "id": "dr-eams/tools",
@@ -5559,9 +6003,151 @@
       ]
     },
     {
-      "id": "dreamdmbar/barInteractions",
+      "id": "dreamdmbar/dream.GlowingLight",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/barInteractions.ts",
+      "path": "dreamdmbar/dream.GlowingLight.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "default",
+        "GlowingLightProps"
+      ]
+    },
+    {
+      "id": "dreamdmbar/dreamsurface.dreamdmbar",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "BAR_H",
+        "default",
+        "NAV_H"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useDreamBarContext",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useDreamBarContext.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "detectSurface",
+        "DreamBarContext",
+        "DreamBarSurface",
+        "resolveIntentOverride",
+        "useDreamBarContext"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useDreamDMConversations",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useDreamDMConversations.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "DMConversation",
+        "useDreamDMConversations"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useDreamDMDraft",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "cleanupStaleDrafts",
+        "DraftPayload",
+        "getDraftAge",
+        "listAllDraftIds",
+        "useDreamDMDraft"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useDreamDMMessages",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useDreamDMMessages.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "DMMessage",
+        "useDreamDMMessages"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useDreamSearch",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useDreamSearch.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "SearchResult",
+        "SearchResultType",
+        "useDreamSearch",
+        "UseDreamSearchReturn"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useMessagingCore",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useMessagingCore.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "MediaType",
+        "SendMessageParams",
+        "useMessagingCore",
+        "UseMessagingCoreReturn"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useModuleBarIntent",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useModuleBarIntent.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "useModuleBarIntent",
+        "UseModuleBarIntentResult"
+      ]
+    },
+    {
+      "id": "dreamdmbar/hooks/useNotifications",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/hooks/useNotifications.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "useNotifications"
+      ]
+    },
+    {
+      "id": "dreamdmbar/notifications/notificationHelpers",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/notifications/notificationHelpers.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "applyOptimisticDelete",
+        "applyOptimisticMarkAll",
+        "applyOptimisticRead",
+        "DbNotificationContent",
+        "DbNotificationRow",
+        "extractNotificationMessage",
+        "getNotificationActionUrl",
+        "getNotificationTitle",
+        "getUnreadCount",
+        "mapNotificationType",
+        "normalizeDbRow",
+        "sortByRecent",
+        "UiNotification",
+        "UiNotificationType"
+      ]
+    },
+    {
+      "id": "dreamdmbar/notifications/useNotifications",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/notifications/useNotifications.ts",
+      "engine": "DreamDMBar",
+      "exports": [
+        "useNotifications",
+        "UseNotificationsReturn"
+      ]
+    },
+    {
+      "id": "dreamdmbar/runtime/barInteractions",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/runtime/barInteractions.ts",
       "engine": "DreamDMBar",
       "exports": [
         "BAR_FLING_LINE_RATIO",
@@ -5624,9 +6210,9 @@
       ]
     },
     {
-      "id": "dreamdmbar/bridgeSeamFlow",
+      "id": "dreamdmbar/runtime/bridgeSeamFlow",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/bridgeSeamFlow.ts",
+      "path": "dreamdmbar/runtime/bridgeSeamFlow.ts",
       "engine": "DreamDMBar",
       "exports": [
         "_resetIdCounter",
@@ -5642,30 +6228,9 @@
       ]
     },
     {
-      "id": "dreamdmbar/dream.GlowingLight",
+      "id": "dreamdmbar/runtime/DreamSystemContext",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/dream.GlowingLight.tsx",
-      "engine": "DreamDMBar",
-      "exports": [
-        "default",
-        "GlowingLightProps"
-      ]
-    },
-    {
-      "id": "dreamdmbar/dreamsurface.dreamdmbar",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "engine": "DreamDMBar",
-      "exports": [
-        "BAR_H",
-        "default",
-        "NAV_H"
-      ]
-    },
-    {
-      "id": "dreamdmbar/DreamSystemContext",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/DreamSystemContext.tsx",
+      "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
       "engine": "DreamDMBar",
       "exports": [
         "BarIntent",
@@ -5681,101 +6246,57 @@
       ]
     },
     {
-      "id": "dreamdmbar/useDreamBarContext",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamBarContext.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "detectSurface",
-        "DreamBarContext",
-        "DreamBarSurface",
-        "resolveIntentOverride",
-        "useDreamBarContext"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useDreamDMConversations",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMConversations.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "DMConversation",
-        "useDreamDMConversations"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useDreamDMDraft",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMDraft.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "cleanupStaleDrafts",
-        "DraftPayload",
-        "getDraftAge",
-        "listAllDraftIds",
-        "useDreamDMDraft"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useDreamDMMessages",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMMessages.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "DMMessage",
-        "useDreamDMMessages"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useDreamSearch",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamSearch.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "SearchResult",
-        "SearchResultType",
-        "useDreamSearch",
-        "UseDreamSearchReturn"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useMessagingCore",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useMessagingCore.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "MediaType",
-        "SendMessageParams",
-        "useMessagingCore",
-        "UseMessagingCoreReturn"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useModuleBarIntent",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useModuleBarIntent.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "useModuleBarIntent",
-        "UseModuleBarIntentResult"
-      ]
-    },
-    {
-      "id": "dreamdmbar/useNotifications",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/useNotifications.ts",
-      "engine": "DreamDMBar",
-      "exports": [
-        "useNotifications"
-      ]
-    },
-    {
       "id": "engins/autoopen/dream.AutoOpenGameEngin",
       "slot": "engin",
       "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "engins/brandingengin/identity/logos",
+      "slot": "engin",
+      "path": "engins/brandingengin/identity/logos.ts",
+      "engine": "Universal",
+      "exports": [
+        "getRandomLogo",
+        "LOGO_PATHS",
+        "LogoPath",
+        "resetLogoCache"
+      ]
+    },
+    {
+      "id": "engins/codeengin/ai/drEamsCodeAssist",
+      "slot": "engin",
+      "path": "engins/codeengin/ai/drEamsCodeAssist.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildCodePrompt",
+        "buildCodeSystemPrompt",
+        "CellLanguage",
+        "classifyQuery",
+        "CODE_VOCABULARY",
+        "CodeContext",
+        "detectLanguageFromCode",
+        "detectNLCommand",
+        "generateCodeFromCommand",
+        "matchCodeVocabulary",
+        "NLCommand",
+        "parseCodeResponse",
+        "ParsedCodeResponse",
+        "QueryIntent",
+        "VOCAB_TERMS",
+        "VocabEntry"
+      ]
+    },
+    {
+      "id": "engins/codeengin/auth",
+      "slot": "engin",
+      "path": "engins/codeengin/auth.ts",
+      "engine": "Universal",
+      "exports": [
+        "CodeEnginAuthenticatedUser"
       ]
     },
     {
@@ -5789,6 +6310,76 @@
         "ParseError",
         "ParseResult"
       ]
+    },
+    {
+      "id": "engins/codeengin/diagnostics",
+      "slot": "engin",
+      "path": "engins/codeengin/diagnostics.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "engins/codeengin/diff/aiEditEngine",
+      "slot": "engin",
+      "path": "engins/codeengin/diff/aiEditEngine.ts",
+      "engine": "Universal",
+      "exports": [
+        "AiSuggestion",
+        "applyEdit",
+        "applyMatchesForCell",
+        "blockBoundsAt",
+        "buildEditPreview",
+        "BuildPreviewOptions",
+        "CODEENGIN_PRODUCTION_MODE",
+        "CONFIRMATION_REQUIRED",
+        "EditableCell",
+        "EditDiffLine",
+        "EditDiffLineType",
+        "EditPreview",
+        "EditScope",
+        "escapeRegex",
+        "functionBoundsAt",
+        "generateDiffLines",
+        "lineBoundsAt",
+        "parseAiInstruction",
+        "RiskLevel",
+        "SCOPE_DESCRIPTION",
+        "SCOPE_LABEL",
+        "SCOPE_ORDER",
+        "SCOPE_RISK",
+        "ScopeMatch",
+        "undoEdit",
+        "UndoSnapshot",
+        "wordBoundsAt"
+      ]
+    },
+    {
+      "id": "engins/codeengin/diff/diffUtils",
+      "slot": "engin",
+      "path": "engins/codeengin/diff/diffUtils.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildFullFileLines",
+        "buildScrollMarkers",
+        "DEMO_DIFF",
+        "DiffFile",
+        "DiffHunk",
+        "DiffLine",
+        "DiffLineType",
+        "firstHunkIndex",
+        "FullFileLine",
+        "HunkScrollMarker",
+        "nextHunkIndex",
+        "parseUnifiedDiff",
+        "prevHunkIndex"
+      ]
+    },
+    {
+      "id": "engins/codeengin/git",
+      "slot": "engin",
+      "path": "engins/codeengin/git.ts",
+      "engine": "Universal",
+      "exports": []
     },
     {
       "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
@@ -5827,6 +6418,102 @@
       "engine": "CodeEngin",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "engins/codeengin/pathSafety",
+      "slot": "engin",
+      "path": "engins/codeengin/pathSafety.ts",
+      "engine": "Universal",
+      "exports": [
+        "assertSafeWorkspacePath",
+        "assertValidWorkspaceId",
+        "CODEENGIN_ALLOWED_EXTENSIONS",
+        "CODEENGIN_BLOCKED_SEGMENTS",
+        "getCodeEnginWorkspacesRoot",
+        "getWorkspaceRoot",
+        "isLikelyEditableFile",
+        "normalizeProjectPath",
+        "safeErrorMessage"
+      ]
+    },
+    {
+      "id": "engins/codeengin/projectGraph",
+      "slot": "engin",
+      "path": "engins/codeengin/projectGraph.ts",
+      "engine": "Universal",
+      "exports": [
+        "extractImports"
+      ]
+    },
+    {
+      "id": "engins/codeengin/runner",
+      "slot": "engin",
+      "path": "engins/codeengin/runner.ts",
+      "engine": "Universal",
+      "exports": [
+        "CODEENGIN_COMMANDS",
+        "listRunnerCommands",
+        "runCiCommand"
+      ]
+    },
+    {
+      "id": "engins/codeengin/search",
+      "slot": "engin",
+      "path": "engins/codeengin/search.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "engins/codeengin/types",
+      "slot": "engin",
+      "path": "engins/codeengin/types.ts",
+      "engine": "Universal",
+      "exports": [
+        "CodeEnginCommandResult",
+        "CodeEnginDiagnostic",
+        "CodeEnginFileNode",
+        "CodeEnginFileRecord",
+        "CodeEnginGraphEdge",
+        "CodeEnginGraphNode",
+        "CodeEnginProjectGraph",
+        "CodeEnginSearchHit",
+        "CodeEnginSymbol",
+        "CodeEnginWorkspaceMeta",
+        "CodeEnginWorkspaceOverview"
+      ]
+    },
+    {
+      "id": "engins/codeengin/workspaceStore",
+      "slot": "engin",
+      "path": "engins/codeengin/workspaceStore.ts",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "engins/contentengin/assets/assetOptimizer",
+      "slot": "engin",
+      "path": "engins/contentengin/assets/assetOptimizer.ts",
+      "engine": "Universal",
+      "exports": [
+        "AssetUploadContext",
+        "OptimisationQuality",
+        "OptimisationResult",
+        "OptimiseOptions",
+        "registryTagsForContext"
+      ]
+    },
+    {
+      "id": "engins/contentengin/assets/indexedDBStore",
+      "slot": "engin",
+      "path": "engins/contentengin/assets/indexedDBStore.ts",
+      "engine": "Universal",
+      "exports": [
+        "OriginalRecord",
+        "SentinelEntry",
+        "StorageStats"
       ]
     },
     {
@@ -5935,6 +6622,189 @@
       "path": "engins/contentengin/cli.ts",
       "engine": "Universal",
       "exports": []
+    },
+    {
+      "id": "engins/contentengin/composite/compositor",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/compositor.ts",
+      "engine": "Universal",
+      "exports": [
+        "addNode",
+        "BlendMode",
+        "CompGraph",
+        "CompNode",
+        "connectNodes",
+        "createGraph",
+        "createNode",
+        "disconnectInput",
+        "findNode",
+        "graphSummary",
+        "NodeParam",
+        "NodeType",
+        "setParam",
+        "topologicalSort"
+      ]
+    },
+    {
+      "id": "engins/contentengin/composite/fxSimulation",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/fxSimulation.ts",
+      "engine": "Universal",
+      "exports": [
+        "allCategories",
+        "createSimulation",
+        "FX_PRESETS",
+        "FxCategory",
+        "FxParam",
+        "FxPreset",
+        "FxSimulation",
+        "getPreset",
+        "getSimParam",
+        "presetsByCategory",
+        "resetSimParams",
+        "setSimParam"
+      ]
+    },
+    {
+      "id": "engins/contentengin/composite/matchmover",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/matchmover.ts",
+      "engine": "Universal",
+      "exports": [
+        "addSample",
+        "addTrackPoint",
+        "CameraFrame",
+        "CameraTrack",
+        "computeHomography",
+        "createTrack",
+        "estimateCameraMotion",
+        "exportTrackCSV",
+        "Homography",
+        "MotionEstimate",
+        "TrackPoint",
+        "TrackSample",
+        "trackSummary"
+      ]
+    },
+    {
+      "id": "engins/contentengin/composite/motionCapture",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/motionCapture.ts",
+      "engine": "Universal",
+      "exports": [
+        "clipSummary",
+        "ClipSummary",
+        "exportBVH",
+        "findJoint",
+        "FramePose",
+        "getFramePose",
+        "Joint",
+        "JointTransform",
+        "MocapClip",
+        "parseBVH",
+        "retargetClip"
+      ]
+    },
+    {
+      "id": "engins/contentengin/composite/rotoscope",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/rotoscope.ts",
+      "engine": "Universal",
+      "exports": [
+        "addLayer",
+        "BezierPoint",
+        "createProject",
+        "exportFrameSVG",
+        "exportShapeSVG",
+        "InterpolatedShape",
+        "interpolateShape",
+        "keyframeList",
+        "removeKeyframe",
+        "RotoLayer",
+        "RotoProject",
+        "RotoShape",
+        "setKeyframe"
+      ]
+    },
+    {
+      "id": "engins/contentengin/content/generativeFill",
+      "slot": "engin",
+      "path": "engins/contentengin/content/generativeFill.ts",
+      "engine": "Universal",
+      "exports": [
+        "analyzeImageColors",
+        "createMaskDataUrl",
+        "DominantColor",
+        "fileToBase64",
+        "GenerativeFillRequest",
+        "GenerativeFillResult",
+        "ImageAnalysis"
+      ]
+    },
+    {
+      "id": "engins/contentengin/content/publishIntent",
+      "slot": "engin",
+      "path": "engins/contentengin/content/publishIntent.ts",
+      "engine": "Universal",
+      "exports": [
+        "formatPublishError",
+        "PublishIntentInput",
+        "PublishToDreamRParams",
+        "resolvePublishIntent"
+      ]
+    },
+    {
+      "id": "engins/contentengin/content/seoScorer",
+      "slot": "engin",
+      "path": "engins/contentengin/content/seoScorer.ts",
+      "engine": "Universal",
+      "exports": [
+        "generateReport",
+        "scoreContent",
+        "SeoReport",
+        "SeoScoreDimension",
+        "SeoScoreInput",
+        "SeoScoreResult"
+      ]
+    },
+    {
+      "id": "engins/contentengin/content/transcriptEditor",
+      "slot": "engin",
+      "path": "engins/contentengin/content/transcriptEditor.ts",
+      "engine": "Universal",
+      "exports": [
+        "annotateSearchMatches",
+        "applyEditsToSegments",
+        "computeCuts",
+        "exportSRT",
+        "parseSRT",
+        "parseVTT",
+        "SearchResult",
+        "searchTranscript",
+        "segmentsToPlainText",
+        "TimelineCut",
+        "totalDurationMs",
+        "TranscriptSegment",
+        "TranscriptWord"
+      ]
+    },
+    {
+      "id": "engins/contentengin/content/voiceClone",
+      "slot": "engin",
+      "path": "engins/contentengin/content/voiceClone.ts",
+      "engine": "Universal",
+      "exports": [
+        "audioFileToBase64",
+        "estimateDurationSeconds",
+        "getBrowserVoices",
+        "ListVoiceProfilesResult",
+        "speakWithBrowserTTS",
+        "TTSRequest",
+        "TTSResult",
+        "VoiceCloneRequest",
+        "VoiceCloneResult",
+        "VoiceProfile"
+      ]
     },
     {
       "id": "engins/contentengin/grammars/animalGrammar",
@@ -6082,6 +6952,54 @@
       "exports": [
         "defaultMaterials",
         "material"
+      ]
+    },
+    {
+      "id": "engins/contentengin/media/h265-encoder",
+      "slot": "engin",
+      "path": "engins/contentengin/media/h265-encoder.ts",
+      "engine": "Universal",
+      "exports": [
+        "BackendKind",
+        "CaptureResult",
+        "EncodedPacket",
+        "EncoderCapabilities",
+        "EncoderOptions",
+        "GameCapture",
+        "H265Encoder",
+        "H265Preset",
+        "PixelFormat",
+        "VideoFrameLike"
+      ]
+    },
+    {
+      "id": "engins/contentengin/media/ledger",
+      "slot": "engin",
+      "path": "engins/contentengin/media/ledger.ts",
+      "engine": "Universal",
+      "exports": [
+        "analyzeLedgerDensity",
+        "buildLedgerMediaUrl",
+        "compressData",
+        "decodeFromLedger",
+        "decodeLedgerStringToUint8Array",
+        "encodeToLedger",
+        "encodeUint8ArrayToLedgerString",
+        "LedgerBinaryHeader",
+        "LedgerDbPayload",
+        "LedgerDensityProfile",
+        "LedgerUploadResult"
+      ]
+    },
+    {
+      "id": "engins/contentengin/media/postMedia",
+      "slot": "engin",
+      "path": "engins/contentengin/media/postMedia.ts",
+      "engine": "Universal",
+      "exports": [
+        "getPostMediaUrls",
+        "getPrimaryPostMediaUrl",
+        "PostMediaShape"
       ]
     },
     {
@@ -6380,6 +7298,335 @@
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/componentInventory",
+      "slot": "engin",
+      "path": "engins/forgeengin/componentInventory.ts",
+      "engine": "Universal",
+      "exports": [
+        "ALL_CATEGORIES",
+        "AtomicComponent",
+        "COMPONENT_INVENTORY",
+        "ComponentCategory",
+        "getByCategory",
+        "searchComponents"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/artifact/manifest",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/artifact/manifest.ts",
+      "engine": "Universal",
+      "exports": [
+        "ArtifactPermission",
+        "ArtifactPermissionSchema",
+        "createManifest",
+        "EnginArtifactManifest",
+        "EnginArtifactManifestSchema",
+        "parseManifest",
+        "safeParseManifest"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/index",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "ArtifactPermissionSchema",
+        "ArtifactSlot",
+        "createManifest",
+        "createTelemetryClient",
+        "DEFAULT_TIER_CONFIG",
+        "detectCapabilityTier",
+        "EnginArtifactManifestSchema",
+        "getTierConfig",
+        "parseManifest",
+        "parseTelemetryEvent",
+        "safeParseManifest",
+        "scoreCapabilities",
+        "TelemetryEventSchema",
+        "TelemetryEventTypeSchema",
+        "tierFromScore",
+        "useArtifactSlot",
+        "useOptionalArtifactSlot"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/quality/tiers",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/quality/tiers.ts",
+      "engine": "Universal",
+      "exports": [
+        "CapabilityInput",
+        "CapabilityNavigator",
+        "CapabilityScreen",
+        "DEFAULT_TIER_CONFIG",
+        "detectCapabilityTier",
+        "getTierConfig",
+        "QualityTier",
+        "QualityTierConfig",
+        "scoreCapabilities",
+        "tierFromScore"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/shell/ArtifactSlot",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx",
+      "engine": "Universal",
+      "exports": [
+        "ArtifactSlot",
+        "ArtifactSlotContextValue",
+        "ArtifactSlotProps",
+        "useArtifactSlot",
+        "useOptionalArtifactSlot"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/telemetry/client",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/telemetry/client.ts",
+      "engine": "Universal",
+      "exports": [
+        "createTelemetryClient",
+        "TelemetryClient",
+        "TelemetryClientOptions",
+        "TelemetryRecordResult",
+        "TelemetrySupabaseClient"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/telemetry/events",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/telemetry/events.ts",
+      "engine": "Universal",
+      "exports": [
+        "parseTelemetryEvent",
+        "TelemetryEvent",
+        "TelemetryEventSchema",
+        "TelemetryEventType",
+        "TelemetryEventTypeSchema"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/assembly",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/assembly.ts",
+      "engine": "Universal",
+      "exports": [
+        "addConnection",
+        "addPiece",
+        "AssemblyValidationError",
+        "Connection",
+        "createAssembly",
+        "deserializeAssembly",
+        "EngineAssembly",
+        "isValidAssembly",
+        "MAX_PIECES",
+        "MIN_PIECES",
+        "movePiece",
+        "PlacedPiece",
+        "removeConnection",
+        "removePiece",
+        "serializeAssembly",
+        "validateAssembly"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/index",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/index.ts",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/piece-registry",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/piece-registry.ts",
+      "engine": "Universal",
+      "exports": [
+        "getPiece",
+        "getPiecesByCategory",
+        "PIECE_CATEGORIES",
+        "PIECE_REGISTRY",
+        "PieceCategory",
+        "PieceManifest",
+        "Port",
+        "PortType"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/engineForge",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/engineForge.ts",
+      "engine": "Universal",
+      "exports": [
+        "AssemblyEvents",
+        "AssemblySandbox",
+        "AtomicPiece",
+        "atomicPieceFromComponent",
+        "createAssembly",
+        "deserializeAssembly",
+        "EngineAssembly",
+        "Port",
+        "runAssembly",
+        "serializeAssembly",
+        "validateAssembly",
+        "ValidationResult",
+        "Wire"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeBuild",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeBuild.ts",
+      "engine": "Universal",
+      "exports": [
+        "canBuildToday",
+        "clearForgeBuilds",
+        "ForgeArtifact",
+        "ForgeArtifactType",
+        "ForgeBuildRecord",
+        "ForgeBuildState",
+        "ForgeLogEvent",
+        "isForgeLogEvent",
+        "readForgeBuilds",
+        "recordBuildToday",
+        "saveForgeBuild",
+        "stageForgeArtifact"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeIntelligence",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeIntelligence.ts",
+      "engine": "Universal",
+      "exports": [
+        "appendForgeHistory",
+        "clearCustomWorkflows",
+        "clearForgeHistory",
+        "clearForgeTransfers",
+        "clearWorkflowRun",
+        "deleteCustomWorkflow",
+        "ForgeHistoryEntry",
+        "ForgeSuggestion",
+        "ForgeTransferEntry",
+        "generateSuggestions",
+        "getActiveWorkflowRun",
+        "getFailureRecovery",
+        "parseGoalToWorkflow",
+        "predictNextEngines",
+        "readCustomWorkflows",
+        "readForgeHistory",
+        "readForgeTransfers",
+        "recordForgeTransfer",
+        "saveCustomWorkflow",
+        "startWorkflowRun",
+        "updateWorkflowStep",
+        "WorkflowRunState",
+        "WorkflowStepStatus"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeMomentum",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeMomentum.ts",
+      "engine": "Universal",
+      "exports": [
+        "computeDepth",
+        "computeDiversity",
+        "computeMomentum",
+        "computeStreak",
+        "computeVelocity",
+        "getLevel",
+        "getLevelColor",
+        "getLevelEmoji",
+        "MomentumDimension",
+        "MomentumLevel",
+        "MomentumSnapshot",
+        "readHistory"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeNexus",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeNexus.ts",
+      "engine": "Universal",
+      "exports": [
+        "AffinityCluster",
+        "buildTransitionMap",
+        "computeEdges",
+        "computeNexus",
+        "computeNodes",
+        "detectClusters",
+        "findDominantPipeline",
+        "NexusEdge",
+        "NexusNode",
+        "NexusSnapshot"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeRegistry",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeRegistry.ts",
+      "engine": "Universal",
+      "exports": [
+        "CREATIVE_ENGINES",
+        "ENGIN_REGISTRY",
+        "EnginEntry",
+        "FORGE_HISTORY_KEY",
+        "FORGE_WORKFLOWS",
+        "ForgeActivityPulse",
+        "ForgeWorkflow",
+        "formatRelativeTime",
+        "getEnginById",
+        "getEnginByName",
+        "getForgeHeat",
+        "INFORMATION_DOMAINS",
+        "InformationDomain",
+        "readForgeActivity",
+        "recordForgeActivity"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeRituals",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeRituals.ts",
+      "engine": "Universal",
+      "exports": [
+        "computeRituals",
+        "detectAffinityPatterns",
+        "detectSequencePatterns",
+        "detectSessionPatterns",
+        "detectTimePatterns",
+        "ForgeRitual",
+        "getTimeBucket",
+        "RitualSnapshot",
+        "RitualType"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/useForgeActivity",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/useForgeActivity.ts",
+      "engine": "Universal",
+      "exports": [
+        "useForgeActivity",
+        "UseForgeActivityOptions",
+        "UseForgeActivityReturn"
+      ]
+    },
+    {
+      "id": "engins/forgeengin/forge/useForgeBuild",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/useForgeBuild.ts",
+      "engine": "Universal",
+      "exports": [
+        "useForgeBuild",
+        "UseForgeBuildReturn"
       ]
     },
     {
@@ -6732,14 +7979,12 @@
       ]
     },
     {
-      "id": "engins/gameengin/control-mappings",
+      "id": "engins/gameengin/controls/control-mappings",
       "slot": "engin",
-      "path": "engins/gameengin/control-mappings.ts",
+      "path": "engins/gameengin/controls/control-mappings.ts",
       "engine": "Universal",
       "exports": [
-        "AssetControlCommand",
         "ControlMapping",
-        "JoystickInput",
         "mapJoystickToAsset"
       ]
     },
@@ -6822,6 +8067,328 @@
         "default",
         "GameRuntimeCrash",
         "GameRuntimeProps"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/avatar",
+      "slot": "engin",
+      "path": "engins/gameengin/games/avatar.ts",
+      "engine": "Universal",
+      "exports": [
+        "AVATAR_CREATED_KEY",
+        "AVATAR_IMAGE_KEY",
+        "AVATAR_PLAY_AS_ME_KEY",
+        "clearAvatar",
+        "consumePlayAsMe",
+        "getAvatarDataUrl",
+        "hasAvatar",
+        "resizeImageToDataUrl",
+        "setAvatarDataUrl",
+        "setPlayAsMe"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/catalog",
+      "slot": "engin",
+      "path": "engins/gameengin/games/catalog.ts",
+      "engine": "Universal",
+      "exports": [
+        "GAME_CATALOG",
+        "GAME_CATALOG_IDS",
+        "GameCatalogEntry"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/DualSenseManager",
+      "slot": "engin",
+      "path": "engins/gameengin/games/DualSenseManager.ts",
+      "engine": "Universal",
+      "exports": [
+        "DualSenseConfig",
+        "DualSenseManager",
+        "DualSenseState",
+        "useDualSense"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerButtons",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerButtons.ts",
+      "engine": "Universal",
+      "exports": [
+        "BTN_DOUBLE_TAP_MAX_MS",
+        "BTN_LONG_PRESS_MS",
+        "BTN_TAP_AND_HOLD_WINDOW_MS",
+        "BTN_TAP_MAX_MS",
+        "ButtonInteraction",
+        "ButtonInteractionEvent",
+        "ButtonInteractionManager",
+        "CONTROLLER_BUTTON_DEFS",
+        "CONTROLLER_BUTTONS",
+        "ControllerButton",
+        "ControllerButtonDef"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerLeft",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerLeft.ts",
+      "engine": "Universal",
+      "exports": [
+        "computeLeftStickVector",
+        "LEFT_STICK_DEAD_ZONE",
+        "LEFT_STICK_RADIUS_PX",
+        "StickVector"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerRight",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerRight.ts",
+      "engine": "Universal",
+      "exports": [
+        "AUTO_FIRE_DELAY_MS",
+        "AUTO_FIRE_INTERVAL_MS",
+        "computeAimDelta",
+        "evaluateRightStickTap",
+        "RIGHT_RESET_TIMEOUT_MS",
+        "RIGHT_TAP_MAX_MS",
+        "RIGHT_TAP_MAX_PX",
+        "TapResult"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/hooks",
+      "slot": "engin",
+      "path": "engins/gameengin/games/hooks.ts",
+      "engine": "Universal",
+      "exports": [
+        "useGameAutoStart",
+        "useGamePerformanceBaseline",
+        "useGamePhase",
+        "useKeySet",
+        "useSubmitScore"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/library-state",
+      "slot": "engin",
+      "path": "engins/gameengin/games/library-state.ts",
+      "engine": "Universal",
+      "exports": [
+        "GAME_LIBRARY_SELECTION_STORAGE_KEY",
+        "GAME_LIBRARY_SESSION_STORAGE_KEY",
+        "MAX_SAVED_GAME_SESSIONS",
+        "SavedGameSession",
+        "upsertSavedGameSession"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/lucid-avenue-world",
+      "slot": "engin",
+      "path": "engins/gameengin/games/lucid-avenue-world.ts",
+      "engine": "Universal",
+      "exports": [
+        "CachePickup",
+        "calculateLucidAvenueScore",
+        "createInitialLucidAvenueState",
+        "deployLucidAvenueVehicle",
+        "DistrictExit",
+        "DistrictId",
+        "DistrictLock",
+        "fastTravelLucidAvenue",
+        "getLucidAvenueCompletionPercent",
+        "getLucidAvenueDistrict",
+        "getLucidAvenueHint",
+        "getLucidAvenueMissionChecklist",
+        "getLucidAvenueObjectiveKeys",
+        "getLucidAvenuePatrolPathKeys",
+        "getLucidAvenuePatrolPositions",
+        "getLucidAvenueRouteContracts",
+        "getLucidAvenueStoryBeat",
+        "interactInLucidAvenue",
+        "isSamePosition",
+        "jamLucidAvenueGrid",
+        "LUCID_AVENUE_6900_TARGET",
+        "LUCID_AVENUE_DISTRICTS",
+        "LUCID_AVENUE_TOTAL_CONTRACTS",
+        "LUCID_AVENUE_TOTAL_FLAGS",
+        "LUCID_AVENUE_TOTAL_SHARDS",
+        "LucidAvenueMode",
+        "LucidAvenueState",
+        "LucidContractId",
+        "LucidDistrict",
+        "LucidFlag",
+        "LucidNpc",
+        "LucidTerminal",
+        "LucidVehicleId",
+        "moveLucidAvenuePlayer",
+        "PatrolRoute",
+        "Position",
+        "requestLucidAvenueHint",
+        "scanLucidAvenue",
+        "ShardPickup",
+        "waitLucidAvenueTurn"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/madmaxi-wildfall-world",
+      "slot": "engin",
+      "path": "engins/gameengin/games/madmaxi-wildfall-world.ts",
+      "engine": "Universal",
+      "exports": [
+        "activateWildfallHeroAbility",
+        "castWildfallRay",
+        "createWildfallRng",
+        "createWildfallState",
+        "currentWildfallZone",
+        "isWildfallPassable",
+        "makeWildfallGlyphGrid",
+        "resolveWildfallMirror",
+        "stepWildfall",
+        "switchWildfallHero",
+        "WILDFALL_HEROES",
+        "WILDFALL_ZONES",
+        "WildfallAction",
+        "wildfallBillboards",
+        "WildfallHero",
+        "WildfallHeroId",
+        "wildfallHeroWeapon",
+        "WildfallInputFrame",
+        "WildfallPhase",
+        "WildfallRelic",
+        "WildfallState",
+        "WildfallVec2",
+        "WildfallWatcher",
+        "WildfallZone",
+        "WildfallZoneId"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/mobileControls",
+      "slot": "engin",
+      "path": "engins/gameengin/games/mobileControls.ts",
+      "engine": "Universal",
+      "exports": [
+        "emitMobileButton",
+        "emitMobileJump",
+        "emitMobileLook",
+        "emitMobileLookDelta",
+        "emitMobileMove",
+        "emitMobileShoot",
+        "fireGameRemoteInput",
+        "GameRemoteInputAction",
+        "getRemoteActionForMobileButton",
+        "getRemoteMoveAction",
+        "MOBILE_HUD_BUTTON_RING",
+        "MobileControlVector",
+        "MobileEventDetail",
+        "MobileGameControlHandlers",
+        "MobileHudButton",
+        "MobileHudMode",
+        "MobileHudRingButtonDefinition",
+        "normalizeStickVector",
+        "registerMobileGameControls",
+        "RemoteMoveAction",
+        "useRegisterMobileGameControls"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/navigation",
+      "slot": "engin",
+      "path": "engins/gameengin/games/navigation.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildGameLaunchHref",
+        "DEFAULT_GAME_ID",
+        "GameLaunchOptions",
+        "isLaunchFlagEnabled",
+        "resolveGameLaunchId"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/performance-baseline",
+      "slot": "engin",
+      "path": "engins/gameengin/games/performance-baseline.ts",
+      "engine": "Universal",
+      "exports": [
+        "createPerformanceBaselineSampler",
+        "DE_GAME_PERFORMANCE_BASELINE",
+        "FrameBaselineSample",
+        "GamePerformanceBaseline",
+        "GameRenderMode",
+        "PerformanceBaselineSource",
+        "publishGamePerformanceBaseline",
+        "RendererBackend",
+        "resolveRendererBackend"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/quality-plan",
+      "slot": "engin",
+      "path": "engins/gameengin/games/quality-plan.ts",
+      "engine": "Universal",
+      "exports": [
+        "ADVANCED_GAME_TARGETS",
+        "AdvancedGameTarget",
+        "GAME_CONTROL_PROFILES",
+        "GAME_ENGINE_STANDARDS",
+        "GAME_QUALITY_PILLARS",
+        "GameControlProfile",
+        "GameEngineStandard",
+        "GameQualityPillar"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/useAIDirector",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useAIDirector.ts",
+      "engine": "Universal",
+      "exports": [
+        "AIDirectorHookResult",
+        "useAIDirector"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/useGameInputKeyboardBridge",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useGameInputKeyboardBridge.ts",
+      "engine": "Universal",
+      "exports": [
+        "GAME_INPUT_KEYBOARD_MAP",
+        "useGameInputKeyboardBridge"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/useGamepad",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useGamepad.ts",
+      "engine": "Universal",
+      "exports": [
+        "GamepadStatus",
+        "useGamepad"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/useImmersiveGameLayout",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useImmersiveGameLayout.ts",
+      "engine": "Universal",
+      "exports": [
+        "getImmersiveCanvasStyle",
+        "getImmersiveOverlayStyle",
+        "getImmersiveStageStyle",
+        "useImmersiveGameLayout"
+      ]
+    },
+    {
+      "id": "engins/gameengin/games/useRemoteChannel",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useRemoteChannel.ts",
+      "engine": "Universal",
+      "exports": [
+        "broadcastGameInput",
+        "useRemoteChannel"
       ]
     },
     {
@@ -7616,6 +9183,188 @@
         "WorkflowDef",
         "workflowsForEngin",
         "WorkflowStage"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/fingerprint",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/fingerprint.ts",
+      "engine": "Universal",
+      "exports": [
+        "Fingerprint",
+        "matchFingerprint",
+        "recordFingerprint",
+        "TimeSlice"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/index",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildPeakMap",
+        "extractStem",
+        "Fingerprint",
+        "FrequencyPeak",
+        "matchFingerprint",
+        "PeakMap",
+        "recordFingerprint",
+        "TimeSlice"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/peak-map",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/peak-map.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildPeakMap",
+        "FrequencyPeak",
+        "PeakMap"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/stem-extractor",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/stem-extractor.ts",
+      "engine": "Universal",
+      "exports": [
+        "extractStem"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/audioFingerprint",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audioFingerprint.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildPeakMap",
+        "createFingerprintIsolator",
+        "extractAudioChunks",
+        "Fingerprint",
+        "matchFingerprint",
+        "MatchResult",
+        "Peak",
+        "PeakMap",
+        "recordReferenceFingerprint"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/music/presets",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/presets.ts",
+      "engine": "Universal",
+      "exports": [
+        "BEAT_PRESETS",
+        "BeatPreset",
+        "findInstrumentPreset",
+        "findPreset",
+        "findProjectTemplate",
+        "GENRE_LIST",
+        "getPresetsByGenre",
+        "INSTRUMENT_PRESETS",
+        "InstrumentPreset",
+        "PROJECT_TEMPLATES",
+        "ProjectTemplate"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/music/starmaker",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmaker.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildReleaseStrategy",
+        "createMelodySuggestions",
+        "MelodySuggestion",
+        "MelodySuggestionInput",
+        "PlaybackMixerState",
+        "PlaybackProfile",
+        "PlaybackProfileInput",
+        "PlaybackQualityMode",
+        "ReleaseStrategy",
+        "ReleaseStrategyInput",
+        "ReleaseTarget",
+        "StemExportState",
+        "summarizePlaybackProfile"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/music/starmakerArrangement",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmakerArrangement.ts",
+      "engine": "Universal",
+      "exports": [
+        "ARRANGEMENT_BARS",
+        "ARRANGEMENT_SOURCE_COLORS",
+        "ARRANGEMENT_TRACKS",
+        "ArrangementClip",
+        "ArrangementSource",
+        "ArrangementTrackId",
+        "ArrangementTrackState"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/music/starmakerDaw",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmakerDaw.ts",
+      "engine": "Universal",
+      "exports": [
+        "analyzeStereoPcm",
+        "AUDIO_QUALITY_PRESETS",
+        "AudioQualityConfig",
+        "audioQualityLabel",
+        "AudioTake",
+        "AUTOMATABLE_PARAMS",
+        "AutomationLane",
+        "AutomationMode",
+        "AutomationPoint",
+        "AutomationState",
+        "BitDepth",
+        "CompingState",
+        "CompRegion",
+        "computeWarpPlaybackRate",
+        "createDemoTake",
+        "createEmptyClip",
+        "createInitialAutomationState",
+        "createInitialCompingState",
+        "createInitialSessionView",
+        "createInitialWarpState",
+        "createMidiNote",
+        "encodeWav24Bit",
+        "isBlackKey",
+        "MidiNote",
+        "midiPitchToName",
+        "PIANO_ROLL_DEFAULTS",
+        "PianoRollQuantize",
+        "PianoRollState",
+        "RealtimeStarMakerAudioEngine",
+        "renderStarMakerPattern",
+        "SampleRateHz",
+        "SessionClip",
+        "SessionScene",
+        "SessionTrack",
+        "SessionViewState",
+        "snapToGrid",
+        "StarMakerAudioDiagnostics",
+        "StarMakerSequencerMixer",
+        "StarMakerSequencerQuality",
+        "StarMakerSequencerSnapshot",
+        "StarMakerStereoPcm",
+        "TAKE_COLORS",
+        "TakeRating",
+        "WarpMarker",
+        "WarpState"
+      ]
+    },
+    {
+      "id": "engins/starmakerengin/music/wasmAudioBridge",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
+      "engine": "Universal",
+      "exports": [
+        "WasmAudioBridge"
       ]
     },
     {

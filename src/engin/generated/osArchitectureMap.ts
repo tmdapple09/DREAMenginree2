@@ -21,15 +21,15 @@ export const osArchitectureFlow = `User Action / Agent / CI
    [Re-render / Persistence]  ← Supabase, lib/vm/, lib/runtime/`;
 
 export const osSlotCounts = {
-  "core-surface": 2,
+  "core-surface": 4,
   "daydream": 2,
-  "surface": 286,
+  "surface": 294,
   "route-surface": 273,
   "dreamsurface": 15,
-  "engin": 141,
+  "engin": 217,
   "engine-ruleset": 10,
   "dreamr": 4,
-  "dreamdmbar": 13,
+  "dreamdmbar": 15,
   "homedream": 1,
   "connector": 0,
   "brain-node": 0,
@@ -38,7 +38,7 @@ export const osSlotCounts = {
   "persona": 6,
   "migration": 56,
   "memory": 6,
-  "dr-eams-tool": 3,
+  "dr-eams-tool": 25,
   "hook": 12,
   "engine-system": 0,
   "engine-utility": 0
@@ -389,15 +389,15 @@ export const osArchitectureGraph = {
     }
   },
   "slotCounts": {
-    "core-surface": 2,
+    "core-surface": 4,
     "daydream": 2,
-    "surface": 286,
+    "surface": 294,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 141,
+    "engin": 217,
     "engine-ruleset": 10,
     "dreamr": 4,
-    "dreamdmbar": 13,
+    "dreamdmbar": 15,
     "homedream": 1,
     "connector": 0,
     "brain-node": 0,
@@ -406,7 +406,7 @@ export const osArchitectureGraph = {
     "persona": 6,
     "migration": 56,
     "memory": 6,
-    "dr-eams-tool": 3,
+    "dr-eams-tool": 25,
     "hook": 12,
     "engine-system": 0,
     "engine-utility": 0
@@ -3315,6 +3315,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "components/icons/sheet",
+      "slot": "surface",
+      "path": "components/icons/sheet.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "components/idari/dream.PlatformHealth",
       "slot": "surface",
       "path": "components/idari/dream.PlatformHealth.tsx",
@@ -3495,6 +3501,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "components/panels/panelTypes",
+      "slot": "surface",
+      "path": "components/panels/panelTypes.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "components/profile/dream.EditableAvatar",
       "slot": "surface",
       "path": "components/profile/dream.EditableAvatar.tsx",
@@ -3636,6 +3648,42 @@ export const osArchitectureStageEntries = {
       "id": "components/three/index",
       "slot": "surface",
       "path": "components/three/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/CustomizeModeContext",
+      "slot": "surface",
+      "path": "components/ui-system/CustomizeModeContext.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/responsive",
+      "slot": "surface",
+      "path": "components/ui-system/responsive.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/runtimeViewport",
+      "slot": "surface",
+      "path": "components/ui-system/runtimeViewport.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/skin-engine",
+      "slot": "surface",
+      "path": "components/ui-system/skin-engine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/theme-engine",
+      "slot": "surface",
+      "path": "components/ui-system/theme-engine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/ui-system/theme",
+      "slot": "surface",
+      "path": "components/ui-system/theme.ts",
       "engine": "Universal"
     },
     {
@@ -3837,6 +3885,18 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "coresurfaces/home/buttons/button-groups",
+      "slot": "core-surface",
+      "path": "coresurfaces/home/buttons/button-groups.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "coresurfaces/home/buttons/contextual-home",
+      "slot": "core-surface",
+      "path": "coresurfaces/home/buttons/contextual-home.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "daydreams/brand/page",
       "slot": "route-surface",
       "path": "daydreams/brand/page.tsx",
@@ -3924,9 +3984,141 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "dr-eams/ai/audit",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/audit.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/boogie-policy",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogie-policy.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/boogie-verifier",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogie-verifier.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/boogieman",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/boogieman.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/capability-gate",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/capability-gate.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/CIC",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/CIC.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/confirm-token",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/confirm-token.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/confirm",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/confirm.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/groq",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/groq.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/handlers/dreams",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/dreams.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/handlers/index",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/handlers/navigation",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/navigation.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/handlers/social",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/handlers/social.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/idempotency",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/idempotency.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/rate-limiter",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/rate-limiter.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/rateLimit",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/rateLimit.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/schemas",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/schemas.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/tfBackend",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/tfBackend.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/tool-router",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/tool-router.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/ai/triad",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/ai/triad.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/animation/DrEamsAnimator",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/animation/DrEamsAnimator.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "dr-eams/capabilities",
       "slot": "dr-eams-tool",
       "path": "dr-eams/capabilities.yaml",
+      "engine": "Universal"
+    },
+    {
+      "id": "dr-eams/search/drEamsSearch",
+      "slot": "dr-eams-tool",
+      "path": "dr-eams/search/drEamsSearch.ts",
       "engine": "Universal"
     },
     {
@@ -3934,18 +4126,6 @@ export const osArchitectureStageEntries = {
       "slot": "dr-eams-tool",
       "path": "dr-eams/tools.ts",
       "engine": "Universal"
-    },
-    {
-      "id": "dreamdmbar/barInteractions",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/barInteractions.ts",
-      "engine": "DreamDMBar"
-    },
-    {
-      "id": "dreamdmbar/bridgeSeamFlow",
-      "slot": "dreamdmbar",
-      "path": "dreamdmbar/bridgeSeamFlow.ts",
-      "engine": "DreamDMBar"
     },
     {
       "id": "dreamdmbar/dream.GlowingLight",
@@ -3960,57 +4140,81 @@ export const osArchitectureStageEntries = {
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/DreamSystemContext",
+      "id": "dreamdmbar/hooks/useDreamBarContext",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/DreamSystemContext.tsx",
+      "path": "dreamdmbar/hooks/useDreamBarContext.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useDreamBarContext",
+      "id": "dreamdmbar/hooks/useDreamDMConversations",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamBarContext.ts",
+      "path": "dreamdmbar/hooks/useDreamDMConversations.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useDreamDMConversations",
+      "id": "dreamdmbar/hooks/useDreamDMDraft",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMConversations.ts",
+      "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useDreamDMDraft",
+      "id": "dreamdmbar/hooks/useDreamDMMessages",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMDraft.ts",
+      "path": "dreamdmbar/hooks/useDreamDMMessages.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useDreamDMMessages",
+      "id": "dreamdmbar/hooks/useDreamSearch",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamDMMessages.ts",
+      "path": "dreamdmbar/hooks/useDreamSearch.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useDreamSearch",
+      "id": "dreamdmbar/hooks/useMessagingCore",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useDreamSearch.ts",
+      "path": "dreamdmbar/hooks/useMessagingCore.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useMessagingCore",
+      "id": "dreamdmbar/hooks/useModuleBarIntent",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useMessagingCore.ts",
+      "path": "dreamdmbar/hooks/useModuleBarIntent.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useModuleBarIntent",
+      "id": "dreamdmbar/hooks/useNotifications",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useModuleBarIntent.ts",
+      "path": "dreamdmbar/hooks/useNotifications.ts",
       "engine": "DreamDMBar"
     },
     {
-      "id": "dreamdmbar/useNotifications",
+      "id": "dreamdmbar/notifications/notificationHelpers",
       "slot": "dreamdmbar",
-      "path": "dreamdmbar/useNotifications.ts",
+      "path": "dreamdmbar/notifications/notificationHelpers.ts",
+      "engine": "DreamDMBar"
+    },
+    {
+      "id": "dreamdmbar/notifications/useNotifications",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/notifications/useNotifications.ts",
+      "engine": "DreamDMBar"
+    },
+    {
+      "id": "dreamdmbar/runtime/barInteractions",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/runtime/barInteractions.ts",
+      "engine": "DreamDMBar"
+    },
+    {
+      "id": "dreamdmbar/runtime/bridgeSeamFlow",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/runtime/bridgeSeamFlow.ts",
+      "engine": "DreamDMBar"
+    },
+    {
+      "id": "dreamdmbar/runtime/DreamSystemContext",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
       "engine": "DreamDMBar"
     }
   ],
@@ -4058,10 +4262,52 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/brandingengin/identity/logos",
+      "slot": "engin",
+      "path": "engins/brandingengin/identity/logos.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/ai/drEamsCodeAssist",
+      "slot": "engin",
+      "path": "engins/codeengin/ai/drEamsCodeAssist.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/auth",
+      "slot": "engin",
+      "path": "engins/codeengin/auth.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/CodeEngin/core/parser",
       "slot": "engin",
       "path": "engins/CodeEngin/core/parser.ts",
       "engine": "CodeEngin"
+    },
+    {
+      "id": "engins/codeengin/diagnostics",
+      "slot": "engin",
+      "path": "engins/codeengin/diagnostics.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/diff/aiEditEngine",
+      "slot": "engin",
+      "path": "engins/codeengin/diff/aiEditEngine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/diff/diffUtils",
+      "slot": "engin",
+      "path": "engins/codeengin/diff/diffUtils.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/git",
+      "slot": "engin",
+      "path": "engins/codeengin/git.ts",
+      "engine": "Universal"
     },
     {
       "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
@@ -4086,6 +4332,54 @@ export const osArchitectureStageEntries = {
       "slot": "engin",
       "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
       "engine": "CodeEngin"
+    },
+    {
+      "id": "engins/codeengin/pathSafety",
+      "slot": "engin",
+      "path": "engins/codeengin/pathSafety.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/projectGraph",
+      "slot": "engin",
+      "path": "engins/codeengin/projectGraph.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/runner",
+      "slot": "engin",
+      "path": "engins/codeengin/runner.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/search",
+      "slot": "engin",
+      "path": "engins/codeengin/search.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/types",
+      "slot": "engin",
+      "path": "engins/codeengin/types.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/codeengin/workspaceStore",
+      "slot": "engin",
+      "path": "engins/codeengin/workspaceStore.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/assets/assetOptimizer",
+      "slot": "engin",
+      "path": "engins/contentengin/assets/assetOptimizer.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/assets/indexedDBStore",
+      "slot": "engin",
+      "path": "engins/contentengin/assets/indexedDBStore.ts",
+      "engine": "Universal"
     },
     {
       "id": "engins/contentengin/assetTypes",
@@ -4133,6 +4427,66 @@ export const osArchitectureStageEntries = {
       "id": "engins/contentengin/cli",
       "slot": "engin",
       "path": "engins/contentengin/cli.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/composite/compositor",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/compositor.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/composite/fxSimulation",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/fxSimulation.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/composite/matchmover",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/matchmover.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/composite/motionCapture",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/motionCapture.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/composite/rotoscope",
+      "slot": "engin",
+      "path": "engins/contentengin/composite/rotoscope.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/content/generativeFill",
+      "slot": "engin",
+      "path": "engins/contentengin/content/generativeFill.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/content/publishIntent",
+      "slot": "engin",
+      "path": "engins/contentengin/content/publishIntent.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/content/seoScorer",
+      "slot": "engin",
+      "path": "engins/contentengin/content/seoScorer.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/content/transcriptEditor",
+      "slot": "engin",
+      "path": "engins/contentengin/content/transcriptEditor.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/content/voiceClone",
+      "slot": "engin",
+      "path": "engins/contentengin/content/voiceClone.ts",
       "engine": "Universal"
     },
     {
@@ -4229,6 +4583,24 @@ export const osArchitectureStageEntries = {
       "id": "engins/contentengin/materials/proceduralMaterials",
       "slot": "engin",
       "path": "engins/contentengin/materials/proceduralMaterials.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/media/h265-encoder",
+      "slot": "engin",
+      "path": "engins/contentengin/media/h265-encoder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/media/ledger",
+      "slot": "engin",
+      "path": "engins/contentengin/media/ledger.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/media/postMedia",
+      "slot": "engin",
+      "path": "engins/contentengin/media/postMedia.ts",
       "engine": "Universal"
     },
     {
@@ -4424,6 +4796,120 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/forgeengin/componentInventory",
+      "slot": "engin",
+      "path": "engins/forgeengin/componentInventory.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/artifact/manifest",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/artifact/manifest.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/index",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/quality/tiers",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/quality/tiers.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/shell/ArtifactSlot",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/telemetry/client",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/telemetry/client.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/enginpipe/telemetry/events",
+      "slot": "engin",
+      "path": "engins/forgeengin/enginpipe/telemetry/events.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/assembly",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/assembly.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/index",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge-ngn/piece-registry",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge-ngn/piece-registry.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/engineForge",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/engineForge.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeBuild",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeBuild.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeIntelligence",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeIntelligence.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeMomentum",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeMomentum.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeNexus",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeNexus.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeRegistry",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeRegistry.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/forgeRituals",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/forgeRituals.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/useForgeActivity",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/useForgeActivity.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/forgeengin/forge/useForgeBuild",
+      "slot": "engin",
+      "path": "engins/forgeengin/forge/useForgeBuild.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/gameengin/accessibility-ai",
       "slot": "engin",
       "path": "engins/gameengin/accessibility-ai.ts",
@@ -4571,6 +5057,120 @@ export const osArchitectureStageEntries = {
       "id": "engins/gameengin/GameRuntime",
       "slot": "engin",
       "path": "engins/gameengin/GameRuntime.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/avatar",
+      "slot": "engin",
+      "path": "engins/gameengin/games/avatar.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/catalog",
+      "slot": "engin",
+      "path": "engins/gameengin/games/catalog.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/DualSenseManager",
+      "slot": "engin",
+      "path": "engins/gameengin/games/DualSenseManager.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerButtons",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerButtons.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerLeft",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerLeft.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/gameControllerRight",
+      "slot": "engin",
+      "path": "engins/gameengin/games/gameControllerRight.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/hooks",
+      "slot": "engin",
+      "path": "engins/gameengin/games/hooks.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/library-state",
+      "slot": "engin",
+      "path": "engins/gameengin/games/library-state.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/lucid-avenue-world",
+      "slot": "engin",
+      "path": "engins/gameengin/games/lucid-avenue-world.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/madmaxi-wildfall-world",
+      "slot": "engin",
+      "path": "engins/gameengin/games/madmaxi-wildfall-world.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/mobileControls",
+      "slot": "engin",
+      "path": "engins/gameengin/games/mobileControls.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/navigation",
+      "slot": "engin",
+      "path": "engins/gameengin/games/navigation.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/performance-baseline",
+      "slot": "engin",
+      "path": "engins/gameengin/games/performance-baseline.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/quality-plan",
+      "slot": "engin",
+      "path": "engins/gameengin/games/quality-plan.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/useAIDirector",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useAIDirector.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/useGameInputKeyboardBridge",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useGameInputKeyboardBridge.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/useGamepad",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useGamepad.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/useImmersiveGameLayout",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useImmersiveGameLayout.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/gameengin/games/useRemoteChannel",
+      "slot": "engin",
+      "path": "engins/gameengin/games/useRemoteChannel.ts",
       "engine": "Universal"
     },
     {
@@ -4895,6 +5495,66 @@ export const osArchitectureStageEntries = {
       "id": "engins/rulesets/workflowEngine",
       "slot": "engin",
       "path": "engins/rulesets/workflowEngine.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/fingerprint",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/fingerprint.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/index",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/peak-map",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/peak-map.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/audio-fingerprint/stem-extractor",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audio-fingerprint/stem-extractor.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/audioFingerprint",
+      "slot": "engin",
+      "path": "engins/starmakerengin/audioFingerprint.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/music/presets",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/presets.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/music/starmaker",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmaker.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/music/starmakerArrangement",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmakerArrangement.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/music/starmakerDaw",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/starmakerDaw.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/starmakerengin/music/wasmAudioBridge",
+      "slot": "engin",
+      "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
       "engine": "Universal"
     },
     {
@@ -5445,15 +6105,15 @@ User Action / Agent / CI
 
 | Slot | Count |
 | --- | ---: |
-| core-surface | 2 |
+| core-surface | 4 |
 | daydream | 2 |
-| surface | 286 |
+| surface | 294 |
 | route-surface | 273 |
 | dreamsurface | 15 |
-| engin | 141 |
+| engin | 217 |
 | engine-ruleset | 10 |
 | dreamr | 4 |
-| dreamdmbar | 13 |
+| dreamdmbar | 15 |
 | homedream | 1 |
 | connector | 0 |
 | brain-node | 0 |
@@ -5462,7 +6122,7 @@ User Action / Agent / CI
 | persona | 6 |
 | migration | 56 |
 | memory | 6 |
-| dr-eams-tool | 3 |
+| dr-eams-tool | 25 |
 | hook | 12 |
 | engine-system | 0 |
 | engine-utility | 0 |

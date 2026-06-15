@@ -28,15 +28,15 @@ User Action / Agent / CI
 
 | Slot | Count |
 | --- | ---: |
-| core-surface | 2 |
+| core-surface | 4 |
 | daydream | 2 |
-| surface | 286 |
+| surface | 294 |
 | route-surface | 273 |
 | dreamsurface | 15 |
-| engin | 141 |
+| engin | 217 |
 | engine-ruleset | 10 |
 | dreamr | 4 |
-| dreamdmbar | 13 |
+| dreamdmbar | 15 |
 | homedream | 1 |
 | connector | 0 |
 | brain-node | 0 |
@@ -45,7 +45,7 @@ User Action / Agent / CI
 | persona | 6 |
 | migration | 56 |
 | memory | 6 |
-| dr-eams-tool | 3 |
+| dr-eams-tool | 25 |
 | hook | 12 |
 | engine-system | 0 |
 | engine-utility | 0 |
