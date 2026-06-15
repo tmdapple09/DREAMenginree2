@@ -8,22 +8,50 @@ export type SculptTool = 'push' | 'pull' | 'smooth' | 'inflate' | 'carve' | 'fla
 export type ExportFormat = 'obj' | 'glb';
 
 export interface Vec2 { u: number; v: number; }
+export interface ColorRGB { r: number; g: number; b: number; }
+export interface ColoredMesh extends Mesh { vertexColors?: ColorRGB[]; palette?: ColorRGB[]; }
 export interface Bounds3 { min: Vec3; max: Vec3; center: Vec3; size: Vec3; radius: number; }
 export interface StrictMeshDiagnostics extends MeshDiagnostics { totalTriangles: number; invalidIndices: number; nonFiniteVertices: number; orphanVertices: number; disconnectedPieces: number; trianglesTooSmall: number; estimatedBytes: number; bounds: Bounds3; }
 export interface RepairReport { changed: boolean; removedInvalidTriangles: number; removedDegenerateTriangles: number; removedOrphanVertices: number; weldedVertices: number; rebuiltNormals: boolean; }
 export interface RepairResult { mesh: Mesh; diagnostics: StrictMeshDiagnostics; report: RepairReport; }
-export interface SourceImageAsset { name: string; url: string; width: number; height: number; mask: number[]; binaryMask: number[]; threshold: number; activeBounds: { minX: number; minY: number; maxX: number; maxY: number } | null; }
+export interface SourceImageAsset { name: string; url: string; width: number; height: number; mask: number[]; binaryMask: number[]; threshold: number; activeBounds: { minX: number; minY: number; maxX: number; maxY: number } | null; palette: ColorRGB[]; colorIndices: number[]; }
 export interface CameraState { yaw: number; pitch: number; zoom: number; panX: number; panY: number; target: Vec3; }
 export interface BrushState { tool: SculptTool; radius: number; strength: number; falloff: number; symmetry: boolean; smoothing: number; }
 export interface EditableMeshState { mesh: Mesh; diagnostics: StrictMeshDiagnostics; quality: MeshQualityLabel; repaired: boolean; repairReport?: RepairReport; }
-export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: Mesh[]; redoStack: Mesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; processingStatus: AssetProcessingStatus; visibleMessage: string; }
+export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: ColoredMesh[]; redoStack: ColoredMesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; processingStatus: AssetProcessingStatus; visibleMessage: string; }
 export type ImplicitAssetWorkspaceObject = DomainObject<'contentengin.implicit-asset-workspace', ImplicitAssetWorkspaceData>;
 
 export const DEFAULT_CAMERA_STATE: CameraState = { yaw: -0.65, pitch: 0.55, zoom: 1.25, panX: 0, panY: 0, target: { x: 0, y: 0, z: 0 } };
 export const DEFAULT_BRUSH_STATE: BrushState = { tool: 'push', radius: 0.22, strength: 0.08, falloff: 0.6, symmetry: false, smoothing: 0.35 };
 const ZERO: Vec3 = { x: 0, y: 0, z: 0 };
+const DEFAULT_COLOR: ColorRGB = { r: 1, g: 0.62, b: 0.08 };
 
-export function createImplicitAssetWorkspaceObject(ownerId = 'local-user', runtimeId = 'contentengin-runtime'): ImplicitAssetWorkspaceObject { const now = new Date().toISOString(); return { id: `implicit-workspace-${Date.now()}`, type: 'contentengin.implicit-asset-workspace', ownerId, runtimeId, visibility: 'local', createdAt: now, updatedAt: now, version: 1, data: { sourceImage: null, mesh: null, previewMesh: null, editHistory: [], redoStack: [], exportFormats: ['obj', 'glb'], activeTool: 'push', cameraState: DEFAULT_CAMERA_STATE, brushState: DEFAULT_BRUSH_STATE, processingStatus: 'idle', visibleMessage: 'Upload an image to make it real.' } }; }
+export function createImplicitAssetWorkspaceObject(ownerId = 'local-user', runtimeId = 'contentengin-runtime'): ImplicitAssetWorkspaceObject {
+  const now = new Date().toISOString();
+  return {
+    id: `implicit-workspace-${Date.now()}`,
+    type: 'contentengin.implicit-asset-workspace',
+    ownerId,
+    runtimeId,
+    visibility: 'local',
+    createdAt: now,
+    updatedAt: now,
+    version: 1,
+    data: {
+      sourceImage: null,
+      mesh: null,
+      previewMesh: null,
+      editHistory: [],
+      redoStack: [],
+      exportFormats: ['obj', 'glb'],
+      activeTool: 'push',
+      cameraState: DEFAULT_CAMERA_STATE,
+      brushState: DEFAULT_BRUSH_STATE,
+      processingStatus: 'idle',
+      visibleMessage: 'Upload an image to make it real.',
+    },
+  };
+}
 
 function clamp(n: number, min: number, max: number): number { return Math.max(min, Math.min(max, n)); }
 function clamp01(n: number): number { return clamp(Number.isFinite(n) ? n : 0, 0, 1); }
@@ -39,44 +67,661 @@ function lerpVec(a: Vec3, b: Vec3, t: number): Vec3 { return addVec(a, mulVec(su
 function finiteVec(v: Vec3): boolean { return Number.isFinite(v.x) && Number.isFinite(v.y) && Number.isFinite(v.z); }
 function triAreaSq(a: Vec3, b: Vec3, c: Vec3): number { if (!finiteVec(a) || !finiteVec(b) || !finiteVec(c)) return 0; return lenSq(crossVec(subVec(b, a), subVec(c, a))) * 0.25; }
 
-export function analyzeImageMask(image: ImageData, name: string, url: string): SourceImageAsset { const maxSide = 64; const scale = Math.max(image.width, image.height) / maxSide; const width = clamp(Math.round(image.width / scale), 8, 64); const height = clamp(Math.round(image.height / scale), 8, 64); const rawMask: number[] = [];
-  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) { let r = 0; let g = 0; let b = 0; let a = 0; let samples = 0; const sx = Math.floor((x + 0.5) * image.width / width); const sy = Math.floor((y + 0.5) * image.height / height); for (let oy = 0; oy < 2; oy++) for (let ox = 0; ox < 2; ox++) { const px = clamp(sx + ox - 1, 0, image.width - 1); const py = clamp(sy + oy - 1, 0, image.height - 1); const i = (py * image.width + px) * 4; r += image.data[i]; g += image.data[i + 1]; b += image.data[i + 2]; a += image.data[i + 3]; samples++; } r /= samples; g /= samples; b /= samples; a /= samples; const alpha = a / 255; const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; const chroma = Math.max(r, g, b) / 255 - Math.min(r, g, b) / 255; rawMask.push(alpha < 0.05 ? 0 : clamp01(alpha * Math.max(0, 1 - luma * 0.72 + chroma * 0.18))); }
-  const threshold = clamp(otsuThreshold(rawMask), 0.08, 0.55) * 0.85; let binary: number[] = rawMask.map((v) => v >= threshold ? 1 : 0); binary = removeSmallIslands(morphErode(morphDilate(binary, width, height), width, height), width, height, Math.max(6, Math.floor(width * height * 0.004))); const soft = rawMask.map((v, i) => { if (binary[i]) return clamp01(v); const x = i % width; const y = Math.floor(i / width); const ns = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]].filter(([nx, ny]) => nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ny * width + nx]); return ns.length ? clamp01(ns.reduce((s, [nx, ny]) => s + rawMask[ny * width + nx], 0) / ns.length * 0.35) : 0; }); const blurred = soft.map((v, i) => { const x = i % width; const y = Math.floor(i / width); let sum = 0; let count = 0; for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) if (nx >= 0 && ny >= 0 && nx < width && ny < height) { sum += soft[ny * width + nx]; count++; } return clamp01(v * 0.5 + (count ? sum / count : v) * 0.5); }); let minX = width; let minY = height; let maxX = -1; let maxY = -1; binary.forEach((v, i) => { if (!v) return; const x = i % width; const y = Math.floor(i / width); minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); }); return { name, url, width, height, mask: blurred, binaryMask: binary, threshold, activeBounds: maxX >= 0 ? { minX, minY, maxX, maxY } : null }; }
-function otsuThreshold(values: number[]): number { const active = values.filter((v) => v > 0.01); if (active.length < 6) return 0.08; const hist = Array(64).fill(0); for (const v of active) hist[clamp(Math.floor(clamp01(v) * 63), 0, 63)]++; const total = active.length; let sum = 0; hist.forEach((h, i) => { sum += i * h; }); let sumB = 0; let wB = 0; let best = 0; let bestVar = -1; for (let i = 0; i < 64; i++) { wB += hist[i]; if (!wB) continue; const wF = total - wB; if (!wF) break; sumB += i * hist[i]; const mB = sumB / wB; const mF = (sum - sumB) / wF; const between = wB * wF * (mB - mF) ** 2; if (between > bestVar) { bestVar = between; best = i; } } return best / 63; }
-function morphDilate(binary: number[], width: number, height: number): number[] { return binary.map((v, i) => { if (v) return 1; const x = i % width; const y = Math.floor(i / width); for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const nx = x + dx; const ny = y + dy; if (nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ny * width + nx]) return 1; } return 0; }); }
-function morphErode(binary: number[], width: number, height: number): number[] { return binary.map((_v, i) => { const x = i % width; const y = Math.floor(i / width); for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const nx = x + dx; const ny = y + dy; if (nx < 0 || ny < 0 || nx >= width || ny >= height || !binary[ny * width + nx]) return 0; } return 1; }); }
-function removeSmallIslands(binary: number[], width: number, height: number, minSize: number): number[] { const out = [...binary]; const seen = new Set<number>(); let largest: number[] = []; const comps: number[][] = []; for (let i = 0; i < binary.length; i++) { if (!binary[i] || seen.has(i)) continue; const comp: number[] = []; const stack = [i]; seen.add(i); while (stack.length) { const p = stack.pop()!; comp.push(p); const x = p % width; const y = Math.floor(p / width); for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) { const ni = ny * width + nx; if (nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ni] && !seen.has(ni)) { seen.add(ni); stack.push(ni); } } } comps.push(comp); if (comp.length > largest.length) largest = comp; } for (const comp of comps) if (comp.length < minSize && comp !== largest) for (const i of comp) out[i] = 0; return out; }
+export function analyzeImageMask(image: ImageData, name: string, url: string): SourceImageAsset {
+  const maxSide = 64;
+  const scale = Math.max(image.width, image.height) / maxSide;
+  const width = clamp(Math.round(image.width / scale), 8, 64);
+  const height = clamp(Math.round(image.height / scale), 8, 64);
+  const rawMask: number[] = [];
+  const rawColors: ColorRGB[] = [];
 
-export function processImageToEditableMesh(source: SourceImageAsset): EditableMeshState { const result = repairMeshDetailed(buildInflatedReliefMesh(source)); const quality = summarizeMeshQuality(result.diagnostics, result.report); return { mesh: result.mesh, diagnostics: result.diagnostics, quality, repaired: result.report.changed, repairReport: result.report }; }
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    let r = 0;
+    let g = 0;
+    let b = 0;
+    let a = 0;
+    let samples = 0;
+    const sx = Math.floor((x + 0.5) * image.width / width);
+    const sy = Math.floor((y + 0.5) * image.height / height);
 
-export function buildInflatedReliefMesh(source: SourceImageAsset): Mesh { const w = source.width; const h = source.height; const mask = source.mask; const binary = source.binaryMask ?? mask.map((v) => v > 0.08 ? 1 : 0); const active = binary.some(Boolean); if (!source.activeBounds || !active) return centerAndScaleMesh(runDualContouring(createSphereSDF(0.65), { resolution: 16 }), 1.8); const vertices: Vec3[] = []; const indices: number[] = []; const front = new Map<string, number>(); const back = new Map<string, number>(); const coord = (gx: number, gy: number, z: number): Vec3 => ({ x: (gx / w - 0.5) * 2, y: -((gy / h - 0.5) * 2), z }); const cell = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h ? binary[y * w + x] === 1 : false; const heightAtCorner = (gx: number, gy: number): number => { let sum = 0; let count = 0; for (const [cx, cy] of [[gx - 1, gy - 1], [gx, gy - 1], [gx - 1, gy], [gx, gy]]) if (cx >= 0 && cy >= 0 && cx < w && cy < h) { sum += mask[cy * w + cx] ?? 0; count++; } if (!count) return 0.02; const dome = Math.sin(clamp01(sum / count) * Math.PI * 0.5); return 0.08 + dome * 0.52; }; const get = (map: Map<string, number>, prefix: string, gx: number, gy: number, z: number) => { const k = `${prefix}:${gx}:${gy}`; const found = map.get(k); if (found !== undefined) return found; const idx = vertices.push(coord(gx, gy, z)) - 1; map.set(k, idx); return idx; }; const getF = (gx: number, gy: number) => get(front, 'f', gx, gy, heightAtCorner(gx, gy)); const getB = (gx: number, gy: number) => get(back, 'b', gx, gy, -0.12);
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { if (!cell(x, y)) continue; const f00 = getF(x, y); const f10 = getF(x + 1, y); const f11 = getF(x + 1, y + 1); const f01 = getF(x, y + 1); const b00 = getB(x, y); const b10 = getB(x + 1, y); const b11 = getB(x + 1, y + 1); const b01 = getB(x, y + 1); indices.push(f00, f11, f10, f00, f01, f11, b00, b10, b11, b00, b11, b01); if (!cell(x - 1, y)) indices.push(f00, b01, b00, f00, f01, b01); if (!cell(x + 1, y)) indices.push(f10, b10, b11, f10, b11, f11); if (!cell(x, y - 1)) indices.push(f00, b00, b10, f00, b10, f10); if (!cell(x, y + 1)) indices.push(f01, b11, b01, f01, f11, b11); }
-  return repairMeshDetailed(centerAndScaleMesh(repairMeshDetailed({ vertices, indices }).mesh, 1.8)).mesh; }
+    for (let oy = 0; oy < 2; oy++) for (let ox = 0; ox < 2; ox++) {
+      const px = clamp(sx + ox - 1, 0, image.width - 1);
+      const py = clamp(sy + oy - 1, 0, image.height - 1);
+      const i = (py * image.width + px) * 4;
+      r += image.data[i];
+      g += image.data[i + 1];
+      b += image.data[i + 2];
+      a += image.data[i + 3];
+      samples++;
+    }
 
-export function cloneMesh(mesh: Mesh): Mesh { return { vertices: mesh.vertices.map((v) => ({ x: v.x, y: v.y, z: v.z })), indices: [...mesh.indices] }; }
-export function computeBounds(mesh: Mesh): Bounds3 { if (!mesh.vertices.length) return { min: { ...ZERO }, max: { ...ZERO }, center: { ...ZERO }, size: { ...ZERO }, radius: 0 }; const clean = mesh.vertices.map((v) => finiteVec(v) ? v : ZERO); const min = { x: Infinity, y: Infinity, z: Infinity }; const max = { x: -Infinity, y: -Infinity, z: -Infinity }; for (const v of clean) { min.x = Math.min(min.x, v.x); min.y = Math.min(min.y, v.y); min.z = Math.min(min.z, v.z); max.x = Math.max(max.x, v.x); max.y = Math.max(max.y, v.y); max.z = Math.max(max.z, v.z); } const center = mulVec(addVec(min, max), 0.5); const size = subVec(max, min); const radius = clean.reduce((r, v) => Math.max(r, distance(v, center)), 0); return { min, max, center, size, radius }; }
-export function computeVertexNormals(mesh: Mesh): Vec3[] { const normals = mesh.vertices.map(() => ({ ...ZERO })); for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = mesh.indices[i]; const b = mesh.indices[i + 1]; const c = mesh.indices[i + 2]; if (!validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh) || a === b || b === c || c === a) continue; const n = crossVec(subVec(mesh.vertices[b], mesh.vertices[a]), subVec(mesh.vertices[c], mesh.vertices[a])); if (lenSq(n) <= 1e-18) continue; normals[a] = addVec(normals[a], n); normals[b] = addVec(normals[b], n); normals[c] = addVec(normals[c], n); } return normals.map((n) => lenSq(n) <= 1e-20 ? { x: 0, y: 0, z: 1 } : normalize(n)); }
-export function computePlanarUVs(mesh: Mesh, bounds = computeBounds(mesh)): Vec2[] { const s = bounds.size; const axes: ('x'|'y'|'z')[] = s.x <= s.y && s.x <= s.z ? ['y','z'] : s.y <= s.x && s.y <= s.z ? ['x','z'] : ['x','y']; return mesh.vertices.map((v) => ({ u: clamp01((v[axes[0]] - bounds.min[axes[0]]) / Math.max(1e-9, s[axes[0]])), v: clamp01((v[axes[1]] - bounds.min[axes[1]]) / Math.max(1e-9, s[axes[1]])) })); }
+    r /= samples;
+    g /= samples;
+    b /= samples;
+    a /= samples;
+    const alpha = a / 255;
+    const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    const chroma = Math.max(r, g, b) / 255 - Math.min(r, g, b) / 255;
+    rawMask.push(alpha < 0.05 ? 0 : clamp01(alpha * Math.max(0, 1 - luma * 0.72 + chroma * 0.18)));
+    rawColors.push({ r: r / 255, g: g / 255, b: b / 255 });
+  }
+
+  const threshold = clamp(otsuThreshold(rawMask), 0.08, 0.55) * 0.85;
+  let binary: number[] = rawMask.map((v) => v >= threshold ? 1 : 0);
+  binary = removeSmallIslands(morphErode(morphDilate(binary, width, height), width, height), width, height, Math.max(6, Math.floor(width * height * 0.004)));
+
+  const soft = rawMask.map((v, i) => {
+    if (binary[i]) return clamp01(v);
+    const x = i % width;
+    const y = Math.floor(i / width);
+    const ns = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]].filter(([nx, ny]) => nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ny * width + nx]);
+    return ns.length ? clamp01(ns.reduce((s, [nx, ny]) => s + rawMask[ny * width + nx], 0) / ns.length * 0.35) : 0;
+  });
+
+  const blurred = soft.map((v, i) => {
+    const x = i % width;
+    const y = Math.floor(i / width);
+    let sum = 0;
+    let count = 0;
+    for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) if (nx >= 0 && ny >= 0 && nx < width && ny < height) {
+      sum += soft[ny * width + nx];
+      count++;
+    }
+    return clamp01(v * 0.5 + (count ? sum / count : v) * 0.5);
+  });
+
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  binary.forEach((v, i) => {
+    if (!v) return;
+    const x = i % width;
+    const y = Math.floor(i / width);
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  });
+
+  const colorQuantized = quantizeColors256(rawColors);
+  return { name, url, width, height, mask: blurred, binaryMask: binary, threshold, activeBounds: maxX >= 0 ? { minX, minY, maxX, maxY } : null, palette: colorQuantized.palette, colorIndices: colorQuantized.indices };
+}
+
+function quantizeColors256(colors: ColorRGB[]): { palette: ColorRGB[]; indices: number[] } {
+  const keyToIndex = new Map<string, number>();
+  const palette: ColorRGB[] = [];
+  const indices: number[] = [];
+
+  for (const c of colors) {
+    const rq = clamp(Math.round(clamp01(c.r) * 7), 0, 7);
+    const gq = clamp(Math.round(clamp01(c.g) * 7), 0, 7);
+    const bq = clamp(Math.round(clamp01(c.b) * 3), 0, 3);
+    const key = `${rq}:${gq}:${bq}`;
+    let idx = keyToIndex.get(key);
+    if (idx === undefined) {
+      idx = palette.push({ r: rq / 7, g: gq / 7, b: bq / 3 }) - 1;
+      keyToIndex.set(key, idx);
+    }
+    indices.push(idx);
+  }
+
+  return { palette: palette.slice(0, 256), indices: indices.map((i) => Math.min(i, 255)) };
+}
+
+function colorForSourceCell(source: SourceImageAsset, x: number, y: number): ColorRGB {
+  const idx = source.colorIndices[y * source.width + x] ?? 0;
+  return source.palette[idx] ?? DEFAULT_COLOR;
+}
+
+function averageColors(colors: ColorRGB[]): ColorRGB {
+  if (!colors.length) return DEFAULT_COLOR;
+  const sum = colors.reduce((s, c) => ({ r: s.r + c.r, g: s.g + c.g, b: s.b + c.b }), { r: 0, g: 0, b: 0 });
+  return { r: sum.r / colors.length, g: sum.g / colors.length, b: sum.b / colors.length };
+}
+
+function otsuThreshold(values: number[]): number {
+  const active = values.filter((v) => v > 0.01);
+  if (active.length < 6) return 0.08;
+  const hist = Array(64).fill(0);
+  for (const v of active) hist[clamp(Math.floor(clamp01(v) * 63), 0, 63)]++;
+  const total = active.length;
+  let sum = 0;
+  hist.forEach((h, i) => { sum += i * h; });
+  let sumB = 0;
+  let wB = 0;
+  let best = 0;
+  let bestVar = -1;
+  for (let i = 0; i < 64; i++) {
+    wB += hist[i];
+    if (!wB) continue;
+    const wF = total - wB;
+    if (!wF) break;
+    sumB += i * hist[i];
+    const mB = sumB / wB;
+    const mF = (sum - sumB) / wF;
+    const between = wB * wF * (mB - mF) ** 2;
+    if (between > bestVar) { bestVar = between; best = i; }
+  }
+  return best / 63;
+}
+
+function morphDilate(binary: number[], width: number, height: number): number[] {
+  return binary.map((v, i) => {
+    if (v) return 1;
+    const x = i % width;
+    const y = Math.floor(i / width);
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ny * width + nx]) return 1;
+    }
+    return 0;
+  });
+}
+
+function morphErode(binary: number[], width: number, height: number): number[] {
+  return binary.map((_v, i) => {
+    const x = i % width;
+    const y = Math.floor(i / width);
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= width || ny >= height || !binary[ny * width + nx]) return 0;
+    }
+    return 1;
+  });
+}
+
+function removeSmallIslands(binary: number[], width: number, height: number, minSize: number): number[] {
+  const out = [...binary];
+  const seen = new Set<number>();
+  let largest: number[] = [];
+  const comps: number[][] = [];
+
+  for (let i = 0; i < binary.length; i++) {
+    if (!binary[i] || seen.has(i)) continue;
+    const comp: number[] = [];
+    const stack = [i];
+    seen.add(i);
+    while (stack.length) {
+      const p = stack.pop()!;
+      comp.push(p);
+      const x = p % width;
+      const y = Math.floor(p / width);
+      for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) {
+        const ni = ny * width + nx;
+        if (nx >= 0 && ny >= 0 && nx < width && ny < height && binary[ni] && !seen.has(ni)) {
+          seen.add(ni);
+          stack.push(ni);
+        }
+      }
+    }
+    comps.push(comp);
+    if (comp.length > largest.length) largest = comp;
+  }
+
+  for (const comp of comps) if (comp.length < minSize && comp !== largest) for (const i of comp) out[i] = 0;
+  return out;
+}
+
+export function processImageToEditableMesh(source: SourceImageAsset): EditableMeshState {
+  const result = repairMeshDetailed(buildInflatedReliefMesh(source));
+  const quality = summarizeMeshQuality(result.diagnostics, result.report);
+  return { mesh: result.mesh, diagnostics: result.diagnostics, quality, repaired: result.report.changed, repairReport: result.report };
+}
+
+export function buildInflatedReliefMesh(source: SourceImageAsset): ColoredMesh {
+  const w = source.width;
+  const h = source.height;
+  const mask = source.mask;
+  const binary = source.binaryMask ?? mask.map((v) => v > 0.08 ? 1 : 0);
+  const active = binary.some(Boolean);
+
+  if (!source.activeBounds || !active) return centerAndScaleMesh(runDualContouring(createSphereSDF(0.65), { resolution: 16 }), 1.8);
+
+  const vertices: Vec3[] = [];
+  const vertexColors: ColorRGB[] = [];
+  const indices: number[] = [];
+  const front = new Map<string, number>();
+  const back = new Map<string, number>();
+
+  const coord = (gx: number, gy: number, z: number): Vec3 => ({ x: (gx / w - 0.5) * 2, y: -((gy / h - 0.5) * 2), z });
+  const cell = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h ? binary[y * w + x] === 1 : false;
+  const heightAtCorner = (gx: number, gy: number): number => {
+    let sum = 0;
+    let count = 0;
+    for (const [cx, cy] of [[gx - 1, gy - 1], [gx, gy - 1], [gx - 1, gy], [gx, gy]]) if (cx >= 0 && cy >= 0 && cx < w && cy < h) {
+      sum += mask[cy * w + cx] ?? 0;
+      count++;
+    }
+    if (!count) return 0.02;
+    const dome = Math.sin(clamp01(sum / count) * Math.PI * 0.5);
+    return 0.08 + dome * 0.52;
+  };
+  const cornerColor = (gx: number, gy: number): ColorRGB => {
+    const colors: ColorRGB[] = [];
+    for (const [cx, cy] of [[gx - 1, gy - 1], [gx, gy - 1], [gx - 1, gy], [gx, gy]]) if (cx >= 0 && cy >= 0 && cx < w && cy < h && cell(cx, cy)) colors.push(colorForSourceCell(source, cx, cy));
+    return averageColors(colors);
+  };
+  const get = (map: Map<string, number>, prefix: string, gx: number, gy: number, z: number) => {
+    const k = `${prefix}:${gx}:${gy}`;
+    const found = map.get(k);
+    if (found !== undefined) return found;
+    const idx = vertices.push(coord(gx, gy, z)) - 1;
+    vertexColors[idx] = cornerColor(gx, gy);
+    map.set(k, idx);
+    return idx;
+  };
+  const getF = (gx: number, gy: number) => get(front, 'f', gx, gy, heightAtCorner(gx, gy));
+  const getB = (gx: number, gy: number) => get(back, 'b', gx, gy, -0.12);
+
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    if (!cell(x, y)) continue;
+    const f00 = getF(x, y);
+    const f10 = getF(x + 1, y);
+    const f11 = getF(x + 1, y + 1);
+    const f01 = getF(x, y + 1);
+    const b00 = getB(x, y);
+    const b10 = getB(x + 1, y);
+    const b11 = getB(x + 1, y + 1);
+    const b01 = getB(x, y + 1);
+
+    indices.push(f00, f11, f10, f00, f01, f11, b00, b10, b11, b00, b11, b01);
+    if (!cell(x - 1, y)) indices.push(f00, b01, b00, f00, f01, b01);
+    if (!cell(x + 1, y)) indices.push(f10, b10, b11, f10, b11, f11);
+    if (!cell(x, y - 1)) indices.push(f00, b00, b10, f00, b10, f10);
+    if (!cell(x, y + 1)) indices.push(f01, b11, b01, f01, f11, b11);
+  }
+
+  return repairMeshDetailed(centerAndScaleMesh(repairMeshDetailed({ vertices, indices, vertexColors, palette: source.palette } as ColoredMesh).mesh, 1.8)).mesh as ColoredMesh;
+}
+
+export function cloneMesh(mesh: Mesh): ColoredMesh {
+  const colored = mesh as ColoredMesh;
+  return { vertices: mesh.vertices.map((v) => ({ x: v.x, y: v.y, z: v.z })), indices: [...mesh.indices], vertexColors: colored.vertexColors?.map((c) => ({ ...c })), palette: colored.palette?.map((c) => ({ ...c })) };
+}
+
+export function computeBounds(mesh: Mesh): Bounds3 {
+  if (!mesh.vertices.length) return { min: { ...ZERO }, max: { ...ZERO }, center: { ...ZERO }, size: { ...ZERO }, radius: 0 };
+  const clean = mesh.vertices.map((v) => finiteVec(v) ? v : ZERO);
+  const min = { x: Infinity, y: Infinity, z: Infinity };
+  const max = { x: -Infinity, y: -Infinity, z: -Infinity };
+  for (const v of clean) {
+    min.x = Math.min(min.x, v.x);
+    min.y = Math.min(min.y, v.y);
+    min.z = Math.min(min.z, v.z);
+    max.x = Math.max(max.x, v.x);
+    max.y = Math.max(max.y, v.y);
+    max.z = Math.max(max.z, v.z);
+  }
+  const center = mulVec(addVec(min, max), 0.5);
+  const size = subVec(max, min);
+  const radius = clean.reduce((r, v) => Math.max(r, distance(v, center)), 0);
+  return { min, max, center, size, radius };
+}
+
+export function computeVertexNormals(mesh: Mesh): Vec3[] {
+  const normals = mesh.vertices.map(() => ({ ...ZERO }));
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = mesh.indices[i];
+    const b = mesh.indices[i + 1];
+    const c = mesh.indices[i + 2];
+    if (!validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh) || a === b || b === c || c === a) continue;
+    const n = crossVec(subVec(mesh.vertices[b], mesh.vertices[a]), subVec(mesh.vertices[c], mesh.vertices[a]));
+    if (lenSq(n) <= 1e-18) continue;
+    normals[a] = addVec(normals[a], n);
+    normals[b] = addVec(normals[b], n);
+    normals[c] = addVec(normals[c], n);
+  }
+  return normals.map((n) => lenSq(n) <= 1e-20 ? { x: 0, y: 0, z: 1 } : normalize(n));
+}
+
+export function computePlanarUVs(mesh: Mesh, bounds = computeBounds(mesh)): Vec2[] {
+  const s = bounds.size;
+  const axes: ('x'|'y'|'z')[] = s.x <= s.y && s.x <= s.z ? ['y','z'] : s.y <= s.x && s.y <= s.z ? ['x','z'] : ['x','y'];
+  return mesh.vertices.map((v) => ({
+    u: clamp01((v[axes[0]] - bounds.min[axes[0]]) / Math.max(1e-9, s[axes[0]])),
+    v: clamp01((v[axes[1]] - bounds.min[axes[1]]) / Math.max(1e-9, s[axes[1]])),
+  }));
+}
+
 function validIndex(i: number, mesh: Mesh): boolean { return Number.isFinite(i) && Number.isInteger(i) && i >= 0 && i < mesh.vertices.length; }
 export function estimateMeshBytes(mesh: Mesh): number { return mesh.vertices.length * 3 * 4 + mesh.indices.length * 4; }
-export function validateMeshStrict(mesh: Mesh): StrictMeshDiagnostics { let invalidIndices = 0; let degenerateTriangles = 0; let trianglesTooSmall = 0; let validTriangles = 0; const edgeUse = new Map<string, number>(); const used = new Set<number>(); const vertGraph = new Map<number, Set<number>>(); const nonFiniteVertices = mesh.vertices.filter((v) => !finiteVec(v)).length; const addEdge = (a: number, b: number) => { const e = a < b ? `${a}:${b}` : `${b}:${a}`; edgeUse.set(e, (edgeUse.get(e) ?? 0) + 1); if (!vertGraph.has(a)) vertGraph.set(a, new Set()); if (!vertGraph.has(b)) vertGraph.set(b, new Set()); vertGraph.get(a)!.add(b); vertGraph.get(b)!.add(a); };
-  for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = mesh.indices[i]; const b = mesh.indices[i + 1]; const c = mesh.indices[i + 2]; const bad = !validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh); if (bad) { invalidIndices += [a, b, c].filter((idx) => !validIndex(idx, mesh)).length; degenerateTriangles++; continue; } const area = triAreaSq(mesh.vertices[a], mesh.vertices[b], mesh.vertices[c]); if (a === b || b === c || c === a || area <= 1e-18) { degenerateTriangles++; continue; } validTriangles++; if (area <= 1e-12) trianglesTooSmall++; used.add(a); used.add(b); used.add(c); addEdge(a, b); addEdge(b, c); addEdge(c, a); }
-  let boundaryEdges = 0; let nonManifoldEdges = 0; for (const use of edgeUse.values()) { if (use === 1) boundaryEdges++; else if (use > 2) nonManifoldEdges++; } let disconnectedPieces = 0; const seen = new Set<number>(); for (const v of used) { if (seen.has(v)) continue; disconnectedPieces++; const stack = [v]; seen.add(v); while (stack.length) for (const n of vertGraph.get(stack.pop()!) ?? []) if (!seen.has(n)) { seen.add(n); stack.push(n); } } return { vertices: mesh.vertices.length, triangles: validTriangles, totalTriangles: Math.floor(mesh.indices.length / 3), degenerateTriangles, boundaryEdges, nonManifoldEdges, invalidIndices, nonFiniteVertices, orphanVertices: mesh.vertices.length - used.size, disconnectedPieces, trianglesTooSmall, estimatedBytes: estimateMeshBytes(mesh), bounds: computeBounds(mesh) }; }
-export function compactMesh(mesh: Mesh): { mesh: Mesh; removedOrphanVertices: number } { const used = new Set<number>(); for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = mesh.indices[i]; const b = mesh.indices[i + 1]; const c = mesh.indices[i + 2]; if (validIndex(a, mesh) && validIndex(b, mesh) && validIndex(c, mesh)) { used.add(a); used.add(b); used.add(c); } } const map = new Map<number, number>(); const vertices: Vec3[] = []; mesh.vertices.forEach((v, i) => { if (used.has(i)) map.set(i, vertices.push({ ...v }) - 1); }); const indices: number[] = []; for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = map.get(mesh.indices[i]); const b = map.get(mesh.indices[i + 1]); const c = map.get(mesh.indices[i + 2]); if (a !== undefined && b !== undefined && c !== undefined) indices.push(a, b, c); } return { mesh: { vertices, indices }, removedOrphanVertices: mesh.vertices.length - vertices.length }; }
-export function weldVertices(mesh: Mesh, tolerance = 1e-5): { mesh: Mesh; weldedVertices: number } { const tol = Math.max(tolerance, 1e-12); const keys = new Map<string, number>(); const remap = new Map<number, number>(); const vertices: Vec3[] = []; mesh.vertices.forEach((v, i) => { const key = `${Math.round(v.x / tol)},${Math.round(v.y / tol)},${Math.round(v.z / tol)}`; const existing = keys.get(key); if (existing !== undefined) remap.set(i, existing); else { const idx = vertices.push({ ...v }) - 1; keys.set(key, idx); remap.set(i, idx); } }); const indices: number[] = []; for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = remap.get(mesh.indices[i]); const b = remap.get(mesh.indices[i + 1]); const c = remap.get(mesh.indices[i + 2]); if (a !== undefined && b !== undefined && c !== undefined && a !== b && b !== c && c !== a && triAreaSq(vertices[a], vertices[b], vertices[c]) > 1e-18) indices.push(a, b, c); } return { mesh: { vertices, indices }, weldedVertices: mesh.vertices.length - vertices.length }; }
-export function repairMeshDetailed(mesh: Mesh): RepairResult { let changed = false; let removedInvalidTriangles = 0; let removedDegenerateTriangles = 0; const cleanVerts = mesh.vertices.map((v) => { const nv = { x: Number.isFinite(v.x) ? v.x : 0, y: Number.isFinite(v.y) ? v.y : 0, z: Number.isFinite(v.z) ? v.z : 0 }; if (nv.x !== v.x || nv.y !== v.y || nv.z !== v.z) changed = true; return nv; }); const indices: number[] = []; for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = mesh.indices[i]; const b = mesh.indices[i + 1]; const c = mesh.indices[i + 2]; if (!validIndex(a, { vertices: cleanVerts, indices: [] }) || !validIndex(b, { vertices: cleanVerts, indices: [] }) || !validIndex(c, { vertices: cleanVerts, indices: [] })) { removedInvalidTriangles++; changed = true; continue; } if (a === b || b === c || c === a || triAreaSq(cleanVerts[a], cleanVerts[b], cleanVerts[c]) <= 1e-18) { removedDegenerateTriangles++; changed = true; continue; } indices.push(a, b, c); } const welded = weldVertices({ vertices: cleanVerts, indices }, 1e-6); const compacted = compactMesh(welded.mesh); changed ||= welded.weldedVertices > 0 || compacted.removedOrphanVertices > 0 || indices.length !== mesh.indices.length; const report = { changed, removedInvalidTriangles, removedDegenerateTriangles, removedOrphanVertices: compacted.removedOrphanVertices, weldedVertices: welded.weldedVertices, rebuiltNormals: false }; return { mesh: compacted.mesh, diagnostics: validateMeshStrict(compacted.mesh), report }; }
+
+export function validateMeshStrict(mesh: Mesh): StrictMeshDiagnostics {
+  let invalidIndices = 0;
+  let degenerateTriangles = 0;
+  let trianglesTooSmall = 0;
+  let validTriangles = 0;
+  const edgeUse = new Map<string, number>();
+  const used = new Set<number>();
+  const vertGraph = new Map<number, Set<number>>();
+  const nonFiniteVertices = mesh.vertices.filter((v) => !finiteVec(v)).length;
+  const addEdge = (a: number, b: number) => {
+    const e = a < b ? `${a}:${b}` : `${b}:${a}`;
+    edgeUse.set(e, (edgeUse.get(e) ?? 0) + 1);
+    if (!vertGraph.has(a)) vertGraph.set(a, new Set());
+    if (!vertGraph.has(b)) vertGraph.set(b, new Set());
+    vertGraph.get(a)!.add(b);
+    vertGraph.get(b)!.add(a);
+  };
+
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = mesh.indices[i];
+    const b = mesh.indices[i + 1];
+    const c = mesh.indices[i + 2];
+    const bad = !validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh);
+    if (bad) {
+      invalidIndices += [a, b, c].filter((idx) => !validIndex(idx, mesh)).length;
+      degenerateTriangles++;
+      continue;
+    }
+    const area = triAreaSq(mesh.vertices[a], mesh.vertices[b], mesh.vertices[c]);
+    if (a === b || b === c || c === a || area <= 1e-18) {
+      degenerateTriangles++;
+      continue;
+    }
+    validTriangles++;
+    if (area <= 1e-12) trianglesTooSmall++;
+    used.add(a);
+    used.add(b);
+    used.add(c);
+    addEdge(a, b);
+    addEdge(b, c);
+    addEdge(c, a);
+  }
+
+  let boundaryEdges = 0;
+  let nonManifoldEdges = 0;
+  for (const use of edgeUse.values()) {
+    if (use === 1) boundaryEdges++;
+    else if (use > 2) nonManifoldEdges++;
+  }
+
+  let disconnectedPieces = 0;
+  const seen = new Set<number>();
+  for (const v of used) {
+    if (seen.has(v)) continue;
+    disconnectedPieces++;
+    const stack = [v];
+    seen.add(v);
+    while (stack.length) for (const n of vertGraph.get(stack.pop()!) ?? []) if (!seen.has(n)) {
+      seen.add(n);
+      stack.push(n);
+    }
+  }
+
+  return { vertices: mesh.vertices.length, triangles: validTriangles, totalTriangles: Math.floor(mesh.indices.length / 3), degenerateTriangles, boundaryEdges, nonManifoldEdges, invalidIndices, nonFiniteVertices, orphanVertices: mesh.vertices.length - used.size, disconnectedPieces, trianglesTooSmall, estimatedBytes: estimateMeshBytes(mesh), bounds: computeBounds(mesh) };
+}
+
+export function compactMesh(mesh: Mesh): { mesh: Mesh; removedOrphanVertices: number } {
+  const used = new Set<number>();
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = mesh.indices[i];
+    const b = mesh.indices[i + 1];
+    const c = mesh.indices[i + 2];
+    if (validIndex(a, mesh) && validIndex(b, mesh) && validIndex(c, mesh)) {
+      used.add(a);
+      used.add(b);
+      used.add(c);
+    }
+  }
+  const oldToNew = new Map<number, number>();
+  const newToOld: number[] = [];
+  const vertices: Vec3[] = [];
+  mesh.vertices.forEach((v, i) => {
+    if (used.has(i)) {
+      oldToNew.set(i, vertices.push({ ...v }) - 1);
+      newToOld.push(i);
+    }
+  });
+  const indices: number[] = [];
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = oldToNew.get(mesh.indices[i]);
+    const b = oldToNew.get(mesh.indices[i + 1]);
+    const c = oldToNew.get(mesh.indices[i + 2]);
+    if (a !== undefined && b !== undefined && c !== undefined) indices.push(a, b, c);
+  }
+  const colored = mesh as ColoredMesh;
+  const vertexColors = colored.vertexColors ? newToOld.map((oldIndex) => colored.vertexColors?.[oldIndex] ?? DEFAULT_COLOR) : undefined;
+  return { mesh: { vertices, indices, vertexColors, palette: colored.palette } as ColoredMesh, removedOrphanVertices: mesh.vertices.length - vertices.length };
+}
+
+export function weldVertices(mesh: Mesh, tolerance = 1e-5): { mesh: ColoredMesh; weldedVertices: number } {
+  const colored = mesh as ColoredMesh;
+  const tol = Math.max(tolerance, 1e-12);
+  const keys = new Map<string, number>();
+  const remap = new Map<number, number>();
+  const vertices: Vec3[] = [];
+  const vertexColors: ColorRGB[] = [];
+
+  mesh.vertices.forEach((v, i) => {
+    const key = `${Math.round(v.x / tol)},${Math.round(v.y / tol)},${Math.round(v.z / tol)}`;
+    const existing = keys.get(key);
+    if (existing !== undefined) remap.set(i, existing);
+    else {
+      const idx = vertices.push({ ...v }) - 1;
+      vertexColors[idx] = colored.vertexColors?.[i] ?? DEFAULT_COLOR;
+      keys.set(key, idx);
+      remap.set(i, idx);
+    }
+  });
+
+  const indices: number[] = [];
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = remap.get(mesh.indices[i]);
+    const b = remap.get(mesh.indices[i + 1]);
+    const c = remap.get(mesh.indices[i + 2]);
+    if (a !== undefined && b !== undefined && c !== undefined && a !== b && b !== c && c !== a && triAreaSq(vertices[a], vertices[b], vertices[c]) > 1e-18) indices.push(a, b, c);
+  }
+
+  return { mesh: { vertices, indices, vertexColors: colored.vertexColors ? vertexColors : undefined, palette: colored.palette }, weldedVertices: mesh.vertices.length - vertices.length };
+}
+
+export function repairMeshDetailed(mesh: Mesh): RepairResult {
+  let changed = false;
+  let removedInvalidTriangles = 0;
+  let removedDegenerateTriangles = 0;
+  const sourceColored = mesh as ColoredMesh;
+  const cleanVerts = mesh.vertices.map((v) => {
+    const nv = { x: Number.isFinite(v.x) ? v.x : 0, y: Number.isFinite(v.y) ? v.y : 0, z: Number.isFinite(v.z) ? v.z : 0 };
+    if (nv.x !== v.x || nv.y !== v.y || nv.z !== v.z) changed = true;
+    return nv;
+  });
+  const indices: number[] = [];
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = mesh.indices[i];
+    const b = mesh.indices[i + 1];
+    const c = mesh.indices[i + 2];
+    if (!validIndex(a, { vertices: cleanVerts, indices: [] }) || !validIndex(b, { vertices: cleanVerts, indices: [] }) || !validIndex(c, { vertices: cleanVerts, indices: [] })) {
+      removedInvalidTriangles++;
+      changed = true;
+      continue;
+    }
+    if (a === b || b === c || c === a || triAreaSq(cleanVerts[a], cleanVerts[b], cleanVerts[c]) <= 1e-18) {
+      removedDegenerateTriangles++;
+      changed = true;
+      continue;
+    }
+    indices.push(a, b, c);
+  }
+
+  const welded = weldVertices({ vertices: cleanVerts, indices, vertexColors: sourceColored.vertexColors?.map((c) => ({ ...c })), palette: sourceColored.palette?.map((c) => ({ ...c })) } as ColoredMesh, 1e-6);
+  const compacted = compactMesh(welded.mesh);
+  changed ||= welded.weldedVertices > 0 || compacted.removedOrphanVertices > 0 || indices.length !== mesh.indices.length;
+  const report = { changed, removedInvalidTriangles, removedDegenerateTriangles, removedOrphanVertices: compacted.removedOrphanVertices, weldedVertices: welded.weldedVertices, rebuiltNormals: false };
+  return { mesh: compacted.mesh, diagnostics: validateMeshStrict(compacted.mesh), report };
+}
+
 export function repairMesh(mesh: Mesh): Mesh { return repairMeshDetailed(mesh).mesh; }
-export function centerAndScaleMesh(mesh: Mesh, targetSize = 1.8): Mesh { const b = computeBounds(mesh); const maxSide = Math.max(b.size.x, b.size.y, b.size.z); if (maxSide <= 1e-12) return cloneMesh(mesh); const scale = targetSize / maxSide; return { vertices: mesh.vertices.map((v) => mulVec(subVec(v, b.center), scale)), indices: [...mesh.indices] }; }
-export function buildVertexAdjacency(mesh: Mesh): number[][] { const sets = mesh.vertices.map(() => new Set<number>()); for (let i = 0; i + 2 < mesh.indices.length; i += 3) { const a = mesh.indices[i]; const b = mesh.indices[i + 1]; const c = mesh.indices[i + 2]; if (!validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh)) continue; sets[a].add(b).add(c); sets[b].add(a).add(c); sets[c].add(a).add(b); } return sets.map((s) => [...s]); }
-export function qualityFromDiagnostics(d: MeshDiagnostics | StrictMeshDiagnostics): MeshQualityLabel { const s = d as Partial<StrictMeshDiagnostics>; if (d.vertices === 0 || d.triangles === 0) return 'Export Blocked'; if ((s.invalidIndices ?? 0) > 0 || (s.nonFiniteVertices ?? 0) > 0) return 'Export Blocked'; if (d.degenerateTriangles > 0 || d.nonManifoldEdges > 0) return 'Needs Repair'; if ((s.estimatedBytes ?? 0) > 12_000_000 || d.triangles > 100_000) return 'Too Heavy'; if (d.boundaryEdges > 0) return 'Open Surface'; return 'Clean'; }
-export function summarizeMeshQuality(diagnostics: StrictMeshDiagnostics, report?: RepairReport): MeshQualityLabel { const q = qualityFromDiagnostics(diagnostics); return report?.changed && q === 'Clean' ? 'Auto-fix applied' : q; }
 
-export function sculptMesh(mesh: Mesh, point: Vec3, brush: BrushState): Mesh { const original = cloneMesh(mesh); const normals = computeVertexNormals(original); const bounds = computeBounds(original); const adjacency = buildVertexAdjacency(original); const radius = Math.max(0.001, brush.radius); const strength = clamp01(brush.strength); const points = brush.symmetry ? [point, { x: -point.x, y: point.y, z: point.z }] : [point]; const deltas = original.vertices.map(() => ({ ...ZERO })); const touched = new Set<number>();
-  for (const p of points) { const affected = original.vertices.map((v, i) => ({ i, dist: distance(v, p) })).filter((a) => a.dist <= radius); const planeNormal = normalize(affected.reduce((n, a) => addVec(n, normals[a.i]), { ...ZERO })); for (const { i, dist } of affected) { const v = original.vertices[i]; const influence = Math.pow(1 - dist / radius, Math.max(0.1, brush.falloff)); const amount = strength * influence; let next = v; const n = normals[i]; if (brush.tool === 'push') next = addVec(v, mulVec(n, amount)); else if (brush.tool === 'pull') next = subVec(v, mulVec(n, amount)); else if (brush.tool === 'carve') next = subVec(v, mulVec(n, amount * 1.25)); else if (brush.tool === 'inflate') { const dir = normalize(subVec(v, bounds.center)); next = addVec(v, mulVec(lenSq(dir) ? dir : n, amount)); } else if (brush.tool === 'flatten') { const pn = lenSq(planeNormal) ? planeNormal : n; next = subVec(v, mulVec(pn, dotVec(subVec(v, p), pn) * Math.min(1, amount * 6))); } else if (brush.tool === 'smooth') { const ns = adjacency[i]; if (ns.length) { const avg = mulVec(ns.reduce((sum, ni) => addVec(sum, original.vertices[ni]), { ...ZERO }), 1 / ns.length); next = lerpVec(v, avg, Math.min(1, amount * 3)); } } deltas[i] = addVec(deltas[i], subVec(next, v)); touched.add(i); } }
-  const out = { vertices: original.vertices.map((v, i) => touched.has(i) ? addVec(v, deltas[i]) : { ...v }), indices: [...original.indices] }; const d = validateMeshStrict(out); return d.invalidIndices || d.degenerateTriangles ? repairMeshDetailed(out).mesh : out; }
+export function centerAndScaleMesh(mesh: Mesh, targetSize = 1.8): ColoredMesh {
+  const b = computeBounds(mesh);
+  const maxSide = Math.max(b.size.x, b.size.y, b.size.z);
+  if (maxSide <= 1e-12) return cloneMesh(mesh);
+  const scale = targetSize / maxSide;
+  const colored = mesh as ColoredMesh;
+  return { vertices: mesh.vertices.map((v) => mulVec(subVec(v, b.center), scale)), indices: [...mesh.indices], vertexColors: colored.vertexColors?.map((c) => ({ ...c })), palette: colored.palette?.map((c) => ({ ...c })) };
+}
 
-export function exportOBJ(mesh: Mesh): string { const repaired = repairMeshDetailed(mesh).mesh; const normals = computeVertexNormals(repaired); const lines = ['# DREAMengin ContentEngin OBJ']; for (const v of repaired.vertices) lines.push(`v ${v.x} ${v.y} ${v.z}`); for (const n of normals) lines.push(`vn ${n.x} ${n.y} ${n.z}`); for (let i = 0; i + 2 < repaired.indices.length; i += 3) { const a = repaired.indices[i]; const b = repaired.indices[i + 1]; const c = repaired.indices[i + 2]; if (!validIndex(a, repaired) || !validIndex(b, repaired) || !validIndex(c, repaired) || a === b || b === c || c === a || triAreaSq(repaired.vertices[a], repaired.vertices[b], repaired.vertices[c]) <= 1e-18) continue; lines.push(`f ${a + 1}//${a + 1} ${b + 1}//${b + 1} ${c + 1}//${c + 1}`); } return `${lines.join('\n')}\n`; }
-export function exportGLB(mesh: Mesh): Blob { const repairedResult = repairMeshDetailed(mesh); const meshToExport = repairedResult.mesh; const diagnostics = validateMeshStrict(meshToExport); if (diagnostics.triangles === 0 || diagnostics.invalidIndices > 0 || diagnostics.nonFiniteVertices > 0 || diagnostics.degenerateTriangles > 0 || diagnostics.nonManifoldEdges > 0) throw new Error('GLB export blocked for invalid mesh.'); const normals = computeVertexNormals(meshToExport); const bounds = computeBounds(meshToExport); const positions = new Float32Array(meshToExport.vertices.flatMap((v) => [v.x, v.y, v.z])); const normalArray = new Float32Array(normals.flatMap((v) => [v.x, v.y, v.z])); const use16 = meshToExport.vertices.length <= 65535; const indexArray = use16 ? new Uint16Array(meshToExport.indices) : new Uint32Array(meshToExport.indices); const { bytes: bin, offsets } = concatAlignedChunks([new Uint8Array(positions.buffer), new Uint8Array(normalArray.buffer), new Uint8Array(indexArray.buffer)]); const componentType = use16 ? 5123 : 5125; const json = { asset: { version: '2.0', generator: 'DREAMengin ContentEngin' }, buffers: [{ byteLength: bin.byteLength }], bufferViews: [{ buffer: 0, byteOffset: offsets[0], byteLength: positions.byteLength, target: 34962 }, { buffer: 0, byteOffset: offsets[1], byteLength: normalArray.byteLength, target: 34962 }, { buffer: 0, byteOffset: offsets[2], byteLength: indexArray.byteLength, target: 34963 }], accessors: [{ bufferView: 0, componentType: 5126, count: meshToExport.vertices.length, type: 'VEC3', min: [bounds.min.x, bounds.min.y, bounds.min.z], max: [bounds.max.x, bounds.max.y, bounds.max.z] }, { bufferView: 1, componentType: 5126, count: normals.length, type: 'VEC3' }, { bufferView: 2, componentType, count: meshToExport.indices.length, type: 'SCALAR' }], materials: [{ name: 'DREAMengin Default Material', pbrMetallicRoughness: { baseColorFactor: [1.0, 0.62, 0.08, 1.0], metallicFactor: 0.0, roughnessFactor: 0.72 } }], meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1 }, indices: 2, material: 0, mode: 4 }] }], nodes: [{ mesh: 0 }], scenes: [{ nodes: [0] }], scene: 0 }; const jsonChunk = paddedChunk(new TextEncoder().encode(JSON.stringify(json)), 0x20); const total = 12 + 8 + jsonChunk.length + 8 + bin.length; const out = new ArrayBuffer(total); const view = new DataView(out); let o = 0; view.setUint32(o, 0x46546c67, true); o += 4; view.setUint32(o, 2, true); o += 4; view.setUint32(o, total, true); o += 4; view.setUint32(o, jsonChunk.length, true); o += 4; view.setUint32(o, 0x4e4f534a, true); o += 4; new Uint8Array(out, o, jsonChunk.length).set(jsonChunk); o += jsonChunk.length; view.setUint32(o, bin.length, true); o += 4; view.setUint32(o, 0x004e4942, true); o += 4; new Uint8Array(out, o, bin.length).set(bin); return new Blob([out], { type: 'model/gltf-binary' }); }
+export function buildVertexAdjacency(mesh: Mesh): number[][] {
+  const sets = mesh.vertices.map(() => new Set<number>());
+  for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
+    const a = mesh.indices[i];
+    const b = mesh.indices[i + 1];
+    const c = mesh.indices[i + 2];
+    if (!validIndex(a, mesh) || !validIndex(b, mesh) || !validIndex(c, mesh)) continue;
+    sets[a].add(b).add(c);
+    sets[b].add(a).add(c);
+    sets[c].add(a).add(b);
+  }
+  return sets.map((s) => [...s]);
+}
+
+export function qualityFromDiagnostics(d: MeshDiagnostics | StrictMeshDiagnostics): MeshQualityLabel {
+  const s = d as Partial<StrictMeshDiagnostics>;
+  if (d.vertices === 0 || d.triangles === 0) return 'Export Blocked';
+  if ((s.invalidIndices ?? 0) > 0 || (s.nonFiniteVertices ?? 0) > 0) return 'Export Blocked';
+  if (d.degenerateTriangles > 0 || d.nonManifoldEdges > 0) return 'Needs Repair';
+  if ((s.estimatedBytes ?? 0) > 12_000_000 || d.triangles > 100_000) return 'Too Heavy';
+  if (d.boundaryEdges > 0) return 'Open Surface';
+  return 'Clean';
+}
+
+export function summarizeMeshQuality(diagnostics: StrictMeshDiagnostics, report?: RepairReport): MeshQualityLabel {
+  const q = qualityFromDiagnostics(diagnostics);
+  return report?.changed && q === 'Clean' ? 'Auto-fix applied' : q;
+}
+
+export function sculptMesh(mesh: Mesh, point: Vec3, brush: BrushState): Mesh {
+  const original = cloneMesh(mesh);
+  const normals = computeVertexNormals(original);
+  const bounds = computeBounds(original);
+  const adjacency = buildVertexAdjacency(original);
+  const radius = Math.max(0.001, brush.radius);
+  const strength = clamp01(brush.strength);
+  const points = brush.symmetry ? [point, { x: -point.x, y: point.y, z: point.z }] : [point];
+  const deltas = original.vertices.map(() => ({ ...ZERO }));
+  const touched = new Set<number>();
+
+  for (const p of points) {
+    const affected = original.vertices.map((v, i) => ({ i, dist: distance(v, p) })).filter((a) => a.dist <= radius);
+    const planeNormal = normalize(affected.reduce((n, a) => addVec(n, normals[a.i]), { ...ZERO }));
+    for (const { i, dist } of affected) {
+      const v = original.vertices[i];
+      const influence = Math.pow(1 - dist / radius, Math.max(0.1, brush.falloff));
+      const amount = strength * influence;
+      let next = v;
+      const n = normals[i];
+      if (brush.tool === 'push') next = addVec(v, mulVec(n, amount));
+      else if (brush.tool === 'pull') next = subVec(v, mulVec(n, amount));
+      else if (brush.tool === 'carve') next = subVec(v, mulVec(n, amount * 1.25));
+      else if (brush.tool === 'inflate') {
+        const dir = normalize(subVec(v, bounds.center));
+        next = addVec(v, mulVec(lenSq(dir) ? dir : n, amount));
+      } else if (brush.tool === 'flatten') {
+        const pn = lenSq(planeNormal) ? planeNormal : n;
+        next = subVec(v, mulVec(pn, dotVec(subVec(v, p), pn) * Math.min(1, amount * 6)));
+      } else if (brush.tool === 'smooth') {
+        const ns = adjacency[i];
+        if (ns.length) {
+          const avg = mulVec(ns.reduce((sum, ni) => addVec(sum, original.vertices[ni]), { ...ZERO }), 1 / ns.length);
+          next = lerpVec(v, avg, Math.min(1, amount * 3));
+        }
+      }
+      deltas[i] = addVec(deltas[i], subVec(next, v));
+      touched.add(i);
+    }
+  }
+
+  const originalColored = original as ColoredMesh;
+  const out: ColoredMesh = { vertices: original.vertices.map((v, i) => touched.has(i) ? addVec(v, deltas[i]) : { ...v }), indices: [...original.indices], vertexColors: originalColored.vertexColors?.map((c) => ({ ...c })), palette: originalColored.palette?.map((c) => ({ ...c })) };
+  const d = validateMeshStrict(out);
+  return d.invalidIndices || d.degenerateTriangles ? repairMeshDetailed(out).mesh : out;
+}
+
+export function exportOBJ(mesh: Mesh): string {
+  const repaired = repairMeshDetailed(mesh).mesh;
+  const normals = computeVertexNormals(repaired);
+  const lines = ['# DREAMengin ContentEngin OBJ'];
+  for (const v of repaired.vertices) lines.push(`v ${v.x} ${v.y} ${v.z}`);
+  for (const n of normals) lines.push(`vn ${n.x} ${n.y} ${n.z}`);
+  for (let i = 0; i + 2 < repaired.indices.length; i += 3) {
+    const a = repaired.indices[i];
+    const b = repaired.indices[i + 1];
+    const c = repaired.indices[i + 2];
+    if (!validIndex(a, repaired) || !validIndex(b, repaired) || !validIndex(c, repaired) || a === b || b === c || c === a || triAreaSq(repaired.vertices[a], repaired.vertices[b], repaired.vertices[c]) <= 1e-18) continue;
+    lines.push(`f ${a + 1}//${a + 1} ${b + 1}//${b + 1} ${c + 1}//${c + 1}`);
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+export function exportGLB(mesh: Mesh): Blob {
+  const repairedResult = repairMeshDetailed(mesh);
+  const meshToExport = repairedResult.mesh;
+  const diagnostics = validateMeshStrict(meshToExport);
+  if (diagnostics.triangles === 0 || diagnostics.invalidIndices > 0 || diagnostics.nonFiniteVertices > 0 || diagnostics.degenerateTriangles > 0 || diagnostics.nonManifoldEdges > 0) throw new Error('GLB export blocked for invalid mesh.');
+
+  const normals = computeVertexNormals(meshToExport);
+  const colors = (meshToExport as ColoredMesh).vertexColors ?? meshToExport.vertices.map(() => DEFAULT_COLOR);
+  const bounds = computeBounds(meshToExport);
+  const positions = new Float32Array(meshToExport.vertices.flatMap((v) => [v.x, v.y, v.z]));
+  const normalArray = new Float32Array(normals.flatMap((v) => [v.x, v.y, v.z]));
+  const colorArray = new Float32Array(colors.flatMap((v) => [clamp01(v.r), clamp01(v.g), clamp01(v.b)]));
+  const use16 = meshToExport.vertices.length <= 65535;
+  const indexArray = use16 ? new Uint16Array(meshToExport.indices) : new Uint32Array(meshToExport.indices);
+  const { bytes: bin, offsets } = concatAlignedChunks([new Uint8Array(positions.buffer), new Uint8Array(normalArray.buffer), new Uint8Array(colorArray.buffer), new Uint8Array(indexArray.buffer)]);
+  const componentType = use16 ? 5123 : 5125;
+  const json = {
+    asset: { version: '2.0', generator: 'DREAMengin ContentEngin' },
+    buffers: [{ byteLength: bin.byteLength }],
+    bufferViews: [
+      { buffer: 0, byteOffset: offsets[0], byteLength: positions.byteLength, target: 34962 },
+      { buffer: 0, byteOffset: offsets[1], byteLength: normalArray.byteLength, target: 34962 },
+      { buffer: 0, byteOffset: offsets[2], byteLength: colorArray.byteLength, target: 34962 },
+      { buffer: 0, byteOffset: offsets[3], byteLength: indexArray.byteLength, target: 34963 },
+    ],
+    accessors: [
+      { bufferView: 0, componentType: 5126, count: meshToExport.vertices.length, type: 'VEC3', min: [bounds.min.x, bounds.min.y, bounds.min.z], max: [bounds.max.x, bounds.max.y, bounds.max.z] },
+      { bufferView: 1, componentType: 5126, count: normals.length, type: 'VEC3' },
+      { bufferView: 2, componentType: 5126, count: colors.length, type: 'VEC3' },
+      { bufferView: 3, componentType, count: meshToExport.indices.length, type: 'SCALAR' },
+    ],
+    materials: [{ name: 'DREAMengin Default Material', pbrMetallicRoughness: { baseColorFactor: [1.0, 0.62, 0.08, 1.0], metallicFactor: 0.0, roughnessFactor: 0.72 } }],
+    meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, COLOR_0: 2 }, indices: 3, material: 0, mode: 4 }] }],
+    nodes: [{ mesh: 0 }],
+    scenes: [{ nodes: [0] }],
+    scene: 0,
+  };
+  const jsonChunk = paddedChunk(new TextEncoder().encode(JSON.stringify(json)), 0x20);
+  const total = 12 + 8 + jsonChunk.length + 8 + bin.length;
+  const out = new ArrayBuffer(total);
+  const view = new DataView(out);
+  let o = 0;
+  view.setUint32(o, 0x46546c67, true); o += 4;
+  view.setUint32(o, 2, true); o += 4;
+  view.setUint32(o, total, true); o += 4;
+  view.setUint32(o, jsonChunk.length, true); o += 4;
+  view.setUint32(o, 0x4e4f534a, true); o += 4;
+  new Uint8Array(out, o, jsonChunk.length).set(jsonChunk); o += jsonChunk.length;
+  view.setUint32(o, bin.length, true); o += 4;
+  view.setUint32(o, 0x004e4942, true); o += 4;
+  new Uint8Array(out, o, bin.length).set(bin);
+  return new Blob([out], { type: 'model/gltf-binary' });
+}
+
 function pad4(n: number): number { return (n + 3) & ~3; }
 function paddedChunk(bytes: Uint8Array, pad: number): Uint8Array { const out = new Uint8Array(pad4(bytes.length)); out.set(bytes); out.fill(pad, bytes.length); return out; }
-function concatAlignedChunks(chunks: Uint8Array[]): { bytes: Uint8Array; offsets: number[] } { const offsets: number[] = []; let length = 0; for (const chunk of chunks) { length = pad4(length); offsets.push(length); length += chunk.byteLength; } const bytes = new Uint8Array(pad4(length)); chunks.forEach((chunk, i) => bytes.set(chunk, offsets[i])); return { bytes, offsets }; }
+function concatAlignedChunks(chunks: Uint8Array[]): { bytes: Uint8Array; offsets: number[] } {
+  const offsets: number[] = [];
+  let length = 0;
+  for (const chunk of chunks) {
+    length = pad4(length);
+    offsets.push(length);
+    length += chunk.byteLength;
+  }
+  const bytes = new Uint8Array(pad4(length));
+  chunks.forEach((chunk, i) => bytes.set(chunk, offsets[i]));
+  return { bytes, offsets };
+}
