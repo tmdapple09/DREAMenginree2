@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-15T09:40:25.292Z
+Generated: 2026-06-15T12:56:40.041Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3318,18 +3318,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── ContentEnginStudio.tsx ∅
-│   │   │   ├── ⬡ AnimationPanel  ← ./AnimationPanel
-│   │   │   ├── ⬡ AssetPreview3D  ← ./AssetPreview3D
-│   │   │   ├── ⬡ ExportPanel  ← ./ExportPanel
-│   │   │   ├── ⬡ MaterialEditor  ← ./MaterialEditor
-│   │   │   ├── ⬡ PartTreeEditor  ← ./PartTreeEditor
-│   │   │   ├── ⬡ PhotoReferencePanel  ← ./PhotoReferencePanel
-│   │   │   ├── ⬡ RecipeEditor  ← ./RecipeEditor
-│   │   │   ├── ⬡ RiggingPanel  ← ./RiggingPanel
-│   │   │   ├── ContentAsset  ← @/engins/contentengin/assetTypes
-│   │   │   ├── ContentRecipe  ← @/engins/contentengin/assetTypes
-│   │   │   ├── useContentEnginRuntime  ← @/engins/rulesets/content/useContentEnginRuntime
-│   │   │   ├── useState  ← react
+│   │   │   ├── ⬡ ImplicitAssetWorkspace  ← @/engins/contentengin/ImplicitAssetWorkspace
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── ExportPanel.tsx ∅
@@ -11442,11 +11431,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── Vec3  ← ../assetTypes
 │   │   │   │   ├── flattenParts  ← ./primitiveBuilder
 │   │   │   │   └── → buildGeometry
-│   │   │   ├── meshBuilder.ts
+│   │   │   ├── meshBuilder.ts ∅
 │   │   │   │   ├── PartNode  ← ../assetTypes
 │   │   │   │   ├── flattenParts  ← ./primitiveBuilder
 │   │   │   │   ├── primitiveStats  ← ./primitiveBuilder
-│   │   │   │   └── → computeMeshMetrics
+│   │   │   │   ├── SDF  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── → buildImplicitContentMesh
+│   │   │   │   ├── → computeMeshMetrics
+│   │   │   │   └── ∅ unused: buildImplicitContentMesh
 │   │   │   ├── modifiers.ts ∅
 │   │   │   │   ├── → applyModifierMetadata
 │   │   │   │   └── ∅ unused: applyModifierMetadata
@@ -11829,17 +11825,56 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → CONTENTENGIN_VERSION
 │   │   │   ├── → identityTransform
 │   │   │   └── → vec3
-│   │   └── cli.ts
-│   │       ├── analyzeImageBytes  ← ./photo/imageAnalyzer
-│   │       ├── buildAsset  ← ./pipeline/build
-│   │       ├── writeAssetBundle  ← ./pipeline/bundle
-│   │       ├── zipDirectory  ← ./pipeline/bundle
-│   │       ├── validateAsset  ← ./pipeline/validate
-│   │       ├── runRiggingPipeline  ← ./rigging
-│   │       ├── cp  ← fs/promises
-│   │       ├── mkdir  ← fs/promises
-│   │       ├── readFile  ← fs/promises
-│   │       └── writeFile  ← fs/promises
+│   │   ├── AssetViewport.tsx ∅
+│   │   │   ├── CameraState  ← @/engins/isosurfaceAssetPipeline
+│   │   │   ├── Mesh  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── Vec3  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── cli.ts
+│   │   │   ├── analyzeImageBytes  ← ./photo/imageAnalyzer
+│   │   │   ├── buildAsset  ← ./pipeline/build
+│   │   │   ├── writeAssetBundle  ← ./pipeline/bundle
+│   │   │   ├── zipDirectory  ← ./pipeline/bundle
+│   │   │   ├── validateAsset  ← ./pipeline/validate
+│   │   │   ├── runRiggingPipeline  ← ./rigging
+│   │   │   ├── cp  ← fs/promises
+│   │   │   ├── mkdir  ← fs/promises
+│   │   │   ├── readFile  ← fs/promises
+│   │   │   └── writeFile  ← fs/promises
+│   │   ├── ImplicitAssetWorkspace.tsx ∅
+│   │   │   ├── ⬡ AssetViewport  ← @/engins/contentengin/AssetViewport
+│   │   │   ├── useImplicitAssetWorkspace  ← @/engins/contentengin/useImplicitAssetWorkspace
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   └── useImplicitAssetWorkspace.ts
+│   │       ├── BrushState  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── CameraState  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── DEFAULT_BRUSH_STATE  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── DEFAULT_CAMERA_STATE  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── EditableMeshState  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── ExportFormat  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── ImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── SculptTool  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── SourceImageAsset  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── analyzeImageMask  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── createImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── exportGLB  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── exportOBJ  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── meshToSnapshot  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── processImageToEditableMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── qualityFromDiagnostics  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── repairMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── sculptMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── validateMesh  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── Vec3  ← @/engins/isosurfaceDualContouring
+│   │       ├── useContentEnginRuntime  ← @/engins/rulesets/content/useContentEnginRuntime
+│   │       ├── useCallback  ← react
+│   │       ├── useMemo  ← react
+│   │       ├── useState  ← react
+│   │       └── → useImplicitAssetWorkspace
 │   ├── forgeengin
 │   │   ├── enginpipe
 │   │   │   ├── artifact
@@ -12954,10 +12989,26 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── predictive-stream.ts
 │   │   │   ├── → BehaviorAnticipator
 │   │   │   └── → MLPrefetchModel
-│   │   ├── procgen.ts
+│   │   ├── procgen.ts ∅
+│   │   │   ├── createTerrainCaveSDF  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── → BiomeSynthesizer
 │   │   │   ├── → ChunkScheduler
-│   │   │   └── → WaveFunctionCollapse
+│   │   │   ├── → DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
+│   │   │   ├── → DualContouringSettings
+│   │   │   ├── → Mesh
+│   │   │   ├── → MeshDiagnostics
+│   │   │   ├── → SDF
+│   │   │   ├── → Vec3
+│   │   │   ├── → WaveFunctionCollapse
+│   │   │   ├── → createTerrainCaveSDF
+│   │   │   ├── → generateMobileTerrainCaveMesh
+│   │   │   ├── → meshToSnapshot
+│   │   │   ├── → runDualContouring
+│   │   │   ├── → validateMesh
+│   │   │   └── ∅ unused: generateMobileTerrainCaveMesh, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3
 │   │   ├── registerCartridges.ts
 │   │   │   ├── moduleRegistry  ← @/engine/runtime/moduleRegistry
 │   │   │   ├── assertCartridgeLoadersReady  ← @/engins/gameengin/cartridges/loaders
@@ -12992,6 +13043,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → HandTrackingInput
 │   │       ├── → PassthroughComposite
 │   │       └── → WebXRSession
+│   ├── labengin
+│   │   └── implicitSurface.ts ∅
+│   │       ├── SDF  ← @/engins/isosurfaceDualContouring
+│   │       ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
+│   │       ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
+│   │       ├── runDualContouring  ← @/engins/isosurfaceDualContouring
+│   │       ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │       ├── → runLabImplicitSurface
+│   │       └── ∅ unused: runLabImplicitSurface
 │   ├── portfolio  [PortfolioEngin]
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
@@ -13072,7 +13132,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── useState  ← react
 │   │   │       └── → useCodeEnginRuntime
 │   │   ├── content
-│   │   │   ├── contentEnginRuleSet.ts
+│   │   │   ├── contentEnginRuleSet.ts ∅
 │   │   │   │   ├── EnginBaseState  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/engine/engin-runtime/EnginBaseState
@@ -13087,7 +13147,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── ContentAsset  ← @/engins/contentengin/assetTypes
 │   │   │   │   ├── ContentRecipe  ← @/engins/contentengin/assetTypes
 │   │   │   │   ├── ExportProfile  ← @/engins/contentengin/assetTypes
-│   │   │   │   └── → CONTENT_ENGIN_RULE_SET
+│   │   │   │   ├── → CONTENT_ENGIN_RULE_SET
+│   │   │   │   ├── → CONTENT_IMPLICIT_ASSET_POLICY
+│   │   │   │   └── ∅ unused: CONTENT_IMPLICIT_ASSET_POLICY
 │   │   │   └── useContentEnginRuntime.ts
 │   │   │       ├── CONTENT_ENGIN_RULE_SET  ← ./contentEnginRuleSet
 │   │   │       ├── ContentEnginAction  ← ./contentEnginRuleSet
@@ -13128,7 +13190,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → ruleSet
 │   │   │   │   ├── → transforms
 │   │   │   │   └── ∅ unused: id, constraints, transforms, params, ruleSet, (default)
-│   │   │   ├── gameEnginRuleSet.ts
+│   │   │   ├── gameEnginRuleSet.ts ∅
 │   │   │   │   ├── EnginBaseState  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/engine/engin-runtime/EnginBaseState
@@ -13141,7 +13203,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── EnginRuleSetManifest  ← @/engine/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/engine/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── → GAME_ENGIN_RULE_SET
-│   │   │   │   └── → GRAVITY_VALUES
+│   │   │   │   ├── → GAME_IMPLICIT_WORLD_POLICY
+│   │   │   │   ├── → GRAVITY_VALUES
+│   │   │   │   └── ∅ unused: GAME_IMPLICIT_WORLD_POLICY
 │   │   │   ├── index.ts ∅
 │   │   │   │   ├── → GAME_ENGIN_RULE_SET
 │   │   │   │   ├── → GRAVITY_VALUES
@@ -13195,7 +13259,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → ruleSet
 │   │   │   │   ├── → transforms
 │   │   │   │   └── ∅ unused: id, constraints, transforms, params, ruleSet, (default)
-│   │   │   ├── labEnginRuleSet.ts
+│   │   │   ├── labEnginRuleSet.ts ∅
 │   │   │   │   ├── EnginBaseState  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/engine/engin-runtime/EnginBaseState
@@ -13207,7 +13271,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── EnginRuleSetContract  ← @/engine/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetManifest  ← @/engine/engin-runtime/EnginRuleSetContract
 │   │   │   │   ├── EnginRuleSetParams  ← @/engine/engin-runtime/EnginRuleSetContract
-│   │   │   │   └── → LAB_ENGIN_RULE_SET
+│   │   │   │   ├── → LAB_ENGIN_RULE_SET
+│   │   │   │   ├── → LAB_IMPLICIT_SURFACE_POLICY
+│   │   │   │   └── ∅ unused: LAB_IMPLICIT_SURFACE_POLICY
 │   │   │   └── useLabEnginRuntime.ts
 │   │   │       ├── LAB_ENGIN_RULE_SET  ← ./labEnginRuleSet
 │   │   │       ├── LabEnginAction  ← ./labEnginRuleSet
@@ -13642,90 +13708,121 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useState  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
-│   └── engin.StarMakerEngin.tsx ⚠ ∅
-│       ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
-│       ├── ⬡ CompingPanel  ← @/components/daydream/starmaker/dream.panel.CompingPanel
-│       ├── ⬡ MultitrackArrangementPanel  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
-│       ├── ⬡ PianoRollPanel  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
-│       ├── ⬡ SessionViewPanel  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
-│       ├── AudioVisualizer3D  ← @/components/dream.AudioVisualizer3D
-│       ├── useDaydreamPersistence  ← @/daydreams/shared/useDaydreamPersistence
-│       ├── useDaydreamState  ← @/daydreams/shared/useDaydreamState
-│       ├── EngineBase  ← @/engine/os/index
-│       ├── UpgradedEngine  ← @/engine/os/index
-│       ├── createEventBus  ← @/engine/os/index
-│       ├── upgradeEngine  ← @/engine/os/index
-│       ├── bridge  ← @/engine/runtime/dualRuntimeBridge
-│       ├── useEnginCoopSync  ← @/engine/runtime/useEnginCoopSync
-│       ├── buildLedgerMediaUrl  ← @/engins/contentengin/media/ledger
-│       ├── uploadBlobToLedgerStorage  ← @/engins/contentengin/media/ledger
-│       ├── ArtifactSlot  ← @/engins/forgeengin/enginpipe/index
-│       ├── recordForgeTransfer  ← @/engins/forgeengin/forge/forgeIntelligence
-│       ├── useForgeActivity  ← @/engins/forgeengin/forge/useForgeActivity
-│       ├── useStarMakerEnginRuntime  ← @/engins/rulesets/music/useStarMakerEnginRuntime
-│       ├── useEnginWorkflow  ← @/engins/rulesets/useEnginWorkflow
-│       ├── PeakMap  ← @/engins/starmakerengin/audioFingerprint
-│       ├── buildPeakMap  ← @/engins/starmakerengin/audioFingerprint
-│       ├── createFingerprintIsolator  ← @/engins/starmakerengin/audioFingerprint
-│       ├── BEAT_PRESETS  ← @/engins/starmakerengin/music/presets
-│       ├── BeatPreset  ← @/engins/starmakerengin/music/presets
-│       ├── GENRE_LIST  ← @/engins/starmakerengin/music/presets
-│       ├── INSTRUMENT_PRESETS  ← @/engins/starmakerengin/music/presets
-│       ├── InstrumentPreset  ← @/engins/starmakerengin/music/presets
-│       ├── PROJECT_TEMPLATES  ← @/engins/starmakerengin/music/presets
-│       ├── ProjectTemplate  ← @/engins/starmakerengin/music/presets
-│       ├── MelodySuggestion  ← @/engins/starmakerengin/music/starmaker
-│       ├── PlaybackQualityMode  ← @/engins/starmakerengin/music/starmaker
-│       ├── buildReleaseStrategy  ← @/engins/starmakerengin/music/starmaker
-│       ├── createMelodySuggestions  ← @/engins/starmakerengin/music/starmaker
-│       ├── summarizePlaybackProfile  ← @/engins/starmakerengin/music/starmaker
-│       ├── ARRANGEMENT_BARS  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ARRANGEMENT_SOURCE_COLORS  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ARRANGEMENT_TRACKS  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ArrangementClip  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ArrangementSource  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ArrangementTrackId  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── ArrangementTrackState  ← @/engins/starmakerengin/music/starmakerArrangement
-│       ├── CompingState  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── PIANO_ROLL_DEFAULTS  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── PianoRollState  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── RealtimeStarMakerAudioEngine  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── SessionViewState  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── StarMakerAudioDiagnostics  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── StarMakerSequencerSnapshot  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── analyzeStereoPcm  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── createInitialCompingState  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── createInitialSessionView  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── createRealtimeStarMakerAudioEngine  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── renderStarMakerPattern  ← @/engins/starmakerengin/music/starmakerDaw
-│       ├── useSharedDream  ← @/hooks/useSharedDream
-│       ├── createClient  ⚠ @/supabase/client/client
-│       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
-│       ├── SUPABASE_URL  ⚠ @/supabase/config
-│       ├── toErrorMessage  ← @/utils/index
-│       ├── ArrowLeft  ← lucide-react
-│       ├── Download  ← lucide-react
-│       ├── FileAudio  ← lucide-react
-│       ├── FolderOpen  ← lucide-react
-│       ├── Gauge  ← lucide-react
-│       ├── Mic2  ← lucide-react
-│       ├── Music  ← lucide-react
-│       ├── Pause  ← lucide-react
-│       ├── Play  ← lucide-react
-│       ├── Radio  ← lucide-react
-│       ├── Sliders  ← lucide-react
-│       ├── Sparkles  ← lucide-react
-│       ├── Upload  ← lucide-react
-│       ├── ZoomIn  ← lucide-react
-│       ├── ZoomOut  ← lucide-react
-│       ├── ⬡ Link  ← next/link
-│       ├── useCallback  ← react
-│       ├── useEffect  ← react
-│       ├── useMemo  ← react
-│       ├── useRef  ← react
-│       ├── useState  ← react
-│       ├── → (default)
-│       └── ∅ unused: (default)
+│   ├── engin.StarMakerEngin.tsx ⚠ ∅
+│   │   ├── ⬡ JourneyTrail  ← @/components/daydream/dream.JourneyTrail
+│   │   ├── ⬡ CompingPanel  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│   │   ├── ⬡ MultitrackArrangementPanel  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
+│   │   ├── ⬡ PianoRollPanel  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
+│   │   ├── ⬡ SessionViewPanel  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
+│   │   ├── AudioVisualizer3D  ← @/components/dream.AudioVisualizer3D
+│   │   ├── useDaydreamPersistence  ← @/daydreams/shared/useDaydreamPersistence
+│   │   ├── useDaydreamState  ← @/daydreams/shared/useDaydreamState
+│   │   ├── EngineBase  ← @/engine/os/index
+│   │   ├── UpgradedEngine  ← @/engine/os/index
+│   │   ├── createEventBus  ← @/engine/os/index
+│   │   ├── upgradeEngine  ← @/engine/os/index
+│   │   ├── bridge  ← @/engine/runtime/dualRuntimeBridge
+│   │   ├── useEnginCoopSync  ← @/engine/runtime/useEnginCoopSync
+│   │   ├── buildLedgerMediaUrl  ← @/engins/contentengin/media/ledger
+│   │   ├── uploadBlobToLedgerStorage  ← @/engins/contentengin/media/ledger
+│   │   ├── ArtifactSlot  ← @/engins/forgeengin/enginpipe/index
+│   │   ├── recordForgeTransfer  ← @/engins/forgeengin/forge/forgeIntelligence
+│   │   ├── useForgeActivity  ← @/engins/forgeengin/forge/useForgeActivity
+│   │   ├── useStarMakerEnginRuntime  ← @/engins/rulesets/music/useStarMakerEnginRuntime
+│   │   ├── useEnginWorkflow  ← @/engins/rulesets/useEnginWorkflow
+│   │   ├── PeakMap  ← @/engins/starmakerengin/audioFingerprint
+│   │   ├── buildPeakMap  ← @/engins/starmakerengin/audioFingerprint
+│   │   ├── createFingerprintIsolator  ← @/engins/starmakerengin/audioFingerprint
+│   │   ├── BEAT_PRESETS  ← @/engins/starmakerengin/music/presets
+│   │   ├── BeatPreset  ← @/engins/starmakerengin/music/presets
+│   │   ├── GENRE_LIST  ← @/engins/starmakerengin/music/presets
+│   │   ├── INSTRUMENT_PRESETS  ← @/engins/starmakerengin/music/presets
+│   │   ├── InstrumentPreset  ← @/engins/starmakerengin/music/presets
+│   │   ├── PROJECT_TEMPLATES  ← @/engins/starmakerengin/music/presets
+│   │   ├── ProjectTemplate  ← @/engins/starmakerengin/music/presets
+│   │   ├── MelodySuggestion  ← @/engins/starmakerengin/music/starmaker
+│   │   ├── PlaybackQualityMode  ← @/engins/starmakerengin/music/starmaker
+│   │   ├── buildReleaseStrategy  ← @/engins/starmakerengin/music/starmaker
+│   │   ├── createMelodySuggestions  ← @/engins/starmakerengin/music/starmaker
+│   │   ├── summarizePlaybackProfile  ← @/engins/starmakerengin/music/starmaker
+│   │   ├── ARRANGEMENT_BARS  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ARRANGEMENT_SOURCE_COLORS  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ARRANGEMENT_TRACKS  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ArrangementClip  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ArrangementSource  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ArrangementTrackId  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── ArrangementTrackState  ← @/engins/starmakerengin/music/starmakerArrangement
+│   │   ├── CompingState  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── PIANO_ROLL_DEFAULTS  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── PianoRollState  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── RealtimeStarMakerAudioEngine  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── SessionViewState  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── StarMakerAudioDiagnostics  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── StarMakerSequencerSnapshot  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── analyzeStereoPcm  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── createInitialCompingState  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── createInitialSessionView  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── createRealtimeStarMakerAudioEngine  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── renderStarMakerPattern  ← @/engins/starmakerengin/music/starmakerDaw
+│   │   ├── useSharedDream  ← @/hooks/useSharedDream
+│   │   ├── createClient  ⚠ @/supabase/client/client
+│   │   ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
+│   │   ├── SUPABASE_URL  ⚠ @/supabase/config
+│   │   ├── toErrorMessage  ← @/utils/index
+│   │   ├── ArrowLeft  ← lucide-react
+│   │   ├── Download  ← lucide-react
+│   │   ├── FileAudio  ← lucide-react
+│   │   ├── FolderOpen  ← lucide-react
+│   │   ├── Gauge  ← lucide-react
+│   │   ├── Mic2  ← lucide-react
+│   │   ├── Music  ← lucide-react
+│   │   ├── Pause  ← lucide-react
+│   │   ├── Play  ← lucide-react
+│   │   ├── Radio  ← lucide-react
+│   │   ├── Sliders  ← lucide-react
+│   │   ├── Sparkles  ← lucide-react
+│   │   ├── Upload  ← lucide-react
+│   │   ├── ZoomIn  ← lucide-react
+│   │   ├── ZoomOut  ← lucide-react
+│   │   ├── ⬡ Link  ← next/link
+│   │   ├── useCallback  ← react
+│   │   ├── useEffect  ← react
+│   │   ├── useMemo  ← react
+│   │   ├── useRef  ← react
+│   │   ├── useState  ← react
+│   │   ├── → (default)
+│   │   └── ∅ unused: (default)
+│   ├── isosurfaceAssetPipeline.ts ∅
+│   │   ├── DomainObject  ← @/engins/contentengin/assetTypes
+│   │   ├── Mesh  ← @/engins/isosurfaceDualContouring
+│   │   ├── MeshDiagnostics  ← @/engins/isosurfaceDualContouring
+│   │   ├── Vec3  ← @/engins/isosurfaceDualContouring
+│   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
+│   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
+│   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
+│   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │   ├── → DEFAULT_BRUSH_STATE
+│   │   ├── → DEFAULT_CAMERA_STATE
+│   │   ├── → analyzeImageMask
+│   │   ├── → buildInflatedReliefMesh
+│   │   ├── → createImplicitAssetWorkspaceObject
+│   │   ├── → exportGLB
+│   │   ├── → exportOBJ
+│   │   ├── → meshToSnapshot
+│   │   ├── → processImageToEditableMesh
+│   │   ├── → qualityFromDiagnostics
+│   │   ├── → repairMesh
+│   │   ├── → sculptMesh
+│   │   ├── → validateMesh
+│   │   └── ∅ unused: buildInflatedReliefMesh
+│   └── isosurfaceDualContouring.ts ∅
+│       ├── → DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
+│       ├── → createSphereSDF
+│       ├── → createTerrainCaveSDF
+│       ├── → meshToSnapshot
+│       ├── → runDualContouring
+│       ├── → validateMesh
+│       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
 ├── fonts
 │   ├── Cormorant_Garamond
 │   │   ├── static
@@ -14319,6 +14416,919 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── → osSlotCounts
 │       ├── (unknown — bare import)  ⚠ ./osArchitectureMap
 │       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
+├── src
+│   └── engin
+│       └── generated
+│           ├── brain.ts
+│           │   └── → brain
+│           ├── cartridges.ts
+│           │   ├── (dynamic)  ← @/public/cartridges/mad-maxi/MANIFEST.json
+│           │   └── → cartridges
+│           ├── connectors.ts
+│           │   └── → connectors
+│           ├── dreamdmbar.ts
+│           │   ├── (dynamic)  ← @/dreamdmbar/dream.GlowingLight
+│           │   ├── (dynamic)  ← @/dreamdmbar/dreamsurface.dreamdmbar
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useDreamBarContext
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useDreamDMConversations
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useDreamDMDraft
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useDreamDMMessages
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useDreamSearch
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useMessagingCore
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useModuleBarIntent
+│           │   ├── (dynamic)  ← @/dreamdmbar/hooks/useNotifications
+│           │   ├── (dynamic)  ← @/dreamdmbar/notifications/notificationHelpers
+│           │   ├── (dynamic)  ← @/dreamdmbar/notifications/useNotifications
+│           │   ├── (dynamic)  ← @/dreamdmbar/runtime/barInteractions
+│           │   ├── (dynamic)  ← @/dreamdmbar/runtime/bridgeSeamFlow
+│           │   ├── (dynamic)  ← @/dreamdmbar/runtime/DreamSystemContext
+│           │   └── → dreamdmbar
+│           ├── dreamr.ts
+│           │   ├── (dynamic)  ← @/app/dreamr/page
+│           │   ├── (dynamic)  ← @/components/dreamr/dream.CloseFriendsSettings
+│           │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRChannelPanel
+│           │   ├── (dynamic)  ← @/components/dreamr/dream.panel.DreamRCreatorPanel
+│           │   └── → dreamr
+│           ├── dreamsurfaces.ts
+│           │   ├── (dynamic)  ← @/components/dreams/dream.connectorlayer
+│           │   ├── (dynamic)  ← @/components/dreams/dream.DraggableDream
+│           │   ├── (dynamic)  ← @/components/dreams/dream.featurelayer
+│           │   ├── (dynamic)  ← @/components/dreams/dream.GlobalDragLayer
+│           │   ├── (dynamic)  ← @/components/dreams/dream.outputlayer
+│           │   ├── (dynamic)  ← @/components/dreams/dream.panel.RuntimeMemoryHUD
+│           │   ├── (dynamic)  ← @/components/dreams/dream.PlatformErrorReporter
+│           │   ├── (dynamic)  ← @/components/dreams/dream.shell.DreamShell
+│           │   ├── (dynamic)  ← @/components/dreams/dream.shell.SharedDreamShell
+│           │   ├── (dynamic)  ← @/components/dreams/dream.SlideOverPanel
+│           │   ├── (dynamic)  ← @/components/dreams/dream.widget.SuperDreamWidget
+│           │   ├── (dynamic)  ← @/components/dreams/dream.window.JourneyDreamWindow
+│           │   ├── (dynamic)  ← @/components/dreams/dreamsurface.dreamspace
+│           │   ├── (dynamic)  ← @/components/dreams/dreamsurface.shell
+│           │   ├── (dynamic)  ← @/components/dreams/dreamsurface.window
+│           │   └── → dreamsurfaces
+│           ├── engins.ts
+│           │   ├── (dynamic)  ← @/engins/autoopen/dream.AutoOpenGameEngin
+│           │   ├── (dynamic)  ← @/engins/brandingengin/identity/logos
+│           │   ├── (dynamic)  ← @/engins/codeengin/ai/drEamsCodeAssist
+│           │   ├── (dynamic)  ← @/engins/codeengin/auth
+│           │   ├── (dynamic)  ← @/engins/CodeEngin/core/parser
+│           │   ├── (dynamic)  ← @/engins/codeengin/diagnostics
+│           │   ├── (dynamic)  ← @/engins/codeengin/diff/aiEditEngine
+│           │   ├── (dynamic)  ← @/engins/codeengin/diff/diffUtils
+│           │   ├── (dynamic)  ← @/engins/codeengin/git
+│           │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel
+│           │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/index
+│           │   ├── (dynamic)  ← @/engins/CodeEngin/modules/ai-co-pilot/useAgentSession
+│           │   ├── (dynamic)  ← @/engins/CodeEngin/orchestrator/dream.index
+│           │   ├── (dynamic)  ← @/engins/codeengin/pathSafety
+│           │   ├── (dynamic)  ← @/engins/codeengin/projectGraph
+│           │   ├── (dynamic)  ← @/engins/codeengin/runner
+│           │   ├── (dynamic)  ← @/engins/codeengin/search
+│           │   ├── (dynamic)  ← @/engins/codeengin/types
+│           │   ├── (dynamic)  ← @/engins/codeengin/workspaceStore
+│           │   ├── (dynamic)  ← @/engins/contentengin/assets/assetOptimizer
+│           │   ├── (dynamic)  ← @/engins/contentengin/assets/indexedDBStore
+│           │   ├── (dynamic)  ← @/engins/contentengin/assetTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/geometryBuilder
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/meshBuilder
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/modifiers
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/primitiveBuilder
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/textureBuilder
+│           │   ├── (dynamic)  ← @/engins/contentengin/builders/uvGenerator
+│           │   ├── (dynamic)  ← @/engins/contentengin/cli
+│           │   ├── (dynamic)  ← @/engins/contentengin/composite/compositor
+│           │   ├── (dynamic)  ← @/engins/contentengin/composite/fxSimulation
+│           │   ├── (dynamic)  ← @/engins/contentengin/composite/matchmover
+│           │   ├── (dynamic)  ← @/engins/contentengin/composite/motionCapture
+│           │   ├── (dynamic)  ← @/engins/contentengin/composite/rotoscope
+│           │   ├── (dynamic)  ← @/engins/contentengin/content/generativeFill
+│           │   ├── (dynamic)  ← @/engins/contentengin/content/publishIntent
+│           │   ├── (dynamic)  ← @/engins/contentengin/content/seoScorer
+│           │   ├── (dynamic)  ← @/engins/contentengin/content/transcriptEditor
+│           │   ├── (dynamic)  ← @/engins/contentengin/content/voiceClone
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/animalGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/bicycleGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/bridgeGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/buildingGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/creatureGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/humanoidGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/propGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/roadGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/shared
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/terrainGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/treeGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/vehicleGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/grammars/waterGrammar
+│           │   ├── (dynamic)  ← @/engins/contentengin/materials/materialTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/materials/paletteExtractor
+│           │   ├── (dynamic)  ← @/engins/contentengin/materials/proceduralMaterials
+│           │   ├── (dynamic)  ← @/engins/contentengin/media/h265-encoder
+│           │   ├── (dynamic)  ← @/engins/contentengin/media/ledger
+│           │   ├── (dynamic)  ← @/engins/contentengin/media/postMedia
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/colorCluster
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/edgeDetector
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/imageAnalyzer
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/photoToRecipe
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/pngDecoder
+│           │   ├── (dynamic)  ← @/engins/contentengin/photo/regionDetector
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/build
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/bundle
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/exportGlb
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/generateCollision
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/generateLods
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/paths
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/validate
+│           │   ├── (dynamic)  ← @/engins/contentengin/pipeline/writeManifest
+│           │   ├── (dynamic)  ← @/engins/contentengin/recipes/recipeResolver
+│           │   ├── (dynamic)  ← @/engins/contentengin/recipes/recipeTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/recipes/seededRandom
+│           │   ├── (dynamic)  ← @/engins/contentengin/rigging/fitArmature
+│           │   ├── (dynamic)  ← @/engins/contentengin/rigging/index
+│           │   ├── (dynamic)  ← @/engins/contentengin/rigging/landmarks
+│           │   ├── (dynamic)  ← @/engins/contentengin/rigging/rigTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/rigging/rigValidator
+│           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderRegistry
+│           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderTypes
+│           │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
+│           │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
+│           │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
+│           │   ├── (dynamic)  ← @/engins/engin.CodeEngin
+│           │   ├── (dynamic)  ← @/engins/engin.ContentEngin
+│           │   ├── (dynamic)  ← @/engins/engin.GameEngin
+│           │   ├── (dynamic)  ← @/engins/engin.LabEngin
+│           │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
+│           │   ├── (dynamic)  ← @/engins/forgeengin/componentInventory
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/artifact/manifest
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/index
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/quality/tiers
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/shell/ArtifactSlot
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/telemetry/client
+│           │   ├── (dynamic)  ← @/engins/forgeengin/enginpipe/telemetry/events
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge-ngn/assembly
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge-ngn/index
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge-ngn/piece-registry
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/engineForge
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeBuild
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeIntelligence
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeMomentum
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeNexus
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeRegistry
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/forgeRituals
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/useForgeActivity
+│           │   ├── (dynamic)  ← @/engins/forgeengin/forge/useForgeBuild
+│           │   ├── (dynamic)  ← @/engins/gameengin/accessibility-ai
+│           │   ├── (dynamic)  ← @/engins/gameengin/ai-director
+│           │   ├── (dynamic)  ← @/engins/gameengin/ai-npcs
+│           │   ├── (dynamic)  ← @/engins/gameengin/assets/BundleCache
+│           │   ├── (dynamic)  ← @/engins/gameengin/assets/BundleManifest
+│           │   ├── (dynamic)  ← @/engins/gameengin/backendNegotiator
+│           │   ├── (dynamic)  ← @/engins/gameengin/brain-reader
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridge-manifest
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridge
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridgeLoader
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/achievementEngine
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/apiStubs
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/loaders
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/manifest
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/reactCartridge
+│           │   ├── (dynamic)  ← @/engins/gameengin/cartridges/saveState
+│           │   ├── (dynamic)  ← @/engins/gameengin/cloud-compute
+│           │   ├── (dynamic)  ← @/engins/gameengin/config/demoGameConfig
+│           │   ├── (dynamic)  ← @/engins/gameengin/controls/control-mappings
+│           │   ├── (dynamic)  ← @/engins/gameengin/core
+│           │   ├── (dynamic)  ← @/engins/gameengin/dream-engine
+│           │   ├── (dynamic)  ← @/engins/gameengin/dreamr-loader
+│           │   ├── (dynamic)  ← @/engins/gameengin/executionWiring
+│           │   ├── (dynamic)  ← @/engins/gameengin/GameEnginCore
+│           │   ├── (dynamic)  ← @/engins/gameengin/gameEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/gameengin/GameRuntime
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/avatar
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/catalog
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/DualSenseManager
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/gameControllerButtons
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/gameControllerLeft
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/gameControllerRight
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/hooks
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/library-state
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/lucid-avenue-world
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/madmaxi-wildfall-world
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/mobileControls
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/navigation
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/performance-baseline
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/quality-plan
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/useAIDirector
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/useGameInputKeyboardBridge
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/useGamepad
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/useImmersiveGameLayout
+│           │   ├── (dynamic)  ← @/engins/gameengin/games/useRemoteChannel
+│           │   ├── (dynamic)  ← @/engins/gameengin/generative-audio
+│           │   ├── (dynamic)  ← @/engins/gameengin/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/input/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/input/InputRouter
+│           │   ├── (dynamic)  ← @/engins/gameengin/launcher
+│           │   ├── (dynamic)  ← @/engins/gameengin/neural-render
+│           │   ├── (dynamic)  ← @/engins/gameengin/path-tracing
+│           │   ├── (dynamic)  ← @/engins/gameengin/platform
+│           │   ├── (dynamic)  ← @/engins/gameengin/post-fx
+│           │   ├── (dynamic)  ← @/engins/gameengin/power-systems
+│           │   ├── (dynamic)  ← @/engins/gameengin/predictive-stream
+│           │   ├── (dynamic)  ← @/engins/gameengin/procgen
+│           │   ├── (dynamic)  ← @/engins/gameengin/registerCartridges
+│           │   ├── (dynamic)  ← @/engins/gameengin/remote/comboMachine
+│           │   ├── (dynamic)  ← @/engins/gameengin/remote/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/remote/layout
+│           │   ├── (dynamic)  ← @/engins/gameengin/remote/moves
+│           │   ├── (dynamic)  ← @/engins/gameengin/remote/sprintDetector
+│           │   ├── (dynamic)  ← @/engins/gameengin/render/ShaderRegistry
+│           │   ├── (dynamic)  ← @/engins/gameengin/runtime/FrameBudget
+│           │   ├── (dynamic)  ← @/engins/gameengin/runtime/FrameClock
+│           │   ├── (dynamic)  ← @/engins/gameengin/runtime/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/runtime/RuntimeQuality
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/ai
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/animation
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/assets
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/index
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/lod
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/network
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/physics
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/pooling
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/rendering
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/spatial
+│           │   ├── (dynamic)  ← @/engins/gameengin/systems/world
+│           │   ├── (dynamic)  ← @/engins/gameengin/unifiedLoop
+│           │   ├── (dynamic)  ← @/engins/gameengin/useUnifiedLoop
+│           │   ├── (dynamic)  ← @/engins/gameengin/webgpu-runtime-shell
+│           │   ├── (dynamic)  ← @/engins/gameengin/world-crdt
+│           │   ├── (dynamic)  ← @/engins/gameengin/xr
+│           │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
+│           │   ├── (dynamic)  ← @/engins/rulesets/brand/brandEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/brand/useBrandEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/code/codeEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/code/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/code/useCodeEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/content/contentEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/content/useContentEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/dreams/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/forge/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/game/declarative
+│           │   ├── (dynamic)  ← @/engins/rulesets/game/gameEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/game/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/game/useGameEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.constants
+│           │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.physics
+│           │   ├── (dynamic)  ← @/engins/rulesets/homedream/dream.homedream.transforms
+│           │   ├── (dynamic)  ← @/engins/rulesets/homedream/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/lab/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/lab/labEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/lab/useLabEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/music/index
+│           │   ├── (dynamic)  ← @/engins/rulesets/music/starMakerEnginRuleSet
+│           │   ├── (dynamic)  ← @/engins/rulesets/music/useStarMakerEnginRuntime
+│           │   ├── (dynamic)  ← @/engins/rulesets/useEnginWorkflow
+│           │   ├── (dynamic)  ← @/engins/rulesets/workflowEngine
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/audio-fingerprint/fingerprint
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/audio-fingerprint/index
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/audio-fingerprint/peak-map
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/audio-fingerprint/stem-extractor
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/audioFingerprint
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/music/presets
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/music/starmaker
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/music/starmakerArrangement
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/music/starmakerDaw
+│           │   ├── (dynamic)  ← @/engins/starmakerengin/music/wasmAudioBridge
+│           │   └── → engins
+│           ├── homedream.ts
+│           │   ├── (dynamic)  ← @/app/homedream/page
+│           │   └── → homedream
+│           ├── hooks.ts
+│           │   ├── (dynamic)  ← @/hooks/use-spatial
+│           │   ├── (dynamic)  ← @/hooks/useAccount
+│           │   ├── (dynamic)  ← @/hooks/useConnectorInstallFlow
+│           │   ├── (dynamic)  ← @/hooks/useDreamLayout
+│           │   ├── (dynamic)  ← @/hooks/useHideOnScroll
+│           │   ├── (dynamic)  ← @/hooks/useMotionTilt
+│           │   ├── (dynamic)  ← @/hooks/useResponsive
+│           │   ├── (dynamic)  ← @/hooks/useSharedDream
+│           │   ├── (dynamic)  ← @/hooks/useTap
+│           │   ├── (dynamic)  ← @/hooks/useTapHoldMove
+│           │   ├── (dynamic)  ← @/hooks/useTick
+│           │   ├── (dynamic)  ← @/hooks/useViewCounter
+│           │   └── → hooks
+│           ├── index.ts ∅
+│           │   ├── brain  ← ./brain
+│           │   ├── cartridges  ← ./cartridges
+│           │   ├── connectors  ← ./connectors
+│           │   ├── dreamdmbar  ← ./dreamdmbar
+│           │   ├── dreamr  ← ./dreamr
+│           │   ├── dreamsurfaces  ← ./dreamsurfaces
+│           │   ├── engins  ← ./engins
+│           │   ├── homedream  ← ./homedream
+│           │   ├── hooks  ← ./hooks
+│           │   ├── personas  ← ./personas
+│           │   ├── rulesets  ← ./rulesets
+│           │   ├── surfaces  ← ./surfaces
+│           │   ├── systems  ← ./systems
+│           │   ├── → hydrateEngineRegistry
+│           │   ├── → osArchitectureFlow
+│           │   ├── → osArchitectureGraph
+│           │   ├── → osArchitectureMap
+│           │   ├── → osArchitectureStageEntries
+│           │   ├── → osGeneratedRouters
+│           │   ├── → osSlotCounts
+│           │   └── ∅ unused: hydrateEngineRegistry, osArchitectureFlow, osArchitectureGraph, osArchitectureMap, osArchitectureStageEntries, osGeneratedRouters, osSlotCounts
+│           ├── osArchitectureMap.ts ∅
+│           │   ├── → osArchitectureFlow
+│           │   ├── → osArchitectureGraph
+│           │   ├── → osArchitectureMap
+│           │   ├── → osArchitectureStageEntries
+│           │   ├── → osGeneratedRouters
+│           │   ├── → osSlotCounts
+│           │   └── ∅ unused: osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
+│           ├── personas.ts
+│           │   └── → personas
+│           ├── rulesets.ts
+│           │   └── → rulesets
+│           ├── surfaces.ts
+│           │   ├── (dynamic)  ← @/app/(internal)/idari-console/page
+│           │   ├── (dynamic)  ← @/app/(internal)/idari-console/platform-errors/page
+│           │   ├── (dynamic)  ← @/app/(internal)/idari-console/platform-health/page
+│           │   ├── (dynamic)  ← @/app/about/page
+│           │   ├── (dynamic)  ← @/app/actions/dream-docs
+│           │   ├── (dynamic)  ← @/app/ads/create/page
+│           │   ├── (dynamic)  ← @/app/ads/page
+│           │   ├── (dynamic)  ← @/app/ads/slot/[id]/page
+│           │   ├── (dynamic)  ← @/app/api/account/delete-data/route
+│           │   ├── (dynamic)  ← @/app/api/account/delete-dream/route
+│           │   ├── (dynamic)  ← @/app/api/account/export-data/route
+│           │   ├── (dynamic)  ← @/app/api/activity/track/route
+│           │   ├── (dynamic)  ← @/app/api/admin/ai-chat/route
+│           │   ├── (dynamic)  ← @/app/api/admin/ai-request/route
+│           │   ├── (dynamic)  ← @/app/api/admin/child-safety/route
+│           │   ├── (dynamic)  ← @/app/api/admin/code-files/route
+│           │   ├── (dynamic)  ← @/app/api/admin/observability/route
+│           │   ├── (dynamic)  ← @/app/api/ads/orders/route
+│           │   ├── (dynamic)  ← @/app/api/ads/view/route
+│           │   ├── (dynamic)  ← @/app/api/agent/session/route
+│           │   ├── (dynamic)  ← @/app/api/ai/boogieman/child-safety/route
+│           │   ├── (dynamic)  ← @/app/api/ai/boogieman/privacy-event/route
+│           │   ├── (dynamic)  ← @/app/api/ai/boogieman/route
+│           │   ├── (dynamic)  ← @/app/api/ai/boogieman/status/route
+│           │   ├── (dynamic)  ← @/app/api/ai/eams/route
+│           │   ├── (dynamic)  ← @/app/api/ai/execute/route
+│           │   ├── (dynamic)  ← @/app/api/ai/idari/route
+│           │   ├── (dynamic)  ← @/app/api/appeal/route
+│           │   ├── (dynamic)  ← @/app/api/auth/logout/route
+│           │   ├── (dynamic)  ← @/app/api/auth/providers/route
+│           │   ├── (dynamic)  ← @/app/api/blocks/route
+│           │   ├── (dynamic)  ← @/app/api/ci/run/route
+│           │   ├── (dynamic)  ← @/app/api/close-friends/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/diagnostics/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/file/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/git/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/run/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/search/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/upload/route
+│           │   ├── (dynamic)  ← @/app/api/codeengin/workspace/route
+│           │   ├── (dynamic)  ← @/app/api/comments/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/[provider]/connect/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/[provider]/disconnect/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/[provider]/items/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/[provider]/sync/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/[provider]/verify/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/cron/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/instagram/oauth/callback/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/instagram/oauth/start/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/status/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/webhooks/[provider]/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/youtube/oauth/callback/route
+│           │   ├── (dynamic)  ← @/app/api/connectors/youtube/oauth/start/route
+│           │   ├── (dynamic)  ← @/app/api/content/generative-fill/route
+│           │   ├── (dynamic)  ← @/app/api/content/intelligence/route
+│           │   ├── (dynamic)  ← @/app/api/content/transcribe/route
+│           │   ├── (dynamic)  ← @/app/api/content/voice-clone/route
+│           │   ├── (dynamic)  ← @/app/api/contentengin/assets/[assetId]/export/gameengin/route
+│           │   ├── (dynamic)  ← @/app/api/contentengin/assets/[assetId]/route
+│           │   ├── (dynamic)  ← @/app/api/contentengin/jobs/[jobId]/route
+│           │   ├── (dynamic)  ← @/app/api/contentengin/jobs/route
+│           │   ├── (dynamic)  ← @/app/api/contentengin/upload/route
+│           │   ├── (dynamic)  ← @/app/api/dr-eams/hf/route
+│           │   ├── (dynamic)  ← @/app/api/dr-eams/run/route
+│           │   ├── (dynamic)  ← @/app/api/drafts/[id]/route
+│           │   ├── (dynamic)  ← @/app/api/drafts/route
+│           │   ├── (dynamic)  ← @/app/api/dream-windows/[id]/route
+│           │   ├── (dynamic)  ← @/app/api/dream-windows/route
+│           │   ├── (dynamic)  ← @/app/api/dreamengin/os-status/route
+│           │   ├── (dynamic)  ← @/app/api/dreamr/feed/route
+│           │   ├── (dynamic)  ← @/app/api/dreamr/suggested/route
+│           │   ├── (dynamic)  ← @/app/api/dreamr/tally/route
+│           │   ├── (dynamic)  ← @/app/api/dreams/feed/route
+│           │   ├── (dynamic)  ← @/app/api/dreams/instances/route
+│           │   ├── (dynamic)  ← @/app/api/dreams/transfer/route
+│           │   ├── (dynamic)  ← @/app/api/embed-feed/route
+│           │   ├── (dynamic)  ← @/app/api/favorites/route
+│           │   ├── (dynamic)  ← @/app/api/feed/route
+│           │   ├── (dynamic)  ← @/app/api/follow/route
+│           │   ├── (dynamic)  ← @/app/api/forge/build/route
+│           │   ├── (dynamic)  ← @/app/api/gal/route
+│           │   ├── (dynamic)  ← @/app/api/game-scores/route
+│           │   ├── (dynamic)  ← @/app/api/gameengin/crash-report/route
+│           │   ├── (dynamic)  ← @/app/api/health/route
+│           │   ├── (dynamic)  ← @/app/api/home-layout/route
+│           │   ├── (dynamic)  ← @/app/api/journey/route
+│           │   ├── (dynamic)  ← @/app/api/lab/benchmarks/route
+│           │   ├── (dynamic)  ← @/app/api/ledger-media/route
+│           │   ├── (dynamic)  ← @/app/api/likes/route
+│           │   ├── (dynamic)  ← @/app/api/marketplace/request/route
+│           │   ├── (dynamic)  ← @/app/api/marketplace/route
+│           │   ├── (dynamic)  ← @/app/api/messages/boards/route
+│           │   ├── (dynamic)  ← @/app/api/messages/route
+│           │   ├── (dynamic)  ← @/app/api/metrics/platform/route
+│           │   ├── (dynamic)  ← @/app/api/metrics/route
+│           │   ├── (dynamic)  ← @/app/api/metrics/user/[userId]/route
+│           │   ├── (dynamic)  ← @/app/api/music/route
+│           │   ├── (dynamic)  ← @/app/api/notifications/route
+│           │   ├── (dynamic)  ← @/app/api/platform/errors/route
+│           │   ├── (dynamic)  ← @/app/api/posts/[id]/route
+│           │   ├── (dynamic)  ← @/app/api/posts/[id]/save/route
+│           │   ├── (dynamic)  ← @/app/api/posts/[id]/view/route
+│           │   ├── (dynamic)  ← @/app/api/posts/profile/[userId]/route
+│           │   ├── (dynamic)  ← @/app/api/posts/route
+│           │   ├── (dynamic)  ← @/app/api/profile/route
+│           │   ├── (dynamic)  ← @/app/api/projects/route
+│           │   ├── (dynamic)  ← @/app/api/scheduled-posts/route
+│           │   ├── (dynamic)  ← @/app/api/security/scan/route
+│           │   ├── (dynamic)  ← @/app/api/settings/appearance/route
+│           │   ├── (dynamic)  ← @/app/api/settings/feed/route
+│           │   ├── (dynamic)  ← @/app/api/settings/notifications/route
+│           │   ├── (dynamic)  ← @/app/api/settings/privacy/route
+│           │   ├── (dynamic)  ← @/app/api/setup/check/route
+│           │   ├── (dynamic)  ← @/app/api/setup/google-oauth/route
+│           │   ├── (dynamic)  ← @/app/api/shared-dream/sessions/[id]/route
+│           │   ├── (dynamic)  ← @/app/api/shared-dream/sessions/route
+│           │   ├── (dynamic)  ← @/app/api/shellhub/devices/route
+│           │   ├── (dynamic)  ← @/app/api/shop/route
+│           │   ├── (dynamic)  ← @/app/api/skip-credits/balance/route
+│           │   ├── (dynamic)  ← @/app/api/skip-credits/earn/route
+│           │   ├── (dynamic)  ← @/app/api/skip-credits/use/route
+│           │   ├── (dynamic)  ← @/app/api/social/ipfs/route
+│           │   ├── (dynamic)  ← @/app/api/social/livekit/room/route
+│           │   ├── (dynamic)  ← @/app/api/social/livekit/token/route
+│           │   ├── (dynamic)  ← @/app/api/social/rss-feed/route
+│           │   ├── (dynamic)  ← @/app/api/upload/route
+│           │   ├── (dynamic)  ← @/app/api/user/layout/route
+│           │   ├── (dynamic)  ← @/app/api/views/track/route
+│           │   ├── (dynamic)  ← @/app/api/widgets/feed/route
+│           │   ├── (dynamic)  ← @/app/api/widgets/instances/route
+│           │   ├── (dynamic)  ← @/app/api/youtube/channel/route
+│           │   ├── (dynamic)  ← @/app/api/youtube/discovery/route
+│           │   ├── (dynamic)  ← @/app/api/youtube/live-feed/route
+│           │   ├── (dynamic)  ← @/app/auth/callback/route
+│           │   ├── (dynamic)  ← @/app/auth/reset-password/page
+│           │   ├── (dynamic)  ← @/app/auth/update-password/page
+│           │   ├── (dynamic)  ← @/app/connectors/dream.ConnectorsClient
+│           │   ├── (dynamic)  ← @/app/connectors/page
+│           │   ├── (dynamic)  ← @/app/daydream/brand/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/brand/page
+│           │   ├── (dynamic)  ← @/app/daydream/code/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/code/page
+│           │   ├── (dynamic)  ← @/app/daydream/constellation/dream.ConstellationClient
+│           │   ├── (dynamic)  ← @/app/daydream/constellation/page
+│           │   ├── (dynamic)  ← @/app/daydream/create/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/create/page
+│           │   ├── (dynamic)  ← @/app/daydream/forge/page
+│           │   ├── (dynamic)  ← @/app/daydream/game/dream.GamePageClient
+│           │   ├── (dynamic)  ← @/app/daydream/game/dream.shell.ImmersiveGameShell
+│           │   ├── (dynamic)  ← @/app/daydream/game/page
+│           │   ├── (dynamic)  ← @/app/daydream/games/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/games/page
+│           │   ├── (dynamic)  ← @/app/daydream/lab/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/lab/page
+│           │   ├── (dynamic)  ← @/app/daydream/lab/portfolio/page
+│           │   ├── (dynamic)  ← @/app/daydream/media-vault/page
+│           │   ├── (dynamic)  ← @/app/daydream/music/engin/page
+│           │   ├── (dynamic)  ← @/app/daydream/music/page
+│           │   ├── (dynamic)  ← @/app/daydream/music/upload/page
+│           │   ├── (dynamic)  ← @/app/daydream/play/page
+│           │   ├── (dynamic)  ← @/app/discover/page
+│           │   ├── (dynamic)  ← @/app/dream-effects/page
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/DreamBarDataBridge
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/algorithms/botDetector
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/api/feedHandler
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/api/route
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/dream.DreamRFeed
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/DreamSpaceRegion
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/DreamWidgetGrid
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/HomeDreamRegion
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/dreamspace/page
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/dualruntime/page
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/homedream/page
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/layout
+│           │   ├── (dynamic)  ← @/app/dreamdmbar/page
+│           │   ├── (dynamic)  ← @/app/dreamspace/page
+│           │   ├── (dynamic)  ← @/app/edit-profiledream/page
+│           │   ├── (dynamic)  ← @/app/engines/brand/campaigns/page
+│           │   ├── (dynamic)  ← @/app/engines/brand/identity/page
+│           │   ├── (dynamic)  ← @/app/engines/brand/layout
+│           │   ├── (dynamic)  ← @/app/engines/brand/page
+│           │   ├── (dynamic)  ← @/app/engines/code/ai/page
+│           │   ├── (dynamic)  ← @/app/engines/code/layout
+│           │   ├── (dynamic)  ← @/app/engines/code/notebook/page
+│           │   ├── (dynamic)  ← @/app/engines/code/page
+│           │   ├── (dynamic)  ← @/app/engines/code/projects/page
+│           │   ├── (dynamic)  ← @/app/engines/create/calendar/page
+│           │   ├── (dynamic)  ← @/app/engines/create/editor/page
+│           │   ├── (dynamic)  ← @/app/engines/create/layout
+│           │   ├── (dynamic)  ← @/app/engines/create/page
+│           │   ├── (dynamic)  ← @/app/engines/create/queue/page
+│           │   ├── (dynamic)  ← @/app/engines/games/builder/page
+│           │   ├── (dynamic)  ← @/app/engines/games/layout
+│           │   ├── (dynamic)  ← @/app/engines/games/library/page
+│           │   ├── (dynamic)  ← @/app/engines/games/page
+│           │   ├── (dynamic)  ← @/app/engines/games/scores/page
+│           │   ├── (dynamic)  ← @/app/engines/lab/data/page
+│           │   ├── (dynamic)  ← @/app/engines/lab/experiments/page
+│           │   ├── (dynamic)  ← @/app/engines/lab/layout
+│           │   ├── (dynamic)  ← @/app/engines/lab/page
+│           │   ├── (dynamic)  ← @/app/engines/lab/quantum/page
+│           │   ├── (dynamic)  ← @/app/engines/layout
+│           │   ├── (dynamic)  ← @/app/engines/music/arrange/page
+│           │   ├── (dynamic)  ← @/app/engines/music/layout
+│           │   ├── (dynamic)  ← @/app/engines/music/library/page
+│           │   ├── (dynamic)  ← @/app/engines/music/page
+│           │   ├── (dynamic)  ← @/app/engines/music/studio/page
+│           │   ├── (dynamic)  ← @/app/engines/page
+│           │   ├── (dynamic)  ← @/app/engines/portfolio/assets/page
+│           │   ├── (dynamic)  ← @/app/engines/portfolio/layout
+│           │   ├── (dynamic)  ← @/app/engines/portfolio/optimize/page
+│           │   ├── (dynamic)  ← @/app/engines/portfolio/page
+│           │   ├── (dynamic)  ← @/app/engines/portfolio/quantum/page
+│           │   ├── (dynamic)  ← @/app/feed-settings/dream.FeedSettingsClient
+│           │   ├── (dynamic)  ← @/app/feed-settings/page
+│           │   ├── (dynamic)  ← @/app/gameengin/cartridges/[id]/page
+│           │   ├── (dynamic)  ← @/app/gameengin/cartridges/page
+│           │   ├── (dynamic)  ← @/app/gameengin/page
+│           │   ├── (dynamic)  ← @/app/join/page
+│           │   ├── (dynamic)  ← @/app/lab/[id]/codespace/page
+│           │   ├── (dynamic)  ← @/app/lab/[id]/page
+│           │   ├── (dynamic)  ← @/app/lab/new/page
+│           │   ├── (dynamic)  ← @/app/lab/page
+│           │   ├── (dynamic)  ← @/app/layout
+│           │   ├── (dynamic)  ← @/app/login/page
+│           │   ├── (dynamic)  ← @/app/marketplace/[id]/page
+│           │   ├── (dynamic)  ← @/app/marketplace/page
+│           │   ├── (dynamic)  ← @/app/marketplace/sell/page
+│           │   ├── (dynamic)  ← @/app/messages/boards/[id]/page
+│           │   ├── (dynamic)  ← @/app/messages/boards/new/page
+│           │   ├── (dynamic)  ← @/app/messages/boards/page
+│           │   ├── (dynamic)  ← @/app/messages/page
+│           │   ├── (dynamic)  ← @/app/mission/page
+│           │   ├── (dynamic)  ← @/app/notes/page
+│           │   ├── (dynamic)  ← @/app/onboarding/page
+│           │   ├── (dynamic)  ← @/app/page
+│           │   ├── (dynamic)  ← @/app/policy/page
+│           │   ├── (dynamic)  ← @/app/profile/[handle]/page
+│           │   ├── (dynamic)  ← @/app/profile/page
+│           │   ├── (dynamic)  ← @/app/settings/account/dream.DangerZoneActions
+│           │   ├── (dynamic)  ← @/app/settings/account/page
+│           │   ├── (dynamic)  ← @/app/settings/algorithm/page
+│           │   ├── (dynamic)  ← @/app/settings/appearance/page
+│           │   ├── (dynamic)  ← @/app/settings/controls/dream.ControlsClient
+│           │   ├── (dynamic)  ← @/app/settings/controls/dream.PositionIndicatorToggle
+│           │   ├── (dynamic)  ← @/app/settings/controls/page
+│           │   ├── (dynamic)  ← @/app/settings/data/dream.DataClient
+│           │   ├── (dynamic)  ← @/app/settings/data/page
+│           │   ├── (dynamic)  ← @/app/settings/dreams/dreams-layout-editor
+│           │   ├── (dynamic)  ← @/app/settings/dreams/page
+│           │   ├── (dynamic)  ← @/app/settings/feed/page
+│           │   ├── (dynamic)  ← @/app/settings/help/page
+│           │   ├── (dynamic)  ← @/app/settings/notifications/page
+│           │   ├── (dynamic)  ← @/app/settings/page
+│           │   ├── (dynamic)  ← @/app/settings/privacy/dream.PrivacyClient
+│           │   ├── (dynamic)  ← @/app/settings/privacy/page
+│           │   ├── (dynamic)  ← @/app/settings/safety/page
+│           │   ├── (dynamic)  ← @/app/settings/security/page
+│           │   ├── (dynamic)  ← @/app/settings/widgets/page
+│           │   ├── (dynamic)  ← @/app/shop/page
+│           │   ├── (dynamic)  ← @/app/shop/sell/page
+│           │   ├── (dynamic)  ← @/app/u/[handle]/page
+│           │   ├── (dynamic)  ← @/app/view-profile/page
+│           │   ├── (dynamic)  ← @/app/webgpu/page
+│           │   ├── (dynamic)  ← @/components/activity/dream.ActivityPostForm
+│           │   ├── (dynamic)  ← @/components/activity/dream.ActivityProfile
+│           │   ├── (dynamic)  ← @/components/activity/dream.TierBadge
+│           │   ├── (dynamic)  ← @/components/ads/dream.AdUnit
+│           │   ├── (dynamic)  ← @/components/ads/dream.SkipCreditBalance
+│           │   ├── (dynamic)  ← @/components/auth/dream.PasswordField
+│           │   ├── (dynamic)  ← @/components/branding/dream.DreamEnginLogo
+│           │   ├── (dynamic)  ← @/components/branding/dream.LogoHero
+│           │   ├── (dynamic)  ← @/components/branding/dream.Nav
+│           │   ├── (dynamic)  ← @/components/connectors/dream.AddSliceSheet
+│           │   ├── (dynamic)  ← @/components/connectors/dream.ConnectDreamPrompt
+│           │   ├── (dynamic)  ← @/components/connectors/dream.ConnectorRow
+│           │   ├── (dynamic)  ← @/components/connectors/dream.NoSlotDialog
+│           │   ├── (dynamic)  ← @/components/connectors/dream.PlacementMode
+│           │   ├── (dynamic)  ← @/components/connectors/dream.widget.ConnectorWidgetPicker
+│           │   ├── (dynamic)  ← @/components/connectors/dream.widget.ConnectWidgetPrompt
+│           │   ├── (dynamic)  ← @/components/contentengin/AnimationPanel
+│           │   ├── (dynamic)  ← @/components/contentengin/AssetPreview3D
+│           │   ├── (dynamic)  ← @/components/contentengin/ContentEnginStudio
+│           │   ├── (dynamic)  ← @/components/contentengin/ExportPanel
+│           │   ├── (dynamic)  ← @/components/contentengin/MaterialEditor
+│           │   ├── (dynamic)  ← @/components/contentengin/PartTreeEditor
+│           │   ├── (dynamic)  ← @/components/contentengin/PhotoReferencePanel
+│           │   ├── (dynamic)  ← @/components/contentengin/RecipeEditor
+│           │   ├── (dynamic)  ← @/components/contentengin/RiggingPanel
+│           │   ├── (dynamic)  ← @/components/core/dream.CoreDream
+│           │   ├── (dynamic)  ← @/components/customize/dream.bar.CustomizeModeBar
+│           │   ├── (dynamic)  ← @/components/customize/dream.bar.CustomizeToolbar
+│           │   ├── (dynamic)  ← @/components/customize/dream.GlobalCustomizeUI
+│           │   ├── (dynamic)  ← @/components/customize/panels/dream.panel.ColorPanel
+│           │   ├── (dynamic)  ← @/components/customize/panels/dream.panel.EffectsPanel
+│           │   ├── (dynamic)  ← @/components/customize/panels/dream.panel.FontPanel
+│           │   ├── (dynamic)  ← @/components/customize/panels/dream.panel.LayoutPanel
+│           │   ├── (dynamic)  ← @/components/daydream/dream.CodeDreamIDE
+│           │   ├── (dynamic)  ← @/components/daydream/dream.constellationmap
+│           │   ├── (dynamic)  ← @/components/daydream/dream.DiffViewer
+│           │   ├── (dynamic)  ← @/components/daydream/dream.JourneyTrail
+│           │   ├── (dynamic)  ← @/components/daydream/dream.LabDreamIDE
+│           │   ├── (dynamic)  ← @/components/daydream/dream.NGNEngin
+│           │   ├── (dynamic)  ← @/components/daydream/dream.OpenDaydreamSideBButton
+│           │   ├── (dynamic)  ← @/components/daydream/dream.shell.DaydreamShell
+│           │   ├── (dynamic)  ← @/components/daydream/dream.StandaloneEnginSurface
+│           │   ├── (dynamic)  ← @/components/daydream/dreamsurface.daydream.BrandDaydream
+│           │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.CompingPanel
+│           │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
+│           │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.PianoRollPanel
+│           │   ├── (dynamic)  ← @/components/daydream/starmaker/dream.panel.SessionViewPanel
+│           │   ├── (dynamic)  ← @/components/draggable/dream.DraggableModule
+│           │   ├── (dynamic)  ← @/components/dream.AIAssistant
+│           │   ├── (dynamic)  ← @/components/dream.AudioVisualizer3D
+│           │   ├── (dynamic)  ← @/components/dream.BoogieWarningBanner
+│           │   ├── (dynamic)  ← @/components/dream.BrandLogo
+│           │   ├── (dynamic)  ← @/components/dream.CommandPalette
+│           │   ├── (dynamic)  ← @/components/dream.CreatePostModal
+│           │   ├── (dynamic)  ← @/components/dream.DragToAnchorClose
+│           │   ├── (dynamic)  ← @/components/dream.DrEamsModeToggle
+│           │   ├── (dynamic)  ← @/components/dream.DrEamsVoiceAssistant
+│           │   ├── (dynamic)  ← @/components/dream.FeedCard
+│           │   ├── (dynamic)  ← @/components/dream.ForgeDreamCanvas
+│           │   ├── (dynamic)  ← @/components/dream.GlobalOverlays
+│           │   ├── (dynamic)  ← @/components/dream.HeroSprite
+│           │   ├── (dynamic)  ← @/components/dream.HomeFeed
+│           │   ├── (dynamic)  ← @/components/dream.IconSelector
+│           │   ├── (dynamic)  ← @/components/dream.InnerDreamsButton
+│           │   ├── (dynamic)  ← @/components/dream.KonamiDream
+│           │   ├── (dynamic)  ← @/components/dream.LandingHero
+│           │   ├── (dynamic)  ← @/components/dream.LedgerChart
+│           │   ├── (dynamic)  ← @/components/dream.MessagesClient
+│           │   ├── (dynamic)  ← @/components/dream.NotificationCenter
+│           │   ├── (dynamic)  ← @/components/dream.OSShellActivator
+│           │   ├── (dynamic)  ← @/components/dream.panel.ChildSafetyPanel
+│           │   ├── (dynamic)  ← @/components/dream.panel.IDariPanel
+│           │   ├── (dynamic)  ← @/components/dream.PhysicsLab
+│           │   ├── (dynamic)  ← @/components/dream.ProfileEditor
+│           │   ├── (dynamic)  ← @/components/dream.ProfileShareButton
+│           │   ├── (dynamic)  ← @/components/dream.ProfileSpace
+│           │   ├── (dynamic)  ← @/components/dream.PullToRefresh
+│           │   ├── (dynamic)  ← @/components/dream.ShrunkMode
+│           │   ├── (dynamic)  ← @/components/dream.SkeletonLoaders
+│           │   ├── (dynamic)  ← @/components/dream.ThemeApplicator
+│           │   ├── (dynamic)  ← @/components/dream.ThemeToggle
+│           │   ├── (dynamic)  ← @/components/dream.ToastSystem
+│           │   ├── (dynamic)  ← @/components/dream.universal_asset_registry
+│           │   ├── (dynamic)  ← @/components/dream.VoidThemeToggle
+│           │   ├── (dynamic)  ← @/components/dream.widget.AnchorWidget
+│           │   ├── (dynamic)  ← @/components/dream.widget.ProfileWidgetBlock
+│           │   ├── (dynamic)  ← @/components/dream.widget.WidgetBubble
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.bar.DrEamsSearchBar
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.CanvasDropZone
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.DREAMenginOS
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.DrEamsCanvas
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.HomeControls
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.menu.NexusMenu
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.menu.OutdreamMenu
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.overlay.ViewAllDreamsOverlay
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.panel.CrossEnginStatusPanel
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.panel.DrEamsPanel
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.scene.BabylonGameScene
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.scene.DrEamsScene
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.scene.PortfolioOptimizationScene
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.shell.EnginShell
+│           │   ├── (dynamic)  ← @/components/dreamengin/dream.widget.AppearanceWidget
+│           │   ├── (dynamic)  ← @/components/dreamengin/dreamsurface.dreamengin
+│           │   ├── (dynamic)  ← @/components/dreamengin/engine/math
+│           │   ├── (dynamic)  ← @/components/dreamengin/engine/types
+│           │   ├── (dynamic)  ← @/components/dreamnav/dream.DreamNavControls
+│           │   ├── (dynamic)  ← @/components/dreamnav/dreamsurface.dreamnav
+│           │   ├── (dynamic)  ← @/components/engines/brand/dream.BrandEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/brand/index
+│           │   ├── (dynamic)  ← @/components/engines/brand/panels/dream.panel.CampaignsPanel
+│           │   ├── (dynamic)  ← @/components/engines/brand/panels/dream.panel.IdentityPanel
+│           │   ├── (dynamic)  ← @/components/engines/code/dream.CodeEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/code/index
+│           │   ├── (dynamic)  ← @/components/engines/code/panels/dream.panel.AIPanel
+│           │   ├── (dynamic)  ← @/components/engines/code/panels/dream.panel.NotebookPanel
+│           │   ├── (dynamic)  ← @/components/engines/code/panels/dream.panel.ProjectsPanel
+│           │   ├── (dynamic)  ← @/components/engines/create/dream.CreateEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/create/index
+│           │   ├── (dynamic)  ← @/components/engines/create/panels/dream.panel.CalendarPanel
+│           │   ├── (dynamic)  ← @/components/engines/create/panels/dream.panel.EditorPanel
+│           │   ├── (dynamic)  ← @/components/engines/create/panels/dream.panel.QueuePanel
+│           │   ├── (dynamic)  ← @/components/engines/games/dream.GameEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/games/index
+│           │   ├── (dynamic)  ← @/components/engines/games/panels/dream.panel.BuilderPanel
+│           │   ├── (dynamic)  ← @/components/engines/games/panels/dream.panel.LibraryPanel
+│           │   ├── (dynamic)  ← @/components/engines/games/panels/dream.panel.ScoresPanel
+│           │   ├── (dynamic)  ← @/components/engines/index
+│           │   ├── (dynamic)  ← @/components/engines/lab/dream.LabEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/lab/index
+│           │   ├── (dynamic)  ← @/components/engines/lab/panels/dream.panel.DataVizPanel
+│           │   ├── (dynamic)  ← @/components/engines/lab/panels/dream.panel.ExperimentsPanel
+│           │   ├── (dynamic)  ← @/components/engines/lab/panels/dream.panel.QuantumPanel
+│           │   ├── (dynamic)  ← @/components/engines/music/dream.MusicEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/music/index
+│           │   ├── (dynamic)  ← @/components/engines/music/panels/dream.panel.ArrangePanel
+│           │   ├── (dynamic)  ← @/components/engines/music/panels/dream.panel.MusicLibraryPanel
+│           │   ├── (dynamic)  ← @/components/engines/music/panels/dream.panel.StudioPanel
+│           │   ├── (dynamic)  ← @/components/engines/portfolio/dream.PortfolioEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/portfolio/index
+│           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
+│           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
+│           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
+│           │   ├── (dynamic)  ← @/components/engines/shared/dream.bar.EnginNavBar
+│           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginProvider
+│           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginRuleSet
+│           │   ├── (dynamic)  ← @/components/engines/shared/dream.makeEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/shared/dream.shell.EnginAppShell
+│           │   ├── (dynamic)  ← @/components/engines/shared/index
+│           │   ├── (dynamic)  ← @/components/feed/dream.AlgorithmEngine
+│           │   ├── (dynamic)  ← @/components/feed/dream.CommentSection
+│           │   ├── (dynamic)  ← @/components/feed/dream.FeedVideoCard
+│           │   ├── (dynamic)  ← @/components/feed/dream.FollowButton
+│           │   ├── (dynamic)  ← @/components/feed/dream.FollowOnboarding
+│           │   ├── (dynamic)  ← @/components/feeds/dream.widget.EmbedFeedWidget
+│           │   ├── (dynamic)  ← @/components/forge/dream.EngineBuilderCanvas
+│           │   ├── (dynamic)  ← @/components/forge/dream.panel.AIBuilderPanel
+│           │   ├── (dynamic)  ← @/components/forge/dream.widget.ForgeMomentumWidget
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.cartridge.CartridgeBrowser
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.cartridge.CartridgeErrorBoundary
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.cartridge.CartridgeLauncher
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.cartridge.FeaturedCartridges
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
+│           │   ├── (dynamic)  ← @/components/gameengin/dream.CrashReportModal
+│           │   ├── (dynamic)  ← @/components/gameengin/input/DualSenseManager
+│           │   ├── (dynamic)  ← @/components/games/_fx/canvasFx
+│           │   ├── (dynamic)  ← @/components/games/dream.AvenueOfMirrors
+│           │   ├── (dynamic)  ← @/components/games/dream.BabylonSideScroller
+│           │   ├── (dynamic)  ← @/components/games/dream.DefuseRitual
+│           │   ├── (dynamic)  ← @/components/games/dream.EchoArena
+│           │   ├── (dynamic)  ← @/components/games/dream.EnginFracture
+│           │   ├── (dynamic)  ← @/components/games/dream.GameController
+│           │   ├── (dynamic)  ← @/components/games/dream.GamesHub
+│           │   ├── (dynamic)  ← @/components/games/dream.Glassfall
+│           │   ├── (dynamic)  ← @/components/games/dream.hud.GameHUD
+│           │   ├── (dynamic)  ← @/components/games/dream.hud.LegacyGameHUD
+│           │   ├── (dynamic)  ← @/components/games/dream.hud.MobileGameHUD
+│           │   ├── (dynamic)  ← @/components/games/dream.Leaderboard
+│           │   ├── (dynamic)  ← @/components/games/dream.LexiconSolitaire
+│           │   ├── (dynamic)  ← @/components/games/dream.MadMaxiWildfall
+│           │   ├── (dynamic)  ← @/components/games/dream.NeonDrift
+│           │   ├── (dynamic)  ← @/components/games/dream.NiteFlyerSolarHymn
+│           │   ├── (dynamic)  ← @/components/games/dream.NullCathedral
+│           │   ├── (dynamic)  ← @/components/games/dream.RecordingControls
+│           │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemote
+│           │   ├── (dynamic)  ← @/components/games/dream.remote.GameRemoteSurface
+│           │   ├── (dynamic)  ← @/components/games/dream.remote.LegacyGameRemote
+│           │   ├── (dynamic)  ← @/components/games/dream.SerpentSiege
+│           │   ├── (dynamic)  ← @/components/games/dream.VoidlineGP
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/audio
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/authoredZonePacks
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/config
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/dream.MadmaxiGame
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/index
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/levels
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/materials
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/types
+│           │   ├── (dynamic)  ← @/components/games/madmaxi/vfx
+│           │   ├── (dynamic)  ← @/components/home/dream.ActiveModuleSurface
+│           │   ├── (dynamic)  ← @/components/home/dream.bar.GlobalDreamBar
+│           │   ├── (dynamic)  ← @/components/home/dream.bar.PersistentDreamBar
+│           │   ├── (dynamic)  ← @/components/home/dream.DaydreamPulseStrip
+│           │   ├── (dynamic)  ← @/components/home/dream.FlagshipEnginesStrip
+│           │   ├── (dynamic)  ← @/components/home/dream.NeuralSeamCanvas
+│           │   ├── (dynamic)  ← @/components/home/dream.widget.DreamWidget
+│           │   ├── (dynamic)  ← @/components/icons/sheet
+│           │   ├── (dynamic)  ← @/components/idari/dream.PlatformHealth
+│           │   ├── (dynamic)  ← @/components/landing/dream.LandingNav
+│           │   ├── (dynamic)  ← @/components/landing/dream.LandingProductStatement
+│           │   ├── (dynamic)  ← @/components/landing/dream.scene.UniverseField
+│           │   ├── (dynamic)  ← @/components/marketplace/dream.MarketplaceListingCard
+│           │   ├── (dynamic)  ← @/components/marketplace/dream.MarketplaceRequestButton
+│           │   ├── (dynamic)  ← @/components/menus/dream.menu.DreamRadialMenu
+│           │   ├── (dynamic)  ← @/components/menus/dream.menu.DualBottomMenu
+│           │   ├── (dynamic)  ← @/components/menus/dream.menu.RadialMenu
+│           │   ├── (dynamic)  ← @/components/menus/dream.menu.SystemRadialMenu
+│           │   ├── (dynamic)  ← @/components/menus/dream.panel.MenuPanel
+│           │   ├── (dynamic)  ← @/components/messaging/dream.BoardComposer
+│           │   ├── (dynamic)  ← @/components/music/dream.SoundRecorder
+│           │   ├── (dynamic)  ← @/components/onboarding/dream.OnboardingTip
+│           │   ├── (dynamic)  ← @/components/optimizer/dream.scene.BabylonOptimizeroScene
+│           │   ├── (dynamic)  ← @/components/overlays/dream.RootStatusScreen
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.AlgorithmPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.AppearancePanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.ConnectorsPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.ControlsPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.DataPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.FeedPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.FeedSettingsPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.HelpPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.MarketplacePanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.PrivacyPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.ProfilePanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.SafetyPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.SettingsPanel
+│           │   ├── (dynamic)  ← @/components/panels/dream.panel.WidgetsPanel
+│           │   ├── (dynamic)  ← @/components/panels/panelTypes
+│           │   ├── (dynamic)  ← @/components/profile/dream.EditableAvatar
+│           │   ├── (dynamic)  ← @/components/profile/dream.ProfileCanvas
+│           │   ├── (dynamic)  ← @/components/profile/dream.ProfileCustomizeButton
+│           │   ├── (dynamic)  ← @/components/profile/dream.widget.ProfileWidgetGrid
+│           │   ├── (dynamic)  ← @/components/providers/dream.AppSurfaceShell
+│           │   ├── (dynamic)  ← @/components/providers/dream.GodTierProvider
+│           │   ├── (dynamic)  ← @/components/providers/dream.ThemeProvider
+│           │   ├── (dynamic)  ← @/components/runtime/dream.DualRuntimeContainer
+│           │   ├── (dynamic)  ← @/components/runtime/dream.RuntimeView
+│           │   ├── (dynamic)  ← @/components/runtime/dream.shell.RuntimeShell
+│           │   ├── (dynamic)  ← @/components/shaders/dream.LightningWing
+│           │   ├── (dynamic)  ← @/components/shaders/dream.NeonGlow
+│           │   ├── (dynamic)  ← @/components/shaders/dream.Refractor
+│           │   ├── (dynamic)  ← @/components/shaders/index
+│           │   ├── (dynamic)  ← @/components/shared-dream/dream.InviteFlow
+│           │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamCanvas
+│           │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamProvider
+│           │   ├── (dynamic)  ← @/components/shared-dream/dream.SharedDreamRuntime
+│           │   ├── (dynamic)  ← @/components/shared-dream/index
+│           │   ├── (dynamic)  ← @/components/spatial/dream.PixiPhysicsLayer
+│           │   ├── (dynamic)  ← @/components/spatial/dream.ProfileSpace
+│           │   ├── (dynamic)  ← @/components/spatial/dream.shell.EnhancedSpatialShell
+│           │   ├── (dynamic)  ← @/components/three/dream.scene
+│           │   ├── (dynamic)  ← @/components/three/index
+│           │   ├── (dynamic)  ← @/components/ui-system/CustomizeModeContext
+│           │   ├── (dynamic)  ← @/components/ui-system/responsive
+│           │   ├── (dynamic)  ← @/components/ui-system/runtimeViewport
+│           │   ├── (dynamic)  ← @/components/ui-system/skin-engine
+│           │   ├── (dynamic)  ← @/components/ui-system/theme-engine
+│           │   ├── (dynamic)  ← @/components/ui-system/theme
+│           │   ├── (dynamic)  ← @/components/ui/dream.AuthenticatedPageHeader
+│           │   ├── (dynamic)  ← @/components/ui/dream.DreamWord
+│           │   ├── (dynamic)  ← @/components/ui/dream.IconList
+│           │   ├── (dynamic)  ← @/components/ui/dream.InfinityIcon
+│           │   ├── (dynamic)  ← @/components/ui/dream.PlatformBadge
+│           │   ├── (dynamic)  ← @/components/ui/dream.SheetIcon
+│           │   ├── (dynamic)  ← @/components/ui/dream.SocialShareSheet
+│           │   ├── (dynamic)  ← @/components/universal-editor/dream.UniversalEditor
+│           │   ├── (dynamic)  ← @/components/universal-editor/dream.UniversalEditorWrapper
+│           │   ├── (dynamic)  ← @/components/universal-editor/index
+│           │   ├── (dynamic)  ← @/components/universal-editor/useTapHoldMove
+│           │   ├── (dynamic)  ← @/components/universe/dream.node-cluster
+│           │   ├── (dynamic)  ← @/components/universe/dream.shell.universe-shell
+│           │   ├── (dynamic)  ← @/components/universe/dream.universe-card
+│           │   ├── (dynamic)  ← @/components/universe/index
+│           │   ├── (dynamic)  ← @/components/warp/dream.WarpCanvas
+│           │   ├── (dynamic)  ← @/components/webgpu/dream.WebGPUShowcase
+│           │   ├── (dynamic)  ← @/components/webgpu/neuralPostProcess
+│           │   ├── (dynamic)  ← @/components/webgpu/renderer
+│           │   ├── (dynamic)  ← @/components/webgpu/shaders
+│           │   ├── (dynamic)  ← @/components/widgets/dream.AddDreamCTA
+│           │   ├── (dynamic)  ← @/components/widgets/dream.ConfigureSheet
+│           │   ├── (dynamic)  ← @/components/widgets/dream.EditModeBanner
+│           │   ├── (dynamic)  ← @/components/widgets/dream.EditModeProvider
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.PlayMediaWidget
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.UniversalWidget
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetCard
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetLibrary
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetPlaceholder
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetShell
+│           │   ├── (dynamic)  ← @/components/widgets/dream.widget.WidgetSurface
+│           │   ├── (dynamic)  ← @/coresurfaces/dreamsurface.EditProfileDream
+│           │   ├── (dynamic)  ← @/coresurfaces/dreamsurface.ViewProfile
+│           │   ├── (dynamic)  ← @/coresurfaces/home/buttons/button-groups
+│           │   ├── (dynamic)  ← @/coresurfaces/home/buttons/contextual-home
+│           │   ├── (dynamic)  ← @/daydreams/brand/page
+│           │   ├── (dynamic)  ← @/daydreams/code/page
+│           │   ├── (dynamic)  ← @/daydreams/create/page
+│           │   ├── (dynamic)  ← @/daydreams/games/page
+│           │   ├── (dynamic)  ← @/daydreams/lab/page
+│           │   ├── (dynamic)  ← @/daydreams/music/page
+│           │   ├── (dynamic)  ← @/daydreams/shared/useDaydreamPersistence
+│           │   ├── (dynamic)  ← @/daydreams/shared/useDaydreamState
+│           │   └── → surfaces
+│           └── systems.ts
+│               └── → systems
 ├── styles
 │   ├── dream-shell.css
 │   ├── globals.css
