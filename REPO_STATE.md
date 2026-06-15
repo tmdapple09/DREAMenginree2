@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-15T04:51:34.563Z
+Generated: 2026-06-15T06:00:03.222Z
 
 ---
 
@@ -143,44 +143,21 @@ Generated: 2026-06-15T04:51:34.563Z
 
 ## Lib / Logic
 
-### `lib/dreamdm/`
-
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/dreamdm/barInteractions.ts`
-- `lib/dreamdm/bridgeSeamFlow.ts`
-- `lib/dreamdm/useDreamBarContext.ts`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMDraft.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/dreamdm/useDreamSearch.ts`
-- `lib/dreamdm/useMessagingCore.ts`
-- `lib/dreamdm/useModuleBarIntent.ts`
-- `lib/dreamdm/useNotifications.ts`
-
-### `lib/runtime/`
-
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dualRuntime.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useDualRuntimePersistence.ts`
+_No lib files for this feature._
 
 <a name="homedream-hooks"></a>
 
 ## Exported Hooks
 
-- `useDreamSystem` — `lib/dreamdm/DreamSystemContext.tsx`
-- `useDreamBarContext` — `lib/dreamdm/useDreamBarContext.ts`
-- `useDreamDMConversations` — `lib/dreamdm/useDreamDMConversations.ts`
-- `useDreamDMDraft` — `lib/dreamdm/useDreamDMDraft.ts`
-- `useDreamDMMessages` — `lib/dreamdm/useDreamDMMessages.ts`
-- `useDreamSearch` — `lib/dreamdm/useDreamSearch.ts`
-- `useMessagingCore` — `lib/dreamdm/useMessagingCore.ts`
-- `useModuleBarIntent` — `lib/dreamdm/useModuleBarIntent.ts`
-- `useNotifications` — `lib/dreamdm/useNotifications.ts`
-- `useDualRuntime` — `lib/runtime/useDualRuntime.ts`
-- `useDualRuntimePersistence` — `lib/runtime/useDualRuntimePersistence.ts`
+- `useDreamSystem` — `dreamdmbar/DreamSystemContext.tsx`
+- `useDreamBarContext` — `dreamdmbar/useDreamBarContext.ts`
+- `useDreamDMConversations` — `dreamdmbar/useDreamDMConversations.ts`
+- `useDreamDMDraft` — `dreamdmbar/useDreamDMDraft.ts`
+- `useDreamDMMessages` — `dreamdmbar/useDreamDMMessages.ts`
+- `useDreamSearch` — `dreamdmbar/useDreamSearch.ts`
+- `useMessagingCore` — `dreamdmbar/useMessagingCore.ts`
+- `useModuleBarIntent` — `dreamdmbar/useModuleBarIntent.ts`
+- `useNotifications` — `dreamdmbar/useNotifications.ts`
 
 <a name="homedream-api"></a>
 
@@ -230,21 +207,16 @@ _No style files for this feature._
 
 ### External packages
 
-- `events`
 - `framer-motion`
 - `lucide-react`
 - `next`
-- `pending`
 - `react`
 
 ### Internal imports
 
 - `../algorithms/dreamrAlgorithm`
 - `./DreamSystemContext`
-- `./dualRuntime`
-- `./dualRuntimeBridge`
 - `./feedHandler`
-- `./memory`
 - `./useDreamDMMessages`
 - `@/app/dreamdmbar/_components/DreamBarDataBridge`
 - `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
@@ -293,14 +265,11 @@ _No style files for this feature._
 - `@/lib/dreamr/feedCursor`
 - `@/lib/dreamr/torridityLedger`
 - `@/lib/dreams/drag`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/feed/useLiveFeed`
 - `@/lib/forge/forgeMomentum`
 - `@/lib/forge/forgeRegistry`
 - `@/lib/games/useImmersiveGameLayout`
 - `@/lib/home-buttons/contextual-home`
-- `@/lib/identity/canonical-names`
 - `@/lib/ledger`
 - `@/lib/media/ledger`
 - `@/lib/media/postMedia`
@@ -311,20 +280,17 @@ _No style files for this feature._
 - `@/lib/runtime/dreamOSBus`
 - `@/lib/runtime/dualRuntime`
 - `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/runtime/madMaxiSnapshotBridge`
-- `@/lib/runtime/runtimeContainer`
 - `@/lib/supabase/client`
 - `@/lib/supabase/safeGetUser`
 - `@/lib/supabase/server`
 - `@/lib/ui/runtimeViewport`
 - `@/lib/utils`
-- `@/lib/vm/wasmGpuVM`
 - `@/types/dreamArtifact`
 - `@/types/widgets`
 
 ## Special Capabilities
 
-**Dual Runtime** (14 files) · **Supabase** (8 files) · **Event Bus** (8 files) · **React Context** (1 files) · **Runtime Registry** (3 files)
+**Dual Runtime** (8 files) · **Supabase** (8 files) · **Event Bus** (6 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
 
 ### Dual Runtime files
 
@@ -335,24 +301,18 @@ _No style files for this feature._
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.NeuralSeamCanvas.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dualRuntime.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useDualRuntimePersistence.ts`
+- `dreamdmbar/DreamSystemContext.tsx`
 
 ### Supabase files
 
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
+- `dreamdmbar/DreamSystemContext.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/dreamdm/useDreamSearch.ts`
-- `lib/dreamdm/useMessagingCore.ts`
+- `dreamdmbar/useDreamDMConversations.ts`
+- `dreamdmbar/useDreamDMMessages.ts`
+- `dreamdmbar/useDreamSearch.ts`
+- `dreamdmbar/useMessagingCore.ts`
 
 ### Event Bus files
 
@@ -360,20 +320,16 @@ _No style files for this feature._
 - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
 - `components/home/dream.ActiveModuleSurface.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/useDualRuntime.ts`
+- `dreamdmbar/useDreamDMConversations.ts`
+- `dreamdmbar/useDreamDMMessages.ts`
 
 ### Context files
 
-- `lib/dreamdm/DreamSystemContext.tsx`
+- `dreamdmbar/DreamSystemContext.tsx`
 
 ### Runtime Registry files
 
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/dreamOSBus.ts`
 
 ---
 
@@ -403,15 +359,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/dreamr/`
-
-- `lib/dreamr/closeFriendsVisibility.ts`
-- `lib/dreamr/dreamrfeed.tsx`
-- `lib/dreamr/feedCursor.ts`
-- `lib/dreamr/socialHumanityScore.ts`
-- `lib/dreamr/swipeCalibration.ts`
-- `lib/dreamr/swipePersonalization.ts`
-- `lib/dreamr/torridityLedger.ts`
+_No lib files for this feature._
 
 <a name="dreamr-hooks"></a>
 
@@ -469,20 +417,14 @@ _No style files for this feature._
 
 - `../algorithms/dreamrAlgorithm`
 - `./feedHandler`
-- `./swipeCalibration`
 - `@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm`
 - `@/app/dreamdmbar/_components/dreamr/api/feedHandler`
 - `@/app/dreamdmbar/_components/dreamr/dream.DreamRCore`
 - `@/components/daydream/dream.JourneyTrail`
-- `@/components/dreamr/dream.panel.DreamRChannelPanel`
-- `@/components/dreamr/dream.panel.DreamRCreatorPanel`
-- `@/engine/io`
 - `@/lib/botDetection`
-- `@/lib/dreamdm/DreamSystemContext`
 - `@/lib/dreamr/closeFriendsVisibility`
 - `@/lib/dreamr/dreamrfeed`
 - `@/lib/dreamr/feedCursor`
-- `@/lib/dreamr/swipePersonalization`
 - `@/lib/dreamr/torridityLedger`
 - `@/lib/feed/useLiveFeed`
 - `@/lib/media/ledger`
@@ -496,7 +438,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (4 files) · **Event Bus** (1 files)
+**Dual Runtime** (2 files) · **Supabase** (3 files) · **Event Bus** (1 files)
 
 ### Dual Runtime files
 
@@ -508,7 +450,6 @@ _No style files for this feature._
 - `app/api/dreamr/suggested/route.ts`
 - `app/api/dreamr/tally/route.ts`
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`
-- `lib/dreamr/socialHumanityScore.ts`
 
 ### Event Bus files
 
@@ -560,32 +501,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/dreamengin/`
-
-- `lib/dreamengin/DrEamsAnimator.ts`
-- `lib/dreamengin/drEamsSearch.ts`
-- `lib/dreamengin/engineAssets.ts`
-- `lib/dreamengin/osSubsystemManifest.ts`
-
-### `lib/dreamenginOS/`
-
-- `lib/dreamenginOS/OSContext.tsx`
-- `lib/dreamenginOS/index.ts`
-
-### `lib/runtime/`
-
-- `lib/runtime/enginWorkflowRegistry.ts`
-- `lib/runtime/instanceManager.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/runtimeContainer.ts`
+_No lib files for this feature._
 
 <a name="dreamengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useOS` — `lib/dreamenginOS/OSContext.tsx`
-- `useInstanceManager` — `lib/runtime/instanceManager.ts`
-- `useModuleRegistry` — `lib/runtime/moduleRegistry.ts`
+_No hook exports in this feature._
 
 <a name="dreamengin-api"></a>
 
@@ -627,28 +549,15 @@ _No style files for this feature._
 - `next`
 - `react`
 - `uuid`
-- `zustand`
 
 ### Internal imports
 
-- `../audioFingerprint`
-- `../botDetection`
-- `../componentInventory`
-- `../eventBus`
-- `../forge/engineForge`
-- `../gameengin/gameEnginRuntime`
-- `../generationLaw`
-- `../ledger`
-- `../slog`
-- `../torridity`
-- `../universalEditor`
 - `./dream.CanvasDropZone`
 - `./dream.DREAMenginOS`
 - `./dream.HomeControls`
 - `./dream.menu.NexusMenu`
 - `./dream.menu.OutdreamMenu`
 - `./dream.panel.DrEamsPanel`
-- `./index`
 - `./math`
 - `@/components/dreamengin/dream.CanvasDropZone`
 - `@/components/dreamnav/dreamsurface.dreamnav`
@@ -657,62 +566,33 @@ _No style files for this feature._
 - `@/components/ui/dream.InfinityIcon`
 - `@/lib/agents/agentBus`
 - `@/lib/babylon/createEngine`
-- `@/lib/connectors/connectorRegistry`
-- `@/lib/dream-window/enginConnectionNetwork`
 - `@/lib/dreamengin/DrEamsAnimator`
 - `@/lib/dreamengin/drEamsSearch`
 - `@/lib/dreamengin/osSubsystemManifest`
 - `@/lib/dreamnav/delta`
 - `@/lib/dreamnav/path`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/forge/forgeRegistry`
 - `@/lib/god-tier/godTierEngine`
 - `@/lib/identity/canonical-names`
 - `@/lib/intelligence/useSessionIntelligence`
-- `@/lib/media/ledger`
 - `@/lib/offline/offlineCache`
 - `@/lib/runtime/EnginDispatcher`
 - `@/lib/runtime/dreamOSBus`
 - `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/runtime/runtimeChannel`
-- `@/lib/supabase/client`
-- `@/lib/supabase/safeGetUser`
 - `@/lib/ui/theme-engine`
 - `@/lib/webgpu/director`
-- `@/lib/widgets/widgetRegistry`
-- `@/types/module-manifest`
-- `@/types/widgets`
 
 ## Special Capabilities
 
-**Dual Runtime** (5 files) · **Supabase** (2 files) · **Event Bus** (2 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (2 files) · **Event Bus** (1 files) · **Runtime Registry** (1 files)
 
 ### Dual Runtime files
 
 - `components/dreamengin/dream.DREAMenginOS.tsx`
 - `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx`
-- `lib/dreamenginOS/index.ts`
-- `lib/runtime/enginWorkflowRegistry.ts`
-- `lib/runtime/moduleRegistry.ts`
-
-### Supabase files
-
-- `lib/dreamengin/engineAssets.ts`
-- `lib/runtime/instanceManager.ts`
 
 ### Event Bus files
 
 - `components/dreamengin/dream.DREAMenginOS.tsx`
-- `lib/runtime/moduleRegistry.ts`
-
-### Zustand files
-
-- `lib/runtime/instanceManager.ts`
-- `lib/runtime/moduleRegistry.ts`
-
-### Context files
-
-- `lib/dreamenginOS/OSContext.tsx`
 
 ### Runtime Registry files
 
@@ -827,140 +707,11 @@ _No style files for this feature._
 - `assembly/index.ts`
 - `assembly/mad-maxi-player.ts`
 
-### `lib/engins/game/`
-
-- `lib/engins/game/gameEnginRuleSet.ts`
-- `lib/engins/game/index.ts`
-- `lib/engins/game/useGameEnginRuntime.ts`
-
-### `lib/gameengin/`
-
-- `lib/gameengin/GameRuntime.tsx`
-- `lib/gameengin/accessibility-ai.ts`
-- `lib/gameengin/ai-director.ts`
-- `lib/gameengin/ai-npcs.ts`
-- `lib/gameengin/backendNegotiator.ts`
-- `lib/gameengin/brain-reader.ts`
-- `lib/gameengin/cartridge-manifest.ts`
-- `lib/gameengin/cartridge.ts`
-- `lib/gameengin/cartridgeLoader.ts`
-- `lib/gameengin/cloud-compute.ts`
-- `lib/gameengin/core.ts`
-- `lib/gameengin/dream-engine.ts`
-- `lib/gameengin/dreamr-loader.ts`
-- `lib/gameengin/executionWiring.ts`
-- `lib/gameengin/gameEnginRuntime.ts`
-- `lib/gameengin/generative-audio.ts`
-- `lib/gameengin/index.ts`
-- `lib/gameengin/neural-render.ts`
-- `lib/gameengin/path-tracing.ts`
-- `lib/gameengin/platform.ts`
-- `lib/gameengin/post-fx.ts`
-- `lib/gameengin/power-systems.ts`
-- `lib/gameengin/predictive-stream.ts`
-- `lib/gameengin/procgen.ts`
-- `lib/gameengin/registerCartridges.ts`
-- `lib/gameengin/unifiedLoop.ts`
-- `lib/gameengin/useUnifiedLoop.ts`
-- `lib/gameengin/webgpu-runtime-shell.ts`
-- `lib/gameengin/world-crdt.ts`
-- `lib/gameengin/xr.ts`
-
-### `lib/gameengin/assets/`
-
-- `lib/gameengin/assets/BundleCache.ts`
-- `lib/gameengin/assets/BundleManifest.ts`
-
-### `lib/gameengin/cartridges/`
-
-- `lib/gameengin/cartridges/achievementEngine.ts`
-- `lib/gameengin/cartridges/apiStubs.ts`
-- `lib/gameengin/cartridges/index.ts`
-- `lib/gameengin/cartridges/loaders.ts`
-- `lib/gameengin/cartridges/manifest.ts`
-- `lib/gameengin/cartridges/reactCartridge.ts`
-- `lib/gameengin/cartridges/saveState.ts`
-
-### `lib/gameengin/input/`
-
-- `lib/gameengin/input/InputRouter.ts`
-- `lib/gameengin/input/index.ts`
-
-### `lib/gameengin/remote/`
-
-- `lib/gameengin/remote/comboMachine.ts`
-- `lib/gameengin/remote/index.ts`
-- `lib/gameengin/remote/layout.ts`
-- `lib/gameengin/remote/moves.ts`
-- `lib/gameengin/remote/sprintDetector.ts`
-
-### `lib/gameengin/render/`
-
-- `lib/gameengin/render/ShaderRegistry.ts`
-
-### `lib/gameengin/runtime/`
-
-- `lib/gameengin/runtime/FrameBudget.ts`
-- `lib/gameengin/runtime/FrameClock.ts`
-- `lib/gameengin/runtime/RuntimeQuality.ts`
-- `lib/gameengin/runtime/index.ts`
-
-### `lib/gameengin/systems/`
-
-- `lib/gameengin/systems/ai.ts`
-- `lib/gameengin/systems/animation.ts`
-- `lib/gameengin/systems/assets.ts`
-- `lib/gameengin/systems/index.ts`
-- `lib/gameengin/systems/lod.ts`
-- `lib/gameengin/systems/network.ts`
-- `lib/gameengin/systems/physics.ts`
-- `lib/gameengin/systems/pooling.ts`
-- `lib/gameengin/systems/rendering.ts`
-- `lib/gameengin/systems/spatial.ts`
-- `lib/gameengin/systems/world.ts`
-
-### `lib/games/`
-
-- `lib/games/DualSenseManager.ts`
-- `lib/games/avatar.ts`
-- `lib/games/catalog.ts`
-- `lib/games/gameControllerButtons.ts`
-- `lib/games/gameControllerLeft.ts`
-- `lib/games/gameControllerRight.ts`
-- `lib/games/hooks.ts`
-- `lib/games/library-state.ts`
-- `lib/games/lucid-avenue-world.ts`
-- `lib/games/madmaxi-wildfall-world.ts`
-- `lib/games/mobileControls.ts`
-- `lib/games/navigation.ts`
-- `lib/games/performance-baseline.ts`
-- `lib/games/quality-plan.ts`
-- `lib/games/useAIDirector.ts`
-- `lib/games/useGameInputKeyboardBridge.ts`
-- `lib/games/useGamepad.ts`
-- `lib/games/useImmersiveGameLayout.ts`
-- `lib/games/useRemoteChannel.ts`
-
 <a name="gameengin-hooks"></a>
 
 ## Exported Hooks
 
 - `useGlobalCrashListener` — `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx`
-- `useGameEnginRuntime` — `lib/engins/game/useGameEnginRuntime.ts`
-- `useGameEngineAPI` — `lib/gameengin/cartridges/reactCartridge.ts`
-- `useUnifiedLoop` — `lib/gameengin/useUnifiedLoop.ts`
-- `useDualSense` — `lib/games/DualSenseManager.ts`
-- `useGameAutoStart` — `lib/games/hooks.ts`
-- `useGamePhase` — `lib/games/hooks.ts`
-- `useKeySet` — `lib/games/hooks.ts`
-- `useSubmitScore` — `lib/games/hooks.ts`
-- `useGamePerformanceBaseline` — `lib/games/hooks.ts`
-- `useRegisterMobileGameControls` — `lib/games/mobileControls.ts`
-- `useAIDirector` — `lib/games/useAIDirector.ts`
-- `useGameInputKeyboardBridge` — `lib/games/useGameInputKeyboardBridge.ts`
-- `useGamepad` — `lib/games/useGamepad.ts`
-- `useImmersiveGameLayout` — `lib/games/useImmersiveGameLayout.ts`
-- `useRemoteChannel` — `lib/games/useRemoteChannel.ts`
 
 <a name="gameengin-api"></a>
 
@@ -1017,115 +768,30 @@ _No style files for this feature._
 ### External packages
 
 - `@babylonjs/core`
-- `@tensorflow/tfjs`
-- `@tensorflow/tfjs-backend-webgpu`
 - `clsx`
 - `framer-motion`
 - `lucide-react`
 - `next`
-- `node:crypto`
-- `node:fs`
-- `node:path`
 - `react`
-- `react-dom`
-- `zod`
 
 ### Internal imports
 
-- `../assets/BundleCache`
-- `../assets/BundleManifest`
-- `../cartridge`
-- `../eventBus`
-- `../power-systems`
-- `./BundleManifest`
-- `./FrameBudget`
-- `./FrameClock`
-- `./GameRuntime`
-- `./InputRouter`
-- `./MyGame`
-- `./RuntimeQuality`
 - `./_fx/canvasFx`
-- `./accessibility-ai`
-- `./ai`
-- `./ai-director`
-- `./ai-npcs`
-- `./animation`
-- `./assets`
 - `./audio`
 - `./authoredZonePacks`
-- `./cartridge`
-- `./cartridgeLoader`
-- `./cartridges/achievementEngine`
-- `./cartridges/apiStubs`
-- `./cartridges/index`
-- `./cartridges/loaders`
-- `./cartridges/manifest`
-- `./cartridges/reactCartridge`
-- `./cartridges/saveState`
-- `./cloud-compute`
-- `./comboMachine`
 - `./config`
-- `./control-mappings`
-- `./core`
-- `./dream-engine`
 - `./dream.CrashReportModal`
 - `./dream.GameEnginApp`
 - `./dream.MadmaxiGame`
 - `./dream.cartridge.CartridgeErrorBoundary`
-- `./dreamr-loader`
-- `./executionWiring`
-- `./gameEnginRuleSet`
-- `./gameEnginRuntime`
-- `./generative-audio`
-- `./layout`
 - `./levels`
-- `./loaders`
-- `./lod`
 - `./madmaxi`
-- `./manifest`
 - `./materials`
-- `./moves`
-- `./network`
-- `./neural-render`
 - `./panels/dream.panel.BuilderPanel`
 - `./panels/dream.panel.LibraryPanel`
 - `./panels/dream.panel.ScoresPanel`
-- `./path-tracing`
-- `./physics`
-- `./platform`
-- `./pooling`
-- `./post-fx`
-- `./power-systems`
-- `./predictive-stream`
-- `./procgen`
-- `./reactCartridge`
-- `./remote/comboMachine`
-- `./remote/layout`
-- `./remote/moves`
-- `./remote/sprintDetector`
-- `./rendering`
-- `./runtime/FrameBudget`
-- `./runtime/RuntimeQuality`
-- `./spatial`
-- `./sprintDetector`
-- `./systems/ai`
-- `./systems/animation`
-- `./systems/assets`
-- `./systems/lod`
-- `./systems/network`
-- `./systems/physics`
-- `./systems/pooling`
-- `./systems/rendering`
-- `./systems/spatial`
-- `./systems/world`
 - `./types`
-- `./unifiedLoop`
-- `./useUnifiedLoop`
 - `./vfx`
-- `./webgpu-runtime-shell`
-- `./world`
-- `./world-crdt`
-- `./xr`
 - `@/components/daydream/dream.JourneyTrail`
 - `@/components/engines/shared`
 - `@/components/gameengin/dream.CartridgeRegistryBootstrap`
@@ -1157,14 +823,7 @@ _No style files for this feature._
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/dreamdm/DreamSystemContext`
 - `@/lib/dreamenginOS`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
-- `@/lib/engins/game`
 - `@/lib/engins/game/gameEnginRuleSet`
 - `@/lib/engins/game/useGameEnginRuntime`
 - `@/lib/forge/forgeIntelligence`
@@ -1174,14 +833,11 @@ _No style files for this feature._
 - `@/lib/gameengin/ai-director`
 - `@/lib/gameengin/backendNegotiator`
 - `@/lib/gameengin/cartridge`
-- `@/lib/gameengin/cartridge-manifest`
 - `@/lib/gameengin/cartridges/loaders`
 - `@/lib/gameengin/cartridges/manifest`
 - `@/lib/gameengin/cartridges/reactCartridge`
-- `@/lib/gameengin/dreamr-loader`
 - `@/lib/gameengin/post-fx`
 - `@/lib/gameengin/registerCartridges`
-- `@/lib/gameengin/systems`
 - `@/lib/games/DualSenseManager`
 - `@/lib/games/avatar`
 - `@/lib/games/catalog`
@@ -1204,39 +860,28 @@ _No style files for this feature._
 - `@/lib/h265-encoder`
 - `@/lib/hooks/useMotionTilt`
 - `@/lib/media/ledger`
-- `@/lib/runtime/channelMetrics`
 - `@/lib/runtime/dreamOSBus`
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/runtime/instanceManager`
-- `@/lib/runtime/madMaxiSnapshotBridge`
-- `@/lib/runtime/moduleRegistry`
-- `@/lib/runtime/runtimeChannel`
-- `@/lib/runtime/sharedResourcePool`
 - `@/lib/runtime/useEnginBridge`
 - `@/lib/runtime/useEnginCoopSync`
 - `@/lib/runtime/useSharedEnginChannel`
 - `@/lib/supabase/client`
-- `@/lib/supabase/safeGetUser`
 - `@/lib/utils`
-- `@/lib/webgpu`
-- `@/types/module-manifest`
 
 ## Special Capabilities
 
-**Dual Runtime** (5 files) · **Supabase** (2 files) · **Event Bus** (10 files) · **React Context** (1 files) · **Runtime Registry** (1 files)
+**Dual Runtime** (3 files) · **Supabase** (1 files) · **Event Bus** (5 files)
 
 ### Dual Runtime files
 
 - `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `engins/engin.GameEngin.tsx`
-- `lib/gameengin/GameRuntime.tsx`
-- `lib/games/DualSenseManager.ts`
 
 ### Supabase files
 
 - `engins/engin.GameEngin.tsx`
-- `lib/gameengin/dream-engine.ts`
 
 ### Event Bus files
 
@@ -1245,19 +890,6 @@ _No style files for this feature._
 - `components/games/dream.AvenueOfMirrors.tsx`
 - `components/games/dream.MadMaxiWildfall.tsx`
 - `engins/engin.GameEngin.tsx`
-- `lib/engins/game/useGameEnginRuntime.ts`
-- `lib/gameengin/GameRuntime.tsx`
-- `lib/gameengin/dream-engine.ts`
-- `lib/gameengin/gameEnginRuntime.ts`
-- `lib/games/gameControllerButtons.ts`
-
-### Context files
-
-- `lib/gameengin/cartridges/reactCartridge.ts`
-
-### Runtime Registry files
-
-- `lib/gameengin/registerCartridges.ts`
 
 ---
 
@@ -1316,21 +948,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/code/`
-
-- `lib/code/drEamsCodeAssist.ts`
-
-### `lib/engins/code/`
-
-- `lib/engins/code/codeEnginRuleSet.ts`
-- `lib/engins/code/useCodeEnginRuntime.ts`
+_No lib files for this feature._
 
 <a name="codeengin-hooks"></a>
 
 ## Exported Hooks
 
 - `useAgentSession` — `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts`
-- `useCodeEnginRuntime` — `lib/engins/code/useCodeEnginRuntime.ts`
 
 <a name="codeengin-api"></a>
 
@@ -1374,7 +998,6 @@ _No style files for this feature._
 - `../modules/ai-co-pilot/dream.panel.AgentPanel`
 - `./CodeEngin/core/parser`
 - `./CodeEngin/modules/ai-co-pilot`
-- `./codeEnginRuleSet`
 - `./dream.CodeEnginApp`
 - `./dream.panel.AgentPanel`
 - `./panels/dream.panel.AIPanel`
@@ -1388,12 +1011,6 @@ _No style files for this feature._
 - `@/engins/engin.CodeEngin`
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/daydream/useDaydreamState`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
 - `@/lib/engins/code/useCodeEnginRuntime`
 - `@/lib/engins/useEnginWorkflow`
@@ -1408,7 +1025,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (3 files)
+**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (2 files)
 
 ### Dual Runtime files
 
@@ -1423,7 +1040,6 @@ _No style files for this feature._
 
 - `components/daydream/dream.CodeDreamIDE.tsx`
 - `engins/engin.CodeEngin.tsx`
-- `lib/engins/code/useCodeEnginRuntime.ts`
 
 ---
 
@@ -1473,16 +1089,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/engins/lab/`
-
-- `lib/engins/lab/labEnginRuleSet.ts`
-- `lib/engins/lab/useLabEnginRuntime.ts`
+_No lib files for this feature._
 
 <a name="labengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useLabEnginRuntime` — `lib/engins/lab/useLabEnginRuntime.ts`
+_No hook exports in this feature._
 
 <a name="labengin-api"></a>
 
@@ -1522,7 +1135,6 @@ _No style files for this feature._
 ### Internal imports
 
 - `./dream.LabEnginApp`
-- `./labEnginRuleSet`
 - `./panels/dream.panel.DataVizPanel`
 - `./panels/dream.panel.ExperimentsPanel`
 - `./panels/dream.panel.QuantumPanel`
@@ -1533,12 +1145,6 @@ _No style files for this feature._
 - `@/engins/engin.LabEngin`
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/dreamenginOS`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
 - `@/lib/engins/lab/useLabEnginRuntime`
 - `@/lib/engins/useEnginWorkflow`
@@ -1553,7 +1159,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (3 files)
+**Dual Runtime** (2 files) · **Supabase** (1 files) · **Event Bus** (2 files)
 
 ### Dual Runtime files
 
@@ -1568,7 +1174,6 @@ _No style files for this feature._
 
 - `components/daydream/dream.LabDreamIDE.tsx`
 - `engins/engin.LabEngin.tsx`
-- `lib/engins/lab/useLabEnginRuntime.ts`
 
 ---
 
@@ -1621,24 +1226,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/engins/music/`
-
-- `lib/engins/music/starMakerEnginRuleSet.ts`
-- `lib/engins/music/useStarMakerEnginRuntime.ts`
-
-### `lib/music/`
-
-- `lib/music/presets.ts`
-- `lib/music/starmaker.ts`
-- `lib/music/starmakerArrangement.ts`
-- `lib/music/starmakerDaw.ts`
-- `lib/music/wasmAudioBridge.ts`
+_No lib files for this feature._
 
 <a name="starmakerengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useStarMakerEnginRuntime` — `lib/engins/music/useStarMakerEnginRuntime.ts`
+_No hook exports in this feature._
 
 <a name="starmakerengin-api"></a>
 
@@ -1681,7 +1275,6 @@ _No style files for this feature._
 - `./panels/dream.panel.ArrangePanel`
 - `./panels/dream.panel.MusicLibraryPanel`
 - `./panels/dream.panel.StudioPanel`
-- `./starMakerEnginRuleSet`
 - `@/components/daydream/dream.JourneyTrail`
 - `@/components/daydream/starmaker/dream.panel.CompingPanel`
 - `@/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel`
@@ -1695,12 +1288,6 @@ _No style files for this feature._
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/daydream/useDaydreamState`
 - `@/lib/dreamenginOS`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
 - `@/lib/engins/music/useStarMakerEnginRuntime`
 - `@/lib/engins/useEnginWorkflow`
@@ -1720,7 +1307,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (1 files) · **Supabase** (1 files) · **Event Bus** (2 files)
+**Dual Runtime** (1 files) · **Supabase** (1 files) · **Event Bus** (1 files)
 
 ### Dual Runtime files
 
@@ -1733,7 +1320,6 @@ _No style files for this feature._
 ### Event Bus files
 
 - `engins/engin.StarMakerEngin.tsx`
-- `lib/engins/music/useStarMakerEnginRuntime.ts`
 
 ---
 
@@ -1776,16 +1362,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/engins/brand/`
-
-- `lib/engins/brand/brandEnginRuleSet.ts`
-- `lib/engins/brand/useBrandEnginRuntime.ts`
+_No lib files for this feature._
 
 <a name="brandengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useBrandEnginRuntime` — `lib/engins/brand/useBrandEnginRuntime.ts`
+_No hook exports in this feature._
 
 <a name="brandengin-api"></a>
 
@@ -1823,7 +1406,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./brandEnginRuleSet`
 - `./dream.BrandEnginApp`
 - `./panels/dream.panel.CampaignsPanel`
 - `./panels/dream.panel.IdentityPanel`
@@ -1834,12 +1416,6 @@ _No style files for this feature._
 - `@/lib/daydream/useDaydreamPersistence`
 - `@/lib/daydream/useDaydreamState`
 - `@/lib/dreamenginOS`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
 - `@/lib/enginpipe`
 - `@/lib/engins/brand/useBrandEnginRuntime`
 - `@/lib/engins/useEnginWorkflow`
@@ -1853,7 +1429,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Dual Runtime** (3 files) · **Supabase** (2 files) · **Event Bus** (3 files)
+**Dual Runtime** (3 files) · **Supabase** (2 files) · **Event Bus** (2 files)
 
 ### Dual Runtime files
 
@@ -1870,7 +1446,6 @@ _No style files for this feature._
 
 - `components/engines/brand/panels/dream.panel.IdentityPanel.tsx`
 - `engins/engin.BrandingEngin.tsx`
-- `lib/engins/brand/useBrandEnginRuntime.ts`
 
 ---
 
@@ -1912,24 +1487,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/content/`
-
-- `lib/content/generativeFill.ts`
-- `lib/content/publishIntent.ts`
-- `lib/content/seoScorer.ts`
-- `lib/content/transcriptEditor.ts`
-- `lib/content/voiceClone.ts`
-
-### `lib/engins/content/`
-
-- `lib/engins/content/contentEnginRuleSet.ts`
-- `lib/engins/content/useContentEnginRuntime.ts`
+_No lib files for this feature._
 
 <a name="createengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useContentEnginRuntime` — `lib/engins/content/useContentEnginRuntime.ts`
+_No hook exports in this feature._
 
 <a name="createengin-api"></a>
 
@@ -1980,7 +1544,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./contentEnginRuleSet`
 - `./dream.CreateEnginApp`
 - `./panels/dream.panel.CalendarPanel`
 - `./panels/dream.panel.EditorPanel`
@@ -1988,21 +1551,6 @@ _No style files for this feature._
 - `@/components/contentengin/ContentEnginStudio`
 - `@/components/engines/shared`
 - `@/engins/engin.ContentEngin`
-- `@/lib/contentengin/assetTypes`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
-- `@/lib/engin-runtime/EnginCapabilityTargets`
-- `@/lib/engin-runtime/EnginIOAdapter`
-- `@/lib/engin-runtime/EnginRuleSetContract`
-- `@/lib/engin-runtime/EnginRuntime`
-
-## Special Capabilities
-
-**Event Bus** (1 files)
-
-### Event Bus files
-
-- `lib/engins/content/useContentEnginRuntime.ts`
 
 ---
 
@@ -2050,14 +1598,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/optimizer/`
-
-- `lib/optimizer/babylon-optimizero.ts`
-- `lib/optimizer/constraint-solver.ts`
-- `lib/optimizer/creative-optimizero.ts`
-- `lib/optimizer/creative-validator.ts`
-- `lib/optimizer/index.ts`
-- `lib/optimizer/types.ts`
+_No lib files for this feature._
 
 <a name="portfolioengin-hooks"></a>
 
@@ -2104,14 +1645,10 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./constraint-solver`
-- `./creative-optimizero`
-- `./creative-validator`
 - `./dream.PortfolioEnginApp`
 - `./panels/dream.panel.AssetsPanel`
 - `./panels/dream.panel.OptimizePanel`
 - `./panels/dream.panel.PortfolioQuantumPanel`
-- `./types`
 - `@/components/daydream/dream.JourneyTrail`
 - `@/components/engines/shared`
 - `@/engins/dream.QuantumCircuitCanvas`
@@ -2168,30 +1705,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/forge/`
-
-- `lib/forge/engineForge.ts`
-- `lib/forge/forgeBuild.ts`
-- `lib/forge/forgeIntelligence.ts`
-- `lib/forge/forgeMomentum.ts`
-- `lib/forge/forgeNexus.ts`
-- `lib/forge/forgeRegistry.ts`
-- `lib/forge/forgeRituals.ts`
-- `lib/forge/useForgeActivity.ts`
-- `lib/forge/useForgeBuild.ts`
-
-### `lib/forge-ngn/`
-
-- `lib/forge-ngn/assembly.ts`
-- `lib/forge-ngn/index.ts`
-- `lib/forge-ngn/piece-registry.ts`
+_No lib files for this feature._
 
 <a name="forgeengin-hooks"></a>
 
 ## Exported Hooks
 
-- `useForgeActivity` — `lib/forge/useForgeActivity.ts`
-- `useForgeBuild` — `lib/forge/useForgeBuild.ts`
+_No hook exports in this feature._
 
 <a name="forgeengin-api"></a>
 
@@ -2232,15 +1752,9 @@ _No style files for this feature._
 - `lucide-react`
 - `next`
 - `react`
-- `uuid`
 
 ### Internal imports
 
-- `../componentInventory`
-- `../eventBus`
-- `./assembly`
-- `./forgeRegistry`
-- `./piece-registry`
 - `@/components/daydream/dream.JourneyTrail`
 - `@/components/dream.BrandLogo`
 - `@/components/forge/dream.panel.AIBuilderPanel`
@@ -2256,19 +1770,14 @@ _No style files for this feature._
 - `@/lib/forge/useForgeActivity`
 - `@/lib/forge/useForgeBuild`
 - `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/utils`
 
 ## Special Capabilities
 
-**Dual Runtime** (1 files) · **Event Bus** (1 files)
+**Dual Runtime** (1 files)
 
 ### Dual Runtime files
 
 - `engins/dream.ForgeEngin.tsx`
-
-### Event Bus files
-
-- `lib/forge/engineForge.ts`
 
 ---
 
@@ -2320,17 +1829,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/daydream/`
-
-- `lib/daydream/useDaydreamPersistence.ts`
-- `lib/daydream/useDaydreamState.ts`
+_No lib files for this feature._
 
 <a name="daydream-hooks"></a>
 
 ## Exported Hooks
 
-- `useDaydreamPersistence` — `lib/daydream/useDaydreamPersistence.ts`
-- `useDaydreamState` — `lib/daydream/useDaydreamState.ts`
+_No hook exports in this feature._
 
 <a name="daydream-api"></a>
 
@@ -2397,19 +1902,8 @@ _No style files for this feature._
 - `@/lib/gsap/useGsapFlip`
 - `@/lib/journey/journeyDots`
 - `@/lib/journey/journeyInsights`
-- `@/lib/supabase/client`
-- `@/lib/supabase/safeGetUser`
 - `@/lib/utils`
 - `@/types/journey`
-
-## Special Capabilities
-
-**Supabase** (2 files)
-
-### Supabase files
-
-- `lib/daydream/useDaydreamPersistence.ts`
-- `lib/daydream/useDaydreamState.ts`
 
 ---
 
@@ -2455,9 +1949,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/dreams/`
-
-- `lib/dreams/profileProjection.ts`
+_No lib files for this feature._
 
 <a name="profile-hooks"></a>
 
@@ -2515,7 +2007,6 @@ _No style files for this feature._
 - `@/components/ui/dream.DreamWord`
 - `@/components/ui/dream.PlatformBadge`
 - `@/hooks/use-spatial`
-- `@/lib/dreams/types`
 - `@/lib/navigation/NavStateBuffer`
 - `@/lib/navigation/SpatialNavigationEngine`
 - `@/lib/navigation/WidgetInstanceMemory`
@@ -2583,25 +2074,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/widgets/`
-
-- `lib/widgets/CrossWidgetPosting.ts`
-- `lib/widgets/WidgetBus.ts`
-- `lib/widgets/WidgetEngine.tsx`
-- `lib/widgets/WidgetEventBus.ts`
-- `lib/widgets/WidgetLinkGraph.ts`
-- `lib/widgets/feed-resolver.ts`
-- `lib/widgets/parse.ts`
-- `lib/widgets/parseConfig.ts`
-- `lib/widgets/useWidget.ts`
-- `lib/widgets/widgetRegistry.ts`
+_No lib files for this feature._
 
 <a name="widgets-hooks"></a>
 
 ## Exported Hooks
 
 - `useEditMode` — `components/widgets/dream.EditModeProvider.tsx`
-- `useWidget` — `lib/widgets/useWidget.ts`
 
 <a name="widgets-api"></a>
 
@@ -2645,9 +2124,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./WidgetBus`
-- `./WidgetEventBus`
-- `./WidgetLinkGraph`
 - `./dream.EditModeProvider`
 - `./dream.widget.WidgetCard`
 - `@/components/dreams/dream.widget.SuperDreamWidget`
@@ -2657,18 +2133,10 @@ _No style files for this feature._
 - `@/lib/navigation/NavStateBuffer`
 - `@/lib/navigation/ReturnStack`
 - `@/lib/navigation/WidgetInstanceMemory`
-- `@/lib/supabase/server`
-- `@/lib/utils`
-- `@/types/widget-system-v2`
-- `@/types/widgetConfigs`
 
 ## Special Capabilities
 
-**Event Bus** (1 files) · **React Context** (1 files)
-
-### Event Bus files
-
-- `lib/widgets/feed-resolver.ts`
+**React Context** (1 files)
 
 ### Context files
 
@@ -2709,33 +2177,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/`
-
-- `lib/social-feed.ts`
-
-### `lib/feed/`
-
-- `lib/feed/feedTopics.ts`
-- `lib/feed/hashtags.ts`
-- `lib/feed/useLiveFeed.ts`
-- `lib/feed/useYouTubeLiveFeed.ts`
-
-### `lib/social/`
-
-- `lib/social/crossPost.ts`
-- `lib/social/livekit.ts`
-- `lib/social/normalizers.ts`
-- `lib/social/platforms.ts`
-- `lib/social/rss-feed.ts`
-- `lib/social/useSocialData.ts`
+_No lib files for this feature._
 
 <a name="feed-hooks"></a>
 
 ## Exported Hooks
 
-- `useLiveFeed` — `lib/feed/useLiveFeed.ts`
-- `useYouTubeLiveFeed` — `lib/feed/useYouTubeLiveFeed.ts`
-- `useSocialData` — `lib/social/useSocialData.ts`
+_No hook exports in this feature._
 
 <a name="feed-api"></a>
 
@@ -2795,11 +2243,9 @@ _No style files for this feature._
 - `lucide-react`
 - `next`
 - `react`
-- `rss-parser`
 
 ### Internal imports
 
-- `./platforms`
 - `@/components/ads/dream.AdUnit`
 - `@/components/feed/dream.CommentSection`
 - `@/components/feed/dream.FeedVideoCard`
@@ -2807,34 +2253,23 @@ _No style files for this feature._
 - `@/components/profile/dream.EditableAvatar`
 - `@/components/ui/dream.SocialShareSheet`
 - `@/components/universe`
-- `@/engine/io`
 - `@/lib/activity/types`
 - `@/lib/dreamdm/DreamSystemContext`
-- `@/lib/feed/feedTopics`
 - `@/lib/feed/useLiveFeed`
 - `@/lib/feed/useYouTubeLiveFeed`
 - `@/lib/media/ledger`
-- `@/lib/media/postMedia`
-- `@/lib/social/normalizers`
 - `@/lib/supabase/client`
 - `@/lib/ui/runtimeViewport`
 - `@/lib/utils`
 - `@/lib/widgets/parseConfig`
-- `@/types/connector`
 
 ## Special Capabilities
 
-**Supabase** (2 files) · **Event Bus** (2 files)
+**Supabase** (1 files)
 
 ### Supabase files
 
 - `components/dream.HomeFeed.tsx`
-- `lib/feed/useLiveFeed.ts`
-
-### Event Bus files
-
-- `lib/feed/useLiveFeed.ts`
-- `lib/social/livekit.ts`
 
 ---
 
@@ -3009,42 +2444,12 @@ _No page routes for this feature._
 
 - `hooks/useDreamLayout.ts`
 
-### `lib/dreamnav/`
-
-- `lib/dreamnav/delta.ts`
-- `lib/dreamnav/gctAssist.ts`
-- `lib/dreamnav/gestures6.ts`
-- `lib/dreamnav/path.ts`
-- `lib/dreamnav/tau.ts`
-
-### `lib/navigation/`
-
-- `lib/navigation/AnchorStateBuffer.ts`
-- `lib/navigation/AnchorWidgetStorage.ts`
-- `lib/navigation/GestureFrameComputer.ts`
-- `lib/navigation/GestureIntentResolver.ts`
-- `lib/navigation/NavStateBuffer.ts`
-- `lib/navigation/PointerEventCapture.ts`
-- `lib/navigation/ReturnStack.ts`
-- `lib/navigation/SpatialNavigationEngine.ts`
-- `lib/navigation/StructureLedger.ts`
-- `lib/navigation/TransformSolver.ts`
-- `lib/navigation/WidgetInstanceMemory.ts`
-- `lib/navigation/anchorField.ts`
-- `lib/navigation/dream-state.ts`
-- `lib/navigation/index.ts`
-- `lib/navigation/manifold.ts`
-- `lib/navigation/physics.ts`
-- `lib/navigation/quaternion.ts`
-- `lib/navigation/useNavigation.ts`
-
 <a name="menus-hooks"></a>
 
 ## Exported Hooks
 
 - `useDreamNav` — `components/dreamnav/dreamsurface.dreamnav.tsx`
 - `useDreamLayout` — `hooks/useDreamLayout.ts`
-- `useNavigation` — `lib/navigation/useNavigation.ts`
 
 <a name="menus-api"></a>
 
@@ -3081,37 +2486,12 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./AnchorStateBuffer`
-- `./AnchorWidgetStorage`
-- `./GestureFrameComputer`
-- `./GestureIntentResolver`
-- `./NavStateBuffer`
-- `./PointerEventCapture`
-- `./ReturnStack`
-- `./SpatialNavigationEngine`
-- `./StructureLedger`
-- `./TransformSolver`
-- `./WidgetInstanceMemory`
-- `./anchorField`
-- `./delta`
-- `./dream-state`
 - `./dream.panel.MenuPanel`
-- `./manifold`
-- `./physics`
-- `./quaternion`
-- `./tau`
-- `./useNavigation`
 - `@/lib/dreamnav/delta`
-- `@/lib/gct`
 
 ## Special Capabilities
 
-**Event Bus** (2 files) · **React Context** (1 files)
-
-### Event Bus files
-
-- `lib/navigation/SpatialNavigationEngine.ts`
-- `lib/navigation/useNavigation.ts`
+**React Context** (1 files)
 
 ### Context files
 
@@ -3150,21 +2530,13 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/dreamdm/`
-
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMDraft.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/dreamdm/useMessagingCore.ts`
+_No lib files for this feature._
 
 <a name="messages-hooks"></a>
 
 ## Exported Hooks
 
-- `useDreamDMConversations` — `lib/dreamdm/useDreamDMConversations.ts`
-- `useDreamDMDraft` — `lib/dreamdm/useDreamDMDraft.ts`
-- `useDreamDMMessages` — `lib/dreamdm/useDreamDMMessages.ts`
-- `useMessagingCore` — `lib/dreamdm/useMessagingCore.ts`
+_No hook exports in this feature._
 
 <a name="messages-api"></a>
 
@@ -3204,8 +2576,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./useDreamDMMessages`
-- `@/engine/io`
 - `@/lib/dreamdm/useDreamDMDraft`
 - `@/lib/dreamdm/useDreamDMMessages`
 - `@/lib/dreamdm/useDreamSearch`
@@ -3215,19 +2585,11 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (4 files) · **Event Bus** (2 files)
+**Supabase** (1 files)
 
 ### Supabase files
 
 - `components/dream.MessagesClient.tsx`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/dreamdm/useMessagingCore.ts`
-
-### Event Bus files
-
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
 
 ---
 
@@ -3255,21 +2617,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/dreamdm/`
-
-- `lib/dreamdm/useNotifications.ts`
-
-### `lib/notifications/`
-
-- `lib/notifications/notificationHelpers.ts`
-- `lib/notifications/useNotifications.ts`
+_No lib files for this feature._
 
 <a name="notifications-hooks"></a>
 
 ## Exported Hooks
 
-- `useNotifications` — `lib/dreamdm/useNotifications.ts`
-- `useNotifications` — `lib/notifications/useNotifications.ts`
+_No hook exports in this feature._
 
 <a name="notifications-api"></a>
 
@@ -3308,10 +2662,8 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./notificationHelpers`
 - `@/lib/notifications/notificationHelpers`
 - `@/lib/notifications/useNotifications`
-- `@/lib/utils`
 
 ---
 
@@ -3348,38 +2700,6 @@ _No style files for this feature._
 ### `hooks/`
 
 - `hooks/useConnectorInstallFlow.ts`
-
-### `lib/connectors/`
-
-- `lib/connectors/connectorRegistry.ts`
-- `lib/connectors/deliveryStrategy.ts`
-- `lib/connectors/installFlow.ts`
-- `lib/connectors/normalise.ts`
-- `lib/connectors/reconcile.ts`
-- `lib/connectors/syncDispatch.ts`
-- `lib/connectors/webhookVerification.ts`
-- `lib/connectors/youtube.ts`
-
-### `lib/connectors/providers/`
-
-- `lib/connectors/providers/bluesky.ts`
-- `lib/connectors/providers/devto.ts`
-- `lib/connectors/providers/facebook.ts`
-- `lib/connectors/providers/github.ts`
-- `lib/connectors/providers/hackernews.ts`
-- `lib/connectors/providers/instagram.ts`
-- `lib/connectors/providers/mastodon.ts`
-- `lib/connectors/providers/medium.ts`
-- `lib/connectors/providers/nostr.ts`
-- `lib/connectors/providers/pinterest.ts`
-- `lib/connectors/providers/podcast.ts`
-- `lib/connectors/providers/reddit.ts`
-- `lib/connectors/providers/shellhub.ts`
-- `lib/connectors/providers/substack.ts`
-- `lib/connectors/providers/tiktok.ts`
-- `lib/connectors/providers/tumblr.ts`
-- `lib/connectors/providers/twitter.ts`
-- `lib/connectors/providers/youtube.ts`
 
 <a name="connectors-hooks"></a>
 
@@ -3430,48 +2750,23 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
 - `lucide-react`
 - `next`
 - `react`
 
 ### Internal imports
 
-- `./normalise`
-- `./syncDispatch`
 - `@/components/connectors/dream.AddSliceSheet`
 - `@/components/connectors/dream.ConnectorRow`
 - `@/components/connectors/dream.NoSlotDialog`
 - `@/components/connectors/dream.PlacementMode`
 - `@/components/connectors/dream.widget.ConnectWidgetPrompt`
 - `@/components/widgets/dream.widget.WidgetShell`
-- `@/engine/io`
 - `@/hooks/useConnectorInstallFlow`
 - `@/lib/connectors/connectorRegistry`
 - `@/lib/connectors/installFlow`
-- `@/lib/connectors/normalise`
-- `@/lib/connectors/providers/bluesky`
-- `@/lib/connectors/providers/github`
-- `@/lib/connectors/providers/instagram`
-- `@/lib/connectors/providers/mastodon`
-- `@/lib/connectors/providers/nostr`
-- `@/lib/connectors/providers/reddit`
-- `@/lib/connectors/providers/youtube`
-- `@/lib/social/rss-feed`
-- `@/lib/supabase/server`
-- `@/lib/utils`
 - `@/lib/widgets/widgetRegistry`
-- `@/types/connector`
-- `@/types/supabase`
 - `@/types/widgets`
-
-## Special Capabilities
-
-**Supabase** (1 files)
-
-### Supabase files
-
-- `lib/connectors/youtube.ts`
 
 ---
 
@@ -3509,18 +2804,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/activity/`
-
-- `lib/activity/skipCredits.ts`
-
-### `lib/marketplace/`
-
-- `lib/marketplace/listings.ts`
-- `lib/marketplace/request.ts`
-
-### `lib/shop/`
-
-- `lib/shop/listings.ts`
+_No lib files for this feature._
 
 <a name="marketplace-hooks"></a>
 
@@ -3574,8 +2858,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./listings`
-- `./types`
 - `@/lib/activity/types`
 - `@/lib/utils`
 
@@ -3613,21 +2895,12 @@ _No page routes for this feature._
 
 - `hooks/useSharedDream.ts`
 
-### `lib/`
-
-- `lib/sharedDream.ts`
-
-### `lib/sharedDream/`
-
-- `lib/sharedDream/useSharedDreamSession.ts`
-
 <a name="shared-dream-hooks"></a>
 
 ## Exported Hooks
 
 - `useSharedDream` — `components/shared-dream/dream.SharedDreamProvider.tsx`
 - `useSharedDream` — `hooks/useSharedDream.ts`
-- `useSharedDreamSession` — `lib/sharedDream/useSharedDreamSession.ts`
 
 <a name="shared-dream-api"></a>
 
@@ -3670,18 +2943,15 @@ _No style files for this feature._
 - `./dream.SharedDreamCanvas`
 - `./dream.SharedDreamProvider`
 - `./dream.SharedDreamRuntime`
-- `./sharedDream/useSharedDreamSession`
-- `@/engine/io`
 - `@/lib/collaboration`
 - `@/lib/runtime/dualRuntimeBridge`
 - `@/lib/sharedDream`
 - `@/lib/sharedDream/useSharedDreamSession`
 - `@/lib/supabase/client`
-- `@/lib/supabase/safeGetUser`
 
 ## Special Capabilities
 
-**Dual Runtime** (1 files) · **Supabase** (3 files) · **Event Bus** (1 files) · **React Context** (1 files)
+**Dual Runtime** (1 files) · **Supabase** (2 files) · **Event Bus** (1 files) · **React Context** (1 files)
 
 ### Dual Runtime files
 
@@ -3691,7 +2961,6 @@ _No style files for this feature._
 
 - `components/shared-dream/dream.SharedDreamProvider.tsx`
 - `hooks/useSharedDream.ts`
-- `lib/sharedDream/useSharedDreamSession.ts`
 
 ### Event Bus files
 
@@ -3736,18 +3005,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/ui/`
-
-- `lib/ui/CustomizeModeContext.tsx`
-- `lib/ui/skin-engine.ts`
-- `lib/ui/theme-engine.ts`
-- `lib/ui/theme.ts`
+_No lib files for this feature._
 
 <a name="customize-hooks"></a>
 
 ## Exported Hooks
 
-- `useCustomizeMode` — `lib/ui/CustomizeModeContext.tsx`
+_No hook exports in this feature._
 
 <a name="customize-api"></a>
 
@@ -3793,14 +3057,6 @@ _No style files for this feature._
 - `@/lib/ui/CustomizeModeContext`
 - `@/lib/ui/skin-engine`
 
-## Special Capabilities
-
-**React Context** (1 files)
-
-### Context files
-
-- `lib/ui/CustomizeModeContext.tsx`
-
 ---
 
 <a name="auth"></a>
@@ -3831,9 +3087,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/auth/`
-
-- `lib/auth/nextRedirect.ts`
+_No lib files for this feature._
 
 <a name="auth-hooks"></a>
 
@@ -3926,43 +3180,6 @@ _No page routes for this feature._
 
 - `dr-eams/tools.ts`
 
-### `lib/agents/`
-
-- `lib/agents/agentBus.ts`
-- `lib/agents/boogieManAI.ts`
-- `lib/agents/drEamsMode.ts`
-- `lib/agents/dreamengin.ts`
-- `lib/agents/idari.ts`
-- `lib/agents/idariLoop.ts`
-- `lib/agents/teachBus.ts`
-- `lib/agents/uiActions.ts`
-
-### `lib/ai/`
-
-- `lib/ai/CIC.ts`
-- `lib/ai/audit.ts`
-- `lib/ai/boogie-policy.ts`
-- `lib/ai/boogie-verifier.ts`
-- `lib/ai/boogieman.ts`
-- `lib/ai/capability-gate.ts`
-- `lib/ai/confirm-token.ts`
-- `lib/ai/confirm.ts`
-- `lib/ai/groq.ts`
-- `lib/ai/idempotency.ts`
-- `lib/ai/rate-limiter.ts`
-- `lib/ai/rateLimit.ts`
-- `lib/ai/schemas.ts`
-- `lib/ai/tfBackend.ts`
-- `lib/ai/tool-router.ts`
-- `lib/ai/triad.ts`
-
-### `lib/ai/handlers/`
-
-- `lib/ai/handlers/dreams.ts`
-- `lib/ai/handlers/index.ts`
-- `lib/ai/handlers/navigation.ts`
-- `lib/ai/handlers/social.ts`
-
 <a name="ai-hooks"></a>
 
 ## Exported Hooks
@@ -4011,59 +3228,28 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
-- `@tensorflow/tfjs`
-- `@tensorflow/tfjs-backend-webgpu`
-- `crypto`
 - `lucide-react`
 - `next`
 - `react`
 - `uuid`
-- `zod`
 
 ### Internal imports
 
-- `../tool-router`
-- `./audit`
-- `./boogie-policy`
-- `./dreams`
-- `./navigation`
-- `./schemas`
-- `./social`
-- `@/engine/io`
 - `@/lib/activity/types`
 - `@/lib/agents/agentBus`
 - `@/lib/agents/drEamsMode`
 - `@/lib/agents/idari`
 - `@/lib/agents/teachBus`
 - `@/lib/agents/uiActions`
-- `@/lib/ai/boogie-policy`
-- `@/lib/ai/groq`
 - `@/lib/ai/schemas`
 - `@/lib/ai/triad`
 - `@/lib/observability/collector`
 - `@/lib/observability/correlator`
 - `@/lib/observability/immediateAction`
 - `@/lib/observability/rootCauseAnalyzer`
-- `@/lib/supabase/safeGetUser`
-- `@/lib/supabase/server`
 - `@/lib/ui/theme`
 - `@/lib/utils`
 - `@/types/ai`
-- `@/types/ai-system`
-
-## Special Capabilities
-
-**Supabase** (6 files)
-
-### Supabase files
-
-- `lib/ai/boogie-verifier.ts`
-- `lib/ai/capability-gate.ts`
-- `lib/ai/confirm-token.ts`
-- `lib/ai/handlers/social.ts`
-- `lib/ai/rate-limiter.ts`
-- `lib/ai/rateLimit.ts`
 
 ---
 
@@ -4091,13 +3277,7 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/child-safety/`
-
-- `lib/child-safety/childSafetyDetector.ts`
-- `lib/child-safety/imageClassifier.ts`
-- `lib/child-safety/messageContextChecker.ts`
-- `lib/child-safety/ncmecReporter.ts`
-- `lib/child-safety/scanMediaUrls.ts`
+_No lib files for this feature._
 
 <a name="child-safety-hooks"></a>
 
@@ -4136,30 +3316,12 @@ _No style files for this feature._
 
 ### External packages
 
-- `@supabase/supabase-js`
-- `crypto`
 - `lucide-react`
 - `react`
 
 ### Internal imports
 
-- `./childSafetyDetector`
-- `./imageClassifier`
-- `@/lib/ai/groq`
-- `@/lib/child-safety/childSafetyDetector`
-- `@/lib/child-safety/messageContextChecker`
-- `@/lib/child-safety/scanMediaUrls`
-- `@/lib/supabase/server`
 - `@/lib/utils`
-
-## Special Capabilities
-
-**Supabase** (2 files)
-
-### Supabase files
-
-- `lib/child-safety/ncmecReporter.ts`
-- `lib/child-safety/scanMediaUrls.ts`
 
 ---
 
@@ -4189,16 +3351,7 @@ _No style files for this feature._
 
 ## Lib / Logic
 
-### `lib/observability/`
-
-- `lib/observability/collector.ts`
-- `lib/observability/correlator.ts`
-- `lib/observability/healthTrend.ts`
-- `lib/observability/immediateAction.ts`
-- `lib/observability/index.ts`
-- `lib/observability/otel.ts`
-- `lib/observability/otelBridge.ts`
-- `lib/observability/rootCauseAnalyzer.ts`
+_No lib files for this feature._
 
 <a name="observability-hooks"></a>
 
@@ -4242,34 +3395,11 @@ _No style files for this feature._
 
 ### External packages
 
-- `@opentelemetry/api`
-- `@opentelemetry/exporter-prometheus`
-- `@opentelemetry/exporter-trace-otlp-http`
-- `@opentelemetry/resources`
-- `@opentelemetry/sdk-metrics`
-- `@opentelemetry/sdk-trace-node`
-- `@opentelemetry/semantic-conventions`
-- `node:http`
 - `react`
 
 ### Internal imports
 
-- `./collector`
-- `./correlator`
-- `./otel`
-- `./otelBridge`
-- `./rootCauseAnalyzer`
 - `@/lib/activity/types`
-- `@/lib/agents/idari`
-- `@/lib/agents/idariLoop`
-
-## Special Capabilities
-
-**Runtime Registry** (1 files)
-
-### Runtime Registry files
-
-- `lib/observability/otel.ts`
 
 ---
 
@@ -4304,30 +3434,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/babylon/`
-
-- `lib/babylon/createEngine.ts`
-- `lib/babylon/dreamengine-hybrid.ts`
-
-### `lib/optimizer/`
-
-- `lib/optimizer/babylon-optimizero.ts`
-- `lib/optimizer/constraint-solver.ts`
-- `lib/optimizer/creative-optimizero.ts`
-- `lib/optimizer/creative-validator.ts`
-- `lib/optimizer/index.ts`
-- `lib/optimizer/types.ts`
-
-### `lib/webgpu/`
-
-- `lib/webgpu/adaptiveQuality.ts`
-- `lib/webgpu/director.ts`
-- `lib/webgpu/useWebGPUDirector.ts`
-
 ### `optimizer/`
 
+- `optimizer/babylon-optimizero.ts`
 - `optimizer/constraint-solver.ts`
+- `optimizer/creative-optimizero.ts`
 - `optimizer/creative-validator.ts`
+- `optimizer/index.from-lib.ts`
 - `optimizer/index.ts`
 - `optimizer/types.ts`
 
@@ -4335,7 +3448,6 @@ _No page routes for this feature._
 
 ## Exported Hooks
 
-- `useWebGPUDirector` — `lib/webgpu/useWebGPUDirector.ts`
 - `useDreamLogoScene` — `src/lib/babylon/useDreamLogoScene.ts`
 
 <a name="webgpu-babylon-api"></a>
@@ -4379,7 +3491,6 @@ _No style files for this feature._
 - `./constraint-solver`
 - `./creative-optimizero`
 - `./creative-validator`
-- `./director`
 - `./renderer`
 - `./shaders`
 - `./types`
@@ -4388,7 +3499,6 @@ _No style files for this feature._
 - `@/lib/optimizer/babylon-optimizero`
 - `@/lib/optimizer/creative-optimizero`
 - `@/lib/webgpu`
-- `@/lib/webgpu/director`
 
 ---
 
@@ -4416,16 +3526,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/warp/`
-
-- `lib/warp/useWarp.ts`
-- `lib/warp/warpEngine.ts`
+_No lib files for this feature._
 
 <a name="warp-hooks"></a>
 
 ## Exported Hooks
 
-- `useWarp` — `lib/warp/useWarp.ts`
+_No hook exports in this feature._
 
 <a name="warp-api"></a>
 
@@ -4455,13 +3562,8 @@ _No style files for this feature._
 
 ## Dependencies
 
-### External packages
-
-- `react`
-
 ### Internal imports
 
-- `./warpEngine`
 - `@/lib/warp/useWarp`
 - `@/lib/warp/warpEngine`
 
@@ -4494,22 +3596,6 @@ _No component files for this feature._
 - `assembly/bus.ts`
 - `assembly/index.ts`
 - `assembly/mad-maxi-player.ts`
-
-### `lib/vm/`
-
-- `lib/vm/bufferManager.ts`
-- `lib/vm/bus-events.ts`
-- `lib/vm/dual-runtime.ts`
-- `lib/vm/dualVMCoordinator.ts`
-- `lib/vm/index.ts`
-- `lib/vm/inter-vm-messaging.ts`
-- `lib/vm/pipelineCache.ts`
-- `lib/vm/resource-quota.ts`
-- `lib/vm/security.ts`
-- `lib/vm/snapshot.ts`
-- `lib/vm/types.ts`
-- `lib/vm/wasm-features.ts`
-- `lib/vm/wasmGpuVM.ts`
 
 <a name="vm-hooks"></a>
 
@@ -4546,36 +3632,7 @@ _No style files for this feature._
 
 ## Dependencies
 
-### Internal imports
-
-- `./bufferManager`
-- `./bus-events`
-- `./dual-runtime`
-- `./dualVMCoordinator`
-- `./inter-vm-messaging`
-- `./pipelineCache`
-- `./resource-quota`
-- `./security`
-- `./snapshot`
-- `./types`
-- `./wasm-features`
-- `./wasmGpuVM`
-- `@/lib/runtime/dualRuntimeBridge`
-
-## Special Capabilities
-
-**Dual Runtime** (4 files) · **Event Bus** (1 files)
-
-### Dual Runtime files
-
-- `lib/vm/bus-events.ts`
-- `lib/vm/dual-runtime.ts`
-- `lib/vm/dualVMCoordinator.ts`
-- `lib/vm/index.ts`
-
-### Event Bus files
-
-- `lib/vm/dual-runtime.ts`
+_No dependencies detected._
 
 ---
 
@@ -4603,11 +3660,7 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/journey/`
-
-- `lib/journey/journeyDots.ts`
-- `lib/journey/journeyInsights.ts`
-- `lib/journey/withJourney.ts`
+_No lib files for this feature._
 
 <a name="journey-hooks"></a>
 
@@ -4651,7 +3704,6 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `@/lib/journey/journeyDots`
 - `@/lib/journey/journeyInsights`
 - `@/types/journey`
 
@@ -4683,61 +3735,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/engins/`
-
-- `lib/engins/useEnginWorkflow.ts`
-- `lib/engins/workflowEngine.ts`
-
-### `lib/runtime/`
-
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/channelMetrics.ts`
-- `lib/runtime/coercionTable.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dropTargetRegistry.ts`
-- `lib/runtime/dualRuntime.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/enginWorkflowRegistry.ts`
-- `lib/runtime/iEngine.ts`
-- `lib/runtime/instanceManager.ts`
-- `lib/runtime/isAuthRelatedError.ts`
-- `lib/runtime/madMaxiSnapshotBridge.ts`
-- `lib/runtime/memory.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/offlineQueue.ts`
-- `lib/runtime/quantumCircuit.ts`
-- `lib/runtime/runtimeChannel.ts`
-- `lib/runtime/runtimeContainer.ts`
-- `lib/runtime/seamClipboard.ts`
-- `lib/runtime/sharedResourcePool.ts`
-- `lib/runtime/snapshotFingerprint.ts`
-- `lib/runtime/swapManager.ts`
-- `lib/runtime/useDragSurface.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useDualRuntimePersistence.ts`
-- `lib/runtime/useEnginBridge.ts`
-- `lib/runtime/useEnginCoopSync.ts`
-- `lib/runtime/useSharedEnginChannel.ts`
+_No lib files for this feature._
 
 <a name="runtime-core-hooks"></a>
 
 ## Exported Hooks
 
 - `useDualRuntime` — `components/runtime/dream.DualRuntimeContainer.tsx`
-- `useEnginWorkflow` — `lib/engins/useEnginWorkflow.ts`
-- `useInstanceManager` — `lib/runtime/instanceManager.ts`
-- `useModuleRegistry` — `lib/runtime/moduleRegistry.ts`
-- `useDragSurface` — `lib/runtime/useDragSurface.ts`
-- `useDualRuntime` — `lib/runtime/useDualRuntime.ts`
-- `useDualRuntimePersistence` — `lib/runtime/useDualRuntimePersistence.ts`
-- `useCodeEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useGameEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useStarMakerEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useLabEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useBrandingEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useContentEnginBridge` — `lib/runtime/useEnginBridge.ts`
-- `useEnginCoopSync` — `lib/runtime/useEnginCoopSync.ts`
-- `useSharedEnginChannel` — `lib/runtime/useSharedEnginChannel.ts`
 
 <a name="runtime-core-api"></a>
 
@@ -4780,18 +3784,11 @@ _No style files for this feature._
 
 ### External packages
 
-- `events`
 - `next`
-- `pending`
 - `react`
-- `zustand`
 
 ### Internal imports
 
-- `./dualRuntime`
-- `./dualRuntimeBridge`
-- `./memory`
-- `./workflowEngine`
 - `@/app/dreamdmbar/_components/HomeDreamRegion`
 - `@/components/dreams/dreamsurface.dreamspace`
 - `@/components/panels/dream.panel.AlgorithmPanel`
@@ -4817,88 +3814,26 @@ _No style files for this feature._
 - `@/engins/engin.LabEngin`
 - `@/engins/engin.StarMakerEngin`
 - `@/lib/dreams/DreamRegistry`
-- `@/lib/engin-runtime/EnginBaseState`
-- `@/lib/engin-runtime/EnginCapabilities`
 - `@/lib/forge/forgeRegistry`
 - `@/lib/identity/canonical-names`
-- `@/lib/journey/journeyDots`
-- `@/lib/observability/collector`
 - `@/lib/panels/panelTypes`
-- `@/lib/runtime/channelMetrics`
-- `@/lib/runtime/coercionTable`
-- `@/lib/runtime/dreamOSBus`
-- `@/lib/runtime/dropTargetRegistry`
 - `@/lib/runtime/dualRuntime`
-- `@/lib/runtime/dualRuntimeBridge`
-- `@/lib/runtime/enginWorkflowRegistry`
 - `@/lib/runtime/iEngine`
-- `@/lib/runtime/instanceManager`
-- `@/lib/runtime/madMaxiSnapshotBridge`
-- `@/lib/runtime/runtimeChannel`
-- `@/lib/runtime/runtimeContainer`
-- `@/lib/runtime/useSharedEnginChannel`
-- `@/lib/supabase/client`
 - `@/lib/ui/runtimeViewport`
-- `@/lib/utils`
-- `@/lib/vm/wasmGpuVM`
 - `@/types/dreamArtifact`
-- `@/types/module-manifest`
-- `@/types/widgets`
 
 ## Special Capabilities
 
-**Dual Runtime** (17 files) · **Supabase** (1 files) · **Event Bus** (7 files) · **Zustand** (2 files) · **React Context** (1 files) · **Runtime Registry** (5 files)
+**Dual Runtime** (2 files) · **React Context** (1 files)
 
 ### Dual Runtime files
 
 - `components/runtime/dream.DualRuntimeContainer.tsx`
 - `components/runtime/dream.RuntimeView.tsx`
-- `lib/engins/useEnginWorkflow.ts`
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/channelMetrics.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dualRuntime.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/enginWorkflowRegistry.ts`
-- `lib/runtime/iEngine.ts`
-- `lib/runtime/memory.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/quantumCircuit.ts`
-- `lib/runtime/seamClipboard.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useDualRuntimePersistence.ts`
-- `lib/runtime/useEnginBridge.ts`
-
-### Supabase files
-
-- `lib/runtime/instanceManager.ts`
-
-### Event Bus files
-
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/runtimeChannel.ts`
-- `lib/runtime/seamClipboard.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useEnginBridge.ts`
-- `lib/runtime/useSharedEnginChannel.ts`
-
-### Zustand files
-
-- `lib/runtime/instanceManager.ts`
-- `lib/runtime/moduleRegistry.ts`
 
 ### Context files
 
 - `components/runtime/dream.DualRuntimeContainer.tsx`
-
-### Runtime Registry files
-
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dropTargetRegistry.ts`
-- `lib/runtime/memory.ts`
-- `lib/runtime/useDragSurface.ts`
 
 ---
 
@@ -4927,47 +3862,13 @@ _No page routes for this feature._
 
 ## Lib / Logic
 
-### `lib/dreamnav/`
-
-- `lib/dreamnav/delta.ts`
-- `lib/dreamnav/gctAssist.ts`
-- `lib/dreamnav/gestures6.ts`
-- `lib/dreamnav/path.ts`
-- `lib/dreamnav/tau.ts`
-
-### `lib/gestures/`
-
-- `lib/gestures/touchGestures.ts`
-- `lib/gestures/useTouchGestures.ts`
-
-### `lib/navigation/`
-
-- `lib/navigation/AnchorStateBuffer.ts`
-- `lib/navigation/AnchorWidgetStorage.ts`
-- `lib/navigation/GestureFrameComputer.ts`
-- `lib/navigation/GestureIntentResolver.ts`
-- `lib/navigation/NavStateBuffer.ts`
-- `lib/navigation/PointerEventCapture.ts`
-- `lib/navigation/ReturnStack.ts`
-- `lib/navigation/SpatialNavigationEngine.ts`
-- `lib/navigation/StructureLedger.ts`
-- `lib/navigation/TransformSolver.ts`
-- `lib/navigation/WidgetInstanceMemory.ts`
-- `lib/navigation/anchorField.ts`
-- `lib/navigation/dream-state.ts`
-- `lib/navigation/index.ts`
-- `lib/navigation/manifold.ts`
-- `lib/navigation/physics.ts`
-- `lib/navigation/quaternion.ts`
-- `lib/navigation/useNavigation.ts`
+_No lib files for this feature._
 
 <a name="dreamnav-hooks"></a>
 
 ## Exported Hooks
 
 - `useDreamNav` — `components/dreamnav/dreamsurface.dreamnav.tsx`
-- `useTouchGestures` — `lib/gestures/useTouchGestures.ts`
-- `useNavigation` — `lib/navigation/useNavigation.ts`
 
 <a name="dreamnav-api"></a>
 
@@ -5005,37 +3906,11 @@ _No style files for this feature._
 
 ### Internal imports
 
-- `./AnchorStateBuffer`
-- `./AnchorWidgetStorage`
-- `./GestureFrameComputer`
-- `./GestureIntentResolver`
-- `./NavStateBuffer`
-- `./PointerEventCapture`
-- `./ReturnStack`
-- `./SpatialNavigationEngine`
-- `./StructureLedger`
-- `./TransformSolver`
-- `./WidgetInstanceMemory`
-- `./anchorField`
-- `./delta`
-- `./dream-state`
-- `./manifold`
-- `./physics`
-- `./quaternion`
-- `./tau`
-- `./touchGestures`
-- `./useNavigation`
 - `@/lib/dreamnav/delta`
-- `@/lib/gct`
 
 ## Special Capabilities
 
-**Event Bus** (2 files) · **React Context** (1 files)
-
-### Event Bus files
-
-- `lib/navigation/SpatialNavigationEngine.ts`
-- `lib/navigation/useNavigation.ts`
+**React Context** (1 files)
 
 ### Context files
 
@@ -5341,6 +4216,193 @@ _No style files for this feature._
 | `node:child_process` | `execFileSync`, `spawnSync` |
 | `node:fs` | `copyFileSync`, `existsSync`, `mkdirSync`, `readFileSync`, `writeFileSync` |
 | `node:path` | `dirname`, `join`, `resolve` |
+
+## `activity/aqs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `UserMetrics` |
+| `@/lib/supabase/client` | `createClient` |
+
+## `activity/boogieActivityPolicy.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/policy/boogiePolicy` | `PolicyCategory`, `PolicyCategoryValue` |
+
+## `activity/scoring.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ActivityTier`, `INNOVATION_BONUS`, `TIER_MULTIPLIERS`, `VERIFICATION_STRENGTH`, `VerificationMethod` |
+
+## `activity/skipCredits.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `AdType`, `SKIP_CREDIT_REWARDS` |
+
+## `activity/visibility-score.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ActivityTier` |
+| `@/lib/supabase/client` | `createClient` |
+
+## `adari.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:fs` | `existsSync`, `readFileSync` |
+| `node:path` | `resolve` |
+
+## `admin/lockout.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServiceClient` |
+
+## `admin/upgrade-readiness.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idari` | `PatchPlan`, `createPatchPlan` |
+| `@/lib/feature-build` | `BuildCycleState`, `DaydreamEnginManifest`, `FEATURE_MANIFESTS`, `FeatureEntry`, `calculateProgress`, `computeAllBuildCycleStates` |
+| `@/lib/setup/checks` | `SetupCheckSummary`, `getSetupStatus` |
+
+## `agentOS.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./engine/agentOS/hostTools` | `CodeEnginHostTools` |
+
+## `ai/audit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `ai/boogie-verifier.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `ActorContext`, `AgentType`, `BoogieDecision`, `BoogieIntentDecision`, `BoogieOutput`, `BoogieSignals`, `Intent`, `ReasonCode` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `ai/boogieman.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./boogie-policy` | `BOOGIE_POLICY_VERSION`, `DEFAULT_DURATIONS_SECONDS`, `EnforcementScope`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `StrikeSeverityLevel`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
+| `./schemas` | `BoogieEnforceOutput`, `BoogieOutput`, `BoogieResult`, `EnforcementAction`, `EnforcementScope`, `Intent` |
+| `uuid` | `v4` |
+
+## `ai/capability-gate.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/triad` | `isOwnerEmail` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `ActorContext`, `IntentType` |
+
+## `ai/confirm-token.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/types/ai-system` | `UIContext` |
+| `crypto` | `createHmac` |
+
+## `ai/handlers/dreams.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `DreamAddFromPresetPayload`, `DreamConfigPatchPayload`, `DreamOpenPayload`, `DreamPreviewPayload`, `DreamRemovePayload`, `DreamReorderPayload` |
+
+## `ai/handlers/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `registerHandler` |
+| `./dreams` | `handleDreamAddFromPreset`, `handleDreamConfigPatch`, `handleDreamOpen`, `handleDreamPreview`, `handleDreamRemove`, `handleDreamReorder` |
+| `./navigation` | `handleHomeAnchorSetState`, `handleHomeMenuOpen`, `handleNavDelta` |
+| `./social` | `handleDraftSave`, `handleFollowUser`, `handlePostCreate`, `handlePostLike`, `handleSearch` |
+
+## `ai/handlers/navigation.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `HomeAnchorSetStatePayload`, `NavDeltaPayload` |
+
+## `ai/handlers/social.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../tool-router` | `ToolHandler` |
+| `@/types/ai-system` | `DraftSavePayload`, `FollowUserPayload`, `PostCreatePayload`, `PostLikePayload`, `SearchPayload` |
+| `crypto` | `randomUUID` |
+
+## `ai/idempotency.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `ai/rate-limiter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `ai/rateLimit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `ai/schemas.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `ai/tfBackend.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
+| `@tensorflow/tfjs` | _(dynamic import)_ |
+
+## `ai/tool-router.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./audit` | `writeAuditLog` |
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/ai-system` | `ActorContext`, `Intent`, `IntentType`, `ToolResult`, `UIContext` |
+
+## `ai/triad.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `@/lib/ai/schemas` | `Intent`, `IntentSchema`, `IntentType` |
+| `uuid` | `v4` |
+
+## `api/route.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `next/server` | `NextRequest`, `NextResponse` |
+| `zod` | `z` |
 
 ## `app/(internal)/idari-console/page.tsx`
 
@@ -8131,6 +7193,168 @@ _No style files for this feature._
 | `@/components/webgpu/dream.WebGPUShowcase` | `⬡ WebGPUShowcase` |
 | `next` | `Metadata` |
 
+## `artifactStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/dreamArtifact` | `DreamArtifact` |
+
+## `assets/assetOptimizer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./indexedDBStore` | `storeOriginal` |
+
+## `audio-fingerprint/fingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./peak-map` | `FrequencyPeak`, `PeakMap` |
+
+## `audio-fingerprint/stem-extractor.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./fingerprint` | `TimeSlice` |
+
+## `audioFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./torridity` | `TORRIDITY_DP`, `TORRIDITY_N` |
+
+## `babylon/createEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@babylonjs/core` | `AbstractEngine` |
+| `@babylonjs/core` | _(dynamic import)_ |
+
+## `babylon/dreamengine-hybrid.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@babylonjs/core` | `* as BABYLON` |
+
+## `bot-detection/detector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./swipe-physics` | `Path`, `coarseGrainInvariance`, `crossSwipeSimilarity`, `deviationEntropy`, `perpendicularDeviation`, `velocityVarianceJerk` |
+
+## `bot-detection/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/botDetection` | `BotSessionResult`, `SwipeRecord`, `isBotSession` |
+
+## `botDetection.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./slog` | `slog`, `slogEntropy`, `slogVariance` |
+
+## `child-safety/childSafetyDetector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `./imageClassifier` | _(dynamic import)_ |
+
+## `child-safety/imageClassifier.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/groq` | `groqChat` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `child-safety/messageContextChecker.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/child-safety/messageContextChecker` | `evaluateMessageContext` |
+
+## `child-safety/ncmecReporter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./childSafetyDetector` | `ChildSafetyResult` |
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `child-safety/scanMediaUrls.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./childSafetyDetector` | `ChildSafetyResult`, `scanContent` |
+| `./imageClassifier` | `classifyImage` |
+| `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+| `crypto` | `createHash` |
+
+## `codeengin/auth.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/admin/lockout` | `isOwner` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `codeengin/diagnostics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginDiagnostic` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+| `@/engins/CodeEngin/core/parser` | `parseCode` |
+
+## `codeengin/git.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./workspaceStore` | `getWorkspaceMeta` |
+| `child_process` | `spawn` |
+
+## `codeengin/projectGraph.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginGraphEdge`, `CodeEnginGraphNode`, `CodeEnginProjectGraph`, `CodeEnginSymbol` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+| `@/engins/CodeEngin/core/parser` | `parseCode` |
+
+## `codeengin/runner.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginCommandResult` |
+| `./workspaceStore` | `getWorkspaceMeta` |
+| `child_process` | `spawn` |
+
+## `codeengin/search.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `CodeEnginSearchHit` |
+| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
+
+## `codeengin/workspaceStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./pathSafety` | `CODEENGIN_BLOCKED_SEGMENTS`, `assertSafeWorkspacePath`, `assertValidWorkspaceId`, `getCodeEnginWorkspacesRoot`, `getWorkspaceRoot`, `isLikelyEditableFile`, `normalizeProjectPath` |
+| `./types` | `CodeEnginFileNode`, `CodeEnginFileRecord`, `CodeEnginWorkspaceMeta`, `CodeEnginWorkspaceOverview` |
+| `crypto` | `createHash`, `randomUUID` |
+| `fs` | `Dirent` |
+
+## `collaboration/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@supabase/supabase-js` | _(dynamic import)_ |
+
 ## `components/activity/dream.ActivityPostForm.tsx`
 
 | Module | Connected via |
@@ -8501,7 +7725,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../lib/audioFingerprint` | `Fingerprint`, `MatchResult`, `PeakMap`, `extractAudioChunks`, `matchFingerprint`, `recordReferenceFingerprint` |
+| `../audioFingerprint` | `Fingerprint`, `MatchResult`, `PeakMap`, `extractAudioChunks`, `matchFingerprint`, `recordReferenceFingerprint` |
 | `@babylonjs/core` | _(dynamic import)_ |
 
 ## `components/dream.BoogieWarningBanner.tsx`
@@ -8574,12 +7798,12 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../lib/componentInventory` | `ALL_CATEGORIES`, `AtomicComponent`, `ComponentCategory`, `getByCategory` |
-| `../lib/eventBus` | `createEventBus` |
-| `../lib/forge/engineForge` | `AssemblySandbox`, `AtomicPiece`, `Wire`, `atomicPieceFromComponent`, `createAssembly`, `runAssembly`, `serializeAssembly`, `validateAssembly` |
+| `../componentInventory` | `ALL_CATEGORIES`, `AtomicComponent`, `ComponentCategory`, `getByCategory` |
+| `../eventBus` | `createEventBus` |
+| `../forge/engineForge` | `AssemblySandbox`, `AtomicPiece`, `Wire`, `atomicPieceFromComponent`, `createAssembly`, `runAssembly`, `serializeAssembly`, `validateAssembly` |
 | `@/lib/utils` | `toErrorMessage` |
 | `react` | `MouseEvent`, `useCallback`, `useEffect`, `useRef`, `useState` |
-| `../lib/supabase/client` | _(dynamic import)_ |
+| `../supabase/client/client` | _(dynamic import)_ |
 
 ## `components/dream.GlobalOverlays.tsx`
 
@@ -10342,6 +9566,188 @@ _No style files for this feature._
 |--------|---------------|
 | `react` | `⬡ React` |
 
+## `connectors/installFlow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/widgets/widgetRegistry` | `getWidgetTypesForConnector` |
+
+## `connectors/normalise.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
+
+## `connectors/providers/bluesky.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseBluesky` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/devto.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseDevto` |
+| `@/lib/social/rss-feed` | `devtoUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/facebook.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseFacebook` |
+| `@/lib/social/rss-feed` | `facebookPageRssUrl`, `parseRssFeed` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/github.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseGitHub` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/hackernews.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseHackerNews` |
+| `@/lib/social/rss-feed` | `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/instagram.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/mastodon.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseMastodon` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/medium.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseMedium` |
+| `@/lib/social/rss-feed` | `mediumUserRssUrl`, `parseRssFeed` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/nostr.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseNostr` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/pinterest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normalisePinterest` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `pinterestRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/podcast.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normalisePodcast` |
+| `@/lib/social/rss-feed` | `parseRssFeed` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/reddit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseReddit` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/substack.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseSubstack` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `substackRssUrl` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/tiktok.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTikTok` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `tiktokProfileRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/tumblr.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTumblr` |
+| `@/lib/social/rss-feed` | `parseRssFeed`, `tumblrRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/twitter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `normaliseTwitter` |
+| `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `parseRssFeed`, `twitterNitterRssUrl` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/providers/youtube.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/normalise` | `YouTubePlaylistItem`, `YouTubeSearchItem`, `deduplicateFeedItems`, `normaliseYouTubePlaylistItem`, `normaliseYouTubeSearchResult` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/reconcile.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./normalise` | `deduplicateFeedItems` |
+| `./syncDispatch` | `dispatchSync` |
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/supabase` | `Database` |
+
+## `connectors/syncDispatch.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/providers/bluesky` | `blueskySync` |
+| `@/lib/connectors/providers/github` | `githubSync` |
+| `@/lib/connectors/providers/instagram` | `instagramSync` |
+| `@/lib/connectors/providers/mastodon` | `mastodonSync` |
+| `@/lib/connectors/providers/nostr` | `nostrSync` |
+| `@/lib/connectors/providers/reddit` | `redditSync` |
+| `@/lib/connectors/providers/youtube` | `youtubeSync` |
+| `@/types/connector` | `UnifiedFeedItem` |
+
+## `connectors/youtube.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServiceClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `consent/consentManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | _(dynamic import)_ |
+
 ## `coresurfaces/dreamsurface.EditProfileDream.tsx`
 
 | Module | Connected via |
@@ -10457,6 +9863,45 @@ _No style files for this feature._
 | `next/navigation` | `redirect` |
 | `next/server` | `connection` |
 
+## `daydreams/shared/useDaydreamPersistence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `daydreams/shared/useDaydreamState.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `dream-docs/embed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `dream-docs/search.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+
+## `dreamdmbar/DreamSystemContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `@/lib/runtime/dualRuntime` | `moveTorus`, `torusFocusKey` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `Dispatch`, `ReactNode`, `SetStateAction`, `createContext`, `useCallback`, `useContext`, `useEffect`, `useRef`, `useState` |
+
 ## `dreamdmbar/dream.GlowingLight.tsx`
 
 | Module | Connected via |
@@ -10485,6 +9930,724 @@ _No style files for this feature._
 | `lucide-react` | `Bell`, `Bot`, `Code2`, `FileText`, `ImageIcon`, `Loader2`, `Maximize2`, `Menu`, `MessageCircle`, `Music`, `Paperclip`, `PenLine`, `Search`, `Send`, `Sparkles`, `X` |
 | `next/image` | `⬡ Image` |
 | `@/lib/supabase/client` | _(dynamic import)_ |
+
+## `dreamdmbar/useDreamBarContext.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./DreamSystemContext` | `BarIntentMode` |
+| `next/navigation` | `usePathname` |
+| `react` | `useMemo` |
+
+## `dreamdmbar/useDreamDMConversations.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `dreamdmbar/useDreamDMDraft.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `dreamdmbar/useDreamDMMessages.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `dreamdmbar/useDreamSearch.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `dreamdmbar/useMessagingCore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./useDreamDMMessages` | `DMMessage` |
+| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useState` |
+
+## `dreamdmbar/useModuleBarIntent.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamdm/DreamSystemContext` | `ModuleBarAction`, `useDreamSystem` |
+| `react` | `useCallback` |
+
+## `dreamdmbar/useNotifications.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `dreamengin/engineAssets.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/media/ledger` | `encodeUint8ArrayToLedgerString` |
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+
+## `dreamengin/osSubsystemManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY` |
+| `@/lib/dream-window/enginConnectionNetwork` | `ALL_CONNECTION_PATHS`, `EnginConnectionPath` |
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `@/lib/identity/canonical-names` | `AI_AGENTS`, `AI_ROUTES` |
+| `@/lib/widgets/widgetRegistry` | `WIDGET_REGISTRY` |
+
+## `dreamenginOS/OSContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../eventBus` | `EventBus`, `createEventBus` |
+| `../ledger` | `Ledger`, `createLedger` |
+| `./index` | `upgradeEngine` |
+
+## `dreamenginOS/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../ledger` | _(dynamic import)_ |
+| `../eventBus` | _(dynamic import)_ |
+
+## `dreamnav/gctAssist.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./tau` | `Action`, `Node` |
+| `@/lib/gct` | `GCTEngine`, `GCTMatch`, `Template` |
+
+## `dreamnav/gestures6.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./delta` | `Action` |
+
+## `dreamnav/path.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreamnav/delta` | `Action`, `Node`, `tau` |
+
+## `dreamr/closeFriendsVisibility.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/supabase/server` | _(dynamic import)_ |
+
+## `dreamr/dreamrfeed.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/dreamr/dream.panel.DreamRChannelPanel` | `⬡ DreamRChannelPanel` |
+| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | `⬡ DreamRCreatorPanel` |
+| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `@/lib/dreamr/swipePersonalization` | `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences`, `nextSwipePreferences`, `personalizeFeedOrder` |
+| `@/lib/dreamr/torridityLedger` | `resolveSwipeRelease` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `lucide-react` | `ArrowUp`, `Bookmark`, `ChevronDown`, `ChevronUp`, `Eye`, `Heart`, `Loader2`, `Maximize2`, `MessageCircle`, `Music2`, `Play`, `RefreshCw`, `Share2`, `Sparkles`, `UserCheck`, `UserPlus`, `Wifi`, `X`, `Youtube` |
+| `next/image` | `⬡ Image` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `dreamr/socialHumanityScore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `dreamr/torridityLedger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./swipeCalibration` | `CalibrationProfile`, `getActiveProfile` |
+
+## `dreams/DreamRegistry.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `dreams/dreamIntentBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `DrEamsIntentType` |
+| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `JsonValue`, `createDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability` |
+| `@/lib/runtime/dreamOSBus` | `InformationDomain`, `IntentEnvelope`, `dreamOSBus` |
+
+## `dreams/profileProjection.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dreams/types` | `DreamProjection`, `DreamVisibility` |
+
+## `dreams/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `isJsonObject`, `isJsonSerializable` |
+
+## `dreams/useDreamsRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useState` |
+
+## `engine/activeModulesStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/dreamArtifact` | `ActiveModuleInstance`, `RuntimeRegionKey` |
+
+## `engine/agents/agentBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ai/schemas` | _(dynamic import)_ |
+| `@/lib/ai/triad` | _(dynamic import)_ |
+
+## `engine/agents/boogieManAI.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/ai` | `BoogieManAgent` |
+
+## `engine/agents/idari.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/ai` | `IDARiAgent` |
+
+## `engine/agents/idariLoop.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/agents/idari` | `PatchPlan`, `PatchRisk`, `createPatchPlan` |
+| `@/lib/observability/collector` | `TelemetrySnapshot`, `getSnapshot` |
+| `@/lib/observability/correlator` | `CorrelationResult`, `correlate` |
+| `@/lib/observability/immediateAction` | `ImmediateRemediationAction`, `buildImmediateRemediationAction` |
+| `@/lib/observability/rootCauseAnalyzer` | `RootCauseAnalysis`, `inferRootCause` |
+| `@/lib/utils` | `toErrorMessage` |
+| `uuid` | `v4` |
+
+## `engine/agents/uiActions.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/theme` | `setDarkMode` |
+
+## `engine/dream-window/DreamWindowLifecycle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DREAM_WINDOW_STATES`, `DreamWindowState` |
+
+## `engine/dream-window/connectionVerbs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `CONNECTION_VERBS`, `ConnectionVerb`, `REJECTED_CONNECTION_VERBS`, `isRejectedConnectionVerb`, `isValidConnectionVerb` |
+
+## `engine/dream-window/enginConnectionNetwork.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DAYDREAM_DOMAINS`, `DaydreamDomain`, `ENGIN_SURFACES`, `EnginSurface`, `NETWORK_COUNTS` |
+
+## `engine/dream-window/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/dream-window` | `ALL_CONNECTION_PATHS`, `DEFAULT_RUNTIME_REGION_STATE`, `DreamWindowInstance`, `activateSurface`, `bindDreamWindow`, `createBindAction`, `dispatch`, `getPathsForDomain`, `mountDreamWindow` |
+
+## `engine/dream-window/runtimeRegion.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `DreamWindowState`, `RUNTIME_REGIONS`, `RuntimeSeamName`, `SURFACE_NAMES` |
+
+## `engine/dream-window/useDreamWindowActions.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/dream-window` | `CreateDreamWindowBody`, `DreamWindowRecord`, `PatchDreamWindowBody` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `engine/engin-runtime/EnginCapabilities.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `DomainObject`, `JsonValue`, `isDomainObject` |
+
+## `engine/engin-runtime/EnginCapabilityExecution.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginCapabilityTargets` | `CanonicalEnginId`, `EnginCapabilityProfile`, `EnginProfileId`, `isCanonicalEnginId` |
+
+## `engine/engin-runtime/EnginCapabilityScorecard.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `JsonObject` |
+| `./EnginCapabilityTargets` | `CapabilityTargetDimension`, `CapabilityTargetEvaluation`, `EnginCapabilityProfile`, `acceptanceValueForTarget`, `evaluateCapabilityTarget` |
+
+## `engine/engin-runtime/EnginDomainCores.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `JsonObject` |
+| `./EnginCapabilityExecution` | `AudioTrackMixer`, `CollaborationDeltaPacker`, `GeometryBatcher`, `MidiEventRingBuffer`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache` |
+| `./EnginCapabilityScorecard` | `EnginCapabilityScorecard`, `MetricMeasurement`, `createEnginCapabilityScorecard` |
+| `./EnginCapabilityTargets` | `ENGIN_CAPABILITY_PROFILES` |
+| `./EnginHardwareCapabilities` | `EnginHardwareCapabilities` |
+| `./EnginPerformanceProbe` | `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe` |
+| `./HotRuntime` | `AudioWorkletRuntime`, `CommandRingBuffer`, `GpuBufferRegistry`, `SnapshotCompactor`, `WasmKernelRuntime`, `WebGPUDeviceRuntime`, `WorkerPoolRuntime` |
+
+## `engine/engin-runtime/EnginEventBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `RuntimeCoherenceReport` |
+
+## `engine/engin-runtime/EnginHardwareCapabilities.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `JsonObject` |
+
+## `engine/engin-runtime/EnginIOAdapter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
+| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality` |
+
+## `engine/engin-runtime/EnginPerformanceProbe.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginCapabilityScorecard` | `MetricMeasurement` |
+| `./EnginCapabilityTargets` | `CapabilityTargetDimension` |
+| `./EnginHardwareCapabilities` | `EnginHardwareCapabilities` |
+
+## `engine/engin-runtime/EnginRuleSetContract.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonObject`, `JsonValue`, `isEnginBaseState` |
+| `./EnginCapabilities` | `EnginCapability` |
+| `./EnginCapabilityTargets` | `EnginCapabilityProfile` |
+
+## `engine/engin-runtime/EnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `CoherenceCapacity`, `EnginBaseState`, `EnginLifecycle`, `JsonObject`, `RuntimeCoherenceReport`, `RuntimeLoad`, `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isEnginBaseState`, `patchBaseState` |
+| `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
+| `./EnginCapabilityExecution` | `EnginCapabilityExecutionKernel`, `createEnginCapabilityExecutionKernel` |
+| `./EnginCapabilityTargets` | `CapabilityProfileValidation`, `capabilityProfileMatchesRuleSet`, `validateEnginCapabilityProfile` |
+| `./EnginEventBus` | `EnginEventBus`, `EnginLifecycleEvents`, `createEnginEventBus` |
+| `./EnginIOAdapter` | `EnginIOAdapter`, `EnginSyncTransport`, `LocalStorageAdapter`, `MemorySyncTransport` |
+| `./EnginRuleSetContract` | `CompatibilityNegotiationResult`, `EnginAction`, `EnginRuleSetContract`, `EnginRuntimeFeature`, `negotiateRuleSetCompatibility`, `validateRuleSetState` |
+| `./EnginSnapshotFingerprint` | `fingerprintEnginSnapshot` |
+| `./HotRuntime` | `HotActionMetadata`, `HotLaneCommand`, `HotRuntime`, `HotRuntimeLane`, `MoldableModuleFrame`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
+| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
+
+## `engine/engin-runtime/EnginSnapshotFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
+
+## `engine/engin-runtime/HotRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginCapabilityExecution` | `EnginExecutionPlan` |
+| `./EnginRuleSetContract` | `EnginAction` |
+
+## `engine/engin-runtime/InternalMetrics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginCapabilityScorecard` | `EnginCapabilityScorecard` |
+
+## `engine/engin-runtime/PremiumRuntimeQuality.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `EnginBaseState`, `JsonObject` |
+| `./EnginRuleSetContract` | `EnginRuntimeFeature` |
+
+## `engine/engin-runtime/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+| `./EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
+| `@/lib/engin-runtime` | `EnginRuntime`, `createEnginRuntime` |
+
+## `engine/gestures/useTouchGestures.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./touchGestures` | `GestureCallbacks`, `GestureConfig`, `GestureRecogniser` |
+| `react` | `RefObject`, `useEffect`, `useRef` |
+
+## `engine/navigation/GestureFrameComputer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./PointerEventCapture` | `PointerState` |
+
+## `engine/navigation/GestureIntentResolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./GestureFrameComputer` | `GestureFrame` |
+| `./quaternion` | `Quaternion`, `fromGestureSwipe`, `identityQuaternion`, `multiply`, `normalize` |
+
+## `engine/navigation/SpatialNavigationEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./GestureFrameComputer` | `GestureFrameComputer` |
+| `./GestureIntentResolver` | `GestureIntent`, `GestureIntentResolver` |
+| `./NavStateBuffer` | `LAYER_HOME`, `NavStateBuffer` |
+| `./PointerEventCapture` | `PointerEventCapture`, `PointerState` |
+| `./ReturnStack` | `ReturnStack` |
+| `./TransformSolver` | `TransformSolver`, `ViewportMetrics` |
+| `./WidgetInstanceMemory` | `WidgetInstanceMemory` |
+
+## `engine/navigation/StructureLedger.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream-state` | `DreamNode`, `DreamState`, `MoveDirection`, `getStateForNode`, `move` |
+
+## `engine/navigation/TransformSolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./NavStateBuffer` | `NavStateBuffer` |
+| `./manifold` | `computeLambda`, `computeSlotPosition`, `projectCubicToSphere` |
+| `./quaternion` | `Quaternion`, `identityQuaternion`, `toRotationMatrix` |
+
+## `engine/navigation/anchorField.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./manifold` | `SINGULARITY_THRESHOLD`, `Vector3` |
+
+## `engine/navigation/quaternion.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./manifold` | `VECTOR_ZERO_THRESHOLD` |
+
+## `engine/navigation/useNavigation.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./SpatialNavigationEngine` | `SpatialNavigationEngine` |
+| `./WidgetInstanceMemory` | `WidgetInstanceRecord` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engine/offline/useOfflineSync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./offlineCache` | `SyncQueueEntry`, `isOnline`, `onConnectivityChange`, `processSyncQueue` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `engine/runtime/EnginDispatcher.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./memory` | `BAR_Y_SCALE`, `MAX_WORKERS`, `SAB_BYTES`, `SNAP_THRESHOLD_RATIO`, `Workgroup`, `buildWorkgroups`, `createEnginSAB`, `f64Telemetry`, `int32AxisState`, `int32DreamDMBarX`, `int32DreamDMBarY`, `int32LockedState` |
+
+## `engine/runtime/channelMetrics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/channelMetrics` | `getChannelMetrics`, `recordEmission` |
+
+## `engine/runtime/dreamOSBus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `INFORMATION_DOMAINS`, `InformationDomain` |
+| `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
+| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `@/lib/runtime/dualRuntimeBridge` | `AnyBridgeEmission`, `DualRuntimeChannel`, `bridge` |
+| `@/lib/runtime/runtimeContainer` | `RuntimeContainer` |
+| `@/types/dreamArtifact` | `DreamArtifactBusEventMap` |
+
+## `engine/runtime/dropTargetRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType` |
+| `@/types/module-manifest` | `RuntimeId` |
+
+## `engine/runtime/dualRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `RUNTIME_REGIONS`, `SURFACE_NAMES` |
+| `@/lib/panels/panelTypes` | `SystemPanelId` |
+
+## `engine/runtime/dualRuntimeBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
+| `events` | `EventEmitter` |
+| `@/lib/vm/wasmGpuVM` | _(dynamic import)_ |
+
+## `engine/runtime/enginWorkflowRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+
+## `engine/runtime/iEngine.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue`, `createDomainObject`, `isDomainObject` |
+| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+
+## `engine/runtime/instanceManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `zustand` | `create` |
+| `@/lib/supabase/client` | _(dynamic import)_ |
+
+## `engine/runtime/isAuthRelatedError.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+
+## `engine/runtime/moduleRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId`, `isModuleManifest`, `negotiateModuleCompatibility` |
+| `@/types/widgets` | `WidgetInstance`, `getWidgetType` |
+| `zustand` | `create` |
+
+## `engine/runtime/offlineQueue.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/utils` | `toErrorMessage` |
+
+## `engine/runtime/quantumCircuit.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntimeBridge` | `QuantumComputeResult` |
+
+## `engine/runtime/runtimeChannel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
+
+## `engine/runtime/runtimeContainer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad` |
+
+## `engine/runtime/seamClipboard.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `@/lib/runtime/enginWorkflowRegistry` | `ENGIN_KEYS`, `EnginKey`, `findWorkflows` |
+
+## `engine/runtime/snapshotFingerprint.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/observability/collector` | `TelemetrySnapshot` |
+
+## `engine/runtime/useDragSurface.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType`, `coerceDataTransfer` |
+| `@/lib/runtime/dropTargetRegistry` | `dropTargetRegistry` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engine/runtime/useDualRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntimeBridge` | `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState`, `UnsubscribeFn`, `bridge` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engine/runtime/useDualRuntimePersistence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `makeHomeActiveTop`, `setRuntimeWorld`, `swapDominantRuntime` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `engine/runtime/useEnginBridge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useEffect`, `useState` |
+
+## `engine/runtime/useEnginCoopSync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/instanceManager` | `EnginName` |
+| `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useEffect` |
+
+## `engine/runtime/useSharedEnginChannel.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/instanceManager` | `EnginName`, `buildInstanceKey`, `promoteInstanceToRealtime`, `useInstanceManager` |
+| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `RuntimeChannelEvent`, `createLocalChannel` |
+| `@/types/module-manifest` | `RuntimeId` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engine/sharedDream.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `SupabaseClient` |
+| `@/lib/collaboration` | `CollabEventHandler`, `CollabEventType`, `CollabMode`, `CollabPayload`, `CollabSession`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession` |
+
+## `engine/social/crossPost.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./platforms` | `PLATFORM_MAP`, `SocialPlatform` |
+
+## `engine/social/rss-feed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
+| `rss-parser` | `⬡ Parser` |
+
+## `engine/social/useSocialData.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/social/normalizers` | `NormalizedPost` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engine/utils.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `clsx` | `ClassValue`, `clsx` |
+| `tailwind-merge` | `twMerge` |
+
+## `engine/vm/bufferManager.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `BufferHandle`, `GPUBufferDescriptor`, `GPUBufferUsageFlags`, `VMErrorCode`, `VMPerformanceCounters`, `VMResourceQuotas` |
+
+## `engine/vm/dual-runtime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./bus-events` | `VMBusEventMap`, `VMBusEventName`, `VMComputeCompletePayload`, `VMErrorPayload`, `VMStatsPayload`, `VMStatsUpdatePayload`, `VMWorkloadSubmittedPayload` |
+| `./inter-vm-messaging` | `InterVMChannel`, `VMEvent` |
+
+## `engine/vm/dualVMCoordinator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/runtime/dualRuntimeBridge` | `VMRegion`, `VMWorkload`, `bridge` |
+
+## `engine/vm/snapshot.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `BindGroupHandle`, `BufferHandle`, `GPUBufferSnapshot`, `HandleTableSnapshot`, `PipelineHandle`, `PipelineSnapshot`, `VMSnapshot`, `WasmMemorySnapshot` |
+| `./wasmGpuVM` | `WasmGpuVM` |
+
+## `engine/vm/wasmGpuVM.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./bufferManager` | `BufferManager` |
+| `./pipelineCache` | `PipelineCache` |
+| `./types` | `BindGroupHandle`, `BufferHandle`, `ComputePipelineDescriptor`, `DEFAULT_VM_CONFIG`, `PipelineHandle`, `VMConfig`, `VMPerformanceCounters`, `VMState`, `VMSyscalls` |
+| `./types` | _(dynamic import)_ |
+
+## `enginpipe/artifact/manifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
+
+## `enginpipe/shell/ArtifactSlot.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../eventBus` | `EventBus`, `createEventBus` |
+| `react` | `ReactNode`, `createContext`, `useContext`, `useEffect`, `useMemo` |
+
+## `enginpipe/telemetry/client.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./events` | `TelemetryEvent`, `parseTelemetryEvent` |
+
+## `enginpipe/telemetry/events.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zod` | `z` |
 
 ## `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
 
@@ -10515,6 +10678,279 @@ _No style files for this feature._
 | `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
 | `next/navigation` | `useSearchParams` |
 | `react` | `useEffect` |
+
+## `engins/contentengin/builders/geometryBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `Vec3` |
+| `./primitiveBuilder` | `flattenParts` |
+
+## `engins/contentengin/builders/meshBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode` |
+| `./primitiveBuilder` | `flattenParts`, `primitiveStats` |
+
+## `engins/contentengin/builders/primitiveBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `PrimitiveKind`, `Vec3`, `identityTransform`, `vec3` |
+
+## `engins/contentengin/builders/textureBuilder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `MaterialDef` |
+
+## `engins/contentengin/builders/uvGenerator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode` |
+
+## `engins/contentengin/cli.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./photo/imageAnalyzer` | `analyzeImageBytes` |
+| `./pipeline/build` | `buildAsset` |
+| `./pipeline/bundle` | `writeAssetBundle`, `zipDirectory` |
+| `./pipeline/validate` | `validateAsset` |
+| `./rigging` | `runRiggingPipeline` |
+| `fs/promises` | `cp`, `mkdir`, `readFile`, `writeFile` |
+
+## `engins/contentengin/grammars/animalGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/bicycleGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/bridgeGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/buildingGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/humanoidGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root`, `symmetrical` |
+
+## `engins/contentengin/grammars/propGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/roadGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/shared.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `vec3` |
+| `../builders/primitiveBuilder` | `createPart` |
+
+## `engins/contentengin/grammars/terrainGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/treeGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/vehicleGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/grammars/waterGrammar.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
+| `./shared` | `p`, `root` |
+
+## `engins/contentengin/materials/proceduralMaterials.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `MaterialDef` |
+
+## `engins/contentengin/photo/imageAnalyzer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShapeRegion`, `SourceImageAnalysis` |
+| `../materials/paletteExtractor` | `rgbaToHex` |
+| `./pngDecoder` | `decodePng` |
+
+## `engins/contentengin/photo/photoToRecipe.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `SourceImageAnalysis` |
+
+## `engins/contentengin/photo/pngDecoder.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `zlib` | `inflateSync` |
+
+## `engins/contentengin/photo/regionDetector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShapeRegion` |
+
+## `engins/contentengin/pipeline/build.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `CONTENTENGIN_VERSION`, `ContentAsset`, `ContentAssetCategory` |
+| `../builders/primitiveBuilder` | `resetPartIds` |
+| `../builders/textureBuilder` | `assignProceduralTextureNames` |
+| `../builders/uvGenerator` | `assignProceduralUv` |
+| `../grammars/animalGrammar` | `buildAnimalParts` |
+| `../grammars/bicycleGrammar` | `buildBicycleParts` |
+| `../grammars/bridgeGrammar` | `buildBridgeParts` |
+| `../grammars/buildingGrammar` | `buildBuildingParts` |
+| `../grammars/humanoidGrammar` | `buildHumanoidParts` |
+| `../grammars/propGrammar` | `buildPropParts` |
+| `../grammars/roadGrammar` | `buildRoadParts` |
+| `../grammars/terrainGrammar` | `buildTerrainParts` |
+| `../grammars/treeGrammar` | `buildTreeParts` |
+| `../grammars/vehicleGrammar` | `buildVehicleParts` |
+| `../grammars/waterGrammar` | `buildWaterParts` |
+| `../materials/proceduralMaterials` | `defaultMaterials` |
+| `../recipes/recipeResolver` | `resolveRecipe` |
+| `../rigging/fitArmature` | `createSkeleton` |
+| `../shaders/shaderRegistry` | `SHADERS` |
+| `./generateCollision` | `generateCollision` |
+| `./generateLods` | `generateLods` |
+| `./paths` | `safeSegment` |
+| `./validate` | `validateAsset` |
+
+## `engins/contentengin/pipeline/bundle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset` |
+| `./exportGlb` | `createGlbBuffer` |
+| `./validate` | `validateAsset` |
+| `./writeManifest` | `makeManifest` |
+| `fs/promises` | `mkdir`, `readFile`, `readdir`, `stat`, `writeFile` |
+
+## `engins/contentengin/pipeline/exportGlb.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `MaterialDef` |
+| `../builders/geometryBuilder` | `buildGeometry` |
+
+## `engins/contentengin/pipeline/generateCollision.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `CollisionBlock`, `PartNode` |
+| `../builders/primitiveBuilder` | `flattenParts` |
+
+## `engins/contentengin/pipeline/generateLods.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ExportProfile`, `LodDef` |
+
+## `engins/contentengin/pipeline/validate.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `ExportProfile`, `ValidationReport` |
+| `../builders/meshBuilder` | `computeMeshMetrics` |
+| `./exportGlb` | `expectedMaterialIdsForAsset`, `inspectGlb` |
+
+## `engins/contentengin/pipeline/writeManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentAsset`, `ContentAssetObject` |
+
+## `engins/contentengin/recipes/recipeResolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ContentRecipe`, `ExportProfile` |
+| `./recipeTypes` | `SUPPORTED_ASSET_TYPES` |
+
+## `engins/contentengin/rigging/fitArmature.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `BoneDef`, `SkeletonDef`, `vec3` |
+| `./rigTypes` | `RigStandard` |
+
+## `engins/contentengin/rigging/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./fitArmature` | `createSkeleton` |
+| `./rigTypes` | `RiggingRequest` |
+| `child_process` | `execFile` |
+| `fs/promises` | `mkdir` |
+| `util` | `promisify` |
+
+## `engins/contentengin/rigging/landmarks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `PartNode`, `Vec3`, `vec3` |
+
+## `engins/contentengin/rigging/rigValidator.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `SkeletonDef` |
+
+## `engins/contentengin/shaders/shaderRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../assetTypes` | `ShaderDef` |
 
 ## `engins/dream.ForgeEngin.tsx`
 
@@ -10694,1565 +11130,7 @@ _No style files for this feature._
 | `next/link` | `⬡ Link` |
 | `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
 
-## `engins/portfolio/dream.PortfolioEngin.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
-| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
-| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `lucide-react` | `Activity`, `ArrowLeft`, `Cpu`, `ShieldCheck`, `TrendingUp` |
-| `react` | `useState` |
-
-## `fix-audit.js`
-
-| Module | Connected via |
-|--------|---------------|
-| `lucide-react` | `DatabaseIcon` |
-
-## `generate-readme.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
-| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
-| `node:path` | `resolve` |
-| `node:url` | `fileURLToPath` |
-
-## `hooks/use-spatial.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/types/spatial` | `Album`, `ContentObject`, `CreateAlbumInput`, `CreateContentInput`, `CreateWidgetInput`, `NavigationState`, `ShareIntent`, `SpaceType`, `UpdateContentInput`, `UpdateWidgetInput`, `Widget` |
-| `react` | `useCallback`, `useMemo`, `useState` |
-
-## `hooks/useAccount.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useEffect`, `useState` |
-
-## `hooks/useConnectorInstallFlow.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/connectorRegistry` | `getConnectorDef` |
-| `@/lib/connectors/installFlow` | `SlotGrid`, `consumeDeferredPrompt`, `handleAddWidget`, `handleConnectSuccess`, `handleDismissPrompt`, `handlePlaceLater` |
-| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef`, `getWidgetTypeDef` |
-| `react` | `useCallback`, `useRef`, `useState` |
-
-## `hooks/useDreamLayout.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `hooks/useHideOnScroll.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useEffect`, `useRef`, `useState` |
-
-## `hooks/useSharedDream.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/collaboration` | `generateInviteLink` |
-| `@/lib/sharedDream` | `DreamBroadcastPayload`, `DreamEventHandler`, `DreamPresenceUpdate`, `DreamSessionMode`, `DreamSessionRole`, `SharedDreamSession`, `broadcastControlSignal`, `broadcastCursorPosition`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createSharedDreamSession`, `leaveSharedDreamSession` |
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `hooks/useTapHoldMove.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../lib/universalEditor` | `ModuleManifest`, `RuntimeId`, `canTransfer` |
-| `react` | `useCallback`, `useEffect`, `useRef` |
-
-## `hooks/useTick.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useCallback`, `useRef` |
-
-## `hooks/useViewCounter.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useEffect`, `useRef` |
-
-## `lib/activeModulesStore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/dreamArtifact` | `ActiveModuleInstance`, `RuntimeRegionKey` |
-
-## `lib/activity/aqs.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `UserMetrics` |
-| `@/lib/supabase/client` | `createClient` |
-
-## `lib/activity/boogieActivityPolicy.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/policy/boogiePolicy` | `PolicyCategory`, `PolicyCategoryValue` |
-
-## `lib/activity/scoring.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `ActivityTier`, `INNOVATION_BONUS`, `TIER_MULTIPLIERS`, `VERIFICATION_STRENGTH`, `VerificationMethod` |
-
-## `lib/activity/skipCredits.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `AdType`, `SKIP_CREDIT_REWARDS` |
-
-## `lib/activity/visibility-score.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `ActivityTier` |
-| `@/lib/supabase/client` | `createClient` |
-
-## `lib/adari.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync` |
-| `node:path` | `resolve` |
-
-## `lib/admin/lockout.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServiceClient` |
-
-## `lib/admin/upgrade-readiness.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/agents/idari` | `PatchPlan`, `createPatchPlan` |
-| `@/lib/feature-build` | `BuildCycleState`, `DaydreamEnginManifest`, `FEATURE_MANIFESTS`, `FeatureEntry`, `calculateProgress`, `computeAllBuildCycleStates` |
-| `@/lib/setup/checks` | `SetupCheckSummary`, `getSetupStatus` |
-
-## `lib/agentOS.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./agentOS/hostTools` | `CodeEnginHostTools` |
-
-## `lib/agents/agentBus.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ai/schemas` | _(dynamic import)_ |
-| `@/lib/ai/triad` | _(dynamic import)_ |
-
-## `lib/agents/boogieManAI.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/ai` | `BoogieManAgent` |
-
-## `lib/agents/idari.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/ai` | `IDARiAgent` |
-
-## `lib/agents/idariLoop.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/agents/idari` | `PatchPlan`, `PatchRisk`, `createPatchPlan` |
-| `@/lib/observability/collector` | `TelemetrySnapshot`, `getSnapshot` |
-| `@/lib/observability/correlator` | `CorrelationResult`, `correlate` |
-| `@/lib/observability/immediateAction` | `ImmediateRemediationAction`, `buildImmediateRemediationAction` |
-| `@/lib/observability/rootCauseAnalyzer` | `RootCauseAnalysis`, `inferRootCause` |
-| `@/lib/utils` | `toErrorMessage` |
-| `uuid` | `v4` |
-
-## `lib/agents/uiActions.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ui/theme` | `setDarkMode` |
-
-## `lib/ai/audit.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/ai/boogie-verifier.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/types/ai-system` | `ActorContext`, `AgentType`, `BoogieDecision`, `BoogieIntentDecision`, `BoogieOutput`, `BoogieSignals`, `Intent`, `ReasonCode` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-
-## `lib/ai/boogieman.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./boogie-policy` | `BOOGIE_POLICY_VERSION`, `DEFAULT_DURATIONS_SECONDS`, `EnforcementScope`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `StrikeSeverityLevel`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
-| `./schemas` | `BoogieEnforceOutput`, `BoogieOutput`, `BoogieResult`, `EnforcementAction`, `EnforcementScope`, `Intent` |
-| `uuid` | `v4` |
-
-## `lib/ai/capability-gate.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ai/triad` | `isOwnerEmail` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/types/ai-system` | `ActorContext`, `IntentType` |
-
-## `lib/ai/confirm-token.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/types/ai-system` | `UIContext` |
-| `crypto` | `createHmac` |
-
-## `lib/ai/handlers/dreams.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../tool-router` | `ToolHandler` |
-| `@/types/ai-system` | `DreamAddFromPresetPayload`, `DreamConfigPatchPayload`, `DreamOpenPayload`, `DreamPreviewPayload`, `DreamRemovePayload`, `DreamReorderPayload` |
-
-## `lib/ai/handlers/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../tool-router` | `registerHandler` |
-| `./dreams` | `handleDreamAddFromPreset`, `handleDreamConfigPatch`, `handleDreamOpen`, `handleDreamPreview`, `handleDreamRemove`, `handleDreamReorder` |
-| `./navigation` | `handleHomeAnchorSetState`, `handleHomeMenuOpen`, `handleNavDelta` |
-| `./social` | `handleDraftSave`, `handleFollowUser`, `handlePostCreate`, `handlePostLike`, `handleSearch` |
-
-## `lib/ai/handlers/navigation.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../tool-router` | `ToolHandler` |
-| `@/types/ai-system` | `HomeAnchorSetStatePayload`, `NavDeltaPayload` |
-
-## `lib/ai/handlers/social.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../tool-router` | `ToolHandler` |
-| `@/types/ai-system` | `DraftSavePayload`, `FollowUserPayload`, `PostCreatePayload`, `PostLikePayload`, `SearchPayload` |
-| `crypto` | `randomUUID` |
-
-## `lib/ai/idempotency.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/ai/rate-limiter.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/ai/rateLimit.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/ai/schemas.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `zod` | `z` |
-
-## `lib/ai/tfBackend.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
-| `@tensorflow/tfjs` | _(dynamic import)_ |
-
-## `lib/ai/tool-router.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./audit` | `writeAuditLog` |
-| `@/engine/io` | `SupabaseClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/ai-system` | `ActorContext`, `Intent`, `IntentType`, `ToolResult`, `UIContext` |
-
-## `lib/ai/triad.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
-| `@/lib/ai/schemas` | `Intent`, `IntentSchema`, `IntentType` |
-| `uuid` | `v4` |
-
-## `lib/api/route.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/supabase/server` | `createServerClient` |
-| `next/server` | `NextRequest`, `NextResponse` |
-| `zod` | `z` |
-
-## `lib/artifactStore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/dreamArtifact` | `DreamArtifact` |
-
-## `lib/assets/assetOptimizer.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./indexedDBStore` | `storeOriginal` |
-
-## `lib/audio-fingerprint/fingerprint.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./peak-map` | `FrequencyPeak`, `PeakMap` |
-
-## `lib/audio-fingerprint/stem-extractor.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./fingerprint` | `TimeSlice` |
-
-## `lib/audioFingerprint.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./torridity` | `TORRIDITY_DP`, `TORRIDITY_N` |
-
-## `lib/babylon/createEngine.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@babylonjs/core` | `AbstractEngine` |
-| `@babylonjs/core` | _(dynamic import)_ |
-
-## `lib/babylon/dreamengine-hybrid.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@babylonjs/core` | `* as BABYLON` |
-
-## `lib/bot-detection/detector.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./swipe-physics` | `Path`, `coarseGrainInvariance`, `crossSwipeSimilarity`, `deviationEntropy`, `perpendicularDeviation`, `velocityVarianceJerk` |
-
-## `lib/bot-detection/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/botDetection` | `BotSessionResult`, `SwipeRecord`, `isBotSession` |
-
-## `lib/botDetection.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./slog` | `slog`, `slogEntropy`, `slogVariance` |
-
-## `lib/child-safety/childSafetyDetector.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/child-safety/childSafetyDetector` | `scanContent` |
-| `./imageClassifier` | _(dynamic import)_ |
-
-## `lib/child-safety/imageClassifier.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ai/groq` | `groqChat` |
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/child-safety/messageContextChecker.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/child-safety/messageContextChecker` | `evaluateMessageContext` |
-
-## `lib/child-safety/ncmecReporter.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./childSafetyDetector` | `ChildSafetyResult` |
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-
-## `lib/child-safety/scanMediaUrls.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./childSafetyDetector` | `ChildSafetyResult`, `scanContent` |
-| `./imageClassifier` | `classifyImage` |
-| `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-| `crypto` | `createHash` |
-
-## `lib/codeengin/auth.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/admin/lockout` | `isOwner` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/codeengin/diagnostics.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `CodeEnginDiagnostic` |
-| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
-| `@/engins/CodeEngin/core/parser` | `parseCode` |
-
-## `lib/codeengin/git.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./workspaceStore` | `getWorkspaceMeta` |
-| `child_process` | `spawn` |
-
-## `lib/codeengin/projectGraph.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `CodeEnginGraphEdge`, `CodeEnginGraphNode`, `CodeEnginProjectGraph`, `CodeEnginSymbol` |
-| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
-| `@/engins/CodeEngin/core/parser` | `parseCode` |
-
-## `lib/codeengin/runner.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `CodeEnginCommandResult` |
-| `./workspaceStore` | `getWorkspaceMeta` |
-| `child_process` | `spawn` |
-
-## `lib/codeengin/search.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `CodeEnginSearchHit` |
-| `./workspaceStore` | `listEditableFiles`, `readProjectFile` |
-
-## `lib/codeengin/workspaceStore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./pathSafety` | `CODEENGIN_BLOCKED_SEGMENTS`, `assertSafeWorkspacePath`, `assertValidWorkspaceId`, `getCodeEnginWorkspacesRoot`, `getWorkspaceRoot`, `isLikelyEditableFile`, `normalizeProjectPath` |
-| `./types` | `CodeEnginFileNode`, `CodeEnginFileRecord`, `CodeEnginWorkspaceMeta`, `CodeEnginWorkspaceOverview` |
-| `crypto` | `createHash`, `randomUUID` |
-| `fs` | `Dirent` |
-
-## `lib/collaboration/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `SupabaseClient` |
-| `@supabase/supabase-js` | _(dynamic import)_ |
-
-## `lib/connectors/installFlow.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/widgets/widgetRegistry` | `getWidgetTypesForConnector` |
-
-## `lib/connectors/normalise.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
-
-## `lib/connectors/providers/bluesky.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseBluesky` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/devto.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseDevto` |
-| `@/lib/social/rss-feed` | `devtoUserRssUrl`, `parseRssFeed` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/facebook.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseFacebook` |
-| `@/lib/social/rss-feed` | `facebookPageRssUrl`, `parseRssFeed` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/github.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseGitHub` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/hackernews.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseHackerNews` |
-| `@/lib/social/rss-feed` | `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `parseRssFeed` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/instagram.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/mastodon.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseMastodon` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/medium.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseMedium` |
-| `@/lib/social/rss-feed` | `mediumUserRssUrl`, `parseRssFeed` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/nostr.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseNostr` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/pinterest.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normalisePinterest` |
-| `@/lib/social/rss-feed` | `parseRssFeed`, `pinterestRssUrl` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/podcast.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normalisePodcast` |
-| `@/lib/social/rss-feed` | `parseRssFeed` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/reddit.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseReddit` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/substack.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseSubstack` |
-| `@/lib/social/rss-feed` | `parseRssFeed`, `substackRssUrl` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/tiktok.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseTikTok` |
-| `@/lib/social/rss-feed` | `parseRssFeed`, `tiktokProfileRssUrl` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/tumblr.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseTumblr` |
-| `@/lib/social/rss-feed` | `parseRssFeed`, `tumblrRssUrl` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/twitter.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `normaliseTwitter` |
-| `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `parseRssFeed`, `twitterNitterRssUrl` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/providers/youtube.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/normalise` | `YouTubePlaylistItem`, `YouTubeSearchItem`, `deduplicateFeedItems`, `normaliseYouTubePlaylistItem`, `normaliseYouTubeSearchResult` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/reconcile.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./normalise` | `deduplicateFeedItems` |
-| `./syncDispatch` | `dispatchSync` |
-| `@/engine/io` | `SupabaseClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/supabase` | `Database` |
-
-## `lib/connectors/syncDispatch.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/providers/bluesky` | `blueskySync` |
-| `@/lib/connectors/providers/github` | `githubSync` |
-| `@/lib/connectors/providers/instagram` | `instagramSync` |
-| `@/lib/connectors/providers/mastodon` | `mastodonSync` |
-| `@/lib/connectors/providers/nostr` | `nostrSync` |
-| `@/lib/connectors/providers/reddit` | `redditSync` |
-| `@/lib/connectors/providers/youtube` | `youtubeSync` |
-| `@/types/connector` | `UnifiedFeedItem` |
-
-## `lib/connectors/youtube.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServiceClient` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-
-## `lib/consent/consentManager.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | _(dynamic import)_ |
-
-## `lib/contentengin/builders/geometryBuilder.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode`, `Vec3` |
-| `./primitiveBuilder` | `flattenParts` |
-
-## `lib/contentengin/builders/meshBuilder.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode` |
-| `./primitiveBuilder` | `flattenParts`, `primitiveStats` |
-
-## `lib/contentengin/builders/primitiveBuilder.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode`, `PrimitiveKind`, `Vec3`, `identityTransform`, `vec3` |
-
-## `lib/contentengin/builders/textureBuilder.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `MaterialDef` |
-
-## `lib/contentengin/builders/uvGenerator.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode` |
-
-## `lib/contentengin/cli.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./photo/imageAnalyzer` | `analyzeImageBytes` |
-| `./pipeline/build` | `buildAsset` |
-| `./pipeline/bundle` | `writeAssetBundle`, `zipDirectory` |
-| `./pipeline/validate` | `validateAsset` |
-| `./rigging` | `runRiggingPipeline` |
-| `fs/promises` | `cp`, `mkdir`, `readFile`, `writeFile` |
-
-## `lib/contentengin/grammars/animalGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/bicycleGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/bridgeGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/buildingGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/humanoidGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root`, `symmetrical` |
-
-## `lib/contentengin/grammars/propGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/roadGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/shared.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode`, `vec3` |
-| `../builders/primitiveBuilder` | `createPart` |
-
-## `lib/contentengin/grammars/terrainGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/treeGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/vehicleGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/grammars/waterGrammar.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `PartNode`, `vec3` |
-| `./shared` | `p`, `root` |
-
-## `lib/contentengin/materials/proceduralMaterials.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `MaterialDef` |
-
-## `lib/contentengin/photo/imageAnalyzer.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ShapeRegion`, `SourceImageAnalysis` |
-| `../materials/paletteExtractor` | `rgbaToHex` |
-| `./pngDecoder` | `decodePng` |
-
-## `lib/contentengin/photo/photoToRecipe.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `SourceImageAnalysis` |
-
-## `lib/contentengin/photo/pngDecoder.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `zlib` | `inflateSync` |
-
-## `lib/contentengin/photo/regionDetector.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ShapeRegion` |
-
-## `lib/contentengin/pipeline/build.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `CONTENTENGIN_VERSION`, `ContentAsset`, `ContentAssetCategory` |
-| `../builders/primitiveBuilder` | `resetPartIds` |
-| `../builders/textureBuilder` | `assignProceduralTextureNames` |
-| `../builders/uvGenerator` | `assignProceduralUv` |
-| `../grammars/animalGrammar` | `buildAnimalParts` |
-| `../grammars/bicycleGrammar` | `buildBicycleParts` |
-| `../grammars/bridgeGrammar` | `buildBridgeParts` |
-| `../grammars/buildingGrammar` | `buildBuildingParts` |
-| `../grammars/humanoidGrammar` | `buildHumanoidParts` |
-| `../grammars/propGrammar` | `buildPropParts` |
-| `../grammars/roadGrammar` | `buildRoadParts` |
-| `../grammars/terrainGrammar` | `buildTerrainParts` |
-| `../grammars/treeGrammar` | `buildTreeParts` |
-| `../grammars/vehicleGrammar` | `buildVehicleParts` |
-| `../grammars/waterGrammar` | `buildWaterParts` |
-| `../materials/proceduralMaterials` | `defaultMaterials` |
-| `../recipes/recipeResolver` | `resolveRecipe` |
-| `../rigging/fitArmature` | `createSkeleton` |
-| `../shaders/shaderRegistry` | `SHADERS` |
-| `./generateCollision` | `generateCollision` |
-| `./generateLods` | `generateLods` |
-| `./paths` | `safeSegment` |
-| `./validate` | `validateAsset` |
-
-## `lib/contentengin/pipeline/bundle.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentAsset` |
-| `./exportGlb` | `createGlbBuffer` |
-| `./validate` | `validateAsset` |
-| `./writeManifest` | `makeManifest` |
-| `fs/promises` | `mkdir`, `readFile`, `readdir`, `stat`, `writeFile` |
-
-## `lib/contentengin/pipeline/exportGlb.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentAsset`, `MaterialDef` |
-| `../builders/geometryBuilder` | `buildGeometry` |
-
-## `lib/contentengin/pipeline/generateCollision.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `CollisionBlock`, `PartNode` |
-| `../builders/primitiveBuilder` | `flattenParts` |
-
-## `lib/contentengin/pipeline/generateLods.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ExportProfile`, `LodDef` |
-
-## `lib/contentengin/pipeline/validate.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentAsset`, `ExportProfile`, `ValidationReport` |
-| `../builders/meshBuilder` | `computeMeshMetrics` |
-| `./exportGlb` | `expectedMaterialIdsForAsset`, `inspectGlb` |
-
-## `lib/contentengin/pipeline/writeManifest.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentAsset`, `ContentAssetObject` |
-
-## `lib/contentengin/recipes/recipeResolver.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ContentRecipe`, `ExportProfile` |
-| `./recipeTypes` | `SUPPORTED_ASSET_TYPES` |
-
-## `lib/contentengin/rigging/fitArmature.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `BoneDef`, `SkeletonDef`, `vec3` |
-| `./rigTypes` | `RigStandard` |
-
-## `lib/contentengin/rigging/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./fitArmature` | `createSkeleton` |
-| `./rigTypes` | `RiggingRequest` |
-| `child_process` | `execFile` |
-| `fs/promises` | `mkdir` |
-| `util` | `promisify` |
-
-## `lib/contentengin/rigging/landmarks.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `PartNode`, `Vec3`, `vec3` |
-
-## `lib/contentengin/rigging/rigValidator.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `SkeletonDef` |
-
-## `lib/contentengin/shaders/shaderRegistry.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../assetTypes` | `ShaderDef` |
-
-## `lib/daydream/useDaydreamPersistence.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/daydream/useDaydreamState.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `react` | `useCallback`, `useEffect`, `useRef` |
-
-## `lib/dream-docs/embed.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/dream-docs/search.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-
-## `lib/dream-window/DreamWindowLifecycle.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DREAM_WINDOW_STATES`, `DreamWindowState` |
-
-## `lib/dream-window/connectionVerbs.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `CONNECTION_VERBS`, `ConnectionVerb`, `REJECTED_CONNECTION_VERBS`, `isRejectedConnectionVerb`, `isValidConnectionVerb` |
-
-## `lib/dream-window/enginConnectionNetwork.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `ConnectionVerb`, `DAYDREAM_DOMAINS`, `DaydreamDomain`, `ENGIN_SURFACES`, `EnginSurface`, `NETWORK_COUNTS` |
-
-## `lib/dream-window/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/dream-window` | `ALL_CONNECTION_PATHS`, `DEFAULT_RUNTIME_REGION_STATE`, `DreamWindowInstance`, `activateSurface`, `bindDreamWindow`, `createBindAction`, `dispatch`, `getPathsForDomain`, `mountDreamWindow` |
-
-## `lib/dream-window/runtimeRegion.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `DreamWindowState`, `RUNTIME_REGIONS`, `RuntimeSeamName`, `SURFACE_NAMES` |
-
-## `lib/dream-window/useDreamWindowActions.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/dream-window` | `CreateDreamWindowBody`, `DreamWindowRecord`, `PatchDreamWindowBody` |
-| `react` | `useCallback`, `useEffect`, `useState` |
-
-## `lib/dreamdm/DreamSystemContext.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO` |
-| `@/lib/panels/panelTypes` | `SystemPanelId` |
-| `@/lib/runtime/dualRuntime` | `moveTorus`, `torusFocusKey` |
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `react` | `Dispatch`, `ReactNode`, `SetStateAction`, `createContext`, `useCallback`, `useContext`, `useEffect`, `useRef`, `useState` |
-
-## `lib/dreamdm/useDreamBarContext.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./DreamSystemContext` | `BarIntentMode` |
-| `next/navigation` | `usePathname` |
-| `react` | `useMemo` |
-
-## `lib/dreamdm/useDreamDMConversations.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `RealtimePostgresInsertPayload` |
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useCallback`, `useEffect`, `useState` |
-
-## `lib/dreamdm/useDreamDMDraft.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/dreamdm/useDreamDMMessages.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `RealtimePostgresInsertPayload` |
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/dreamdm/useDreamSearch.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/dreamdm/useMessagingCore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./useDreamDMMessages` | `DMMessage` |
-| `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `react` | `useCallback`, `useState` |
-
-## `lib/dreamdm/useModuleBarIntent.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/dreamdm/DreamSystemContext` | `ModuleBarAction`, `useDreamSystem` |
-| `react` | `useCallback` |
-
-## `lib/dreamdm/useNotifications.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/dreamengin/engineAssets.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/media/ledger` | `encodeUint8ArrayToLedgerString` |
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-
-## `lib/dreamengin/osSubsystemManifest.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY` |
-| `@/lib/dream-window/enginConnectionNetwork` | `ALL_CONNECTION_PATHS`, `EnginConnectionPath` |
-| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
-| `@/lib/identity/canonical-names` | `AI_AGENTS`, `AI_ROUTES` |
-| `@/lib/widgets/widgetRegistry` | `WIDGET_REGISTRY` |
-
-## `lib/dreamenginOS/OSContext.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `../eventBus` | `EventBus`, `createEventBus` |
-| `../ledger` | `Ledger`, `createLedger` |
-| `./index` | `upgradeEngine` |
-
-## `lib/dreamenginOS/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../ledger` | _(dynamic import)_ |
-| `../eventBus` | _(dynamic import)_ |
-
-## `lib/dreamnav/gctAssist.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./tau` | `Action`, `Node` |
-| `@/lib/gct` | `GCTEngine`, `GCTMatch`, `Template` |
-
-## `lib/dreamnav/gestures6.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./delta` | `Action` |
-
-## `lib/dreamnav/path.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/dreamnav/delta` | `Action`, `Node`, `tau` |
-
-## `lib/dreamr/closeFriendsVisibility.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `SupabaseClient` |
-| `@/lib/supabase/server` | _(dynamic import)_ |
-
-## `lib/dreamr/dreamrfeed.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/components/dreamr/dream.panel.DreamRChannelPanel` | `⬡ DreamRChannelPanel` |
-| `@/components/dreamr/dream.panel.DreamRCreatorPanel` | `⬡ DreamRCreatorPanel` |
-| `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
-| `@/lib/dreamr/swipePersonalization` | `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences`, `nextSwipePreferences`, `personalizeFeedOrder` |
-| `@/lib/dreamr/torridityLedger` | `resolveSwipeRelease` |
-| `@/lib/feed/useLiveFeed` | `FeedPost` |
-| `@/types/connector` | `UnifiedFeedItem` |
-| `lucide-react` | `ArrowUp`, `Bookmark`, `ChevronDown`, `ChevronUp`, `Eye`, `Heart`, `Loader2`, `Maximize2`, `MessageCircle`, `Music2`, `Play`, `RefreshCw`, `Share2`, `Sparkles`, `UserCheck`, `UserPlus`, `Wifi`, `X`, `Youtube` |
-| `next/image` | `⬡ Image` |
-| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
-
-## `lib/dreamr/socialHumanityScore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-
-## `lib/dreamr/torridityLedger.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./swipeCalibration` | `CalibrationProfile`, `getActiveProfile` |
-
-## `lib/dreams/DreamRegistry.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `⬡ React` |
-
-## `lib/dreams/dreamIntentBus.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `DrEamsIntentType` |
-| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `JsonValue`, `createDomainObject` |
-| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability` |
-| `@/lib/runtime/dreamOSBus` | `InformationDomain`, `IntentEnvelope`, `dreamOSBus` |
-
-## `lib/dreams/profileProjection.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/dreams/types` | `DreamProjection`, `DreamVisibility` |
-
-## `lib/dreams/types.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `isJsonObject`, `isJsonSerializable` |
-
-## `lib/dreams/useDreamsRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useCallback`, `useState` |
-
-## `lib/engin-runtime/EnginCapabilities.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `DomainObject`, `JsonValue`, `isDomainObject` |
-
-## `lib/engin-runtime/EnginCapabilityExecution.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginCapabilityTargets` | `CanonicalEnginId`, `EnginCapabilityProfile`, `EnginProfileId`, `isCanonicalEnginId` |
-
-## `lib/engin-runtime/EnginCapabilityScorecard.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `JsonObject` |
-| `./EnginCapabilityTargets` | `CapabilityTargetDimension`, `CapabilityTargetEvaluation`, `EnginCapabilityProfile`, `acceptanceValueForTarget`, `evaluateCapabilityTarget` |
-
-## `lib/engin-runtime/EnginDomainCores.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `JsonObject` |
-| `./EnginCapabilityExecution` | `AudioTrackMixer`, `CollaborationDeltaPacker`, `GeometryBatcher`, `MidiEventRingBuffer`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache` |
-| `./EnginCapabilityScorecard` | `EnginCapabilityScorecard`, `MetricMeasurement`, `createEnginCapabilityScorecard` |
-| `./EnginCapabilityTargets` | `ENGIN_CAPABILITY_PROFILES` |
-| `./EnginHardwareCapabilities` | `EnginHardwareCapabilities` |
-| `./EnginPerformanceProbe` | `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe` |
-| `./HotRuntime` | `AudioWorkletRuntime`, `CommandRingBuffer`, `GpuBufferRegistry`, `SnapshotCompactor`, `WasmKernelRuntime`, `WebGPUDeviceRuntime`, `WorkerPoolRuntime` |
-
-## `lib/engin-runtime/EnginEventBus.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `RuntimeCoherenceReport` |
-
-## `lib/engin-runtime/EnginHardwareCapabilities.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `JsonObject` |
-
-## `lib/engin-runtime/EnginIOAdapter.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
-| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality` |
-
-## `lib/engin-runtime/EnginPerformanceProbe.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginCapabilityScorecard` | `MetricMeasurement` |
-| `./EnginCapabilityTargets` | `CapabilityTargetDimension` |
-| `./EnginHardwareCapabilities` | `EnginHardwareCapabilities` |
-
-## `lib/engin-runtime/EnginRuleSetContract.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `JsonObject`, `JsonValue`, `isEnginBaseState` |
-| `./EnginCapabilities` | `EnginCapability` |
-| `./EnginCapabilityTargets` | `EnginCapabilityProfile` |
-
-## `lib/engin-runtime/EnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `CoherenceCapacity`, `EnginBaseState`, `EnginLifecycle`, `JsonObject`, `RuntimeCoherenceReport`, `RuntimeLoad`, `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isEnginBaseState`, `patchBaseState` |
-| `./EnginCapabilities` | `DEFAULT_USER_CAPABILITIES`, `EnginCapabilityMap`, `gateCapability` |
-| `./EnginCapabilityExecution` | `EnginCapabilityExecutionKernel`, `createEnginCapabilityExecutionKernel` |
-| `./EnginCapabilityTargets` | `CapabilityProfileValidation`, `capabilityProfileMatchesRuleSet`, `validateEnginCapabilityProfile` |
-| `./EnginEventBus` | `EnginEventBus`, `EnginLifecycleEvents`, `createEnginEventBus` |
-| `./EnginIOAdapter` | `EnginIOAdapter`, `EnginSyncTransport`, `LocalStorageAdapter`, `MemorySyncTransport` |
-| `./EnginRuleSetContract` | `CompatibilityNegotiationResult`, `EnginAction`, `EnginRuleSetContract`, `EnginRuntimeFeature`, `negotiateRuleSetCompatibility`, `validateRuleSetState` |
-| `./EnginSnapshotFingerprint` | `fingerprintEnginSnapshot` |
-| `./HotRuntime` | `HotActionMetadata`, `HotLaneCommand`, `HotRuntime`, `HotRuntimeLane`, `MoldableModuleFrame`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
-| `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
-
-## `lib/engin-runtime/EnginSnapshotFingerprint.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `JsonValue` |
-
-## `lib/engin-runtime/HotRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginCapabilityExecution` | `EnginExecutionPlan` |
-| `./EnginRuleSetContract` | `EnginAction` |
-
-## `lib/engin-runtime/InternalMetrics.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginCapabilityScorecard` | `EnginCapabilityScorecard` |
-
-## `lib/engin-runtime/PremiumRuntimeQuality.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginBaseState` | `EnginBaseState`, `JsonObject` |
-| `./EnginRuleSetContract` | `EnginRuntimeFeature` |
-
-## `lib/engin-runtime/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
-| `./EnginRuntime` | `EnginRuntime`, `EnginRuntimeOptions` |
-| `@/lib/engin-runtime` | `EnginRuntime`, `createEnginRuntime` |
-
-## `lib/enginpipe/artifact/manifest.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `zod` | `z` |
-
-## `lib/enginpipe/shell/ArtifactSlot.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `../../eventBus` | `EventBus`, `createEventBus` |
-| `react` | `ReactNode`, `createContext`, `useContext`, `useEffect`, `useMemo` |
-
-## `lib/enginpipe/telemetry/client.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./events` | `TelemetryEvent`, `parseTelemetryEvent` |
-
-## `lib/enginpipe/telemetry/events.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `zod` | `z` |
-
-## `lib/engins/brand/brandEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/brand/useBrandEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./brandEnginRuleSet` | `BRAND_ENGIN_RULE_SET`, `BrandEnginAction`, `BrandEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/code/codeEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/code/useCodeEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./codeEnginRuleSet` | `CODE_ENGIN_RULE_SET`, `CodeEnginAction`, `CodeEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/content/contentEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe`, `ExportProfile` |
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/content/useContentEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./contentEnginRuleSet` | `CONTENT_ENGIN_RULE_SET`, `ContentEnginAction`, `ContentEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/game/gameEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/game/useGameEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./gameEnginRuleSet` | `GAME_ENGIN_RULE_SET`, `GameEnginAction`, `GameEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/lab/labEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/lab/useLabEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./labEnginRuleSet` | `LAB_ENGIN_RULE_SET`, `LabEnginAction`, `LabEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/music/starMakerEnginRuleSet.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
-| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
-| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
-| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
-
-## `lib/engins/music/useStarMakerEnginRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./starMakerEnginRuleSet` | `STAR_MAKER_ENGIN_RULE_SET`, `StarMakerEnginAction`, `StarMakerEnginDerivedState` |
-| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
-| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/engins/useEnginWorkflow.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./workflowEngine` | `EnginWorkflow`, `HANDOFF_PATHS`, `HandoffKind`, `WorkflowStage`, `abandonWorkflow`, `advanceStage`, `checkHandoffEligibility`, `createWorkflow`, `describeWorkflow`, `findWorkflowDef` |
-| `@/lib/journey/journeyDots` | `logJourneyDot` |
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `react` | `useCallback`, `useEffect`, `useState` |
-
-## `lib/feature-build/buildCycle.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./featureManifest` | `DaydreamEnginManifest`, `FeatureStatus` |
-
-## `lib/feature-build/featureManifest.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `DaydreamDomain`, `EnginSurface` |
-
-## `lib/feature-build/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/feature-build` | `FEATURE_MANIFESTS`, `SICC_DIMENSIONS`, `computeBuildCycleState` |
-
-## `lib/feed/useLiveFeed.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `RealtimePostgresInsertPayload` |
-| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
-| `@/lib/supabase/client` | `createClient` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/feed/useYouTubeLiveFeed.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries` |
-| `@/lib/feed/useLiveFeed` | `FeedPost` |
-| `@/types/connector` | `UnifiedFeedItem` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/feeds/embedFeedLoader.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/feeds/embedFeedLoader` | `loadEmbedFeed` |
-| `node:fs` | `readFileSync` |
-| `node:path` | `join` |
-
-## `lib/forge-ngn/assembly.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./piece-registry` | `PieceManifest`, `getPiece` |
-
-## `lib/forge/engineForge.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `../componentInventory` | `AtomicComponent` |
-| `../eventBus` | `EventBus`, `createEventBus` |
-
-## `lib/forge/forgeBuild.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `uuid` | `v4` |
-
-## `lib/forge/forgeIntelligence.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `EnginEntry`, `FORGE_HISTORY_KEY`, `FORGE_WORKFLOWS`, `ForgeWorkflow` |
-
-## `lib/forge/forgeMomentum.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./forgeRegistry` | `CREATIVE_ENGINES`, `FORGE_HISTORY_KEY` |
-
-## `lib/forge/forgeNexus.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
-
-## `lib/forge/forgeRituals.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
-
-## `lib/forge/useForgeActivity.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./forgeRegistry` | `recordForgeActivity` |
-| `react` | `useCallback`, `useEffect`, `useRef` |
-
-## `lib/forge/useForgeBuild.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/forge/forgeBuild` | `ForgeArtifact`, `ForgeArtifactType`, `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `isForgeLogEvent`, `recordBuildToday`, `saveForgeBuild`, `stageForgeArtifact` |
-| `@/lib/utils` | `toErrorMessage` |
-| `react` | `useCallback`, `useRef`, `useState` |
-| `uuid` | `v4` |
-| `@/lib/forge/forgeBuild` | _(dynamic import)_ |
-
-## `lib/gameengin/GameRuntime.tsx`
+## `engins/gameengin/GameRuntime.tsx`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12267,26 +11145,26 @@ _No style files for this feature._
 | `@/lib/runtime/sharedResourcePool` | `acquireSharedResource`, `releaseSharedResource` |
 | `react` | `useCallback`, `useEffect`, `useRef` |
 
-## `lib/gameengin/ai-director.ts`
+## `engins/gameengin/ai-director.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@tensorflow/tfjs` | _(dynamic import)_ |
 | `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
 
-## `lib/gameengin/assets/BundleCache.ts`
+## `engins/gameengin/assets/BundleCache.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./BundleManifest` | `GameEnginBundleManifest`, `assertValidBundleManifest`, `bundleWeightBytes` |
 
-## `lib/gameengin/assets/BundleManifest.ts`
+## `engins/gameengin/assets/BundleManifest.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `RendererBackendId` |
 
-## `lib/gameengin/backendNegotiator.ts`
+## `engins/gameengin/backendNegotiator.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12294,7 +11172,7 @@ _No style files for this feature._
 | `./cartridges/manifest` | `CartridgeManifestEntry` |
 | `./runtime/RuntimeQuality` | `decideRuntimeQuality` |
 
-## `lib/gameengin/brain-reader.ts`
+## `engins/gameengin/brain-reader.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12302,25 +11180,25 @@ _No style files for this feature._
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
 
-## `lib/gameengin/cartridge-manifest.ts`
+## `engins/gameengin/cartridge-manifest.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `zod` | `z` |
 
-## `lib/gameengin/cartridges/achievementEngine.ts`
+## `engins/gameengin/cartridges/achievementEngine.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `AchievementDefinition`, `AchievementState`, `CartridgeAchievementsAPI` |
 
-## `lib/gameengin/cartridges/apiStubs.ts`
+## `engins/gameengin/cartridges/apiStubs.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `CartridgeAchievementsAPI`, `CartridgeAssetsAPI`, `CartridgeAudioAPI`, `CartridgeHapticsAPI`, `CartridgeNetworkAPI`, `CartridgeSaveAPI` |
 
-## `lib/gameengin/cartridges/loaders.ts`
+## `engins/gameengin/cartridges/loaders.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12341,13 +11219,13 @@ _No style files for this feature._
 | `@/components/games/dream.LexiconSolitaire` | _(dynamic import)_ |
 | `@/components/games/dream.DefuseRitual` | _(dynamic import)_ |
 
-## `lib/gameengin/cartridges/manifest.ts`
+## `engins/gameengin/cartridges/manifest.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `CartridgeInputProfile`, `CartridgeOrientationPreference`, `CartridgeQualityDefaults`, `CartridgeRendererFamily`, `CartridgeWarmupPlan`, `CartridgeWorkerEntry`, `RendererBackendId` |
 
-## `lib/gameengin/cartridges/reactCartridge.ts`
+## `engins/gameengin/cartridges/reactCartridge.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12357,13 +11235,13 @@ _No style files for this feature._
 | `react-dom/client` | `Root`, `createRoot` |
 | `./MyGame` | _(dynamic import)_ |
 
-## `lib/gameengin/cartridges/saveState.ts`
+## `engins/gameengin/cartridges/saveState.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `CartridgeSaveAPI`, `CartridgeSaveSlot` |
 
-## `lib/gameengin/core.ts`
+## `engins/gameengin/core.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12372,7 +11250,7 @@ _No style files for this feature._
 | `@/lib/babylon/createEngine` | _(dynamic import)_ |
 | `@babylonjs/core` | _(dynamic import)_ |
 
-## `lib/gameengin/dream-engine.ts`
+## `engins/gameengin/dream-engine.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12381,13 +11259,13 @@ _No style files for this feature._
 | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `@/lib/utils` | `toErrorMessage` |
 
-## `lib/gameengin/dreamr-loader.ts`
+## `engins/gameengin/dreamr-loader.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin/cartridge-manifest` | `CARTRIDGE_MAGIC`, `CartridgeManifest`, `validateManifest` |
 
-## `lib/gameengin/executionWiring.ts`
+## `engins/gameengin/executionWiring.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12431,27 +11309,27 @@ _No style files for this feature._
 | `@/lib/games/madmaxi-wildfall-world` | `* as LucidAvenueWorld` |
 | `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
 
-## `lib/gameengin/gameEnginRuntime.ts`
+## `engins/gameengin/gameEnginRuntime.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `../eventBus` | `EventBus`, `createEventBus` |
+| `../../eventBus` | `EventBus`, `createEventBus` |
 | `./runtime/FrameBudget` | `GameEnginQualityTier`, `resolveFrameBudget` |
 | `./runtime/RuntimeQuality` | `decideRuntimeQuality` |
 
-## `lib/gameengin/index.ts`
+## `engins/gameengin/index.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin` | `...`, `AIDirector`, `AdvancedPhysicsWorld`, `ComputeShaderPipeline`, `EliteGameEngine`, `PostFXManager`, `RollbackNetcode` |
 
-## `lib/gameengin/input/InputRouter.ts`
+## `engins/gameengin/input/InputRouter.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `CartridgeInputEvent` |
 
-## `lib/gameengin/platform.ts`
+## `engins/gameengin/platform.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12461,7 +11339,7 @@ _No style files for this feature._
 | `./post-fx` | `PostFXManager` |
 | `@babylonjs/core` | `Camera`, `Scene` |
 
-## `lib/gameengin/post-fx.ts`
+## `engins/gameengin/post-fx.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12473,7 +11351,7 @@ _No style files for this feature._
 | `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline` | _(dynamic import)_ |
 | `@babylonjs/core/Layers/glowLayer` | _(dynamic import)_ |
 
-## `lib/gameengin/registerCartridges.ts`
+## `engins/gameengin/registerCartridges.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12482,56 +11360,295 @@ _No style files for this feature._
 | `@/lib/runtime/moduleRegistry` | `moduleRegistry` |
 | `@/types/module-manifest` | `ModuleManifest` |
 
-## `lib/gameengin/remote/comboMachine.ts`
+## `engins/gameengin/remote/comboMachine.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./moves` | `ALL_COMBOS`, `Combo`, `FaceButton`, `MULTITOUCH_COMBOS`, `MultiTouchCombo`, `maxComboLength` |
 
-## `lib/gameengin/render/ShaderRegistry.ts`
+## `engins/gameengin/render/ShaderRegistry.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../cartridge` | `RendererBackendId` |
 
-## `lib/gameengin/runtime/FrameClock.ts`
+## `engins/gameengin/runtime/FrameClock.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./FrameBudget` | `GameEnginQualityTier`, `resolveFrameBudget` |
 
-## `lib/gameengin/systems/index.ts`
+## `engins/gameengin/systems/index.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin/systems` | `OctreeBVH`, `ResourcePool` |
 
-## `lib/gameengin/systems/pooling.ts`
+## `engins/gameengin/systems/pooling.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../power-systems` | `ResourcePool` |
 
-## `lib/gameengin/useUnifiedLoop.ts`
+## `engins/gameengin/useUnifiedLoop.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./unifiedLoop` | `LoopPriority`, `registerGame`, `unregisterGame` |
 | `react` | `useEffect`, `useRef` |
 
-## `lib/gameengin/webgpu-runtime-shell.ts`
+## `engins/gameengin/webgpu-runtime-shell.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin/dreamr-loader` | `DreamrCartridgeArchive` |
 
-## `lib/games/DualSenseManager.ts`
+## `engins/portfolio/dream.PortfolioEngin.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/daydream/dream.JourneyTrail` | `⬡ JourneyTrail` |
+| `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `lucide-react` | `Activity`, `ArrowLeft`, `Cpu`, `ShieldCheck`, `TrendingUp` |
+| `react` | `useState` |
+
+## `engins/rulesets/brand/brandEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/brand/useBrandEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./brandEnginRuleSet` | `BRAND_ENGIN_RULE_SET`, `BrandEnginAction`, `BrandEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/code/codeEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/code/useCodeEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./codeEnginRuleSet` | `CODE_ENGIN_RULE_SET`, `CodeEnginAction`, `CodeEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/content/contentEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe`, `ExportProfile` |
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/content/useContentEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./contentEnginRuleSet` | `CONTENT_ENGIN_RULE_SET`, `ContentEnginAction`, `ContentEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/game/gameEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/game/useGameEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./gameEnginRuleSet` | `GAME_ENGIN_RULE_SET`, `GameEnginAction`, `GameEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/lab/labEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/lab/useLabEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./labEnginRuleSet` | `LAB_ENGIN_RULE_SET`, `LabEnginAction`, `LabEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/music/starMakerEnginRuleSet.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+
+## `engins/rulesets/music/useStarMakerEnginRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./starMakerEnginRuleSet` | `STAR_MAKER_ENGIN_RULE_SET`, `StarMakerEnginAction`, `StarMakerEnginDerivedState` |
+| `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/rulesets/useEnginWorkflow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./workflowEngine` | `EnginWorkflow`, `HANDOFF_PATHS`, `HandoffKind`, `WorkflowStage`, `abandonWorkflow`, `advanceStage`, `checkHandoffEligibility`, `createWorkflow`, `describeWorkflow`, `findWorkflowDef` |
+| `@/lib/journey/journeyDots` | `logJourneyDot` |
+| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `react` | `useCallback`, `useEffect`, `useState` |
+
+## `feature-build/buildCycle.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./featureManifest` | `DaydreamEnginManifest`, `FeatureStatus` |
+
+## `feature-build/featureManifest.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/identity/canonical-names` | `DaydreamDomain`, `EnginSurface` |
+
+## `feature-build/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feature-build` | `FEATURE_MANIFESTS`, `SICC_DIMENSIONS`, `computeBuildCycleState` |
+
+## `feed/useLiveFeed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/io` | `RealtimePostgresInsertPayload` |
+| `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `feed/useYouTubeLiveFeed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries` |
+| `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `@/types/connector` | `UnifiedFeedItem` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `feeds/embedFeedLoader.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/feeds/embedFeedLoader` | `loadEmbedFeed` |
+| `node:fs` | `readFileSync` |
+| `node:path` | `join` |
+
+## `fix-audit.js`
+
+| Module | Connected via |
+|--------|---------------|
+| `lucide-react` | `DatabaseIcon` |
+
+## `forge-ngn/assembly.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./piece-registry` | `PieceManifest`, `getPiece` |
+
+## `forge/engineForge.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../componentInventory` | `AtomicComponent` |
+| `../eventBus` | `EventBus`, `createEventBus` |
+
+## `forge/forgeBuild.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `uuid` | `v4` |
+
+## `forge/forgeIntelligence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `EnginEntry`, `FORGE_HISTORY_KEY`, `FORGE_WORKFLOWS`, `ForgeWorkflow` |
+
+## `forge/forgeMomentum.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `FORGE_HISTORY_KEY` |
+
+## `forge/forgeNexus.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
+
+## `forge/forgeRituals.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `FORGE_HISTORY_KEY` |
+
+## `forge/useForgeActivity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./forgeRegistry` | `recordForgeActivity` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `forge/useForgeBuild.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/forge/forgeBuild` | `ForgeArtifact`, `ForgeArtifactType`, `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `isForgeLogEvent`, `recordBuildToday`, `saveForgeBuild`, `stageForgeArtifact` |
+| `@/lib/utils` | `toErrorMessage` |
+| `react` | `useCallback`, `useRef`, `useState` |
+| `uuid` | `v4` |
+| `@/lib/forge/forgeBuild` | _(dynamic import)_ |
+
+## `games/DualSenseManager.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `react` | `useEffect`, `useRef`, `useState` |
 
-## `lib/games/catalog.ts`
+## `games/catalog.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12539,7 +11656,7 @@ _No style files for this feature._
 | `@/lib/games/mobileControls` | `MobileHudMode` |
 | `@/lib/games/performance-baseline` | `GameRenderMode` |
 
-## `lib/games/hooks.ts`
+## `games/hooks.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12547,85 +11664,87 @@ _No style files for this feature._
 | `@/lib/webgpu` | `isWebGPUAvailable` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/games/mobileControls.ts`
+## `games/mobileControls.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
 | `react` | `useEffect`, `useRef` |
 
-## `lib/games/useAIDirector.ts`
+## `games/useAIDirector.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gameengin/ai-director` | `AIDirector`, `DirectorState`, `PlayerSignals` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/games/useGameInputKeyboardBridge.ts`
+## `games/useGameInputKeyboardBridge.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/components/games/dream.remote.GameRemote` | `GameInputAction` |
 | `react` | `useEffect` |
 
-## `lib/games/useGamepad.ts`
+## `games/useGamepad.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/games/useImmersiveGameLayout.ts`
+## `games/useImmersiveGameLayout.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `next/navigation` | `usePathname` |
 | `react` | `CSSProperties`, `useEffect`, `useState` |
 
-## `lib/games/useRemoteChannel.ts`
+## `games/useRemoteChannel.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `react` | `useEffect` |
 
-## `lib/gct/anomaly-detection.ts`
+## `gct/anomaly-detection.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
 
-## `lib/gct/audio-fingerprint.ts`
+## `gct/audio-fingerprint.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
 
-## `lib/gct/image-search.ts`
+## `gct/image-search.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./gct-engine` | `GCTEngine`, `GCTMatch`, `Template` |
 
-## `lib/gct/recommendations.ts`
+## `gct/recommendations.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./gct-engine` | `GCTEngine`, `Template` |
 
-## `lib/gestures/useTouchGestures.ts`
+## `generate-readme.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `./touchGestures` | `GestureCallbacks`, `GestureConfig`, `GestureRecogniser` |
-| `react` | `RefObject`, `useEffect`, `useRef` |
+| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
+| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
+| `node:path` | `resolve` |
+| `node:url` | `fileURLToPath` |
 
-## `lib/god-tier/useGodTier.ts`
+## `god-tier/useGodTier.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./godTierEngine` | `DeviceSignals`, `DreamEngineGodTierSystem`, `GodTierState`, `MeshSnapshot`, `RouteSignals`, `RuntimeMetrics`, `UIElementSnapshot`, `UXSignals`, `defaultDeviceSignals`, `defaultRuntimeMetrics`, `defaultUXSignals`, `getGodTierUiTokens` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/gsap/gsap.ts`
+## `gsap/gsap.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12633,28 +11752,64 @@ _No style files for this feature._
 | `gsap` | `gsap` |
 | `gsap` | _(dynamic import)_ |
 
-## `lib/gsap/useGsapEntrance.ts`
+## `gsap/useGsapEntrance.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gsap/gsap` | `getGsap` |
 | `react` | `useEffect`, `useRef` |
 
-## `lib/gsap/useGsapFlip.ts`
+## `gsap/useGsapFlip.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gsap/gsap` | `getGsap` |
 | `react` | `useCallback`, `useRef`, `useState` |
 
-## `lib/gsap/useGsapScrollReveal.ts`
+## `gsap/useGsapScrollReveal.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/gsap/gsap` | `getGsap` |
 | `react` | `useEffect`, `useRef` |
 
-## `lib/hooks/useMotionTilt.ts`
+## `hooks/use-spatial.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/types/spatial` | `Album`, `ContentObject`, `CreateAlbumInput`, `CreateContentInput`, `CreateWidgetInput`, `NavigationState`, `ShareIntent`, `SpaceType`, `UpdateContentInput`, `UpdateWidgetInput`, `Widget` |
+| `react` | `useCallback`, `useMemo`, `useState` |
+
+## `hooks/useAccount.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useEffect`, `useState` |
+
+## `hooks/useConnectorInstallFlow.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/connectors/connectorRegistry` | `getConnectorDef` |
+| `@/lib/connectors/installFlow` | `SlotGrid`, `consumeDeferredPrompt`, `handleAddWidget`, `handleConnectSuccess`, `handleDismissPrompt`, `handlePlaceLater` |
+| `@/lib/widgets/widgetRegistry` | `WidgetTypeDef`, `getWidgetTypeDef` |
+| `react` | `useCallback`, `useRef`, `useState` |
+
+## `hooks/useDreamLayout.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `hooks/useHideOnScroll.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `hooks/useMotionTilt.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12662,33 +11817,61 @@ _No style files for this feature._
 | `framer-motion` | `MotionProps`, `useMotionTemplate`, `useMotionValue`, `useSpring`, `useTransform` |
 | `react` | `useRef` |
 
-## `lib/hooks/useResponsive.ts`
+## `hooks/useResponsive.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
 | `react` | `useEffect`, `useState`, `useSyncExternalStore` |
 
-## `lib/hooks/useTap.ts`
+## `hooks/useSharedDream.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/collaboration` | `generateInviteLink` |
+| `@/lib/sharedDream` | `DreamBroadcastPayload`, `DreamEventHandler`, `DreamPresenceUpdate`, `DreamSessionMode`, `DreamSessionRole`, `SharedDreamSession`, `broadcastControlSignal`, `broadcastCursorPosition`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createSharedDreamSession`, `leaveSharedDreamSession` |
+| `@/lib/supabase/client` | `createClient` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `hooks/useTap.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `react` | `useCallback`, `useEffect`, `useRef` |
 
-## `lib/intelligence/continuityHelpers.ts`
+## `hooks/useTapHoldMove.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../universalEditor` | `ModuleManifest`, `RuntimeId`, `canTransfer` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
+## `hooks/useTick.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useCallback`, `useRef` |
+
+## `hooks/useViewCounter.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect`, `useRef` |
+
+## `intelligence/continuityHelpers.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `EnginEntry`, `ForgeActivityPulse` |
 
-## `lib/intelligence/sessionPatternEngine.ts`
+## `intelligence/sessionPatternEngine.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@tensorflow/tfjs` | _(dynamic import)_ |
 | `@tensorflow/tfjs-backend-webgpu` | _(dynamic import)_ |
 
-## `lib/intelligence/useSessionIntelligence.ts`
+## `intelligence/useSessionIntelligence.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12697,105 +11880,52 @@ _No style files for this feature._
 | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/journey/journeyDots.ts`
+## `journey/journeyDots.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/journey/journeyDots` | `hasJourneyDot`, `logJourneyDot` |
 | `@/types/journey` | `LogJourneyDotInput` |
 
-## `lib/journey/journeyInsights.ts`
+## `journey/journeyInsights.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/types/journey` | `JourneyDot` |
 
-## `lib/journey/withJourney.ts`
+## `journey/withJourney.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/journey/journeyDots` | `logJourneyDot` |
 | `@/types/journey` | `JourneyDotKind` |
 
-## `lib/ledger.ts`
+## `ledger.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./audioFingerprint` | `Fingerprint`, `PeakMap` |
 | `@/engine/io` | `SupabaseClient` |
 
-## `lib/marketplace/request.ts`
+## `marketplace/request.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./listings` | `MARKETPLACE_CONTACT_TABLE` |
 
-## `lib/media/ledger.ts`
+## `media/ledger.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/utils` | `toErrorMessage` |
 
-## `lib/navigation/GestureFrameComputer.ts`
+## `next.config.mjs`
 
 | Module | Connected via |
 |--------|---------------|
-| `./PointerEventCapture` | `PointerState` |
+| `next` | _(dynamic import)_ |
 
-## `lib/navigation/GestureIntentResolver.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./GestureFrameComputer` | `GestureFrame` |
-| `./quaternion` | `Quaternion`, `fromGestureSwipe`, `identityQuaternion`, `multiply`, `normalize` |
-
-## `lib/navigation/SpatialNavigationEngine.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./GestureFrameComputer` | `GestureFrameComputer` |
-| `./GestureIntentResolver` | `GestureIntent`, `GestureIntentResolver` |
-| `./NavStateBuffer` | `LAYER_HOME`, `NavStateBuffer` |
-| `./PointerEventCapture` | `PointerEventCapture`, `PointerState` |
-| `./ReturnStack` | `ReturnStack` |
-| `./TransformSolver` | `TransformSolver`, `ViewportMetrics` |
-| `./WidgetInstanceMemory` | `WidgetInstanceMemory` |
-
-## `lib/navigation/StructureLedger.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./dream-state` | `DreamNode`, `DreamState`, `MoveDirection`, `getStateForNode`, `move` |
-
-## `lib/navigation/TransformSolver.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./NavStateBuffer` | `NavStateBuffer` |
-| `./manifold` | `computeLambda`, `computeSlotPosition`, `projectCubicToSphere` |
-| `./quaternion` | `Quaternion`, `identityQuaternion`, `toRotationMatrix` |
-
-## `lib/navigation/anchorField.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./manifold` | `SINGULARITY_THRESHOLD`, `Vector3` |
-
-## `lib/navigation/quaternion.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./manifold` | `VECTOR_ZERO_THRESHOLD` |
-
-## `lib/navigation/useNavigation.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./SpatialNavigationEngine` | `SpatialNavigationEngine` |
-| `./WidgetInstanceMemory` | `WidgetInstanceRecord` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/notifications/useNotifications.ts`
+## `notifications/useNotifications.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12803,31 +11933,31 @@ _No style files for this feature._
 | `@/lib/utils` | `toErrorMessage` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
-## `lib/observability/collector.ts`
+## `observability/collector.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./otelBridge` | _(dynamic import)_ |
 
-## `lib/observability/correlator.ts`
+## `observability/correlator.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./collector` | `LogEntry`, `MetricPoint`, `TelemetrySnapshot`, `TraceSpan` |
 
-## `lib/observability/healthTrend.ts`
+## `observability/healthTrend.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/agents/idariLoop` | `LoopIteration`, `LoopStatus` |
 
-## `lib/observability/immediateAction.ts`
+## `observability/immediateAction.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./rootCauseAnalyzer` | `RootCauseAnalysis` |
 
-## `lib/observability/otel.ts`
+## `observability/otel.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12840,14 +11970,14 @@ _No style files for this feature._
 | `@opentelemetry/semantic-conventions` | `ATTR_SERVICE_NAME`, `ATTR_SERVICE_VERSION` |
 | `node:http` | `IncomingMessage`, `ServerResponse` |
 
-## `lib/observability/otelBridge.ts`
+## `observability/otelBridge.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./otel` | `getMeter`, `getTracer` |
 | `@opentelemetry/api` | `Counter`, `Histogram`, `Span`, `SpanStatusCode`, `UpDownCounter` |
 
-## `lib/observability/rootCauseAnalyzer.ts`
+## `observability/rootCauseAnalyzer.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -12855,464 +11985,11 @@ _No style files for this feature._
 | `./correlator` | `AnomalySignal` |
 | `@/lib/agents/idari` | `PatchRisk` |
 
-## `lib/offline/useOfflineSync.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./offlineCache` | `SyncQueueEntry`, `isOnline`, `onConnectivityChange`, `processSyncQueue` |
-| `react` | `useCallback`, `useEffect`, `useState` |
-
-## `lib/optimizer/babylon-optimizero.ts`
+## `optimizer/babylon-optimizero.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./creative-optimizero` | `CreativeCandidate`, `CreativeOptimizero`, `DEFAULT_WEIGHTS`, `OptimizeroResult`, `OptimizeroWeights`, `ScoredCandidate` |
-
-## `lib/optimizer/constraint-solver.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `Constraint`, `ConstraintSolverOptions`, `OptimizationItem`, `RankedItem` |
-
-## `lib/optimizer/creative-validator.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `CreativeOption`, `CreativeValidationResult`, `HardFailureReason` |
-
-## `lib/optimizer/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./constraint-solver` | `ConstraintSolver` |
-| `./creative-validator` | `validateCreativeOption` |
-| `./types` | `Asset`, `Constraint`, `CreativeContext`, `CreativeOptimizerResult`, `CreativeOption`, `CreativeScore`, `FeedItem`, `HardFailureReason`, `Notification`, `OptimizationItem`, `OptimizerConfig`, `QueuedAction`, `RankedCreativeOption`, `RankedItem`, `RuntimeContext`, `SearchResult`, `WidgetPriority` |
-
-## `lib/platform/lab.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/reality/realityStore.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `Reality`, `RealityActivityEntry`, `RealityActivityKind`, `RealityEnginSlot`, `RealityMember`, `RealityMode`, `RealitySnapshot` |
-| `@supabase/supabase-js` | `SupabaseClient` |
-
-## `lib/reality/types.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/collaboration` | `CollabMode`, `SessionRole` |
-
-## `lib/renderer/Canvas2DRenderer.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./FrustumCuller` | `FrustumCuller`, `Rect` |
-| `./IRenderer` | `IRenderer`, `TextStyle` |
-
-## `lib/renderer/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/renderer` | `Canvas2DRenderer`, `createRenderer` |
-| `./Canvas2DRenderer` | _(dynamic import)_ |
-
-## `lib/runtime/EnginDispatcher.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./memory` | `BAR_Y_SCALE`, `MAX_WORKERS`, `SAB_BYTES`, `SNAP_THRESHOLD_RATIO`, `Workgroup`, `buildWorkgroups`, `createEnginSAB`, `f64Telemetry`, `int32AxisState`, `int32DreamDMBarX`, `int32DreamDMBarY`, `int32LockedState` |
-
-## `lib/runtime/channelMetrics.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/channelMetrics` | `getChannelMetrics`, `recordEmission` |
-
-## `lib/runtime/dreamOSBus.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isDomainObject` |
-| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
-| `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `INFORMATION_DOMAINS`, `InformationDomain` |
-| `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
-| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
-| `@/lib/runtime/dualRuntimeBridge` | `AnyBridgeEmission`, `DualRuntimeChannel`, `bridge` |
-| `@/lib/runtime/runtimeContainer` | `RuntimeContainer` |
-| `@/types/dreamArtifact` | `DreamArtifactBusEventMap` |
-
-## `lib/runtime/dropTargetRegistry.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType` |
-| `@/types/module-manifest` | `RuntimeId` |
-
-## `lib/runtime/dualRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `RUNTIME_REGIONS`, `SURFACE_NAMES` |
-| `@/lib/panels/panelTypes` | `SystemPanelId` |
-
-## `lib/runtime/dualRuntimeBridge.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
-| `events` | `EventEmitter` |
-| `@/lib/vm/wasmGpuVM` | _(dynamic import)_ |
-
-## `lib/runtime/enginWorkflowRegistry.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-
-## `lib/runtime/iEngine.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue`, `createDomainObject`, `isDomainObject` |
-| `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
-| `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
-
-## `lib/runtime/instanceManager.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel` |
-| `@/types/module-manifest` | `RuntimeId` |
-| `zustand` | `create` |
-| `@/lib/supabase/client` | _(dynamic import)_ |
-
-## `lib/runtime/isAuthRelatedError.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/runtime/moduleRegistry.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `@/types/module-manifest` | `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId`, `isModuleManifest`, `negotiateModuleCompatibility` |
-| `@/types/widgets` | `WidgetInstance`, `getWidgetType` |
-| `zustand` | `create` |
-
-## `lib/runtime/offlineQueue.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/runtime/quantumCircuit.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./dualRuntimeBridge` | `QuantumComputeResult` |
-
-## `lib/runtime/runtimeChannel.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
-
-## `lib/runtime/runtimeContainer.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/engin-runtime/EnginBaseState` | `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad` |
-
-## `lib/runtime/seamClipboard.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/identity/canonical-names` | `RuntimeRegion` |
-| `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `@/lib/runtime/enginWorkflowRegistry` | `ENGIN_KEYS`, `EnginKey`, `findWorkflows` |
-
-## `lib/runtime/snapshotFingerprint.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/observability/collector` | `TelemetrySnapshot` |
-
-## `lib/runtime/useDragSurface.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType`, `coerceDataTransfer` |
-| `@/lib/runtime/dropTargetRegistry` | `dropTargetRegistry` |
-| `@/types/module-manifest` | `RuntimeId` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/runtime/useDualRuntime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./dualRuntimeBridge` | `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState`, `UnsubscribeFn`, `bridge` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/runtime/useDualRuntimePersistence.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `makeHomeActiveTop`, `setRuntimeWorld`, `swapDominantRuntime` |
-| `react` | `useCallback`, `useEffect`, `useState` |
-
-## `lib/runtime/useEnginBridge.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/dualRuntimeBridge` | `bridge` |
-| `react` | `useEffect`, `useState` |
-
-## `lib/runtime/useEnginCoopSync.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/instanceManager` | `EnginName` |
-| `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
-| `@/types/module-manifest` | `RuntimeId` |
-| `react` | `useEffect` |
-
-## `lib/runtime/useSharedEnginChannel.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/instanceManager` | `EnginName`, `buildInstanceKey`, `promoteInstanceToRealtime`, `useInstanceManager` |
-| `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `RuntimeChannelEvent`, `createLocalChannel` |
-| `@/types/module-manifest` | `RuntimeId` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/scene/sceneState.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/offline/offlineCache` | `CachedScene`, `SceneObject`, `SceneSnapshot`, `deleteScene`, `enqueueSyncAction`, `getScene`, `listScenes`, `saveScene` |
-
-## `lib/setup/checks.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
-
-## `lib/sharedDream.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/engine/io` | `SupabaseClient` |
-| `@/lib/collaboration` | `CollabEventHandler`, `CollabEventType`, `CollabMode`, `CollabPayload`, `CollabSession`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession` |
-
-## `lib/sharedDream/useSharedDreamSession.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/client` | `createClient` |
-| `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/social-feed.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `rss-parser` | `⬡ Parser` |
-
-## `lib/social/crossPost.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./platforms` | `PLATFORM_MAP`, `SocialPlatform` |
-
-## `lib/social/rss-feed.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/connector` | `FeedItemMedia`, `UnifiedFeedItem` |
-| `rss-parser` | `⬡ Parser` |
-
-## `lib/social/useSocialData.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/social/normalizers` | `NormalizedPost` |
-| `@/lib/utils` | `toErrorMessage` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/torridity.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./slog` | `slog` |
-
-## `lib/torridity/physics.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./constants` | `a0Perception`, `deltaP`, `n` |
-
-## `lib/ui/CustomizeModeContext.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/ui/skin-engine` | `AllPageSkins`, `DEFAULT_SKIN`, `SkinData`, `SkinPage`, `applySkin`, `loadAllSkins`, `resolveSkin`, `saveAllSkins` |
-
-## `lib/universalEditor.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./eventBus` | `EventBus`, `createEventBus` |
-| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
-
-## `lib/user-sim/userSimAgent.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/user-sim` | `AgentAction`, `AuditFinding`, `BehaviorSignals`, `FindingSeverity`, `JourneyOutcome`, `PerceptionFrame`, `Persona`, `PersonaType`, `SimJourneyResult`, `SimStep` |
-| `uuid` | `v4` |
-
-## `lib/utils.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `clsx` | `ClassValue`, `clsx` |
-| `tailwind-merge` | `twMerge` |
-
-## `lib/vm/bufferManager.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `BufferHandle`, `GPUBufferDescriptor`, `GPUBufferUsageFlags`, `VMErrorCode`, `VMPerformanceCounters`, `VMResourceQuotas` |
-
-## `lib/vm/dual-runtime.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./bus-events` | `VMBusEventMap`, `VMBusEventName`, `VMComputeCompletePayload`, `VMErrorPayload`, `VMStatsPayload`, `VMStatsUpdatePayload`, `VMWorkloadSubmittedPayload` |
-| `./inter-vm-messaging` | `InterVMChannel`, `VMEvent` |
-
-## `lib/vm/dualVMCoordinator.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/runtime/dualRuntimeBridge` | `VMRegion`, `VMWorkload`, `bridge` |
-
-## `lib/vm/snapshot.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `BindGroupHandle`, `BufferHandle`, `GPUBufferSnapshot`, `HandleTableSnapshot`, `PipelineHandle`, `PipelineSnapshot`, `VMSnapshot`, `WasmMemorySnapshot` |
-| `./wasmGpuVM` | `WasmGpuVM` |
-
-## `lib/vm/wasmGpuVM.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./bufferManager` | `BufferManager` |
-| `./pipelineCache` | `PipelineCache` |
-| `./types` | `BindGroupHandle`, `BufferHandle`, `ComputePipelineDescriptor`, `DEFAULT_VM_CONFIG`, `PipelineHandle`, `VMConfig`, `VMPerformanceCounters`, `VMState`, `VMSyscalls` |
-| `./types` | _(dynamic import)_ |
-
-## `lib/warp/useWarp.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./warpEngine` | `WarpEffect`, `WarpEngine`, `WarpEngineOptions` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/web3/client.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `ChainConfig`, `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `WalletAccount`, `WalletConnectionState`, `WalletProvider`, `Web3Error` |
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/web3/engagement.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./client` | `web3Client` |
-| `./types` | `DEFAULT_CHAIN_ID`, `EngagementPayload`, `EngagementStats`, `SUPPORTED_CHAINS`, `Web3Error` |
-
-## `lib/web3/index.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/web3` | `trackEngagement`, `uploadToIpfs`, `web3Client` |
-
-## `lib/web3/ipfs.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./types` | `IpfsContent`, `IpfsUploadResult`, `Web3Error` |
-
-## `lib/webgpu/adaptiveQuality.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./director` | `Pressure`, `RuntimeMetrics`, `classifyPressure` |
-
-## `lib/webgpu/useWebGPUDirector.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./director` | `CameraSignals`, `CameraState`, `DirectorBabylonEngine`, `DirectorBabylonMesh`, `DirectorBabylonScene`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics`, `WebGPUDirector`, `applyDirectorFrame`, `buildSceneObjects` |
-| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
-
-## `lib/widgets/CrossWidgetPosting.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./WidgetEventBus` | `WidgetMsg`, `widgetEventBus` |
-| `./WidgetLinkGraph` | `WidgetLinkGraph` |
-| `@/lib/utils` | `toErrorMessage` |
-
-## `lib/widgets/WidgetEngine.tsx`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `⬡ React` |
-
-## `lib/widgets/feed-resolver.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/lib/supabase/server` | `createServerClient` |
-| `@/lib/utils` | `toErrorMessage` |
-| `@/types/widget-system-v2` | `FeedHostConfig`, `FeedItemSummary`, `FeedScope`, `HostKind`, `HostResolved`, `HostResolvedStatus` |
-
-## `lib/widgets/parse.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/widgetConfigs` | `DreamenginWidgetType`, `EmbedWidgetConfig`, `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `TextWidgetConfig`, `TypedWidget`, `YouTubeWidgetConfig` |
-
-## `lib/widgets/parseConfig.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `@/types/widgetConfigs` | `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `YouTubeWidgetConfig` |
-
-## `lib/widgets/useWidget.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `react` | `useEffect` |
-
-## `next.config.mjs`
-
-| Module | Connected via |
-|--------|---------------|
-| `next` | _(dynamic import)_ |
 
 ## `optimizer/constraint-solver.ts`
 
@@ -13326,6 +12003,14 @@ _No style files for this feature._
 |--------|---------------|
 | `./types` | `CreativeOption`, `CreativeValidationResult`, `HardFailureReason` |
 
+## `optimizer/index.from-lib.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./constraint-solver` | `ConstraintSolver` |
+| `./creative-validator` | `validateCreativeOption` |
+| `./types` | `Asset`, `Constraint`, `CreativeContext`, `CreativeOptimizerResult`, `CreativeOption`, `CreativeScore`, `FeedItem`, `HardFailureReason`, `Notification`, `OptimizationItem`, `OptimizerConfig`, `QueuedAction`, `RankedCreativeOption`, `RankedItem`, `RuntimeContext`, `SearchResult`, `WidgetPriority` |
+
 ## `optimizer/index.ts`
 
 | Module | Connected via |
@@ -13333,6 +12018,13 @@ _No style files for this feature._
 | `./constraint-solver` | `ConstraintSolver` |
 | `./creative-validator` | `validateCreativeOption` |
 | `./types` | `Asset`, `Constraint`, `CreativeContext`, `CreativeOptimizerResult`, `CreativeOption`, `CreativeScore`, `FeedItem`, `HardFailureReason`, `Notification`, `OptimizationItem`, `OptimizerConfig`, `QueuedAction`, `RankedCreativeOption`, `RankedItem`, `RuntimeContext`, `SearchResult`, `WidgetPriority` |
+
+## `platform/lab.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/utils` | `toErrorMessage` |
 
 ## `playwright.config.ts`
 
@@ -13358,6 +12050,33 @@ _No style files for this feature._
 | `node:url` | `fileURLToPath` |
 | `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
 
+## `reality/realityStore.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `Reality`, `RealityActivityEntry`, `RealityActivityKind`, `RealityEnginSlot`, `RealityMember`, `RealityMode`, `RealitySnapshot` |
+| `@supabase/supabase-js` | `SupabaseClient` |
+
+## `reality/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/collaboration` | `CollabMode`, `SessionRole` |
+
+## `renderer/Canvas2DRenderer.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./FrustumCuller` | `FrustumCuller`, `Rect` |
+| `./IRenderer` | `IRenderer`, `TextStyle` |
+
+## `renderer/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/renderer` | `Canvas2DRenderer`, `createRenderer` |
+| `./Canvas2DRenderer` | _(dynamic import)_ |
+
 ## `repo-visualizer/analyzer.mjs`
 
 | Module | Connected via |
@@ -13371,6 +12090,12 @@ _No style files for this feature._
 |--------|---------------|
 | `node:child_process` | `exec` |
 | `node:url` | `fileURLToPath` |
+
+## `scene/sceneState.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/offline/offlineCache` | `CachedScene`, `SceneObject`, `SceneSnapshot`, `deleteScene`, `enqueueSyncAction`, `getScene`, `listScenes`, `saveScene` |
 
 ## `scripts/autofix-vercel-build.mjs`
 
@@ -13438,13 +12163,13 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `ConceptPattern`, `VisionStatement`, `isOriginal`, `listConceptPatterns`, `listMechanics`, `logRDSession`, `readVisionStatement`, `recordVisionStatement`, `signatureHash` |
+| `../../engins/gameengin/brain-reader.js` | `ConceptPattern`, `VisionStatement`, `isOriginal`, `listConceptPatterns`, `listMechanics`, `logRDSession`, `readVisionStatement`, `recordVisionStatement`, `signatureHash` |
 
 ## `scripts/gameengin/artisan-run.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `BRAIN_ROOT`, `listCompositionPrinciples`, `listMaterialRecipes`, `listTechniques`, `logRDSession`, `recordAssetGeneration` |
+| `../../engins/gameengin/brain-reader.js` | `BRAIN_ROOT`, `listCompositionPrinciples`, `listMaterialRecipes`, `listTechniques`, `logRDSession`, `recordAssetGeneration` |
 | `node:crypto` | `createHash` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
@@ -13459,7 +12184,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
+| `../../engins/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
 | `node:child_process` | `execSync` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
@@ -13468,7 +12193,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
+| `../../engins/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
 | `node:child_process` | `execFileSync` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
@@ -13477,7 +12202,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
+| `../../engins/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
 | `./lib/tar.js` | `TarFile`, `packTar` |
 | `node:child_process` | `execFileSync` |
 | `node:fs` | `* as fs` |
@@ -13488,7 +12213,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
+| `../../engins/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
 
@@ -13496,19 +12221,19 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `../../engins/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 
 ## `scripts/gameengin/smoke-webgpu.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `../../engins/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 
 ## `scripts/gameengin/upgrader-run.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
+| `../../engins/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
 
@@ -13516,7 +12241,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../../lib/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
+| `../../engins/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
 
@@ -13632,6 +12357,26 @@ _No style files for this feature._
 | `./systems` | `systems` |
 | `node:fs` | `promises` |
 | `node:url` | `fileURLToPath`, `pathToFileURL` |
+
+## `setup/checks.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
+
+## `sharedDream/useSharedDreamSession.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/client` | `createClient` |
+| `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `social-feed.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `rss-parser` | `⬡ Parser` |
 
 ## `src/components/dream.DreamEnginLogo.tsx`
 
@@ -15019,6 +13764,18 @@ _No style files for this feature._
 |--------|---------------|
 | `tailwindcss` | _(dynamic import)_ |
 
+## `torridity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./slog` | `slog` |
+
+## `torridity/physics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./constants` | `a0Perception`, `deltaP`, `n` |
+
 ## `types/ai-system.ts`
 
 | Module | Connected via |
@@ -15043,11 +13800,117 @@ _No style files for this feature._
 |--------|---------------|
 | `zod` | `z` |
 
+## `ui/CustomizeModeContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/ui/skin-engine` | `AllPageSkins`, `DEFAULT_SKIN`, `SkinData`, `SkinPage`, `applySkin`, `loadAllSkins`, `resolveSkin`, `saveAllSkins` |
+
+## `universalEditor.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./eventBus` | `EventBus`, `createEventBus` |
+| `@/types/module-manifest` | `ModuleManifest`, `RuntimeId` |
+
+## `user-sim/userSimAgent.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/user-sim` | `AgentAction`, `AuditFinding`, `BehaviorSignals`, `FindingSeverity`, `JourneyOutcome`, `PerceptionFrame`, `Persona`, `PersonaType`, `SimJourneyResult`, `SimStep` |
+| `uuid` | `v4` |
+
 ## `vitest.config.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `vitest/config` | `defineConfig` |
+
+## `warp/useWarp.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./warpEngine` | `WarpEffect`, `WarpEngine`, `WarpEngineOptions` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `web3/client.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `ChainConfig`, `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `WalletAccount`, `WalletConnectionState`, `WalletProvider`, `Web3Error` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `web3/engagement.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./client` | `web3Client` |
+| `./types` | `DEFAULT_CHAIN_ID`, `EngagementPayload`, `EngagementStats`, `SUPPORTED_CHAINS`, `Web3Error` |
+
+## `web3/index.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/web3` | `trackEngagement`, `uploadToIpfs`, `web3Client` |
+
+## `web3/ipfs.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `IpfsContent`, `IpfsUploadResult`, `Web3Error` |
+
+## `webgpu/adaptiveQuality.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./director` | `Pressure`, `RuntimeMetrics`, `classifyPressure` |
+
+## `webgpu/useWebGPUDirector.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./director` | `CameraSignals`, `CameraState`, `DirectorBabylonEngine`, `DirectorBabylonMesh`, `DirectorBabylonScene`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics`, `WebGPUDirector`, `applyDirectorFrame`, `buildSceneObjects` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `widgets/CrossWidgetPosting.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./WidgetEventBus` | `WidgetMsg`, `widgetEventBus` |
+| `./WidgetLinkGraph` | `WidgetLinkGraph` |
+| `@/lib/utils` | `toErrorMessage` |
+
+## `widgets/WidgetEngine.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `⬡ React` |
+
+## `widgets/feed-resolver.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/supabase/server` | `createServerClient` |
+| `@/lib/utils` | `toErrorMessage` |
+| `@/types/widget-system-v2` | `FeedHostConfig`, `FeedItemSummary`, `FeedScope`, `HostKind`, `HostResolved`, `HostResolvedStatus` |
+
+## `widgets/parse.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgetConfigs` | `DreamenginWidgetType`, `EmbedWidgetConfig`, `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `TextWidgetConfig`, `TypedWidget`, `YouTubeWidgetConfig` |
+
+## `widgets/parseConfig.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/types/widgetConfigs` | `SocialEmbedWidgetConfig`, `SocialFeedWidgetConfig`, `SocialProfileWidgetConfig`, `SocialProvider`, `YouTubeWidgetConfig` |
+
+## `widgets/useWidget.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
 
 ---
 
@@ -15058,6 +13921,11 @@ _No style files for this feature._
 ## `.github/scripts/issue-bot.js`
 
 - `./HeavyComponent`
+
+## `ai/tfBackend.ts`
+
+- `@tensorflow/tfjs-backend-webgpu`
+- `@tensorflow/tfjs`
 
 ## `app/api/ai/boogieman/child-safety/route.ts`
 
@@ -15085,6 +13953,18 @@ _No style files for this feature._
 - `@/components/landing/dream.LandingNav`
 - `@/components/landing/dream.scene.UniverseField`
 
+## `babylon/createEngine.ts`
+
+- `@babylonjs/core`
+
+## `child-safety/childSafetyDetector.ts`
+
+- `./imageClassifier`
+
+## `collaboration/index.ts`
+
+- `@supabase/supabase-js`
+
 ## `components/daydream/dream.DiffViewer.tsx`
 
 - `@/lib/diff/diffUtils`
@@ -15095,7 +13975,7 @@ _No style files for this feature._
 
 ## `components/dream.ForgeDreamCanvas.tsx`
 
-- `../lib/supabase/client`
+- `../supabase/client/client`
 
 ## `components/dream.GlobalOverlays.tsx`
 
@@ -15156,6 +14036,10 @@ _No style files for this feature._
 - `@/engins/engin.ContentEngin`
 - `@/engins/dream.ForgeEngin`
 
+## `consent/consentManager.ts`
+
+- `@/lib/supabase/client`
+
 ## `daydreams/games/page.tsx`
 
 - `@/engins/engin.GameEngin`
@@ -15164,51 +14048,38 @@ _No style files for this feature._
 
 - `@/lib/supabase/client`
 
-## `lib/agents/agentBus.ts`
-
-- `@/lib/ai/schemas`
-- `@/lib/ai/triad`
-
-## `lib/ai/tfBackend.ts`
-
-- `@tensorflow/tfjs-backend-webgpu`
-- `@tensorflow/tfjs`
-
-## `lib/babylon/createEngine.ts`
-
-- `@babylonjs/core`
-
-## `lib/child-safety/childSafetyDetector.ts`
-
-- `./imageClassifier`
-
-## `lib/collaboration/index.ts`
-
-- `@supabase/supabase-js`
-
-## `lib/consent/consentManager.ts`
-
-- `@/lib/supabase/client`
-
-## `lib/dreamenginOS/index.ts`
+## `dreamenginOS/index.ts`
 
 - `../ledger`
 - `../eventBus`
 
-## `lib/dreamr/closeFriendsVisibility.ts`
+## `dreamr/closeFriendsVisibility.ts`
 
 - `@/lib/supabase/server`
 
-## `lib/forge/useForgeBuild.ts`
+## `engine/agents/agentBus.ts`
 
-- `@/lib/forge/forgeBuild`
+- `@/lib/ai/schemas`
+- `@/lib/ai/triad`
 
-## `lib/gameengin/ai-director.ts`
+## `engine/runtime/dualRuntimeBridge.ts`
+
+- `@/lib/vm/wasmGpuVM`
+
+## `engine/runtime/instanceManager.ts`
+
+- `@/lib/supabase/client`
+
+## `engine/vm/wasmGpuVM.ts`
+
+- `./types`
+
+## `engins/gameengin/ai-director.ts`
 
 - `@tensorflow/tfjs`
 - `@tensorflow/tfjs-backend-webgpu`
 
-## `lib/gameengin/cartridges/loaders.ts`
+## `engins/gameengin/cartridges/loaders.ts`
 
 - `@/components/games/madmaxi`
 - `@/components/games/dream.NeonDrift`
@@ -15223,16 +14094,16 @@ _No style files for this feature._
 - `@/components/games/dream.LexiconSolitaire`
 - `@/components/games/dream.DefuseRitual`
 
-## `lib/gameengin/cartridges/reactCartridge.ts`
+## `engins/gameengin/cartridges/reactCartridge.ts`
 
 - `./MyGame`
 
-## `lib/gameengin/core.ts`
+## `engins/gameengin/core.ts`
 
 - `@/lib/babylon/createEngine`
 - `@babylonjs/core`
 
-## `lib/gameengin/post-fx.ts`
+## `engins/gameengin/post-fx.ts`
 
 - `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline`
 - `@babylonjs/core`
@@ -15240,38 +14111,30 @@ _No style files for this feature._
 - `@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline`
 - `@babylonjs/core/Layers/glowLayer`
 
-## `lib/gsap/gsap.ts`
+## `forge/useForgeBuild.ts`
+
+- `@/lib/forge/forgeBuild`
+
+## `gsap/gsap.ts`
 
 - `gsap`
 
-## `lib/intelligence/sessionPatternEngine.ts`
+## `intelligence/sessionPatternEngine.ts`
 
 - `@tensorflow/tfjs`
 - `@tensorflow/tfjs-backend-webgpu`
 
-## `lib/observability/collector.ts`
-
-- `./otelBridge`
-
-## `lib/renderer/index.ts`
-
-- `./Canvas2DRenderer`
-
-## `lib/runtime/dualRuntimeBridge.ts`
-
-- `@/lib/vm/wasmGpuVM`
-
-## `lib/runtime/instanceManager.ts`
-
-- `@/lib/supabase/client`
-
-## `lib/vm/wasmGpuVM.ts`
-
-- `./types`
-
 ## `next.config.mjs`
 
 - `next`
+
+## `observability/collector.ts`
+
+- `./otelBridge`
+
+## `renderer/index.ts`
+
+- `./Canvas2DRenderer`
 
 ## `src/engin/core/index.ts`
 
@@ -17781,6 +16644,10 @@ _No style files for this feature._
 
 - `daydreams/music/page.tsx`
 
+## `dreamdmbar/DreamSystemContext.tsx/`
+
+- `dreamdmbar/DreamSystemContext.tsx`
+
 ## `dreamdmbar/dream.GlowingLight.tsx/`
 
 - `dreamdmbar/dream.GlowingLight.tsx`
@@ -17788,6 +16655,22 @@ _No style files for this feature._
 ## `dreamdmbar/dreamsurface.dreamdmbar.tsx/`
 
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+
+## `dreamenginOS/OSContext.tsx/`
+
+- `dreamenginOS/OSContext.tsx`
+
+## `dreamr/dreamrfeed.tsx/`
+
+- `dreamr/dreamrfeed.tsx`
+
+## `dreams/DreamRegistry.tsx/`
+
+- `dreams/DreamRegistry.tsx`
+
+## `enginpipe/shell/`
+
+- `enginpipe/shell/ArtifactSlot.tsx`
 
 ## `engins/CodeEngin/`
 
@@ -17830,47 +16713,27 @@ _No style files for this feature._
 
 - `engins/engin.StarMakerEngin.tsx`
 
+## `engins/gameengin/`
+
+- `engins/gameengin/GameRuntime.tsx`
+
 ## `engins/portfolio/`
 
 - `engins/portfolio/dream.PortfolioEngin.tsx`
-
-## `lib/dreamdm/`
-
-- `lib/dreamdm/DreamSystemContext.tsx`
-
-## `lib/dreamenginOS/`
-
-- `lib/dreamenginOS/OSContext.tsx`
-
-## `lib/dreamr/`
-
-- `lib/dreamr/dreamrfeed.tsx`
-
-## `lib/dreams/`
-
-- `lib/dreams/DreamRegistry.tsx`
-
-## `lib/enginpipe/`
-
-- `lib/enginpipe/shell/ArtifactSlot.tsx`
-
-## `lib/gameengin/`
-
-- `lib/gameengin/GameRuntime.tsx`
-
-## `lib/ui/`
-
-- `lib/ui/CustomizeModeContext.tsx`
-
-## `lib/widgets/`
-
-- `lib/widgets/WidgetEngine.tsx`
 
 ## `src/components/`
 
 - `src/components/dream.DreamEnginLogo.tsx`
 - `src/components/dream.LogoHero.tsx`
 - `src/components/dream.Nav.tsx`
+
+## `ui/CustomizeModeContext.tsx/`
+
+- `ui/CustomizeModeContext.tsx`
+
+## `widgets/WidgetEngine.tsx/`
+
+- `widgets/WidgetEngine.tsx`
 
 ---
 
@@ -17914,9 +16777,227 @@ _No style files for this feature._
 
 - `useEditMode`
 
+## `daydreams/shared/useDaydreamPersistence.ts`
+
+- `useDaydreamPersistence`
+
+## `daydreams/shared/useDaydreamState.ts`
+
+- `useDaydreamState`
+
+## `dreamdmbar/DreamSystemContext.tsx`
+
+- `useDreamSystem`
+
+## `dreamdmbar/useDreamBarContext.ts`
+
+- `useDreamBarContext`
+
+## `dreamdmbar/useDreamDMConversations.ts`
+
+- `useDreamDMConversations`
+
+## `dreamdmbar/useDreamDMDraft.ts`
+
+- `useDreamDMDraft`
+
+## `dreamdmbar/useDreamDMMessages.ts`
+
+- `useDreamDMMessages`
+
+## `dreamdmbar/useDreamSearch.ts`
+
+- `useDreamSearch`
+
+## `dreamdmbar/useMessagingCore.ts`
+
+- `useMessagingCore`
+
+## `dreamdmbar/useModuleBarIntent.ts`
+
+- `useModuleBarIntent`
+
+## `dreamdmbar/useNotifications.ts`
+
+- `useNotifications`
+
+## `dreamenginOS/OSContext.tsx`
+
+- `useOS`
+
+## `dreams/useDreamsRuntime.ts`
+
+- `useDreamsRuntime`
+
+## `engine/dream-window/useDreamWindowActions.ts`
+
+- `useDreamWindowActions`
+
+## `engine/gestures/useTouchGestures.ts`
+
+- `useTouchGestures`
+
+## `engine/navigation/useNavigation.ts`
+
+- `useNavigation`
+
+## `engine/offline/useOfflineSync.ts`
+
+- `useOfflineSync`
+
+## `engine/runtime/instanceManager.ts`
+
+- `useInstanceManager`
+
+## `engine/runtime/moduleRegistry.ts`
+
+- `useModuleRegistry`
+
+## `engine/runtime/useDragSurface.ts`
+
+- `useDragSurface`
+
+## `engine/runtime/useDualRuntime.ts`
+
+- `useDualRuntime`
+
+## `engine/runtime/useDualRuntimePersistence.ts`
+
+- `useDualRuntimePersistence`
+
+## `engine/runtime/useEnginBridge.ts`
+
+- `useCodeEnginBridge`
+- `useGameEnginBridge`
+- `useStarMakerEnginBridge`
+- `useLabEnginBridge`
+- `useBrandingEnginBridge`
+- `useContentEnginBridge`
+
+## `engine/runtime/useEnginCoopSync.ts`
+
+- `useEnginCoopSync`
+
+## `engine/runtime/useSharedEnginChannel.ts`
+
+- `useSharedEnginChannel`
+
+## `engine/social/useSocialData.ts`
+
+- `useSocialData`
+
+## `enginpipe/shell/ArtifactSlot.tsx`
+
+- `useArtifactSlot`
+- `useOptionalArtifactSlot`
+
 ## `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts`
 
 - `useAgentSession`
+
+## `engins/gameengin/cartridges/reactCartridge.ts`
+
+- `useGameEngineAPI`
+
+## `engins/gameengin/useUnifiedLoop.ts`
+
+- `useUnifiedLoop`
+
+## `engins/rulesets/brand/useBrandEnginRuntime.ts`
+
+- `useBrandEnginRuntime`
+
+## `engins/rulesets/code/useCodeEnginRuntime.ts`
+
+- `useCodeEnginRuntime`
+
+## `engins/rulesets/content/useContentEnginRuntime.ts`
+
+- `useContentEnginRuntime`
+
+## `engins/rulesets/game/useGameEnginRuntime.ts`
+
+- `useGameEnginRuntime`
+
+## `engins/rulesets/lab/useLabEnginRuntime.ts`
+
+- `useLabEnginRuntime`
+
+## `engins/rulesets/music/useStarMakerEnginRuntime.ts`
+
+- `useStarMakerEnginRuntime`
+
+## `engins/rulesets/useEnginWorkflow.ts`
+
+- `useEnginWorkflow`
+
+## `feed/useLiveFeed.ts`
+
+- `useLiveFeed`
+
+## `feed/useYouTubeLiveFeed.ts`
+
+- `useYouTubeLiveFeed`
+
+## `forge/useForgeActivity.ts`
+
+- `useForgeActivity`
+
+## `forge/useForgeBuild.ts`
+
+- `useForgeBuild`
+
+## `games/DualSenseManager.ts`
+
+- `useDualSense`
+
+## `games/hooks.ts`
+
+- `useGameAutoStart`
+- `useGamePhase`
+- `useKeySet`
+- `useSubmitScore`
+- `useGamePerformanceBaseline`
+
+## `games/mobileControls.ts`
+
+- `useRegisterMobileGameControls`
+
+## `games/useAIDirector.ts`
+
+- `useAIDirector`
+
+## `games/useGameInputKeyboardBridge.ts`
+
+- `useGameInputKeyboardBridge`
+
+## `games/useGamepad.ts`
+
+- `useGamepad`
+
+## `games/useImmersiveGameLayout.ts`
+
+- `useImmersiveGameLayout`
+
+## `games/useRemoteChannel.ts`
+
+- `useRemoteChannel`
+
+## `god-tier/useGodTier.ts`
+
+- `useGodTier`
+
+## `gsap/useGsapEntrance.ts`
+
+- `useGsapEntrance`
+
+## `gsap/useGsapFlip.ts`
+
+- `useGsapFlip`
+
+## `gsap/useGsapScrollReveal.ts`
+
+- `useGsapScrollReveal`
 
 ## `hooks/use-spatial.ts`
 
@@ -17942,9 +17023,31 @@ _No style files for this feature._
 
 - `useHideOnScroll`
 
+## `hooks/useMotionTilt.ts`
+
+- `useMotionTilt`
+
+## `hooks/useResponsive.ts`
+
+- `useViewport`
+- `useBreakpoint`
+- `useIsAtLeast`
+- `useIsBelow`
+- `useIsMobile`
+- `useIsTablet`
+- `useIsDesktop`
+- `useBreakpointValue`
+- `useFluid`
+- `useMediaQuery`
+
 ## `hooks/useSharedDream.ts`
 
 - `useSharedDream`
+
+## `hooks/useTap.ts`
+
+- `useTap`
+- `useHomeParticleTap`
 
 ## `hooks/useTapHoldMove.ts`
 
@@ -17958,273 +17061,17 @@ _No style files for this feature._
 
 - `useViewCounter`
 
-## `lib/daydream/useDaydreamPersistence.ts`
-
-- `useDaydreamPersistence`
-
-## `lib/daydream/useDaydreamState.ts`
-
-- `useDaydreamState`
-
-## `lib/dream-window/useDreamWindowActions.ts`
-
-- `useDreamWindowActions`
-
-## `lib/dreamdm/DreamSystemContext.tsx`
-
-- `useDreamSystem`
-
-## `lib/dreamdm/useDreamBarContext.ts`
-
-- `useDreamBarContext`
-
-## `lib/dreamdm/useDreamDMConversations.ts`
-
-- `useDreamDMConversations`
-
-## `lib/dreamdm/useDreamDMDraft.ts`
-
-- `useDreamDMDraft`
-
-## `lib/dreamdm/useDreamDMMessages.ts`
-
-- `useDreamDMMessages`
-
-## `lib/dreamdm/useDreamSearch.ts`
-
-- `useDreamSearch`
-
-## `lib/dreamdm/useMessagingCore.ts`
-
-- `useMessagingCore`
-
-## `lib/dreamdm/useModuleBarIntent.ts`
-
-- `useModuleBarIntent`
-
-## `lib/dreamdm/useNotifications.ts`
-
-- `useNotifications`
-
-## `lib/dreamenginOS/OSContext.tsx`
-
-- `useOS`
-
-## `lib/dreams/useDreamsRuntime.ts`
-
-- `useDreamsRuntime`
-
-## `lib/enginpipe/shell/ArtifactSlot.tsx`
-
-- `useArtifactSlot`
-- `useOptionalArtifactSlot`
-
-## `lib/engins/brand/useBrandEnginRuntime.ts`
-
-- `useBrandEnginRuntime`
-
-## `lib/engins/code/useCodeEnginRuntime.ts`
-
-- `useCodeEnginRuntime`
-
-## `lib/engins/content/useContentEnginRuntime.ts`
-
-- `useContentEnginRuntime`
-
-## `lib/engins/game/useGameEnginRuntime.ts`
-
-- `useGameEnginRuntime`
-
-## `lib/engins/lab/useLabEnginRuntime.ts`
-
-- `useLabEnginRuntime`
-
-## `lib/engins/music/useStarMakerEnginRuntime.ts`
-
-- `useStarMakerEnginRuntime`
-
-## `lib/engins/useEnginWorkflow.ts`
-
-- `useEnginWorkflow`
-
-## `lib/feed/useLiveFeed.ts`
-
-- `useLiveFeed`
-
-## `lib/feed/useYouTubeLiveFeed.ts`
-
-- `useYouTubeLiveFeed`
-
-## `lib/forge/useForgeActivity.ts`
-
-- `useForgeActivity`
-
-## `lib/forge/useForgeBuild.ts`
-
-- `useForgeBuild`
-
-## `lib/gameengin/cartridges/reactCartridge.ts`
-
-- `useGameEngineAPI`
-
-## `lib/gameengin/useUnifiedLoop.ts`
-
-- `useUnifiedLoop`
-
-## `lib/games/DualSenseManager.ts`
-
-- `useDualSense`
-
-## `lib/games/hooks.ts`
-
-- `useGameAutoStart`
-- `useGamePhase`
-- `useKeySet`
-- `useSubmitScore`
-- `useGamePerformanceBaseline`
-
-## `lib/games/mobileControls.ts`
-
-- `useRegisterMobileGameControls`
-
-## `lib/games/useAIDirector.ts`
-
-- `useAIDirector`
-
-## `lib/games/useGameInputKeyboardBridge.ts`
-
-- `useGameInputKeyboardBridge`
-
-## `lib/games/useGamepad.ts`
-
-- `useGamepad`
-
-## `lib/games/useImmersiveGameLayout.ts`
-
-- `useImmersiveGameLayout`
-
-## `lib/games/useRemoteChannel.ts`
-
-- `useRemoteChannel`
-
-## `lib/gestures/useTouchGestures.ts`
-
-- `useTouchGestures`
-
-## `lib/god-tier/useGodTier.ts`
-
-- `useGodTier`
-
-## `lib/gsap/useGsapEntrance.ts`
-
-- `useGsapEntrance`
-
-## `lib/gsap/useGsapFlip.ts`
-
-- `useGsapFlip`
-
-## `lib/gsap/useGsapScrollReveal.ts`
-
-- `useGsapScrollReveal`
-
-## `lib/hooks/useMotionTilt.ts`
-
-- `useMotionTilt`
-
-## `lib/hooks/useResponsive.ts`
-
-- `useViewport`
-- `useBreakpoint`
-- `useIsAtLeast`
-- `useIsBelow`
-- `useIsMobile`
-- `useIsTablet`
-- `useIsDesktop`
-- `useBreakpointValue`
-- `useFluid`
-- `useMediaQuery`
-
-## `lib/hooks/useTap.ts`
-
-- `useTap`
-- `useHomeParticleTap`
-
-## `lib/intelligence/useSessionIntelligence.ts`
+## `intelligence/useSessionIntelligence.ts`
 
 - `useSessionIntelligence`
 
-## `lib/navigation/useNavigation.ts`
-
-- `useNavigation`
-
-## `lib/notifications/useNotifications.ts`
+## `notifications/useNotifications.ts`
 
 - `useNotifications`
 
-## `lib/offline/useOfflineSync.ts`
-
-- `useOfflineSync`
-
-## `lib/runtime/instanceManager.ts`
-
-- `useInstanceManager`
-
-## `lib/runtime/moduleRegistry.ts`
-
-- `useModuleRegistry`
-
-## `lib/runtime/useDragSurface.ts`
-
-- `useDragSurface`
-
-## `lib/runtime/useDualRuntime.ts`
-
-- `useDualRuntime`
-
-## `lib/runtime/useDualRuntimePersistence.ts`
-
-- `useDualRuntimePersistence`
-
-## `lib/runtime/useEnginBridge.ts`
-
-- `useCodeEnginBridge`
-- `useGameEnginBridge`
-- `useStarMakerEnginBridge`
-- `useLabEnginBridge`
-- `useBrandingEnginBridge`
-- `useContentEnginBridge`
-
-## `lib/runtime/useEnginCoopSync.ts`
-
-- `useEnginCoopSync`
-
-## `lib/runtime/useSharedEnginChannel.ts`
-
-- `useSharedEnginChannel`
-
-## `lib/sharedDream/useSharedDreamSession.ts`
+## `sharedDream/useSharedDreamSession.ts`
 
 - `useSharedDreamSession`
-
-## `lib/social/useSocialData.ts`
-
-- `useSocialData`
-
-## `lib/ui/CustomizeModeContext.tsx`
-
-- `useCustomizeMode`
-
-## `lib/warp/useWarp.ts`
-
-- `useWarp`
-
-## `lib/webgpu/useWebGPUDirector.ts`
-
-- `useWebGPUDirector`
-
-## `lib/widgets/useWidget.ts`
-
-- `useWidget`
 
 ## `src/lib/babylon/useDreamLogoScene.ts`
 
@@ -18237,6 +17084,22 @@ _No style files for this feature._
 ## `tests/phase8f-daydream-network.test.ts`
 
 - `useDaydreamPersistence`
+
+## `ui/CustomizeModeContext.tsx`
+
+- `useCustomizeMode`
+
+## `warp/useWarp.ts`
+
+- `useWarp`
+
+## `webgpu/useWebGPUDirector.ts`
+
+- `useWebGPUDirector`
+
+## `widgets/useWidget.ts`
+
+- `useWidget`
 
 ---
 
@@ -18275,6 +17138,7 @@ _No style files for this feature._
 
 > Files that directly touch the dual-runtime system — the spine connecting dreamdmbar to everything.
 
+- `adari.ts`
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
 - `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
 - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
@@ -18301,42 +17165,41 @@ _No style files for this feature._
 - `components/runtime/dream.DualRuntimeContainer.tsx`
 - `components/runtime/dream.RuntimeView.tsx`
 - `components/shared-dream/dream.SharedDreamRuntime.tsx`
+- `dreamdmbar/DreamSystemContext.tsx`
+- `dreamenginOS/index.ts`
+- `dreams/dreamIntentBus.ts`
+- `dreams/types.ts`
+- `engine/runtime/EnginDispatcher.ts`
+- `engine/runtime/channelMetrics.ts`
+- `engine/runtime/dreamOSBus.ts`
+- `engine/runtime/dualRuntime.ts`
+- `engine/runtime/dualRuntimeBridge.ts`
+- `engine/runtime/enginWorkflowRegistry.ts`
+- `engine/runtime/iEngine.ts`
+- `engine/runtime/memory.ts`
+- `engine/runtime/moduleRegistry.ts`
+- `engine/runtime/quantumCircuit.ts`
+- `engine/runtime/seamClipboard.ts`
+- `engine/runtime/useDualRuntime.ts`
+- `engine/runtime/useDualRuntimePersistence.ts`
+- `engine/runtime/useEnginBridge.ts`
+- `engine/vm/bus-events.ts`
+- `engine/vm/dual-runtime.ts`
+- `engine/vm/dualVMCoordinator.ts`
+- `engine/vm/index.ts`
 - `engins/dream.ForgeEngin.tsx`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
+- `engins/gameengin/GameRuntime.tsx`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
-- `lib/adari.ts`
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/dreamenginOS/index.ts`
-- `lib/dreams/dreamIntentBus.ts`
-- `lib/dreams/types.ts`
-- `lib/engins/useEnginWorkflow.ts`
-- `lib/eventBus.ts`
-- `lib/gameengin/GameRuntime.tsx`
-- `lib/games/DualSenseManager.ts`
-- `lib/intelligence/sessionPatternEngine.ts`
-- `lib/intelligence/useSessionIntelligence.ts`
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/channelMetrics.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dualRuntime.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/enginWorkflowRegistry.ts`
-- `lib/runtime/iEngine.ts`
-- `lib/runtime/memory.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/quantumCircuit.ts`
-- `lib/runtime/seamClipboard.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useDualRuntimePersistence.ts`
-- `lib/runtime/useEnginBridge.ts`
-- `lib/vm/bus-events.ts`
-- `lib/vm/dual-runtime.ts`
-- `lib/vm/dualVMCoordinator.ts`
-- `lib/vm/index.ts`
+- `engins/rulesets/useEnginWorkflow.ts`
+- `eventBus.ts`
+- `games/DualSenseManager.ts`
+- `intelligence/sessionPatternEngine.ts`
+- `intelligence/useSessionIntelligence.ts`
 - `readme-autosync.ts`
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
@@ -18353,6 +17216,15 @@ _No style files for this feature._
 
 # Supabase Usage
 
+- `activity/aqs.ts`
+- `activity/visibility-score.ts`
+- `admin/lockout.ts`
+- `ai/boogie-verifier.ts`
+- `ai/capability-gate.ts`
+- `ai/confirm-token.ts`
+- `ai/handlers/social.ts`
+- `ai/rate-limiter.ts`
+- `ai/rateLimit.ts`
 - `app/(internal)/idari-console/platform-errors/page.tsx`
 - `app/(internal)/idari-console/platform-health/page.tsx`
 - `app/ads/create/page.tsx`
@@ -18444,6 +17316,8 @@ _No style files for this feature._
 - `app/settings/security/page.tsx`
 - `app/shop/sell/page.tsx`
 - `app/view-profile/page.tsx`
+- `child-safety/ncmecReporter.ts`
+- `child-safety/scanMediaUrls.ts`
 - `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`
 - `components/dream.CreatePostModal.tsx`
 - `components/dream.ForgeDreamCanvas.tsx`
@@ -18460,48 +17334,37 @@ _No style files for this feature._
 - `components/panels/dream.panel.WidgetsPanel.tsx`
 - `components/profile/dream.ProfileCanvas.tsx`
 - `components/shared-dream/dream.SharedDreamProvider.tsx`
+- `connectors/youtube.ts`
+- `consent/consentManager.ts`
 - `coresurfaces/dreamsurface.EditProfileDream.tsx`
 - `coresurfaces/dreamsurface.ViewProfile.tsx`
+- `daydreams/shared/useDaydreamPersistence.ts`
+- `daydreams/shared/useDaydreamState.ts`
+- `dream-docs/search.ts`
+- `dreamdmbar/DreamSystemContext.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+- `dreamdmbar/useDreamDMConversations.ts`
+- `dreamdmbar/useDreamDMMessages.ts`
+- `dreamdmbar/useDreamSearch.ts`
+- `dreamdmbar/useMessagingCore.ts`
+- `dreamengin/engineAssets.ts`
+- `dreamr/socialHumanityScore.ts`
 - `engine/io.ts`
+- `engine/runtime/instanceManager.ts`
+- `enginpipe/telemetry/client.ts`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
+- `engins/gameengin/dream-engine.ts`
+- `feed/useLiveFeed.ts`
 - `hooks/use-spatial.ts`
 - `hooks/useAccount.ts`
 - `hooks/useSharedDream.ts`
-- `lib/activity/aqs.ts`
-- `lib/activity/visibility-score.ts`
-- `lib/admin/lockout.ts`
-- `lib/ai/boogie-verifier.ts`
-- `lib/ai/capability-gate.ts`
-- `lib/ai/confirm-token.ts`
-- `lib/ai/handlers/social.ts`
-- `lib/ai/rate-limiter.ts`
-- `lib/ai/rateLimit.ts`
-- `lib/child-safety/ncmecReporter.ts`
-- `lib/child-safety/scanMediaUrls.ts`
-- `lib/connectors/youtube.ts`
-- `lib/consent/consentManager.ts`
-- `lib/daydream/useDaydreamPersistence.ts`
-- `lib/daydream/useDaydreamState.ts`
-- `lib/dream-docs/search.ts`
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/dreamdm/useDreamSearch.ts`
-- `lib/dreamdm/useMessagingCore.ts`
-- `lib/dreamengin/engineAssets.ts`
-- `lib/dreamr/socialHumanityScore.ts`
-- `lib/enginpipe/telemetry/client.ts`
-- `lib/feed/useLiveFeed.ts`
-- `lib/gameengin/dream-engine.ts`
-- `lib/ledger.ts`
-- `lib/platform/lab.ts`
-- `lib/reality/realityStore.ts`
-- `lib/runtime/instanceManager.ts`
-- `lib/sharedDream/useSharedDreamSession.ts`
+- `ledger.ts`
+- `platform/lab.ts`
+- `reality/realityStore.ts`
+- `sharedDream/useSharedDreamSession.ts`
 - `supabaseClient.ts`
 
 ---
@@ -18512,8 +17375,8 @@ _No style files for this feature._
 
 ## Zustand Stores
 
-- `lib/runtime/instanceManager.ts`
-- `lib/runtime/moduleRegistry.ts`
+- `engine/runtime/instanceManager.ts`
+- `engine/runtime/moduleRegistry.ts`
 
 ## React Context Providers & Consumers
 
@@ -18524,11 +17387,11 @@ _No style files for this feature._
 - `components/runtime/dream.DualRuntimeContainer.tsx`
 - `components/shared-dream/dream.SharedDreamProvider.tsx`
 - `components/widgets/dream.EditModeProvider.tsx`
-- `lib/dreamdm/DreamSystemContext.tsx`
-- `lib/dreamenginOS/OSContext.tsx`
-- `lib/enginpipe/shell/ArtifactSlot.tsx`
-- `lib/gameengin/cartridges/reactCartridge.ts`
-- `lib/ui/CustomizeModeContext.tsx`
+- `dreamdmbar/DreamSystemContext.tsx`
+- `dreamenginOS/OSContext.tsx`
+- `enginpipe/shell/ArtifactSlot.tsx`
+- `engins/gameengin/cartridges/reactCartridge.ts`
+- `ui/CustomizeModeContext.tsx`
 
 ---
 
@@ -18539,6 +17402,9 @@ _No style files for this feature._
 - `app/api/codeengin/upload/route.ts`
 - `app/dreamdmbar/_components/DreamSpaceRegion.tsx`
 - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
+- `codeengin/git.ts`
+- `codeengin/runner.ts`
+- `collaboration/index.ts`
 - `components/daydream/dream.CodeDreamIDE.tsx`
 - `components/daydream/dream.LabDreamIDE.tsx`
 - `components/draggable/dream.DraggableModule.tsx`
@@ -18555,52 +17421,49 @@ _No style files for this feature._
 - `components/home/dream.bar.PersistentDreamBar.tsx`
 - `components/shared-dream/dream.SharedDreamRuntime.tsx`
 - `components/spatial/dream.shell.EnhancedSpatialShell.tsx`
+- `dreamdmbar/useDreamDMConversations.ts`
+- `dreamdmbar/useDreamDMMessages.ts`
+- `engine/engin-runtime/EnginRuntime.ts`
+- `engine/navigation/SpatialNavigationEngine.ts`
+- `engine/navigation/useNavigation.ts`
+- `engine/runtime/dualRuntimeBridge.ts`
+- `engine/runtime/moduleRegistry.ts`
+- `engine/runtime/runtimeChannel.ts`
+- `engine/runtime/seamClipboard.ts`
+- `engine/runtime/useDualRuntime.ts`
+- `engine/runtime/useEnginBridge.ts`
+- `engine/runtime/useSharedEnginChannel.ts`
+- `engine/social/livekit.ts`
+- `engine/vm/dual-runtime.ts`
 - `engins/engin.BrandingEngin.tsx`
 - `engins/engin.CodeEngin.tsx`
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
+- `engins/gameengin/GameRuntime.tsx`
+- `engins/gameengin/dream-engine.ts`
+- `engins/gameengin/gameEnginRuntime.ts`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
-- `lib/codeengin/git.ts`
-- `lib/codeengin/runner.ts`
-- `lib/collaboration/index.ts`
-- `lib/dreamdm/useDreamDMConversations.ts`
-- `lib/dreamdm/useDreamDMMessages.ts`
-- `lib/engin-runtime/EnginRuntime.ts`
-- `lib/engins/brand/useBrandEnginRuntime.ts`
-- `lib/engins/code/useCodeEnginRuntime.ts`
-- `lib/engins/content/useContentEnginRuntime.ts`
-- `lib/engins/game/useGameEnginRuntime.ts`
-- `lib/engins/lab/useLabEnginRuntime.ts`
-- `lib/engins/music/useStarMakerEnginRuntime.ts`
-- `lib/event-bus/index.ts`
-- `lib/eventBus.ts`
-- `lib/feed/useLiveFeed.ts`
-- `lib/forge/engineForge.ts`
-- `lib/gameengin/GameRuntime.tsx`
-- `lib/gameengin/dream-engine.ts`
-- `lib/gameengin/gameEnginRuntime.ts`
-- `lib/games/gameControllerButtons.ts`
-- `lib/intelligence/useSessionIntelligence.ts`
-- `lib/navigation/SpatialNavigationEngine.ts`
-- `lib/navigation/useNavigation.ts`
-- `lib/runtime/dualRuntimeBridge.ts`
-- `lib/runtime/moduleRegistry.ts`
-- `lib/runtime/runtimeChannel.ts`
-- `lib/runtime/seamClipboard.ts`
-- `lib/runtime/useDualRuntime.ts`
-- `lib/runtime/useEnginBridge.ts`
-- `lib/runtime/useSharedEnginChannel.ts`
-- `lib/social/livekit.ts`
-- `lib/vm/dual-runtime.ts`
-- `lib/web3/client.ts`
-- `lib/widgets/feed-resolver.ts`
+- `engins/rulesets/brand/useBrandEnginRuntime.ts`
+- `engins/rulesets/code/useCodeEnginRuntime.ts`
+- `engins/rulesets/content/useContentEnginRuntime.ts`
+- `engins/rulesets/game/useGameEnginRuntime.ts`
+- `engins/rulesets/lab/useLabEnginRuntime.ts`
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts`
+- `event-bus/index.ts`
+- `eventBus.ts`
+- `feed/useLiveFeed.ts`
+- `forge/engineForge.ts`
+- `games/gameControllerButtons.ts`
+- `intelligence/useSessionIntelligence.ts`
 - `scripts/feature-build/generate-features.mjs`
 - `scripts/generate-repo-state.mjs`
 - `src/core/GameEnginCore.ts`
 - `src/engin/core/index.ts`
 - `src/engin/generated/osArchitectureMap.ts`
 - `types/dreamArtifact.ts`
+- `web3/client.ts`
+- `widgets/feed-resolver.ts`
 
 ---
 
@@ -18611,15 +17474,15 @@ _No style files for this feature._
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
 - `components/dream.OSShellActivator.tsx`
 - `components/dreamengin/dream.DREAMenginOS.tsx`
-- `lib/dreams/types.ts`
-- `lib/engin-runtime/HotRuntime.ts`
-- `lib/gameengin/registerCartridges.ts`
-- `lib/observability/otel.ts`
-- `lib/runtime/EnginDispatcher.ts`
-- `lib/runtime/dreamOSBus.ts`
-- `lib/runtime/dropTargetRegistry.ts`
-- `lib/runtime/memory.ts`
-- `lib/runtime/useDragSurface.ts`
+- `dreams/types.ts`
+- `engine/engin-runtime/HotRuntime.ts`
+- `engine/runtime/EnginDispatcher.ts`
+- `engine/runtime/dreamOSBus.ts`
+- `engine/runtime/dropTargetRegistry.ts`
+- `engine/runtime/memory.ts`
+- `engine/runtime/useDragSurface.ts`
+- `engins/gameengin/registerCartridges.ts`
+- `observability/otel.ts`
 - `readme-autosync.ts`
 - `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
@@ -18646,19 +17509,19 @@ _No circular dependencies detected._
 | File | Import Count |
 |------|--------------|
 | `engins/engin.GameEngin.tsx` | 42 |
-| `lib/gameengin/executionWiring.ts` | 39 |
+| `engins/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
-| `lib/contentengin/pipeline/build.ts` | 23 |
+| `engins/contentengin/pipeline/build.ts` | 23 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
 | `components/dream.HomeFeed.tsx` | 17 |
-| `lib/engin-runtime/index.ts` | 17 |
+| `engine/engin-runtime/index.ts` | 17 |
 | `scripts/wire-orphans.mjs` | 17 |
 | `app/daydream/games/page.tsx` | 16 |
-| `lib/gameengin/index.ts` | 16 |
-| `lib/navigation/index.ts` | 16 |
+| `engine/navigation/index.ts` | 16 |
+| `engins/gameengin/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
 | `daydreams/games/page.tsx` | 15 |
@@ -18685,19 +17548,19 @@ _No circular dependencies detected._
 | File | Coupling | Flags |
 |------|----------|-------|
 | `engins/engin.GameEngin.tsx` | 42 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `lib/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
+| `engins/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
-| `lib/contentengin/pipeline/build.ts` | 23 | HIGH_COUPLING |
+| `engins/contentengin/pipeline/build.ts` | 23 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
-| `lib/engin-runtime/index.ts` | 17 | HIGH_COUPLING |
+| `engine/engin-runtime/index.ts` | 17 | HIGH_COUPLING |
 | `scripts/wire-orphans.mjs` | 17 | HIGH_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
-| `lib/gameengin/index.ts` | 16 | HIGH_COUPLING |
-| `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
+| `engine/navigation/index.ts` | 16 | HIGH_COUPLING |
+| `engins/gameengin/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
@@ -18717,7 +17580,7 @@ _No circular dependencies detected._
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
-| `lib/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
+| `engine/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
 | `app/api/ai/boogieman/route.ts` | 11 | HIGH_COUPLING |
 | `app/api/ai/execute/route.ts` | 11 | HIGH_COUPLING |
@@ -18732,8 +17595,8 @@ _No circular dependencies detected._
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | 11 | HIGH_COUPLING |
 | `components/providers/dream.AppSurfaceShell.tsx` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
 | `daydreams/music/page.tsx` | 11 | HIGH_COUPLING |
-| `lib/dreamenginOS/index.ts` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
-| `lib/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
+| `dreamenginOS/index.ts` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
+| `engins/gameengin/systems/index.ts` | 11 | HIGH_COUPLING |
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/daydream/music/page.tsx` | 10 | MEDIUM_COUPLING |
@@ -18743,9 +17606,9 @@ _No circular dependencies detected._
 | `daydreams/code/page.tsx` | 10 | MEDIUM_COUPLING |
 | `daydreams/create/page.tsx` | 10 | MEDIUM_COUPLING |
 | `daydreams/lab/page.tsx` | 10 | MEDIUM_COUPLING |
-| `lib/dreamr/dreamrfeed.tsx` | 10 | MEDIUM_COUPLING |
-| `lib/engin-runtime/EnginRuntime.ts` | 10 | MEDIUM_COUPLING, EVENT_BUS |
-| `lib/gameengin/GameRuntime.tsx` | 10 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `dreamr/dreamrfeed.tsx` | 10 | MEDIUM_COUPLING |
+| `engine/engin-runtime/EnginRuntime.ts` | 10 | MEDIUM_COUPLING, EVENT_BUS |
+| `engins/gameengin/GameRuntime.tsx` | 10 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/ads/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/api/account/delete-data/route.ts` | 9 | MEDIUM_COUPLING |
 | `app/api/account/delete-dream/route.ts` | 9 | MEDIUM_COUPLING |
@@ -18781,10 +17644,10 @@ _No circular dependencies detected._
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
+| `connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
-| `lib/connectors/syncDispatch.ts` | 8 | MEDIUM_COUPLING |
-| `lib/observability/otel.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
-| `lib/runtime/dreamOSBus.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engine/runtime/dreamOSBus.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `observability/otel.ts` | 8 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
 | `tests/game-navigation.test.ts` | 8 | MEDIUM_COUPLING |
 | `app/ads/create/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/ads/slot/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -18833,11 +17696,11 @@ _No circular dependencies detected._
 | `components/profile/dream.ProfileCanvas.tsx` | 7 | MEDIUM_COUPLING |
 | `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
+| `engine/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
+| `engine/engin-runtime/EnginDomainCores.ts` | 7 | MEDIUM_COUPLING |
+| `engine/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
+| `engins/contentengin/cli.ts` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `lib/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
-| `lib/contentengin/cli.ts` | 7 | MEDIUM_COUPLING |
-| `lib/engin-runtime/EnginDomainCores.ts` | 7 | MEDIUM_COUPLING |
-| `lib/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/dream-window-system.test.ts` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `tests/game-controller.test.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `tests/gameengin-cartridges.test.ts` | 7 | MEDIUM_COUPLING |
@@ -18876,6 +17739,7 @@ _No circular dependencies detected._
 | `app/messages/boards/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/notes/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/onboarding/page.tsx` | 6 | MEDIUM_COUPLING |
+| `codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
 | `components/customize/dream.GlobalCustomizeUI.tsx` | 6 | MEDIUM_COUPLING |
 | `components/dream.CreatePostModal.tsx` | 6 | MEDIUM_COUPLING |
 | `components/dream.universal_asset_registry.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS |
@@ -18889,10 +17753,9 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.WidgetsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
-| `lib/codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
-| `lib/contentengin/pipeline/bundle.ts` | 6 | MEDIUM_COUPLING |
-| `lib/contentengin/rigging/index.ts` | 6 | MEDIUM_COUPLING |
-| `lib/dreamdm/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
+| `dreamdmbar/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
+| `engins/contentengin/pipeline/bundle.ts` | 6 | MEDIUM_COUPLING |
+| `engins/contentengin/rigging/index.ts` | 6 | MEDIUM_COUPLING |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `src/engin/core/index.ts` | 6 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
@@ -18904,38 +17767,37 @@ _No circular dependencies detected._
 | `components/daydream/dream.CodeDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.MadMaxiWildfall.tsx` | 4 | EVENT_BUS |
-| `lib/engins/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/engins/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/engins/content/useContentEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/engins/game/useGameEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/engins/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/engins/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
-| `lib/feed/useLiveFeed.ts` | 4 | EVENT_BUS |
-| `lib/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
-| `lib/gameengin/registerCartridges.ts` | 4 | RUNTIME_REGISTRY |
-| `lib/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, DUAL_RUNTIME, ZUSTAND_STATE |
-| `lib/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
-| `lib/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
+| `engine/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, DUAL_RUNTIME, ZUSTAND_STATE |
+| `engine/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `engine/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
+| `engine/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
+| `engins/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
+| `engins/gameengin/registerCartridges.ts` | 4 | RUNTIME_REGISTRY |
+| `engins/rulesets/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
+| `engins/rulesets/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
+| `engins/rulesets/content/useContentEnginRuntime.ts` | 4 | EVENT_BUS |
+| `engins/rulesets/game/useGameEnginRuntime.ts` | 4 | EVENT_BUS |
+| `engins/rulesets/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
+| `engins/rulesets/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
+| `feed/useLiveFeed.ts` | 4 | EVENT_BUS |
+| `intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/generate-readme.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-asset-pipeline.test.ts` | 4 | RUNTIME_REGISTRY |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
+| `codeengin/runner.ts` | 3 | EVENT_BUS |
 | `components/draggable/dream.DraggableModule.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.AvenueOfMirrors.tsx` | 3 | EVENT_BUS |
-| `lib/codeengin/runner.ts` | 3 | EVENT_BUS |
-| `lib/dreamdm/useDreamDMConversations.ts` | 3 | EVENT_BUS |
-| `lib/dreamdm/useDreamDMMessages.ts` | 3 | EVENT_BUS |
-| `lib/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
-| `lib/navigation/useNavigation.ts` | 3 | EVENT_BUS |
-| `lib/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
+| `dreamdmbar/useDreamDMConversations.ts` | 3 | EVENT_BUS |
+| `dreamdmbar/useDreamDMMessages.ts` | 3 | EVENT_BUS |
+| `engine/navigation/useNavigation.ts` | 3 | EVENT_BUS |
+| `engine/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
@@ -18943,15 +17805,15 @@ _No circular dependencies detected._
 | `tests/phase8f-daydream-activation.test.ts` | 3 | EVENT_BUS |
 | `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/universal-visual-modularity.test.ts` | 3 | EVENT_BUS |
+| `widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/codeengin/git.ts` | 2 | EVENT_BUS |
-| `lib/engin-runtime/HotRuntime.ts` | 2 | RUNTIME_REGISTRY |
-| `lib/forge/engineForge.ts` | 2 | EVENT_BUS |
-| `lib/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
-| `lib/runtime/useDualRuntime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/runtime/useEnginBridge.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/vm/dual-runtime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/web3/client.ts` | 2 | EVENT_BUS |
+| `codeengin/git.ts` | 2 | EVENT_BUS |
+| `engine/engin-runtime/HotRuntime.ts` | 2 | RUNTIME_REGISTRY |
+| `engine/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
+| `engine/runtime/useDualRuntime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `engine/runtime/useEnginBridge.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `engine/vm/dual-runtime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
+| `forge/engineForge.ts` | 2 | EVENT_BUS |
 | `scripts/generate-repo-state.mjs` | 2 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `src/core/GameEnginCore.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/dual-runtime-bridge-peer-activity.test.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
@@ -18959,15 +17821,16 @@ _No circular dependencies detected._
 | `tests/engin-dispatcher-glow.test.ts` | 2 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-power-systems.test.ts` | 2 | EVENT_BUS, RUNTIME_REGISTRY |
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
-| `lib/collaboration/index.ts` | 1 | EVENT_BUS |
-| `lib/dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `lib/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `lib/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
-| `lib/event-bus/index.ts` | 0 | EVENT_BUS |
-| `lib/eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
-| `lib/games/gameControllerButtons.ts` | 0 | EVENT_BUS |
-| `lib/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `lib/social/livekit.ts` | 0 | EVENT_BUS |
+| `web3/client.ts` | 2 | EVENT_BUS |
+| `collaboration/index.ts` | 1 | EVENT_BUS |
+| `dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engine/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engine/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
+| `engine/runtime/memory.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engine/social/livekit.ts` | 0 | EVENT_BUS |
+| `event-bus/index.ts` | 0 | EVENT_BUS |
+| `eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
+| `games/gameControllerButtons.ts` | 0 | EVENT_BUS |
 | `src/engin/generated/osArchitectureMap.ts` | 0 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `src/engin/generated/systems.ts` | 0 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `types/dreamArtifact.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
@@ -18983,294 +17846,627 @@ _No circular dependencies detected._
 
 | File | Broken specifier | Imported names |
 |------|-----------------|----------------|
+| `activity/aqs.ts` | `@/lib/supabase/client` | `createClient` |
+| `activity/boogieActivityPolicy.ts` | `@/lib/policy/boogiePolicy` | `PolicyCategory`, `PolicyCategoryValue` |
+| `activity/visibility-score.ts` | `@/lib/supabase/client` | `createClient` |
+| `admin/lockout.ts` | `@/lib/supabase/server` | `createServiceClient` |
+| `admin/upgrade-readiness.ts` | `@/lib/agents/idari` | `PatchPlan`, `createPatchPlan` |
+| `admin/upgrade-readiness.ts` | `@/lib/feature-build` | `BuildCycleState`, `DaydreamEnginManifest`, `FEATURE_MANIFESTS`, `FeatureEntry`, `calculateProgress`, `computeAllBuildCycleStates` |
+| `admin/upgrade-readiness.ts` | `@/lib/setup/checks` | `SetupCheckSummary`, `getSetupStatus` |
+| `ai/audit.ts` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `ai/audit.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/boogie-verifier.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/capability-gate.ts` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `ai/capability-gate.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/capability-gate.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `ai/confirm-token.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/idempotency.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/rate-limiter.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/rateLimit.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `ai/tool-router.ts` | `@/lib/utils` | `toErrorMessage` |
+| `ai/triad.ts` | `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `ai/triad.ts` | `@/lib/ai/schemas` | `Intent`, `IntentSchema`, `IntentType` |
+| `api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/(internal)/idari-console/page.tsx` | `@/lib/admin/upgrade-readiness` | `createUpgradeReadinessSnapshot` |
+| `app/(internal)/idari-console/page.tsx` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/(internal)/idari-console/page.tsx` | `@/lib/dev-bypass` | `isDevAdminBypassActive` |
 | `app/(internal)/idari-console/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/(internal)/idari-console/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/(internal)/idari-console/platform-errors/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/(internal)/idari-console/platform-health/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/(internal)/idari-console/platform-health/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/actions/dream-docs.ts` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/actions/dream-docs.ts` | `@/lib/dream-docs/embed` | `embedDocSection` |
 | `app/actions/dream-docs.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/actions/dream-docs.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/actions/dream-docs.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/ads/create/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/ads/create/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/ads/create/page.tsx` | `@/lib/utils` | `toErrorMessage` |
 | `app/ads/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/ads/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/ads/slot/[id]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/ads/slot/[id]/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/account/delete-data/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/account/delete-data/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/account/delete-data/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/account/delete-data/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/account/delete-data/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/account/delete-dream/route.ts` | `@/lib/agents/agentBus` | `runTriadConsensus` |
+| `app/api/account/delete-dream/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/account/delete-dream/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/account/delete-dream/route.ts` | `@/lib/supabase/server` | `createServerClient`, `createServiceClient` |
 | `app/api/account/delete-dream/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/account/export-data/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/account/export-data/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/account/export-data/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/activity/track/route.ts` | `@/lib/activity/scoring` | `calculateActivityPoints`, `calculateDecayDate` |
+| `app/api/activity/track/route.ts` | `@/lib/activity/types` | `ActivityVerification`, `TrackActivityRequest`, `TrackActivityResponse`, `VERIFICATION_STRENGTH` |
 | `app/api/activity/track/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/activity/track/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/admin/ai-chat/route.ts` | `@/lib/admin/lockout` | `isAdminLocked`, `isOwner`, `triggerAdminLockout` |
+| `app/api/admin/ai-chat/route.ts` | `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `app/api/admin/ai-chat/route.ts` | `@/lib/ai/triad` | `AI_MODELS` |
 | `app/api/admin/ai-chat/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/admin/ai-chat/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/admin/ai-request/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/admin/ai-request/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/admin/child-safety/route.ts` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/api/admin/child-safety/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/admin/child-safety/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/admin/child-safety/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/admin/child-safety/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/admin/code-files/route.ts` | `@/lib/admin/lockout` | `isAdminLocked`, `isDomainBlocked`, `isOwner`, `triggerAdminLockout` |
 | `app/api/admin/code-files/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/admin/code-files/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/admin/observability/route.ts` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/api/admin/observability/route.ts` | `@/lib/api/route` | `jsonApiError` |
+| `app/api/admin/observability/route.ts` | `@/lib/observability/collector` | `getBufferStats`, `getSnapshot` |
+| `app/api/admin/observability/route.ts` | `@/lib/observability/correlator` | `correlate` |
+| `app/api/admin/observability/route.ts` | `@/lib/observability/immediateAction` | `buildImmediateRemediationAction` |
+| `app/api/admin/observability/route.ts` | `@/lib/observability/rootCauseAnalyzer` | `inferRootCause` |
 | `app/api/admin/observability/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/admin/observability/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/ads/orders/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ads/orders/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ads/orders/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/ads/view/route.ts` | `@/lib/activity/aqs` | `qualifiesForPremiumCPV` |
+| `app/api/ads/view/route.ts` | `@/lib/activity/revenueSplit` | `calculateActivityRevenueSplit` |
+| `app/api/ads/view/route.ts` | `@/lib/activity/skipCredits` | `calculateSkipCreditsEarned` |
+| `app/api/ads/view/route.ts` | `@/lib/activity/types` | `AdView`, `CPVTier`, `CPV_PRICING`, `TrackAdViewRequest`, `TrackAdViewResponse` |
 | `app/api/ads/view/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ads/view/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/agent/session/route.ts` | `@/lib/agentOS` | `getAgentOS` |
+| `app/api/agent/session/route.ts` | `@/lib/agentOS/hostTools` | `codeEnginHostTools` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION`, `boogieEnforce` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/api/route` | `jsonApiError` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/child-safety/childSafetyDetector` | `isZeroTolerance`, `scanContent` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/child-safety/imageClassifier` | `classifyImage` |
+| `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
 | `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/boogieman/child-safety/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ai/boogieman/privacy-event/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/boogieman/privacy-event/route.ts` | `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION` |
+| `app/api/ai/boogieman/privacy-event/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/ai/boogieman/privacy-event/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/boogieman/privacy-event/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ai/boogieman/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/boogieman/route.ts` | `@/lib/ai/boogieman` | `BOOGIE_POLICY_VERSION`, `boogieEvaluate` |
+| `app/api/ai/boogieman/route.ts` | `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `app/api/ai/boogieman/route.ts` | `@/lib/ai/triad` | `boogiePolicyCheck`, `isOwnerEmail` |
+| `app/api/ai/boogieman/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/ai/boogieman/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/boogieman/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ai/boogieman/status/route.ts` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/boogieman` | `boogieEvaluate` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/confirm` | `makeConfirmToken` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/rateLimit` | `checkRateLimit`, `getCurrentRPM` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/schemas` | `DrEamsRunBodySchema`, `DrEamsRunResponse` |
+| `app/api/ai/eams/route.ts` | `@/lib/ai/triad` | `boogiePolicyCheck`, `isOwnerEmail`, `planWithEams`, `validateWithIdari` |
+| `app/api/ai/eams/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/ai/eams/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/eams/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ai/execute/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/execute/route.ts` | `@/lib/ai/confirm` | `verifyConfirmToken` |
+| `app/api/ai/execute/route.ts` | `@/lib/ai/rateLimit` | `checkRateLimit` |
+| `app/api/ai/execute/route.ts` | `@/lib/ai/schemas` | `ExecuteBodySchema`, `Intent` |
+| `app/api/ai/execute/route.ts` | `@/lib/ai/triad` | `validateWithIdari` |
+| `app/api/ai/execute/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/ai/execute/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/execute/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/ai/execute/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/ai/idari/route.ts` | `@/lib/agents/idari` | `GenerationLawAssessment`, `assessGenerationLawScope`, `formatGenerationLawLoadCheck` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/boogieman` | `boogieEvaluate` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/groq` | `GroqMessage`, `groqChat` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/rateLimit` | `checkRateLimit`, `getCurrentRPM` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/schemas` | `DrEamsRunBodySchema`, `Intent` |
+| `app/api/ai/idari/route.ts` | `@/lib/ai/triad` | `AI_MODELS`, `isOwnerEmail`, `validateWithIdari` |
+| `app/api/ai/idari/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/ai/idari/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/ai/idari/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/appeal/route.ts` | `@/lib/ai/audit` | `writeAuditLog` |
+| `app/api/appeal/route.ts` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION`, `RULE_CODES` |
+| `app/api/appeal/route.ts` | `@/lib/ai/schemas` | `AppealRequestSchema` |
+| `app/api/appeal/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/appeal/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/appeal/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/auth/logout/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/auth/providers/route.ts` | `@/lib/supabase/config` | `SUPABASE_CONFIG` |
+| `app/api/blocks/route.ts` | `@/lib/api/route` | `jsonApiError` |
 | `app/api/blocks/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/blocks/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/blocks/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/ci/run/route.ts` | `@/lib/codeengin/runner` | `runCiCommand` |
 | `app/api/close-friends/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/close-friends/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/close-friends/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/codeengin/diagnostics/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/diagnostics/route.ts` | `@/lib/codeengin/diagnostics` | `diagnoseFile`, `diagnoseWorkspace` |
+| `app/api/codeengin/diagnostics/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/file/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/file/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/file/route.ts` | `@/lib/codeengin/workspaceStore` | `createProjectFile`, `deleteProjectFile`, `moveProjectFile`, `readProjectFile`, `writeProjectFile` |
+| `app/api/codeengin/git/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/git/route.ts` | `@/lib/codeengin/git` | `getGitDiff`, `getGitLog`, `getGitStatus` |
+| `app/api/codeengin/git/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/run/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/run/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/run/route.ts` | `@/lib/codeengin/runner` | `listRunnerCommands`, `runCodeEnginCommand` |
+| `app/api/codeengin/search/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/search/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/search/route.ts` | `@/lib/codeengin/search` | `searchWorkspace` |
+| `app/api/codeengin/upload/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/upload/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/upload/route.ts` | `@/lib/codeengin/workspaceStore` | `createCodeEnginWorkspace`, `getWorkspaceOverview` |
+| `app/api/codeengin/workspace/route.ts` | `@/lib/codeengin/auth` | `assertCodeEnginAccess` |
+| `app/api/codeengin/workspace/route.ts` | `@/lib/codeengin/projectGraph` | `buildProjectGraph` |
+| `app/api/codeengin/workspace/route.ts` | `@/lib/codeengin/pathSafety` | `safeErrorMessage` |
+| `app/api/codeengin/workspace/route.ts` | `@/lib/codeengin/workspaceStore` | `createCodeEnginWorkspace`, `getWorkspaceOverview`, `listEditableFiles` |
+| `app/api/codeengin/workspace/route.ts` | `@/lib/codeengin/runner` | `listRunnerCommands` |
+| `app/api/comments/route.ts` | `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `app/api/comments/route.ts` | `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
 | `app/api/comments/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/comments/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/comments/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/bluesky` | `blueskyVerify` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/github` | `githubVerify` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/mastodon` | `mastodonVerify` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/nostr` | `nostrVerify` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/reddit` | `redditVerify` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/connectors/providers/youtube` | `youtubeVerify` |
 | `app/api/connectors/[provider]/connect/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/[provider]/connect/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/[provider]/connect/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/connectors/[provider]/disconnect/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/[provider]/disconnect/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/connectors/[provider]/items/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/[provider]/items/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/[provider]/items/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/connectors/[provider]/sync/route.ts` | `@/lib/connectors/reconcile` | `reconcileConnector` |
+| `app/api/connectors/[provider]/sync/route.ts` | `@/lib/connectors/syncDispatch` | `DISPATCH_SUPPORTED_PROVIDERS` |
 | `app/api/connectors/[provider]/sync/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/[provider]/sync/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/bluesky` | `blueskyVerify` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/github` | `githubVerify` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/mastodon` | `mastodonVerify` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/nostr` | `nostrVerify` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/reddit` | `redditVerify` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/connectors/providers/youtube` | `youtubeVerify` |
 | `app/api/connectors/[provider]/verify/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/[provider]/verify/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/[provider]/verify/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/connectors/cron/route.ts` | `@/lib/connectors/reconcile` | `ReconcileResult`, `reconcileConnector` |
+| `app/api/connectors/cron/route.ts` | `@/lib/connectors/syncDispatch` | `DISPATCH_SUPPORTED_PROVIDERS` |
+| `app/api/connectors/cron/route.ts` | `@/lib/connectors/webhookVerification` | `isCronAuthorised` |
 | `app/api/connectors/cron/route.ts` | `@/lib/supabase/server` | `createServiceClient` |
+| `app/api/connectors/cron/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/connectors/instagram/oauth/callback/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/instagram/oauth/callback/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/status/route.ts` | `@/lib/connectors/connectorRegistry` | `ConnectorStatus` |
 | `app/api/connectors/status/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/status/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/webhooks/[provider]/route.ts` | `@/lib/connectors/deliveryStrategy` | `supportsWebhook`, `supportsWebhookVerification` |
+| `app/api/connectors/webhooks/[provider]/route.ts` | `@/lib/connectors/webhookVerification` | `extractMetaWebhookChallenge`, `extractYouTubeWebSubChallenge` |
+| `app/api/connectors/webhooks/[provider]/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/connectors/youtube/oauth/callback/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/connectors/youtube/oauth/callback/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/content/generative-fill/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/content/generative-fill/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/content/generative-fill/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/content/intelligence/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/content/intelligence/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/content/intelligence/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/content/transcribe/route.ts` | `@/lib/content/transcriptEditor` | `parseSRT`, `parseVTT`, `totalDurationMs` |
 | `app/api/content/transcribe/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/content/transcribe/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/content/voice-clone/route.ts` | `@/lib/content/voiceClone` | `estimateDurationSeconds` |
 | `app/api/content/voice-clone/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/content/voice-clone/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/content/voice-clone/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts` | `@/lib/contentengin/pipeline/paths` | `safeSegment`, `safeUnder` |
+| `app/api/contentengin/assets/[assetId]/route.ts` | `@/lib/contentengin/pipeline/paths` | `safeUnder` |
+| `app/api/contentengin/jobs/route.ts` | `@/lib/contentengin/pipeline/build` | `buildAsset` |
+| `app/api/contentengin/jobs/route.ts` | `@/lib/contentengin/pipeline/bundle` | `writeAssetBundle`, `zipDirectory` |
+| `app/api/contentengin/upload/route.ts` | `@/lib/contentengin/photo/imageAnalyzer` | `analyzeImageBytes` |
 | `app/api/drafts/[id]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/drafts/[id]/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/drafts/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/drafts/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/drafts/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/dream-windows/[id]/route.ts` | `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES`, `DreamWindowInstance`, `validateDreamWindowLayers` |
 | `app/api/dream-windows/[id]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dream-windows/[id]/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/dream-windows/route.ts` | `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
 | `app/api/dream-windows/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dream-windows/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/dream-windows/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/dreamengin/os-status/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreamengin/os-status/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/dreamr/suggested/route.ts` | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
+| `app/api/dreamr/suggested/route.ts` | `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
 | `app/api/dreamr/suggested/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreamr/suggested/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/dreamr/tally/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreamr/tally/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/dreams/feed/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreams/feed/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/dreams/feed/route.ts` | `@/lib/widgets/feed-resolver` | `resolveFeedHost` |
 | `app/api/dreams/instances/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreams/instances/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/dreams/transfer/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/dreams/transfer/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/dreams/transfer/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/embed-feed/route.ts` | `@/lib/feeds/embedFeedLoader` | `EmbedFeedItem`, `loadEmbedFeed` |
 | `app/api/embed-feed/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/favorites/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/favorites/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/favorites/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/feed/route.ts` | `@/lib/activity/visibility-score` | `sortByVisibilityScore` |
+| `app/api/feed/route.ts` | `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
 | `app/api/feed/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/feed/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/follow/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/follow/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/follow/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/gal/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/gal/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/gal/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/game-scores/route.ts` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
 | `app/api/game-scores/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/game-scores/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/game-scores/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/gameengin/crash-report/route.ts` | `@/lib/gameengin/brain-reader` | `CRASH_REPORT_MAX_BYTES`, `isActiveCartridge`, `recordCrashReport` |
+| `app/api/gameengin/crash-report/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/home-layout/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/home-layout/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/home-layout/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/journey/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/journey/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/journey/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/lab/benchmarks/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/lab/benchmarks/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/lab/benchmarks/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/ledger-media/route.ts` | `@/lib/media/ledger` | `decodeLedgerBlob` |
 | `app/api/ledger-media/route.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `app/api/ledger-media/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/likes/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/likes/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/likes/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/marketplace/request/route.ts` | `@/lib/marketplace/request` | `buildContactRequestRecord`, `validateContactRequest` |
 | `app/api/marketplace/request/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/marketplace/request/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/marketplace/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/marketplace/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/marketplace/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/messages/boards/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/messages/boards/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/messages/route.ts` | `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `app/api/messages/route.ts` | `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `app/api/messages/route.ts` | `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
 | `app/api/messages/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/messages/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/messages/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/metrics/platform/route.ts` | `@/lib/activity/types` | `GetPlatformMetricsResponse` |
 | `app/api/metrics/platform/route.ts` | `@/lib/supabase/server` | `createServerClient`, `createServiceClient` |
 | `app/api/metrics/platform/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/metrics/route.ts` | `@/lib/observability/otel` | `getPrometheusMetrics` |
+| `app/api/metrics/route.ts` | `@/lib/observability/otelBridge` | `initOtelBridge` |
+| `app/api/metrics/user/[userId]/route.ts` | `@/lib/activity/types` | `ActivityTier`, `GetUserMetricsResponse`, `UserMetrics`, `isValidActivityTier` |
 | `app/api/metrics/user/[userId]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/music/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/music/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/music/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/notifications/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/notifications/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/notifications/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/platform/errors/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/platform/errors/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/platform/errors/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/posts/[id]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/posts/[id]/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/posts/[id]/save/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/posts/[id]/save/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/posts/[id]/save/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/posts/[id]/view/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/posts/[id]/view/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/posts/profile/[userId]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/posts/profile/[userId]/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/posts/route.ts` | `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `app/api/posts/route.ts` | `@/lib/child-safety/ncmecReporter` | `reportChildSafetyIncident` |
+| `app/api/posts/route.ts` | `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `app/api/posts/route.ts` | `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
 | `app/api/posts/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/posts/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/posts/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/profile/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/profile/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/profile/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/projects/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/projects/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/projects/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/scheduled-posts/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/scheduled-posts/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/scheduled-posts/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/security/scan/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/settings/appearance/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/settings/appearance/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/settings/appearance/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/settings/feed/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/settings/feed/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/settings/feed/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/settings/notifications/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/settings/notifications/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/settings/notifications/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/settings/privacy/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/settings/privacy/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/settings/privacy/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/setup/check/route.ts` | `@/lib/setup/checks` | `getSetupStatus` |
 | `app/api/setup/google-oauth/route.ts` | `@/lib/supabase/config` | `SUPABASE_CONFIG`, `getServerSiteOrigin`, `getSupabaseAuthCallbackUrl` |
 | `app/api/shared-dream/sessions/[id]/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/shared-dream/sessions/[id]/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/shared-dream/sessions/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/shared-dream/sessions/route.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `app/api/shellhub/devices/route.ts` | `@/lib/connectors/providers/shellhub` | `SHELLHUB_DEFAULT_SERVER`, `ShellHubDevice`, `shellhubListDevices` |
 | `app/api/shellhub/devices/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/shellhub/devices/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/shellhub/devices/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/shop/route.ts` | `@/lib/shop/listings` | `normalizeShopListing`, `validateShopListing` |
 | `app/api/shop/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/shop/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/shop/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/skip-credits/balance/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/skip-credits/balance/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/skip-credits/earn/route.ts` | `@/lib/activity/types` | `EarnSkipCreditsRequest`, `EarnSkipCreditsResponse` |
 | `app/api/skip-credits/earn/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/skip-credits/earn/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/skip-credits/use/route.ts` | `@/lib/activity/types` | `UseSkipCreditsRequest`, `UseSkipCreditsResponse` |
 | `app/api/skip-credits/use/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/skip-credits/use/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/social/ipfs/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/social/ipfs/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/social/livekit/room/route.ts` | `@/lib/social/livekit` | `LiveKitRoomInfo` |
 | `app/api/social/livekit/room/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/social/livekit/room/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/social/livekit/token/route.ts` | `@/lib/social/livekit` | `LiveKitError`, `generateServerToken` |
 | `app/api/social/livekit/token/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/social/livekit/token/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/social/livekit/token/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/social/rss-feed/route.ts` | `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `RssProvider`, `devtoUserRssUrl`, `facebookPageRssUrl`, `githubUserAtomUrl`, `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `mastodonUserRssUrl`, `mediumUserRssUrl`, `nostrGatewayRssUrl`, `parseRssFeed`, `pinterestRssUrl`, `podcastRssUrl`, `redditSubredditRssUrl`, `redditUserRssUrl`, `substackRssUrl`, `tiktokProfileRssUrl`, `tumblrRssUrl`, `twitterNitterRssUrl`, `youtubeChannelRssUrl`, `youtubePlaylistRssUrl` |
+| `app/api/social/rss-feed/route.ts` | `@/lib/utils` | `toErrorMessage` |
 | `app/api/upload/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/upload/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/api/user/layout/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/user/layout/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/user/layout/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/views/track/route.ts` | `@/lib/activity/types` | `TrackViewRequest`, `TrackViewResponse`, `View` |
 | `app/api/views/track/route.ts` | `@/lib/supabase/server` | `createServerClient` |
 | `app/api/views/track/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/api/youtube/channel/route.ts` | `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeSearchByQuery` |
+| `app/api/youtube/channel/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/youtube/discovery/route.ts` | `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeDiscovery` |
+| `app/api/youtube/discovery/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/api/youtube/live-feed/route.ts` | `@/lib/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeSearchByQuery` |
+| `app/api/youtube/live-feed/route.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/auth/callback/route.ts` | `@/lib/auth/nextRedirect` | `resolveSafeNextPath` |
 | `app/auth/callback/route.ts` | `@/lib/supabase/config` | `SUPABASE_CONFIG` |
 | `app/auth/callback/route.ts` | `@/lib/supabase/server` | `createServerClientWithCustomCookies` |
 | `app/auth/reset-password/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/auth/reset-password/page.tsx` | `@/lib/supabase/config` | `buildAuthCallbackUrl` |
 | `app/auth/update-password/page.tsx` | `@/lib/supabase/client` | `createClient` |
+| `app/connectors/dream.ConnectorsClient.tsx` | `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY`, `ConnectorStatus`, `getConnectorDef` |
+| `app/connectors/dream.ConnectorsClient.tsx` | `@/lib/connectors/installFlow` | `SlotGrid` |
+| `app/connectors/dream.ConnectorsClient.tsx` | `@/lib/widgets/widgetRegistry` | `getWidgetTypeDef` |
 | `app/connectors/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/connectors/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/brand/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/brand/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/brand/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/code/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/code/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/code/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/constellation/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/constellation/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/constellation/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/create/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/create/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/create/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/forge/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
+| `app/daydream/forge/page.tsx` | `@/lib/forge/forgeRegistry` | `CREATIVE_ENGINES` |
 | `app/daydream/forge/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/forge/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref`, `resolveGameLaunchId` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `app/daydream/games/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/games/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/daydream/games/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/daydream/games/page.tsx` | `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `app/daydream/games/page.tsx` | `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `app/daydream/games/page.tsx` | `@/lib/games/quality-plan` | `GAME_QUALITY_PILLARS` |
+| `app/daydream/lab/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/lab/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/lab/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/lab/portfolio/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/lab/portfolio/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/lab/portfolio/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/music/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/daydream/music/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/daydream/music/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/daydream/music/upload/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/daydream/music/upload/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/daydream/music/upload/page.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `app/daydream/play/page.tsx` | `@/lib/games/navigation` | `DEFAULT_GAME_ID`, `buildGameLaunchHref` |
 | `app/discover/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/discover/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/dream-effects/page.tsx` | `@/lib/gsap/useGsapEntrance` | `useGsapEntrance` |
+| `app/dream-effects/page.tsx` | `@/lib/utils` | `cn` |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/runtime/EnginDispatcher` | `EnginDispatcher` |
+| `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `@/lib/supabase/client` | `createClient` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `@/lib/artifactStore` | `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `@/lib/dreamenginOS/OSContext` | `useOS` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `@/lib/ledger` | `AssetEntry`, `AssetType`, `getAllByKind` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | `@/lib/notifications/useNotifications` | `useNotifications` |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` | `@/lib/dreamr/torridityLedger` | `TORRIDITY_LEDGER_CONFIG`, `slog` |
+| `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` | `@/lib/dreamr/torridityLedger` | `calculateRank`, `derivePostMassMeta`, `getPostMass` |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/dreamr/closeFriendsVisibility` | `filterByCloseFriends`, `loadVisibilityCircle` |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/dreamr/feedCursor` | `deriveNextCursor`, `parseFeedParams` |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/media/postMedia` | `PostMediaShape`, `getPrimaryPostMediaUrl` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | `@/lib/utils` | `toErrorMessage` |
+| `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` | `@/lib/botDetection` | `Point`, `analyzeSwipe`, `tallyView` |
+| `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` | `@/lib/runtime/dualRuntimeBridge` | `enginBridge` |
+| `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` | `@/lib/dreamr/dreamrfeed` | `(unknown — bare import)` |
+| `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/supabase/client` | `createClient` |
+| `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `@/lib/dreamr/dreamrfeed` | `⬡ DreamRFeed` |
+| `app/dreamdmbar/dreamspace/page.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `app/dreamdmbar/dualruntime/page.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `app/dreamdmbar/homedream/page.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `app/dreamdmbar/layout.tsx` | `@/lib/ai/triad` | `isOwnerEmail` |
+| `app/dreamdmbar/layout.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
+| `app/dreamdmbar/layout.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `app/dreamdmbar/layout.tsx` | `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
 | `app/dreamdmbar/layout.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamdmbar/layout.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/dreamr/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/dreamr/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/dreamr/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/edit-profiledream/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/edit-profiledream/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/brand/campaigns/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/brand/campaigns/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/brand/campaigns/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/brand/identity/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/brand/identity/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/brand/identity/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/brand/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/brand/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/brand/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/code/ai/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/code/ai/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/code/ai/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/code/notebook/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/code/notebook/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/code/notebook/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/code/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/code/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/code/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/code/projects/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/code/projects/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/code/projects/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/create/calendar/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/create/calendar/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/engines/create/calendar/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/engines/create/editor/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/create/editor/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/engines/create/editor/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/engines/create/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/create/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/create/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/create/queue/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/create/queue/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/engines/create/queue/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/engines/games/builder/page.tsx` | `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `app/engines/games/builder/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/games/builder/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/builder/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/games/library/page.tsx` | `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `app/engines/games/library/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/games/library/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/library/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/games/page.tsx` | `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `app/engines/games/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/games/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/games/scores/page.tsx` | `@/lib/auth/nextRedirect` | `buildLoginRedirectPath` |
+| `app/engines/games/scores/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/games/scores/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/games/scores/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/lab/data/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/lab/data/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/lab/data/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/lab/experiments/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/lab/experiments/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/lab/experiments/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/lab/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/lab/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/lab/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/lab/quantum/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/lab/quantum/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/lab/quantum/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/music/arrange/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/music/arrange/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/music/arrange/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/music/library/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/music/library/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/music/library/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/music/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/music/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/music/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/music/studio/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/music/studio/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/music/studio/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/portfolio/assets/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/portfolio/assets/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/portfolio/assets/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/portfolio/optimize/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/portfolio/optimize/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/portfolio/optimize/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/portfolio/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/portfolio/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/portfolio/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/engines/portfolio/quantum/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/error.tsx` | `@/lib/runtime/isAuthRelatedError` | `isAuthRelatedError` |
 | `app/error.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/feed-settings/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/gameengin/cartridges/[id]/page.tsx` | `@/lib/gameengin/cartridges/manifest` | `getCartridgeManifest` |
+| `app/global-error.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `app/homedream/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
+| `app/homedream/page.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
 | `app/homedream/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/homedream/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/join/page.tsx` | `@/lib/supabase/client` | `createClient` |
@@ -19279,8 +18475,13 @@ _No circular dependencies detected._
 | `app/lab/[id]/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/lab/new/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/lab/new/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/lab/new/page.tsx` | `@/lib/utils` | `toErrorMessage` |
 | `app/lab/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/lab/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/layout.tsx` | `@/lib/dreamdm/DreamSystemContext` | `DreamSystemProvider` |
+| `app/layout.tsx` | `@/lib/dreamenginOS/OSContext` | `OSProvider` |
+| `app/layout.tsx` | `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
+| `app/login/page.tsx` | `@/lib/auth/nextRedirect` | `resolveSafeNextPath` |
 | `app/login/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/login/page.tsx` | `@/lib/supabase/config` | `buildAuthCallbackUrl` |
 | `app/marketplace/[id]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -19289,6 +18490,7 @@ _No circular dependencies detected._
 | `app/marketplace/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/marketplace/sell/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/marketplace/sell/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/marketplace/sell/page.tsx` | `@/lib/utils` | `toErrorMessage` |
 | `app/messages/boards/[id]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/messages/boards/[id]/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/messages/boards/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -19301,55 +18503,408 @@ _No circular dependencies detected._
 | `app/onboarding/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `app/policy/page.tsx` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
 | `app/profile/[handle]/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/profile/[handle]/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/account/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/account/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/algorithm/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/algorithm/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/settings/appearance/page.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `app/settings/appearance/page.tsx` | `@/lib/ui/theme-engine` | `THEME_PRESETS` |
 | `app/settings/controls/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/controls/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/data/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/data/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/help/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/help/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/settings/page.tsx` | `@/lib/ai/triad` | `isOwnerEmail` |
 | `app/settings/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/privacy/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/privacy/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/settings/safety/page.tsx` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
 | `app/settings/safety/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/settings/safety/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/security/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/settings/security/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/settings/security/page.tsx` | `@/lib/supabase/config` | `buildAuthCallbackUrl` |
+| `app/settings/security/page.tsx` | `@/lib/utils` | `toErrorMessage` |
 | `app/shop/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/shop/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `app/shop/sell/page.tsx` | `@/lib/supabase/client` | `createClient` |
 | `app/shop/sell/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `app/shop/sell/page.tsx` | `@/lib/utils` | `toErrorMessage` |
 | `app/view-profile/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `app/view-profile/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `babylon/createEngine.ts` | `@/lib/webgpu/director` | `(unknown — bare import)` |
+| `bot-detection/index.ts` | `@/lib/botDetection` | `BotSessionResult`, `SwipeRecord`, `isBotSession` |
+| `child-safety/childSafetyDetector.ts` | `@/lib/child-safety/childSafetyDetector` | `scanContent` |
+| `child-safety/imageClassifier.ts` | `@/lib/ai/groq` | `groqChat` |
+| `child-safety/imageClassifier.ts` | `@/lib/utils` | `toErrorMessage` |
+| `child-safety/messageContextChecker.ts` | `@/lib/child-safety/messageContextChecker` | `evaluateMessageContext` |
+| `child-safety/ncmecReporter.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `child-safety/ncmecReporter.ts` | `@/lib/utils` | `toErrorMessage` |
+| `child-safety/scanMediaUrls.ts` | `@/lib/child-safety/scanMediaUrls` | `scanMediaUrlsForChildSafety` |
+| `codeengin/auth.ts` | `@/lib/admin/lockout` | `isOwner` |
+| `codeengin/auth.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `codeengin/auth.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `components/activity/dream.ActivityPostForm.tsx` | `@/lib/activity/scoring` | `calculateActivityPoints`, `getTierDescription` |
+| `components/activity/dream.ActivityPostForm.tsx` | `@/lib/activity/types` | `ActivityTier`, `VerificationMethod` |
+| `components/activity/dream.ActivityProfile.tsx` | `@/lib/activity/aqs` | `formatAQS`, `formatRealShitRate`, `getAQSTier`, `getAQSTierColor` |
+| `components/activity/dream.ActivityProfile.tsx` | `@/lib/activity/types` | `ActivityTier`, `GetUserMetricsResponse`, `UserMetrics` |
+| `components/activity/dream.TierBadge.tsx` | `@/lib/activity/scoring` | `getTierDescription`, `getTierDisplayName` |
+| `components/activity/dream.TierBadge.tsx` | `@/lib/activity/types` | `ActivityTier` |
+| `components/ads/dream.AdUnit.tsx` | `@/lib/activity/types` | `AdType` |
+| `components/connectors/dream.AddSliceSheet.tsx` | `@/lib/connectors/connectorRegistry` | `ConnectorDef`, `SliceTypeDef` |
+| `components/connectors/dream.ConnectorRow.tsx` | `@/lib/connectors/connectorRegistry` | `ConnectorDef`, `ConnectorStatus` |
+| `components/connectors/dream.NoSlotDialog.tsx` | `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+| `components/connectors/dream.PlacementMode.tsx` | `@/lib/connectors/installFlow` | `handlePlacementCancel`, `handlePlacementDone` |
+| `components/connectors/dream.PlacementMode.tsx` | `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+| `components/connectors/dream.widget.ConnectWidgetPrompt.tsx` | `@/lib/widgets/widgetRegistry` | `WidgetTypeDef` |
+| `components/contentengin/AnimationPanel.tsx` | `@/lib/contentengin/assetTypes` | `ContentAsset` |
+| `components/contentengin/AssetPreview3D.tsx` | `@/lib/contentengin/assetTypes` | `ContentAsset` |
+| `components/contentengin/ContentEnginStudio.tsx` | `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe` |
+| `components/contentengin/ContentEnginStudio.tsx` | `@/lib/engins/content/useContentEnginRuntime` | `useContentEnginRuntime` |
+| `components/contentengin/ExportPanel.tsx` | `@/lib/contentengin/assetTypes` | `ContentAsset` |
+| `components/contentengin/MaterialEditor.tsx` | `@/lib/contentengin/assetTypes` | `MaterialDef` |
+| `components/contentengin/PartTreeEditor.tsx` | `@/lib/contentengin/assetTypes` | `PartNode` |
+| `components/contentengin/RecipeEditor.tsx` | `@/lib/contentengin/assetTypes` | `ContentRecipe`, `ExportProfile` |
+| `components/contentengin/RiggingPanel.tsx` | `@/lib/contentengin/assetTypes` | `ContentAsset` |
+| `components/customize/dream.bar.CustomizeModeBar.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/dream.bar.CustomizeToolbar.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/panels/dream.panel.ColorPanel.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/panels/dream.panel.ColorPanel.tsx` | `@/lib/ui/skin-engine` | `SKIN_PRESETS` |
+| `components/customize/panels/dream.panel.EffectsPanel.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/panels/dream.panel.FontPanel.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/panels/dream.panel.FontPanel.tsx` | `@/lib/ui/skin-engine` | `SkinFont` |
+| `components/customize/panels/dream.panel.LayoutPanel.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/customize/panels/dream.panel.LayoutPanel.tsx` | `@/lib/ui/skin-engine` | `SkinLayout`, `SkinShadow` |
+| `components/daydream/dream.CodeDreamIDE.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/daydream/dream.CodeDreamIDE.tsx` | `@/lib/runtime/swapManager` | `getSwap`, `toggleSwap` |
+| `components/daydream/dream.DiffViewer.tsx` | `@/lib/diff/diffUtils` | `DEMO_DIFF`, `DiffFile`, `FullFileLine`, `buildFullFileLines`, `buildScrollMarkers`, `firstHunkIndex`, `nextHunkIndex`, `parseUnifiedDiff`, `prevHunkIndex` |
+| `components/daydream/dream.JourneyTrail.tsx` | `@/lib/journey/journeyInsights` | `AnnotatedDot`, `annotateDotsWithInsights`, `computeCurrentStreak` |
+| `components/daydream/dream.LabDreamIDE.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/daydream/dream.LabDreamIDE.tsx` | `@/lib/runtime/swapManager` | `getSwap`, `toggleSwap` |
+| `components/daydream/dream.NGNEngin.tsx` | `@/lib/event-bus` | `bridgeBuses`, `createEventBus` |
+| `components/daydream/dream.NGNEngin.tsx` | `@/lib/forge-ngn/assembly` | `EngineAssembly`, `PlacedPiece`, `addConnection`, `addPiece`, `createAssembly`, `movePiece`, `removePiece`, `serializeAssembly`, `validateAssembly` |
+| `components/daydream/dream.NGNEngin.tsx` | `@/lib/forge-ngn/piece-registry` | `PIECE_CATEGORIES`, `PIECE_REGISTRY`, `PieceCategory`, `PieceManifest`, `Port`, `getPiece`, `getPiecesByCategory` |
+| `components/daydream/dream.NGNEngin.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | `@/lib/gsap/useGsapFlip` | `useGsapFlip` |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | `@/lib/journey/journeyDots` | `hasJourneyDot`, `logJourneyDot` |
+| `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/daydream/starmaker/dream.panel.CompingPanel.tsx` | `@/lib/music/starmakerDaw` | `AudioTake`, `CompingState`, `TAKE_COLORS`, `TakeRating`, `createDemoTake` |
+| `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` | `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackId`, `ArrangementTrackState` |
+| `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` | `@/lib/music/starmakerDaw` | `MidiNote`, `PianoRollQuantize`, `PianoRollState`, `createMidiNote`, `isBlackKey`, `midiPitchToName`, `snapToGrid` |
+| `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` | `@/lib/music/starmakerDaw` | `SessionTrack`, `SessionViewState` |
+| `components/draggable/dream.DraggableModule.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/dream.AIAssistant.tsx` | `@/lib/agents/agentBus` | `onIdariEvent` |
+| `components/dream.AIAssistant.tsx` | `@/lib/agents/drEamsMode` | `getDrEamsMode`, `onDrEamsModeChange` |
+| `components/dream.AIAssistant.tsx` | `@/lib/agents/teachBus` | `hasTaught`, `markTaught`, `onTeach` |
+| `components/dream.AIAssistant.tsx` | `@/lib/agents/uiActions` | `executeUiAction`, `getUiCapabilities` |
+| `components/dream.BoogieWarningBanner.tsx` | `@/lib/policy/boogiePolicy` | `PolicyResult` |
+| `components/dream.BrandLogo.tsx` | `@/lib/branding/logos` | `LOGO_PATHS`, `getRandomLogo` |
+| `components/dream.CreatePostModal.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `components/dream.CreatePostModal.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/dream.CreatePostModal.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.DrEamsModeToggle.tsx` | `@/lib/agents/drEamsMode` | `getDrEamsMode`, `onDrEamsModeChange`, `setDrEamsMode` |
+| `components/dream.DrEamsModeToggle.tsx` | `@/lib/agents/teachBus` | `emitTeach` |
+| `components/dream.DrEamsVoiceAssistant.tsx` | `@/lib/agents/agentBus` | `onIdariEvent` |
+| `components/dream.FeedCard.tsx` | `@/lib/utils` | `cn`, `formatRelativeTime` |
+| `components/dream.FeedCard.tsx` | `@/lib/widgets/parseConfig` | `inferProviderFromUrl` |
+| `components/dream.ForgeDreamCanvas.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.HomeFeed.tsx` | `@/lib/activity/types` | `AdType` |
+| `components/dream.HomeFeed.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/dream.HomeFeed.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost`, `useLiveFeed` |
+| `components/dream.HomeFeed.tsx` | `@/lib/feed/useYouTubeLiveFeed` | `useYouTubeLiveFeed` |
+| `components/dream.HomeFeed.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `components/dream.HomeFeed.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/dream.HomeFeed.tsx` | `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `components/dream.HomeFeed.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.LandingHero.tsx` | `@/lib/dreamr/swipeCalibration` | `CalibrationSample`, `calibrateDevice` |
+| `components/dream.LedgerChart.tsx` | `@/lib/ledger-data` | `LedgerData` |
+| `components/dream.MessagesClient.tsx` | `@/lib/dreamdm/useDreamDMDraft` | `useDreamDMDraft` |
+| `components/dream.MessagesClient.tsx` | `@/lib/dreamdm/useDreamDMMessages` | `DMMessage`, `useDreamDMMessages` |
+| `components/dream.MessagesClient.tsx` | `@/lib/dreamdm/useDreamSearch` | `useDreamSearch` |
+| `components/dream.MessagesClient.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
 | `components/dream.MessagesClient.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/dream.MessagesClient.tsx` | `@/lib/utils` | `formatRelativeTime`, `toErrorMessage` |
+| `components/dream.NotificationCenter.tsx` | `@/lib/notifications/notificationHelpers` | `UiNotification`, `UiNotificationType` |
+| `components/dream.NotificationCenter.tsx` | `@/lib/notifications/useNotifications` | `useNotifications` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/runtime/EnginDispatcher` | `EnginDispatcher` |
+| `components/dream.OSShellActivator.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `components/dream.ProfileEditor.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `components/dream.ProfileEditor.tsx` | `@/lib/social/platforms` | `SOCIAL_PLATFORMS`, `detectPlatform` |
 | `components/dream.ProfileEditor.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/dream.ProfileEditor.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/dream.ProfileEditor.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.ProfileSpace.tsx` | `@/lib/navigation/WidgetInstanceMemory` | `WidgetInstanceRecord` |
+| `components/dream.ShrunkMode.tsx` | `@/lib/navigation/AnchorWidgetStorage` | `PriorityWidget` |
+| `components/dream.ThemeToggle.tsx` | `@/lib/agents/teachBus` | `emitTeach` |
+| `components/dream.ThemeToggle.tsx` | `@/lib/ui/theme` | `getInitialDarkMode`, `toggleDarkMode` |
+| `components/dream.panel.ChildSafetyPanel.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.panel.IDariPanel.tsx` | `@/lib/agents/agentBus` | `emitIdariEvent` |
+| `components/dream.panel.IDariPanel.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.universal_asset_registry.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
 | `components/dream.universal_asset_registry.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/dream.universal_asset_registry.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/dream.universal_asset_registry.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dream.widget.AnchorWidget.tsx` | `@/lib/navigation/AnchorStateBuffer` | `AnchorStateBuffer`, `HOLD_FIRED`, `HOLD_HOLDING`, `HOLD_IDLE`, `MODE_HOME`, `MODE_PROFILE`, `MODE_SHRUNK` |
+| `components/dream.widget.AnchorWidget.tsx` | `@/lib/navigation/AnchorWidgetStorage` | `AnchorWidgetStorage` |
+| `components/dream.widget.AnchorWidget.tsx` | `@/lib/navigation/NavStateBuffer` | `LAYER_HOME`, `LAYER_PROFILE`, `NavStateBuffer`, `PROFILE_DEPTH` |
+| `components/dream.widget.AnchorWidget.tsx` | `@/lib/navigation/ReturnStack` | `ReturnStack` |
+| `components/dream.widget.AnchorWidget.tsx` | `@/lib/navigation/WidgetInstanceMemory` | `WidgetInstanceMemory` |
+| `components/dreamengin/dream.CanvasDropZone.tsx` | `@/lib/offline/offlineCache` | `cacheAsset`, `enqueueSyncAction` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/agents/agentBus` | `IdariEventDetail`, `onIdariEvent` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/dreamengin/osSubsystemManifest` | `DREAMENGIN_OS_SUBSYSTEM_MANIFEST`, `DreamenginOSSubsystemNode` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/runtime/dreamOSBus` | `DreamOSSharedArtifact`, `RuntimeContext`, `dreamOSBus` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/runtime/dualRuntimeBridge` | `PeerState`, `bridge` |
+| `components/dreamengin/dream.DREAMenginOS.tsx` | `@/lib/runtime/EnginDispatcher` | `DispatcherStats`, `EnginDispatcher` |
+| `components/dreamengin/dream.DrEamsCanvas.tsx` | `@/lib/dreamengin/DrEamsAnimator` | `DrEamsAction`, `DrEamsAnimator` |
+| `components/dreamengin/dream.bar.DrEamsSearchBar.tsx` | `@/lib/dreamengin/drEamsSearch` | `NavSuggestion`, `buildDrEamsRequest`, `buildDreamDMUrl`, `matchNavSuggestions`, `parseDrEamsReply`, `truncatePreview` |
+| `components/dreamengin/dream.menu.OutdreamMenu.tsx` | `@/lib/dreamnav/delta` | `Node` |
+| `components/dreamengin/dream.menu.OutdreamMenu.tsx` | `@/lib/dreamnav/path` | `dispatchTauPath`, `findTauPath` |
+| `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx` | `@/lib/dreamnav/delta` | `Node` |
+| `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx` | `@/lib/dreamnav/path` | `dispatchTauPath`, `findTauPath` |
+| `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` | `@/lib/runtime/dualRuntimeBridge` | `PeerState`, `bridge` |
+| `components/dreamengin/dream.scene.BabylonGameScene.tsx` | `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `components/dreamengin/dream.scene.BabylonGameScene.tsx` | `@/lib/god-tier/godTierEngine` | `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `components/dreamengin/dream.scene.BabylonGameScene.tsx` | `@/lib/webgpu/director` | `WebGPUDirector`, `applyDirectorFrame`, `buildSceneObjects`, `defaultCameraSignals` |
+| `components/dreamengin/dream.scene.DrEamsScene.tsx` | `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `components/dreamengin/dream.scene.DrEamsScene.tsx` | `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `components/dreamengin/dream.widget.AppearanceWidget.tsx` | `@/lib/ui/theme-engine` | `THEME_PRESETS` |
+| `components/dreamnav/dreamsurface.dreamnav.tsx` | `@/lib/dreamnav/delta` | `Action`, `DEFAULT_NAV_STATE`, `Node`, `reduceNav` |
+| `components/dreamr/dream.panel.DreamRChannelPanel.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `components/dreams/dream.DraggableDream.tsx` | `@/lib/dreams/drag` | `DREAM_DRAG_MIME`, `DreamDragData`, `serializeDreamDragData` |
+| `components/dreams/dream.GlobalDragLayer.tsx` | `@/lib/dreams/drag` | `DreamDragData` |
+| `components/dreams/dream.outputlayer.tsx` | `@/lib/dreams/profileProjection` | `canRenderProjection` |
+| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | `@/lib/intelligence/continuityHelpers` | `formatArtifactKind`, `getArtifactAccent` |
+| `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` | `@/lib/runtime/dreamOSBus` | `DreamOSSnapshot`, `dreamOSBus` |
+| `components/dreams/dream.shell.SharedDreamShell.tsx` | `@/lib/sharedDream` | `DreamBroadcastPayload` |
+| `components/dreams/dream.shell.SharedDreamShell.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/dreams/dream.widget.SuperDreamWidget.tsx` | `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `components/dreams/dream.widget.SuperDreamWidget.tsx` | `@/lib/dream-window/useDreamWindowActions` | `useDreamWindowActions` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/dreams/useDreamsRuntime` | `useDreamsRuntime` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/forge/forgeIntelligence` | `ForgeHistoryEntry`, `ForgeSuggestion`, `generateSuggestions`, `readForgeHistory` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/forge/forgeMomentum` | `MomentumLevel`, `MomentumSnapshot`, `computeMomentum`, `getLevelColor` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `ForgeActivityPulse`, `readForgeActivity` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/intelligence/continuityHelpers` | `resolveResumeDest` |
+| `components/dreams/dreamsurface.dreamspace.tsx` | `@/lib/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
+| `components/dreams/dreamsurface.window.tsx` | `@/lib/universalEditor` | `ModuleManifest`, `RuntimeId` |
+| `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/engines/games/panels/dream.panel.BuilderPanel.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/engines/games/panels/dream.panel.LibraryPanel.tsx` | `@/lib/games/catalog` | `GAME_CATALOG` |
+| `components/engines/games/panels/dream.panel.LibraryPanel.tsx` | `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `components/engines/music/panels/dream.panel.StudioPanel.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/feed/dream.CommentSection.tsx` | `@/lib/utils` | `formatRelativeTime` |
+| `components/feed/dream.FeedVideoCard.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `components/feeds/dream.widget.EmbedFeedWidget.tsx` | `@/lib/feeds/embedFeedLoader` | `EmbedFeedItem` |
+| `components/feeds/dream.widget.EmbedFeedWidget.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/forge/dream.EngineBuilderCanvas.tsx` | `@/lib/componentInventory` | `AtomicComponent`, `COMPONENT_INVENTORY`, `ComponentCategory` |
+| `components/forge/dream.EngineBuilderCanvas.tsx` | `@/lib/forge/engineForge` | `AtomicPiece`, `EngineAssembly`, `Wire`, `atomicPieceFromComponent`, `createAssembly`, `deserializeAssembly`, `serializeAssembly`, `validateAssembly` |
+| `components/forge/dream.panel.AIBuilderPanel.tsx` | `@/lib/forge/forgeBuild` | `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `readForgeBuilds` |
+| `components/forge/dream.panel.AIBuilderPanel.tsx` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `components/forge/dream.panel.AIBuilderPanel.tsx` | `@/lib/forge/useForgeBuild` | `useForgeBuild` |
+| `components/forge/dream.widget.ForgeMomentumWidget.tsx` | `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | `@/lib/gameengin/registerCartridges` | `registerCartridges` |
+| `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `components/gameengin/dream.CrashReportModal.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/gameengin/dream.cartridge.CartridgeBrowser.tsx` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST`, `CartridgeManifestEntry`, `getCartridgeCategories` |
+| `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/gameengin/cartridge` | `GameCartridge`, `GravityPreset`, `RuntimeBackendDiagnostics` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/gameengin/cartridges/loaders` | `LoadedCartridgeBundle`, `loadCartridgeBundle` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/gameengin/backendNegotiator` | `negotiateRendererBackend`, `serverBootstrapDiagnostics` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/gameengin/cartridges/manifest` | `CartridgeManifestEntry` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `components/gameengin/dream.cartridge.FeaturedCartridges.tsx` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST`, `CartridgeManifestEntry` |
+| `components/games/dream.AvenueOfMirrors.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.AvenueOfMirrors.tsx` | `@/lib/gameengin/cartridges/reactCartridge` | `useGameEngineAPI` |
+| `components/games/dream.DefuseRitual.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `components/games/dream.EchoArena.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.EchoArena.tsx` | `@/lib/games/mobileControls` | `useRegisterMobileGameControls` |
+| `components/games/dream.EchoArena.tsx` | `@/lib/games/performance-baseline` | `createPerformanceBaselineSampler`, `publishGamePerformanceBaseline` |
+| `components/games/dream.EnginFracture.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/games/avatar` | `getAvatarDataUrl`, `setPlayAsMe` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/games/catalog` | `GAME_CATALOG`, `GameCatalogEntry` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/games/library-state` | `GAME_LIBRARY_SELECTION_STORAGE_KEY`, `GAME_LIBRARY_SESSION_STORAGE_KEY`, `SavedGameSession`, `upsertSavedGameSession` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/games/navigation` | `buildGameLaunchHref`, `resolveGameLaunchId` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/gsap/useGsapEntrance` | `useGsapEntrance` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/gsap/useGsapScrollReveal` | `useGsapScrollReveal` |
+| `components/games/dream.GamesHub.tsx` | `@/lib/hooks/useMotionTilt` | `useMotionTilt` |
+| `components/games/dream.Glassfall.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.LexiconSolitaire.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `components/games/dream.MadMaxiWildfall.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.MadMaxiWildfall.tsx` | `@/lib/gameengin/cartridges/reactCartridge` | `useGameEngineAPI` |
+| `components/games/dream.MadMaxiWildfall.tsx` | `@/lib/games/madmaxi-wildfall-world` | `WILDFALL_HEROES`, `WILDFALL_ZONES`, `WildfallHeroId`, `WildfallInputFrame`, `WildfallState`, `activateWildfallHeroAbility`, `castWildfallRay`, `createWildfallState`, `currentWildfallZone`, `resolveWildfallMirror`, `stepWildfall`, `switchWildfallHero`, `wildfallBillboards` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/gameengin` | `EliteGameEngine` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/gameengin/ai-director` | `AIDirector` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/gameengin/post-fx` | `PostFXManager` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/games/performance-baseline` | `publishGamePerformanceBaseline` |
+| `components/games/dream.NeonDrift.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/games/dream.NiteFlyerSolarHymn.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.NullCathedral.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.RecordingControls.tsx` | `@/lib/h265-encoder` | `CaptureResult`, `GameCapture` |
+| `components/games/dream.SerpentSiege.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.VoidlineGP.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useGamePhase`, `useSubmitScore` |
+| `components/games/dream.hud.GameHUD.tsx` | `@/lib/games/mobileControls` | `MobileHudMode` |
+| `components/games/dream.hud.MobileGameHUD.tsx` | `@/lib/games/mobileControls` | `MOBILE_HUD_BUTTON_RING`, `MobileControlVector`, `MobileHudButton`, `MobileHudMode`, `emitMobileButton`, `emitMobileLook`, `emitMobileMove`, `fireGameRemoteInput`, `getRemoteActionForMobileButton`, `getRemoteMoveAction`, `normalizeStickVector` |
+| `components/games/dream.remote.GameRemoteSurface.tsx` | `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
+| `components/games/dream.remote.GameRemoteSurface.tsx` | `@/lib/games/gameControllerButtons` | `ButtonInteractionManager`, `ControllerButton` |
+| `components/games/madmaxi/dream.MadmaxiGame.tsx` | `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `components/games/madmaxi/dream.MadmaxiGame.tsx` | `@/lib/games/hooks` | `useGameAutoStart`, `useSubmitScore` |
+| `components/games/madmaxi/dream.MadmaxiGame.tsx` | `@/lib/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
+| `components/games/madmaxi/dream.MadmaxiGame.tsx` | `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultUXSignals` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/activeModulesStore` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/artifactStore` | `loadArtifacts`, `saveArtifact` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/dream-window/DreamWindowLifecycle` | `DREAM_WINDOW_STATES` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/dream-window/useDreamWindowActions` | `useDreamWindowActions` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/home/dream.FlagshipEnginesStrip.tsx` | `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `components/home/dream.FlagshipEnginesStrip.tsx` | `@/lib/forge/forgeRegistry` | `getEnginById` |
+| `components/home/dream.NeuralSeamCanvas.tsx` | `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `components/home/dream.NeuralSeamCanvas.tsx` | `@/lib/dreamdm/bridgeSeamFlow` | `SeamParticle`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles`, `tickParticles` |
+| `components/home/dream.NeuralSeamCanvas.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/home/dream.bar.GlobalDreamBar.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/home/dream.bar.GlobalDreamBar.tsx` | `@/lib/home-buttons/contextual-home` | `runHomeAction` |
+| `components/home/dream.bar.GlobalDreamBar.tsx` | `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `@/lib/dreamdm/barInteractions` | `DIVIDER_H` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `@/lib/dreamenginOS/OSContext` | `useOS` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `@/lib/dreams/drag` | `DreamRuntime`, `parseDreamDragData`, `surfaceForRuntime`, `transferDream` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `components/home/dream.widget.DreamWidget.tsx` | `@/lib/utils` | `cn` |
+| `components/idari/dream.PlatformHealth.tsx` | `@/lib/activity/types` | `GetPlatformMetricsResponse`, `PLATFORM_HEALTH_TARGETS` |
+| `components/landing/dream.scene.UniverseField.tsx` | `@/lib/torridity/constants` | `n` |
+| `components/marketplace/dream.MarketplaceRequestButton.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/music/dream.SoundRecorder.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `@/lib/babylon/createEngine` | `createBabylonEngine` |
+| `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `@/lib/god-tier/godTierEngine` | `BabylonSceneLike`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals` |
+| `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `@/lib/optimizer/babylon-optimizero` | `BabylonUICandidate`, `BabylonUIGenerator`, `BabylonUIOptimizero` |
+| `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `@/lib/optimizer/creative-optimizero` | `CHAOS_WEIGHTS`, `DEFAULT_WEIGHTS`, `OptimizeroResult`, `OptimizeroWeights`, `STABLE_WEIGHTS` |
+| `components/panels/dream.panel.AlgorithmPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/panels/dream.panel.AppearancePanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/panels/dream.panel.AppearancePanel.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/panels/dream.panel.AppearancePanel.tsx` | `@/lib/ui/theme-engine` | `DEFAULT_OVERRIDES`, `THEME_PRESETS` |
+| `components/panels/dream.panel.ControlsPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/panels/dream.panel.DataPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `components/panels/dream.panel.DataPanel.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/panels/dream.panel.FeedSettingsPanel.tsx` | `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `FEED_TOPICS_KEY`, `loadActiveTopicIds` |
+| `components/panels/dream.panel.HelpPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/panels/dream.panel.MarketplacePanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `components/panels/dream.panel.MarketplacePanel.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/panels/dream.panel.PrivacyPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `components/panels/dream.panel.ProfilePanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.ProfilePanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/panels/dream.panel.SafetyPanel.tsx` | `@/lib/ai/boogie-policy` | `BOOGIE_POLICY_VERSION` |
+| `components/panels/dream.panel.SafetyPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `components/panels/dream.panel.SafetyPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.SafetyPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/panels/dream.panel.SettingsPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `components/panels/dream.panel.SettingsPanel.tsx` | `@/lib/panels/panelTypes` | `SystemPanelId` |
 | `components/panels/dream.panel.SettingsPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.SettingsPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/panels/dream.panel.WidgetsPanel.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
 | `components/panels/dream.panel.WidgetsPanel.tsx` | `@/lib/supabase/client` | `createClient` |
 | `components/panels/dream.panel.WidgetsPanel.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `components/profile/dream.ProfileCanvas.tsx` | `@/lib/social/platforms` | `PROFILE_SHARE_PLATFORMS` |
 | `components/profile/dream.ProfileCanvas.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/profile/dream.ProfileCanvas.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `components/profile/dream.ProfileCustomizeButton.tsx` | `@/lib/ui/CustomizeModeContext` | `useCustomizeMode` |
+| `components/providers/dream.AppSurfaceShell.tsx` | `@/lib/dreamdm/DreamSystemContext` | `DreamSystemProvider` |
+| `components/providers/dream.AppSurfaceShell.tsx` | `@/lib/dreamenginOS/OSContext` | `OSProvider` |
+| `components/providers/dream.AppSurfaceShell.tsx` | `@/lib/routing/surfaces` | `isPublicSurfacePath` |
+| `components/providers/dream.AppSurfaceShell.tsx` | `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
+| `components/providers/dream.GodTierProvider.tsx` | `@/lib/god-tier/useGodTier` | `useGodTier` |
+| `components/providers/dream.ThemeProvider.tsx` | `@/lib/ui/theme-engine` | `DEFAULT_OVERRIDES`, `UserOverrides`, `applyTheme`, `getPreset`, `loadStoredTheme`, `saveTheme` |
+| `components/runtime/dream.DualRuntimeContainer.tsx` | `@/lib/runtime/dualRuntime` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RuntimeWorld`, `isHomeActiveTop`, `makeDreamSpaceActiveSurface`, `makeHomeActiveTop`, `makeHomeDreamSpaceActive` |
+| `components/runtime/dream.DualRuntimeContainer.tsx` | `@/lib/runtime/iEngine` | `ActorContext`, `IntentBus`, `JsonObject`, `JsonValue`, `createIntentPacket`, `dualRuntimeManifest`, `dualRuntimeRuleSet`, `negotiateCompatibility` |
+| `components/runtime/dream.RuntimeView.tsx` | `@/lib/forge/forgeRegistry` | `getEnginByName` |
+| `components/runtime/dream.RuntimeView.tsx` | `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `components/runtime/dream.RuntimeView.tsx` | `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `components/runtime/dream.RuntimeView.tsx` | `@/lib/dreams/DreamRegistry` | `getDreamComponent` |
+| `components/runtime/dream.RuntimeView.tsx` | `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `components/runtime/dream.shell.RuntimeShell.tsx` | `@/lib/ui/runtimeViewport` | `isCompactRuntimeViewport` |
+| `components/shared-dream/dream.SharedDreamProvider.tsx` | `@/lib/collaboration` | `CollabEventHandler`, `CollabMode`, `CollabPayload`, `CollabSession`, `CollabSessionOptions`, `PeerInfo`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession`, `generateInviteLink`, `parseInviteLink` |
 | `components/shared-dream/dream.SharedDreamProvider.tsx` | `@/lib/supabase/client` | `createClient` |
+| `components/shared-dream/dream.SharedDreamRuntime.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `components/shared-dream/dream.SharedDreamRuntime.tsx` | `@/lib/sharedDream/useSharedDreamSession` | `useSharedDreamSession` |
+| `components/spatial/dream.ProfileSpace.tsx` | `@/lib/utils` | `cn` |
+| `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | `@/lib/navigation/NavStateBuffer` | `LAYER_HOME`, `LAYER_PROFILE` |
+| `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | `@/lib/navigation/SpatialNavigationEngine` | `SpatialNavigationEngine` |
+| `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | `@/lib/navigation/WidgetInstanceMemory` | `WidgetBindingType`, `WidgetInstanceRecord`, `WidgetPresentation`, `WidgetVisibility` |
+| `components/ui/dream.PlatformBadge.tsx` | `@/lib/icons/sheet` | `hasIcon` |
+| `components/ui/dream.PlatformBadge.tsx` | `@/lib/social/platforms` | `PLATFORM_MAP` |
+| `components/ui/dream.SheetIcon.tsx` | `@/lib/icons/sheet` | `COLS`, `FRAME_W`, `ICONS`, `IconName`, `ROWS`, `SHEET_PATH`, `hasIcon` |
+| `components/ui/dream.SocialShareSheet.tsx` | `@/lib/social/platforms` | `PROFILE_SHARE_PLATFORMS`, `SocialPlatform` |
+| `components/universal-editor/dream.UniversalEditor.tsx` | `@/lib/runtime/coercionTable` | `DreamDrop`, `classifyDrop` |
+| `components/universe/dream.node-cluster.tsx` | `@/lib/utils` | `cn` |
+| `components/universe/dream.shell.universe-shell.tsx` | `@/lib/utils` | `cn` |
+| `components/universe/dream.universe-card.tsx` | `@/lib/utils` | `cn` |
+| `components/warp/dream.WarpCanvas.tsx` | `@/lib/warp/useWarp` | `useWarp` |
+| `components/warp/dream.WarpCanvas.tsx` | `@/lib/warp/warpEngine` | `WarpEffect` |
+| `components/webgpu/dream.WebGPUShowcase.tsx` | `@/lib/webgpu` | `isWebGPUAvailable` |
+| `connectors/installFlow.ts` | `@/lib/widgets/widgetRegistry` | `getWidgetTypesForConnector` |
+| `connectors/providers/bluesky.ts` | `@/lib/connectors/normalise` | `normaliseBluesky` |
+| `connectors/providers/devto.ts` | `@/lib/connectors/normalise` | `normaliseDevto` |
+| `connectors/providers/devto.ts` | `@/lib/social/rss-feed` | `devtoUserRssUrl`, `parseRssFeed` |
+| `connectors/providers/facebook.ts` | `@/lib/connectors/normalise` | `normaliseFacebook` |
+| `connectors/providers/facebook.ts` | `@/lib/social/rss-feed` | `facebookPageRssUrl`, `parseRssFeed` |
+| `connectors/providers/facebook.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/github.ts` | `@/lib/connectors/normalise` | `normaliseGitHub` |
+| `connectors/providers/hackernews.ts` | `@/lib/connectors/normalise` | `normaliseHackerNews` |
+| `connectors/providers/hackernews.ts` | `@/lib/social/rss-feed` | `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `parseRssFeed` |
+| `connectors/providers/mastodon.ts` | `@/lib/connectors/normalise` | `normaliseMastodon` |
+| `connectors/providers/medium.ts` | `@/lib/connectors/normalise` | `normaliseMedium` |
+| `connectors/providers/medium.ts` | `@/lib/social/rss-feed` | `mediumUserRssUrl`, `parseRssFeed` |
+| `connectors/providers/nostr.ts` | `@/lib/connectors/normalise` | `normaliseNostr` |
+| `connectors/providers/pinterest.ts` | `@/lib/connectors/normalise` | `normalisePinterest` |
+| `connectors/providers/pinterest.ts` | `@/lib/social/rss-feed` | `parseRssFeed`, `pinterestRssUrl` |
+| `connectors/providers/pinterest.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/podcast.ts` | `@/lib/connectors/normalise` | `normalisePodcast` |
+| `connectors/providers/podcast.ts` | `@/lib/social/rss-feed` | `parseRssFeed` |
+| `connectors/providers/podcast.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/reddit.ts` | `@/lib/connectors/normalise` | `normaliseReddit` |
+| `connectors/providers/substack.ts` | `@/lib/connectors/normalise` | `normaliseSubstack` |
+| `connectors/providers/substack.ts` | `@/lib/social/rss-feed` | `parseRssFeed`, `substackRssUrl` |
+| `connectors/providers/tiktok.ts` | `@/lib/connectors/normalise` | `normaliseTikTok` |
+| `connectors/providers/tiktok.ts` | `@/lib/social/rss-feed` | `parseRssFeed`, `tiktokProfileRssUrl` |
+| `connectors/providers/tiktok.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/tumblr.ts` | `@/lib/connectors/normalise` | `normaliseTumblr` |
+| `connectors/providers/tumblr.ts` | `@/lib/social/rss-feed` | `parseRssFeed`, `tumblrRssUrl` |
+| `connectors/providers/tumblr.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/twitter.ts` | `@/lib/connectors/normalise` | `normaliseTwitter` |
+| `connectors/providers/twitter.ts` | `@/lib/social/rss-feed` | `DEFAULT_NITTER_INSTANCE`, `parseRssFeed`, `twitterNitterRssUrl` |
+| `connectors/providers/twitter.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/providers/youtube.ts` | `@/lib/connectors/normalise` | `YouTubePlaylistItem`, `YouTubeSearchItem`, `deduplicateFeedItems`, `normaliseYouTubePlaylistItem`, `normaliseYouTubeSearchResult` |
+| `connectors/reconcile.ts` | `@/lib/utils` | `toErrorMessage` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/bluesky` | `blueskySync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/github` | `githubSync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/instagram` | `instagramSync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/mastodon` | `mastodonSync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/nostr` | `nostrSync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/reddit` | `redditSync` |
+| `connectors/syncDispatch.ts` | `@/lib/connectors/providers/youtube` | `youtubeSync` |
+| `connectors/youtube.ts` | `@/lib/supabase/server` | `createServiceClient` |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | `@/lib/supabase/client` | `createClient` |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | `@/lib/supabase/server` | `createServerClient` |
@@ -19362,76 +18917,333 @@ _No circular dependencies detected._
 | `daydreams/create/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `daydreams/games/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `daydreams/games/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
+| `daydreams/games/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
+| `daydreams/games/page.tsx` | `@/lib/games/navigation` | `buildGameLaunchHref` |
+| `daydreams/games/page.tsx` | `@/lib/games/quality-plan` | `GAME_QUALITY_PILLARS` |
 | `daydreams/lab/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `daydreams/lab/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `daydreams/music/page.tsx` | `@/lib/dev-bypass` | `isDevBypassActive` |
 | `daydreams/music/page.tsx` | `@/lib/supabase/server` | `createServerClient` |
 | `daydreams/music/page.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `daydreams/shared/useDaydreamPersistence.ts` | `@/lib/supabase/client` | `createClient` |
+| `daydreams/shared/useDaydreamPersistence.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `daydreams/shared/useDaydreamState.ts` | `@/lib/supabase/client` | `createClient` |
+| `daydreams/shared/useDaydreamState.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `dream-docs/embed.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `dream-docs/search.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `dreamdmbar/DreamSystemContext.tsx` | `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO` |
+| `dreamdmbar/DreamSystemContext.tsx` | `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `dreamdmbar/DreamSystemContext.tsx` | `@/lib/runtime/dualRuntime` | `moveTorus`, `torusFocusKey` |
+| `dreamdmbar/DreamSystemContext.tsx` | `@/lib/supabase/client` | `createClient` |
+| `dreamdmbar/DreamSystemContext.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `MoodPeriod`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `STREAK_STORAGE_KEY`, `SURFACE_ACCENT_COLORS`, `StreakData`, `StreakTier`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `getMoodPeriod`, `getStreakTier`, `resolveGoldTapAction`, `resolveStreak`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/DreamSystemContext` | `BarIntentMode`, `useDreamSystem` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useDreamBarContext` | `DreamBarContext`, `useDreamBarContext` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useDreamDMConversations` | `DMConversation`, `useDreamDMConversations` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useDreamDMDraft` | `useDreamDMDraft` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useDreamDMMessages` | `DMMessage`, `useDreamDMMessages` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useDreamSearch` | `SearchResult`, `useDreamSearch` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useMessagingCore` | `MediaType`, `useMessagingCore` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/dreamdm/useNotifications` | `useNotifications` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/ui/runtimeViewport` | `getPreferredViewportHeight`, `isCompactRuntimeViewport` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `@/lib/utils` | `formatRelativeTime` |
+| `dreamdmbar/useDreamDMConversations.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreamdmbar/useDreamDMMessages.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreamdmbar/useDreamSearch.ts` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `dreamdmbar/useDreamSearch.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreamdmbar/useMessagingCore.ts` | `@/lib/media/ledger` | `uploadBlobToLedgerStorage` |
+| `dreamdmbar/useMessagingCore.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreamdmbar/useMessagingCore.ts` | `@/lib/utils` | `toErrorMessage` |
+| `dreamdmbar/useModuleBarIntent.ts` | `@/lib/dreamdm/DreamSystemContext` | `ModuleBarAction`, `useDreamSystem` |
+| `dreamengin/engineAssets.ts` | `@/lib/media/ledger` | `encodeUint8ArrayToLedgerString` |
+| `dreamengin/engineAssets.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreamengin/engineAssets.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `dreamengin/osSubsystemManifest.ts` | `@/lib/connectors/connectorRegistry` | `CONNECTOR_REGISTRY` |
+| `dreamengin/osSubsystemManifest.ts` | `@/lib/dream-window/enginConnectionNetwork` | `ALL_CONNECTION_PATHS`, `EnginConnectionPath` |
+| `dreamengin/osSubsystemManifest.ts` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `dreamengin/osSubsystemManifest.ts` | `@/lib/identity/canonical-names` | `AI_AGENTS`, `AI_ROUTES` |
+| `dreamengin/osSubsystemManifest.ts` | `@/lib/widgets/widgetRegistry` | `WIDGET_REGISTRY` |
+| `dreamnav/gctAssist.ts` | `@/lib/gct` | `GCTEngine`, `GCTMatch`, `Template` |
+| `dreamnav/path.ts` | `@/lib/dreamnav/delta` | `Action`, `Node`, `tau` |
+| `dreamr/dreamrfeed.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `dreamr/dreamrfeed.tsx` | `@/lib/dreamr/swipePersonalization` | `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences`, `nextSwipePreferences`, `personalizeFeedOrder` |
+| `dreamr/dreamrfeed.tsx` | `@/lib/dreamr/torridityLedger` | `resolveSwipeRelease` |
+| `dreamr/dreamrfeed.tsx` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `dreamr/socialHumanityScore.ts` | `@/lib/supabase/client` | `createClient` |
+| `dreams/dreamIntentBus.ts` | `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `JsonValue`, `createDomainObject` |
+| `dreams/dreamIntentBus.ts` | `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability` |
+| `dreams/dreamIntentBus.ts` | `@/lib/runtime/dreamOSBus` | `InformationDomain`, `IntentEnvelope`, `dreamOSBus` |
+| `dreams/profileProjection.ts` | `@/lib/dreams/types` | `DreamProjection`, `DreamVisibility` |
+| `dreams/types.ts` | `@/lib/engin-runtime/EnginBaseState` | `JsonObject`, `isJsonObject`, `isJsonSerializable` |
+| `engine/agents/agentBus.ts` | `@/lib/ai/schemas` | `(unknown — bare import)` |
+| `engine/agents/idariLoop.ts` | `@/lib/agents/idari` | `PatchPlan`, `PatchRisk`, `createPatchPlan` |
+| `engine/agents/idariLoop.ts` | `@/lib/observability/collector` | `TelemetrySnapshot`, `getSnapshot` |
+| `engine/agents/idariLoop.ts` | `@/lib/observability/correlator` | `CorrelationResult`, `correlate` |
+| `engine/agents/idariLoop.ts` | `@/lib/observability/immediateAction` | `ImmediateRemediationAction`, `buildImmediateRemediationAction` |
+| `engine/agents/idariLoop.ts` | `@/lib/observability/rootCauseAnalyzer` | `RootCauseAnalysis`, `inferRootCause` |
+| `engine/agents/idariLoop.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engine/agents/uiActions.ts` | `@/lib/ui/theme` | `setDarkMode` |
+| `engine/dream-window/DreamWindowLifecycle.ts` | `@/lib/identity/canonical-names` | `ConnectionVerb`, `DREAM_WINDOW_STATES`, `DreamWindowState` |
+| `engine/dream-window/connectionVerbs.ts` | `@/lib/identity/canonical-names` | `CONNECTION_VERBS`, `ConnectionVerb`, `REJECTED_CONNECTION_VERBS`, `isRejectedConnectionVerb`, `isValidConnectionVerb` |
+| `engine/dream-window/enginConnectionNetwork.ts` | `@/lib/identity/canonical-names` | `ConnectionVerb`, `DAYDREAM_DOMAINS`, `DaydreamDomain`, `ENGIN_SURFACES`, `EnginSurface`, `NETWORK_COUNTS` |
+| `engine/dream-window/index.ts` | `@/lib/dream-window` | `ALL_CONNECTION_PATHS`, `DEFAULT_RUNTIME_REGION_STATE`, `DreamWindowInstance`, `activateSurface`, `bindDreamWindow`, `createBindAction`, `dispatch`, `getPathsForDomain`, `mountDreamWindow` |
+| `engine/dream-window/runtimeRegion.ts` | `@/lib/identity/canonical-names` | `DreamWindowState`, `RUNTIME_REGIONS`, `RuntimeSeamName`, `SURFACE_NAMES` |
+| `engine/dream-window/useDreamWindowActions.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engine/engin-runtime/index.ts` | `@/lib/engin-runtime` | `EnginRuntime`, `createEnginRuntime` |
+| `engine/policy/boogiePolicy.ts` | `@/lib/ai/boogie-policy` | `(unknown — bare import)` |
+| `engine/runtime/channelMetrics.ts` | `@/lib/runtime/channelMetrics` | `getChannelMetrics`, `recordEmission` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/identity/canonical-names` | `AI_AGENTS`, `RuntimeRegion` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/runtime/dualRuntimeBridge` | `AnyBridgeEmission`, `DualRuntimeChannel`, `bridge` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/runtime/runtimeContainer` | `RuntimeContainer` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `INFORMATION_DOMAINS`, `InformationDomain` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `isDomainObject` |
+| `engine/runtime/dreamOSBus.ts` | `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+| `engine/runtime/dropTargetRegistry.ts` | `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType` |
+| `engine/runtime/dualRuntime.ts` | `@/lib/identity/canonical-names` | `RUNTIME_REGIONS`, `SURFACE_NAMES` |
+| `engine/runtime/dualRuntime.ts` | `@/lib/panels/panelTypes` | `SystemPanelId` |
+| `engine/runtime/dualRuntimeBridge.ts` | `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
+| `engine/runtime/enginWorkflowRegistry.ts` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engine/runtime/iEngine.ts` | `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue`, `createDomainObject`, `isDomainObject` |
+| `engine/runtime/iEngine.ts` | `@/lib/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+| `engine/runtime/iEngine.ts` | `@/lib/runtime/dualRuntime` | `RuntimeWorld` |
+| `engine/runtime/instanceManager.ts` | `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel` |
+| `engine/runtime/isAuthRelatedError.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engine/runtime/moduleRegistry.ts` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engine/runtime/offlineQueue.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engine/runtime/runtimeChannel.ts` | `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
+| `engine/runtime/runtimeContainer.ts` | `@/lib/engin-runtime/EnginBaseState` | `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad`, `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad` |
+| `engine/runtime/seamClipboard.ts` | `@/lib/identity/canonical-names` | `RuntimeRegion` |
+| `engine/runtime/seamClipboard.ts` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `engine/runtime/seamClipboard.ts` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engine/runtime/seamClipboard.ts` | `@/lib/runtime/enginWorkflowRegistry` | `ENGIN_KEYS`, `EnginKey`, `findWorkflows` |
+| `engine/runtime/snapshotFingerprint.ts` | `@/lib/observability/collector` | `TelemetrySnapshot` |
+| `engine/runtime/useDragSurface.ts` | `@/lib/runtime/coercionTable` | `DreamDrop`, `DreamDropType`, `coerceDataTransfer` |
+| `engine/runtime/useDragSurface.ts` | `@/lib/runtime/dropTargetRegistry` | `dropTargetRegistry` |
+| `engine/runtime/useEnginBridge.ts` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engine/runtime/useEnginCoopSync.ts` | `@/lib/runtime/instanceManager` | `EnginName` |
+| `engine/runtime/useEnginCoopSync.ts` | `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `engine/runtime/useSharedEnginChannel.ts` | `@/lib/runtime/instanceManager` | `EnginName`, `buildInstanceKey`, `promoteInstanceToRealtime`, `useInstanceManager` |
+| `engine/runtime/useSharedEnginChannel.ts` | `@/lib/runtime/runtimeChannel` | `RuntimeChannel`, `RuntimeChannelEvent`, `createLocalChannel` |
+| `engine/sharedDream.ts` | `@/lib/collaboration` | `CollabEventHandler`, `CollabEventType`, `CollabMode`, `CollabPayload`, `CollabSession`, `PresenceUpdateData`, `SessionRole`, `broadcastControlSignal`, `broadcastCursor`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createCollabSession` |
+| `engine/social/useSocialData.ts` | `@/lib/social/normalizers` | `NormalizedPost` |
+| `engine/social/useSocialData.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engine/vm/dualVMCoordinator.ts` | `@/lib/runtime/dualRuntimeBridge` | `VMRegion`, `VMWorkload`, `bridge` |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
 | `engins/CodeEngin/orchestrator/dream.index.tsx` | `@/engins/CodeEngin/orchestrator` | `⬡ CodeEnginOrchestrator` |
+| `engins/autoopen/dream.AutoOpenGameEngin.tsx` | `@/lib/runtime/instanceManager` | `createInstance` |
+| `engins/autoopen/dream.AutoOpenGameEngin.tsx` | `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/forgeIntelligence` | `ForgeHistoryEntry`, `ForgeSuggestion`, `ForgeTransferEntry`, `WorkflowRunState`, `clearWorkflowRun`, `deleteCustomWorkflow`, `generateSuggestions`, `getActiveWorkflowRun`, `getFailureRecovery`, `parseGoalToWorkflow`, `readCustomWorkflows`, `readForgeHistory`, `readForgeTransfers`, `saveCustomWorkflow`, `startWorkflowRun`, `updateWorkflowStep` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/forgeNexus` | `NexusSnapshot`, `computeNexus` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/forgeRegistry` | `CREATIVE_ENGINES`, `ENGIN_REGISTRY`, `EnginEntry`, `FORGE_WORKFLOWS`, `ForgeActivityPulse`, `ForgeWorkflow`, `formatRelativeTime`, `readForgeActivity` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/forgeRituals` | `RitualSnapshot`, `computeRituals` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/dream.ForgeEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `DualRuntimeChannel`, `bridge` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/engins/brand/useBrandEnginRuntime` | `useBrandEnginRuntime` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/runtime/useEnginBridge` | `useBrandingEnginBridge` |
+| `engins/engin.BrandingEngin.tsx` | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.BrandingEngin.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/engins/code/useCodeEnginRuntime` | `useCodeEnginRuntime` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/engin.CodeEngin.tsx` | `@/lib/runtime/useEnginBridge` | `useCodeEnginBridge` |
 | `engins/engin.CodeEngin.tsx` | `@/components/DreamButton` | `⬡ DreamButton` |
+| `engins/engin.GameEngin.tsx` | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `engins/engin.GameEngin.tsx` | `@/lib/dreamdm/DreamSystemContext` | `useDreamSystem` |
+| `engins/engin.GameEngin.tsx` | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `engins/engin.GameEngin.tsx` | `@/lib/engins/game/gameEnginRuleSet` | `GameScore`, `GravityPreset`, `PhysicsConfig`, `ScriptLanguage`, `ScriptState`, `TileType` |
+| `engins/engin.GameEngin.tsx` | `@/lib/engins/game/useGameEnginRuntime` | `useGameEnginRuntime` |
+| `engins/engin.GameEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/engin.GameEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/engin.GameEngin.tsx` | `@/lib/gameengin/cartridge` | `GameCartridge` |
+| `engins/engin.GameEngin.tsx` | `@/lib/gameengin/cartridges/loaders` | `loadCartridge` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/catalog` | `GAME_CATALOG` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/avatar` | `consumePlayAsMe`, `getAvatarDataUrl` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/library-state` | `GAME_LIBRARY_SESSION_STORAGE_KEY`, `MAX_SAVED_GAME_SESSIONS`, `SavedGameSession` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/navigation` | `buildGameLaunchHref`, `isLaunchFlagEnabled`, `resolveGameLaunchId` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/quality-plan` | `GAME_CONTROL_PROFILES`, `GAME_QUALITY_PILLARS` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/useGamepad` | `useGamepad` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/useAIDirector` | `useAIDirector` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/DualSenseManager` | `useDualSense` |
+| `engins/engin.GameEngin.tsx` | `@/lib/games/useRemoteChannel` | `useRemoteChannel` |
+| `engins/engin.GameEngin.tsx` | `@/lib/media/ledger` | `buildLedgerMediaUrl` |
+| `engins/engin.GameEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/engin.GameEngin.tsx` | `@/lib/runtime/instanceManager` | `createInstance` |
+| `engins/engin.GameEngin.tsx` | `@/lib/runtime/useEnginBridge` | `useGameEnginBridge` |
+| `engins/engin.GameEngin.tsx` | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
+| `engins/engin.GameEngin.tsx` | `@/lib/runtime/useSharedEnginChannel` | `useSharedEnginChannel` |
 | `engins/engin.GameEngin.tsx` | `@/lib/supabase/client` | `createClient` |
+| `engins/engin.GameEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/engin.GameEngin.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `engins/engin.GameEngin.tsx` | `@/lib/gameengin/GameRuntime` | `⬡ GameRuntime` |
+| `engins/engin.LabEngin.tsx` | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `engins/engin.LabEngin.tsx` | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `engins/engin.LabEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/engin.LabEngin.tsx` | `@/lib/engins/lab/useLabEnginRuntime` | `useLabEnginRuntime` |
+| `engins/engin.LabEngin.tsx` | `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `engins/engin.LabEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/engin.LabEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/engin.LabEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/engin.LabEngin.tsx` | `@/lib/runtime/useEnginBridge` | `useLabEnginBridge` |
+| `engins/engin.LabEngin.tsx` | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
 | `engins/engin.LabEngin.tsx` | `@/lib/supabase/client` | `createClient` |
+| `engins/engin.LabEngin.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/audioFingerprint` | `PeakMap`, `buildPeakMap`, `createFingerprintIsolator` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/daydream/useDaydreamPersistence` | `useDaydreamPersistence` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/dreamenginOS` | `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/enginpipe` | `ArtifactSlot` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/engins/music/useStarMakerEnginRuntime` | `useStarMakerEnginRuntime` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/engins/useEnginWorkflow` | `useEnginWorkflow` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/media/ledger` | `buildLedgerMediaUrl`, `uploadBlobToLedgerStorage` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/music/presets` | `BEAT_PRESETS`, `BeatPreset`, `GENRE_LIST`, `INSTRUMENT_PRESETS`, `InstrumentPreset`, `PROJECT_TEMPLATES`, `ProjectTemplate` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/music/starmaker` | `MelodySuggestion`, `PlaybackQualityMode`, `buildReleaseStrategy`, `createMelodySuggestions`, `summarizePlaybackProfile` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/music/starmakerArrangement` | `ARRANGEMENT_BARS`, `ARRANGEMENT_SOURCE_COLORS`, `ARRANGEMENT_TRACKS`, `ArrangementClip`, `ArrangementSource`, `ArrangementTrackId`, `ArrangementTrackState` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/music/starmakerDaw` | `CompingState`, `PIANO_ROLL_DEFAULTS`, `PianoRollState`, `RealtimeStarMakerAudioEngine`, `SessionViewState`, `StarMakerAudioDiagnostics`, `StarMakerSequencerSnapshot`, `analyzeStereoPcm`, `createInitialCompingState`, `createInitialSessionView`, `createRealtimeStarMakerAudioEngine`, `renderStarMakerPattern` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/runtime/useEnginCoopSync` | `useEnginCoopSync` |
 | `engins/engin.StarMakerEngin.tsx` | `@/lib/supabase/client` | `createClient` |
 | `engins/engin.StarMakerEngin.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `engins/engin.StarMakerEngin.tsx` | `@/lib/supabase/config` | `SUPABASE_URL` |
+| `engins/engin.StarMakerEngin.tsx` | `@/lib/utils` | `toErrorMessage` |
+| `engins/gameengin/GameRuntime.tsx` | `@/lib/runtime/channelMetrics` | `recordEmission` |
+| `engins/gameengin/GameRuntime.tsx` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `engins/gameengin/GameRuntime.tsx` | `@/lib/runtime/runtimeChannel` | `createLocalChannel` |
+| `engins/gameengin/GameRuntime.tsx` | `@/lib/runtime/sharedResourcePool` | `acquireSharedResource`, `releaseSharedResource` |
+| `engins/gameengin/cartridges/loaders.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engins/gameengin/cartridges/reactCartridge.ts` | `@/lib/gameengin/cartridge` | `GameCartridge`, `GameEngineAPI` |
+| `engins/gameengin/dream-engine.ts` | `@/lib/media/ledger` | `decodeLedgerStringToUint8Array`, `encodeUint8ArrayToLedgerString` |
+| `engins/gameengin/dream-engine.ts` | `@/lib/supabase/client` | `createClient` |
+| `engins/gameengin/dream-engine.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
+| `engins/gameengin/dream-engine.ts` | `@/lib/utils` | `toErrorMessage` |
+| `engins/gameengin/dreamr-loader.ts` | `@/lib/gameengin/cartridge-manifest` | `CARTRIDGE_MAGIC`, `CartridgeManifest`, `validateManifest` |
+| `engins/gameengin/executionWiring.ts` | `@/lib/runtime/madMaxiSnapshotBridge` | `invokeMadMaxiSnapshotTransfer` |
+| `engins/gameengin/executionWiring.ts` | `@/lib/engins/game` | `* as GameRuleSetIndex` |
+| `engins/gameengin/executionWiring.ts` | `@/lib/games/madmaxi-wildfall-world` | `* as LucidAvenueWorld` |
+| `engins/gameengin/index.ts` | `@/lib/gameengin` | `...`, `AIDirector`, `AdvancedPhysicsWorld`, `ComputeShaderPipeline`, `EliteGameEngine`, `PostFXManager`, `RollbackNetcode` |
+| `engins/gameengin/registerCartridges.ts` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `engins/gameengin/registerCartridges.ts` | `@/lib/gameengin/cartridges/loaders` | `assertCartridgeLoadersReady` |
+| `engins/gameengin/registerCartridges.ts` | `@/lib/runtime/moduleRegistry` | `moduleRegistry` |
+| `engins/gameengin/systems/index.ts` | `@/lib/gameengin/systems` | `OctreeBVH`, `ResourcePool` |
+| `engins/gameengin/webgpu-runtime-shell.ts` | `@/lib/gameengin/dreamr-loader` | `DreamrCartridgeArchive` |
+| `engins/portfolio/dream.PortfolioEngin.tsx` | `@/lib/forge/forgeIntelligence` | `recordForgeTransfer` |
+| `engins/portfolio/dream.PortfolioEngin.tsx` | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
+| `engins/portfolio/dream.PortfolioEngin.tsx` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `engins/rulesets/brand/brandEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/brand/brandEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/brand/brandEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/brand/brandEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/brand/useBrandEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/brand/useBrandEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/code/codeEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/code/codeEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/code/codeEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/code/codeEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/code/useCodeEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/code/useCodeEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `@/lib/contentengin/assetTypes` | `ContentAsset`, `ContentRecipe`, `ExportProfile` |
+| `engins/rulesets/content/useContentEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/content/useContentEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/game/gameEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/game/gameEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/game/gameEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/game/gameEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/game/useGameEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/game/useGameEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/lab/labEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/lab/labEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/lab/labEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/lab/labEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/lab/useLabEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/lab/useLabEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/music/starMakerEnginRuleSet.ts` | `@/lib/engin-runtime/EnginBaseState` | `EnginBaseState`, `JsonObject`, `patchBaseState` |
+| `engins/rulesets/music/starMakerEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilities` | `EnginCapability` |
+| `engins/rulesets/music/starMakerEnginRuleSet.ts` | `@/lib/engin-runtime/EnginCapabilityTargets` | `getEnginCapabilityProfile` |
+| `engins/rulesets/music/starMakerEnginRuleSet.ts` | `@/lib/engin-runtime/EnginRuleSetContract` | `ConstraintResult`, `EnginAction`, `EnginConstraint`, `EnginRuleSetContract`, `EnginRuleSetManifest`, `EnginRuleSetParams` |
+| `engins/rulesets/music/useStarMakerEnginRuntime.ts` | `@/lib/engin-runtime/EnginIOAdapter` | `MemoryAdapter` |
+| `engins/rulesets/music/useStarMakerEnginRuntime.ts` | `@/lib/engin-runtime/EnginRuntime` | `EnginHardwareAccelerationState`, `EnginRuntime`, `EnginRuntimeOptions` |
+| `engins/rulesets/useEnginWorkflow.ts` | `@/lib/journey/journeyDots` | `logJourneyDot` |
+| `engins/rulesets/useEnginWorkflow.ts` | `@/lib/runtime/dualRuntimeBridge` | `bridge` |
+| `feature-build/featureManifest.ts` | `@/lib/identity/canonical-names` | `DaydreamDomain`, `EnginSurface` |
+| `feature-build/index.ts` | `@/lib/feature-build` | `FEATURE_MANIFESTS`, `SICC_DIMENSIONS`, `computeBuildCycleState` |
+| `feed/useLiveFeed.ts` | `@/lib/media/postMedia` | `getPrimaryPostMediaUrl` |
+| `feed/useLiveFeed.ts` | `@/lib/supabase/client` | `createClient` |
+| `feed/useYouTubeLiveFeed.ts` | `@/lib/feed/feedTopics` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries` |
+| `feed/useYouTubeLiveFeed.ts` | `@/lib/feed/useLiveFeed` | `FeedPost` |
+| `feeds/embedFeedLoader.ts` | `@/lib/feeds/embedFeedLoader` | `loadEmbedFeed` |
+| `forge/useForgeBuild.ts` | `@/lib/forge/forgeBuild` | `ForgeArtifact`, `ForgeArtifactType`, `ForgeBuildRecord`, `ForgeLogEvent`, `canBuildToday`, `isForgeLogEvent`, `recordBuildToday`, `saveForgeBuild`, `stageForgeArtifact` |
+| `forge/useForgeBuild.ts` | `@/lib/utils` | `toErrorMessage` |
+| `games/catalog.ts` | `@/lib/gameengin/cartridges/manifest` | `CARTRIDGE_MANIFEST` |
+| `games/catalog.ts` | `@/lib/games/mobileControls` | `MobileHudMode` |
+| `games/catalog.ts` | `@/lib/games/performance-baseline` | `GameRenderMode` |
+| `games/hooks.ts` | `@/lib/games/performance-baseline` | `DE_GAME_PERFORMANCE_BASELINE`, `GamePerformanceBaseline`, `GameRenderMode`, `createPerformanceBaselineSampler`, `resolveRendererBackend` |
+| `games/hooks.ts` | `@/lib/webgpu` | `isWebGPUAvailable` |
+| `games/mobileControls.ts` | `@/lib/games/useRemoteChannel` | `broadcastGameInput` |
+| `games/useAIDirector.ts` | `@/lib/gameengin/ai-director` | `AIDirector`, `DirectorState`, `PlayerSignals` |
+| `gsap/gsap.ts` | `@/lib/gsap/gsap` | `getGsap` |
+| `gsap/useGsapEntrance.ts` | `@/lib/gsap/gsap` | `getGsap` |
+| `gsap/useGsapFlip.ts` | `@/lib/gsap/gsap` | `getGsap` |
+| `gsap/useGsapScrollReveal.ts` | `@/lib/gsap/gsap` | `getGsap` |
 | `hooks/use-spatial.ts` | `@/lib/supabase/client` | `createClient` |
 | `hooks/useAccount.ts` | `@/lib/supabase/client` | `createClient` |
+| `hooks/useConnectorInstallFlow.ts` | `@/lib/connectors/connectorRegistry` | `getConnectorDef` |
+| `hooks/useConnectorInstallFlow.ts` | `@/lib/connectors/installFlow` | `SlotGrid`, `consumeDeferredPrompt`, `handleAddWidget`, `handleConnectSuccess`, `handleDismissPrompt`, `handlePlaceLater` |
+| `hooks/useConnectorInstallFlow.ts` | `@/lib/widgets/widgetRegistry` | `WidgetTypeDef`, `getWidgetTypeDef` |
+| `hooks/useMotionTilt.ts` | `@/lib/hooks/useMotionTilt` | `useMotionTilt` |
+| `hooks/useSharedDream.ts` | `@/lib/collaboration` | `generateInviteLink` |
+| `hooks/useSharedDream.ts` | `@/lib/sharedDream` | `DreamBroadcastPayload`, `DreamEventHandler`, `DreamPresenceUpdate`, `DreamSessionMode`, `DreamSessionRole`, `SharedDreamSession`, `broadcastControlSignal`, `broadcastCursorPosition`, `broadcastDataPacket`, `broadcastEdit`, `broadcastMediaSync`, `broadcastModeChange`, `broadcastPresenceUpdate`, `broadcastStatePatch`, `createSharedDreamSession`, `leaveSharedDreamSession` |
 | `hooks/useSharedDream.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/activity/aqs.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/activity/visibility-score.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/admin/lockout.ts` | `@/lib/supabase/server` | `createServiceClient` |
-| `lib/ai/audit.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/boogie-verifier.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/capability-gate.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/capability-gate.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/ai/confirm-token.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/idempotency.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/rate-limiter.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/ai/rateLimit.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/api/route.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/api/route.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/child-safety/ncmecReporter.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/codeengin/auth.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/codeengin/auth.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/connectors/youtube.ts` | `@/lib/supabase/server` | `createServiceClient` |
-| `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/daydream/useDaydreamPersistence.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/daydream/useDaydreamState.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/daydream/useDaydreamState.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/dream-docs/embed.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/dream-docs/search.ts` | `@/lib/supabase/server` | `createServerClient` |
-| `lib/dreamdm/DreamSystemContext.tsx` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamdm/DreamSystemContext.tsx` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/dreamdm/useDreamDMConversations.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamdm/useDreamDMMessages.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamdm/useDreamSearch.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamdm/useMessagingCore.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamengin/engineAssets.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/dreamengin/engineAssets.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/dreamr/socialHumanityScore.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/feed/useLiveFeed.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/gameengin/dream-engine.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/gameengin/dream-engine.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/gameengin/executionWiring.ts` | `./control-mappings` | `* as ControlMappings` |
-| `lib/gameengin/index.ts` | `./control-mappings` | `(unknown — bare import)` |
-| `lib/platform/lab.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/setup/checks.ts` | `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
-| `lib/sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/client` | `createClient` |
-| `lib/sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `lib/widgets/feed-resolver.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `intelligence/continuityHelpers.ts` | `@/lib/forge/forgeRegistry` | `ENGIN_REGISTRY`, `EnginEntry`, `ForgeActivityPulse` |
+| `intelligence/useSessionIntelligence.ts` | `@/lib/runtime/dreamOSBus` | `dreamOSBus` |
+| `journey/journeyDots.ts` | `@/lib/journey/journeyDots` | `hasJourneyDot`, `logJourneyDot` |
+| `journey/withJourney.ts` | `@/lib/journey/journeyDots` | `logJourneyDot` |
+| `media/ledger.ts` | `@/lib/utils` | `toErrorMessage` |
+| `notifications/useNotifications.ts` | `@/lib/utils` | `toErrorMessage` |
+| `observability/healthTrend.ts` | `@/lib/agents/idariLoop` | `LoopIteration`, `LoopStatus` |
+| `observability/rootCauseAnalyzer.ts` | `@/lib/agents/idari` | `PatchRisk` |
+| `platform/lab.ts` | `@/lib/supabase/client` | `createClient` |
+| `platform/lab.ts` | `@/lib/utils` | `toErrorMessage` |
 | `proxy.ts` | `@/lib/supabase/server` | `createServerClientWithCustomCookies` |
 | `proxy.ts` | `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL` |
 | `proxy.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
-| `scripts/gameengin/architect-run.ts` | `../../lib/gameengin/brain-reader.js` | `ConceptPattern`, `VisionStatement`, `isOriginal`, `listConceptPatterns`, `listMechanics`, `logRDSession`, `readVisionStatement`, `recordVisionStatement`, `signatureHash` |
-| `scripts/gameengin/artisan-run.ts` | `../../lib/gameengin/brain-reader.js` | `BRAIN_ROOT`, `listCompositionPrinciples`, `listMaterialRecipes`, `listTechniques`, `logRDSession`, `recordAssetGeneration` |
-| `scripts/gameengin/maestro-analyze.ts` | `../../lib/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
-| `scripts/gameengin/mechanic-run.ts` | `../../lib/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
-| `scripts/gameengin/package-cartridge.ts` | `../../lib/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
+| `reality/types.ts` | `@/lib/collaboration` | `CollabMode`, `SessionRole` |
+| `renderer/index.ts` | `@/lib/renderer` | `Canvas2DRenderer`, `createRenderer` |
+| `scene/sceneState.ts` | `@/lib/offline/offlineCache` | `CachedScene`, `SceneObject`, `SceneSnapshot`, `deleteScene`, `enqueueSyncAction`, `getScene`, `listScenes`, `saveScene` |
+| `scripts/gameengin/architect-run.ts` | `../../engins/gameengin/brain-reader.js` | `ConceptPattern`, `VisionStatement`, `isOriginal`, `listConceptPatterns`, `listMechanics`, `logRDSession`, `readVisionStatement`, `recordVisionStatement`, `signatureHash` |
+| `scripts/gameengin/artisan-run.ts` | `../../engins/gameengin/brain-reader.js` | `BRAIN_ROOT`, `listCompositionPrinciples`, `listMaterialRecipes`, `listTechniques`, `logRDSession`, `recordAssetGeneration` |
+| `scripts/gameengin/maestro-analyze.ts` | `../../engins/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
+| `scripts/gameengin/mechanic-run.ts` | `../../engins/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
+| `scripts/gameengin/package-cartridge.ts` | `../../engins/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
 | `scripts/gameengin/package-cartridge.ts` | `./lib/tar.js` | `TarFile`, `packTar` |
-| `scripts/gameengin/prophet-run.ts` | `../../lib/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
-| `scripts/gameengin/upgrader-run.ts` | `../../lib/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
-| `scripts/gameengin/writer-run.ts` | `../../lib/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
+| `scripts/gameengin/prophet-run.ts` | `../../engins/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
+| `scripts/gameengin/upgrader-run.ts` | `../../engins/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
+| `scripts/gameengin/writer-run.ts` | `../../engins/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
+| `scripts/postbuild.ts` | `../lib/adari` | `assertBuildInvariants` |
 | `scripts/wire-orphans.mjs` | `./engins` | `engins` |
 | `scripts/wire-orphans.mjs` | `./rulesets` | `rulesets` |
 | `scripts/wire-orphans.mjs` | `./surfaces` | `surfaces` |
@@ -19446,9 +19258,23 @@ _No circular dependencies detected._
 | `scripts/wire-orphans.mjs` | `./systems` | `systems` |
 | `scripts/wire-orphans.mjs` | `./hooks` | `hooks` |
 | `scripts/wire-orphans.mjs` | `./osArchitectureMap` | `(unknown — bare import)` |
+| `setup/checks.ts` | `@/lib/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` |
+| `sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/client` | `createClient` |
+| `sharedDream/useSharedDreamSession.ts` | `@/lib/supabase/safeGetUser` | `safeGetUser` |
 | `src/components/dream.DreamEnginLogo.tsx` | `@/lib/babylon/useDreamLogoScene` | `DreamLogoSceneOptions`, `useDreamLogoScene` |
 | `src/components/dream.DreamEnginLogo.tsx` | `@/components/DreamEnginLogo` | `DreamEnginLogo` |
+| `src/core/GameEnginCore.ts` | `@/lib/gameengin/core` | `EliteGameEngine`, `QualityTier` |
+| `src/core/GameEnginCore.ts` | `@/lib/gameengin/gameEnginRuntime` | `GameEnginRuntime` |
 | `src/engin/core/index.ts` | `@/lib/supabase/client` | `createClient` |
+| `src/launcher.ts` | `@/lib/utils` | `toErrorMessage` |
+| `types/dream-window.ts` | `@/lib/dream-window/DreamWindowLifecycle` | `DestinationRule`, `DreamWindowConfig`, `DreamWindowPosition`, `DreamWindowSize`, `DreamWindowState` |
+| `types/module-manifest.ts` | `@/lib/engin-runtime/EnginBaseState` | `isJsonSerializable` |
+| `ui/CustomizeModeContext.tsx` | `@/lib/ui/skin-engine` | `AllPageSkins`, `DEFAULT_SKIN`, `SkinData`, `SkinPage`, `applySkin`, `loadAllSkins`, `resolveSkin`, `saveAllSkins` |
+| `web3/client.ts` | `@/lib/utils` | `toErrorMessage` |
+| `web3/index.ts` | `@/lib/web3` | `trackEngagement`, `uploadToIpfs`, `web3Client` |
+| `widgets/CrossWidgetPosting.ts` | `@/lib/utils` | `toErrorMessage` |
+| `widgets/feed-resolver.ts` | `@/lib/supabase/server` | `createServerClient` |
+| `widgets/feed-resolver.ts` | `@/lib/utils` | `toErrorMessage` |
 
 ---
 
@@ -19462,6 +19288,34 @@ _No circular dependencies detected._
 
 | File | Unused exports |
 |------|----------------|
+| `activity/aqs.ts` | `calculateAQS`, `getUserMetrics`, `getAQS`, `qualifiesForPremiumCPV`, `getAQSTier`, `getAQSTierColor`, `formatAQS`, `calculateRealShitRate`, `formatRealShitRate`, `getAQSLeaderboard` |
+| `activity/boogieActivityPolicy.ts` | `resolveActivityFeedTreatment`, `shouldExcludeFromFeed`, `detectActivityFraudSignals` |
+| `activity/revenueSplit.ts` | `ACTIVITY_REVENUE_SPLIT`, `calculateActivityRevenueSplit`, `validateActivityRevenueSplit` |
+| `activity/scoring.ts` | `calculateActivityPoints`, `getTierMultiplier`, `getVerificationStrength`, `getInnovationBonus`, `calculateVisibilityBoost`, `shouldPromoteActivity`, `getTierDisplayName`, `getTierDescription`, `getVerificationMethodDisplayName`, `validateTierForActivityType`, `calculateDecayDate`, `isDecayed` |
+| `activity/skipCredits.ts` | `SKIP_CREDIT_SPEND_PER_AD`, `MIN_WATCHED_PERCENT_FOR_CREDIT`, `calculateSkipCreditsEarned`, `canSpendSkipCredit`, `spendSkipCredit`, `addSkipCredits` |
+| `activity/types.ts` | `isValidActivityTier`, `CPV_PRICING`, `PLATFORM_HEALTH_TARGETS` |
+| `activity/visibility-score.ts` | `calculateVisibilityScore`, `calculateVisibilityScores`, `sortByVisibilityScore`, `getVisibilityRankedFeed`, `shouldPromotePost`, `estimateVisibilityScore` |
+| `adari.ts` | `getBuildReport`, `assertBuildInvariants` |
+| `admin/lockout.ts` | `isAdminLocked`, `triggerAdminLockout`, `OWNER_EMAIL`, `isOwner`, `isDomainBlocked` |
+| `admin/upgrade-readiness.ts` | `summarizeBuildReadiness`, `selectNextUpgradeTarget`, `buildPatchPlanChecklist`, `describeUpgradeBlockers`, `createUpgradeProposal`, `createUpgradeReadinessSnapshot` |
+| `agentOS.ts` | `getAgentOS` |
+| `ai/CIC.ts` | `CIC` |
+| `ai/boogie-policy.ts` | `ENFORCEMENT_ACTIONS`, `ENFORCEMENT_SCOPES`, `CATEGORY_SEVERITY` |
+| `ai/boogie-verifier.ts` | `detectSignals`, `verifyIntents`, `redactSecrets` |
+| `ai/boogieman.ts` | `BLAST_RADIUS_ESCALATION_THRESHOLD`, `CONTAINMENT_ACTIONS`, `computeRiskScore`, `selectAction`, `boogieEnforce`, `getStrikeWeight`, `getStrikeExpiryDays`, `boogieEvaluate`, `BOOGIE_POLICY_VERSION` |
+| `ai/capability-gate.ts` | `getRoleRank`, `buildActorContext`, `hasCapability`, `meetsMinimumRole`, `authorizeIntent`, `authorizeIntents` |
+| `ai/confirm-token.ts` | `generateConfirmToken`, `verifyConfirmToken`, `storeConfirmToken`, `consumeConfirmToken` |
+| `ai/confirm.ts` | `makeConfirmToken`, `verifyConfirmToken` |
+| `ai/groq.ts` | `groqChat`, `groqHealthCheck` |
+| `ai/handlers/index.ts` | `registerAllHandlers` |
+| `ai/idempotency.ts` | `checkIdempotency` |
+| `ai/rate-limiter.ts` | `RATE_LIMITS`, `checkRateLimit`, `getCurrentRPM` |
+| `ai/rateLimit.ts` | `checkRateLimit`, `getCurrentRPM` |
+| `ai/schemas.ts` | `AgentSchema`, `UIContextSchema`, `IntentTypeSchema`, `IntentSchema`, `IntentEnvelopeSchema`, `CodeContextSchema`, `DrEamsRunBodySchema`, `DrEamsRunResponseSchema`, `ExecuteBodySchema`, `ExecuteResponseSchema`, `BoogieDecisionSchema`, `BoogieResultSchema`, `BoogieOutputSchema`, `EnforcementActionSchema`, `EnforcementScopeSchema`, `StrikeSeveritySchema`, `StrikeEntrySchema`, `UserSafeExplanationSchema`, `InternalAuditEventSchema`, `BoogieEnforceOutputSchema`, `AppealRequestSchema`, `AppealEntrySchema`, `PolicyHealthSchema` |
+| `ai/tfBackend.ts` | `initTfBackend` |
+| `ai/tool-router.ts` | `getHandler`, `executeIntent`, `executeIntents` |
+| `ai/triad.ts` | `AI_MODELS`, `getOwnerEmail`, `isOwnerEmail`, `CANONICAL_NAV_ROUTES`, `planWithEams`, `validateWithIdari`, `boogiePolicyCheck` |
+| `api/route.ts` | `json`, `jsonError`, `jsonApiError`, `withApi`, `requireUser`, `parseJson`, `parseQuery` |
 | `app/actions/dream-docs.ts` | `createDreamDoc`, `publishDreamDoc`, `upsertDocSection` |
 | `app/auth/callback/route.ts` | `GET` |
 | `app/connectors/dream.ConnectorsClient.tsx` | `(default)` |
@@ -19497,9 +19351,40 @@ _No circular dependencies detected._
 | `app/settings/data/dream.DataClient.tsx` | `(default)` |
 | `app/settings/dreams/dreams-layout-editor.tsx` | `(default)` |
 | `app/settings/privacy/dream.PrivacyClient.tsx` | `(default)` |
+| `artifactStore.ts` | `getDefaultSystemArtifacts`, `loadArtifacts`, `saveArtifact`, `saveArtifacts`, `removeArtifact`, `listVisibleArtifacts`, `hideArtifact`, `restoreArtifact`, `listSystemArtifacts` |
 | `assembly/bus.ts` | `QUEUE_SIZE`, `enqueue`, `dequeue`, `reset` |
 | `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD`, `hashBytesFNV1A`, `shapeGlowFieldSIMD` |
 | `assembly/mad-maxi-player.ts` | `init`, `handleInput`, `update`, `getSnapshotSize`, `writeSnapshot`, `loadSnapshot`, `getMemoryUsage`, `getX`, `getY`, `getVX`, `getVY`, `getOnGround`, `getJumpsUsed`, `getCoyoteTimer`, `getDashTimer`, `getTicks` |
+| `assets/assetOptimizer.ts` | `optimiseAsset`, `registryTagsForContext` |
+| `assets/indexedDBStore.ts` | `getOriginal`, `deleteOriginal`, `checkSentinels`, `listStoredOriginals`, `cleanupExpiredOriginals`, `getStorageStats`, `hasOriginal` |
+| `audio-fingerprint/fingerprint.ts` | `recordFingerprint`, `matchFingerprint` |
+| `audio-fingerprint/index.ts` | `matchFingerprint`, `recordFingerprint`, `Fingerprint`, `TimeSlice`, `buildPeakMap`, `FrequencyPeak`, `PeakMap`, `extractStem` |
+| `audio-fingerprint/peak-map.ts` | `buildPeakMap` |
+| `audio-fingerprint/stem-extractor.ts` | `extractStem`, `extractStemAsync` |
+| `audioFingerprint.ts` | `buildPeakMap`, `createFingerprintIsolator` |
+| `auth/nextRedirect.ts` | `resolveSafeNextPath`, `buildLoginRedirectPath` |
+| `babylon/createEngine.ts` | `createBabylonEngine` |
+| `babylon/dreamengine-hybrid.ts` | `initHybridEngine`, `onGrab` |
+| `bot-detection/detector.ts` | `BotDetector` |
+| `bot-detection/index.ts` | `HUMAN_MIN_DEVIATION_PX`, `BOT_MAX_DEVIATION_PX`, `HUMAN_MAX_CROSS_SIMILARITY`, `BOT_MIN_CROSS_SIMILARITY`, `HUMAN_MAX_COARSE_GRAIN_DIFF`, `BOT_MIN_COARSE_GRAIN_DIFF`, `HUMAN_MIN_ENTROPY`, `BOT_MAX_ENTROPY`, `HUMAN_MIN_SLOG_VEL_VAR`, `BOT_MAX_SLOG_VEL_VAR`, `VIEW_TALLY_THRESHOLD_MS`, `createViewTimer`, `PERFECT_LINE_THRESHOLD_PX`, `FREEZE_MIN_MS`, `FREEZE_MAX_MS`, `PerfectLineTrap`, `BotSessionTracker`, `analyzeSwipe`, `isBotSession`, `tallyView`, `BotSessionResult`, `Point`, `SwipeAnalysis`, `SwipeRecord`, `ViewTally` |
+| `bot-detection/view-tally.ts` | `VIEW_TALLY_DURATION_MS`, `createViewTallyTimer`, `ViewTallyTracker` |
+| `botDetection.ts` | `analyzeSwipe`, `tallyView`, `isBotSession` |
+| `branding/logos.ts` | `LOGO_PATHS`, `getRandomLogo`, `resetLogoCache` |
+| `child-safety/childSafetyDetector.ts` | `isZeroTolerance`, `isMinorToAdultImageBlock` |
+| `child-safety/messageContextChecker.ts` | `evaluateMessageContext`, `CHILD_SAFETY_LAW_SUMMARY` |
+| `child-safety/ncmecReporter.ts` | `reportChildSafetyIncident` |
+| `child-safety/scanMediaUrls.ts` | `scanMediaUrlsForChildSafety`, `isImageUrl` |
+| `code/drEamsCodeAssist.ts` | `CODE_VOCABULARY`, `VOCAB_TERMS`, `matchCodeVocabulary`, `detectLanguageFromCode`, `classifyQuery`, `buildCodeSystemPrompt`, `buildCodePrompt`, `parseCodeResponse`, `detectNLCommand`, `generateCodeFromCommand`, `getCodeAssistCompletion` |
+| `codeengin/auth.ts` | `assertCodeEnginAccess` |
+| `codeengin/diagnostics.ts` | `diagnoseFile`, `diagnoseWorkspace` |
+| `codeengin/git.ts` | `getGitStatus`, `getGitDiff`, `getGitLog` |
+| `codeengin/pathSafety.ts` | `CODEENGIN_ALLOWED_EXTENSIONS`, `safeErrorMessage` |
+| `codeengin/projectGraph.ts` | `extractImports`, `buildProjectGraph` |
+| `codeengin/runner.ts` | `CODEENGIN_COMMANDS`, `listRunnerCommands`, `runCodeEnginCommand`, `runCiCommand` |
+| `codeengin/search.ts` | `searchWorkspace` |
+| `codeengin/workspaceStore.ts` | `createCodeEnginWorkspace`, `getWorkspaceOverview`, `writeProjectFile`, `createProjectFile`, `deleteProjectFile`, `moveProjectFile`, `(default)` |
+| `collaboration/index.ts` | `DEFAULT_MODE_RULESETS`, `WebRTCCollabSession`, `createLocalCollabSession`, `createSupabaseCollabSession`, `createCollabSession`, `generateInviteLink`, `parseInviteLink`, `broadcastCursor`, `broadcastEdit`, `broadcastPlayhead`, `broadcastStatePatch`, `broadcastDataPacket`, `broadcastMediaSync`, `broadcastControlSignal`, `broadcastModeChange`, `broadcastPresenceUpdate` |
+| `componentInventory.ts` | `COMPONENT_INVENTORY`, `searchComponents` |
 | `components/activity/dream.ActivityPostForm.tsx` | `ActivityPostForm` |
 | `components/ads/dream.SkipCreditBalance.tsx` | `SkipCreditBalance` |
 | `components/auth/dream.PasswordField.tsx` | `(default)` |
@@ -19784,19 +19669,214 @@ _No circular dependencies detected._
 | `components/widgets/dream.widget.WidgetPlaceholder.tsx` | `(default)` |
 | `components/widgets/dream.widget.WidgetShell.tsx` | `default` |
 | `components/widgets/dream.widget.WidgetSurface.tsx` | `default` |
+| `composite/compositor.ts` | `createNode`, `createGraph`, `addNode`, `connectNodes`, `disconnectInput`, `setParam`, `findNode`, `topologicalSort`, `graphSummary` |
+| `composite/fxSimulation.ts` | `FX_PRESETS`, `getPreset`, `presetsByCategory`, `createSimulation`, `setSimParam`, `getSimParam`, `resetSimParams`, `allCategories` |
+| `composite/matchmover.ts` | `createTrack`, `addTrackPoint`, `addSample`, `computeHomography`, `estimateCameraMotion`, `exportTrackCSV`, `trackSummary` |
+| `composite/motionCapture.ts` | `parseBVH`, `getFramePose`, `retargetClip`, `exportBVH`, `clipSummary`, `findJoint` |
+| `composite/rotoscope.ts` | `createProject`, `addLayer`, `setKeyframe`, `removeKeyframe`, `interpolateShape`, `exportShapeSVG`, `exportFrameSVG`, `keyframeList` |
+| `connectors/connectorRegistry.ts` | `CONNECTOR_REGISTRY`, `getConnectorDef` |
+| `connectors/deliveryStrategy.ts` | `DELIVERY_STRATEGY_MATRIX`, `getDeliveryStrategy`, `supportsWebhook`, `supportsPoll`, `supportsWebhookVerification`, `knownDeliveryProviders` |
+| `connectors/installFlow.ts` | `findBestSlot`, `queueSuggestedWidget`, `getSuggestedWidgets`, `dismissSuggestedWidget`, `removeSuggestedWidget`, `isSessionDismissed`, `_resetInstallFlowState`, `deferPrompt`, `consumeDeferredPrompt`, `enqueueForPlacement`, `dequeueNextPlacement`, `peekPlacementQueue`, `scheduleAutoLock`, `cancelAutoLock`, `handleConnectSuccess`, `handleDismissPrompt`, `handleAddWidget`, `handlePlaceLater`, `handlePlacementDone`, `handlePlacementCancel` |
+| `connectors/normalise.ts` | `normaliseMastodon`, `normaliseBluesky`, `normaliseGitHub`, `normaliseReddit`, `normaliseNostr`, `normaliseYouTubePlaylistItem`, `normaliseYouTubeSearchResult`, `normaliseDevto`, `normaliseFacebook`, `normaliseHackerNews`, `normaliseMedium`, `normalisePinterest`, `normalisePodcast`, `normaliseSubstack`, `normaliseTikTok`, `normaliseTumblr`, `normaliseTwitter`, `stripHtml`, `hostFromUrl`, `atUriToHttps` |
+| `connectors/providers/bluesky.ts` | `blueskyVerify`, `blueskySync`, `blueskyCredentialFields` |
+| `connectors/providers/devto.ts` | `devtoVerify`, `devtoSync`, `devtoCredentialFields` |
+| `connectors/providers/facebook.ts` | `facebookVerify`, `facebookSync`, `facebookCredentialFields` |
+| `connectors/providers/github.ts` | `githubVerify`, `githubSync`, `githubCredentialFields` |
+| `connectors/providers/hackernews.ts` | `hackernewsVerify`, `hackernewsSync`, `hackernewsCredentialFields` |
+| `connectors/providers/instagram.ts` | `instagramVerify`, `instagramSync`, `getInstagramOAuthConfig`, `INSTAGRAM_CREDENTIAL_FIELDS` |
+| `connectors/providers/mastodon.ts` | `mastodonVerify`, `mastodonSync`, `mastodonCredentialFields` |
+| `connectors/providers/medium.ts` | `mediumVerify`, `mediumSync`, `mediumCredentialFields` |
+| `connectors/providers/nostr.ts` | `isValidNostrPubkey`, `nostrVerify`, `nostrSync`, `nostrCredentialFields` |
+| `connectors/providers/pinterest.ts` | `pinterestVerify`, `pinterestSync`, `pinterestCredentialFields` |
+| `connectors/providers/podcast.ts` | `podcastVerify`, `podcastSync`, `podcastCredentialFields` |
+| `connectors/providers/reddit.ts` | `redditVerify`, `redditSync`, `redditSyncSaved`, `redditCredentialFields` |
+| `connectors/providers/shellhub.ts` | `SHELLHUB_DEFAULT_SERVER`, `shellhubVerify`, `shellhubListDevices`, `shellhubCredentialFields` |
+| `connectors/providers/substack.ts` | `substackVerify`, `substackSync`, `substackCredentialFields` |
+| `connectors/providers/tiktok.ts` | `tiktokVerify`, `tiktokSync`, `tiktokCredentialFields` |
+| `connectors/providers/tumblr.ts` | `tumblrVerify`, `tumblrSync`, `tumblrCredentialFields` |
+| `connectors/providers/twitter.ts` | `twitterVerify`, `twitterSync`, `twitterCredentialFields` |
+| `connectors/providers/youtube.ts` | `getYouTubeApiKey`, `getYouTubeAnalyticsApiKey`, `youtubeVerify`, `youtubeSearchByQuery`, `youtubeDiscovery`, `youtubeSync` |
+| `connectors/reconcile.ts` | `reconcileConnector` |
+| `connectors/syncDispatch.ts` | `DISPATCH_SUPPORTED_PROVIDERS`, `UnsupportedProviderError` |
+| `connectors/webhookVerification.ts` | `extractYouTubeWebSubChallenge`, `extractMetaWebhookChallenge`, `isCronAuthorised` |
+| `connectors/youtube.ts` | `pollYouTube` |
+| `consent/consentManager.ts` | `resolveAcceptPolicy`, `ConsentManager`, `consentManager` |
+| `content/generativeFill.ts` | `requestGenerativeFill`, `createMaskDataUrl`, `analyzeImageColors`, `fileToBase64` |
+| `content/publishIntent.ts` | `resolvePublishIntent`, `formatPublishError`, `publishToDreamR` |
+| `content/seoScorer.ts` | `scoreContent`, `generateReport` |
+| `content/transcriptEditor.ts` | `parseSRT`, `parseVTT`, `computeCuts`, `applyEditsToSegments`, `exportSRT`, `searchTranscript`, `annotateSearchMatches`, `segmentsToPlainText`, `totalDurationMs` |
+| `content/voiceClone.ts` | `cloneVoice`, `textToSpeech`, `listVoiceProfiles`, `deleteVoiceProfile`, `speakWithBrowserTTS`, `getBrowserVoices`, `audioFileToBase64`, `estimateDurationSeconds` |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | `(default)` |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | `metadata`, `(default)` |
+| `data-transform.ts` | `DATA_PHYSICS`, `encodeToLedger`, `applyPhysicsFilter`, `decodeFromLedger`, `normalizeBuffer`, `computeBufferStats`, `zscore` |
 | `daydreams/brand/page.tsx` | `metadata`, `(default)` |
 | `daydreams/code/page.tsx` | `metadata`, `(default)` |
 | `daydreams/create/page.tsx` | `metadata`, `(default)` |
 | `daydreams/games/page.tsx` | `metadata`, `(default)` |
 | `daydreams/lab/page.tsx` | `metadata`, `(default)` |
 | `daydreams/music/page.tsx` | `metadata`, `(default)` |
+| `daydreams/shared/useDaydreamPersistence.ts` | `useDaydreamPersistence` |
+| `daydreams/shared/useDaydreamState.ts` | `useDaydreamState` |
+| `dev-bypass.ts` | `isDevBypassActive`, `isDevAdminBypassActive` |
+| `diff/aiEditEngine.ts` | `CODEENGIN_PRODUCTION_MODE`, `SCOPE_ORDER`, `SCOPE_LABEL`, `SCOPE_DESCRIPTION`, `SCOPE_RISK`, `CONFIRMATION_REQUIRED`, `escapeRegex`, `wordBoundsAt`, `lineBoundsAt`, `blockBoundsAt`, `functionBoundsAt`, `generateDiffLines`, `parseAiInstruction`, `buildEditPreview`, `applyMatchesForCell`, `applyEdit`, `undoEdit` |
+| `diff/diffUtils.ts` | `parseUnifiedDiff`, `buildFullFileLines`, `firstHunkIndex`, `prevHunkIndex`, `nextHunkIndex`, `buildScrollMarkers`, `DEMO_DIFF` |
+| `dream-docs/embed.ts` | `embedDocSection` |
+| `dream-docs/index.ts` | `searchDreamDocs`, `embedDocSection` |
+| `dream-docs/search.ts` | `searchDreamDocs` |
+| `dreamdmbar/DreamSystemContext.tsx` | `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS`, `DreamSystemProvider`, `useDreamSystem` |
+| `dreamdmbar/barInteractions.ts` | `DIVIDER_H`, `SPLIT_SNAP_POINTS`, `DEFAULT_SPLIT_RATIO`, `SPLIT_RATIO_MIN`, `SPLIT_RATIO_MAX`, `SPLIT_FLING_VELOCITY_PX_PER_MS`, `snapToSplitPoint`, `snapSplitRatioOnRelease`, `GOLD_SECOND_TAP_WINDOW_MS`, `GOLD_TAP_SLOP_PX`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_LINE_RATIO`, `MIN_POINTER_SAMPLE_DELTA_MS`, `resolveGoldTapAction`, `shouldTreatGoldReleaseAsTap`, `calculatePointerVelocity`, `shouldCollapseGoldSwipe`, `shouldSnapBottomDragToTop`, `shouldCollapseTopExpandedDrag`, `decideBarRelease`, `ORB_SIZE`, `ORB_TAP_SLOP`, `clampOrbOffset`, `computeOrbDragPosition`, `getMoodPeriod`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `SURFACE_ACCENT_COLORS`, `SLASH_COMMANDS`, `filterSlashCommands`, `computeTypingRhythm`, `rhythmToHandleScale`, `STREAK_STORAGE_KEY`, `todayDateString`, `resolveStreak`, `getStreakTier`, `QUICK_REACTIONS`, `GOLD_LONG_PRESS_MS`, `PARTICLE_COUNT`, `generateParticles`, `DRAG_TAP_THRESHOLD_PX`, `DOUBLE_TAP_WINDOW_MS`, `LIGHT_POSITION_CYCLE`, `cycleLightPosition` |
+| `dreamdmbar/bridgeSeamFlow.ts` | `SEAM_CHANNEL_COLORS`, `SEAM_DEFAULT_COLOR`, `channelColor`, `createSeamParticle`, `createIdleParticle`, `tickParticles`, `isParticleDead`, `evictDeadParticles`, `_resetIdCounter` |
 | `dreamdmbar/dream.GlowingLight.tsx` | `(default)` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `BAR_H`, `NAV_H`, `(default)` |
+| `dreamdmbar/useDreamBarContext.ts` | `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
+| `dreamdmbar/useDreamDMConversations.ts` | `useDreamDMConversations` |
+| `dreamdmbar/useDreamDMDraft.ts` | `listAllDraftIds`, `cleanupStaleDrafts`, `getDraftAge`, `useDreamDMDraft` |
+| `dreamdmbar/useDreamDMMessages.ts` | `useDreamDMMessages` |
+| `dreamdmbar/useDreamSearch.ts` | `useDreamSearch` |
+| `dreamdmbar/useMessagingCore.ts` | `useMessagingCore` |
+| `dreamdmbar/useModuleBarIntent.ts` | `useModuleBarIntent` |
+| `dreamdmbar/useNotifications.ts` | `useNotifications` |
+| `dreamengin/DrEamsAnimator.ts` | `DrEamsAnimator` |
+| `dreamengin/drEamsSearch.ts` | `NAV_SUGGESTIONS`, `matchNavSuggestions`, `buildDrEamsRequest`, `parseDrEamsReply`, `buildDreamDMUrl`, `truncatePreview` |
+| `dreamengin/engineAssets.ts` | `saveEngineAsset` |
+| `dreamengin/osSubsystemManifest.ts` | `buildDreamenginOSSubsystemManifest`, `DREAMENGIN_OS_SUBSYSTEM_MANIFEST` |
+| `dreamenginOS/OSContext.tsx` | `OSProvider`, `useOS` |
+| `dreamenginOS/index.ts` | `slog`, `slogArray`, `slogEntropy`, `slogInv`, `slogMean`, `slogVariance`, `TORRIDITY_A0_PERCEPTION`, `TORRIDITY_DP`, `TORRIDITY_LAMBDA`, `TORRIDITY_N`, `contentMass`, `mu`, `rankFeed`, `throttledVisibility`, `torridityRank`, `BUGS_LOG`, `DELTA_P`, `DOC_RELATIONSHIPS`, `IOTA_MAX`, `LAMBDA`, `THRESHOLD_FLOW`, `THRESHOLD_SYNTHESIZE`, `auditPostPass`, `calculateInventionForce`, `getPassProtocol`, `logResidual`, `runPrePassChecklist`, `createDualRuntimeHub`, `createEventBus`, `createLedger`, `getAllByKind`, `getLedgerEntry`, `recordView`, `storeAsset`, `storeFingerprint`, `storePeakMap`, `storeSampleMetadata`, `storeTorridityRank`, `canTransfer`, `createLocalEventBus`, `transferModule`, `analyzeSwipe`, `isBotSession`, `tallyView`, `buildPeakMap`, `extractAudioChunks`, `matchFingerprint`, `recordReferenceFingerprint`, `ALL_CATEGORIES`, `COMPONENT_INVENTORY`, `getByCategory`, `searchComponents`, `atomicPieceFromComponent`, `createAssembly`, `deserializeAssembly`, `runAssembly`, `serializeAssembly`, `validateAssembly`, `GameEnginRuntime`, `loadDreamGame` |
+| `dreamnav/delta.ts` | `tau`, `transition`, `DEFAULT_NAV_STATE`, `reduceNav` |
+| `dreamnav/gctAssist.ts` | `chooseAxisAction`, `chooseWidgetForSlot` |
+| `dreamnav/gestures6.ts` | `createGestureArbiter` |
+| `dreamnav/path.ts` | `findTauPath`, `dispatchTauPath` |
+| `dreamr/closeFriendsVisibility.ts` | `filterByCloseFriends`, `fetchCloseFriendsCircle`, `loadVisibilityCircle` |
+| `dreamr/dreamrfeed.tsx` | `DREAMR_TOPICS`, `(default)` |
+| `dreamr/feedCursor.ts` | `MAX_SEEN_IDS`, `parseFeedParams`, `deriveNextCursor` |
+| `dreamr/socialHumanityScore.ts` | `computeSocialHumanityScore` |
+| `dreamr/swipeCalibration.ts` | `calibrateDevice`, `setActiveProfile`, `resetCalibration` |
+| `dreamr/swipePersonalization.ts` | `LONGFORM_CONTENT_THRESHOLD`, `CREATOR_PREFERENCE_WEIGHT`, `TYPE_PREFERENCE_WEIGHT`, `emptyDreamRSwipePreferences`, `creatorPreferenceKey`, `contentTypePreferenceKey`, `nextSwipePreferences`, `shouldRecordDreamRView`, `canRecordDreamRView`, `personalizeFeedOrder` |
+| `dreamr/torridityLedger.ts` | `TORRIDITY_LEDGER_CONFIG`, `slog`, `getInteractionDelta`, `getDeceleration`, `calculateSnapForce`, `verifyHumanity`, `getPostMass`, `normalizeHumanViews`, `calculateRank`, `derivePostMassMeta`, `calculateOriginality`, `resolveSwipeRelease` |
+| `dreams/DreamRegistry.tsx` | `DreamRegistry`, `getDreamComponent` |
+| `dreams/drag.ts` | `DREAM_DRAG_MIME`, `serializeDreamDragData`, `parseDreamDragData`, `transferDream`, `surfaceForRuntime` |
+| `dreams/dreamIntentBus.ts` | `dispatchDreamIntent`, `registerDreamIntentHandler` |
+| `dreams/profileProjection.ts` | `createDreamProjection`, `canRenderProjection` |
+| `dreams/types.ts` | `DREAM_SURFACES`, `DREAM_KINDS`, `DREAM_RENDER_MODES`, `DREAM_VISIBILITIES`, `OWNER_PERMISSIONS`, `VIEWER_PERMISSIONS`, `NO_PERMISSIONS`, `createDream`, `isDream`, `dreamCan`, `resolveDreamSurfaceAdapter` |
+| `dreams/useDreamsRuntime.ts` | `useDreamsRuntime` |
+| `engine/activeModulesStore.ts` | `loadActiveModules`, `saveActiveModule`, `saveActiveModules`, `saveActiveModulesForRegion`, `transferActiveModuleRegion`, `removeActiveModule` |
+| `engine/agentOS/hostTools.ts` | `codeEnginHostTools` |
+| `engine/agents/agentBus.ts` | `emitIdariEvent`, `onIdariEvent`, `emitGameEnginAgentEvent`, `emitInnerDreamsEvent`, `onInnerDreamsEvent`, `runTriadConsensus` |
+| `engine/agents/boogieManAI.ts` | `BOOGIEMAN_EVENT`, `createBoogieManAgent`, `checkPolicy`, `emitBoogieManEvent`, `onBoogieManEvent` |
+| `engine/agents/drEamsMode.ts` | `DREAMS_MODE_STORAGE_KEY`, `DREAMS_MODE_EVENT`, `getDrEamsMode`, `setDrEamsMode`, `onDrEamsModeChange` |
+| `engine/agents/dreamengin.ts` | `IDENTITY`, `AXIOMS`, `VOCABULARY`, `CORE_SURFACES`, `DAYDREAM_SURFACES`, `CONNECTION_PATH_COUNT`, `DESIGN_TOKENS`, `PRIVACY_RULES`, `NAVIGATION_RULES`, `DREAM_WINDOW_STATES`, `AI_TRIAD`, `DREAMDM_BAR`, `validateVocabulary`, `validatePalette`, `validatePrivacy`, `validateNavigation`, `validateAction`, `validateCredentialSafety`, `DREAMENGIN_EVENT`, `emitDreamEnginEvent`, `onDreamEnginEvent` |
+| `engine/agents/idari.ts` | `IDARI_EVENT`, `createPatchPlan`, `GENERATION_LAW_WEIGHTS`, `assessGenerationLawScope`, `formatGenerationLawLoadCheck`, `createKnownIssue`, `updateKnownIssueStatus`, `createIDARiAgent`, `emitIDARiEvent`, `onIDARiEvent`, `evaluateSpecRequirements`, `VERCEL_2026_RUNTIME`, `createVercelBuildResult` |
+| `engine/agents/idariLoop.ts` | `buildIdariPrompt`, `buildFallbackPatchPlan`, `runLoopIteration`, `runRemediationLoop`, `getLoopHealthSummary` |
+| `engine/agents/teachBus.ts` | `emitTeach`, `onTeach`, `hasTaught`, `markTaught` |
+| `engine/agents/uiActions.ts` | `executeUiAction`, `getUiCapabilities` |
+| `engine/dream-window/DreamWindowLifecycle.ts` | `bindDreamWindow`, `mountDreamWindow`, `collapseDreamWindow`, `activateDreamWindow`, `unmountDreamWindow`, `unbindDreamWindow`, `createDreamWindowInstance`, `DREAM_WINDOW_REQUIRED_LAYERS`, `validateDreamWindowLayers` |
+| `engine/dream-window/connectionVerbs.ts` | `dispatch`, `createBindAction`, `createMountAction`, `createActivateAction`, `createAttachAction`, `createRouteIntoAction`, `createOpenIntoAction`, `createConnectAcrossAction`, `CONNECTION_VERBS`, `isValidConnectionVerb`, `REJECTED_CONNECTION_VERBS` |
+| `engine/dream-window/enginConnectionNetwork.ts` | `ALL_CONNECTION_PATHS`, `getPathsForDomain`, `getPathsForEngin`, `hasConnectionPath` |
+| `engine/dream-window/index.ts` | `DREAM_WINDOW_REQUIRED_LAYERS`, `DREAM_WINDOW_STATES`, `activateDreamWindow`, `bindDreamWindow`, `collapseDreamWindow`, `createDreamWindowInstance`, `mountDreamWindow`, `unbindDreamWindow`, `unmountDreamWindow`, `validateDreamWindowLayers`, `CONNECTION_VERBS`, `createActivateAction`, `createAttachAction`, `createBindAction`, `createConnectAcrossAction`, `createMountAction`, `createOpenIntoAction`, `createRouteIntoAction`, `dispatch`, `isValidConnectionVerb`, `DEFAULT_RUNTIME_REGION_STATE`, `RUNTIME_REGIONS`, `activateSurface`, `dismountWindowFromDreamSpace`, `getSurfaceSpaceSurface`, `isDreamSpaceDominant`, `mountWindowInDreamSpace`, `setSeamPosition`, `ALL_CONNECTION_PATHS`, `getPathsForDomain`, `getPathsForEngin`, `hasConnectionPath` |
+| `engine/dream-window/runtimeRegion.ts` | `DEFAULT_RUNTIME_REGION_STATE`, `activateSurface`, `mountWindowInDreamSpace`, `dismountWindowFromDreamSpace`, `setSeamPosition`, `getSurfaceSpaceSurface`, `isDreamSpaceDominant`, `RUNTIME_REGIONS` |
+| `engine/dream-window/useDreamWindowActions.ts` | `createDreamWindow`, `patchDreamWindow`, `useDreamWindowActions` |
+| `engine/engin-runtime/EnginBaseState.ts` | `isRuntimeCoherenceReport`, `isJsonSerializable`, `isJsonObject`, `createDomainObject`, `DEFAULT_COHERENCE_CAPACITY`, `evaluateCoherence`, `explainCoherencePressure`, `resolveCoherenceTransform` |
+| `engine/engin-runtime/EnginCapabilities.ts` | `DENY_ALL`, `mergeCapabilities`, `authorizeDomainCapability` |
+| `engine/engin-runtime/EnginCapabilityExecution.ts` | `getEnginExecutionPlan`, `CodeEditRingBuffer` |
+| `engine/engin-runtime/EnginCapabilityTargets.ts` | `CANONICAL_ENGIN_IDS`, `CANONICAL_ENGIN_ALIASES`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `createCustomEnginCapabilityProfile`, `getEnginCapabilityProfile`, `validateCanonicalEnginCapabilityProfiles` |
+| `engine/engin-runtime/EnginDomainCores.ts` | `CodePieceTableDocument`, `CodeEditorHotState`, `CodeDiagnosticWorkerBridge`, `CodeExecutionWorkerBridge`, `CodeSnapshotCompactor`, `CodeStartupHydrator`, `CodeKeystrokeBenchmark`, `GameWebGPUDevice`, `GameRenderLoop`, `GameInstanceBufferManager`, `GameGeometryBufferRegistry`, `GameMaterialBucketBuffer`, `GameFrustumCuller`, `GameLODSelector`, `GameInputRingBuffer`, `GamePhysicsCommandBuffer`, `GameFrameBudgetProbe`, `GameGeometryThroughputBenchmark`, `StarMakerAudioWorkletProcessor`, `StarMakerAudioWorkletBridge`, `StarMakerTrackBufferPool`, `StarMakerAudioCommandQueue`, `StarMakerTransportClock`, `StarMakerMixerKernel`, `StarMakerMeteringDecoupler`, `StarMakerLatencyProbe`, `ContentRenderJobQueue`, `ContentWorkerRenderBridge`, `ContentWebGPURenderPath`, `ContentTileRenderer4K`, `ContentRayAccelerationStructure`, `ContentGeometryBufferRegistry`, `ContentMaterialBufferRegistry`, `ContentProgressiveOutputBuffer`, `ContentGpuCapabilityProbe`, `ContentRenderBenchmark`, `BrandVectorPathCache`, `BrandSdfGlyphAtlas`, `BrandPaletteCache`, `BrandTypeScaleCache`, `BrandFileHydrator`, `BrandCollaborationDeltaPacker`, `BrandPatchLog`, `BrandLocalApplyQueue`, `BrandVectorRenderProbe`, `BrandFileOpenProbe`, `BrandCollaborationSyncProbe`, `LabParticleSoABuffer`, `LabSpatialHashGrid`, `LabCollisionCandidateBuffer`, `LabCollisionKernel`, `LabWebGPUComputePipeline`, `LabComputeShaderRegistry`, `LabGpuParticleBuffers`, `LabWasmSimdFallback`, `LabSimulationWorkerBridge`, `LabSimulationClock`, `LabParticleBenchmark64K`, `LabParticleBenchmark1M`, `LabCollisionBenchmark`, `LabGpuDispatchProbe`, `CollaborationApplyQueue`, `CollaborationRevisionClock`, `TransportLatencyProbe`, `DeterministicMergePatchModel`, `CrdtPatchModel`, `AssetManifestLoader`, `LazyEnginHydrator`, `StreamingAssetLoader`, `IndexedDbBlobStore`, `CacheStorageRuntime`, `createCanonicalScorecards`, `runCanonicalPerformanceBenchmarks`, `CodeEditRingBuffer`, `MidiEventRingBuffer`, `CollaborationDeltaPacker`, `StartupBudgetProbe`, `IdleMemoryProbe` |
+| `engine/engin-runtime/EnginHardwareCapabilities.ts` | `detectWasmSimdSupport`, `detectEnginHardwareCapabilities`, `fallbackEnginHardwareCapabilities` |
+| `engine/engin-runtime/EnginIOAdapter.ts` | `enginStorageKey`, `MemoryAdapter` |
+| `engine/engin-runtime/EnginPerformanceProbe.ts` | `gpuMeasurementOrHardwareDependent` |
+| `engine/engin-runtime/EnginRuleSetContract.ts` | `validateRuleSetManifest` |
+| `engine/engin-runtime/EnginRuntime.ts` | `ENGIN_RUNTIME_VERSION`, `ENGIN_RUNTIME_FEATURES` |
+| `engine/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
+| `engine/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `CoalescedCommandQueue`, `HotLaneScheduler`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `ShaderKernelRegistry`, `MoldableModuleGpuBridge` |
+| `engine/engin-runtime/InternalMetrics.ts` | `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `DevOnlyBenchmarkRunner` |
+| `engine/engin-runtime/index.ts` | `createEnginRuntime`, `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createDomainObject`, `createRuntimeLoad`, `evaluateCoherence`, `explainCoherencePressure`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `isRuntimeCoherenceReport`, `patchBaseState`, `resolveCoherenceTransform`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `CommandRingBuffer`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `GpuBufferRegistry`, `HotActionClassifier`, `HotRuntime`, `RevisionCoalescer`, `SnapshotCompactor`, `TypedMemoryArena`, `WasmKernelRuntime`, `WebGPUDeviceRuntime`, `WorkerPoolRuntime`, `detectEnginHardwareCapabilities`, `detectWasmSimdSupport`, `fallbackEnginHardwareCapabilities`, `createEnginCapabilityScorecard`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `AudioTrackMixer`, `CodeEditRingBuffer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `MidiEventRingBuffer`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `getEnginExecutionPlan`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `createCustomEnginCapabilityProfile`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `validateEnginCapabilityProfile`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION`, `EnginRuntime` |
+| `engine/gestures/useTouchGestures.ts` | `useTouchGestures` |
+| `engine/identity/canonical-names.ts` | `PLATFORM_NAME`, `PRODUCT_VERSION`, `REJECTED_PLATFORM_VARIANTS`, `CORE_SURFACES`, `CORE_SURFACE_ROUTES`, `LEGACY_ROUTES`, `REJECTED_CORE_SURFACE_NAMES`, `DAYDREAM_DOMAINS`, `DAYDREAM_ROUTES`, `ENGIN_SURFACES`, `DAYDREAM_TO_ENGIN`, `ALL_ENGIN_NAMES`, `REJECTED_ENGIN_NAMES`, `PLATFORM_MODULES`, `MODULE_ROUTES`, `REJECTED_MODULE_NAMES`, `AI_AGENTS`, `AI_ROUTES`, `PRODUCT_DESCRIPTION`, `PRODUCT_DESCRIPTION_FULL`, `RUNTIME_REGIONS`, `RUNTIME_SEAM_NAMES`, `SURFACE_NAMES`, `ROUTE_LAW_NAMING_PREFERENCES`, `DREAM_WINDOW`, `DREAM_WINDOW_STATES`, `DREAM_WINDOW_REQUIRED_FIELDS`, `CONNECTION_VERBS`, `REJECTED_CONNECTION_VERBS`, `NETWORK_COUNTS`, `NETWORK_WORK_TYPES`, `REJECTED_OS_TERMS`, `isCanonicalPlatformName`, `isRejectedPlatformVariant`, `isValidEnginName`, `isRejectedEnginName`, `hasEnginSuffix`, `hasEngineSuffix`, `isValidDaydreamDomain`, `isValidModuleName`, `isRejectedModuleName`, `isRejectedOsTerm`, `isValidDreamWindowState`, `isValidConnectionVerb`, `isRejectedConnectionVerb`, `isValidRuntimeRegion`, `isValidSurfaceName`, `isRouteLawPreferredName`, `getEnginForDomain`, `validateName`, `ALL_CANONICAL_NAMES` |
+| `engine/index.ts` | `UniversalEngine`, `engine` |
+| `engine/navigation/AnchorStateBuffer.ts` | `MODE_HOME`, `MODE_PROFILE`, `MODE_SHRUNK`, `HOLD_IDLE`, `HOLD_HOLDING`, `HOLD_FIRED`, `AnchorStateBuffer` |
+| `engine/navigation/AnchorWidgetStorage.ts` | `AnchorWidgetStorage` |
+| `engine/navigation/GestureIntentResolver.ts` | `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `HOLD_THRESHOLD_MS`, `GESTURE_SENSITIVITY` |
+| `engine/navigation/NavStateBuffer.ts` | `LAYER_CUBE`, `LAYER_PROFILE`, `LAYER_WIDGET`, `LAYER_DREAM`, `PROFILE_DEPTH`, `FULLSCREEN_DEPTH` |
+| `engine/navigation/StructureLedger.ts` | `matchState`, `resolveTransition`, `ledgerStats` |
+| `engine/navigation/anchorField.ts` | `DEFAULT_ANCHOR_CONFIG`, `computePotential`, `computeForceField`, `shouldApplyRecenter`, `updateActivityTime`, `checkIdleStatus`, `computeAttractorForce`, `applyForceToVelocity`, `computeRecenterInterpolation`, `distanceToHome` |
+| `engine/navigation/dream-state.ts` | `createInitialDreamState`, `returnHome`, `zoom` |
+| `engine/navigation/index.ts` | `AnchorStateBuffer`, `HOLD_FIRED`, `HOLD_HOLDING`, `HOLD_IDLE`, `MODE_HOME`, `MODE_PROFILE`, `MODE_SHRUNK`, `AnchorWidgetStorage`, `GestureFrameComputer`, `GestureIntent`, `GestureIntentResolver`, `HOLD_THRESHOLD_MS`, `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `FULLSCREEN_DEPTH`, `LAYER_CUBE`, `LAYER_DREAM`, `LAYER_HOME`, `LAYER_PROFILE`, `LAYER_WIDGET`, `NavStateBuffer`, `PROFILE_DEPTH`, `PointerEventCapture`, `ReturnStack`, `SpatialNavigationEngine`, `TransformSolver`, `useNavigation`, `WidgetBindingType`, `WidgetInstanceMemory`, `WidgetPresentation`, `WidgetVisibility`, `ledgerStats`, `matchState`, `resolveTransition` |
+| `engine/navigation/manifold.ts` | `cartesianToSpherical`, `sphericalToCartesian`, `smoothstep`, `distanceToEdge`, `blendFaceEdge`, `computeWidgetCurvature`, `normalizeVector`, `vectorMagnitude`, `dotProduct`, `crossProduct` |
+| `engine/navigation/physics.ts` | `DEFAULT_PHYSICS_CONFIG`, `computeAcceleration`, `updatePhysicsState`, `applyInertialDecay`, `SNAP_THRESHOLD`, `shouldSnapToGrid`, `snapToGrid`, `verletIntegration`, `rk4Integration`, `gestureToForce`, `applyDamping`, `hasSettled`, `computeSpringForce` |
+| `engine/navigation/quaternion.ts` | `fromAxisAngle`, `magnitude`, `isValid`, `rotateVector`, `slerp`, `toEulerAngles` |
+| `engine/navigation/useNavigation.ts` | `useNavigation` |
+| `engine/offline/offlineCache.ts` | `DB_NAME`, `DB_VERSION`, `STORE_ASSETS`, `STORE_SCENES`, `STORE_SYNC_QUEUE`, `openDB`, `cacheAsset`, `getAsset`, `deleteAsset`, `listAssets`, `saveScene`, `getScene`, `deleteScene`, `listScenes`, `enqueueSyncAction`, `getSyncQueue`, `clearSyncQueue`, `removeSyncEntry` |
+| `engine/offline/useOfflineSync.ts` | `useOfflineSync` |
+| `engine/policy/boogiePolicy.ts` | `PolicyCategory`, `PolicySeverity`, `boogieEvaluate`, `emitBoogieManEvent`, `onBoogieManEvent`, `BOOGIE_POLICY_VERSION`, `CATEGORY_SEVERITY`, `DEFAULT_DURATIONS_SECONDS`, `ENFORCEMENT_ACTIONS`, `ENFORCEMENT_SCOPES`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
+| `engine/runtime/EnginDispatcher.ts` | `initWasmEngine`, `EnginDispatcher` |
+| `engine/runtime/channelMetrics.ts` | `recordEmission`, `recordError`, `getChannelMetrics`, `getAllChannelMetrics`, `resetChannelMetrics` |
+| `engine/runtime/coercionTable.ts` | `coerceDataTransfer`, `coerceRawPayload`, `classifyDrop` |
+| `engine/runtime/dreamOSBus.ts` | `CAPABILITY_DESCRIPTORS`, `isIntentEnvelope`, `isInformationDomain`, `getCapabilityDescriptor`, `getCapabilityChildren`, `getCapabilitiesForDomains`, `deriveAIRuntimeContext`, `dreamOSBus`, `INFORMATION_DOMAINS` |
+| `engine/runtime/dropTargetRegistry.ts` | `dropTargetRegistry` |
+| `engine/runtime/dualRuntime.ts` | `TORUS_DOMAINS`, `TORUS_WIDTH`, `TORUS_HEIGHT`, `TORUS_FOCUS_MAP`, `makeHomeDreamSpaceActive`, `makeDreamSpaceActiveSurface`, `isHomeActiveTop`, `worldsEqual`, `torusFocusKey`, `moveTorus`, `RUNTIME_REGIONS`, `SURFACE_NAMES` |
+| `engine/runtime/dualRuntimeBridge.ts` | `enginBridge` |
+| `engine/runtime/enginWorkflowRegistry.ts` | `ENGIN_KEYS`, `findWorkflows`, `findWorkflowById`, `executeWorkflow`, `allWorkflows`, `getWorkflowsByArtifactType`, `getWorkflowStats`, `workflowExists` |
+| `engine/runtime/iEngine.ts` | `validateDomainObject`, `authorizeCapability`, `validateManifest`, `negotiateCompatibility`, `IntentBus`, `createRuntimeObject`, `createIntentPacket`, `dualRuntimeManifest`, `dualRuntimeRuleSet` |
+| `engine/runtime/instanceManager.ts` | `useInstanceManager`, `buildInstanceKey`, `createInstance`, `promoteInstanceToRealtime`, `persistInstanceList`, `spawnDualInstances` |
+| `engine/runtime/isAuthRelatedError.ts` | `isAuthRelatedError` |
+| `engine/runtime/madMaxiSnapshotBridge.ts` | `invokeMadMaxiSnapshotTransfer` |
+| `engine/runtime/memory.ts` | `MEMORY_SIZE`, `CACHE_LINE`, `ENTITY_COUNT`, `BAR_SEAM_ATOMICS_INDEX`, `BAR_SEAM_SCALE`, `SOA_POSX_OFFSET`, `SOA_POSY_OFFSET`, `SOA_POSZ_OFFSET`, `SOA_VELX_OFFSET`, `SOA_VELY_OFFSET`, `SOA_VELZ_OFFSET`, `HOMEDREAM_PRIVATE_OFFSET`, `PUBLIC_VIEW_LIMIT`, `OFFSET_POS_X`, `OFFSET_POS_Y`, `OFFSET_POS_Z`, `OFFSET_VEL_X`, `OFFSET_VEL_Y`, `OFFSET_VEL_Z`, `OFFSET_DAYDREAM_TYPE`, `OFFSET_DREAMDM_BAR_Y`, `OFFSET_DREAMDM_BAR_X`, `OFFSET_TELEMETRY`, `OFFSET_LOCKED_STATE`, `OFFSET_AXIS_STATE`, `SEAM_CTRL_IDX_BAR_Y`, `SEAM_CTRL_IDX_BAR_X`, `SEAM_CTRL_IDX_LOCKED`, `SEAM_CTRL_IDX_AXIS`, `ENGIN_OFFSET_POS_X`, `ENGIN_OFFSET_POS_Y`, `ENGIN_OFFSET_POS_Z`, `ENGIN_OFFSET_VEL_X`, `ENGIN_OFFSET_VEL_Y`, `ENGIN_OFFSET_VEL_Z`, `ENGIN_OFFSET_DREAMDM_BAR_Y`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_LOCKED_STATE`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_TELEMETRY`, `ENGIN_SAB_SIZE`, `getConformMemoryMap`, `_resetConformMemoryMap`, `writeBarSeam`, `readBarSeam`, `boogieMemoryGuard`, `isIndexInBounds`, `f32Channel`, `u8DaydreamType`, `f32DreamDMBarY`, `isSABAvailable`, `getEntityBounds`, `validateWorkgroup`, `getWorkerCount` |
+| `engine/runtime/moduleRegistry.ts` | `useModuleRegistry`, `moduleRegistry`, `subscribeRegistryToTransferEvents`, `manifestFromWidget` |
+| `engine/runtime/offlineQueue.ts` | `enqueue`, `dequeue`, `flushQueue`, `getQueueStatus`, `listenOnline`, `isOnline` |
+| `engine/runtime/quantumCircuit.ts` | `runQuantumCircuit` |
+| `engine/runtime/runtimeChannel.ts` | `createLocalChannel`, `createRealtimeChannel`, `createRuntimeChannel` |
+| `engine/runtime/runtimeContainer.ts` | `RuntimeContainer` |
+| `engine/runtime/seamClipboard.ts` | `seamClipboard` |
+| `engine/runtime/sharedResourcePool.ts` | `acquireSharedResource`, `releaseSharedResource` |
+| `engine/runtime/snapshotFingerprint.ts` | `fingerprintSnapshot`, `snapshotsAreEquivalent`, `createFingerprintCache` |
+| `engine/runtime/swapManager.ts` | `getSwap`, `setSwap`, `toggleSwap`, `clearSwap`, `getAllSwapStates`, `resetAllSwaps` |
+| `engine/runtime/useDragSurface.ts` | `useDragSurface` |
+| `engine/runtime/useDualRuntime.ts` | `useDualRuntime` |
+| `engine/runtime/useDualRuntimePersistence.ts` | `useDualRuntimePersistence` |
+| `engine/runtime/useEnginBridge.ts` | `useCodeEnginBridge`, `useGameEnginBridge`, `useStarMakerEnginBridge`, `useLabEnginBridge`, `useBrandingEnginBridge`, `useContentEnginBridge` |
+| `engine/runtime/useEnginCoopSync.ts` | `useEnginCoopSync` |
+| `engine/runtime/useSharedEnginChannel.ts` | `useSharedEnginChannel` |
+| `engine/sharedDream.ts` | `createSharedDreamSession`, `joinSharedDreamSession`, `broadcastCursorPosition`, `broadcastEdit`, `broadcastStatePatch`, `broadcastDataPacket`, `broadcastMediaSync`, `broadcastControlSignal`, `broadcastModeChange`, `broadcastPresenceUpdate`, `leaveSharedDreamSession`, `useSharedDreamSession`, `SharedDreamActivityEntry`, `SharedDreamMember`, `UseSharedDreamSessionOptions`, `UseSharedDreamSessionResult` |
+| `engine/shop/listings.ts` | `SHOP_TABLE`, `SHOP_LISTING_REQUIRED_FIELDS`, `SHOP_TITLE_MAX_LENGTH`, `SHOP_PRICE_MIN`, `validateShopListing`, `normalizeShopListing`, `SHOP_ORDERS_TABLE`, `SHOP_ORDERS_PRIVATE_FIELDS`, `isOrderOwner` |
+| `engine/social/crossPost.ts` | `buildCrossPostTargets`, `formatShareText`, `openCrossPost`, `nativeShare`, `buildDreamOgMeta` |
+| `engine/social/livekit.ts` | `LiveKitError`, `fetchLiveKitToken`, `fetchRoomInfo`, `LiveKitRoomManager`, `generateServerToken` |
+| `engine/social/normalizers.ts` | `normalizeMastodonPost`, `normalizeNostrEvent`, `normalizeBlueskyPost` |
+| `engine/social/platforms.ts` | `SOCIAL_PLATFORMS`, `detectPlatform`, `getPlatform`, `PROFILE_SHARE_PLATFORMS` |
+| `engine/social/rss-feed.ts` | `youtubeChannelRssUrl`, `youtubePlaylistRssUrl`, `redditSubredditRssUrl`, `redditUserRssUrl`, `mastodonUserRssUrl`, `githubUserAtomUrl`, `nostrGatewayRssUrl`, `mediumUserRssUrl`, `devtoUserRssUrl`, `substackRssUrl`, `hackerNewsRssUrl`, `hackerNewsUserRssUrl`, `twitterNitterRssUrl`, `DEFAULT_NITTER_INSTANCE`, `facebookPageRssUrl`, `pinterestRssUrl`, `tumblrRssUrl`, `tiktokProfileRssUrl`, `podcastRssUrl`, `parseRssFeed`, `normaliseRssItem`, `extractFirstImage`, `stripHtml` |
+| `engine/social/useSocialData.ts` | `useSocialData` |
+| `engine/utils.ts` | `cn`, `formatDate`, `formatRelativeTime`, `generateDedupeHash`, `debounce`, `throttle`, `clamp`, `truncate`, `retry`, `sleep`, `deepClone`, `groupBy`, `unique`, `assert`, `toErrorMessage`, `isError` |
+| `engine/vm/dual-runtime.ts` | `DualRuntime`, `dualRuntime` |
+| `engine/vm/dualVMCoordinator.ts` | `getDualVMCoordinator`, `initializeDualVMCoordinator`, `destroyDualVMCoordinator` |
+| `engine/vm/index.ts` | `detectWasmFeatures`, `resetWasmFeatureCache`, `WasmFeatureSet`, `DEFAULT_RESOURCE_QUOTA`, `QuotaExceededError`, `enforceQuota`, `withinQuota`, `QuotaViolation`, `ResourceQuota`, `ResourceUsage`, `InterVMChannel`, `VMEvent`, `GPUTimeSlicer`, `MemoryBoundsError`, `SYSCALL_ALLOWLIST`, `checkBounds`, `isSyscallAllowed`, `AllowedSyscall`, `TimeBudget`, `DualRuntime`, `dualRuntime`, `VMId`, `VMRuntimeStats`, `VMWorkloadSpec`, `BufferManager`, `destroyDualVMCoordinator`, `getDualVMCoordinator`, `initializeDualVMCoordinator`, `DualVMConfig`, `DualVMCoordinator`, `VMRegion`, `VMWorkload`, `PipelineCache`, `SnapshotManager`, `WasmGpuVM`, `DEFAULT_VM_CONFIG`, `ErrorCode`, `GPUBufferUsageFlags` |
+| `engine/vm/resource-quota.ts` | `QuotaExceededError`, `DEFAULT_RESOURCE_QUOTA`, `enforceQuota`, `withinQuota` |
+| `engine/vm/security.ts` | `MemoryBoundsError`, `checkBounds`, `SYSCALL_ALLOWLIST`, `isSyscallAllowed`, `GPUTimeSlicer` |
+| `engine/vm/snapshot.ts` | `SnapshotManager` |
+| `engine/vm/types.ts` | `ErrorCode`, `DEFAULT_VM_QUOTAS` |
+| `engine/vm/wasm-features.ts` | `detectWasmFeatures`, `resetWasmFeatureCache` |
+| `enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `parseManifest`, `safeParseManifest`, `createManifest` |
+| `enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `ArtifactSlot`, `useArtifactSlot`, `useOptionalArtifactSlot` |
+| `enginpipe/quality/tiers.ts` | `DEFAULT_TIER_CONFIG`, `scoreCapabilities`, `tierFromScore`, `detectCapabilityTier`, `getTierConfig` |
+| `enginpipe/shell/ArtifactSlot.tsx` | `ArtifactSlot`, `useArtifactSlot`, `useOptionalArtifactSlot` |
+| `enginpipe/telemetry/client.ts` | `createTelemetryClient` |
+| `enginpipe/telemetry/events.ts` | `TelemetryEventTypeSchema`, `TelemetryEventSchema` |
 | `engins/CodeEngin/modules/ai-co-pilot/index.ts` | `useAgentSession` |
 | `engins/CodeEngin/orchestrator/dream.index.tsx` | `(default)` |
 | `engins/autoopen/dream.AutoOpenGameEngin.tsx` | `(default)` |
+| `engins/contentengin/builders/modifiers.ts` | `applyModifierMetadata` |
+| `engins/contentengin/grammars/creatureGrammar.ts` | `buildCreatureParts` |
+| `engins/contentengin/materials/paletteExtractor.ts` | `extractPalette` |
+| `engins/contentengin/materials/proceduralMaterials.ts` | `material` |
+| `engins/contentengin/photo/colorCluster.ts` | `extractPalette` |
+| `engins/contentengin/photo/edgeDetector.ts` | `buildEdgeMapFromRgba` |
+| `engins/contentengin/photo/photoToRecipe.ts` | `photoToRecipe` |
+| `engins/contentengin/photo/regionDetector.ts` | `relabelRegion` |
+| `engins/contentengin/pipeline/paths.ts` | `safeUnder` |
+| `engins/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
+| `engins/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
+| `engins/contentengin/recipes/seededRandom.ts` | `seededRandom`, `pick` |
+| `engins/contentengin/rigging/index.ts` | `createSkeleton` |
+| `engins/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
+| `engins/contentengin/rigging/rigValidator.ts` | `validateSkeleton` |
+| `engins/contentengin/shaders/shaderRegistry.ts` | `getShader` |
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `(default)` |
 | `engins/engin.BrandingEngin.tsx` | `(default)` |
@@ -19805,303 +19885,170 @@ _No circular dependencies detected._
 | `engins/engin.GameEngin.tsx` | `(default)` |
 | `engins/engin.LabEngin.tsx` | `(default)` |
 | `engins/engin.StarMakerEngin.tsx` | `(default)` |
+| `engins/gameengin/GameRuntime.tsx` | `(default)` |
+| `engins/gameengin/assets/BundleCache.ts` | `planBundleCache` |
+| `engins/gameengin/backendNegotiator.ts` | `negotiateRendererBackend`, `serverBootstrapDiagnostics` |
+| `engins/gameengin/brain-reader.ts` | `BRAIN_ROOT`, `STRUCTURE_TYPES`, `readGenreDNA`, `listGenres`, `readProgressionModel`, `readMechanic`, `listMechanics`, `listStructuralMechanics`, `readInspiration`, `readPrinciple`, `signatureHash`, `readOriginalityRegistry`, `isOriginal`, `logRDSession`, `listCartridges`, `listTechniques`, `listMaterialRecipes`, `listCompositionPrinciples`, `recordAssetGeneration`, `readCharacterVoice`, `readEmotionalTone`, `listEmotionalTones`, `listDialoguePatterns`, `readNarrativePacing`, `recordBuild`, `recordAssignments`, `getLastTouched`, `readUpgradeRules`, `recordUpgrade`, `readActiveProjects`, `setActiveProjects`, `isActiveCartridge`, `CRASH_REPORT_MAX_BYTES`, `recordCrashReport`, `listCrashReports`, `listConceptPatterns`, `VISION_STATEMENT_MAX_BYTES`, `VISION_BUDGET_MAX_HOURS`, `recordVisionStatement`, `listVisionStatements`, `readVisionStatement`, `readCartridgeStatus`, `setCartridgeStatus`, `listCartridgesByStatus`, `recordProgressionState`, `readProgressionState` |
+| `engins/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MAGIC`, `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema`, `validateManifest`, `hasCartridgeMagic` |
+| `engins/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `parseDreamrArchive`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
+| `engins/gameengin/cartridges/achievementEngine.ts` | `purgeCartridgeAchievements`, `getUnlockedCount` |
+| `engins/gameengin/cartridges/apiStubs.ts` | `stubSaveAPI`, `stubAchievementsAPI` |
+| `engins/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
+| `engins/gameengin/cartridges/loaders.ts` | `loadCartridgeBundle`, `loadCartridge`, `getCartridgeIds` |
+| `engins/gameengin/cartridges/manifest.ts` | `getCartridgeCategories` |
+| `engins/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `useGameEngineAPI`, `createReactCartridgeHost`, `CARTRIDGE_LOADERS`, `createReactGameCartridge` |
+| `engins/gameengin/cartridges/saveState.ts` | `purgeCartridgeSaves`, `getSaveStorageBytes` |
+| `engins/gameengin/control-mappings.ts` | `mapJoystickToAsset` |
+| `engins/gameengin/core.ts` | `ECSWorld` |
+| `engins/gameengin/dream-engine.ts` | `DreamEngine` |
+| `engins/gameengin/dreamr-loader.ts` | `parseDreamrArchive`, `loadDreamrCartridgeFromResponse` |
+| `engins/gameengin/gameEnginRuntime.ts` | `loadDreamGame`, `GameEnginRuntime` |
+| `engins/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `EliteGameEngine`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `AIDirector`, `PostFXManager`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AdvancedPhysicsWorld`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `ComputeShaderPipeline`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `RollbackNetcode`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
+| `engins/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
+| `engins/gameengin/input/index.ts` | `GameRuntimeInputRouter` |
+| `engins/gameengin/platform.ts` | `GameEnginPlatform` |
+| `engins/gameengin/registerCartridges.ts` | `registerCartridges` |
+| `engins/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
+| `engins/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
+| `engins/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
+| `engins/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
+| `engins/gameengin/render/ShaderRegistry.ts` | `GameEnginShaderRegistry` |
+| `engins/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
+| `engins/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
+| `engins/gameengin/runtime/index.ts` | `GAMEENGIN_FRAME_BUDGETS`, `resolveFrameBudget`, `GameEnginFrameClock`, `decideRuntimeQuality` |
+| `engins/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
+| `engins/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
+| `engins/gameengin/systems/assets.ts` | `AssetStreamManager`, `assertValidBundleManifest`, `bundleWeightBytes`, `planBundleCache` |
+| `engins/gameengin/systems/lod.ts` | `LODSystem` |
+| `engins/gameengin/systems/network.ts` | `ClientSidePrediction`, `RollbackNetcode` |
+| `engins/gameengin/systems/physics.ts` | `AdvancedPhysicsWorld`, `PhysicsMaterialSystem` |
+| `engins/gameengin/systems/pooling.ts` | `ObjectPoolingSystem`, `ResourcePool` |
+| `engins/gameengin/systems/rendering.ts` | `ComputeShaderPipeline`, `GPUProfiler`, `WGSLShaderManager`, `GPUComputeSystem` |
+| `engins/gameengin/systems/spatial.ts` | `OctreeBVH`, `SpatialAudioDSP` |
+| `engins/gameengin/systems/world.ts` | `GlobalIllumProbes`, `ProceduralWorldGen`, `TerrainEngine`, `TerrainSystem`, `GIProbeSystem` |
+| `engins/gameengin/unifiedLoop.ts` | `activeGameCount`, `isLoopRunning`, `_resetLoop` |
+| `engins/gameengin/useUnifiedLoop.ts` | `useUnifiedLoop` |
+| `engins/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
+| `engins/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
+| `engins/rulesets/brand/useBrandEnginRuntime.ts` | `useBrandEnginRuntime` |
+| `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
+| `engins/rulesets/code/useCodeEnginRuntime.ts` | `useCodeEnginRuntime` |
+| `engins/rulesets/content/useContentEnginRuntime.ts` | `useContentEnginRuntime` |
+| `engins/rulesets/game/gameEnginRuleSet.ts` | `GRAVITY_VALUES` |
+| `engins/rulesets/game/index.ts` | `GAME_ENGIN_RULE_SET`, `GRAVITY_VALUES` |
+| `engins/rulesets/game/useGameEnginRuntime.ts` | `useGameEnginRuntime` |
+| `engins/rulesets/lab/useLabEnginRuntime.ts` | `useLabEnginRuntime` |
+| `engins/rulesets/music/useStarMakerEnginRuntime.ts` | `useStarMakerEnginRuntime` |
+| `engins/rulesets/useEnginWorkflow.ts` | `useEnginWorkflow` |
+| `engins/rulesets/workflowEngine.ts` | `STAGE_LABELS`, `isValidTransition`, `handoffsFrom`, `WORKFLOW_CATALOG`, `workflowsForEngin` |
 | `eslint.config.mjs` | `(default)` |
+| `event-bus/index.ts` | `createEventBus`, `bridgeBuses` |
+| `eventBus.ts` | `createDualRuntimeHub` |
+| `feature-build/buildCycle.ts` | `getBuildPhase`, `calculateProgress`, `countFeaturesByStatus`, `countUsableFeatures`, `computeBuildCycleState`, `computeAllBuildCycleStates`, `allPairsInRefinePhase`, `allPairsMovingForward` |
+| `feature-build/featureManifest.ts` | `FEATURE_MANIFESTS`, `getManifest` |
+| `feature-build/index.ts` | `FEATURE_MANIFESTS`, `getManifest`, `allPairsInRefinePhase`, `allPairsMovingForward`, `calculateProgress`, `computeAllBuildCycleStates`, `computeBuildCycleState`, `countFeaturesByStatus`, `countUsableFeatures`, `getBuildPhase`, `SICC_DIMENSIONS`, `SICC_GLOBAL_CRITERIA`, `getCriteriaForDimension` |
+| `feature-build/uiQualityCriteria.ts` | `SICC_GLOBAL_CRITERIA`, `getCriteriaForDimension`, `SICC_DIMENSIONS` |
+| `feed/feedTopics.ts` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `FEED_TOPICS_KEY`, `loadActiveTopicIds`, `topicIdsToQueries` |
+| `feed/hashtags.ts` | `MAX_TAGS_PER_POST`, `MAX_TAG_LENGTH`, `extractHashtags`, `validateTag`, `calculateTrending`, `formatTag`, `segmentText` |
+| `feed/useLiveFeed.ts` | `useLiveFeed` |
+| `feed/useYouTubeLiveFeed.ts` | `useYouTubeLiveFeed` |
+| `feeds/embedFeedLoader.ts` | `loadEmbedFeed`, `loadEmbedFeedByProvider` |
+| `forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `createAssembly`, `addPiece`, `removePiece`, `movePiece`, `addConnection`, `removeConnection`, `validateAssembly`, `isValidAssembly`, `serializeAssembly`, `deserializeAssembly` |
+| `forge-ngn/piece-registry.ts` | `PIECE_REGISTRY`, `getPiecesByCategory`, `PIECE_CATEGORIES` |
+| `forge/engineForge.ts` | `deserializeAssembly` |
+| `forge/forgeBuild.ts` | `isForgeLogEvent`, `saveForgeBuild`, `readForgeBuilds`, `clearForgeBuilds`, `canBuildToday`, `recordBuildToday`, `stageForgeArtifact` |
+| `forge/forgeIntelligence.ts` | `appendForgeHistory`, `readForgeHistory`, `clearForgeHistory`, `predictNextEngines`, `generateSuggestions`, `parseGoalToWorkflow`, `recordForgeTransfer`, `readForgeTransfers`, `clearForgeTransfers`, `saveCustomWorkflow`, `readCustomWorkflows`, `deleteCustomWorkflow`, `clearCustomWorkflows`, `startWorkflowRun`, `updateWorkflowStep`, `getActiveWorkflowRun`, `clearWorkflowRun`, `getFailureRecovery` |
+| `forge/forgeMomentum.ts` | `readHistory`, `computeVelocity`, `computeDiversity`, `computeStreak`, `computeDepth`, `getLevel`, `getLevelColor`, `getLevelEmoji`, `computeMomentum` |
+| `forge/forgeNexus.ts` | `buildTransitionMap`, `computeEdges`, `computeNodes`, `detectClusters`, `findDominantPipeline`, `computeNexus` |
+| `forge/forgeRegistry.ts` | `INFORMATION_DOMAINS`, `getEnginById`, `getEnginByName`, `readForgeActivity`, `getForgeHeat`, `formatRelativeTime` |
+| `forge/forgeRituals.ts` | `getTimeBucket`, `detectTimePatterns`, `detectSequencePatterns`, `detectSessionPatterns`, `detectAffinityPatterns`, `computeRituals` |
+| `forge/useForgeActivity.ts` | `useForgeActivity` |
+| `forge/useForgeBuild.ts` | `useForgeBuild` |
+| `games/DualSenseManager.ts` | `useDualSense`, `DualSenseManager` |
+| `games/avatar.ts` | `AVATAR_IMAGE_KEY`, `AVATAR_CREATED_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `getAvatarDataUrl`, `setAvatarDataUrl`, `hasAvatar`, `clearAvatar`, `resizeImageToDataUrl`, `setPlayAsMe`, `consumePlayAsMe` |
+| `games/catalog.ts` | `GAME_CATALOG`, `GAME_CATALOG_IDS` |
+| `games/gameControllerButtons.ts` | `BTN_TAP_MAX_MS`, `BTN_LONG_PRESS_MS`, `BTN_DOUBLE_TAP_MAX_MS`, `BTN_TAP_AND_HOLD_WINDOW_MS`, `CONTROLLER_BUTTONS`, `CONTROLLER_BUTTON_DEFS`, `ButtonInteractionManager` |
+| `games/gameControllerLeft.ts` | `LEFT_STICK_RADIUS_PX`, `LEFT_STICK_DEAD_ZONE`, `computeLeftStickVector` |
+| `games/gameControllerRight.ts` | `RIGHT_TAP_MAX_MS`, `RIGHT_TAP_MAX_PX`, `RIGHT_RESET_TIMEOUT_MS`, `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS`, `evaluateRightStickTap`, `computeAimDelta` |
+| `games/hooks.ts` | `useGameAutoStart`, `useGamePhase`, `useKeySet`, `useSubmitScore`, `useGamePerformanceBaseline` |
+| `games/library-state.ts` | `GAME_LIBRARY_SELECTION_STORAGE_KEY`, `GAME_LIBRARY_SESSION_STORAGE_KEY`, `MAX_SAVED_GAME_SESSIONS`, `upsertSavedGameSession` |
+| `games/lucid-avenue-world.ts` | `LUCID_AVENUE_TOTAL_SHARDS`, `LUCID_AVENUE_TOTAL_FLAGS`, `LUCID_AVENUE_TOTAL_CONTRACTS`, `LUCID_AVENUE_6900_TARGET`, `LUCID_AVENUE_DISTRICTS`, `createInitialLucidAvenueState`, `getLucidAvenueDistrict`, `getLucidAvenuePatrolPositions`, `getLucidAvenueMissionChecklist`, `getLucidAvenueRouteContracts`, `calculateLucidAvenueScore`, `getLucidAvenueCompletionPercent`, `getLucidAvenueStoryBeat`, `isSamePosition`, `moveLucidAvenuePlayer`, `waitLucidAvenueTurn`, `scanLucidAvenue`, `jamLucidAvenueGrid`, `deployLucidAvenueVehicle`, `fastTravelLucidAvenue`, `getLucidAvenueHint`, `requestLucidAvenueHint`, `interactInLucidAvenue`, `getLucidAvenuePatrolPathKeys`, `getLucidAvenueObjectiveKeys` |
+| `games/madmaxi-wildfall-world.ts` | `WILDFALL_HEROES`, `WILDFALL_ZONES`, `createWildfallRng`, `createWildfallState`, `currentWildfallZone`, `makeWildfallGlyphGrid`, `switchWildfallHero`, `activateWildfallHeroAbility`, `stepWildfall`, `resolveWildfallMirror`, `isWildfallPassable`, `castWildfallRay`, `wildfallBillboards`, `wildfallHeroWeapon` |
+| `games/mobileControls.ts` | `MOBILE_HUD_BUTTON_RING`, `normalizeStickVector`, `getRemoteMoveAction`, `fireGameRemoteInput`, `registerMobileGameControls`, `emitMobileMove`, `emitMobileLook`, `emitMobileButton`, `emitMobileLookDelta`, `emitMobileJump`, `emitMobileShoot`, `getRemoteActionForMobileButton`, `useRegisterMobileGameControls` |
+| `games/navigation.ts` | `DEFAULT_GAME_ID`, `buildGameLaunchHref`, `isLaunchFlagEnabled`, `resolveGameLaunchId` |
+| `games/performance-baseline.ts` | `DE_GAME_PERFORMANCE_BASELINE`, `resolveRendererBackend`, `createPerformanceBaselineSampler`, `publishGamePerformanceBaseline` |
+| `games/quality-plan.ts` | `GAME_QUALITY_PILLARS`, `GAME_CONTROL_PROFILES`, `GAME_ENGINE_STANDARDS`, `ADVANCED_GAME_TARGETS` |
+| `games/useAIDirector.ts` | `useAIDirector` |
+| `games/useGameInputKeyboardBridge.ts` | `GAME_INPUT_KEYBOARD_MAP`, `useGameInputKeyboardBridge` |
+| `games/useGamepad.ts` | `useGamepad` |
+| `games/useImmersiveGameLayout.ts` | `useImmersiveGameLayout`, `getImmersiveCanvasStyle`, `getImmersiveStageStyle`, `getImmersiveOverlayStyle` |
+| `games/useRemoteChannel.ts` | `broadcastGameInput`, `useRemoteChannel` |
+| `gct/anomaly-detection.ts` | `detectAnomalies` |
+| `gct/audio-fingerprint.ts` | `audioToVector`, `identifySong` |
+| `gct/image-search.ts` | `findSimilarImages` |
+| `gct/recommendations.ts` | `recommendItems` |
+| `generationLaw.ts` | `DELTA_P`, `LAMBDA`, `IOTA_MAX`, `THRESHOLD_FLOW`, `THRESHOLD_SYNTHESIZE`, `calculateInventionForce`, `getPassProtocol`, `runPrePassChecklist`, `BUGS_LOG`, `logResidual`, `auditPostPass`, `DOC_RELATIONSHIPS` |
+| `god-tier/godTierEngine.ts` | `RingAverage`, `computeAlgorithmLevel`, `buildChildContentFilter`, `maxAssumptionBoot`, `framePressureShield`, `fidelityScaler`, `heroObjectImportance`, `eliteMeshPolicy`, `cinematicMotionStack`, `visualDominanceEngine`, `predictIntent`, `speculativePrefetchEngine`, `frictionOverride`, `uiPrioritySolver`, `applyGodTierToBabylon`, `godTierSystem`, `runDreamEngineGodTier`, `defaultRouteSignals`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildPassPlan`, `buildSceneObjects`, `classifyObject`, `classifyPressure`, `decideObject`, `defaultCameraSignals`, `defaultDirectorMetrics`, `resolveFrameBudget`, `resolveResolutionScale`, `resolveTemporalState`, `scoreObject`, `webGPUDirector`, `CameraSignals`, `CameraState`, `DirectorBabylonEngine`, `DirectorBabylonMesh`, `DirectorBabylonScene`, `DirectorFrame`, `FrameBudget`, `MeshHints`, `ObjectDecision`, `PassConfig`, `PassName`, `PassPlan`, `Pressure`, `QualityClass`, `SceneObject`, `TemporalState` |
+| `god-tier/useGodTier.ts` | `useGodTier` |
+| `gsap/gsap.ts` | `getGsap` |
+| `gsap/useGsapEntrance.ts` | `useGsapEntrance` |
+| `gsap/useGsapFlip.ts` | `useGsapFlip` |
+| `gsap/useGsapScrollReveal.ts` | `useGsapScrollReveal` |
+| `h265-encoder.ts` | `H265Encoder`, `GameCapture` |
+| `home-buttons/button-groups.ts` | `BUTTON_GROUPS` |
+| `home-buttons/contextual-home.ts` | `HOME_BOTTOM_THRESHOLD`, `HOME_TOP_THRESHOLD`, `resolveHomeTarget`, `runHomeAction` |
 | `hooks/use-spatial.ts` | `useSpatialNavigation`, `useAlbums`, `useShareToProfile` |
 | `hooks/useHideOnScroll.ts` | `useHideOnScroll` |
+| `hooks/useMotionTilt.ts` | `useMotionTilt` |
+| `hooks/useResponsive.ts` | `useViewport`, `useBreakpoint`, `useIsAtLeast`, `useIsBelow`, `useIsMobile`, `useIsTablet`, `useIsDesktop`, `useBreakpointValue`, `useFluid`, `useMediaQuery`, `getCurrentViewportWidth` |
+| `hooks/useTap.ts` | `useTap`, `useHomeParticleTap` |
 | `hooks/useTick.ts` | `useTick` |
 | `hooks/useViewCounter.ts` | `useViewCounter` |
-| `lib/activeModulesStore.ts` | `saveActiveModules` |
-| `lib/activity/aqs.ts` | `calculateAQS`, `getUserMetrics`, `getAQS`, `getAQSLeaderboard` |
-| `lib/activity/boogieActivityPolicy.ts` | `resolveActivityFeedTreatment`, `shouldExcludeFromFeed`, `detectActivityFraudSignals` |
-| `lib/activity/scoring.ts` | `calculateVisibilityBoost`, `getVerificationMethodDisplayName`, `validateTierForActivityType` |
-| `lib/activity/skipCredits.ts` | `SKIP_CREDIT_SPEND_PER_AD`, `MIN_WATCHED_PERCENT_FOR_CREDIT` |
-| `lib/activity/visibility-score.ts` | `calculateVisibilityScore`, `calculateVisibilityScores`, `getVisibilityRankedFeed`, `shouldPromotePost` |
-| `lib/adari.ts` | `getBuildReport` |
-| `lib/admin/upgrade-readiness.ts` | `describeUpgradeBlockers`, `createUpgradeProposal` |
-| `lib/agents/agentBus.ts` | `emitGameEnginAgentEvent`, `emitInnerDreamsEvent`, `onInnerDreamsEvent` |
-| `lib/agents/boogieManAI.ts` | `BOOGIEMAN_EVENT`, `createBoogieManAgent`, `checkPolicy`, `emitBoogieManEvent`, `onBoogieManEvent` |
-| `lib/agents/drEamsMode.ts` | `DREAMS_MODE_STORAGE_KEY`, `DREAMS_MODE_EVENT` |
-| `lib/agents/dreamengin.ts` | `IDENTITY`, `AXIOMS`, `VOCABULARY`, `CORE_SURFACES`, `DAYDREAM_SURFACES`, `CONNECTION_PATH_COUNT`, `DESIGN_TOKENS`, `PRIVACY_RULES`, `NAVIGATION_RULES`, `DREAM_WINDOW_STATES`, `AI_TRIAD`, `DREAMDM_BAR`, `validateVocabulary`, `validatePalette`, `validatePrivacy`, `validateNavigation`, `validateAction`, `validateCredentialSafety`, `DREAMENGIN_EVENT`, `emitDreamEnginEvent`, `onDreamEnginEvent` |
-| `lib/agents/idari.ts` | `IDARI_EVENT`, `GENERATION_LAW_WEIGHTS`, `createIDARiAgent`, `emitIDARiEvent`, `onIDARiEvent` |
-| `lib/agents/idariLoop.ts` | `runRemediationLoop`, `getLoopHealthSummary` |
-| `lib/ai/CIC.ts` | `CIC` |
-| `lib/ai/boogie-policy.ts` | `ENFORCEMENT_ACTIONS`, `ENFORCEMENT_SCOPES`, `CATEGORY_SEVERITY` |
-| `lib/ai/boogie-verifier.ts` | `detectSignals`, `verifyIntents`, `redactSecrets` |
-| `lib/ai/boogieman.ts` | `getStrikeWeight`, `getStrikeExpiryDays` |
-| `lib/ai/capability-gate.ts` | `getRoleRank`, `buildActorContext`, `hasCapability`, `meetsMinimumRole`, `authorizeIntent`, `authorizeIntents` |
-| `lib/ai/confirm-token.ts` | `generateConfirmToken`, `verifyConfirmToken`, `storeConfirmToken`, `consumeConfirmToken` |
-| `lib/ai/groq.ts` | `groqHealthCheck` |
-| `lib/ai/handlers/index.ts` | `registerAllHandlers` |
-| `lib/ai/idempotency.ts` | `checkIdempotency` |
-| `lib/ai/rate-limiter.ts` | `RATE_LIMITS`, `checkRateLimit`, `getCurrentRPM` |
-| `lib/ai/schemas.ts` | `AgentSchema`, `UIContextSchema`, `IntentTypeSchema`, `IntentEnvelopeSchema`, `CodeContextSchema`, `DrEamsRunResponseSchema`, `ExecuteResponseSchema`, `BoogieDecisionSchema`, `BoogieResultSchema`, `BoogieOutputSchema`, `EnforcementActionSchema`, `EnforcementScopeSchema`, `StrikeSeveritySchema`, `StrikeEntrySchema`, `UserSafeExplanationSchema`, `InternalAuditEventSchema`, `BoogieEnforceOutputSchema`, `AppealEntrySchema`, `PolicyHealthSchema` |
-| `lib/ai/tfBackend.ts` | `initTfBackend` |
-| `lib/ai/tool-router.ts` | `getHandler`, `executeIntent`, `executeIntents` |
-| `lib/ai/triad.ts` | `getOwnerEmail` |
-| `lib/api/route.ts` | `json`, `jsonError`, `withApi`, `requireUser`, `parseJson`, `parseQuery` |
-| `lib/artifactStore.ts` | `getDefaultSystemArtifacts`, `saveArtifacts`, `removeArtifact` |
-| `lib/assets/assetOptimizer.ts` | `optimiseAsset` |
-| `lib/assets/indexedDBStore.ts` | `getOriginal`, `deleteOriginal`, `checkSentinels`, `listStoredOriginals`, `cleanupExpiredOriginals`, `getStorageStats`, `hasOriginal` |
-| `lib/audio-fingerprint/fingerprint.ts` | `recordFingerprint`, `matchFingerprint` |
-| `lib/audio-fingerprint/index.ts` | `matchFingerprint`, `recordFingerprint`, `Fingerprint`, `TimeSlice`, `buildPeakMap`, `FrequencyPeak`, `PeakMap`, `extractStem` |
-| `lib/audio-fingerprint/peak-map.ts` | `buildPeakMap` |
-| `lib/audio-fingerprint/stem-extractor.ts` | `extractStem`, `extractStemAsync` |
-| `lib/babylon/dreamengine-hybrid.ts` | `initHybridEngine`, `onGrab` |
-| `lib/bot-detection/detector.ts` | `BotDetector` |
-| `lib/bot-detection/index.ts` | `HUMAN_MAX_CROSS_SIMILARITY`, `BOT_MIN_CROSS_SIMILARITY`, `HUMAN_MAX_COARSE_GRAIN_DIFF`, `BOT_MIN_COARSE_GRAIN_DIFF`, `HUMAN_MIN_ENTROPY`, `BOT_MAX_ENTROPY`, `HUMAN_MIN_SLOG_VEL_VAR`, `BOT_MAX_SLOG_VEL_VAR`, `analyzeSwipe`, `isBotSession`, `tallyView`, `BotSessionResult`, `Point`, `SwipeAnalysis`, `SwipeRecord`, `ViewTally` |
-| `lib/bot-detection/view-tally.ts` | `VIEW_TALLY_DURATION_MS`, `createViewTallyTimer`, `ViewTallyTracker` |
-| `lib/child-safety/childSafetyDetector.ts` | `isMinorToAdultImageBlock` |
-| `lib/child-safety/messageContextChecker.ts` | `CHILD_SAFETY_LAW_SUMMARY` |
-| `lib/code/drEamsCodeAssist.ts` | `buildCodePrompt`, `getCodeAssistCompletion` |
-| `lib/codeengin/pathSafety.ts` | `CODEENGIN_ALLOWED_EXTENSIONS` |
-| `lib/codeengin/projectGraph.ts` | `extractImports` |
-| `lib/codeengin/runner.ts` | `CODEENGIN_COMMANDS` |
-| `lib/codeengin/workspaceStore.ts` | `(default)` |
-| `lib/collaboration/index.ts` | `createLocalCollabSession`, `createSupabaseCollabSession`, `broadcastPlayhead` |
-| `lib/componentInventory.ts` | `searchComponents` |
-| `lib/composite/compositor.ts` | `createNode`, `createGraph`, `addNode`, `connectNodes`, `disconnectInput`, `setParam`, `findNode`, `topologicalSort`, `graphSummary` |
-| `lib/composite/fxSimulation.ts` | `FX_PRESETS`, `getPreset`, `presetsByCategory`, `createSimulation`, `setSimParam`, `getSimParam`, `resetSimParams`, `allCategories` |
-| `lib/composite/matchmover.ts` | `createTrack`, `addTrackPoint`, `addSample`, `computeHomography`, `estimateCameraMotion`, `exportTrackCSV`, `trackSummary` |
-| `lib/composite/motionCapture.ts` | `parseBVH`, `getFramePose`, `retargetClip`, `exportBVH`, `clipSummary`, `findJoint` |
-| `lib/composite/rotoscope.ts` | `createProject`, `addLayer`, `setKeyframe`, `removeKeyframe`, `interpolateShape`, `exportShapeSVG`, `exportFrameSVG`, `keyframeList` |
-| `lib/connectors/installFlow.ts` | `removeSuggestedWidget`, `enqueueForPlacement`, `dequeueNextPlacement`, `peekPlacementQueue` |
-| `lib/connectors/providers/bluesky.ts` | `blueskyCredentialFields` |
-| `lib/connectors/providers/devto.ts` | `devtoVerify`, `devtoSync`, `devtoCredentialFields` |
-| `lib/connectors/providers/facebook.ts` | `facebookVerify`, `facebookSync`, `facebookCredentialFields` |
-| `lib/connectors/providers/github.ts` | `githubCredentialFields` |
-| `lib/connectors/providers/hackernews.ts` | `hackernewsVerify`, `hackernewsSync`, `hackernewsCredentialFields` |
-| `lib/connectors/providers/instagram.ts` | `instagramVerify`, `getInstagramOAuthConfig`, `INSTAGRAM_CREDENTIAL_FIELDS` |
-| `lib/connectors/providers/mastodon.ts` | `mastodonCredentialFields` |
-| `lib/connectors/providers/medium.ts` | `mediumVerify`, `mediumSync`, `mediumCredentialFields` |
-| `lib/connectors/providers/nostr.ts` | `nostrCredentialFields` |
-| `lib/connectors/providers/pinterest.ts` | `pinterestVerify`, `pinterestSync`, `pinterestCredentialFields` |
-| `lib/connectors/providers/podcast.ts` | `podcastVerify`, `podcastSync`, `podcastCredentialFields` |
-| `lib/connectors/providers/reddit.ts` | `redditSyncSaved`, `redditCredentialFields` |
-| `lib/connectors/providers/shellhub.ts` | `shellhubVerify`, `shellhubCredentialFields` |
-| `lib/connectors/providers/substack.ts` | `substackVerify`, `substackSync`, `substackCredentialFields` |
-| `lib/connectors/providers/tiktok.ts` | `tiktokVerify`, `tiktokSync`, `tiktokCredentialFields` |
-| `lib/connectors/providers/tumblr.ts` | `tumblrVerify`, `tumblrSync`, `tumblrCredentialFields` |
-| `lib/connectors/providers/twitter.ts` | `twitterVerify`, `twitterSync`, `twitterCredentialFields` |
-| `lib/connectors/providers/youtube.ts` | `getYouTubeAnalyticsApiKey` |
-| `lib/connectors/syncDispatch.ts` | `UnsupportedProviderError` |
-| `lib/connectors/youtube.ts` | `pollYouTube` |
-| `lib/consent/consentManager.ts` | `resolveAcceptPolicy`, `ConsentManager`, `consentManager` |
-| `lib/content/generativeFill.ts` | `requestGenerativeFill`, `createMaskDataUrl`, `analyzeImageColors`, `fileToBase64` |
-| `lib/content/seoScorer.ts` | `scoreContent`, `generateReport` |
-| `lib/content/transcriptEditor.ts` | `computeCuts`, `applyEditsToSegments`, `exportSRT`, `searchTranscript`, `annotateSearchMatches`, `segmentsToPlainText` |
-| `lib/content/voiceClone.ts` | `cloneVoice`, `textToSpeech`, `listVoiceProfiles`, `deleteVoiceProfile`, `speakWithBrowserTTS`, `getBrowserVoices`, `audioFileToBase64` |
-| `lib/contentengin/builders/modifiers.ts` | `applyModifierMetadata` |
-| `lib/contentengin/grammars/creatureGrammar.ts` | `buildCreatureParts` |
-| `lib/contentengin/materials/paletteExtractor.ts` | `extractPalette` |
-| `lib/contentengin/materials/proceduralMaterials.ts` | `material` |
-| `lib/contentengin/photo/colorCluster.ts` | `extractPalette` |
-| `lib/contentengin/photo/edgeDetector.ts` | `buildEdgeMapFromRgba` |
-| `lib/contentengin/photo/photoToRecipe.ts` | `photoToRecipe` |
-| `lib/contentengin/photo/regionDetector.ts` | `relabelRegion` |
-| `lib/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
-| `lib/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
-| `lib/contentengin/recipes/seededRandom.ts` | `pick` |
-| `lib/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
-| `lib/contentengin/shaders/shaderRegistry.ts` | `getShader` |
-| `lib/diff/aiEditEngine.ts` | `CODEENGIN_PRODUCTION_MODE` |
-| `lib/dream-docs/index.ts` | `searchDreamDocs`, `embedDocSection` |
-| `lib/dream-docs/search.ts` | `searchDreamDocs` |
-| `lib/dream-window/connectionVerbs.ts` | `isValidConnectionVerb`, `REJECTED_CONNECTION_VERBS` |
-| `lib/dream-window/index.ts` | `DREAM_WINDOW_REQUIRED_LAYERS`, `DREAM_WINDOW_STATES`, `activateDreamWindow`, `collapseDreamWindow`, `createDreamWindowInstance`, `unbindDreamWindow`, `unmountDreamWindow`, `validateDreamWindowLayers`, `CONNECTION_VERBS`, `createActivateAction`, `createAttachAction`, `createConnectAcrossAction`, `createMountAction`, `createOpenIntoAction`, `createRouteIntoAction`, `isValidConnectionVerb`, `RUNTIME_REGIONS`, `dismountWindowFromDreamSpace`, `getSurfaceSpaceSurface`, `isDreamSpaceDominant`, `mountWindowInDreamSpace`, `setSeamPosition`, `getPathsForEngin`, `hasConnectionPath` |
-| `lib/dream-window/useDreamWindowActions.ts` | `createDreamWindow`, `patchDreamWindow` |
-| `lib/dreamdm/DreamSystemContext.tsx` | `DEFAULT_WORLD_FOCUS` |
-| `lib/dreamdm/barInteractions.ts` | `GOLD_SECOND_TAP_WINDOW_MS`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `MIN_POINTER_SAMPLE_DELTA_MS`, `LIGHT_POSITION_CYCLE` |
-| `lib/dreamdm/useDreamDMDraft.ts` | `listAllDraftIds`, `cleanupStaleDrafts`, `getDraftAge` |
-| `lib/dreamdm/useModuleBarIntent.ts` | `useModuleBarIntent` |
-| `lib/dreamengin/engineAssets.ts` | `saveEngineAsset` |
-| `lib/dreamenginOS/index.ts` | `slog`, `slogArray`, `slogEntropy`, `slogInv`, `slogMean`, `slogVariance`, `TORRIDITY_A0_PERCEPTION`, `TORRIDITY_DP`, `TORRIDITY_LAMBDA`, `TORRIDITY_N`, `contentMass`, `mu`, `rankFeed`, `throttledVisibility`, `torridityRank`, `BUGS_LOG`, `DELTA_P`, `DOC_RELATIONSHIPS`, `IOTA_MAX`, `LAMBDA`, `THRESHOLD_FLOW`, `THRESHOLD_SYNTHESIZE`, `auditPostPass`, `calculateInventionForce`, `getPassProtocol`, `logResidual`, `runPrePassChecklist`, `createDualRuntimeHub`, `createLedger`, `getAllByKind`, `getLedgerEntry`, `recordView`, `storeAsset`, `storeFingerprint`, `storePeakMap`, `storeSampleMetadata`, `storeTorridityRank`, `canTransfer`, `createLocalEventBus`, `transferModule`, `analyzeSwipe`, `isBotSession`, `tallyView`, `buildPeakMap`, `extractAudioChunks`, `matchFingerprint`, `recordReferenceFingerprint`, `ALL_CATEGORIES`, `COMPONENT_INVENTORY`, `getByCategory`, `searchComponents`, `atomicPieceFromComponent`, `createAssembly`, `deserializeAssembly`, `runAssembly`, `serializeAssembly`, `validateAssembly`, `GameEnginRuntime`, `loadDreamGame` |
-| `lib/dreamnav/delta.ts` | `transition` |
-| `lib/dreamnav/gctAssist.ts` | `chooseAxisAction`, `chooseWidgetForSlot` |
-| `lib/dreamnav/gestures6.ts` | `createGestureArbiter` |
-| `lib/dreamr/closeFriendsVisibility.ts` | `fetchCloseFriendsCircle` |
-| `lib/dreamr/dreamrfeed.tsx` | `DREAMR_TOPICS`, `(default)` |
-| `lib/dreamr/socialHumanityScore.ts` | `computeSocialHumanityScore` |
-| `lib/dreamr/swipePersonalization.ts` | `LONGFORM_CONTENT_THRESHOLD`, `CREATOR_PREFERENCE_WEIGHT`, `TYPE_PREFERENCE_WEIGHT`, `creatorPreferenceKey` |
-| `lib/dreamr/torridityLedger.ts` | `getDeceleration`, `calculateSnapForce`, `normalizeHumanViews` |
-| `lib/dreams/DreamRegistry.tsx` | `DreamRegistry` |
-| `lib/dreams/profileProjection.ts` | `createDreamProjection` |
-| `lib/dreams/types.ts` | `DREAM_SURFACES`, `DREAM_KINDS`, `DREAM_RENDER_MODES`, `DREAM_VISIBILITIES` |
-| `lib/engin-runtime/EnginBaseState.ts` | `isRuntimeCoherenceReport`, `DEFAULT_COHERENCE_CAPACITY`, `evaluateCoherence`, `explainCoherencePressure`, `resolveCoherenceTransform` |
-| `lib/engin-runtime/EnginCapabilityExecution.ts` | `getEnginExecutionPlan`, `CodeEditRingBuffer` |
-| `lib/engin-runtime/EnginCapabilityTargets.ts` | `CANONICAL_ENGIN_ALIASES`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId` |
-| `lib/engin-runtime/EnginDomainCores.ts` | `CodePieceTableDocument`, `CodeEditorHotState`, `CodeDiagnosticWorkerBridge`, `CodeExecutionWorkerBridge`, `CodeSnapshotCompactor`, `CodeStartupHydrator`, `CodeKeystrokeBenchmark`, `GameWebGPUDevice`, `GameRenderLoop`, `GameInstanceBufferManager`, `GameGeometryBufferRegistry`, `GameMaterialBucketBuffer`, `GameFrustumCuller`, `GameLODSelector`, `GameInputRingBuffer`, `GamePhysicsCommandBuffer`, `GameFrameBudgetProbe`, `GameGeometryThroughputBenchmark`, `StarMakerAudioWorkletProcessor`, `StarMakerAudioWorkletBridge`, `StarMakerTrackBufferPool`, `StarMakerAudioCommandQueue`, `StarMakerTransportClock`, `StarMakerMixerKernel`, `StarMakerMeteringDecoupler`, `StarMakerLatencyProbe`, `ContentRenderJobQueue`, `ContentWorkerRenderBridge`, `ContentWebGPURenderPath`, `ContentTileRenderer4K`, `ContentRayAccelerationStructure`, `ContentGeometryBufferRegistry`, `ContentMaterialBufferRegistry`, `ContentProgressiveOutputBuffer`, `ContentGpuCapabilityProbe`, `ContentRenderBenchmark`, `BrandVectorPathCache`, `BrandSdfGlyphAtlas`, `BrandPaletteCache`, `BrandTypeScaleCache`, `BrandFileHydrator`, `BrandCollaborationDeltaPacker`, `BrandPatchLog`, `BrandLocalApplyQueue`, `BrandVectorRenderProbe`, `BrandFileOpenProbe`, `BrandCollaborationSyncProbe`, `LabParticleSoABuffer`, `LabSpatialHashGrid`, `LabCollisionCandidateBuffer`, `LabCollisionKernel`, `LabWebGPUComputePipeline`, `LabComputeShaderRegistry`, `LabGpuParticleBuffers`, `LabWasmSimdFallback`, `LabSimulationWorkerBridge`, `LabSimulationClock`, `LabParticleBenchmark64K`, `LabParticleBenchmark1M`, `LabCollisionBenchmark`, `LabGpuDispatchProbe`, `CollaborationApplyQueue`, `CollaborationRevisionClock`, `TransportLatencyProbe`, `DeterministicMergePatchModel`, `CrdtPatchModel`, `AssetManifestLoader`, `LazyEnginHydrator`, `StreamingAssetLoader`, `IndexedDbBlobStore`, `CacheStorageRuntime`, `createCanonicalScorecards`, `runCanonicalPerformanceBenchmarks`, `CodeEditRingBuffer`, `MidiEventRingBuffer`, `CollaborationDeltaPacker`, `StartupBudgetProbe`, `IdleMemoryProbe` |
-| `lib/engin-runtime/EnginHardwareCapabilities.ts` | `detectWasmSimdSupport`, `detectEnginHardwareCapabilities`, `fallbackEnginHardwareCapabilities` |
-| `lib/engin-runtime/EnginPerformanceProbe.ts` | `gpuMeasurementOrHardwareDependent` |
-| `lib/engin-runtime/EnginRuleSetContract.ts` | `validateRuleSetManifest` |
-| `lib/engin-runtime/EnginRuntime.ts` | `ENGIN_RUNTIME_VERSION`, `ENGIN_RUNTIME_FEATURES` |
-| `lib/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
-| `lib/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `CoalescedCommandQueue`, `HotLaneScheduler`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `ShaderKernelRegistry`, `MoldableModuleGpuBridge` |
-| `lib/engin-runtime/InternalMetrics.ts` | `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `DevOnlyBenchmarkRunner` |
-| `lib/engin-runtime/index.ts` | `attachCoherenceReport`, `createBaseState`, `createCoherenceCapacity`, `createCoherenceReport`, `createDomainObject`, `createRuntimeLoad`, `evaluateCoherence`, `explainCoherencePressure`, `isDomainObject`, `isEnginBaseState`, `isJsonObject`, `isJsonSerializable`, `isRuntimeCoherenceReport`, `patchBaseState`, `resolveCoherenceTransform`, `createEnginEventBus`, `enginStorageKey`, `LocalStorageAdapter`, `MemoryAdapter`, `MemorySyncTransport`, `authorizeDomainCapability`, `DEFAULT_USER_CAPABILITIES`, `DENY_ALL`, `gateCapability`, `mergeCapabilities`, `negotiateRuleSetCompatibility`, `validateRuleSetManifest`, `validateRuleSetState`, `fingerprintBytesWithWasm`, `fingerprintEnginSnapshot`, `hashBytesFNV1A`, `stableStringifySnapshot`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality`, `AudioWorkletRuntime`, `BinaryCommandBus`, `GpuBufferRegistry`, `WasmKernelRuntime`, `WorkerPoolRuntime`, `detectWasmSimdSupport`, `EnginPerformanceProbe`, `IdleMemoryProbe`, `StartupBudgetProbe`, `gpuMeasurementOrHardwareDependent`, `DevOnlyBenchmarkRunner`, `AudioTrackMixer`, `CollaborationDeltaPacker`, `EnginCapabilityExecutionKernel`, `GeometryBatcher`, `ParticleSoAKernel`, `RayGridAccelerator`, `VectorPathCache`, `createEnginCapabilityExecutionKernel`, `CANONICAL_ENGIN_IDS`, `ENGIN_CAPABILITY_PROFILES`, `acceptanceValueForTarget`, `evaluateCapabilityTarget`, `capabilityProfileMatchesRuleSet`, `getEnginCapabilityProfile`, `isCanonicalEnginId`, `isCustomEnginProfileId`, `isEnginProfileId`, `toCustomEnginProfileId`, `validateCanonicalEnginCapabilityProfiles`, `ENGIN_RUNTIME_FEATURES`, `ENGIN_RUNTIME_VERSION` |
-| `lib/engine/index.ts` | `UniversalEngine` |
-| `lib/enginpipe/artifact/manifest.ts` | `ArtifactPermissionSchema` |
-| `lib/enginpipe/index.ts` | `ArtifactPermissionSchema`, `EnginArtifactManifestSchema`, `createManifest`, `parseManifest`, `safeParseManifest`, `createTelemetryClient`, `TelemetryEventSchema`, `TelemetryEventTypeSchema`, `parseTelemetryEvent`, `DEFAULT_TIER_CONFIG`, `detectCapabilityTier`, `getTierConfig`, `scoreCapabilities`, `tierFromScore`, `useArtifactSlot`, `useOptionalArtifactSlot` |
-| `lib/enginpipe/shell/ArtifactSlot.tsx` | `ArtifactSlot`, `useArtifactSlot`, `useOptionalArtifactSlot` |
-| `lib/enginpipe/telemetry/events.ts` | `TelemetryEventSchema` |
-| `lib/engins/code/codeEnginRuleSet.ts` | `(default)` |
-| `lib/engins/game/index.ts` | `GAME_ENGIN_RULE_SET`, `GRAVITY_VALUES` |
-| `lib/feature-build/index.ts` | `getManifest`, `allPairsInRefinePhase`, `allPairsMovingForward`, `countFeaturesByStatus`, `countUsableFeatures`, `getBuildPhase`, `SICC_GLOBAL_CRITERIA`, `getCriteriaForDimension` |
-| `lib/feeds/embedFeedLoader.ts` | `loadEmbedFeedByProvider` |
-| `lib/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
-| `lib/gameengin/GameRuntime.tsx` | `(default)` |
-| `lib/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
-| `lib/gameengin/cartridge-manifest.ts` | `CARTRIDGE_MIME`, `CARTRIDGE_EXT`, `QualityTierSchema`, `RenderModeSchema`, `PermissionSchema`, `CartridgeManifestSchema` |
-| `lib/gameengin/cartridgeLoader.ts` | `loadDreamrCartridgeFromResponse`, `DreamrCartridgeArchive`, `DreamrFileEntry` |
-| `lib/gameengin/cartridges/achievementEngine.ts` | `purgeCartridgeAchievements`, `getUnlockedCount` |
-| `lib/gameengin/cartridges/apiStubs.ts` | `stubSaveAPI`, `stubAchievementsAPI` |
-| `lib/gameengin/cartridges/index.ts` | `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `CARTRIDGE_LOADERS`, `getCartridgeIds`, `loadCartridge`, `CartridgeLoader`, `assertCartridgeLoadersReady`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders` |
-| `lib/gameengin/cartridges/reactCartridge.ts` | `GameEngineAPIContext`, `createReactCartridgeHost`, `CARTRIDGE_LOADERS`, `createReactGameCartridge` |
-| `lib/gameengin/cartridges/saveState.ts` | `purgeCartridgeSaves`, `getSaveStorageBytes` |
-| `lib/gameengin/core.ts` | `ECSWorld` |
-| `lib/gameengin/dream-engine.ts` | `DreamEngine` |
-| `lib/gameengin/dreamr-loader.ts` | `parseDreamrArchive`, `loadDreamrCartridgeFromResponse` |
-| `lib/gameengin/gameEnginRuntime.ts` | `loadDreamGame` |
-| `lib/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
-| `lib/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
-| `lib/gameengin/platform.ts` | `GameEnginPlatform` |
-| `lib/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
-| `lib/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
-| `lib/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
-| `lib/gameengin/remote/sprintDetector.ts` | `DOUBLE_TAP_WINDOW_MS`, `SPRINT_MOVE_THRESHOLD` |
-| `lib/gameengin/runtime/FrameBudget.ts` | `GAMEENGIN_FRAME_BUDGETS` |
-| `lib/gameengin/runtime/FrameClock.ts` | `GameEnginFrameClock` |
-| `lib/gameengin/runtime/index.ts` | `resolveFrameBudget` |
-| `lib/gameengin/systems/ai.ts` | `BehaviorTreeEngine`, `WorkerJobSystem`, `BehaviorTreeSystem` |
-| `lib/gameengin/systems/animation.ts` | `AnimationStateMachine`, `ReplayBuffer`, `TypedEventBus`, `AnimationFSM`, `EventBus` |
-| `lib/gameengin/systems/assets.ts` | `AssetStreamManager`, `assertValidBundleManifest`, `bundleWeightBytes`, `planBundleCache` |
-| `lib/gameengin/systems/lod.ts` | `LODSystem` |
-| `lib/gameengin/systems/network.ts` | `ClientSidePrediction`, `RollbackNetcode` |
-| `lib/gameengin/systems/physics.ts` | `AdvancedPhysicsWorld`, `PhysicsMaterialSystem` |
-| `lib/gameengin/systems/pooling.ts` | `ObjectPoolingSystem`, `ResourcePool` |
-| `lib/gameengin/systems/rendering.ts` | `ComputeShaderPipeline`, `GPUProfiler`, `WGSLShaderManager`, `GPUComputeSystem` |
-| `lib/gameengin/systems/spatial.ts` | `OctreeBVH`, `SpatialAudioDSP` |
-| `lib/gameengin/systems/world.ts` | `GlobalIllumProbes`, `ProceduralWorldGen`, `TerrainEngine`, `TerrainSystem`, `GIProbeSystem` |
-| `lib/gameengin/unifiedLoop.ts` | `activeGameCount`, `isLoopRunning`, `_resetLoop` |
-| `lib/gameengin/useUnifiedLoop.ts` | `useUnifiedLoop` |
-| `lib/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
-| `lib/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
-| `lib/games/DualSenseManager.ts` | `DualSenseManager` |
-| `lib/games/avatar.ts` | `AVATAR_IMAGE_KEY`, `AVATAR_CREATED_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `setAvatarDataUrl`, `hasAvatar`, `clearAvatar`, `resizeImageToDataUrl` |
-| `lib/games/catalog.ts` | `GAME_CATALOG_IDS` |
-| `lib/games/gameControllerRight.ts` | `AUTO_FIRE_DELAY_MS`, `AUTO_FIRE_INTERVAL_MS` |
-| `lib/games/hooks.ts` | `useKeySet`, `useGamePerformanceBaseline` |
-| `lib/games/lucid-avenue-world.ts` | `LUCID_AVENUE_TOTAL_SHARDS`, `LUCID_AVENUE_TOTAL_FLAGS`, `LUCID_AVENUE_TOTAL_CONTRACTS`, `LUCID_AVENUE_6900_TARGET`, `LUCID_AVENUE_DISTRICTS`, `createInitialLucidAvenueState`, `getLucidAvenueDistrict`, `getLucidAvenuePatrolPositions`, `getLucidAvenueMissionChecklist`, `getLucidAvenueRouteContracts`, `calculateLucidAvenueScore`, `getLucidAvenueCompletionPercent`, `getLucidAvenueStoryBeat`, `isSamePosition`, `moveLucidAvenuePlayer`, `waitLucidAvenueTurn`, `scanLucidAvenue`, `jamLucidAvenueGrid`, `deployLucidAvenueVehicle`, `fastTravelLucidAvenue`, `getLucidAvenueHint`, `requestLucidAvenueHint`, `interactInLucidAvenue`, `getLucidAvenuePatrolPathKeys`, `getLucidAvenueObjectiveKeys` |
-| `lib/games/madmaxi-wildfall-world.ts` | `createWildfallRng`, `makeWildfallGlyphGrid`, `isWildfallPassable`, `wildfallHeroWeapon` |
-| `lib/games/mobileControls.ts` | `registerMobileGameControls`, `emitMobileLookDelta`, `emitMobileJump`, `emitMobileShoot` |
-| `lib/games/useImmersiveGameLayout.ts` | `getImmersiveCanvasStyle`, `getImmersiveStageStyle`, `getImmersiveOverlayStyle` |
-| `lib/gct/anomaly-detection.ts` | `detectAnomalies` |
-| `lib/gct/audio-fingerprint.ts` | `audioToVector`, `identifySong` |
-| `lib/gct/image-search.ts` | `findSimilarImages` |
-| `lib/gct/recommendations.ts` | `recommendItems` |
-| `lib/generationLaw.ts` | `DELTA_P`, `LAMBDA`, `IOTA_MAX`, `THRESHOLD_FLOW`, `THRESHOLD_SYNTHESIZE`, `calculateInventionForce`, `getPassProtocol`, `runPrePassChecklist`, `BUGS_LOG`, `logResidual`, `auditPostPass`, `DOC_RELATIONSHIPS` |
-| `lib/gestures/useTouchGestures.ts` | `useTouchGestures` |
-| `lib/god-tier/godTierEngine.ts` | `godTierSystem`, `runDreamEngineGodTier`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildPassPlan`, `buildSceneObjects`, `classifyObject`, `classifyPressure`, `decideObject`, `defaultCameraSignals`, `defaultDirectorMetrics`, `resolveFrameBudget`, `resolveResolutionScale`, `resolveTemporalState`, `scoreObject`, `webGPUDirector`, `CameraSignals`, `CameraState`, `DirectorBabylonEngine`, `DirectorBabylonMesh`, `DirectorBabylonScene`, `DirectorFrame`, `FrameBudget`, `MeshHints`, `ObjectDecision`, `PassConfig`, `PassName`, `PassPlan`, `Pressure`, `QualityClass`, `SceneObject`, `TemporalState` |
-| `lib/h265-encoder.ts` | `H265Encoder` |
-| `lib/home-buttons/button-groups.ts` | `BUTTON_GROUPS` |
-| `lib/hooks/useResponsive.ts` | `useViewport`, `useBreakpoint`, `useIsAtLeast`, `useIsBelow`, `useIsMobile`, `useIsTablet`, `useIsDesktop`, `useBreakpointValue`, `useFluid`, `useMediaQuery`, `getCurrentViewportWidth` |
-| `lib/hooks/useTap.ts` | `useTap`, `useHomeParticleTap` |
-| `lib/icons/sheet.ts` | `SHEET_W`, `SHEET_H`, `validateIconMap` |
-| `lib/identity/canonical-names.ts` | `REJECTED_CORE_SURFACE_NAMES`, `DAYDREAM_ROUTES`, `REJECTED_MODULE_NAMES`, `PRODUCT_DESCRIPTION_FULL` |
-| `lib/intelligence/sessionContinuity.ts` | `sessionContinuity` |
-| `lib/intelligence/useSessionIntelligence.ts` | `PATTERN_MATRIX_LS_KEY` |
-| `lib/journey/journeyInsights.ts` | `MS_PER_DAY` |
-| `lib/journey/withJourney.ts` | `withJourney` |
-| `lib/ledger-data.ts` | `ledgerData` |
-| `lib/ledger.ts` | `getLedgerEntry`, `storePeakMap`, `storeFingerprint`, `storeSampleMetadata`, `storeTorridityRank`, `storeAsset`, `recordView` |
-| `lib/marketplace/request.ts` | `MARKETPLACE_CONTACT_TABLE` |
-| `lib/media/ledger.ts` | `compressData`, `downloadBlobFromLedgerStorage` |
-| `lib/music/presets.ts` | `getPresetsByGenre`, `findPreset`, `findInstrumentPreset`, `findProjectTemplate` |
-| `lib/music/starmakerDaw.ts` | `createEmptyClip`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState`, `encodeWav24Bit` |
-| `lib/music/wasmAudioBridge.ts` | `createWasmAudioBridge` |
-| `lib/navigation/GestureIntentResolver.ts` | `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `HOLD_THRESHOLD_MS`, `GESTURE_SENSITIVITY` |
-| `lib/navigation/NavStateBuffer.ts` | `LAYER_CUBE`, `LAYER_WIDGET`, `LAYER_DREAM`, `FULLSCREEN_DEPTH` |
-| `lib/navigation/anchorField.ts` | `DEFAULT_ANCHOR_CONFIG`, `computePotential`, `computeForceField`, `shouldApplyRecenter`, `updateActivityTime`, `checkIdleStatus`, `computeAttractorForce`, `applyForceToVelocity`, `computeRecenterInterpolation`, `distanceToHome` |
-| `lib/navigation/index.ts` | `AnchorStateBuffer`, `HOLD_FIRED`, `HOLD_HOLDING`, `HOLD_IDLE`, `MODE_HOME`, `MODE_PROFILE`, `MODE_SHRUNK`, `AnchorWidgetStorage`, `GestureFrameComputer`, `GestureIntent`, `GestureIntentResolver`, `HOLD_THRESHOLD_MS`, `PINCH_IN_THRESHOLD`, `PINCH_OUT_THRESHOLD`, `SWIPE_THRESHOLD`, `FULLSCREEN_DEPTH`, `LAYER_CUBE`, `LAYER_DREAM`, `LAYER_HOME`, `LAYER_PROFILE`, `LAYER_WIDGET`, `NavStateBuffer`, `PROFILE_DEPTH`, `PointerEventCapture`, `ReturnStack`, `SpatialNavigationEngine`, `TransformSolver`, `useNavigation`, `WidgetBindingType`, `WidgetInstanceMemory`, `WidgetPresentation`, `WidgetVisibility`, `ledgerStats`, `matchState`, `resolveTransition` |
-| `lib/navigation/manifold.ts` | `cartesianToSpherical`, `sphericalToCartesian`, `smoothstep`, `distanceToEdge`, `blendFaceEdge`, `computeWidgetCurvature`, `normalizeVector`, `vectorMagnitude`, `dotProduct`, `crossProduct` |
-| `lib/navigation/physics.ts` | `DEFAULT_PHYSICS_CONFIG`, `computeAcceleration`, `updatePhysicsState`, `applyInertialDecay`, `SNAP_THRESHOLD`, `shouldSnapToGrid`, `snapToGrid`, `verletIntegration`, `rk4Integration`, `gestureToForce`, `applyDamping`, `hasSettled`, `computeSpringForce` |
-| `lib/navigation/quaternion.ts` | `fromAxisAngle`, `magnitude`, `isValid`, `rotateVector`, `slerp`, `toEulerAngles` |
-| `lib/navigation/useNavigation.ts` | `useNavigation` |
-| `lib/observability/correlator.ts` | `detectSustainedErrorRate` |
-| `lib/observability/healthTrend.ts` | `updateHealthTrend`, `clearHealthTrend`, `getHealthTrend`, `getHealthScore`, `getMTTR`, `exportHealthReport` |
-| `lib/observability/otelBridge.ts` | `otelRecordLog`, `otelRecordMetric`, `otelRecordTrace`, `otelRequestStart`, `otelRequestEnd` |
-| `lib/offline/offlineCache.ts` | `DB_NAME`, `DB_VERSION`, `STORE_ASSETS`, `STORE_SCENES`, `STORE_SYNC_QUEUE`, `openDB`, `getAsset`, `deleteAsset`, `listAssets`, `getSyncQueue`, `clearSyncQueue`, `removeSyncEntry` |
-| `lib/offline/useOfflineSync.ts` | `useOfflineSync` |
-| `lib/optimizer/index.ts` | `ConstraintSolver` |
-| `lib/panels/panelTypes.ts` | `PANEL_META` |
-| `lib/platform/index.ts` | `getFeed`, `syncToGlobalRegistry`, `processAdOrder`, `logPhysicsExperiment` |
-| `lib/platform/lab.ts` | `logPhysicsExperiment` |
-| `lib/policy/boogiePolicy.ts` | `CATEGORY_SEVERITY`, `DEFAULT_DURATIONS_SECONDS`, `ENFORCEMENT_ACTIONS`, `ENFORCEMENT_SCOPES`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
-| `lib/reality/realityStore.ts` | `getRealityById`, `listMyRealities`, `createReality`, `updateEnginSlots`, `touchReality`, `joinReality`, `touchMembership`, `listMembers`, `saveSnapshot`, `loadLatestSnapshot`, `appendActivity`, `loadActivity`, `buildChannelId` |
-| `lib/renderer/Canvas2DRenderer.ts` | `Canvas2DRenderer` |
-| `lib/renderer/index.ts` | `FrustumCuller` |
-| `lib/routing/surfaces.ts` | `PUBLIC_SURFACE_PREFIXES`, `SAB_ISOLATED_ROUTE_PREFIXES`, `isSabIsolatedPath` |
-| `lib/runtime/EnginDispatcher.ts` | `initWasmEngine` |
-| `lib/runtime/channelMetrics.ts` | `recordError`, `getAllChannelMetrics`, `resetChannelMetrics` |
-| `lib/runtime/dreamOSBus.ts` | `CAPABILITY_DESCRIPTORS`, `isIntentEnvelope`, `isInformationDomain`, `INFORMATION_DOMAINS` |
-| `lib/runtime/dualRuntime.ts` | `TORUS_DOMAINS`, `TORUS_WIDTH`, `TORUS_HEIGHT`, `TORUS_FOCUS_MAP`, `RUNTIME_REGIONS` |
-| `lib/runtime/enginWorkflowRegistry.ts` | `getWorkflowsByArtifactType`, `getWorkflowStats`, `workflowExists` |
-| `lib/runtime/iEngine.ts` | `validateManifest` |
-| `lib/runtime/instanceManager.ts` | `persistInstanceList`, `spawnDualInstances` |
-| `lib/runtime/memory.ts` | `ENGIN_OFFSET_POS_X`, `ENGIN_OFFSET_POS_Y`, `ENGIN_OFFSET_POS_Z`, `ENGIN_OFFSET_VEL_X`, `ENGIN_OFFSET_VEL_Y`, `ENGIN_OFFSET_VEL_Z`, `ENGIN_OFFSET_DREAMDM_BAR_Y`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_LOCKED_STATE`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_TELEMETRY`, `ENGIN_SAB_SIZE`, `isSABAvailable`, `getEntityBounds`, `validateWorkgroup`, `getWorkerCount` |
-| `lib/runtime/moduleRegistry.ts` | `subscribeRegistryToTransferEvents`, `manifestFromWidget` |
-| `lib/runtime/offlineQueue.ts` | `listenOnline` |
-| `lib/runtime/quantumCircuit.ts` | `runQuantumCircuit` |
-| `lib/runtime/runtimeChannel.ts` | `createRealtimeChannel` |
-| `lib/runtime/snapshotFingerprint.ts` | `fingerprintSnapshot`, `snapshotsAreEquivalent`, `createFingerprintCache` |
-| `lib/runtime/useDragSurface.ts` | `useDragSurface` |
-| `lib/runtime/useDualRuntime.ts` | `useDualRuntime` |
-| `lib/runtime/useDualRuntimePersistence.ts` | `useDualRuntimePersistence` |
-| `lib/runtime/useEnginBridge.ts` | `useStarMakerEnginBridge`, `useContentEnginBridge` |
-| `lib/scene/sceneState.ts` | `persistScene`, `restoreScene`, `removeScene`, `listPersistedScenes`, `createAutoSave` |
-| `lib/setup/checks.ts` | `getSetupChecks` |
-| `lib/sharedDream.ts` | `joinSharedDreamSession`, `useSharedDreamSession`, `SharedDreamActivityEntry`, `SharedDreamMember`, `UseSharedDreamSessionOptions`, `UseSharedDreamSessionResult` |
-| `lib/slog.ts` | `slogInv`, `slogArray`, `slogMean` |
-| `lib/social/crossPost.ts` | `openCrossPost`, `nativeShare` |
-| `lib/social/livekit.ts` | `fetchLiveKitToken`, `fetchRoomInfo`, `LiveKitRoomManager` |
-| `lib/social/normalizers.ts` | `normalizeMastodonPost`, `normalizeNostrEvent`, `normalizeBlueskyPost` |
-| `lib/social/useSocialData.ts` | `useSocialData` |
-| `lib/torridity/constants.ts` | `lambda` |
-| `lib/torridity/index.ts` | `a0Perception`, `deltaP`, `lambda`, `n`, `contentMass`, `decayFactor`, `mu`, `rankFeed`, `throttlingGate`, `torridityRank`, `ContentItem`, `RankedItem` |
-| `lib/torridity/physics.ts` | `mu`, `contentMass`, `torridityRank`, `decayFactor`, `throttlingGate`, `rankFeed` |
-| `lib/ui/skin-engine.ts` | `getSkinPreset` |
-| `lib/universalEditor.ts` | `createLocalEventBus`, `transferModule` |
-| `lib/utils.ts` | `formatDate`, `generateDedupeHash`, `isError` |
-| `lib/vm/dual-runtime.ts` | `DualRuntime`, `dualRuntime` |
-| `lib/vm/dualVMCoordinator.ts` | `getDualVMCoordinator`, `initializeDualVMCoordinator`, `destroyDualVMCoordinator` |
-| `lib/vm/index.ts` | `detectWasmFeatures`, `resetWasmFeatureCache`, `WasmFeatureSet`, `DEFAULT_RESOURCE_QUOTA`, `QuotaExceededError`, `enforceQuota`, `withinQuota`, `QuotaViolation`, `ResourceQuota`, `ResourceUsage`, `InterVMChannel`, `VMEvent`, `GPUTimeSlicer`, `MemoryBoundsError`, `SYSCALL_ALLOWLIST`, `checkBounds`, `isSyscallAllowed`, `AllowedSyscall`, `TimeBudget`, `DualRuntime`, `dualRuntime`, `VMId`, `VMRuntimeStats`, `VMWorkloadSpec`, `BufferManager`, `destroyDualVMCoordinator`, `getDualVMCoordinator`, `initializeDualVMCoordinator`, `DualVMConfig`, `DualVMCoordinator`, `VMRegion`, `VMWorkload`, `PipelineCache`, `SnapshotManager`, `WasmGpuVM`, `DEFAULT_VM_CONFIG`, `ErrorCode`, `GPUBufferUsageFlags` |
-| `lib/vm/resource-quota.ts` | `QuotaExceededError`, `DEFAULT_RESOURCE_QUOTA`, `enforceQuota`, `withinQuota` |
-| `lib/vm/security.ts` | `MemoryBoundsError`, `checkBounds`, `SYSCALL_ALLOWLIST`, `isSyscallAllowed`, `GPUTimeSlicer` |
-| `lib/vm/snapshot.ts` | `SnapshotManager` |
-| `lib/vm/types.ts` | `ErrorCode`, `DEFAULT_VM_QUOTAS` |
-| `lib/vm/wasm-features.ts` | `detectWasmFeatures`, `resetWasmFeatureCache` |
-| `lib/web3/client.ts` | `Web3Client` |
-| `lib/web3/engagement.ts` | `trackEngagement`, `getEngagementStats`, `applyOptimisticEngagement`, `getOptimisticDelta`, `clearOptimisticDelta` |
-| `lib/web3/index.ts` | `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `Web3Error`, `Web3Client`, `applyOptimisticEngagement`, `clearOptimisticDelta`, `getEngagementStats`, `getOptimisticDelta`, `getFromIpfs`, `isIpfsCid`, `pinCid`, `resolveIpfsUrl`, `uploadFileToIpfs` |
-| `lib/web3/ipfs.ts` | `uploadToIpfs`, `uploadFileToIpfs`, `getFromIpfs`, `pinCid`, `resolveIpfsUrl`, `isIpfsCid` |
-| `lib/webgpu.ts` | `initializeWebGPURuntime`, `getRendererBackend` |
-| `lib/webgpu/adaptiveQuality.ts` | `getBatteryState`, `getDeviceMemoryGB`, `getCoreCount`, `gatherDeviceSignals` |
-| `lib/webgpu/director.ts` | `webGPUDirector` |
-| `lib/webgpu/useWebGPUDirector.ts` | `useWebGPUDirector`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildSceneObjects`, `defaultCameraSignals`, `defaultDirectorMetrics`, `CameraSignals`, `CameraState`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics` |
-| `lib/widgets/CrossWidgetPosting.ts` | `MSG_TYPE_POST_REQUEST`, `MSG_TYPE_POST_RESULT`, `MSG_TYPE_FOCUS_REQUEST`, `MSG_TYPE_SEND_TEXT`, `MSG_TYPE_SEND_MEDIA`, `CrossWidgetPostingEngine` |
-| `lib/widgets/WidgetBus.ts` | `(default)` |
-| `lib/widgets/WidgetEngine.tsx` | `WidgetLibrary` |
-| `lib/widgets/WidgetEventBus.ts` | `WidgetEventBus` |
-| `lib/widgets/feed-resolver.ts` | `resolvePublicAppPosts`, `subscribeAppPostsRealtime`, `getFeedChannelKey`, `subscribeFeedRealtime` |
-| `lib/widgets/parse.ts` | `parseYouTubeConfig`, `parseTextConfig`, `parseEmbedConfig`, `parseSocialEmbedConfig`, `parseSocialProfileConfig`, `parseSocialFeedConfig`, `parseTypedWidget` |
-| `lib/widgets/parseConfig.ts` | `parseYouTubeWidgetConfig`, `parseSocialEmbedWidgetConfig`, `parseSocialProfileWidgetConfig`, `parseSocialFeedWidgetConfig` |
-| `lib/widgets/useWidget.ts` | `useWidget`, `emitWidget`, `setWidgetMemory`, `getWidgetMemory`, `chainWidgets`, `spawnSubWidget`, `getSubWidgets` |
+| `icons/sheet.ts` | `SHEET_PATH`, `SHEET_W`, `SHEET_H`, `COLS`, `ROWS`, `FRAME_W`, `FRAME_H`, `ICONS`, `ICON_ENTRIES`, `getIconPos`, `hasIcon`, `validateIconMap` |
+| `intelligence/continuityHelpers.ts` | `resolveResumeDest`, `formatArtifactKind`, `getArtifactAccent` |
+| `intelligence/sessionContinuity.ts` | `sessionContinuity` |
+| `intelligence/useSessionIntelligence.ts` | `PATTERN_MATRIX_LS_KEY`, `useSessionIntelligence` |
+| `journey/journeyDots.ts` | `logJourneyDot`, `hasJourneyDot` |
+| `journey/journeyInsights.ts` | `MS_PER_DAY`, `RETURN_GAP_DAYS`, `findFirstOccurrenceIds`, `computeCurrentStreak`, `computeWeeklyFrequency`, `detectReturnGaps`, `annotateDotsWithInsights` |
+| `journey/withJourney.ts` | `withJourney` |
+| `ledger-data.ts` | `ledgerData` |
+| `ledger.ts` | `getLedgerEntry`, `getAllByKind`, `storePeakMap`, `storeFingerprint`, `storeSampleMetadata`, `storeTorridityRank`, `storeAsset`, `recordView` |
+| `marketplace/listings.ts` | `MARKETPLACE_TABLE`, `VALID_MARKETPLACE_CATEGORIES`, `MARKETPLACE_TITLE_MAX`, `MARKETPLACE_TAGS_MAX`, `MARKETPLACE_TAG_MAX_LENGTH`, `validateMarketplaceListing`, `normalizeMarketplaceListing`, `marketplaceDetailRoute`, `formatMarketplacePrice` |
+| `marketplace/request.ts` | `CONTACT_REQUEST_MESSAGE_MAX`, `validateContactRequest`, `buildContactRequestRecord`, `MARKETPLACE_CONTACT_TABLE` |
+| `media/ledger.ts` | `encodeToLedger`, `compressData`, `decodeFromLedger`, `analyzeLedgerDensity`, `buildLedgerMediaUrl`, `encodeUint8ArrayToLedgerString`, `decodeLedgerStringToUint8Array`, `encodeBlobToLedger`, `decodeLedgerBlob`, `uploadBlobToLedgerStorage`, `downloadBlobFromLedgerStorage` |
+| `media/postMedia.ts` | `getPostMediaUrls`, `getPrimaryPostMediaUrl` |
+| `music/presets.ts` | `BEAT_PRESETS`, `INSTRUMENT_PRESETS`, `PROJECT_TEMPLATES`, `GENRE_LIST`, `getPresetsByGenre`, `findPreset`, `findInstrumentPreset`, `findProjectTemplate` |
+| `music/starmaker.ts` | `summarizePlaybackProfile`, `buildReleaseStrategy`, `createMelodySuggestions` |
+| `music/starmakerArrangement.ts` | `ARRANGEMENT_BARS`, `ARRANGEMENT_TRACKS`, `ARRANGEMENT_SOURCE_COLORS` |
+| `music/starmakerDaw.ts` | `PIANO_ROLL_DEFAULTS`, `midiPitchToName`, `isBlackKey`, `createMidiNote`, `snapToGrid`, `TAKE_COLORS`, `createDemoTake`, `createInitialCompingState`, `createEmptyClip`, `createInitialSessionView`, `AUTOMATABLE_PARAMS`, `createInitialAutomationState`, `createInitialWarpState`, `computeWarpPlaybackRate`, `AUDIO_QUALITY_PRESETS`, `audioQualityLabel`, `analyzeStereoPcm`, `renderStarMakerPattern`, `encodeWav24Bit`, `createRealtimeStarMakerAudioEngine` |
+| `music/wasmAudioBridge.ts` | `createWasmAudioBridge` |
 | `next.config.mjs` | `(default)` |
+| `notifications/notificationHelpers.ts` | `mapNotificationType`, `getNotificationTitle`, `getNotificationActionUrl`, `extractNotificationMessage` |
+| `notifications/useNotifications.ts` | `useNotifications` |
+| `observability/collector.ts` | `collectLog`, `collectMetric`, `collectTrace`, `getSnapshot`, `getBufferStats`, `clearBuffers`, `collectBatchLogs`, `getErrorRate`, `getP95Latency`, `groupTracesByTraceId`, `getLogCountsBySeverity` |
+| `observability/correlator.ts` | `detectErrorSpikes`, `detectLatencySpikes`, `detectMetricAnomalies`, `detectSustainedErrorRate`, `correlate` |
+| `observability/healthTrend.ts` | `updateHealthTrend`, `clearHealthTrend`, `getHealthTrend`, `getHealthScore`, `getMTTR`, `exportHealthReport` |
+| `observability/immediateAction.ts` | `buildImmediateRemediationAction` |
+| `observability/otel.ts` | `getPrometheusMetrics` |
+| `observability/otelBridge.ts` | `otelRecordLog`, `otelRecordMetric`, `otelRecordTrace`, `otelRequestStart`, `otelRequestEnd`, `initOtelBridge` |
+| `observability/rootCauseAnalyzer.ts` | `inferRootCause` |
+| `optimizer/babylon-optimizero.ts` | `BabylonOptimizeroScorers`, `BABYLON_HARD_CHECKS`, `BabylonUIOptimizero`, `BabylonUIGenerator` |
+| `optimizer/creative-optimizero.ts` | `CHAOS_WEIGHTS`, `STABLE_WEIGHTS`, `STANDARD_UI_HARD_CHECKS`, `createUIOptimizero` |
+| `optimizer/index.from-lib.ts` | `DreamOptimizer`, `ConstraintSolver` |
 | `optimizer/index.ts` | `DreamOptimizer`, `ConstraintSolver` |
+| `panels/panelTypes.ts` | `PANEL_META` |
+| `platform/index.ts` | `getFeed`, `syncToGlobalRegistry`, `processAdOrder`, `logPhysicsExperiment` |
+| `platform/lab.ts` | `logPhysicsExperiment` |
 | `playwright.config.ts` | `(default)` |
 | `postcss.config.mjs` | `(default)` |
 | `proxy.ts` | `proxy`, `config` |
 | `readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected` |
+| `reality/realityStore.ts` | `getRealityById`, `listMyRealities`, `createReality`, `updateEnginSlots`, `touchReality`, `joinReality`, `touchMembership`, `listMembers`, `saveSnapshot`, `loadLatestSnapshot`, `appendActivity`, `loadActivity`, `buildChannelId` |
+| `renderer/Canvas2DRenderer.ts` | `Canvas2DRenderer` |
+| `renderer/index.ts` | `createRenderer`, `Canvas2DRenderer`, `FrustumCuller` |
+| `routing/surfaces.ts` | `PUBLIC_SURFACE_PREFIXES`, `SAB_ISOLATED_ROUTE_PREFIXES`, `isPublicSurfacePath`, `isSabIsolatedPath` |
+| `scene/sceneState.ts` | `createDefaultSnapshot`, `persistScene`, `restoreScene`, `removeScene`, `listPersistedScenes`, `scenesAreDifferent`, `createAutoSave` |
 | `scripts/export-full-code.mjs` | `DEFAULT_EXCLUDED_DIRS`, `DEFAULT_EXCLUDED_BASENAMES`, `isProbablyTextBuffer`, `hasPrintableContent`, `collectExportableFiles`, `exportFullCodeSnapshot` |
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-readme.ts` | `SECTION_REGISTRY`, `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected`, `runReadmeAutosync` |
@@ -20110,6 +20057,10 @@ _No circular dependencies detected._
 | `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
+| `setup/checks.ts` | `getSetupChecks`, `summarizeSetupChecks`, `getSetupStatus` |
+| `sharedDream/useSharedDreamSession.ts` | `useSharedDreamSession` |
+| `slog.ts` | `slogInv`, `slogArray`, `slogMean` |
+| `social-feed.ts` | `stripHtml`, `extractFirstImage`, `fetchSocialFeed` |
 | `src/components/dream.DreamEnginLogo.tsx` | `DreamEnginLogo`, `(default)` |
 | `src/components/dream.LogoHero.tsx` | `(default)` |
 | `src/components/dream.Nav.tsx` | `(default)` |
@@ -20138,6 +20089,10 @@ _No circular dependencies detected._
 | `src/lib/ai/client.ts` | `callAi` |
 | `src/lib/babylon/useDreamLogoScene.ts` | `useDreamLogoScene` |
 | `supabaseClient.ts` | `supabase` |
+| `torridity.ts` | `TORRIDITY_LAMBDA`, `TORRIDITY_A0_PERCEPTION`, `mu`, `contentMass`, `torridityRank`, `torridityRankSpec`, `contentDecayFactor`, `decayedRank`, `throttledVisibility`, `rankFeed` |
+| `torridity/constants.ts` | `lambda` |
+| `torridity/index.ts` | `a0Perception`, `deltaP`, `lambda`, `n`, `contentMass`, `decayFactor`, `mu`, `rankFeed`, `throttlingGate`, `torridityRank`, `ContentItem`, `RankedItem` |
+| `torridity/physics.ts` | `mu`, `contentMass`, `torridityRank`, `decayFactor`, `throttlingGate`, `rankFeed` |
 | `types/ai-system.ts` | `UserRole`, `ActorContextSchema`, `HomeAnchorState`, `Surface`, `CubePosition`, `Overlay`, `GestureDirection`, `GestureChain`, `NavStateSafe`, `UIContextSchema`, `DrEamsIntentType`, `IDariIntentType`, `IntentSchema`, `IntentEnvelopeSchema`, `HomeMenuOpenPayload`, `DiagSchemaSnapshotPayload`, `DiagRLSSnapshotPayload`, `DiagCodeReferenceScanPayload`, `DiagEnvChecklistPayload`, `AdminPatchProposalPayload`, `AdminMigrationProposalPayload`, `ModerationFlagContentPayload`, `JSONPatch`, `UIToast`, `UIDelta`, `ToolResultError`, `DrEamsRunRequest`, `DrEamsRunResponse`, `IDariRunRequest`, `IDariRunResponse`, `ExecuteRequest`, `ExecuteResponse`, `MemoryScope`, `AIMemory`, `AuditEntry` |
 | `types/dream-window.ts` | `DREAM_WINDOW_STATES` |
 | `types/experience.ts` | `MAX_WIDGETS` |
@@ -20147,7 +20102,34 @@ _No circular dependencies detected._
 | `types/user-sim.ts` | `PersonaTypeSchema`, `PersonaSchema`, `ViewportSchema`, `VisibleElementSchema`, `PerceptionFrameSchema`, `BehaviorSignalsSchema`, `AgentActionTypeSchema`, `AgentActionSchema`, `FindingSeveritySchema`, `AuditFindingSchema`, `SimStepSchema`, `JourneyOutcomeSchema`, `SimJourneyResultSchema` |
 | `types/widget-system-v2.ts` | `DreamSurface`, `transformToArray`, `transformFromArray`, `DEFAULT_FEED_HOST_CONFIG`, `getInstanceTransform`, `setInstanceTransform`, `isFeedHostConfig`, `isCompositeHostConfig`, `validateFeedHostConfig`, `validateTransform` |
 | `types/widgets.ts` | `getWidgetConfig`, `isWidgetInstance`, `isFeedWidget`, `isTextWidget`, `isMediaWidget` |
+| `ui/CustomizeModeContext.tsx` | `useCustomizeMode`, `CustomizeModeProvider` |
+| `ui/responsive.ts` | `BREAKPOINT_ORDER`, `clamp`, `cssClamp` |
+| `ui/runtimeViewport.ts` | `COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH`, `isCompactRuntimeViewport`, `getPreferredViewportHeight` |
+| `ui/skin-engine.ts` | `DEFAULT_SKIN`, `SKIN_PRESETS`, `getSkinPreset`, `applySkin`, `loadAllSkins`, `saveAllSkins`, `resolveSkin` |
+| `ui/theme-engine.ts` | `DEFAULT_OVERRIDES`, `THEME_PRESETS`, `getPreset`, `applyTheme`, `loadStoredTheme`, `saveTheme` |
+| `ui/theme.ts` | `getInitialDarkMode`, `setDarkMode`, `toggleDarkMode` |
+| `universalEditor.ts` | `createLocalEventBus`, `transferModule` |
+| `user-sim/userSimAgent.ts` | `PERSONAS`, `perceive`, `decideAction`, `SPEC_RULES`, `judgeStep`, `runJourney`, `judgeJourney` |
 | `vitest.config.ts` | `(default)` |
+| `warp/useWarp.ts` | `useWarp` |
+| `warp/warpEngine.ts` | `integrateKernel`, `decayKernel`, `gravityKernel`, `turbulenceKernel`, `spiralKernel`, `expansionKernel`, `flowKernel`, `dampingKernel`, `wrapBoundaryKernel`, `spawnParticle` |
+| `web3/client.ts` | `Web3Client` |
+| `web3/engagement.ts` | `trackEngagement`, `getEngagementStats`, `applyOptimisticEngagement`, `getOptimisticDelta`, `clearOptimisticDelta` |
+| `web3/index.ts` | `DEFAULT_CHAIN_ID`, `SUPPORTED_CHAINS`, `Web3Error`, `Web3Client`, `web3Client`, `applyOptimisticEngagement`, `clearOptimisticDelta`, `getEngagementStats`, `getOptimisticDelta`, `trackEngagement`, `getFromIpfs`, `isIpfsCid`, `pinCid`, `resolveIpfsUrl`, `uploadFileToIpfs`, `uploadToIpfs` |
+| `web3/ipfs.ts` | `uploadToIpfs`, `uploadFileToIpfs`, `getFromIpfs`, `pinCid`, `resolveIpfsUrl`, `isIpfsCid` |
+| `webgpu.ts` | `initializeWebGPURuntime`, `isWebGPUAvailable`, `getRendererBackend` |
+| `webgpu/adaptiveQuality.ts` | `getQualityProfile`, `getBatteryState`, `getDeviceMemoryGB`, `getCoreCount`, `resolveQualityTier`, `AdaptiveQualityController`, `gatherDeviceSignals` |
+| `webgpu/director.ts` | `buildPassPlan`, `scoreObject`, `classifyObject`, `decideObject`, `resolveFrameBudget`, `resolveTemporalState`, `resolveResolutionScale`, `webGPUDirector`, `defaultDirectorMetrics`, `defaultCameraSignals`, `babylonMeshToSceneObject` |
+| `webgpu/useWebGPUDirector.ts` | `useWebGPUDirector`, `WebGPUDirector`, `applyDirectorFrame`, `babylonMeshToSceneObject`, `buildSceneObjects`, `defaultCameraSignals`, `defaultDirectorMetrics`, `CameraSignals`, `CameraState`, `DirectorFrame`, `MeshHints`, `RuntimeMetrics` |
+| `widgets/CrossWidgetPosting.ts` | `MSG_TYPE_POST_REQUEST`, `MSG_TYPE_POST_RESULT`, `MSG_TYPE_FOCUS_REQUEST`, `MSG_TYPE_SEND_TEXT`, `MSG_TYPE_SEND_MEDIA`, `CrossWidgetPostingEngine` |
+| `widgets/WidgetBus.ts` | `(default)` |
+| `widgets/WidgetEngine.tsx` | `WidgetLibrary` |
+| `widgets/WidgetEventBus.ts` | `WidgetEventBus` |
+| `widgets/feed-resolver.ts` | `resolveFeedHost`, `resolvePublicAppPosts`, `subscribeAppPostsRealtime`, `getFeedChannelKey`, `subscribeFeedRealtime` |
+| `widgets/parse.ts` | `parseYouTubeConfig`, `parseTextConfig`, `parseEmbedConfig`, `parseSocialEmbedConfig`, `parseSocialProfileConfig`, `parseSocialFeedConfig`, `parseTypedWidget` |
+| `widgets/parseConfig.ts` | `parseYouTubeWidgetConfig`, `parseSocialEmbedWidgetConfig`, `parseSocialProfileWidgetConfig`, `parseSocialFeedWidgetConfig`, `inferProviderFromUrl` |
+| `widgets/useWidget.ts` | `useWidget`, `emitWidget`, `setWidgetMemory`, `getWidgetMemory`, `chainWidgets`, `spawnSubWidget`, `getSubWidgets` |
+| `widgets/widgetRegistry.ts` | `WIDGET_REGISTRY`, `getWidgetTypeDef`, `getWidgetTypesForConnector`, `resolveConnectorState` |
 
 ---
 
@@ -20317,10 +20299,93 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── vercel-deploy.yml
 │       ├── visual-schematic.yml
 │       └── visual-schematicpages.yml
+├── activity
+│   ├── aqs.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: calculateAQS, getUserMetrics, getAQS, qualifiesForPremiumCPV, getAQSTier, getAQSTierColor, formatAQS, calculateRealShitRate, formatRealShitRate, getAQSLeaderboard
+│   ├── boogieActivityPolicy.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/policy/boogiePolicy  (PolicyCategory, PolicyCategoryValue)
+│   │   └── ∅ unused: resolveActivityFeedTreatment, shouldExcludeFromFeed, detectActivityFraudSignals
+│   ├── revenueSplit.ts ∅
+│   │   └── ∅ unused: ACTIVITY_REVENUE_SPLIT, calculateActivityRevenueSplit, validateActivityRevenueSplit
+│   ├── scoring.ts ∅
+│   │   └── ∅ unused: calculateActivityPoints, getTierMultiplier, getVerificationStrength, getInnovationBonus, calculateVisibilityBoost, shouldPromoteActivity, getTierDisplayName, getTierDescription, getVerificationMethodDisplayName, validateTierForActivityType, calculateDecayDate, isDecayed
+│   ├── skipCredits.ts ∅
+│   │   └── ∅ unused: SKIP_CREDIT_SPEND_PER_AD, MIN_WATCHED_PERCENT_FOR_CREDIT, calculateSkipCreditsEarned, canSpendSkipCredit, spendSkipCredit, addSkipCredits
+│   ├── types.ts ∅
+│   │   └── ∅ unused: isValidActivityTier, CPV_PRICING, PLATFORM_HEALTH_TARGETS
+│   └── visibility-score.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/client  (createClient)
+│       └── ∅ unused: calculateVisibilityScore, calculateVisibilityScores, sortByVisibilityScore, getVisibilityRankedFeed, shouldPromotePost, estimateVisibilityScore
+├── admin
+│   ├── lockout.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServiceClient)
+│   │   └── ∅ unused: isAdminLocked, triggerAdminLockout, OWNER_EMAIL, isOwner, isDomainBlocked
+│   └── upgrade-readiness.ts ⚠ ∅
+│       ├── ⚠ @/lib/agents/idari  (PatchPlan, createPatchPlan)
+│       ├── ⚠ @/lib/feature-build  (BuildCycleState, DaydreamEnginManifest, FEATURE_MANIFESTS, FeatureEntry, calculateProgress, computeAllBuildCycleStates)
+│       ├── ⚠ @/lib/setup/checks  (SetupCheckSummary, getSetupStatus)
+│       └── ∅ unused: summarizeBuildReadiness, selectNextUpgradeTarget, buildPatchPlanChecklist, describeUpgradeBlockers, createUpgradeProposal, createUpgradeReadinessSnapshot
 ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── humanAI  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   └── personas  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   └── .gitkeep
+├── ai
+│   ├── handlers
+│   │   ├── dreams.ts
+│   │   ├── index.ts ∅
+│   │   │   └── ∅ unused: registerAllHandlers
+│   │   ├── navigation.ts
+│   │   └── social.ts
+│   ├── audit.ts ⚠
+│   │   ├── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION)
+│   │   └── ⚠ @/lib/supabase/server  (createServerClient)
+│   ├── boogie-policy.ts ∅
+│   │   └── ∅ unused: ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, CATEGORY_SEVERITY
+│   ├── boogie-verifier.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: detectSignals, verifyIntents, redactSecrets
+│   ├── boogieman.ts ∅
+│   │   └── ∅ unused: BLAST_RADIUS_ESCALATION_THRESHOLD, CONTAINMENT_ACTIONS, computeRiskScore, selectAction, boogieEnforce, getStrikeWeight, getStrikeExpiryDays, boogieEvaluate, BOOGIE_POLICY_VERSION
+│   ├── capability-gate.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   └── ∅ unused: getRoleRank, buildActorContext, hasCapability, meetsMinimumRole, authorizeIntent, authorizeIntents
+│   ├── CIC.ts ∅
+│   │   └── ∅ unused: CIC
+│   ├── confirm-token.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: generateConfirmToken, verifyConfirmToken, storeConfirmToken, consumeConfirmToken
+│   ├── confirm.ts ∅
+│   │   └── ∅ unused: makeConfirmToken, verifyConfirmToken
+│   ├── groq.ts ∅
+│   │   └── ∅ unused: groqChat, groqHealthCheck
+│   ├── idempotency.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: checkIdempotency
+│   ├── rate-limiter.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: RATE_LIMITS, checkRateLimit, getCurrentRPM
+│   ├── rateLimit.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: checkRateLimit, getCurrentRPM
+│   ├── schemas.ts ∅
+│   │   └── ∅ unused: AgentSchema, UIContextSchema, IntentTypeSchema, IntentSchema, IntentEnvelopeSchema, CodeContextSchema, DrEamsRunBodySchema, DrEamsRunResponseSchema, ExecuteBodySchema, ExecuteResponseSchema, BoogieDecisionSchema, BoogieResultSchema, BoogieOutputSchema, EnforcementActionSchema, EnforcementScopeSchema, StrikeSeveritySchema, StrikeEntrySchema, UserSafeExplanationSchema, InternalAuditEventSchema, BoogieEnforceOutputSchema, AppealRequestSchema, AppealEntrySchema, PolicyHealthSchema
+│   ├── tfBackend.ts ∅
+│   │   └── ∅ unused: initTfBackend
+│   ├── tool-router.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: getHandler, executeIntent, executeIntents
+│   └── triad.ts ⚠ ∅
+│       ├── ⚠ @/lib/ai/groq  (GroqMessage, groqChat)
+│       ├── ⚠ @/lib/ai/schemas  (Intent, IntentSchema, IntentType)
+│       └── ∅ unused: AI_MODELS, getOwnerEmail, isOwnerEmail, CANONICAL_NAV_ROUTES, planWithEams, validateWithIdari, boogiePolicyCheck
+├── api
+│   └── route.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│       └── ∅ unused: json, jsonError, jsonApiError, withApi, requireUser, parseJson, parseQuery
 ├── app
 │   ├── (internal)
 │   │   └── idari-console  [Observability & Idari Console]
@@ -20332,20 +20397,27 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── page.tsx ⚠
+│   │           ├── ⚠ @/lib/admin/upgrade-readiness  (createUpgradeReadinessSnapshot)
+│   │           ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │           ├── ⚠ @/lib/dev-bypass  (isDevAdminBypassActive)
 │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── about
 │   │   └── page.tsx
 │   ├── actions
 │   │   └── dream-docs.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │       ├── ⚠ @/lib/dream-docs/embed  (embedDocSection)
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── ∅ unused: createDreamDoc, publishDreamDoc, upsertDocSection
 │   ├── ads
 │   │   ├── create
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── slot
 │   │   │   └── [id]
 │   │   │       └── page.tsx ⚠
@@ -20358,24 +20430,36 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── account
 │   │   │   ├── delete-data
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── delete-dream
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/agents/agentBus  (runTriadConsensus)
+│   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient, createServiceClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── export-data
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── activity
 │   │   │   └── track
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/activity/scoring  (calculateActivityPoints, calculateDecayDate)
+│   │   │           ├── ⚠ @/lib/activity/types  (ActivityVerification, TrackActivityRequest, TrackActivityResponse, VERIFICATION_STRENGTH)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── admin
 │   │   │   ├── ai-chat
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/admin/lockout  (isAdminLocked, isOwner, triggerAdminLockout)
+│   │   │   │       ├── ⚠ @/lib/ai/groq  (GroqMessage, groqChat)
+│   │   │   │       ├── ⚠ @/lib/ai/triad  (AI_MODELS)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── ai-request
@@ -20384,57 +20468,117 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── child-safety
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── code-files
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/admin/lockout  (isAdminLocked, isDomainBlocked, isOwner, triggerAdminLockout)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── observability
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │   │           ├── ⚠ @/lib/api/route  (jsonApiError)
+│   │   │           ├── ⚠ @/lib/observability/collector  (getBufferStats, getSnapshot)
+│   │   │           ├── ⚠ @/lib/observability/correlator  (correlate)
+│   │   │           ├── ⚠ @/lib/observability/immediateAction  (buildImmediateRemediationAction)
+│   │   │           ├── ⚠ @/lib/observability/rootCauseAnalyzer  (inferRootCause)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── ads
 │   │   │   ├── orders
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── view
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/activity/aqs  (qualifiesForPremiumCPV)
+│   │   │           ├── ⚠ @/lib/activity/revenueSplit  (calculateActivityRevenueSplit)
+│   │   │           ├── ⚠ @/lib/activity/skipCredits  (calculateSkipCreditsEarned)
+│   │   │           ├── ⚠ @/lib/activity/types  (AdView, CPVTier, CPV_PRICING, TrackAdViewRequest, TrackAdViewResponse)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── agent
 │   │   │   └── session
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/agentOS  (getAgentOS)
+│   │   │           └── ⚠ @/lib/agentOS/hostTools  (codeEnginHostTools)
 │   │   ├── ai
 │   │   │   ├── boogieman
 │   │   │   │   ├── child-safety
 │   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │   │       ├── ⚠ @/lib/ai/boogieman  (BOOGIE_POLICY_VERSION, boogieEnforce)
+│   │   │   │   │       ├── ⚠ @/lib/ai/rateLimit  (checkRateLimit)
+│   │   │   │   │       ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
+│   │   │   │   │       ├── ⚠ @/lib/child-safety/childSafetyDetector  (isZeroTolerance, scanContent)
+│   │   │   │   │       ├── ⚠ @/lib/child-safety/imageClassifier  (classifyImage)
+│   │   │   │   │       ├── ⚠ @/lib/child-safety/ncmecReporter  (reportChildSafetyIncident)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │   ├── privacy-event
 │   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │   │       ├── ⚠ @/lib/ai/boogieman  (BOOGIE_POLICY_VERSION)
+│   │   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │   ├── status
-│   │   │   │   │   └── route.ts
+│   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       └── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION)
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │       ├── ⚠ @/lib/ai/boogieman  (BOOGIE_POLICY_VERSION, boogieEvaluate)
+│   │   │   │       ├── ⚠ @/lib/ai/rateLimit  (checkRateLimit)
+│   │   │   │       ├── ⚠ @/lib/ai/triad  (boogiePolicyCheck, isOwnerEmail)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── eams
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │       ├── ⚠ @/lib/ai/boogieman  (boogieEvaluate)
+│   │   │   │       ├── ⚠ @/lib/ai/confirm  (makeConfirmToken)
+│   │   │   │       ├── ⚠ @/lib/ai/rateLimit  (checkRateLimit, getCurrentRPM)
+│   │   │   │       ├── ⚠ @/lib/ai/schemas  (DrEamsRunBodySchema, DrEamsRunResponse)
+│   │   │   │       ├── ⚠ @/lib/ai/triad  (boogiePolicyCheck, isOwnerEmail, planWithEams, validateWithIdari)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── execute
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │   │       ├── ⚠ @/lib/ai/confirm  (verifyConfirmToken)
+│   │   │   │       ├── ⚠ @/lib/ai/rateLimit  (checkRateLimit)
+│   │   │   │       ├── ⚠ @/lib/ai/schemas  (ExecuteBodySchema, Intent)
+│   │   │   │       ├── ⚠ @/lib/ai/triad  (validateWithIdari)
+│   │   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── idari
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/agents/idari  (GenerationLawAssessment, assessGenerationLawScope, formatGenerationLawLoadCheck)
+│   │   │           ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │           ├── ⚠ @/lib/ai/boogieman  (boogieEvaluate)
+│   │   │           ├── ⚠ @/lib/ai/groq  (GroqMessage, groqChat)
+│   │   │           ├── ⚠ @/lib/ai/rateLimit  (checkRateLimit, getCurrentRPM)
+│   │   │           ├── ⚠ @/lib/ai/schemas  (DrEamsRunBodySchema, Intent)
+│   │   │           ├── ⚠ @/lib/ai/triad  (AI_MODELS, isOwnerEmail, validateWithIdari)
+│   │   │           ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── appeal
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/ai/audit  (writeAuditLog)
+│   │   │       ├── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION, RULE_CODES)
+│   │   │       ├── ⚠ @/lib/ai/schemas  (AppealRequestSchema)
+│   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── auth
@@ -20446,40 +20590,77 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │           └── ⚠ @/lib/supabase/config  (SUPABASE_CONFIG)
 │   │   ├── blocks
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/api/route  (jsonApiError)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── ci
 │   │   │   └── run
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           └── ⚠ @/lib/codeengin/runner  (runCiCommand)
 │   │   ├── close-friends
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── codeengin
 │   │   │   ├── diagnostics
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/diagnostics  (diagnoseFile, diagnoseWorkspace)
+│   │   │   │       └── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
 │   │   │   ├── file
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
+│   │   │   │       └── ⚠ @/lib/codeengin/workspaceStore  (createProjectFile, deleteProjectFile, moveProjectFile, readProjectFile, writeProjectFile)
 │   │   │   ├── git
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/git  (getGitDiff, getGitLog, getGitStatus)
+│   │   │   │       └── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
 │   │   │   ├── run
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
+│   │   │   │       └── ⚠ @/lib/codeengin/runner  (listRunnerCommands, runCodeEnginCommand)
 │   │   │   ├── search
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
+│   │   │   │       └── ⚠ @/lib/codeengin/search  (searchWorkspace)
 │   │   │   ├── upload
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │   │       ├── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
+│   │   │   │       └── ⚠ @/lib/codeengin/workspaceStore  (createCodeEnginWorkspace, getWorkspaceOverview)
 │   │   │   └── workspace
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/codeengin/auth  (assertCodeEnginAccess)
+│   │   │           ├── ⚠ @/lib/codeengin/projectGraph  (buildProjectGraph)
+│   │   │           ├── ⚠ @/lib/codeengin/pathSafety  (safeErrorMessage)
+│   │   │           ├── ⚠ @/lib/codeengin/workspaceStore  (createCodeEnginWorkspace, getWorkspaceOverview, listEditableFiles)
+│   │   │           └── ⚠ @/lib/codeengin/runner  (listRunnerCommands)
 │   │   ├── comments
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/child-safety/childSafetyDetector  (scanContent)
+│   │   │       ├── ⚠ @/lib/child-safety/ncmecReporter  (reportChildSafetyIncident)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── connectors
 │   │   │   ├── [provider]
 │   │   │   │   ├── connect
 │   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/bluesky  (blueskyVerify)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/github  (githubVerify)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/mastodon  (mastodonVerify)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/nostr  (nostrVerify)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/reddit  (redditVerify)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/providers/youtube  (youtubeVerify)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │   ├── disconnect
 │   │   │   │   │   └── route.ts ⚠
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20487,18 +20668,32 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── items
 │   │   │   │   │   └── route.ts ⚠
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │   ├── sync
 │   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       ├── ⚠ @/lib/connectors/reconcile  (reconcileConnector)
+│   │   │   │   │       ├── ⚠ @/lib/connectors/syncDispatch  (DISPATCH_SUPPORTED_PROVIDERS)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │   └── verify
 │   │   │   │       └── route.ts ⚠
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/bluesky  (blueskyVerify)
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/github  (githubVerify)
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/mastodon  (mastodonVerify)
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/nostr  (nostrVerify)
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/reddit  (redditVerify)
+│   │   │   │           ├── ⚠ @/lib/connectors/providers/youtube  (youtubeVerify)
 │   │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── cron
 │   │   │   │   └── route.ts ⚠
-│   │   │   │       └── ⚠ @/lib/supabase/server  (createServiceClient)
+│   │   │   │       ├── ⚠ @/lib/connectors/reconcile  (ReconcileResult, reconcileConnector)
+│   │   │   │       ├── ⚠ @/lib/connectors/syncDispatch  (DISPATCH_SUPPORTED_PROVIDERS)
+│   │   │   │       ├── ⚠ @/lib/connectors/webhookVerification  (isCronAuthorised)
+│   │   │   │       ├── ⚠ @/lib/supabase/server  (createServiceClient)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── instagram
 │   │   │   │   └── oauth
 │   │   │   │       ├── callback
@@ -20509,11 +20704,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │           └── route.ts
 │   │   │   ├── status
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/connectors/connectorRegistry  (ConnectorStatus)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── webhooks
 │   │   │   │   └── [provider]
-│   │   │   │       └── route.ts
+│   │   │   │       └── route.ts ⚠
+│   │   │   │           ├── ⚠ @/lib/connectors/deliveryStrategy  (supportsWebhook, supportsWebhookVerification)
+│   │   │   │           ├── ⚠ @/lib/connectors/webhookVerification  (extractMetaWebhookChallenge, extractYouTubeWebSubChallenge)
+│   │   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── youtube
 │   │   │       └── oauth
 │   │   │           ├── callback
@@ -20526,32 +20725,42 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── generative-fill
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── intelligence
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── transcribe
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/content/transcriptEditor  (parseSRT, parseVTT, totalDurationMs)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── voice-clone
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/content/voiceClone  (estimateDurationSeconds)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── contentengin
 │   │   │   ├── assets
 │   │   │   │   └── [assetId]
 │   │   │   │       ├── export
 │   │   │   │       │   └── gameengin
-│   │   │   │       │       └── route.ts
-│   │   │   │       └── route.ts
+│   │   │   │       │       └── route.ts ⚠
+│   │   │   │       │           └── ⚠ @/lib/contentengin/pipeline/paths  (safeSegment, safeUnder)
+│   │   │   │       └── route.ts ⚠
+│   │   │   │           └── ⚠ @/lib/contentengin/pipeline/paths  (safeUnder)
 │   │   │   ├── jobs
 │   │   │   │   ├── [jobId]
 │   │   │   │   │   └── route.ts
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/contentengin/pipeline/build  (buildAsset)
+│   │   │   │       └── ⚠ @/lib/contentengin/pipeline/bundle  (writeAssetBundle, zipDirectory)
 │   │   │   └── upload
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           └── ⚠ @/lib/contentengin/photo/imageAnalyzer  (analyzeImageBytes)
 │   │   ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   ├── hf  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   │   │   └── route.ts
@@ -20564,15 +20773,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── dream-windows
 │   │   │   ├── [id]
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_STATES, DreamWindowInstance, validateDreamWindowLayers)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_STATES)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── dreamengin
 │   │   │   └── os-status
 │   │   │       └── route.ts ⚠
@@ -20583,6 +20796,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── route.ts
 │   │   │   ├── suggested  [DreamR]
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/dreamr/closeFriendsVisibility  (filterByCloseFriends, loadVisibilityCircle)
+│   │   │   │       ├── ⚠ @/lib/media/postMedia  (getPrimaryPostMediaUrl)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── tally  [DreamR]
@@ -20593,7 +20808,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── feed
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/widgets/feed-resolver  (resolveFeedHost)
 │   │   │   ├── instances
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20601,101 +20817,132 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── transfer
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── embed-feed
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/feeds/embedFeedLoader  (EmbedFeedItem, loadEmbedFeed)
 │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   ├── favorites
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── feed
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/activity/visibility-score  (sortByVisibilityScore)
+│   │   │       ├── ⚠ @/lib/media/postMedia  (getPrimaryPostMediaUrl)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── follow
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── forge
 │   │   ├── gal
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── game-scores
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── gameengin
 │   │   │   └── crash-report
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/gameengin/brain-reader  (CRASH_REPORT_MAX_BYTES, isActiveCartridge, recordCrashReport)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── health
 │   │   │   └── route.ts
 │   │   ├── home-layout
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── journey
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── lab
 │   │   │   └── benchmarks
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── ledger-media
 │   │   │   └── route.ts ⚠
-│   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │       ├── ⚠ @/lib/media/ledger  (decodeLedgerBlob)
+│   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── likes
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── marketplace
 │   │   │   ├── request
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/marketplace/request  (buildContactRequestRecord, validateContactRequest)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── messages
 │   │   │   ├── boards
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/child-safety/childSafetyDetector  (scanContent)
+│   │   │       ├── ⚠ @/lib/child-safety/ncmecReporter  (reportChildSafetyIncident)
+│   │   │       ├── ⚠ @/lib/child-safety/scanMediaUrls  (scanMediaUrlsForChildSafety)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── metrics
 │   │   │   ├── platform
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/activity/types  (GetPlatformMetricsResponse)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient, createServiceClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── user
 │   │   │   │   └── [userId]
 │   │   │   │       └── route.ts ⚠
+│   │   │   │           ├── ⚠ @/lib/activity/types  (ActivityTier, GetUserMetricsResponse, UserMetrics, isValidActivityTier)
 │   │   │   │           └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── route.ts
+│   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/observability/otel  (getPrometheusMetrics)
+│   │   │       └── ⚠ @/lib/observability/otelBridge  (initOtelBridge)
 │   │   ├── music
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── notifications
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── platform
 │   │   │   └── errors
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── posts
 │   │   │   ├── [id]
 │   │   │   │   ├── save
 │   │   │   │   │   └── route.ts ⚠
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │   ├── view
 │   │   │   │   │   └── route.ts ⚠
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20709,43 +20956,57 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/child-safety/childSafetyDetector  (scanContent)
+│   │   │       ├── ⚠ @/lib/child-safety/ncmecReporter  (reportChildSafetyIncident)
+│   │   │       ├── ⚠ @/lib/child-safety/scanMediaUrls  (scanMediaUrlsForChildSafety)
+│   │   │       ├── ⚠ @/lib/media/postMedia  (getPrimaryPostMediaUrl)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── profile
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── projects
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── scheduled-posts
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── security
 │   │   │   └── scan
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── settings
 │   │   │   ├── appearance
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── feed
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   ├── notifications
 │   │   │   │   └── route.ts ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── privacy
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── setup
 │   │   │   ├── check
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts ⚠
+│   │   │   │       └── ⚠ @/lib/setup/checks  (getSetupStatus)
 │   │   │   └── google-oauth
 │   │   │       └── route.ts ⚠
 │   │   │           └── ⚠ @/lib/supabase/config  (SUPABASE_CONFIG, getServerSiteOrigin, getSupabaseAuthCallbackUrl)
@@ -20761,12 +21022,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── shellhub
 │   │   │   └── devices
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/connectors/providers/shellhub  (SHELLHUB_DEFAULT_SERVER, ShellHubDevice, shellhubListDevices)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── shop
 │   │   │   └── route.ts ⚠
+│   │   │       ├── ⚠ @/lib/shop/listings  (normalizeShopListing, validateShopListing)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── skip-credits
 │   │   │   ├── balance
 │   │   │   │   └── route.ts ⚠
@@ -20774,10 +21039,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── earn
 │   │   │   │   └── route.ts ⚠
+│   │   │   │       ├── ⚠ @/lib/activity/types  (EarnSkipCreditsRequest, EarnSkipCreditsResponse)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── use
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/activity/types  (UseSkipCreditsRequest, UseSkipCreditsResponse)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── social
@@ -20788,14 +21055,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── livekit
 │   │   │   │   ├── room
 │   │   │   │   │   └── route.ts ⚠
+│   │   │   │   │       ├── ⚠ @/lib/social/livekit  (LiveKitRoomInfo)
 │   │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │   └── token
 │   │   │   │       └── route.ts ⚠
+│   │   │   │           ├── ⚠ @/lib/social/livekit  (LiveKitError, generateServerToken)
 │   │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── rss-feed
-│   │   │       └── route.ts
+│   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/social/rss-feed  (DEFAULT_NITTER_INSTANCE, RssProvider, devtoUserRssUrl, facebookPageRssUrl, githubUserAtomUrl, hackerNewsRssUrl, hackerNewsUserRssUrl, mastodonUserRssUrl, mediumUserRssUrl, nostrGatewayRssUrl, parseRssFeed, pinterestRssUrl, podcastRssUrl, redditSubredditRssUrl, redditUserRssUrl, substackRssUrl, tiktokProfileRssUrl, tumblrRssUrl, twitterNitterRssUrl, youtubeChannelRssUrl, youtubePlaylistRssUrl)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── upload
 │   │   │   └── route.ts ⚠
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20804,10 +21076,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── layout
 │   │   │       └── route.ts ⚠
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │           └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── views
 │   │   │   └── track
 │   │   │       └── route.ts ⚠
+│   │   │           ├── ⚠ @/lib/activity/types  (TrackViewRequest, TrackViewResponse, View)
 │   │   │           ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │           └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── widgets
@@ -20817,14 +21091,21 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── route.ts
 │   │   └── youtube
 │   │       ├── channel
-│   │       │   └── route.ts
+│   │       │   └── route.ts ⚠
+│   │       │       ├── ⚠ @/lib/connectors/providers/youtube  (getYouTubeApiKey, youtubeSearchByQuery)
+│   │       │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │       ├── discovery
-│   │       │   └── route.ts
+│   │       │   └── route.ts ⚠
+│   │       │       ├── ⚠ @/lib/connectors/providers/youtube  (getYouTubeApiKey, youtubeDiscovery)
+│   │       │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── live-feed
-│   │           └── route.ts
+│   │           └── route.ts ⚠
+│   │               ├── ⚠ @/lib/connectors/providers/youtube  (getYouTubeApiKey, youtubeSearchByQuery)
+│   │               └── ⚠ @/lib/utils  (toErrorMessage)
 │   ├── auth  [Auth]
 │   │   ├── callback  [Auth]
 │   │   │   └── route.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/auth/nextRedirect  (resolveSafeNextPath)
 │   │   │       ├── ⚠ @/lib/supabase/config  (SUPABASE_CONFIG)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClientWithCustomCookies)
 │   │   │       └── ∅ unused: GET
@@ -20836,7 +21117,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── page.tsx ⚠
 │   │           └── ⚠ @/lib/supabase/client  (createClient)
 │   ├── connectors  [Connectors]
-│   │   ├── dream.ConnectorsClient.tsx ∅
+│   │   ├── dream.ConnectorsClient.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/connectorRegistry  (CONNECTOR_REGISTRY, ConnectorStatus, getConnectorDef)
+│   │   │   ├── ⚠ @/lib/connectors/installFlow  (SlotGrid)
+│   │   │   ├── ⚠ @/lib/widgets/widgetRegistry  (getWidgetTypeDef)
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
@@ -20846,50 +21130,68 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── engin  [BrandEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── code  [CodeEngin, Daydream System]
 │   │   │   ├── engin  [CodeEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── constellation  [Daydream System]
 │   │   │   ├── dream.ConstellationClient.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── create  [CreateEngin, Daydream System]
 │   │   │   ├── engin  [CreateEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── forge  [ForgeEngin (Engine Builder), Daydream System]
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
+│   │   │       ├── ⚠ @/lib/forge/forgeRegistry  (CREATIVE_ENGINES)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── game  [GameEngin, Daydream System]
 │   │   │   ├── dream.GamePageClient.tsx ∅
 │   │   │   │   └── ∅ unused: default
-│   │   │   ├── dream.shell.ImmersiveGameShell.tsx ∅
+│   │   │   ├── dream.shell.ImmersiveGameShell.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/gameengin/cartridge  (GameCartridge, GravityPreset)
+│   │   │   │   ├── ⚠ @/lib/gameengin/cartridges/loaders  (loadCartridge)
+│   │   │   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
+│   │   │   │   ├── ⚠ @/lib/games/navigation  (DEFAULT_GAME_ID, buildGameLaunchHref, resolveGameLaunchId)
+│   │   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   │   ├── ⚠ @/lib/gameengin/GameRuntime  (⬡ GameRuntime)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── page.tsx
 │   │   ├── games  [GameEngin, Daydream System]
 │   │   │   ├── engin  [GameEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │       ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath)
+│   │   │       ├── ⚠ @/lib/games/navigation  (buildGameLaunchHref)
+│   │   │       └── ⚠ @/lib/games/quality-plan  (GAME_QUALITY_PILLARS)
 │   │   ├── lab  [LabEngin, Daydream System]
 │   │   │   ├── engin  [LabEngin, Daydream System]
 │   │   │   │   └── page.tsx
 │   │   │   ├── portfolio  [LabEngin, PortfolioEngin, Daydream System]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── media-vault  [CreateEngin, Daydream System]
@@ -20900,59 +21202,96 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── upload  [StarMaker (Music Engin), Daydream System]
 │   │   │   │   └── page.tsx ⚠
 │   │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   └── play  [Daydream System]
-│   │       └── page.tsx
+│   │       └── page.tsx ⚠
+│   │           └── ⚠ @/lib/games/navigation  (DEFAULT_GAME_ID, buildGameLaunchHref)
 │   ├── discover  [Feed & Social]
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── dream-effects
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/gsap/useGsapEntrance  (useGsapEntrance)
+│   │       └── ⚠ @/lib/utils  (cn)
 │   ├── dreamdmbar  [HOME — DreamDMBar]
 │   │   ├── _components  [HOME — DreamDMBar]
 │   │   │   ├── dreamr  [HOME — DreamDMBar, DreamR]
 │   │   │   │   ├── algorithms  [HOME — DreamDMBar, DreamR]
-│   │   │   │   │   ├── botDetector.ts
-│   │   │   │   │   └── dreamrAlgorithm.ts
+│   │   │   │   │   ├── botDetector.ts ⚠
+│   │   │   │   │   │   └── ⚠ @/lib/dreamr/torridityLedger  (TORRIDITY_LEDGER_CONFIG, slog)
+│   │   │   │   │   └── dreamrAlgorithm.ts ⚠
+│   │   │   │   │       └── ⚠ @/lib/dreamr/torridityLedger  (calculateRank, derivePostMassMeta, getPostMass)
 │   │   │   │   ├── api  [HOME — DreamDMBar, DreamR]
 │   │   │   │   │   ├── feedHandler.ts ⚠
+│   │   │   │   │   │   ├── ⚠ @/lib/dreamr/closeFriendsVisibility  (filterByCloseFriends, loadVisibilityCircle)
+│   │   │   │   │   │   ├── ⚠ @/lib/dreamr/feedCursor  (deriveNextCursor, parseFeedParams)
+│   │   │   │   │   │   ├── ⚠ @/lib/media/postMedia  (PostMediaShape, getPrimaryPostMediaUrl)
 │   │   │   │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   │   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │   │   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   │   │   │   │   └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │   │   └── route.ts ∅
 │   │   │   │   │       └── ∅ unused: GET
-│   │   │   │   ├── dream.DreamRCore.tsx ∅
+│   │   │   │   ├── dream.DreamRCore.tsx ⚠ ∅
+│   │   │   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   ├── dream.DreamRFeed.tsx ∅
+│   │   │   │   ├── dream.DreamRFeed.tsx ⚠ ∅
+│   │   │   │   │   ├── ⚠ @/lib/botDetection  (Point, analyzeSwipe, tallyView)
+│   │   │   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (enginBridge)
+│   │   │   │   │   ├── ⚠ @/lib/dreamr/dreamrfeed  ((unknown — bare import))
 │   │   │   │   │   └── ∅ unused: (default)
 │   │   │   │   └── dreamsurface.dreamr.tsx ⚠ ∅
+│   │   │   │       ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
+│   │   │   │       ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
 │   │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   │   │       ├── ⚠ @/lib/dreamr/dreamrfeed  (⬡ DreamRFeed)
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── DreamBarDataBridge.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   │   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
+│   │   │   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
+│   │   │   │   ├── ⚠ @/lib/runtime/EnginDispatcher  (EnginDispatcher)
+│   │   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
 │   │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── DreamSpaceRegion.tsx ∅
+│   │   │   ├── DreamSpaceRegion.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/artifactStore  (listSystemArtifacts, listVisibleArtifacts, restoreArtifact)
+│   │   │   │   ├── ⚠ @/lib/dreamenginOS/OSContext  (useOS)
+│   │   │   │   ├── ⚠ @/lib/ledger  (AssetEntry, AssetType, getAllByKind)
+│   │   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   ├── DreamWidgetGrid.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   └── HomeDreamRegion.tsx ∅
+│   │   │   └── HomeDreamRegion.tsx ⚠ ∅
+│   │   │       ├── ⚠ @/lib/notifications/useNotifications  (useNotifications)
+│   │   │       ├── ⚠ @/lib/ui/runtimeViewport  (isCompactRuntimeViewport)
 │   │   │       └── ∅ unused: (default)
 │   │   ├── dreamspace  [HOME — DreamDMBar]
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx ⚠
+│   │   │       └── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   ├── dualruntime  [HOME — DreamDMBar, DREAMenginOS]
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx ⚠
+│   │   │       └── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   ├── homedream  [HOME — DreamDMBar]
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx ⚠
+│   │   │       └── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   ├── layout.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
+│   │   │   ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
+│   │   │   ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
+│   │   │   ├── ⚠ @/lib/media/postMedia  (getPrimaryPostMediaUrl)
 │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx
 │   ├── dreamr  [DreamR]
 │   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   ├── dreamspace
@@ -20965,128 +21304,160 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── brand  [BrandEngin]
 │   │   │   ├── campaigns  [BrandEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── identity  [BrandEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── code  [CodeEngin]
 │   │   │   ├── ai  [CodeEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── notebook  [CodeEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── projects  [CodeEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── create  [CreateEngin]
 │   │   │   ├── calendar  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── editor  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── queue  [CreateEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── games  [GameEngin]
 │   │   │   ├── builder  [GameEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath)
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── library  [GameEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath)
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── scores  [GameEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath)
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath)
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── lab  [LabEngin]
 │   │   │   ├── data  [LabEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── experiments  [LabEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── quantum  [LabEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── music  [StarMaker (Music Engin)]
 │   │   │   ├── arrange  [StarMaker (Music Engin)]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── library  [StarMaker (Music Engin)]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── studio  [StarMaker (Music Engin)]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── portfolio  [PortfolioEngin]
 │   │   │   ├── assets  [PortfolioEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── optimize  [PortfolioEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── quantum  [PortfolioEngin]
 │   │   │   │   └── page.tsx ⚠
+│   │   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   ├── layout.tsx ∅
 │   │   │   │   └── ∅ unused: metadata, (default)
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── layout.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── feed-settings
@@ -21098,11 +21469,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── gameengin  [GameEngin]
 │   │   ├── cartridges  [GameEngin]
 │   │   │   ├── [id]  [GameEngin]
-│   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx ⚠
+│   │   │   │       └── ⚠ @/lib/gameengin/cartridges/manifest  (getCartridgeManifest)
 │   │   │   └── page.tsx
 │   │   └── page.tsx
 │   ├── homedream  [HOME — DreamDMBar]
 │   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
+│   │       ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ⚠ @/lib/supabase/server  (createServerClient)
 │   ├── join  [Auth]
@@ -21119,12 +21493,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── new  [LabEngin]
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── login  [Auth]
 │   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/auth/nextRedirect  (resolveSafeNextPath)
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)
 │   │       └── ⚠ @/lib/supabase/config  (buildAuthCallbackUrl)
 │   ├── marketplace  [Marketplace & Shop]
@@ -21135,7 +21511,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── sell  [Marketplace & Shop]
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
@@ -21164,7 +21541,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── policy
-│   │   └── page.tsx
+│   │   └── page.tsx ⚠
+│   │       └── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION)
 │   ├── profile  [Profile & Edit Profile]
 │   │   ├── [handle]  [Profile & Edit Profile]
 │   │   │   └── page.tsx ⚠
@@ -21183,7 +21561,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── appearance  [Settings]
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   │       └── ⚠ @/lib/ui/theme-engine  (THEME_PRESETS)
 │   │   ├── controls  [Settings]
 │   │   │   ├── dream.ControlsClient.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -21218,23 +21598,27 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── safety  [Settings]
 │   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION)
 │   │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   ├── security  [Settings]
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │       └── ⚠ @/lib/supabase/config  (buildAuthCallbackUrl)
+│   │   │       ├── ⚠ @/lib/supabase/config  (buildAuthCallbackUrl)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   ├── widgets  [Settings]
 │   │   │   └── page.tsx
 │   │   └── page.tsx ⚠
+│   │       ├── ⚠ @/lib/ai/triad  (isOwnerEmail)
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   ├── shop  [Marketplace & Shop]
 │   │   ├── sell  [Marketplace & Shop]
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
@@ -21248,12 +21632,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── webgpu
 │   │   └── page.tsx
 │   ├── error.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/runtime/isAuthRelatedError  (isAuthRelatedError)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: (default)
-│   ├── global-error.tsx ∅
+│   ├── global-error.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── globals-enhanced.css
-│   ├── layout.tsx ∅
+│   ├── layout.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (DreamSystemProvider)
+│   │   ├── ⚠ @/lib/dreamenginOS/OSContext  (OSProvider)
+│   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (CustomizeModeProvider)
 │   │   └── ∅ unused: metadata, viewport, (default)
 │   ├── loading.tsx ∅
 │   │   └── ∅ unused: (default)
@@ -21269,6 +21658,41 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD
 │   └── mad-maxi-player.ts ∅
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
+├── assets
+│   ├── assetOptimizer.ts ∅
+│   │   └── ∅ unused: optimiseAsset, registryTagsForContext
+│   └── indexedDBStore.ts ∅
+│       └── ∅ unused: getOriginal, deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
+├── audio-fingerprint
+│   ├── fingerprint.ts ∅
+│   │   └── ∅ unused: recordFingerprint, matchFingerprint
+│   ├── index.ts ∅
+│   │   └── ∅ unused: matchFingerprint, recordFingerprint, Fingerprint, TimeSlice, buildPeakMap, FrequencyPeak, PeakMap, extractStem
+│   ├── peak-map.ts ∅
+│   │   └── ∅ unused: buildPeakMap
+│   └── stem-extractor.ts ∅
+│       └── ∅ unused: extractStem, extractStemAsync
+├── auth
+│   └── nextRedirect.ts ∅
+│       └── ∅ unused: resolveSafeNextPath, buildLoginRedirectPath
+├── babylon
+│   ├── createEngine.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/webgpu/director  ((unknown — bare import))
+│   │   └── ∅ unused: createBabylonEngine
+│   └── dreamengine-hybrid.ts ∅
+│       └── ∅ unused: initHybridEngine, onGrab
+├── bot-detection
+│   ├── detector.ts ∅
+│   │   └── ∅ unused: BotDetector
+│   ├── index.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/botDetection  (BotSessionResult, SwipeRecord, isBotSession)
+│   │   └── ∅ unused: HUMAN_MIN_DEVIATION_PX, BOT_MAX_DEVIATION_PX, HUMAN_MAX_CROSS_SIMILARITY, BOT_MIN_CROSS_SIMILARITY, HUMAN_MAX_COARSE_GRAIN_DIFF, BOT_MIN_COARSE_GRAIN_DIFF, HUMAN_MIN_ENTROPY, BOT_MAX_ENTROPY, HUMAN_MIN_SLOG_VEL_VAR, BOT_MAX_SLOG_VEL_VAR, VIEW_TALLY_THRESHOLD_MS, createViewTimer, PERFECT_LINE_THRESHOLD_PX, FREEZE_MIN_MS, FREEZE_MAX_MS, PerfectLineTrap, BotSessionTracker, analyzeSwipe, isBotSession, tallyView, BotSessionResult, Point, SwipeAnalysis, SwipeRecord, ViewTally
+│   ├── swipe-physics.ts
+│   └── view-tally.ts ∅
+│       └── ∅ unused: VIEW_TALLY_DURATION_MS, createViewTallyTimer, ViewTallyTracker
+├── branding
+│   └── logos.ts ∅
+│       └── ∅ unused: LOGO_PATHS, getRandomLogo, resetLogoCache
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── typecheck  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   │   └── error-files.txt
@@ -21278,192 +21702,331 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── routes.json
 │   ├── schema.json
 │   └── ui-surfaces.json
+├── child-safety
+│   ├── childSafetyDetector.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/child-safety/childSafetyDetector  (scanContent)
+│   │   └── ∅ unused: isZeroTolerance, isMinorToAdultImageBlock
+│   ├── imageClassifier.ts ⚠
+│   │   ├── ⚠ @/lib/ai/groq  (groqChat)
+│   │   └── ⚠ @/lib/utils  (toErrorMessage)
+│   ├── messageContextChecker.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/child-safety/messageContextChecker  (evaluateMessageContext)
+│   │   └── ∅ unused: evaluateMessageContext, CHILD_SAFETY_LAW_SUMMARY
+│   ├── ncmecReporter.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: reportChildSafetyIncident
+│   └── scanMediaUrls.ts ⚠ ∅
+│       ├── ⚠ @/lib/child-safety/scanMediaUrls  (scanMediaUrlsForChildSafety)
+│       └── ∅ unused: scanMediaUrlsForChildSafety, isImageUrl
+├── code
+│   └── drEamsCodeAssist.ts ∅
+│       └── ∅ unused: CODE_VOCABULARY, VOCAB_TERMS, matchCodeVocabulary, detectLanguageFromCode, classifyQuery, buildCodeSystemPrompt, buildCodePrompt, parseCodeResponse, detectNLCommand, generateCodeFromCommand, getCodeAssistCompletion
+├── codeengin
+│   ├── auth.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/admin/lockout  (isOwner)
+│   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: assertCodeEnginAccess
+│   ├── diagnostics.ts ∅
+│   │   └── ∅ unused: diagnoseFile, diagnoseWorkspace
+│   ├── git.ts ∅
+│   │   └── ∅ unused: getGitStatus, getGitDiff, getGitLog
+│   ├── pathSafety.ts ∅
+│   │   └── ∅ unused: CODEENGIN_ALLOWED_EXTENSIONS, safeErrorMessage
+│   ├── projectGraph.ts ∅
+│   │   └── ∅ unused: extractImports, buildProjectGraph
+│   ├── runner.ts ∅
+│   │   └── ∅ unused: CODEENGIN_COMMANDS, listRunnerCommands, runCodeEnginCommand, runCiCommand
+│   ├── search.ts ∅
+│   │   └── ∅ unused: searchWorkspace
+│   ├── types.ts
+│   └── workspaceStore.ts ∅
+│       └── ∅ unused: createCodeEnginWorkspace, getWorkspaceOverview, writeProjectFile, createProjectFile, deleteProjectFile, moveProjectFile, (default)
+├── collaboration
+│   └── index.ts ∅
+│       └── ∅ unused: DEFAULT_MODE_RULESETS, WebRTCCollabSession, createLocalCollabSession, createSupabaseCollabSession, createCollabSession, generateInviteLink, parseInviteLink, broadcastCursor, broadcastEdit, broadcastPlayhead, broadcastStatePatch, broadcastDataPacket, broadcastMediaSync, broadcastControlSignal, broadcastModeChange, broadcastPresenceUpdate
 ├── components
 │   ├── activity
-│   │   ├── dream.ActivityPostForm.tsx ∅
+│   │   ├── dream.ActivityPostForm.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/activity/scoring  (calculateActivityPoints, getTierDescription)
+│   │   │   ├── ⚠ @/lib/activity/types  (ActivityTier, VerificationMethod)
 │   │   │   └── ∅ unused: ActivityPostForm
-│   │   ├── dream.ActivityProfile.tsx
-│   │   └── dream.TierBadge.tsx
+│   │   ├── dream.ActivityProfile.tsx ⚠
+│   │   │   ├── ⚠ @/lib/activity/aqs  (formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor)
+│   │   │   └── ⚠ @/lib/activity/types  (ActivityTier, GetUserMetricsResponse, UserMetrics)
+│   │   └── dream.TierBadge.tsx ⚠
+│   │       ├── ⚠ @/lib/activity/scoring  (getTierDescription, getTierDisplayName)
+│   │       └── ⚠ @/lib/activity/types  (ActivityTier)
 │   ├── ads  [Marketplace & Shop]
-│   │   ├── dream.AdUnit.tsx
+│   │   ├── dream.AdUnit.tsx ⚠
+│   │   │   └── ⚠ @/lib/activity/types  (AdType)
 │   │   └── dream.SkipCreditBalance.tsx ∅
 │   │       └── ∅ unused: SkipCreditBalance
 │   ├── auth  [Auth]
 │   │   └── dream.PasswordField.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── connectors  [Connectors]
-│   │   ├── dream.AddSliceSheet.tsx ∅
+│   │   ├── dream.AddSliceSheet.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/connectorRegistry  (ConnectorDef, SliceTypeDef)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.ConnectDreamPrompt.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.ConnectorRow.tsx ∅
+│   │   ├── dream.ConnectorRow.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/connectorRegistry  (ConnectorDef, ConnectorStatus)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NoSlotDialog.tsx ∅
+│   │   ├── dream.NoSlotDialog.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/widgets/widgetRegistry  (WidgetTypeDef)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.PlacementMode.tsx ∅
+│   │   ├── dream.PlacementMode.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/installFlow  (handlePlacementCancel, handlePlacementDone)
+│   │   │   ├── ⚠ @/lib/widgets/widgetRegistry  (WidgetTypeDef)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.widget.ConnectorWidgetPicker.tsx ∅
 │   │   │   └── ∅ unused: TOP_10_CONNECTORS, (default)
-│   │   └── dream.widget.ConnectWidgetPrompt.tsx ∅
+│   │   └── dream.widget.ConnectWidgetPrompt.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/widgets/widgetRegistry  (WidgetTypeDef)
 │   │       └── ∅ unused: (default)
 │   ├── contentengin
-│   │   ├── AnimationPanel.tsx ∅
+│   │   ├── AnimationPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (ContentAsset)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── AssetPreview3D.tsx ∅
+│   │   ├── AssetPreview3D.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (ContentAsset)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── ContentEnginStudio.tsx ∅
+│   │   ├── ContentEnginStudio.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (ContentAsset, ContentRecipe)
+│   │   │   ├── ⚠ @/lib/engins/content/useContentEnginRuntime  (useContentEnginRuntime)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── ExportPanel.tsx ∅
+│   │   ├── ExportPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (ContentAsset)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── MaterialEditor.tsx ∅
+│   │   ├── MaterialEditor.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (MaterialDef)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── PartTreeEditor.tsx ∅
+│   │   ├── PartTreeEditor.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (PartNode)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── PhotoReferencePanel.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── RecipeEditor.tsx ∅
+│   │   ├── RecipeEditor.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/contentengin/assetTypes  (ContentRecipe, ExportProfile)
 │   │   │   └── ∅ unused: (default)
-│   │   └── RiggingPanel.tsx ∅
+│   │   └── RiggingPanel.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/contentengin/assetTypes  (ContentAsset)
 │   │       └── ∅ unused: (default)
 │   ├── core
 │   │   └── dream.CoreDream.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── customize  [Customize Mode]
 │   │   ├── panels  [Customize Mode]
-│   │   │   ├── dream.panel.ColorPanel.tsx ∅
+│   │   │   ├── dream.panel.ColorPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   │   │   ├── ⚠ @/lib/ui/skin-engine  (SKIN_PRESETS)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── dream.panel.EffectsPanel.tsx ∅
+│   │   │   ├── dream.panel.EffectsPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── dream.panel.FontPanel.tsx ∅
+│   │   │   ├── dream.panel.FontPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   │   │   ├── ⚠ @/lib/ui/skin-engine  (SkinFont)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   └── dream.panel.LayoutPanel.tsx ∅
+│   │   │   └── dream.panel.LayoutPanel.tsx ⚠ ∅
+│   │   │       ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   │       ├── ⚠ @/lib/ui/skin-engine  (SkinLayout, SkinShadow)
 │   │   │       └── ∅ unused: (default)
-│   │   ├── dream.bar.CustomizeModeBar.tsx ∅
+│   │   ├── dream.bar.CustomizeModeBar.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.bar.CustomizeToolbar.tsx ∅
+│   │   ├── dream.bar.CustomizeToolbar.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.GlobalCustomizeUI.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── daydream
 │   │   ├── starmaker  [StarMaker (Music Engin)]
-│   │   │   ├── dream.panel.CompingPanel.tsx ∅
+│   │   │   ├── dream.panel.CompingPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/music/starmakerDaw  (AudioTake, CompingState, TAKE_COLORS, TakeRating, createDemoTake)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── dream.panel.MultitrackArrangementPanel.tsx ∅
+│   │   │   ├── dream.panel.MultitrackArrangementPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/music/starmakerArrangement  (ARRANGEMENT_BARS, ArrangementClip, ArrangementSource, ArrangementTrackId, ArrangementTrackState)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── dream.panel.PianoRollPanel.tsx ∅
+│   │   │   ├── dream.panel.PianoRollPanel.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/music/starmakerDaw  (MidiNote, PianoRollQuantize, PianoRollState, createMidiNote, isBlackKey, midiPitchToName, snapToGrid)
 │   │   │   │   └── ∅ unused: (default)
-│   │   │   └── dream.panel.SessionViewPanel.tsx ∅
+│   │   │   └── dream.panel.SessionViewPanel.tsx ⚠ ∅
+│   │   │       ├── ⚠ @/lib/music/starmakerDaw  (SessionTrack, SessionViewState)
 │   │   │       └── ∅ unused: (default)
-│   │   ├── dream.CodeDreamIDE.tsx ∅
+│   │   ├── dream.CodeDreamIDE.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   ├── ⚠ @/lib/runtime/swapManager  (getSwap, toggleSwap)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.constellationmap.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.DiffViewer.tsx ∅
+│   │   ├── dream.DiffViewer.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/diff/diffUtils  (DEMO_DIFF, DiffFile, FullFileLine, buildFullFileLines, buildScrollMarkers, firstHunkIndex, nextHunkIndex, parseUnifiedDiff, prevHunkIndex)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.JourneyTrail.tsx ∅
+│   │   ├── dream.JourneyTrail.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/journey/journeyInsights  (AnnotatedDot, annotateDotsWithInsights, computeCurrentStreak)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.LabDreamIDE.tsx ∅
+│   │   ├── dream.LabDreamIDE.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   ├── ⚠ @/lib/runtime/swapManager  (getSwap, toggleSwap)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NGNEngin.tsx ∅
+│   │   ├── dream.NGNEngin.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/event-bus  (bridgeBuses, createEventBus)
+│   │   │   ├── ⚠ @/lib/forge-ngn/assembly  (EngineAssembly, PlacedPiece, addConnection, addPiece, createAssembly, movePiece, removePiece, serializeAssembly, validateAssembly)
+│   │   │   ├── ⚠ @/lib/forge-ngn/piece-registry  (PIECE_CATEGORIES, PIECE_REGISTRY, PieceCategory, PieceManifest, Port, getPiece, getPiecesByCategory)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.OpenDaydreamSideBButton.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.shell.DaydreamShell.tsx ∅
+│   │   ├── dream.shell.DaydreamShell.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/daydream/useDaydreamState  (useDaydreamState)
+│   │   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   │   ├── ⚠ @/lib/gsap/useGsapFlip  (useGsapFlip)
+│   │   │   ├── ⚠ @/lib/journey/journeyDots  (hasJourneyDot, logJourneyDot)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.StandaloneEnginSurface.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │       ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │       ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ∅ unused: (default)
 │   ├── draggable
-│   │   └── dream.DraggableModule.tsx ∅
+│   │   └── dream.DraggableModule.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │       └── ∅ unused: (default)
 │   ├── dreamengin  [DREAMenginOS]
 │   │   ├── engine  [DREAMenginOS]
 │   │   │   ├── math.ts ∅
 │   │   │   │   └── ∅ unused: clamp, wrap, unitComplexFromAngle, unitComplexRotate
 │   │   │   └── types.ts
-│   │   ├── dream.bar.DrEamsSearchBar.tsx ∅
+│   │   ├── dream.bar.DrEamsSearchBar.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamengin/drEamsSearch  (NavSuggestion, buildDrEamsRequest, buildDreamDMUrl, matchNavSuggestions, parseDrEamsReply, truncatePreview)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.CanvasDropZone.tsx ∅
+│   │   ├── dream.CanvasDropZone.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/offline/offlineCache  (cacheAsset, enqueueSyncAction)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.DREAMenginOS.tsx ∅
+│   │   ├── dream.DREAMenginOS.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/agents/agentBus  (IdariEventDetail, onIdariEvent)
+│   │   │   ├── ⚠ @/lib/babylon/createEngine  (createBabylonEngine)
+│   │   │   ├── ⚠ @/lib/dreamengin/osSubsystemManifest  (DREAMENGIN_OS_SUBSYSTEM_MANIFEST, DreamenginOSSubsystemNode)
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (RuntimeRegion)
+│   │   │   ├── ⚠ @/lib/intelligence/useSessionIntelligence  (useSessionIntelligence)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (DreamOSSharedArtifact, RuntimeContext, dreamOSBus)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (PeerState, bridge)
+│   │   │   ├── ⚠ @/lib/runtime/EnginDispatcher  (DispatcherStats, EnginDispatcher)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.DrEamsCanvas.tsx ∅
+│   │   ├── dream.DrEamsCanvas.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamengin/DrEamsAnimator  (DrEamsAction, DrEamsAnimator)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.HomeControls.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.menu.NexusMenu.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.menu.OutdreamMenu.tsx ∅
+│   │   ├── dream.menu.OutdreamMenu.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamnav/delta  (Node)
+│   │   │   ├── ⚠ @/lib/dreamnav/path  (dispatchTauPath, findTauPath)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.overlay.ViewAllDreamsOverlay.tsx ∅
+│   │   ├── dream.overlay.ViewAllDreamsOverlay.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamnav/delta  (Node)
+│   │   │   ├── ⚠ @/lib/dreamnav/path  (dispatchTauPath, findTauPath)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.CrossEnginStatusPanel.tsx ∅
+│   │   ├── dream.panel.CrossEnginStatusPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (PeerState, bridge)
 │   │   │   └── ∅ unused: CrossEnginStatusPanel, (default)
 │   │   ├── dream.panel.DrEamsPanel.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.scene.BabylonGameScene.tsx ∅
+│   │   ├── dream.scene.BabylonGameScene.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/babylon/createEngine  (createBabylonEngine)
+│   │   │   ├── ⚠ @/lib/god-tier/godTierEngine  (DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals)
+│   │   │   ├── ⚠ @/lib/webgpu/director  (WebGPUDirector, applyDirectorFrame, buildSceneObjects, defaultCameraSignals)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.scene.DrEamsScene.tsx ∅
+│   │   ├── dream.scene.DrEamsScene.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/babylon/createEngine  (createBabylonEngine)
+│   │   │   ├── ⚠ @/lib/god-tier/godTierEngine  (BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.scene.PortfolioOptimizationScene.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.shell.EnginShell.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.widget.AppearanceWidget.tsx ∅
+│   │   ├── dream.widget.AppearanceWidget.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ui/theme-engine  (THEME_PRESETS)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dreamsurface.dreamengin.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── dreamnav  [Menus & Navigation, Dream Navigation]
 │   │   ├── dream.DreamNavControls.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   └── dreamsurface.dreamnav.tsx
+│   │   └── dreamsurface.dreamnav.tsx ⚠
+│   │       └── ⚠ @/lib/dreamnav/delta  (Action, DEFAULT_NAV_STATE, Node, reduceNav)
 │   ├── dreamr  [DreamR]
 │   │   ├── dream.CloseFriendsSettings.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.DreamRChannelPanel.tsx ∅
+│   │   ├── dream.panel.DreamRChannelPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.panel.DreamRCreatorPanel.tsx ∅
+│   │   └── dream.panel.DreamRCreatorPanel.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
 │   │       └── ∅ unused: (default)
 │   ├── dreams
 │   │   ├── dream.connectorlayer.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.DraggableDream.tsx ∅
+│   │   ├── dream.DraggableDream.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreams/drag  (DREAM_DRAG_MIME, DreamDragData, serializeDreamDragData)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.featurelayer.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.GlobalDragLayer.tsx ∅
+│   │   ├── dream.GlobalDragLayer.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreams/drag  (DreamDragData)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.outputlayer.tsx ∅
+│   │   ├── dream.outputlayer.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreams/profileProjection  (canRenderProjection)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.RuntimeMemoryHUD.tsx ∅
+│   │   ├── dream.panel.RuntimeMemoryHUD.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/intelligence/continuityHelpers  (formatArtifactKind, getArtifactAccent)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (DreamOSSnapshot, dreamOSBus)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.PlatformErrorReporter.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.shell.DreamShell.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.shell.SharedDreamShell.tsx ∅
+│   │   ├── dream.shell.SharedDreamShell.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/sharedDream  (DreamBroadcastPayload)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── ∅ unused: SharedDreamShell, (default)
 │   │   ├── dream.SlideOverPanel.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.widget.SuperDreamWidget.tsx ∅
+│   │   ├── dream.widget.SuperDreamWidget.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_STATES)
+│   │   │   ├── ⚠ @/lib/dream-window/useDreamWindowActions  (useDreamWindowActions)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.window.JourneyDreamWindow.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dreamsurface.dreamspace.tsx ∅
+│   │   ├── dreamsurface.dreamspace.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreams/useDreamsRuntime  (useDreamsRuntime)
+│   │   │   ├── ⚠ @/lib/forge/forgeIntelligence  (ForgeHistoryEntry, ForgeSuggestion, generateSuggestions, readForgeHistory)
+│   │   │   ├── ⚠ @/lib/forge/forgeMomentum  (MomentumLevel, MomentumSnapshot, computeMomentum, getLevelColor)
+│   │   │   ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY, ForgeActivityPulse, readForgeActivity)
+│   │   │   ├── ⚠ @/lib/intelligence/continuityHelpers  (resolveResumeDest)
+│   │   │   ├── ⚠ @/lib/intelligence/useSessionIntelligence  (useSessionIntelligence)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dreamsurface.shell.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   └── dreamsurface.window.tsx ∅
+│   │   └── dreamsurface.window.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/universalEditor  (ModuleManifest, RuntimeId)
 │   │       └── ∅ unused: DreamWindowShell, (default)
 │   ├── engines
 │   │   ├── brand  [BrandEngin]
 │   │   │   ├── panels  [BrandEngin]
 │   │   │   │   ├── dream.panel.CampaignsPanel.tsx ∅
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   └── dream.panel.IdentityPanel.tsx ∅
+│   │   │   │   └── dream.panel.IdentityPanel.tsx ⚠ ∅
+│   │   │   │       ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.BrandEnginApp.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -21478,6 +22041,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── dream.panel.ProjectsPanel.tsx ⚠ ∅
 │   │   │   │       ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.CodeEnginApp.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -21497,9 +22061,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── ∅ unused: CreateEnginApp, CalendarPanel, EditorPanel, QueuePanel
 │   │   ├── games  [GameEngin]
 │   │   │   ├── panels  [GameEngin]
-│   │   │   │   ├── dream.panel.BuilderPanel.tsx ∅
+│   │   │   │   ├── dream.panel.BuilderPanel.tsx ⚠ ∅
+│   │   │   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   ├── dream.panel.LibraryPanel.tsx ∅
+│   │   │   │   ├── dream.panel.LibraryPanel.tsx ⚠ ∅
+│   │   │   │   │   ├── ⚠ @/lib/games/catalog  (GAME_CATALOG)
+│   │   │   │   │   ├── ⚠ @/lib/games/navigation  (buildGameLaunchHref)
 │   │   │   │   │   └── ∅ unused: (default)
 │   │   │   │   └── dream.panel.ScoresPanel.tsx ∅
 │   │   │   │       └── ∅ unused: (default)
@@ -21525,7 +22092,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   └── ∅ unused: (default)
 │   │   │   │   ├── dream.panel.MusicLibraryPanel.tsx ∅
 │   │   │   │   │   └── ∅ unused: (default)
-│   │   │   │   └── dream.panel.StudioPanel.tsx ∅
+│   │   │   │   └── dream.panel.StudioPanel.tsx ⚠ ∅
+│   │   │   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.MusicEnginApp.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -21559,37 +22127,59 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── feed  [Feed & Social]
 │   │   ├── dream.AlgorithmEngine.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.CommentSection.tsx ∅
+│   │   ├── dream.CommentSection.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (formatRelativeTime)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.FeedVideoCard.tsx ∅
+│   │   ├── dream.FeedVideoCard.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.FollowButton.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.FollowOnboarding.tsx ∅
 │   │       └── ∅ unused: FOLLOW_OPTIONS, saveFollowSetting, (default)
 │   ├── feeds  [Feed & Social]
-│   │   └── dream.widget.EmbedFeedWidget.tsx ∅
+│   │   └── dream.widget.EmbedFeedWidget.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/feeds/embedFeedLoader  (EmbedFeedItem)
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── ∅ unused: (default)
 │   ├── forge  [ForgeEngin (Engine Builder)]
-│   │   ├── dream.EngineBuilderCanvas.tsx ∅
+│   │   ├── dream.EngineBuilderCanvas.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/componentInventory  (AtomicComponent, COMPONENT_INVENTORY, ComponentCategory)
+│   │   │   ├── ⚠ @/lib/forge/engineForge  (AtomicPiece, EngineAssembly, Wire, atomicPieceFromComponent, createAssembly, deserializeAssembly, serializeAssembly, validateAssembly)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.AIBuilderPanel.tsx ∅
+│   │   ├── dream.panel.AIBuilderPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/forge/forgeBuild  (ForgeBuildRecord, ForgeLogEvent, canBuildToday, readForgeBuilds)
+│   │   │   ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY)
+│   │   │   ├── ⚠ @/lib/forge/useForgeBuild  (useForgeBuild)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.widget.ForgeMomentumWidget.tsx ∅
+│   │   └── dream.widget.ForgeMomentumWidget.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/forge/forgeMomentum  (MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji)
 │   │       └── ∅ unused: (default)
 │   ├── gameengin  [GameEngin]
 │   │   ├── input  [GameEngin]
 │   │   │   └── DualSenseManager.ts
-│   │   ├── dream.cartridge.CartridgeBrowser.tsx ∅
+│   │   ├── dream.cartridge.CartridgeBrowser.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST, CartridgeManifestEntry, getCartridgeCategories)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.cartridge.CartridgeErrorBoundary.tsx
-│   │   ├── dream.cartridge.CartridgeLauncher.tsx ∅
+│   │   ├── dream.cartridge.CartridgeErrorBoundary.tsx ⚠
+│   │   │   └── ⚠ @/lib/utils  (toErrorMessage)
+│   │   ├── dream.cartridge.CartridgeLauncher.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/cartridge  (GameCartridge, GravityPreset, RuntimeBackendDiagnostics)
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/loaders  (LoadedCartridgeBundle, loadCartridgeBundle)
+│   │   │   ├── ⚠ @/lib/gameengin/backendNegotiator  (negotiateRendererBackend, serverBootstrapDiagnostics)
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CartridgeManifestEntry)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   ├── ⚠ @/lib/gameengin/GameRuntime  (⬡ GameRuntime)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.cartridge.FeaturedCartridges.tsx ∅
+│   │   ├── dream.cartridge.FeaturedCartridges.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST, CartridgeManifestEntry)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.CartridgeRegistryBootstrap.tsx ∅
+│   │   ├── dream.CartridgeRegistryBootstrap.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/registerCartridges  (registerCartridges)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.CrashReportModal.tsx ∅
+│   │   └── dream.CrashReportModal.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── ∅ unused: (default)
 │   ├── games  [GameEngin]
 │   │   ├── _fx  [GameEngin]
@@ -21600,7 +22190,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── authoredZonePacks.ts
 │   │   │   ├── config.ts ∅
 │   │   │   │   └── ∅ unused: MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, BOSSES
-│   │   │   ├── dream.MadmaxiGame.tsx ∅
+│   │   │   ├── dream.MadmaxiGame.tsx ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/babylon/createEngine  (createBabylonEngine)
+│   │   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useSubmitScore)
+│   │   │   │   ├── ⚠ @/lib/games/useImmersiveGameLayout  (useImmersiveGameLayout)
+│   │   │   │   ├── ⚠ @/lib/god-tier/godTierEngine  (BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultUXSignals)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   ├── index.ts ∅
 │   │   │   │   └── ∅ unused: default, TOTAL_LEVELS, getZoneIdx, isBossLevel
@@ -21612,82 +22206,139 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── vfx.ts
 │   │   ├── css-modules.d.ts ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.AvenueOfMirrors.tsx ∅
+│   │   ├── dream.AvenueOfMirrors.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/reactCartridge  (useGameEngineAPI)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.BabylonSideScroller.tsx ∅
 │   │   │   └── ∅ unused: MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, default, getEnemyKindForIndex, getMadmaxiLevelDefinition, getPowerUpForIndex
-│   │   ├── dream.DefuseRitual.tsx ∅
+│   │   ├── dream.DefuseRitual.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.EchoArena.tsx ∅
+│   │   ├── dream.EchoArena.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
+│   │   │   ├── ⚠ @/lib/games/mobileControls  (useRegisterMobileGameControls)
+│   │   │   ├── ⚠ @/lib/games/performance-baseline  (createPerformanceBaselineSampler, publishGamePerformanceBaseline)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.EnginFracture.tsx ∅
+│   │   ├── dream.EnginFracture.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.GameController.module.css
 │   │   ├── dream.GameController.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.GamesHub.tsx ∅
+│   │   ├── dream.GamesHub.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/avatar  (getAvatarDataUrl, setPlayAsMe)
+│   │   │   ├── ⚠ @/lib/games/catalog  (GAME_CATALOG, GameCatalogEntry)
+│   │   │   ├── ⚠ @/lib/games/library-state  (GAME_LIBRARY_SELECTION_STORAGE_KEY, GAME_LIBRARY_SESSION_STORAGE_KEY, SavedGameSession, upsertSavedGameSession)
+│   │   │   ├── ⚠ @/lib/games/navigation  (buildGameLaunchHref, resolveGameLaunchId)
+│   │   │   ├── ⚠ @/lib/gsap/useGsapEntrance  (useGsapEntrance)
+│   │   │   ├── ⚠ @/lib/gsap/useGsapScrollReveal  (useGsapScrollReveal)
+│   │   │   ├── ⚠ @/lib/hooks/useMotionTilt  (useMotionTilt)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.Glassfall.tsx ∅
+│   │   ├── dream.Glassfall.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.hud.GameHUD.tsx ∅
+│   │   ├── dream.hud.GameHUD.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/mobileControls  (MobileHudMode)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.hud.LegacyGameHUD.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.hud.MobileGameHUD.module.css
-│   │   ├── dream.hud.MobileGameHUD.tsx ∅
+│   │   ├── dream.hud.MobileGameHUD.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/mobileControls  (MOBILE_HUD_BUTTON_RING, MobileControlVector, MobileHudButton, MobileHudMode, emitMobileButton, emitMobileLook, emitMobileMove, fireGameRemoteInput, getRemoteActionForMobileButton, getRemoteMoveAction, normalizeStickVector)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.Leaderboard.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.LexiconSolitaire.tsx ∅
+│   │   ├── dream.LexiconSolitaire.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.MadMaxiWildfall.tsx ∅
+│   │   ├── dream.MadMaxiWildfall.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/reactCartridge  (useGameEngineAPI)
+│   │   │   ├── ⚠ @/lib/games/madmaxi-wildfall-world  (WILDFALL_HEROES, WILDFALL_ZONES, WildfallHeroId, WildfallInputFrame, WildfallState, activateWildfallHeroAbility, castWildfallRay, createWildfallState, currentWildfallZone, resolveWildfallMirror, stepWildfall, switchWildfallHero, wildfallBillboards)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NeonDrift.tsx ∅
+│   │   ├── dream.NeonDrift.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin  (EliteGameEngine)
+│   │   │   ├── ⚠ @/lib/gameengin/ai-director  (AIDirector)
+│   │   │   ├── ⚠ @/lib/gameengin/post-fx  (PostFXManager)
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
+│   │   │   ├── ⚠ @/lib/games/performance-baseline  (publishGamePerformanceBaseline)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NiteFlyerSolarHymn.tsx ∅
+│   │   ├── dream.NiteFlyerSolarHymn.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NullCathedral.tsx ∅
+│   │   ├── dream.NullCathedral.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.RecordingControls.tsx ∅
+│   │   ├── dream.RecordingControls.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/h265-encoder  (CaptureResult, GameCapture)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.GameRemote.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.remote.GameRemoteSurface.tsx ∅
+│   │   ├── dream.remote.GameRemoteSurface.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/useRemoteChannel  (broadcastGameInput)
+│   │   │   ├── ⚠ @/lib/games/gameControllerButtons  (ButtonInteractionManager, ControllerButton)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.remote.LegacyGameRemote.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.SerpentSiege.tsx ∅
+│   │   ├── dream.SerpentSiege.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.VoidlineGP.tsx ∅
+│   │   └── dream.VoidlineGP.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/games/hooks  (useGameAutoStart, useGamePhase, useSubmitScore)
 │   │       └── ∅ unused: (default)
 │   ├── home  [HOME — DreamDMBar]
-│   │   ├── dream.ActiveModuleSurface.tsx ∅
+│   │   ├── dream.ActiveModuleSurface.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/activeModulesStore  (loadActiveModules, removeActiveModule, saveActiveModule, saveActiveModulesForRegion, transferActiveModuleRegion)
+│   │   │   ├── ⚠ @/lib/artifactStore  (loadArtifacts, saveArtifact)
+│   │   │   ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_STATES)
+│   │   │   ├── ⚠ @/lib/dream-window/useDreamWindowActions  (useDreamWindowActions)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.bar.GlobalDreamBar.tsx ∅
+│   │   ├── dream.bar.GlobalDreamBar.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   │   ├── ⚠ @/lib/home-buttons/contextual-home  (runHomeAction)
+│   │   │   ├── ⚠ @/lib/routing/surfaces  (isPublicSurfacePath)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.bar.PersistentDreamBar.tsx ∅
+│   │   ├── dream.bar.PersistentDreamBar.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
+│   │   │   ├── ⚠ @/lib/dreamenginOS/OSContext  (useOS)
+│   │   │   ├── ⚠ @/lib/dreams/drag  (DreamRuntime, parseDreamDragData, surfaceForRuntime, transferDream)
+│   │   │   ├── ⚠ @/lib/routing/surfaces  (isPublicSurfacePath)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.DaydreamPulseStrip.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.FlagshipEnginesStrip.tsx ∅
+│   │   ├── dream.FlagshipEnginesStrip.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/forge/forgeMomentum  (MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji)
+│   │   │   ├── ⚠ @/lib/forge/forgeRegistry  (getEnginById)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.NeuralSeamCanvas.tsx ∅
+│   │   ├── dream.NeuralSeamCanvas.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
+│   │   │   ├── ⚠ @/lib/dreamdm/bridgeSeamFlow  (SeamParticle, createIdleParticle, createSeamParticle, evictDeadParticles, tickParticles)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.widget.DreamWidget.tsx ∅
+│   │   └── dream.widget.DreamWidget.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/utils  (cn)
 │   │       └── ∅ unused: (default)
 │   ├── idari  [AI Systems (Boogieman / Dr.EAMS / Idari), Observability & Idari Console]
-│   │   └── dream.PlatformHealth.tsx
+│   │   └── dream.PlatformHealth.tsx ⚠
+│   │       └── ⚠ @/lib/activity/types  (GetPlatformMetricsResponse, PLATFORM_HEALTH_TARGETS)
 │   ├── landing
 │   │   ├── dream.LandingNav.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.LandingProductStatement.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.scene.UniverseField.tsx ∅
+│   │   └── dream.scene.UniverseField.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/torridity/constants  (n)
 │   │       └── ∅ unused: (default)
 │   ├── marketplace  [Marketplace & Shop]
 │   │   ├── dream.MarketplaceListingCard.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.MarketplaceRequestButton.tsx ∅
+│   │   └── dream.MarketplaceRequestButton.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── ∅ unused: (default)
 │   ├── menus  [Menus & Navigation]
 │   │   ├── dream.menu.DreamRadialMenu.tsx ∅
@@ -21704,53 +22355,73 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── dream.BoardComposer.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── music  [StarMaker (Music Engin)]
-│   │   └── dream.SoundRecorder.tsx ∅
+│   │   └── dream.SoundRecorder.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │       └── ∅ unused: (default)
 │   ├── onboarding
 │   │   └── dream.OnboardingTip.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
-│   │   └── dream.scene.BabylonOptimizeroScene.tsx ∅
+│   │   └── dream.scene.BabylonOptimizeroScene.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/babylon/createEngine  (createBabylonEngine)
+│   │       ├── ⚠ @/lib/god-tier/godTierEngine  (BabylonSceneLike, DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals)
+│   │       ├── ⚠ @/lib/optimizer/babylon-optimizero  (BabylonUICandidate, BabylonUIGenerator, BabylonUIOptimizero)
+│   │       ├── ⚠ @/lib/optimizer/creative-optimizero  (CHAOS_WEIGHTS, DEFAULT_WEIGHTS, OptimizeroResult, OptimizeroWeights, STABLE_WEIGHTS)
 │   │       └── ∅ unused: (default)
 │   ├── overlays
 │   │   └── dream.RootStatusScreen.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── panels  [Settings]
-│   │   ├── dream.panel.AlgorithmPanel.tsx ∅
+│   │   ├── dream.panel.AlgorithmPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.AppearancePanel.tsx ∅
+│   │   ├── dream.panel.AppearancePanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   │   ├── ⚠ @/lib/ui/theme-engine  (DEFAULT_OVERRIDES, THEME_PRESETS)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.ConnectorsPanel.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.ControlsPanel.tsx ∅
+│   │   ├── dream.panel.ControlsPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.DataPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.FeedPanel.tsx ∅
 │   │   │   └── ∅ unused: default
-│   │   ├── dream.panel.FeedSettingsPanel.tsx ∅
+│   │   ├── dream.panel.FeedSettingsPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/feed/feedTopics  (ALL_TOPICS, DEFAULT_TOPIC_IDS, FEED_TOPICS_KEY, loadActiveTopicIds)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.HelpPanel.tsx ∅
+│   │   ├── dream.panel.HelpPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.MarketplacePanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.PrivacyPanel.tsx ∅
+│   │   ├── dream.panel.PrivacyPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.ProfilePanel.tsx ⚠ ∅
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.SafetyPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ai/boogie-policy  (BOOGIE_POLICY_VERSION)
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.panel.SettingsPanel.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.panel.WidgetsPanel.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
 │   │       ├── ⚠ @/lib/supabase/client  (createClient)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ∅ unused: (default)
@@ -21758,25 +22429,42 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.EditableAvatar.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.ProfileCanvas.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/social/platforms  (PROFILE_SHARE_PLATFORMS)
 │   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.ProfileCustomizeButton.tsx ∅
+│   │   ├── dream.ProfileCustomizeButton.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.widget.ProfileWidgetGrid.tsx ∅
 │   │       └── ∅ unused: DEFAULT_CONFIG, DEFAULT_WIDGETS, DEFAULT_DREAMS, WIDGET_TRAY, (default)
 │   ├── providers
-│   │   ├── dream.AppSurfaceShell.tsx ∅
+│   │   ├── dream.AppSurfaceShell.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (DreamSystemProvider)
+│   │   │   ├── ⚠ @/lib/dreamenginOS/OSContext  (OSProvider)
+│   │   │   ├── ⚠ @/lib/routing/surfaces  (isPublicSurfacePath)
+│   │   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (CustomizeModeProvider)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.GodTierProvider.tsx ∅
+│   │   ├── dream.GodTierProvider.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/god-tier/useGodTier  (useGodTier)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.ThemeProvider.tsx ∅
+│   │   └── dream.ThemeProvider.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/ui/theme-engine  (DEFAULT_OVERRIDES, UserOverrides, applyTheme, getPreset, loadStoredTheme, saveTheme)
 │   │       └── ∅ unused: (default)
 │   ├── runtime  [Runtime Core]
-│   │   ├── dream.DualRuntimeContainer.tsx ∅
+│   │   ├── dream.DualRuntimeContainer.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntime  (DEFAULT_DUAL_RUNTIME, DualRuntimeState, RuntimeWorld, isHomeActiveTop, makeDreamSpaceActiveSurface, makeHomeActiveTop, makeHomeDreamSpaceActive)
+│   │   │   ├── ⚠ @/lib/runtime/iEngine  (ActorContext, IntentBus, JsonObject, JsonValue, createIntentPacket, dualRuntimeManifest, dualRuntimeRuleSet, negotiateCompatibility)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.RuntimeView.tsx ∅
+│   │   ├── dream.RuntimeView.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/forge/forgeRegistry  (getEnginByName)
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (RuntimeRegion)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntime  (RuntimeWorld)
+│   │   │   ├── ⚠ @/lib/dreams/DreamRegistry  (getDreamComponent)
+│   │   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.shell.RuntimeShell.tsx ∅
+│   │   └── dream.shell.RuntimeShell.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/ui/runtimeViewport  (isCompactRuntimeViewport)
 │   │       └── ∅ unused: (default)
 │   ├── shaders
 │   │   ├── dream.LightningWing.tsx ∅
@@ -21791,17 +22479,24 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.InviteFlow.tsx
 │   │   ├── dream.SharedDreamCanvas.tsx
 │   │   ├── dream.SharedDreamProvider.tsx ⚠
+│   │   │   ├── ⚠ @/lib/collaboration  (CollabEventHandler, CollabMode, CollabPayload, CollabSession, CollabSessionOptions, PeerInfo, PresenceUpdateData, SessionRole, broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession, generateInviteLink, parseInviteLink)
 │   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   ├── dream.SharedDreamRuntime.tsx ∅
+│   │   ├── dream.SharedDreamRuntime.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   ├── ⚠ @/lib/sharedDream/useSharedDreamSession  (useSharedDreamSession)
 │   │   │   └── ∅ unused: (default)
 │   │   └── index.ts ∅
 │   │       └── ∅ unused: useSharedDream, SharedDreamContextValue, SharedDreamProviderProps, SharedDreamCanvas, SharedDreamCanvasProps, InviteFlowProps, SharedDreamRuntime, SharedDreamRuntimeProps
 │   ├── spatial  [Profile & Edit Profile]
 │   │   ├── dream.PixiPhysicsLayer.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.ProfileSpace.tsx ∅
+│   │   ├── dream.ProfileSpace.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (cn)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.shell.EnhancedSpatialShell.tsx ∅
+│   │   └── dream.shell.EnhancedSpatialShell.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/navigation/NavStateBuffer  (LAYER_HOME, LAYER_PROFILE)
+│   │       ├── ⚠ @/lib/navigation/SpatialNavigationEngine  (SpatialNavigationEngine)
+│   │       ├── ⚠ @/lib/navigation/WidgetInstanceMemory  (WidgetBindingType, WidgetInstanceRecord, WidgetPresentation, WidgetVisibility)
 │   │       └── ∅ unused: (default)
 │   ├── three
 │   │   ├── dream.scene.tsx ∅
@@ -21817,14 +22512,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.InfinityIcon.tsx ∅
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.PlatformBadge.tsx ∅
+│   │   ├── dream.PlatformBadge.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/icons/sheet  (hasIcon)
+│   │   │   ├── ⚠ @/lib/social/platforms  (PLATFORM_MAP)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.SheetIcon.tsx ∅
+│   │   ├── dream.SheetIcon.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/icons/sheet  (COLS, FRAME_W, ICONS, IconName, ROWS, SHEET_PATH, hasIcon)
 │   │   │   └── ∅ unused: (default)
-│   │   └── dream.SocialShareSheet.tsx ∅
+│   │   └── dream.SocialShareSheet.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/social/platforms  (PROFILE_SHARE_PLATFORMS, SocialPlatform)
 │   │       └── ∅ unused: (default)
 │   ├── universal-editor
-│   │   ├── dream.UniversalEditor.tsx ∅
+│   │   ├── dream.UniversalEditor.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/coercionTable  (DreamDrop, classifyDrop)
 │   │   │   └── ∅ unused: UniversalEditor
 │   │   ├── dream.UniversalEditorWrapper.tsx ∅
 │   │   │   └── ∅ unused: UniversalEditorWrapper
@@ -21832,19 +22532,25 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: useTapHoldMove, Position, TapHoldMoveBindings, TapHoldMoveOptions, UniversalEditorWrapper, UniversalEditorWrapperProps, UniversalEditor, UniversalEditorProps
 │   │   └── useTapHoldMove.ts
 │   ├── universe
-│   │   ├── dream.node-cluster.tsx ∅
+│   │   ├── dream.node-cluster.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (cn)
 │   │   │   └── ∅ unused: NodeCluster, (default)
-│   │   ├── dream.shell.universe-shell.tsx ∅
+│   │   ├── dream.shell.universe-shell.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (cn)
 │   │   │   └── ∅ unused: UniverseShell, (default)
-│   │   ├── dream.universe-card.tsx ∅
+│   │   ├── dream.universe-card.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (cn)
 │   │   │   └── ∅ unused: UniverseCard, UniverseCardHeader, UniverseCardContent, UniverseCardFooter, (default)
 │   │   └── index.ts ∅
 │   │       └── ∅ unused: NodeCluster, UniverseShell, UniverseCardFooter, UniverseCardHeader
 │   ├── warp  [Warp System]
-│   │   └── dream.WarpCanvas.tsx ∅
+│   │   └── dream.WarpCanvas.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/warp/useWarp  (useWarp)
+│   │       ├── ⚠ @/lib/warp/warpEngine  (WarpEffect)
 │   │       └── ∅ unused: (default)
 │   ├── webgpu  [WebGPU / Babylon Engine]
-│   │   ├── dream.WebGPUShowcase.tsx ∅
+│   │   ├── dream.WebGPUShowcase.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/webgpu  (isWebGPUAvailable)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── neuralPostProcess.ts ∅
 │   │   │   └── ∅ unused: NEURAL_POST_PROCESS_WGSL, NEURAL_UNIFORM_SIZE, createNeuralUniforms, createNeuralPostProcessPipeline, dispatchNeuralPostProcess
@@ -21874,34 +22580,55 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: default
 │   │   └── dream.widget.WidgetSurface.tsx ∅
 │   │       └── ∅ unused: default
-│   ├── dream.AIAssistant.tsx ∅
+│   ├── dream.AIAssistant.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/agentBus  (onIdariEvent)
+│   │   ├── ⚠ @/lib/agents/drEamsMode  (getDrEamsMode, onDrEamsModeChange)
+│   │   ├── ⚠ @/lib/agents/teachBus  (hasTaught, markTaught, onTeach)
+│   │   ├── ⚠ @/lib/agents/uiActions  (executeUiAction, getUiCapabilities)
 │   │   └── ∅ unused: (default)
 │   ├── dream.AudioVisualizer3D.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.BoogieWarningBanner.tsx ∅
+│   ├── dream.BoogieWarningBanner.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/policy/boogiePolicy  (PolicyResult)
 │   │   └── ∅ unused: (default)
-│   ├── dream.BrandLogo.tsx ∅
+│   ├── dream.BrandLogo.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/branding/logos  (LOGO_PATHS, getRandomLogo)
 │   │   └── ∅ unused: (default)
 │   ├── dream.CommandPalette.tsx ∅
 │   │   └── ∅ unused: MobileCmdFab, (default)
 │   ├── dream.CreatePostModal.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.DragToAnchorClose.tsx
-│   ├── dream.DrEamsModeToggle.tsx ∅
+│   ├── dream.DrEamsModeToggle.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/drEamsMode  (getDrEamsMode, onDrEamsModeChange, setDrEamsMode)
+│   │   ├── ⚠ @/lib/agents/teachBus  (emitTeach)
 │   │   └── ∅ unused: (default)
-│   ├── dream.DrEamsVoiceAssistant.tsx ∅
+│   ├── dream.DrEamsVoiceAssistant.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/agentBus  (onIdariEvent)
 │   │   └── ∅ unused: (default)
-│   ├── dream.FeedCard.tsx ∅
+│   ├── dream.FeedCard.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (cn, formatRelativeTime)
+│   │   ├── ⚠ @/lib/widgets/parseConfig  (inferProviderFromUrl)
 │   │   └── ∅ unused: (default)
-│   ├── dream.ForgeDreamCanvas.tsx ∅
+│   ├── dream.ForgeDreamCanvas.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.GlobalOverlays.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.HeroSprite.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.HomeFeed.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/activity/types  (AdType)
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost, useLiveFeed)
+│   │   ├── ⚠ @/lib/feed/useYouTubeLiveFeed  (useYouTubeLiveFeed)
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/ui/runtimeViewport  (isCompactRuntimeViewport)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.IconSelector.tsx ∅
 │   │   └── ∅ unused: (default)
@@ -21909,57 +22636,211 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── dream.KonamiDream.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.LandingHero.tsx ∅
+│   ├── dream.LandingHero.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamr/swipeCalibration  (CalibrationSample, calibrateDevice)
 │   │   └── ∅ unused: (default)
-│   ├── dream.LedgerChart.tsx ∅
+│   ├── dream.LedgerChart.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/ledger-data  (LedgerData)
 │   │   └── ∅ unused: (default)
 │   ├── dream.MessagesClient.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/useDreamDMDraft  (useDreamDMDraft)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamDMMessages  (DMMessage, useDreamDMMessages)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamSearch  (useDreamSearch)
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/utils  (formatRelativeTime, toErrorMessage)
 │   │   └── ∅ unused: (default)
-│   ├── dream.NotificationCenter.tsx ∅
+│   ├── dream.NotificationCenter.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/notifications/notificationHelpers  (UiNotification, UiNotificationType)
+│   │   ├── ⚠ @/lib/notifications/useNotifications  (useNotifications)
 │   │   └── ∅ unused: (default)
-│   ├── dream.OSShellActivator.tsx ∅
+│   ├── dream.OSShellActivator.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
+│   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
+│   │   ├── ⚠ @/lib/routing/surfaces  (isPublicSurfacePath)
+│   │   ├── ⚠ @/lib/runtime/EnginDispatcher  (EnginDispatcher)
+│   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
 │   │   └── ∅ unused: (default)
-│   ├── dream.panel.ChildSafetyPanel.tsx ∅
+│   ├── dream.panel.ChildSafetyPanel.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
-│   ├── dream.panel.IDariPanel.tsx ∅
+│   ├── dream.panel.IDariPanel.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/agentBus  (emitIdariEvent)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.PhysicsLab.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.ProfileEditor.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
+│   │   ├── ⚠ @/lib/social/platforms  (SOCIAL_PLATFORMS, detectPlatform)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/ui/CustomizeModeContext  (useCustomizeMode)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.ProfileShareButton.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.ProfileSpace.tsx
+│   ├── dream.ProfileSpace.tsx ⚠
+│   │   └── ⚠ @/lib/navigation/WidgetInstanceMemory  (WidgetInstanceRecord)
 │   ├── dream.PullToRefresh.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.ShrunkMode.tsx ∅
+│   ├── dream.ShrunkMode.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/navigation/AnchorWidgetStorage  (PriorityWidget)
 │   │   └── ∅ unused: ShrunkMode
 │   ├── dream.SkeletonLoaders.tsx ∅
 │   │   └── ∅ unused: FeedCardSkeleton, GridSkeleton, WidgetSkeleton
 │   ├── dream.ThemeApplicator.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.ThemeToggle.tsx ∅
+│   ├── dream.ThemeToggle.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/teachBus  (emitTeach)
+│   │   ├── ⚠ @/lib/ui/theme  (getInitialDarkMode, toggleDarkMode)
 │   │   └── ∅ unused: (default)
 │   ├── dream.ToastSystem.tsx ∅
 │   │   └── ∅ unused: useToast, ToastProvider
 │   ├── dream.universal_asset_registry.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   ├── dream.VoidThemeToggle.tsx ∅
 │   │   └── ∅ unused: (default)
-│   ├── dream.widget.AnchorWidget.tsx ∅
+│   ├── dream.widget.AnchorWidget.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/navigation/AnchorStateBuffer  (AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK)
+│   │   ├── ⚠ @/lib/navigation/AnchorWidgetStorage  (AnchorWidgetStorage)
+│   │   ├── ⚠ @/lib/navigation/NavStateBuffer  (LAYER_HOME, LAYER_PROFILE, NavStateBuffer, PROFILE_DEPTH)
+│   │   ├── ⚠ @/lib/navigation/ReturnStack  (ReturnStack)
+│   │   ├── ⚠ @/lib/navigation/WidgetInstanceMemory  (WidgetInstanceMemory)
 │   │   └── ∅ unused: AnchorWidget
 │   ├── dream.widget.ProfileWidgetBlock.tsx ∅
 │   │   └── ∅ unused: (default)
 │   └── dream.widget.WidgetBubble.tsx ∅
 │       └── ∅ unused: (default)
+├── composite
+│   ├── compositor.ts ∅
+│   │   └── ∅ unused: createNode, createGraph, addNode, connectNodes, disconnectInput, setParam, findNode, topologicalSort, graphSummary
+│   ├── fxSimulation.ts ∅
+│   │   └── ∅ unused: FX_PRESETS, getPreset, presetsByCategory, createSimulation, setSimParam, getSimParam, resetSimParams, allCategories
+│   ├── matchmover.ts ∅
+│   │   └── ∅ unused: createTrack, addTrackPoint, addSample, computeHomography, estimateCameraMotion, exportTrackCSV, trackSummary
+│   ├── motionCapture.ts ∅
+│   │   └── ∅ unused: parseBVH, getFramePose, retargetClip, exportBVH, clipSummary, findJoint
+│   └── rotoscope.ts ∅
+│       └── ∅ unused: createProject, addLayer, setKeyframe, removeKeyframe, interpolateShape, exportShapeSVG, exportFrameSVG, keyframeList
 ├── config
 │   ├── advanced-game-targets.json
 │   ├── optimizer.yaml
 │   └── ui-ux-spec.yaml
+├── connectors
+│   ├── providers
+│   │   ├── bluesky.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseBluesky)
+│   │   │   └── ∅ unused: blueskyVerify, blueskySync, blueskyCredentialFields
+│   │   ├── devto.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseDevto)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (devtoUserRssUrl, parseRssFeed)
+│   │   │   └── ∅ unused: devtoVerify, devtoSync, devtoCredentialFields
+│   │   ├── facebook.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseFacebook)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (facebookPageRssUrl, parseRssFeed)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: facebookVerify, facebookSync, facebookCredentialFields
+│   │   ├── github.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseGitHub)
+│   │   │   └── ∅ unused: githubVerify, githubSync, githubCredentialFields
+│   │   ├── hackernews.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseHackerNews)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (hackerNewsRssUrl, hackerNewsUserRssUrl, parseRssFeed)
+│   │   │   └── ∅ unused: hackernewsVerify, hackernewsSync, hackernewsCredentialFields
+│   │   ├── instagram.ts ∅
+│   │   │   └── ∅ unused: instagramVerify, instagramSync, getInstagramOAuthConfig, INSTAGRAM_CREDENTIAL_FIELDS
+│   │   ├── mastodon.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseMastodon)
+│   │   │   └── ∅ unused: mastodonVerify, mastodonSync, mastodonCredentialFields
+│   │   ├── medium.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseMedium)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (mediumUserRssUrl, parseRssFeed)
+│   │   │   └── ∅ unused: mediumVerify, mediumSync, mediumCredentialFields
+│   │   ├── nostr.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseNostr)
+│   │   │   └── ∅ unused: isValidNostrPubkey, nostrVerify, nostrSync, nostrCredentialFields
+│   │   ├── pinterest.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normalisePinterest)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (parseRssFeed, pinterestRssUrl)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: pinterestVerify, pinterestSync, pinterestCredentialFields
+│   │   ├── podcast.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normalisePodcast)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (parseRssFeed)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: podcastVerify, podcastSync, podcastCredentialFields
+│   │   ├── reddit.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseReddit)
+│   │   │   └── ∅ unused: redditVerify, redditSync, redditSyncSaved, redditCredentialFields
+│   │   ├── shellhub.ts ∅
+│   │   │   └── ∅ unused: SHELLHUB_DEFAULT_SERVER, shellhubVerify, shellhubListDevices, shellhubCredentialFields
+│   │   ├── substack.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseSubstack)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (parseRssFeed, substackRssUrl)
+│   │   │   └── ∅ unused: substackVerify, substackSync, substackCredentialFields
+│   │   ├── tiktok.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseTikTok)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (parseRssFeed, tiktokProfileRssUrl)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: tiktokVerify, tiktokSync, tiktokCredentialFields
+│   │   ├── tumblr.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseTumblr)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (parseRssFeed, tumblrRssUrl)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: tumblrVerify, tumblrSync, tumblrCredentialFields
+│   │   ├── twitter.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/connectors/normalise  (normaliseTwitter)
+│   │   │   ├── ⚠ @/lib/social/rss-feed  (DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: twitterVerify, twitterSync, twitterCredentialFields
+│   │   └── youtube.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/connectors/normalise  (YouTubePlaylistItem, YouTubeSearchItem, deduplicateFeedItems, normaliseYouTubePlaylistItem, normaliseYouTubeSearchResult)
+│   │       └── ∅ unused: getYouTubeApiKey, getYouTubeAnalyticsApiKey, youtubeVerify, youtubeSearchByQuery, youtubeDiscovery, youtubeSync
+│   ├── connectorRegistry.ts ∅
+│   │   └── ∅ unused: CONNECTOR_REGISTRY, getConnectorDef
+│   ├── deliveryStrategy.ts ∅
+│   │   └── ∅ unused: DELIVERY_STRATEGY_MATRIX, getDeliveryStrategy, supportsWebhook, supportsPoll, supportsWebhookVerification, knownDeliveryProviders
+│   ├── installFlow.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/widgets/widgetRegistry  (getWidgetTypesForConnector)
+│   │   └── ∅ unused: findBestSlot, queueSuggestedWidget, getSuggestedWidgets, dismissSuggestedWidget, removeSuggestedWidget, isSessionDismissed, _resetInstallFlowState, deferPrompt, consumeDeferredPrompt, enqueueForPlacement, dequeueNextPlacement, peekPlacementQueue, scheduleAutoLock, cancelAutoLock, handleConnectSuccess, handleDismissPrompt, handleAddWidget, handlePlaceLater, handlePlacementDone, handlePlacementCancel
+│   ├── normalise.ts ∅
+│   │   └── ∅ unused: normaliseMastodon, normaliseBluesky, normaliseGitHub, normaliseReddit, normaliseNostr, normaliseYouTubePlaylistItem, normaliseYouTubeSearchResult, normaliseDevto, normaliseFacebook, normaliseHackerNews, normaliseMedium, normalisePinterest, normalisePodcast, normaliseSubstack, normaliseTikTok, normaliseTumblr, normaliseTwitter, stripHtml, hostFromUrl, atUriToHttps
+│   ├── reconcile.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: reconcileConnector
+│   ├── syncDispatch.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/connectors/providers/bluesky  (blueskySync)
+│   │   ├── ⚠ @/lib/connectors/providers/github  (githubSync)
+│   │   ├── ⚠ @/lib/connectors/providers/instagram  (instagramSync)
+│   │   ├── ⚠ @/lib/connectors/providers/mastodon  (mastodonSync)
+│   │   ├── ⚠ @/lib/connectors/providers/nostr  (nostrSync)
+│   │   ├── ⚠ @/lib/connectors/providers/reddit  (redditSync)
+│   │   ├── ⚠ @/lib/connectors/providers/youtube  (youtubeSync)
+│   │   └── ∅ unused: DISPATCH_SUPPORTED_PROVIDERS, UnsupportedProviderError
+│   ├── webhookVerification.ts ∅
+│   │   └── ∅ unused: extractYouTubeWebSubChallenge, extractMetaWebhookChallenge, isCronAuthorised
+│   └── youtube.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/server  (createServiceClient)
+│       └── ∅ unused: pollYouTube
+├── consent
+│   └── consentManager.ts ∅
+│       └── ∅ unused: resolveAcceptPolicy, ConsentManager, consentManager
+├── content
+│   ├── generativeFill.ts ∅
+│   │   └── ∅ unused: requestGenerativeFill, createMaskDataUrl, analyzeImageColors, fileToBase64
+│   ├── publishIntent.ts ∅
+│   │   └── ∅ unused: resolvePublishIntent, formatPublishError, publishToDreamR
+│   ├── seoScorer.ts ∅
+│   │   └── ∅ unused: scoreContent, generateReport
+│   ├── transcriptEditor.ts ∅
+│   │   └── ∅ unused: parseSRT, parseVTT, computeCuts, applyEditsToSegments, exportSRT, searchTranscript, annotateSearchMatches, segmentsToPlainText, totalDurationMs
+│   └── voiceClone.ts ∅
+│       └── ∅ unused: cloneVoice, textToSpeech, listVoiceProfiles, deleteVoiceProfile, speakWithBrowserTTS, getBrowserVoices, audioFileToBase64, estimateDurationSeconds
 ├── coresurfaces  [Profile & Edit Profile]
 │   ├── dreamsurface.EditProfileDream.tsx ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
@@ -21989,30 +22870,465 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── page.tsx ⚠ ∅
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
+│   │       ├── ⚠ @/lib/games/navigation  (buildGameLaunchHref)
+│   │       ├── ⚠ @/lib/games/quality-plan  (GAME_QUALITY_PILLARS)
 │   │       └── ∅ unused: metadata, (default)
 │   ├── lab
 │   │   └── page.tsx ⚠ ∅
 │   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
 │   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │       └── ∅ unused: metadata, (default)
-│   └── music
-│       └── page.tsx ⚠ ∅
-│           ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   ├── music
+│   │   └── page.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/dev-bypass  (isDevBypassActive)
+│   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │       └── ∅ unused: metadata, (default)
+│   └── shared
+│       ├── useDaydreamPersistence.ts ⚠ ∅
+│       │   ├── ⚠ @/lib/supabase/client  (createClient)
+│       │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│       │   └── ∅ unused: useDaydreamPersistence
+│       └── useDaydreamState.ts ⚠ ∅
+│           ├── ⚠ @/lib/supabase/client  (createClient)
 │           ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│           └── ∅ unused: metadata, (default)
+│           └── ∅ unused: useDaydreamState
+├── diff
+│   ├── aiEditEngine.ts ∅
+│   │   └── ∅ unused: CODEENGIN_PRODUCTION_MODE, SCOPE_ORDER, SCOPE_LABEL, SCOPE_DESCRIPTION, SCOPE_RISK, CONFIRMATION_REQUIRED, escapeRegex, wordBoundsAt, lineBoundsAt, blockBoundsAt, functionBoundsAt, generateDiffLines, parseAiInstruction, buildEditPreview, applyMatchesForCell, applyEdit, undoEdit
+│   └── diffUtils.ts ∅
+│       └── ∅ unused: parseUnifiedDiff, buildFullFileLines, firstHunkIndex, prevHunkIndex, nextHunkIndex, buildScrollMarkers, DEMO_DIFF
 ├── dr-eams  [AI Systems (Boogieman / Dr.EAMS / Idari)]
 │   ├── capabilities.yaml
 │   └── tools.ts
+├── dream-docs
+│   ├── embed.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   └── ∅ unused: embedDocSection
+│   ├── index.ts ∅
+│   │   └── ∅ unused: searchDreamDocs, embedDocSection
+│   └── search.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/server  (createServerClient)
+│       └── ∅ unused: searchDreamDocs
 ├── dreamdmbar  [HOME — DreamDMBar]
+│   ├── barInteractions.ts ∅
+│   │   └── ∅ unused: DIVIDER_H, SPLIT_SNAP_POINTS, DEFAULT_SPLIT_RATIO, SPLIT_RATIO_MIN, SPLIT_RATIO_MAX, SPLIT_FLING_VELOCITY_PX_PER_MS, snapToSplitPoint, snapSplitRatioOnRelease, GOLD_SECOND_TAP_WINDOW_MS, GOLD_TAP_SLOP_PX, BAR_SNAP_TO_TOP_THRESHOLD_PX, BAR_SNAP_TO_TOP_HEIGHT_RATIO, BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS, BAR_FLING_TO_TOP_MIN_DRAG_PX, BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS, BAR_FLING_LINE_RATIO, MIN_POINTER_SAMPLE_DELTA_MS, resolveGoldTapAction, shouldTreatGoldReleaseAsTap, calculatePointerVelocity, shouldCollapseGoldSwipe, shouldSnapBottomDragToTop, shouldCollapseTopExpandedDrag, decideBarRelease, ORB_SIZE, ORB_TAP_SLOP, clampOrbOffset, computeOrbDragPosition, getMoodPeriod, MOOD_AURA_GRADIENTS, MOOD_EDGE_COLORS, SURFACE_ACCENT_COLORS, SLASH_COMMANDS, filterSlashCommands, computeTypingRhythm, rhythmToHandleScale, STREAK_STORAGE_KEY, todayDateString, resolveStreak, getStreakTier, QUICK_REACTIONS, GOLD_LONG_PRESS_MS, PARTICLE_COUNT, generateParticles, DRAG_TAP_THRESHOLD_PX, DOUBLE_TAP_WINDOW_MS, LIGHT_POSITION_CYCLE, cycleLightPosition
+│   ├── bridgeSeamFlow.ts ∅
+│   │   └── ∅ unused: SEAM_CHANNEL_COLORS, SEAM_DEFAULT_COLOR, channelColor, createSeamParticle, createIdleParticle, tickParticles, isParticleDead, evictDeadParticles, _resetIdCounter
 │   ├── dream.GlowingLight.tsx ∅
 │   │   └── ∅ unused: (default)
-│   └── dreamsurface.dreamdmbar.tsx ∅
-│       └── ∅ unused: BAR_H, NAV_H, (default)
+│   ├── dreamsurface.dreamdmbar.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DEFAULT_SPLIT_RATIO, DIVIDER_H, DOUBLE_TAP_WINDOW_MS, DRAG_TAP_THRESHOLD_PX, GOLD_LONG_PRESS_MS, MOOD_AURA_GRADIENTS, MOOD_EDGE_COLORS, MoodPeriod, ORB_TAP_SLOP, Particle, QUICK_REACTIONS, SPLIT_RATIO_MAX, SPLIT_RATIO_MIN, STREAK_STORAGE_KEY, SURFACE_ACCENT_COLORS, StreakData, StreakTier, SurfaceAccent, calculatePointerVelocity, computeTypingRhythm, decideBarRelease, getMoodPeriod, getStreakTier, resolveGoldTapAction, resolveStreak, rhythmToHandleScale, shouldCollapseTopExpandedDrag, snapSplitRatioOnRelease)
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (BarIntentMode, useDreamSystem)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamBarContext  (DreamBarContext, useDreamBarContext)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamDMConversations  (DMConversation, useDreamDMConversations)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamDMDraft  (useDreamDMDraft)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamDMMessages  (DMMessage, useDreamDMMessages)
+│   │   ├── ⚠ @/lib/dreamdm/useDreamSearch  (SearchResult, useDreamSearch)
+│   │   ├── ⚠ @/lib/dreamdm/useMessagingCore  (MediaType, useMessagingCore)
+│   │   ├── ⚠ @/lib/dreamdm/useNotifications  (useNotifications)
+│   │   ├── ⚠ @/lib/games/useImmersiveGameLayout  (useImmersiveGameLayout)
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
+│   │   ├── ⚠ @/lib/ui/runtimeViewport  (getPreferredViewportHeight, isCompactRuntimeViewport)
+│   │   ├── ⚠ @/lib/utils  (formatRelativeTime)
+│   │   └── ∅ unused: BAR_H, NAV_H, (default)
+│   ├── DreamSystemContext.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/barInteractions  (DEFAULT_SPLIT_RATIO)
+│   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
+│   │   ├── ⚠ @/lib/runtime/dualRuntime  (moveTorus, torusFocusKey)
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   └── ∅ unused: DEFAULT_BAR_INTENT, DEFAULT_WORLD_FOCUS, DreamSystemProvider, useDreamSystem
+│   ├── useDreamBarContext.ts ∅
+│   │   └── ∅ unused: detectSurface, resolveIntentOverride, useDreamBarContext
+│   ├── useDreamDMConversations.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: useDreamDMConversations
+│   ├── useDreamDMDraft.ts ∅
+│   │   └── ∅ unused: listAllDraftIds, cleanupStaleDrafts, getDraftAge, useDreamDMDraft
+│   ├── useDreamDMMessages.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: useDreamDMMessages
+│   ├── useDreamSearch.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY)
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: useDreamSearch
+│   ├── useMessagingCore.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/media/ledger  (uploadBlobToLedgerStorage)
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: useMessagingCore
+│   ├── useModuleBarIntent.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (ModuleBarAction, useDreamSystem)
+│   │   └── ∅ unused: useModuleBarIntent
+│   └── useNotifications.ts ∅
+│       └── ∅ unused: useNotifications
+├── dreamengin
+│   ├── DrEamsAnimator.ts ∅
+│   │   └── ∅ unused: DrEamsAnimator
+│   ├── drEamsSearch.ts ∅
+│   │   └── ∅ unused: NAV_SUGGESTIONS, matchNavSuggestions, buildDrEamsRequest, parseDrEamsReply, buildDreamDMUrl, truncatePreview
+│   ├── engineAssets.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/media/ledger  (encodeUint8ArrayToLedgerString)
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   └── ∅ unused: saveEngineAsset
+│   └── osSubsystemManifest.ts ⚠ ∅
+│       ├── ⚠ @/lib/connectors/connectorRegistry  (CONNECTOR_REGISTRY)
+│       ├── ⚠ @/lib/dream-window/enginConnectionNetwork  (ALL_CONNECTION_PATHS, EnginConnectionPath)
+│       ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY)
+│       ├── ⚠ @/lib/identity/canonical-names  (AI_AGENTS, AI_ROUTES)
+│       ├── ⚠ @/lib/widgets/widgetRegistry  (WIDGET_REGISTRY)
+│       └── ∅ unused: buildDreamenginOSSubsystemManifest, DREAMENGIN_OS_SUBSYSTEM_MANIFEST
+├── dreamenginOS
+│   ├── index.ts ∅
+│   │   └── ∅ unused: slog, slogArray, slogEntropy, slogInv, slogMean, slogVariance, TORRIDITY_A0_PERCEPTION, TORRIDITY_DP, TORRIDITY_LAMBDA, TORRIDITY_N, contentMass, mu, rankFeed, throttledVisibility, torridityRank, BUGS_LOG, DELTA_P, DOC_RELATIONSHIPS, IOTA_MAX, LAMBDA, THRESHOLD_FLOW, THRESHOLD_SYNTHESIZE, auditPostPass, calculateInventionForce, getPassProtocol, logResidual, runPrePassChecklist, createDualRuntimeHub, createEventBus, createLedger, getAllByKind, getLedgerEntry, recordView, storeAsset, storeFingerprint, storePeakMap, storeSampleMetadata, storeTorridityRank, canTransfer, createLocalEventBus, transferModule, analyzeSwipe, isBotSession, tallyView, buildPeakMap, extractAudioChunks, matchFingerprint, recordReferenceFingerprint, ALL_CATEGORIES, COMPONENT_INVENTORY, getByCategory, searchComponents, atomicPieceFromComponent, createAssembly, deserializeAssembly, runAssembly, serializeAssembly, validateAssembly, GameEnginRuntime, loadDreamGame
+│   └── OSContext.tsx ∅
+│       └── ∅ unused: OSProvider, useOS
+├── dreamnav
+│   ├── delta.ts ∅
+│   │   └── ∅ unused: tau, transition, DEFAULT_NAV_STATE, reduceNav
+│   ├── gctAssist.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gct  (GCTEngine, GCTMatch, Template)
+│   │   └── ∅ unused: chooseAxisAction, chooseWidgetForSlot
+│   ├── gestures6.ts ∅
+│   │   └── ∅ unused: createGestureArbiter
+│   ├── path.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamnav/delta  (Action, Node, tau)
+│   │   └── ∅ unused: findTauPath, dispatchTauPath
+│   └── tau.ts
+├── dreamr
+│   ├── closeFriendsVisibility.ts ∅
+│   │   └── ∅ unused: filterByCloseFriends, fetchCloseFriendsCircle, loadVisibilityCircle
+│   ├── dreamrfeed.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   ├── ⚠ @/lib/dreamr/swipePersonalization  (canRecordDreamRView, contentTypePreferenceKey, emptyDreamRSwipePreferences, nextSwipePreferences, personalizeFeedOrder)
+│   │   ├── ⚠ @/lib/dreamr/torridityLedger  (resolveSwipeRelease)
+│   │   ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
+│   │   └── ∅ unused: DREAMR_TOPICS, (default)
+│   ├── feedCursor.ts ∅
+│   │   └── ∅ unused: MAX_SEEN_IDS, parseFeedParams, deriveNextCursor
+│   ├── socialHumanityScore.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: computeSocialHumanityScore
+│   ├── swipeCalibration.ts ∅
+│   │   └── ∅ unused: calibrateDevice, setActiveProfile, resetCalibration
+│   ├── swipePersonalization.ts ∅
+│   │   └── ∅ unused: LONGFORM_CONTENT_THRESHOLD, CREATOR_PREFERENCE_WEIGHT, TYPE_PREFERENCE_WEIGHT, emptyDreamRSwipePreferences, creatorPreferenceKey, contentTypePreferenceKey, nextSwipePreferences, shouldRecordDreamRView, canRecordDreamRView, personalizeFeedOrder
+│   └── torridityLedger.ts ∅
+│       └── ∅ unused: TORRIDITY_LEDGER_CONFIG, slog, getInteractionDelta, getDeceleration, calculateSnapForce, verifyHumanity, getPostMass, normalizeHumanViews, calculateRank, derivePostMassMeta, calculateOriginality, resolveSwipeRelease
+├── dreams
+│   ├── drag.ts ∅
+│   │   └── ∅ unused: DREAM_DRAG_MIME, serializeDreamDragData, parseDreamDragData, transferDream, surfaceForRuntime
+│   ├── dreamIntentBus.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (JsonObject, JsonValue, createDomainObject)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (DomainAuthorizationContext, DomainCapability)
+│   │   ├── ⚠ @/lib/runtime/dreamOSBus  (InformationDomain, IntentEnvelope, dreamOSBus)
+│   │   └── ∅ unused: dispatchDreamIntent, registerDreamIntentHandler
+│   ├── DreamRegistry.tsx ∅
+│   │   └── ∅ unused: DreamRegistry, getDreamComponent
+│   ├── profileProjection.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/dreams/types  (DreamProjection, DreamVisibility)
+│   │   └── ∅ unused: createDreamProjection, canRenderProjection
+│   ├── types.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (JsonObject, isJsonObject, isJsonSerializable)
+│   │   └── ∅ unused: DREAM_SURFACES, DREAM_KINDS, DREAM_RENDER_MODES, DREAM_VISIBILITIES, OWNER_PERMISSIONS, VIEWER_PERMISSIONS, NO_PERMISSIONS, createDream, isDream, dreamCan, resolveDreamSurfaceAdapter
+│   └── useDreamsRuntime.ts ∅
+│       └── ∅ unused: useDreamsRuntime
 ├── engine
-│   └── io.ts
+│   ├── agentOS
+│   │   └── hostTools.ts ∅
+│   │       └── ∅ unused: codeEnginHostTools
+│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
+│   │   ├── agentBus.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/ai/schemas  ((unknown — bare import))
+│   │   │   └── ∅ unused: emitIdariEvent, onIdariEvent, emitGameEnginAgentEvent, emitInnerDreamsEvent, onInnerDreamsEvent, runTriadConsensus
+│   │   ├── boogieManAI.ts ∅
+│   │   │   └── ∅ unused: BOOGIEMAN_EVENT, createBoogieManAgent, checkPolicy, emitBoogieManEvent, onBoogieManEvent
+│   │   ├── dreamengin.ts ∅
+│   │   │   └── ∅ unused: IDENTITY, AXIOMS, VOCABULARY, CORE_SURFACES, DAYDREAM_SURFACES, CONNECTION_PATH_COUNT, DESIGN_TOKENS, PRIVACY_RULES, NAVIGATION_RULES, DREAM_WINDOW_STATES, AI_TRIAD, DREAMDM_BAR, validateVocabulary, validatePalette, validatePrivacy, validateNavigation, validateAction, validateCredentialSafety, DREAMENGIN_EVENT, emitDreamEnginEvent, onDreamEnginEvent
+│   │   ├── drEamsMode.ts ∅
+│   │   │   └── ∅ unused: DREAMS_MODE_STORAGE_KEY, DREAMS_MODE_EVENT, getDrEamsMode, setDrEamsMode, onDrEamsModeChange
+│   │   ├── idari.ts ∅
+│   │   │   └── ∅ unused: IDARI_EVENT, createPatchPlan, GENERATION_LAW_WEIGHTS, assessGenerationLawScope, formatGenerationLawLoadCheck, createKnownIssue, updateKnownIssueStatus, createIDARiAgent, emitIDARiEvent, onIDARiEvent, evaluateSpecRequirements, VERCEL_2026_RUNTIME, createVercelBuildResult
+│   │   ├── idariLoop.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/agents/idari  (PatchPlan, PatchRisk, createPatchPlan)
+│   │   │   ├── ⚠ @/lib/observability/collector  (TelemetrySnapshot, getSnapshot)
+│   │   │   ├── ⚠ @/lib/observability/correlator  (CorrelationResult, correlate)
+│   │   │   ├── ⚠ @/lib/observability/immediateAction  (ImmediateRemediationAction, buildImmediateRemediationAction)
+│   │   │   ├── ⚠ @/lib/observability/rootCauseAnalyzer  (RootCauseAnalysis, inferRootCause)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: buildIdariPrompt, buildFallbackPatchPlan, runLoopIteration, runRemediationLoop, getLoopHealthSummary
+│   │   ├── teachBus.ts ∅
+│   │   │   └── ∅ unused: emitTeach, onTeach, hasTaught, markTaught
+│   │   └── uiActions.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/ui/theme  (setDarkMode)
+│   │       └── ∅ unused: executeUiAction, getUiCapabilities
+│   ├── dream-window
+│   │   ├── connectionVerbs.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (CONNECTION_VERBS, ConnectionVerb, REJECTED_CONNECTION_VERBS, isRejectedConnectionVerb, isValidConnectionVerb)
+│   │   │   └── ∅ unused: dispatch, createBindAction, createMountAction, createActivateAction, createAttachAction, createRouteIntoAction, createOpenIntoAction, createConnectAcrossAction, CONNECTION_VERBS, isValidConnectionVerb, REJECTED_CONNECTION_VERBS
+│   │   ├── DreamWindowLifecycle.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (ConnectionVerb, DREAM_WINDOW_STATES, DreamWindowState)
+│   │   │   └── ∅ unused: bindDreamWindow, mountDreamWindow, collapseDreamWindow, activateDreamWindow, unmountDreamWindow, unbindDreamWindow, createDreamWindowInstance, DREAM_WINDOW_REQUIRED_LAYERS, validateDreamWindowLayers
+│   │   ├── enginConnectionNetwork.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (ConnectionVerb, DAYDREAM_DOMAINS, DaydreamDomain, ENGIN_SURFACES, EnginSurface, NETWORK_COUNTS)
+│   │   │   └── ∅ unused: ALL_CONNECTION_PATHS, getPathsForDomain, getPathsForEngin, hasConnectionPath
+│   │   ├── index.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/dream-window  (ALL_CONNECTION_PATHS, DEFAULT_RUNTIME_REGION_STATE, DreamWindowInstance, activateSurface, bindDreamWindow, createBindAction, dispatch, getPathsForDomain, mountDreamWindow)
+│   │   │   └── ∅ unused: DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, activateDreamWindow, bindDreamWindow, collapseDreamWindow, createDreamWindowInstance, mountDreamWindow, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers, CONNECTION_VERBS, createActivateAction, createAttachAction, createBindAction, createConnectAcrossAction, createMountAction, createOpenIntoAction, createRouteIntoAction, dispatch, isValidConnectionVerb, DEFAULT_RUNTIME_REGION_STATE, RUNTIME_REGIONS, activateSurface, dismountWindowFromDreamSpace, getSurfaceSpaceSurface, isDreamSpaceDominant, mountWindowInDreamSpace, setSeamPosition, ALL_CONNECTION_PATHS, getPathsForDomain, getPathsForEngin, hasConnectionPath
+│   │   ├── runtimeRegion.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (DreamWindowState, RUNTIME_REGIONS, RuntimeSeamName, SURFACE_NAMES)
+│   │   │   └── ∅ unused: DEFAULT_RUNTIME_REGION_STATE, activateSurface, mountWindowInDreamSpace, dismountWindowFromDreamSpace, setSeamPosition, getSurfaceSpaceSurface, isDreamSpaceDominant, RUNTIME_REGIONS
+│   │   └── useDreamWindowActions.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │       └── ∅ unused: createDreamWindow, patchDreamWindow, useDreamWindowActions
+│   ├── engin-runtime
+│   │   ├── EnginBaseState.ts ∅
+│   │   │   └── ∅ unused: isRuntimeCoherenceReport, isJsonSerializable, isJsonObject, createDomainObject, DEFAULT_COHERENCE_CAPACITY, evaluateCoherence, explainCoherencePressure, resolveCoherenceTransform
+│   │   ├── EnginCapabilities.ts ∅
+│   │   │   └── ∅ unused: DENY_ALL, mergeCapabilities, authorizeDomainCapability
+│   │   ├── EnginCapabilityExecution.ts ∅
+│   │   │   └── ∅ unused: getEnginExecutionPlan, CodeEditRingBuffer
+│   │   ├── EnginCapabilityScorecard.ts
+│   │   ├── EnginCapabilityTargets.ts ∅
+│   │   │   └── ∅ unused: CANONICAL_ENGIN_IDS, CANONICAL_ENGIN_ALIASES, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, createCustomEnginCapabilityProfile, getEnginCapabilityProfile, validateCanonicalEnginCapabilityProfiles
+│   │   ├── EnginDomainCores.ts ∅
+│   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, runCanonicalPerformanceBenchmarks, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
+│   │   ├── EnginEventBus.ts
+│   │   ├── EnginHardwareCapabilities.ts ∅
+│   │   │   └── ∅ unused: detectWasmSimdSupport, detectEnginHardwareCapabilities, fallbackEnginHardwareCapabilities
+│   │   ├── EnginIOAdapter.ts ∅
+│   │   │   └── ∅ unused: enginStorageKey, MemoryAdapter
+│   │   ├── EnginPerformanceProbe.ts ∅
+│   │   │   └── ∅ unused: gpuMeasurementOrHardwareDependent
+│   │   ├── EnginRuleSetContract.ts ∅
+│   │   │   └── ∅ unused: validateRuleSetManifest
+│   │   ├── EnginRuntime.ts ∅
+│   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
+│   │   ├── EnginSnapshotFingerprint.ts ∅
+│   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
+│   │   ├── HotRuntime.ts ∅
+│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, CoalescedCommandQueue, HotLaneScheduler, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue, ShaderKernelRegistry, MoldableModuleGpuBridge
+│   │   ├── index.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/engin-runtime  (EnginRuntime, createEnginRuntime)
+│   │   │   └── ∅ unused: createEnginRuntime, attachCoherenceReport, createBaseState, createCoherenceCapacity, createCoherenceReport, createDomainObject, createRuntimeLoad, evaluateCoherence, explainCoherencePressure, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, isRuntimeCoherenceReport, patchBaseState, resolveCoherenceTransform, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, CommandRingBuffer, DeferredPersistenceQueue, DeferredSyncQueue, GpuBufferRegistry, HotActionClassifier, HotRuntime, RevisionCoalescer, SnapshotCompactor, TypedMemoryArena, WasmKernelRuntime, WebGPUDeviceRuntime, WorkerPoolRuntime, detectEnginHardwareCapabilities, detectWasmSimdSupport, fallbackEnginHardwareCapabilities, createEnginCapabilityScorecard, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, InternalOnlyMetricStore, UserFacingMetricLeakTest, AudioTrackMixer, CodeEditRingBuffer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, MidiEventRingBuffer, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, getEnginExecutionPlan, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, createCustomEnginCapabilityProfile, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, validateEnginCapabilityProfile, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION, EnginRuntime
+│   │   ├── InternalMetrics.ts ∅
+│   │   │   └── ∅ unused: InternalOnlyMetricStore, UserFacingMetricLeakTest, DevOnlyBenchmarkRunner
+│   │   └── PremiumRuntimeQuality.ts
+│   ├── gestures
+│   │   ├── touchGestures.ts
+│   │   └── useTouchGestures.ts ∅
+│   │       └── ∅ unused: useTouchGestures
+│   ├── identity
+│   │   └── canonical-names.ts ∅
+│   │       └── ∅ unused: PLATFORM_NAME, PRODUCT_VERSION, REJECTED_PLATFORM_VARIANTS, CORE_SURFACES, CORE_SURFACE_ROUTES, LEGACY_ROUTES, REJECTED_CORE_SURFACE_NAMES, DAYDREAM_DOMAINS, DAYDREAM_ROUTES, ENGIN_SURFACES, DAYDREAM_TO_ENGIN, ALL_ENGIN_NAMES, REJECTED_ENGIN_NAMES, PLATFORM_MODULES, MODULE_ROUTES, REJECTED_MODULE_NAMES, AI_AGENTS, AI_ROUTES, PRODUCT_DESCRIPTION, PRODUCT_DESCRIPTION_FULL, RUNTIME_REGIONS, RUNTIME_SEAM_NAMES, SURFACE_NAMES, ROUTE_LAW_NAMING_PREFERENCES, DREAM_WINDOW, DREAM_WINDOW_STATES, DREAM_WINDOW_REQUIRED_FIELDS, CONNECTION_VERBS, REJECTED_CONNECTION_VERBS, NETWORK_COUNTS, NETWORK_WORK_TYPES, REJECTED_OS_TERMS, isCanonicalPlatformName, isRejectedPlatformVariant, isValidEnginName, isRejectedEnginName, hasEnginSuffix, hasEngineSuffix, isValidDaydreamDomain, isValidModuleName, isRejectedModuleName, isRejectedOsTerm, isValidDreamWindowState, isValidConnectionVerb, isRejectedConnectionVerb, isValidRuntimeRegion, isValidSurfaceName, isRouteLawPreferredName, getEnginForDomain, validateName, ALL_CANONICAL_NAMES
+│   ├── navigation
+│   │   ├── anchorField.ts ∅
+│   │   │   └── ∅ unused: DEFAULT_ANCHOR_CONFIG, computePotential, computeForceField, shouldApplyRecenter, updateActivityTime, checkIdleStatus, computeAttractorForce, applyForceToVelocity, computeRecenterInterpolation, distanceToHome
+│   │   ├── AnchorStateBuffer.ts ∅
+│   │   │   └── ∅ unused: MODE_HOME, MODE_PROFILE, MODE_SHRUNK, HOLD_IDLE, HOLD_HOLDING, HOLD_FIRED, AnchorStateBuffer
+│   │   ├── AnchorWidgetStorage.ts ∅
+│   │   │   └── ∅ unused: AnchorWidgetStorage
+│   │   ├── dream-state.ts ∅
+│   │   │   └── ∅ unused: createInitialDreamState, returnHome, zoom
+│   │   ├── GestureFrameComputer.ts
+│   │   ├── GestureIntentResolver.ts ∅
+│   │   │   └── ∅ unused: PINCH_IN_THRESHOLD, PINCH_OUT_THRESHOLD, SWIPE_THRESHOLD, HOLD_THRESHOLD_MS, GESTURE_SENSITIVITY
+│   │   ├── index.ts ∅
+│   │   │   └── ∅ unused: AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK, AnchorWidgetStorage, GestureFrameComputer, GestureIntent, GestureIntentResolver, HOLD_THRESHOLD_MS, PINCH_IN_THRESHOLD, PINCH_OUT_THRESHOLD, SWIPE_THRESHOLD, FULLSCREEN_DEPTH, LAYER_CUBE, LAYER_DREAM, LAYER_HOME, LAYER_PROFILE, LAYER_WIDGET, NavStateBuffer, PROFILE_DEPTH, PointerEventCapture, ReturnStack, SpatialNavigationEngine, TransformSolver, useNavigation, WidgetBindingType, WidgetInstanceMemory, WidgetPresentation, WidgetVisibility, ledgerStats, matchState, resolveTransition
+│   │   ├── manifold.ts ∅
+│   │   │   └── ∅ unused: cartesianToSpherical, sphericalToCartesian, smoothstep, distanceToEdge, blendFaceEdge, computeWidgetCurvature, normalizeVector, vectorMagnitude, dotProduct, crossProduct
+│   │   ├── NavStateBuffer.ts ∅
+│   │   │   └── ∅ unused: LAYER_CUBE, LAYER_PROFILE, LAYER_WIDGET, LAYER_DREAM, PROFILE_DEPTH, FULLSCREEN_DEPTH
+│   │   ├── physics.ts ∅
+│   │   │   └── ∅ unused: DEFAULT_PHYSICS_CONFIG, computeAcceleration, updatePhysicsState, applyInertialDecay, SNAP_THRESHOLD, shouldSnapToGrid, snapToGrid, verletIntegration, rk4Integration, gestureToForce, applyDamping, hasSettled, computeSpringForce
+│   │   ├── PointerEventCapture.ts
+│   │   ├── quaternion.ts ∅
+│   │   │   └── ∅ unused: fromAxisAngle, magnitude, isValid, rotateVector, slerp, toEulerAngles
+│   │   ├── ReturnStack.ts
+│   │   ├── SpatialNavigationEngine.ts
+│   │   ├── StructureLedger.ts ∅
+│   │   │   └── ∅ unused: matchState, resolveTransition, ledgerStats
+│   │   ├── TransformSolver.ts
+│   │   ├── useNavigation.ts ∅
+│   │   │   └── ∅ unused: useNavigation
+│   │   └── WidgetInstanceMemory.ts
+│   ├── offline
+│   │   ├── offlineCache.ts ∅
+│   │   │   └── ∅ unused: DB_NAME, DB_VERSION, STORE_ASSETS, STORE_SCENES, STORE_SYNC_QUEUE, openDB, cacheAsset, getAsset, deleteAsset, listAssets, saveScene, getScene, deleteScene, listScenes, enqueueSyncAction, getSyncQueue, clearSyncQueue, removeSyncEntry
+│   │   └── useOfflineSync.ts ∅
+│   │       └── ∅ unused: useOfflineSync
+│   ├── policy
+│   │   └── boogiePolicy.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/ai/boogie-policy  ((unknown — bare import))
+│   │       └── ∅ unused: PolicyCategory, PolicySeverity, boogieEvaluate, emitBoogieManEvent, onBoogieManEvent, BOOGIE_POLICY_VERSION, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES
+│   ├── runtime
+│   │   ├── channelMetrics.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/channelMetrics  (getChannelMetrics, recordEmission)
+│   │   │   └── ∅ unused: recordEmission, recordError, getChannelMetrics, getAllChannelMetrics, resetChannelMetrics
+│   │   ├── coercionTable.ts ∅
+│   │   │   └── ∅ unused: coerceDataTransfer, coerceRawPayload, classifyDrop
+│   │   ├── dreamOSBus.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (AI_AGENTS, RuntimeRegion)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntime  (RuntimeWorld)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (AnyBridgeEmission, DualRuntimeChannel, bridge)
+│   │   │   ├── ⚠ @/lib/runtime/runtimeContainer  (RuntimeContainer)
+│   │   │   ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY, INFORMATION_DOMAINS, InformationDomain)
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (DomainObject, JsonObject, JsonValue, RuntimeCoherenceReport, RuntimeLoad, createCoherenceCapacity, createCoherenceReport, createRuntimeLoad, isDomainObject)
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (DomainAuthorizationContext, DomainCapability, authorizeDomainCapability)
+│   │   │   └── ∅ unused: CAPABILITY_DESCRIPTORS, isIntentEnvelope, isInformationDomain, getCapabilityDescriptor, getCapabilityChildren, getCapabilitiesForDomains, deriveAIRuntimeContext, dreamOSBus, INFORMATION_DOMAINS
+│   │   ├── dropTargetRegistry.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/coercionTable  (DreamDrop, DreamDropType)
+│   │   │   └── ∅ unused: dropTargetRegistry
+│   │   ├── dualRuntime.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (RUNTIME_REGIONS, SURFACE_NAMES)
+│   │   │   ├── ⚠ @/lib/panels/panelTypes  (SystemPanelId)
+│   │   │   └── ∅ unused: TORUS_DOMAINS, TORUS_WIDTH, TORUS_HEIGHT, TORUS_FOCUS_MAP, makeHomeDreamSpaceActive, makeDreamSpaceActiveSurface, isHomeActiveTop, worldsEqual, torusFocusKey, moveTorus, RUNTIME_REGIONS, SURFACE_NAMES
+│   │   ├── dualRuntimeBridge.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/madMaxiSnapshotBridge  (invokeMadMaxiSnapshotTransfer)
+│   │   │   └── ∅ unused: enginBridge
+│   │   ├── EnginDispatcher.ts ∅
+│   │   │   └── ∅ unused: initWasmEngine, EnginDispatcher
+│   │   ├── enginWorkflowRegistry.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   └── ∅ unused: ENGIN_KEYS, findWorkflows, findWorkflowById, executeWorkflow, allWorkflows, getWorkflowsByArtifactType, getWorkflowStats, workflowExists
+│   │   ├── iEngine.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (DomainObject, DomainVisibility, JsonObject, JsonValue, createDomainObject, isDomainObject)
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (DomainAuthorizationContext, DomainCapability, authorizeDomainCapability)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntime  (RuntimeWorld)
+│   │   │   └── ∅ unused: validateDomainObject, authorizeCapability, validateManifest, negotiateCompatibility, IntentBus, createRuntimeObject, createIntentPacket, dualRuntimeManifest, dualRuntimeRuleSet
+│   │   ├── instanceManager.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/runtimeChannel  (RuntimeChannel, createLocalChannel, createRuntimeChannel)
+│   │   │   └── ∅ unused: useInstanceManager, buildInstanceKey, createInstance, promoteInstanceToRealtime, persistInstanceList, spawnDualInstances
+│   │   ├── isAuthRelatedError.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: isAuthRelatedError
+│   │   ├── madMaxiSnapshotBridge.ts ∅
+│   │   │   └── ∅ unused: invokeMadMaxiSnapshotTransfer
+│   │   ├── memory.ts ∅
+│   │   │   └── ∅ unused: MEMORY_SIZE, CACHE_LINE, ENTITY_COUNT, BAR_SEAM_ATOMICS_INDEX, BAR_SEAM_SCALE, SOA_POSX_OFFSET, SOA_POSY_OFFSET, SOA_POSZ_OFFSET, SOA_VELX_OFFSET, SOA_VELY_OFFSET, SOA_VELZ_OFFSET, HOMEDREAM_PRIVATE_OFFSET, PUBLIC_VIEW_LIMIT, OFFSET_POS_X, OFFSET_POS_Y, OFFSET_POS_Z, OFFSET_VEL_X, OFFSET_VEL_Y, OFFSET_VEL_Z, OFFSET_DAYDREAM_TYPE, OFFSET_DREAMDM_BAR_Y, OFFSET_DREAMDM_BAR_X, OFFSET_TELEMETRY, OFFSET_LOCKED_STATE, OFFSET_AXIS_STATE, SEAM_CTRL_IDX_BAR_Y, SEAM_CTRL_IDX_BAR_X, SEAM_CTRL_IDX_LOCKED, SEAM_CTRL_IDX_AXIS, ENGIN_OFFSET_POS_X, ENGIN_OFFSET_POS_Y, ENGIN_OFFSET_POS_Z, ENGIN_OFFSET_VEL_X, ENGIN_OFFSET_VEL_Y, ENGIN_OFFSET_VEL_Z, ENGIN_OFFSET_DREAMDM_BAR_Y, ENGIN_OFFSET_DREAMDM_BAR_X, ENGIN_OFFSET_LOCKED_STATE, ENGIN_OFFSET_AXIS_STATE, ENGIN_OFFSET_TELEMETRY, ENGIN_SAB_SIZE, getConformMemoryMap, _resetConformMemoryMap, writeBarSeam, readBarSeam, boogieMemoryGuard, isIndexInBounds, f32Channel, u8DaydreamType, f32DreamDMBarY, isSABAvailable, getEntityBounds, validateWorkgroup, getWorkerCount
+│   │   ├── moduleRegistry.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   └── ∅ unused: useModuleRegistry, moduleRegistry, subscribeRegistryToTransferEvents, manifestFromWidget
+│   │   ├── offlineQueue.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: enqueue, dequeue, flushQueue, getQueueStatus, listenOnline, isOnline
+│   │   ├── quantumCircuit.ts ∅
+│   │   │   └── ∅ unused: runQuantumCircuit
+│   │   ├── runtimeChannel.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (isJsonSerializable)
+│   │   │   └── ∅ unused: createLocalChannel, createRealtimeChannel, createRuntimeChannel
+│   │   ├── runtimeContainer.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (CoherenceCapacity, RuntimeCoherenceReport, RuntimeLoad, createCoherenceCapacity, createCoherenceReport, createRuntimeLoad)
+│   │   │   └── ∅ unused: RuntimeContainer
+│   │   ├── seamClipboard.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/identity/canonical-names  (RuntimeRegion)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   ├── ⚠ @/lib/runtime/enginWorkflowRegistry  (ENGIN_KEYS, EnginKey, findWorkflows)
+│   │   │   └── ∅ unused: seamClipboard
+│   │   ├── sharedResourcePool.ts ∅
+│   │   │   └── ∅ unused: acquireSharedResource, releaseSharedResource
+│   │   ├── snapshotFingerprint.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/observability/collector  (TelemetrySnapshot)
+│   │   │   └── ∅ unused: fingerprintSnapshot, snapshotsAreEquivalent, createFingerprintCache
+│   │   ├── swapManager.ts ∅
+│   │   │   └── ∅ unused: getSwap, setSwap, toggleSwap, clearSwap, getAllSwapStates, resetAllSwaps
+│   │   ├── useDragSurface.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/coercionTable  (DreamDrop, DreamDropType, coerceDataTransfer)
+│   │   │   ├── ⚠ @/lib/runtime/dropTargetRegistry  (dropTargetRegistry)
+│   │   │   └── ∅ unused: useDragSurface
+│   │   ├── useDualRuntime.ts ∅
+│   │   │   └── ∅ unused: useDualRuntime
+│   │   ├── useDualRuntimePersistence.ts ∅
+│   │   │   └── ∅ unused: useDualRuntimePersistence
+│   │   ├── useEnginBridge.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   └── ∅ unused: useCodeEnginBridge, useGameEnginBridge, useStarMakerEnginBridge, useLabEnginBridge, useBrandingEnginBridge, useContentEnginBridge
+│   │   ├── useEnginCoopSync.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/instanceManager  (EnginName)
+│   │   │   ├── ⚠ @/lib/runtime/useSharedEnginChannel  (useSharedEnginChannel)
+│   │   │   └── ∅ unused: useEnginCoopSync
+│   │   └── useSharedEnginChannel.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/runtime/instanceManager  (EnginName, buildInstanceKey, promoteInstanceToRealtime, useInstanceManager)
+│   │       ├── ⚠ @/lib/runtime/runtimeChannel  (RuntimeChannel, RuntimeChannelEvent, createLocalChannel)
+│   │       └── ∅ unused: useSharedEnginChannel
+│   ├── shop
+│   │   └── listings.ts ∅
+│   │       └── ∅ unused: SHOP_TABLE, SHOP_LISTING_REQUIRED_FIELDS, SHOP_TITLE_MAX_LENGTH, SHOP_PRICE_MIN, validateShopListing, normalizeShopListing, SHOP_ORDERS_TABLE, SHOP_ORDERS_PRIVATE_FIELDS, isOrderOwner
+│   ├── social
+│   │   ├── crossPost.ts ∅
+│   │   │   └── ∅ unused: buildCrossPostTargets, formatShareText, openCrossPost, nativeShare, buildDreamOgMeta
+│   │   ├── livekit.ts ∅
+│   │   │   └── ∅ unused: LiveKitError, fetchLiveKitToken, fetchRoomInfo, LiveKitRoomManager, generateServerToken
+│   │   ├── normalizers.ts ∅
+│   │   │   └── ∅ unused: normalizeMastodonPost, normalizeNostrEvent, normalizeBlueskyPost
+│   │   ├── platforms.ts ∅
+│   │   │   └── ∅ unused: SOCIAL_PLATFORMS, detectPlatform, getPlatform, PROFILE_SHARE_PLATFORMS
+│   │   ├── rss-feed.ts ∅
+│   │   │   └── ∅ unused: youtubeChannelRssUrl, youtubePlaylistRssUrl, redditSubredditRssUrl, redditUserRssUrl, mastodonUserRssUrl, githubUserAtomUrl, nostrGatewayRssUrl, mediumUserRssUrl, devtoUserRssUrl, substackRssUrl, hackerNewsRssUrl, hackerNewsUserRssUrl, twitterNitterRssUrl, DEFAULT_NITTER_INSTANCE, facebookPageRssUrl, pinterestRssUrl, tumblrRssUrl, tiktokProfileRssUrl, podcastRssUrl, parseRssFeed, normaliseRssItem, extractFirstImage, stripHtml
+│   │   └── useSocialData.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/social/normalizers  (NormalizedPost)
+│   │       ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │       └── ∅ unused: useSocialData
+│   ├── vm
+│   │   ├── bufferManager.ts
+│   │   ├── bus-events.ts
+│   │   ├── dual-runtime.ts ∅
+│   │   │   └── ∅ unused: DualRuntime, dualRuntime
+│   │   ├── dualVMCoordinator.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (VMRegion, VMWorkload, bridge)
+│   │   │   └── ∅ unused: getDualVMCoordinator, initializeDualVMCoordinator, destroyDualVMCoordinator
+│   │   ├── index.ts ∅
+│   │   │   └── ∅ unused: detectWasmFeatures, resetWasmFeatureCache, WasmFeatureSet, DEFAULT_RESOURCE_QUOTA, QuotaExceededError, enforceQuota, withinQuota, QuotaViolation, ResourceQuota, ResourceUsage, InterVMChannel, VMEvent, GPUTimeSlicer, MemoryBoundsError, SYSCALL_ALLOWLIST, checkBounds, isSyscallAllowed, AllowedSyscall, TimeBudget, DualRuntime, dualRuntime, VMId, VMRuntimeStats, VMWorkloadSpec, BufferManager, destroyDualVMCoordinator, getDualVMCoordinator, initializeDualVMCoordinator, DualVMConfig, DualVMCoordinator, VMRegion, VMWorkload, PipelineCache, SnapshotManager, WasmGpuVM, DEFAULT_VM_CONFIG, ErrorCode, GPUBufferUsageFlags
+│   │   ├── inter-vm-messaging.ts
+│   │   ├── pipelineCache.ts
+│   │   ├── resource-quota.ts ∅
+│   │   │   └── ∅ unused: QuotaExceededError, DEFAULT_RESOURCE_QUOTA, enforceQuota, withinQuota
+│   │   ├── security.ts ∅
+│   │   │   └── ∅ unused: MemoryBoundsError, checkBounds, SYSCALL_ALLOWLIST, isSyscallAllowed, GPUTimeSlicer
+│   │   ├── snapshot.ts ∅
+│   │   │   └── ∅ unused: SnapshotManager
+│   │   ├── types.ts ∅
+│   │   │   └── ∅ unused: ErrorCode, DEFAULT_VM_QUOTAS
+│   │   ├── wasm-features.ts ∅
+│   │   │   └── ∅ unused: detectWasmFeatures, resetWasmFeatureCache
+│   │   └── wasmGpuVM.ts
+│   ├── activeModulesStore.ts ∅
+│   │   └── ∅ unused: loadActiveModules, saveActiveModule, saveActiveModules, saveActiveModulesForRegion, transferActiveModuleRegion, removeActiveModule
+│   ├── bus.wasm
+│   ├── index.ts ∅
+│   │   └── ∅ unused: UniversalEngine, engine
+│   ├── io.ts
+│   ├── sharedDream.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/collaboration  (CollabEventHandler, CollabEventType, CollabMode, CollabPayload, CollabSession, PresenceUpdateData, SessionRole, broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession)
+│   │   └── ∅ unused: createSharedDreamSession, joinSharedDreamSession, broadcastCursorPosition, broadcastEdit, broadcastStatePatch, broadcastDataPacket, broadcastMediaSync, broadcastControlSignal, broadcastModeChange, broadcastPresenceUpdate, leaveSharedDreamSession, useSharedDreamSession, SharedDreamActivityEntry, SharedDreamMember, UseSharedDreamSessionOptions, UseSharedDreamSessionResult
+│   └── utils.ts ∅
+│       └── ∅ unused: cn, formatDate, formatRelativeTime, generateDedupeHash, debounce, throttle, clamp, truncate, retry, sleep, deepClone, groupBy, unique, assert, toErrorMessage, isError
+├── enginpipe
+│   ├── artifact
+│   │   └── manifest.ts ∅
+│   │       └── ∅ unused: ArtifactPermissionSchema, EnginArtifactManifestSchema, parseManifest, safeParseManifest, createManifest
+│   ├── quality
+│   │   └── tiers.ts ∅
+│   │       └── ∅ unused: DEFAULT_TIER_CONFIG, scoreCapabilities, tierFromScore, detectCapabilityTier, getTierConfig
+│   ├── shell
+│   │   └── ArtifactSlot.tsx ∅
+│   │       └── ∅ unused: ArtifactSlot, useArtifactSlot, useOptionalArtifactSlot
+│   ├── telemetry
+│   │   ├── client.ts ∅
+│   │   │   └── ∅ unused: createTelemetryClient
+│   │   └── events.ts ∅
+│   │       └── ∅ unused: TelemetryEventTypeSchema, TelemetryEventSchema
+│   └── index.ts ∅
+│       └── ∅ unused: ArtifactPermissionSchema, EnginArtifactManifestSchema, createManifest, parseManifest, safeParseManifest, createTelemetryClient, TelemetryEventSchema, TelemetryEventTypeSchema, parseTelemetryEvent, DEFAULT_TIER_CONFIG, detectCapabilityTier, getTierConfig, scoreCapabilities, tierFromScore, ArtifactSlot, useArtifactSlot, useOptionalArtifactSlot
 ├── engins
 │   ├── autoopen  [GameEngin]
-│   │   └── dream.AutoOpenGameEngin.tsx ∅
+│   │   └── dream.AutoOpenGameEngin.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/runtime/instanceManager  (createInstance)
+│   │       ├── ⚠ @/lib/runtime/useSharedEnginChannel  (useSharedEnginChannel)
 │   │       └── ∅ unused: (default)
 │   ├── CodeEngin  [CodeEngin]
 │   │   ├── core  [CodeEngin]
@@ -22025,35 +23341,546 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       └── useAgentSession.ts
 │   │   └── orchestrator  [CodeEngin]
 │   │       └── dream.index.tsx ⚠ ∅
+│   │           ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
 │   │           ├── ⚠ @/engins/CodeEngin/orchestrator  (⬡ CodeEnginOrchestrator)
 │   │           └── ∅ unused: (default)
+│   ├── contentengin
+│   │   ├── builders
+│   │   │   ├── geometryBuilder.ts
+│   │   │   ├── meshBuilder.ts
+│   │   │   ├── modifiers.ts ∅
+│   │   │   │   └── ∅ unused: applyModifierMetadata
+│   │   │   ├── primitiveBuilder.ts
+│   │   │   ├── textureBuilder.ts
+│   │   │   └── uvGenerator.ts
+│   │   ├── grammars
+│   │   │   ├── animalGrammar.ts
+│   │   │   ├── bicycleGrammar.ts
+│   │   │   ├── bridgeGrammar.ts
+│   │   │   ├── buildingGrammar.ts
+│   │   │   ├── creatureGrammar.ts ∅
+│   │   │   │   └── ∅ unused: buildCreatureParts
+│   │   │   ├── humanoidGrammar.ts
+│   │   │   ├── propGrammar.ts
+│   │   │   ├── roadGrammar.ts
+│   │   │   ├── shared.ts
+│   │   │   ├── terrainGrammar.ts
+│   │   │   ├── treeGrammar.ts
+│   │   │   ├── vehicleGrammar.ts
+│   │   │   └── waterGrammar.ts
+│   │   ├── materials
+│   │   │   ├── materialTypes.ts
+│   │   │   ├── paletteExtractor.ts ∅
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   └── proceduralMaterials.ts ∅
+│   │   │       └── ∅ unused: material
+│   │   ├── photo
+│   │   │   ├── colorCluster.ts ∅
+│   │   │   │   └── ∅ unused: extractPalette
+│   │   │   ├── edgeDetector.ts ∅
+│   │   │   │   └── ∅ unused: buildEdgeMapFromRgba
+│   │   │   ├── imageAnalyzer.ts
+│   │   │   ├── photoToRecipe.ts ∅
+│   │   │   │   └── ∅ unused: photoToRecipe
+│   │   │   ├── pngDecoder.ts
+│   │   │   └── regionDetector.ts ∅
+│   │   │       └── ∅ unused: relabelRegion
+│   │   ├── pipeline
+│   │   │   ├── build.ts
+│   │   │   ├── bundle.ts
+│   │   │   ├── exportGlb.ts
+│   │   │   ├── generateCollision.ts
+│   │   │   ├── generateLods.ts
+│   │   │   ├── paths.ts ∅
+│   │   │   │   └── ∅ unused: safeUnder
+│   │   │   ├── validate.ts
+│   │   │   └── writeManifest.ts ∅
+│   │   │       └── ∅ unused: wrapAsset
+│   │   ├── recipes
+│   │   │   ├── recipeResolver.ts ∅
+│   │   │   │   └── ∅ unused: normalizeAssetType
+│   │   │   ├── recipeTypes.ts
+│   │   │   └── seededRandom.ts ∅
+│   │   │       └── ∅ unused: seededRandom, pick
+│   │   ├── rigging
+│   │   │   ├── templates
+│   │   │   │   ├── bird_basic.json
+│   │   │   │   ├── fish_basic.json
+│   │   │   │   ├── humanoid_basic.json
+│   │   │   │   ├── quadruped_basic.json
+│   │   │   │   └── vehicle_mechanical.json
+│   │   │   ├── fitArmature.ts
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: createSkeleton
+│   │   │   ├── landmarks.ts ∅
+│   │   │   │   └── ∅ unused: estimateLandmarks
+│   │   │   ├── rigTypes.ts
+│   │   │   └── rigValidator.ts ∅
+│   │   │       └── ∅ unused: validateSkeleton
+│   │   ├── shaders
+│   │   │   ├── shaderRegistry.ts ∅
+│   │   │   │   └── ∅ unused: getShader
+│   │   │   └── shaderTypes.ts
+│   │   ├── assetTypes.ts
+│   │   └── cli.ts
+│   ├── gameengin
+│   │   ├── assets
+│   │   │   ├── BundleCache.ts ∅
+│   │   │   │   └── ∅ unused: planBundleCache
+│   │   │   └── BundleManifest.ts
+│   │   ├── brain
+│   │   │   ├── asset-registry
+│   │   │   ├── build-history
+│   │   │   ├── character-voices
+│   │   │   │   └── mad-maxi.json
+│   │   │   ├── composition-principles
+│   │   │   │   ├── leading-lines-landmark.json
+│   │   │   │   └── parallax-layers.json
+│   │   │   ├── concept-library
+│   │   │   │   └── neon-courier.json
+│   │   │   ├── concept-patterns
+│   │   │   │   ├── protagonists
+│   │   │   │   │   └── reluctant-courier.json
+│   │   │   │   ├── scope-formulas
+│   │   │   │   │   └── one-day-runner.json
+│   │   │   │   └── settings
+│   │   │   │       └── neon-rain-megacity.json
+│   │   │   ├── crash-reports
+│   │   │   ├── dialogue-patterns
+│   │   │   │   ├── callback-anchor.json
+│   │   │   │   ├── implied-subject.json
+│   │   │   │   └── sentence-fragment-rhythm.json
+│   │   │   ├── emotional-tones
+│   │   │   │   ├── determined.json
+│   │   │   │   ├── fierce.json
+│   │   │   │   ├── hopeful.json
+│   │   │   │   ├── reflective.json
+│   │   │   │   └── weary.json
+│   │   │   ├── fun-heuristics
+│   │   │   │   ├── meta-progression.json
+│   │   │   │   ├── moment-to-moment.json
+│   │   │   │   └── session-loop.json
+│   │   │   ├── genre-dna
+│   │   │   │   ├── action-rpg.json
+│   │   │   │   ├── episodic.json
+│   │   │   │   ├── live-service.json
+│   │   │   │   ├── metroidvania.json
+│   │   │   │   ├── open-world.json
+│   │   │   │   ├── platformer.json
+│   │   │   │   ├── puzzle.json
+│   │   │   │   ├── racing.json
+│   │   │   │   ├── roguelike.json
+│   │   │   │   ├── sandbox.json
+│   │   │   │   └── template.json
+│   │   │   ├── inspiration-corpus
+│   │   │   │   ├── celeste.json
+│   │   │   │   ├── dead-cells.json
+│   │   │   │   ├── hades.json
+│   │   │   │   ├── hollow-knight.json
+│   │   │   │   └── outer-wilds.json
+│   │   │   ├── material-recipes
+│   │   │   │   ├── neon-glass-tube.json
+│   │   │   │   ├── rusted-iron.json
+│   │   │   │   └── sun-bleached-sandstone.json
+│   │   │   ├── mechanic-library
+│   │   │   │   ├── camera
+│   │   │   │   │   ├── look-ahead.json
+│   │   │   │   │   ├── screen-shake.json
+│   │   │   │   │   └── smooth-follow.json
+│   │   │   │   ├── combat
+│   │   │   │   │   ├── combo.json
+│   │   │   │   │   ├── hit-stop.json
+│   │   │   │   │   ├── parry.json
+│   │   │   │   │   └── ranged.json
+│   │   │   │   ├── movement
+│   │   │   │   │   ├── coyote-time.json
+│   │   │   │   │   ├── dash.json
+│   │   │   │   │   ├── double-jump.json
+│   │   │   │   │   ├── grapple.json
+│   │   │   │   │   └── wall-slide.json
+│   │   │   │   ├── progression
+│   │   │   │   │   ├── metroidvania-gating.json
+│   │   │   │   │   ├── roguelike-perks.json
+│   │   │   │   │   └── skill-tree.json
+│   │   │   │   └── structural
+│   │   │   │       ├── ability-gating.json
+│   │   │   │       ├── meta-progression.json
+│   │   │   │       ├── procedural-generation.json
+│   │   │   │       ├── run-persistence.json
+│   │   │   │       ├── season-pass.json
+│   │   │   │       └── world-streaming.json
+│   │   │   ├── narrative-pacing
+│   │   │   │   └── default.json
+│   │   │   ├── originality-registry
+│   │   │   │   ├── by-cartridge
+│   │   │   │   │   └── mad-maxi.json
+│   │   │   │   └── signatures.json
+│   │   │   ├── principles
+│   │   │   ├── progression-state
+│   │   │   ├── rd-sessions
+│   │   │   ├── technique-library
+│   │   │   │   ├── lighting
+│   │   │   │   │   └── three-point-mood.json
+│   │   │   │   ├── modeling
+│   │   │   │   │   ├── edge-flow.json
+│   │   │   │   │   └── silhouette-first.json
+│   │   │   │   └── optimization
+│   │   │   │       └── texture-atlasing.json
+│   │   │   ├── upgrade-history
+│   │   │   │   └── prioritization-rules.json
+│   │   │   ├── visual-bible
+│   │   │   │   ├── characters
+│   │   │   │   └── environments
+│   │   │   ├── work-queue
+│   │   │   └── active-projects.json
+│   │   ├── cartridges
+│   │   │   ├── achievementEngine.ts ∅
+│   │   │   │   └── ∅ unused: purgeCartridgeAchievements, getUnlockedCount
+│   │   │   ├── apiStubs.ts ∅
+│   │   │   │   └── ∅ unused: stubSaveAPI, stubAchievementsAPI
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader, assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders
+│   │   │   ├── loaders.ts ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   │   └── ∅ unused: loadCartridgeBundle, loadCartridge, getCartridgeIds
+│   │   │   ├── manifest.ts ∅
+│   │   │   │   └── ∅ unused: getCartridgeCategories
+│   │   │   ├── reactCartridge.ts ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/gameengin/cartridge  (GameCartridge, GameEngineAPI)
+│   │   │   │   └── ∅ unused: GameEngineAPIContext, useGameEngineAPI, createReactCartridgeHost, CARTRIDGE_LOADERS, createReactGameCartridge
+│   │   │   └── saveState.ts ∅
+│   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
+│   │   ├── input
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: GameRuntimeInputRouter
+│   │   │   └── InputRouter.ts ∅
+│   │   │       └── ∅ unused: GameRuntimeInputRouter
+│   │   ├── remote
+│   │   │   ├── comboMachine.ts ∅
+│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS
+│   │   │   ├── index.ts
+│   │   │   ├── layout.ts ∅
+│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, HUD_ALLOWED_ELEMENTS
+│   │   │   ├── moves.ts ∅
+│   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
+│   │   │   └── sprintDetector.ts ∅
+│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
+│   │   ├── render
+│   │   │   └── ShaderRegistry.ts ∅
+│   │   │       └── ∅ unused: GameEnginShaderRegistry
+│   │   ├── runtime
+│   │   │   ├── FrameBudget.ts ∅
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
+│   │   │   ├── FrameClock.ts ∅
+│   │   │   │   └── ∅ unused: GameEnginFrameClock
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget, GameEnginFrameClock, decideRuntimeQuality
+│   │   │   └── RuntimeQuality.ts
+│   │   ├── systems
+│   │   │   ├── ai.ts ∅
+│   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem
+│   │   │   ├── animation.ts ∅
+│   │   │   │   └── ∅ unused: AnimationStateMachine, ReplayBuffer, TypedEventBus, AnimationFSM, EventBus
+│   │   │   ├── assets.ts ∅
+│   │   │   │   └── ∅ unused: AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, planBundleCache
+│   │   │   ├── index.ts ⚠
+│   │   │   │   └── ⚠ @/lib/gameengin/systems  (OctreeBVH, ResourcePool)
+│   │   │   ├── lod.ts ∅
+│   │   │   │   └── ∅ unused: LODSystem
+│   │   │   ├── network.ts ∅
+│   │   │   │   └── ∅ unused: ClientSidePrediction, RollbackNetcode
+│   │   │   ├── physics.ts ∅
+│   │   │   │   └── ∅ unused: AdvancedPhysicsWorld, PhysicsMaterialSystem
+│   │   │   ├── pooling.ts ∅
+│   │   │   │   └── ∅ unused: ObjectPoolingSystem, ResourcePool
+│   │   │   ├── rendering.ts ∅
+│   │   │   │   └── ∅ unused: ComputeShaderPipeline, GPUProfiler, WGSLShaderManager, GPUComputeSystem
+│   │   │   ├── spatial.ts ∅
+│   │   │   │   └── ∅ unused: OctreeBVH, SpatialAudioDSP
+│   │   │   └── world.ts ∅
+│   │   │       └── ∅ unused: GlobalIllumProbes, ProceduralWorldGen, TerrainEngine, TerrainSystem, GIProbeSystem
+│   │   ├── accessibility-ai.ts
+│   │   ├── ai-director.ts
+│   │   ├── ai-npcs.ts
+│   │   ├── backendNegotiator.ts ∅
+│   │   │   └── ∅ unused: negotiateRendererBackend, serverBootstrapDiagnostics
+│   │   ├── brain-reader.ts ∅
+│   │   │   └── ∅ unused: BRAIN_ROOT, STRUCTURE_TYPES, readGenreDNA, listGenres, readProgressionModel, readMechanic, listMechanics, listStructuralMechanics, readInspiration, readPrinciple, signatureHash, readOriginalityRegistry, isOriginal, logRDSession, listCartridges, listTechniques, listMaterialRecipes, listCompositionPrinciples, recordAssetGeneration, readCharacterVoice, readEmotionalTone, listEmotionalTones, listDialoguePatterns, readNarrativePacing, recordBuild, recordAssignments, getLastTouched, readUpgradeRules, recordUpgrade, readActiveProjects, setActiveProjects, isActiveCartridge, CRASH_REPORT_MAX_BYTES, recordCrashReport, listCrashReports, listConceptPatterns, VISION_STATEMENT_MAX_BYTES, VISION_BUDGET_MAX_HOURS, recordVisionStatement, listVisionStatements, readVisionStatement, readCartridgeStatus, setCartridgeStatus, listCartridgesByStatus, recordProgressionState, readProgressionState
+│   │   ├── cartridge-manifest.ts ∅
+│   │   │   └── ∅ unused: CARTRIDGE_MAGIC, CARTRIDGE_MIME, CARTRIDGE_EXT, QualityTierSchema, RenderModeSchema, PermissionSchema, CartridgeManifestSchema, validateManifest, hasCartridgeMagic
+│   │   ├── cartridge.ts
+│   │   ├── cartridgeLoader.ts ∅
+│   │   │   └── ∅ unused: loadDreamrCartridgeFromResponse, parseDreamrArchive, DreamrCartridgeArchive, DreamrFileEntry
+│   │   ├── cloud-compute.ts
+│   │   ├── control-mappings.ts ∅
+│   │   │   └── ∅ unused: mapJoystickToAsset
+│   │   ├── core.ts ∅
+│   │   │   └── ∅ unused: ECSWorld
+│   │   ├── dream-engine.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/media/ledger  (decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString)
+│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│   │   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   │   └── ∅ unused: DreamEngine
+│   │   ├── dreamr-loader.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/cartridge-manifest  (CARTRIDGE_MAGIC, CartridgeManifest, validateManifest)
+│   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
+│   │   ├── executionWiring.ts ⚠
+│   │   │   ├── ⚠ @/lib/runtime/madMaxiSnapshotBridge  (invokeMadMaxiSnapshotTransfer)
+│   │   │   ├── ⚠ @/lib/engins/game  (* as GameRuleSetIndex)
+│   │   │   └── ⚠ @/lib/games/madmaxi-wildfall-world  (* as LucidAvenueWorld)
+│   │   ├── gameEnginRuntime.ts ∅
+│   │   │   └── ∅ unused: loadDreamGame, GameEnginRuntime
+│   │   ├── GameRuntime.tsx ⚠ ∅
+│   │   │   ├── ⚠ @/lib/runtime/channelMetrics  (recordEmission)
+│   │   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
+│   │   │   ├── ⚠ @/lib/runtime/runtimeChannel  (createLocalChannel)
+│   │   │   ├── ⚠ @/lib/runtime/sharedResourcePool  (acquireSharedResource, releaseSharedResource)
+│   │   │   └── ∅ unused: (default)
+│   │   ├── generative-audio.ts
+│   │   ├── index.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin  (..., AIDirector, AdvancedPhysicsWorld, ComputeShaderPipeline, EliteGameEngine, PostFXManager, RollbackNetcode)
+│   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, EliteGameEngine, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, AIDirector, PostFXManager, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
+│   │   ├── neural-render.ts
+│   │   ├── path-tracing.ts
+│   │   ├── platform.ts ∅
+│   │   │   └── ∅ unused: GameEnginPlatform
+│   │   ├── post-fx.ts
+│   │   ├── power-systems.ts
+│   │   ├── predictive-stream.ts
+│   │   ├── procgen.ts
+│   │   ├── registerCartridges.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
+│   │   │   ├── ⚠ @/lib/gameengin/cartridges/loaders  (assertCartridgeLoadersReady)
+│   │   │   ├── ⚠ @/lib/runtime/moduleRegistry  (moduleRegistry)
+│   │   │   └── ∅ unused: registerCartridges
+│   │   ├── unifiedLoop.ts ∅
+│   │   │   └── ∅ unused: activeGameCount, isLoopRunning, _resetLoop
+│   │   ├── useUnifiedLoop.ts ∅
+│   │   │   └── ∅ unused: useUnifiedLoop
+│   │   ├── webgpu-runtime-shell.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/gameengin/dreamr-loader  (DreamrCartridgeArchive)
+│   │   │   └── ∅ unused: canUseWebGPU, planRuntimeShellHandoff
+│   │   ├── world-crdt.ts ∅
+│   │   │   └── ∅ unused: EventualConsistencyBridge
+│   │   └── xr.ts
 │   ├── portfolio  [PortfolioEngin]
-│   │   └── dream.PortfolioEngin.tsx ∅
+│   │   └── dream.PortfolioEngin.tsx ⚠ ∅
+│   │       ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │       ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │       ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   │       └── ∅ unused: (default)
-│   ├── dream.ForgeEngin.tsx ∅
+│   ├── rulesets
+│   │   ├── brand
+│   │   │   ├── brandEnginRuleSet.ts ⚠
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   └── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   └── useBrandEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useBrandEnginRuntime
+│   │   ├── code
+│   │   │   ├── codeEnginRuleSet.ts ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   └── useCodeEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useCodeEnginRuntime
+│   │   ├── content
+│   │   │   ├── contentEnginRuleSet.ts ⚠
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   │   └── ⚠ @/lib/contentengin/assetTypes  (ContentAsset, ContentRecipe, ExportProfile)
+│   │   │   └── useContentEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useContentEnginRuntime
+│   │   ├── game
+│   │   │   ├── gameEnginRuleSet.ts ⚠ ∅
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   │   └── ∅ unused: GRAVITY_VALUES
+│   │   │   ├── index.ts ∅
+│   │   │   │   └── ∅ unused: GAME_ENGIN_RULE_SET, GRAVITY_VALUES
+│   │   │   └── useGameEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useGameEnginRuntime
+│   │   ├── lab
+│   │   │   ├── labEnginRuleSet.ts ⚠
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   └── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   └── useLabEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useLabEnginRuntime
+│   │   ├── music
+│   │   │   ├── starMakerEnginRuleSet.ts ⚠
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, JsonObject, patchBaseState)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (EnginCapability)
+│   │   │   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (getEnginCapabilityProfile)
+│   │   │   │   └── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (ConstraintResult, EnginAction, EnginConstraint, EnginRuleSetContract, EnginRuleSetManifest, EnginRuleSetParams)
+│   │   │   └── useStarMakerEnginRuntime.ts ⚠ ∅
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (MemoryAdapter)
+│   │   │       ├── ⚠ @/lib/engin-runtime/EnginRuntime  (EnginHardwareAccelerationState, EnginRuntime, EnginRuntimeOptions)
+│   │   │       └── ∅ unused: useStarMakerEnginRuntime
+│   │   ├── useEnginWorkflow.ts ⚠ ∅
+│   │   │   ├── ⚠ @/lib/journey/journeyDots  (logJourneyDot)
+│   │   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   │   └── ∅ unused: useEnginWorkflow
+│   │   └── workflowEngine.ts ∅
+│   │       └── ∅ unused: STAGE_LABELS, isValidTransition, handoffsFrom, WORKFLOW_CATALOG, workflowsForEngin
+│   ├── dream.ForgeEngin.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│   │   ├── ⚠ @/lib/forge/forgeIntelligence  (ForgeHistoryEntry, ForgeSuggestion, ForgeTransferEntry, WorkflowRunState, clearWorkflowRun, deleteCustomWorkflow, generateSuggestions, getActiveWorkflowRun, getFailureRecovery, parseGoalToWorkflow, readCustomWorkflows, readForgeHistory, readForgeTransfers, saveCustomWorkflow, startWorkflowRun, updateWorkflowStep)
+│   │   ├── ⚠ @/lib/forge/forgeMomentum  (MomentumSnapshot, computeMomentum, getLevelColor, getLevelEmoji)
+│   │   ├── ⚠ @/lib/forge/forgeNexus  (NexusSnapshot, computeNexus)
+│   │   ├── ⚠ @/lib/forge/forgeRegistry  (CREATIVE_ENGINES, ENGIN_REGISTRY, EnginEntry, FORGE_WORKFLOWS, ForgeActivityPulse, ForgeWorkflow, formatRelativeTime, readForgeActivity)
+│   │   ├── ⚠ @/lib/forge/forgeRituals  (RitualSnapshot, computeRituals)
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (DualRuntimeChannel, bridge)
 │   │   └── ∅ unused: (default)
 │   ├── dream.QuantumCircuitCanvas.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── engin.BrandingEngin.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/daydream/useDaydreamPersistence  (useDaydreamPersistence)
+│   │   ├── ⚠ @/lib/daydream/useDaydreamState  (useDaydreamState)
+│   │   ├── ⚠ @/lib/dreamenginOS  (EngineBase, UpgradedEngine, createEventBus, upgradeEngine)
+│   │   ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│   │   ├── ⚠ @/lib/engins/brand/useBrandEnginRuntime  (useBrandEnginRuntime)
+│   │   ├── ⚠ @/lib/engins/useEnginWorkflow  (useEnginWorkflow)
+│   │   ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginBridge  (useBrandingEnginBridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginCoopSync  (useEnginCoopSync)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │   │   └── ∅ unused: (default)
 │   ├── engin.CodeEngin.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/daydream/useDaydreamPersistence  (useDaydreamPersistence)
+│   │   ├── ⚠ @/lib/daydream/useDaydreamState  (useDaydreamState)
+│   │   ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│   │   ├── ⚠ @/lib/engins/code/useCodeEnginRuntime  (useCodeEnginRuntime)
+│   │   ├── ⚠ @/lib/engins/useEnginWorkflow  (useEnginWorkflow)
+│   │   ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginBridge  (useCodeEnginBridge)
 │   │   ├── ⚠ @/components/DreamButton  (⬡ DreamButton)
 │   │   └── ∅ unused: createIntent, labDatasetId, loadDataset, (default)
 │   ├── engin.ContentEngin.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── engin.GameEngin.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/daydream/useDaydreamPersistence  (useDaydreamPersistence)
+│   │   ├── ⚠ @/lib/dreamdm/DreamSystemContext  (useDreamSystem)
+│   │   ├── ⚠ @/lib/dreamenginOS  (EngineBase, UpgradedEngine, createEventBus, upgradeEngine)
+│   │   ├── ⚠ @/lib/engins/game/gameEnginRuleSet  (GameScore, GravityPreset, PhysicsConfig, ScriptLanguage, ScriptState, TileType)
+│   │   ├── ⚠ @/lib/engins/game/useGameEnginRuntime  (useGameEnginRuntime)
+│   │   ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   ├── ⚠ @/lib/gameengin/cartridge  (GameCartridge)
+│   │   ├── ⚠ @/lib/gameengin/cartridges/loaders  (loadCartridge)
+│   │   ├── ⚠ @/lib/games/catalog  (GAME_CATALOG)
+│   │   ├── ⚠ @/lib/games/avatar  (consumePlayAsMe, getAvatarDataUrl)
+│   │   ├── ⚠ @/lib/games/library-state  (GAME_LIBRARY_SESSION_STORAGE_KEY, MAX_SAVED_GAME_SESSIONS, SavedGameSession)
+│   │   ├── ⚠ @/lib/games/navigation  (buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId)
+│   │   ├── ⚠ @/lib/games/quality-plan  (GAME_CONTROL_PROFILES, GAME_QUALITY_PILLARS)
+│   │   ├── ⚠ @/lib/games/useGameInputKeyboardBridge  (useGameInputKeyboardBridge)
+│   │   ├── ⚠ @/lib/games/useGamepad  (useGamepad)
+│   │   ├── ⚠ @/lib/games/useAIDirector  (useAIDirector)
+│   │   ├── ⚠ @/lib/games/DualSenseManager  (useDualSense)
+│   │   ├── ⚠ @/lib/games/useRemoteChannel  (useRemoteChannel)
+│   │   ├── ⚠ @/lib/media/ledger  (buildLedgerMediaUrl)
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   ├── ⚠ @/lib/runtime/instanceManager  (createInstance)
+│   │   ├── ⚠ @/lib/runtime/useEnginBridge  (useGameEnginBridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginCoopSync  (useEnginCoopSync)
+│   │   ├── ⚠ @/lib/runtime/useSharedEnginChannel  (useSharedEnginChannel)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   ├── ⚠ @/lib/gameengin/GameRuntime  (⬡ GameRuntime)
 │   │   └── ∅ unused: (default)
 │   ├── engin.LabEngin.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/daydream/useDaydreamPersistence  (useDaydreamPersistence)
+│   │   ├── ⚠ @/lib/dreamenginOS  (EngineBase, UpgradedEngine, createEventBus, upgradeEngine)
+│   │   ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│   │   ├── ⚠ @/lib/engins/lab/useLabEnginRuntime  (useLabEnginRuntime)
+│   │   ├── ⚠ @/lib/engins/useEnginWorkflow  (useEnginWorkflow)
+│   │   ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│   │   ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginBridge  (useLabEnginBridge)
+│   │   ├── ⚠ @/lib/runtime/useEnginCoopSync  (useEnginCoopSync)
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
 │   │   └── ∅ unused: (default)
 │   └── engin.StarMakerEngin.tsx ⚠ ∅
+│       ├── ⚠ @/lib/audioFingerprint  (PeakMap, buildPeakMap, createFingerprintIsolator)
+│       ├── ⚠ @/lib/daydream/useDaydreamPersistence  (useDaydreamPersistence)
+│       ├── ⚠ @/lib/daydream/useDaydreamState  (useDaydreamState)
+│       ├── ⚠ @/lib/dreamenginOS  (EngineBase, UpgradedEngine, createEventBus, upgradeEngine)
+│       ├── ⚠ @/lib/enginpipe  (ArtifactSlot)
+│       ├── ⚠ @/lib/engins/music/useStarMakerEnginRuntime  (useStarMakerEnginRuntime)
+│       ├── ⚠ @/lib/engins/useEnginWorkflow  (useEnginWorkflow)
+│       ├── ⚠ @/lib/forge/forgeIntelligence  (recordForgeTransfer)
+│       ├── ⚠ @/lib/forge/useForgeActivity  (useForgeActivity)
+│       ├── ⚠ @/lib/media/ledger  (buildLedgerMediaUrl, uploadBlobToLedgerStorage)
+│       ├── ⚠ @/lib/music/presets  (BEAT_PRESETS, BeatPreset, GENRE_LIST, INSTRUMENT_PRESETS, InstrumentPreset, PROJECT_TEMPLATES, ProjectTemplate)
+│       ├── ⚠ @/lib/music/starmaker  (MelodySuggestion, PlaybackQualityMode, buildReleaseStrategy, createMelodySuggestions, summarizePlaybackProfile)
+│       ├── ⚠ @/lib/music/starmakerArrangement  (ARRANGEMENT_BARS, ARRANGEMENT_SOURCE_COLORS, ARRANGEMENT_TRACKS, ArrangementClip, ArrangementSource, ArrangementTrackId, ArrangementTrackState)
+│       ├── ⚠ @/lib/music/starmakerDaw  (CompingState, PIANO_ROLL_DEFAULTS, PianoRollState, RealtimeStarMakerAudioEngine, SessionViewState, StarMakerAudioDiagnostics, StarMakerSequencerSnapshot, analyzeStereoPcm, createInitialCompingState, createInitialSessionView, createRealtimeStarMakerAudioEngine, renderStarMakerPattern)
+│       ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│       ├── ⚠ @/lib/runtime/useEnginCoopSync  (useEnginCoopSync)
 │       ├── ⚠ @/lib/supabase/client  (createClient)
 │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
 │       ├── ⚠ @/lib/supabase/config  (SUPABASE_URL)
+│       ├── ⚠ @/lib/utils  (toErrorMessage)
 │       └── ∅ unused: (default)
+├── event-bus
+│   └── index.ts ∅
+│       └── ∅ unused: createEventBus, bridgeBuses
+├── feature-build
+│   ├── buildCycle.ts ∅
+│   │   └── ∅ unused: getBuildPhase, calculateProgress, countFeaturesByStatus, countUsableFeatures, computeBuildCycleState, computeAllBuildCycleStates, allPairsInRefinePhase, allPairsMovingForward
+│   ├── featureManifest.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/identity/canonical-names  (DaydreamDomain, EnginSurface)
+│   │   └── ∅ unused: FEATURE_MANIFESTS, getManifest
+│   ├── index.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/feature-build  (FEATURE_MANIFESTS, SICC_DIMENSIONS, computeBuildCycleState)
+│   │   └── ∅ unused: FEATURE_MANIFESTS, getManifest, allPairsInRefinePhase, allPairsMovingForward, calculateProgress, computeAllBuildCycleStates, computeBuildCycleState, countFeaturesByStatus, countUsableFeatures, getBuildPhase, SICC_DIMENSIONS, SICC_GLOBAL_CRITERIA, getCriteriaForDimension
+│   └── uiQualityCriteria.ts ∅
+│       └── ∅ unused: SICC_GLOBAL_CRITERIA, getCriteriaForDimension, SICC_DIMENSIONS
+├── feed
+│   ├── feedTopics.ts ∅
+│   │   └── ∅ unused: ALL_TOPICS, DEFAULT_TOPIC_IDS, FEED_TOPICS_KEY, loadActiveTopicIds, topicIdsToQueries
+│   ├── hashtags.ts ∅
+│   │   └── ∅ unused: MAX_TAGS_PER_POST, MAX_TAG_LENGTH, extractHashtags, validateTag, calculateTrending, formatTag, segmentText
+│   ├── useLiveFeed.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/media/postMedia  (getPrimaryPostMediaUrl)
+│   │   ├── ⚠ @/lib/supabase/client  (createClient)
+│   │   └── ∅ unused: useLiveFeed
+│   └── useYouTubeLiveFeed.ts ⚠ ∅
+│       ├── ⚠ @/lib/feed/feedTopics  (ALL_TOPICS, DEFAULT_TOPIC_IDS, loadActiveTopicIds, topicIdsToQueries)
+│       ├── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
+│       └── ∅ unused: useYouTubeLiveFeed
+├── feeds
+│   └── embedFeedLoader.ts ⚠ ∅
+│       ├── ⚠ @/lib/feeds/embedFeedLoader  (loadEmbedFeed)
+│       └── ∅ unused: loadEmbedFeed, loadEmbedFeedByProvider
 ├── fonts
 │   ├── Cormorant_Garamond
 │   │   ├── static
@@ -22101,1101 +23928,175 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── OFL.txt
 │       ├── README.txt
 │       └── SpaceGrotesk-VariableFont_wght.ttf
+├── forge
+│   ├── engineForge.ts ∅
+│   │   └── ∅ unused: deserializeAssembly
+│   ├── forgeBuild.ts ∅
+│   │   └── ∅ unused: isForgeLogEvent, saveForgeBuild, readForgeBuilds, clearForgeBuilds, canBuildToday, recordBuildToday, stageForgeArtifact
+│   ├── forgeIntelligence.ts ∅
+│   │   └── ∅ unused: appendForgeHistory, readForgeHistory, clearForgeHistory, predictNextEngines, generateSuggestions, parseGoalToWorkflow, recordForgeTransfer, readForgeTransfers, clearForgeTransfers, saveCustomWorkflow, readCustomWorkflows, deleteCustomWorkflow, clearCustomWorkflows, startWorkflowRun, updateWorkflowStep, getActiveWorkflowRun, clearWorkflowRun, getFailureRecovery
+│   ├── forgeMomentum.ts ∅
+│   │   └── ∅ unused: readHistory, computeVelocity, computeDiversity, computeStreak, computeDepth, getLevel, getLevelColor, getLevelEmoji, computeMomentum
+│   ├── forgeNexus.ts ∅
+│   │   └── ∅ unused: buildTransitionMap, computeEdges, computeNodes, detectClusters, findDominantPipeline, computeNexus
+│   ├── forgeRegistry.ts ∅
+│   │   └── ∅ unused: INFORMATION_DOMAINS, getEnginById, getEnginByName, readForgeActivity, getForgeHeat, formatRelativeTime
+│   ├── forgeRituals.ts ∅
+│   │   └── ∅ unused: getTimeBucket, detectTimePatterns, detectSequencePatterns, detectSessionPatterns, detectAffinityPatterns, computeRituals
+│   ├── useForgeActivity.ts ∅
+│   │   └── ∅ unused: useForgeActivity
+│   └── useForgeBuild.ts ⚠ ∅
+│       ├── ⚠ @/lib/forge/forgeBuild  (ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent, canBuildToday, isForgeLogEvent, recordBuildToday, saveForgeBuild, stageForgeArtifact)
+│       ├── ⚠ @/lib/utils  (toErrorMessage)
+│       └── ∅ unused: useForgeBuild
+├── forge-ngn
+│   ├── assembly.ts ∅
+│   │   └── ∅ unused: MIN_PIECES, MAX_PIECES, createAssembly, addPiece, removePiece, movePiece, addConnection, removeConnection, validateAssembly, isValidAssembly, serializeAssembly, deserializeAssembly
+│   ├── index.ts
+│   └── piece-registry.ts ∅
+│       └── ∅ unused: PIECE_REGISTRY, getPiecesByCategory, PIECE_CATEGORIES
+├── games
+│   ├── avatar.ts ∅
+│   │   └── ∅ unused: AVATAR_IMAGE_KEY, AVATAR_CREATED_KEY, AVATAR_PLAY_AS_ME_KEY, getAvatarDataUrl, setAvatarDataUrl, hasAvatar, clearAvatar, resizeImageToDataUrl, setPlayAsMe, consumePlayAsMe
+│   ├── catalog.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
+│   │   ├── ⚠ @/lib/games/mobileControls  (MobileHudMode)
+│   │   ├── ⚠ @/lib/games/performance-baseline  (GameRenderMode)
+│   │   └── ∅ unused: GAME_CATALOG, GAME_CATALOG_IDS
+│   ├── DualSenseManager.ts ∅
+│   │   └── ∅ unused: useDualSense, DualSenseManager
+│   ├── gameControllerButtons.ts ∅
+│   │   └── ∅ unused: BTN_TAP_MAX_MS, BTN_LONG_PRESS_MS, BTN_DOUBLE_TAP_MAX_MS, BTN_TAP_AND_HOLD_WINDOW_MS, CONTROLLER_BUTTONS, CONTROLLER_BUTTON_DEFS, ButtonInteractionManager
+│   ├── gameControllerLeft.ts ∅
+│   │   └── ∅ unused: LEFT_STICK_RADIUS_PX, LEFT_STICK_DEAD_ZONE, computeLeftStickVector
+│   ├── gameControllerRight.ts ∅
+│   │   └── ∅ unused: RIGHT_TAP_MAX_MS, RIGHT_TAP_MAX_PX, RIGHT_RESET_TIMEOUT_MS, AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS, evaluateRightStickTap, computeAimDelta
+│   ├── hooks.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/games/performance-baseline  (DE_GAME_PERFORMANCE_BASELINE, GamePerformanceBaseline, GameRenderMode, createPerformanceBaselineSampler, resolveRendererBackend)
+│   │   ├── ⚠ @/lib/webgpu  (isWebGPUAvailable)
+│   │   └── ∅ unused: useGameAutoStart, useGamePhase, useKeySet, useSubmitScore, useGamePerformanceBaseline
+│   ├── library-state.ts ∅
+│   │   └── ∅ unused: GAME_LIBRARY_SELECTION_STORAGE_KEY, GAME_LIBRARY_SESSION_STORAGE_KEY, MAX_SAVED_GAME_SESSIONS, upsertSavedGameSession
+│   ├── lucid-avenue-world.ts ∅
+│   │   └── ∅ unused: LUCID_AVENUE_TOTAL_SHARDS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, createInitialLucidAvenueState, getLucidAvenueDistrict, getLucidAvenuePatrolPositions, getLucidAvenueMissionChecklist, getLucidAvenueRouteContracts, calculateLucidAvenueScore, getLucidAvenueCompletionPercent, getLucidAvenueStoryBeat, isSamePosition, moveLucidAvenuePlayer, waitLucidAvenueTurn, scanLucidAvenue, jamLucidAvenueGrid, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueHint, requestLucidAvenueHint, interactInLucidAvenue, getLucidAvenuePatrolPathKeys, getLucidAvenueObjectiveKeys
+│   ├── madmaxi-wildfall-world.ts ∅
+│   │   └── ∅ unused: WILDFALL_HEROES, WILDFALL_ZONES, createWildfallRng, createWildfallState, currentWildfallZone, makeWildfallGlyphGrid, switchWildfallHero, activateWildfallHeroAbility, stepWildfall, resolveWildfallMirror, isWildfallPassable, castWildfallRay, wildfallBillboards, wildfallHeroWeapon
+│   ├── mobileControls.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/games/useRemoteChannel  (broadcastGameInput)
+│   │   └── ∅ unused: MOBILE_HUD_BUTTON_RING, normalizeStickVector, getRemoteMoveAction, fireGameRemoteInput, registerMobileGameControls, emitMobileMove, emitMobileLook, emitMobileButton, emitMobileLookDelta, emitMobileJump, emitMobileShoot, getRemoteActionForMobileButton, useRegisterMobileGameControls
+│   ├── navigation.ts ∅
+│   │   └── ∅ unused: DEFAULT_GAME_ID, buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId
+│   ├── performance-baseline.ts ∅
+│   │   └── ∅ unused: DE_GAME_PERFORMANCE_BASELINE, resolveRendererBackend, createPerformanceBaselineSampler, publishGamePerformanceBaseline
+│   ├── quality-plan.ts ∅
+│   │   └── ∅ unused: GAME_QUALITY_PILLARS, GAME_CONTROL_PROFILES, GAME_ENGINE_STANDARDS, ADVANCED_GAME_TARGETS
+│   ├── useAIDirector.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gameengin/ai-director  (AIDirector, DirectorState, PlayerSignals)
+│   │   └── ∅ unused: useAIDirector
+│   ├── useGameInputKeyboardBridge.ts ∅
+│   │   └── ∅ unused: GAME_INPUT_KEYBOARD_MAP, useGameInputKeyboardBridge
+│   ├── useGamepad.ts ∅
+│   │   └── ∅ unused: useGamepad
+│   ├── useImmersiveGameLayout.ts ∅
+│   │   └── ∅ unused: useImmersiveGameLayout, getImmersiveCanvasStyle, getImmersiveStageStyle, getImmersiveOverlayStyle
+│   └── useRemoteChannel.ts ∅
+│       └── ∅ unused: broadcastGameInput, useRemoteChannel
+├── gct
+│   ├── anomaly-detection.ts ∅
+│   │   └── ∅ unused: detectAnomalies
+│   ├── audio-fingerprint.ts ∅
+│   │   └── ∅ unused: audioToVector, identifySong
+│   ├── gct-engine.ts
+│   ├── image-search.ts ∅
+│   │   └── ∅ unused: findSimilarImages
+│   ├── index.ts
+│   └── recommendations.ts ∅
+│       └── ∅ unused: recommendItems
+├── god-tier
+│   ├── godTierEngine.ts ∅
+│   │   └── ∅ unused: RingAverage, computeAlgorithmLevel, buildChildContentFilter, maxAssumptionBoot, framePressureShield, fidelityScaler, heroObjectImportance, eliteMeshPolicy, cinematicMotionStack, visualDominanceEngine, predictIntent, speculativePrefetchEngine, frictionOverride, uiPrioritySolver, applyGodTierToBabylon, godTierSystem, runDreamEngineGodTier, defaultRouteSignals, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildPassPlan, buildSceneObjects, classifyObject, classifyPressure, decideObject, defaultCameraSignals, defaultDirectorMetrics, resolveFrameBudget, resolveResolutionScale, resolveTemporalState, scoreObject, webGPUDirector, CameraSignals, CameraState, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, DirectorFrame, FrameBudget, MeshHints, ObjectDecision, PassConfig, PassName, PassPlan, Pressure, QualityClass, SceneObject, TemporalState
+│   └── useGodTier.ts ∅
+│       └── ∅ unused: useGodTier
+├── gsap
+│   ├── gsap.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gsap/gsap  (getGsap)
+│   │   └── ∅ unused: getGsap
+│   ├── useGsapEntrance.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gsap/gsap  (getGsap)
+│   │   └── ∅ unused: useGsapEntrance
+│   ├── useGsapFlip.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/gsap/gsap  (getGsap)
+│   │   └── ∅ unused: useGsapFlip
+│   └── useGsapScrollReveal.ts ⚠ ∅
+│       ├── ⚠ @/lib/gsap/gsap  (getGsap)
+│       └── ∅ unused: useGsapScrollReveal
+├── home-buttons
+│   ├── button-groups.ts ∅
+│   │   └── ∅ unused: BUTTON_GROUPS
+│   └── contextual-home.ts ∅
+│       └── ∅ unused: HOME_BOTTOM_THRESHOLD, HOME_TOP_THRESHOLD, resolveHomeTarget, runHomeAction
 ├── hooks
 │   ├── use-spatial.ts ⚠ ∅
 │   │   ├── ⚠ @/lib/supabase/client  (createClient)
 │   │   └── ∅ unused: useSpatialNavigation, useAlbums, useShareToProfile
 │   ├── useAccount.ts ⚠
 │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   ├── useConnectorInstallFlow.ts
+│   ├── useConnectorInstallFlow.ts ⚠
+│   │   ├── ⚠ @/lib/connectors/connectorRegistry  (getConnectorDef)
+│   │   ├── ⚠ @/lib/connectors/installFlow  (SlotGrid, consumeDeferredPrompt, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater)
+│   │   └── ⚠ @/lib/widgets/widgetRegistry  (WidgetTypeDef, getWidgetTypeDef)
 │   ├── useDreamLayout.ts
 │   ├── useHideOnScroll.ts ∅
 │   │   └── ∅ unused: useHideOnScroll
+│   ├── useMotionTilt.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/hooks/useMotionTilt  (useMotionTilt)
+│   │   └── ∅ unused: useMotionTilt
+│   ├── useResponsive.ts ∅
+│   │   └── ∅ unused: useViewport, useBreakpoint, useIsAtLeast, useIsBelow, useIsMobile, useIsTablet, useIsDesktop, useBreakpointValue, useFluid, useMediaQuery, getCurrentViewportWidth
 │   ├── useSharedDream.ts ⚠
+│   │   ├── ⚠ @/lib/collaboration  (generateInviteLink)
+│   │   ├── ⚠ @/lib/sharedDream  (DreamBroadcastPayload, DreamEventHandler, DreamPresenceUpdate, DreamSessionMode, DreamSessionRole, SharedDreamSession, broadcastControlSignal, broadcastCursorPosition, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createSharedDreamSession, leaveSharedDreamSession)
 │   │   └── ⚠ @/lib/supabase/client  (createClient)
+│   ├── useTap.ts ∅
+│   │   └── ∅ unused: useTap, useHomeParticleTap
 │   ├── useTapHoldMove.ts
 │   ├── useTick.ts ∅
 │   │   └── ∅ unused: useTick
 │   └── useViewCounter.ts ∅
 │       └── ∅ unused: useViewCounter
-├── lib
-│   ├── activity
-│   │   ├── aqs.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   └── ∅ unused: calculateAQS, getUserMetrics, getAQS, getAQSLeaderboard
-│   │   ├── boogieActivityPolicy.ts ∅
-│   │   │   └── ∅ unused: resolveActivityFeedTreatment, shouldExcludeFromFeed, detectActivityFraudSignals
-│   │   ├── revenueSplit.ts
-│   │   ├── scoring.ts ∅
-│   │   │   └── ∅ unused: calculateVisibilityBoost, getVerificationMethodDisplayName, validateTierForActivityType
-│   │   ├── skipCredits.ts ∅
-│   │   │   └── ∅ unused: SKIP_CREDIT_SPEND_PER_AD, MIN_WATCHED_PERCENT_FOR_CREDIT
-│   │   ├── types.ts
-│   │   └── visibility-score.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │       └── ∅ unused: calculateVisibilityScore, calculateVisibilityScores, getVisibilityRankedFeed, shouldPromotePost
-│   ├── admin
-│   │   ├── lockout.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/server  (createServiceClient)
-│   │   └── upgrade-readiness.ts ∅
-│   │       └── ∅ unused: describeUpgradeBlockers, createUpgradeProposal
-│   ├── agentOS
-│   │   └── hostTools.ts
-│   ├── agents  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── agentBus.ts ∅
-│   │   │   └── ∅ unused: emitGameEnginAgentEvent, emitInnerDreamsEvent, onInnerDreamsEvent
-│   │   ├── boogieManAI.ts ∅
-│   │   │   └── ∅ unused: BOOGIEMAN_EVENT, createBoogieManAgent, checkPolicy, emitBoogieManEvent, onBoogieManEvent
-│   │   ├── dreamengin.ts ∅
-│   │   │   └── ∅ unused: IDENTITY, AXIOMS, VOCABULARY, CORE_SURFACES, DAYDREAM_SURFACES, CONNECTION_PATH_COUNT, DESIGN_TOKENS, PRIVACY_RULES, NAVIGATION_RULES, DREAM_WINDOW_STATES, AI_TRIAD, DREAMDM_BAR, validateVocabulary, validatePalette, validatePrivacy, validateNavigation, validateAction, validateCredentialSafety, DREAMENGIN_EVENT, emitDreamEnginEvent, onDreamEnginEvent
-│   │   ├── drEamsMode.ts ∅
-│   │   │   └── ∅ unused: DREAMS_MODE_STORAGE_KEY, DREAMS_MODE_EVENT
-│   │   ├── idari.ts ∅
-│   │   │   └── ∅ unused: IDARI_EVENT, GENERATION_LAW_WEIGHTS, createIDARiAgent, emitIDARiEvent, onIDARiEvent
-│   │   ├── idariLoop.ts ∅
-│   │   │   └── ∅ unused: runRemediationLoop, getLoopHealthSummary
-│   │   ├── teachBus.ts
-│   │   └── uiActions.ts
-│   ├── ai  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   ├── handlers  [AI Systems (Boogieman / Dr.EAMS / Idari)]
-│   │   │   ├── dreams.ts
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: registerAllHandlers
-│   │   │   ├── navigation.ts
-│   │   │   └── social.ts
-│   │   ├── audit.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   ├── boogie-policy.ts ∅
-│   │   │   └── ∅ unused: ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, CATEGORY_SEVERITY
-│   │   ├── boogie-verifier.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── ∅ unused: detectSignals, verifyIntents, redactSecrets
-│   │   ├── boogieman.ts ∅
-│   │   │   └── ∅ unused: getStrikeWeight, getStrikeExpiryDays
-│   │   ├── capability-gate.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ∅ unused: getRoleRank, buildActorContext, hasCapability, meetsMinimumRole, authorizeIntent, authorizeIntents
-│   │   ├── CIC.ts ∅
-│   │   │   └── ∅ unused: CIC
-│   │   ├── confirm-token.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── ∅ unused: generateConfirmToken, verifyConfirmToken, storeConfirmToken, consumeConfirmToken
-│   │   ├── confirm.ts
-│   │   ├── groq.ts ∅
-│   │   │   └── ∅ unused: groqHealthCheck
-│   │   ├── idempotency.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── ∅ unused: checkIdempotency
-│   │   ├── rate-limiter.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── ∅ unused: RATE_LIMITS, checkRateLimit, getCurrentRPM
-│   │   ├── rateLimit.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   ├── schemas.ts ∅
-│   │   │   └── ∅ unused: AgentSchema, UIContextSchema, IntentTypeSchema, IntentEnvelopeSchema, CodeContextSchema, DrEamsRunResponseSchema, ExecuteResponseSchema, BoogieDecisionSchema, BoogieResultSchema, BoogieOutputSchema, EnforcementActionSchema, EnforcementScopeSchema, StrikeSeveritySchema, StrikeEntrySchema, UserSafeExplanationSchema, InternalAuditEventSchema, BoogieEnforceOutputSchema, AppealEntrySchema, PolicyHealthSchema
-│   │   ├── tfBackend.ts ∅
-│   │   │   └── ∅ unused: initTfBackend
-│   │   ├── tool-router.ts ∅
-│   │   │   └── ∅ unused: getHandler, executeIntent, executeIntents
-│   │   └── triad.ts ∅
-│   │       └── ∅ unused: getOwnerEmail
-│   ├── api
-│   │   └── route.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │       └── ∅ unused: json, jsonError, withApi, requireUser, parseJson, parseQuery
-│   ├── assets
-│   │   ├── assetOptimizer.ts ∅
-│   │   │   └── ∅ unused: optimiseAsset
-│   │   └── indexedDBStore.ts ∅
-│   │       └── ∅ unused: getOriginal, deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
-│   ├── audio-fingerprint
-│   │   ├── fingerprint.ts ∅
-│   │   │   └── ∅ unused: recordFingerprint, matchFingerprint
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: matchFingerprint, recordFingerprint, Fingerprint, TimeSlice, buildPeakMap, FrequencyPeak, PeakMap, extractStem
-│   │   ├── peak-map.ts ∅
-│   │   │   └── ∅ unused: buildPeakMap
-│   │   └── stem-extractor.ts ∅
-│   │       └── ∅ unused: extractStem, extractStemAsync
-│   ├── auth  [Auth]
-│   │   └── nextRedirect.ts
-│   ├── babylon  [WebGPU / Babylon Engine]
-│   │   ├── createEngine.ts
-│   │   └── dreamengine-hybrid.ts ∅
-│   │       └── ∅ unused: initHybridEngine, onGrab
-│   ├── bot-detection
-│   │   ├── detector.ts ∅
-│   │   │   └── ∅ unused: BotDetector
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: HUMAN_MAX_CROSS_SIMILARITY, BOT_MIN_CROSS_SIMILARITY, HUMAN_MAX_COARSE_GRAIN_DIFF, BOT_MIN_COARSE_GRAIN_DIFF, HUMAN_MIN_ENTROPY, BOT_MAX_ENTROPY, HUMAN_MIN_SLOG_VEL_VAR, BOT_MAX_SLOG_VEL_VAR, analyzeSwipe, isBotSession, tallyView, BotSessionResult, Point, SwipeAnalysis, SwipeRecord, ViewTally
-│   │   ├── swipe-physics.ts
-│   │   └── view-tally.ts ∅
-│   │       └── ∅ unused: VIEW_TALLY_DURATION_MS, createViewTallyTimer, ViewTallyTracker
-│   ├── branding
-│   │   └── logos.ts
-│   ├── child-safety  [Child Safety]
-│   │   ├── childSafetyDetector.ts ∅
-│   │   │   └── ∅ unused: isMinorToAdultImageBlock
-│   │   ├── imageClassifier.ts
-│   │   ├── messageContextChecker.ts ∅
-│   │   │   └── ∅ unused: CHILD_SAFETY_LAW_SUMMARY
-│   │   ├── ncmecReporter.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   └── scanMediaUrls.ts
-│   ├── code  [CodeEngin]
-│   │   └── drEamsCodeAssist.ts ∅
-│   │       └── ∅ unused: buildCodePrompt, getCodeAssistCompletion
-│   ├── codeengin  [CodeEngin]
-│   │   ├── auth.ts ⚠
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   ├── diagnostics.ts
-│   │   ├── git.ts
-│   │   ├── pathSafety.ts ∅
-│   │   │   └── ∅ unused: CODEENGIN_ALLOWED_EXTENSIONS
-│   │   ├── projectGraph.ts ∅
-│   │   │   └── ∅ unused: extractImports
-│   │   ├── runner.ts ∅
-│   │   │   └── ∅ unused: CODEENGIN_COMMANDS
-│   │   ├── search.ts
-│   │   ├── types.ts
-│   │   └── workspaceStore.ts ∅
-│   │       └── ∅ unused: (default)
-│   ├── collaboration
-│   │   └── index.ts ∅
-│   │       └── ∅ unused: createLocalCollabSession, createSupabaseCollabSession, broadcastPlayhead
-│   ├── composite
-│   │   ├── compositor.ts ∅
-│   │   │   └── ∅ unused: createNode, createGraph, addNode, connectNodes, disconnectInput, setParam, findNode, topologicalSort, graphSummary
-│   │   ├── fxSimulation.ts ∅
-│   │   │   └── ∅ unused: FX_PRESETS, getPreset, presetsByCategory, createSimulation, setSimParam, getSimParam, resetSimParams, allCategories
-│   │   ├── matchmover.ts ∅
-│   │   │   └── ∅ unused: createTrack, addTrackPoint, addSample, computeHomography, estimateCameraMotion, exportTrackCSV, trackSummary
-│   │   ├── motionCapture.ts ∅
-│   │   │   └── ∅ unused: parseBVH, getFramePose, retargetClip, exportBVH, clipSummary, findJoint
-│   │   └── rotoscope.ts ∅
-│   │       └── ∅ unused: createProject, addLayer, setKeyframe, removeKeyframe, interpolateShape, exportShapeSVG, exportFrameSVG, keyframeList
-│   ├── connectors  [Connectors]
-│   │   ├── providers  [Connectors]
-│   │   │   ├── bluesky.ts ∅
-│   │   │   │   └── ∅ unused: blueskyCredentialFields
-│   │   │   ├── devto.ts ∅
-│   │   │   │   └── ∅ unused: devtoVerify, devtoSync, devtoCredentialFields
-│   │   │   ├── facebook.ts ∅
-│   │   │   │   └── ∅ unused: facebookVerify, facebookSync, facebookCredentialFields
-│   │   │   ├── github.ts ∅
-│   │   │   │   └── ∅ unused: githubCredentialFields
-│   │   │   ├── hackernews.ts ∅
-│   │   │   │   └── ∅ unused: hackernewsVerify, hackernewsSync, hackernewsCredentialFields
-│   │   │   ├── instagram.ts ∅
-│   │   │   │   └── ∅ unused: instagramVerify, getInstagramOAuthConfig, INSTAGRAM_CREDENTIAL_FIELDS
-│   │   │   ├── mastodon.ts ∅
-│   │   │   │   └── ∅ unused: mastodonCredentialFields
-│   │   │   ├── medium.ts ∅
-│   │   │   │   └── ∅ unused: mediumVerify, mediumSync, mediumCredentialFields
-│   │   │   ├── nostr.ts ∅
-│   │   │   │   └── ∅ unused: nostrCredentialFields
-│   │   │   ├── pinterest.ts ∅
-│   │   │   │   └── ∅ unused: pinterestVerify, pinterestSync, pinterestCredentialFields
-│   │   │   ├── podcast.ts ∅
-│   │   │   │   └── ∅ unused: podcastVerify, podcastSync, podcastCredentialFields
-│   │   │   ├── reddit.ts ∅
-│   │   │   │   └── ∅ unused: redditSyncSaved, redditCredentialFields
-│   │   │   ├── shellhub.ts ∅
-│   │   │   │   └── ∅ unused: shellhubVerify, shellhubCredentialFields
-│   │   │   ├── substack.ts ∅
-│   │   │   │   └── ∅ unused: substackVerify, substackSync, substackCredentialFields
-│   │   │   ├── tiktok.ts ∅
-│   │   │   │   └── ∅ unused: tiktokVerify, tiktokSync, tiktokCredentialFields
-│   │   │   ├── tumblr.ts ∅
-│   │   │   │   └── ∅ unused: tumblrVerify, tumblrSync, tumblrCredentialFields
-│   │   │   ├── twitter.ts ∅
-│   │   │   │   └── ∅ unused: twitterVerify, twitterSync, twitterCredentialFields
-│   │   │   └── youtube.ts ∅
-│   │   │       └── ∅ unused: getYouTubeAnalyticsApiKey
-│   │   ├── connectorRegistry.ts
-│   │   ├── deliveryStrategy.ts
-│   │   ├── installFlow.ts ∅
-│   │   │   └── ∅ unused: removeSuggestedWidget, enqueueForPlacement, dequeueNextPlacement, peekPlacementQueue
-│   │   ├── normalise.ts
-│   │   ├── reconcile.ts
-│   │   ├── syncDispatch.ts ∅
-│   │   │   └── ∅ unused: UnsupportedProviderError
-│   │   ├── webhookVerification.ts
-│   │   └── youtube.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/server  (createServiceClient)
-│   │       └── ∅ unused: pollYouTube
-│   ├── consent
-│   │   └── consentManager.ts ∅
-│   │       └── ∅ unused: resolveAcceptPolicy, ConsentManager, consentManager
-│   ├── content  [CreateEngin]
-│   │   ├── generativeFill.ts ∅
-│   │   │   └── ∅ unused: requestGenerativeFill, createMaskDataUrl, analyzeImageColors, fileToBase64
-│   │   ├── publishIntent.ts
-│   │   ├── seoScorer.ts ∅
-│   │   │   └── ∅ unused: scoreContent, generateReport
-│   │   ├── transcriptEditor.ts ∅
-│   │   │   └── ∅ unused: computeCuts, applyEditsToSegments, exportSRT, searchTranscript, annotateSearchMatches, segmentsToPlainText
-│   │   └── voiceClone.ts ∅
-│   │       └── ∅ unused: cloneVoice, textToSpeech, listVoiceProfiles, deleteVoiceProfile, speakWithBrowserTTS, getBrowserVoices, audioFileToBase64
-│   ├── contentengin  [CreateEngin]
-│   │   ├── builders  [CreateEngin]
-│   │   │   ├── geometryBuilder.ts
-│   │   │   ├── meshBuilder.ts
-│   │   │   ├── modifiers.ts ∅
-│   │   │   │   └── ∅ unused: applyModifierMetadata
-│   │   │   ├── primitiveBuilder.ts
-│   │   │   ├── textureBuilder.ts
-│   │   │   └── uvGenerator.ts
-│   │   ├── grammars  [CreateEngin]
-│   │   │   ├── animalGrammar.ts
-│   │   │   ├── bicycleGrammar.ts
-│   │   │   ├── bridgeGrammar.ts
-│   │   │   ├── buildingGrammar.ts
-│   │   │   ├── creatureGrammar.ts ∅
-│   │   │   │   └── ∅ unused: buildCreatureParts
-│   │   │   ├── humanoidGrammar.ts
-│   │   │   ├── propGrammar.ts
-│   │   │   ├── roadGrammar.ts
-│   │   │   ├── shared.ts
-│   │   │   ├── terrainGrammar.ts
-│   │   │   ├── treeGrammar.ts
-│   │   │   ├── vehicleGrammar.ts
-│   │   │   └── waterGrammar.ts
-│   │   ├── materials  [CreateEngin]
-│   │   │   ├── materialTypes.ts
-│   │   │   ├── paletteExtractor.ts ∅
-│   │   │   │   └── ∅ unused: extractPalette
-│   │   │   └── proceduralMaterials.ts ∅
-│   │   │       └── ∅ unused: material
-│   │   ├── photo  [CreateEngin]
-│   │   │   ├── colorCluster.ts ∅
-│   │   │   │   └── ∅ unused: extractPalette
-│   │   │   ├── edgeDetector.ts ∅
-│   │   │   │   └── ∅ unused: buildEdgeMapFromRgba
-│   │   │   ├── imageAnalyzer.ts
-│   │   │   ├── photoToRecipe.ts ∅
-│   │   │   │   └── ∅ unused: photoToRecipe
-│   │   │   ├── pngDecoder.ts
-│   │   │   └── regionDetector.ts ∅
-│   │   │       └── ∅ unused: relabelRegion
-│   │   ├── pipeline  [CreateEngin]
-│   │   │   ├── build.ts
-│   │   │   ├── bundle.ts
-│   │   │   ├── exportGlb.ts
-│   │   │   ├── generateCollision.ts
-│   │   │   ├── generateLods.ts
-│   │   │   ├── paths.ts
-│   │   │   ├── validate.ts
-│   │   │   └── writeManifest.ts ∅
-│   │   │       └── ∅ unused: wrapAsset
-│   │   ├── recipes  [CreateEngin]
-│   │   │   ├── recipeResolver.ts ∅
-│   │   │   │   └── ∅ unused: normalizeAssetType
-│   │   │   ├── recipeTypes.ts
-│   │   │   └── seededRandom.ts ∅
-│   │   │       └── ∅ unused: pick
-│   │   ├── rigging  [CreateEngin]
-│   │   │   ├── templates  [CreateEngin]
-│   │   │   │   ├── bird_basic.json
-│   │   │   │   ├── fish_basic.json
-│   │   │   │   ├── humanoid_basic.json
-│   │   │   │   ├── quadruped_basic.json
-│   │   │   │   └── vehicle_mechanical.json
-│   │   │   ├── fitArmature.ts
-│   │   │   ├── index.ts
-│   │   │   ├── landmarks.ts ∅
-│   │   │   │   └── ∅ unused: estimateLandmarks
-│   │   │   ├── rigTypes.ts
-│   │   │   └── rigValidator.ts
-│   │   ├── shaders  [CreateEngin]
-│   │   │   ├── shaderRegistry.ts ∅
-│   │   │   │   └── ∅ unused: getShader
-│   │   │   └── shaderTypes.ts
-│   │   ├── assetTypes.ts
-│   │   └── cli.ts
-│   ├── daydream  [Daydream System]
-│   │   ├── useDaydreamPersistence.ts ⚠
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   └── useDaydreamState.ts ⚠
-│   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   ├── diff
-│   │   ├── aiEditEngine.ts ∅
-│   │   │   └── ∅ unused: CODEENGIN_PRODUCTION_MODE
-│   │   └── diffUtils.ts
-│   ├── dream-docs
-│   │   ├── embed.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: searchDreamDocs, embedDocSection
-│   │   └── search.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │       └── ∅ unused: searchDreamDocs
-│   ├── dream-window
-│   │   ├── connectionVerbs.ts ∅
-│   │   │   └── ∅ unused: isValidConnectionVerb, REJECTED_CONNECTION_VERBS
-│   │   ├── DreamWindowLifecycle.ts
-│   │   ├── enginConnectionNetwork.ts
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, activateDreamWindow, collapseDreamWindow, createDreamWindowInstance, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers, CONNECTION_VERBS, createActivateAction, createAttachAction, createConnectAcrossAction, createMountAction, createOpenIntoAction, createRouteIntoAction, isValidConnectionVerb, RUNTIME_REGIONS, dismountWindowFromDreamSpace, getSurfaceSpaceSurface, isDreamSpaceDominant, mountWindowInDreamSpace, setSeamPosition, getPathsForEngin, hasConnectionPath
-│   │   ├── runtimeRegion.ts
-│   │   └── useDreamWindowActions.ts ∅
-│   │       └── ∅ unused: createDreamWindow, patchDreamWindow
-│   ├── dreamdm  [HOME — DreamDMBar]
-│   │   ├── barInteractions.ts ∅
-│   │   │   └── ∅ unused: GOLD_SECOND_TAP_WINDOW_MS, BAR_SNAP_TO_TOP_THRESHOLD_PX, BAR_SNAP_TO_TOP_HEIGHT_RATIO, MIN_POINTER_SAMPLE_DELTA_MS, LIGHT_POSITION_CYCLE
-│   │   ├── bridgeSeamFlow.ts
-│   │   ├── DreamSystemContext.tsx ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ∅ unused: DEFAULT_WORLD_FOCUS
-│   │   ├── useDreamBarContext.ts
-│   │   ├── useDreamDMConversations.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   ├── useDreamDMDraft.ts ∅
-│   │   │   └── ∅ unused: listAllDraftIds, cleanupStaleDrafts, getDraftAge
-│   │   ├── useDreamDMMessages.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   ├── useDreamSearch.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   ├── useMessagingCore.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   ├── useModuleBarIntent.ts ∅
-│   │   │   └── ∅ unused: useModuleBarIntent
-│   │   └── useNotifications.ts
-│   ├── dreamengin  [DREAMenginOS]
-│   │   ├── DrEamsAnimator.ts
-│   │   ├── drEamsSearch.ts
-│   │   ├── engineAssets.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ∅ unused: saveEngineAsset
-│   │   └── osSubsystemManifest.ts
-│   ├── dreamenginOS  [DREAMenginOS]
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: slog, slogArray, slogEntropy, slogInv, slogMean, slogVariance, TORRIDITY_A0_PERCEPTION, TORRIDITY_DP, TORRIDITY_LAMBDA, TORRIDITY_N, contentMass, mu, rankFeed, throttledVisibility, torridityRank, BUGS_LOG, DELTA_P, DOC_RELATIONSHIPS, IOTA_MAX, LAMBDA, THRESHOLD_FLOW, THRESHOLD_SYNTHESIZE, auditPostPass, calculateInventionForce, getPassProtocol, logResidual, runPrePassChecklist, createDualRuntimeHub, createLedger, getAllByKind, getLedgerEntry, recordView, storeAsset, storeFingerprint, storePeakMap, storeSampleMetadata, storeTorridityRank, canTransfer, createLocalEventBus, transferModule, analyzeSwipe, isBotSession, tallyView, buildPeakMap, extractAudioChunks, matchFingerprint, recordReferenceFingerprint, ALL_CATEGORIES, COMPONENT_INVENTORY, getByCategory, searchComponents, atomicPieceFromComponent, createAssembly, deserializeAssembly, runAssembly, serializeAssembly, validateAssembly, GameEnginRuntime, loadDreamGame
-│   │   └── OSContext.tsx
-│   ├── dreamnav  [Menus & Navigation, Dream Navigation]
-│   │   ├── delta.ts ∅
-│   │   │   └── ∅ unused: transition
-│   │   ├── gctAssist.ts ∅
-│   │   │   └── ∅ unused: chooseAxisAction, chooseWidgetForSlot
-│   │   ├── gestures6.ts ∅
-│   │   │   └── ∅ unused: createGestureArbiter
-│   │   ├── path.ts
-│   │   └── tau.ts
-│   ├── dreamr  [DreamR]
-│   │   ├── closeFriendsVisibility.ts ∅
-│   │   │   └── ∅ unused: fetchCloseFriendsCircle
-│   │   ├── dreamrfeed.tsx ∅
-│   │   │   └── ∅ unused: DREAMR_TOPICS, (default)
-│   │   ├── feedCursor.ts
-│   │   ├── socialHumanityScore.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   └── ∅ unused: computeSocialHumanityScore
-│   │   ├── swipeCalibration.ts
-│   │   ├── swipePersonalization.ts ∅
-│   │   │   └── ∅ unused: LONGFORM_CONTENT_THRESHOLD, CREATOR_PREFERENCE_WEIGHT, TYPE_PREFERENCE_WEIGHT, creatorPreferenceKey
-│   │   └── torridityLedger.ts ∅
-│   │       └── ∅ unused: getDeceleration, calculateSnapForce, normalizeHumanViews
-│   ├── dreams
-│   │   ├── drag.ts
-│   │   ├── dreamIntentBus.ts
-│   │   ├── DreamRegistry.tsx ∅
-│   │   │   └── ∅ unused: DreamRegistry
-│   │   ├── profileProjection.ts ∅
-│   │   │   └── ∅ unused: createDreamProjection
-│   │   ├── types.ts ∅
-│   │   │   └── ∅ unused: DREAM_SURFACES, DREAM_KINDS, DREAM_RENDER_MODES, DREAM_VISIBILITIES
-│   │   └── useDreamsRuntime.ts
-│   ├── engin-runtime
-│   │   ├── EnginBaseState.ts ∅
-│   │   │   └── ∅ unused: isRuntimeCoherenceReport, DEFAULT_COHERENCE_CAPACITY, evaluateCoherence, explainCoherencePressure, resolveCoherenceTransform
-│   │   ├── EnginCapabilities.ts
-│   │   ├── EnginCapabilityExecution.ts ∅
-│   │   │   └── ∅ unused: getEnginExecutionPlan, CodeEditRingBuffer
-│   │   ├── EnginCapabilityScorecard.ts
-│   │   ├── EnginCapabilityTargets.ts ∅
-│   │   │   └── ∅ unused: CANONICAL_ENGIN_ALIASES, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId
-│   │   ├── EnginDomainCores.ts ∅
-│   │   │   └── ∅ unused: CodePieceTableDocument, CodeEditorHotState, CodeDiagnosticWorkerBridge, CodeExecutionWorkerBridge, CodeSnapshotCompactor, CodeStartupHydrator, CodeKeystrokeBenchmark, GameWebGPUDevice, GameRenderLoop, GameInstanceBufferManager, GameGeometryBufferRegistry, GameMaterialBucketBuffer, GameFrustumCuller, GameLODSelector, GameInputRingBuffer, GamePhysicsCommandBuffer, GameFrameBudgetProbe, GameGeometryThroughputBenchmark, StarMakerAudioWorkletProcessor, StarMakerAudioWorkletBridge, StarMakerTrackBufferPool, StarMakerAudioCommandQueue, StarMakerTransportClock, StarMakerMixerKernel, StarMakerMeteringDecoupler, StarMakerLatencyProbe, ContentRenderJobQueue, ContentWorkerRenderBridge, ContentWebGPURenderPath, ContentTileRenderer4K, ContentRayAccelerationStructure, ContentGeometryBufferRegistry, ContentMaterialBufferRegistry, ContentProgressiveOutputBuffer, ContentGpuCapabilityProbe, ContentRenderBenchmark, BrandVectorPathCache, BrandSdfGlyphAtlas, BrandPaletteCache, BrandTypeScaleCache, BrandFileHydrator, BrandCollaborationDeltaPacker, BrandPatchLog, BrandLocalApplyQueue, BrandVectorRenderProbe, BrandFileOpenProbe, BrandCollaborationSyncProbe, LabParticleSoABuffer, LabSpatialHashGrid, LabCollisionCandidateBuffer, LabCollisionKernel, LabWebGPUComputePipeline, LabComputeShaderRegistry, LabGpuParticleBuffers, LabWasmSimdFallback, LabSimulationWorkerBridge, LabSimulationClock, LabParticleBenchmark64K, LabParticleBenchmark1M, LabCollisionBenchmark, LabGpuDispatchProbe, CollaborationApplyQueue, CollaborationRevisionClock, TransportLatencyProbe, DeterministicMergePatchModel, CrdtPatchModel, AssetManifestLoader, LazyEnginHydrator, StreamingAssetLoader, IndexedDbBlobStore, CacheStorageRuntime, createCanonicalScorecards, runCanonicalPerformanceBenchmarks, CodeEditRingBuffer, MidiEventRingBuffer, CollaborationDeltaPacker, StartupBudgetProbe, IdleMemoryProbe
-│   │   ├── EnginEventBus.ts
-│   │   ├── EnginHardwareCapabilities.ts ∅
-│   │   │   └── ∅ unused: detectWasmSimdSupport, detectEnginHardwareCapabilities, fallbackEnginHardwareCapabilities
-│   │   ├── EnginIOAdapter.ts
-│   │   ├── EnginPerformanceProbe.ts ∅
-│   │   │   └── ∅ unused: gpuMeasurementOrHardwareDependent
-│   │   ├── EnginRuleSetContract.ts ∅
-│   │   │   └── ∅ unused: validateRuleSetManifest
-│   │   ├── EnginRuntime.ts ∅
-│   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
-│   │   ├── EnginSnapshotFingerprint.ts ∅
-│   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
-│   │   ├── HotRuntime.ts ∅
-│   │   │   └── ∅ unused: HotActionClassifier, RevisionCoalescer, CoalescedCommandQueue, HotLaneScheduler, TypedMemoryArena, BinaryCommandBus, DeferredPersistenceQueue, DeferredSyncQueue, ShaderKernelRegistry, MoldableModuleGpuBridge
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: attachCoherenceReport, createBaseState, createCoherenceCapacity, createCoherenceReport, createDomainObject, createRuntimeLoad, evaluateCoherence, explainCoherencePressure, isDomainObject, isEnginBaseState, isJsonObject, isJsonSerializable, isRuntimeCoherenceReport, patchBaseState, resolveCoherenceTransform, createEnginEventBus, enginStorageKey, LocalStorageAdapter, MemoryAdapter, MemorySyncTransport, authorizeDomainCapability, DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities, negotiateRuleSetCompatibility, validateRuleSetManifest, validateRuleSetState, fingerprintBytesWithWasm, fingerprintEnginSnapshot, hashBytesFNV1A, stableStringifySnapshot, createPremiumRuntimeQuality, validatePremiumRuntimeQuality, AudioWorkletRuntime, BinaryCommandBus, GpuBufferRegistry, WasmKernelRuntime, WorkerPoolRuntime, detectWasmSimdSupport, EnginPerformanceProbe, IdleMemoryProbe, StartupBudgetProbe, gpuMeasurementOrHardwareDependent, DevOnlyBenchmarkRunner, AudioTrackMixer, CollaborationDeltaPacker, EnginCapabilityExecutionKernel, GeometryBatcher, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, createEnginCapabilityExecutionKernel, CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, evaluateCapabilityTarget, capabilityProfileMatchesRuleSet, getEnginCapabilityProfile, isCanonicalEnginId, isCustomEnginProfileId, isEnginProfileId, toCustomEnginProfileId, validateCanonicalEnginCapabilityProfiles, ENGIN_RUNTIME_FEATURES, ENGIN_RUNTIME_VERSION
-│   │   ├── InternalMetrics.ts ∅
-│   │   │   └── ∅ unused: InternalOnlyMetricStore, UserFacingMetricLeakTest, DevOnlyBenchmarkRunner
-│   │   └── PremiumRuntimeQuality.ts
-│   ├── engine
-│   │   └── index.ts ∅
-│   │       └── ∅ unused: UniversalEngine
-│   ├── enginpipe
-│   │   ├── artifact
-│   │   │   └── manifest.ts ∅
-│   │   │       └── ∅ unused: ArtifactPermissionSchema
-│   │   ├── quality
-│   │   │   └── tiers.ts
-│   │   ├── shell
-│   │   │   └── ArtifactSlot.tsx ∅
-│   │   │       └── ∅ unused: ArtifactSlot, useArtifactSlot, useOptionalArtifactSlot
-│   │   ├── telemetry
-│   │   │   ├── client.ts
-│   │   │   └── events.ts ∅
-│   │   │       └── ∅ unused: TelemetryEventSchema
-│   │   └── index.ts ∅
-│   │       └── ∅ unused: ArtifactPermissionSchema, EnginArtifactManifestSchema, createManifest, parseManifest, safeParseManifest, createTelemetryClient, TelemetryEventSchema, TelemetryEventTypeSchema, parseTelemetryEvent, DEFAULT_TIER_CONFIG, detectCapabilityTier, getTierConfig, scoreCapabilities, tierFromScore, useArtifactSlot, useOptionalArtifactSlot
-│   ├── engins
-│   │   ├── brand  [BrandEngin]
-│   │   │   ├── brandEnginRuleSet.ts
-│   │   │   └── useBrandEnginRuntime.ts
-│   │   ├── code  [CodeEngin]
-│   │   │   ├── codeEnginRuleSet.ts ∅
-│   │   │   │   └── ∅ unused: (default)
-│   │   │   └── useCodeEnginRuntime.ts
-│   │   ├── content  [CreateEngin]
-│   │   │   ├── contentEnginRuleSet.ts
-│   │   │   └── useContentEnginRuntime.ts
-│   │   ├── game  [GameEngin]
-│   │   │   ├── gameEnginRuleSet.ts
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: GAME_ENGIN_RULE_SET, GRAVITY_VALUES
-│   │   │   └── useGameEnginRuntime.ts
-│   │   ├── lab  [LabEngin]
-│   │   │   ├── labEnginRuleSet.ts
-│   │   │   └── useLabEnginRuntime.ts
-│   │   ├── music  [StarMaker (Music Engin)]
-│   │   │   ├── starMakerEnginRuleSet.ts
-│   │   │   └── useStarMakerEnginRuntime.ts
-│   │   ├── useEnginWorkflow.ts
-│   │   └── workflowEngine.ts
-│   ├── event-bus
-│   │   └── index.ts
-│   ├── feature-build
-│   │   ├── buildCycle.ts
-│   │   ├── featureManifest.ts
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: getManifest, allPairsInRefinePhase, allPairsMovingForward, countFeaturesByStatus, countUsableFeatures, getBuildPhase, SICC_GLOBAL_CRITERIA, getCriteriaForDimension
-│   │   └── uiQualityCriteria.ts
-│   ├── feed  [Feed & Social]
-│   │   ├── feedTopics.ts
-│   │   ├── hashtags.ts
-│   │   ├── useLiveFeed.ts ⚠
-│   │   │   └── ⚠ @/lib/supabase/client  (createClient)
-│   │   └── useYouTubeLiveFeed.ts
-│   ├── feeds  [Feed & Social]
-│   │   └── embedFeedLoader.ts ∅
-│   │       └── ∅ unused: loadEmbedFeedByProvider
-│   ├── forge  [ForgeEngin (Engine Builder)]
-│   │   ├── engineForge.ts
-│   │   ├── forgeBuild.ts
-│   │   ├── forgeIntelligence.ts
-│   │   ├── forgeMomentum.ts
-│   │   ├── forgeNexus.ts
-│   │   ├── forgeRegistry.ts
-│   │   ├── forgeRituals.ts
-│   │   ├── useForgeActivity.ts
-│   │   └── useForgeBuild.ts
-│   ├── forge-ngn  [ForgeEngin (Engine Builder)]
-│   │   ├── assembly.ts ∅
-│   │   │   └── ∅ unused: MIN_PIECES, MAX_PIECES, removeConnection, isValidAssembly, deserializeAssembly
-│   │   ├── index.ts
-│   │   └── piece-registry.ts
-│   ├── gameengin  [GameEngin]
-│   │   ├── assets  [GameEngin]
-│   │   │   ├── BundleCache.ts
-│   │   │   └── BundleManifest.ts
-│   │   ├── brain  [GameEngin]
-│   │   │   ├── asset-registry  [GameEngin]
-│   │   │   ├── build-history  [GameEngin]
-│   │   │   ├── character-voices  [GameEngin]
-│   │   │   │   └── mad-maxi.json
-│   │   │   ├── composition-principles  [GameEngin]
-│   │   │   │   ├── leading-lines-landmark.json
-│   │   │   │   └── parallax-layers.json
-│   │   │   ├── concept-library  [GameEngin]
-│   │   │   │   └── neon-courier.json
-│   │   │   ├── concept-patterns  [GameEngin]
-│   │   │   │   ├── protagonists  [GameEngin]
-│   │   │   │   │   └── reluctant-courier.json
-│   │   │   │   ├── scope-formulas  [GameEngin]
-│   │   │   │   │   └── one-day-runner.json
-│   │   │   │   └── settings  [GameEngin]
-│   │   │   │       └── neon-rain-megacity.json
-│   │   │   ├── crash-reports  [GameEngin]
-│   │   │   ├── dialogue-patterns  [GameEngin]
-│   │   │   │   ├── callback-anchor.json
-│   │   │   │   ├── implied-subject.json
-│   │   │   │   └── sentence-fragment-rhythm.json
-│   │   │   ├── emotional-tones  [GameEngin]
-│   │   │   │   ├── determined.json
-│   │   │   │   ├── fierce.json
-│   │   │   │   ├── hopeful.json
-│   │   │   │   ├── reflective.json
-│   │   │   │   └── weary.json
-│   │   │   ├── fun-heuristics  [GameEngin]
-│   │   │   │   ├── meta-progression.json
-│   │   │   │   ├── moment-to-moment.json
-│   │   │   │   └── session-loop.json
-│   │   │   ├── genre-dna  [GameEngin]
-│   │   │   │   ├── action-rpg.json
-│   │   │   │   ├── episodic.json
-│   │   │   │   ├── live-service.json
-│   │   │   │   ├── metroidvania.json
-│   │   │   │   ├── open-world.json
-│   │   │   │   ├── platformer.json
-│   │   │   │   ├── puzzle.json
-│   │   │   │   ├── racing.json
-│   │   │   │   ├── roguelike.json
-│   │   │   │   ├── sandbox.json
-│   │   │   │   └── template.json
-│   │   │   ├── inspiration-corpus  [GameEngin]
-│   │   │   │   ├── celeste.json
-│   │   │   │   ├── dead-cells.json
-│   │   │   │   ├── hades.json
-│   │   │   │   ├── hollow-knight.json
-│   │   │   │   └── outer-wilds.json
-│   │   │   ├── material-recipes  [GameEngin]
-│   │   │   │   ├── neon-glass-tube.json
-│   │   │   │   ├── rusted-iron.json
-│   │   │   │   └── sun-bleached-sandstone.json
-│   │   │   ├── mechanic-library  [GameEngin]
-│   │   │   │   ├── camera  [GameEngin]
-│   │   │   │   │   ├── look-ahead.json
-│   │   │   │   │   ├── screen-shake.json
-│   │   │   │   │   └── smooth-follow.json
-│   │   │   │   ├── combat  [GameEngin]
-│   │   │   │   │   ├── combo.json
-│   │   │   │   │   ├── hit-stop.json
-│   │   │   │   │   ├── parry.json
-│   │   │   │   │   └── ranged.json
-│   │   │   │   ├── movement  [GameEngin]
-│   │   │   │   │   ├── coyote-time.json
-│   │   │   │   │   ├── dash.json
-│   │   │   │   │   ├── double-jump.json
-│   │   │   │   │   ├── grapple.json
-│   │   │   │   │   └── wall-slide.json
-│   │   │   │   ├── progression  [GameEngin]
-│   │   │   │   │   ├── metroidvania-gating.json
-│   │   │   │   │   ├── roguelike-perks.json
-│   │   │   │   │   └── skill-tree.json
-│   │   │   │   └── structural  [GameEngin]
-│   │   │   │       ├── ability-gating.json
-│   │   │   │       ├── meta-progression.json
-│   │   │   │       ├── procedural-generation.json
-│   │   │   │       ├── run-persistence.json
-│   │   │   │       ├── season-pass.json
-│   │   │   │       └── world-streaming.json
-│   │   │   ├── narrative-pacing  [GameEngin]
-│   │   │   │   └── default.json
-│   │   │   ├── originality-registry  [GameEngin]
-│   │   │   │   ├── by-cartridge  [GameEngin]
-│   │   │   │   │   └── mad-maxi.json
-│   │   │   │   └── signatures.json
-│   │   │   ├── principles  [GameEngin]
-│   │   │   ├── progression-state  [GameEngin]
-│   │   │   ├── rd-sessions  [GameEngin]
-│   │   │   ├── technique-library  [GameEngin]
-│   │   │   │   ├── lighting  [GameEngin]
-│   │   │   │   │   └── three-point-mood.json
-│   │   │   │   ├── modeling  [GameEngin]
-│   │   │   │   │   ├── edge-flow.json
-│   │   │   │   │   └── silhouette-first.json
-│   │   │   │   └── optimization  [GameEngin]
-│   │   │   │       └── texture-atlasing.json
-│   │   │   ├── upgrade-history  [GameEngin]
-│   │   │   │   └── prioritization-rules.json
-│   │   │   ├── visual-bible  [GameEngin]
-│   │   │   │   ├── characters  [GameEngin]
-│   │   │   │   └── environments  [GameEngin]
-│   │   │   ├── work-queue  [GameEngin]
-│   │   │   └── active-projects.json
-│   │   ├── cartridges  [GameEngin]
-│   │   │   ├── achievementEngine.ts ∅
-│   │   │   │   └── ∅ unused: purgeCartridgeAchievements, getUnlockedCount
-│   │   │   ├── apiStubs.ts ∅
-│   │   │   │   └── ∅ unused: stubSaveAPI, stubAchievementsAPI
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode, CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader, assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders
-│   │   │   ├── loaders.ts
-│   │   │   ├── manifest.ts
-│   │   │   ├── reactCartridge.ts ∅
-│   │   │   │   └── ∅ unused: GameEngineAPIContext, createReactCartridgeHost, CARTRIDGE_LOADERS, createReactGameCartridge
-│   │   │   └── saveState.ts ∅
-│   │   │       └── ∅ unused: purgeCartridgeSaves, getSaveStorageBytes
-│   │   ├── input  [GameEngin]
-│   │   │   ├── index.ts
-│   │   │   └── InputRouter.ts ∅
-│   │   │       └── ∅ unused: GameRuntimeInputRouter
-│   │   ├── remote  [GameEngin]
-│   │   │   ├── comboMachine.ts ∅
-│   │   │   │   └── ∅ unused: COMBO_WINDOW_MS, MULTITOUCH_WINDOW_MS
-│   │   │   ├── index.ts
-│   │   │   ├── layout.ts ∅
-│   │   │   │   └── ∅ unused: PORTRAIT_LAYOUT, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, RIGHT_JOYSTICK_RADIUS_MM, HUD_ALLOWED_ELEMENTS
-│   │   │   ├── moves.ts ∅
-│   │   │   │   └── ∅ unused: BASE_COMBOS, SPRINT_COMBOS
-│   │   │   └── sprintDetector.ts ∅
-│   │   │       └── ∅ unused: DOUBLE_TAP_WINDOW_MS, SPRINT_MOVE_THRESHOLD
-│   │   ├── render  [GameEngin]
-│   │   │   └── ShaderRegistry.ts
-│   │   ├── runtime  [GameEngin]
-│   │   │   ├── FrameBudget.ts ∅
-│   │   │   │   └── ∅ unused: GAMEENGIN_FRAME_BUDGETS
-│   │   │   ├── FrameClock.ts ∅
-│   │   │   │   └── ∅ unused: GameEnginFrameClock
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: resolveFrameBudget
-│   │   │   └── RuntimeQuality.ts
-│   │   ├── systems  [GameEngin]
-│   │   │   ├── ai.ts ∅
-│   │   │   │   └── ∅ unused: BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem
-│   │   │   ├── animation.ts ∅
-│   │   │   │   └── ∅ unused: AnimationStateMachine, ReplayBuffer, TypedEventBus, AnimationFSM, EventBus
-│   │   │   ├── assets.ts ∅
-│   │   │   │   └── ∅ unused: AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, planBundleCache
-│   │   │   ├── index.ts
-│   │   │   ├── lod.ts ∅
-│   │   │   │   └── ∅ unused: LODSystem
-│   │   │   ├── network.ts ∅
-│   │   │   │   └── ∅ unused: ClientSidePrediction, RollbackNetcode
-│   │   │   ├── physics.ts ∅
-│   │   │   │   └── ∅ unused: AdvancedPhysicsWorld, PhysicsMaterialSystem
-│   │   │   ├── pooling.ts ∅
-│   │   │   │   └── ∅ unused: ObjectPoolingSystem, ResourcePool
-│   │   │   ├── rendering.ts ∅
-│   │   │   │   └── ∅ unused: ComputeShaderPipeline, GPUProfiler, WGSLShaderManager, GPUComputeSystem
-│   │   │   ├── spatial.ts ∅
-│   │   │   │   └── ∅ unused: OctreeBVH, SpatialAudioDSP
-│   │   │   └── world.ts ∅
-│   │   │       └── ∅ unused: GlobalIllumProbes, ProceduralWorldGen, TerrainEngine, TerrainSystem, GIProbeSystem
-│   │   ├── accessibility-ai.ts
-│   │   ├── ai-director.ts
-│   │   ├── ai-npcs.ts
-│   │   ├── backendNegotiator.ts
-│   │   ├── brain-reader.ts ∅
-│   │   │   └── ∅ unused: readMechanic, readInspiration, readPrinciple, logRDSession
-│   │   ├── cartridge-manifest.ts ∅
-│   │   │   └── ∅ unused: CARTRIDGE_MIME, CARTRIDGE_EXT, QualityTierSchema, RenderModeSchema, PermissionSchema, CartridgeManifestSchema
-│   │   ├── cartridge.ts
-│   │   ├── cartridgeLoader.ts ∅
-│   │   │   └── ∅ unused: loadDreamrCartridgeFromResponse, DreamrCartridgeArchive, DreamrFileEntry
-│   │   ├── cloud-compute.ts
-│   │   ├── core.ts ∅
-│   │   │   └── ∅ unused: ECSWorld
-│   │   ├── dream-engine.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/client  (createClient)
-│   │   │   ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   │   │   └── ∅ unused: DreamEngine
-│   │   ├── dreamr-loader.ts ∅
-│   │   │   └── ∅ unused: parseDreamrArchive, loadDreamrCartridgeFromResponse
-│   │   ├── executionWiring.ts ⚠
-│   │   │   └── ⚠ ./control-mappings  (* as ControlMappings)
-│   │   ├── gameEnginRuntime.ts ∅
-│   │   │   └── ∅ unused: loadDreamGame
-│   │   ├── GameRuntime.tsx ∅
-│   │   │   └── ∅ unused: (default)
-│   │   ├── generative-audio.ts
-│   │   ├── index.ts ⚠ ∅
-│   │   │   ├── ⚠ ./control-mappings  ((unknown — bare import))
-│   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
-│   │   ├── neural-render.ts
-│   │   ├── path-tracing.ts
-│   │   ├── platform.ts ∅
-│   │   │   └── ∅ unused: GameEnginPlatform
-│   │   ├── post-fx.ts
-│   │   ├── power-systems.ts
-│   │   ├── predictive-stream.ts
-│   │   ├── procgen.ts
-│   │   ├── registerCartridges.ts
-│   │   ├── unifiedLoop.ts ∅
-│   │   │   └── ∅ unused: activeGameCount, isLoopRunning, _resetLoop
-│   │   ├── useUnifiedLoop.ts ∅
-│   │   │   └── ∅ unused: useUnifiedLoop
-│   │   ├── webgpu-runtime-shell.ts ∅
-│   │   │   └── ∅ unused: canUseWebGPU, planRuntimeShellHandoff
-│   │   ├── world-crdt.ts ∅
-│   │   │   └── ∅ unused: EventualConsistencyBridge
-│   │   └── xr.ts
-│   ├── games  [GameEngin]
-│   │   ├── avatar.ts ∅
-│   │   │   └── ∅ unused: AVATAR_IMAGE_KEY, AVATAR_CREATED_KEY, AVATAR_PLAY_AS_ME_KEY, setAvatarDataUrl, hasAvatar, clearAvatar, resizeImageToDataUrl
-│   │   ├── catalog.ts ∅
-│   │   │   └── ∅ unused: GAME_CATALOG_IDS
-│   │   ├── DualSenseManager.ts ∅
-│   │   │   └── ∅ unused: DualSenseManager
-│   │   ├── gameControllerButtons.ts
-│   │   ├── gameControllerLeft.ts
-│   │   ├── gameControllerRight.ts ∅
-│   │   │   └── ∅ unused: AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS
-│   │   ├── hooks.ts ∅
-│   │   │   └── ∅ unused: useKeySet, useGamePerformanceBaseline
-│   │   ├── library-state.ts
-│   │   ├── lucid-avenue-world.ts ∅
-│   │   │   └── ∅ unused: LUCID_AVENUE_TOTAL_SHARDS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, createInitialLucidAvenueState, getLucidAvenueDistrict, getLucidAvenuePatrolPositions, getLucidAvenueMissionChecklist, getLucidAvenueRouteContracts, calculateLucidAvenueScore, getLucidAvenueCompletionPercent, getLucidAvenueStoryBeat, isSamePosition, moveLucidAvenuePlayer, waitLucidAvenueTurn, scanLucidAvenue, jamLucidAvenueGrid, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueHint, requestLucidAvenueHint, interactInLucidAvenue, getLucidAvenuePatrolPathKeys, getLucidAvenueObjectiveKeys
-│   │   ├── madmaxi-wildfall-world.ts ∅
-│   │   │   └── ∅ unused: createWildfallRng, makeWildfallGlyphGrid, isWildfallPassable, wildfallHeroWeapon
-│   │   ├── mobileControls.ts ∅
-│   │   │   └── ∅ unused: registerMobileGameControls, emitMobileLookDelta, emitMobileJump, emitMobileShoot
-│   │   ├── navigation.ts
-│   │   ├── performance-baseline.ts
-│   │   ├── quality-plan.ts
-│   │   ├── useAIDirector.ts
-│   │   ├── useGameInputKeyboardBridge.ts
-│   │   ├── useGamepad.ts
-│   │   ├── useImmersiveGameLayout.ts ∅
-│   │   │   └── ∅ unused: getImmersiveCanvasStyle, getImmersiveStageStyle, getImmersiveOverlayStyle
-│   │   └── useRemoteChannel.ts
-│   ├── gct
-│   │   ├── anomaly-detection.ts ∅
-│   │   │   └── ∅ unused: detectAnomalies
-│   │   ├── audio-fingerprint.ts ∅
-│   │   │   └── ∅ unused: audioToVector, identifySong
-│   │   ├── gct-engine.ts
-│   │   ├── image-search.ts ∅
-│   │   │   └── ∅ unused: findSimilarImages
-│   │   ├── index.ts
-│   │   └── recommendations.ts ∅
-│   │       └── ∅ unused: recommendItems
-│   ├── gestures  [Dream Navigation]
-│   │   ├── touchGestures.ts
-│   │   └── useTouchGestures.ts ∅
-│   │       └── ∅ unused: useTouchGestures
-│   ├── god-tier
-│   │   ├── godTierEngine.ts ∅
-│   │   │   └── ∅ unused: godTierSystem, runDreamEngineGodTier, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildPassPlan, buildSceneObjects, classifyObject, classifyPressure, decideObject, defaultCameraSignals, defaultDirectorMetrics, resolveFrameBudget, resolveResolutionScale, resolveTemporalState, scoreObject, webGPUDirector, CameraSignals, CameraState, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, DirectorFrame, FrameBudget, MeshHints, ObjectDecision, PassConfig, PassName, PassPlan, Pressure, QualityClass, SceneObject, TemporalState
-│   │   └── useGodTier.ts
-│   ├── gsap
-│   │   ├── gsap.ts
-│   │   ├── useGsapEntrance.ts
-│   │   ├── useGsapFlip.ts
-│   │   └── useGsapScrollReveal.ts
-│   ├── home-buttons
-│   │   ├── button-groups.ts ∅
-│   │   │   └── ∅ unused: BUTTON_GROUPS
-│   │   └── contextual-home.ts
-│   ├── hooks
-│   │   ├── useMotionTilt.ts
-│   │   ├── useResponsive.ts ∅
-│   │   │   └── ∅ unused: useViewport, useBreakpoint, useIsAtLeast, useIsBelow, useIsMobile, useIsTablet, useIsDesktop, useBreakpointValue, useFluid, useMediaQuery, getCurrentViewportWidth
-│   │   └── useTap.ts ∅
-│   │       └── ∅ unused: useTap, useHomeParticleTap
-│   ├── icons
-│   │   └── sheet.ts ∅
-│   │       └── ∅ unused: SHEET_W, SHEET_H, validateIconMap
-│   ├── identity
-│   │   └── canonical-names.ts ∅
-│   │       └── ∅ unused: REJECTED_CORE_SURFACE_NAMES, DAYDREAM_ROUTES, REJECTED_MODULE_NAMES, PRODUCT_DESCRIPTION_FULL
-│   ├── intelligence
-│   │   ├── continuityHelpers.ts
-│   │   ├── sessionContinuity.ts ∅
-│   │   │   └── ∅ unused: sessionContinuity
-│   │   ├── sessionPatternEngine.ts
-│   │   └── useSessionIntelligence.ts ∅
-│   │       └── ∅ unused: PATTERN_MATRIX_LS_KEY
-│   ├── journey  [Journey System]
-│   │   ├── journeyDots.ts
-│   │   ├── journeyInsights.ts ∅
-│   │   │   └── ∅ unused: MS_PER_DAY
-│   │   └── withJourney.ts ∅
-│   │       └── ∅ unused: withJourney
-│   ├── marketplace  [Marketplace & Shop]
-│   │   ├── listings.ts
-│   │   └── request.ts ∅
-│   │       └── ∅ unused: MARKETPLACE_CONTACT_TABLE
-│   ├── media
-│   │   ├── ledger.ts ∅
-│   │   │   └── ∅ unused: compressData, downloadBlobFromLedgerStorage
-│   │   └── postMedia.ts
-│   ├── music  [StarMaker (Music Engin)]
-│   │   ├── presets.ts ∅
-│   │   │   └── ∅ unused: getPresetsByGenre, findPreset, findInstrumentPreset, findProjectTemplate
-│   │   ├── starmaker.ts
-│   │   ├── starmakerArrangement.ts
-│   │   ├── starmakerDaw.ts ∅
-│   │   │   └── ∅ unused: createEmptyClip, AUTOMATABLE_PARAMS, createInitialAutomationState, encodeWav24Bit
-│   │   └── wasmAudioBridge.ts ∅
-│   │       └── ∅ unused: createWasmAudioBridge
-│   ├── navigation  [Menus & Navigation, Dream Navigation]
-│   │   ├── anchorField.ts ∅
-│   │   │   └── ∅ unused: DEFAULT_ANCHOR_CONFIG, computePotential, computeForceField, shouldApplyRecenter, updateActivityTime, checkIdleStatus, computeAttractorForce, applyForceToVelocity, computeRecenterInterpolation, distanceToHome
-│   │   ├── AnchorStateBuffer.ts
-│   │   ├── AnchorWidgetStorage.ts
-│   │   ├── dream-state.ts
-│   │   ├── GestureFrameComputer.ts
-│   │   ├── GestureIntentResolver.ts ∅
-│   │   │   └── ∅ unused: PINCH_IN_THRESHOLD, PINCH_OUT_THRESHOLD, SWIPE_THRESHOLD, HOLD_THRESHOLD_MS, GESTURE_SENSITIVITY
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK, AnchorWidgetStorage, GestureFrameComputer, GestureIntent, GestureIntentResolver, HOLD_THRESHOLD_MS, PINCH_IN_THRESHOLD, PINCH_OUT_THRESHOLD, SWIPE_THRESHOLD, FULLSCREEN_DEPTH, LAYER_CUBE, LAYER_DREAM, LAYER_HOME, LAYER_PROFILE, LAYER_WIDGET, NavStateBuffer, PROFILE_DEPTH, PointerEventCapture, ReturnStack, SpatialNavigationEngine, TransformSolver, useNavigation, WidgetBindingType, WidgetInstanceMemory, WidgetPresentation, WidgetVisibility, ledgerStats, matchState, resolveTransition
-│   │   ├── manifold.ts ∅
-│   │   │   └── ∅ unused: cartesianToSpherical, sphericalToCartesian, smoothstep, distanceToEdge, blendFaceEdge, computeWidgetCurvature, normalizeVector, vectorMagnitude, dotProduct, crossProduct
-│   │   ├── NavStateBuffer.ts ∅
-│   │   │   └── ∅ unused: LAYER_CUBE, LAYER_WIDGET, LAYER_DREAM, FULLSCREEN_DEPTH
-│   │   ├── physics.ts ∅
-│   │   │   └── ∅ unused: DEFAULT_PHYSICS_CONFIG, computeAcceleration, updatePhysicsState, applyInertialDecay, SNAP_THRESHOLD, shouldSnapToGrid, snapToGrid, verletIntegration, rk4Integration, gestureToForce, applyDamping, hasSettled, computeSpringForce
-│   │   ├── PointerEventCapture.ts
-│   │   ├── quaternion.ts ∅
-│   │   │   └── ∅ unused: fromAxisAngle, magnitude, isValid, rotateVector, slerp, toEulerAngles
-│   │   ├── ReturnStack.ts
-│   │   ├── SpatialNavigationEngine.ts
-│   │   ├── StructureLedger.ts
-│   │   ├── TransformSolver.ts
-│   │   ├── useNavigation.ts ∅
-│   │   │   └── ∅ unused: useNavigation
-│   │   └── WidgetInstanceMemory.ts
-│   ├── notifications  [Notifications]
-│   │   ├── notificationHelpers.ts
-│   │   └── useNotifications.ts
-│   ├── observability  [Observability & Idari Console]
-│   │   ├── collector.ts
-│   │   ├── correlator.ts ∅
-│   │   │   └── ∅ unused: detectSustainedErrorRate
-│   │   ├── healthTrend.ts ∅
-│   │   │   └── ∅ unused: updateHealthTrend, clearHealthTrend, getHealthTrend, getHealthScore, getMTTR, exportHealthReport
-│   │   ├── immediateAction.ts
-│   │   ├── index.ts
-│   │   ├── otel.ts
-│   │   ├── otelBridge.ts ∅
-│   │   │   └── ∅ unused: otelRecordLog, otelRecordMetric, otelRecordTrace, otelRequestStart, otelRequestEnd
-│   │   └── rootCauseAnalyzer.ts
-│   ├── offline
-│   │   ├── offlineCache.ts ∅
-│   │   │   └── ∅ unused: DB_NAME, DB_VERSION, STORE_ASSETS, STORE_SCENES, STORE_SYNC_QUEUE, openDB, getAsset, deleteAsset, listAssets, getSyncQueue, clearSyncQueue, removeSyncEntry
-│   │   └── useOfflineSync.ts ∅
-│   │       └── ∅ unused: useOfflineSync
-│   ├── optimizer  [PortfolioEngin, WebGPU / Babylon Engine]
-│   │   ├── babylon-optimizero.ts
-│   │   ├── constraint-solver.ts
-│   │   ├── creative-optimizero.ts
-│   │   ├── creative-validator.ts
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: ConstraintSolver
-│   │   └── types.ts
-│   ├── panels
-│   │   └── panelTypes.ts ∅
-│   │       └── ∅ unused: PANEL_META
-│   ├── platform
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: getFeed, syncToGlobalRegistry, processAdOrder, logPhysicsExperiment
-│   │   └── lab.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │       └── ∅ unused: logPhysicsExperiment
-│   ├── policy
-│   │   └── boogiePolicy.ts ∅
-│   │       └── ∅ unused: CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES
-│   ├── reality
-│   │   ├── realityStore.ts ∅
-│   │   │   └── ∅ unused: getRealityById, listMyRealities, createReality, updateEnginSlots, touchReality, joinReality, touchMembership, listMembers, saveSnapshot, loadLatestSnapshot, appendActivity, loadActivity, buildChannelId
-│   │   └── types.ts
-│   ├── renderer
-│   │   ├── Canvas2DRenderer.ts ∅
-│   │   │   └── ∅ unused: Canvas2DRenderer
-│   │   ├── FrustumCuller.ts
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: FrustumCuller
-│   │   └── IRenderer.ts
-│   ├── routing
-│   │   └── surfaces.ts ∅
-│   │       └── ∅ unused: PUBLIC_SURFACE_PREFIXES, SAB_ISOLATED_ROUTE_PREFIXES, isSabIsolatedPath
-│   ├── runtime  [Runtime Core]
-│   │   ├── channelMetrics.ts ∅
-│   │   │   └── ∅ unused: recordError, getAllChannelMetrics, resetChannelMetrics
-│   │   ├── coercionTable.ts
-│   │   ├── dreamOSBus.ts ∅
-│   │   │   └── ∅ unused: CAPABILITY_DESCRIPTORS, isIntentEnvelope, isInformationDomain, INFORMATION_DOMAINS
-│   │   ├── dropTargetRegistry.ts
-│   │   ├── dualRuntime.ts ∅
-│   │   │   └── ∅ unused: TORUS_DOMAINS, TORUS_WIDTH, TORUS_HEIGHT, TORUS_FOCUS_MAP, RUNTIME_REGIONS
-│   │   ├── dualRuntimeBridge.ts
-│   │   ├── EnginDispatcher.ts ∅
-│   │   │   └── ∅ unused: initWasmEngine
-│   │   ├── enginWorkflowRegistry.ts ∅
-│   │   │   └── ∅ unused: getWorkflowsByArtifactType, getWorkflowStats, workflowExists
-│   │   ├── iEngine.ts ∅
-│   │   │   └── ∅ unused: validateManifest
-│   │   ├── instanceManager.ts ∅
-│   │   │   └── ∅ unused: persistInstanceList, spawnDualInstances
-│   │   ├── isAuthRelatedError.ts
-│   │   ├── madMaxiSnapshotBridge.ts
-│   │   ├── memory.ts ∅
-│   │   │   └── ∅ unused: ENGIN_OFFSET_POS_X, ENGIN_OFFSET_POS_Y, ENGIN_OFFSET_POS_Z, ENGIN_OFFSET_VEL_X, ENGIN_OFFSET_VEL_Y, ENGIN_OFFSET_VEL_Z, ENGIN_OFFSET_DREAMDM_BAR_Y, ENGIN_OFFSET_DREAMDM_BAR_X, ENGIN_OFFSET_LOCKED_STATE, ENGIN_OFFSET_AXIS_STATE, ENGIN_OFFSET_TELEMETRY, ENGIN_SAB_SIZE, isSABAvailable, getEntityBounds, validateWorkgroup, getWorkerCount
-│   │   ├── moduleRegistry.ts ∅
-│   │   │   └── ∅ unused: subscribeRegistryToTransferEvents, manifestFromWidget
-│   │   ├── offlineQueue.ts ∅
-│   │   │   └── ∅ unused: listenOnline
-│   │   ├── quantumCircuit.ts ∅
-│   │   │   └── ∅ unused: runQuantumCircuit
-│   │   ├── runtimeChannel.ts ∅
-│   │   │   └── ∅ unused: createRealtimeChannel
-│   │   ├── runtimeContainer.ts
-│   │   ├── seamClipboard.ts
-│   │   ├── sharedResourcePool.ts
-│   │   ├── snapshotFingerprint.ts ∅
-│   │   │   └── ∅ unused: fingerprintSnapshot, snapshotsAreEquivalent, createFingerprintCache
-│   │   ├── swapManager.ts
-│   │   ├── useDragSurface.ts ∅
-│   │   │   └── ∅ unused: useDragSurface
-│   │   ├── useDualRuntime.ts ∅
-│   │   │   └── ∅ unused: useDualRuntime
-│   │   ├── useDualRuntimePersistence.ts ∅
-│   │   │   └── ∅ unused: useDualRuntimePersistence
-│   │   ├── useEnginBridge.ts ∅
-│   │   │   └── ∅ unused: useStarMakerEnginBridge, useContentEnginBridge
-│   │   ├── useEnginCoopSync.ts
-│   │   └── useSharedEnginChannel.ts
-│   ├── scene
-│   │   └── sceneState.ts ∅
-│   │       └── ∅ unused: persistScene, restoreScene, removeScene, listPersistedScenes, createAutoSave
-│   ├── setup
-│   │   └── checks.ts ⚠ ∅
-│   │       ├── ⚠ @/lib/supabase/config  (SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_URL)
-│   │       └── ∅ unused: getSetupChecks
-│   ├── sharedDream  [Shared Dream (Collab)]
-│   │   └── useSharedDreamSession.ts ⚠
-│   │       ├── ⚠ @/lib/supabase/client  (createClient)
-│   │       └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   ├── shop  [Marketplace & Shop]
-│   │   └── listings.ts
-│   ├── social  [Feed & Social]
-│   │   ├── crossPost.ts ∅
-│   │   │   └── ∅ unused: openCrossPost, nativeShare
-│   │   ├── livekit.ts ∅
-│   │   │   └── ∅ unused: fetchLiveKitToken, fetchRoomInfo, LiveKitRoomManager
-│   │   ├── normalizers.ts ∅
-│   │   │   └── ∅ unused: normalizeMastodonPost, normalizeNostrEvent, normalizeBlueskyPost
-│   │   ├── platforms.ts
-│   │   ├── rss-feed.ts
-│   │   └── useSocialData.ts ∅
-│   │       └── ∅ unused: useSocialData
-│   ├── torridity
-│   │   ├── constants.ts ∅
-│   │   │   └── ∅ unused: lambda
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: a0Perception, deltaP, lambda, n, contentMass, decayFactor, mu, rankFeed, throttlingGate, torridityRank, ContentItem, RankedItem
-│   │   └── physics.ts ∅
-│   │       └── ∅ unused: mu, contentMass, torridityRank, decayFactor, throttlingGate, rankFeed
-│   ├── ui
-│   │   ├── CustomizeModeContext.tsx
-│   │   ├── responsive.ts
-│   │   ├── runtimeViewport.ts
-│   │   ├── skin-engine.ts ∅
-│   │   │   └── ∅ unused: getSkinPreset
-│   │   ├── theme-engine.ts
-│   │   └── theme.ts
-│   ├── user-sim
-│   │   └── userSimAgent.ts
-│   ├── vm  [VM / WASM Runtime]
-│   │   ├── bufferManager.ts
-│   │   ├── bus-events.ts
-│   │   ├── dual-runtime.ts ∅
-│   │   │   └── ∅ unused: DualRuntime, dualRuntime
-│   │   ├── dualVMCoordinator.ts ∅
-│   │   │   └── ∅ unused: getDualVMCoordinator, initializeDualVMCoordinator, destroyDualVMCoordinator
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: detectWasmFeatures, resetWasmFeatureCache, WasmFeatureSet, DEFAULT_RESOURCE_QUOTA, QuotaExceededError, enforceQuota, withinQuota, QuotaViolation, ResourceQuota, ResourceUsage, InterVMChannel, VMEvent, GPUTimeSlicer, MemoryBoundsError, SYSCALL_ALLOWLIST, checkBounds, isSyscallAllowed, AllowedSyscall, TimeBudget, DualRuntime, dualRuntime, VMId, VMRuntimeStats, VMWorkloadSpec, BufferManager, destroyDualVMCoordinator, getDualVMCoordinator, initializeDualVMCoordinator, DualVMConfig, DualVMCoordinator, VMRegion, VMWorkload, PipelineCache, SnapshotManager, WasmGpuVM, DEFAULT_VM_CONFIG, ErrorCode, GPUBufferUsageFlags
-│   │   ├── inter-vm-messaging.ts
-│   │   ├── pipelineCache.ts
-│   │   ├── resource-quota.ts ∅
-│   │   │   └── ∅ unused: QuotaExceededError, DEFAULT_RESOURCE_QUOTA, enforceQuota, withinQuota
-│   │   ├── security.ts ∅
-│   │   │   └── ∅ unused: MemoryBoundsError, checkBounds, SYSCALL_ALLOWLIST, isSyscallAllowed, GPUTimeSlicer
-│   │   ├── snapshot.ts ∅
-│   │   │   └── ∅ unused: SnapshotManager
-│   │   ├── types.ts ∅
-│   │   │   └── ∅ unused: ErrorCode, DEFAULT_VM_QUOTAS
-│   │   ├── wasm-features.ts ∅
-│   │   │   └── ∅ unused: detectWasmFeatures, resetWasmFeatureCache
-│   │   └── wasmGpuVM.ts
-│   ├── warp  [Warp System]
-│   │   ├── useWarp.ts
-│   │   └── warpEngine.ts
-│   ├── web3
-│   │   ├── client.ts ∅
-│   │   │   └── ∅ unused: Web3Client
-│   │   ├── engagement.ts ∅
-│   │   │   └── ∅ unused: trackEngagement, getEngagementStats, applyOptimisticEngagement, getOptimisticDelta, clearOptimisticDelta
-│   │   ├── index.ts ∅
-│   │   │   └── ∅ unused: DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, Web3Error, Web3Client, applyOptimisticEngagement, clearOptimisticDelta, getEngagementStats, getOptimisticDelta, getFromIpfs, isIpfsCid, pinCid, resolveIpfsUrl, uploadFileToIpfs
-│   │   ├── ipfs.ts ∅
-│   │   │   └── ∅ unused: uploadToIpfs, uploadFileToIpfs, getFromIpfs, pinCid, resolveIpfsUrl, isIpfsCid
-│   │   └── types.ts
-│   ├── webgpu  [WebGPU / Babylon Engine]
-│   │   ├── adaptiveQuality.ts ∅
-│   │   │   └── ∅ unused: getBatteryState, getDeviceMemoryGB, getCoreCount, gatherDeviceSignals
-│   │   ├── director.ts ∅
-│   │   │   └── ∅ unused: webGPUDirector
-│   │   └── useWebGPUDirector.ts ∅
-│   │       └── ∅ unused: useWebGPUDirector, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals, defaultDirectorMetrics, CameraSignals, CameraState, DirectorFrame, MeshHints, RuntimeMetrics
-│   ├── widgets  [Widgets System]
-│   │   ├── CrossWidgetPosting.ts ∅
-│   │   │   └── ∅ unused: MSG_TYPE_POST_REQUEST, MSG_TYPE_POST_RESULT, MSG_TYPE_FOCUS_REQUEST, MSG_TYPE_SEND_TEXT, MSG_TYPE_SEND_MEDIA, CrossWidgetPostingEngine
-│   │   ├── feed-resolver.ts ⚠ ∅
-│   │   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
-│   │   │   └── ∅ unused: resolvePublicAppPosts, subscribeAppPostsRealtime, getFeedChannelKey, subscribeFeedRealtime
-│   │   ├── parse.ts ∅
-│   │   │   └── ∅ unused: parseYouTubeConfig, parseTextConfig, parseEmbedConfig, parseSocialEmbedConfig, parseSocialProfileConfig, parseSocialFeedConfig, parseTypedWidget
-│   │   ├── parseConfig.ts ∅
-│   │   │   └── ∅ unused: parseYouTubeWidgetConfig, parseSocialEmbedWidgetConfig, parseSocialProfileWidgetConfig, parseSocialFeedWidgetConfig
-│   │   ├── useWidget.ts ∅
-│   │   │   └── ∅ unused: useWidget, emitWidget, setWidgetMemory, getWidgetMemory, chainWidgets, spawnSubWidget, getSubWidgets
-│   │   ├── WidgetBus.ts ∅
-│   │   │   └── ∅ unused: (default)
-│   │   ├── WidgetEngine.tsx ∅
-│   │   │   └── ∅ unused: WidgetLibrary
-│   │   ├── WidgetEventBus.ts ∅
-│   │   │   └── ∅ unused: WidgetEventBus
-│   │   ├── WidgetLinkGraph.ts
-│   │   └── widgetRegistry.ts
-│   ├── activeModulesStore.ts ∅
-│   │   └── ∅ unused: saveActiveModules
-│   ├── adari.ts ∅
-│   │   └── ∅ unused: getBuildReport
-│   ├── agentOS.ts
-│   ├── artifactStore.ts ∅
-│   │   └── ∅ unused: getDefaultSystemArtifacts, saveArtifacts, removeArtifact
-│   ├── audioFingerprint.ts
-│   ├── botDetection.ts
-│   ├── bus.wasm
-│   ├── componentInventory.ts ∅
-│   │   └── ∅ unused: searchComponents
-│   ├── data-transform.ts
-│   ├── dev-bypass.ts
-│   ├── eventBus.ts
-│   ├── generationLaw.ts ∅
-│   │   └── ∅ unused: DELTA_P, LAMBDA, IOTA_MAX, THRESHOLD_FLOW, THRESHOLD_SYNTHESIZE, calculateInventionForce, getPassProtocol, runPrePassChecklist, BUGS_LOG, logResidual, auditPostPass, DOC_RELATIONSHIPS
-│   ├── h265-encoder.ts ∅
-│   │   └── ∅ unused: H265Encoder
-│   ├── ledger-data.ts ∅
-│   │   └── ∅ unused: ledgerData
-│   ├── ledger.ts ∅
-│   │   └── ∅ unused: getLedgerEntry, storePeakMap, storeFingerprint, storeSampleMetadata, storeTorridityRank, storeAsset, recordView
-│   ├── sharedDream.ts ∅
-│   │   └── ∅ unused: joinSharedDreamSession, useSharedDreamSession, SharedDreamActivityEntry, SharedDreamMember, UseSharedDreamSessionOptions, UseSharedDreamSessionResult
-│   ├── slog.ts ∅
-│   │   └── ∅ unused: slogInv, slogArray, slogMean
-│   ├── social-feed.ts
-│   ├── torridity.ts
-│   ├── universalEditor.ts ∅
-│   │   └── ∅ unused: createLocalEventBus, transferModule
-│   ├── utils.ts ∅
-│   │   └── ∅ unused: formatDate, generateDedupeHash, isError
-│   └── webgpu.ts ∅
-│       └── ∅ unused: initializeWebGPURuntime, getRendererBackend
+├── icons
+│   └── sheet.ts ∅
+│       └── ∅ unused: SHEET_PATH, SHEET_W, SHEET_H, COLS, ROWS, FRAME_W, FRAME_H, ICONS, ICON_ENTRIES, getIconPos, hasIcon, validateIconMap
+├── intelligence
+│   ├── continuityHelpers.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/forge/forgeRegistry  (ENGIN_REGISTRY, EnginEntry, ForgeActivityPulse)
+│   │   └── ∅ unused: resolveResumeDest, formatArtifactKind, getArtifactAccent
+│   ├── sessionContinuity.ts ∅
+│   │   └── ∅ unused: sessionContinuity
+│   ├── sessionPatternEngine.ts
+│   └── useSessionIntelligence.ts ⚠ ∅
+│       ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
+│       └── ∅ unused: PATTERN_MATRIX_LS_KEY, useSessionIntelligence
+├── journey
+│   ├── journeyDots.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/journey/journeyDots  (hasJourneyDot, logJourneyDot)
+│   │   └── ∅ unused: logJourneyDot, hasJourneyDot
+│   ├── journeyInsights.ts ∅
+│   │   └── ∅ unused: MS_PER_DAY, RETURN_GAP_DAYS, findFirstOccurrenceIds, computeCurrentStreak, computeWeeklyFrequency, detectReturnGaps, annotateDotsWithInsights
+│   └── withJourney.ts ⚠ ∅
+│       ├── ⚠ @/lib/journey/journeyDots  (logJourneyDot)
+│       └── ∅ unused: withJourney
+├── marketplace
+│   ├── listings.ts ∅
+│   │   └── ∅ unused: MARKETPLACE_TABLE, VALID_MARKETPLACE_CATEGORIES, MARKETPLACE_TITLE_MAX, MARKETPLACE_TAGS_MAX, MARKETPLACE_TAG_MAX_LENGTH, validateMarketplaceListing, normalizeMarketplaceListing, marketplaceDetailRoute, formatMarketplacePrice
+│   └── request.ts ∅
+│       └── ∅ unused: CONTACT_REQUEST_MESSAGE_MAX, validateContactRequest, buildContactRequestRecord, MARKETPLACE_CONTACT_TABLE
+├── media
+│   ├── ledger.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: encodeToLedger, compressData, decodeFromLedger, analyzeLedgerDensity, buildLedgerMediaUrl, encodeUint8ArrayToLedgerString, decodeLedgerStringToUint8Array, encodeBlobToLedger, decodeLedgerBlob, uploadBlobToLedgerStorage, downloadBlobFromLedgerStorage
+│   └── postMedia.ts ∅
+│       └── ∅ unused: getPostMediaUrls, getPrimaryPostMediaUrl
 ├── misc
 │   └── images
 │       ├── arm2_transparent.png
@@ -23209,12 +24110,76 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── shoe2_transparent.png
 │       ├── sprite_2x_transparent.png
 │       └── sprite_transparent.png
+├── music
+│   ├── presets.ts ∅
+│   │   └── ∅ unused: BEAT_PRESETS, INSTRUMENT_PRESETS, PROJECT_TEMPLATES, GENRE_LIST, getPresetsByGenre, findPreset, findInstrumentPreset, findProjectTemplate
+│   ├── starmaker.ts ∅
+│   │   └── ∅ unused: summarizePlaybackProfile, buildReleaseStrategy, createMelodySuggestions
+│   ├── starmakerArrangement.ts ∅
+│   │   └── ∅ unused: ARRANGEMENT_BARS, ARRANGEMENT_TRACKS, ARRANGEMENT_SOURCE_COLORS
+│   ├── starmakerDaw.ts ∅
+│   │   └── ∅ unused: PIANO_ROLL_DEFAULTS, midiPitchToName, isBlackKey, createMidiNote, snapToGrid, TAKE_COLORS, createDemoTake, createInitialCompingState, createEmptyClip, createInitialSessionView, AUTOMATABLE_PARAMS, createInitialAutomationState, createInitialWarpState, computeWarpPlaybackRate, AUDIO_QUALITY_PRESETS, audioQualityLabel, analyzeStereoPcm, renderStarMakerPattern, encodeWav24Bit, createRealtimeStarMakerAudioEngine
+│   └── wasmAudioBridge.ts ∅
+│       └── ∅ unused: createWasmAudioBridge
+├── notifications
+│   ├── notificationHelpers.ts ∅
+│   │   └── ∅ unused: mapNotificationType, getNotificationTitle, getNotificationActionUrl, extractNotificationMessage
+│   └── useNotifications.ts ⚠ ∅
+│       ├── ⚠ @/lib/utils  (toErrorMessage)
+│       └── ∅ unused: useNotifications
+├── observability
+│   ├── collector.ts ∅
+│   │   └── ∅ unused: collectLog, collectMetric, collectTrace, getSnapshot, getBufferStats, clearBuffers, collectBatchLogs, getErrorRate, getP95Latency, groupTracesByTraceId, getLogCountsBySeverity
+│   ├── correlator.ts ∅
+│   │   └── ∅ unused: detectErrorSpikes, detectLatencySpikes, detectMetricAnomalies, detectSustainedErrorRate, correlate
+│   ├── healthTrend.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/agents/idariLoop  (LoopIteration, LoopStatus)
+│   │   └── ∅ unused: updateHealthTrend, clearHealthTrend, getHealthTrend, getHealthScore, getMTTR, exportHealthReport
+│   ├── immediateAction.ts ∅
+│   │   └── ∅ unused: buildImmediateRemediationAction
+│   ├── index.ts
+│   ├── otel.ts ∅
+│   │   └── ∅ unused: getPrometheusMetrics
+│   ├── otelBridge.ts ∅
+│   │   └── ∅ unused: otelRecordLog, otelRecordMetric, otelRecordTrace, otelRequestStart, otelRequestEnd, initOtelBridge
+│   └── rootCauseAnalyzer.ts ⚠ ∅
+│       ├── ⚠ @/lib/agents/idari  (PatchRisk)
+│       └── ∅ unused: inferRootCause
 ├── optimizer  [WebGPU / Babylon Engine]
+│   ├── babylon-optimizero.ts ∅
+│   │   └── ∅ unused: BabylonOptimizeroScorers, BABYLON_HARD_CHECKS, BabylonUIOptimizero, BabylonUIGenerator
 │   ├── constraint-solver.ts
+│   ├── creative-optimizero.ts ∅
+│   │   └── ∅ unused: CHAOS_WEIGHTS, STABLE_WEIGHTS, STANDARD_UI_HARD_CHECKS, createUIOptimizero
 │   ├── creative-validator.ts
+│   ├── index.from-lib.ts ∅
+│   │   └── ∅ unused: DreamOptimizer, ConstraintSolver
 │   ├── index.ts ∅
 │   │   └── ∅ unused: DreamOptimizer, ConstraintSolver
 │   └── types.ts
+├── panels
+│   └── panelTypes.ts ∅
+│       └── ∅ unused: PANEL_META
+├── platform
+│   ├── index.ts ∅
+│   │   └── ∅ unused: getFeed, syncToGlobalRegistry, processAdOrder, logPhysicsExperiment
+│   └── lab.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/client  (createClient)
+│       ├── ⚠ @/lib/utils  (toErrorMessage)
+│       └── ∅ unused: logPhysicsExperiment
+├── reality
+│   ├── realityStore.ts ∅
+│   │   └── ∅ unused: getRealityById, listMyRealities, createReality, updateEnginSlots, touchReality, joinReality, touchMembership, listMembers, saveSnapshot, loadLatestSnapshot, appendActivity, loadActivity, buildChannelId
+│   └── types.ts ⚠
+│       └── ⚠ @/lib/collaboration  (CollabMode, SessionRole)
+├── renderer
+│   ├── Canvas2DRenderer.ts ∅
+│   │   └── ∅ unused: Canvas2DRenderer
+│   ├── FrustumCuller.ts
+│   ├── index.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/renderer  (Canvas2DRenderer, createRenderer)
+│   │   └── ∅ unused: createRenderer, Canvas2DRenderer, FrustumCuller
+│   └── IRenderer.ts
 ├── repo-visualizer
 │   ├── analyzer.mjs
 │   ├── graph-stats.json
@@ -23241,6 +24206,13 @@ Legend: ⚠ broken import  ∅ unused export
 │       └── torridity_ledger.tex
 ├── research-and-development
 │   └── LICENSE
+├── routing
+│   └── surfaces.ts ∅
+│       └── ∅ unused: PUBLIC_SURFACE_PREFIXES, SAB_ISOLATED_ROUTE_PREFIXES, isPublicSurfacePath, isSabIsolatedPath
+├── scene
+│   └── sceneState.ts ⚠ ∅
+│       ├── ⚠ @/lib/offline/offlineCache  (CachedScene, SceneObject, SceneSnapshot, deleteScene, enqueueSyncAction, getScene, listScenes, saveScene)
+│       └── ∅ unused: createDefaultSnapshot, persistScene, restoreScene, removeScene, listPersistedScenes, scenesAreDifferent, createAutoSave
 ├── scripts
 │   ├── archive
 │   │   └── validate-deployment.js
@@ -23256,25 +24228,25 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── lib
 │   │   │   └── tar.ts
 │   │   ├── architect-run.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (ConceptPattern, VisionStatement, isOriginal, listConceptPatterns, listMechanics, logRDSession, readVisionStatement, recordVisionStatement, signatureHash)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (ConceptPattern, VisionStatement, isOriginal, listConceptPatterns, listMechanics, logRDSession, readVisionStatement, recordVisionStatement, signatureHash)
 │   │   ├── artisan-run.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (BRAIN_ROOT, listCompositionPrinciples, listMaterialRecipes, listTechniques, logRDSession, recordAssetGeneration)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (BRAIN_ROOT, listCompositionPrinciples, listMaterialRecipes, listTechniques, logRDSession, recordAssetGeneration)
 │   │   ├── maestro-analyze.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (AgentName, AssignmentLogEntry, CartridgeStatus, getLastTouched, isOriginal, listCartridges, listMechanics, logRDSession, readCartridgeStatus, recordAssignments, signatureHash)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (AgentName, AssignmentLogEntry, CartridgeStatus, getLastTouched, isOriginal, listCartridges, listMechanics, logRDSession, readCartridgeStatus, recordAssignments, signatureHash)
 │   │   ├── mechanic-run.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (listMechanics, logRDSession, recordBuild)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (listMechanics, logRDSession, recordBuild)
 │   │   ├── package-cartridge.ts ⚠ ∅
-│   │   │   ├── ⚠ ../../lib/gameengin/cartridge-manifest.js  (CARTRIDGE_MAGIC, validateManifest)
+│   │   │   ├── ⚠ ../../engins/gameengin/cartridge-manifest.js  (CARTRIDGE_MAGIC, validateManifest)
 │   │   │   ├── ⚠ ./lib/tar.js  (TarFile, packTar)
 │   │   │   └── ∅ unused: packageCartridge
 │   │   ├── prophet-run.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (isOriginal, listMechanics, logRDSession, readGenreDNA, signatureHash)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (isOriginal, listMechanics, logRDSession, readGenreDNA, signatureHash)
 │   │   ├── smoke-webgl.ts
 │   │   ├── smoke-webgpu.ts
 │   │   ├── upgrader-run.ts ⚠
-│   │   │   └── ⚠ ../../lib/gameengin/brain-reader.js  (AgentName, getLastTouched, listCartridges, listMechanics, listTechniques, logRDSession, readUpgradeRules, recordUpgrade)
+│   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (AgentName, getLastTouched, listCartridges, listMechanics, listTechniques, logRDSession, readUpgradeRules, recordUpgrade)
 │   │   └── writer-run.ts ⚠
-│   │       └── ⚠ ../../lib/gameengin/brain-reader.js  (listDialoguePatterns, logRDSession, readCharacterVoice, readEmotionalTone, readNarrativePacing)
+│   │       └── ⚠ ../../engins/gameengin/brain-reader.js  (listDialoguePatterns, logRDSession, readCharacterVoice, readEmotionalTone, readNarrativePacing)
 │   ├── autofix-vercel-build.mjs
 │   ├── center-audit.mjs
 │   ├── check-build-memory-drift.mjs
@@ -23299,7 +24271,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── migrate-imports.sh
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
-│   ├── postbuild.ts
+│   ├── postbuild.ts ⚠
+│   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
 │   ├── readme-autosync.ts ∅
 │   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
@@ -23333,6 +24306,15 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── ⚠ ./hooks  (hooks)
 │       ├── ⚠ ./osArchitectureMap  ((unknown — bare import))
 │       └── ∅ unused: $, hydrateEngineRegistry, osArchitectureFlow, osSlotCounts, osGeneratedRouters, osArchitectureGraph, osArchitectureStageEntries, osArchitectureMap
+├── setup
+│   └── checks.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/config  (SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_URL)
+│       └── ∅ unused: getSetupChecks, summarizeSetupChecks, getSetupStatus
+├── sharedDream
+│   └── useSharedDreamSession.ts ⚠ ∅
+│       ├── ⚠ @/lib/supabase/client  (createClient)
+│       ├── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
+│       └── ∅ unused: useSharedDreamSession
 ├── src
 │   ├── components
 │   │   ├── dream.DreamEnginLogo.tsx ⚠ ∅
@@ -23347,7 +24329,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── demoGameConfig.ts ∅
 │   │       └── ∅ unused: (default)
 │   ├── core
-│   │   └── GameEnginCore.ts ∅
+│   │   └── GameEnginCore.ts ⚠ ∅
+│   │       ├── ⚠ @/lib/gameengin/core  (EliteGameEngine, QualityTier)
+│   │       ├── ⚠ @/lib/gameengin/gameEnginRuntime  (GameEnginRuntime)
 │   │       └── ∅ unused: validateConfig
 │   ├── dream
 │   │   └── rulesets
@@ -23425,7 +24409,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── babylon  [WebGPU / Babylon Engine]
 │   │       └── useDreamLogoScene.ts ∅
 │   │           └── ∅ unused: useDreamLogoScene
-│   └── launcher.ts
+│   └── launcher.ts ⚠
+│       └── ⚠ @/lib/utils  (toErrorMessage)
 ├── styles
 │   ├── dream-shell.css
 │   ├── globals.css
@@ -23434,235 +24419,483 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── view-transitions.css
 ├── tests
 │   ├── contentengin
-│   │   ├── contentengin-api.test.ts
-│   │   ├── contentengin-export.test.ts
-│   │   ├── contentengin-grammars.test.ts
-│   │   ├── contentengin-recipes.test.ts
-│   │   ├── contentengin-rigging.test.ts
-│   │   └── contentengin-validation.test.ts
+│   │   ├── contentengin-api.test.ts ⚠
+│   │   │   └── ⚠ ../../lib/contentengin/photo/imageAnalyzer  (analyzeImageBytes)
+│   │   ├── contentengin-export.test.ts ⚠
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/exportGlb  (createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/paths  (safeSegment)
+│   │   │   └── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
+│   │   ├── contentengin-grammars.test.ts ⚠
+│   │   │   └── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │   ├── contentengin-recipes.test.ts ⚠
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │   │   └── ⚠ ../../lib/contentengin/recipes/seededRandom  (seededRandom)
+│   │   ├── contentengin-rigging.test.ts ⚠
+│   │   │   ├── ⚠ ../../lib/contentengin/rigging  (createSkeleton)
+│   │   │   └── ⚠ ../../lib/contentengin/rigging/rigValidator  (validateSkeleton)
+│   │   └── contentengin-validation.test.ts ⚠
+│   │       ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │       ├── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
+│   │       └── ⚠ ../../lib/contentengin/assetTypes  (PartNode)
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
 │   ├── enginpipe
-│   │   ├── manifest.test.ts
-│   │   ├── telemetry.test.ts
-│   │   └── tiers.test.ts
+│   │   ├── manifest.test.ts ⚠
+│   │   │   └── ⚠ @/lib/enginpipe/artifact/manifest  (EnginArtifactManifestSchema, createManifest, parseManifest, safeParseManifest)
+│   │   ├── telemetry.test.ts ⚠
+│   │   │   ├── ⚠ @/lib/enginpipe/telemetry/events  (TelemetryEventTypeSchema, parseTelemetryEvent)
+│   │   │   └── ⚠ @/lib/enginpipe/telemetry/client  (TelemetrySupabaseClient, createTelemetryClient)
+│   │   └── tiers.test.ts ⚠
+│   │       └── ⚠ @/lib/enginpipe/quality/tiers  (DEFAULT_TIER_CONFIG, detectCapabilityTier, getTierConfig, scoreCapabilities, tierFromScore)
 │   ├── navigation
-│   │   ├── manifold-physics.spec.ts
+│   │   ├── manifold-physics.spec.ts ⚠
+│   │   │   ├── ⚠ @/lib/navigation/manifold  ((unknown — bare import))
+│   │   │   ├── ⚠ @/lib/navigation/physics  ((unknown — bare import))
+│   │   │   └── ⚠ @/lib/navigation/anchorField  ((unknown — bare import))
 │   │   ├── navigation.spec.ts
-│   │   └── quaternion.spec.ts
-│   ├── activity-first-protocol.test.ts
-│   ├── activity-revenue-split.test.ts
-│   ├── admin-lockout.test.ts
-│   ├── admin-upgrade-readiness.test.ts
+│   │   └── quaternion.spec.ts ⚠
+│   │       └── ⚠ @/lib/navigation/quaternion  ((unknown — bare import))
+│   ├── activity-first-protocol.test.ts ⚠
+│   │   ├── ⚠ ../lib/activity/types  (ActivityTier, CPV_PRICING, SKIP_CREDIT_REWARDS, TIER_MULTIPLIERS, VERIFICATION_STRENGTH, VerificationMethod)
+│   │   ├── ⚠ ../lib/activity/scoring  (calculateActivityPoints, calculateDecayDate, getInnovationBonus, getTierDisplayName, getTierMultiplier, getVerificationStrength, isDecayed, shouldPromoteActivity)
+│   │   ├── ⚠ ../lib/activity/aqs  (calculateRealShitRate, formatAQS, formatRealShitRate, getAQSTier)
+│   │   └── ⚠ ../lib/activity/visibility-score  (estimateVisibilityScore)
+│   ├── activity-revenue-split.test.ts ⚠
+│   │   └── ⚠ @/lib/activity/revenueSplit  (ACTIVITY_REVENUE_SPLIT, calculateActivityRevenueSplit, validateActivityRevenueSplit)
+│   ├── admin-lockout.test.ts ⚠
+│   │   └── ⚠ @/lib/admin/lockout  (OWNER_EMAIL, isDomainBlocked, isOwner)
+│   ├── admin-upgrade-readiness.test.ts ⚠
+│   │   ├── ⚠ @/lib/feature-build  (DaydreamEnginManifest)
+│   │   ├── ⚠ @/lib/admin/upgrade-readiness  (buildPatchPlanChecklist, createUpgradeReadinessSnapshot, selectNextUpgradeTarget, summarizeBuildReadiness)
+│   │   └── ⚠ @/lib/setup/checks  (SetupCheck, summarizeSetupChecks)
 │   ├── agent-bus-consensus.test.ts
-│   ├── ai-edit-engine.test.ts
+│   ├── ai-edit-engine.test.ts ⚠
+│   │   └── ⚠ @/lib/diff/aiEditEngine  (CONFIRMATION_REQUIRED, EditPreview, EditableCell, SCOPE_DESCRIPTION, SCOPE_LABEL, SCOPE_ORDER, SCOPE_RISK, applyEdit, applyMatchesForCell, blockBoundsAt, buildEditPreview, escapeRegex, functionBoundsAt, generateDiffLines, lineBoundsAt, parseAiInstruction, undoEdit, wordBoundsAt)
 │   ├── api-route-body-guard.test.ts
-│   ├── asset-optimizer.test.ts
+│   ├── asset-optimizer.test.ts ⚠
+│   │   └── ⚠ @/lib/assets/assetOptimizer  (registryTagsForContext)
 │   ├── auth-providers-route.test.ts
 │   ├── auth-update-password-page.test.ts
 │   ├── authenticated-ui-shells.test.ts
-│   ├── babylon-optimizero.test.ts
+│   ├── babylon-optimizero.test.ts ⚠
+│   │   ├── ⚠ @/lib/optimizer/babylon-optimizero  (BABYLON_HARD_CHECKS, BabylonOptimizeroScorers, BabylonUICandidate, BabylonUIGenerator, BabylonUIOptimizero)
+│   │   └── ⚠ @/lib/optimizer/creative-optimizero  (CHAOS_WEIGHTS, CreativeCandidate, DEFAULT_WEIGHTS)
 │   ├── babylon-webgpu-engine.test.ts
-│   ├── bar-hide-preserves-both-runtimes.test.ts
-│   ├── boogie-policy-module.test.ts
-│   ├── boogieman.test.ts
+│   ├── bar-hide-preserves-both-runtimes.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
+│   ├── boogie-policy-module.test.ts ⚠
+│   │   └── ⚠ @/lib/policy/boogiePolicy  (BOOGIE_POLICY_VERSION, PolicyCategory, PolicyResult, PolicySeverity, boogieEvaluate, emitBoogieManEvent, onBoogieManEvent)
+│   ├── boogieman.test.ts ⚠
+│   │   ├── ⚠ @/lib/ai/boogieman  (BLAST_RADIUS_ESCALATION_THRESHOLD, BOOGIE_POLICY_VERSION, CONTAINMENT_ACTIONS, boogieEnforce, boogieEvaluate, computeRiskScore, selectAction)
+│   │   ├── ⚠ @/lib/ai/boogie-policy  (RULE_CODES, THRESHOLDS)
+│   │   └── ⚠ @/lib/ai/schemas  (Intent)
 │   ├── bot-detector.test.ts
-│   ├── branding-logos.test.ts
+│   ├── branding-logos.test.ts ⚠
+│   │   └── ⚠ @/lib/branding/logos  (LOGO_PATHS, getRandomLogo, resetLogoCache)
 │   ├── canonical-naming-enforcement.test.ts
-│   ├── child-safety.test.ts
-│   ├── code-dream-preview.test.ts
-│   ├── coercion-table.test.ts
-│   ├── collector-extended.test.ts
+│   ├── child-safety.test.ts ⚠
+│   │   ├── ⚠ @/lib/child-safety/childSafetyDetector  (isZeroTolerance, scanContent)
+│   │   ├── ⚠ @/lib/child-safety/imageClassifier  (classifyImage)
+│   │   ├── ⚠ @/lib/child-safety/scanMediaUrls  (isImageUrl, scanMediaUrlsForChildSafety)
+│   │   └── ⚠ @/lib/child-safety/messageContextChecker  (evaluateMessageContext)
+│   ├── code-dream-preview.test.ts ⚠
+│   │   └── ⚠ @/lib/code/drEamsCodeAssist  (CellLanguage, detectLanguageFromCode, detectNLCommand, generateCodeFromCommand, matchCodeVocabulary, parseCodeResponse)
+│   ├── coercion-table.test.ts ⚠
+│   │   └── ⚠ ../lib/runtime/coercionTable  (DreamDrop, classifyDrop, coerceRawPayload)
+│   ├── collector-extended.test.ts ⚠
+│   │   └── ⚠ ../lib/observability/collector  (clearBuffers, collectBatchLogs, collectLog, collectTrace, getErrorRate, getLogCountsBySeverity, getP95Latency, groupTracesByTraceId)
 │   ├── compositeengin-features.test.ts
-│   ├── conform-memory-map.test.ts
-│   ├── connector-delivery.test.ts
-│   ├── connectors.test.ts
+│   ├── conform-memory-map.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/memory  (BAR_SEAM_ATOMICS_INDEX, BAR_SEAM_SCALE, CACHE_LINE, ENTITY_COUNT, HOMEDREAM_PRIVATE_OFFSET, MEMORY_SIZE, PUBLIC_VIEW_LIMIT, SOA_POSX_OFFSET, SOA_POSY_OFFSET, SOA_POSZ_OFFSET, SOA_VELX_OFFSET, SOA_VELY_OFFSET, SOA_VELZ_OFFSET, _resetConformMemoryMap, boogieMemoryGuard, getConformMemoryMap, readBarSeam, writeBarSeam)
+│   ├── connector-delivery.test.ts ⚠
+│   │   ├── ⚠ @/lib/connectors/deliveryStrategy  (DELIVERY_STRATEGY_MATRIX, getDeliveryStrategy, knownDeliveryProviders, supportsPoll, supportsWebhook, supportsWebhookVerification)
+│   │   └── ⚠ @/lib/connectors/webhookVerification  (extractMetaWebhookChallenge, extractYouTubeWebSubChallenge, isCronAuthorised)
+│   ├── connectors.test.ts ⚠
+│   │   ├── ⚠ @/lib/connectors/connectorRegistry  (CONNECTOR_REGISTRY, getConnectorDef)
+│   │   ├── ⚠ @/lib/connectors/normalise  (atUriToHttps, deduplicateFeedItems, hostFromUrl, normaliseBluesky, normaliseGitHub, normaliseMastodon, normaliseNostr, normalisePodcast, normaliseReddit, normaliseTwitter, normaliseYouTubePlaylistItem, normaliseYouTubeSearchResult, stripHtml)
+│   │   └── ⚠ @/lib/connectors/providers/nostr  (isValidNostrPubkey)
 │   ├── content-intelligence-routes.test.ts
-│   ├── content-publish-intent.test.ts
+│   ├── content-publish-intent.test.ts ⚠
+│   │   └── ⚠ @/lib/content/publishIntent  (formatPublishError, publishToDreamR, resolvePublishIntent)
 │   ├── contentengin-features.test.ts
-│   ├── contextual-home.test.ts
-│   ├── creative-optimizero.test.ts
-│   ├── data-transform-extended.test.ts
-│   ├── data-transform.test.ts
+│   ├── contextual-home.test.ts ⚠
+│   │   └── ⚠ @/lib/home-buttons/contextual-home  (HOME_BOTTOM_THRESHOLD, HOME_TOP_THRESHOLD, resolveHomeTarget, runHomeAction)
+│   ├── creative-optimizero.test.ts ⚠
+│   │   └── ⚠ @/lib/optimizer/creative-optimizero  (CHAOS_WEIGHTS, CreativeCandidate, CreativeOptimizero, DEFAULT_WEIGHTS, HardFailCheck, STABLE_WEIGHTS, STANDARD_UI_HARD_CHECKS, ScoreFunction, createUIOptimizero)
+│   ├── data-transform-extended.test.ts ⚠
+│   │   └── ⚠ ../lib/data-transform  (computeBufferStats, decodeFromLedger, encodeToLedger, normalizeBuffer, zscore)
+│   ├── data-transform.test.ts ⚠
+│   │   └── ⚠ @/lib/data-transform  (DATA_PHYSICS, applyPhysicsFilter, decodeFromLedger, encodeToLedger)
 │   ├── daydream-engin-routes.test.ts
-│   ├── decide-bar-release.test.ts
+│   ├── decide-bar-release.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/barInteractions  (BAR_FLING_LINE_RATIO, BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS, BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS, decideBarRelease)
 │   ├── dev-bypass.test.ts
-│   ├── diff-viewer.test.ts
-│   ├── dr-eams-code-assist.test.ts
-│   ├── dr-eams-search-bar.test.ts
-│   ├── dream-bar-context.test.ts
-│   ├── dream-continuity-spine.test.ts
-│   ├── dream-effects.test.ts
-│   ├── dream-intent-bus.test.ts
-│   ├── dream-os-bus.test.ts
-│   ├── dream-state.test.ts
-│   ├── dream-window-system.test.ts
-│   ├── dreamdm-bar-intent.test.ts
-│   ├── dreamdm-bar-interactions.test.ts
-│   ├── dreamdm-bar-wild.test.ts
+│   ├── diff-viewer.test.ts ⚠
+│   │   └── ⚠ @/lib/diff/diffUtils  (DEMO_DIFF, buildFullFileLines, buildScrollMarkers, firstHunkIndex, nextHunkIndex, parseUnifiedDiff, prevHunkIndex)
+│   ├── dr-eams-code-assist.test.ts ⚠
+│   │   └── ⚠ @/lib/code/drEamsCodeAssist  (CODE_VOCABULARY, CellLanguage, NLCommand, VOCAB_TERMS, buildCodeSystemPrompt, classifyQuery, detectLanguageFromCode, detectNLCommand, generateCodeFromCommand, matchCodeVocabulary, parseCodeResponse)
+│   ├── dr-eams-search-bar.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamengin/drEamsSearch  (NAV_SUGGESTIONS, buildDrEamsRequest, buildDreamDMUrl, matchNavSuggestions, parseDrEamsReply, truncatePreview)
+│   ├── dream-bar-context.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/useDreamBarContext  (DreamBarSurface, detectSurface)
+│   ├── dream-continuity-spine.test.ts ⚠
+│   │   ├── ⚠ @/lib/intelligence/continuityHelpers  (formatArtifactKind, getArtifactAccent, resolveResumeDest)
+│   │   └── ⚠ @/lib/forge/forgeRegistry  (ForgeActivityPulse)
+│   ├── dream-effects.test.ts ⚠
+│   │   └── ⚠ @/lib/gsap/useGsapEntrance  (useGsapEntrance)
+│   ├── dream-intent-bus.test.ts ⚠
+│   │   ├── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
+│   │   └── ⚠ @/lib/dreams/dreamIntentBus  (dispatchDreamIntent, registerDreamIntentHandler)
+│   ├── dream-os-bus.test.ts ⚠
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   └── ⚠ @/lib/runtime/dreamOSBus  (deriveAIRuntimeContext, dreamOSBus, getCapabilitiesForDomains, getCapabilityChildren, getCapabilityDescriptor)
+│   ├── dream-state.test.ts ⚠
+│   │   └── ⚠ @/lib/navigation/dream-state  (createInitialDreamState, move, returnHome, zoom)
+│   ├── dream-window-system.test.ts ⚠
+│   │   ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_STATES, DreamWindowInstance, activateDreamWindow, bindDreamWindow, collapseDreamWindow, createDreamWindowInstance, mountDreamWindow, unbindDreamWindow, unmountDreamWindow)
+│   │   ├── ⚠ @/lib/dream-window/connectionVerbs  (CONNECTION_VERBS, createActivateAction, createAttachAction, createBindAction, createConnectAcrossAction, createMountAction, createOpenIntoAction, createRouteIntoAction, dispatch)
+│   │   ├── ⚠ @/lib/dream-window/runtimeRegion  (DEFAULT_RUNTIME_REGION_STATE, RUNTIME_REGIONS, activateSurface, dismountWindowFromDreamSpace, getSurfaceSpaceSurface, isDreamSpaceDominant, mountWindowInDreamSpace, setSeamPosition)
+│   │   ├── ⚠ @/lib/dream-window/enginConnectionNetwork  (ALL_CONNECTION_PATHS, getPathsForDomain, getPathsForEngin, hasConnectionPath)
+│   │   ├── ⚠ @/lib/runtime/dualRuntime  (DEFAULT_DUAL_RUNTIME, RuntimeWorld, SURFACE_NAMES, isHomeActiveTop, makeHomeActiveTop, makeHomeDreamSpaceActive, setRuntimeWorld, swapDominantRuntime, worldsEqual)
+│   │   └── ⚠ @/lib/identity/canonical-names  (DAYDREAM_DOMAINS, ENGIN_SURFACES, NETWORK_COUNTS, SURFACE_NAMES)
+│   ├── dreamdm-bar-intent.test.ts ⚠
+│   │   ├── ⚠ @/lib/dreamdm/useDreamBarContext  (detectSurface, resolveIntentOverride)
+│   │   └── ⚠ @/lib/dreamdm/DreamSystemContext  (BarIntent, BarIntentMode, DEFAULT_BAR_INTENT)
+│   ├── dreamdm-bar-interactions.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/barInteractions  (BAR_FLING_TO_TOP_MIN_DRAG_PX, BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS, DEFAULT_SPLIT_RATIO, DIVIDER_H, DOUBLE_TAP_WINDOW_MS, DRAG_TAP_THRESHOLD_PX, GOLD_TAP_SLOP_PX, LightPosition, ORB_SIZE, ORB_TAP_SLOP, SPLIT_FLING_VELOCITY_PX_PER_MS, SPLIT_SNAP_POINTS, clampOrbOffset, computeOrbDragPosition, cycleLightPosition, resolveGoldTapAction, shouldCollapseGoldSwipe, shouldCollapseTopExpandedDrag, shouldSnapBottomDragToTop, shouldTreatGoldReleaseAsTap, snapSplitRatioOnRelease, snapToSplitPoint)
+│   ├── dreamdm-bar-wild.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/barInteractions  (GOLD_LONG_PRESS_MS, MOOD_AURA_GRADIENTS, MOOD_EDGE_COLORS, MoodPeriod, PARTICLE_COUNT, QUICK_REACTIONS, SLASH_COMMANDS, STREAK_STORAGE_KEY, SURFACE_ACCENT_COLORS, StreakData, StreakTier, computeTypingRhythm, filterSlashCommands, generateParticles, getMoodPeriod, getStreakTier, resolveStreak, rhythmToHandleScale, todayDateString)
 │   ├── dreamdm-draft.test.ts
 │   ├── dreamdm-messaging-phase2.test.ts
 │   ├── dreamengin-os.test.ts
 │   ├── dreamengin-unfakeable-performance-integrity.gate.test.ts
-│   ├── dreamnav.tau.test.ts
+│   ├── dreamnav.tau.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamnav/tau  (NavState, tau, transition)
 │   ├── dreamr-algorithm-velocity.test.ts
 │   ├── dreamr-algorithm.test.ts
 │   ├── dreamr-feed-limits.test.ts
 │   ├── dreamr-feed-topics.test.ts
 │   ├── dreamr-page-route.test.ts
-│   ├── dreamr-swipe-personalization.test.ts
-│   ├── dreamr-visibility-cursor.test.ts
+│   ├── dreamr-swipe-personalization.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamr/swipePersonalization  (DreamRSwipePost, canRecordDreamRView, contentTypePreferenceKey, emptyDreamRSwipePreferences, nextSwipePreferences, personalizeFeedOrder, shouldRecordDreamRView)
+│   ├── dreamr-visibility-cursor.test.ts ⚠
+│   │   ├── ⚠ @/lib/dreamr/closeFriendsVisibility  (filterByCloseFriends)
+│   │   └── ⚠ @/lib/dreamr/feedCursor  (MAX_SEEN_IDS, deriveNextCursor, parseFeedParams)
 │   ├── dreamspace-panel.test.ts
-│   ├── drop-target-registry.test.ts
-│   ├── dual-runtime-bridge-peer-activity.test.ts
-│   ├── durable-bridge.test.ts
+│   ├── drop-target-registry.test.ts ⚠
+│   │   ├── ⚠ ../lib/runtime/dropTargetRegistry  (dropTargetRegistry)
+│   │   └── ⚠ ../lib/runtime/coercionTable  (DreamDrop)
+│   ├── dual-runtime-bridge-peer-activity.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   ├── durable-bridge.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
 │   ├── edit-profiledream-section7.test.ts
-│   ├── engin-capability-targets.test.ts
-│   ├── engin-dispatcher-glow.test.ts
-│   ├── engin-dispatcher.test.ts
-│   ├── engin-hot-runtime-wiring.test.ts
-│   ├── engin-runtime-core.test.ts
-│   ├── engin-workflow.test.ts
+│   ├── engin-capability-targets.test.ts ⚠
+│   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityExecution  (AudioTrackMixer, GeometryBatcher, MidiEventRingBuffer, ParticleSoAKernel, RayGridAccelerator, createEnginCapabilityExecutionKernel)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (CANONICAL_ENGIN_IDS, ENGIN_CAPABILITY_PROFILES, acceptanceValueForTarget, capabilityProfileMatchesRuleSet, createCustomEnginCapabilityProfile, validateCanonicalEnginCapabilityProfiles, validateEnginCapabilityProfile)
+│   │   ├── ⚠ @/lib/engins/brand/brandEnginRuleSet  (BRAND_ENGIN_RULE_SET)
+│   │   ├── ⚠ @/lib/engins/code/codeEnginRuleSet  (CODE_ENGIN_RULE_SET)
+│   │   ├── ⚠ @/lib/engins/content/contentEnginRuleSet  (CONTENT_ENGIN_RULE_SET)
+│   │   ├── ⚠ @/lib/engins/game/gameEnginRuleSet  (GAME_ENGIN_RULE_SET)
+│   │   ├── ⚠ @/lib/engins/lab/labEnginRuleSet  (LAB_ENGIN_RULE_SET)
+│   │   └── ⚠ @/lib/engins/music/starMakerEnginRuleSet  (STAR_MAKER_ENGIN_RULE_SET)
+│   ├── engin-dispatcher-glow.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/EnginDispatcher  (EnginDispatcher)
+│   ├── engin-dispatcher.test.ts ⚠
+│   │   ├── ⚠ @/lib/runtime/memory  (BAR_Y_SCALE, ENTITY_COUNT, MAX_WORKERS, OFFSET_AXIS_STATE, OFFSET_DAYDREAM_TYPE, OFFSET_DREAMDM_BAR_X, OFFSET_DREAMDM_BAR_Y, OFFSET_LOCKED_STATE, OFFSET_POS_X, OFFSET_POS_Y, OFFSET_POS_Z, OFFSET_TELEMETRY, OFFSET_VEL_X, OFFSET_VEL_Y, OFFSET_VEL_Z, SAB_BYTES, SEAM_CTRL_IDX_AXIS, SEAM_CTRL_IDX_BAR_X, SEAM_CTRL_IDX_BAR_Y, SEAM_CTRL_IDX_LOCKED, SNAP_THRESHOLD_RATIO, buildWorkgroups, createEnginSAB, f32Channel, f32DreamDMBarY, f64Telemetry, int32AxisState, int32DreamDMBarX, int32DreamDMBarY, int32LockedState, isIndexInBounds, u8DaydreamType)
+│   │   └── ⚠ @/lib/runtime/EnginDispatcher  (EnginDispatcher)
+│   ├── engin-hot-runtime-wiring.test.ts ⚠
+│   │   ├── ⚠ @/lib/engin-runtime  (AssetManifestLoader, BrandCollaborationDeltaPacker, BrandFileHydrator, BrandLocalApplyQueue, BrandPatchLog, BrandSdfGlyphAtlas, BrandVectorPathCache, CacheStorageRuntime, CodeDiagnosticWorkerBridge, CodeEditRingBuffer, CodeEditorHotState, CodeExecutionWorkerBridge, CodeKeystrokeBenchmark, CodePieceTableDocument, CodeSnapshotCompactor, CodeStartupHydrator, CollaborationApplyQueue, CollaborationRevisionClock, CommandRingBuffer, ContentRayAccelerationStructure, ContentRenderJobQueue, ContentTileRenderer4K, ContentWorkerRenderBridge, CrdtPatchModel, DeferredPersistenceQueue, DeferredSyncQueue, DeterministicMergePatchModel, EnginAction, EnginRuleSetContract, GameFrustumCuller, GameGeometryThroughputBenchmark, GameInputRingBuffer, GameInstanceBufferManager, GameLODSelector, GameMaterialBucketBuffer, GamePhysicsCommandBuffer, HotActionClassifier, HotRuntime, IndexedDbBlobStore, InternalOnlyMetricStore, LabCollisionCandidateBuffer, LabCollisionKernel, LabParticleSoABuffer, LabSimulationClock, LazyEnginHydrator, MidiEventRingBuffer, RevisionCoalescer, SnapshotCompactor, StarMakerAudioCommandQueue, StarMakerLatencyProbe, StarMakerMeteringDecoupler, StarMakerMixerKernel, StarMakerTrackBufferPool, StreamingAssetLoader, TransportLatencyProbe, TypedMemoryArena, UserFacingMetricLeakTest, WebGPUDeviceRuntime, createCanonicalScorecards, createCustomEnginCapabilityProfile, createEnginCapabilityScorecard, createEnginRuntime, detectEnginHardwareCapabilities, fallbackEnginHardwareCapabilities, getEnginExecutionPlan, validateEnginCapabilityProfile)
+│   │   └── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, patchBaseState)
+│   ├── engin-runtime-core.test.ts ⚠
+│   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, createBaseState, patchBaseState)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilities  (DEFAULT_USER_CAPABILITIES, DENY_ALL, gateCapability, mergeCapabilities)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginIOAdapter  (LocalStorageAdapter, MemoryAdapter, enginStorageKey)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginEventBus  (createEnginEventBus)
+│   │   ├── ⚠ @/lib/engin-runtime  (EnginRuntime, createEnginRuntime)
+│   │   ├── ⚠ @/lib/engins/code/codeEnginRuleSet  (CODE_ENGIN_RULE_SET)
+│   │   ├── ⚠ @/lib/engin-runtime/EnginCapabilityTargets  (createCustomEnginCapabilityProfile)
+│   │   └── ⚠ @/lib/engin-runtime/EnginRuleSetContract  (EnginAction, EnginRuleSetContract)
+│   ├── engin-workflow.test.ts ⚠
+│   │   └── ⚠ ../lib/engins/workflowEngine  (HANDOFF_PATHS, STAGE_LABELS, WORKFLOW_CATALOG, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin)
 │   ├── example.spec.ts
 │   ├── export-full-code.test.ts
-│   ├── feature-build.test.ts
-│   ├── forge-build.test.ts
-│   ├── forge-engin.test.ts
-│   ├── forge-momentum.test.ts
-│   ├── forge-nexus.test.ts
-│   ├── forge-rituals.test.ts
+│   ├── feature-build.test.ts ⚠
+│   │   ├── ⚠ @/lib/feature-build/featureManifest  (DaydreamEnginManifest, FEATURE_MANIFESTS, getManifest)
+│   │   ├── ⚠ @/lib/feature-build/buildCycle  (allPairsInRefinePhase, allPairsMovingForward, calculateProgress, computeAllBuildCycleStates, computeBuildCycleState, countFeaturesByStatus, countUsableFeatures, getBuildPhase)
+│   │   ├── ⚠ @/lib/feature-build/uiQualityCriteria  (SICC_DIMENSIONS, SICC_GLOBAL_CRITERIA, getCriteriaForDimension)
+│   │   └── ⚠ @/lib/identity/canonical-names  (DAYDREAM_DOMAINS, ENGIN_SURFACES)
+│   ├── forge-build.test.ts ⚠
+│   │   └── ⚠ @/lib/forge/forgeBuild  (ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeBuildState, ForgeLogEvent, canBuildToday, clearForgeBuilds, isForgeLogEvent, readForgeBuilds, recordBuildToday, saveForgeBuild, stageForgeArtifact)
+│   ├── forge-engin.test.ts ⚠
+│   │   ├── ⚠ @/lib/forge/forgeRegistry  (CREATIVE_ENGINES, ENGIN_REGISTRY, EnginEntry, FORGE_WORKFLOWS, ForgeActivityPulse, formatRelativeTime, getForgeHeat, readForgeActivity, recordForgeActivity)
+│   │   └── ⚠ @/lib/forge/forgeIntelligence  (ForgeHistoryEntry, appendForgeHistory, clearCustomWorkflows, clearForgeHistory, clearForgeTransfers, clearWorkflowRun, deleteCustomWorkflow, generateSuggestions, getActiveWorkflowRun, getFailureRecovery, parseGoalToWorkflow, predictNextEngines, readCustomWorkflows, readForgeHistory, readForgeTransfers, recordForgeTransfer, saveCustomWorkflow, startWorkflowRun, updateWorkflowStep)
+│   ├── forge-momentum.test.ts ⚠
+│   │   ├── ⚠ @/lib/forge/forgeMomentum  (MomentumLevel, computeDepth, computeDiversity, computeMomentum, computeStreak, computeVelocity, getLevel, getLevelColor, getLevelEmoji, readHistory)
+│   │   └── ⚠ @/lib/forge/forgeRegistry  (FORGE_HISTORY_KEY)
+│   ├── forge-nexus.test.ts ⚠
+│   │   ├── ⚠ @/lib/forge/forgeNexus  (buildTransitionMap, computeEdges, computeNexus, computeNodes, detectClusters, findDominantPipeline)
+│   │   └── ⚠ @/lib/forge/forgeRegistry  (CREATIVE_ENGINES, FORGE_HISTORY_KEY)
+│   ├── forge-rituals.test.ts ⚠
+│   │   ├── ⚠ @/lib/forge/forgeRituals  (computeRituals, detectAffinityPatterns, detectSequencePatterns, detectSessionPatterns, detectTimePatterns, getTimeBucket)
+│   │   └── ⚠ @/lib/forge/forgeRegistry  (FORGE_HISTORY_KEY)
 │   ├── fusion-cartridges-depth.test.ts
-│   ├── fusion-cartridges.test.ts
-│   ├── game-controller.test.ts
-│   ├── game-engin-ruleset.test.ts
+│   ├── fusion-cartridges.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
+│   │   └── ⚠ @/lib/gameengin/cartridges/loaders  (CARTRIDGE_LOADERS)
+│   ├── game-controller.test.ts ⚠
+│   │   ├── ⚠ @/lib/games/gameControllerLeft  (LEFT_STICK_DEAD_ZONE, LEFT_STICK_RADIUS_PX, computeLeftStickVector)
+│   │   ├── ⚠ @/lib/games/gameControllerRight  (RIGHT_RESET_TIMEOUT_MS, RIGHT_TAP_MAX_MS, RIGHT_TAP_MAX_PX, computeAimDelta, evaluateRightStickTap)
+│   │   └── ⚠ @/lib/games/gameControllerButtons  (BTN_DOUBLE_TAP_MAX_MS, BTN_LONG_PRESS_MS, BTN_TAP_AND_HOLD_WINDOW_MS, BTN_TAP_MAX_MS, ButtonInteractionEvent, ButtonInteractionManager, CONTROLLER_BUTTONS, CONTROLLER_BUTTON_DEFS, ControllerButton)
+│   ├── game-engin-ruleset.test.ts ⚠
+│   │   ├── ⚠ @/lib/engin-runtime/EnginBaseState  (EnginBaseState, createBaseState)
+│   │   └── ⚠ @/lib/engins/game/gameEnginRuleSet  (GAME_ENGIN_RULE_SET, GRAVITY_VALUES, GameEnginAction, GameScore)
 │   ├── game-navigation.test.ts ⚠
-│   │   └── ⚠ @/lib/supabase/config  (buildAuthCallbackUrl)
-│   ├── game-performance-baseline.test.ts
-│   ├── game-quality-plan.test.ts
+│   │   ├── ⚠ @/lib/auth/nextRedirect  (buildLoginRedirectPath, resolveSafeNextPath)
+│   │   ├── ⚠ @/lib/supabase/config  (buildAuthCallbackUrl)
+│   │   ├── ⚠ @/lib/games/library-state  (upsertSavedGameSession)
+│   │   ├── ⚠ @/lib/games/navigation  (DEFAULT_GAME_ID, buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId)
+│   │   └── ⚠ @/lib/games/useGameInputKeyboardBridge  (GAME_INPUT_KEYBOARD_MAP)
+│   ├── game-performance-baseline.test.ts ⚠
+│   │   └── ⚠ @/lib/games/performance-baseline  (createPerformanceBaselineSampler, resolveRendererBackend)
+│   ├── game-quality-plan.test.ts ⚠
+│   │   └── ⚠ @/lib/games/quality-plan  (ADVANCED_GAME_TARGETS, GAME_CONTROL_PROFILES, GAME_ENGINE_STANDARDS, GAME_QUALITY_PILLARS)
 │   ├── game-remote-regression.test.ts
-│   ├── gameengin-architect.test.ts
-│   ├── gameengin-asset-pipeline.test.ts
-│   ├── gameengin-cartridges.test.ts
-│   ├── gameengin-crash-modal.test.ts
-│   ├── gameengin-input-router.test.ts
-│   ├── gameengin-loop.test.ts
-│   ├── gameengin-power-systems.test.ts
-│   ├── gameengin-progression.test.ts
-│   ├── gameengin-remote.test.ts
-│   ├── gameengin-runtime-upgrade.test.ts
-│   ├── gameengin-spec.test.ts
+│   ├── gameengin-architect.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/brain-reader  (BRAIN_ROOT, VISION_BUDGET_MAX_HOURS, VISION_STATEMENT_MAX_BYTES, VisionStatement, listCartridges, listCartridgesByStatus, listConceptPatterns, listVisionStatements, readCartridgeStatus, readVisionStatement, recordVisionStatement, setCartridgeStatus)
+│   ├── gameengin-asset-pipeline.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/assets/BundleManifest  (GameEnginBundleManifest, assertValidBundleManifest, bundleWeightBytes)
+│   │   ├── ⚠ @/lib/gameengin/assets/BundleCache  (planBundleCache)
+│   │   └── ⚠ @/lib/gameengin/render/ShaderRegistry  (GameEnginShaderRegistry)
+│   ├── gameengin-cartridges.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest)
+│   │   ├── ⚠ @/lib/gameengin/cartridges/loaders  (CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge)
+│   │   └── ⚠ @/lib/games/catalog  (GAME_CATALOG)
+│   ├── gameengin-crash-modal.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/brain-reader  (CRASH_REPORT_MAX_BYTES)
+│   ├── gameengin-input-router.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/input  (GameRuntimeInputRouter)
+│   │   └── ⚠ @/lib/gameengin/cartridge  (CartridgeInputEvent)
+│   ├── gameengin-loop.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/brain-reader  (ActiveProjects, BRAIN_ROOT, CRASH_REPORT_MAX_BYTES, isActiveCartridge, listCrashReports, readActiveProjects, recordCrashReport, setActiveProjects)
+│   ├── gameengin-power-systems.test.ts ⚠
+│   │   └── ⚠ ../lib/gameengin/power-systems  (AdvancedPhysicsWorld, AnimationClip, AnimationStateMachine, AssetStreamManager, BTContext, BTNode, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODLevel, LODObject, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem)
+│   ├── gameengin-progression.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/brain-reader  (BRAIN_ROOT, STRUCTURE_TYPES, StructureType, listGenres, listStructuralMechanics, readGenreDNA, readProgressionModel, readProgressionState, recordProgressionState)
+│   ├── gameengin-remote.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/remote  (BASE_COMBOS, BASE_MOVES, Combo, ComboMachine, DOUBLE_TAP_WINDOW_MS, FaceButton, HUD_ALLOWED_ELEMENTS, LANDSCAPE_LAYOUT, LEFT_JOYSTICK_RADIUS_MM, MULTITOUCH_COMBOS, PORTRAIT_LAYOUT, RIGHT_JOYSTICK_RADIUS_MM, RIGHT_JOYSTICK_RADIUS_RATIO, SPRINT_COMBOS, SPRINT_MOVES, SprintDetector, isHudElementAllowed, layoutFor, radiusMmToPx)
+│   ├── gameengin-runtime-upgrade.test.ts ⚠
+│   │   └── ⚠ @/lib/gameengin/runtime  (GAMEENGIN_FRAME_BUDGETS, GameEnginFrameClock, decideRuntimeQuality)
+│   ├── gameengin-spec.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/cartridge-manifest  (CARTRIDGE_MAGIC, hasCartridgeMagic, validateManifest)
+│   │   ├── ⚠ @/lib/gameengin/cartridgeLoader  (parseDreamrArchive)
+│   │   └── ⚠ @/lib/gameengin/brain-reader  (BRAIN_ROOT, getLastTouched, isOriginal, listCartridges, listCompositionPrinciples, listDialoguePatterns, listEmotionalTones, listMaterialRecipes, listMechanics, listTechniques, readCharacterVoice, readEmotionalTone, readGenreDNA, readNarrativePacing, readOriginalityRegistry, readUpgradeRules, recordAssetGeneration, recordAssignments, recordBuild, recordUpgrade, signatureHash)
 │   ├── games-daydream-page-auth.test.ts
-│   ├── god-tier-engine.test.ts
+│   ├── god-tier-engine.test.ts ⚠
+│   │   └── ⚠ @/lib/god-tier/godTierEngine  (BabylonEngineLike, BabylonSceneLike, DeviceSignals, DreamEngineGodTierSystem, GodTierState, MeshSnapshot, RingAverage, RouteSignals, RuntimeMetrics, UIElementSnapshot, UXSignals, applyGodTierToBabylon, buildChildContentFilter, cinematicMotionStack, computeAlgorithmLevel, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals, eliteMeshPolicy, fidelityScaler, framePressureShield, frictionOverride, getGodTierUiTokens, heroObjectImportance, maxAssumptionBoot, predictIntent, speculativePrefetchEngine, uiPrioritySolver, visualDominanceEngine)
 │   ├── hero-sprite.test.ts
-│   ├── home-feed-home.test.ts
+│   ├── home-feed-home.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/barInteractions  (DIVIDER_H)
 │   ├── homedream-page-auth.test.ts
-│   ├── i-engine-runtime.test.ts
-│   ├── icons.test.ts
+│   ├── i-engine-runtime.test.ts ⚠
+│   │   ├── ⚠ @/lib/runtime/dualRuntime  (DEFAULT_DUAL_RUNTIME)
+│   │   └── ⚠ @/lib/runtime/iEngine  (IntentBus, authorizeCapability, createIntentPacket, createRuntimeObject, dualRuntimeManifest, dualRuntimeRuleSet, negotiateCompatibility, validateDomainObject)
+│   ├── icons.test.ts ⚠
+│   │   └── ⚠ @/lib/icons/sheet  (COLS, FRAME_H, FRAME_W, ICONS, ICON_ENTRIES, IconName, ROWS, getIconPos, hasIcon)
 │   ├── idari-admin-guard.test.ts
-│   ├── idari-observability-loop.test.ts
-│   ├── idari-patch-plan.test.ts
+│   ├── idari-observability-loop.test.ts ⚠
+│   │   ├── ⚠ @/lib/observability/collector  (LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan, clearBuffers, collectLog, collectMetric, collectTrace, getBufferStats, getSnapshot)
+│   │   ├── ⚠ @/lib/observability/correlator  (AnomalySignal, CorrelationResult, correlate, detectErrorSpikes, detectLatencySpikes, detectMetricAnomalies)
+│   │   ├── ⚠ @/lib/observability/rootCauseAnalyzer  (RootCauseAnalysis, inferRootCause)
+│   │   ├── ⚠ @/lib/observability/immediateAction  (buildImmediateRemediationAction)
+│   │   └── ⚠ @/lib/agents/idariLoop  (buildFallbackPatchPlan, buildIdariPrompt, runLoopIteration)
+│   ├── idari-patch-plan.test.ts ⚠
+│   │   └── ⚠ @/lib/agents/idari  (KnownIssue, PatchPlan, SpecRequirement, VERCEL_2026_RUNTIME, assessGenerationLawScope, createKnownIssue, createPatchPlan, createVercelBuildResult, evaluateSpecRequirements, formatGenerationLawLoadCheck, updateKnownIssueStatus)
 │   ├── instance-manager.test.ts
-│   ├── integration-wiring.test.ts
-│   ├── is-auth-related-error.test.ts
-│   ├── journey-insights.test.ts
+│   ├── integration-wiring.test.ts ⚠
+│   │   └── ⚠ @/lib/forge/forgeRegistry  (CREATIVE_ENGINES, ENGIN_REGISTRY)
+│   ├── is-auth-related-error.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/isAuthRelatedError  (isAuthRelatedError)
+│   ├── journey-insights.test.ts ⚠
+│   │   └── ⚠ @/lib/journey/journeyInsights  (RETURN_GAP_DAYS, annotateDotsWithInsights, computeCurrentStreak, computeWeeklyFrequency, detectReturnGaps, findFirstOccurrenceIds)
 │   ├── journey.test.ts
-│   ├── lab-dream-split.test.ts
+│   ├── lab-dream-split.test.ts ⚠
+│   │   └── ⚠ @/lib/code/drEamsCodeAssist  (detectLanguageFromCode, detectNLCommand, generateCodeFromCommand, parseCodeResponse)
 │   ├── lab-section-12-spec.test.ts
-│   ├── landing-calibration.test.ts
+│   ├── landing-calibration.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamr/swipeCalibration  ((unknown — bare import))
 │   ├── landing-mission-link.test.ts
-│   ├── ledger-media.test.ts
-│   ├── live-feed.test.ts
+│   ├── ledger-media.test.ts ⚠
+│   │   └── ⚠ @/lib/media/ledger  (analyzeLedgerDensity, buildLedgerMediaUrl, decodeFromLedger, decodeLedgerBlob, decodeLedgerStringToUint8Array, encodeBlobToLedger, encodeToLedger, encodeUint8ArrayToLedgerString)
+│   ├── live-feed.test.ts ⚠
+│   │   └── ⚠ @/lib/feed/useLiveFeed  (FeedPost)
 │   ├── madmaxi-accessibility-tuning.test.ts
 │   ├── madmaxi-authored-levels.test.ts
 │   ├── madmaxi-mechanics.test.ts
-│   ├── mobile-game-controls.test.ts
-│   ├── modular-os-stores.test.ts
+│   ├── mobile-game-controls.test.ts ⚠
+│   │   ├── ⚠ @/lib/games/mobileControls  (MOBILE_HUD_BUTTON_RING, getRemoteMoveAction, normalizeStickVector)
+│   │   └── ⚠ @/lib/games/catalog  (GAME_CATALOG)
+│   ├── modular-os-stores.test.ts ⚠
+│   │   ├── ⚠ @/lib/artifactStore  (hideArtifact, listSystemArtifacts, listVisibleArtifacts, loadArtifacts, restoreArtifact, saveArtifact)
+│   │   ├── ⚠ @/lib/activeModulesStore  (loadActiveModules, removeActiveModule, saveActiveModule, saveActiveModulesForRegion, transferActiveModuleRegion)
+│   │   └── ⚠ @/lib/runtime/dreamOSBus  (dreamOSBus)
 │   ├── module-registry.test.ts
 │   ├── music-starmaker-section10.test.ts
 │   ├── namespace-isolation.test.ts
-│   ├── neural-seam-flow.test.ts
-│   ├── notifications.test.ts
-│   ├── offline-queue.test.ts
-│   ├── optimizer.test.ts
+│   ├── neural-seam-flow.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamdm/bridgeSeamFlow  (SEAM_CHANNEL_COLORS, SEAM_DEFAULT_COLOR, SeamParticle, _resetIdCounter, channelColor, createIdleParticle, createSeamParticle, evictDeadParticles, isParticleDead, tickParticles)
+│   ├── notifications.test.ts ⚠
+│   │   └── ⚠ @/lib/notifications/notificationHelpers  (DbNotificationRow, UiNotification, applyOptimisticDelete, applyOptimisticMarkAll, applyOptimisticRead, extractNotificationMessage, getNotificationActionUrl, getNotificationTitle, getUnreadCount, mapNotificationType, normalizeDbRow, sortByRecent)
+│   ├── offline-queue.test.ts ⚠
+│   │   └── ⚠ ../lib/runtime/offlineQueue  (dequeue, enqueue, flushQueue, getQueueStatus, isOnline)
+│   ├── optimizer.test.ts ⚠
+│   │   ├── ⚠ @/lib/optimizer/constraint-solver  (ConstraintSolver)
+│   │   ├── ⚠ @/lib/optimizer  (DreamOptimizer)
+│   │   ├── ⚠ @/lib/optimizer/creative-validator  (validateCreativeOption)
+│   │   └── ⚠ @/lib/optimizer/types  (Asset, CreativeContext, CreativeOption, FeedItem, Notification, OptimizerConfig, QueuedAction, RuntimeContext, SearchResult, WidgetPriority)
 │   ├── orphan-wire-script.test.ts
-│   ├── os-subsystem-manifest.test.ts
+│   ├── os-subsystem-manifest.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamengin/osSubsystemManifest  (DREAMENGIN_OS_SUBSYSTEM_MANIFEST, buildDreamenginOSSubsystemManifest)
 │   ├── page-surface-wiring.test.ts
 │   ├── phase6-privacy-idari.test.ts
-│   ├── phase7-naming.test.ts
-│   ├── phase8a.test.ts
-│   ├── phase8b-dream-windows.test.ts
+│   ├── phase7-naming.test.ts ⚠
+│   │   └── ⚠ @/lib/identity/canonical-names  (AI_AGENTS, AI_ROUTES, ALL_CANONICAL_NAMES, ALL_ENGIN_NAMES, CONNECTION_VERBS, CORE_SURFACES, CORE_SURFACE_ROUTES, DAYDREAM_DOMAINS, DAYDREAM_TO_ENGIN, DREAM_WINDOW, DREAM_WINDOW_REQUIRED_FIELDS, DREAM_WINDOW_STATES, ENGIN_SURFACES, MODULE_ROUTES, NETWORK_COUNTS, NETWORK_WORK_TYPES, PLATFORM_MODULES, PLATFORM_NAME, PRODUCT_DESCRIPTION, REJECTED_CONNECTION_VERBS, REJECTED_ENGIN_NAMES, REJECTED_OS_TERMS, REJECTED_PLATFORM_VARIANTS, ROUTE_LAW_NAMING_PREFERENCES, RUNTIME_REGIONS, RUNTIME_SEAM_NAMES, SURFACE_NAMES, getEnginForDomain, hasEnginSuffix, hasEngineSuffix, isCanonicalPlatformName, isRejectedConnectionVerb, isRejectedEnginName, isRejectedModuleName, isRejectedOsTerm, isRejectedPlatformVariant, isRouteLawPreferredName, isValidConnectionVerb, isValidDaydreamDomain, isValidDreamWindowState, isValidEnginName, isValidModuleName, isValidRuntimeRegion, isValidSurfaceName, validateName)
+│   ├── phase8a.test.ts ⚠
+│   │   └── ⚠ @/lib/ai/triad  (CANONICAL_NAV_ROUTES)
+│   ├── phase8b-dream-windows.test.ts ⚠
+│   │   └── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, DreamWindowInstance, DreamWindowLayerValidationResult, activateDreamWindow, bindDreamWindow, collapseDreamWindow, createDreamWindowInstance, mountDreamWindow, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers)
 │   ├── phase8e-orders.test.ts
-│   ├── phase8e-shop-marketplace.test.ts
+│   ├── phase8e-shop-marketplace.test.ts ⚠
+│   │   ├── ⚠ @/lib/shop/listings  (SHOP_LISTING_REQUIRED_FIELDS, SHOP_ORDERS_PRIVATE_FIELDS, SHOP_ORDERS_TABLE, SHOP_PRICE_MIN, SHOP_TABLE, SHOP_TITLE_MAX_LENGTH, isOrderOwner, normalizeShopListing, validateShopListing)
+│   │   ├── ⚠ @/lib/marketplace/listings  (MARKETPLACE_CONTACT_TABLE, MARKETPLACE_TABLE, MARKETPLACE_TAGS_MAX, MARKETPLACE_TAG_MAX_LENGTH, MARKETPLACE_TITLE_MAX, VALID_MARKETPLACE_CATEGORIES, formatMarketplacePrice, marketplaceDetailRoute, normalizeMarketplaceListing, validateMarketplaceListing)
+│   │   └── ⚠ @/lib/marketplace/request  (CONTACT_REQUEST_MESSAGE_MAX, buildContactRequestRecord, validateContactRequest)
 │   ├── phase8f-daydream-activation.test.ts
 │   ├── phase8f-daydream-network.test.ts ⚠
 │   │   └── ⚠ @/lib/supabase/client  ((unknown — bare import))
 │   ├── phase8g-dual-runtime-persistence.test.ts
 │   ├── phase8h-triad-consensus.test.ts
 │   ├── phase8i-settings-persistence.test.ts
-│   ├── phase9-adaptive-quality.test.ts
-│   ├── phase9-cross-post.test.ts
+│   ├── phase9-adaptive-quality.test.ts ⚠
+│   │   └── ⚠ @/lib/webgpu/adaptiveQuality  (AdaptiveQualityController, DeviceSignals, QualityTier, getQualityProfile, resolveQualityTier)
+│   ├── phase9-cross-post.test.ts ⚠
+│   │   └── ⚠ @/lib/social/crossPost  (DreamSharePayload, buildCrossPostTargets, buildDreamOgMeta, formatShareText)
 │   ├── phase9-drag-drop.test.ts
-│   ├── phase9-hashtags.test.ts
-│   ├── phase9-notifications.test.ts
-│   ├── phase9-offline-cache.test.ts
-│   ├── phase9-scene-state.test.ts
-│   ├── phase9-touch-gestures.test.ts
+│   ├── phase9-hashtags.test.ts ⚠
+│   │   └── ⚠ @/lib/feed/hashtags  (MAX_TAGS_PER_POST, MAX_TAG_LENGTH, calculateTrending, extractHashtags, formatTag, segmentText, validateTag)
+│   ├── phase9-notifications.test.ts ⚠
+│   │   └── ⚠ @/lib/notifications/notificationHelpers  (DbNotificationRow, extractNotificationMessage, getNotificationActionUrl, getNotificationTitle, mapNotificationType, normalizeDbRow)
+│   ├── phase9-offline-cache.test.ts ⚠
+│   │   └── ⚠ @/lib/offline/offlineCache  (CachedAsset, CachedScene, SceneObject, SceneSnapshot, SyncQueueEntry)
+│   ├── phase9-scene-state.test.ts ⚠
+│   │   └── ⚠ @/lib/scene/sceneState  (SceneSnapshot, createDefaultSnapshot, scenesAreDifferent)
+│   ├── phase9-touch-gestures.test.ts ⚠
+│   │   └── ⚠ @/lib/gestures/touchGestures  (GestureCallbacks, GestureEvent, GestureRecogniser)
 │   ├── platform-utils.test.ts
-│   ├── post-media.test.ts
+│   ├── post-media.test.ts ⚠
+│   │   └── ⚠ @/lib/media/postMedia  (getPostMediaUrls, getPrimaryPostMediaUrl)
 │   ├── post-view-counting.test.ts
 │   ├── product-law-principle10-alignment.test.ts
 │   ├── profile-avatar-edit-entrypoints.test.ts
 │   ├── rate-limiting.test.ts
-│   ├── readme-autosync.test.ts
+│   ├── readme-autosync.test.ts ⚠
+│   │   └── ⚠ ../lib/dreams/types  (DrEamsIntentType, Dream, DreamKind, DreamPermissions, DreamRenderMode, DreamSurface, NO_PERMISSIONS, OWNER_PERMISSIONS, VIEWER_PERMISSIONS, createDream, dreamCan, isDream, resolveDreamSurfaceAdapter)
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
 │   ├── report-driven-game-agent.test.ts
 │   ├── repository-state-analysis-section.test.ts
-│   ├── responsive.test.ts
-│   ├── rss-feed.test.ts
-│   ├── runtime-channel.test.ts
-│   ├── runtime-container.test.ts
-│   ├── runtime-viewport.test.ts
+│   ├── responsive.test.ts ⚠
+│   │   └── ⚠ ../lib/ui/responsive  (BREAKPOINTS, BREAKPOINT_ORDER, clamp, cssClamp, fluid, getBreakpoint, isAtLeast, isBelow, pickByBreakpoint, readViewportWidth)
+│   ├── rss-feed.test.ts ⚠
+│   │   └── ⚠ @/lib/social/rss-feed  (RssFeedConfig, extractFirstImage, githubUserAtomUrl, mastodonUserRssUrl, normaliseRssItem, nostrGatewayRssUrl, parseRssFeed, redditSubredditRssUrl, redditUserRssUrl, stripHtml, youtubeChannelRssUrl, youtubePlaylistRssUrl)
+│   ├── runtime-channel.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/runtimeChannel  (createLocalChannel, createRuntimeChannel)
+│   ├── runtime-container.test.ts ⚠
+│   │   └── ⚠ @/lib/runtime/runtimeContainer  (RuntimeContainer)
+│   ├── runtime-viewport.test.ts ⚠
+│   │   └── ⚠ @/lib/ui/runtimeViewport  (COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH, getPreferredViewportHeight, isCompactRuntimeViewport)
 │   ├── runtime-wiring.test.ts
 │   ├── safe-get-user.test.ts ⚠
 │   │   └── ⚠ @/lib/supabase/safeGetUser  (safeGetUser)
-│   ├── seam-clipboard.test.ts
-│   ├── session-continuity.test.ts
-│   ├── session-pattern-engine.test.ts
+│   ├── seam-clipboard.test.ts ⚠
+│   │   ├── ⚠ @/lib/runtime/dualRuntimeBridge  (bridge)
+│   │   ├── ⚠ @/lib/runtime/enginWorkflowRegistry  (ENGIN_KEYS, EnginKey, allWorkflows, executeWorkflow, findWorkflowById, findWorkflows)
+│   │   └── ⚠ @/lib/runtime/seamClipboard  (SeamClipboardPayload, seamClipboard)
+│   ├── session-continuity.test.ts ⚠
+│   │   └── ⚠ @/lib/intelligence/sessionContinuity  (SessionContinuity, SessionStorageBackend, StoredSession)
+│   ├── session-pattern-engine.test.ts ⚠
+│   │   └── ⚠ @/lib/intelligence/sessionPatternEngine  (SessionPatternEngine)
 │   ├── setup-env.ts
-│   ├── shell-cartridge-wiring.test.ts
-│   ├── skip-credits.test.ts
-│   ├── social-feed.test.ts
-│   ├── social-platforms.test.ts
+│   ├── shell-cartridge-wiring.test.ts ⚠
+│   │   ├── ⚠ @/lib/gameengin/cartridges/manifest  (CARTRIDGE_MANIFEST)
+│   │   ├── ⚠ @/lib/gameengin/registerCartridges  (registerCartridges)
+│   │   └── ⚠ @/lib/runtime/moduleRegistry  (moduleRegistry, useModuleRegistry)
+│   ├── skip-credits.test.ts ⚠
+│   │   ├── ⚠ @/lib/activity/skipCredits  (addSkipCredits, calculateSkipCreditsEarned, canSpendSkipCredit, spendSkipCredit)
+│   │   └── ⚠ @/lib/activity/types  (AdType)
+│   ├── social-feed.test.ts ⚠
+│   │   └── ⚠ @/lib/social-feed  (SocialFeedItem, extractFirstImage, fetchSocialFeed, stripHtml)
+│   ├── social-platforms.test.ts ⚠
+│   │   └── ⚠ @/lib/social/platforms  (PLATFORM_MAP, PROFILE_SHARE_PLATFORMS, SOCIAL_PLATFORMS, detectPlatform, getPlatform)
 │   ├── spec35-vm-bus-events.test.ts
-│   ├── spec36-bot-detection.test.ts
-│   ├── spec37-torridity.test.ts
-│   ├── spec38-collaboration.test.ts
-│   ├── spec41-engine-builder.test.ts
-│   ├── starmaker-music.test.ts
-│   ├── structure-ledger.test.ts
+│   ├── spec36-bot-detection.test.ts ⚠
+│   │   ├── ⚠ @/lib/bot-detection/index  (BOT_MAX_DEVIATION_PX, BotSessionTracker, FREEZE_MAX_MS, FREEZE_MIN_MS, HUMAN_MIN_DEVIATION_PX, PERFECT_LINE_THRESHOLD_PX, PerfectLineTrap, VIEW_TALLY_THRESHOLD_MS, createViewTimer)
+│   │   └── ⚠ @/lib/botDetection  (analyzeSwipe, tallyView)
+│   ├── spec37-torridity.test.ts ⚠
+│   │   └── ⚠ @/lib/torridity  (ContentItem, TORRIDITY_A0_PERCEPTION, TORRIDITY_DP, TORRIDITY_LAMBDA, TORRIDITY_N, contentDecayFactor, contentMass, decayedRank, mu, rankFeed, throttledVisibility, torridityRank, torridityRankSpec)
+│   ├── spec38-collaboration.test.ts ⚠
+│   │   └── ⚠ @/lib/collaboration/index  (CollabPayload, DEFAULT_MODE_RULESETS, WebRTCCollabSession, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession, generateInviteLink, parseInviteLink)
+│   ├── spec41-engine-builder.test.ts ⚠
+│   │   ├── ⚠ @/lib/forge/engineForge  (AtomicPiece, Wire, atomicPieceFromComponent, createAssembly, deserializeAssembly, runAssembly, serializeAssembly, validateAssembly)
+│   │   ├── ⚠ @/lib/componentInventory  (COMPONENT_INVENTORY)
+│   │   └── ⚠ @/lib/eventBus  (createDualRuntimeHub, createEventBus)
+│   ├── starmaker-music.test.ts ⚠
+│   │   ├── ⚠ @/lib/music/starmaker  (buildReleaseStrategy, createMelodySuggestions, summarizePlaybackProfile)
+│   │   └── ⚠ @/lib/music/starmakerDaw  (AUDIO_QUALITY_PRESETS, PIANO_ROLL_DEFAULTS, audioQualityLabel, computeWarpPlaybackRate, createInitialCompingState, createInitialSessionView, createInitialWarpState, createMidiNote, isBlackKey, midiPitchToName, snapToGrid)
+│   ├── structure-ledger.test.ts ⚠
+│   │   ├── ⚠ @/lib/navigation/dream-state  (createInitialDreamState, getStateForNode, move)
+│   │   └── ⚠ @/lib/navigation/StructureLedger  (ledgerStats, matchState, resolveTransition)
 │   ├── supabase-config.test.ts
-│   ├── swap-manager-extended.test.ts
-│   ├── swipe-calibration.test.ts
+│   ├── swap-manager-extended.test.ts ⚠
+│   │   └── ⚠ ../lib/runtime/swapManager  (clearSwap, getAllSwapStates, getSwap, resetAllSwaps, setSwap, toggleSwap)
+│   ├── swipe-calibration.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamr/swipeCalibration  (CalibrationProfile, calibrateDevice, getActiveProfile, resetCalibration, setActiveProfile)
 │   ├── tech-foundation.test.ts
-│   ├── torridity-ledger.test.ts
+│   ├── torridity-ledger.test.ts ⚠
+│   │   └── ⚠ @/lib/dreamr/torridityLedger  (TORRIDITY_LEDGER_CONFIG, calculateOriginality, calculateRank, derivePostMassMeta, getInteractionDelta, getPostMass, resolveSwipeRelease, slog, verifyHumanity)
 │   ├── universal-asset-registry.test.ts
-│   ├── universal-engine.test.ts
+│   ├── universal-engine.test.ts ⚠
+│   │   └── ⚠ @/lib/engine  (engine)
 │   ├── universal-visual-modularity.test.ts
 │   ├── update-readme-current-status.test.ts
-│   ├── user-sim.test.ts
-│   ├── utils-extended.test.ts
+│   ├── user-sim.test.ts ⚠
+│   │   └── ⚠ @/lib/user-sim/userSimAgent  (PERSONAS, SPEC_RULES, decideAction, judgeJourney, judgeStep, perceive, runJourney)
+│   ├── utils-extended.test.ts ⚠
+│   │   └── ⚠ ../lib/utils  (assert, clamp, debounce, deepClone, groupBy, retry, sleep, throttle, truncate, unique)
 │   ├── utils-supabase-server.test.ts ⚠
 │   │   └── ⚠ @/utils/supabase/server  (createClient)
-│   ├── v2-readiness.test.ts
+│   ├── v2-readiness.test.ts ⚠
+│   │   └── ⚠ @/lib/identity/canonical-names  (CORE_SURFACE_ROUTES, LEGACY_ROUTES, PLATFORM_NAME, PRODUCT_VERSION)
 │   ├── view-profile-public-view-controls.test.ts
-│   ├── warp-engine.test.ts
+│   ├── warp-engine.test.ts ⚠
+│   │   └── ⚠ @/lib/warp/warpEngine  (WarpContext, WarpEngine, WarpParticle, dampingKernel, decayKernel, expansionKernel, flowKernel, gravityKernel, integrateKernel, spawnParticle, spiralKernel, turbulenceKernel, wrapBoundaryKernel)
 │   ├── wasm-gpu-vm.test.ts
-│   ├── webgpu-director.test.ts
-│   ├── widget-install-flow.test.ts
+│   ├── webgpu-director.test.ts ⚠
+│   │   └── ⚠ @/lib/webgpu/director  (CameraSignals, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, RuntimeMetrics, SceneObject, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildPassPlan, buildSceneObjects, classifyObject, classifyPressure, decideObject, defaultCameraSignals, defaultDirectorMetrics, resolveFrameBudget, resolveResolutionScale, resolveTemporalState, scoreObject)
+│   ├── widget-install-flow.test.ts ⚠
+│   │   ├── ⚠ @/lib/connectors/installFlow  (SlotGrid, _resetInstallFlowState, cancelAutoLock, consumeDeferredPrompt, deferPrompt, dismissSuggestedWidget, findBestSlot, getSuggestedWidgets, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater, isSessionDismissed, queueSuggestedWidget, scheduleAutoLock)
+│   │   ├── ⚠ @/lib/widgets/widgetRegistry  (WIDGET_REGISTRY, getWidgetTypeDef, getWidgetTypesForConnector, resolveConnectorState)
+│   │   └── ⚠ @/lib/connectors/connectorRegistry  (CONNECTOR_REGISTRY, getConnectorDef)
 │   └── youtube-provider.test.ts
+├── torridity
+│   ├── constants.ts ∅
+│   │   └── ∅ unused: lambda
+│   ├── index.ts ∅
+│   │   └── ∅ unused: a0Perception, deltaP, lambda, n, contentMass, decayFactor, mu, rankFeed, throttlingGate, torridityRank, ContentItem, RankedItem
+│   └── physics.ts ∅
+│       └── ∅ unused: mu, contentMass, torridityRank, decayFactor, throttlingGate, rankFeed
 ├── types
 │   ├── ads.ts
 │   ├── ai-system.ts ∅
@@ -23670,14 +24903,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── ai.ts
 │   ├── ccc.ts
 │   ├── connector.ts
-│   ├── dream-window.ts ∅
+│   ├── dream-window.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/dream-window/DreamWindowLifecycle  (DestinationRule, DreamWindowConfig, DreamWindowPosition, DreamWindowSize, DreamWindowState)
 │   │   └── ∅ unused: DREAM_WINDOW_STATES
 │   ├── dreamArtifact.ts
 │   ├── experience.ts ∅
 │   │   └── ∅ unused: MAX_WIDGETS
 │   ├── journey.ts
 │   ├── marketplace.ts
-│   ├── module-manifest.ts
+│   ├── module-manifest.ts ⚠
+│   │   └── ⚠ @/lib/engin-runtime/EnginBaseState  (isJsonSerializable)
 │   ├── rivet-dev-agent-os.d.ts ∅
 │   │   └── ∅ unused: AgentOs, (default)
 │   ├── spatial.ts ∅
@@ -23691,17 +24926,107 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── widgetConfigs.ts
 │   └── widgets.ts ∅
 │       └── ∅ unused: getWidgetConfig, isWidgetInstance, isFeedWidget, isTextWidget, isMediaWidget
+├── ui
+│   ├── CustomizeModeContext.tsx ⚠ ∅
+│   │   ├── ⚠ @/lib/ui/skin-engine  (AllPageSkins, DEFAULT_SKIN, SkinData, SkinPage, applySkin, loadAllSkins, resolveSkin, saveAllSkins)
+│   │   └── ∅ unused: useCustomizeMode, CustomizeModeProvider
+│   ├── responsive.ts ∅
+│   │   └── ∅ unused: BREAKPOINT_ORDER, clamp, cssClamp
+│   ├── runtimeViewport.ts ∅
+│   │   └── ∅ unused: COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH, isCompactRuntimeViewport, getPreferredViewportHeight
+│   ├── skin-engine.ts ∅
+│   │   └── ∅ unused: DEFAULT_SKIN, SKIN_PRESETS, getSkinPreset, applySkin, loadAllSkins, saveAllSkins, resolveSkin
+│   ├── theme-engine.ts ∅
+│   │   └── ∅ unused: DEFAULT_OVERRIDES, THEME_PRESETS, getPreset, applyTheme, loadStoredTheme, saveTheme
+│   └── theme.ts ∅
+│       └── ∅ unused: getInitialDarkMode, setDarkMode, toggleDarkMode
+├── user-sim
+│   └── userSimAgent.ts ∅
+│       └── ∅ unused: PERSONAS, perceive, decideAction, SPEC_RULES, judgeStep, runJourney, judgeJourney
 ├── utils
+├── warp
+│   ├── useWarp.ts ∅
+│   │   └── ∅ unused: useWarp
+│   └── warpEngine.ts ∅
+│       └── ∅ unused: integrateKernel, decayKernel, gravityKernel, turbulenceKernel, spiralKernel, expansionKernel, flowKernel, dampingKernel, wrapBoundaryKernel, spawnParticle
+├── web3
+│   ├── client.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: Web3Client
+│   ├── engagement.ts ∅
+│   │   └── ∅ unused: trackEngagement, getEngagementStats, applyOptimisticEngagement, getOptimisticDelta, clearOptimisticDelta
+│   ├── index.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/web3  (trackEngagement, uploadToIpfs, web3Client)
+│   │   └── ∅ unused: DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, Web3Error, Web3Client, web3Client, applyOptimisticEngagement, clearOptimisticDelta, getEngagementStats, getOptimisticDelta, trackEngagement, getFromIpfs, isIpfsCid, pinCid, resolveIpfsUrl, uploadFileToIpfs, uploadToIpfs
+│   ├── ipfs.ts ∅
+│   │   └── ∅ unused: uploadToIpfs, uploadFileToIpfs, getFromIpfs, pinCid, resolveIpfsUrl, isIpfsCid
+│   └── types.ts
+├── webgpu
+│   ├── adaptiveQuality.ts ∅
+│   │   └── ∅ unused: getQualityProfile, getBatteryState, getDeviceMemoryGB, getCoreCount, resolveQualityTier, AdaptiveQualityController, gatherDeviceSignals
+│   ├── director.ts ∅
+│   │   └── ∅ unused: buildPassPlan, scoreObject, classifyObject, decideObject, resolveFrameBudget, resolveTemporalState, resolveResolutionScale, webGPUDirector, defaultDirectorMetrics, defaultCameraSignals, babylonMeshToSceneObject
+│   └── useWebGPUDirector.ts ∅
+│       └── ∅ unused: useWebGPUDirector, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals, defaultDirectorMetrics, CameraSignals, CameraState, DirectorFrame, MeshHints, RuntimeMetrics
+├── widgets
+│   ├── CrossWidgetPosting.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: MSG_TYPE_POST_REQUEST, MSG_TYPE_POST_RESULT, MSG_TYPE_FOCUS_REQUEST, MSG_TYPE_SEND_TEXT, MSG_TYPE_SEND_MEDIA, CrossWidgetPostingEngine
+│   ├── feed-resolver.ts ⚠ ∅
+│   │   ├── ⚠ @/lib/supabase/server  (createServerClient)
+│   │   ├── ⚠ @/lib/utils  (toErrorMessage)
+│   │   └── ∅ unused: resolveFeedHost, resolvePublicAppPosts, subscribeAppPostsRealtime, getFeedChannelKey, subscribeFeedRealtime
+│   ├── parse.ts ∅
+│   │   └── ∅ unused: parseYouTubeConfig, parseTextConfig, parseEmbedConfig, parseSocialEmbedConfig, parseSocialProfileConfig, parseSocialFeedConfig, parseTypedWidget
+│   ├── parseConfig.ts ∅
+│   │   └── ∅ unused: parseYouTubeWidgetConfig, parseSocialEmbedWidgetConfig, parseSocialProfileWidgetConfig, parseSocialFeedWidgetConfig, inferProviderFromUrl
+│   ├── useWidget.ts ∅
+│   │   └── ∅ unused: useWidget, emitWidget, setWidgetMemory, getWidgetMemory, chainWidgets, spawnSubWidget, getSubWidgets
+│   ├── WidgetBus.ts ∅
+│   │   └── ∅ unused: (default)
+│   ├── WidgetEngine.tsx ∅
+│   │   └── ∅ unused: WidgetLibrary
+│   ├── WidgetEventBus.ts ∅
+│   │   └── ∅ unused: WidgetEventBus
+│   ├── WidgetLinkGraph.ts
+│   └── widgetRegistry.ts ∅
+│       └── ∅ unused: WIDGET_REGISTRY, getWidgetTypeDef, getWidgetTypesForConnector, resolveConnectorState
 ├── _manifest.json
 ├── .cursorrules
 ├── .env.example
 ├── .env.local.example
 ├── .gitignore
 ├── .gitleaks.toml
+├── adari.ts ∅
+│   └── ∅ unused: getBuildReport, assertBuildInvariants
+├── agentOS.ts ∅
+│   └── ∅ unused: getAgentOS
+├── artifactStore.ts ∅
+│   └── ∅ unused: getDefaultSystemArtifacts, loadArtifacts, saveArtifact, saveArtifacts, removeArtifact, listVisibleArtifacts, hideArtifact, restoreArtifact, listSystemArtifacts
+├── audioFingerprint.ts ∅
+│   └── ∅ unused: buildPeakMap, createFingerprintIsolator
+├── botDetection.ts ∅
+│   └── ∅ unused: analyzeSwipe, tallyView, isBotSession
+├── componentInventory.ts ∅
+│   └── ∅ unused: COMPONENT_INVENTORY, searchComponents
+├── data-transform.ts ∅
+│   └── ∅ unused: DATA_PHYSICS, encodeToLedger, applyPhysicsFilter, decodeFromLedger, normalizeBuffer, computeBufferStats, zscore
+├── dev-bypass.ts ∅
+│   └── ∅ unused: isDevBypassActive, isDevAdminBypassActive
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
+├── eventBus.ts ∅
+│   └── ∅ unused: createDualRuntimeHub
 ├── fix-audit.js
 ├── generate-readme.ts
+├── generationLaw.ts ∅
+│   └── ∅ unused: DELTA_P, LAMBDA, IOTA_MAX, THRESHOLD_FLOW, THRESHOLD_SYNTHESIZE, calculateInventionForce, getPassProtocol, runPrePassChecklist, BUGS_LOG, logResidual, auditPostPass, DOC_RELATIONSHIPS
+├── h265-encoder.ts ∅
+│   └── ∅ unused: H265Encoder, GameCapture
+├── ledger-data.ts ∅
+│   └── ∅ unused: ledgerData
+├── ledger.ts ∅
+│   └── ∅ unused: getLedgerEntry, getAllByKind, storePeakMap, storeFingerprint, storeSampleMetadata, storeTorridityRank, storeAsset, recordView
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
@@ -23722,10 +25047,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: proxy, config
 ├── readme-autosync.ts ∅
 │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
+├── slog.ts ∅
+│   └── ∅ unused: slogInv, slogArray, slogMean
+├── social-feed.ts ∅
+│   └── ∅ unused: stripHtml, extractFirstImage, fetchSocialFeed
 ├── supabaseClient.ts ∅
 │   └── ∅ unused: supabase
 ├── tailwind.config.ts
 ├── tailwindcss-animate.d.ts
+├── torridity.ts ∅
+│   └── ∅ unused: TORRIDITY_LAMBDA, TORRIDITY_A0_PERCEPTION, mu, contentMass, torridityRank, torridityRankSpec, contentDecayFactor, decayedRank, throttledVisibility, rankFeed
 ├── tsconfig.app.json
 ├── tsconfig.base.json
 ├── tsconfig.games.json
@@ -23735,7 +25066,11 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tsconfig.test.json
 ├── tsconfig.tsbuildinfo
 ├── tsconfig.worker.json
+├── universalEditor.ts ∅
+│   └── ∅ unused: createLocalEventBus, transferModule
 ├── vercel.json
-└── vitest.config.ts ∅
-    └── ∅ unused: (default)
+├── vitest.config.ts ∅
+│   └── ∅ unused: (default)
+└── webgpu.ts ∅
+    └── ∅ unused: initializeWebGPURuntime, isWebGPUAvailable, getRendererBackend
 ```
