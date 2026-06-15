@@ -1,8 +1,8 @@
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { buildProjectGraph } from '@/lib/codeengin/projectGraph';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
-import { createCodeEnginWorkspace, getWorkspaceOverview, listEditableFiles } from '@/lib/codeengin/workspaceStore';
-import { listRunnerCommands } from '@/lib/codeengin/runner';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { buildProjectGraph } from '@/engins/codeengin/projectGraph';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
+import { createCodeEnginWorkspace, getWorkspaceOverview, listEditableFiles } from '@/engins/codeengin/workspaceStore';
+import { listRunnerCommands } from '@/engins/codeengin/runner';
 import { NextResponse } from 'next/server';
 
 type WorkspaceBody = { action?: 'create' | 'files' | 'graph' | 'overview'; workspaceId?: string; path?: string; name?: string };

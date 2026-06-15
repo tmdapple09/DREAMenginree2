@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { NextRequest, NextResponse } from 'next/server';
 
 const SUPABASE_AUTH_COOKIE = /^(?:sb-|supabase-).*(?:auth-token|code-verifier)/;

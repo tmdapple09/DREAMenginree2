@@ -1,11 +1,11 @@
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { jsonApiError } from '@/engine/api/route';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // app/api/admin/child-safety/route.ts
 // Admin endpoint for child safety incident review queue and hash registry management.

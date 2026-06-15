@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { tau, transition, type NavState } from '@/lib/dreamnav/tau';
+import { tau, transition, type NavState } from '@/engine/dreamnav/tau';
 
 describe('dreamnav tau', () => {
   it('maps home node actions to inner layer', () => {

@@ -1,4 +1,4 @@
-import { CARTRIDGE_MAGIC, validateManifest, type CartridgeManifest } from '@/lib/gameengin/cartridge-manifest';
+import { CARTRIDGE_MAGIC, validateManifest, type CartridgeManifest } from '@/engins/gameengin/cartridge-manifest';
 
 export interface DreamrFileEntry {
   name: string;

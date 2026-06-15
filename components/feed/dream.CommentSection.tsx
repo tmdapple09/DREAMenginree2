@@ -1,6 +1,6 @@
 'use client';
 
-import { formatRelativeTime } from '@/lib/utils';
+import { formatRelativeTime } from '@/utils/index';
 import { AlertCircle, Loader2, MessageCircle, Send } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';

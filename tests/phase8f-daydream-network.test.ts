@@ -631,8 +631,8 @@ describe('useDaydreamPersistence — unit tests with mock Supabase', () => {
   // These are structural/code-level tests since we test in node environment
   const hookSrc = readSource('lib/daydream/useDaydreamPersistence.ts');
 
-  it('hook uses createClient from @/lib/supabase/client', () => {
-    expect(hookSrc).toContain("from '@/lib/supabase/client'");
+  it('hook uses createClient from @/supabase/client/client', () => {
+    expect(hookSrc).toContain("from '@/supabase/client/client'");
   });
 
   it('hook has correct onConflict for upsert (user_id,daydream_type)', () => {
@@ -693,7 +693,7 @@ describe('Architecture compliance', () => {
     ];
     for (const f of engins) {
       const src = readSource(f);
-      expect(src).toContain("from '@/lib/supabase/client'");
+      expect(src).toContain("from '@/supabase/client/client'");
     }
   });
 

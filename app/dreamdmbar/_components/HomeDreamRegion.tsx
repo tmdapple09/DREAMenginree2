@@ -11,8 +11,8 @@ import DraggableDream from '@/components/dreams/dream.DraggableDream';
 import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import DaydreamPulseStrip from '@/components/home/dream.DaydreamPulseStrip';
 import FlagshipEnginesStrip from '@/components/home/dream.FlagshipEnginesStrip';
-import { useNotifications } from '@/lib/notifications/useNotifications';
-import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
+import { useNotifications } from '@/dreamdmbar/notifications/useNotifications';
+import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 
 type ProfileLike = {

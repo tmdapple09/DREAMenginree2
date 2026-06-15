@@ -1,7 +1,7 @@
 'use client';
 
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
-import { SKIN_PRESETS } from '@/lib/ui/skin-engine';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
+import { SKIN_PRESETS } from '@/components/ui-system/skin-engine';
 import React, { useState } from 'react';
 
 const GRADIENT_PRESETS = [

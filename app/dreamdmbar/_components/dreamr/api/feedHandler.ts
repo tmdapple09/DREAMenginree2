@@ -1,12 +1,12 @@
 import {
   filterByCloseFriends,
   loadVisibilityCircle,
-} from '@/lib/dreamr/closeFriendsVisibility';
-import { deriveNextCursor, parseFeedParams } from '@/lib/dreamr/feedCursor';
-import { getPrimaryPostMediaUrl, type PostMediaShape } from '@/lib/media/postMedia';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
-import { toErrorMessage } from '@/lib/utils';
+} from '@/dreamr/runtime/closeFriendsVisibility';
+import { deriveNextCursor, parseFeedParams } from '@/dreamr/runtime/feedCursor';
+import { getPrimaryPostMediaUrl, type PostMediaShape } from '@/engins/contentengin/media/postMedia';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { toErrorMessage } from '@/utils/index';
 import { type NextRequest, NextResponse } from 'next/server';
 import { rankFeed, type ScoredPost } from '../algorithms/dreamrAlgorithm';
 

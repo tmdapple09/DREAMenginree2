@@ -2,7 +2,7 @@ import {
     calculateRank,
     derivePostMassMeta,
     getPostMass,
-} from '@/lib/dreamr/torridityLedger';
+} from '@/dreamr/runtime/torridityLedger';
 
 /**
  * DreamR Algorithm — humanistic feed scoring.

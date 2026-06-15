@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { CRASH_REPORT_MAX_BYTES as SERVER_CAP } from '@/lib/gameengin/brain-reader';
+import { CRASH_REPORT_MAX_BYTES as SERVER_CAP } from '@/engins/gameengin/brain-reader';
 import { CRASH_REPORT_MAX_BYTES as CLIENT_CAP } from '@/components/gameengin/dream.CrashReportModal';
 import { CartridgeErrorBoundary } from '@/components/gameengin/dream.cartridge.CartridgeErrorBoundary';
 

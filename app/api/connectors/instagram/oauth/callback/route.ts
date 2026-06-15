@@ -1,5 +1,5 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';

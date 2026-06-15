@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getPostMediaUrls, getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
+import { getPostMediaUrls, getPrimaryPostMediaUrl } from '@/engins/contentengin/media/postMedia';
 
 describe('post media normalization', () => {
   it('prefers the canonical media_url when present', () => {

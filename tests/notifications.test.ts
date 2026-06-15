@@ -30,7 +30,7 @@ import {
   sortByRecent,
   type DbNotificationRow,
   type UiNotification,
-} from '@/lib/notifications/notificationHelpers';
+} from '@/dreamdmbar/notifications/notificationHelpers';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 

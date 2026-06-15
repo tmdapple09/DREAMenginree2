@@ -1,11 +1,11 @@
 'use server';
 
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { embedDocSection } from '@/lib/dream-docs/embed';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { embedDocSection } from '@/docs/dream-docs/embed';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { Json } from '@/types/supabase';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/actions/dream-docs.ts

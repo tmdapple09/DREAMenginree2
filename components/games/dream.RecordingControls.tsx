@@ -1,6 +1,6 @@
 'use client';
 
-import { GameCapture, type CaptureResult } from '@/lib/h265-encoder';
+import { GameCapture, type CaptureResult } from '@/engins/contentengin/media/h265-encoder';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Props {

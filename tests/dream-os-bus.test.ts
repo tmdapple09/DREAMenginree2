@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import {
   dreamOSBus,
   deriveAIRuntimeContext,
   getCapabilitiesForDomains,
   getCapabilityChildren,
   getCapabilityDescriptor,
-} from '@/lib/runtime/dreamOSBus';
+} from '@/engine/runtime/dreamOSBus';
 
 
 const authorizationContext = {

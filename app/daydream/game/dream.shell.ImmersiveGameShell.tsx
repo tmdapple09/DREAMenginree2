@@ -1,18 +1,18 @@
 'use client';
 
 import GameRemote from '@/components/games/dream.remote.GameRemote';
-import GameRuntime from '@/lib/gameengin/GameRuntime';
-import type { GameCartridge, GravityPreset } from '@/lib/gameengin/cartridge';
-import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
-import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
+import GameRuntime from '@/engins/gameengin/GameRuntime';
+import type { GameCartridge, GravityPreset } from '@/engins/gameengin/cartridge';
+import { loadCartridge } from '@/engins/gameengin/cartridges/loaders';
+import { CARTRIDGE_MANIFEST } from '@/engins/gameengin/cartridges/manifest';
 import {
     buildGameLaunchHref,
     DEFAULT_GAME_ID,
     resolveGameLaunchId,
-} from '@/lib/games/navigation';
+} from '@/engins/gameengin/games/navigation';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * ImmersiveGameShell — True full-screen game launcher with PS5-style boot

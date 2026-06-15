@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { GameRuntimeInputRouter } from '@/lib/gameengin/input';
-import type { CartridgeInputEvent } from '@/lib/gameengin/cartridge';
+import { GameRuntimeInputRouter } from '@/engins/gameengin/input';
+import type { CartridgeInputEvent } from '@/engins/gameengin/cartridge';
 
 class FakeWindow extends EventTarget {
   isSecureContext = true;

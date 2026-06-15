@@ -10,7 +10,7 @@ import {
   getIconPos,
   hasIcon,
   type IconName,
-} from '@/lib/icons/sheet';
+} from '@/components/icons/sheet';
 
 // ─── Sheet constants ──────────────────────────────────────────────────────────
 

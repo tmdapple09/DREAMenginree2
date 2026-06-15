@@ -29,9 +29,9 @@ import {
   getLevelEmoji,
   readHistory,
   type MomentumLevel,
-} from '@/lib/forge/forgeMomentum';
+} from '@/engins/forgeengin/forge/forgeMomentum';
 
-import { FORGE_HISTORY_KEY } from '@/lib/forge/forgeRegistry';
+import { FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

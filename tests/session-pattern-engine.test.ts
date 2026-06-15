@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { SessionPatternEngine } from '@/lib/intelligence/sessionPatternEngine';
+import { SessionPatternEngine } from '@/engine/intelligence/sessionPatternEngine';
 
 // Mock TF.js so the tests run without requiring GPU or heavy native deps.
 vi.mock('@tensorflow/tfjs', () => ({

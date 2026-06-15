@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from '@/components/providers/dream.ThemeProvider';
-import { THEME_PRESETS } from '@/lib/ui/theme-engine';
+import { THEME_PRESETS } from '@/components/ui-system/theme-engine';
 import { useCallback } from 'react';
 
 function Slider({

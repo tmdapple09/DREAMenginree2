@@ -1,6 +1,6 @@
 'use client';
 
-import { createBabylonEngine } from '@/lib/babylon/createEngine';
+import { createBabylonEngine } from '@/engine/rendering/babylon/createEngine';
 import {
     DreamEngineGodTierSystem,
     applyGodTierToBabylon,
@@ -9,7 +9,7 @@ import {
     defaultRuntimeMetrics,
     defaultUXSignals,
     type BabylonSceneLike,
-} from '@/lib/god-tier/godTierEngine';
+} from '@/engine/rendering/god-tier/godTierEngine';
 import {
     Mesh,
     ArcRotateCamera,

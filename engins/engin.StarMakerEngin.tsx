@@ -7,17 +7,17 @@ import PianoRollPanel from '@/components/daydream/starmaker/dream.panel.PianoRol
 import SessionViewPanel from '@/components/daydream/starmaker/dream.panel.SessionViewPanel';
 import { AudioVisualizer3D } from '@/components/dream.AudioVisualizer3D';
 import { useSharedDream } from '@/hooks/useSharedDream';
-import { buildPeakMap, createFingerprintIsolator, type PeakMap } from '@/lib/audioFingerprint';
-import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
-import { useDaydreamState } from '@/lib/daydream/useDaydreamState';
-import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
-import { createEventBus, upgradeEngine } from '@/lib/dreamenginOS';
-import { ArtifactSlot } from '@/lib/enginpipe';
-import { useStarMakerEnginRuntime } from '@/lib/engins/music/useStarMakerEnginRuntime';
-import { useEnginWorkflow } from '@/lib/engins/useEnginWorkflow';
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { buildLedgerMediaUrl, uploadBlobToLedgerStorage } from '@/lib/media/ledger';
+import { buildPeakMap, createFingerprintIsolator, type PeakMap } from '@/engins/starmakerengin/audioFingerprint';
+import { useDaydreamPersistence } from '@/daydreams/shared/useDaydreamPersistence';
+import { useDaydreamState } from '@/daydreams/shared/useDaydreamState';
+import type { EngineBase, UpgradedEngine } from '@/engine/os/index';
+import { createEventBus, upgradeEngine } from '@/engine/os/index';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
+import { useStarMakerEnginRuntime } from '@/engins/rulesets/music/useStarMakerEnginRuntime';
+import { useEnginWorkflow } from '@/engins/rulesets/useEnginWorkflow';
+import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { buildLedgerMediaUrl, uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
 import {
     BEAT_PRESETS,
     GENRE_LIST,
@@ -26,14 +26,14 @@ import {
     type BeatPreset,
     type InstrumentPreset,
     type ProjectTemplate,
-} from '@/lib/music/presets';
+} from '@/engins/starmakerengin/music/presets';
 import {
     buildReleaseStrategy,
     createMelodySuggestions,
     summarizePlaybackProfile,
     type MelodySuggestion,
     type PlaybackQualityMode,
-} from '@/lib/music/starmaker';
+} from '@/engins/starmakerengin/music/starmaker';
 import {
     ARRANGEMENT_BARS,
     ARRANGEMENT_SOURCE_COLORS,
@@ -42,7 +42,7 @@ import {
     type ArrangementSource,
     type ArrangementTrackId,
     type ArrangementTrackState,
-} from '@/lib/music/starmakerArrangement';
+} from '@/engins/starmakerengin/music/starmakerArrangement';
 import {
     PIANO_ROLL_DEFAULTS,
     analyzeStereoPcm,
@@ -56,12 +56,12 @@ import {
     type SessionViewState,
     type StarMakerAudioDiagnostics,
     type StarMakerSequencerSnapshot,
-} from '@/lib/music/starmakerDaw';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { SUPABASE_URL as CANONICAL_SUPABASE_URL } from '@/lib/supabase/config';
+} from '@/engins/starmakerengin/music/starmakerDaw';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
+import { useEnginCoopSync } from '@/engine/runtime/useEnginCoopSync';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { SUPABASE_URL as CANONICAL_SUPABASE_URL } from '@/supabase/config';
 import {
     ArrowLeft,
     Download,
@@ -81,7 +81,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * StarMakerEngin — Side B control layer for the Music Daydream.

@@ -1,9 +1,9 @@
 "use client";
 
 import PasswordField from "@/components/auth/dream.PasswordField";
-import { resolveSafeNextPath } from "@/lib/auth/nextRedirect";
-import { createClient } from "@/lib/supabase/client";
-import { buildAuthCallbackUrl } from "@/lib/supabase/config";
+import { resolveSafeNextPath } from "@/supabase/auth/nextRedirect";
+import { createClient } from "@/supabase/client/client";
+import { buildAuthCallbackUrl } from "@/supabase/config";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";

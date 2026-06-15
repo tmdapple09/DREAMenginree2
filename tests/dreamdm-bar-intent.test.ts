@@ -22,13 +22,13 @@ import { describe, it, expect } from 'vitest';
 import {
   detectSurface,
   resolveIntentOverride,
-} from '@/lib/dreamdm/useDreamBarContext';
+} from '@/dreamdmbar/hooks/useDreamBarContext';
 
 import {
   DEFAULT_BAR_INTENT,
   type BarIntentMode,
   type BarIntent,
-} from '@/lib/dreamdm/DreamSystemContext';
+} from '@/dreamdmbar/runtime/DreamSystemContext';
 
 // ── DEFAULT_BAR_INTENT ────────────────────────────────────────────────────────
 

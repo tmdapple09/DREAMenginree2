@@ -1,7 +1,7 @@
 'use client';
 
-import { formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor } from '@/lib/activity/aqs';
-import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/lib/activity/types';
+import { formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor } from '@/dreamr/activity/aqs';
+import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/dreamr/activity/types';
 import { useEffect, useState } from 'react';
 import { TierBadge } from './dream.TierBadge';
 

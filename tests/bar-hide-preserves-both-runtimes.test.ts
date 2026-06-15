@@ -11,7 +11,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
+import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
 
 // ---------------------------------------------------------------------------
 // Pure layout helpers — extracted from HomeSystem render logic so we can test

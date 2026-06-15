@@ -1,6 +1,6 @@
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { BookOpen, HelpCircle, MessageCircle, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';

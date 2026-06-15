@@ -51,23 +51,23 @@ import {
     type StreakData,
     type StreakTier,
     type SurfaceAccent
-} from '@/lib/dreamdm/barInteractions';
-import { useDreamSystem, type BarIntentMode } from '@/lib/dreamdm/DreamSystemContext';
-import { useDreamBarContext, type DreamBarContext } from '@/lib/dreamdm/useDreamBarContext';
+} from '@/dreamdmbar/runtime/barInteractions';
+import { useDreamSystem, type BarIntentMode } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { useDreamBarContext, type DreamBarContext } from '@/dreamdmbar/hooks/useDreamBarContext';
 import {
     useDreamDMConversations,
     type DMConversation,
-} from '@/lib/dreamdm/useDreamDMConversations';
-import { useDreamDMDraft } from '@/lib/dreamdm/useDreamDMDraft';
-import type { DMMessage } from '@/lib/dreamdm/useDreamDMMessages';
-import { useDreamDMMessages } from '@/lib/dreamdm/useDreamDMMessages';
-import { useDreamSearch, type SearchResult } from '@/lib/dreamdm/useDreamSearch';
-import { useMessagingCore, type MediaType } from '@/lib/dreamdm/useMessagingCore';
-import { useNotifications } from '@/lib/dreamdm/useNotifications';
-import { useImmersiveGameLayout } from '@/lib/games/useImmersiveGameLayout';
-import { uploadBlobToLedgerStorage } from '@/lib/media/ledger';
-import { getPreferredViewportHeight, isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
-import { formatRelativeTime } from '@/lib/utils';
+} from '@/dreamdmbar/hooks/useDreamDMConversations';
+import { useDreamDMDraft } from '@/dreamdmbar/hooks/useDreamDMDraft';
+import type { DMMessage } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamDMMessages } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamSearch, type SearchResult } from '@/dreamdmbar/hooks/useDreamSearch';
+import { useMessagingCore, type MediaType } from '@/dreamdmbar/hooks/useMessagingCore';
+import { useNotifications } from '@/dreamdmbar/hooks/useNotifications';
+import { useImmersiveGameLayout } from '@/engins/gameengin/games/useImmersiveGameLayout';
+import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
+import { getPreferredViewportHeight, isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
+import { formatRelativeTime } from '@/utils/index';
 
 /**
  * DreamDMBar — Pass 3 (Window Model) — CORRECTED GOLD PARTICLE SPEC
@@ -1132,7 +1132,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   // Resolve userId
   useEffect(() => {
     setMounted(true);
-    import('@/lib/supabase/client')
+    import('@/supabase/client/client')
       .then(({ createClient }) =>
         createClient().auth.getUser().then(({ data }: { data: { user: { id: string } | null } }) => {
           if (data.user) { setUserId(data.user.id); reloadConvs(); }
@@ -1216,7 +1216,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         // Upload any attached media files first
         const mediaUrls: string[] = [];
         if (quickDraftFiles.length > 0) {
-          const { createClient } = await import('@/lib/supabase/client');
+          const { createClient } = await import('@/supabase/client/client');
           const supabase = createClient();
           for (const file of quickDraftFiles) {
             const bucket = file.type.startsWith('image/') ? 'images'
@@ -1314,7 +1314,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         // Upload media files if any
         const mediaUrls: string[] = [];
         if (quickDraftFiles.length > 0) {
-          const { createClient } = await import('@/lib/supabase/client');
+          const { createClient } = await import('@/supabase/client/client');
           const supabase = createClient();
 
           for (const file of quickDraftFiles) {

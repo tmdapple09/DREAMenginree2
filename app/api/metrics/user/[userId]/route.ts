@@ -1,5 +1,5 @@
-import { ActivityTier, isValidActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/lib/activity/types';
-import { createServerClient } from '@/lib/supabase/server';
+import { ActivityTier, isValidActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/dreamr/activity/types';
+import { createServerClient } from '@/supabase/server/serverClient';
 import type { Database } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 

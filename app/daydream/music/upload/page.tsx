@@ -1,12 +1,12 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, Info, Loader2, Music, Upload, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // SURFACE: dreamsurface.MusicUpload  (framework-mandated basename: page.tsx)
 

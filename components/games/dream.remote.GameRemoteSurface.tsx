@@ -1,7 +1,7 @@
 'use client';
 
-import { broadcastGameInput } from '@/lib/games/useRemoteChannel';
-import { ButtonInteractionManager, type ControllerButton } from '@/lib/games/gameControllerButtons';
+import { broadcastGameInput } from '@/engins/gameengin/games/useRemoteChannel';
+import { ButtonInteractionManager, type ControllerButton } from '@/engins/gameengin/games/gameControllerButtons';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**

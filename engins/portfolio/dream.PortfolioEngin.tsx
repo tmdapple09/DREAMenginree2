@@ -2,9 +2,9 @@
 
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import QuantumCircuitCanvas, { type QuantumMeasurementResult } from '@/engins/dream.QuantumCircuitCanvas';
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Activity, ArrowLeft, Cpu, ShieldCheck, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 

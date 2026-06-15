@@ -1,6 +1,6 @@
 'use client';
 
-import { ArtifactSlot } from '@/lib/enginpipe';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
 import { AgentPanel } from '../modules/ai-co-pilot/dream.panel.AgentPanel';
 
 /**

@@ -1,6 +1,6 @@
 'use client';
 
-import { invokeMadMaxiSnapshotTransfer } from '@/lib/runtime/madMaxiSnapshotBridge';
+import { invokeMadMaxiSnapshotTransfer } from '@/engine/runtime/madMaxiSnapshotBridge';
 import { EventEmitter } from 'events';
 
 // Framework directives stay physically first when required.
@@ -635,7 +635,7 @@ class DualRuntimeBridge extends EventEmitter {
   async initVMs(config: { enableInterVMCommunication?: boolean } = {}): Promise<void> {
     if (this._vmTop && this._vmBottom) return;
     try {
-      const { WasmGpuVM } = await import('@/lib/vm/wasmGpuVM');
+      const { WasmGpuVM } = await import('@/engine/vm/wasmGpuVM');
       this._vmTop    = await WasmGpuVM.create({ id: 'vm-top' });
       this._vmBottom = await WasmGpuVM.create({ id: 'vm-bottom' });
       if (config.enableInterVMCommunication !== false) {

@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeedPost } from "@/lib/feed/useLiveFeed";
+import type { FeedPost } from "@/dreamr/feed/useLiveFeed";
 import {
   ExternalLink,
   Globe,

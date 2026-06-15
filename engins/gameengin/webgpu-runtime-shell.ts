@@ -1,4 +1,4 @@
-import type { DreamrCartridgeArchive } from '@/lib/gameengin/dreamr-loader';
+import type { DreamrCartridgeArchive } from '@/engins/gameengin/dreamr-loader';
 
 // Framework directives stay physically first when required.
 

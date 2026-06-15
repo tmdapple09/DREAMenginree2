@@ -8,7 +8,7 @@ import {
     makeDreamSpaceActiveSurface,
     makeHomeActiveTop,
     makeHomeDreamSpaceActive,
-} from '@/lib/runtime/dualRuntime';
+} from '@/engine/runtime/dualRuntime';
 import {
     IntentBus,
     createIntentPacket,
@@ -18,7 +18,7 @@ import {
     type ActorContext,
     type JsonObject,
     type JsonValue,
-} from '@/lib/runtime/iEngine';
+} from '@/engine/runtime/iEngine';
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.

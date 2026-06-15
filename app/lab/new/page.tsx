@@ -1,12 +1,12 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, FlaskConical, Globe, Loader2, Lock, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // SURFACE: dreamsurface.LabNew  (framework-mandated basename: page.tsx)
 

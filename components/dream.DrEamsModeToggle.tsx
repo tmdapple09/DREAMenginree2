@@ -1,7 +1,7 @@
 'use client';
 
-import { getDrEamsMode, onDrEamsModeChange, setDrEamsMode } from '@/lib/agents/drEamsMode'
-import { emitTeach } from '@/lib/agents/teachBus'
+import { getDrEamsMode, onDrEamsModeChange, setDrEamsMode } from '@/engine/agents/drEamsMode'
+import { emitTeach } from '@/engine/agents/teachBus'
 import { Bot, BotOff } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

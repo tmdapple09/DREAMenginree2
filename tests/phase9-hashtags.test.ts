@@ -14,7 +14,7 @@ import {
   segmentText,
   MAX_TAGS_PER_POST,
   MAX_TAG_LENGTH,
-} from '@/lib/feed/hashtags';
+} from '@/dreamr/feed/hashtags';
 
 // ─── extractHashtags ──────────────────────────────────────────────────────────
 

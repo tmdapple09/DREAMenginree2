@@ -34,7 +34,7 @@ import {
   type GodTierState,
   type BabylonEngineLike,
   type BabylonSceneLike,
-} from '@/lib/god-tier/godTierEngine';
+} from '@/engine/rendering/god-tier/godTierEngine';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 

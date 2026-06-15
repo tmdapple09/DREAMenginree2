@@ -1,7 +1,7 @@
 'use client';
 
 import PositionIndicatorToggle from '@/app/settings/controls/dream.PositionIndicatorToggle';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Check, Sliders } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 

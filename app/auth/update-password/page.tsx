@@ -1,7 +1,7 @@
 "use client";
 
 import PasswordField from "@/components/auth/dream.PasswordField";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/supabase/client/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";

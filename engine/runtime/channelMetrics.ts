@@ -15,7 +15,7 @@
  *  72. resetChannelMetrics — for testing
  *
  * Usage:
- *   import { recordEmission, getChannelMetrics } from '@/lib/runtime/channelMetrics';
+ *   import { recordEmission, getChannelMetrics } from '@/engine/runtime/channelMetrics';
  *
  *   // In the bridge emit path:
  *   recordEmission('music', 12);

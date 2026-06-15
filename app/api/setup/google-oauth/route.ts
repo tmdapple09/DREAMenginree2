@@ -1,4 +1,4 @@
-import { SUPABASE_CONFIG, getServerSiteOrigin, getSupabaseAuthCallbackUrl } from "@/lib/supabase/config";
+import { SUPABASE_CONFIG, getServerSiteOrigin, getSupabaseAuthCallbackUrl } from "@/supabase/config";
 import { NextResponse } from "next/server";
 
 /**

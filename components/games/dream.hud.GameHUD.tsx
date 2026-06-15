@@ -1,7 +1,7 @@
 'use client';
 
 import GameRemote from '@/components/games/dream.remote.GameRemote';
-import type { MobileHudMode } from '@/lib/games/mobileControls';
+import type { MobileHudMode } from '@/engins/gameengin/games/mobileControls';
 
 interface GameHUDProps {
   gameLabel: string;

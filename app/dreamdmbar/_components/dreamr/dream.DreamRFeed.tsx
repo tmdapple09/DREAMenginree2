@@ -1,8 +1,8 @@
 'use client';
 
-import type { Point } from '@/lib/botDetection';
-import { analyzeSwipe, tallyView } from '@/lib/botDetection';
-import { enginBridge } from '@/lib/runtime/dualRuntimeBridge';
+import type { Point } from '@/dreamr/botDetection';
+import { analyzeSwipe, tallyView } from '@/dreamr/botDetection';
+import { enginBridge } from '@/engine/runtime/dualRuntimeBridge';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: string, sharerId: string, viewerId: string}) {
@@ -155,4 +155,4 @@ export default function DreamRFeed({ videoId, sharerId, viewerId }: {videoId: st
   );
 }
 
-export { DREAMR_TOPICS } from '@/lib/dreamr/dreamrfeed';
+export { DREAMR_TOPICS } from '@/dreamr/components/dreamrfeed';

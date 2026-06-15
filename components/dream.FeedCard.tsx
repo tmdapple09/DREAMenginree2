@@ -2,8 +2,8 @@
 
 import CommentSection from '@/components/feed/dream.CommentSection';
 import { UniverseCard, UniverseCardContent } from '@/components/universe';
-import { cn, formatRelativeTime } from '@/lib/utils';
-import { inferProviderFromUrl } from '@/lib/widgets/parseConfig';
+import { cn, formatRelativeTime } from '@/utils/index';
+import { inferProviderFromUrl } from '@/engine/widgets/parseConfig';
 import { Bookmark, ExternalLink, FileText, Flag, Heart, Link2, MessageCircle, MoreHorizontal, Share2, Sparkles, Youtube } from 'lucide-react';
 import Image from 'next/image';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';

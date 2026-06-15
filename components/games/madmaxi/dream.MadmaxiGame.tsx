@@ -1,8 +1,8 @@
 'use client';
 
-import { createBabylonEngine } from '@/lib/babylon/createEngine';
-import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
-import { useImmersiveGameLayout } from '@/lib/games/useImmersiveGameLayout';
+import { createBabylonEngine } from '@/engine/rendering/babylon/createEngine';
+import { useGameAutoStart, useSubmitScore } from '@/engins/gameengin/games/hooks';
+import { useImmersiveGameLayout } from '@/engins/gameengin/games/useImmersiveGameLayout';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     DreamEngineGodTierSystem,
@@ -11,7 +11,7 @@ import {
     defaultRouteSignals,
     defaultUXSignals,
     type BabylonSceneLike,
-} from '@/lib/god-tier/godTierEngine';
+} from '@/engine/rendering/god-tier/godTierEngine';
 import '@babylonjs/loaders/glTF';
 import { MadmaxiAudioController } from './audio';
 import {

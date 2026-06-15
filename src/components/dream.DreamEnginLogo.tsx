@@ -1,6 +1,6 @@
 "use client";
 
-import { useDreamLogoScene, type DreamLogoSceneOptions } from "@/lib/babylon/useDreamLogoScene";
+import { useDreamLogoScene, type DreamLogoSceneOptions } from "@/engine/rendering/babylon/useDreamLogoScene";
 import { useRef } from "react";
 
 interface DreamEnginLogoProps extends DreamLogoSceneOptions {

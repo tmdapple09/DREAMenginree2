@@ -1,4 +1,4 @@
-import { setDarkMode } from '@/lib/ui/theme';
+import { setDarkMode } from '@/components/ui-system/theme';
 
 export type UiActionResult = { handled: boolean; reply: string };
 

@@ -1,7 +1,7 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // app/api/marketplace/route.ts
 // DreamMarketplace API — GET (browse) + POST (list an item).

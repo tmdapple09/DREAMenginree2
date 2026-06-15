@@ -3,7 +3,7 @@
 import {
     CARTRIDGE_MANIFEST,
     type CartridgeManifestEntry,
-} from '@/lib/gameengin/cartridges/manifest';
+} from '@/engins/gameengin/cartridges/manifest';
 import Link from 'next/link';
 
 /**

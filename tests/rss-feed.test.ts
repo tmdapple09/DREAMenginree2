@@ -27,7 +27,7 @@ import {
   normaliseRssItem,
   parseRssFeed,
   type RssFeedConfig,
-} from '@/lib/social/rss-feed';
+} from '@/engine/social/rss-feed';
 
 // ── A. URL builders ───────────────────────────────────────────────────────
 

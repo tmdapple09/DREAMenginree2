@@ -14,7 +14,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
+import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
 
 // ── Helpers / shared fixtures ─────────────────────────────────────────────────
 

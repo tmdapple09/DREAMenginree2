@@ -1,11 +1,11 @@
-import type { ReconcileResult } from '@/lib/connectors/reconcile';
-import { reconcileConnector } from '@/lib/connectors/reconcile';
-import { DISPATCH_SUPPORTED_PROVIDERS } from '@/lib/connectors/syncDispatch';
-import { isCronAuthorised } from '@/lib/connectors/webhookVerification';
-import { createServiceClient } from '@/lib/supabase/server';
+import type { ReconcileResult } from '@/engine/connectors/reconcile';
+import { reconcileConnector } from '@/engine/connectors/reconcile';
+import { DISPATCH_SUPPORTED_PROVIDERS } from '@/engine/connectors/syncDispatch';
+import { isCronAuthorised } from '@/engine/connectors/webhookVerification';
+import { createServiceClient } from '@/supabase/server/serverClient';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/connectors/cron/route.ts

@@ -13,10 +13,10 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { createBaseState } from '@/lib/engin-runtime/EnginBaseState';
-import { GAME_ENGIN_RULE_SET, GRAVITY_VALUES } from '@/lib/engins/game/gameEnginRuleSet';
-import type { GameEnginAction, GameScore } from '@/lib/engins/game/gameEnginRuleSet';
-import type { EnginBaseState } from '@/lib/engin-runtime/EnginBaseState';
+import { createBaseState } from '@/engine/engin-runtime/EnginBaseState';
+import { GAME_ENGIN_RULE_SET, GRAVITY_VALUES } from '@/engins/rulesets/game/gameEnginRuleSet';
+import type { GameEnginAction, GameScore } from '@/engins/rulesets/game/gameEnginRuleSet';
+import type { EnginBaseState } from '@/engine/engin-runtime/EnginBaseState';
 
 function makeState(): EnginBaseState {
   return createBaseState('games');

@@ -1,8 +1,8 @@
 'use client';
 
-import type { DreamDrop, DreamDropType } from '@/lib/runtime/coercionTable';
-import { coerceDataTransfer } from '@/lib/runtime/coercionTable';
-import { dropTargetRegistry } from '@/lib/runtime/dropTargetRegistry';
+import type { DreamDrop, DreamDropType } from '@/engine/runtime/coercionTable';
+import { coerceDataTransfer } from '@/engine/runtime/coercionTable';
+import { dropTargetRegistry } from '@/engine/runtime/dropTargetRegistry';
 import type { RuntimeId } from '@/types/module-manifest';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

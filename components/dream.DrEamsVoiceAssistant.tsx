@@ -1,6 +1,6 @@
 'use client';
 
-import { onIdariEvent } from '@/lib/agents/agentBus';
+import { onIdariEvent } from '@/engine/agents/agentBus';
 import { Bot, Maximize2, Mic, MicOff, Minimize2, Radio, Send, Sparkles, Volume2, VolumeX, X } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';

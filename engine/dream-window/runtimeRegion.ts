@@ -3,7 +3,7 @@ import {
     SURFACE_NAMES,
     type DreamWindowState,
     type RuntimeSeamName,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 // Framework directives stay physically first when required.
 

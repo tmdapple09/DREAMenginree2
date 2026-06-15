@@ -57,12 +57,12 @@ describe('createBabylonEngine', () => {
   });
 
   it('exports createBabylonEngine as a function', async () => {
-    const mod = await import('@/lib/babylon/createEngine');
+    const mod = await import('@/engine/rendering/babylon/createEngine');
     expect(typeof mod.createBabylonEngine).toBe('function');
   });
 
   it('returns a BabylonEngineResult with engine + isWebGPU flag', async () => {
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas);
     expect(result).toHaveProperty('engine');
     expect(result).toHaveProperty('isWebGPU');
@@ -71,7 +71,7 @@ describe('createBabylonEngine', () => {
 
   it('falls back to WebGL Engine when WebGPU is not supported', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(false);
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas, { antialias: true });
     expect(result.isWebGPU).toBe(false);
     expect(MockEngine).toHaveBeenCalledWith(canvas, true, expect.objectContaining({ antialias: true }));
@@ -79,7 +79,7 @@ describe('createBabylonEngine', () => {
 
   it('returns WebGPU engine when supported', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(true);
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas, { antialias: false });
     expect(result.isWebGPU).toBe(true);
     expect(MockWebGPUEngine.CreateAsync).toHaveBeenCalledWith(
@@ -90,7 +90,7 @@ describe('createBabylonEngine', () => {
 
   it('honors runtime compatibility negotiation that disables WebGPU', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(true);
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas, { preferWebGPU: false });
     expect(result.isWebGPU).toBe(false);
     expect(result.webgpuReason).toBe('WebGPU disabled by runtime compatibility negotiation.');
@@ -101,7 +101,7 @@ describe('createBabylonEngine', () => {
   it('falls back to WebGL if WebGPUEngine.CreateAsync throws', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(true);
     MockWebGPUEngine.CreateAsync = vi.fn().mockRejectedValue(new Error('GPU unavailable'));
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas);
     expect(result.isWebGPU).toBe(false);
     expect(MockEngine).toHaveBeenCalled();
@@ -111,7 +111,7 @@ describe('createBabylonEngine', () => {
 
   it('falls back to WebGL if IsSupportedAsync rejects', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.reject(new Error('no navigator.gpu'));
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas);
     expect(result.isWebGPU).toBe(false);
     // Restore
@@ -119,14 +119,14 @@ describe('createBabylonEngine', () => {
   });
 
   it('uses antialias: true as default', async () => {
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     await createBabylonEngine(canvas);
     expect(MockEngine).toHaveBeenCalledWith(canvas, true, expect.objectContaining({ antialias: true }));
   });
 
   it('passes custom options to WebGL Engine', async () => {
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(false);
-    const { createBabylonEngine } = await import('@/lib/babylon/createEngine');
+    const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     await createBabylonEngine(canvas, { antialias: false, preserveDrawingBuffer: true, stencil: false });
     expect(MockEngine).toHaveBeenCalledWith(
       canvas,

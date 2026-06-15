@@ -2,16 +2,16 @@ import {
     assessGenerationLawScope,
     formatGenerationLawLoadCheck,
     type GenerationLawAssessment,
-} from '@/lib/agents/idari';
-import { writeAuditLog } from '@/lib/ai/audit';
-import { boogieEvaluate } from '@/lib/ai/boogieman';
-import { groqChat, type GroqMessage } from '@/lib/ai/groq';
-import { checkRateLimit, getCurrentRPM } from '@/lib/ai/rateLimit';
-import { DrEamsRunBodySchema, type Intent } from '@/lib/ai/schemas';
-import { AI_MODELS, isOwnerEmail, validateWithIdari } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/engine/agents/idari';
+import { writeAuditLog } from '@/dr-eams/ai/audit';
+import { boogieEvaluate } from '@/dr-eams/ai/boogieman';
+import { groqChat, type GroqMessage } from '@/dr-eams/ai/groq';
+import { checkRateLimit, getCurrentRPM } from '@/dr-eams/ai/rateLimit';
+import { DrEamsRunBodySchema, type Intent } from '@/dr-eams/ai/schemas';
+import { AI_MODELS, isOwnerEmail, validateWithIdari } from '@/dr-eams/ai/triad';
+import { jsonApiError } from '@/engine/api/route';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';

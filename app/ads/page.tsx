@@ -1,6 +1,6 @@
 import DreamWord from '@/components/ui/dream.DreamWord';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { AdListing, AdOrder, AdSlot } from '@/types/ads';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, BarChart3, DollarSign, LayoutGrid, Plus, ShoppingCart, Sparkles } from 'lucide-react';

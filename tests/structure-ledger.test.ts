@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { createInitialDreamState, getStateForNode, move } from '@/lib/navigation/dream-state';
+import { createInitialDreamState, getStateForNode, move } from '@/engine/navigation/dream-state';
 import {
   ledgerStats,
   matchState,
   resolveTransition,
-} from '@/lib/navigation/StructureLedger';
+} from '@/engine/navigation/StructureLedger';
 
 const ALL_NODES = [
   '0',

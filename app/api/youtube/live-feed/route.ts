@@ -1,7 +1,7 @@
-import { getYouTubeApiKey, youtubeSearchByQuery } from '@/lib/connectors/providers/youtube';
+import { getYouTubeApiKey, youtubeSearchByQuery } from '@/engine/connectors/providers/youtube';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/youtube/live-feed/route.ts

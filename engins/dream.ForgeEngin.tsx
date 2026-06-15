@@ -3,7 +3,7 @@
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import BrandLogo from '@/components/dream.BrandLogo';
 import AIBuilderPanel from '@/components/forge/dream.panel.AIBuilderPanel';
-import { ArtifactSlot } from '@/lib/enginpipe';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
 import {
     clearWorkflowRun,
     deleteCustomWorkflow,
@@ -21,17 +21,17 @@ import {
     type ForgeSuggestion,
     type ForgeTransferEntry,
     type WorkflowRunState,
-} from '@/lib/forge/forgeIntelligence';
+} from '@/engins/forgeengin/forge/forgeIntelligence';
 import {
     computeMomentum,
     getLevelColor,
     getLevelEmoji,
     type MomentumSnapshot,
-} from '@/lib/forge/forgeMomentum';
+} from '@/engins/forgeengin/forge/forgeMomentum';
 import {
     computeNexus,
     type NexusSnapshot,
-} from '@/lib/forge/forgeNexus';
+} from '@/engins/forgeengin/forge/forgeNexus';
 import {
     CREATIVE_ENGINES,
     ENGIN_REGISTRY,
@@ -41,13 +41,13 @@ import {
     type EnginEntry,
     type ForgeActivityPulse,
     type ForgeWorkflow,
-} from '@/lib/forge/forgeRegistry';
+} from '@/engins/forgeengin/forge/forgeRegistry';
 import {
     computeRituals,
     type RitualSnapshot,
-} from '@/lib/forge/forgeRituals';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { bridge, type DualRuntimeChannel } from '@/lib/runtime/dualRuntimeBridge';
+} from '@/engins/forgeengin/forge/forgeRituals';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { bridge, type DualRuntimeChannel } from '@/engine/runtime/dualRuntimeBridge';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
     Activity,

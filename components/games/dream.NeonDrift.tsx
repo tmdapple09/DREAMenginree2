@@ -1,14 +1,14 @@
 'use client';
 
 import { DualSenseManager } from '@/components/gameengin/input/DualSenseManager';
-import { EliteGameEngine } from '@/lib/gameengin';
-import { AIDirector } from '@/lib/gameengin/ai-director';
-import { PostFXManager } from '@/lib/gameengin/post-fx';
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { publishGamePerformanceBaseline } from '@/lib/games/performance-baseline';
+import { EliteGameEngine } from '@/engins/gameengin/index';
+import { AIDirector } from '@/engins/gameengin/ai-director';
+import { PostFXManager } from '@/engins/gameengin/post-fx';
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
+import { publishGamePerformanceBaseline } from '@/engins/gameengin/games/performance-baseline';
 import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * NeonDrift — Elite WebGPU cyberpunk endless racer — 2026 Edition

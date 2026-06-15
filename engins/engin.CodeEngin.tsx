@@ -1,15 +1,15 @@
 'use client';
 
 import CrossEnginStatusPanel from '@/components/dreamengin/dream.panel.CrossEnginStatusPanel';
-import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
-import { useDaydreamState } from '@/lib/daydream/useDaydreamState';
-import { ArtifactSlot } from '@/lib/enginpipe';
-import { useCodeEnginRuntime } from '@/lib/engins/code/useCodeEnginRuntime';
-import { useEnginWorkflow } from '@/lib/engins/useEnginWorkflow';
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { useCodeEnginBridge } from '@/lib/runtime/useEnginBridge';
+import { useDaydreamPersistence } from '@/daydreams/shared/useDaydreamPersistence';
+import { useDaydreamState } from '@/daydreams/shared/useDaydreamState';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
+import { useCodeEnginRuntime } from '@/engins/rulesets/code/useCodeEnginRuntime';
+import { useEnginWorkflow } from '@/engins/rulesets/useEnginWorkflow';
+import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
+import { useCodeEnginBridge } from '@/engine/runtime/useEnginBridge';
 import {
   ArrowLeft,
   Bot,

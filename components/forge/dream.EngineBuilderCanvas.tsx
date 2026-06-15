@@ -4,7 +4,7 @@ import {
     COMPONENT_INVENTORY,
     type AtomicComponent,
     type ComponentCategory,
-} from '@/lib/componentInventory';
+} from '@/engins/forgeengin/componentInventory';
 import {
     atomicPieceFromComponent,
     createAssembly,
@@ -14,7 +14,7 @@ import {
     type AtomicPiece,
     type EngineAssembly,
     type Wire,
-} from '@/lib/forge/engineForge';
+} from '@/engins/forgeengin/forge/engineForge';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
     AlertTriangle,

@@ -1,11 +1,11 @@
-import type { RuntimeRegion } from '@/lib/identity/canonical-names';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import type { RuntimeRegion } from '@/engine/identity/canonical-names';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import {
     ENGIN_KEYS,
     findWorkflows,
     type EnginKey,
-} from '@/lib/runtime/enginWorkflowRegistry';
+} from '@/engine/runtime/enginWorkflowRegistry';
 
 // Framework directives stay physically first when required.
 

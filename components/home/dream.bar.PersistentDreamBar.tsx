@@ -5,11 +5,11 @@ import { useDualRuntime } from '@/components/runtime/dream.DualRuntimeContainer'
 import RuntimeView from '@/components/runtime/dream.RuntimeView';
 import DreamDMBar from '@/dreamdmbar/dreamsurface.dreamdmbar';
 import { useDreamLayout } from '@/hooks/useDreamLayout';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
-import { useOS } from '@/lib/dreamenginOS/OSContext';
-import { parseDreamDragData, surfaceForRuntime, transferDream, type DreamRuntime } from '@/lib/dreams/drag';
-import { isPublicSurfacePath } from '@/lib/routing/surfaces';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
+import { useOS } from '@/engine/os/OSContext';
+import { parseDreamDragData, surfaceForRuntime, transferDream, type DreamRuntime } from '@/engine/dreams/drag';
+import { isPublicSurfacePath } from '@/engine/routing/surfaces';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 

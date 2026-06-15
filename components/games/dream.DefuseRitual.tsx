@@ -1,6 +1,6 @@
 'use client';
 
-import { useGameAutoStart, useSubmitScore } from '@/lib/games/hooks';
+import { useGameAutoStart, useSubmitScore } from '@/engins/gameengin/games/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**

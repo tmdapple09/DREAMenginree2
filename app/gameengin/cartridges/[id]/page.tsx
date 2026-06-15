@@ -1,5 +1,5 @@
 import CartridgeLauncher from '@/components/gameengin/dream.cartridge.CartridgeLauncher';
-import { getCartridgeManifest } from '@/lib/gameengin/cartridges/manifest';
+import { getCartridgeManifest } from '@/engins/gameengin/cartridges/manifest';
 import { notFound } from 'next/navigation';
 import { connection } from 'next/server';
 

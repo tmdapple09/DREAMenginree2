@@ -1,7 +1,7 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
-import { buildAuthCallbackUrl } from "@/lib/supabase/config";
+import { createClient } from "@/supabase/client/client";
+import { buildAuthCallbackUrl } from "@/supabase/config";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 

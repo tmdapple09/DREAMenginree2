@@ -1,0 +1,328 @@
+import { groqChat, type GroqMessage } from '@/dr-eams/ai/groq';
+import { IntentSchema, type Intent, type IntentType } from '@/dr-eams/ai/schemas';
+import { v4 as uuidv4 } from 'uuid';
+
+// lib/ai/triad.ts
+// Dr. Eams (user AI) + Idari (builder AI) + Boogie (policy AI)
+//
+// This module intentionally keeps the orchestration server-side.
+// The UI should only ever talk to Dr. Eams endpoints.
+
+export const AI_MODELS = {
+  // User-facing agent — override via GROQ_MODEL_EAMS_FAST / GROQ_MODEL_EAMS_HEAVY
+  EAMS_PRIMARY: process.env.GROQ_MODEL_EAMS_FAST || 'meta-llama/llama-4-scout-17b-16e-instruct',
+  EAMS_FALLBACK: process.env.GROQ_MODEL_EAMS_HEAVY || 'llama-3.3-70b-versatile',
+
+  // Builder / maintainer — override via GROQ_MODEL_IDARI_FAST / GROQ_MODEL_IDARI_HEAVY
+  IDARI_PRIMARY: process.env.GROQ_MODEL_IDARI_FAST || 'moonshotai/kimi-k2-instruct-0905',
+  IDARI_FALLBACK: process.env.GROQ_MODEL_IDARI_HEAVY || 'openai/gpt-oss-120b',
+
+  // Policy / safety — override via GROQ_MODEL_BOOGIE
+  BOOGIE: process.env.GROQ_MODEL_BOOGIE || 'openai/gpt-oss-safeguard-20b',
+};
+
+export function getOwnerEmail(): string | null {
+  return process.env.OWNER_EMAIL ?? null;
+}
+
+export function isOwnerEmail(email?: string | null): boolean {
+  if (!email) return false;
+  const ownerEmail = getOwnerEmail();
+  if (!ownerEmail) return false;
+  return email.toLowerCase() === ownerEmail.toLowerCase();
+}
+
+type EamsPlan = { response_text: string; intents: Intent[]; interpreted_intent?: string };
+
+function safeJsonParse(text: string): Record<string, unknown> | null {
+  try {
+    return JSON.parse(text);
+  } catch {
+    // Try to recover JSON from a fenced block
+    const match = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/```\s*([\s\S]*?)```/);
+    if (match?.[1]) {
+      try {
+        return JSON.parse(match[1]);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+}
+
+// Phase 8 §A — Canonical routes for Dr. Eams navigation resolution (Point 9).
+// These are the only valid NAV_DELTA route values Dr. Eams may propose.
+// Any route not in this list is rejected at the intent-validation layer.
+
+export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
+  // Core surfaces
+  '/homedream',
+  '/home',
+  '/edit-profiledream',
+  '/edit-profile',
+  '/view-profile',
+  // Daydream surfaces
+  '/daydream/music',
+  '/daydream/games',
+  '/daydream/lab',
+  '/daydream/code',
+  '/daydream/brand',
+  '/daydream/create',
+  '/daydream/analytics',
+  // Platform modules
+  '/messages',
+  '/shop',
+  '/marketplace',
+  '/ads',
+  '/connectors',
+  '/settings',
+  '/settings/feed',
+  '/settings/appearance',
+  '/settings/privacy',
+  '/settings/widgets',
+  '/settings/data',
+  '/settings/help',
+  '/feed-settings',
+  '/discover',
+  '/onboarding',
+]);
+
+// Dr. Eams: create a concise reply + up to 3 JSON intents.
+
+// Subset of CODE_VOCABULARY terms inlined so triad.ts remains self-contained.
+// Full vocabulary lives in lib/code/drEamsCodeAssist.ts.
+const CODE_VOCAB_SNAPSHOT = [
+  'variable, constant, function, class, loop, recursion, closure, async/await, callback, promise',
+  'inheritance, polymorphism, encapsulation, abstraction, singleton, decorator',
+  'array, dictionary, linked list, stack, queue, hash table, tree, graph',
+  'binary search, BFS, DFS, dynamic programming, sorting',
+  'map, filter, reduce, immutable, pure function',
+  'REST, GraphQL, WebSocket, JWT, CORS',
+  'Docker, CI/CD, Kubernetes',
+  'encryption, OAuth2, SQL injection, XSS',
+  'neural network, gradient descent, overfitting, transformer, embedding, RAG',
+  'shader, mesh, quaternion, physics, particle system',
+].join('; ');
+
+export async function planWithEams(input: {
+  message: string;
+  actorEmail?: string | null;
+  actorRole: 'user' | 'admin' | 'owner';
+  uiRoute?: string;
+  /** Optional: real content context fetched from Supabase (Phase 8 §A Point 10) */
+  contentContext?: string;
+  /**
+   * When provided, Dr. Eams operates in code-assist mode: vocabulary lookup,
+   * NL→code generation, explain/refactor/debug flows.
+   * Privacy: only selected_code (≤ 2 000 chars) is ever included.
+   */
+  codeContext?: {
+    language: 'python' | 'javascript' | 'typescript' | 'bash';
+    selected_code: string;
+    cursor_line?: number;
+  };
+}): Promise<EamsPlan> {
+  const canonicalRouteList = Array.from(CANONICAL_NAV_ROUTES).join(', ');
+
+  // Build the code-assist section of the system prompt when codeContext present.
+  const codeAssistSection = input.codeContext
+    ? `\nCODE ASSIST MODE — ACTIVE:\n` +
+      `Language: ${input.codeContext.language}\n` +
+      `Key coding vocabulary you must recognise: ${CODE_VOCAB_SNAPSHOT}\n` +
+      `When the user mentions any of these terms, give a clear definition and a ${input.codeContext.language} code example.\n` +
+      `When the user says "write a function that…", "create a class…", "add a loop", etc., generate working ${input.codeContext.language} code wrapped in a fenced block.\n` +
+      `When the user says "explain this", analyse the snippet.\n` +
+      `Privacy: do NOT reference code beyond the snippet provided below.\n` +
+      (input.codeContext.selected_code.trim()
+        ? `\nACTIVE CODE SNIPPET (${input.codeContext.language}):\n\`\`\`${input.codeContext.language}\n${input.codeContext.selected_code.slice(0, 2000)}\n\`\`\`\n`
+        : `No code snippet provided.\n`) +
+      `\nIn code-assist mode:\n` +
+      `- Return { response_text: "<explanation or code>", intents: [] }\n` +
+      `- response_text may contain fenced code blocks\n` +
+      `- Do NOT propose navigation intents\n`
+    : '';
+
+  const system: GroqMessage = {
+    role: 'system',
+    content:
+      `You are Dr. Eams, the user-facing AI for DREAMengin.\n` +
+      `Your job: help the user navigate and use the app.\n\n` +
+      `PLATFORM CONTEXT:\n` +
+      `- DREAMengin v2 ships 20 built-in games including MADMAXI, DREAM FORCE, DREAM GEMS, BLOCK STACK, NITE FLYER, ENGIN CHESS, DREAM REALM QUEST, DREAMquest, DREAMwars, Neon Drift, Echo Arena, and Lucid Avenue.\n` +
+      `- 3 AI agents in the triad: Dr. Eams (you, user-facing), IDARi (builder/admin), TheBoogieMan (policy).\n` +
+      `- GameEngin uses the Babylon.js v8 rendering engine for immersive 3D experiences.\n` +
+      `- 25+ social/service integrations supported.\n` +
+      `- 331 automated tests pass on every deploy.\n\n` +
+      `CHILD SAFETY — MANDATORY RULES (you must enforce these at all times):\n` +
+      `- Minors are users aged 13–17. Adults are 18+.\n` +
+      `- Any image sent from a minor to an adult is ALWAYS blocked (rule C32_MINOR_IMAGE). No exceptions.\n` +
+      `- Adults soliciting images from minors are permanently banned (rule C33_SOLICITING_IMAGES).\n` +
+      `- Monitor all minor-adult conversations for grooming, harassment, or inappropriate content.\n` +
+      `- Recognize safe contexts: teacher-student, coach-athlete, family member, youth group, tutor, mentor.\n` +
+      `- If you see any grooming signals, secrecy coercion, platform migration requests, or sexual content involving minors, flag the conversation immediately for TheBoogieMan.Ai enforcement.\n` +
+      `- Child safety laws: PROTECT Act (mandatory NCMEC reporting for CSAM), COPPA (min age 13), CIPA (block harmful content for minors), CDA §230 / STOP CSAM Act (act on known CSAM immediately).\n` +
+      `- Images appearing to depict minors in sexual contexts are CSAM and must be reported regardless of stated adult age.\n\n` +
+      `CANONICAL NAVIGATION ROUTES (Phase 8 §A Point 9 — only these are valid):\n` +
+      `${canonicalRouteList}\n\n` +
+      `RULES (strict):\n` +
+      `1) Respond with ONLY JSON. No markdown.\n` +
+      `2) Output shape: { response_text: string, interpreted_intent?: string, intents: Intent[] }.\n` +
+      `3) Intents must match the app schema exactly. Max 3 intents.\n` +
+      `4) Only propose SAFE UI intents: NAV_DELTA, HOME_MENU_OPEN, SEARCH, POST_CREATE.\n` +
+      `5) For NAV_DELTA intents, the payload.route MUST be one of the canonical routes listed above.\n` +
+      `6) If you are unsure, return intents: [] and give a helpful response_text.\n` +
+      `7) If real content context is provided below, use it to answer content questions accurately.\n\n` +
+      `The user's role is ${input.actorRole}. Current route: ${input.uiRoute || 'unknown'}.\n` +
+      (input.contentContext ? `\nREAL CONTENT CONTEXT (from database):\n${input.contentContext}\n` : '') +
+      codeAssistSection +
+      `Be concise, confident, and action-oriented.`,
+  };
+
+  const user: GroqMessage = {
+    role: 'user',
+    content: input.message,
+  };
+
+  const tryModels = [AI_MODELS.EAMS_PRIMARY, AI_MODELS.EAMS_FALLBACK];
+
+  let lastErr: unknown = null;
+  for (const model of tryModels) {
+    try {
+      const raw = await groqChat({ model, messages: [system, user], temperature: 0.2, max_tokens: 700 });
+      const parsed = safeJsonParse(raw);
+      if (!parsed || typeof parsed !== 'object') throw new Error('Eams output was not JSON');
+
+      const response_text = String(parsed.response_text || '').trim();
+      const interpreted_intent = parsed.interpreted_intent ? String(parsed.interpreted_intent) : undefined;
+      const intentsRaw = Array.isArray(parsed.intents) ? parsed.intents : [];
+
+      const intents: Intent[] = intentsRaw
+        .slice(0, 3)
+        .map((x) => {
+          const base = {
+            intent_id: typeof x?.intent_id === 'string' ? x.intent_id : uuidv4(),
+            type: x?.type as IntentType,
+            confidence: typeof x?.confidence === 'number' ? x.confidence : 0.6,
+            requires_confirmation: Boolean(x?.requires_confirmation),
+            rationale: typeof x?.rationale === 'string' ? x.rationale : 'Requested by user',
+            idempotency_key: typeof x?.idempotency_key === 'string' ? x.idempotency_key : `eams-${Date.now()}`,
+            payload: (x?.payload && typeof x.payload === 'object') ? x.payload as any : {},
+          };
+          return base;
+        })
+        // Phase 8 §A Point 9: validate NAV_DELTA payloads contain real canonical routes
+        .filter((intent) => {
+          if (!IntentSchema.safeParse(intent).success) return false;
+          if (intent.type === 'NAV_DELTA') {
+            const route = (intent.payload as any)?.route;
+            if (typeof route === 'string' && route.length > 0) {
+              // Accept canonical routes exactly; also accept /profile/[handle] patterns
+              return CANONICAL_NAV_ROUTES.has(route) || /^\/profile\/[^/]+$/.test(route);
+            }
+            return false;
+          }
+          return true;
+        });
+
+      return {
+        response_text: response_text || `Got it.`,
+        interpreted_intent,
+        intents,
+      };
+    } catch (e: unknown) {
+      lastErr = e;
+    }
+  }
+
+  // Hard fallback
+  return {
+    response_text: `I'm having trouble reaching my brain right now. Try again in a moment.`,
+    intents: [],
+    interpreted_intent: undefined,
+  };
+}
+
+// Idari: sanity-check / shrink / normalize. (LLM optional; rule-based default)
+
+// User-facing intents — safe for any authenticated actor.
+const USER_ALLOWED_INTENT_TYPES: IntentType[] = [
+  'NAV_DELTA',
+  'HOME_MENU_OPEN',
+  'SEARCH',
+  'POST_CREATE',
+];
+
+// Admin-context intents — Idari builder/diagnostics only.
+// Extends user-allowed list with admin-tier diagnostic types.
+const ADMIN_ALLOWED_INTENT_TYPES: IntentType[] = [
+  ...USER_ALLOWED_INTENT_TYPES,
+  'DIAG_SCHEMA_SNAPSHOT',
+  'DIAG_RLS_SNAPSHOT',
+];
+
+/**
+ * Validate and filter intents produced by an AI planner.
+ *
+ * @param intents  Raw intents from the planner.
+ * @param context  'user' (default) — restricts to safe UI intents only.
+ *                 'admin' — also permits Idari diagnostic intent types.
+ */
+export function validateWithIdari(
+  intents: Intent[],
+  context: 'user' | 'admin' = 'user'
+): { intents: Intent[]; notes: string[] } {
+  const notes: string[] = [];
+  const allowed = context === 'admin' ? ADMIN_ALLOWED_INTENT_TYPES : USER_ALLOWED_INTENT_TYPES;
+  const filtered = intents
+    .filter((i) => allowed.includes((i as { type: string }).type as never))
+    .slice(0, 3);
+
+  if (filtered.length !== intents.length) {
+    notes.push('Removed unsupported intents.');
+  }
+  return { intents: filtered, notes };
+}
+
+// Boogie: policy layer. Use existing rule engine elsewhere; this is LLM helper.
+
+export async function boogiePolicyCheck(input: {
+  actorRole: 'user' | 'admin' | 'owner';
+  actorEmail?: string | null;
+  message: string;
+}): Promise<{ hard_block: boolean; reason?: string }> {
+  const sys: GroqMessage = {
+    role: 'system',
+    content:
+      `You are TheBoogieMan.Ai, the policy AI for DREAMengin v2.\n` +
+      `Platform context: DREAMengin runs 20 built-in games and 3 AI agents (Dr. Eams, IDARi, TheBoogieMan).\n` +
+      `You must enforce: Helpful, Honest, Harmless. Respect privacy. Obey laws.\n` +
+      `Return ONLY JSON: { hard_block: boolean, reason?: string }.\n` +
+      `Hard-block requests that involve: illegal activity, doxxing, credential theft, malware, bypassing auth, privacy violations.\n` +
+      `Gaming content, creative expression, and educational queries are always allowed.\n` +
+      `If safe, hard_block=false.\n\n` +
+      `CHILD SAFETY — ZERO-TOLERANCE (mandatory enforcement):\n` +
+      `- Minors are users aged 13–17. Adults are 18+.\n` +
+      `- Any image from a minor to an adult is ALWAYS blocked (rule C32_MINOR_IMAGE). No exceptions.\n` +
+      `- Adults soliciting images from minors: recommend permanent ban (rule C33_SOLICITING_IMAGES), hard_block=true.\n` +
+      `- CSAM (child sexual abuse material) of any kind: hard_block=true, zero-tolerance, mandatory NCMEC reporting.\n` +
+      `- Grooming patterns (secrecy coercion, platform migration, bribery, meeting solicitation): hard_block=true for high-confidence signals.\n` +
+      `- Evaluate context of minor-adult conversations: teacher-student, coach, family, youth group, tutor = safe with monitoring.\n` +
+      `- Child safety laws: PROTECT Act (18 U.S.C. §2256), COPPA, CIPA, CDA §230 / STOP CSAM Act 2023, Age-Appropriate Design Codes.\n` +
+      `- Any image that looks like pornography requires the subject to prove they are an adult. Images of third parties require age verification AND consent. Never show any image to humans that looks like child pornography.\n`,
+  };
+  const user: GroqMessage = { role: 'user', content: input.message };
+
+  try {
+    const raw = await groqChat({ model: AI_MODELS.BOOGIE, messages: [sys, user], temperature: 0.0, max_tokens: 220 });
+    const parsed = safeJsonParse(raw);
+    if (!parsed || typeof parsed !== 'object') return { hard_block: false };
+    return {
+      hard_block: Boolean(parsed.hard_block),
+      reason: parsed.reason ? String(parsed.reason) : undefined,
+    };
+  } catch {
+    // If Boogie model isn't available, fail open here; the rule engine will still run.
+    return { hard_block: false };
+  }
+}

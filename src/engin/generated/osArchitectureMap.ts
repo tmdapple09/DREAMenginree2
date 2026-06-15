@@ -4532,9 +4532,9 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/gameengin/control-mappings",
+      "id": "engins/gameengin/controls/control-mappings",
       "slot": "engin",
-      "path": "engins/gameengin/control-mappings.ts",
+      "path": "engins/gameengin/controls/control-mappings.ts",
       "engine": "Universal"
     },
     {

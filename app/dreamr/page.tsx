@@ -1,8 +1,8 @@
 import DreamRSection from "@/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr";
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
-import { isDevBypassActive } from "@/lib/dev-bypass";
-import { safeGetUser } from "@/lib/supabase/safeGetUser";
-import { createServerClient } from "@/lib/supabase/server";
+import { isDevBypassActive } from "@/engine/dev-bypass";
+import { safeGetUser } from "@/supabase/client/safeGetUser";
+import { createServerClient } from "@/supabase/server/serverClient";
 import { Radio } from "lucide-react";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";

@@ -2,7 +2,7 @@ import {
     DREAM_WINDOW_STATES,
     type ConnectionVerb,
     type DreamWindowState,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 /**
  * DreamWindowLifecycle — Dream Window state machine

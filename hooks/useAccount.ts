@@ -1,6 +1,6 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/supabase/client/client';
 import { useEffect, useState } from 'react';
 
 export function useAccount(initialAccountId?: string | null ){

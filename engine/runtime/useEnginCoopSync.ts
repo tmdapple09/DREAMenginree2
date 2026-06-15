@@ -1,7 +1,7 @@
 'use client';
 
-import type { EnginName } from '@/lib/runtime/instanceManager';
-import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
+import type { EnginName } from '@/engine/runtime/instanceManager';
+import { useSharedEnginChannel } from '@/engine/runtime/useSharedEnginChannel';
 import type { RuntimeId } from '@/types/module-manifest';
 import { useEffect } from 'react';
 

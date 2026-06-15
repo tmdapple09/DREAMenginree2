@@ -1,7 +1,7 @@
 "use client";
 
 import { useSharedDream } from "@/hooks/useSharedDream";
-import type { DreamBroadcastPayload } from "@/lib/sharedDream";
+import type { DreamBroadcastPayload } from "@/engine/sharedDream";
 import { Mic, MicOff, X } from "lucide-react";
 import React, {
   useCallback,
@@ -10,7 +10,7 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { toErrorMessage } from "@/lib/utils";
+import { toErrorMessage } from "@/utils/index";
 
 /**
  * SharedDreamShell — Real-time collaborative Engin wrapper

@@ -4,7 +4,7 @@ import type { GameCartridge } from '../cartridge';
 import type { CartridgeManifestEntry } from './manifest';
 import { CARTRIDGE_MANIFEST, getCartridgeManifest } from './manifest';
 import { defineReactCartridgeLoader } from './reactCartridge';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * lib/gameengin/cartridges/loaders.ts

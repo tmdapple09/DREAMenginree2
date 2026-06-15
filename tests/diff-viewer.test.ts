@@ -13,7 +13,7 @@ import {
   nextHunkIndex,
   prevHunkIndex,
   DEMO_DIFF,
-} from '@/lib/diff/diffUtils';
+} from '@/engins/codeengin/diff/diffUtils';
 
 // ─── Sample diffs ─────────────────────────────────────────────────────────────
 

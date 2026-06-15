@@ -8,7 +8,7 @@ import {
   GAME_CONTROL_PROFILES,
   GAME_ENGINE_STANDARDS,
   GAME_QUALITY_PILLARS,
-} from '@/lib/games/quality-plan';
+} from '@/engins/gameengin/games/quality-plan';
 
 describe('GAME_QUALITY_PILLARS', () => {
   it('keeps game quality and controls as explicit priorities', () => {

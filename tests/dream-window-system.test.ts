@@ -29,7 +29,7 @@ import {
   unbindDreamWindow,
   createDreamWindowInstance,
   type DreamWindowInstance,
-} from '@/lib/dream-window/DreamWindowLifecycle';
+} from '@/engine/dream-window/DreamWindowLifecycle';
 
 import {
   dispatch,
@@ -41,7 +41,7 @@ import {
   createOpenIntoAction,
   createConnectAcrossAction,
   CONNECTION_VERBS,
-} from '@/lib/dream-window/connectionVerbs';
+} from '@/engine/dream-window/connectionVerbs';
 
 import {
   DEFAULT_RUNTIME_REGION_STATE,
@@ -52,14 +52,14 @@ import {
   getSurfaceSpaceSurface,
   isDreamSpaceDominant,
   RUNTIME_REGIONS,
-} from '@/lib/dream-window/runtimeRegion';
+} from '@/engine/dream-window/runtimeRegion';
 
 import {
   ALL_CONNECTION_PATHS,
   getPathsForDomain,
   getPathsForEngin,
   hasConnectionPath,
-} from '@/lib/dream-window/enginConnectionNetwork';
+} from '@/engine/dream-window/enginConnectionNetwork';
 
 import {
   DEFAULT_DUAL_RUNTIME,
@@ -71,14 +71,14 @@ import {
   worldsEqual,
   SURFACE_NAMES,
   type RuntimeWorld,
-} from '@/lib/runtime/dualRuntime';
+} from '@/engine/runtime/dualRuntime';
 
 import {
   DAYDREAM_DOMAINS,
   ENGIN_SURFACES,
   NETWORK_COUNTS,
   SURFACE_NAMES as CANONICAL_SURFACE_NAMES,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

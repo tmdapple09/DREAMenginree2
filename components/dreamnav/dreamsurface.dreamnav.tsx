@@ -1,7 +1,7 @@
 'use client';
 
-import type { Action, Node } from '@/lib/dreamnav/delta';
-import { DEFAULT_NAV_STATE, reduceNav } from '@/lib/dreamnav/delta';
+import type { Action, Node } from '@/engine/dreamnav/delta';
+import { DEFAULT_NAV_STATE, reduceNav } from '@/engine/dreamnav/delta';
 import React, { createContext, useContext, useReducer } from 'react';
 
 interface DreamNavCtx {

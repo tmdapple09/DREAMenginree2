@@ -1,6 +1,6 @@
 'use client';
 
-import { canRenderProjection } from '@/lib/dreams/profileProjection';
+import { canRenderProjection } from '@/engine/dreams/profileProjection';
 import type { ReactNode } from 'react';
 
 export type DreamOutputMode = 'home' | 'profile';

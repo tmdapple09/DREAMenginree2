@@ -5,7 +5,7 @@
  * Import individual modules for tree-shaking, or import everything here.
  *
  * @example
- * import { OctreeBVH, ResourcePool } from '@/lib/gameengin/systems';
+ * import { OctreeBVH, ResourcePool } from '@/engins/gameengin/systems';
  */
 
 export * from './ai';

@@ -5,7 +5,7 @@ import {
   HOME_TOP_THRESHOLD,
   resolveHomeTarget,
   runHomeAction,
-} from '@/lib/home-buttons/contextual-home';
+} from '@/coresurfaces/home/buttons/contextual-home';
 
 describe('resolveHomeTarget', () => {
   it('returns "surface" when bar is at the bottom (high splitRatio)', () => {

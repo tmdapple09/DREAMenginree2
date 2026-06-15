@@ -1,6 +1,6 @@
 'use client';
 
-import { isCompactRuntimeViewport } from '@/lib/ui/runtimeViewport';
+import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
 import React, { useCallback, useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.

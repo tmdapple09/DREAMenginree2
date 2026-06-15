@@ -1,4 +1,4 @@
-import { bridge, type VMRegion, type VMWorkload } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge, type VMRegion, type VMWorkload } from '@/engine/runtime/dualRuntimeBridge';
 
 /**
  * lib/vm/dualVMCoordinator.ts

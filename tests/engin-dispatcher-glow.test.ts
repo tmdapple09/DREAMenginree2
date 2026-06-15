@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EnginDispatcher } from '@/lib/runtime/EnginDispatcher';
+import { EnginDispatcher } from '@/engine/runtime/EnginDispatcher';
 
 describe('EnginDispatcher glow field shaping owner path', () => {
   it('shapes glow intensity buffers through the existing dispatcher owner with JS fallback', () => {

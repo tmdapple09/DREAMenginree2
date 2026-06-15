@@ -2,9 +2,9 @@ import {
     patchBaseState,
     type EnginBaseState,
     type JsonObject,
-} from '@/lib/engin-runtime/EnginBaseState';
-import type { EnginCapability } from '@/lib/engin-runtime/EnginCapabilities';
-import { getEnginCapabilityProfile } from '@/lib/engin-runtime/EnginCapabilityTargets';
+} from '@/engine/engin-runtime/EnginBaseState';
+import type { EnginCapability } from '@/engine/engin-runtime/EnginCapabilities';
+import { getEnginCapabilityProfile } from '@/engine/engin-runtime/EnginCapabilityTargets';
 import type {
     ConstraintResult,
     EnginAction,
@@ -12,7 +12,7 @@ import type {
     EnginRuleSetContract,
     EnginRuleSetManifest,
     EnginRuleSetParams,
-} from '@/lib/engin-runtime/EnginRuleSetContract';
+} from '@/engine/engin-runtime/EnginRuleSetContract';
 
 /**
  * lib/engins/game/gameEnginRuleSet.ts

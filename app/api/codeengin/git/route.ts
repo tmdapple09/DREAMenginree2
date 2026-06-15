@@ -1,6 +1,6 @@
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { getGitDiff, getGitLog, getGitStatus } from '@/lib/codeengin/git';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { getGitDiff, getGitLog, getGitStatus } from '@/engins/codeengin/git';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {

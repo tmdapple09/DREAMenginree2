@@ -3,7 +3,7 @@ import {
   formatPublishError,
   publishToDreamR,
   resolvePublishIntent,
-} from '@/lib/content/publishIntent';
+} from '@/engins/contentengin/content/publishIntent';
 
 describe('resolvePublishIntent', () => {
   it('prefers the explicit draft text', () => {

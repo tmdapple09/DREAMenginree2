@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 
 describe('Dual runtime bridge peer activity observers', () => {
   beforeEach(() => {

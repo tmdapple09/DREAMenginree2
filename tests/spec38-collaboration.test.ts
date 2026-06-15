@@ -19,7 +19,7 @@ import {
   parseInviteLink,
   WebRTCCollabSession,
   type CollabPayload,
-} from '@/lib/collaboration/index';
+} from '@/engine/collaboration/index';
 
 // ─── §38.2 Invite link ───────────────────────────────────────────────────────
 

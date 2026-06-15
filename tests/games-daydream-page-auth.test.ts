@@ -44,9 +44,9 @@ const authenticatedPageHeaderMock = vi.hoisted(() => vi.fn(() => null));
 vi.mock('next/navigation', () => ({ redirect: redirectMock }));
 vi.mock('next/server', () => ({ connection: connectionMock }));
 vi.mock('next/dynamic', () => ({ default: vi.fn(() => vi.fn(() => null)) }));
-vi.mock('@/lib/supabase/server', () => ({ createServerClient: createServerClientMock }));
-vi.mock('@/lib/supabase/safeGetUser', () => ({ safeGetUser: safeGetUserMock }));
-vi.mock('@/lib/dev-bypass', () => ({ isDevBypassActive: isDevBypassActiveMock }));
+vi.mock('@/supabase/server/serverClient', () => ({ createServerClient: createServerClientMock }));
+vi.mock('@/supabase/client/safeGetUser', () => ({ safeGetUser: safeGetUserMock }));
+vi.mock('@/engine/dev-bypass', () => ({ isDevBypassActive: isDevBypassActiveMock }));
 vi.mock('@/components/daydream/dream.shell.DaydreamShell', () => ({
   default: daydreamShellMock,
 }));
@@ -60,10 +60,10 @@ vi.mock('@/components/daydream/dream.OpenDaydreamSideBButton', () => ({
 vi.mock('@/components/ui/dream.AuthenticatedPageHeader', () => ({
   default: authenticatedPageHeaderMock,
 }));
-vi.mock('@/lib/games/quality-plan', () => ({
+vi.mock('@/engins/gameengin/games/quality-plan', () => ({
   GAME_QUALITY_PILLARS: [],
 }));
-vi.mock('@/lib/games/navigation', () => ({
+vi.mock('@/engins/gameengin/games/navigation', () => ({
   buildGameLaunchHref: vi.fn(
     (id: string) => `/daydream/games?game=${id}&openEngin=true`,
   ),

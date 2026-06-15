@@ -1,8 +1,8 @@
 import {
     RUNTIME_REGIONS,
     SURFACE_NAMES,
-} from '@/lib/identity/canonical-names';
-import type { SystemPanelId } from '@/lib/panels/panelTypes';
+} from '@/engine/identity/canonical-names';
+import type { SystemPanelId } from '@/components/panels/panelTypes';
 
 // Framework directives stay physically first when required.
 

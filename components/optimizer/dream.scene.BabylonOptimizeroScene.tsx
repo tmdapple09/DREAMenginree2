@@ -1,6 +1,6 @@
 "use client";
 
-import { createBabylonEngine } from '@/lib/babylon/createEngine';
+import { createBabylonEngine } from '@/engine/rendering/babylon/createEngine';
 import {
     DreamEngineGodTierSystem,
     applyGodTierToBabylon,
@@ -9,13 +9,13 @@ import {
     defaultRuntimeMetrics,
     defaultUXSignals,
     type BabylonSceneLike,
-} from '@/lib/god-tier/godTierEngine';
+} from '@/engine/rendering/god-tier/godTierEngine';
 import {
     BabylonUIGenerator,
     BabylonUIOptimizero,
     type BabylonUICandidate,
-} from '@/lib/optimizer/babylon-optimizero';
-import { CHAOS_WEIGHTS, DEFAULT_WEIGHTS, STABLE_WEIGHTS, type OptimizeroResult, type OptimizeroWeights } from '@/lib/optimizer/creative-optimizero';
+} from '@/optimizer/babylon-optimizero';
+import { CHAOS_WEIGHTS, DEFAULT_WEIGHTS, STABLE_WEIGHTS, type OptimizeroResult, type OptimizeroWeights } from '@/optimizer/creative-optimizero';
 import { useEffect, useRef, useState } from 'react';
 
 /**

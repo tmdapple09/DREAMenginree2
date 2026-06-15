@@ -1,6 +1,6 @@
 'use client';
 
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
+import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
 import {
     ChevronLeft, ChevronRight,
     Maximize2, Minimize2, X, Youtube,

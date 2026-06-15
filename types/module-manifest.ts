@@ -1,4 +1,4 @@
-import { isJsonSerializable } from '@/lib/engin-runtime/EnginBaseState';
+import { isJsonSerializable } from '@/engine/engin-runtime/EnginBaseState';
 
 /**
  * types/module-manifest.ts

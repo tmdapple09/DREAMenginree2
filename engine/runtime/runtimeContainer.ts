@@ -5,7 +5,7 @@ import {
   type CoherenceCapacity,
   type RuntimeCoherenceReport,
   type RuntimeLoad,
-} from '@/lib/engin-runtime/EnginBaseState';
+} from '@/engine/engin-runtime/EnginBaseState';
 
 // Framework directives stay physically first when required.
 

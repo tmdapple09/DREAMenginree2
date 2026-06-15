@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { calibrateDevice, type CalibrationSample } from '@/lib/dreamr/swipeCalibration';
+import { calibrateDevice, type CalibrationSample } from '@/dreamr/runtime/swipeCalibration';
 import LandingProductStatement from '@/components/landing/dream.LandingProductStatement';
 
 interface CalibrationState {

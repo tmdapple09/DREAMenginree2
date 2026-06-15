@@ -1,6 +1,6 @@
 'use client';
 
-import { bridgeBuses, createEventBus } from '@/lib/event-bus';
+import { bridgeBuses, createEventBus } from '@/engine/events/event-bus/index';
 import {
     addConnection,
     addPiece,
@@ -11,7 +11,7 @@ import {
     validateAssembly,
     type EngineAssembly,
     type PlacedPiece,
-} from '@/lib/forge-ngn/assembly';
+} from '@/engins/forgeengin/forge-ngn/assembly';
 import {
     PIECE_CATEGORIES,
     PIECE_REGISTRY,
@@ -20,7 +20,7 @@ import {
     type PieceCategory,
     type PieceManifest,
     type Port,
-} from '@/lib/forge-ngn/piece-registry';
+} from '@/engins/forgeengin/forge-ngn/piece-registry';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
     AlertCircle,
@@ -47,7 +47,7 @@ import {
     type DragEvent,
     type MouseEvent as ReactMouseEvent,
 } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * NGNEngin — Visual Engine Builder (Engin Forge)

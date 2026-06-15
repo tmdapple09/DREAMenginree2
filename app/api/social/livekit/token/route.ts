@@ -1,8 +1,8 @@
-import { generateServerToken, LiveKitError } from '@/lib/social/livekit';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { generateServerToken, LiveKitError } from '@/engine/social/livekit';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * POST /api/social/livekit/token

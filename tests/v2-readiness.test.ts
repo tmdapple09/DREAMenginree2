@@ -12,7 +12,7 @@ import {
   PRODUCT_VERSION,
   CORE_SURFACE_ROUTES,
   LEGACY_ROUTES,
-} from '@/lib/identity/canonical-names';
+} from '@/engine/identity/canonical-names';
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 

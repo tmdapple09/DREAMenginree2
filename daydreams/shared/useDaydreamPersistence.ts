@@ -1,7 +1,7 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**

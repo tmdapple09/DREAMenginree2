@@ -20,7 +20,7 @@ import {
   NAV_SUGGESTIONS,
   parseDrEamsReply,
   truncatePreview,
-} from '@/lib/dreamengin/drEamsSearch';
+} from '@/dr-eams/search/drEamsSearch';
 
 // ── matchNavSuggestions ────────────────────────────────────────────────────────
 

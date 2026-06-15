@@ -1,6 +1,6 @@
 'use client';
 
-import type { PriorityWidget } from '@/lib/navigation/AnchorWidgetStorage';
+import type { PriorityWidget } from '@/engine/navigation/AnchorWidgetStorage';
 
 interface ShrunkModeProps {
   priorityWidgets: PriorityWidget[];

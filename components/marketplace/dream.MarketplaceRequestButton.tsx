@@ -2,7 +2,7 @@
 
 import { CheckCircle, Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * components/marketplace/dream.MarketplaceRequestButton.tsx

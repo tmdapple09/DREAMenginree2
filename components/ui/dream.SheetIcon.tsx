@@ -8,7 +8,7 @@ import {
     SHEET_PATH,
     hasIcon,
     type IconName,
-} from '@/lib/icons/sheet';
+} from '@/components/icons/sheet';
 
 type Props = {
   /** Registered icon name. Falls back to "dot" if unrecognised. */

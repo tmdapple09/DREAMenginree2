@@ -86,8 +86,8 @@ export const onInnerDreamsEvent = onIdariEvent;
 export interface TriadConsensusResult {
   /** True only if Dr. Eams planned, IDARi validated, and Boogie allowed. */
   unanimous: boolean;
-  eams: { response_text: string; intents: import('@/lib/ai/schemas').Intent[] };
-  idari: { intents: import('@/lib/ai/schemas').Intent[]; notes: string[] };
+  eams: { response_text: string; intents: import('@/dr-eams/ai/schemas').Intent[] };
+  idari: { intents: import('@/dr-eams/ai/schemas').Intent[]; notes: string[] };
   boogie: { hard_block: boolean; reason?: string };
 }
 
@@ -110,7 +110,7 @@ export async function runTriadConsensus(input: {
   uiRoute?: string;
 }): Promise<TriadConsensusResult> {
   // Dynamic import keeps server modules out of client bundles
-  const { planWithEams, validateWithIdari, boogiePolicyCheck } = await import('@/lib/ai/triad');
+  const { planWithEams, validateWithIdari, boogiePolicyCheck } = await import('@/dr-eams/ai/triad');
 
   const [eamsPlan, boogieResult] = await Promise.all([
     planWithEams(input),
@@ -137,4 +137,4 @@ export async function runTriadConsensus(input: {
   };
 }
 
-export type { Intent } from '@/lib/ai/schemas';
+export type { Intent } from '@/dr-eams/ai/schemas';

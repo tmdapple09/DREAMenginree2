@@ -8,9 +8,9 @@ import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRe
 import GodTierProvider from '@/components/providers/dream.GodTierProvider';
 import ThemeProvider from '@/components/providers/dream.ThemeProvider';
 import DualRuntimeContainer from '@/components/runtime/dream.DualRuntimeContainer';
-import { DreamSystemProvider } from '@/lib/dreamdm/DreamSystemContext';
-import { OSProvider } from '@/lib/dreamenginOS/OSContext';
-import { CustomizeModeProvider } from '@/lib/ui/CustomizeModeContext';
+import { DreamSystemProvider } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { OSProvider } from '@/engine/os/OSContext';
+import { CustomizeModeProvider } from '@/components/ui-system/CustomizeModeContext';
 import '@/styles/home-dream.css';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';

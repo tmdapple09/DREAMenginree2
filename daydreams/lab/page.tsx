@@ -2,8 +2,8 @@ import OpenDaydreamSideBButton from '@/components/daydream/dream.OpenDaydreamSid
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import LabEngin from '@/engins/engin.LabEngin';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { FlaskConical, Play } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';

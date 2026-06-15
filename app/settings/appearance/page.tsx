@@ -2,8 +2,8 @@
 
 import { THEME_PRESETS as GRADIENT_PRESETS, applyTheme, applyVoidTheme, isVoidThemeActive, type DeTheme } from '@/components/dream.ThemeApplicator';
 import { useTheme } from '@/components/providers/dream.ThemeProvider';
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
-import { THEME_PRESETS } from '@/lib/ui/theme-engine';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
+import { THEME_PRESETS } from '@/components/ui-system/theme-engine';
 import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';

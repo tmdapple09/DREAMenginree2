@@ -3,10 +3,10 @@
 import { Bot, Maximize2, Minimize2, Send, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { onIdariEvent } from '@/lib/agents/agentBus';
-import { getDrEamsMode, onDrEamsModeChange } from '@/lib/agents/drEamsMode';
-import { hasTaught, markTaught, onTeach } from '@/lib/agents/teachBus';
-import { executeUiAction, getUiCapabilities } from '@/lib/agents/uiActions';
+import { onIdariEvent } from '@/engine/agents/agentBus';
+import { getDrEamsMode, onDrEamsModeChange } from '@/engine/agents/drEamsMode';
+import { hasTaught, markTaught, onTeach } from '@/engine/agents/teachBus';
+import { executeUiAction, getUiCapabilities } from '@/engine/agents/uiActions';
 
 interface Message {
   id: string;

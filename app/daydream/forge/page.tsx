@@ -4,10 +4,10 @@ import DaydreamShell, {
 import ForgeMomentumWidget from "@/components/forge/dream.widget.ForgeMomentumWidget";
 import AuthenticatedPageHeader from "@/components/ui/dream.AuthenticatedPageHeader";
 import ForgeEngin from "@/engins/dream.ForgeEngin";
-import { isDevBypassActive } from "@/lib/dev-bypass";
-import { CREATIVE_ENGINES } from "@/lib/forge/forgeRegistry";
-import { createServerClient } from "@/lib/supabase/server";
-import { safeGetUser } from "@/lib/supabase/safeGetUser";
+import { isDevBypassActive } from "@/engine/dev-bypass";
+import { CREATIVE_ENGINES } from "@/engins/forgeengin/forge/forgeRegistry";
+import { createServerClient } from "@/supabase/server/serverClient";
+import { safeGetUser } from "@/supabase/client/safeGetUser";
 import { Activity, Flame, Layers, TrendingUp, Zap } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";

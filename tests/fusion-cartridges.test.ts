@@ -7,8 +7,8 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import { CARTRIDGE_LOADERS } from '@/lib/gameengin/cartridges/loaders';
+import { CARTRIDGE_MANIFEST } from '@/engins/gameengin/cartridges/manifest';
+import { CARTRIDGE_LOADERS } from '@/engins/gameengin/cartridges/loaders';
 
 const REPO_ROOT = process.cwd();
 

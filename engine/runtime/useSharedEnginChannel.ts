@@ -1,8 +1,8 @@
 'use client';
 
-import type { EnginName } from '@/lib/runtime/instanceManager';
-import { buildInstanceKey, promoteInstanceToRealtime, useInstanceManager } from '@/lib/runtime/instanceManager';
-import { createLocalChannel, type RuntimeChannel, type RuntimeChannelEvent } from '@/lib/runtime/runtimeChannel';
+import type { EnginName } from '@/engine/runtime/instanceManager';
+import { buildInstanceKey, promoteInstanceToRealtime, useInstanceManager } from '@/engine/runtime/instanceManager';
+import { createLocalChannel, type RuntimeChannel, type RuntimeChannelEvent } from '@/engine/runtime/runtimeChannel';
 import type { RuntimeId } from '@/types/module-manifest';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createPerformanceBaselineSampler,
   resolveRendererBackend,
-} from '@/lib/games/performance-baseline';
+} from '@/engins/gameengin/games/performance-baseline';
 
 describe('resolveRendererBackend', () => {
   it('prefers WebGPU for webgpu and babylon runtimes when supported', () => {

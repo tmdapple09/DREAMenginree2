@@ -1,7 +1,7 @@
 'use client';
 
 import SharedDreamRuntime from '@/components/shared-dream/dream.SharedDreamRuntime';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.

@@ -1,4 +1,4 @@
-import { runCiCommand } from '@/lib/codeengin/runner';
+import { runCiCommand } from '@/engins/codeengin/runner';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {

@@ -2,8 +2,8 @@ import OpenDaydreamSideBButton from '@/components/daydream/dream.OpenDaydreamSid
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import ContentEngin from '@/engins/engin.ContentEngin';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { BarChart2, Brain, Calendar, FileText, PlusCircle, RefreshCw, Sparkles, Video } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';

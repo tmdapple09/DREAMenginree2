@@ -1,11 +1,11 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * ProjectsPanel — Project manager for the Code Engine app.

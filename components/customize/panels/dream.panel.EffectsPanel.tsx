@@ -1,6 +1,6 @@
 'use client';
 
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 import { SlidePanel } from './dream.panel.ColorPanel';
 
 /**

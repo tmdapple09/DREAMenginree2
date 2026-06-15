@@ -1,14 +1,14 @@
-import { qualifiesForPremiumCPV } from '@/lib/activity/aqs';
-import { calculateActivityRevenueSplit } from '@/lib/activity/revenueSplit';
-import { calculateSkipCreditsEarned } from '@/lib/activity/skipCredits';
+import { qualifiesForPremiumCPV } from '@/dreamr/activity/aqs';
+import { calculateActivityRevenueSplit } from '@/dreamr/activity/revenueSplit';
+import { calculateSkipCreditsEarned } from '@/dreamr/activity/skipCredits';
 import type {
     AdView,
     TrackAdViewRequest,
     TrackAdViewResponse,
-} from '@/lib/activity/types';
-import { CPV_PRICING, CPVTier } from '@/lib/activity/types';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/dreamr/activity/types';
+import { CPV_PRICING, CPVTier } from '@/dreamr/activity/types';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 // app/api/ads/view/route.ts

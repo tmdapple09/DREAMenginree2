@@ -1,6 +1,6 @@
-import type { TrackViewRequest, TrackViewResponse, View } from '@/lib/activity/types';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { TrackViewRequest, TrackViewResponse, View } from '@/dreamr/activity/types';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

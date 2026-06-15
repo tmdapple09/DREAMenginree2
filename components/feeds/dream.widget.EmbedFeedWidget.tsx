@@ -1,9 +1,9 @@
 'use client';
 
-import type { EmbedFeedItem } from '@/lib/feeds/embedFeedLoader';
+import type { EmbedFeedItem } from '@/dreamr/feeds/embedFeedLoader';
 import { ExternalLink, Eye, Hash, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * components/feeds/dream.widget.EmbedFeedWidget.tsx

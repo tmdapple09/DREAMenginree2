@@ -16,8 +16,8 @@ import {
   CARTRIDGE_MAGIC,
   hasCartridgeMagic,
   validateManifest,
-} from '@/lib/gameengin/cartridge-manifest';
-import { parseDreamrArchive } from '@/lib/gameengin/cartridgeLoader';
+} from '@/engins/gameengin/cartridge-manifest';
+import { parseDreamrArchive } from '@/engins/gameengin/cartridgeLoader';
 import {
   BRAIN_ROOT,
   listMechanics,
@@ -25,7 +25,7 @@ import {
   readOriginalityRegistry,
   signatureHash,
   isOriginal,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 import { packTar, unpackTar } from '@/scripts/gameengin/lib/tar';
 
 describe('GameEngin spec — Brain substrate (§2)', () => {
@@ -171,7 +171,7 @@ import {
   recordAssignments,
   recordUpgrade,
   getLastTouched,
-} from '@/lib/gameengin/brain-reader';
+} from '@/engins/gameengin/brain-reader';
 
 describe('GameEngin spec v2 — Artisan brain layers', () => {
   it('seeds at least one technique per category (modeling/lighting/optimization)', () => {

@@ -10,7 +10,7 @@ import {
   formatShareText,
   buildDreamOgMeta,
   type DreamSharePayload,
-} from '@/lib/social/crossPost';
+} from '@/engine/social/crossPost';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -141,7 +141,7 @@ describe('Cross-Post — buildDreamOgMeta', () => {
 
 describe('Cross-Post — Mastodon platform', () => {
   it('mastodon is in SOCIAL_PLATFORMS', async () => {
-    const { PLATFORM_MAP } = await import('@/lib/social/platforms');
+    const { PLATFORM_MAP } = await import('@/engine/social/platforms');
     expect(PLATFORM_MAP['mastodon']).toBeDefined();
     expect(PLATFORM_MAP['mastodon']!.supportsShare).toBe(true);
     expect(PLATFORM_MAP['mastodon']!.label).toBe('Mastodon');

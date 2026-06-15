@@ -19,7 +19,7 @@ import {
   evictDeadParticles,
   _resetIdCounter,
   type SeamParticle,
-} from '@/lib/dreamdm/bridgeSeamFlow';
+} from '@/dreamdmbar/runtime/bridgeSeamFlow';
 
 beforeEach(() => {
   _resetIdCounter();

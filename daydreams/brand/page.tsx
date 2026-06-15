@@ -2,8 +2,8 @@ import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.
 import BrandDaydream from '@/components/daydream/dreamsurface.daydream.BrandDaydream';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import BrandingEngin from '@/engins/engin.BrandingEngin';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { Palette } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';

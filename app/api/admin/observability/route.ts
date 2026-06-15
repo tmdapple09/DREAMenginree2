@@ -1,11 +1,11 @@
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { jsonApiError } from '@/lib/api/route';
-import { getBufferStats, getSnapshot } from '@/lib/observability/collector';
-import { correlate } from '@/lib/observability/correlator';
-import { buildImmediateRemediationAction } from '@/lib/observability/immediateAction';
-import { inferRootCause } from '@/lib/observability/rootCauseAnalyzer';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { jsonApiError } from '@/engine/api/route';
+import { getBufferStats, getSnapshot } from '@/engine/observability/collector';
+import { correlate } from '@/engine/observability/correlator';
+import { buildImmediateRemediationAction } from '@/engine/observability/immediateAction';
+import { inferRootCause } from '@/engine/observability/rootCauseAnalyzer';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

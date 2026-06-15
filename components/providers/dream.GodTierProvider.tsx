@@ -1,6 +1,6 @@
 'use client';
 
-import { useGodTier } from '@/lib/god-tier/useGodTier';
+import { useGodTier } from '@/engine/rendering/god-tier/useGodTier';
 import { usePathname } from 'next/navigation';
 
 /**

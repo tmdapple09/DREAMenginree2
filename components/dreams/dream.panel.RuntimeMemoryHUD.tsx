@@ -3,8 +3,8 @@
 import {
   formatArtifactKind,
   getArtifactAccent,
-} from "@/lib/intelligence/continuityHelpers";
-import { dreamOSBus, type DreamOSSnapshot } from "@/lib/runtime/dreamOSBus";
+} from "@/engine/intelligence/continuityHelpers";
+import { dreamOSBus, type DreamOSSnapshot } from "@/engine/runtime/dreamOSBus";
 import { useEffect, useState } from "react";
 
 // Framework directives stay physically first when required.

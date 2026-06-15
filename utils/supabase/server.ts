@@ -2,7 +2,7 @@ import {
     createServerClient,
     createServerClientWithCookies,
     type SupabaseCookieStore,
-} from '@/lib/supabase/server'
+} from '@/supabase/server/serverClient'
 
 export function createClient(cookieStore: SupabaseCookieStore): ReturnType<typeof createServerClientWithCookies>
 export function createClient(): ReturnType<typeof createServerClient>

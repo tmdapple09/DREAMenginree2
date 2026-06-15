@@ -4,7 +4,7 @@
 // zero-tolerance logic, and clean content pass-through.
 
 import { describe, it, expect } from 'vitest';
-import { scanContent, isZeroTolerance } from '@/lib/child-safety/childSafetyDetector';
+import { scanContent, isZeroTolerance } from '@/engine/safety/child-safety/childSafetyDetector';
 
 // ============================================================================
 // CLEAN CONTENT — should never flag innocent text
@@ -373,7 +373,7 @@ describe('childSafetyDetector — Layer 4 LLM image classification', () => {
 // imageClassifier — parseVerdict / classifyImage (pure logic tests, no API)
 // ============================================================================
 
-import { classifyImage } from '@/lib/child-safety/imageClassifier';
+import { classifyImage } from '@/engine/safety/child-safety/imageClassifier';
 
 describe('imageClassifier — classifyImage graceful degradation', () => {
   it('returns skipped result when GROQ_API_KEY is missing', async () => {
@@ -401,7 +401,7 @@ describe('imageClassifier — classifyImage graceful degradation', () => {
 // scanMediaUrlsForChildSafety — real-time URL scanner (no network calls)
 // ============================================================================
 
-import { scanMediaUrlsForChildSafety, isImageUrl } from '@/lib/child-safety/scanMediaUrls';
+import { scanMediaUrlsForChildSafety, isImageUrl } from '@/engine/safety/child-safety/scanMediaUrls';
 
 // Minimal fake Supabase client that returns an empty hash registry
 const emptySupabase = {
@@ -454,7 +454,7 @@ describe('scanMediaUrlsForChildSafety — hash registry check', () => {
     // path by checking that scanContent propagates hash match properly.
     // The integration is covered by the Layer 1 tests in childSafetyDetector.
     // Here we verify the supabase client is wired correctly:
-    const { scanContent: sc } = await import('@/lib/child-safety/childSafetyDetector');
+    const { scanContent: sc } = await import('@/engine/safety/child-safety/childSafetyDetector');
     const result = sc({
       mediaHashes: [emptyBufHash],
       knownBadHashes: new Set([emptyBufHash]),
@@ -596,7 +596,7 @@ describe('childSafetyDetector — C32_MINOR_IMAGE (minor-to-adult image blocking
 // messageContextChecker — minor-adult conversation context evaluation
 // ============================================================================
 
-import { evaluateMessageContext } from '@/lib/child-safety/messageContextChecker';
+import { evaluateMessageContext } from '@/engine/safety/child-safety/messageContextChecker';
 
 describe('messageContextChecker — safe contexts (no action)', () => {
   it('returns safe for teacher-student context', () => {

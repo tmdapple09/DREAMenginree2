@@ -1,15 +1,15 @@
-import { blueskyVerify } from '@/lib/connectors/providers/bluesky';
-import { githubVerify } from '@/lib/connectors/providers/github';
-import { mastodonVerify } from '@/lib/connectors/providers/mastodon';
-import { nostrVerify } from '@/lib/connectors/providers/nostr';
-import { redditVerify } from '@/lib/connectors/providers/reddit';
-import { youtubeVerify } from '@/lib/connectors/providers/youtube';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { blueskyVerify } from '@/engine/connectors/providers/bluesky';
+import { githubVerify } from '@/engine/connectors/providers/github';
+import { mastodonVerify } from '@/engine/connectors/providers/mastodon';
+import { nostrVerify } from '@/engine/connectors/providers/nostr';
+import { redditVerify } from '@/engine/connectors/providers/reddit';
+import { youtubeVerify } from '@/engine/connectors/providers/youtube';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { ConnectorVerifyResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * app/api/connectors/[provider]/verify/route.ts

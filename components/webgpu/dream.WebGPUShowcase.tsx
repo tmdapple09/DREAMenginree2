@@ -1,6 +1,6 @@
 'use client';
 
-import { isWebGPUAvailable } from '@/lib/webgpu';
+import { isWebGPUAvailable } from '@/engine/rendering/webgpu';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { WebGPURenderer } from './renderer';

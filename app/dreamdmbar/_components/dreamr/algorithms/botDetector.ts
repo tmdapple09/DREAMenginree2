@@ -1,4 +1,4 @@
-import { slog, TORRIDITY_LEDGER_CONFIG } from '@/lib/dreamr/torridityLedger';
+import { slog, TORRIDITY_LEDGER_CONFIG } from '@/dreamr/runtime/torridityLedger';
 
 /**
  * botDetector — Physical Turing Test for DreamR swipe interactions.

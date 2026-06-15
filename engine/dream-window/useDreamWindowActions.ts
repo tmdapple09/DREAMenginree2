@@ -7,7 +7,7 @@ import type {
 } from '@/types/dream-window';
 import { useCallback, useEffect, useState } from 'react';
 import { DREAM_WINDOW_STATES } from './DreamWindowLifecycle';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * lib/dream-window/useDreamWindowActions.ts

@@ -1,4 +1,4 @@
-import { getSetupStatus } from '@/lib/setup/checks';
+import { getSetupStatus } from '@/engine/setup/checks';
 import { NextResponse } from 'next/server';
 
 /**

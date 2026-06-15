@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import type { DaydreamEnginManifest } from '@/lib/feature-build';
+import type { DaydreamEnginManifest } from '@/engine/feature-build/index';
 import {
   buildPatchPlanChecklist,
   createUpgradeReadinessSnapshot,
   selectNextUpgradeTarget,
   summarizeBuildReadiness,
-} from '@/lib/admin/upgrade-readiness';
-import { summarizeSetupChecks, type SetupCheck } from '@/lib/setup/checks';
+} from '@/engine/admin/upgrade-readiness';
+import { summarizeSetupChecks, type SetupCheck } from '@/engine/setup/checks';
 
 function makeManifest(
   domain: DaydreamEnginManifest['domain'],

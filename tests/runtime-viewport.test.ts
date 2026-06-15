@@ -4,7 +4,7 @@ import {
   COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH,
   getPreferredViewportHeight,
   isCompactRuntimeViewport,
-} from '@/lib/ui/runtimeViewport';
+} from '@/components/ui-system/runtimeViewport';
 
 describe('isCompactRuntimeViewport', () => {
   it('treats widths below the mobile cutoff as compact', () => {

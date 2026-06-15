@@ -13,10 +13,10 @@ import {
     useGlobalCrashListener,
     type CartridgeCrashEvent,
 } from '@/components/gameengin/dream.cartridge.CartridgeErrorBoundary';
-import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
-import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
-import { createEventBus, upgradeEngine } from '@/lib/dreamenginOS';
+import { useDaydreamPersistence } from '@/daydreams/shared/useDaydreamPersistence';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import type { EngineBase, UpgradedEngine } from '@/engine/os/index';
+import { createEventBus, upgradeEngine } from '@/engine/os/index';
 import type {
     GameScore,
     GravityPreset,
@@ -24,34 +24,34 @@ import type {
     ScriptLanguage,
     ScriptState,
     TileType,
-} from '@/lib/engins/game/gameEnginRuleSet';
-import { useGameEnginRuntime } from '@/lib/engins/game/useGameEnginRuntime';
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import GameRuntime from '@/lib/gameengin/GameRuntime';
-import type { GameCartridge } from '@/lib/gameengin/cartridge';
-import { loadCartridge } from '@/lib/gameengin/cartridges/loaders';
-import { GAME_CATALOG } from '@/lib/games/catalog';
-import { consumePlayAsMe, getAvatarDataUrl } from '@/lib/games/avatar';
+} from '@/engins/rulesets/game/gameEnginRuleSet';
+import { useGameEnginRuntime } from '@/engins/rulesets/game/useGameEnginRuntime';
+import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import GameRuntime from '@/engins/gameengin/GameRuntime';
+import type { GameCartridge } from '@/engins/gameengin/cartridge';
+import { loadCartridge } from '@/engins/gameengin/cartridges/loaders';
+import { GAME_CATALOG } from '@/engins/gameengin/games/catalog';
+import { consumePlayAsMe, getAvatarDataUrl } from '@/engins/gameengin/games/avatar';
 import {
     GAME_LIBRARY_SESSION_STORAGE_KEY,
     MAX_SAVED_GAME_SESSIONS,
     type SavedGameSession,
-} from '@/lib/games/library-state';
-import { buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId } from '@/lib/games/navigation';
-import { GAME_CONTROL_PROFILES, GAME_QUALITY_PILLARS } from '@/lib/games/quality-plan';
-import { useGameInputKeyboardBridge } from '@/lib/games/useGameInputKeyboardBridge';
-import { useGamepad } from '@/lib/games/useGamepad';
-import { useAIDirector } from '@/lib/games/useAIDirector';
-import { useDualSense } from '@/lib/games/DualSenseManager';
-import { useRemoteChannel } from '@/lib/games/useRemoteChannel';
-import { buildLedgerMediaUrl } from '@/lib/media/ledger';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { createInstance } from '@/lib/runtime/instanceManager';
-import { useGameEnginBridge } from '@/lib/runtime/useEnginBridge';
-import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
-import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
-import { createClient } from '@/lib/supabase/client';
+} from '@/engins/gameengin/games/library-state';
+import { buildGameLaunchHref, isLaunchFlagEnabled, resolveGameLaunchId } from '@/engins/gameengin/games/navigation';
+import { GAME_CONTROL_PROFILES, GAME_QUALITY_PILLARS } from '@/engins/gameengin/games/quality-plan';
+import { useGameInputKeyboardBridge } from '@/engins/gameengin/games/useGameInputKeyboardBridge';
+import { useGamepad } from '@/engins/gameengin/games/useGamepad';
+import { useAIDirector } from '@/engins/gameengin/games/useAIDirector';
+import { useDualSense } from '@/engins/gameengin/games/DualSenseManager';
+import { useRemoteChannel } from '@/engins/gameengin/games/useRemoteChannel';
+import { buildLedgerMediaUrl } from '@/engins/contentengin/media/ledger';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
+import { createInstance } from '@/engine/runtime/instanceManager';
+import { useGameEnginBridge } from '@/engine/runtime/useEnginBridge';
+import { useEnginCoopSync } from '@/engine/runtime/useEnginCoopSync';
+import { useSharedEnginChannel } from '@/engine/runtime/useSharedEnginChannel';
+import { createClient } from '@/supabase/client/client';
 import {
     Award,
     FileCode,
@@ -68,8 +68,8 @@ import {
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArtifactSlot } from '@/lib/enginpipe';
-import { toErrorMessage } from '@/lib/utils';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * GameEngin — Side B control layer for the Games Daydream.

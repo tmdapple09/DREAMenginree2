@@ -16,7 +16,7 @@ import {
     type CollabSession,
     type PresenceUpdateData,
     type SessionRole,
-} from '@/lib/collaboration';
+} from '@/engine/collaboration/index';
 
 // Framework directives stay physically first when required.
 
@@ -164,4 +164,4 @@ export async function leaveSharedDreamSession(session: SharedDreamSession): Prom
 export {
     useSharedDreamSession, type SharedDreamActivityEntry, type SharedDreamMember, type UseSharedDreamSessionOptions,
     type UseSharedDreamSessionResult
-} from '../sharedDream/useSharedDreamSession';
+} from '@/engine/sharedDream/useSharedDreamSession';

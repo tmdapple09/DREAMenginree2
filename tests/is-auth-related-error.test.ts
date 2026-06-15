@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isAuthRelatedError } from '@/lib/runtime/isAuthRelatedError';
+import { isAuthRelatedError } from '@/engine/runtime/isAuthRelatedError';
 
 /**
  * Tests for isAuthRelatedError — the classifier that determines whether the

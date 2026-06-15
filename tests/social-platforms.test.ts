@@ -6,7 +6,7 @@ import {
   PROFILE_SHARE_PLATFORMS,
   detectPlatform,
   getPlatform,
-} from '@/lib/social/platforms';
+} from '@/engine/social/platforms';
 
 // ─── Registry shape ──────────────────────────────────────────────────────────
 

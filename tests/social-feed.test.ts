@@ -15,7 +15,7 @@ import {
   extractFirstImage,
   fetchSocialFeed,
   type SocialFeedItem,
-} from '@/lib/social-feed';
+} from '@/dreamr/social-feed';
 
 // ── A. stripHtml ──────────────────────────────────────────────────────────
 

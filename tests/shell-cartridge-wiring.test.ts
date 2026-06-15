@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { CARTRIDGE_MANIFEST } from '@/lib/gameengin/cartridges/manifest';
-import { registerCartridges } from '@/lib/gameengin/registerCartridges';
-import { moduleRegistry, useModuleRegistry } from '@/lib/runtime/moduleRegistry';
+import { CARTRIDGE_MANIFEST } from '@/engins/gameengin/cartridges/manifest';
+import { registerCartridges } from '@/engins/gameengin/registerCartridges';
+import { moduleRegistry, useModuleRegistry } from '@/engine/runtime/moduleRegistry';
 
 function source(path: string): string {
   return readFileSync(resolve(process.cwd(), path), 'utf8');

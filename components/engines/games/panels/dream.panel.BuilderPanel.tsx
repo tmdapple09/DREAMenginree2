@@ -1,6 +1,6 @@
 'use client';
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Info, Save, Sparkles, Trash2 } from 'lucide-react';
 import { useCallback, useState, type KeyboardEvent } from 'react';
 

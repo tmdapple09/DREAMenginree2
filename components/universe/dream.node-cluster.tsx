@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/index';
 import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';

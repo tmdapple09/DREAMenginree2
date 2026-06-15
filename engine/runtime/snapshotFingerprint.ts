@@ -1,4 +1,4 @@
-import type { TelemetrySnapshot } from '@/lib/observability/collector';
+import type { TelemetrySnapshot } from '@/engine/observability/collector';
 
 // Framework directives stay physically first when required.
 

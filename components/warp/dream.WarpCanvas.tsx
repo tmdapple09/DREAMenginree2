@@ -1,7 +1,7 @@
 'use client';
 
-import { useWarp } from '@/lib/warp/useWarp';
-import type { WarpEffect } from '@/lib/warp/warpEngine';
+import { useWarp } from '@/engine/rendering/warp/useWarp';
+import type { WarpEffect } from '@/engine/rendering/warp/warpEngine';
 
 /**
  * WarpCanvas — a full-viewport fixed canvas overlay that renders the

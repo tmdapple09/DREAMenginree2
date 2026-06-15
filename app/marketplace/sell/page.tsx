@@ -1,12 +1,12 @@
 'use client';
 
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 // SURFACE: dreamsurface.MarketplaceSell  (framework-mandated basename: page.tsx)
 // app/marketplace/sell/page.tsx

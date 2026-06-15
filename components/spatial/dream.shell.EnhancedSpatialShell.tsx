@@ -2,9 +2,9 @@
 
 import { ProfileSpace } from '@/components/dream.ProfileSpace';
 import PixiPhysicsLayer from '@/components/spatial/dream.PixiPhysicsLayer';
-import { LAYER_HOME, LAYER_PROFILE } from '@/lib/navigation/NavStateBuffer';
-import { SpatialNavigationEngine } from '@/lib/navigation/SpatialNavigationEngine';
-import { WidgetBindingType, WidgetInstanceRecord, WidgetPresentation, WidgetVisibility } from '@/lib/navigation/WidgetInstanceMemory';
+import { LAYER_HOME, LAYER_PROFILE } from '@/engine/navigation/NavStateBuffer';
+import { SpatialNavigationEngine } from '@/engine/navigation/SpatialNavigationEngine';
+import { WidgetBindingType, WidgetInstanceRecord, WidgetPresentation, WidgetVisibility } from '@/engine/navigation/WidgetInstanceMemory';
 import { Home } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 

@@ -1,6 +1,6 @@
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
-import { listRunnerCommands, runCodeEnginCommand } from '@/lib/codeengin/runner';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
+import { listRunnerCommands, runCodeEnginCommand } from '@/engins/codeengin/runner';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request): Promise<NextResponse> {

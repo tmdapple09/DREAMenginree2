@@ -4,7 +4,7 @@ import {
     annotateDotsWithInsights,
     computeCurrentStreak,
     type AnnotatedDot,
-} from '@/lib/journey/journeyInsights';
+} from '@/engine/journey/journeyInsights';
 import type { JourneyDot, JourneyTimeGroup } from '@/types/journey';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';

@@ -1,7 +1,7 @@
 'use client';
 
-import { createInstance } from '@/lib/runtime/instanceManager';
-import { useSharedEnginChannel } from '@/lib/runtime/useSharedEnginChannel';
+import { createInstance } from '@/engine/runtime/instanceManager';
+import { useSharedEnginChannel } from '@/engine/runtime/useSharedEnginChannel';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 

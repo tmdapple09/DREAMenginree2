@@ -1,6 +1,6 @@
-import { parseSRT, parseVTT, totalDurationMs } from '@/lib/content/transcriptEditor';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { parseSRT, parseVTT, totalDurationMs } from '@/engins/contentengin/content/transcriptEditor';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

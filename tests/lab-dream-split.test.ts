@@ -13,7 +13,7 @@ import {
   generateCodeFromCommand,
   detectNLCommand,
   parseCodeResponse,
-} from '@/lib/code/drEamsCodeAssist';
+} from '@/engins/codeengin/ai/drEamsCodeAssist';
 
 // ─── Simulation result helpers ────────────────────────────────────────────────
 

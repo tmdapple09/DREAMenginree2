@@ -7,7 +7,7 @@ import {
   personalizeFeedOrder,
   shouldRecordDreamRView,
   type DreamRSwipePost,
-} from '@/lib/dreamr/swipePersonalization';
+} from '@/dreamr/runtime/swipePersonalization';
 
 function post(overrides: Partial<DreamRSwipePost>): DreamRSwipePost {
   return {

@@ -1,8 +1,8 @@
 import HomeDreamSurface from '@/app/dreamdmbar/_components/HomeDreamRegion';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 

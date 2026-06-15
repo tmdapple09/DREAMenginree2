@@ -3,7 +3,7 @@ import {
   SessionContinuity,
   type SessionStorageBackend,
   type StoredSession,
-} from '@/lib/intelligence/sessionContinuity';
+} from '@/engine/intelligence/sessionContinuity';
 
 // ── In-memory test backend ────────────────────────────────────────────────────
 // Injected via the constructor so tests run in any environment (node or jsdom)

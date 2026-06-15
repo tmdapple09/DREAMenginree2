@@ -1,7 +1,7 @@
 'use client';
 
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useGameEngineAPI } from '@/lib/gameengin/cartridges/reactCartridge';
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
+import { useGameEngineAPI } from '@/engins/gameengin/cartridges/reactCartridge';
 import {
   WILDFALL_HEROES,
   WILDFALL_ZONES,
@@ -16,7 +16,7 @@ import {
   type WildfallHeroId,
   type WildfallInputFrame,
   type WildfallState,
-} from '@/lib/games/madmaxi-wildfall-world';
+} from '@/engins/gameengin/games/madmaxi-wildfall-world';
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 const VIEW_W = 720;

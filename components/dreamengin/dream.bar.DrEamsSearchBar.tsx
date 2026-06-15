@@ -7,7 +7,7 @@ import {
     parseDrEamsReply,
     truncatePreview,
     type NavSuggestion,
-} from '@/lib/dreamengin/drEamsSearch';
+} from '@/dr-eams/search/drEamsSearch';
 import { ArrowRight, MessageCircle, Search, Sparkles, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';

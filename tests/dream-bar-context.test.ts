@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { detectSurface, type DreamBarSurface } from '@/lib/dreamdm/useDreamBarContext';
+import { detectSurface, type DreamBarSurface } from '@/dreamdmbar/hooks/useDreamBarContext';
 
 // ── detectSurface — route → surface mapping ──────────────────────────────────
 

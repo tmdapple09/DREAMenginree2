@@ -286,8 +286,8 @@ export function onBoogieManEvent(
 export {
     BOOGIE_POLICY_VERSION, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS,
     ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES
-} from '@/lib/ai/boogie-policy';
+} from '@/dr-eams/ai/boogie-policy';
 export type {
     BoogiePolicyVersion, EnforcementAction,
     EnforcementScope, RuleCode, StrikeSeverityLevel
-} from '@/lib/ai/boogie-policy';
+} from '@/dr-eams/ai/boogie-policy';

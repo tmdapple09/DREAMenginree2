@@ -1,12 +1,12 @@
 import DreamBarDataBridge from '@/app/dreamdmbar/_components/DreamBarDataBridge';
 import GlobalDreamBar from '@/components/home/dream.bar.GlobalDreamBar';
 import PersistentDreamBar from '@/components/home/dream.bar.PersistentDreamBar';
-import { isOwnerEmail } from '@/lib/ai/triad';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import type { FeedPost } from '@/lib/feed/useLiveFeed';
-import { getPrimaryPostMediaUrl } from '@/lib/media/postMedia';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { createServerClient } from '@/lib/supabase/server';
+import { isOwnerEmail } from '@/dr-eams/ai/triad';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
+import { getPrimaryPostMediaUrl } from '@/engins/contentengin/media/postMedia';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import { Suspense } from 'react';

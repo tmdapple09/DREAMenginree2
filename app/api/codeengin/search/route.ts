@@ -1,6 +1,6 @@
-import { assertCodeEnginAccess } from '@/lib/codeengin/auth';
-import { safeErrorMessage } from '@/lib/codeengin/pathSafety';
-import { searchWorkspace } from '@/lib/codeengin/search';
+import { assertCodeEnginAccess } from '@/engins/codeengin/auth';
+import { safeErrorMessage } from '@/engins/codeengin/pathSafety';
+import { searchWorkspace } from '@/engins/codeengin/search';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {

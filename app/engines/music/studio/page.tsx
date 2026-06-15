@@ -1,8 +1,8 @@
 import StudioPanel from '@/components/engines/music/panels/dream.panel.StudioPanel';
 import { EnginAppShell, EnginNavBar } from '@/components/engines/shared';
-import { isDevBypassActive } from '@/lib/dev-bypass';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import { isDevBypassActive } from '@/engine/dev-bypass';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 

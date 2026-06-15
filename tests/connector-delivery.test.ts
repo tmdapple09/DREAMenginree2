@@ -21,12 +21,12 @@ import {
   supportsPoll,
   supportsWebhookVerification,
   knownDeliveryProviders,
-} from '@/lib/connectors/deliveryStrategy';
+} from '@/engine/connectors/deliveryStrategy';
 import {
   extractYouTubeWebSubChallenge,
   extractMetaWebhookChallenge,
   isCronAuthorised,
-} from '@/lib/connectors/webhookVerification';
+} from '@/engine/connectors/webhookVerification';
 
 // ── A. deliveryStrategy ───────────────────────────────────────────────────────
 

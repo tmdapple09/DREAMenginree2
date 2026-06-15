@@ -1,5 +1,5 @@
-import { getAgentOS } from '@/lib/agentOS';
-import { codeEnginHostTools } from '@/lib/agentOS/hostTools';
+import { getAgentOS } from '@/engine/agentOS';
+import { codeEnginHostTools } from '@/engine/agentOS/hostTools';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 

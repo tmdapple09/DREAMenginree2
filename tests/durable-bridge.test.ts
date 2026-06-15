@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 
 beforeEach(() => {
   bridge.clearAll();

@@ -1,7 +1,7 @@
 'use client';
 
-import { handlePlacementCancel, handlePlacementDone } from '@/lib/connectors/installFlow';
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import { handlePlacementCancel, handlePlacementDone } from '@/engine/connectors/installFlow';
+import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { useCallback, useEffect, useState } from 'react';
 
 // components/connectors/dream.PlacementMode.tsx

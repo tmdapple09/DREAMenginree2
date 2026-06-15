@@ -1,6 +1,6 @@
 'use client';
 
-import { classifyDrop, type DreamDrop } from '@/lib/runtime/coercionTable';
+import { classifyDrop, type DreamDrop } from '@/engine/runtime/coercionTable';
 import { useMemo, useState } from 'react';
 
 export interface UniversalEditorProps {

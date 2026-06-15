@@ -1,14 +1,14 @@
 'use client';
 
-import { DIVIDER_H } from '@/lib/dreamdm/barInteractions';
+import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
 import {
     createIdleParticle,
     createSeamParticle,
     evictDeadParticles,
     tickParticles,
     type SeamParticle,
-} from '@/lib/dreamdm/bridgeSeamFlow';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+} from '@/dreamdmbar/runtime/bridgeSeamFlow';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useCallback, useEffect, useRef } from 'react';
 
 /**

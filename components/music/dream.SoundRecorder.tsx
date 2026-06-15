@@ -2,7 +2,7 @@
 
 import { Download, Mic, Pause, Play, Square, Trash2, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 type RecorderState = 'idle' | 'recording' | 'recorded';
 

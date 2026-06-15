@@ -1,9 +1,9 @@
 'use client';
 
-import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '@/lib/media/ledger';
-import { createClient } from '@/lib/supabase/client';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
-import { toErrorMessage } from '@/lib/utils';
+import { decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString } from '@/engins/contentengin/media/ledger';
+import { createClient } from '@/supabase/client/client';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * lib/gameengin/dream-engine.ts

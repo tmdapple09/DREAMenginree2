@@ -1,7 +1,7 @@
 'use client';
 
-import { useCustomizeMode } from '@/lib/ui/CustomizeModeContext';
-import { type SkinFont } from '@/lib/ui/skin-engine';
+import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
+import { type SkinFont } from '@/components/ui-system/skin-engine';
 import { SlidePanel } from './dream.panel.ColorPanel';
 
 const FONTS: { id: SkinFont; label: string; preview: string; desc: string }[] = [

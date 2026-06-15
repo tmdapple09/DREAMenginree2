@@ -1,7 +1,7 @@
-import type { DreamWindowInstance } from '@/lib/dream-window/DreamWindowLifecycle';
-import { DREAM_WINDOW_STATES, validateDreamWindowLayers } from '@/lib/dream-window/DreamWindowLifecycle';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+import type { DreamWindowInstance } from '@/engine/dream-window/DreamWindowLifecycle';
+import { DREAM_WINDOW_STATES, validateDreamWindowLayers } from '@/engine/dream-window/DreamWindowLifecycle';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

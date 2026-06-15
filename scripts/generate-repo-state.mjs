@@ -63,8 +63,8 @@ function extractDynamicImports(content) {
  * Returns a map of:  modulePath → [namedExport1, namedExport2, ...]
  *
  * Example output:
- *   '@/lib/runtime/useDualRuntime'  → ['useDualRuntime', 'DualRuntimeBridge']
- *   '@/lib/runtime/dreamOSBus'      → ['(default) dreamOSBus']
+ *   '@/engine/runtime/useDualRuntime'  → ['useDualRuntime', 'DualRuntimeBridge']
+ *   '@/engine/runtime/dreamOSBus'      → ['(default) dreamOSBus']
  *   '@/components/dream.HomeFeed'   → ['HomeFeed']
  *
  * This is what lets you trace exactly WHICH function/hook/component

@@ -4,7 +4,7 @@ import {
   CARTRIDGE_MANIFEST,
   getCartridgeCategories,
   type CartridgeManifestEntry,
-} from "@/lib/gameengin/cartridges/manifest";
+} from "@/engins/gameengin/cartridges/manifest";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 

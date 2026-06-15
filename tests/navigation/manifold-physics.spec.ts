@@ -5,7 +5,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { projectCubicToSphere, vectorMagnitude } = require('@/lib/navigation/manifold');
+      const { projectCubicToSphere, vectorMagnitude } = require('@/engine/navigation/manifold');
       
       const cubePos = { x: 1, y: 0, z: 0 };
       
@@ -42,7 +42,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { computeLambda } = require('@/lib/navigation/manifold');
+      const { computeLambda } = require('@/engine/navigation/manifold');
       
       return {
         depth0: computeLambda(0, 5),
@@ -61,7 +61,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { sphericalToCartesian, vectorMagnitude } = require('@/lib/navigation/manifold');
+      const { sphericalToCartesian, vectorMagnitude } = require('@/engine/navigation/manifold');
       
       // Different spherical coordinates
       const coords1 = { theta: Math.PI / 4, phi: 0 };
@@ -89,7 +89,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { smoothstep } = require('@/lib/navigation/manifold');
+      const { smoothstep } = require('@/engine/navigation/manifold');
       
       return {
         at0: smoothstep(0, 1, 0),
@@ -116,7 +116,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { computeSlotPosition } = require('@/lib/navigation/manifold');
+      const { computeSlotPosition } = require('@/engine/navigation/manifold');
       
       // Get all 8 slot positions
       const positions = [];
@@ -149,7 +149,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { blendFaceEdge } = require('@/lib/navigation/manifold');
+      const { blendFaceEdge } = require('@/engine/navigation/manifold');
       
       const faceA = { x: 1, y: 0, z: 0 };
       const faceB = { x: 0, y: 1, z: 0 };
@@ -184,7 +184,7 @@ test.describe('Manifold Smoothing - Section 4', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { computeWidgetCurvature } = require('@/lib/navigation/manifold');
+      const { computeWidgetCurvature } = require('@/engine/navigation/manifold');
       
       return {
         center: computeWidgetCurvature(0, 0, 0.1),
@@ -209,7 +209,7 @@ test.describe('Physics Model - Section 5', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { DEFAULT_PHYSICS_CONFIG } = require('@/lib/navigation/physics');
+      const { DEFAULT_PHYSICS_CONFIG } = require('@/engine/navigation/physics');
       return DEFAULT_PHYSICS_CONFIG.damping;
     });
     
@@ -221,7 +221,7 @@ test.describe('Physics Model - Section 5', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { applyInertialDecay, DEFAULT_PHYSICS_CONFIG } = require('@/lib/navigation/physics');
+      const { applyInertialDecay, DEFAULT_PHYSICS_CONFIG } = require('@/engine/navigation/physics');
       
       const initialVelocity = 100;
       const dt = 0.1;
@@ -251,7 +251,7 @@ test.describe('Physics Model - Section 5', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { shouldSnapToGrid, SNAP_THRESHOLD, snapToGrid } = require('@/lib/navigation/physics');
+      const { shouldSnapToGrid, SNAP_THRESHOLD, snapToGrid } = require('@/engine/navigation/physics');
       
       return {
         belowThreshold: shouldSnapToGrid(0.01),
@@ -274,7 +274,7 @@ test.describe('Physics Model - Section 5', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { updatePhysicsState } = require('@/lib/navigation/physics');
+      const { updatePhysicsState } = require('@/engine/navigation/physics');
       
       const initialState = {
         position: 0,
@@ -309,7 +309,7 @@ test.describe('Anchor Field - Section 8', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { computePotential, DEFAULT_ANCHOR_CONFIG } = require('@/lib/navigation/anchorField');
+      const { computePotential, DEFAULT_ANCHOR_CONFIG } = require('@/engine/navigation/anchorField');
       
       return {
         near: computePotential({ x: 1, y: 0, z: 0 }, DEFAULT_ANCHOR_CONFIG),
@@ -327,7 +327,7 @@ test.describe('Anchor Field - Section 8', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { computeForceField, DEFAULT_ANCHOR_CONFIG } = require('@/lib/navigation/anchorField');
+      const { computeForceField, DEFAULT_ANCHOR_CONFIG } = require('@/engine/navigation/anchorField');
       
       // Position to the right of home (positive x)
       const force = computeForceField({ x: 2, y: 0, z: 0 }, DEFAULT_ANCHOR_CONFIG);
@@ -345,7 +345,7 @@ test.describe('Anchor Field - Section 8', () => {
     await page.goto('/');
     
     const result = await page.evaluate(() => {
-      const { shouldApplyRecenter, DEFAULT_ANCHOR_CONFIG } = require('@/lib/navigation/anchorField');
+      const { shouldApplyRecenter, DEFAULT_ANCHOR_CONFIG } = require('@/engine/navigation/anchorField');
       
       const state = {
         lastActivityTime: 1000,

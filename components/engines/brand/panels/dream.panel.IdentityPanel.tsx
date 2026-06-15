@@ -1,6 +1,6 @@
 'use client';
 
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Hash, Palette, Save, Type } from 'lucide-react';
 import { useState } from 'react';
 

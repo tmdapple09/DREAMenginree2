@@ -15,7 +15,7 @@ import {
     XCircle,
 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * ChildSafetyPanel — Admin UI for the child safety enforcement system.

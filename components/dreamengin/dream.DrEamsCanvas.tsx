@@ -1,6 +1,6 @@
 'use client';
 
-import { DrEamsAnimator, type DrEamsAction } from '@/lib/dreamengin/DrEamsAnimator';
+import { DrEamsAnimator, type DrEamsAction } from '@/dr-eams/animation/DrEamsAnimator';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 /**

@@ -2,9 +2,9 @@
 // Unit tests for TheBoogieMan.Ai policy gate
 
 import { describe, it, expect } from 'vitest';
-import { boogieEvaluate, boogieEnforce, computeRiskScore, selectAction, BOOGIE_POLICY_VERSION, CONTAINMENT_ACTIONS, BLAST_RADIUS_ESCALATION_THRESHOLD } from '@/lib/ai/boogieman';
-import { RULE_CODES, THRESHOLDS } from '@/lib/ai/boogie-policy';
-import type { Intent } from '@/lib/ai/schemas';
+import { boogieEvaluate, boogieEnforce, computeRiskScore, selectAction, BOOGIE_POLICY_VERSION, CONTAINMENT_ACTIONS, BLAST_RADIUS_ESCALATION_THRESHOLD } from '@/dr-eams/ai/boogieman';
+import { RULE_CODES, THRESHOLDS } from '@/dr-eams/ai/boogie-policy';
+import type { Intent } from '@/dr-eams/ai/schemas';
 
 // ---------------------------------------------------------------------------
 // boogieEvaluate — intent-gate (backwards compat + policy_version stamping)

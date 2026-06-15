@@ -71,7 +71,7 @@ Object.defineProperty(globalThis, 'localStorage', { value: mockLocalStorage, wri
 
 // ── Import modules under test ──────────────────────────────────────────────────
 
-import { registryTagsForContext } from '@/lib/assets/assetOptimizer';
+import { registryTagsForContext } from '@/engins/contentengin/assets/assetOptimizer';
 
 // ── registryTagsForContext tests ───────────────────────────────────────────────
 
@@ -138,7 +138,7 @@ describe('IndexedDB sentinel detection', () => {
 
   it('checkSentinels returns empty array when no sentinels exist', async () => {
     localStorageData.clear();
-    const { checkSentinels } = await import('@/lib/assets/indexedDBStore');
+    const { checkSentinels } = await import('@/engins/contentengin/assets/indexedDBStore');
     const missing = await checkSentinels().catch(() => [] as string[]);
     expect(Array.isArray(missing)).toBe(true);
     expect(missing.length).toBe(0);

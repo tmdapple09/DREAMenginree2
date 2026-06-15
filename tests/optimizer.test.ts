@@ -3,9 +3,9 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { ConstraintSolver } from '@/lib/optimizer/constraint-solver';
-import { DreamOptimizer } from '@/lib/optimizer';
-import { validateCreativeOption } from '@/lib/optimizer/creative-validator';
+import { ConstraintSolver } from '@/optimizer/constraint-solver';
+import { DreamOptimizer } from '@/optimizer';
+import { validateCreativeOption } from '@/optimizer/creative-validator';
 import type {
   OptimizerConfig,
   FeedItem,
@@ -16,7 +16,7 @@ import type {
   QueuedAction,
   CreativeOption,
   CreativeContext,
-} from '@/lib/optimizer/types';
+} from '@/optimizer/types';
 
 describe('ConstraintSolver', () => {
   it('should create a constraint solver with default options', () => {
@@ -865,7 +865,7 @@ describe('Creative Optimizer', () => {
 // actually changes ranking behaviour (docs/BUGS.md TODO items resolved).
 // =============================================================================
 
-import type { RuntimeContext } from '@/lib/optimizer/types';
+import type { RuntimeContext } from '@/optimizer/types';
 
 describe('DreamOptimizer — RuntimeContext injection', () => {
   /** Minimal config that enables feed + widget + notification ranking. */

@@ -8,7 +8,7 @@ import {
     isBlackKey,
     midiPitchToName,
     snapToGrid,
-} from '@/lib/music/starmakerDaw';
+} from '@/engins/starmakerengin/music/starmakerDaw';
 import { ChevronDown, ChevronUp, Piano } from 'lucide-react';
 import { useCallback, useState } from 'react';
 

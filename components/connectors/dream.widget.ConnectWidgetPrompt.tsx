@@ -1,6 +1,6 @@
 'use client';
 
-import type { WidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { useEffect, useRef, useState } from 'react';
 
 // components/connectors/dream.widget.ConnectWidgetPrompt.tsx

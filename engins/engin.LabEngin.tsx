@@ -2,18 +2,18 @@
 
 import JourneyTrail from '@/components/daydream/dream.JourneyTrail';
 import { ForgeDreamCanvas } from '@/components/dream.ForgeDreamCanvas';
-import { useDaydreamPersistence } from '@/lib/daydream/useDaydreamPersistence';
-import type { EngineBase, UpgradedEngine } from '@/lib/dreamenginOS';
-import { createEventBus, upgradeEngine } from '@/lib/dreamenginOS';
-import { ArtifactSlot } from '@/lib/enginpipe';
-import { useLabEnginRuntime } from '@/lib/engins/lab/useLabEnginRuntime';
-import { useEnginWorkflow } from '@/lib/engins/useEnginWorkflow';
-import { recordForgeTransfer } from '@/lib/forge/forgeIntelligence';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { bridge } from '@/lib/runtime/dualRuntimeBridge';
-import { useLabEnginBridge } from '@/lib/runtime/useEnginBridge';
-import { useEnginCoopSync } from '@/lib/runtime/useEnginCoopSync';
-import { createClient } from '@/lib/supabase/client';
+import { useDaydreamPersistence } from '@/daydreams/shared/useDaydreamPersistence';
+import type { EngineBase, UpgradedEngine } from '@/engine/os/index';
+import { createEventBus, upgradeEngine } from '@/engine/os/index';
+import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
+import { useLabEnginRuntime } from '@/engins/rulesets/lab/useLabEnginRuntime';
+import { useEnginWorkflow } from '@/engins/rulesets/useEnginWorkflow';
+import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { bridge } from '@/engine/runtime/dualRuntimeBridge';
+import { useLabEnginBridge } from '@/engine/runtime/useEnginBridge';
+import { useEnginCoopSync } from '@/engine/runtime/useEnginCoopSync';
+import { createClient } from '@/supabase/client/client';
 import { useEffect, useRef, useState } from 'react';
 import QuantumCircuitCanvas, {
     type QuantumMeasurementResult,
@@ -34,7 +34,7 @@ import {
     RefreshCw,
 } from 'lucide-react';
 import Link from 'next/link';
-import { toErrorMessage } from '@/lib/utils';
+import { toErrorMessage } from '@/utils/index';
 
 /**
  * LabEngin — Side B control layer for the Lab Daydream.

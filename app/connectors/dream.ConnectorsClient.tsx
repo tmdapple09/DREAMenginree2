@@ -9,10 +9,10 @@ import ConnectWidgetPrompt from '@/components/connectors/dream.widget.ConnectWid
 import type { WidgetDataState } from '@/components/widgets/dream.widget.WidgetShell';
 import WidgetShell from '@/components/widgets/dream.widget.WidgetShell';
 import { useConnectorInstallFlow } from '@/hooks/useConnectorInstallFlow';
-import type { ConnectorStatus } from '@/lib/connectors/connectorRegistry';
-import { CONNECTOR_REGISTRY, getConnectorDef } from '@/lib/connectors/connectorRegistry';
-import type { SlotGrid } from '@/lib/connectors/installFlow';
-import { getWidgetTypeDef } from '@/lib/widgets/widgetRegistry';
+import type { ConnectorStatus } from '@/engine/connectors/connectorRegistry';
+import { CONNECTOR_REGISTRY, getConnectorDef } from '@/engine/connectors/connectorRegistry';
+import type { SlotGrid } from '@/engine/connectors/installFlow';
+import { getWidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { RefreshCw } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 

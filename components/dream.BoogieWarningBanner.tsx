@@ -1,6 +1,6 @@
 'use client';
 
-import type { PolicyResult } from '@/lib/policy/boogiePolicy';
+import type { PolicyResult } from '@/engine/policy/boogiePolicy';
 import { AlertTriangle, ExternalLink, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';

@@ -2,10 +2,10 @@
 
 import DreamRCore from "@/app/dreamdmbar/_components/dreamr/dream.DreamRCore";
 import JourneyTrail from "@/components/daydream/dream.JourneyTrail";
-import DreamRFeed from "@/lib/dreamr/dreamrfeed";
-import type { FeedPost } from "@/lib/feed/useLiveFeed";
-import { uploadBlobToLedgerStorage } from "@/lib/media/ledger";
-import { createClient } from "@/lib/supabase/client";
+import DreamRFeed from "@/dreamr/components/dreamrfeed";
+import type { FeedPost } from "@/dreamr/feed/useLiveFeed";
+import { uploadBlobToLedgerStorage } from "@/engins/contentengin/media/ledger";
+import { createClient } from "@/supabase/client/client";
 import {
   BarChart2,
   Check,

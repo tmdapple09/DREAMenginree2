@@ -2,10 +2,10 @@
 
 import BrandLogo from '@/components/dream.BrandLogo';
 import GameRemote from '@/components/games/dream.remote.GameRemote';
-import { useDaydreamState } from '@/lib/daydream/useDaydreamState';
-import { useForgeActivity } from '@/lib/forge/useForgeActivity';
-import { useGsapFlip } from '@/lib/gsap/useGsapFlip';
-import { hasJourneyDot, logJourneyDot } from '@/lib/journey/journeyDots';
+import { useDaydreamState } from '@/daydreams/shared/useDaydreamState';
+import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
+import { useGsapFlip } from '@/engine/animation/gsap/useGsapFlip';
+import { hasJourneyDot, logJourneyDot } from '@/engine/journey/journeyDots';
 import { JOURNEY_DOMAIN_COLORS } from '@/types/journey';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';

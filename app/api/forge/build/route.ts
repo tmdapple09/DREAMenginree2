@@ -21,11 +21,11 @@
  * Rate limiting: client-side (localStorage) + in-memory Map TTL here.
  */
 
-import { groqChat, type GroqMessage } from '@/lib/ai/groq';
-import { AI_MODELS } from '@/lib/ai/triad';
-import type { ForgeLogEvent } from '@/lib/forge/forgeBuild';
-import { ENGIN_REGISTRY } from '@/lib/forge/forgeRegistry';
-import { toErrorMessage } from '@/lib/utils';
+import { groqChat, type GroqMessage } from '@/dr-eams/ai/groq';
+import { AI_MODELS } from '@/dr-eams/ai/triad';
+import type { ForgeLogEvent } from '@/engins/forgeengin/forge/forgeBuild';
+import { ENGIN_REGISTRY } from '@/engins/forgeengin/forge/forgeRegistry';
+import { toErrorMessage } from '@/utils/index';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

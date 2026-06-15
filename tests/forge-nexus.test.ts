@@ -25,9 +25,9 @@ import {
   detectClusters,
   findDominantPipeline,
   computeNexus,
-} from '@/lib/forge/forgeNexus';
+} from '@/engins/forgeengin/forge/forgeNexus';
 
-import { CREATIVE_ENGINES, FORGE_HISTORY_KEY } from '@/lib/forge/forgeRegistry';
+import { CREATIVE_ENGINES, FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

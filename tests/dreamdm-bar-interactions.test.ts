@@ -19,7 +19,7 @@ import {
   ORB_TAP_SLOP,
   clampOrbOffset,
   computeOrbDragPosition,
-} from '@/lib/dreamdm/barInteractions';
+} from '@/dreamdmbar/runtime/barInteractions';
 
 describe('resolveGoldTapAction', () => {
   it('waits on the first gold particle tap', () => {
@@ -257,7 +257,7 @@ describe('computeOrbDragPosition', () => {
 
 // ── Glowing light position cycle ────────────────────────────────────────────
 
-import { cycleLightPosition, DRAG_TAP_THRESHOLD_PX, DOUBLE_TAP_WINDOW_MS, type LightPosition } from '@/lib/dreamdm/barInteractions';
+import { cycleLightPosition, DRAG_TAP_THRESHOLD_PX, DOUBLE_TAP_WINDOW_MS, type LightPosition } from '@/dreamdmbar/runtime/barInteractions';
 
 describe('glowing light constants', () => {
   it('exports a positive DRAG_TAP_THRESHOLD_PX', () => {

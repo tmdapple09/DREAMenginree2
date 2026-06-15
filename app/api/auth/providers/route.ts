@@ -1,4 +1,4 @@
-import { SUPABASE_CONFIG } from "@/lib/supabase/config";
+import { SUPABASE_CONFIG } from "@/supabase/config";
 import { NextResponse } from "next/server";
 
 /**

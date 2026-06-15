@@ -5,14 +5,14 @@ import {
   computeLeftStickVector,
   LEFT_STICK_RADIUS_PX,
   LEFT_STICK_DEAD_ZONE,
-} from '@/lib/games/gameControllerLeft';
+} from '@/engins/gameengin/games/gameControllerLeft';
 import {
   evaluateRightStickTap,
   computeAimDelta,
   RIGHT_TAP_MAX_MS,
   RIGHT_TAP_MAX_PX,
   RIGHT_RESET_TIMEOUT_MS,
-} from '@/lib/games/gameControllerRight';
+} from '@/engins/gameengin/games/gameControllerRight';
 import {
   ButtonInteractionManager,
   CONTROLLER_BUTTON_DEFS,
@@ -23,7 +23,7 @@ import {
   BTN_TAP_AND_HOLD_WINDOW_MS,
   type ButtonInteractionEvent,
   type ControllerButton,
-} from '@/lib/games/gameControllerButtons';
+} from '@/engins/gameengin/games/gameControllerButtons';
 
 const REPO_ROOT = process.cwd();
 

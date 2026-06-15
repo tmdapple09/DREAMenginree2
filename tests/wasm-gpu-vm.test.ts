@@ -54,7 +54,7 @@ vi.stubGlobal('navigator', { gpu: mockGPU });
 describe('WASM+GPU VM Core', () => {
   describe('VM Types and Interfaces', () => {
     it('should define all required handle types', async () => {
-      const { GPUBufferUsageFlags, ErrorCode } = await import('@/lib/vm/types');
+      const { GPUBufferUsageFlags, ErrorCode } = await import('@/engine/vm/types');
 
       expect(GPUBufferUsageFlags.STORAGE).toBe(1 << 0);
       expect(GPUBufferUsageFlags.UNIFORM).toBe(1 << 1);
@@ -65,7 +65,7 @@ describe('WASM+GPU VM Core', () => {
     });
 
     it('should provide default VM configuration', async () => {
-      const { DEFAULT_VM_CONFIG } = await import('@/lib/vm/types');
+      const { DEFAULT_VM_CONFIG } = await import('@/engine/vm/types');
 
       expect(DEFAULT_VM_CONFIG.id).toBe('vm-default');
       expect(DEFAULT_VM_CONFIG.quotas.maxGPUBufferCount).toBe(2048);
@@ -76,7 +76,7 @@ describe('WASM+GPU VM Core', () => {
 
   describe('Buffer Manager', () => {
     it('should enforce buffer count quota', async () => {
-      const { BufferManager } = await import('@/lib/vm/bufferManager');
+      const { BufferManager } = await import('@/engine/vm/bufferManager');
 
       const quotas = {
         maxGPUBufferCount: 2,
@@ -115,7 +115,7 @@ describe('WASM+GPU VM Core', () => {
     });
 
     it('should track total GPU memory usage', async () => {
-      const { BufferManager } = await import('@/lib/vm/bufferManager');
+      const { BufferManager } = await import('@/engine/vm/bufferManager');
 
       const quotas = {
         maxGPUBufferCount: 100,
@@ -156,7 +156,7 @@ describe('WASM+GPU VM Core', () => {
 
   describe('Pipeline Cache', () => {
     it('should cache compiled pipelines', async () => {
-      const { PipelineCache } = await import('@/lib/vm/pipelineCache');
+      const { PipelineCache } = await import('@/engine/vm/pipelineCache');
 
       const cache = new PipelineCache(mockDevice as never);
 
@@ -174,7 +174,7 @@ describe('WASM+GPU VM Core', () => {
 
   describe('Snapshot Manager', () => {
     it('should serialize and deserialize snapshots', async () => {
-      const { SnapshotManager } = await import('@/lib/vm/snapshot');
+      const { SnapshotManager } = await import('@/engine/vm/snapshot');
 
       const snapshot = {
         version: 1,
@@ -215,7 +215,7 @@ describe('WASM+GPU VM Core', () => {
 describe('Dual VM Coordinator', () => {
   it('should provide global coordinator singleton', async () => {
     const { initializeDualVMCoordinator, getDualVMCoordinator, destroyDualVMCoordinator } =
-      await import('@/lib/vm/dualVMCoordinator');
+      await import('@/engine/vm/dualVMCoordinator');
 
     // Initially no coordinator
     expect(getDualVMCoordinator()).toBeNull();
@@ -234,7 +234,7 @@ describe('Dual VM Coordinator', () => {
 
   it('should track active workloads', async () => {
     const { initializeDualVMCoordinator, destroyDualVMCoordinator } =
-      await import('@/lib/vm/dualVMCoordinator');
+      await import('@/engine/vm/dualVMCoordinator');
 
     const coordinator = await initializeDualVMCoordinator({
       enableInterVMCommunication: false,
@@ -249,7 +249,7 @@ describe('Dual VM Coordinator', () => {
 
 describe('Integration: VM Specification Compliance', () => {
   it('should implement all required syscalls', async () => {
-    const { WasmGpuVM } = await import('@/lib/vm/wasmGpuVM');
+    const { WasmGpuVM } = await import('@/engine/vm/wasmGpuVM');
 
     const vm = await WasmGpuVM.create({
       id: 'test-vm',
@@ -284,7 +284,7 @@ describe('Integration: VM Specification Compliance', () => {
   });
 
   it('should report performance counters', async () => {
-    const { WasmGpuVM } = await import('@/lib/vm/wasmGpuVM');
+    const { WasmGpuVM } = await import('@/engine/vm/wasmGpuVM');
 
     const vm = await WasmGpuVM.create({
       id: 'test-vm',

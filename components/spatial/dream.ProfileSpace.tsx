@@ -1,7 +1,7 @@
 "use client";
 
 import { useContent, useWidgets } from "@/hooks/use-spatial";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/index";
 import type { ContentObject, Widget, WidgetType, WidgetVisibility } from "@/types/spatial";
 import {
     ChevronLeft,

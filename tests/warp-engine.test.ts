@@ -18,7 +18,7 @@ import {
   flowKernel,
   dampingKernel,
   wrapBoundaryKernel,
-} from '@/lib/warp/warpEngine';
+} from '@/engine/rendering/warp/warpEngine';
 
 // ---------------------------------------------------------------------------
 // Helpers

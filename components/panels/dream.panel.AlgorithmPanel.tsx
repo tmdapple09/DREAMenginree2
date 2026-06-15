@@ -1,7 +1,7 @@
 'use client';
 
 import AlgorithmEngine from '@/components/feed/dream.AlgorithmEngine';
-import { useDreamSystem } from '@/lib/dreamdm/DreamSystemContext';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Cpu } from 'lucide-react';
 
 /**

@@ -1,7 +1,7 @@
 'use client';
 
-import { calculateActivityPoints, getTierDescription } from '@/lib/activity/scoring';
-import { ActivityTier, VerificationMethod } from '@/lib/activity/types';
+import { calculateActivityPoints, getTierDescription } from '@/dreamr/activity/scoring';
+import { ActivityTier, VerificationMethod } from '@/dreamr/activity/types';
 import { useState } from 'react';
 import { TierBadge } from './dream.TierBadge';
 

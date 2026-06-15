@@ -3,9 +3,9 @@ import {
     isDomainBlocked,
     isOwner,
     triggerAdminLockout,
-} from '@/lib/admin/lockout';
-import { createServerClient } from '@/lib/supabase/server';
-import { safeGetUser } from '@/lib/supabase/safeGetUser';
+} from '@/engine/admin/lockout';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { safeGetUser } from '@/supabase/client/safeGetUser';
 import fs from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';

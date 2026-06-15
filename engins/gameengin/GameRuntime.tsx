@@ -1,9 +1,9 @@
 'use client';
 
-import { recordEmission } from '@/lib/runtime/channelMetrics';
-import { dreamOSBus } from '@/lib/runtime/dreamOSBus';
-import { createLocalChannel } from '@/lib/runtime/runtimeChannel';
-import { acquireSharedResource, releaseSharedResource } from '@/lib/runtime/sharedResourcePool';
+import { recordEmission } from '@/engine/runtime/channelMetrics';
+import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
+import { createLocalChannel } from '@/engine/runtime/runtimeChannel';
+import { acquireSharedResource, releaseSharedResource } from '@/engine/runtime/sharedResourcePool';
 import { useCallback, useEffect, useRef } from 'react';
 import type {
     AchievementDefinition,

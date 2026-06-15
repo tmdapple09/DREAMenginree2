@@ -9,8 +9,8 @@
  * deliberately disorienting yourself.
  */
 
-import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/lib/games/hooks';
-import { useGameEngineAPI } from '@/lib/gameengin/cartridges/reactCartridge';
+import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
+import { useGameEngineAPI } from '@/engins/gameengin/cartridges/reactCartridge';
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 const MAP_N = 16;
