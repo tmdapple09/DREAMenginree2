@@ -1,89 +1,136 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useContentEnginRuntime } from '@/engins/rulesets/content/useContentEnginRuntime';
-import { createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, exportGLB, exportOBJ, meshToSnapshot, processImageToEditableMesh, qualityFromDiagnostics, repairMesh, sculptMesh, validateMesh, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type SculptTool, type SourceImageAsset, analyzeImageMask } from '@/engins/isosurfaceAssetPipeline';
-import type { Vec3 } from '@/engins/isosurfaceDualContouring';
+import { analyzeImageMask, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, exportGLB, exportOBJ, meshToSnapshot, processImageToEditableMesh, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
+import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
 
 export interface WorkspaceIntentLog { type: string; at: string; }
 
 export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'contentengin-runtime') {
   const { dispatch } = useContentEnginRuntime({ useMemoryAdapter: true });
   const [workspace, setWorkspace] = useState<ImplicitAssetWorkspaceObject>(() => createImplicitAssetWorkspaceObject(ownerId, runtimeId));
+  const workspaceRef = useRef(workspace);
+  const sourceUrlRef = useRef<string | null>(null);
+  const lastBrushEmit = useRef(0);
   const [intents, setIntents] = useState<WorkspaceIntentLog[]>([]);
-  const emit = useCallback((type: string, payload: Record<string, unknown> = {}) => {
-    dispatch({ type: type as never, payload: payload as never });
-    setIntents((prev) => [{ type, at: new Date().toISOString() }, ...prev].slice(0, 8));
-  }, [dispatch]);
+  useEffect(() => { workspaceRef.current = workspace; }, [workspace]);
+  useEffect(() => () => { if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current); }, []);
+
+  const emit = useCallback((type: string, payload: Record<string, unknown> = {}) => { dispatch({ type: type as never, payload: payload as never }); setIntents((prev) => [{ type, at: new Date().toISOString() }, ...prev].slice(0, 8)); }, [dispatch]);
   const updateData = useCallback((patch: Partial<ImplicitAssetWorkspaceObject['data']>) => {
-    setWorkspace((current) => ({ ...current, updatedAt: new Date().toISOString(), version: current.version + 1, data: { ...current.data, ...patch } }));
+    setWorkspace((current) => {
+      const next = {
+        ...current,
+        updatedAt: new Date().toISOString(),
+        version: current.version + 1,
+        data: {
+          ...current.data,
+          ...patch,
+        },
+      };
+
+      workspaceRef.current = next;
+      return next;
+    });
   }, []);
 
   const uploadImage = useCallback(async (file: File) => {
-    emit('contentengin:image-uploaded', { fileName: file.name });
+    if (sourceUrlRef.current) {
+      URL.revokeObjectURL(sourceUrlRef.current);
+      sourceUrlRef.current = null;
+    }
+
     const url = URL.createObjectURL(file);
-    const image = await fileToImageData(file);
-    const sourceImage = analyzeImageMask(image, file.name, url);
-    updateData({ sourceImage, processingStatus: 'uploaded', visibleMessage: 'Image loaded. Press Process to make it 3D.' });
+
+    try {
+      const image = await fileToImageData(file);
+      const sourceImage = analyzeImageMask(image, file.name, url);
+
+      sourceUrlRef.current = url;
+
+      updateData({
+        sourceImage,
+        processingStatus: 'uploaded',
+        visibleMessage: 'Image loaded. Press Process to make it 3D.',
+      });
+
+      emit('contentengin:image-uploaded', {
+        sourceImage: {
+          name: sourceImage.name,
+          width: sourceImage.width,
+          height: sourceImage.height,
+          threshold: sourceImage.threshold,
+          activeBounds: sourceImage.activeBounds,
+        },
+      });
+    } catch {
+      URL.revokeObjectURL(url);
+      sourceUrlRef.current = null;
+
+      updateData({
+        processingStatus: 'failed',
+        visibleMessage: 'Could not read image. Try another file.',
+      });
+    }
   }, [emit, updateData]);
 
-  const process = useCallback(() => {
-    if (!workspace.data.sourceImage) return;
-    emit('contentengin:asset-process-requested', { sourceName: workspace.data.sourceImage.name });
-    updateData({ processingStatus: 'processing', visibleMessage: 'Shaping your image into a 3D asset…' });
-    window.setTimeout(() => {
-      const editable = processImageToEditableMesh(workspace.data.sourceImage as SourceImageAsset);
-      updateData({ mesh: editable, previewMesh: meshToSnapshot(editable.mesh, editable.diagnostics), editHistory: [], redoStack: [], processingStatus: editable.quality === 'Export Blocked' ? 'generated' : 'ready-to-download', visibleMessage: editable.quality === 'Export Blocked' ? 'Mesh Quality: Export Blocked. Try Smooth or Lower Detail.' : `Mesh Quality: ${editable.quality}. Ready to Download.` });
-    }, 16);
-  }, [emit, updateData, workspace.data.sourceImage]);
+  const process = useCallback(() => { const sourceImage = workspaceRef.current.data.sourceImage; if (!sourceImage) return; emit('contentengin:asset-process-requested', { sourceName: sourceImage.name }); updateData({ processingStatus: 'processing', visibleMessage: 'Shaping your image into a 3D asset…' }); window.setTimeout(() => { try { const editable = processImageToEditableMesh(sourceImage); const ready = editable.quality === 'Clean' || editable.quality === 'Open Surface' || editable.quality === 'Auto-fix applied'; updateData({ mesh: editable, previewMesh: meshToSnapshot(editable.mesh, editable.diagnostics), editHistory: [], redoStack: [], processingStatus: ready ? 'ready-to-download' : 'generated', visibleMessage: messageForQuality(editable.quality) }); emit('contentengin:asset-process-completed', { processingStatus: ready ? 'ready-to-download' : 'generated', meshDiagnostics: diagnosticsMetadata(editable), quality: editable.quality }); } catch { updateData({ processingStatus: 'failed', visibleMessage: 'Processing failed. Try a simpler image.' }); } }, 16); }, [emit, updateData]);
 
-  const startEdit = useCallback(() => { if (!workspace.data.mesh) return; emit('contentengin:asset-edit-started'); updateData({ processingStatus: 'editing', visibleMessage: 'Edit mode on. Drag on the asset to sculpt.' }); }, [emit, updateData, workspace.data.mesh]);
-  const setTool = useCallback((tool: SculptTool) => updateData({ activeTool: tool, brushState: { ...workspace.data.brushState, tool } }), [updateData, workspace.data.brushState]);
-  const setBrush = useCallback((brushState: Partial<BrushState>) => updateData({ brushState: { ...workspace.data.brushState, ...brushState } }), [updateData, workspace.data.brushState]);
-  const setCamera = useCallback((cameraState: Partial<CameraState>) => updateData({ cameraState: { ...workspace.data.cameraState, ...cameraState } }), [updateData, workspace.data.cameraState]);
+  const startEdit = useCallback(() => { if (!workspaceRef.current.data.mesh) return; emit('contentengin:asset-edit-started'); updateData({ processingStatus: 'editing', visibleMessage: 'Edit mode on. Sculpt directly on the asset.' }); }, [emit, updateData]);
+  const setTool = useCallback((tool: SculptTool) => { const current = workspaceRef.current.data.brushState; updateData({ activeTool: tool, brushState: { ...current, tool } }); }, [updateData]);
+  const setBrush = useCallback((brushState: Partial<BrushState>) => { updateData({ brushState: { ...workspaceRef.current.data.brushState, ...brushState } }); }, [updateData]);
+  const setCamera = useCallback((cameraState: Partial<CameraState>) => { updateData({ cameraState: { ...workspaceRef.current.data.cameraState, ...cameraState, zoom: cameraState.zoom === undefined ? workspaceRef.current.data.cameraState.zoom : Math.max(0.25, Math.min(6, cameraState.zoom)) } }); }, [updateData]);
   const resetView = useCallback(() => updateData({ cameraState: DEFAULT_CAMERA_STATE }), [updateData]);
   const resetBrush = useCallback(() => updateData({ brushState: DEFAULT_BRUSH_STATE, activeTool: DEFAULT_BRUSH_STATE.tool }), [updateData]);
 
-  const applyBrushAt = useCallback((point: Vec3) => {
-    const current = workspace.data.mesh;
-    if (!current || workspace.data.processingStatus !== 'editing') return;
-    const mesh = sculptMesh(current.mesh, point, workspace.data.brushState);
-    const repaired = repairMesh(mesh);
-    const diagnostics = validateMesh(repaired);
-    const next: EditableMeshState = { mesh: repaired, diagnostics, quality: qualityFromDiagnostics(diagnostics), repaired: true };
-    updateData({ mesh: next, previewMesh: meshToSnapshot(repaired, diagnostics), editHistory: [...workspace.data.editHistory, current.mesh].slice(-24), redoStack: [], visibleMessage: next.quality === 'Export Blocked' ? 'Mesh Quality: Export Blocked. Try Smooth or Lower Detail.' : `Mesh Quality: ${next.quality}. Ready to Download.` });
-  }, [updateData, workspace.data.brushState, workspace.data.editHistory, workspace.data.mesh, workspace.data.processingStatus]);
+  const applyBrushAt = useCallback((point: Vec3) => { const data = workspaceRef.current.data; const current = data.mesh; if (!current || data.processingStatus !== 'editing') return; const sculpted = sculptMesh(current.mesh, point, data.brushState); const repaired = repairMeshDetailed(sculpted); const quality = summarizeMeshQuality(repaired.diagnostics, repaired.report); const next: EditableMeshState = { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report }; updateData({ mesh: next, previewMesh: meshToSnapshot(repaired.mesh, repaired.diagnostics), editHistory: [...data.editHistory, cloneForHistory(current.mesh)].slice(-24), redoStack: [], visibleMessage: messageForQuality(quality) }); const now = Date.now(); if (now - lastBrushEmit.current > 250) { lastBrushEmit.current = now; emit('contentengin:asset-brush-applied', { tool: data.brushState.tool }); } }, [emit, updateData]);
 
-  const undo = useCallback(() => {
-    const previous = workspace.data.editHistory.at(-1); if (!previous || !workspace.data.mesh) return;
-    const diagnostics = validateMesh(previous);
-    updateData({ mesh: { mesh: previous, diagnostics, quality: qualityFromDiagnostics(diagnostics), repaired: true }, previewMesh: meshToSnapshot(previous, diagnostics), editHistory: workspace.data.editHistory.slice(0, -1), redoStack: [workspace.data.mesh.mesh, ...workspace.data.redoStack].slice(0, 24) });
-  }, [updateData, workspace.data.editHistory, workspace.data.mesh, workspace.data.redoStack]);
-
-  const redo = useCallback(() => {
-    const next = workspace.data.redoStack[0]; if (!next || !workspace.data.mesh) return;
-    const diagnostics = validateMesh(next);
-    updateData({ mesh: { mesh: next, diagnostics, quality: qualityFromDiagnostics(diagnostics), repaired: true }, previewMesh: meshToSnapshot(next, diagnostics), editHistory: [...workspace.data.editHistory, workspace.data.mesh.mesh].slice(-24), redoStack: workspace.data.redoStack.slice(1) });
-  }, [updateData, workspace.data.editHistory, workspace.data.mesh, workspace.data.redoStack]);
+  const undo = useCallback(() => { const data = workspaceRef.current.data; const previous = data.editHistory.at(-1); if (!previous || !data.mesh) return; const diagnostics = validateMeshStrict(previous); const quality = qualityFromDiagnostics(diagnostics); updateData({ mesh: { mesh: previous, diagnostics, quality, repaired: true }, previewMesh: meshToSnapshot(previous, diagnostics), editHistory: data.editHistory.slice(0, -1), redoStack: [data.mesh.mesh, ...data.redoStack].slice(0, 24), processingStatus: 'editing', visibleMessage: messageForQuality(quality) }); }, [updateData]);
+  const redo = useCallback(() => { const data = workspaceRef.current.data; const nextMesh = data.redoStack[0]; if (!nextMesh || !data.mesh) return; const diagnostics = validateMeshStrict(nextMesh); const quality = qualityFromDiagnostics(diagnostics); updateData({ mesh: { mesh: nextMesh, diagnostics, quality, repaired: true }, previewMesh: meshToSnapshot(nextMesh, diagnostics), editHistory: [...data.editHistory, data.mesh.mesh].slice(-24), redoStack: data.redoStack.slice(1), processingStatus: 'editing', visibleMessage: messageForQuality(quality) }); }, [updateData]);
 
   const download = useCallback((format: ExportFormat) => {
-    const current = workspace.data.mesh;
+    const current = workspaceRef.current.data.mesh;
     if (!current) return;
+
     emit('contentengin:asset-export-requested', { format });
-    const diagnostics = validateMesh(current.mesh);
-    if (qualityFromDiagnostics(diagnostics) === 'Export Blocked') { updateData({ visibleMessage: 'Mesh Quality: Export Blocked. Try Smooth or Lower Detail.' }); return; }
-    const blob = format === 'obj' ? new Blob([exportOBJ(current.mesh)], { type: 'text/plain' }) : exportGLB(current.mesh);
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `dreamengin-asset.${format}`; a.click(); URL.revokeObjectURL(a.href);
-    updateData({ processingStatus: 'ready-to-download', visibleMessage: 'Mesh Quality: Clean. Download started.' });
-  }, [emit, updateData, workspace.data.mesh]);
+
+    const repaired = repairMeshDetailed(current.mesh);
+    const diagnostics = validateMeshStrict(repaired.mesh);
+    const quality = qualityFromDiagnostics(diagnostics);
+
+    if (
+      diagnostics.invalidIndices > 0 ||
+      diagnostics.nonFiniteVertices > 0 ||
+      diagnostics.triangles === 0 ||
+      quality === 'Export Blocked'
+    ) {
+      updateData({ visibleMessage: 'Export blocked. Repair the mesh first.' });
+      return;
+    }
+
+    if (format === 'glb' && (quality === 'Needs Repair' || diagnostics.degenerateTriangles > 0 || diagnostics.nonManifoldEdges > 0)) {
+      updateData({ visibleMessage: 'GLB export blocked. Repair the mesh first.' });
+      return;
+    }
+
+    const fileName = `dreamengin-asset.${format}`;
+    const blob = format === 'obj' ? new Blob([exportOBJ(repaired.mesh)], { type: 'text/plain' }) : exportGLB(repaired.mesh);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+    const visibleMessage = quality === 'Too Heavy' ? 'Download started. This mesh may be heavy.' : 'Download started.';
+    updateData({ processingStatus: 'ready-to-download', visibleMessage });
+    emit('contentengin:download-ready', { downloads: { format, fileName, triangles: diagnostics.triangles, vertices: diagnostics.vertices } });
+  }, [emit, updateData]);
 
   return useMemo(() => ({ workspace, intents, uploadImage, process, startEdit, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download }), [workspace, intents, uploadImage, process, startEdit, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download]);
 }
 
-async function fileToImageData(file: File): Promise<ImageData> {
-  const bitmap = await createImageBitmap(file);
-  const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
-  const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('Could not read image.');
-  ctx.drawImage(bitmap, 0, 0);
-  return ctx.getImageData(0, 0, canvas.width, canvas.height);
-}
+async function fileToImageData(file: File): Promise<ImageData> { const bitmap = await createImageBitmap(file); const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height; const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('Could not read image.'); ctx.drawImage(bitmap, 0, 0); return ctx.getImageData(0, 0, canvas.width, canvas.height); }
+function messageForQuality(quality: string): string { if (quality === 'Export Blocked') return 'Mesh Quality: Export Blocked. Repair before download.'; if (quality === 'Needs Repair') return 'Mesh Quality: Needs Repair. OBJ may still download if valid.'; return `Mesh Quality: ${quality}. Ready to Download.`; }
+function diagnosticsMetadata(editable: EditableMeshState) { const d = editable.diagnostics; return { vertices: d.vertices, triangles: d.triangles, boundaryEdges: d.boundaryEdges, nonManifoldEdges: d.nonManifoldEdges, invalidIndices: d.invalidIndices, nonFiniteVertices: d.nonFiniteVertices, estimatedBytes: d.estimatedBytes }; }
+function cloneForHistory(mesh: Mesh): Mesh { return { vertices: mesh.vertices.map((v) => ({ ...v })), indices: [...mesh.indices] }; }
