@@ -9,19 +9,19 @@ User Action / Agent / CI
    [Surface / Shell]          ← components/, app/, coresurfaces/, daydreams/
         │ dispatches Intent
         ▼
-   [EnginDispatcher]          ← engine/runtime/EnginDispatcher.ts
+   [EnginDispatcher]          ← lib/runtime/EnginDispatcher.ts
         │ looks up ModuleKey
         ▼
-   [Module Registry]          ← engine/runtime/moduleRegistry.ts
+   [Module Registry]          ← lib/runtime/moduleRegistry.ts
         │ routes to Engin
         ▼
-   [Engin Logic]              ← /engins/*.tsx + engine/generated/engins.ts*RuleSet.ts + engine/engin-runtime/
+   [Engin Logic]              ← /engins/*.tsx + lib/engins/*RuleSet.ts + lib/engin-runtime/
         │ applies rule-set
         ▼
-   [State Mutation + Bus]     ← engine/runtime/dreamOSBus.ts
+   [State Mutation + Bus]     ← lib/runtime/dreamOSBus.ts
         │
         ▼
-   [Re-render / Persistence]  ← Supabase, engine/vm/, engine/runtime/
+   [Re-render / Persistence]  ← Supabase, lib/vm/, lib/runtime/
 ```
 
 ## Generated Slot Counts
@@ -55,12 +55,12 @@ User Action / Agent / CI
 | Stage ID | Label | Paths | Slots | Dispatches To |
 | --- | --- | --- | --- | --- |
 | `user-action` | User Action / Agent / CI | — | — | `surface-shell` |
-| `surface-shell` | Surface / Shell | `components/`, `app/`, `coresurfaces/`, `daydreams/`, `engine/dreams/`, `engine/dream-window/`, `engine/widgets/` | `core-surface`, `daydream`, `surface`, `route-surface`, `dreamsurface` | `engin-dispatcher` |
-| `engin-dispatcher` | EnginDispatcher | `engine/runtime/EnginDispatcher.ts` | — | `module-registry` |
-| `module-registry` | Module Registry | `engine/runtime/moduleRegistry.ts`, `engine/generated/` | `dreamr`, `dreamdmbar`, `homedream`, `connector`, `dr-eams-tool` | `engin-logic` |
-| `engin-logic` | Engin Logic | `engins/`, `engine/generated/engins.ts`, `engine/engin-runtime/`, `engins/gameengin/brain/`, `engins/gameengin/cartridges/`, `public/cartridges/` | `engin`, `engine-ruleset`, `brain-node`, `brain-doc`, `cartridge`, `persona` | `state-mutation-bus` |
-| `state-mutation-bus` | State Mutation + Bus | `engine/runtime/dreamOSBus.ts`, `engine/runtime/`, `hooks/`, `hooks/`, `engins/gameengin/`, `engins/gameengin/games/` | `hook`, `engine-system`, `engine-utility` | `rerender-persistence` |
-| `rerender-persistence` | Re-render / Persistence | `supabase/`, `supabase/migrations/`, `build-memory/`, `engine/vm/`, `engine/runtime/` | `migration`, `memory` | — |
+| `surface-shell` | Surface / Shell | `components/`, `app/`, `coresurfaces/`, `daydreams/`, `lib/dreams/`, `lib/dream-window/`, `lib/widgets/` | `core-surface`, `daydream`, `surface`, `route-surface`, `dreamsurface` | `engin-dispatcher` |
+| `engin-dispatcher` | EnginDispatcher | `lib/runtime/EnginDispatcher.ts` | — | `module-registry` |
+| `module-registry` | Module Registry | `lib/runtime/moduleRegistry.ts`, `engine/generated/` | `dreamr`, `dreamdmbar`, `homedream`, `connector`, `dr-eams-tool` | `engin-logic` |
+| `engin-logic` | Engin Logic | `engins/`, `lib/engins/`, `lib/engin-runtime/`, `lib/gameengin/brain/`, `lib/gameengin/cartridges/`, `public/cartridges/` | `engin`, `engine-ruleset`, `brain-node`, `brain-doc`, `cartridge`, `persona` | `state-mutation-bus` |
+| `state-mutation-bus` | State Mutation + Bus | `lib/runtime/dreamOSBus.ts`, `lib/runtime/`, `lib/hooks/`, `hooks/`, `lib/gameengin/`, `lib/games/` | `hook`, `engine-system`, `engine-utility` | `rerender-persistence` |
+| `rerender-persistence` | Re-render / Persistence | `supabase/`, `supabase/migrations/`, `build-memory/`, `lib/vm/`, `lib/runtime/` | `migration`, `memory` | — |
 
 ## Shell Classification
 
@@ -71,15 +71,15 @@ User Action / Agent / CI
 | `components/` | `surface` |
 | `app/` | `route-surface` |
 | `engins/` | `engin` |
-| `engine/generated/engins.ts` | `engine-ruleset` |
-| `dreamr/runtime/` | `dreamr` |
+| `lib/engins/` | `engine-ruleset` |
+| `lib/dreamr/` | `dreamr` |
 | `app/dreamr/` | `dreamr` |
+| `lib/dreamdm/` | `dreamdmbar` |
 | `dreamdmbar/` | `dreamdmbar` |
-| `dreamdmbar/` | `dreamdmbar` |
-| `engine/home-buttons/` | `homedream` |
-| `engine/dreams/` | `dreamsurface` |
-| `engine/dream-window/` | `dreamsurface` |
-| `engine/widgets/` | `dreamsurface` |
+| `lib/home-buttons/` | `homedream` |
+| `lib/dreams/` | `dreamsurface` |
+| `lib/dream-window/` | `dreamsurface` |
+| `lib/widgets/` | `dreamsurface` |
 
 ## Generated Router Lanes
 
