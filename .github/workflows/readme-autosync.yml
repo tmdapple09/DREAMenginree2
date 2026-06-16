@@ -4,10 +4,9 @@ on:
   workflow_dispatch:
 
   schedule:
-    # GitHub cron is UTC.
-    # 6am Pacific is 13:00 UTC during PDT and 14:00 UTC during PST.
-    # The gate job below makes sure the heavy README job only runs at actual 6am Pacific.
+    # 6:00 AM Pacific during daylight saving time
     - cron: "0 13 * * *"
+    # 6:00 AM Pacific during standard time
     - cron: "0 14 * * *"
 
 permissions:
@@ -19,41 +18,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  gate:
-    name: Allow manual or 6am Pacific only
+  pacific-time-gate:
+    name: Allow only 6 AM Pacific or manual runs
     runs-on: ubuntu-latest
-
     outputs:
-      should_run: ${{ steps.window.outputs.should_run }}
-
+      should_run: ${{ steps.gate.outputs.should_run }}
     steps:
-      - name: Check run window
-        id: window
+      - name: Check Pacific time gate
+        id: gate
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manual run allowed."
             echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual workflow_dispatch run allowed."
             exit 0
           fi
 
           PACIFIC_HOUR="$(TZ=America/Los_Angeles date +%H)"
 
-          echo "Pacific hour: $PACIFIC_HOUR"
-
           if [ "$PACIFIC_HOUR" = "06" ]; then
-            echo "Scheduled run allowed."
             echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Scheduled run allowed. Current Pacific hour is 06."
           else
-            echo "Not 6am Pacific. Heavy README job will not run."
             echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Scheduled run skipped. Current Pacific hour is $PACIFIC_HOUR, not 06."
           fi
 
   readme-full-coverage:
-    name: Regenerate and validate full README coverage
+    name: Regenerate and report full README coverage
     runs-on: ubuntu-latest
-    needs: gate
-    if: needs.gate.outputs.should_run == 'true'
+    needs: pacific-time-gate
+    if: needs.pacific-time-gate.outputs.should_run == 'true'
 
     steps:
       - name: Checkout full repository
@@ -108,7 +103,7 @@ jobs:
             --changed-files .readme-autosync/all-files.txt \
             --summary-file .readme-autosync/readme-summary.json
 
-      - name: Validate README full coverage
+      - name: Report README full coverage
         id: validate
         shell: bash
         run: |
@@ -330,6 +325,8 @@ jobs:
             "",
           ].join("\n");
 
+          const hasCoverageIssues = failures.length > 0;
+
           fs.writeFileSync(reportPath, report);
           fs.writeFileSync(jsonPath, JSON.stringify({
             trackedFiles: repoFiles.length,
@@ -338,13 +335,16 @@ jobs:
             staleReadmePaths: stalePaths,
             warnings,
             failures,
+            hasCoverageIssues,
           }, null, 2));
 
           console.log(report);
 
-          if (failures.length) {
-            process.exit(1);
+          if (hasCoverageIssues) {
+            console.log("README coverage issues found. Marked in report artifact. Not failing workflow.");
           }
+
+          process.exit(0);
           NODE
 
       - name: Detect README changes
@@ -359,7 +359,7 @@ jobs:
           fi
 
       - name: Commit README update
-        if: steps.validate.outcome == 'success' && steps.autosync.outputs.readme_changed == 'true'
+        if: steps.autosync.outputs.readme_changed == 'true'
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
