@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-15T15:34:36.370Z",
+  "generatedAt": "2026-06-16T00:39:25.253Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
@@ -6620,7 +6620,9 @@
       "engine": "Universal",
       "exports": [
         "buildImplicitContentMesh",
-        "computeMeshMetrics"
+        "buildRegionFitContentMesh",
+        "computeMeshMetrics",
+        "sdfFromAlgebraicFit"
       ]
     },
     {
@@ -7110,7 +7112,13 @@
       "path": "engins/contentengin/photo/regionDetector.ts",
       "engine": "Universal",
       "exports": [
-        "relabelRegion"
+        "AlgebraicFitKind",
+        "AlgebraicRegionFit",
+        "detectSemanticAlgebraicRegions",
+        "fitAlgebraicRegion",
+        "relabelRegion",
+        "SemanticPartLabel",
+        "SemanticShapeRegion"
       ]
     },
     {
@@ -8754,7 +8762,11 @@
         "createTerrainCaveSDF",
         "DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS",
         "DualContouringSettings",
+        "generateCaveChunk",
+        "generateDestructibleWallChunk",
         "generateMobileTerrainCaveMesh",
+        "generateRockProp",
+        "generateTerrainCutout",
         "Mesh",
         "MeshDiagnostics",
         "meshToSnapshot",
@@ -9102,6 +9114,8 @@
         "CameraState",
         "centerAndScaleMesh",
         "cloneMesh",
+        "ColoredMesh",
+        "ColorRGB",
         "compactMesh",
         "computeBounds",
         "computePlanarUVs",
@@ -9141,14 +9155,27 @@
       "path": "engins/isosurfaceDualContouring.ts",
       "engine": "Universal",
       "exports": [
+        "classifyMobileIsoSurfaceTier",
+        "createBoxSDF",
+        "createCapsuleSDF",
+        "createIsoSurfaceJob",
         "createSphereSDF",
         "createTerrainCaveSDF",
+        "createTorusSDF",
         "DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS",
         "DualContouringSettings",
+        "estimateIsoSurfaceMemoryBytes",
+        "IsoSurfaceJob",
+        "IsoSurfacePurpose",
+        "IsoSurfaceSdfKind",
+        "IsoSurfaceSourceEngin",
         "Mesh",
         "MeshDiagnostics",
         "meshToSnapshot",
+        "MobileIsoSurfaceTier",
+        "normalizeDualContouringSettings",
         "runDualContouring",
+        "runIsoSurfaceJob",
         "SDF",
         "validateMesh",
         "Vec3"
@@ -9160,6 +9187,7 @@
       "path": "engins/labengin/implicitSurface.ts",
       "engine": "Universal",
       "exports": [
+        "LabImplicitSurfacePreset",
         "LabImplicitSurfaceRun",
         "runLabImplicitSurface"
       ]
@@ -9254,6 +9282,7 @@
       "engine": "Universal",
       "exports": [
         "CONTENT_ENGIN_RULE_SET",
+        "CONTENT_IMPLICIT_ASSET_POLICY",
         "ContentEnginAction",
         "ContentEnginDerivedState"
       ]
