@@ -31,7 +31,7 @@ Pass 2 upgrades DreamDM from a standalone page into a **real-time, persistent, n
 3. **Notification integration** — Unread message counts and notification data flow from the existing `notifications` table through a shared hook.
 4. **DreamDM Bar component** — A compact, reusable `<DreamDMBar>` renders the unread count badge and provides quick-access to `/messages` from any surface.
 5. **Media column migration** — `messages.media_url` and `messages.media_type` columns added to the database so media attachments are fully persisted.
-6. **Modular hook layer** — Logic extracted from `MessagesClient.tsx` into `dreamdmbar/` hooks, separating concerns per `GENERATION_LAW.md §3.1`.
+6. **Modular hook layer** — Logic extracted from `MessagesClient.tsx` into `lib/dreamdm/` hooks, separating concerns per `GENERATION_LAW.md §3.1`.
 7. **Notifications insert fix** — API-layer bug corrected: notification inserts now use the `content` JSONB field per the schema.
 
 ### 1.3 What is out of scope (Pass 3+)
@@ -57,7 +57,7 @@ Pass 2 upgrades DreamDM from a standalone page into a **real-time, persistent, n
 - Incoming messages from the current user (already optimistically added) are deduplicated by `id`.
 - On subscription error or disconnection, the component falls back to the last fetched state without crashing.
 
-**Hook:** `dreamdmbar/hooks/useDreamDMMessages.ts`
+**Hook:** `lib/dreamdm/useDreamDMMessages.ts`
 
 ### 2.2 Draft Persistence
 
@@ -68,7 +68,7 @@ Pass 2 upgrades DreamDM from a standalone page into a **real-time, persistent, n
 - Maximum draft length stored is 5 000 characters; longer content is silently truncated at 4 999 to avoid storage quota errors.
 - No draft content is sent to any server; it is local-only.
 
-**Hook:** `dreamdmbar/hooks/useDreamDMDraft.ts`
+**Hook:** `lib/dreamdm/useDreamDMDraft.ts`
 
 ### 2.3 Unread Count and Notification Integration
 
@@ -79,7 +79,7 @@ Pass 2 upgrades DreamDM from a standalone page into a **real-time, persistent, n
 - Hook is independent of `MessagesClient`; it can be mounted in any layout.
 - Zero-state: no badge rendered when `unreadCount === 0`.
 
-**Hook:** `dreamdmbar/hooks/useNotifications.ts`
+**Hook:** `lib/dreamdm/useNotifications.ts`
 
 ### 2.4 DreamDM Bar Component
 
@@ -134,7 +134,7 @@ The existing `notifications` table uses `type TEXT` and `content JSONB`. The mes
 ## 4. Component and Hook Architecture
 
 ```
-dreamdmbar/
+lib/dreamdm/
   useDreamDMConversations.ts   — fetch + realtime conversations list
   useDreamDMMessages.ts        — fetch + realtime messages for a conversation
   useDreamDMDraft.ts           — localStorage draft save/restore for a conversation
@@ -148,7 +148,7 @@ components/dreamdm/
 
 | Layer | What goes here |
 |-------|---------------|
-| `dreamdmbar/` | All data-fetching, state management, side effects |
+| `lib/dreamdm/` | All data-fetching, state management, side effects |
 | `components/dreamdm/` | Presentational components; receive data via props or hooks |
 | `components/dream.MessagesClient.tsx` | Full-surface view; composes hooks + presentational components |
 | `app/messages/page.tsx` | Server component; auth gate, initial data fetch, passes to client |
@@ -257,7 +257,7 @@ Per `CONSTITUTION.md` Rule 8 (Action Honesty): every visible action must map to 
 
 | Residual | Resolution |
 |---------|-----------|
-| Logic mixed with UI in `MessagesClient.tsx` | Hooks extracted to `dreamdmbar/`; client file composes hooks |
+| Logic mixed with UI in `MessagesClient.tsx` | Hooks extracted to `lib/dreamdm/`; client file composes hooks |
 | `media_url`/`media_type` fields sent to API but no DB columns | Migration adds columns |
 | `notifications` insert uses wrong field names | API corrected to use `content` JSONB |
 

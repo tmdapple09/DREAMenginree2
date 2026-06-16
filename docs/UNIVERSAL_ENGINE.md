@@ -2,7 +2,7 @@
 
 DREAMengin now runs through one fixed universal engine.
 
-- The engine lives in `src/engin/core/index.ts` and is re-exported from `utils/index.ts`.
+- The engine lives in `src/engin/core/index.ts` and is re-exported from `lib/engine/index.ts`.
 - Behaviors are rule-sets (constraints + transforms + params) outside the engine.
 - To change behavior, swap rule-sets; the engine itself stays fixed.
 

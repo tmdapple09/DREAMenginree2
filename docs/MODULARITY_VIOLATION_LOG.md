@@ -64,9 +64,9 @@ The following canonical elements are **fully modular** and pass the Universal Mo
 | `components/dreams/dreamsurface.window.tsx` (DreamWindowShell) | `useTapHoldMove` | `canTransfer` + `onTransfer` callback |
 | `components/universal-editor/dream.UniversalEditorWrapper.tsx` | `useTapHoldMove` | `onTransfer` callback → `moduleRegistry.transferModule` |
 | `components/home/dreamsurface.homedream-grid.tsx` | `DraggableModule` per widget | `manifestFromWidget` → bridge |
-| `engine/runtime/moduleRegistry.ts` | — (logic layer) | `transferModule(id, targetRuntime)` enforces `compatibleRuntimes` |
-| `engine/runtime/dropTargetRegistry.ts` | — (logic layer) | `route(drop, region)` routes to highest-priority matching target |
-| `engine/runtime/useDragSurface.ts` | — (hook) | Registers surface as a `dropTargetRegistry` target |
+| `lib/runtime/moduleRegistry.ts` | — (logic layer) | `transferModule(id, targetRuntime)` enforces `compatibleRuntimes` |
+| `lib/runtime/dropTargetRegistry.ts` | — (logic layer) | `route(drop, region)` routes to highest-priority matching target |
+| `lib/runtime/useDragSurface.ts` | — (hook) | Registers surface as a `dropTargetRegistry` target |
 | `types/module-manifest.ts` | — (type) | Full `ModuleManifest` shape with `ui.movable`, `ui.resizable` |
 
 ---

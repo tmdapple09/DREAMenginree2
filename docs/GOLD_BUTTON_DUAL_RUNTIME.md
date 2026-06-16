@@ -102,7 +102,7 @@ A `RuntimeWorld` can be:
 
 ### Architecture
 
-**Core Library:** `engine/runtime/dualRuntime.ts`
+**Core Library:** `lib/runtime/dualRuntime.ts`
 
 Defines types and utility functions:
 ```typescript
@@ -181,7 +181,7 @@ Implementation in `dreamdmbar/dreamsurface.dreamdmbar.tsx` (and the
 `HomeControls` / `DreamNavControls` mirrors): a single tap is delayed by
 `DOUBLE_TAP_WINDOW_MS = 260` so a follow-up tap can promote the gesture to
 double-tap. The shared hook is `useHomeParticleTap` in
-`hooks/useTap.ts`.
+`lib/hooks/useTap.ts`.
 
 ```typescript
 const fireLightSingleTap = useCallback(() => {
@@ -256,7 +256,7 @@ Per the spec, the default Home state includes:
 
 The **whole bar** is the drag handle on both touch and pointer devices.
 Release semantics are owned by `decideBarRelease` in
-`dreamdmbar/runtime/barInteractions.ts`:
+`lib/dreamdm/barInteractions.ts`:
 
 | Release | Outcome |
 |---------|---------|
@@ -317,7 +317,7 @@ Test coverage includes:
 - `components/home/dream.HomeSystem.tsx` - Integrated dual runtime system
 
 ### Created
-- `engine/runtime/dualRuntime.ts` - Dual runtime state and utilities
+- `lib/runtime/dualRuntime.ts` - Dual runtime state and utilities
 - `components/runtime/dream.DualRuntimeContainer.tsx` - Runtime context provider
 - `components/runtime/dream.RuntimeView.tsx` - Runtime content renderer
 - `docs/GOLD_BUTTON_DUAL_RUNTIME.md` - This documentation

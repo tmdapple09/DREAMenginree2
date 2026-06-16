@@ -6,7 +6,7 @@
 
 **Document type:** Implementation spec  
 **Scope:** Unified workflow model for all 6 Engin runtimes  
-**Status:** Active — first implementation slice in `engins/rulesets/workflowEngine.ts`  
+**Status:** Active — first implementation slice in `lib/engins/workflowEngine.ts`  
 **Authority:** Anchored to `docs/CONSTITUTION.md`, `docs/ARCHITECTURE.md §1`, `docs/GENERATION_LAW.md`
 
 ---
@@ -157,8 +157,8 @@ All Journey Trail writes follow the `logJourneyDot` fire-and-forget contract: th
 
 | File | Purpose |
 |------|---------|
-| `engins/rulesets/workflowEngine.ts` | Pure types and functions: `EnginWorkflow`, `createWorkflow`, `advanceStage`, `canHandoff`, `WORKFLOW_CATALOG` |
-| `engins/rulesets/useEnginWorkflow.ts` | React hook: `useEnginWorkflow(enginId)` — manages one workflow instance, persists to localStorage, emits bridge events on handoff |
+| `lib/engins/workflowEngine.ts` | Pure types and functions: `EnginWorkflow`, `createWorkflow`, `advanceStage`, `canHandoff`, `WORKFLOW_CATALOG` |
+| `lib/engins/useEnginWorkflow.ts` | React hook: `useEnginWorkflow(enginId)` — manages one workflow instance, persists to localStorage, emits bridge events on handoff |
 | `tests/engin-workflow.test.ts` | Vitest unit tests for the pure engine layer |
 
 The hook layer (`useEnginWorkflow`) is the only I/O layer. The pure engine (`workflowEngine.ts`) has no imports from React, Supabase, or the bridge — it is test-safe.

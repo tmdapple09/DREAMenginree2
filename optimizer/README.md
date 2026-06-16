@@ -20,9 +20,9 @@ subject to constraints
 
 ### Core Components
 
-- **ConstraintSolver** (`optimizer/constraint-solver.ts`): Core optimization engine that solves multi-objective problems with weighted constraints
-- **DreamOptimizer** (`optimizer/index.ts`): High-level API for specific optimization use cases
-- **Types** (`optimizer/types.ts`): TypeScript type definitions for the optimization framework
+- **ConstraintSolver** (`lib/optimizer/constraint-solver.ts`): Core optimization engine that solves multi-objective problems with weighted constraints
+- **DreamOptimizer** (`lib/optimizer/index.ts`): High-level API for specific optimization use cases
+- **Types** (`lib/optimizer/types.ts`): TypeScript type definitions for the optimization framework
 - **Configuration** (`config/optimizer.yaml`): YAML configuration file defining constraints and weights for all optimization targets
 
 ### Command-Line Tool
@@ -207,8 +207,8 @@ node scripts/optimize-dreamengin.mjs --target=all --config=config/optimizer.yaml
 ### Programmatic Usage
 
 ```typescript
-import { DreamOptimizer } from 'config/optimizer.yaml';
-import type { FeedItem, OptimizerConfig } from 'optimizer/types.ts';
+import { DreamOptimizer } from '@/lib/optimizer';
+import type { FeedItem, OptimizerConfig } from '@/lib/optimizer/types';
 
 // Load configuration
 const config: OptimizerConfig = loadConfig();
@@ -229,8 +229,8 @@ rankedFeed.forEach(result => {
 ### Creative Options Optimization
 
 ```typescript
-import { DreamOptimizer } from 'config/optimizer.yaml';
-import type { CreativeOption, CreativeContext, OptimizerConfig } from 'optimizer/types.ts';
+import { DreamOptimizer } from '@/lib/optimizer';
+import type { CreativeOption, CreativeContext, OptimizerConfig } from '@/lib/optimizer/types';
 
 // Load configuration
 const config: OptimizerConfig = loadConfig();
@@ -296,8 +296,8 @@ console.log('Rejected Options:', result.rejected_candidates);
 ### Low-Level Constraint Solver
 
 ```typescript
-import { ConstraintSolver } from 'optimizer/constraint-solver.ts';
-import type { OptimizationItem, Constraint } from 'optimizer/types.ts';
+import { ConstraintSolver } from '@/lib/optimizer/constraint-solver';
+import type { OptimizationItem, Constraint } from '@/lib/optimizer/types';
 
 const solver = new ConstraintSolver({
   maxIterations: 1000,
@@ -368,8 +368,8 @@ pnpm test
 To add a new optimization target:
 
 1. Add configuration to `config/optimizer.yaml`
-2. Define types in `optimizer/types.ts`
-3. Implement optimizer method in `optimizer/index.ts`
+2. Define types in `lib/optimizer/types.ts`
+3. Implement optimizer method in `lib/optimizer/index.ts`
 4. Add tests in `tests/optimizer.test.ts`
 5. Update this README
 

@@ -93,7 +93,7 @@ This repo ships with the **human AI army** — an automated product audit system
 
 ### Repository Folder Law
 
-Do not create a shared catch-all logic folder. DREAMengin places files in their owning root domain: `engine/`, `engins/`, `dreamr/`, `dreamdmbar/`, `supabase/`, `hooks/`, `types/`, or `utils/`.
+Do not create a `lib/` folder. DREAMengin does not use `lib/` as an architecture bucket. Place files in their owning root domain: `engine/`, `engins/`, `dreamr/`, `dreamdmbar/`, `supabase/`, `hooks/`, `types/`, or `utils/`.
 
 ### DREAMENGIN ARCHITECTURE RULES (Engine + Rule-Set Model)
 
@@ -134,7 +134,7 @@ Bringing in a new piece to fix something, then wrapping it in adapters so the ro
 
 ### Overview
 
-DREAMengin is a Next.js 16+ / React 19 / Supabase spatial operating environment. The primary application is in the workspace root (`app/`, `components/`, `engine/`, `engins/`). There is also a secondary Express backend in `backend/` (social aggregator) and a legacy Vite frontend in `frontend/` — both are optional.
+DREAMengin is a Next.js 16+ / React 19 / Supabase spatial operating environment. The primary application is in the workspace root (`app/`, `components/`, `lib/`). There is also a secondary Express backend in `backend/` (social aggregator) and a legacy Vite frontend in `frontend/` — both are optional.
 
 ### Node / Package Manager
 

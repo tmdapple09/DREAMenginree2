@@ -35,7 +35,7 @@ Pass 1 builds the **foundational DreamDM messaging surface** — a full-page pri
 - `media_url` / `media_type` DB columns (added in Pass 2 migration)
 - `drafts` table (added in Pass 2 migration)
 - Notifications insert `content` JSONB bug fix (resolved in Pass 2)
-- Modular `dreamdmbar/` hook layer (extracted in Pass 2)
+- Modular `lib/dreamdm/` hook layer (extracted in Pass 2)
 
 ---
 
@@ -190,7 +190,7 @@ app/api/
 | `app/api/messages/route.ts` | REST handlers; server-only Supabase client |
 | `app/api/notifications/route.ts` | REST handlers; server-only Supabase client |
 
-> **Architecture residual:** `MessagesClient.tsx` mixes data-fetching logic with UI rendering. This is resolved in Pass 2 by extracting `dreamdmbar/` hooks.
+> **Architecture residual:** `MessagesClient.tsx` mixes data-fetching logic with UI rendering. This is resolved in Pass 2 by extracting `lib/dreamdm/` hooks.
 
 ---
 
@@ -272,7 +272,7 @@ Per `CONSTITUTION.md` Rule 8 (Action Honesty): every visible action maps to a re
 
 ### 7.3 Timestamps
 
-- Relative time via `formatRelativeTime()` from `engine/utils`.
+- Relative time via `formatRelativeTime()` from `lib/utils`.
 - Shown below each bubble.
 
 ---
@@ -304,7 +304,7 @@ Per `CONSTITUTION.md` Rule 8 (Action Honesty): every visible action maps to a re
 
 | Residual | Deferred resolution |
 |---------|---------------------|
-| Logic mixed with UI in `MessagesClient.tsx` | Hooks extracted to `dreamdmbar/` in Pass 2 |
+| Logic mixed with UI in `MessagesClient.tsx` | Hooks extracted to `lib/dreamdm/` in Pass 2 |
 | `media_url`/`media_type` sent to API but no DB columns | DB columns added in Pass 2 migration `20260310000010` |
 | No realtime subscription — fetch on select only | Supabase Realtime subscription added in Pass 2 |
 | No draft persistence | `localStorage`-backed draft hook added in Pass 2 |
@@ -342,10 +342,10 @@ Per `CONSTITUTION.md` Rule 8 (Action Honesty): every visible action maps to a re
 
 Pass 2 (`docs/dreamdm_bar_pass2.md`) extends this foundation by:
 
-- Extracting `dreamdmbar/hooks/useDreamDMMessages.ts` — Supabase Realtime subscription for live message delivery.
-- Extracting `dreamdmbar/hooks/useDreamDMDraft.ts` — `localStorage` draft save/restore per conversation.
-- Extracting `dreamdmbar/hooks/useDreamDMConversations.ts` — conversations fetch with realtime updates.
-- Adding `dreamdmbar/hooks/useNotifications.ts` — unread count polling hook.
+- Extracting `lib/dreamdm/useDreamDMMessages.ts` — Supabase Realtime subscription for live message delivery.
+- Extracting `lib/dreamdm/useDreamDMDraft.ts` — `localStorage` draft save/restore per conversation.
+- Extracting `lib/dreamdm/useDreamDMConversations.ts` — conversations fetch with realtime updates.
+- Adding `lib/dreamdm/useNotifications.ts` — unread count polling hook.
 - Adding `components/dreamdm/DreamDMBar.tsx` — compact DM badge + link embeddable in any layout.
 - Adding migration `20260310000010` — `messages.media_url`, `messages.media_type` columns and `drafts` table.
 - Fixing `notifications` insert field names in the API.

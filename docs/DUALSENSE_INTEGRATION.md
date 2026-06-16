@@ -38,7 +38,7 @@ DREAMengin now includes comprehensive DualSense (PS5) controller support with mo
 ### React Hook (Recommended)
 
 ```tsx
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';
+import { useGamepad } from '@/lib/games/useGamepad';
 
 function MyGame() {
   const { connected, gamepadName, isDualSense, rumble } = useGamepad();
@@ -65,7 +65,7 @@ function MyGame() {
 ### Class-Based API (Non-React)
 
 ```typescript
-import { DualSenseManager } from 'engins/gameengin/games/DualSenseManager.ts';
+import { DualSenseManager } from '@/lib/games/DualSenseManager';
 
 const manager = new DualSenseManager({
   enableGyro: true,      // Enable gyroscope input (mobile)
@@ -113,7 +113,7 @@ All games that listen to the `de-game-input` CustomEvent protocol automatically 
 
 ```tsx
 // In your game component
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';
+import { useGamepad } from '@/lib/games/useGamepad';
 
 function RacingGame() {
   const { rumble } = useGamepad();
@@ -178,8 +178,8 @@ setInterval(() => rumble(0.3, 50), 100);
 5. Games can trigger haptic feedback via `rumble()` function
 
 ### Files
-- `engins/gameengin/games/useGamepad.ts` - React hook with DualSense detection and haptics
-- `engins/gameengin/games/DualSenseManager.ts` - Class-based manager with full state access
+- `lib/games/useGamepad.ts` - React hook with DualSense detection and haptics
+- `lib/games/DualSenseManager.ts` - Class-based manager with full state access
 - `components/daydream/GameEngin.tsx` - Exposes rumble globally, shows connection status
 
 ## Browser Compatibility

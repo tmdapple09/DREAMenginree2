@@ -1344,7 +1344,7 @@ test animations
 ### 12.1 Rigging Directory Layout
 
 ```text
-engins/contentengin/rigging/
+lib/contentengin/rigging/
 ├── templates/
 │   ├── humanoid_basic.json
 │   ├── quadruped_basic.json
@@ -1593,7 +1593,7 @@ if __name__ == "__main__":
 ### 12.4 Rigging TypeScript Wrapper
 
 ```ts
-// engins/contentengin/rigging/index.ts
+// lib/contentengin/rigging/index.ts
 
 import { execFile } from 'child_process';
 import path from 'path';
@@ -1787,7 +1787,7 @@ asset_id/
 ## 16. DIRECTORY LAYOUT AND CODE MODULES
 
 ```text
-engins/contentengin/
+lib/contentengin/
 ├── assetTypes.ts
 ├── recipes/
 │   ├── recipeTypes.ts

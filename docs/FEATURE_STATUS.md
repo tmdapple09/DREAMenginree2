@@ -20,22 +20,22 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 
 | Feature | Status | Target |
 |---|---|---|
-| `activity_points` table (decaying 30-day sum) | ✅ | Migration `20260413000000_phase9_activity_first_protocol.sql`; decay logic in `dreamr/activity/scoring.ts`. |
+| `activity_points` table (decaying 30-day sum) | ✅ | Migration `20260413000000_phase9_activity_first_protocol.sql`; decay logic in `lib/activity/scoring.ts`. |
 | `activity_verification` table (evidence of activity) | ✅ | Migration + `POST /api/activity/track`; `ActivityPostForm` captures verification method and evidence. |
 | `views` table (verified human views) | ✅ | Migration + `POST /api/views/track`; feed API exposes verified `views_count`. |
 | `skip_credits` table (user credit balance) | ✅ | Migration + skip-credit APIs; `SkipCreditBalance` is mounted in the persistent DreamDM shell. |
 | `ad_views` table (verified ad views for billing) | ✅ | Migration + `POST /api/ads/view`; `AdUnit` records CPV ad views. |
 | `user_metrics` table (AQS, Real Shit Rate) | ✅ | Migration + `GET /api/metrics/user/[userId]`; profile surfaces display metrics through `ActivityProfile`. |
 | `visibility_score` feed ranking (replaces engagement ranking) | ✅ | `app/api/feed/route.ts` defaults to `sort=activity` and calls `sortByVisibilityScore`. |
-| Activity Quality Score (AQS) as core metric | ✅ | `dreamr/activity/aqs.ts`; shown on public profile, ViewProfile preview, and EditProfileDream. |
-| Activity tier multipliers (Tier 0–6) | ✅ | `dreamr/activity/scoring.ts`; current 30-day tier badge shown in profile metrics. |
+| Activity Quality Score (AQS) as core metric | ✅ | `lib/activity/aqs.ts`; shown on public profile, ViewProfile preview, and EditProfileDream. |
+| Activity tier multipliers (Tier 0–6) | ✅ | `lib/activity/scoring.ts`; current 30-day tier badge shown in profile metrics. |
 | Points decay over 30-day rolling window | ✅ | Migration function `apply_points_decay()` and scoring helpers. |
 | Profile: total views + AQS + Real Shit Rate display | ✅ | `ActivityProfile` wired into `/profile/[handle]`, `/view-profile`, and `/edit-profiledream`. |
 | Feed: view count prominent, no like count | ✅ | Feed API returns verified views and uses activity ranking by default; engagement sorting remains explicit legacy mode only. |
 | Ad units: Pre-Roll, Post-Roll, Rewarded (no mid-roll) | ✅ | `components/ads/dream.AdUnit.tsx`; HomeDream feed uses rewarded boundary ads. |
 | Skip credit system (earn + auto-apply) | ✅ | Skip-credit APIs + persistent shell balance display + `AdUnit` skip/use flow. |
 | `AD` badge on all ad placements | ✅ | `AdUnit` renders an `AD` label for placement clarity. |
-| CPV billing (Standard $0.08 / Premium $0.12 / Super $0.15) | ✅ | `dreamr/activity/types.ts` + `POST /api/ads/view` CPV verification path. |
+| CPV billing (Standard $0.08 / Premium $0.12 / Super $0.15) | ✅ | `lib/activity/types.ts` + `POST /api/ads/view` CPV verification path. |
 | TheBoogieMan.Ai harmful content enforcement (search-only, no feed) | ✅ | BoogieMan policy routes and child-safety tests cover conservative enforcement. |
 | TheBoogieMan.Ai fraud detection (fake check-ins, bot views) | ✅ | Activity verification/fraud fields, bot detection modules, and view/ad verification APIs. |
 | Parental controls — minors blocked from harmful content by default | ✅ | Child-safety API/UI and `tests/child-safety.test.ts`. |
@@ -47,18 +47,18 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 
 | Item | Status | Repo truth |
 |---|---|---|
-| Canonical naming wins across UI/routes/docs | ✅ | `engine/identity/canonical-names.ts` is single authority. All 🟡 naming items closed. Surface labels in WorkspaceDashboard use canonical names. |
+| Canonical naming wins across UI/routes/docs | ✅ | `lib/identity/canonical-names.ts` is single authority. All 🟡 naming items closed. Surface labels in WorkspaceDashboard use canonical names. |
 | HomeDream is the clear product center | ✅ | `/homedream` is runtime root. `/dreamengin` (orbit shell) redirects to `/homedream`. No competing home shell. |
 | Parallel old/new UI layers stop competing | ✅ | `components/v1-ui/` archived. `/dreamengin`, `/codespace`, `/physics-lab` all redirect to canonical Daydream routes. Archive headers on 12 dead root-level components. |
 | Dreams / Daydreams / Engins legible to outsiders | ✅ | `/codespace` → `/daydream/code`. `/physics-lab` → `/daydream/lab`. `/music` → `/daydream/music`. DreamDMBar routes aligned. Quick-action labels use canonical surface names. |
 | Auth + onboarding + entry reliable | ✅ | `/join` (email) → `/onboarding` → HomeDream. `/join` (OAuth) → `/auth/callback?next=/onboarding` → `/onboarding`. Returning users → `/homedream`. |
 | SuperDreamWidget composition aligned | ✅ | `components/dreams/dream.widget.SuperDreamWidget.tsx` with real cluster composition rules. |
-| AI triad coordination bus active | ✅ | `engine/agents/agentBus.ts` — client event bridge live. `runTriadConsensus` gate active server-side. DreamDMBar `dreams` surface uses `toggleDrEams()` (not legacy route). |
+| AI triad coordination bus active | ✅ | `lib/agents/agentBus.ts` — client event bridge live. `runTriadConsensus` gate active server-side. DreamDMBar `dreams` surface uses `toggleDrEams()` (not legacy route). |
 | Clutter pass complete | ✅ | v1-ui CSS removed from global layout. Archive headers on 12 dead components. Dead routes redirected. |
 | Motion restraint pass complete | ✅ | GodTier blur (0.15/0.10). GlowLayer kernel 16. All transitions intentional. |
 | Profile/public boundary clean | ✅ | `visibility_mappings` authoritative. ViewProfile reads projections only. Nothing public by default. |
-| Build enforcement updated for v2 | ✅ | `engine/agents/adari.ts` + `scripts/postbuild.js` require v2 canonical files (not WheelLayout/WidgetEngine/etc.). Version check included. |
-| PRODUCT_VERSION in canonical-names | ✅ | `engine/identity/canonical-names.ts` exports `PRODUCT_VERSION = '2.0.0'`. |
+| Build enforcement updated for v2 | ✅ | `lib/adari.ts` + `scripts/postbuild.js` require v2 canonical files (not WheelLayout/WidgetEngine/etc.). Version check included. |
+| PRODUCT_VERSION in canonical-names | ✅ | `lib/identity/canonical-names.ts` exports `PRODUCT_VERSION = '2.0.0'`. |
 | package.json version | ✅ | `"version": "2.0.0"`. |
 
 ## 1. Core surfaces
@@ -85,15 +85,15 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 | Feature | Status | Repo truth |
 |---|---|---|
 | DreamsSpacePanel — separate runtime panel | ✅ | `components/dreams/dreamsurface.dreamspace.tsx`; revealed by dragging DreamDMBar upward. |
-| useDreamsRuntime hook | ✅ | `engine/dreams/useDreamsRuntime.ts`; independent navigation state separate from home runtime. |
+| useDreamsRuntime hook | ✅ | `lib/dreams/useDreamsRuntime.ts`; independent navigation state separate from home runtime. |
 | Daydreams as priority in Dreams Space | ✅ | DreamsSpacePanel surfaces all 6 Daydreams as the first/default tab (`✦ Daydreams`), per README runtime model. |
 | Live routes to all 6 Daydreams from Dreams Space | ✅ | Each tile in the Daydreams tab links directly to `/daydream/music`, `/daydream/games`, `/daydream/lab`, `/daydream/code`, `/daydream/brand`, `/daydream/create`. |
 | Connector feeds (YouTube / GitHub / Spotify) | ✅ | Available in the secondary `✨ Feeds` tab; service sub-tabs preserved. |
 | Whole-bar drag handle | ✅ | `dreamdmbar/dreamsurface.dreamdmbar.tsx` — pointer drag fires from anywhere on the bar (not just the gold particle). Touch already had this. |
-| Momentum fling release | ✅ | `dreamdmbar/runtime/barInteractions.ts::decideBarRelease` — slow drag parks where you let go; upward fling past the invisible 2/5 line snaps to top; downward fling at/below the line snaps to bottom. Test: `tests/decide-bar-release.test.ts`. |
-| Single-tap discipline | ✅ | `hooks/useTap.ts` — `useTap` (canonical single-tap) + `useHomeParticleTap` (the only sanctioned double-tap site, gold particle only). |
-| Solo-parity runtime channel | ✅ | `engine/runtime/runtimeChannel.ts` — `LocalChannel` (in-mem pub/sub) + `RealtimeChannel` (lazy Supabase, graceful local fallback) + `createRuntimeChannel(id, mode)` factory. Solo == co-op with one peer. Tests: `tests/runtime-channel.test.ts`. |
-| Manifest `solo` / `coop` flags | ✅ | `engine/feature-build/featureManifest.ts::DaydreamEnginManifest` gained optional `solo: boolean` and `coop: boolean \| { affordances: string[] }` (backwards-compatible). |
+| Momentum fling release | ✅ | `lib/dreamdm/barInteractions.ts::decideBarRelease` — slow drag parks where you let go; upward fling past the invisible 2/5 line snaps to top; downward fling at/below the line snaps to bottom. Test: `tests/decide-bar-release.test.ts`. |
+| Single-tap discipline | ✅ | `lib/hooks/useTap.ts` — `useTap` (canonical single-tap) + `useHomeParticleTap` (the only sanctioned double-tap site, gold particle only). |
+| Solo-parity runtime channel | ✅ | `lib/runtime/runtimeChannel.ts` — `LocalChannel` (in-mem pub/sub) + `RealtimeChannel` (lazy Supabase, graceful local fallback) + `createRuntimeChannel(id, mode)` factory. Solo == co-op with one peer. Tests: `tests/runtime-channel.test.ts`. |
+| Manifest `solo` / `coop` flags | ✅ | `lib/feature-build/featureManifest.ts::DaydreamEnginManifest` gained optional `solo: boolean` and `coop: boolean \| { affordances: string[] }` (backwards-compatible). |
 
 ## 3. Daydream pairs
 
@@ -106,7 +106,7 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 | Brand / BrandingEngin | ✅ | `app/daydream/brand/page.tsx` exists; `components/daydream/BrandingEngin.tsx` exists. |
 | Create / ContentEngin | ✅ | `app/daydream/create/page.tsx` exists; `components/daydream/ContentEngin.tsx` exists. |
 | DaydreamShell sideBComponent prop | ✅ | `components/daydream/dream.shell.DaydreamShell.tsx` now accepts `sideBComponent` prop (Phase 6). |
-| useDaydreamState hook | ✅ | `daydreams/shared/useDaydreamState.ts` created (Phase 6). |
+| useDaydreamState hook | ✅ | `lib/daydream/useDaydreamState.ts` created (Phase 6). |
 | Legacy extra daydream routes | 🟡 | `analytics`, `media-vault`, and `play` still exist and must be repurposed (Phase 6). |
 
 ## 4. Platform modules
@@ -126,7 +126,7 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 | Dr. Eams | ✅ | Canonical route at `/api/ai/eams`. `DrEamsSearchBar` wired in HomeDream (`WorkspaceDashboard`); `onOpenDrEams` calls real `openDrEams` from `DreamSystemContext`. Send-to-DreamDM routing live. Phase 6 item 5 complete. |
 | IDARi | ✅ | `/api/ai/idari` exists; admin-guard enforced even under dev bypass; `IDARI_PASSWORD` env check returns 503 when absent. 15 guard tests in `tests/idari-admin-guard.test.ts`. Phase 6 item 6 complete. |
 | TheBoogieMan.Ai | ✅ | `/api/ai/boogieman` and `/api/ai/boogieman/privacy-event` exist. Visibility-change events logged on `handleSave`; publish events logged on `handlePublish` in EditProfileDream. Phase 6 item 7 complete. |
-| AI Triad coordination bus | ✅ | `engine/agents/agentBus.ts` — client-side event bridge live. `runTriadConsensus` gate active server-side for delete-dream and critical ops. |
+| AI Triad coordination bus | ✅ | `lib/agents/agentBus.ts` — client-side event bridge live. `runTriadConsensus` gate active server-side for delete-dream and critical ops. |
 
 ## 6. Privacy and profile integrity
 
@@ -150,7 +150,7 @@ Canonical spec: `docs/ACTIVITY_FIRST_PROTOCOL.md` — Active Platform Law (2026-
 The following items are the Phase 6 focus. See `docs/dreamengin_phase6.md` for the full 50-point spec.
 
 1. ✅ Add `components/daydream/GameEngin.tsx` (Games Daydream Side B) — done.
-2. ✅ Create `daydreams/shared/useDaydreamState.ts` (shared Daydream/Engin state hook) — done.
+2. ✅ Create `lib/daydream/useDaydreamState.ts` (shared Daydream/Engin state hook) — done.
 3. ✅ Wire `sideBComponent` prop into `DaydreamShell`; wire `GameEngin` into Games page — done.
 4. ✅ Surface Daydreams as priority in Dreams Space with live routes from second runtime — done.
 5. ✅ Integrate Dr. Eams as HomeDream search bar with send-to-DreamDM routing — done. `DrEamsSearchBar` wired in `WorkspaceDashboard`; `onOpenDrEams` now calls real `openDrEams` from `DreamSystemContext` (was `() => {}` — Phase 6 Item 13 fix applied simultaneously).
@@ -170,7 +170,7 @@ All prior alignment priorities are now closed:
 3. ✅ EditProfileDream → ViewProfile projection boundaries clean.
 4. ✅ All legacy routes either repurposed or redirected to canonical surfaces.
 5. ✅ v1-ui CSS removed from global layout; Dream Rail (v2) CSS in `styles/home-dream.css`.
-6. ✅ `PRODUCT_VERSION = '2.0.0'` declared in `engine/identity/canonical-names.ts`.
+6. ✅ `PRODUCT_VERSION = '2.0.0'` declared in `lib/identity/canonical-names.ts`.
 
 ## 9. Phase 7 — Product Identity, Naming, and Constitution
 
@@ -179,7 +179,7 @@ All prior alignment priorities are now closed:
 | Product definition document | ✅ | `docs/PRODUCT_DEFINITION.md` — locked final authority on what DREAMengin is and is not. |
 | Naming authority document | ✅ | `docs/NAMING_AUTHORITY.md` — locked canonical names, rejection list, validation rules, AI agent reference. |
 | Product constitution document | ✅ | `docs/CONSTITUTION.md` — locked binding rules covering privacy, action honesty, user intent, navigation, anti-patterns, and valid proposals. |
-| Machine-readable naming library | ✅ | `engine/identity/canonical-names.ts` — TypeScript exports for all canonical names and validation functions. |
+| Machine-readable naming library | ✅ | `lib/identity/canonical-names.ts` — TypeScript exports for all canonical names and validation functions. |
 | Naming authority tests | ✅ | `tests/phase7-naming.test.ts` — programmatic validation of naming authority rules. |
 
 ## 10. Phase 8 — Real Runtime Completion
@@ -190,7 +190,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 
 | Point | Status | Repo truth |
 |---|---|---|
-| 1. Feed from real Supabase queries | ✅ | `dreamr/feed/useLiveFeed.ts` reads `feed_items` table; no static arrays. |
+| 1. Feed from real Supabase queries | ✅ | `lib/feed/useLiveFeed.ts` reads `feed_items` table; no static arrays. |
 | 2. Connector feed items surface | ✅ | Connector items land in `feed_items` after user-triggered sync. |
 | 3. Feed algorithm settings persist | ✅ | `/api/settings/feed` saves and restores feed settings. |
 | 4. Dream Window layout persists | ✅ | `app/api/home-layout/route.ts` persists layout per user. |
@@ -198,7 +198,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 | 6. Feed private by default | ✅ | No feed item on public surface without explicit publish event. |
 | 7. Feed scroll independent from bar | ✅ | Separate scroll regions; Gold Button / DreamDM Bar do not scroll with feed. |
 | 8. HomeDream is runtime root | ✅ | All navigation opens from HomeDream; no full-world reset. |
-| 9. Dr. Eams real navigation | ✅ | `dr-eams/ai/handlers/navigation.ts` resolves to real canonical routes. |
+| 9. Dr. Eams real navigation | ✅ | `lib/ai/handlers/navigation.ts` resolves to real canonical routes. |
 | 10. Dr. Eams real content | ✅ | Content queries hit real Supabase data filtered by visibility. |
 
 ### §B — Dream Window System: Full Lifecycle Activation (Points 11–22)
@@ -241,7 +241,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 | 34. Dr. Eams compose routes to real DM | ✅ | Message lands in DB as real record. |
 | 35. DreamDM Bar drag resizes regions | ✅ | Functional drag gesture; both regions resize in real time. |
 | 36. Draft content persists locally | ✅ | Draft saved to local state; restored on return. |
-| 37. Notifications reflect real events | ✅ | `dreamdmbar/hooks/useNotifications.ts`; sourced from real DB queries. |
+| 37. Notifications reflect real events | ✅ | `lib/dreamdm/useNotifications.ts`; sourced from real DB queries. |
 | 38. Unread count reflects DB state | ✅ | Badge count recalculates on new messages via Realtime. |
 
 ### §E — DreamShop & DreamMarketplace: Real Listings (Points 39–46)
@@ -282,7 +282,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 | 60. Gold Button right menu — real items | ✅ | DreamMenu opens with real nav; Dr. Eams active. |
 | 61. Single/double tap Gold Button spec | ✅ | Per GOLD_BUTTON_DUAL_RUNTIME spec. |
 | 62. Gold Button attachment spec-compliant | ✅ | Attaches to top of DreamDM Bar. |
-| 63. Dual runtime persists to localStorage | ✅ | `engine/runtime/useDualRuntimePersistence.ts` serializes/restores state. |
+| 63. Dual runtime persists to localStorage | ✅ | `lib/runtime/useDualRuntimePersistence.ts` serializes/restores state. |
 | 64. Navigation feels like depth | ✅ | No full-page reload; context preserved on surface transitions. |
 | 65. Back-navigation restores prior surface | ✅ | State preserved where technically feasible. |
 | 66. Cross-runtime connection bus active | ✅ | ContentEngin ↔ StarMakerEngin via dualRuntimeBridge music channel. |
@@ -294,7 +294,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 | Point | Status | Repo truth |
 |---|---|---|
 | 69. Triad consensus gate used in critical path | ✅ | `delete-dream` calls `runTriadConsensus`; blocks on TRIAD_BLOCKED (403). |
-| 70. Dr. Eams navigation results real | ✅ | `dr-eams/ai/handlers/navigation.ts` verified routes. |
+| 70. Dr. Eams navigation results real | ✅ | `lib/ai/handlers/navigation.ts` verified routes. |
 | 71. Dr. Eams content results real | ✅ | Content queries hit Supabase; filtered by visibility permissions. |
 | 72. BoogieMan enforces nothing-public-by-default | ✅ | `/api/ai/boogieman/privacy-event` logs and blocks privacy violations. |
 | 73. IDARi admin-only | ✅ | `/api/ai/idari` has IDARI_PASSWORD + role guard; 15 guard tests. |
@@ -310,7 +310,7 @@ All 100 points tracked. §A–§D completed on prior passes. §E–§J completed
 | 78. connector_accounts.token_blob never to browser | ✅ | Confirmed: token_blob excluded from all connector API SELECT. |
 | 79. SERVICE_ROLE_KEY not in client bundle | ✅ | Server-only; never in NEXT_PUBLIC_. |
 | 80. API routes check auth before DB query | ✅ | All routes call getUser(); reject before query on 401. |
-| 81. Notifications from real events | ✅ | `dreamdmbar/hooks/useNotifications.ts`; Realtime + DB sourced. |
+| 81. Notifications from real events | ✅ | `lib/dreamdm/useNotifications.ts`; Realtime + DB sourced. |
 | 82. Follower/following counts from real DB | ✅ | `follows` table; no hardcoded approximations. |
 | 83. Appearance settings save to DB | ✅ | `/api/settings/appearance`; page loads from DB on mount, saves on change. |
 | 84. Privacy settings save to DB | ✅ | `/api/settings/privacy`; each toggle writes to settings table. |

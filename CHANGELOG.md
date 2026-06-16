@@ -17,20 +17,20 @@ All notable changes to DREAMengin are documented in this file.
   onto the bar root so the entire surface can be grabbed (touch already had
   this; divider mode preserved).
 - **Momentum fling restored.** New `decideBarRelease` helper in
-  `dreamdmbar/runtime/barInteractions.ts` returns `'snap-top' | 'snap-bottom' | 'park'`.
+  `lib/dreamdm/barInteractions.ts` returns `'snap-top' | 'snap-bottom' | 'park'`.
   Slow drag → bar parks wherever the user lets go (no forced snap-back);
   upward fling past the invisible 2/5 line (`BAR_FLING_LINE_RATIO = 0.4`) →
   snaps to top; downward fling at/below the line → snaps to bottom.
-- **System-wide single-tap discipline.** New `hooks/useTap.ts` exposes
+- **System-wide single-tap discipline.** New `lib/hooks/useTap.ts` exposes
   `useTap` (canonical single-tap) and `useHomeParticleTap` (the sole
   sanctioned double-tap site, gold particle only). `ForgeDreamCanvas`
   add-piece converted from `onDoubleClick` to `onClick`. Game-controller and
   sprint-detector double-taps are gameplay primitives inside cartridges and
   intentionally kept. New ESLint guardrail in `eslint.config.mjs`
   (`no-restricted-syntax`) warns on any `onDoubleClick` / `onDblClick` JSX
-  attribute outside `hooks/useTap.ts` and the cartridge directories
-  (`components/games/**`, `engins/gameengin/games/**`, `engine/dualsense/**`).
-- **Solo-parity runtime channel.** `engine/runtime/runtimeChannel.ts` adds
+  attribute outside `lib/hooks/useTap.ts` and the cartridge directories
+  (`components/games/**`, `lib/games/**`, `lib/dualsense/**`).
+- **Solo-parity runtime channel.** `lib/runtime/runtimeChannel.ts` adds
   `LocalChannel` (in-mem pub/sub, faulty-listener-isolated), `RealtimeChannel`
   (lazy Supabase import with graceful local fallback), and a
   `createRuntimeChannel(id, mode)` factory. Solo == co-op with one peer; the
@@ -62,7 +62,7 @@ All notable changes to DREAMengin are documented in this file.
 
 ### What v2.0.0 means
 
-1. **Canonical naming wins** — Every surface, route, component, and doc now uses the single authority defined in `engine/identity/canonical-names.ts` and `docs/NAMING_AUTHORITY.md`. Widget-era naming is fully archived. Dream Window is the only term for modular runtime containers.
+1. **Canonical naming wins** — Every surface, route, component, and doc now uses the single authority defined in `lib/identity/canonical-names.ts` and `docs/NAMING_AUTHORITY.md`. Widget-era naming is fully archived. Dream Window is the only term for modular runtime containers.
 
 2. **HomeDream is the clear product center** — `/homedream` is the authenticated runtime root. All competing shell routes (`/dreamengin`, etc.) now redirect to `/homedream`. Gold Button + DreamDM Bar + dual runtime persistence make the hierarchy obvious.
 
@@ -72,12 +72,12 @@ All notable changes to DREAMengin are documented in this file.
 
 5. **Auth + onboarding + entry are boring and reliable** — New users from `/join` go to `/onboarding` (not directly to `/homedream`). OAuth from `/join` sets `?next=/onboarding` on the auth callback. Returning users go straight to `/homedream`.
 
-6. **Core repo partials closed** — Build enforcement (`engine/agents/adari.ts`, `scripts/postbuild.js`) updated from v1-era files to v2.0.0 canonical required files. DreamDMBar routing fully aligned to canonical Daydream routes. `PRODUCT_VERSION = '2.0.0'` in canonical-names.
+6. **Core repo partials closed** — Build enforcement (`lib/adari.ts`, `scripts/postbuild.js`) updated from v1-era files to v2.0.0 canonical required files. DreamDMBar routing fully aligned to canonical Daydream routes. `PRODUCT_VERSION = '2.0.0'` in canonical-names.
 
 ### Changed
 
 - `package.json` — version `1.0.0` → `2.0.0`
-- `engine/identity/canonical-names.ts` — added `PRODUCT_VERSION = '2.0.0'` constant
+- `lib/identity/canonical-names.ts` — added `PRODUCT_VERSION = '2.0.0'` constant
 - `app/layout.tsx` — removed global `@/components/v1-ui/widget-feed-screen.css` import
 - `components/home/dream.HomeDream.tsx` — removed v1-ui CSS import; renamed `widget-rail` → `dream-rail`, `widget-icon` → `dream-rail-icon`, `feed-area-transition` → `dream-feed-transition`; aria-labels updated
 - `styles/home-dream.css` — added v2 Dream Rail CSS classes
@@ -87,7 +87,7 @@ All notable changes to DREAMengin are documented in this file.
 - `app/join/page.tsx` — email signup redirects to `/onboarding`; OAuth sets `?next=/onboarding` on callback
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx` — `dreams` surface routes to `toggleDrEams()` (not `/dreamengin`); `code` → `/daydream/code`; `music` → `/daydream/music`
 - `components/home/dream.WorkspaceDashboard.tsx` — quick-action pills: "DreamProfile" → "Edit ProfileDream", "Feed" → "Discover", "Your Dreams" → "View Profile"
-- `engine/agents/adari.ts` — REQUIRED_PATHS updated to v2 canonical files; version check added
+- `lib/adari.ts` — REQUIRED_PATHS updated to v2 canonical files; version check added
 - `scripts/postbuild.js` — same
 - `docs/FEATURE_STATUS.md` — all partial items closed; v2.0.0 checklist added
 - `tests/v2-readiness.test.ts` — 31 structural invariant tests

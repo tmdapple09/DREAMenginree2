@@ -15,7 +15,7 @@ action that triggered it.
 | Screen shake decay | ~150 ms | Exponential decay, capped amplitude |
 
 ## Implementation
-- Pool particle bursts via `engins/gameengin/power-systems.ts` ResourcePool.
+- Pool particle bursts via `lib/gameengin/power-systems.ts` ResourcePool.
 - Trigger SFX directly from the same WASM tick as the gameplay event.
 - Define haptic patterns inside `mechanic-library/**/*.json` — one source of truth.
 

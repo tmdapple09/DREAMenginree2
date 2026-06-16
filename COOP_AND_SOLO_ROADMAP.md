@@ -38,11 +38,11 @@ at once rather than one-at-a-time. This file is the receipt.
   moved off the small light wrapper onto the bar root
   (`dreamdmbar/dreamsurface.dreamdmbar.tsx`). Touch already had this.
 - ✅ **Momentum fling restored** —
-  `decideBarRelease` (`dreamdmbar/runtime/barInteractions.ts`):
+  `decideBarRelease` (`lib/dreamdm/barInteractions.ts`):
     * slow drag → bar parks wherever the user lets go (free placement),
     * upward fling past the invisible 2/5 line → snaps to top,
     * downward fling near/below the line → snaps to bottom.
-- ✅ `useTap` / `useHomeParticleTap` (`hooks/useTap.ts`) — single-tap is
+- ✅ `useTap` / `useHomeParticleTap` (`lib/hooks/useTap.ts`) — single-tap is
   now the canonical hook; double-tap is structurally walled off behind the
   home-particle hook so callers can't accidentally re-introduce it.
 - ✅ One non-home `onDoubleClick` purged (`ForgeDreamCanvas` add-piece).
@@ -58,7 +58,7 @@ at once rather than one-at-a-time. This file is the receipt.
   needed editing — every Engin keeps working.
 
 ### Pass 5 — Runtime channel adapter (solo == co-op with one peer)
-- ✅ `engine/runtime/runtimeChannel.ts` — `LocalChannel` (in-mem pub/sub),
+- ✅ `lib/runtime/runtimeChannel.ts` — `LocalChannel` (in-mem pub/sub),
   `RealtimeChannel` (Supabase Realtime, dynamically imported, falls back to
   local when Supabase is absent), `createRuntimeChannel(id, mode)` factory.
 
@@ -78,7 +78,7 @@ locked decisions above so future-me doesn't have to relitigate.
   big-bang.
 
 ### Pass 4 — Multi-instance Engin manager
-- `engine/runtime/instanceManager.ts` — keyed by `${engin}:${instanceId}`.
+- `lib/runtime/instanceManager.ts` — keyed by `${engin}:${instanceId}`.
 - Solo and co-op instances are the same row; they only differ in their
   `runtimeChannel` adapter (decision #3 — same identity, channel does the
   rest).

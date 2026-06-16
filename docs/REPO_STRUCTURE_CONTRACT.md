@@ -26,7 +26,7 @@ All non-runtime image archives must live under `assets/images/`.
 |---|---|
 | `app/` | Product routes + API runtime |
 | `components/` | Product UI surfaces |
-| `engine/` + `engins/` | Shared runtime/domain logic and Engin-owned adapters |
+| `lib/` | Shared domain logic and adapters |
 | `.github/workflows/` | CI/CD automation |
 | `docs/` | Governance, architecture, guides, logs |
 | `assets/` | Archived static assets (non-runtime) |

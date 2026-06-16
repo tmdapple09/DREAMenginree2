@@ -27,7 +27,7 @@ Full WASM+GPU VM specification covering:
 - ✅ DREAMengin integration (dual runtime, bridge, OS bus)
 
 ### 2. Core VM Implementation (459 lines)
-**File:** `engine/vm/wasmGpuVM.ts`
+**File:** `lib/vm/wasmGpuVM.ts`
 
 Production-ready virtual machine:
 - ✅ WebAssembly 2.0 instantiation (SIMD, threads, multi-memory)
@@ -40,7 +40,7 @@ Production-ready virtual machine:
 - ✅ Error handling with spec-compliant error codes
 
 ### 3. Buffer Management (332 lines)
-**File:** `engine/vm/bufferManager.ts`
+**File:** `lib/vm/bufferManager.ts`
 
 GPU buffer lifecycle:
 - ✅ Buffer creation with usage flags (9 flags: STORAGE, UNIFORM, etc)
@@ -52,7 +52,7 @@ GPU buffer lifecycle:
 - ✅ Atomic memory tracking
 
 ### 4. Pipeline Cache (274 lines)
-**File:** `engine/vm/pipelineCache.ts`
+**File:** `lib/vm/pipelineCache.ts`
 
 Shader compilation optimization:
 - ✅ IndexedDB persistent cache
@@ -64,7 +64,7 @@ Shader compilation optimization:
 - ✅ Clear and close operations
 
 ### 5. Snapshot/Serialization (320 lines)
-**File:** `engine/vm/snapshot.ts`
+**File:** `lib/vm/snapshot.ts`
 
 VM state migration:
 - ✅ Binary format with magic "VMSN" and version
@@ -77,7 +77,7 @@ VM state migration:
 - ✅ Resource quota snapshot
 
 ### 6. Dual VM Coordinator (344 lines)
-**File:** `engine/vm/dualVMCoordinator.ts`
+**File:** `lib/vm/dualVMCoordinator.ts`
 
 Dual runtime orchestration:
 - ✅ Left/Right VM initialization
@@ -90,7 +90,7 @@ Dual runtime orchestration:
 - ✅ Global singleton management
 
 ### 7. Type Definitions (320 lines)
-**File:** `engine/vm/types.ts`
+**File:** `lib/vm/types.ts`
 
 Complete type system:
 - ✅ Handle types (BufferHandle, PipelineHandle, BindGroupHandle)
@@ -105,7 +105,7 @@ Complete type system:
 - ✅ Inter-VM communication types
 
 ### 8. Public API (46 lines)
-**File:** `engine/vm/index.ts`
+**File:** `lib/vm/index.ts`
 
 Barrel export for clean imports:
 - ✅ WasmGpuVM class
@@ -130,7 +130,7 @@ Comprehensive test suite:
 - ✅ WebGPU mocking for CI/CD
 
 ### 10. Documentation (271 + 250 lines)
-**Files:** `docs/wasm_gpu_vm_spec.md`, `engine/vm/README.md`
+**Files:** `docs/wasm_gpu_vm_spec.md`, `lib/vm/README.md`
 
 Complete documentation:
 - ✅ Architecture overview with ASCII diagrams
@@ -178,7 +178,7 @@ dreamOSBus.upsertArtifact({
 ```
 
 ### Existing WASM Infrastructure
-- ✅ Compatible with `engins/starmakerengin/music/wasmAudioBridge.ts`
+- ✅ Compatible with `lib/music/wasmAudioBridge.ts`
 - ✅ Uses same SharedArrayBuffer patterns as `assembly/index.ts`
 - ✅ Extends existing `public/workers/engin-shader.wasm`
 
@@ -228,7 +228,7 @@ dreamOSBus.upsertArtifact({
 
 ### Initialize Dual VM System
 ```typescript
-import { initializeDualVMCoordinator } from 'engine/vm/index.ts';
+import { initializeDualVMCoordinator } from '@/lib/vm';
 
 const coordinator = await initializeDualVMCoordinator({
   left: { id: 'vm-left' },
@@ -250,7 +250,7 @@ await coordinator.submitWorkload({
 
 ### Direct VM Control
 ```typescript
-import { WasmGpuVM } from 'engine/vm/index.ts';
+import { WasmGpuVM } from '@/lib/vm';
 
 const vm = await WasmGpuVM.create({ id: 'standalone' });
 await vm.loadWasm(wasmBinary);
@@ -272,7 +272,7 @@ syscalls.vm_submit();
 ### TypeScript Compilation
 ```bash
 $ npx tsc --noEmit
-# ✅ No errors in engine/vm/** files
+# ✅ No errors in lib/vm/** files
 ```
 
 ### Test Suite
@@ -283,7 +283,7 @@ $ pnpm test tests/wasm-gpu-vm.test.ts
 
 ### File Structure
 ```
-engine/vm/
+lib/vm/
 ├── README.md              (250 lines - user guide)
 ├── types.ts              (320 lines - type system)
 ├── bufferManager.ts      (332 lines - GPU buffers)

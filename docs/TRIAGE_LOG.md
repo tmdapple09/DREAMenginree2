@@ -18,7 +18,7 @@ All changes are logged here in chronological order. Each entry: file affected, a
 | **Reason** | "Dashboard" and "Workspace" are both banned words per `NAMING_AUTHORITY.md` and `CONSTITUTION.md` AP-2 (Naming Drift). Component renders real HomeDream Surface content — real content, banned name. Renamed to canonical `HomeDreamSurface`. |
 | **Importers updated** | `components/runtime/dream.RuntimeView.tsx`, `components/core/dream.CoreDream.tsx` |
 | **Tests updated** | `tests/integration-wiring.test.ts`, `tests/home-feed-home.test.ts`, `tests/v2-readiness.test.ts`, `tests/authenticated-ui-shells.test.ts`, `tests/notifications.test.ts` |
-| **Comments updated** | `app/homedream/page.tsx`, `components/dream.NotificationCenter.tsx`, `dreamdmbar/hooks/useNotifications.ts`, `dreamdmbar/notifications/notificationHelpers.ts`, `app/daydream/code/page.tsx`, `daydreams/code/page.tsx`, `components/core/dream.CoreDream.tsx` |
+| **Comments updated** | `app/homedream/page.tsx`, `components/dream.NotificationCenter.tsx`, `lib/notifications/useNotifications.ts`, `lib/notifications/notificationHelpers.ts`, `app/daydream/code/page.tsx`, `daydreams/code/page.tsx`, `components/core/dream.CoreDream.tsx` |
 
 ---
 

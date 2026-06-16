@@ -85,13 +85,13 @@ Here's a rewritten version based on the current naming grammar, the 4-layer mode
 |-------|----------|----------------|
 | **Surface** | `app/` routes, `page.tsx` files | Entry points only — no logic, no data access. Thin shims that import and render a `dreamsurface.*` component. |
 | **Component** | `components/`, `engins/` | UI atoms, shells, menus, widgets, and the six canonical Engins (`engin.*Engin.tsx`). |
-| **Logic** | `engine/`, `engins/`, `hooks/`, `utils/` | Business logic, data transforms, state management, API clients, the Generation Law engine. |
+| **Logic** | `lib/`, `hooks/`, `utils/` | Business logic, data transforms, state management, API clients, the Generation Law engine. |
 | **Data** | `supabase/`, RLS policies, `types/`, `schema/` | Database schemas, queries, type definitions, migrations. |
 
 **Residual is present when:**
 - Logic or data access appears directly in a Surface file (`app/*/page.tsx`).
-- A Component file contains database queries instead of calling an `engine/`, `engins/`, or `hooks/` function.
-- A new system is placed at the wrong layer (e.g., a payment processor lives in `components/checkout/` instead of `engine/commerce/`).
+- A Component file contains database queries instead of calling a `lib/` or `hooks/` function.
+- A new system is placed at the wrong layer (e.g., a payment processor lives in `components/checkout/` instead of `lib/commerce/`).
 - A pass touches all four layers in a single change (A=4 → χ spikes). Decompose the pass into focused steps unless ι ≥ 9.59 (MANIFEST) demands otherwise.
 
 ---

@@ -24,5 +24,5 @@ Director).
 
 ## Read / Write API
 
-All agents interact with the brain through `engins/gameengin/brain-reader.ts`
+All agents interact with the brain through `lib/gameengin/brain-reader.ts`
 (see §2.3 of the spec).

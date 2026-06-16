@@ -14215,8 +14215,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── package-cartridge.ts ⚠ ∅
 │   │   │   ├── CARTRIDGE_MAGIC  ⚠ ../../engins/gameengin/cartridge-manifest.js
 │   │   │   ├── validateManifest  ⚠ ../../engins/gameengin/cartridge-manifest.js
-│   │   │   ├── TarFile  ⚠ scripts/gameengin package tar helper
-│   │   │   ├── packTar  ⚠ scripts/gameengin package tar helper
+│   │   │   ├── TarFile  ⚠ ./lib/tar.js
+│   │   │   ├── packTar  ⚠ ./lib/tar.js
 │   │   │   ├── execFileSync  ← node:child_process
 │   │   │   ├── * as fs  ← node:fs
 │   │   │   ├── * as path  ← node:path
@@ -14360,7 +14360,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── parse  ← yaml
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
-│   │   └── assertBuildInvariants  ⚠ engine/agents/adari.ts
+│   │   └── assertBuildInvariants  ⚠ ../lib/adari
 │   ├── readme-autosync.ts ∅
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
@@ -15387,42 +15387,42 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tests
 │   ├── contentengin
 │   │   ├── contentengin-api.test.ts ⚠
-│   │   │   ├── analyzeImageBytes  ⚠ engins/contentengin/photo/imageAnalyzer.ts
+│   │   │   ├── analyzeImageBytes  ⚠ ../../lib/contentengin/photo/imageAnalyzer
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   ├── it  ← vitest
 │   │   │   └── deflateSync  ← zlib
 │   │   ├── contentengin-export.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ engins/contentengin/pipeline/build.ts
-│   │   │   ├── createGlbBuffer  ⚠ engins/contentengin/pipeline/exportGlb.ts
-│   │   │   ├── expectedMaterialIdsForAsset  ⚠ engins/contentengin/pipeline/exportGlb.ts
-│   │   │   ├── inspectGlb  ⚠ engins/contentengin/pipeline/exportGlb.ts
-│   │   │   ├── safeSegment  ⚠ engins/contentengin/pipeline/paths.ts
-│   │   │   ├── validateAsset  ⚠ engins/contentengin/pipeline/validate.ts
+│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
+│   │   │   ├── createGlbBuffer  ⚠ ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── expectedMaterialIdsForAsset  ⚠ ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── inspectGlb  ⚠ ../../lib/contentengin/pipeline/exportGlb
+│   │   │   ├── safeSegment  ⚠ ../../lib/contentengin/pipeline/paths
+│   │   │   ├── validateAsset  ⚠ ../../lib/contentengin/pipeline/validate
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
 │   │   ├── contentengin-grammars.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ engins/contentengin/pipeline/build.ts
+│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
 │   │   ├── contentengin-recipes.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ engins/contentengin/pipeline/build.ts
-│   │   │   ├── seededRandom  ⚠ engins/contentengin/recipes/seededRandom.ts
+│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
+│   │   │   ├── seededRandom  ⚠ ../../lib/contentengin/recipes/seededRandom
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
 │   │   ├── contentengin-rigging.test.ts ⚠
-│   │   │   ├── createSkeleton  ⚠ engins/contentengin/rigging/index.ts
-│   │   │   ├── validateSkeleton  ⚠ engins/contentengin/rigging/rigValidator.ts
+│   │   │   ├── createSkeleton  ⚠ ../../lib/contentengin/rigging
+│   │   │   ├── validateSkeleton  ⚠ ../../lib/contentengin/rigging/rigValidator
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
 │   │   └── contentengin-validation.test.ts ⚠
-│   │       ├── PartNode  ⚠ engins/contentengin/assetTypes.ts
-│   │       ├── buildAsset  ⚠ engins/contentengin/pipeline/build.ts
-│   │       ├── validateAsset  ⚠ engins/contentengin/pipeline/validate.ts
+│   │       ├── PartNode  ⚠ ../../lib/contentengin/assetTypes
+│   │       ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
+│   │       ├── validateAsset  ⚠ ../../lib/contentengin/pipeline/validate
 │   │       ├── describe  ← vitest
 │   │       ├── expect  ← vitest
 │   │       └── it  ← vitest
@@ -15474,25 +15474,25 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── expect  ← @playwright/test
 │   │       └── test  ← @playwright/test
 │   ├── activity-first-protocol.test.ts ⚠
-│   │   ├── calculateRealShitRate  ⚠ dreamr/activity/aqs.ts
-│   │   ├── formatAQS  ⚠ dreamr/activity/aqs.ts
-│   │   ├── formatRealShitRate  ⚠ dreamr/activity/aqs.ts
-│   │   ├── getAQSTier  ⚠ dreamr/activity/aqs.ts
-│   │   ├── calculateActivityPoints  ⚠ dreamr/activity/scoring.ts
-│   │   ├── calculateDecayDate  ⚠ dreamr/activity/scoring.ts
-│   │   ├── getInnovationBonus  ⚠ dreamr/activity/scoring.ts
-│   │   ├── getTierDisplayName  ⚠ dreamr/activity/scoring.ts
-│   │   ├── getTierMultiplier  ⚠ dreamr/activity/scoring.ts
-│   │   ├── getVerificationStrength  ⚠ dreamr/activity/scoring.ts
-│   │   ├── isDecayed  ⚠ dreamr/activity/scoring.ts
-│   │   ├── shouldPromoteActivity  ⚠ dreamr/activity/scoring.ts
-│   │   ├── ActivityTier  ⚠ dreamr/activity/types.ts
-│   │   ├── CPV_PRICING  ⚠ dreamr/activity/types.ts
-│   │   ├── SKIP_CREDIT_REWARDS  ⚠ dreamr/activity/types.ts
-│   │   ├── TIER_MULTIPLIERS  ⚠ dreamr/activity/types.ts
-│   │   ├── VERIFICATION_STRENGTH  ⚠ dreamr/activity/types.ts
-│   │   ├── VerificationMethod  ⚠ dreamr/activity/types.ts
-│   │   ├── estimateVisibilityScore  ⚠ dreamr/activity/visibility-score.ts
+│   │   ├── calculateRealShitRate  ⚠ ../lib/activity/aqs
+│   │   ├── formatAQS  ⚠ ../lib/activity/aqs
+│   │   ├── formatRealShitRate  ⚠ ../lib/activity/aqs
+│   │   ├── getAQSTier  ⚠ ../lib/activity/aqs
+│   │   ├── calculateActivityPoints  ⚠ ../lib/activity/scoring
+│   │   ├── calculateDecayDate  ⚠ ../lib/activity/scoring
+│   │   ├── getInnovationBonus  ⚠ ../lib/activity/scoring
+│   │   ├── getTierDisplayName  ⚠ ../lib/activity/scoring
+│   │   ├── getTierMultiplier  ⚠ ../lib/activity/scoring
+│   │   ├── getVerificationStrength  ⚠ ../lib/activity/scoring
+│   │   ├── isDecayed  ⚠ ../lib/activity/scoring
+│   │   ├── shouldPromoteActivity  ⚠ ../lib/activity/scoring
+│   │   ├── ActivityTier  ⚠ ../lib/activity/types
+│   │   ├── CPV_PRICING  ⚠ ../lib/activity/types
+│   │   ├── SKIP_CREDIT_REWARDS  ⚠ ../lib/activity/types
+│   │   ├── TIER_MULTIPLIERS  ⚠ ../lib/activity/types
+│   │   ├── VERIFICATION_STRENGTH  ⚠ ../lib/activity/types
+│   │   ├── VerificationMethod  ⚠ ../lib/activity/types
+│   │   ├── estimateVisibilityScore  ⚠ ../lib/activity/visibility-score
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -15689,21 +15689,21 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── coercion-table.test.ts ⚠
-│   │   ├── DreamDrop  ⚠ engine/runtime/coercionTable.ts
-│   │   ├── classifyDrop  ⚠ engine/runtime/coercionTable.ts
-│   │   ├── coerceRawPayload  ⚠ engine/runtime/coercionTable.ts
+│   │   ├── DreamDrop  ⚠ ../lib/runtime/coercionTable
+│   │   ├── classifyDrop  ⚠ ../lib/runtime/coercionTable
+│   │   ├── coerceRawPayload  ⚠ ../lib/runtime/coercionTable
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── collector-extended.test.ts ⚠
-│   │   ├── clearBuffers  ⚠ engine/observability/collector.ts
-│   │   ├── collectBatchLogs  ⚠ engine/observability/collector.ts
-│   │   ├── collectLog  ⚠ engine/observability/collector.ts
-│   │   ├── collectTrace  ⚠ engine/observability/collector.ts
-│   │   ├── getErrorRate  ⚠ engine/observability/collector.ts
-│   │   ├── getLogCountsBySeverity  ⚠ engine/observability/collector.ts
-│   │   ├── getP95Latency  ⚠ engine/observability/collector.ts
-│   │   ├── groupTracesByTraceId  ⚠ engine/observability/collector.ts
+│   │   ├── clearBuffers  ⚠ ../lib/observability/collector
+│   │   ├── collectBatchLogs  ⚠ ../lib/observability/collector
+│   │   ├── collectLog  ⚠ ../lib/observability/collector
+│   │   ├── collectTrace  ⚠ ../lib/observability/collector
+│   │   ├── getErrorRate  ⚠ ../lib/observability/collector
+│   │   ├── getLogCountsBySeverity  ⚠ ../lib/observability/collector
+│   │   ├── getP95Latency  ⚠ ../lib/observability/collector
+│   │   ├── groupTracesByTraceId  ⚠ ../lib/observability/collector
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -15712,11 +15712,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
-│   │   ├── (dynamic)  ← engins/contentengin/composite/motionCapture.ts
-│   │   ├── (dynamic)  ← engins/contentengin/composite/compositor.ts
-│   │   ├── (dynamic)  ← engins/contentengin/composite/rotoscope.ts
-│   │   ├── (dynamic)  ← engins/contentengin/composite/fxSimulation.ts
-│   │   └── (dynamic)  ← engins/contentengin/composite/matchmover.ts
+│   │   ├── (dynamic)  ← ../lib/composite/motionCapture
+│   │   ├── (dynamic)  ← ../lib/composite/compositor
+│   │   ├── (dynamic)  ← ../lib/composite/rotoscope
+│   │   ├── (dynamic)  ← ../lib/composite/fxSimulation
+│   │   └── (dynamic)  ← ../lib/composite/matchmover
 │   ├── conform-memory-map.test.ts
 │   │   ├── BAR_SEAM_ATOMICS_INDEX  ← @/engine/runtime/memory
 │   │   ├── BAR_SEAM_SCALE  ← @/engine/runtime/memory
@@ -15795,9 +15795,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
 │   │   ├── vi  ← vitest
-│   │   ├── (dynamic)  ← engins/contentengin/content/transcriptEditor.ts
-│   │   ├── (dynamic)  ← engins/contentengin/content/seoScorer.ts
-│   │   ├── (dynamic)  ← engins/contentengin/content/voiceClone.ts
+│   │   ├── (dynamic)  ← ../lib/content/transcriptEditor
+│   │   ├── (dynamic)  ← ../lib/content/seoScorer
+│   │   ├── (dynamic)  ← ../lib/content/voiceClone
 │   │   ├── (dynamic)  ← ../app/api/content/transcribe/route
 │   │   ├── (dynamic)  ← next/server
 │   │   ├── (dynamic)  ← ../app/api/content/generative-fill/route
@@ -15825,11 +15825,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── data-transform-extended.test.ts ⚠
-│   │   ├── computeBufferStats  ⚠ engine/data-transform.ts
-│   │   ├── decodeFromLedger  ⚠ engine/data-transform.ts
-│   │   ├── encodeToLedger  ⚠ engine/data-transform.ts
-│   │   ├── normalizeBuffer  ⚠ engine/data-transform.ts
-│   │   ├── zscore  ⚠ engine/data-transform.ts
+│   │   ├── computeBufferStats  ⚠ ../lib/data-transform
+│   │   ├── decodeFromLedger  ⚠ ../lib/data-transform
+│   │   ├── encodeToLedger  ⚠ ../lib/data-transform
+│   │   ├── normalizeBuffer  ⚠ ../lib/data-transform
+│   │   ├── zscore  ⚠ ../lib/data-transform
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -16164,8 +16164,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── drop-target-registry.test.ts ⚠
-│   │   ├── DreamDrop  ⚠ engine/runtime/coercionTable.ts
-│   │   ├── dropTargetRegistry  ⚠ engine/runtime/dropTargetRegistry.ts
+│   │   ├── DreamDrop  ⚠ ../lib/runtime/coercionTable
+│   │   ├── dropTargetRegistry  ⚠ ../lib/runtime/dropTargetRegistry
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -16361,18 +16361,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── (dynamic)  ← @/engine/engin-runtime/EnginCapabilities
 │   │   └── (dynamic)  ← @/engine/engin-runtime
 │   ├── engin-workflow.test.ts ⚠
-│   │   ├── HANDOFF_PATHS  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── STAGE_LABELS  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── WORKFLOW_CATALOG  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── abandonWorkflow  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── advanceStage  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── checkHandoffEligibility  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── createWorkflow  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── describeWorkflow  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── findWorkflowDef  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── handoffsFrom  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── isValidTransition  ⚠ engins/rulesets/workflowEngine.ts
-│   │   ├── workflowsForEngin  ⚠ engins/rulesets/workflowEngine.ts
+│   │   ├── HANDOFF_PATHS  ⚠ ../lib/engins/workflowEngine
+│   │   ├── STAGE_LABELS  ⚠ ../lib/engins/workflowEngine
+│   │   ├── WORKFLOW_CATALOG  ⚠ ../lib/engins/workflowEngine
+│   │   ├── abandonWorkflow  ⚠ ../lib/engins/workflowEngine
+│   │   ├── advanceStage  ⚠ ../lib/engins/workflowEngine
+│   │   ├── checkHandoffEligibility  ⚠ ../lib/engins/workflowEngine
+│   │   ├── createWorkflow  ⚠ ../lib/engins/workflowEngine
+│   │   ├── describeWorkflow  ⚠ ../lib/engins/workflowEngine
+│   │   ├── findWorkflowDef  ⚠ ../lib/engins/workflowEngine
+│   │   ├── handoffsFrom  ⚠ ../lib/engins/workflowEngine
+│   │   ├── isValidTransition  ⚠ ../lib/engins/workflowEngine
+│   │   ├── workflowsForEngin  ⚠ ../lib/engins/workflowEngine
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -16686,30 +16686,30 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── gameengin-power-systems.test.ts ⚠
-│   │   ├── AdvancedPhysicsWorld  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── AnimationClip  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── AnimationStateMachine  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── AssetStreamManager  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── BTContext  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── BTNode  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── BehaviorTreeEngine  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── ClientSidePrediction  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── ComputeShaderPipeline  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── GPUProfiler  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── GlobalIllumProbes  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── LODLevel  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── LODObject  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── LODSystem  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── OctreeBVH  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── PhysicsMaterialSystem  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── ProceduralWorldGen  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── ReplayBuffer  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── ResourcePool  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── RollbackNetcode  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── TerrainEngine  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── TypedEventBus  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── WGSLShaderManager  ⚠ engins/gameengin/power-systems.ts
-│   │   ├── WorkerJobSystem  ⚠ engins/gameengin/power-systems.ts
+│   │   ├── AdvancedPhysicsWorld  ⚠ ../lib/gameengin/power-systems
+│   │   ├── AnimationClip  ⚠ ../lib/gameengin/power-systems
+│   │   ├── AnimationStateMachine  ⚠ ../lib/gameengin/power-systems
+│   │   ├── AssetStreamManager  ⚠ ../lib/gameengin/power-systems
+│   │   ├── BTContext  ⚠ ../lib/gameengin/power-systems
+│   │   ├── BTNode  ⚠ ../lib/gameengin/power-systems
+│   │   ├── BehaviorTreeEngine  ⚠ ../lib/gameengin/power-systems
+│   │   ├── ClientSidePrediction  ⚠ ../lib/gameengin/power-systems
+│   │   ├── ComputeShaderPipeline  ⚠ ../lib/gameengin/power-systems
+│   │   ├── GPUProfiler  ⚠ ../lib/gameengin/power-systems
+│   │   ├── GlobalIllumProbes  ⚠ ../lib/gameengin/power-systems
+│   │   ├── LODLevel  ⚠ ../lib/gameengin/power-systems
+│   │   ├── LODObject  ⚠ ../lib/gameengin/power-systems
+│   │   ├── LODSystem  ⚠ ../lib/gameengin/power-systems
+│   │   ├── OctreeBVH  ⚠ ../lib/gameengin/power-systems
+│   │   ├── PhysicsMaterialSystem  ⚠ ../lib/gameengin/power-systems
+│   │   ├── ProceduralWorldGen  ⚠ ../lib/gameengin/power-systems
+│   │   ├── ReplayBuffer  ⚠ ../lib/gameengin/power-systems
+│   │   ├── ResourcePool  ⚠ ../lib/gameengin/power-systems
+│   │   ├── RollbackNetcode  ⚠ ../lib/gameengin/power-systems
+│   │   ├── TerrainEngine  ⚠ ../lib/gameengin/power-systems
+│   │   ├── TypedEventBus  ⚠ ../lib/gameengin/power-systems
+│   │   ├── WGSLShaderManager  ⚠ ../lib/gameengin/power-systems
+│   │   ├── WorkerJobSystem  ⚠ ../lib/gameengin/power-systems
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -16786,8 +16786,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── hasCartridgeMagic  ← @/engins/gameengin/cartridge-manifest
 │   │   ├── validateManifest  ← @/engins/gameengin/cartridge-manifest
 │   │   ├── parseDreamrArchive  ← @/engins/gameengin/cartridgeLoader
-│   │   ├── packTar  ← scripts/gameengin package tar helper
-│   │   ├── unpackTar  ← scripts/gameengin package tar helper
+│   │   ├── packTar  ← @/scripts/gameengin/lib/tar
+│   │   ├── unpackTar  ← @/scripts/gameengin/lib/tar
 │   │   ├── * as fs  ← node:fs
 │   │   ├── * as path  ← node:path
 │   │   ├── describe  ← vitest
@@ -16937,7 +16937,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
-│   │   └── (dynamic)  ← engine/runtime/instanceManager.ts
+│   │   └── (dynamic)  ← ../lib/runtime/instanceManager
 │   ├── integration-wiring.test.ts
 │   │   ├── ⬡ CommandPalette  ← @/components/dream.CommandPalette
 │   │   ├── CREATIVE_ENGINES  ← @/engins/forgeengin/forge/forgeRegistry
@@ -17125,11 +17125,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── offline-queue.test.ts ⚠
-│   │   ├── dequeue  ⚠ engine/runtime/offlineQueue.ts
-│   │   ├── enqueue  ⚠ engine/runtime/offlineQueue.ts
-│   │   ├── flushQueue  ⚠ engine/runtime/offlineQueue.ts
-│   │   ├── getQueueStatus  ⚠ engine/runtime/offlineQueue.ts
-│   │   ├── isOnline  ⚠ engine/runtime/offlineQueue.ts
+│   │   ├── dequeue  ⚠ ../lib/runtime/offlineQueue
+│   │   ├── enqueue  ⚠ ../lib/runtime/offlineQueue
+│   │   ├── flushQueue  ⚠ ../lib/runtime/offlineQueue
+│   │   ├── getQueueStatus  ⚠ ../lib/runtime/offlineQueue
+│   │   ├── isOnline  ⚠ ../lib/runtime/offlineQueue
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -17407,10 +17407,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
 │   │   ├── vi  ← vitest
-│   │   ├── (dynamic)  ← engine/platform/lab.ts
+│   │   ├── (dynamic)  ← ../lib/platform/lab
 │   │   ├── (dynamic)  ← ../app/api/ads/orders/route
 │   │   ├── (dynamic)  ← ../app/api/gal/route
-│   │   └── (dynamic)  ← engine/platform/index.ts
+│   │   └── (dynamic)  ← ../lib/platform/index
 │   ├── post-media.test.ts
 │   │   ├── getPostMediaUrls  ← @/engins/contentengin/media/postMedia
 │   │   ├── getPrimaryPostMediaUrl  ← @/engins/contentengin/media/postMedia
@@ -17437,19 +17437,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── readme-autosync.test.ts ⚠
-│   │   ├── DrEamsIntentType  ⚠ engine/dreams/types.ts
-│   │   ├── Dream  ⚠ engine/dreams/types.ts
-│   │   ├── DreamKind  ⚠ engine/dreams/types.ts
-│   │   ├── DreamPermissions  ⚠ engine/dreams/types.ts
-│   │   ├── DreamRenderMode  ⚠ engine/dreams/types.ts
-│   │   ├── DreamSurface  ⚠ engine/dreams/types.ts
-│   │   ├── NO_PERMISSIONS  ⚠ engine/dreams/types.ts
-│   │   ├── OWNER_PERMISSIONS  ⚠ engine/dreams/types.ts
-│   │   ├── VIEWER_PERMISSIONS  ⚠ engine/dreams/types.ts
-│   │   ├── createDream  ⚠ engine/dreams/types.ts
-│   │   ├── dreamCan  ⚠ engine/dreams/types.ts
-│   │   ├── isDream  ⚠ engine/dreams/types.ts
-│   │   ├── resolveDreamSurfaceAdapter  ⚠ engine/dreams/types.ts
+│   │   ├── DrEamsIntentType  ⚠ ../lib/dreams/types
+│   │   ├── Dream  ⚠ ../lib/dreams/types
+│   │   ├── DreamKind  ⚠ ../lib/dreams/types
+│   │   ├── DreamPermissions  ⚠ ../lib/dreams/types
+│   │   ├── DreamRenderMode  ⚠ ../lib/dreams/types
+│   │   ├── DreamSurface  ⚠ ../lib/dreams/types
+│   │   ├── NO_PERMISSIONS  ⚠ ../lib/dreams/types
+│   │   ├── OWNER_PERMISSIONS  ⚠ ../lib/dreams/types
+│   │   ├── VIEWER_PERMISSIONS  ⚠ ../lib/dreams/types
+│   │   ├── createDream  ⚠ ../lib/dreams/types
+│   │   ├── dreamCan  ⚠ ../lib/dreams/types
+│   │   ├── isDream  ⚠ ../lib/dreams/types
+│   │   ├── resolveDreamSurfaceAdapter  ⚠ ../lib/dreams/types
 │   │   ├── buildAutosyncSummary  ← ../scripts/readme-autosync
 │   │   ├── computeAffected  ← ../scripts/readme-autosync
 │   │   ├── replaceSection  ← ../scripts/readme-autosync
@@ -17491,16 +17491,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
 │   ├── responsive.test.ts ⚠
-│   │   ├── BREAKPOINTS  ⚠ components/ui-system/responsive.ts
-│   │   ├── BREAKPOINT_ORDER  ⚠ components/ui-system/responsive.ts
-│   │   ├── clamp  ⚠ components/ui-system/responsive.ts
-│   │   ├── cssClamp  ⚠ components/ui-system/responsive.ts
-│   │   ├── fluid  ⚠ components/ui-system/responsive.ts
-│   │   ├── getBreakpoint  ⚠ components/ui-system/responsive.ts
-│   │   ├── isAtLeast  ⚠ components/ui-system/responsive.ts
-│   │   ├── isBelow  ⚠ components/ui-system/responsive.ts
-│   │   ├── pickByBreakpoint  ⚠ components/ui-system/responsive.ts
-│   │   ├── readViewportWidth  ⚠ components/ui-system/responsive.ts
+│   │   ├── BREAKPOINTS  ⚠ ../lib/ui/responsive
+│   │   ├── BREAKPOINT_ORDER  ⚠ ../lib/ui/responsive
+│   │   ├── clamp  ⚠ ../lib/ui/responsive
+│   │   ├── cssClamp  ⚠ ../lib/ui/responsive
+│   │   ├── fluid  ⚠ ../lib/ui/responsive
+│   │   ├── getBreakpoint  ⚠ ../lib/ui/responsive
+│   │   ├── isAtLeast  ⚠ ../lib/ui/responsive
+│   │   ├── isBelow  ⚠ ../lib/ui/responsive
+│   │   ├── pickByBreakpoint  ⚠ ../lib/ui/responsive
+│   │   ├── readViewportWidth  ⚠ ../lib/ui/responsive
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
@@ -17734,12 +17734,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── vi  ← vitest
 │   │   └── (dynamic)  ← @/supabase/config
 │   ├── swap-manager-extended.test.ts ⚠
-│   │   ├── clearSwap  ⚠ engine/runtime/swapManager.ts
-│   │   ├── getAllSwapStates  ⚠ engine/runtime/swapManager.ts
-│   │   ├── getSwap  ⚠ engine/runtime/swapManager.ts
-│   │   ├── resetAllSwaps  ⚠ engine/runtime/swapManager.ts
-│   │   ├── setSwap  ⚠ engine/runtime/swapManager.ts
-│   │   ├── toggleSwap  ⚠ engine/runtime/swapManager.ts
+│   │   ├── clearSwap  ⚠ ../lib/runtime/swapManager
+│   │   ├── getAllSwapStates  ⚠ ../lib/runtime/swapManager
+│   │   ├── getSwap  ⚠ ../lib/runtime/swapManager
+│   │   ├── resetAllSwaps  ⚠ ../lib/runtime/swapManager
+│   │   ├── setSwap  ⚠ ../lib/runtime/swapManager
+│   │   ├── toggleSwap  ⚠ ../lib/runtime/swapManager
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -17759,7 +17759,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   ├── it  ← vitest
-│   │   └── (dynamic)  ← supabase/vector.ts
+│   │   └── (dynamic)  ← ../lib/supabase/vector
 │   ├── torridity-ledger.test.ts
 │   │   ├── TORRIDITY_LEDGER_CONFIG  ← @/dreamr/runtime/torridityLedger
 │   │   ├── calculateOriginality  ← @/dreamr/runtime/torridityLedger
@@ -17824,16 +17824,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── it  ← vitest
 │   │   └── vi  ← vitest
 │   ├── utils-extended.test.ts ⚠
-│   │   ├── assert  ⚠ engine/utils
-│   │   ├── clamp  ⚠ engine/utils
-│   │   ├── debounce  ⚠ engine/utils
-│   │   ├── deepClone  ⚠ engine/utils
-│   │   ├── groupBy  ⚠ engine/utils
-│   │   ├── retry  ⚠ engine/utils
-│   │   ├── sleep  ⚠ engine/utils
-│   │   ├── throttle  ⚠ engine/utils
-│   │   ├── truncate  ⚠ engine/utils
-│   │   ├── unique  ⚠ engine/utils
+│   │   ├── assert  ⚠ ../lib/utils
+│   │   ├── clamp  ⚠ ../lib/utils
+│   │   ├── debounce  ⚠ ../lib/utils
+│   │   ├── deepClone  ⚠ ../lib/utils
+│   │   ├── groupBy  ⚠ ../lib/utils
+│   │   ├── retry  ⚠ ../lib/utils
+│   │   ├── sleep  ⚠ ../lib/utils
+│   │   ├── throttle  ⚠ ../lib/utils
+│   │   ├── truncate  ⚠ ../lib/utils
+│   │   ├── unique  ⚠ ../lib/utils
 │   │   ├── afterEach  ← vitest
 │   │   ├── beforeEach  ← vitest
 │   │   ├── describe  ← vitest

@@ -109,7 +109,7 @@ These features are spec'd but not yet built. They are mandatory obligations per 
 
 | Location | Description |
 |----------|-------------|
-| `engins/codeengin/ai/drEamsCodeAssist.ts:355` | implement\n}`; |
+| `lib/code/drEamsCodeAssist.ts:355` | implement\n}`; |
 
 ---
 

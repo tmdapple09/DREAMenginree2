@@ -1,5 +1,5 @@
 /**
- * utils/index.ts
+ * lib/dream-docs/index.ts
  * Barrel export for the DreamDocs knowledge base library.
  */
 

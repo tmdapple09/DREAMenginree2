@@ -13394,7 +13394,7 @@ _No style files for this feature._
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
 
-## `scripts/gameengin package tar helper`
+## `scripts/gameengin/lib/tar.ts`
 
 | Module | Connected via |
 |--------|---------------|
@@ -13423,7 +13423,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../../engins/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
-| `scripts/gameengin package tar helper` | `TarFile`, `packTar` |
+| `./lib/tar.js` | `TarFile`, `packTar` |
 | `node:child_process` | `execFileSync` |
 | `node:fs` | `* as fs` |
 | `node:path` | `* as path` |
@@ -13513,7 +13513,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `engine/agents/adari.ts` | `assertBuildInvariants` |
+| `../lib/adari` | `assertBuildInvariants` |
 
 ## `scripts/readme-autosync.ts`
 
@@ -16566,11 +16566,11 @@ _No style files for this feature._
 
 ## `tests/compositeengin-features.test.ts`
 
-- `engins/contentengin/composite/motionCapture.ts`
-- `engins/contentengin/composite/compositor.ts`
-- `engins/contentengin/composite/rotoscope.ts`
-- `engins/contentengin/composite/fxSimulation.ts`
-- `engins/contentengin/composite/matchmover.ts`
+- `../lib/composite/motionCapture`
+- `../lib/composite/compositor`
+- `../lib/composite/rotoscope`
+- `../lib/composite/fxSimulation`
+- `../lib/composite/matchmover`
 
 ## `tests/content-intelligence-routes.test.ts`
 
@@ -16579,9 +16579,9 @@ _No style files for this feature._
 
 ## `tests/contentengin-features.test.ts`
 
-- `engins/contentengin/content/transcriptEditor.ts`
-- `engins/contentengin/content/seoScorer.ts`
-- `engins/contentengin/content/voiceClone.ts`
+- `../lib/content/transcriptEditor`
+- `../lib/content/seoScorer`
+- `../lib/content/voiceClone`
 - `../app/api/content/transcribe/route`
 - `next/server`
 - `../app/api/content/generative-fill/route`
@@ -16625,7 +16625,7 @@ _No style files for this feature._
 
 ## `tests/instance-manager.test.ts`
 
-- `engine/runtime/instanceManager.ts`
+- `../lib/runtime/instanceManager`
 
 ## `tests/module-registry.test.ts`
 
@@ -16659,10 +16659,10 @@ _No style files for this feature._
 
 ## `tests/platform-utils.test.ts`
 
-- `engine/platform/lab.ts`
+- `../lib/platform/lab`
 - `../app/api/ads/orders/route`
 - `../app/api/gal/route`
-- `engine/platform/index.ts`
+- `../lib/platform/index`
 
 ## `tests/rss-feed.test.ts`
 
@@ -16683,7 +16683,7 @@ _No style files for this feature._
 
 ## `tests/tech-foundation.test.ts`
 
-- `supabase/vector.ts`
+- `../lib/supabase/vector`
 
 ## `tests/universal-asset-registry.test.ts`
 
@@ -19448,11 +19448,11 @@ _No circular dependencies detected._
 | `scripts/gameengin/maestro-analyze.ts` | `../../engins/gameengin/brain-reader.js` | `AgentName`, `AssignmentLogEntry`, `CartridgeStatus`, `getLastTouched`, `isOriginal`, `listCartridges`, `listMechanics`, `logRDSession`, `readCartridgeStatus`, `recordAssignments`, `signatureHash` |
 | `scripts/gameengin/mechanic-run.ts` | `../../engins/gameengin/brain-reader.js` | `listMechanics`, `logRDSession`, `recordBuild` |
 | `scripts/gameengin/package-cartridge.ts` | `../../engins/gameengin/cartridge-manifest.js` | `CARTRIDGE_MAGIC`, `validateManifest` |
-| `scripts/gameengin/package-cartridge.ts` | `scripts/gameengin package tar helper` | `TarFile`, `packTar` |
+| `scripts/gameengin/package-cartridge.ts` | `./lib/tar.js` | `TarFile`, `packTar` |
 | `scripts/gameengin/prophet-run.ts` | `../../engins/gameengin/brain-reader.js` | `isOriginal`, `listMechanics`, `logRDSession`, `readGenreDNA`, `signatureHash` |
 | `scripts/gameengin/upgrader-run.ts` | `../../engins/gameengin/brain-reader.js` | `AgentName`, `getLastTouched`, `listCartridges`, `listMechanics`, `listTechniques`, `logRDSession`, `readUpgradeRules`, `recordUpgrade` |
 | `scripts/gameengin/writer-run.ts` | `../../engins/gameengin/brain-reader.js` | `listDialoguePatterns`, `logRDSession`, `readCharacterVoice`, `readEmotionalTone`, `readNarrativePacing` |
-| `scripts/postbuild.ts` | `engine/agents/adari.ts` | `assertBuildInvariants` |
+| `scripts/postbuild.ts` | `../lib/adari` | `assertBuildInvariants` |
 | `scripts/wire-orphans.mjs` | `./engins` | `engins` |
 | `scripts/wire-orphans.mjs` | `./rulesets` | `rulesets` |
 | `scripts/wire-orphans.mjs` | `./surfaces` | `surfaces` |
@@ -23410,7 +23410,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (listMechanics, logRDSession, recordBuild)
 │   │   ├── package-cartridge.ts ⚠ ∅
 │   │   │   ├── ⚠ ../../engins/gameengin/cartridge-manifest.js  (CARTRIDGE_MAGIC, validateManifest)
-│   │   │   ├── ⚠ scripts/gameengin package tar helper  (TarFile, packTar)
+│   │   │   ├── ⚠ ./lib/tar.js  (TarFile, packTar)
 │   │   │   └── ∅ unused: packageCartridge
 │   │   ├── prophet-run.ts ⚠
 │   │   │   └── ⚠ ../../engins/gameengin/brain-reader.js  (isOriginal, listMechanics, logRDSession, readGenreDNA, signatureHash)
@@ -23445,7 +23445,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── optimize-dreamengin.mjs
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
-│   │   └── ⚠ engine/agents/adari.ts  (assertBuildInvariants)
+│   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
 │   ├── readme-autosync.ts ∅
 │   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
@@ -23508,24 +23508,24 @@ Legend: ⚠ broken import  ∅ unused export
 ├── tests
 │   ├── contentengin
 │   │   ├── contentengin-api.test.ts ⚠
-│   │   │   └── ⚠ engins/contentengin/photo/imageAnalyzer.ts  (analyzeImageBytes)
+│   │   │   └── ⚠ ../../lib/contentengin/photo/imageAnalyzer  (analyzeImageBytes)
 │   │   ├── contentengin-export.test.ts ⚠
-│   │   │   ├── ⚠ engins/contentengin/pipeline/build.ts  (buildAsset)
-│   │   │   ├── ⚠ engins/contentengin/pipeline/exportGlb.ts  (createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb)
-│   │   │   ├── ⚠ engins/contentengin/pipeline/paths.ts  (safeSegment)
-│   │   │   └── ⚠ engins/contentengin/pipeline/validate.ts  (validateAsset)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/exportGlb  (createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/paths  (safeSegment)
+│   │   │   └── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
 │   │   ├── contentengin-grammars.test.ts ⚠
-│   │   │   └── ⚠ engins/contentengin/pipeline/build.ts  (buildAsset)
+│   │   │   └── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
 │   │   ├── contentengin-recipes.test.ts ⚠
-│   │   │   ├── ⚠ engins/contentengin/pipeline/build.ts  (buildAsset)
-│   │   │   └── ⚠ engins/contentengin/recipes/seededRandom.ts  (seededRandom)
+│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │   │   └── ⚠ ../../lib/contentengin/recipes/seededRandom  (seededRandom)
 │   │   ├── contentengin-rigging.test.ts ⚠
-│   │   │   ├── ⚠ engins/contentengin/rigging/index.ts  (createSkeleton)
-│   │   │   └── ⚠ engins/contentengin/rigging/rigValidator.ts  (validateSkeleton)
+│   │   │   ├── ⚠ ../../lib/contentengin/rigging  (createSkeleton)
+│   │   │   └── ⚠ ../../lib/contentengin/rigging/rigValidator  (validateSkeleton)
 │   │   └── contentengin-validation.test.ts ⚠
-│   │       ├── ⚠ engins/contentengin/pipeline/build.ts  (buildAsset)
-│   │       ├── ⚠ engins/contentengin/pipeline/validate.ts  (validateAsset)
-│   │       └── ⚠ engins/contentengin/assetTypes.ts  (PartNode)
+│   │       ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
+│   │       ├── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
+│   │       └── ⚠ ../../lib/contentengin/assetTypes  (PartNode)
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
@@ -23538,10 +23538,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── navigation.spec.ts
 │   │   └── quaternion.spec.ts
 │   ├── activity-first-protocol.test.ts ⚠
-│   │   ├── ⚠ dreamr/activity/types.ts  (ActivityTier, CPV_PRICING, SKIP_CREDIT_REWARDS, TIER_MULTIPLIERS, VERIFICATION_STRENGTH, VerificationMethod)
-│   │   ├── ⚠ dreamr/activity/scoring.ts  (calculateActivityPoints, calculateDecayDate, getInnovationBonus, getTierDisplayName, getTierMultiplier, getVerificationStrength, isDecayed, shouldPromoteActivity)
-│   │   ├── ⚠ dreamr/activity/aqs.ts  (calculateRealShitRate, formatAQS, formatRealShitRate, getAQSTier)
-│   │   └── ⚠ dreamr/activity/visibility-score.ts  (estimateVisibilityScore)
+│   │   ├── ⚠ ../lib/activity/types  (ActivityTier, CPV_PRICING, SKIP_CREDIT_REWARDS, TIER_MULTIPLIERS, VERIFICATION_STRENGTH, VerificationMethod)
+│   │   ├── ⚠ ../lib/activity/scoring  (calculateActivityPoints, calculateDecayDate, getInnovationBonus, getTierDisplayName, getTierMultiplier, getVerificationStrength, isDecayed, shouldPromoteActivity)
+│   │   ├── ⚠ ../lib/activity/aqs  (calculateRealShitRate, formatAQS, formatRealShitRate, getAQSTier)
+│   │   └── ⚠ ../lib/activity/visibility-score  (estimateVisibilityScore)
 │   ├── activity-revenue-split.test.ts
 │   ├── admin-lockout.test.ts
 │   ├── admin-upgrade-readiness.test.ts
@@ -23563,9 +23563,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── child-safety.test.ts
 │   ├── code-dream-preview.test.ts
 │   ├── coercion-table.test.ts ⚠
-│   │   └── ⚠ engine/runtime/coercionTable.ts  (DreamDrop, classifyDrop, coerceRawPayload)
+│   │   └── ⚠ ../lib/runtime/coercionTable  (DreamDrop, classifyDrop, coerceRawPayload)
 │   ├── collector-extended.test.ts ⚠
-│   │   └── ⚠ engine/observability/collector.ts  (clearBuffers, collectBatchLogs, collectLog, collectTrace, getErrorRate, getLogCountsBySeverity, getP95Latency, groupTracesByTraceId)
+│   │   └── ⚠ ../lib/observability/collector  (clearBuffers, collectBatchLogs, collectLog, collectTrace, getErrorRate, getLogCountsBySeverity, getP95Latency, groupTracesByTraceId)
 │   ├── compositeengin-features.test.ts
 │   ├── conform-memory-map.test.ts
 │   ├── connector-delivery.test.ts
@@ -23576,7 +23576,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── contextual-home.test.ts
 │   ├── creative-optimizero.test.ts
 │   ├── data-transform-extended.test.ts ⚠
-│   │   └── ⚠ engine/data-transform.ts  (computeBufferStats, decodeFromLedger, encodeToLedger, normalizeBuffer, zscore)
+│   │   └── ⚠ ../lib/data-transform  (computeBufferStats, decodeFromLedger, encodeToLedger, normalizeBuffer, zscore)
 │   ├── data-transform.test.ts
 │   ├── daydream-engin-routes.test.ts
 │   ├── decide-bar-release.test.ts
@@ -23608,8 +23608,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dreamr-visibility-cursor.test.ts
 │   ├── dreamspace-panel.test.ts
 │   ├── drop-target-registry.test.ts ⚠
-│   │   ├── ⚠ engine/runtime/dropTargetRegistry.ts  (dropTargetRegistry)
-│   │   └── ⚠ engine/runtime/coercionTable.ts  (DreamDrop)
+│   │   ├── ⚠ ../lib/runtime/dropTargetRegistry  (dropTargetRegistry)
+│   │   └── ⚠ ../lib/runtime/coercionTable  (DreamDrop)
 │   ├── dual-runtime-bridge-peer-activity.test.ts
 │   ├── durable-bridge.test.ts
 │   ├── edit-profiledream-section7.test.ts
@@ -23619,7 +23619,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── engin-hot-runtime-wiring.test.ts
 │   ├── engin-runtime-core.test.ts
 │   ├── engin-workflow.test.ts ⚠
-│   │   └── ⚠ engins/rulesets/workflowEngine.ts  (HANDOFF_PATHS, STAGE_LABELS, WORKFLOW_CATALOG, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin)
+│   │   └── ⚠ ../lib/engins/workflowEngine  (HANDOFF_PATHS, STAGE_LABELS, WORKFLOW_CATALOG, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin)
 │   ├── example.spec.ts
 │   ├── export-full-code.test.ts
 │   ├── feature-build.test.ts
@@ -23645,7 +23645,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── gameengin-input-router.test.ts
 │   ├── gameengin-loop.test.ts
 │   ├── gameengin-power-systems.test.ts ⚠
-│   │   └── ⚠ engins/gameengin/power-systems.ts  (AdvancedPhysicsWorld, AnimationClip, AnimationStateMachine, AssetStreamManager, BTContext, BTNode, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODLevel, LODObject, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem)
+│   │   └── ⚠ ../lib/gameengin/power-systems  (AdvancedPhysicsWorld, AnimationClip, AnimationStateMachine, AssetStreamManager, BTContext, BTNode, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GPUProfiler, GlobalIllumProbes, LODLevel, LODObject, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem)
 │   ├── gameengin-progression.test.ts
 │   ├── gameengin-remote.test.ts
 │   ├── gameengin-runtime-upgrade.test.ts
@@ -23682,7 +23682,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── neural-seam-flow.test.ts
 │   ├── notifications.test.ts
 │   ├── offline-queue.test.ts ⚠
-│   │   └── ⚠ engine/runtime/offlineQueue.ts  (dequeue, enqueue, flushQueue, getQueueStatus, isOnline)
+│   │   └── ⚠ ../lib/runtime/offlineQueue  (dequeue, enqueue, flushQueue, getQueueStatus, isOnline)
 │   ├── optimizer.test.ts
 │   ├── orphan-wire-script.test.ts
 │   ├── os-subsystem-manifest.test.ts
@@ -23714,14 +23714,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── profile-avatar-edit-entrypoints.test.ts
 │   ├── rate-limiting.test.ts
 │   ├── readme-autosync.test.ts ⚠
-│   │   └── ⚠ engine/dreams/types.ts  (DrEamsIntentType, Dream, DreamKind, DreamPermissions, DreamRenderMode, DreamSurface, NO_PERMISSIONS, OWNER_PERMISSIONS, VIEWER_PERMISSIONS, createDream, dreamCan, isDream, resolveDreamSurfaceAdapter)
+│   │   └── ⚠ ../lib/dreams/types  (DrEamsIntentType, Dream, DreamKind, DreamPermissions, DreamRenderMode, DreamSurface, NO_PERMISSIONS, OWNER_PERMISSIONS, VIEWER_PERMISSIONS, createDream, dreamCan, isDream, resolveDreamSurfaceAdapter)
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
 │   ├── report-driven-game-agent.test.ts
 │   ├── repository-state-analysis-section.test.ts
 │   ├── responsive.test.ts ⚠
-│   │   └── ⚠ components/ui-system/responsive.ts  (BREAKPOINTS, BREAKPOINT_ORDER, clamp, cssClamp, fluid, getBreakpoint, isAtLeast, isBelow, pickByBreakpoint, readViewportWidth)
+│   │   └── ⚠ ../lib/ui/responsive  (BREAKPOINTS, BREAKPOINT_ORDER, clamp, cssClamp, fluid, getBreakpoint, isAtLeast, isBelow, pickByBreakpoint, readViewportWidth)
 │   ├── rss-feed.test.ts
 │   ├── runtime-channel.test.ts
 │   ├── runtime-container.test.ts
@@ -23746,7 +23746,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── structure-ledger.test.ts
 │   ├── supabase-config.test.ts
 │   ├── swap-manager-extended.test.ts ⚠
-│   │   └── ⚠ engine/runtime/swapManager.ts  (clearSwap, getAllSwapStates, getSwap, resetAllSwaps, setSwap, toggleSwap)
+│   │   └── ⚠ ../lib/runtime/swapManager  (clearSwap, getAllSwapStates, getSwap, resetAllSwaps, setSwap, toggleSwap)
 │   ├── swipe-calibration.test.ts
 │   ├── tech-foundation.test.ts
 │   ├── torridity-ledger.test.ts
@@ -23756,7 +23756,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── update-readme-current-status.test.ts
 │   ├── user-sim.test.ts
 │   ├── utils-extended.test.ts ⚠
-│   │   └── ⚠ engine/utils  (assert, clamp, debounce, deepClone, groupBy, retry, sleep, throttle, truncate, unique)
+│   │   └── ⚠ ../lib/utils  (assert, clamp, debounce, deepClone, groupBy, retry, sleep, throttle, truncate, unique)
 │   ├── utils-supabase-server.test.ts ⚠
 │   │   └── ⚠ @/utils/supabase/server  (createClient)
 │   ├── v2-readiness.test.ts

@@ -43,7 +43,7 @@ q = (w, xi, yj, zk)  where ||q|| = 1
 - Drift correction: Normalize every N frames to prevent accumulation error
 - No gimbal lock
 
-**Implementation:** `engine/navigation/quaternion.ts`
+**Implementation:** `lib/navigation/quaternion.ts`
 
 #### 2. Manifold Smoothing (Section 4)
 
@@ -65,7 +65,7 @@ weight = smoothstep(0, ε, distToEdge)
 position = mix(faceA, faceB, weight)
 ```
 
-**Implementation:** `engine/navigation/manifold.ts`
+**Implementation:** `lib/navigation/manifold.ts`
 
 #### 3. Gesture Physics Model (Section 5)
 
@@ -90,7 +90,7 @@ v(t) = v0 * e^(-βt)
 - If |θ| < 0.02 rad → snap to grid
 - Prevents micro-jitter
 
-**Implementation:** `engine/navigation/physics.ts`
+**Implementation:** `lib/navigation/physics.ts`
 
 #### 4. Home Anchor Field (Section 8)
 
@@ -105,7 +105,7 @@ F = -∇U                          // Force gradient
 - If idle > 3000ms → apply force field
 - User drifts home naturally without explicit action
 
-**Implementation:** `engine/navigation/anchorField.ts`
+**Implementation:** `lib/navigation/anchorField.ts`
 
 #### 5. Coordinate Systems (Section 2)
 
@@ -200,7 +200,7 @@ WidgetInstanceMemory
 ### Basic Integration
 
 ```tsx
-import { useNavigation } from 'dr-eams/ai/handlers/navigation.ts';
+import { useNavigation } from '@/lib/navigation';
 
 function MyComponent() {
   const { navState, isReady, goHome, switchToProfile } = useNavigation({
@@ -221,7 +221,7 @@ function MyComponent() {
 ### Advanced Engine Usage
 
 ```tsx
-import { SpatialNavigationEngine } from 'dr-eams/ai/handlers/navigation.ts';
+import { SpatialNavigationEngine } from '@/lib/navigation';
 
 const engine = new SpatialNavigationEngine({
   element: document,

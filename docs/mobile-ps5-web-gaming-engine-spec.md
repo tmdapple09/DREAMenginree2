@@ -41,10 +41,10 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Tiered quality ladder (ultra/high/medium/low) with explicit toggles per device class.
   - Material, lighting, shadows, post-processing and LOD policy with hard caps.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/core.ts` — `QualityTier`: Adaptive quality tiers (ultra/high/medium/low)
-  - ✅ `engins/gameengin/core.ts` — `QUALITY_PRESETS`: Quality preset budgets with targetFps
-  - ✅ `engins/gameengin/post-fx.ts` — `PostFXManager`: Post-processing pipeline (bloom, SSAO, DoF, motion blur)
-  - ✅ `engins/gameengin/power-systems.ts` — `LODSystem`: Level-of-detail system
+  - ✅ `lib/gameengin/core.ts` — `QualityTier`: Adaptive quality tiers (ultra/high/medium/low)
+  - ✅ `lib/gameengin/core.ts` — `QUALITY_PRESETS`: Quality preset budgets with targetFps
+  - ✅ `lib/gameengin/post-fx.ts` — `PostFXManager`: Post-processing pipeline (bloom, SSAO, DoF, motion blur)
+  - ✅ `lib/gameengin/power-systems.ts` — `LODSystem`: Level-of-detail system
 
 ### ✅ Gameplay Simulation
 - **Target level:** Deterministic gameplay loops with predictable physics, AI, and save-state behavior.
@@ -55,10 +55,10 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Entity/system budgets by genre scenario (arena, open zone, RTS swarm).
   - Determinism tests for input playback and netcode desync detection.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/power-systems.ts` — `RollbackNetcode`: Deterministic rollback netcode (lockstep)
-  - ✅ `engins/gameengin/power-systems.ts` — `ReplayBuffer`: Input recording and deterministic replay
-  - ✅ `engins/gameengin/power-systems.ts` — `AdvancedPhysicsWorld`: Havok-compatible physics world
-  - ✅ `engins/gameengin/power-systems.ts` — `BehaviorTreeEngine`: AI behaviour trees + GOAP planner
+  - ✅ `lib/gameengin/power-systems.ts` — `RollbackNetcode`: Deterministic rollback netcode (lockstep)
+  - ✅ `lib/gameengin/power-systems.ts` — `ReplayBuffer`: Input recording and deterministic replay
+  - ✅ `lib/gameengin/power-systems.ts` — `AdvancedPhysicsWorld`: Havok-compatible physics world
+  - ✅ `lib/gameengin/power-systems.ts` — `BehaviorTreeEngine`: AI behaviour trees + GOAP planner
 
 ### ✅ Input & Controls
 - **Target level:** Native-feeling touch + controller + keyboard/mouse parity on mobile browser.
@@ -69,10 +69,10 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Latency budget from hardware event to simulation tick and rendered frame.
   - DualSense/gamepad feature policy (haptics/trigger semantics where available).
 - **Implementation checks:**
-  - ✅ `engine/gestures/touchGestures.ts`: Touch gesture abstraction layer
-  - ✅ `engins/gameengin/games/DualSenseManager.ts` — `DualSenseManager`: PS5 DualSense haptics + gamepad integration
-  - ✅ `engins/gameengin/gameEnginRuntime.ts` — `dualsense`: Runtime gamepad detection (DualSense vs generic)
-  - ✅ `engins/gameengin/control-mappings.ts` — `ControlMapping`: Persistent control mapping API
+  - ✅ `lib/gestures/touchGestures.ts`: Touch gesture abstraction layer
+  - ✅ `lib/games/DualSenseManager.ts` — `DualSenseManager`: PS5 DualSense haptics + gamepad integration
+  - ✅ `lib/gameengin/gameEnginRuntime.ts` — `dualsense`: Runtime gamepad detection (DualSense vs generic)
+  - ✅ `lib/gameengin/control-mappings.ts` — `ControlMapping`: Persistent control mapping API
 
 ### ✅ Audio Pipeline
 - **Target level:** Low-latency, spatially coherent audio with stable mixing under load.
@@ -83,7 +83,7 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Spatial audio and occlusion policy tied to gameplay state.
   - Audio quality fallback plan for constrained devices and power-save modes.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/power-systems.ts` — `SpatialAudioDSP`: HRTF + convolution reverb + Doppler spatial audio
+  - ✅ `lib/gameengin/power-systems.ts` — `SpatialAudioDSP`: HRTF + convolution reverb + Doppler spatial audio
 
 ### ✅ Networking & Online Systems
 - **Target level:** Fast, resilient multiplayer and social synchronization for mobile conditions.
@@ -94,9 +94,9 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Jitter/packet-loss tolerance targets and reconnection strategy.
   - Cheat-resistance model and secure state validation boundaries.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/power-systems.ts` — `RollbackNetcode`: Rollback netcode with authority model
-  - ✅ `engins/gameengin/power-systems.ts` — `ClientSidePrediction`: Client-side prediction + server reconciliation
-  - ✅ `engins/gameengin/power-systems.ts` — `ReplayBuffer`: Anti-cheat hash in replay buffer
+  - ✅ `lib/gameengin/power-systems.ts` — `RollbackNetcode`: Rollback netcode with authority model
+  - ✅ `lib/gameengin/power-systems.ts` — `ClientSidePrediction`: Client-side prediction + server reconciliation
+  - ✅ `lib/gameengin/power-systems.ts` — `ReplayBuffer`: Anti-cheat hash in replay buffer
 
 ### ✅ Asset Streaming & Memory
 - **Target level:** Near-instant world entry with progressive streaming and strict memory caps.
@@ -107,9 +107,9 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Memory budgets by subsystem (textures, meshes, animation, audio, AI).
   - Warm-start / cold-start targets and cache invalidation strategy.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/power-systems.ts` — `AssetStreamManager`: Priority-queue progressive LOD asset streaming
-  - ✅ `engins/gameengin/power-systems.ts` — `ResourcePool`: Zero-allocation fixed-capacity object pools
-  - ✅ `engins/gameengin/power-systems.ts` — `TerrainEngine`: Heightmap clipmap LOD with virtual textures
+  - ✅ `lib/gameengin/power-systems.ts` — `AssetStreamManager`: Priority-queue progressive LOD asset streaming
+  - ✅ `lib/gameengin/power-systems.ts` — `ResourcePool`: Zero-allocation fixed-capacity object pools
+  - ✅ `lib/gameengin/power-systems.ts` — `TerrainEngine`: Heightmap clipmap LOD with virtual textures
 
 ### ✅ Offline, Recovery & Session Continuity
 - **Target level:** Game survives tab lifecycle events and intermittent connectivity.
@@ -120,8 +120,8 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Suspend/resume/restore contract for background/foreground transitions.
   - Corruption protection + recovery playbook for cached state and saves.
 - **Implementation checks:**
-  - ✅ `engine/runtime/offlineQueue.ts`: Offline action queue with auto-flush
-  - ✅ `engine/intelligence/sessionContinuity.ts` — `SessionContinuity`: Session continuity and restoration
+  - ✅ `lib/runtime/offlineQueue.ts`: Offline action queue with auto-flush
+  - ✅ `lib/intelligence/sessionContinuity.ts` — `SessionContinuity`: Session continuity and restoration
 
 ### ✅ Security, Safety & Privacy
 - **Target level:** Production-safe gameplay ecosystem with anti-abuse and privacy-by-default design.
@@ -133,7 +133,7 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Data-minimization matrix and consent boundaries by feature.
 - **Implementation checks:**
   - ✅ `docs/SECURITY.md`: Security policy and threat model document
-  - ✅ `engine/safety/child-safety/scanMediaUrls.ts`: Child-safety / content moderation layer
+  - ✅ `lib/child-safety/scanMediaUrls.ts`: Child-safety / content moderation layer
 
 ### ✅ Quality Engineering & Telemetry
 - **Target level:** Continuous proof that the engine meets target quality on real mobile devices.
@@ -144,8 +144,8 @@ At that point the spec file no longer changes and the 15-minute job becomes a no
   - Device coverage matrix and regression test gates.
   - Auto-rollback and release confidence criteria tied to live telemetry.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/power-systems.ts` — `GPUProfiler`: WebGPU timestamp queries + CPU flame-graph
-  - ✅ `engins/gameengin/core.ts` — `FrameTelemetry`: Runtime telemetry type (FPS, frame time, draw calls)
+  - ✅ `lib/gameengin/power-systems.ts` — `GPUProfiler`: WebGPU timestamp queries + CPU flame-graph
+  - ✅ `lib/gameengin/core.ts` — `FrameTelemetry`: Runtime telemetry type (FPS, frame time, draw calls)
 
 ## Source Research Snapshot
 

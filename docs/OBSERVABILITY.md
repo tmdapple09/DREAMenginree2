@@ -30,9 +30,9 @@ hood — there are no user-facing dashboards, panels, or widgets.
 
 | File | Purpose |
 |---|---|
-| `engine/observability/otel.ts` | OTel SDK singleton — MeterProvider + TracerProvider |
-| `engine/observability/otelBridge.ts` | Bridges `collector.ts` ring-buffer events to OTel instruments |
-| `engine/observability/collector.ts` | In-process ring buffers (unchanged API, now also forwards to OTel) |
+| `lib/observability/otel.ts` | OTel SDK singleton — MeterProvider + TracerProvider |
+| `lib/observability/otelBridge.ts` | Bridges `collector.ts` ring-buffer events to OTel instruments |
+| `lib/observability/collector.ts` | In-process ring buffers (unchanged API, now also forwards to OTel) |
 | `app/api/metrics/route.ts` | `/api/metrics` — Prometheus exposition endpoint |
 | `prometheus/prometheus.yml` | Prometheus scrape config |
 | `grafana/datasources/prometheus.yml` | Auto-provisions Prometheus datasource in Grafana |

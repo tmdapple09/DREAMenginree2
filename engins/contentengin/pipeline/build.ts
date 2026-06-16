@@ -6,7 +6,7 @@ function applyProceduralPartHints(parts: ReturnType<typeof partsFor>, recipe: Re
   const byLabel = new Map(hints.map((hint) => [hint.label, hint]));
   const attach = (part: typeof parts[number]): typeof parts[number] => {
     const hint = byLabel.get(part.label) ?? byLabel.get(part.id);
-    return { ...part, metadata: { ...part.metadata, proceduralPartHint: hint, isosurfaceKernel: hint ? 'robust-sparse-dual-contouring' : part.metadata?.isosurfaceKernel }, children: (part.children ?? []).map(attach) };
+    return { ...part, metadata: { ...part.metadata, proceduralPartHint: hint, isosurfaceKernel: hint ? 'robust-sparse-dual-contouring' : part.metadata.isosurfaceKernel }, children: part.children.map(attach) };
   };
   return parts.map(attach);
 }

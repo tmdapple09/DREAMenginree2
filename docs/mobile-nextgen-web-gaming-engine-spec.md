@@ -44,9 +44,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - ReSTIR / spatiotemporal reservoir resampling policy.
   - Neural denoiser model size, latency and fallback strategy.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/path-tracing.ts` — `PathTracer`: WebGPU path tracer with BVH acceleration
-  - ✅ `engins/gameengin/path-tracing.ts` — `RestirGI`: ReSTIR global illumination resampling
-  - ✅ `engins/gameengin/path-tracing.ts` — `NeuralDenoiser`: Neural denoiser for path-traced output
+  - ✅ `lib/gameengin/path-tracing.ts` — `PathTracer`: WebGPU path tracer with BVH acceleration
+  - ✅ `lib/gameengin/path-tracing.ts` — `RestirGI`: ReSTIR global illumination resampling
+  - ✅ `lib/gameengin/path-tracing.ts` — `NeuralDenoiser`: Neural denoiser for path-traced output
 
 ### ✅ Neural Rendering & Upscaling
 - **Target level:** On-device neural upscaling (DLSS-class) and neural texture compression for mobile bandwidth.
@@ -57,9 +57,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Neural texture format spec and decode budget.
   - Frame generation policy and motion-vector requirements.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/neural-render.ts` — `NeuralUpscaler`: WebNN/WebGPU neural upscaler
-  - ✅ `engins/gameengin/neural-render.ts` — `NeuralTextureCompression`: Neural texture compression decoder
-  - ✅ `engins/gameengin/neural-render.ts` — `FrameGenerator`: Motion-vector-based frame generation
+  - ✅ `lib/gameengin/neural-render.ts` — `NeuralUpscaler`: WebNN/WebGPU neural upscaler
+  - ✅ `lib/gameengin/neural-render.ts` — `NeuralTextureCompression`: Neural texture compression decoder
+  - ✅ `lib/gameengin/neural-render.ts` — `FrameGenerator`: Motion-vector-based frame generation
 
 ### ✅ Generative AI NPCs
 - **Target level:** LLM-driven NPC behavior, dialogue, and emergent goals running on-device or via edge.
@@ -70,9 +70,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Personality / memory schema and persistence contract.
   - Safety filters, refusal policy, and offline fallback dialogue trees.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/ai-npcs.ts` — `LLMNPCBrain`: LLM-backed NPC reasoning + memory
-  - ✅ `engins/gameengin/ai-npcs.ts` — `EmergentDialogue`: Generative dialogue with safety filters
-  - ✅ `engins/gameengin/ai-npcs.ts` — `NPCPersonalityStore`: Persistent NPC personality + memory store
+  - ✅ `lib/gameengin/ai-npcs.ts` — `LLMNPCBrain`: LLM-backed NPC reasoning + memory
+  - ✅ `lib/gameengin/ai-npcs.ts` — `EmergentDialogue`: Generative dialogue with safety filters
+  - ✅ `lib/gameengin/ai-npcs.ts` — `NPCPersonalityStore`: Persistent NPC personality + memory store
 
 ### ✅ Procedural World Generation
 - **Target level:** Infinite, coherent procedurally generated worlds with deterministic seeds and biome blending.
@@ -83,9 +83,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Biome synthesis rules and macro/micro structure layering.
   - Streaming budget for procedural chunk generation.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/procgen.ts` — `WaveFunctionCollapse`: WFC-based tile/structure synthesis
-  - ✅ `engins/gameengin/procgen.ts` — `BiomeSynthesizer`: Biome blending + macro structure generator
-  - ✅ `engins/gameengin/procgen.ts` — `ChunkScheduler`: Async procedural chunk scheduler
+  - ✅ `lib/gameengin/procgen.ts` — `WaveFunctionCollapse`: WFC-based tile/structure synthesis
+  - ✅ `lib/gameengin/procgen.ts` — `BiomeSynthesizer`: Biome blending + macro structure generator
+  - ✅ `lib/gameengin/procgen.ts` — `ChunkScheduler`: Async procedural chunk scheduler
 
 ### ✅ Cloud Hybrid Compute & Edge Offload
 - **Target level:** Heavy workloads transparently offloaded to edge nodes when local budgets are exceeded.
@@ -96,9 +96,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - State handoff protocol and rollback on disconnect.
   - Edge node trust model and result verification.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/cloud-compute.ts` — `EdgeOffloadRouter`: Local-vs-edge workload router
-  - ✅ `engins/gameengin/cloud-compute.ts` — `RemoteRenderHandoff`: Pixel-streamed remote-render handoff
-  - ✅ `engins/gameengin/cloud-compute.ts` — `ResultVerifier`: Edge result verification + rollback
+  - ✅ `lib/gameengin/cloud-compute.ts` — `EdgeOffloadRouter`: Local-vs-edge workload router
+  - ✅ `lib/gameengin/cloud-compute.ts` — `RemoteRenderHandoff`: Pixel-streamed remote-render handoff
+  - ✅ `lib/gameengin/cloud-compute.ts` — `ResultVerifier`: Edge result verification + rollback
 
 ### ✅ XR / Spatial Reality Parity
 - **Target level:** First-class WebXR parity with hand tracking, passthrough, and shared spatial anchors.
@@ -109,9 +109,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Hand-tracking input mapping that mirrors gamepad/touch.
   - Spatial anchor + passthrough composition policy.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/xr.ts` — `WebXRSession`: WebXR session lifecycle wrapper
-  - ✅ `engins/gameengin/xr.ts` — `HandTrackingInput`: Hand-tracking → unified input bridge
-  - ✅ `engins/gameengin/xr.ts` — `PassthroughComposite`: Passthrough AR + spatial anchor composer
+  - ✅ `lib/gameengin/xr.ts` — `WebXRSession`: WebXR session lifecycle wrapper
+  - ✅ `lib/gameengin/xr.ts` — `HandTrackingInput`: Hand-tracking → unified input bridge
+  - ✅ `lib/gameengin/xr.ts` — `PassthroughComposite`: Passthrough AR + spatial anchor composer
 
 ### ✅ Generative Adaptive Audio
 - **Target level:** Music and SFX generated/adapted in real-time to gameplay state via on-device models.
@@ -122,8 +122,8 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Neural foley / SFX synthesis budget and quality tiers.
   - Voice-synthesis policy and consent boundaries.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/generative-audio.ts` — `AdaptiveMusicEngine`: Tension-driven adaptive music graph
-  - ✅ `engins/gameengin/generative-audio.ts` — `NeuralFoley`: On-device neural foley synthesizer
+  - ✅ `lib/gameengin/generative-audio.ts` — `AdaptiveMusicEngine`: Tension-driven adaptive music graph
+  - ✅ `lib/gameengin/generative-audio.ts` — `NeuralFoley`: On-device neural foley synthesizer
 
 ### ✅ Predictive Asset Streaming (ML)
 - **Target level:** ML-driven prefetch that anticipates the player's next location and warms caches preemptively.
@@ -134,8 +134,8 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Prefetch budget vs. data plan / metered connection policy.
   - Cache eviction strategy informed by predicted dwell time.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/predictive-stream.ts` — `MLPrefetchModel`: On-device prefetch prediction model
-  - ✅ `engins/gameengin/predictive-stream.ts` — `BehaviorAnticipator`: Player behavior anticipation engine
+  - ✅ `lib/gameengin/predictive-stream.ts` — `MLPrefetchModel`: On-device prefetch prediction model
+  - ✅ `lib/gameengin/predictive-stream.ts` — `BehaviorAnticipator`: Player behavior anticipation engine
 
 ### ✅ Persistent World CRDT Sync
 - **Target level:** Massively shared, eventually-consistent persistent worlds via CRDTs over WebTransport.
@@ -146,8 +146,8 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Conflict resolution and history compaction policy.
   - Backpressure and partial-replica strategy for mobile.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/world-crdt.ts` — `WorldStateCRDT`: CRDT-based shared world state
-  - ✅ `engins/gameengin/world-crdt.ts` — `EventualConsistencyBridge`: WebTransport CRDT sync bridge
+  - ✅ `lib/gameengin/world-crdt.ts` — `WorldStateCRDT`: CRDT-based shared world state
+  - ✅ `lib/gameengin/world-crdt.ts` — `EventualConsistencyBridge`: WebTransport CRDT sync bridge
 
 ### ✅ Accessibility AI
 - **Target level:** Real-time AI-driven accessibility: captions, motion reduction, color-vision adaptation, input remap.
@@ -158,9 +158,9 @@ mirroring the behavior of the PS5-tier spec evolver.
   - Motion-reduction adaptive heuristics tied to vestibular safety.
   - Color-vision adaptation matrix and per-user calibration.
 - **Implementation checks:**
-  - ✅ `engins/gameengin/accessibility-ai.ts` — `RealtimeCaptioner`: On-device speech-to-caption
-  - ✅ `engins/gameengin/accessibility-ai.ts` — `MotionReductionAI`: Adaptive motion-reduction governor
-  - ✅ `engins/gameengin/accessibility-ai.ts` — `ColorVisionAdapter`: Per-user color-vision adapter
+  - ✅ `lib/gameengin/accessibility-ai.ts` — `RealtimeCaptioner`: On-device speech-to-caption
+  - ✅ `lib/gameengin/accessibility-ai.ts` — `MotionReductionAI`: Adaptive motion-reduction governor
+  - ✅ `lib/gameengin/accessibility-ai.ts` — `ColorVisionAdapter`: Per-user color-vision adapter
 
 ## Source Research Snapshot
 

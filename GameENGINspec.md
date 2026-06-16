@@ -292,7 +292,7 @@ export function handleInput(inputPtr: usize): void {
 ### 1.7 Cartridge Loading Sequence
 
 ```typescript
-// engins/gameengin/cartridge-loader.ts
+// lib/gameengin/cartridge-loader.ts
 async function loadCartridge(url: string): Promise<LoadedCartridge> {
   // 1. Fetch compressed cartridge
   const response = await fetch(url);
@@ -365,10 +365,10 @@ if (data) {
 
 ### 2.1 Directory Structure & Purpose
 
-The Brain is a version-controlled directory at `engins/gameengin/brain/`. It is the **single source of truth** for game design knowledge, inspiration, and originality tracking.
+The Brain is a version-controlled directory at `lib/gameengin/brain/`. It is the **single source of truth** for game design knowledge, inspiration, and originality tracking.
 
 ```
-engins/gameengin/brain/
+lib/gameengin/brain/
 ├── README.md                           # Agent usage guide
 │
 ├── principles/                         # Timeless axioms of game feel
@@ -617,11 +617,11 @@ All agents interact with the brain using simple Node.js `fs` operations during w
 **Read Example (Prophet getting genre DNA):**
 
 ```typescript
-// scripts/gameengin brain-reader helper
+// scripts/gameengin/lib/brain-reader.ts
 import * as fs from 'fs';
 import * as path from 'path';
 
-const BRAIN_ROOT = path.join(process.cwd(), 'engins/gameengin/brain/README.md');
+const BRAIN_ROOT = path.join(process.cwd(), 'lib/gameengin/brain');
 
 export function readGenreDNA(genre: string): any {
   const filePath = path.join(BRAIN_ROOT, 'genre-dna', `${genre}.json`);
@@ -915,7 +915,7 @@ Every 10 levels of *Mad Maxi*, Maestro triggers a **Pulse**:
 ### 6.1 Boot Sequence & Canvas Ownership
 
 ```typescript
-// engins/gameengin/platform.ts (excerpt)
+// lib/gameengin/platform.ts (excerpt)
 export async function boot(options: PlatformBootOptions): Promise<GameEnginPlatform> {
   // 1. Acquire canvas mutex
   if (canvas['__GAMEENGIN_OWNER__']) throw new Error('Canvas already owned');
@@ -963,7 +963,7 @@ export async function boot(options: PlatformBootOptions): Promise<GameEnginPlatf
 ### 6.3 Havok Physics Integration (WASM)
 
 ```typescript
-// engins/gameengin/physics-world.ts
+// lib/gameengin/physics-world.ts
 class PhysicsWorld {
   private havok: HavokPhysics;
   private fixedDeltaTime = 1/60;
@@ -1015,10 +1015,10 @@ interface InputState {
 
 | GameEngin Component | Existing DREAMengin Path |
 |---------------------|--------------------------|
-| Platform core | `engins/gameengin/` (exists, extend) |
-| Cartridge runtime | `engins/gameengin/GameRuntime.tsx`, `cartridge.ts` |
-| Cartridge manifest/loaders | `engins/gameengin/cartridges/` (exists) |
-| Brain | `engins/gameengin/brain/` (new) |
+| Platform core | `lib/gameengin/` (exists, extend) |
+| Cartridge runtime | `lib/gameengin/GameRuntime.tsx`, `cartridge.ts` |
+| Cartridge manifest/loaders | `lib/gameengin/cartridges/` (exists) |
+| Brain | `lib/gameengin/brain/` (new) |
 | UI Components | `components/gameengin/` (exists) |
 | Routes | `app/gameengin/` (exists) |
 | Workflows | `.github/workflows/gameengin-*.yml` (new) |
@@ -1068,7 +1068,7 @@ The consolidation slice already wrapped all 28 existing games in `components/gam
 
 | Hour | Task | Deliverable |
 |------|------|-------------|
-| 0-2 | Create `engins/gameengin/brain/` directory and seed with initial principles, genre DNA, mechanic library. | Brain seed files |
+| 0-2 | Create `lib/gameengin/brain/` directory and seed with initial principles, genre DNA, mechanic library. | Brain seed files |
 | 2-4 | Create migration `20260418000000_gameengin_core.sql` and apply to dev DB. | New tables |
 | 4-6 | Write workflow YAML files (5 new) in `.github/workflows/`. | Workflows |
 | 6-10 | Write core scripts: `maestro-analyze.ts`, `prophet-run.ts`, `mechanic-run.ts`, `artisan-run.ts`, `writer-run.ts`. | Scripts |
@@ -1108,10 +1108,10 @@ Due to length constraints, full file contents are provided in the previous detai
 - `public/cartridges/mad-maxi/MANIFEST.json` (provided in §1.3)
 
 ### E. Brain File Examples
-- `engins/gameengin/brain/principles/responsiveness.md` (§2.2)
-- `engins/gameengin/brain/genre-dna/platformer.json` (§2.2)
-- `engins/gameengin/brain/mechanic-library/movement/double-jump.json` (§2.2)
-- `engins/gameengin/brain/inspiration-corpus/celeste.json` (§2.2)
+- `lib/gameengin/brain/principles/responsiveness.md` (§2.2)
+- `lib/gameengin/brain/genre-dna/platformer.json` (§2.2)
+- `lib/gameengin/brain/mechanic-library/movement/double-jump.json` (§2.2)
+- `lib/gameengin/brain/inspiration-corpus/celeste.json` (§2.2)
 
 ---
 

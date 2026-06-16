@@ -43,7 +43,7 @@ DREAMengin is a **spatial, privacy‑first creative OS** — not a traditional w
 
 - Three AI agents: **Dr. Eams** (user assistant), **IDARi** (admin fixer), **TheBoogieMan.Ai** (policy enforcer)
 - Navigation is **surface‑stack** with **DreamDM Bar** as the persistent root container — it is not a component, not a divider, not a seam; it owns HomeDream Surface and DreamSpace as dependent runtimes and never unmounts.
-- The **Gold Particle** (attached to the bar) opens dual menus (left = Daydreams, right = settings) on single tap, and resets both runtimes to Home on double tap. The Gold Particle is the **only** sanctioned double-tap surface in the entire system — every other UI control responds to a *single* tap (`hooks/useTap.ts`). An ESLint `no-restricted-syntax` rule in `eslint.config.mjs` warns on any new `onDoubleClick` outside the cartridge directories (`components/games/**`, `engins/gameengin/games/**`, `engine/dualsense/**`).
+- The **Gold Particle** (attached to the bar) opens dual menus (left = Daydreams, right = settings) on single tap, and resets both runtimes to Home on double tap. The Gold Particle is the **only** sanctioned double-tap surface in the entire system — every other UI control responds to a *single* tap (`lib/hooks/useTap.ts`). An ESLint `no-restricted-syntax` rule in `eslint.config.mjs` warns on any new `onDoubleClick` outside the cartridge directories (`components/games/**`, `lib/games/**`, `lib/dualsense/**`).
 - **The DreamDM Bar is the root container that owns HomeDream Surface and DreamSpace as dependent runtimes. When the bar moves, the runtimes are pushed with it. When the bar is hidden, both runtimes remain on screen at the split they held.** Hiding the bar is visual only for the bar itself. Both runtimes remain rendered at the split they held; each continues to scroll independently inside its own frozen region.
 - The single source of truth for what the product is: **README.md** (always authoritative).
 - The binding AI build constraint: **`docs/GENERATION_LAW.md`** – compute **ι** (Invention Force) using torridity constants (`ΔP=0.1`, `λ=1.71`) and select a protocol (**FLOW**, **SYNTHESIZE**, **MANIFEST**) before every generation pass.
@@ -214,7 +214,7 @@ Versions use `^` (caret) = minimum compatible version as declared in `package.js
 | Container | Docker + Docker Compose | — |
 | Deployment | Vercel (primary) | — |
 
-**Runtime memory model:** The Engine uses a 16 MB SharedArrayBuffer partitioned into control, entity SoA, and HomeDream private regions. `EnginDispatcher` (singleton, `engine/runtime/EnginDispatcher.ts`) allocates the SAB, spawns hardwareConcurrency − 1 shader workers, and relays DreamDM Bar y-position writes into the SAB so Dream Windows reposition without a main‑thread round‑trip. See `docs/ARCHITECTURE.md §12` for the full memory map and worker protocol.
+**Runtime memory model:** The Engine uses a 16 MB SharedArrayBuffer partitioned into control, entity SoA, and HomeDream private regions. `EnginDispatcher` (singleton, `lib/runtime/EnginDispatcher.ts`) allocates the SAB, spawns hardwareConcurrency − 1 shader workers, and relays DreamDM Bar y-position writes into the SAB so Dream Windows reposition without a main‑thread round‑trip. See `docs/ARCHITECTURE.md §12` for the full memory map and worker protocol.
 
 ---
 
@@ -340,26 +340,26 @@ This section maps the most important files and what they do. Read this before se
 
 | File | Purpose |
 |------|---------|
-| `supabase/` | Supabase client setup (browser, server, env resolution) |
-| `supabase/config.ts` | Env var resolution — reads canonical `NEXT_PUBLIC_` vars safely |
-| `engine/agents/` | AI agent helpers (Dr. Eams, IDARi, TheBoogieMan) |
-| `engine/navigation/` | τ‑navigation system (deterministic state machine) |
-| `engine/navigation/StructureLedger.ts` | Precomputed O(1) navigation state/transition ledger (13 nodes × 78 transitions) |
-| `engine/runtime/memory.ts` | 16 MB SharedArrayBuffer layout — entity SoA arrays, DreamDM Bar root-container y-position slot, HomeDream privacy boundary |
-| `engine/runtime/EnginDispatcher.ts` | Singleton shader‑worker dispatcher — allocates SAB, spawns workers, relays bar y-position writes, exposes µs/tick telemetry |
-| `engine/runtime/dualRuntimeBridge.ts` | Light‑speed bridge (renamed from `dualRuntimeBridge`), zero‑copy, local event buses |
-| `engine/runtime/runtimeChannel.ts` | Solo-parity channel adapter: `LocalChannel` (in-mem), `RealtimeChannel` (lazy Supabase, graceful local fallback), `createRuntimeChannel(id, mode)` factory. Solo == co-op with one peer. |
-| `hooks/useTap.ts` | Canonical `useTap` (single-tap) + `useHomeParticleTap` (sole sanctioned double-tap site, gold particle only). |
-| `dreamdmbar/runtime/barInteractions.ts` | Bar drag math: `decideBarRelease` (slow drag parks where you let go; fling past the invisible 2/5 line snaps to top/bottom). |
-| `engine/os/` | Core OS library (ledger, torridity, generation law, bot detection, shared dream, universal editor, fingerprint isolation) |
-| `engine/events/eventBus.ts` | Local event bus factory (no global bridge) |
-| `engine/ledger/ledger.ts` | Information conservation (views, edits, state) |
-| `dreamr/torridity.ts` | Torridity constants and interpolation functions |
-| `engine/generationLaw.ts` | ι‑Engine (calculateInventionForce, getPassProtocol, etc.) |
-| `dreamr/botDetection.ts` | Physical Turing test – jitter, cross‑swipe, 4‑second tally |
-| `engine/sharedDream.ts` | Shared Dream collaboration (WebRTC / Supabase Realtime) |
-| `engine/editor/universalEditor.ts` | Tap‑hold‑move, edge transfer, ModuleManifest |
-| `engins/starmakerengin/audioFingerprint.ts` | Peak map sound isolation (no AI) |
+| `lib/supabase/` | Supabase client setup (browser, server, env resolution) |
+| `lib/supabase/config.ts` | Env var resolution — reads canonical `NEXT_PUBLIC_` vars safely |
+| `lib/agents/` | AI agent helpers (Dr. Eams, IDARi, TheBoogieMan) |
+| `lib/navigation/` | τ‑navigation system (deterministic state machine) |
+| `lib/navigation/StructureLedger.ts` | Precomputed O(1) navigation state/transition ledger (13 nodes × 78 transitions) |
+| `lib/runtime/memory.ts` | 16 MB SharedArrayBuffer layout — entity SoA arrays, DreamDM Bar root-container y-position slot, HomeDream privacy boundary |
+| `lib/runtime/EnginDispatcher.ts` | Singleton shader‑worker dispatcher — allocates SAB, spawns workers, relays bar y-position writes, exposes µs/tick telemetry |
+| `lib/runtime/dualRuntimeBridge.ts` | Light‑speed bridge (renamed from `dualRuntimeBridge`), zero‑copy, local event buses |
+| `lib/runtime/runtimeChannel.ts` | Solo-parity channel adapter: `LocalChannel` (in-mem), `RealtimeChannel` (lazy Supabase, graceful local fallback), `createRuntimeChannel(id, mode)` factory. Solo == co-op with one peer. |
+| `lib/hooks/useTap.ts` | Canonical `useTap` (single-tap) + `useHomeParticleTap` (sole sanctioned double-tap site, gold particle only). |
+| `lib/dreamdm/barInteractions.ts` | Bar drag math: `decideBarRelease` (slow drag parks where you let go; fling past the invisible 2/5 line snaps to top/bottom). |
+| `lib/dreamenginOS/` | Core OS library (ledger, torridity, generation law, bot detection, shared dream, universal editor, fingerprint isolation) |
+| `lib/eventBus.ts` | Local event bus factory (no global bridge) |
+| `lib/ledger.ts` | Information conservation (views, edits, state) |
+| `lib/torridity.ts` | Torridity constants and interpolation functions |
+| `lib/generationLaw.ts` | ι‑Engine (calculateInventionForce, getPassProtocol, etc.) |
+| `lib/botDetection.ts` | Physical Turing test – jitter, cross‑swipe, 4‑second tally |
+| `lib/sharedDream.ts` | Shared Dream collaboration (WebRTC / Supabase Realtime) |
+| `lib/universalEditor.ts` | Tap‑hold‑move, edge transfer, ModuleManifest |
+| `lib/audioFingerprint.ts` | Peak map sound isolation (no AI) |
 | `hooks/` | Custom React hooks |
 | `types/widget-system-v2.ts` | Core Dream/widget type definitions |
 | `utils/` | General utility functions |
@@ -432,8 +432,8 @@ README.md
 app/layout.tsx
   └─ wraps all routes; global Supabase provider, theme, fonts
 
-supabase/config.ts  ←  reads process.env NEXT_PUBLIC_* vars
-  └─ used by supabase/client/client.ts and supabase/server/serverClient.ts
+lib/supabase/config.ts  ←  reads process.env NEXT_PUBLIC_* vars
+  └─ used by lib/supabase/browser.ts and lib/supabase/server.ts
        └─ used by all app/api/* routes and auth‑gated pages
 
 dreamdmbar/dreamsurface.dreamdmbar.tsx
@@ -442,12 +442,12 @@ dreamdmbar/dreamsurface.dreamdmbar.tsx
 
 components/dream.HomeRadialNav.tsx (Gold Particle)
   └─ attached to DreamDMBar, opens dual menus
-  └─ imports from engine/navigation/ (τ‑state machine)
+  └─ imports from lib/navigation/ (τ‑state machine)
 
 components/dreams/* (DreamShell → ConnectorLayer → FeatureLayer → OutputLayer)
   └─ all Dreams must pass through these 4 layers
   └─ OutputLayer feeds into components/profile/* (ViewProfile)
-  └─ ConnectorLayer uses supabase/client/client.ts (auth state)
+  └─ ConnectorLayer uses lib/supabase/browser.ts (auth state)
 
 app/homedream/page.tsx
   └─ renders dreamdmbar/homedream/dream.homedream.HomeDream.tsx (via DreamDMBar)
@@ -650,7 +650,7 @@ After updating, change the **Last updated:** date at the top.
 
 | Naming authority | `docs/NAMING_AUTHORITY.md` (canonical names, validation rules) |
 | Constitution | `docs/CONSTITUTION.md` (binding rules for every system) |
-| Naming library | `engine/identity/canonical-names.ts` |
+| Naming library | `lib/identity/canonical-names.ts` |
 
 | Dev server | `pnpm dev` → `http://localhost:3000` |
 | Type check | `pnpm typecheck` |
@@ -660,7 +660,7 @@ After updating, change the **Last updated:** date at the top.
 | Build | `pnpm build` |
 
 | Path alias | `@/` → project root (configured in `tsconfig.json`) |
-| DB/Auth | Supabase — config in `supabase/` |
+| DB/Auth | Supabase — config in `lib/supabase/` |
 | Env template | `.env.example` → copy to `.env.local` |
 
 **Canonical Daydream / Engin pairs:**

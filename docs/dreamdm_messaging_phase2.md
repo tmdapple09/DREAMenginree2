@@ -26,7 +26,7 @@ Both surfaces share the **same source of truth** for messaging, search, drafts, 
 
 | # | Feature | Status |
 |---|---------|--------|
-| 1 | Shared conversation/message source of truth | ✅ shared `dreamdmbar/` hooks |
+| 1 | Shared conversation/message source of truth | ✅ shared `lib/dreamdm/` hooks |
 | 2 | Real direct messaging on both surfaces | ✅ `useMessagingCore` + `/api/messages` |
 | 3 | Conversation selection on both surfaces | ✅ |
 | 4 | Message composition and send on both surfaces | ✅ |
@@ -48,9 +48,9 @@ Both surfaces share the **same source of truth** for messaging, search, drafts, 
 
 ## 3. Hook Architecture
 
-All shared logic lives in `dreamdmbar/`. Components import from hooks — no logic is duplicated.
+All shared logic lives in `lib/dreamdm/`. Components import from hooks — no logic is duplicated.
 
-### 3.1 `dreamdmbar/hooks/useDreamSearch.ts` (NEW)
+### 3.1 `lib/dreamdm/useDreamSearch.ts` (NEW)
 
 Universal search hook shared by both surfaces.
 
@@ -72,7 +72,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn
 
 **Dr. Eams persistence key:** `de-dreams-mode` (localStorage)
 
-### 3.2 `dreamdmbar/hooks/useMessagingCore.ts` (NEW)
+### 3.2 `lib/dreamdm/useMessagingCore.ts` (NEW)
 
 Shared send / attach / validate logic.
 
@@ -94,10 +94,10 @@ export function useMessagingCore(
 
 ### 3.3 Existing hooks (unchanged)
 
-- `dreamdmbar/hooks/useDreamDMMessages.ts` — realtime message subscription
-- `dreamdmbar/hooks/useDreamDMDraft.ts` — per-conversation draft persistence
-- `dreamdmbar/hooks/useDreamDMConversations.ts` — conversation list + realtime updates
-- `dreamdmbar/hooks/useNotifications.ts` — unread count
+- `lib/dreamdm/useDreamDMMessages.ts` — realtime message subscription
+- `lib/dreamdm/useDreamDMDraft.ts` — per-conversation draft persistence
+- `lib/dreamdm/useDreamDMConversations.ts` — conversation list + realtime updates
+- `lib/dreamdm/useNotifications.ts` — unread count
 
 ---
 

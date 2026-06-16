@@ -11,7 +11,7 @@ This example shows how to add haptic feedback to the Racing Game using the new D
 ```tsx
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useGameAutoStart, useGamePhase, useKeySet, useSubmitScore } from 'engins/gameengin/games/hooks.ts';
+import { useGameAutoStart, useGamePhase, useKeySet, useSubmitScore } from '@/lib/games/hooks';
 
 export default function RacingGame() {
   const [phase, phaseRef, setPhase] = useGamePhase<Phase>('menu');
@@ -41,8 +41,8 @@ export default function RacingGame() {
 ```tsx
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useGameAutoStart, useGamePhase, useKeySet, useSubmitScore } from 'engins/gameengin/games/hooks.ts';
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts'; // ← Import DualSense hook
+import { useGameAutoStart, useGamePhase, useKeySet, useSubmitScore } from '@/lib/games/hooks';
+import { useGamepad } from '@/lib/games/useGamepad'; // ← Import DualSense hook
 
 export default function RacingGame() {
   const [phase, phaseRef, setPhase] = useGamePhase<Phase>('menu');
@@ -94,7 +94,7 @@ export default function RacingGame() {
 
 ## Key Changes
 
-1. **Import the hook**: `import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';`
+1. **Import the hook**: `import { useGamepad } from '@/lib/games/useGamepad';`
 2. **Get rumble function**: `const { rumble, isDualSense } = useGamepad();`
 3. **Add haptic feedback**:
    - Check `isDualSense` to avoid calling rumble on non-DualSense controllers
@@ -172,7 +172,7 @@ rumble(intensity, 100);
 ### Space Shooter (Shoot Feedback)
 
 ```tsx
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';
+import { useGamepad } from '@/lib/games/useGamepad';
 
 export default function SpaceShooter() {
   const { rumble, isDualSense } = useGamepad();
@@ -212,7 +212,7 @@ export default function SpaceShooter() {
 ### Platformer (Jump & Land Feedback)
 
 ```tsx
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';
+import { useGamepad } from '@/lib/games/useGamepad';
 
 export default function Platformer() {
   const { rumble, isDualSense } = useGamepad();
@@ -249,7 +249,7 @@ export default function Platformer() {
 ### Racing Game (Engine Rumble Pattern)
 
 ```tsx
-import { useGamepad } from 'engins/gameengin/games/useGamepad.ts';
+import { useGamepad } from '@/lib/games/useGamepad';
 
 export default function RacingGame() {
   const { rumble, isDualSense } = useGamepad();
@@ -320,7 +320,7 @@ setTimeout(() => window.gamepadRumble(0.5, 80), 300);
 For mobile games, you can also use gyro data:
 
 ```tsx
-import { useDualSense } from 'engins/gameengin/games/DualSenseManager.ts';
+import { useDualSense } from '@/lib/games/DualSenseManager';
 
 export default function RacingGame() {
   const { state, rumble, isMobile } = useDualSense({

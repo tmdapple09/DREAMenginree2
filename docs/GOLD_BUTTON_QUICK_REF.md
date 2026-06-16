@@ -22,7 +22,7 @@ const TOP_H = 340;       // Panel height at top
 const GOLD_SZ = 64;      // Gold button diameter
 const SNAP_DOWN_PX = 88; // Snap to bottom when dragged down 88px
 
-// dreamdmbar/runtime/barInteractions.ts
+// lib/dreamdm/barInteractions.ts
 const BAR_FLING_LINE_RATIO = 0.4;                          // The "invisible 2/5 line"
 const BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS = -0.9; // Upward fling
 const BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS = 0.9; // Downward fling
@@ -100,12 +100,12 @@ type RuntimeWorld =
 
 > **System-wide tap discipline (2026-04):** every other interactive control in
 > DREAMengin responds to a *single* tap. Double-tap is structurally walled off
-> behind `useHomeParticleTap` in `hooks/useTap.ts`; new code uses `useTap`.
+> behind `useHomeParticleTap` in `lib/hooks/useTap.ts`; new code uses `useTap`.
 
 ## Bar Drag Behavior (2026-04)
 
 The **whole bar** is the drag handle (touch and pointer). Release semantics
-live in `decideBarRelease` (`dreamdmbar/runtime/barInteractions.ts`):
+live in `decideBarRelease` (`lib/dreamdm/barInteractions.ts`):
 
 | Release | Outcome |
 |--------|---------|
@@ -169,7 +169,7 @@ npm run test:watch # Watch mode
 |-----------|------|
 | DreamDMBar | `dreamdmbar/dreamsurface.dreamdmbar.tsx` |
 | HomeSystem | `components/home/dream.HomeSystem.tsx` |
-| Dual Runtime State | `engine/runtime/dualRuntime.ts` |
+| Dual Runtime State | `lib/runtime/dualRuntime.ts` |
 | Runtime Container | `components/runtime/dream.DualRuntimeContainer.tsx` |
 | Runtime View | `components/runtime/dream.RuntimeView.tsx` |
 

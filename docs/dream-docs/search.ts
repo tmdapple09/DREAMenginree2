@@ -1,7 +1,7 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
 /**
- * engins/codeengin/search.ts
+ * lib/dream-docs/search.ts
  * Dr. Eams knowledge base semantic search.
  * Used by the AI bar to answer "how do I..." questions.
  */

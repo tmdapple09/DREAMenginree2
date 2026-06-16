@@ -516,8 +516,8 @@ Where:
 - `app/api/dreamr/`
 - `components/dreamr/`
 - `components/feed/`
-- `dreamr/runtime/`
-- `dr-eams/ai/handlers/social.ts`
+- `lib/dreamr/`
+- `lib/social/`
 
 Tech:
 
@@ -550,8 +550,8 @@ Where:
 - `app/homedream/`
 - `app/profile/`
 - `app/api/dreamr/`
-- `dr-eams/ai/handlers/social.ts`
-- `engine/content/`
+- `lib/social/`
+- `lib/content/`
 
 Tech:
 
@@ -593,7 +593,7 @@ Where:
 - `components/dreamr/`
 - `components/home/`
 - `app/api/dreamr/`
-- `dreamr/runtime/`
+- `lib/dreamr/`
 
 Tech:
 
@@ -630,7 +630,7 @@ Where:
 
 - `app/dreamdmbar/`
 - `dreamdmbar/`
-- `dreamdmbar/`
+- `lib/dreamdm/`
 - `components/home/`
 - `components/dreamr/`
 - `components/runtime/`
@@ -661,7 +661,7 @@ Goal: DreamDMBar becomes the thing users use to talk, search, comment, attach ob
 Where:
 
 - `app/messages/`
-- `dreamdmbar/`
+- `lib/dreamdm/`
 - `components/dreamr/`
 - `components/home/`
 - `app/api/`
@@ -700,9 +700,9 @@ Where:
 
 - `components/dreamr/`
 - `components/feed/`
-- `dreamdmbar/`
+- `lib/dreamdm/`
 - `app/api/dreamr/`
-- `dr-eams/ai/handlers/social.ts`
+- `lib/social/`
 
 Tech:
 
@@ -733,8 +733,8 @@ Where:
 - `components/home/`
 - `components/dreams/`
 - `components/runtime/`
-- `engine/runtime/`
-- `engine/dream-window/`
+- `lib/runtime/`
+- `lib/dream-window/`
 
 Tech:
 
@@ -772,8 +772,8 @@ Where:
 - `components/dreams/`
 - `components/spatial/`
 - `components/runtime/`
-- `engine/runtime/`
-- `engine/babylon/`
+- `lib/runtime/`
+- `lib/babylon/`
 
 Tech:
 
@@ -808,10 +808,10 @@ Where:
 - `components/home/`
 - `components/spatial/`
 - `components/gameengin/`
-- `engine/runtime/`
-- `engine/dream-window/`
-- `engine/widgets/`
-- `engins/gameengin/`
+- `lib/runtime/`
+- `lib/dream-window/`
+- `lib/widgets/`
+- `lib/gameengin/`
 - `daydreams/`
 - `app/daydream/`
 - `app/homedream/`
@@ -897,7 +897,7 @@ Goal: Daydream becomes the creative workshop side of the OS.
 Where:
 
 - `components/shared-dream/`
-- `engine/sharedDream.ts`
+- `lib/sharedDream.ts`
 - `hooks/useSharedDream.ts`
 - `components/runtime/`
 - `app/dreamspace/`
@@ -940,7 +940,7 @@ Goal: make Shared Dreams the shared reality layer of DREAMengin. It is where Dre
 
 Where:
 
-- `engine/dream-window/`
+- `lib/dream-window/`
 - `components/runtime/`
 - `components/dreams/`
 - `components/home/`
@@ -978,8 +978,8 @@ Goal: let Dreams appear as movable windows when window mode makes sense.
 Where:
 
 - `components/runtime/`
-- `engine/runtime/`
-- `engine/engin-runtime/`
+- `lib/runtime/`
+- `lib/engin-runtime/`
 - `components/widgets/`
 - `engins/`
 
@@ -1011,7 +1011,7 @@ Goal: DREAMengin becomes modular instead of page-based.
 Where:
 
 - `components/runtime/`
-- `engine/runtime/`
+- `lib/runtime/`
 - `components/dreams/`
 - `app/homedream/`
 - `app/dreamspace/`
@@ -1047,8 +1047,8 @@ Where:
 - `app/api/gameengin/`
 - `components/gameengin/`
 - `components/games/`
-- `engins/gameengin/`
-- `engins/gameengin/games/`
+- `lib/gameengin/`
+- `lib/games/`
 - `engins/engin.GameEngin.tsx`
 
 Tech:
@@ -1080,11 +1080,11 @@ Goal: games become first-class objects inside DREAMengin.
 Where:
 
 - `components/games/`
-- `engins/gameengin/games/`
+- `lib/games/`
 - `app/gameengin/`
 - `public/cartridges/`
-- `engins/gameengin/`
-- `engine/vm/`
+- `lib/gameengin/`
+- `lib/vm/`
 
 Tech:
 
@@ -1118,9 +1118,9 @@ Where:
 
 - `public/cartridges/`
 - `public/cartridges/mad-maxi/`
-- `engins/gameengin/`
-- `engins/gameengin/games/`
-- `engine/vm/`
+- `lib/gameengin/`
+- `lib/games/`
+- `lib/vm/`
 - `assembly/`
 - `components/games/`
 - `app/gameengin/`
@@ -1163,9 +1163,9 @@ Where:
 
 - `public/cartridges/mad-maxi/`
 - `components/games/`
-- `engins/gameengin/`
-- `engins/gameengin/games/`
-- `engine/vm/`
+- `lib/gameengin/`
+- `lib/games/`
+- `lib/vm/`
 - `app/gameengin/`
 - `components/gameengin/`
 
@@ -1230,7 +1230,7 @@ Goal: one control surface works across multiple games/cartridges.
 
 Where:
 
-- `engine/babylon/`
+- `lib/babylon/`
 - `components/gameengin/`
 - `components/games/`
 - `components/dreamengin/`
@@ -1263,7 +1263,7 @@ Where:
 
 - `app/webgpu/`
 - `components/webgpu/`
-- `engine/rendering/webgpu.ts`
+- `lib/webgpu/`
 - Babylon WebGPU engine path
 
 Tech:
@@ -1291,7 +1291,7 @@ Goal: let DREAMengin visually compete with modern OS/game UI, not old web UI.
 Where:
 
 - `components/widgets/`
-- `engine/widgets/`
+- `lib/widgets/`
 - `types/widgets.ts`
 - `types/widget-system-v2.ts`
 
@@ -1329,7 +1329,7 @@ Where:
 - `components/widgets/`
 - `components/runtime/`
 - `app/api/content/`
-- `engine/content/`
+- `lib/content/`
 
 Tech:
 
@@ -1363,7 +1363,7 @@ Where:
 
 - `app/engines/create/`
 - `app/api/content/`
-- `engine/content/`
+- `lib/content/`
 - `engins/engin.ContentEngin.tsx`
 
 Tech:
@@ -1394,8 +1394,8 @@ Where:
 
 - `app/daydream/forge/`
 - `components/forge/`
-- `engins/forgeengin/forge/`
-- `engins/forgeengin/forge-ngn/`
+- `lib/forge/`
+- `lib/forge-ngn/`
 - `engins/dream.ForgeEngin.tsx`
 
 Tech:
@@ -1428,7 +1428,7 @@ Where:
 - `app/engines/code/`
 - `app/daydream/code/`
 - `engins/engin.CodeEngin.tsx`
-- `engine/code/`
+- `lib/code/`
 
 Tech:
 
@@ -1456,7 +1456,7 @@ Where:
 - `app/engines/music/`
 - `app/daydream/music/`
 - `components/daydream/starmaker/`
-- `engins/starmakerengin/music/`
+- `lib/music/`
 - `engins/engin.StarMakerEngin.tsx`
 
 Tech:
@@ -1559,9 +1559,9 @@ LabEngin = test chamber. Not the final home of features.
 Where:
 
 - simengin-related files if present
-- `engine/runtime/`
-- `engins/gameengin/`
-- `engins/gameengin/games/`
+- `lib/runtime/`
+- `lib/gameengin/`
+- `lib/games/`
 - `components/gameengin/`
 - `components/dreams/`
 - `components/spatial/`
@@ -1650,7 +1650,7 @@ Goal: all pages/surfaces feel like one world.
 
 Where:
 
-- `dreamr/runtime/swipeCalibration.ts`
+- `lib/dreamr/swipeCalibration`
 - `components/dreamr/`
 - `components/runtime/`
 - `components/gameengin/`
@@ -1743,7 +1743,7 @@ Where:
 - `app/connectors/`
 - `app/api/connectors/`
 - `components/connectors/`
-- `engine/connectors/`
+- `lib/connectors/`
 - `hooks/useConnectorInstallFlow.ts`
 
 Tech:
@@ -1773,7 +1773,7 @@ Goal: bring outside tools/data into DREAMengin without breaking the OS model.
 
 Where:
 
-- `dreamr/activity/`
+- `lib/activity/`
 - `components/dreamr/`
 - `components/profile/`
 - messages/feed zones
