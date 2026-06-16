@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-15T15:34:16.337Z
+Generated: 2026-06-16T00:38:40.682Z
 
 ---
 
@@ -12064,8 +12064,9 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../assetTypes` | `PartNode` |
+| `../photo/regionDetector` | `AlgebraicRegionFit` |
 | `./primitiveBuilder` | `flattenParts`, `primitiveStats` |
-| `@/engins/isosurfaceDualContouring` | `SDF`, `createSphereSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh` |
+| `@/engins/isosurfaceDualContouring` | `DualContouringSettings`, `IsoSurfaceJob`, `SDF`, `createBoxSDF`, `createCapsuleSDF`, `createSphereSDF`, `createTorusSDF`, `meshToSnapshot`, `runIsoSurfaceJob` |
 
 ## `engins/contentengin/builders/primitiveBuilder.ts`
 
@@ -12205,6 +12206,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../assetTypes` | `ContentRecipe`, `SourceImageAnalysis` |
+| `./regionDetector` | `detectSemanticAlgebraicRegions` |
 
 ## `engins/contentengin/photo/pngDecoder.ts`
 
@@ -12216,7 +12218,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `../assetTypes` | `ShapeRegion` |
+| `../assetTypes` | `ShapeRegion`, `Vec2` |
 
 ## `engins/contentengin/pipeline/build.ts`
 
@@ -12919,7 +12921,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceDualContouring` | `createTerrainCaveSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh` |
+| `@/engins/isosurfaceDualContouring` | `DualContouringSettings`, `createBoxSDF`, `createSphereSDF`, `createTerrainCaveSDF`, `meshToSnapshot`, `runIsoSurfaceJob` |
 
 ## `engins/gameengin/registerCartridges.ts`
 
@@ -12984,7 +12986,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceDualContouring` | `SDF`, `createSphereSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh` |
+| `@/engins/isosurfaceDualContouring` | `DualContouringSettings`, `SDF`, `createSphereSDF`, `createTerrainCaveSDF`, `meshToSnapshot`, `runIsoSurfaceJob` |
 
 ## `engins/portfolio/dream.PortfolioEngin.tsx`
 
@@ -20028,7 +20030,7 @@ _No circular dependencies detected._
 | `engins/contentengin/ImplicitAssetWorkspace.tsx` | `(default)` |
 | `engins/contentengin/assets/assetOptimizer.ts` | `optimiseAsset` |
 | `engins/contentengin/assets/indexedDBStore.ts` | `getOriginal`, `deleteOriginal`, `checkSentinels`, `listStoredOriginals`, `cleanupExpiredOriginals`, `getStorageStats`, `hasOriginal` |
-| `engins/contentengin/builders/meshBuilder.ts` | `buildImplicitContentMesh` |
+| `engins/contentengin/builders/meshBuilder.ts` | `sdfFromAlgebraicFit`, `buildImplicitContentMesh`, `buildRegionFitContentMesh` |
 | `engins/contentengin/builders/modifiers.ts` | `applyModifierMetadata` |
 | `engins/contentengin/composite/compositor.ts` | `createNode`, `createGraph`, `addNode`, `connectNodes`, `disconnectInput`, `setParam`, `findNode`, `topologicalSort`, `graphSummary` |
 | `engins/contentengin/composite/fxSimulation.ts` | `FX_PRESETS`, `getPreset`, `presetsByCategory`, `createSimulation`, `setSimParam`, `getSimParam`, `resetSimParams`, `allCategories` |
@@ -20047,7 +20049,7 @@ _No circular dependencies detected._
 | `engins/contentengin/photo/colorCluster.ts` | `extractPalette` |
 | `engins/contentengin/photo/edgeDetector.ts` | `buildEdgeMapFromRgba` |
 | `engins/contentengin/photo/photoToRecipe.ts` | `photoToRecipe` |
-| `engins/contentengin/photo/regionDetector.ts` | `relabelRegion` |
+| `engins/contentengin/photo/regionDetector.ts` | `fitAlgebraicRegion`, `relabelRegion` |
 | `engins/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
 | `engins/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
 | `engins/contentengin/recipes/seededRandom.ts` | `seededRandom`, `pick` |
@@ -20097,7 +20099,7 @@ _No circular dependencies detected._
 | `engins/gameengin/index.ts` | `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `mapJoystickToAsset`, `ECSWorld`, `DreamEngine`, `activeGameCount`, `isLoopRunning`, `registerGame`, `unregisterGame`, `useUnifiedLoop`, `GameEnginPlatform`, `detectCapabilities`, `GRAVITY_VALUES`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `GameRuntime`, `CARTRIDGE_MANIFEST`, `getCartridgeCategories`, `getCartridgeManifest`, `assertCartridgeLoadersReady`, `getCartridgeIds`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `loadCartridge`, `AnimationStateMachine`, `AssetStreamManager`, `BehaviorTreeEngine`, `ClientSidePrediction`, `GPUProfiler`, `GlobalIllumProbes`, `LODSystem`, `OctreeBVH`, `PhysicsMaterialSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `ResourcePool`, `SpatialAudioDSP`, `TerrainEngine`, `TypedEventBus`, `WGSLShaderManager`, `WorkerJobSystem`, `createGameEnginExecutionKernel` |
 | `engins/gameengin/input/InputRouter.ts` | `GameRuntimeInputRouter` |
 | `engins/gameengin/platform.ts` | `GameEnginPlatform` |
-| `engins/gameengin/procgen.ts` | `generateMobileTerrainCaveMesh`, `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `createTerrainCaveSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh`, `DualContouringSettings`, `Mesh`, `MeshDiagnostics`, `SDF`, `Vec3` |
+| `engins/gameengin/procgen.ts` | `generateMobileTerrainCaveMesh`, `generateCaveChunk`, `generateRockProp`, `generateTerrainCutout`, `generateDestructibleWallChunk`, `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `createTerrainCaveSDF`, `meshToSnapshot`, `runDualContouring`, `validateMesh`, `DualContouringSettings`, `Mesh`, `MeshDiagnostics`, `SDF`, `Vec3` |
 | `engins/gameengin/remote/comboMachine.ts` | `COMBO_WINDOW_MS`, `MULTITOUCH_WINDOW_MS` |
 | `engins/gameengin/remote/layout.ts` | `PORTRAIT_LAYOUT`, `LANDSCAPE_LAYOUT`, `LEFT_JOYSTICK_RADIUS_MM`, `RIGHT_JOYSTICK_RADIUS_RATIO`, `RIGHT_JOYSTICK_RADIUS_MM`, `HUD_ALLOWED_ELEMENTS` |
 | `engins/gameengin/remote/moves.ts` | `BASE_COMBOS`, `SPRINT_COMBOS` |
@@ -20120,11 +20122,12 @@ _No circular dependencies detected._
 | `engins/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
 | `engins/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
 | `engins/isosurfaceAssetPipeline.ts` | `buildInflatedReliefMesh`, `cloneMesh`, `computeVertexNormals`, `computePlanarUVs`, `estimateMeshBytes`, `compactMesh`, `weldVertices`, `repairMesh`, `centerAndScaleMesh`, `buildVertexAdjacency`, `validateMesh` |
-| `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS` |
+| `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `normalizeDualContouringSettings`, `classifyMobileIsoSurfaceTier`, `estimateIsoSurfaceMemoryBytes`, `validateMesh`, `createIsoSurfaceJob` |
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
 | `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
+| `engins/rulesets/content/contentEnginRuleSet.ts` | `CONTENT_IMPLICIT_ASSET_POLICY` |
 | `engins/rulesets/dreams/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/forge/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/game/declarative.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
@@ -22766,7 +22769,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── builders
 │   │   │   ├── geometryBuilder.ts
 │   │   │   ├── meshBuilder.ts ∅
-│   │   │   │   └── ∅ unused: buildImplicitContentMesh
+│   │   │   │   └── ∅ unused: sdfFromAlgebraicFit, buildImplicitContentMesh, buildRegionFitContentMesh
 │   │   │   ├── modifiers.ts ∅
 │   │   │   │   └── ∅ unused: applyModifierMetadata
 │   │   │   ├── primitiveBuilder.ts
@@ -22830,7 +22833,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: photoToRecipe
 │   │   │   ├── pngDecoder.ts
 │   │   │   └── regionDetector.ts ∅
-│   │   │       └── ∅ unused: relabelRegion
+│   │   │       └── ∅ unused: fitAlgebraicRegion, relabelRegion
 │   │   ├── pipeline
 │   │   │   ├── build.ts
 │   │   │   ├── bundle.ts
@@ -23150,7 +23153,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── power-systems.ts
 │   │   ├── predictive-stream.ts
 │   │   ├── procgen.ts ∅
-│   │   │   └── ∅ unused: generateMobileTerrainCaveMesh, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3
+│   │   │   └── ∅ unused: generateMobileTerrainCaveMesh, generateCaveChunk, generateRockProp, generateTerrainCutout, generateDestructibleWallChunk, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3
 │   │   ├── registerCartridges.ts
 │   │   ├── unifiedLoop.ts ∅
 │   │   │   └── ∅ unused: activeGameCount, isLoopRunning, _resetLoop
@@ -23178,7 +23181,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: id, constraints, transforms, params, ruleSet, (default)
 │   │   │   └── useCodeEnginRuntime.ts
 │   │   ├── content
-│   │   │   ├── contentEnginRuleSet.ts
+│   │   │   ├── contentEnginRuleSet.ts ∅
+│   │   │   │   └── ∅ unused: CONTENT_IMPLICIT_ASSET_POLICY
 │   │   │   └── useContentEnginRuntime.ts
 │   │   ├── dreams
 │   │   │   └── index.ts ∅
@@ -23264,7 +23268,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── isosurfaceAssetPipeline.ts ∅
 │   │   └── ∅ unused: buildInflatedReliefMesh, cloneMesh, computeVertexNormals, computePlanarUVs, estimateMeshBytes, compactMesh, weldVertices, repairMesh, centerAndScaleMesh, buildVertexAdjacency, validateMesh
 │   └── isosurfaceDualContouring.ts ∅
-│       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
+│       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, normalizeDualContouringSettings, classifyMobileIsoSurfaceTier, estimateIsoSurfaceMemoryBytes, validateMesh, createIsoSurfaceJob
 ├── fonts
 │   ├── Cormorant_Garamond
 │   │   ├── static
