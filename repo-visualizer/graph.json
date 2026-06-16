@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-16T01:40:02.769Z",
+  "generatedAt": "2026-06-16T02:10:05.195Z",
   "root": ".",
   "nodes": [
     {
@@ -3506,6 +3506,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-readme-full-autosync-fixed.zip",
+      "label": "DREAMenginree2-readme-full-autosync-fixed.zip",
+      "type": "file",
+      "path": "DREAMenginree2-readme-full-autosync-fixed.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
