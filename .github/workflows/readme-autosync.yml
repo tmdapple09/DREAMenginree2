@@ -1,4 +1,4 @@
-name: README Autosync
+name: README Full Coverage Autosync
 
 on:
   push:
@@ -11,19 +11,19 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
 
 permissions:
   contents: write
   pull-requests: write
 
 concurrency:
-  group: readme-autosync-${{ github.ref }}
+  group: readme-full-coverage-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  autosync:
-    name: Regenerate README from repository state
+  readme-full-coverage:
+    name: Regenerate and validate full README coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -44,39 +44,284 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Collect changed files
+      - name: Build complete tracked-file inventory
         shell: bash
         run: |
           mkdir -p .readme-autosync
 
-          CHANGED_FILES=".readme-autosync/changed-files.txt"
+          git ls-files \
+            ':!:node_modules/**' \
+            ':!:.next/**' \
+            ':!:out/**' \
+            ':!:dist/**' \
+            ':!:coverage/**' \
+            ':!:playwright-report/**' \
+            ':!:test-results/**' \
+            ':!:.turbo/**' \
+            ':!:.vercel/**' \
+            ':!:*.tsbuildinfo' \
+            > .readme-autosync/all-files.txt
 
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD > "$CHANGED_FILES"
+          cp .readme-autosync/all-files.txt .readme-autosync/changed-files.txt
 
-          elif [ "${{ github.event_name }}" = "push" ]; then
-            BEFORE="${{ github.event.before }}"
-            AFTER="${{ github.sha }}"
+          echo "Tracked files counted:"
+          wc -l .readme-autosync/all-files.txt
 
-            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-              git ls-files > "$CHANGED_FILES"
-            else
-              git diff --name-only "$BEFORE" "$AFTER" > "$CHANGED_FILES"
-            fi
-
-          else
-            git ls-files > "$CHANGED_FILES"
+      - name: Regenerate README from entire repository
+        shell: bash
+        run: |
+          if [ ! -f scripts/generate-readme.ts ]; then
+            echo "Missing scripts/generate-readme.ts"
+            exit 1
           fi
 
-          echo "Changed files:"
-          cat "$CHANGED_FILES"
+          pnpm tsx scripts/generate-readme.ts \
+            --changed-files .readme-autosync/all-files.txt \
+            --summary-file .readme-autosync/readme-summary.json
 
-      - name: Regenerate README
+      - name: Validate README full coverage
+        id: validate
+        shell: bash
         run: |
-          pnpm tsx scripts/generate-readme.ts --changed-files .readme-autosync/changed-files.txt
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+
+          const inventoryPath = ".readme-autosync/all-files.txt";
+          const readmePath = "README.md";
+          const reportPath = ".readme-autosync/readme-coverage-report.md";
+          const jsonPath = ".readme-autosync/readme-coverage-report.json";
+
+          const repoFiles = fs.readFileSync(inventoryPath, "utf8")
+            .split(/\r?\n/g)
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((file) => file.replace(/\\/g, "/"));
+
+          if (!fs.existsSync(readmePath)) {
+            throw new Error("README.md does not exist after generation.");
+          }
+
+          const readme = fs.readFileSync(readmePath, "utf8");
+
+          const fileSet = new Set(repoFiles);
+          const dirSet = new Set(["."]);
+
+          for (const file of repoFiles) {
+            const parts = file.split("/");
+            let current = "";
+            for (let i = 0; i < parts.length - 1; i++) {
+              current = current ? `${current}/${parts[i]}` : parts[i];
+              dirSet.add(current);
+            }
+          }
+
+          function normalizeCandidate(raw) {
+            return String(raw)
+              .trim()
+              .replace(/^\.?\//, "")
+              .replace(/#.*$/, "")
+              .replace(/\?.*$/, "")
+              .replace(/[),.;:]+$/g, "")
+              .replace(/\\ /g, " ")
+              .replace(/\\/g, "/");
+          }
+
+          function looksLikeRepoPath(raw) {
+            const value = normalizeCandidate(raw);
+
+            if (!value) return false;
+            if (value.startsWith("http://")) return false;
+            if (value.startsWith("https://")) return false;
+            if (value.startsWith("mailto:")) return false;
+            if (value.startsWith("#")) return false;
+            if (value.includes("*")) return false;
+            if (value.includes("{")) return false;
+            if (value.includes("}")) return false;
+            if (value.includes("$")) return false;
+            if (value.includes("\n")) return false;
+            if (value.length > 180) return false;
+
+            return (
+              value.includes("/") ||
+              /^[A-Za-z0-9._-]+\.[A-Za-z0-9]+$/.test(value) ||
+              value.startsWith(".github") ||
+              value.startsWith(".env")
+            );
+          }
+
+          function existsInRepo(candidate) {
+            const value = normalizeCandidate(candidate);
+            return fileSet.has(value) || dirSet.has(value) || fs.existsSync(value);
+          }
+
+          const failures = [];
+          const warnings = [];
+
+          if (!readme.trim()) {
+            failures.push("README.md is empty.");
+          }
+
+          if (!/ARCHITECTURE\.md/i.test(readme)) {
+            failures.push("README does not mention ARCHITECTURE.md authority.");
+          }
+
+          if (/@\/lib\//g.test(readme)) {
+            failures.push("README still contains stale @/lib/ import references.");
+          }
+
+          if (/Files tracked:\s*\*\*0\*\*/g.test(readme)) {
+            failures.push("README contains one or more generated sections with Files tracked: **0**.");
+          }
+
+          if (/\(no files currently matched\)/g.test(readme)) {
+            failures.push("README contains '(no files currently matched)', which means a section is stale or uncovered.");
+          }
+
+          if (/(…|\.\.\.)\s*\(\d+\s+more files\)/g.test(readme)) {
+            failures.push("README contains truncated file listings like '… (N more files)'. Full coverage requires every tracked path to be listed.");
+          }
+
+          const missingFiles = repoFiles.filter((file) => !readme.includes(file));
+
+          if (missingFiles.length) {
+            failures.push(`README is missing ${missingFiles.length} tracked file path(s).`);
+          }
+
+          const extractedPaths = new Set();
+
+          const markdownLinkRe = /\[[^\]]+\]\((?!https?:\/\/|mailto:|#)([^)#]+)(?:#[^)]+)?\)/g;
+          for (const match of readme.matchAll(markdownLinkRe)) {
+            const candidate = normalizeCandidate(match[1]);
+            if (looksLikeRepoPath(candidate)) extractedPaths.add(candidate);
+          }
+
+          const backtickRe = /`([^`]+)`/g;
+          for (const match of readme.matchAll(backtickRe)) {
+            const candidate = normalizeCandidate(match[1]);
+            if (looksLikeRepoPath(candidate)) extractedPaths.add(candidate);
+          }
+
+          const codeFenceRe = /```(?:text|txt)?\n([\s\S]*?)```/g;
+          for (const fence of readme.matchAll(codeFenceRe)) {
+            const body = fence[1];
+            if (!/[├└]──/.test(body)) continue;
+
+            const stack = [];
+
+            for (const rawLine of body.split(/\r?\n/g)) {
+              const match = rawLine.match(/^([│\s]*)(?:├──|└──)\s+(.+)$/);
+              if (!match) continue;
+
+              const prefix = match[1] || "";
+              let name = match[2].trim();
+
+              if (!name || name.startsWith("(")) continue;
+              if (/more files/i.test(name)) continue;
+
+              name = name
+                .replace(/\s+#.*$/g, "")
+                .replace(/\/$/g, "")
+                .trim();
+
+              if (!name) continue;
+
+              const depth = Math.floor(prefix.replace(/│/g, " ").length / 4);
+              stack[depth] = name;
+              stack.length = depth + 1;
+
+              const fullPath = normalizeCandidate(stack.join("/"));
+              if (looksLikeRepoPath(fullPath)) extractedPaths.add(fullPath);
+            }
+          }
+
+          const stalePaths = [...extractedPaths]
+            .filter((candidate) => looksLikeRepoPath(candidate))
+            .filter((candidate) => !existsInRepo(candidate));
+
+          if (stalePaths.length) {
+            failures.push(`README contains ${stalePaths.length} stale or nonexistent repo path(s).`);
+          }
+
+          const h2s = [...readme.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
+          const seenH2 = new Set();
+          const duplicateH2 = [];
+
+          for (const heading of h2s) {
+            const key = heading.toLowerCase();
+            if (seenH2.has(key)) duplicateH2.push(heading);
+            seenH2.add(key);
+          }
+
+          if (duplicateH2.length) {
+            warnings.push(`Duplicate README H2 headings detected: ${duplicateH2.join(", ")}`);
+          }
+
+          const appRoutes = repoFiles.filter((file) => /^app\/api\/.+\/route\.tsx?$/.test(file));
+          const appPages = repoFiles.filter((file) => /^app\/.+\/page\.tsx?$/.test(file));
+          const migrations = repoFiles.filter((file) => /^supabase\/migrations\/.+\.sql$/.test(file));
+          const engins = repoFiles.filter((file) => /^engins\/.+\.(ts|tsx|js|jsx|mjs|cjs)$/.test(file));
+          const workflows = repoFiles.filter((file) => /^\.github\/workflows\/.+\.ya?ml$/.test(file));
+
+          const requiredGroups = [
+            ["API routes", appRoutes],
+            ["App pages", appPages],
+            ["Supabase migrations", migrations],
+            ["Engins", engins],
+            ["GitHub workflows", workflows],
+          ];
+
+          for (const [name, files] of requiredGroups) {
+            const missing = files.filter((file) => !readme.includes(file));
+            if (missing.length) {
+              failures.push(`README is missing ${missing.length}/${files.length} ${name}.`);
+            }
+          }
+
+          const report = [
+            "# README Full Coverage Report",
+            "",
+            `Tracked files scanned: ${repoFiles.length}`,
+            `Extracted README repo paths: ${extractedPaths.size}`,
+            `Missing tracked files: ${missingFiles.length}`,
+            `Stale README paths: ${stalePaths.length}`,
+            `Warnings: ${warnings.length}`,
+            `Failures: ${failures.length}`,
+            "",
+            "## Failures",
+            failures.length ? failures.map((f) => `- ${f}`).join("\n") : "- None",
+            "",
+            "## Warnings",
+            warnings.length ? warnings.map((w) => `- ${w}`).join("\n") : "- None",
+            "",
+            "## Missing tracked files",
+            missingFiles.length ? missingFiles.map((f) => `- \`${f}\``).join("\n") : "- None",
+            "",
+            "## Stale README paths",
+            stalePaths.length ? stalePaths.map((f) => `- \`${f}\``).join("\n") : "- None",
+            "",
+          ].join("\n");
+
+          fs.writeFileSync(reportPath, report);
+          fs.writeFileSync(jsonPath, JSON.stringify({
+            trackedFiles: repoFiles.length,
+            extractedReadmePaths: extractedPaths.size,
+            missingTrackedFiles: missingFiles,
+            staleReadmePaths: stalePaths,
+            warnings,
+            failures,
+          }, null, 2));
+
+          console.log(report);
+
+          if (failures.length) {
+            process.exit(1);
+          }
+          NODE
 
       - name: Detect README changes
         id: autosync
+        if: always()
         shell: bash
         run: |
           if git diff --quiet README.md; then
@@ -86,54 +331,64 @@ jobs:
           fi
 
       - name: Commit README update on push
-        if: github.event_name == 'push' && steps.autosync.outputs.readme_changed == 'true'
+        if: github.event_name == 'push' && steps.validate.outcome == 'success' && steps.autosync.outputs.readme_changed == 'true'
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add README.md
-          git commit -m "docs(readme): autosync repository state [skip ci]"
+          git commit -m "docs(readme): full coverage autosync [skip ci]"
           git push
 
-      - name: Upload README artifact for pull requests
-        if: github.event_name == 'pull_request' && steps.autosync.outputs.readme_changed == 'true'
+      - name: Upload README coverage artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: readme-autosync
-          path: README.md
+          name: readme-full-coverage
+          path: |
+            README.md
+            .readme-autosync/all-files.txt
+            .readme-autosync/readme-summary.json
+            .readme-autosync/readme-coverage-report.md
+            .readme-autosync/readme-coverage-report.json
 
       - name: Upsert sticky PR comment
-        if: github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            const marker = '<!-- readme-autosync -->';
+            const marker = '<!-- readme-full-coverage-autosync -->';
 
-            const body =
-              '${{ steps.autosync.outputs.readme_changed }}' === 'true'
-                ? `${marker}
+            const validation = '${{ steps.validate.outcome }}';
+            const changed = '${{ steps.autosync.outputs.readme_changed }}';
 
-            ## 📖 README Autosync
+            const body = `${marker}
 
-            README.md was regenerated from the current repository state.
+            ## README Full Coverage Autosync
 
-            Sources used:
+            Validation status: **${validation}**
 
-            - FILE_TREE.md
-            - ARCHITECTURE.md
-            - CORE*.md
-            - REPO_STATE.md
-            - Capability metadata
-            - Runtime metadata
-            - Generated registries
+            README changed: **${changed}**
 
-            Updated README is available in the \`readme-autosync\` artifact.`
-                : `${marker}
+            This workflow regenerated README.md from the full tracked repository inventory, then validated:
 
-            ## 📖 README Autosync
+            - every tracked file path is represented
+            - every app route is represented
+            - every app page is represented
+            - every Supabase migration is represented
+            - every Engin file is represented
+            - every GitHub workflow is represented
+            - no stale/nonexistent repo paths are documented
+            - no generated section reports zero files
+            - no file listing is truncated with “more files”
+            - no stale \`@/lib/\` import references remain
 
-            README.md already matches the current repository state.`;
+            Artifacts:
+            - \`README.md\`
+            - \`readme-coverage-report.md\`
+            - \`readme-coverage-report.json\`
+            - \`all-files.txt\``;
 
             const { data: comments } =
               await github.rest.issues.listComments({
@@ -163,8 +418,3 @@ jobs:
                 body,
               });
             }
-
-      - name: Step summary
-        if: always()
-        run: |
-          echo "README Autosync completed." >> $GITHUB_STEP_SUMMARY
