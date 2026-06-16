@@ -13,7 +13,7 @@
 ## SYSTEM OVERVIEW
 - `app/` → product routes + API endpoints
 - `components/` → UI and surface components
-- `lib/` → shared logic, adapters, utilities
+- `engine/` and `engins/` → shared runtime logic, adapters, and Engin-owned utilities
 - `.github/workflows/` → active CI/CD automation
 - `system/` → archived/operational infrastructure artifacts
 - `docs/` → architecture, policy, guides, logs
@@ -24,7 +24,7 @@
 
 ## CANONICAL ROOT LAYOUT
 Canonical root entries are enforced to:
-- `app/`, `components/`, `lib/` (temporary), `engins/`, `games/`
+- `app/`, `components/`, `engine/`, `engins/`, `games/`
 - `core/`, `system/`, `agents/`
 - `docs/`, `assets/`, `.github/`, `public/`, `styles/`, `tests/`, `scripts/`
 - root config/runtime files only (`package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `next.config.mjs`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.js`, `tailwind.config.ts`, `README.md`, `LICENSE`, `vercel.json`, optional `instrumentation.ts`, optional `middleware.ts`, env/gitignore files)

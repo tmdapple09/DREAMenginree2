@@ -220,7 +220,7 @@ Snapchat does not have a public API for Stories or friend content.
 ## Delivery strategy: webhooks + cron fallback
 
 DREAMengin uses a **hybrid delivery model** per connector. The strategy for each provider
-is declared in `lib/connectors/deliveryStrategy.ts`.
+is declared in `engine/connectors/deliveryStrategy.ts`.
 
 | Delivery method | Meaning |
 |----------------|---------|
@@ -273,8 +273,8 @@ is declared in `lib/connectors/deliveryStrategy.ts`.
 Both the user-triggered sync route and the cron fallback call the same function:
 
 ```
-lib/connectors/reconcile.ts → reconcileConnector(db, userId, provider, tokenBlob)
-  1. dispatchSync  (lib/connectors/syncDispatch.ts) → UnifiedFeedItem[]
+engine/connectors/reconcile.ts → reconcileConnector(db, userId, provider, tokenBlob)
+  1. dispatchSync  (engine/connectors/syncDispatch.ts) → UnifiedFeedItem[]
   2. deduplicateFeedItems
   3. upsert feed_items  (ON CONFLICT user_id, provider, external_id DO NOTHING)
   4. update connector_accounts.last_synced_at / last_sync_count / last_error
@@ -319,8 +319,8 @@ See `types/connector.ts` for the full type definitions:
 - `UnifiedFeedItem` — normalised cross-provider feed item
 - `FeedItemRow` — DB row in `feed_items`
 
-See `lib/connectors/normalise.ts` for normalisation functions per provider.
+See `engine/connectors/normalise.ts` for normalisation functions per provider.
 
-See `lib/connectors/providers/` for per-provider verify + sync implementations.
+See `engine/connectors/providers/` for per-provider verify + sync implementations.
 
-See `lib/connectors/deliveryStrategy.ts` for the delivery strategy matrix.
+See `engine/connectors/deliveryStrategy.ts` for the delivery strategy matrix.

@@ -13,7 +13,7 @@ This patch is built against:
 
 ### 1. Real YouTube connector backend
 New provider:
-- `lib/connectors/providers/youtube.ts`
+- `engine/connectors/providers/youtube.ts`
 
 It verifies a live Google OAuth access token and syncs:
 - subscription feed

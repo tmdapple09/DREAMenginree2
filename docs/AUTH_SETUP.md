@@ -89,7 +89,7 @@ DEV_ADMIN=true         # also unlocks admin panel (requires DEV_BYPASS_AUTH=true
 
 **Security guarantees:**
 - Both vars have **no** `NEXT_PUBLIC_` prefix — they are never bundled into the browser
-- Both are **hard-blocked** when `NODE_ENV === 'production'` in `lib/dev-bypass.ts`,
+- Both are **hard-blocked** when `NODE_ENV === 'production'` in `engine/dev-bypass.ts`,
   so even if accidentally set in a Vercel env var they cannot weaken a production deployment
 - IDARi API endpoints (`/api/ai/idari`, `/api/admin/*`) always require a real
   Supabase session + admin role, regardless of bypass flags

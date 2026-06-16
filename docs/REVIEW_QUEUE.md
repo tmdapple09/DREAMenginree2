@@ -43,8 +43,8 @@ For each entry: read the description, look at the file, then decide:
 | Field | Value |
 |---|---|
 | **Consumers** | `dreamsurface.dreamnav.tsx` is imported by: `components/dreamengin/dreamsurface.dreamengin.tsx`, `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`, `components/dreamengin/dream.menu.OutdreamMenu.tsx`. `dream.DreamNavControls.tsx` is imported by: `dreamdmbar/homedream/dream.homedream.HomeDream.tsx`. |
-| **Description** | `dreamsurface.dreamnav.tsx` is a React Context provider for spatial navigation (DreamNav). Uses `lib/dreamnav/` (delta, path, gestures). `dream.DreamNavControls.tsx` renders the Gold Button (home button) with DreamNav dispatch. |
-| **Recommendation** | **Ambiguous** — has real consumers but the prior conversation analysis says "nothing dispatches to it." The `DreamNavProvider` is mounted by `dreamsurface.dreamengin.tsx` but no component may be dispatching nav actions. Needs owner review: is this the spatial navigation system you want, or is it dead weight? If dead: delete all 3 files (`dreamsurface.dreamnav.tsx`, `dream.DreamNavControls.tsx`, and `lib/dreamnav/`). If alive: wire properly and document in NAMING_AUTHORITY. |
+| **Description** | `dreamsurface.dreamnav.tsx` is a React Context provider for spatial navigation (DreamNav). Uses `engine/dreamnav/` (delta, path, gestures). `dream.DreamNavControls.tsx` renders the Gold Button (home button) with DreamNav dispatch. |
+| **Recommendation** | **Ambiguous** — has real consumers but the prior conversation analysis says "nothing dispatches to it." The `DreamNavProvider` is mounted by `dreamsurface.dreamengin.tsx` but no component may be dispatching nav actions. Needs owner review: is this the spatial navigation system you want, or is it dead weight? If dead: delete all 3 files (`dreamsurface.dreamnav.tsx`, `dream.DreamNavControls.tsx`, and `engine/dreamnav/`). If alive: wire properly and document in NAMING_AUTHORITY. |
 
 ---
 

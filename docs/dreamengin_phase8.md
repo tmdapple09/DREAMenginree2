@@ -144,7 +144,7 @@ Each section of this spec is a separate pass target. Do not attempt the full pha
 63. Dual runtime state (top/bottom, dominant runtime) persists to localStorage and restores on reload — user returns to the same runtime configuration they left.
 64. Navigation between surfaces feels like depth — no full-page reload, no context loss on standard transitions between HomeDream, Daydream, Engin, and module surfaces.
 65. Returning from any surface restores prior surface to a valid, coherent state — no blank or reset surfaces on back-navigation where technically feasible.
-66. Cross-runtime connection bus (`lib/runtime/dualRuntime.ts`) extended — at least one pair of compatible Engin runtimes can share live state across top and bottom runtime regions.
+66. Cross-runtime connection bus (`engine/runtime/dualRuntime.ts`) extended — at least one pair of compatible Engin runtimes can share live state across top and bottom runtime regions.
 67. Runtime transitions have smooth animation — no jarring cuts between dominant runtime changes; transition respects DreamDM Bar drag velocity.
 68. DreamSpace (bottom runtime default) renders real Dream Windows browsable by the user — not a placeholder shell.
 
@@ -154,7 +154,7 @@ Each section of this spec is a separate pass target. Do not attempt the full pha
 
 **Points 69–76**
 
-69. AI Triad consensus gate implemented — unanimous triad approval required before any major system-level update recommendation is acted upon; `lib/agents/agentBus.ts` is the sole cross-agent channel.
+69. AI Triad consensus gate implemented — unanimous triad approval required before any major system-level update recommendation is acted upon; `engine/agents/agentBus.ts` is the sole cross-agent channel.
 70. Dr. Eams navigation suggestion results are real — all platform location suggestions resolve to real canonical routes with verified existence.
 71. Dr. Eams content results are real — platform content queries hit real Supabase data, filtered by the authenticated user's visibility permissions.
 72. TheBoogieMan.Ai enforces "nothing public by default" at the API layer — any request that would expose private data without an explicit `visibility_mappings` record is rejected and logged.

@@ -57,7 +57,7 @@ A complete implementation of the WASM+GPU Virtual Machine specification for DREA
 ### Initialize Dual VM Coordinator
 
 ```typescript
-import { initializeDualVMCoordinator } from '@/lib/vm';
+import { initializeDualVMCoordinator } from 'engine/vm/index.ts';
 
 const coordinator = await initializeDualVMCoordinator({
   left: {
@@ -82,7 +82,7 @@ const coordinator = await initializeDualVMCoordinator({
 ### Submit a Workload
 
 ```typescript
-import { getDualVMCoordinator } from '@/lib/vm';
+import { getDualVMCoordinator } from 'engine/vm/index.ts';
 
 const coordinator = getDualVMCoordinator();
 
@@ -98,7 +98,7 @@ await coordinator.submitWorkload({
 ### Direct VM Usage
 
 ```typescript
-import { WasmGpuVM } from '@/lib/vm';
+import { WasmGpuVM } from 'engine/vm/index.ts';
 
 const vm = await WasmGpuVM.create({
   id: 'standalone-vm',
@@ -183,7 +183,7 @@ console.log('Pipeline Cache Misses:', stats.counters.pipelineCacheMisses);
 ## Inter-VM Communication
 
 ```typescript
-import { getDualVMCoordinator } from '@/lib/vm';
+import { getDualVMCoordinator } from 'engine/vm/index.ts';
 
 const coordinator = getDualVMCoordinator();
 
@@ -235,12 +235,12 @@ The VM coordinator publishes events to the `dualRuntimeBridge`:
 
 ## Files
 
-- `lib/vm/types.ts` — Type definitions
-- `lib/vm/wasmGpuVM.ts` — Core VM implementation
-- `lib/vm/bufferManager.ts` — GPU buffer allocation
-- `lib/vm/pipelineCache.ts` — Shader compilation cache
-- `lib/vm/snapshot.ts` — State serialization
-- `lib/vm/dualVMCoordinator.ts` — Dual VM orchestration
+- `engine/vm/types.ts` — Type definitions
+- `engine/vm/wasmGpuVM.ts` — Core VM implementation
+- `engine/vm/bufferManager.ts` — GPU buffer allocation
+- `engine/vm/pipelineCache.ts` — Shader compilation cache
+- `engine/vm/snapshot.ts` — State serialization
+- `engine/vm/dualVMCoordinator.ts` — Dual VM orchestration
 - `tests/wasm-gpu-vm.test.ts` — Integration tests
 
 ## Specification

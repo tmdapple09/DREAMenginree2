@@ -236,7 +236,7 @@ Test with existing games:
 
 Create these test files:
 
-#### `lib/games/__tests__/DualSenseManager.test.ts`
+#### `engins/gameengin/games/__tests__/DualSenseManager.test.ts`
 ```typescript
 describe('DualSenseManager', () => {
   it('should detect DualSense by vendor ID', () => {
@@ -253,7 +253,7 @@ describe('DualSenseManager', () => {
 });
 ```
 
-#### `lib/games/__tests__/useGamepad.test.ts`
+#### `engins/gameengin/games/__tests__/useGamepad.test.ts`
 ```typescript
 describe('useGamepad', () => {
   it('should detect connection', () => {

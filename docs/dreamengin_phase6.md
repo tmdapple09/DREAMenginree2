@@ -60,7 +60,7 @@ Phase 6 must be implementable without altering the README, the product constitut
 
 11. All three AI API routes (`/api/ai/eams`, `/api/ai/idari`, `/api/ai/boogieman`) must be server-side only and must never forward API keys to the client bundle.
 
-12. The triad coordination bus (`lib/agents/agentBus.ts`) must be the sole channel through which agents communicate cross-agent state; no direct agent-to-agent coupling is permitted outside that bus.
+12. The triad coordination bus (`engine/agents/agentBus.ts`) must be the sole channel through which agents communicate cross-agent state; no direct agent-to-agent coupling is permitted outside that bus.
 
 ---
 
@@ -112,7 +112,7 @@ Phase 6 must be implementable without altering the README, the product constitut
 
 33. GameEngin must be added to `components/daydream/` as the Side B Engin component for the Games Daydream pair, consistent with the five already-created Engin components.
 
-34. The `useDaydreamState` hook must be created in `lib/daydream/` to provide shared Daydream/Engin state management across all six pairs.
+34. The `useDaydreamState` hook must be created in `engine/daydream/` to provide shared Daydream/Engin state management across all six pairs.
 
 35. DaydreamShell must accept a `sideBComponent` prop so that each Daydream route can inject the appropriate Engin component as Side B.
 
@@ -167,9 +167,9 @@ Phase 6 must be implementable without altering the README, the product constitut
 ## Key Files Affected
 
 - `components/daydream/` — add GameEngin.tsx; update DaydreamShell with sideBComponent prop
-- `lib/daydream/` — create useDaydreamState hook
+- `engine/daydream/` — create useDaydreamState hook
 - `app/daydream/analytics/`, `app/daydream/media-vault/`, `app/daydream/play/` — repurpose or redirect
-- `lib/ai/triad.ts`, `lib/agents/agentBus.ts` — AI Triad coordination
+- `engine/agents/agentBus.ts`, `engine/agents/agentBus.ts` — AI Triad coordination
 - `app/api/ai/` — all three AI routes (eams, idari, boogieman)
 - `app/view-profile/`, `app/profile/[handle]/` — projection-only rendering
 - `app/edit-profiledream/` — private/share distinction in save flow

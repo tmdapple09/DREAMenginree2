@@ -17,7 +17,7 @@ Every DREAMengin "Engin" (GameEngin, StarMakerEngin, CodeEngin, …) runs on the
 ## File Structure
 
 ```
-lib/engin-runtime/
+engine/engin-runtime/
 ├── EnginBaseState.ts        Base state model + helpers
 ├── EnginEventBus.ts         Client-safe event bus abstraction
 ├── EnginIOAdapter.ts        I/O layer (LocalStorageAdapter, MemoryAdapter)
@@ -26,7 +26,7 @@ lib/engin-runtime/
 ├── EnginRuntime.ts          The universal runtime (never changes)
 └── index.ts                 Barrel export + createEnginRuntime() factory
 
-lib/engins/
+engine/generated/engins.ts
 └── game/
     ├── gameEnginRuleSet.ts  GameEngin rule-set (domain logic only)
     ├── useGameEnginRuntime.ts  React hook for GameEngin
@@ -70,10 +70,10 @@ When you call `runtime.dispatch(action)`, the engine:
 
 ## Adding a New Engin Rule-Set
 
-1. Create `lib/engins/<name>/<name>RuleSet.ts` implementing `EnginRuleSetContract`.
+1. Create `engine/generated/engins.ts<name>/<name>RuleSet.ts` implementing `EnginRuleSetContract`.
 2. Define the `Actions` discriminated union.
 3. Implement `params`, `requiredCapabilities`, `constraints`, `transform`, and `deriveState`.
-4. Create `lib/engins/<name>/use<Name>EnginRuntime.ts` hook (see `useGameEnginRuntime.ts`).
+4. Create `engine/generated/engins.ts<name>/use<Name>EnginRuntime.ts` hook (see `useGameEnginRuntime.ts`).
 5. Import the hook in your Engin component and replace bespoke state with engine state.
 6. Add tests in `tests/<name>-engin-ruleset.test.ts`.
 
@@ -82,7 +82,7 @@ When you call `runtime.dispatch(action)`, the engine:
 ## GameEngin Example
 
 ```ts
-import { useGameEnginRuntime } from '@/lib/engins/game/useGameEnginRuntime';
+import { useGameEnginRuntime } from 'engins/rulesets/game/useGameEnginRuntime.ts';
 
 function MyGameEnginComponent() {
   const { state, dispatch } = useGameEnginRuntime();

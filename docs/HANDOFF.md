@@ -37,8 +37,8 @@ that handle document updates, memory syncing, and handoffs trigger on every push
   spec for `SharedArrayBuffer` memory map (16 MB, entity SoA, HomeDream private region,
   DreamDM Bar seam slot) and `EnginDispatcher` singleton (worker pool, SAB allocation,
   zero-copy seam relay, µs/tick telemetry, bounds audit).
-- `docs/AGENT_PLAYBOOK.md` Key File Map now lists `lib/runtime/memory.ts`,
-  `lib/runtime/EnginDispatcher.ts`, and `lib/navigation/StructureLedger.ts`; tech-stack
+- `docs/AGENT_PLAYBOOK.md` Key File Map now lists `engine/runtime/memory.ts`,
+  `engine/runtime/EnginDispatcher.ts`, and `engine/navigation/StructureLedger.ts`; tech-stack
   table includes the `SharedArrayBuffer` + shader `Worker` pool row with a pointer to
   the new ARCHITECTURE §12.
 
@@ -46,16 +46,16 @@ that handle document updates, memory syncing, and handoffs trigger on every push
 
 | File | Role |
 |------|------|
-| `lib/runtime/memory.ts` | 16 MB SAB layout — entity SoA arrays, bar seam slot, HomeDream privacy boundary |
-| `lib/runtime/EnginDispatcher.ts` | Singleton dispatcher — SAB lifecycle, worker pool, telemetry, BoogieMan audit |
+| `engine/runtime/memory.ts` | 16 MB SAB layout — entity SoA arrays, bar seam slot, HomeDream privacy boundary |
+| `engine/runtime/EnginDispatcher.ts` | Singleton dispatcher — SAB lifecycle, worker pool, telemetry, BoogieMan audit |
 | `public/workers/engin-shader.worker.ts` | Per-worker Atomics.wait / rAF tick loop |
 | `tests/engin-dispatcher.test.ts` | Dispatcher lifecycle and bounds-enforcement unit tests |
 | `tests/conform-memory-map.test.ts` | Memory map conformance tests |
-| `lib/navigation/StructureLedger.ts` | Precomputed O(1) navigation state/transition ledger |
+| `engine/navigation/StructureLedger.ts` | Precomputed O(1) navigation state/transition ledger |
 
 ### What has NOT changed
 
-The underlying `lib/runtime/` implementation was already in place. This pass only
+The underlying `engine/runtime/` implementation was already in place. This pass only
 ensures the documentation catches up to the existing code reality so agents and
 developers find accurate orientation from the start of every session.
 
@@ -180,7 +180,7 @@ Use `docs/alignment/DOCS_CHANGE_TRACKER.md` as the ledger for this pass.
 | # | Date / Time (UTC) | Revision | Branch | Author | Summary |
 |---|---|---|---|---|---|
 | **auto** | 2026-03-15 23:02 UTC | `c513b3f` | completedream | appthemanger-ctrl | no file changes<br>Merge pull request #216 from appthemanger-ctrl/copilot/clean-up-unused-resources — chore: strip all mock/demo/placeholder code — wire every surface to real data<br> |
-| **auto** | 2026-03-15 22:00 UTC | `5017632` | copilot/clean-up-unused-resources | Copilot | +1 added  −6 deleted  ~9 modified<br>chore: remove all mock/demo/placeholder code - complete housekeeping — Co-authored-by: appthemanger-ctrl <253588904+appthemanger-ctrl@users.noreply.github.com><br>➕: `app/daydream/game/dream.GamePageClient.tsx`<br>✏️: `app/profile/[handle]/page.tsx`, `app/settings/safety/page.tsx`, `app/view-profile/page.tsx`, `backend/src/services/ipfsService.js`, `backend/src/services/livekitService.js`, `components/dream.widget.AnchorWidgetOrchestrator.tsx`, `components/dreamengin/dream.menu.NexusMenu.tsx`, `components/profile/dream.widget.ProfileWidgetGrid.tsx`, `validate-deployment.js`<br>🗑️: `components/AdvancedSearch.tsx`, `components/FloatingActionBubble.tsx`, `components/GestureNavigationDemo.tsx`, `components/MobileFloatingActionButton.tsx`, `lib/connectors/demo.ts`, `lib/navigation/mockWidgetData.ts` |
+| **auto** | 2026-03-15 22:00 UTC | `5017632` | copilot/clean-up-unused-resources | Copilot | +1 added  −6 deleted  ~9 modified<br>chore: remove all mock/demo/placeholder code - complete housekeeping — Co-authored-by: appthemanger-ctrl <253588904+appthemanger-ctrl@users.noreply.github.com><br>➕: `app/daydream/game/dream.GamePageClient.tsx`<br>✏️: `app/profile/[handle]/page.tsx`, `app/settings/safety/page.tsx`, `app/view-profile/page.tsx`, `backend/src/services/ipfsService.js`, `backend/src/services/livekitService.js`, `components/dream.widget.AnchorWidgetOrchestrator.tsx`, `components/dreamengin/dream.menu.NexusMenu.tsx`, `components/profile/dream.widget.ProfileWidgetGrid.tsx`, `validate-deployment.js`<br>🗑️: `components/AdvancedSearch.tsx`, `components/FloatingActionBubble.tsx`, `components/GestureNavigationDemo.tsx`, `components/MobileFloatingActionButton.tsx`, `engine/connectors/demo.ts`, `engine/navigation/mockWidgetData.ts` |
 | **auto** | 2026-03-15 21:42 UTC | `6c4a89a` | completedream | appthemanger-ctrl | no file changes<br>Merge pull request #215 from appthemanger-ctrl/copilot/implement-daydreams-description-route — fix: full platform wiring audit — daydreams discoverable, all dead actions wired, all broken routes fixed<br> |
 | **auto** | 2026-03-15 20:53 UTC | `3e821e0` | completedream | appthemanger-ctrl | −1 deleted<br>Delete daydream/game directory<br>🗑️: `daydream/game/GamePageClient_app.tsx` |
 | **auto** | 2026-03-15 20:46 UTC | `e8e98a3` | completedream | appthemanger-ctrl | +1 added  −1 deleted<br>Add GamePageClient_app.tsx file<br>➕: `daydream/game/GamePageClient_app.tsx`<br>🗑️: `app/game/GamePageClient.tsx` |

@@ -31,10 +31,10 @@ Phase 9 has been **successfully implemented to perfection** per the Activity-Fir
 ### 2. Core Business Logic ✅
 
 **Files:**
-- `lib/activity/types.ts` - Complete TypeScript type definitions
-- `lib/activity/scoring.ts` - Tier system, points calculation, verification
-- `lib/activity/aqs.ts` - AQS calculator and formatters
-- `lib/activity/visibility-score.ts` - Feed ranking algorithm
+- `dreamr/activity/types.ts` - Complete TypeScript type definitions
+- `dreamr/activity/scoring.ts` - Tier system, points calculation, verification
+- `dreamr/activity/aqs.ts` - AQS calculator and formatters
+- `dreamr/activity/visibility-score.ts` - Feed ranking algorithm
 
 **Features:**
 - Tier 0-6 classification system
@@ -149,7 +149,7 @@ The codebase has TypeScript errors because the new database tables are not yet i
 
 **To resolve:**
 1. Run migration: `supabase migration up`
-2. Generate types: `supabase gen types typescript > lib/supabase/database.types.ts`
+2. Generate types: `supabase gen types typescript > supabase/database.types.ts`
 3. Run typecheck: `pnpm typecheck` (will pass)
 
 ### Database Migration
@@ -175,10 +175,10 @@ The migration file is **idempotent** and safe to run multiple times. It uses:
 ### Created (24 files):
 ```
 supabase/migrations/20260413000000_phase9_activity_first_protocol.sql
-lib/activity/types.ts
-lib/activity/scoring.ts
-lib/activity/aqs.ts
-lib/activity/visibility-score.ts
+dreamr/activity/types.ts
+dreamr/activity/scoring.ts
+dreamr/activity/aqs.ts
+dreamr/activity/visibility-score.ts
 app/api/activity/track/route.ts
 app/api/views/track/route.ts
 app/api/ads/view/route.ts
@@ -206,7 +206,7 @@ app/api/feed/route.ts (added visibility score ranking)
 1. **Database Setup**
    ```bash
    supabase migration up
-   supabase gen types typescript > lib/supabase/database.types.ts
+   supabase gen types typescript > supabase/database.types.ts
    ```
 
 2. **Validation**

@@ -30,4 +30,4 @@ The current sprite includes social, media, commerce, browser, platform, and util
 
 - `components/ui/dream.SheetIcon.tsx`
 - `components/ui/dream.IconList.tsx`
-- `lib/icons/*` when present in the repo
+- `docs/icons.md*` when present in the repo

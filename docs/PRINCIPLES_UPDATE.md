@@ -58,12 +58,12 @@ when synchronization features are incomplete.
 
 | File | Change |
 |------|--------|
-| `lib/feature-build/uiQualityCriteria.ts` | `SICCDimension` type: `'stylized'` → `'synchronized'`; section header; `SICC_DIMENSIONS` entry |
+| `engine/feature-build/uiQualityCriteria.ts` | `SICCDimension` type: `'stylized'` → `'synchronized'`; section header; `SICC_DIMENSIONS` entry |
 | `tests/feature-build.test.ts` | All test arrays and assertions updated |
 | `components/connectors/dream.widget.ConnectorWidgetPicker.tsx` | Comment: `S.I.C.C. — Stylized…` → `S.I.C.C. — Synchronized…` |
 | `components/dream.LandingHero.tsx` | Comment updated |
 | `components/home/dream.DaydreamPulseStrip.tsx` | Comment updated |
-| `lib/feature-build/buildCycle.ts` | Comment updated |
+| `engine/feature-build/buildCycle.ts` | Comment updated |
 | `docs/AXIOMS.md` | Axiom 4 updated from "Stylized" to "Synchronized" |
 | `CHANGELOG.md` | Entry documenting the change |
 | `docs/PRINCIPLES_UPDATE.md` | This file |

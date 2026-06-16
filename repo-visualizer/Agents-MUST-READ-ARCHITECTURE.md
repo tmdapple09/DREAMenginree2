@@ -29,19 +29,19 @@ User Action / Agent / CI
    [Surface / Shell]          ← components/, app/, coresurfaces/, daydreams/
         │ dispatches Intent
         ▼
-   [EnginDispatcher]          ← lib/runtime/EnginDispatcher.ts
+   [EnginDispatcher]          ← engine/runtime/EnginDispatcher.ts
         │ looks up ModuleKey
         ▼
-   [Module Registry]          ← lib/runtime/moduleRegistry.ts
+   [Module Registry]          ← engine/runtime/moduleRegistry.ts
         │ routes to Engin
         ▼
-   [Engin Logic]              ← /engins/*.tsx + lib/engin-runtime/
+   [Engin Logic]              ← /engins/*.tsx + engine/engin-runtime/
         │ applies rule-set
         ▼
-   [State Mutation + Bus]     ← lib/runtime/dreamOSBus.ts
+   [State Mutation + Bus]     ← engine/runtime/dreamOSBus.ts
         │
         ▼
-   [Re-render / Persistence]  ← Supabase, lib/vm/, lib/runtime/
+   [Re-render / Persistence]  ← Supabase, engine/vm/, engine/runtime/
 ```
 
 ---
@@ -51,41 +51,41 @@ User Action / Agent / CI
 **Purpose:** Ultimate authority for all state, event, and mutation orchestration. Enforces: all flows are Intent-driven; only registered Engins mutate state.
 
 **Core files:**
-- `lib/runtime/EnginDispatcher.ts` — event dispatcher / mutation kernel (imported by 5 surfaces)
-- `lib/runtime/dualRuntime.ts` — dual-mode runtime coordination (HomeDream + DreamSpace run concurrently)
-- `lib/runtime/dualRuntimeBridge.ts` — the bridge between both runtimes; most-imported runtime file (34 consumers)
-- `lib/runtime/moduleRegistry.ts` — system-wide Engin/ModuleKey registry
-- `lib/runtime/dreamOSBus.ts` — cross-surface global event bus (12 consumers)
-- `lib/runtime/memory.ts` — dispatcher memory map
-- `lib/runtime/instanceManager.ts` — multi-instance Engin lifecycle manager
-- `lib/runtime/runtimeChannel.ts` — shared channel between runtime instances
-- `lib/runtime/runtimeContainer.ts` — container context for runtime lifecycle
-- `lib/runtime/seamClipboard.ts` — seam clipboard for cross-engin data transfer
-- `lib/runtime/useEnginCoopSync.ts` — cooperative sync hook used by all Engins
-- `lib/runtime/useEnginBridge.ts` — bridge hook connecting Engins to dual runtime
-- `lib/runtime/useSharedEnginChannel.ts` — shared channel hook for coop sessions
-- `lib/runtime/swapManager.ts` — hot-swaps runtimes without full remount
-- `lib/runtime/offlineQueue.ts` — queues mutations while offline
-- `lib/runtime/coercionTable.ts` — drag-drop type coercion rules
-- `lib/runtime/dropTargetRegistry.ts` — registered drop target slots
-- `lib/runtime/enginWorkflowRegistry.ts` — workflow step registry
-- `lib/runtime/channelMetrics.ts` — perf metrics per runtime channel
-- `lib/runtime/sharedResourcePool.ts` — shared GPU / WASM resource pool
-- `lib/runtime/madMaxiSnapshotBridge.ts` — game snapshot bridge for MadMaxi
-- `lib/runtime/snapshotFingerprint.ts` — state fingerprinting for diffing
-- `lib/runtime/quantumCircuit.ts` — experimental quantum circuit runtime stub
-- `lib/runtime/isAuthRelatedError.ts` — auth error classifier for runtime recovery
+- `engine/runtime/EnginDispatcher.ts` — event dispatcher / mutation kernel (imported by 5 surfaces)
+- `engine/runtime/dualRuntime.ts` — dual-mode runtime coordination (HomeDream + DreamSpace run concurrently)
+- `engine/runtime/dualRuntimeBridge.ts` — the bridge between both runtimes; most-imported runtime file (34 consumers)
+- `engine/runtime/moduleRegistry.ts` — system-wide Engin/ModuleKey registry
+- `engine/runtime/dreamOSBus.ts` — cross-surface global event bus (12 consumers)
+- `engine/runtime/memory.ts` — dispatcher memory map
+- `engine/runtime/instanceManager.ts` — multi-instance Engin lifecycle manager
+- `engine/runtime/runtimeChannel.ts` — shared channel between runtime instances
+- `engine/runtime/runtimeContainer.ts` — container context for runtime lifecycle
+- `engine/runtime/seamClipboard.ts` — seam clipboard for cross-engin data transfer
+- `engine/runtime/useEnginCoopSync.ts` — cooperative sync hook used by all Engins
+- `engine/runtime/useEnginBridge.ts` — bridge hook connecting Engins to dual runtime
+- `engine/runtime/useSharedEnginChannel.ts` — shared channel hook for coop sessions
+- `engine/runtime/swapManager.ts` — hot-swaps runtimes without full remount
+- `engine/runtime/offlineQueue.ts` — queues mutations while offline
+- `engine/runtime/coercionTable.ts` — drag-drop type coercion rules
+- `engine/runtime/dropTargetRegistry.ts` — registered drop target slots
+- `engine/runtime/enginWorkflowRegistry.ts` — workflow step registry
+- `engine/runtime/channelMetrics.ts` — perf metrics per runtime channel
+- `engine/runtime/sharedResourcePool.ts` — shared GPU / WASM resource pool
+- `engine/runtime/madMaxiSnapshotBridge.ts` — game snapshot bridge for MadMaxi
+- `engine/runtime/snapshotFingerprint.ts` — state fingerprinting for diffing
+- `engine/runtime/quantumCircuit.ts` — experimental quantum circuit runtime stub
+- `engine/runtime/isAuthRelatedError.ts` — auth error classifier for runtime recovery
 - `engine/io.ts` — low-level I/O primitives used by live feed, collaboration, connectors
 
 **Relationships:**
 - **Receives from:** all surfaces (`EnginDispatcher.dispatch(intent)`)
 - **Routes to:** `moduleRegistry` → specific Engin logic
 - **Publishes to:** `dreamOSBus` → all listening surfaces re-render
-- **Reads:** `lib/runtime/memory.ts` for state snapshot
+- **Reads:** `engine/runtime/memory.ts` for state snapshot
 
 **TO CONTRIBUTE:**
 - Register new ModuleKeys only inside `moduleRegistry.ts`
-- New runtime behaviors → create a new runtime util in `lib/runtime/`, export, register
+- New runtime behaviors → create a new runtime util in `engine/runtime/`, export, register
 - Keep `EnginDispatcher.ts` kernel contract stable; expand only when truly necessary
 
 **NEVER:**
@@ -151,37 +151,37 @@ User Action / Agent / CI
 - `engins/dream.QuantumCircuitCanvas.tsx` — Quantum circuit visualization
 
 **Core files — Engin runtime layer:**
-- `lib/engin-runtime/EnginRuntime.ts` — base runtime class all Engins extend
-- `lib/engin-runtime/EnginBaseState.ts` — shared base state shape
-- `lib/engin-runtime/EnginCapabilities.ts` — capability flags per Engin
-- `lib/engin-runtime/EnginRuleSetContract.ts` — rule-set interface contract
-- `lib/engin-runtime/EnginIOAdapter.ts` — I/O bridge for Engin ↔ runtime
-- `lib/engin-runtime/EnginEventBus.ts` — per-Engin event bus (wraps global bus)
-- `lib/engin-runtime/index.ts` — barrel export
+- `engine/engin-runtime/EnginRuntime.ts` — base runtime class all Engins extend
+- `engine/engin-runtime/EnginBaseState.ts` — shared base state shape
+- `engine/engin-runtime/EnginCapabilities.ts` — capability flags per Engin
+- `engine/engin-runtime/EnginRuleSetContract.ts` — rule-set interface contract
+- `engine/engin-runtime/EnginIOAdapter.ts` — I/O bridge for Engin ↔ runtime
+- `engine/engin-runtime/EnginEventBus.ts` — per-Engin event bus (wraps global bus)
+- `engine/engin-runtime/index.ts` — barrel export
 
 **Core files — per-Engin rule-sets:**
-- `lib/engins/brand/brandEnginRuleSet.ts` + `useBrandEnginRuntime.ts`
-- `lib/engins/code/codeEnginRuleSet.ts` + `useCodeEnginRuntime.ts`
-- `lib/engins/content/contentEnginRuleSet.ts` + `useContentEnginRuntime.ts`
-- `lib/engins/game/gameEnginRuleSet.ts` + `useGameEnginRuntime.ts` + `index.ts`
-- `lib/engins/lab/labEnginRuleSet.ts` + `useLabEnginRuntime.ts`
-- `lib/engins/music/starMakerEnginRuleSet.ts` + `useStarMakerEnginRuntime.ts`
-- `lib/engins/useEnginWorkflow.ts` — shared workflow composition hook
-- `lib/engins/workflowEngine.ts` — workflow step execution engine
-- `lib/enginpipe/` — artifact pipeline: `index.ts`, `artifact/manifest.ts`, `quality/tiers.ts`, `telemetry/events.ts`, `telemetry/client.ts`, `shell/ArtifactSlot.tsx`
+- `engins/rulesets/brand/brandEnginRuleSet.ts` + `useBrandEnginRuntime.ts`
+- `engins/rulesets/code/codeEnginRuleSet.ts` + `useCodeEnginRuntime.ts`
+- `engins/rulesets/content/contentEnginRuleSet.ts` + `useContentEnginRuntime.ts`
+- `engins/rulesets/game/gameEnginRuleSet.ts` + `useGameEnginRuntime.ts` + `index.ts`
+- `engins/rulesets/lab/labEnginRuleSet.ts` + `useLabEnginRuntime.ts`
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` + `useStarMakerEnginRuntime.ts`
+- `engins/rulesets/useEnginWorkflow.ts` — shared workflow composition hook
+- `engins/rulesets/workflowEngine.ts` — workflow step execution engine
+- `engine/enginpipe/` — artifact pipeline: `index.ts`, `artifact/manifest.ts`, `quality/tiers.ts`, `telemetry/events.ts`, `telemetry/client.ts`, `shell/ArtifactSlot.tsx`
 
 **Module registry wiring:**
-- `lib/runtime/moduleRegistry.ts` — maps ModuleKeys → Engin constructors
-- `lib/gameengin/registerCartridges.ts` — wires game cartridges into registry
+- `engine/runtime/moduleRegistry.ts` — maps ModuleKeys → Engin constructors
+- `engins/gameengin/registerCartridges.ts` — wires game cartridges into registry
 
 **Relationships:**
 - Kernel (`EnginDispatcher`) → ModuleKey → Engin logic
 - Engins emit state mutations → bus → surfaces re-render
-- Engins read rule-sets from `lib/engins/<name>/`; never from kernel
+- Engins read rule-sets from `engine/generated/engins.ts<name>/`; never from kernel
 
 **TO CONTRIBUTE:**
 - Build new Engin in `/engins/`, export as named class/function
-- Add rule-set in `lib/engins/<name>/`
+- Add rule-set in `engine/generated/engins.ts<name>/`
 - Register ModuleKey in `moduleRegistry.ts`
 - Wire in `src/engin/generated/rulesets.ts` (auto-generated manifest)
 
@@ -205,7 +205,7 @@ User Action / Agent / CI
 - `src/dream/rulesets/forgengn/index.ts` — ForgeNGN ruleset declaration
 - `src/dream/rulesets/dreamsengin/index.ts` — DreamsEngin ruleset declaration
 - `src/engin/generated/rulesets.ts` — auto-generated manifest of all rulesets
-- `lib/runtime/EnginDispatcher.ts` — reads ruleset at dispatch time
+- `engine/runtime/EnginDispatcher.ts` — reads ruleset at dispatch time
 - `config/optimizer.yaml` — optimizer behavior config
 - `config/ui-ux-spec.yaml` — UI/UX quality spec config
 - `config/advanced-game-targets.json` — game performance targets
@@ -262,8 +262,8 @@ User Action / Agent / CI
 - `components/dreamengin/dream.bar.DrEamsSearchBar.tsx` — OS-level search
 - `components/dreamengin/dream.CanvasDropZone.tsx` — drag-drop target
 - `components/dreamengin/dream.HomeControls.tsx` — home control buttons
-- `lib/dreamenginOS/index.ts` — OS subsystem bootstrap (11 imports, 8 consumers)
-- `lib/dreamenginOS/OSContext.tsx` — OS React context
+- `engine/os/index.ts` — OS subsystem bootstrap (11 imports, 8 consumers)
+- `engine/os/OSContext.tsx` — OS React context
 
 **Core files — Runtime views:**
 - `components/runtime/dream.RuntimeView.tsx` — main runtime panel view (21 imports)
@@ -334,10 +334,10 @@ User Action / Agent / CI
 - `components/dream.CommandPalette.tsx` — command palette
 - `components/dream.OSShellActivator.tsx` — OS shell trigger (7 imports)
 - `components/dream.BrandLogo.tsx` — brand logo (5 consumers)
-- `lib/dreamdm/DreamSystemContext.tsx` — global DreamDM context (4 imports, 26 consumers)
-- `lib/dreamdm/barInteractions.ts` — bar interaction state (12 consumers)
-- `lib/panels/panelTypes.ts` — panel type definitions (7 consumers)
-- `lib/routing/surfaces.ts` — surface routing map
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — global DreamDM context (4 imports, 26 consumers)
+- `dreamdmbar/runtime/barInteractions.ts` — bar interaction state (12 consumers)
+- `components/panels/panelTypes.ts` — panel type definitions (7 consumers)
+- `engine/routing/surfaces.ts` — surface routing map
 
 **Relationships:**
 - Call `EnginDispatcher.dispatch()` to initiate actions
@@ -360,35 +360,35 @@ User Action / Agent / CI
 **Purpose:** Handles gesture-driven spatial navigation, anchor widgets, quaternion-based transforms, and the DreamNav system for switching between OS layers.
 
 **Core files:**
-- `lib/navigation/SpatialNavigationEngine.ts` — main navigation engine (7 imports, 4 consumers)
-- `lib/navigation/GestureFrameComputer.ts` — gesture frame analysis
-- `lib/navigation/GestureIntentResolver.ts` — resolves gesture → intent
-- `lib/navigation/PointerEventCapture.ts` — raw pointer capture
-- `lib/navigation/TransformSolver.ts` — quaternion transform solver
-- `lib/navigation/quaternion.ts` — quaternion math utilities
-- `lib/navigation/manifold.ts` — navigation manifold topology
-- `lib/navigation/NavStateBuffer.ts` — navigation state buffer
-- `lib/navigation/ReturnStack.ts` — back-navigation stack
-- `lib/navigation/AnchorWidgetStorage.ts` — persists anchor widget positions
-- `lib/navigation/AnchorStateBuffer.ts` — real-time anchor state buffer
-- `lib/navigation/WidgetInstanceMemory.ts` — widget position memory
-- `lib/navigation/dream-state.ts` — navigation state snapshot
-- `lib/navigation/StructureLedger.ts` — navigation structure ledger
-- `lib/navigation/anchorField.ts` — spatial anchor field
-- `lib/navigation/useNavigation.ts` — navigation hook
-- `lib/navigation/index.ts` — barrel (16 sub-exports)
-- `lib/dreamnav/delta.ts` — delta navigation primitives (7 consumers)
-- `lib/dreamnav/path.ts` — path resolution
-- `lib/dreamnav/tau.ts` — tau navigation metric
-- `lib/dreamnav/gctAssist.ts` — GCT-assisted navigation
-- `lib/dreamnav/gestures6.ts` — 6-axis gesture primitives
-- `lib/gestures/touchGestures.ts` + `useTouchGestures.ts` — mobile touch gestures
+- `engine/navigation/SpatialNavigationEngine.ts` — main navigation engine (7 imports, 4 consumers)
+- `engine/navigation/GestureFrameComputer.ts` — gesture frame analysis
+- `engine/navigation/GestureIntentResolver.ts` — resolves gesture → intent
+- `engine/navigation/PointerEventCapture.ts` — raw pointer capture
+- `engine/navigation/TransformSolver.ts` — quaternion transform solver
+- `engine/navigation/quaternion.ts` — quaternion math utilities
+- `engine/navigation/manifold.ts` — navigation manifold topology
+- `engine/navigation/NavStateBuffer.ts` — navigation state buffer
+- `engine/navigation/ReturnStack.ts` — back-navigation stack
+- `engine/navigation/AnchorWidgetStorage.ts` — persists anchor widget positions
+- `engine/navigation/AnchorStateBuffer.ts` — real-time anchor state buffer
+- `engine/navigation/WidgetInstanceMemory.ts` — widget position memory
+- `engine/navigation/dream-state.ts` — navigation state snapshot
+- `engine/navigation/StructureLedger.ts` — navigation structure ledger
+- `engine/navigation/anchorField.ts` — spatial anchor field
+- `engine/navigation/useNavigation.ts` — navigation hook
+- `engine/navigation/index.ts` — barrel (16 sub-exports)
+- `engine/dreamnav/delta.ts` — delta navigation primitives (7 consumers)
+- `engine/dreamnav/path.ts` — path resolution
+- `engine/dreamnav/tau.ts` — tau navigation metric
+- `engine/dreamnav/gctAssist.ts` — GCT-assisted navigation
+- `engine/dreamnav/gestures6.ts` — 6-axis gesture primitives
+- `engine/gestures/touchGestures.ts` + `useTouchGestures.ts` — mobile touch gestures
 - `components/dream.widget.AnchorWidget.tsx` — anchor widget component
 - `components/dream.ShrunkMode.tsx` — shrunk/collapsed navigation mode
 - `components/spatial/dream.shell.EnhancedSpatialShell.tsx` — spatial shell (5 imports)
 - `components/spatial/dream.PixiPhysicsLayer.tsx` — Pixi.js physics layer
-- `lib/ui/runtimeViewport.ts` — viewport management (6 consumers)
-- `lib/ui/responsive.ts` — responsive breakpoints
+- `components/ui-system/runtimeViewport.ts` — viewport management (6 consumers)
+- `components/ui-system/responsive.ts` — responsive breakpoints
 - `use-spatial.ts` (root) — spatial hook entry
 
 **Relationships:**
@@ -411,23 +411,23 @@ User Action / Agent / CI
 **Purpose:** The persistent bottom interaction rail — home feed, notifications, DMs, and the dual-runtime seam. Also hosts the full DM messaging system.
 
 **Core files:**
-- `lib/dreamdm/DreamSystemContext.tsx` — bar's React context (26 consumers)
-- `lib/dreamdm/barInteractions.ts` — bar drag, swipe, release logic (12 consumers)
-- `lib/dreamdm/bridgeSeamFlow.ts` — neural seam bridge animation
-- `lib/dreamdm/useDreamDMMessages.ts` — message fetching/sending
-- `lib/dreamdm/useDreamDMDraft.ts` — draft message state
-- `lib/dreamdm/useDreamDMConversations.ts` — conversation list
-- `lib/dreamdm/useMessagingCore.ts` — messaging core composable
-- `lib/dreamdm/useDreamSearch.ts` — DM search
-- `lib/dreamdm/useNotifications.ts` — notification stream
-- `lib/dreamdm/useDreamBarContext.ts` — bar context hook
-- `lib/dreamdm/useModuleBarIntent.ts` — module bar intent hook
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — bar's React context (26 consumers)
+- `dreamdmbar/runtime/barInteractions.ts` — bar drag, swipe, release logic (12 consumers)
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — neural seam bridge animation
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — message fetching/sending
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — draft message state
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — conversation list
+- `dreamdmbar/hooks/useMessagingCore.ts` — messaging core composable
+- `dreamdmbar/hooks/useDreamSearch.ts` — DM search
+- `dreamdmbar/hooks/useNotifications.ts` — notification stream
+- `dreamdmbar/hooks/useDreamBarContext.ts` — bar context hook
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — module bar intent hook
 - `components/home/dream.NeuralSeamCanvas.tsx` — animated seam (3 imports)
 - `components/dream.MessagesClient.tsx` — messages UI (6 imports)
 - `components/dream.NotificationCenter.tsx` — notification UI
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx` — data bridge to dual runtime
 - `app/messages/page.tsx` + `app/messages/boards/` — message pages
-- `lib/media/ledger.ts` — media ledger for DM attachments (14 consumers)
+- `engins/contentengin/media/ledger.ts` — media ledger for DM attachments (14 consumers)
 
 **Relationships:**
 - `DreamSystemContext` is the shared global for bar + panel state
@@ -454,20 +454,20 @@ User Action / Agent / CI
 - `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` — real-time bot detection
 - `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` — feed API handler
 - `app/dreamdmbar/_components/dreamr/api/route.ts` — local feed route
-- `lib/dreamr/torridityLedger.ts` — torridity engagement ledger (5 consumers)
-- `lib/dreamr/swipeCalibration.ts` — swipe physics calibration
-- `lib/dreamr/swipePersonalization.ts` — per-user swipe personalization
-- `lib/dreamr/closeFriendsVisibility.ts` — close friends feed filter
-- `lib/dreamr/feedCursor.ts` — pagination cursor
-- `lib/dreamr/socialHumanityScore.ts` — humanity scoring for anti-bot
-- `lib/dreamr/dreamrfeed.tsx` — feed composition (7 imports)
-- `lib/feed/useLiveFeed.ts` — live Supabase realtime feed (3 imports, 10 consumers)
-- `lib/feed/useYouTubeLiveFeed.ts` — YouTube connector feed
-- `lib/feed/feedTopics.ts` — topic filtering
-- `lib/feed/hashtags.ts` — hashtag parsing
-- `lib/torridity.ts` + `lib/torridity/` — Torridity physics model (engagement gravity)
-- `lib/bot-detection/` — bot detection index, detector, swipe-physics, view-tally
-- `lib/botDetection.ts` — top-level bot detection facade (5 consumers)
+- `dreamr/runtime/torridityLedger.ts` — torridity engagement ledger (5 consumers)
+- `dreamr/runtime/swipeCalibration.ts` — swipe physics calibration
+- `dreamr/runtime/swipePersonalization.ts` — per-user swipe personalization
+- `dreamr/runtime/closeFriendsVisibility.ts` — close friends feed filter
+- `dreamr/runtime/feedCursor.ts` — pagination cursor
+- `dreamr/runtime/socialHumanityScore.ts` — humanity scoring for anti-bot
+- `dreamr/runtime/dreamrfeed.tsx` — feed composition (7 imports)
+- `dreamr/feed/useLiveFeed.ts` — live Supabase realtime feed (3 imports, 10 consumers)
+- `dreamr/feed/useYouTubeLiveFeed.ts` — YouTube connector feed
+- `dreamr/feed/feedTopics.ts` — topic filtering
+- `dreamr/feed/hashtags.ts` — hashtag parsing
+- `dreamr/torridity.ts` + `dreamr/torridity/` — Torridity physics model (engagement gravity)
+- `dreamr/bot-detection/` — bot detection index, detector, swipe-physics, view-tally
+- `dreamr/botDetection.ts` — top-level bot detection facade (5 consumers)
 - `app/api/dreamr/feed/route.ts` + `suggested/route.ts` + `tally/route.ts` — API endpoints
 
 **Relationships:**
@@ -490,45 +490,45 @@ User Action / Agent / CI
 **Purpose:** Console-class browser gaming. PS5/PS6-equivalent logical performance via WebGPU + WASM SIMD + Babylon.js 9. Cartridges are `.dreamr` binary packages.
 
 **Core files — GameEngin runtime:**
-- `lib/gameengin/GameRuntime.tsx` — main game runtime (8 imports, 4 consumers)
-- `lib/gameengin/core.ts` — core game loop (2 imports)
-- `lib/gameengin/platform.ts` — platform abstraction (4 imports)
-- `lib/gameengin/power-systems.ts` — power/performance systems (14 consumers)
-- `lib/gameengin/ai-director.ts` — AI difficulty director
-- `lib/gameengin/unifiedLoop.ts` + `useUnifiedLoop.ts` — unified game loop
-- `lib/gameengin/index.ts` — barrel (13 sub-exports)
-- `lib/gameengin/systems/` — physics, rendering, spatial, AI, animation, assets, LOD, network, pooling, world
-- `lib/gameengin/remote/` — remote control: combo machine, moves, sprint detector, layout
+- `engins/gameengin/GameRuntime.tsx` — main game runtime (8 imports, 4 consumers)
+- `engins/gameengin/core.ts` — core game loop (2 imports)
+- `engins/gameengin/platform.ts` — platform abstraction (4 imports)
+- `engins/gameengin/power-systems.ts` — power/performance systems (14 consumers)
+- `engins/gameengin/ai-director.ts` — AI difficulty director
+- `engins/gameengin/unifiedLoop.ts` + `useUnifiedLoop.ts` — unified game loop
+- `engins/gameengin/index.ts` — barrel (13 sub-exports)
+- `engins/gameengin/systems/` — physics, rendering, spatial, AI, animation, assets, LOD, network, pooling, world
+- `engins/gameengin/remote/` — remote control: combo machine, moves, sprint detector, layout
 
 **Core files — Cartridge system:**
-- `lib/gameengin/cartridge.ts` — cartridge contract (12 consumers)
-- `lib/gameengin/cartridges/manifest.ts` — cartridge manifest (13 consumers)
-- `lib/gameengin/cartridges/loaders.ts` — cartridge loader (14 imports, 7 consumers)
-- `lib/gameengin/cartridges/reactCartridge.ts` — React cartridge wrapper
-- `lib/gameengin/cartridges/achievementEngine.ts` — achievements
-- `lib/gameengin/cartridges/saveState.ts` — save/load state
-- `lib/gameengin/cartridges/apiStubs.ts` — game API stubs
-- `lib/gameengin/cartridge-manifest.ts` — manifest schema
-- `lib/gameengin/cartridgeLoader.ts` — WASM/asset loader
-- `lib/gameengin/dreamr-loader.ts` — `.dreamr` binary loader
-- `lib/gameengin/registerCartridges.ts` — wires cartridges into module registry (3 imports)
-- `lib/gameengin/webgpu-runtime-shell.ts` — WebGPU shell for game runtime
+- `engins/gameengin/cartridge.ts` — cartridge contract (12 consumers)
+- `engins/gameengin/cartridges/manifest.ts` — cartridge manifest (13 consumers)
+- `engins/gameengin/cartridges/loaders.ts` — cartridge loader (14 imports, 7 consumers)
+- `engins/gameengin/cartridges/reactCartridge.ts` — React cartridge wrapper
+- `engins/gameengin/cartridges/achievementEngine.ts` — achievements
+- `engins/gameengin/cartridges/saveState.ts` — save/load state
+- `engins/gameengin/cartridges/apiStubs.ts` — game API stubs
+- `engins/gameengin/cartridge-manifest.ts` — manifest schema
+- `engins/gameengin/cartridgeLoader.ts` — WASM/asset loader
+- `engins/gameengin/dreamr-loader.ts` — `.dreamr` binary loader
+- `engins/gameengin/registerCartridges.ts` — wires cartridges into module registry (3 imports)
+- `engins/gameengin/webgpu-runtime-shell.ts` — WebGPU shell for game runtime
 
 **Core files — AI & procgen:**
-- `lib/gameengin/ai-npcs.ts` — NPC AI agents
-- `lib/gameengin/accessibility-ai.ts` — accessibility AI adapations
-- `lib/gameengin/procgen.ts` — procedural generation
-- `lib/gameengin/generative-audio.ts` — AI audio generation
-- `lib/gameengin/neural-render.ts` — neural rendering
-- `lib/gameengin/path-tracing.ts` — path tracing
-- `lib/gameengin/world-crdt.ts` — CRDT world state for multiplayer
-- `lib/gameengin/xr.ts` — XR/VR support stub
-- `lib/gameengin/cloud-compute.ts` — cloud compute offload
-- `lib/gameengin/predictive-stream.ts` — predictive asset streaming
+- `engins/gameengin/ai-npcs.ts` — NPC AI agents
+- `engins/gameengin/accessibility-ai.ts` — accessibility AI adapations
+- `engins/gameengin/procgen.ts` — procedural generation
+- `engins/gameengin/generative-audio.ts` — AI audio generation
+- `engins/gameengin/neural-render.ts` — neural rendering
+- `engins/gameengin/path-tracing.ts` — path tracing
+- `engins/gameengin/world-crdt.ts` — CRDT world state for multiplayer
+- `engins/gameengin/xr.ts` — XR/VR support stub
+- `engins/gameengin/cloud-compute.ts` — cloud compute offload
+- `engins/gameengin/predictive-stream.ts` — predictive asset streaming
 
 **Core files — Knowledge Brain (R&D substrate):**
-- `lib/gameengin/brain-reader.ts` — reads brain JSON files (7 consumers)
-- `lib/gameengin/brain/` — 60+ JSON files: genre-dna, mechanic-library, inspiration-corpus (Hades, Celeste, Dead Cells, Hollow Knight, Outer Wilds), fun-heuristics, dialogue-patterns, emotional-tones, character-voices, material-recipes, technique-library, originality-registry
+- `engins/gameengin/brain-reader.ts` — reads brain JSON files (7 consumers)
+- `engins/gameengin/brain/` — 60+ JSON files: genre-dna, mechanic-library, inspiration-corpus (Hades, Celeste, Dead Cells, Hollow Knight, Outer Wilds), fun-heuristics, dialogue-patterns, emotional-tones, character-voices, material-recipes, technique-library, originality-registry
 
 **Core files — Game components:**
 - `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` — cartridge launcher (6 imports)
@@ -553,19 +553,19 @@ User Action / Agent / CI
 - `components/games/dream.remote.GameRemote.tsx` + `GameRemoteSurface.tsx` — remote control
 
 **Core files — Game hooks & utilities:**
-- `lib/games/hooks.ts` — game lifecycle hooks (14 consumers)
-- `lib/games/catalog.ts` — game catalog
-- `lib/games/navigation.ts` — game navigation (10 consumers)
-- `lib/games/mobileControls.ts` — mobile control scheme (8 consumers)
-- `lib/games/performance-baseline.ts` — performance measurement baseline
-- `lib/games/quality-plan.ts` — quality tier plan
-- `lib/games/library-state.ts` — games library state
-- `lib/games/avatar.ts` — player avatar
-- `lib/games/useGamepad.ts` + `DualSenseManager.ts` — gamepad / DualSense haptics
-- `lib/games/useGameInputKeyboardBridge.ts` — keyboard → game input bridge
-- `lib/games/useRemoteChannel.ts` — remote game session channel
-- `lib/games/useImmersiveGameLayout.ts` — immersive layout hook
-- `lib/games/useAIDirector.ts` — AI director hook
+- `engins/gameengin/games/hooks.ts` — game lifecycle hooks (14 consumers)
+- `engins/gameengin/games/catalog.ts` — game catalog
+- `engins/gameengin/games/navigation.ts` — game navigation (10 consumers)
+- `engins/gameengin/games/mobileControls.ts` — mobile control scheme (8 consumers)
+- `engins/gameengin/games/performance-baseline.ts` — performance measurement baseline
+- `engins/gameengin/games/quality-plan.ts` — quality tier plan
+- `engins/gameengin/games/library-state.ts` — games library state
+- `engins/gameengin/games/avatar.ts` — player avatar
+- `engins/gameengin/games/useGamepad.ts` + `DualSenseManager.ts` — gamepad / DualSense haptics
+- `engins/gameengin/games/useGameInputKeyboardBridge.ts` — keyboard → game input bridge
+- `engins/gameengin/games/useRemoteChannel.ts` — remote game session channel
+- `engins/gameengin/games/useImmersiveGameLayout.ts` — immersive layout hook
+- `engins/gameengin/games/useAIDirector.ts` — AI director hook
 
 **Autonomous Studio Team (AI agent roles):**
 - `scripts/gameengin/maestro-analyze.ts` — Maestro (orchestrator)
@@ -586,7 +586,7 @@ User Action / Agent / CI
 
 **TO CONTRIBUTE:**
 - New game → build as a React cartridge in `components/games/`, register in `cartridges/loaders.ts`
-- New brain knowledge → add JSON files to `lib/gameengin/brain/`
+- New brain knowledge → add JSON files to `engins/gameengin/brain/`
 - New AI agent role → add script in `scripts/gameengin/`
 
 **NEVER:**
@@ -601,18 +601,18 @@ User Action / Agent / CI
 **Purpose:** Browser-native GPU rendering. Adaptive quality tier selection, Babylon.js engine creation, god-tier post-processing, and WebGPU shader pipeline.
 
 **Core files:**
-- `lib/webgpu.ts` — top-level WebGPU facade (4 consumers)
-- `lib/webgpu/director.ts` — render director (6 consumers)
-- `lib/webgpu/adaptiveQuality.ts` — adaptive quality tier switching
-- `lib/webgpu/useWebGPUDirector.ts` — director hook
-- `lib/god-tier/godTierEngine.ts` — god-tier post-fx engine (7 consumers)
-- `lib/god-tier/useGodTier.ts` — god-tier hook
-- `lib/babylon/createEngine.ts` — Babylon.js engine factory (9 consumers)
-- `lib/babylon/dreamengine-hybrid.ts` — hybrid Babylon/WebGPU setup
-- `lib/renderer/Canvas2DRenderer.ts` — 2D canvas renderer fallback
-- `lib/renderer/FrustumCuller.ts` — frustum culling
-- `lib/renderer/IRenderer.ts` — renderer interface
-- `lib/renderer/index.ts` — renderer barrel
+- `engine/rendering/webgpu.ts` — top-level WebGPU facade (4 consumers)
+- `engine/rendering/webgpu/director.ts` — render director (6 consumers)
+- `engine/rendering/webgpu/adaptiveQuality.ts` — adaptive quality tier switching
+- `engine/rendering/webgpu/useWebGPUDirector.ts` — director hook
+- `engine/rendering/god-tier/godTierEngine.ts` — god-tier post-fx engine (7 consumers)
+- `engine/rendering/god-tier/useGodTier.ts` — god-tier hook
+- `engine/rendering/babylon/createEngine.ts` — Babylon.js engine factory (9 consumers)
+- `engine/rendering/babylon/dreamengine-hybrid.ts` — hybrid Babylon/WebGPU setup
+- `engine/rendering/renderer/Canvas2DRenderer.ts` — 2D canvas renderer fallback
+- `engine/rendering/renderer/FrustumCuller.ts` — frustum culling
+- `engine/rendering/renderer/IRenderer.ts` — renderer interface
+- `utils/index.ts` — renderer barrel
 - `components/webgpu/dream.WebGPUShowcase.tsx` — WebGPU demo
 - `components/webgpu/renderer.ts` — renderer component logic
 - `components/webgpu/shaders.ts` — shader constants
@@ -623,14 +623,14 @@ User Action / Agent / CI
 - `dream.scene.BabylonOptimizeroScene.tsx` (root) + `dream.scene.DrEamsScene.tsx` (root)
 - `components/three/dream.scene.tsx` — Three.js scene
 - `components/shaders/dream.NeonGlow.tsx`, `dream.LightningWing.tsx`, `dream.Refractor.tsx`
-- `components/warp/dream.WarpCanvas.tsx` + `lib/warp/warpEngine.ts` + `useWarp.ts`
+- `components/warp/dream.WarpCanvas.tsx` + `engine/rendering/warp/warpEngine.ts` + `useWarp.ts`
 - `public/workers/engin-shader.wasm` + `engin-shader.worker.ts` — shader WASM worker
-- `lib/bus.wasm` — compiled WASM bus module
+- `engine/bus.wasm` — compiled WASM bus module
 
 **Relationships:**
 - `godTierEngine` consumes `webgpu/director.ts`
 - `GameRuntime` uses `createEngine` + `godTierEngine`
-- Adaptive quality reads `lib/games/performance-baseline.ts` targets
+- Adaptive quality reads `engins/gameengin/games/performance-baseline.ts` targets
 
 **TO CONTRIBUTE:**
 - New shaders → add to `components/shaders/` and import in scene
@@ -647,19 +647,19 @@ User Action / Agent / CI
 **Purpose:** Dual-VM coordination: one JavaScript VM and one WASM/GPU VM for high-performance game and compute tasks. Manages inter-VM messaging, resource quotas, and snapshots.
 
 **Core files:**
-- `lib/vm/wasmGpuVM.ts` — WASM/GPU VM (3 imports, 5 consumers)
-- `lib/vm/bufferManager.ts` — GPU buffer manager
-- `lib/vm/pipelineCache.ts` — WebGPU pipeline cache
-- `lib/vm/types.ts` — VM type definitions (6 consumers)
-- `lib/vm/snapshot.ts` — VM state snapshots
-- `lib/vm/dualVMCoordinator.ts` — coordinates both VMs
-- `lib/vm/dual-runtime.ts` — dual runtime bridge at VM level
-- `lib/vm/inter-vm-messaging.ts` — cross-VM message protocol
-- `lib/vm/bus-events.ts` — VM bus event types
-- `lib/vm/index.ts` — barrel (11 sub-exports)
-- `lib/vm/resource-quota.ts` — per-VM resource limits
-- `lib/vm/security.ts` — VM isolation / security
-- `lib/vm/wasm-features.ts` — WASM feature detection
+- `engine/vm/wasmGpuVM.ts` — WASM/GPU VM (3 imports, 5 consumers)
+- `engine/vm/bufferManager.ts` — GPU buffer manager
+- `engine/vm/pipelineCache.ts` — WebGPU pipeline cache
+- `engine/vm/types.ts` — VM type definitions (6 consumers)
+- `engine/vm/snapshot.ts` — VM state snapshots
+- `engine/vm/dualVMCoordinator.ts` — coordinates both VMs
+- `engine/vm/dual-runtime.ts` — dual runtime bridge at VM level
+- `engine/vm/inter-vm-messaging.ts` — cross-VM message protocol
+- `engine/vm/bus-events.ts` — VM bus event types
+- `engine/vm/index.ts` — barrel (11 sub-exports)
+- `engine/vm/resource-quota.ts` — per-VM resource limits
+- `engine/vm/security.ts` — VM isolation / security
+- `engine/vm/wasm-features.ts` — WASM feature detection
 - `assembly/` — AssemblyScript source for WASM compilation
 - `public/cartridges/mad-maxi/logic/main.wasm` — compiled game WASM
 
@@ -683,64 +683,64 @@ User Action / Agent / CI
 **Purpose:** Multi-model AI orchestration. Covers: in-app AI assistant (DrEams), content moderation AI (Boogieman), platform health agent (Idari), event-driven AI (EAMS), and the Triad consensus system.
 
 **Core files — AI core:**
-- `lib/ai/triad.ts` — Triad multi-agent consensus system (2 imports, 17 consumers)
-- `lib/ai/schemas.ts` — AI request/response schemas (9 consumers)
-- `lib/ai/groq.ts` — Groq LLM integration (5 consumers)
-- `lib/ai/tool-router.ts` — routes AI tool calls to handlers (3 imports)
-- `lib/ai/handlers/index.ts` + `navigation.ts` + `dreams.ts` + `social.ts` — tool call handlers
-- `lib/ai/audit.ts` — AI action audit log (2 imports, 11 consumers)
-- `lib/ai/capability-gate.ts` — per-user AI capability gating (3 imports)
-- `lib/ai/confirm.ts` — AI action confirmation gate
-- `lib/ai/confirm-token.ts` — one-time confirmation tokens
-- `lib/ai/idempotency.ts` — idempotency for AI requests
-- `lib/ai/rate-limiter.ts` + `rateLimit.ts` — dual-layer rate limiting
-- `lib/ai/CIC.ts` — CIC (content intelligence classifier)
-- `lib/ai/tfBackend.ts` — TensorFlow.js backend
+- `engine/agents/agentBus.ts` — Triad multi-agent consensus system (2 imports, 17 consumers)
+- `dr-eams/ai/schemas.ts` — AI request/response schemas (9 consumers)
+- `dr-eams/ai/groq.ts` — Groq LLM integration (5 consumers)
+- `dr-eams/ai/tool-router.ts` — routes AI tool calls to handlers (3 imports)
+- `utils/index.ts` + `navigation.ts` + `dreams.ts` + `social.ts` — tool call handlers
+- `dr-eams/ai/audit.ts` — AI action audit log (2 imports, 11 consumers)
+- `dr-eams/ai/capability-gate.ts` — per-user AI capability gating (3 imports)
+- `dr-eams/ai/confirm.ts` — AI action confirmation gate
+- `dr-eams/ai/confirm-token.ts` — one-time confirmation tokens
+- `dr-eams/ai/idempotency.ts` — idempotency for AI requests
+- `dr-eams/ai/rate-limiter.ts` + `rateLimit.ts` — dual-layer rate limiting
+- `dr-eams/ai/CIC.ts` — CIC (content intelligence classifier)
+- `dr-eams/ai/tfBackend.ts` — TensorFlow.js backend
 
 **Core files — Boogieman (moderation):**
-- `lib/ai/boogieman.ts` — content moderation engine (2 imports, 7 consumers)
-- `lib/ai/boogie-policy.ts` — moderation policy rules (10 consumers)
-- `lib/ai/boogie-verifier.ts` — policy verification
-- `lib/policy/boogiePolicy.ts` — platform-level boogie policy
-- `lib/activity/boogieActivityPolicy.ts` — activity-specific policy
+- `engine/agents/boogieManAI.ts` — content moderation engine (2 imports, 7 consumers)
+- `dr-eams/ai/boogie-policy.ts` — moderation policy rules (10 consumers)
+- `dr-eams/ai/boogie-verifier.ts` — policy verification
+- `engine/policy/boogiePolicy.ts` — platform-level boogie policy
+- `dreamr/activity/boogieActivityPolicy.ts` — activity-specific policy
 - `app/api/ai/boogieman/route.ts` + `child-safety/route.ts` + `privacy-event/route.ts` + `status/route.ts`
 
 **Core files — Child Safety:**
-- `lib/child-safety/childSafetyDetector.ts` — main detector (1 import, 8 consumers)
-- `lib/child-safety/imageClassifier.ts` — image-based CSAM detection (1 import, 5 consumers)
-- `lib/child-safety/ncmecReporter.ts` — mandatory NCMEC reporting (2 imports, 5 consumers)
-- `lib/child-safety/scanMediaUrls.ts` — scans media URLs (2 imports, 4 consumers)
-- `lib/child-safety/messageContextChecker.ts` — message-context safety check
+- `engine/safety/child-safety/childSafetyDetector.ts` — main detector (1 import, 8 consumers)
+- `engine/safety/child-safety/imageClassifier.ts` — image-based CSAM detection (1 import, 5 consumers)
+- `engine/safety/child-safety/ncmecReporter.ts` — mandatory NCMEC reporting (2 imports, 5 consumers)
+- `engine/safety/child-safety/scanMediaUrls.ts` — scans media URLs (2 imports, 4 consumers)
+- `engine/safety/child-safety/messageContextChecker.ts` — message-context safety check
 - `app/api/admin/child-safety/route.ts`
 
 **Core files — Idari (platform health agent):**
-- `lib/agents/idari.ts` — Idari agent (1 import, 6 consumers)
-- `lib/agents/idariLoop.ts` — Idari observation loop (5 imports, 3 consumers)
-- `lib/observability/collector.ts` — metric collector (1 import, 9 consumers)
-- `lib/observability/correlator.ts` — metric correlator
-- `lib/observability/rootCauseAnalyzer.ts` — root cause engine (3 imports, 6 consumers)
-- `lib/observability/immediateAction.ts` — immediate remediation actions
-- `lib/observability/healthTrend.ts` — health trend tracking
-- `lib/observability/otel.ts` + `otelBridge.ts` — OpenTelemetry integration
-- `lib/observability/index.ts` — barrel
+- `engine/agents/idari.ts` — Idari agent (1 import, 6 consumers)
+- `engine/agents/idariLoop.ts` — Idari observation loop (5 imports, 3 consumers)
+- `engine/observability/collector.ts` — metric collector (1 import, 9 consumers)
+- `engine/observability/correlator.ts` — metric correlator
+- `engine/observability/rootCauseAnalyzer.ts` — root cause engine (3 imports, 6 consumers)
+- `engine/observability/immediateAction.ts` — immediate remediation actions
+- `engine/observability/healthTrend.ts` — health trend tracking
+- `engine/observability/otel.ts` + `otelBridge.ts` — OpenTelemetry integration
+- `engine/observability/index.ts` — barrel
 - `app/(internal)/idari-console/` — internal admin pages (health, errors, AI console)
 - `app/api/admin/observability/route.ts` + `ai-chat/route.ts`
 
 **Core files — EAMS & agent bus:**
-- `lib/agents/agentBus.ts` — agent event bus (2 imports, 7 consumers)
-- `lib/agents/boogieManAI.ts` — BoogieMan AI agent
-- `lib/agents/drEamsMode.ts` — DrEams mode toggle
-- `lib/agents/teachBus.ts` — teaching/learn event bus
-- `lib/agents/uiActions.ts` — AI-driven UI actions
-- `lib/agents/dreamengin.ts` — DREAMengin agent interface
-- `lib/agentOS.ts` + `lib/agentOS/hostTools.ts` — Agent OS host
+- `engine/agents/agentBus.ts` — agent event bus (2 imports, 7 consumers)
+- `engine/agents/boogieManAI.ts` — BoogieMan AI agent
+- `engine/agents/drEamsMode.ts` — DrEams mode toggle
+- `engine/agents/teachBus.ts` — teaching/learn event bus
+- `engine/agents/uiActions.ts` — AI-driven UI actions
+- `engine/agents/dreamengin.ts` — DREAMengin agent interface
+- `engine/agentOS.ts` + `engine/agentOS/hostTools.ts` — Agent OS host
 - `app/api/ai/eams/route.ts` + `execute/route.ts` + `idari/route.ts`
 
 **Core files — DrEams AI (in-app):**
 - `dr-eams/tools.ts` + `dr-eams/capabilities.yaml` — DrEams tool definitions
-- `lib/code/drEamsCodeAssist.ts` — code assist AI
-- `lib/dreamengin/drEamsSearch.ts` — OS-level semantic search
-- `lib/dreamengin/DrEamsAnimator.ts` — DrEams animation controller
+- `engins/codeengin/ai/drEamsCodeAssist.ts` — code assist AI
+- `dr-eams/search/drEamsSearch.ts` — OS-level semantic search
+- `dr-eams/animation/DrEamsAnimator.ts` — DrEams animation controller
 - `components/dream.AIAssistant.tsx` — AI assistant UI
 - `components/dream.DrEamsModeToggle.tsx` — mode toggle
 - `components/dream.DrEamsVoiceAssistant.tsx` — voice interface
@@ -754,13 +754,13 @@ User Action / Agent / CI
 - `.github/workflows/humanai-audit.yml` — workflow
 
 **Relationships:**
-- All AI routes → `lib/ai/audit.ts` for logging
+- All AI routes → `dr-eams/ai/audit.ts` for logging
 - `Triad` system achieves consensus across multiple models before acting
 - `Boogieman` is called by every content-creating endpoint (posts, comments, messages)
 - `Idari` loop reads `observability/collector.ts` → triggers `immediateAction`
 
 **TO CONTRIBUTE:**
-- New AI tool → add to `lib/ai/handlers/`, register in `tool-router.ts`
+- New AI tool → add to `engine/ai/handlers/`, register in `tool-router.ts`
 - New moderation rule → extend `boogie-policy.ts`
 - New audit persona → add to `agents/humanAI/personas/`
 
@@ -776,31 +776,31 @@ User Action / Agent / CI
 **Purpose:** Connectors to external platforms (Instagram, YouTube, Bluesky, Mastodon, Twitter/X, Reddit, GitHub, TikTok, and more), post/comment/like/follow social graph, RSS feed, cross-posting, and content intelligence.
 
 **Core files — Connectors:**
-- `lib/connectors/connectorRegistry.ts` — registry of all connectors (9 consumers)
-- `lib/connectors/normalise.ts` — normalizes data from all platforms (19 consumers)
-- `lib/connectors/syncDispatch.ts` — sync dispatcher (8 imports, 4 consumers)
-- `lib/connectors/reconcile.ts` — conflict reconciliation (4 imports, 3 consumers)
-- `lib/connectors/installFlow.ts` — connector install/auth flow (1 import, 5 consumers)
-- `lib/connectors/webhookVerification.ts` — inbound webhook verification
-- `lib/connectors/deliveryStrategy.ts` — content delivery strategy
-- `lib/connectors/providers/youtube.ts` — YouTube (2 imports, 8 consumers)
-- `lib/connectors/providers/instagram.ts` — Instagram
-- `lib/connectors/providers/bluesky.ts` — Bluesky / AT Protocol
-- `lib/connectors/providers/mastodon.ts` — Mastodon
-- `lib/connectors/providers/nostr.ts` — Nostr (decentralized)
-- `lib/connectors/providers/twitter.ts`, `reddit.ts`, `github.ts`, `tiktok.ts`, `facebook.ts`, `devto.ts`, `medium.ts`, `hackernews.ts`, `substack.ts`, `tumblr.ts`, `pinterest.ts`, `podcast.ts`
-- `lib/connectors/providers/shellhub.ts` — ShellHub device connector
-- `lib/connectors/youtube.ts` — YouTube OAuth integration
+- `engine/connectors/connectorRegistry.ts` — registry of all connectors (9 consumers)
+- `engine/connectors/normalise.ts` — normalizes data from all platforms (19 consumers)
+- `engine/connectors/syncDispatch.ts` — sync dispatcher (8 imports, 4 consumers)
+- `engine/connectors/reconcile.ts` — conflict reconciliation (4 imports, 3 consumers)
+- `engine/connectors/installFlow.ts` — connector install/auth flow (1 import, 5 consumers)
+- `engine/connectors/webhookVerification.ts` — inbound webhook verification
+- `engine/connectors/deliveryStrategy.ts` — content delivery strategy
+- `engine/connectors/providers/youtube.ts` — YouTube (2 imports, 8 consumers)
+- `engine/connectors/providers/instagram.ts` — Instagram
+- `engine/connectors/providers/bluesky.ts` — Bluesky / AT Protocol
+- `engine/connectors/providers/mastodon.ts` — Mastodon
+- `engine/connectors/providers/nostr.ts` — Nostr (decentralized)
+- `engine/connectors/providers/twitter.ts`, `reddit.ts`, `github.ts`, `tiktok.ts`, `facebook.ts`, `devto.ts`, `medium.ts`, `hackernews.ts`, `substack.ts`, `tumblr.ts`, `pinterest.ts`, `podcast.ts`
+- `engine/connectors/providers/shellhub.ts` — ShellHub device connector
+- `engine/connectors/youtube.ts` — YouTube OAuth integration
 - `app/api/connectors/[provider]/` — connect, disconnect, sync, verify, items, webhooks
 - `app/api/connectors/instagram/oauth/` + `youtube/oauth/` — OAuth flows
 - `app/connectors/dream.ConnectorsClient.tsx` — connectors management UI (10 imports)
 
 **Core files — Social graph:**
-- `lib/social/platforms.ts` — platform definitions (8 consumers)
-- `lib/social/crossPost.ts` — cross-platform posting
-- `lib/social/rss-feed.ts` — RSS generation (13 consumers)
-- `lib/social/livekit.ts` — LiveKit real-time video/audio
-- `lib/social-feed.ts` — social feed aggregation
+- `engine/social/platforms.ts` — platform definitions (8 consumers)
+- `engine/social/crossPost.ts` — cross-platform posting
+- `engine/social/rss-feed.ts` — RSS generation (13 consumers)
+- `engine/social/livekit.ts` — LiveKit real-time video/audio
+- `dreamr/social-feed.ts` — social feed aggregation
 - `app/api/follow/route.ts`, `likes/route.ts`, `comments/route.ts`, `blocks/route.ts`, `close-friends/route.ts`
 - `app/api/posts/` — CRUD for posts, views, saves
 - `app/api/profile/route.ts`, `activity/track/route.ts`, `notifications/route.ts`
@@ -809,17 +809,17 @@ User Action / Agent / CI
 - `app/api/social/rss-feed/route.ts`
 
 **Core files — Content intelligence:**
-- `lib/content/publishIntent.ts` — publish workflow
-- `lib/content/seoScorer.ts` — SEO scoring
-- `lib/content/transcriptEditor.ts` — transcript editing
-- `lib/content/voiceClone.ts` — voice cloning
-- `lib/content/generativeFill.ts` — generative image fill
-- `lib/composite/` — compositor, rotoscope, matchmover, motionCapture, fxSimulation
+- `engins/contentengin/content/publishIntent.ts` — publish workflow
+- `engins/contentengin/content/seoScorer.ts` — SEO scoring
+- `engins/contentengin/content/transcriptEditor.ts` — transcript editing
+- `engins/contentengin/content/voiceClone.ts` — voice cloning
+- `engins/contentengin/content/generativeFill.ts` — generative image fill
+- `engine/composite/` — compositor, rotoscope, matchmover, motionCapture, fxSimulation
 - `app/api/content/` — transcribe, voice-clone, generative-fill, intelligence
 
 **Core files — Media ledger:**
-- `lib/media/ledger.ts` — media asset ledger (14 consumers)
-- `lib/media/postMedia.ts` — post media processing (9 consumers)
+- `engins/contentengin/media/ledger.ts` — media asset ledger (14 consumers)
+- `engins/contentengin/media/postMedia.ts` — post media processing (9 consumers)
 - `app/api/ledger-media/route.ts`, `upload/route.ts`
 
 **Relationships:**
@@ -828,7 +828,7 @@ User Action / Agent / CI
 - Child safety scans run on all posts, comments, and messages before storage
 
 **TO CONTRIBUTE:**
-- New connector → add provider in `lib/connectors/providers/`, register in `connectorRegistry.ts`, add OAuth route
+- New connector → add provider in `engine/connectors/providers/`, register in `connectorRegistry.ts`, add OAuth route
 - Must implement: `normalise`, `sync`, `verify`, `disconnect`
 
 **NEVER:**
@@ -842,13 +842,13 @@ User Action / Agent / CI
 **Purpose:** Activity Quality Score (AQS), activity tracking, revenue split, Skip Credits (in-app currency), ads platform, and the boogie moderation-activity policy bridge.
 
 **Core files:**
-- `lib/activity/types.ts` — activity type definitions (21 consumers — 2nd most imported type)
-- `lib/activity/scoring.ts` — activity scoring logic (5 consumers)
-- `lib/activity/aqs.ts` — Activity Quality Score engine (2 imports, 5 consumers)
-- `lib/activity/visibility-score.ts` — feed visibility scoring (3 imports, 3 consumers)
-- `lib/activity/revenueSplit.ts` — creator revenue split
-- `lib/activity/skipCredits.ts` — Skip Credits balance management
-- `lib/activity/boogieActivityPolicy.ts` — boogie-activity bridge policy
+- `dreamr/activity/types.ts` — activity type definitions (21 consumers — 2nd most imported type)
+- `dreamr/activity/scoring.ts` — activity scoring logic (5 consumers)
+- `dreamr/activity/aqs.ts` — Activity Quality Score engine (2 imports, 5 consumers)
+- `dreamr/activity/visibility-score.ts` — feed visibility scoring (3 imports, 3 consumers)
+- `dreamr/activity/revenueSplit.ts` — creator revenue split
+- `dreamr/activity/skipCredits.ts` — Skip Credits balance management
+- `dreamr/activity/boogieActivityPolicy.ts` — boogie-activity bridge policy
 - `app/api/activity/track/route.ts` — activity tracking endpoint
 - `app/api/ads/` — ads orders, view tracking
 - `app/api/skip-credits/` — balance, earn, use
@@ -879,18 +879,18 @@ User Action / Agent / CI
 **Purpose:** Enforces a strict canonical naming system for all modules, surfaces, and entities. Prevents naming collisions across the distributed OS.
 
 **Core files:**
-- `lib/identity/canonical-names.ts` — canonical name registry (16 consumers — critical hub)
-- `lib/dreamengin/osSubsystemManifest.ts` — OS subsystem manifest (5 imports, 3 consumers)
-- `lib/dream-window/DreamWindowLifecycle.ts` — dream window lifecycle (1 import, 10 consumers)
-- `lib/dream-window/enginConnectionNetwork.ts` — Engin connection topology
-- `lib/dream-window/connectionVerbs.ts` — connection action vocabulary
-- `lib/dream-window/runtimeRegion.ts` — runtime region mapping
-- `lib/dream-window/useDreamWindowActions.ts` — dream window action hook
-- `lib/dream-window/index.ts` — barrel
-- `lib/feature-build/featureManifest.ts` — feature manifest (1 import, 4 consumers)
-- `lib/feature-build/buildCycle.ts` — feature build cycle
-- `lib/feature-build/uiQualityCriteria.ts` — UI quality criteria
-- `lib/feature-build/index.ts` — barrel
+- `engine/identity/canonical-names.ts` — canonical name registry (16 consumers — critical hub)
+- `engine/manifests/osSubsystemManifest.ts` — OS subsystem manifest (5 imports, 3 consumers)
+- `engine/dream-window/DreamWindowLifecycle.ts` — dream window lifecycle (1 import, 10 consumers)
+- `engine/dream-window/enginConnectionNetwork.ts` — Engin connection topology
+- `engine/dream-window/connectionVerbs.ts` — connection action vocabulary
+- `engine/dream-window/runtimeRegion.ts` — runtime region mapping
+- `engine/dream-window/useDreamWindowActions.ts` — dream window action hook
+- `engine/dream-window/index.ts` — barrel
+- `engine/feature-build/featureManifest.ts` — feature manifest (1 import, 4 consumers)
+- `engine/feature-build/buildCycle.ts` — feature build cycle
+- `engine/feature-build/uiQualityCriteria.ts` — UI quality criteria
+- `engine/feature-build/index.ts` — barrel
 
 **Relationships:**
 - `canonical-names.ts` is imported by `DreamWindowLifecycle`, `osSubsystemManifest`, `seamClipboard`, `enginConnectionNetwork`
@@ -928,7 +928,7 @@ User Action / Agent / CI
 - `app/api/shared-dream/sessions/` — co-creation sessions
 - `app/api/social/` — LiveKit, IPFS, RSS
 - `app/api/widgets/` + `dream-windows/` + `home-layout/` + `user/layout/`
-- `lib/api/route.ts` — shared route handler factory (14 consumers)
+- `engine/api/route.ts` — shared route handler factory (14 consumers)
 
 **Core files — Express backend:**
 - `backend/index.js` — Express server entry
@@ -936,31 +936,31 @@ User Action / Agent / CI
 - `backend/src/services/livekitService.js` — LiveKit integration service
 
 **Core files — Supabase integration:**
-- `lib/supabase/server.ts` — server-side client (187 consumers — most imported file)
-- `lib/supabase/client.ts` — browser-side client (63 consumers)
-- `lib/supabase/config.ts` — Supabase config (14 consumers)
-- `lib/supabase/safeGetUser.ts` — safe user getter (8 consumers)
-- `lib/supabase/vector.ts` — pgvector support
-- `lib/supabase/realtime.ts` — realtime subscription helpers
+- `supabase/server/serverClient.ts` — server-side client (187 consumers — most imported file)
+- `supabase/client/client.ts` — browser-side client (63 consumers)
+- `supabase/config.ts` — Supabase config (14 consumers)
+- `supabase/client/safeGetUser.ts` — safe user getter (8 consumers)
+- `supabase/vector.ts` — pgvector support
+- `supabase/realtime.ts` — realtime subscription helpers
 - `supabase/migrations/` — 55 SQL migration files (full schema history)
 - `supabase/schema-final.sql` — consolidated schema
 - `supabase/seed.sql` — development seed data
 
 **Core files — Auth:**
 - `app/auth/callback/route.ts` — OAuth callback
-- `lib/auth/nextRedirect.ts` — auth redirect helper (9 consumers)
-- `lib/admin/lockout.ts` — admin lockout protection
-- `lib/admin/upgrade-readiness.ts` — upgrade readiness checker
-- `lib/setup/checks.ts` — first-run setup checks
-- `lib/consent/consentManager.ts` — user consent management
+- `supabase/auth/nextRedirect.ts` — auth redirect helper (9 consumers)
+- `engine/admin/lockout.ts` — admin lockout protection
+- `engine/admin/upgrade-readiness.ts` — upgrade readiness checker
+- `engine/setup/checks.ts` — first-run setup checks
+- `engine/consent/consentManager.ts` — user consent management
 
 **Relationships:**
-- All routes → `lib/supabase/server.ts` for DB access
+- All routes → `supabase/server/serverClient.ts` for DB access
 - Content routes → Boogieman scan before storage
-- Admin routes → `lib/admin/lockout.ts` gate
+- Admin routes → `engine/admin/lockout.ts` gate
 
 **TO CONTRIBUTE:**
-- New endpoint → add in `app/api/<domain>/route.ts`, use `lib/api/route.ts` factory
+- New endpoint → add in `app/api/<domain>/route.ts`, use `engine/api/route.ts` factory
 - New DB table → add Supabase migration in `supabase/migrations/`
 - Auth-required routes → use `safeGetUser.ts`
 
@@ -976,15 +976,15 @@ User Action / Agent / CI
 **Purpose:** Modular, user-placeable widgets ("Dreams") that mount inside the spatial shell. Each widget is a mini-app that can host connectors, games, media, or arbitrary content.
 
 **Core files:**
-- `lib/widgets/widgetRegistry.ts` — widget type registry (9 consumers)
-- `lib/widgets/parseConfig.ts` — parse widget config from DB
-- `lib/widgets/parse.ts` — widget config parser
-- `lib/widgets/feed-resolver.ts` — widget feed data resolver
-- `lib/widgets/WidgetBus.ts` — widget event bus
-- `lib/widgets/WidgetEventBus.ts` — typed event bus
-- `lib/widgets/WidgetLinkGraph.ts` — widget link graph
-- `lib/widgets/CrossWidgetPosting.ts` — cross-widget data posting
-- `lib/widgets/useWidget.ts` — widget lifecycle hook
+- `engine/widgets/widgetRegistry.ts` — widget type registry (9 consumers)
+- `engine/widgets/parseConfig.ts` — parse widget config from DB
+- `engine/widgets/parse.ts` — widget config parser
+- `engine/widgets/feed-resolver.ts` — widget feed data resolver
+- `engine/widgets/WidgetBus.ts` — widget event bus
+- `engine/widgets/WidgetEventBus.ts` — typed event bus
+- `engine/widgets/WidgetLinkGraph.ts` — widget link graph
+- `engine/widgets/CrossWidgetPosting.ts` — cross-widget data posting
+- `engine/widgets/useWidget.ts` — widget lifecycle hook
 - `components/dreams/dream.widget.SuperDreamWidget.tsx` — universal widget host (3 imports)
 - `components/widgets/dream.widget.WidgetCard.tsx` — widget card shell
 - `components/widgets/dream.widget.UniversalWidget.tsx` — universal widget
@@ -995,7 +995,7 @@ User Action / Agent / CI
 - `components/widgets/dream.widget.PlayMediaWidget.tsx` — media widget
 - `components/widgets/dream.EditModeProvider.tsx` + `dream.EditModeBanner.tsx`
 - `components/widgets/dream.AddDreamCTA.tsx` + `dream.ConfigureSheet.tsx`
-- `lib/dream-window/DreamWindowLifecycle.ts` — dream window lifecycle (10 consumers)
+- `engine/dream-window/DreamWindowLifecycle.ts` — dream window lifecycle (10 consumers)
 - `app/api/widgets/feed/route.ts` + `instances/route.ts`
 - `app/api/dream-windows/route.ts` + `[id]/route.ts`
 
@@ -1019,12 +1019,12 @@ User Action / Agent / CI
 **Purpose:** DAW (Digital Audio Workstation) built into the platform. Piano roll, multitrack arrangement, session view, comping, audio fingerprinting, and voice cloning.
 
 **Core files:**
-- `lib/music/starmaker.ts` — StarMaker DAW core (3 consumers)
-- `lib/music/starmakerDaw.ts` — DAW session management (6 consumers)
-- `lib/music/starmakerArrangement.ts` — multitrack arrangement
-- `lib/music/presets.ts` — instrument/effect presets
-- `lib/music/wasmAudioBridge.ts` — WASM audio DSP bridge
-- `lib/audioFingerprint.ts` + `lib/audio-fingerprint/` — fingerprint, peak-map, stem-extractor
+- `engins/starmakerengin/music/starmaker.ts` — StarMaker DAW core (3 consumers)
+- `engins/starmakerengin/music/starmakerDaw.ts` — DAW session management (6 consumers)
+- `engins/starmakerengin/music/starmakerArrangement.ts` — multitrack arrangement
+- `engins/starmakerengin/music/presets.ts` — instrument/effect presets
+- `engins/starmakerengin/music/wasmAudioBridge.ts` — WASM audio DSP bridge
+- `engins/starmakerengin/audioFingerprint.ts` + `engins/starmakerengin/audio-fingerprint/` — fingerprint, peak-map, stem-extractor
 - `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — piano roll UI
 - `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`
 - `components/daydream/starmaker/dream.panel.CompingPanel.tsx`
@@ -1051,19 +1051,19 @@ User Action / Agent / CI
 **Purpose:** Visual engine builder for creating new Engins and Daydream surfaces. The Forge is where creators build custom dream environments.
 
 **Core files:**
-- `lib/forge/forgeRegistry.ts` — forge registry (18 consumers — most imported forge file)
-- `lib/forge/forgeIntelligence.ts` — AI intelligence for forge (1 import, 12 consumers)
-- `lib/forge/forgeMomentum.ts` — forge activity momentum (1 import, 6 consumers)
-- `lib/forge/forgeNexus.ts` — forge nexus connections
-- `lib/forge/forgeRituals.ts` — forge build rituals
-- `lib/forge/forgeBuild.ts` — build execution
-- `lib/forge/engineForge.ts` — engine forge core (2 imports)
-- `lib/forge/useForgeActivity.ts` — forge activity hook (1 import, 13 consumers)
-- `lib/forge/useForgeBuild.ts` — forge build hook
-- `lib/forge-ngn/piece-registry.ts` — NGN piece registry (4 consumers)
-- `lib/forge-ngn/assembly.ts` — NGN assembly logic
-- `lib/forge-ngn/index.ts` — NGN barrel
-- `lib/componentInventory.ts` — component inventory for forge (6 consumers)
+- `engins/forgeengin/forge/forgeRegistry.ts` — forge registry (18 consumers — most imported forge file)
+- `engins/forgeengin/forge/forgeIntelligence.ts` — AI intelligence for forge (1 import, 12 consumers)
+- `engins/forgeengin/forge/forgeMomentum.ts` — forge activity momentum (1 import, 6 consumers)
+- `engins/forgeengin/forge/forgeNexus.ts` — forge nexus connections
+- `engins/forgeengin/forge/forgeRituals.ts` — forge build rituals
+- `engins/forgeengin/forge/forgeBuild.ts` — build execution
+- `engins/forgeengin/forge/engineForge.ts` — engine forge core (2 imports)
+- `engins/forgeengin/forge/useForgeActivity.ts` — forge activity hook (1 import, 13 consumers)
+- `engins/forgeengin/forge/useForgeBuild.ts` — forge build hook
+- `engins/forgeengin/forge-ngn/piece-registry.ts` — NGN piece registry (4 consumers)
+- `engins/forgeengin/forge-ngn/assembly.ts` — NGN assembly logic
+- `engins/forgeengin/forge-ngn/index.ts` — NGN barrel
+- `engins/forgeengin/componentInventory.ts` — component inventory for forge (6 consumers)
 - `components/forge/dream.panel.AIBuilderPanel.tsx` — AI builder panel (3 imports)
 - `components/forge/dream.EngineBuilderCanvas.tsx` — drag-drop canvas
 - `components/forge/dream.widget.ForgeMomentumWidget.tsx` — momentum display
@@ -1085,13 +1085,13 @@ User Action / Agent / CI
 **Purpose:** Tracks user journeys through the platform, provides session continuity, and powers contextual intelligence (what the user is working on, what they need next).
 
 **Core files:**
-- `lib/journey/journeyDots.ts` — journey dot tracking (1 import, 4 consumers)
-- `lib/journey/journeyInsights.ts` — journey analytics (1 import, 3 consumers)
-- `lib/journey/withJourney.ts` — HOC for journey tracking
-- `lib/intelligence/sessionContinuity.ts` — session continuity
-- `lib/intelligence/sessionPatternEngine.ts` — behavioral pattern engine
-- `lib/intelligence/continuityHelpers.ts` — continuity utilities (1 import, 4 consumers)
-- `lib/intelligence/useSessionIntelligence.ts` — session intelligence hook (3 imports, 3 consumers)
+- `engine/journey/journeyDots.ts` — journey dot tracking (1 import, 4 consumers)
+- `engine/journey/journeyInsights.ts` — journey analytics (1 import, 3 consumers)
+- `engine/journey/withJourney.ts` — HOC for journey tracking
+- `engine/intelligence/sessionContinuity.ts` — session continuity
+- `engine/intelligence/sessionPatternEngine.ts` — behavioral pattern engine
+- `engine/intelligence/continuityHelpers.ts` — continuity utilities (1 import, 4 consumers)
+- `engine/intelligence/useSessionIntelligence.ts` — session intelligence hook (3 imports, 3 consumers)
 - `components/daydream/dream.JourneyTrail.tsx` — journey trail visualization (12 consumers)
 - `app/api/journey/route.ts`
 - `types/journey.ts` — journey type definitions (7 consumers)
@@ -1108,14 +1108,14 @@ User Action / Agent / CI
 **Purpose:** OpenTelemetry metrics, error collection, root cause analysis, and the Idari agent's automated remediation loop.
 
 **Core files:**
-- `lib/observability/collector.ts` — metric collector (9 consumers)
-- `lib/observability/correlator.ts` — metric correlator (1 import, 6 consumers)
-- `lib/observability/rootCauseAnalyzer.ts` — root cause engine (3 imports, 6 consumers)
-- `lib/observability/immediateAction.ts` — automated fixes (1 import, 4 consumers)
-- `lib/observability/healthTrend.ts` — health trend tracker
-- `lib/observability/otel.ts` + `otelBridge.ts` — OpenTelemetry bridging
-- `lib/observability/index.ts` — barrel
-- `lib/runtime/snapshotFingerprint.ts` — state diff fingerprinting
+- `engine/observability/collector.ts` — metric collector (9 consumers)
+- `engine/observability/correlator.ts` — metric correlator (1 import, 6 consumers)
+- `engine/observability/rootCauseAnalyzer.ts` — root cause engine (3 imports, 6 consumers)
+- `engine/observability/immediateAction.ts` — automated fixes (1 import, 4 consumers)
+- `engine/observability/healthTrend.ts` — health trend tracker
+- `engine/observability/otel.ts` + `otelBridge.ts` — OpenTelemetry bridging
+- `engine/observability/index.ts` — barrel
+- `engine/runtime/snapshotFingerprint.ts` — state diff fingerprinting
 - `grafana/` — Grafana dashboards and Prometheus datasource config
 - `prometheus/prometheus.yml` — Prometheus scrape config
 - `app/api/metrics/route.ts` + `platform/route.ts` + `user/[userId]/route.ts`
@@ -1135,14 +1135,14 @@ User Action / Agent / CI
 **Purpose:** Anomaly detection, audio fingerprinting for GCT analysis, image search, and recommendation generation. Used for content quality and originality scoring.
 
 **Core files:**
-- `lib/gct/gct-engine.ts` — GCT core engine (6 consumers)
-- `lib/gct/anomaly-detection.ts` — anomaly detection
-- `lib/gct/audio-fingerprint.ts` — audio GCT fingerprinting
-- `lib/gct/image-search.ts` — image similarity search
-- `lib/gct/recommendations.ts` — GCT-based recommendations
-- `lib/gct/index.ts` — barrel (5 exports, 2 consumers)
-- `lib/dreamnav/gctAssist.ts` — GCT-assisted navigation hints
-- `lib/dreamnav/tau.ts` — tau navigation metric (GCT-derived)
+- `engine/gct/gct-engine.ts` — GCT core engine (6 consumers)
+- `engine/gct/anomaly-detection.ts` — anomaly detection
+- `engine/gct/audio-fingerprint.ts` — audio GCT fingerprinting
+- `engine/gct/image-search.ts` — image similarity search
+- `engine/gct/recommendations.ts` — GCT-based recommendations
+- `engine/gct/index.ts` — barrel (5 exports, 2 consumers)
+- `engine/dreamnav/gctAssist.ts` — GCT-assisted navigation hints
+- `engine/dreamnav/tau.ts` — tau navigation metric (GCT-derived)
 - `research/ccc-ada-twin-engine/` — theoretical research backing GCT
 
 **Relationships:**
@@ -1157,12 +1157,12 @@ User Action / Agent / CI
 **Purpose:** Incubator for performance optimization, creative validation, constraint solving, and pre-production trials.
 
 **Core files:**
-- `lib/optimizer/constraint-solver.ts` — optimization constraint solver (1 import, 3 consumers)
-- `lib/optimizer/creative-validator.ts` — creative output validator (1 import, 3 consumers)
-- `lib/optimizer/creative-optimizero.ts` — creative optimizer (5 consumers)
-- `lib/optimizer/babylon-optimizero.ts` — Babylon.js scene optimizer (1 import, 3 consumers)
-- `lib/optimizer/types.ts` — optimizer type definitions (5 consumers)
-- `lib/optimizer/index.ts` — barrel
+- `optimizer/constraint-solver.ts` — optimization constraint solver (1 import, 3 consumers)
+- `optimizer/creative-validator.ts` — creative output validator (1 import, 3 consumers)
+- `optimizer/creative-optimizero.ts` — creative optimizer (5 consumers)
+- `optimizer/babylon-optimizero.ts` — Babylon.js scene optimizer (1 import, 3 consumers)
+- `optimizer/types.ts` — optimizer type definitions (5 consumers)
+- `optimizer/index.ts` — barrel
 - `optimizer/constraint-solver.ts`, `creative-validator.ts`, `index.ts`, `types.ts` — root-level optimizer dir
 - `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` — optimizer 3D scene
 - `dream.scene.BabylonOptimizeroScene.tsx` (root) — root mount

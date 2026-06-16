@@ -8,10 +8,10 @@ share — `GameEngin`, `CodeEngin`, `MusicEngin` (StarMaker), `BrandEngin`,
 `LabEngin`, `ContentEngin`, and any future `*Engin`.
 
 Each row below maps a generic catalog component to its implementation
-under `lib/enginpipe/`. PR #1 ships rows **1, 4, 8, 11**; subsequent
+under `engine/enginpipe/`. PR #1 ships rows **1, 4, 8, 11**; subsequent
 PRs fill in the remaining components.
 
-| # | Component | Generic Pattern | `lib/enginpipe/` Path | Status |
+| # | Component | Generic Pattern | `engine/enginpipe/` Path | Status |
 |---|-----------|-----------------|----------------------|--------|
 | 1 | Artifact Container Format | TAR + Zstd + Manifest + WASM + Assets | `artifact/manifest.ts` | ✅ shipped |
 | 2 | File-Based Knowledge Brain | `principles/`, `patterns/`, `inspiration-corpus/`, `registry/`, `sessions/`, `predictions/` | `brain/` | ⏳ PR #2 |
@@ -35,7 +35,7 @@ import {
   createTelemetryClient,
   detectCapabilityTier,
   parseManifest,
-} from '@/lib/enginpipe';
+} from 'engine/enginpipe';
 ```
 
 ### Mounting an Engin runtime
@@ -65,7 +65,7 @@ const manifest = createManifest({
 ### Reporting telemetry
 
 ```ts
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from 'supabase/client/client.ts';
 
 const tele = createTelemetryClient({ supabase: createClient() });
 await tele.record({
@@ -100,5 +100,5 @@ Returns `'ultra' | 'high' | 'medium' | 'low'`. The default tier table
    Engin renders or processes media.
 
 GameEngin is the first concrete instantiation of this template; its
-runtime in `lib/gameengin/` is being progressively rewritten to consume
-`lib/enginpipe/` instead of holding its own copies of these patterns.
+runtime in `engins/gameengin/` is being progressively rewritten to consume
+`engine/enginpipe/` instead of holding its own copies of these patterns.

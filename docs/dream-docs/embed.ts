@@ -1,12 +1,12 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
 /**
- * lib/dream-docs/embed.ts
+ * docs/dream-docs/embed.ts
  * Server-side helper to generate and upsert a pgvector embedding for a
  * dream_doc_sections row whenever its content is saved.
  *
  * Uses the same OpenAI-compatible embedding endpoint pattern as the rest of
- * the codebase (lib/supabase/vector.ts).
+ * the codebase (supabase/vector.ts).
  */
 
 const EMBEDDING_MODEL = 'text-embedding-3-small';

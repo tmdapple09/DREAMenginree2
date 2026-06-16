@@ -82,7 +82,7 @@ Auto-synced from `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tscon
 </details>
 
 ## The Engins
-Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dreamdm/**` using repository introspection.
+Auto-synced from `engins/**`, `components/runtime/**`, `engine/runtime/**`, `dreamdmbar/**` using repository introspection.
 - Files tracked: **58**
 - API routes discovered: none
 - App pages discovered: none
@@ -183,49 +183,49 @@ Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dr
 - `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
 - `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
 - `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/dreamdm/barInteractions.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useNotifications.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/EnginDispatcher.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/channelMetrics.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/coercionTable.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dreamOSBus.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dropTargetRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dualRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dualRuntimeBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/enginWorkflowRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/instanceManager.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/isAuthRelatedError.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/madMaxiSnapshotBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/memory.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/moduleRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/offlineQueue.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/quantumCircuit.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/runtimeChannel.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/runtimeContainer.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/seamClipboard.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/sharedResourcePool.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/swapManager.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDragSurface.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDualRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDualRuntimePersistence.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useEnginBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useEnginCoopSync.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
+- `dreamdmbar/runtime/barInteractions.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/coercionTable.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/dropTargetRegistry.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/dualRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/dualRuntimeBridge.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/enginWorkflowRegistry.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/instanceManager.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/isAuthRelatedError.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/madMaxiSnapshotBridge.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/memory.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/moduleRegistry.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/offlineQueue.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/quantumCircuit.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/runtimeChannel.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/runtimeContainer.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/swapManager.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useDualRuntimePersistence.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useEnginBridge.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useEnginCoopSync.ts` — TypeScript/JavaScript runtime module.
+- `engine/runtime/useSharedEnginChannel.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
 ### Custom Engins capability (current state)
-Auto-synced from `engins/**`, `components/daydream/**`, `lib/engins/**` using repository introspection.
+Auto-synced from `engins/**`, `components/daydream/**`, `engine/generated/engins.ts**` using repository introspection.
 - Files tracked: **47**
 - API routes discovered: none
 - App pages discovered: none
@@ -333,32 +333,32 @@ Auto-synced from `engins/**`, `components/daydream/**`, `lib/engins/**` using re
 - `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
 - `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
 - `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
-- `lib/engins/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/code/codeEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/code/useCodeEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/content/contentEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/content/useContentEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/gameEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/index.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/useGameEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/lab/labEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/lab/useLabEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/music/starMakerEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/music/useStarMakerEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/useEnginWorkflow.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/workflowEngine.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/code/useCodeEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/content/contentEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/content/useContentEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/game/gameEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `utils/index.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/game/useGameEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/lab/labEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/lab/useLabEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/useEnginWorkflow.ts` — TypeScript/JavaScript runtime module.
+- `engins/rulesets/workflowEngine.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
 ## Dual Runtimes
-DREAMengin runs two persistent runtime regions separated by the DreamDM seam: **Surface Space** (top) and **DreamSpace** (bottom). `lib/runtime/dualRuntime.ts` defines canonical world state, dominance, and torus navigation so either region can host any world (`HomeDream Surface`, `DreamSpace`, `dream`, `engin`, `panel`, `custom`).
+DREAMengin runs two persistent runtime regions separated by the DreamDM seam: **Surface Space** (top) and **DreamSpace** (bottom). `engine/runtime/dualRuntime.ts` defines canonical world state, dominance, and torus navigation so either region can host any world (`HomeDream Surface`, `DreamSpace`, `dream`, `engin`, `panel`, `custom`).
 
-`components/runtime/dream.DualRuntimeContainer.tsx` is the state controller used by layout-level shells, while `lib/runtime/dualRuntimeBridge.ts` provides cross-region event transport, durable queueing, and shared message plumbing. `lib/runtime/useDualRuntimePersistence.ts` persists region/world state through OPFS with localStorage fallback so split/runtime choices survive reloads.
+`components/runtime/dream.DualRuntimeContainer.tsx` is the state controller used by layout-level shells, while `engine/runtime/dualRuntimeBridge.ts` provides cross-region event transport, durable queueing, and shared message plumbing. `engine/runtime/useDualRuntimePersistence.ts` persists region/world state through OPFS with localStorage fallback so split/runtime choices survive reloads.
 
 The persistent seam is rendered by `components/home/dream.bar.PersistentDreamBar.tsx` + `dreamdmbar/dreamsurface.dreamdmbar.tsx`, which continuously publishes split-ratio context and keeps both regions mounted.
 
-For compute-heavy parity, the VM pair under `lib/vm/` (`dualVMCoordinator.ts`, `wasmGpuVM.ts`, `inter-vm-messaging.ts`, `resource-quota.ts`, `security.ts`, `snapshot.ts`) enforces quotas, bounds, and snapshot controls while preserving the same rule-set contract in both regions. Solo/co-op parity is maintained through shared runtime channels rather than separate UI implementations.
+For compute-heavy parity, the VM pair under `engine/vm/` (`dualVMCoordinator.ts`, `wasmGpuVM.ts`, `inter-vm-messaging.ts`, `resource-quota.ts`, `security.ts`, `snapshot.ts`) enforces quotas, bounds, and snapshot controls while preserving the same rule-set contract in both regions. Solo/co-op parity is maintained through shared runtime channels rather than separate UI implementations.
 #### Dual runtime pipeline file structure
 ```text
 ├── COOP_AND_SOLO_ROADMAP.md
@@ -503,54 +503,54 @@ For compute-heavy parity, the VM pair under `lib/vm/` (`dualVMCoordinator.ts`, `
 - `dreamdmbar/homedream/dreamr/dreamsurface.dreamr.tsx` — React UI module for dreamr.
 - `dreamdmbar/homedream/dreamsurface.dreamdmbar-grid.tsx` — React UI module for dreamdmbar grid.
 - `dreamdmbar/homedream/dreamsurface.homedream.tsx` — React UI module for homedream.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/runtime/EnginDispatcher.ts` — TypeScript runtime module for EnginDispatcher.
-- `lib/runtime/channelMetrics.ts` — TypeScript runtime module for channelMetrics.
-- `lib/runtime/coercionTable.ts` — TypeScript runtime module for coercionTable.
-- `lib/runtime/dreamOSBus.ts` — TypeScript runtime module for dreamOSBus.
-- `lib/runtime/dropTargetRegistry.ts` — TypeScript runtime module for dropTargetRegistry.
-- `lib/runtime/dualRuntime.ts` — TypeScript runtime module for dualRuntime.
-- `lib/runtime/dualRuntimeBridge.ts` — TypeScript runtime module for dualRuntimeBridge.
-- `lib/runtime/enginWorkflowRegistry.ts` — TypeScript runtime module for enginWorkflowRegistry.
-- `lib/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
-- `lib/runtime/isAuthRelatedError.ts` — TypeScript runtime module for isAuthRelatedError.
-- `lib/runtime/memory.ts` — TypeScript runtime module for memory.
-- `lib/runtime/moduleRegistry.ts` — TypeScript runtime module for moduleRegistry.
-- `lib/runtime/offlineQueue.ts` — TypeScript runtime module for offlineQueue.
-- `lib/runtime/quantumCircuit.ts` — TypeScript runtime module for quantumCircuit.
-- `lib/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
-- `lib/runtime/runtimeContainer.ts` — TypeScript runtime module for runtimeContainer.
-- `lib/runtime/seamClipboard.ts` — TypeScript runtime module for seamClipboard.
-- `lib/runtime/snapshotFingerprint.ts` — TypeScript runtime module for snapshotFingerprint.
-- `lib/runtime/swapManager.ts` — TypeScript runtime module for swapManager.
-- `lib/runtime/useDragSurface.ts` — TypeScript runtime module for useDragSurface.
-- `lib/runtime/useDualRuntime.ts` — TypeScript runtime module for useDualRuntime.
-- `lib/runtime/useDualRuntimePersistence.ts` — TypeScript runtime module for useDualRuntimePersistence.
-- `lib/runtime/useEnginBridge.ts` — TypeScript runtime module for useEnginBridge.
-- `lib/runtime/useEnginCoopSync.ts` — TypeScript runtime module for useEnginCoopSync.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
-- `lib/vm/README.md` — Subsystem documentation reference.
-- `lib/vm/bufferManager.ts` — TypeScript runtime module for bufferManager.
-- `lib/vm/bus-events.ts` — TypeScript runtime module for bus events.
-- `lib/vm/dual-runtime.ts` — TypeScript runtime module for dual runtime.
-- `lib/vm/dualVMCoordinator.ts` — TypeScript runtime module for dualVMCoordinator.
-- `lib/vm/index.ts` — TypeScript runtime module for index.
-- `lib/vm/inter-vm-messaging.ts` — TypeScript runtime module for inter vm messaging.
-- `lib/vm/pipelineCache.ts` — TypeScript runtime module for pipelineCache.
-- `lib/vm/resource-quota.ts` — TypeScript runtime module for resource quota.
-- `lib/vm/security.ts` — TypeScript runtime module for security.
-- `lib/vm/snapshot.ts` — TypeScript runtime module for snapshot.
-- `lib/vm/types.ts` — TypeScript runtime module for types.
-- `lib/vm/wasm-features.ts` — TypeScript runtime module for wasm features.
-- `lib/vm/wasmGpuVM.ts` — TypeScript runtime module for wasmGpuVM.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
+- `engine/runtime/EnginDispatcher.ts` — TypeScript runtime module for EnginDispatcher.
+- `engine/runtime/channelMetrics.ts` — TypeScript runtime module for channelMetrics.
+- `engine/runtime/coercionTable.ts` — TypeScript runtime module for coercionTable.
+- `engine/runtime/dreamOSBus.ts` — TypeScript runtime module for dreamOSBus.
+- `engine/runtime/dropTargetRegistry.ts` — TypeScript runtime module for dropTargetRegistry.
+- `engine/runtime/dualRuntime.ts` — TypeScript runtime module for dualRuntime.
+- `engine/runtime/dualRuntimeBridge.ts` — TypeScript runtime module for dualRuntimeBridge.
+- `engine/runtime/enginWorkflowRegistry.ts` — TypeScript runtime module for enginWorkflowRegistry.
+- `engine/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
+- `engine/runtime/isAuthRelatedError.ts` — TypeScript runtime module for isAuthRelatedError.
+- `engine/runtime/memory.ts` — TypeScript runtime module for memory.
+- `engine/runtime/moduleRegistry.ts` — TypeScript runtime module for moduleRegistry.
+- `engine/runtime/offlineQueue.ts` — TypeScript runtime module for offlineQueue.
+- `engine/runtime/quantumCircuit.ts` — TypeScript runtime module for quantumCircuit.
+- `engine/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
+- `engine/runtime/runtimeContainer.ts` — TypeScript runtime module for runtimeContainer.
+- `engine/runtime/seamClipboard.ts` — TypeScript runtime module for seamClipboard.
+- `engine/runtime/snapshotFingerprint.ts` — TypeScript runtime module for snapshotFingerprint.
+- `engine/runtime/swapManager.ts` — TypeScript runtime module for swapManager.
+- `engine/runtime/useDragSurface.ts` — TypeScript runtime module for useDragSurface.
+- `engine/runtime/useDualRuntime.ts` — TypeScript runtime module for useDualRuntime.
+- `engine/runtime/useDualRuntimePersistence.ts` — TypeScript runtime module for useDualRuntimePersistence.
+- `engine/runtime/useEnginBridge.ts` — TypeScript runtime module for useEnginBridge.
+- `engine/runtime/useEnginCoopSync.ts` — TypeScript runtime module for useEnginCoopSync.
+- `engine/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
+- `engine/vm/README.md` — Subsystem documentation reference.
+- `engine/vm/bufferManager.ts` — TypeScript runtime module for bufferManager.
+- `engine/vm/bus-events.ts` — TypeScript runtime module for bus events.
+- `engine/vm/dual-runtime.ts` — TypeScript runtime module for dual runtime.
+- `engine/vm/dualVMCoordinator.ts` — TypeScript runtime module for dualVMCoordinator.
+- `engine/vm/index.ts` — TypeScript runtime module for index.
+- `engine/vm/inter-vm-messaging.ts` — TypeScript runtime module for inter vm messaging.
+- `engine/vm/pipelineCache.ts` — TypeScript runtime module for pipelineCache.
+- `engine/vm/resource-quota.ts` — TypeScript runtime module for resource quota.
+- `engine/vm/security.ts` — TypeScript runtime module for security.
+- `engine/vm/snapshot.ts` — TypeScript runtime module for snapshot.
+- `engine/vm/types.ts` — TypeScript runtime module for types.
+- `engine/vm/wasm-features.ts` — TypeScript runtime module for wasm features.
+- `engine/vm/wasmGpuVM.ts` — TypeScript runtime module for wasmGpuVM.
 
 </details>
 ## Shared Dreams
-Shared Dreams are realtime collaboration sessions where multiple peers co-edit or co-view the same runtime context. The canonical session model lives in `lib/collaboration/index.ts` (roles, modes, event families, permissions), and `lib/sharedDream.ts` provides the backwards-compatible façade consumed by hooks/components.
+Shared Dreams are realtime collaboration sessions where multiple peers co-edit or co-view the same runtime context. The canonical session model lives in `utils/index.ts` (roles, modes, event families, permissions), and `engine/sharedDream.ts` provides the backwards-compatible façade consumed by hooks/components.
 
 Runtime flow:
 - `hooks/useSharedDream.ts` and `components/shared-dream/dream.SharedDreamProvider.tsx` create/join sessions and keep peer/cursor/presence state in sync.
-- `lib/supabase/realtime.ts` provides typed transport adapters for broadcast + presence channels, with graceful local fallback paths.
+- `supabase/realtime.ts` provides typed transport adapters for broadcast + presence channels, with graceful local fallback paths.
 - Payload normalization (cursor, edit, state_patch, media_sync, data_packet, control_signal, mode_change, presence_update) is centralized before dispatch.
 - `dream.InviteFlow.tsx` generates invite links and auto-join handoff via URL channel parsing.
 
@@ -613,12 +613,12 @@ Shared session persistence/API surface is exposed through `app/api/dream-windows
 - `components/shared-dream/dream.SharedDreamProvider.tsx` — React UI module for SharedDreamProvider.
 - `components/shared-dream/index.ts` — TypeScript runtime module for index.
 - `hooks/useSharedDream.ts` — TypeScript runtime module for useSharedDream.
-- `lib/collaboration/index.ts` — TypeScript runtime module for index.
-- `lib/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
-- `lib/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
-- `lib/sharedDream.ts` — TypeScript runtime module for sharedDream.
-- `lib/supabase/realtime.ts` — TypeScript runtime module for realtime.
+- `utils/index.ts` — TypeScript runtime module for index.
+- `engine/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
+- `engine/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
+- `engine/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
+- `engine/sharedDream.ts` — TypeScript runtime module for sharedDream.
+- `supabase/realtime.ts` — TypeScript runtime module for realtime.
 - `supabase/migrations/20260307000001_conversations_messages.sql` — Database schema or migration for 20260307000001 conversations messages.
 - `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — Database schema or migration for 20260321200000 phase8a feed and layout.
 - `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — Database schema or migration for 20260322000000 phase8b windows.
@@ -626,7 +626,7 @@ Shared session persistence/API surface is exposed through `app/api/dream-windows
 
 </details>
 ## Dreamr — Human Media
-Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `lib/feed/**`, `components/home/**` using repository introspection.
+Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `dreamr/feed/**`, `components/home/**` using repository introspection.
 - Files tracked: **14**
 - API routes discovered: `/api/dreamr/feed`, `/api/dreamr/suggested`
 - App pages discovered: `/dreamr`
@@ -670,10 +670,10 @@ Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `lib/feed/**`, `component
 - `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
 - `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
 - `components/home/dream.widget.DreamWidget.tsx` — React UI module for WidgetDreamWidget.
-- `lib/feed/feedTopics.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/hashtags.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/useLiveFeed.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/useYouTubeLiveFeed.ts` — TypeScript/JavaScript runtime module.
+- `dreamr/feed/feedTopics.ts` — TypeScript/JavaScript runtime module.
+- `dreamr/feed/hashtags.ts` — TypeScript/JavaScript runtime module.
+- `dreamr/feed/useLiveFeed.ts` — TypeScript/JavaScript runtime module.
+- `dreamr/feed/useYouTubeLiveFeed.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
@@ -681,7 +681,7 @@ Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `lib/feed/**`, `component
 The Shop is DREAMengin’s first-party storefront (`/shop`, `/shop/sell`) for creator-owned merch listings. Unlike Marketplace, Shop behaves as a direct seller storefront tied to the owner’s catalog.
 
 Runtime flow:
-- Listing CRUD and validation run through `app/api/shop/route.ts` + `lib/shop/listings.ts`.
+- Listing CRUD and validation run through `app/api/shop/route.ts` + `engine/shop/listings.ts`.
 - Records persist to the Supabase `merch` table introduced in `20260324000001_phase8e_shop_marketplace.sql`.
 - Create/update actions emit feed-side visibility artifacts so products can appear in user-facing discovery surfaces.
 - Billing logic in-repo is server-side order math/recording; external checkout provider wiring is intentionally not embedded in this subsystem.
@@ -709,7 +709,7 @@ Runtime flow:
 - `app/api/shop/route.ts` — API route handler for `/api/shop`.
 - `app/shop/page.tsx` — Next.js route page for `/shop`.
 - `app/shop/sell/page.tsx` — Next.js route page for `/shop/sell`.
-- `lib/shop/listings.ts` — TypeScript runtime module for listings.
+- `engine/shop/listings.ts` — TypeScript runtime module for listings.
 - `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — Database schema or migration for 20260324000001 phase8e shop marketplace.
 - `tests/phase8e-shop-marketplace.test.ts` — TypeScript runtime module for phase8e shop marketplace test.
 
@@ -718,8 +718,8 @@ Runtime flow:
 Marketplace is the peer-to-peer exchange surface (`/marketplace`, `/marketplace/sell`, `/marketplace/[id]`) and is intentionally separate from Shop. It focuses on cross-user discovery, request workflows, and moderated publish state.
 
 How it works:
-- Listings and query filters are handled by `app/api/marketplace/route.ts` + `lib/marketplace/listings.ts` with category/tag filtering and seller-profile joins.
-- Buyer → seller outreach runs through `app/api/marketplace/request/route.ts` + `lib/marketplace/request.ts` (request/contact workflow).
+- Listings and query filters are handled by `app/api/marketplace/route.ts` + `engine/shop/listings.ts` with category/tag filtering and seller-profile joins.
+- Buyer → seller outreach runs through `app/api/marketplace/request/route.ts` + `engine/marketplace/request.ts` (request/contact workflow).
 - `marketplace_items` and `marketplace_contact_requests` schema/policies are defined in `20260324000001_phase8e_shop_marketplace.sql` with moderation/publish gating semantics.
 - UI surfaces (`dream.MarketplaceListingCard`, `dream.MarketplaceRequestButton`) consume the same fixed runtime/state contract as other modules.
 #### Marketplace files file structure
@@ -764,8 +764,8 @@ How it works:
 - `components/marketplace/dream.MarketplaceListingCard.tsx` — React UI module for MarketplaceListingCard.
 - `components/marketplace/dream.MarketplaceRequestButton.tsx` — React UI module for MarketplaceRequestButton.
 - `components/panels/dream.panel.MarketplacePanel.tsx` — React UI module for panel MarketplacePanel.
-- `lib/marketplace/listings.ts` — TypeScript runtime module for listings.
-- `lib/marketplace/request.ts` — TypeScript runtime module for request.
+- `engine/shop/listings.ts` — TypeScript runtime module for listings.
+- `engine/marketplace/request.ts` — TypeScript runtime module for request.
 - `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — Database schema or migration for 20260324000001 phase8e shop marketplace.
 - `tests/phase8e-shop-marketplace.test.ts` — TypeScript runtime module for phase8e shop marketplace test.
 - `types/marketplace.ts` — TypeScript runtime module for marketplace.
@@ -830,7 +830,7 @@ What it does:
 
 </details>
 ## The DmBar (`dreamdmbar/`)
-Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**` using repository introspection.
+Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `dreamdmbar/**` using repository introspection.
 - Files tracked: **16**
 - API routes discovered: none
 - App pages discovered: none
@@ -866,17 +866,17 @@ Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**
 - `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `dreamdmbar/dream.GlowingLight.tsx` — React UI module for GlowingLight.
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React UI module for DreamsurfaceDreamdmbar.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/dreamdm/barInteractions.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useNotifications.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
+- `dreamdmbar/runtime/barInteractions.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
@@ -929,16 +929,16 @@ Runtime flow:
 - `app/messages/page.tsx` — Next.js route page for `/messages`.
 - `components/dream.MessagesClient.tsx` — React UI module for MessagesClient.
 - `components/messaging/dream.BoardComposer.tsx` — React UI module for BoardComposer.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript runtime module for useDreamDMConversations.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript runtime module for useDreamDMDraft.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript runtime module for useDreamDMMessages.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript runtime module for useMessagingCore.
-- `lib/dreamdm/useNotifications.ts` — TypeScript runtime module for useNotifications.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript runtime module for useDreamDMConversations.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript runtime module for useDreamDMDraft.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript runtime module for useDreamDMMessages.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript runtime module for useMessagingCore.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript runtime module for useNotifications.
 - `supabase/migrations/20260307000001_conversations_messages.sql` — Database schema or migration for 20260307000001 conversations messages.
 
 </details>
 ## HomeDream
-Auto-synced from `app/homedream/**`, `components/home/**`, `lib/home/**` using repository introspection.
+Auto-synced from `app/homedream/**`, `components/home/**`, `engine/home/**` using repository introspection.
 - Files tracked: **8**
 - API routes discovered: none
 - App pages discovered: `/homedream`
@@ -972,7 +972,7 @@ Auto-synced from `app/homedream/**`, `components/home/**`, `lib/home/**` using r
 </details>
 
 ## DreamSpace
-Auto-synced from `app/daydream/**`, `components/daydream/**`, `lib/daydream/**` using repository introspection.
+Auto-synced from `app/daydream/**`, `components/daydream/**`, `engine/daydream/**` using repository introspection.
 - Files tracked: **40**
 - API routes discovered: none
 - App pages discovered: `/daydream/analytics`, `/daydream/brand`, `/daydream/brand/engin`, `/daydream/code`, `/daydream/code/engin`, `/daydream/constellation`, `/daydream/create`, `/daydream/create/engin`, +12 more
@@ -1087,15 +1087,15 @@ Auto-synced from `app/daydream/**`, `components/daydream/**`, `lib/daydream/**` 
 - `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
 - `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
 - `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
-- `lib/daydream/useDaydreamPersistence.ts` — TypeScript/JavaScript runtime module.
-- `lib/daydream/useDaydreamState.ts` — TypeScript/JavaScript runtime module.
+- `daydreams/shared/useDaydreamPersistence.ts` — TypeScript/JavaScript runtime module.
+- `daydreams/shared/useDaydreamState.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
 ## Dreams (Widgets / Windows / Surfaces)
 This repo ships three user-facing primitives that share one runtime contract:
-- **Widgets** — small embeddable units (for cards/tools/media controls) mostly under `components/widgets/*` and `lib/widgets/*`.
-- **Dream Windows** — full modular runtime containers with lifecycle (`unbound → bound → mounted ↔ collapsed`) enforced by `lib/dream-window/DreamWindowLifecycle.ts`.
+- **Widgets** — small embeddable units (for cards/tools/media controls) mostly under `components/widgets/*` and `engine/widgets/*`.
+- **Dream Windows** — full modular runtime containers with lifecycle (`unbound → bound → mounted ↔ collapsed`) enforced by `engine/dream-window/DreamWindowLifecycle.ts`.
 - **Surfaces** — canonical mount points where windows/widgets run (HomeDream Surface, DreamSpace, profile/runtime shells), implemented through `dreamsurface.*.tsx` components under `components/dreams/*`, `components/dreamengin/*`, and `dreamdmbar/homedream/*`.
 
 The naming convention `dreamsurface.*.tsx` marks canonical mount components across domains (`dreamsurface.homedream.tsx`, `dreamsurface.dreamspace.tsx`, `dreamsurface.window.tsx`, etc.). These components stay bound to fixed engine plumbing while rule-sets define what each surface renders.
@@ -1194,28 +1194,28 @@ The naming convention `dreamsurface.*.tsx` marks canonical mount components acro
 - `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React UI module for widget WidgetPlaceholder.
 - `components/widgets/dream.widget.WidgetShell.tsx` — React UI module for widget WidgetShell.
 - `components/widgets/dream.widget.WidgetSurface.tsx` — React UI module for widget WidgetSurface.
-- `lib/dream-window/DreamWindowLifecycle.ts` — TypeScript runtime module for DreamWindowLifecycle.
-- `lib/dream-window/connectionVerbs.ts` — TypeScript runtime module for connectionVerbs.
-- `lib/dream-window/enginConnectionNetwork.ts` — TypeScript runtime module for enginConnectionNetwork.
-- `lib/dream-window/index.ts` — TypeScript runtime module for index.
-- `lib/dream-window/runtimeRegion.ts` — TypeScript runtime module for runtimeRegion.
-- `lib/dream-window/useDreamWindowActions.ts` — TypeScript runtime module for useDreamWindowActions.
-- `lib/widgets/CrossWidgetPosting.ts` — TypeScript runtime module for CrossWidgetPosting.
-- `lib/widgets/WidgetBus.ts` — TypeScript runtime module for WidgetBus.
-- `lib/widgets/WidgetEngine.tsx` — React UI module for WidgetEngine.
-- `lib/widgets/WidgetEventBus.ts` — TypeScript runtime module for WidgetEventBus.
-- `lib/widgets/WidgetLinkGraph.ts` — TypeScript runtime module for WidgetLinkGraph.
-- `lib/widgets/feed-resolver.ts` — TypeScript runtime module for feed resolver.
-- `lib/widgets/parse.ts` — TypeScript runtime module for parse.
-- `lib/widgets/parseConfig.ts` — TypeScript runtime module for parseConfig.
-- `lib/widgets/useWidget.ts` — TypeScript runtime module for useWidget.
-- `lib/widgets/widgetRegistry.ts` — TypeScript runtime module for widgetRegistry.
+- `engine/dream-window/DreamWindowLifecycle.ts` — TypeScript runtime module for DreamWindowLifecycle.
+- `engine/dream-window/connectionVerbs.ts` — TypeScript runtime module for connectionVerbs.
+- `engine/dream-window/enginConnectionNetwork.ts` — TypeScript runtime module for enginConnectionNetwork.
+- `engine/dream-window/index.ts` — TypeScript runtime module for index.
+- `engine/dream-window/runtimeRegion.ts` — TypeScript runtime module for runtimeRegion.
+- `engine/dream-window/useDreamWindowActions.ts` — TypeScript runtime module for useDreamWindowActions.
+- `engine/widgets/CrossWidgetPosting.ts` — TypeScript runtime module for CrossWidgetPosting.
+- `engine/widgets/WidgetBus.ts` — TypeScript runtime module for WidgetBus.
+- `engine/widgets/WidgetEngine.tsx` — React UI module for WidgetEngine.
+- `engine/widgets/WidgetEventBus.ts` — TypeScript runtime module for WidgetEventBus.
+- `engine/widgets/WidgetLinkGraph.ts` — TypeScript runtime module for WidgetLinkGraph.
+- `engine/widgets/feed-resolver.ts` — TypeScript runtime module for feed resolver.
+- `engine/widgets/parse.ts` — TypeScript runtime module for parse.
+- `engine/widgets/parseConfig.ts` — TypeScript runtime module for parseConfig.
+- `engine/widgets/useWidget.ts` — TypeScript runtime module for useWidget.
+- `engine/widgets/widgetRegistry.ts` — TypeScript runtime module for widgetRegistry.
 - `types/dream-window.ts` — TypeScript runtime module for dream window.
 - `types/widget-system-v2.ts` — TypeScript runtime module for widget system v2.
 
 </details>
 ## User-Facing Modularity
-Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using repository introspection.
+Auto-synced from `components/**`, `styles/**`, `engine/ui/**`, `hooks/**` using repository introspection.
 - Files tracked: **321**
 - API routes discovered: none
 - App pages discovered: none
@@ -1653,12 +1653,12 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 - `hooks/useTapHoldMove.ts` — TypeScript/JavaScript runtime module.
 - `hooks/useTick.ts` — TypeScript/JavaScript runtime module.
 - `hooks/useViewCounter.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/CustomizeModeContext.tsx` — React UI module for CustomizeModeContext.
-- `lib/ui/responsive.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/runtimeViewport.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/skin-engine.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/theme-engine.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/theme.ts` — TypeScript/JavaScript runtime module.
+- `components/ui-system/CustomizeModeContext.tsx` — React UI module for CustomizeModeContext.
+- `components/ui-system/responsive.ts` — TypeScript/JavaScript runtime module.
+- `components/ui-system/runtimeViewport.ts` — TypeScript/JavaScript runtime module.
+- `components/ui-system/skin-engine.ts` — TypeScript/JavaScript runtime module.
+- `components/ui-system/theme-engine.ts` — TypeScript/JavaScript runtime module.
+- `styles/theme.css` — TypeScript/JavaScript runtime module.
 - `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `styles/dream-shell.css` — project file (css).
 - `styles/globals.css` — project file (css).
@@ -1779,7 +1779,7 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 </details>
 
 ## Full Website Customizability
-Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styles/**` using repository introspection.
+Auto-synced from `app/settings/**`, `app/api/settings/**`, `styles/theme.css**`, `styles/**` using repository introspection.
 - Files tracked: **30**
 - API routes discovered: `/api/settings/appearance`, `/api/settings/feed`, `/api/settings/notifications`, `/api/settings/privacy`
 - App pages discovered: `/settings`, `/settings/account`, `/settings/algorithm`, `/settings/appearance`, `/settings/controls`, `/settings/data`, `/settings/dreams`, `/settings/feed`, +6 more
@@ -1875,7 +1875,7 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 </details>
 
 ## Backend, System, Core & CoreSurfaces
-Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `lib/supabase/**` using repository introspection.
+Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `supabase/**` using repository introspection.
 - Files tracked: **122**
 - API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
 - App pages discovered: none
@@ -2122,12 +2122,12 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
 - `coresurfaces/dreamsurface.EditProfileDream.tsx` — React UI module for DreamsurfaceEditProfileDream.
 - `coresurfaces/dreamsurface.ViewProfile.tsx` — React UI module for DreamsurfaceViewProfile.
-- `lib/supabase/client.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/config.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/realtime.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/safeGetUser.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/server.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/vector.ts` — TypeScript/JavaScript runtime module.
+- `supabase/client/client.ts` — TypeScript/JavaScript runtime module.
+- `supabase/config.ts` — TypeScript/JavaScript runtime module.
+- `supabase/realtime.ts` — TypeScript/JavaScript runtime module.
+- `supabase/client/safeGetUser.ts` — TypeScript/JavaScript runtime module.
+- `supabase/server/serverClient.ts` — TypeScript/JavaScript runtime module.
+- `supabase/vector.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
@@ -2397,7 +2397,7 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `scripts/fix-audit.js` — TypeScript module.
 - `scripts/gameengin/architect-run.ts` — TypeScript module.
 - `scripts/gameengin/artisan-run.ts` — TypeScript module.
-- `scripts/gameengin/lib/tar.ts` — TypeScript module.
+- `scripts/gameengin package tar helper` — TypeScript module.
 - `scripts/gameengin/maestro-analyze.ts` — TypeScript module.
 - `scripts/gameengin/mechanic-run.ts` — TypeScript module.
 - `scripts/gameengin/package-cartridge.ts` — TypeScript module.
@@ -3934,8 +3934,8 @@ Auto-synced from `src/**` using repository introspection.
 - `engine/generated/systems.ts` — TypeScript/JavaScript runtime module.
 - `src/engin/state/base.json` — project file (json).
 - `engins/gameengin/launcher.ts` — TypeScript/JavaScript runtime module.
-- `src/lib/ai/client.ts` — TypeScript/JavaScript runtime module.
-- `src/lib/babylon/useDreamLogoScene.ts` — TypeScript/JavaScript runtime module.
+- `dr-eams/ai/client.ts` — TypeScript/JavaScript runtime module.
+- `components/three/useDreamLogoScene.ts` — TypeScript/JavaScript runtime module.
 
 </details>
 
