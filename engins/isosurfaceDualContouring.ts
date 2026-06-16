@@ -1,6 +1,11 @@
 export interface Vec3 { x: number; y: number; z: number }
 export interface Mesh { vertices: Vec3[]; indices: number[] }
 export interface MeshDiagnostics { vertices: number; triangles: number; degenerateTriangles: number; boundaryEdges: number; nonManifoldEdges: number }
+export type IsoSurfaceSourceEngin = 'content' | 'game' | 'lab';
+export type IsoSurfacePurpose = 'asset-generation' | 'terrain-chunk' | 'collision-proxy' | 'simulation-surface' | 'mesh-repair';
+export type IsoSurfaceSdfKind = 'sphere' | 'torus' | 'terrain-cave' | 'metaball' | 'capsule-blend' | 'image-region-fit' | 'custom';
+export interface IsoSurfaceJob { id: string; sourceEngin: IsoSurfaceSourceEngin; purpose: IsoSurfacePurpose; sdfKind: IsoSurfaceSdfKind; settings: DualContouringSettings; diagnostics?: MeshDiagnostics & { resolution: number; sampleDomain: { origin: Vec3; size: number }; estimatedMemoryBytes: number; mobileSafetyTier: MobileIsoSurfaceTier }; output?: { meshId: string; glbUrl?: string; objUrl?: string; collisionId?: string } }
+export type MobileIsoSurfaceTier = 'preview' | 'good-mobile' | 'high-end-mobile' | 'desktop-or-batch';
 export type SDF = (p: Vec3) => number;
 export interface DualContouringSettings { origin: Vec3; size: number; resolution: number; isoLevel: number; normalEpsFactor: number; qefRegularization: number; areaEpsilon: number }
 
@@ -58,8 +63,25 @@ class QEF {
   solve(minB: Vec3, maxB: Vec3, regularization: number): Vec3 { if (this.count === 0) return mul(add(minB, maxB), 0.5); const centroid = clamp(mul(this.mass, 1 / this.count), minB, maxB); const scale = this.ATA.flat().reduce((s, v) => s + Math.abs(v), 0); const lambda = Math.max(1e-12, regularization * Math.max(1, scale)); const A = this.ATA.map((row, r) => row.map((v, c) => v + (r === c ? lambda : 0))); const b = [this.ATb[0] + lambda * centroid.x, this.ATb[1] + lambda * centroid.y, this.ATb[2] + lambda * centroid.z]; const sol = solve3(A, b); if (!sol) return centroid; const diag = Math.sqrt(lenSq(sub(maxB, minB))); const inside = sol.x >= minB.x - diag * 0.25 && sol.x <= maxB.x + diag * 0.25 && sol.y >= minB.y - diag * 0.25 && sol.y <= maxB.y + diag * 0.25 && sol.z >= minB.z - diag * 0.25 && sol.z <= maxB.z + diag * 0.25; return inside ? clamp(sol, minB, maxB) : centroid; }
 }
 
+export function normalizeDualContouringSettings(settings: Partial<DualContouringSettings> = {}): DualContouringSettings {
+  return { ...DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, ...settings };
+}
+
+export function classifyMobileIsoSurfaceTier(resolution: number): MobileIsoSurfaceTier {
+  if (resolution <= 18) return 'preview';
+  if (resolution <= 32) return 'good-mobile';
+  if (resolution <= 64) return 'high-end-mobile';
+  return 'desktop-or-batch';
+}
+
+export function estimateIsoSurfaceMemoryBytes(settings: Partial<DualContouringSettings> = {}): number {
+  const cfg = normalizeDualContouringSettings(settings);
+  const cells = cfg.resolution ** 3;
+  return Math.ceil(cells * (8 * 4 + 3 * 4 + 4));
+}
+
 export function runDualContouring(sdf: SDF, settings: Partial<DualContouringSettings> = {}): Mesh {
-  const cfg = { ...DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, ...settings }; if (cfg.resolution <= 0 || cfg.size <= 0) throw new Error('Invalid dual contouring settings.');
+  const cfg = normalizeDualContouringSettings(settings); if (cfg.resolution <= 0 || cfg.size <= 0) throw new Error('Invalid dual contouring settings.');
   const step = cfg.size / cfg.resolution; const eps = Math.max(step * cfg.normalEpsFactor, 1e-7); const verts: Vec3[] = []; const indices: number[] = []; const cells = new Map<string, number>();
   const corners = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]]; const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
   for (let z = 0; z < cfg.resolution; z++) for (let y = 0; y < cfg.resolution; y++) for (let x = 0; x < cfg.resolution; x++) {
@@ -80,3 +102,25 @@ export function validateMesh(mesh: Mesh, areaEpsilon = 1e-18): MeshDiagnostics {
 export function createSphereSDF(radius = 0.72): SDF { return (p) => Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z) - radius; }
 export function createTerrainCaveSDF(seed = 1): SDF { return (p) => { const n = Math.sin((p.x + seed) * 5.1) * Math.cos((p.z - seed) * 4.7) * 0.12; const ground = p.y + 0.18 * Math.sin(p.x * 2.3 + seed) + n; const cave = 0.34 - Math.sqrt((p.x * 0.85) ** 2 + (p.y + 0.08) ** 2 + (p.z * 0.85) ** 2); return Math.max(ground, -cave); }; }
 export function meshToSnapshot(mesh: Mesh, diagnostics = validateMesh(mesh)): { vertices: number; triangles: number; diagnostics: MeshDiagnostics; positions: number[]; indices: number[] } { return { vertices: mesh.vertices.length, triangles: Math.floor(mesh.indices.length / 3), diagnostics, positions: mesh.vertices.flatMap((v) => [v.x, v.y, v.z]), indices: mesh.indices }; }
+
+export function createIsoSurfaceJob(args: { id: string; sourceEngin: IsoSurfaceSourceEngin; purpose: IsoSurfacePurpose; sdfKind: IsoSurfaceSdfKind; settings?: Partial<DualContouringSettings>; mesh?: Mesh; output?: IsoSurfaceJob['output'] }): IsoSurfaceJob {
+  const settings = normalizeDualContouringSettings(args.settings);
+  const diagnostics = args.mesh ? {
+    ...validateMesh(args.mesh, settings.areaEpsilon),
+    resolution: settings.resolution,
+    sampleDomain: { origin: settings.origin, size: settings.size },
+    estimatedMemoryBytes: estimateIsoSurfaceMemoryBytes(settings),
+    mobileSafetyTier: classifyMobileIsoSurfaceTier(settings.resolution),
+  } : undefined;
+  return { id: args.id, sourceEngin: args.sourceEngin, purpose: args.purpose, sdfKind: args.sdfKind, settings, diagnostics, output: args.output };
+}
+
+export function runIsoSurfaceJob(sdf: SDF, job: Omit<IsoSurfaceJob, 'diagnostics' | 'output' | 'settings'> & { settings?: Partial<DualContouringSettings> }): { job: IsoSurfaceJob; mesh: Mesh; snapshot: ReturnType<typeof meshToSnapshot> } {
+  const mesh = runDualContouring(sdf, job.settings);
+  const completed = createIsoSurfaceJob({ ...job, mesh });
+  return { job: completed, mesh, snapshot: meshToSnapshot(mesh, completed.diagnostics) };
+}
+
+export function createTorusSDF(majorRadius = 0.52, minorRadius = 0.16): SDF { return (p) => { const qx = Math.sqrt(p.x * p.x + p.z * p.z) - majorRadius; return Math.sqrt(qx * qx + p.y * p.y) - minorRadius; }; }
+export function createCapsuleSDF(a: Vec3 = { x: 0, y: -0.55, z: 0 }, b: Vec3 = { x: 0, y: 0.55, z: 0 }, radius = 0.22): SDF { return (p) => { const pa = sub(p, a); const ba = sub(b, a); const h = Math.min(1, Math.max(0, dot(pa, ba) / Math.max(1e-12, dot(ba, ba)))); return Math.sqrt(lenSq(sub(pa, mul(ba, h)))) - radius; }; }
+export function createBoxSDF(halfExtents: Vec3 = { x: 0.55, y: 0.55, z: 0.55 }, radius = 0): SDF { return (p) => { const q = { x: Math.abs(p.x) - halfExtents.x, y: Math.abs(p.y) - halfExtents.y, z: Math.abs(p.z) - halfExtents.z }; const outside = Math.sqrt(Math.max(q.x, 0) ** 2 + Math.max(q.y, 0) ** 2 + Math.max(q.z, 0) ** 2); return outside + Math.min(Math.max(q.x, q.y, q.z), 0) - radius; }; }

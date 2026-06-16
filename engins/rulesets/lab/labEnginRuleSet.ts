@@ -225,5 +225,8 @@ export const LAB_IMPLICIT_SURFACE_POLICY = {
   engine: 'robust-sparse-dual-contouring',
   mobileFirstResolution: 18,
   intents: ['lab:sim-start', 'lab:sim-complete', 'lab:physics-received'],
+  presets: ['fluid','particle','neural','quantum','metaball','terrain-cave'],
+  diagnostics: ['vertices','triangles','boundaryEdges','nonManifoldEdges','degenerateTriangles','resolution','sampleDomain','estimatedMemoryBytes','mobileSafetyTier'],
+  sharedKernel: 'engins/isosurfaceDualContouring.ts',
   output: 'level-set simulations may publish mesh diagnostics and compact indexed mesh snapshots through the intent bus',
 } as const;

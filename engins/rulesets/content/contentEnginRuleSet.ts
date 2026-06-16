@@ -16,7 +16,10 @@ const MANIFEST:EnginRuleSetManifest<ContentEnginAction>={id:PARAMS.enginId,name:
 
 export const CONTENT_IMPLICIT_ASSET_POLICY = {
   engine: 'robust-sparse-dual-contouring',
-  mobileFirstResolution: 64,
+  mobileFirstResolution: 18,
+  qualityLadder: { preview: '16-18', balanced: '24-32', export: '48-64', batch: '96+' },
+  sharedKernel: 'engins/isosurfaceDualContouring.ts',
+  semanticFlow: ['region contour','algebraic fit','SDF','dual contour mesh','PartNode procedural hint','rig/collision/LOD/export'],
   output: 'Image masks become compact colored mesh assets with validation diagnostics before export',
   flow: ['Upload Image', 'Process', 'Edit', 'Download'],
   rendererPreference: 'webgpu-with-canvas-fallback',

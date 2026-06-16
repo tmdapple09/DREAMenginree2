@@ -295,5 +295,7 @@ export const GAME_IMPLICIT_WORLD_POLICY = {
   engine: 'robust-sparse-dual-contouring',
   mobileFirstResolution: 18,
   intents: ['game:world-save', 'game:physics-apply'],
-  output: 'terrain, caves, collision proxies, and procedural props use validated indexed SDF meshes',
+  namedGenerators: ['generateCaveChunk','generateRockProp','generateTerrainCutout','generateDestructibleWallChunk'],
+  sharedKernel: 'engins/isosurfaceDualContouring.ts',
+  output: 'terrain, caves, destructible walls, collision proxies, and procedural props use validated indexed SDF meshes',
 } as const;
