@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-16T01:21:05.857Z",
+  "generatedAt": "2026-06-16T01:40:02.769Z",
   "root": ".",
   "nodes": [
     {
@@ -3506,16 +3506,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-docs-lib-refs-fixed-modified-only.zip",
-      "label": "DREAMengin-docs-lib-refs-fixed-modified-only.zip",
-      "type": "file",
-      "path": "DREAMengin-docs-lib-refs-fixed-modified-only.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
