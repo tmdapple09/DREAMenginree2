@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-15T15:34:16.470Z
+Generated: 2026-06-16T00:38:57.787Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -11433,16 +11433,23 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── → buildGeometry
 │   │   │   ├── meshBuilder.ts ∅
 │   │   │   │   ├── PartNode  ← ../assetTypes
+│   │   │   │   ├── AlgebraicRegionFit  ← ../photo/regionDetector
 │   │   │   │   ├── flattenParts  ← ./primitiveBuilder
 │   │   │   │   ├── primitiveStats  ← ./primitiveBuilder
+│   │   │   │   ├── DualContouringSettings  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── IsoSurfaceJob  ← @/engins/isosurfaceDualContouring
 │   │   │   │   ├── SDF  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── createBoxSDF  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── createCapsuleSDF  ← @/engins/isosurfaceDualContouring
 │   │   │   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── createTorusSDF  ← @/engins/isosurfaceDualContouring
 │   │   │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
-│   │   │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
-│   │   │   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │   │   │   ├── runIsoSurfaceJob  ← @/engins/isosurfaceDualContouring
 │   │   │   │   ├── → buildImplicitContentMesh
+│   │   │   │   ├── → buildRegionFitContentMesh
 │   │   │   │   ├── → computeMeshMetrics
-│   │   │   │   └── ∅ unused: buildImplicitContentMesh
+│   │   │   │   ├── → sdfFromAlgebraicFit
+│   │   │   │   └── ∅ unused: sdfFromAlgebraicFit, buildImplicitContentMesh, buildRegionFitContentMesh
 │   │   │   ├── modifiers.ts ∅
 │   │   │   │   ├── → applyModifierMetadata
 │   │   │   │   └── ∅ unused: applyModifierMetadata
@@ -11685,6 +11692,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── photoToRecipe.ts ∅
 │   │   │   │   ├── ContentRecipe  ← ../assetTypes
 │   │   │   │   ├── SourceImageAnalysis  ← ../assetTypes
+│   │   │   │   ├── detectSemanticAlgebraicRegions  ← ./regionDetector
 │   │   │   │   ├── → photoToRecipe
 │   │   │   │   └── ∅ unused: photoToRecipe
 │   │   │   ├── pngDecoder.ts
@@ -11692,8 +11700,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── → decodePng
 │   │   │   └── regionDetector.ts ∅
 │   │   │       ├── ShapeRegion  ← ../assetTypes
+│   │   │       ├── Vec2  ← ../assetTypes
+│   │   │       ├── → detectSemanticAlgebraicRegions
+│   │   │       ├── → fitAlgebraicRegion
 │   │   │       ├── → relabelRegion
-│   │   │       └── ∅ unused: relabelRegion
+│   │   │       └── ∅ unused: fitAlgebraicRegion, relabelRegion
 │   │   ├── pipeline
 │   │   │   ├── build.ts
 │   │   │   │   ├── CONTENTENGIN_VERSION  ← ../assetTypes
@@ -12996,10 +13007,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → BehaviorAnticipator
 │   │   │   └── → MLPrefetchModel
 │   │   ├── procgen.ts ∅
+│   │   │   ├── DualContouringSettings  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── createBoxSDF  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── createTerrainCaveSDF  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
-│   │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
-│   │   │   ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │   │   ├── runIsoSurfaceJob  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── → BiomeSynthesizer
 │   │   │   ├── → ChunkScheduler
 │   │   │   ├── → DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
@@ -13010,11 +13023,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → Vec3
 │   │   │   ├── → WaveFunctionCollapse
 │   │   │   ├── → createTerrainCaveSDF
+│   │   │   ├── → generateCaveChunk
+│   │   │   ├── → generateDestructibleWallChunk
 │   │   │   ├── → generateMobileTerrainCaveMesh
+│   │   │   ├── → generateRockProp
+│   │   │   ├── → generateTerrainCutout
 │   │   │   ├── → meshToSnapshot
 │   │   │   ├── → runDualContouring
 │   │   │   ├── → validateMesh
-│   │   │   └── ∅ unused: generateMobileTerrainCaveMesh, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3
+│   │   │   └── ∅ unused: generateMobileTerrainCaveMesh, generateCaveChunk, generateRockProp, generateTerrainCutout, generateDestructibleWallChunk, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3
 │   │   ├── registerCartridges.ts
 │   │   │   ├── moduleRegistry  ← @/engine/runtime/moduleRegistry
 │   │   │   ├── assertCartridgeLoadersReady  ← @/engins/gameengin/cartridges/loaders
@@ -13051,11 +13068,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       └── → WebXRSession
 │   ├── labengin
 │   │   └── implicitSurface.ts ∅
+│   │       ├── DualContouringSettings  ← @/engins/isosurfaceDualContouring
 │   │       ├── SDF  ← @/engins/isosurfaceDualContouring
 │   │       ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
+│   │       ├── createTerrainCaveSDF  ← @/engins/isosurfaceDualContouring
 │   │       ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
-│   │       ├── runDualContouring  ← @/engins/isosurfaceDualContouring
-│   │       ├── validateMesh  ← @/engins/isosurfaceDualContouring
+│   │       ├── runIsoSurfaceJob  ← @/engins/isosurfaceDualContouring
 │   │       ├── → runLabImplicitSurface
 │   │       └── ∅ unused: runLabImplicitSurface
 │   ├── portfolio  [PortfolioEngin]
@@ -13138,7 +13156,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── useState  ← react
 │   │   │       └── → useCodeEnginRuntime
 │   │   ├── content
-│   │   │   ├── contentEnginRuleSet.ts
+│   │   │   ├── contentEnginRuleSet.ts ∅
 │   │   │   │   ├── EnginBaseState  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   │   ├── patchBaseState  ← @/engine/engin-runtime/EnginBaseState
@@ -13153,7 +13171,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── ContentAsset  ← @/engins/contentengin/assetTypes
 │   │   │   │   ├── ContentRecipe  ← @/engins/contentengin/assetTypes
 │   │   │   │   ├── ExportProfile  ← @/engins/contentengin/assetTypes
-│   │   │   │   └── → CONTENT_ENGIN_RULE_SET
+│   │   │   │   ├── → CONTENT_ENGIN_RULE_SET
+│   │   │   │   ├── → CONTENT_IMPLICIT_ASSET_POLICY
+│   │   │   │   └── ∅ unused: CONTENT_IMPLICIT_ASSET_POLICY
 │   │   │   └── useContentEnginRuntime.ts
 │   │   │       ├── CONTENT_ENGIN_RULE_SET  ← ./contentEnginRuleSet
 │   │   │       ├── ContentEnginAction  ← ./contentEnginRuleSet
@@ -13832,12 +13852,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: buildInflatedReliefMesh, cloneMesh, computeVertexNormals, computePlanarUVs, estimateMeshBytes, compactMesh, weldVertices, repairMesh, centerAndScaleMesh, buildVertexAdjacency, validateMesh
 │   └── isosurfaceDualContouring.ts ∅
 │       ├── → DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
+│       ├── → classifyMobileIsoSurfaceTier
+│       ├── → createBoxSDF
+│       ├── → createCapsuleSDF
+│       ├── → createIsoSurfaceJob
 │       ├── → createSphereSDF
 │       ├── → createTerrainCaveSDF
+│       ├── → createTorusSDF
+│       ├── → estimateIsoSurfaceMemoryBytes
 │       ├── → meshToSnapshot
+│       ├── → normalizeDualContouringSettings
 │       ├── → runDualContouring
+│       ├── → runIsoSurfaceJob
 │       ├── → validateMesh
-│       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
+│       └── ∅ unused: DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, normalizeDualContouringSettings, classifyMobileIsoSurfaceTier, estimateIsoSurfaceMemoryBytes, validateMesh, createIsoSurfaceJob
 ├── fonts
 │   ├── Cormorant_Garamond
 │   │   ├── static
