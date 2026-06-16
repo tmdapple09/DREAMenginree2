@@ -44,12 +44,14 @@ For readers new to the project: DREAMengin is closer to an OS shell than a singl
 - [28. License](#license)
 
 ## Tech Stack & Monorepo Layout
-Auto-synced from `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tsconfig*.json`, `next.config.*`, `eslint.config.*`, `tailwind.config.*`, `vercel.json`, `.env*.example`, `Dockerfile*` using repository introspection.
-- Files tracked: **12**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Tech Stack & Monorepo Layout file structure
+Tech Stack & Monorepo Layout provides shared infrastructure used across the platform.
+### Responsibilities
+- Theming, design tokens, and visual customisation
+- Quality assurance and integration coverage
+- Infrastructure provisioning and operational observability
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 ├── .env.example
 ├── .env.local.example
@@ -59,178 +61,798 @@ Auto-synced from `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tscon
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── tailwind.config.ts
+├── tsconfig.app.json
+├── tsconfig.base.json
 ├── tsconfig.games.json
 ├── tsconfig.gamesengin.json
 ├── tsconfig.json
+├── tsconfig.server.json
+├── tsconfig.test.json
+├── tsconfig.worker.json
 └── vercel.json
 ```
-<details><summary>Tech Stack & Monorepo Layout file index (12 files)</summary>
+<details><summary>Tech Stack & Monorepo Layout file index (17 files)</summary>
 
-- `.env.example` — project file (example).
-- `.env.local.example` — project file (example).
-- `eslint.config.mjs` — TypeScript/JavaScript runtime module.
-- `next.config.mjs` — TypeScript/JavaScript runtime module.
-- `package.json` — project file (json).
-- `pnpm-lock.yaml` — project file (yaml).
-- `pnpm-workspace.yaml` — project file (yaml).
-- `tailwind.config.ts` — TypeScript/JavaScript runtime module.
-- `tsconfig.games.json` — project file (json).
-- `tsconfig.gamesengin.json` — project file (json).
-- `tsconfig.json` — project file (json).
-- `vercel.json` — project file (json).
+- `.env.example` — project file.
+- `.env.local.example` — project file.
+- `eslint.config.mjs` — project file.
+- `next.config.mjs` — project file.
+- `package.json` — project file.
+- `pnpm-lock.yaml` — project file.
+- `pnpm-workspace.yaml` — project file.
+- `tailwind.config.ts` — TypeScript module.
+- `tsconfig.app.json` — project file.
+- `tsconfig.base.json` — project file.
+- `tsconfig.games.json` — project file.
+- `tsconfig.gamesengin.json` — project file.
+- `tsconfig.json` — project file.
+- `tsconfig.server.json` — project file.
+- `tsconfig.test.json` — project file.
+- `tsconfig.worker.json` — project file.
+- `vercel.json` — project file.
 
 </details>
 
 ## The Engins
-Auto-synced from `engins/**`, `components/runtime/**`, `lib/runtime/**`, `lib/dreamdm/**` using repository introspection.
-- Files tracked: **58**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeEngin`, `ContentEngin`, `DreamSystemContext`, `DualRuntimeContainer`, `ForgeEngin`, `GameEngin`, +9 more
-#### The Engins file structure
+The Engins is a UI subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in EnginDispatcher, IntentBus, UniversalEngine. It depends on Backend, System, Core & CoreSurfaces, Custom Engins, Dreamr — Human Media.
+### Responsibilities
+- Renders DualRuntimeContainer, RuntimeView, RuntimeShell, GlowingLight, DreamDMBar, DreamSystemProvider, +15 more
+- Core abstractions: EnginDispatcher, IntentBus, UniversalEngine, RuntimeContainer, H265Encoder
+- Runtime orchestration and engin lifecycle management
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Real-time communication and channel management
+- Feed ranking, algorithm execution, and content scoring
+### Key Modules
+- `AgentPanel`
+- `CodeEnginOrchestrator`
+- `DreamDMBar`
+- `DreamSystemProvider`
+- `DualRuntimeContainer`
+- `EnginDispatcher`
+- `GlowingLight`
+- `IntentBus`
+- `RuntimeContainer`
+- `RuntimeShell`
+- `RuntimeView`
+- `UniversalEngine`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Custom Engins**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Custom Engins
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+### Public Surfaces
+**Components:**
+`AgentPanel`, `ArtifactSlot`, `AssetViewport`, `BrandingEngin`, `CodeEngin`, `CodeEnginOrchestrator`, `ContentEngin`, `DreamDMBar`, `DreamSystemProvider`, `DualRuntimeContainer`, +11 more
+### Notable Abstractions
+- `GlowingLightProps` — interface
+- `DreamBarSurface` — type
+- `DreamBarContext` — interface
+- `DMConversation` — interface
+- `DraftPayload` — interface
+- `DMMessage` — interface
+- `SearchResultType` — type
+- `SearchResult` — interface
+- `UseDreamSearchReturn` — interface
+- `MediaType` — type
+- `SendMessageParams` — interface
+- `UseMessagingCoreReturn` — interface
+- `useAIDirector` — hook
+- `useAgentSession` — hook
+- `useArtifactSlot` — hook
+- `useBrandEnginRuntime` — hook
+- `useBrandingEnginBridge` — hook
+- `useCodeEnginBridge` — hook
+- `useCodeEnginRuntime` — hook
+- `useContentEnginBridge` — hook
+### Capabilities
+- Exposes useAIDirector, useAgentSession, useArtifactSlot, useBrandEnginRuntime, useBrandingEnginBridge, useCodeEnginBridge as composable React hooks
+- Public contract surface: GlowingLightProps, DreamBarContext, DMConversation, DraftPayload, DMMessage
+- Shared type vocabulary: DreamBarSurface, SearchResultType, MediaType, DbNotificationContent, UiNotificationType
+- Utility functions: detectSurface, resolveIntentOverride, listAllDraftIds, cleanupStaleDrafts, getDraftAge, mapNotificationType
+#### File Structure
 ```text
 ├── components
 │   └── runtime
 │       ├── dream.DualRuntimeContainer.tsx
 │       ├── dream.RuntimeView.tsx
 │       └── dream.shell.RuntimeShell.tsx
-├── engins
+├── dreamdmbar
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── CodeEngin
-│   │   ├── core
-│   │   │   └── parser.ts
-│   │   ├── modules
-│   │   │   └── ai-co-pilot
-│   │   │       ├── dream.panel.AgentPanel.tsx
-│   │   │       ├── index.ts
-│   │   │       └── useAgentSession.ts
-│   │   └── orchestrator
-│   │       └── dream.index.tsx
-│   ├── autoopen
-│   │   └── dream.AutoOpenGameEngin.tsx
-│   ├── dream.ForgeEngin.tsx
-│   ├── dream.QuantumCircuitCanvas.tsx
-│   ├── dream.panel.AnalyticsEngin.tsx
-│   ├── engin.BrandingEngin.tsx
-│   ├── engin.CodeEngin.tsx
-│   ├── engin.ContentEngin.tsx
-│   ├── engin.GameEngin.tsx
-│   ├── engin.LabEngin.tsx
-│   ├── engin.StarMakerEngin.tsx
-│   └── portfolio
-│       └── dream.PortfolioEngin.tsx
-└── lib
-    ├── dreamdm
-    │   ├── DreamSystemContext.tsx
-    │   ├── barInteractions.ts
-    │   ├── bridgeSeamFlow.ts
-    │   ├── useDreamBarContext.ts
-    │   ├── useDreamDMConversations.ts
-    │   ├── useDreamDMDraft.ts
-    │   ├── useDreamDMMessages.ts
-    │   ├── useDreamSearch.ts
-    │   ├── useMessagingCore.ts
-    │   ├── useModuleBarIntent.ts
-    │   └── useNotifications.ts
-    └── runtime
-        ├── EnginDispatcher.ts
-        ├── channelMetrics.ts
-        ├── coercionTable.ts
-        ├── dreamOSBus.ts
-        ├── dropTargetRegistry.ts
-        ├── dualRuntime.ts
-        ├── dualRuntimeBridge.ts
-        ├── enginWorkflowRegistry.ts
-        ├── instanceManager.ts
-        ├── isAuthRelatedError.ts
-        ├── madMaxiSnapshotBridge.ts
-        ├── memory.ts
-        ├── moduleRegistry.ts
-        ├── offlineQueue.ts
-        ├── quantumCircuit.ts
-        ├── runtimeChannel.ts
-        ├── runtimeContainer.ts
-        ├── seamClipboard.ts
-        ├── sharedResourcePool.ts
-        ├── snapshotFingerprint.ts
-        ├── swapManager.ts
-        ├── useDragSurface.ts
-        ├── useDualRuntime.ts
-        ├── useDualRuntimePersistence.ts
-        ├── useEnginBridge.ts
-        ├── useEnginCoopSync.ts
-        └── useSharedEnginChannel.ts
+│   ├── dream.GlowingLight.tsx
+│   ├── dreamsurface.dreamdmbar.tsx
+│   ├── hooks
+│   │   ├── useDreamBarContext.ts
+│   │   ├── useDreamDMConversations.ts
+│   │   ├── useDreamDMDraft.ts
+│   │   ├── useDreamDMMessages.ts
+│   │   ├── useDreamSearch.ts
+│   │   ├── useMessagingCore.ts
+│   │   ├── useModuleBarIntent.ts
+│   │   └── useNotifications.ts
+│   ├── notifications
+│   │   ├── notificationHelpers.ts
+│   │   └── useNotifications.ts
+│   └── runtime
+│       ├── DreamSystemContext.tsx
+│       ├── barInteractions.ts
+│       └── bridgeSeamFlow.ts
+├── engine
+│   └── runtime
+│       ├── EnginDispatcher.ts
+│       ├── channelMetrics.ts
+│       ├── coercionTable.ts
+│       ├── dreamOSBus.ts
+│       ├── dreamsurface
+│       │   ├── dreamsurface.bridge.ts
+│       │   ├── dreamsurface.delta.ts
+│       │   └── index.ts
+│       ├── dropTargetRegistry.ts
+│       ├── dualRuntime.ts
+│       ├── dualRuntimeBridge.ts
+│       ├── engin.auth.ts
+│       ├── engin.eventbus.ts
+│       ├── engin.ledger.ts
+│       ├── engin.renderloop.ts
+│       ├── enginWorkflowRegistry.ts
+│       ├── iEngine.ts
+│       ├── index.ts
+│       ├── instanceManager.ts
+│       ├── isAuthRelatedError.ts
+│       ├── madMaxiSnapshotBridge.ts
+│       ├── memory.ts
+│       ├── moduleRegistry.ts
+│       ├── offlineQueue.ts
+│       ├── quantumCircuit.ts
+│       ├── runtimeChannel.ts
+│       ├── runtimeContainer.ts
+│       ├── seamClipboard.ts
+│       ├── sharedResourcePool.ts
+│       ├── snapshotFingerprint.ts
+│       ├── swapManager.ts
+│       ├── useDragSurface.ts
+│       ├── useDualRuntime.ts
+│       ├── useDualRuntimePersistence.ts
+│       ├── useEnginBridge.ts
+│       ├── useEnginCoopSync.ts
+│       └── useSharedEnginChannel.ts
+└── engins
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── CodeEngin
+    │   ├── core
+    │   │   └── parser.ts
+    │   ├── modules
+    │   │   └── ai-co-pilot
+    │   │       ├── dream.panel.AgentPanel.tsx
+    │   │       ├── index.ts
+    │   │       └── useAgentSession.ts
+    │   └── orchestrator
+    │       └── dream.index.tsx
+    ├── autoopen
+    │   └── dream.AutoOpenGameEngin.tsx
+    ├── brandingengin
+    │   └── identity
+    │       └── logos.ts
+    ├── codeengin
+    │   ├── ai
+    │   │   └── drEamsCodeAssist.ts
+    │   ├── auth.ts
+    │   ├── diagnostics.ts
+    │   ├── diff
+    │   │   ├── aiEditEngine.ts
+    │   │   └── diffUtils.ts
+    │   ├── git.ts
+    │   ├── pathSafety.ts
+    │   ├── projectGraph.ts
+    │   ├── runner.ts
+    │   ├── search.ts
+    │   ├── types.ts
+    │   └── workspaceStore.ts
+    ├── contentengin
+    │   ├── AssetViewport.tsx
+    │   ├── ImplicitAssetWorkspace.tsx
+    │   ├── assetTypes.ts
+    │   ├── assets
+    │   │   ├── assetOptimizer.ts
+    │   │   └── indexedDBStore.ts
+    │   ├── builders
+    │   │   ├── geometryBuilder.ts
+    │   │   ├── meshBuilder.ts
+    │   │   ├── modifiers.ts
+    │   │   ├── primitiveBuilder.ts
+    │   │   ├── textureBuilder.ts
+    │   │   └── uvGenerator.ts
+    │   ├── cli.ts
+    │   ├── composite
+    │   │   ├── compositor.ts
+    │   │   ├── fxSimulation.ts
+    │   │   ├── matchmover.ts
+    │   │   ├── motionCapture.ts
+    │   │   └── rotoscope.ts
+    │   ├── content
+    │   │   ├── generativeFill.ts
+    │   │   ├── publishIntent.ts
+… (262 more files)
 ```
-<details><summary>The Engins file index (58 files)</summary>
+<details><summary>The Engins file index (382 files)</summary>
 
-- `components/runtime/dream.DualRuntimeContainer.tsx` — React UI module for DualRuntimeContainer.
-- `components/runtime/dream.RuntimeView.tsx` — React UI module for RuntimeView.
-- `components/runtime/dream.shell.RuntimeShell.tsx` — React UI module for ShellRuntimeShell.
-- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
-- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/orchestrator/dream.index.tsx` — React UI module for Index.
-- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React UI module for AutoOpenGameEngin.
-- `engins/dream.ForgeEngin.tsx` — React UI module for ForgeEngin.
-- `engins/dream.QuantumCircuitCanvas.tsx` — React UI module for QuantumCircuitCanvas.
-- `engins/dream.panel.AnalyticsEngin.tsx` — React UI module for PanelAnalyticsEngin.
-- `engins/engin.BrandingEngin.tsx` — React UI module for BrandingEngin.
-- `engins/engin.CodeEngin.tsx` — React UI module for CodeEngin.
-- `engins/engin.ContentEngin.tsx` — React UI module for ContentEngin.
-- `engins/engin.GameEngin.tsx` — React UI module for GameEngin.
-- `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
-- `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
-- `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/dreamdm/barInteractions.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useNotifications.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/EnginDispatcher.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/channelMetrics.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/coercionTable.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dreamOSBus.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dropTargetRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dualRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/dualRuntimeBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/enginWorkflowRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/instanceManager.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/isAuthRelatedError.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/madMaxiSnapshotBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/memory.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/moduleRegistry.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/offlineQueue.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/quantumCircuit.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/runtimeChannel.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/runtimeContainer.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/seamClipboard.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/sharedResourcePool.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/swapManager.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDragSurface.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDualRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useDualRuntimePersistence.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useEnginBridge.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useEnginCoopSync.ts` — TypeScript/JavaScript runtime module.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript/JavaScript runtime module.
+- `components/runtime/dream.DualRuntimeContainer.tsx` — React component module.
+- `components/runtime/dream.RuntimeView.tsx` — React component module.
+- `components/runtime/dream.shell.RuntimeShell.tsx` — React component module.
+- `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `dreamdmbar/dream.GlowingLight.tsx` — React component module.
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React component module.
+- `dreamdmbar/hooks/useDreamBarContext.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamSearch.ts` — TypeScript module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript module.
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — TypeScript module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/notifications/notificationHelpers.ts` — TypeScript module.
+- `dreamdmbar/notifications/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React component module.
+- `dreamdmbar/runtime/barInteractions.ts` — TypeScript module.
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript module.
+- `engine/runtime/EnginDispatcher.ts` — TypeScript module.
+- `engine/runtime/channelMetrics.ts` — TypeScript module.
+- `engine/runtime/coercionTable.ts` — TypeScript module.
+- `engine/runtime/dreamOSBus.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/dreamsurface.bridge.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/dreamsurface.delta.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/index.ts` — TypeScript module.
+- `engine/runtime/dropTargetRegistry.ts` — TypeScript module.
+- `engine/runtime/dualRuntime.ts` — TypeScript module.
+- `engine/runtime/dualRuntimeBridge.ts` — TypeScript module.
+- `engine/runtime/engin.auth.ts` — TypeScript module.
+- `engine/runtime/engin.eventbus.ts` — TypeScript module.
+- `engine/runtime/engin.ledger.ts` — TypeScript module.
+- `engine/runtime/engin.renderloop.ts` — TypeScript module.
+- `engine/runtime/enginWorkflowRegistry.ts` — TypeScript module.
+- `engine/runtime/iEngine.ts` — TypeScript module.
+- `engine/runtime/index.ts` — TypeScript module.
+- `engine/runtime/instanceManager.ts` — TypeScript module.
+- `engine/runtime/isAuthRelatedError.ts` — TypeScript module.
+- `engine/runtime/madMaxiSnapshotBridge.ts` — TypeScript module.
+- `engine/runtime/memory.ts` — TypeScript module.
+- `engine/runtime/moduleRegistry.ts` — TypeScript module.
+- `engine/runtime/offlineQueue.ts` — TypeScript module.
+- `engine/runtime/quantumCircuit.ts` — TypeScript module.
+- `engine/runtime/runtimeChannel.ts` — TypeScript module.
+- `engine/runtime/runtimeContainer.ts` — TypeScript module.
+- `engine/runtime/seamClipboard.ts` — TypeScript module.
+- `engine/runtime/sharedResourcePool.ts` — TypeScript module.
+- `engine/runtime/snapshotFingerprint.ts` — TypeScript module.
+- `engine/runtime/swapManager.ts` — TypeScript module.
+- `engine/runtime/useDragSurface.ts` — TypeScript module.
+- `engine/runtime/useDualRuntime.ts` — TypeScript module.
+- `engine/runtime/useDualRuntimePersistence.ts` — TypeScript module.
+- `engine/runtime/useEnginBridge.ts` — TypeScript module.
+- `engine/runtime/useEnginCoopSync.ts` — TypeScript module.
+- `engine/runtime/useSharedEnginChannel.ts` — TypeScript module.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `engins/CodeEngin/core/parser.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React component module.
+- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript module.
+- `engins/CodeEngin/orchestrator/dream.index.tsx` — React component module.
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React component module.
+- `engins/brandingengin/identity/logos.ts` — TypeScript module.
+- `engins/codeengin/ai/drEamsCodeAssist.ts` — TypeScript module.
+- `engins/codeengin/auth.ts` — TypeScript module.
+- `engins/codeengin/diagnostics.ts` — TypeScript module.
+- `engins/codeengin/diff/aiEditEngine.ts` — TypeScript module.
+- `engins/codeengin/diff/diffUtils.ts` — TypeScript module.
+- `engins/codeengin/git.ts` — TypeScript module.
+- `engins/codeengin/pathSafety.ts` — TypeScript module.
+- `engins/codeengin/projectGraph.ts` — TypeScript module.
+- `engins/codeengin/runner.ts` — TypeScript module.
+- `engins/codeengin/search.ts` — TypeScript module.
+- `engins/codeengin/types.ts` — TypeScript module.
+- `engins/codeengin/workspaceStore.ts` — TypeScript module.
+- `engins/contentengin/AssetViewport.tsx` — React component module.
+- `engins/contentengin/ImplicitAssetWorkspace.tsx` — React component module.
+- `engins/contentengin/assetTypes.ts` — TypeScript module.
+- `engins/contentengin/assets/assetOptimizer.ts` — TypeScript module.
+- `engins/contentengin/assets/indexedDBStore.ts` — TypeScript module.
+- `engins/contentengin/builders/geometryBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/meshBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/modifiers.ts` — TypeScript module.
+- `engins/contentengin/builders/primitiveBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/textureBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/uvGenerator.ts` — TypeScript module.
+- `engins/contentengin/cli.ts` — TypeScript module.
+- `engins/contentengin/composite/compositor.ts` — TypeScript module.
+- `engins/contentengin/composite/fxSimulation.ts` — TypeScript module.
+- `engins/contentengin/composite/matchmover.ts` — TypeScript module.
+- `engins/contentengin/composite/motionCapture.ts` — TypeScript module.
+- `engins/contentengin/composite/rotoscope.ts` — TypeScript module.
+- `engins/contentengin/content/generativeFill.ts` — TypeScript module.
+- `engins/contentengin/content/publishIntent.ts` — TypeScript module.
+- `engins/contentengin/content/seoScorer.ts` — TypeScript module.
+- `engins/contentengin/content/transcriptEditor.ts` — TypeScript module.
+- `engins/contentengin/content/voiceClone.ts` — TypeScript module.
+- `engins/contentengin/grammars/animalGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bicycleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bridgeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/buildingGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/creatureGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/humanoidGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/propGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/roadGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/shared.ts` — TypeScript module.
+- `engins/contentengin/grammars/terrainGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/treeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/vehicleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/waterGrammar.ts` — TypeScript module.
+- `engins/contentengin/materials/materialTypes.ts` — TypeScript module.
+- `engins/contentengin/materials/paletteExtractor.ts` — TypeScript module.
+- `engins/contentengin/materials/proceduralMaterials.ts` — TypeScript module.
+- `engins/contentengin/media/h265-encoder.ts` — TypeScript module.
+- `engins/contentengin/media/ledger.ts` — TypeScript module.
+- `engins/contentengin/media/postMedia.ts` — TypeScript module.
+- `engins/contentengin/photo/colorCluster.ts` — TypeScript module.
+- `engins/contentengin/photo/edgeDetector.ts` — TypeScript module.
+- `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript module.
+- `engins/contentengin/photo/photoToRecipe.ts` — TypeScript module.
+- `engins/contentengin/photo/pngDecoder.ts` — TypeScript module.
+- `engins/contentengin/photo/regionDetector.ts` — TypeScript module.
+- `engins/contentengin/pipeline/build.ts` — TypeScript module.
+- `engins/contentengin/pipeline/bundle.ts` — TypeScript module.
+- `engins/contentengin/pipeline/exportGlb.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateCollision.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateLods.ts` — TypeScript module.
+- `engins/contentengin/pipeline/paths.ts` — TypeScript module.
+- `engins/contentengin/pipeline/validate.ts` — TypeScript module.
+- `engins/contentengin/pipeline/writeManifest.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeResolver.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeTypes.ts` — TypeScript module.
+- `engins/contentengin/recipes/seededRandom.ts` — TypeScript module.
+- `engins/contentengin/rigging/fitArmature.ts` — TypeScript module.
+- `engins/contentengin/rigging/index.ts` — TypeScript module.
+- `engins/contentengin/rigging/landmarks.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigTypes.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigValidator.ts` — TypeScript module.
+- `engins/contentengin/rigging/templates/bird_basic.json` — project file.
+- `engins/contentengin/rigging/templates/fish_basic.json` — project file.
+- `engins/contentengin/rigging/templates/humanoid_basic.json` — project file.
+- `engins/contentengin/rigging/templates/quadruped_basic.json` — project file.
+- `engins/contentengin/rigging/templates/vehicle_mechanical.json` — project file.
+- `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript module.
+- `engins/contentengin/shaders/shaderTypes.ts` — TypeScript module.
+- `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript module.
+- `engins/dream.ForgeEngin.tsx` — React component module.
+- `engins/dream.QuantumCircuitCanvas.tsx` — React component module.
+- `engins/engin.BrandingEngin.tsx` — React component module.
+- `engins/engin.CodeEngin.tsx` — React component module.
+- `engins/engin.ContentEngin.tsx` — React component module.
+- `engins/engin.GameEngin.tsx` — React component module.
+- `engins/engin.LabEngin.tsx` — React component module.
+- `engins/engin.StarMakerEngin.tsx` — React component module.
+- `engins/forgeengin/componentInventory.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/artifact/manifest.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/index.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/quality/tiers.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx` — React component module.
+- `engins/forgeengin/enginpipe/telemetry/client.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/telemetry/events.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/assembly.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/index.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/piece-registry.ts` — TypeScript module.
+- `engins/forgeengin/forge/engineForge.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeBuild.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeIntelligence.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeMomentum.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeNexus.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRegistry.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRituals.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeActivity.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeBuild.ts` — TypeScript module.
+- `engins/gameengin/GameEnginCore.ts` — TypeScript module.
+- `engins/gameengin/GameRuntime.tsx` — React component module.
+- `engins/gameengin/accessibility-ai.ts` — TypeScript module.
+- `engins/gameengin/ai-director.ts` — TypeScript module.
+- `engins/gameengin/ai-npcs.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleCache.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleManifest.ts` — TypeScript module.
+- `engins/gameengin/backendNegotiator.ts` — TypeScript module.
+- `engins/gameengin/brain-reader.ts` — TypeScript module.
+- `engins/gameengin/brain/README.md` — documentation.
+- `engins/gameengin/brain/active-projects.json` — project file.
+- `engins/gameengin/brain/asset-registry/README.md` — documentation.
+- `engins/gameengin/brain/build-history/README.md` — documentation.
+- `engins/gameengin/brain/character-voices/mad-maxi.json` — project file.
+- `engins/gameengin/brain/composition-principles/leading-lines-landmark.json` — project file.
+- `engins/gameengin/brain/composition-principles/parallax-layers.json` — project file.
+- `engins/gameengin/brain/concept-library/README.md` — documentation.
+- `engins/gameengin/brain/concept-library/neon-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/README.md` — documentation.
+- `engins/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json` — project file.
+- `engins/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json` — project file.
+- `engins/gameengin/brain/crash-reports/README.md` — documentation.
+- `engins/gameengin/brain/dialogue-patterns/callback-anchor.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/implied-subject.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json` — project file.
+- `engins/gameengin/brain/emotional-tones/determined.json` — project file.
+- `engins/gameengin/brain/emotional-tones/fierce.json` — project file.
+- `engins/gameengin/brain/emotional-tones/hopeful.json` — project file.
+- `engins/gameengin/brain/emotional-tones/reflective.json` — project file.
+- `engins/gameengin/brain/emotional-tones/weary.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/meta-progression.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/moment-to-moment.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/session-loop.json` — project file.
+- `engins/gameengin/brain/genre-dna/action-rpg.json` — project file.
+- `engins/gameengin/brain/genre-dna/episodic.json` — project file.
+- `engins/gameengin/brain/genre-dna/live-service.json` — project file.
+- `engins/gameengin/brain/genre-dna/metroidvania.json` — project file.
+- `engins/gameengin/brain/genre-dna/open-world.json` — project file.
+- `engins/gameengin/brain/genre-dna/platformer.json` — project file.
+- `engins/gameengin/brain/genre-dna/puzzle.json` — project file.
+- `engins/gameengin/brain/genre-dna/racing.json` — project file.
+- `engins/gameengin/brain/genre-dna/roguelike.json` — project file.
+- `engins/gameengin/brain/genre-dna/sandbox.json` — project file.
+- `engins/gameengin/brain/genre-dna/template.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/celeste.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/dead-cells.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hades.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hollow-knight.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/outer-wilds.json` — project file.
+- `engins/gameengin/brain/material-recipes/neon-glass-tube.json` — project file.
+- `engins/gameengin/brain/material-recipes/rusted-iron.json` — project file.
+- `engins/gameengin/brain/material-recipes/sun-bleached-sandstone.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/look-ahead.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/screen-shake.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/smooth-follow.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/combo.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/hit-stop.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/parry.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/ranged.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/coyote-time.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/dash.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/double-jump.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/grapple.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/wall-slide.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/metroidvania-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/roguelike-perks.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/skill-tree.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/ability-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/meta-progression.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/procedural-generation.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/run-persistence.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/season-pass.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/world-streaming.json` — project file.
+- `engins/gameengin/brain/narrative-pacing/default.json` — project file.
+- `engins/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json` — project file.
+- `engins/gameengin/brain/originality-registry/signatures.json` — project file.
+- `engins/gameengin/brain/principles/emotional-core.md` — documentation.
+- `engins/gameengin/brain/principles/feedback.md` — documentation.
+- `engins/gameengin/brain/principles/mastery.md` — documentation.
+- `engins/gameengin/brain/principles/progression.md` — documentation.
+- `engins/gameengin/brain/principles/responsiveness.md` — documentation.
+- `engins/gameengin/brain/principles/risk-reward.md` — documentation.
+- `engins/gameengin/brain/progression-state/README.md` — documentation.
+- `engins/gameengin/brain/rd-sessions/README.md` — documentation.
+- `engins/gameengin/brain/technique-library/lighting/three-point-mood.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/edge-flow.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/silhouette-first.json` — project file.
+- `engins/gameengin/brain/technique-library/optimization/texture-atlasing.json` — project file.
+- `engins/gameengin/brain/upgrade-history/README.md` — documentation.
+- `engins/gameengin/brain/upgrade-history/prioritization-rules.json` — project file.
+- `engins/gameengin/brain/visual-bible/characters/mad-maxi.md` — documentation.
+- `engins/gameengin/brain/visual-bible/environments/neon-wasteland.md` — documentation.
+- `engins/gameengin/brain/work-queue/README.md` — documentation.
+- `engins/gameengin/cartridge-manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridgeLoader.ts` — TypeScript module.
+- `engins/gameengin/cartridges/achievementEngine.ts` — TypeScript module.
+- `engins/gameengin/cartridges/apiStubs.ts` — TypeScript module.
+- `engins/gameengin/cartridges/index.ts` — TypeScript module.
+- `engins/gameengin/cartridges/loaders.ts` — TypeScript module.
+- `engins/gameengin/cartridges/manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridges/reactCartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridges/saveState.ts` — TypeScript module.
+- `engins/gameengin/cloud-compute.ts` — TypeScript module.
+- `engins/gameengin/config/demoGameConfig.ts` — TypeScript module.
+- `engins/gameengin/controls/control-mappings.ts` — TypeScript module.
+- `engins/gameengin/core.ts` — TypeScript module.
+- `engins/gameengin/dream-engine.ts` — TypeScript module.
+- `engins/gameengin/dreamr-loader.ts` — TypeScript module.
+- `engins/gameengin/executionWiring.ts` — TypeScript module.
+- `engins/gameengin/gameEnginRuntime.ts` — TypeScript module.
+- `engins/gameengin/games/DualSenseManager.ts` — TypeScript module.
+- `engins/gameengin/games/avatar.ts` — TypeScript module.
+- `engins/gameengin/games/catalog.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerButtons.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerLeft.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerRight.ts` — TypeScript module.
+- `engins/gameengin/games/hooks.ts` — TypeScript module.
+- `engins/gameengin/games/library-state.ts` — TypeScript module.
+- `engins/gameengin/games/lucid-avenue-world.ts` — TypeScript module.
+- `engins/gameengin/games/madmaxi-wildfall-world.ts` — TypeScript module.
+- `engins/gameengin/games/mobileControls.ts` — TypeScript module.
+- `engins/gameengin/games/navigation.ts` — TypeScript module.
+- `engins/gameengin/games/performance-baseline.ts` — TypeScript module.
+- `engins/gameengin/games/quality-plan.ts` — TypeScript module.
+- `engins/gameengin/games/useAIDirector.ts` — TypeScript module.
+- `engins/gameengin/games/useGameInputKeyboardBridge.ts` — TypeScript module.
+- `engins/gameengin/games/useGamepad.ts` — TypeScript module.
+- `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript module.
+- `engins/gameengin/games/useRemoteChannel.ts` — TypeScript module.
+- `engins/gameengin/generative-audio.ts` — TypeScript module.
+- `engins/gameengin/index.ts` — TypeScript module.
+- `engins/gameengin/input/InputRouter.ts` — TypeScript module.
+- `engins/gameengin/input/index.ts` — TypeScript module.
+- `engins/gameengin/launcher.ts` — TypeScript module.
+- `engins/gameengin/neural-render.ts` — TypeScript module.
+- `engins/gameengin/path-tracing.ts` — TypeScript module.
+- `engins/gameengin/platform.ts` — TypeScript module.
+- `engins/gameengin/post-fx.ts` — TypeScript module.
+- `engins/gameengin/power-systems.ts` — TypeScript module.
+- `engins/gameengin/predictive-stream.ts` — TypeScript module.
+- `engins/gameengin/procgen.ts` — TypeScript module.
+- `engins/gameengin/registerCartridges.ts` — TypeScript module.
+- `engins/gameengin/remote/comboMachine.ts` — TypeScript module.
+- `engins/gameengin/remote/index.ts` — TypeScript module.
+- `engins/gameengin/remote/layout.ts` — TypeScript module.
+- `engins/gameengin/remote/moves.ts` — TypeScript module.
+- `engins/gameengin/remote/sprintDetector.ts` — TypeScript module.
+- `engins/gameengin/render/ShaderRegistry.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameBudget.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameClock.ts` — TypeScript module.
+- `engins/gameengin/runtime/RuntimeQuality.ts` — TypeScript module.
+- `engins/gameengin/runtime/index.ts` — TypeScript module.
+- `engins/gameengin/systems/ai.ts` — TypeScript module.
+- `engins/gameengin/systems/animation.ts` — TypeScript module.
+- `engins/gameengin/systems/assets.ts` — TypeScript module.
+- `engins/gameengin/systems/index.ts` — TypeScript module.
+- `engins/gameengin/systems/lod.ts` — TypeScript module.
+- `engins/gameengin/systems/network.ts` — TypeScript module.
+- `engins/gameengin/systems/physics.ts` — TypeScript module.
+- `engins/gameengin/systems/pooling.ts` — TypeScript module.
+- `engins/gameengin/systems/rendering.ts` — TypeScript module.
+- `engins/gameengin/systems/spatial.ts` — TypeScript module.
+- `engins/gameengin/systems/world.ts` — TypeScript module.
+- `engins/gameengin/unifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/useUnifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/webgpu-runtime-shell.ts` — TypeScript module.
+- `engins/gameengin/world-crdt.ts` — TypeScript module.
+- `engins/gameengin/xr.ts` — TypeScript module.
+- `engins/isosurfaceAssetPipeline.ts` — TypeScript module.
+- `engins/isosurfaceDualContouring.ts` — TypeScript module.
+- `engins/labengin/implicitSurface.ts` — TypeScript module.
+- `engins/portfolio/dream.PortfolioEngin.tsx` — React component module.
+- `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/code/index.ts` — TypeScript module.
+- `engins/rulesets/code/useCodeEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/content/contentEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/content/useContentEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/dreams/index.ts` — TypeScript module.
+- `engins/rulesets/forge/index.ts` — TypeScript module.
+- `engins/rulesets/game/declarative.ts` — TypeScript module.
+- `engins/rulesets/game/gameEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/game/index.ts` — TypeScript module.
+- `engins/rulesets/game/useGameEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.constants.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.physics.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.transforms.ts` — TypeScript module.
+- `engins/rulesets/homedream/index.ts` — TypeScript module.
+- `engins/rulesets/lab/index.ts` — TypeScript module.
+- `engins/rulesets/lab/labEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/lab/useLabEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/music/index.ts` — TypeScript module.
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/useEnginWorkflow.ts` — TypeScript module.
+- `engins/rulesets/workflowEngine.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/fingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/index.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/peak-map.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/stem-extractor.ts` — TypeScript module.
+- `engins/starmakerengin/audioFingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/music/presets.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmaker.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerArrangement.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerDaw.ts` — TypeScript module.
+- `engins/starmakerengin/music/wasmAudioBridge.ts` — TypeScript module.
+
+</details>
+
+### BrandingEngin
+BrandingEngin is a UI subsystem composed of React components and presentation logic. It depends on Backend, System, Core & CoreSurfaces, DreamSpace, Dual Runtimes.
+#### Responsibilities
+- Renders BrandingEngin
+#### Key Modules
+- `BrandingEngin`
+- `engin.BrandingEngin`
+#### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **The Engins**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on DreamSpace
+- Depends on Dual Runtimes
+- Depends on The Engins
+#### Public Surfaces
+**Components:**
+`BrandingEngin`
+##### File Structure
+```text
+└── engins
+    └── engin.BrandingEngin.tsx
+```
+<details><summary>BrandingEngin file index (1 files)</summary>
+
+- `engins/engin.BrandingEngin.tsx` — React component module.
+
+</details>
+
+### CodeEngin
+CodeEngin is a UI subsystem composed of React components and presentation logic. It exposes useAgentSession as React hooks for consumption by sibling subsystems. It depends on DreamSpace, The Engins, User-Facing Modularity.
+#### Responsibilities
+- Renders AgentPanel, CodeEnginOrchestrator, CodeEngin
+#### Key Modules
+- `AgentPanel`
+- `CodeEngin`
+- `CodeEnginOrchestrator`
+- `dream.index`
+- `dream.panel.AgentPanel`
+- `engin.CodeEngin`
+#### Architectural Relationships
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Depends on DreamSpace
+- Depends on The Engins
+- Depends on User-Facing Modularity
+#### Public Surfaces
+**Components:**
+`AgentPanel`, `CodeEngin`, `CodeEnginOrchestrator`
+#### Notable Abstractions
+- `ParseError` — interface
+- `ParsedSymbol` — interface
+- `ParseResult` — interface
+- `AgentMessage` — interface
+- `UseAgentSessionReturn` — interface
+- `AgentMessage` — interface
+- `UseAgentSessionReturn` — interface
+- `useAgentSession` — hook
+#### Capabilities
+- Exposes useAgentSession as composable React hooks
+- Public contract surface: ParseError, ParsedSymbol, ParseResult, AgentMessage, UseAgentSessionReturn
+- Utility functions: parseCode, AgentPanel
+##### File Structure
+```text
+└── engins
+    ├── CodeEngin
+    │   ├── core
+    │   │   └── parser.ts
+    │   ├── modules
+    │   │   └── ai-co-pilot
+    │   │       ├── dream.panel.AgentPanel.tsx
+    │   │       ├── index.ts
+    │   │       └── useAgentSession.ts
+    │   └── orchestrator
+    │       └── dream.index.tsx
+    └── engin.CodeEngin.tsx
+```
+<details><summary>CodeEngin file index (6 files)</summary>
+
+- `engins/CodeEngin/core/parser.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React component module.
+- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript module.
+- `engins/CodeEngin/orchestrator/dream.index.tsx` — React component module.
+- `engins/engin.CodeEngin.tsx` — React component module.
+
+</details>
+
+### ContentEngin
+ContentEngin is a UI subsystem composed of React components and presentation logic. It depends on User-Facing Modularity.
+#### Responsibilities
+- Renders ContentEngin
+#### Key Modules
+- `ContentEngin`
+- `engin.ContentEngin`
+#### Architectural Relationships
+- Depends on **User-Facing Modularity**
+- Depends on User-Facing Modularity
+#### Public Surfaces
+**Components:**
+`ContentEngin`
+##### File Structure
+```text
+└── engins
+    └── engin.ContentEngin.tsx
+```
+<details><summary>ContentEngin file index (1 files)</summary>
+
+- `engins/engin.ContentEngin.tsx` — React component module.
 
 </details>
 
 ### Custom Engins capability (current state)
-Auto-synced from `engins/**`, `components/daydream/**`, `lib/engins/**` using repository introspection.
-- Files tracked: **47**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeDreamIDE`, `CodeEngin`, `Constellationmap`, `ContentEngin`, `DiffViewer`, `DreamsurfaceDaydreamAnalyticsDaydream`, +20 more
-#### Custom Engins capability (current state) file structure
+Custom Engins capability (current state) is a UI subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in H265Encoder, GameCapture, GameEnginConfigError. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, Dreams (Widgets / Windows / Surfaces).
+#### Responsibilities
+- Renders CodeDreamIDE, DiffViewer, JourneyTrail, LabDreamIDE, NGNEngin, OpenDaydreamSideBButton, +23 more
+- Core abstractions: H265Encoder, GameCapture, GameEnginConfigError, GameEnginCore, RealtimeCaptioner
+- Runtime orchestration and engin lifecycle management
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Feed ranking, algorithm execution, and content scoring
+#### Key Modules
+- `BrandDaydream`
+- `CodeDreamIDE`
+- `CompingPanel`
+- `DaydreamShell`
+- `DiffViewer`
+- `DreamConstellationMap`
+- `JourneyTrail`
+- `LabDreamIDE`
+- `MultitrackArrangementPanel`
+- `NGNEngin`
+- `OpenDaydreamSideBButton`
+- `StandaloneEnginSurface`
+#### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on DreamSpace
+#### Public Surfaces
+**Components:**
+`AgentPanel`, `ArtifactSlot`, `AssetViewport`, `BrandDaydream`, `BrandingEngin`, `CodeDreamIDE`, `CodeEngin`, `CodeEnginOrchestrator`, `CompingPanel`, `ContentEngin`, +19 more
+#### Notable Abstractions
+- `StandaloneEnginName` — type
+- `DaydreamWidget` — type
+- `ParseError` — interface
+- `ParsedSymbol` — interface
+- `ParseResult` — interface
+- `AgentMessage` — interface
+- `UseAgentSessionReturn` — interface
+- `AgentMessage` — interface
+- `UseAgentSessionReturn` — interface
+- `LogoPath` — type
+- `VocabEntry` — interface
+- `CellLanguage` — type
+- `useAIDirector` — hook
+- `useAgentSession` — hook
+- `useArtifactSlot` — hook
+- `useBrandEnginRuntime` — hook
+- `useCodeEnginRuntime` — hook
+- `useContentEnginRuntime` — hook
+- `useDualSense` — hook
+- `useEnginWorkflow` — hook
+#### Capabilities
+- Exposes useAIDirector, useAgentSession, useArtifactSlot, useBrandEnginRuntime, useCodeEnginRuntime, useContentEnginRuntime as composable React hooks
+- Public contract surface: ParseError, ParsedSymbol, ParseResult, AgentMessage, UseAgentSessionReturn
+- Shared type vocabulary: StandaloneEnginName, DaydreamWidget, LogoPath, CellLanguage, QueryIntent
+- Utility functions: parseCode, AgentPanel, AutoOpenGameEngin, getRandomLogo, resetLogoCache, matchCodeVocabulary
+##### File Structure
 ```text
 ├── components
 │   └── daydream
@@ -243,406 +865,1040 @@ Auto-synced from `engins/**`, `components/daydream/**`, `lib/engins/**` using re
 │       ├── dream.StandaloneEnginSurface.tsx
 │       ├── dream.constellationmap.tsx
 │       ├── dream.shell.DaydreamShell.tsx
-│       ├── dreamsurface.daydream.AnalyticsDaydream.tsx
 │       ├── dreamsurface.daydream.BrandDaydream.tsx
 │       └── starmaker
 │           ├── dream.panel.CompingPanel.tsx
 │           ├── dream.panel.MultitrackArrangementPanel.tsx
 │           ├── dream.panel.PianoRollPanel.tsx
 │           └── dream.panel.SessionViewPanel.tsx
-├── engins
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── CodeEngin
-│   │   ├── core
-│   │   │   └── parser.ts
-│   │   ├── modules
-│   │   │   └── ai-co-pilot
-│   │   │       ├── dream.panel.AgentPanel.tsx
-│   │   │       ├── index.ts
-│   │   │       └── useAgentSession.ts
-│   │   └── orchestrator
-│   │       └── dream.index.tsx
-│   ├── autoopen
-│   │   └── dream.AutoOpenGameEngin.tsx
-│   ├── dream.ForgeEngin.tsx
-│   ├── dream.QuantumCircuitCanvas.tsx
-│   ├── dream.panel.AnalyticsEngin.tsx
-│   ├── engin.BrandingEngin.tsx
-│   ├── engin.CodeEngin.tsx
-│   ├── engin.ContentEngin.tsx
-│   ├── engin.GameEngin.tsx
-│   ├── engin.LabEngin.tsx
-│   ├── engin.StarMakerEngin.tsx
-│   └── portfolio
-│       └── dream.PortfolioEngin.tsx
-└── lib
-    └── engins
-        ├── brand
-        │   ├── brandEnginRuleSet.ts
-        │   └── useBrandEnginRuntime.ts
-        ├── code
-        │   ├── codeEnginRuleSet.ts
-        │   └── useCodeEnginRuntime.ts
-        ├── content
-        │   ├── contentEnginRuleSet.ts
-        │   └── useContentEnginRuntime.ts
-        ├── game
-        │   ├── gameEnginRuleSet.ts
-        │   ├── index.ts
-        │   └── useGameEnginRuntime.ts
-        ├── lab
-        │   ├── labEnginRuleSet.ts
-        │   └── useLabEnginRuntime.ts
-        ├── music
-        │   ├── starMakerEnginRuleSet.ts
-        │   └── useStarMakerEnginRuntime.ts
-        ├── useEnginWorkflow.ts
-        └── workflowEngine.ts
+└── engins
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── CodeEngin
+    │   ├── core
+    │   │   └── parser.ts
+    │   ├── modules
+    │   │   └── ai-co-pilot
+    │   │       ├── dream.panel.AgentPanel.tsx
+    │   │       ├── index.ts
+    │   │       └── useAgentSession.ts
+    │   └── orchestrator
+    │       └── dream.index.tsx
+    ├── autoopen
+    │   └── dream.AutoOpenGameEngin.tsx
+    ├── brandingengin
+    │   └── identity
+    │       └── logos.ts
+    ├── codeengin
+    │   ├── ai
+    │   │   └── drEamsCodeAssist.ts
+    │   ├── auth.ts
+    │   ├── diagnostics.ts
+    │   ├── diff
+    │   │   ├── aiEditEngine.ts
+    │   │   └── diffUtils.ts
+    │   ├── git.ts
+    │   ├── pathSafety.ts
+    │   ├── projectGraph.ts
+    │   ├── runner.ts
+    │   ├── search.ts
+    │   ├── types.ts
+    │   └── workspaceStore.ts
+    ├── contentengin
+    │   ├── AssetViewport.tsx
+    │   ├── ImplicitAssetWorkspace.tsx
+    │   ├── assetTypes.ts
+    │   ├── assets
+    │   │   ├── assetOptimizer.ts
+    │   │   └── indexedDBStore.ts
+    │   ├── builders
+    │   │   ├── geometryBuilder.ts
+    │   │   ├── meshBuilder.ts
+    │   │   ├── modifiers.ts
+    │   │   ├── primitiveBuilder.ts
+    │   │   ├── textureBuilder.ts
+    │   │   └── uvGenerator.ts
+    │   ├── cli.ts
+    │   ├── composite
+    │   │   ├── compositor.ts
+    │   │   ├── fxSimulation.ts
+    │   │   ├── matchmover.ts
+    │   │   ├── motionCapture.ts
+    │   │   └── rotoscope.ts
+    │   ├── content
+    │   │   ├── generativeFill.ts
+    │   │   ├── publishIntent.ts
+    │   │   ├── seoScorer.ts
+    │   │   ├── transcriptEditor.ts
+    │   │   └── voiceClone.ts
+    │   ├── grammars
+    │   │   ├── animalGrammar.ts
+    │   │   ├── bicycleGrammar.ts
+    │   │   ├── bridgeGrammar.ts
+    │   │   ├── buildingGrammar.ts
+    │   │   ├── creatureGrammar.ts
+    │   │   ├── humanoidGrammar.ts
+    │   │   ├── propGrammar.ts
+    │   │   ├── roadGrammar.ts
+    │   │   ├── shared.ts
+    │   │   ├── terrainGrammar.ts
+    │   │   ├── treeGrammar.ts
+    │   │   ├── vehicleGrammar.ts
+    │   │   └── waterGrammar.ts
+    │   ├── materials
+    │   │   ├── materialTypes.ts
+    │   │   ├── paletteExtractor.ts
+    │   │   └── proceduralMaterials.ts
+    │   ├── media
+    │   │   ├── h265-encoder.ts
+    │   │   ├── ledger.ts
+    │   │   └── postMedia.ts
+    │   ├── photo
+    │   │   ├── colorCluster.ts
+    │   │   ├── edgeDetector.ts
+    │   │   ├── imageAnalyzer.ts
+    │   │   ├── photoToRecipe.ts
+    │   │   ├── pngDecoder.ts
+    │   │   └── regionDetector.ts
+    │   ├── pipeline
+    │   │   ├── build.ts
+    │   │   ├── bundle.ts
+    │   │   ├── exportGlb.ts
+    │   │   ├── generateCollision.ts
+    │   │   ├── generateLods.ts
+    │   │   ├── paths.ts
+    │   │   ├── validate.ts
+    │   │   └── writeManifest.ts
+    │   ├── recipes
+    │   │   ├── recipeResolver.ts
+    │   │   ├── recipeTypes.ts
+    │   │   └── seededRandom.ts
+    │   ├── rigging
+    │   │   ├── fitArmature.ts
+… (221 more files)
 ```
-<details><summary>Custom Engins capability (current state) file index (47 files)</summary>
+<details><summary>Custom Engins capability (current state) file index (341 files)</summary>
 
-- `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
-- `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
-- `components/daydream/dream.JourneyTrail.tsx` — React UI module for JourneyTrail.
-- `components/daydream/dream.LabDreamIDE.tsx` — React UI module for LabDreamIDE.
-- `components/daydream/dream.NGNEngin.tsx` — React UI module for NGNEngin.
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React UI module for OpenDaydreamSideBButton.
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — React UI module for StandaloneEnginSurface.
-- `components/daydream/dream.constellationmap.tsx` — React UI module for Constellationmap.
-- `components/daydream/dream.shell.DaydreamShell.tsx` — React UI module for ShellDaydreamShell.
-- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` — React UI module for DreamsurfaceDaydreamAnalyticsDaydream.
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React UI module for DreamsurfaceDaydreamBrandDaydream.
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React UI module for PanelCompingPanel.
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
-- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
-- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/orchestrator/dream.index.tsx` — React UI module for Index.
-- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React UI module for AutoOpenGameEngin.
-- `engins/dream.ForgeEngin.tsx` — React UI module for ForgeEngin.
-- `engins/dream.QuantumCircuitCanvas.tsx` — React UI module for QuantumCircuitCanvas.
-- `engins/dream.panel.AnalyticsEngin.tsx` — React UI module for PanelAnalyticsEngin.
-- `engins/engin.BrandingEngin.tsx` — React UI module for BrandingEngin.
-- `engins/engin.CodeEngin.tsx` — React UI module for CodeEngin.
-- `engins/engin.ContentEngin.tsx` — React UI module for ContentEngin.
-- `engins/engin.GameEngin.tsx` — React UI module for GameEngin.
-- `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
-- `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
-- `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
-- `lib/engins/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/code/codeEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/code/useCodeEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/content/contentEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/content/useContentEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/gameEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/index.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/game/useGameEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/lab/labEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/lab/useLabEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/music/starMakerEnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/music/useStarMakerEnginRuntime.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/useEnginWorkflow.ts` — TypeScript/JavaScript runtime module.
-- `lib/engins/workflowEngine.ts` — TypeScript/JavaScript runtime module.
+- `components/daydream/dream.CodeDreamIDE.tsx` — React component module.
+- `components/daydream/dream.DiffViewer.tsx` — React component module.
+- `components/daydream/dream.JourneyTrail.tsx` — React component module.
+- `components/daydream/dream.LabDreamIDE.tsx` — React component module.
+- `components/daydream/dream.NGNEngin.tsx` — React component module.
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React component module.
+- `components/daydream/dream.StandaloneEnginSurface.tsx` — React component module.
+- `components/daydream/dream.constellationmap.tsx` — React component module.
+- `components/daydream/dream.shell.DaydreamShell.tsx` — React component module.
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React component module.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `engins/CodeEngin/core/parser.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React component module.
+- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript module.
+- `engins/CodeEngin/orchestrator/dream.index.tsx` — React component module.
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React component module.
+- `engins/brandingengin/identity/logos.ts` — TypeScript module.
+- `engins/codeengin/ai/drEamsCodeAssist.ts` — TypeScript module.
+- `engins/codeengin/auth.ts` — TypeScript module.
+- `engins/codeengin/diagnostics.ts` — TypeScript module.
+- `engins/codeengin/diff/aiEditEngine.ts` — TypeScript module.
+- `engins/codeengin/diff/diffUtils.ts` — TypeScript module.
+- `engins/codeengin/git.ts` — TypeScript module.
+- `engins/codeengin/pathSafety.ts` — TypeScript module.
+- `engins/codeengin/projectGraph.ts` — TypeScript module.
+- `engins/codeengin/runner.ts` — TypeScript module.
+- `engins/codeengin/search.ts` — TypeScript module.
+- `engins/codeengin/types.ts` — TypeScript module.
+- `engins/codeengin/workspaceStore.ts` — TypeScript module.
+- `engins/contentengin/AssetViewport.tsx` — React component module.
+- `engins/contentengin/ImplicitAssetWorkspace.tsx` — React component module.
+- `engins/contentengin/assetTypes.ts` — TypeScript module.
+- `engins/contentengin/assets/assetOptimizer.ts` — TypeScript module.
+- `engins/contentengin/assets/indexedDBStore.ts` — TypeScript module.
+- `engins/contentengin/builders/geometryBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/meshBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/modifiers.ts` — TypeScript module.
+- `engins/contentengin/builders/primitiveBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/textureBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/uvGenerator.ts` — TypeScript module.
+- `engins/contentengin/cli.ts` — TypeScript module.
+- `engins/contentengin/composite/compositor.ts` — TypeScript module.
+- `engins/contentengin/composite/fxSimulation.ts` — TypeScript module.
+- `engins/contentengin/composite/matchmover.ts` — TypeScript module.
+- `engins/contentengin/composite/motionCapture.ts` — TypeScript module.
+- `engins/contentengin/composite/rotoscope.ts` — TypeScript module.
+- `engins/contentengin/content/generativeFill.ts` — TypeScript module.
+- `engins/contentengin/content/publishIntent.ts` — TypeScript module.
+- `engins/contentengin/content/seoScorer.ts` — TypeScript module.
+- `engins/contentengin/content/transcriptEditor.ts` — TypeScript module.
+- `engins/contentengin/content/voiceClone.ts` — TypeScript module.
+- `engins/contentengin/grammars/animalGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bicycleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bridgeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/buildingGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/creatureGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/humanoidGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/propGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/roadGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/shared.ts` — TypeScript module.
+- `engins/contentengin/grammars/terrainGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/treeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/vehicleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/waterGrammar.ts` — TypeScript module.
+- `engins/contentengin/materials/materialTypes.ts` — TypeScript module.
+- `engins/contentengin/materials/paletteExtractor.ts` — TypeScript module.
+- `engins/contentengin/materials/proceduralMaterials.ts` — TypeScript module.
+- `engins/contentengin/media/h265-encoder.ts` — TypeScript module.
+- `engins/contentengin/media/ledger.ts` — TypeScript module.
+- `engins/contentengin/media/postMedia.ts` — TypeScript module.
+- `engins/contentengin/photo/colorCluster.ts` — TypeScript module.
+- `engins/contentengin/photo/edgeDetector.ts` — TypeScript module.
+- `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript module.
+- `engins/contentengin/photo/photoToRecipe.ts` — TypeScript module.
+- `engins/contentengin/photo/pngDecoder.ts` — TypeScript module.
+- `engins/contentengin/photo/regionDetector.ts` — TypeScript module.
+- `engins/contentengin/pipeline/build.ts` — TypeScript module.
+- `engins/contentengin/pipeline/bundle.ts` — TypeScript module.
+- `engins/contentengin/pipeline/exportGlb.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateCollision.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateLods.ts` — TypeScript module.
+- `engins/contentengin/pipeline/paths.ts` — TypeScript module.
+- `engins/contentengin/pipeline/validate.ts` — TypeScript module.
+- `engins/contentengin/pipeline/writeManifest.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeResolver.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeTypes.ts` — TypeScript module.
+- `engins/contentengin/recipes/seededRandom.ts` — TypeScript module.
+- `engins/contentengin/rigging/fitArmature.ts` — TypeScript module.
+- `engins/contentengin/rigging/index.ts` — TypeScript module.
+- `engins/contentengin/rigging/landmarks.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigTypes.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigValidator.ts` — TypeScript module.
+- `engins/contentengin/rigging/templates/bird_basic.json` — project file.
+- `engins/contentengin/rigging/templates/fish_basic.json` — project file.
+- `engins/contentengin/rigging/templates/humanoid_basic.json` — project file.
+- `engins/contentengin/rigging/templates/quadruped_basic.json` — project file.
+- `engins/contentengin/rigging/templates/vehicle_mechanical.json` — project file.
+- `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript module.
+- `engins/contentengin/shaders/shaderTypes.ts` — TypeScript module.
+- `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript module.
+- `engins/dream.ForgeEngin.tsx` — React component module.
+- `engins/dream.QuantumCircuitCanvas.tsx` — React component module.
+- `engins/engin.BrandingEngin.tsx` — React component module.
+- `engins/engin.CodeEngin.tsx` — React component module.
+- `engins/engin.ContentEngin.tsx` — React component module.
+- `engins/engin.GameEngin.tsx` — React component module.
+- `engins/engin.LabEngin.tsx` — React component module.
+- `engins/engin.StarMakerEngin.tsx` — React component module.
+- `engins/forgeengin/componentInventory.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/artifact/manifest.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/index.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/quality/tiers.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx` — React component module.
+- `engins/forgeengin/enginpipe/telemetry/client.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/telemetry/events.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/assembly.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/index.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/piece-registry.ts` — TypeScript module.
+- `engins/forgeengin/forge/engineForge.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeBuild.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeIntelligence.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeMomentum.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeNexus.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRegistry.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRituals.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeActivity.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeBuild.ts` — TypeScript module.
+- `engins/gameengin/GameEnginCore.ts` — TypeScript module.
+- `engins/gameengin/GameRuntime.tsx` — React component module.
+- `engins/gameengin/accessibility-ai.ts` — TypeScript module.
+- `engins/gameengin/ai-director.ts` — TypeScript module.
+- `engins/gameengin/ai-npcs.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleCache.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleManifest.ts` — TypeScript module.
+- `engins/gameengin/backendNegotiator.ts` — TypeScript module.
+- `engins/gameengin/brain-reader.ts` — TypeScript module.
+- `engins/gameengin/brain/README.md` — documentation.
+- `engins/gameengin/brain/active-projects.json` — project file.
+- `engins/gameengin/brain/asset-registry/README.md` — documentation.
+- `engins/gameengin/brain/build-history/README.md` — documentation.
+- `engins/gameengin/brain/character-voices/mad-maxi.json` — project file.
+- `engins/gameengin/brain/composition-principles/leading-lines-landmark.json` — project file.
+- `engins/gameengin/brain/composition-principles/parallax-layers.json` — project file.
+- `engins/gameengin/brain/concept-library/README.md` — documentation.
+- `engins/gameengin/brain/concept-library/neon-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/README.md` — documentation.
+- `engins/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json` — project file.
+- `engins/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json` — project file.
+- `engins/gameengin/brain/crash-reports/README.md` — documentation.
+- `engins/gameengin/brain/dialogue-patterns/callback-anchor.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/implied-subject.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json` — project file.
+- `engins/gameengin/brain/emotional-tones/determined.json` — project file.
+- `engins/gameengin/brain/emotional-tones/fierce.json` — project file.
+- `engins/gameengin/brain/emotional-tones/hopeful.json` — project file.
+- `engins/gameengin/brain/emotional-tones/reflective.json` — project file.
+- `engins/gameengin/brain/emotional-tones/weary.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/meta-progression.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/moment-to-moment.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/session-loop.json` — project file.
+- `engins/gameengin/brain/genre-dna/action-rpg.json` — project file.
+- `engins/gameengin/brain/genre-dna/episodic.json` — project file.
+- `engins/gameengin/brain/genre-dna/live-service.json` — project file.
+- `engins/gameengin/brain/genre-dna/metroidvania.json` — project file.
+- `engins/gameengin/brain/genre-dna/open-world.json` — project file.
+- `engins/gameengin/brain/genre-dna/platformer.json` — project file.
+- `engins/gameengin/brain/genre-dna/puzzle.json` — project file.
+- `engins/gameengin/brain/genre-dna/racing.json` — project file.
+- `engins/gameengin/brain/genre-dna/roguelike.json` — project file.
+- `engins/gameengin/brain/genre-dna/sandbox.json` — project file.
+- `engins/gameengin/brain/genre-dna/template.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/celeste.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/dead-cells.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hades.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hollow-knight.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/outer-wilds.json` — project file.
+- `engins/gameengin/brain/material-recipes/neon-glass-tube.json` — project file.
+- `engins/gameengin/brain/material-recipes/rusted-iron.json` — project file.
+- `engins/gameengin/brain/material-recipes/sun-bleached-sandstone.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/look-ahead.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/screen-shake.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/smooth-follow.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/combo.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/hit-stop.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/parry.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/ranged.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/coyote-time.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/dash.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/double-jump.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/grapple.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/wall-slide.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/metroidvania-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/roguelike-perks.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/skill-tree.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/ability-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/meta-progression.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/procedural-generation.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/run-persistence.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/season-pass.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/world-streaming.json` — project file.
+- `engins/gameengin/brain/narrative-pacing/default.json` — project file.
+- `engins/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json` — project file.
+- `engins/gameengin/brain/originality-registry/signatures.json` — project file.
+- `engins/gameengin/brain/principles/emotional-core.md` — documentation.
+- `engins/gameengin/brain/principles/feedback.md` — documentation.
+- `engins/gameengin/brain/principles/mastery.md` — documentation.
+- `engins/gameengin/brain/principles/progression.md` — documentation.
+- `engins/gameengin/brain/principles/responsiveness.md` — documentation.
+- `engins/gameengin/brain/principles/risk-reward.md` — documentation.
+- `engins/gameengin/brain/progression-state/README.md` — documentation.
+- `engins/gameengin/brain/rd-sessions/README.md` — documentation.
+- `engins/gameengin/brain/technique-library/lighting/three-point-mood.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/edge-flow.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/silhouette-first.json` — project file.
+- `engins/gameengin/brain/technique-library/optimization/texture-atlasing.json` — project file.
+- `engins/gameengin/brain/upgrade-history/README.md` — documentation.
+- `engins/gameengin/brain/upgrade-history/prioritization-rules.json` — project file.
+- `engins/gameengin/brain/visual-bible/characters/mad-maxi.md` — documentation.
+- `engins/gameengin/brain/visual-bible/environments/neon-wasteland.md` — documentation.
+- `engins/gameengin/brain/work-queue/README.md` — documentation.
+- `engins/gameengin/cartridge-manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridgeLoader.ts` — TypeScript module.
+- `engins/gameengin/cartridges/achievementEngine.ts` — TypeScript module.
+- `engins/gameengin/cartridges/apiStubs.ts` — TypeScript module.
+- `engins/gameengin/cartridges/index.ts` — TypeScript module.
+- `engins/gameengin/cartridges/loaders.ts` — TypeScript module.
+- `engins/gameengin/cartridges/manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridges/reactCartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridges/saveState.ts` — TypeScript module.
+- `engins/gameengin/cloud-compute.ts` — TypeScript module.
+- `engins/gameengin/config/demoGameConfig.ts` — TypeScript module.
+- `engins/gameengin/controls/control-mappings.ts` — TypeScript module.
+- `engins/gameengin/core.ts` — TypeScript module.
+- `engins/gameengin/dream-engine.ts` — TypeScript module.
+- `engins/gameengin/dreamr-loader.ts` — TypeScript module.
+- `engins/gameengin/executionWiring.ts` — TypeScript module.
+- `engins/gameengin/gameEnginRuntime.ts` — TypeScript module.
+- `engins/gameengin/games/DualSenseManager.ts` — TypeScript module.
+- `engins/gameengin/games/avatar.ts` — TypeScript module.
+- `engins/gameengin/games/catalog.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerButtons.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerLeft.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerRight.ts` — TypeScript module.
+- `engins/gameengin/games/hooks.ts` — TypeScript module.
+- `engins/gameengin/games/library-state.ts` — TypeScript module.
+- `engins/gameengin/games/lucid-avenue-world.ts` — TypeScript module.
+- `engins/gameengin/games/madmaxi-wildfall-world.ts` — TypeScript module.
+- `engins/gameengin/games/mobileControls.ts` — TypeScript module.
+- `engins/gameengin/games/navigation.ts` — TypeScript module.
+- `engins/gameengin/games/performance-baseline.ts` — TypeScript module.
+- `engins/gameengin/games/quality-plan.ts` — TypeScript module.
+- `engins/gameengin/games/useAIDirector.ts` — TypeScript module.
+- `engins/gameengin/games/useGameInputKeyboardBridge.ts` — TypeScript module.
+- `engins/gameengin/games/useGamepad.ts` — TypeScript module.
+- `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript module.
+- `engins/gameengin/games/useRemoteChannel.ts` — TypeScript module.
+- `engins/gameengin/generative-audio.ts` — TypeScript module.
+- `engins/gameengin/index.ts` — TypeScript module.
+- `engins/gameengin/input/InputRouter.ts` — TypeScript module.
+- `engins/gameengin/input/index.ts` — TypeScript module.
+- `engins/gameengin/launcher.ts` — TypeScript module.
+- `engins/gameengin/neural-render.ts` — TypeScript module.
+- `engins/gameengin/path-tracing.ts` — TypeScript module.
+- `engins/gameengin/platform.ts` — TypeScript module.
+- `engins/gameengin/post-fx.ts` — TypeScript module.
+- `engins/gameengin/power-systems.ts` — TypeScript module.
+- `engins/gameengin/predictive-stream.ts` — TypeScript module.
+- `engins/gameengin/procgen.ts` — TypeScript module.
+- `engins/gameengin/registerCartridges.ts` — TypeScript module.
+- `engins/gameengin/remote/comboMachine.ts` — TypeScript module.
+- `engins/gameengin/remote/index.ts` — TypeScript module.
+- `engins/gameengin/remote/layout.ts` — TypeScript module.
+- `engins/gameengin/remote/moves.ts` — TypeScript module.
+- `engins/gameengin/remote/sprintDetector.ts` — TypeScript module.
+- `engins/gameengin/render/ShaderRegistry.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameBudget.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameClock.ts` — TypeScript module.
+- `engins/gameengin/runtime/RuntimeQuality.ts` — TypeScript module.
+- `engins/gameengin/runtime/index.ts` — TypeScript module.
+- `engins/gameengin/systems/ai.ts` — TypeScript module.
+- `engins/gameengin/systems/animation.ts` — TypeScript module.
+- `engins/gameengin/systems/assets.ts` — TypeScript module.
+- `engins/gameengin/systems/index.ts` — TypeScript module.
+- `engins/gameengin/systems/lod.ts` — TypeScript module.
+- `engins/gameengin/systems/network.ts` — TypeScript module.
+- `engins/gameengin/systems/physics.ts` — TypeScript module.
+- `engins/gameengin/systems/pooling.ts` — TypeScript module.
+- `engins/gameengin/systems/rendering.ts` — TypeScript module.
+- `engins/gameengin/systems/spatial.ts` — TypeScript module.
+- `engins/gameengin/systems/world.ts` — TypeScript module.
+- `engins/gameengin/unifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/useUnifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/webgpu-runtime-shell.ts` — TypeScript module.
+- `engins/gameengin/world-crdt.ts` — TypeScript module.
+- `engins/gameengin/xr.ts` — TypeScript module.
+- `engins/isosurfaceAssetPipeline.ts` — TypeScript module.
+- `engins/isosurfaceDualContouring.ts` — TypeScript module.
+- `engins/labengin/implicitSurface.ts` — TypeScript module.
+- `engins/portfolio/dream.PortfolioEngin.tsx` — React component module.
+- `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/code/index.ts` — TypeScript module.
+- `engins/rulesets/code/useCodeEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/content/contentEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/content/useContentEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/dreams/index.ts` — TypeScript module.
+- `engins/rulesets/forge/index.ts` — TypeScript module.
+- `engins/rulesets/game/declarative.ts` — TypeScript module.
+- `engins/rulesets/game/gameEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/game/index.ts` — TypeScript module.
+- `engins/rulesets/game/useGameEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.constants.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.physics.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.transforms.ts` — TypeScript module.
+- `engins/rulesets/homedream/index.ts` — TypeScript module.
+- `engins/rulesets/lab/index.ts` — TypeScript module.
+- `engins/rulesets/lab/labEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/lab/useLabEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/music/index.ts` — TypeScript module.
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/useEnginWorkflow.ts` — TypeScript module.
+- `engins/rulesets/workflowEngine.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/fingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/index.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/peak-map.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/stem-extractor.ts` — TypeScript module.
+- `engins/starmakerengin/audioFingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/music/presets.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmaker.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerArrangement.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerDaw.ts` — TypeScript module.
+- `engins/starmakerengin/music/wasmAudioBridge.ts` — TypeScript module.
+
+</details>
+
+### ForgeEngin
+ForgeEngin is a UI subsystem composed of React components and presentation logic. It depends on Dreams (Widgets / Windows / Surfaces), DreamSpace, The Engins.
+#### Responsibilities
+- Renders ForgeEngin
+#### Key Modules
+- `ForgeEngin`
+- `dream.ForgeEngin`
+#### Architectural Relationships
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on DreamSpace
+- Depends on The Engins
+- Depends on User-Facing Modularity
+#### Public Surfaces
+**Components:**
+`ForgeEngin`
+##### File Structure
+```text
+└── engins
+    └── dream.ForgeEngin.tsx
+```
+<details><summary>ForgeEngin file index (1 files)</summary>
+
+- `engins/dream.ForgeEngin.tsx` — React component module.
+
+</details>
+
+### GameEngin
+GameEngin is a UI subsystem composed of React components and presentation logic. It depends on Backend, System, Core & CoreSurfaces, DreamSpace, The Engins.
+#### Responsibilities
+- Renders GameEngin
+#### Key Modules
+- `GameEngin`
+- `dream.AutoOpenGameEngin`
+- `engin.GameEngin`
+#### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on DreamSpace
+- Depends on The Engins
+- Depends on User-Facing Modularity
+#### Public Surfaces
+**Components:**
+`GameEngin`
+#### Capabilities
+- Utility functions: AutoOpenGameEngin
+##### File Structure
+```text
+└── engins
+    ├── autoopen
+    │   └── dream.AutoOpenGameEngin.tsx
+    └── engin.GameEngin.tsx
+```
+<details><summary>GameEngin file index (2 files)</summary>
+
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React component module.
+- `engins/engin.GameEngin.tsx` — React component module.
+
+</details>
+
+### LabEngin
+LabEngin is a UI subsystem composed of React components and presentation logic. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), DreamSpace.
+#### Responsibilities
+- Renders QuantumCircuitCanvas, LabEngin
+#### Key Modules
+- `LabEngin`
+- `QuantumCircuitCanvas`
+- `dream.QuantumCircuitCanvas`
+- `engin.LabEngin`
+#### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on DreamSpace
+- Depends on The Engins
+#### Public Surfaces
+**Components:**
+`LabEngin`, `QuantumCircuitCanvas`
+#### Notable Abstractions
+- `GateOp` — type
+- `QuantumMeasurementResult` — interface
+- `QuantumCircuitCanvasProps` — interface
+#### Capabilities
+- Public contract surface: QuantumMeasurementResult, QuantumCircuitCanvasProps
+- Shared type vocabulary: GateOp
+##### File Structure
+```text
+└── engins
+    ├── dream.QuantumCircuitCanvas.tsx
+    └── engin.LabEngin.tsx
+```
+<details><summary>LabEngin file index (2 files)</summary>
+
+- `engins/dream.QuantumCircuitCanvas.tsx` — React component module.
+- `engins/engin.LabEngin.tsx` — React component module.
+
+</details>
+
+### PortfolioEngin
+PortfolioEngin is a UI subsystem composed of React components and presentation logic. It depends on DreamSpace, The Engins.
+#### Responsibilities
+- Renders PortfolioEngin
+#### Key Modules
+- `PortfolioEngin`
+- `dream.PortfolioEngin`
+#### Architectural Relationships
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Depends on DreamSpace
+- Depends on The Engins
+#### Public Surfaces
+**Components:**
+`PortfolioEngin`
+##### File Structure
+```text
+└── engins
+    └── portfolio
+        └── dream.PortfolioEngin.tsx
+```
+<details><summary>PortfolioEngin file index (1 files)</summary>
+
+- `engins/portfolio/dream.PortfolioEngin.tsx` — React component module.
+
+</details>
+
+### StarMakerEngin
+StarMakerEngin is a UI subsystem composed of React components and presentation logic. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), DreamSpace.
+#### Responsibilities
+- Renders StarMakerEngin
+#### Key Modules
+- `StarMakerEngin`
+- `engin.StarMakerEngin`
+#### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **The Engins**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on DreamSpace
+- Depends on Dual Runtimes
+#### Public Surfaces
+**Components:**
+`StarMakerEngin`
+##### File Structure
+```text
+└── engins
+    └── engin.StarMakerEngin.tsx
+```
+<details><summary>StarMakerEngin file index (1 files)</summary>
+
+- `engins/engin.StarMakerEngin.tsx` — React component module.
 
 </details>
 
 ## Dual Runtimes
-DREAMengin runs two persistent runtime regions separated by the DreamDM seam: **Surface Space** (top) and **DreamSpace** (bottom). `lib/runtime/dualRuntime.ts` defines canonical world state, dominance, and torus navigation so either region can host any world (`HomeDream Surface`, `DreamSpace`, `dream`, `engin`, `panel`, `custom`).
-
-`components/runtime/dream.DualRuntimeContainer.tsx` is the state controller used by layout-level shells, while `lib/runtime/dualRuntimeBridge.ts` provides cross-region event transport, durable queueing, and shared message plumbing. `lib/runtime/useDualRuntimePersistence.ts` persists region/world state through OPFS with localStorage fallback so split/runtime choices survive reloads.
-
-The persistent seam is rendered by `components/home/dream.bar.PersistentDreamBar.tsx` + `dreamdmbar/dreamsurface.dreamdmbar.tsx`, which continuously publishes split-ratio context and keeps both regions mounted.
-
-For compute-heavy parity, the VM pair under `lib/vm/` (`dualVMCoordinator.ts`, `wasmGpuVM.ts`, `inter-vm-messaging.ts`, `resource-quota.ts`, `security.ts`, `snapshot.ts`) enforces quotas, bounds, and snapshot controls while preserving the same rule-set contract in both regions. Solo/co-op parity is maintained through shared runtime channels rather than separate UI implementations.
-#### Dual runtime pipeline file structure
+Dual Runtimes is a UI subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in EnginDispatcher, IntentBus, UniversalEngine. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), Shared Dreams.
+### Responsibilities
+- Renders DualRuntimeContainer, RuntimeView, RuntimeShell, GlowingLight, DreamDMBar, DreamSystemProvider
+- Core abstractions: EnginDispatcher, IntentBus, UniversalEngine, RuntimeContainer, BufferManager
+- Runtime orchestration and engin lifecycle management
+- Authentication, session, and access control
+- Real-time communication and channel management
+### Key Modules
+- `BufferManager`
+- `DreamDMBar`
+- `DreamSystemProvider`
+- `DualRuntime`
+- `DualRuntimeContainer`
+- `EnginDispatcher`
+- `GlowingLight`
+- `IntentBus`
+- `RuntimeContainer`
+- `RuntimeShell`
+- `RuntimeView`
+- `UniversalEngine`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **Shared Dreams**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Participates in the Shared Dreams pub/sub channel system
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+### Public Surfaces
+**Components:**
+`DreamDMBar`, `DreamSystemProvider`, `DualRuntimeContainer`, `GlowingLight`, `RuntimeShell`, `RuntimeView`
+### Notable Abstractions
+- `GlowingLightProps` — interface
+- `DreamBarSurface` — type
+- `DreamBarContext` — interface
+- `DMConversation` — interface
+- `DraftPayload` — interface
+- `DMMessage` — interface
+- `SearchResultType` — type
+- `SearchResult` — interface
+- `UseDreamSearchReturn` — interface
+- `MediaType` — type
+- `SendMessageParams` — interface
+- `UseMessagingCoreReturn` — interface
+- `useBrandingEnginBridge` — hook
+- `useCodeEnginBridge` — hook
+- `useContentEnginBridge` — hook
+- `useDragSurface` — hook
+- `useDreamBarContext` — hook
+- `useDreamDMConversations` — hook
+- `useDreamDMDraft` — hook
+- `useDreamDMMessages` — hook
+### Capabilities
+- Exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge, useDragSurface, useDreamBarContext, useDreamDMConversations as composable React hooks
+- Public contract surface: GlowingLightProps, DreamBarContext, DMConversation, DraftPayload, DMMessage
+- Shared type vocabulary: DreamBarSurface, SearchResultType, MediaType, DbNotificationContent, UiNotificationType
+- Utility functions: detectSurface, resolveIntentOverride, listAllDraftIds, cleanupStaleDrafts, getDraftAge, mapNotificationType
+#### File Structure
 ```text
-├── COOP_AND_SOLO_ROADMAP.md
-├── app
-│   ├── homedream
-│   │   └── page.tsx
-│   └── layout.tsx
-├── assembly
-│   ├── bus.ts
-│   ├── index.ts
-│   └── mad-maxi-player.ts
 ├── components
-│   ├── dream.OSShellActivator.tsx
-│   ├── dreamengin
-│   │   ├── dream.CanvasDropZone.tsx
-│   │   ├── dream.DREAMenginOS.tsx
-│   │   ├── dream.DrEamsCanvas.tsx
-│   │   ├── dream.HomeControls.tsx
-│   │   ├── dream.bar.DrEamsSearchBar.tsx
-│   │   ├── dream.menu.NexusMenu.tsx
-│   │   ├── dream.menu.OutdreamMenu.tsx
-│   │   ├── dream.overlay.ViewAllDreamsOverlay.tsx
-│   │   ├── dream.panel.CrossEnginStatusPanel.tsx
-│   │   ├── dream.panel.DrEamsPanel.tsx
-│   │   ├── dream.scene.BabylonGameScene.tsx
-│   │   ├── dream.scene.DrEamsScene.tsx
-│   │   ├── dream.scene.PortfolioOptimizationScene.tsx
-│   │   ├── dream.shell.EnginShell.tsx
-│   │   ├── dream.widget.AppearanceWidget.tsx
-│   │   ├── dreamsurface.dreamengin.tsx
-│   │   ├── dreamsurface.dreamspace-runtime.tsx
-│   │   └── engine
-│   │       ├── math.ts
-│   │       └── types.ts
-│   ├── home
-│   │   └── dream.bar.PersistentDreamBar.tsx
 │   └── runtime
 │       ├── dream.DualRuntimeContainer.tsx
 │       ├── dream.RuntimeView.tsx
 │       └── dream.shell.RuntimeShell.tsx
 ├── dreamdmbar
+│   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── dream.GlowingLight.tsx
 │   ├── dreamsurface.dreamdmbar.tsx
-│   └── homedream
-│       ├── dream.shell.HomeSystem.tsx
-│       ├── dreamr
-│       │   ├── algorithms
-│       │   │   ├── botDetector.ts
-│       │   │   └── dreamrAlgorithm.ts
-│       │   ├── api
-│       │   │   └── route.ts
-│       │   ├── dream.DreamRCore.tsx
-│       │   ├── dream.DreamRFeed.tsx
-│       │   └── dreamsurface.dreamr.tsx
-│       ├── dreamsurface.dreamdmbar-grid.tsx
-│       └── dreamsurface.homedream.tsx
-└── lib
-    ├── dreamdm
-    │   └── DreamSystemContext.tsx
-    ├── runtime
-    │   ├── EnginDispatcher.ts
-    │   ├── channelMetrics.ts
-    │   ├── coercionTable.ts
-    │   ├── dreamOSBus.ts
-    │   ├── dropTargetRegistry.ts
-    │   ├── dualRuntime.ts
-    │   ├── dualRuntimeBridge.ts
-    │   ├── enginWorkflowRegistry.ts
-    │   ├── instanceManager.ts
-    │   ├── isAuthRelatedError.ts
-    │   ├── memory.ts
-    │   ├── moduleRegistry.ts
-    │   ├── offlineQueue.ts
-    │   ├── quantumCircuit.ts
-    │   ├── runtimeChannel.ts
-    │   ├── runtimeContainer.ts
-    │   ├── seamClipboard.ts
-    │   ├── snapshotFingerprint.ts
-    │   ├── swapManager.ts
-    │   ├── useDragSurface.ts
-    │   ├── useDualRuntime.ts
-    │   ├── useDualRuntimePersistence.ts
-    │   ├── useEnginBridge.ts
-    │   ├── useEnginCoopSync.ts
-    │   └── useSharedEnginChannel.ts
-    └── vm
-        ├── README.md
-        ├── bufferManager.ts
-        ├── bus-events.ts
-        ├── dual-runtime.ts
-        ├── dualVMCoordinator.ts
-        ├── index.ts
-        ├── inter-vm-messaging.ts
-        ├── pipelineCache.ts
-        ├── resource-quota.ts
-        ├── security.ts
-        ├── snapshot.ts
-        ├── types.ts
-        ├── wasm-features.ts
-        └── wasmGpuVM.ts
+│   ├── hooks
+│   │   ├── useDreamBarContext.ts
+│   │   ├── useDreamDMConversations.ts
+│   │   ├── useDreamDMDraft.ts
+│   │   ├── useDreamDMMessages.ts
+│   │   ├── useDreamSearch.ts
+│   │   ├── useMessagingCore.ts
+│   │   ├── useModuleBarIntent.ts
+│   │   └── useNotifications.ts
+│   ├── notifications
+│   │   ├── notificationHelpers.ts
+│   │   └── useNotifications.ts
+│   └── runtime
+│       ├── DreamSystemContext.tsx
+│       ├── barInteractions.ts
+│       └── bridgeSeamFlow.ts
+├── engine
+│   ├── runtime
+│   │   ├── EnginDispatcher.ts
+│   │   ├── channelMetrics.ts
+│   │   ├── coercionTable.ts
+│   │   ├── dreamOSBus.ts
+│   │   ├── dreamsurface
+│   │   │   ├── dreamsurface.bridge.ts
+│   │   │   ├── dreamsurface.delta.ts
+│   │   │   └── index.ts
+│   │   ├── dropTargetRegistry.ts
+│   │   ├── dualRuntime.ts
+│   │   ├── dualRuntimeBridge.ts
+│   │   ├── engin.auth.ts
+│   │   ├── engin.eventbus.ts
+│   │   ├── engin.ledger.ts
+│   │   ├── engin.renderloop.ts
+│   │   ├── enginWorkflowRegistry.ts
+│   │   ├── iEngine.ts
+│   │   ├── index.ts
+│   │   ├── instanceManager.ts
+│   │   ├── isAuthRelatedError.ts
+│   │   ├── madMaxiSnapshotBridge.ts
+│   │   ├── memory.ts
+│   │   ├── moduleRegistry.ts
+│   │   ├── offlineQueue.ts
+│   │   ├── quantumCircuit.ts
+│   │   ├── runtimeChannel.ts
+│   │   ├── runtimeContainer.ts
+│   │   ├── seamClipboard.ts
+│   │   ├── sharedResourcePool.ts
+│   │   ├── snapshotFingerprint.ts
+│   │   ├── swapManager.ts
+│   │   ├── useDragSurface.ts
+│   │   ├── useDualRuntime.ts
+│   │   ├── useDualRuntimePersistence.ts
+│   │   ├── useEnginBridge.ts
+│   │   ├── useEnginCoopSync.ts
+│   │   └── useSharedEnginChannel.ts
+│   └── vm
+│       ├── README.md
+│       ├── bufferManager.ts
+│       ├── bus-events.ts
+│       ├── dual-runtime.ts
+│       ├── dualVMCoordinator.ts
+│       ├── index.ts
+│       ├── inter-vm-messaging.ts
+│       ├── pipelineCache.ts
+│       ├── resource-quota.ts
+│       ├── security.ts
+│       ├── snapshot.ts
+│       ├── types.ts
+│       ├── wasm-features.ts
+│       └── wasmGpuVM.ts
+└── hooks
+    └── useSharedDream.ts
 ```
-<details><summary>Dual runtime pipeline file index (81 files)</summary>
+<details><summary>Dual Runtimes file index (70 files)</summary>
 
-- `COOP_AND_SOLO_ROADMAP.md` — Documentation/spec for COOP AND SOLO ROADMAP.
-- `app/homedream/page.tsx` — Next.js route page for `/homedream`.
-- `app/layout.tsx` — Next.js layout for `/`.
-- `assembly/bus.ts` — TypeScript runtime module for bus.
-- `assembly/index.ts` — TypeScript runtime module for index.
-- `assembly/mad-maxi-player.ts` — TypeScript runtime module for mad maxi player.
-- `components/dream.OSShellActivator.tsx` — React UI module for OSShellActivator.
-- `components/dreamengin/dream.CanvasDropZone.tsx` — React UI module for CanvasDropZone.
-- `components/dreamengin/dream.DREAMenginOS.tsx` — React UI module for DREAMenginOS.
-- `components/dreamengin/dream.DrEamsCanvas.tsx` — React UI module for DrEamsCanvas.
-- `components/dreamengin/dream.HomeControls.tsx` — React UI module for HomeControls.
-- `components/dreamengin/dream.bar.DrEamsSearchBar.tsx` — React UI module for bar DrEamsSearchBar.
-- `components/dreamengin/dream.menu.NexusMenu.tsx` — React UI module for menu NexusMenu.
-- `components/dreamengin/dream.menu.OutdreamMenu.tsx` — React UI module for menu OutdreamMenu.
-- `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx` — React UI module for overlay ViewAllDreamsOverlay.
-- `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` — React UI module for panel CrossEnginStatusPanel.
-- `components/dreamengin/dream.panel.DrEamsPanel.tsx` — React UI module for panel DrEamsPanel.
-- `components/dreamengin/dream.scene.BabylonGameScene.tsx` — React UI module for scene BabylonGameScene.
-- `components/dreamengin/dream.scene.DrEamsScene.tsx` — React UI module for scene DrEamsScene.
-- `components/dreamengin/dream.scene.PortfolioOptimizationScene.tsx` — React UI module for scene PortfolioOptimizationScene.
-- `components/dreamengin/dream.shell.EnginShell.tsx` — React UI module for shell EnginShell.
-- `components/dreamengin/dream.widget.AppearanceWidget.tsx` — React UI module for widget AppearanceWidget.
-- `components/dreamengin/dreamsurface.dreamengin.tsx` — React UI module for dreamengin.
-- `components/dreamengin/dreamsurface.dreamspace-runtime.tsx` — React UI module for dreamspace runtime.
-- `components/dreamengin/engine/math.ts` — TypeScript runtime module for math.
-- `components/dreamengin/engine/types.ts` — TypeScript runtime module for types.
-- `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for bar PersistentDreamBar.
-- `components/runtime/dream.DualRuntimeContainer.tsx` — React UI module for DualRuntimeContainer.
-- `components/runtime/dream.RuntimeView.tsx` — React UI module for RuntimeView.
-- `components/runtime/dream.shell.RuntimeShell.tsx` — React UI module for shell RuntimeShell.
-- `dreamdmbar/dream.GlowingLight.tsx` — React UI module for GlowingLight.
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React UI module for dreamdmbar.
-- `dreamdmbar/homedream/dream.shell.HomeSystem.tsx` — React UI module for shell HomeSystem.
-- `dreamdmbar/homedream/dreamr/algorithms/botDetector.ts` — TypeScript runtime module for botDetector.
-- `dreamdmbar/homedream/dreamr/algorithms/dreamrAlgorithm.ts` — TypeScript runtime module for dreamrAlgorithm.
-- `dreamdmbar/homedream/dreamr/api/route.ts` — API route handler for `/homedream/dreamr/api`.
-- `dreamdmbar/homedream/dreamr/dream.DreamRCore.tsx` — React UI module for DreamRCore.
-- `dreamdmbar/homedream/dreamr/dream.DreamRFeed.tsx` — React UI module for DreamRFeed.
-- `dreamdmbar/homedream/dreamr/dreamsurface.dreamr.tsx` — React UI module for dreamr.
-- `dreamdmbar/homedream/dreamsurface.dreamdmbar-grid.tsx` — React UI module for dreamdmbar grid.
-- `dreamdmbar/homedream/dreamsurface.homedream.tsx` — React UI module for homedream.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/runtime/EnginDispatcher.ts` — TypeScript runtime module for EnginDispatcher.
-- `lib/runtime/channelMetrics.ts` — TypeScript runtime module for channelMetrics.
-- `lib/runtime/coercionTable.ts` — TypeScript runtime module for coercionTable.
-- `lib/runtime/dreamOSBus.ts` — TypeScript runtime module for dreamOSBus.
-- `lib/runtime/dropTargetRegistry.ts` — TypeScript runtime module for dropTargetRegistry.
-- `lib/runtime/dualRuntime.ts` — TypeScript runtime module for dualRuntime.
-- `lib/runtime/dualRuntimeBridge.ts` — TypeScript runtime module for dualRuntimeBridge.
-- `lib/runtime/enginWorkflowRegistry.ts` — TypeScript runtime module for enginWorkflowRegistry.
-- `lib/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
-- `lib/runtime/isAuthRelatedError.ts` — TypeScript runtime module for isAuthRelatedError.
-- `lib/runtime/memory.ts` — TypeScript runtime module for memory.
-- `lib/runtime/moduleRegistry.ts` — TypeScript runtime module for moduleRegistry.
-- `lib/runtime/offlineQueue.ts` — TypeScript runtime module for offlineQueue.
-- `lib/runtime/quantumCircuit.ts` — TypeScript runtime module for quantumCircuit.
-- `lib/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
-- `lib/runtime/runtimeContainer.ts` — TypeScript runtime module for runtimeContainer.
-- `lib/runtime/seamClipboard.ts` — TypeScript runtime module for seamClipboard.
-- `lib/runtime/snapshotFingerprint.ts` — TypeScript runtime module for snapshotFingerprint.
-- `lib/runtime/swapManager.ts` — TypeScript runtime module for swapManager.
-- `lib/runtime/useDragSurface.ts` — TypeScript runtime module for useDragSurface.
-- `lib/runtime/useDualRuntime.ts` — TypeScript runtime module for useDualRuntime.
-- `lib/runtime/useDualRuntimePersistence.ts` — TypeScript runtime module for useDualRuntimePersistence.
-- `lib/runtime/useEnginBridge.ts` — TypeScript runtime module for useEnginBridge.
-- `lib/runtime/useEnginCoopSync.ts` — TypeScript runtime module for useEnginCoopSync.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
-- `lib/vm/README.md` — Subsystem documentation reference.
-- `lib/vm/bufferManager.ts` — TypeScript runtime module for bufferManager.
-- `lib/vm/bus-events.ts` — TypeScript runtime module for bus events.
-- `lib/vm/dual-runtime.ts` — TypeScript runtime module for dual runtime.
-- `lib/vm/dualVMCoordinator.ts` — TypeScript runtime module for dualVMCoordinator.
-- `lib/vm/index.ts` — TypeScript runtime module for index.
-- `lib/vm/inter-vm-messaging.ts` — TypeScript runtime module for inter vm messaging.
-- `lib/vm/pipelineCache.ts` — TypeScript runtime module for pipelineCache.
-- `lib/vm/resource-quota.ts` — TypeScript runtime module for resource quota.
-- `lib/vm/security.ts` — TypeScript runtime module for security.
-- `lib/vm/snapshot.ts` — TypeScript runtime module for snapshot.
-- `lib/vm/types.ts` — TypeScript runtime module for types.
-- `lib/vm/wasm-features.ts` — TypeScript runtime module for wasm features.
-- `lib/vm/wasmGpuVM.ts` — TypeScript runtime module for wasmGpuVM.
+- `components/runtime/dream.DualRuntimeContainer.tsx` — React component module.
+- `components/runtime/dream.RuntimeView.tsx` — React component module.
+- `components/runtime/dream.shell.RuntimeShell.tsx` — React component module.
+- `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `dreamdmbar/dream.GlowingLight.tsx` — React component module.
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React component module.
+- `dreamdmbar/hooks/useDreamBarContext.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamSearch.ts` — TypeScript module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript module.
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — TypeScript module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/notifications/notificationHelpers.ts` — TypeScript module.
+- `dreamdmbar/notifications/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React component module.
+- `dreamdmbar/runtime/barInteractions.ts` — TypeScript module.
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript module.
+- `engine/runtime/EnginDispatcher.ts` — TypeScript module.
+- `engine/runtime/channelMetrics.ts` — TypeScript module.
+- `engine/runtime/coercionTable.ts` — TypeScript module.
+- `engine/runtime/dreamOSBus.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/dreamsurface.bridge.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/dreamsurface.delta.ts` — TypeScript module.
+- `engine/runtime/dreamsurface/index.ts` — TypeScript module.
+- `engine/runtime/dropTargetRegistry.ts` — TypeScript module.
+- `engine/runtime/dualRuntime.ts` — TypeScript module.
+- `engine/runtime/dualRuntimeBridge.ts` — TypeScript module.
+- `engine/runtime/engin.auth.ts` — TypeScript module.
+- `engine/runtime/engin.eventbus.ts` — TypeScript module.
+- `engine/runtime/engin.ledger.ts` — TypeScript module.
+- `engine/runtime/engin.renderloop.ts` — TypeScript module.
+- `engine/runtime/enginWorkflowRegistry.ts` — TypeScript module.
+- `engine/runtime/iEngine.ts` — TypeScript module.
+- `engine/runtime/index.ts` — TypeScript module.
+- `engine/runtime/instanceManager.ts` — TypeScript module.
+- `engine/runtime/isAuthRelatedError.ts` — TypeScript module.
+- `engine/runtime/madMaxiSnapshotBridge.ts` — TypeScript module.
+- `engine/runtime/memory.ts` — TypeScript module.
+- `engine/runtime/moduleRegistry.ts` — TypeScript module.
+- `engine/runtime/offlineQueue.ts` — TypeScript module.
+- `engine/runtime/quantumCircuit.ts` — TypeScript module.
+- `engine/runtime/runtimeChannel.ts` — TypeScript module.
+- `engine/runtime/runtimeContainer.ts` — TypeScript module.
+- `engine/runtime/seamClipboard.ts` — TypeScript module.
+- `engine/runtime/sharedResourcePool.ts` — TypeScript module.
+- `engine/runtime/snapshotFingerprint.ts` — TypeScript module.
+- `engine/runtime/swapManager.ts` — TypeScript module.
+- `engine/runtime/useDragSurface.ts` — TypeScript module.
+- `engine/runtime/useDualRuntime.ts` — TypeScript module.
+- `engine/runtime/useDualRuntimePersistence.ts` — TypeScript module.
+- `engine/runtime/useEnginBridge.ts` — TypeScript module.
+- `engine/runtime/useEnginCoopSync.ts` — TypeScript module.
+- `engine/runtime/useSharedEnginChannel.ts` — TypeScript module.
+- `engine/vm/README.md` — documentation.
+- `engine/vm/bufferManager.ts` — TypeScript module.
+- `engine/vm/bus-events.ts` — TypeScript module.
+- `engine/vm/dual-runtime.ts` — TypeScript module.
+- `engine/vm/dualVMCoordinator.ts` — TypeScript module.
+- `engine/vm/index.ts` — TypeScript module.
+- `engine/vm/inter-vm-messaging.ts` — TypeScript module.
+- `engine/vm/pipelineCache.ts` — TypeScript module.
+- `engine/vm/resource-quota.ts` — TypeScript module.
+- `engine/vm/security.ts` — TypeScript module.
+- `engine/vm/snapshot.ts` — TypeScript module.
+- `engine/vm/types.ts` — TypeScript module.
+- `engine/vm/wasm-features.ts` — TypeScript module.
+- `engine/vm/wasmGpuVM.ts` — TypeScript module.
+- `hooks/useSharedDream.ts` — TypeScript module.
 
 </details>
+
 ## Shared Dreams
-Shared Dreams are realtime collaboration sessions where multiple peers co-edit or co-view the same runtime context. The canonical session model lives in `lib/collaboration/index.ts` (roles, modes, event families, permissions), and `lib/sharedDream.ts` provides the backwards-compatible façade consumed by hooks/components.
-
-Runtime flow:
-- `hooks/useSharedDream.ts` and `components/shared-dream/dream.SharedDreamProvider.tsx` create/join sessions and keep peer/cursor/presence state in sync.
-- `lib/supabase/realtime.ts` provides typed transport adapters for broadcast + presence channels, with graceful local fallback paths.
-- Payload normalization (cursor, edit, state_patch, media_sync, data_packet, control_signal, mode_change, presence_update) is centralized before dispatch.
-- `dream.InviteFlow.tsx` generates invite links and auto-join handoff via URL channel parsing.
-
-Shared session persistence/API surface is exposed through `app/api/dream-windows/*`, `app/api/dreams/instances`, and messaging board routes; Phase 8 migrations (`20260321200000_phase8a_feed_and_layout.sql`, `20260322000000_phase8b_dream_windows.sql`, plus messaging migration `20260307000001_conversations_messages.sql`) provide the backing schema and policy boundaries.
-#### Shared-dream pipeline file structure
+Shared Dreams is a full-stack subsystem that owns both React surfaces and API handlers. It exposes useSharedDream, useSharedDreamSession as React hooks for consumption by sibling subsystems. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), The Engins.
+### Responsibilities
+- API surface: /api/dreams
+- Renders POST, GET, GET, POST, InviteFlow, SharedDreamCanvas, +2 more
+- Database schema ownership and data persistence
+- Real-time communication and channel management
+- Feed ranking, algorithm execution, and content scoring
+### Key Modules
+- `GET`
+- `InviteFlow`
+- `POST`
+- `SharedDreamCanvas`
+- `SharedDreamProvider`
+- `SharedDreamRuntime`
+- `dream.InviteFlow`
+- `dream.SharedDreamCanvas`
+- `dream.SharedDreamProvider`
+- `dream.SharedDreamRuntime`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+- Depends on User-Facing Modularity
+### Public Surfaces
+**API Endpoints:**
+- `/api/dreams/feed` `[GET, POST]`
+- `/api/dreams/instances` `[GET]`
+- `/api/dreams/transfer` `[POST]`
+**Components:**
+`GET`, `InviteFlow`, `POST`, `SharedDreamCanvas`, `SharedDreamProvider`, `SharedDreamRuntime`
+### Notable Abstractions
+- `InviteFlowProps` — interface
+- `SharedDreamCanvasProps` — interface
+- `CursorPosition` — interface
+- `SharedDreamContextValue` — interface
+- `SharedDreamProviderProps` — interface
+- `SharedDreamRuntimeProps` — interface
+- `SharedDreamContextValue` — interface
+- `SharedDreamProviderProps` — interface
+- `SharedDreamCanvasProps` — interface
+- `InviteFlowProps` — interface
+- `SharedDreamRuntimeProps` — interface
+- `SharedDreamSession` — type
+- `useSharedDream` — hook
+- `useSharedDreamSession` — hook
+### Capabilities
+- Exposes useSharedDream, useSharedDreamSession as composable React hooks
+- Public contract surface: InviteFlowProps, SharedDreamCanvasProps, CursorPosition, SharedDreamContextValue, SharedDreamProviderProps
+- Shared type vocabulary: SharedDreamSession, DreamEventType, DreamBroadcastPayload, DreamEventHandler, DreamSessionRole
+- Utility functions: SharedDreamProvider, SharedDreamCanvas, InviteFlow, SharedDreamRuntime, createSharedDreamSession, joinSharedDreamSession
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   └── api
-│       ├── dream-windows
-│       │   ├── [id]
-│       │   │   └── route.ts
-│       │   └── route.ts
-│       ├── dreams
-│       │   ├── feed
-│       │   │   └── route.ts
-│       │   ├── instances
-│       │   │   └── route.ts
-│       │   └── transfer
-│       │       └── route.ts
-│       └── messages
-│           ├── boards
+│       └── dreams
+│           ├── feed
 │           │   └── route.ts
-│           └── route.ts
+│           ├── instances
+│           │   └── route.ts
+│           └── transfer
+│               └── route.ts
 ├── components
 │   └── shared-dream
 │       ├── dream.InviteFlow.tsx
 │       ├── dream.SharedDreamCanvas.tsx
 │       ├── dream.SharedDreamProvider.tsx
+│       ├── dream.SharedDreamRuntime.tsx
 │       └── index.ts
+├── engine
+│   └── sharedDream.ts
 ├── hooks
 │   └── useSharedDream.ts
-├── lib
-│   ├── collaboration
-│   │   └── index.ts
-│   ├── runtime
-│   │   ├── instanceManager.ts
-│   │   ├── runtimeChannel.ts
-│   │   └── useSharedEnginChannel.ts
-│   ├── sharedDream.ts
-│   └── supabase
-│       └── realtime.ts
 └── supabase
-    └── migrations
-        ├── 20260307000001_conversations_messages.sql
-        ├── 20260321200000_phase8a_feed_and_layout.sql
-        ├── 20260322000000_phase8b_dream_windows.sql
-        └── 20260420000001_consent_settings_audit.sql
+    └── realtime.ts
 ```
-<details><summary>Shared-dream pipeline file index (22 files)</summary>
+<details><summary>Shared Dreams file index (11 files)</summary>
 
-- `app/api/dream-windows/[id]/route.ts` — API route handler for `/api/dream-windows/[id]`.
-- `app/api/dream-windows/route.ts` — API route handler for `/api/dream-windows`.
-- `app/api/dreams/feed/route.ts` — API route handler for `/api/dreams/feed`.
-- `app/api/dreams/instances/route.ts` — API route handler for `/api/dreams/instances`.
-- `app/api/dreams/transfer/route.ts` — API route handler for `/api/dreams/transfer`.
-- `app/api/messages/boards/route.ts` — API route handler for `/api/messages/boards`.
-- `app/api/messages/route.ts` — API route handler for `/api/messages`.
-- `components/shared-dream/dream.InviteFlow.tsx` — React UI module for InviteFlow.
-- `components/shared-dream/dream.SharedDreamCanvas.tsx` — React UI module for SharedDreamCanvas.
-- `components/shared-dream/dream.SharedDreamProvider.tsx` — React UI module for SharedDreamProvider.
-- `components/shared-dream/index.ts` — TypeScript runtime module for index.
-- `hooks/useSharedDream.ts` — TypeScript runtime module for useSharedDream.
-- `lib/collaboration/index.ts` — TypeScript runtime module for index.
-- `lib/runtime/instanceManager.ts` — TypeScript runtime module for instanceManager.
-- `lib/runtime/runtimeChannel.ts` — TypeScript runtime module for runtimeChannel.
-- `lib/runtime/useSharedEnginChannel.ts` — TypeScript runtime module for useSharedEnginChannel.
-- `lib/sharedDream.ts` — TypeScript runtime module for sharedDream.
-- `lib/supabase/realtime.ts` — TypeScript runtime module for realtime.
-- `supabase/migrations/20260307000001_conversations_messages.sql` — Database schema or migration for 20260307000001 conversations messages.
-- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — Database schema or migration for 20260321200000 phase8a feed and layout.
-- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — Database schema or migration for 20260322000000 phase8b windows.
-- `supabase/migrations/20260420000001_consent_settings_audit.sql` — Database schema or migration for 20260420000001 consent settings audit.
+- `app/api/dreams/feed/route.ts` — API route handler.
+- `app/api/dreams/instances/route.ts` — API route handler.
+- `app/api/dreams/transfer/route.ts` — API route handler.
+- `components/shared-dream/dream.InviteFlow.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamCanvas.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamProvider.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamRuntime.tsx` — React component module.
+- `components/shared-dream/index.ts` — TypeScript module.
+- `engine/sharedDream.ts` — TypeScript module.
+- `hooks/useSharedDream.ts` — TypeScript module.
+- `supabase/realtime.ts` — TypeScript module.
 
 </details>
+
 ## Dreamr — Human Media
-Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `lib/feed/**`, `components/home/**` using repository introspection.
-- Files tracked: **14**
-- API routes discovered: `/api/dreamr/feed`, `/api/dreamr/suggested`
-- App pages discovered: `/dreamr`
-- Components/modules discovered: `ActiveModuleSurface`, `BarGlobalDreamBar`, `BarPersistentDreamBar`, `DaydreamPulseStrip`, `FlagshipEnginesStrip`, `NeuralSeamCanvas`, `Page`, `WidgetDreamWidget`
-#### Dreamr — Human Media file structure
+Dreamr — Human Media is a full-stack subsystem that owns both React surfaces and API handlers. It exposes useLiveFeed, useYouTubeLiveFeed as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in BotDetector, PerfectLineTrap, BotSessionTracker. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), HomeDream.
+### Responsibilities
+- User-facing surfaces: /dreamr
+- API surface: /api/dreamr
+- Renders GET, POST, DreamRPage, CloseFriendsSettings, DreamRChannelPanel, DreamRCreatorPanel, +8 more
+- Core abstractions: BotDetector, PerfectLineTrap, BotSessionTracker, ViewTallyTracker
+- Runtime orchestration and engin lifecycle management
+- Feed ranking, algorithm execution, and content scoring
+### Key Modules
+- `ActiveModuleSurface`
+- `CloseFriendsSettings`
+- `DaydreamPulseStrip`
+- `DreamRChannelPanel`
+- `DreamRCreatorPanel`
+- `DreamRPage`
+- `FlagshipEnginesStrip`
+- `GET`
+- `GlobalDreamBar`
+- `NeuralSeamCanvas`
+- `POST`
+- `PersistentDreamBar`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **HomeDream**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on HomeDream
+- Depends on The Engins
+### Public Surfaces
+**Routes:**
+- `/dreamr`
+**API Endpoints:**
+- `/api/dreamr/feed` `[GET]`
+- `/api/dreamr/suggested` `[GET]`
+- `/api/dreamr/tally` `[POST]`
+**Components:**
+`ActiveModuleSurface`, `CloseFriendsSettings`, `DaydreamPulseStrip`, `DreamRChannelPanel`, `DreamRCreatorPanel`, `DreamRFeed`, `DreamRPage`, `DreamWidget`, `FlagshipEnginesStrip`, `GET`, +4 more
+### Notable Abstractions
+- `ActivityFeedTreatment` — type
+- `BoogieActivitySignals` — interface
+- `ActivityRevenueSplit` — interface
+- `ActivityTier` — enum
+- `VerificationMethod` — enum
+- `CPVTier` — enum
+- `AdType` — enum
+- `ActivityPoint` — interface
+- `ActivityVerification` — interface
+- `View` — interface
+- `SkipCredit` — interface
+- `AdView` — interface
+- `useLiveFeed` — hook
+- `useYouTubeLiveFeed` — hook
+### Capabilities
+- Exposes useLiveFeed, useYouTubeLiveFeed as composable React hooks
+- Public contract surface: BoogieActivitySignals, ActivityRevenueSplit, ActivityPoint, ActivityVerification, View
+- Shared type vocabulary: ActivityFeedTreatment, Path, DreamRSwipeIntent, DreamRViewIntent, SocialSource
+- Utility functions: calculateAQS, getUserMetrics, getAQS, qualifiesForPremiumCPV, getAQSTier, getAQSTierColor
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   ├── api
 │   │   └── dreamr
 │   │       ├── feed
 │   │       │   └── route.ts
-│   │       └── suggested
+│   │       ├── suggested
+│   │       │   └── route.ts
+│   │       └── tally
 │   │           └── route.ts
 │   └── dreamr
 │       └── page.tsx
 ├── components
+│   ├── dreamr
+│   │   ├── dream.CloseFriendsSettings.tsx
+│   │   ├── dream.panel.DreamRChannelPanel.tsx
+│   │   └── dream.panel.DreamRCreatorPanel.tsx
 │   └── home
 │       ├── dream.ActiveModuleSurface.tsx
 │       ├── dream.DaydreamPulseStrip.tsx
@@ -651,41 +1907,130 @@ Auto-synced from `app/dreamr/**`, `app/api/dreamr/**`, `lib/feed/**`, `component
 │       ├── dream.bar.GlobalDreamBar.tsx
 │       ├── dream.bar.PersistentDreamBar.tsx
 │       └── dream.widget.DreamWidget.tsx
-└── lib
-    └── feed
-        ├── feedTopics.ts
-        ├── hashtags.ts
-        ├── useLiveFeed.ts
-        └── useYouTubeLiveFeed.ts
+└── dreamr
+    ├── activity
+    │   ├── aqs.ts
+    │   ├── boogieActivityPolicy.ts
+    │   ├── revenueSplit.ts
+    │   ├── scoring.ts
+    │   ├── skipCredits.ts
+    │   ├── types.ts
+    │   └── visibility-score.ts
+    ├── bot-detection
+    │   ├── detector.ts
+    │   ├── index.ts
+    │   ├── swipe-physics.ts
+    │   └── view-tally.ts
+    ├── botDetection.ts
+    ├── components
+    │   └── dreamrfeed.tsx
+    ├── feed
+    │   ├── feedTopics.ts
+    │   ├── hashtags.ts
+    │   ├── useLiveFeed.ts
+    │   └── useYouTubeLiveFeed.ts
+    ├── feeds
+    │   └── embedFeedLoader.ts
+    ├── runtime
+    │   ├── closeFriendsVisibility.ts
+    │   ├── feedCursor.ts
+    │   ├── socialHumanityScore.ts
+    │   ├── swipeCalibration.ts
+    │   ├── swipePersonalization.ts
+    │   └── torridityLedger.ts
+    ├── social-feed.ts
+    ├── torridity
+    │   ├── constants.ts
+    │   ├── index.ts
+    │   └── physics.ts
+    └── torridity.ts
 ```
-<details><summary>Dreamr — Human Media file index (14 files)</summary>
+<details><summary>Dreamr — Human Media file index (43 files)</summary>
 
 - `app/api/dreamr/feed/route.ts` — API route handler.
 - `app/api/dreamr/suggested/route.ts` — API route handler.
+- `app/api/dreamr/tally/route.ts` — API route handler.
 - `app/dreamr/page.tsx` — route page.
-- `components/home/dream.ActiveModuleSurface.tsx` — React UI module for ActiveModuleSurface.
-- `components/home/dream.DaydreamPulseStrip.tsx` — React UI module for DaydreamPulseStrip.
-- `components/home/dream.FlagshipEnginesStrip.tsx` — React UI module for FlagshipEnginesStrip.
-- `components/home/dream.NeuralSeamCanvas.tsx` — React UI module for NeuralSeamCanvas.
-- `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
-- `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
-- `components/home/dream.widget.DreamWidget.tsx` — React UI module for WidgetDreamWidget.
-- `lib/feed/feedTopics.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/hashtags.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/useLiveFeed.ts` — TypeScript/JavaScript runtime module.
-- `lib/feed/useYouTubeLiveFeed.ts` — TypeScript/JavaScript runtime module.
+- `components/dreamr/dream.CloseFriendsSettings.tsx` — React component module.
+- `components/dreamr/dream.panel.DreamRChannelPanel.tsx` — React component module.
+- `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` — React component module.
+- `components/home/dream.ActiveModuleSurface.tsx` — React component module.
+- `components/home/dream.DaydreamPulseStrip.tsx` — React component module.
+- `components/home/dream.FlagshipEnginesStrip.tsx` — React component module.
+- `components/home/dream.NeuralSeamCanvas.tsx` — React component module.
+- `components/home/dream.bar.GlobalDreamBar.tsx` — React component module.
+- `components/home/dream.bar.PersistentDreamBar.tsx` — React component module.
+- `components/home/dream.widget.DreamWidget.tsx` — React component module.
+- `dreamr/activity/aqs.ts` — TypeScript module.
+- `dreamr/activity/boogieActivityPolicy.ts` — TypeScript module.
+- `dreamr/activity/revenueSplit.ts` — TypeScript module.
+- `dreamr/activity/scoring.ts` — TypeScript module.
+- `dreamr/activity/skipCredits.ts` — TypeScript module.
+- `dreamr/activity/types.ts` — TypeScript module.
+- `dreamr/activity/visibility-score.ts` — TypeScript module.
+- `dreamr/bot-detection/detector.ts` — TypeScript module.
+- `dreamr/bot-detection/index.ts` — TypeScript module.
+- `dreamr/bot-detection/swipe-physics.ts` — TypeScript module.
+- `dreamr/bot-detection/view-tally.ts` — TypeScript module.
+- `dreamr/botDetection.ts` — TypeScript module.
+- `dreamr/components/dreamrfeed.tsx` — React component module.
+- `dreamr/feed/feedTopics.ts` — TypeScript module.
+- `dreamr/feed/hashtags.ts` — TypeScript module.
+- `dreamr/feed/useLiveFeed.ts` — TypeScript module.
+- `dreamr/feed/useYouTubeLiveFeed.ts` — TypeScript module.
+- `dreamr/feeds/embedFeedLoader.ts` — TypeScript module.
+- `dreamr/runtime/closeFriendsVisibility.ts` — TypeScript module.
+- `dreamr/runtime/feedCursor.ts` — TypeScript module.
+- `dreamr/runtime/socialHumanityScore.ts` — TypeScript module.
+- `dreamr/runtime/swipeCalibration.ts` — TypeScript module.
+- `dreamr/runtime/swipePersonalization.ts` — TypeScript module.
+- `dreamr/runtime/torridityLedger.ts` — TypeScript module.
+- `dreamr/social-feed.ts` — TypeScript module.
+- `dreamr/torridity.ts` — TypeScript module.
+- `dreamr/torridity/constants.ts` — TypeScript module.
+- `dreamr/torridity/index.ts` — TypeScript module.
+- `dreamr/torridity/physics.ts` — TypeScript module.
 
 </details>
 
 ## The Shop
-The Shop is DREAMengin’s first-party storefront (`/shop`, `/shop/sell`) for creator-owned merch listings. Unlike Marketplace, Shop behaves as a direct seller storefront tied to the owner’s catalog.
-
-Runtime flow:
-- Listing CRUD and validation run through `app/api/shop/route.ts` + `lib/shop/listings.ts`.
-- Records persist to the Supabase `merch` table introduced in `20260324000001_phase8e_shop_marketplace.sql`.
-- Create/update actions emit feed-side visibility artifacts so products can appear in user-facing discovery surfaces.
-- Billing logic in-repo is server-side order math/recording; external checkout provider wiring is intentionally not embedded in this subsystem.
-#### Shop files file structure
+The Shop is a full-stack subsystem that owns both React surfaces and API handlers. It depends on Backend, System, Core & CoreSurfaces, User-Facing Modularity.
+### Responsibilities
+- User-facing surfaces: /shop, /shop/sell
+- API surface: /api/shop
+- Renders GET, POST, PUT, DELETE, ShopPage, SellItemPage
+### Key Modules
+- `DELETE`
+- `GET`
+- `POST`
+- `PUT`
+- `SellItemPage`
+- `ShopPage`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **User-Facing Modularity**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Routes:**
+- `/shop`
+- `/shop/sell`
+**API Endpoints:**
+- `/api/shop` `[GET, POST, PUT, DELETE]`
+**Components:**
+`DELETE`, `GET`, `POST`, `PUT`, `SellItemPage`, `ShopPage`
+### Notable Abstractions
+- `ShopListingInput` — type
+- `ShopListingRecord` — type
+- `ValidationResult` — type
+### Capabilities
+- Shared type vocabulary: ShopListingInput, ShopListingRecord, ValidationResult
+- Utility functions: validateShopListing, normalizeShopListing, isOrderOwner
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+- Delete endpoints for resource lifecycle
+#### File Structure
 ```text
 ├── app
 │   ├── api
@@ -695,34 +2040,65 @@ Runtime flow:
 │       ├── page.tsx
 │       └── sell
 │           └── page.tsx
-├── lib
-│   └── shop
-│       └── listings.ts
-├── supabase
-│   └── migrations
-│       └── 20260324000001_phase8e_shop_marketplace.sql
-└── tests
-    └── phase8e-shop-marketplace.test.ts
+└── engine
+    └── shop
+        └── listings.ts
 ```
-<details><summary>Shop files file index (6 files)</summary>
+<details><summary>The Shop file index (4 files)</summary>
 
-- `app/api/shop/route.ts` — API route handler for `/api/shop`.
-- `app/shop/page.tsx` — Next.js route page for `/shop`.
-- `app/shop/sell/page.tsx` — Next.js route page for `/shop/sell`.
-- `lib/shop/listings.ts` — TypeScript runtime module for listings.
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — Database schema or migration for 20260324000001 phase8e shop marketplace.
-- `tests/phase8e-shop-marketplace.test.ts` — TypeScript runtime module for phase8e shop marketplace test.
+- `app/api/shop/route.ts` — API route handler.
+- `app/shop/page.tsx` — route page.
+- `app/shop/sell/page.tsx` — route page.
+- `engine/shop/listings.ts` — TypeScript module.
 
 </details>
-## The Marketplace
-Marketplace is the peer-to-peer exchange surface (`/marketplace`, `/marketplace/sell`, `/marketplace/[id]`) and is intentionally separate from Shop. It focuses on cross-user discovery, request workflows, and moderated publish state.
 
-How it works:
-- Listings and query filters are handled by `app/api/marketplace/route.ts` + `lib/marketplace/listings.ts` with category/tag filtering and seller-profile joins.
-- Buyer → seller outreach runs through `app/api/marketplace/request/route.ts` + `lib/marketplace/request.ts` (request/contact workflow).
-- `marketplace_items` and `marketplace_contact_requests` schema/policies are defined in `20260324000001_phase8e_shop_marketplace.sql` with moderation/publish gating semantics.
-- UI surfaces (`dream.MarketplaceListingCard`, `dream.MarketplaceRequestButton`) consume the same fixed runtime/state contract as other modules.
-#### Marketplace files file structure
+## The Marketplace
+The Marketplace is a full-stack subsystem that owns both React surfaces and API handlers. It depends on Backend, System, Core & CoreSurfaces, User-Facing Modularity.
+### Responsibilities
+- User-facing surfaces: /marketplace, /marketplace/[id], /marketplace/sell
+- API surface: /api/marketplace
+- Renders POST, GET, POST, MarketplaceItemPage, MarketplacePage, MarketplaceSellPage, +2 more
+### Key Modules
+- `GET`
+- `MarketplaceItemPage`
+- `MarketplaceListingCard`
+- `MarketplacePage`
+- `MarketplaceRequestButton`
+- `MarketplaceSellPage`
+- `POST`
+- `dream.MarketplaceListingCard`
+- `dream.MarketplaceRequestButton`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **User-Facing Modularity**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Routes:**
+- `/marketplace`
+- `/marketplace/[id]`
+- `/marketplace/sell`
+**API Endpoints:**
+- `/api/marketplace` `[GET, POST]`
+- `/api/marketplace/request` `[POST]`
+**Components:**
+`GET`, `MarketplaceItemPage`, `MarketplaceListingCard`, `MarketplacePage`, `MarketplaceRequestButton`, `MarketplaceSellPage`, `POST`
+### Notable Abstractions
+- `MarketplaceCategory` — type
+- `MarketplaceListingInput` — type
+- `MarketplaceListingRecord` — type
+- `ValidationResult` — type
+- `ContactRequestInput` — type
+- `ContactRequestRecord` — type
+- `ContactRequestValidationResult` — type
+### Capabilities
+- Shared type vocabulary: MarketplaceCategory, MarketplaceListingInput, MarketplaceListingRecord, ValidationResult, ContactRequestInput
+- Utility functions: validateMarketplaceListing, normalizeMarketplaceListing, marketplaceDetailRoute, formatMarketplacePrice, validateContactRequest, buildContactRequestRecord
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   ├── api
@@ -737,50 +2113,71 @@ How it works:
 │       └── sell
 │           └── page.tsx
 ├── components
-│   ├── marketplace
-│   │   ├── dream.MarketplaceListingCard.tsx
-│   │   └── dream.MarketplaceRequestButton.tsx
-│   └── panels
-│       └── dream.panel.MarketplacePanel.tsx
-├── lib
 │   └── marketplace
-│       ├── listings.ts
-│       └── request.ts
-├── supabase
-│   └── migrations
-│       └── 20260324000001_phase8e_shop_marketplace.sql
-├── tests
-│   └── phase8e-shop-marketplace.test.ts
-└── types
-    └── marketplace.ts
+│       ├── dream.MarketplaceListingCard.tsx
+│       └── dream.MarketplaceRequestButton.tsx
+└── engine
+    └── marketplace
+        ├── listings.ts
+        └── request.ts
 ```
-<details><summary>Marketplace files file index (13 files)</summary>
+<details><summary>The Marketplace file index (9 files)</summary>
 
-- `app/api/marketplace/request/route.ts` — API route handler for `/api/marketplace/request`.
-- `app/api/marketplace/route.ts` — API route handler for `/api/marketplace`.
-- `app/marketplace/[id]/page.tsx` — Next.js route page for `/marketplace/[id]`.
-- `app/marketplace/page.tsx` — Next.js route page for `/marketplace`.
-- `app/marketplace/sell/page.tsx` — Next.js route page for `/marketplace/sell`.
-- `components/marketplace/dream.MarketplaceListingCard.tsx` — React UI module for MarketplaceListingCard.
-- `components/marketplace/dream.MarketplaceRequestButton.tsx` — React UI module for MarketplaceRequestButton.
-- `components/panels/dream.panel.MarketplacePanel.tsx` — React UI module for panel MarketplacePanel.
-- `lib/marketplace/listings.ts` — TypeScript runtime module for listings.
-- `lib/marketplace/request.ts` — TypeScript runtime module for request.
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — Database schema or migration for 20260324000001 phase8e shop marketplace.
-- `tests/phase8e-shop-marketplace.test.ts` — TypeScript runtime module for phase8e shop marketplace test.
-- `types/marketplace.ts` — TypeScript runtime module for marketplace.
+- `app/api/marketplace/request/route.ts` — API route handler.
+- `app/api/marketplace/route.ts` — API route handler.
+- `app/marketplace/[id]/page.tsx` — route page.
+- `app/marketplace/page.tsx` — route page.
+- `app/marketplace/sell/page.tsx` — route page.
+- `components/marketplace/dream.MarketplaceListingCard.tsx` — React component module.
+- `components/marketplace/dream.MarketplaceRequestButton.tsx` — React component module.
+- `engine/marketplace/listings.ts` — TypeScript module.
+- `engine/marketplace/request.ts` — TypeScript module.
 
 </details>
-## Ads & User Ads
-Ads & User Ads cover campaign creation, slot delivery, order accounting, and skip-credit economics across `/ads`, `/ads/create`, and `/ads/slot/[id]`.
 
-What it does:
-- `app/api/ads/orders/route.ts` applies platform/creator split math during order writes.
-- `app/api/ads/view/route.ts` tracks ad impressions/views for reporting and payout logic.
-- Skip-credit ledger endpoints (`/api/skip-credits/balance|earn|use`) maintain earn/use/balance state consumed by UI components.
-- `components/ads/dream.AdUnit.tsx` renders ad units and `dream.SkipCreditBalance.tsx` exposes user credit balance in-shell.
-- `supabase/migrations/20260321000000_ads_platform_promotions.sql` adds platform promotion + ad-system schema required by these surfaces.
-#### Ads system files file structure
+## Ads & User Ads
+Ads & User Ads is a full-stack subsystem that owns both React surfaces and API handlers. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, User-Facing Modularity.
+### Responsibilities
+- User-facing surfaces: /ads, /ads/create, /ads/slot/[id]
+- API surface: /api/ads
+- Renders CreateAdSlotPage, AdsPage, AdSlotPage, POST, POST, AdUnit, +1 more
+### Key Modules
+- `AdSlotPage`
+- `AdUnit`
+- `AdsPage`
+- `CreateAdSlotPage`
+- `POST`
+- `SkipCreditBalance`
+- `dream.AdUnit`
+- `dream.SkipCreditBalance`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **User-Facing Modularity**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Routes:**
+- `/ads`
+- `/ads/create`
+- `/ads/slot/[id]`
+**API Endpoints:**
+- `/api/ads/orders` `[POST]`
+- `/api/ads/view` `[POST]`
+**Components:**
+`AdSlotPage`, `AdUnit`, `AdsPage`, `CreateAdSlotPage`, `POST`, `SkipCreditBalance`
+### Notable Abstractions
+- `AdPlacement` — type
+- `AdSlot` — type
+- `ProfileLite` — type
+- `AdListing` — type
+- `AdOrder` — type
+### Capabilities
+- Shared type vocabulary: AdPlacement, AdSlot, ProfileLite, AdListing, AdOrder
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   ├── ads
@@ -791,104 +2188,195 @@ What it does:
 │   │       └── [id]
 │   │           └── page.tsx
 │   └── api
-│       ├── ads
-│       │   ├── orders
-│       │   │   └── route.ts
-│       │   └── view
-│       │       └── route.ts
-│       └── skip-credits
-│           ├── balance
+│       └── ads
+│           ├── orders
 │           │   └── route.ts
-│           ├── earn
-│           │   └── route.ts
-│           └── use
+│           └── view
 │               └── route.ts
 ├── components
 │   └── ads
 │       ├── dream.AdUnit.tsx
 │       └── dream.SkipCreditBalance.tsx
-├── supabase
-│   └── migrations
-│       └── 20260321000000_ads_platform_promotions.sql
 └── types
     └── ads.ts
 ```
-<details><summary>Ads system files file index (12 files)</summary>
+<details><summary>Ads & User Ads file index (8 files)</summary>
 
-- `app/ads/create/page.tsx` — Next.js route page for `/ads/create`.
-- `app/ads/page.tsx` — Next.js route page for `/ads`.
-- `app/ads/slot/[id]/page.tsx` — Next.js route page for `/ads/slot/[id]`.
-- `app/api/ads/orders/route.ts` — API route handler for `/api/ads/orders`.
-- `app/api/ads/view/route.ts` — API route handler for `/api/ads/view`.
-- `app/api/skip-credits/balance/route.ts` — API route handler for `/api/skip-credits/balance`.
-- `app/api/skip-credits/earn/route.ts` — API route handler for `/api/skip-credits/earn`.
-- `app/api/skip-credits/use/route.ts` — API route handler for `/api/skip-credits/use`.
-- `components/ads/dream.AdUnit.tsx` — React UI module for AdUnit.
-- `components/ads/dream.SkipCreditBalance.tsx` — React UI module for SkipCreditBalance.
-- `supabase/migrations/20260321000000_ads_platform_promotions.sql` — Database schema or migration for 20260321000000 ads platform promotions.
-- `types/ads.ts` — TypeScript runtime module for ads.
+- `app/ads/create/page.tsx` — route page.
+- `app/ads/page.tsx` — route page.
+- `app/ads/slot/[id]/page.tsx` — route page.
+- `app/api/ads/orders/route.ts` — API route handler.
+- `app/api/ads/view/route.ts` — API route handler.
+- `components/ads/dream.AdUnit.tsx` — React component module.
+- `components/ads/dream.SkipCreditBalance.tsx` — React component module.
+- `types/ads.ts` — TypeScript module.
 
 </details>
+
 ## The DmBar (`dreamdmbar/`)
-Auto-synced from `dreamdmbar/**`, `components/home/dream.bar.*`, `lib/dreamdm/**` using repository introspection.
-- Files tracked: **16**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `BarGlobalDreamBar`, `BarPersistentDreamBar`, `DreamSystemContext`, `DreamsurfaceDreamdmbar`, `GlowingLight`
-#### The DmBar (`dreamdmbar/`) file structure
+The DmBar (`dreamdmbar/`) is a UI subsystem composed of React components and presentation logic. It exposes useDreamBarContext, useDreamDMConversations, useDreamDMDraft as React hooks for consumption by sibling subsystems. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, The Engins.
+### Responsibilities
+- Renders GlobalDreamBar, PersistentDreamBar, GlowingLight, DreamDMBar, DreamSystemProvider
+- Runtime orchestration and engin lifecycle management
+### Key Modules
+- `DreamDMBar`
+- `DreamSystemContext`
+- `DreamSystemProvider`
+- `GlobalDreamBar`
+- `GlowingLight`
+- `PersistentDreamBar`
+- `dream.GlowingLight`
+- `dream.bar.GlobalDreamBar`
+- `dream.bar.PersistentDreamBar`
+- `dreamsurface.dreamdmbar`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on The Engins
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Components:**
+`DreamDMBar`, `DreamSystemProvider`, `GlobalDreamBar`, `GlowingLight`, `PersistentDreamBar`
+### Notable Abstractions
+- `GlowingLightProps` — interface
+- `DreamBarSurface` — type
+- `DreamBarContext` — interface
+- `DMConversation` — interface
+- `DraftPayload` — interface
+- `DMMessage` — interface
+- `SearchResultType` — type
+- `SearchResult` — interface
+- `UseDreamSearchReturn` — interface
+- `MediaType` — type
+- `SendMessageParams` — interface
+- `UseMessagingCoreReturn` — interface
+- `useDreamBarContext` — hook
+- `useDreamDMConversations` — hook
+- `useDreamDMDraft` — hook
+- `useDreamDMMessages` — hook
+- `useDreamSearch` — hook
+- `useDreamSystem` — hook
+- `useMessagingCore` — hook
+- `useModuleBarIntent` — hook
+### Capabilities
+- Exposes useDreamBarContext, useDreamDMConversations, useDreamDMDraft, useDreamDMMessages, useDreamSearch, useDreamSystem as composable React hooks
+- Public contract surface: GlowingLightProps, DreamBarContext, DMConversation, DraftPayload, DMMessage
+- Shared type vocabulary: DreamBarSurface, SearchResultType, MediaType, DbNotificationContent, UiNotificationType
+- Utility functions: detectSurface, resolveIntentOverride, listAllDraftIds, cleanupStaleDrafts, getDraftAge, mapNotificationType
+#### File Structure
 ```text
 ├── components
 │   └── home
 │       ├── dream.bar.GlobalDreamBar.tsx
 │       └── dream.bar.PersistentDreamBar.tsx
-├── dreamdmbar
-│   ├── Agents-MUST-READ-ARCHITECTURE.md
-│   ├── dream.GlowingLight.tsx
-│   └── dreamsurface.dreamdmbar.tsx
-└── lib
-    └── dreamdm
+└── dreamdmbar
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── dream.GlowingLight.tsx
+    ├── dreamsurface.dreamdmbar.tsx
+    ├── hooks
+    │   ├── useDreamBarContext.ts
+    │   ├── useDreamDMConversations.ts
+    │   ├── useDreamDMDraft.ts
+    │   ├── useDreamDMMessages.ts
+    │   ├── useDreamSearch.ts
+    │   ├── useMessagingCore.ts
+    │   ├── useModuleBarIntent.ts
+    │   └── useNotifications.ts
+    ├── notifications
+    │   ├── notificationHelpers.ts
+    │   └── useNotifications.ts
+    └── runtime
         ├── DreamSystemContext.tsx
         ├── barInteractions.ts
-        ├── bridgeSeamFlow.ts
-        ├── useDreamBarContext.ts
-        ├── useDreamDMConversations.ts
-        ├── useDreamDMDraft.ts
-        ├── useDreamDMMessages.ts
-        ├── useDreamSearch.ts
-        ├── useMessagingCore.ts
-        ├── useModuleBarIntent.ts
-        └── useNotifications.ts
+        └── bridgeSeamFlow.ts
 ```
-<details><summary>The DmBar (`dreamdmbar/`) file index (16 files)</summary>
+<details><summary>The DmBar (`dreamdmbar/`) file index (18 files)</summary>
 
-- `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
-- `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
-- `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `dreamdmbar/dream.GlowingLight.tsx` — React UI module for GlowingLight.
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React UI module for DreamsurfaceDreamdmbar.
-- `lib/dreamdm/DreamSystemContext.tsx` — React UI module for DreamSystemContext.
-- `lib/dreamdm/barInteractions.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/bridgeSeamFlow.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamBarContext.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useDreamSearch.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useModuleBarIntent.ts` — TypeScript/JavaScript runtime module.
-- `lib/dreamdm/useNotifications.ts` — TypeScript/JavaScript runtime module.
+- `components/home/dream.bar.GlobalDreamBar.tsx` — React component module.
+- `components/home/dream.bar.PersistentDreamBar.tsx` — React component module.
+- `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `dreamdmbar/dream.GlowingLight.tsx` — React component module.
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — React component module.
+- `dreamdmbar/hooks/useDreamBarContext.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamSearch.ts` — TypeScript module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript module.
+- `dreamdmbar/hooks/useModuleBarIntent.ts` — TypeScript module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/notifications/notificationHelpers.ts` — TypeScript module.
+- `dreamdmbar/notifications/useNotifications.ts` — TypeScript module.
+- `dreamdmbar/runtime/DreamSystemContext.tsx` — React component module.
+- `dreamdmbar/runtime/barInteractions.ts` — TypeScript module.
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript module.
 
 </details>
 
 ## Messaging
-Messaging covers direct conversations, board-style threads, drafts, notifications, and realtime message sync under the DreamDM shell.
-
-Runtime flow:
-- `app/api/messages/route.ts` handles conversation fetch/send writes with auth + child-safety checks on message content/media.
-- `app/api/messages/boards/route.ts` provides board creation and board post request flow.
-- Client orchestration is split across `useDreamDMConversations`, `useDreamDMMessages`, `useDreamDMDraft`, `useMessagingCore`, and `useNotifications` for list state, realtime inserts, optimistic send, draft persistence, and unread polling.
-- `20260307000001_conversations_messages.sql` provides the core `conversations/messages` schema + policy baseline used by these routes/hooks.
-#### Messaging files file structure
+Messaging is a full-stack subsystem that owns both React surfaces and API handlers. It exposes useDreamDMConversations, useDreamDMDraft, useDreamDMMessages as React hooks for consumption by sibling subsystems. It depends on Backend, System, Core & CoreSurfaces, Dreams (Widgets / Windows / Surfaces), The Engins.
+### Responsibilities
+- User-facing surfaces: /messages, /messages/boards, /messages/boards/[id], /messages/boards/new
+- API surface: /api/messages
+- Renders POST, GET, POST, BoardDetailPage, NewBoardPage, BoardsPage, +2 more
+- Real-time communication and channel management
+### Key Modules
+- `BoardComposer`
+- `BoardDetailPage`
+- `BoardsPage`
+- `GET`
+- `MessagesPage`
+- `NewBoardPage`
+- `POST`
+- `dream.BoardComposer`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Routes:**
+- `/messages`
+- `/messages/boards`
+- `/messages/boards/[id]`
+- `/messages/boards/new`
+**API Endpoints:**
+- `/api/messages` `[GET, POST]`
+- `/api/messages/boards` `[POST]`
+**Components:**
+`BoardComposer`, `BoardDetailPage`, `BoardsPage`, `GET`, `MessagesPage`, `NewBoardPage`, `POST`
+### Notable Abstractions
+- `DMConversation` — interface
+- `DraftPayload` — interface
+- `DMMessage` — interface
+- `MediaType` — type
+- `SendMessageParams` — interface
+- `UseMessagingCoreReturn` — interface
+- `useDreamDMConversations` — hook
+- `useDreamDMDraft` — hook
+- `useDreamDMMessages` — hook
+- `useMessagingCore` — hook
+- `useNotifications` — hook
+### Capabilities
+- Exposes useDreamDMConversations, useDreamDMDraft, useDreamDMMessages, useMessagingCore, useNotifications as composable React hooks
+- Public contract surface: DMConversation, DraftPayload, DMMessage, SendMessageParams, UseMessagingCoreReturn
+- Shared type vocabulary: MediaType
+- Utility functions: listAllDraftIds, cleanupStaleDrafts, getDraftAge
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   ├── api
@@ -905,45 +2393,69 @@ Runtime flow:
 │       │   └── page.tsx
 │       └── page.tsx
 ├── components
-│   ├── dream.MessagesClient.tsx
 │   └── messaging
 │       └── dream.BoardComposer.tsx
-├── lib
-│   └── dreamdm
-│       ├── useDreamDMConversations.ts
-│       ├── useDreamDMDraft.ts
-│       ├── useDreamDMMessages.ts
-│       ├── useMessagingCore.ts
-│       └── useNotifications.ts
-└── supabase
-    └── migrations
-        └── 20260307000001_conversations_messages.sql
+└── dreamdmbar
+    └── hooks
+        ├── useDreamDMConversations.ts
+        ├── useDreamDMDraft.ts
+        ├── useDreamDMMessages.ts
+        ├── useMessagingCore.ts
+        └── useNotifications.ts
 ```
-<details><summary>Messaging files file index (14 files)</summary>
+<details><summary>Messaging file index (12 files)</summary>
 
-- `app/api/messages/boards/route.ts` — API route handler for `/api/messages/boards`.
-- `app/api/messages/route.ts` — API route handler for `/api/messages`.
-- `app/messages/boards/[id]/page.tsx` — Next.js route page for `/messages/boards/[id]`.
-- `app/messages/boards/new/page.tsx` — Next.js route page for `/messages/boards/new`.
-- `app/messages/boards/page.tsx` — Next.js route page for `/messages/boards`.
-- `app/messages/page.tsx` — Next.js route page for `/messages`.
-- `components/dream.MessagesClient.tsx` — React UI module for MessagesClient.
-- `components/messaging/dream.BoardComposer.tsx` — React UI module for BoardComposer.
-- `lib/dreamdm/useDreamDMConversations.ts` — TypeScript runtime module for useDreamDMConversations.
-- `lib/dreamdm/useDreamDMDraft.ts` — TypeScript runtime module for useDreamDMDraft.
-- `lib/dreamdm/useDreamDMMessages.ts` — TypeScript runtime module for useDreamDMMessages.
-- `lib/dreamdm/useMessagingCore.ts` — TypeScript runtime module for useMessagingCore.
-- `lib/dreamdm/useNotifications.ts` — TypeScript runtime module for useNotifications.
-- `supabase/migrations/20260307000001_conversations_messages.sql` — Database schema or migration for 20260307000001 conversations messages.
+- `app/api/messages/boards/route.ts` — API route handler.
+- `app/api/messages/route.ts` — API route handler.
+- `app/messages/boards/[id]/page.tsx` — route page.
+- `app/messages/boards/new/page.tsx` — route page.
+- `app/messages/boards/page.tsx` — route page.
+- `app/messages/page.tsx` — route page.
+- `components/messaging/dream.BoardComposer.tsx` — React component module.
+- `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMDraft.ts` — TypeScript module.
+- `dreamdmbar/hooks/useDreamDMMessages.ts` — TypeScript module.
+- `dreamdmbar/hooks/useMessagingCore.ts` — TypeScript module.
+- `dreamdmbar/hooks/useNotifications.ts` — TypeScript module.
 
 </details>
+
 ## HomeDream
-Auto-synced from `app/homedream/**`, `components/home/**`, `lib/home/**` using repository introspection.
-- Files tracked: **8**
-- API routes discovered: none
-- App pages discovered: `/homedream`
-- Components/modules discovered: `ActiveModuleSurface`, `BarGlobalDreamBar`, `BarPersistentDreamBar`, `DaydreamPulseStrip`, `FlagshipEnginesStrip`, `NeuralSeamCanvas`, `Page`, `WidgetDreamWidget`
-#### HomeDream file structure
+HomeDream is a UI subsystem composed of React components and presentation logic. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, Dreams (Widgets / Windows / Surfaces).
+### Responsibilities
+- User-facing surfaces: /homedream
+- Renders HomeDreamPage, ActiveModuleSurface, DaydreamPulseStrip, FlagshipEnginesStrip, NeuralSeamCanvas, GlobalDreamBar, +2 more
+### Key Modules
+- `ActiveModuleSurface`
+- `DaydreamPulseStrip`
+- `DreamWidget`
+- `FlagshipEnginesStrip`
+- `GlobalDreamBar`
+- `HomeDreamPage`
+- `NeuralSeamCanvas`
+- `PersistentDreamBar`
+- `dream.ActiveModuleSurface`
+- `dream.DaydreamPulseStrip`
+- `dream.FlagshipEnginesStrip`
+- `dream.NeuralSeamCanvas`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+### Public Surfaces
+**Routes:**
+- `/homedream`
+**Components:**
+`ActiveModuleSurface`, `DaydreamPulseStrip`, `DreamWidget`, `FlagshipEnginesStrip`, `GlobalDreamBar`, `HomeDreamPage`, `NeuralSeamCanvas`, `PersistentDreamBar`
+#### File Structure
 ```text
 ├── app
 │   └── homedream
@@ -961,28 +2473,90 @@ Auto-synced from `app/homedream/**`, `components/home/**`, `lib/home/**` using r
 <details><summary>HomeDream file index (8 files)</summary>
 
 - `app/homedream/page.tsx` — route page.
-- `components/home/dream.ActiveModuleSurface.tsx` — React UI module for ActiveModuleSurface.
-- `components/home/dream.DaydreamPulseStrip.tsx` — React UI module for DaydreamPulseStrip.
-- `components/home/dream.FlagshipEnginesStrip.tsx` — React UI module for FlagshipEnginesStrip.
-- `components/home/dream.NeuralSeamCanvas.tsx` — React UI module for NeuralSeamCanvas.
-- `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
-- `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
-- `components/home/dream.widget.DreamWidget.tsx` — React UI module for WidgetDreamWidget.
+- `components/home/dream.ActiveModuleSurface.tsx` — React component module.
+- `components/home/dream.DaydreamPulseStrip.tsx` — React component module.
+- `components/home/dream.FlagshipEnginesStrip.tsx` — React component module.
+- `components/home/dream.NeuralSeamCanvas.tsx` — React component module.
+- `components/home/dream.bar.GlobalDreamBar.tsx` — React component module.
+- `components/home/dream.bar.PersistentDreamBar.tsx` — React component module.
+- `components/home/dream.widget.DreamWidget.tsx` — React component module.
 
 </details>
 
 ## DreamSpace
-Auto-synced from `app/daydream/**`, `components/daydream/**`, `lib/daydream/**` using repository introspection.
-- Files tracked: **40**
-- API routes discovered: none
-- App pages discovered: `/daydream/analytics`, `/daydream/brand`, `/daydream/brand/engin`, `/daydream/code`, `/daydream/code/engin`, `/daydream/constellation`, `/daydream/create`, `/daydream/create/engin`, +12 more
-- Components/modules discovered: `CodeDreamIDE`, `ConstellationClient`, `Constellationmap`, `DiffViewer`, `DreamsurfaceDaydreamAnalyticsDaydream`, `DreamsurfaceDaydreamBrandDaydream`, `GamePageClient`, `JourneyTrail`, +11 more
-#### DreamSpace file structure
+DreamSpace is a UI subsystem composed of React components and presentation logic. It exposes useDaydreamPersistence, useDaydreamState as React hooks for consumption by sibling subsystems. It depends on Backend, System, Core & CoreSurfaces, Custom Engins, Dreams (Widgets / Windows / Surfaces).
+### Responsibilities
+- User-facing surfaces: /daydream/brand, /daydream/brand/engin, /daydream/code, /daydream/code/engin, /daydream/constellation, +14 more
+- Renders BrandDaydreamPage, CodeDaydreamPage, ConstellationClient, ConstellationPage, CreateDaydreamPage, ForgeDaydreamPage, +28 more
+- Asset storage, upload pipelines, and CDN management
+### Key Modules
+- `BrandDaydreamPage`
+- `CodeDaydreamPage`
+- `ConstellationClient`
+- `ConstellationPage`
+- `CreateDaydreamPage`
+- `ForgeDaydreamPage`
+- `GamePage`
+- `GamesDaydreamPage`
+- `GamesEnginRedirectPage`
+- `ImmersiveGameShell`
+- `LabDaydreamPage`
+- `OptimizeroPage`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Custom Engins**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Custom Engins
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+### Public Surfaces
+**Routes:**
+- `/daydream/brand`
+- `/daydream/brand/engin`
+- `/daydream/code`
+- `/daydream/code/engin`
+- `/daydream/constellation`
+- `/daydream/create`
+- `/daydream/create/engin`
+- `/daydream/forge`
+- `/daydream/game`
+- `/daydream/games`
+- `/daydream/games/engin`
+- `/daydream/lab`
+- `/daydream/lab/engin`
+- `/daydream/lab/portfolio`
+- `/daydream/media-vault`
+- `/daydream/music`
+- `/daydream/music/engin`
+- `/daydream/music/upload`
+- `/daydream/play`
+**Components:**
+`BrandDaydream`, `BrandDaydreamPage`, `CodeDaydreamPage`, `CodeDreamIDE`, `CompingPanel`, `ConstellationClient`, `ConstellationPage`, `CreateDaydreamPage`, `DaydreamShell`, `DiffViewer`, +18 more
+### Notable Abstractions
+- `StandaloneEnginName` — type
+- `DaydreamWidget` — type
+- `UseDaydreamPersistenceOptions` — interface
+- `UseDaydreamPersistenceReturn` — interface
+- `DaydreamSide` — type
+- `DaydreamStatePayload` — type
+- `UseDaydreamStateOptions` — interface
+- `UseDaydreamStateReturn` — interface
+- `useDaydreamPersistence` — hook
+- `useDaydreamState` — hook
+### Capabilities
+- Exposes useDaydreamPersistence, useDaydreamState as composable React hooks
+- Public contract surface: UseDaydreamPersistenceOptions, UseDaydreamPersistenceReturn, UseDaydreamStateOptions, UseDaydreamStateReturn
+- Shared type vocabulary: StandaloneEnginName, DaydreamWidget, DaydreamSide, DaydreamStatePayload
+- Utility functions: BrandEnginRedirectPage, CodeEnginRedirectPage, CreateEnginRedirectPage, BabylonSideScroller, LabEnginRedirectPage, MediaVaultLegacyPage
+#### File Structure
 ```text
 ├── app
 │   └── daydream
-│       ├── analytics
-│       │   └── page.tsx
 │       ├── brand
 │       │   ├── engin
 │       │   │   └── page.tsx
@@ -1035,32 +2609,43 @@ Auto-synced from `app/daydream/**`, `components/daydream/**`, `lib/daydream/**` 
 │       ├── dream.StandaloneEnginSurface.tsx
 │       ├── dream.constellationmap.tsx
 │       ├── dream.shell.DaydreamShell.tsx
-│       ├── dreamsurface.daydream.AnalyticsDaydream.tsx
 │       ├── dreamsurface.daydream.BrandDaydream.tsx
 │       └── starmaker
 │           ├── dream.panel.CompingPanel.tsx
 │           ├── dream.panel.MultitrackArrangementPanel.tsx
 │           ├── dream.panel.PianoRollPanel.tsx
 │           └── dream.panel.SessionViewPanel.tsx
-└── lib
-    └── daydream
+└── daydreams
+    ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── brand
+    │   └── page.tsx
+    ├── code
+    │   └── page.tsx
+    ├── create
+    │   └── page.tsx
+    ├── games
+    │   └── page.tsx
+    ├── lab
+    │   └── page.tsx
+    ├── music
+    │   └── page.tsx
+    └── shared
         ├── useDaydreamPersistence.ts
         └── useDaydreamState.ts
 ```
-<details><summary>DreamSpace file index (40 files)</summary>
+<details><summary>DreamSpace file index (45 files)</summary>
 
-- `app/daydream/analytics/page.tsx` — route page.
 - `app/daydream/brand/engin/page.tsx` — route page.
 - `app/daydream/brand/page.tsx` — route page.
 - `app/daydream/code/engin/page.tsx` — route page.
 - `app/daydream/code/page.tsx` — route page.
-- `app/daydream/constellation/dream.ConstellationClient.tsx` — React UI module for ConstellationClient.
+- `app/daydream/constellation/dream.ConstellationClient.tsx` — React component module.
 - `app/daydream/constellation/page.tsx` — route page.
 - `app/daydream/create/engin/page.tsx` — route page.
 - `app/daydream/create/page.tsx` — route page.
 - `app/daydream/forge/page.tsx` — route page.
-- `app/daydream/game/dream.GamePageClient.tsx` — React UI module for GamePageClient.
-- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` — React UI module for ShellImmersiveGameShell.
+- `app/daydream/game/dream.GamePageClient.tsx` — React component module.
+- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` — React component module.
 - `app/daydream/game/page.tsx` — route page.
 - `app/daydream/games/engin/page.tsx` — route page.
 - `app/daydream/games/page.tsx` — route page.
@@ -1072,46 +2657,136 @@ Auto-synced from `app/daydream/**`, `components/daydream/**`, `lib/daydream/**` 
 - `app/daydream/music/page.tsx` — route page.
 - `app/daydream/music/upload/page.tsx` — route page.
 - `app/daydream/play/page.tsx` — route page.
-- `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
-- `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
-- `components/daydream/dream.JourneyTrail.tsx` — React UI module for JourneyTrail.
-- `components/daydream/dream.LabDreamIDE.tsx` — React UI module for LabDreamIDE.
-- `components/daydream/dream.NGNEngin.tsx` — React UI module for NGNEngin.
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React UI module for OpenDaydreamSideBButton.
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — React UI module for StandaloneEnginSurface.
-- `components/daydream/dream.constellationmap.tsx` — React UI module for Constellationmap.
-- `components/daydream/dream.shell.DaydreamShell.tsx` — React UI module for ShellDaydreamShell.
-- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` — React UI module for DreamsurfaceDaydreamAnalyticsDaydream.
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React UI module for DreamsurfaceDaydreamBrandDaydream.
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React UI module for PanelCompingPanel.
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
-- `lib/daydream/useDaydreamPersistence.ts` — TypeScript/JavaScript runtime module.
-- `lib/daydream/useDaydreamState.ts` — TypeScript/JavaScript runtime module.
+- `components/daydream/dream.CodeDreamIDE.tsx` — React component module.
+- `components/daydream/dream.DiffViewer.tsx` — React component module.
+- `components/daydream/dream.JourneyTrail.tsx` — React component module.
+- `components/daydream/dream.LabDreamIDE.tsx` — React component module.
+- `components/daydream/dream.NGNEngin.tsx` — React component module.
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React component module.
+- `components/daydream/dream.StandaloneEnginSurface.tsx` — React component module.
+- `components/daydream/dream.constellationmap.tsx` — React component module.
+- `components/daydream/dream.shell.DaydreamShell.tsx` — React component module.
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React component module.
+- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `daydreams/brand/page.tsx` — route page.
+- `daydreams/code/page.tsx` — route page.
+- `daydreams/create/page.tsx` — route page.
+- `daydreams/games/page.tsx` — route page.
+- `daydreams/lab/page.tsx` — route page.
+- `daydreams/music/page.tsx` — route page.
+- `daydreams/shared/useDaydreamPersistence.ts` — TypeScript module.
+- `daydreams/shared/useDaydreamState.ts` — TypeScript module.
 
 </details>
 
 ## Dreams (Widgets / Windows / Surfaces)
-This repo ships three user-facing primitives that share one runtime contract:
-- **Widgets** — small embeddable units (for cards/tools/media controls) mostly under `components/widgets/*` and `lib/widgets/*`.
-- **Dream Windows** — full modular runtime containers with lifecycle (`unbound → bound → mounted ↔ collapsed`) enforced by `lib/dream-window/DreamWindowLifecycle.ts`.
-- **Surfaces** — canonical mount points where windows/widgets run (HomeDream Surface, DreamSpace, profile/runtime shells), implemented through `dreamsurface.*.tsx` components under `components/dreams/*`, `components/dreamengin/*`, and `dreamdmbar/homedream/*`.
-
-The naming convention `dreamsurface.*.tsx` marks canonical mount components across domains (`dreamsurface.homedream.tsx`, `dreamsurface.dreamspace.tsx`, `dreamsurface.window.tsx`, etc.). These components stay bound to fixed engine plumbing while rule-sets define what each surface renders.
-#### Dreams/Windows/Widgets files file structure
+Dreams (Widgets / Windows / Surfaces) is a UI subsystem composed of React components and presentation logic. It exposes useDreamWindowActions, useDualRuntime, useEditMode as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in CrossWidgetPostingEngine, WidgetEventBus, WidgetLinkGraph. It depends on Ads & User Ads, Backend, System, Core & CoreSurfaces, Dreamr — Human Media.
+### Responsibilities
+- Renders AIAssistant, AudioVisualizer3D, BoogieWarningBanner, BrandLogo, CommandPalette, MobileCmdFab, +58 more
+- Core abstractions: CrossWidgetPostingEngine, WidgetEventBus, WidgetLinkGraph
+- Runtime orchestration and engin lifecycle management
+- Feed ranking, algorithm execution, and content scoring
+### Key Modules
+- `AIAssistant`
+- `AudioVisualizer3D`
+- `BoogieWarningBanner`
+- `BrandLogo`
+- `CommandPalette`
+- `CreatePostModal`
+- `DrEamsModeToggle`
+- `DrEamsVoiceAssistant`
+- `DragHandle`
+- `DragToAnchorClose`
+- `ForgeDreamCanvas`
+- `MobileCmdFab`
+### Architectural Relationships
+- Depends on **Ads & User Ads**
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **Shared Dreams**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Participates in the Shared Dreams pub/sub channel system
+- Consumes core backend services and database abstractions
+- Depends on Ads & User Ads
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on DreamSpace
+### Public Surfaces
+**Components:**
+`AIAssistant`, `AddDreamCTA`, `AnchorWidget`, `AudioVisualizer3D`, `BoogieWarningBanner`, `BrandLogo`, `ChildSafetyPanel`, `CommandPalette`, `ConfigureSheet`, `CreatePostModal`, +54 more
+### Notable Abstractions
+- `AudioVisualizer3DProps` — interface
+- `DeTheme` — interface
+- `RegistryEntry` — interface
+- `GameAssetRow` — interface
+- `ControlMapping` — interface
+- `EnrichedEntry` — interface
+- `UniversalAssetRegistryProps` — interface
+- `DreamConnectorLayerProps` — interface
+- `DreamFeatureLayerProps` — interface
+- `DreamOutputMode` — type
+- `DreamVisibility` — type
+- `DreamOutputLayerProps` — interface
+- `useDreamWindowActions` — hook
+- `useDualRuntime` — hook
+- `useEditMode` — hook
+- `useToast` — hook
+- `useWidget` — hook
+### Capabilities
+- Exposes useDreamWindowActions, useDualRuntime, useEditMode, useToast, useWidget as composable React hooks
+- Public contract surface: AudioVisualizer3DProps, DeTheme, RegistryEntry, GameAssetRow, ControlMapping
+- Shared type vocabulary: DreamOutputMode, DreamVisibility, DreamDataState, DreamDataState, DreamDataState
+- Utility functions: pickZoneQuote, hitZone, OSShellActivator, applyTheme, applyVoidTheme, isVoidThemeActive
+#### File Structure
 ```text
-├── app
-│   ├── api
-│   │   └── widgets
-│   │       ├── feed
-│   │       │   └── route.ts
-│   │       └── instances
-│   │           └── route.ts
-│   └── settings
-│       └── widgets
-│           └── page.tsx
 ├── components
+│   ├── dream.AIAssistant.tsx
+│   ├── dream.AudioVisualizer3D.tsx
+│   ├── dream.BoogieWarningBanner.tsx
+│   ├── dream.BrandLogo.tsx
+│   ├── dream.CommandPalette.tsx
+│   ├── dream.CreatePostModal.tsx
+│   ├── dream.DrEamsModeToggle.tsx
+│   ├── dream.DrEamsVoiceAssistant.tsx
+│   ├── dream.DragToAnchorClose.tsx
+│   ├── dream.FeedCard.tsx
+│   ├── dream.ForgeDreamCanvas.tsx
+│   ├── dream.GlobalOverlays.tsx
+│   ├── dream.HeroSprite.tsx
+│   ├── dream.HomeFeed.tsx
+│   ├── dream.IconSelector.tsx
+│   ├── dream.InnerDreamsButton.tsx
+│   ├── dream.KonamiDream.tsx
+│   ├── dream.LandingHero.tsx
+│   ├── dream.LedgerChart.tsx
+│   ├── dream.MessagesClient.tsx
+│   ├── dream.NotificationCenter.tsx
+│   ├── dream.OSShellActivator.tsx
+│   ├── dream.PhysicsLab.tsx
+│   ├── dream.ProfileEditor.tsx
+│   ├── dream.ProfileShareButton.tsx
+│   ├── dream.ProfileSpace.tsx
+│   ├── dream.PullToRefresh.tsx
+│   ├── dream.ShrunkMode.tsx
+│   ├── dream.SkeletonLoaders.tsx
+│   ├── dream.ThemeApplicator.tsx
+│   ├── dream.ThemeToggle.tsx
+│   ├── dream.ToastSystem.tsx
+│   ├── dream.VoidThemeToggle.tsx
+│   ├── dream.panel.ChildSafetyPanel.tsx
+│   ├── dream.panel.IDariPanel.tsx
+│   ├── dream.universal_asset_registry.tsx
+│   ├── dream.widget.AnchorWidget.tsx
+│   ├── dream.widget.ProfileWidgetBlock.tsx
+│   ├── dream.widget.WidgetBubble.tsx
 │   ├── dreams
 │   │   ├── dream.DraggableDream.tsx
 │   │   ├── dream.GlobalDragLayer.tsx
@@ -1128,6 +2803,10 @@ The naming convention `dreamsurface.*.tsx` marks canonical mount components acro
 │   │   ├── dreamsurface.dreamspace.tsx
 │   │   ├── dreamsurface.shell.tsx
 │   │   └── dreamsurface.window.tsx
+│   ├── runtime
+│   │   ├── dream.DualRuntimeContainer.tsx
+│   │   ├── dream.RuntimeView.tsx
+│   │   └── dream.shell.RuntimeShell.tsx
 │   └── widgets
 │       ├── dream.AddDreamCTA.tsx
 │       ├── dream.ConfigureSheet.tsx
@@ -1140,87 +2819,187 @@ The naming convention `dreamsurface.*.tsx` marks canonical mount components acro
 │       ├── dream.widget.WidgetPlaceholder.tsx
 │       ├── dream.widget.WidgetShell.tsx
 │       └── dream.widget.WidgetSurface.tsx
-├── lib
-│   ├── dream-window
-│   │   ├── DreamWindowLifecycle.ts
-│   │   ├── connectionVerbs.ts
-│   │   ├── enginConnectionNetwork.ts
-│   │   ├── index.ts
-│   │   ├── runtimeRegion.ts
-│   │   └── useDreamWindowActions.ts
-│   └── widgets
-│       ├── CrossWidgetPosting.ts
-│       ├── WidgetBus.ts
-│       ├── WidgetEngine.tsx
-│       ├── WidgetEventBus.ts
-│       ├── WidgetLinkGraph.ts
-│       ├── feed-resolver.ts
-│       ├── parse.ts
-│       ├── parseConfig.ts
-│       ├── useWidget.ts
-│       └── widgetRegistry.ts
-└── types
-    ├── dream-window.ts
-    └── widget-system-v2.ts
+└── engine
+    ├── dream-window
+    │   ├── DreamWindowLifecycle.ts
+    │   ├── connectionVerbs.ts
+    │   ├── enginConnectionNetwork.ts
+    │   ├── index.ts
+    │   ├── runtimeRegion.ts
+    │   └── useDreamWindowActions.ts
+    └── widgets
+        ├── CrossWidgetPosting.ts
+        ├── WidgetBus.ts
+        ├── WidgetEngine.tsx
+        ├── WidgetEventBus.ts
+        ├── WidgetLinkGraph.ts
+        ├── feed-resolver.ts
+        ├── parse.ts
+        ├── parseConfig.ts
+        ├── useWidget.ts
+        └── widgetRegistry.ts
 ```
-<details><summary>Dreams/Windows/Widgets files file index (47 files)</summary>
+<details><summary>Dreams (Widgets / Windows / Surfaces) file index (84 files)</summary>
 
-- `app/api/widgets/feed/route.ts` — API route handler for `/api/widgets/feed`.
-- `app/api/widgets/instances/route.ts` — API route handler for `/api/widgets/instances`.
-- `app/settings/widgets/page.tsx` — Next.js route page for `/settings/widgets`.
-- `components/dreams/dream.DraggableDream.tsx` — React UI module for DraggableDream.
-- `components/dreams/dream.GlobalDragLayer.tsx` — React UI module for GlobalDragLayer.
-- `components/dreams/dream.PlatformErrorReporter.tsx` — React UI module for PlatformErrorReporter.
-- `components/dreams/dream.SlideOverPanel.tsx` — React UI module for SlideOverPanel.
-- `components/dreams/dream.connectorlayer.tsx` — React UI module for connectorlayer.
-- `components/dreams/dream.featurelayer.tsx` — React UI module for featurelayer.
-- `components/dreams/dream.outputlayer.tsx` — React UI module for outputlayer.
-- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — React UI module for panel RuntimeMemoryHUD.
-- `components/dreams/dream.shell.DreamShell.tsx` — React UI module for shell DreamShell.
-- `components/dreams/dream.shell.SharedDreamShell.tsx` — React UI module for shell SharedDreamShell.
-- `components/dreams/dream.widget.SuperDreamWidget.tsx` — React UI module for widget SuperDreamWidget.
-- `components/dreams/dream.window.JourneyDreamWindow.tsx` — React UI module for window JourneyDreamWindow.
-- `components/dreams/dreamsurface.dreamspace.tsx` — React UI module for dreamspace.
-- `components/dreams/dreamsurface.shell.tsx` — React UI module for shell.
-- `components/dreams/dreamsurface.window.tsx` — React UI module for window.
-- `components/widgets/dream.AddDreamCTA.tsx` — React UI module for AddDreamCTA.
-- `components/widgets/dream.ConfigureSheet.tsx` — React UI module for ConfigureSheet.
-- `components/widgets/dream.EditModeBanner.tsx` — React UI module for EditModeBanner.
-- `components/widgets/dream.EditModeProvider.tsx` — React UI module for EditModeProvider.
-- `components/widgets/dream.widget.PlayMediaWidget.tsx` — React UI module for widget PlayMediaWidget.
-- `components/widgets/dream.widget.UniversalWidget.tsx` — React UI module for widget UniversalWidget.
-- `components/widgets/dream.widget.WidgetCard.tsx` — React UI module for widget WidgetCard.
-- `components/widgets/dream.widget.WidgetLibrary.tsx` — React UI module for widget WidgetLibrary.
-- `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React UI module for widget WidgetPlaceholder.
-- `components/widgets/dream.widget.WidgetShell.tsx` — React UI module for widget WidgetShell.
-- `components/widgets/dream.widget.WidgetSurface.tsx` — React UI module for widget WidgetSurface.
-- `lib/dream-window/DreamWindowLifecycle.ts` — TypeScript runtime module for DreamWindowLifecycle.
-- `lib/dream-window/connectionVerbs.ts` — TypeScript runtime module for connectionVerbs.
-- `lib/dream-window/enginConnectionNetwork.ts` — TypeScript runtime module for enginConnectionNetwork.
-- `lib/dream-window/index.ts` — TypeScript runtime module for index.
-- `lib/dream-window/runtimeRegion.ts` — TypeScript runtime module for runtimeRegion.
-- `lib/dream-window/useDreamWindowActions.ts` — TypeScript runtime module for useDreamWindowActions.
-- `lib/widgets/CrossWidgetPosting.ts` — TypeScript runtime module for CrossWidgetPosting.
-- `lib/widgets/WidgetBus.ts` — TypeScript runtime module for WidgetBus.
-- `lib/widgets/WidgetEngine.tsx` — React UI module for WidgetEngine.
-- `lib/widgets/WidgetEventBus.ts` — TypeScript runtime module for WidgetEventBus.
-- `lib/widgets/WidgetLinkGraph.ts` — TypeScript runtime module for WidgetLinkGraph.
-- `lib/widgets/feed-resolver.ts` — TypeScript runtime module for feed resolver.
-- `lib/widgets/parse.ts` — TypeScript runtime module for parse.
-- `lib/widgets/parseConfig.ts` — TypeScript runtime module for parseConfig.
-- `lib/widgets/useWidget.ts` — TypeScript runtime module for useWidget.
-- `lib/widgets/widgetRegistry.ts` — TypeScript runtime module for widgetRegistry.
-- `types/dream-window.ts` — TypeScript runtime module for dream window.
-- `types/widget-system-v2.ts` — TypeScript runtime module for widget system v2.
+- `components/dream.AIAssistant.tsx` — React component module.
+- `components/dream.AudioVisualizer3D.tsx` — React component module.
+- `components/dream.BoogieWarningBanner.tsx` — React component module.
+- `components/dream.BrandLogo.tsx` — React component module.
+- `components/dream.CommandPalette.tsx` — React component module.
+- `components/dream.CreatePostModal.tsx` — React component module.
+- `components/dream.DrEamsModeToggle.tsx` — React component module.
+- `components/dream.DrEamsVoiceAssistant.tsx` — React component module.
+- `components/dream.DragToAnchorClose.tsx` — React component module.
+- `components/dream.FeedCard.tsx` — React component module.
+- `components/dream.ForgeDreamCanvas.tsx` — React component module.
+- `components/dream.GlobalOverlays.tsx` — React component module.
+- `components/dream.HeroSprite.tsx` — React component module.
+- `components/dream.HomeFeed.tsx` — React component module.
+- `components/dream.IconSelector.tsx` — React component module.
+- `components/dream.InnerDreamsButton.tsx` — React component module.
+- `components/dream.KonamiDream.tsx` — React component module.
+- `components/dream.LandingHero.tsx` — React component module.
+- `components/dream.LedgerChart.tsx` — React component module.
+- `components/dream.MessagesClient.tsx` — React component module.
+- `components/dream.NotificationCenter.tsx` — React component module.
+- `components/dream.OSShellActivator.tsx` — React component module.
+- `components/dream.PhysicsLab.tsx` — React component module.
+- `components/dream.ProfileEditor.tsx` — React component module.
+- `components/dream.ProfileShareButton.tsx` — React component module.
+- `components/dream.ProfileSpace.tsx` — React component module.
+- `components/dream.PullToRefresh.tsx` — React component module.
+- `components/dream.ShrunkMode.tsx` — React component module.
+- `components/dream.SkeletonLoaders.tsx` — React component module.
+- `components/dream.ThemeApplicator.tsx` — React component module.
+- `components/dream.ThemeToggle.tsx` — React component module.
+- `components/dream.ToastSystem.tsx` — React component module.
+- `components/dream.VoidThemeToggle.tsx` — React component module.
+- `components/dream.panel.ChildSafetyPanel.tsx` — React component module.
+- `components/dream.panel.IDariPanel.tsx` — React component module.
+- `components/dream.universal_asset_registry.tsx` — React component module.
+- `components/dream.widget.AnchorWidget.tsx` — React component module.
+- `components/dream.widget.ProfileWidgetBlock.tsx` — React component module.
+- `components/dream.widget.WidgetBubble.tsx` — React component module.
+- `components/dreams/dream.DraggableDream.tsx` — React component module.
+- `components/dreams/dream.GlobalDragLayer.tsx` — React component module.
+- `components/dreams/dream.PlatformErrorReporter.tsx` — React component module.
+- `components/dreams/dream.SlideOverPanel.tsx` — React component module.
+- `components/dreams/dream.connectorlayer.tsx` — React component module.
+- `components/dreams/dream.featurelayer.tsx` — React component module.
+- `components/dreams/dream.outputlayer.tsx` — React component module.
+- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — React component module.
+- `components/dreams/dream.shell.DreamShell.tsx` — React component module.
+- `components/dreams/dream.shell.SharedDreamShell.tsx` — React component module.
+- `components/dreams/dream.widget.SuperDreamWidget.tsx` — React component module.
+- `components/dreams/dream.window.JourneyDreamWindow.tsx` — React component module.
+- `components/dreams/dreamsurface.dreamspace.tsx` — React component module.
+- `components/dreams/dreamsurface.shell.tsx` — React component module.
+- `components/dreams/dreamsurface.window.tsx` — React component module.
+- `components/runtime/dream.DualRuntimeContainer.tsx` — React component module.
+- `components/runtime/dream.RuntimeView.tsx` — React component module.
+- `components/runtime/dream.shell.RuntimeShell.tsx` — React component module.
+- `components/widgets/dream.AddDreamCTA.tsx` — React component module.
+- `components/widgets/dream.ConfigureSheet.tsx` — React component module.
+- `components/widgets/dream.EditModeBanner.tsx` — React component module.
+- `components/widgets/dream.EditModeProvider.tsx` — React component module.
+- `components/widgets/dream.widget.PlayMediaWidget.tsx` — React component module.
+- `components/widgets/dream.widget.UniversalWidget.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetCard.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetLibrary.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetShell.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetSurface.tsx` — React component module.
+- `engine/dream-window/DreamWindowLifecycle.ts` — TypeScript module.
+- `engine/dream-window/connectionVerbs.ts` — TypeScript module.
+- `engine/dream-window/enginConnectionNetwork.ts` — TypeScript module.
+- `engine/dream-window/index.ts` — TypeScript module.
+- `engine/dream-window/runtimeRegion.ts` — TypeScript module.
+- `engine/dream-window/useDreamWindowActions.ts` — TypeScript module.
+- `engine/widgets/CrossWidgetPosting.ts` — TypeScript module.
+- `engine/widgets/WidgetBus.ts` — TypeScript module.
+- `engine/widgets/WidgetEngine.tsx` — React component module.
+- `engine/widgets/WidgetEventBus.ts` — TypeScript module.
+- `engine/widgets/WidgetLinkGraph.ts` — TypeScript module.
+- `engine/widgets/feed-resolver.ts` — TypeScript module.
+- `engine/widgets/parse.ts` — TypeScript module.
+- `engine/widgets/parseConfig.ts` — TypeScript module.
+- `engine/widgets/useWidget.ts` — TypeScript module.
+- `engine/widgets/widgetRegistry.ts` — TypeScript module.
 
 </details>
+
 ## User-Facing Modularity
-Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using repository introspection.
-- Files tracked: **321**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `AIAssistant`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, `AlgorithmEngine`, +255 more
-#### User-Facing Modularity file structure
+User-Facing Modularity is a UI subsystem composed of React components and presentation logic. It exposes useAccount, useAlbums, useBreakpoint as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in CartridgeErrorBoundary, DualSenseManager, ParticlePool. It depends on Ads & User Ads, Backend, System, Core & CoreSurfaces, dr-eams.
+### Responsibilities
+- Renders ActivityPostForm, ActivityProfile, TierBadge, AdUnit, SkipCreditBalance, PasswordField, +277 more
+- Core abstractions: CartridgeErrorBoundary, DualSenseManager, ParticlePool, ScreenShake, ParallaxLayers
+- Runtime orchestration and engin lifecycle management
+- Authentication, session, and access control
+- Feed ranking, algorithm execution, and content scoring
+- Theming, design tokens, and visual customisation
+### Key Modules
+- `ActivityPostForm`
+- `ActivityProfile`
+- `AdUnit`
+- `AddSliceSheet`
+- `ConnectorRow`
+- `DreamEnginLogo`
+- `LogoHero`
+- `Nav`
+- `NoSlotDialog`
+- `PasswordField`
+- `SkipCreditBalance`
+- `TierBadge`
+### Architectural Relationships
+- Depends on **Ads & User Ads**
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **dr-eams**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **Full Website Customizability**
+- Depends on **optimizer**
+- Depends on **Shared Dreams**
+- Depends on **The Engins**
+- Depends on **The Marketplace**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Participates in the Shared Dreams pub/sub channel system
+- Consumes core backend services and database abstractions
+- Depends on Ads & User Ads
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on dr-eams
+- Depends on Dreamr — Human Media
+### Public Surfaces
+**Components:**
+`AIAssistant`, `AIBuilderPanel`, `AIPanel`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, `AlgorithmEngine`, +248 more
+### Notable Abstractions
+- `ActivityPostData` — interface
+- `FeedSlice` — interface
+- `AddSliceSheetProps` — interface
+- `ConnectWidgetPromptProps` — interface
+- `ConnectorRowProps` — interface
+- `NoSlotDialogProps` — interface
+- `PlacedWidget` — interface
+- `PlacementModeProps` — interface
+- `ConnectWidgetPromptProps` — interface
+- `PickerConnector` — interface
+- `ConnectorWidgetPickerProps` — interface
+- `StandaloneEnginName` — type
+- `useAccount` — hook
+- `useAlbums` — hook
+- `useBreakpoint` — hook
+- `useBreakpointValue` — hook
+- `useConnectorInstallFlow` — hook
+- `useContent` — hook
+- `useCustomizeMode` — hook
+- `useDreamLayout` — hook
+### Capabilities
+- Exposes useAccount, useAlbums, useBreakpoint, useBreakpointValue, useConnectorInstallFlow, useContent as composable React hooks
+- Public contract surface: ActivityPostData, FeedSlice, AddSliceSheetProps, ConnectWidgetPromptProps, ConnectorRowProps
+- Shared type vocabulary: StandaloneEnginName, DaydreamWidget, AssetCategory, UnitComplex, Depth
+- Utility functions: ConnectWidgetPrompt, pickZoneQuote, hitZone, OSShellActivator, applyTheme, applyVoidTheme
+#### File Structure
 ```text
 ├── components
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -1233,6 +3012,10 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 │   │   └── dream.SkipCreditBalance.tsx
 │   ├── auth
 │   │   └── dream.PasswordField.tsx
+│   ├── branding
+│   │   ├── dream.DreamEnginLogo.tsx
+│   │   ├── dream.LogoHero.tsx
+│   │   └── dream.Nav.tsx
 │   ├── connectors
 │   │   ├── dream.AddSliceSheet.tsx
 │   │   ├── dream.ConnectDreamPrompt.tsx
@@ -1241,6 +3024,16 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 │   │   ├── dream.PlacementMode.tsx
 │   │   ├── dream.widget.ConnectWidgetPrompt.tsx
 │   │   └── dream.widget.ConnectorWidgetPicker.tsx
+│   ├── contentengin
+│   │   ├── AnimationPanel.tsx
+│   │   ├── AssetPreview3D.tsx
+│   │   ├── ContentEnginStudio.tsx
+│   │   ├── ExportPanel.tsx
+│   │   ├── MaterialEditor.tsx
+│   │   ├── PartTreeEditor.tsx
+│   │   ├── PhotoReferencePanel.tsx
+│   │   ├── RecipeEditor.tsx
+│   │   └── RiggingPanel.tsx
 │   ├── core
 │   │   └── dream.CoreDream.tsx
 │   ├── customize
@@ -1262,7 +3055,6 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 │   │   ├── dream.StandaloneEnginSurface.tsx
 │   │   ├── dream.constellationmap.tsx
 │   │   ├── dream.shell.DaydreamShell.tsx
-│   │   ├── dreamsurface.daydream.AnalyticsDaydream.tsx
 │   │   ├── dreamsurface.daydream.BrandDaydream.tsx
 │   │   └── starmaker
 │   │       ├── dream.panel.CompingPanel.tsx
@@ -1329,352 +3121,418 @@ Auto-synced from `components/**`, `styles/**`, `lib/ui/**`, `hooks/**` using rep
 │   │   ├── dreamsurface.dreamengin.tsx
 │   │   └── engine
 │   │       ├── math.ts
-│   │       └── types.ts
-│   ├── dreamnav
-│   │   ├── dream.DreamNavControls.tsx
-│   │   └── dreamsurface.dreamnav.tsx
-│   ├── dreamr
-│   │   ├── dream.CloseFriendsSettings.tsx
-│   │   ├── dream.panel.DreamRChannelPanel.tsx
-│   │   └── dream.panel.DreamRCreatorPanel.tsx
-│   ├── dreams
-│   │   ├── dream.DraggableDream.tsx
-│   │   ├── dream.GlobalDragLayer.tsx
-│   │   ├── dream.PlatformErrorReporter.tsx
-│   │   ├── dream.SlideOverPanel.tsx
-… (201 more files)
+… (219 more files)
 ```
-<details><summary>User-Facing Modularity file index (321 files)</summary>
+<details><summary>User-Facing Modularity file index (339 files)</summary>
 
-- `components/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `components/activity/dream.ActivityPostForm.tsx` — React UI module for ActivityPostForm.
-- `components/activity/dream.ActivityProfile.tsx` — React UI module for ActivityProfile.
-- `components/activity/dream.TierBadge.tsx` — React UI module for TierBadge.
-- `components/ads/dream.AdUnit.tsx` — React UI module for AdUnit.
-- `components/ads/dream.SkipCreditBalance.tsx` — React UI module for SkipCreditBalance.
-- `components/auth/dream.PasswordField.tsx` — React UI module for PasswordField.
-- `components/connectors/dream.AddSliceSheet.tsx` — React UI module for AddSliceSheet.
-- `components/connectors/dream.ConnectDreamPrompt.tsx` — React UI module for ConnectDreamPrompt.
-- `components/connectors/dream.ConnectorRow.tsx` — React UI module for ConnectorRow.
-- `components/connectors/dream.NoSlotDialog.tsx` — React UI module for NoSlotDialog.
-- `components/connectors/dream.PlacementMode.tsx` — React UI module for PlacementMode.
-- `components/connectors/dream.widget.ConnectWidgetPrompt.tsx` — React UI module for WidgetConnectWidgetPrompt.
-- `components/connectors/dream.widget.ConnectorWidgetPicker.tsx` — React UI module for WidgetConnectorWidgetPicker.
-- `components/core/dream.CoreDream.tsx` — React UI module for CoreDream.
-- `components/customize/dream.GlobalCustomizeUI.tsx` — React UI module for GlobalCustomizeUI.
-- `components/customize/dream.bar.CustomizeModeBar.tsx` — React UI module for BarCustomizeModeBar.
-- `components/customize/dream.bar.CustomizeToolbar.tsx` — React UI module for BarCustomizeToolbar.
-- `components/customize/panels/dream.panel.ColorPanel.tsx` — React UI module for PanelColorPanel.
-- `components/customize/panels/dream.panel.EffectsPanel.tsx` — React UI module for PanelEffectsPanel.
-- `components/customize/panels/dream.panel.FontPanel.tsx` — React UI module for PanelFontPanel.
-- `components/customize/panels/dream.panel.LayoutPanel.tsx` — React UI module for PanelLayoutPanel.
-- `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
-- `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
-- `components/daydream/dream.JourneyTrail.tsx` — React UI module for JourneyTrail.
-- `components/daydream/dream.LabDreamIDE.tsx` — React UI module for LabDreamIDE.
-- `components/daydream/dream.NGNEngin.tsx` — React UI module for NGNEngin.
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React UI module for OpenDaydreamSideBButton.
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — React UI module for StandaloneEnginSurface.
-- `components/daydream/dream.constellationmap.tsx` — React UI module for Constellationmap.
-- `components/daydream/dream.shell.DaydreamShell.tsx` — React UI module for ShellDaydreamShell.
-- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` — React UI module for DreamsurfaceDaydreamAnalyticsDaydream.
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React UI module for DreamsurfaceDaydreamBrandDaydream.
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React UI module for PanelCompingPanel.
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
-- `components/draggable/dream.DraggableModule.tsx` — React UI module for DraggableModule.
-- `components/dream.AIAssistant.tsx` — React UI module for AIAssistant.
-- `components/dream.AudioVisualizer3D.tsx` — React UI module for AudioVisualizer3D.
-- `components/dream.BoogieWarningBanner.tsx` — React UI module for BoogieWarningBanner.
-- `components/dream.BrandLogo.tsx` — React UI module for BrandLogo.
-- `components/dream.CommandPalette.tsx` — React UI module for CommandPalette.
-- `components/dream.CreatePostModal.tsx` — React UI module for CreatePostModal.
-- `components/dream.DrEamsModeToggle.tsx` — React UI module for DrEamsModeToggle.
-- `components/dream.DrEamsVoiceAssistant.tsx` — React UI module for DrEamsVoiceAssistant.
-- `components/dream.DragToAnchorClose.tsx` — React UI module for DragToAnchorClose.
-- `components/dream.FeedCard.tsx` — React UI module for FeedCard.
-- `components/dream.ForgeDreamCanvas.tsx` — React UI module for ForgeDreamCanvas.
-- `components/dream.GlobalOverlays.tsx` — React UI module for GlobalOverlays.
-- `components/dream.HeroSprite.tsx` — React UI module for HeroSprite.
-- `components/dream.HomeFeed.tsx` — React UI module for HomeFeed.
-- `components/dream.IconSelector.tsx` — React UI module for IconSelector.
-- `components/dream.InnerDreamsButton.tsx` — React UI module for InnerDreamsButton.
-- `components/dream.KonamiDream.tsx` — React UI module for KonamiDream.
-- `components/dream.LandingHero.tsx` — React UI module for LandingHero.
-- `components/dream.LedgerChart.tsx` — React UI module for LedgerChart.
-- `components/dream.MessagesClient.tsx` — React UI module for MessagesClient.
-- `components/dream.NotificationCenter.tsx` — React UI module for NotificationCenter.
-- `components/dream.OSShellActivator.tsx` — React UI module for OSShellActivator.
-- `components/dream.PhysicsLab.tsx` — React UI module for PhysicsLab.
-- `components/dream.ProfileEditor.tsx` — React UI module for ProfileEditor.
-- `components/dream.ProfileShareButton.tsx` — React UI module for ProfileShareButton.
-- `components/dream.ProfileSpace.tsx` — React UI module for ProfileSpace.
-- `components/dream.PullToRefresh.tsx` — React UI module for PullToRefresh.
-- `components/dream.ShrunkMode.tsx` — React UI module for ShrunkMode.
-- `components/dream.SkeletonLoaders.tsx` — React UI module for SkeletonLoaders.
-- `components/dream.ThemeApplicator.tsx` — React UI module for ThemeApplicator.
-- `components/dream.ThemeToggle.tsx` — React UI module for ThemeToggle.
-- `components/dream.ToastSystem.tsx` — React UI module for ToastSystem.
-- `components/dream.VoidThemeToggle.tsx` — React UI module for VoidThemeToggle.
-- `components/dream.panel.ChildSafetyPanel.tsx` — React UI module for PanelChildSafetyPanel.
-- `components/dream.panel.IDariPanel.tsx` — React UI module for PanelIDariPanel.
-- `components/dream.universal_asset_registry.tsx` — React UI module for UniversalAssetRegistry.
-- `components/dream.widget.AnchorWidget.tsx` — React UI module for WidgetAnchorWidget.
-- `components/dream.widget.ProfileWidgetBlock.tsx` — React UI module for WidgetProfileWidgetBlock.
-- `components/dream.widget.WidgetBubble.tsx` — React UI module for WidgetWidgetBubble.
-- `components/dreamengin/dream.CanvasDropZone.tsx` — React UI module for CanvasDropZone.
-- `components/dreamengin/dream.DREAMenginOS.tsx` — React UI module for DREAMenginOS.
-- `components/dreamengin/dream.DrEamsCanvas.tsx` — React UI module for DrEamsCanvas.
-- `components/dreamengin/dream.HomeControls.tsx` — React UI module for HomeControls.
-- `components/dreamengin/dream.bar.DrEamsSearchBar.tsx` — React UI module for BarDrEamsSearchBar.
-- `components/dreamengin/dream.menu.NexusMenu.tsx` — React UI module for MenuNexusMenu.
-- `components/dreamengin/dream.menu.OutdreamMenu.tsx` — React UI module for MenuOutdreamMenu.
-- `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx` — React UI module for OverlayViewAllDreamsOverlay.
-- `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` — React UI module for PanelCrossEnginStatusPanel.
-- `components/dreamengin/dream.panel.DrEamsPanel.tsx` — React UI module for PanelDrEamsPanel.
-- `components/dreamengin/dream.scene.BabylonGameScene.tsx` — React UI module for SceneBabylonGameScene.
-- `components/dreamengin/dream.scene.DrEamsScene.tsx` — React UI module for SceneDrEamsScene.
-- `components/dreamengin/dream.scene.PortfolioOptimizationScene.tsx` — React UI module for ScenePortfolioOptimizationScene.
-- `components/dreamengin/dream.shell.EnginShell.tsx` — React UI module for ShellEnginShell.
-- `components/dreamengin/dream.widget.AppearanceWidget.tsx` — React UI module for WidgetAppearanceWidget.
-- `components/dreamengin/dreamsurface.dreamengin.tsx` — React UI module for DreamsurfaceDreamengin.
-- `components/dreamengin/engine/math.ts` — TypeScript/JavaScript runtime module.
-- `components/dreamengin/engine/types.ts` — TypeScript/JavaScript runtime module.
-- `components/dreamnav/dream.DreamNavControls.tsx` — React UI module for DreamNavControls.
-- `components/dreamnav/dreamsurface.dreamnav.tsx` — React UI module for DreamsurfaceDreamnav.
-- `components/dreamr/dream.CloseFriendsSettings.tsx` — React UI module for CloseFriendsSettings.
-- `components/dreamr/dream.panel.DreamRChannelPanel.tsx` — React UI module for PanelDreamRChannelPanel.
-- `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` — React UI module for PanelDreamRCreatorPanel.
-- `components/dreams/dream.DraggableDream.tsx` — React UI module for DraggableDream.
-- `components/dreams/dream.GlobalDragLayer.tsx` — React UI module for GlobalDragLayer.
-- `components/dreams/dream.PlatformErrorReporter.tsx` — React UI module for PlatformErrorReporter.
-- `components/dreams/dream.SlideOverPanel.tsx` — React UI module for SlideOverPanel.
-- `components/dreams/dream.connectorlayer.tsx` — React UI module for Connectorlayer.
-- `components/dreams/dream.featurelayer.tsx` — React UI module for Featurelayer.
-- `components/dreams/dream.outputlayer.tsx` — React UI module for Outputlayer.
-- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — React UI module for PanelRuntimeMemoryHUD.
-- `components/dreams/dream.shell.DreamShell.tsx` — React UI module for ShellDreamShell.
-- `components/dreams/dream.shell.SharedDreamShell.tsx` — React UI module for ShellSharedDreamShell.
-- `components/dreams/dream.widget.SuperDreamWidget.tsx` — React UI module for WidgetSuperDreamWidget.
-- `components/dreams/dream.window.JourneyDreamWindow.tsx` — React UI module for WindowJourneyDreamWindow.
-- `components/dreams/dreamsurface.dreamspace.tsx` — React UI module for DreamsurfaceDreamspace.
-- `components/dreams/dreamsurface.shell.tsx` — React UI module for DreamsurfaceShell.
-- `components/dreams/dreamsurface.window.tsx` — React UI module for DreamsurfaceWindow.
-- `components/engines/brand/dream.BrandEnginApp.tsx` — React UI module for BrandEnginApp.
-- `components/engines/brand/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx` — React UI module for PanelCampaignsPanel.
-- `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` — React UI module for PanelIdentityPanel.
-- `components/engines/code/dream.CodeEnginApp.tsx` — React UI module for CodeEnginApp.
-- `components/engines/code/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/code/panels/dream.panel.AIPanel.tsx` — React UI module for PanelAIPanel.
-- `components/engines/code/panels/dream.panel.NotebookPanel.tsx` — React UI module for PanelNotebookPanel.
-- `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` — React UI module for PanelProjectsPanel.
-- `components/engines/create/dream.CreateEnginApp.tsx` — React UI module for CreateEnginApp.
-- `components/engines/create/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/create/panels/dream.panel.CalendarPanel.tsx` — React UI module for PanelCalendarPanel.
-- `components/engines/create/panels/dream.panel.EditorPanel.tsx` — React UI module for PanelEditorPanel.
-- `components/engines/create/panels/dream.panel.QueuePanel.tsx` — React UI module for PanelQueuePanel.
-- `components/engines/games/dream.GameEnginApp.tsx` — React UI module for GameEnginApp.
-- `components/engines/games/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/games/panels/dream.panel.BuilderPanel.tsx` — React UI module for PanelBuilderPanel.
-- `components/engines/games/panels/dream.panel.LibraryPanel.tsx` — React UI module for PanelLibraryPanel.
-- `components/engines/games/panels/dream.panel.ScoresPanel.tsx` — React UI module for PanelScoresPanel.
-- `components/engines/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/lab/dream.LabEnginApp.tsx` — React UI module for LabEnginApp.
-- `components/engines/lab/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/lab/panels/dream.panel.DataVizPanel.tsx` — React UI module for PanelDataVizPanel.
-- `components/engines/lab/panels/dream.panel.ExperimentsPanel.tsx` — React UI module for PanelExperimentsPanel.
-- `components/engines/lab/panels/dream.panel.QuantumPanel.tsx` — React UI module for PanelQuantumPanel.
-- `components/engines/music/dream.MusicEnginApp.tsx` — React UI module for MusicEnginApp.
-- `components/engines/music/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/music/panels/dream.panel.ArrangePanel.tsx` — React UI module for PanelArrangePanel.
-- `components/engines/music/panels/dream.panel.MusicLibraryPanel.tsx` — React UI module for PanelMusicLibraryPanel.
-- `components/engines/music/panels/dream.panel.StudioPanel.tsx` — React UI module for PanelStudioPanel.
-- `components/engines/portfolio/dream.PortfolioEnginApp.tsx` — React UI module for PortfolioEnginApp.
-- `components/engines/portfolio/index.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` — React UI module for PanelAssetsPanel.
-- `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` — React UI module for PanelOptimizePanel.
-- `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` — React UI module for PanelPortfolioQuantumPanel.
-- `components/engines/shared/dream.EnginProvider.tsx` — React UI module for EnginProvider.
-- `components/engines/shared/dream.EnginRuleSet.ts` — TypeScript/JavaScript runtime module.
-- `components/engines/shared/dream.bar.EnginNavBar.tsx` — React UI module for BarEnginNavBar.
-- `components/engines/shared/dream.makeEnginApp.tsx` — React UI module for MakeEnginApp.
-- `components/engines/shared/dream.shell.EnginAppShell.tsx` — React UI module for ShellEnginAppShell.
-- `components/engines/shared/index.ts` — TypeScript/JavaScript runtime module.
-- `components/feed/dream.AlgorithmEngine.tsx` — React UI module for AlgorithmEngine.
-- `components/feed/dream.CommentSection.tsx` — React UI module for CommentSection.
-- `components/feed/dream.FeedVideoCard.tsx` — React UI module for FeedVideoCard.
-- `components/feed/dream.FollowButton.tsx` — React UI module for FollowButton.
-- `components/feed/dream.FollowOnboarding.tsx` — React UI module for FollowOnboarding.
-- `components/feeds/dream.widget.EmbedFeedWidget.tsx` — React UI module for WidgetEmbedFeedWidget.
-- `components/forge/dream.EngineBuilderCanvas.tsx` — React UI module for EngineBuilderCanvas.
-- `components/forge/dream.panel.AIBuilderPanel.tsx` — React UI module for PanelAIBuilderPanel.
-- `components/forge/dream.widget.ForgeMomentumWidget.tsx` — React UI module for WidgetForgeMomentumWidget.
-- `components/gameengin/README.md` — documentation file.
-- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` — React UI module for CartridgeRegistryBootstrap.
-- `components/gameengin/dream.CrashReportModal.tsx` — React UI module for CrashReportModal.
-- `components/gameengin/dream.cartridge.CartridgeBrowser.tsx` — React UI module for CartridgeCartridgeBrowser.
-- `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx` — React UI module for CartridgeCartridgeErrorBoundary.
-- `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` — React UI module for CartridgeCartridgeLauncher.
-- `components/gameengin/dream.cartridge.FeaturedCartridges.tsx` — React UI module for CartridgeFeaturedCartridges.
-- `components/gameengin/input/DualSenseManager.ts` — TypeScript/JavaScript runtime module.
-- `components/games/_fx/canvasFx.ts` — TypeScript/JavaScript runtime module.
-- `components/games/css-modules.d.ts` — TypeScript/JavaScript runtime module.
-- `components/games/dream.AvenueOfMirrors.tsx` — React UI module for AvenueOfMirrors.
-- `components/games/dream.BabylonSideScroller.tsx` — React UI module for BabylonSideScroller.
-- `components/games/dream.DefuseRitual.tsx` — React UI module for DefuseRitual.
-- `components/games/dream.EchoArena.tsx` — React UI module for EchoArena.
-- `components/games/dream.EnginFracture.tsx` — React UI module for EnginFracture.
-- `components/games/dream.GameController.module.css` — project file (css).
-- `components/games/dream.GameController.tsx` — React UI module for GameController.
-- `components/games/dream.GamesHub.tsx` — React UI module for GamesHub.
-- `components/games/dream.Glassfall.tsx` — React UI module for Glassfall.
-- `components/games/dream.Leaderboard.tsx` — React UI module for Leaderboard.
-- `components/games/dream.LexiconSolitaire.tsx` — React UI module for LexiconSolitaire.
-- `components/games/dream.NeonDrift.tsx` — React UI module for NeonDrift.
-- `components/games/dream.NiteFlyerSolarHymn.tsx` — React UI module for NiteFlyerSolarHymn.
-- `components/games/dream.NullCathedral.tsx` — React UI module for NullCathedral.
-- `components/games/dream.RecordingControls.tsx` — React UI module for RecordingControls.
-- `components/games/dream.SerpentSiege.tsx` — React UI module for SerpentSiege.
-- `components/games/dream.VoidlineGP.tsx` — React UI module for VoidlineGP.
-- `components/games/dream.hud.GameHUD.tsx` — React UI module for HudGameHUD.
-- `components/games/dream.hud.MobileGameHUD.module.css` — project file (css).
-- `components/games/dream.hud.MobileGameHUD.tsx` — React UI module for HudMobileGameHUD.
-- `components/games/dream.remote.GameRemote.tsx` — React UI module for RemoteGameRemote.
-- `components/games/madmaxi/audio.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/authoredZonePacks.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/config.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/dream.MadmaxiGame.tsx` — React UI module for MadmaxiGame.
-- `components/games/madmaxi/index.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/levels.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/materials.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/types.ts` — TypeScript/JavaScript runtime module.
-- `components/games/madmaxi/vfx.ts` — TypeScript/JavaScript runtime module.
-- `components/home/dream.ActiveModuleSurface.tsx` — React UI module for ActiveModuleSurface.
-- `components/home/dream.DaydreamPulseStrip.tsx` — React UI module for DaydreamPulseStrip.
-- `components/home/dream.FlagshipEnginesStrip.tsx` — React UI module for FlagshipEnginesStrip.
-- `components/home/dream.NeuralSeamCanvas.tsx` — React UI module for NeuralSeamCanvas.
-- `components/home/dream.bar.GlobalDreamBar.tsx` — React UI module for BarGlobalDreamBar.
-- `components/home/dream.bar.PersistentDreamBar.tsx` — React UI module for BarPersistentDreamBar.
-- `components/home/dream.widget.DreamWidget.tsx` — React UI module for WidgetDreamWidget.
-- `components/idari/dream.PlatformHealth.tsx` — React UI module for PlatformHealth.
-- `components/landing/dream.LandingNav.tsx` — React UI module for LandingNav.
-- `components/landing/dream.LandingProductStatement.tsx` — React UI module for LandingProductStatement.
-- `components/landing/dream.scene.UniverseField.tsx` — React UI module for SceneUniverseField.
-- `components/marketplace/dream.MarketplaceListingCard.tsx` — React UI module for MarketplaceListingCard.
-- `components/marketplace/dream.MarketplaceRequestButton.tsx` — React UI module for MarketplaceRequestButton.
-- `components/menus/dream.menu.DreamRadialMenu.tsx` — React UI module for MenuDreamRadialMenu.
-- `components/menus/dream.menu.DualBottomMenu.tsx` — React UI module for MenuDualBottomMenu.
-- `components/menus/dream.menu.RadialMenu.tsx` — React UI module for MenuRadialMenu.
-- `components/menus/dream.menu.SystemRadialMenu.tsx` — React UI module for MenuSystemRadialMenu.
-- `components/menus/dream.panel.MenuPanel.tsx` — React UI module for PanelMenuPanel.
-- `components/messaging/dream.BoardComposer.tsx` — React UI module for BoardComposer.
-- `components/music/dream.SoundRecorder.tsx` — React UI module for SoundRecorder.
-- `components/onboarding/dream.OnboardingTip.tsx` — React UI module for OnboardingTip.
-- `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` — React UI module for SceneBabylonOptimizeroScene.
-- `components/overlays/dream.RootStatusScreen.tsx` — React UI module for RootStatusScreen.
-- `components/panels/dream.panel.AlgorithmPanel.tsx` — React UI module for PanelAlgorithmPanel.
-- `components/panels/dream.panel.AppearancePanel.tsx` — React UI module for PanelAppearancePanel.
-- `components/panels/dream.panel.ConnectorsPanel.tsx` — React UI module for PanelConnectorsPanel.
-- `components/panels/dream.panel.ControlsPanel.tsx` — React UI module for PanelControlsPanel.
-- `components/panels/dream.panel.DataPanel.tsx` — React UI module for PanelDataPanel.
-- `components/panels/dream.panel.FeedPanel.tsx` — React UI module for PanelFeedPanel.
-- `components/panels/dream.panel.FeedSettingsPanel.tsx` — React UI module for PanelFeedSettingsPanel.
-- `components/panels/dream.panel.HelpPanel.tsx` — React UI module for PanelHelpPanel.
-- `components/panels/dream.panel.MarketplacePanel.tsx` — React UI module for PanelMarketplacePanel.
-- `components/panels/dream.panel.PrivacyPanel.tsx` — React UI module for PanelPrivacyPanel.
-- `components/panels/dream.panel.ProfilePanel.tsx` — React UI module for PanelProfilePanel.
-- `components/panels/dream.panel.SafetyPanel.tsx` — React UI module for PanelSafetyPanel.
-- `components/panels/dream.panel.SettingsPanel.tsx` — React UI module for PanelSettingsPanel.
-- `components/panels/dream.panel.WidgetsPanel.tsx` — React UI module for PanelWidgetsPanel.
-- `components/profile/dream.EditableAvatar.tsx` — React UI module for EditableAvatar.
-- `components/profile/dream.ProfileCanvas.tsx` — React UI module for ProfileCanvas.
-- `components/profile/dream.ProfileCustomizeButton.tsx` — React UI module for ProfileCustomizeButton.
-- `components/profile/dream.widget.ProfileWidgetGrid.tsx` — React UI module for WidgetProfileWidgetGrid.
-- `components/providers/dream.AppSurfaceShell.tsx` — React UI module for AppSurfaceShell.
-- `components/providers/dream.GodTierProvider.tsx` — React UI module for GodTierProvider.
-- `components/providers/dream.ThemeProvider.tsx` — React UI module for ThemeProvider.
-- `components/runtime/dream.DualRuntimeContainer.tsx` — React UI module for DualRuntimeContainer.
-- `components/runtime/dream.RuntimeView.tsx` — React UI module for RuntimeView.
-- `components/runtime/dream.shell.RuntimeShell.tsx` — React UI module for ShellRuntimeShell.
-- `components/shaders/dream.LightningWing.tsx` — React UI module for LightningWing.
-- `components/shaders/dream.NeonGlow.tsx` — React UI module for NeonGlow.
-- `components/shaders/dream.Refractor.tsx` — React UI module for Refractor.
-- `components/shaders/index.ts` — TypeScript/JavaScript runtime module.
-- `components/shared-dream/dream.InviteFlow.tsx` — React UI module for InviteFlow.
-- `components/shared-dream/dream.SharedDreamCanvas.tsx` — React UI module for SharedDreamCanvas.
-- `components/shared-dream/dream.SharedDreamProvider.tsx` — React UI module for SharedDreamProvider.
-- `components/shared-dream/dream.SharedDreamRuntime.tsx` — React UI module for SharedDreamRuntime.
-- `components/shared-dream/index.ts` — TypeScript/JavaScript runtime module.
-- `components/spatial/dream.PixiPhysicsLayer.tsx` — React UI module for PixiPhysicsLayer.
-- `components/spatial/dream.ProfileSpace.tsx` — React UI module for ProfileSpace.
-- `components/spatial/dream.shell.EnhancedSpatialShell.tsx` — React UI module for ShellEnhancedSpatialShell.
-- `components/three/dream.scene.tsx` — React UI module for Scene.
-- `components/three/index.ts` — TypeScript/JavaScript runtime module.
-- `components/ui/dream.AuthenticatedPageHeader.tsx` — React UI module for AuthenticatedPageHeader.
-- `components/ui/dream.DreamWord.tsx` — React UI module for DreamWord.
-- `components/ui/dream.IconList.tsx` — React UI module for IconList.
-- `components/ui/dream.InfinityIcon.tsx` — React UI module for InfinityIcon.
-- `components/ui/dream.PlatformBadge.tsx` — React UI module for PlatformBadge.
-- `components/ui/dream.SheetIcon.tsx` — React UI module for SheetIcon.
-- `components/ui/dream.SocialShareSheet.tsx` — React UI module for SocialShareSheet.
-- `components/universal-editor/dream.UniversalEditor.tsx` — React UI module for UniversalEditor.
-- `components/universal-editor/dream.UniversalEditorWrapper.tsx` — React UI module for UniversalEditorWrapper.
-- `components/universal-editor/index.ts` — TypeScript/JavaScript runtime module.
-- `components/universal-editor/useTapHoldMove.ts` — TypeScript/JavaScript runtime module.
-- `components/universe/dream.node-cluster.tsx` — React UI module for NodeCluster.
-- `components/universe/dream.shell.universe-shell.tsx` — React UI module for ShellUniverseShell.
-- `components/universe/dream.universe-card.tsx` — React UI module for UniverseCard.
-- `components/universe/index.ts` — TypeScript/JavaScript runtime module.
-- `components/warp/dream.WarpCanvas.tsx` — React UI module for WarpCanvas.
-- `components/webgpu/dream.WebGPUShowcase.tsx` — React UI module for WebGPUShowcase.
-- `components/webgpu/neuralPostProcess.ts` — TypeScript/JavaScript runtime module.
-- `components/webgpu/renderer.ts` — TypeScript/JavaScript runtime module.
-- `components/webgpu/shaders.ts` — TypeScript/JavaScript runtime module.
-- `components/widgets/dream.AddDreamCTA.tsx` — React UI module for AddDreamCTA.
-- `components/widgets/dream.ConfigureSheet.tsx` — React UI module for ConfigureSheet.
-- `components/widgets/dream.EditModeBanner.tsx` — React UI module for EditModeBanner.
-- `components/widgets/dream.EditModeProvider.tsx` — React UI module for EditModeProvider.
-- `components/widgets/dream.widget.PlayMediaWidget.tsx` — React UI module for WidgetPlayMediaWidget.
-- `components/widgets/dream.widget.UniversalWidget.tsx` — React UI module for WidgetUniversalWidget.
-- `components/widgets/dream.widget.WidgetCard.tsx` — React UI module for WidgetWidgetCard.
-- `components/widgets/dream.widget.WidgetLibrary.tsx` — React UI module for WidgetWidgetLibrary.
-- `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React UI module for WidgetWidgetPlaceholder.
-- `components/widgets/dream.widget.WidgetShell.tsx` — React UI module for WidgetWidgetShell.
-- `components/widgets/dream.widget.WidgetSurface.tsx` — React UI module for WidgetWidgetSurface.
-- `hooks/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `hooks/use-spatial.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useAccount.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useConnectorInstallFlow.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useDreamLayout.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useHideOnScroll.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useSharedDream.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useTapHoldMove.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useTick.ts` — TypeScript/JavaScript runtime module.
-- `hooks/useViewCounter.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/CustomizeModeContext.tsx` — React UI module for CustomizeModeContext.
-- `lib/ui/responsive.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/runtimeViewport.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/skin-engine.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/theme-engine.ts` — TypeScript/JavaScript runtime module.
-- `lib/ui/theme.ts` — TypeScript/JavaScript runtime module.
-- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `styles/dream-shell.css` — project file (css).
-- `styles/globals.css` — project file (css).
-- `styles/home-dream.css` — project file (css).
-- `styles/theme.css` — project file (css).
-- `styles/view-transitions.css` — project file (css).
+- `components/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `components/activity/dream.ActivityPostForm.tsx` — React component module.
+- `components/activity/dream.ActivityProfile.tsx` — React component module.
+- `components/activity/dream.TierBadge.tsx` — React component module.
+- `components/ads/dream.AdUnit.tsx` — React component module.
+- `components/ads/dream.SkipCreditBalance.tsx` — React component module.
+- `components/auth/dream.PasswordField.tsx` — React component module.
+- `components/branding/dream.DreamEnginLogo.tsx` — React component module.
+- `components/branding/dream.LogoHero.tsx` — React component module.
+- `components/branding/dream.Nav.tsx` — React component module.
+- `components/connectors/dream.AddSliceSheet.tsx` — React component module.
+- `components/connectors/dream.ConnectDreamPrompt.tsx` — React component module.
+- `components/connectors/dream.ConnectorRow.tsx` — React component module.
+- `components/connectors/dream.NoSlotDialog.tsx` — React component module.
+- `components/connectors/dream.PlacementMode.tsx` — React component module.
+- `components/connectors/dream.widget.ConnectWidgetPrompt.tsx` — React component module.
+- `components/connectors/dream.widget.ConnectorWidgetPicker.tsx` — React component module.
+- `components/contentengin/AnimationPanel.tsx` — React component module.
+- `components/contentengin/AssetPreview3D.tsx` — React component module.
+- `components/contentengin/ContentEnginStudio.tsx` — React component module.
+- `components/contentengin/ExportPanel.tsx` — React component module.
+- `components/contentengin/MaterialEditor.tsx` — React component module.
+- `components/contentengin/PartTreeEditor.tsx` — React component module.
+- `components/contentengin/PhotoReferencePanel.tsx` — React component module.
+- `components/contentengin/RecipeEditor.tsx` — React component module.
+- `components/contentengin/RiggingPanel.tsx` — React component module.
+- `components/core/dream.CoreDream.tsx` — React component module.
+- `components/customize/dream.GlobalCustomizeUI.tsx` — React component module.
+- `components/customize/dream.bar.CustomizeModeBar.tsx` — React component module.
+- `components/customize/dream.bar.CustomizeToolbar.tsx` — React component module.
+- `components/customize/panels/dream.panel.ColorPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.EffectsPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.FontPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.LayoutPanel.tsx` — React component module.
+- `components/daydream/dream.CodeDreamIDE.tsx` — React component module.
+- `components/daydream/dream.DiffViewer.tsx` — React component module.
+- `components/daydream/dream.JourneyTrail.tsx` — React component module.
+- `components/daydream/dream.LabDreamIDE.tsx` — React component module.
+- `components/daydream/dream.NGNEngin.tsx` — React component module.
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React component module.
+- `components/daydream/dream.StandaloneEnginSurface.tsx` — React component module.
+- `components/daydream/dream.constellationmap.tsx` — React component module.
+- `components/daydream/dream.shell.DaydreamShell.tsx` — React component module.
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React component module.
+- `components/draggable/dream.DraggableModule.tsx` — React component module.
+- `components/dream.AIAssistant.tsx` — React component module.
+- `components/dream.AudioVisualizer3D.tsx` — React component module.
+- `components/dream.BoogieWarningBanner.tsx` — React component module.
+- `components/dream.BrandLogo.tsx` — React component module.
+- `components/dream.CommandPalette.tsx` — React component module.
+- `components/dream.CreatePostModal.tsx` — React component module.
+- `components/dream.DrEamsModeToggle.tsx` — React component module.
+- `components/dream.DrEamsVoiceAssistant.tsx` — React component module.
+- `components/dream.DragToAnchorClose.tsx` — React component module.
+- `components/dream.FeedCard.tsx` — React component module.
+- `components/dream.ForgeDreamCanvas.tsx` — React component module.
+- `components/dream.GlobalOverlays.tsx` — React component module.
+- `components/dream.HeroSprite.tsx` — React component module.
+- `components/dream.HomeFeed.tsx` — React component module.
+- `components/dream.IconSelector.tsx` — React component module.
+- `components/dream.InnerDreamsButton.tsx` — React component module.
+- `components/dream.KonamiDream.tsx` — React component module.
+- `components/dream.LandingHero.tsx` — React component module.
+- `components/dream.LedgerChart.tsx` — React component module.
+- `components/dream.MessagesClient.tsx` — React component module.
+- `components/dream.NotificationCenter.tsx` — React component module.
+- `components/dream.OSShellActivator.tsx` — React component module.
+- `components/dream.PhysicsLab.tsx` — React component module.
+- `components/dream.ProfileEditor.tsx` — React component module.
+- `components/dream.ProfileShareButton.tsx` — React component module.
+- `components/dream.ProfileSpace.tsx` — React component module.
+- `components/dream.PullToRefresh.tsx` — React component module.
+- `components/dream.ShrunkMode.tsx` — React component module.
+- `components/dream.SkeletonLoaders.tsx` — React component module.
+- `components/dream.ThemeApplicator.tsx` — React component module.
+- `components/dream.ThemeToggle.tsx` — React component module.
+- `components/dream.ToastSystem.tsx` — React component module.
+- `components/dream.VoidThemeToggle.tsx` — React component module.
+- `components/dream.panel.ChildSafetyPanel.tsx` — React component module.
+- `components/dream.panel.IDariPanel.tsx` — React component module.
+- `components/dream.universal_asset_registry.tsx` — React component module.
+- `components/dream.widget.AnchorWidget.tsx` — React component module.
+- `components/dream.widget.ProfileWidgetBlock.tsx` — React component module.
+- `components/dream.widget.WidgetBubble.tsx` — React component module.
+- `components/dreamengin/dream.CanvasDropZone.tsx` — React component module.
+- `components/dreamengin/dream.DREAMenginOS.tsx` — React component module.
+- `components/dreamengin/dream.DrEamsCanvas.tsx` — React component module.
+- `components/dreamengin/dream.HomeControls.tsx` — React component module.
+- `components/dreamengin/dream.bar.DrEamsSearchBar.tsx` — React component module.
+- `components/dreamengin/dream.menu.NexusMenu.tsx` — React component module.
+- `components/dreamengin/dream.menu.OutdreamMenu.tsx` — React component module.
+- `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx` — React component module.
+- `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` — React component module.
+- `components/dreamengin/dream.panel.DrEamsPanel.tsx` — React component module.
+- `components/dreamengin/dream.scene.BabylonGameScene.tsx` — React component module.
+- `components/dreamengin/dream.scene.DrEamsScene.tsx` — React component module.
+- `components/dreamengin/dream.scene.PortfolioOptimizationScene.tsx` — React component module.
+- `components/dreamengin/dream.shell.EnginShell.tsx` — React component module.
+- `components/dreamengin/dream.widget.AppearanceWidget.tsx` — React component module.
+- `components/dreamengin/dreamsurface.dreamengin.tsx` — React component module.
+- `components/dreamengin/engine/math.ts` — TypeScript module.
+- `components/dreamengin/engine/types.ts` — TypeScript module.
+- `components/dreamnav/dream.DreamNavControls.tsx` — React component module.
+- `components/dreamnav/dreamsurface.dreamnav.tsx` — React component module.
+- `components/dreamr/dream.CloseFriendsSettings.tsx` — React component module.
+- `components/dreamr/dream.panel.DreamRChannelPanel.tsx` — React component module.
+- `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` — React component module.
+- `components/dreams/dream.DraggableDream.tsx` — React component module.
+- `components/dreams/dream.GlobalDragLayer.tsx` — React component module.
+- `components/dreams/dream.PlatformErrorReporter.tsx` — React component module.
+- `components/dreams/dream.SlideOverPanel.tsx` — React component module.
+- `components/dreams/dream.connectorlayer.tsx` — React component module.
+- `components/dreams/dream.featurelayer.tsx` — React component module.
+- `components/dreams/dream.outputlayer.tsx` — React component module.
+- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — React component module.
+- `components/dreams/dream.shell.DreamShell.tsx` — React component module.
+- `components/dreams/dream.shell.SharedDreamShell.tsx` — React component module.
+- `components/dreams/dream.widget.SuperDreamWidget.tsx` — React component module.
+- `components/dreams/dream.window.JourneyDreamWindow.tsx` — React component module.
+- `components/dreams/dreamsurface.dreamspace.tsx` — React component module.
+- `components/dreams/dreamsurface.shell.tsx` — React component module.
+- `components/dreams/dreamsurface.window.tsx` — React component module.
+- `components/engines/brand/dream.BrandEnginApp.tsx` — React component module.
+- `components/engines/brand/index.ts` — TypeScript module.
+- `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx` — React component module.
+- `components/engines/brand/panels/dream.panel.IdentityPanel.tsx` — React component module.
+- `components/engines/code/dream.CodeEnginApp.tsx` — React component module.
+- `components/engines/code/index.ts` — TypeScript module.
+- `components/engines/code/panels/dream.panel.AIPanel.tsx` — React component module.
+- `components/engines/code/panels/dream.panel.NotebookPanel.tsx` — React component module.
+- `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` — React component module.
+- `components/engines/create/dream.CreateEnginApp.tsx` — React component module.
+- `components/engines/create/index.ts` — TypeScript module.
+- `components/engines/create/panels/dream.panel.CalendarPanel.tsx` — React component module.
+- `components/engines/create/panels/dream.panel.EditorPanel.tsx` — React component module.
+- `components/engines/create/panels/dream.panel.QueuePanel.tsx` — React component module.
+- `components/engines/games/dream.GameEnginApp.tsx` — React component module.
+- `components/engines/games/index.ts` — TypeScript module.
+- `components/engines/games/panels/dream.panel.BuilderPanel.tsx` — React component module.
+- `components/engines/games/panels/dream.panel.LibraryPanel.tsx` — React component module.
+- `components/engines/games/panels/dream.panel.ScoresPanel.tsx` — React component module.
+- `components/engines/index.ts` — TypeScript module.
+- `components/engines/lab/dream.LabEnginApp.tsx` — React component module.
+- `components/engines/lab/index.ts` — TypeScript module.
+- `components/engines/lab/panels/dream.panel.DataVizPanel.tsx` — React component module.
+- `components/engines/lab/panels/dream.panel.ExperimentsPanel.tsx` — React component module.
+- `components/engines/lab/panels/dream.panel.QuantumPanel.tsx` — React component module.
+- `components/engines/music/dream.MusicEnginApp.tsx` — React component module.
+- `components/engines/music/index.ts` — TypeScript module.
+- `components/engines/music/panels/dream.panel.ArrangePanel.tsx` — React component module.
+- `components/engines/music/panels/dream.panel.MusicLibraryPanel.tsx` — React component module.
+- `components/engines/music/panels/dream.panel.StudioPanel.tsx` — React component module.
+- `components/engines/portfolio/dream.PortfolioEnginApp.tsx` — React component module.
+- `components/engines/portfolio/index.ts` — TypeScript module.
+- `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` — React component module.
+- `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` — React component module.
+- `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` — React component module.
+- `components/engines/shared/dream.EnginProvider.tsx` — React component module.
+- `components/engines/shared/dream.EnginRuleSet.ts` — TypeScript module.
+- `components/engines/shared/dream.bar.EnginNavBar.tsx` — React component module.
+- `components/engines/shared/dream.makeEnginApp.tsx` — React component module.
+- `components/engines/shared/dream.shell.EnginAppShell.tsx` — React component module.
+- `components/engines/shared/index.ts` — TypeScript module.
+- `components/feed/dream.AlgorithmEngine.tsx` — React component module.
+- `components/feed/dream.CommentSection.tsx` — React component module.
+- `components/feed/dream.FeedVideoCard.tsx` — React component module.
+- `components/feed/dream.FollowButton.tsx` — React component module.
+- `components/feed/dream.FollowOnboarding.tsx` — React component module.
+- `components/feeds/dream.widget.EmbedFeedWidget.tsx` — React component module.
+- `components/forge/dream.EngineBuilderCanvas.tsx` — React component module.
+- `components/forge/dream.panel.AIBuilderPanel.tsx` — React component module.
+- `components/forge/dream.widget.ForgeMomentumWidget.tsx` — React component module.
+- `components/gameengin/README.md` — documentation.
+- `components/gameengin/dream.CartridgeRegistryBootstrap.tsx` — React component module.
+- `components/gameengin/dream.CrashReportModal.tsx` — React component module.
+- `components/gameengin/dream.cartridge.CartridgeBrowser.tsx` — React component module.
+- `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx` — React component module.
+- `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` — React component module.
+- `components/gameengin/dream.cartridge.FeaturedCartridges.tsx` — React component module.
+- `components/gameengin/input/DualSenseManager.ts` — TypeScript module.
+- `components/games/_fx/canvasFx.ts` — TypeScript module.
+- `components/games/css-modules.d.ts` — TypeScript module.
+- `components/games/dream.AvenueOfMirrors.tsx` — React component module.
+- `components/games/dream.BabylonSideScroller.tsx` — React component module.
+- `components/games/dream.DefuseRitual.tsx` — React component module.
+- `components/games/dream.EchoArena.tsx` — React component module.
+- `components/games/dream.EnginFracture.tsx` — React component module.
+- `components/games/dream.GameController.module.css` — project file.
+- `components/games/dream.GameController.tsx` — React component module.
+- `components/games/dream.GamesHub.tsx` — React component module.
+- `components/games/dream.Glassfall.tsx` — React component module.
+- `components/games/dream.Leaderboard.tsx` — React component module.
+- `components/games/dream.LexiconSolitaire.tsx` — React component module.
+- `components/games/dream.MadMaxiWildfall.tsx` — React component module.
+- `components/games/dream.NeonDrift.tsx` — React component module.
+- `components/games/dream.NiteFlyerSolarHymn.tsx` — React component module.
+- `components/games/dream.NullCathedral.tsx` — React component module.
+- `components/games/dream.RecordingControls.tsx` — React component module.
+- `components/games/dream.SerpentSiege.tsx` — React component module.
+- `components/games/dream.VoidlineGP.tsx` — React component module.
+- `components/games/dream.hud.GameHUD.tsx` — React component module.
+- `components/games/dream.hud.LegacyGameHUD.tsx` — React component module.
+- `components/games/dream.hud.MobileGameHUD.module.css` — project file.
+- `components/games/dream.hud.MobileGameHUD.tsx` — React component module.
+- `components/games/dream.remote.GameRemote.tsx` — React component module.
+- `components/games/dream.remote.GameRemoteSurface.tsx` — React component module.
+- `components/games/dream.remote.LegacyGameRemote.tsx` — React component module.
+- `components/games/madmaxi/audio.ts` — TypeScript module.
+- `components/games/madmaxi/authoredZonePacks.ts` — TypeScript module.
+- `components/games/madmaxi/config.ts` — TypeScript module.
+- `components/games/madmaxi/dream.MadmaxiGame.tsx` — React component module.
+- `components/games/madmaxi/index.ts` — TypeScript module.
+- `components/games/madmaxi/levels.ts` — TypeScript module.
+- `components/games/madmaxi/materials.ts` — TypeScript module.
+- `components/games/madmaxi/types.ts` — TypeScript module.
+- `components/games/madmaxi/vfx.ts` — TypeScript module.
+- `components/home/dream.ActiveModuleSurface.tsx` — React component module.
+- `components/home/dream.DaydreamPulseStrip.tsx` — React component module.
+- `components/home/dream.FlagshipEnginesStrip.tsx` — React component module.
+- `components/home/dream.NeuralSeamCanvas.tsx` — React component module.
+- `components/home/dream.bar.GlobalDreamBar.tsx` — React component module.
+- `components/home/dream.bar.PersistentDreamBar.tsx` — React component module.
+- `components/home/dream.widget.DreamWidget.tsx` — React component module.
+- `components/icons/sheet.ts` — TypeScript module.
+- `components/idari/dream.PlatformHealth.tsx` — React component module.
+- `components/landing/dream.LandingNav.tsx` — React component module.
+- `components/landing/dream.LandingProductStatement.tsx` — React component module.
+- `components/landing/dream.scene.UniverseField.tsx` — React component module.
+- `components/marketplace/dream.MarketplaceListingCard.tsx` — React component module.
+- `components/marketplace/dream.MarketplaceRequestButton.tsx` — React component module.
+- `components/menus/dream.menu.DreamRadialMenu.tsx` — React component module.
+- `components/menus/dream.menu.DualBottomMenu.tsx` — React component module.
+- `components/menus/dream.menu.RadialMenu.tsx` — React component module.
+- `components/menus/dream.menu.SystemRadialMenu.tsx` — React component module.
+- `components/menus/dream.panel.MenuPanel.tsx` — React component module.
+- `components/messaging/dream.BoardComposer.tsx` — React component module.
+- `components/music/dream.SoundRecorder.tsx` — React component module.
+- `components/onboarding/dream.OnboardingTip.tsx` — React component module.
+- `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` — React component module.
+- `components/overlays/dream.RootStatusScreen.tsx` — React component module.
+- `components/panels/dream.panel.AlgorithmPanel.tsx` — React component module.
+- `components/panels/dream.panel.AppearancePanel.tsx` — React component module.
+- `components/panels/dream.panel.ConnectorsPanel.tsx` — React component module.
+- `components/panels/dream.panel.ControlsPanel.tsx` — React component module.
+- `components/panels/dream.panel.DataPanel.tsx` — React component module.
+- `components/panels/dream.panel.FeedPanel.tsx` — React component module.
+- `components/panels/dream.panel.FeedSettingsPanel.tsx` — React component module.
+- `components/panels/dream.panel.HelpPanel.tsx` — React component module.
+- `components/panels/dream.panel.MarketplacePanel.tsx` — React component module.
+- `components/panels/dream.panel.PrivacyPanel.tsx` — React component module.
+- `components/panels/dream.panel.ProfilePanel.tsx` — React component module.
+- `components/panels/dream.panel.SafetyPanel.tsx` — React component module.
+- `components/panels/dream.panel.SettingsPanel.tsx` — React component module.
+- `components/panels/dream.panel.WidgetsPanel.tsx` — React component module.
+- `components/panels/panelTypes.ts` — TypeScript module.
+- `components/profile/dream.EditableAvatar.tsx` — React component module.
+- `components/profile/dream.ProfileCanvas.tsx` — React component module.
+- `components/profile/dream.ProfileCustomizeButton.tsx` — React component module.
+- `components/profile/dream.widget.ProfileWidgetGrid.tsx` — React component module.
+- `components/providers/dream.AppSurfaceShell.tsx` — React component module.
+- `components/providers/dream.GodTierProvider.tsx` — React component module.
+- `components/providers/dream.ThemeProvider.tsx` — React component module.
+- `components/runtime/dream.DualRuntimeContainer.tsx` — React component module.
+- `components/runtime/dream.RuntimeView.tsx` — React component module.
+- `components/runtime/dream.shell.RuntimeShell.tsx` — React component module.
+- `components/shaders/dream.LightningWing.tsx` — React component module.
+- `components/shaders/dream.NeonGlow.tsx` — React component module.
+- `components/shaders/dream.Refractor.tsx` — React component module.
+- `components/shaders/index.ts` — TypeScript module.
+- `components/shared-dream/dream.InviteFlow.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamCanvas.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamProvider.tsx` — React component module.
+- `components/shared-dream/dream.SharedDreamRuntime.tsx` — React component module.
+- `components/shared-dream/index.ts` — TypeScript module.
+- `components/spatial/dream.PixiPhysicsLayer.tsx` — React component module.
+- `components/spatial/dream.ProfileSpace.tsx` — React component module.
+- `components/spatial/dream.shell.EnhancedSpatialShell.tsx` — React component module.
+- `components/three/dream.scene.tsx` — React component module.
+- `components/three/index.ts` — TypeScript module.
+- `components/ui-system/CustomizeModeContext.tsx` — React component module.
+- `components/ui-system/responsive.ts` — TypeScript module.
+- `components/ui-system/runtimeViewport.ts` — TypeScript module.
+- `components/ui-system/skin-engine.ts` — TypeScript module.
+- `components/ui-system/theme-engine.ts` — TypeScript module.
+- `components/ui-system/theme.ts` — TypeScript module.
+- `components/ui/dream.AuthenticatedPageHeader.tsx` — React component module.
+- `components/ui/dream.DreamWord.tsx` — React component module.
+- `components/ui/dream.IconList.tsx` — React component module.
+- `components/ui/dream.InfinityIcon.tsx` — React component module.
+- `components/ui/dream.PlatformBadge.tsx` — React component module.
+- `components/ui/dream.SheetIcon.tsx` — React component module.
+- `components/ui/dream.SocialShareSheet.tsx` — React component module.
+- `components/universal-editor/dream.UniversalEditor.tsx` — React component module.
+- `components/universal-editor/dream.UniversalEditorWrapper.tsx` — React component module.
+- `components/universal-editor/index.ts` — TypeScript module.
+- `components/universal-editor/useTapHoldMove.ts` — TypeScript module.
+- `components/universe/dream.node-cluster.tsx` — React component module.
+- `components/universe/dream.shell.universe-shell.tsx` — React component module.
+- `components/universe/dream.universe-card.tsx` — React component module.
+- `components/universe/index.ts` — TypeScript module.
+- `components/warp/dream.WarpCanvas.tsx` — React component module.
+- `components/webgpu/dream.WebGPUShowcase.tsx` — React component module.
+- `components/webgpu/neuralPostProcess.ts` — TypeScript module.
+- `components/webgpu/renderer.ts` — TypeScript module.
+- `components/webgpu/shaders.ts` — TypeScript module.
+- `components/widgets/dream.AddDreamCTA.tsx` — React component module.
+- `components/widgets/dream.ConfigureSheet.tsx` — React component module.
+- `components/widgets/dream.EditModeBanner.tsx` — React component module.
+- `components/widgets/dream.EditModeProvider.tsx` — React component module.
+- `components/widgets/dream.widget.PlayMediaWidget.tsx` — React component module.
+- `components/widgets/dream.widget.UniversalWidget.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetCard.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetLibrary.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetPlaceholder.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetShell.tsx` — React component module.
+- `components/widgets/dream.widget.WidgetSurface.tsx` — React component module.
+- `hooks/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `hooks/use-spatial.ts` — TypeScript module.
+- `hooks/useAccount.ts` — TypeScript module.
+- `hooks/useConnectorInstallFlow.ts` — TypeScript module.
+- `hooks/useDreamLayout.ts` — TypeScript module.
+- `hooks/useHideOnScroll.ts` — TypeScript module.
+- `hooks/useMotionTilt.ts` — TypeScript module.
+- `hooks/useResponsive.ts` — TypeScript module.
+- `hooks/useSharedDream.ts` — TypeScript module.
+- `hooks/useTap.ts` — TypeScript module.
+- `hooks/useTapHoldMove.ts` — TypeScript module.
+- `hooks/useTick.ts` — TypeScript module.
+- `hooks/useViewCounter.ts` — TypeScript module.
+- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `styles/dream-shell.css` — project file.
+- `styles/globals.css` — project file.
+- `styles/home-dream.css` — project file.
+- `styles/theme.css` — project file.
+- `styles/view-transitions.css` — project file.
 
 </details>
 
 ## Custom Engins
-Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using repository introspection.
-- Files tracked: **39**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `AutoOpenGameEngin`, `BrandingEngin`, `CodeDreamIDE`, `CodeEngin`, `Constellationmap`, `ContentEngin`, `DiffViewer`, `DreamsurfaceDaydreamAnalyticsDaydream`, +21 more
-#### Custom Engins file structure
+Custom Engins is a UI subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as React hooks for consumption by sibling subsystems. Core abstractions are encapsulated in H265Encoder, GameCapture, GameEnginConfigError. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, Dreams (Widgets / Windows / Surfaces).
+### Responsibilities
+- Renders CodeDreamIDE, DiffViewer, JourneyTrail, LabDreamIDE, NGNEngin, OpenDaydreamSideBButton, +29 more
+- Core abstractions: H265Encoder, GameCapture, GameEnginConfigError, GameEnginCore, RealtimeCaptioner
+- Runtime orchestration and engin lifecycle management
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Feed ranking, algorithm execution, and content scoring
+### Key Modules
+- `BrandDaydream`
+- `CodeDreamIDE`
+- `CompingPanel`
+- `DaydreamShell`
+- `DiffViewer`
+- `DreamConstellationMap`
+- `JourneyTrail`
+- `LabDreamIDE`
+- `MultitrackArrangementPanel`
+- `NGNEngin`
+- `OpenDaydreamSideBButton`
+- `StandaloneEnginSurface`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **DreamSpace**
+- Depends on **Dual Runtimes**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on DreamSpace
+### Public Surfaces
+**Components:**
+`AgentPanel`, `ArtifactSlot`, `AssetViewport`, `BrandDaydream`, `BrandDaydreamPage`, `BrandingEngin`, `CodeDaydreamPage`, `CodeDreamIDE`, `CodeEngin`, `CodeEnginOrchestrator`, +25 more
+### Notable Abstractions
+- `StandaloneEnginName` — type
+- `DaydreamWidget` — type
+- `UseDaydreamPersistenceOptions` — interface
+- `UseDaydreamPersistenceReturn` — interface
+- `DaydreamSide` — type
+- `DaydreamStatePayload` — type
+- `UseDaydreamStateOptions` — interface
+- `UseDaydreamStateReturn` — interface
+- `ParseError` — interface
+- `ParsedSymbol` — interface
+- `ParseResult` — interface
+- `AgentMessage` — interface
+- `useAIDirector` — hook
+- `useAgentSession` — hook
+- `useArtifactSlot` — hook
+- `useBrandEnginRuntime` — hook
+- `useCodeEnginRuntime` — hook
+- `useContentEnginRuntime` — hook
+- `useDaydreamPersistence` — hook
+- `useDaydreamState` — hook
+### Capabilities
+- Exposes useAIDirector, useAgentSession, useArtifactSlot, useBrandEnginRuntime, useCodeEnginRuntime, useContentEnginRuntime as composable React hooks
+- Public contract surface: UseDaydreamPersistenceOptions, UseDaydreamPersistenceReturn, UseDaydreamStateOptions, UseDaydreamStateReturn, ParseError
+- Shared type vocabulary: StandaloneEnginName, DaydreamWidget, DaydreamSide, DaydreamStatePayload, LogoPath
+- Utility functions: parseCode, AgentPanel, AutoOpenGameEngin, getRandomLogo, resetLogoCache, matchCodeVocabulary
+#### File Structure
 ```text
 ├── components
 │   └── daydream
@@ -1687,7 +3545,6 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 │       ├── dream.StandaloneEnginSurface.tsx
 │       ├── dream.constellationmap.tsx
 │       ├── dream.shell.DaydreamShell.tsx
-│       ├── dreamsurface.daydream.AnalyticsDaydream.tsx
 │       ├── dreamsurface.daydream.BrandDaydream.tsx
 │       └── starmaker
 │           ├── dream.panel.CompingPanel.tsx
@@ -1706,8 +3563,11 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
 │   │   └── page.tsx
 │   ├── lab
 │   │   └── page.tsx
-│   └── music
-│       └── page.tsx
+│   ├── music
+│   │   └── page.tsx
+│   └── shared
+│       ├── useDaydreamPersistence.ts
+│       └── useDaydreamState.ts
 └── engins
     ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── CodeEngin
@@ -1722,69 +3582,494 @@ Auto-synced from `engins/**`, `daydreams/**`, `components/daydream/**` using rep
     │       └── dream.index.tsx
     ├── autoopen
     │   └── dream.AutoOpenGameEngin.tsx
-    ├── dream.ForgeEngin.tsx
-    ├── dream.QuantumCircuitCanvas.tsx
-    ├── dream.panel.AnalyticsEngin.tsx
-    ├── engin.BrandingEngin.tsx
-    ├── engin.CodeEngin.tsx
-    ├── engin.ContentEngin.tsx
-    ├── engin.GameEngin.tsx
-    ├── engin.LabEngin.tsx
-    ├── engin.StarMakerEngin.tsx
-    └── portfolio
-        └── dream.PortfolioEngin.tsx
+    ├── brandingengin
+    │   └── identity
+    │       └── logos.ts
+    ├── codeengin
+    │   ├── ai
+    │   │   └── drEamsCodeAssist.ts
+    │   ├── auth.ts
+    │   ├── diagnostics.ts
+    │   ├── diff
+    │   │   ├── aiEditEngine.ts
+    │   │   └── diffUtils.ts
+    │   ├── git.ts
+    │   ├── pathSafety.ts
+    │   ├── projectGraph.ts
+    │   ├── runner.ts
+    │   ├── search.ts
+    │   ├── types.ts
+    │   └── workspaceStore.ts
+    ├── contentengin
+    │   ├── AssetViewport.tsx
+    │   ├── ImplicitAssetWorkspace.tsx
+    │   ├── assetTypes.ts
+    │   ├── assets
+    │   │   ├── assetOptimizer.ts
+    │   │   └── indexedDBStore.ts
+    │   ├── builders
+    │   │   ├── geometryBuilder.ts
+    │   │   ├── meshBuilder.ts
+    │   │   ├── modifiers.ts
+    │   │   ├── primitiveBuilder.ts
+    │   │   ├── textureBuilder.ts
+    │   │   └── uvGenerator.ts
+    │   ├── cli.ts
+    │   ├── composite
+    │   │   ├── compositor.ts
+    │   │   ├── fxSimulation.ts
+    │   │   ├── matchmover.ts
+    │   │   ├── motionCapture.ts
+    │   │   └── rotoscope.ts
+    │   ├── content
+    │   │   ├── generativeFill.ts
+    │   │   ├── publishIntent.ts
+    │   │   ├── seoScorer.ts
+    │   │   ├── transcriptEditor.ts
+    │   │   └── voiceClone.ts
+    │   ├── grammars
+    │   │   ├── animalGrammar.ts
+    │   │   ├── bicycleGrammar.ts
+    │   │   ├── bridgeGrammar.ts
+    │   │   ├── buildingGrammar.ts
+    │   │   ├── creatureGrammar.ts
+    │   │   ├── humanoidGrammar.ts
+    │   │   ├── propGrammar.ts
+    │   │   ├── roadGrammar.ts
+    │   │   ├── shared.ts
+    │   │   ├── terrainGrammar.ts
+    │   │   ├── treeGrammar.ts
+    │   │   ├── vehicleGrammar.ts
+    │   │   └── waterGrammar.ts
+    │   ├── materials
+    │   │   ├── materialTypes.ts
+    │   │   ├── paletteExtractor.ts
+    │   │   └── proceduralMaterials.ts
+    │   ├── media
+    │   │   ├── h265-encoder.ts
+    │   │   ├── ledger.ts
+    │   │   └── postMedia.ts
+    │   ├── photo
+    │   │   ├── colorCluster.ts
+    │   │   ├── edgeDetector.ts
+    │   │   ├── imageAnalyzer.ts
+    │   │   ├── photoToRecipe.ts
+… (230 more files)
 ```
-<details><summary>Custom Engins file index (39 files)</summary>
+<details><summary>Custom Engins file index (350 files)</summary>
 
-- `components/daydream/dream.CodeDreamIDE.tsx` — React UI module for CodeDreamIDE.
-- `components/daydream/dream.DiffViewer.tsx` — React UI module for DiffViewer.
-- `components/daydream/dream.JourneyTrail.tsx` — React UI module for JourneyTrail.
-- `components/daydream/dream.LabDreamIDE.tsx` — React UI module for LabDreamIDE.
-- `components/daydream/dream.NGNEngin.tsx` — React UI module for NGNEngin.
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React UI module for OpenDaydreamSideBButton.
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — React UI module for StandaloneEnginSurface.
-- `components/daydream/dream.constellationmap.tsx` — React UI module for Constellationmap.
-- `components/daydream/dream.shell.DaydreamShell.tsx` — React UI module for ShellDaydreamShell.
-- `components/daydream/dreamsurface.daydream.AnalyticsDaydream.tsx` — React UI module for DreamsurfaceDaydreamAnalyticsDaydream.
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React UI module for DreamsurfaceDaydreamBrandDaydream.
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React UI module for PanelCompingPanel.
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React UI module for PanelMultitrackArrangementPanel.
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React UI module for PanelPianoRollPanel.
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React UI module for PanelSessionViewPanel.
-- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `components/daydream/dream.CodeDreamIDE.tsx` — React component module.
+- `components/daydream/dream.DiffViewer.tsx` — React component module.
+- `components/daydream/dream.JourneyTrail.tsx` — React component module.
+- `components/daydream/dream.LabDreamIDE.tsx` — React component module.
+- `components/daydream/dream.NGNEngin.tsx` — React component module.
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — React component module.
+- `components/daydream/dream.StandaloneEnginSurface.tsx` — React component module.
+- `components/daydream/dream.constellationmap.tsx` — React component module.
+- `components/daydream/dream.shell.DaydreamShell.tsx` — React component module.
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — React component module.
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — React component module.
+- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
 - `daydreams/brand/page.tsx` — route page.
 - `daydreams/code/page.tsx` — route page.
 - `daydreams/create/page.tsx` — route page.
 - `daydreams/games/page.tsx` — route page.
 - `daydreams/lab/page.tsx` — route page.
 - `daydreams/music/page.tsx` — route page.
-- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React UI module for PanelAgentPanel.
-- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript/JavaScript runtime module.
-- `engins/CodeEngin/orchestrator/dream.index.tsx` — React UI module for Index.
-- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React UI module for AutoOpenGameEngin.
-- `engins/dream.ForgeEngin.tsx` — React UI module for ForgeEngin.
-- `engins/dream.QuantumCircuitCanvas.tsx` — React UI module for QuantumCircuitCanvas.
-- `engins/dream.panel.AnalyticsEngin.tsx` — React UI module for PanelAnalyticsEngin.
-- `engins/engin.BrandingEngin.tsx` — React UI module for BrandingEngin.
-- `engins/engin.CodeEngin.tsx` — React UI module for CodeEngin.
-- `engins/engin.ContentEngin.tsx` — React UI module for ContentEngin.
-- `engins/engin.GameEngin.tsx` — React UI module for GameEngin.
-- `engins/engin.LabEngin.tsx` — React UI module for LabEngin.
-- `engins/engin.StarMakerEngin.tsx` — React UI module for StarMakerEngin.
-- `engins/portfolio/dream.PortfolioEngin.tsx` — React UI module for PortfolioEngin.
+- `daydreams/shared/useDaydreamPersistence.ts` — TypeScript module.
+- `daydreams/shared/useDaydreamState.ts` — TypeScript module.
+- `engins/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `engins/CodeEngin/core/parser.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React component module.
+- `engins/CodeEngin/modules/ai-co-pilot/index.ts` — TypeScript module.
+- `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` — TypeScript module.
+- `engins/CodeEngin/orchestrator/dream.index.tsx` — React component module.
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` — React component module.
+- `engins/brandingengin/identity/logos.ts` — TypeScript module.
+- `engins/codeengin/ai/drEamsCodeAssist.ts` — TypeScript module.
+- `engins/codeengin/auth.ts` — TypeScript module.
+- `engins/codeengin/diagnostics.ts` — TypeScript module.
+- `engins/codeengin/diff/aiEditEngine.ts` — TypeScript module.
+- `engins/codeengin/diff/diffUtils.ts` — TypeScript module.
+- `engins/codeengin/git.ts` — TypeScript module.
+- `engins/codeengin/pathSafety.ts` — TypeScript module.
+- `engins/codeengin/projectGraph.ts` — TypeScript module.
+- `engins/codeengin/runner.ts` — TypeScript module.
+- `engins/codeengin/search.ts` — TypeScript module.
+- `engins/codeengin/types.ts` — TypeScript module.
+- `engins/codeengin/workspaceStore.ts` — TypeScript module.
+- `engins/contentengin/AssetViewport.tsx` — React component module.
+- `engins/contentengin/ImplicitAssetWorkspace.tsx` — React component module.
+- `engins/contentengin/assetTypes.ts` — TypeScript module.
+- `engins/contentengin/assets/assetOptimizer.ts` — TypeScript module.
+- `engins/contentengin/assets/indexedDBStore.ts` — TypeScript module.
+- `engins/contentengin/builders/geometryBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/meshBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/modifiers.ts` — TypeScript module.
+- `engins/contentengin/builders/primitiveBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/textureBuilder.ts` — TypeScript module.
+- `engins/contentengin/builders/uvGenerator.ts` — TypeScript module.
+- `engins/contentengin/cli.ts` — TypeScript module.
+- `engins/contentengin/composite/compositor.ts` — TypeScript module.
+- `engins/contentengin/composite/fxSimulation.ts` — TypeScript module.
+- `engins/contentengin/composite/matchmover.ts` — TypeScript module.
+- `engins/contentengin/composite/motionCapture.ts` — TypeScript module.
+- `engins/contentengin/composite/rotoscope.ts` — TypeScript module.
+- `engins/contentengin/content/generativeFill.ts` — TypeScript module.
+- `engins/contentengin/content/publishIntent.ts` — TypeScript module.
+- `engins/contentengin/content/seoScorer.ts` — TypeScript module.
+- `engins/contentengin/content/transcriptEditor.ts` — TypeScript module.
+- `engins/contentengin/content/voiceClone.ts` — TypeScript module.
+- `engins/contentengin/grammars/animalGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bicycleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/bridgeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/buildingGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/creatureGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/humanoidGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/propGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/roadGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/shared.ts` — TypeScript module.
+- `engins/contentengin/grammars/terrainGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/treeGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/vehicleGrammar.ts` — TypeScript module.
+- `engins/contentengin/grammars/waterGrammar.ts` — TypeScript module.
+- `engins/contentengin/materials/materialTypes.ts` — TypeScript module.
+- `engins/contentengin/materials/paletteExtractor.ts` — TypeScript module.
+- `engins/contentengin/materials/proceduralMaterials.ts` — TypeScript module.
+- `engins/contentengin/media/h265-encoder.ts` — TypeScript module.
+- `engins/contentengin/media/ledger.ts` — TypeScript module.
+- `engins/contentengin/media/postMedia.ts` — TypeScript module.
+- `engins/contentengin/photo/colorCluster.ts` — TypeScript module.
+- `engins/contentengin/photo/edgeDetector.ts` — TypeScript module.
+- `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript module.
+- `engins/contentengin/photo/photoToRecipe.ts` — TypeScript module.
+- `engins/contentengin/photo/pngDecoder.ts` — TypeScript module.
+- `engins/contentengin/photo/regionDetector.ts` — TypeScript module.
+- `engins/contentengin/pipeline/build.ts` — TypeScript module.
+- `engins/contentengin/pipeline/bundle.ts` — TypeScript module.
+- `engins/contentengin/pipeline/exportGlb.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateCollision.ts` — TypeScript module.
+- `engins/contentengin/pipeline/generateLods.ts` — TypeScript module.
+- `engins/contentengin/pipeline/paths.ts` — TypeScript module.
+- `engins/contentengin/pipeline/validate.ts` — TypeScript module.
+- `engins/contentengin/pipeline/writeManifest.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeResolver.ts` — TypeScript module.
+- `engins/contentengin/recipes/recipeTypes.ts` — TypeScript module.
+- `engins/contentengin/recipes/seededRandom.ts` — TypeScript module.
+- `engins/contentengin/rigging/fitArmature.ts` — TypeScript module.
+- `engins/contentengin/rigging/index.ts` — TypeScript module.
+- `engins/contentengin/rigging/landmarks.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigTypes.ts` — TypeScript module.
+- `engins/contentengin/rigging/rigValidator.ts` — TypeScript module.
+- `engins/contentengin/rigging/templates/bird_basic.json` — project file.
+- `engins/contentengin/rigging/templates/fish_basic.json` — project file.
+- `engins/contentengin/rigging/templates/humanoid_basic.json` — project file.
+- `engins/contentengin/rigging/templates/quadruped_basic.json` — project file.
+- `engins/contentengin/rigging/templates/vehicle_mechanical.json` — project file.
+- `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript module.
+- `engins/contentengin/shaders/shaderTypes.ts` — TypeScript module.
+- `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript module.
+- `engins/dream.ForgeEngin.tsx` — React component module.
+- `engins/dream.QuantumCircuitCanvas.tsx` — React component module.
+- `engins/engin.BrandingEngin.tsx` — React component module.
+- `engins/engin.CodeEngin.tsx` — React component module.
+- `engins/engin.ContentEngin.tsx` — React component module.
+- `engins/engin.GameEngin.tsx` — React component module.
+- `engins/engin.LabEngin.tsx` — React component module.
+- `engins/engin.StarMakerEngin.tsx` — React component module.
+- `engins/forgeengin/componentInventory.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/artifact/manifest.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/index.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/quality/tiers.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx` — React component module.
+- `engins/forgeengin/enginpipe/telemetry/client.ts` — TypeScript module.
+- `engins/forgeengin/enginpipe/telemetry/events.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/assembly.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/index.ts` — TypeScript module.
+- `engins/forgeengin/forge-ngn/piece-registry.ts` — TypeScript module.
+- `engins/forgeengin/forge/engineForge.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeBuild.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeIntelligence.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeMomentum.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeNexus.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRegistry.ts` — TypeScript module.
+- `engins/forgeengin/forge/forgeRituals.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeActivity.ts` — TypeScript module.
+- `engins/forgeengin/forge/useForgeBuild.ts` — TypeScript module.
+- `engins/gameengin/GameEnginCore.ts` — TypeScript module.
+- `engins/gameengin/GameRuntime.tsx` — React component module.
+- `engins/gameengin/accessibility-ai.ts` — TypeScript module.
+- `engins/gameengin/ai-director.ts` — TypeScript module.
+- `engins/gameengin/ai-npcs.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleCache.ts` — TypeScript module.
+- `engins/gameengin/assets/BundleManifest.ts` — TypeScript module.
+- `engins/gameengin/backendNegotiator.ts` — TypeScript module.
+- `engins/gameengin/brain-reader.ts` — TypeScript module.
+- `engins/gameengin/brain/README.md` — documentation.
+- `engins/gameengin/brain/active-projects.json` — project file.
+- `engins/gameengin/brain/asset-registry/README.md` — documentation.
+- `engins/gameengin/brain/build-history/README.md` — documentation.
+- `engins/gameengin/brain/character-voices/mad-maxi.json` — project file.
+- `engins/gameengin/brain/composition-principles/leading-lines-landmark.json` — project file.
+- `engins/gameengin/brain/composition-principles/parallax-layers.json` — project file.
+- `engins/gameengin/brain/concept-library/README.md` — documentation.
+- `engins/gameengin/brain/concept-library/neon-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/README.md` — documentation.
+- `engins/gameengin/brain/concept-patterns/protagonists/reluctant-courier.json` — project file.
+- `engins/gameengin/brain/concept-patterns/scope-formulas/one-day-runner.json` — project file.
+- `engins/gameengin/brain/concept-patterns/settings/neon-rain-megacity.json` — project file.
+- `engins/gameengin/brain/crash-reports/README.md` — documentation.
+- `engins/gameengin/brain/dialogue-patterns/callback-anchor.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/implied-subject.json` — project file.
+- `engins/gameengin/brain/dialogue-patterns/sentence-fragment-rhythm.json` — project file.
+- `engins/gameengin/brain/emotional-tones/determined.json` — project file.
+- `engins/gameengin/brain/emotional-tones/fierce.json` — project file.
+- `engins/gameengin/brain/emotional-tones/hopeful.json` — project file.
+- `engins/gameengin/brain/emotional-tones/reflective.json` — project file.
+- `engins/gameengin/brain/emotional-tones/weary.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/meta-progression.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/moment-to-moment.json` — project file.
+- `engins/gameengin/brain/fun-heuristics/session-loop.json` — project file.
+- `engins/gameengin/brain/genre-dna/action-rpg.json` — project file.
+- `engins/gameengin/brain/genre-dna/episodic.json` — project file.
+- `engins/gameengin/brain/genre-dna/live-service.json` — project file.
+- `engins/gameengin/brain/genre-dna/metroidvania.json` — project file.
+- `engins/gameengin/brain/genre-dna/open-world.json` — project file.
+- `engins/gameengin/brain/genre-dna/platformer.json` — project file.
+- `engins/gameengin/brain/genre-dna/puzzle.json` — project file.
+- `engins/gameengin/brain/genre-dna/racing.json` — project file.
+- `engins/gameengin/brain/genre-dna/roguelike.json` — project file.
+- `engins/gameengin/brain/genre-dna/sandbox.json` — project file.
+- `engins/gameengin/brain/genre-dna/template.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/celeste.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/dead-cells.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hades.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/hollow-knight.json` — project file.
+- `engins/gameengin/brain/inspiration-corpus/outer-wilds.json` — project file.
+- `engins/gameengin/brain/material-recipes/neon-glass-tube.json` — project file.
+- `engins/gameengin/brain/material-recipes/rusted-iron.json` — project file.
+- `engins/gameengin/brain/material-recipes/sun-bleached-sandstone.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/look-ahead.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/screen-shake.json` — project file.
+- `engins/gameengin/brain/mechanic-library/camera/smooth-follow.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/combo.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/hit-stop.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/parry.json` — project file.
+- `engins/gameengin/brain/mechanic-library/combat/ranged.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/coyote-time.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/dash.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/double-jump.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/grapple.json` — project file.
+- `engins/gameengin/brain/mechanic-library/movement/wall-slide.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/metroidvania-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/roguelike-perks.json` — project file.
+- `engins/gameengin/brain/mechanic-library/progression/skill-tree.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/ability-gating.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/meta-progression.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/procedural-generation.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/run-persistence.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/season-pass.json` — project file.
+- `engins/gameengin/brain/mechanic-library/structural/world-streaming.json` — project file.
+- `engins/gameengin/brain/narrative-pacing/default.json` — project file.
+- `engins/gameengin/brain/originality-registry/by-cartridge/mad-maxi.json` — project file.
+- `engins/gameengin/brain/originality-registry/signatures.json` — project file.
+- `engins/gameengin/brain/principles/emotional-core.md` — documentation.
+- `engins/gameengin/brain/principles/feedback.md` — documentation.
+- `engins/gameengin/brain/principles/mastery.md` — documentation.
+- `engins/gameengin/brain/principles/progression.md` — documentation.
+- `engins/gameengin/brain/principles/responsiveness.md` — documentation.
+- `engins/gameengin/brain/principles/risk-reward.md` — documentation.
+- `engins/gameengin/brain/progression-state/README.md` — documentation.
+- `engins/gameengin/brain/rd-sessions/README.md` — documentation.
+- `engins/gameengin/brain/technique-library/lighting/three-point-mood.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/edge-flow.json` — project file.
+- `engins/gameengin/brain/technique-library/modeling/silhouette-first.json` — project file.
+- `engins/gameengin/brain/technique-library/optimization/texture-atlasing.json` — project file.
+- `engins/gameengin/brain/upgrade-history/README.md` — documentation.
+- `engins/gameengin/brain/upgrade-history/prioritization-rules.json` — project file.
+- `engins/gameengin/brain/visual-bible/characters/mad-maxi.md` — documentation.
+- `engins/gameengin/brain/visual-bible/environments/neon-wasteland.md` — documentation.
+- `engins/gameengin/brain/work-queue/README.md` — documentation.
+- `engins/gameengin/cartridge-manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridgeLoader.ts` — TypeScript module.
+- `engins/gameengin/cartridges/achievementEngine.ts` — TypeScript module.
+- `engins/gameengin/cartridges/apiStubs.ts` — TypeScript module.
+- `engins/gameengin/cartridges/index.ts` — TypeScript module.
+- `engins/gameengin/cartridges/loaders.ts` — TypeScript module.
+- `engins/gameengin/cartridges/manifest.ts` — TypeScript module.
+- `engins/gameengin/cartridges/reactCartridge.ts` — TypeScript module.
+- `engins/gameengin/cartridges/saveState.ts` — TypeScript module.
+- `engins/gameengin/cloud-compute.ts` — TypeScript module.
+- `engins/gameengin/config/demoGameConfig.ts` — TypeScript module.
+- `engins/gameengin/controls/control-mappings.ts` — TypeScript module.
+- `engins/gameengin/core.ts` — TypeScript module.
+- `engins/gameengin/dream-engine.ts` — TypeScript module.
+- `engins/gameengin/dreamr-loader.ts` — TypeScript module.
+- `engins/gameengin/executionWiring.ts` — TypeScript module.
+- `engins/gameengin/gameEnginRuntime.ts` — TypeScript module.
+- `engins/gameengin/games/DualSenseManager.ts` — TypeScript module.
+- `engins/gameengin/games/avatar.ts` — TypeScript module.
+- `engins/gameengin/games/catalog.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerButtons.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerLeft.ts` — TypeScript module.
+- `engins/gameengin/games/gameControllerRight.ts` — TypeScript module.
+- `engins/gameengin/games/hooks.ts` — TypeScript module.
+- `engins/gameengin/games/library-state.ts` — TypeScript module.
+- `engins/gameengin/games/lucid-avenue-world.ts` — TypeScript module.
+- `engins/gameengin/games/madmaxi-wildfall-world.ts` — TypeScript module.
+- `engins/gameengin/games/mobileControls.ts` — TypeScript module.
+- `engins/gameengin/games/navigation.ts` — TypeScript module.
+- `engins/gameengin/games/performance-baseline.ts` — TypeScript module.
+- `engins/gameengin/games/quality-plan.ts` — TypeScript module.
+- `engins/gameengin/games/useAIDirector.ts` — TypeScript module.
+- `engins/gameengin/games/useGameInputKeyboardBridge.ts` — TypeScript module.
+- `engins/gameengin/games/useGamepad.ts` — TypeScript module.
+- `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript module.
+- `engins/gameengin/games/useRemoteChannel.ts` — TypeScript module.
+- `engins/gameengin/generative-audio.ts` — TypeScript module.
+- `engins/gameengin/index.ts` — TypeScript module.
+- `engins/gameengin/input/InputRouter.ts` — TypeScript module.
+- `engins/gameengin/input/index.ts` — TypeScript module.
+- `engins/gameengin/launcher.ts` — TypeScript module.
+- `engins/gameengin/neural-render.ts` — TypeScript module.
+- `engins/gameengin/path-tracing.ts` — TypeScript module.
+- `engins/gameengin/platform.ts` — TypeScript module.
+- `engins/gameengin/post-fx.ts` — TypeScript module.
+- `engins/gameengin/power-systems.ts` — TypeScript module.
+- `engins/gameengin/predictive-stream.ts` — TypeScript module.
+- `engins/gameengin/procgen.ts` — TypeScript module.
+- `engins/gameengin/registerCartridges.ts` — TypeScript module.
+- `engins/gameengin/remote/comboMachine.ts` — TypeScript module.
+- `engins/gameengin/remote/index.ts` — TypeScript module.
+- `engins/gameengin/remote/layout.ts` — TypeScript module.
+- `engins/gameengin/remote/moves.ts` — TypeScript module.
+- `engins/gameengin/remote/sprintDetector.ts` — TypeScript module.
+- `engins/gameengin/render/ShaderRegistry.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameBudget.ts` — TypeScript module.
+- `engins/gameengin/runtime/FrameClock.ts` — TypeScript module.
+- `engins/gameengin/runtime/RuntimeQuality.ts` — TypeScript module.
+- `engins/gameengin/runtime/index.ts` — TypeScript module.
+- `engins/gameengin/systems/ai.ts` — TypeScript module.
+- `engins/gameengin/systems/animation.ts` — TypeScript module.
+- `engins/gameengin/systems/assets.ts` — TypeScript module.
+- `engins/gameengin/systems/index.ts` — TypeScript module.
+- `engins/gameengin/systems/lod.ts` — TypeScript module.
+- `engins/gameengin/systems/network.ts` — TypeScript module.
+- `engins/gameengin/systems/physics.ts` — TypeScript module.
+- `engins/gameengin/systems/pooling.ts` — TypeScript module.
+- `engins/gameengin/systems/rendering.ts` — TypeScript module.
+- `engins/gameengin/systems/spatial.ts` — TypeScript module.
+- `engins/gameengin/systems/world.ts` — TypeScript module.
+- `engins/gameengin/unifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/useUnifiedLoop.ts` — TypeScript module.
+- `engins/gameengin/webgpu-runtime-shell.ts` — TypeScript module.
+- `engins/gameengin/world-crdt.ts` — TypeScript module.
+- `engins/gameengin/xr.ts` — TypeScript module.
+- `engins/isosurfaceAssetPipeline.ts` — TypeScript module.
+- `engins/isosurfaceDualContouring.ts` — TypeScript module.
+- `engins/labengin/implicitSurface.ts` — TypeScript module.
+- `engins/portfolio/dream.PortfolioEngin.tsx` — React component module.
+- `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/code/index.ts` — TypeScript module.
+- `engins/rulesets/code/useCodeEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/content/contentEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/content/useContentEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/dreams/index.ts` — TypeScript module.
+- `engins/rulesets/forge/index.ts` — TypeScript module.
+- `engins/rulesets/game/declarative.ts` — TypeScript module.
+- `engins/rulesets/game/gameEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/game/index.ts` — TypeScript module.
+- `engins/rulesets/game/useGameEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.constants.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.physics.ts` — TypeScript module.
+- `engins/rulesets/homedream/dream.homedream.transforms.ts` — TypeScript module.
+- `engins/rulesets/homedream/index.ts` — TypeScript module.
+- `engins/rulesets/lab/index.ts` — TypeScript module.
+- `engins/rulesets/lab/labEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/lab/useLabEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/music/index.ts` — TypeScript module.
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` — TypeScript module.
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts` — TypeScript module.
+- `engins/rulesets/useEnginWorkflow.ts` — TypeScript module.
+- `engins/rulesets/workflowEngine.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/fingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/index.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/peak-map.ts` — TypeScript module.
+- `engins/starmakerengin/audio-fingerprint/stem-extractor.ts` — TypeScript module.
+- `engins/starmakerengin/audioFingerprint.ts` — TypeScript module.
+- `engins/starmakerengin/music/presets.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmaker.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerArrangement.ts` — TypeScript module.
+- `engins/starmakerengin/music/starmakerDaw.ts` — TypeScript module.
+- `engins/starmakerengin/music/wasmAudioBridge.ts` — TypeScript module.
 
 </details>
 
 ## Full Website Customizability
-Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styles/**` using repository introspection.
-- Files tracked: **30**
-- API routes discovered: `/api/settings/appearance`, `/api/settings/feed`, `/api/settings/notifications`, `/api/settings/privacy`
-- App pages discovered: `/settings`, `/settings/account`, `/settings/algorithm`, `/settings/appearance`, `/settings/controls`, `/settings/data`, `/settings/dreams`, `/settings/feed`, +6 more
-- Components/modules discovered: `ControlsClient`, `DangerZoneActions`, `DataClient`, `DreamsLayoutEditor`, `Page`, `PositionIndicatorToggle`, `PrivacyClient`
-#### Full Website Customizability file structure
+Full Website Customizability is a full-stack subsystem that owns both React surfaces and API handlers. It depends on Backend, System, Core & CoreSurfaces, dr-eams, Dreams (Widgets / Windows / Surfaces).
+### Responsibilities
+- User-facing surfaces: /settings, /settings/account, /settings/algorithm, /settings/appearance, /settings/controls, +9 more
+- API surface: /api/settings
+- Renders GET, POST, GET, POST, GET, POST, +29 more
+- Feed ranking, algorithm execution, and content scoring
+- Theming, design tokens, and visual customisation
+### Key Modules
+- `AccountSettingsPage`
+- `AlgorithmPage`
+- `AppearanceSettingsPage`
+- `ControlsClient`
+- `ControlsSettingsPage`
+- `DangerZoneActions`
+- `DataClient`
+- `DataSettingsPage`
+- `DreamsLayoutEditor`
+- `GET`
+- `POST`
+- `PositionIndicatorToggle`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **dr-eams**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **User-Facing Modularity**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on dr-eams
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Routes:**
+- `/settings`
+- `/settings/account`
+- `/settings/algorithm`
+- `/settings/appearance`
+- `/settings/controls`
+- `/settings/data`
+- `/settings/dreams`
+- `/settings/feed`
+- `/settings/help`
+- `/settings/notifications`
+- `/settings/privacy`
+- `/settings/safety`
+- `/settings/security`
+- `/settings/widgets`
+**API Endpoints:**
+- `/api/settings/appearance` `[GET, POST]`
+- `/api/settings/feed` `[GET, POST]`
+- `/api/settings/notifications` `[GET, POST]`
+- `/api/settings/privacy` `[GET, POST]`
+**Components:**
+`AccountSettingsPage`, `AlgorithmPage`, `AppearanceSettingsPage`, `ColorPanel`, `ControlsClient`, `ControlsSettingsPage`, `CustomizeModeBar`, `CustomizeToolbar`, `DangerZoneActions`, `DataClient`, +19 more
+### Capabilities
+- Utility functions: FeedSettingsRedirect
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+#### File Structure
 ```text
 ├── app
 │   ├── api
@@ -1831,6 +4116,16 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
 │       │   └── page.tsx
 │       └── widgets
 │           └── page.tsx
+├── components
+│   └── customize
+│       ├── dream.GlobalCustomizeUI.tsx
+│       ├── dream.bar.CustomizeModeBar.tsx
+│       ├── dream.bar.CustomizeToolbar.tsx
+│       └── panels
+│           ├── dream.panel.ColorPanel.tsx
+│           ├── dream.panel.EffectsPanel.tsx
+│           ├── dream.panel.FontPanel.tsx
+│           └── dream.panel.LayoutPanel.tsx
 └── styles
     ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── dream-shell.css
@@ -1839,48 +4134,233 @@ Auto-synced from `app/settings/**`, `app/api/settings/**`, `lib/theme/**`, `styl
     ├── theme.css
     └── view-transitions.css
 ```
-<details><summary>Full Website Customizability file index (30 files)</summary>
+<details><summary>Full Website Customizability file index (37 files)</summary>
 
 - `app/api/settings/appearance/route.ts` — API route handler.
 - `app/api/settings/feed/route.ts` — API route handler.
 - `app/api/settings/notifications/route.ts` — API route handler.
 - `app/api/settings/privacy/route.ts` — API route handler.
-- `app/settings/account/dream.DangerZoneActions.tsx` — React UI module for DangerZoneActions.
+- `app/settings/account/dream.DangerZoneActions.tsx` — React component module.
 - `app/settings/account/page.tsx` — route page.
 - `app/settings/algorithm/page.tsx` — route page.
 - `app/settings/appearance/page.tsx` — route page.
-- `app/settings/controls/dream.ControlsClient.tsx` — React UI module for ControlsClient.
-- `app/settings/controls/dream.PositionIndicatorToggle.tsx` — React UI module for PositionIndicatorToggle.
+- `app/settings/controls/dream.ControlsClient.tsx` — React component module.
+- `app/settings/controls/dream.PositionIndicatorToggle.tsx` — React component module.
 - `app/settings/controls/page.tsx` — route page.
-- `app/settings/data/dream.DataClient.tsx` — React UI module for DataClient.
+- `app/settings/data/dream.DataClient.tsx` — React component module.
 - `app/settings/data/page.tsx` — route page.
-- `app/settings/dreams/dreams-layout-editor.tsx` — React UI module for DreamsLayoutEditor.
+- `app/settings/dreams/dreams-layout-editor.tsx` — React component module.
 - `app/settings/dreams/page.tsx` — route page.
 - `app/settings/feed/page.tsx` — route page.
 - `app/settings/help/page.tsx` — route page.
 - `app/settings/notifications/page.tsx` — route page.
 - `app/settings/page.tsx` — route page.
-- `app/settings/privacy/dream.PrivacyClient.tsx` — React UI module for PrivacyClient.
+- `app/settings/privacy/dream.PrivacyClient.tsx` — React component module.
 - `app/settings/privacy/page.tsx` — route page.
 - `app/settings/safety/page.tsx` — route page.
 - `app/settings/security/page.tsx` — route page.
 - `app/settings/widgets/page.tsx` — route page.
-- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `styles/dream-shell.css` — project file (css).
-- `styles/globals.css` — project file (css).
-- `styles/home-dream.css` — project file (css).
-- `styles/theme.css` — project file (css).
-- `styles/view-transitions.css` — project file (css).
+- `components/customize/dream.GlobalCustomizeUI.tsx` — React component module.
+- `components/customize/dream.bar.CustomizeModeBar.tsx` — React component module.
+- `components/customize/dream.bar.CustomizeToolbar.tsx` — React component module.
+- `components/customize/panels/dream.panel.ColorPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.EffectsPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.FontPanel.tsx` — React component module.
+- `components/customize/panels/dream.panel.LayoutPanel.tsx` — React component module.
+- `styles/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `styles/dream-shell.css` — project file.
+- `styles/globals.css` — project file.
+- `styles/home-dream.css` — project file.
+- `styles/theme.css` — project file.
+- `styles/view-transitions.css` — project file.
 
 </details>
 
 ## Backend, System, Core & CoreSurfaces
-Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/api/**`, `lib/supabase/**` using repository introspection.
-- Files tracked: **122**
-- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
-- App pages discovered: none
-- Components/modules discovered: `DreamsurfaceEditProfileDream`, `DreamsurfaceViewProfile`
-#### Backend, System, Core & CoreSurfaces file structure
+Backend, System, Core & CoreSurfaces is a full-stack subsystem that owns both React surfaces and API handlers. It depends on dr-eams, Dreamr — Human Media, Dreams (Widgets / Windows / Surfaces).
+### Responsibilities
+- API surface: /api/account, /api/activity, /api/admin, /api/ads, …
+- Renders POST, POST, GET, POST, POST, POST, +157 more
+- Database schema ownership and data persistence
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Real-time communication and channel management
+- Feed ranking, algorithm execution, and content scoring
+- Asset storage, upload pipelines, and CDN management
+- Quality assurance and integration coverage
+### Key Modules
+- `DELETE`
+- `EditProfileDreamPage`
+- `GET`
+- `PATCH`
+- `POST`
+- `PUT`
+- `ViewProfilePage`
+- `dreamsurface.EditProfileDream`
+- `dreamsurface.ViewProfile`
+### Architectural Relationships
+- Depends on **dr-eams**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **The Marketplace**
+- Depends on **The Shop**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Depends on dr-eams
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+- Depends on The Engins
+### Public Surfaces
+**API Endpoints:**
+- `/api/account/delete-data` `[POST]`
+- `/api/account/delete-dream` `[POST]`
+- `/api/account/export-data` `[GET]`
+- `/api/activity/track` `[POST]`
+- `/api/admin/ai-chat` `[POST]`
+- `/api/admin/ai-request` `[POST]`
+- `/api/admin/child-safety` `[GET, POST]`
+- `/api/admin/code-files` `[POST]`
+- `/api/admin/observability` `[GET]`
+- `/api/ads/orders` `[POST]`
+- `/api/ads/view` `[POST]`
+- `/api/agent/session` `[POST]`
+- `/api/ai/boogieman` `[POST]`
+- `/api/ai/boogieman/child-safety` `[POST]`
+- `/api/ai/boogieman/privacy-event` `[POST]`
+- `/api/ai/boogieman/status` `[GET]`
+- `/api/ai/eams` `[POST]`
+- `/api/ai/execute` `[POST]`
+- `/api/ai/idari` `[POST]`
+- `/api/appeal` `[POST]`
+- `/api/auth/logout` `[GET]`
+- `/api/auth/providers` `[GET]`
+- `/api/blocks` `[GET, POST, DELETE]`
+- `/api/ci/run` `[POST]`
+- `/api/close-friends` `[GET, POST, DELETE]`
+- `/api/codeengin/diagnostics` `[POST]`
+- `/api/codeengin/file` `[POST]`
+- `/api/codeengin/git` `[POST]`
+- `/api/codeengin/run` `[GET, POST]`
+- `/api/codeengin/search` `[POST]`
+- `/api/codeengin/upload` `[POST]`
+- `/api/codeengin/workspace` `[GET, POST]`
+- `/api/comments` `[GET, POST, DELETE]`
+- `/api/connectors/[provider]/connect` `[POST]`
+- `/api/connectors/[provider]/disconnect` `[DELETE]`
+- `/api/connectors/[provider]/items` `[GET]`
+- `/api/connectors/[provider]/sync` `[POST]`
+- `/api/connectors/[provider]/verify` `[GET]`
+- `/api/connectors/cron` `[GET]`
+- `/api/connectors/instagram/oauth/callback` `[GET]`
+- `/api/connectors/instagram/oauth/start` `[GET]`
+- `/api/connectors/status` `[GET]`
+- `/api/connectors/webhooks/[provider]` `[GET, POST]`
+- `/api/connectors/youtube/oauth/callback` `[GET]`
+- `/api/connectors/youtube/oauth/start` `[GET]`
+- `/api/content/generative-fill` `[POST]`
+- `/api/content/intelligence` `[POST]`
+- `/api/content/transcribe` `[POST]`
+- `/api/content/voice-clone` `[POST]`
+- `/api/contentengin/assets/[assetId]` `[GET]`
+- `/api/contentengin/assets/[assetId]/export/gameengin` `[POST]`
+- `/api/contentengin/jobs` `[GET, POST]`
+- `/api/contentengin/jobs/[jobId]` `[GET]`
+- `/api/contentengin/upload` `[POST]`
+- `/api/dr-eams/hf` `[POST]`
+- `/api/dr-eams/run` `[POST]`
+- `/api/drafts` `[GET, POST]`
+- `/api/drafts/[id]` `[PATCH, DELETE]`
+- `/api/dream-windows` `[GET, POST]`
+- `/api/dream-windows/[id]` `[GET, PATCH, DELETE]`
+- `/api/dreamengin/os-status` `[GET]`
+- `/api/dreamr/feed` `[GET]`
+- `/api/dreamr/suggested` `[GET]`
+- `/api/dreamr/tally` `[POST]`
+- `/api/dreams/feed` `[GET, POST]`
+- `/api/dreams/instances` `[GET]`
+- `/api/dreams/transfer` `[POST]`
+- `/api/embed-feed` `[GET]`
+- `/api/favorites` `[GET, POST, DELETE]`
+- `/api/feed` `[GET]`
+- `/api/follow` `[GET, POST, DELETE]`
+- `/api/forge/build` `[POST]`
+- `/api/gal` `[POST]`
+- `/api/game-scores` `[GET, POST, PATCH]`
+- `/api/gameengin/crash-report` `[POST]`
+- `/api/health` `[GET]`
+- `/api/home-layout` `[GET, POST]`
+- `/api/journey` `[GET, POST]`
+- `/api/lab/benchmarks` `[POST]`
+- `/api/ledger-media` `[GET]`
+- `/api/likes` `[GET, POST, DELETE]`
+- `/api/marketplace` `[GET, POST]`
+- `/api/marketplace/request` `[POST]`
+- `/api/messages` `[GET, POST]`
+- `/api/messages/boards` `[POST]`
+- `/api/metrics` `[GET]`
+- `/api/metrics/platform` `[GET]`
+- `/api/metrics/user/[userId]` `[GET]`
+- `/api/music` `[GET, POST, DELETE]`
+- `/api/notifications` `[GET, PUT, DELETE]`
+- `/api/platform/errors` `[GET, POST]`
+- `/api/posts` `[GET, POST]`
+- `/api/posts/[id]` `[DELETE]`
+- `/api/posts/[id]/save` `[POST, DELETE]`
+- `/api/posts/[id]/view` `[POST]`
+- `/api/posts/profile/[userId]` `[GET]`
+- `/api/profile` `[GET, PUT]`
+- `/api/projects` `[GET, POST, PUT, DELETE]`
+- `/api/scheduled-posts` `[GET, POST, PUT, DELETE]`
+- `/api/security/scan` `[POST]`
+- `/api/settings/appearance` `[GET, POST]`
+- `/api/settings/feed` `[GET, POST]`
+- `/api/settings/notifications` `[GET, POST]`
+- `/api/settings/privacy` `[GET, POST]`
+- `/api/setup/check` `[GET]`
+- `/api/setup/google-oauth` `[GET]`
+- `/api/shared-dream/sessions` `[GET, POST]`
+- `/api/shared-dream/sessions/[id]` `[GET, PATCH]`
+- `/api/shellhub/devices` `[GET]`
+- `/api/shop` `[GET, POST, PUT, DELETE]`
+- `/api/skip-credits/balance` `[GET]`
+- `/api/skip-credits/earn` `[POST]`
+- `/api/skip-credits/use` `[POST]`
+- `/api/social/ipfs` `[GET, POST]`
+- `/api/social/livekit/room` `[GET]`
+- `/api/social/livekit/token` `[POST]`
+- `/api/social/rss-feed` `[GET]`
+- `/api/upload` `[POST]`
+- `/api/user/layout` `[GET, POST]`
+- `/api/views/track` `[POST]`
+- `/api/widgets/feed` `[GET, POST]`
+- `/api/widgets/instances` `[GET]`
+- `/api/youtube/channel` `[GET]`
+- `/api/youtube/discovery` `[GET]`
+- `/api/youtube/live-feed` `[GET]`
+**Components:**
+`DELETE`, `EditProfileDreamPage`, `GET`, `PATCH`, `POST`, `PUT`, `ViewProfilePage`
+### Notable Abstractions
+- `FileNode` — interface
+- `OAuthProvidersResponse` — interface
+- `ConnectorStatusEntry` — interface
+- `ContentEnginJobType` — type
+- `EmbedFeedResponse` — interface
+- `UnifiedFeedEntry` — interface
+- `ShellHubDevicesResponse` — interface
+- `YouTubeChannelResponse` — interface
+- `YouTubeDiscoveryResponse` — interface
+- `YouTubeLiveFeedResponse` — interface
+- `ButtonGroupName` — type
+- `ButtonItem` — type
+### Capabilities
+- Public contract surface: FileNode, OAuthProvidersResponse, ConnectorStatusEntry, EmbedFeedResponse, UnifiedFeedEntry
+- Shared type vocabulary: ContentEnginJobType, ButtonGroupName, ButtonItem, HomeTarget, PresenceStatus
+- Utility functions: getOAuthProvidersResponse, GET, POST, GET, GET, POST
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+- Delete endpoints for resource lifecycle
+#### File Structure
 ```text
 ├── app
 │   └── api
@@ -1942,6 +4422,21 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 │       │       └── route.ts
 │       ├── close-friends
 │       │   └── route.ts
+│       ├── codeengin
+│       │   ├── diagnostics
+│       │   │   └── route.ts
+│       │   ├── file
+│       │   │   └── route.ts
+│       │   ├── git
+│       │   │   └── route.ts
+│       │   ├── run
+│       │   │   └── route.ts
+│       │   ├── search
+│       │   │   └── route.ts
+│       │   ├── upload
+│       │   │   └── route.ts
+│       │   └── workspace
+│       │       └── route.ts
 │       ├── comments
 │       │   └── route.ts
 │       ├── connectors
@@ -1984,27 +4479,12 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 │       │   │   └── route.ts
 │       │   └── voice-clone
 │       │       └── route.ts
-│       ├── dr-eams
-│       │   ├── hf
-│       │   │   └── route.ts
-│       │   └── run
-│       │       └── route.ts
-│       ├── drafts
-│       │   ├── [id]
-│       │   │   └── route.ts
-│       │   └── route.ts
-│       ├── dream-windows
-│       │   ├── [id]
-│       │   │   └── route.ts
-│       │   └── route.ts
-│       ├── dreamengin
-│       │   └── os-status
-│       │       └── route.ts
-│       ├── dreamr
-│       │   ├── feed
-… (2 more files)
+│       ├── contentengin
+│       │   ├── assets
+│       │   │   └── [assetId]
+… (87 more files)
 ```
-<details><summary>Backend, System, Core & CoreSurfaces file index (122 files)</summary>
+<details><summary>Backend, System, Core & CoreSurfaces file index (207 files)</summary>
 
 - `app/api/account/delete-data/route.ts` — API route handler.
 - `app/api/account/delete-dream/route.ts` — API route handler.
@@ -2031,6 +4511,13 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/blocks/route.ts` — API route handler.
 - `app/api/ci/run/route.ts` — API route handler.
 - `app/api/close-friends/route.ts` — API route handler.
+- `app/api/codeengin/diagnostics/route.ts` — API route handler.
+- `app/api/codeengin/file/route.ts` — API route handler.
+- `app/api/codeengin/git/route.ts` — API route handler.
+- `app/api/codeengin/run/route.ts` — API route handler.
+- `app/api/codeengin/search/route.ts` — API route handler.
+- `app/api/codeengin/upload/route.ts` — API route handler.
+- `app/api/codeengin/workspace/route.ts` — API route handler.
 - `app/api/comments/route.ts` — API route handler.
 - `app/api/connectors/[provider]/connect/route.ts` — API route handler.
 - `app/api/connectors/[provider]/disconnect/route.ts` — API route handler.
@@ -2048,6 +4535,11 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/content/intelligence/route.ts` — API route handler.
 - `app/api/content/transcribe/route.ts` — API route handler.
 - `app/api/content/voice-clone/route.ts` — API route handler.
+- `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts` — API route handler.
+- `app/api/contentengin/assets/[assetId]/route.ts` — API route handler.
+- `app/api/contentengin/jobs/[jobId]/route.ts` — API route handler.
+- `app/api/contentengin/jobs/route.ts` — API route handler.
+- `app/api/contentengin/upload/route.ts` — API route handler.
 - `app/api/dr-eams/hf/route.ts` — API route handler.
 - `app/api/dr-eams/run/route.ts` — API route handler.
 - `app/api/drafts/[id]/route.ts` — API route handler.
@@ -2119,27 +4611,102 @@ Auto-synced from `backend/**`, `core/**`, `coresurfaces/**`, `system/**`, `app/a
 - `app/api/youtube/channel/route.ts` — API route handler.
 - `app/api/youtube/discovery/route.ts` — API route handler.
 - `app/api/youtube/live-feed/route.ts` — API route handler.
-- `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `coresurfaces/dreamsurface.EditProfileDream.tsx` — React UI module for DreamsurfaceEditProfileDream.
-- `coresurfaces/dreamsurface.ViewProfile.tsx` — React UI module for DreamsurfaceViewProfile.
-- `lib/supabase/client.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/config.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/realtime.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/safeGetUser.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/server.ts` — TypeScript/JavaScript runtime module.
-- `lib/supabase/vector.ts` — TypeScript/JavaScript runtime module.
+- `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `coresurfaces/dreamsurface.EditProfileDream.tsx` — React component module.
+- `coresurfaces/dreamsurface.ViewProfile.tsx` — React component module.
+- `coresurfaces/home/buttons/button-groups.ts` — TypeScript module.
+- `coresurfaces/home/buttons/contextual-home.ts` — TypeScript module.
+- `supabase/.temp/cli-latest` — project file.
+- `supabase/.temp/gotrue-version` — project file.
+- `supabase/.temp/linked-project.json` — project file.
+- `supabase/.temp/pooler-url` — project file.
+- `supabase/.temp/postgres-version` — project file.
+- `supabase/.temp/project-ref` — project file.
+- `supabase/.temp/rest-version` — project file.
+- `supabase/.temp/storage-migration` — project file.
+- `supabase/.temp/storage-version` — project file.
+- `supabase/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `supabase/auth/nextRedirect.ts` — TypeScript module.
+- `supabase/client/client.ts` — TypeScript module.
+- `supabase/client/safeGetUser.ts` — TypeScript module.
+- `supabase/config.toml` — project file.
+- `supabase/config.ts` — TypeScript module.
+- `supabase/migrations/20240120000000_initial_schema.sql` — SQL schema/migration.
+- `supabase/migrations/20240120000001_enable_rls.sql` — SQL schema/migration.
+- `supabase/migrations/20260129000000_upgrade_schema.sql` — SQL schema/migration.
+- `supabase/migrations/20260210000000_widget_system_v2.sql` — SQL schema/migration.
+- `supabase/migrations/20260210000001_ai_system_v2026.sql` — SQL schema/migration.
+- `supabase/migrations/20260210_ai_core.sql` — SQL schema/migration.
+- `supabase/migrations/20260214000000_security_axioms.sql` — SQL schema/migration.
+- `supabase/migrations/20260226000000_admin_lock.sql` — SQL schema/migration.
+- `supabase/migrations/20260305000000_create_notes.sql` — SQL schema/migration.
+- `supabase/migrations/20260305000001_comments.sql` — SQL schema/migration.
+- `supabase/migrations/20260305000002_leaderboard.sql` — SQL schema/migration.
+- `supabase/migrations/20260307000000_readme_gaps.sql` — SQL schema/migration.
+- `supabase/migrations/20260307000001_conversations_messages.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000000_widget_instances_visibility.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000001_profiles_widget_config.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000002_profile_dream_widgets.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000003_connector_accounts.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000004_feed_items.sql` — SQL schema/migration.
+- `supabase/migrations/20260310000010_dreamdm_bar_pass2.sql` — SQL schema/migration.
+- `supabase/migrations/20260315000000_content_drafts.sql` — SQL schema/migration.
+- `supabase/migrations/20260316000000_visibility_mappings.sql` — SQL schema/migration.
+- `supabase/migrations/20260319000000_journey_dots.sql` — SQL schema/migration.
+- `supabase/migrations/20260319065444_new-migration.sql` — SQL schema/migration.
+- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql` — SQL schema/migration.
+- `supabase/migrations/20260320000000_scheduled_posts.sql` — SQL schema/migration.
+- `supabase/migrations/20260320100000_game_scores_all_games.sql` — SQL schema/migration.
+- `supabase/migrations/20260320110000_user_blocks.sql` — SQL schema/migration.
+- `supabase/migrations/20260321000000_ads_platform_promotions.sql` — SQL schema/migration.
+- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — SQL schema/migration.
+- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — SQL schema/migration.
+- `supabase/migrations/20260322000000_policy_events.sql` — SQL schema/migration.
+- `supabase/migrations/20260322000001_message_boards.sql` — SQL schema/migration.
+- `supabase/migrations/20260323100000_embed_feed_items.sql` — SQL schema/migration.
+- `supabase/migrations/20260324000000_phase8e_orders.sql` — SQL schema/migration.
+- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — SQL schema/migration.
+- `supabase/migrations/20260325000000_phase8f_daydream_network.sql` — SQL schema/migration.
+- `supabase/migrations/20260325100000_child_safety.sql` — SQL schema/migration.
+- `supabase/migrations/20260401000001_platform_utilities.sql` — SQL schema/migration.
+- `supabase/migrations/20260402000001_control_mappings.sql` — SQL schema/migration.
+- `supabase/migrations/20260402000002_game_assets.sql` — SQL schema/migration.
+- `supabase/migrations/20260403000001_pgvector_embeddings.sql` — SQL schema/migration.
+- `supabase/migrations/20260403000002_pgvector_search_rpc.sql` — SQL schema/migration.
+- `supabase/migrations/20260405000001_dreamr_feed_registry.sql` — SQL schema/migration.
+- `supabase/migrations/20260405042406_auto_scaffold.sql` — SQL schema/migration.
+- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql` — SQL schema/migration.
+- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql` — SQL schema/migration.
+- `supabase/migrations/20260417000001_dream_docs_search_rpc.sql` — SQL schema/migration.
+- `supabase/migrations/20260418000000_gameengin_core.sql` — SQL schema/migration.
+- `supabase/migrations/20260420000001_consent_settings_audit.sql` — SQL schema/migration.
+- `supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql` — SQL schema/migration.
+- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql` — SQL schema/migration.
+- `supabase/migrations/20260426000200_build_memory_schema_gaps.sql` — SQL schema/migration.
+- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql` — SQL schema/migration.
+- `supabase/migrations/20260516000100_dreamr_tally.sql` — SQL schema/migration.
+- `supabase/migrations/20260516000300_shared_dream_sessions.sql` — SQL schema/migration.
+- `supabase/migrations/20260605015234_auto_scaffold.sql` — SQL schema/migration.
+- `supabase/realtime.ts` — TypeScript module.
+- `supabase/schema-final.sql` — SQL schema/migration.
+- `supabase/seed.sql` — SQL schema/migration.
+- `supabase/server/serverClient.ts` — TypeScript module.
+- `supabase/vector.ts` — TypeScript module.
+- `utils/supabase/server.ts` — TypeScript module.
 
 </details>
 
 ## Agents & Workflow
-Agents & Workflow provides shared infrastructure used across the platform.
+Agents & Workflow provides shared infrastructure used across the platform. It depends on The Engins.
 ### Responsibilities
 - Database schema ownership and data persistence
 - Feed ranking, algorithm execution, and content scoring
 - Quality assurance and integration coverage
 - Infrastructure provisioning and operational observability
 ### Architectural Relationships
-- Self-contained — no detected cross-subsystem imports
+- Depends on **The Engins**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Depends on The Engins
 ### Notable Abstractions
 - `TarFile` — interface
 - `PackResult` — interface
@@ -2150,9 +4717,6 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `ImportEdge` — interface
 - `RouteEntry` — interface
 - `SubsystemModel` — interface
-- `SubsectionDescriptor` — interface
-- `SectionDescriptor` — interface
-- `AffectedSection` — interface
 ### Capabilities
 - Public contract surface: TarFile, PackResult, SubsectionDescriptor, SectionDescriptor, AutosyncSummary
 - Utility functions: packTar, unpackTar, packageCartridge, analyzeExports, analyzeImports, analyzeRoutes
@@ -2275,12 +4839,12 @@ Agents & Workflow provides shared infrastructure used across the platform.
     ├── check-orphans.mjs
     ├── check-root-hygiene.mjs
     ├── close-all-open-prs.sh
-    ├── deploy.sh
-    ├── export-full-code.mjs
-    ├── feature-build
-… (30 more files)
+    ├── contentengin
+    │   ├── blender-add-basic-animations.py
+    │   ├── blender-auto-rig.py
+… (35 more files)
 ```
-<details><summary>Agents & Workflow file index (150 files)</summary>
+<details><summary>Agents & Workflow file index (155 files)</summary>
 
 - `.github/scripts/DREAMENGIN_CORE_COMPLETE.md` — documentation.
 - `.github/scripts/DREAMENGIN_CORE_USAGE.md` — documentation.
@@ -2391,6 +4955,11 @@ Agents & Workflow provides shared infrastructure used across the platform.
 - `scripts/check-orphans.mjs` — project file.
 - `scripts/check-root-hygiene.mjs` — project file.
 - `scripts/close-all-open-prs.sh` — project file.
+- `scripts/contentengin/blender-add-basic-animations.py` — project file.
+- `scripts/contentengin/blender-auto-rig.py` — project file.
+- `scripts/contentengin/blender-cleanup.py` — project file.
+- `scripts/contentengin/blender-validate-rig.py` — project file.
+- `scripts/contentengin/validate-glb.mjs` — project file.
 - `scripts/deploy.sh` — project file.
 - `scripts/export-full-code.mjs` — project file.
 - `scripts/feature-build/generate-features.mjs` — project file.
@@ -2436,12 +5005,47 @@ Agents & Workflow provides shared infrastructure used across the platform.
 </details>
 
 ## Research, Experiments & Daydreams
-Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`, `daydreams/**` using repository introspection.
-- Files tracked: **28**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `Page`
-#### Research, Experiments & Daydreams file structure
+Research, Experiments & Daydreams is a UI subsystem composed of React components and presentation logic. It exposes useDaydreamPersistence, useDaydreamState as React hooks for consumption by sibling subsystems. It depends on Backend, System, Core & CoreSurfaces, DreamSpace, The Engins.
+### Responsibilities
+- Renders BrandDaydreamPage, CodeDaydreamPage, CreateDaydreamPage, GamesDaydreamPage, LabDaydreamPage, MusicArtistHubPage
+- Quality assurance and integration coverage
+### Key Modules
+- `BrandDaydreamPage`
+- `CodeDaydreamPage`
+- `CreateDaydreamPage`
+- `GamesDaydreamPage`
+- `LabDaydreamPage`
+- `MusicArtistHubPage`
+- `useDaydreamPersistence`
+- `useDaydreamState`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **DreamSpace**
+- Depends on **The Engins**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on DreamSpace
+- Depends on The Engins
+- Depends on User-Facing Modularity
+### Public Surfaces
+**Components:**
+`BrandDaydreamPage`, `CodeDaydreamPage`, `CreateDaydreamPage`, `GamesDaydreamPage`, `LabDaydreamPage`, `MusicArtistHubPage`
+### Notable Abstractions
+- `UseDaydreamPersistenceOptions` — interface
+- `UseDaydreamPersistenceReturn` — interface
+- `DaydreamSide` — type
+- `DaydreamStatePayload` — type
+- `UseDaydreamStateOptions` — interface
+- `UseDaydreamStateReturn` — interface
+- `useDaydreamPersistence` — hook
+- `useDaydreamState` — hook
+### Capabilities
+- Exposes useDaydreamPersistence, useDaydreamState as composable React hooks
+- Public contract surface: UseDaydreamPersistenceOptions, UseDaydreamPersistenceReturn, UseDaydreamStateOptions, UseDaydreamStateReturn
+- Shared type vocabulary: DaydreamSide, DaydreamStatePayload
+#### File Structure
 ```text
 ├── daydreams
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -2455,11 +5059,11 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 │   │   └── page.tsx
 │   ├── lab
 │   │   └── page.tsx
-│   └── music
-│       └── page.tsx
-├── experiments
-│   ├── .gitkeep
-│   └── Agents-MUST-READ-ARCHITECTURE.md
+│   ├── music
+│   │   └── page.tsx
+│   └── shared
+│       ├── useDaydreamPersistence.ts
+│       └── useDaydreamState.ts
 ├── research
 │   ├── Agents-MUST-READ-ARCHITECTURE.md
 │   ├── DISCOVERY.md
@@ -2492,34 +5096,34 @@ Auto-synced from `research/**`, `research-and-development/**`, `experiments/**`,
 ```
 <details><summary>Research, Experiments & Daydreams file index (28 files)</summary>
 
-- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
+- `daydreams/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
 - `daydreams/brand/page.tsx` — route page.
 - `daydreams/code/page.tsx` — route page.
 - `daydreams/create/page.tsx` — route page.
 - `daydreams/games/page.tsx` — route page.
 - `daydreams/lab/page.tsx` — route page.
 - `daydreams/music/page.tsx` — route page.
-- `experiments/.gitkeep` — project file (no extension).
-- `experiments/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `research-and-development/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `research-and-development/LICENSE` — project file (no extension).
-- `research-and-development/tech-spec-v1.md` — documentation file.
-- `research/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `research/DISCOVERY.md` — documentation file.
-- `research/README.md` — documentation file.
-- `research/ccc-ada-twin-engine/README.md` — documentation file.
-- `research/ccc-ada-twin-engine/code/README.md` — documentation file.
-- `research/ccc-ada-twin-engine/data/README.md` — documentation file.
-- `research/ccc-ada-twin-engine/notes/sharpening_notes.txt` — project file (txt).
-- `research/ccc-ada-twin-engine/paper/ccc_ada_axioms_and_invariants.tex` — project file (tex).
-- `research/ccc-ada-twin-engine/paper/ccc_ada_black_hole_gravitational_wave_memory.tex` — project file (tex).
-- `research/ccc-ada-twin-engine/paper/ccc_ada_holography_and_information_boundary.tex` — project file (tex).
-- `research/ccc-ada-twin-engine/paper/ccc_ada_predictions_and_falsifiability.tex` — project file (tex).
-- `research/ccc-ada-twin-engine/paper/ccc_ada_twin_engine_framework.tex` — project file (tex).
-- `research/data/README.md` — documentation file.
-- `research/data/torr_vs_mond_lock_n11.csv` — project file (csv).
-- `research/equations/torridityequate.txt` — project file (txt).
-- `research/paper/torridity_ledger.tex` — project file (tex).
+- `daydreams/shared/useDaydreamPersistence.ts` — TypeScript module.
+- `daydreams/shared/useDaydreamState.ts` — TypeScript module.
+- `research-and-development/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `research-and-development/LICENSE` — project file.
+- `research-and-development/tech-spec-v1.md` — documentation.
+- `research/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `research/DISCOVERY.md` — documentation.
+- `research/README.md` — documentation.
+- `research/ccc-ada-twin-engine/README.md` — documentation.
+- `research/ccc-ada-twin-engine/code/README.md` — documentation.
+- `research/ccc-ada-twin-engine/data/README.md` — documentation.
+- `research/ccc-ada-twin-engine/notes/sharpening_notes.txt` — project file.
+- `research/ccc-ada-twin-engine/paper/ccc_ada_axioms_and_invariants.tex` — project file.
+- `research/ccc-ada-twin-engine/paper/ccc_ada_black_hole_gravitational_wave_memory.tex` — project file.
+- `research/ccc-ada-twin-engine/paper/ccc_ada_holography_and_information_boundary.tex` — project file.
+- `research/ccc-ada-twin-engine/paper/ccc_ada_predictions_and_falsifiability.tex` — project file.
+- `research/ccc-ada-twin-engine/paper/ccc_ada_twin_engine_framework.tex` — project file.
+- `research/data/README.md` — documentation.
+- `research/data/torr_vs_mond_lock_n11.csv` — project file.
+- `research/equations/torridityequate.txt` — project file.
+- `research/paper/torridity_ledger.tex` — project file.
 
 </details>
 
@@ -2687,12 +5291,47 @@ Infra & Ops provides shared infrastructure used across the platform.
 </details>
 
 ## Testing
-Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using repository introspection.
-- Files tracked: **210**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Testing file structure
+Testing provides shared infrastructure used across the platform. It depends on Agents & Workflow, Backend, System, Core & CoreSurfaces, dr-eams.
+### Responsibilities
+- Runtime orchestration and engin lifecycle management
+- Database schema ownership and data persistence
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Real-time communication and channel management
+- Feed ranking, algorithm execution, and content scoring
+- Quality assurance and integration coverage
+### Key Modules
+- `code-dream-preview.test`
+- `daydream-engin-routes.test`
+- `dream-bar-context.test`
+- `dream-continuity-spine.test`
+- `dream-effects.test`
+- `dream-intent-bus.test`
+- `dream-os-bus.test`
+- `dream-state.test`
+- `dream-window-system.test`
+- `dreamdm-bar-intent.test`
+- `dreamdm-bar-interactions.test`
+- `dreamdm-bar-wild.test`
+### Architectural Relationships
+- Depends on **Agents & Workflow**
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **dr-eams**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **optimizer**
+- Depends on **The Engins**
+- Depends on **The Marketplace**
+- Depends on **The Shop**
+- Depends on **User-Facing Modularity**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Orchestrated by agent workflows and automation pipelines
+- Depends on Agents & Workflow
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on dr-eams
+- Depends on Dreamr — Human Media
+#### File Structure
 ```text
 ├── playwright.config.ts
 ├── tests
@@ -2727,6 +5366,13 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   ├── connectors.test.ts
 │   ├── content-intelligence-routes.test.ts
 │   ├── content-publish-intent.test.ts
+│   ├── contentengin
+│   │   ├── contentengin-api.test.ts
+│   │   ├── contentengin-export.test.ts
+│   │   ├── contentengin-grammars.test.ts
+│   │   ├── contentengin-recipes.test.ts
+│   │   ├── contentengin-rigging.test.ts
+│   │   └── contentengin-validation.test.ts
 │   ├── contentengin-features.test.ts
 │   ├── contextual-home.test.ts
 │   ├── creative-optimizero.test.ts
@@ -2741,6 +5387,7 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   ├── dream-bar-context.test.ts
 │   ├── dream-continuity-spine.test.ts
 │   ├── dream-effects.test.ts
+│   ├── dream-intent-bus.test.ts
 │   ├── dream-os-bus.test.ts
 │   ├── dream-state.test.ts
 │   ├── dream-window-system.test.ts
@@ -2750,6 +5397,7 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   ├── dreamdm-draft.test.ts
 │   ├── dreamdm-messaging-phase2.test.ts
 │   ├── dreamengin-os.test.ts
+│   ├── dreamengin-unfakeable-performance-integrity.gate.test.ts
 │   ├── dreamnav.tau.test.ts
 │   ├── dreamr-algorithm-velocity.test.ts
 │   ├── dreamr-algorithm.test.ts
@@ -2766,7 +5414,10 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
 │   ├── edit-profiledream-section7.test.ts
+│   ├── engin-capability-targets.test.ts
+│   ├── engin-dispatcher-glow.test.ts
 │   ├── engin-dispatcher.test.ts
+│   ├── engin-hot-runtime-wiring.test.ts
 │   ├── engin-runtime-core.test.ts
 │   ├── engin-workflow.test.ts
 │   ├── enginpipe
@@ -2790,254 +5441,256 @@ Auto-synced from `tests/**`, `vitest.config.ts`, `playwright.config.ts` using re
 │   ├── game-quality-plan.test.ts
 │   ├── game-remote-regression.test.ts
 │   ├── gameengin-architect.test.ts
+│   ├── gameengin-asset-pipeline.test.ts
 │   ├── gameengin-cartridges.test.ts
 │   ├── gameengin-crash-modal.test.ts
+│   ├── gameengin-input-router.test.ts
 │   ├── gameengin-loop.test.ts
 │   ├── gameengin-power-systems.test.ts
 │   ├── gameengin-progression.test.ts
 │   ├── gameengin-remote.test.ts
+│   ├── gameengin-runtime-upgrade.test.ts
 │   ├── gameengin-spec.test.ts
 │   ├── games-daydream-page-auth.test.ts
 │   ├── god-tier-engine.test.ts
-│   ├── hero-sprite.test.ts
-│   ├── home-feed-home.test.ts
-│   ├── homedream-page-auth.test.ts
-│   ├── icons.test.ts
-│   ├── idari-admin-guard.test.ts
-│   ├── idari-observability-loop.test.ts
-│   ├── idari-patch-plan.test.ts
-│   ├── instance-manager.test.ts
-│   ├── integration-wiring.test.ts
-│   ├── is-auth-related-error.test.ts
-│   ├── journey-insights.test.ts
-│   ├── journey.test.ts
-│   ├── lab-dream-split.test.ts
-│   ├── lab-section-12-spec.test.ts
-│   ├── landing-calibration.test.ts
-… (90 more files)
+… (106 more files)
 ```
-<details><summary>Testing file index (210 files)</summary>
+<details><summary>Testing file index (226 files)</summary>
 
-- `playwright.config.ts` — TypeScript/JavaScript runtime module.
-- `tests/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `tests/DUALSENSE_TEST_PLAN.md` — documentation file.
-- `tests/activity-first-protocol.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/activity-revenue-split.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/admin-lockout.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/admin-upgrade-readiness.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/agent-bus-consensus.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/ai-edit-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/api-route-body-guard.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/asset-optimizer.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/auth-providers-route.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/auth-update-password-page.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/authenticated-ui-shells.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/babylon-optimizero.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/babylon-webgpu-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/bar-hide-preserves-both-runtimes.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/boogie-policy-module.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/boogieman.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/bot-detector.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/branding-logos.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/canonical-naming-enforcement.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/child-safety.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/code-dream-preview.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/coercion-table.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/collector-extended.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/compositeengin-features.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/conform-memory-map.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/connector-delivery.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/connectors.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/content-intelligence-routes.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/content-publish-intent.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/contentengin-features.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/contextual-home.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/creative-optimizero.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/data-transform-extended.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/data-transform.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/daydream-engin-routes.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/decide-bar-release.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dev-bypass.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/diff-viewer.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dr-eams-code-assist.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dr-eams-search-bar.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-bar-context.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-continuity-spine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-effects.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-os-bus.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-state.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dream-window-system.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamdm-bar-intent.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamdm-bar-interactions.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamdm-bar-wild.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamdm-draft.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamdm-messaging-phase2.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamengin-os.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamnav.tau.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-algorithm-velocity.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-algorithm.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-feed-limits.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-feed-topics.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-page-route.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-swipe-personalization.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamr-visibility-cursor.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dreamspace-panel.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/drop-target-registry.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/dual-runtime-bridge-peer-activity.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/durable-bridge.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/e2e/demo.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/e2e/full-coverage.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/edit-profiledream-section7.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/engin-dispatcher.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/engin-runtime-core.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/engin-workflow.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/enginpipe/manifest.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/enginpipe/telemetry.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/enginpipe/tiers.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/example.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/export-full-code.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/feature-build.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/forge-build.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/forge-engin.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/forge-momentum.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/forge-nexus.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/forge-rituals.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/fusion-cartridges-depth.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/fusion-cartridges.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-controller.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-engin-ruleset.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-navigation.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-performance-baseline.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-quality-plan.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/game-remote-regression.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-architect.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-cartridges.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-crash-modal.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-loop.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-power-systems.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-progression.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-remote.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/gameengin-spec.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/games-daydream-page-auth.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/god-tier-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/hero-sprite.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/home-feed-home.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/homedream-page-auth.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/icons.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/idari-admin-guard.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/idari-observability-loop.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/idari-patch-plan.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/instance-manager.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/integration-wiring.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/is-auth-related-error.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/journey-insights.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/journey.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/lab-dream-split.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/lab-section-12-spec.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/landing-calibration.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/landing-mission-link.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/ledger-media.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/live-feed.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/madmaxi-authored-levels.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/madmaxi-mechanics.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/mobile-game-controls.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/modular-os-stores.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/module-registry.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/music-starmaker-section10.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/namespace-isolation.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/navigation/manifold-physics.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/navigation/navigation.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/navigation/quaternion.spec.ts` — TypeScript/JavaScript runtime module.
-- `tests/neural-seam-flow.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/notifications.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/offline-queue.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/optimizer.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/orphan-wire-script.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/os-subsystem-manifest.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/page-surface-wiring.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase6-privacy-idari.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase7-naming.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8a.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8b-dream-windows.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8e-orders.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8e-shop-marketplace.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8f-daydream-activation.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8f-daydream-network.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8g-dual-runtime-persistence.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8h-triad-consensus.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase8i-settings-persistence.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-adaptive-quality.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-cross-post.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-drag-drop.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-hashtags.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-notifications.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-offline-cache.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-scene-state.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/phase9-touch-gestures.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/platform-utils.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/post-media.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/post-view-counting.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/product-law-principle10-alignment.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/profile-avatar-edit-entrypoints.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/rate-limiting.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/readme-autosync.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/readme-homedream-system.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/readme-section13-code-codeengin.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/readme-section6-homedream.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/report-driven-game-agent.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/repository-state-analysis-section.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/responsive.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/rss-feed.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/runtime-channel.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/runtime-container.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/runtime-viewport.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/runtime-wiring.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/safe-get-user.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/seam-clipboard.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/session-continuity.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/session-pattern-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/setup-env.ts` — TypeScript/JavaScript runtime module.
-- `tests/shell-cartridge-wiring.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/skip-credits.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/social-feed.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/social-platforms.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/spec35-vm-bus-events.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/spec36-bot-detection.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/spec37-torridity.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/spec38-collaboration.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/spec41-engine-builder.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/starmaker-music.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/structure-ledger.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/supabase-config.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/swap-manager-extended.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/swipe-calibration.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/tech-foundation.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/torridity-ledger.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/universal-asset-registry.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/universal-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/universal-visual-modularity.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/update-readme-current-status.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/user-sim.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/utils-extended.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/utils-supabase-server.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/v2-readiness.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/view-profile-public-view-controls.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/warp-engine.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/wasm-gpu-vm.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/webgpu-director.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/widget-install-flow.test.ts` — TypeScript/JavaScript runtime module.
-- `tests/youtube-provider.test.ts` — TypeScript/JavaScript runtime module.
-- `vitest.config.ts` — TypeScript/JavaScript runtime module.
+- `playwright.config.ts` — TypeScript module.
+- `tests/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `tests/DUALSENSE_TEST_PLAN.md` — documentation.
+- `tests/activity-first-protocol.test.ts` — TypeScript module.
+- `tests/activity-revenue-split.test.ts` — TypeScript module.
+- `tests/admin-lockout.test.ts` — TypeScript module.
+- `tests/admin-upgrade-readiness.test.ts` — TypeScript module.
+- `tests/agent-bus-consensus.test.ts` — TypeScript module.
+- `tests/ai-edit-engine.test.ts` — TypeScript module.
+- `tests/api-route-body-guard.test.ts` — TypeScript module.
+- `tests/asset-optimizer.test.ts` — TypeScript module.
+- `tests/auth-providers-route.test.ts` — TypeScript module.
+- `tests/auth-update-password-page.test.ts` — TypeScript module.
+- `tests/authenticated-ui-shells.test.ts` — TypeScript module.
+- `tests/babylon-optimizero.test.ts` — TypeScript module.
+- `tests/babylon-webgpu-engine.test.ts` — TypeScript module.
+- `tests/bar-hide-preserves-both-runtimes.test.ts` — TypeScript module.
+- `tests/boogie-policy-module.test.ts` — TypeScript module.
+- `tests/boogieman.test.ts` — TypeScript module.
+- `tests/bot-detector.test.ts` — TypeScript module.
+- `tests/branding-logos.test.ts` — TypeScript module.
+- `tests/canonical-naming-enforcement.test.ts` — TypeScript module.
+- `tests/child-safety.test.ts` — TypeScript module.
+- `tests/code-dream-preview.test.ts` — TypeScript module.
+- `tests/coercion-table.test.ts` — TypeScript module.
+- `tests/collector-extended.test.ts` — TypeScript module.
+- `tests/compositeengin-features.test.ts` — TypeScript module.
+- `tests/conform-memory-map.test.ts` — TypeScript module.
+- `tests/connector-delivery.test.ts` — TypeScript module.
+- `tests/connectors.test.ts` — TypeScript module.
+- `tests/content-intelligence-routes.test.ts` — TypeScript module.
+- `tests/content-publish-intent.test.ts` — TypeScript module.
+- `tests/contentengin-features.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-api.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-export.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-grammars.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-recipes.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-rigging.test.ts` — TypeScript module.
+- `tests/contentengin/contentengin-validation.test.ts` — TypeScript module.
+- `tests/contextual-home.test.ts` — TypeScript module.
+- `tests/creative-optimizero.test.ts` — TypeScript module.
+- `tests/data-transform-extended.test.ts` — TypeScript module.
+- `tests/data-transform.test.ts` — TypeScript module.
+- `tests/daydream-engin-routes.test.ts` — TypeScript module.
+- `tests/decide-bar-release.test.ts` — TypeScript module.
+- `tests/dev-bypass.test.ts` — TypeScript module.
+- `tests/diff-viewer.test.ts` — TypeScript module.
+- `tests/dr-eams-code-assist.test.ts` — TypeScript module.
+- `tests/dr-eams-search-bar.test.ts` — TypeScript module.
+- `tests/dream-bar-context.test.ts` — TypeScript module.
+- `tests/dream-continuity-spine.test.ts` — TypeScript module.
+- `tests/dream-effects.test.ts` — TypeScript module.
+- `tests/dream-intent-bus.test.ts` — TypeScript module.
+- `tests/dream-os-bus.test.ts` — TypeScript module.
+- `tests/dream-state.test.ts` — TypeScript module.
+- `tests/dream-window-system.test.ts` — TypeScript module.
+- `tests/dreamdm-bar-intent.test.ts` — TypeScript module.
+- `tests/dreamdm-bar-interactions.test.ts` — TypeScript module.
+- `tests/dreamdm-bar-wild.test.ts` — TypeScript module.
+- `tests/dreamdm-draft.test.ts` — TypeScript module.
+- `tests/dreamdm-messaging-phase2.test.ts` — TypeScript module.
+- `tests/dreamengin-os.test.ts` — TypeScript module.
+- `tests/dreamengin-unfakeable-performance-integrity.gate.test.ts` — TypeScript module.
+- `tests/dreamnav.tau.test.ts` — TypeScript module.
+- `tests/dreamr-algorithm-velocity.test.ts` — TypeScript module.
+- `tests/dreamr-algorithm.test.ts` — TypeScript module.
+- `tests/dreamr-feed-limits.test.ts` — TypeScript module.
+- `tests/dreamr-feed-topics.test.ts` — TypeScript module.
+- `tests/dreamr-page-route.test.ts` — TypeScript module.
+- `tests/dreamr-swipe-personalization.test.ts` — TypeScript module.
+- `tests/dreamr-visibility-cursor.test.ts` — TypeScript module.
+- `tests/dreamspace-panel.test.ts` — TypeScript module.
+- `tests/drop-target-registry.test.ts` — TypeScript module.
+- `tests/dual-runtime-bridge-peer-activity.test.ts` — TypeScript module.
+- `tests/durable-bridge.test.ts` — TypeScript module.
+- `tests/e2e/demo.spec.ts` — TypeScript module.
+- `tests/e2e/full-coverage.spec.ts` — TypeScript module.
+- `tests/edit-profiledream-section7.test.ts` — TypeScript module.
+- `tests/engin-capability-targets.test.ts` — TypeScript module.
+- `tests/engin-dispatcher-glow.test.ts` — TypeScript module.
+- `tests/engin-dispatcher.test.ts` — TypeScript module.
+- `tests/engin-hot-runtime-wiring.test.ts` — TypeScript module.
+- `tests/engin-runtime-core.test.ts` — TypeScript module.
+- `tests/engin-workflow.test.ts` — TypeScript module.
+- `tests/enginpipe/manifest.test.ts` — TypeScript module.
+- `tests/enginpipe/telemetry.test.ts` — TypeScript module.
+- `tests/enginpipe/tiers.test.ts` — TypeScript module.
+- `tests/example.spec.ts` — TypeScript module.
+- `tests/export-full-code.test.ts` — TypeScript module.
+- `tests/feature-build.test.ts` — TypeScript module.
+- `tests/forge-build.test.ts` — TypeScript module.
+- `tests/forge-engin.test.ts` — TypeScript module.
+- `tests/forge-momentum.test.ts` — TypeScript module.
+- `tests/forge-nexus.test.ts` — TypeScript module.
+- `tests/forge-rituals.test.ts` — TypeScript module.
+- `tests/fusion-cartridges-depth.test.ts` — TypeScript module.
+- `tests/fusion-cartridges.test.ts` — TypeScript module.
+- `tests/game-controller.test.ts` — TypeScript module.
+- `tests/game-engin-ruleset.test.ts` — TypeScript module.
+- `tests/game-navigation.test.ts` — TypeScript module.
+- `tests/game-performance-baseline.test.ts` — TypeScript module.
+- `tests/game-quality-plan.test.ts` — TypeScript module.
+- `tests/game-remote-regression.test.ts` — TypeScript module.
+- `tests/gameengin-architect.test.ts` — TypeScript module.
+- `tests/gameengin-asset-pipeline.test.ts` — TypeScript module.
+- `tests/gameengin-cartridges.test.ts` — TypeScript module.
+- `tests/gameengin-crash-modal.test.ts` — TypeScript module.
+- `tests/gameengin-input-router.test.ts` — TypeScript module.
+- `tests/gameengin-loop.test.ts` — TypeScript module.
+- `tests/gameengin-power-systems.test.ts` — TypeScript module.
+- `tests/gameengin-progression.test.ts` — TypeScript module.
+- `tests/gameengin-remote.test.ts` — TypeScript module.
+- `tests/gameengin-runtime-upgrade.test.ts` — TypeScript module.
+- `tests/gameengin-spec.test.ts` — TypeScript module.
+- `tests/games-daydream-page-auth.test.ts` — TypeScript module.
+- `tests/god-tier-engine.test.ts` — TypeScript module.
+- `tests/hero-sprite.test.ts` — TypeScript module.
+- `tests/home-feed-home.test.ts` — TypeScript module.
+- `tests/homedream-page-auth.test.ts` — TypeScript module.
+- `tests/i-engine-runtime.test.ts` — TypeScript module.
+- `tests/icons.test.ts` — TypeScript module.
+- `tests/idari-admin-guard.test.ts` — TypeScript module.
+- `tests/idari-observability-loop.test.ts` — TypeScript module.
+- `tests/idari-patch-plan.test.ts` — TypeScript module.
+- `tests/instance-manager.test.ts` — TypeScript module.
+- `tests/integration-wiring.test.ts` — TypeScript module.
+- `tests/is-auth-related-error.test.ts` — TypeScript module.
+- `tests/journey-insights.test.ts` — TypeScript module.
+- `tests/journey.test.ts` — TypeScript module.
+- `tests/lab-dream-split.test.ts` — TypeScript module.
+- `tests/lab-section-12-spec.test.ts` — TypeScript module.
+- `tests/landing-calibration.test.ts` — TypeScript module.
+- `tests/landing-mission-link.test.ts` — TypeScript module.
+- `tests/ledger-media.test.ts` — TypeScript module.
+- `tests/live-feed.test.ts` — TypeScript module.
+- `tests/madmaxi-accessibility-tuning.test.ts` — TypeScript module.
+- `tests/madmaxi-authored-levels.test.ts` — TypeScript module.
+- `tests/madmaxi-mechanics.test.ts` — TypeScript module.
+- `tests/mobile-game-controls.test.ts` — TypeScript module.
+- `tests/modular-os-stores.test.ts` — TypeScript module.
+- `tests/module-registry.test.ts` — TypeScript module.
+- `tests/music-starmaker-section10.test.ts` — TypeScript module.
+- `tests/namespace-isolation.test.ts` — TypeScript module.
+- `tests/navigation/manifold-physics.spec.ts` — TypeScript module.
+- `tests/navigation/navigation.spec.ts` — TypeScript module.
+- `tests/navigation/quaternion.spec.ts` — TypeScript module.
+- `tests/neural-seam-flow.test.ts` — TypeScript module.
+- `tests/notifications.test.ts` — TypeScript module.
+- `tests/offline-queue.test.ts` — TypeScript module.
+- `tests/optimizer.test.ts` — TypeScript module.
+- `tests/orphan-wire-script.test.ts` — TypeScript module.
+- `tests/os-subsystem-manifest.test.ts` — TypeScript module.
+- `tests/page-surface-wiring.test.ts` — TypeScript module.
+- `tests/phase6-privacy-idari.test.ts` — TypeScript module.
+- `tests/phase7-naming.test.ts` — TypeScript module.
+- `tests/phase8a.test.ts` — TypeScript module.
+- `tests/phase8b-dream-windows.test.ts` — TypeScript module.
+- `tests/phase8e-orders.test.ts` — TypeScript module.
+- `tests/phase8e-shop-marketplace.test.ts` — TypeScript module.
+- `tests/phase8f-daydream-activation.test.ts` — TypeScript module.
+- `tests/phase8f-daydream-network.test.ts` — TypeScript module.
+- `tests/phase8g-dual-runtime-persistence.test.ts` — TypeScript module.
+- `tests/phase8h-triad-consensus.test.ts` — TypeScript module.
+- `tests/phase8i-settings-persistence.test.ts` — TypeScript module.
+- `tests/phase9-adaptive-quality.test.ts` — TypeScript module.
+- `tests/phase9-cross-post.test.ts` — TypeScript module.
+- `tests/phase9-drag-drop.test.ts` — TypeScript module.
+- `tests/phase9-hashtags.test.ts` — TypeScript module.
+- `tests/phase9-notifications.test.ts` — TypeScript module.
+- `tests/phase9-offline-cache.test.ts` — TypeScript module.
+- `tests/phase9-scene-state.test.ts` — TypeScript module.
+- `tests/phase9-touch-gestures.test.ts` — TypeScript module.
+- `tests/platform-utils.test.ts` — TypeScript module.
+- `tests/post-media.test.ts` — TypeScript module.
+- `tests/post-view-counting.test.ts` — TypeScript module.
+- `tests/product-law-principle10-alignment.test.ts` — TypeScript module.
+- `tests/profile-avatar-edit-entrypoints.test.ts` — TypeScript module.
+- `tests/rate-limiting.test.ts` — TypeScript module.
+- `tests/readme-autosync.test.ts` — TypeScript module.
+- `tests/readme-homedream-system.test.ts` — TypeScript module.
+- `tests/readme-section13-code-codeengin.test.ts` — TypeScript module.
+- `tests/readme-section6-homedream.test.ts` — TypeScript module.
+- `tests/report-driven-game-agent.test.ts` — TypeScript module.
+- `tests/repository-state-analysis-section.test.ts` — TypeScript module.
+- `tests/responsive.test.ts` — TypeScript module.
+- `tests/rss-feed.test.ts` — TypeScript module.
+- `tests/runtime-channel.test.ts` — TypeScript module.
+- `tests/runtime-container.test.ts` — TypeScript module.
+- `tests/runtime-viewport.test.ts` — TypeScript module.
+- `tests/runtime-wiring.test.ts` — TypeScript module.
+- `tests/safe-get-user.test.ts` — TypeScript module.
+- `tests/seam-clipboard.test.ts` — TypeScript module.
+- `tests/session-continuity.test.ts` — TypeScript module.
+- `tests/session-pattern-engine.test.ts` — TypeScript module.
+- `tests/setup-env.ts` — TypeScript module.
+- `tests/shell-cartridge-wiring.test.ts` — TypeScript module.
+- `tests/skip-credits.test.ts` — TypeScript module.
+- `tests/social-feed.test.ts` — TypeScript module.
+- `tests/social-platforms.test.ts` — TypeScript module.
+- `tests/spec35-vm-bus-events.test.ts` — TypeScript module.
+- `tests/spec36-bot-detection.test.ts` — TypeScript module.
+- `tests/spec37-torridity.test.ts` — TypeScript module.
+- `tests/spec38-collaboration.test.ts` — TypeScript module.
+- `tests/spec41-engine-builder.test.ts` — TypeScript module.
+- `tests/starmaker-music.test.ts` — TypeScript module.
+- `tests/structure-ledger.test.ts` — TypeScript module.
+- `tests/supabase-config.test.ts` — TypeScript module.
+- `tests/swap-manager-extended.test.ts` — TypeScript module.
+- `tests/swipe-calibration.test.ts` — TypeScript module.
+- `tests/tech-foundation.test.ts` — TypeScript module.
+- `tests/torridity-ledger.test.ts` — TypeScript module.
+- `tests/universal-asset-registry.test.ts` — TypeScript module.
+- `tests/universal-engine.test.ts` — TypeScript module.
+- `tests/universal-visual-modularity.test.ts` — TypeScript module.
+- `tests/update-readme-current-status.test.ts` — TypeScript module.
+- `tests/user-sim.test.ts` — TypeScript module.
+- `tests/utils-extended.test.ts` — TypeScript module.
+- `tests/utils-supabase-server.test.ts` — TypeScript module.
+- `tests/v2-readiness.test.ts` — TypeScript module.
+- `tests/view-profile-public-view-controls.test.ts` — TypeScript module.
+- `tests/warp-engine.test.ts` — TypeScript module.
+- `tests/wasm-gpu-vm.test.ts` — TypeScript module.
+- `tests/webgpu-director.test.ts` — TypeScript module.
+- `tests/widget-install-flow.test.ts` — TypeScript module.
+- `tests/youtube-provider.test.ts` — TypeScript module.
+- `vitest.config.ts` — TypeScript module.
 
 </details>
 
 ## Getting Started
-Auto-synced from `README.md`, `.env.example`, `.env.local.example` using repository introspection.
-- Files tracked: **3**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Getting Started file structure
+Getting Started provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 ├── .env.example
 ├── .env.local.example
@@ -3045,19 +5698,190 @@ Auto-synced from `README.md`, `.env.example`, `.env.local.example` using reposit
 ```
 <details><summary>Getting Started file index (3 files)</summary>
 
-- `.env.example` — project file (example).
-- `.env.local.example` — project file (example).
-- `README.md` — documentation file.
+- `.env.example` — project file.
+- `.env.local.example` — project file.
+- `README.md` — documentation.
 
 </details>
 
 ## Environment Variables
-Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using repository introspection.
-- Files tracked: **115**
-- API routes discovered: `/api/account/delete-data`, `/api/account/delete-dream`, `/api/account/export-data`, `/api/activity/track`, `/api/admin/ai-chat`, `/api/admin/ai-request`, `/api/admin/child-safety`, `/api/admin/code-files`, +105 more
-- App pages discovered: none
-- Components/modules discovered: none
-#### Environment Variables file structure
+Environment Variables is a full-stack subsystem that owns both React surfaces and API handlers. It depends on Backend, System, Core & CoreSurfaces, dr-eams, Dreamr — Human Media.
+### Responsibilities
+- API surface: /api/account, /api/activity, /api/admin, /api/ads, …
+- Renders POST, POST, GET, POST, POST, POST, +155 more
+- AI model integration and inference routing
+- Authentication, session, and access control
+- Real-time communication and channel management
+- Feed ranking, algorithm execution, and content scoring
+- Asset storage, upload pipelines, and CDN management
+### Key Modules
+- `DELETE`
+- `GET`
+- `PATCH`
+- `POST`
+- `PUT`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Depends on **dr-eams**
+- Depends on **Dreamr — Human Media**
+- Depends on **Dreams (Widgets / Windows / Surfaces)**
+- Depends on **The Engins**
+- Depends on **The Marketplace**
+- Depends on **The Shop**
+- Integrates with the Dual Runtime layer for execution orchestration
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+- Depends on dr-eams
+- Depends on Dreamr — Human Media
+- Depends on Dreams (Widgets / Windows / Surfaces)
+### Public Surfaces
+**API Endpoints:**
+- `/api/account/delete-data` `[POST]`
+- `/api/account/delete-dream` `[POST]`
+- `/api/account/export-data` `[GET]`
+- `/api/activity/track` `[POST]`
+- `/api/admin/ai-chat` `[POST]`
+- `/api/admin/ai-request` `[POST]`
+- `/api/admin/child-safety` `[GET, POST]`
+- `/api/admin/code-files` `[POST]`
+- `/api/admin/observability` `[GET]`
+- `/api/ads/orders` `[POST]`
+- `/api/ads/view` `[POST]`
+- `/api/agent/session` `[POST]`
+- `/api/ai/boogieman` `[POST]`
+- `/api/ai/boogieman/child-safety` `[POST]`
+- `/api/ai/boogieman/privacy-event` `[POST]`
+- `/api/ai/boogieman/status` `[GET]`
+- `/api/ai/eams` `[POST]`
+- `/api/ai/execute` `[POST]`
+- `/api/ai/idari` `[POST]`
+- `/api/appeal` `[POST]`
+- `/api/auth/logout` `[GET]`
+- `/api/auth/providers` `[GET]`
+- `/api/blocks` `[GET, POST, DELETE]`
+- `/api/ci/run` `[POST]`
+- `/api/close-friends` `[GET, POST, DELETE]`
+- `/api/codeengin/diagnostics` `[POST]`
+- `/api/codeengin/file` `[POST]`
+- `/api/codeengin/git` `[POST]`
+- `/api/codeengin/run` `[GET, POST]`
+- `/api/codeengin/search` `[POST]`
+- `/api/codeengin/upload` `[POST]`
+- `/api/codeengin/workspace` `[GET, POST]`
+- `/api/comments` `[GET, POST, DELETE]`
+- `/api/connectors/[provider]/connect` `[POST]`
+- `/api/connectors/[provider]/disconnect` `[DELETE]`
+- `/api/connectors/[provider]/items` `[GET]`
+- `/api/connectors/[provider]/sync` `[POST]`
+- `/api/connectors/[provider]/verify` `[GET]`
+- `/api/connectors/cron` `[GET]`
+- `/api/connectors/instagram/oauth/callback` `[GET]`
+- `/api/connectors/instagram/oauth/start` `[GET]`
+- `/api/connectors/status` `[GET]`
+- `/api/connectors/webhooks/[provider]` `[GET, POST]`
+- `/api/connectors/youtube/oauth/callback` `[GET]`
+- `/api/connectors/youtube/oauth/start` `[GET]`
+- `/api/content/generative-fill` `[POST]`
+- `/api/content/intelligence` `[POST]`
+- `/api/content/transcribe` `[POST]`
+- `/api/content/voice-clone` `[POST]`
+- `/api/contentengin/assets/[assetId]` `[GET]`
+- `/api/contentengin/assets/[assetId]/export/gameengin` `[POST]`
+- `/api/contentengin/jobs` `[GET, POST]`
+- `/api/contentengin/jobs/[jobId]` `[GET]`
+- `/api/contentengin/upload` `[POST]`
+- `/api/dr-eams/hf` `[POST]`
+- `/api/dr-eams/run` `[POST]`
+- `/api/drafts` `[GET, POST]`
+- `/api/drafts/[id]` `[PATCH, DELETE]`
+- `/api/dream-windows` `[GET, POST]`
+- `/api/dream-windows/[id]` `[GET, PATCH, DELETE]`
+- `/api/dreamengin/os-status` `[GET]`
+- `/api/dreamr/feed` `[GET]`
+- `/api/dreamr/suggested` `[GET]`
+- `/api/dreamr/tally` `[POST]`
+- `/api/dreams/feed` `[GET, POST]`
+- `/api/dreams/instances` `[GET]`
+- `/api/dreams/transfer` `[POST]`
+- `/api/embed-feed` `[GET]`
+- `/api/favorites` `[GET, POST, DELETE]`
+- `/api/feed` `[GET]`
+- `/api/follow` `[GET, POST, DELETE]`
+- `/api/forge/build` `[POST]`
+- `/api/gal` `[POST]`
+- `/api/game-scores` `[GET, POST, PATCH]`
+- `/api/gameengin/crash-report` `[POST]`
+- `/api/health` `[GET]`
+- `/api/home-layout` `[GET, POST]`
+- `/api/journey` `[GET, POST]`
+- `/api/lab/benchmarks` `[POST]`
+- `/api/ledger-media` `[GET]`
+- `/api/likes` `[GET, POST, DELETE]`
+- `/api/marketplace` `[GET, POST]`
+- `/api/marketplace/request` `[POST]`
+- `/api/messages` `[GET, POST]`
+- `/api/messages/boards` `[POST]`
+- `/api/metrics` `[GET]`
+- `/api/metrics/platform` `[GET]`
+- `/api/metrics/user/[userId]` `[GET]`
+- `/api/music` `[GET, POST, DELETE]`
+- `/api/notifications` `[GET, PUT, DELETE]`
+- `/api/platform/errors` `[GET, POST]`
+- `/api/posts` `[GET, POST]`
+- `/api/posts/[id]` `[DELETE]`
+- `/api/posts/[id]/save` `[POST, DELETE]`
+- `/api/posts/[id]/view` `[POST]`
+- `/api/posts/profile/[userId]` `[GET]`
+- `/api/profile` `[GET, PUT]`
+- `/api/projects` `[GET, POST, PUT, DELETE]`
+- `/api/scheduled-posts` `[GET, POST, PUT, DELETE]`
+- `/api/security/scan` `[POST]`
+- `/api/settings/appearance` `[GET, POST]`
+- `/api/settings/feed` `[GET, POST]`
+- `/api/settings/notifications` `[GET, POST]`
+- `/api/settings/privacy` `[GET, POST]`
+- `/api/setup/check` `[GET]`
+- `/api/setup/google-oauth` `[GET]`
+- `/api/shared-dream/sessions` `[GET, POST]`
+- `/api/shared-dream/sessions/[id]` `[GET, PATCH]`
+- `/api/shellhub/devices` `[GET]`
+- `/api/shop` `[GET, POST, PUT, DELETE]`
+- `/api/skip-credits/balance` `[GET]`
+- `/api/skip-credits/earn` `[POST]`
+- `/api/skip-credits/use` `[POST]`
+- `/api/social/ipfs` `[GET, POST]`
+- `/api/social/livekit/room` `[GET]`
+- `/api/social/livekit/token` `[POST]`
+- `/api/social/rss-feed` `[GET]`
+- `/api/upload` `[POST]`
+- `/api/user/layout` `[GET, POST]`
+- `/api/views/track` `[POST]`
+- `/api/widgets/feed` `[GET, POST]`
+- `/api/widgets/instances` `[GET]`
+- `/api/youtube/channel` `[GET]`
+- `/api/youtube/discovery` `[GET]`
+- `/api/youtube/live-feed` `[GET]`
+**Components:**
+`DELETE`, `GET`, `PATCH`, `POST`, `PUT`
+### Notable Abstractions
+- `FileNode` — interface
+- `OAuthProvidersResponse` — interface
+- `ConnectorStatusEntry` — interface
+- `ContentEnginJobType` — type
+- `EmbedFeedResponse` — interface
+- `UnifiedFeedEntry` — interface
+- `ShellHubDevicesResponse` — interface
+- `YouTubeChannelResponse` — interface
+- `YouTubeDiscoveryResponse` — interface
+- `YouTubeLiveFeedResponse` — interface
+### Capabilities
+- Public contract surface: FileNode, OAuthProvidersResponse, ConnectorStatusEntry, EmbedFeedResponse, UnifiedFeedEntry
+- Shared type vocabulary: ContentEnginJobType
+- Utility functions: getOAuthProvidersResponse, GET, POST, GET, GET, POST
+- Read endpoints for data retrieval
+- Write endpoints for mutations
+- Delete endpoints for resource lifecycle
+#### File Structure
 ```text
 ├── .env.example
 ├── .env.local.example
@@ -3121,6 +5945,21 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
         │       └── route.ts
         ├── close-friends
         │   └── route.ts
+        ├── codeengin
+        │   ├── diagnostics
+        │   │   └── route.ts
+        │   ├── file
+        │   │   └── route.ts
+        │   ├── git
+        │   │   └── route.ts
+        │   ├── run
+        │   │   └── route.ts
+        │   ├── search
+        │   │   └── route.ts
+        │   ├── upload
+        │   │   └── route.ts
+        │   └── workspace
+        │       └── route.ts
         ├── comments
         │   └── route.ts
         ├── connectors
@@ -3163,27 +6002,13 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
         │   │   └── route.ts
         │   └── voice-clone
         │       └── route.ts
-        ├── dr-eams
-        │   ├── hf
-        │   │   └── route.ts
-        │   └── run
-        │       └── route.ts
-        ├── drafts
-        │   ├── [id]
-        │   │   └── route.ts
-        │   └── route.ts
-        ├── dream-windows
-        │   ├── [id]
-        │   │   └── route.ts
-        │   └── route.ts
-        ├── dreamengin
-        │   └── os-status
-        │       └── route.ts
+        ├── contentengin
+… (7 more files)
 ```
-<details><summary>Environment Variables file index (115 files)</summary>
+<details><summary>Environment Variables file index (127 files)</summary>
 
-- `.env.example` — project file (example).
-- `.env.local.example` — project file (example).
+- `.env.example` — project file.
+- `.env.local.example` — project file.
 - `app/api/account/delete-data/route.ts` — API route handler.
 - `app/api/account/delete-dream/route.ts` — API route handler.
 - `app/api/account/export-data/route.ts` — API route handler.
@@ -3209,6 +6034,13 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 - `app/api/blocks/route.ts` — API route handler.
 - `app/api/ci/run/route.ts` — API route handler.
 - `app/api/close-friends/route.ts` — API route handler.
+- `app/api/codeengin/diagnostics/route.ts` — API route handler.
+- `app/api/codeengin/file/route.ts` — API route handler.
+- `app/api/codeengin/git/route.ts` — API route handler.
+- `app/api/codeengin/run/route.ts` — API route handler.
+- `app/api/codeengin/search/route.ts` — API route handler.
+- `app/api/codeengin/upload/route.ts` — API route handler.
+- `app/api/codeengin/workspace/route.ts` — API route handler.
 - `app/api/comments/route.ts` — API route handler.
 - `app/api/connectors/[provider]/connect/route.ts` — API route handler.
 - `app/api/connectors/[provider]/disconnect/route.ts` — API route handler.
@@ -3226,6 +6058,11 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 - `app/api/content/intelligence/route.ts` — API route handler.
 - `app/api/content/transcribe/route.ts` — API route handler.
 - `app/api/content/voice-clone/route.ts` — API route handler.
+- `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts` — API route handler.
+- `app/api/contentengin/assets/[assetId]/route.ts` — API route handler.
+- `app/api/contentengin/jobs/[jobId]/route.ts` — API route handler.
+- `app/api/contentengin/jobs/route.ts` — API route handler.
+- `app/api/contentengin/upload/route.ts` — API route handler.
 - `app/api/dr-eams/hf/route.ts` — API route handler.
 - `app/api/dr-eams/run/route.ts` — API route handler.
 - `app/api/drafts/[id]/route.ts` — API route handler.
@@ -3301,7 +6138,7 @@ Auto-synced from `.env.example`, `.env.local.example`, `app/api/**` using reposi
 </details>
 
 ## Contributing
-Contributing provides shared infrastructure used across the platform.
+Contributing provides shared infrastructure used across the platform. It depends on Backend, System, Core & CoreSurfaces.
 ### Responsibilities
 - Runtime orchestration and engin lifecycle management
 - Database schema ownership and data persistence
@@ -3309,7 +6146,17 @@ Contributing provides shared infrastructure used across the platform.
 - Quality assurance and integration coverage
 - Infrastructure provisioning and operational observability
 ### Architectural Relationships
-- Self-contained — no detected cross-subsystem imports
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+### Notable Abstractions
+- `DreamDocSearchResult` — interface
+- `SearchDreamDocsOptions` — interface
+- `DreamDocSearchResult` — interface
+- `SearchDreamDocsOptions` — interface
+### Capabilities
+- Public contract surface: DreamDocSearchResult, SearchDreamDocsOptions, DreamDocSearchResult, SearchDreamDocsOptions
+- Utility functions: embedDocSection, searchDreamDocs, embedDocSection, searchDreamDocs
 #### File Structure
 ```text
 ├── .github
@@ -3432,9 +6279,9 @@ Contributing provides shared infrastructure used across the platform.
 │   │   ├── check_workflow_masking.py
 │   │   ├── dreamengin_core.py
 │   │   ├── humanai_audit.py
-… (164 more files)
+… (167 more files)
 ```
-<details><summary>Contributing file index (284 files)</summary>
+<details><summary>Contributing file index (287 files)</summary>
 
 - `.github/PULL_REQUEST_TEMPLATE.md` — documentation.
 - `.github/actions/resilient-engine/action.yml` — project file.
@@ -3677,6 +6524,9 @@ Contributing provides shared infrastructure used across the platform.
 - `docs/alignment/DOCS_CHANGE_TRACKER.md` — documentation.
 - `docs/alignment/REPO_TO_SPEC.md` — documentation.
 - `docs/archive/.gitkeep` — project file.
+- `docs/dream-docs/embed.ts` — TypeScript module.
+- `docs/dream-docs/index.ts` — TypeScript module.
+- `docs/dream-docs/search.ts` — TypeScript module.
 - `docs/dreamdm_bar_pass1.md` — documentation.
 - `docs/dreamdm_bar_pass2.md` — documentation.
 - `docs/dreamdm_messaging_phase2.md` — documentation.
@@ -3724,9 +6574,18 @@ Contributing provides shared infrastructure used across the platform.
 </details>
 
 ## License
-MIT — see [LICENSE](LICENSE).
+License provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
+```text
+└── LICENSE
+```
+<details><summary>License file index (1 files)</summary>
 
----
+- `LICENSE` — project file.
+
+</details>
 
 ## HomeDream System
 
@@ -3773,12 +6632,10 @@ Required drag wrapper primitives: `DraggableModule`, `DreamWindowShell`, `Univer
 No artificial "repurpose before invent" rule.
 
 ## Repo Visualizer
-Auto-synced from `repo-visualizer/**` using repository introspection.
-- Files tracked: **7**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Repo Visualizer file structure
+Repo Visualizer provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── repo-visualizer
     ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -3791,151 +6648,111 @@ Auto-synced from `repo-visualizer/**` using repository introspection.
 ```
 <details><summary>Repo Visualizer file index (7 files)</summary>
 
-- `repo-visualizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `repo-visualizer/README.md` — documentation file.
-- `repo-visualizer/analyzer.mjs` — TypeScript/JavaScript runtime module.
-- `repo-visualizer/graph-stats.json` — project file (json).
-- `repo-visualizer/graph.json` — project file (json).
-- `repo-visualizer/index.html` — project file (html).
-- `repo-visualizer/server.mjs` — TypeScript/JavaScript runtime module.
+- `repo-visualizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `repo-visualizer/README.md` — documentation.
+- `repo-visualizer/analyzer.mjs` — project file.
+- `repo-visualizer/graph-stats.json` — project file.
+- `repo-visualizer/graph.json` — project file.
+- `repo-visualizer/index.html` — project file.
+- `repo-visualizer/server.mjs` — project file.
 
 </details>
 
 ## Build Memory
-Auto-synced from `build-memory/**` using repository introspection.
-- Files tracked: **7**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Build Memory file structure
+Build Memory provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── build-memory
     ├── Agents-MUST-READ-ARCHITECTURE.md
     ├── actions.json
     ├── events.json
+    ├── os-architecture-map.md
     ├── registry.json
     ├── routes.json
     ├── schema.json
+    ├── typecheck
+    │   └── error-files.txt
     └── ui-surfaces.json
 ```
-<details><summary>Build Memory file index (7 files)</summary>
+<details><summary>Build Memory file index (9 files)</summary>
 
-- `build-memory/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `build-memory/actions.json` — project file (json).
-- `build-memory/events.json` — project file (json).
-- `build-memory/registry.json` — project file (json).
-- `build-memory/routes.json` — project file (json).
-- `build-memory/schema.json` — project file (json).
-- `build-memory/ui-surfaces.json` — project file (json).
+- `build-memory/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `build-memory/actions.json` — project file.
+- `build-memory/events.json` — project file.
+- `build-memory/os-architecture-map.md` — documentation.
+- `build-memory/registry.json` — project file.
+- `build-memory/routes.json` — project file.
+- `build-memory/schema.json` — project file.
+- `build-memory/typecheck/error-files.txt` — project file.
+- `build-memory/ui-surfaces.json` — project file.
 
 </details>
 
 ## Src
-Auto-synced from `src/**` using repository introspection.
-- Files tracked: **37**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: `DreamEnginLogo`, `LogoHero`, `Nav`
-#### Src file structure
+Src provides shared infrastructure used across the platform.
+### Key Modules
+- `dreamdmbar`
+- `dreamr`
+- `dreamsurfaces`
+- `homedream`
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+### Notable Abstractions
+- `BrainMap` — type
+- `CartridgesMap` — type
+- `ConnectorsMap` — type
+- `DreamdmbarMap` — type
+- `DreamrMap` — type
+- `DreamsurfacesMap` — type
+- `EnginsMap` — type
+- `HomedreamMap` — type
+- `HooksMap` — type
+- `OsArchitectureGraph` — type
+- `OsArchitectureMap` — type
+- `OsArchitectureStageEntries` — type
+### Capabilities
+- Shared type vocabulary: BrainMap, CartridgesMap, ConnectorsMap, DreamdmbarMap, DreamrMap
+- Utility functions: hydrateEngineRegistry
+#### File Structure
 ```text
 └── src
-    ├── Agents-MUST-READ-ARCHITECTURE.md
-    ├── components
-    │   ├── dream.DreamEnginLogo.tsx
-    │   ├── dream.LogoHero.tsx
-    │   └── dream.Nav.tsx
-    ├── configs
-    │   └── demoGameConfig.ts
-    ├── core
-    │   └── GameEnginCore.ts
-    ├── dream
-    │   └── rulesets
-    │       ├── codeengin
-    │       │   └── index.ts
-    │       ├── dreamsengin
-    │       │   └── index.ts
-    │       ├── forgengn
-    │       │   └── index.ts
-    │       ├── gameengin
-    │       │   └── index.ts
-    │       ├── homedream
-    │       │   ├── dream.homedream.constants.ts
-    │       │   ├── dream.homedream.physics.ts
-    │       │   ├── dream.homedream.transforms.ts
-    │       │   └── index.ts
-    │       ├── labengin
-    │       │   └── index.ts
-    │       └── starmakerengin
-    │           └── index.ts
-    ├── dreamsurface
-    │   ├── dreamsurface.bridge.ts
-    │   ├── dreamsurface.delta.ts
-    │   └── index.ts
-    ├── engin
-    │   ├── core
-    │   │   ├── engin.auth.ts
-    │   │   ├── engin.eventbus.ts
-    │   │   ├── engin.ledger.ts
-    │   │   ├── engin.renderloop.ts
-    │   │   └── index.ts
-    │   ├── generated
-    │   │   ├── brain.ts
-    │   │   ├── cartridges.ts
-    │   │   ├── connectors.ts
-    │   │   ├── hooks.ts
-    │   │   ├── index.ts
-    │   │   ├── personas.ts
-    │   │   ├── rulesets.ts
-    │   │   ├── surfaces.ts
-    │   │   └── systems.ts
-    │   └── state
-    │       └── base.json
-    ├── launcher.ts
-    └── lib
-        ├── ai
-        │   └── client.ts
-        └── babylon
-            └── useDreamLogoScene.ts
+    └── engin
+        └── generated
+            ├── brain.ts
+            ├── cartridges.ts
+            ├── connectors.ts
+            ├── dreamdmbar.ts
+            ├── dreamr.ts
+            ├── dreamsurfaces.ts
+            ├── engins.ts
+            ├── homedream.ts
+            ├── hooks.ts
+            ├── index.ts
+            ├── osArchitectureMap.ts
+            ├── personas.ts
+            ├── rulesets.ts
+            ├── surfaces.ts
+            └── systems.ts
 ```
-<details><summary>Src file index (37 files)</summary>
+<details><summary>Src file index (15 files)</summary>
 
-- `src/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `src/components/dream.DreamEnginLogo.tsx` — React UI module for DreamEnginLogo.
-- `src/components/dream.LogoHero.tsx` — React UI module for LogoHero.
-- `src/components/dream.Nav.tsx` — React UI module for Nav.
-- `src/configs/demoGameConfig.ts` — TypeScript/JavaScript runtime module.
-- `src/core/GameEnginCore.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/code/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/dreams/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/forge/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/game/declarative.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/homedream/dream.homedream.constants.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/homedream/dream.homedream.physics.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/homedream/dream.homedream.transforms.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/homedream/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/lab/index.ts` — TypeScript/JavaScript runtime module.
-- `engins/rulesets/music/index.ts` — TypeScript/JavaScript runtime module.
-- `src/dreamsurface/dreamsurface.bridge.ts` — TypeScript/JavaScript runtime module.
-- `src/dreamsurface/dreamsurface.delta.ts` — TypeScript/JavaScript runtime module.
-- `src/dreamsurface/index.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/core/engin.auth.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/core/engin.eventbus.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/core/engin.ledger.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/core/engin.renderloop.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/core/index.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/brain.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/cartridges.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/connectors.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/hooks.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/index.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/personas.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/rulesets.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/surfaces.ts` — TypeScript/JavaScript runtime module.
-- `engine/generated/systems.ts` — TypeScript/JavaScript runtime module.
-- `src/engin/state/base.json` — project file (json).
-- `engins/gameengin/launcher.ts` — TypeScript/JavaScript runtime module.
-- `src/lib/ai/client.ts` — TypeScript/JavaScript runtime module.
-- `src/lib/babylon/useDreamLogoScene.ts` — TypeScript/JavaScript runtime module.
+- `src/engin/generated/brain.ts` — TypeScript module.
+- `src/engin/generated/cartridges.ts` — TypeScript module.
+- `src/engin/generated/connectors.ts` — TypeScript module.
+- `src/engin/generated/dreamdmbar.ts` — TypeScript module.
+- `src/engin/generated/dreamr.ts` — TypeScript module.
+- `src/engin/generated/dreamsurfaces.ts` — TypeScript module.
+- `src/engin/generated/engins.ts` — TypeScript module.
+- `src/engin/generated/homedream.ts` — TypeScript module.
+- `src/engin/generated/hooks.ts` — TypeScript module.
+- `src/engin/generated/index.ts` — TypeScript module.
+- `src/engin/generated/osArchitectureMap.ts` — TypeScript module.
+- `src/engin/generated/personas.ts` — TypeScript module.
+- `src/engin/generated/rulesets.ts` — TypeScript module.
+- `src/engin/generated/surfaces.ts` — TypeScript module.
+- `src/engin/generated/systems.ts` — TypeScript module.
 
 </details>
 
@@ -4187,12 +7004,12 @@ Auto-synced from `api/**` using repository introspection.
 </details>
 
 ## Assembly
-Auto-synced from `assembly/**` using repository introspection.
-- Files tracked: **4**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Assembly file structure
+Assembly provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+### Capabilities
+- Utility functions: enqueue, dequeue, reset, tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A
+#### File Structure
 ```text
 └── assembly
     ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -4202,20 +7019,20 @@ Auto-synced from `assembly/**` using repository introspection.
 ```
 <details><summary>Assembly file index (4 files)</summary>
 
-- `assembly/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `assembly/bus.ts` — TypeScript/JavaScript runtime module.
-- `assembly/index.ts` — TypeScript/JavaScript runtime module.
-- `assembly/mad-maxi-player.ts` — TypeScript/JavaScript runtime module.
+- `assembly/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `assembly/bus.ts` — TypeScript module.
+- `assembly/index.ts` — TypeScript module.
+- `assembly/mad-maxi-player.ts` — TypeScript module.
 
 </details>
 
 ## Config
-Auto-synced from `config/**` using repository introspection.
-- Files tracked: **4**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Config file structure
+Config provides shared infrastructure used across the platform.
+### Responsibilities
+- Quality assurance and integration coverage
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── config
     ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -4225,31 +7042,105 @@ Auto-synced from `config/**` using repository introspection.
 ```
 <details><summary>Config file index (4 files)</summary>
 
-- `config/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `config/advanced-game-targets.json` — project file (json).
-- `config/optimizer.yaml` — project file (yaml).
-- `config/ui-ux-spec.yaml` — project file (yaml).
+- `config/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `config/advanced-game-targets.json` — project file.
+- `config/optimizer.yaml` — project file.
+- `config/ui-ux-spec.yaml` — project file.
 
 </details>
 
 ## Dr Eams
-Auto-synced from `dr-eams/**` using repository introspection.
-- Files tracked: **3**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Dr Eams file structure
+Dr Eams provides shared infrastructure used across the platform. Core abstractions are encapsulated in CIC, DrEamsAnimator. It depends on Backend, System, Core & CoreSurfaces.
+### Responsibilities
+- Core abstractions: CIC, DrEamsAnimator
+- AI model integration and inference routing
+### Key Modules
+- `CIC`
+- `DrEamsAnimator`
+- `dreams`
+### Architectural Relationships
+- Depends on **Backend, System, Core & CoreSurfaces**
+- Consumes core backend services and database abstractions
+- Depends on Backend, System, Core & CoreSurfaces
+### Notable Abstractions
+- `CIC` — class
+- `BoogiePolicyVersion` — type
+- `EnforcementAction` — type
+- `EnforcementScope` — type
+- `StrikeSeverityLevel` — type
+- `RuleCode` — type
+- `BoogieEnforceInput` — interface
+- `AiAgent` — type
+- `AiMessage` — interface
+- `AiResponse` — interface
+- `GroqRole` — type
+- `GroqMessage` — interface
+### Capabilities
+- Public contract surface: BoogieEnforceInput, AiMessage, AiResponse, GroqMessage, GroqChatOptions
+- Shared type vocabulary: BoogiePolicyVersion, EnforcementAction, EnforcementScope, StrikeSeverityLevel, RuleCode
+- Utility functions: writeAuditLog, detectSignals, verifyIntents, redactSecrets, computeRiskScore, selectAction
+#### File Structure
 ```text
 └── dr-eams
     ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── ai
+    │   ├── CIC.ts
+    │   ├── audit.ts
+    │   ├── boogie-policy.ts
+    │   ├── boogie-verifier.ts
+    │   ├── boogieman.ts
+    │   ├── capability-gate.ts
+    │   ├── client.ts
+    │   ├── confirm-token.ts
+    │   ├── confirm.ts
+    │   ├── groq.ts
+    │   ├── handlers
+    │   │   ├── dreams.ts
+    │   │   ├── index.ts
+    │   │   ├── navigation.ts
+    │   │   └── social.ts
+    │   ├── idempotency.ts
+    │   ├── rate-limiter.ts
+    │   ├── rateLimit.ts
+    │   ├── schemas.ts
+    │   ├── tfBackend.ts
+    │   ├── tool-router.ts
+    │   └── triad.ts
+    ├── animation
+    │   └── DrEamsAnimator.ts
     ├── capabilities.yaml
+    ├── search
+    │   └── drEamsSearch.ts
     └── tools.ts
 ```
-<details><summary>Dr Eams file index (3 files)</summary>
+<details><summary>Dr Eams file index (26 files)</summary>
 
-- `dr-eams/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `dr-eams/capabilities.yaml` — project file (yaml).
-- `dr-eams/tools.ts` — TypeScript/JavaScript runtime module.
+- `dr-eams/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `dr-eams/ai/CIC.ts` — TypeScript module.
+- `dr-eams/ai/audit.ts` — TypeScript module.
+- `dr-eams/ai/boogie-policy.ts` — TypeScript module.
+- `dr-eams/ai/boogie-verifier.ts` — TypeScript module.
+- `dr-eams/ai/boogieman.ts` — TypeScript module.
+- `dr-eams/ai/capability-gate.ts` — TypeScript module.
+- `dr-eams/ai/client.ts` — TypeScript module.
+- `dr-eams/ai/confirm-token.ts` — TypeScript module.
+- `dr-eams/ai/confirm.ts` — TypeScript module.
+- `dr-eams/ai/groq.ts` — TypeScript module.
+- `dr-eams/ai/handlers/dreams.ts` — TypeScript module.
+- `dr-eams/ai/handlers/index.ts` — TypeScript module.
+- `dr-eams/ai/handlers/navigation.ts` — TypeScript module.
+- `dr-eams/ai/handlers/social.ts` — TypeScript module.
+- `dr-eams/ai/idempotency.ts` — TypeScript module.
+- `dr-eams/ai/rate-limiter.ts` — TypeScript module.
+- `dr-eams/ai/rateLimit.ts` — TypeScript module.
+- `dr-eams/ai/schemas.ts` — TypeScript module.
+- `dr-eams/ai/tfBackend.ts` — TypeScript module.
+- `dr-eams/ai/tool-router.ts` — TypeScript module.
+- `dr-eams/ai/triad.ts` — TypeScript module.
+- `dr-eams/animation/DrEamsAnimator.ts` — TypeScript module.
+- `dr-eams/capabilities.yaml` — project file.
+- `dr-eams/search/drEamsSearch.ts` — TypeScript module.
+- `dr-eams/tools.ts` — TypeScript module.
 
 </details>
 
@@ -4369,12 +7260,10 @@ Auto-synced from `frontend/**` using repository introspection.
 </details>
 
 ## Misc
-Auto-synced from `misc/**` using repository introspection.
-- Files tracked: **12**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Misc file structure
+Misc provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── misc
     ├── Agents-MUST-READ-ARCHITECTURE.md
@@ -4393,43 +7282,73 @@ Auto-synced from `misc/**` using repository introspection.
 ```
 <details><summary>Misc file index (12 files)</summary>
 
-- `misc/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `misc/images/arm2_transparent.png` — project file (png).
-- `misc/images/coat_transparent.png` — project file (png).
-- `misc/images/head_transparent.png` — project file (png).
-- `misc/images/iconslist.png` — project file (png).
-- `misc/images/logo_DREAM_transparent.png` — project file (png).
-- `misc/images/logo_ENGIN_transparent.png` — project file (png).
-- `misc/images/logo_transparent.png` — project file (png).
-- `misc/images/shoe1_transparent.png` — project file (png).
-- `misc/images/shoe2_transparent.png` — project file (png).
-- `misc/images/sprite_2x_transparent.png` — project file (png).
-- `misc/images/sprite_transparent.png` — project file (png).
+- `misc/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `misc/images/arm2_transparent.png` — project file.
+- `misc/images/coat_transparent.png` — project file.
+- `misc/images/head_transparent.png` — project file.
+- `misc/images/iconslist.png` — project file.
+- `misc/images/logo_DREAM_transparent.png` — project file.
+- `misc/images/logo_ENGIN_transparent.png` — project file.
+- `misc/images/logo_transparent.png` — project file.
+- `misc/images/shoe1_transparent.png` — project file.
+- `misc/images/shoe2_transparent.png` — project file.
+- `misc/images/sprite_2x_transparent.png` — project file.
+- `misc/images/sprite_transparent.png` — project file.
 
 </details>
 
 ## Optimizer
-Auto-synced from `optimizer/**` using repository introspection.
-- Files tracked: **5**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Optimizer file structure
+Optimizer provides shared infrastructure used across the platform. Core abstractions are encapsulated in BabylonOptimizeroScorers, BabylonUIOptimizero, BabylonUIGenerator.
+### Responsibilities
+- Core abstractions: BabylonOptimizeroScorers, BabylonUIOptimizero, BabylonUIGenerator, ConstraintSolver, CreativeOptimizero
+### Key Modules
+- `BabylonOptimizeroScorers`
+- `BabylonUIGenerator`
+- `BabylonUIOptimizero`
+- `ConstraintSolver`
+- `CreativeOptimizero`
+- `DreamOptimizer`
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+### Notable Abstractions
+- `BabylonUICandidate` — interface
+- `BabylonOptimizeroScorers` — class
+- `BabylonUIOptimizero` — class
+- `BabylonUIGenerator` — class
+- `ConstraintSolver` — class
+- `CreativeCandidate` — interface
+- `ScoredCandidate` — interface
+- `OptimizeroWeights` — interface
+- `OptimizeroResult` — interface
+- `HardFailCheck` — type
+- `ScoreFunction` — type
+- `CreativeOptimizero` — class
+### Capabilities
+- Public contract surface: BabylonUICandidate, CreativeCandidate, ScoredCandidate, OptimizeroWeights, OptimizeroResult
+- Shared type vocabulary: HardFailCheck, ScoreFunction, ConstraintPriority, DeviceType, ConstraintPriority
+- Utility functions: createUIOptimizero, validateCreativeOption
+#### File Structure
 ```text
 └── optimizer
     ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── README.md
+    ├── babylon-optimizero.ts
     ├── constraint-solver.ts
+    ├── creative-optimizero.ts
     ├── creative-validator.ts
     ├── index.ts
     └── types.ts
 ```
-<details><summary>Optimizer file index (5 files)</summary>
+<details><summary>Optimizer file index (8 files)</summary>
 
-- `optimizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `optimizer/constraint-solver.ts` — TypeScript/JavaScript runtime module.
-- `optimizer/creative-validator.ts` — TypeScript/JavaScript runtime module.
-- `optimizer/index.ts` — TypeScript/JavaScript runtime module.
-- `optimizer/types.ts` — TypeScript/JavaScript runtime module.
+- `optimizer/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `optimizer/README.md` — documentation.
+- `optimizer/babylon-optimizero.ts` — TypeScript module.
+- `optimizer/constraint-solver.ts` — TypeScript module.
+- `optimizer/creative-optimizero.ts` — TypeScript module.
+- `optimizer/creative-validator.ts` — TypeScript module.
+- `optimizer/index.ts` — TypeScript module.
+- `optimizer/types.ts` — TypeScript module.
 
 </details>
 
@@ -4455,15 +7374,28 @@ Auto-synced from `output/**` using repository introspection.
 </details>
 
 ## Public
-Auto-synced from `public/**` using repository introspection.
-- Files tracked: **33**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Public file structure
+Public provides shared infrastructure used across the platform.
+### Responsibilities
+- Feed ranking, algorithm execution, and content scoring
+- Infrastructure provisioning and operational observability
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── public
     ├── Agents-MUST-READ-ARCHITECTURE.md
+    ├── DREAMenginree2-completedream
+    │   └── public
+    │       ├── favicon.ico
+    │       ├── file.svg
+    │       ├── globe.svg
+    │       ├── images
+    │       │   ├── logo1.PNG
+    │       │   ├── logo2.PNG
+    │       │   └── logo3.PNG
+    │       ├── next.svg
+    │       ├── vercel.svg
+    │       └── window.svg
     ├── arm1_transparent.png
     ├── arm2_transparent.png
     ├── cartridges
@@ -4503,41 +7435,50 @@ Auto-synced from `public/**` using repository introspection.
         ├── engin-shader.wasm
         └── engin-shader.worker.ts
 ```
-<details><summary>Public file index (33 files)</summary>
+<details><summary>Public file index (42 files)</summary>
 
-- `public/Agents-MUST-READ-ARCHITECTURE.md` — documentation file.
-- `public/arm1_transparent.png` — project file (png).
-- `public/arm2_transparent.png` — project file (png).
-- `public/cartridges/mad-maxi/MANIFEST.json` — project file (json).
-- `public/cartridges/mad-maxi/logic/main.wasm` — project file (wasm).
-- `public/cartridges/mad-maxi/tuning.json` — project file (json).
-- `public/coat_transparent.png` — project file (png).
-- `public/dr-eams-pbr.html` — project file (html).
-- `public/favicon.ico` — project file (ico).
-- `public/feeds/embed-feed.json` — project file (json).
-- `public/file.svg` — project file (svg).
-- `public/globe.svg` — project file (svg).
-- `public/head_transparent.png` — project file (png).
-- `public/images/iconslist.png` — project file (png).
-- `public/images/logo1.PNG` — project file (png).
-- `public/images/logo2.PNG` — project file (png).
-- `public/images/logo3.PNG` — project file (png).
-- `public/logo-icon.png` — project file (png).
-- `public/logo_DREAM_transparent.png` — project file (png).
-- `public/logo_ENGIN_transparent.png` — project file (png).
-- `public/manifest.json` — project file (json).
-- `public/manifest.webmanifest` — project file (webmanifest).
-- `public/module-loader.html` — project file (html).
-- `public/next.svg` — project file (svg).
-- `public/shoe1_transparent.png` — project file (png).
-- `public/shoe2_transparent.png` — project file (png).
-- `public/sprite_2x_transparent.png` — project file (png).
-- `public/sprite_transparent.png` — project file (png).
-- `public/vercel.svg` — project file (svg).
-- `public/window.svg` — project file (svg).
-- `public/workers/asset-optimizer.worker.js` — TypeScript/JavaScript runtime module.
-- `public/workers/engin-shader.wasm` — project file (wasm).
-- `public/workers/engin-shader.worker.ts` — TypeScript/JavaScript runtime module.
+- `public/Agents-MUST-READ-ARCHITECTURE.md` — documentation.
+- `public/DREAMenginree2-completedream/public/favicon.ico` — project file.
+- `public/DREAMenginree2-completedream/public/file.svg` — project file.
+- `public/DREAMenginree2-completedream/public/globe.svg` — project file.
+- `public/DREAMenginree2-completedream/public/images/logo1.PNG` — project file.
+- `public/DREAMenginree2-completedream/public/images/logo2.PNG` — project file.
+- `public/DREAMenginree2-completedream/public/images/logo3.PNG` — project file.
+- `public/DREAMenginree2-completedream/public/next.svg` — project file.
+- `public/DREAMenginree2-completedream/public/vercel.svg` — project file.
+- `public/DREAMenginree2-completedream/public/window.svg` — project file.
+- `public/arm1_transparent.png` — project file.
+- `public/arm2_transparent.png` — project file.
+- `public/cartridges/mad-maxi/MANIFEST.json` — project file.
+- `public/cartridges/mad-maxi/logic/main.wasm` — project file.
+- `public/cartridges/mad-maxi/tuning.json` — project file.
+- `public/coat_transparent.png` — project file.
+- `public/dr-eams-pbr.html` — project file.
+- `public/favicon.ico` — project file.
+- `public/feeds/embed-feed.json` — project file.
+- `public/file.svg` — project file.
+- `public/globe.svg` — project file.
+- `public/head_transparent.png` — project file.
+- `public/images/iconslist.png` — project file.
+- `public/images/logo1.PNG` — project file.
+- `public/images/logo2.PNG` — project file.
+- `public/images/logo3.PNG` — project file.
+- `public/logo-icon.png` — project file.
+- `public/logo_DREAM_transparent.png` — project file.
+- `public/logo_ENGIN_transparent.png` — project file.
+- `public/manifest.json` — project file.
+- `public/manifest.webmanifest` — project file.
+- `public/module-loader.html` — project file.
+- `public/next.svg` — project file.
+- `public/shoe1_transparent.png` — project file.
+- `public/shoe2_transparent.png` — project file.
+- `public/sprite_2x_transparent.png` — project file.
+- `public/sprite_transparent.png` — project file.
+- `public/vercel.svg` — project file.
+- `public/window.svg` — project file.
+- `public/workers/asset-optimizer.worker.js` — TypeScript module.
+- `public/workers/engin-shader.wasm` — project file.
+- `public/workers/engin-shader.worker.ts` — TypeScript module.
 
 </details>
 
@@ -4785,24 +7726,102 @@ Auto-synced from `workflow/**` using repository introspection.
 </details>
 
 ## Fonts
-Auto-synced from `fonts/**` using repository introspection.
-- Files tracked: **4**
-- API routes discovered: none
-- App pages discovered: none
-- Components/modules discovered: none
-#### Fonts file structure
+Fonts provides shared infrastructure used across the platform.
+### Architectural Relationships
+- Self-contained — no detected cross-subsystem imports
+#### File Structure
 ```text
 └── fonts
-    ├── Cormorant_Garamond.zip
-    ├── Plus_Jakarta_Sans.zip
-    ├── Space_Grotesk.zip
+    ├── Cormorant_Garamond
+    │   ├── CormorantGaramond-Italic-VariableFont_wght.ttf
+    │   ├── CormorantGaramond-VariableFont_wght.ttf
+    │   ├── OFL.txt
+    │   ├── README.txt
+    │   └── static
+    │       ├── CormorantGaramond-Bold.ttf
+    │       ├── CormorantGaramond-BoldItalic.ttf
+    │       ├── CormorantGaramond-Italic.ttf
+    │       ├── CormorantGaramond-Light.ttf
+    │       ├── CormorantGaramond-LightItalic.ttf
+    │       ├── CormorantGaramond-Medium.ttf
+    │       ├── CormorantGaramond-MediumItalic.ttf
+    │       ├── CormorantGaramond-Regular.ttf
+    │       ├── CormorantGaramond-SemiBold.ttf
+    │       └── CormorantGaramond-SemiBoldItalic.ttf
+    ├── Plus_Jakarta_Sans
+    │   ├── OFL.txt
+    │   ├── PlusJakartaSans-Italic-VariableFont_wght.ttf
+    │   ├── PlusJakartaSans-VariableFont_wght.ttf
+    │   ├── README.txt
+    │   └── static
+    │       ├── PlusJakartaSans-Bold.ttf
+    │       ├── PlusJakartaSans-BoldItalic.ttf
+    │       ├── PlusJakartaSans-ExtraBold.ttf
+    │       ├── PlusJakartaSans-ExtraBoldItalic.ttf
+    │       ├── PlusJakartaSans-ExtraLight.ttf
+    │       ├── PlusJakartaSans-ExtraLightItalic.ttf
+    │       ├── PlusJakartaSans-Italic.ttf
+    │       ├── PlusJakartaSans-Light.ttf
+    │       ├── PlusJakartaSans-LightItalic.ttf
+    │       ├── PlusJakartaSans-Medium.ttf
+    │       ├── PlusJakartaSans-MediumItalic.ttf
+    │       ├── PlusJakartaSans-Regular.ttf
+    │       ├── PlusJakartaSans-SemiBold.ttf
+    │       └── PlusJakartaSans-SemiBoldItalic.ttf
+    ├── Space_Grotesk
+    │   ├── OFL.txt
+    │   ├── README.txt
+    │   ├── SpaceGrotesk-VariableFont_wght.ttf
+    │   └── static
+    │       ├── SpaceGrotesk-Bold.ttf
+    │       ├── SpaceGrotesk-Light.ttf
+    │       ├── SpaceGrotesk-Medium.ttf
+    │       ├── SpaceGrotesk-Regular.ttf
+    │       └── SpaceGrotesk-SemiBold.ttf
     └── fonts.md
 ```
-<details><summary>Fonts file index (4 files)</summary>
+<details><summary>Fonts file index (41 files)</summary>
 
-- `fonts/Cormorant_Garamond.zip` — project file (zip).
-- `fonts/Plus_Jakarta_Sans.zip` — project file (zip).
-- `fonts/Space_Grotesk.zip` — project file (zip).
-- `fonts/fonts.md` — documentation file.
+- `fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf` — project file.
+- `fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf` — project file.
+- `fonts/Cormorant_Garamond/OFL.txt` — project file.
+- `fonts/Cormorant_Garamond/README.txt` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-Bold.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-BoldItalic.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-Italic.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-Light.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-LightItalic.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-MediumItalic.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf` — project file.
+- `fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBoldItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/OFL.txt` — project file.
+- `fonts/Plus_Jakarta_Sans/PlusJakartaSans-Italic-VariableFont_wght.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/README.txt` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Bold.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-BoldItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBold.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraBoldItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLight.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-ExtraLightItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Italic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Light.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-LightItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Medium.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-MediumItalic.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBold.ttf` — project file.
+- `fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-SemiBoldItalic.ttf` — project file.
+- `fonts/Space_Grotesk/OFL.txt` — project file.
+- `fonts/Space_Grotesk/README.txt` — project file.
+- `fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf` — project file.
+- `fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf` — project file.
+- `fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf` — project file.
+- `fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf` — project file.
+- `fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf` — project file.
+- `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` — project file.
+- `fonts/fonts.md` — documentation.
 
 </details>
