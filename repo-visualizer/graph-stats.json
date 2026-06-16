@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-06-16T00:50:37.205Z",
-  "totalFiles": 2184,
-  "totalNodes": 7492,
-  "totalEdges": 8076,
-  "totalFunctionAndClassNodes": 4242,
-  "orphanCount": 3733,
+  "generatedAt": "2026-06-15T09:41:56.041Z",
+  "totalFiles": 2162,
+  "totalNodes": 7360,
+  "totalEdges": 7151,
+  "totalFunctionAndClassNodes": 4136,
+  "orphanCount": 3651,
   "countsByType": {
-    "folder": 622,
-    "file": 114,
+    "folder": 618,
+    "file": 113,
     "doc": 228,
     "config": 235,
-    "function": 3974,
+    "function": 3869,
     "python": 18,
-    "class": 268,
+    "class": 267,
     "js": 8,
     "mjs": 30,
     "route": 246,
-    "ts": 904,
-    "tsx": 330,
+    "ts": 885,
+    "tsx": 328,
     "css": 8,
     "cjs": 4,
     "sql-table": 149,
@@ -25,13 +25,6 @@
     "sql": 59
   },
   "topConnected": [
-    {
-      "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 576,
-      "label": "surfaces.ts",
-      "type": "ts",
-      "path": "src/engin/generated/surfaces.ts"
-    },
     {
       "id": "file:engine/generated/surfaces.ts",
       "degree": 573,
@@ -52,13 +45,6 @@
       "label": "safeGetUser.ts",
       "type": "ts",
       "path": "supabase/client/safeGetUser.ts"
-    },
-    {
-      "id": "file:src/engin/generated/engins.ts",
-      "degree": 237,
-      "label": "engins.ts",
-      "type": "ts",
-      "path": "src/engin/generated/engins.ts"
     },
     {
       "id": "file:engine/generated/engins.ts",
@@ -94,6 +80,20 @@
       "label": "toErrorMessage",
       "type": "function",
       "path": "utils/index.ts"
+    },
+    {
+      "id": "file:engine/dev-bypass.ts",
+      "degree": 85,
+      "label": "dev-bypass.ts",
+      "type": "ts",
+      "path": "engine/dev-bypass.ts"
+    },
+    {
+      "id": "file:engins/gameengin/executionWiring.ts",
+      "degree": 79,
+      "label": "executionWiring.ts",
+      "type": "ts",
+      "path": "engins/gameengin/executionWiring.ts"
     }
   ]
 }

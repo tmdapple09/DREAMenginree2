@@ -116,8 +116,10 @@ export function createIsoSurfaceJob(args: { id: string; sourceEngin: IsoSurfaceS
 }
 
 export function runIsoSurfaceJob(sdf: SDF, job: Omit<IsoSurfaceJob, 'diagnostics' | 'output' | 'settings'> & { settings?: Partial<DualContouringSettings> }): { job: IsoSurfaceJob; mesh: Mesh; snapshot: ReturnType<typeof meshToSnapshot> } {
-  const mesh = runDualContouring(sdf, job.settings);
-  const completed = createIsoSurfaceJob({ ...job, mesh });
+  const settings = normalizeDualContouringSettings(job.settings);
+  if (classifyMobileIsoSurfaceTier(settings.resolution) === 'desktop-or-batch' && job.purpose !== 'mesh-repair') throw new Error(`IsoSurfaceJob ${job.id} resolution ${settings.resolution} must run as batch/export, not synchronous mobile runtime.`);
+  const mesh = runDualContouring(sdf, settings);
+  const completed = createIsoSurfaceJob({ ...job, settings, mesh });
   return { job: completed, mesh, snapshot: meshToSnapshot(mesh, completed.diagnostics) };
 }
 
