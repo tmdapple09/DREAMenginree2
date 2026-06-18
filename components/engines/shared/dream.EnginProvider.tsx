@@ -14,7 +14,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
  * can call useEngin() to read shared state without prop-drilling.
  */
 
-export type EngineId = 'games' | 'music' | 'code' | 'lab' | 'brand' | 'create' | 'portfolio';
+export type EngineId = 'games' | 'music' | 'code' | 'lab' | 'brand' | 'create' | 'portfolio' | 'render';
 
 interface EnginContextValue {
   engineId: EngineId;

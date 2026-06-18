@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T20:46:28.357Z
+Generated: 2026-06-18T22:20:41.077Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -684,7 +684,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │           ├── assertCodeEnginAccess  ← @/engins/codeengin/auth
 │   │   │           ├── safeErrorMessage  ← @/engins/codeengin/pathSafety
 │   │   │           ├── buildProjectGraph  ← @/engins/codeengin/projectGraph
-│   │   │           ├── listRunnerCommands  ← @/engins/codeengin/runner
+│   │   │           ├── listRunnerCommands  ← @/engins/codeengin/runnerCommands
 │   │   │           ├── createCodeEnginWorkspace  ← @/engins/codeengin/workspaceStore
 │   │   │           ├── getWorkspaceOverview  ← @/engins/codeengin/workspaceStore
 │   │   │           ├── listEditableFiles  ← @/engins/codeengin/workspaceStore
@@ -2493,6 +2493,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── redirect  ← next/navigation
 │   │   │       ├── connection  ← next/server
 │   │   │       └── → (default)
+│   │   ├── render
+│   │   │   └── page.tsx
+│   │   │       ├── ⬡ RenderEnginApp  ← @/components/engines/render/dream.RenderEnginApp
+│   │   │       ├── → (default)
+│   │   │       └── → metadata
 │   │   ├── layout.tsx ∅
 │   │   │   ├── ReactNode  ← react
 │   │   │   ├── → (default)
@@ -4317,6 +4322,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → PortfolioEnginApp
 │   │   │       ├── → PortfolioQuantumPanel
 │   │   │       └── ∅ unused: PortfolioEnginApp, AssetsPanel, OptimizePanel, PortfolioQuantumPanel
+│   │   ├── render
+│   │   │   ├── dream.RenderEnginApp.tsx ∅
+│   │   │   │   ├── makeEnginApp  ← @/components/engines/shared
+│   │   │   │   ├── RenderEnginViewport  ← @/engins/renderengin
+│   │   │   │   ├── → (default)
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   └── index.ts ∅
+│   │   │       ├── → RenderEnginApp
+│   │   │       └── ∅ unused: RenderEnginApp
 │   │   ├── shared
 │   │   │   ├── dream.bar.EnginNavBar.tsx ∅
 │   │   │   │   ├── ⬡ Link  ← next/link
@@ -11350,15 +11364,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → buildProjectGraph
 │   │   │   ├── → extractImports
 │   │   │   └── ∅ unused: extractImports
-│   │   ├── runner.ts ∅
+│   │   ├── runner.ts
+│   │   │   ├── CODEENGIN_COMMANDS  ← ./runnerCommands
 │   │   │   ├── CodeEnginCommandResult  ← ./types
 │   │   │   ├── getWorkspaceMeta  ← ./workspaceStore
 │   │   │   ├── spawn  ← child_process
-│   │   │   ├── → CODEENGIN_COMMANDS
 │   │   │   ├── → listRunnerCommands
 │   │   │   ├── → runCiCommand
-│   │   │   ├── → runCodeEnginCommand
-│   │   │   └── ∅ unused: CODEENGIN_COMMANDS
+│   │   │   └── → runCodeEnginCommand
+│   │   ├── runnerCommands.ts
+│   │   │   ├── → CODEENGIN_COMMANDS
+│   │   │   └── → listRunnerCommands
 │   │   ├── search.ts
 │   │   │   ├── CodeEnginSearchHit  ← ./types
 │   │   │   ├── listEditableFiles  ← ./workspaceStore
@@ -13120,6 +13136,79 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── useState  ← react
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
+│   ├── renderengin
+│   │   ├── core.ts ∅
+│   │   │   ├── DomainObject  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── EnginBaseState  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── EnginAction  ← ../../engine/engin-runtime/EnginRuleSetContract
+│   │   │   ├── EnginRuleSetContract  ← ../../engine/engin-runtime/EnginRuleSetContract
+│   │   │   ├── → RenderEnginRuleSet
+│   │   │   ├── → buildClusterDag
+│   │   │   ├── → clamp01
+│   │   │   ├── → clusterizeMesh
+│   │   │   ├── → composeModelMatrix
+│   │   │   ├── → computeTangents
+│   │   │   ├── → createMeshBuffers
+│   │   │   ├── → createRenderAsset
+│   │   │   ├── → evaluateJointWorldMatrices
+│   │   │   ├── → evaluateSkinMatrices
+│   │   │   ├── → fresnelSchlick
+│   │   │   ├── → ggxDistribution
+│   │   │   ├── → makeDualQuaternion
+│   │   │   ├── → mat4FromQuat
+│   │   │   ├── → mat4Identity
+│   │   │   ├── → mat4LookAt
+│   │   │   ├── → mat4Mul
+│   │   │   ├── → mat4Perspective
+│   │   │   ├── → mat4Scale
+│   │   │   ├── → mat4Transform
+│   │   │   ├── → mat4Translation
+│   │   │   ├── → projectVertex
+│   │   │   ├── → quatMul
+│   │   │   ├── → schlickG1
+│   │   │   ├── → selectLod
+│   │   │   ├── → shadeCookTorrance
+│   │   │   ├── → skinVertexLbs
+│   │   │   ├── → smithGeometry
+│   │   │   ├── → unpackOrm
+│   │   │   ├── → v3add
+│   │   │   ├── → v3cross
+│   │   │   ├── → v3dot
+│   │   │   ├── → v3length
+│   │   │   ├── → v3normalize
+│   │   │   ├── → v3scale
+│   │   │   ├── → v3sub
+│   │   │   └── ∅ unused: v3add, v3sub, v3scale, v3dot, v3cross, v3length, v3normalize, clamp01, mat4Translation, mat4Scale, mat4Mul, mat4Transform, mat4FromQuat, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, createRenderAsset, RenderEnginRuleSet
+│   │   ├── index.ts
+│   │   │   └── → RenderEnginViewport
+│   │   ├── RenderEnginViewport.tsx ∅
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── composeModelMatrix  ← ./core
+│   │   │   ├── createMeshBuffers  ← ./core
+│   │   │   ├── mat4LookAt  ← ./core
+│   │   │   ├── mat4Perspective  ← ./core
+│   │   │   ├── RenderEnginFrameStats  ← ./webgpu
+│   │   │   ├── WebGpuRenderEngin  ← ./webgpu
+│   │   │   ├── requestWebGpuDevice  ← ./webgpu
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   └── webgpu.ts ∅
+│   │       ├── Mat4  ← ./core
+│   │       ├── MeshBuffers  ← ./core
+│   │       ├── Vec3  ← ./core
+│   │       ├── Vertex  ← ./core
+│   │       ├── mat4Identity  ← ./core
+│   │       ├── → WebGpuRenderEngin
+│   │       ├── → packAosVertexBuffer
+│   │       ├── → requestWebGpuDevice
+│   │       ├── → toGpuMat4
+│   │       └── ∅ unused: toGpuMat4, packAosVertexBuffer
 │   ├── rulesets
 │   │   ├── brand
 │   │   │   ├── brandEnginRuleSet.ts
@@ -17557,6 +17646,26 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-section6-homedream.test.ts
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── resolve  ← node:path
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-core.test.ts
+│   │   ├── clusterizeMesh  ← ../engins/renderengin
+│   │   ├── composeModelMatrix  ← ../engins/renderengin
+│   │   ├── createMeshBuffers  ← ../engins/renderengin
+│   │   ├── createRenderAsset  ← ../engins/renderengin
+│   │   ├── mat4Identity  ← ../engins/renderengin
+│   │   ├── packAosVertexBuffer  ← ../engins/renderengin
+│   │   ├── projectVertex  ← ../engins/renderengin
+│   │   ├── shadeCookTorrance  ← ../engins/renderengin
+│   │   ├── skinVertexLbs  ← ../engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-webgpu.test.ts
+│   │   ├── createMeshBuffers  ← ../engins/renderengin
+│   │   ├── packAosVertexBuffer  ← ../engins/renderengin
+│   │   ├── toGpuMat4  ← ../engins/renderengin
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest

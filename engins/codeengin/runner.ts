@@ -1,25 +1,15 @@
 import { spawn } from 'child_process';
 import { getWorkspaceMeta } from './workspaceStore';
+import { CODEENGIN_COMMANDS } from './runnerCommands';
+export { listRunnerCommands } from './runnerCommands';
 import type { CodeEnginCommandResult } from './types';
 
 const DEFAULT_TIMEOUT_MS = Number(process.env.CODEENGIN_RUN_TIMEOUT_MS ?? 120_000);
 const MAX_OUTPUT_CHARS = Number(process.env.CODEENGIN_MAX_RUN_OUTPUT_CHARS ?? 30_000);
 
-export const CODEENGIN_COMMANDS: Record<string, { command: string; args: string[]; label: string }> = {
-  lint: { command: 'pnpm', args: ['lint'], label: 'Lint' },
-  typecheck: { command: 'pnpm', args: ['typecheck'], label: 'Typecheck' },
-  test: { command: 'pnpm', args: ['test'], label: 'Unit tests' },
-  build: { command: 'pnpm', args: ['build'], label: 'Build' },
-  preflight: { command: 'pnpm', args: ['preflight'], label: 'Preflight' },
-};
-
 function clampOutput(value: string): string {
   if (value.length <= MAX_OUTPUT_CHARS) return value;
   return `${value.slice(0, MAX_OUTPUT_CHARS)}\n… output truncated by CodeEngin (${value.length} chars)`;
-}
-
-export function listRunnerCommands(): Array<{ id: string; label: string; command: string }> {
-  return Object.entries(CODEENGIN_COMMANDS).map(([id, config]) => ({ id, label: config.label, command: [config.command, ...config.args].join(' ') }));
 }
 
 export async function runCodeEnginCommand(workspaceId: string, ownerId: string, commandId: string): Promise<CodeEnginCommandResult> {

@@ -9,7 +9,9 @@ export const CODEENGIN_BLOCKED_SEGMENTS = new Set([
 ]);
 
 export function getCodeEnginWorkspacesRoot(): string {
-  return path.resolve(process.env.CODEENGIN_WORKSPACES_ROOT ?? path.join(process.cwd(), '.codeengin-workspaces'));
+  const configuredRoot = process.env.CODEENGIN_WORKSPACES_ROOT?.trim();
+  if (configuredRoot) return path.resolve(/*turbopackIgnore: true*/ configuredRoot);
+  return path.join(process.cwd(), '.codeengin-workspaces');
 }
 
 export function assertValidWorkspaceId(workspaceId: string | null | undefined): string {

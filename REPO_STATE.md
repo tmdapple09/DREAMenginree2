@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T20:46:28.200Z
+Generated: 2026-06-18T22:20:40.948Z
 
 ---
 
@@ -4131,6 +4131,7 @@ _No style files for this feature._
 | `/engines/portfolio/assets` | `app/engines/portfolio/assets/page.tsx` |  |
 | `/engines/portfolio/optimize` | `app/engines/portfolio/optimize/page.tsx` |  |
 | `/engines/portfolio/quantum` | `app/engines/portfolio/quantum/page.tsx` |  |
+| `/engines/render` | `app/engines/render/page.tsx` |  |
 
 ## `/feed-settings`
 
@@ -4749,7 +4750,7 @@ _No style files for this feature._
 | `@/engins/codeengin/auth` | `assertCodeEnginAccess` |
 | `@/engins/codeengin/pathSafety` | `safeErrorMessage` |
 | `@/engins/codeengin/projectGraph` | `buildProjectGraph` |
-| `@/engins/codeengin/runner` | `listRunnerCommands` |
+| `@/engins/codeengin/runnerCommands` | `listRunnerCommands` |
 | `@/engins/codeengin/workspaceStore` | `createCodeEnginWorkspace`, `getWorkspaceOverview`, `listEditableFiles` |
 | `next/server` | `NextResponse` |
 
@@ -6514,6 +6515,12 @@ _No style files for this feature._
 | `@/supabase/server/serverClient` | `createServerClient` |
 | `next/navigation` | `redirect` |
 | `next/server` | `connection` |
+
+## `app/engines/render/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/render/dream.RenderEnginApp` | `⬡ RenderEnginApp` |
 
 ## `app/error.tsx`
 
@@ -8280,6 +8287,13 @@ _No style files for this feature._
 |--------|---------------|
 | `lucide-react` | `Info`, `Play`, `RotateCcw`, `Zap` |
 | `react` | `useCallback`, `useState` |
+
+## `components/engines/render/dream.RenderEnginApp.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/components/engines/shared` | `makeEnginApp` |
+| `@/engins/renderengin` | `RenderEnginViewport` |
 
 ## `components/engines/shared/dream.EnginProvider.tsx`
 
@@ -12024,6 +12038,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `./runnerCommands` | `CODEENGIN_COMMANDS` |
 | `./types` | `CodeEnginCommandResult` |
 | `./workspaceStore` | `getWorkspaceMeta` |
 | `child_process` | `spawn` |
@@ -13039,6 +13054,27 @@ _No style files for this feature._
 | `@/engins/forgeengin/forge/useForgeActivity` | `useForgeActivity` |
 | `lucide-react` | `Activity`, `ArrowLeft`, `Cpu`, `ShieldCheck`, `TrendingUp` |
 | `react` | `useState` |
+
+## `engins/renderengin/RenderEnginViewport.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `MeshBuffers`, `composeModelMatrix`, `createMeshBuffers`, `mat4LookAt`, `mat4Perspective` |
+| `./webgpu` | `RenderEnginFrameStats`, `WebGpuRenderEngin`, `requestWebGpuDevice` |
+| `react` | `useEffect`, `useRef`, `useState` |
+
+## `engins/renderengin/core.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue` |
+| `../../engine/engin-runtime/EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+
+## `engins/renderengin/webgpu.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vertex`, `mat4Identity` |
 
 ## `engins/rulesets/brand/brandEnginRuleSet.ts`
 
@@ -17193,6 +17229,7 @@ _No style files for this feature._
 - `app/engines/portfolio/optimize/page.tsx`
 - `app/engines/portfolio/page.tsx`
 - `app/engines/portfolio/quantum/page.tsx`
+- `app/engines/render/page.tsx`
 
 ## `app/error.tsx/`
 
@@ -17622,6 +17659,7 @@ _No style files for this feature._
 - `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx`
 - `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`
 - `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx`
+- `components/engines/render/dream.RenderEnginApp.tsx`
 - `components/engines/shared/dream.EnginProvider.tsx`
 - `components/engines/shared/dream.bar.EnginNavBar.tsx`
 - `components/engines/shared/dream.makeEnginApp.tsx`
@@ -17949,6 +17987,10 @@ _No style files for this feature._
 ## `engins/portfolio/`
 
 - `engins/portfolio/dream.PortfolioEngin.tsx`
+
+## `engins/renderengin/`
+
+- `engins/renderengin/RenderEnginViewport.tsx`
 
 ---
 
@@ -18993,6 +19035,7 @@ _No circular dependencies detected._
 | `engine/runtime/seamClipboard.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
 | `engine/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
+| `engins/codeengin/runner.ts` | 4 | EVENT_BUS |
 | `engins/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
 | `engins/gameengin/registerCartridges.ts` | 4 | RUNTIME_REGISTRY |
 | `engins/rulesets/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -19018,7 +19061,6 @@ _No circular dependencies detected._
 | `engine/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
-| `engins/codeengin/runner.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
@@ -19744,6 +19786,8 @@ _No circular dependencies detected._
 | `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` | `(default)` |
 | `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` | `(default)` |
 | `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` | `(default)` |
+| `components/engines/render/dream.RenderEnginApp.tsx` | `(default)` |
+| `components/engines/render/index.ts` | `RenderEnginApp` |
 | `components/engines/shared/dream.EnginProvider.tsx` | `EnginProvider`, `useEngin` |
 | `components/engines/shared/dream.bar.EnginNavBar.tsx` | `(default)` |
 | `components/engines/shared/dream.makeEnginApp.tsx` | `makeEnginApp`, `(default)` |
@@ -20099,7 +20143,6 @@ _No circular dependencies detected._
 | `engins/codeengin/diff/aiEditEngine.ts` | `CODEENGIN_PRODUCTION_MODE` |
 | `engins/codeengin/pathSafety.ts` | `CODEENGIN_ALLOWED_EXTENSIONS` |
 | `engins/codeengin/projectGraph.ts` | `extractImports` |
-| `engins/codeengin/runner.ts` | `CODEENGIN_COMMANDS` |
 | `engins/codeengin/workspaceStore.ts` | `(default)` |
 | `engins/contentengin/AssetViewport.tsx` | `(default)` |
 | `engins/contentengin/ImplicitAssetWorkspace.tsx` | `(default)` |
@@ -20198,6 +20241,9 @@ _No circular dependencies detected._
 | `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `normalizeDualContouringSettings`, `classifyMobileIsoSurfaceTier`, `estimateIsoSurfaceMemoryBytes`, `validateMesh`, `createIsoSurfaceJob` |
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
+| `engins/renderengin/RenderEnginViewport.tsx` | `(default)` |
+| `engins/renderengin/core.ts` | `v3add`, `v3sub`, `v3scale`, `v3dot`, `v3cross`, `v3length`, `v3normalize`, `clamp01`, `mat4Translation`, `mat4Scale`, `mat4Mul`, `mat4Transform`, `mat4FromQuat`, `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `makeDualQuaternion`, `quatMul`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `createRenderAsset`, `RenderEnginRuleSet` |
+| `engins/renderengin/webgpu.ts` | `toGpuMat4`, `packAosVertexBuffer` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
 | `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/content/contentEnginRuleSet.ts` | `CONTENT_IMPLICIT_ASSET_POLICY` |
@@ -21200,6 +21246,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   ├── render
+│   │   │   └── page.tsx
 │   │   ├── layout.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
@@ -21668,6 +21716,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
 │   │   │       └── ∅ unused: PortfolioEnginApp, AssetsPanel, OptimizePanel, PortfolioQuantumPanel
+│   │   ├── render
+│   │   │   ├── dream.RenderEnginApp.tsx ∅
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   └── index.ts ∅
+│   │   │       └── ∅ unused: RenderEnginApp
 │   │   ├── shared
 │   │   │   ├── dream.bar.EnginNavBar.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -22819,8 +22872,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: CODEENGIN_ALLOWED_EXTENSIONS
 │   │   ├── projectGraph.ts ∅
 │   │   │   └── ∅ unused: extractImports
-│   │   ├── runner.ts ∅
-│   │   │   └── ∅ unused: CODEENGIN_COMMANDS
+│   │   ├── runner.ts
+│   │   ├── runnerCommands.ts
 │   │   ├── search.ts
 │   │   ├── types.ts
 │   │   └── workspaceStore.ts ∅
@@ -23249,6 +23302,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── portfolio  [PortfolioEngin]
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       └── ∅ unused: (default)
+│   ├── renderengin
+│   │   ├── core.ts ∅
+│   │   │   └── ∅ unused: v3add, v3sub, v3scale, v3dot, v3cross, v3length, v3normalize, clamp01, mat4Translation, mat4Scale, mat4Mul, mat4Transform, mat4FromQuat, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, createRenderAsset, RenderEnginRuleSet
+│   │   ├── index.ts
+│   │   ├── RenderEnginViewport.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   └── webgpu.ts ∅
+│   │       └── ∅ unused: toGpuMat4, packAosVertexBuffer
 │   ├── rulesets
 │   │   ├── brand
 │   │   │   ├── brandEnginRuleSet.ts
@@ -23795,6 +23856,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
+│   ├── renderengin-core.test.ts
+│   ├── renderengin-webgpu.test.ts
 │   ├── report-driven-game-agent.test.ts
 │   ├── repository-state-analysis-section.test.ts
 │   ├── responsive.test.ts ⚠
