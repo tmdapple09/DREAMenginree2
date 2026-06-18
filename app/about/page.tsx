@@ -25,82 +25,82 @@ export default function AboutPage( ){
   const features = [
     {
       icon: Shield,
-      title: 'Privacy-First',
-      description: 'Your data belongs to you. End-to-end encryption, no tracking, no selling your info. We built DreamEngin to respect your privacy at every level.',
+      title: 'You own your space',
+      description: 'Your profile, posts, projects, shop, messages, and private work belong to you. DREAMengin is built around clear controls for what stays private, what you share, and what becomes public.',
       color: 'from-green-500 to-emerald-600'
     },
     {
       icon: Cpu,
-      title: 'AI-Powered Tools',
-      description: 'Our Ai helps you create, organise, and explore. Get intelligent suggestions, automate tasks, and unlock your creative potential.',
+      title: 'Helpful AI when you want it',
+      description: 'Dr. Eams can help you find your way around, draft ideas, organize work, and turn a plain request into action. It is there to help — not to make the place feel robotic.',
       color: 'from-purple-500 to-violet-600'
     },
     {
       icon: Users,
-      title: 'Social Connections',
-      description: 'Discover and connect with creators who share your passions. Follow, message, collaborate, and build your community.',
+      title: 'A real creative network',
+      description: 'Follow people, message them, share work, collaborate, and build a community around what you make instead of chasing random trends.',
       color: 'from-blue-500 to-cyan-600'
     },
     {
       icon: Music,
-      title: 'Music Integration',
-      description: 'Share your music, embed tracks from YouTube and Spotify, and showcase your sound. Perfect for artists, producers, and music lovers or create your own with StarMakerENGIN',
+      title: 'Music, content, games, and more',
+      description: 'Keep different kinds of projects together. A song, a video idea, a game character, a storefront item, and a post can all live in the same creative world.',
       color: 'from-pink-500 to-rose-600'
     },
     {
       icon: Beaker,
-      title: 'Creative Labs',
-      description: 'Build and share interactive experiments. Physics simulations, data visualizations, AI projects - your playground for innovation.',
+      title: 'A place to try ideas',
+      description: 'Use LabEngin for experiments, notes, simulations, research, and weird ideas that are not ready to be polished yet.',
       color: 'from-violet-500 to-purple-600'
     },
     {
       icon: ShoppingBag,
-      title: 'Merch Shop',
-      description: 'Sell your creations directly to your audience. Set up your store, list items, and earn from your work - all within the platform.',
+      title: 'Built-in ways to earn',
+      description: 'Showcase and sell digital products, creative services, themes, assets, and community-made tools from inside the same place people discover your work.',
       color: 'from-orange-500 to-amber-600'
     },
   ];
 
   const navigationPrinciples = [
     {
-      title: 'Spatial Navigation (Not Pages)',
-      description: 'Home, Profile, Feed, Messages, Marketplace, Lab, Music, Social Hub, and Settings live on a continuous plane.'
+      title: 'Everything starts from HomeDream',
+      description: 'HomeDream is your personal starting point. From there you can open messages, profiles, projects, tools, and shared spaces without feeling lost.'
     },
     {
-      title: 'Torus / Infinite Loop',
-      description: 'Left meets right, up meets down, and zooming cycles layers so every direction eventually returns home.'
+      title: 'DreamSpace is where work opens up',
+      description: 'DreamSpace is the bigger canvas for projects, apps, rooms, windows, and shared creative sessions.'
     },
     {
-      title: 'Home Anchor (∞)',
-      description: 'Long press the logo, hold with haptics, or zoom out fully to snap back to the Home anchor.'
+      title: 'The DreamDM Bar keeps things moving',
+      description: 'The bar is your quick way to move between conversations, spaces, tools, and the things you are currently working on.'
     },
   ];
 
   const widgetSystem = [
     {
-      title: 'Widget Rails',
-      description: 'Top, bottom, left, and right rails keep 8 widgets visible while overflow scrolls around the view.'
+      title: 'Widgets make your space yours',
+      description: 'Add useful blocks like feeds, links, media, notes, products, music, and project pieces to the surfaces you use most.'
     },
     {
-      title: 'Capacity + Layers',
-      description: 'Each surface holds up to 9 active widgets; advanced layers unlock up to 36 across depth.'
+      title: 'Engins are focused creative tools',
+      description: 'Open an Engin when you want to code, make content, build games, work on music, test ideas, or shape your brand.'
     },
     {
-      title: 'Gesture Actions',
-      description: 'Tap to preview, long press for menus, drag to reorder, pinch to resize, and throw into the feed to post.'
+      title: 'Your work can move with you',
+      description: 'A piece of work can start private, be shared with someone, or become public when you are ready.'
     },
   ];
 
   const spaces = [
-    { name: 'HomeDream', path: '/homedream', icon: Sparkles, description: 'The gravitational center with Home Dreams and instant recall.' },
-    { name: 'ViewProfile', path: '/view-profile', icon: Heart, description: 'Living dashboards that morph from Home with public permissions.' },
-    { name: 'Feed', path: '/homedream', icon: LayoutGrid, description: 'A dynamic surface for personal, social, widget, and AI-generated content.' },
-    { name: 'DreamDM', path: '/messages', icon: MessageCircle, description: 'Direct conversations and system signals layered into the plane.' },
-    { name: 'DreamMarketplace', path: '/marketplace', icon: ShoppingBag, description: 'Sell widgets, beats, workflows, and creator goods natively.' },
-    { name: 'Lab', path: '/lab', icon: Beaker, description: 'Creative computing experiments, simulations, and research tools.' },
-    { name: 'Music', path: '/daydream/music', icon: Music, description: 'Recording, sharing, and collaboration spaces for sound.' },
-    { name: 'Social Hub', path: '/discover', icon: Users, description: 'Community clusters, discovery loops, and shared spaces.' },
-    { name: 'Settings', path: '/settings', icon: Settings, description: 'System layer for privacy, security, and personalization.' },
+    { name: 'HomeDream', path: '/homedream', icon: Sparkles, description: 'Your personal home base for daily activity, saved work, and quick access.' },
+    { name: 'DreamSpace', path: '/dreamdmbar', icon: LayoutGrid, description: 'A larger creative canvas for projects, windows, tools, and shared spaces.' },
+    { name: 'DreamR', path: '/dreamr', icon: Users, description: 'The social side of DREAMengin for posts, discovery, profiles, and community.' },
+    { name: 'DreamDM', path: '/messages', icon: MessageCircle, description: 'Messages, boards, and conversations that can connect directly to your work.' },
+    { name: 'DreamMarketplace', path: '/marketplace', icon: ShoppingBag, description: 'A place to discover and offer themes, assets, services, tools, and creative goods.' },
+    { name: 'CodeEngin', path: '/engines/code', icon: Cpu, description: 'A focused space for software, automations, notebooks, and coding projects.' },
+    { name: 'StarMakerEngin', path: '/engines/music', icon: Music, description: 'A music workspace for song ideas, sound, recording, sharing, and releases.' },
+    { name: 'LabEngin', path: '/engines/lab', icon: Beaker, description: 'A playground for experiments, data, simulations, research, and discovery.' },
+    { name: 'Settings', path: '/settings', icon: Settings, description: 'Controls for privacy, security, appearance, and how your space behaves.' },
   ];
 
   return (
@@ -159,10 +159,10 @@ export default function AboutPage( ){
             }}>∞</div>
           </div>
           <h1 style={{ fontSize: 38, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 12, lineHeight: 1.15 }}>
-            Welcome to DREAMengin
+            What DREAMengin is
           </h1>
           <p style={{ fontSize: 16, color: 'rgba(165,195,235,0.65)', maxWidth: 580, margin: '0 auto', lineHeight: 1.7 }}>
-            DREAMengin is a living interface system that turns your digital life into a navigable universe. Instead of apps, you move through connected spaces that loop, morph, and return home without friction.
+            DREAMengin is a creative home for your digital life. It brings your profile, content, messages, projects, tools, shop, and community into one connected space so your ideas are not scattered everywhere.
           </p>
         </section>
 
@@ -173,10 +173,10 @@ export default function AboutPage( ){
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }} className="sm:flex-row sm:items-center sm:gap-6">
                 <div style={{ width: 80, height: 80, borderRadius: 20, flexShrink: 0, background: 'linear-gradient(135deg, rgba(42,138,184,0.14) 0%, rgba(42,138,184,0.08) 100%)', border: '1.5px solid rgba(42,138,184,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>∞</div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#38bdf8', marginBottom: 4 }}>AI Companion</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#38bdf8', marginBottom: 4 }}>Helpful Guide</div>
                   <h2 style={{ fontSize: 20, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Meet Dr. Eams</h2>
                   <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', lineHeight: 1.7 }}>
-                    Dr. Eams is your always-present AI guide inside DREAMengin. Powered by IDARi, Dr. Eams helps you navigate the spatial interface, activate widgets, draft and post content, answer questions, and translate your intent into motion — all without leaving your current dream. Think of Dr. Eams as the mind that lives at the center of your universe.
+                    Dr. Eams is the guide inside DREAMengin. You can ask for help finding something, starting a post, opening a tool, organizing an idea, or understanding what to do next. The goal is simple: less hunting around, more making.
                   </p>
                 </div>
               </div>
@@ -191,10 +191,10 @@ export default function AboutPage( ){
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }} className="sm:flex-row-reverse sm:items-center sm:gap-6">
                 <div style={{ width: 80, height: 80, borderRadius: 20, flexShrink: 0, background: 'linear-gradient(135deg, rgba(139,92,246,0.14) 0%, rgba(200,152,26,0.08) 100%)', border: '1.5px solid rgba(139,92,246,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>👾</div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8b5cf6', marginBottom: 4 }}>Safety Guardian</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8b5cf6', marginBottom: 4 }}>Safety Helper</div>
                   <h2 style={{ fontSize: 20, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Meet Boogie</h2>
                   <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', lineHeight: 1.7 }}>
-                    Boogie is the silent guardian of DREAMengin. Operating as the platform's safety and moderation layer, Boogie monitors for policy violations, harmful content, and suspicious activity — stepping in before problems reach users. Boogie doesn't interfere with your creative flow; it works in the background so your dreams stay safe, fair, and protected.
+                    Boogie helps keep the community safe. It watches for harmful behavior, spam, scams, and content that breaks the rules so people can create and connect without the space turning messy.
                   </p>
                 </div>
               </div>
@@ -209,10 +209,10 @@ export default function AboutPage( ){
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }} className="sm:flex-row sm:items-center sm:gap-6">
                 <div style={{ width: 80, height: 80, borderRadius: 20, flexShrink: 0, background: 'linear-gradient(135deg, rgba(16,185,129,0.14) 0%, rgba(200,152,26,0.08) 100%)', border: '1.5px solid rgba(16,185,129,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>🧠</div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#10b981', marginBottom: 4 }}>System Intelligence</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#10b981', marginBottom: 4 }}>Behind-the-scenes care</div>
                   <h2 style={{ fontSize: 20, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Meet IDARi</h2>
                   <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', lineHeight: 1.7 }}>
-                    IDARi is the autonomous system intelligence that keeps DREAMengin healthy and self-healing. While you dream, IDARi silently monitors performance, auto-repairs broken state, maintains widget integrity, and surfaces insights to the platform team. IDARi is the reason DREAMengin feels alive — it's the nervous system behind everything that just works.
+                    IDARi is the behind-the-scenes system that helps DREAMengin stay smooth, connected, and reliable. Most people do not need to think about it. It is there so the experience feels less like managing apps and more like moving through your own space.
                   </p>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function AboutPage( ){
 
         {/* Unified Interface Vision */}
         <section className="mb-12">
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Unified Interface &amp; Navigation Vision</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>How it feels to use</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             {navigationPrinciples.map((principle) => (
               <div key={principle.title} style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
@@ -237,7 +237,7 @@ export default function AboutPage( ){
 
         {/* Widget System */}
         <section className="mb-12">
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Widget Rails &amp; Layers</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Tools that fit your space</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             {widgetSystem.map((item) => (
               <div key={item.title} style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
@@ -252,7 +252,7 @@ export default function AboutPage( ){
 
         {/* Core Features */}
         <section className="mb-12">
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>What Makes Us Different</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>What makes DREAMengin different</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
             {features.map((feature) => (
               <div key={feature.title} style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
@@ -270,7 +270,7 @@ export default function AboutPage( ){
 
         {/* Pages Overview */}
         <section className="mb-12">
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Explore the Spaces</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Explore the main spaces</h2>
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
             <div className="de-widget-body" style={{ padding: '6px 8px' }}>
               {spaces.map((page) => (
@@ -294,17 +294,17 @@ export default function AboutPage( ){
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px 10px", borderBottom: "1px solid rgba(16,185,129,0.2)", background: 'rgba(16,185,129,0.05)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Lock className="w-4 h-4" style={{ color: '#10b981' }} />
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: '#10b981', textTransform: "uppercase" }}>Our Privacy Promise</span>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: '#10b981', textTransform: "uppercase" }}>Our privacy promise</span>
               </div>
             </div>
             <div className="de-widget-body">
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
-                  'We never sell your data to advertisers or third parties',
-                  'End-to-end encryption on all private messages',
-                  'You control who sees your content with granular privacy settings',
-                  'Delete your data anytime — we actually delete it',
-                  'No behavioral tracking or surveillance capitalism',
+                  'We do not want your private work treated like someone else\'s product',
+                  'You choose what is private, shared, or public',
+                  'Messages and personal spaces are designed to feel personal',
+                  'Your creative home should be easy to change, clean up, and grow',
+                  'The platform is built around people making things, not trapping attention',
                 ].map((item) => (
                   <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: 'rgba(200,220,255,0.82)', lineHeight: 1.5 }}>
                     <span style={{ color: '#10b981', flexShrink: 0, marginTop: 1, fontWeight: 700 }}>✓</span>
@@ -319,7 +319,7 @@ export default function AboutPage( ){
         {/* Connect Everything */}
         <section className="mb-12" style={{ textAlign: 'center' }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Connect Everything</h2>
-          <p style={{ fontSize: 13, color: 'rgba(165,195,235,0.65)', marginBottom: 20 }}>Bring all your platforms into one Dream.</p>
+          <p style={{ fontSize: 13, color: 'rgba(165,195,235,0.65)', marginBottom: 20 }}>Bring the places you already use closer to the work you are building.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12 }}>
             {[
               { name: 'instagram',  label: 'Instagram'  },
@@ -344,10 +344,10 @@ export default function AboutPage( ){
 
         {/* CTA */}
         <section style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Ready to Navigate the Dream?</h2>
-          <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', marginBottom: 24, lineHeight: 1.6 }}>Step into a universe where every gesture loops back to meaning.</p>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Ready to build your Dream?</h2>
+          <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', marginBottom: 24, lineHeight: 1.6 }}>Start with your own space, then add the people, tools, projects, and ideas that matter to you.</p>
           <Link href="/join" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 32px", borderRadius: 999, fontSize: 15, fontWeight: 700, background: "linear-gradient(135deg, #F59E0B, #D97706)", color: "#fff", boxShadow: "0 4px 20px rgba(245,158,11,0.35)", cursor: "pointer", textDecoration: "none" }}>
-            Create Your Account
+            Start building
             <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
@@ -368,7 +368,7 @@ export default function AboutPage( ){
             <PlatformBadge name="tiktok"    size={36} label="TikTok"    />
           </div>
           <p style={{ fontSize: 12, color: 'rgba(165,195,235,0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
-            Made with <Heart className="w-3 h-3" style={{ color: '#dc4444' }} /> for dreamers everywhere
+            Built with <Heart className="w-3 h-3" style={{ color: '#dc4444' }} /> for dreamers everywhere
           </p>
         </footer>
       </main>
