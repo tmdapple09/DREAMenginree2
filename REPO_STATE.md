@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T04:30:50.104Z
+Generated: 2026-06-18T07:52:07.394Z
 
 ---
 
@@ -250,7 +250,7 @@ _No style files for this feature._
 - `@/dreamdmbar/hooks/useDreamDMMessages`
 - `@/dreamdmbar/hooks/useDreamSearch`
 - `@/dreamdmbar/hooks/useMessagingCore`
-- `@/dreamdmbar/hooks/useNotifications`
+- `@/dreamdmbar/notifications/notificationHelpers`
 - `@/dreamdmbar/notifications/useNotifications`
 - `@/dreamdmbar/runtime/DreamSystemContext`
 - `@/dreamdmbar/runtime/barInteractions`
@@ -9581,9 +9581,10 @@ _No style files for this feature._
 | `@/dreamdmbar/hooks/useDreamDMMessages` | `DMMessage`, `useDreamDMMessages` |
 | `@/dreamdmbar/hooks/useDreamSearch` | `SearchResult`, `useDreamSearch` |
 | `@/dreamdmbar/hooks/useMessagingCore` | `MediaType`, `useMessagingCore` |
-| `@/dreamdmbar/hooks/useNotifications` | `useNotifications` |
+| `@/dreamdmbar/notifications/notificationHelpers` | `UiNotification` |
+| `@/dreamdmbar/notifications/useNotifications` | `useNotifications` |
 | `@/dreamdmbar/runtime/DreamSystemContext` | `BarIntentMode`, `useDreamSystem` |
-| `@/dreamdmbar/runtime/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `MOOD_AURA_GRADIENTS`, `MOOD_EDGE_COLORS`, `MoodPeriod`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `STREAK_STORAGE_KEY`, `SURFACE_ACCENT_COLORS`, `StreakData`, `StreakTier`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `getMoodPeriod`, `getStreakTier`, `resolveGoldTapAction`, `resolveStreak`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
+| `@/dreamdmbar/runtime/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `SURFACE_ACCENT_COLORS`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `resolveGoldTapAction`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
 | `@/engins/contentengin/media/ledger` | `uploadBlobToLedgerStorage` |
 | `@/engins/gameengin/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
 | `@/utils/index` | `formatRelativeTime` |
@@ -18659,7 +18660,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/contentengin/pipeline/build.ts` | 23 |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
 | `components/dream.HomeFeed.tsx` | 17 |
@@ -18698,7 +18699,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/contentengin/pipeline/build.ts` | 23 | HIGH_COUPLING |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 18 | HIGH_COUPLING |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING |
@@ -19836,6 +19837,7 @@ _No circular dependencies detected._
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `BAR_H`, `NAV_H`, `(default)` |
 | `dreamdmbar/hooks/useDreamDMDraft.ts` | `listAllDraftIds`, `cleanupStaleDrafts`, `getDraftAge` |
 | `dreamdmbar/hooks/useModuleBarIntent.ts` | `useModuleBarIntent` |
+| `dreamdmbar/hooks/useNotifications.ts` | `useNotifications` |
 | `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_WORLD_FOCUS` |
 | `dreamdmbar/runtime/barInteractions.ts` | `GOLD_SECOND_TAP_WINDOW_MS`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `MIN_POINTER_SAMPLE_DELTA_MS`, `LIGHT_POSITION_CYCLE` |
 | `dreamr/activity/aqs.ts` | `calculateAQS`, `getUserMetrics`, `getAQS`, `calculateRealShitRate`, `getAQSLeaderboard` |
@@ -20301,6 +20303,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
 │       ├── export-repo-to-artifacts.yml
+│       ├── export-src-only.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -22142,7 +22145,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ⚠ @/supabase/client/client  (createClient)
 │   │   ├── useModuleBarIntent.ts ∅
 │   │   │   └── ∅ unused: useModuleBarIntent
-│   │   └── useNotifications.ts
+│   │   └── useNotifications.ts ∅
+│   │       └── ∅ unused: useNotifications
 │   ├── notifications  [HOME — DreamDMBar]
 │   │   ├── notificationHelpers.ts
 │   │   └── useNotifications.ts

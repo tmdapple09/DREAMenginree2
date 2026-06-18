@@ -30,26 +30,17 @@ import {
     DIVIDER_H,
     DOUBLE_TAP_WINDOW_MS,
     DRAG_TAP_THRESHOLD_PX,
-    getMoodPeriod,
-    getStreakTier,
     GOLD_LONG_PRESS_MS,
-    MOOD_AURA_GRADIENTS,
-    MOOD_EDGE_COLORS,
     ORB_TAP_SLOP as ORB_TAP_SLOP_CONST,
     QUICK_REACTIONS,
     resolveGoldTapAction,
-    resolveStreak,
     rhythmToHandleScale,
     shouldCollapseTopExpandedDrag,
     snapSplitRatioOnRelease,
     SPLIT_RATIO_MAX,
     SPLIT_RATIO_MIN,
-    STREAK_STORAGE_KEY,
     SURFACE_ACCENT_COLORS,
-    type MoodPeriod,
     type Particle,
-    type StreakData,
-    type StreakTier,
     type SurfaceAccent
 } from '@/dreamdmbar/runtime/barInteractions';
 import { useDreamSystem, type BarIntentMode } from '@/dreamdmbar/runtime/DreamSystemContext';
@@ -63,7 +54,8 @@ import type { DMMessage } from '@/dreamdmbar/hooks/useDreamDMMessages';
 import { useDreamDMMessages } from '@/dreamdmbar/hooks/useDreamDMMessages';
 import { useDreamSearch, type SearchResult } from '@/dreamdmbar/hooks/useDreamSearch';
 import { useMessagingCore, type MediaType } from '@/dreamdmbar/hooks/useMessagingCore';
-import { useNotifications } from '@/dreamdmbar/hooks/useNotifications';
+import { useNotifications as useLiveNotifications } from '@/dreamdmbar/notifications/useNotifications';
+import type { UiNotification } from '@/dreamdmbar/notifications/notificationHelpers';
 import { useImmersiveGameLayout } from '@/engins/gameengin/games/useImmersiveGameLayout';
 import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
 import { getPreferredViewportHeight, isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
@@ -161,46 +153,6 @@ function ContextIcon({ ctx, size }: {ctx: DreamBarContext; size: number}) {
     case 'sparkles':
     default:               return <Sparkles      {...props} />;
   }
-}
-
-// StreakFlame — renders the dream streak flame icon with tier-appropriate style
-function StreakFlame({ count, tier }: {count: number; tier: StreakTier}) {
-  if (tier === 'none') return null;
-  const colors: Record<StreakTier, string> = {
-    none: 'transparent',
-    ember: '#ff9800',
-    fire: '#ff5722',
-    inferno: 'linear-gradient(135deg, #ff5722, #e91e63, #9c27b0, #2196f3)',
-    legend: 'linear-gradient(135deg, #ffd700, #ff8c00, #ff5722, #e91e63, #9c27b0)',
-  };
-  const isGradient = tier === 'inferno' || tier === 'legend';
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
-      <span
-        className="sicc-flame"
-        style={{
-          display: 'inline-flex', fontSize: 14, lineHeight: 1,
-          filter: tier === 'legend' ? 'drop-shadow(0 0 6px rgba(255,215,0,0.7))' : tier === 'inferno' ? 'drop-shadow(0 0 4px rgba(233,30,99,0.5))' : 'none',
-        }}
-        aria-hidden
-      >
-        🔥
-      </span>
-      <span style={{
-        fontSize: 10, fontWeight: 800, lineHeight: 1,
-        ...(isGradient ? {
-          background: colors[tier],
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        } : {
-          color: colors[tier],
-        }),
-      }}>
-        {count}
-      </span>
-    </div>
-  );
 }
 
 // ParticleFountain — renders animated particles from Gold Particle long-press
@@ -379,14 +331,6 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     barTouchTimerRef.current = setTimeout(() => { setBarTouched(false); }, 3000);
   }, []);
 
-  const [moodPeriod, setMoodPeriod] = useState<MoodPeriod>(() => getMoodPeriod(new Date().getHours()));
-  useEffect(() => {
-    const updateMood = () => setMoodPeriod(getMoodPeriod(new Date().getHours()));
-    // Check every 5 minutes for time-of-day shift
-    const interval = setInterval(updateMood, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const keystrokeTimesRef = useRef<number[]>([]);
   const [typingRhythm, setTypingRhythm] = useState(0);
 
@@ -411,20 +355,6 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     }, 300);
     return () => clearInterval(decay);
   }, [typingRhythm]);
-
-  const [streakData, setStreakData] = useState<StreakData>({ count: 0, lastActiveDate: '' });
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STREAK_STORAGE_KEY);
-      const stored: StreakData | null = raw ? JSON.parse(raw) : null;
-      const updated = resolveStreak(stored);
-      setStreakData(updated);
-      localStorage.setItem(STREAK_STORAGE_KEY, JSON.stringify(updated));
-    } catch {
-      // Ignore localStorage errors
-    }
-  }, []);
-  const streakTier = getStreakTier(streakData.count);
 
   const [particles, setParticles] = useState<Particle[]>([]);
 
@@ -964,7 +894,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   }, [dividerModeActive, expandTapCount, openDrEams, openDreamDMInput, revealBar]);
 
   const { conversations, reload: reloadConvs } = useDreamDMConversations(userId);
-  const { unreadCount, markAllRead }            = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useLiveNotifications();
+  const markAllRead = useCallback(() => {
+    void markAllAsRead();
+  }, [markAllAsRead]);
 
   const { messages, isLoading: msgsLoading, addOptimistic, replaceOptimistic, removeOptimistic } =
     useDreamDMMessages(selectedConv?.id ?? null, false, []);
@@ -1587,8 +1520,6 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     ? -keyboardOffsetPx
     : 0;
 
-  const moodAuraGradient = MOOD_AURA_GRADIENTS[moodPeriod];
-  const moodEdgeColor = MOOD_EDGE_COLORS[moodPeriod];
   const surfaceAccent = SURFACE_ACCENT_COLORS[(barCtx.surface as SurfaceAccent)] ?? SURFACE_ACCENT_COLORS.general;
   const handleScale = rhythmToHandleScale(typingRhythm);
 
@@ -2040,25 +1971,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               ? 'sicc-bar-particle-glow 1.0s ease-in-out infinite'
               : 'none',
             cursor: isParticleMode ? 'grabbing' : (isSeamMode ? 'ns-resize' : 'default'),
-            // Mood-responsive edge glow — picked up by sicc-bar-edge::before gradient
-            '--de-mood-edge': moodEdgeColor,
           } as React.CSSProperties;
         })()}
       >
-        {/* ── 🌈 Mood Aura overlay — ambient glow shifts with time-of-day + surface ── */}
-        {!isResting && !isSeamMode && !isParticleMode && (
-          <div
-            className="sicc-mood-aura"
-            aria-hidden
-            style={{
-              position: 'absolute', inset: 0, zIndex: 0,
-              background: moodAuraGradient,
-              pointerEvents: 'none',
-              borderRadius: 'inherit',
-              mixBlendMode: 'soft-light',
-            }}
-          />
-        )}
         {!isResting && !isSeamMode && !isParticleMode && (
           <div
             aria-hidden
@@ -2346,10 +2261,12 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   )}
                 </div>
 
-                {/* 🔥 Dream Streak counter */}
-                {streakData.count > 0 && (
-                  <StreakFlame count={streakData.count} tier={streakTier} />
-                )}
+                <CompactNotificationStrip
+                  notifications={notifications}
+                  unreadCount={unreadCount}
+                  onRead={(id) => { void markAsRead(id); }}
+                  compact={isCompactViewport}
+                />
 
                 {/* Comment mode indicator */}
                 {barIntent.mode === 'comment' && (
@@ -2749,6 +2666,114 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     </>
   );
 }
+// ─────────────────────────────────────────────────────────────────────────────
+// CompactNotificationStrip — live notification previews for the compact bar.
+
+function CompactNotificationStrip({
+  notifications,
+  unreadCount,
+  onRead,
+  compact,
+}: {
+  notifications: UiNotification[];
+  unreadCount: number;
+  onRead: (id: string) => void;
+  compact: boolean;
+}) {
+  const visibleNotifications = notifications.slice(0, compact ? 1 : 2);
+  if (visibleNotifications.length === 0) {
+    return (
+      <div
+        aria-label="No new notifications"
+        style={{
+          flexShrink: 1,
+          minWidth: 0,
+          maxWidth: compact ? 82 : 118,
+          borderRadius: 999,
+          padding: compact ? '3px 7px' : '3px 8px',
+          background: 'rgba(42,138,184,0.08)',
+          border: '1px solid rgba(42,138,184,0.14)',
+          color: 'var(--de-text-dim)',
+          fontSize: compact ? 9 : 10,
+          fontWeight: 700,
+          lineHeight: 1,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+      >
+        All clear
+      </div>
+    );
+  }
+
+  return (
+    <div
+      aria-label={`${unreadCount} unread notification${unreadCount === 1 ? '' : 's'}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        flexShrink: 1,
+        minWidth: 0,
+        maxWidth: compact ? 118 : 220,
+        overflow: 'hidden',
+      }}
+    >
+      {visibleNotifications.map((notification) => {
+        const isUnread = !notification.read;
+        return (
+          <button
+            key={notification.id}
+            type="button"
+            aria-label={`${notification.title}: ${notification.message}`}
+            title={`${notification.title}: ${notification.message}`}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={() => {
+              onRead(notification.id);
+              if (notification.actionUrl) {
+                window.location.href = notification.actionUrl;
+              }
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              minWidth: 0,
+              maxWidth: compact ? 112 : 104,
+              border: isUnread ? '1px solid rgba(200,152,26,0.28)' : '1px solid rgba(180,185,200,0.18)',
+              borderRadius: 999,
+              background: isUnread ? 'rgba(200,152,26,0.12)' : 'rgba(255,255,255,0.42)',
+              color: isUnread ? 'var(--de-heading)' : 'var(--de-text-dim)',
+              padding: compact ? '3px 7px' : '3px 8px',
+              cursor: notification.actionUrl ? 'pointer' : 'default',
+              fontSize: compact ? 9 : 10,
+              fontWeight: 700,
+              lineHeight: 1,
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            <span
+              aria-hidden
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                flexShrink: 0,
+                background: isUnread ? 'var(--de-gold)' : 'rgba(180,185,200,0.55)',
+                boxShadow: isUnread ? '0 0 6px rgba(200,152,26,0.52)' : 'none',
+              }}
+            />
+            <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {notification.message}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ModeButton — compact pill for switching bar intent mode
 
