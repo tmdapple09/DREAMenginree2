@@ -63,6 +63,17 @@ const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
 /** Cap sampled FPS before forwarding optional internal diagnostics. */
 const MAX_DISPLAY_FPS = 999;
 
+const FRAME_SAMPLE_CAPACITY = 120;
+
+function appendFrameSample(samples: number[], value: number, cursorRef: { current: number }): void {
+  if (samples.length < FRAME_SAMPLE_CAPACITY) {
+    samples.push(value);
+    return;
+  }
+  samples[cursorRef.current] = value;
+  cursorRef.current = (cursorRef.current + 1) % FRAME_SAMPLE_CAPACITY;
+}
+
 // Imports and external modules this runtime file depends on.
 
 // Top-level runtime registration and connection seams.
@@ -101,6 +112,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
   const lastTimeRef        = useRef(0);
   const elapsedRef         = useRef(0);
   const frameTimesRef      = useRef<number[]>([]);
+  const frameSampleCursorRef = useRef(0);
   const fpsIntervalRef     = useRef(0);
   const cleanupRef         = useRef<(() => void) | null>(null);
   const mountedCartridgeRef = useRef<GameCartridge | null>(null);
@@ -235,10 +247,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       telemetry: {
         reportFrame(dtMs) {
           recordEmission('games', dtMs);
-          frameTimesRef.current.push(dtMs);
-          if (frameTimesRef.current.length > 120) {
-            frameTimesRef.current.shift();
-          }
+          appendFrameSample(frameTimesRef.current, dtMs, frameSampleCursorRef);
         },
       },
 
@@ -371,6 +380,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     accumulatorRef.current = 0;
     elapsedRef.current   = 0;
     frameTimesRef.current = [];
+    frameSampleCursorRef.current = 0;
 
     const loop = (now: number) => {
       if (lastTimeRef.current === 0) {
@@ -411,8 +421,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       }
 
       const frameMs = performance.now() - frameStart;
-      frameTimesRef.current.push(frameMs);
-      if (frameTimesRef.current.length > 120) frameTimesRef.current.shift();
+      appendFrameSample(frameTimesRef.current, frameMs, frameSampleCursorRef);
 
       rafIdRef.current = requestAnimationFrame(loop);
     };

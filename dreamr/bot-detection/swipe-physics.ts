@@ -82,9 +82,13 @@ export function perpendicularDeviation(path: Path): number {
   if (path.length < 3) return 0;
   const { dx, dy, len } = lineDirection(path);
   const p0 = path[0];
-  const inner = path.slice(1, -1);
-  const deviations = inner.map((p) => perpDist(p, p0, dx, dy, len));
-  return deviations.reduce((s, d) => s + d, 0) / deviations.length;
+  let total = 0;
+  let count = 0;
+  for (let i = 1; i < path.length - 1; i++) {
+    total += perpDist(path[i], p0, dx, dy, len);
+    count += 1;
+  }
+  return count > 0 ? total / count : 0;
 }
 
 /**
@@ -148,12 +152,17 @@ export function deviationEntropy(path: Path): number {
   if (path.length < 3) return 0;
 
   const { dx, dy, len } = lineDirection(path);
-  const p0   = path[0];
-  const devs = path.slice(1, -1).map((p) => perpDist(p, p0, dx, dy, len));
+  const p0 = path[0];
+  const devs: number[] = [];
+  let maxDev = 1e-6;
+  for (let i = 1; i < path.length - 1; i++) {
+    const deviation = perpDist(path[i], p0, dx, dy, len);
+    devs.push(deviation);
+    if (deviation > maxDev) maxDev = deviation;
+  }
   if (devs.length === 0) return 0;
 
   const N_BINS = 10;
-  const maxDev = Math.max(...devs, 1e-6);
   const counts = new Array<number>(N_BINS).fill(0);
   for (const d of devs) {
     const bin = Math.min(N_BINS - 1, Math.floor((d / maxDev) * N_BINS));

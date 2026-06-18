@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-16T00:38:57.655Z
+Generated: 2026-06-18T02:52:14.385Z
 
 ---
 
@@ -13483,10 +13483,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
-| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
-| `node:url` | `fileURLToPath` |
-| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
+| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
+| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync` |
+| `node:path` | `join`, `relative`, `resolve` |
 
 ## `scripts/generate-repo-state.mjs`
 
@@ -13519,8 +13518,10 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
-| `node:path` | `resolve` |
+| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
+| `node:url` | `fileURLToPath` |
+| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
 
 ## `scripts/update-bugs.mjs`
 
@@ -18351,9 +18352,9 @@ _No style files for this feature._
 - `engins/portfolio/dream.PortfolioEngin.tsx`
 - `engins/rulesets/useEnginWorkflow.ts`
 - `readme-autosync.ts`
-- `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
+- `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
 - `src/engin/generated/osArchitectureMap.ts`
 - `src/engin/generated/surfaces.ts`
@@ -18508,7 +18509,6 @@ _No style files for this feature._
 - `engins/engin.GameEngin.tsx`
 - `engins/engin.LabEngin.tsx`
 - `engins/engin.StarMakerEngin.tsx`
-- `engins/forgeengin/enginpipe/telemetry/client.ts`
 - `engins/gameengin/controls/control-mappings.ts`
 - `engins/gameengin/dream-engine.ts`
 - `hooks/use-spatial.ts`
@@ -18635,8 +18635,8 @@ _No style files for this feature._
 - `engins/gameengin/GameEnginCore.ts`
 - `engins/gameengin/registerCartridges.ts`
 - `readme-autosync.ts`
-- `scripts/generate-readme.ts`
 - `scripts/generate-repo-state.mjs`
+- `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
 - `src/engin/generated/osArchitectureMap.ts`
 
@@ -18912,6 +18912,7 @@ _No circular dependencies detected._
 | `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/modular-os-stores.test.ts` | 5 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/performance-hot-paths.test.ts` | 5 | EVENT_BUS |
 | `components/daydream/dream.CodeDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.MadMaxiWildfall.tsx` | 4 | EVENT_BUS |
@@ -18930,7 +18931,7 @@ _No circular dependencies detected._
 | `engins/rulesets/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
 | `readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `scripts/generate-readme.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `scripts/readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-asset-pipeline.test.ts` | 4 | RUNTIME_REGISTRY |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
@@ -20120,7 +20121,6 @@ _No circular dependencies detected._
 | `engins/gameengin/unifiedLoop.ts` | `activeGameCount`, `isLoopRunning`, `_resetLoop` |
 | `engins/gameengin/useUnifiedLoop.ts` | `useUnifiedLoop` |
 | `engins/gameengin/webgpu-runtime-shell.ts` | `canUseWebGPU`, `planRuntimeShellHandoff` |
-| `engins/gameengin/world-crdt.ts` | `EventualConsistencyBridge` |
 | `engins/isosurfaceAssetPipeline.ts` | `buildInflatedReliefMesh`, `cloneMesh`, `computeVertexNormals`, `computePlanarUVs`, `estimateMeshBytes`, `compactMesh`, `weldVertices`, `repairMesh`, `centerAndScaleMesh`, `buildVertexAdjacency`, `validateMesh` |
 | `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `normalizeDualContouringSettings`, `classifyMobileIsoSurfaceTier`, `estimateIsoSurfaceMemoryBytes`, `validateMesh`, `createIsoSurfaceJob` |
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
@@ -20163,10 +20163,9 @@ _No circular dependencies detected._
 | `readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected` |
 | `scripts/export-full-code.mjs` | `DEFAULT_EXCLUDED_DIRS`, `DEFAULT_EXCLUDED_BASENAMES`, `isProbablyTextBuffer`, `hasPrintableContent`, `collectExportableFiles`, `exportFullCodeSnapshot` |
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
-| `scripts/generate-readme.ts` | `SECTION_REGISTRY`, `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected`, `runReadmeAutosync` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
-| `scripts/readme-autosync.ts` | `SECTION_REGISTRY`, `upsertSubsectionInSection` |
+| `scripts/readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `upsertSubsectionInSection` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
@@ -23161,8 +23160,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: useUnifiedLoop
 │   │   ├── webgpu-runtime-shell.ts ∅
 │   │   │   └── ∅ unused: canUseWebGPU, planRuntimeShellHandoff
-│   │   ├── world-crdt.ts ∅
-│   │   │   └── ∅ unused: EventualConsistencyBridge
+│   │   ├── world-crdt.ts
 │   │   └── xr.ts
 │   ├── labengin
 │   │   └── implicitSurface.ts ∅
@@ -23434,8 +23432,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── fix-audit.js
 │   ├── generate-mobile-nextgen-spec.mjs
 │   ├── generate-mobile-ps5-spec.mjs
-│   ├── generate-readme.ts ∅
-│   │   └── ∅ unused: SECTION_REGISTRY, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected, runReadmeAutosync
+│   ├── generate-readme.ts
 │   ├── generate-repo-state.mjs ∅
 │   │   └── ∅ unused: ..., Foo, Baz, (default)
 │   ├── generate-webapp-final-form.mjs ∅
@@ -23447,7 +23444,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.ts ⚠
 │   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
 │   ├── readme-autosync.ts ∅
-│   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
+│   │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql
@@ -23687,6 +23684,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── orphan-wire-script.test.ts
 │   ├── os-subsystem-manifest.test.ts
 │   ├── page-surface-wiring.test.ts
+│   ├── performance-hot-paths.test.ts
 │   ├── phase6-privacy-idari.test.ts
 │   ├── phase7-naming.test.ts
 │   ├── phase8a.test.ts

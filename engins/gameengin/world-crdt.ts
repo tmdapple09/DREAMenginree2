@@ -120,6 +120,8 @@ export interface BridgeConfig {
   maxInflightBytes?: number;
   /** Send batch every N ms. */
   flushIntervalMs?: number;
+  /** Hard queue cap; oldest pending records are compacted when exceeded. */
+  maxQueuedRecords?: number;
 }
 
 /**
@@ -132,6 +134,7 @@ export class EventualConsistencyBridge<T> {
   private readonly transport: BridgeTransport<T>;
   private readonly maxInflight: number;
   private readonly flushIntervalMs: number;
+  private readonly maxQueuedRecords: number;
   private include: (rec: CRDTRecord<T>) => boolean = () => true;
   private outbox: CRDTRecord<T>[] = [];
   private inflightBytes = 0;
@@ -144,6 +147,7 @@ export class EventualConsistencyBridge<T> {
     this.transport = transport;
     this.maxInflight = Math.max(1024, config.maxInflightBytes ?? 64 * 1024);
     this.flushIntervalMs = Math.max(16, config.flushIntervalMs ?? 100);
+    this.maxQueuedRecords = Math.max(1, config.maxQueuedRecords ?? 512);
   }
 
   setInclusionPredicate(pred: (rec: CRDTRecord<T>) => boolean): void { this.include = pred; }
@@ -168,6 +172,11 @@ export class EventualConsistencyBridge<T> {
       this.dropped += 1;
       return;
     }
+    if (this.outbox.length >= this.maxQueuedRecords) {
+      const dropped = this.outbox.splice(0, this.outbox.length - this.maxQueuedRecords + 1);
+      for (const rec of dropped) this.inflightBytes -= this.estimateBytes(rec);
+      this.dropped += dropped.length;
+    }
     this.outbox.push(record);
     this.inflightBytes += size;
   }
@@ -181,15 +190,33 @@ export class EventualConsistencyBridge<T> {
     try {
       await this.transport.send(batch);
     } catch {
-      // Re-queue on failure (best-effort).
-      this.outbox.unshift(...batch);
-      this.inflightBytes += bytes;
+      // Preserve transport order: failed records remain ahead of newer records.
+      this.outbox = this.capQueuedRecords(batch.concat(this.outbox));
+      this.inflightBytes = this.sumEstimatedBytes(this.outbox);
     }
   }
 
+  private capQueuedRecords(records: CRDTRecord<T>[]): CRDTRecord<T>[] {
+    if (records.length <= this.maxQueuedRecords) return records;
+    const dropCount = records.length - this.maxQueuedRecords;
+    this.dropped += dropCount;
+    return records.slice(dropCount);
+  }
+
+  private sumEstimatedBytes(records: CRDTRecord<T>[]): number {
+    let total = 0;
+    for (const rec of records) total += this.estimateBytes(rec);
+    return total;
+  }
+
   private estimateBytes(rec: CRDTRecord<T>): number {
-    try { return JSON.stringify(rec).length; }
-    catch { return 256; }
+    const value = rec.value;
+    const valueHint = typeof value === 'string'
+      ? value.length
+      : typeof value === 'number' || typeof value === 'boolean'
+        ? 16
+        : 128;
+    return rec.id.length + rec.ts.replica.length + valueHint + 48;
   }
 
   get droppedCount(): number { return this.dropped; }

@@ -2,10 +2,9 @@
  * lib/vm/inter-vm-messaging.ts — SharedArrayBuffer-backed inter-VM message queue
  *
  * InterVMChannel: lock-free ring-buffer for passing VMEvent messages
- * between TOO_VM and BOTTOM_VM without allocating on the hot path.
- *
- * Falls back to a regular ArrayBuffer when SharedArrayBuffer is unavailable
- * (cross-origin isolated pages not required in single-threaded mode).
+ * between TOO_VM and BOTTOM_VM with demand-driven draining. Fixed-shape runtime
+ * events use a compact binary slot; open-ended custom/stats events fall back to
+ * JSON in the same transport slot so behavior remains ruleset-owned.
  */
 
 export type VMEvent =
@@ -15,137 +14,180 @@ export type VMEvent =
   | { type: 'stats-update';       region: 'top' | 'bottom'; stats: Record<string, unknown>; timestamp: number }
   | { type: 'custom';             name: string; payload: unknown; timestamp: number };
 
-//
-// [0..3]    producer index (Int32, atomic)
-// [4..7]    consumer index (Int32, atomic)
-// [8..]     N slots of SLOT_BYTES each
-//            slot[0..3]      = payload length (uint32, LE)
-//            slot[4..SLOT-1] = UTF-8 encoded JSON
+const HEADER_BYTES = 8;
+const SLOT_BYTES = 512;
+const DEFAULT_SLOTS = 64;
+const SLOT_META_BYTES = 4;
+const BINARY_STRING_BYTES = 220;
 
-const HEADER_BYTES   = 8;
-const SLOT_BYTES     = 512;  // max JSON message size
-const DEFAULT_SLOTS  = 64;
+const enum WireKind {
+  Json = 0,
+  WorkloadSubmitted = 1,
+  ComputeComplete = 2,
+  Error = 3,
+}
+
+const enum RegionCode {
+  Top = 1,
+  Bottom = 2,
+}
+
+function encodeRegion(region: 'top' | 'bottom'): RegionCode {
+  return region === 'top' ? RegionCode.Top : RegionCode.Bottom;
+}
+
+function decodeRegion(region: number): 'top' | 'bottom' {
+  return region === RegionCode.Top ? 'top' : 'bottom';
+}
 
 export class InterVMChannel {
-  private readonly buf:          SharedArrayBuffer | ArrayBuffer;
-  private readonly view:         DataView;
-  private readonly producerIdx:  Int32Array;
-  private readonly consumerIdx:  Int32Array;
-  private readonly capacity:     number;
-  private readonly encoder:      TextEncoder;
-  private readonly decoder:      TextDecoder;
+  private readonly buf: SharedArrayBuffer | ArrayBuffer;
+  private readonly view: DataView;
+  private readonly producerIdx: Int32Array;
+  private readonly consumerIdx: Int32Array;
+  private readonly capacity: number;
+  private readonly encoder = new TextEncoder();
+  private readonly decoder = new TextDecoder();
   private readonly subscribers = new Set<(msg: VMEvent) => void>();
-  private _pollHandle:           ReturnType<typeof setInterval> | null = null;
+  private drainScheduled = false;
 
   constructor(capacity = DEFAULT_SLOTS) {
     this.capacity = capacity;
-    this.encoder  = new TextEncoder();
-    this.decoder  = new TextDecoder();
-
     const totalBytes = HEADER_BYTES + capacity * SLOT_BYTES;
-
-    if (typeof SharedArrayBuffer !== 'undefined') {
-      this.buf = new SharedArrayBuffer(totalBytes);
-    } else {
-      this.buf = new ArrayBuffer(totalBytes);
-    }
-
-    this.view        = new DataView(this.buf);
+    this.buf = typeof SharedArrayBuffer !== 'undefined' ? new SharedArrayBuffer(totalBytes) : new ArrayBuffer(totalBytes);
+    this.view = new DataView(this.buf);
     this.producerIdx = new Int32Array(this.buf, 0, 1);
     this.consumerIdx = new Int32Array(this.buf, 4, 1);
   }
 
-  /**
-   * Enqueue a VMEvent.
-   * Returns false if the queue is full or the message is too large.
-   */
   send(msg: VMEvent): boolean {
-    const json    = JSON.stringify(msg);
-    const encoded = this.encoder.encode(json);
-
-    if (encoded.length + 4 > SLOT_BYTES) {
-      console.warn('[InterVMChannel] Message too large to enqueue:', encoded.length);
-      return false;
-    }
-
     const prod = Atomics.load(this.producerIdx, 0);
     const cons = Atomics.load(this.consumerIdx, 0);
     const used = (prod - cons + this.capacity) % this.capacity;
+    if (used >= this.capacity - 1) return false;
 
-    if (used >= this.capacity - 1) return false; // Full
-
-    const slot   = prod % this.capacity;
+    const slot = prod % this.capacity;
     const offset = HEADER_BYTES + slot * SLOT_BYTES;
+    if (!this.writeSlot(offset, msg)) return false;
 
-    this.view.setUint32(offset, encoded.length, true);
-    new Uint8Array(this.buf, offset + 4, encoded.length).set(encoded);
-
-    Atomics.add(this.producerIdx, 0, 1);
-
-    // Notify subscribers asynchronously
-    Promise.resolve().then(() => this._drain());
-
+    Atomics.store(this.producerIdx, 0, prod + 1);
+    this.scheduleDrain();
     return true;
   }
 
-  /**
-   * Dequeue one VMEvent. Returns null if the queue is empty.
-   */
   recv(): VMEvent | null {
     const prod = Atomics.load(this.producerIdx, 0);
     const cons = Atomics.load(this.consumerIdx, 0);
-
     if (prod === cons) return null;
 
-    const slot   = cons % this.capacity;
+    const slot = cons % this.capacity;
     const offset = HEADER_BYTES + slot * SLOT_BYTES;
-    const len    = this.view.getUint32(offset, true);
+    const len = this.view.getUint16(offset, true);
+    const kind = this.view.getUint8(offset + 2);
 
-    Atomics.add(this.consumerIdx, 0, 1);
+    Atomics.store(this.consumerIdx, 0, cons + 1);
+    if (len === 0 || len + SLOT_META_BYTES > SLOT_BYTES) return null;
 
-    if (len === 0 || len + 4 > SLOT_BYTES) return null;
-
-    const raw  = new Uint8Array(this.buf, offset + 4, len);
-    const json = this.decoder.decode(raw);
-
-    try {
-      return JSON.parse(json) as VMEvent;
-    } catch {
-      return null;
-    }
+    return this.readSlot(offset, kind, len);
   }
 
-  /**
-   * Register a callback to receive VMEvents as they arrive.
-   * Returns an unsubscribe function.
-   */
   subscribe(cb: (msg: VMEvent) => void): () => void {
     this.subscribers.add(cb);
-    if (this.subscribers.size === 1) this._startPoll();
+    this.scheduleDrain();
     return () => {
       this.subscribers.delete(cb);
-      if (this.subscribers.size === 0) this._stopPoll();
     };
   }
 
   destroy(): void {
-    this._stopPoll();
     this.subscribers.clear();
+    this.drainScheduled = false;
   }
 
-  private _startPoll(): void {
-    if (this._pollHandle) return;
-    this._pollHandle = setInterval(() => this._drain(), 16);
-  }
+  private writeSlot(offset: number, msg: VMEvent): boolean {
+    const binary = this.tryWriteBinary(offset, msg);
+    if (binary) return true;
 
-  private _stopPoll(): void {
-    if (this._pollHandle !== null) {
-      clearInterval(this._pollHandle);
-      this._pollHandle = null;
+    const encoded = this.encoder.encode(JSON.stringify(msg));
+    if (encoded.length + SLOT_META_BYTES > SLOT_BYTES) {
+      console.warn('[InterVMChannel] Message too large to enqueue:', encoded.length);
+      return false;
     }
+    this.view.setUint16(offset, encoded.length, true);
+    this.view.setUint8(offset + 2, WireKind.Json);
+    new Uint8Array(this.buf, offset + SLOT_META_BYTES, encoded.length).set(encoded);
+    return true;
   }
 
-  private _drain(): void {
+  private tryWriteBinary(offset: number, msg: VMEvent): boolean {
+    if (msg.type !== 'workload-submitted' && msg.type !== 'compute-complete' && msg.type !== 'error') return false;
+
+    const primary = msg.type === 'error' ? (msg.workloadId ?? '') : msg.workloadId;
+    const primaryBytes = this.encoder.encode(primary);
+    const secondaryBytes = msg.type === 'error' ? this.encoder.encode(msg.error) : new Uint8Array(0);
+    if (primaryBytes.length > BINARY_STRING_BYTES || secondaryBytes.length > BINARY_STRING_BYTES) return false;
+
+    const len = 20 + primaryBytes.length + secondaryBytes.length;
+    if (len + SLOT_META_BYTES > SLOT_BYTES) return false;
+
+    const kind = msg.type === 'workload-submitted'
+      ? WireKind.WorkloadSubmitted
+      : msg.type === 'compute-complete'
+        ? WireKind.ComputeComplete
+        : WireKind.Error;
+
+    this.view.setUint16(offset, len, true);
+    this.view.setUint8(offset + 2, kind);
+    this.view.setUint8(offset + 3, encodeRegion(msg.region));
+    this.view.setFloat64(offset + 4, msg.timestamp, true);
+    this.view.setFloat32(offset + 12, msg.type === 'compute-complete' ? msg.durationMs : 0, true);
+    this.view.setUint16(offset + 16, primaryBytes.length, true);
+    this.view.setUint16(offset + 18, secondaryBytes.length, true);
+    const payload = new Uint8Array(this.buf, offset + 20, primaryBytes.length + secondaryBytes.length);
+    payload.set(primaryBytes);
+    payload.set(secondaryBytes, primaryBytes.length);
+    return true;
+  }
+
+  private readSlot(offset: number, kind: number, len: number): VMEvent | null {
+    if (kind === WireKind.Json) {
+      try {
+        const raw = new Uint8Array(this.buf, offset + SLOT_META_BYTES, len);
+        return JSON.parse(this.decoder.decode(raw)) as VMEvent;
+      } catch {
+        return null;
+      }
+    }
+
+    const region = decodeRegion(this.view.getUint8(offset + 3));
+    const timestamp = this.view.getFloat64(offset + 4, true);
+    const durationMs = this.view.getFloat32(offset + 12, true);
+    const primaryLength = this.view.getUint16(offset + 16, true);
+    const secondaryLength = this.view.getUint16(offset + 18, true);
+    if (20 + primaryLength + secondaryLength !== len) return null;
+
+    const payloadOffset = offset + 20;
+    const primary = this.decoder.decode(new Uint8Array(this.buf, payloadOffset, primaryLength));
+    const secondary = secondaryLength > 0
+      ? this.decoder.decode(new Uint8Array(this.buf, payloadOffset + primaryLength, secondaryLength))
+      : '';
+
+    if (kind === WireKind.WorkloadSubmitted) return { type: 'workload-submitted', workloadId: primary, region, timestamp };
+    if (kind === WireKind.ComputeComplete) return { type: 'compute-complete', workloadId: primary, region, durationMs, timestamp };
+    if (kind === WireKind.Error) return { type: 'error', workloadId: primary || undefined, region, error: secondary, timestamp };
+    return null;
+  }
+
+  private scheduleDrain(): void {
+    if (this.drainScheduled || this.subscribers.size === 0) return;
+    this.drainScheduled = true;
+    queueMicrotask(() => {
+      this.drainScheduled = false;
+      this.drain();
+    });
+  }
+
+  private drain(): void {
     let msg: VMEvent | null;
     while ((msg = this.recv()) !== null) {
       for (const cb of this.subscribers) {

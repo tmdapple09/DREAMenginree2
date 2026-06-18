@@ -88,8 +88,10 @@ export class WaveFunctionCollapse {
 
   private propagate(start: number): boolean {
     const queue = [start];
-    while (queue.length > 0) {
-      const i = queue.shift() as number;
+    let cursor = 0;
+    while (cursor < queue.length) {
+      const i = queue[cursor];
+      cursor += 1;
       const x = i % this.width;
       const y = Math.floor(i / this.width);
       const neighbours: Array<[number, number, number, number]> = [
@@ -197,6 +199,11 @@ export interface ChunkJob {
   run(): Promise<void>;
 }
 
+interface ScheduledChunkJob {
+  job: ChunkJob;
+  sequence: number;
+}
+
 export interface SchedulerConfig {
   /** Max ms of work per scheduling tick (frame budget for procgen). */
   budgetPerTickMs?: number;
@@ -211,7 +218,8 @@ export interface SchedulerConfig {
 export class ChunkScheduler {
   private readonly budget: number;
   private readonly maxConcurrent: number;
-  private queue: ChunkJob[] = [];
+  private heap: ScheduledChunkJob[] = [];
+  private nextSequence = 0;
   private inFlight = 0;
   private completed = 0;
 
@@ -221,16 +229,17 @@ export class ChunkScheduler {
   }
 
   enqueue(job: ChunkJob): void {
-    this.queue.push(job);
-    this.queue.sort((a, b) => b.priority - a.priority);
+    this.heap.push({ job, sequence: this.nextSequence });
+    this.nextSequence += 1;
+    this.bubbleUp(this.heap.length - 1);
   }
 
   /** Drain jobs up to the per-tick budget. */
   async tick(): Promise<number> {
     let spent = 0;
     let started = 0;
-    while (this.queue.length > 0 && spent + this.queue[0].estimatedCostMs <= this.budget && this.inFlight < this.maxConcurrent) {
-      const job = this.queue.shift() as ChunkJob;
+    while (this.heap.length > 0 && spent + this.heap[0].job.estimatedCostMs <= this.budget && this.inFlight < this.maxConcurrent) {
+      const job = this.popNext() as ChunkJob;
       spent += job.estimatedCostMs;
       this.inFlight += 1;
       started += 1;
@@ -242,9 +251,47 @@ export class ChunkScheduler {
     return started;
   }
 
-  get pending(): number { return this.queue.length; }
+  get pending(): number { return this.heap.length; }
   get active(): number { return this.inFlight; }
   get totalCompleted(): number { return this.completed; }
+
+  private popNext(): ChunkJob | undefined {
+    if (this.heap.length === 0) return undefined;
+    const top = this.heap[0];
+    const tail = this.heap.pop();
+    if (tail && this.heap.length > 0) {
+      this.heap[0] = tail;
+      this.bubbleDown(0);
+    }
+    return top.job;
+  }
+
+  private hasHigherPriority(a: ScheduledChunkJob, b: ScheduledChunkJob): boolean {
+    if (a.job.priority !== b.job.priority) return a.job.priority > b.job.priority;
+    return a.sequence < b.sequence;
+  }
+
+  private bubbleUp(index: number): void {
+    while (index > 0) {
+      const parent = Math.floor((index - 1) / 2);
+      if (!this.hasHigherPriority(this.heap[index], this.heap[parent])) return;
+      [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]];
+      index = parent;
+    }
+  }
+
+  private bubbleDown(index: number): void {
+    while (true) {
+      const left = index * 2 + 1;
+      const right = left + 1;
+      let best = index;
+      if (left < this.heap.length && this.hasHigherPriority(this.heap[left], this.heap[best])) best = left;
+      if (right < this.heap.length && this.hasHigherPriority(this.heap[right], this.heap[best])) best = right;
+      if (best === index) return;
+      [this.heap[index], this.heap[best]] = [this.heap[best], this.heap[index]];
+      index = best;
+    }
+  }
 }
 
 export { DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, type DualContouringSettings, type Mesh, type MeshDiagnostics, type SDF, type Vec3 } from '@/engins/isosurfaceDualContouring';

@@ -55,10 +55,19 @@ export function decodeFromLedger(buffer: readonly number[]): number[] {
  */
 export function normalizeBuffer(buffer: readonly number[]): number[] {
   if (buffer.length === 0) return [];
-  const finite = buffer.filter(isFinite);
-  if (finite.length === 0) return buffer.map(() => 0);
-  const min = Math.min(...finite);
-  const max = Math.max(...finite);
+
+  let min = Infinity;
+  let max = -Infinity;
+  let finiteCount = 0;
+
+  for (const value of buffer) {
+    if (!isFinite(value)) continue;
+    finiteCount += 1;
+    if (value < min) min = value;
+    if (value > max) max = value;
+  }
+
+  if (finiteCount === 0) return buffer.map(() => 0);
   const range = max - min;
   if (range === 0) return buffer.map(() => 0);
   return buffer.map((v) => (isFinite(v) ? (v - min) / range : 0));
@@ -79,20 +88,35 @@ export interface BufferStats {
  * Returns zeroed stats when the buffer has no finite values.
  */
 export function computeBufferStats(buffer: readonly number[]): BufferStats {
-  const finite = buffer.filter(isFinite);
-  if (finite.length === 0) {
+  let count = 0;
+  let mean = 0;
+  let m2 = 0;
+  let min = Infinity;
+  let max = -Infinity;
+  let sum = 0;
+
+  for (const value of buffer) {
+    if (!isFinite(value)) continue;
+    count += 1;
+    sum += value;
+    if (value < min) min = value;
+    if (value > max) max = value;
+
+    const delta = value - mean;
+    mean += delta / count;
+    m2 += delta * (value - mean);
+  }
+
+  if (count === 0) {
     return { count: 0, mean: 0, std: 0, min: 0, max: 0, sum: 0 };
   }
-  const count = finite.length;
-  const sum = finite.reduce((a, b) => a + b, 0);
-  const mean = sum / count;
-  const variance = finite.reduce((a, b) => a + (b - mean) ** 2, 0) / count;
+
   return {
     count,
     mean,
-    std: Math.sqrt(variance),
-    min: Math.min(...finite),
-    max: Math.max(...finite),
+    std: Math.sqrt(m2 / count),
+    min,
+    max,
     sum,
   };
 }

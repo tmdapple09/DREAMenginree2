@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-16T00:38:57.787Z
+Generated: 2026-06-18T02:52:14.523Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -13058,10 +13058,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → canUseWebGPU
 │   │   │   ├── → planRuntimeShellHandoff
 │   │   │   └── ∅ unused: canUseWebGPU, planRuntimeShellHandoff
-│   │   ├── world-crdt.ts ∅
+│   │   ├── world-crdt.ts
 │   │   │   ├── → EventualConsistencyBridge
-│   │   │   ├── → WorldStateCRDT
-│   │   │   └── ∅ unused: EventualConsistencyBridge
+│   │   │   └── → WorldStateCRDT
 │   │   └── xr.ts
 │   │       ├── → HandTrackingInput
 │   │       ├── → PassthroughComposite
@@ -14297,40 +14296,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFile  ← node:fs/promises
 │   │   └── writeFile  ← node:fs/promises
-│   ├── generate-readme.ts ∅
+│   ├── generate-readme.ts
+│   │   ├── SECTION_REGISTRY  ← ./readme-autosync
+│   │   ├── runReadmeAutosync  ← ./readme-autosync
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── readdirSync  ← node:fs
 │   │   ├── statSync  ← node:fs
-│   │   ├── writeFileSync  ← node:fs
-│   │   ├── basename  ← node:path
-│   │   ├── extname  ← node:path
 │   │   ├── join  ← node:path
 │   │   ├── relative  ← node:path
-│   │   ├── resolve  ← node:path
-│   │   ├── fileURLToPath  ← node:url
-│   │   ├── ArrowFunction  ← ts-morph
-│   │   ├── FunctionDeclaration  ← ts-morph
-│   │   ├── FunctionExpression  ← ts-morph
-│   │   ├── Node  ← ts-morph
-│   │   ├── Project  ← ts-morph
-│   │   ├── SourceFile  ← ts-morph
-│   │   ├── SyntaxKind  ← ts-morph
-│   │   ├── → SECTION_REGISTRY
-│   │   ├── → analyzeComponents
-│   │   ├── → analyzeDependencies
-│   │   ├── → analyzeExports
-│   │   ├── → analyzeHooks
-│   │   ├── → analyzeImports
-│   │   ├── → analyzeRoutes
-│   │   ├── → analyzeSubsystem
-│   │   ├── → buildArchitecturalSectionBlock
-│   │   ├── → buildArchitecturalSubsectionBlock
-│   │   ├── → computeAffected
-│   │   ├── → replaceSection
-│   │   ├── → runReadmeAutosync
-│   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: SECTION_REGISTRY, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected, runReadmeAutosync
+│   │   └── resolve  ← node:path
 │   ├── generate-repo-state.mjs ∅
 │   │   ├── * as Foo  ← path
 │   │   ├── Qux  ← path
@@ -14364,14 +14339,38 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-autosync.ts ∅
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
+│   │   ├── readdirSync  ← node:fs
+│   │   ├── statSync  ← node:fs
 │   │   ├── writeFileSync  ← node:fs
+│   │   ├── basename  ← node:path
+│   │   ├── extname  ← node:path
+│   │   ├── join  ← node:path
+│   │   ├── relative  ← node:path
 │   │   ├── resolve  ← node:path
+│   │   ├── fileURLToPath  ← node:url
+│   │   ├── ArrowFunction  ← ts-morph
+│   │   ├── FunctionDeclaration  ← ts-morph
+│   │   ├── FunctionExpression  ← ts-morph
+│   │   ├── Node  ← ts-morph
+│   │   ├── Project  ← ts-morph
+│   │   ├── SourceFile  ← ts-morph
+│   │   ├── SyntaxKind  ← ts-morph
 │   │   ├── → SECTION_REGISTRY
+│   │   ├── → analyzeComponents
+│   │   ├── → analyzeDependencies
+│   │   ├── → analyzeExports
+│   │   ├── → analyzeHooks
+│   │   ├── → analyzeImports
+│   │   ├── → analyzeRoutes
+│   │   ├── → analyzeSubsystem
+│   │   ├── → buildArchitecturalSectionBlock
+│   │   ├── → buildArchitecturalSubsectionBlock
 │   │   ├── → buildAutosyncSummary
 │   │   ├── → computeAffected
 │   │   ├── → replaceSection
+│   │   ├── → runReadmeAutosync
 │   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: SECTION_REGISTRY, upsertSubsectionInSection
+│   │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
@@ -17169,6 +17168,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
+│   ├── performance-hot-paths.test.ts
+│   │   ├── InterVMChannel  ← ../engine/vm/inter-vm-messaging
+│   │   ├── createTelemetryClient  ← ../engins/forgeengin/enginpipe/telemetry/client
+│   │   ├── ChunkScheduler  ← ../engins/gameengin/procgen
+│   │   ├── CRDTRecord  ← ../engins/gameengin/world-crdt
+│   │   ├── EventualConsistencyBridge  ← ../engins/gameengin/world-crdt
+│   │   ├── WorldStateCRDT  ← ../engins/gameengin/world-crdt
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   ├── it  ← vitest
+│   │   └── vi  ← vitest
 │   ├── phase6-privacy-idari.test.ts
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest

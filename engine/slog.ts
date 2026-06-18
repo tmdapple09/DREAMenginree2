@@ -37,8 +37,9 @@ export function slogArray(xs: number[]): number[] {
  */
 export function slogMean(xs: number[]): number {
   if (xs.length === 0) return 0;
-  const transformed = slogArray(xs);
-  return transformed.reduce((a, b) => a + b, 0) / transformed.length;
+  let sum = 0;
+  for (const x of xs) sum += slog(x);
+  return sum / xs.length;
 }
 
 /**
@@ -46,10 +47,17 @@ export function slogMean(xs: number[]): number {
  */
 export function slogVariance(xs: number[]): number {
   if (xs.length < 2) return 0;
-  const transformed = slogArray(xs);
-  const mean = transformed.reduce((a, b) => a + b, 0) / transformed.length;
-  const squaredDiffs = transformed.map((v) => (v - mean) ** 2);
-  return squaredDiffs.reduce((a, b) => a + b, 0) / (transformed.length - 1);
+  let count = 0;
+  let mean = 0;
+  let m2 = 0;
+  for (const x of xs) {
+    count += 1;
+    const value = slog(x);
+    const delta = value - mean;
+    mean += delta / count;
+    m2 += delta * (value - mean);
+  }
+  return m2 / (count - 1);
 }
 
 /**
@@ -60,10 +68,20 @@ export function slogVariance(xs: number[]): number {
  */
 export function slogEntropy(xs: number[]): number {
   if (xs.length === 0) return 0;
-  const transformed = slogArray(xs).map(Math.abs);
-  const total = transformed.reduce((a, b) => a + b, 0);
+  const magnitudes = new Array<number>(xs.length);
+  let total = 0;
+  for (let i = 0; i < xs.length; i++) {
+    const value = Math.abs(slog(xs[i]));
+    magnitudes[i] = value;
+    total += value;
+  }
   if (total === 0) return 0;
-  const probs = transformed.map((v) => v / total);
-  return -probs.reduce((acc, p) => (p > 0 ? acc + p * Math.log(p) : acc), 0);
+  let entropy = 0;
+  for (const value of magnitudes) {
+    if (value === 0) continue;
+    const p = value / total;
+    entropy -= p * Math.log(p);
+  }
+  return entropy;
 }
 
