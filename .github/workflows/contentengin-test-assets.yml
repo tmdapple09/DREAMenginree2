@@ -1,0 +1,47 @@
+name: ContentEngin Test Assets
+
+on:
+  pull_request:
+    paths:
+      - 'engins/contentengin/**'
+      - 'tests/contentengin/test-assets/sandbox/recipes/**'
+      - 'scripts/contentengin/generate-test-assets.mjs'
+      - '.github/workflows/contentengin-test-assets.yml'
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'engins/contentengin/**'
+      - 'tests/contentengin/test-assets/sandbox/recipes/**'
+      - 'scripts/contentengin/generate-test-assets.mjs'
+      - '.github/workflows/contentengin-test-assets.yml'
+
+jobs:
+  generate-test-assets:
+    name: Generate sandbox exports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: corepack enable pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate ContentEngin sandbox test assets
+        run: node scripts/contentengin/generate-test-assets.mjs
+
+      - name: Upload generated test assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: contentengin-sandbox-test-assets
+          path: tests/contentengin/test-assets/sandbox/exports
+          if-no-files-found: error

@@ -1,0 +1,12 @@
+{
+  "assetType": "humanoid",
+  "seed": 61801,
+  "profile": "ps3",
+  "parameters": {
+    "assetId": "test-neon-runner",
+    "skinColor": "#8fd3ff",
+    "clothColor": "#27253f",
+    "hairColor": "#ffe66d"
+  },
+  "materialParameters": {}
+}

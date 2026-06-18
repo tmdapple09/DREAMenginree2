@@ -24,6 +24,9 @@ export function validateAsset(
     bones: asset.skeleton?.bones.length ?? 0,
     maxWeightsPerVertex: asset.skeleton?.maxInfluencesPerVertex ?? 0,
     glbSizeBytes: glb?.length ?? 0,
+    drawCalls: glbInspection ? glbInspection.meshPrimitiveCount : asset.materials.length,
+    estimatedRuntimeMemoryBytes: (glb?.length ?? 0) + metrics0.vertices * 32 + asset.materials.length * 4096,
+    mobileDesktopParityScore: asset.runtimeProfile?.desktopClassOutput ? 1 : 0.82,
   };
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -46,6 +49,9 @@ export function validateAsset(
   if (metrics.bones > lim.bones) errors.push(`Bone count ${metrics.bones} exceeds ${lim.bones}.`);
   if (metrics.maxWeightsPerVertex > 4) errors.push('Weights per vertex exceed 4.');
   if (metrics.glbSizeBytes > lim.size) errors.push(`GLB size ${metrics.glbSizeBytes} exceeds ${lim.size}.`);
+  if (metrics.drawCalls > (asset.runtimeProfile?.maxDrawCalls ?? 48)) warnings.push(`Draw calls ${metrics.drawCalls} exceed mobile-first target ${asset.runtimeProfile?.maxDrawCalls ?? 48}.`);
+  if (metrics.estimatedRuntimeMemoryBytes > 96_000_000) warnings.push(`Estimated runtime memory ${metrics.estimatedRuntimeMemoryBytes} exceeds mobile-first soft budget 96000000.`);
+  if (metrics.mobileDesktopParityScore < 0.95) warnings.push('Runtime profile must preserve desktop-class output quality on mobile-first targets.');
   if (!asset.recipe) errors.push('Missing recipe.');
   if (!asset.collision?.shapes?.length) warnings.push('Missing collision.');
   if (!asset.lods?.length) warnings.push('Missing LODs.');

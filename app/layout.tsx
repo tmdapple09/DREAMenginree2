@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import '@/styles/view-transitions.css';
 import '@/styles/dream-shell.css';
-import CommandPalette from '@/components/dream.CommandPalette';
+import CommandPaletteMount from '@/components/dream.CommandPaletteMount';
 import GlobalOverlays from '@/components/dream.GlobalOverlays';
 import ThemeApplicator from '@/components/dream.ThemeApplicator';
 import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
@@ -77,7 +77,6 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
         className="antialiased dream-bg"
         style={{ fontFamily: 'var(--font-space-grotesk, "Space Grotesk", system-ui, sans-serif)' }}
       >
-        {false && <CommandPalette />}
         <ThemeProvider>
           <ThemeApplicator />
           <Suspense><GodTierProvider /></Suspense>
@@ -88,7 +87,7 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
                 <DualRuntimeContainer>
                   <main role="main" aria-label="Main content">{children}</main>
                   <GlobalOverlays />
-                  <Suspense><CommandPalette /></Suspense>
+                  <Suspense><CommandPaletteMount /></Suspense>
                 </DualRuntimeContainer>
               </DreamSystemProvider>
             </CustomizeModeProvider>

@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T09:09:03.455Z
+Generated: 2026-06-18T19:05:21.377Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -109,6 +109,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── bouncer.yml
 │       ├── cleanup-dead-code.yml
 │       ├── codeql.yml
+│       ├── contentengin-test-assets.yml
 │       ├── copilot-setup-steps.yml
 │       ├── daydream-all.yml
 │       ├── daydream-brand-engin.yml
@@ -3109,7 +3110,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── globals-enhanced.css
 │   ├── layout.tsx ∅
-│   │   ├── ⬡ CommandPalette  ← @/components/dream.CommandPalette
+│   │   ├── ⬡ CommandPaletteMount  ← @/components/dream.CommandPaletteMount
 │   │   ├── ⬡ GlobalOverlays  ← @/components/dream.GlobalOverlays
 │   │   ├── ⬡ ThemeApplicator  ← @/components/dream.ThemeApplicator
 │   │   ├── ⬡ CartridgeRegistryBootstrap  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
@@ -6011,6 +6012,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → (default)
 │   │   ├── → MobileCmdFab
 │   │   └── ∅ unused: MobileCmdFab, (default)
+│   ├── dream.CommandPaletteMount.tsx ∅
+│   │   ├── (dynamic)  ← ./dream.CommandPalette
+│   │   ├── → (default)
+│   │   └── ∅ unused: (default)
 │   ├── dream.CreatePostModal.tsx ⚠ ∅
 │   │   ├── uploadBlobToLedgerStorage  ← @/engins/contentengin/media/ledger
 │   │   ├── createClient  ⚠ @/supabase/client/client
@@ -11714,8 +11719,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── buildVehicleParts  ← ../grammars/vehicleGrammar
 │   │   │   │   ├── buildWaterParts  ← ../grammars/waterGrammar
 │   │   │   │   ├── defaultMaterials  ← ../materials/proceduralMaterials
+│   │   │   │   ├── createContentEnginPerformancePlan  ← ../performancePlan
 │   │   │   │   ├── resolveRecipe  ← ../recipes/recipeResolver
 │   │   │   │   ├── createSkeleton  ← ../rigging/fitArmature
+│   │   │   │   ├── createContentEnginRuntimeProfile  ← ../runtimeProfile
 │   │   │   │   ├── SHADERS  ← ../shaders/shaderRegistry
 │   │   │   │   ├── generateCollision  ← ./generateCollision
 │   │   │   │   ├── generateLods  ← ./generateLods
@@ -11780,7 +11787,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── seededRandom.ts ∅
 │   │   │       ├── → pick
 │   │   │       ├── → seededRandom
-│   │   │       └── ∅ unused: seededRandom, pick
+│   │   │       └── ∅ unused: pick
 │   │   ├── rigging
 │   │   │   ├── templates
 │   │   │   │   ├── bird_basic.json
@@ -11820,6 +11827,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: getShader
 │   │   │   └── shaderTypes.ts
 │   │   ├── assetTypes.ts
+│   │   │   ├── (dynamic)  ← ./runtimeProfile
+│   │   │   ├── (dynamic)  ← ./performancePlan
 │   │   │   ├── → CONTENTENGIN_VERSION
 │   │   │   ├── → identityTransform
 │   │   │   └── → vec3
@@ -11848,9 +11857,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── writeFile  ← fs/promises
 │   │   ├── ImplicitAssetWorkspace.tsx ∅
 │   │   │   ├── ⬡ AssetViewport  ← @/engins/contentengin/AssetViewport
+│   │   │   ├── CONTENTENGIN_2026_UPGRADES  ← @/engins/contentengin/upgradeMatrix
 │   │   │   ├── useImplicitAssetWorkspace  ← @/engins/contentengin/useImplicitAssetWorkspace
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── performancePlan.ts
+│   │   │   ├── ContentEnginRuntimeProfile  ← ./runtimeProfile
+│   │   │   └── → createContentEnginPerformancePlan
+│   │   ├── runtimeProfile.ts
+│   │   │   ├── ExportProfile  ← ./assetTypes
+│   │   │   ├── ContentEnginUpgradeId  ← ./upgradeMatrix
+│   │   │   ├── enabledUpgradeIds  ← ./upgradeMatrix
+│   │   │   └── → createContentEnginRuntimeProfile
+│   │   ├── upgradeMatrix.ts
+│   │   │   ├── ExportProfile  ← ./assetTypes
+│   │   │   ├── → CONTENTENGIN_2026_UPGRADES
+│   │   │   └── → enabledUpgradeIds
 │   │   └── useImplicitAssetWorkspace.ts
 │   │       ├── BrushState  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES  ← @/engins/isosurfaceAssetPipeline
@@ -14152,6 +14174,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── blender-auto-rig.py
 │   │   ├── blender-cleanup.py
 │   │   ├── blender-validate-rig.py
+│   │   ├── generate-test-assets.mjs
+│   │   │   ├── execFile  ← node:child_process
+│   │   │   ├── mkdir  ← node:fs/promises
+│   │   │   ├── readdir  ← node:fs/promises
+│   │   │   ├── rm  ← node:fs/promises
+│   │   │   ├── writeFile  ← node:fs/promises
+│   │   │   └── promisify  ← node:util
 │   │   └── validate-glb.mjs
 │   │       └── readFileSync  ← node:fs
 │   ├── feature-build
@@ -15380,24 +15409,30 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── view-transitions.css
 ├── tests
 │   ├── contentengin
+│   │   ├── test-assets
+│   │   │   └── sandbox
+│   │   │       └── recipes
+│   │   │           ├── canyon-racer.recipe.json
+│   │   │           ├── glass-canopy-tree.recipe.json
+│   │   │           └── neon-runner.recipe.json
 │   │   ├── assetviewport-pickmode.test.ts
 │   │   │   ├── readFileSync  ← fs
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
-│   │   ├── contentengin-api.test.ts ⚠
-│   │   │   ├── analyzeImageBytes  ⚠ ../../lib/contentengin/photo/imageAnalyzer
+│   │   ├── contentengin-api.test.ts
+│   │   │   ├── analyzeImageBytes  ← ../../engins/contentengin/photo/imageAnalyzer
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   ├── it  ← vitest
 │   │   │   └── deflateSync  ← zlib
-│   │   ├── contentengin-export.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
-│   │   │   ├── createGlbBuffer  ⚠ ../../lib/contentengin/pipeline/exportGlb
-│   │   │   ├── expectedMaterialIdsForAsset  ⚠ ../../lib/contentengin/pipeline/exportGlb
-│   │   │   ├── inspectGlb  ⚠ ../../lib/contentengin/pipeline/exportGlb
-│   │   │   ├── safeSegment  ⚠ ../../lib/contentengin/pipeline/paths
-│   │   │   ├── validateAsset  ⚠ ../../lib/contentengin/pipeline/validate
+│   │   ├── contentengin-export.test.ts
+│   │   │   ├── buildAsset  ← ../../engins/contentengin/pipeline/build
+│   │   │   ├── createGlbBuffer  ← ../../engins/contentengin/pipeline/exportGlb
+│   │   │   ├── expectedMaterialIdsForAsset  ← ../../engins/contentengin/pipeline/exportGlb
+│   │   │   ├── inspectGlb  ← ../../engins/contentengin/pipeline/exportGlb
+│   │   │   ├── safeSegment  ← ../../engins/contentengin/pipeline/paths
+│   │   │   ├── validateAsset  ← ../../engins/contentengin/pipeline/validate
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
@@ -15407,14 +15442,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
-│   │   ├── contentengin-grammars.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
+│   │   ├── contentengin-grammars.test.ts
+│   │   │   ├── buildAsset  ← ../../engins/contentengin/pipeline/build
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
-│   │   ├── contentengin-recipes.test.ts ⚠
-│   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
-│   │   │   ├── seededRandom  ⚠ ../../lib/contentengin/recipes/seededRandom
+│   │   ├── contentengin-recipes.test.ts
+│   │   │   ├── buildAsset  ← ../../engins/contentengin/pipeline/build
+│   │   │   ├── seededRandom  ← ../../engins/contentengin/recipes/seededRandom
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
@@ -15427,10 +15462,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
-│   │   └── contentengin-validation.test.ts ⚠
-│   │       ├── PartNode  ⚠ ../../lib/contentengin/assetTypes
-│   │       ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
-│   │       ├── validateAsset  ⚠ ../../lib/contentengin/pipeline/validate
+│   │   └── contentengin-validation.test.ts
+│   │       ├── PartNode  ← ../../engins/contentengin/assetTypes
+│   │       ├── buildAsset  ← ../../engins/contentengin/pipeline/build
+│   │       ├── validateAsset  ← ../../engins/contentengin/pipeline/validate
 │   │       ├── describe  ← vitest
 │   │       ├── expect  ← vitest
 │   │       └── it  ← vitest

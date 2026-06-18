@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T09:09:03.310Z
+Generated: 2026-06-18T19:05:21.268Z
 
 ---
 
@@ -6642,7 +6642,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/dream.CommandPalette` | `⬡ CommandPalette` |
+| `@/components/dream.CommandPaletteMount` | `⬡ CommandPaletteMount` |
 | `@/components/dream.GlobalOverlays` | `⬡ GlobalOverlays` |
 | `@/components/dream.ThemeApplicator` | `⬡ ThemeApplicator` |
 | `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
@@ -7496,6 +7496,12 @@ _No style files for this feature._
 | `lucide-react` | `ArrowRight`, `Code2`, `Compass`, `Flame`, `FlaskConical`, `Gamepad2`, `Home`, `MessageSquare`, `Music`, `Palette`, `PenLine`, `Search`, `Settings`, `ShoppingBag`, `Stars`, `TrendingUp`, `User`, `Zap` |
 | `next/navigation` | `useRouter` |
 | `react` | `useEffect`, `useRef`, `useState` |
+
+## `components/dream.CommandPaletteMount.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dream.CommandPalette` | _(dynamic import)_ |
 
 ## `components/dream.CreatePostModal.tsx`
 
@@ -12045,7 +12051,15 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engins/contentengin/AssetViewport` | `⬡ AssetViewport` |
+| `@/engins/contentengin/upgradeMatrix` | `CONTENTENGIN_2026_UPGRADES` |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | `useImplicitAssetWorkspace` |
+
+## `engins/contentengin/assetTypes.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./runtimeProfile` | _(dynamic import)_ |
+| `./performancePlan` | _(dynamic import)_ |
 
 ## `engins/contentengin/assets/assetOptimizer.ts`
 
@@ -12194,6 +12208,12 @@ _No style files for this feature._
 |--------|---------------|
 | `@/utils/index` | `toErrorMessage` |
 
+## `engins/contentengin/performancePlan.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./runtimeProfile` | `ContentEnginRuntimeProfile` |
+
 ## `engins/contentengin/photo/imageAnalyzer.ts`
 
 | Module | Connected via |
@@ -12241,8 +12261,10 @@ _No style files for this feature._
 | `../grammars/vehicleGrammar` | `buildVehicleParts` |
 | `../grammars/waterGrammar` | `buildWaterParts` |
 | `../materials/proceduralMaterials` | `defaultMaterials` |
+| `../performancePlan` | `createContentEnginPerformancePlan` |
 | `../recipes/recipeResolver` | `resolveRecipe` |
 | `../rigging/fitArmature` | `createSkeleton` |
+| `../runtimeProfile` | `createContentEnginRuntimeProfile` |
 | `../shaders/shaderRegistry` | `SHADERS` |
 | `./generateCollision` | `generateCollision` |
 | `./generateLods` | `generateLods` |
@@ -12329,11 +12351,24 @@ _No style files for this feature._
 |--------|---------------|
 | `../assetTypes` | `SkeletonDef` |
 
+## `engins/contentengin/runtimeProfile.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./assetTypes` | `ExportProfile` |
+| `./upgradeMatrix` | `ContentEnginUpgradeId`, `enabledUpgradeIds` |
+
 ## `engins/contentengin/shaders/shaderRegistry.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `../assetTypes` | `ShaderDef` |
+
+## `engins/contentengin/upgradeMatrix.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./assetTypes` | `ExportProfile` |
 
 ## `engins/contentengin/useImplicitAssetWorkspace.ts`
 
@@ -13353,6 +13388,14 @@ _No style files for this feature._
 |--------|---------------|
 | `node:fs/promises` | `readdir` |
 | `node:url` | `fileURLToPath` |
+
+## `scripts/contentengin/generate-test-assets.mjs`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:child_process` | `execFile` |
+| `node:fs/promises` | `mkdir`, `readdir`, `rm`, `writeFile` |
+| `node:util` | `promisify` |
 
 ## `scripts/contentengin/validate-glb.mjs`
 
@@ -14592,6 +14635,10 @@ _No style files for this feature._
 
 - `@babylonjs/core`
 
+## `components/dream.CommandPaletteMount.tsx`
+
+- `./dream.CommandPalette`
+
 ## `components/dream.ForgeDreamCanvas.tsx`
 
 - `@/supabase/client/client`
@@ -15611,6 +15658,11 @@ _No style files for this feature._
 ## `engine/vm/wasmGpuVM.ts`
 
 - `./types`
+
+## `engins/contentengin/assetTypes.ts`
+
+- `./runtimeProfile`
+- `./performancePlan`
 
 ## `engins/forgeengin/forge/useForgeBuild.ts`
 
@@ -17348,6 +17400,10 @@ _No style files for this feature._
 
 - `components/dream.CommandPalette.tsx`
 
+## `components/dream.CommandPaletteMount.tsx/`
+
+- `components/dream.CommandPaletteMount.tsx`
+
 ## `components/dream.CreatePostModal.tsx/`
 
 - `components/dream.CreatePostModal.tsx`
@@ -18661,7 +18717,7 @@ _No circular dependencies detected._
 | `engins/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
-| `engins/contentengin/pipeline/build.ts` | 23 |
+| `engins/contentengin/pipeline/build.ts` | 25 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -18700,7 +18756,7 @@ _No circular dependencies detected._
 | `engins/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
-| `engins/contentengin/pipeline/build.ts` | 23 | HIGH_COUPLING |
+| `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -19570,6 +19626,7 @@ _No circular dependencies detected._
 | `components/dream.BoogieWarningBanner.tsx` | `(default)` |
 | `components/dream.BrandLogo.tsx` | `(default)` |
 | `components/dream.CommandPalette.tsx` | `MobileCmdFab`, `(default)` |
+| `components/dream.CommandPaletteMount.tsx` | `(default)` |
 | `components/dream.CreatePostModal.tsx` | `(default)` |
 | `components/dream.DrEamsModeToggle.tsx` | `(default)` |
 | `components/dream.DrEamsVoiceAssistant.tsx` | `(default)` |
@@ -20055,7 +20112,7 @@ _No circular dependencies detected._
 | `engins/contentengin/photo/regionDetector.ts` | `fitAlgebraicRegion`, `relabelRegion` |
 | `engins/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
 | `engins/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
-| `engins/contentengin/recipes/seededRandom.ts` | `seededRandom`, `pick` |
+| `engins/contentengin/recipes/seededRandom.ts` | `pick` |
 | `engins/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
 | `engins/contentengin/shaders/shaderRegistry.ts` | `getShader` |
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
@@ -20285,6 +20342,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── bouncer.yml
 │       ├── cleanup-dead-code.yml
 │       ├── codeql.yml
+│       ├── contentengin-test-assets.yml
 │       ├── copilot-setup-steps.yml
 │       ├── daydream-all.yml
 │       ├── daydream-brand-engin.yml
@@ -21949,6 +22007,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: (default)
 │   ├── dream.CommandPalette.tsx ∅
 │   │   └── ∅ unused: MobileCmdFab, (default)
+│   ├── dream.CommandPaletteMount.tsx ∅
+│   │   └── ∅ unused: (default)
 │   ├── dream.CreatePostModal.tsx ⚠ ∅
 │   │   ├── ⚠ @/supabase/client/client  (createClient)
 │   │   └── ∅ unused: (default)
@@ -22850,7 +22910,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: normalizeAssetType
 │   │   │   ├── recipeTypes.ts
 │   │   │   └── seededRandom.ts ∅
-│   │   │       └── ∅ unused: seededRandom, pick
+│   │   │       └── ∅ unused: pick
 │   │   ├── rigging
 │   │   │   ├── templates
 │   │   │   │   ├── bird_basic.json
@@ -22874,6 +22934,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── cli.ts
 │   │   ├── ImplicitAssetWorkspace.tsx ∅
 │   │   │   └── ∅ unused: (default)
+│   │   ├── performancePlan.ts
+│   │   ├── runtimeProfile.ts
+│   │   ├── upgradeMatrix.ts
 │   │   └── useImplicitAssetWorkspace.ts
 │   ├── forgeengin
 │   │   ├── enginpipe
@@ -23392,6 +23455,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── blender-auto-rig.py
 │   │   ├── blender-cleanup.py
 │   │   ├── blender-validate-rig.py
+│   │   ├── generate-test-assets.mjs
 │   │   └── validate-glb.mjs
 │   ├── feature-build
 │   │   └── generate-features.mjs
@@ -23504,25 +23568,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── view-transitions.css
 ├── tests
 │   ├── contentengin
+│   │   ├── test-assets
+│   │   │   └── sandbox
+│   │   │       └── recipes
+│   │   │           ├── canyon-racer.recipe.json
+│   │   │           ├── glass-canopy-tree.recipe.json
+│   │   │           └── neon-runner.recipe.json
 │   │   ├── assetviewport-pickmode.test.ts
-│   │   ├── contentengin-api.test.ts ⚠
-│   │   │   └── ⚠ ../../lib/contentengin/photo/imageAnalyzer  (analyzeImageBytes)
-│   │   ├── contentengin-export.test.ts ⚠
-│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
-│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/exportGlb  (createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb)
-│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/paths  (safeSegment)
-│   │   │   └── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
+│   │   ├── contentengin-api.test.ts
+│   │   ├── contentengin-export.test.ts
 │   │   ├── contentengin-glb-import.test.ts
-│   │   ├── contentengin-grammars.test.ts ⚠
-│   │   │   └── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
-│   │   ├── contentengin-recipes.test.ts ⚠
-│   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
-│   │   │   └── ⚠ ../../lib/contentengin/recipes/seededRandom  (seededRandom)
+│   │   ├── contentengin-grammars.test.ts
+│   │   ├── contentengin-recipes.test.ts
 │   │   ├── contentengin-rigging.test.ts
-│   │   └── contentengin-validation.test.ts ⚠
-│   │       ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
-│   │       ├── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
-│   │       └── ⚠ ../../lib/contentengin/assetTypes  (PartNode)
+│   │   └── contentengin-validation.test.ts
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts

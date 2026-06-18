@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { buildAsset } from '../../lib/contentengin/pipeline/build';
-import { createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb } from '../../lib/contentengin/pipeline/exportGlb';
-import { safeSegment } from '../../lib/contentengin/pipeline/paths';
-import { validateAsset } from '../../lib/contentengin/pipeline/validate';
+import { buildAsset } from '../../engins/contentengin/pipeline/build';
+import { createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb } from '../../engins/contentengin/pipeline/exportGlb';
+import { safeSegment } from '../../engins/contentengin/pipeline/paths';
+import { validateAsset } from '../../engins/contentengin/pipeline/validate';
 
 describe('ContentEngin real GLB export', () => {
   it('exports a GLB with real mesh primitives, vertices, and indices', () => {
