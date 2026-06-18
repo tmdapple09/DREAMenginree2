@@ -2,13 +2,27 @@
 /**
  * readme-autosync.ts
  *
- * Autosync workflow: preserved.
- * Analysis engine: rewritten to separate real behavior owners from visual noise.
+ * Source-only DREAMengin README autosync.
+ *
+ * This script intentionally analyzes application source code only.
+ *
+ * Excluded by design:
+ *   - tests
+ *   - docs / markdown
+ *   - scripts
+ *   - CI / .github
+ *   - images / videos / photos
+ *   - generated assets
+ *   - public media
+ *   - config inventory
  *
  * Core rule:
- *   Key Modules are not "anything exported" and not "anything PascalCase".
- *   Key Modules must show evidence of behavior ownership, routing, runtime,
- *   capability execution, state/data mutation, provider logic, or major surface entry.
+ *   Key Modules are behavior owners, runtime/capability owners, route/surface
+ *   entrypoints, provider adapters, state/persistence owners, or Engin/domain
+ *   execution files.
+ *
+ * They are NOT random PascalCase components, props interfaces, icons, glow
+ * helpers, visual wrappers, demos, mocks, docs, tests, or scripts.
  */
 
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
@@ -97,7 +111,7 @@ export interface SubsystemModel {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Section registry
+// Application-source registry only
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const SECTION_REGISTRY: SectionDescriptor[] = [
@@ -106,58 +120,159 @@ export const SECTION_REGISTRY: SectionDescriptor[] = [
     title: 'The Engins',
     globs: ['engins/**', 'components/runtime/**', 'engine/runtime/**', 'dreamdmbar/**'],
     subsections: {
-      'branding-engin': { id: 'branding-engin', title: 'BrandingEngin', globs: ['engins/engin.BrandingEngin.tsx'] },
-      'code-engin': { id: 'code-engin', title: 'CodeEngin', globs: ['engins/engin.CodeEngin.tsx', 'engins/CodeEngin/**'] },
-      'content-engin': { id: 'content-engin', title: 'ContentEngin', globs: ['engins/engin.ContentEngin.tsx'] },
-      'game-engin': { id: 'game-engin', title: 'GameEngin', globs: ['engins/engin.GameEngin.tsx', 'engins/autoopen/**'] },
-      'lab-engin': { id: 'lab-engin', title: 'LabEngin', globs: ['engins/engin.LabEngin.tsx', 'engins/dream.QuantumCircuitCanvas.tsx'] },
-      'starmaker-engin': { id: 'starmaker-engin', title: 'StarMakerEngin', globs: ['engins/engin.StarMakerEngin.tsx'] },
-      'analytics-engin': { id: 'analytics-engin', title: 'AnalyticsEngin', globs: ['engins/dream.panel.AnalyticsEngin.tsx'] },
-      'forge-engin': { id: 'forge-engin', title: 'ForgeEngin', globs: ['engins/dream.ForgeEngin.tsx'] },
-      'portfolio-engin': { id: 'portfolio-engin', title: 'PortfolioEngin', globs: ['engins/portfolio/**'] },
+      'branding-engin': {
+        id: 'branding-engin',
+        title: 'BrandingEngin',
+        globs: ['engins/engin.BrandingEngin.tsx', 'engins/**/brand*.ts', 'engins/**/branding*.ts'],
+      },
+      'code-engin': {
+        id: 'code-engin',
+        title: 'CodeEngin',
+        globs: ['engins/engin.CodeEngin.tsx', 'engins/CodeEngin/**', 'components/daydream/dream.CodeDreamIDE.tsx'],
+      },
+      'content-engin': {
+        id: 'content-engin',
+        title: 'ContentEngin',
+        globs: [
+          'engins/engin.ContentEngin.tsx',
+          'components/contentengin/**',
+          'app/api/contentengin/**',
+          'engine/**/contentengin/**',
+        ],
+      },
+      'game-engin': {
+        id: 'game-engin',
+        title: 'GameEngin',
+        globs: [
+          'engins/engin.GameEngin.tsx',
+          'engins/autoopen/**',
+          'components/games/**',
+          'app/api/gameengin/**',
+          'engine/**/game*.ts',
+        ],
+      },
+      'lab-engin': {
+        id: 'lab-engin',
+        title: 'LabEngin',
+        globs: ['engins/engin.LabEngin.tsx', 'engins/dream.QuantumCircuitCanvas.tsx', 'components/daydream/dream.LabDreamIDE.tsx'],
+      },
+      'starmaker-engin': {
+        id: 'starmaker-engin',
+        title: 'StarMakerEngin',
+        globs: ['engins/engin.StarMakerEngin.tsx', 'engins/**/starMaker*.ts', 'components/starmaker/**'],
+      },
+      'analytics-engin': {
+        id: 'analytics-engin',
+        title: 'AnalyticsEngin',
+        globs: ['engins/dream.panel.AnalyticsEngin.tsx'],
+      },
+      'forge-engin': {
+        id: 'forge-engin',
+        title: 'ForgeEngin',
+        globs: ['engins/dream.ForgeEngin.tsx', 'engins/forgeengin/**'],
+      },
+      'portfolio-engin': {
+        id: 'portfolio-engin',
+        title: 'PortfolioEngin',
+        globs: ['engins/portfolio/**'],
+      },
       'custom-engins-capability': {
         id: 'custom-engins-capability',
-        title: 'Custom Engins capability (current state)',
+        title: 'Custom Engins capability',
         globs: ['engins/**', 'components/daydream/**', 'engins/rulesets/**'],
       },
     },
   },
-  { id: 'dual-runtimes', title: 'Dual Runtimes', globs: ['engine/runtime/**', 'engine/vm/**', 'components/runtime/**', 'hooks/useSharedDream.ts', 'dreamdmbar/**'] },
-  { id: 'shared-dreams', title: 'Shared Dreams', globs: ['engine/sharedDream.ts', 'supabase/realtime.ts', 'hooks/useSharedDream*.ts', 'app/api/dreams/**', 'components/shared-dream/**'] },
-  { id: 'dreamr---human-media', title: 'Dreamr — Human Media', globs: ['app/dreamr/**', 'app/api/dreamr/**', 'dreamr/**', 'dreamdmbar/homedream/dreamr/**', 'components/dreamr/**', 'components/home/**'] },
-  { id: 'the-shop', title: 'The Shop', globs: ['app/shop/**', 'app/api/shop/**', 'engine/shop/**', 'components/shop/**'] },
-  { id: 'the-marketplace', title: 'The Marketplace', globs: ['app/marketplace/**', 'app/api/marketplace/**', 'engine/marketplace/**', 'components/marketplace/**'] },
-  { id: 'ads-user-ads', title: 'Ads & User Ads', globs: ['app/ads/**', 'app/api/ads/**', 'components/ads/**', 'types/ads.ts'] },
-  { id: 'the-dmbar-dreamdmbar', title: 'The DmBar (`dreamdmbar/`)', globs: ['dreamdmbar/**', 'components/home/dream.bar.*'] },
-  { id: 'messaging', title: 'Messaging', globs: ['app/messages/**', 'app/api/messages/**', 'components/messaging/**', 'dreamdmbar/hooks/useDreamDM*.ts', 'dreamdmbar/hooks/useMessagingCore.ts', 'dreamdmbar/hooks/useNotifications.ts'] },
-  { id: 'homedream', title: 'HomeDream', globs: ['app/homedream/**', 'components/home/**', 'dreamdmbar/homedream/**'] },
-  { id: 'dreamspace', title: 'DreamSpace', globs: ['app/daydream/**', 'components/daydream/**', 'daydreams/**'] },
-  { id: 'dreams-widgets-windows-surfaces', title: 'Dreams (Widgets / Windows / Surfaces)', globs: ['components/dream.**', 'components/dreams/**', 'components/widgets/**', 'components/runtime/**', 'engine/widgets/**', 'engine/dream-window/**'] },
-  { id: 'user-facing-modularity', title: 'User-Facing Modularity', globs: ['components/**', 'styles/**', 'components/ui-system/**', 'hooks/**'] },
-  { id: 'custom-engins', title: 'Custom Engins', globs: ['engins/**', 'daydreams/**', 'components/daydream/**'] },
-  { id: 'full-website-customizability', title: 'Full Website Customizability', globs: ['app/settings/**', 'app/api/settings/**', 'styles/**', 'components/customize/**'] },
+  {
+    id: 'runtime-orchestration',
+    title: 'Runtime Orchestration',
+    globs: ['engine/runtime/**', 'engine/vm/**', 'components/runtime/**'],
+  },
+  {
+    id: 'dual-runtimes',
+    title: 'Dual Runtimes',
+    globs: ['engine/runtime/**', 'engine/vm/**', 'components/runtime/**', 'hooks/useSharedDream.ts', 'dreamdmbar/**'],
+  },
+  {
+    id: 'shared-dreams',
+    title: 'Shared Dreams',
+    globs: ['engine/sharedDream.ts', 'supabase/realtime.ts', 'hooks/useSharedDream*.ts', 'app/api/dreams/**', 'components/shared-dream/**'],
+  },
+  {
+    id: 'homedream',
+    title: 'HomeDream',
+    globs: ['app/homedream/**', 'components/home/**', 'dreamdmbar/homedream/**'],
+  },
+  {
+    id: 'dreamr---human-media',
+    title: 'Dreamr — Human Media',
+    globs: ['app/dreamr/**', 'app/api/dreamr/**', 'dreamr/**', 'dreamdmbar/homedream/dreamr/**', 'components/dreamr/**', 'components/home/**'],
+  },
+  {
+    id: 'dreamspace',
+    title: 'DreamSpace',
+    globs: ['app/daydream/**', 'components/daydream/**', 'daydreams/**'],
+  },
+  {
+    id: 'the-dmbar-dreamdmbar',
+    title: 'DreamDMBar',
+    globs: ['dreamdmbar/**', 'components/home/dream.bar.*'],
+  },
+  {
+    id: 'messaging',
+    title: 'Messaging',
+    globs: ['app/messages/**', 'app/api/messages/**', 'components/messaging/**', 'dreamdmbar/hooks/useDreamDM*.ts', 'dreamdmbar/hooks/useMessagingCore.ts', 'dreamdmbar/hooks/useNotifications.ts'],
+  },
+  {
+    id: 'connectors-live-feeds',
+    title: 'Connectors & Live Feeds',
+    globs: ['engine/connectors/**', 'engine/social/**', 'app/api/youtube/**', 'types/connector.ts'],
+  },
+  {
+    id: 'dreams-widgets-windows-surfaces',
+    title: 'Dreams, Widgets, Windows & Surfaces',
+    globs: ['components/dream.**', 'components/dreams/**', 'components/widgets/**', 'components/runtime/**', 'engine/widgets/**', 'engine/dream-window/**'],
+  },
+  {
+    id: 'user-facing-modularity',
+    title: 'User-Facing Modularity',
+    globs: ['components/**', 'styles/**', 'components/ui-system/**', 'hooks/**'],
+  },
+  {
+    id: 'the-shop',
+    title: 'The Shop',
+    globs: ['app/shop/**', 'app/api/shop/**', 'engine/shop/**', 'components/shop/**'],
+  },
+  {
+    id: 'the-marketplace',
+    title: 'The Marketplace',
+    globs: ['app/marketplace/**', 'app/api/marketplace/**', 'engine/marketplace/**', 'components/marketplace/**'],
+  },
+  {
+    id: 'ads-user-ads',
+    title: 'Ads & User Ads',
+    globs: ['app/ads/**', 'app/api/ads/**', 'components/ads/**', 'types/ads.ts'],
+  },
+  {
+    id: 'settings-customization',
+    title: 'Settings & Customization',
+    globs: ['app/settings/**', 'app/api/settings/**', 'styles/**', 'components/customize/**'],
+  },
   {
     id: 'backend-system-core-coresurfaces',
     title: 'Backend, System, Core & CoreSurfaces',
-    globs: ['backend/**', 'core/**', 'coresurfaces/**', 'system/**', 'engine/**', 'app/api/**', 'supabase/**', 'utils/supabase/**'],
-  },
-  { id: 'agents-workflow', title: 'Agents & Workflow', globs: ['agents/**', '.github/workflows/**', '.github/scripts/**', 'scripts/**'] },
-  { id: 'research-experiments-daydreams', title: 'Research, Experiments & Daydreams', globs: ['research/**', 'research-and-development/**', 'experiments/**', 'daydreams/**'] },
-  { id: 'infra-ops', title: 'Infra & Ops', globs: ['terraform/**', 'prometheus/**', 'grafana/**', '.github/workflows/**', 'vercel.json', 'docker-compose.yml'] },
-  { id: 'testing', title: 'Testing', globs: ['tests/**', 'vitest.config.ts', 'playwright.config.ts'] },
-  {
-    id: 'tech-stack-monorepo-layout',
-    title: 'Tech Stack & Monorepo Layout',
     globs: [
-      'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig*.json',
-      'next.config.*', 'eslint.config.*', 'tailwind.config.*', 'vercel.json',
-      '.env*.example', 'Dockerfile*',
+      'backend/**',
+      'core/**',
+      'coresurfaces/**',
+      'system/**',
+      'engine/**',
+      'app/api/**',
+      'supabase/**',
+      'utils/supabase/**',
+      'types/**',
     ],
   },
-  { id: 'getting-started', title: 'Getting Started', globs: ['README.md', '.env.example', '.env.local.example'] },
-  { id: 'environment-variables', title: 'Environment Variables', globs: ['.env.example', '.env.local.example', 'app/api/**'] },
-  { id: 'contributing', title: 'Contributing', globs: ['CONTRIBUTING*', 'AGENTS.md', 'docs/**', '.github/**'] },
-  { id: 'license', title: 'License', globs: ['LICENSE'] },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -221,15 +336,34 @@ function matchesAnyGlob(filePath: string, globs: string[]): boolean {
   return globs.some((g) => matchesGlob(n, g));
 }
 
+const SKIPPED_DIRECTORIES = new Set([
+  'node_modules',
+  '.git',
+  '__pycache__',
+  '.next',
+  '.vercel',
+  'coverage',
+  'docs',
+  'tests',
+  'test',
+  'scripts',
+  '.github',
+  'research',
+  'research-and-development',
+  'experiments',
+  'public',
+]);
+
 function walkFiles(dir: string): string[] {
   const out: string[] = [];
 
   for (const entry of readdirSync(dir)) {
-    if (['node_modules', '.git', '__pycache__', '.next', 'coverage', '.vercel'].includes(entry)) continue;
+    if (SKIPPED_DIRECTORIES.has(entry)) continue;
 
     const full = join(dir, entry);
 
     if (statSync(full).isDirectory()) {
+      if (['__tests__', '__mocks__', 'fixtures', 'fixture', 'mocks', 'mock', 'generated'].includes(entry)) continue;
       out.push(...walkFiles(full));
     } else if (!entry.endsWith('.pyc')) {
       out.push(normalizePath(relative(ROOT, full)));
@@ -255,7 +389,7 @@ function toRoutePath(filePath: string): string {
 
 function buildTreeLines(files: string[], maxLines = 120): string[] {
   const sorted = [...new Set(files)].sort();
-  if (sorted.length === 0) return ['(no files currently matched)'];
+  if (sorted.length === 0) return ['(no application source files currently matched)'];
 
   const tree = new Map<string, Set<string>>();
 
@@ -291,7 +425,7 @@ function buildTreeLines(files: string[], maxLines = 120): string[] {
   emit('', '');
 
   if (sorted.length > maxLines) {
-    lines.push(`… (${sorted.length - maxLines} more files)`);
+    lines.push(`… (${sorted.length - maxLines} more application source files)`);
   }
 
   return lines;
@@ -307,7 +441,89 @@ function readFileTextSafe(filePath: string): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Signal filters: this is what stops random UI fluff from becoming "key"
+// Source-only intake filter
+// ─────────────────────────────────────────────────────────────────────────────
+
+const APPLICATION_SOURCE_ROOTS = [
+  /^app\//,
+  /^components\//,
+  /^engine\//,
+  /^engins\//,
+  /^dreamdmbar\//,
+  /^daydreams\//,
+  /^hooks\//,
+  /^types\//,
+  /^utils\/supabase\//,
+  /^supabase\//,
+  /^styles\//,
+  /^backend\//,
+  /^core\//,
+  /^coresurfaces\//,
+  /^system\//,
+];
+
+const APPLICATION_SOURCE_EXTENSIONS = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.css',
+  '.sql',
+]);
+
+export function isApplicationSourceCode(filePath: string): boolean {
+  const f = normalizePath(filePath);
+  const ext = extname(f).toLowerCase();
+
+  if (!APPLICATION_SOURCE_EXTENSIONS.has(ext)) return false;
+
+  if (!APPLICATION_SOURCE_ROOTS.some((pattern) => pattern.test(f))) {
+    return false;
+  }
+
+  return ![
+    /^docs\//,
+    /^tests\//,
+    /^test\//,
+    /^scripts\//,
+    /^\.github\//,
+    /^research\//,
+    /^research-and-development\//,
+    /^experiments\//,
+    /^coverage\//,
+    /^public\//,
+    /^\.next\//,
+    /^\.vercel\//,
+    /^node_modules\//,
+    /(^|\/)__tests__\//,
+    /(^|\/)__mocks__\//,
+    /(^|\/)generated\//,
+    /(^|\/)fixtures?\//,
+    /(^|\/)mocks?\//,
+    /\.(test|spec|stories|story)\.(t|j)sx?$/,
+    /\.d\.ts$/,
+    /\.md$/,
+    /\.mdx$/,
+    /\.json$/,
+    /\.lock$/,
+    /\.png$/,
+    /\.jpe?g$/,
+    /\.gif$/,
+    /\.webp$/,
+    /\.svg$/,
+    /\.mp4$/,
+    /\.mov$/,
+    /\.webm$/,
+    /\.mp3$/,
+    /\.wav$/,
+    /\.wasm$/,
+  ].some((pattern) => pattern.test(f));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Signal filters
 // ─────────────────────────────────────────────────────────────────────────────
 
 function isLowSignalExportName(name: string): boolean {
@@ -322,7 +538,7 @@ function isImportantExportName(name: string): boolean {
   if (isLowSignalExportName(name)) return false;
   if (isDemoOrMockName(name)) return false;
 
-  return /(?:Engin|Engine|Runtime|RuleSet|Ruleset|Capability|Intent|Dispatcher|Provider|Feed|Profile|Message|Conversation|Surface|Bridge|Bus|Registry|Snapshot|Manifest|Transport|Adapter|Store|Reducer|Orchestr|Resolver|Validator|Auth|Permission|Session|Channel|Realtime|Dream|DreamR|HomeDream|DreamSpace|DMBar|Workflow|Pipeline|Asset|Cartridge|Command|Controller|Service|Repository|Gateway|Client|Connector|Sync|Queue|Mutation|Transaction|Presence|Notification)/i.test(name);
+  return /(?:Engin|Engine|Runtime|RuleSet|Ruleset|Capability|Intent|Dispatcher|Provider|Feed|Profile|Message|Conversation|Surface|Bridge|Bus|Registry|Snapshot|Manifest|Transport|Adapter|Store|Reducer|Orchestr|Resolver|Validator|Auth|Permission|Session|Channel|Realtime|Dream|DreamR|HomeDream|DreamSpace|DMBar|Workflow|Pipeline|Asset|Cartridge|Command|Controller|Service|Repository|Gateway|Client|Connector|Sync|Queue|Mutation|Transaction|Presence|Notification|Policy|Schema|Upload|Export|Import)/i.test(name);
 }
 
 function isDecorativePath(filePath: string): boolean {
@@ -349,14 +565,17 @@ function isImportantPath(filePath: string): boolean {
     /^components\/runtime\//,
     /^dreamdmbar\//,
     /^app\/api\/(?:dreams|dreamr|messages|youtube|contentengin|gameengin|homedream|shop|marketplace|ads|settings)\//,
-    /^app\/(?:homedream|dreamr|messages|u|view-profile|daydream|shop|marketplace)\//,
+    /^app\/(?:homedream|dreamr|messages|u|view-profile|daydream|shop|marketplace|settings)\//,
     /^components\/home\/.*(?:HomeDream|Feed|Profile|Message|Post|DreamR|Surface|Runtime|DMBar)/i,
     /^components\/dreamr\//,
     /^components\/messaging\//,
     /^components\/shared-dream\//,
+    /^components\/contentengin\//,
+    /^components\/games\//,
     /^components\/daydream\/.*(?:IDE|Surface|Runtime|Engin|Dream|Studio|Asset|Pipeline)/i,
     /^supabase\//,
     /^utils\/supabase\//,
+    /^types\/.*(?:runtime|connector|feed|profile|message|engin|dream|capability|asset|game|ads)/i,
   ].some((pattern) => pattern.test(filePath));
 }
 
@@ -629,22 +848,6 @@ export function analyzeDependencies(
   return [...depIds].sort();
 }
 
-function populateUsedBy(models: SubsystemModel[]): void {
-  const byId = new Map(models.map((model) => [model.id, model]));
-
-  for (const model of models) {
-    for (const dep of model.dependsOn) {
-      const target = byId.get(dep);
-      if (!target) continue;
-      if (!target.usedBy.includes(model.id)) target.usedBy.push(model.id);
-    }
-  }
-
-  for (const model of models) {
-    model.usedBy.sort();
-  }
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Key module inference
 // ─────────────────────────────────────────────────────────────────────────────
@@ -754,7 +957,6 @@ function scoreKeyModule(file: string, fileExports: ExportedSymbol[]): KeyModuleC
 }
 
 function inferKeyModules(
-  title: string,
   files: string[],
   exports: ExportedSymbol[],
 ): string[] {
@@ -800,30 +1002,31 @@ export function analyzeSubsystem(
   files: string[],
   allSubsystems: Array<{ id: string; globs: string[] }>,
 ): SubsystemModel {
+  const appFiles = files.filter(isApplicationSourceCode);
   const exports: ExportedSymbol[] = [];
   const imports: ImportEdge[] = [];
 
-  const tsFiles = files.filter((f) => /\.(t|j)sx?$/i.test(f));
+  const tsFiles = appFiles.filter((f) => /\.(t|j)sx?$/i.test(f));
 
   for (const file of tsFiles) {
     exports.push(...analyzeExports(file));
     imports.push(...analyzeImports(file));
   }
 
-  const routes = analyzeRoutes(files);
+  const routes = analyzeRoutes(appFiles);
   const components = analyzeComponents(exports);
   const hooks = analyzeHooks(exports);
   const dependsOn = analyzeDependencies(imports, allSubsystems, descriptor.id);
-  const keyModules = inferKeyModules(descriptor.title, files, exports);
+  const keyModules = inferKeyModules(appFiles, exports);
 
   const { responsibilities, capabilities, integrationPoints } =
-    inferArchitecturalNarrative(descriptor, files, exports, routes, hooks, dependsOn);
+    inferArchitecturalNarrative(descriptor, appFiles, exports, routes, hooks, dependsOn);
 
   return {
     id: descriptor.id,
     title: descriptor.title,
     globs: descriptor.globs,
-    files,
+    files: appFiles,
     exports,
     imports,
     routes,
@@ -914,8 +1117,6 @@ function inferArchitecturalNarrative(
   const hasPayment = /stripe|payment|billing|subscription/i.test(joinedFiles);
   const hasStorage = /storage|upload|cdn|bucket|blob|asset/i.test(joinedFiles);
   const hasTheme = /theme|style|css|tailwind|customize/i.test(joinedFiles);
-  const hasTest = /test|spec|vitest|playwright/i.test(joinedFiles);
-  const hasInfra = /terraform|docker|prometheus|grafana|vercel/i.test(joinedFiles);
   const hasGame = /game|cartridge|wasm|webgpu|controller/i.test(joinedFiles);
   const hasContent = /contentengin|asset|recipe|glb|rig|animate|validate|export/i.test(joinedFiles);
 
@@ -956,8 +1157,6 @@ function inferArchitecturalNarrative(
   if (hasTheme) responsibilities.push('Theming, design tokens, visual customization, or settings surfaces');
   if (hasGame) responsibilities.push('GameEngin cartridge/runtime interaction or playable system behavior');
   if (hasContent) responsibilities.push('ContentEngin asset creation, validation, rigging, animation, or export behavior');
-  if (hasTest) responsibilities.push('Quality gates, regression checks, or integration coverage');
-  if (hasInfra) responsibilities.push('Infrastructure provisioning, deployment, or operational observability');
 
   if (hooks.length > 0) {
     capabilities.push(`Exposes hooks: ${hooks.slice(0, 6).join(', ')}${hooks.length > 6 ? `, +${hooks.length - 6} more` : ''}`);
@@ -988,11 +1187,11 @@ function inferArchitecturalNarrative(
   }
 
   if (files.length === 0) {
-    capabilities.push('No source files currently matched — section registered but unpopulated');
+    capabilities.push('No application source files currently matched — section registered but unpopulated');
   }
 
-  if (dependsOn.includes('dual-runtimes') || dependsOn.includes('the-engins')) {
-    integrationPoints.push('Integrates with the Engin / Dual Runtime layer for execution orchestration');
+  if (dependsOn.includes('dual-runtimes') || dependsOn.includes('runtime-orchestration') || dependsOn.includes('the-engins')) {
+    integrationPoints.push('Integrates with the Engin / Runtime layer for execution orchestration');
   }
 
   if (dependsOn.includes('shared-dreams')) {
@@ -1005,10 +1204,6 @@ function inferArchitecturalNarrative(
 
   if (dependsOn.includes('the-dmbar-dreamdmbar')) {
     integrationPoints.push('Surfaces through the DreamDMBar navigation / communication layer');
-  }
-
-  if (dependsOn.includes('agents-workflow')) {
-    integrationPoints.push('Orchestrated by agent workflows or automation pipelines');
   }
 
   for (const dep of dependsOn.slice(0, 4)) {
@@ -1040,20 +1235,20 @@ function generateSubsystemDescription(model: SubsystemModel): string {
   const parts: string[] = [];
 
   if (files.length === 0) {
-    parts.push(`${title} is registered in the section registry but currently has no matched source files.`);
+    parts.push(`${title} is registered in the application-source registry but currently has no matched source files.`);
     return parts.join(' ');
   }
 
   const hasReact = components.length > 0 || files.some((f) => /\.tsx$/.test(f));
 
   if (hasReact && apiRoutes.length > 0) {
-    parts.push(`${title} is a full-stack subsystem with React surfaces and API transport boundaries.`);
+    parts.push(`${title} is a full-stack application subsystem with React surfaces and API transport boundaries.`);
   } else if (hasReact) {
-    parts.push(`${title} is a user-facing surface subsystem composed of React components and presentation logic.`);
+    parts.push(`${title} is a user-facing application surface subsystem composed of React components and presentation logic.`);
   } else if (apiRoutes.length > 0) {
-    parts.push(`${title} is a server/API subsystem exposing ${apiRoutes.length} route handler${apiRoutes.length !== 1 ? 's' : ''}.`);
+    parts.push(`${title} is a server/API application subsystem exposing ${apiRoutes.length} route handler${apiRoutes.length !== 1 ? 's' : ''}.`);
   } else {
-    parts.push(`${title} provides platform behavior, contracts, or infrastructure used by the rest of DREAMengin.`);
+    parts.push(`${title} provides application behavior, contracts, or infrastructure used by DREAMengin.`);
   }
 
   if (pageRoutes.length > 0) {
@@ -1115,21 +1310,21 @@ function fmtSymbolList(names: string[], max = 10): string {
 }
 
 function buildFileIndex(files: string[]): string {
-  if (files.length === 0) return '- _No files currently matched._';
+  if (files.length === 0) return '- _No application source files currently matched._';
 
   return files
     .sort()
     .map((f) => {
       const ext = extname(f).toLowerCase();
 
-      let kind = 'project file';
+      let kind = 'application source file';
 
       if (f.endsWith('/route.ts') || f.endsWith('/route.tsx')) kind = 'API route transport boundary';
       else if (f.endsWith('/page.tsx') || f.endsWith('/page.ts')) kind = 'route page surface';
-      else if (ext === '.tsx' || ext === '.jsx') kind = 'React component module';
-      else if (ext === '.ts' || ext === '.js') kind = 'TypeScript module';
-      else if (ext === '.sql') kind = 'SQL schema/migration';
-      else if (ext === '.md') kind = 'documentation';
+      else if (ext === '.tsx' || ext === '.jsx') kind = 'React application module';
+      else if (ext === '.ts' || ext === '.js' || ext === '.mjs' || ext === '.cjs') kind = 'TypeScript/JavaScript application module';
+      else if (ext === '.sql') kind = 'SQL schema/persistence source';
+      else if (ext === '.css') kind = 'application style source';
 
       return `- \`${f}\` — ${kind}.`;
     })
@@ -1177,6 +1372,7 @@ function renderSectionMarkdown(
   model: SubsystemModel,
   files: string[],
 ): string {
+  const appFiles = files.filter(isApplicationSourceCode);
   const subLevel = headingLevel === '##' ? '###' : '####';
   const subSubLevel = headingLevel === '##' ? '####' : '#####';
 
@@ -1251,16 +1447,16 @@ function renderSectionMarkdown(
     sections.push(`${subLevel} Capabilities`, fmtList(model.capabilities));
   }
 
-  const tree = buildTreeLines(files).join('\n');
+  const tree = buildTreeLines(appFiles).join('\n');
 
   sections.push(
-    `${subSubLevel} File Structure`,
+    `${subSubLevel} Application Source Structure`,
     '```text',
     tree,
     '```',
-    `<details><summary>${title} file index (${files.length} files)</summary>`,
+    `<details><summary>${title} application source index (${appFiles.length} files)</summary>`,
     '',
-    buildFileIndex(files),
+    buildFileIndex(appFiles),
     '',
     '</details>',
   );
@@ -1370,8 +1566,8 @@ function inferDynamicSections(changedFiles: string[], registry: SectionDescripto
   const seen = new Set<string>();
   const usedIds = new Set(registry.map((s) => s.id));
 
-  for (const cf of changedFiles) {
-    const top = normalizePath(cf).split('/')[0];
+  for (const cf of changedFiles.map(normalizePath).filter(isApplicationSourceCode)) {
+    const top = cf.split('/')[0];
 
     if (!top || top.startsWith('.') || handledTopLevels.has(top) || seen.has(top)) continue;
 
@@ -1401,11 +1597,12 @@ function inferDynamicSections(changedFiles: string[], registry: SectionDescripto
 }
 
 function inferFullRebuildDynamicSections(allFiles: string[], registry: SectionDescriptor[]): SectionDescriptor[] {
-  const dynamic = inferDynamicSections(allFiles, registry);
+  const appFiles = allFiles.filter(isApplicationSourceCode);
+  const dynamic = inferDynamicSections(appFiles, registry);
   const usedIds = new Set([...registry, ...dynamic].map((section) => section.id));
   const usedTitles = new Set([...registry, ...dynamic].map((section) => section.title));
 
-  const topLevelDirs = [...new Set(allFiles.map((file) => normalizePath(file).split('/')[0]).filter(Boolean))]
+  const topLevelDirs = [...new Set(appFiles.map((file) => normalizePath(file).split('/')[0]).filter(Boolean))]
     .filter((top) => !top.startsWith('.') && top !== 'node_modules')
     .sort();
 
@@ -1442,8 +1639,9 @@ export function computeAffected(
   sections: SectionDescriptor[] = SECTION_REGISTRY,
 ): Map<string, { section: SectionDescriptor; subsections: Set<string> }> {
   const affected = new Map<string, { section: SectionDescriptor; subsections: Set<string> }>();
+  const appChangedFiles = changedFiles.map(normalizePath).filter(isApplicationSourceCode);
 
-  for (const cf of changedFiles.map(normalizePath)) {
+  for (const cf of appChangedFiles) {
     for (const section of sections) {
       if (!matchesAnyGlob(cf, section.globs)) continue;
 
@@ -1465,7 +1663,10 @@ export function computeAffected(
 }
 
 export function buildAutosyncSummary(changedFiles: readonly string[]): AutosyncSummary {
-  const normalizedChangedFiles = [...changedFiles].map(normalizePath);
+  const normalizedChangedFiles = [...changedFiles]
+    .map(normalizePath)
+    .filter(isApplicationSourceCode);
+
   const dynamicSections = inferDynamicSections(normalizedChangedFiles, SECTION_REGISTRY);
   const sections = [...SECTION_REGISTRY, ...dynamicSections];
   const affected = computeAffected(normalizedChangedFiles, sections);
@@ -1495,12 +1696,16 @@ export function buildAutosyncSummary(changedFiles: readonly string[]): AutosyncS
 export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile?: string; fullRebuild?: boolean }): AutosyncSummary {
   if (!existsSync(README_PATH)) throw new Error(`README not found at ${README_PATH}`);
 
-  const allFiles = walkFiles(ROOT);
+  const allFiles = walkFiles(ROOT).filter(isApplicationSourceCode);
+  const changedApplicationFiles = options.changedFiles
+    .map(normalizePath)
+    .filter(isApplicationSourceCode);
+
   const fullRebuild = options.fullRebuild === true;
 
   const dynamicSections = fullRebuild
     ? inferFullRebuildDynamicSections(allFiles, SECTION_REGISTRY)
-    : inferDynamicSections(options.changedFiles, SECTION_REGISTRY);
+    : inferDynamicSections(changedApplicationFiles, SECTION_REGISTRY);
 
   const sections = [...SECTION_REGISTRY, ...dynamicSections];
 
@@ -1509,11 +1714,11 @@ export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile
       section.id,
       { section, subsections: new Set(Object.keys(section.subsections ?? {})) },
     ]))
-    : computeAffected(options.changedFiles, sections);
+    : computeAffected(changedApplicationFiles, sections);
 
   if (affected.size === 0) {
     const summary: AutosyncSummary = {
-      changedFiles: options.changedFiles.map(normalizePath),
+      changedFiles: changedApplicationFiles,
       affectedSections: [],
       regeneratedSections: [],
       regeneratedSubsections: [],
@@ -1576,7 +1781,7 @@ export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile
   }
 
   const summary: AutosyncSummary = {
-    changedFiles: options.changedFiles.map(normalizePath),
+    changedFiles: changedApplicationFiles,
     affectedSections: [...affected.values()].map(({ section }) => ({ id: section.id, title: section.title })),
     regeneratedSections,
     regeneratedSubsections,
@@ -1609,17 +1814,18 @@ function readChangedFiles(changedFilesPath: string): string[] {
     .split(/\r?\n/g)
     .map((l) => l.trim())
     .filter(Boolean)
-    .map(normalizePath);
+    .map(normalizePath)
+    .filter(isApplicationSourceCode);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === __filename) {
   const changedFilesFile = parseArg('--changed-files');
   const summaryFile = parseArg('--summary-file');
   const fullRebuild = process.argv.includes('--full') || !changedFilesFile;
-  const changedFiles = changedFilesFile ? readChangedFiles(resolve(changedFilesFile)) : walkFiles(ROOT);
+  const changedFiles = changedFilesFile ? readChangedFiles(resolve(changedFilesFile)) : walkFiles(ROOT).filter(isApplicationSourceCode);
 
   if (fullRebuild) {
-    console.log('readme-autosync: running full README rebuild from live repo state.');
+    console.log('readme-autosync: running application-source-only README rebuild from live repo state.');
   }
 
   const summary = runReadmeAutosync({
