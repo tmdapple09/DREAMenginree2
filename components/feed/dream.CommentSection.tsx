@@ -294,6 +294,9 @@ export default function CommentSection({ postId }: Props) {
             >
               <textarea
                 ref={inputRef}
+                data-dreamdm-intent="comment"
+                data-dreamdm-target-post-id={postId}
+                data-dreamdm-target-label="this post"
                 value={draft}
                 onChange={e => setDraft(e.target.value.slice(0, COMMENT_MAX_LENGTH))}
                 onKeyDown={handleKeyDown}

@@ -43,14 +43,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const offset = parseInt(searchParams.get('offset') ?? '0', 10);
 
     // Get the list of user IDs the caller follows
-    const { data: followRows } = await supabase
+    const { data: followRows, error: followsError } = await supabase
       .from('follows')
       .select('following_id')
       .eq('follower_id', user.id);
 
-    const followedIds: string[] = (followRows ?? []).map(
-      (r: { following_id: string }) => r.following_id,
-    );
+    const followedIds: string[] = followsError
+      ? []
+      : (followRows ?? []).map((r: { following_id: string }) => r.following_id);
     // Always include the caller's own posts
     followedIds.push(user.id);
 

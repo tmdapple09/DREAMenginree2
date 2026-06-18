@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T06:29:19.522Z",
+  "generatedAt": "2026-06-16T04:12:31.513Z",
   "root": ".",
   "nodes": [
     {
@@ -2912,16 +2912,6 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/export-src-only.yml",
-      "label": "export-src-only.yml",
-      "type": "config",
-      "path": ".github/workflows/export-src-only.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:.github/workflows/exportrepo.yml",
       "label": "exportrepo.yml",
       "type": "config",
@@ -3516,16 +3506,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-src-only-1-gitapply-patched.zip",
-      "label": "DREAMengin-src-only-1-gitapply-patched.zip",
-      "type": "file",
-      "path": "DREAMengin-src-only-1-gitapply-patched.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -9079,32 +9059,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/api/youtube/live-feed/route.ts#fallbackChannelIds",
-      "label": "fallbackChannelIds",
-      "type": "function",
-      "path": "app/api/youtube/live-feed/route.ts",
-      "parent": "file:app/api/youtube/live-feed/route.ts",
-      "loc": 38,
-      "isOrphan": false,
-      "exported": false
-    },
-    {
-      "id": "function:app/api/youtube/live-feed/route.ts#fetchFallbackYouTubeFeed",
-      "label": "fetchFallbackYouTubeFeed",
-      "type": "function",
-      "path": "app/api/youtube/live-feed/route.ts",
-      "parent": "file:app/api/youtube/live-feed/route.ts",
-      "loc": 51,
-      "isOrphan": false,
-      "exported": false
-    },
-    {
       "id": "function:app/api/youtube/live-feed/route.ts#GET",
       "label": "GET",
       "type": "function",
       "path": "app/api/youtube/live-feed/route.ts",
       "parent": "file:app/api/youtube/live-feed/route.ts",
-      "loc": 77,
+      "loc": 32,
       "isOrphan": false,
       "exported": true
     },
@@ -20683,7 +20643,7 @@
       "type": "function",
       "path": "components/home/dream.FlagshipEnginesStrip.tsx",
       "parent": "file:components/home/dream.FlagshipEnginesStrip.tsx",
-      "loc": 40,
+      "loc": 52,
       "isOrphan": true,
       "exported": true
     },
@@ -27717,7 +27677,7 @@
       "type": "function",
       "path": "dreamr/bot-detection/swipe-physics.ts",
       "parent": "file:dreamr/bot-detection/swipe-physics.ts",
-      "loc": 103,
+      "loc": 99,
       "isOrphan": false,
       "exported": true
     },
@@ -27727,7 +27687,7 @@
       "type": "function",
       "path": "dreamr/bot-detection/swipe-physics.ts",
       "parent": "file:dreamr/bot-detection/swipe-physics.ts",
-      "loc": 132,
+      "loc": 128,
       "isOrphan": false,
       "exported": true
     },
@@ -27737,7 +27697,7 @@
       "type": "function",
       "path": "dreamr/bot-detection/swipe-physics.ts",
       "parent": "file:dreamr/bot-detection/swipe-physics.ts",
-      "loc": 151,
+      "loc": 147,
       "isOrphan": false,
       "exported": true
     },
@@ -27747,7 +27707,7 @@
       "type": "function",
       "path": "dreamr/bot-detection/swipe-physics.ts",
       "parent": "file:dreamr/bot-detection/swipe-physics.ts",
-      "loc": 198,
+      "loc": 189,
       "isOrphan": false,
       "exported": true
     },
@@ -32069,32 +32029,12 @@
       "tags": []
     },
     {
-      "id": "function:engine/connectors/youtube.ts#fetchJsonWithTimeout",
-      "label": "fetchJsonWithTimeout",
-      "type": "function",
-      "path": "engine/connectors/youtube.ts",
-      "parent": "file:engine/connectors/youtube.ts",
-      "loc": 22,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/connectors/youtube.ts#mapWithConcurrency",
-      "label": "mapWithConcurrency",
-      "type": "function",
-      "path": "engine/connectors/youtube.ts",
-      "parent": "file:engine/connectors/youtube.ts",
-      "loc": 38,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:engine/connectors/youtube.ts#pollYouTube",
       "label": "pollYouTube",
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 54,
+      "loc": 4,
       "isOrphan": true,
       "exported": true
     },
@@ -32104,7 +32044,7 @@
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 86,
+      "loc": 33,
       "isOrphan": true,
       "exported": false
     },
@@ -32211,7 +32151,7 @@
       "type": "function",
       "path": "engine/data-transform.ts",
       "parent": "file:engine/data-transform.ts",
-      "loc": 90,
+      "loc": 81,
       "isOrphan": true,
       "exported": true
     },
@@ -32221,7 +32161,7 @@
       "type": "function",
       "path": "engine/data-transform.ts",
       "parent": "file:engine/data-transform.ts",
-      "loc": 129,
+      "loc": 105,
       "isOrphan": true,
       "exported": true
     },
@@ -42828,7 +42768,7 @@
       "type": "function",
       "path": "engine/slog.ts",
       "parent": "file:engine/slog.ts",
-      "loc": 48,
+      "loc": 47,
       "isOrphan": false,
       "exported": true
     },
@@ -42838,7 +42778,7 @@
       "type": "function",
       "path": "engine/slog.ts",
       "parent": "file:engine/slog.ts",
-      "loc": 69,
+      "loc": 61,
       "isOrphan": false,
       "exported": true
     },
@@ -43589,32 +43529,12 @@
       "tags": []
     },
     {
-      "id": "function:engine/vm/inter-vm-messaging.ts#encodeRegion",
-      "label": "encodeRegion",
-      "type": "function",
-      "path": "engine/vm/inter-vm-messaging.ts",
-      "parent": "file:engine/vm/inter-vm-messaging.ts",
-      "loc": 34,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/vm/inter-vm-messaging.ts#decodeRegion",
-      "label": "decodeRegion",
-      "type": "function",
-      "path": "engine/vm/inter-vm-messaging.ts",
-      "parent": "file:engine/vm/inter-vm-messaging.ts",
-      "loc": 38,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "class:engine/vm/inter-vm-messaging.ts#InterVMChannel",
       "label": "InterVMChannel",
       "type": "class",
       "path": "engine/vm/inter-vm-messaging.ts",
       "parent": "file:engine/vm/inter-vm-messaging.ts",
-      "loc": 42,
+      "loc": 28,
       "isOrphan": false,
       "exported": true
     },
@@ -50138,32 +50058,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:engins/forgeengin/enginpipe/telemetry/client.ts#getBrowserLifecycleTargets",
-      "label": "getBrowserLifecycleTargets",
-      "type": "function",
-      "path": "engins/forgeengin/enginpipe/telemetry/client.ts",
-      "parent": "file:engins/forgeengin/enginpipe/telemetry/client.ts",
-      "loc": 62,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/forgeengin/enginpipe/telemetry/client.ts#getProcessLifecycleTarget",
-      "label": "getProcessLifecycleTarget",
-      "type": "function",
-      "path": "engins/forgeengin/enginpipe/telemetry/client.ts",
-      "parent": "file:engins/forgeengin/enginpipe/telemetry/client.ts",
-      "loc": 69,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:engins/forgeengin/enginpipe/telemetry/client.ts#createTelemetryClient",
       "label": "createTelemetryClient",
       "type": "function",
       "path": "engins/forgeengin/enginpipe/telemetry/client.ts",
       "parent": "file:engins/forgeengin/enginpipe/telemetry/client.ts",
-      "loc": 78,
+      "loc": 47,
       "isOrphan": false,
       "exported": true
     },
@@ -51205,22 +51105,12 @@
       "tags": []
     },
     {
-      "id": "function:engins/gameengin/GameRuntime.tsx#appendFrameSample",
-      "label": "appendFrameSample",
-      "type": "function",
-      "path": "engins/gameengin/GameRuntime.tsx",
-      "parent": "file:engins/gameengin/GameRuntime.tsx",
-      "loc": 67,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:engins/gameengin/GameRuntime.tsx#GameRuntime",
       "label": "GameRuntime",
       "type": "function",
       "path": "engins/gameengin/GameRuntime.tsx",
       "parent": "file:engins/gameengin/GameRuntime.tsx",
-      "loc": 101,
+      "loc": 90,
       "isOrphan": true,
       "exported": true
     },
@@ -55694,7 +55584,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 298,
+      "loc": 251,
       "isOrphan": true,
       "exported": false
     },
@@ -55704,7 +55594,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 303,
+      "loc": 256,
       "isOrphan": true,
       "exported": true
     },
@@ -55714,7 +55604,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 307,
+      "loc": 260,
       "isOrphan": true,
       "exported": true
     },
@@ -55724,7 +55614,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 311,
+      "loc": 264,
       "isOrphan": true,
       "exported": true
     },
@@ -55734,7 +55624,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 316,
+      "loc": 269,
       "isOrphan": true,
       "exported": true
     },
@@ -55744,7 +55634,7 @@
       "type": "function",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 320,
+      "loc": 273,
       "isOrphan": true,
       "exported": true
     },
@@ -55764,7 +55654,7 @@
       "type": "class",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 146,
+      "loc": 144,
       "isOrphan": false,
       "exported": true
     },
@@ -55774,7 +55664,7 @@
       "type": "class",
       "path": "engins/gameengin/procgen.ts",
       "parent": "file:engins/gameengin/procgen.ts",
-      "loc": 218,
+      "loc": 211,
       "isOrphan": false,
       "exported": true
     },
@@ -56360,8 +56250,8 @@
       "type": "class",
       "path": "engins/gameengin/world-crdt.ts",
       "parent": "file:engins/gameengin/world-crdt.ts",
-      "loc": 132,
-      "isOrphan": false,
+      "loc": 130,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -63629,7 +63519,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 309,
+      "loc": 175,
       "isOrphan": true,
       "exported": false
     },
@@ -63639,7 +63529,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 313,
+      "loc": 179,
       "isOrphan": true,
       "exported": false
     },
@@ -63649,7 +63539,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 317,
+      "loc": 183,
       "isOrphan": true,
       "exported": false
     },
@@ -63659,7 +63549,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 352,
+      "loc": 198,
       "isOrphan": true,
       "exported": false
     },
@@ -63669,7 +63559,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 356,
+      "loc": 202,
       "isOrphan": true,
       "exported": false
     },
@@ -63679,7 +63569,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 379,
+      "loc": 207,
       "isOrphan": true,
       "exported": false
     },
@@ -63689,7 +63579,17 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 398,
+      "loc": 221,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#toComponentName",
+      "label": "toComponentName",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 230,
       "isOrphan": true,
       "exported": false
     },
@@ -63699,117 +63599,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 412,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#readFileTextSafe",
-      "label": "readFileTextSafe",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 456,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isApplicationSourceCode",
-      "label": "isApplicationSourceCode",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 498,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isLowSignalExportName",
-      "label": "isLowSignalExportName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 551,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDemoOrMockName",
-      "label": "isDemoOrMockName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 555,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isImportantExportName",
-      "label": "isImportantExportName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 559,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDecorativePath",
-      "label": "isDecorativePath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 566,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDemoOrMockPath",
-      "label": "isDemoOrMockPath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 570,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isImportantPath",
-      "label": "isImportantPath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 574,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#hasBehaviorEvidence",
-      "label": "hasBehaviorEvidence",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 604,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isTypeOnlyFile",
-      "label": "isTypeOnlyFile",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 621,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#lineCount",
-      "label": "lineCount",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 625,
+      "loc": 236,
       "isOrphan": true,
       "exported": false
     },
@@ -63819,7 +63609,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 636,
+      "loc": 270,
       "isOrphan": true,
       "exported": false
     },
@@ -63829,7 +63619,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 648,
+      "loc": 279,
       "isOrphan": true,
       "exported": false
     },
@@ -63839,7 +63629,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 666,
+      "loc": 295,
       "isOrphan": true,
       "exported": false
     },
@@ -63849,7 +63639,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 674,
+      "loc": 303,
       "isOrphan": true,
       "exported": false
     },
@@ -63859,7 +63649,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 678,
+      "loc": 307,
       "isOrphan": true,
       "exported": true
     },
@@ -63869,7 +63659,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 742,
+      "loc": 365,
       "isOrphan": true,
       "exported": true
     },
@@ -63879,7 +63669,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 778,
+      "loc": 400,
       "isOrphan": true,
       "exported": false
     },
@@ -63889,7 +63679,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 797,
+      "loc": 416,
       "isOrphan": true,
       "exported": true
     },
@@ -63899,7 +63689,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 817,
+      "loc": 434,
       "isOrphan": true,
       "exported": true
     },
@@ -63909,7 +63699,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 827,
+      "loc": 438,
       "isOrphan": true,
       "exported": true
     },
@@ -63919,29 +63709,9 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 840,
+      "loc": 446,
       "isOrphan": true,
       "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#scoreKeyModule",
-      "label": "scoreKeyModule",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 877,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferKeyModules",
-      "label": "inferKeyModules",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 981,
-      "isOrphan": true,
-      "exported": false
     },
     {
       "id": "function:scripts/readme-autosync.ts#analyzeSubsystem",
@@ -63949,37 +63719,17 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1022,
+      "loc": 476,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "function:scripts/readme-autosync.ts#filteredInterfaces",
-      "label": "filteredInterfaces",
+      "id": "function:scripts/readme-autosync.ts#inferKeyModules",
+      "label": "inferKeyModules",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1076,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#filteredTypes",
-      "label": "filteredTypes",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1084,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#filteredFunctions",
-      "label": "filteredFunctions",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1092,
+      "loc": 533,
       "isOrphan": true,
       "exported": false
     },
@@ -63989,7 +63739,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1101,
+      "loc": 559,
       "isOrphan": true,
       "exported": false
     },
@@ -63999,7 +63749,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1250,
+      "loc": 699,
       "isOrphan": true,
       "exported": false
     },
@@ -64009,7 +63759,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1311,
+      "loc": 759,
       "isOrphan": true,
       "exported": false
     },
@@ -64019,7 +63769,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1315,
+      "loc": 763,
       "isOrphan": true,
       "exported": false
     },
@@ -64029,7 +63779,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1326,
+      "loc": 773,
       "isOrphan": true,
       "exported": false
     },
@@ -64039,27 +63789,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1334,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#fmtKeyModules",
-      "label": "fmtKeyModules",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1356,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#notableExportsForMarkdown",
-      "label": "notableExportsForMarkdown",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1362,
+      "loc": 779,
       "isOrphan": true,
       "exported": false
     },
@@ -64069,7 +63799,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1371,
+      "loc": 797,
       "isOrphan": true,
       "exported": true
     },
@@ -64079,7 +63809,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1380,
+      "loc": 806,
       "isOrphan": true,
       "exported": true
     },
@@ -64089,7 +63819,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1391,
+      "loc": 816,
       "isOrphan": true,
       "exported": false
     },
@@ -64099,9 +63829,19 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1493,
+      "loc": 914,
       "isOrphan": true,
       "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#replaceSection",
+      "label": "replaceSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 926,
+      "isOrphan": false,
+      "exported": true
     },
     {
       "id": "function:scripts/readme-autosync.ts#removeAllSectionsByTitle",
@@ -64109,67 +63849,27 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1508,
+      "loc": 933,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#stripLegacyManagedSections",
-      "label": "stripLegacyManagedSections",
+      "id": "function:scripts/readme-autosync.ts#stripManagedGeneratedSections",
+      "label": "stripManagedGeneratedSections",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1523,
+      "loc": 945,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#upsertSubsectionInSection",
-      "label": "upsertSubsectionInSection",
+      "id": "function:scripts/readme-autosync.ts#dedupeManagedGeneratedSections",
+      "label": "dedupeManagedGeneratedSections",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1537,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildSectionWithSubsections",
-      "label": "buildSectionWithSubsections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1558,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildManagedReadmeBlock",
-      "label": "buildManagedReadmeBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1579,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#rebaseReadmeWithManagedBlock",
-      "label": "rebaseReadmeWithManagedBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1601,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferDynamicSections",
-      "label": "inferDynamicSections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1625,
+      "loc": 953,
       "isOrphan": true,
       "exported": false
     },
@@ -64179,7 +63879,27 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1664,
+      "loc": 965,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#upsertSubsectionInSection",
+      "label": "upsertSubsectionInSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 989,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#inferDynamicSections",
+      "label": "inferDynamicSections",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1011,
       "isOrphan": true,
       "exported": false
     },
@@ -64189,7 +63909,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1702,
+      "loc": 1034,
       "isOrphan": false,
       "exported": true
     },
@@ -64199,7 +63919,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1730,
+      "loc": 1054,
       "isOrphan": false,
       "exported": true
     },
@@ -64209,7 +63929,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1761,
+      "loc": 1081,
       "isOrphan": false,
       "exported": true
     },
@@ -64219,7 +63939,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1817,
+      "loc": 1163,
       "isOrphan": true,
       "exported": false
     },
@@ -64229,7 +63949,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1824,
+      "loc": 1169,
       "isOrphan": true,
       "exported": false
     },
@@ -73141,16 +72861,6 @@
       "tags": []
     },
     {
-      "id": "file:tests/performance-hot-paths.test.ts",
-      "label": "performance-hot-paths.test.ts",
-      "type": "ts",
-      "path": "tests/performance-hot-paths.test.ts",
-      "parent": "folder:tests",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:tests/phase6-privacy-idari.test.ts",
       "label": "phase6-privacy-idari.test.ts",
       "type": "ts",
@@ -79198,11 +78908,6 @@
     },
     {
       "source": "file:app/api/youtube/live-feed/route.ts",
-      "target": "file:engine/social/rss-feed.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/api/youtube/live-feed/route.ts",
       "target": "file:types/connector.ts",
       "kind": "import"
     },
@@ -79214,11 +78919,6 @@
     {
       "source": "file:app/api/youtube/live-feed/route.ts",
       "target": "file:engine/connectors/providers/youtube.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/api/youtube/live-feed/route.ts",
-      "target": "file:engine/social/rss-feed.ts",
       "kind": "route-uses"
     },
     {
@@ -85304,6 +85004,11 @@
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
       "target": "file:types/dreamArtifact.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/home/dream.FlagshipEnginesStrip.tsx",
+      "target": "file:engins/forgeengin/forge/forgeMomentum.ts",
       "kind": "import"
     },
     {
@@ -101077,26 +100782,6 @@
       "kind": "import"
     },
     {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "file:engine/vm/inter-vm-messaging.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "file:engins/forgeengin/enginpipe/telemetry/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "file:engins/gameengin/procgen.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "file:engins/gameengin/world-crdt.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:tests/phase7-naming.test.ts",
       "target": "file:engine/identity/canonical-names.ts",
       "kind": "import"
@@ -103714,16 +103399,6 @@
     {
       "source": "file:app/api/youtube/discovery/route.ts",
       "target": "function:utils/index.ts#toErrorMessage",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/api/youtube/live-feed/route.ts",
-      "target": "function:engine/social/rss-feed.ts#parseRssFeed",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/api/youtube/live-feed/route.ts",
-      "target": "function:engine/social/rss-feed.ts#youtubeChannelRssUrl",
       "kind": "call"
     },
     {
@@ -106649,6 +106324,21 @@
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
       "target": "function:engine/artifacts/artifactStore.ts#saveArtifact",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.FlagshipEnginesStrip.tsx",
+      "target": "function:engins/forgeengin/forge/forgeMomentum.ts#computeMomentum",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.FlagshipEnginesStrip.tsx",
+      "target": "function:engins/forgeengin/forge/forgeMomentum.ts#getLevelColor",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.FlagshipEnginesStrip.tsx",
+      "target": "function:engins/forgeengin/forge/forgeMomentum.ts#getLevelEmoji",
       "kind": "call"
     },
     {
@@ -113012,26 +112702,6 @@
       "kind": "call"
     },
     {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "class:engine/vm/inter-vm-messaging.ts#InterVMChannel",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "function:engins/forgeengin/enginpipe/telemetry/client.ts#createTelemetryClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "class:engins/gameengin/procgen.ts#ChunkScheduler",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/performance-hot-paths.test.ts",
-      "target": "class:engins/gameengin/world-crdt.ts#EventualConsistencyBridge",
-      "kind": "call"
-    },
-    {
       "source": "file:tests/phase7-naming.test.ts",
       "target": "function:engine/identity/canonical-names.ts#isCanonicalPlatformName",
       "kind": "call"
@@ -113333,7 +113003,7 @@
     },
     {
       "source": "file:tests/readme-autosync.test.ts",
-      "target": "file:scripts/readme-autosync.ts",
+      "target": "function:scripts/readme-autosync.ts#replaceSection",
       "kind": "call"
     },
     {

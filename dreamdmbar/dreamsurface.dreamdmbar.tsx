@@ -1113,9 +1113,30 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     const mirrorContextualInput = (event: Event) => {
       if (!isContextualTextInput(event.target)) return;
       const target = event.target;
-      const mode: BarIntentMode = target.type === 'search' ? 'search' : 'message';
-      const targetLabel = target.getAttribute('aria-label') || target.placeholder || 'Context typing';
-      setBarIntent({ mode, targetLabel });
+      const declaredIntent = target.dataset.dreamdmIntent as BarIntentMode | undefined;
+      const inferredComment = target.placeholder.toLowerCase().includes('comment');
+      const mode: BarIntentMode | undefined = declaredIntent
+        ?? (target.type === 'search' ? 'search' : undefined)
+        ?? (inferredComment ? 'comment' : undefined);
+      const targetLabel = target.dataset.dreamdmTargetLabel
+        || target.getAttribute('aria-label')
+        || target.placeholder
+        || 'Context typing';
+
+      if (mode && mode !== 'default') {
+        setBarIntent({
+          mode,
+          targetPostId: target.dataset.dreamdmTargetPostId,
+          targetLabel,
+        });
+        if (mode === 'search') setSearchQuery(target.value);
+      } else {
+        // Plain page text inputs should inherit the current surface action
+        // (feed → Post, discover → Search, etc.) instead of being forced into
+        // DM mode with no recipient. That forced-message state made Send a no-op.
+        clearBarIntent();
+      }
+
       setQuickDraft(target.value);
       setIsBloom(true);
     };
@@ -1127,7 +1148,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       document.removeEventListener('focusin', mirrorContextualInput);
       document.removeEventListener('input', mirrorContextualInput);
     };
-  }, [setBarIntent]);
+  }, [setBarIntent, clearBarIntent]);
 
   // Resolve userId
   useEffect(() => {
