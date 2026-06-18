@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T03:49:56.850Z",
+  "generated_at": "2026-06-18T22:21:23.091Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 120,
+  "count": 121,
   "surfaces": [
     {
       "type": "page",
@@ -926,6 +926,18 @@
         {
           "name": "EnginAppShell, EnginNavBar",
           "from": "@/components/engines/shared"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "path": "/engines/render",
+      "file": "app/engines/render/page.tsx",
+      "component": "RenderEnginPage",
+      "imports": [
+        {
+          "name": "RenderEnginApp",
+          "from": "@/components/engines/render/dream.RenderEnginApp"
         }
       ]
     },
