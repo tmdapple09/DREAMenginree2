@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T04:24:58.776Z
+Generated: 2026-06-18T04:30:50.230Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14337,7 +14337,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── readdirSync  ← node:fs
 │   │   ├── statSync  ← node:fs
 │   │   ├── writeFileSync  ← node:fs
-│   │   ├── basename  ← node:path
 │   │   ├── extname  ← node:path
 │   │   ├── join  ← node:path
 │   │   ├── relative  ← node:path
@@ -14360,7 +14359,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → buildAutosyncSummary
 │   │   ├── → computeAffected
 │   │   ├── → isApplicationSourceCode
-│   │   ├── → replaceSection
 │   │   ├── → runReadmeAutosync
 │   │   ├── → upsertSubsectionInSection
 │   │   └── ∅ unused: isApplicationSourceCode, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
