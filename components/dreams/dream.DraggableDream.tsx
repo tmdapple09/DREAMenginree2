@@ -30,7 +30,7 @@ export default function DraggableDream({ dream, children, className, style }: Dr
 
   return (
     <div
-      draggable
+      draggable={false}
       className={className}
       data-dream-id={dream.dream_id}
       data-dream-runtime={dream.runtime}
@@ -61,8 +61,8 @@ export default function DraggableDream({ dream, children, className, style }: Dr
       }}
       style={{
         opacity: dragging ? 0.58 : 1,
-        cursor: dragging ? 'grabbing' : 'grab',
-        touchAction: 'none',
+        cursor: dragging ? 'grabbing' : 'default',
+        touchAction: 'pan-y',
         transition: 'opacity 120ms ease',
         ...style,
       }}
