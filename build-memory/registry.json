@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T08:42:05.008Z",
+  "generatedAt": "2026-06-18T08:48:54.474Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
@@ -9105,8 +9105,10 @@
       "path": "engins/isosurfaceAssetPipeline.ts",
       "engine": "Universal",
       "exports": [
+        "addRigBendPoint",
         "analyzeImageMask",
         "AssetProcessingStatus",
+        "AutoRigState",
         "Bounds3",
         "BrushState",
         "buildInflatedReliefMesh",
@@ -9120,6 +9122,8 @@
         "computeBounds",
         "computePlanarUVs",
         "computeVertexNormals",
+        "CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES",
+        "createAutoRigState",
         "createImplicitAssetWorkspaceObject",
         "DEFAULT_BRUSH_STATE",
         "DEFAULT_CAMERA_STATE",
@@ -9134,10 +9138,13 @@
         "meshToSnapshot",
         "processImageToEditableMesh",
         "qualityFromDiagnostics",
+        "removeLastRigBendPoint",
         "repairMesh",
         "repairMeshDetailed",
         "RepairReport",
         "RepairResult",
+        "RigBendPoint",
+        "RigTargetKind",
         "sculptMesh",
         "SculptTool",
         "SourceImageAsset",
@@ -9284,7 +9291,8 @@
         "CONTENT_ENGIN_RULE_SET",
         "CONTENT_IMPLICIT_ASSET_POLICY",
         "ContentEnginAction",
-        "ContentEnginDerivedState"
+        "ContentEnginDerivedState",
+        "ContentEnginDomain"
       ]
     },
     {
