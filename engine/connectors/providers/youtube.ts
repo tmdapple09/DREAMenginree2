@@ -90,11 +90,11 @@ function getFirstEnvValue(...keys: string[]): string | undefined {
 }
 
 export function getYouTubeApiKey(): string | undefined {
-  return getFirstEnvValue('YOUTUBE_API_KEY', 'API_KEY');
+  return getFirstEnvValue('YOUTUBEAPI');
 }
 
 export function getYouTubeAnalyticsApiKey(): string | undefined {
-  return getFirstEnvValue('YOUTUBE_ANALYTICS_API_KEY', 'YOUTUBE_API_KEY', 'API_KEY');
+  return getFirstEnvValue('YOUTUBE_ANALYTICS_API_KEY', 'YOUTUBEAPI');
 }
 
 async function fetchYouTubeJson<T>(url: string, accessToken: string): Promise<T> {
