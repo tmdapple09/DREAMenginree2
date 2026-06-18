@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T19:08:08.505Z
+Generated: 2026-06-18T20:45:49.361Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -10463,6 +10463,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── authorizeDomainCapability  ← @/engine/engin-runtime/EnginCapabilities
 │   │   │   ├── RuntimeWorld  ← @/engine/runtime/dualRuntime
 │   │   │   ├── → IntentBus
+│   │   │   ├── → SpatialRuntimeCore
 │   │   │   ├── → authorizeCapability
 │   │   │   ├── → createIntentPacket
 │   │   │   ├── → createRuntimeObject
@@ -10635,6 +10636,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → fingerprintSnapshot
 │   │   │   ├── → snapshotsAreEquivalent
 │   │   │   └── ∅ unused: fingerprintSnapshot, snapshotsAreEquivalent, createFingerprintCache
+│   │   ├── superciliousPlatformRuntime.ts
+│   │   │   ├── EngineManifest  ← @/engine/runtime/iEngine
+│   │   │   ├── IntentPacket  ← @/engine/runtime/iEngine
+│   │   │   ├── JsonObject  ← @/engine/runtime/iEngine
+│   │   │   ├── JsonValue  ← @/engine/runtime/iEngine
+│   │   │   ├── RuntimeRuleSet  ← @/engine/runtime/iEngine
+│   │   │   ├── createRuntimeObject  ← @/engine/runtime/iEngine
+│   │   │   ├── → COMPETING_PLATFORMS
+│   │   │   ├── → SUPERCILIOUS_CAPABILITIES
+│   │   │   ├── → assertDreamEnginSuperset
+│   │   │   ├── → createCapabilityVector
+│   │   │   ├── → createSuperciliousPlatformState
+│   │   │   ├── → dreamEnginSuperciliousManifest
+│   │   │   └── → superciliousPlatformRuleSet
 │   │   ├── swapManager.ts ∅
 │   │   │   ├── → clearSwap
 │   │   │   ├── → getAllSwapStates
@@ -11857,7 +11872,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── writeFile  ← fs/promises
 │   │   ├── ImplicitAssetWorkspace.tsx ∅
 │   │   │   ├── ⬡ AssetViewport  ← @/engins/contentengin/AssetViewport
-│   │   │   ├── CONTENTENGIN_2026_UPGRADES  ← @/engins/contentengin/upgradeMatrix
 │   │   │   ├── useImplicitAssetWorkspace  ← @/engins/contentengin/useImplicitAssetWorkspace
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
@@ -11869,10 +11883,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ContentEnginUpgradeId  ← ./upgradeMatrix
 │   │   │   ├── enabledUpgradeIds  ← ./upgradeMatrix
 │   │   │   └── → createContentEnginRuntimeProfile
-│   │   ├── upgradeMatrix.ts
+│   │   ├── upgradeMatrix.ts ∅
 │   │   │   ├── ExportProfile  ← ./assetTypes
 │   │   │   ├── → CONTENTENGIN_2026_UPGRADES
-│   │   │   └── → enabledUpgradeIds
+│   │   │   ├── → enabledUpgradeIds
+│   │   │   └── ∅ unused: CONTENTENGIN_2026_UPGRADES
 │   │   └── useImplicitAssetWorkspace.ts
 │   │       ├── BrushState  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES  ← @/engins/isosurfaceAssetPipeline
@@ -14593,6 +14608,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/contentengin/media/h265-encoder
 │           │   ├── (dynamic)  ← @/engins/contentengin/media/ledger
 │           │   ├── (dynamic)  ← @/engins/contentengin/media/postMedia
+│           │   ├── (dynamic)  ← @/engins/contentengin/performancePlan
 │           │   ├── (dynamic)  ← @/engins/contentengin/photo/colorCluster
 │           │   ├── (dynamic)  ← @/engins/contentengin/photo/edgeDetector
 │           │   ├── (dynamic)  ← @/engins/contentengin/photo/imageAnalyzer
@@ -14615,8 +14631,10 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/contentengin/rigging/landmarks
 │           │   ├── (dynamic)  ← @/engins/contentengin/rigging/rigTypes
 │           │   ├── (dynamic)  ← @/engins/contentengin/rigging/rigValidator
+│           │   ├── (dynamic)  ← @/engins/contentengin/runtimeProfile
 │           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderRegistry
 │           │   ├── (dynamic)  ← @/engins/contentengin/shaders/shaderTypes
+│           │   ├── (dynamic)  ← @/engins/contentengin/upgradeMatrix
 │           │   ├── (dynamic)  ← @/engins/contentengin/useImplicitAssetWorkspace
 │           │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
 │           │   ├── (dynamic)  ← @/engins/dream.QuantumCircuitCanvas
@@ -15142,6 +15160,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/components/dream.BoogieWarningBanner
 │           │   ├── (dynamic)  ← @/components/dream.BrandLogo
 │           │   ├── (dynamic)  ← @/components/dream.CommandPalette
+│           │   ├── (dynamic)  ← @/components/dream.CommandPaletteMount
 │           │   ├── (dynamic)  ← @/components/dream.CreatePostModal
 │           │   ├── (dynamic)  ← @/components/dream.DragToAnchorClose
 │           │   ├── (dynamic)  ← @/components/dream.DrEamsModeToggle
@@ -15466,6 +15485,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── PartNode  ← ../../engins/contentengin/assetTypes
 │   │       ├── buildAsset  ← ../../engins/contentengin/pipeline/build
 │   │       ├── validateAsset  ← ../../engins/contentengin/pipeline/validate
+│   │       ├── describe  ← vitest
+│   │       ├── expect  ← vitest
+│   │       └── it  ← vitest
+│   ├── dreamengin-superiority
+│   │   └── dreamengin-competitive-workflow-gate.test.ts
 │   │       ├── describe  ← vitest
 │   │       ├── expect  ← vitest
 │   │       └── it  ← vitest
@@ -16902,6 +16926,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── i-engine-runtime.test.ts
 │   │   ├── DEFAULT_DUAL_RUNTIME  ← @/engine/runtime/dualRuntime
 │   │   ├── IntentBus  ← @/engine/runtime/iEngine
+│   │   ├── SpatialRuntimeCore  ← @/engine/runtime/iEngine
 │   │   ├── authorizeCapability  ← @/engine/runtime/iEngine
 │   │   ├── createIntentPacket  ← @/engine/runtime/iEngine
 │   │   ├── createRuntimeObject  ← @/engine/runtime/iEngine
@@ -16909,6 +16934,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dualRuntimeRuleSet  ← @/engine/runtime/iEngine
 │   │   ├── negotiateCompatibility  ← @/engine/runtime/iEngine
 │   │   ├── validateDomainObject  ← @/engine/runtime/iEngine
+│   │   ├── COMPETING_PLATFORMS  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── SUPERCILIOUS_CAPABILITIES  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── assertDreamEnginSuperset  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── createCapabilityVector  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── createSuperciliousPlatformState  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── dreamEnginSuperciliousManifest  ← @/engine/runtime/superciliousPlatformRuntime
+│   │   ├── superciliousPlatformRuleSet  ← @/engine/runtime/superciliousPlatformRuntime
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest

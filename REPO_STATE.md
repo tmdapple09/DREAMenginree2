@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T19:08:08.366Z
+Generated: 2026-06-18T20:45:49.217Z
 
 ---
 
@@ -11710,6 +11710,12 @@ _No style files for this feature._
 |--------|---------------|
 | `@/engine/observability/collector` | `TelemetrySnapshot` |
 
+## `engine/runtime/superciliousPlatformRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/runtime/iEngine` | `EngineManifest`, `IntentPacket`, `JsonObject`, `JsonValue`, `RuntimeRuleSet`, `createRuntimeObject` |
+
 ## `engine/runtime/useDragSurface.ts`
 
 | Module | Connected via |
@@ -12051,7 +12057,6 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engins/contentengin/AssetViewport` | `⬡ AssetViewport` |
-| `@/engins/contentengin/upgradeMatrix` | `CONTENTENGIN_2026_UPGRADES` |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | `useImplicitAssetWorkspace` |
 
 ## `engins/contentengin/assetTypes.ts`
@@ -13742,6 +13747,7 @@ _No style files for this feature._
 | `@/engins/contentengin/media/h265-encoder` | _(dynamic import)_ |
 | `@/engins/contentengin/media/ledger` | _(dynamic import)_ |
 | `@/engins/contentengin/media/postMedia` | _(dynamic import)_ |
+| `@/engins/contentengin/performancePlan` | _(dynamic import)_ |
 | `@/engins/contentengin/photo/colorCluster` | _(dynamic import)_ |
 | `@/engins/contentengin/photo/edgeDetector` | _(dynamic import)_ |
 | `@/engins/contentengin/photo/imageAnalyzer` | _(dynamic import)_ |
@@ -13764,8 +13770,10 @@ _No style files for this feature._
 | `@/engins/contentengin/rigging/landmarks` | _(dynamic import)_ |
 | `@/engins/contentengin/rigging/rigTypes` | _(dynamic import)_ |
 | `@/engins/contentengin/rigging/rigValidator` | _(dynamic import)_ |
+| `@/engins/contentengin/runtimeProfile` | _(dynamic import)_ |
 | `@/engins/contentengin/shaders/shaderRegistry` | _(dynamic import)_ |
 | `@/engins/contentengin/shaders/shaderTypes` | _(dynamic import)_ |
+| `@/engins/contentengin/upgradeMatrix` | _(dynamic import)_ |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | _(dynamic import)_ |
 | `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
 | `@/engins/dream.QuantumCircuitCanvas` | _(dynamic import)_ |
@@ -14284,6 +14292,7 @@ _No style files for this feature._
 | `@/components/dream.BoogieWarningBanner` | _(dynamic import)_ |
 | `@/components/dream.BrandLogo` | _(dynamic import)_ |
 | `@/components/dream.CommandPalette` | _(dynamic import)_ |
+| `@/components/dream.CommandPaletteMount` | _(dynamic import)_ |
 | `@/components/dream.CreatePostModal` | _(dynamic import)_ |
 | `@/components/dream.DragToAnchorClose` | _(dynamic import)_ |
 | `@/components/dream.DrEamsModeToggle` | _(dynamic import)_ |
@@ -15818,6 +15827,7 @@ _No style files for this feature._
 - `@/engins/contentengin/media/h265-encoder`
 - `@/engins/contentengin/media/ledger`
 - `@/engins/contentengin/media/postMedia`
+- `@/engins/contentengin/performancePlan`
 - `@/engins/contentengin/photo/colorCluster`
 - `@/engins/contentengin/photo/edgeDetector`
 - `@/engins/contentengin/photo/imageAnalyzer`
@@ -15840,8 +15850,10 @@ _No style files for this feature._
 - `@/engins/contentengin/rigging/landmarks`
 - `@/engins/contentengin/rigging/rigTypes`
 - `@/engins/contentengin/rigging/rigValidator`
+- `@/engins/contentengin/runtimeProfile`
 - `@/engins/contentengin/shaders/shaderRegistry`
 - `@/engins/contentengin/shaders/shaderTypes`
+- `@/engins/contentengin/upgradeMatrix`
 - `@/engins/contentengin/useImplicitAssetWorkspace`
 - `@/engins/dream.ForgeEngin`
 - `@/engins/dream.QuantumCircuitCanvas`
@@ -16336,6 +16348,7 @@ _No style files for this feature._
 - `@/components/dream.BoogieWarningBanner`
 - `@/components/dream.BrandLogo`
 - `@/components/dream.CommandPalette`
+- `@/components/dream.CommandPaletteMount`
 - `@/components/dream.CreatePostModal`
 - `@/components/dream.DragToAnchorClose`
 - `@/components/dream.DrEamsModeToggle`
@@ -18635,6 +18648,7 @@ _No style files for this feature._
 - `engine/navigation/SpatialNavigationEngine.ts`
 - `engine/navigation/useNavigation.ts`
 - `engine/runtime/dualRuntimeBridge.ts`
+- `engine/runtime/iEngine.ts`
 - `engine/runtime/index.ts`
 - `engine/runtime/moduleRegistry.ts`
 - `engine/runtime/runtimeChannel.ts`
@@ -19002,6 +19016,7 @@ _No circular dependencies detected._
 | `dreamdmbar/hooks/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `engine/navigation/useNavigation.ts` | 3 | EVENT_BUS |
 | `engine/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/codeengin/runner.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
@@ -20115,6 +20130,7 @@ _No circular dependencies detected._
 | `engins/contentengin/recipes/seededRandom.ts` | `pick` |
 | `engins/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
 | `engins/contentengin/shaders/shaderRegistry.ts` | `getShader` |
+| `engins/contentengin/upgradeMatrix.ts` | `CONTENTENGIN_2026_UPGRADES` |
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `(default)` |
 | `engins/engin.BrandingEngin.tsx` | `(default)` |
@@ -22660,6 +22676,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── sharedResourcePool.ts
 │   │   ├── snapshotFingerprint.ts ∅
 │   │   │   └── ∅ unused: fingerprintSnapshot, snapshotsAreEquivalent, createFingerprintCache
+│   │   ├── superciliousPlatformRuntime.ts
 │   │   ├── swapManager.ts ∅
 │   │   │   └── ∅ unused: setSwap, clearSwap, getAllSwapStates, resetAllSwaps
 │   │   ├── useDragSurface.ts ∅
@@ -22936,7 +22953,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   ├── performancePlan.ts
 │   │   ├── runtimeProfile.ts
-│   │   ├── upgradeMatrix.ts
+│   │   ├── upgradeMatrix.ts ∅
+│   │   │   └── ∅ unused: CONTENTENGIN_2026_UPGRADES
 │   │   └── useImplicitAssetWorkspace.ts
 │   ├── forgeengin
 │   │   ├── enginpipe
@@ -23582,6 +23600,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── contentengin-recipes.test.ts
 │   │   ├── contentengin-rigging.test.ts
 │   │   └── contentengin-validation.test.ts
+│   ├── dreamengin-superiority
+│   │   └── dreamengin-competitive-workflow-gate.test.ts
 │   ├── e2e
 │   │   ├── demo.spec.ts
 │   │   └── full-coverage.spec.ts
