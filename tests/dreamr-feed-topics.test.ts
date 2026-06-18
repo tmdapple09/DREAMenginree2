@@ -245,9 +245,9 @@ describe('YouTubeChannelResponse typing', () => {
       similarVideos: [],
       channel: '',
       topic: '',
-      error: 'YOUTUBE_API_KEY is not configured.',
+      error: 'YOUTUBEAPI is not configured.',
     };
     expect(errorResponse.ok).toBe(false);
-    expect(errorResponse.error).toContain('YOUTUBE_API_KEY');
+    expect(errorResponse.error).toContain('YOUTUBEAPI');
   });
 });

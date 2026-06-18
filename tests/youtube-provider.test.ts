@@ -2,16 +2,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('youtube provider discovery helpers', () => {
   const originalEnv = {
-    API_KEY: process.env.API_KEY,
-    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+    YOUTUBEAPI: process.env.YOUTUBEAPI,
     YOUTUBE_ANALYTICS_API_KEY: process.env.YOUTUBE_ANALYTICS_API_KEY,
   };
 
   beforeEach(() => {
     vi.resetModules();
     vi.unstubAllGlobals();
-    delete process.env.API_KEY;
-    delete process.env.YOUTUBE_API_KEY;
+    delete process.env.YOUTUBEAPI;
     delete process.env.YOUTUBE_ANALYTICS_API_KEY;
   });
 
@@ -28,18 +26,17 @@ describe('youtube provider discovery helpers', () => {
     }
   });
 
-  it('falls back to API_KEY when YOUTUBE_API_KEY is not configured', async () => {
-    process.env.API_KEY = 'shared-key';
+  it('reads the Vercel YOUTUBEAPI key for public YouTube requests and analytics fallback', async () => {
+    process.env.YOUTUBEAPI = 'youtube-key';
 
     const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/engine/connectors/providers/youtube');
 
-    expect(getYouTubeApiKey()).toBe('shared-key');
-    expect(getYouTubeAnalyticsApiKey()).toBe('shared-key');
+    expect(getYouTubeApiKey()).toBe('youtube-key');
+    expect(getYouTubeAnalyticsApiKey()).toBe('youtube-key');
   });
 
-  it('prefers the explicit YouTube-specific keys when present', async () => {
-    process.env.API_KEY = 'shared-key';
-    process.env.YOUTUBE_API_KEY = 'youtube-key';
+  it('prefers the explicit YouTube analytics key when present', async () => {
+    process.env.YOUTUBEAPI = 'youtube-key';
     process.env.YOUTUBE_ANALYTICS_API_KEY = 'youtube-analytics-key';
 
     const { getYouTubeApiKey, getYouTubeAnalyticsApiKey } = await import('@/engine/connectors/providers/youtube');

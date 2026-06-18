@@ -19,7 +19,7 @@
  *                                (default: empty — no tag filter)
  *   FEED_MAX_ITEMS             — maximum embed items to keep (default: 20)
  *   FEED_SOURCES               — comma-separated: youtube,instagram (default: youtube)
- *   YOUTUBE_API_KEY            — YouTube Data API v3 key (public data, no OAuth)
+ *   YOUTUBEAPI                  — YouTube Data API v3 key (public data, no OAuth)
  *   INSTAGRAM_ACCESS_TOKEN     — Instagram Basic Display API long-lived token
  *   NEXT_PUBLIC_SUPABASE_URL   — Project URL
  *   SUPABASE_SERVICE_ROLE_KEY  — Service-role secret (bypasses RLS for CI writes)
@@ -48,7 +48,7 @@ const REQUIRED_TAGS    = (process.env.FEED_REQUIRED_TAGS ?? '')
   .split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
 const SOURCES          = (process.env.FEED_SOURCES ?? 'youtube')
   .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
-const YOUTUBE_API_KEY  = process.env.YOUTUBE_API_KEY  ?? '';
+const YOUTUBEAPI       = process.env.YOUTUBEAPI  ?? '';
 const FEED_QUERY       = process.env.FEED_QUERY ?? '';
 const IG_ACCESS_TOKEN  = process.env.INSTAGRAM_ACCESS_TOKEN ?? '';
 const NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
@@ -313,11 +313,11 @@ async function main() {
 
   // YouTube
   if (SOURCES.includes('youtube')) {
-    if (!YOUTUBE_API_KEY) {
-      console.warn('⚠️  YOUTUBE_API_KEY is not set — skipping YouTube source.');
+    if (!YOUTUBEAPI) {
+      console.warn('⚠️  YOUTUBEAPI is not set — skipping YouTube source.');
     } else {
       console.log('Fetching YouTube videos…');
-      const ytRaw  = await fetchYouTubeVideos(YOUTUBE_API_KEY, Math.min(MAX_ITEMS * 3, 50));
+      const ytRaw  = await fetchYouTubeVideos(YOUTUBEAPI, Math.min(MAX_ITEMS * 3, 50));
       const ytItems = ytRaw.map(normaliseYouTubeItem);
       console.log(`  Fetched ${ytItems.length} YouTube items.`);
       raw.push(...ytItems);

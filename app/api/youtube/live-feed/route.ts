@@ -10,7 +10,7 @@ import { toErrorMessage } from '@/utils/index';
  * GET /api/youtube/live-feed
  *
  * Searches YouTube for videos matching a free-text query using the
- * server-side YOUTUBE_API_KEY. Consumed by useYouTubeLiveFeed to
+ * server-side YOUTUBEAPI. Consumed by useYouTubeLiveFeed to
  * populate the HomeFeed sliding window without exposing the API key.
  *
  * Query params:

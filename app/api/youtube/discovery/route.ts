@@ -9,7 +9,7 @@ import { toErrorMessage } from '@/utils/index';
  * GET /api/youtube/discovery
  *
  * Returns a randomly shuffled mix of globally trending YouTube videos and
- * world news videos, powered by the server-side YOUTUBE_API_KEY env var.
+ * world news videos, powered by the server-side YOUTUBEAPI env var.
  *
  * No user authentication required — entirely public data.
  *
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<YouTubeDiscove
     // Optional integration not configured — graceful degradation, not an outage.
     // Consumers branch on `ok`; emitting 5xx here would create false monitoring alarms.
     return NextResponse.json(
-      { ok: false, items: [], fetched: 0, error: 'YOUTUBE_API_KEY is not configured.' },
+      { ok: false, items: [], fetched: 0, error: 'YOUTUBEAPI is not configured.' },
       { status: 200 },
     );
   }
