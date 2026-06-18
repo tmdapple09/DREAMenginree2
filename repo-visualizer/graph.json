@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T06:27:06.127Z",
+  "generatedAt": "2026-06-18T06:29:19.522Z",
   "root": ".",
   "nodes": [
     {
@@ -3516,6 +3516,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMengin-src-only-1-gitapply-patched.zip",
+      "label": "DREAMengin-src-only-1-gitapply-patched.zip",
+      "type": "file",
+      "path": "DREAMengin-src-only-1-gitapply-patched.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
