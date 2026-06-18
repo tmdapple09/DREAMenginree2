@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T02:52:42.433Z
+Generated: 2026-06-18T03:49:11.204Z
 
 ---
 
@@ -277,7 +277,6 @@ _No style files for this feature._
 - `@/engine/runtime/dualRuntimeBridge`
 - `@/engins/contentengin/media/ledger`
 - `@/engins/contentengin/media/postMedia`
-- `@/engins/forgeengin/forge/forgeMomentum`
 - `@/engins/forgeengin/forge/forgeRegistry`
 - `@/engins/gameengin/games/useImmersiveGameLayout`
 - `@/hooks/useAccount`
@@ -5638,6 +5637,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engine/connectors/providers/youtube` | `getYouTubeApiKey`, `youtubeSearchByQuery` |
+| `@/engine/social/rss-feed` | `parseRssFeed`, `youtubeChannelRssUrl` |
 | `@/types/connector` | `UnifiedFeedItem` |
 | `@/utils/index` | `toErrorMessage` |
 | `next/server` | `NextRequest`, `NextResponse` |
@@ -8680,11 +8680,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/forgeengin/forge/forgeMomentum` | `MomentumSnapshot`, `computeMomentum`, `getLevelColor`, `getLevelEmoji` |
 | `@/engins/forgeengin/forge/forgeRegistry` | `getEnginById` |
-| `lucide-react` | `Activity`, `ChevronRight`, `Flame`, `Gamepad2` |
+| `lucide-react` | `ChevronRight`, `Flame`, `Gamepad2` |
 | `next/navigation` | `useRouter` |
-| `react` | `useEffect`, `useState` |
 
 ## `components/home/dream.NeuralSeamCanvas.tsx`
 
