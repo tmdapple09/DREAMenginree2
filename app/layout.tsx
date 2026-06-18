@@ -43,8 +43,8 @@ const dreamr = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'DREAMengin - Your Creative Platform',
-  description: 'A living interface system that turns your digital life into a navigable universe of connected spaces.',
+  title: 'DREAMengin - Your creative home',
+  description: 'Build your profile, projects, content, shop, messages, and creative tools in one connected space.',
   icons: {
     icon: '/logo-icon.png',
     apple: '/logo-icon.png',

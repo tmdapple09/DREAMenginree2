@@ -9,9 +9,9 @@ export default function LandingProductStatement() {
       <div
         className="de-kicker mb-6"
         style={{ color: '#d4a832' }}
-        aria-label="DREAMengin — Creative Operating System"
+        aria-label="DREAMengin — A new kind of creative home"
       >
-        Creative Operating System
+        A new kind of creative home
       </div>
 
       {/* Headline */}
@@ -23,7 +23,7 @@ export default function LandingProductStatement() {
           color: 'rgba(220,235,255,0.97)',
         }}
       >
-        Let Our ENGINS{' '}
+        Make, share, and grow your ideas{' '}
         <span
           style={{
             background:
@@ -33,7 +33,7 @@ export default function LandingProductStatement() {
             backgroundClip: 'text',
           }}
         >
-          Power Your DREAMS.
+          in one place.
         </span>
       </h1>
 
@@ -42,65 +42,66 @@ export default function LandingProductStatement() {
         className="text-base md:text-lg leading-relaxed mb-8 max-w-md"
         style={{ color: 'rgba(165,195,235,0.78)' }}
       >
-        A creative operating system where software, games, music, content,
-        research, and branding work together in one connected ecosystem.
+        DREAMengin gives you one place to build your digital world — your profile,
+        posts, projects, music, games, storefront, messages, and creative tools all
+        connected instead of scattered across a dozen apps.
       </p>
 
       {/* DREAMengin Engins */}
       <div className="de-premium-stack" aria-label="DREAMengin Engins">
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">CodeEngin</span>
-          <strong>Build Software</strong>
+          <strong>Build your tools</strong>
           <p>
-            Create apps, websites, automations, tools, and AI-powered workflows.
+            Work on websites, apps, automations, and coding projects without leaving your space.
           </p>
         </article>
 
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">GameEngin</span>
-          <strong>Create Games</strong>
+          <strong>Make playable worlds</strong>
           <p>
-            Build worlds, gameplay systems, multiplayer experiences, and interactive entertainment.
+            Sketch game ideas, build characters, shape scenes, and keep your game work connected.
           </p>
         </article>
 
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">StarMakerEngin</span>
-          <strong>Produce Music</strong>
+          <strong>Create and share music</strong>
           <p>
-            Record vocals, arrange tracks, mix audio, master releases, and publish your music.
+            Keep songs, sounds, ideas, and releases close to the rest of your creative life.
           </p>
         </article>
 
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">ContentEngin</span>
-          <strong>Create Content</strong>
+          <strong>Turn ideas into posts</strong>
           <p>
-            Design videos, posts, media campaigns, and content for every platform.
+            Plan, draft, organize, and publish content from the same place you create it.
           </p>
         </article>
 
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">LabEngin</span>
-          <strong>Experiment & Discover</strong>
+          <strong>Try things out</strong>
           <p>
-            Run simulations, test ideas, analyze data, and turn research into results.
+            Test ideas, save experiments, compare notes, and see what is worth building next.
           </p>
         </article>
 
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">BrandingEngin</span>
-          <strong>Build Your Brand</strong>
+          <strong>Shape your presence</strong>
           <p>
-            Create identities, launch campaigns, grow audiences, and measure performance.
+            Bring your look, story, links, offers, audience, and campaigns into one living profile.
           </p>
         </article>
       </div>
 
       {/* DreamR statement */}
       <Link href="/mission" className="de-landing-mission-link mt-4 mb-6 block">
-        DreamR — A social platform where your individuality is the algorithm.{' '}
-        <span>Where creativity—not likes—gets you seen. →</span>
+        DreamR is the social side of DREAMengin — a place for your work, your people, and your story.{' '}
+        <span>Learn more →</span>
       </Link>
 
       {/* CTAs */}
@@ -118,7 +119,7 @@ export default function LandingProductStatement() {
             boxSizing: 'border-box',
           }}
         >
-          Create an Account
+          Start building
         </Link>
 
         <Link
@@ -135,7 +136,7 @@ export default function LandingProductStatement() {
             boxSizing: 'border-box',
           }}
         >
-          Welcome Back!
+          Log in
         </Link>
       </div>
     </div>
