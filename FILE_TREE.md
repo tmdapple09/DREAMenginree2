@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T02:52:42.569Z
+Generated: 2026-06-18T03:49:11.341Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1616,6 +1616,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │           └── route.ts
 │   │               ├── getYouTubeApiKey  ← @/engine/connectors/providers/youtube
 │   │               ├── youtubeSearchByQuery  ← @/engine/connectors/providers/youtube
+│   │               ├── parseRssFeed  ← @/engine/social/rss-feed
+│   │               ├── youtubeChannelRssUrl  ← @/engine/social/rss-feed
 │   │               ├── UnifiedFeedItem  ← @/types/connector
 │   │               ├── toErrorMessage  ← @/utils/index
 │   │               ├── NextRequest  ← next/server
@@ -5040,18 +5042,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.FlagshipEnginesStrip.tsx ∅
-│   │   │   ├── MomentumSnapshot  ← @/engins/forgeengin/forge/forgeMomentum
-│   │   │   ├── computeMomentum  ← @/engins/forgeengin/forge/forgeMomentum
-│   │   │   ├── getLevelColor  ← @/engins/forgeengin/forge/forgeMomentum
-│   │   │   ├── getLevelEmoji  ← @/engins/forgeengin/forge/forgeMomentum
 │   │   │   ├── getEnginById  ← @/engins/forgeengin/forge/forgeRegistry
-│   │   │   ├── Activity  ← lucide-react
 │   │   │   ├── ChevronRight  ← lucide-react
 │   │   │   ├── Flame  ← lucide-react
 │   │   │   ├── Gamepad2  ← lucide-react
 │   │   │   ├── useRouter  ← next/navigation
-│   │   │   ├── useEffect  ← react
-│   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.NeuralSeamCanvas.tsx ∅

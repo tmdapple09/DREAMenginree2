@@ -41,7 +41,7 @@ export default async function HomeDreamPage() {
       supabase
         .from('app_posts')
         .select('id, user_id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count')
-        .eq('user_id', user.id)
+        .or(`visibility.eq.public,user_id.eq.${user.id}`)
         .order('created_at', { ascending: false })
         .limit(20)
         .returns<AppPostRow[]>(),
