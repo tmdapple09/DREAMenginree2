@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T04:14:27.857Z
+Generated: 2026-06-18T04:24:58.776Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14359,10 +14359,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → buildArchitecturalSubsectionBlock
 │   │   ├── → buildAutosyncSummary
 │   │   ├── → computeAffected
+│   │   ├── → isApplicationSourceCode
 │   │   ├── → replaceSection
 │   │   ├── → runReadmeAutosync
 │   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
+│   │   └── ∅ unused: isApplicationSourceCode, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
