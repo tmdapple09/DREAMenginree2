@@ -4,7 +4,7 @@
  *
  * Source-only DREAMengin README autosync.
  *
- * This script intentionally analyzes application source code only.
+ * This script analyzes application source code only.
  *
  * Excluded by design:
  *   - tests
@@ -16,6 +16,11 @@
  *   - public media
  *   - config inventory
  *
+ * README behavior:
+ *   - Always rebases the managed README block from the current application source.
+ *   - Preserves manual README content outside the managed block.
+ *   - Replaces the generated block completely every run.
+ *
  * Core rule:
  *   Key Modules are behavior owners, runtime/capability owners, route/surface
  *   entrypoints, provider adapters, state/persistence owners, or Engin/domain
@@ -26,7 +31,7 @@
  */
 
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
-import { basename, extname, join, relative, resolve } from 'node:path';
+import { extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   Project,
@@ -275,6 +280,21 @@ export const SECTION_REGISTRY: SectionDescriptor[] = [
   },
 ];
 
+const LEGACY_MANAGED_SECTION_TITLES = [
+  'The DmBar (`dreamdmbar/`)',
+  'Full Website Customizability',
+  'Custom Engins',
+  'Agents & Workflow',
+  'Research, Experiments & Daydreams',
+  'Infra & Ops',
+  'Testing',
+  'Tech Stack & Monorepo Layout',
+  'Getting Started',
+  'Environment Variables',
+  'Contributing',
+  'License',
+];
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Path utilities
 // ─────────────────────────────────────────────────────────────────────────────
@@ -283,6 +303,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = resolve(__filename, '..');
 const ROOT = resolve(__dirname, '..');
 const README_PATH = join(ROOT, 'README.md');
+
+const AUTOSYNC_START = '<!-- DREAMENGIN_AUTOSYNC:START -->';
+const AUTOSYNC_END = '<!-- DREAMENGIN_AUTOSYNC:END -->';
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1077,7 +1100,7 @@ function filteredFunctions(exports: ExportedSymbol[]): string[] {
 }
 
 function inferArchitecturalNarrative(
-  descriptor: SectionDescriptor | SubsectionDescriptor,
+  _descriptor: SectionDescriptor | SubsectionDescriptor,
   files: string[],
   exports: ExportedSymbol[],
   routes: RouteEntry[],
@@ -1465,7 +1488,7 @@ function renderSectionMarkdown(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// README section replacement
+// README rebase helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
 function findSectionBounds(readme: string, title: string): { start: number; end: number } | null {
@@ -1483,14 +1506,6 @@ function findSectionBounds(readme: string, title: string): { start: number; end:
   return { start: headingStart, end: sectionEnd };
 }
 
-export function replaceSection(readme: string, section: SectionDescriptor, replacement: string): string {
-  const bounds = findSectionBounds(readme, section.title);
-
-  if (!bounds) return `${readme.trimEnd()}\n\n${replacement.trim()}\n`;
-
-  return `${readme.slice(0, bounds.start)}${replacement.trim()}\n\n${readme.slice(bounds.end).replace(/^\n+/, '')}`;
-}
-
 function removeAllSectionsByTitle(readme: string, title: string): string {
   let next = readme;
   let guard = 0;
@@ -1506,27 +1521,15 @@ function removeAllSectionsByTitle(readme: string, title: string): string {
   return next;
 }
 
-function stripManagedGeneratedSections(readme: string, sections: SectionDescriptor[]): string {
+function stripLegacyManagedSections(readme: string, sections: SectionDescriptor[]): string {
   let next = readme;
+  const titles = [
+    ...sections.map((section) => section.title),
+    ...LEGACY_MANAGED_SECTION_TITLES,
+  ];
 
-  for (const section of sections) {
-    next = removeAllSectionsByTitle(next, section.title);
-  }
-
-  return `${next.trimEnd()}\n`;
-}
-
-function dedupeManagedGeneratedSections(readme: string, sections: SectionDescriptor[]): string {
-  let next = readme;
-
-  for (const section of sections) {
-    const first = findSectionBounds(next, section.title);
-    if (!first) continue;
-
-    const preserved = next.slice(first.start, first.end).trim();
-
-    next = removeAllSectionsByTitle(next, section.title);
-    next = `${next.slice(0, first.start)}${preserved}\n\n${next.slice(first.start).replace(/^\n+/, '')}`;
+  for (const title of [...new Set(titles)]) {
+    next = removeAllSectionsByTitle(next, title);
   }
 
   return `${next.trimEnd()}\n`;
@@ -1551,6 +1554,69 @@ export function upsertSubsectionInSection(
   const subsectionEnd = nextSubsectionOffset === -1 ? sectionBody.length : searchFrom + nextSubsectionOffset;
 
   return `${sectionBody.slice(0, subsectionStart)}${replacement.trim()}\n\n${sectionBody.slice(subsectionEnd).replace(/^\n+/, '')}`;
+}
+
+function buildSectionWithSubsections(
+  section: SectionDescriptor,
+  allFiles: string[],
+  subsystemIndex: Array<{ id: string; globs: string[] }>,
+): string {
+  const sectionFiles = allFiles.filter((f) => matchesAnyGlob(f, section.globs));
+
+  let block = buildArchitecturalSectionBlock(section, sectionFiles, subsystemIndex);
+
+  if (section.subsections) {
+    for (const subsection of Object.values(section.subsections).sort((a, b) => a.title.localeCompare(b.title))) {
+      const subFiles = allFiles.filter((f) => matchesAnyGlob(f, subsection.globs));
+      const subBlock = buildArchitecturalSubsectionBlock(subsection, subFiles, subsystemIndex);
+
+      block = upsertSubsectionInSection(block, subsection, subBlock);
+    }
+  }
+
+  return block.trim();
+}
+
+function buildManagedReadmeBlock(
+  sections: SectionDescriptor[],
+  allFiles: string[],
+  subsystemIndex: Array<{ id: string; globs: string[] }>,
+): string {
+  const body = sections
+    .map((section) => buildSectionWithSubsections(section, allFiles, subsystemIndex))
+    .filter(Boolean)
+    .join('\n\n');
+
+  return [
+    AUTOSYNC_START,
+    '',
+    '> This block is generated from DREAMengin application source code only.',
+    '> It excludes tests, docs, scripts, CI, media, public assets, generated files, and config inventory.',
+    '',
+    body,
+    '',
+    AUTOSYNC_END,
+  ].join('\n').trim();
+}
+
+function rebaseReadmeWithManagedBlock(
+  currentReadme: string,
+  managedBlock: string,
+  sections: SectionDescriptor[],
+): string {
+  const start = currentReadme.indexOf(AUTOSYNC_START);
+  const end = currentReadme.indexOf(AUTOSYNC_END);
+
+  if (start !== -1 && end !== -1 && end > start) {
+    const before = currentReadme.slice(0, start).trimEnd();
+    const after = currentReadme.slice(end + AUTOSYNC_END.length).replace(/^\n+/, '').trimEnd();
+
+    return `${before}\n\n${managedBlock.trim()}${after ? `\n\n${after}` : ''}\n`;
+  }
+
+  const migratedReadme = stripLegacyManagedSections(currentReadme, sections).trimEnd();
+
+  return `${migratedReadme}\n\n${managedBlock.trim()}\n`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1690,7 +1756,7 @@ export function buildAutosyncSummary(changedFiles: readonly string[]): AutosyncS
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Main autosync entry
+// Main autosync entry — always rebases managed block from current source
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile?: string; fullRebuild?: boolean }): AutosyncSummary {
@@ -1701,92 +1767,41 @@ export function runReadmeAutosync(options: { changedFiles: string[]; summaryFile
     .map(normalizePath)
     .filter(isApplicationSourceCode);
 
-  const fullRebuild = options.fullRebuild === true;
-
-  const dynamicSections = fullRebuild
-    ? inferFullRebuildDynamicSections(allFiles, SECTION_REGISTRY)
-    : inferDynamicSections(changedApplicationFiles, SECTION_REGISTRY);
-
+  const dynamicSections = inferFullRebuildDynamicSections(allFiles, SECTION_REGISTRY);
   const sections = [...SECTION_REGISTRY, ...dynamicSections];
-
-  const affected = fullRebuild
-    ? new Map(sections.map((section) => [
-      section.id,
-      { section, subsections: new Set(Object.keys(section.subsections ?? {})) },
-    ]))
-    : computeAffected(changedApplicationFiles, sections);
-
-  if (affected.size === 0) {
-    const summary: AutosyncSummary = {
-      changedFiles: changedApplicationFiles,
-      affectedSections: [],
-      regeneratedSections: [],
-      regeneratedSubsections: [],
-      readmeChanged: false,
-      fullRebuild,
-    };
-
-    if (options.summaryFile) {
-      writeFileSync(options.summaryFile, JSON.stringify(summary, null, 2));
-    }
-
-    return summary;
-  }
 
   const subsystemIndex: Array<{ id: string; globs: string[] }> = sections.map((s) => ({
     id: s.id,
     globs: s.globs,
   }));
 
-  let readme = readFileSync(README_PATH, 'utf8');
+  const currentReadme = readFileSync(README_PATH, 'utf8');
+  const managedBlock = buildManagedReadmeBlock(sections, allFiles, subsystemIndex);
+  const nextReadme = rebaseReadmeWithManagedBlock(currentReadme, managedBlock, sections);
 
-  if (fullRebuild) {
-    readme = stripManagedGeneratedSections(readme, sections);
-  }
-
-  const regeneratedSubsections: Array<{ sectionId: string; subsectionId: string; title: string }> = [];
-  const regeneratedSections: Array<{ id: string; title: string }> = [];
-
-  for (const { section, subsections } of affected.values()) {
-    const sectionFiles = allFiles.filter((f) => matchesAnyGlob(f, section.globs));
-
-    let replacement = buildArchitecturalSectionBlock(section, sectionFiles, subsystemIndex);
-
-    if (subsections.size > 0 && section.subsections) {
-      for (const subsectionId of [...subsections].sort()) {
-        const subsection = section.subsections[subsectionId];
-        if (!subsection) continue;
-
-        const subFiles = allFiles.filter((f) => matchesAnyGlob(f, subsection.globs));
-        const subBlock = buildArchitecturalSubsectionBlock(subsection, subFiles, subsystemIndex);
-
-        replacement = upsertSubsectionInSection(replacement, subsection, subBlock);
-        regeneratedSubsections.push({ sectionId: section.id, subsectionId, title: subsection.title });
-      }
-    }
-
-    readme = replaceSection(readme, section, replacement);
-    regeneratedSections.push({ id: section.id, title: section.title });
-  }
-
-  if (!fullRebuild) {
-    readme = dedupeManagedGeneratedSections(readme, sections);
-  }
-
-  const original = readFileSync(README_PATH, 'utf8');
-  const readmeChanged = original !== readme;
+  const readmeChanged = currentReadme !== nextReadme;
 
   if (readmeChanged) {
-    writeFileSync(README_PATH, readme);
+    writeFileSync(README_PATH, nextReadme);
   }
+
+  const affected = computeAffected(changedApplicationFiles, sections);
+
+  const regeneratedSubsections = sections.flatMap((section) =>
+    Object.values(section.subsections ?? {}).map((subsection) => ({
+      sectionId: section.id,
+      subsectionId: subsection.id,
+      title: subsection.title,
+    })),
+  );
 
   const summary: AutosyncSummary = {
     changedFiles: changedApplicationFiles,
     affectedSections: [...affected.values()].map(({ section }) => ({ id: section.id, title: section.title })),
-    regeneratedSections,
+    regeneratedSections: sections.map((section) => ({ id: section.id, title: section.title })),
     regeneratedSubsections,
     readmeChanged,
-    fullRebuild,
+    fullRebuild: true,
   };
 
   if (options.summaryFile) {
@@ -1821,16 +1836,16 @@ function readChangedFiles(changedFilesPath: string): string[] {
 if (process.argv[1] && resolve(process.argv[1]) === __filename) {
   const changedFilesFile = parseArg('--changed-files');
   const summaryFile = parseArg('--summary-file');
-  const fullRebuild = process.argv.includes('--full') || !changedFilesFile;
-  const changedFiles = changedFilesFile ? readChangedFiles(resolve(changedFilesFile)) : walkFiles(ROOT).filter(isApplicationSourceCode);
 
-  if (fullRebuild) {
-    console.log('readme-autosync: running application-source-only README rebuild from live repo state.');
-  }
+  const changedFiles = changedFilesFile
+    ? readChangedFiles(resolve(changedFilesFile))
+    : walkFiles(ROOT).filter(isApplicationSourceCode);
+
+  console.log('readme-autosync: rebasing README managed block from current application source.');
 
   const summary = runReadmeAutosync({
     changedFiles,
-    fullRebuild,
+    fullRebuild: true,
     summaryFile: summaryFile ? resolve(summaryFile) : undefined,
   });
 
