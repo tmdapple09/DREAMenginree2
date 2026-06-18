@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T03:49:42.692Z
+Generated: 2026-06-18T04:14:27.857Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14343,9 +14343,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── relative  ← node:path
 │   │   ├── resolve  ← node:path
 │   │   ├── fileURLToPath  ← node:url
-│   │   ├── ArrowFunction  ← ts-morph
-│   │   ├── FunctionDeclaration  ← ts-morph
-│   │   ├── FunctionExpression  ← ts-morph
 │   │   ├── Node  ← ts-morph
 │   │   ├── Project  ← ts-morph
 │   │   ├── SourceFile  ← ts-morph

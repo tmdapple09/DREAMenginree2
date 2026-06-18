@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T03:49:42.556Z
+Generated: 2026-06-18T04:14:27.714Z
 
 ---
 
@@ -13519,7 +13519,7 @@ _No style files for this feature._
 | `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
 | `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
 | `node:url` | `fileURLToPath` |
-| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
+| `ts-morph` | `Node`, `Project`, `SourceFile`, `SyntaxKind` |
 
 ## `scripts/update-bugs.mjs`
 
