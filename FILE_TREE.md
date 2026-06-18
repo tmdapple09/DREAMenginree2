@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T04:30:50.230Z
+Generated: 2026-06-18T07:52:07.502Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -127,6 +127,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── elite-gameengin-evolution.yml
 │       ├── engin-all.yml
 │       ├── export-repo-to-artifacts.yml
+│       ├── export-src-only.yml
 │       ├── exportrepo.yml
 │       ├── full-audit.yml
 │       ├── game-engin-patrol.yml
@@ -6960,12 +6961,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── → useModuleBarIntent
 │   │   │   └── ∅ unused: useModuleBarIntent
-│   │   └── useNotifications.ts
+│   │   └── useNotifications.ts ∅
 │   │       ├── useCallback  ← react
 │   │       ├── useEffect  ← react
 │   │       ├── useRef  ← react
 │   │       ├── useState  ← react
-│   │       └── → useNotifications
+│   │       ├── → useNotifications
+│   │       └── ∅ unused: useNotifications
 │   ├── notifications  [HOME — DreamDMBar]
 │   │   ├── notificationHelpers.ts
 │   │   │   ├── → applyOptimisticDelete
@@ -7098,7 +7100,8 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── useDreamSearch  ← @/dreamdmbar/hooks/useDreamSearch
 │       ├── MediaType  ← @/dreamdmbar/hooks/useMessagingCore
 │       ├── useMessagingCore  ← @/dreamdmbar/hooks/useMessagingCore
-│       ├── useNotifications  ← @/dreamdmbar/hooks/useNotifications
+│       ├── UiNotification  ← @/dreamdmbar/notifications/notificationHelpers
+│       ├── useNotifications  ← @/dreamdmbar/notifications/useNotifications
 │       ├── BarIntentMode  ← @/dreamdmbar/runtime/DreamSystemContext
 │       ├── useDreamSystem  ← @/dreamdmbar/runtime/DreamSystemContext
 │       ├── DEFAULT_SPLIT_RATIO  ← @/dreamdmbar/runtime/barInteractions
@@ -7106,26 +7109,17 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── DOUBLE_TAP_WINDOW_MS  ← @/dreamdmbar/runtime/barInteractions
 │       ├── DRAG_TAP_THRESHOLD_PX  ← @/dreamdmbar/runtime/barInteractions
 │       ├── GOLD_LONG_PRESS_MS  ← @/dreamdmbar/runtime/barInteractions
-│       ├── MOOD_AURA_GRADIENTS  ← @/dreamdmbar/runtime/barInteractions
-│       ├── MOOD_EDGE_COLORS  ← @/dreamdmbar/runtime/barInteractions
-│       ├── MoodPeriod  ← @/dreamdmbar/runtime/barInteractions
 │       ├── ORB_TAP_SLOP  ← @/dreamdmbar/runtime/barInteractions
 │       ├── Particle  ← @/dreamdmbar/runtime/barInteractions
 │       ├── QUICK_REACTIONS  ← @/dreamdmbar/runtime/barInteractions
 │       ├── SPLIT_RATIO_MAX  ← @/dreamdmbar/runtime/barInteractions
 │       ├── SPLIT_RATIO_MIN  ← @/dreamdmbar/runtime/barInteractions
-│       ├── STREAK_STORAGE_KEY  ← @/dreamdmbar/runtime/barInteractions
 │       ├── SURFACE_ACCENT_COLORS  ← @/dreamdmbar/runtime/barInteractions
-│       ├── StreakData  ← @/dreamdmbar/runtime/barInteractions
-│       ├── StreakTier  ← @/dreamdmbar/runtime/barInteractions
 │       ├── SurfaceAccent  ← @/dreamdmbar/runtime/barInteractions
 │       ├── calculatePointerVelocity  ← @/dreamdmbar/runtime/barInteractions
 │       ├── computeTypingRhythm  ← @/dreamdmbar/runtime/barInteractions
 │       ├── decideBarRelease  ← @/dreamdmbar/runtime/barInteractions
-│       ├── getMoodPeriod  ← @/dreamdmbar/runtime/barInteractions
-│       ├── getStreakTier  ← @/dreamdmbar/runtime/barInteractions
 │       ├── resolveGoldTapAction  ← @/dreamdmbar/runtime/barInteractions
-│       ├── resolveStreak  ← @/dreamdmbar/runtime/barInteractions
 │       ├── rhythmToHandleScale  ← @/dreamdmbar/runtime/barInteractions
 │       ├── shouldCollapseTopExpandedDrag  ← @/dreamdmbar/runtime/barInteractions
 │       ├── snapSplitRatioOnRelease  ← @/dreamdmbar/runtime/barInteractions
