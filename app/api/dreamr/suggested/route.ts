@@ -48,14 +48,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const db = supabase as SupabaseClient;
 
-  const { data: follows } = await supabase
+  const { data: follows, error: followsError } = await supabase
     .from('follows')
     .select('following_id')
     .eq('follower_id', user.id);
 
-  const followedIds: string[] = (follows ?? []).map(
-    (f: { following_id: string }) => f.following_id,
-  );
+  const followedIds: string[] = followsError
+    ? []
+    : (follows ?? []).map((f: { following_id: string }) => f.following_id);
   // Always exclude self
   const excludeIds = [...followedIds, user.id];
   const circle = await loadVisibilityCircle(user.id);

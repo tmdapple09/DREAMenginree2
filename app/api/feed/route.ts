@@ -109,12 +109,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Collect followed user IDs
 
     const db = supabase as SupabaseClient;
-    const { data: follows } = await supabase
+    const { data: follows, error: followsError } = await supabase
       .from('follows')
       .select('following_id')
       .eq('follower_id', user.id);
 
-    const followedIds = (follows ?? []).map((f: { following_id: string }) => f.following_id);
+    const followedIds = followsError
+      ? []
+      : (follows ?? []).map((f: { following_id: string }) => f.following_id);
     const authorIds   = [user.id, ...followedIds];
 
     let q = db
