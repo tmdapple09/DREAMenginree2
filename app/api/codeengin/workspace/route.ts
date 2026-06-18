@@ -29,7 +29,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       const overview = await getWorkspaceOverview(workspace.id, user.id);
       return NextResponse.json({ ok: true, workspace, overview, commands: listRunnerCommands() });
     }
-    if (!body.workspaceId) throw new Error('Missing workspaceId. Public CodeEngin cannot open the deployed DREAMengin source.');
+    if (!body.workspaceId) throw new Error('Missing workspaceId. Create or upload a user-owned project before loading CodeEngin.');
     if (body.action === 'files') return NextResponse.json({ ok: true, files: await listEditableFiles(body.workspaceId, user.id, body.path ?? '') });
     if (body.action === 'graph') return NextResponse.json({ ok: true, graph: await buildProjectGraph(body.workspaceId, user.id, body.path ?? '') });
     const [overview, commands] = await Promise.all([getWorkspaceOverview(body.workspaceId, user.id), Promise.resolve(listRunnerCommands())]);
