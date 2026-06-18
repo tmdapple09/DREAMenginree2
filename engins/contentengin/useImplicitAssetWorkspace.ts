@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useContentEnginRuntime } from '@/engins/rulesets/content/useContentEnginRuntime';
-import { analyzeImageMask, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, exportGLB, exportOBJ, meshToSnapshot, processImageToEditableMesh, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
+import { analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type RigTargetKind, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
 
 export interface WorkspaceIntentLog { type: string; at: string; }
@@ -41,6 +41,35 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     });
   }, []);
 
+  const uploadGlb = useCallback(async (file: File) => {
+    processTokenRef.current += 1;
+    if (sourceUrlRef.current) {
+      URL.revokeObjectURL(sourceUrlRef.current);
+      sourceUrlRef.current = null;
+    }
+    if (file.size > CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES) {
+      updateData({ processingStatus: 'failed', visibleMessage: 'GLB too large for mobile-safe import. Keep it under 25 MB for now.' });
+      return;
+    }
+    try {
+      const editable = await importGLBToEditableMesh(file);
+      updateData({
+        sourceImage: null,
+        sourceGlb: { name: file.name, size: file.size },
+        mesh: editable,
+        previewMesh: meshToSnapshot(editable.mesh, editable.diagnostics),
+        editHistory: [],
+        redoStack: [],
+        rigState: createAutoRigState('humanoid'),
+        processingStatus: 'rigging',
+        visibleMessage: 'GLB loaded. Pick a rig metadata type, then tap the places where joints bend.',
+      });
+      emit('contentengin:glb-uploaded', { sourceGlb: { name: file.name, size: file.size }, meshDiagnostics: diagnosticsMetadata(editable) });
+    } catch {
+      updateData({ processingStatus: 'failed', visibleMessage: 'Could not read that GLB. This MVP needs a binary .glb with indexed mesh positions.' });
+    }
+  }, [emit, updateData]);
+
   const uploadImage = useCallback(async (file: File) => {
     processTokenRef.current += 1;
 
@@ -59,6 +88,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
 
       updateData({
         sourceImage,
+        sourceGlb: null,
         mesh: null,
         previewMesh: null,
         editHistory: [],
@@ -97,12 +127,13 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
 
     updateData({
       sourceImage: null,
+      sourceGlb: null,
       mesh: null,
       previewMesh: null,
       editHistory: [],
       redoStack: [],
       processingStatus: 'idle',
-      visibleMessage: 'Upload an image to make it real.',
+      visibleMessage: 'Upload an image or GLB to make it real.',
     });
 
     emit('contentengin:asset-cleared');
@@ -139,6 +170,39 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
         if (processTokenRef.current === token) updateData({ processingStatus: 'failed', visibleMessage: 'Processing failed. Try a simpler image.' });
       }
     }, 16);
+  }, [emit, updateData]);
+
+  const setRigTarget = useCallback((target: RigTargetKind) => {
+    updateData({ rigState: createAutoRigState(target), processingStatus: 'rigging', visibleMessage: `${target} rig metadata. Tap each bend point in order.` });
+    emit('contentengin:asset-rig-target-set', { target });
+  }, [emit, updateData]);
+
+  const startRigMetadataMode = useCallback(() => {
+    if (!workspaceRef.current.data.mesh) return;
+    updateData({ processingStatus: 'rigging', visibleMessage: 'Rig metadata mode on. Tap where joints bend, then download GLB + rig metadata.' });
+    emit('contentengin:asset-rig-metadata-started', { target: workspaceRef.current.data.rigState.target });
+  }, [emit, updateData]);
+
+  const placeRigBendPoint = useCallback((point: Vec3) => {
+    const data = workspaceRef.current.data;
+    if (!data.mesh || data.processingStatus !== 'rigging') return;
+    const rigState = addRigBendPoint(data.rigState, point);
+    updateData({ rigState, visibleMessage: `${rigState.bendPoints.length} bend point(s) placed for ${rigState.target}.` });
+    emit('contentengin:asset-rig-bend-point-set', { target: rigState.target, count: rigState.bendPoints.length });
+  }, [emit, updateData]);
+
+  const undoRigBendPoint = useCallback(() => {
+    const rigState = removeLastRigBendPoint(workspaceRef.current.data.rigState);
+    updateData({ rigState, visibleMessage: `${rigState.bendPoints.length} bend point(s) placed for ${rigState.target}.` });
+  }, [updateData]);
+
+
+  const clearRigMetadata = useCallback(() => {
+    const target = workspaceRef.current.data.rigState.target;
+    const rigState = createAutoRigState(target);
+    updateData({ rigState, visibleMessage: `${target} rig metadata cleared. Tap bend points to rebuild it.` });
+    emit('contentengin:asset-rig-target-set', { target });
+    emit('contentengin:asset-rig-bend-point-set', { target, count: 0 });
   }, [emit, updateData]);
 
   const startEdit = useCallback(() => {
@@ -246,13 +310,15 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
       return;
     }
 
-    if (format === 'glb' && (quality === 'Needs Repair' || diagnostics.degenerateTriangles > 0 || diagnostics.nonManifoldEdges > 0)) {
+    if ((format === 'glb' || format === 'rig-metadata-glb') && (quality === 'Needs Repair' || diagnostics.degenerateTriangles > 0 || diagnostics.nonManifoldEdges > 0)) {
       updateData({ visibleMessage: 'GLB export blocked. Repair the mesh first.' });
       return;
     }
 
-    const fileName = `dreamengin-asset.${format}`;
-    const blob = format === 'obj' ? new Blob([exportOBJ(repaired.mesh)], { type: 'text/plain' }) : exportGLB(repaired.mesh);
+    const isRigMetadata = format === 'rig-metadata-glb';
+    const rigState = isRigMetadata ? { ...workspaceRef.current.data.rigState, status: 'metadata-ready' as const } : workspaceRef.current.data.rigState;
+    const fileName = isRigMetadata ? 'dreamengin-asset-rig-metadata.glb' : `dreamengin-asset.${format}`;
+    const blob = format === 'obj' ? new Blob([exportOBJ(repaired.mesh)], { type: 'text/plain' }) : exportGLB(repaired.mesh, isRigMetadata ? rigState : undefined);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -261,10 +327,11 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     window.setTimeout(() => URL.revokeObjectURL(url), 1500);
     const visibleMessage = quality === 'Too Heavy' ? 'Download started. This mesh may be heavy.' : 'Download started.';
     updateData({ processingStatus: 'ready-to-download', visibleMessage });
-    emit('contentengin:download-ready', { downloads: { format, fileName, triangles: diagnostics.triangles, vertices: diagnostics.vertices } });
+    if (isRigMetadata) updateData({ rigState });
+    emit('contentengin:download-ready', { downloads: { format, fileName, triangles: diagnostics.triangles, vertices: diagnostics.vertices, rigMetadataOnly: isRigMetadata } });
   }, [emit, updateData]);
 
-  return useMemo(() => ({ workspace, intents, uploadImage, clearWorkspace, process, startEdit, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download }), [workspace, intents, uploadImage, clearWorkspace, process, startEdit, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download]);
+  return useMemo(() => ({ workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download }), [workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download]);
 }
 
 async function fileToImageData(file: File): Promise<ImageData> {

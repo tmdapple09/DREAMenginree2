@@ -2,10 +2,13 @@ import { createSphereSDF, meshToSnapshot, runDualContouring, type Mesh, type Mes
 export { meshToSnapshot, validateMesh } from '@/engins/isosurfaceDualContouring';
 import type { DomainObject } from '@/engins/contentengin/assetTypes';
 
-export type AssetProcessingStatus = 'idle' | 'uploaded' | 'processing' | 'generated' | 'editing' | 'ready-to-download' | 'failed';
+export type AssetProcessingStatus = 'idle' | 'uploaded' | 'processing' | 'generated' | 'editing' | 'rigging' | 'ready-to-download' | 'failed';
 export type MeshQualityLabel = 'Clean' | 'Open Surface' | 'Needs Repair' | 'Export Blocked' | 'Too Heavy' | 'Auto-fix applied';
 export type SculptTool = 'push' | 'pull' | 'smooth' | 'inflate' | 'carve' | 'flatten';
-export type ExportFormat = 'obj' | 'glb';
+export type ExportFormat = 'obj' | 'glb' | 'rig-metadata-glb';
+export type RigTargetKind = 'humanoid' | 'quadruped' | 'vehicle' | 'creature' | 'bird' | 'fish' | 'custom';
+export interface RigBendPoint { id: string; label: string; position: Vec3; createdAt: string; }
+export interface AutoRigState { target: RigTargetKind; bendPoints: RigBendPoint[]; skeleton: { standard: string; bones: { name: string; parent?: string; head: Vec3; tail: Vec3; bend?: Vec3 }[]; maxInfluencesPerVertex: number }; status: 'empty' | 'ready' | 'metadata-ready'; }
 
 export interface Vec2 { u: number; v: number; }
 export interface ColorRGB { r: number; g: number; b: number; }
@@ -18,13 +21,45 @@ export interface SourceImageAsset { name: string; url: string; width: number; he
 export interface CameraState { yaw: number; pitch: number; zoom: number; panX: number; panY: number; target: Vec3; }
 export interface BrushState { tool: SculptTool; radius: number; strength: number; falloff: number; symmetry: boolean; smoothing: number; }
 export interface EditableMeshState { mesh: Mesh; diagnostics: StrictMeshDiagnostics; quality: MeshQualityLabel; repaired: boolean; repairReport?: RepairReport; }
-export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: ColoredMesh[]; redoStack: ColoredMesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; processingStatus: AssetProcessingStatus; visibleMessage: string; }
+export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; sourceGlb: { name: string; size: number } | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: ColoredMesh[]; redoStack: ColoredMesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; rigState: AutoRigState; processingStatus: AssetProcessingStatus; visibleMessage: string; }
 export type ImplicitAssetWorkspaceObject = DomainObject<'contentengin.implicit-asset-workspace', ImplicitAssetWorkspaceData>;
 
 export const DEFAULT_CAMERA_STATE: CameraState = { yaw: -0.65, pitch: 0.55, zoom: 1.25, panX: 0, panY: 0, target: { x: 0, y: 0, z: 0 } };
 export const DEFAULT_BRUSH_STATE: BrushState = { tool: 'push', radius: 0.22, strength: 0.08, falloff: 0.6, symmetry: false, smoothing: 0.35 };
 const ZERO: Vec3 = { x: 0, y: 0, z: 0 };
 const DEFAULT_COLOR: ColorRGB = { r: 1, g: 0.62, b: 0.08 };
+
+export function createAutoRigState(target: RigTargetKind): AutoRigState {
+  const labels: Record<RigTargetKind, string[]> = {
+    humanoid: ['hips', 'spine', 'neck', 'head', 'shoulder.L', 'elbow.L', 'wrist.L', 'shoulder.R', 'elbow.R', 'wrist.R', 'hip.L', 'knee.L', 'ankle.L', 'hip.R', 'knee.R', 'ankle.R'],
+    quadruped: ['root', 'spine', 'neck', 'head', 'tail', 'front-shoulder.L', 'front-knee.L', 'front-paw.L', 'front-shoulder.R', 'front-knee.R', 'front-paw.R', 'rear-hip.L', 'rear-knee.L', 'rear-paw.L', 'rear-hip.R', 'rear-knee.R', 'rear-paw.R'],
+    vehicle: ['chassis', 'steering', 'wheel.FL', 'wheel.FR', 'wheel.RL', 'wheel.RR', 'door.L', 'door.R'],
+    creature: ['root', 'spine', 'neck', 'head', 'tail', 'limbA.L', 'limbB.L', 'limbA.R', 'limbB.R'],
+    bird: ['root', 'spine', 'neck', 'head', 'wing.L', 'wingtip.L', 'wing.R', 'wingtip.R', 'leg.L', 'leg.R', 'tail'],
+    fish: ['head', 'spine.A', 'spine.B', 'tail', 'fin.top', 'fin.L', 'fin.R'],
+    custom: ['root', 'joint.A', 'joint.B', 'joint.C'],
+  };
+  const names = labels[target];
+  const bones = names.map((name, index) => ({ name, parent: index === 0 ? undefined : names[Math.max(0, index - 1)], head: { x: 0, y: index / names.length - 0.5, z: 0 }, tail: { x: 0, y: (index + 1) / names.length - 0.5, z: 0 } }));
+  return { target, bendPoints: [], skeleton: { standard: target, bones, maxInfluencesPerVertex: 4 }, status: 'empty' };
+}
+
+export function addRigBendPoint(rig: AutoRigState, point: Vec3): AutoRigState {
+  const index = rig.bendPoints.length;
+  const boneIndex = Math.min(index, rig.skeleton.bones.length - 1);
+  const label = rig.skeleton.bones[boneIndex]?.name ?? `joint.${index + 1}`;
+  const bendPoint: RigBendPoint = { id: `bend-${Date.now()}-${index}`, label, position: { ...point }, createdAt: new Date().toISOString() };
+  const bones = rig.skeleton.bones.map((bone, i) => i === boneIndex ? { ...bone, bend: { ...point }, tail: { ...point } } : bone);
+  if (boneIndex + 1 < bones.length) bones[boneIndex + 1] = { ...bones[boneIndex + 1], head: { ...point } };
+  return { ...rig, bendPoints: [...rig.bendPoints, bendPoint], skeleton: { ...rig.skeleton, bones }, status: 'ready' };
+}
+
+export function removeLastRigBendPoint(rig: AutoRigState): AutoRigState {
+  const next = createAutoRigState(rig.target);
+  for (const p of rig.bendPoints.slice(0, -1)) Object.assign(next, addRigBendPoint(next, p.position));
+  return next;
+}
+
 
 export function createImplicitAssetWorkspaceObject(ownerId = 'local-user', runtimeId = 'contentengin-runtime'): ImplicitAssetWorkspaceObject {
   const now = new Date().toISOString();
@@ -39,14 +74,16 @@ export function createImplicitAssetWorkspaceObject(ownerId = 'local-user', runti
     version: 1,
     data: {
       sourceImage: null,
+      sourceGlb: null,
       mesh: null,
       previewMesh: null,
       editHistory: [],
       redoStack: [],
-      exportFormats: ['obj', 'glb'],
+      exportFormats: ['obj', 'glb', 'rig-metadata-glb'],
       activeTool: 'push',
       cameraState: DEFAULT_CAMERA_STATE,
       brushState: DEFAULT_BRUSH_STATE,
+      rigState: createAutoRigState('humanoid'),
       processingStatus: 'idle',
       visibleMessage: 'Upload an image to make it real.',
     },
@@ -641,6 +678,81 @@ export function sculptMesh(mesh: Mesh, point: Vec3, brush: BrushState): Mesh {
   return d.invalidIndices || d.degenerateTriangles ? repairMeshDetailed(out).mesh : out;
 }
 
+
+export const CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES = 25 * 1024 * 1024;
+
+export async function importGLBToEditableMesh(file: File): Promise<EditableMeshState> {
+  if (file.size > CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES) throw new Error('GLB file is too large for mobile-safe parsing.');
+  const buffer = await file.arrayBuffer();
+  const mesh = parseGLBMesh(buffer);
+  const repaired = repairMeshDetailed(mesh);
+  const quality = summarizeMeshQuality(repaired.diagnostics, repaired.report);
+  return { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report };
+}
+
+function parseGLBMesh(buffer: ArrayBuffer): ColoredMesh {
+  const view = new DataView(buffer);
+  if (view.byteLength < 20 || view.getUint32(0, true) !== 0x46546c67 || view.getUint32(4, true) !== 2) throw new Error('Not a GLB 2.0 file.');
+  const jsonLength = view.getUint32(12, true);
+  if (20 + jsonLength > view.byteLength) throw new Error('GLB JSON chunk is out of bounds.');
+  const jsonType = view.getUint32(16, true);
+  if (jsonType !== 0x4e4f534a) throw new Error('GLB is missing JSON chunk.');
+  const json = JSON.parse(new TextDecoder().decode(new Uint8Array(buffer, 20, jsonLength)).trim());
+  const binHeader = 20 + pad4(jsonLength);
+  if (binHeader + 8 > view.byteLength) throw new Error('GLB is missing BIN chunk.');
+  const binLength = view.getUint32(binHeader, true);
+  if (view.getUint32(binHeader + 4, true) !== 0x004e4942) throw new Error('GLB is missing BIN chunk.');
+  if (binHeader + 8 + binLength > view.byteLength) throw new Error('GLB BIN chunk is out of bounds.');
+  const binOffset = binHeader + 8;
+  if (!isMinimalGltf(json)) throw new Error('GLB has no usable accessors or buffer views.');
+  const primitive = json.meshes?.[0]?.primitives?.[0];
+  const posAccessorIndex = primitive?.attributes?.POSITION;
+  const indexAccessorIndex = primitive?.indices;
+  if (typeof posAccessorIndex !== 'number' || typeof indexAccessorIndex !== 'number') throw new Error('GLB mesh needs POSITION and indices.');
+  const positions = readAccessor(json, buffer, binOffset, posAccessorIndex);
+  const rawIndices = readAccessor(json, buffer, binOffset, indexAccessorIndex);
+  const vertices: Vec3[] = [];
+  for (let i = 0; i + 2 < positions.length; i += 3) vertices.push({ x: positions[i]!, y: positions[i + 1]!, z: positions[i + 2]! });
+  return { vertices, indices: rawIndices.map((n) => Math.trunc(n)), vertexColors: vertices.map(() => DEFAULT_COLOR) };
+}
+
+interface MinimalGltfAccessor { bufferView: number; byteOffset?: number; componentType: number; count: number; type: string }
+interface MinimalGltfBufferView { byteOffset?: number; byteStride?: number }
+interface MinimalGltf { accessors: MinimalGltfAccessor[]; bufferViews: MinimalGltfBufferView[]; meshes?: { primitives?: { attributes?: { POSITION?: number }; indices?: number }[] }[] }
+
+function isMinimalGltf(value: unknown): value is MinimalGltf {
+  if (!value || typeof value !== 'object') return false;
+  const gltf = value as { accessors?: unknown; bufferViews?: unknown };
+  return Array.isArray(gltf.accessors) && Array.isArray(gltf.bufferViews);
+}
+
+function readAccessor(gltf: MinimalGltf, buffer: ArrayBuffer, binOffset: number, accessorIndex: number): number[] {
+  const accessor = gltf.accessors[accessorIndex];
+  if (!accessor) throw new Error('GLB accessor is missing.');
+  const view = gltf.bufferViews[accessor.bufferView];
+  if (!view) throw new Error('GLB bufferView is missing.');
+  const componentSize: Record<number, number> = { 5120: 1, 5121: 1, 5122: 2, 5123: 2, 5125: 4, 5126: 4 };
+  const componentCount: Record<string, number> = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
+  const size = componentSize[accessor.componentType];
+  const comps = componentCount[accessor.type];
+  if (!size || !comps) throw new Error('Unsupported GLB accessor.');
+  const stride = view.byteStride ?? size * comps;
+  const start = binOffset + (view.byteOffset ?? 0) + (accessor.byteOffset ?? 0);
+  const dv = new DataView(buffer);
+  const out: number[] = [];
+  for (let i = 0; i < accessor.count; i++) for (let c = 0; c < comps; c++) {
+    const o = start + i * stride + c * size;
+    if (o < 0 || o + size > buffer.byteLength) throw new Error('GLB accessor reads out of bounds.');
+    if (accessor.componentType === 5126) out.push(dv.getFloat32(o, true));
+    else if (accessor.componentType === 5125) out.push(dv.getUint32(o, true));
+    else if (accessor.componentType === 5123) out.push(dv.getUint16(o, true));
+    else if (accessor.componentType === 5122) out.push(dv.getInt16(o, true));
+    else if (accessor.componentType === 5121) out.push(dv.getUint8(o));
+    else out.push(dv.getInt8(o));
+  }
+  return out;
+}
+
 export function exportOBJ(mesh: Mesh): string {
   const repaired = repairMeshDetailed(mesh).mesh;
   const normals = computeVertexNormals(repaired);
@@ -657,7 +769,7 @@ export function exportOBJ(mesh: Mesh): string {
   return `${lines.join('\n')}\n`;
 }
 
-export function exportGLB(mesh: Mesh): Blob {
+export function exportGLB(mesh: Mesh, rigMetadata?: AutoRigState): Blob {
   const repairedResult = repairMeshDetailed(mesh);
   const meshToExport = repairedResult.mesh;
   const diagnostics = validateMeshStrict(meshToExport);
@@ -690,9 +802,10 @@ export function exportGLB(mesh: Mesh): Blob {
     ],
     materials: [{ name: 'DREAMengin Default Material', pbrMetallicRoughness: { baseColorFactor: [1.0, 0.62, 0.08, 1.0], metallicFactor: 0.0, roughnessFactor: 0.72 } }],
     meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, COLOR_0: 2 }, indices: 3, material: 0, mode: 4 }] }],
-    nodes: [{ mesh: 0 }],
+    nodes: [{ mesh: 0, extras: rigMetadata ? { contentenginRigMetadata: rigMetadata } : undefined }],
     scenes: [{ nodes: [0] }],
     scene: 0,
+    extras: rigMetadata ? { contentengin: { rigMetadata, rigged: false, rigMetadataOnly: true, workflow: 'manual-bend-point-rig-metadata' } } : undefined,
   };
   const jsonChunk = paddedChunk(new TextEncoder().encode(JSON.stringify(json)), 0x20);
   const total = 12 + 8 + jsonChunk.length + 8 + bin.length;
