@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 297,
+  "surface": 298,
   "route-surface": 273,
   "dreamsurface": 15,
-  "engin": 236,
+  "engin": 239,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 297,
+    "surface": 298,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 236,
+    "engin": 239,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -2334,6 +2334,12 @@ export const osArchitectureStageEntries = {
       "id": "components/dream.CommandPalette",
       "slot": "surface",
       "path": "components/dream.CommandPalette.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/dream.CommandPaletteMount",
+      "slot": "surface",
+      "path": "components/dream.CommandPaletteMount.tsx",
       "engine": "Universal"
     },
     {
@@ -4640,6 +4646,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/contentengin/performancePlan",
+      "slot": "engin",
+      "path": "engins/contentengin/performancePlan.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/contentengin/photo/colorCluster",
       "slot": "engin",
       "path": "engins/contentengin/photo/colorCluster.ts",
@@ -4772,6 +4784,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/contentengin/runtimeProfile",
+      "slot": "engin",
+      "path": "engins/contentengin/runtimeProfile.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/contentengin/shaders/shaderRegistry",
       "slot": "engin",
       "path": "engins/contentengin/shaders/shaderRegistry.ts",
@@ -4781,6 +4799,12 @@ export const osArchitectureStageEntries = {
       "id": "engins/contentengin/shaders/shaderTypes",
       "slot": "engin",
       "path": "engins/contentengin/shaders/shaderTypes.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/upgradeMatrix",
+      "slot": "engin",
+      "path": "engins/contentengin/upgradeMatrix.ts",
       "engine": "Universal"
     },
     {
@@ -6185,10 +6209,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 297 |
+| surface | 298 |
 | route-surface | 273 |
 | dreamsurface | 15 |
-| engin | 236 |
+| engin | 239 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |

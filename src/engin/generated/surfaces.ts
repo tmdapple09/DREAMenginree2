@@ -321,6 +321,7 @@ export const surfaces = {
   "components/dream.BoogieWarningBanner": () => import("@/components/dream.BoogieWarningBanner"),
   "components/dream.BrandLogo": () => import("@/components/dream.BrandLogo"),
   "components/dream.CommandPalette": () => import("@/components/dream.CommandPalette"),
+  "components/dream.CommandPaletteMount": () => import("@/components/dream.CommandPaletteMount"),
   "components/dream.CreatePostModal": () => import("@/components/dream.CreatePostModal"),
   "components/dream.DragToAnchorClose": () => import("@/components/dream.DragToAnchorClose"),
   "components/dream.DrEamsModeToggle": () => import("@/components/dream.DrEamsModeToggle"),

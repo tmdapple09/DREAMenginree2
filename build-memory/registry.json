@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-18T17:48:21.975Z",
+  "generatedAt": "2026-06-18T19:09:15.068Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 297,
+    "surface": 298,
     "route-surface": 273,
     "dreamsurface": 15,
-    "engin": 236,
+    "engin": 239,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -2888,6 +2888,15 @@
       "exports": [
         "default",
         "MobileCmdFab"
+      ]
+    },
+    {
+      "id": "components/dream.CommandPaletteMount",
+      "slot": "surface",
+      "path": "components/dream.CommandPaletteMount.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
       ]
     },
     {
@@ -7063,6 +7072,16 @@
       ]
     },
     {
+      "id": "engins/contentengin/performancePlan",
+      "slot": "engin",
+      "path": "engins/contentengin/performancePlan.ts",
+      "engine": "Universal",
+      "exports": [
+        "ContentEnginPerformancePlan",
+        "createContentEnginPerformancePlan"
+      ]
+    },
+    {
       "id": "engins/contentengin/photo/colorCluster",
       "slot": "engin",
       "path": "engins/contentengin/photo/colorCluster.ts",
@@ -7273,6 +7292,17 @@
       ]
     },
     {
+      "id": "engins/contentengin/runtimeProfile",
+      "slot": "engin",
+      "path": "engins/contentengin/runtimeProfile.ts",
+      "engine": "Universal",
+      "exports": [
+        "ContentEnginRuntimeProfile",
+        "ContentEnginRuntimeTier",
+        "createContentEnginRuntimeProfile"
+      ]
+    },
+    {
       "id": "engins/contentengin/shaders/shaderRegistry",
       "slot": "engin",
       "path": "engins/contentengin/shaders/shaderRegistry.ts",
@@ -7288,6 +7318,18 @@
       "path": "engins/contentengin/shaders/shaderTypes.ts",
       "engine": "Universal",
       "exports": []
+    },
+    {
+      "id": "engins/contentengin/upgradeMatrix",
+      "slot": "engin",
+      "path": "engins/contentengin/upgradeMatrix.ts",
+      "engine": "Universal",
+      "exports": [
+        "CONTENTENGIN_2026_UPGRADES",
+        "ContentEnginUpgrade",
+        "ContentEnginUpgradeId",
+        "enabledUpgradeIds"
+      ]
     },
     {
       "id": "engins/contentengin/useImplicitAssetWorkspace",
