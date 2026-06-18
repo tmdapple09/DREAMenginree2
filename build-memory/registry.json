@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-18T20:46:53.038Z",
+  "generatedAt": "2026-06-18T22:21:28.933Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 298,
-    "route-surface": 273,
+    "surface": 300,
+    "route-surface": 274,
     "dreamsurface": 15,
-    "engin": 239,
+    "engin": 244,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -1858,6 +1858,16 @@
       "id": "app/engines/portfolio/quantum/page",
       "slot": "route-surface",
       "path": "app/engines/portfolio/quantum/page.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default",
+        "metadata"
+      ]
+    },
+    {
+      "id": "app/engines/render/page",
+      "slot": "route-surface",
+      "path": "app/engines/render/page.tsx",
       "engine": "Universal",
       "exports": [
         "default",
@@ -3927,6 +3937,24 @@
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "components/engines/render/dream.RenderEnginApp",
+      "slot": "surface",
+      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/engines/render/index",
+      "slot": "surface",
+      "path": "components/engines/render/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "RenderEnginApp"
       ]
     },
     {
@@ -6500,9 +6528,18 @@
       "path": "engins/codeengin/runner.ts",
       "engine": "Universal",
       "exports": [
-        "CODEENGIN_COMMANDS",
         "listRunnerCommands",
         "runCiCommand"
+      ]
+    },
+    {
+      "id": "engins/codeengin/runnerCommands",
+      "slot": "engin",
+      "path": "engins/codeengin/runnerCommands.ts",
+      "engine": "Universal",
+      "exports": [
+        "CODEENGIN_COMMANDS",
+        "listRunnerCommands"
       ]
     },
     {
@@ -9248,6 +9285,99 @@
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "engins/renderengin/core",
+      "slot": "engin",
+      "path": "engins/renderengin/core.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildClusterDag",
+        "clamp01",
+        "clusterizeMesh",
+        "composeModelMatrix",
+        "computeTangents",
+        "createMeshBuffers",
+        "createRenderAsset",
+        "DualQuaternion",
+        "evaluateJointWorldMatrices",
+        "evaluateSkinMatrices",
+        "fresnelSchlick",
+        "GeometryCluster",
+        "ggxDistribution",
+        "Joint",
+        "LodLevel",
+        "makeDualQuaternion",
+        "Mat4",
+        "mat4FromQuat",
+        "mat4Identity",
+        "mat4LookAt",
+        "mat4Mul",
+        "mat4Perspective",
+        "mat4Scale",
+        "mat4Transform",
+        "mat4Translation",
+        "MeshBuffers",
+        "projectVertex",
+        "Quat",
+        "quatMul",
+        "RenderAsset",
+        "RenderAssetData",
+        "RenderEnginRuleSet",
+        "RenderIntent",
+        "schlickG1",
+        "selectLod",
+        "shadeCookTorrance",
+        "skinVertexLbs",
+        "smithGeometry",
+        "unpackOrm",
+        "v3add",
+        "v3cross",
+        "v3dot",
+        "v3length",
+        "v3normalize",
+        "v3scale",
+        "v3sub",
+        "Vec2",
+        "Vec3",
+        "Vec4",
+        "Vertex"
+      ]
+    },
+    {
+      "id": "engins/renderengin/index",
+      "slot": "engin",
+      "path": "engins/renderengin/index.ts",
+      "engine": "Universal",
+      "exports": [
+        "RenderEnginViewport"
+      ]
+    },
+    {
+      "id": "engins/renderengin/RenderEnginViewport",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "engins/renderengin/webgpu",
+      "slot": "engin",
+      "path": "engins/renderengin/webgpu.ts",
+      "engine": "Universal",
+      "exports": [
+        "packAosVertexBuffer",
+        "PackedVertexBuffer",
+        "RenderEnginFrameStats",
+        "RenderEnginGpuMesh",
+        "RenderEnginLifecycleHooks",
+        "RenderEnginScene",
+        "RenderEnginSceneObject",
+        "toGpuMat4",
+        "WebGpuRenderEngin"
       ]
     },
     {

@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 298,
-  "route-surface": 273,
+  "surface": 300,
+  "route-surface": 274,
   "dreamsurface": 15,
-  "engin": 239,
+  "engin": 244,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 298,
-    "route-surface": 273,
+    "surface": 300,
+    "route-surface": 274,
     "dreamsurface": 15,
-    "engin": 239,
+    "engin": 244,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -1713,6 +1713,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "app/engines/render/page",
+      "slot": "route-surface",
+      "path": "app/engines/render/page.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "app/feed-settings/dream.FeedSettingsClient",
       "slot": "route-surface",
       "path": "app/feed-settings/dream.FeedSettingsClient.tsx",
@@ -2964,6 +2970,18 @@ export const osArchitectureStageEntries = {
       "id": "components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel",
       "slot": "surface",
       "path": "components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/engines/render/dream.RenderEnginApp",
+      "slot": "surface",
+      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/engines/render/index",
+      "slot": "surface",
+      "path": "components/engines/render/index.ts",
       "engine": "Universal"
     },
     {
@@ -4382,6 +4400,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/codeengin/runnerCommands",
+      "slot": "engin",
+      "path": "engins/codeengin/runnerCommands.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/codeengin/search",
       "slot": "engin",
       "path": "engins/codeengin/search.ts",
@@ -5510,6 +5534,30 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/core",
+      "slot": "engin",
+      "path": "engins/renderengin/core.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/index",
+      "slot": "engin",
+      "path": "engins/renderengin/index.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/RenderEnginViewport",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/webgpu",
+      "slot": "engin",
+      "path": "engins/renderengin/webgpu.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/rulesets/brand/brandEnginRuleSet",
       "slot": "engin",
       "path": "engins/rulesets/brand/brandEnginRuleSet.ts",
@@ -6209,10 +6257,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 298 |
-| route-surface | 273 |
+| surface | 300 |
+| route-surface | 274 |
 | dreamsurface | 15 |
-| engin | 239 |
+| engin | 244 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
