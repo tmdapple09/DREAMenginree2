@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T07:53:07.716Z
+Generated: 2026-06-18T08:48:12.188Z
 
 ---
 
@@ -1526,8 +1526,10 @@ _No style files for this feature._
 - `tests/content-intelligence-routes.test.ts`
 - `tests/content-publish-intent.test.ts`
 - `tests/contentengin-features.test.ts`
+- `tests/contentengin/assetviewport-pickmode.test.ts`
 - `tests/contentengin/contentengin-api.test.ts`
 - `tests/contentengin/contentengin-export.test.ts`
+- `tests/contentengin/contentengin-glb-import.test.ts`
 - `tests/contentengin/contentengin-grammars.test.ts`
 - `tests/contentengin/contentengin-recipes.test.ts`
 - `tests/contentengin/contentengin-rigging.test.ts`
@@ -12034,7 +12036,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceAssetPipeline` | `CameraState`, `computeBounds` |
+| `@/engins/isosurfaceAssetPipeline` | `CameraState`, `RigBendPoint`, `computeBounds` |
 | `@/engins/isosurfaceDualContouring` | `Mesh`, `Vec3` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -12337,7 +12339,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/isosurfaceAssetPipeline` | `BrushState`, `CameraState`, `DEFAULT_BRUSH_STATE`, `DEFAULT_CAMERA_STATE`, `EditableMeshState`, `ExportFormat`, `ImplicitAssetWorkspaceObject`, `SculptTool`, `analyzeImageMask`, `createImplicitAssetWorkspaceObject`, `exportGLB`, `exportOBJ`, `meshToSnapshot`, `processImageToEditableMesh`, `qualityFromDiagnostics`, `repairMeshDetailed`, `sculptMesh`, `summarizeMeshQuality`, `validateMeshStrict` |
+| `@/engins/isosurfaceAssetPipeline` | `BrushState`, `CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES`, `CameraState`, `DEFAULT_BRUSH_STATE`, `DEFAULT_CAMERA_STATE`, `EditableMeshState`, `ExportFormat`, `ImplicitAssetWorkspaceObject`, `RigTargetKind`, `SculptTool`, `addRigBendPoint`, `analyzeImageMask`, `createAutoRigState`, `createImplicitAssetWorkspaceObject`, `exportGLB`, `exportOBJ`, `importGLBToEditableMesh`, `meshToSnapshot`, `processImageToEditableMesh`, `qualityFromDiagnostics`, `removeLastRigBendPoint`, `repairMeshDetailed`, `sculptMesh`, `summarizeMeshQuality`, `validateMeshStrict` |
 | `@/engins/isosurfaceDualContouring` | `Mesh`, `Vec3` |
 | `@/engins/rulesets/content/useContentEnginRuntime` | `useContentEnginRuntime` |
 | `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
@@ -20054,9 +20056,7 @@ _No circular dependencies detected._
 | `engins/contentengin/pipeline/writeManifest.ts` | `wrapAsset` |
 | `engins/contentengin/recipes/recipeResolver.ts` | `normalizeAssetType` |
 | `engins/contentengin/recipes/seededRandom.ts` | `seededRandom`, `pick` |
-| `engins/contentengin/rigging/index.ts` | `createSkeleton` |
 | `engins/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
-| `engins/contentengin/rigging/rigValidator.ts` | `validateSkeleton` |
 | `engins/contentengin/shaders/shaderRegistry.ts` | `getShader` |
 | `engins/dream.ForgeEngin.tsx` | `(default)` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `(default)` |
@@ -22859,13 +22859,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── quadruped_basic.json
 │   │   │   │   └── vehicle_mechanical.json
 │   │   │   ├── fitArmature.ts
-│   │   │   ├── index.ts ∅
-│   │   │   │   └── ∅ unused: createSkeleton
+│   │   │   ├── index.ts
 │   │   │   ├── landmarks.ts ∅
 │   │   │   │   └── ∅ unused: estimateLandmarks
 │   │   │   ├── rigTypes.ts
-│   │   │   └── rigValidator.ts ∅
-│   │   │       └── ∅ unused: validateSkeleton
+│   │   │   └── rigValidator.ts
 │   │   ├── shaders
 │   │   │   ├── shaderRegistry.ts ∅
 │   │   │   │   └── ∅ unused: getShader
@@ -23506,6 +23504,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── view-transitions.css
 ├── tests
 │   ├── contentengin
+│   │   ├── assetviewport-pickmode.test.ts
 │   │   ├── contentengin-api.test.ts ⚠
 │   │   │   └── ⚠ ../../lib/contentengin/photo/imageAnalyzer  (analyzeImageBytes)
 │   │   ├── contentengin-export.test.ts ⚠
@@ -23513,14 +23512,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⚠ ../../lib/contentengin/pipeline/exportGlb  (createGlbBuffer, expectedMaterialIdsForAsset, inspectGlb)
 │   │   │   ├── ⚠ ../../lib/contentengin/pipeline/paths  (safeSegment)
 │   │   │   └── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)
+│   │   ├── contentengin-glb-import.test.ts
 │   │   ├── contentengin-grammars.test.ts ⚠
 │   │   │   └── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
 │   │   ├── contentengin-recipes.test.ts ⚠
 │   │   │   ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
 │   │   │   └── ⚠ ../../lib/contentengin/recipes/seededRandom  (seededRandom)
-│   │   ├── contentengin-rigging.test.ts ⚠
-│   │   │   ├── ⚠ ../../lib/contentengin/rigging  (createSkeleton)
-│   │   │   └── ⚠ ../../lib/contentengin/rigging/rigValidator  (validateSkeleton)
+│   │   ├── contentengin-rigging.test.ts
 │   │   └── contentengin-validation.test.ts ⚠
 │   │       ├── ⚠ ../../lib/contentengin/pipeline/build  (buildAsset)
 │   │       ├── ⚠ ../../lib/contentengin/pipeline/validate  (validateAsset)

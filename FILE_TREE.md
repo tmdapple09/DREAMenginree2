@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T07:53:07.850Z
+Generated: 2026-06-18T08:48:12.326Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -11794,15 +11794,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── vec3  ← ../assetTypes
 │   │   │   │   ├── RigStandard  ← ./rigTypes
 │   │   │   │   └── → createSkeleton
-│   │   │   ├── index.ts ∅
+│   │   │   ├── index.ts
 │   │   │   │   ├── createSkeleton  ← ./fitArmature
 │   │   │   │   ├── RiggingRequest  ← ./rigTypes
 │   │   │   │   ├── execFile  ← child_process
 │   │   │   │   ├── mkdir  ← fs/promises
 │   │   │   │   ├── promisify  ← util
 │   │   │   │   ├── → createSkeleton
-│   │   │   │   ├── → runRiggingPipeline
-│   │   │   │   └── ∅ unused: createSkeleton
+│   │   │   │   └── → runRiggingPipeline
 │   │   │   ├── landmarks.ts ∅
 │   │   │   │   ├── PartNode  ← ../assetTypes
 │   │   │   │   ├── Vec3  ← ../assetTypes
@@ -11810,10 +11809,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → estimateLandmarks
 │   │   │   │   └── ∅ unused: estimateLandmarks
 │   │   │   ├── rigTypes.ts
-│   │   │   └── rigValidator.ts ∅
+│   │   │   └── rigValidator.ts
 │   │   │       ├── SkeletonDef  ← ../assetTypes
-│   │   │       ├── → validateSkeleton
-│   │   │       └── ∅ unused: validateSkeleton
+│   │   │       └── → validateSkeleton
 │   │   ├── shaders
 │   │   │   ├── shaderRegistry.ts ∅
 │   │   │   │   ├── ShaderDef  ← ../assetTypes
@@ -11827,6 +11825,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── → vec3
 │   │   ├── AssetViewport.tsx ∅
 │   │   │   ├── CameraState  ← @/engins/isosurfaceAssetPipeline
+│   │   │   ├── RigBendPoint  ← @/engins/isosurfaceAssetPipeline
 │   │   │   ├── computeBounds  ← @/engins/isosurfaceAssetPipeline
 │   │   │   ├── Mesh  ← @/engins/isosurfaceDualContouring
 │   │   │   ├── Vec3  ← @/engins/isosurfaceDualContouring
@@ -11854,20 +11853,26 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   └── useImplicitAssetWorkspace.ts
 │   │       ├── BrushState  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── CameraState  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── DEFAULT_BRUSH_STATE  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── DEFAULT_CAMERA_STATE  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── EditableMeshState  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── ExportFormat  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── ImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── RigTargetKind  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── SculptTool  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── addRigBendPoint  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── analyzeImageMask  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── createAutoRigState  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── createImplicitAssetWorkspaceObject  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── exportGLB  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── exportOBJ  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── importGLBToEditableMesh  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── meshToSnapshot  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── processImageToEditableMesh  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── qualityFromDiagnostics  ← @/engins/isosurfaceAssetPipeline
+│   │       ├── removeLastRigBendPoint  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── repairMeshDetailed  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── sculptMesh  ← @/engins/isosurfaceAssetPipeline
 │   │       ├── summarizeMeshQuality  ← @/engins/isosurfaceAssetPipeline
@@ -13812,8 +13817,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── createSphereSDF  ← @/engins/isosurfaceDualContouring
 │   │   ├── meshToSnapshot  ← @/engins/isosurfaceDualContouring
 │   │   ├── runDualContouring  ← @/engins/isosurfaceDualContouring
+│   │   ├── → CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES
 │   │   ├── → DEFAULT_BRUSH_STATE
 │   │   ├── → DEFAULT_CAMERA_STATE
+│   │   ├── → addRigBendPoint
 │   │   ├── → analyzeImageMask
 │   │   ├── → buildInflatedReliefMesh
 │   │   ├── → buildVertexAdjacency
@@ -13823,13 +13830,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → computeBounds
 │   │   ├── → computePlanarUVs
 │   │   ├── → computeVertexNormals
+│   │   ├── → createAutoRigState
 │   │   ├── → createImplicitAssetWorkspaceObject
 │   │   ├── → estimateMeshBytes
 │   │   ├── → exportGLB
 │   │   ├── → exportOBJ
+│   │   ├── → importGLBToEditableMesh
 │   │   ├── → meshToSnapshot
 │   │   ├── → processImageToEditableMesh
 │   │   ├── → qualityFromDiagnostics
+│   │   ├── → removeLastRigBendPoint
 │   │   ├── → repairMesh
 │   │   ├── → repairMeshDetailed
 │   │   ├── → sculptMesh
@@ -15370,6 +15380,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── view-transitions.css
 ├── tests
 │   ├── contentengin
+│   │   ├── assetviewport-pickmode.test.ts
+│   │   │   ├── readFileSync  ← fs
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
 │   │   ├── contentengin-api.test.ts ⚠
 │   │   │   ├── analyzeImageBytes  ⚠ ../../lib/contentengin/photo/imageAnalyzer
 │   │   │   ├── describe  ← vitest
@@ -15386,6 +15401,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
+│   │   ├── contentengin-glb-import.test.ts
+│   │   │   ├── CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES  ← ../../engins/isosurfaceAssetPipeline
+│   │   │   ├── importGLBToEditableMesh  ← ../../engins/isosurfaceAssetPipeline
+│   │   │   ├── describe  ← vitest
+│   │   │   ├── expect  ← vitest
+│   │   │   └── it  ← vitest
 │   │   ├── contentengin-grammars.test.ts ⚠
 │   │   │   ├── buildAsset  ⚠ ../../lib/contentengin/pipeline/build
 │   │   │   ├── describe  ← vitest
@@ -15397,9 +15418,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
-│   │   ├── contentengin-rigging.test.ts ⚠
-│   │   │   ├── createSkeleton  ⚠ ../../lib/contentengin/rigging
-│   │   │   ├── validateSkeleton  ⚠ ../../lib/contentengin/rigging/rigValidator
+│   │   ├── contentengin-rigging.test.ts
+│   │   │   ├── createSkeleton  ← ../../engins/contentengin/rigging
+│   │   │   ├── validateSkeleton  ← ../../engins/contentengin/rigging/rigValidator
+│   │   │   ├── addRigBendPoint  ← ../../engins/isosurfaceAssetPipeline
+│   │   │   ├── createAutoRigState  ← ../../engins/isosurfaceAssetPipeline
+│   │   │   ├── exportGLB  ← ../../engins/isosurfaceAssetPipeline
 │   │   │   ├── describe  ← vitest
 │   │   │   ├── expect  ← vitest
 │   │   │   └── it  ← vitest
