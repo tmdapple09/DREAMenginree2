@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Build source-only zip
         run: |
@@ -16,7 +16,7 @@ jobs:
           ZIP_NAME="DREAMengin-src-${TIMESTAMP}.zip"
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
 
-          zip -r "$ZIP_NAME" . \
+          zip -r -q "$ZIP_NAME" . \
             --exclude "*.md" \
             --exclude "*.MD" \
             --exclude "*.png" \
@@ -36,26 +36,37 @@ jobs:
             --exclude "*.yml" \
             --exclude "*pnpm-lock*" \
             --exclude "*package-lock*" \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".DS_Store" \
+            --exclude "node_modules/*" \
+            --exclude "tests/*" \
+            --exclude "scripts/*" \
+            --exclude "docs/*" \
+            --exclude "public/*" \
+            --exclude "build-memory/*" \
+            --exclude "repo-visualizer/*" \
+            --exclude "supabase/.temp/*" \
+            --exclude "playwright.config.ts" \
+            --exclude "vitest.config.ts" \
             --exclude "*/node_modules/*" \
             --exclude "*/.github/*" \
-            --exclude "*/scripts/*" \
             --exclude "*/tests/*" \
+            --exclude "*/scripts/*" \
             --exclude "*/docs/*" \
             --exclude "*/public/*" \
             --exclude "*/build-memory/*" \
             --exclude "*/repo-visualizer/*" \
             --exclude "*/supabase/.temp/*" \
-            --exclude "*/playwright.config.ts" \
-            --exclude "*/vitest.config.ts" \
             --exclude "*/.git/*" \
-            --exclude "*.DS_Store"
+            -X
 
           echo "Built: $ZIP_NAME"
           echo "Files: $(unzip -l $ZIP_NAME | tail -1)"
           echo "Size:  $(du -sh $ZIP_NAME | cut -f1)"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: DREAMengin-src-${{ github.run_number }}
           path: ${{ env.ZIP_NAME }}
