@@ -1,3 +1,4 @@
+```
 name: Export App Source (No Docs/CI/Tests)
 
 on:
@@ -16,80 +17,39 @@ jobs:
           ZIP_NAME="DREAMengin-src-${TIMESTAMP}.zip"
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
 
-          # App source directories
-          SRC_DIRS=(
-            app
-            components
-            hooks
-            types
-            utils
-            styles
-            src
-            supabase
-            dr-eams
-            assembly
-            daydreams
-            coresurfaces
-            config
-            build-memory
-            repo-visualizer
-          )
-
-          # Root config files
-          ROOT_FILES=(
-            next.config.mjs
-            next.config.ts
-            next.config.js
-            package.json
-            pnpm-lock.yaml
-            pnpm-workspace.yaml
-            postcss.config.js
-            postcss.config.mjs
-            proxy.ts
-            supabaseClient.ts
-            tailwind.config.ts
-            tailwindcss-animate.d.ts
-            tsconfig.json
-            tsconfig.app.json
-            tsconfig.base.json
-            tsconfig.games.json
-            tsconfig.gamesengin.json
-            tsconfig.server.json
-            tsconfig.test.json
-            tsconfig.worker.json
-            vercel.json
-            vitest.config.ts
-          )
-
-          # Collect args for zip
-          ZIP_ARGS=()
-
-          for dir in "${SRC_DIRS[@]}"; do
-            [ -d "$dir" ] && ZIP_ARGS+=("$dir")
-          done
-
-          for f in "${ROOT_FILES[@]}"; do
-            [ -f "$f" ] && ZIP_ARGS+=("$f")
-          done
-
-          # Build zip â exclude docs, media, and other non-source noise
-          zip -r "$ZIP_NAME" "${ZIP_ARGS[@]}" \
+          zip -r "$ZIP_NAME" . \
             --exclude "*.md" \
             --exclude "*.MD" \
-            --exclude "*.txt" \
             --exclude "*.png" \
             --exclude "*.jpg" \
             --exclude "*.jpeg" \
             --exclude "*.gif" \
             --exclude "*.svg" \
+            --exclude "*.ico" \
             --exclude "*.mp4" \
             --exclude "*.mov" \
             --exclude "*.webm" \
-            --exclude "*.ico" \
-            --exclude "*.DS_Store" \
-            --exclude "*/.git/*" \
+            --exclude "*.ttf" \
+            --exclude "*.woff" \
+            --exclude "*.woff2" \
+            --exclude "*.tsbuildinfo" \
+            --exclude "*.yaml" \
+            --exclude "*.yml" \
+            --exclude "*pnpm-lock*" \
+            --exclude "*package-lock*" \
             --exclude "*/node_modules/*" \
-            --exclude "supabase/.temp/*" \
+            --exclude "*/.github/*" \
+            --exclude "*/scripts/*" \
+            --exclude "*/tests/*" \
+            --exclude "*/docs/*" \
+            --exclude "*/public/*" \
+            --exclude "*/build-memory/*" \
+            --exclude "*/repo-visualizer/*" \
+            --exclude "*/supabase/.temp/*" \
+            --exclude "*/playwright.config.ts" \
+            --exclude "*/vitest.config.ts" \
+            --exclude "*/.git/*" \
+            --exclude "*.DS_Store" \
             -X
 
           echo "Built: $ZIP_NAME"
@@ -102,3 +62,4 @@ jobs:
           name: DREAMengin-src-${{ github.run_number }}
           path: ${{ env.ZIP_NAME }}
           retention-days: 7
+```
