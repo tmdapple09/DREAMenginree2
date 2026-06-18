@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build source-only zip
         run: |
@@ -48,15 +48,14 @@ jobs:
             --exclude "*/playwright.config.ts" \
             --exclude "*/vitest.config.ts" \
             --exclude "*/.git/*" \
-            --exclude "*.DS_Store" \
-            -X
+            --exclude "*.DS_Store"
 
           echo "Built: $ZIP_NAME"
           echo "Files: $(unzip -l $ZIP_NAME | tail -1)"
           echo "Size:  $(du -sh $ZIP_NAME | cut -f1)"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: DREAMengin-src-${{ github.run_number }}
           path: ${{ env.ZIP_NAME }}
