@@ -71,6 +71,102 @@ export interface SyncTransport {
   subscribe: (channel: string, onIntent: (intent: IntentPacket) => void) => () => void;
 }
 
+export type RuntimeLifecycleHook = 'install' | 'activate' | 'suspend' | 'resume' | 'destroy';
+
+export interface RuntimeLifecycleHooks<TState> {
+  install?: (state: TState) => TState | Promise<TState>;
+  activate?: (state: TState) => TState | Promise<TState>;
+  suspend?: (state: TState) => TState | Promise<TState>;
+  resume?: (state: TState) => TState | Promise<TState>;
+  destroy?: (state: TState) => TState | Promise<TState>;
+}
+
+export interface StrictIntentRoute<TState> {
+  readonly state: TState;
+  readonly intent: IntentPacket;
+  readonly snapshot: RuntimeSnapshot<TState>;
+}
+
+export interface SpatialRuntimeCoreOptions<TState> {
+  coreVersion: string;
+  manifest: EngineManifest;
+  ruleSet: RuntimeRuleSet<TState>;
+  initialState: TState;
+  actor: ActorContext;
+  ownerId: string;
+  runtimeId: string;
+  transport?: SyncTransport;
+  lifecycle?: RuntimeLifecycleHooks<TState>;
+}
+
+/**
+ * SpatialRuntimeCore is the ι-Engine enforcement seam for modules that need to
+ * be better than platform silos: one state owner, one active rule-set, strict
+ * intent ingress, lifecycle hooks, sync abstraction, deterministic snapshots,
+ * and manifest compatibility negotiation before anything can run.
+ */
+export class SpatialRuntimeCore<TState> {
+  private readonly bus: IntentBus<TState>;
+  private state: TState;
+  private lifecycleState: RuntimeLifecycleHook | 'created' = 'created';
+
+  constructor(private readonly options: SpatialRuntimeCoreOptions<TState>) {
+    const compatibility = negotiateCompatibility(options.coreVersion, options.manifest);
+    if (!compatibility.allowed) {
+      throw new Error(`Runtime manifest rejected: ${compatibility.reasons.join('; ')}`);
+    }
+    if (!options.manifest.acceptedIntentTypes.every((type) => type.trim().length > 0)) {
+      throw new Error('Runtime manifest accepted intents must be non-empty strings.');
+    }
+    this.state = options.initialState;
+    this.bus = new IntentBus(options.ruleSet);
+  }
+
+  get currentState(): TState {
+    return this.state;
+  }
+
+  get lifecycle(): RuntimeLifecycleHook | 'created' {
+    return this.lifecycleState;
+  }
+
+  async runLifecycle(hook: RuntimeLifecycleHook): Promise<TState> {
+    if (!this.options.manifest.runtimeHooks.includes(hook)) {
+      throw new Error(`Lifecycle hook '${hook}' is not declared by manifest '${this.options.manifest.id}'.`);
+    }
+    const next = await this.options.lifecycle?.[hook]?.(this.state);
+    if (next !== undefined) this.state = next;
+    this.lifecycleState = hook;
+    return this.state;
+  }
+
+  async routeIntent(intent: IntentPacket, capability: CapabilityAction = 'write'): Promise<StrictIntentRoute<TState>> {
+    const envelopeDecision = validateDomainObject(intent);
+    if (!envelopeDecision.allowed) throw new Error(envelopeDecision.reasons.join('; '));
+    if (!this.options.manifest.acceptedIntentTypes.includes(intent.type)) {
+      throw new Error(`Intent '${intent.type}' is not accepted by manifest '${this.options.manifest.id}'.`);
+    }
+    const capabilityDecision = authorizeCapability(capability, this.options.actor, intent);
+    if (!capabilityDecision.allowed) throw new Error(capabilityDecision.reasons.join('; '));
+
+    this.state = this.bus.route(this.state, intent);
+    await this.options.transport?.publish(this.options.runtimeId, intent);
+    return {
+      state: this.state,
+      intent,
+      snapshot: this.bus.snapshot(this.options.runtimeId, this.options.ownerId, this.state, this.options.manifest.schemaVersion),
+    };
+  }
+
+  subscribeTransport(): () => void {
+    return this.options.transport?.subscribe(this.options.runtimeId, (intent) => {
+      if (this.options.manifest.acceptedIntentTypes.includes(intent.type)) {
+        this.state = this.bus.route(this.state, intent);
+      }
+    }) ?? (() => undefined);
+  }
+}
+
 export function validateDomainObject<TType extends string, TData extends JsonValue>(object: DomainObject<TType, TData>): AuthorizationDecision {
   return isDomainObject(object)
     ? { allowed: true, reasons: [] }
