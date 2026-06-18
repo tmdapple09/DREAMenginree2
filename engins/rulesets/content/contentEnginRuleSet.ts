@@ -17,14 +17,17 @@ const MANIFEST:EnginRuleSetManifest<ContentEnginAction>={id:PARAMS.enginId,name:
 
 export const CONTENT_IMPLICIT_ASSET_POLICY = {
   engine: 'robust-sparse-dual-contouring',
-  mobileFirstResolution: 18,
-  qualityLadder: { preview: '16-18', balanced: '24-32', export: '48-64', batch: '96+' },
+  mobileFirstResolution: 32,
+  desktopClassOnMobile: true,
+  runtimeTier: 'mobile-2026-webgpu',
+  qualityLadder: { preview: '24-32', balanced: '48-64', export: '96-128', batch: '160+' },
   sharedKernel: 'engins/isosurfaceDualContouring.ts',
   semanticFlow: ['region contour','algebraic fit','SDF','dual contour mesh','PartNode procedural hint','rig/collision/LOD/export'],
   output: 'Image masks become compact colored mesh assets with validation diagnostics before export',
   flow: ['Upload Image', 'Process', 'Edit', 'Download'],
-  rendererPreference: 'webgpu-with-canvas-fallback',
-  colorBudget: 256,
+  rendererPreference: 'webgpu-first-webgl2-canvas-fallback',
+  colorBudget: 512,
+  mobileBudgets: { drawCalls: 48, frameMs: 16.67, snapshotCadenceMs: 250, maxTexture: 2048 },
   intents: ['contentengin:image-uploaded','contentengin:glb-uploaded','contentengin:asset-rig-metadata-started','contentengin:asset-rig-target-set','contentengin:asset-rig-bend-point-set','contentengin:asset-process-requested','contentengin:asset-process-completed','contentengin:asset-edit-started','contentengin:asset-brush-applied','contentengin:asset-export-requested','contentengin:download-ready','contentengin:asset-cleared'],
   events: ['contentengin:image-uploaded','contentengin:glb-uploaded','contentengin:asset-rig-metadata-started','contentengin:asset-rig-target-set','contentengin:asset-rig-bend-point-set','contentengin:asset-process-requested','contentengin:asset-process-completed','contentengin:asset-edit-started','contentengin:asset-brush-applied','contentengin:asset-export-requested','contentengin:download-ready','contentengin:asset-cleared'],
 } as const;

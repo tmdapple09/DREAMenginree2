@@ -1,3 +1,3 @@
-import { describe, expect, it } from 'vitest'; import { buildAsset } from '../../lib/contentengin/pipeline/build';
+import { describe, expect, it } from 'vitest'; import { buildAsset } from '../../engins/contentengin/pipeline/build';
 const types=['humanoid','quadruped','bird','fish','creature','car','truck','bicycle','motorcycle','building','road','bridge','terrain','tree','water','weapon','furniture','container','tool'];
 describe('ContentEngin required asset families',()=>{ for(const assetType of types){ it(`builds ${assetType}`,()=>{ const asset=buildAsset({assetType,seed:7,profile:'ps3',parameters:{},materialParameters:{}}); expect(asset.parts.length).toBeGreaterThan(0); expect(asset.materials.length).toBeGreaterThan(0); expect(asset.validation.gameReady).toBe(true); }); } });

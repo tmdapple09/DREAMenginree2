@@ -50,3 +50,6 @@ __pycache__/
 # Generated repository audit reports
 reports/
 
+
+# Generated ContentEngin test asset bundles (created by CI after push)
+tests/contentengin/test-assets/sandbox/exports/

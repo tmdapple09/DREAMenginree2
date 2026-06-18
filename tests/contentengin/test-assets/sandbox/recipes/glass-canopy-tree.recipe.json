@@ -1,0 +1,11 @@
+{
+  "assetType": "tree",
+  "seed": 61803,
+  "profile": "ps3",
+  "parameters": {
+    "assetId": "test-glass-canopy-tree",
+    "barkColor": "#6b4f2a",
+    "leafColor": "#7df9c6"
+  },
+  "materialParameters": {}
+}
