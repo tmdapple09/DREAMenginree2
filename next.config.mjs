@@ -35,6 +35,18 @@ const nextConfig = {
       "./vitest.config.ts",
       "./playwright.config.ts",
     ],
+    "/api/codeengin/workspace": [
+      "./next.config.mjs",
+      "./tailwind.config.ts",
+      "./postcss.config.*",
+      "./tsconfig*.json",
+      "./eslint.config.mjs",
+      "./vitest.config.ts",
+      "./playwright.config.ts",
+      "./node_modules/**",
+      "./.git/**",
+      "./.next/**",
+    ],
   },
 
   images: {

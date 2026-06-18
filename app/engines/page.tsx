@@ -9,7 +9,7 @@ import { connection } from 'next/server';
 
 export const metadata = {
   title: 'Engines – DREAMengin',
-  description: 'All eight DREAMengin creative engine apps.',
+  description: 'All nine DREAMengin creative engine apps.',
 };
 
 const ENGINES = [
@@ -67,6 +67,16 @@ const ENGINES = [
     accent: '#fb923c',
     subroutes: ['Editor', 'Calendar', 'Queue'],
   },
+
+  {
+    id: 'render',
+    name: 'RenderEngin',
+    emoji: '🧊',
+    description: 'WebGPU viewport · render pipeline',
+    href: '/engines/render',
+    accent: '#38bdf8',
+    subroutes: ['Viewport'],
+  },
   {
     id: 'forge',
     name: 'ForgeEngin',
@@ -110,7 +120,7 @@ export default async function EnginesHubPage( ){
             <span className="text-white">engines</span>
           </h1>
           <p className="text-white/50 mt-2 text-lg">
-            Eight creative engines — each its own app, all connected.
+            Nine creative engines — each its own app, all connected.
           </p>
         </div>
 

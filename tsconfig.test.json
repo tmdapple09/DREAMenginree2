@@ -15,10 +15,11 @@
     "tests/game-navigation.test.ts",
     "tests/game-remote-regression.test.ts",
     "tests/report-driven-game-agent.test.ts",
+    "tests/renderengin-core.test.ts",
+    "tests/renderengin-webgpu.test.ts",
     "vitest.config.ts"
   ],
   "exclude": [
     "node_modules"
   ]
 }
-
