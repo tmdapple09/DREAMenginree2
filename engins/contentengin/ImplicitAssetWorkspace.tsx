@@ -9,6 +9,8 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
   const mesh = data.mesh?.mesh ?? null;
   const canProcess = Boolean(data.sourceImage) && data.processingStatus !== 'processing';
   const canEdit = Boolean(mesh);
+  const canRig = Boolean(mesh);
+  const isRigging = data.processingStatus === 'rigging';
   const quality = data.mesh?.quality ?? null;
 
   const strictValid = Boolean(
@@ -34,18 +36,21 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
       <div className="brand">{onBack && <button className="back" onClick={onBack}>←</button>}<div><h1>ContentEngin 3D Asset Workspace</h1><p>{data.visibleMessage}</p></div></div>
       <div className="actions">
         <label className="file">Upload Image<input aria-label="Upload Image" type="file" accept="image/*" onChange={(e) => { const file = e.currentTarget.files?.[0]; if (file) void ws.uploadImage(file); }} /></label>
+        <label className="file">Upload GLB<input aria-label="Upload GLB" type="file" accept=".glb,model/gltf-binary" onChange={(e) => { const file = e.currentTarget.files?.[0]; if (file) void ws.uploadGlb(file); }} /></label>
         <button disabled={!canProcess} onClick={ws.process}>{data.processingStatus === 'processing' ? 'Processing…' : 'Process'}</button>
         <button disabled={!canEdit} onClick={ws.startEdit}>{data.processingStatus === 'editing' ? 'Editing' : 'Edit'}</button>
+        <button disabled={!canRig} onClick={ws.startRigMetadataMode}>{isRigging ? 'Rig Metadata' : 'Rig Metadata'}</button>
         <button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>Download OBJ</button><button disabled={!data.sourceImage && !mesh} onClick={ws.clearWorkspace}>Remove</button>
       </div>
     </section>
     <section className="stage">
-      <div className="viewport-shell"><AssetViewport mesh={mesh} sourceUrl={data.sourceImage?.url} camera={data.cameraState} editMode={data.processingStatus === 'editing'} brushRadius={data.brushState.radius} onCamera={ws.setCamera} onSculpt={ws.applyBrushAt} onFrame={ws.resetView} /></div>
+      <div className="viewport-shell"><AssetViewport mesh={mesh} sourceUrl={data.sourceImage?.url} camera={data.cameraState} editMode={data.processingStatus === 'editing'} pickMode={isRigging} brushRadius={data.brushState.radius} onCamera={ws.setCamera} rigBendPoints={data.rigState.bendPoints} onSculpt={isRigging ? ws.placeRigBendPoint : ws.applyBrushAt} onFrame={ws.resetView} /></div>
       <div className="edge"><button onClick={ws.resetView}>Frame Object</button><button onClick={ws.resetView}>Reset View</button><button onClick={() => ws.setCamera({ zoom: data.cameraState.zoom + .15 })}>Zoom In</button><button onClick={() => ws.setCamera({ zoom: data.cameraState.zoom - .15 })}>Zoom Out</button></div>
       <div className="quality">Mesh Quality: {data.mesh?.quality ?? 'Waiting'}</div>
+      {isRigging && <div className="sculpt"><div className="tools">{(['humanoid','quadruped','vehicle','creature','bird','fish','custom'] as const).map((target) => <button key={target} data-active={data.rigState.target === target} onClick={() => ws.setRigTarget(target)}>{target}</button>)}<button onClick={ws.undoRigBendPoint}>Undo Bend</button><button onClick={ws.clearRigMetadata}>Clear Rig Metadata</button></div><div className="sliders"><label>Bend Points<strong>{data.rigState.bendPoints.length}</strong></label><label>Next Joint<strong>{data.rigState.skeleton.bones[Math.min(data.rigState.bendPoints.length, data.rigState.skeleton.bones.length - 1)]?.name ?? 'done'}</strong></label></div></div>}
       {data.processingStatus === 'editing' && <div className="sculpt"><div className="tools">{(['push','pull','smooth','inflate','carve','flatten'] as const).map((tool) => <button key={tool} data-active={data.activeTool === tool} onClick={() => ws.setTool(tool)}>{tool}</button>)}<button onClick={ws.undo}>Undo</button><button onClick={ws.redo}>Redo</button></div><div className="sliders"><label>Brush Radius<input type="range" min="0.05" max="0.6" step="0.01" value={data.brushState.radius} onChange={(e) => ws.setBrush({ radius: Number(e.currentTarget.value) })} /></label><label>Strength<input type="range" min="0.01" max="0.2" step="0.01" value={data.brushState.strength} onChange={(e) => ws.setBrush({ strength: Number(e.currentTarget.value) })} /></label></div></div>}
-      <div className="download"><button disabled={!canDownloadGlb} onClick={() => ws.download('glb')}>.glb</button><button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>.obj</button></div>
-      <p className="hint">Touch: drag to sculpt in Edit · two fingers pan/zoom · double tap frames view</p>
+      <div className="download"><button disabled={!canDownloadGlb} onClick={() => ws.download('glb')}>.glb</button><button disabled={!canDownloadGlb || data.rigState.bendPoints.length === 0} onClick={() => ws.download('rig-metadata-glb')}>GLB + Rig Metadata</button><button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>.obj</button></div>
+      <p className="hint">MVP supports indexed binary GLB mesh primitives · Edit: drag to sculpt · Rig metadata: tap bend points · two fingers pan/zoom</p>
     </section>
   </main>;
 }

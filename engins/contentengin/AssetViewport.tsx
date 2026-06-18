@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { computeBounds } from '@/engins/isosurfaceAssetPipeline';
-import type { CameraState } from '@/engins/isosurfaceAssetPipeline';
+import type { CameraState, RigBendPoint } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
 
 type ColorRGB = { r: number; g: number; b: number };
@@ -39,6 +39,8 @@ export default function AssetViewport({
   sourceUrl,
   camera,
   editMode,
+  pickMode = false,
+  rigBendPoints = [],
   brushRadius,
   onCamera,
   onSculpt,
@@ -48,6 +50,8 @@ export default function AssetViewport({
   sourceUrl?: string;
   camera: CameraState;
   editMode: boolean;
+  pickMode?: boolean;
+  rigBendPoints?: RigBendPoint[];
   brushRadius: number;
   onCamera: (patch: Partial<CameraState>) => void;
   onSculpt: (point: Vec3) => void;
@@ -64,6 +68,7 @@ export default function AssetViewport({
     lastDistance?: number;
   }>({ mode: 'none' });
   const lastSculptAt = useRef(0);
+  const pickStart = useRef<{ x: number; y: number; at: number } | null>(null);
   const gpuRef = useRef<GpuRuntime | null>(null);
 
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
@@ -199,16 +204,16 @@ export default function AssetViewport({
 
     if (renderMode === 'webgpu' && gpuRef.current) {
       drawWebGPU(canvas, width, height, mesh as ColoredMesh | null, cameraRef.current, editMode, gpuRef.current);
-      drawOverlay(overlayCtx, width, height, editMode, brushRadius, pointer, imageRef.current, cameraRef.current, mesh);
+      drawOverlay(overlayCtx, width, height, editMode || pickMode, brushRadius, pointer, imageRef.current, cameraRef.current, mesh, rigBendPoints);
       return;
     }
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawViewport(ctx, width, height, mesh as ColoredMesh | null, cameraRef.current, editMode, brushRadius, pointer, imageRef.current);
+    drawViewport(ctx, width, height, mesh as ColoredMesh | null, cameraRef.current, editMode || pickMode, brushRadius, pointer, imageRef.current, rigBendPoints);
     overlayCtx.clearRect(0, 0, width, height);
-  }, [mesh, editMode, brushRadius, pointer, imageVersion, renderMode]);
+  }, [mesh, editMode, pickMode, rigBendPoints, brushRadius, pointer, imageVersion, renderMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -278,6 +283,11 @@ export default function AssetViewport({
           gesture.current = { mode: 'pan', lastCenter: p };
           return;
         }
+        if (pickMode) {
+          pickStart.current = { ...p, at: performance.now() };
+          gesture.current = { mode: 'blocked', lastCenter: p };
+          return;
+        }
         if (editMode) {
           gesture.current = { mode: 'sculpt', lastCenter: p };
           sculptAt(e.currentTarget, p, true);
@@ -333,25 +343,32 @@ export default function AssetViewport({
         onCamera({ yaw: cameraRef.current.yaw + dx * 0.01, pitch: clamp(cameraRef.current.pitch + dy * 0.01, -1.35, 1.35) });
         return;
       }
-      if (gesture.current.mode === 'sculpt') sculptAt(e.currentTarget, p, false);
+      if (gesture.current.mode === 'sculpt' && !pickMode) sculptAt(e.currentTarget, p, false);
     },
     onPointerUp: (e: React.PointerEvent<HTMLCanvasElement>) => {
+      const p = canvasPoint(e);
+      const start = pickStart.current;
+      if (pickMode && start && pointers.current.size === 1 && pointDistance(start, p) <= 8 && performance.now() - start.at <= 700) {
+        sculptAt(e.currentTarget, p, true);
+      }
+      if (pointers.current.size <= 1) pickStart.current = null;
       pointers.current.delete(e.pointerId);
       if (pointers.current.size === 0) {
         gesture.current = { mode: 'none' };
         setPointer(null);
         return;
       }
-      resetGestureAfterPointerChange(editMode);
+      resetGestureAfterPointerChange(editMode && !pickMode);
     },
     onPointerCancel: (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (pointers.current.size <= 1) pickStart.current = null;
       pointers.current.delete(e.pointerId);
       if (pointers.current.size === 0) {
         gesture.current = { mode: 'none' };
         setPointer(null);
         return;
       }
-      resetGestureAfterPointerChange(editMode);
+      resetGestureAfterPointerChange(editMode && !pickMode);
     },
   };
 
@@ -448,7 +465,8 @@ function drawOverlay(
   pointer: { x: number; y: number } | null,
   img: HTMLImageElement | null,
   camera: CameraState,
-  mesh: Mesh | null
+  mesh: Mesh | null,
+  rigBendPoints: RigBendPoint[]
 ) {
   ctx.clearRect(0, 0, width, height);
   if (!mesh) {
@@ -458,6 +476,7 @@ function drawOverlay(
     ctx.fillText('Upload an image, then press Process', width / 2, height / 2);
   }
   drawSource(ctx, width, img);
+  drawRigBendMarkers(ctx, width, height, camera, rigBendPoints);
   if (editMode && pointer) {
     ctx.beginPath();
     ctx.arc(pointer.x, pointer.y, Math.max(8, brushRadius * Math.min(width, height) * 0.34 * camera.zoom), 0, Math.PI * 2);
@@ -476,7 +495,8 @@ function drawViewport(
   editMode: boolean,
   brushRadius: number,
   pointer: { x: number; y: number } | null,
-  sourceImage: HTMLImageElement | null
+  sourceImage: HTMLImageElement | null,
+  rigBendPoints: RigBendPoint[]
 ) {
   ctx.clearRect(0, 0, width, height);
   const grd = ctx.createLinearGradient(0, 0, 0, height);
@@ -494,6 +514,7 @@ function drawViewport(
     drawMesh(ctx, width, height, mesh, camera, editMode);
   }
   drawSource(ctx, width, sourceImage);
+  drawRigBendMarkers(ctx, width, height, camera, rigBendPoints);
   if (editMode && pointer) {
     ctx.beginPath();
     ctx.arc(pointer.x, pointer.y, Math.max(8, brushRadius * Math.min(width, height) * 0.34 * camera.zoom), 0, Math.PI * 2);
@@ -501,6 +522,30 @@ function drawViewport(
     ctx.lineWidth = 2;
     ctx.stroke();
   }
+}
+
+
+function drawRigBendMarkers(ctx: CanvasRenderingContext2D, width: number, height: number, camera: CameraState, bendPoints: RigBendPoint[]) {
+  if (!bendPoints.length) return;
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.font = '800 11px system-ui';
+  bendPoints.forEach((point, index) => {
+    const p = project(point.position, width, height, camera);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(245,158,11,.95)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(15,23,42,.92)';
+    ctx.stroke();
+    ctx.fillStyle = '#0f172a';
+    ctx.fillText(String(index + 1), p.x, p.y + 4);
+    ctx.fillStyle = 'rgba(255,255,255,.92)';
+    ctx.fillText(point.label, p.x, p.y - 10);
+  });
+  ctx.restore();
 }
 
 function drawGrid(ctx: CanvasRenderingContext2D, width: number, height: number, camera: CameraState, mesh: Mesh | null) {
