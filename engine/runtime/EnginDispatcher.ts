@@ -1,3 +1,4 @@
+import type { RenderIntentType } from '@/engins/renderengin/core';
 import {
     BAR_Y_SCALE,
     buildWorkgroups,
@@ -154,6 +155,14 @@ export interface WasmEngineExports {
   ) => void;
 }
 
+
+export interface RenderDispatcherIntent {
+  type: RenderIntentType;
+  source: string;
+  payload?: Record<string, unknown>;
+  createdAt: string;
+}
+
 export interface DispatcherStats {
   /** Number of active shader workers. */
   workerCount: number;
@@ -256,6 +265,7 @@ export class EnginDispatcher {
   private _boundsViolations = 0;
   private _initialized = false;
   private _wasmExports: WasmEngineExports | null = null;
+  private _renderIntentQueue: RenderDispatcherIntent[] = [];
 
   private constructor() {}
 
@@ -355,6 +365,18 @@ export class EnginDispatcher {
     this._initialized = true;
   }
 
+
+  dispatchRenderIntent(intent: Omit<RenderDispatcherIntent, 'createdAt'>): boolean {
+    if (!intent.type.startsWith('render.')) return false;
+    this._renderIntentQueue.push({ ...intent, createdAt: new Date().toISOString() });
+    if (this._renderIntentQueue.length > 128) this._renderIntentQueue.shift();
+    return true;
+  }
+
+  readRenderIntentQueue(): readonly RenderDispatcherIntent[] {
+    return this._renderIntentQueue;
+  }
+
   /**
    * Gracefully terminate all workers and release resources.
    */
@@ -372,6 +394,7 @@ export class EnginDispatcher {
     this._boundsViolations = 0;
     this._initialized = false;
     this._wasmExports = null;
+    this._renderIntentQueue = [];
   }
 
   /**
