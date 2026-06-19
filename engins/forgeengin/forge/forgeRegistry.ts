@@ -114,6 +114,18 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     domains: ['communication', 'visual', 'memory'],
     capabilities: ['Rich Text', 'Multi-Platform', 'AI Optimizer', 'Scheduling', 'Analytics'],
   },
+
+  {
+    id: 'render',
+    name: 'RenderEngin',
+    emoji: '🧊',
+    accent: '#38bdf8',
+    desc: 'WebGPU scene viewport for user assets, previews, snapshots, and cross-Engin render handoffs.',
+    daydreamHref: '/daydream/render',
+    enginHref: '/engines/render',
+    domains: ['visual', 'physics', 'logic'],
+    capabilities: ['WebGPU', 'Scene Graph', 'Asset Preview', 'Runtime Snapshots', 'Cross-Engin Handoff'],
+  },
   {
     id: 'forge',
     name: 'ForgeEngin',

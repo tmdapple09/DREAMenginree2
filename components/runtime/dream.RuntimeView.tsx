@@ -43,6 +43,7 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
   BrandingEngin: dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false }),
   ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
   ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
+  RenderEngin: dynamic(() => import('@/components/engines/render/dream.RenderEnginApp'), { ssr: false }),
 };
 
 // Imports and external modules this runtime file depends on.

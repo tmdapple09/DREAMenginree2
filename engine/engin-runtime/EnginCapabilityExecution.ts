@@ -115,6 +115,24 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> =
       ],
       workerPreferred: true,
     }),
+    render: executionPlan({
+      enginId: "render",
+      realtimeActionTypes: [
+        "render.camera.orbit",
+        "render.camera.zoom",
+        "render.object.transform",
+        "render.viewport.resize",
+        "render.frame.render",
+      ],
+      syncCadenceRevisions: 2,
+      subsystems: [
+        "coalesced-runtime-work",
+        "instanced-geometry",
+        "deterministic-aabb-ray-scan",
+        "gpu-compute-dispatch",
+      ],
+      workerPreferred: true,
+    }),
   });
 
 // Imports and external modules this runtime file depends on.
