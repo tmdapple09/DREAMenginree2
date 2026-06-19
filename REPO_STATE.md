@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-19T00:27:25.282Z
+Generated: 2026-06-19T00:27:51.496Z
 
 ---
 
@@ -13840,6 +13840,7 @@ _No style files for this feature._
 | `@/engins/codeengin/pathSafety` | _(dynamic import)_ |
 | `@/engins/codeengin/projectGraph` | _(dynamic import)_ |
 | `@/engins/codeengin/runner` | _(dynamic import)_ |
+| `@/engins/codeengin/runnerCommands` | _(dynamic import)_ |
 | `@/engins/codeengin/search` | _(dynamic import)_ |
 | `@/engins/codeengin/types` | _(dynamic import)_ |
 | `@/engins/codeengin/workspaceStore` | _(dynamic import)_ |
@@ -14028,6 +14029,10 @@ _No style files for this feature._
 | `@/engins/isosurfaceDualContouring` | _(dynamic import)_ |
 | `@/engins/labengin/implicitSurface` | _(dynamic import)_ |
 | `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
+| `@/engins/renderengin/core` | _(dynamic import)_ |
+| `@/engins/renderengin/index` | _(dynamic import)_ |
+| `@/engins/renderengin/RenderEnginViewport` | _(dynamic import)_ |
+| `@/engins/renderengin/webgpu` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/brandEnginRuleSet` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/useBrandEnginRuntime` | _(dynamic import)_ |
 | `@/engins/rulesets/code/codeEnginRuleSet` | _(dynamic import)_ |
@@ -14325,6 +14330,7 @@ _No style files for this feature._
 | `@/app/engines/portfolio/optimize/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/quantum/page` | _(dynamic import)_ |
+| `@/app/engines/render/page` | _(dynamic import)_ |
 | `@/app/feed-settings/dream.FeedSettingsClient` | _(dynamic import)_ |
 | `@/app/feed-settings/page` | _(dynamic import)_ |
 | `@/app/gameengin/cartridges/[id]/page` | _(dynamic import)_ |
@@ -14519,6 +14525,8 @@ _No style files for this feature._
 | `@/components/engines/portfolio/panels/dream.panel.AssetsPanel` | _(dynamic import)_ |
 | `@/components/engines/portfolio/panels/dream.panel.OptimizePanel` | _(dynamic import)_ |
 | `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel` | _(dynamic import)_ |
+| `@/components/engines/render/dream.RenderEnginApp` | _(dynamic import)_ |
+| `@/components/engines/render/index` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.bar.EnginNavBar` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.EnginProvider` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.EnginRuleSet` | _(dynamic import)_ |
@@ -15921,6 +15929,7 @@ _No style files for this feature._
 - `@/engins/codeengin/pathSafety`
 - `@/engins/codeengin/projectGraph`
 - `@/engins/codeengin/runner`
+- `@/engins/codeengin/runnerCommands`
 - `@/engins/codeengin/search`
 - `@/engins/codeengin/types`
 - `@/engins/codeengin/workspaceStore`
@@ -16109,6 +16118,10 @@ _No style files for this feature._
 - `@/engins/isosurfaceDualContouring`
 - `@/engins/labengin/implicitSurface`
 - `@/engins/portfolio/dream.PortfolioEngin`
+- `@/engins/renderengin/core`
+- `@/engins/renderengin/index`
+- `@/engins/renderengin/RenderEnginViewport`
+- `@/engins/renderengin/webgpu`
 - `@/engins/rulesets/brand/brandEnginRuleSet`
 - `@/engins/rulesets/brand/useBrandEnginRuntime`
 - `@/engins/rulesets/code/codeEnginRuleSet`
@@ -16382,6 +16395,7 @@ _No style files for this feature._
 - `@/app/engines/portfolio/optimize/page`
 - `@/app/engines/portfolio/page`
 - `@/app/engines/portfolio/quantum/page`
+- `@/app/engines/render/page`
 - `@/app/feed-settings/dream.FeedSettingsClient`
 - `@/app/feed-settings/page`
 - `@/app/gameengin/cartridges/[id]/page`
@@ -16576,6 +16590,8 @@ _No style files for this feature._
 - `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
 - `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
 - `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
+- `@/components/engines/render/dream.RenderEnginApp`
+- `@/components/engines/render/index`
 - `@/components/engines/shared/dream.bar.EnginNavBar`
 - `@/components/engines/shared/dream.EnginProvider`
 - `@/components/engines/shared/dream.EnginRuleSet`

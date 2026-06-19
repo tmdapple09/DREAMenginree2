@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-19T00:27:25.417Z
+Generated: 2026-06-19T00:27:51.631Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14827,6 +14827,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/codeengin/pathSafety
 │           │   ├── (dynamic)  ← @/engins/codeengin/projectGraph
 │           │   ├── (dynamic)  ← @/engins/codeengin/runner
+│           │   ├── (dynamic)  ← @/engins/codeengin/runnerCommands
 │           │   ├── (dynamic)  ← @/engins/codeengin/search
 │           │   ├── (dynamic)  ← @/engins/codeengin/types
 │           │   ├── (dynamic)  ← @/engins/codeengin/workspaceStore
@@ -15015,6 +15016,10 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/isosurfaceDualContouring
 │           │   ├── (dynamic)  ← @/engins/labengin/implicitSurface
 │           │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
+│           │   ├── (dynamic)  ← @/engins/renderengin/core
+│           │   ├── (dynamic)  ← @/engins/renderengin/index
+│           │   ├── (dynamic)  ← @/engins/renderengin/RenderEnginViewport
+│           │   ├── (dynamic)  ← @/engins/renderengin/webgpu
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/brandEnginRuleSet
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/useBrandEnginRuntime
 │           │   ├── (dynamic)  ← @/engins/rulesets/code/codeEnginRuleSet
@@ -15319,6 +15324,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/optimize/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/quantum/page
+│           │   ├── (dynamic)  ← @/app/engines/render/page
 │           │   ├── (dynamic)  ← @/app/feed-settings/dream.FeedSettingsClient
 │           │   ├── (dynamic)  ← @/app/feed-settings/page
 │           │   ├── (dynamic)  ← @/app/gameengin/cartridges/[id]/page
@@ -15513,6 +15519,8 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
+│           │   ├── (dynamic)  ← @/components/engines/render/dream.RenderEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/render/index
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.bar.EnginNavBar
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginProvider
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginRuleSet
