@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-18T22:21:05.298Z
+Generated: 2026-06-19T23:26:30.415Z
 
 ---
 
@@ -200,6 +200,7 @@ _No style files for this feature._
 - `tests/phase8g-dual-runtime-persistence.test.ts`
 - `tests/readme-homedream-system.test.ts`
 - `tests/readme-section6-homedream.test.ts`
+- `tests/renderengin-runtime-wiring.test.ts`
 - `tests/runtime-wiring.test.ts`
 
 <a name="homedream-deps"></a>
@@ -863,6 +864,7 @@ _No style files for this feature._
 - `@/engins/gameengin/index`
 - `@/engins/gameengin/post-fx`
 - `@/engins/gameengin/registerCartridges`
+- `@/engins/renderengin`
 - `@/engins/rulesets/game/gameEnginRuleSet`
 - `@/engins/rulesets/game/useGameEnginRuntime`
 - `@/hooks/useMotionTilt`
@@ -3850,6 +3852,7 @@ _No style files for this feature._
 - `tests/engin-runtime-core.test.ts`
 - `tests/engin-workflow.test.ts`
 - `tests/gameengin-runtime-upgrade.test.ts`
+- `tests/renderengin-runtime-wiring.test.ts`
 - `tests/runtime-channel.test.ts`
 - `tests/runtime-container.test.ts`
 - `tests/runtime-viewport.test.ts`
@@ -6521,6 +6524,11 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/engines/render/dream.RenderEnginApp` | `⬡ RenderEnginApp` |
+| `@/engine/dev-bypass` | `isDevBypassActive` |
+| `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `@/supabase/server/serverClient` | `createServerClient` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
 
 ## `app/error.tsx`
 
@@ -8293,7 +8301,9 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/engines/shared` | `makeEnginApp` |
-| `@/engins/renderengin` | `RenderEnginViewport` |
+| `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
+| `@/engins/renderengin` | `RenderEnginRuleSet`, `RenderEnginViewport`, `RenderIntent` |
+| `react` | `useMemo` |
 
 ## `components/engines/shared/dream.EnginProvider.tsx`
 
@@ -10313,6 +10323,13 @@ _No style files for this feature._
 | `./HotRuntime` | `HotActionMetadata`, `HotLaneCommand`, `HotRuntime`, `HotRuntimeLane`, `MoldableModuleFrame`, `WebGPUComputeMeasurement`, `WebGPUInitializationResult` |
 | `./PremiumRuntimeQuality` | `PremiumRuntimeQuality`, `createPremiumRuntimeQuality`, `validatePremiumRuntimeQuality` |
 
+## `engine/engin-runtime/EnginRuntimeRegistry.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./EnginBaseState` | `JsonObject` |
+| `./EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
+
 ## `engine/engin-runtime/EnginSnapshotFingerprint.ts`
 
 | Module | Connected via |
@@ -11584,6 +11601,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./memory` | `BAR_Y_SCALE`, `MAX_WORKERS`, `SAB_BYTES`, `SNAP_THRESHOLD_RATIO`, `Workgroup`, `buildWorkgroups`, `createEnginSAB`, `f64Telemetry`, `int32AxisState`, `int32DreamDMBarX`, `int32DreamDMBarY`, `int32LockedState` |
+| `@/engins/renderengin/core` | `RenderIntentType` |
 
 ## `engine/runtime/channelMetrics.ts`
 
@@ -12073,6 +12091,8 @@ _No style files for this feature._
 |--------|---------------|
 | `@/engins/contentengin/AssetViewport` | `⬡ AssetViewport` |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | `useImplicitAssetWorkspace` |
+| `@/engins/renderengin` | `dispatchRenderHandoff` |
+| `next/navigation` | `useRouter` |
 
 ## `engins/contentengin/assetTypes.ts`
 
@@ -12511,6 +12531,7 @@ _No style files for this feature._
 | `@/engins/gameengin/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
 | `@/engins/gameengin/games/useGamepad` | `useGamepad` |
 | `@/engins/gameengin/games/useRemoteChannel` | `useRemoteChannel` |
+| `@/engins/renderengin` | `dispatchRenderHandoff` |
 | `@/engins/rulesets/game/gameEnginRuleSet` | `GameScore`, `GravityPreset`, `PhysicsConfig`, `ScriptLanguage`, `ScriptState`, `TileType` |
 | `@/engins/rulesets/game/useGameEnginRuntime` | `useGameEnginRuntime` |
 | `@/supabase/client/client` | `createClient` |
@@ -13059,9 +13080,44 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./core` | `MeshBuffers`, `composeModelMatrix`, `createMeshBuffers`, `mat4LookAt`, `mat4Perspective` |
+| `./assets` | `createParsedObjRenderAsset`, `estimateRenderAssetMemory` |
+| `./core` | `MeshBuffers`, `RenderIntent`, `Vec3`, `composeModelMatrix`, `createMeshBuffers`, `mat4LookAt`, `mat4Perspective` |
 | `./webgpu` | `RenderEnginFrameStats`, `WebGpuRenderEngin`, `requestWebGpuDevice` |
-| `react` | `useEffect`, `useRef`, `useState` |
+| `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/renderengin/advancedRendering.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `DualQuaternion`, `Mat4`, `MeshBuffers`, `Quat`, `Vec3`, `Vec4`, `Vertex`, `makeDualQuaternion`, `mat4Identity`, `mat4Mul`, `mat4Transform`, `quatMul`, `v3add`, `v3length`, `v3normalize`, `v3scale`, `v3sub` |
+| `./virtualization` | `RenderBounds`, `RenderFrustumPlane` |
+
+## `engins/renderengin/animation.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Mat4`, `Quat`, `Vec3`, `mat4FromQuat`, `mat4Mul`, `mat4Scale`, `mat4Translation` |
+
+## `engins/renderengin/assets.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `MeshBuffers`, `Vec2`, `Vec3`, `createMeshBuffers`, `createRenderAsset`, `v3cross`, `v3normalize`, `v3sub`, `validateMeshForRenderUpload` |
+| `@/engine/engin-runtime/EnginBaseState` | `DomainVisibility`, `JsonObject`, `JsonValue` |
+| `@/engine/engin-runtime/EnginCapabilities` | `DomainAuthorizationContext`, `DomainCapability`, `authorizeDomainCapability` |
+
+## `engins/renderengin/benchmarkProof.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/completionEvidence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../engine/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue` |
 
 ## `engins/renderengin/core.ts`
 
@@ -13070,11 +13126,106 @@ _No style files for this feature._
 | `../../engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue` |
 | `../../engine/engin-runtime/EnginRuleSetContract` | `EnginAction`, `EnginRuleSetContract` |
 
+## `engins/renderengin/diagnostics.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `MeshBuffers` |
+| `./webgpu` | `RenderEnginFrameStats` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/lighting.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Vec3`, `v3normalize` |
+| `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
+
+## `engins/renderengin/liveBenchmark.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./webgpu` | `WebGpuRenderEngin` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/materials.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Vec3`, `clamp01` |
+| `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
+
+## `engins/renderengin/performanceIntegrity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/postProcessing.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/renderSettings.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/runtimeRegistration.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `RENDER_ENGIN_ID`, `RENDER_INTENT_TYPES`, `RenderEnginRuleSet` |
+| `@/engine/engin-runtime/EnginRuntimeRegistry` | `registerRuntimeEngin` |
+
+## `engins/renderengin/scene.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Mat4`, `Quat`, `Vec3`, `composeModelMatrix`, `mat4Identity`, `mat4Mul` |
+| `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue` |
+
+## `engins/renderengin/security.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/serviceIntegration.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `RenderIntentType` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+| `@/engine/runtime/EnginDispatcher` | `EnginDispatcher`, `RenderDispatcherIntent` |
+
+## `engins/renderengin/textures.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
+
+## `engins/renderengin/viewportControls.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Vec2`, `Vec3`, `v3dot`, `v3length`, `v3normalize`, `v3scale`, `v3sub` |
+| `./virtualization` | `RenderBounds` |
+
+## `engins/renderengin/virtualization.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `MeshBuffers`, `Vec3`, `v3length`, `v3sub` |
+| `./scene` | `RenderScene` |
+
 ## `engins/renderengin/webgpu.ts`
 
 | Module | Connected via |
 |--------|---------------|
-| `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vertex`, `mat4Identity` |
+| `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `mat4Identity`, `validateMeshForRenderUpload` |
 
 ## `engins/rulesets/brand/brandEnginRuleSet.ts`
 
@@ -17229,6 +17380,8 @@ _No style files for this feature._
 - `app/engines/portfolio/optimize/page.tsx`
 - `app/engines/portfolio/page.tsx`
 - `app/engines/portfolio/quantum/page.tsx`
+- `app/engines/render/error.tsx`
+- `app/engines/render/loading.tsx`
 - `app/engines/render/page.tsx`
 
 ## `app/error.tsx/`
@@ -18462,6 +18615,7 @@ _No style files for this feature._
 - `engins/gameengin/GameRuntime.tsx`
 - `engins/gameengin/games/DualSenseManager.ts`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
+- `engins/renderengin/serviceIntegration.ts`
 - `engins/rulesets/useEnginWorkflow.ts`
 - `readme-autosync.ts`
 - `scripts/generate-repo-state.mjs`
@@ -18747,6 +18901,7 @@ _No style files for this feature._
 - `engine/runtime/useDragSurface.ts`
 - `engins/gameengin/GameEnginCore.ts`
 - `engins/gameengin/registerCartridges.ts`
+- `engins/renderengin/serviceIntegration.ts`
 - `readme-autosync.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/readme-autosync.ts`
@@ -18769,11 +18924,12 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 42 |
+| `engins/engin.GameEngin.tsx` | 43 |
 | `engins/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 25 |
 | `engins/contentengin/pipeline/build.ts` | 25 |
+| `engins/renderengin/index.ts` | 22 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -18798,7 +18954,6 @@ _No circular dependencies detected._
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
 | `app/api/connectors/[provider]/verify/route.ts` | 12 |
-| `app/connectors/dream.ConnectorsClient.tsx` | 12 |
 
 ---
 
@@ -18808,11 +18963,12 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 42 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 43 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
+| `engins/renderengin/index.ts` | 22 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -18996,6 +19152,7 @@ _No circular dependencies detected._
 | `app/engines/music/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/portfolio/page.tsx` | 6 | MEDIUM_COUPLING |
+| `app/engines/render/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/lab/[id]/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/messages/boards/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/notes/page.tsx` | 6 | MEDIUM_COUPLING |
@@ -19021,6 +19178,7 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
+| `tests/renderengin-runtime-wiring.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/shell-cartridge-wiring.test.ts` | 6 | MEDIUM_COUPLING |
 | `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
@@ -19062,15 +19220,19 @@ _No circular dependencies detected._
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
+| `engins/renderengin/serviceIntegration.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
 | `tests/module-registry.test.ts` | 3 | EVENT_BUS, ZUSTAND_STATE |
 | `tests/phase8f-daydream-activation.test.ts` | 3 | EVENT_BUS |
 | `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/render-full-integration.test.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `tests/render-service-integration.test.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/universal-visual-modularity.test.ts` | 3 | EVENT_BUS |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/engin-runtime/HotRuntime.ts` | 2 | RUNTIME_REGISTRY |
+| `engine/runtime/EnginDispatcher.ts` | 2 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
 | `engine/runtime/useDualRuntime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/useEnginBridge.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
@@ -19087,7 +19249,6 @@ _No circular dependencies detected._
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
 | `engine/collaboration/index.ts` | 1 | EVENT_BUS |
 | `engine/dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `engine/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
 | `engine/events/event-bus/index.ts` | 0 | EVENT_BUS |
 | `engine/events/eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
@@ -19401,6 +19562,8 @@ _No circular dependencies detected._
 | `app/engines/portfolio/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/engines/render/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/engines/render/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/error.tsx` | `@/supabase/client/client` | `createClient` |
 | `app/feed-settings/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/feed-settings/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
@@ -19618,6 +19781,8 @@ _No circular dependencies detected._
 | `app/engines/layout.tsx` | `(default)` |
 | `app/engines/music/layout.tsx` | `metadata`, `(default)` |
 | `app/engines/portfolio/layout.tsx` | `metadata`, `(default)` |
+| `app/engines/render/error.tsx` | `(default)` |
+| `app/engines/render/loading.tsx` | `(default)` |
 | `app/error.tsx` | `(default)` |
 | `app/feed-settings/dream.FeedSettingsClient.tsx` | `(default)` |
 | `app/global-error.tsx` | `(default)` |
@@ -20029,6 +20194,7 @@ _No circular dependencies detected._
 | `engine/engin-runtime/EnginPerformanceProbe.ts` | `gpuMeasurementOrHardwareDependent` |
 | `engine/engin-runtime/EnginRuleSetContract.ts` | `validateRuleSetManifest` |
 | `engine/engin-runtime/EnginRuntime.ts` | `ENGIN_RUNTIME_VERSION`, `ENGIN_RUNTIME_FEATURES` |
+| `engine/engin-runtime/EnginRuntimeRegistry.ts` | `listRuntimeEnginRegistrations` |
 | `engine/engin-runtime/EnginSnapshotFingerprint.ts` | `stableStringifySnapshot`, `hashBytesFNV1A`, `fingerprintBytesWithWasm` |
 | `engine/engin-runtime/HotRuntime.ts` | `HotActionClassifier`, `RevisionCoalescer`, `CoalescedCommandQueue`, `HotLaneScheduler`, `TypedMemoryArena`, `BinaryCommandBus`, `DeferredPersistenceQueue`, `DeferredSyncQueue`, `ShaderKernelRegistry`, `MoldableModuleGpuBridge` |
 | `engine/engin-runtime/InternalMetrics.ts` | `InternalOnlyMetricStore`, `UserFacingMetricLeakTest`, `DevOnlyBenchmarkRunner` |
@@ -20242,8 +20408,26 @@ _No circular dependencies detected._
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
 | `engins/renderengin/RenderEnginViewport.tsx` | `(default)` |
-| `engins/renderengin/core.ts` | `v3add`, `v3sub`, `v3scale`, `v3dot`, `v3cross`, `v3length`, `v3normalize`, `clamp01`, `mat4Translation`, `mat4Scale`, `mat4Mul`, `mat4Transform`, `mat4FromQuat`, `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `makeDualQuaternion`, `quatMul`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `createRenderAsset`, `RenderEnginRuleSet` |
-| `engins/renderengin/webgpu.ts` | `toGpuMat4`, `packAosVertexBuffer` |
+| `engins/renderengin/advancedRendering.ts` | `applyMorphTargets`, `skinVertexDqs`, `buildDualQuaternionPalette`, `planBoneStorage`, `createTimestampQueryPlan`, `reduceTimestampPairs`, `markDeviceLost`, `markDeviceRebuilding`, `markDeviceRestored`, `buildMeshlets`, `planComputeCulling`, `buildIndirectDrawCommands`, `planStreamingPages`, `compressGeometryQuantized`, `solveTwoBoneIk`, `applySkinMatrixToVertex`, `combinePoseMatrix` |
+| `engins/renderengin/animation.ts` | `sampleKeyframes`, `evaluateAnimationClip` |
+| `engins/renderengin/assets.ts` | `parseObjMesh`, `parseGlbHeader`, `renderAssetManifestToJson`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `parseGlbMesh`, `createParsedGlbRenderAsset` |
+| `engins/renderengin/benchmarkProof.ts` | `createTenMillionPolygonProof`, `evaluateGpuBenchmarkProof`, `createTenMillionTriangleBenchmarkScene`, `certifyTenMillionScene` |
+| `engins/renderengin/completionEvidence.ts` | `createRenderCompletionEvidence` |
+| `engins/renderengin/core.ts` | `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `RENDER_ENGIN_NAME` |
+| `engins/renderengin/diagnostics.ts` | `createRenderPerformanceReport`, `frameStatsToPerformanceSample`, `createBenchmarkScene`, `evaluateRenderPerformanceGate` |
+| `engins/renderengin/lighting.ts` | `createRenderLight`, `createRenderEnvironment`, `summarizeRenderLights` |
+| `engins/renderengin/liveBenchmark.ts` | `isMobileRenderUserAgent`, `summarizeLiveBenchmark`, `runRenderLiveBenchmark` |
+| `engins/renderengin/materials.ts` | `createRenderMaterial`, `packRenderMaterial`, `updateRenderMaterial` |
+| `engins/renderengin/performanceIntegrity.ts` | `DEFAULT_RENDER_PERFORMANCE_THRESHOLDS`, `evaluateRenderPerformanceIntegrity` |
+| `engins/renderengin/postProcessing.ts` | `createRenderPostProcessGraph`, `executePostProcessPixel` |
+| `engins/renderengin/renderSettings.ts` | `createRenderQualitySettings`, `switchRenderPreviewMode` |
+| `engins/renderengin/scene.ts` | `defaultRenderTransform`, `createRenderScene`, `createRenderSceneObject`, `addObjectToRenderScene`, `selectRenderSceneObjects`, `updateRenderSceneObject`, `removeRenderSceneObject`, `setRenderSceneEnvironment`, `computeRenderObjectWorldMatrix`, `serializeRenderScene`, `deserializeRenderScene`, `undoRenderScene`, `redoRenderScene`, `renderSceneSummary` |
+| `engins/renderengin/security.ts` | `authorizeRenderCapability`, `validateRenderAssetManifestServer` |
+| `engins/renderengin/serviceIntegration.ts` | `RENDER_SERVICE_PIPELINE`, `RENDER_SERVICE_COMMANDS`, `RENDER_SERVICE_HANDOFFS`, `createRenderServiceIntent`, `getRenderHandoffForSource`, `dispatchRenderServiceIntent`, `dispatchRenderHandoff` |
+| `engins/renderengin/textures.ts` | `calculateMipLevelCount`, `estimateTextureBytes`, `validateRenderTexture`, `createRenderTexture`, `createTextureMemoryReport` |
+| `engins/renderengin/viewportControls.ts` | `panRenderCamera`, `orbitRenderCamera`, `zoomRenderCamera`, `pinchZoomRenderCamera`, `resetRenderCamera`, `fitCameraToBounds`, `createViewportRay`, `raycastSphere`, `pickRenderObject`, `createBoundingBoxLines`, `transformGizmoDelta`, `createAxisHelper` |
+| `engins/renderengin/virtualization.ts` | `computeMeshBounds`, `sphereIntersectsFrustum`, `selectScreenSpaceLod`, `cullRenderScene`, `buildInstanceBatches`, `createTerrainChunks` |
+| `engins/renderengin/webgpu.ts` | `SHADER`, `toGpuMat4`, `packAosVertexBuffer` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
 | `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
 | `engins/rulesets/content/contentEnginRuleSet.ts` | `CONTENT_IMPLICIT_ASSET_POLICY` |
@@ -21247,7 +21431,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   │   ├── render
-│   │   │   └── page.tsx
+│   │   │   ├── error.tsx ∅
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   ├── loading.tsx ∅
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   ├── layout.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
@@ -22502,6 +22692,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: validateRuleSetManifest
 │   │   ├── EnginRuntime.ts ∅
 │   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
+│   │   ├── EnginRuntimeRegistry.ts ∅
+│   │   │   └── ∅ unused: listRuntimeEnginRegistrations
 │   │   ├── EnginSnapshotFingerprint.ts ∅
 │   │   │   └── ∅ unused: stableStringifySnapshot, hashBytesFNV1A, fingerprintBytesWithWasm
 │   │   ├── HotRuntime.ts ∅
@@ -23303,13 +23495,50 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── renderengin
+│   │   ├── advancedRendering.ts ∅
+│   │   │   └── ∅ unused: applyMorphTargets, skinVertexDqs, buildDualQuaternionPalette, planBoneStorage, createTimestampQueryPlan, reduceTimestampPairs, markDeviceLost, markDeviceRebuilding, markDeviceRestored, buildMeshlets, planComputeCulling, buildIndirectDrawCommands, planStreamingPages, compressGeometryQuantized, solveTwoBoneIk, applySkinMatrixToVertex, combinePoseMatrix
+│   │   ├── animation.ts ∅
+│   │   │   └── ∅ unused: sampleKeyframes, evaluateAnimationClip
+│   │   ├── assets.ts ∅
+│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
+│   │   ├── benchmarkProof.ts ∅
+│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof, createTenMillionTriangleBenchmarkScene, certifyTenMillionScene
+│   │   ├── completionEvidence.ts ∅
+│   │   │   └── ∅ unused: createRenderCompletionEvidence
 │   │   ├── core.ts ∅
-│   │   │   └── ∅ unused: v3add, v3sub, v3scale, v3dot, v3cross, v3length, v3normalize, clamp01, mat4Translation, mat4Scale, mat4Mul, mat4Transform, mat4FromQuat, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, createRenderAsset, RenderEnginRuleSet
+│   │   │   └── ∅ unused: projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
+│   │   ├── diagnostics.ts ∅
+│   │   │   └── ∅ unused: createRenderPerformanceReport, frameStatsToPerformanceSample, createBenchmarkScene, evaluateRenderPerformanceGate
 │   │   ├── index.ts
+│   │   ├── lighting.ts ∅
+│   │   │   └── ∅ unused: createRenderLight, createRenderEnvironment, summarizeRenderLights
+│   │   ├── liveBenchmark.ts ∅
+│   │   │   └── ∅ unused: isMobileRenderUserAgent, summarizeLiveBenchmark, runRenderLiveBenchmark
+│   │   ├── materials.ts ∅
+│   │   │   └── ∅ unused: createRenderMaterial, packRenderMaterial, updateRenderMaterial
+│   │   ├── performanceIntegrity.ts ∅
+│   │   │   └── ∅ unused: DEFAULT_RENDER_PERFORMANCE_THRESHOLDS, evaluateRenderPerformanceIntegrity
+│   │   ├── postProcessing.ts ∅
+│   │   │   └── ∅ unused: createRenderPostProcessGraph, executePostProcessPixel
 │   │   ├── RenderEnginViewport.tsx ∅
 │   │   │   └── ∅ unused: (default)
+│   │   ├── renderSettings.ts ∅
+│   │   │   └── ∅ unused: createRenderQualitySettings, switchRenderPreviewMode
+│   │   ├── runtimeRegistration.ts
+│   │   ├── scene.ts ∅
+│   │   │   └── ∅ unused: defaultRenderTransform, createRenderScene, createRenderSceneObject, addObjectToRenderScene, selectRenderSceneObjects, updateRenderSceneObject, removeRenderSceneObject, setRenderSceneEnvironment, computeRenderObjectWorldMatrix, serializeRenderScene, deserializeRenderScene, undoRenderScene, redoRenderScene, renderSceneSummary
+│   │   ├── security.ts ∅
+│   │   │   └── ∅ unused: authorizeRenderCapability, validateRenderAssetManifestServer
+│   │   ├── serviceIntegration.ts ∅
+│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, createRenderServiceIntent, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff
+│   │   ├── textures.ts ∅
+│   │   │   └── ∅ unused: calculateMipLevelCount, estimateTextureBytes, validateRenderTexture, createRenderTexture, createTextureMemoryReport
+│   │   ├── viewportControls.ts ∅
+│   │   │   └── ∅ unused: panRenderCamera, orbitRenderCamera, zoomRenderCamera, pinchZoomRenderCamera, resetRenderCamera, fitCameraToBounds, createViewportRay, raycastSphere, pickRenderObject, createBoundingBoxLines, transformGizmoDelta, createAxisHelper
+│   │   ├── virtualization.ts ∅
+│   │   │   └── ∅ unused: computeMeshBounds, sphereIntersectsFrustum, selectScreenSpaceLod, cullRenderScene, buildInstanceBatches, createTerrainChunks
 │   │   └── webgpu.ts ∅
-│   │       └── ∅ unused: toGpuMat4, packAosVertexBuffer
+│   │       └── ∅ unused: SHADER, toGpuMat4, packAosVertexBuffer
 │   ├── rulesets
 │   │   ├── brand
 │   │   │   ├── brandEnginRuleSet.ts
@@ -23856,7 +24085,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
+│   ├── render-completion-evidence.test.ts
+│   ├── render-full-integration.test.ts
+│   ├── render-service-integration.test.ts
+│   ├── render-viewport-lifecycle-source.test.ts
+│   ├── render-viewport-security-performance.test.ts
+│   ├── renderengin-advanced-rendering.test.ts
+│   ├── renderengin-assets-scene.test.ts
 │   ├── renderengin-core.test.ts
+│   ├── renderengin-glb-virtual-animation.test.ts
+│   ├── renderengin-gpu-proof-security.test.ts
+│   ├── renderengin-material-security-performance.test.ts
+│   ├── renderengin-runtime-wiring.test.ts
+│   ├── renderengin-texture-lighting-settings.test.ts
 │   ├── renderengin-webgpu.test.ts
 │   ├── report-driven-game-agent.test.ts
 │   ├── repository-state-analysis-section.test.ts
