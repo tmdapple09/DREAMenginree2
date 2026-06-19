@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-18T22:21:28.933Z",
+  "generatedAt": "2026-06-19T00:28:15.757Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 274,
+    "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 244,
+    "engin": 256,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -16,7 +16,7 @@
     "brain-doc": 0,
     "cartridge": 1,
     "persona": 6,
-    "migration": 56,
+    "migration": 57,
     "memory": 6,
     "dr-eams-tool": 26,
     "hook": 12,
@@ -1862,6 +1862,24 @@
       "exports": [
         "default",
         "metadata"
+      ]
+    },
+    {
+      "id": "app/engines/render/error",
+      "slot": "route-surface",
+      "path": "app/engines/render/error.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "app/engines/render/loading",
+      "slot": "route-surface",
+      "path": "app/engines/render/loading.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
       ]
     },
     {
@@ -9288,6 +9306,53 @@
       ]
     },
     {
+      "id": "engins/renderengin/animation",
+      "slot": "engin",
+      "path": "engins/renderengin/animation.ts",
+      "engine": "Universal",
+      "exports": [
+        "evaluateAnimationClip",
+        "RenderAnimationChannel",
+        "RenderAnimationClip",
+        "RenderAnimationPath",
+        "RenderAnimationPose",
+        "RenderKeyframeQuat",
+        "RenderKeyframeVec3",
+        "sampleKeyframes"
+      ]
+    },
+    {
+      "id": "engins/renderengin/assets",
+      "slot": "engin",
+      "path": "engins/renderengin/assets.ts",
+      "engine": "Universal",
+      "exports": [
+        "authorizeRenderAssetOperation",
+        "createContentEnginRenderHandoff",
+        "createGameEnginRenderHandoff",
+        "createParsedGlbRenderAsset",
+        "createParsedObjRenderAsset",
+        "estimateRenderAssetMemory",
+        "ParsedRenderAsset",
+        "parseGlbHeader",
+        "parseGlbMesh",
+        "parseObjMesh",
+        "RenderAssetManifest",
+        "renderAssetManifestToJson"
+      ]
+    },
+    {
+      "id": "engins/renderengin/benchmarkProof",
+      "slot": "engin",
+      "path": "engins/renderengin/benchmarkProof.ts",
+      "engine": "Universal",
+      "exports": [
+        "createTenMillionPolygonProof",
+        "evaluateGpuBenchmarkProof",
+        "RenderMillionPolyProof"
+      ]
+    },
+    {
       "id": "engins/renderengin/core",
       "slot": "engin",
       "path": "engins/renderengin/core.ts",
@@ -9322,10 +9387,15 @@
         "projectVertex",
         "Quat",
         "quatMul",
+        "RENDER_ENGIN_ID",
+        "RENDER_ENGIN_NAME",
+        "RENDER_INTENT_TYPES",
         "RenderAsset",
         "RenderAssetData",
+        "RenderAssetValidationResult",
         "RenderEnginRuleSet",
         "RenderIntent",
+        "RenderIntentType",
         "schlickG1",
         "selectLod",
         "shadeCookTorrance",
@@ -9339,10 +9409,26 @@
         "v3normalize",
         "v3scale",
         "v3sub",
+        "validateMeshForRenderUpload",
         "Vec2",
         "Vec3",
         "Vec4",
         "Vertex"
+      ]
+    },
+    {
+      "id": "engins/renderengin/diagnostics",
+      "slot": "engin",
+      "path": "engins/renderengin/diagnostics.ts",
+      "engine": "Universal",
+      "exports": [
+        "createBenchmarkScene",
+        "createRenderPerformanceReport",
+        "evaluateRenderPerformanceGate",
+        "frameStatsToPerformanceSample",
+        "RenderBenchmarkScene",
+        "RenderPerformanceReport",
+        "RenderPerformanceSample"
       ]
     },
     {
@@ -9355,12 +9441,142 @@
       ]
     },
     {
+      "id": "engins/renderengin/lighting",
+      "slot": "engin",
+      "path": "engins/renderengin/lighting.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderEnvironment",
+        "createRenderLight",
+        "RenderEnvironment",
+        "RenderEnvironmentData",
+        "RenderLight",
+        "RenderLightData",
+        "RenderLightKind",
+        "summarizeRenderLights"
+      ]
+    },
+    {
+      "id": "engins/renderengin/materials",
+      "slot": "engin",
+      "path": "engins/renderengin/materials.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderMaterial",
+        "packRenderMaterial",
+        "RenderMaterial",
+        "RenderMaterialData",
+        "updateRenderMaterial"
+      ]
+    },
+    {
+      "id": "engins/renderengin/postProcessing",
+      "slot": "engin",
+      "path": "engins/renderengin/postProcessing.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderPostProcessGraph",
+        "executePostProcessPixel",
+        "RenderPostProcessGraph",
+        "RenderPostProcessPass"
+      ]
+    },
+    {
       "id": "engins/renderengin/RenderEnginViewport",
       "slot": "engin",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "engins/renderengin/renderSettings",
+      "slot": "engin",
+      "path": "engins/renderengin/renderSettings.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderQualitySettings",
+        "RenderPreviewMode",
+        "RenderQualitySettings",
+        "RenderQualityTier",
+        "switchRenderPreviewMode"
+      ]
+    },
+    {
+      "id": "engins/renderengin/runtimeRegistration",
+      "slot": "engin",
+      "path": "engins/renderengin/runtimeRegistration.ts",
+      "engine": "Universal",
+      "exports": [
+        "RenderEnginRuntimeRegistration"
+      ]
+    },
+    {
+      "id": "engins/renderengin/scene",
+      "slot": "engin",
+      "path": "engins/renderengin/scene.ts",
+      "engine": "Universal",
+      "exports": [
+        "addObjectToRenderScene",
+        "computeRenderObjectWorldMatrix",
+        "createRenderScene",
+        "createRenderSceneObject",
+        "defaultRenderTransform",
+        "deserializeRenderScene",
+        "redoRenderScene",
+        "removeRenderSceneObject",
+        "RenderScene",
+        "RenderSceneData",
+        "RenderSceneEnvironment",
+        "RenderSceneLayer",
+        "RenderSceneObject",
+        "RenderSceneObjectData",
+        "RenderSceneObjectKind",
+        "renderSceneSummary",
+        "RenderTransform",
+        "selectRenderSceneObjects",
+        "serializeRenderScene",
+        "setRenderSceneEnvironment",
+        "undoRenderScene",
+        "updateRenderSceneObject"
+      ]
+    },
+    {
+      "id": "engins/renderengin/textures",
+      "slot": "engin",
+      "path": "engins/renderengin/textures.ts",
+      "engine": "Universal",
+      "exports": [
+        "calculateMipLevelCount",
+        "createRenderTexture",
+        "createTextureMemoryReport",
+        "estimateTextureBytes",
+        "RenderTexture",
+        "RenderTextureData",
+        "RenderTextureFormat",
+        "RenderTextureRole",
+        "RenderTextureValidation",
+        "validateRenderTexture"
+      ]
+    },
+    {
+      "id": "engins/renderengin/virtualization",
+      "slot": "engin",
+      "path": "engins/renderengin/virtualization.ts",
+      "engine": "Universal",
+      "exports": [
+        "buildInstanceBatches",
+        "computeMeshBounds",
+        "createTerrainChunks",
+        "cullRenderScene",
+        "RenderBounds",
+        "RenderCullingResult",
+        "RenderFrustumPlane",
+        "RenderInstanceBatch",
+        "RenderTerrainChunk",
+        "selectScreenSpaceLod",
+        "sphereIntersectsFrustum"
       ]
     },
     {
@@ -9373,9 +9589,12 @@
         "PackedVertexBuffer",
         "RenderEnginFrameStats",
         "RenderEnginGpuMesh",
+        "RenderEnginGpuTexture",
         "RenderEnginLifecycleHooks",
         "RenderEnginScene",
         "RenderEnginSceneObject",
+        "RenderGpuMaterial",
+        "SHADER",
         "toGpuMat4",
         "WebGpuRenderEngin"
       ]
@@ -10448,6 +10667,13 @@
       "id": "supabase/migrations/20260605015234_auto_scaffold",
       "slot": "migration",
       "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260619000000_renderengin_assets_rls",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
       "engine": "Universal",
       "exports": []
     }

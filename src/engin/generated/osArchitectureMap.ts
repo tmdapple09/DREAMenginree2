@@ -24,9 +24,9 @@ export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
   "surface": 300,
-  "route-surface": 274,
+  "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 244,
+  "engin": 256,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -36,7 +36,7 @@ export const osSlotCounts = {
   "brain-doc": 0,
   "cartridge": 1,
   "persona": 6,
-  "migration": 56,
+  "migration": 57,
   "memory": 6,
   "dr-eams-tool": 26,
   "hook": 12,
@@ -392,9 +392,9 @@ export const osArchitectureGraph = {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 274,
+    "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 244,
+    "engin": 256,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -404,7 +404,7 @@ export const osArchitectureGraph = {
     "brain-doc": 0,
     "cartridge": 1,
     "persona": 6,
-    "migration": 56,
+    "migration": 57,
     "memory": 6,
     "dr-eams-tool": 26,
     "hook": 12,
@@ -1710,6 +1710,18 @@ export const osArchitectureStageEntries = {
       "id": "app/engines/portfolio/quantum/page",
       "slot": "route-surface",
       "path": "app/engines/portfolio/quantum/page.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/engines/render/error",
+      "slot": "route-surface",
+      "path": "app/engines/render/error.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/engines/render/loading",
+      "slot": "route-surface",
+      "path": "app/engines/render/loading.tsx",
       "engine": "Universal"
     },
     {
@@ -5534,9 +5546,33 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/animation",
+      "slot": "engin",
+      "path": "engins/renderengin/animation.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/assets",
+      "slot": "engin",
+      "path": "engins/renderengin/assets.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/benchmarkProof",
+      "slot": "engin",
+      "path": "engins/renderengin/benchmarkProof.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/core",
       "slot": "engin",
       "path": "engins/renderengin/core.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/diagnostics",
+      "slot": "engin",
+      "path": "engins/renderengin/diagnostics.ts",
       "engine": "Universal"
     },
     {
@@ -5546,9 +5582,57 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/lighting",
+      "slot": "engin",
+      "path": "engins/renderengin/lighting.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/materials",
+      "slot": "engin",
+      "path": "engins/renderengin/materials.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/postProcessing",
+      "slot": "engin",
+      "path": "engins/renderengin/postProcessing.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/RenderEnginViewport",
       "slot": "engin",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/renderSettings",
+      "slot": "engin",
+      "path": "engins/renderengin/renderSettings.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/runtimeRegistration",
+      "slot": "engin",
+      "path": "engins/renderengin/runtimeRegistration.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/scene",
+      "slot": "engin",
+      "path": "engins/renderengin/scene.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/textures",
+      "slot": "engin",
+      "path": "engins/renderengin/textures.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/virtualization",
+      "slot": "engin",
+      "path": "engins/renderengin/virtualization.ts",
       "engine": "Universal"
     },
     {
@@ -6220,6 +6304,12 @@ export const osArchitectureStageEntries = {
       "slot": "migration",
       "path": "supabase/migrations/20260605015234_auto_scaffold.sql",
       "engine": "Universal"
+    },
+    {
+      "id": "supabase/migrations/20260619000000_renderengin_assets_rls",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "engine": "Universal"
     }
   ],
   "unmapped": []
@@ -6258,9 +6348,9 @@ User Action / Agent / CI
 | core-surface | 4 |
 | daydream | 2 |
 | surface | 300 |
-| route-surface | 274 |
+| route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 244 |
+| engin | 256 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
@@ -6270,7 +6360,7 @@ User Action / Agent / CI
 | brain-doc | 0 |
 | cartridge | 1 |
 | persona | 6 |
-| migration | 56 |
+| migration | 57 |
 | memory | 6 |
 | dr-eams-tool | 26 |
 | hook | 12 |
