@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-18T22:21:23.091Z",
+  "generated_at": "2026-06-19T00:28:09.988Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
     "supabase/migrations/"
   ],
-  "count": 152,
+  "count": 153,
   "tables": [
     {
       "table": "activity_points",
@@ -4556,6 +4556,52 @@
         }
       ],
       "source": "types/supabase.ts"
+    },
+    {
+      "table": "render_assets",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid primary key default gen_random_uuid()"
+        },
+        {
+          "name": "owner_id",
+          "type": "uuid not null references auth"
+        },
+        {
+          "name": "runtime_id",
+          "type": "text not null"
+        },
+        {
+          "name": "visibility",
+          "type": "text not null default"
+        },
+        {
+          "name": "asset_kind",
+          "type": "text not null check (asset_kind in ("
+        },
+        {
+          "name": "manifest",
+          "type": "jsonb not null default"
+        },
+        {
+          "name": "byte_length",
+          "type": "bigint not null default 0 check (byte_length"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz not null default now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamptz not null default now()"
+        },
+        {
+          "name": "version",
+          "type": "integer not null default 1 check (version"
+        }
+      ],
+      "source": "20260619000000_renderengin_assets_rls.sql"
     },
     {
       "table": "reports",
