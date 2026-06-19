@@ -58,7 +58,110 @@ export function buildClusterDag(leaves: readonly GeometryCluster[]): GeometryClu
 
 export type RenderAssetData = JsonObject & { mesh: JsonObject; material: JsonObject; optimization: JsonObject; };
 export type RenderAsset = DomainObject<'asset.render3d', RenderAssetData>;
-export function createRenderAsset(input: { id: string; ownerId: string; runtimeId: string; visibility: DomainVisibility; mesh: MeshBuffers; material: { albedo: Vec3; orm: Vec3 }; now?: string }): RenderAsset { const now=input.now ?? new Date().toISOString(); return { id:input.id, type:'asset.render3d', ownerId:input.ownerId, runtimeId:input.runtimeId, visibility:input.visibility, createdAt:now, updatedAt:now, version:1, data:{ mesh:{ vertexCount:input.mesh.vertices.length, indexCount:input.mesh.indices.length, packedVertexStrideBytes:48, skinningStoredOutOfBand:true, indexFormat:input.mesh.indexFormat }, material:{ albedo:input.material.albedo as unknown as JsonValue, orm:input.material.orm as unknown as JsonValue, channels:{ r:'ambientOcclusion', g:'roughness', b:'metallic' } }, optimization:{ clusterTriangles:128, lodPolicy:'distance-or-virtualized-geometry' } } }; }
 
-export type RenderIntent = EnginAction<'render.asset.register'|'render.asset.remove'|'render.lifecycle.snapshot', JsonObject>;
-export const RenderEnginRuleSet: EnginRuleSetContract<RenderIntent> = { manifest:{ id:'renderengin.ruleset.webgpu-viewport-foundation', name:'RenderEngin WebGPU Viewport Foundation', version:'1.0.0', schema:{ actionTypes:['render.asset.register','render.asset.remove','render.lifecycle.snapshot'], domainVersion:1 }, compatibility:{ minRuntimeVersion:'1.0.0', requiredFeatures:['lifecycle-hooks','manifest-schema','strict-intent-routing','sync-transport','state-snapshotting','compatibility-negotiation'] } }, params:{ enginId:'renderengin', name:'RenderEngin', layoutMode:'immersive', accentColor:'#7dd3fc' }, requiredCapabilities:['state:read','state:write','assets:load'], capabilityTargets:{ enginId:'renderengin', targets:[{ dimension:'viewport-framerate', direction:'at-least', target:1, unit:'fps', minimumProgress:0.8 }], levers:['route render mutations through intent snapshots','pack vertices as 48-byte AOS buffers','keep cluster helpers descriptive until GPU culling and streaming exist'] }, constraints:[(_state, action)=>({valid:['render.asset.register','render.asset.remove','render.lifecycle.snapshot'].includes(action.type), reason:'Unknown RenderEngin intent.'})], transform(state: EnginBaseState, action: RenderIntent): EnginBaseState { const assets = { ...((state.domain.assets as JsonObject | undefined) ?? {}) }; if(action.type==='render.asset.register' && action.payload?.asset && typeof action.payload.asset === 'object') { const asset = action.payload.asset as JsonObject; if (typeof asset.id === 'string' && asset.id.trim().length > 0 && asset.type === 'asset.render3d') assets[asset.id] = asset; } if(action.type==='render.asset.remove' && typeof action.payload?.id === 'string') delete assets[action.payload.id]; return { ...state, revision:state.revision+1, updatedAt:new Date().toISOString(), domain:{ ...state.domain, assets, lastIntent:action.type } }; }, deriveState(state: EnginBaseState): JsonObject { return { assetCount:Object.keys((state.domain.assets as JsonObject | undefined) ?? {}).length, pipeline:['object','world','view','clip','ndc','screen'], supports:['packed-webgpu-vertex-buffer','TBN-normal-baking','Cook-Torrance-GGX','LBS-position-skinning','DQS-primitives','LOD-selection','basic-triangle-cluster-helpers','webgpu-viewport-runtime'] }; } };
+export const RENDER_ENGIN_ID = 'render' as const;
+export const RENDER_ENGIN_NAME = 'RenderEngin' as const;
+
+export const RENDER_INTENT_TYPES = [
+  'render.scene.load',
+  'render.asset.preview',
+  'render.asset.load',
+  'render.asset.register',
+  'render.asset.remove',
+  'render.camera.orbit',
+  'render.camera.zoom',
+  'render.object.select',
+  'render.object.transform',
+  'render.material.set',
+  'render.viewport.resize',
+  'render.viewport.snapshot',
+  'render.frame.render',
+  'render.lifecycle.snapshot',
+] as const;
+
+export type RenderIntentType = (typeof RENDER_INTENT_TYPES)[number];
+export type RenderIntent = EnginAction<RenderIntentType, JsonObject>;
+
+export interface RenderAssetValidationResult extends JsonObject {
+  valid: boolean;
+  reason?: string;
+  vertexCount: number;
+  indexCount: number;
+}
+
+export function validateMeshForRenderUpload(mesh: MeshBuffers): RenderAssetValidationResult {
+  if (!mesh.vertices.length) return { valid: false, reason: 'Render asset has an empty mesh.', vertexCount: 0, indexCount: mesh.indices.length };
+  if (!mesh.indices.length || mesh.indices.length % 3 !== 0) return { valid: false, reason: 'Render asset indices must describe whole triangles.', vertexCount: mesh.vertices.length, indexCount: mesh.indices.length };
+  const badIndex = mesh.indices.find((index) => !Number.isInteger(index) || index < 0 || index >= mesh.vertices.length);
+  if (badIndex !== undefined) return { valid: false, reason: `Render asset index ${badIndex} is out of range.`, vertexCount: mesh.vertices.length, indexCount: mesh.indices.length };
+  for (const vertex of mesh.vertices) {
+    const channels = [...vertex.position, ...vertex.normal, ...vertex.tangent, ...vertex.uv];
+    if (channels.some((value) => !Number.isFinite(value))) return { valid: false, reason: 'Render asset contains NaN or infinite vertex data.', vertexCount: mesh.vertices.length, indexCount: mesh.indices.length };
+    if (v3length(vertex.normal) < EPS) return { valid: false, reason: 'Render asset contains an invalid normal.', vertexCount: mesh.vertices.length, indexCount: mesh.indices.length };
+  }
+  return { valid: true, vertexCount: mesh.vertices.length, indexCount: mesh.indices.length };
+}
+
+export function createRenderAsset(input: { id: string; ownerId: string; runtimeId: string; visibility: DomainVisibility; mesh: MeshBuffers; material: { albedo: Vec3; orm: Vec3 }; now?: string }): RenderAsset {
+  const validation = validateMeshForRenderUpload(input.mesh);
+  if (!validation.valid) throw new Error(validation.reason ?? 'Render asset validation failed.');
+  const now=input.now ?? new Date().toISOString();
+  return { id:input.id, type:'asset.render3d', ownerId:input.ownerId, runtimeId:input.runtimeId, visibility:input.visibility, createdAt:now, updatedAt:now, version:1, data:{ mesh:{ vertexCount:input.mesh.vertices.length, indexCount:input.mesh.indices.length, packedVertexStrideBytes:48, skinningStoredOutOfBand:true, indexFormat:input.mesh.indexFormat, validation }, material:{ albedo:input.material.albedo as unknown as JsonValue, orm:input.material.orm as unknown as JsonValue, channels:{ r:'ambientOcclusion', g:'roughness', b:'metallic' } }, optimization:{ clusterTriangles:128, lodPolicy:'manual-until-gpu-culling-ships' } } };
+}
+
+function renderDomain(state: EnginBaseState): JsonObject {
+  return {
+    assets: (state.domain.assets as JsonObject | undefined) ?? {},
+    scene: (state.domain.scene as JsonObject | undefined) ?? { objects: {}, selectedObjectId: null, environment: { clearColor: '#eff6ff' } },
+    viewport: (state.domain.viewport as JsonObject | undefined) ?? { width: 0, height: 0, webgpu: 'unknown', mobile: false },
+    camera: (state.domain.camera as JsonObject | undefined) ?? { orbit: [0, 0], zoom: 2.4, target: [0, 0, 0] },
+    events: (state.domain.events as JsonObject | undefined) ?? {},
+  };
+}
+
+function bump(state: EnginBaseState, domain: JsonObject): EnginBaseState {
+  return { ...state, revision: state.revision + 1, updatedAt: new Date().toISOString(), domain };
+}
+
+export const RenderEnginRuleSet: EnginRuleSetContract<RenderIntent> = {
+  manifest:{
+    id:'render.ruleset.webgpu-runtime',
+    name:'RenderEngin WebGPU Runtime RuleSet',
+    version:'1.1.0',
+    schema:{
+      actionTypes: RENDER_INTENT_TYPES,
+      domainVersion:1,
+      validateAction: (action) => ({ valid: RENDER_INTENT_TYPES.includes(action.type) }),
+    },
+    compatibility:{ minRuntimeVersion:'1.0.0', requiredFeatures:['lifecycle-hooks','manifest-schema','strict-intent-routing','sync-transport','state-snapshotting','compatibility-negotiation'] }
+  },
+  params:{ enginId: RENDER_ENGIN_ID, name: RENDER_ENGIN_NAME, layoutMode:'immersive', accentColor:'#38bdf8', route:'/engines/render', capabilityId:'render' },
+  requiredCapabilities:['state:read','state:write','assets:load','bridge:emit','bridge:listen'],
+  capabilityTargets:{ enginId: RENDER_ENGIN_ID, targets:[{ dimension:'viewport-framerate', direction:'at-least', target:30, unit:'fps', minimumProgress:0.8 }, { dimension:'gpu-render-latency', direction:'at-most', target:16.7, unit:'ms', minimumProgress:0.8 }], levers:['route render mutations through intent snapshots','pack vertices as 48-byte AOS buffers','dispose GPU resources on unload and remount','keep claimed supports aligned with implemented renderer'] },
+  constraints:[(_state, action)=>({valid: RENDER_INTENT_TYPES.includes(action.type), reason:'Unknown RenderEngin intent.'})],
+  transform(state: EnginBaseState, action: RenderIntent): EnginBaseState {
+    const base = renderDomain(state);
+    const assets = { ...(base.assets as JsonObject) };
+    const scene = { ...(base.scene as JsonObject) };
+    const viewport = { ...(base.viewport as JsonObject) };
+    const camera = { ...(base.camera as JsonObject) };
+    const events: Record<string, JsonValue | undefined> = { ...(base.events as JsonObject), lastIntent: action.type, lastIntentAt: new Date().toISOString() };
+    if(action.type==='render.asset.register' && action.payload?.asset && typeof action.payload.asset === 'object') { const asset = action.payload.asset as JsonObject; if (typeof asset.id === 'string' && asset.type === 'asset.render3d') assets[asset.id] = asset; }
+    if(action.type==='render.asset.remove' && typeof action.payload?.id === 'string') delete assets[action.payload.id];
+    if(action.type==='render.scene.load' && action.payload?.scene && typeof action.payload.scene === 'object') Object.assign(scene, action.payload.scene);
+    if(action.type==='render.object.select') scene.selectedObjectId = typeof action.payload?.id === 'string' ? action.payload.id : null;
+    if(action.type==='render.object.transform' && typeof action.payload?.id === 'string') scene[`transform:${action.payload.id}`] = action.payload.transform as JsonValue;
+    if(action.type==='render.material.set' && typeof action.payload?.objectId === 'string') scene[`material:${action.payload.objectId}`] = action.payload.material as JsonValue;
+    if(action.type==='render.camera.orbit') camera.orbit = action.payload?.orbit as JsonValue;
+    if(action.type==='render.camera.zoom' && typeof action.payload?.zoom === 'number') camera.zoom = action.payload.zoom;
+    if(action.type==='render.viewport.resize') { viewport.width = action.payload?.width as JsonValue; viewport.height = action.payload?.height as JsonValue; }
+    if(action.type==='render.asset.preview' || action.type==='render.asset.load') events.assetPipeline = action.payload ?? {};
+    if(action.type==='render.viewport.snapshot' || action.type==='render.lifecycle.snapshot') events.snapshotRequested = true;
+    if(action.type==='render.frame.render') events.lastFrame = action.payload ?? {};
+    return bump(state, { ...state.domain, assets, scene, viewport, camera, events, lastIntent: action.type });
+  },
+  deriveState(state: EnginBaseState): JsonObject {
+    const domain = renderDomain(state);
+    return { assetCount:Object.keys(domain.assets as JsonObject).length, scene: domain.scene, viewport: domain.viewport, camera: domain.camera, pipeline:['User Action','Intent','Runtime Orchestration','Capability Resolution','Engin Execution','State Mutation','Event Distribution','Surface Update'], supports:['webgpu-device-creation','canvas-context-creation','shader-pipeline-creation','depth-buffer','resize-handling','per-object-uniforms','packed-webgpu-vertex-buffer','asset-validation-before-gpu-upload','obj-import','glb-header-validation','glb-mesh-extraction','scene-graph-domain-objects','scene-serialization','scene-undo-redo','camera-orbit-zoom-controls','viewport-snapshot-capture','fallback-2d-renderer','asset-memory-accounting','domain-authorization-gates','contentengin-render-handoff','gameengin-render-handoff','texture-domain-objects','texture-samplers','texture-memory-accounting','gpu-texture-shader-binding','shadow-depth-pass','pbr-material-uniforms','emissive-alpha-material-controls','directional-point-spot-lights','shadow-map-descriptors','environment-map-slots','tone-mapping-settings','gamma-correction-settings','bloom-settings','post-processing-execution','wireframe-normal-depth-debug-modes','render-quality-settings','frame-performance-reporting','benchmark-scene-gates','gpu-benchmark-proof','ten-million-poly-proof','server-backed-render-assets-rls','frustum-culling','screen-space-lod-selection','instanced-render-batching','terrain-chunk-planning','animation-clip-sampling','explicit-gpu-resource-disposal','runtime-snapshots','intent-routed-viewport-actions'], limitations:['DQS rendering, production timestamp-query GPU timing, full shadow sampling in the color pass, and live-device 10M-poly certification remain future work'] };
+  }
+};
