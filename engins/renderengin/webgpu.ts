@@ -3,7 +3,9 @@ import {
   type Mat4,
   type MeshBuffers,
   type Vec3,
+  type Vec4,
   type Vertex,
+  validateMeshForRenderUpload,
 } from './core';
 
 export interface PackedVertexBuffer {
@@ -13,11 +15,22 @@ export interface PackedVertexBuffer {
   readonly vertexCount: number;
 }
 
+export interface RenderEnginGpuTexture {
+  readonly texture: GPUTexture;
+  readonly view: GPUTextureView;
+  readonly sampler: GPUSampler;
+  readonly width: number;
+  readonly height: number;
+  readonly format: GPUTextureFormat;
+  dispose(): void;
+}
+
 export interface RenderEnginGpuMesh {
   readonly vertexBuffer: GPUBuffer;
   readonly indexBuffer: GPUBuffer;
   readonly indexCount: number;
   readonly indexFormat: GPUIndexFormat;
+  dispose(): void;
 }
 
 export interface RenderEnginFrameStats {
@@ -25,14 +38,26 @@ export interface RenderEnginFrameStats {
   readonly cpuFrameMs: number;
   readonly indexCount: number;
   readonly drawCalls: number;
+  readonly estimatedFps: number;
+  readonly droppedFrame: boolean;
   readonly measuredAt: string;
+  readonly gpuFrameMs?: number;
+  readonly gpuLatencyMeasured: boolean;
+}
+
+export interface RenderGpuMaterial {
+  readonly albedo: Vec4;
+  readonly orm: Vec4;
+  readonly emissive: Vec4;
 }
 
 export interface RenderEnginSceneObject {
   readonly mesh: RenderEnginGpuMesh;
   readonly uniformBuffer: GPUBuffer;
   readonly bindGroup: GPUBindGroup;
+  readonly albedoTexture: RenderEnginGpuTexture;
   modelMatrix?: Mat4;
+  material?: RenderGpuMaterial;
 }
 
 export interface RenderEnginScene {
@@ -48,18 +73,28 @@ export interface RenderEnginLifecycleHooks {
   onFrame?(stats: RenderEnginFrameStats): void;
   onError?(error: Error): void;
   onStop?(): void;
+  onDeviceLost?(info: GPUDeviceLostInfo): void;
+  onDeviceRestored?(): void;
 }
 
-const SHADER = /* wgsl */ `
+export const SHADER = /* wgsl */ `
 struct Uniforms {
   model : mat4x4<f32>,
   view : mat4x4<f32>,
   projection : mat4x4<f32>,
+  lightViewProjection : mat4x4<f32>,
   camera : vec4<f32>,
   light : vec4<f32>,
+  albedo : vec4<f32>,
+  orm : vec4<f32>,
+  emissive : vec4<f32>,
 };
 
 @group(0) @binding(0) var<uniform> uniforms : Uniforms;
+@group(0) @binding(1) var albedoTexture : texture_2d<f32>;
+@group(0) @binding(2) var albedoSampler : sampler;
+@group(0) @binding(3) var shadowTexture : texture_depth_2d;
+@group(0) @binding(4) var shadowSampler : sampler_comparison;
 
 struct VertexInput {
   @location(0) position : vec3<f32>,
@@ -72,6 +107,7 @@ struct VertexOutput {
   @builtin(position) clip : vec4<f32>,
   @location(0) worldNormal : vec3<f32>,
   @location(1) uv : vec2<f32>,
+  @location(2) shadowClip : vec4<f32>,
 };
 
 @vertex
@@ -81,6 +117,7 @@ fn vsMain(input : VertexInput) -> VertexOutput {
   out.clip = uniforms.projection * uniforms.view * world;
   out.worldNormal = normalize((uniforms.model * vec4<f32>(input.normal, 0.0)).xyz);
   out.uv = input.uv;
+  out.shadowClip = uniforms.lightViewProjection * world;
   return out;
 }
 
@@ -89,9 +126,24 @@ fn fsMain(input : VertexOutput) -> @location(0) vec4<f32> {
   let n = normalize(input.worldNormal);
   let l = normalize(-uniforms.light.xyz);
   let ndl = max(dot(n, l), 0.0);
-  let base = vec3<f32>(0.58 + input.uv.x * 0.22, 0.72, 0.95 - input.uv.y * 0.22);
-  let ambient = base * 0.08;
-  return vec4<f32>(ambient + base * ndl, 1.0);
+  let textureAlbedo = textureSample(albedoTexture, albedoSampler, input.uv).rgb;
+  let shadowNdc = input.shadowClip.xyz / max(input.shadowClip.w, 0.0001);
+  let shadowUv = shadowNdc.xy * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5, 0.5);
+  var shadowVisibility = 1.0;
+  if (shadowUv.x >= 0.0 && shadowUv.x <= 1.0 && shadowUv.y >= 0.0 && shadowUv.y <= 1.0 && shadowNdc.z >= 0.0 && shadowNdc.z <= 1.0) {
+    shadowVisibility = textureSampleCompare(shadowTexture, shadowSampler, shadowUv, shadowNdc.z - 0.004);
+  }
+  let base = uniforms.albedo.rgb * textureAlbedo;
+  let roughness = clamp(uniforms.orm.g, 0.04, 1.0);
+  let metallic = clamp(uniforms.orm.b, 0.0, 1.0);
+  let ao = clamp(uniforms.orm.r, 0.0, 1.0);
+  let viewDir = normalize(uniforms.camera.xyz);
+  let halfDir = normalize(l + viewDir);
+  let specPower = mix(64.0, 8.0, roughness);
+  let specular = pow(max(dot(n, halfDir), 0.0), specPower) * mix(0.04, 0.8, metallic);
+  let ambient = base * 0.12 * ao;
+  let color = ambient + (base * ndl * (1.0 - metallic * 0.35) + vec3<f32>(specular)) * shadowVisibility + uniforms.emissive.rgb;
+  return vec4<f32>(color, uniforms.albedo.a);
 }
 `;
 
@@ -160,13 +212,18 @@ export class WebGpuRenderEngin {
   readonly format: GPUTextureFormat;
 
   private readonly pipeline: GPURenderPipeline;
+  private readonly shadowPipeline: GPURenderPipeline;
   private readonly bindGroupLayout: GPUBindGroupLayout;
+  private readonly defaultAlbedoTexture: RenderEnginGpuTexture;
+  private readonly shadowSampler: GPUSampler;
   private depthTexture: GPUTexture;
+  private shadowDepthTexture: GPUTexture;
   private width: number;
   private height: number;
   private frameIndex = 0;
   private animationFrame: number | null = null;
   private stopped = true;
+  private deviceLost = false;
   private scene: RenderEnginScene = {
     viewMatrix: mat4Identity(),
     projectionMatrix: mat4Identity(),
@@ -195,9 +252,18 @@ export class WebGpuRenderEngin {
       alphaMode: options.alphaMode ?? 'premultiplied',
     });
     this.depthTexture = this.createDepthTexture(this.width, this.height);
+    this.shadowDepthTexture = this.createDepthTexture(2048, 2048);
+    this.shadowSampler = this.device.createSampler({ compare: 'less-equal', magFilter: 'linear', minFilter: 'linear' });
+    this.defaultAlbedoTexture = this.uploadTexture({ width: 1, height: 1, data: new Uint8Array([255, 255, 255, 255]) });
 
     this.bindGroupLayout = this.device.createBindGroupLayout({
-      entries: [{ binding: 0, visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT, buffer: {} }],
+      entries: [
+        { binding: 0, visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT, buffer: {} },
+        { binding: 1, visibility: GPUShaderStage.FRAGMENT, texture: {} },
+        { binding: 2, visibility: GPUShaderStage.FRAGMENT, sampler: {} },
+        { binding: 3, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: 'depth' } },
+        { binding: 4, visibility: GPUShaderStage.FRAGMENT, sampler: { type: 'comparison' } },
+      ],
     });
     this.pipeline = this.device.createRenderPipeline({
       layout: this.device.createPipelineLayout({ bindGroupLayouts: [this.bindGroupLayout] }),
@@ -226,13 +292,36 @@ export class WebGpuRenderEngin {
         depthCompare: 'less',
       },
     });
+    void this.device.lost.then((info) => { this.deviceLost = true; this.stop(); });
+    this.shadowPipeline = this.device.createRenderPipeline({
+      layout: this.device.createPipelineLayout({ bindGroupLayouts: [this.bindGroupLayout] }),
+      vertex: {
+        module: this.device.createShaderModule({ code: SHADER }),
+        entryPoint: 'vsMain',
+        buffers: [{
+          arrayStride: 48,
+          attributes: [
+            { shaderLocation: 0, offset: 0, format: 'float32x3' },
+            { shaderLocation: 1, offset: 12, format: 'float32x3' },
+            { shaderLocation: 2, offset: 24, format: 'float32x4' },
+            { shaderLocation: 3, offset: 40, format: 'float32x2' },
+          ],
+        }],
+      },
+      primitive: { topology: 'triangle-list', cullMode: 'back' },
+      depthStencil: {
+        format: 'depth24plus',
+        depthWriteEnabled: true,
+        depthCompare: 'less',
+      },
+    });
   }
 
   private createDepthTexture(width: number, height: number): GPUTexture {
     return this.device.createTexture({
       size: { width, height },
       format: 'depth24plus',
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
   }
 
@@ -246,31 +335,75 @@ export class WebGpuRenderEngin {
     this.depthTexture = this.createDepthTexture(nextWidth, nextHeight);
   }
 
+  uploadTexture(options: { width: number; height: number; data?: Uint8Array; format?: GPUTextureFormat; usage?: GPUTextureUsageFlags; mipLevelCount?: number }): RenderEnginGpuTexture {
+    const width = Math.max(1, Math.floor(options.width));
+    const height = Math.max(1, Math.floor(options.height));
+    const format = options.format ?? 'rgba8unorm';
+    const texture = this.device.createTexture({
+      size: { width, height },
+      format,
+      mipLevelCount: Math.max(1, Math.floor(options.mipLevelCount ?? 1)),
+      usage: options.usage ?? (GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT),
+    });
+    if (options.data) {
+      const rowBytes = width * 4;
+      const paddedRowBytes = Math.ceil(rowBytes / 256) * 256;
+      const expectedBytes = rowBytes * height;
+      if (options.data.byteLength < expectedBytes) {
+        throw new Error('Texture upload data is smaller than the declared RGBA texture dimensions.');
+      }
+      const upload = paddedRowBytes === rowBytes
+        ? options.data.subarray(0, expectedBytes)
+        : new Uint8Array(paddedRowBytes * height);
+      if (upload !== options.data) {
+        for (let row = 0; row < height; row += 1) {
+          upload.set(options.data.subarray(row * rowBytes, row * rowBytes + rowBytes), row * paddedRowBytes);
+        }
+      }
+      this.device.queue.writeTexture({ texture }, upload, { bytesPerRow: paddedRowBytes, rowsPerImage: height }, { width, height });
+    }
+    const sampler = this.device.createSampler({ magFilter: 'linear', minFilter: 'linear', mipmapFilter: 'linear', maxAnisotropy: 1 });
+    return { texture, view: texture.createView(), sampler, width, height, format, dispose: () => texture.destroy() };
+  }
+
   uploadMesh(mesh: MeshBuffers): RenderEnginGpuMesh {
+    const validation = validateMeshForRenderUpload(mesh);
+    if (!validation.valid) throw new Error(validation.reason ?? 'Render asset validation failed before GPU upload.');
     const packed = packAosVertexBuffer(mesh);
     const indices = mesh.indexFormat === 'uint16'
       ? new Uint16Array(mesh.indices)
       : new Uint32Array(mesh.indices);
+    const vertexBuffer = createBuffer(this.device, packed.data, GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST);
+    const indexBuffer = createBuffer(this.device, indices, GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST);
     return {
-      vertexBuffer: createBuffer(this.device, packed.data, GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST),
-      indexBuffer: createBuffer(this.device, indices, GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST),
+      vertexBuffer,
+      indexBuffer,
       indexCount: mesh.indices.length,
       indexFormat: mesh.indexFormat,
+      dispose: () => { vertexBuffer.destroy(); indexBuffer.destroy(); },
     };
   }
 
-  createSceneObject(mesh: RenderEnginGpuMesh, modelMatrix: Mat4 = mat4Identity()): RenderEnginSceneObject {
+  createSceneObject(mesh: RenderEnginGpuMesh, modelMatrix: Mat4 = mat4Identity(), material: RenderGpuMaterial = { albedo: [0.58, 0.72, 0.95, 1], orm: [1, 0.55, 0, 0], emissive: [0, 0, 0, 0] }, albedoTexture: RenderEnginGpuTexture = this.defaultAlbedoTexture): RenderEnginSceneObject {
     const uniformBuffer = this.device.createBuffer({
-      size: 16 * 3 * 4 + 4 * 2 * 4,
+      size: 16 * 4 * 4 + 4 * 5 * 4,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     return {
       mesh,
       modelMatrix,
+      material,
+      albedoTexture,
       uniformBuffer,
       bindGroup: this.device.createBindGroup({
         layout: this.bindGroupLayout,
-        entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
+        entries: [
+          { binding: 0, resource: { buffer: uniformBuffer } },
+          { binding: 1, resource: albedoTexture.view },
+          { binding: 2, resource: albedoTexture.sampler },
+          { binding: 3, resource: this.shadowDepthTexture.createView() },
+          { binding: 4, resource: this.shadowSampler },
+        ],
       }),
     };
   }
@@ -279,13 +412,51 @@ export class WebGpuRenderEngin {
     this.scene = scene;
   }
 
+
+  private writeObjectUniforms(object: RenderEnginSceneObject): void {
+    const uniforms = new Float32Array(84);
+    writeMat4(uniforms, 0, toGpuMat4(object.modelMatrix ?? mat4Identity()));
+    writeMat4(uniforms, 16, toGpuMat4(this.scene.viewMatrix));
+    writeMat4(uniforms, 32, toGpuMat4(this.scene.projectionMatrix));
+    writeMat4(uniforms, 48, toGpuMat4(this.scene.projectionMatrix));
+    uniforms.set([...this.scene.cameraPosition, 1], 64);
+    uniforms.set([...this.scene.lightDirection, 0], 68);
+    uniforms.set(object.material?.albedo ?? [0.58, 0.72, 0.95, 1], 72);
+    uniforms.set(object.material?.orm ?? [1, 0.55, 0, 0], 76);
+    uniforms.set(object.material?.emissive ?? [0, 0, 0, 0], 80);
+    this.device.queue.writeBuffer(object.uniformBuffer, 0, uniforms);
+  }
+
+  private renderShadowPass(encoder: GPUCommandEncoder): void {
+    const pass = encoder.beginRenderPass({
+      colorAttachments: [],
+      depthStencilAttachment: {
+        view: this.shadowDepthTexture.createView(),
+        depthClearValue: 1,
+        depthLoadOp: 'clear',
+        depthStoreOp: 'store',
+      },
+    });
+    pass.setPipeline(this.shadowPipeline);
+    for (const object of this.scene.objects) {
+      this.writeObjectUniforms(object);
+      pass.setBindGroup(0, object.bindGroup);
+      pass.setVertexBuffer(0, object.mesh.vertexBuffer);
+      pass.setIndexBuffer(object.mesh.indexBuffer, object.mesh.indexFormat);
+      pass.drawIndexed(object.mesh.indexCount);
+    }
+    pass.end();
+  }
+
   renderFrame(): RenderEnginFrameStats {
+    if (this.deviceLost) throw new Error('WebGPU device was lost; rebuild the Render service pipeline before rendering.');
     const started = performance.now();
     const encoder = this.device.createCommandEncoder();
+    this.renderShadowPass(encoder);
     const pass = encoder.beginRenderPass({
       colorAttachments: [{
         view: this.context.getCurrentTexture().createView(),
-        clearValue: { r: 0.015, g: 0.018, b: 0.026, a: 1 },
+        clearValue: { r: 0.94, g: 0.98, b: 1, a: 1 },
         loadOp: 'clear',
         storeOp: 'store',
       }],
@@ -301,13 +472,7 @@ export class WebGpuRenderEngin {
     let indexCount = 0;
     let drawCalls = 0;
     for (const object of this.scene.objects) {
-      const uniforms = new Float32Array(56);
-      writeMat4(uniforms, 0, toGpuMat4(object.modelMatrix ?? mat4Identity()));
-      writeMat4(uniforms, 16, toGpuMat4(this.scene.viewMatrix));
-      writeMat4(uniforms, 32, toGpuMat4(this.scene.projectionMatrix));
-      uniforms.set([...this.scene.cameraPosition, 1], 48);
-      uniforms.set([...this.scene.lightDirection, 0], 52);
-      this.device.queue.writeBuffer(object.uniformBuffer, 0, uniforms);
+      this.writeObjectUniforms(object);
       pass.setBindGroup(0, object.bindGroup);
       pass.setVertexBuffer(0, object.mesh.vertexBuffer);
       pass.setIndexBuffer(object.mesh.indexBuffer, object.mesh.indexFormat);
@@ -324,7 +489,10 @@ export class WebGpuRenderEngin {
       cpuFrameMs: performance.now() - started,
       indexCount,
       drawCalls,
+      estimatedFps: performance.now() > started ? 1000 / Math.max(0.001, performance.now() - started) : 0,
+      droppedFrame: performance.now() - started > 16.7,
       measuredAt: new Date().toISOString(),
+      gpuLatencyMeasured: false,
     };
   }
 
@@ -334,6 +502,7 @@ export class WebGpuRenderEngin {
     const tick = () => {
       if (this.stopped) return;
       try {
+        if (this.deviceLost) { this.stop(); return; }
         hooks.onFrame?.(this.renderFrame());
         this.animationFrame = requestAnimationFrame(tick);
       } catch (error) {
@@ -351,5 +520,26 @@ export class WebGpuRenderEngin {
       this.animationFrame = null;
     }
     hooks.onStop?.();
+  }
+
+  isDeviceLost(): boolean {
+    return this.deviceLost;
+  }
+
+  disposeScene(): void {
+    for (const object of this.scene.objects) {
+      object.uniformBuffer.destroy();
+      object.mesh.dispose();
+      if (object.albedoTexture !== this.defaultAlbedoTexture) object.albedoTexture.dispose();
+    }
+    this.scene = { ...this.scene, objects: [] };
+  }
+
+  dispose(): void {
+    this.stop();
+    this.disposeScene();
+    this.depthTexture.destroy();
+    this.shadowDepthTexture.destroy();
+    this.defaultAlbedoTexture.dispose();
   }
 }

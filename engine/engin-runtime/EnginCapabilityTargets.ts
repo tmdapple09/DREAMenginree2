@@ -113,6 +113,21 @@ export const ENGIN_CAPABILITY_PROFILES: Readonly<
       "degrade chart density before reducing simulation-step precision",
     ],
   ),
+  render: profile(
+    "render",
+    [
+      atLeast("viewport-framerate", 30, "fps"),
+      atMost("gpu-render-latency", 16.7, "ms"),
+      atLeast("geometry-throughput", 1_000_000, "polygons-per-frame"),
+      atLeast("viewport-resolution", 1, "k"),
+    ],
+    [
+      "route every viewport, asset, camera, material, and frame mutation through render service intents",
+      "keep WebGPU resources behind client-only lifecycle boundaries with explicit disposal",
+      "snapshot serializable scene state separately from uploaded GPU buffers",
+      "negotiate browser compatibility before loading user assets or issuing GPU work",
+    ],
+  ),
 });
 
 export const CANONICAL_ENGIN_IDS: readonly CanonicalEnginId[] = Object.freeze([
@@ -122,6 +137,7 @@ export const CANONICAL_ENGIN_IDS: readonly CanonicalEnginId[] = Object.freeze([
   "create",
   "brand",
   "lab",
+  "render",
 ]);
 
 export const CANONICAL_ENGIN_ALIASES: Readonly<
@@ -133,6 +149,7 @@ export const CANONICAL_ENGIN_ALIASES: Readonly<
   create: Object.freeze(["create", "content", "ContentEngin"]),
   brand: Object.freeze(["brand", "branding", "BrandingEngin"]),
   lab: Object.freeze(["lab", "LabEngin"]),
+  render: Object.freeze(["render", "RenderEngin", "renderengin"]),
 });
 
 // Imports and external modules this runtime file depends on.
@@ -147,7 +164,8 @@ export type CanonicalEnginId =
   | "music"
   | "create"
   | "brand"
-  | "lab";
+  | "lab"
+  | "render";
 
 export type CustomEnginProfileId = string;
 
