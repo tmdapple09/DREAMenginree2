@@ -17,22 +17,15 @@ type Profile = {
   avatar_url: string | null;
 };
 
-type Attachment = {
-  id: string;
-  name: string;
-  storage_path: string;
-};
-
 type Project = {
   id: string;
-  owner_id: string;
+  user_id: string;
   title: string;
   description: string | null;
   visibility: string;
   created_at: string;
 
   profiles: Profile | null;
-  attachments: Attachment[] | null;
 };
 
 export default async function LabProjectPage({ params }: LabProjectPageProps) {
@@ -48,13 +41,12 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
     .select(
       `
       id,
-      owner_id,
+      user_id,
       title,
       description,
       visibility,
       created_at,
-      profiles(handle, display_name, avatar_url),
-      attachments(id, name, storage_path)
+      profiles(handle, display_name, avatar_url)
     `
     )
     .eq('id', id)
@@ -66,7 +58,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
 
   const project = projectRaw as unknown as Project;
 
-  const isOwner = user?.id === project.owner_id;
+  const isOwner = user?.id === project.user_id;
 
   // Simple access rule until members table exists:
   // owner can view anything, others only public projects

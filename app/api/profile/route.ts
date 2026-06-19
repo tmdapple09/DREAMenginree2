@@ -5,6 +5,24 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
+const PROFILE_SELECT = '*';
+const SUPPORTED_PROFILE_UPDATE_FIELDS = new Set([
+  'display_name',
+  'handle',
+  'bio',
+  'avatar_url',
+  'banner_url',
+  'website',
+  'location',
+  'dream_config',
+  'profile_dream_widgets',
+  'widget_order',
+]);
+
+function normalizeHandle(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 32);
+}
+
 // GET - Fetch profile
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
@@ -14,7 +32,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const handle = searchParams.get('handle');
   const userId = searchParams.get('user_id');
 
-  let query = supabase.from('profiles').select('*');
+  let query = supabase.from('profiles').select(PROFILE_SELECT);
 
   if (handle) {
     query = query.eq('handle', handle);
@@ -26,7 +44,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'No profile identifier provided' }, { status: 400 });
   }
 
-  const { data: profile, error } = await query.single();
+  const { data: profile, error } = await query.maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
@@ -36,15 +54,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
   }
 
-  // Run follower/following counts (and optional follow-check) in parallel
   const followCheckQuery =
     user && profile.id !== user.id
       ? supabase
           .from('follows')
-          .select('id')
+          .select('follower_id, following_id')
           .eq('follower_id', user.id)
           .eq('following_id', profile.id)
-          .single()
+          .maybeSingle()
       : Promise.resolve({ data: null });
 
   const [
@@ -63,14 +80,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     followCheckQuery,
   ]);
 
-  const isFollowing = !!followRow;
-
   return NextResponse.json({
     profile: {
       ...profile,
       followers_count: followersCount || 0,
       following_count: followingCount || 0,
-      is_following: isFollowing,
+      is_following: !!followRow,
       is_own_profile: user?.id === profile.id,
     },
   });
@@ -85,44 +100,67 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await req.json().catch(() => ({})) as {
-    display_name?: string;
-    handle?: string;
-    bio?: string;
-    avatar_url?: string;
-    banner_url?: string;
-    website?: string;
-    location?: string;
-    dream_config?: unknown;
-    widget_config?: unknown;
-    widget_order?: unknown;
-  };
-  const { display_name, handle, bio, avatar_url, banner_url, website, location, dream_config, widget_config, widget_order } = body;
+  const body = await req.json().catch(() => ({})) as Record<string, unknown>;
+  const now = new Date().toISOString();
+  const updateData: Record<string, unknown> = { updated_at: now };
+  const optionalData: Record<string, unknown> = { updated_at: now };
+  const ignored_fields: string[] = [];
 
-  const updateData: Record<string, unknown> = {
-    updated_at: new Date().toISOString(),
-  };
-
-  if (display_name !== undefined) updateData.display_name = display_name?.trim();
-  if (handle !== undefined && handle?.trim()) updateData.handle = handle.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
-  if (bio !== undefined) updateData.bio = bio?.trim();
-  if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
-  if (banner_url !== undefined) updateData.banner_url = banner_url;
-  if (website !== undefined) updateData.website = website?.trim();
-  if (location !== undefined) updateData.location = location?.trim();
-  if (dream_config !== undefined || widget_config !== undefined) updateData.dream_config = dream_config ?? widget_config;
-  if (widget_order !== undefined) updateData.profile_dream_widgets = widget_order;
-
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .update(updateData as never)
-    .eq('id', user.id)
-    .select()
-    .single();
-
-  if (error) {
-    return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
+  for (const key of Object.keys(body)) {
+    if (!SUPPORTED_PROFILE_UPDATE_FIELDS.has(key)) ignored_fields.push(key);
   }
 
-  return NextResponse.json({ profile });
+  if (typeof body.display_name === 'string') updateData.display_name = body.display_name.trim();
+
+  if (typeof body.handle === 'string') {
+    const normalized = normalizeHandle(body.handle);
+    if (!normalized) {
+      return NextResponse.json({ error: 'Handle must include letters, numbers, or underscores.' }, { status: 400 });
+    }
+    updateData.handle = normalized;
+  }
+
+  if (typeof body.bio === 'string') updateData.bio = body.bio.trim();
+  if (typeof body.avatar_url === 'string' || body.avatar_url === null) updateData.avatar_url = body.avatar_url;
+
+  if (typeof body.banner_url === 'string' || body.banner_url === null) optionalData.banner_url = body.banner_url;
+  if (typeof body.website === 'string' || body.website === null) optionalData.website = typeof body.website === 'string' ? body.website.trim() : null;
+  if (typeof body.location === 'string' || body.location === null) optionalData.location = typeof body.location === 'string' ? body.location.trim() : null;
+  if (Array.isArray(body.dream_config)) optionalData.dream_config = body.dream_config;
+  if (Array.isArray(body.profile_dream_widgets)) optionalData.profile_dream_widgets = body.profile_dream_widgets;
+  if (Array.isArray(body.widget_order)) optionalData.profile_dream_widgets = body.widget_order;
+
+  const { error: baseError } = await supabase
+    .from('profiles')
+    .update(updateData as never)
+    .eq('id', user.id);
+
+  if (baseError) {
+    return NextResponse.json({ error: toErrorMessage(baseError) }, { status: 500 });
+  }
+
+  const optionalKeys = Object.keys(optionalData).filter((key) => key !== 'updated_at');
+  if (optionalKeys.length > 0) {
+    const { error: optionalError } = await (supabase as unknown as SupabaseClient)
+      .from('profiles')
+      .update(optionalData)
+      .eq('id', user.id);
+
+    if (optionalError) {
+      ignored_fields.push(...optionalKeys);
+    }
+  }
+
+  const { data: profile, error: readError } = await supabase
+    .from('profiles')
+    .select(PROFILE_SELECT)
+    .eq('id', user.id)
+    .single();
+
+  if (readError) {
+    return NextResponse.json({ error: toErrorMessage(readError) }, { status: 500 });
+  }
+
+  return NextResponse.json({ profile, ignored_fields: Array.from(new Set(ignored_fields)) });
 }
+

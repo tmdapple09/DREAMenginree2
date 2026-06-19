@@ -11,7 +11,7 @@ import { toErrorMessage } from '@/utils/index';
  * Shared connector reconciliation — the full sync pipeline in one function:
  *   1. dispatchSync  → fetch provider items via token_blob credentials
  *   2. deduplicateFeedItems → in-memory dedup by (provider, external_id)
- *   3. Upsert feed_items in DB
+ *   3. Upsert connector_feed_items in DB
  *   4. Update connector_accounts.last_synced_at / last_sync_count / last_error
  *
  * Caller provides an already-constructed Supabase client, allowing both:
@@ -105,11 +105,11 @@ export async function reconcileConnector(
       provider: item.provider,
       external_id: item.external_id,
       payload: item,
-      published_at: item.published_at || null,
+      published_at: item.published_at || now,
     }));
 
     const { error: upsertError, count } = await anyDb
-      .from('feed_items')
+      .from('connector_feed_items')
       .upsert(rows, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true, count: 'exact' });
 
     if (upsertError) {

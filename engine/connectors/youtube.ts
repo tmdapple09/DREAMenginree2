@@ -1,23 +1,27 @@
+import { createServiceClient } from '@/supabase/server/serverClient';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import 'server-only';
-import { createServiceClient } from '@/supabase/server/serverClient';
 
 const YOUTUBE_FETCH_TIMEOUT_MS = 12_000;
 const YOUTUBE_CHANNEL_CONCURRENCY = 4;
 
-type FeedItemRow = {
+type ConnectorFeedItemRow = {
   user_id: string;
-  source: 'youtube';
-  source_account_id: string;
+  provider: 'youtube';
   external_id: string;
-  ts: string;
-  title: string;
-  summary: string;
-  url: string;
-  media_json: { thumbnail?: string; channelTitle?: string };
-  tags_json: string[];
-  dedupe_hash: string;
-  visibility: 'private';
+  payload: {
+    provider: 'youtube';
+    external_id: string;
+    author_handle: string;
+    author_name: string;
+    content_text: string;
+    permalink: string;
+    published_at: string;
+    media: Array<{ url: string; type: 'image' }>;
+    raw: Record<string, unknown>;
+  };
+  published_at: string;
+  created_at: string;
 };
 
 async function fetchJsonWithTimeout(url: string, accessToken: string): Promise<unknown> {
@@ -77,41 +81,49 @@ export async function pollYouTube(userId: string, accessToken: string): Promise<
 
     const supabase = (await createServiceClient()) as SupabaseClient;
     await supabase
-      .from('feed_items')
-      .upsert(feedItems, { onConflict: 'dedupe_hash', ignoreDuplicates: true });
+      .from('connector_feed_items')
+      .upsert(feedItems, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
   } catch (error: unknown) {
     console.error('YouTube polling error:', error);
   }
 }
 
-async function fetchChannelVideos(userId: string, accessToken: string, channelId: string): Promise<FeedItemRow[]> {
+async function fetchChannelVideos(userId: string, accessToken: string, channelId: string): Promise<ConnectorFeedItemRow[]> {
   try {
     const data = await fetchJsonWithTimeout(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(channelId)}&order=date&maxResults=10&type=video`,
       accessToken,
     ) as { items?: Array<{ id?: { videoId?: string }; snippet?: { publishedAt?: string; title?: string; description?: string; thumbnails?: { medium?: { url?: string } }; channelTitle?: string } }> };
 
-    const feedItems: FeedItemRow[] = [];
+    const feedItems: ConnectorFeedItemRow[] = [];
     for (const item of data.items ?? []) {
       const videoId = item.id?.videoId;
       if (!videoId) continue;
+
       const snippet = item.snippet ?? {};
+      const publishedAt = new Date(snippet.publishedAt ?? Date.now()).toISOString();
+      const thumbnail = snippet.thumbnails?.medium?.url;
       feedItems.push({
         user_id: userId,
-        source: 'youtube',
-        source_account_id: channelId,
+        provider: 'youtube',
         external_id: videoId,
-        ts: new Date(snippet.publishedAt ?? Date.now()).toISOString(),
-        title: snippet.title ?? '',
-        summary: snippet.description ?? '',
-        url: `https://youtube.com/watch?v=${videoId}`,
-        media_json: {
-          thumbnail: snippet.thumbnails?.medium?.url,
-          channelTitle: snippet.channelTitle,
+        payload: {
+          provider: 'youtube',
+          external_id: videoId,
+          author_handle: channelId,
+          author_name: snippet.channelTitle ?? channelId,
+          content_text: snippet.title ?? '',
+          permalink: `https://youtube.com/watch?v=${videoId}`,
+          published_at: publishedAt,
+          media: thumbnail ? [{ url: thumbnail, type: 'image' }] : [],
+          raw: {
+            channelId,
+            description: snippet.description ?? '',
+            thumbnail,
+          },
         },
-        tags_json: [],
-        dedupe_hash: `${userId}-youtube-${videoId}`,
-        visibility: 'private',
+        published_at: publishedAt,
+        created_at: new Date().toISOString(),
       });
     }
 

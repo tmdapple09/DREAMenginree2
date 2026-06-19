@@ -26,9 +26,9 @@ import { toErrorMessage } from '@/utils/index';
  *
  * Ingestion (POST):
  *   YouTube: Parses Atom XML notification, looks up the connected user by channel ID,
- *            upserts a feed_item row.
+ *            upserts a connector_feed_items row.
  *   Instagram: Parses Meta webhook JSON, looks up the connected user by Instagram
- *              account ID, upserts feed_item rows for each media change event.
+ *              account ID, upserts connector_feed_items rows for each media change event.
  *   Unsupported providers: Returns 400.
  *
  * AXIOM 4 — Security by Default:
@@ -244,11 +244,11 @@ export async function POST(
     }));
 
     const { error } = await db
-      .from('feed_items')
+      .from('connector_feed_items')
       .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
     if (error) {
-      console.error('[webhook:youtube] feed_items upsert error', { error: toErrorMessage(error) });
+      console.error('[webhook:youtube] connector_feed_items upsert error', { error: toErrorMessage(error) });
     }
 
     return NextResponse.json({ ok: true, provider, ingested: inserts.length });
@@ -337,11 +337,11 @@ export async function POST(
         }));
 
         const { error } = await db
-          .from('feed_items')
+          .from('connector_feed_items')
           .upsert(inserts, { onConflict: 'user_id,provider,external_id', ignoreDuplicates: true });
 
         if (error) {
-          console.error('[webhook:instagram] feed_items upsert error', { error: toErrorMessage(error) });
+          console.error('[webhook:instagram] connector_feed_items upsert error', { error: toErrorMessage(error) });
         } else {
           totalIngested += inserts.length;
         }

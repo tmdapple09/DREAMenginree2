@@ -29,6 +29,8 @@ type FollowRow = {
 };
 
 type AppPostRow = FeedPost & {
+  user_id: string;
+  post_visibility?: string | null;
   media_urls?: string[] | null;
   media_json?: unknown;
 };
@@ -108,6 +110,14 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
       const followedIds = follows.map((f) => f.following_id);
       const authorIds = [user.id, ...followedIds];
 
+      const { data: closeFriendRows } = await supabase
+        .from('close_friends')
+        .select('user_id')
+        .eq('friend_id', user.id);
+      const closeFriendAuthorIds = new Set(
+        ((closeFriendRows ?? []) as Array<{ user_id: string }>).map((row) => row.user_id),
+      );
+
       const { data: postsData } = await supabase
         .from('app_posts')
         .select(
@@ -115,15 +125,21 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
         profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)`
         )
         .in('user_id', authorIds)
-        .eq('visibility', 'public')
+        .or(`visibility.in.(public,followers),user_id.eq.${user.id}`)
         .order('created_at', { ascending: false })
         .limit(30)
         .returns<AppPostRow[]>();
 
-      const platformPosts = (postsData ?? []).map((post) => ({
-        ...post,
-        media_url: getPrimaryPostMediaUrl(post),
-      }));
+      const platformPosts = (postsData ?? [])
+        .filter((post) => (
+          post.post_visibility !== 'close_friends' ||
+          post.user_id === user.id ||
+          closeFriendAuthorIds.has(post.user_id)
+        ))
+        .map((post) => ({
+          ...post,
+          media_url: getPrimaryPostMediaUrl(post),
+        }));
 
       const connectorEntries: FeedPost[] = feedItems.map((item) => {
         const preview = item.preview ?? {};

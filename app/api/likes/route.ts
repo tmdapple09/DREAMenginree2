@@ -31,11 +31,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (user) {
     const { data: like } = await supabase
       .from('likes')
-      .select('id')
+      .select('user_id, content_type, content_id')
       .eq('user_id', user.id)
       .eq('content_type', contentType)
       .eq('content_id', contentId)
-      .single();
+      .maybeSingle();
 
     hasLiked = !!like;
   }
@@ -68,11 +68,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Check if already liked
   const { data: existing } = await supabase
     .from('likes')
-    .select('id')
+    .select('user_id, content_type, content_id')
     .eq('user_id', user.id)
     .eq('content_type', content_type)
     .eq('content_id', content_id)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     return NextResponse.json({ error: 'Already liked' }, { status: 400 });
@@ -85,22 +85,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       user_id: user.id,
       content_type,
       content_id,
+      ...(content_type === 'post' ? { post_id: content_id } : {}),
     });
 
   if (error) {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
-  }
-
-  // Update like count on the content table (optional RPC, ignore if it doesn't exist)
-  if (content_type === 'post') {
-    try {
-      await supabase.rpc('increment_likes', {
-        table_name: 'app_posts',
-        row_id: content_id
-      });
-    } catch {
-      // Ignore if RPC doesn't exist, we'll use count query instead
-    }
   }
 
   // Get new count
@@ -109,6 +98,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .select('*', { count: 'exact', head: true })
     .eq('content_type', content_type)
     .eq('content_id', content_id);
+
+  if (content_type === 'post') {
+    await supabase
+      .from('app_posts')
+      .update({ likes_count: newCount || 0 })
+      .eq('id', content_id);
+  }
 
   return NextResponse.json({
     success: true,
@@ -151,6 +147,13 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .select('*', { count: 'exact', head: true })
     .eq('content_type', contentType)
     .eq('content_id', contentId);
+
+  if (contentType === 'post') {
+    await supabase
+      .from('app_posts')
+      .update({ likes_count: newCount || 0 })
+      .eq('id', contentId);
+  }
 
   return NextResponse.json({
     success: true,

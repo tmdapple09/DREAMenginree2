@@ -68,36 +68,42 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const entries: UnifiedFeedEntry[] = [];
 
   {
-
     const db = supabase as SupabaseClient;
     let q = db
-      .from('feed_items')
-      .select('id, title, preview, created_at')
-      .order('created_at', { ascending: false })
+      .from('connector_feed_items')
+      .select('id, provider, payload, published_at, created_at')
+      .eq('user_id', user.id)
+      .order('published_at', { ascending: false })
       .limit(limit);
 
-    if (before) q = q.lt('created_at', before);
+    if (before) q = q.lt('published_at', before);
+    if (provider) q = q.eq('provider', provider);
 
     const { data: items } = await q;
 
     if (items) {
-      for (const item of items as Array<{ id: string; title: string | null; preview: Record<string, unknown> | null; created_at: string }>) {
-        const p = item.preview ?? {};
-        const itemProvider = (p.provider as string | undefined) ?? 'widget-feed';
-        if (provider && itemProvider !== provider) continue;
+      for (const item of items as Array<{
+        id: string;
+        provider: string;
+        payload: Record<string, unknown> | null;
+        published_at: string;
+        created_at: string;
+      }>) {
+        const p = item.payload ?? {};
+        const itemProvider = item.provider || (p.provider as string | undefined) || 'connector';
         const firstMedia = Array.isArray(p.media) ? p.media[0] as { url?: string; type?: 'image' | 'video' | 'audio' } | undefined : undefined;
         entries.push({
-          id:           item.id,
-          source:       'connector',
-          provider:     itemProvider,
+          id:            item.id,
+          source:        'connector',
+          provider:      itemProvider,
           author_handle: p.author_handle as string | undefined,
           author_name:   p.author_name   as string | undefined,
           author_avatar: p.author_avatar as string | null | undefined,
-          content_text:  (p.content_text ?? p.text ?? item.title ?? p.title) as string | undefined,
+          content_text:  (p.content_text ?? p.text ?? p.title) as string | undefined,
           content_html:  p.content_html  as string | undefined,
           media:         (p.media as UnifiedFeedEntry['media']) ?? (firstMedia?.url ? [{ url: firstMedia.url, type: firstMedia.type ?? 'image' }] : []),
           permalink:     p.permalink     as string | undefined,
-          published_at:  item.created_at,
+          published_at:  item.published_at,
           created_at:    item.created_at,
           raw:           p,
         });
@@ -117,16 +123,24 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const followedIds = followsError
       ? []
       : (follows ?? []).map((f: { following_id: string }) => f.following_id);
-    const authorIds   = [user.id, ...followedIds];
+    const authorIds = [user.id, ...followedIds];
+
+    const { data: closeFriendRows } = await db
+      .from('close_friends')
+      .select('user_id')
+      .eq('friend_id', user.id);
+    const closeFriendAuthorIds = new Set(
+      (closeFriendRows ?? []).map((row: { user_id: string }) => row.user_id),
+    );
 
     let q = db
         .from('app_posts')
         .select(
-          'id, content, visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, ' +
+          'id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, ' +
           'profiles!inner(handle, display_name, avatar_url)'
         )
       .in('user_id', authorIds)
-      .eq('visibility', 'public')
+      .or(`visibility.in.(public,followers),user_id.eq.${user.id}`)
       .order('created_at', { ascending: false })
       .limit(limit);
 
@@ -137,7 +151,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     interface AppPostRow {
       id: string;
+      user_id: string;
       content?: string;
+      post_visibility?: string | null;
       created_at: string;
       likes_count?: number;
       view_count?: number;
@@ -152,6 +168,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       for (const post of posts) {
 
         const p = (post as unknown) as AppPostRow;
+        if (
+          p.post_visibility === 'close_friends' &&
+          p.user_id !== user.id &&
+          !closeFriendAuthorIds.has(p.user_id)
+        ) {
+          continue;
+        }
+
         const profile = p.profiles ?? {};
 
         entries.push({

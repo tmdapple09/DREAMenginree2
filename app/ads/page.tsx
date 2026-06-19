@@ -24,7 +24,7 @@ export default async function AdsPage( ){
   const { data: mySlotsData } = await db
     .from('ad_slots')
     .select('*')
-    .eq('owner_id', user.id)
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
   // Fetch available listings — split into user DreamAds vs platform promotions.
@@ -33,16 +33,15 @@ export default async function AdsPage( ){
     .from('ad_listings')
     .select(`
       *,
-      ad_slots!inner(*, profiles!inner(handle, display_name))
-    `)
-    .eq('status', 'available');
+      ad_slots!inner(*)
+    `);
 
   // Fetch user's orders
   const { data: myOrdersData } = await db
     .from('ad_orders')
     .select(`
       *,
-      ad_listings!inner(*, ad_slots!inner(*, profiles!inner(handle, display_name)))
+      ad_listings!inner(*, ad_slots!inner(*))
     `)
     .eq('buyer_id', user.id);
 
@@ -51,10 +50,17 @@ export default async function AdsPage( ){
   const allListings: AdListing[] = (marketplaceData as unknown as AdListing[] | null) ?? [];
   const myOrders: AdOrder[] = (myOrdersData as unknown as AdOrder[] | null) ?? [];
 
-  // Separate user DreamAds from platform promotions (Phase 6 item 11)
-  // Use strict equality so null/undefined listings land in userAdListings (owner's own ads).
-  const userAdListings = allListings.filter((l) => l.is_platform_promotion !== true);
-  const platformPromotions = allListings.filter((l) => l.is_platform_promotion === true);
+  const userAdListings = allListings;
+  const platformPromotions: AdListing[] = [];
+
+  const slotLabel = (slot?: AdSlot | null) =>
+    (slot?.slot_name ?? slot?.placement ?? 'ad_slot').replace(/_/g, ' ');
+  const dailyPrice = (slot?: AdSlot | null) =>
+    Number(slot?.price_per_day ?? slot?.price_day ?? 0).toFixed(2);
+  const weeklyPrice = (slot?: AdSlot | null) =>
+    Number(slot?.price_per_week ?? slot?.price_week ?? 0).toFixed(2);
+  const isSlotActive = (slot?: AdSlot | null) =>
+    slot?.is_available ?? slot?.active ?? false;
 
   return (
     <div className="de-sky-bg min-h-screen">
@@ -118,17 +124,17 @@ export default async function AdsPage( ){
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="text-sm font-semibold capitalize" style={{ color: 'var(--de-heading)' }}>
-                      {slot.placement?.replace(/_/g, ' ')}
+                      {slotLabel(slot)}
                     </div>
                     <div className="text-xs" style={{ color: 'var(--de-text-dim)' }}>
-                      ${slot.price_day}/day · ${slot.price_week}/week
+                      ${dailyPrice(slot)}/day · ${weeklyPrice(slot)}/week
                     </div>
                   </div>
                   <span className="text-xs px-2 py-0.5 rounded-full" style={{
-                    background: slot.active ? 'rgba(34,197,94,0.12)' : 'rgba(160,195,240,0.15)',
-                    color: slot.active ? '#22c55e' : 'var(--de-text-dim)',
+                    background: isSlotActive(slot) ? 'rgba(34,197,94,0.12)' : 'rgba(160,195,240,0.15)',
+                    color: isSlotActive(slot) ? '#22c55e' : 'var(--de-text-dim)',
                   }}>
-                    {slot.active ? 'Active' : 'Inactive'}
+                    {isSlotActive(slot) ? 'Active' : 'Inactive'}
                   </span>
                 </Link>
               ))
@@ -175,10 +181,10 @@ export default async function AdsPage( ){
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="text-sm font-semibold capitalize" style={{ color: 'var(--de-heading)' }}>
-                      {listing.ad_slots?.placement?.replace(/_/g, ' ')}
+                      {slotLabel(listing.ad_slots)}
                     </div>
                     <div className="text-xs" style={{ color: 'var(--de-text-dim)' }}>
-                      by @{listing.ad_slots?.profiles?.handle} · ${listing.ad_slots?.price_day}/day
+                      ${dailyPrice(listing.ad_slots)}/day
                     </div>
                   </div>
                   <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(42,138,184,0.1)', color: 'var(--de-accent)', border: '1px solid rgba(42,138,184,0.2)' }}>
@@ -213,10 +219,10 @@ export default async function AdsPage( ){
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="text-sm font-semibold capitalize" style={{ color: 'var(--de-heading)' }}>
-                      {listing.ad_slots?.placement?.replace(/_/g, ' ')}
+                      {slotLabel(listing.ad_slots)}
                     </div>
                     <div className="text-xs" style={{ color: 'var(--de-text-dim)' }}>
-                      Platform · ${listing.ad_slots?.price_day}/day
+                      Platform · ${dailyPrice(listing.ad_slots)}/day
                     </div>
                   </div>
                   <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(155,89,182,0.10)', color: '#9b59b6', border: '1px solid rgba(155,89,182,0.20)' }}>
@@ -240,10 +246,10 @@ export default async function AdsPage( ){
                 <div key={order.id} className="de-row">
                   <div style={{ flex: 1 }}>
                     <div className="text-sm font-semibold capitalize" style={{ color: 'var(--de-heading)' }}>
-                      {order.ad_listings?.ad_slots?.placement?.replace(/_/g, ' ')}
+                      {slotLabel(order.ad_listings?.ad_slots)}
                     </div>
                     <div className="text-xs" style={{ color: 'var(--de-text-dim)' }}>
-                      by @{order.ad_listings?.ad_slots?.profiles?.handle}
+                      Order created
                     </div>
                   </div>
                   <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(42,138,184,0.1)', color: 'var(--de-accent)', border: '1px solid rgba(42,138,184,0.2)' }}>

@@ -185,7 +185,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
                   label:     match.display_name || match.handle || 'Conversation',
                   sublabel:  match.handle ? `@${match.handle}` : 'Conversation',
                   avatarUrl: match.avatar_url,
-                  href:      `/messages?conversation=${conv.id}`,
+                  href:      `/messages?conversation_id=${conv.id}`,
                   targetId:  conv.id,
                 });
               }

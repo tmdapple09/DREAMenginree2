@@ -204,7 +204,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               </Link>
             </div>
           ) : (
-            <FollowButton handle={profile.handle} displayName={displayName} />
+            <FollowButton targetId={profile.id} handle={profile.handle} displayName={displayName} />
           )}
         </div>
       </div>

@@ -34,10 +34,11 @@ export default function NewProjectPage( ){
       const { data, error: insertError } = await supabase
         .from('projects')
         .insert({
-          owner_id: user.id,
+          user_id: user.id,
           title,
           description,
-          visibility
+          visibility,
+          status: 'active'
         })
         .select()
         .single();

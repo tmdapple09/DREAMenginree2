@@ -38,17 +38,24 @@ export function saveFollowSetting(handle: string, displayName: string, frequency
 type Props = {
   handle: string;
   displayName: string;
-  onConfirm: (frequency: FollowFrequency) => void;
+  onConfirm: (frequency: FollowFrequency) => void | Promise<void>;
   onClose: () => void;
 };
 
 export default function FollowOnboarding({ handle, displayName, onConfirm, onClose }: Props) {
   const [selected, setSelected] = useState<FollowFrequency>('highlights');
+  const [submitting, setSubmitting] = useState(false);
 
-  const confirm = useCallback(() => {
+  const confirm = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
     saveFollowSetting(handle, displayName, selected);
-    onConfirm(selected);
-  }, [handle, displayName, selected, onConfirm]);
+    try {
+      await onConfirm(selected);
+    } finally {
+      setSubmitting(false);
+    }
+  }, [handle, displayName, selected, onConfirm, submitting]);
 
   return (
     /* Backdrop */
@@ -145,7 +152,7 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
           <button type="button" onClick={onClose} className="de-btn de-btn-ghost" style={{ flex: 1 }}>
             Cancel
           </button>
-          <button type="button" onClick={confirm} className="de-btn de-btn-primary" style={{ flex: 2, fontWeight: 800, gap: 6 }}>
+          <button type="button" onClick={() => void confirm()} disabled={submitting} className="de-btn de-btn-primary" style={{ flex: 2, fontWeight: 800, gap: 6, opacity: submitting ? 0.65 : 1 }}>
             <Check className="w-4 h-4" /> Follow
           </button>
         </div>

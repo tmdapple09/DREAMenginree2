@@ -19,17 +19,7 @@ interface Project {
   title: string;
   description?: string;
   created_at: string;
-  language?: string;
 }
-
-const LANG_COLORS: Record<string, string> = {
-  python:     '#3b82f6',
-  javascript: '#f59e0b',
-  typescript: '#2563eb',
-  rust:       '#ef4444',
-  go:         '#06b6d4',
-  default:    '#6366f1',
-};
 
 export default function ProjectsPanel( ){
   const [projects, setProjects] = useState<Project[]>([]);
@@ -37,7 +27,6 @@ export default function ProjectsPanel( ){
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState('');
-  const [newLang, setNewLang] = useState('typescript');
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,8 +38,8 @@ export default function ProjectsPanel( ){
     if (!user) { setLoading(false); return; }
     const { data, error: err } = await supabase
       .from('projects')
-      .select('id, title, description, created_at, language')
-      .eq('owner_id', user.id)
+      .select('id, title, description, created_at, visibility, status')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(30);
     if (err) setError(toErrorMessage(err));
@@ -69,8 +58,9 @@ export default function ProjectsPanel( ){
     const { error: err } = await supabase.from('projects').insert({
       title: newTitle.trim(),
       description: newDesc.trim() || null,
-      language: newLang,
-      owner_id: user.id,
+      visibility: 'private',
+      status: 'active',
+      user_id: user.id,
     });
     if (err) setError(toErrorMessage(err));
     else {
@@ -130,15 +120,6 @@ export default function ProjectsPanel( ){
                 placeholder="Description (optional)"
                 className="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#22d3ee]/50"
               />
-              <select
-                value={newLang}
-                onChange={(e) => setNewLang(e.target.value)}
-                className="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#22d3ee]/50"
-              >
-                {Object.keys(LANG_COLORS).filter((l) => l !== 'default').map((l) => (
-                  <option key={l} value={l}>{l.charAt(0).toUpperCase() + l.slice(1)}</option>
-                ))}
-              </select>
               <div className="flex gap-2">
                 <button
                   onClick={createProject}
@@ -171,7 +152,6 @@ export default function ProjectsPanel( ){
         {!loading && projects.length > 0 && (
           <div className="space-y-2">
             {projects.map((proj) => {
-              const langColor = LANG_COLORS[proj.language ?? 'default'] ?? LANG_COLORS.default;
               return (
                 <div
                   key={proj.id}
@@ -184,9 +164,6 @@ export default function ProjectsPanel( ){
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-semibold text-white truncate">{proj.title}</div>
                     <div className="flex items-center gap-2 mt-0.5">
-                      {proj.language && (
-                        <span className="text-xs" style={{ color: langColor }}>{proj.language}</span>
-                      )}
                       <span className="text-xs text-white/30 flex items-center gap-1">
                         <Clock size={10} />
                         {formatDate(proj.created_at)}

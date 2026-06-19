@@ -8,11 +8,18 @@ export type AdPlacement =
 export type AdSlot = {
   id: string;
   owner_id?: string;
-  placement: AdPlacement;
-  active: boolean;
-  price_day: number;
-  price_week: number;
+  user_id?: string;
+  placement?: AdPlacement;
+  slot_name?: string;
+  slot_size?: string;
+  active?: boolean;
+  is_available?: boolean;
+  price_day?: number;
+  price_week?: number;
+  price_per_day?: number;
+  price_per_week?: number;
   created_at?: string;
+  profiles?: ProfileLite;
 };
 
 export type ProfileLite = {

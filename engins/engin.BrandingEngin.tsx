@@ -146,7 +146,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
 
       const [profileRes, followsRes] = await Promise.all([
         supabase.from('profiles').select('handle, display_name').eq('id', user.id).maybeSingle(),
-        supabase.from('follows').select('follower_id', { count: 'exact', head: true }).eq('followed_id', user.id),
+        supabase.from('follows').select('follower_id', { count: 'exact', head: true }).eq('following_id', user.id),
       ]);
 
       if (!cancelled) {

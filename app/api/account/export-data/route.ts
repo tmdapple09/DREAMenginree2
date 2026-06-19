@@ -21,7 +21,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const EXPORT_TARGETS: Array<{ table: string; ownerCol: string }> = [
   { table: 'profiles',           ownerCol: 'id' },
   { table: 'dream_instances',   ownerCol: 'user_id' },
-  { table: 'feed_items',         ownerCol: 'user_id' },
+  { table: 'connector_feed_items', ownerCol: 'user_id' },
   { table: 'merch',              ownerCol: 'user_id' },
   { table: 'favorites',          ownerCol: 'user_id' },
   { table: 'music_releases',     ownerCol: 'user_id' },

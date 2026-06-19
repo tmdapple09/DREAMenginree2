@@ -355,13 +355,13 @@ export default function StarMakerEngin({ onBack, instanceId: instanceIdProp }: P
     const supabase = createClient();
 
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.user;
+      const user = res.data.user;
       if (!user || cancelled) { setLoading(false); return; }
 
       const { data } = await supabase
         .from('music_releases')
         .select('id, title, visibility')
-        .eq('owner_id', user.id)
+        .eq('user_id', user.id)
         .order('id', { ascending: false })
         .limit(20);
 

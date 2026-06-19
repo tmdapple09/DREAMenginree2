@@ -44,8 +44,14 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  const slot = data as unknown as AdSlot & { owner_id?: string };
-  if (slot.owner_id && slot.owner_id !== user.id) {
+  const slot = data as unknown as AdSlot & { owner_id?: string; user_id?: string };
+  const ownerId = slot.user_id ?? slot.owner_id;
+  const slotLabel = (slot.slot_name ?? slot.placement ?? 'ad_slot').replace(/_/g, ' ');
+  const slotActive = slot.is_available ?? slot.active ?? false;
+  const slotPriceDay = Number(slot.price_per_day ?? slot.price_day ?? 0).toFixed(2);
+  const slotPriceWeek = Number(slot.price_per_week ?? slot.price_week ?? 0).toFixed(2);
+
+  if (ownerId && ownerId !== user.id) {
     return (
       <div className="de-sky-bg min-h-screen">
         <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
@@ -86,19 +92,19 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
             <LayoutGrid className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
             <span className="de-widget-title">Slot Details</span>
             <span className="ml-auto text-xs px-2 py-0.5 rounded-full" style={{
-              background: slot.active ? 'rgba(34,197,94,0.12)' : 'rgba(160,195,240,0.15)',
-              color: slot.active ? '#22c55e' : 'var(--de-text-dim)',
+              background: slotActive ? 'rgba(34,197,94,0.12)' : 'rgba(160,195,240,0.15)',
+              color: slotActive ? '#22c55e' : 'var(--de-text-dim)',
             }}>
-              {slot.active ? 'Active' : 'Inactive'}
+              {slotActive ? 'Active' : 'Inactive'}
             </span>
           </div>
           <div className="de-widget-body" style={{ padding: 0 }}>
             {[
               { icon: Hash, label: 'Slot ID', value: slot.id, mono: true },
-              { icon: LayoutGrid, label: 'Placement', value: slot.placement },
-              { icon: ToggleLeft, label: 'Status', value: slot.active ? 'Active' : 'Inactive' },
-              { icon: DollarSign, label: 'Price / Day', value: `$${slot.price_day}` },
-              { icon: DollarSign, label: 'Price / Week', value: `$${slot.price_week}` },
+              { icon: LayoutGrid, label: 'Placement', value: slotLabel },
+              { icon: ToggleLeft, label: 'Status', value: slotActive ? 'Active' : 'Inactive' },
+              { icon: DollarSign, label: 'Price / Day', value: `$${slotPriceDay}` },
+              { icon: DollarSign, label: 'Price / Week', value: `$${slotPriceWeek}` },
             ].map(({ icon: Icon, label, value, mono }) => (
               <div key={label} className="de-row">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(200,152,26,0.1)' }}>

@@ -84,26 +84,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     title?: string;
     description?: string;
     visibility?: string;
-    template?: string;
-    tags?: string[];
   };
-  const { title, description, visibility = 'private', template, tags = [] } = body;
+  const { title, description, visibility = 'private' } = body;
 
   if (!title || title.trim().length === 0) {
     return NextResponse.json({ error: 'Title is required' }, { status: 400 });
   }
 
   const { data: project, error } = await supabase
-    .from('projects' as never)
+    .from('projects')
     .insert({
-      user_id: user.id as string,
-      title: title.trim() as string,
-      description: (description?.trim() || null) as string | null,
-      visibility: visibility as string,
-      template: (template || null) as string | null,
-      tags: tags as string[],
-      data: {} as Record<string, unknown>, // Empty project data to start
-    } as never)
+      user_id: user.id,
+      title: title.trim(),
+      description: description?.trim() || null,
+      visibility,
+      status: 'active',
+    })
     .select(`
       *,
       profiles!inner(id, handle, display_name, avatar_url)
@@ -112,17 +108,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   if (error) {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
-  }
-
-  // Create feed item if public
-  if (visibility === 'public') {
-
-    await (supabase as SupabaseClient).from('feed_items').insert({
-      user_id: user.id,
-      type: 'project',
-      content: { title: (project as Record<string, unknown>).title, project_id: (project as Record<string, unknown>).id },
-      ts: new Date().toISOString(),
-    });
   }
 
   return NextResponse.json({ project }, { status: 201 });
@@ -142,10 +127,8 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     title?: string;
     description?: string;
     visibility?: string;
-    data?: unknown;
-    tags?: string[];
   };
-  const { id, title, description, visibility, data: projectData, tags } = body;
+  const { id, title, description, visibility } = body;
 
   if (!id) {
     return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
@@ -158,8 +141,6 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   if (title !== undefined) updateData.title = title.trim();
   if (description !== undefined) updateData.description = description?.trim();
   if (visibility !== undefined) updateData.visibility = visibility;
-  if (projectData !== undefined) updateData.data = projectData;
-  if (tags !== undefined) updateData.tags = tags;
 
   const { data: project, error } = await supabase
     .from('projects')

@@ -1,19 +1,21 @@
 import { scanContent } from '@/engine/safety/child-safety/childSafetyDetector';
 import { reportChildSafetyIncident } from '@/engine/safety/child-safety/ncmecReporter';
 import { scanMediaUrlsForChildSafety } from '@/engine/safety/child-safety/scanMediaUrls';
-import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { toErrorMessage } from '@/utils/index';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/utils/index';
 
-// ── Minor-to-adult image blocking helpers ─────────────────────────────────
+type ProfileAgeRow = Record<string, unknown> | null;
 
-/**
- * Look up the age of a user from their profile.
- * Returns null if age is unavailable or unverified.
- */
+type ConversationRow = {
+  id: string;
+  participant1_id: string;
+  participant2_id: string;
+};
+
 async function getUserAge(
   supabase: Awaited<ReturnType<typeof createServerClient>>,
   userId: string,
@@ -21,16 +23,18 @@ async function getUserAge(
   try {
     const { data } = await (supabase as SupabaseClient)
       .from('profiles')
-      .select('age, birth_year')
+      .select('*')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
 
-    if (!data) return null;
+    const row = data as ProfileAgeRow;
+    if (!row) return null;
 
-    // Prefer explicit age field; fall back to birth_year
-    if (typeof data.age === 'number' && data.age > 0) return data.age;
-    if (typeof data.birth_year === 'number' && data.birth_year > 0) {
-      return new Date().getFullYear() - data.birth_year;
+    const age = row.age;
+    const birthYear = row.birth_year;
+    if (typeof age === 'number' && age > 0) return age;
+    if (typeof birthYear === 'number' && birthYear > 0) {
+      return new Date().getFullYear() - birthYear;
     }
     return null;
   } catch {
@@ -38,7 +42,43 @@ async function getUserAge(
   }
 }
 
-// GET - Fetch conversations
+async function getConversationForUser(
+  db: SupabaseClient,
+  conversationId: string,
+  userId: string,
+): Promise<ConversationRow | null> {
+  const { data, error } = await db
+    .from('conversations')
+    .select('id, participant1_id, participant2_id')
+    .eq('id', conversationId)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  const conversation = data as ConversationRow;
+  if (conversation.participant1_id !== userId && conversation.participant2_id !== userId) {
+    return null;
+  }
+  return conversation;
+}
+
+async function mirrorConversationParticipants(
+  db: SupabaseClient,
+  conversationId: string,
+  participantIds: [string, string],
+): Promise<void> {
+  try {
+    await db
+      .from('conversation_participants')
+      .upsert(
+        participantIds.map((userId) => ({ conversation_id: conversationId, user_id: userId })),
+        { onConflict: 'conversation_id,user_id', ignoreDuplicates: true },
+      );
+  } catch {
+    // Optional mirror table. conversations.participant1_id/participant2_id remain canonical.
+  }
+}
+
+// GET - Fetch conversations or messages for one conversation.
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -47,31 +87,33 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const db = supabase as SupabaseClient;
   const { searchParams } = new URL(req.url);
   const conversationId = searchParams.get('conversation_id');
 
   if (conversationId) {
-    // Fetch messages for a specific conversation
+    const conversation = await getConversationForUser(db, conversationId, user.id);
+    if (!conversation) {
+      return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
+    }
 
-    const { data: messages, error } = await (supabase as SupabaseClient)
+    const { data: messages, error } = await db
       .from('messages')
       .select(`
         *,
         sender:profiles!sender_id(id, handle, display_name, avatar_url)
       `)
-      .eq('conversation_id', conversationId)
+      .eq('conversation_id', conversation.id)
       .order('created_at', { ascending: true });
 
     if (error) {
       return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
-    return NextResponse.json({ messages });
+    return NextResponse.json({ messages: messages ?? [] });
   }
 
-  // Fetch all conversations for the user
-
-  const { data: conversations, error } = await (supabase as SupabaseClient)
+  const { data: conversations, error } = await db
     .from('conversations')
     .select(`
       *,
@@ -86,10 +128,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  return NextResponse.json({ conversations });
+  return NextResponse.json({ conversations: conversations ?? [] });
 }
 
-// POST - Send a message
+// POST - Send a message. Creates a two-person conversation when recipient_id is provided.
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -106,8 +148,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     media_type?: string;
   };
 
-  const { recipient_id, content, conversation_id, media_url, media_type } = body;
-  const normalizedContent = typeof content === 'string' ? content.trim() : '';
+  const { recipient_id, conversation_id, media_url, media_type } = body;
+  const normalizedContent = typeof body.content === 'string' ? body.content.trim() : '';
   const normalizedMediaUrl = typeof media_url === 'string' ? media_url.trim() : '';
   const normalizedMediaType = typeof media_type === 'string' && media_type.trim().length > 0
     ? media_type.trim()
@@ -115,6 +157,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   if (!conversation_id && !recipient_id) {
     return NextResponse.json({ error: 'recipient_id or conversation_id required' }, { status: 400 });
+  }
+
+  if (recipient_id && recipient_id === user.id) {
+    return NextResponse.json({ error: 'You cannot message yourself' }, { status: 400 });
   }
 
   if (!normalizedContent && !normalizedMediaUrl) {
@@ -126,33 +172,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let resolvedRecipientId: string | null = recipient_id ?? null;
 
   if (convId) {
-    const { data: conversation, error: conversationError } = await db
-      .from('conversations')
-      .select('id, participant1_id, participant2_id')
-      .eq('id', convId)
-      .single();
-
-    if (conversationError || !conversation) {
+    const conversation = await getConversationForUser(db, convId, user.id);
+    if (!conversation) {
       return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
     }
 
-    const existingConversation = conversation as {
-      id: string;
-      participant1_id: string;
-      participant2_id: string;
-    };
+    resolvedRecipientId = conversation.participant1_id === user.id
+      ? conversation.participant2_id
+      : conversation.participant1_id;
+  } else if (recipient_id) {
+    const { data: recipientProfile, error: recipientError } = await db
+      .from('profiles')
+      .select('id')
+      .eq('id', recipient_id)
+      .maybeSingle();
 
-    if (
-      existingConversation.participant1_id !== user.id &&
-      existingConversation.participant2_id !== user.id
-    ) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (recipientError || !recipientProfile) {
+      return NextResponse.json({ error: 'Recipient not found' }, { status: 404 });
     }
 
-    resolvedRecipientId = existingConversation.participant1_id === user.id
-      ? existingConversation.participant2_id
-      : existingConversation.participant1_id;
-  } else if (recipient_id) {
     const { data: existing } = await db
       .from('conversations')
       .select('id')
@@ -176,12 +214,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
 
       convId = (newConv as { id: string }).id;
+      await mirrorConversationParticipants(db, convId, [user.id, recipient_id]);
     }
   }
 
   if (!convId || !resolvedRecipientId) {
     return NextResponse.json({ error: 'Conversation recipient could not be resolved' }, { status: 400 });
   }
+
+  await mirrorConversationParticipants(db, convId, [user.id, resolvedRecipientId]);
 
   const senderAge = await getUserAge(supabase, user.id);
   const recipientAge = await getUserAge(supabase, resolvedRecipientId);
@@ -206,7 +247,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       surface: 'message',
       contentRef,
-    }).catch((err: unknown ) => console.error('[child-safety] minor image block report error:', err));
+    }).catch((err: unknown) => console.error('[child-safety] minor image block report error:', err));
 
     return NextResponse.json(
       { error: 'This image was sent from a minor and has been blocked.' },
@@ -224,7 +265,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       surface: 'message',
       contentRef: `draft:${contentHash.slice(0, 16)}`,
       contentHash,
-    }).catch((err: unknown ) => console.error('[child-safety] message report error:', err));
+    }).catch((err: unknown) => console.error('[child-safety] message report error:', err));
 
     return NextResponse.json(
       { error: 'Message violates our child safety policy and has been blocked.' },
@@ -245,7 +286,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         detectionResult: mediaSafetyResult,
         surface: 'message',
         contentRef: 'media:1_file',
-      }).catch((err: unknown ) => console.error('[child-safety] message media report error:', err));
+      }).catch((err: unknown) => console.error('[child-safety] message media report error:', err));
 
       return NextResponse.json(
         { error: 'Attached image violates our child safety policy and has been blocked.' },
@@ -255,22 +296,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const messageContent = normalizedMediaUrl
-    ? [
-        normalizedContent,
-        `[Attachment: ${normalizedMediaType}] ${normalizedMediaUrl}`,
-      ].filter(Boolean).join('\n\n')
+    ? [normalizedContent, `[Attachment: ${normalizedMediaType}] ${normalizedMediaUrl}`]
+        .filter(Boolean)
+        .join('\n\n')
     : normalizedContent;
-
-  const messageRow = {
-    conversation_id: convId,
-    sender_id: user.id,
-    recipient_id: resolvedRecipientId,
-    content: messageContent,
-  };
 
   const { data: message, error } = await db
     .from('messages')
-    .insert(messageRow)
+    .insert({
+      conversation_id: convId,
+      sender_id: user.id,
+      recipient_id: resolvedRecipientId,
+      content: messageContent,
+      is_read: false,
+      read: false,
+    })
     .select(`
       *,
       sender:profiles!sender_id(id, handle, display_name, avatar_url)
@@ -289,10 +329,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   await db.from('notifications').insert({
     user_id: resolvedRecipientId,
     type: 'message',
-    content: {
-      message: `New message from ${user.email}`,
+    message: `New message from ${user.email ?? 'someone'}`,
+    data: {
       conversation_id: convId,
       message_id: (message as Record<string, unknown>).id,
+      sender_id: user.id,
     },
   });
 

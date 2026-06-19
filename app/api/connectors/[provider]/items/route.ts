@@ -1,29 +1,22 @@
-import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
+import { createServerClient } from '@/supabase/server/serverClient';
+import { toErrorMessage } from '@/utils/index';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { toErrorMessage } from '@/utils/index';
 
 /**
- * app/api/connectors/[provider]/items/route.ts
- *
- * Read-only helper route for widget rendering.
- * Returns the user's most recently synced normalised items for a provider.
- *
- * This is the missing bridge between:
- *   connector sync -> feed_items storage -> actual widget display
+ * Read connector-synced items for a user/provider.
+ * Connector storage lives in connector_feed_items because public.feed_items is
+ * widget-shaped in the live DB and cannot store provider payloads.
  */
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
 ) {
   const { provider } = await params;
   const supabase = await createServerClient();
-
-  const db = supabase as SupabaseClient;
-
   const user = await safeGetUser(supabase);
+
   if (!user) {
     return NextResponse.json({ ok: false, items: [], error: 'Unauthorised' }, { status: 401 });
   }
@@ -34,8 +27,8 @@ export async function GET(
     ? Math.max(1, Math.min(24, Math.floor(rawLimit)))
     : 6;
 
-  const { data, error } = await db
-    .from('feed_items')
+  const { data, error } = await (supabase as SupabaseClient)
+    .from('connector_feed_items')
     .select('payload, published_at')
     .eq('user_id', user.id)
     .eq('provider', provider)
@@ -53,8 +46,5 @@ export async function GET(
     .map((row: { payload?: unknown }) => row.payload)
     .filter(Boolean);
 
-  return NextResponse.json({
-    ok: true,
-    items,
-  });
+  return NextResponse.json({ ok: true, items });
 }

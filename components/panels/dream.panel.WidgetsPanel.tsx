@@ -2,8 +2,6 @@
 
 import DreamWord from '@/components/ui/dream.DreamWord';
 import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
-import { createClient } from '@/supabase/client/client';
-import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, Eye, EyeOff, LayoutGrid, Loader2, Pin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -29,24 +27,23 @@ export default function WidgetsPanel( ){
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const sb = createClient();
-        const user = await safeGetUser(sb);
-        if (!user) { setLoading(false); return; }
-        const { data } = await sb.from('profiles').select('profile_dream_widgets').eq('id', user.id).single();
-        if (data?.profile_dream_widgets && Array.isArray(data.profile_dream_widgets) && data.profile_dream_widgets.length > 0) {
-          // Map stored ProfileDream format to WidgetEntry
-          const mapped: WidgetEntry[] = (data.profile_dream_widgets as Array<{ label?: string; title?: string; pinned?: boolean; visible?: boolean }>).map((w) => ({
-            name:    w.label ?? w.title ?? 'Dream',
-            pinned:  w.pinned  ?? false,
+    try {
+      const saved = localStorage.getItem('de-profile-widget-order');
+      if (saved) {
+        const parsed = JSON.parse(saved) as Array<{ label?: string; title?: string; name?: string; pinned?: boolean; visible?: boolean }>;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setWidgets(parsed.map((w) => ({
+            name: w.name ?? w.label ?? w.title ?? 'Dream',
+            pinned: w.pinned ?? false,
             visible: w.visible ?? true,
-          }));
-          setWidgets(mapped);
+          })));
         }
-      } catch { /* use defaults */ }
-      finally { setLoading(false); }
-    })();
+      }
+    } catch {
+      // use defaults
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const toggle = (idx: number, key: 'pinned' | 'visible') => {

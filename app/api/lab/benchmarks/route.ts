@@ -33,12 +33,12 @@ export async function POST(_req: NextRequest ): Promise<NextResponse> {
   const db = supabase as SupabaseClient;
   const title = `Benchmark Run — ${new Date().toISOString()}`;
   const { data: record, error } = await db
-    .from('physics_experiments')
+    .from('science_experiments')
     .insert({
-      creator_id: user.id,
+      user_id: user.id,
       title,
       status: 'completed',
-      visibility: 'private',
+      results: { benchmarks: results },
     })
     .select('id, title, status')
     .single();

@@ -126,6 +126,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
   }
 
+  const { count: commentCount } = await supabase
+    .from('comments')
+    .select('*', { count: 'exact', head: true })
+    .eq('post_id', post_id);
+
+  await supabase
+    .from('app_posts')
+    .update({ comments_count: commentCount || 0 })
+    .eq('id', post_id);
+
   // Enrich with profile
   const { data: profile } = await supabase
     .from('profiles')
@@ -164,6 +174,13 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
 
   const { comment_id } = parsed.data;
 
+  const { data: existingComment } = await supabase
+    .from('comments')
+    .select('post_id')
+    .eq('id', comment_id)
+    .eq('user_id', user.id)
+    .maybeSingle();
+
   // RLS enforces user_id = auth.uid() for delete, but we also check explicitly
   const { error } = await supabase
     .from('comments')
@@ -173,6 +190,18 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
 
   if (error) {
     return NextResponse.json({ data: null, error: toErrorMessage(error) }, { status: 500 });
+  }
+
+  if (existingComment?.post_id) {
+    const { count: commentCount } = await supabase
+      .from('comments')
+      .select('*', { count: 'exact', head: true })
+      .eq('post_id', existingComment.post_id);
+
+    await supabase
+      .from('app_posts')
+      .update({ comments_count: commentCount || 0 })
+      .eq('id', existingComment.post_id);
   }
 
   return NextResponse.json({ data: { deleted: true }, error: null });

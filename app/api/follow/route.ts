@@ -31,10 +31,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Check if current user follows target
     const { data: follow } = await supabase
       .from('follows')
-      .select('id')
+      .select('follower_id, following_id')
       .eq('follower_id', user.id)
       .eq('following_id', targetId)
-      .single();
+      .maybeSingle();
 
     return NextResponse.json({ isFollowing: !!follow });
   }
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .select(`
         follower:profiles!follower_id(id, handle, display_name, avatar_url)
       `)
-      .eq('following_id', userId)
+      .eq('following_id', userId);
       // NOTE: We avoid `.returns<T>()` here because in some build environments
       // the Supabase client can degrade to `any`, and TypeScript will fail the
       // build with: "Untyped function calls may not accept type arguments."
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .select(`
         following:profiles!following_id(id, handle, display_name, avatar_url)
       `)
-      .eq('follower_id', userId)
+      .eq('follower_id', userId);
       // See NOTE above re: `.returns<T>()`.
 
     if (error) {
@@ -125,10 +125,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Check if already following
   const { data: existing } = await supabase
     .from('follows')
-    .select('id')
+    .select('follower_id, following_id')
     .eq('follower_id', user.id)
     .eq('following_id', target_id)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     return NextResponse.json({ error: 'Already following' }, { status: 400 });
@@ -145,7 +145,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Create notification — content JSONB must match notificationHelpers.ts schema
+  // Create notification — message + data must match the live notifications schema
   // so that NotificationCenter can derive actor name and action URL.
   // Cast to `any` because the generated TS types may lag behind the actual schema.
   const { data: followerProfile } = await supabase
@@ -157,7 +157,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   await (supabase as SupabaseClient).from('notifications').insert({
     user_id: target_id,
     type: 'follow',
-    content: {
+    message: `${followerProfile?.display_name ?? followerProfile?.handle ?? 'Someone'} started following you.`,
+    data: {
       actor_handle:       followerProfile?.handle       ?? user.id,
       actor_display_name: followerProfile?.display_name ?? followerProfile?.handle ?? 'Someone',
       follower_id:        user.id,

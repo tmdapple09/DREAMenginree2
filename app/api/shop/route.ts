@@ -102,15 +102,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Create feed item
-
-  await (supabase as SupabaseClient).from('feed_items').insert({
-    user_id: user.id,
-    type: 'merch',
-    content: { title: item.name, item_id: item.id, price: item.price },
-    ts: new Date().toISOString(),
-  });
-
   return NextResponse.json({ item }, { status: 201 });
 }
 

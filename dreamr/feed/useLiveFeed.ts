@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *
  * Subscribes to two Supabase Realtime channels:
  *   1. `homedream-posts:{userId}` — INSERT + UPDATE on app_posts (visibility=public)
- *   2. `homedream-items:{userId}` — INSERT on feed_items (user_id=eq.{userId})
+ *   2. `homedream-items:{userId}` — INSERT on connector_feed_items (user_id=eq.{userId})
  *
  * New posts from OTHER users are queued (not auto-prepended) so the user
  * doesn't lose their scroll position. A "N new posts" tap-to-show banner
@@ -25,7 +25,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *   - lib/ Logic layer per GENERATION_LAW §3.1
  *   - Same Realtime pattern as useDreamDMMessages (lib/dreamdm/)
  *   - docs/ARCHITECTURE.md §10 — no JS timers; events drive everything
- *   - docs/AXIOMS.md Axiom 5 — feed_items scoped to user_id via RLS
+ *   - docs/AXIOMS.md Axiom 5 — connector_feed_items scoped to user_id via RLS
  *
  * Performance:
  *   - INSERT handler does one single-row SELECT to hydrate the profile join.
@@ -154,7 +154,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           event: 'INSERT',
           schema: 'public',
           table: 'app_posts',
-          // Filter to public posts only — private posts never surface here
+          // Base public filter. Close-friends posts are skipped below unless self-authored.
           filter: 'visibility=eq.public',
         },
         async (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
@@ -166,13 +166,14 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           // (the realtime payload does not include joined columns)
             const { data } = await supabase
               .from('app_posts')
-              .select('id, content, visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)')
+              .select('id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)')
               .eq('id', postId)
               .single();
 
           if (!data) return;
 
           const d = data as any;
+          if (d.post_visibility === 'close_friends' && authorId !== userId) return;
 
           const newPost: FeedPost = {
             id:             d.id,
@@ -241,20 +242,21 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'feed_items',
+          table: 'connector_feed_items',
+          filter: `user_id=eq.${userId}`,
         },
         (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
           const raw = payload.new as any;
 
-          const p = (raw.preview ?? {}) as any;
+          const p = (raw.payload ?? {}) as any;
           const firstMedia = Array.isArray(p.media) && p.media.length > 0 ? p.media[0] : null;
 
           const newEntry: FeedPost = {
             id:             raw.id         as string,
-            content:        (p.content_text ?? p.text ?? raw.title ?? p.title ?? '') as string,
-            visibility:     'public',
+            content:        (p.content_text ?? p.text ?? p.title ?? '') as string,
+            visibility:     'private',
             media_url:      (p.media_url ?? firstMedia?.url ?? null) as string | null,
-            created_at:     (raw.created_at ?? new Date().toISOString()) as string,
+            created_at:     (raw.published_at ?? raw.created_at ?? new Date().toISOString()) as string,
             likes_count:    0,
             comments_count: 0,
             profiles: {
@@ -263,7 +265,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
               avatar_url:   (p.author_avatar ?? null)                   as string | null,
             },
             source:   'connector',
-            provider: 'widget-feed',
+            provider: (raw.provider ?? 'connector') as string,
           };
 
           // Connector items always queue — they are from external services

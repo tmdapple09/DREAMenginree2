@@ -119,37 +119,32 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
 
       setUploadProgress('Creating post...');
 
-      const { error } = await supabase
-        .from('app_posts')
-        .insert({
-          user_id: userId,
+      const flatMediaUrls = [
+        ...mediaUrls.images,
+        ...mediaUrls.videos,
+        ...mediaUrls.audio,
+      ];
+
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
           content,
           visibility,
-          media_json: mediaUrls
-        });
+          media_urls: flatMediaUrls,
+          media_json: mediaUrls,
+        }),
+      });
 
-      if (!error) {
-        // Also create a feed item for the post
-        await supabase
-          .from('feed_items')
-          .insert({
-            user_id: userId,
-            source: 'app',
-            external_id: crypto.randomUUID(),
-            title: content.slice(0, 100),
-            summary: content,
-            ts: new Date().toISOString(),
-            dedupe_hash: `${userId}-app-${Date.now()}`,
-            visibility: visibility,
-            media_json: mediaUrls
-          });
-
-        setContent('');
-        setUploadedMedia([]);
-        onClose();
-      } else {
-        throw error;
+      const data = await res.json().catch(() => ({})) as { error?: string };
+      if (!res.ok) {
+        throw new Error(data.error ?? 'Failed to create post');
       }
+
+      setContent('');
+      setUploadedMedia([]);
+      onClose();
     } catch (error: unknown) {
       console.error('Post creation error:', error);
       alert(error instanceof Error ? toErrorMessage(error) : 'Failed to create post');

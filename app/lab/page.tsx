@@ -98,7 +98,7 @@ export default async function LabPage( ){
   const { data: myProjectsData } = await db
     .from('projects')
     .select('*')
-    .eq('owner_id', user.id)
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
   // Fetch public projects
@@ -109,7 +109,7 @@ export default async function LabPage( ){
       profiles!inner(handle, display_name, avatar_url)
     `)
     .eq('visibility', 'public')
-    .not('owner_id', 'eq', user.id)
+    .not('user_id', 'eq', user.id)
     .order('created_at', { ascending: false })
     .limit(10);
 

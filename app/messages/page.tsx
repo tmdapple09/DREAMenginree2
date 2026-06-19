@@ -23,6 +23,12 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
   const params = searchParams ? await searchParams : {};
   const fromDrEams = params.from === 'dr-eams';
   const initialQuery = typeof params.q === 'string' ? params.q : '';
+  const initialSelectedConversationId = typeof params.conversation_id === 'string'
+    ? params.conversation_id
+    : typeof params.conversation === 'string'
+      ? params.conversation
+      : undefined;
+  const initialCompose = typeof params.compose === 'string' ? params.compose : '';
 
   // Fetch conversations
   const { data: conversations } = await supabase
@@ -55,6 +61,8 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
       initialConversations={displayConversations}
       fromDrEams={fromDrEams}
       initialDrEamsQuery={initialQuery}
+      initialSelectedConversationId={initialSelectedConversationId}
+      initialCompose={initialCompose}
     />
   );
 }

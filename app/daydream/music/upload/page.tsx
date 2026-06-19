@@ -48,7 +48,6 @@ export default function UploadMusicPage( ){
         .from('music_releases')
         .insert({
           user_id: user.id,
-          owner_id: user.id,
           title,
           embed_url: finalEmbedUrl || null,
           visibility

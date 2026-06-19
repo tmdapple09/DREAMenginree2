@@ -25,8 +25,12 @@ export interface DbNotificationRow {
   id: string;
   user_id?: string;
   type: string;
-  /** Free-form JSON content — shape varies by notification type */
-  content: DbNotificationContent | null;
+  /** Free-form JSON content — legacy name */
+  content?: DbNotificationContent | null;
+  /** Free-form JSON payload — current notifications table column */
+  data?: DbNotificationContent | null;
+  /** Current notifications table text column */
+  message?: string | null;
   read: boolean;
   created_at: string;
 }
@@ -200,7 +204,7 @@ export function extractNotificationMessage(
  */
 export function normalizeDbRow(row: DbNotificationRow): UiNotification {
   const uiType   = mapNotificationType(row.type);
-  const content  = row.content ?? null;
+  const content: DbNotificationContent | null = row.data ?? row.content ?? (row.message ? { message: row.message } : null);
   const title    = getNotificationTitle(uiType);
   const message  = extractNotificationMessage(uiType, content);
   const actionUrl = getNotificationActionUrl(uiType, content);

@@ -40,14 +40,14 @@ import { toErrorMessage } from '@/utils/index';
  * LabEngin — Side B control layer for the Lab Daydream.
  *
  * Responsibilities (README spec §9.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Surface active experiments from the `physics_experiments` table.
+ *   - Surface active experiments from the `science_experiments` table.
  *   - Provide a direct entry point to start a new experiment.
  *   - Show a Simulation Status placeholder ready for future runtime data.
  *   - Simulation Runner: run deterministic browser simulation kernels with numeric results.
  *   - Data Visualization Panel: chart type selector + ASCII preview + export.
  *   - Cross-Engin Sync: live status indicators for Code, Game, Music channels.
  *
- * Security: filters by creator_id = auth.uid() as defence-in-depth on top of
+ * Security: filters by user_id = auth.uid() as defence-in-depth on top of
  * server-side RLS. Follows AXIOM 4 (security by default).
  */
 
@@ -257,12 +257,12 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     const supabase = createClient();
 
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.user;
+      const user = res.data.user;
       if (!user || cancelled) { setLoading(false); return; }
       const { data } = await supabase
-        .from('physics_experiments')
+        .from('science_experiments')
         .select('id, title, status')
-        .eq('creator_id', user.id)
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(10);
       if (!cancelled) {
@@ -540,13 +540,12 @@ export default function LabEngin({ onBack, instanceId: instanceIdProp }: Props) 
     // Write a real experiment record to Supabase (Phase 8 §F, pt 53).
     const supabase = createClient();
     supabase.auth.getUser().then(async (res: Awaited<ReturnType<typeof supabase.auth.getUser>>) => {
-      const user = res.user;
+      const user = res.data.user;
       if (user) {
-        await supabase.from('physics_experiments').insert({
-          creator_id:  user.id,
+        await supabase.from('science_experiments').insert({
+          user_id:  user.id,
           title:       title.trim(),
           status:      'completed',
-          visibility:  'private',
         });
       }
       const newResult = {

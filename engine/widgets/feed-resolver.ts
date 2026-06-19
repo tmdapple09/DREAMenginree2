@@ -9,15 +9,16 @@ import {
 } from '@/types/widget-system-v2';
 import { toErrorMessage } from '@/utils/index';
 
-interface FeedItemRow {
+interface AppPostFeedRow {
   id: string;
   user_id: string;
-  ts: string;
-  summary?: string;
-  title?: string;
-  media_json?: Record<string, unknown>;
+  content: string | null;
+  media_json?: Record<string, unknown> | null;
+  media_urls?: string[] | null;
+  media_url?: string | null;
   visibility: string;
-  item_id?: string;
+  post_visibility?: string | null;
+  created_at: string;
 }
 // =====================================================
 // Feed Host Resolver
@@ -57,26 +58,20 @@ export async function resolveFeedHost(
       };
     }
 
-    // Build query for feed items
-
+    // Build query from app_posts. The live feed_items table is widget-shaped,
+    // not user-scoped social content, so user feeds resolve from app_posts.
     let query = (supabase as SupabaseClient)
-      .from('feed_items')
-      .select('id, user_id, ts, title, summary, url, media_json, tags_json, visibility, importance_score')
-      .eq('user_id' as never, targetUserId)
-      .order('ts', { ascending: false })
+      .from('app_posts')
+      .select('id, user_id, content, media_url, media_urls, media_json, visibility, post_visibility, created_at')
+      .eq('user_id', targetUserId)
+      .order('created_at', { ascending: false })
       .limit(hostConfig.limit);
 
-    // Apply filters
-    if (hostConfig.filters.tags && Array.isArray(hostConfig.filters.tags) && hostConfig.filters.tags.length > 0) {
-      query = query.contains('tags_json', hostConfig.filters.tags);
+    if (hostConfig.scope !== FeedScope.SELF || targetUserId !== ownerId) {
+      query = query.eq('visibility', 'public');
     }
 
-    if (hostConfig.filters.project_id) {
-      query = query.eq('project_id' as never, hostConfig.filters.project_id);
-    }
-
-    // Execute query
-    const { data: feedItems, error } = await query.returns<FeedItemRow[]>();
+    const { data: feedItems, error } = await query.returns<AppPostFeedRow[]>();
 
     if (error) {
       console.error('Feed resolver error:', error);
@@ -87,31 +82,28 @@ export async function resolveFeedHost(
       };
     }
 
-    // Transform to FeedItemSummary format and fetch engagement counts
-    const items: FeedItemSummary[] = await Promise.all((feedItems || []).map(async (item: FeedItemRow) => {
-      // Fetch engagement counts for this item
+    const { data: closeFriendRows } = await (supabase as SupabaseClient)
+      .from('close_friends')
+      .select('user_id')
+      .eq('friend_id', ownerId);
+    const closeFriendAuthorIds = new Set(
+      (closeFriendRows ?? []).map((row: { user_id: string }) => row.user_id),
+    );
 
-      const { data: engagementData } = await (supabase as SupabaseClient)
-        .from('content_engagement' as never)
-        .select('engagement_type')
-        .eq('content_id' as never, item.id);
+    const visibleItems = (feedItems || []).filter((item) => (
+      item.post_visibility !== 'close_friends' ||
+      item.user_id === ownerId ||
+      closeFriendAuthorIds.has(item.user_id)
+    ));
 
-      const engagementCounts = (engagementData || []).reduce((acc: { likes: number; comments: number; shares: number }, eng: { engagement_type: string }) => {
-        if (eng.engagement_type === 'like') acc.likes++;
-        else if (eng.engagement_type === 'comment') acc.comments++;
-        else if (eng.engagement_type === 'share') acc.shares++;
-        return acc;
-      }, { likes: 0, comments: 0, shares: 0 });
-
-      return {
-        item_id: item.id,
-        author_id: item.user_id,
-        created_at: item.ts,
-        text_preview: item.summary || item.title || '',
-        media_preview_url: extractMediaPreviewUrl(item.media_json),
-        engagement_counts: engagementCounts,
-        visibility: item.visibility as 'public' | 'followers' | 'private',
-      };
+    const items: FeedItemSummary[] = visibleItems.map((item: AppPostFeedRow) => ({
+      item_id: item.id,
+      author_id: item.user_id,
+      created_at: item.created_at,
+      text_preview: item.content ?? '',
+      media_preview_url: extractMediaPreviewUrl(item.media_json) ?? item.media_url ?? item.media_urls?.[0],
+      engagement_counts: { likes: 0, comments: 0, shares: 0 },
+      visibility: item.visibility as 'public' | 'followers' | 'private',
     }));
 
     return {
@@ -324,7 +316,7 @@ export async function subscribeAppPostsRealtime(
 }
 
 // =====================================================
-// 6. FEED_ITEMS REALTIME SUBSCRIPTION HELPERS (Widget System V2)
+// 6. APP_POSTS REALTIME SUBSCRIPTION HELPERS (Widget System V2)
 // =====================================================
 
 export function getFeedChannelKey(scope: FeedScope, userId: string): string {
@@ -355,8 +347,8 @@ export async function subscribeFeedRealtime(
       {
         event: '*',
         schema: 'public',
-        table: 'feed_items',
-        filter: `user_id=eq.${targetUserId}`,
+        table: 'app_posts',
+        filter: `user_id=eq.${targetUserId}`, 
       },
       async () => {
         // Debounce updates

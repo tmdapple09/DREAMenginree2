@@ -39,17 +39,38 @@ export default function CreateAdSlotPage( ){
         return;
       }
 
-      const { error: insertError } = await supabase
+      const selectedPlacement = placements.find((p) => p.id === placement);
+      const dailyRate = parseFloat(priceDay);
+      const weeklyRate = parseFloat(priceWeek);
+
+      const { data: slot, error: insertError } = await supabase
         .from('ad_slots')
         .insert({
-          owner_id: user.id,
-          placement,
-          price_day: parseFloat(priceDay),
-          price_week: parseFloat(priceWeek),
-          active: true
-        });
+          user_id: user.id,
+          slot_name: placement,
+          slot_size: placement,
+          price_per_day: Number.isFinite(dailyRate) ? dailyRate : 0,
+          price_per_week: Number.isFinite(weeklyRate) ? weeklyRate : 0,
+          is_available: true
+        })
+        .select('id')
+        .single();
 
       if (insertError) throw insertError;
+
+      if (slot?.id) {
+        const { error: listingError } = await supabase
+          .from('ad_listings')
+          .insert({
+            ad_slot_id: slot.id,
+            seller_id: user.id,
+            title: selectedPlacement?.label ?? placement.replace(/_/g, ' '),
+            description: selectedPlacement?.description ?? null,
+            price: Number.isFinite(dailyRate) ? dailyRate : 0,
+          });
+
+        if (listingError) throw listingError;
+      }
 
       router.push('/ads');
     } catch (err: unknown) {

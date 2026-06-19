@@ -59,10 +59,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     description?: string;
     embed_url?: string;
     visibility?: string;
-    genre?: string;
     cover_url?: string;
   };
-  const { title, description, embed_url, visibility = 'public', genre, cover_url } = body;
+  const { title, description, embed_url, visibility = 'public', cover_url } = body;
 
   if (!title || title.trim().length === 0) {
     return NextResponse.json({ error: 'Title is required' }, { status: 400 });
@@ -76,7 +75,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       description: description?.trim() || null,
       embed_url: embed_url?.trim() || null,
       visibility,
-      genre: genre?.trim() || null,
       cover_url: cover_url || null,
     } as never)
     .select(`
@@ -88,15 +86,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (error) {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
-
-  // Create feed item
-
-  await (supabase as SupabaseClient).from('feed_items').insert({
-    user_id: user.id,
-    type: 'music',
-    content: { title: release.title, release_id: release.id },
-    ts: new Date().toISOString(),
-  });
 
   return NextResponse.json({ release }, { status: 201 });
 }

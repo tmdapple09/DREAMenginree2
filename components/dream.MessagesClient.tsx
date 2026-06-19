@@ -38,6 +38,10 @@ interface MessagesClientProps {
    * input and shown in the context banner.
    */
   initialDrEamsQuery?: string;
+  /** Conversation selected by /messages?conversation_id=... or /messages/new redirect. */
+  initialSelectedConversationId?: string;
+  /** Draft body passed by /messages?compose=... or /messages/new redirect. */
+  initialCompose?: string;
 }
 
 /** Parse a subject line from message content formatted as "**Subject:** [subject]\n\n[body]" */
@@ -78,10 +82,22 @@ function getConversationPreview(lastMessage: string): string {
  *  Must be long enough for a mousedown on a suggestion to fire before blur hides the list. */
 const SUGGESTIONS_CLOSE_DELAY_MS = 200;
 
-export default function MessagesClient({ userId, initialConversations, fromDrEams = false, initialDrEamsQuery = '' }: MessagesClientProps) {
+export default function MessagesClient({
+  userId,
+  initialConversations,
+  fromDrEams = false,
+  initialDrEamsQuery = '',
+  initialSelectedConversationId,
+  initialCompose = '',
+}: MessagesClientProps) {
+  const initialSelectedConversation =
+    initialConversations.find((conversation) => conversation.id === initialSelectedConversationId) ??
+    initialConversations[0] ??
+    null;
+
   const [conversations, setConversations] = useState(initialConversations);
-  const [selectedConv, setSelectedConv] = useState<Conversation | null>(initialConversations[0] || null);
-  const [newMessage, setNewMessage] = useState('');
+  const [selectedConv, setSelectedConv] = useState<Conversation | null>(initialSelectedConversation);
+  const [newMessage, setNewMessage] = useState(initialCompose);
   const [newSubject, setNewSubject] = useState('');
   const [showSubjectField, setShowSubjectField] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -94,6 +110,7 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
   const [showDrEamsBanner, setShowDrEamsBanner] = useState(fromDrEams && !!initialDrEamsQuery);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const initialComposeAppliedRef = useRef(false);
   const supabase = createClient();
   const router = useRouter();
 
@@ -116,6 +133,12 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
       setNewMessage(draft.body);
       setNewSubject(draft.subject);
       setShowSubjectField(!!draft.subject.trim());
+    } else if (!initialComposeAppliedRef.current && initialCompose.trim()) {
+      initialComposeAppliedRef.current = true;
+      setNewMessage(initialCompose);
+      setNewSubject('');
+      setShowSubjectField(false);
+      if (selectedConv?.id) saveDraft({ subject: '', body: initialCompose });
     } else {
       setNewMessage('');
       setNewSubject('');
@@ -202,7 +225,8 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
     if ((!newMessage.trim() && !selectedFile) || !selectedConv || isSending) return;
 
     const rawBody = newMessage.trim();
-    const messageContent = formatMessageContent(newSubject, rawBody);
+    const rawSubject = newSubject;
+    const messageContent = formatMessageContent(rawSubject, rawBody);
     setNewMessage('');
     setNewSubject('');
     setShowSubjectField(false);
@@ -244,23 +268,30 @@ export default function MessagesClient({ userId, initialConversations, fromDrEam
         }),
       });
 
-      const data = await res.json();
-      if (data.message) {
-        replaceOptimistic(optimisticMessage!.id, data.message);
-        // Update conversation list updated_at
-        setConversations((prev) =>
-          prev.map((c) =>
-            c.id === selectedConv.id
-              ? { ...c, lastMessage: messageContent, updatedAt: new Date().toISOString() }
-              : c
-          )
-        );
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(typeof data.error === 'string' ? data.error : 'Failed to send message');
       }
+      if (!data.message) {
+        throw new Error('Message API did not return the saved message');
+      }
+
+      replaceOptimistic(optimisticMessage!.id, data.message);
+      // Update conversation list updated_at
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === selectedConv.id
+            ? { ...c, lastMessage: messageContent, updatedAt: new Date().toISOString() }
+            : c
+        )
+      );
     } catch (err: unknown) {
       console.error('Failed to send message:', err);
       alert(err instanceof Error ? toErrorMessage(err) : 'Failed to send message');
       if (optimisticMessage) removeOptimistic(optimisticMessage.id);
       setNewMessage(rawBody);
+      setNewSubject(rawSubject);
+      setShowSubjectField(!!rawSubject.trim());
     } finally {
       setIsSending(false);
     }
